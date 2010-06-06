@@ -37,11 +37,13 @@ public interface ColQuery extends Query<ColQuery>, Projectable {
     <A> ColQuery from(Path<A> entity, Iterable<? extends A> col);
     
     /**
+     * Define an inner join from the collection path to the alias
+     * 
      * @param <P>
-     * @param target
+     * @param collectionPath
      * @param alias
      * @return
      */
-    <P> ColQuery innerJoin(Path<? extends Collection<P>> target, Path<P> alias);
+    <P> ColQuery innerJoin(Path<? extends Collection<P>> collectionPath, Path<P> alias);
 
 }

@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections;
+package com.mysema.query.collections.engine;
 
 import java.net.URLClassLoader;
 import java.util.ArrayList;
@@ -24,6 +24,8 @@ import com.mysema.codegen.EvaluatorFactory;
 import com.mysema.codegen.Type;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
+import com.mysema.query.collections.ColQuerySerializer;
+import com.mysema.query.collections.ColQueryTemplates;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
@@ -34,34 +36,31 @@ import com.mysema.query.types.expr.EBoolean;
  *
  */
 @Immutable
-public class ExprEvaluatorFactory {
-
-    public static final ExprEvaluatorFactory DEFAULT = new ExprEvaluatorFactory(ColQueryTemplates.DEFAULT);
-    
-    static Object[] combine(int size, Object[]... arrays) {
-        int offset = 0;
-        Object[] target = new Object[size];
-        for (Object[] arr : arrays) {
-            System.arraycopy(arr, 0, target, offset, arr.length);
-            offset += arr.length;
-        }
-        return target;
-    }
+public class DefaultEvaluatorFactory {
     
     private final EvaluatorFactory factory;
     
     private final ColQueryTemplates templates;
     
-    public ExprEvaluatorFactory(ColQueryTemplates templates){
+    public DefaultEvaluatorFactory(ColQueryTemplates templates){
         // TODO : which ClassLoader to pick ?!?
-	this(templates, (URLClassLoader)ExprEvaluatorFactory.class.getClassLoader(), ToolProvider.getSystemJavaCompiler());
+	this(templates, 
+	    (URLClassLoader)DefaultEvaluatorFactory.class.getClassLoader(), 
+	    ToolProvider.getSystemJavaCompiler());
     }
     
-    public ExprEvaluatorFactory(ColQueryTemplates templates, URLClassLoader classLoader, JavaCompiler compiler){
+    public DefaultEvaluatorFactory(ColQueryTemplates templates, 
+            URLClassLoader classLoader, JavaCompiler compiler){
         this.templates = templates;
         this.factory = new EvaluatorFactory(classLoader, compiler);
     }
     
+    /**
+     * @param <T>
+     * @param sources
+     * @param projection
+     * @return
+     */
     public <T> Evaluator<T> create(List<? extends Expr<?>> sources, Expr<T> projection) {
         ColQuerySerializer serializer = new ColQuerySerializer(templates);
         serializer.handle(projection);
@@ -93,6 +92,12 @@ public class ExprEvaluatorFactory {
         return factory.createEvaluator("return " + javaSource +";", projection.getType(), names, types, constants);        
     }
     
+    /**
+     * @param <T>
+     * @param source
+     * @param filter
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public <T> Evaluator<List<T>> createEvaluator(Expr<? extends T> source, EBoolean filter){
         String typeName = com.mysema.codegen.ClassUtils.getName(source.getType());
@@ -123,6 +128,11 @@ public class ExprEvaluatorFactory {
                 constants);
     }
     
+    /**
+     * @param joins
+     * @param filter
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public Evaluator<List<Object[]>> createEvaluator(List<JoinExpression> joins, @Nullable EBoolean filter){
         List<String> sourceNames = new ArrayList<String>();

@@ -15,14 +15,9 @@ import org.junit.Test;
 
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.collections.ColQuery;
-import com.mysema.query.collections.ColQueryImpl;
-import com.mysema.query.collections.ExprEvaluatorFactory;
 import com.mysema.query.types.path.PNumber;
 
 public class PagingTest extends AbstractQueryTest {
-    
-    private static final ExprEvaluatorFactory evaluatorFactory = ExprEvaluatorFactory.DEFAULT;
 
     private List<Integer> ints = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
@@ -57,7 +52,7 @@ public class PagingTest extends AbstractQueryTest {
     }
 
     private ColQuery createQuery(QueryModifiers modifiers) {
-        ColQuery query = new ColQueryImpl(evaluatorFactory).from(var, ints);
+        ColQuery query = new ColQueryImpl().from(var, ints);
         if (modifiers != null){
             query.restrict(modifiers);
         }            

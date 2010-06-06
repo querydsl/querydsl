@@ -16,19 +16,22 @@ import org.junit.Test;
 
 import com.mysema.query.animal.Cat;
 import com.mysema.query.animal.QCat;
-import com.mysema.query.collections.ExprEvaluatorFactory;
+import com.mysema.query.collections.ColQueryTemplates;
 import com.mysema.query.collections.MiniApi;
+import com.mysema.query.collections.engine.DefaultEvaluatorFactory;
 
 public class LoadTest {
     
     private QCat cat = QCat.cat;
+    
+    private DefaultEvaluatorFactory evaluatorFactory = new DefaultEvaluatorFactory(ColQueryTemplates.DEFAULT);
     
     @Test
     public void creation(){
         System.out.println("Evaluator creation #1");
         for (int i = 0; i < 5; i++){
             long s = System.currentTimeMillis();
-            ExprEvaluatorFactory.DEFAULT.create(Collections.singletonList(cat), cat.name.startsWith("Bob"));
+            evaluatorFactory.create(Collections.singletonList(cat), cat.name.startsWith("Bob"));
             long e = System.currentTimeMillis();
             System.out.println(" " + (e-s)+"ms");    
         }        
@@ -37,7 +40,7 @@ public class LoadTest {
         System.out.println("Evaluator creation #2");
         for (int i = 0; i < 5; i++){
             long s = System.currentTimeMillis();
-            ExprEvaluatorFactory.DEFAULT.create(Collections.singletonList(cat), cat.name.startsWith("Bob" + i));
+            evaluatorFactory.create(Collections.singletonList(cat), cat.name.startsWith("Bob" + i));
             long e = System.currentTimeMillis();
             System.out.println(" " + (e-s)+"ms");    
         }        

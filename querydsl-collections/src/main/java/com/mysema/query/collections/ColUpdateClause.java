@@ -28,13 +28,13 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
     
     private final ColQuery query;
     
-    public ColUpdateClause(ExprEvaluatorFactory ef, Path<T> expr, Iterable<? extends T> col){
-        this.query = new ColQueryImpl(ef).from(expr, col);
+    public ColUpdateClause(QueryEngine qe, Path<T> expr, Iterable<? extends T> col){
+        this.query = new ColQueryImpl(qe).from(expr, col);
         this.expr = expr;
     }
     
     public ColUpdateClause(Path<T> expr, Iterable<? extends T> col){
-        this(ExprEvaluatorFactory.DEFAULT, expr, col);
+        this(QueryEngine.DEFAULT, expr, col);
     }
     
     @Override

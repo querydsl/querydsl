@@ -21,7 +21,7 @@ public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQ
      * Create a new ColQueryImpl instance
      */
     public ColQueryImpl() {
-        super(new DefaultQueryMetadata(), ExprEvaluatorFactory.DEFAULT);
+        super(new DefaultQueryMetadata(), QueryEngine.DEFAULT);
     }
     
     /**
@@ -29,8 +29,8 @@ public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQ
      * 
      * @param evaluatorFactory
      */
-    public ColQueryImpl(ExprEvaluatorFactory evaluatorFactory) {
-        super(new DefaultQueryMetadata(), evaluatorFactory);
+    public ColQueryImpl(QueryEngine queryEngine) {
+        super(new DefaultQueryMetadata(), queryEngine);
     }
     
     /**
@@ -39,15 +39,15 @@ public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQ
      * @param metadata
      * @param evaluatorFactory
      */
-    public ColQueryImpl(QueryMetadata metadata, ExprEvaluatorFactory evaluatorFactory) {
-        super(metadata, evaluatorFactory);
+    public ColQueryImpl(QueryMetadata metadata, QueryEngine queryEngine) {
+        super(metadata, queryEngine);
     }
 
     /**
      * Clone the state of this query to a new ColQueryImpl instance
      */
     public ColQueryImpl clone(){
-        return new ColQueryImpl(queryMixin.getMetadata(), getEvaluatorFactory());
+        return new ColQueryImpl(queryMixin.getMetadata(), getQueryEngine());
     }
 
     /**

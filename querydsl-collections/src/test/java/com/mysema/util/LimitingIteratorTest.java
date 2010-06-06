@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections;
+package com.mysema.util;
 
 import static org.junit.Assert.assertEquals;
 
@@ -16,7 +16,6 @@ import org.apache.commons.collections15.IteratorUtils;
 import org.junit.Test;
 
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.collections.LimitingIterator;
 
 public class LimitingIteratorTest {
 

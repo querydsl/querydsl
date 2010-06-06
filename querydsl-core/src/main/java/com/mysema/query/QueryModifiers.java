@@ -6,6 +6,7 @@
 package com.mysema.query;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
@@ -97,6 +98,23 @@ public final class QueryModifiers implements Serializable{
     public boolean isRestricting() {
         return limit != null || offset != null;
     }
+    
+    /**
+     * Get a sublist based on the restriction of limit and offset
+     * 
+     * @param <T>
+     * @param list
+     * @return
+     */
+    public <T> List<T> subList(List<T> list) {
+        if (!list.isEmpty()){
+            int from = offset != null ? offset.intValue() : 0;
+            int to = limit != null ? (from + limit.intValue()) : list.size();
+            return list.subList(from, Math.min(to,list.size()));    
+        }else{
+            return list;
+        }        
+    }
 
     @Override
     public boolean equals(Object o){
@@ -120,4 +138,6 @@ public final class QueryModifiers implements Serializable{
             return 0;
         }
     }
+
+
 }

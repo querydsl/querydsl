@@ -48,7 +48,7 @@ public class ColQueryTest extends AbstractQueryTest {
     public void testArrayProjection() {
         // select pairs of cats with different names
         query().from(cat, cats).from(otherCat, cats).where(cat.name.ne(otherCat.name)).list(cat.name, otherCat.name);
-        assertTrue(last.res.size() == 4 * 3);
+        assertEquals(4*3, last.res.size());
     }
 
     @Test
@@ -119,7 +119,7 @@ public class ColQueryTest extends AbstractQueryTest {
 
         query().from(cat, cats).where(cat.kittens.isNotEmpty()).list(cat);
 
-        query().from(cat, cats).where(cat.name.matches("fri.*")).list($(cat.name));
+        query().from(cat, cats).where(cat.name.matches("fri.*")).list(cat.name);
 
     }
 

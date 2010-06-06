@@ -14,7 +14,6 @@ import org.junit.Before;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.animal.Cat;
 import com.mysema.query.animal.QCat;
-import com.mysema.query.collections.ColQueryImpl;
 import com.mysema.query.types.Expr;
 
 /**
@@ -72,32 +71,20 @@ public abstract class AbstractQueryTest {
     }
 
     static class TestQuery extends ColQueryImpl {
-//        public TestQuery() {
-//            super(evaluatorFactory);
-//        }
 
         List<Object> res = new ArrayList<Object>();
 
         @Override
         public <RT> List<RT> list(Expr<RT> projection) {
+            boolean array = projection.getType().isArray();
             List<RT> rv = super.list(projection);
             for (Object o : rv) {
-                System.out.println(o);
+                System.out.println(array ? Arrays.toString((Object[])o) : o);
                 res.add(o);
             }
             System.out.println();
             return rv;
         }
 
-        @Override
-        public List<Object[]> list(Expr<?>[] args) {
-            List<Object[]> rv = super.list(args);
-            for (Object[] o : rv) {
-                System.out.println(Arrays.asList(o));
-                res.add(o);
-            }
-            System.out.println();
-            return rv;
-        }
     }
 }

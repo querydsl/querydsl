@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.collections;
+package com.mysema.query.collections.engine;
 
 import java.io.Serializable;
 import java.util.Comparator;
@@ -33,13 +33,13 @@ public class MultiComparator<T> implements Comparator<T>, Serializable {
         this.asc = directions.clone();
     }
 
+    @Override
     public int compare(T o1, T o2) {
         if (o1.getClass().isArray()){
             return innerCompare(ev.evaluate((Object[])o1), ev.evaluate((Object[])o2));    
         }else{
             return innerCompare(ev.evaluate(o1), ev.evaluate(o2));
-        }
-        
+        }        
     }
     
     private int innerCompare(Object[] o1, Object[] o2) {
