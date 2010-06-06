@@ -16,6 +16,7 @@ import com.mysema.commons.lang.CloseableIterator;
  *
  * @param <T>
  */
+// TODO : put this functionality into IteratorAdapter
 public class ResultIterator<T> implements CloseableIterator<T>{
     
     private final Closeable closeable;
