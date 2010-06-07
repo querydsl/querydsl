@@ -12,6 +12,8 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
+ * ColDeleteClause is an implementation of the DeleteClause interface for the Querydsl Collections module
+ * 
  * @author tiwe
  *
  * @param <T>

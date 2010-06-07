@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
 package com.mysema.query.collections;
 
 import java.util.ArrayList;
@@ -23,6 +28,8 @@ import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.util.MultiComparator;
 
 /**
+ * Default implementation of the QueryEngine interface
+ * 
  * @author tiwe
  *
  */
@@ -44,6 +51,15 @@ public class DefaultQueryEngine implements QueryEngine {
         }
     }
     
+    @Override
+    public <T> List<T> list(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables, Expr<T> projection){        
+        if (metadata.getJoins().size() == 1){
+            return evaluateSingleSource(metadata, iterables, false);
+        }else{
+            return evaluateMultipleSources(metadata, iterables, false);
+        }        
+    }
+
     private List<?> distinct(List<?> list) {
         if (!list.isEmpty() && list.get(0).getClass().isArray()){
             Set set = new HashSet(list.size());
@@ -79,22 +95,18 @@ public class DefaultQueryEngine implements QueryEngine {
                     Operation target = (Operation) join.getTarget();
                    sources.add(target.getArg(1));
                 }            
-            }
-            
+            }            
             // ordered
             if (!metadata.getOrderBy().isEmpty()){
                 order(metadata, sources, list);
-            }
-            
+            }            
             // limit + offset
             if (metadata.getModifiers().isRestricting()){
                 list = metadata.getModifiers().subList(list);
-            }
-            
+            }            
             if (list.isEmpty()){
                 return list;
-            }
-            
+            }            
             // projection
             list = project(metadata, sources, list);                
         }
@@ -106,7 +118,6 @@ public class DefaultQueryEngine implements QueryEngine {
         
         return list;
     }
-
 
     private List evaluateSingleSource(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables, boolean count) {        
         Expr<?> source = metadata.getJoins().get(0).getTarget();
@@ -133,22 +144,18 @@ public class DefaultQueryEngine implements QueryEngine {
                     list = new ArrayList(list);    
                 }
                 order(metadata, sources, list);
-            }        
-            
+            }                    
             // limit + offset
             if (metadata.getModifiers().isRestricting()){
                 list = metadata.getModifiers().subList(list);
-            }
-            
+            }            
             if (list.isEmpty()){
                 return list;
-            }
-            
+            }            
             // projection
             if (metadata.getProjection().size() > 1 || !metadata.getProjection().get(0).equals(source)){
                 list = project(metadata, sources, list);
-            }            
-        
+            }           
         }        
 
         // distinct
@@ -160,15 +167,6 @@ public class DefaultQueryEngine implements QueryEngine {
         
     }
 
-    @Override
-    public <T> List<T> list(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables, Expr<T> projection){        
-        if (metadata.getJoins().size() == 1){
-            return evaluateSingleSource(metadata, iterables, false);
-        }else{
-            return evaluateMultipleSources(metadata, iterables, false);
-        }        
-    }
-    
     private void order(QueryMetadata metadata, List<Expr<?>> sources, List<?> list) {
         // create a projection for the order
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
@@ -183,7 +181,6 @@ public class DefaultQueryEngine implements QueryEngine {
 
         Collections.sort(list, new MultiComparator(orderEvaluator, directions));
     }
-
 
     private List<?> project(QueryMetadata metadata, List<Expr<?>> sources, List<?> list) {
         Evaluator projectionEvaluator = evaluatorFactory.create(sources, metadata.getProjection().get(0));

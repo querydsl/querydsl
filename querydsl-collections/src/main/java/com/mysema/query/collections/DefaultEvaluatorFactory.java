@@ -30,6 +30,9 @@ import com.mysema.query.types.Operation;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
+ * DefaultEvaluatorFactory extends the EvaluatorFactory class to provide Java source 
+ * templates for evaluation of ColQuery queries
+ * 
  * @author tiwe
  *
  */
@@ -54,6 +57,8 @@ public class DefaultEvaluatorFactory {
     }
     
     /**
+     * Create an Evaluator for the given query sources and projection
+     * 
      * @param <T>
      * @param sources
      * @param projection
@@ -91,6 +96,8 @@ public class DefaultEvaluatorFactory {
     }
     
     /**
+     * Create an Evaluator for the given source and filter
+     * 
      * @param <T>
      * @param source
      * @param filter
@@ -127,6 +134,8 @@ public class DefaultEvaluatorFactory {
     }
     
     /**
+     * Create an Evaluator for the given sources and the given optional filter
+     * 
      * @param joins
      * @param filter
      * @return

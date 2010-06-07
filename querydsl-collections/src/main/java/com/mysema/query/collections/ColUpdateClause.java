@@ -16,6 +16,8 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
+ * ColUpdateClause is an implementation of the UpdateClause interface for Querydsl Collections
+ * 
  * @author tiwe
  *
  * @param <T>

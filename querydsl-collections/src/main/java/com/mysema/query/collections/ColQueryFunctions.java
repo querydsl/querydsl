@@ -11,6 +11,8 @@ import java.util.Date;
 import javax.annotation.Nullable;
 
 /**
+ * ColQueryFunctions defines function implementation for use in ColQueryTemplates
+ * 
  * @author tiwe
  *
  */
