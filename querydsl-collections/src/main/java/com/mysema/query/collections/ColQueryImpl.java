@@ -48,5 +48,12 @@ public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQ
     public ColQueryImpl clone(){
         return new ColQueryImpl(queryMixin.getMetadata(), getQueryEngine());
     }
+    
+    /**
+     * @return
+     */
+    public QueryMetadata getMetadata() {
+        return queryMixin.getMetadata();
+    }
 
 }

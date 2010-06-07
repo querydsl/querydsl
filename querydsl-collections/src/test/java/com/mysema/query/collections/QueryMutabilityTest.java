@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query;
+package com.mysema.query.collections;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -11,8 +11,8 @@ import java.util.Collections;
 
 import org.junit.Test;
 
+import com.mysema.query.QueryMutability;
 import com.mysema.query.animal.QCat;
-import com.mysema.query.collections.Cat;
 import com.mysema.query.collections.ColQueryImpl;
 
 public class QueryMutabilityTest {
