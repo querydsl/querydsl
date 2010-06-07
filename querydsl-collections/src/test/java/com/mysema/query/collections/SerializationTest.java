@@ -12,7 +12,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.Tuple;
-import com.mysema.query.animal.Cat;
 import com.mysema.query.types.expr.QTuple;
 
 public class SerializationTest extends AbstractQueryTest{

@@ -75,7 +75,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
         return (Q)this;
     }
     
-    private QueryMetadata getMetadata() {
+    protected QueryMetadata getMetadata() {
         return queryMixin.getMetadata();
     }
 

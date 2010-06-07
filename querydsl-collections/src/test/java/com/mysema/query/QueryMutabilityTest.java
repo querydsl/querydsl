@@ -11,8 +11,8 @@ import java.util.Collections;
 
 import org.junit.Test;
 
-import com.mysema.query.animal.Cat;
 import com.mysema.query.animal.QCat;
+import com.mysema.query.collections.Cat;
 import com.mysema.query.collections.ColQueryImpl;
 
 public class QueryMutabilityTest {

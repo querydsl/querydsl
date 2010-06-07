@@ -10,7 +10,6 @@ import static com.mysema.query.collections.MiniApi.from;
 
 import org.junit.Test;
 
-import com.mysema.query.animal.Cat;
 import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.expr.ENumber;

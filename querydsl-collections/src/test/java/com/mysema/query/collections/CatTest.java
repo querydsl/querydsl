@@ -3,12 +3,13 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query.animal;
+package com.mysema.query.collections;
 
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.mysema.query.animal.QCat;
 import com.mysema.query.types.path.PSimple;
 
 public class CatTest {

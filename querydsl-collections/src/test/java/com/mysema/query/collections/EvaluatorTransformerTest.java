@@ -12,7 +12,6 @@ import java.util.Collections;
 import org.junit.Test;
 
 import com.mysema.codegen.Evaluator;
-import com.mysema.query.animal.Cat;
 import com.mysema.query.animal.QCat;
 
 public class EvaluatorTransformerTest {

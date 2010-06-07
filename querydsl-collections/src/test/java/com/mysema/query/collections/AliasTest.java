@@ -20,7 +20,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.alias.Alias;
-import com.mysema.query.animal.Cat;
 import com.mysema.query.animal.QCat;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;

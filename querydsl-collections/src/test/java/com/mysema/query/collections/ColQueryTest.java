@@ -15,7 +15,6 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.mysema.query.animal.Cat;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.path.PString;
