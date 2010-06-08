@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query;
+package com.mysema.query.collections;
 
 import static org.junit.Assert.assertEquals;
 
@@ -15,7 +15,6 @@ import java.util.List;
 import org.junit.Test;
 
 import com.mysema.query.collections.QCat;
-import com.mysema.query.collections.Cat;
 import com.mysema.query.collections.ColQueryTemplates;
 import com.mysema.query.collections.DefaultEvaluatorFactory;
 import com.mysema.query.collections.MiniApi;
