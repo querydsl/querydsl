@@ -11,8 +11,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.animal.QCat;
-import com.mysema.query.collections.MiniApi;
 import com.mysema.query.types.expr.EBoolean;
 
 public class CompilationOverheadTest {

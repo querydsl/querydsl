@@ -14,8 +14,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.query.animal.QCat;
-
 public class InnerJoinTest extends AbstractQueryTest{
 
     private QCat cat, kitten;

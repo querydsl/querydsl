@@ -12,7 +12,6 @@ import java.util.List;
 import org.junit.Before;
 
 import com.mysema.query.alias.Alias;
-import com.mysema.query.animal.QCat;
 import com.mysema.query.types.Expr;
 
 /**

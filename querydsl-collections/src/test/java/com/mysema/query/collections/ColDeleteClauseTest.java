@@ -13,8 +13,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.animal.QCat;
-
 public class ColDeleteClauseTest {
 
     @Test

@@ -11,11 +11,6 @@ import java.util.Collections;
 
 import org.junit.Test;
 
-import com.mysema.query.animal.QAnimal;
-import com.mysema.query.animal.QCat;
-import com.mysema.query.collections.ColQuery;
-import com.mysema.query.collections.ColQueryImpl;
-import com.mysema.query.collections.MiniApi;
 import com.mysema.query.types.path.PathInits;
 
 public class TypeCastTest {

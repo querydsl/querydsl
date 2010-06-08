@@ -5,7 +5,6 @@
  */
 package com.mysema.query.collections;
 
-import static com.mysema.query.alias.Alias.$;
 import static com.mysema.query.collections.MiniApi.from;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

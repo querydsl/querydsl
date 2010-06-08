@@ -14,7 +14,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.animal.QCat;
+import com.mysema.query.collections.QCat;
 import com.mysema.query.collections.Cat;
 import com.mysema.query.collections.ColQueryTemplates;
 import com.mysema.query.collections.DefaultEvaluatorFactory;
