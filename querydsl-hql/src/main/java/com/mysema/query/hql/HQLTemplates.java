@@ -52,8 +52,7 @@ public class HQLTemplates extends Templates {
         // numeric
         add(Ops.MathOps.SQRT, "sqrt({0})");
 
-        // various        
-        add(CAST, "cast({0} as {1s})");
+        // various
         add(Ops.NE_PRIMITIVE, "{0} <> {1}", 25);
         add(Ops.NE_OBJECT, "{0} <> {1}", 25);
         add(Ops.IS_NULL, "{0} is null", 26);
@@ -94,15 +93,8 @@ public class HQLTemplates extends Templates {
         add(Ops.DateTimeOps.CURRENT_DATE, "current_date()");
         add(Ops.DateTimeOps.CURRENT_TIME, "current_time()");
         add(Ops.DateTimeOps.CURRENT_TIMESTAMP, "current_timestamp()");
-        add(Ops.DateTimeOps.MILLISECOND, "0"); // NOT supported in HQL
-        add(Ops.DateTimeOps.SECOND, "second({0})");
-        add(Ops.DateTimeOps.MINUTE, "minute({0})");
-        add(Ops.DateTimeOps.HOUR, "hour({0})");
-        add(Ops.DateTimeOps.DAY_OF_MONTH, "day({0})");
-        add(Ops.DateTimeOps.MONTH, "month({0})");
-        add(Ops.DateTimeOps.YEAR, "year({0})");
-        add(Ops.DateTimeOps.YEAR_MONTH, "year({0}) * 100 + month({0})");
-
+        
+        
         // path types
         for (PathType type : new PathType[] { 
                 PathType.LISTVALUE,
@@ -118,6 +110,19 @@ public class HQLTemplates extends Templates {
         add(Ops.CASE_EQ, "case {1} end");
         add(Ops.CASE_EQ_WHEN,  "when {0} = {1} then {2} {3}");
         add(Ops.CASE_EQ_ELSE,  "else {0}");
+        
+        
+        // HQL specific
+        add(CAST, "cast({0} as {1s})");
+        
+        add(Ops.DateTimeOps.MILLISECOND, "0"); // NOT supported in HQL
+        add(Ops.DateTimeOps.SECOND, "second({0})");
+        add(Ops.DateTimeOps.MINUTE, "minute({0})");
+        add(Ops.DateTimeOps.HOUR, "hour({0})");
+        add(Ops.DateTimeOps.DAY_OF_MONTH, "day({0})");
+        add(Ops.DateTimeOps.MONTH, "month({0})");
+        add(Ops.DateTimeOps.YEAR, "year({0})");
+        add(Ops.DateTimeOps.YEAR_MONTH, "year({0}) * 100 + month({0})");
         //CHECKSTYLE:ON
     }
  
