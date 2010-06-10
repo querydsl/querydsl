@@ -387,18 +387,25 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void method(final EntityType model, Method method, SerializerConfig config, CodeWriter writer) throws IOException {
-        // header
-        String type = typeMappings.getExprType(method.getReturnType(), model, false, true, false);
-        writer.beginPublicMethod(type, method.getName(), method.getParameters(), new Transformer<Parameter,String>(){
+        String exprType = typeMappings.getExprType(method.getReturnType(), model, false, true, false);        
+        String custType = typeMappings.getCustomType(method.getReturnType(), model, true);     
+        
+        exprArgsMethod(model, method, writer, exprType, custType);
+        if (!method.getParameters().isEmpty()){
+            normalArgsMethod(model, method, writer, exprType, custType);    
+        }        
+    }
+
+    private void exprArgsMethod(final EntityType model, Method method, CodeWriter writer, String exprType, String custType) throws IOException {
+        writer.beginPublicMethod(exprType, method.getName(), method.getParameters(), new Transformer<Parameter,String>(){
             @Override
             public String transform(Parameter p) {
                 return typeMappings.getExprType(p.getType(), model, false, false, true) + SPACE + p.getName();
             }            
         });
         
-        // body start
-        String customClass = typeMappings.getCustomType(method.getReturnType(), model, true);        
-        writer.beginLine(RETURN + customClass + ".create(");
+        // body start        
+        writer.beginLine(RETURN + custType + ".create(");
         String fullName = method.getReturnType().getFullName();
         if (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName())){
             method.getReturnType().appendLocalRawName(model, writer);
@@ -408,6 +415,33 @@ public class EntitySerializer implements Serializer{
         writer.append(", this");
         for (Parameter p : method.getParameters()){
             writer.append(COMMA + p.getName());
+        }        
+        writer.append(");\n");
+
+        // body end
+        writer.end();
+    }
+    
+    private void normalArgsMethod(final EntityType model, Method method, CodeWriter writer, String exprType, String custType) throws IOException {
+        writer.beginPublicMethod(exprType, method.getName(), method.getParameters(), new Transformer<Parameter,String>(){
+            @Override
+            public String transform(Parameter p) {
+                return p.getType().getLocalGenericName(model, true) + SPACE + p.getName();
+                
+            }            
+        });
+        
+        // body start        
+        writer.beginLine(RETURN + custType + ".create(");
+        String fullName = method.getReturnType().getFullName();
+        if (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName())){
+            method.getReturnType().appendLocalRawName(model, writer);
+            writer.append(".class, ");
+        }        
+        writer.append(QUOTE + StringEscapeUtils.escapeJava(method.getTemplate()) + QUOTE);
+        writer.append(", this");
+        for (Parameter p : method.getParameters()){
+            writer.append(COMMA + "ExprConst.create(" + p.getName() + ")");
         }        
         writer.append(");\n");
 

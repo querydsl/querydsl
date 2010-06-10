@@ -39,6 +39,8 @@ public class QueryExtensions6Test {
         QQueryExtensions6Test_User user = QQueryExtensions6Test_User.user; 
         QQueryExtensions6Test_User other = new QQueryExtensions6Test_User("other");
         assertEquals("user.managedBy = other", user.isManagedBy(other).toString());
+        
+        System.out.println(user.isManagedBy(new User()));
     }
     
     
