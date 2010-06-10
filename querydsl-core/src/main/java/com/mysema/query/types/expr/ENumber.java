@@ -12,7 +12,9 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.BooleanBuilder;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.Interval;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
@@ -340,6 +342,23 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
      */
     public ENumber<Integer> intValue() {
         return castToNum(Integer.class);
+    }
+    
+    /**
+     * Get <code>this in period</code> expression 
+     * 
+     * @param period
+     * @return
+     */
+    public <A extends Number & Comparable<?>> EBoolean in(Interval<A> period) {
+        BooleanBuilder builder = new BooleanBuilder();
+        if (period.getBegin() != null) {
+            builder.and(goe(period.getBegin()));
+        }
+        if (period.getEnd() != null) {
+            builder.and(loe(period.getEnd()));
+        }
+        return builder.getValue();
     }
 
     /**

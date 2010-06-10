@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.IntervalImpl;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.*;
 
@@ -74,6 +75,10 @@ public class Filters {
         rv.add(expr.lt(knownValue));
         rv.add(expr.loe(other));
         rv.add(expr.loe(knownValue));
+        
+        rv.add(expr.in(IntervalImpl.create(knownValue, null)));
+        rv.add(expr.in(IntervalImpl.create(null, knownValue)));
+        
         return rv;
 
     }
@@ -188,6 +193,8 @@ public class Filters {
             rv.add(edouble.between(1.0, 2.0));
             rv.add(edouble.notBetween(1.0, 2.0));
         }
+
+        rv.add(expr.in(IntervalImpl.create(0, 100)));
         
         return rv;
     }
@@ -270,6 +277,8 @@ public class Filters {
             // https://issues.apache.org/jira/browse/DERBY-4389
             rv.add(new Coalesce<String>(String.class, expr, other).eq("xxx"));
         }        
+        
+        rv.add(expr.in(IntervalImpl.create("A", "Z")));
             
         return rv;
     }    
