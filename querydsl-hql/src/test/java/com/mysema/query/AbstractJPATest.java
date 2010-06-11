@@ -15,6 +15,7 @@ import javax.persistence.EntityManager;
 import org.junit.Test;
 
 import com.mysema.query.hql.HQLTemplates;
+import com.mysema.query.hql.JPQLTemplates;
 import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.hql.jpa.JPAQuery;
@@ -31,7 +32,7 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
         return new JPAQuery(entityManager, getTemplates());
     }
     
-    protected HQLTemplates getTemplates(){
+    protected JPQLTemplates getTemplates(){
 	return HQLTemplates.DEFAULT;
     }
 

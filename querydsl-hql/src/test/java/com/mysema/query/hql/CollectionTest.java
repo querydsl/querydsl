@@ -13,11 +13,11 @@ public class CollectionTest extends AbstractQueryTest{
     
     @Test
     public void test(){
-        assertToString(":a1 member of cat.kittensSet", cat.kittensSet.contains(new Cat()));
-        assertToString(":a1 member of cat.kittens", cat.kittens.contains(new Cat()));
+        assertToString(":a1 in elements(cat.kittensSet)", cat.kittensSet.contains(new Cat()));
+        assertToString(":a1 in elements(cat.kittens)", cat.kittens.contains(new Cat()));
         
-        assertToString("cat member of cat1.kittens", cat.in(cat1.kittens));
-        assertToString("cat member of cat1.kittensSet", cat.in(cat1.kittensSet));
+        assertToString("cat in elements(cat1.kittens)", cat.in(cat1.kittens));
+        assertToString("cat in elements(cat1.kittensSet)", cat.in(cat1.kittensSet));
     }
 
     @Test

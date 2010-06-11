@@ -12,6 +12,7 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.hql.HQLQuery;
 import com.mysema.query.hql.HQLTemplates;
+import com.mysema.query.hql.JPQLTemplates;
 
 
 /**
@@ -45,7 +46,7 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
      * @param session
      * @param templates
      */
-    public HibernateQuery(Session session, HQLTemplates templates) {
+    public HibernateQuery(Session session, JPQLTemplates templates) {
 	this(new DefaultSessionHolder(session), templates);
     }
 
@@ -63,7 +64,7 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
      * @param session
      * @param templates
      */
-    public HibernateQuery(SessionHolder session, HQLTemplates templates) {
+    public HibernateQuery(SessionHolder session, JPQLTemplates templates) {
         super(session, templates, new DefaultQueryMetadata());
     }
 
@@ -72,7 +73,7 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
      * @param templates
      * @param metadata
      */
-    protected HibernateQuery(SessionHolder session, HQLTemplates templates, QueryMetadata metadata) {
+    protected HibernateQuery(SessionHolder session, JPQLTemplates templates, QueryMetadata metadata) {
         super(session, templates, metadata);
     }
     

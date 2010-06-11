@@ -19,6 +19,7 @@ import org.junit.Test;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.hql.HQLTemplates;
+import com.mysema.query.hql.JPQLTemplates;
 import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.hql.hibernate.HibernateQuery;
@@ -36,7 +37,7 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
         return new HibernateQuery(session, getTemplates());
     }
     
-    protected HQLTemplates getTemplates(){
+    protected JPQLTemplates getTemplates(){
 	return HQLTemplates.DEFAULT;
     }
 

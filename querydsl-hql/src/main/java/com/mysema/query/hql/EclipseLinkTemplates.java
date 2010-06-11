@@ -3,11 +3,8 @@
  * All rights reserved.
  * 
  */
-package com.mysema.query;
+package com.mysema.query.hql;
 
-import com.mysema.query.hql.HQLTemplates;
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 
 /**
@@ -16,18 +13,15 @@ import com.mysema.query.types.Ops;
  * @author tiwe
  *
  */
-public class EclipseLinkTemplates extends HQLTemplates{
+public class EclipseLinkTemplates extends JPQLTemplates{
     
-    public static final EclipseLinkTemplates DEFAULT = new EclipseLinkTemplates();    
+    public static final JPQLTemplates DEFAULT = new EclipseLinkTemplates();    
     
     // TODO : indexed list access
     
     // TODO : cast
     
     protected EclipseLinkTemplates() {
-	// JPQL standard
-	add(Ops.INSTANCE_OF, "type({0}) = {1}");
-	
 	// LIKE replacements
         add(Ops.STRING_CONTAINS, "locate({1},{0}) > 0");
         add(Ops.STRING_CONTAINS_IC, "locate({1l},{0l}) > 0");
@@ -50,17 +44,5 @@ public class EclipseLinkTemplates extends HQLTemplates{
         
     }
     
-    public boolean wrapElements(Operator<?> operator){
-	return false;
-    }
-    
-    public boolean wrapConstant(Constant<?> expr) {
-	return false;
-    }
-    
-    public boolean isTypeAsString() {
-        // TODO : get rid of this when Hibernate supports type(alias)
-	return false;
-    }
 
 }

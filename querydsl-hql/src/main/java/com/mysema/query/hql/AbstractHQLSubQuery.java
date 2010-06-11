@@ -143,7 +143,7 @@ public class AbstractHQLSubQuery<Q extends AbstractHQLSubQuery<Q>> extends Detac
     
     public String toString(){
         if (!queryMixin.getMetadata().getJoins().isEmpty()){
-            HQLSerializer serializer = new HQLSerializer(HQLTemplates.DEFAULT);
+            HQLSerializer serializer = new HQLSerializer(JPQLTemplates.DEFAULT);
             serializer.serialize(queryMixin.getMetadata(), false, null);
             return serializer.toString().trim();    
         }else{

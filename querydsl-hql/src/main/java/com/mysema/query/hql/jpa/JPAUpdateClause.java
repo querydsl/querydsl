@@ -17,7 +17,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.UpdateClause;
 import com.mysema.query.hql.HQLSerializer;
 import com.mysema.query.hql.HQLTemplates;
-import com.mysema.query.hql.hibernate.HibernateUpdateClause;
+import com.mysema.query.hql.JPQLTemplates;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
@@ -35,13 +35,13 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
     
     private final EntityManager entityManager;
     
-    private final HQLTemplates templates;
+    private final JPQLTemplates templates;
     
     public JPAUpdateClause(EntityManager session, PEntity<?> entity){
         this(session, entity, HQLTemplates.DEFAULT);
     }
     
-    public JPAUpdateClause(EntityManager em, PEntity<?> entity, HQLTemplates templates){
+    public JPAUpdateClause(EntityManager em, PEntity<?> entity, JPQLTemplates templates){
         this.entityManager = em;
         this.templates = templates;
         metadata.addJoin(JoinType.DEFAULT, entity);        

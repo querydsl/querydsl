@@ -77,7 +77,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     
     private static final Map<JoinType, String> joinTypes = new HashMap<JoinType, String>();
     
-    private final HQLTemplates templates;
+    private final JPQLTemplates templates;
     
     static{
         joinTypes.put(JoinType.DEFAULT, COMMA);
@@ -89,7 +89,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     
     private boolean wrapElements = false;
 
-    public HQLSerializer(HQLTemplates templates) {
+    public HQLSerializer(JPQLTemplates templates) {
         super(templates);
         this.templates = templates;
     }
@@ -303,7 +303,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         
         if (operator.equals(Ops.IN)){
             if (args.get(1) instanceof Path){
-        	super.visitOperation(type, HQLTemplates.MEMBER_OF, args);
+        	super.visitOperation(type, JPQLTemplates.MEMBER_OF, args);
             }else{
         	super.visitOperation(type, operator, args);
             }
@@ -326,7 +326,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         } else if (operator.equals(Ops.NUMCAST)) {            
             Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
             String typeName = targetType.getSimpleName().toLowerCase(Locale.ENGLISH);
-            visitOperation(targetType, HQLTemplates.CAST, Arrays.<Expr<?>>asList(args.get(0), ExprConst.create(typeName)));
+            visitOperation(targetType, JPQLTemplates.CAST, Arrays.<Expr<?>>asList(args.get(0), ExprConst.create(typeName)));
                         
         } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQuery){
             SubQuery subQuery = (SubQuery) args.get(0);            

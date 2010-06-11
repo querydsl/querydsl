@@ -115,7 +115,7 @@ public class FeaturesTest extends AbstractQueryTest {
 
         // toString("cat.bodyWeight as bw", cat.bodyWeight.as("bw"));
 
-        assertToString("kitten member of cat.kittens", kitten.in(cat.kittens));
+        assertToString("kitten in elements(cat.kittens)", kitten.in(cat.kittens));
 
         // toString("distinct cat.bodyWeight", distinct(cat.bodyWeight));
     }

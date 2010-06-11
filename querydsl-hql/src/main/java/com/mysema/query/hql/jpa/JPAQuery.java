@@ -11,6 +11,7 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.hql.HQLQuery;
 import com.mysema.query.hql.HQLTemplates;
+import com.mysema.query.hql.JPQLTemplates;
 
 /**
  * JPAQuery is the default implementation of the HQLQuery interface for JPA
@@ -43,7 +44,7 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements HQLQue
      * @param entityManager
      * @param patterns
      */
-    public JPAQuery(EntityManager entityManager, HQLTemplates patterns) {
+    public JPAQuery(EntityManager entityManager, JPQLTemplates patterns) {
         super(new DefaultSessionHolder(entityManager), patterns, new DefaultQueryMetadata());
     }
     
@@ -52,7 +53,7 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements HQLQue
      * @param templates
      * @param metadata
      */
-    protected JPAQuery(JPASessionHolder session, HQLTemplates templates, QueryMetadata metadata) {
+    protected JPAQuery(JPASessionHolder session, JPQLTemplates templates, QueryMetadata metadata) {
         super(session, templates, metadata);
     }
     

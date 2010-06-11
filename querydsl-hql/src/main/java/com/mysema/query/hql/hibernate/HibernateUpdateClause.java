@@ -18,6 +18,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.UpdateClause;
 import com.mysema.query.hql.HQLSerializer;
 import com.mysema.query.hql.HQLTemplates;
+import com.mysema.query.hql.JPQLTemplates;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
@@ -36,7 +37,7 @@ public class HibernateUpdateClause implements
 
     private final SessionHolder session;
 
-    private final HQLTemplates templates;
+    private final JPQLTemplates templates;
 
     public HibernateUpdateClause(Session session, PEntity<?> entity) {
         this(new DefaultSessionHolder(session), entity, HQLTemplates.DEFAULT);
@@ -46,8 +47,7 @@ public class HibernateUpdateClause implements
         this(new StatelessSessionHolder(session), entity, HQLTemplates.DEFAULT);
     }
 
-    public HibernateUpdateClause(SessionHolder session, PEntity<?> entity,
-            HQLTemplates templates) {
+    public HibernateUpdateClause(SessionHolder session, PEntity<?> entity, JPQLTemplates templates) {
         this.session = session;
         this.templates = templates;
         metadata.addJoin(JoinType.DEFAULT, entity);

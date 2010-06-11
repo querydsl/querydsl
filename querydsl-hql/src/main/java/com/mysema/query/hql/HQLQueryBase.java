@@ -27,9 +27,9 @@ public abstract class HQLQueryBase<Q extends HQLQueryBase<Q>> extends Projectabl
 
     private final HQLQueryMixin<Q> queryMixin;
     
-    private final HQLTemplates templates;
+    private final JPQLTemplates templates;
     
-    protected HQLTemplates getTemplates(){
+    protected JPQLTemplates getTemplates(){
         return templates;
     }
     
@@ -38,7 +38,7 @@ public abstract class HQLQueryBase<Q extends HQLQueryBase<Q>> extends Projectabl
     }
     
     @SuppressWarnings("unchecked")
-    public HQLQueryBase(QueryMetadata md, HQLTemplates templates) {
+    public HQLQueryBase(QueryMetadata md, JPQLTemplates templates) {
         super(new HQLQueryMixin<Q>(md));
         super.queryMixin.setSelf((Q) this);
         this.queryMixin = (HQLQueryMixin) super.queryMixin;

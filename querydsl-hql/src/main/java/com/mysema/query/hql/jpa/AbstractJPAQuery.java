@@ -22,6 +22,7 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.hql.HQLQueryBase;
 import com.mysema.query.hql.HQLTemplates;
+import com.mysema.query.hql.JPQLTemplates;
 import com.mysema.query.types.Expr;
 
 /**
@@ -41,7 +42,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
         this(new DefaultSessionHolder(em), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
     }
     
-    public AbstractJPAQuery(JPASessionHolder sessionHolder, HQLTemplates patterns, QueryMetadata metadata) {
+    public AbstractJPAQuery(JPASessionHolder sessionHolder, JPQLTemplates patterns, QueryMetadata metadata) {
         super(metadata, patterns);
         this.sessionHolder = sessionHolder;
     }

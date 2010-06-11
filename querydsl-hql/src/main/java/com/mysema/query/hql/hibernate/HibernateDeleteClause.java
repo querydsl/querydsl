@@ -17,6 +17,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.hql.HQLSerializer;
 import com.mysema.query.hql.HQLTemplates;
+import com.mysema.query.hql.JPQLTemplates;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 
@@ -32,7 +33,7 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
     
     private final SessionHolder session;
     
-    private final HQLTemplates templates;
+    private final JPQLTemplates templates;
     
     public HibernateDeleteClause(Session session, PEntity<?> entity){
         this(new DefaultSessionHolder(session), entity, HQLTemplates.DEFAULT);
@@ -42,7 +43,7 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
         this(new StatelessSessionHolder(session), entity, HQLTemplates.DEFAULT);
     }
     
-    public HibernateDeleteClause(SessionHolder session, PEntity<?> entity, HQLTemplates templates){
+    public HibernateDeleteClause(SessionHolder session, PEntity<?> entity, JPQLTemplates templates){
         this.session = session;
         this.templates = templates;
         md.addJoin(JoinType.DEFAULT, entity);        
