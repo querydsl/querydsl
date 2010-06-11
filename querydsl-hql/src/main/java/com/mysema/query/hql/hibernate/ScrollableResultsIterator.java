@@ -8,6 +8,8 @@ package com.mysema.query.hql.hibernate;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
+import javax.annotation.Nullable;
+
 import org.hibernate.ScrollableResults;
 
 import com.mysema.commons.lang.CloseableIterator;
@@ -25,6 +27,7 @@ public class ScrollableResultsIterator<T> implements CloseableIterator<T> {
     
     private final boolean asArray;
     
+    @Nullable
     private Boolean hasNext;
 
     public ScrollableResultsIterator(ScrollableResults results) {
