@@ -28,8 +28,8 @@ public class HQLTemplates extends JPQLTemplates{
     protected HQLTemplates() {
         //CHECKSTYLE:OFF        
         add(CAST, "cast({0} as {1s})");
-        add(Ops.INSTANCE_OF, "{0}.class = {1}");
-        add(MEMBER_OF, "{0} in elements({1})");
+        add(Ops.INSTANCE_OF, "{0}.class = {1}"); // TODO : remove this when Hibernate supports type(alias)
+        add(MEMBER_OF, "{0} in elements({1})"); // TODO : remove this when Hibernate supports member of properly
         
         // path types
         for (PathType type : new PathType[] { 
