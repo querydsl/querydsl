@@ -31,6 +31,7 @@ public class EclipseLinkTemplates extends JPQLTemplates{
         add(Ops.STARTS_WITH_IC, "locate({1l},{0l})=1");    
 	
 	// EclipseLink specific (works at least with Derby, HSQLDB and H2)
+        add(Ops.DateTimeOps.MILLISECOND, "0"); // NOT SUPPORTED
         add(Ops.DateTimeOps.SECOND, "func('second',{0})");
         add(Ops.DateTimeOps.MINUTE, "func('minute',{0})");
         add(Ops.DateTimeOps.HOUR, "func('hour',{0})");
