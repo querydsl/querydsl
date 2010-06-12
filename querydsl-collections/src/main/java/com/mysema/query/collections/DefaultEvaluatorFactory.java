@@ -165,13 +165,18 @@ public class DefaultEvaluatorFactory {
                 
             }else if (join.getType() == JoinType.INNERJOIN){
                 Operation alias = (Operation)join.getTarget();
-                // TODO : handle also Map inner joins
                 // TODO : handle join condition
-                ser.append("for ( " + typeName + " " + alias.getArg(1) + " : ").handle(alias.getArg(0)).append("){\n");
+                ser.append("for ( " + typeName + " " + alias.getArg(1) + " : ");
+                ser.handle(alias.getArg(0));
+                if (alias.getArg(0).getType().equals(Map.class)){
+                    ser.append(".values()");
+                }                
+                ser.append("){\n");
                 vars.append(alias.getArg(1));
-                
-            // TODO : left join    
-                
+            
+            }else if (join.getType() == JoinType.LEFTJOIN){
+                // TODO    
+                                
             }else{
                 throw new IllegalArgumentException("Illegal join expression " + join);
             }

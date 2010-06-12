@@ -23,6 +23,7 @@ import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.OSimple;
+import com.mysema.query.types.path.PMap;
 
 /**
  * AbstractColQuery provides a base class for Collection query implementations.
@@ -67,6 +68,11 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
     private <D> Expr<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias){
         return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target.asExpr(), alias.asExpr());
     }
+    
+    @SuppressWarnings("unchecked")
+    private <D> Expr<D> createAlias(PMap<?,D,?> target, Path<D> alias){
+        return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target.asExpr(), alias.asExpr());
+    }
 
     @SuppressWarnings("unchecked")
     public <A> Q from(Path<A> entity, Iterable<? extends A> col) {
@@ -83,6 +89,12 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
 
     @SuppressWarnings("unchecked")
     public <P> Q innerJoin(Path<? extends Collection<P>> target, Path<P> alias) {
+        getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
+        return (Q)this;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public <P> Q innerJoin(PMap<?,P,?> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return (Q)this;
     }

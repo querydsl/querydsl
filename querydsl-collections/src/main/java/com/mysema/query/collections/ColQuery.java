@@ -10,6 +10,7 @@ import java.util.Collection;
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.path.PMap;
 
 /**
  * Query interface for Collection queries
@@ -37,7 +38,7 @@ public interface ColQuery extends Query<ColQuery>, Projectable {
     <A> ColQuery from(Path<A> entity, Iterable<? extends A> col);
     
     /**
-     * Define an inner join from the collection path to the alias
+     * Define an inner join from the Collection typed path to the alias
      * 
      * @param <P>
      * @param collectionPath
@@ -46,4 +47,14 @@ public interface ColQuery extends Query<ColQuery>, Projectable {
      */
     <P> ColQuery innerJoin(Path<? extends Collection<P>> collectionPath, Path<P> alias);
 
+    /**
+     * Define an inner join from the Map typed path to the alias
+     * 
+     * @param <P>
+     * @param mapPath
+     * @param alias
+     * @return
+     */
+    <P> ColQuery innerJoin(PMap<?,P,?> mapPath, Path<P> alias);
+    
 }

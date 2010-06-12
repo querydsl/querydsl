@@ -32,7 +32,9 @@ public class InnerJoinTest extends AbstractQueryTest{
         Cat franz = new Cat("Franz");
         
         bob.setKittens(Collections.singletonList(bob2));
+        bob.setKittensByName(Collections.singletonMap(bob2.getName(), bob2));
         kate.setKittens(Collections.singletonList(kate2));        
+        kate.setKittensByName(Collections.singletonMap(kate2.getName(), kate));
         cats = Arrays.asList(bob, bob2, kate, kate2, franz);
     }
     
@@ -46,6 +48,17 @@ public class InnerJoinTest extends AbstractQueryTest{
         assertEquals("Bob", rv.get(0).getName());
         assertEquals("Kate", rv.get(1).getName());
         
+    }
+    
+    @Test
+    public void testMap(){
+        List<Cat> rv = MiniApi.from(cat, cats)
+            .innerJoin(cat.kittensByName, kitten)
+            .where(cat.name.eq(kitten.name))
+            .orderBy(cat.name.asc())
+            .list(cat);
+        assertEquals("Bob", rv.get(0).getName());
+        assertEquals("Kate", rv.get(1).getName());
     }
          
 }
