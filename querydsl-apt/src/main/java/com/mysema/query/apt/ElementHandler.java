@@ -217,7 +217,7 @@ public final class ElementHandler{
         queryMethods.add(methodModel);
     }
 
-    private List<Parameter> transformParams(List<? extends VariableElement> params){
+    public List<Parameter> transformParams(List<? extends VariableElement> params){
         List<Parameter> parameters = new ArrayList<Parameter>(params.size());
         for (VariableElement param : params){
             Type paramType = getType(param);

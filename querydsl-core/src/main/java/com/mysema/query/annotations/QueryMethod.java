@@ -27,6 +27,7 @@ import java.lang.annotation.Target;
 @Documented
 @Target({METHOD})
 @Retention(RUNTIME)
+// TODO : reanme to Method
 public @interface QueryMethod {
 
     /**

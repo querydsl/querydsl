@@ -22,6 +22,7 @@ import java.lang.annotation.Target;
 @Documented
 @Target({FIELD,METHOD})
 @Retention(RUNTIME)
+// TODO : reanme to Init
 public @interface QueryInit {
 
     /**

@@ -5,7 +5,7 @@
  */
 package com.mysema.query.annotations;
 
-import static java.lang.annotation.ElementType.TYPE;
+import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 import java.lang.annotation.Documented;
@@ -13,23 +13,22 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Declaration of extension methods on an external type. Extensions of builtin types (e.g. String, Boolean, JDK Number types)
- * are not supported
+ * Declaration of a static delegate method
+ * 
+ * TODO : document me!
  * 
  * @author tiwe
  *
  */
 @Documented
-@Target(TYPE)
+@Target({METHOD})
 @Retention(RUNTIME)
-// TODO : rename to Extensions
-public @interface QueryExtensions {
-    
+// TODO : rename to Delegate
+public @interface QueryDelegate {
+
     /**
-     * Type to be extended
-     * 
      * @return
      */
     Class<?> value();
-
+    
 }

@@ -37,18 +37,12 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.codegen.JavaWriter;
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryExtensions;
 import com.mysema.query.annotations.QueryMethod;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QuerydslVariables;
-import com.mysema.query.codegen.EntityType;
-import com.mysema.query.codegen.Method;
-import com.mysema.query.codegen.Serializer;
-import com.mysema.query.codegen.SerializerConfig;
-import com.mysema.query.codegen.Supertype;
-import com.mysema.query.codegen.Type;
-import com.mysema.query.codegen.TypeFactory;
-import com.mysema.query.codegen.TypeMappings;
+import com.mysema.query.codegen.*;
 
 /**
  * Processor handles the actual work in the Querydsl APT module
@@ -132,10 +126,13 @@ public class Processor {
         }
         extensionTypes.put(entityModel.getFullName(), entityModel); 
         
-    }
-
-
+    }   
+    
     public void process() {
+        // process delegate methods
+        processDelegateMethods();
+        
+        // process types
         processCustomTypes();               
         processExtensions();        
         if (configuration.getSuperTypeAnn() != null) {
@@ -189,68 +186,6 @@ public class Processor {
                 serializeVariableList(packageElement.getQualifiedName().toString(), vars, models);
             }
         }        
-    }   
-
-    private void processCustomTypes() {
-        for (Element queryMethod : roundEnv.getElementsAnnotatedWith(QueryMethod.class)){
-            Element element = queryMethod.getEnclosingElement();
-            if (element.getAnnotation(QueryExtensions.class) != null){
-                continue;
-            }
-            if (element.getAnnotation(configuration.getEntityAnn()) != null){
-                continue;
-            }
-            if (configuration.getSuperTypeAnn() != null 
-                    && element.getAnnotation(configuration.getSuperTypeAnn()) != null){
-                continue;
-            }
-            if (configuration.getEmbeddableAnn() != null 
-                    && element.getAnnotation(configuration.getEmbeddableAnn()) != null){
-                continue;
-            }
-            handleExtensionType(element.asType(), element);
-        }
-    }
-
-    private void processDTOs() {
-        Set<Element> visitedDTOTypes = new HashSet<Element>();
-        for (Element element : roundEnv.getElementsAnnotatedWith(QueryProjection.class)) {
-            Element parent = element.getEnclosingElement();
-            if (parent.getAnnotation(configuration.getEntityAnn()) == null
-                    && parent.getAnnotation(configuration.getEmbeddableAnn()) == null
-                    && !visitedDTOTypes.contains(parent)){
-                EntityType model = elementHandler.handleProjectionType((TypeElement)parent);
-                dtos.put(model.getFullName(), model);    
-                visitedDTOTypes.add(parent);
-                
-            }            
-        }
-    }
-
-    private void processEmbeddables() {        
-        // FIXME
-        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnn())) {
-            typeModelFactory.create(element.asType());
-        }        
-        
-        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnn())) {                       
-            EntityType model = elementHandler.handleNormalType((TypeElement) element);
-            embeddables.put(model.getFullName(), model);
-        }  
-        allSupertypes.putAll(embeddables);
-        
-        // add super type fields
-        for (EntityType embeddable : embeddables.values()) {
-            addSupertypeFields(embeddable, allSupertypes);
-        }
-    }
-
-    private void processEntities() {
-        process(configuration.getEntityAnn(), entityTypes);
-    }
-    
-    private void processSupertypes() {
-        process(configuration.getSuperTypeAnn(), actualSupertypes);
     }
     
     private void process(Class<? extends Annotation> annotation, Map<String,EntityType> types){
@@ -296,6 +231,89 @@ public class Processor {
             addSupertypeFields(type, allSupertypes);      
         }
     }
+
+    private void processCustomTypes() {
+        for (Element queryMethod : roundEnv.getElementsAnnotatedWith(QueryMethod.class)){
+            Element element = queryMethod.getEnclosingElement();
+            if (element.getAnnotation(QueryExtensions.class) != null){
+                continue;
+            }else if (element.getAnnotation(configuration.getEntityAnn()) != null){
+                continue;
+            }else if (configuration.getSuperTypeAnn() != null && element.getAnnotation(configuration.getSuperTypeAnn()) != null){
+                continue;
+            }else if (configuration.getEmbeddableAnn() != null && element.getAnnotation(configuration.getEmbeddableAnn()) != null){
+                continue;
+            }
+            handleExtensionType(element.asType(), element);
+        }
+    }
+
+    private void processDelegateMethods(){
+        for (Element delegateMethod : roundEnv.getElementsAnnotatedWith(QueryDelegate.class)){
+            ExecutableElement method = (ExecutableElement)delegateMethod;
+            Element element = delegateMethod.getEnclosingElement();
+            String name = method.getSimpleName().toString();            
+            Type delegateType = typeModelFactory.create(element.asType());
+            Type returnType = typeModelFactory.create(method.getReturnType());            
+            List<Parameter> parameters = elementHandler.transformParams(method.getParameters());
+            // remove first element
+            parameters = parameters.subList(1, parameters.size());
+            
+            EntityType entityType = null;            
+            for (AnnotationMirror annotation : delegateMethod.getAnnotationMirrors()){
+                if (annotation.getAnnotationType().asElement().getSimpleName().toString().equals(QueryDelegate.class.getSimpleName())){
+                    for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : annotation.getElementValues().entrySet()){
+                        if (entry.getKey().getSimpleName().toString().equals("value")){
+                            TypeMirror type = (TypeMirror)entry.getValue().getValue();
+                            entityType = typeModelFactory.createEntityType(type);
+                        }
+                    }                    
+                }
+            }   
+            
+            if (entityType != null){
+                entityType.addDelegate(new Delegate(delegateType, name, parameters, returnType));
+            }
+            
+        }
+    }
+
+    private void processDTOs() {
+        Set<Element> visitedDTOTypes = new HashSet<Element>();
+        for (Element element : roundEnv.getElementsAnnotatedWith(QueryProjection.class)) {
+            Element parent = element.getEnclosingElement();
+            if (parent.getAnnotation(configuration.getEntityAnn()) == null
+                    && parent.getAnnotation(configuration.getEmbeddableAnn()) == null
+                    && !visitedDTOTypes.contains(parent)){
+                EntityType model = elementHandler.handleProjectionType((TypeElement)parent);
+                dtos.put(model.getFullName(), model);    
+                visitedDTOTypes.add(parent);
+                
+            }            
+        }
+    }
+
+    private void processEmbeddables() {        
+        // FIXME
+        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnn())) {
+            typeModelFactory.create(element.asType());
+        }        
+        
+        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnn())) {                       
+            EntityType model = elementHandler.handleNormalType((TypeElement) element);
+            embeddables.put(model.getFullName(), model);
+        }  
+        allSupertypes.putAll(embeddables);
+        
+        // add super type fields
+        for (EntityType embeddable : embeddables.values()) {
+            addSupertypeFields(embeddable, allSupertypes);
+        }
+    }
+    
+    private void processEntities() {
+        process(configuration.getEntityAnn(), entityTypes);
+    }
     
     private void processExtensions() {
         for (Element element : roundEnv.getElementsAnnotatedWith(QueryExtensions.class)){
@@ -310,6 +328,10 @@ public class Processor {
                 }
             }            
         }    
+    }
+    
+    private void processSupertypes() {
+        process(configuration.getSuperTypeAnn(), actualSupertypes);
     }
           
     private void serialize(Serializer serializer, Collection<EntityType> models) {

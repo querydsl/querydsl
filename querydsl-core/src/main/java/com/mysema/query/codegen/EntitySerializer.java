@@ -303,11 +303,12 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {       
+        writer.staticimports(PathMetadataFactory.class);
         writer.imports(PathMetadata.class.getPackage(), PSimple.class.getPackage());
-        writer.staticimports(PathMetadataFactory.class);        
-        
+                
         if (!model.getConstructors().isEmpty()
                 || !model.getMethods().isEmpty()
+                || !model.getDelegates().isEmpty()
                 || (model.hasLists() && config.useListAccessors()) 
                 || (model.hasMaps() && config.useMapAccessors())){
             writer.imports(EComparable.class.getPackage());
@@ -448,6 +449,27 @@ public class EntitySerializer implements Serializer{
         // body end
         writer.end();
     }
+    
+    private void delegate(final EntityType model, Delegate delegate, SerializerConfig config, CodeWriter writer) throws IOException {
+        writer.beginPublicMethod(delegate.getReturnType().getSimpleName(), delegate.getName(), delegate.getParameters(), new Transformer<Parameter,String>(){
+            @Override
+            public String transform(Parameter p) {
+                return p.getType().getLocalGenericName(model, true) + SPACE + p.getName();
+                
+            }            
+        });
+        
+        // body start        
+        writer.beginLine(RETURN + delegate.getDelegateType().getFullName() + "."+delegate.getName()+"(");
+        writer.append("this");
+        for (Parameter parameter : delegate.getParameters()){
+            writer.append(COMMA + parameter.getName());
+        }        
+        writer.append(");\n");
+
+        // body end
+        writer.end();
+    }
 
     protected void outro(EntityType model, CodeWriter writer) throws IOException {
         writer.end();        
@@ -462,6 +484,11 @@ public class EntitySerializer implements Serializer{
         // constructors
         constructors(model, config, writer);        
 
+        // delegates
+        for (Delegate delegate : model.getDelegates()){
+            delegate(model, delegate, config, writer);
+        }
+        
         // methods
         for (Method method : model.getMethods()){
             method(model, method, config, writer);
@@ -480,6 +507,7 @@ public class EntitySerializer implements Serializer{
         }
         outro(model, writer);
     }
+
 
     protected void serialize(EntityType model, Property field, String type, CodeWriter writer, String factoryMethod, String... args) throws IOException{
         Supertype superType = model.getSuperType();

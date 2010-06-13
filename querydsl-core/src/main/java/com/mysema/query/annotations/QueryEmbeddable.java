@@ -18,6 +18,7 @@ import java.lang.annotation.Target;
 /**
  * Annotation for APT based Domain query type generation. Annotate Embeddable types with this annotation.
  */
+// TODO : rename to QEmbeddable
 public @interface QueryEmbeddable {
 
 }

@@ -18,5 +18,7 @@ import java.lang.annotation.Target;
 /**
  * Annotation for APT based Domain query type generation. 
  */
+// TODO : rename to QSupertype
 public @interface QuerySupertype {
+    
 }

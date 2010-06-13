@@ -44,11 +44,11 @@ public final class EmbeddableSerializer extends EntitySerializer{
     
     @Override
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
-        writer.imports(PathMetadata.class.getPackage());
-        writer.imports(PSimple.class.getPackage());  
+        writer.imports(PathMetadata.class.getPackage(), PSimple.class.getPackage());
         
         if ((model.hasLists() && config.useListAccessors())
                 || !model.getMethods().isEmpty()
+                || !model.getDelegates().isEmpty()
                 || (model.hasMaps() && config.useMapAccessors())){
             writer.imports(EComparable.class.getPackage());
         }

@@ -36,6 +36,8 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
 
     private final Set<Method> methods = new HashSet<Method>();
     
+    private final Set<Delegate> delegates = new HashSet<Delegate>();
+    
     private final String prefix;
     
     private final Set<Property> properties = new TreeSet<Property>();
@@ -65,6 +67,10 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     
     public void addMethod(Method method){
         methods.add(method);
+    }
+    
+    public void addDelegate(Delegate delegate){
+        delegates.add(delegate);
     }
 
     public void addProperty(Property field) {
@@ -126,6 +132,10 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         return methods;
     }
 
+    public Set<Delegate> getDelegates(){
+        return delegates;
+    }
+    
     public TypeCategory getOriginalCategory(){
         return super.getCategory();
     }
@@ -168,6 +178,10 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         for (Method method : entityType.getMethods()){
             addMethod(method.createCopy(this));
         }        
+        for (Delegate delegate : entityType.getDelegates()){
+            addDelegate(delegate);
+        }
+        
         for (Property property : entityType.getProperties()){
             if (!property.isInherited()){                
                 addProperty(property.createCopy(this));    

@@ -23,6 +23,7 @@ import java.lang.annotation.Target;
 @Documented
 @Target({FIELD,METHOD})
 @Retention(RUNTIME)
+// TODO : rename to Transient
 public @interface QueryTransient {
 
 }
