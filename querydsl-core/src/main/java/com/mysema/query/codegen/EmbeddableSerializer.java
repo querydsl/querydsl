@@ -46,6 +46,8 @@ public final class EmbeddableSerializer extends EntitySerializer{
     
     @Override
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
+        introDelegatePackages(writer, model);
+        
         List<Package> packages = new ArrayList<Package>();
         packages.add(PathMetadata.class.getPackage());
         packages.add(PSimple.class.getPackage());        
@@ -57,14 +59,7 @@ public final class EmbeddableSerializer extends EntitySerializer{
         }        
         if (!model.getMethods().isEmpty()){
             packages.add(CSimple.class.getPackage());
-        }
-        
-        for (Delegate delegate : model.getDelegates()){
-            if (!delegate.getDelegateType().getPackageName().equals(model.getPackageName())){
-                packages.add(Package.getPackage(delegate.getDelegateType().getPackageName()));
-            }
-        }
-        
+        }        
         writer.imports(packages.toArray(new Package[packages.size()]));
     }
 

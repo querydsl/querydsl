@@ -264,8 +264,11 @@ public class Processor {
                 if (annotation.getAnnotationType().asElement().getSimpleName().toString().equals(QueryDelegate.class.getSimpleName())){
                     for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : annotation.getElementValues().entrySet()){
                         if (entry.getKey().getSimpleName().toString().equals("value")){
-                            TypeMirror type = (TypeMirror)entry.getValue().getValue();
-                            entityType = typeModelFactory.createEntityType(type);
+                            if (entry.getValue().getValue() instanceof TypeMirror){
+                                TypeMirror type = (TypeMirror)entry.getValue().getValue();
+                                entityType = typeModelFactory.createEntityType(type);    
+                            }
+                            
                         }
                     }                    
                 }
@@ -321,8 +324,10 @@ public class Processor {
                 if (annotation.getAnnotationType().asElement().getSimpleName().toString().equals(QueryExtensions.class.getSimpleName())){
                     for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : annotation.getElementValues().entrySet()){
                         if (entry.getKey().getSimpleName().toString().equals("value")){
-                            TypeMirror type = (TypeMirror)entry.getValue().getValue();
-                            handleExtensionType(type, element);
+                            if (entry.getValue().getValue() instanceof TypeMirror){
+                                TypeMirror type = (TypeMirror)entry.getValue().getValue();
+                                handleExtensionType(type, element);    
+                            }                            
                         }
                     }                    
                 }

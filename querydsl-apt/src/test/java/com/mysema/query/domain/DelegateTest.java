@@ -55,10 +55,10 @@ public class DelegateTest {
         return EBooleanConst.TRUE;
     }
     
-    @QueryDelegate(User.class)
-    public static PString getName(QDelegateTest_User user){
-        return user.name;
-    }
+//    @QueryDelegate(DelegateTest.User.class)
+//    public static PString getName(QDelegateTest_User user){
+//        return user.name;
+//    }
     
     @Test
     public void testUser(){        

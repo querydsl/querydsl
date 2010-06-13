@@ -102,8 +102,7 @@ public class EntitySerializer implements Serializer{
             initEntityFields(writer, config, model); 
             writer.end();
         }
-        
-        
+                
     }
         
     protected void constructorsForVariables(CodeWriter writer, EntityType model) throws IOException {
@@ -292,6 +291,8 @@ public class EntitySerializer implements Serializer{
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {       
         writer.staticimports(PathMetadataFactory.class);
         
+        introDelegatePackages(writer, model);
+        
         List<Package> packages = new ArrayList<Package>();
         packages.add(PathMetadata.class.getPackage());
         packages.add(PSimple.class.getPackage());                
@@ -306,13 +307,16 @@ public class EntitySerializer implements Serializer{
             packages.add(CSimple.class.getPackage());
         }        
         
+        writer.imports(packages.toArray(new Package[packages.size()]));
+    }
+
+    protected void introDelegatePackages(CodeWriter writer, EntityType model) throws IOException {
         for (Delegate delegate : model.getDelegates()){
             if (!delegate.getDelegateType().getPackageName().equals(model.getPackageName())){
-                packages.add(Package.getPackage(delegate.getDelegateType().getPackageName()));
-            }
+                String packageName = delegate.getDelegateType().getPackageName();
+                writer.line("import " + packageName + ".*;");
+            }        
         }
-        
-        writer.imports(packages.toArray(new Package[packages.size()]));
     }
 
     protected void introInits(CodeWriter writer, EntityType model) throws IOException {
