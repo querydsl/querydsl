@@ -50,6 +50,8 @@ public interface CodeWriter extends Appendable{
     CodeWriter imports(Class<?>... imports) throws IOException;
 
     CodeWriter imports(Package... imports) throws IOException;
+    
+    CodeWriter imports(Collection<?> imports) throws IOException;
 
     CodeWriter javadoc(String... lines) throws IOException;
 

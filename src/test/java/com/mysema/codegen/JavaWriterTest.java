@@ -213,6 +213,15 @@ public class JavaWriterTest {
         match("/testImports", w.toString());
     }
     
+
+    @Test
+    public void testImports2() throws IOException{
+        writer.imports(Arrays.asList("java.lang.reflect","java.util"));
+        
+        match("/testImports2", w.toString());
+    }
+    
+    
     @Test
     public void testSuppressWarnings() throws IOException{
 	writer.suppressWarnings("unused");

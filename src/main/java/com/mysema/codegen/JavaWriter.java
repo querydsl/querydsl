@@ -33,15 +33,15 @@ import org.apache.commons.lang.StringUtils;
  */
 public final class JavaWriter implements Appendable, CodeWriter{
     
-    private static final int INDENT_SPACES = 4;
-        
     private static final String EXTENDS = " extends ";
-
+        
     private static final String IMPLEMENTS = " implements ";
 
     private static final String IMPORT = "import ";
 
     private static final String IMPORT_STATIC = "import static ";
+
+    private static final int INDENT_SPACES = 4;
 
     private static final String PACKAGE = "package ";
 
@@ -256,6 +256,14 @@ public final class JavaWriter implements Appendable, CodeWriter{
         return stmt(type + SPACE + name).nl();
     }
 
+    private JavaWriter field(String modifier, String type, String name) throws IOException{
+        return stmt(modifier + type + SPACE + name).nl();
+    }
+    
+    private JavaWriter field(String modifier, String type, String name, String value) throws IOException{
+        return stmt(modifier + type + SPACE + name + ASSIGN + value).nl();
+    }
+
     private JavaWriter goIn(){
         indent += "    ";
         return this;
@@ -277,7 +285,22 @@ public final class JavaWriter implements Appendable, CodeWriter{
         nl();
         return this;
     }
-    
+
+    @Override
+    public CodeWriter imports(Collection<?> imports) throws IOException {
+        for (Object o : imports){
+            if (o instanceof Class<?>){
+                imports((Class<?>)o);
+            }else if (o instanceof Package){
+                imports((Package)o);
+            }else{
+                line(IMPORT + o + SEMICOLON);
+                nl();
+            }
+        }
+        return this;
+    }
+
     @Override
     public JavaWriter imports(Package... imports) throws IOException {
         for (Package p : imports){
@@ -296,7 +319,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
         }
         return line(" */");
     }
-
+    
     @Override
     public JavaWriter line(String... segments) throws IOException{
         append(indent);
@@ -305,7 +328,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
         }        
         return nl();
     }
-
+    
     @Override
     public JavaWriter nl() throws IOException {
         return append(NEWLINE);        
@@ -330,14 +353,14 @@ public final class JavaWriter implements Appendable, CodeWriter{
         append(")");
         return this;
     }
-    
+
     private JavaWriter params(String... params) throws IOException{
         append("(");
         append(StringUtils.join(params, COMMA));
         append(")");
         return this;
     }
-
+    
     @Override
     public JavaWriter privateField(String type, String name) throws IOException {
         return field(PRIVATE, type, name);
@@ -347,17 +370,17 @@ public final class JavaWriter implements Appendable, CodeWriter{
     public JavaWriter privateFinal(String type, String name) throws IOException {
         return field(PRIVATE, type, name);        
     }
-
+    
     @Override
     public JavaWriter privateFinal(String type, String name, String value) throws IOException {
         return field(PRIVATE, type, name, value);
     }
-    
+
     @Override
     public JavaWriter privateStaticFinal(String type, String name, String value) throws IOException {
         return field(PRIVATE_STATIC_FINAL, type, name, value);
     }
-    
+        
     @Override
     public JavaWriter protectedField(String type, String name) throws IOException {
         return field(PROTECTED, type, name);        
@@ -372,7 +395,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
     public JavaWriter protectedFinal(String type, String name, String value) throws IOException {
         return field(PROTECTED, type, name, value);
     }
-        
+
     @Override
     public JavaWriter publicField(String type, String name) throws IOException {
         return field(PUBLIC, type, name);
@@ -382,25 +405,17 @@ public final class JavaWriter implements Appendable, CodeWriter{
     public JavaWriter publicFinal(String type, String name) throws IOException {
         return field(PUBLIC_FINAL, type, name);        
     }
-
+    
     @Override
     public JavaWriter publicFinal(String type, String name, String value) throws IOException {
         return field(PUBLIC_FINAL, type, name, value);
     }
-
+    
     @Override
     public JavaWriter publicStaticFinal(String type, String name, String value) throws IOException {
         return field(PUBLIC_STATIC_FINAL, type, name, value);
     }
-    
-    private JavaWriter field(String modifier, String type, String name) throws IOException{
-        return stmt(modifier + type + SPACE + name).nl();
-    }
-    
-    private JavaWriter field(String modifier, String type, String name, String value) throws IOException{
-        return stmt(modifier + type + SPACE + name + ASSIGN + value).nl();
-    }
-    
+
     @Override
     public JavaWriter staticimports(Class<?>... imports) throws IOException{
         for (Class<?> cl : imports){
@@ -412,12 +427,12 @@ public final class JavaWriter implements Appendable, CodeWriter{
     private JavaWriter stmt(String stmt) throws IOException{
         return line(stmt + SEMICOLON);
     }
-
+    
     @Override
     public JavaWriter suppressWarnings(String type) throws IOException{
         return line("@SuppressWarnings(\"" + type +"\")");
     }
-    
+
     private <T> String[] transform(Collection<T> parameters, Transformer<T,String> transformer){
         String[] rv = new String[parameters.size()];
         int i = 0; 
