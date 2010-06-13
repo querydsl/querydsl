@@ -7,18 +7,36 @@ import org.junit.Test;
 
 import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryEntity;
+import com.mysema.query.annotations.QuerySupertype;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EBooleanConst;
 import com.mysema.query.types.path.PString;
 
 public class DelegateTest {
     
+    @QuerySupertype
+    public static class Identifiable {
+        
+        long id;
+        
+    }
+    
     @QueryEntity
-    public static class User{
+    public static class User extends Identifiable{
         
         String name;
         
         User managedBy;
+        
+    }
+    
+    @QueryEntity
+    public static class SimpleUser extends User{
+        
+    }
+    
+    @QueryEntity
+    public static class SimpleUser2 extends SimpleUser{
         
     }
     
@@ -43,11 +61,29 @@ public class DelegateTest {
     }
     
     @Test
-    public void test(){        
+    public void testUser(){        
         QDelegateTest_User user = QDelegateTest_User.user;
         assertNotNull(user.isManagedBy(new User()));
         assertNotNull(user.isManagedBy(user));
         assertNotNull(user.simpleMethod());
+        
+        assertEquals(user.name, user.getName());
+    }
+    
+    @Test
+    public void testSimpleUser(){
+        QDelegateTest_SimpleUser user = QDelegateTest_SimpleUser.simpleUser;
+        assertNotNull(user.isManagedBy(new User()));
+        assertNotNull(user.isManagedBy(user._super));
+        
+        assertEquals(user.name, user.getName());
+    }
+    
+    @Test
+    public void testSimpleUser2(){
+        QDelegateTest_SimpleUser2 user = QDelegateTest_SimpleUser2.simpleUser2;
+        assertNotNull(user.isManagedBy(new User()));
+        assertNotNull(user.isManagedBy(user._super._super));
         
         assertEquals(user.name, user.getName());
     }

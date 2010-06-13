@@ -5,20 +5,7 @@
  */
 package com.mysema.query.codegen;
 
-import static com.mysema.codegen.Symbols.ASSIGN;
-import static com.mysema.codegen.Symbols.COMMA;
-import static com.mysema.codegen.Symbols.DOT;
-import static com.mysema.codegen.Symbols.DOT_CLASS;
-import static com.mysema.codegen.Symbols.EMPTY;
-import static com.mysema.codegen.Symbols.NEW;
-import static com.mysema.codegen.Symbols.QUOTE;
-import static com.mysema.codegen.Symbols.RETURN;
-import static com.mysema.codegen.Symbols.SEMICOLON;
-import static com.mysema.codegen.Symbols.SPACE;
-import static com.mysema.codegen.Symbols.STAR;
-import static com.mysema.codegen.Symbols.SUPER;
-import static com.mysema.codegen.Symbols.THIS;
-import static com.mysema.codegen.Symbols.UNCHECKED;
+import static com.mysema.codegen.Symbols.*;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -32,6 +19,7 @@ import org.apache.commons.collections15.Transformer;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
+import com.mysema.codegen.CodeWriter;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
@@ -45,7 +33,6 @@ import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.PathMetadataFactory;
-import com.mysema.codegen.CodeWriter;
 
 /**
  * EntitySerializer is a Serializer implementation for entity types
@@ -304,19 +291,28 @@ public class EntitySerializer implements Serializer{
 
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {       
         writer.staticimports(PathMetadataFactory.class);
-        writer.imports(PathMetadata.class.getPackage(), PSimple.class.getPackage());
-                
+        
+        List<Package> packages = new ArrayList<Package>();
+        packages.add(PathMetadata.class.getPackage());
+        packages.add(PSimple.class.getPackage());                
         if (!model.getConstructors().isEmpty()
                 || !model.getMethods().isEmpty()
                 || !model.getDelegates().isEmpty()
                 || (model.hasLists() && config.useListAccessors()) 
                 || (model.hasMaps() && config.useMapAccessors())){
-            writer.imports(EComparable.class.getPackage());
+            packages.add(EComparable.class.getPackage());
+        }        
+        if (!model.getMethods().isEmpty()){
+            packages.add(CSimple.class.getPackage());
+        }        
+        
+        for (Delegate delegate : model.getDelegates()){
+            if (!delegate.getDelegateType().getPackageName().equals(model.getPackageName())){
+                packages.add(Package.getPackage(delegate.getDelegateType().getPackageName()));
+            }
         }
         
-        if (!model.getMethods().isEmpty()){
-            writer.imports(CSimple.class.getPackage());
-        }
+        writer.imports(packages.toArray(new Package[packages.size()]));
     }
 
     protected void introInits(CodeWriter writer, EntityType model) throws IOException {
@@ -460,8 +456,19 @@ public class EntitySerializer implements Serializer{
         });
         
         // body start        
-        writer.beginLine(RETURN + delegate.getDelegateType().getFullName() + "."+delegate.getName()+"(");
+        writer.beginLine(RETURN + delegate.getDelegateType().getSimpleName() + "."+delegate.getName()+"(");
         writer.append("this");
+        if (!model.equals(delegate.getDeclaringType())){
+            int counter = 0; 
+            EntityType type = model;
+            while (type != null && !type.equals(delegate.getDeclaringType())){
+                type = type.getSuperType() != null ? type.getSuperType().getEntityType() : null;
+                counter++;
+            }
+            for (int i = 0; i < counter; i++){
+                writer.append("._super");
+            }
+        }               
         for (Parameter parameter : delegate.getParameters()){
             writer.append(COMMA + parameter.getName());
         }        

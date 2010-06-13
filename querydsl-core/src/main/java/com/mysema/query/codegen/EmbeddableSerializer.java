@@ -6,7 +6,9 @@
 package com.mysema.query.codegen;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.mysema.codegen.CodeWriter;
 import com.mysema.query.types.PathMetadata;
@@ -44,18 +46,26 @@ public final class EmbeddableSerializer extends EntitySerializer{
     
     @Override
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
-        writer.imports(PathMetadata.class.getPackage(), PSimple.class.getPackage());
-        
+        List<Package> packages = new ArrayList<Package>();
+        packages.add(PathMetadata.class.getPackage());
+        packages.add(PSimple.class.getPackage());        
         if ((model.hasLists() && config.useListAccessors())
                 || !model.getMethods().isEmpty()
                 || !model.getDelegates().isEmpty()
                 || (model.hasMaps() && config.useMapAccessors())){
-            writer.imports(EComparable.class.getPackage());
+            packages.add(EComparable.class.getPackage());
+        }        
+        if (!model.getMethods().isEmpty()){
+            packages.add(CSimple.class.getPackage());
         }
         
-        if (!model.getMethods().isEmpty()){
-            writer.imports(CSimple.class.getPackage());
+        for (Delegate delegate : model.getDelegates()){
+            if (!delegate.getDelegateType().getPackageName().equals(model.getPackageName())){
+                packages.add(Package.getPackage(delegate.getDelegateType().getPackageName()));
+            }
         }
+        
+        writer.imports(packages.toArray(new Package[packages.size()]));
     }
 
 

@@ -272,7 +272,7 @@ public class Processor {
             }   
             
             if (entityType != null){
-                entityType.addDelegate(new Delegate(delegateType, name, parameters, returnType));
+                entityType.addDelegate(new Delegate(entityType, delegateType, name, parameters, returnType));
             }
             
         }

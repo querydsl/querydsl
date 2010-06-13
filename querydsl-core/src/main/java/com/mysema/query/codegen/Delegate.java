@@ -14,6 +14,8 @@ import com.mysema.commons.lang.Assert;
 @Immutable
 public class Delegate {
     
+    private final Type declaringType;
+    
     private final Type delegateType;
 
     private final String name;
@@ -22,7 +24,8 @@ public class Delegate {
 
     private final Type returnType;
     
-    public Delegate(Type delegateType, String name, List<Parameter> params, Type returnType) {
+    public Delegate(Type declaringType, Type delegateType, String name, List<Parameter> params, Type returnType) {
+        this.declaringType = Assert.notNull(declaringType,"declaringType");
         this.delegateType = Assert.notNull(delegateType,"delegateType");
         this.name = Assert.notNull(name,"name");
         this.parameters = Assert.notNull(params,"params");
@@ -41,20 +44,24 @@ public class Delegate {
         }        
     }
     
+    public Type getDeclaringType() {
+        return declaringType;
+    }
+
+    public Type getDelegateType() {
+        return delegateType;
+    }
+
     public String getName() {
         return name;
     }
-
+    
     public List<Parameter> getParameters() {
         return parameters;
     }
-
+    
     public Type getReturnType() {
         return returnType;
-    }
-    
-    public Type getDelegateType() {
-        return delegateType;
     }
 
     @Override
