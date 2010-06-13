@@ -18,13 +18,13 @@ import java.util.Set;
 public final class ClassUtils {
     
     public static String getName(Class<?> cl){
-        return getName(cl, Collections.singleton(Object.class.getPackage()), Collections.<Class<?>>emptySet());
+        return getName(cl, Collections.singleton("java.lang"), Collections.<String>emptySet());
     }
     
-    public static String getName(Class<?> cl, Set<Package> packages, Set<Class<?>> classes) {
+    public static String getName(Class<?> cl, Set<String> packages, Set<String> classes) {
         if (cl.isArray()) {
             return getName(cl.getComponentType(), packages, classes) + "[]";
-        } else if (cl.getPackage() == null || packages.contains(cl.getPackage()) || classes.contains(cl)) {
+        } else if (cl.getPackage() == null || packages.contains(cl.getPackage().getName()) || classes.contains(cl.getName())) {
             return cl.getSimpleName().replace('$', '.');
         } else {
             return cl.getName().replace('$', '.');
@@ -32,10 +32,10 @@ public final class ClassUtils {
     }
     
     public static String getName(Type<?> cl){
-        return getName(cl, Collections.singleton(Object.class.getPackage()), Collections.<Class<?>>emptySet());
+        return getName(cl, Collections.singleton("java.lang"), Collections.<String>emptySet());
     }
     
-    public static String getName(Type<?> type, Set<Package> packages, Set<Class<?>> classes){
+    public static String getName(Type<?> type, Set<String> packages, Set<String> classes){
         if (type.getParameters().isEmpty()){
             return getName(type.getJavaClass(), packages, classes);
         }else{

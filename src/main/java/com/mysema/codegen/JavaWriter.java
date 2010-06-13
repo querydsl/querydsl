@@ -65,9 +65,9 @@ public final class JavaWriter implements Appendable, CodeWriter{
     
     private final Appendable appendable;
     
-    private final Set<Class<?>> importedClasses = new HashSet<Class<?>>();
+    private final Set<String> importedClasses = new HashSet<String>();
     
-    private final Set<Package> importedPackages = new HashSet<Package>();
+    private final Set<String> importedPackages = new HashSet<String>();
     
     private String indent = "";
     
@@ -78,7 +78,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
             throw new IllegalArgumentException("appendable is null");
         }
         this.appendable = appendable;
-        this.importedPackages.add(Object.class.getPackage());
+        this.importedPackages.add("java.lang");
     }
     
     @Override
@@ -149,7 +149,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
     }
 
     private JavaWriter appendType(Class<?> type) throws IOException{
-        if (importedClasses.contains(type) || importedPackages.contains(type.getPackage())){
+        if (importedClasses.contains(type.getName()) || importedPackages.contains(type.getPackage().getName())){
             append(type.getSimpleName());
         }else{
             append(type.getName());
@@ -279,7 +279,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
     @Override
     public JavaWriter imports(Class<?>... imports) throws IOException{
         for (Class<?> cl : imports){
-            importedClasses.add(cl);
+            importedClasses.add(cl.getName());
             line(IMPORT + cl.getName() + SEMICOLON);
         }
         nl();
@@ -287,25 +287,30 @@ public final class JavaWriter implements Appendable, CodeWriter{
     }
 
     @Override
-    public CodeWriter imports(Collection<?> imports) throws IOException {
-        for (Object o : imports){
-            if (o instanceof Class<?>){
-                imports((Class<?>)o);
-            }else if (o instanceof Package){
-                imports((Package)o);
-            }else{
-                line(IMPORT + o + SEMICOLON);
-                nl();
-            }
+    public JavaWriter imports(Package... imports) throws IOException {
+        for (Package p : imports){
+            importedPackages.add(p.getName());
+            line(IMPORT + p.getName() + ".*;");
         }
+        nl();
+        return this;
+    }
+    
+    @Override
+    public JavaWriter importClasses(String... imports) throws IOException{
+        for (String cl : imports){
+            importedClasses.add(cl);
+            line(IMPORT + cl + SEMICOLON);
+        }
+        nl();
         return this;
     }
 
     @Override
-    public JavaWriter imports(Package... imports) throws IOException {
-        for (Package p : imports){
+    public JavaWriter importPackages(String... imports) throws IOException {
+        for (String p : imports){
             importedPackages.add(p);
-            line(IMPORT + p.getName() + ".*;");
+            line(IMPORT + p + ".*;");
         }
         nl();
         return this;
@@ -336,7 +341,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
 
     @Override
     public JavaWriter packageDecl(String packageName) throws IOException{
-        importedPackages.add(Package.getPackage(packageName));
+        importedPackages.add(packageName);
         return line(PACKAGE + packageName + SEMICOLON).nl();
     }
     

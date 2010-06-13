@@ -216,7 +216,7 @@ public class JavaWriterTest {
 
     @Test
     public void testImports2() throws IOException{
-        writer.imports(Arrays.asList("java.lang.reflect","java.util"));
+        writer.importPackages("java.lang.reflect","java.util");
         
         match("/testImports2", w.toString());
     }
