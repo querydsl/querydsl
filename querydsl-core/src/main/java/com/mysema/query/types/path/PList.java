@@ -63,7 +63,7 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
     @SuppressWarnings("unchecked")
     public PList(Class<? super E> elementType, Class<Q> queryType, PathMetadata<?> metadata) {
         super((Class)List.class);
-        this.elementType = (Class<E>) Assert.notNull(elementType,"type is null");
+        this.elementType = (Class<E>) Assert.notNull(elementType,"type");
         this.queryType = queryType;
         this.pathMixin = new PathMixin<List<E>>(this, metadata);
     }

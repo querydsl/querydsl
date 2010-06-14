@@ -35,8 +35,8 @@ public class PSet<E> extends ECollectionBase<Set<E>,E> implements Path<Set<E>> {
     @SuppressWarnings("unchecked")
     public PSet(Class<? super E> type, String entityName, PathMetadata<?> metadata) {
         super((Class)Set.class);
-        this.elementType = (Class<E>) Assert.notNull(type,"type is null");        
-        this.entityName = Assert.notNull(entityName,"entityName is null");
+        this.elementType = (Class<E>) Assert.notNull(type,"type");        
+        this.entityName = Assert.notNull(entityName,"entityName");
         this.pathMixin = new PathMixin<Set<E>>(this, metadata);
     }
 

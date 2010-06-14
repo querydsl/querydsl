@@ -87,7 +87,7 @@ public final class ENumberConst<D extends Number & Comparable<?>> extends ENumbe
      */    
     @SuppressWarnings("unchecked")
     public static <T extends Number & Comparable<?>> ENumber<T> create(T val){
-        return new ENumberConst<T>((Class<T>)val.getClass(), Assert.notNull(val,"val is null"));
+        return new ENumberConst<T>((Class<T>)val.getClass(), Assert.notNull(val,"val"));
     }
     
     private final D constant;

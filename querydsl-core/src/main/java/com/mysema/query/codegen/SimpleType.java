@@ -36,10 +36,10 @@ public final class SimpleType extends AbstractType {
             String simpleName, 
             boolean finalClass,
             Type... parameters) {
-        this.typeCategory = Assert.notNull(typeCategory,"typeCategory is null");
-        this.fullName = Assert.notNull(name,"name is null");
-        this.packageName = Assert.notNull(packageName,"packageName is null");
-        this.simpleName = Assert.notNull(simpleName,"simpleName is null");
+        this.typeCategory = Assert.notNull(typeCategory,"typeCategory");
+        this.fullName = Assert.notNull(name,"name");
+        this.packageName = Assert.notNull(packageName, "packageName");
+        this.simpleName = Assert.notNull(simpleName,"simpleName");
         if (!packageName.isEmpty()){
             this.localName = name.substring(packageName.length()+1);            
         }else{

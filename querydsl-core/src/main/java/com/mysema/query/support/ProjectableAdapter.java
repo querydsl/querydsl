@@ -25,7 +25,7 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     private final P projectable;
 
     public ProjectableAdapter(P projectable) {
-        this.projectable = Assert.notNull(projectable,"projectable is null");
+        this.projectable = Assert.notNull(projectable,"projectable");
     }
     
     protected P getProjectable(){

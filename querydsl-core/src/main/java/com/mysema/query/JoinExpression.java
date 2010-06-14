@@ -31,8 +31,8 @@ public final class JoinExpression {
     private final JoinType type;
 
     public JoinExpression(JoinType type, Expr<?> target) {
-        this.type = Assert.notNull(type,"type is null");
-        this.target = Assert.notNull(target,"target is null");
+        this.type = Assert.notNull(type,"type");
+        this.target = Assert.notNull(target,"target");
     }
 
     public EBoolean getCondition() {

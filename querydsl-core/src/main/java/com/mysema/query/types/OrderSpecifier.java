@@ -29,8 +29,8 @@ public class OrderSpecifier<A extends Comparable> implements Serializable {
     private final Expr<A> target;
 
     public OrderSpecifier(Order order, Expr<A> target) {
-        this.order = Assert.notNull(order,"order is null");
-        this.target = Assert.notNull(target,"target is null");
+        this.order = Assert.notNull(order,"order");
+        this.target = Assert.notNull(target,"target");
     }
 
     /**

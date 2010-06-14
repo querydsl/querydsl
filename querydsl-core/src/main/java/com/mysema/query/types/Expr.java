@@ -34,7 +34,7 @@ public abstract class Expr<D> implements Serializable{
     private final Class<? extends D> type;
         
     public Expr(Class<? extends D> type) {
-        this.type = Assert.notNull(type,"type is null");
+        this.type = Assert.notNull(type,"type");
         this.primitive = type.isPrimitive() 
             || Number.class.isAssignableFrom(type) 
             || Boolean.class.equals(type) 

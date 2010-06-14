@@ -34,7 +34,7 @@ public class ExprConst<D> extends ESimple<D> implements Constant<D> {
         if (val instanceof Boolean){
             return (Expr<T>)EBooleanConst.create((Boolean)val);            
         }else{
-            return new ExprConst<T>(Assert.notNull(val,"val is null"));    
+            return new ExprConst<T>(Assert.notNull(val,"val"));    
         }
     }
     

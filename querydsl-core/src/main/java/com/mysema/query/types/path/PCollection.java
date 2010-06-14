@@ -35,8 +35,8 @@ public class PCollection<E> extends ECollectionBase<Collection<E>,E> implements 
     @SuppressWarnings("unchecked")
     public PCollection(Class<? super E> type, String entityName, PathMetadata<?> metadata) {
         super((Class)Collection.class);        
-        this.elementType = (Class<E>) Assert.notNull(type,"type is null");
-        this.entityName = Assert.notNull(entityName,"entityName is null");
+        this.elementType = (Class<E>) Assert.notNull(type,"type");
+        this.entityName = Assert.notNull(entityName,"entityName");
         this.pathMixin = new PathMixin<Collection<E>>(this, metadata);
     }
 
