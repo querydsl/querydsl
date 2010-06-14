@@ -43,6 +43,7 @@ import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QIdName;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.Param;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.Coalesce;
 import com.mysema.query.types.expr.EArrayConstructor;
@@ -589,4 +590,15 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 	    assertNotNull(projection);
 	}
     }
+    
+    
+    @Test
+    public void params(){
+        Param<String> name = new Param<String>(String.class,"name");
+        assertEquals("Mike",query()
+                .from(employee).where(employee.firstname.eq(name))
+                .set(name, "Mike")
+                .uniqueResult(employee.firstname));
+    }
+        
 }

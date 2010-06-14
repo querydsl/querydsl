@@ -51,7 +51,7 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause>{
         Map<Object,String> constants = serializer.getConstantToLabel();
 
         Query query = entityManager.createQuery(serializer.toString());
-        JPAUtil.setConstants(query, constants);
+        JPAUtil.setConstants(query, constants, metadata.getParams());
         return query.executeUpdate();
     }
 

@@ -6,6 +6,7 @@
 package com.mysema.query.serialization;
 
 import com.mysema.query.types.EConstructor;
+import com.mysema.query.types.Param;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.Templates;
 
@@ -22,8 +23,13 @@ public class DummySerializer extends SerializerBase<DummySerializer>{
 
     @Override
     public void visit(EConstructor<?> expr) {
-	// TODO Auto-generated method stub
-	
+	// TODO Auto-generated method stub	
+    }
+
+    @Override
+    public void visit(Param<?> param) {
+        // TODO Auto-generated method stub
+        
     }
 
 }

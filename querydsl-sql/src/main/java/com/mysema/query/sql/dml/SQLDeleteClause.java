@@ -8,6 +8,7 @@ package com.mysema.query.sql.dml;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Collections;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import com.mysema.query.QueryException;
 import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.types.Param;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.util.JDBCUtil;
@@ -68,7 +70,7 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause> {
         PreparedStatement stmt = null;
         try {
             stmt = connection.prepareStatement(queryString);
-            JDBCUtil.setParameters(stmt, serializer.getConstants());
+            JDBCUtil.setParameters(stmt, serializer.getConstants(), Collections.<Param<?>,Object>emptyMap());
             return stmt.executeUpdate();
         } catch (SQLException e) {
             throw new QueryException("Caught " + e.getClass().getSimpleName()

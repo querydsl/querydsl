@@ -22,6 +22,8 @@ import org.hibernate.type.LongType;
 import org.hibernate.type.ShortType;
 import org.hibernate.type.Type;
 
+import com.mysema.query.types.Param;
+
 /**
  * Utility methods for Hibernate
  * 
@@ -45,26 +47,26 @@ public final class HibernateUtil {
     
     private HibernateUtil(){}
 
-    public static void setConstants(Query query, Map<Object,String> constants) {
+    public static void setConstants(Query query, Map<Object,String> constants, Map<Param<?>, Object> params) {
         for (Map.Entry<Object, String> entry : constants.entrySet()){
             String key = entry.getValue();
             Object val = entry.getKey();
-            
-            if (val instanceof Collection<?>) {
-                // NOTE : parameter types should be given explicitly
-                query.setParameterList(key, (Collection<?>) val);
-                
-            } else if (val.getClass().isArray()) {
-                // NOTE : parameter types should be given explicitly
-                query.setParameterList(key, (Object[]) val);
-                
-            }else if (TYPES.containsKey(val.getClass())){
-                query.setParameter(key, val, TYPES.get(val.getClass()));
-                
-            } else {
-                // NOTE : parameter types should be given explicitly
-                query.setParameter(key, val);
+            if (Param.class.isInstance(val)){
+                val = params.get(val);
             }
+            setValue(query, key, val);
+        }       
+    }
+
+    private static void setValue(Query query, String key, Object val) {
+        if (val instanceof Collection<?>) {
+            query.setParameterList(key, (Collection<?>) val);            
+        } else if (val.getClass().isArray()) {
+            query.setParameterList(key, (Object[]) val);            
+        }else if (TYPES.containsKey(val.getClass())){
+            query.setParameter(key, val, TYPES.get(val.getClass()));            
+        } else {
+            query.setParameter(key, val);
         }
     }
 }

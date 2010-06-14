@@ -8,6 +8,7 @@ package com.mysema.query.support;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Param;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
@@ -54,6 +55,10 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
 
     public Q restrict(QueryModifiers modifiers) {
         return queryMixin.restrict(modifiers);
+    }
+    
+    public <P> Q set(Param<P> param, P value){
+        return queryMixin.set(param, value);
     }
 
 }

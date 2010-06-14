@@ -48,7 +48,7 @@ public class IntegrationTest extends ParsingTest {
                 try {
                     System.out.println("query : " + toString().replace('\n', ' '));
                     Query query = session.createQuery(toString());
-                    HibernateUtil.setConstants(query, getConstants());
+                    HibernateUtil.setConstants(query, getConstants(),getMetadata().getParams());
                     query.list();
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -100,7 +100,7 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
         logQuery(queryString);
         org.hibernate.SQLQuery query = session.createSQLQuery(queryString);
         // set constants
-        HibernateUtil.setConstants(query, constants);
+        HibernateUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
         // set entity paths
         for (Path<?> path : entityPaths){
             query.addEntity(path.toString(), path.getType());

@@ -106,4 +106,10 @@ public final class ToStringVisitor implements Visitor{
         toString = expr.getMetadata().toString();        
     }
 
+    @Override
+    public void visit(Param<?> param) {
+        toString = "{" + param + "}";
+        
+    }
+
 }

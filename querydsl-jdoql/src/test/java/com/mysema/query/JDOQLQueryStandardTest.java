@@ -5,6 +5,7 @@
  */
 package com.mysema.query;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
@@ -28,6 +29,7 @@ import com.mysema.query.jdoql.testdomain.QStore;
 import com.mysema.query.jdoql.testdomain.Store;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.Param;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.QTuple;
@@ -173,4 +175,10 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
 	}
     }
     
+    
+    @Test
+    public void testParams(){
+        Param<String> name = new Param<String>(String.class,"name");
+        assertEquals("ABC0",query().from(product).where(product.name.eq(name)).set(name, "ABC0").uniqueResult(product.name));
+    }
 }

@@ -26,6 +26,7 @@ import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
@@ -181,7 +182,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         
         // parameters
         if (!subquery && !getConstantToLabel().isEmpty()){
-            serializeParameters();    
+            serializeParameters(metadata.getParams());    
         }        
                 
         // group by
@@ -234,7 +235,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         }
     }
     
-    private void serializeParameters() {
+    private void serializeParameters(Map<Param<?>, Object> params) {
         append(PARAMETERS);
         boolean first = true;
         List<Map.Entry<Object, String>> entries = new ArrayList<Map.Entry<Object, String>>(getConstantToLabel().entrySet());
@@ -242,9 +243,15 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         for (Map.Entry<Object, String> entry : entries){
             if (!first){
                 append(COMMA);
-            }
-            constants.add(entry.getKey());
-            append(entry.getKey().getClass().getName()).append(" ").append(entry.getValue());
+            }            
+            if (Param.class.isInstance(entry.getKey())){
+                constants.add(params.get(entry.getKey()));
+                append(((Param<?>)entry.getKey()).getType().getName());
+            }else{
+                constants.add(entry.getKey());
+                append(entry.getKey().getClass().getName());    
+            }            
+            append(" ").append(entry.getValue());
             first = false;
         }
     }

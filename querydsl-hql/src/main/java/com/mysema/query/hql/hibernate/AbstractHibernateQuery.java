@@ -123,7 +123,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
 
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
         Query query = session.createQuery(queryString);
-        HibernateUtil.setConstants(query, getConstants());
+        HibernateUtil.setConstants(query, getConstants(), getMetadata().getParams());
         if (fetchSize > 0){
             query.setFetchSize(fetchSize);
         }

@@ -27,6 +27,7 @@ import com.mysema.query.hql.domain.DomesticCat;
 import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.Param;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EList;
@@ -268,6 +269,12 @@ public abstract class AbstractStandardTest {
 	for (Projection projection : projections){
 	    assertNotNull(projection);
 	}
+    }
+    
+    @Test
+    public void testParams(){
+        Param<String> name = new Param<String>(String.class,"name");
+        assertEquals("Bob123",query().from(cat).where(cat.name.eq(name)).set(name, "Bob123").uniqueResult(cat.name));
     }
         
 

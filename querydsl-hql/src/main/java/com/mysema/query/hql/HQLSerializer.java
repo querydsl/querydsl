@@ -263,6 +263,12 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     }
     
     @Override
+    public void visit(Param<?> param){
+        append(":");
+        super.visit(param);
+    }
+    
+    @Override
     public void visit(SubQuery<?> query) {
         append("(");       
         serialize(query.getMetadata(), false, null);

@@ -7,11 +7,13 @@ package com.mysema.query;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Param;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
@@ -140,6 +142,13 @@ public interface QueryMetadata extends Serializable {
     List<? extends Expr<?>> getProjection();
     
     /**
+     * Get the parameters
+     * 
+     * @return
+     */
+    Map<Param<?>,Object> getParams();
+    
+    /**
      * Get the expressions aggregated into a single boolean expression or null, 
      * if none where defined
      * 
@@ -191,4 +200,11 @@ public interface QueryMetadata extends Serializable {
      * @param unique
      */
     void setUnique(boolean unique);
+    
+    /**
+     * @param <T>
+     * @param param
+     * @param value
+     */
+    <T> void setParam(Param<T> param, T value);
 }

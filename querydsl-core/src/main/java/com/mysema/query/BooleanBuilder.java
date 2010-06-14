@@ -18,7 +18,7 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
- * BooleanBuilder is a cascading builder for {@link EBoolean} expressions.
+ * BooleanBuilder is a cascading builder for {@link EBoolean} expressions. 
  * 
  * @author tiwe
  */

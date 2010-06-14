@@ -97,7 +97,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
 
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
         Query query = sessionHolder.createQuery(queryString);
-        JPAUtil.setConstants(query, getConstants());
+        JPAUtil.setConstants(query, getConstants(), getMetadata().getParams());
         if (modifiers != null && modifiers.isRestricting()) {
             if (modifiers.getLimit() != null) {
                 query.setMaxResults(modifiers.getLimit().intValue());

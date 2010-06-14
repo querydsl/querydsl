@@ -38,7 +38,7 @@ public class JPAIntegrationTest extends ParsingTest {
 
                     // create Query and execute it
                     Query query = entityManager.createQuery(toString());
-                    JPAUtil.setConstants(query, getConstants());
+                    JPAUtil.setConstants(query, getConstants(),getMetadata().getParams());
                     try {
                         query.getResultList();
                     } catch (Exception e) {

@@ -56,7 +56,7 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
         Map<Object,String> constants = serializer.getConstantToLabel();
 
         Query query = session.createQuery(serializer.toString());
-        HibernateUtil.setConstants(query, constants);
+        HibernateUtil.setConstants(query, constants, md.getParams());
         return query.executeUpdate();
     }
 

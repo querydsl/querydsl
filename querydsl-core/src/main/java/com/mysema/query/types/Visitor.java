@@ -6,8 +6,6 @@
 package com.mysema.query.types;
 
 
-
-
 /**
  * Visitor defines a Visitor signature for {@link Expr} instances.
  * 
@@ -45,5 +43,10 @@ public interface Visitor {
      * @param query
      */
     void visit(SubQuery<?> query);
+    
+    /**
+     * @param param
+     */
+    void visit(Param<?> param);
     
 }

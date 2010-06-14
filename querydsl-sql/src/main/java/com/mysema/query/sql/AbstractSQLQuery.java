@@ -159,7 +159,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
-            JDBCUtil.setParameters(stmt, constants);
+            JDBCUtil.setParameters(stmt, constants, getMetadata().getParams());
             ResultSet rs = stmt.executeQuery();
             
             return new ResultSetAdapter(rs) {
@@ -214,7 +214,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         try {
             PreparedStatement stmt = conn.prepareStatement(queryString);
             final List<? extends Expr<?>> projection = getMetadata().getProjection();
-            JDBCUtil.setParameters(stmt, constants);
+            JDBCUtil.setParameters(stmt, constants, getMetadata().getParams());
             ResultSet rs = stmt.executeQuery();
 
             return new SQLResultIterator<Object[]>(stmt, rs) {
@@ -272,7 +272,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         logger.debug("query : {}", queryString);
         try {
             PreparedStatement stmt = conn.prepareStatement(queryString);
-            JDBCUtil.setParameters(stmt, constants);
+            JDBCUtil.setParameters(stmt, constants, getMetadata().getParams());
             ResultSet rs = stmt.executeQuery();
 
             return new SQLResultIterator<RT>(stmt, rs) {
@@ -397,7 +397,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         ResultSet rs = null;
         try {
             stmt = conn.prepareStatement(queryString);
-            JDBCUtil.setParameters(stmt, constants);
+            JDBCUtil.setParameters(stmt, constants, getMetadata().getParams());
             rs = stmt.executeQuery();
             rs.next();
             return rs.getLong(1);

@@ -96,7 +96,7 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery>{
             query = session.createSQLQuery(queryString);
         } 
         // set constants
-        JPAUtil.setConstants(query, constants);        
+        JPAUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());        
         return query;
     }
     

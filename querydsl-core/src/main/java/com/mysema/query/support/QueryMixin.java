@@ -12,6 +12,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Param;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 
@@ -127,6 +128,12 @@ public class QueryMixin<T>{
         return self;
     }
 
+    public <P> T set(Param<P> param, P value){
+        metadata.setParam(param, value);
+        return self;
+    }
+                                            
+    
     public void setUnique(boolean unique) {
         metadata.setUnique(unique);        
     }

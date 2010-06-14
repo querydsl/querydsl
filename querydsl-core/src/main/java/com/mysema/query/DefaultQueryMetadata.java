@@ -8,14 +8,17 @@ package com.mysema.query;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 
@@ -48,6 +51,8 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     private List<Expr<?>> projection = new ArrayList<Expr<?>>();
 
+    private Map<Param<?>,Object> params = new HashMap<Param<?>,Object>();
+    
     private boolean unique;
 
     private BooleanBuilder where = new BooleanBuilder();
@@ -129,6 +134,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             clone.modifiers = new QueryModifiers(modifiers);
             clone.orderBy = new ArrayList<OrderSpecifier<?>>(orderBy);
             clone.projection = new ArrayList<Expr<?>>(projection);
+            clone.params = new HashMap<Param<?>,Object>(params);
             clone.where = where.clone();
             return clone;
         } catch (CloneNotSupportedException e) {
@@ -164,6 +170,10 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         return modifiers;
     }
 
+    public Map<Param<?>,Object> getParams(){
+        return params;
+    }
+    
     @Override
     public List<OrderSpecifier<?>> getOrderBy() {
         return Collections.unmodifiableList(orderBy);
@@ -192,6 +202,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public void reset() {
         clearProjection();
+        params = new HashMap<Param<?>,Object>();
         modifiers = new QueryModifiers();
     }
 
@@ -226,6 +237,11 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public void setUnique(boolean unique) {
         this.unique = unique;
+    }
+
+    @Override
+    public <T> void setParam(Param<T> param, T value) {
+        params.put(param, value);
     }
     
 }

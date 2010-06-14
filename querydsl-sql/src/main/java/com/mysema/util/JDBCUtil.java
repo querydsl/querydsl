@@ -8,8 +8,11 @@ package com.mysema.util;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.PreparedStatement;
 import java.util.Collection;
+import java.util.Map;
 
 import org.apache.commons.lang.ClassUtils;
+
+import com.mysema.query.types.Param;
 
 /**
  * @author tiwe
@@ -19,10 +22,13 @@ public final class JDBCUtil {
     
     private JDBCUtil(){}
     
-    public static void setParameters(PreparedStatement stmt, Collection<Object> objects){
+    public static void setParameters(PreparedStatement stmt, Collection<Object> objects, Map<Param<?>, Object> params){
         int counter = 1;
         for (Object o : objects) {
             try {
+                if (Param.class.isInstance(o)){
+                    o = params.get(o);
+                }
                 setParameter(stmt, counter++, o);
             } catch (NoSuchMethodException e) {
                 throw new IllegalArgumentException(e);
