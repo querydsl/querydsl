@@ -174,9 +174,9 @@ public class DefaultEvaluatorFactory {
                 ser.append("){\n");
                 vars.append(alias.getArg(1));
             
-            }else if (join.getType() == JoinType.LEFTJOIN){
-                // TODO    
-                                
+//            }else if (join.getType() == JoinType.LEFTJOIN){
+//                // TODO    
+//                                
             }else{
                 throw new IllegalArgumentException("Illegal join expression " + join);
             }
