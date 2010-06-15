@@ -15,6 +15,7 @@ import com.mysema.query.SimpleProjectable;
 import com.mysema.query.SimpleQuery;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Param;
 import com.mysema.query.types.expr.EBoolean;
 
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
@@ -99,10 +100,16 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     }
 
     @Override
+    public <P> SimpleQueryAdapter<T> set(Param<P> param, P value) {
+        query.set(param, value);
+        return this;
+    }
+    
+    @Override
     public String toString(){
         return query.toString();
     }
-    
+
     @Override
     public T uniqueResult() {
         return projectable.uniqueResult(projection);

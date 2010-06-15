@@ -8,6 +8,7 @@ package com.mysema.query;
 import javax.annotation.Nonnegative;
 
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Param;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
@@ -59,5 +60,15 @@ public interface SimpleQuery<Q extends SimpleQuery<Q>> {
      * @return
      */
     Q orderBy(OrderSpecifier<?>... o);
+    
+    /**
+     * Set the given parameter to the given value
+     * 
+     * @param <T>
+     * @param param
+     * @param value
+     * @return
+     */
+    <T> Q set(Param<T> param, T value);
 
 }

@@ -23,6 +23,7 @@ import com.mysema.query.SimpleProjectable;
 import com.mysema.query.SimpleQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Param;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
@@ -34,17 +35,9 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
 
     private final QueryMixin<LuceneQuery> queryMixin;
 
-    private final LuceneSerializer serializer;
-
     private final Searcher searcher;
 
-    /**
-     * @param lowerCase
-     * @param searcher
-     */
-    public LuceneQuery(Searcher searcher) {
-        this(LuceneSerializer.DEFAULT, searcher);
-    }
+    private final LuceneSerializer serializer;
 
     /**
      * @param serializer
@@ -56,36 +49,12 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
         this.searcher = searcher;
     }
 
-    @Override
-    public LuceneQuery limit(long limit) {
-        return queryMixin.limit(limit);
-    }
-
-    @Override
-    public LuceneQuery offset(long offset) {
-        return queryMixin.offset(offset);
-    }
-
-    @Override
-    public LuceneQuery orderBy(OrderSpecifier<?>... o) {
-        return queryMixin.orderBy(o);
-    }
-
-    @Override
-    public LuceneQuery restrict(QueryModifiers modifiers) {
-        return queryMixin.restrict(modifiers);
-    }
-
-    @Override
-    public LuceneQuery where(EBoolean... e) {
-        return queryMixin.where(e);
-    }
-
-    private Query createQuery() {
-        if (queryMixin.getMetadata().getWhere() == null) {
-            throw new QueryException("Where clause was null.");
-        }
-        return serializer.toQuery(queryMixin.getMetadata().getWhere());
+    /**
+     * @param lowerCase
+     * @param searcher
+     */
+    public LuceneQuery(Searcher searcher) {
+        this(LuceneSerializer.DEFAULT, searcher);
     }
 
     @Override
@@ -104,6 +73,18 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
     @Override
     public long countDistinct() {
         return count();
+    }
+
+    private Query createQuery() {
+        if (queryMixin.getMetadata().getWhere() == null) {
+            throw new QueryException("Where clause was null.");
+        }
+        return serializer.toQuery(queryMixin.getMetadata().getWhere());
+    }
+
+    @Override
+    public LuceneQuery limit(long limit) {
+        return queryMixin.limit(limit);
     }
 
     @Override
@@ -139,20 +120,6 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
         return documents;
     }
 
-    private List<Document> listSorted(List<OrderSpecifier<?>> orderBys, int limit, int offset) {
-        try {
-            Sort sort = serializer.toSort(orderBys);
-            ScoreDoc[] scoreDocs = searcher.search(createQuery(), null, limit + offset, sort).scoreDocs;
-            List<Document> documents = new ArrayList<Document>(scoreDocs.length - offset);
-            for (int i = offset; i < scoreDocs.length; ++i) {
-                documents.add(searcher.doc(scoreDocs[i].doc));
-            }
-            return documents;
-        } catch (IOException e) {
-            throw new QueryException(e);
-        }
-    }
-
     @Override
     public List<Document> listDistinct() {
         return list();
@@ -174,6 +141,40 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
                 count());
     }
 
+    private List<Document> listSorted(List<OrderSpecifier<?>> orderBys, int limit, int offset) {
+        try {
+            Sort sort = serializer.toSort(orderBys);
+            ScoreDoc[] scoreDocs = searcher.search(createQuery(), null, limit + offset, sort).scoreDocs;
+            List<Document> documents = new ArrayList<Document>(scoreDocs.length - offset);
+            for (int i = offset; i < scoreDocs.length; ++i) {
+                documents.add(searcher.doc(scoreDocs[i].doc));
+            }
+            return documents;
+        } catch (IOException e) {
+            throw new QueryException(e);
+        }
+    }
+
+    @Override
+    public LuceneQuery offset(long offset) {
+        return queryMixin.offset(offset);
+    }
+
+    @Override
+    public LuceneQuery orderBy(OrderSpecifier<?>... o) {
+        return queryMixin.orderBy(o);
+    }
+
+    @Override
+    public LuceneQuery restrict(QueryModifiers modifiers) {
+        return queryMixin.restrict(modifiers);
+    }
+
+    @Override
+    public <T> LuceneQuery set(Param<T> param, T value) {
+        return queryMixin.set(param, value);
+    }
+
     @Override
     public Document uniqueResult() {
         try {
@@ -192,6 +193,11 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
         } catch (IOException e) {
             throw new QueryException(e);
         }
+    }
+
+    @Override
+    public LuceneQuery where(EBoolean... e) {
+        return queryMixin.where(e);
     }
 
 }

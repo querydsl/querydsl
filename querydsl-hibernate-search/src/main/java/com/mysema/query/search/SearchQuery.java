@@ -21,6 +21,7 @@ import com.mysema.query.SimpleQuery;
 import com.mysema.query.lucene.LuceneSerializer;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Param;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 
@@ -33,21 +34,13 @@ import com.mysema.query.types.path.PEntity;
  */
 public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjectable<T>{
 
+    private final PEntity<T> path;
+
     private final QueryMixin<SearchQuery<T>> queryMixin;
 
     private final LuceneSerializer serializer;
 
     private final FullTextSession session;
-
-    private final PEntity<T> path;
-    
-    /**
-     * @param session
-     * @param path
-     */
-    public SearchQuery(Session session, PEntity<T> path) {
-        this(Search.getFullTextSession(session), path);
-    }
     
     /**
      * @param session
@@ -60,31 +53,24 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
         this.serializer = SearchSerializer.DEFAULT;        
     }
     
-    @Override
-    public SearchQuery<T> limit(long limit) {
-        return queryMixin.limit(limit);
-    }
-
-    @Override
-    public SearchQuery<T> offset(long offset) {
-        return queryMixin.offset(offset);
-    }
-
-    @Override
-    public SearchQuery<T> orderBy(OrderSpecifier<?>... o) {
-        return queryMixin.orderBy(o);
-    }
-
-    @Override
-    public SearchQuery<T> restrict(QueryModifiers modifiers) {
-        return queryMixin.restrict(modifiers);
-    }
-
-    @Override
-    public SearchQuery<T> where(EBoolean... e) {
-        return queryMixin.where(e);
+    /**
+     * @param session
+     * @param path
+     */
+    public SearchQuery(Session session, PEntity<T> path) {
+        this(Search.getFullTextSession(session), path);
     }
     
+    @Override
+    public long count() {
+        return createQuery(true).getResultSize();
+    }
+
+    @Override
+    public long countDistinct() {
+        return count();
+    }
+
     private FullTextQuery createQuery(boolean forCount){
         QueryMetadata metadata = queryMixin.getMetadata();
         Assert.notNull(metadata.getWhere(), "where needs to be set");
@@ -111,13 +97,8 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
     }
 
     @Override
-    public long count() {
-        return createQuery(true).getResultSize();
-    }
-
-    @Override
-    public long countDistinct() {
-        return count();
+    public SearchQuery<T> limit(long limit) {
+        return queryMixin.limit(limit);
     }
 
     @SuppressWarnings("unchecked")
@@ -125,7 +106,7 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
     public List<T> list() {
         return createQuery(false).list();
     }
-
+    
     @Override
     public List<T> listDistinct() {
         return list();
@@ -143,10 +124,35 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
         return new SearchResults<T>(query.list(), queryMixin.getMetadata().getModifiers(), query.getResultSize());
     }
 
+    @Override
+    public SearchQuery<T> offset(long offset) {
+        return queryMixin.offset(offset);
+    }
+
+    @Override
+    public SearchQuery<T> orderBy(OrderSpecifier<?>... o) {
+        return queryMixin.orderBy(o);
+    }
+
+    @Override
+    public SearchQuery<T> restrict(QueryModifiers modifiers) {
+        return queryMixin.restrict(modifiers);
+    }
+
+    @Override
+    public <P> SearchQuery<T> set(Param<P> param, P value) {
+        return queryMixin.set(param, value);
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public T uniqueResult() {
         return (T) createQuery(false).uniqueResult();
+    }
+
+    @Override
+    public SearchQuery<T> where(EBoolean... e) {
+        return queryMixin.where(e);
     } 
 
 }

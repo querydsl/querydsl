@@ -8,7 +8,7 @@ package com.mysema.query.collections;
 import java.util.Collection;
 
 import com.mysema.query.Projectable;
-import com.mysema.query.Query;
+import com.mysema.query.SimpleQuery;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.path.PMap;
 
@@ -18,7 +18,7 @@ import com.mysema.query.types.path.PMap;
  * @author tiwe
  * @version $Id$
  */
-public interface ColQuery extends Query<ColQuery>, Projectable {
+public interface ColQuery extends SimpleQuery<ColQuery>, Projectable {
     
     /**
      * Clone this ColQuery instance and return the clone
