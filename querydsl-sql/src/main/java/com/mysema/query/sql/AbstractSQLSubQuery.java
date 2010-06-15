@@ -4,6 +4,7 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.support.QueryMixin;
+import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 
@@ -14,18 +15,11 @@ import com.mysema.query.types.path.PEntity;
  *
  */
 public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends DetachableQuery<Q> {
-    
-    
-    /**
-     * 
-     */
+
     public AbstractSQLSubQuery() {
         this(new DefaultQueryMetadata());
     }
-    
-    /**
-     * @param metadata
-     */
+
     @SuppressWarnings("unchecked")
     public AbstractSQLSubQuery(QueryMetadata metadata) {
         super(new QueryMixin<Q>(metadata));
@@ -40,18 +34,42 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.fullJoin(target);
     }
     
+    public Q fullJoin(SubQuery<?> target) {
+        return queryMixin.fullJoin(target.asExpr());
+    }
+    
     public Q innerJoin(PEntity<?> target) {
         return queryMixin.innerJoin(target);
+    }
+    
+    public Q innerJoin(SubQuery<?> target) {
+        return queryMixin.innerJoin(target.asExpr());
     }
     
     public Q join(PEntity<?> target) {
         return queryMixin.join(target);
     }
     
+    public Q join(SubQuery<?> target) {
+        return queryMixin.join(target.asExpr());
+    }
+    
     public Q leftJoin(PEntity<?> target) {
         return queryMixin.leftJoin(target);
     }
     
+    public Q leftJoin(SubQuery<?> target) {
+        return queryMixin.leftJoin(target.asExpr());
+    }
+    
+    public Q rightJoin(PEntity<?> target) {
+        return queryMixin.leftJoin(target);
+    }
+    
+    public Q rightJoin(SubQuery<?> target) {
+        return queryMixin.leftJoin(target.asExpr());
+    }
+
     public Q on(EBoolean... conditions){
         return queryMixin.on(conditions);
     }

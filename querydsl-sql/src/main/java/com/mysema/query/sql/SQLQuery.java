@@ -65,6 +65,54 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
     SQLQuery leftJoin(PEntity<?> o);
     
     /**
+     * Adds a right join to the given target
+     * 
+     * @param o
+     * @return
+     */
+    SQLQuery rightJoin(PEntity<?> o);
+    
+    /**
+     * Adds a full join to the given target
+     * 
+     * @param o
+     * @return
+     */
+    SQLQuery fullJoin(SubQuery<?> o);
+
+    /**
+     * Adds an inner join to the given target
+     * 
+     * @param o
+     * @return
+     */
+    SQLQuery innerJoin(SubQuery<?> o);
+
+    /**
+     * Adds a join to the given target
+     * 
+     * @param o
+     * @return
+     */
+    SQLQuery join(SubQuery<?> o);
+    
+    /**
+     * Adds a left join to the given target
+     * 
+     * @param o
+     * @return
+     */
+    SQLQuery leftJoin(SubQuery<?> o);
+    
+    /**
+     * Adds a right join to the given target
+     * 
+     * @param o
+     * @return
+     */
+    SQLQuery rightJoin(SubQuery<?> o);
+    
+    /**
      * Defines a filter to the last added join
      * 
      * @param conditions

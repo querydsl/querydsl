@@ -128,6 +128,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.fullJoin(target);
     }
 
+    public Q fullJoin(SubQuery<?> target) {
+        return queryMixin.fullJoin(target.asExpr());
+    }
+    
     @SuppressWarnings("unchecked")
     private <T> T get(ResultSet rs, int i, Class<T> type) {
         String methodName = "get" + type.getSimpleName();
@@ -183,11 +187,15 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     protected SQLTemplates getTemplates() {
         return templates;
     }
-
+    
     public Q innerJoin(PEntity<?> target) {
         return queryMixin.innerJoin(target);
     }
 
+    public Q innerJoin(SubQuery<?> target) {
+        return queryMixin.innerJoin(target.asExpr());
+    }
+    
     private <RT> UnionBuilder<RT> innerUnion(SubQuery<?>... sq) {
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("Don't mix union and from");
@@ -195,13 +203,13 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         this.sq = sq;
         return new UnionBuilder<RT>();
     }
-
+    
     @Override
     public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
         queryMixin.addToProjection(args);
         return iterateMultiple();
     }
-
+    
     @Override
     public <RT> CloseableIterator<RT> iterate(Expr<RT> expr) {
         queryMixin.addToProjection(expr);
@@ -265,7 +273,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         }
 
     }
-
+    
     @SuppressWarnings("unchecked")
     private <RT> CloseableIterator<RT> iterateSingle(@Nullable final Expr<RT> expr) {
         String queryString = buildQueryString(false);
@@ -317,13 +325,21 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
             reset();
         }
     }
-    
+
     public Q join(PEntity<?> target) {
         return queryMixin.join(target);
     }
 
+    public Q join(SubQuery<?> target) {
+        return queryMixin.join(target.asExpr());
+    }
+
     public Q leftJoin(PEntity<?> target) {
         return queryMixin.leftJoin(target);
+    }
+
+    public Q leftJoin(SubQuery<?> target) {
+        return queryMixin.leftJoin(target.asExpr());
     }
 
     @Override
@@ -369,6 +385,14 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     private void reset() {
         queryMixin.getMetadata().reset();
         constants = null;
+    }
+
+    public Q rightJoin(PEntity<?> target) {
+        return queryMixin.leftJoin(target);
+    }
+
+    public Q rightJoin(SubQuery<?> target) {
+        return queryMixin.leftJoin(target.asExpr());
     }
 
     @Override
