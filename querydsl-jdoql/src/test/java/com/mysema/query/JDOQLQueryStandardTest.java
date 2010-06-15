@@ -30,6 +30,7 @@ import com.mysema.query.jdoql.testdomain.Store;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Param;
+import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.QTuple;
@@ -174,11 +175,17 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
 	    assertNotNull(projection);
 	}
     }
-    
-    
+        
     @Test
     public void testParams(){
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("ABC0",query().from(product).where(product.name.eq(name)).set(name, "ABC0").uniqueResult(product.name));
+    }
+    
+
+    @Test(expected=ParamNotSetException.class)
+    public void testParams_not_set(){
+        Param<String> name = new Param<String>(String.class,"name");
+        assertEquals("ABC0",query().from(product).where(product.name.eq(name)).uniqueResult(product.name));
     }
 }

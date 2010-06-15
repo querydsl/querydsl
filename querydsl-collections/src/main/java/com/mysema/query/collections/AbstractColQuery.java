@@ -109,8 +109,6 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
         try {
             queryMixin.addToProjection(projection);
             return new IteratorAdapter<RT>(queryEngine.list(getMetadata(), iterables, projection).iterator());
-        } catch (Exception e) {
-            throw new QueryException(e.getMessage(), e);
         }finally{
             reset();
         }        
@@ -126,8 +124,6 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
         try {
             queryMixin.addToProjection(projection);
             return queryEngine.list(getMetadata(), iterables, projection);
-        } catch (Exception e) {
-            throw new QueryException(e.getMessage(), e);
         }finally{
             reset();
         } 

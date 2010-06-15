@@ -28,6 +28,7 @@ import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Param;
+import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EList;
@@ -275,6 +276,12 @@ public abstract class AbstractStandardTest {
     public void testParams(){
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Bob123",query().from(cat).where(cat.name.eq(name)).set(name, "Bob123").uniqueResult(cat.name));
+    }
+    
+    @Test(expected=ParamNotSetException.class)
+    public void testParams_not_set(){
+        Param<String> name = new Param<String>(String.class,"name");
+        assertEquals("Bob123",query().from(cat).where(cat.name.eq(name)).uniqueResult(cat.name));
     }
         
 

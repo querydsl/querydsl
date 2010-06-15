@@ -23,6 +23,7 @@ import org.hibernate.type.ShortType;
 import org.hibernate.type.Type;
 
 import com.mysema.query.types.Param;
+import com.mysema.query.types.ParamNotSetException;
 
 /**
  * Utility methods for Hibernate
@@ -53,6 +54,9 @@ public final class HibernateUtil {
             Object val = entry.getKey();
             if (Param.class.isInstance(val)){
                 val = params.get(val);
+                if (val == null){
+                    throw new ParamNotSetException((Param<?>) entry.getKey());
+                }
             }
             setValue(query, key, val);
         }       

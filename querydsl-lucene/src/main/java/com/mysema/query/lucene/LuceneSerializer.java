@@ -22,15 +22,7 @@ import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.util.NumericUtils;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Param;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathType;
+import com.mysema.query.types.*;
 
 /**
  * Serializes Querydsl queries to Lucene queries.
@@ -346,7 +338,11 @@ public class LuceneSerializer {
 
     private String[] createTerms(QueryMetadata metadata, Expr<?> expr) {
         if (expr instanceof Param<?>){
-            return split(expr, metadata.getParams().get(expr).toString());
+            Object value = metadata.getParams().get(expr);
+            if (value == null){
+                throw new ParamNotSetException((Param<?>) expr);
+            }
+            return split(expr, value.toString());
         }else{
             return split(expr, expr.toString());    
         }        
@@ -354,7 +350,11 @@ public class LuceneSerializer {
 
     private String[] createEscapedTerms(QueryMetadata metadata, Expr<?> expr) {
         if (expr instanceof Param<?>){
-            return split(expr, QueryParser.escape(metadata.getParams().get(expr).toString()));
+            Object value = metadata.getParams().get(expr);
+            if (value == null){
+                throw new ParamNotSetException((Param<?>) expr);
+            }
+            return split(expr, QueryParser.escape(value.toString()));
         }else{
             return split(expr, QueryParser.escape(expr.toString()));
         }        

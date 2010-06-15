@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 import javax.jdo.PersistenceManager;
@@ -27,7 +26,6 @@ import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.Param;
 import com.mysema.query.types.expr.QTuple;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.util.ResultIterator;

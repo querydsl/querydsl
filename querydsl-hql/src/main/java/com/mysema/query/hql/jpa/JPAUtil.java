@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.persistence.Query;
 
 import com.mysema.query.types.Param;
+import com.mysema.query.types.ParamNotSetException;
 
 
 /**
@@ -28,6 +29,9 @@ public final class JPAUtil {
             Object val = entry.getKey();
             if (Param.class.isInstance(val)){
                 val = params.get(val);
+                if (val == null){
+                    throw new ParamNotSetException((Param<?>) entry.getKey());
+                }
             }
             query.setParameter(key, val);
         }

@@ -13,6 +13,7 @@ import java.util.Map;
 import org.apache.commons.lang.ClassUtils;
 
 import com.mysema.query.types.Param;
+import com.mysema.query.types.ParamNotSetException;
 
 /**
  * @author tiwe
@@ -27,6 +28,9 @@ public final class JDBCUtil {
         for (Object o : objects) {
             try {
                 if (Param.class.isInstance(o)){
+                    if (!params.containsKey(o)){
+                        throw new ParamNotSetException((Param<?>) o);
+                    }
                     o = params.get(o);
                 }
                 setParameter(stmt, counter++, o);

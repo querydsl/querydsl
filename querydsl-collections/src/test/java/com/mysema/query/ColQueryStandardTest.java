@@ -5,7 +5,7 @@
  */
 package com.mysema.query;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
@@ -23,6 +23,7 @@ import com.mysema.query.collections.QCat;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Param;
+import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.QTuple;
@@ -121,5 +122,11 @@ public class ColQueryStandardTest {
     public void params(){
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Bob", MiniApi.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").uniqueResult(cat.name));
+    }
+    
+    @Test(expected=ParamNotSetException.class)
+    public void params_not_set(){
+        Param<String> name = new Param<String>(String.class,"name");
+        assertEquals("Bob", MiniApi.from(cat, data).where(cat.name.eq(name)).uniqueResult(cat.name));
     }
 }

@@ -29,6 +29,7 @@ import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Param;
+import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
@@ -210,7 +211,11 @@ public class DefaultEvaluatorFactory {
         Map<String,Object> constants = new HashMap<String,Object>();
         for (Map.Entry<Object,String> entry : constantToLabel.entrySet()){
             if (entry.getKey() instanceof Param<?>){
-                constants.put(entry.getValue(), metadata.getParams().get(entry.getKey()));
+                Object value = metadata.getParams().get(entry.getKey());
+                if (value == null){
+                    throw new ParamNotSetException((Param<?>) entry.getKey());
+                }
+                constants.put(entry.getValue(), value);
             }else{
                 constants.put(entry.getValue(), entry.getKey());
             }            

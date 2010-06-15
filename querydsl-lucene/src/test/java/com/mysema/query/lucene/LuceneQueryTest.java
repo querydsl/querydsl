@@ -37,6 +37,7 @@ import com.mysema.query.QueryException;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.types.Param;
+import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
@@ -319,12 +320,19 @@ public class LuceneQueryTest {
     }
     
     @Test
-    public void uniResult_With_Param(){
+    public void uniqueResult_With_Param(){
         Param<String> param = new Param<String>(String.class,"title");
         query.set(param, "Nummi");
         query.where(title.startsWith(param));
         Document document = query.uniqueResult();
         assertEquals("Nummisuutarit", document.get("title"));
+    }
+    
+    @Test(expected=ParamNotSetException.class)
+    public void uniqueResult_Param_Not_Set(){
+        Param<String> param = new Param<String>(String.class,"title");
+        query.where(title.startsWith(param));
+        query.uniqueResult();
     }
 
     @Test(expected = QueryException.class)
