@@ -77,7 +77,7 @@ public class DefaultQueryEngine implements QueryEngine {
 
     private List evaluateMultipleSources(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables, boolean count) {        
         // from where
-        Evaluator<List<Object[]>> ev = evaluatorFactory.createEvaluator(metadata.getJoins(), metadata.getWhere());
+        Evaluator<List<Object[]>> ev = evaluatorFactory.createEvaluator(metadata, metadata.getJoins(), metadata.getWhere());
         List<Iterable<?>> iterableList = new ArrayList<Iterable<?>>(metadata.getJoins().size());
         for (JoinExpression join : metadata.getJoins()){
             if (join.getType() == JoinType.DEFAULT){
@@ -132,7 +132,7 @@ public class DefaultQueryEngine implements QueryEngine {
         
         // from & where
         if (metadata.getWhere() != null){
-            Evaluator<List<?>> evaluator = (Evaluator)evaluatorFactory.createEvaluator(source, metadata.getWhere());
+            Evaluator<List<?>> evaluator = (Evaluator)evaluatorFactory.createEvaluator(metadata, source, metadata.getWhere());
             list = evaluator.evaluate(list);
         }        
         
@@ -177,13 +177,13 @@ public class DefaultQueryEngine implements QueryEngine {
             directions[i] = orderBy.get(i).getOrder() == Order.ASC;
         }
         Expr<?> expr = new EArrayConstructor<Object>(Object[].class, orderByExpr);
-        Evaluator orderEvaluator = evaluatorFactory.create(sources, expr);
+        Evaluator orderEvaluator = evaluatorFactory.create(metadata, sources, expr);
 
         Collections.sort(list, new MultiComparator(orderEvaluator, directions));
     }
 
     private List<?> project(QueryMetadata metadata, List<Expr<?>> sources, List<?> list) {
-        Evaluator projectionEvaluator = evaluatorFactory.create(sources, metadata.getProjection().get(0));
+        Evaluator projectionEvaluator = evaluatorFactory.create(metadata, sources, metadata.getProjection().get(0));
         EvaluatorTransformer transformer = new EvaluatorTransformer(projectionEvaluator);
         list = IteratorUtils.toList(IteratorUtils.transformedIterator(list.iterator(), transformer));
         return list;

@@ -24,9 +24,11 @@ import com.mysema.codegen.EvaluatorFactory;
 import com.mysema.codegen.Type;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
+import com.mysema.query.types.Param;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
@@ -64,15 +66,12 @@ public class DefaultEvaluatorFactory {
      * @param projection
      * @return
      */
-    public <T> Evaluator<T> create(List<? extends Expr<?>> sources, Expr<T> projection) {
+    public <T> Evaluator<T> create(QueryMetadata metadata, List<? extends Expr<?>> sources, Expr<T> projection) {
         ColQuerySerializer serializer = new ColQuerySerializer(templates);
         serializer.handle(projection);
         
         Map<Object,String> constantToLabel = serializer.getConstantToLabel();
-        Map<String,Object> constants = new HashMap<String,Object>();
-        for (Map.Entry<Object,String> entry : constantToLabel.entrySet()){
-            constants.put(entry.getValue(), entry.getKey());
-        }
+        Map<String, Object> constants = getConstants(metadata, constantToLabel);
         Class<?>[] types = new Class<?>[sources.size()];
         String[] names = new String[sources.size()];
         for (int i = 0; i < sources.size(); i++) {
@@ -94,7 +93,7 @@ public class DefaultEvaluatorFactory {
         
         return factory.createEvaluator("return " + javaSource +";", projection.getType(), names, types, constants);        
     }
-    
+
     /**
      * Create an Evaluator for the given source and filter
      * 
@@ -104,7 +103,7 @@ public class DefaultEvaluatorFactory {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <T> Evaluator<List<T>> createEvaluator(Expr<? extends T> source, EBoolean filter){
+    public <T> Evaluator<List<T>> createEvaluator(QueryMetadata metadata, Expr<? extends T> source, EBoolean filter){
         String typeName = com.mysema.codegen.ClassUtils.getName(source.getType());
         ColQuerySerializer ser = new ColQuerySerializer(templates);
         ser.append("java.util.List<"+typeName+"> rv = new java.util.ArrayList<"+typeName+">();\n");
@@ -116,10 +115,7 @@ public class DefaultEvaluatorFactory {
         ser.append("return rv;");
         
         Map<Object,String> constantToLabel = ser.getConstantToLabel();
-        Map<String,Object> constants = new HashMap<String,Object>();
-        for (Map.Entry<Object,String> entry : constantToLabel.entrySet()){
-            constants.put(entry.getValue(), entry.getKey());
-        }
+        Map<String, Object> constants = getConstants(metadata, constantToLabel);
         
         Type sourceType = new Type(source.getType());
         Type sourceListType = new Type(Iterable.class, sourceType); 
@@ -141,7 +137,7 @@ public class DefaultEvaluatorFactory {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Evaluator<List<Object[]>> createEvaluator(List<JoinExpression> joins, @Nullable EBoolean filter){
+    public Evaluator<List<Object[]>> createEvaluator(QueryMetadata metadata, List<JoinExpression> joins, @Nullable EBoolean filter){
         List<String> sourceNames = new ArrayList<String>();
         List<Type> sourceTypes = new ArrayList<Type>();
         List<Class> sourceClasses = new ArrayList<Class>();
@@ -198,10 +194,7 @@ public class DefaultEvaluatorFactory {
         ser.append("return rv;");
         
         Map<Object,String> constantToLabel = ser.getConstantToLabel();
-        Map<String,Object> constants = new HashMap<String,Object>();
-        for (Map.Entry<Object,String> entry : constantToLabel.entrySet()){
-            constants.put(entry.getValue(), entry.getKey());
-        }
+        Map<String, Object> constants = getConstants(metadata, constantToLabel);
         
         Type projectionType = new Type(List.class, new Type(Object[].class));        
         return factory.createEvaluator(
@@ -211,6 +204,18 @@ public class DefaultEvaluatorFactory {
                 sourceTypes.toArray(new Type[sourceTypes.size()]), 
                 sourceClasses.toArray(new Class[sourceClasses.size()]), 
                 constants);
+    }
+    
+    private Map<String, Object> getConstants(QueryMetadata metadata, Map<Object, String> constantToLabel) {
+        Map<String,Object> constants = new HashMap<String,Object>();
+        for (Map.Entry<Object,String> entry : constantToLabel.entrySet()){
+            if (entry.getKey() instanceof Param<?>){
+                constants.put(entry.getValue(), metadata.getParams().get(entry.getKey()));
+            }else{
+                constants.put(entry.getValue(), entry.getKey());
+            }            
+        }
+        return constants;
     }
 
     

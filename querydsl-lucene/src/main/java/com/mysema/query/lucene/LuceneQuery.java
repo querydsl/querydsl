@@ -79,7 +79,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
         if (queryMixin.getMetadata().getWhere() == null) {
             throw new QueryException("Where clause was null.");
         }
-        return serializer.toQuery(queryMixin.getMetadata().getWhere());
+        return serializer.toQuery(queryMixin.getMetadata(), queryMixin.getMetadata().getWhere());
     }
 
     @Override
@@ -137,8 +137,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
          * TODO Get rid of count(). It could be implemented by iterating the
          * list results in list* from n to m.
          */
-        return new SearchResults<Document>(documents, queryMixin.getMetadata().getModifiers(),
-                count());
+        return new SearchResults<Document>(documents, queryMixin.getMetadata().getModifiers(), count());
     }
 
     private List<Document> listSorted(List<OrderSpecifier<?>> orderBys, int limit, int offset) {

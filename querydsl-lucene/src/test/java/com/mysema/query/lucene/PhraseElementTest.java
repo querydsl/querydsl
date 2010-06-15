@@ -5,6 +5,8 @@ import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
+import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.path.PString;
 
 
@@ -14,8 +16,9 @@ public class PhraseElementTest {
     public void test(){
         PString title = new PString("title");
         LuceneSerializer serializer = new LuceneSerializer(false,false);
-        assertEquals("title:Hello World", serializer.toQuery(title.eq("Hello World")).toString());
-        assertEquals("title:\"Hello World\"", serializer.toQuery(title.eq(new PhraseElement("Hello World"))).toString());
+        QueryMetadata metadata = new DefaultQueryMetadata();
+        assertEquals("title:Hello World", serializer.toQuery(metadata, title.eq("Hello World")).toString());
+        assertEquals("title:\"Hello World\"", serializer.toQuery(metadata, title.eq(new PhraseElement("Hello World"))).toString());
     }
     
     @Test

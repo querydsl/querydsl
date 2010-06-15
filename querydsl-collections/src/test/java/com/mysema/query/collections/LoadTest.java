@@ -14,10 +14,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.collections.QCat;
-import com.mysema.query.collections.ColQueryTemplates;
-import com.mysema.query.collections.DefaultEvaluatorFactory;
-import com.mysema.query.collections.MiniApi;
+import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.QueryMetadata;
 
 public class LoadTest {
     
@@ -25,12 +23,14 @@ public class LoadTest {
     
     private DefaultEvaluatorFactory evaluatorFactory = new DefaultEvaluatorFactory(ColQueryTemplates.DEFAULT);
     
+    private QueryMetadata metadata = new DefaultQueryMetadata();
+    
     @Test
     public void creation(){
         System.out.println("Evaluator creation #1");
         for (int i = 0; i < 5; i++){
             long s = System.currentTimeMillis();
-            evaluatorFactory.create(Collections.singletonList(cat), cat.name.startsWith("Bob"));
+            evaluatorFactory.create(metadata, Collections.singletonList(cat), cat.name.startsWith("Bob"));
             long e = System.currentTimeMillis();
             System.out.println(" " + (e-s)+"ms");    
         }        
@@ -39,7 +39,7 @@ public class LoadTest {
         System.out.println("Evaluator creation #2");
         for (int i = 0; i < 5; i++){
             long s = System.currentTimeMillis();
-            evaluatorFactory.create(Collections.singletonList(cat), cat.name.startsWith("Bob" + i));
+            evaluatorFactory.create(metadata, Collections.singletonList(cat), cat.name.startsWith("Bob" + i));
             long e = System.currentTimeMillis();
             System.out.println(" " + (e-s)+"ms");    
         }        

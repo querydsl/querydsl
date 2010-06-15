@@ -74,7 +74,7 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
     private FullTextQuery createQuery(boolean forCount){
         QueryMetadata metadata = queryMixin.getMetadata();
         Assert.notNull(metadata.getWhere(), "where needs to be set");
-        org.apache.lucene.search.Query query = serializer.toQuery(metadata.getWhere());
+        org.apache.lucene.search.Query query = serializer.toQuery(metadata, metadata.getWhere());
                 
         FullTextQuery fullTextQuery = session.createFullTextQuery(query, path.getType());
         

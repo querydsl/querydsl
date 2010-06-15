@@ -17,26 +17,18 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.BooleanClause;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.NumericRangeQuery;
-import org.apache.lucene.search.PhraseQuery;
-import org.apache.lucene.search.PrefixQuery;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Sort;
-import org.apache.lucene.search.SortField;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.TermRangeQuery;
-import org.apache.lucene.search.WildcardQuery;
+import org.apache.lucene.search.*;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.util.NumericUtils;
 
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathType;
 
@@ -72,49 +64,49 @@ public class LuceneSerializer {
         this.splitTerms = splitTerms;
     }
 
-    private Query toQuery(Operation<?> operation) {
+    private Query toQuery(QueryMetadata metadata, Operation<?> operation) {
         Operator<?> op = operation.getOperator();
         if (op == Ops.OR) {
-            return toTwoHandSidedQuery(operation, Occur.SHOULD);
+            return toTwoHandSidedQuery(metadata, operation, Occur.SHOULD);
         } else if (op == Ops.AND) {
-            return toTwoHandSidedQuery(operation, Occur.MUST);
+            return toTwoHandSidedQuery(metadata, operation, Occur.MUST);
         } else if (op == Ops.NOT) {
             BooleanQuery bq = new BooleanQuery();
-            bq.add(new BooleanClause(toQuery(operation.getArg(0)), Occur.MUST_NOT));
+            bq.add(new BooleanClause(toQuery(metadata, operation.getArg(0)), Occur.MUST_NOT));
             return bq;
         } else if (op == Ops.LIKE) {
-            return like(operation);
+            return like(metadata, operation);
         } else if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE || op == Ops.EQ_IGNORE_CASE) {
-            return eq(operation);
+            return eq(metadata, operation);
         } else if (op == Ops.NE_OBJECT || op == Ops.NE_PRIMITIVE) {
-            return ne(operation);
+            return ne(metadata, operation);
         } else if (op == Ops.STARTS_WITH || op == Ops.STARTS_WITH_IC) {
-            return startsWith(operation);
+            return startsWith(metadata, operation);
         } else if (op == Ops.ENDS_WITH || op == Ops.ENDS_WITH_IC) {
-            return endsWith(operation);
+            return endsWith(metadata, operation);
         } else if (op == Ops.STRING_CONTAINS || op == Ops.STRING_CONTAINS_IC) {
-            return stringContains(operation);
+            return stringContains(metadata, operation);
         } else if (op == Ops.BETWEEN) {
-            return between(operation);
+            return between(metadata, operation);
         } else if (op == Ops.IN) {
-            return in(operation);
+            return in(metadata, operation);
         } else if (op == Ops.LT || op == Ops.BEFORE) {
-            return lt(operation);
+            return lt(metadata, operation);
         } else if (op == Ops.GT || op == Ops.AFTER) {
-            return gt(operation);
+            return gt(metadata, operation);
         } else if (op == Ops.LOE || op == Ops.BOE) {
-            return le(operation);
+            return le(metadata, operation);
         } else if (op == Ops.GOE || op == Ops.AOE) {
-            return ge(operation);
+            return ge(metadata, operation);
         } else if (op == PathType.DELEGATE) {
-            return toQuery(operation.getArg(0));
+            return toQuery(metadata, operation.getArg(0));
         }
         throw new UnsupportedOperationException("Illegal operation " + operation);
     }
 
-    private Query toTwoHandSidedQuery(Operation<?> operation, Occur occur) {
-        Query lhs = toQuery(operation.getArg(0));
-        Query rhs = toQuery(operation.getArg(1));
+    private Query toTwoHandSidedQuery(QueryMetadata metadata, Operation<?> operation, Occur occur) {
+        Query lhs = toQuery(metadata, operation.getArg(0));
+        Query rhs = toQuery(metadata, operation.getArg(1));
         BooleanQuery bq = new BooleanQuery();
         bq.add(createBooleanClause(lhs, occur));
         bq.add(createBooleanClause(rhs, occur));
@@ -136,10 +128,10 @@ public class LuceneSerializer {
         return new BooleanClause(query, occur);
     }
 
-    private Query like(Operation<?> operation) {
+    private Query like(QueryMetadata metadata, Operation<?> operation) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
-        String[] terms = createTerms(operation.getArg(1));
+        String[] terms = createTerms(metadata, operation.getArg(1));
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
             for (String s : terms) {
@@ -151,14 +143,14 @@ public class LuceneSerializer {
     }
 
     @SuppressWarnings("unchecked")
-    private Query eq(Operation<?> operation) {
+    private Query eq(QueryMetadata metadata, Operation<?> operation) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
         if (Number.class.isAssignableFrom(operation.getArg(1).getType())) {
             return new TermQuery(new Term(field, convertNumber(((Constant<Number>) operation
                     .getArg(1)).getConstant())));
         }
-        return eq(field, createTerms(operation.getArg(1)));
+        return eq(metadata, field, createTerms(metadata, operation.getArg(1)));
     }
 
     private String convertNumber(Number number) {
@@ -184,7 +176,7 @@ public class LuceneSerializer {
         }
     }
 
-    private Query eq(String field, String[] terms) {
+    private Query eq(QueryMetadata metadata, String field, String[] terms) {
         if (terms.length > 1) {
             PhraseQuery pq = new PhraseQuery();
             for (String s : terms) {
@@ -196,26 +188,26 @@ public class LuceneSerializer {
     }
 
     @SuppressWarnings("unchecked")
-    private Query in(Operation<?> operation) {
+    private Query in(QueryMetadata metadata, Operation<?> operation) {
         String field = toField(operation.getArg(0));
         Collection values = (Collection) ((Constant) operation.getArg(1)).getConstant();
         BooleanQuery bq = new BooleanQuery();
         for (Object value : values) {
-            bq.add(eq(field, StringUtils.split(value.toString())), Occur.SHOULD);
+            bq.add(eq(metadata, field, StringUtils.split(value.toString())), Occur.SHOULD);
         }
         return bq;
     }
 
-    private Query ne(Operation<?> operation) {
+    private Query ne(QueryMetadata metadata, Operation<?> operation) {
         BooleanQuery bq = new BooleanQuery();
-        bq.add(new BooleanClause(eq(operation), Occur.MUST_NOT));
+        bq.add(new BooleanClause(eq(metadata, operation), Occur.MUST_NOT));
         return bq;
     }
 
-    private Query startsWith(Operation<?> operation) {
+    private Query startsWith(QueryMetadata metadata, Operation<?> operation) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
-        String[] terms = createEscapedTerms(operation.getArg(1));
+        String[] terms = createEscapedTerms(metadata, operation.getArg(1));
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
             for (int i = 0; i < terms.length; ++i) {
@@ -227,10 +219,10 @@ public class LuceneSerializer {
         return new PrefixQuery(new Term(field, normalize(terms[0])));
     }
 
-    private Query stringContains(Operation<?> operation) {
+    private Query stringContains(QueryMetadata metadata, Operation<?> operation) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
-        String[] terms = createEscapedTerms(operation.getArg(1));
+        String[] terms = createEscapedTerms(metadata, operation.getArg(1));
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
             for (String s : terms) {
@@ -241,10 +233,10 @@ public class LuceneSerializer {
         return new WildcardQuery(new Term(field, "*" + normalize(terms[0]) + "*"));
     }
 
-    private Query endsWith(Operation<?> operation) {
+    private Query endsWith(QueryMetadata metadata, Operation<?> operation) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
-        String[] terms = createEscapedTerms(operation.getArg(1));
+        String[] terms = createEscapedTerms(metadata, operation.getArg(1));
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
             for (int i = 0; i < terms.length; ++i) {
@@ -256,35 +248,34 @@ public class LuceneSerializer {
         return new WildcardQuery(new Term(field, "*" + normalize(terms[0])));
     }
 
-    private Query between(Operation<?> operation) {
+    private Query between(QueryMetadata metadata, Operation<?> operation) {
         verifyArguments(operation);
         // TODO Phrase not properly supported
-        return range(toField(operation.getArg(0)), operation.getArg(1), operation.getArg(2), true,
-                true);
+        return range(metadata, toField(operation.getArg(0)), operation.getArg(1), operation.getArg(2), true, true);
     }
 
-    private Query lt(Operation<?> operation) {
+    private Query lt(QueryMetadata metadata, Operation<?> operation) {
         verifyArguments(operation);
-        return range(toField(operation.getArg(0)), null, operation.getArg(1), false, false);
+        return range(metadata, toField(operation.getArg(0)), null, operation.getArg(1), false, false);
     }
 
-    private Query gt(Operation<?> operation) {
+    private Query gt(QueryMetadata metadata, Operation<?> operation) {
         verifyArguments(operation);
-        return range(toField(operation.getArg(0)), operation.getArg(1), null, false, false);
+        return range(metadata, toField(operation.getArg(0)), operation.getArg(1), null, false, false);
     }
 
-    private Query le(Operation<?> operation) {
+    private Query le(QueryMetadata metadata, Operation<?> operation) {
         verifyArguments(operation);
-        return range(toField(operation.getArg(0)), null, operation.getArg(1), true, true);
+        return range(metadata, toField(operation.getArg(0)), null, operation.getArg(1), true, true);
     }
 
-    private Query ge(Operation<?> operation) {
+    private Query ge(QueryMetadata metadata, Operation<?> operation) {
         verifyArguments(operation);
-        return range(toField(operation.getArg(0)), operation.getArg(1), null, true, true);
+        return range(metadata, toField(operation.getArg(0)), operation.getArg(1), null, true, true);
     }
 
     @SuppressWarnings("unchecked")
-    private Query range(String field, Expr<?> min, Expr<?> max, boolean minInc, boolean maxInc) {
+    private Query range(QueryMetadata metadata, String field, Expr<?> min, Expr<?> max, boolean minInc, boolean maxInc) {
         if (min != null && Number.class.isAssignableFrom(min.getType()) || max != null
                 && Number.class.isAssignableFrom(max.getType())) {
             Class<? extends Number> numType = (Class) (min != null ? min.getType() : max.getType());
@@ -292,17 +283,15 @@ public class LuceneSerializer {
                     : ((Constant) min).getConstant()), (Number) (max == null ? null
                     : ((Constant) max).getConstant()), minInc, maxInc);
         }
-        return stringRange(field, min, max, minInc, maxInc);
+        return stringRange(metadata, field, min, max, minInc, maxInc);
     }
 
     private <N extends Number> NumericRangeQuery<?> numericRange(Class<N> clazz, String field,
             N min, N max, boolean minInc, boolean maxInc) {
         if (clazz.equals(Integer.class)) {
-            return NumericRangeQuery.newIntRange(field, (Integer) min, (Integer) max, minInc,
-                    maxInc);
+            return NumericRangeQuery.newIntRange(field, (Integer) min, (Integer) max, minInc, maxInc);
         } else if (clazz.equals(Double.class)) {
-            return NumericRangeQuery.newDoubleRange(field, (Double) min, (Double) max, minInc,
-                    minInc);
+            return NumericRangeQuery.newDoubleRange(field, (Double) min, (Double) max, minInc, minInc);
         } else if (clazz.equals(Float.class)) {
             return NumericRangeQuery.newFloatRange(field, (Float) min, (Float) max, minInc, minInc);
         } else if (clazz.equals(Long.class)) {
@@ -315,14 +304,13 @@ public class LuceneSerializer {
         }
     }
 
-    private Query stringRange(String field, Expr<?> min, Expr<?> max, boolean minInc, boolean maxInc) {
+    private Query stringRange(QueryMetadata metadata, String field, Expr<?> min, Expr<?> max, boolean minInc, boolean maxInc) {
         if (min == null) {
-            return new TermRangeQuery(field, null, normalize(createTerms(max)[0]), minInc, maxInc);
+            return new TermRangeQuery(field, null, normalize(createTerms(metadata, max)[0]), minInc, maxInc);
         } else if (max == null) {
-            return new TermRangeQuery(field, normalize(createTerms(min)[0]), null, minInc, maxInc);
+            return new TermRangeQuery(field, normalize(createTerms(metadata, min)[0]), null, minInc, maxInc);
         } else {
-            return new TermRangeQuery(field, normalize(createTerms(min)[0]),
-                    normalize(createTerms(max)[0]), minInc, maxInc);
+            return new TermRangeQuery(field, normalize(createTerms(metadata, min)[0]), normalize(createTerms(metadata, max)[0]), minInc, maxInc);
         }
     }
 
@@ -347,6 +335,7 @@ public class LuceneSerializer {
         List<Expr<?>> arguments = operation.getArgs();
         for (int i = 1; i < arguments.size(); ++i) {
             if (!(arguments.get(i) instanceof Constant<?>)
+                    && !(arguments.get(i) instanceof Param<?>)
                     && !(arguments.get(i) instanceof PhraseElement)
                     && !(arguments.get(i) instanceof TermElement)) {
                 throw new IllegalArgumentException("operand was of unsupported type "
@@ -355,12 +344,20 @@ public class LuceneSerializer {
         }
     }
 
-    private String[] createTerms(Expr<?> expr) {
-        return split(expr, expr.toString());
+    private String[] createTerms(QueryMetadata metadata, Expr<?> expr) {
+        if (expr instanceof Param<?>){
+            return split(expr, metadata.getParams().get(expr).toString());
+        }else{
+            return split(expr, expr.toString());    
+        }        
     }
 
-    private String[] createEscapedTerms(Expr<?> expr) {
-        return split(expr, QueryParser.escape(expr.toString()));
+    private String[] createEscapedTerms(QueryMetadata metadata, Expr<?> expr) {
+        if (expr instanceof Param<?>){
+            return split(expr, QueryParser.escape(metadata.getParams().get(expr).toString()));
+        }else{
+            return split(expr, QueryParser.escape(expr.toString()));
+        }        
     }
 
     private String[] split(Expr<?> expr, String str) {
@@ -379,14 +376,14 @@ public class LuceneSerializer {
         return lowerCase ? s.toLowerCase(Locale.ENGLISH) : s;
     }
 
-    public Query toQuery(Expr<?> expr) {
+    public Query toQuery(QueryMetadata metadata, Expr<?> expr) {
         if (expr instanceof Operation<?>) {
-            return toQuery((Operation<?>) expr);
+            return toQuery(metadata, (Operation<?>) expr);
         } else if (expr instanceof QueryElement) {
             return ((QueryElement) expr).getQuery();
-        }
-        throw new IllegalArgumentException("expr was of unsupported type "
-                + expr.getClass().getName());
+        } else{
+            throw new IllegalArgumentException("expr was of unsupported type " + expr.getClass().getName());    
+        }        
     }
 
     public Sort toSort(List<OrderSpecifier<?>> orderBys) {

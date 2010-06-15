@@ -36,6 +36,7 @@ import org.junit.Test;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
+import com.mysema.query.types.Param;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
@@ -313,6 +314,15 @@ public class LuceneQueryTest {
     @Test
     public void uniqueResult() {
         query.where(title.startsWith("Nummi"));
+        Document document = query.uniqueResult();
+        assertEquals("Nummisuutarit", document.get("title"));
+    }
+    
+    @Test
+    public void uniResult_With_Param(){
+        Param<String> param = new Param<String>(String.class,"title");
+        query.set(param, "Nummi");
+        query.where(title.startsWith(param));
         Document document = query.uniqueResult();
         assertEquals("Nummisuutarit", document.get("title"));
     }
