@@ -40,6 +40,7 @@ import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.domain.IdName;
+import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QIdName;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
@@ -54,6 +55,7 @@ import com.mysema.query.types.expr.ENumberConst;
 import com.mysema.query.types.expr.QTuple;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PathBuilder;
+import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.ObjectSubQuery;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.Label;
@@ -405,6 +407,26 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
               ).list(sq.get(sal).avg(), sq.get(sal).min(), sq.get(sal).max());
         
 //        select avg(sq.sal), min(sq.sal), max(sq.sal) from (select (e.SALARY + e.SALARY + e.SALARY) as sal from EMPLOYEE2 e) as sq
+    }
+    
+    @Test
+    public void subQueryJoin(){
+        ListSubQuery<Integer> sq = sq().from(employee2).list(employee2.id);
+        QEmployee sqEmp = new QEmployee("sq");
+        
+        // inner join
+        query().from(employee).innerJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
+        
+        // left join
+        query().from(employee).leftJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
+        
+        // right join
+        query().from(employee).rightJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
+        
+        // FIXME
+        // full join
+//        query().from(employee).fullJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
+            
     }
     
     @Test

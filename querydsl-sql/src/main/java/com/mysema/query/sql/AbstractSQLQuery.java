@@ -30,6 +30,7 @@ import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
@@ -128,8 +129,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.fullJoin(target);
     }
 
-    public Q fullJoin(SubQuery<?> target) {
-        return queryMixin.fullJoin(target.asExpr());
+    @SuppressWarnings("unchecked")
+    public Q fullJoin(SubQuery<?> target, Path<?> alias) {
+        return queryMixin.fullJoin(target.asExpr().as((Path)alias));
     }
     
     @SuppressWarnings("unchecked")
@@ -192,8 +194,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.innerJoin(target);
     }
 
-    public Q innerJoin(SubQuery<?> target) {
-        return queryMixin.innerJoin(target.asExpr());
+    @SuppressWarnings("unchecked")
+    public Q innerJoin(SubQuery<?> target, Path<?> alias) {
+        return queryMixin.innerJoin(target.asExpr().as((Path)alias));
     }
     
     private <RT> UnionBuilder<RT> innerUnion(SubQuery<?>... sq) {
@@ -330,16 +333,18 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.join(target);
     }
 
-    public Q join(SubQuery<?> target) {
-        return queryMixin.join(target.asExpr());
+    @SuppressWarnings("unchecked")
+    public Q join(SubQuery<?> target, Path<?> alias) {
+        return queryMixin.join(target.asExpr().as((Path)alias));
     }
 
     public Q leftJoin(PEntity<?> target) {
         return queryMixin.leftJoin(target);
     }
 
-    public Q leftJoin(SubQuery<?> target) {
-        return queryMixin.leftJoin(target.asExpr());
+    @SuppressWarnings("unchecked")
+    public Q leftJoin(SubQuery<?> target, Path<?> alias) {
+        return queryMixin.leftJoin(target.asExpr().as((Path)alias));
     }
 
     @Override
@@ -391,8 +396,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.leftJoin(target);
     }
 
-    public Q rightJoin(SubQuery<?> target) {
-        return queryMixin.leftJoin(target.asExpr());
+    @SuppressWarnings("unchecked")
+    public Q rightJoin(SubQuery<?> target, Path<?> alias) {
+        return queryMixin.leftJoin(target.asExpr().as((Path)alias));
     }
 
     @Override

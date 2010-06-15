@@ -4,6 +4,7 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.support.QueryMixin;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
@@ -34,23 +35,25 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.fullJoin(target);
     }
     
-    public Q fullJoin(SubQuery<?> target) {
-        return queryMixin.fullJoin(target.asExpr());
+    @SuppressWarnings("unchecked")
+    public Q fullJoin(SubQuery<?> target, Path<?> alias) {
+        return queryMixin.fullJoin(target.asExpr().as((Path)alias));
     }
     
     public Q innerJoin(PEntity<?> target) {
         return queryMixin.innerJoin(target);
     }
     
-    public Q innerJoin(SubQuery<?> target) {
-        return queryMixin.innerJoin(target.asExpr());
+    @SuppressWarnings("unchecked")
+    public Q innerJoin(SubQuery<?> target, Path<?> alias) {
+        return queryMixin.innerJoin(target.asExpr().as((Path)alias));
     }
     
     public Q join(PEntity<?> target) {
         return queryMixin.join(target);
     }
     
-    public Q join(SubQuery<?> target) {
+    public Q join(SubQuery<?> target, Path<?> alias) {
         return queryMixin.join(target.asExpr());
     }
     
@@ -58,16 +61,18 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.leftJoin(target);
     }
     
-    public Q leftJoin(SubQuery<?> target) {
-        return queryMixin.leftJoin(target.asExpr());
+    @SuppressWarnings("unchecked")
+    public Q leftJoin(SubQuery<?> target, Path<?> alias) {
+        return queryMixin.leftJoin(target.asExpr().as((Path)alias));
     }
     
     public Q rightJoin(PEntity<?> target) {
         return queryMixin.leftJoin(target);
     }
     
-    public Q rightJoin(SubQuery<?> target) {
-        return queryMixin.leftJoin(target.asExpr());
+    @SuppressWarnings("unchecked")
+    public Q rightJoin(SubQuery<?> target, Path<?> alias) {
+        return queryMixin.leftJoin(target.asExpr().as((Path)alias));
     }
 
     public Q on(EBoolean... conditions){

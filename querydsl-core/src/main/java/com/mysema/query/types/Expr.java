@@ -52,6 +52,8 @@ public abstract class Expr<D> implements Serializable{
         return this;
     }
     
+    public abstract Expr<D> as(Path<D> alias);
+    
     /**
      * Get the <code>count(this)</code> expression
      * 

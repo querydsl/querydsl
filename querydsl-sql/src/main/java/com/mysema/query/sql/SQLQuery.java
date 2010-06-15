@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
@@ -78,7 +79,7 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
      * @param o
      * @return
      */
-    SQLQuery fullJoin(SubQuery<?> o);
+    SQLQuery fullJoin(SubQuery<?> o, Path<?> alias);
 
     /**
      * Adds an inner join to the given target
@@ -86,7 +87,7 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
      * @param o
      * @return
      */
-    SQLQuery innerJoin(SubQuery<?> o);
+    SQLQuery innerJoin(SubQuery<?> o, Path<?> alias);
 
     /**
      * Adds a join to the given target
@@ -94,7 +95,7 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
      * @param o
      * @return
      */
-    SQLQuery join(SubQuery<?> o);
+    SQLQuery join(SubQuery<?> o, Path<?> alias);
     
     /**
      * Adds a left join to the given target
@@ -102,7 +103,7 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
      * @param o
      * @return
      */
-    SQLQuery leftJoin(SubQuery<?> o);
+    SQLQuery leftJoin(SubQuery<?> o, Path<?> alias);
     
     /**
      * Adds a right join to the given target
@@ -110,7 +111,7 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
      * @param o
      * @return
      */
-    SQLQuery rightJoin(SubQuery<?> o);
+    SQLQuery rightJoin(SubQuery<?> o, Path<?> alias);
     
     /**
      * Defines a filter to the last added join
