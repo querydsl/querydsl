@@ -274,7 +274,7 @@ public class User {
 }  	  
 ]]></programlisting>
 
-    <para>Customization of package</para>
+    <para>Customization of package content</para>
 	
      <programlisting language="java"><![CDATA[
 @QuerydslConfig(listAccessors=true)
@@ -359,7 +359,7 @@ public class MyEntity{
     </sect2>      
 
     <sect2>
-    <title>Custom methods</title>
+    <title>Custom methods in query types</title>
   
     <para>
     Querydsl provides the possibility to annotate methods for mirroring in query types. Methods can either be annotated 
@@ -411,6 +411,70 @@ public class Point{
   This approach is feasible, if the related domain type is available for annotation and APT post processing.</para>
   
     </sect2>    
+	
+	<sect2>
+		<title>Delegate methods</title>
+		
+	<para>Instead of custom methods with serialization templates, static delegates can be used.</para>
+	
+	<para>Here is a simple example from a unit test: </para>
+	
+<programlisting language="java"><![CDATA[   
+    @QueryEntity
+    public static class User{
+       
+        String name;
+       
+        User managedBy;
+       
+    }
+   
+    @QueryDelegate(User.class)
+    public static EBoolean isManagedBy(QUser user, User other){
+		// TODO : create complex expression here and return it
+        return EBooleanConst.TRUE;
+    }
+   
+    @QueryDelegate(User.class)
+    public static EBoolean isManagedBy(QUser user, QUser other){
+		// TODO : create complex expression here and return it
+        return EBooleanConst.TRUE;
+    }
+   
+    @QueryDelegate(User.class)
+    public static EBoolean simpleMethod(QUser user){
+        // TODO : create complex expression here and return it
+		return EBooleanConst.TRUE;
+    }
+   
+    @QueryDelegate(User.class)
+    public static PString getName(QUser user){
+        return user.name;
+    }
+]]></programlisting>    	
+
+
+	<para>And the generated methods in the query type :</para>
+
+<programlisting language="java"><![CDATA[   
+    public EBoolean isManagedBy(Qser other) {
+        return com.mysema.query.domain.DelegateTest.isManagedBy(this, other);
+    }
+
+    public EBoolean isManagedBy(User other) {
+        return com.mysema.query.domain.DelegateTest.isManagedBy(this, other);
+    }
+
+    public PString getName() {
+        return com.mysema.query.domain.DelegateTest.getName(this);
+    }
+
+    public EBoolean simpleMethod() {
+        return com.mysema.query.domain.DelegateTest.simpleMethod(this);
+    }	
+]]></programlisting>    		
+		
+	</sect2>
     
     </sect1>
 
