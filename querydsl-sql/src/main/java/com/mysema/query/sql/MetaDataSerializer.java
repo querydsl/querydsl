@@ -11,6 +11,7 @@ import java.util.Collections;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.EntityType;
+import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.TypeMappings;
 
 /**
@@ -39,5 +40,11 @@ public class MetaDataSerializer extends EntitySerializer {
         String alias = namingStrategy.getDefaultAlias(namePrefix, entityType);
         String queryType = typeMappings.getPathType(entityType, entityType, true);            
         writer.publicStaticFinal(queryType, variableName, NEW + queryType + "(\"" + alias + "\")");
+    }
+    
+    @Override
+    protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
+        super.introImports(writer, config, model);
+        writer.imports(Table.class);
     }
 }
