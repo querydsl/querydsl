@@ -40,10 +40,6 @@ public class DerbyTemplates extends SQLTemplates {
         add(Ops.CASE_EQ_WHEN,  "when {0} = {1} then {2} {3}");
         add(Ops.CASE_EQ_ELSE,  "else {0}");
         
-//        setLimitAndOffsetSymbols(false);
-//        setLimitTemplate("fetch first {0s} rows only");
-//        setOffsetTemplate("offset {0s} rows");
-//        setLimitOffsetTemplate("offset {1s} rows fetch next {0s} rows only");
     }
     
     protected void serializeModifiers(QueryMetadata metadata, SerializationContext context) {
