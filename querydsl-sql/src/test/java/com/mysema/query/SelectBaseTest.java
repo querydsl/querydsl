@@ -631,4 +631,16 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
                 .uniqueResult(employee.firstname));
     }
         
+    @Test
+    public void complex_boolean(){
+        EBoolean first = employee.firstname.eq("Mike").and(employee.lastname.eq("Smith"));
+        EBoolean second = employee.firstname.eq("Joe").and(employee.lastname.eq("Divis"));
+        assertEquals(2, query().from(employee).where(first.or(second)).count());
+        
+        assertEquals(0, query().from(employee).where(
+            employee.firstname.eq("Mike"),
+            employee.lastname.eq("Smith").or(employee.firstname.eq("Joe")),
+            employee.lastname.eq("Divis")
+        ).count());
+    }
 }
