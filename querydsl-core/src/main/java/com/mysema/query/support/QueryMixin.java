@@ -13,7 +13,10 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.path.PEntity;
 
 /**
  * Mixin style Query implementation
@@ -95,23 +98,47 @@ public class QueryMixin<T>{
         return self;
     }
     
-    public <P> T fullJoin(Expr<P> target) {
+    public <P> T fullJoin(PEntity<P> target) {
         metadata.addJoin(JoinType.FULLJOIN, target);
         return self;
     }    
     
-    public <P> T innerJoin(Expr<P> target) {
+    public <P> T innerJoin(PEntity<P> target) {
         metadata.addJoin(JoinType.INNERJOIN, target);
         return self;
     }
     
-    public <P> T join(Expr<P> target) {
+    public <P> T join(PEntity<P> target) {
         metadata.addJoin(JoinType.JOIN, target);
         return self;
     }    
 
-    public <P> T leftJoin(Expr<P> target) {
+    public <P> T leftJoin(PEntity<P> target) {
         metadata.addJoin(JoinType.LEFTJOIN, target);
+        return self;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public <P> T fullJoin(SubQuery<P> target, Path alias) {
+        metadata.addJoin(JoinType.FULLJOIN, target.asExpr().as(alias));
+        return self;
+    }    
+    
+    @SuppressWarnings("unchecked")
+    public <P> T innerJoin(SubQuery<P> target, Path alias) {
+        metadata.addJoin(JoinType.INNERJOIN, target.asExpr().as(alias));
+        return self;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public <P> T join(SubQuery<P> target, Path alias) {
+        metadata.addJoin(JoinType.JOIN, target.asExpr().as(alias));
+        return self;
+    }    
+
+    @SuppressWarnings("unchecked")
+    public <P> T leftJoin(SubQuery<P> target, Path alias) {
+        metadata.addJoin(JoinType.LEFTJOIN, target.asExpr().as(alias));
         return self;
     }
 

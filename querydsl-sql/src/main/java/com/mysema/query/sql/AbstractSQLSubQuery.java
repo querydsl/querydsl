@@ -35,18 +35,16 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.fullJoin(target);
     }
     
-    @SuppressWarnings("unchecked")
     public Q fullJoin(SubQuery<?> target, Path<?> alias) {
-        return queryMixin.fullJoin(target.asExpr().as((Path)alias));
+        return queryMixin.fullJoin(target, alias);
     }
     
     public Q innerJoin(PEntity<?> target) {
         return queryMixin.innerJoin(target);
     }
     
-    @SuppressWarnings("unchecked")
     public Q innerJoin(SubQuery<?> target, Path<?> alias) {
-        return queryMixin.innerJoin(target.asExpr().as((Path)alias));
+        return queryMixin.innerJoin(target, alias);
     }
     
     public Q join(PEntity<?> target) {
@@ -54,25 +52,23 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     }
     
     public Q join(SubQuery<?> target, Path<?> alias) {
-        return queryMixin.join(target.asExpr());
+        return queryMixin.join(target, alias);
     }
     
     public Q leftJoin(PEntity<?> target) {
         return queryMixin.leftJoin(target);
     }
     
-    @SuppressWarnings("unchecked")
     public Q leftJoin(SubQuery<?> target, Path<?> alias) {
-        return queryMixin.leftJoin(target.asExpr().as((Path)alias));
+        return queryMixin.leftJoin(target, alias);
     }
     
     public Q rightJoin(PEntity<?> target) {
         return queryMixin.leftJoin(target);
     }
     
-    @SuppressWarnings("unchecked")
     public Q rightJoin(SubQuery<?> target, Path<?> alias) {
-        return queryMixin.leftJoin(target.asExpr().as((Path)alias));
+        return queryMixin.leftJoin(target, alias);
     }
 
     public Q on(EBoolean... conditions){
