@@ -431,20 +431,20 @@ public class Point{
    
     @QueryDelegate(User.class)
     public static EBoolean isManagedBy(QUser user, User other){
-		// TODO : create complex expression here and return it
+        // TODO : create complex expression here and return it
         return EBooleanConst.TRUE;
     }
    
     @QueryDelegate(User.class)
     public static EBoolean isManagedBy(QUser user, QUser other){
-		// TODO : create complex expression here and return it
+        // TODO : create complex expression here and return it
         return EBooleanConst.TRUE;
     }
    
     @QueryDelegate(User.class)
     public static EBoolean simpleMethod(QUser user){
         // TODO : create complex expression here and return it
-		return EBooleanConst.TRUE;
+        return EBooleanConst.TRUE;
     }
    
     @QueryDelegate(User.class)
