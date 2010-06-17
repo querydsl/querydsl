@@ -79,6 +79,46 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
      * @param o
      * @return
      */
+    <E, P> SQLQuery fullJoin(ForeignKey<E,P> foreign, Key<E,P> primary);
+    
+    /**
+     * Adds an inner join to the given target
+     * 
+     * @param o
+     * @return
+     */
+    <E, P> SQLQuery innerJoin(ForeignKey<E,P> foreign, Key<E,P> primary);
+
+    /**
+     * Adds a join to the given target
+     * 
+     * @param o
+     * @return
+     */
+    <E, P> SQLQuery join(ForeignKey<E,P> foreign, Key<E,P> primary);
+    
+    /**
+     * Adds a left join to the given target
+     * 
+     * @param o
+     * @return
+     */
+    <E, P> SQLQuery leftJoin(ForeignKey<E,P> foreign, Key<E,P> primary);
+    
+    /**
+     * Adds a right join to the given target
+     * 
+     * @param o
+     * @return
+     */
+    <E, P> SQLQuery rightJoin(ForeignKey<E,P> foreign, Key<E,P> primary);
+    
+    /**
+     * Adds a full join to the given target
+     * 
+     * @param o
+     * @return
+     */
     SQLQuery fullJoin(SubQuery<?> o, Path<?> alias);
 
     /**

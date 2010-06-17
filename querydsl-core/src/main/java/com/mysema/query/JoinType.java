@@ -31,6 +31,10 @@ public enum JoinType {
      */
     LEFTJOIN,
     /**
+     * right join
+     */
+    RIGHTJOIN,    
+    /**
      * full join
      */
     FULLJOIN;

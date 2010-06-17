@@ -37,6 +37,16 @@ public class MetaDataExporter {
     
     private static final Logger logger = LoggerFactory.getLogger(MetaDataExporter.class);
     
+    private static final int FK_PARENT_TABLE_NAME = 3;
+    
+    private static final int FK_PARENT_COLUMN_NAME = 4;
+    
+    private static final int FK_FOREIGN_TABLE_NAME = 7;
+    
+    private static final int FK_FOREIGN_COLUMN_NAME = 8;
+    
+    private static final int FK_NAME = 12;
+    
     private static final int COLUMN_NAME = 4;
     
     private static final int COLUMN_TYPE = 5;
@@ -142,6 +152,16 @@ public class MetaDataExporter {
         return classes;
     }
     
+    private void handleForeignKey(EntityType classModel, ResultSet foreignKeys) throws SQLException {
+        String parentTableName = foreignKeys.getString(FK_PARENT_TABLE_NAME);
+        String parentColumnName = foreignKeys.getString(FK_PARENT_COLUMN_NAME);
+        String foreignTable = foreignKeys.getString(FK_FOREIGN_TABLE_NAME);
+        String foreignColumn = foreignKeys.getString(FK_FOREIGN_COLUMN_NAME);
+        String foreignKeyName = foreignKeys.getString(FK_NAME);
+        System.err.println(classModel.getFullName());
+        System.err.println(foreignKeyName + " (" + parentTableName + "."+parentColumnName  + " == " + foreignTable + "." + foreignColumn +")");
+    }
+    
     private void handleColumn(EntityType classModel, ResultSet columns) throws SQLException {
         String columnName = columns.getString(COLUMN_NAME);
         String propertyName = namingStrategy.getPropertyName(columnName, namePrefix, classModel);
@@ -162,6 +182,17 @@ public class MetaDataExporter {
         String className = namingStrategy.getClassName(namePrefix, tableName);
         EntityType classModel = createEntityType(tableName, className);
         
+        // collect foreign keys
+        ResultSet foreignKeys = md.getCrossReference(null, schemaPattern, null, null, schemaPattern, tableName);
+        try{
+            while (foreignKeys.next()){
+                handleForeignKey(classModel, foreignKeys);
+            }
+        }finally{
+            foreignKeys.close();
+        }
+        
+        // collect columns
         ResultSet columns = md.getColumns(null, schemaPattern, tableName, null);
         try{
             while (columns.next()) {
@@ -170,6 +201,8 @@ public class MetaDataExporter {
         }finally{
             columns.close();
         }
+        
+        // serialize model
         serialize(classModel);
     }
 

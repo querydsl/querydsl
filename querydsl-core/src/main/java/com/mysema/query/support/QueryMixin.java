@@ -27,9 +27,9 @@ import com.mysema.query.types.path.PEntity;
  */
 public class QueryMixin<T>{
     
-    private T self;
-    
     private final QueryMetadata metadata;
+    
+    private T self;
     
     public QueryMixin(){
         this.metadata = new DefaultQueryMetadata();
@@ -53,14 +53,29 @@ public class QueryMixin<T>{
         return self;
     }
 
-    public QueryMetadata getMetadata() {
-        return metadata;
-    }
-    
     public T from(Expr<?>... args) {
         for (Expr<?> arg : args){
             metadata.addJoin(JoinType.DEFAULT, arg);
         }
+        return self;
+    }
+    
+    public <P> T fullJoin(PEntity<P> target) {
+        metadata.addJoin(JoinType.FULLJOIN, target);
+        return self;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <P> T fullJoin(SubQuery<P> target, Path alias) {
+        metadata.addJoin(JoinType.FULLJOIN, target.asExpr().as(alias));
+        return self;
+    }
+
+    public QueryMetadata getMetadata() {
+        return metadata;
+    }
+
+    public T getSelf(){
         return self;
     }
 
@@ -73,39 +88,24 @@ public class QueryMixin<T>{
         metadata.addHaving(o);
         return self;
     }
-
-    public T orderBy(OrderSpecifier<?>... o) {
-        metadata.addOrderBy(o);
-        return self;
-    }
-
-    public T where(EBoolean... o) {
-        metadata.addWhere(o);
-        return self;
-    }
-
-    public String toString() {
-        return metadata.toString();
-    }
-    
-    public T limit(long limit) {
-        metadata.setLimit(limit);
-        return self;
-    }
-
-    public T offset(long offset) {
-        metadata.setOffset(offset);
-        return self;
-    }
-    
-    public <P> T fullJoin(PEntity<P> target) {
-        metadata.addJoin(JoinType.FULLJOIN, target);
-        return self;
-    }    
     
     public <P> T innerJoin(PEntity<P> target) {
         metadata.addJoin(JoinType.INNERJOIN, target);
         return self;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <P> T innerJoin(SubQuery<P> target, Path alias) {
+        metadata.addJoin(JoinType.INNERJOIN, target.asExpr().as(alias));
+        return self;
+    }
+    
+    public boolean isDistinct() {
+        return metadata.isDistinct();
+    }    
+    
+    public boolean isUnique() {
+        return metadata.isUnique();
     }
     
     public <P> T join(PEntity<P> target) {
@@ -113,37 +113,30 @@ public class QueryMixin<T>{
         return self;
     }    
 
-    public <P> T leftJoin(PEntity<P> target) {
-        metadata.addJoin(JoinType.LEFTJOIN, target);
-        return self;
-    }
-    
-    @SuppressWarnings("unchecked")
-    public <P> T fullJoin(SubQuery<P> target, Path alias) {
-        metadata.addJoin(JoinType.FULLJOIN, target.asExpr().as(alias));
-        return self;
-    }    
-    
-    @SuppressWarnings("unchecked")
-    public <P> T innerJoin(SubQuery<P> target, Path alias) {
-        metadata.addJoin(JoinType.INNERJOIN, target.asExpr().as(alias));
-        return self;
-    }
-    
     @SuppressWarnings("unchecked")
     public <P> T join(SubQuery<P> target, Path alias) {
         metadata.addJoin(JoinType.JOIN, target.asExpr().as(alias));
         return self;
+    }
+    
+    public <P> T leftJoin(PEntity<P> target) {
+        metadata.addJoin(JoinType.LEFTJOIN, target);
+        return self;
     }    
-
+    
     @SuppressWarnings("unchecked")
     public <P> T leftJoin(SubQuery<P> target, Path alias) {
         metadata.addJoin(JoinType.LEFTJOIN, target.asExpr().as(alias));
         return self;
     }
+    
+    public T limit(long limit) {
+        metadata.setLimit(limit);
+        return self;
+    }    
 
-    public T restrict(QueryModifiers modifiers) {
-        metadata.setModifiers(modifiers);
+    public T offset(long offset) {
+        metadata.setOffset(offset);
         return self;
     }
     
@@ -153,35 +146,53 @@ public class QueryMixin<T>{
         }        
         return self;
     }
+    
+    public T orderBy(OrderSpecifier<?>... o) {
+        metadata.addOrderBy(o);
+        return self;
+    }
 
+    public T restrict(QueryModifiers modifiers) {
+        metadata.setModifiers(modifiers);
+        return self;
+    }
+    
+    public <P> T rightJoin(PEntity<P> target) {
+        metadata.addJoin(JoinType.RIGHTJOIN, target);
+        return self;
+    }
+
+    @SuppressWarnings("unchecked")
+    public <P> T rightJoin(SubQuery<P> target, Path alias) {
+        metadata.addJoin(JoinType.RIGHTJOIN, target.asExpr().as(alias));
+        return self;
+    }
+    
     public <P> T set(Param<P> param, P value){
         metadata.setParam(param, value);
         return self;
-    }
-                                            
-    
-    public void setUnique(boolean unique) {
-        metadata.setUnique(unique);        
     }
 
     public void setDistinct(boolean distinct) {
         metadata.setDistinct(distinct);        
     }
     
-    public boolean isUnique() {
-        return metadata.isUnique();
-    }
-
-    public boolean isDistinct() {
-        return metadata.isDistinct();
-    }
-    
-    public T getSelf(){
-        return self;
-    }    
-    
     public void setSelf(T self){
         this.self = self;
     }
+
+    public void setUnique(boolean unique) {
+        metadata.setUnique(unique);        
+    }
+    
+    public String toString() {
+        return metadata.toString();
+    }    
+    
+    public T where(EBoolean... o) {
+        metadata.addWhere(o);
+        return self;
+    }
+
     
 }

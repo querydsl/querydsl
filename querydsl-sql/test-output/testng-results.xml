@@ -1,10 +1,10 @@
 <testng-results>
   <reporter-output>
   </reporter-output>
-  <suite name="querydsl-sql by packages">
+  <suite name="querydsl-sql" duration-ms="5" started-at="2010-06-17T00:25:11Z" finished-at="2010-06-17T00:25:11Z">
     <groups>
     </groups>
-    <test name="com.mysema.query">
+    <test name="com.mysema.query.sql.MetaDataSerializerTest" duration-ms="5" started-at="2010-06-17T00:25:11Z" finished-at="2010-06-17T00:25:11Z">
     </test>
   </suite>
 </testng-results>

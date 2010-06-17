@@ -79,6 +79,8 @@ public class MetaDataExporterTest {
     }
     
     private void test(String namePrefix, NamingStrategy namingStrategy, String target) throws SQLException{
+        stmt.execute("drop table employee if exists");        
+        
         stmt.execute("drop table survey if exists");
         stmt.execute("create table survey (id int, name varchar(30))");
         

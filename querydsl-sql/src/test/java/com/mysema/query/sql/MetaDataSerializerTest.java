@@ -51,14 +51,27 @@ public class MetaDataSerializerTest {
     public void testGeneration() throws Exception {
         // normal settings
         
+        stmt.execute("drop table employee if exists");        
         stmt.execute("drop table survey if exists");
-        stmt.execute("create table survey (id int, name varchar(30))");
-        
         stmt.execute("drop table date_test if exists");
-        stmt.execute("create table date_test (d date)");
-        
         stmt.execute("drop table date_time_test if exists");
-        stmt.execute("create table date_time_test (dt datetime)");
+                
+        stmt.execute("create table survey (id int, name varchar(30), "
+                + "CONSTRAINT PK_survey PRIMARY KEY (id))");        
+        stmt.execute("create table date_test (d date)");        
+        stmt.execute("create table date_time_test (dt datetime)");        
+        stmt.execute("create table employee("
+                + "id INT, "
+                + "firstname VARCHAR(50), " 
+                + "lastname VARCHAR(50), "
+                + "salary DECIMAL(10, 2), " 
+                + "datefield DATE, "
+                + "timefield TIME, "
+                + "superior_id int, " 
+                + "survey_id int, "
+                + "CONSTRAINT PK_employee PRIMARY KEY (id), "
+                + "CONSTRAINT FK_survey FOREIGN KEY (survey_id) REFERENCES survey(id), "
+                + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");
         
         
         String namePrefix = "Q";

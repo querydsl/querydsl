@@ -133,6 +133,58 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.fullJoin(target, alias);
     }
     
+    public <E,P> Q fullJoin(ForeignKey<E,P> foreign, Key<E,P> key) {
+        return queryMixin.fullJoin(key.getEntity()).on(foreign.eq(key));
+    }
+    
+    public Q innerJoin(PEntity<?> target) {
+        return queryMixin.innerJoin(target);
+    }
+    
+    public Q innerJoin(SubQuery<?> target, Path<?> alias) {
+        return queryMixin.innerJoin(target, alias);
+    }
+    
+    public <E,P> Q innerJoin(ForeignKey<E,P> foreign, Key<E,P> key) {
+        return queryMixin.innerJoin(key.getEntity()).on(foreign.eq(key));
+    }
+    
+    public Q join(PEntity<?> target) {
+        return queryMixin.join(target);
+    }
+
+    public Q join(SubQuery<?> target, Path<?> alias) {
+        return queryMixin.join(target, alias);
+    }
+
+    public <E,P> Q join(ForeignKey<E,P> foreign, Key<E,P> key) {
+        return queryMixin.join(key.getEntity()).on(foreign.eq(key));
+    }
+    
+    public Q leftJoin(PEntity<?> target) {
+        return queryMixin.leftJoin(target);
+    }
+
+    public Q leftJoin(SubQuery<?> target, Path<?> alias) {
+        return queryMixin.leftJoin(target, alias);
+    }
+    
+    public <E,P> Q leftJoin(ForeignKey<E,P> foreign, Key<E,P> key) {
+        return queryMixin.leftJoin(key.getEntity()).on(foreign.eq(key));
+    }
+    
+    public Q rightJoin(PEntity<?> target) {
+        return queryMixin.rightJoin(target);
+    }
+
+    public Q rightJoin(SubQuery<?> target, Path<?> alias) {
+        return queryMixin.rightJoin(target, alias);
+    }
+    
+    public <E,P> Q rightJoin(ForeignKey<E,P> foreign, Key<E,P> primary) {
+        return queryMixin.rightJoin(primary.getEntity()).on(foreign.getProperty().eq(primary.getProperty()));
+    }
+    
     @SuppressWarnings("unchecked")
     private <T> T get(ResultSet rs, int i, Class<T> type) {
         String methodName = "get" + type.getSimpleName();
@@ -188,15 +240,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     protected SQLTemplates getTemplates() {
         return templates;
     }
-    
-    public Q innerJoin(PEntity<?> target) {
-        return queryMixin.innerJoin(target);
-    }
 
-    @SuppressWarnings("unchecked")
-    public Q innerJoin(SubQuery<?> target, Path<?> alias) {
-        return queryMixin.innerJoin(target, alias);
-    }
     
     private <RT> UnionBuilder<RT> innerUnion(SubQuery<?>... sq) {
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
@@ -328,21 +372,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         }
     }
 
-    public Q join(PEntity<?> target) {
-        return queryMixin.join(target);
-    }
-
-    public Q join(SubQuery<?> target, Path<?> alias) {
-        return queryMixin.join(target, alias);
-    }
-
-    public Q leftJoin(PEntity<?> target) {
-        return queryMixin.leftJoin(target);
-    }
-
-    public Q leftJoin(SubQuery<?> target, Path<?> alias) {
-        return queryMixin.leftJoin(target, alias);
-    }
 
     @Override
     public List<Object[]> list(Expr<?>[] args) {
@@ -387,14 +416,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     private void reset() {
         queryMixin.getMetadata().reset();
         constants = null;
-    }
-
-    public Q rightJoin(PEntity<?> target) {
-        return queryMixin.leftJoin(target);
-    }
-
-    public Q rightJoin(SubQuery<?> target, Path<?> alias) {
-        return queryMixin.leftJoin(target, alias);
     }
 
     @Override

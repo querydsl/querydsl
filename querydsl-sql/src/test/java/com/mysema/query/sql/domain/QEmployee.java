@@ -7,6 +7,8 @@ package com.mysema.query.sql.domain;
 
 import java.math.BigDecimal;
 
+import com.mysema.query.sql.ForeignKey;
+import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.Table;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
@@ -39,6 +41,10 @@ public class QEmployee extends PEntity<QEmployee> {
     public final PTime<java.sql.Time> timefield = createTime("TIMEFIELD", java.sql.Time.class);
     
     public final PNumber<java.lang.Integer> superiorId = createNumber("SUPERIOR_ID", java.lang.Integer.class);
+    
+    private final PrimaryKey<QEmployee,Integer> idKey = new PrimaryKey<QEmployee,Integer>(this, id);
+    
+    private final ForeignKey<QEmployee,Integer> superiorIdKey = new ForeignKey<QEmployee,Integer>(this, superiorId);
 
     public QEmployee(java.lang.String path) {
         super(QEmployee.class, PathMetadataFactory.forVariable(path));
@@ -47,4 +53,14 @@ public class QEmployee extends PEntity<QEmployee> {
     public QEmployee(PathMetadata<?> metadata) {
         super(QEmployee.class, metadata);
     }
+
+    public PrimaryKey<QEmployee, Integer> id() {
+        return idKey;
+    }
+
+    public ForeignKey<QEmployee, Integer> superiorId() {
+        return superiorIdKey;
+    }
+    
+    
 }
