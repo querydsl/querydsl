@@ -92,7 +92,7 @@ public class KeyTest {
         QCompany company = new QCompany("company");
         
         // superiorId -> id
-        query().from(user).innerJoin(user.superiorId(), user.id());
+        query().from(user).innerJoin(user.superiorId(), user2.id());
         
         // superiorId -> superiorId
         query().from(user).innerJoin(user.superiorId(), user2.superiorId());
