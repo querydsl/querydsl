@@ -41,6 +41,7 @@ public class JPQLTemplates extends Templates {
 
         // numeric
         add(Ops.MathOps.SQRT, "sqrt({0})");
+        add(Ops.MOD, "mod({0},{1})", 0);
 
         // various
         add(Ops.NE_PRIMITIVE, "{0} <> {1}", 25);

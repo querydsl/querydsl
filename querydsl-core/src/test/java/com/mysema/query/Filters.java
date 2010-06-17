@@ -187,11 +187,15 @@ public class Filters {
         if (expr.getType().equals(Integer.class)){
             ENumber<Integer> eint = (ENumber)expr;
             rv.add(eint.between(1, 2));
-            rv.add(eint.notBetween(1, 2));            
+            rv.add(eint.notBetween(1, 2));
+            rv.add(eint.mod(5).eq(0));
         }else if (expr.getType().equals(Double.class)){
             ENumber<Double> edouble = (ENumber)expr;
             rv.add(edouble.between(1.0, 2.0));
             rv.add(edouble.notBetween(1.0, 2.0));
+        }else if (expr.getType().equals(Long.class)){
+            ENumber<Long> elong = (ENumber)expr;
+            rv.add(elong.mod(5l).eq(0l));
         }
 
         rv.add(expr.in(IntervalImpl.create(0, 100)));

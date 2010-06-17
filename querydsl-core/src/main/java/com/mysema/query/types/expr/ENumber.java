@@ -444,6 +444,23 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
         }
         return min;
     }
+
+    /**
+     * @param num
+     * @return
+     */
+    public ENumber<D> mod(ENumber<D> num){
+        return ONumber.create(getType(), Ops.MOD, this, num);
+    }
+    
+    /**
+     * @param num
+     * @return
+     */
+    public ENumber<D> mod(D num){
+        return ONumber.create(getType(), Ops.MOD, this, ENumberConst.create(num));
+    }
+    
     
     /**
      * Get the result of the operation this * right

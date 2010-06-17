@@ -114,6 +114,7 @@ public class SQLTemplates extends Templates {
         add(Ops.MathOps.RANDOM, "rand()");
         add(Ops.MathOps.CEIL, "ceiling({0})");
         add(Ops.MathOps.POWER, "power({0},{1})");
+        add(Ops.MOD, "mod({0},{1})", 0);
 
         // date time
         add(Ops.DateTimeOps.CURRENT_DATE, "current_date");
