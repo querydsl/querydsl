@@ -10,7 +10,7 @@ import com.mysema.query.types.expr.ESimple;
 
 
 /**
- * Param defines a named parameter in a query
+ * Param defines a parameter in a query with an optional name
  * 
  * @author tiwe
  *
@@ -20,11 +20,22 @@ public class Param<T> extends ESimple<T> {
 
     private static final long serialVersionUID = -6872502615009012503L;
     
-    private String name;
+    private static volatile long counter = 0;
+    
+    private final String name;
+    
+    private final boolean anon;
     
     public Param(Class<? extends T> type, String name) {
         super(type);
         this.name = Assert.notNull(name, "name");
+        this.anon = false;
+    }
+    
+    public Param(Class<? extends T> type) {
+        super(type);
+        this.name = "param" + (++counter);
+        this.anon = true;
     }
 
     @Override
@@ -38,7 +49,9 @@ public class Param<T> extends ESimple<T> {
             return true;
         }else if (o instanceof Param<?>){
             Param<?> other = (Param<?>)o;
-            return other.getType().equals(getType()) && other.getName().equals(name);
+            return other.getType().equals(getType()) 
+                && other.getName().equals(name) 
+                && other.anon == anon;
         }else{
             return false;
         }
@@ -53,4 +66,15 @@ public class Param<T> extends ESimple<T> {
         return name;
     }
     
+    public boolean isAnon(){
+        return anon;
+    }
+
+    public String getNotSetMessage() {
+        if (!anon){
+            return "The parameter " + name + " needs to be set";
+        }else{
+            return "A parameter of type " + getType().getName() + " was not set";
+        }
+    }
 }

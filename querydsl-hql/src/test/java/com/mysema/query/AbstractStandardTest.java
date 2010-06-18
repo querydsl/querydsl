@@ -278,6 +278,12 @@ public abstract class AbstractStandardTest {
         assertEquals("Bob123",query().from(cat).where(cat.name.eq(name)).set(name, "Bob123").uniqueResult(cat.name));
     }
     
+    @Test
+    public void testParams_anon(){
+        Param<String> name = new Param<String>(String.class);
+        assertEquals("Bob123",query().from(cat).where(cat.name.eq(name)).set(name, "Bob123").uniqueResult(cat.name));
+    }
+    
     @Test(expected=ParamNotSetException.class)
     public void testParams_not_set(){
         Param<String> name = new Param<String>(String.class,"name");

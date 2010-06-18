@@ -124,6 +124,12 @@ public class ColQueryStandardTest {
         assertEquals("Bob", MiniApi.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").uniqueResult(cat.name));
     }
     
+    @Test
+    public void params_anon(){
+        Param<String> name = new Param<String>(String.class);
+        assertEquals("Bob", MiniApi.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").uniqueResult(cat.name));
+    }
+    
     @Test(expected=ParamNotSetException.class)
     public void params_not_set(){
         Param<String> name = new Param<String>(String.class,"name");

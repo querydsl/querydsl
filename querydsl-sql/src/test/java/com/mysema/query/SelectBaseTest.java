@@ -647,6 +647,15 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
                 .uniqueResult(employee.firstname));
     }
     
+    @Test
+    public void params_anon(){
+        Param<String> name = new Param<String>(String.class);
+        assertEquals("Mike",query()
+                .from(employee).where(employee.firstname.eq(name))
+                .set(name, "Mike")
+                .uniqueResult(employee.firstname));
+    }
+    
     @Test(expected=ParamNotSetException.class)
     public void params_not_set(){
         Param<String> name = new Param<String>(String.class,"name");

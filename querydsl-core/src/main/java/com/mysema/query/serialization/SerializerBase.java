@@ -26,7 +26,9 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     private String constantPrefix = "a";
     
-    private String paramPrefix = "_";
+    private String paramPrefix = "p";
+    
+    private String anonParamPrefix = "_";
     
     private final Map<Object,String> constantToLabel = new HashMap<Object,String>();
     
@@ -98,6 +100,10 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         this.paramPrefix = prefix;
     }
 
+    public void setAnonParamPrefix(String prefix){
+        this.anonParamPrefix = prefix;
+    }
+    
     public String toString() {
         return builder.toString();
     }
@@ -116,7 +122,12 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     
     @Override
     public void visit(Param<?> param){
-        String paramLabel = paramPrefix + param.getName();
+        String paramLabel;
+        if (param.isAnon()){
+            paramLabel = anonParamPrefix + param.getName();
+        }else{
+            paramLabel = paramPrefix + param.getName();
+        }
         constantToLabel.put(param, paramLabel);
         append(paramLabel);
     }

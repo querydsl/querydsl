@@ -182,6 +182,11 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
         assertEquals("ABC0",query().from(product).where(product.name.eq(name)).set(name, "ABC0").uniqueResult(product.name));
     }
     
+    @Test
+    public void testParams_anon(){
+        Param<String> name = new Param<String>(String.class);
+        assertEquals("ABC0",query().from(product).where(product.name.eq(name)).set(name, "ABC0").uniqueResult(product.name));
+    }
 
     @Test(expected=ParamNotSetException.class)
     public void testParams_not_set(){

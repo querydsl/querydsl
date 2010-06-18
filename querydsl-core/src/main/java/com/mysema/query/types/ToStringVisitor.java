@@ -108,7 +108,7 @@ public final class ToStringVisitor implements Visitor{
 
     @Override
     public void visit(Param<?> param) {
-        toString = "{" + param + "}";
+        toString = "{" + param.getName() + "}";
         
     }
 
