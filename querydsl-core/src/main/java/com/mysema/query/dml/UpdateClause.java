@@ -20,13 +20,21 @@ import com.mysema.query.types.expr.EBoolean;
 public interface UpdateClause<C extends UpdateClause<C>> {
     
     /**
-     * Defines the filter constraints
+     * Execute the delete clause and return the amount of updated rows/items
      * 
-     * @param o
      * @return
      */
-    C where(EBoolean... o);
+    long execute();
     
+    /**
+     * Set the paths to be updated
+     * 
+     * @param paths
+     * @param values
+     * @return
+     */
+    C set(List<? extends Path<?>> paths, List<?> values);
+     
     /**
      * Set the path to be updated
      * 
@@ -36,21 +44,13 @@ public interface UpdateClause<C extends UpdateClause<C>> {
      * @return
      */
     <T> C set(Path<T> path, T value);
-     
-    /**
-     * Set the paths to be updated
-     * 
-     * @param paths
-     * @param values
-     * @return
-     */
-    C set(List<? extends Path<?>> paths, List<?> values);
     
     /**
-     * Execute the delete clause and return the amount of updated rows/items
+     * Defines the filter constraints
      * 
+     * @param o
      * @return
      */
-    long execute();
+    C where(EBoolean... o);
 
 }

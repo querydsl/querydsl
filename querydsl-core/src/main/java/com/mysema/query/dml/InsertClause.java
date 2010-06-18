@@ -18,13 +18,13 @@ import com.mysema.query.types.SubQuery;
 public interface InsertClause<C extends InsertClause<C>> {
 
     /**
-     * Define the columns of to be populated
+     * Define the columns to be populated
      * 
      * @param columns
      * @return
      */
     C columns(Path<?>... columns);
-
+    
     /**
      * Execute the insert clause and return the amount of inserted rows/items
      * 
@@ -39,6 +39,16 @@ public interface InsertClause<C extends InsertClause<C>> {
      * @return
      */
     C select(SubQuery<?> subQuery);
+
+    /**
+     * Add a value binding
+     * 
+     * @param <T>
+     * @param path path to be updated
+     * @param value value to set
+     * @return
+     */
+    <T> C set(Path<T> path, T value);
 
     /**
      * Define the value bindings

@@ -103,6 +103,13 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
     }
 
     @Override
+    public <T> SQLInsertClause set(Path<T> path, T value) {
+        columns.add(path);
+        values.add(ExprConst.create(value));
+        return this;
+    }
+
+    @Override
     @java.lang.SuppressWarnings("unchecked")
     public SQLInsertClause values(Object... v) {
         for (Object value : v) {

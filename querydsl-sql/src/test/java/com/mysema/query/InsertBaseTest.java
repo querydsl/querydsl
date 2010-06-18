@@ -62,6 +62,15 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     }
     
     @Test
+    public void insert_Alternative_Syntax(){
+        // with columns
+        insert(survey)
+            .set(survey.id, 3)
+            .set(survey.name, "Hello")
+            .execute();
+    }
+    
+    @Test
     public void complex1(){
         // related to #584795 
         QSurvey survey = new QSurvey("survey");
