@@ -88,7 +88,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public void addJoinCondition(EBoolean o) {
         if (!joins.isEmpty()) {
-            joins.get(joins.size() - 1).setCondition(o);
+            joins.get(joins.size() - 1).addCondition(o);
         }
     }
 

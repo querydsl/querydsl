@@ -24,9 +24,12 @@ public class JoinExpressionTest {
     }
 
     @Test
-    public void testSetCondition() {
-	je.setCondition(EBooleanConst.TRUE);
+    public void testAddCondition() {
+	je.addCondition(EBooleanConst.TRUE);
 	assertEquals(EBooleanConst.TRUE, je.getCondition());
+	
+	je.addCondition(EBooleanConst.FALSE);
+	assertEquals(EBooleanConst.TRUE.and(EBooleanConst.FALSE), je.getCondition());
     }
 
     @Test

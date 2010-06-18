@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.ObjectUtils;
+
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
@@ -84,7 +86,7 @@ public final class BooleanBuilder extends EBoolean implements Cloneable, Operati
         if (o == this){
             return true;
         }else if (o instanceof BooleanBuilder){
-            return ((BooleanBuilder)o).getValue().equals(expr);    
+            return ObjectUtils.equals(((BooleanBuilder)o).getValue(), expr);
         }else{
             return false;
         }               

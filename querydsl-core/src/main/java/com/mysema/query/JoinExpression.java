@@ -21,8 +21,7 @@ import com.mysema.query.types.expr.EBoolean;
  */
 public final class JoinExpression {
     
-    // mutable
-    private EBoolean condition;
+    private BooleanBuilder condition = new BooleanBuilder();
 
     private final Set<Object> flags = new HashSet<Object>();
 
@@ -36,11 +35,11 @@ public final class JoinExpression {
     }
 
     public EBoolean getCondition() {
-        return condition;
+        return condition.getValue();
     }
 
-    public void setCondition(EBoolean condition) {
-        this.condition = condition;
+    public void addCondition(EBoolean c) {
+        condition.and(c);
     }
 
     public Expr<?> getTarget() {
@@ -66,7 +65,7 @@ public final class JoinExpression {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(type).append(" ").append(target);
-        if (condition != null) {
+        if (condition.getValue() != null) {
             builder.append(" ON ").append(condition);
         }
         return builder.toString();
