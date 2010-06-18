@@ -174,25 +174,16 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     
     @Test
     public void compactJoin(){
-        // verbose #1
+        // verbose 
         query().from(employee).innerJoin(employee2)
             .on(employee.superiorId.eq(employee2.id))
             .list(employee.id, employee2.id);
         
-        // compact #1
+        // compact
         query().from(employee)
-            .innerJoin(employee.superiorId(), employee2.id())
+            .innerJoin(employee.superiorIdKey, employee2)
             .list(employee.id, employee2.id);
         
-        // verbose #2
-        query().from(employee).innerJoin(employee2)
-            .on(employee.superiorId.eq(employee2.superiorId))
-            .list(employee.id, employee2.id);
-        
-        // compact #2
-        query().from(employee)
-            .innerJoin(employee.superiorId(), employee2.superiorId())
-            .list(employee.id, employee2.id);
     }
     
     @Test

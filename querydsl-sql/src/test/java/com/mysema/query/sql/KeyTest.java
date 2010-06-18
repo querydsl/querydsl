@@ -12,76 +12,52 @@ public class KeyTest {
     @Table("USER")
     public static class QUser extends PEntity<QUser>{
 
-        public final PNumber<java.lang.Integer> id = createNumber("ID", java.lang.Integer.class);
+        public final PNumber<Integer> id = createNumber("ID", Integer.class);
         
-        public final PNumber<java.lang.Integer> department = createNumber("DEPARTMENT", java.lang.Integer.class);
+        public final PNumber<Integer> department = createNumber("DEPARTMENT", Integer.class);
         
-        public final PNumber<java.lang.Integer> superiorId = createNumber("SUPERIOR_ID", java.lang.Integer.class);
+        public final PNumber<Integer> superiorId = createNumber("SUPERIOR_ID", Integer.class);
                 
-        private final PrimaryKey<QUser,Integer> idKey = new PrimaryKey<QUser,Integer>(this, id);
+        public final PrimaryKey<QUser> idKey = new PrimaryKey<QUser>(this, id);
         
-        private final ForeignKey<QDepartment,Integer> departmentKey = new ForeignKey<QDepartment,Integer>(this, department);
+        public final ForeignKey<QDepartment> departmentKey = new ForeignKey<QDepartment>(this, department, "ID");
                 
-        private final ForeignKey<QUser,Integer> superiorIdKey = new ForeignKey<QUser,Integer>(this, superiorId);
+        public final ForeignKey<QUser> superiorIdKey = new ForeignKey<QUser>(this, superiorId,"ID");
         
         public QUser(String path) {
             super(QUser.class, PathMetadataFactory.forVariable(path));
         }
         
-        public PrimaryKey<QUser, Integer> id() {
-            return idKey;
-        }
-
-        public ForeignKey<QDepartment, Integer> department() {
-            return departmentKey;
-        }
-        
-        public ForeignKey<QUser, Integer> superiorId() {
-            return superiorIdKey;
-        }
     }
     
     @Table("DEPARTMENT")
     public static class QDepartment extends PEntity<QDepartment>{
 
-        public final PNumber<java.lang.Integer> id = createNumber("ID", java.lang.Integer.class);
+        public final PNumber<Integer> id = createNumber("ID", Integer.class);
         
-        public final PNumber<java.lang.Integer> company = createNumber("COMPANY", java.lang.Integer.class);
+        public final PNumber<Integer> company = createNumber("COMPANY", Integer.class);
         
-        private final PrimaryKey<QDepartment,Integer> idKey = new PrimaryKey<QDepartment,Integer>(this, id);
+        public final PrimaryKey<QDepartment> idKey = new PrimaryKey<QDepartment>(this, id);
         
-        private final ForeignKey<QCompany,Integer> companyKey = new ForeignKey<QCompany,Integer>(this, company);
+        public final ForeignKey<QCompany> companyKey = new ForeignKey<QCompany>(this, company, "ID");
         
         public QDepartment(String path) {
             super(QDepartment.class, PathMetadataFactory.forVariable(path));
         }
-        
-        public PrimaryKey<QDepartment, Integer> id() {
-            return idKey;
-        }
-
-        public ForeignKey<QCompany, Integer> company() {
-            return companyKey;
-        }
-        
-        
+                
     }
     
     @Table("COMPANY")
     public static class QCompany extends PEntity<QCompany>{
         
-        public final PNumber<java.lang.Integer> id = createNumber("ID", java.lang.Integer.class);
+        public final PNumber<Integer> id = createNumber("ID", Integer.class);
 
-        private final PrimaryKey<QCompany,Integer> idKey = new PrimaryKey<QCompany,Integer>(this, id);
+        public final PrimaryKey<QCompany> idKey = new PrimaryKey<QCompany>(this, id);
         
         public QCompany(String path) {
             super(QCompany.class, PathMetadataFactory.forVariable(path));
         }
-        
-        public PrimaryKey<QCompany, Integer> id() {
-            return idKey;
-        }
-        
+                
     }
     
     @Test
@@ -92,15 +68,12 @@ public class KeyTest {
         QCompany company = new QCompany("company");
         
         // superiorId -> id
-        query().from(user).innerJoin(user.superiorId(), user2.id());
-        
-        // superiorId -> superiorId
-        query().from(user).innerJoin(user.superiorId(), user2.superiorId());
+        query().from(user).innerJoin(user.superiorIdKey, user2);
         
         // department -> id / company -> id
         query().from(user)
-            .innerJoin(user.department(), department.id())
-            .innerJoin(department.company(), company.id());
+            .innerJoin(user.departmentKey, department)
+            .innerJoin(department.companyKey, company);
     }
     
     private SQLQuery query(){

@@ -1,6 +1,8 @@
 package com.mysema.query.sql;
 
-import com.mysema.query.types.Expr;
+import java.util.Arrays;
+import java.util.List;
+
 import com.mysema.query.types.Path;
 import com.mysema.query.types.path.PEntity;
 
@@ -10,23 +12,27 @@ import com.mysema.query.types.path.PEntity;
  * @param <E>
  * @param <P>
  */
-public class PrimaryKey <E,P> implements Key<E,P>{
+public class PrimaryKey <E>{
     
-    private final PEntity<E> entity;
+    private final PEntity<?> entity;
     
-    private final Path<P> property;
-    
-    public PrimaryKey(PEntity<E> entity, Path<P> property) {
-        this.entity = entity;
-        this.property = property;
+    private final List<? extends Path<?>> localColumns;
+
+    public PrimaryKey(PEntity<?> entity, Path<?>... localColumns) {
+        this(entity, Arrays.asList(localColumns));
     }
     
-    public PEntity<E> getEntity(){
+    public PrimaryKey(PEntity<?> entity, List<? extends Path<?>> localColumns) {
+        this.entity = entity;
+        this.localColumns = localColumns;
+    }
+    
+    public PEntity<?> getEntity(){
         return entity;
     }
-    
-    public Expr<P> getProperty(){
-        return property.asExpr();
+
+    public List<? extends Path<?>> getLocalColumns() {
+        return localColumns;
     }
-    
+
 }

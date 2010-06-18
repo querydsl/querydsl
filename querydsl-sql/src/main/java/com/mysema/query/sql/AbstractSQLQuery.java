@@ -133,8 +133,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.fullJoin(target, alias);
     }
     
-    public <E,P> Q fullJoin(ForeignKey<E,P> foreign, Key<E,P> key) {
-        return queryMixin.fullJoin(key.getEntity()).on(foreign.eq(key));
+    public <E> Q fullJoin(ForeignKey<E> key, PEntity<E> entity) {
+        return queryMixin.fullJoin(entity).on(key.on(entity));
     }
     
     public Q innerJoin(PEntity<?> target) {
@@ -145,8 +145,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.innerJoin(target, alias);
     }
     
-    public <E,P> Q innerJoin(ForeignKey<E,P> foreign, Key<E,P> key) {
-        return queryMixin.innerJoin(key.getEntity()).on(foreign.eq(key));
+    public <E> Q innerJoin(ForeignKey<E> key, PEntity<E> entity) {
+        return queryMixin.innerJoin(entity).on(key.on(entity));
     }
     
     public Q join(PEntity<?> target) {
@@ -157,8 +157,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.join(target, alias);
     }
 
-    public <E,P> Q join(ForeignKey<E,P> foreign, Key<E,P> key) {
-        return queryMixin.join(key.getEntity()).on(foreign.eq(key));
+    public <E> Q join(ForeignKey<E> key, PEntity<E>  entity) {
+        return queryMixin.join(entity).on(key.on(entity));
     }
     
     public Q leftJoin(PEntity<?> target) {
@@ -169,8 +169,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.leftJoin(target, alias);
     }
     
-    public <E,P> Q leftJoin(ForeignKey<E,P> foreign, Key<E,P> key) {
-        return queryMixin.leftJoin(key.getEntity()).on(foreign.eq(key));
+    public <E> Q leftJoin(ForeignKey<E> key, PEntity<E>  entity) {
+        return queryMixin.leftJoin(entity).on(key.on(entity));
     }
     
     public Q rightJoin(PEntity<?> target) {
@@ -181,8 +181,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.rightJoin(target, alias);
     }
     
-    public <E,P> Q rightJoin(ForeignKey<E,P> foreign, Key<E,P> primary) {
-        return queryMixin.rightJoin(primary.getEntity()).on(foreign.getProperty().eq(primary.getProperty()));
+    public <E> Q rightJoin(ForeignKey<E> key, PEntity<E>  entity) {
+        return queryMixin.rightJoin(entity).on(key.on(entity));
     }
     
     @SuppressWarnings("unchecked")

@@ -79,7 +79,7 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
      * @param o
      * @return
      */
-    <E, P> SQLQuery fullJoin(ForeignKey<E,P> foreign, Key<E,P> primary);
+    <E> SQLQuery fullJoin(ForeignKey<E> key, PEntity<E> entity);
     
     /**
      * Adds an inner join to the given target
@@ -87,7 +87,7 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
      * @param o
      * @return
      */
-    <E, P> SQLQuery innerJoin(ForeignKey<E,P> foreign, Key<E,P> primary);
+    <E> SQLQuery innerJoin(ForeignKey<E> foreign, PEntity<E> entity);
 
     /**
      * Adds a join to the given target
@@ -95,7 +95,7 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
      * @param o
      * @return
      */
-    <E, P> SQLQuery join(ForeignKey<E,P> foreign, Key<E,P> primary);
+    <E> SQLQuery join(ForeignKey<E> foreign, PEntity<E> entity);
     
     /**
      * Adds a left join to the given target
@@ -103,7 +103,7 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
      * @param o
      * @return
      */
-    <E, P> SQLQuery leftJoin(ForeignKey<E,P> foreign, Key<E,P> primary);
+    <E> SQLQuery leftJoin(ForeignKey<E> foreign, PEntity<E> entity);
     
     /**
      * Adds a right join to the given target
@@ -111,7 +111,7 @@ public interface SQLQuery extends Query<SQLQuery>, Projectable {
      * @param o
      * @return
      */
-    <E, P> SQLQuery rightJoin(ForeignKey<E,P> foreign, Key<E,P> primary);
+    <E> SQLQuery rightJoin(ForeignKey<E> foreign, PEntity<E> entity);
     
     /**
      * Adds a full join to the given target
