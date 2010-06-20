@@ -7,8 +7,7 @@ package com.mysema.query;
 
 import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Constants.survey2;
-import static org.junit.Assert.assertNotNull;
-
+import static org.junit.Assert.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -66,12 +65,10 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     
     @Test
     @ExcludeIn({Target.HSQLDB, Target.DERBY})
-    public void insertWithKeys() throws SQLException{
+    public void insert_With_Keys() throws SQLException{
         ResultSet rs = insert(survey).set(survey.name, "Hello World").executeWithKeys();
-        assertNotNull(rs);
+        assertTrue(rs.next());
         rs.close();
-        
-        // TODO : add assertions
     }
     
     @Test

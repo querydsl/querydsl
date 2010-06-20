@@ -25,7 +25,7 @@ public final class Connections {
 
     private static final String CREATE_TABLE_DATETEST = "create table DATE_TEST(DATE_TEST date)";
 
-    private static final String CREATE_TABLE_SURVEY = "create table SURVEY(ID int,NAME varchar(30))";
+    private static final String CREATE_TABLE_SURVEY = "create table SURVEY(ID int, NAME varchar(30))";
 
     private static final String CREATE_TABLE_TEST = "create table TEST(NAME varchar(255))";
 
