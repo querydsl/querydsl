@@ -65,18 +65,22 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return self;
     }
 
-    public final S handle(String sep, List<? extends Expr<?>> expressions) {
+    public final S handle(String sep, List<?> expressions) {
         boolean first = true;
-        for (Expr<?> expr : expressions) {
+        for (Object expr : expressions) {
             if (!first) {
                 append(sep);
             }
-            handle(expr);
+            if (expr instanceof Expr<?>){
+                handle((Expr<?>)expr);    
+            }else{
+                throw new IllegalArgumentException("Unsupported type " + expr.getClass().getName());
+            }            
             first = false;
         }
         return self;
     }
-
+    
     private void handleTemplate(Template template, List<Expr<?>> args){
         for (Template.Element element : template.getElements()){
             if (element.getStaticText() != null){
