@@ -8,7 +8,9 @@ package com.mysema.query.codegen;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -43,6 +45,8 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     private final Set<Property> properties = new TreeSet<Property>();
     
     private final Collection<Supertype> superTypes;
+    
+    private final Map<Object,Object> data = new HashMap<Object,Object>();
 
     private String uncapSimpleName;
 
@@ -171,6 +175,10 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
 
     public boolean hasMaps() {
         return hasMaps;
+    }
+    
+    public Map<Object, Object> getData() {
+        return data;
     }
 
     public void include(Supertype supertype) {

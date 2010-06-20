@@ -23,17 +23,6 @@ public class OriginalNamingStrategy implements NamingStrategy {
     }
 
     @Override
-    public String getPropertyName(String columnName, String namePrefix, EntityType entityType) {
-        return columnName;
-    }
-
-    @Override
-    public String getDefaultVariableName(String namePrefix, EntityType entityType) {
-        // TODO : escape
-        return entityType.getSimpleName();
-    }
-
-    @Override
     public String getDefaultAlias(String namePrefix, EntityType entityType) {
         for (Annotation ann : entityType.getAnnotations()) {
             if (ann.annotationType().equals(Table.class)) {
@@ -41,6 +30,27 @@ public class OriginalNamingStrategy implements NamingStrategy {
             }
         }
         return getDefaultVariableName(namePrefix, entityType);
+    }
+
+    @Override
+    public String getDefaultVariableName(String namePrefix, EntityType entityType) {
+        // TODO : escape
+        return entityType.getSimpleName();
+    }
+    
+    @Override
+    public String getPropertyName(String columnName, String namePrefix, EntityType entityType) {
+        return columnName;
+    }
+
+    @Override
+    public String getPropertyNameForForeignKey(String foreignKeyName, EntityType entityType) {
+        return foreignKeyName;
+    }
+
+    @Override
+    public String getPropertyNameForPrimaryKey(String primaryKeyName, EntityType model) {
+        return primaryKeyName;
     }
 
     @Override

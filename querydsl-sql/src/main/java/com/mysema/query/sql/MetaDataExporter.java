@@ -15,7 +15,9 @@ import java.io.Writer;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -26,6 +28,8 @@ import org.slf4j.LoggerFactory;
 import com.mysema.codegen.JavaWriter;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.codegen.*;
+import com.mysema.query.sql.support.ForeignKeyData;
+import com.mysema.query.sql.support.PrimaryKeyData;
 
 /**
  * MetadataExporter exports JDBC metadata to Querydsl query types
@@ -41,9 +45,11 @@ public class MetaDataExporter {
     
     private static final int FK_PARENT_COLUMN_NAME = 4;
     
-    private static final int FK_FOREIGN_TABLE_NAME = 7;
-    
     private static final int FK_FOREIGN_COLUMN_NAME = 8;
+    
+    private static final int PK_NAME = 6;
+    
+    private static final int PK_COLUMN_NAME = 4;
     
     private static final int FK_NAME = 12;
     
@@ -52,7 +58,7 @@ public class MetaDataExporter {
     private static final int COLUMN_TYPE = 5;
     
     private static final int TABLE_NAME = 3;
-
+    
     private static Writer writerFor(File file) {
         if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
             logger.error("Folder " + file.getParent() + " could not be created");
@@ -151,17 +157,7 @@ public class MetaDataExporter {
     public Set<String> getClasses() {
         return classes;
     }
-    
-    private void handleForeignKey(EntityType classModel, ResultSet foreignKeys) throws SQLException {
-        String parentTableName = foreignKeys.getString(FK_PARENT_TABLE_NAME);
-        String parentColumnName = foreignKeys.getString(FK_PARENT_COLUMN_NAME);
-        String foreignTable = foreignKeys.getString(FK_FOREIGN_TABLE_NAME);
-        String foreignColumn = foreignKeys.getString(FK_FOREIGN_COLUMN_NAME);
-        String foreignKeyName = foreignKeys.getString(FK_NAME);
-        System.err.println(classModel.getFullName());
-        System.err.println(foreignKeyName + " (" + parentTableName + "."+parentColumnName  + " == " + foreignTable + "." + foreignColumn +")");
-    }
-    
+        
     private void handleColumn(EntityType classModel, ResultSet columns) throws SQLException {
         String columnName = columns.getString(COLUMN_NAME);
         String propertyName = namingStrategy.getPropertyName(columnName, namePrefix, classModel);
@@ -182,15 +178,48 @@ public class MetaDataExporter {
         String className = namingStrategy.getClassName(namePrefix, tableName);
         EntityType classModel = createEntityType(tableName, className);
         
+        // collect primary keys
+        ResultSet primaryKeys = md.getPrimaryKeys(null, schemaPattern, tableName);
+        Map<String,PrimaryKeyData> primaryKeyData = new HashMap<String,PrimaryKeyData>();
+        try{
+            while (primaryKeys.next()){
+                String name = primaryKeys.getString(PK_NAME);
+                String columnName = primaryKeys.getString(PK_COLUMN_NAME);
+                
+                PrimaryKeyData data = primaryKeyData.get(name);
+                if (data == null){
+                    data = new PrimaryKeyData(name);
+                    primaryKeyData.put(name, data);
+                }
+                data.add(columnName);
+            }
+        }finally{
+            primaryKeys.close();
+        }
+        
+        classModel.getData().put(PrimaryKeyData.class, primaryKeyData.values());        
+        
         // collect foreign keys
         ResultSet foreignKeys = md.getCrossReference(null, schemaPattern, null, null, schemaPattern, tableName);
+        Map<String,ForeignKeyData> foreignKeyData = new HashMap<String,ForeignKeyData>();
         try{
             while (foreignKeys.next()){
-                handleForeignKey(classModel, foreignKeys);
+                String name = foreignKeys.getString(FK_NAME);
+                String parentTableName = foreignKeys.getString(FK_PARENT_TABLE_NAME);
+                String parentColumnName = foreignKeys.getString(FK_PARENT_COLUMN_NAME);
+                String foreignColumn = foreignKeys.getString(FK_FOREIGN_COLUMN_NAME);                                
+                ForeignKeyData data = foreignKeyData.get(name);
+                if (data == null){
+                    data = new ForeignKeyData(name, parentTableName);
+                    foreignKeyData.put(name, data);
+                }
+                data.add(foreignColumn, parentColumnName);
             }
         }finally{
             foreignKeys.close();
         }
+        
+        classModel.getData().put(ForeignKeyData.class, foreignKeyData.values());
         
         // collect columns
         ResultSet columns = md.getColumns(null, schemaPattern, tableName, null);
