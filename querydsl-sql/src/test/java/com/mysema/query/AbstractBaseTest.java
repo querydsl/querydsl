@@ -19,6 +19,7 @@ import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
+import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.path.PEntity;
 
@@ -44,6 +45,10 @@ public abstract class AbstractBaseTest {
     
     protected SQLDeleteClause delete(PEntity<?> e){
         return new SQLDeleteClause(Connections.getConnection(), dialect, e);
+    }
+    
+    protected SQLMergeClause merge(PEntity<?> e){
+        return new SQLMergeClause(Connections.getConnection(), dialect, e);
     }
     
     protected SQLQuery query() {
