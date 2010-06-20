@@ -35,6 +35,7 @@ import com.mysema.util.JDBCUtil;
  * @author tiwe
  *
  */
+@edu.umd.cs.findbugs.annotations.SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public class SQLMergeClause {
     
     private static final Logger logger = LoggerFactory.getLogger(SQLMergeClause.class);
@@ -101,7 +102,7 @@ public class SQLMergeClause {
         return this;
     }
     
-    public <T> SQLMergeClause set(Path<T> path, T value) {
+    public <T> SQLMergeClause set(Path<T> path, @Nullable T value) {
         columns.add(path);
         if (value != null){
             values.add(ExprConst.create(value));    
