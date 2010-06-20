@@ -225,6 +225,37 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
     }
 
+    public void serializeForMerge(PEntity<?> entity, List<Path<?>> keys,
+            List<Path<?>> columns, List<Expr<?>> values, @Nullable SubQuery<?> subQuery) {
+        this.entity = entity;
+        append(templates.getMergeInto());
+        handle(entity);
+        append(" ");
+        // columns
+        if (!columns.isEmpty()){
+            skipParent = true;
+            append("(").handle(COMMA, columns).append(") ");
+            skipParent = false;
+        }
+        // keys
+        if (!keys.isEmpty()){
+            append(templates.getKey());
+            skipParent = true;
+            append("(").handle(COMMA, keys).append(") ");
+            skipParent = false;
+        }        
+
+        if (subQuery != null){
+            // subquery
+            append("\n");
+            serialize(subQuery.getMetadata(), false);
+        }else{
+            // values
+            append(templates.getValues());
+            append("(").handle(COMMA, values).append(") ");
+        }
+    }
+    
     public void serializeForInsert(PEntity<?> entity, List<Path<?>> columns, 
             List<Expr<?>> values, @Nullable SubQuery<?> subQuery) {
         this.entity = entity;
@@ -232,16 +263,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         handle(entity);
         // columns
         if (!columns.isEmpty()){
-            append("(");
-            boolean first = true;
+            append("(");            
             skipParent = true;
-            for (Path<?> column : columns){
-                if (!first){
-                    append(COMMA);                    
-                }                
-                handle(column.asExpr());
-                first = false;
-            }
+            handle(COMMA, columns);
             skipParent = false;
             append(")");
         }
@@ -263,7 +287,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         this.entity = entity;
         append(templates.getUpdate());
         handle(entity);
-        append("\nset ");
+        append("\n");
+        append(templates.getSet());
         boolean first = true;
         skipParent = true;
         for (Pair<Path<?>,?> update : updates){

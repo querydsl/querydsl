@@ -41,6 +41,8 @@ public class SQLTemplates extends Templates {
 
     private String columnAlias = " ";
     
+    private String key = "key";
+    
     private String count = "count ";
     
     private String countStar = "count(*)";
@@ -66,6 +68,8 @@ public class SQLTemplates extends Templates {
     private String innerJoin = "\ninner join ";
     
     private String insertInto = "insert into ";
+    
+    private String mergeInto = "merge into ";
     
     private String join = "\njoin ";
     
@@ -95,6 +99,8 @@ public class SQLTemplates extends Templates {
     private String values = "\nvalues ";
     
     private String where = "\nwhere ";
+    
+    private String set = "set ";
     
     protected SQLTemplates(){
         this(null);
@@ -451,5 +457,31 @@ public class SQLTemplates extends Templates {
     protected void setWhere(String where) {
         this.where = where;
     }
+
+    public String getMergeInto() {
+        return mergeInto;
+    }
+
+    public void setMergeInto(String mergeInto) {
+        this.mergeInto = mergeInto;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getSet() {
+        return set;
+    }
+
+    public void setSet(String set) {
+        this.set = set;
+    }
+    
+    
     
 }

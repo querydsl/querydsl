@@ -73,8 +73,7 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause> {
             JDBCUtil.setParameters(stmt, serializer.getConstants(), Collections.<Param<?>,Object>emptyMap());
             return stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new QueryException("Caught " + e.getClass().getSimpleName()
-                    + " for " + queryString, e);
+            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
         } finally {
             if (stmt != null) {
                 close(stmt);

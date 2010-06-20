@@ -90,8 +90,7 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
             JDBCUtil.setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
             return stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new QueryException("Caught " + e.getClass().getSimpleName()
-                    + " for " + queryString, e);
+            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
         } finally {
             if (stmt != null) {
                 close(stmt);
@@ -117,11 +116,10 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
     }
 
     @Override
-    @java.lang.SuppressWarnings("unchecked")
     public SQLInsertClause values(Object... v) {
         for (Object value : v) {
-            if (value instanceof Expr) {
-                values.add((Expr) value);
+            if (value instanceof Expr<?>) {
+                values.add((Expr<?>) value);
             } else if (value != null){
                 values.add(ExprConst.create(value));
             }else{
