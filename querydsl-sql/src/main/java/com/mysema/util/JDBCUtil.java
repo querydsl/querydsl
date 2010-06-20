@@ -44,6 +44,7 @@ public final class JDBCUtil {
         }
     }
     
+    // TODO : don't use reflaection here
     private static void setParameter(PreparedStatement stmt, int i, Object o) throws NoSuchMethodException, 
         IllegalAccessException, InvocationTargetException {
         Class<?> type = o.getClass();        
