@@ -7,6 +7,7 @@ package com.mysema.query.sql.dml;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +31,7 @@ import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.path.NullExpr;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.util.JDBCUtil;
+import com.mysema.util.ResultSetAdapter;
 
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
@@ -75,6 +77,33 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
     public SQLInsertClause columns(Path<?>... columns) {
         this.columns.addAll(Arrays.asList(columns));
         return this;
+    }
+    
+    public ResultSet executeWithKeys(){
+        SQLSerializer serializer = new SQLSerializer(templates, true);
+        serializer.serializeForInsert(entity, columns, values, subQuery);
+        String queryString = serializer.toString();
+        logger.debug(queryString);
+
+        try {
+            final PreparedStatement stmt = connection.prepareStatement(queryString);
+            JDBCUtil.setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
+            stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            
+            return new ResultSetAdapter(rs){
+                @Override
+                public void close() throws SQLException {
+                    try {
+                        super.close();
+                    } finally {
+                        stmt.close();
+                    }
+                }  
+            };            
+        } catch (SQLException e) {
+            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
+        }        
     }
 
     @Override

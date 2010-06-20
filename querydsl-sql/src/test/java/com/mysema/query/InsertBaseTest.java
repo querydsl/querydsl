@@ -7,7 +7,9 @@ package com.mysema.query;
 
 import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Constants.survey2;
+import static org.junit.Assert.assertNotNull;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.junit.After;
@@ -18,6 +20,7 @@ import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
+import com.mysema.testutil.ExcludeIn;
 
 public abstract class InsertBaseTest extends AbstractBaseTest{
         
@@ -59,6 +62,16 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
         insert(survey)
             .select(sq().from(survey2).list(survey2.id.add(10), survey2.name))
             .execute();
+    }
+    
+    @Test
+    @ExcludeIn({Target.HSQLDB, Target.DERBY})
+    public void insertWithKeys() throws SQLException{
+        ResultSet rs = insert(survey).set(survey.name, "Hello World").executeWithKeys();
+        assertNotNull(rs);
+        rs.close();
+        
+        // TODO : add assertions
     }
     
     @Test
