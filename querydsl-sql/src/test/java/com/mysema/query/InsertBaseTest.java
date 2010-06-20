@@ -22,7 +22,7 @@ import com.mysema.query.sql.domain.QSurvey;
 public abstract class InsertBaseTest extends AbstractBaseTest{
         
     private void reset() throws SQLException{
-        delete(survey).where(survey.name.isNotNull()).execute();
+        delete(survey).execute();
         insert(survey).values(1, "Hello World").execute();   
     }
     
@@ -58,6 +58,24 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
         // with subquery, without columns
         insert(survey)
             .select(sq().from(survey2).list(survey2.id.add(10), survey2.name))
+            .execute();
+    }
+    
+    @Test
+    public void insertNull(){
+        // with columns
+        insert(survey)
+            .columns(survey.id, survey.name)
+            .values(3, null).execute();
+        
+        // without columns
+        insert(survey)
+            .values(4, null).execute();
+        
+        // with set
+        insert(survey)
+            .set(survey.id, 5)
+            .set(survey.name, null)
             .execute();
     }
     

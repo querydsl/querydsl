@@ -24,6 +24,7 @@ import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.path.NullExpr;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.util.JDBCUtil;
 
@@ -38,9 +39,8 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 @SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public class SQLUpdateClause implements UpdateClause<SQLUpdateClause> {
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(SQLInsertClause.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
+    
     private final Connection connection;
 
     private final PEntity<?> entity;
@@ -75,11 +75,10 @@ public class SQLUpdateClause implements UpdateClause<SQLUpdateClause> {
         PreparedStatement stmt = null;
         try {
             stmt = connection.prepareStatement(queryString);
-            JDBCUtil.setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
+            JDBCUtil.setParameters(stmt, serializer.getConstants(), Collections.<Param<?>,Object>emptyMap());
             return stmt.executeUpdate();
         } catch (SQLException e) {
-            throw new QueryException("Caught " + e.getClass().getSimpleName()
-                    + " for " + queryString, e);
+            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
         } finally {
             if (stmt != null) {
                 close(stmt);
@@ -89,14 +88,23 @@ public class SQLUpdateClause implements UpdateClause<SQLUpdateClause> {
 
     @Override
     public <T> SQLUpdateClause set(Path<T> path, T value) {
-        updates.add(Pair.<Path<?>,Object>of(path, value));
+        if (value != null){
+            updates.add(Pair.<Path<?>,Object>of(path, value));
+        }else{            
+            updates.add(Pair.<Path<?>,Object>of(path, new NullExpr<T>(path.getType())));
+        }        
         return this;
     }
 
+    @java.lang.SuppressWarnings("unchecked")
     @Override
     public SQLUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++){
-            updates.add(Pair.<Path<?>,Object>of(paths.get(i), values.get(i)));
+            if (values.get(i) != null){
+                updates.add(Pair.<Path<?>,Object>of(paths.get(i), values.get(i)));    
+            }else{
+                updates.add(Pair.<Path<?>,Object>of(paths.get(i), new NullExpr(paths.get(i).getType())));
+            }            
         }
         return this;
     }
@@ -109,5 +117,10 @@ public class SQLUpdateClause implements UpdateClause<SQLUpdateClause> {
         return this;
     }
 
-
+    @Override
+    public String toString(){
+        SQLSerializer serializer = new SQLSerializer(templates, true);
+        serializer.serializeForUpdate(entity, updates, where.getValue());
+        return serializer.toString();
+    }
 }

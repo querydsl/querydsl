@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +27,7 @@ import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.ExprConst;
+import com.mysema.query.types.path.NullExpr;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.util.JDBCUtil;
 
@@ -39,15 +42,15 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 @SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public class SQLInsertClause implements InsertClause<SQLInsertClause> {
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(SQLInsertClause.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
+    
     private final List<Path<?>> columns = new ArrayList<Path<?>>();
 
     private final Connection connection;
 
     private final PEntity<?> entity;
 
+    @Nullable
     private SubQuery<?> subQuery;
 
     private final SQLTemplates templates;
@@ -105,7 +108,11 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
     @Override
     public <T> SQLInsertClause set(Path<T> path, T value) {
         columns.add(path);
-        values.add(ExprConst.create(value));
+        if (value != null){
+            values.add(ExprConst.create(value));    
+        }else{
+            values.add(new NullExpr<T>(path.getType()));
+        }        
         return this;
     }
 
@@ -115,11 +122,20 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
         for (Object value : v) {
             if (value instanceof Expr) {
                 values.add((Expr) value);
-            } else {
+            } else if (value != null){
                 values.add(ExprConst.create(value));
+            }else{
+                values.add(NullExpr.DEFAULT);
             }
         }
         return this;
+    }
+    
+    @Override
+    public String toString(){
+        SQLSerializer serializer = new SQLSerializer(templates, true);
+        serializer.serializeForInsert(entity, columns, values, subQuery);
+        return serializer.toString();
     }
 
 }

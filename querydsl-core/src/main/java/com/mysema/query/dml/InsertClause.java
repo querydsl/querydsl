@@ -5,6 +5,8 @@
  */
 package com.mysema.query.dml;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 
@@ -48,7 +50,7 @@ public interface InsertClause<C extends InsertClause<C>> {
      * @param value value to set
      * @return
      */
-    <T> C set(Path<T> path, T value);
+    <T> C set(Path<T> path, @Nullable T value);
 
     /**
      * Define the value bindings

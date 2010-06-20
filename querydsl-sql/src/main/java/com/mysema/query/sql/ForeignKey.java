@@ -11,6 +11,8 @@ import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PSimple;
 
 /**
+ * ForeignKey defines a foreign key on a table to another table
+ * 
  * @author tiwe
  *
  * @param <E>

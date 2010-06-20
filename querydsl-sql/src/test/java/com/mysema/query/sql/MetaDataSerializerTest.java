@@ -57,7 +57,7 @@ public class MetaDataSerializerTest {
         stmt.execute("drop table date_time_test if exists");
                 
         stmt.execute("create table survey (id int, name varchar(30), "
-                + "CONSTRAINT PK_survey PRIMARY KEY (id))");        
+                + "CONSTRAINT PK_survey PRIMARY KEY (id, name))");        
         stmt.execute("create table date_test (d date)");        
         stmt.execute("create table date_time_test (dt datetime)");        
         stmt.execute("create table employee("
@@ -69,8 +69,9 @@ public class MetaDataSerializerTest {
                 + "timefield TIME, "
                 + "superior_id int, " 
                 + "survey_id int, "
+                + "survey_name varchar(30), "
                 + "CONSTRAINT PK_employee PRIMARY KEY (id), "
-                + "CONSTRAINT FK_survey FOREIGN KEY (survey_id) REFERENCES survey(id), "
+                + "CONSTRAINT FK_survey FOREIGN KEY (survey_id, survey_name) REFERENCES survey(id,name), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");
         
         

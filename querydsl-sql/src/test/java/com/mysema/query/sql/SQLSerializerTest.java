@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.sql.dml.SQLInsertClause;
+import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.domain.QSurvey;
 
 
@@ -24,4 +26,21 @@ public class SQLSerializerTest {
         assertEquals("s.NAME = s.NAME and (s.NAME = s.NAME or s.NAME = s.NAME)", str);
     }
     
+    @Test
+    public void testUpdate(){
+        QSurvey survey = new QSurvey("survey");
+        SQLUpdateClause updateClause = new SQLUpdateClause(null,SQLTemplates.DEFAULT,survey);
+        updateClause.set(survey.id, 1);
+        updateClause.set(survey.name, null);
+        assertEquals("update SURVEY\nset ID = ?, NAME = null", updateClause.toString());
+    }
+    
+    @Test
+    public void testInsert(){
+        QSurvey survey = new QSurvey("survey");
+        SQLInsertClause insertClause = new SQLInsertClause(null,SQLTemplates.DEFAULT,survey);
+        insertClause.set(survey.id, 1);
+        insertClause.set(survey.name, null);
+        assertEquals("insert into SURVEY(ID, NAME)\nvalues (?, null)", insertClause.toString());
+    }
 }

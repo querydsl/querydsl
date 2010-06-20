@@ -7,6 +7,8 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.path.PEntity;
 
 /**
+ * PrimaryKey defines a primary key on table
+ * 
  * @author tiwe
  *
  * @param <E>

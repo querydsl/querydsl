@@ -7,6 +7,8 @@ package com.mysema.query.dml;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 
@@ -43,7 +45,7 @@ public interface UpdateClause<C extends UpdateClause<C>> {
      * @param value value to set
      * @return
      */
-    <T> C set(Path<T> path, T value);
+    <T> C set(Path<T> path, @Nullable T value);
     
     /**
      * Defines the filter constraints

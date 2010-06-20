@@ -487,7 +487,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     public void various() throws SQLException {
         for (String s : query().from(survey).list(survey.name.lower())){
-            assertEquals(s, s.toLowerCase());
+            assertEquals(s, s.toLowerCase());             
         }
         
         for (String s : query().from(survey).list(survey.name.append("abc"))){
