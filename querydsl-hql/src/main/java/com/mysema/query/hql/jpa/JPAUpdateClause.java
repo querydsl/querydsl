@@ -21,6 +21,7 @@ import com.mysema.query.hql.JPQLTemplates;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.path.NullExpr;
 import com.mysema.query.types.path.PEntity;
 
 /**
@@ -60,7 +61,12 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
 
     @Override
     public <T> JPAUpdateClause set(Path<T> path, T value) {
-        metadata.addProjection(path.asExpr().eq(value));
+        if (value != null){
+            metadata.addProjection(path.asExpr().eq(value));    
+        }else{
+            metadata.addProjection(path.asExpr().eq(new NullExpr<T>(path.getType())));
+        }
+        
         return this;
     }
     
@@ -68,7 +74,11 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
     @Override
     public JPAUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++){
-            metadata.addProjection(((Expr)paths.get(i).asExpr()).eq(values.get(i)));
+            if (values.get(i) != null){
+                metadata.addProjection(((Expr)paths.get(i).asExpr()).eq(values.get(i)));    
+            }else{
+                metadata.addProjection(((Expr)paths.get(i).asExpr()).eq(new NullExpr(paths.get(i).getType())));
+            }            
         }
         return this;
     }

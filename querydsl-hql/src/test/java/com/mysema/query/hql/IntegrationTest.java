@@ -113,6 +113,19 @@ public class IntegrationTest extends ParsingTest {
     }
     
     @Test
+    public void testUpdate_with_null(){
+        session.save(new Cat("Bob",10));
+        session.save(new Cat("Steve",11));
+        
+        QCat cat = QCat.cat;
+        long amount = update(cat).where(cat.name.eq("Bob"))
+            .set(cat.name, null)
+            .set(cat.alive, false)
+            .execute();
+        assertEquals(1, amount);                
+    }
+    
+    @Test
     public void testDelete(){
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));
@@ -120,9 +133,7 @@ public class IntegrationTest extends ParsingTest {
         QCat cat = QCat.cat;
         long amount = delete(cat).where(cat.name.eq("Bob"))            
             .execute();
-        assertEquals(1, amount);
-            
-        assertEquals(0l, query().from(cat).where(cat.name.eq("Bob")).count());
+        assertEquals(1, amount);    
     }
     
     @Test
