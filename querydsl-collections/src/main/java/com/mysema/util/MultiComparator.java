@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.util;
 
@@ -14,7 +14,7 @@ import com.mysema.codegen.Evaluator;
 
 /**
  * MultiComparator compares
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -36,12 +36,12 @@ public class MultiComparator<T> implements Comparator<T>, Serializable {
     @Override
     public int compare(T o1, T o2) {
         if (o1.getClass().isArray()){
-            return innerCompare(ev.evaluate((Object[])o1), ev.evaluate((Object[])o2));    
+            return innerCompare(ev.evaluate((Object[])o1), ev.evaluate((Object[])o2));
         }else{
             return innerCompare(ev.evaluate(o1), ev.evaluate(o2));
-        }        
+        }
     }
-    
+
     private int innerCompare(Object[] o1, Object[] o2) {
         for (int i = 0; i < o1.length; i++) {
             int res = naturalOrder.compare(o1[i], o2[i]);

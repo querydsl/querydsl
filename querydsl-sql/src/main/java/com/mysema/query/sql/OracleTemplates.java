@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql;
 
@@ -13,14 +13,14 @@ import com.mysema.query.types.Ops;
 
 /**
  * OracleTemplates is an SQL dialect for Oracle
- * 
+ *
  * tested with Oracle 10g XE
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
 public class OracleTemplates extends SQLTemplates {
-    
+
     private String outerQueryEnd = "\n ) a) where ";
 
     private String outerQueryStart = "select * from (\n select a.*, rownum rn from (\n  ";
@@ -30,13 +30,13 @@ public class OracleTemplates extends SQLTemplates {
     private String limitQueryStart = "select * from (\n  ";
 
     private String limitOffsetTemplate = "rn > {0s} and rn <= {1s}";
-        
+
     private String offsetTemplate = "rn > {0}";
-    
+
     public OracleTemplates(){
         this(false);
     }
-    
+
     public OracleTemplates(boolean quote){
         super(quote ? "\"" : null);
         // type mappings
@@ -49,14 +49,14 @@ public class OracleTemplates extends SQLTemplates {
         addClass2TypeMappings("varchar(4000 char)", String.class);
 
         add(Ops.ALIAS, "{0} {1}");
-        
+
         // String
         add(Ops.CONCAT, "{0} || {1}");
         add(Ops.INDEX_OF, "instrb({0},{1})-1");
         add(Ops.INDEX_OF_2ARGS, "instrb({0},{1},{2}+1)-1");
         add(Ops.MATCHES, "regexp_like({0},{1})");
         add(Ops.StringOps.SPACE, "lpad('',{0},' ')");
-        
+
         // Number
         add(Ops.MathOps.CEIL, "ceil({0})");
         add(Ops.MathOps.RANDOM, "dbms_random.value");
@@ -74,33 +74,33 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.HOUR, "to_number(to_char({0},'HH24'))");
         add(Ops.DateTimeOps.MINUTE, "to_number(to_char({0},'MI'))");
         add(Ops.DateTimeOps.SECOND, "to_number(to_char({0},'SS'))");
-                
+
     }
-    
+
     @Override
     public void serialize(QueryMetadata metadata, boolean forCountRow, SerializationContext context) {
         if (!forCountRow && metadata.getModifiers().isRestricting()){
             QueryModifiers mod = metadata.getModifiers();
-            
+
             if (mod.getOffset() == null){
                 context.append(limitQueryStart);
                 context.serialize(metadata, forCountRow);
-                context.handle(limitQueryEnd, mod.getLimit());            
+                context.handle(limitQueryEnd, mod.getLimit());
             }else{
                 context.append(outerQueryStart);
                 context.serialize(metadata, forCountRow);
-                context.append(outerQueryEnd);            
-                
+                context.append(outerQueryEnd);
+
                 if (mod.getLimit() == null){
                     context.handle(offsetTemplate, mod.getOffset());
                 }else{
                     context.handle(limitOffsetTemplate, mod.getOffset(), mod.getLimit() + mod.getOffset());
                 }
             }
-              
+
         }else{
-            context.serialize(metadata, forCountRow);    
-        }        
+            context.serialize(metadata, forCountRow);
+        }
     }
-        
+
 }

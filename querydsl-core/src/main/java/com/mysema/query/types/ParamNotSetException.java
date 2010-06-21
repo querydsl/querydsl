@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types;
 
@@ -12,9 +12,9 @@ package com.mysema.query.types;
 public class ParamNotSetException extends RuntimeException{
 
     private static final long serialVersionUID = 2019016965590576490L;
-    
+
     public ParamNotSetException(Param<?> param) {
         super(param.getNotSetMessage());
-    }    
+    }
 
 }

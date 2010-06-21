@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.domain;
 
@@ -18,9 +18,9 @@ import javax.persistence.OneToMany;
 public class Payment extends Item {
     @ManyToOne
     Status currentStatus, status;
-    
+
     PaymentStatus name;
-    
+
     @OneToMany
     Collection<StatusChange> statusChanges;
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.domain;
 
@@ -19,7 +19,7 @@ import org.hibernate.annotations.CollectionOfElements;
 public class Player {
     @Id
     long id;
-    
+
     @CollectionOfElements
     List<Integer> scores;
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.jpa;
 
@@ -22,28 +22,28 @@ import com.mysema.query.types.path.PEntity;
 
 /**
  * DeleteClause implementation for JPA
- * 
+ *
  * @author tiwe
  *
  */
 public class JPADeleteClause implements DeleteClause<JPADeleteClause>{
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
-    
+
     private final EntityManager entityManager;
-    
+
     private final JPQLTemplates templates;
-    
+
     public JPADeleteClause(EntityManager em, PEntity<?> entity){
         this(em, entity, HQLTemplates.DEFAULT);
     }
-    
+
     public JPADeleteClause(EntityManager entityManager, PEntity<?> entity, JPQLTemplates templates){
         this.entityManager = entityManager;
         this.templates = templates;
         metadata.addJoin(JoinType.DEFAULT, entity);
     }
-    
+
     @Override
     public long execute() {
         HQLSerializer serializer = new HQLSerializer(templates);

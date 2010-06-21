@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.serialization;
 
@@ -22,7 +22,7 @@ public class JavaTemplatesTest {
     public void testMappings() throws IllegalArgumentException, IllegalAccessException {
         JavaTemplates templates = new JavaTemplates();
         int matched = 0;
-        for (Field field : Ops.class.getFields()){            
+        for (Field field : Ops.class.getFields()){
             if (Operator.class.isAssignableFrom(field.getType())){
                 matched++;
                 Operator<?> operator = (Operator<?>) field.get(null);

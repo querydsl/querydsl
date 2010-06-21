@@ -12,9 +12,9 @@ public class Superclass3Test {
     public static class Subtype extends DefaultQueryMetadata{
 
         private static final long serialVersionUID = -218949941713252847L;
-        
+
     }
-    
+
     @Test
     public void test(){
         Assert.assertNotNull(QSuperclass3Test_Subtype.subtype.distinct);

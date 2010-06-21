@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql.models.company;
 
@@ -10,7 +10,7 @@ import com.mysema.query.annotations.QueryEntity;
 /**
  * Details of a person. Represents a subset of the information available from
  * Person, and so can be used as a ResultClass for SQL/JDOQL queries.
- * 
+ *
  * @version $Revision: 1.1 $
  */
 @QueryEntity
@@ -30,7 +30,7 @@ public class PersonalDetails {
 
     /**
      * Accessor for the first name.
-     * 
+     *
      * @return First name.
      **/
     public String getFirstName() {
@@ -39,7 +39,7 @@ public class PersonalDetails {
 
     /**
      * Accessor for the last name.
-     * 
+     *
      * @return Last name.
      **/
     public String getLastName() {
@@ -48,7 +48,7 @@ public class PersonalDetails {
 
     /**
      * Accessor for the currency of the payment.
-     * 
+     *
      * @return Currency of the payment.
      **/
     public int getAge() {
@@ -57,7 +57,7 @@ public class PersonalDetails {
 
     /**
      * Mutator for the first name.
-     * 
+     *
      * @param name
      *            First name
      **/
@@ -67,7 +67,7 @@ public class PersonalDetails {
 
     /**
      * Mutator for the last name.
-     * 
+     *
      * @param name
      *            Last name
      **/
@@ -77,7 +77,7 @@ public class PersonalDetails {
 
     /**
      * Mutator for the persons age.
-     * 
+     *
      * @param age
      *            age of the person
      **/
@@ -87,7 +87,7 @@ public class PersonalDetails {
 
     /**
      * Utility to return the object as a string.
-     * 
+     *
      * @return Stringified version of this Person
      **/
     public String toString() {

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql.dml;
 
@@ -27,9 +27,9 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 /**
  * SQLDeleteClause defines a DELETE clause
- * 
+ *
  * @author tiwe
- * 
+ *
  */
 @SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public class SQLDeleteClause implements DeleteClause<SQLDeleteClause> {
@@ -40,9 +40,9 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause> {
     private final Connection connection;
 
     private final PEntity<?> entity;
-    
+
     private final BooleanBuilder where = new BooleanBuilder();
-    
+
     private final SQLTemplates templates;
 
     public SQLDeleteClause(Connection connection, SQLTemplates templates,

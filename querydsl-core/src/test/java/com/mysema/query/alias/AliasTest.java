@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.alias;
 
@@ -20,52 +20,52 @@ import java.util.Set;
 import org.junit.Test;
 
 public class AliasTest {
-    
+
     public enum Gender{
     MALE,
     FEMALE
     }
-    
+
     public interface DomainType{
-        
+
         String getFirstName();
-        
+
         String getLastName();
-        
+
         int getAge();
-        
+
         List<DomainType> getList();
-        
+
         Map<String,DomainType> getMap();
-        
+
         BigDecimal getBigDecimal();
-        
+
         BigInteger getBigInteger();
-        
+
         Byte getByte();
-        
+
         Collection<DomainType> getCollection();
-        
+
         Double getDouble();
-        
+
         Float getFloat();
-        
+
         java.sql.Date getDate();
-        
+
         java.util.Date getDate2();
-        
+
         Set<DomainType> getSet();
-        
+
         Short getShort();
-        
+
         Time getTime();
-        
+
         Timestamp getTimestamp();
-        
+
         Gender getGender();
-        
+
     }
-    
+
     @Test
     public void basicUsage(){
         DomainType domainType = Alias.alias(DomainType.class);
@@ -73,7 +73,7 @@ public class AliasTest {
         assertEquals("domainType.age", $(domainType.getAge()).toString());
         assertEquals("domainType.map.get(a)", $(domainType.getMap().get("a")).toString());
         assertEquals("domainType.list.get(0)", $(domainType.getList().get(0)).toString());
-        
+
         assertEquals("domainType.bigDecimal", $(domainType.getBigDecimal()).toString());
         assertEquals("domainType.bigInteger", $(domainType.getBigInteger()).toString());
         assertEquals("domainType.byte", $(domainType.getByte()).toString());
@@ -88,7 +88,7 @@ public class AliasTest {
         assertEquals("domainType.timestamp", $(domainType.getTimestamp()).toString());
         assertEquals("domainType.gender", $(domainType.getGender()).toString());
     }
-    
+
     @Test
     public void getAny(){
     DomainType domainType = Alias.alias(DomainType.class);
@@ -99,9 +99,9 @@ public class AliasTest {
     @Test
     public void otherMethods(){
     DomainType domainType = Alias.alias(DomainType.class);
-    assertEquals("domainType", domainType.toString());    
+    assertEquals("domainType", domainType.toString());
     }
-    
+
     @Test
     public void var(){
     assertEquals("it", Alias.var().toString());

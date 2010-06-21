@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.collections;
 
@@ -22,7 +22,7 @@ public class CatTest {
     public void stringAsSimple() throws SecurityException, NoSuchFieldException {
         assertTrue(QCat.cat.stringAsSimple.getClass().equals(PSimple.class));
     }
-    
+
     @Test
     public void dateAsSimple(){
         assertTrue(QCat.cat.dateAsSimple.getClass().equals(PSimple.class));

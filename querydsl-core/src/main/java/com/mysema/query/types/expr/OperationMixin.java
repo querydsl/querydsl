@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.expr;
 
@@ -23,17 +23,17 @@ public final class OperationMixin<RT> implements Operation<RT>, Serializable {
     private static final long serialVersionUID = 4796432056083507588L;
 
     private final List<Expr<?>> args;
-    
+
     private final Operator<? super RT> operator;
-    
+
     private final Expr<RT> self;
-    
+
     public OperationMixin(Operation<RT> self, Operator<? super RT> operator, List<Expr<?>> args){
         this.self = self.asExpr();
         this.operator = operator;
         this.args = Collections.unmodifiableList(args);
     }
-    
+
     @Override
     public Expr<RT> asExpr() {
         return self;
@@ -48,7 +48,7 @@ public final class OperationMixin<RT> implements Operation<RT>, Serializable {
     public List<Expr<?>> getArgs() {
         return args;
     }
-    
+
     @Override
     public Operator<? super RT> getOperator() {
         return operator;
@@ -58,7 +58,7 @@ public final class OperationMixin<RT> implements Operation<RT>, Serializable {
     public Class<? extends RT> getType() {
         return self.getType();
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o){
@@ -66,17 +66,17 @@ public final class OperationMixin<RT> implements Operation<RT>, Serializable {
             return true;
         }else if (o instanceof Operation){
             Operation op = (Operation)o;
-            return op.getOperator().equals(operator) 
+            return op.getOperator().equals(operator)
                 && op.getArgs().equals(args)
                 && op.getType().equals(self.getType());
         }else{
             return false;
         }
     }
-    
+
     @Override
     public int hashCode(){
         return self.getType().hashCode();
     }
-    
+
 }

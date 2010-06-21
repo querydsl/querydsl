@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.domain;
 
@@ -23,7 +23,7 @@ public class Animal {
     private java.util.Date birthdate;
 
     private int weight, toes;
-    
+
     // needed for JPA tests
     @Type(type="com.mysema.query.ExtDoubleType")
     private double bodyWeight;

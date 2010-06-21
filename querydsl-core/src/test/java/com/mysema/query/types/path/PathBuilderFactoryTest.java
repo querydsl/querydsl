@@ -2,7 +2,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.path;
 
@@ -18,7 +18,7 @@ public class PathBuilderFactoryTest {
         PathBuilder<Object> pathBuilder = factory.create(Object.class);
         assertEquals("object", pathBuilder.toString());
         assertEquals(Object.class, pathBuilder.getType());
-        
+
         pathBuilder.get("prop", Object.class);
         pathBuilder.get("prop", String.class);
         pathBuilder.get("prop", Object.class);

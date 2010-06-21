@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.serialization;
 
@@ -16,7 +16,7 @@ import com.mysema.query.types.*;
 
 /**
  * SerializerBase is a stub for Serializer implementations
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -25,13 +25,13 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     private final StringBuilder builder = new StringBuilder();
 
     private String constantPrefix = "a";
-    
+
     private String paramPrefix = "p";
-    
+
     private String anonParamPrefix = "_";
-    
+
     private final Map<Object,String> constantToLabel = new HashMap<Object,String>();
-    
+
     @SuppressWarnings("unchecked")
     private final S self = (S) this;
 
@@ -39,7 +39,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     public SerializerBase(Templates patterns) {
         this.templates = Assert.notNull(patterns,"patterns");
-    }    
+    }
 
     public S append(String... str) {
         for (String s : str) {
@@ -47,15 +47,15 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         }
         return self;
     }
-    
+
     protected String getConstantPrefix() {
         return constantPrefix;
     }
-    
+
     public Map<Object,String> getConstantToLabel() {
         return constantToLabel;
     }
-    
+
     protected Template getTemplate(Operator<?> op) {
         return templates.getTemplate(op);
     }
@@ -72,34 +72,33 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 append(sep);
             }
             if (expr instanceof Expr<?>){
-                handle((Expr<?>)expr);    
+                handle((Expr<?>)expr);
             }else{
                 throw new IllegalArgumentException("Unsupported type " + expr.getClass().getName());
-            }            
+            }
             first = false;
         }
         return self;
     }
-    
+
     private void handleTemplate(Template template, List<Expr<?>> args){
         for (Template.Element element : template.getElements()){
             if (element.getStaticText() != null){
                 append(element.getStaticText());
             }else if (element.isAsString()){
                 append(args.get(element.getIndex()).toString());
-            }else if (element.hasConverter()){    
+            }else if (element.hasConverter()){
                 handle(element.convert(args.get(element.getIndex())));
             }else{
-                handle(args.get(element.getIndex()));    
+                handle(args.get(element.getIndex()));
             }
         }
     }
-    
-    
+
     public void setConstantPrefix(String prefix){
         this.constantPrefix = prefix;
     }
-    
+
     public void setParamPrefix(String prefix){
         this.paramPrefix = prefix;
     }
@@ -107,14 +106,13 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     public void setAnonParamPrefix(String prefix){
         this.anonParamPrefix = prefix;
     }
-    
+
     public String toString() {
         return builder.toString();
     }
 
-
     @Override
-    public void visit(Constant<?> expr) {        
+    public void visit(Constant<?> expr) {
         if (!constantToLabel.containsKey(expr.getConstant())) {
             String constLabel = constantPrefix + (constantToLabel.size() + 1);
             constantToLabel.put(expr.getConstant(), constLabel);
@@ -123,7 +121,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
             append(constantToLabel.get(expr.getConstant()));
         }
     }
-    
+
     @Override
     public void visit(Param<?> param){
         String paramLabel;
@@ -137,7 +135,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     @Override
-    public void visit(Custom<?> expr) {        
+    public void visit(Custom<?> expr) {
         handleTemplate(expr.getTemplate(), expr.getArgs());
     }
 
@@ -145,12 +143,12 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     public void visit(EConstructor<?> expr) {
     handle(", ", expr.getArgs());
     }
-    
+
     @Override
     public void visit(Operation<?> expr) {
         visitOperation(expr.getType(), expr.getOperator(), expr.getArgs());
     }
-    
+
     @Override
     public void visit(Path<?> path) {
         PathType pathType = path.getMetadata().getPathType();
@@ -162,7 +160,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         args.add(path.getMetadata().getExpression());
         handleTemplate(template, args);
     }
-    
+
     @SuppressWarnings("unchecked")
     protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
         Template template = templates.getTemplate(operator);
@@ -181,7 +179,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 Expr arg = args.get(i);
                 if (arg instanceof BooleanBuilder){
                     arg = ((BooleanBuilder)arg).getValue();
-                }                
+                }
                 if (arg instanceof Operation){
                     wrap = precedence < templates.getPrecedence(((Operation<?>) arg).getOperator());
                 }
@@ -191,13 +189,13 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 if (element.hasConverter()){
                     handle(element.convert(arg));
                 }else{
-                    handle(arg);                    
+                    handle(arg);
                 }
                 if (wrap){
                     append(")");
                 }
             }
-        }        
+        }
     }
 
 }

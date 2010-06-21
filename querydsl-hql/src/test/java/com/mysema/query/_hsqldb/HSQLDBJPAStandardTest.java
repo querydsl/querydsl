@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._hsqldb;
 
@@ -12,8 +12,6 @@ import com.mysema.query.Target;
 import com.mysema.testutil.JPAConfig;
 import com.mysema.testutil.JPATestRunner;
 
-
-
 /**
  * @author tiwe
  *
@@ -21,11 +19,10 @@ import com.mysema.testutil.JPATestRunner;
 @RunWith(JPATestRunner.class)
 @JPAConfig("hsqldb")
 public class HSQLDBJPAStandardTest extends AbstractJPATest{
-    
+
     @Override
     protected Target getTarget() {
         return Target.HSQLDB;
     }
-    
-    
+
 }

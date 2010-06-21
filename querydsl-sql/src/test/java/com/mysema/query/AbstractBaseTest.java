@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query;
 
@@ -24,33 +24,33 @@ import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.path.PEntity;
 
 public abstract class AbstractBaseTest {
-   
+
     @AfterClass
     public static void tearDownAfterClass() throws SQLException {
-        Connections.close();            
+        Connections.close();
     }
-    
+
     protected SQLTemplates dialect;
-    
+
     @Nullable
-    protected String expectedQuery;    
-    
+    protected String expectedQuery;
+
     protected SQLUpdateClause update(PEntity<?> e){
         return new SQLUpdateClause(Connections.getConnection(), dialect, e);
     }
-    
+
     protected SQLInsertClause insert(PEntity<?> e){
         return new SQLInsertClause(Connections.getConnection(), dialect, e);
     }
-    
+
     protected SQLDeleteClause delete(PEntity<?> e){
         return new SQLDeleteClause(Connections.getConnection(), dialect, e);
     }
-    
+
     protected SQLMergeClause merge(PEntity<?> e){
         return new SQLMergeClause(Connections.getConnection(), dialect, e);
     }
-    
+
     protected SQLQuery query() {
         return new SQLQueryImpl(Connections.getConnection(), dialect) {
             @Override
@@ -65,12 +65,9 @@ public abstract class AbstractBaseTest {
             }
         };
     }
-    
 
     protected SQLSubQuery sq(){
         return new SQLSubQuery();
     }
 
-
-    
 }

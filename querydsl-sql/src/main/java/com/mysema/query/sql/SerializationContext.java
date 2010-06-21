@@ -1,10 +1,9 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql;
-
 
 import com.mysema.query.QueryMetadata;
 
@@ -19,7 +18,7 @@ public interface SerializationContext {
      * @param forCountRow
      */
     void serialize(QueryMetadata metadata, boolean forCountRow);
-    
+
     /**
      * @param str
      */

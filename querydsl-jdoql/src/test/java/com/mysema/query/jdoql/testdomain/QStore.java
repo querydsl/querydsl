@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql.testdomain;
 
@@ -18,29 +18,29 @@ import com.mysema.query.types.path.PathMetadataFactory;
  */
 @SuppressWarnings("serial")
 public class QStore extends PEntity<com.mysema.query.jdoql.testdomain.Store>{
-    
+
     public static final QStore store = new QStore("store");
-    
+
     public final PString name = createString("name");
-    
+
     public final PMap<String,Product,QProduct> productsByName = this.<String,Product,QProduct>createMap("productsByName",String.class,Product.class,QProduct.class);
-    
+
     public final PCollection<Product> products = createCollection("products",Product.class);
-    
+
     public QProduct productsByName(String key) {
         return new QProduct(PathMetadataFactory.forMapAccess(productsByName,key));
     }
-    
+
     public QProduct productsByName(com.mysema.query.types.Expr<String> key) {
         return new QProduct(PathMetadataFactory.forMapAccess(productsByName,key));
     }
-    
+
     public QStore(String path) {
-          this(Store.class, path);        
+          this(Store.class, path);
     }
     public QStore(Class<? extends Store> cl, String path) {
           super(cl, PathMetadataFactory.forVariable(path));
-    }    
+    }
     public QStore(PathMetadata<?> metadata) {
          super(Store.class, metadata);
     }

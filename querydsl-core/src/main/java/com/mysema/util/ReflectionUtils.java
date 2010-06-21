@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.util;
 
@@ -16,17 +16,16 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 
-
 /**
  * @author tiwe
  *
  */
 public final class ReflectionUtils {
-    
+
     private static final AnnotatedElement EMPTY = new AnnotatedElementAdapter();
-    
+
     private ReflectionUtils(){}
-    
+
     public static AnnotatedElement getAnnotatedElement(Class<?> beanClass, String propertyName, Class<?> propertyClass){
         Field field = getFieldOrNull(beanClass, propertyName);
         Method method = getGetterOrNull(beanClass, propertyName, propertyClass);
@@ -38,7 +37,7 @@ public final class ReflectionUtils {
             return new AnnotatedElementAdapter(field, method);
         }
     }
-    
+
     @Nullable
     private static Field getFieldOrNull(Class<?> beanClass, String propertyName){
         while (beanClass != null && !beanClass.equals(Object.class)){
@@ -51,22 +50,22 @@ public final class ReflectionUtils {
         }
         return null;
     }
-    
+
     @Nullable
     private static Method getGetterOrNull(Class<?> beanClass, String name, Class<?> type){
         String methodName = (type.equals(Boolean.class) ? "is" : "get") + StringUtils.capitalize(name);
         while(beanClass != null && !beanClass.equals(Object.class)){
             try {
-                return beanClass.getDeclaredMethod(methodName);                
+                return beanClass.getDeclaredMethod(methodName);
             } catch (SecurityException e) { // skip
             } catch (NoSuchMethodException e) { // skip
             }
             beanClass = beanClass.getSuperclass();
         }
         return null;
-        
+
     }
-    
+
     @SuppressWarnings("unchecked")
     @Nullable
     public static Class<?> getTypeParameter(java.lang.reflect.Type type, int index) {
@@ -86,5 +85,5 @@ public final class ReflectionUtils {
         }
         return null;
     }
-    
+
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._derby;
 
@@ -21,14 +21,14 @@ import com.mysema.testutil.JPATestRunner;
 @RunWith(JPATestRunner.class)
 @JPAConfig("derby-eclipselink")
 public abstract class DerbyJPAEclipseLinkTest extends AbstractJPATest{
-    
+
     protected JPQLTemplates getTemplates(){
     return EclipseLinkTemplates.DEFAULT;
     }
-    
+
     @Override
     protected Target getTarget() {
         return Target.DERBY;
     }
-    
+
 }

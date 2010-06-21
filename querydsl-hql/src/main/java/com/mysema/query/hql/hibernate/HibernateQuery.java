@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.hibernate;
 
@@ -14,10 +14,9 @@ import com.mysema.query.hql.HQLQuery;
 import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.hql.JPQLTemplates;
 
-
 /**
  * HibernateQuery is the default implementation of the HQLQuery interface for Hibernate
- * 
+ *
  * @author tiwe
  *
  */
@@ -30,19 +29,19 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
     public HibernateQuery() {
         this(NoSessionHolder.DEFAULT, HQLTemplates.DEFAULT);
     }
-    
+
     /**
      * Creates a new Session bound query
-     * 
+     *
      * @param session
      */
     public HibernateQuery(Session session) {
         this(new DefaultSessionHolder(session), HQLTemplates.DEFAULT);
-    }    
+    }
 
     /**
      * Creates a new Session bound query
-     * 
+     *
      * @param session
      * @param templates
      */
@@ -50,16 +49,15 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
     this(new DefaultSessionHolder(session), templates);
     }
 
-    
     /**
      * Creates a new Stateless session bound query
-     * 
+     *
      * @param session
      */
     public HibernateQuery(StatelessSession session) {
         this(new StatelessSessionHolder(session), HQLTemplates.DEFAULT);
     }
-       
+
     /**
      * @param session
      * @param templates
@@ -76,17 +74,15 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
     protected HibernateQuery(SessionHolder session, JPQLTemplates templates, QueryMetadata metadata) {
         super(session, templates, metadata);
     }
-    
 
     /**
      * Clone the state of this query to a new HibernateQuery instance with the given Session
-     * 
+     *
      * @param session
      * @return
      */
     public HibernateQuery clone(Session session){
         return new HibernateQuery(new DefaultSessionHolder(session), getTemplates(), getMetadata().clone());
     }
-    
-    
+
 }

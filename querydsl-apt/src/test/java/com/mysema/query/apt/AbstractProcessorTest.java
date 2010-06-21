@@ -34,7 +34,7 @@ public abstract class AbstractProcessorTest {
         if (!out.mkdirs()){
             Assert.fail("Creation of " + out.getPath() + " failed");
         }
-        
+
         JavaCompiler compiler = new SimpleCompiler();
         System.out.println(compiler.getClass().getName());
         List<String> options = new ArrayList<String>(classes.size() + 3);
@@ -42,8 +42,8 @@ public abstract class AbstractProcessorTest {
         options.add("target/" + target);
         options.add("-proc:only");
         options.add("-processor");
-        options.add(processorClass.getName());        
-        options.addAll(classes);        
+        options.add(processorClass.getName());
+        options.addAll(classes);
         int compilationResult = compiler.run(null, null, null, options.toArray(new String[options.size()]));
         if(compilationResult == 0){
             System.out.println("Compilation is successful");

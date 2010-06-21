@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.path;
 
@@ -14,10 +14,10 @@ import com.mysema.query.types.expr.EBoolean;
 
 /**
  * PBoolean represents boolean path expressions
- * 
+ *
  * @author tiwe
  * @see java.lang.Boolean
- * 
+ *
  */
 public class PBoolean extends EBoolean implements Path<Boolean> {
 
@@ -32,21 +32,21 @@ public class PBoolean extends EBoolean implements Path<Boolean> {
     public PBoolean(PathMetadata<?> metadata) {
         this.pathMixin = new PathMixin<Boolean>(this, metadata);
     }
-    
+
     public PBoolean(String var) {
         this(PathMetadataFactory.forVariable(var));
     }
-    
+
     @Override
     public void accept(Visitor v) {
-        v.visit(this);        
-    } 
-    
+        v.visit(this);
+    }
+
     @Override
     public boolean equals(Object o) {
         return pathMixin.equals(o);
     }
-    
+
     @Override
     public PathMetadata<?> getMetadata() {
         return pathMixin.getMetadata();
@@ -66,15 +66,15 @@ public class PBoolean extends EBoolean implements Path<Boolean> {
     public EBoolean isNotNull() {
         return pathMixin.isNotNull();
     }
-    
+
     @Override
     public EBoolean isNull() {
         return pathMixin.isNull();
     }
-    
+
     @Override
     public AnnotatedElement getAnnotatedElement(){
         return pathMixin.getAnnotatedElement();
     }
-    
+
 }

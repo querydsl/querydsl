@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql;
 
@@ -24,35 +24,35 @@ import com.mysema.query.jdoql.testdomain.QProduct;
 public class BasicsTest extends AbstractJDOTest {
 
     private static final JDOQLTemplates templates = new JDOQLTemplates();
-    
+
     private final QBook book = QBook.book;
 
     private final QProduct product = QProduct.product;
-    
+
     private final QProduct product2 = new QProduct("product2");
-    
+
     @Test
     public void serialization() throws IOException{
         JDOQLQuery query = query();
-        
+
         assertEquals("FROM com.mysema.query.jdoql.testdomain.Product", query.from(product).toString());
         assertEquals("FROM com.mysema.query.jdoql.testdomain.Product" +
-            "\nVARIABLES com.mysema.query.jdoql.testdomain.Product product2", 
+            "\nVARIABLES com.mysema.query.jdoql.testdomain.Product product2",
             query.from(product2).toString());
-        
+
         query.where(product.ne(product2)).list(product, product2);
-        query.close();        
+        query.close();
     }
-    
+
     @Test
     public void subQuerySerialization() throws IOException{
         JDOQLSubQuery query = sub();
-        
+
         assertEquals("FROM com.mysema.query.jdoql.testdomain.Product", query.from(product).toString());
         assertEquals("FROM com.mysema.query.jdoql.testdomain.Product" +
-            "\nVARIABLES com.mysema.query.jdoql.testdomain.Product product2", 
+            "\nVARIABLES com.mysema.query.jdoql.testdomain.Product product2",
             query.from(product2).toString());
-            
+
     }
 
     @Test
@@ -61,19 +61,19 @@ public class BasicsTest extends AbstractJDOTest {
         assertEquals(0, delete(product).where(product.name.eq("XXX")).execute());
         assertEquals(count, delete(product).execute());
     }
-    
+
     @Test
     public void countTests() {
         assertEquals("count", 2, query().from(product).count());
     }
-    
+
     @Test
     public void simpleTest() throws IOException{
         JDOQLQuery query = new JDOQLQueryImpl(pm, templates, false);
         assertEquals("Sony Discman", query.from(product).where(product.name.eq("Sony Discman")).uniqueResult(product.name));
         query.close();
     }
-    
+
     @Test
     public void projectionTests() {
         assertEquals("Sony Discman", query().from(product).where(
@@ -88,7 +88,7 @@ public class BasicsTest extends AbstractJDOTest {
         assertEquals("eq", 1, query(product, product.name.eq("Sony Discman")).size());
         assertEquals("instanceof ", 1, query(product,product.instanceOf(Book.class)).size());
     }
-    
+
     @Test
     @Ignore
     public void detachedResults(){
@@ -100,11 +100,11 @@ public class BasicsTest extends AbstractJDOTest {
     @Test
     public void booleanTests() {
         // boolean
-        assertEquals("and", 1, 
+        assertEquals("and", 1,
             query(product, product.name.eq("Sony Discman").and(product.price.loe(300.00))).size());
-        assertEquals("or", 2, 
+        assertEquals("or", 2,
             query(product, product.name.eq("Sony Discman").or(product.price.loe(300.00))).size());
-        assertEquals("not", 2, 
+        assertEquals("not", 2,
             query(product, product.name.eq("Sony MP3 player").not()).size());
     }
 

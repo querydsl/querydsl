@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.query;
 
@@ -13,7 +13,7 @@ import com.mysema.query.types.expr.EString;
 
 /**
  * Single result subquery
- * 
+ *
  * @author tiwe
  */
 public final class StringSubQuery extends EString implements SubQuery<String>{
@@ -21,26 +21,26 @@ public final class StringSubQuery extends EString implements SubQuery<String>{
     private static final long serialVersionUID = -64156984110154969L;
 
     private final SubQueryMixin<String> subQueryMixin;
-    
+
     public StringSubQuery(QueryMetadata md) {
         subQueryMixin = new SubQueryMixin<String>(this,md);
     }
-    
+
     @Override
     public void accept(Visitor v) {
-        v.visit(this);        
+        v.visit(this);
     }
 
     @Override
     public boolean equals(Object o) {
        return subQueryMixin.equals(o);
     }
-    
+
     @Override
     public EBoolean exists() {
         return subQueryMixin.exists();
     }
-    
+
     @Override
     public QueryMetadata getMetadata() {
         return subQueryMixin.getMetadata();
@@ -50,7 +50,7 @@ public final class StringSubQuery extends EString implements SubQuery<String>{
     public int hashCode(){
         return subQueryMixin.hashCode();
     }
-    
+
     @Override
     public EBoolean notExists() {
         return subQueryMixin.notExists();

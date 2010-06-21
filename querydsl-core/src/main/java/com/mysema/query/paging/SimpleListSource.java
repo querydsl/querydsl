@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.paging;
 
@@ -16,13 +16,13 @@ import com.mysema.commons.lang.Assert;
  * @param <T>
  */
 public class SimpleListSource<T> implements ListSource<T> {
-    
+
     private final List<T> list;
-    
+
     public SimpleListSource(List<T> list){
         this.list = Assert.notNull(list,"list");
     }
-    
+
     public SimpleListSource(T... args){
         this(Arrays.asList(args));
     }

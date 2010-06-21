@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.functions;
 
@@ -11,9 +11,9 @@ import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.ONumber;
 
 /**
- * MathFunctions provides additional math functions that are not available 
+ * MathFunctions provides additional math functions that are not available
  * in standard numeric expressions
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -21,7 +21,7 @@ public final class MathFunctions {
 
     private MathFunctions() {
     }
-    
+
     public static ENumber<Double> acos(Expr<Double> left) {
         return ONumber.create(left.getType(), MathOps.ACOS, left);
     }

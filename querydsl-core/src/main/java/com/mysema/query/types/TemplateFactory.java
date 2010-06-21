@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types;
 
@@ -28,7 +28,7 @@ import com.mysema.query.types.Template.Element;
 
 /**
  * TemplateFactory is a factory for {@link Template} instances
- * 
+ *
  * @author tiwe
  *
  */
@@ -38,9 +38,9 @@ public class TemplateFactory {
     private static final Pattern elementPattern = Pattern.compile("\\{%?%?\\d+[slu%]?%?\\}");
 
     public static final TemplateFactory DEFAULT = new TemplateFactory();
-        
+
     private final Map<String,Template> cache = new HashMap<String,Template>();
-        
+
     public Template create(String template){
         if (cache.containsKey(template)){
             return cache.get(template);
@@ -63,16 +63,16 @@ public class TemplateFactory {
                     converter = toEndsWithViaLike;
                         str = str.substring(1);
                     }
-                    
-                }                
+
+                }
                 int strip = 0;
                 switch (str.charAt(str.length()-1)){
-                  case 'l' : 
+                  case 'l' :
                       converter = toLowerCase;
                       strip = 1;
                       break;
-                  case 'u' : 
-                      converter = toUpperCase; 
+                  case 'u' :
+                      converter = toUpperCase;
                       strip = 1;
                       break;
                   case '%' :
@@ -94,14 +94,14 @@ public class TemplateFactory {
                       }
                       }
                       break;
-                  case 's' : 
+                  case 's' :
                       asString = true;
                       strip = 1;
                       break;
                 }
                 if (strip > 0){
-                    str = str.substring(0, str.length()-strip);    
-                }                
+                    str = str.substring(0, str.length()-strip);
+                }
                 int index = Integer.parseInt(str);
                 if (asString){
                     elements.add(new Element(index, true));
@@ -118,7 +118,7 @@ public class TemplateFactory {
             Template rv = new Template(template, elements);
             cache.put(template, rv);
             return rv;
-        }               
+        }
     }
-    
+
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.collections;
 
@@ -29,7 +29,7 @@ import com.mysema.util.MultiComparator;
 
 /**
  * Default implementation of the QueryEngine interface
- * 
+ *
  * @author tiwe
  *
  */
@@ -37,11 +37,11 @@ import com.mysema.util.MultiComparator;
 public class DefaultQueryEngine implements QueryEngine {
 
     private final DefaultEvaluatorFactory evaluatorFactory;
-    
+
     public DefaultQueryEngine(DefaultEvaluatorFactory evaluatorFactory) {
         this.evaluatorFactory = evaluatorFactory;
     }
-    
+
     @Override
     public long count(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables){
         if (metadata.getJoins().size() == 1){
@@ -50,14 +50,14 @@ public class DefaultQueryEngine implements QueryEngine {
             return evaluateMultipleSources(metadata, iterables, true).size();
         }
     }
-    
+
     @Override
-    public <T> List<T> list(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables, Expr<T> projection){        
+    public <T> List<T> list(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables, Expr<T> projection){
         if (metadata.getJoins().size() == 1){
             return evaluateSingleSource(metadata, iterables, false);
         }else{
             return evaluateMultipleSources(metadata, iterables, false);
-        }        
+        }
     }
 
     private List<?> distinct(List<?> list) {
@@ -68,14 +68,14 @@ public class DefaultQueryEngine implements QueryEngine {
                 if (set.add(Arrays.asList((Object[])o))){
                     rv.add(o);
                 }
-            }            
-            return rv;            
+            }
+            return rv;
         }else{
             return new ArrayList(new HashSet(list));
         }
     }
 
-    private List evaluateMultipleSources(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables, boolean count) {        
+    private List evaluateMultipleSources(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables, boolean count) {
         // from where
         Evaluator<List<Object[]>> ev = evaluatorFactory.createEvaluator(metadata, metadata.getJoins(), metadata.getWhere());
         List<Iterable<?>> iterableList = new ArrayList<Iterable<?>>(metadata.getJoins().size());
@@ -85,86 +85,86 @@ public class DefaultQueryEngine implements QueryEngine {
             }
         }
         List<?> list = ev.evaluate(iterableList.toArray());
-        
+
         if (!count && !list.isEmpty()){
             List<Expr<?>> sources = new ArrayList<Expr<?>>();
             for (JoinExpression join : metadata.getJoins()){
                 if (join.getType() == JoinType.DEFAULT){
-                    sources.add(join.getTarget());    
+                    sources.add(join.getTarget());
                 }else{
                     Operation target = (Operation) join.getTarget();
                    sources.add(target.getArg(1));
-                }            
-            }            
+                }
+            }
             // ordered
             if (!metadata.getOrderBy().isEmpty()){
                 order(metadata, sources, list);
-            }            
+            }
             // limit + offset
             if (metadata.getModifiers().isRestricting()){
                 list = metadata.getModifiers().subList(list);
-            }            
+            }
             if (list.isEmpty()){
                 return list;
-            }            
+            }
             // projection
-            list = project(metadata, sources, list);                
+            list = project(metadata, sources, list);
         }
-        
+
         // distinct
-        if (metadata.isDistinct()){            
+        if (metadata.isDistinct()){
             list = distinct(list);
-        }                
-        
+        }
+
         return list;
     }
 
-    private List evaluateSingleSource(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables, boolean count) {        
+    private List evaluateSingleSource(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables, boolean count) {
         Expr<?> source = metadata.getJoins().get(0).getTarget();
         List<Expr<?>> sources = Collections.<Expr<?>>singletonList(source);
-        Iterable<?> iterable = iterables.values().iterator().next(); 
+        Iterable<?> iterable = iterables.values().iterator().next();
         List<?> list;
         if (iterable instanceof List){
             list = (List)iterable;
         }else{
             list = IteratorAdapter.asList(iterable.iterator());
         }
-        
+
         // from & where
         if (metadata.getWhere() != null){
             Evaluator<List<?>> evaluator = (Evaluator)evaluatorFactory.createEvaluator(metadata, source, metadata.getWhere());
             list = evaluator.evaluate(list);
-        }        
-        
-        if (!count && !list.isEmpty()){            
+        }
+
+        if (!count && !list.isEmpty()){
             // ordered
             if (!metadata.getOrderBy().isEmpty()){
                 // clone list
                 if (list == iterable){
-                    list = new ArrayList(list);    
+                    list = new ArrayList(list);
                 }
                 order(metadata, sources, list);
-            }                    
+            }
             // limit + offset
             if (metadata.getModifiers().isRestricting()){
                 list = metadata.getModifiers().subList(list);
-            }            
+            }
             if (list.isEmpty()){
                 return list;
-            }            
+            }
             // projection
             if (metadata.getProjection().size() > 1 || !metadata.getProjection().get(0).equals(source)){
                 list = project(metadata, sources, list);
-            }           
-        }        
+            }
+        }
 
         // distinct
-        if (metadata.isDistinct()){            
+        if (metadata.isDistinct()){
             list = distinct(list);
         }
-        
+
         return list;
-        
+
     }
 
     private void order(QueryMetadata metadata, List<Expr<?>> sources, List<?> list) {
@@ -188,5 +188,5 @@ public class DefaultQueryEngine implements QueryEngine {
         list = IteratorUtils.toList(IteratorUtils.transformedIterator(list.iterator(), transformer));
         return list;
     }
-    
+
 }

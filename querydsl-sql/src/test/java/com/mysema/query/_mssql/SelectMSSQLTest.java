@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._mssql;
 
@@ -45,20 +45,20 @@ public class SelectMSSQLTest extends SelectBaseTest {
     public void setUpForTest() {
         dialect = new SQLServerTemplates().newLineToSingleSpace();
     }
-    
+
     @Test
     public void manualPaging(){
         RowNumber rowNumber = rowNumber().orderBy(employee.lastname.asc()).as(rn);
         // TODO : create a short cut for wild card
         Expr<Object[]> all = CSimple.create(Object[].class, "*");
-        
+
         // simple
         System.out.println("#1");
         for (Object[] row : query().from(employee).list(employee.firstname, employee.lastname, rowNumber)){
             System.out.println(Arrays.asList(row));
         }
         System.out.println();
-        
+
         // with subquery, generic alias
         System.out.println("#2");
         ListSubQuery<Object[]> sub = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
@@ -67,7 +67,7 @@ public class SelectMSSQLTest extends SelectBaseTest {
             System.out.println(Arrays.asList(row));
         }
         System.out.println();
-                
+
         // with subquery, only row number
         System.out.println("#3");
         ObjectSubQuery<Long> sub2 = sq().from(employee).unique(rowNumber);
@@ -76,7 +76,7 @@ public class SelectMSSQLTest extends SelectBaseTest {
             System.out.println(Arrays.asList(row));
         }
         System.out.println();
-        
+
         // with subquery, specific alias
         System.out.println("#4");
         ListSubQuery<Object[]> sub3 = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
@@ -84,5 +84,5 @@ public class SelectMSSQLTest extends SelectBaseTest {
             System.out.println(Arrays.asList(row));
         }
     }
-    
+
 }

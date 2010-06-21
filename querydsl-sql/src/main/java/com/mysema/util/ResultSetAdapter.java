@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.util;
 
@@ -32,9 +32,9 @@ import java.util.Map;
  *
  */
 public class ResultSetAdapter implements ResultSet{
-    
+
     private final ResultSet rs;
-    
+
     public ResultSetAdapter(ResultSet rs){
         this.rs = rs;
     }

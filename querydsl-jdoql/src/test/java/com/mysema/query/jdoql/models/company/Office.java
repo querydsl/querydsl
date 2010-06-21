@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql.models.company;
 
@@ -48,7 +48,7 @@ public class Office {
 
     /**
      * Accessor for the roomt name
-     * 
+     *
      * @return Returns the room name.
      */
     public String getRoomName() {
@@ -57,7 +57,7 @@ public class Office {
 
     /**
      * Mutator for the room name
-     * 
+     *
      * @param roomName
      *            The room name
      */

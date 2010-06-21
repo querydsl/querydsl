@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -11,19 +11,19 @@ import javax.annotation.Nullable;
 
 /**
  * TypeSuper is a Type for type variables and wildcard types
- * 
+ *
  * @author tiwe
  *
  */
 public class TypeSuper extends TypeAdapter{
-    
+
     private final Type superType;
-    
+
     @Nullable
     private final String varName;
 
     public TypeSuper(String varName, Type type) {
-        super(Types.OBJECT);        
+        super(Types.OBJECT);
         this.superType = type;
         this.varName = varName;
     }
@@ -33,7 +33,7 @@ public class TypeSuper extends TypeAdapter{
         this.superType = type;
         this.varName = null;
     }
-    
+
     @Override
     public void appendLocalGenericName(Type context, Appendable builder, boolean asArgType) throws IOException {
         if (!asArgType){
@@ -41,7 +41,7 @@ public class TypeSuper extends TypeAdapter{
             superType.appendLocalGenericName(context, builder, true);
         }else{
             super.appendLocalGenericName(context, builder, asArgType);
-        }    
+        }
     }
 
     public String getVarName(){

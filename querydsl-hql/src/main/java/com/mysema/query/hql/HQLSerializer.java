@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql;
 
@@ -32,7 +32,7 @@ import com.mysema.util.MathUtils;
 
 /**
  * HQLSerializer serializes querydsl expressions into HQL syntax.
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -42,7 +42,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             Ops.ADD, Ops.SUB, Ops.MULT, Ops.DIV,
             Ops.LT, Ops.LOE, Ops.GT, Ops.GOE, Ops.BETWEEN,
             Ops.BEFORE, Ops.AFTER, Ops.BOE, Ops.AOE));
-    
+
     private static final String SELECT_COUNT_DISTINCT = "select count(distinct ";
 
     private static final String COMMA = ", ";
@@ -52,33 +52,33 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     private static final String FETCH = "fetch ";
 
     private static final String FETCH_ALL_PROPERTIES = " fetch all properties";
-    
+
     private static final String FROM = "from ";
-    
+
     private static final String GROUP_BY = "\ngroup by ";
-    
+
     private static final String HAVING = "\nhaving ";
-    
+
     private static final String ORDER_BY = "\norder by ";
-    
+
     private static final String SELECT = "select ";
-    
+
     private static final String SELECT_COUNT = "select count(";
-    
+
     private static final String SELECT_DISTINCT = "select distinct ";
-    
+
     private static final String SET = "\nset ";
-    
+
     private static final String UPDATE = "update ";
-    
+
     private static final String WHERE = "\nwhere ";
-    
+
     private static final String WITH = " with ";
-    
+
     private static final Map<JoinType, String> joinTypes = new HashMap<JoinType, String>();
-    
+
     private final JPQLTemplates templates;
-    
+
     static{
         joinTypes.put(JoinType.DEFAULT, COMMA);
         joinTypes.put(JoinType.FULLJOIN, "\n  full join ");
@@ -86,7 +86,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         joinTypes.put(JoinType.JOIN, "\n  join ");
         joinTypes.put(JoinType.LEFTJOIN, "\n  left join ");
     }
-    
+
     private boolean wrapElements = false;
 
     public HQLSerializer(JPQLTemplates templates) {
@@ -125,10 +125,10 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         }
         return OSimple.create(
                 operation.getType(),
-                operation.getOperator(), 
+                operation.getOperator(),
                 args.<Expr<?>>toArray(new Expr[args.size()]));
     }
-    
+
     private Expr<?> regexToLike(String str){
         return EStringConst.create(str.replace(".*", "%").replace(".", "_"));
     }
@@ -144,20 +144,20 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         // select
         if (projection != null){
             append(SELECT).append(projection).append("\n");
-            
+
         }else if (forCountRow) {
             if (!metadata.isDistinct()){
                 append(SELECT_COUNT);
             }else{
-                append(SELECT_COUNT_DISTINCT);                
+                append(SELECT_COUNT_DISTINCT);
             }
             if(!select.isEmpty()){
-                handle(COMMA, select);    
+                handle(COMMA, select);
             }else{
                 handle(joins.get(0).getTarget());
-            }                
-            append(")\n"); 
-            
+            }
+            append(")\n");
+
         } else if (!select.isEmpty()) {
             if (!metadata.isDistinct()) {
                 append(SELECT);
@@ -165,9 +165,9 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
                 append(SELECT_DISTINCT);
             }
             handle(COMMA, select).append("\n");
-            
+
         }
-        
+
         // from
         append(FROM);
         serializeSources(forCountRow, joins);
@@ -176,12 +176,12 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         if (where != null) {
             append(WHERE).handle(where);
         }
-        
+
         // group by
         if (!groupBy.isEmpty()) {
             append(GROUP_BY).handle(COMMA, groupBy);
         }
-        
+
         // having
         if (having != null) {
             if (groupBy.isEmpty()) {
@@ -189,7 +189,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             }
             append(HAVING).handle(having);
         }
-        
+
         // order by
         if (!orderBy.isEmpty() && !forCountRow) {
             append(ORDER_BY);
@@ -197,7 +197,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             for (OrderSpecifier<?> os : orderBy) {
                 if (!first){
                     append(COMMA);
-                }                    
+                }
                 handle(os.getTarget());
                 append(" " + os.getOrder().toString().toLowerCase(Locale.ENGLISH));
                 first = false;
@@ -207,7 +207,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
 
     public void serializeForDelete(QueryMetadata md) {
         append(DELETE);
-        handleJoinTarget(md.getJoins().get(0));        
+        handleJoinTarget(md.getJoins().get(0));
         if (md.getWhere() != null) {
             append(WHERE).handle(md.getWhere());
         }
@@ -228,10 +228,10 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             JoinExpression je = joins.get(i);
             if (i > 0) {
                 append(joinTypes.get(je.getType()));
-            }            
+            }
             if (je.hasFlag(HQLFlags.FETCH) && !forCountRow){
                 append(FETCH);
-            }            
+            }
             handleJoinTarget(je);
             if (je.hasFlag(HQLFlags.FETCH_ALL) && !forCountRow){
                 append(FETCH_ALL_PROPERTIES);
@@ -242,7 +242,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             }
         }
     }
-    
+
     @Override
     public void visit(Constant<?> expr) {
         boolean wrap = templates.wrapConstant(expr);
@@ -261,16 +261,16 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             append(")");
         }
     }
-    
+
     @Override
     public void visit(Param<?> param){
         append(":");
         super.visit(param);
     }
-    
+
     @Override
     public void visit(SubQuery<?> query) {
-        append("(");       
+        append("(");
         serialize(query.getMetadata(), false, null);
         append(")");
     }
@@ -278,7 +278,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     @Override
     public void visit(Path<?> expr){
         // only wrap a PathCollection, if it the pathType is PROPERTY
-        boolean wrap = wrapElements 
+        boolean wrap = wrapElements
             && (Collection.class.isAssignableFrom(expr.getType()) || Map.class.isAssignableFrom(expr.getType()))
             && expr.getMetadata().getPathType().equals(PathType.PROPERTY);
         if (wrap) {
@@ -289,7 +289,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             append(")");
         }
     }
-    
+
     @Override
     public void visit(EConstructor<?> expr) {
     if (expr.getClass().equals(EConstructor.class)){
@@ -299,21 +299,21 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     }else{
         // serialize arguments only
         super.visit(expr);
-    }    
+    }
     }
 
     @SuppressWarnings("unchecked")
     protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
         boolean old = wrapElements;
         wrapElements = templates.wrapElements(operator);
-        
+
         if (operator.equals(Ops.IN)){
             if (args.get(1) instanceof Path){
             super.visitOperation(type, JPQLTemplates.MEMBER_OF, args);
             }else{
             super.visitOperation(type, operator, args);
             }
-            
+
         } else if (operator.equals(Ops.INSTANCE_OF)) {
             if (templates.isTypeAsString()){
             List<Expr<?>> newArgs = new ArrayList<Expr<?>>(args);
@@ -322,24 +322,24 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
                 if (cl.getAnnotation(DiscriminatorValue.class) != null){
                     newArgs.set(1, EStringConst.create(cl.getAnnotation(DiscriminatorValue.class).value()));
                 }else{
-                    newArgs.set(1, EStringConst.create(cl.getName()));    
-                }            
+                    newArgs.set(1, EStringConst.create(cl.getName()));
+                }
                 super.visitOperation(type, operator, newArgs);
             }else{
             super.visitOperation(type, operator, args);
             }
-            
-        } else if (operator.equals(Ops.NUMCAST)) {            
+
+        } else if (operator.equals(Ops.NUMCAST)) {
             Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
             String typeName = targetType.getSimpleName().toLowerCase(Locale.ENGLISH);
             visitOperation(targetType, JPQLTemplates.CAST, Arrays.<Expr<?>>asList(args.get(0), ExprConst.create(typeName)));
-                        
+
         } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQuery){
-            SubQuery subQuery = (SubQuery) args.get(0);            
+            SubQuery subQuery = (SubQuery) args.get(0);
             append("exists (");
             serialize(subQuery.getMetadata(), false, "1");
             append(")");
-            
+
         } else if (operator.equals(Ops.MATCHES)){
             List<Expr<?>> newArgs = new ArrayList<Expr<?>>(args);
             if (newArgs.get(1) instanceof Constant){
@@ -348,10 +348,10 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
                 newArgs.set(1, regexToLike((Operation)newArgs.get(1)));
             }
             super.visitOperation(type, operator, newArgs);
-            
+
         }else if(NUMERIC.contains(operator)){
             super.visitOperation(type, operator, normalizeNumericArgs(args));
-            
+
         } else {
             super.visitOperation(type, operator, args);
         }
@@ -380,8 +380,8 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
                     Number number = (Number) ((Constant)arg).getConstant();
                     newArgs.add(ExprConst.create(MathUtils.cast(number, (Class)numType)));
                 }else{
-                    newArgs.add(arg);    
-                }                
+                    newArgs.add(arg);
+                }
             }
             return newArgs;
         }else{

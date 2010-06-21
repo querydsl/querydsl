@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -14,85 +14,84 @@ import net.jcip.annotations.Immutable;
 
 import com.mysema.query.annotations.PropertyType;
 
-
 /**
  * TypeCategory defines the expression type used for a Field
- * 
+ *
  * @author tiwe
  *
  */
 @Immutable
 public enum TypeCategory {
     /**
-     * 
-     */           
+     *
+     */
     SIMPLE(null),
     /**
-     * 
+     *
      */
     MAP(null),
     /**
-     * 
+     *
      */
     COLLECTION(null),
     /**
-     * 
+     *
      */
-    LIST(COLLECTION),    
+    LIST(COLLECTION),
     /**
-     * 
+     *
      */
     SET(COLLECTION),
     /**
-     * 
+     *
      */
     ARRAY(null),
     /**
-     * 
+     *
      */
     COMPARABLE(SIMPLE),
     /**
-     * 
+     *
      */
-    BOOLEAN(COMPARABLE, Boolean.class.getName()),     
+    BOOLEAN(COMPARABLE, Boolean.class.getName()),
     /**
-     *  
+     *
      */
     DATE(COMPARABLE, java.sql.Date.class.getName(), "org.joda.time.LocalDate"),
     /**
-     * 
+     *
      */
-    DATETIME(COMPARABLE, 
+    DATETIME(COMPARABLE,
         java.util.Calendar.class.getName(),
-        java.util.Date.class.getName(), 
-        java.sql.Timestamp.class.getName(), 
-        "org.joda.time.LocalDateTime", 
+        java.util.Date.class.getName(),
+        java.sql.Timestamp.class.getName(),
+        "org.joda.time.LocalDateTime",
         "org.joda.time.Instant",
-        "org.joda.time.DateTime", 
-        "org.joda.time.DateMidnight"),    
+        "org.joda.time.DateTime",
+        "org.joda.time.DateMidnight"),
     /**
-     * 
+     *
      */
     ENTITY(null),
-    
+
     /**
-     * 
+     *
      */
-    NUMERIC(COMPARABLE),     
+    NUMERIC(COMPARABLE),
     /**
-     * 
+     *
      */
     STRING(COMPARABLE, String.class.getName()),
     /**
-     * 
+     *
      */
     TIME(COMPARABLE, java.sql.Time.class.getName(), "org.joda.time.LocalTime");
-    
+
     @Nullable
     private final TypeCategory superType;
-    
+
     private final Set<String> types;
-        
+
     TypeCategory(@Nullable TypeCategory superType, String... types){
         this.superType = superType;
         this.types = new HashSet<String>(types.length);
@@ -105,18 +104,18 @@ public enum TypeCategory {
     public TypeCategory getSuperType() {
         return superType;
     }
-    
+
     public boolean supports(Class<?> cl){
         return supports(cl.getName());
     }
-    
+
     public boolean supports(String className){
         return types.contains(className);
     }
-    
+
     /**
      * transitive and reflexive subCategoryOf check
-     * 
+     *
      * @param ancestor
      * @return
      */
@@ -127,9 +126,9 @@ public enum TypeCategory {
             return false;
         }else{
             return superType == ancestor || superType.isSubCategoryOf(ancestor);
-        }            
+        }
     }
-    
+
     public static TypeCategory get(String className){
         for (TypeCategory category : values()){
             if (category.supports(className)){
@@ -138,7 +137,7 @@ public enum TypeCategory {
         }
         return SIMPLE;
     }
-    
+
     @Nullable
     public static TypeCategory get(PropertyType propertyType){
         switch(propertyType){
@@ -146,11 +145,11 @@ public enum TypeCategory {
             case DATE: return DATE;
             case DATETIME: return DATETIME;
             case ENTITY: return ENTITY;
-            case SIMPLE: return SIMPLE;            
-            case TIME: return TIME;    
+            case SIMPLE: return SIMPLE;
+            case TIME: return TIME;
             case NONE: return null;
-        }        
+        }
         throw new IllegalArgumentException("Unsupported PropertyType " + propertyType);
     }
-    
+
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql.oracle;
 
@@ -17,7 +17,7 @@ import com.mysema.query.types.expr.EBoolean;
 
 /**
  * OracleQuery provides Oracle specific extensions to the base SQL query type
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -32,7 +32,7 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
     public OracleQuery(Connection conn, SQLTemplates patterns) {
         super(conn, patterns, new DefaultQueryMetadata());
     }
-    
+
     protected OracleQuery(Connection conn, SQLTemplates patterns, QueryMetadata metadata) {
         super(conn, patterns, metadata);
     }
@@ -66,15 +66,15 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
         return new OracleSerializer(getTemplates(), connectBy, connectByNocyclePrior,
                 connectByPrior, orderSiblingsBy, startWith);
     }
-    
+
     /**
      * Clone the state of this query to a new SQLQueryImpl instance with the given Connection
-     * 
+     *
      * @param conn
      * @return
      */
     public OracleQuery clone(Connection conn){
-        return new OracleQuery(conn, getTemplates(), getMetadata().clone());   
+        return new OracleQuery(conn, getTemplates(), getMetadata().clone());
     }
 
     // TODO : connect by root

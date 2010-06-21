@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql;
 
@@ -12,7 +12,7 @@ import com.mysema.query.types.expr.EDateTime;
 import com.mysema.query.types.expr.ETime;
 
 public class DateTimeTest extends AbstractQueryTest {
-    
+
     @Test
     public void testDateOperations() {
         // current_date(), current_time(), current_timestamp()

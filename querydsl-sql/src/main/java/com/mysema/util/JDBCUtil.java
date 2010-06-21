@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.util;
 
@@ -20,9 +20,9 @@ import com.mysema.query.types.ParamNotSetException;
  *
  */
 public final class JDBCUtil {
-    
+
     private JDBCUtil(){}
-    
+
     public static void setParameters(PreparedStatement stmt, Collection<Object> objects, Map<Param<?>, Object> params){
         int counter = 1;
         for (Object o : objects) {
@@ -43,11 +43,11 @@ public final class JDBCUtil {
             }
         }
     }
-    
+
     // TODO : don't use reflection here
-    private static void setParameter(PreparedStatement stmt, int i, Object o) throws NoSuchMethodException, 
+    private static void setParameter(PreparedStatement stmt, int i, Object o) throws NoSuchMethodException,
         IllegalAccessException, InvocationTargetException {
-        Class<?> type = o.getClass();        
+        Class<?> type = o.getClass();
         String methodName = "set" + type.getSimpleName();
         if (methodName.equals("setInteger")) {
             methodName = "setInt";
@@ -59,9 +59,9 @@ public final class JDBCUtil {
             type = java.sql.Date.class;
             o = new java.sql.Date(((java.util.Date) o).getTime());
         }
-        
+
         type = ClassUtils.wrapperToPrimitive(type) != null ? ClassUtils.wrapperToPrimitive(type) : type;
-        
+
         // TODO : cache methods
         PreparedStatement.class.getMethod(methodName, int.class, type).invoke(stmt, i, o);
     }

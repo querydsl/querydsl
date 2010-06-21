@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.domain;
 
@@ -16,9 +16,9 @@ import javax.persistence.ManyToOne;
 public class Employee {
     @ManyToOne
     Company company;
-    
+
     String firstName, lastName;
-    
+
     @Id
     int id;
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.expr;
 
@@ -12,10 +12,9 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Ops;
 
-
 /**
  * ECollectionBase is an abstract base class for ECollection implementations
- * 
+ *
  * @author tiwe
  *
  * @param <D>
@@ -26,35 +25,35 @@ public abstract class ECollectionBase<C extends Collection<E>, E> extends ESimpl
 
     @Nullable
     private volatile EBoolean empty;
-   
+
     @Nullable
-    private volatile ENumber<Integer> size;    
-    
+    private volatile ENumber<Integer> size;
+
     public ECollectionBase(Class<? extends C> type) {
         super(type);
     }
-    
+
     @Override
     public final EBoolean contains(E child) {
-        return contains(ExprConst.create(child));        
+        return contains(ExprConst.create(child));
     }
 
     @Override
     public final EBoolean contains(Expr<E> child) {
         return OBoolean.create(Ops.IN, child, this);
     }
-    
+
     @Override
     public final EBoolean isEmpty() {
         if (empty == null){
-            empty = OBoolean.create(Ops.COL_IS_EMPTY, this); 
+            empty = OBoolean.create(Ops.COL_IS_EMPTY, this);
         }
         return empty;
     }
 
     @Override
     public final EBoolean isNotEmpty() {
-        return isEmpty().not();  
+        return isEmpty().not();
     }
 
     @Override

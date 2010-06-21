@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql.testdomain;
 
@@ -23,18 +23,18 @@ import javax.jdo.annotations.Value;
 public class Store {
 
     private String name;
-    
+
 //    @Persistent
     @Join
     @Element(types=Product.class)
     private List<Product> products = new ArrayList<Product>();
-    
+
 //    @Persistent
     @Join
     @Key(types=String.class)
     @Value(types=Product.class)
     private Map<String,Product> productsByName = new HashMap<String,Product>();
-    
+
     public String getName() {
         return name;
     }
@@ -58,5 +58,5 @@ public class Store {
     public void setProducts(List<Product> products) {
         this.products = products;
     }
-    
+
 }

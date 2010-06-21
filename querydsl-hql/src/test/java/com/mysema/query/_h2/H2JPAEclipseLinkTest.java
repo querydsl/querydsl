@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._h2;
 
@@ -21,14 +21,14 @@ import com.mysema.testutil.JPATestRunner;
 @RunWith(JPATestRunner.class)
 @JPAConfig("h2-eclipselink")
 public abstract class H2JPAEclipseLinkTest extends AbstractJPATest{
-    
+
     protected JPQLTemplates getTemplates(){
     return EclipseLinkTemplates.DEFAULT;
     }
-    
+
     @Override
     protected Target getTarget() {
         return Target.H2;
     }
-    
+
 }

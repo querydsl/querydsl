@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.collections;
 
@@ -33,35 +33,35 @@ import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
- * DefaultEvaluatorFactory extends the EvaluatorFactory class to provide Java source 
+ * DefaultEvaluatorFactory extends the EvaluatorFactory class to provide Java source
  * templates for evaluation of ColQuery queries
- * 
+ *
  * @author tiwe
  *
  */
 @Immutable
 public class DefaultEvaluatorFactory {
-    
+
     private final EvaluatorFactory factory;
-    
+
     private final ColQueryTemplates templates;
-    
+
     public DefaultEvaluatorFactory(ColQueryTemplates templates){
         // TODO : which ClassLoader to pick ?!?
-    this(templates, 
-        (URLClassLoader)DefaultEvaluatorFactory.class.getClassLoader(), 
+    this(templates,
+        (URLClassLoader)DefaultEvaluatorFactory.class.getClassLoader(),
         ToolProvider.getSystemJavaCompiler());
     }
-    
-    public DefaultEvaluatorFactory(ColQueryTemplates templates, 
+
+    public DefaultEvaluatorFactory(ColQueryTemplates templates,
             URLClassLoader classLoader, JavaCompiler compiler){
         this.templates = templates;
         this.factory = new EvaluatorFactory(classLoader, compiler);
     }
-    
+
     /**
      * Create an Evaluator for the given query sources and projection
-     * 
+     *
      * @param <T>
      * @param sources
      * @param projection
@@ -70,7 +70,7 @@ public class DefaultEvaluatorFactory {
     public <T> Evaluator<T> create(QueryMetadata metadata, List<? extends Expr<?>> sources, Expr<T> projection) {
         ColQuerySerializer serializer = new ColQuerySerializer(templates);
         serializer.handle(projection);
-        
+
         Map<Object,String> constantToLabel = serializer.getConstantToLabel();
         Map<String, Object> constants = getConstants(metadata, constantToLabel);
         Class<?>[] types = new Class<?>[sources.size()];
@@ -79,25 +79,25 @@ public class DefaultEvaluatorFactory {
             types[i] = sources.get(i).getType();
             names[i] = sources.get(i).toString();
         }
-        
+
         // normalize types
         for (int i = 0; i < types.length; i++){
             if (ClassUtils.wrapperToPrimitive(types[i]) != null){
                 types[i] = ClassUtils.wrapperToPrimitive(types[i]);
             }
         }
-        
+
         String javaSource = serializer.toString();
         if (projection instanceof EConstructor<?>){
             javaSource = "("+com.mysema.codegen.ClassUtils.getName(projection.getType())+")(" + javaSource+")";
         }
-        
-        return factory.createEvaluator("return " + javaSource +";", projection.getType(), names, types, constants);        
+
+        return factory.createEvaluator("return " + javaSource +";", projection.getType(), names, types, constants);
     }
 
     /**
      * Create an Evaluator for the given source and filter
-     * 
+     *
      * @param <T>
      * @param source
      * @param filter
@@ -114,25 +114,25 @@ public class DefaultEvaluatorFactory {
         ser.append("    }\n");
         ser.append("}\n");
         ser.append("return rv;");
-        
+
         Map<Object,String> constantToLabel = ser.getConstantToLabel();
         Map<String, Object> constants = getConstants(metadata, constantToLabel);
-        
+
         Type sourceType = new Type(source.getType());
-        Type sourceListType = new Type(Iterable.class, sourceType); 
-        
+        Type sourceListType = new Type(Iterable.class, sourceType);
+
         return factory.createEvaluator(
-                ser.toString(), 
-                sourceListType, 
-                new String[]{source+"_"}, 
-                new Type[]{sourceListType}, 
-                new Class[]{Iterable.class}, 
+                ser.toString(),
+                sourceListType,
+                new String[]{source+"_"},
+                new Type[]{sourceListType},
+                new Class[]{Iterable.class},
                 constants);
     }
-    
+
     /**
      * Create an Evaluator for the given sources and the given optional filter
-     * 
+     *
      * @param joins
      * @param filter
      * @return
@@ -143,9 +143,9 @@ public class DefaultEvaluatorFactory {
         List<Type> sourceTypes = new ArrayList<Type>();
         List<Class> sourceClasses = new ArrayList<Class>();
         StringBuilder vars = new StringBuilder();
-        ColQuerySerializer ser = new ColQuerySerializer(templates);        
+        ColQuerySerializer ser = new ColQuerySerializer(templates);
         ser.append("java.util.List<Object[]> rv = new java.util.ArrayList<Object[]>();\n");
-        
+
         // creating context
         for (JoinExpression join : joins){
             Expr<?> target = join.getTarget();
@@ -159,7 +159,7 @@ public class DefaultEvaluatorFactory {
                 sourceNames.add(target+"_");
                 sourceTypes.add(new Type(Iterable.class, new Type(target.getType())));
                 sourceClasses.add(Iterable.class);
-                
+
             }else if (join.getType() == JoinType.INNERJOIN){
                 Operation alias = (Operation)join.getTarget();
                 // TODO : handle join condition
@@ -167,46 +167,46 @@ public class DefaultEvaluatorFactory {
                 ser.handle(alias.getArg(0));
                 if (alias.getArg(0).getType().equals(Map.class)){
                     ser.append(".values()");
-                }                
+                }
                 ser.append("){\n");
                 vars.append(alias.getArg(1));
-            
+
 //            }else if (join.getType() == JoinType.LEFTJOIN){
-//                // TODO    
-//                                
+//                // TODO
+//
             }else{
                 throw new IllegalArgumentException("Illegal join expression " + join);
             }
         }
-        
+
         // filter
         if (filter != null){
             ser.append("if (").handle(filter).append("){\n");
             ser.append("    rv.add(new Object[]{"+vars+"});\n");
-            ser.append("}\n");    
+            ser.append("}\n");
         }else{
             ser.append("rv.add(new Object[]{"+vars+"});\n");
         }
-        
+
         // closing context
         for (int i = 0; i < joins.size(); i++){
-            ser.append("}\n");    
-        }        
+            ser.append("}\n");
+        }
         ser.append("return rv;");
-        
+
         Map<Object,String> constantToLabel = ser.getConstantToLabel();
         Map<String, Object> constants = getConstants(metadata, constantToLabel);
-        
-        Type projectionType = new Type(List.class, new Type(Object[].class));        
+
+        Type projectionType = new Type(List.class, new Type(Object[].class));
         return factory.createEvaluator(
-                ser.toString(), 
-                projectionType, 
-                sourceNames.toArray(new String[sourceNames.size()]), 
-                sourceTypes.toArray(new Type[sourceTypes.size()]), 
-                sourceClasses.toArray(new Class[sourceClasses.size()]), 
+                ser.toString(),
+                projectionType,
+                sourceNames.toArray(new String[sourceNames.size()]),
+                sourceTypes.toArray(new Type[sourceTypes.size()]),
+                sourceClasses.toArray(new Class[sourceClasses.size()]),
                 constants);
     }
-    
+
     private Map<String, Object> getConstants(QueryMetadata metadata, Map<Object, String> constantToLabel) {
         Map<String,Object> constants = new HashMap<String,Object>();
         for (Map.Entry<Object,String> entry : constantToLabel.entrySet()){
@@ -218,10 +218,9 @@ public class DefaultEvaluatorFactory {
                 constants.put(entry.getValue(), value);
             }else{
                 constants.put(entry.getValue(), entry.getKey());
-            }            
+            }
         }
         return constants;
     }
 
-    
 }

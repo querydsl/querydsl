@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.expr;
 
@@ -15,7 +15,7 @@ import com.mysema.query.types.Visitor;
 
 /**
  * ODateTime represents DateTime operations
- * 
+ *
  * @author tiwe
  *
  * @param <D>
@@ -28,7 +28,7 @@ public class ODateTime<D extends Comparable<?>> extends
 
     /**
      * Factory method
-     * 
+     *
      * @param <D>
      * @param type
      * @param op
@@ -40,7 +40,7 @@ public class ODateTime<D extends Comparable<?>> extends
     }
 
     private final Operation<D> opMixin;
-    
+
     ODateTime(Class<D> type, Operator<? super D> op, Expr<?>... args) {
         this(type, op, Arrays.asList(args));
     }
@@ -52,7 +52,7 @@ public class ODateTime<D extends Comparable<?>> extends
 
     @Override
     public void accept(Visitor v) {
-        v.visit(this);        
+        v.visit(this);
     }
 
     @Override
@@ -69,12 +69,12 @@ public class ODateTime<D extends Comparable<?>> extends
     public Operator<? super D> getOperator() {
         return opMixin.getOperator();
     }
-    
+
     @Override
     public boolean equals(Object o){
         return opMixin.equals(o);
     }
-    
+
     @Override
     public int hashCode(){
         return getType().hashCode();

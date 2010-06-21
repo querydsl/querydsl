@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql.dml;
 
@@ -37,15 +37,15 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 /**
  * SQLInsertClause defines an INSERT INTO clause
- * 
+ *
  * @author tiwe
- * 
+ *
  */
 @SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public class SQLInsertClause implements InsertClause<SQLInsertClause> {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
-    
+
     private final List<Path<?>> columns = new ArrayList<Path<?>>();
 
     private final Connection connection;
@@ -78,7 +78,7 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
         this.columns.addAll(Arrays.asList(columns));
         return this;
     }
-    
+
     public ResultSet executeWithKeys(){
         SQLSerializer serializer = new SQLSerializer(templates, true);
         serializer.serializeForInsert(entity, columns, values, subQuery);
@@ -90,7 +90,7 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
             JDBCUtil.setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
-            
+
             return new ResultSetAdapter(rs){
                 @Override
                 public void close() throws SQLException {
@@ -99,11 +99,11 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
                     } finally {
                         stmt.close();
                     }
-                }  
-            };            
+                }
+            };
         } catch (SQLException e) {
             throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
-        }        
+        }
     }
 
     @Override
@@ -137,10 +137,10 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
     public <T> SQLInsertClause set(Path<T> path, T value) {
         columns.add(path);
         if (value != null){
-            values.add(ExprConst.create(value));    
+            values.add(ExprConst.create(value));
         }else{
             values.add(new NullExpr<T>(path.getType()));
-        }        
+        }
         return this;
     }
 
@@ -157,7 +157,7 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
         }
         return this;
     }
-    
+
     @Override
     public String toString(){
         SQLSerializer serializer = new SQLSerializer(templates, true);

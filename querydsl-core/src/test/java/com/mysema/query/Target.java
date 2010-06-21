@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query;
 
@@ -9,13 +9,13 @@ package com.mysema.query;
  * @author tiwe
  *
  */
-public enum Target{        
+public enum Target{
     /**
      * Derby
      */
     DERBY,
     /**
-     * 
+     *
      */
     H2,
     /**
@@ -41,10 +41,10 @@ public enum Target{
     /**
      * Microsoft SQL Server
      */
-    SQLSERVER,    
+    SQLSERVER,
     /**
-     * 
+     *
      */
     LUCENE;
-    
+
 }

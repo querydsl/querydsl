@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._mysql;
 
@@ -31,6 +31,5 @@ public class SelectMySQLTest extends SelectBaseTest {
     public void setUpForTest() {
         dialect = new MySQLTemplates().newLineToSingleSpace();
     }
-
 
 }

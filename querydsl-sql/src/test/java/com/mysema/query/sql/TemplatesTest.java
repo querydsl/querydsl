@@ -1,14 +1,14 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql;
 
 import org.junit.Test;
 
 public class TemplatesTest {
-    
+
     @Test
     public void test(){
     new DerbyTemplates();

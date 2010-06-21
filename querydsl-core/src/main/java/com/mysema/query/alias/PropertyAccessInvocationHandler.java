@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.alias;
 
@@ -38,14 +38,14 @@ import com.mysema.util.ReflectionUtils;
 /**
  * PropertyAccessInvocationHandler is the main InvocationHandler class for the
  * CGLIB alias proxies
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
 class PropertyAccessInvocationHandler implements MethodInterceptor {
 
     private static final int RETURN_VALUE = 42;
-    
+
     private final Expr<?> hostExpression;
 
     private final AliasFactory aliasFactory;
@@ -63,9 +63,9 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
     public Object intercept(Object proxy, Method method, Object[] args, MethodProxy methodProxy) throws Throwable {
     //CHECKSTYLE:ON
         Object rv = null;
-        
+
         MethodType methodType = MethodType.get(method);
-       
+
         if (methodType == MethodType.GETTER) {
             String ptyName = propertyNameForGetter(method);
             Class<?> ptyClass = method.getReturnType();
@@ -141,7 +141,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
         } else if (Integer.class.equals(type) || int.class.equals(type)) {
             path = new PNumber<Integer>(Integer.class, pm);
             rv = Integer.valueOf(RETURN_VALUE);
-            
+
         } else if (Byte.class.equals(type) || byte.class.equals(type)) {
             path = new PNumber<Byte>(Byte.class, pm);
             rv = Byte.valueOf((byte)RETURN_VALUE);
@@ -149,15 +149,15 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
         } else if (java.util.Date.class.equals(type)) {
             path = new PDateTime<Date>(Date.class, pm);
             rv = new Date();
-            
+
         } else if (java.sql.Timestamp.class.equals(type)) {
             path = new PDateTime<Timestamp>(Timestamp.class, pm);
             rv = new Timestamp(System.currentTimeMillis());
-            
+
         } else if (java.sql.Date.class.equals(type)) {
             path = new PDate<java.sql.Date>(java.sql.Date.class, pm);
             rv = new java.sql.Date(System.currentTimeMillis());
-            
+
         } else if (java.sql.Time.class.equals(type)) {
             path = new PTime<java.sql.Time>(java.sql.Time.class, pm);
             rv = new java.sql.Time(System.currentTimeMillis());
@@ -214,19 +214,19 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
         } else if (Enum.class.isAssignableFrom(type)) {
             path = new PComparable(type, pm);
             rv = type.getEnumConstants()[0];
-            
-        } else if (type.isArray()){            
+
+        } else if (type.isArray()){
             path = new PArray(type, pm);
         rv = Array.newInstance(type.getComponentType(), 5);
-        
+
         } else {
             if (Comparable.class.isAssignableFrom(type)){
                 path = new PComparable(type, pm);
             }else{
-                path = new PEntity<T>((Class<T>) type, pm);    
-            }                        
+                path = new PEntity<T>((Class<T>) type, pm);
+            }
             if (!Modifier.isFinal(type.getModifiers())){
-                rv = aliasFactory.createAliasForProperty(type, parent, path);    
+                rv = aliasFactory.createAliasForProperty(type, parent, path);
             }else{
                 rv = null;
             }

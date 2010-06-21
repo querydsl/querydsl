@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query;
 
@@ -32,7 +32,6 @@ public final class QueryModifiers implements Serializable{
     public static QueryModifiers offset(@Nonnegative long offset) {
         return new QueryModifiers(null, Long.valueOf(offset));
     }
-
 
     @Nullable
     private final Long limit, offset;
@@ -98,10 +97,10 @@ public final class QueryModifiers implements Serializable{
     public boolean isRestricting() {
         return limit != null || offset != null;
     }
-    
+
     /**
      * Get a sublist based on the restriction of limit and offset
-     * 
+     *
      * @param <T>
      * @param list
      * @return
@@ -110,10 +109,10 @@ public final class QueryModifiers implements Serializable{
         if (!list.isEmpty()){
             int from = offset != null ? offset.intValue() : 0;
             int to = limit != null ? (from + limit.intValue()) : list.size();
-            return list.subList(from, Math.min(to,list.size()));    
+            return list.subList(from, Math.min(to,list.size()));
         }else{
             return list;
-        }        
+        }
     }
 
     @Override
@@ -122,12 +121,12 @@ public final class QueryModifiers implements Serializable{
             return true;
         }else if (o instanceof QueryModifiers){
             QueryModifiers qm = (QueryModifiers)o;
-            return ObjectUtils.equals(qm.getLimit(), limit) && ObjectUtils.equals(qm.getOffset(), offset);            
+            return ObjectUtils.equals(qm.getLimit(), limit) && ObjectUtils.equals(qm.getOffset(), offset);
         }else{
             return false;
         }
     }
-    
+
     @Override
     public int hashCode(){
         if (limit != null){
@@ -138,6 +137,5 @@ public final class QueryModifiers implements Serializable{
             return 0;
         }
     }
-
 
 }

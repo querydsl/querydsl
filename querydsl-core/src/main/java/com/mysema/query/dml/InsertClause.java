@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.dml;
 
@@ -12,7 +12,7 @@ import com.mysema.query.types.SubQuery;
 
 /**
  * InsertClause defines a generic extensible interface for Insert clauses
- * 
+ *
  * @author tiwe
  *
  * @param <C>
@@ -21,22 +21,22 @@ public interface InsertClause<C extends InsertClause<C>> {
 
     /**
      * Define the columns to be populated
-     * 
+     *
      * @param columns
      * @return
      */
     C columns(Path<?>... columns);
-    
+
     /**
      * Execute the insert clause and return the amount of inserted rows/items
-     * 
+     *
      * @return
      */
     long execute();
 
     /**
      * Define the populate via subquery
-     * 
+     *
      * @param subQuery
      * @return
      */
@@ -44,7 +44,7 @@ public interface InsertClause<C extends InsertClause<C>> {
 
     /**
      * Add a value binding
-     * 
+     *
      * @param <T>
      * @param path path to be updated
      * @param value value to set
@@ -54,7 +54,7 @@ public interface InsertClause<C extends InsertClause<C>> {
 
     /**
      * Define the value bindings
-     * 
+     *
      * @param v
      * @return
      */

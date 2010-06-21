@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.collections;
 
@@ -55,7 +55,7 @@ public class PagingTest extends AbstractQueryTest {
         ColQuery query = new ColQueryImpl().from(var, ints);
         if (modifiers != null){
             query.restrict(modifiers);
-        }            
+        }
         return query;
     }
 }

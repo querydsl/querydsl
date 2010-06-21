@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.jpa.sql;
 
@@ -26,15 +26,15 @@ import com.mysema.testutil.JPATestRunner;
 @RunWith(JPATestRunner.class)
 @JPAConfig("derby")
 public class JPAQueryMutabilityTest{
-    
+
     private static final SQLTemplates derbyTemplates = new DerbyTemplates();
-    
+
     private EntityManager entityManager;
-    
+
     protected JPASQLQuery query(){
         return new JPASQLQuery(entityManager, derbyTemplates);
     }
-    
+
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -50,11 +50,11 @@ public class JPAQueryMutabilityTest{
         JPASQLQuery query = query().from(cat);
         new QueryMutability(query).test(cat.id, cat.name);
     }
-    
+
     @Test
     public void testClone(){
         SAnimal cat = new SAnimal("cat");
-        JPASQLQuery query = query().from(cat).where(cat.name.isNotNull());        
+        JPASQLQuery query = query().from(cat).where(cat.name.isNotNull());
         JPASQLQuery query2 = query.clone(entityManager);
         assertEquals(query.getMetadata().getJoins(), query2.getMetadata().getJoins());
         assertEquals(query.getMetadata().getWhere(), query2.getMetadata().getWhere());

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.util;
 
@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 public final class MathUtils {
-    
+
     private MathUtils(){}
 
     @SuppressWarnings("unchecked")
@@ -17,13 +17,13 @@ public final class MathUtils {
         BigDecimal res = new BigDecimal(num1.toString()).add(new BigDecimal(num2.toString()));
         return MathUtils.<D>cast(res, (Class<D>)num1.getClass());
     }
-    
+
     @SuppressWarnings("unchecked")
     public static <D extends Number & Comparable<?>> D difference(D num1, Number num2){
         BigDecimal res = new BigDecimal(num1.toString()).subtract(new BigDecimal(num2.toString()));
         return MathUtils.<D>cast(res, (Class<D>)num1.getClass());
     }
-    
+
     @SuppressWarnings("unchecked")
     public static <D extends Number & Comparable<?>> D cast(Number num, Class<D> type){
         Number rv;
@@ -32,7 +32,7 @@ public final class MathUtils {
         }else if (type.equals(Double.class)){
             rv = num.doubleValue();
         }else if (type.equals(Float.class)){
-            rv = num.floatValue();        
+            rv = num.floatValue();
         }else if (type.equals(Integer.class)){
             rv = num.intValue();
         }else if (type.equals(Long.class)){
@@ -56,6 +56,6 @@ public final class MathUtils {
         }else{
             throw new IllegalArgumentException(String.format("Illegal type : %s", type.getSimpleName()));
         }
-        return (D) rv;        
+        return (D) rv;
     }
 }

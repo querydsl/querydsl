@@ -1,17 +1,16 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.expr.ESimple;
 
-
 /**
  * Param defines a parameter in a query with an optional name
- * 
+ *
  * @author tiwe
  *
  * @param <T>
@@ -19,19 +18,19 @@ import com.mysema.query.types.expr.ESimple;
 public class Param<T> extends ESimple<T> {
 
     private static final long serialVersionUID = -6872502615009012503L;
-    
+
     private static volatile long counter = 0;
-    
+
     private final String name;
-    
+
     private final boolean anon;
-    
+
     public Param(Class<? extends T> type, String name) {
         super(type);
         this.name = Assert.notNull(name, "name");
         this.anon = false;
     }
-    
+
     public Param(Class<? extends T> type) {
         super(type);
         this.name = "param" + (++counter);
@@ -49,14 +48,14 @@ public class Param<T> extends ESimple<T> {
             return true;
         }else if (o instanceof Param<?>){
             Param<?> other = (Param<?>)o;
-            return other.getType().equals(getType()) 
-                && other.getName().equals(name) 
+            return other.getType().equals(getType())
+                && other.getName().equals(name)
                 && other.anon == anon;
         }else{
             return false;
         }
     }
-    
+
     @Override
     public int hashCode(){
         return name.hashCode();
@@ -65,7 +64,7 @@ public class Param<T> extends ESimple<T> {
     public String getName() {
         return name;
     }
-    
+
     public boolean isAnon(){
         return anon;
     }

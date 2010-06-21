@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.domain;
 
@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class Domain {
-    
+
     private Domain(){}
 
     public static final List<Class<?>> classes = Arrays.<Class<?>>asList(
@@ -55,5 +55,5 @@ public final class Domain {
             Store.class,
             Superclass.class,
             User.class
-    ); 
+    );
 }

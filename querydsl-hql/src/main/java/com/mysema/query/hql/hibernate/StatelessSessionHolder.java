@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.hibernate;
 
@@ -16,13 +16,13 @@ import com.mysema.commons.lang.Assert;
  *
  */
 public class StatelessSessionHolder implements SessionHolder{
-    
+
     private final StatelessSession session;
 
     public StatelessSessionHolder(StatelessSession session){
         this.session = Assert.notNull(session,"session");
     }
-    
+
     @Override
     public Query createQuery(String queryString) {
         return session.createQuery(queryString);

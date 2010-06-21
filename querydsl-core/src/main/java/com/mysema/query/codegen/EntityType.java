@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -22,14 +22,14 @@ import com.mysema.commons.lang.Assert;
 
 /**
  * EntityType represents a model of a query domain type with properties
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
 public final class EntityType extends TypeAdapter implements Comparable<EntityType> {
-    
+
     private final Set<Annotation> annotations = new HashSet<Annotation>();
-    
+
     private final Set<Constructor> constructors = new HashSet<Constructor>();
 
     private int escapeSuffix = 1;
@@ -37,15 +37,15 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     private boolean hasLists, hasMaps, hasEntityFields;
 
     private final Set<Method> methods = new HashSet<Method>();
-    
+
     private final Set<Delegate> delegates = new HashSet<Delegate>();
-    
+
     private final String prefix;
-    
+
     private final Set<Property> properties = new TreeSet<Property>();
-    
+
     private final Collection<Supertype> superTypes;
-    
+
     private final Map<Object,Object> data = new HashMap<Object,Object>();
 
     private String uncapSimpleName;
@@ -56,38 +56,38 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
 
     public EntityType(String prefix, Type type, Set<Supertype> superTypes) {
         super(type);
-        this.prefix = Assert.notNull(prefix,"prefix");        
+        this.prefix = Assert.notNull(prefix,"prefix");
         this.uncapSimpleName = StringUtils.uncapitalize(type.getSimpleName());
         this.superTypes = superTypes;
-    }    
+    }
 
     public void addAnnotation(Annotation annotation){
         annotations.add(annotation);
     }
-    
+
     public void addConstructor(Constructor co) {
         constructors.add(co);
     }
-    
+
     public void addMethod(Method method){
         methods.add(method);
     }
-    
+
     public void addDelegate(Delegate delegate){
         delegates.add(delegate);
     }
 
     public void addProperty(Property field) {
-        properties.add(validateField(field));        
+        properties.add(validateField(field));
         switch(field.getType().getCategory()){
-        case MAP: 
-            hasMaps = true; 
+        case MAP:
+            hasMaps = true;
             break;
-        case LIST: 
-            hasLists = true; 
+        case LIST:
+            hasLists = true;
             break;
-        case ENTITY:    
-            hasEntityFields = true;            
+        case ENTITY:
+            hasEntityFields = true;
         }
     }
 
@@ -119,7 +119,7 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
             return builder.toString();
         } catch (IOException e) {
             throw new CodeGenerationException(e.getMessage(), e);
-        }            
+        }
     }
 
     public String getLocalRawName() {
@@ -139,7 +139,7 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     public Set<Delegate> getDelegates(){
         return delegates;
     }
-    
+
     public TypeCategory getOriginalCategory(){
         return super.getCategory();
     }
@@ -176,7 +176,7 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     public boolean hasMaps() {
         return hasMaps;
     }
-    
+
     public Map<Object, Object> getData() {
         return data;
     }
@@ -185,16 +185,16 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         EntityType entityType = supertype.getEntityType();
         for (Method method : entityType.getMethods()){
             addMethod(method.createCopy(this));
-        }        
+        }
         for (Delegate delegate : entityType.getDelegates()){
             addDelegate(delegate);
         }
-        
+
         for (Property property : entityType.getProperties()){
-            if (!property.isInherited()){                
-                addProperty(property.createCopy(this));    
-            }            
-        }        
+            if (!property.isInherited()){
+                addProperty(property.createCopy(this));
+            }
+        }
     }
 
     private Property validateField(Property field) {
@@ -203,5 +203,5 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         }
         return field;
     }
-        
+
 }

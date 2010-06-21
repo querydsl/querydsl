@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql.mssql;
 
@@ -21,7 +21,7 @@ import com.mysema.query.types.path.PNumber;
 
 /**
  * RowNumber supports row_number constructs for MS SQL Server
- * 
+ *
  * @author tiwe
  *
  */
@@ -30,16 +30,16 @@ public class RowNumber extends ESimple<Long>{
     private static final long serialVersionUID = 3499501725767772281L;
 
     private final List<Expr<?>> partitionBy = new ArrayList<Expr<?>>();
-    
+
     private final List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
-    
+
     @Nullable
     private PNumber<Long> target;
-    
+
     public RowNumber() {
         super(Long.class);
     }
-    
+
     @Override
     public void accept(Visitor v) {
         List<Expr<?>> args = new ArrayList<Expr<?>>(partitionBy.size() + orderBy.size());
@@ -51,18 +51,18 @@ public class RowNumber extends ESimple<Long>{
         if (!orderBy.isEmpty()){
             if (!partitionBy.isEmpty()){
                 builder.append(" ");
-            }            
+            }
             builder.append("order by ");
             appendOrder(args, builder);
-        }        
+        }
         builder.append(")");
-        
+
         if (target != null){
             builder.append(" as {" + args.size() + "}");
             args.add(target);
         }
-        
-        ENumber<Long> expr = CNumber.create(Long.class, builder.toString(), 
+
+        ENumber<Long> expr = CNumber.create(Long.class, builder.toString(),
                 args.toArray(new Expr[args.size()]));
         expr.accept(v);
     }
@@ -87,7 +87,7 @@ public class RowNumber extends ESimple<Long>{
             if (!first){
                 builder.append(", ");
             }
-            builder.append("{" + args.size()+"}");            
+            builder.append("{" + args.size()+"}");
             if (!expr.isAscending()){
                 builder.append(" desc");
             }
@@ -95,14 +95,14 @@ public class RowNumber extends ESimple<Long>{
             first = false;
         }
     }
-    
+
     public RowNumber orderBy(OrderSpecifier<?>... order){
         for (OrderSpecifier<?> o : order){
             orderBy.add(o);
         }
         return this;
     }
-    
+
     public RowNumber orderBy(EComparable<?>... order){
         for (EComparable<?> o : order){
             orderBy.add(o.asc());
@@ -116,17 +116,17 @@ public class RowNumber extends ESimple<Long>{
         }
         return this;
     }
-    
+
     public RowNumber as(PNumber<Long> target){
         this.target = target;
         return this;
     }
-    
+
     @Override
     public int hashCode(){
         return orderBy.hashCode();
     }
-    
+
     @Override
     public boolean equals(Object o) {
         if (o == this){

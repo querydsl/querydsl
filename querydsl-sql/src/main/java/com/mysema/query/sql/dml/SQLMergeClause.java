@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql.dml;
 
@@ -31,17 +31,17 @@ import com.mysema.util.JDBCUtil;
 
 /**
  * SQLMergeClause defines an MERGE INTO clause
- * 
+ *
  * @author tiwe
  *
  */
 @edu.umd.cs.findbugs.annotations.SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public class SQLMergeClause {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(SQLMergeClause.class);
-    
+
     private final List<Path<?>> columns = new ArrayList<Path<?>>();
-    
+
     private final Connection connection;
 
     private final PEntity<?> entity;
@@ -60,7 +60,7 @@ public class SQLMergeClause {
         this.templates = templates;
         this.entity = entity;
     }
-    
+
     protected void close(PreparedStatement stmt) {
         try {
             stmt.close();
@@ -101,14 +101,14 @@ public class SQLMergeClause {
         this.subQuery = subQuery;
         return this;
     }
-    
+
     public <T> SQLMergeClause set(Path<T> path, @Nullable T value) {
         columns.add(path);
         if (value != null){
-            values.add(ExprConst.create(value));    
+            values.add(ExprConst.create(value));
         }else{
             values.add(new NullExpr<T>(path.getType()));
-        }        
+        }
         return this;
     }
 
@@ -118,7 +118,7 @@ public class SQLMergeClause {
         serializer.serializeForMerge(entity, keys, columns, values, subQuery);
         return serializer.toString();
     }
-    
+
     public SQLMergeClause values(Object... v) {
         for (Object value : v) {
             if (value instanceof Expr<?>) {
@@ -131,7 +131,5 @@ public class SQLMergeClause {
         }
         return this;
     }
-
-    
 
 }

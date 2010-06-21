@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql;
 
@@ -12,17 +12,17 @@ import com.mysema.query.types.OrderSpecifier;
 
 /**
  * Union defines an interface for Union queries
- * 
+ *
  * @author tiwe
  *
  * @param <RT>
  */
 // TODO : provide more projection types
 public interface Union<RT> {
-    
+
     /**
      * Define the ordering of the query results
-     * 
+     *
      * @param o
      * @return
      */
@@ -30,7 +30,7 @@ public interface Union<RT> {
 
     /**
      * Retrieve the results
-     * 
+     *
      * @return
      * @throws SQLException
      */

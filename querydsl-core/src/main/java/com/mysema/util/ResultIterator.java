@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.util;
 
@@ -18,11 +18,11 @@ import com.mysema.commons.lang.CloseableIterator;
  */
 // TODO : put this functionality into IteratorAdapter
 public class ResultIterator<T> implements CloseableIterator<T>{
-    
+
     private final Closeable closeable;
-    
+
     private final Iterator<T> iterator;
-    
+
     public ResultIterator(Iterator<T> iterator, Closeable closeable){
         this.iterator = iterator;
         this.closeable = closeable;

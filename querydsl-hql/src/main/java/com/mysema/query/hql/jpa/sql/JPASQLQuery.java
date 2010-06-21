@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.jpa.sql;
 
@@ -31,35 +31,35 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.path.PEntity;
 
 /**
- * JPASQLQuery is an SQLQuery implementation that uses Hibernate's Native SQL functionality 
+ * JPASQLQuery is an SQLQuery implementation that uses Hibernate's Native SQL functionality
  * to execute queries
- * 
+ *
  * @author tiwe
  *
  */
 // TODO : add support for constructor projections
 public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery>{
-    
+
     private static final Logger logger = LoggerFactory.getLogger(JPASQLQuery.class);
-        
+
     private Map<Object,String> constants;
-    
+
     private List<Path<?>> entityPaths;
-    
+
     private final JPASessionHolder session;
-    
-    private final SQLTemplates sqlTemplates;    
+
+    private final SQLTemplates sqlTemplates;
 
     public JPASQLQuery(EntityManager entityManager, SQLTemplates sqlTemplates) {
         this(new DefaultSessionHolder(entityManager), sqlTemplates, new DefaultQueryMetadata());
     }
-        
+
     protected JPASQLQuery(JPASessionHolder session, SQLTemplates sqlTemplates, QueryMetadata metadata) {
         super(metadata);
         this.session = session;
         this.sqlTemplates = sqlTemplates;
     }
-    
+
     private String buildQueryString(boolean forCountRow) {
         if (queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("No joins given");
@@ -77,7 +77,7 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery>{
 
     public Query createQuery(Expr<?>... args){
         queryMixin.addToProjection(args);
-        return createQuery(toQueryString());   
+        return createQuery(toQueryString());
     }
 
     @SuppressWarnings("unchecked")
@@ -87,19 +87,19 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery>{
         Query query;
         if (projection.get(0) instanceof PEntity){
             if (projection.size() == 1){
-                query = session.createSQLQuery(queryString, projection.get(0).getType());    
+                query = session.createSQLQuery(queryString, projection.get(0).getType());
             }else{
                 throw new IllegalArgumentException("Only single element entity projections are supported");
             }
-            
+
         }else{
             query = session.createSQLQuery(queryString);
-        } 
+        }
         // set constants
-        JPAUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());        
+        JPAUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
         return query;
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public List<Object[]> list(Expr<?>[] args) {
@@ -115,7 +115,7 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery>{
         reset();
         return query.getResultList();
     }
-    
+
     @Override
     public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
         return new IteratorAdapter<Object[]>(list(args).iterator());
@@ -145,24 +145,23 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery>{
             return SearchResults.emptyResults();
         }
     }
-    
+
     protected void logQuery(String queryString){
         if (logger.isDebugEnabled()){
-            logger.debug(queryString.replace('\n', ' '));    
-        }        
+            logger.debug(queryString.replace('\n', ' '));
+        }
     }
-   
-    
+
     protected void reset() {
         queryMixin.getMetadata().reset();
         entityPaths = null;
         constants = null;
     }
-    
+
     protected String toCountRowsString() {
         return buildQueryString(true);
     }
-   
+
     protected String toQueryString(){
         return buildQueryString(false);
     }
@@ -173,6 +172,5 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery>{
         reset();
         return (RT) query.getSingleResult();
     }
-    
 
 }

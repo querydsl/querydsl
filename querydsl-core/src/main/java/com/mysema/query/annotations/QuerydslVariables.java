@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.annotations;
 
@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 /**
  * QuerydslVariables defines that a Variables class or interface is to be serialized into the host package.
  * The type will contain public static final constants for the entity types of the package.
- * 
+ *
  * @author tiwe
  *
  */
@@ -24,17 +24,17 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 // TODO : rename to Variables
 public @interface QuerydslVariables {
-    
+
     /**
      * Simple name of the variables class
-     * 
+     *
      * @return
      */
     String  value() default "Variables";
-    
+
     /**
      * Generate interface instead of class
-     * 
+     *
      * @return
      */
     boolean asInterface() default false;

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.testutil;
 
@@ -48,7 +48,7 @@ public class JPATestRunner extends JUnit4ClassRunner {
 
     public void run(final RunNotifier notifier) {
         try {
-            JPAConfig config = getTestClass().getJavaClass().getAnnotation(JPAConfig.class);            
+            JPAConfig config = getTestClass().getJavaClass().getAnnotation(JPAConfig.class);
             entityManagerFactory = Persistence.createEntityManagerFactory(config.value());
             super.run(notifier);
         } catch (Exception e) {
@@ -57,7 +57,7 @@ public class JPATestRunner extends JUnit4ClassRunner {
         } finally {
             if (entityManagerFactory != null){
                 entityManagerFactory.close();
-            }                
+            }
         }
 
     }

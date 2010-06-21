@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.expr;
 
@@ -11,21 +11,19 @@ import javax.annotation.Nonnegative;
 
 import com.mysema.query.types.Expr;
 
-
-
 /**
  * EList represents java.util.List typed expressions
- * 
+ *
  * @author tiwe
- * 
+ *
  * @param <E> component type
  * @see java.util.List
  */
 public interface EList<E> extends ECollection<List<E>,E> {
-    
+
     /**
      * Indexed access
-     * 
+     *
      * @param index
      * @return this.get(index)
      * @see java.util.List#get(int)
@@ -34,7 +32,7 @@ public interface EList<E> extends ECollection<List<E>,E> {
 
     /**
      * Indexed access
-     * 
+     *
      * @param index
      * @return this.get(index)
      * @see java.util.List#get(int)

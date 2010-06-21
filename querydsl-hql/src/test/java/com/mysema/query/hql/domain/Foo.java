@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.domain;
 
@@ -21,14 +21,14 @@ import org.hibernate.annotations.IndexColumn;
 @Entity
 public class Foo {
     String bar;
-    
+
     @Id
     int id;
-    
+
     @CollectionOfElements
     @IndexColumn(name = "_index")
     List<String> names;
-    
+
     @Temporal(TemporalType.DATE)
     java.util.Date startDate;
 }

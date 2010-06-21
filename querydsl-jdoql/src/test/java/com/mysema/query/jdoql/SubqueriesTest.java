@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql;
 
@@ -18,9 +18,9 @@ import com.mysema.query.jdoql.testdomain.QProduct;
 public class SubqueriesTest extends AbstractJDOTest {
 
     private QProduct product = QProduct.product;
-    
+
     private QProduct other = new QProduct("other");
-       
+
     @Test
     public void test1() {
         for (double price : query().from(product)
@@ -29,7 +29,7 @@ public class SubqueriesTest extends AbstractJDOTest {
             System.out.println(price);
         }
     }
-    
+
     @Test
     public void test2() {
         for (double price : query().from(product)
@@ -50,8 +50,7 @@ public class SubqueriesTest extends AbstractJDOTest {
             System.out.println(price);
         }
     }
-    
-    
+
     @BeforeClass
     public static void doPersist() {
         // Persistence of a Product and a Book.

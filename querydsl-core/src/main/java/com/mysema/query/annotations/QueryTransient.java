@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.annotations;
 
@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 /**
  * Annotate fields and getters that should be skipped in APT based code generation
  * with this annotation
- * 
+ *
  * @author tiwe
  *
  */

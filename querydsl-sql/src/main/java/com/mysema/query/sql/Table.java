@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql;
 
@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 
 /**
  * Annotation to be used on Querydsl query types to declare the annotation to be used
- * 
+ *
  * @author tiwe
  *
  */
@@ -22,10 +22,10 @@ import java.lang.annotation.Target;
 @Target(TYPE)
 @Retention(RUNTIME)
 public @interface Table {
-    
+
     /**
      * @return
      */
     String value();
-    
+
 }

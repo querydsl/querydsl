@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.path;
 
@@ -17,53 +17,53 @@ import com.mysema.query.types.expr.ECollectionBase;
 
 /**
  * PSet represents set paths
- * 
+ *
  * @author tiwe
- * 
+ *
  * @param <E> component type
  */
 public class PSet<E> extends ECollectionBase<Set<E>,E> implements Path<Set<E>> {
-    
+
     private static final long serialVersionUID = 4145848445507037373L;
 
     private final Class<E> elementType;
-    
+
     private final String entityName;
-    
+
     private final Path<Set<E>> pathMixin;
-    
+
     @SuppressWarnings("unchecked")
     public PSet(Class<? super E> type, String entityName, PathMetadata<?> metadata) {
         super((Class)Set.class);
-        this.elementType = (Class<E>) Assert.notNull(type,"type");        
+        this.elementType = (Class<E>) Assert.notNull(type,"type");
         this.entityName = Assert.notNull(entityName,"entityName");
         this.pathMixin = new PathMixin<Set<E>>(this, metadata);
     }
 
     @Override
     public void accept(Visitor v) {
-        v.visit(this);        
+        v.visit(this);
     }
 
     @Override
     public boolean equals(Object o) {
         return pathMixin.equals(o);
     }
-    
+
     @Override
     public Class<E> getElementType() {
         return elementType;
     }
-    
+
     /**
      * Get the entity name for this Entity collection path
-     * 
+     *
      * @return
      */
     public String getEntityName() {
         return entityName;
     }
-    
+
     @Override
     public PathMetadata<?> getMetadata() {
         return pathMixin.getMetadata();
@@ -83,12 +83,12 @@ public class PSet<E> extends ECollectionBase<Set<E>,E> implements Path<Set<E>> {
     public EBoolean isNotNull() {
         return pathMixin.isNotNull();
     }
-    
+
     @Override
     public EBoolean isNull() {
         return pathMixin.isNull();
     }
-    
+
     @Override
     public AnnotatedElement getAnnotatedElement(){
         return pathMixin.getAnnotatedElement();

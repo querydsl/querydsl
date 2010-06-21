@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types;
 
@@ -14,16 +14,15 @@ import net.jcip.annotations.Immutable;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
-
 /**
  * PathMetadata provides metadata for {@link Path} expressions.
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
 @Immutable
 public final class PathMetadata<T> implements Serializable{
-    
+
     private static final long serialVersionUID = -1055994185028970065L;
 
     private final Expr<T> expression;
@@ -34,7 +33,7 @@ public final class PathMetadata<T> implements Serializable{
     private final Path<?> parent, root;
 
     private final PathType pathType;
-    
+
     public PathMetadata(@Nullable Path<?> parent, Expr<T> expression, PathType type) {
         this.parent = parent;
         this.expression = expression;
@@ -52,11 +51,11 @@ public final class PathMetadata<T> implements Serializable{
             return new EqualsBuilder()
                 .append(expression, p.expression)
                 .append(parent, p.parent)
-                .append(pathType, p.pathType).isEquals();    
+                .append(pathType, p.pathType).isEquals();
         }else{
             return false;
         }
-        
+
     }
 
     public Expr<T> getExpression() {
@@ -67,7 +66,7 @@ public final class PathMetadata<T> implements Serializable{
     public Path<?> getParent() {
         return parent;
     }
-    
+
     public PathType getPathType() {
         return pathType;
     }
@@ -85,5 +84,5 @@ public final class PathMetadata<T> implements Serializable{
     public boolean isRoot(){
         return parent == null;
     }
-    
+
 }

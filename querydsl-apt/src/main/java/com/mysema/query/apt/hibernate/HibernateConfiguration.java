@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.apt.hibernate;
 
@@ -29,7 +29,7 @@ public class HibernateConfiguration extends JPAConfiguration{
             Class<? extends Annotation> skipAnn) throws ClassNotFoundException {
         super(roundEnv, options, entityAnn, superTypeAnn, embeddableAnn, skipAnn);
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     protected List<Class<? extends Annotation>> getAnnotations() throws ClassNotFoundException{
@@ -42,8 +42,7 @@ public class HibernateConfiguration extends JPAConfiguration{
             annotations.add((Class<? extends Annotation>) Class.forName("org.hibernate.annotations."+simpleName));
         }
         return annotations;
-        
+
     }
-        
 
 }

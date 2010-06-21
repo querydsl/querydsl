@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.expr;
 
@@ -15,10 +15,10 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 
 /**
- * CaseBuilder enables the construction of typesafe case-when-then-else 
+ * CaseBuilder enables the construction of typesafe case-when-then-else
  * constructs :
  * e.g.
- * 
+ *
  * <pre>
  * Expr&lt;String&gt; cases = new CaseBuilder()
  *     .when(c.annualSpending.gt(10000)).then("Premier")
@@ -26,19 +26,19 @@ import com.mysema.query.types.Ops;
  *     .when(c.annualSpending.gt(2000)).then("Silver")
  *     .otherwise("Bronze");
  * </pre>
- * 
+ *
  * @author tiwe
- * 
+ *
  */
 public final class CaseBuilder {
-    
+
     private static class CaseElement<A> {
-        
+
         @Nullable
         private final EBoolean condition;
-        
+
         private final Expr<A> target;
-        
+
         public CaseElement(@Nullable EBoolean condition, Expr<A> target){
             this.condition = condition;
             this.target = target;
@@ -51,12 +51,12 @@ public final class CaseBuilder {
         public Expr<A> getTarget() {
             return target;
         }
-        
+
     }
-    
+
     /**
      * Cascading typesafe Case builder
-     * 
+     *
      * @author tiwe
      *
      * @param <A>
@@ -64,7 +64,7 @@ public final class CaseBuilder {
     public abstract static class Cases<A, Q extends Expr<A>> {
 
         private final List<CaseElement<A>> cases = new ArrayList<CaseElement<A>>();
-        
+
         private final Class<A> type;
 
         public Cases(Class<A> type) {
@@ -77,22 +77,22 @@ public final class CaseBuilder {
         }
 
         protected abstract Q createResult(Class<A> type, Expr<A> last);
-        
+
         public Q otherwise(A constant) {
             return otherwise(ExprConst.create(constant));
         }
-        
+
         public Q otherwise(Expr<A> expr) {
             cases.add(0, new CaseElement<A>(null, expr));
             Expr<A> last = null;
             for (CaseElement<A> element : cases){
                 if (last == null){
-                    last = OSimple.create(type, Ops.CASE_ELSE, 
+                    last = OSimple.create(type, Ops.CASE_ELSE,
                             element.getTarget());
                 }else{
-                    last = OSimple.create(type, Ops.CASE_WHEN, 
-                            element.getCondition(), 
-                            element.getTarget(), 
+                    last = OSimple.create(type, Ops.CASE_WHEN,
+                            element.getCondition(),
+                            element.getTarget(),
                             last);
                 }
             }
@@ -104,10 +104,10 @@ public final class CaseBuilder {
         }
 
     }
-    
+
     /**
      * Intermediate When state
-     * 
+     *
      * @author tiwe
      *
      * @param <A>
@@ -115,7 +115,7 @@ public final class CaseBuilder {
     public static class CaseWhen<A,Q extends Expr<A>> {
 
         private final EBoolean b;
-        
+
         private final Cases<A,Q> cases;
 
         public CaseWhen(Cases<A,Q> cases, EBoolean b) {
@@ -134,22 +134,22 @@ public final class CaseBuilder {
 
     /**
      * Initial state of Case construction
-     * 
+     *
      * @author tiwe
      *
      */
     public static class Initial {
-        
+
         private final EBoolean when;
 
         public Initial(EBoolean b) {
             this.when = b;
         }
-        
+
         public <A> Cases<A,Expr<A>> then(A constant) {
             return then(ExprConst.create(constant));
         }
-        
+
         public Cases<String,EString> then(EString expr){
             return new Cases<String,EString>(String.class){
                 @SuppressWarnings("unchecked")
@@ -157,7 +157,7 @@ public final class CaseBuilder {
                 protected EString createResult(Class<String> type, Expr<String> last) {
                     return OString.create((Operator)Ops.CASE, last);
                 }
-                
+
             }.addCase(when, expr);
         }
 
@@ -168,25 +168,25 @@ public final class CaseBuilder {
                 protected Expr<A> createResult(Class<A> type, Expr<A> last) {
                     return OSimple.create(type, Ops.CASE, last);
                 }
-                
+
             }.addCase(when, expr);
         }
-        
+
         @SuppressWarnings("unchecked")
         public <A extends Number & Comparable<?>> Cases<A, ENumber<A>> then(ENumber<A> expr) {
-            return new Cases<A, ENumber<A>>((Class)expr.getType()){                
+            return new Cases<A, ENumber<A>>((Class)expr.getType()){
                 @Override
                 protected ENumber<A> createResult(Class<A> type, Expr<A> last) {
                     return ONumber.create(type, (Operator)Ops.CASE, last);
                 }
-                
+
             }.addCase(when, expr);
         }
 
         public Cases<String, EString> then(String str){
             return then(EStringConst.create(str));
         }
-        
+
         public <A extends Number & Comparable<?>> Cases<A, ENumber<A>> then(A num){
             return then(ENumberConst.create(num));
         }

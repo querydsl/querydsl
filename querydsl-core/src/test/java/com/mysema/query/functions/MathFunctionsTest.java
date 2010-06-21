@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.functions;
 
@@ -12,7 +12,7 @@ import org.junit.Test;
 import com.mysema.query.types.path.PNumber;
 
 public class MathFunctionsTest {
-    
+
     @Test
     public void test(){
         PNumber<Double> num = new PNumber<Double>(Double.class, "num");
@@ -26,9 +26,7 @@ public class MathFunctionsTest {
         assertEquals("pow(num,num)",  MathFunctions.pow(num,num).toString());
         assertEquals("sin(num)",    MathFunctions.sin(num).toString());
         assertEquals("tan(num)",    MathFunctions.tan(num).toString());
-        
-        
+
     }
-    
 
 }

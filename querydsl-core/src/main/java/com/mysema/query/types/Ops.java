@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types;
 
@@ -11,15 +11,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-
 /**
  * Ops provides the operators for the fluent query grammar.
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
 public interface Ops {
-    
+
     List<Class<?>> BOOLEAN_X_2 = unmodifiableList(Arrays.<Class<?>> asList(Boolean.class, Boolean.class));
 
     List<Class<?>> COMPARABLE_X_2 = unmodifiableList(Arrays.<Class<?>> asList(Comparable.class, Comparable.class));
@@ -44,7 +43,7 @@ public interface Ops {
     Operator<String> STRING_CAST = new OperatorImpl<String>(Object.class);
     Operator<Object> ALIAS = new OperatorImpl<Object>();
     Operator<Object> LIST = new OperatorImpl<Object>();
-        
+
     // collection
     Operator<Boolean> IN = new OperatorImpl<Boolean>(OBJECT_X_2); // cmp. contains
     Operator<Boolean> COL_IS_EMPTY = new OperatorImpl<Boolean>(Object.class);
@@ -52,27 +51,27 @@ public interface Ops {
 
     // array
     Operator<Number> ARRAY_SIZE = new OperatorImpl<Number>(Object.class);
-    
+
     // map
     Operator<Boolean> CONTAINS_KEY = new OperatorImpl<Boolean>(OBJECT_X_2);
     Operator<Boolean> CONTAINS_VALUE = new OperatorImpl<Boolean>(OBJECT_X_2);
     Operator<Number> MAP_SIZE = new OperatorImpl<Number>(Object.class);
     Operator<Boolean> MAP_ISEMPTY = new OperatorImpl<Boolean>(Object.class);
-    
+
     // Boolean
     Operator<Boolean> AND = new OperatorImpl<Boolean>(BOOLEAN_X_2);
     Operator<Boolean> NOT = new OperatorImpl<Boolean>(Boolean.class);
     Operator<Boolean> OR = new OperatorImpl<Boolean>(BOOLEAN_X_2);
     Operator<Boolean> XNOR = new OperatorImpl<Boolean>(BOOLEAN_X_2);
     Operator<Boolean> XOR = new OperatorImpl<Boolean>(BOOLEAN_X_2);
-    
+
     // Comparable
     Operator<Boolean> BETWEEN = new OperatorImpl<Boolean>(COMPARABLE_X_3);
     Operator<Boolean> GOE = new OperatorImpl<Boolean>(COMPARABLE_X_2);
     Operator<Boolean> GT = new OperatorImpl<Boolean>(COMPARABLE_X_2);
     Operator<Boolean> LOE = new OperatorImpl<Boolean>(COMPARABLE_X_2);
     Operator<Boolean> LT = new OperatorImpl<Boolean>(COMPARABLE_X_2);
-    
+
     // Date / Comparable
     Operator<Boolean> AFTER = new OperatorImpl<Boolean>(COMPARABLE_X_2);
     Operator<Boolean> BEFORE = new OperatorImpl<Boolean>(COMPARABLE_X_2);
@@ -103,24 +102,24 @@ public interface Ops {
     Operator<Number> INDEX_OF = new OperatorImpl<Number>();
     Operator<Boolean> EQ_IGNORE_CASE = new OperatorImpl<Boolean>(STRING_X_2);
     Operator<Boolean> ENDS_WITH = new OperatorImpl<Boolean>(STRING_X_2);
-    Operator<Boolean> ENDS_WITH_IC = new OperatorImpl<Boolean>(STRING_X_2);    
+    Operator<Boolean> ENDS_WITH_IC = new OperatorImpl<Boolean>(STRING_X_2);
     Operator<Boolean> STRING_CONTAINS = new OperatorImpl<Boolean>(STRING_X_2);
     Operator<Boolean> STRING_CONTAINS_IC = new OperatorImpl<Boolean>(STRING_X_2);
     Operator<Boolean> LIKE = new OperatorImpl<Boolean>(STRING_X_2);
-        
+
     // case
     Operator<Object> CASE = new OperatorImpl<Object>(Object.class);
     Operator<Object> CASE_WHEN = new OperatorImpl<Object>();
     Operator<Object> CASE_ELSE = new OperatorImpl<Object>(Object.class);
-    
+
     // case for eq
     Operator<Object> CASE_EQ = new OperatorImpl<Object>(Object.class);
     Operator<Object> CASE_EQ_WHEN = new OperatorImpl<Object>();
     Operator<Object> CASE_EQ_ELSE = new OperatorImpl<Object>(Object.class);
-    
+
     // coalesce
     Operator<Object> COALESCE = new OperatorImpl<Object>(Object.class);
-    
+
     // subquery operations
     Operator<Boolean> EXISTS = new OperatorImpl<Boolean>(Object.class);
 
@@ -136,20 +135,20 @@ public interface Ops {
     @SuppressWarnings("unchecked")
     interface AggOps{
         Operator<Comparable> MAX_AGG = new OperatorImpl<Comparable>(Comparable.class);
-        Operator<Comparable> MIN_AGG = new OperatorImpl<Comparable>(Comparable.class);        
-        Operator<Number> AVG_AGG = new OperatorImpl<Number>(Number.class);        
+        Operator<Comparable> MIN_AGG = new OperatorImpl<Comparable>(Comparable.class);
+        Operator<Number> AVG_AGG = new OperatorImpl<Number>(Number.class);
         Operator<Number> SUM_AGG = new OperatorImpl<Number>(Number.class);
         Operator<Number> COUNT_AGG = new OperatorImpl<Number>(Object.class);
         Operator<Number> COUNT_DISTINCT_AGG = new OperatorImpl<Number>(Object.class);
         Operator<Number> COUNT_ALL_AGG = new OperatorImpl<Number>();
 //        ENumber<Long> COUNT_ALL_AGG_EXPR = ONumber.create(Long.class, COUNT_ALL_AGG);
     }
-    
+
     /**
      * Date and time operators
      */
     @SuppressWarnings("unchecked")
-    interface DateTimeOps {        
+    interface DateTimeOps {
         Operator<Comparable> CURRENT_DATE = new OperatorImpl<Comparable>();
         Operator<Comparable> CURRENT_TIME = new OperatorImpl<Comparable>();
         Operator<Comparable> CURRENT_TIMESTAMP = new OperatorImpl<Comparable>();
@@ -169,7 +168,7 @@ public interface Ops {
 
     /**
      * Math operators
-     * 
+     *
      */
     interface MathOps {
         Operator<Number> ABS = new OperatorImpl<Number>(Number.class);
@@ -188,8 +187,8 @@ public interface Ops {
         Operator<Number> MAX = new OperatorImpl<Number>(NUMBER_X_2);
         Operator<Number> LOG10 = new OperatorImpl<Number>(Number.class);
         Operator<Number> LOG = new OperatorImpl<Number>(Number.class);
-        Operator<Number> FLOOR = new OperatorImpl<Number>(Number.class);        
-        Operator<Number> EXP = new OperatorImpl<Number>(Number.class);        
+        Operator<Number> FLOOR = new OperatorImpl<Number>(Number.class);
+        Operator<Number> EXP = new OperatorImpl<Number>(Number.class);
     }
 
     /**
@@ -203,7 +202,7 @@ public interface Ops {
         Operator<Number> LAST_INDEX_2ARGS = new OperatorImpl<Number>();
         Operator<Number> LAST_INDEX = new OperatorImpl<Number>(STRING_X_2);
     }
-    
+
     /**
      * Quantification operators
      */
@@ -218,6 +217,6 @@ public interface Ops {
         // exists = true is subselect matches
         // not exists = true if subselect doesn't match
         Operator<Object> ANY = new OperatorImpl<Object>(Object.class);
-        Operator<Object> ALL = new OperatorImpl<Object>(Object.class);        
+        Operator<Object> ALL = new OperatorImpl<Object>(Object.class);
     }
 }

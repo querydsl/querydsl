@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql.models.company;
 
@@ -18,13 +18,13 @@ import com.mysema.query.annotations.QueryEntity;
  */
 @QueryEntity
 public class Person implements Cloneable {
-    
+
     public static class Id implements Serializable {
 
         private static final long serialVersionUID = -4893934512712167318L;
-        
+
         public String globalNum;
-        
+
         public long personNum;
 
         public Id() {
@@ -66,11 +66,11 @@ public class Person implements Cloneable {
     public static final String FIRSTNAME = "Woody";
 
     private static Random random = new Random();
-    
+
     private int age;
-    
+
     private Person bestFriend;
-    
+
     private String emailAddress;
 
     private String firstName;

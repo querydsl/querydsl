@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -13,19 +13,19 @@ import java.util.Map;
 import org.junit.Test;
 
 public class ClassTypeTest {
-    
+
     private ClassType stringType = new ClassType(TypeCategory.STRING, String.class);
-    
+
     @Test
     public void asArrayType(){
     assertEquals(stringType, stringType.asArrayType().getParameter(0));
     }
-    
+
     @Test
     public void as(){
     assertEquals(TypeCategory.COMPARABLE, stringType.as(TypeCategory.COMPARABLE).getCategory());
     }
-    
+
     @Test
     public void getParameters(){
     ClassType mapType = new ClassType(TypeCategory.MAP, Map.class, stringType, stringType);

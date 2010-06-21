@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql;
 
@@ -23,14 +23,14 @@ import com.mysema.query.sql.support.PrimaryKeyData;
 /**
  * MetaDataSerializer defines the Query type serialization logic for MetaDataExporter.
  * Subclass this class for customization.
- * 
+ *
  * @author tiwe
  *
  */
 public class MetaDataSerializer extends EntitySerializer {
-    
+
     private final String namePrefix;
-    
+
     private final NamingStrategy namingStrategy;
 
     public MetaDataSerializer(String namePrefix, NamingStrategy namingStrategy) {
@@ -40,33 +40,33 @@ public class MetaDataSerializer extends EntitySerializer {
         this.namingStrategy = namingStrategy;
     }
 
-    @Override 
+    @Override
     protected void introDefaultInstance(CodeWriter writer, EntityType entityType) throws IOException {
         String variableName = namingStrategy.getDefaultVariableName(namePrefix, entityType);
         String alias = namingStrategy.getDefaultAlias(namePrefix, entityType);
-        String queryType = typeMappings.getPathType(entityType, entityType, true);            
+        String queryType = typeMappings.getPathType(entityType, entityType, true);
         writer.publicStaticFinal(queryType, variableName, NEW + queryType + "(\"" + alias + "\")");
     }
-    
+
     @Override
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
         super.introImports(writer, config, model);
         writer.imports(Table.class.getPackage());
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     protected void serializeProperties(EntityType model,  SerializerConfig config, CodeWriter writer) throws IOException {
         super.serializeProperties(model, config, writer);
-        
+
         // primary keys
         Collection<PrimaryKeyData> primaryKeys = (Collection<PrimaryKeyData>) model.getData().get(PrimaryKeyData.class);
         if (primaryKeys != null){
             serializePrimaryKeys(model, writer, primaryKeys);
         }
-        
+
         // foreign keys
-        Collection<ForeignKeyData> foreignKeys = (Collection<ForeignKeyData>) model.getData().get(ForeignKeyData.class);     
+        Collection<ForeignKeyData> foreignKeys = (Collection<ForeignKeyData>) model.getData().get(ForeignKeyData.class);
         if (foreignKeys != null){
             serializeForeignKeys(model, writer, foreignKeys);
         }
@@ -89,7 +89,7 @@ public class MetaDataSerializer extends EntitySerializer {
             value.append(")");
             writer.publicFinal("PrimaryKey<"+queryType+">", fieldName, value.toString());
         }
-        
+
     }
 
     protected void serializeForeignKeys(EntityType model, CodeWriter writer,
@@ -114,7 +114,7 @@ public class MetaDataSerializer extends EntitySerializer {
                     local.append(namingStrategy.getPropertyName(pair.getFirst(), namePrefix, model));
                     foreign.append("\"" + pair.getSecond() + "\"");
                 }
-                value.append("Arrays.asList("+local+"), Arrays.asList("+foreign+")");                    
+                value.append("Arrays.asList("+local+"), Arrays.asList("+foreign+")");
             }
             value.append(")");
             writer.publicFinal("ForeignKey<"+foreignType+">", fieldName, value.toString());

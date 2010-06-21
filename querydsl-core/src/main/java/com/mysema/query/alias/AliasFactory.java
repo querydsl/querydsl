@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.alias;
 
@@ -22,7 +22,7 @@ import com.mysema.query.types.path.PEntity;
 
 /**
  * AliasFactory is a factory class for alias creation
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -33,7 +33,7 @@ public class AliasFactory {
     // caches top level paths (class/var as key)
     private final Map<Pair<Class<?>,String>, PEntity<?>> pathCache =
         LazyMap.decorate(new HashMap<Pair<Class<?>,String>,PEntity<?>>(), new PEntityTransformer());
-            
+
     private final Map<Pair<Class<?>,Expr<?>>, ManagedObject> proxyCache =
         LazyMap.decorate(
             new HashMap<Pair<Class<?>,Expr<?>>,ManagedObject>(),
@@ -41,8 +41,8 @@ public class AliasFactory {
                 @Override
                 public ManagedObject transform(Pair<Class<?>, Expr<?>> input) {
                     return (ManagedObject) createProxy(input.getFirst(), input.getSecond());
-                }                
-            });    
+                }
+            });
 
     /**
      * @param <A>
@@ -122,7 +122,7 @@ public class AliasFactory {
     }
 
     /**
-     * 
+     *
      */
     public void reset() {
         current.set(null);

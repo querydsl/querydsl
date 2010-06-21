@@ -19,7 +19,7 @@ import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 public class GeneratedKeysTest {
-    
+
     @Table("GENERATED_KEYS")
     public static class QGeneratedKeysEntity extends PEntity<QGeneratedKeysEntity>{
 
@@ -28,17 +28,17 @@ public class GeneratedKeysTest {
         public QGeneratedKeysEntity(String name) {
             super(QGeneratedKeysEntity.class, PathMetadataFactory.forVariable(name));
         }
-        
+
         public final PNumber<java.lang.Integer> id = createNumber("ID", java.lang.Integer.class);
-        
+
         public final PString name = createString("NAME");
-        
+
     }
-    
+
     private Connection conn;
-    
+
     private Statement stmt;
-    
+
     @Before
     public void setUp() throws ClassNotFoundException, SQLException{
         Class.forName("org.h2.Driver");
@@ -46,36 +46,36 @@ public class GeneratedKeysTest {
         conn = DriverManager.getConnection(url, "sa", "");
         stmt = conn.createStatement();
     }
-    
+
     @After
     public void tearDown() throws SQLException{
         try{
-            stmt.close();    
+            stmt.close();
         }finally{
-            conn.close();    
+            conn.close();
         }
     }
-    
+
     @Test
     public void test() throws SQLException{
-        stmt.execute("drop table GENERATED_KEYS if exists");        
+        stmt.execute("drop table GENERATED_KEYS if exists");
         stmt.execute("create table GENERATED_KEYS(" +
                  "ID int AUTO_INCREMENT PRIMARY KEY, " +
                  "NAME varchar(30))");
-        
+
         QGeneratedKeysEntity entity = new QGeneratedKeysEntity("entity");
         SQLInsertClause insertClause = new SQLInsertClause(conn, new H2Templates(), entity);
         ResultSet rs = insertClause.set(entity.name, "Hello").executeWithKeys();
         assertTrue(rs.next());
         assertEquals(1, rs.getInt(1));
         assertFalse(rs.next());
-        
+
         insertClause = new SQLInsertClause(conn, new H2Templates(), entity);
         rs = insertClause.set(entity.name, "World").executeWithKeys();
         assertTrue(rs.next());
         assertEquals(2, rs.getInt(1));
         assertFalse(rs.next());
-        
+
     }
 
 }

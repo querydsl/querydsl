@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql;
 
@@ -26,23 +26,23 @@ import com.mysema.query.types.path.PEntity;
 
 /**
  * SqlSerializer serializes Querydsl queries into SQL
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
 public class SQLSerializer extends SerializerBase<SQLSerializer> {
-    
+
     private final SerializationContext context = new SerializationContext(){
 
         @Override
         public void serialize(QueryMetadata metadata, boolean forCountRow) {
-            SQLSerializer.this.serializeForQuery(metadata, forCountRow);            
+            SQLSerializer.this.serializeForQuery(metadata, forCountRow);
         }
 
         @Override
         public SerializationContext append(String str) {
             SQLSerializer.this.append(str);
-            return this;            
+            return this;
         }
 
         @Override
@@ -52,27 +52,27 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 exprs[i] = ExprConst.create(args[i]);
             }
             SQLSerializer.this.handle(CSimple.create(Object.class, template, exprs));
-            
+
         }
-        
+
     };
-    
+
     private static final String COMMA = ", ";
 
     private final List<Object> constants = new ArrayList<Object>();
-    
+
     private final boolean dml;
-    
+
     private boolean skipParent;
-    
+
     private PEntity<?> entity;
-    
+
     private final SQLTemplates templates;
 
     public SQLSerializer(SQLTemplates templates) {
         this(templates, false);
     }
-    
+
     public SQLSerializer(SQLTemplates templates, boolean dml) {
         super(templates);
         this.templates = templates;
@@ -83,16 +83,16 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         String column = path.getMetadata().getExpression().toString();
         append(templates.quoteColumnName(column));
     }
-    
+
     private void appendAsTableName(Path<?> path){
         String table = path.getAnnotatedElement().getAnnotation(Table.class).value();
         append(templates.quoteTableName(table));
     }
-    
+
     protected void beforeOrderBy() {
         // template method, for subclasses do override
     }
-    
+
     public List<Object> getConstants(){
         return constants;
     }
@@ -105,8 +105,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 for (Field field : j.getTarget().getClass().getFields()) {
                     if (Expr.class.isAssignableFrom(field.getType())){
                         Expr<?> column = (Expr<?>) field.get(j.getTarget());
-                        columns.add(column);    
-                    }                    
+                        columns.add(column);
+                    }
                 }
             }
             return columns;
@@ -115,7 +115,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         } catch (IllegalAccessException e) {
             throw new QueryException(e);
         }
-            
+
     }
 
     protected SQLTemplates getTemplates(){
@@ -134,11 +134,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
         handle(je.getTarget());
     }
-    
+
     public void serialize(QueryMetadata metadata, boolean forCountRow){
         templates.serialize(metadata, forCountRow, context);
     }
-    
+
     @SuppressWarnings("unchecked")
     private void serializeForQuery(QueryMetadata metadata, boolean forCountRow) {
         List<? extends Expr<?>> select = metadata.getProjection();
@@ -157,45 +157,45 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 sqlSelect.add(selectExpr);
             }
         }
-        
-        // select 
-        if (forCountRow) {            
+
+        // select
+        if (forCountRow) {
             append(templates.getSelect());
             if (!metadata.isDistinct()){
                 append(templates.getCountStar());
             }else{
                 append(templates.getDistinctCountStart());
-                if (sqlSelect.isEmpty()){                    
+                if (sqlSelect.isEmpty()){
                     List<Expr<?>> columns = getIdentifierColumns(joins);
                     handle(columns.get(0));
                 }else{
-                    handle(COMMA, sqlSelect);    
-                }                
+                    handle(COMMA, sqlSelect);
+                }
                 append(templates.getDistinctCountEnd());
             }
-            
+
         } else if (!sqlSelect.isEmpty()) {
             if (!metadata.isDistinct()) {
                 append(templates.getSelect());
             } else {
                 append(templates.getSelectDistinct());
-            }  
+            }
             handle(COMMA, sqlSelect);
         }
-        
+
         // from
         serializeSources(joins);
 
-        // where 
+        // where
         if (where != null) {
             append(templates.getWhere()).handle(where);
         }
-        
+
         // group by
         if (!groupBy.isEmpty()) {
             append(templates.getGroupBy()).handle(COMMA, groupBy);
         }
-        
+
         // having
         if (having != null) {
             if (groupBy.isEmpty()) {
@@ -211,9 +211,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!orderBy.isEmpty() && !forCountRow) {
             serializeOrderBy(orderBy);
         }
-        
+
     }
-    
+
     public void serializeForDelete(PEntity<?> entity, EBoolean where) {
         this.entity = entity;
         append(templates.getDeleteFrom());
@@ -243,7 +243,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             skipParent = true;
             append("(").handle(COMMA, keys).append(") ");
             skipParent = false;
-        }        
+        }
 
         if (subQuery != null){
             // subquery
@@ -255,34 +255,34 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             append("(").handle(COMMA, values).append(") ");
         }
     }
-    
-    public void serializeForInsert(PEntity<?> entity, List<Path<?>> columns, 
+
+    public void serializeForInsert(PEntity<?> entity, List<Path<?>> columns,
             List<Expr<?>> values, @Nullable SubQuery<?> subQuery) {
         this.entity = entity;
-        append(templates.getInsertInto());        
+        append(templates.getInsertInto());
         handle(entity);
         // columns
         if (!columns.isEmpty()){
-            append("(");            
+            append("(");
             skipParent = true;
             handle(COMMA, columns);
             skipParent = false;
             append(")");
         }
-        
+
         if (subQuery != null){
             append("\n");
             serialize(subQuery.getMetadata(), false);
-        }else{            
+        }else{
             // values
             append(templates.getValues());
             append("(");
             handle(COMMA, values);
-            append(")");            
+            append(")");
         }
     }
 
-    public void serializeForUpdate(PEntity<?> entity, 
+    public void serializeForUpdate(PEntity<?> entity,
             List<Pair<Path<?>, ?>> updates, EBoolean where) {
         this.entity = entity;
         append(templates.getUpdate());
@@ -309,14 +309,14 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             append(templates.getWhere()).handle(where);
         }
     }
-    
+
     private void serializeOrderBy(List<OrderSpecifier<?>> orderBy) {
         append(templates.getOrderBy());
         boolean first = true;
         for (OrderSpecifier<?> os : orderBy) {
             if (!first){
                 append(COMMA);
-            }                    
+            }
             handle(os.getTarget());
             append(os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc());
             first = false;
@@ -335,13 +335,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             if (i > 0) {
                 append(templates.getJoinSymbol(je.getType()));
             }
-            handleJoinTarget(je);            
+            handleJoinTarget(je);
             if (je.getCondition() != null) {
                 append(templates.getOn()).handle(je.getCondition());
             }
         }
     }
-
 
     @SuppressWarnings("unchecked")
     public void serializeUnion(SubQuery[] sqs, List<OrderSpecifier<?>> orderBy) {
@@ -355,7 +354,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             for (OrderSpecifier<?> os : orderBy) {
                 if (!first){
                     append(COMMA);
-                }                    
+                }
                 handle(os.getTarget());
                 append(os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc());
                 first = false;
@@ -381,16 +380,16 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             append(")");
         }else{
             append("?");
-            constants.add(expr.getConstant());    
-        }        
+            constants.add(expr.getConstant());
+        }
     }
-    
+
     @Override
     public void visit(Param<?> param){
         append("?");
         constants.add(param);
     }
-    
+
     public void visit(Path<?> path) {
         if (dml){
             if (path.equals(entity)){
@@ -417,12 +416,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (operator.equals(Ops.STRING_CAST)) {
             String typeName = templates.getTypeForClass(String.class);
             visitOperation(String.class, SQLTemplates.CAST, Arrays.<Expr<?>>asList(args.get(0), ExprConst.create(typeName)));
-        
+
         } else if (operator.equals(Ops.NUMCAST)) {
             Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
             String typeName = templates.getTypeForClass(targetType);
             visitOperation(targetType, SQLTemplates.CAST, Arrays.<Expr<?>>asList(args.get(0), ExprConst.create(typeName)));
-        
+
         } else {
             super.visitOperation(type, operator, args);
         }

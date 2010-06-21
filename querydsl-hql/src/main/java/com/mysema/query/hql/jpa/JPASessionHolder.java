@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.jpa;
 
@@ -12,7 +12,7 @@ import javax.persistence.Query;
  *
  */
 public interface JPASessionHolder {
-    
+
     /**
      * @param queryString
      * @return
@@ -24,12 +24,12 @@ public interface JPASessionHolder {
      * @return
      */
     Query createSQLQuery(String queryString);
-    
+
     /**
      * @param queryString
      * @param resultClass
      * @return
      */
     Query createSQLQuery(String queryString, Class<?> resultClass);
-    
+
 }

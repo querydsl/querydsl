@@ -1,15 +1,13 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
 import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
-
-
 
 public class TypeCategoryTest {
 

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.jpa;
 
@@ -15,39 +15,39 @@ import com.mysema.query.hql.JPQLTemplates;
 
 /**
  * JPAQuery is the default implementation of the HQLQuery interface for JPA
- * 
+ *
  * @author tiwe
  *
  */
 public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements HQLQuery{
 
     /**
-     * Creates a new detached query 
+     * Creates a new detached query
      * The query can be attached via the clone method
      */
     public JPAQuery(){
         super(new NoSessionHolder(), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
-    }    
+    }
 
     /**
      * Creates a new EntityManager bound query
-     * 
+     *
      * @param entityManager
      */
     public JPAQuery(EntityManager entityManager) {
         super(new DefaultSessionHolder(entityManager), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
     }
-    
+
     /**
      * Creates a new query
-     * 
+     *
      * @param entityManager
      * @param patterns
      */
     public JPAQuery(EntityManager entityManager, JPQLTemplates patterns) {
         super(new DefaultSessionHolder(entityManager), patterns, new DefaultQueryMetadata());
     }
-    
+
     /**
      * @param session
      * @param templates
@@ -56,10 +56,10 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements HQLQue
     protected JPAQuery(JPASessionHolder session, JPQLTemplates templates, QueryMetadata metadata) {
         super(session, templates, metadata);
     }
-    
+
     /**
      * Clone the state of this query to a new JPAQuery instance with the given EntityManager
-     * 
+     *
      * @param entityManager
      * @return
      */

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.hibernate;
 
@@ -23,32 +23,32 @@ import com.mysema.query.types.path.PEntity;
 
 /**
  * DeleteClause implementation for Hibernate
- * 
+ *
  * @author tiwe
  *
  */
 public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause>{
 
     private final QueryMetadata md = new DefaultQueryMetadata();
-    
+
     private final SessionHolder session;
-    
+
     private final JPQLTemplates templates;
-    
+
     public HibernateDeleteClause(Session session, PEntity<?> entity){
         this(new DefaultSessionHolder(session), entity, HQLTemplates.DEFAULT);
     }
-    
+
     public HibernateDeleteClause(StatelessSession session, PEntity<?> entity){
         this(new StatelessSessionHolder(session), entity, HQLTemplates.DEFAULT);
     }
-    
+
     public HibernateDeleteClause(SessionHolder session, PEntity<?> entity, JPQLTemplates templates){
         this.session = session;
         this.templates = templates;
-        md.addJoin(JoinType.DEFAULT, entity);        
+        md.addJoin(JoinType.DEFAULT, entity);
     }
-    
+
     @Override
     public long execute() {
         HQLSerializer serializer = new HQLSerializer(templates);

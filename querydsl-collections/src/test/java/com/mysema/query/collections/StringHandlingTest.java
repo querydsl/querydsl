@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.collections;
 
@@ -17,7 +17,7 @@ import com.mysema.query.types.path.PString;
 
 /**
  * StringHandlingTest provides
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -30,9 +30,9 @@ public class StringHandlingTest extends AbstractQueryTest {
     private List<String> data = Arrays.asList("abc", "aBC", "def");
 
     private final PString a = new PString("a");
-    
+
     private final PString b = new PString("b");
-    
+
     @Test
     public void equalsIgnoreCase() {
         Iterator<String> res = Arrays.asList("petER - PETer",

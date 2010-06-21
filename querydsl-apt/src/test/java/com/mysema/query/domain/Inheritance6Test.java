@@ -61,7 +61,7 @@ public class Inheritance6Test {
     }
 
     @Test
-    public void intermediate_superclass_should_contain_fields_from_top_superclass() {  
+    public void intermediate_superclass_should_contain_fields_from_top_superclass() {
          QInheritance6Test_Translation translation = QInheritance6Test_Gloss.gloss._super;
          assertEquals(PDateTime.class, translation.createdOn.getClass());
     }

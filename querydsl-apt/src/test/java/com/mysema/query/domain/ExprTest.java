@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.domain;
 
@@ -23,7 +23,7 @@ import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.EStringConst;
 
 public class ExprTest {
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void test() throws Throwable {
@@ -53,15 +53,15 @@ public class ExprTest {
         exprs.add(QRelationTest_RelationType.relationType);
         exprs.add(QReservedNamesTest_ReservedNames.reservedNames);
         exprs.add(QSimpleTypesTest_SimpleTypes.simpleTypes);
-        
+
         exprs.add(EStringConst.create("Hello World!"));
         exprs.add(ENumberConst.create(1000));
         exprs.add(ENumberConst.create(10l));
         exprs.add(EBooleanConst.TRUE);
         exprs.add(EBooleanConst.FALSE);
-        
+
         Set<Expr<?>> toVisit = new HashSet<Expr<?>>();
-        
+
         // all entities
         toVisit.addAll(exprs);
         // and all their direct properties
@@ -75,43 +75,43 @@ public class ExprTest {
                         toVisit.add(str.charAt(0));
                         toVisit.add(str.isEmpty());
                     }else if (rv instanceof EBoolean){
-                        EBoolean b = (EBoolean)rv; 
+                        EBoolean b = (EBoolean)rv;
                         toVisit.add(b.not());
                     }
                     toVisit.add((Expr<?>) rv);
                 }
             }
         }
-        
+
         Set<String> failures = new TreeSet<String>();
-        
+
         for (Expr<?> expr : toVisit){
             for (Method method : expr.getClass().getMethods()){
                 if (method.getName().equals("getArg")) continue;
                 if (method.getReturnType() != void.class
                  && !method.getReturnType().isPrimitive()){
                     Class<?>[] types = method.getParameterTypes();
-                    Object[] args;                        
+                    Object[] args;
                     if (types.length == 0){
-                        args = new Object[0];                            
+                        args = new Object[0];
                     }else if (types.length == 1){
                         if (types[0] == int.class){
-                            args = new Object[]{Integer.valueOf(1)};           
-                        }else if (types[0] == boolean.class){    
+                            args = new Object[]{Integer.valueOf(1)};
+                        }else if (types[0] == boolean.class){
                             args = new Object[]{Boolean.TRUE};
                         }else{
                             continue;
-                        }                           
-                        
+                        }
+
                     }else{
                         continue;
                     }
-                    Object rv = method.invoke(expr, args);   
+                    Object rv = method.invoke(expr, args);
                     if (method.invoke(expr, args) != rv){
                         failures.add(expr.getClass().getSimpleName()+"."+method.getName()+" is unstable");
                     }
                 }
-            }    
+            }
         }
 
         if (failures.size() > 0){
@@ -120,7 +120,7 @@ public class ExprTest {
         for (String failure : failures){
             System.err.println(failure);
         }
-                        
+
 //        assertTrue("Got "+failures.size()+" failures",failures.isEmpty());
     }
 

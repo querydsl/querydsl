@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql.testdomain;
 
@@ -24,24 +24,24 @@ public class Product {
     private String description = null;
 
     private double price = 0.0;
-    
+
     private Date publicationDate;
-    
+
     @Persistent
     private java.sql.Date dateField;
-    
+
     @Persistent
     private java.sql.Time timeField;
 
     private int amount;
-    
+
     public Product() {
     }
 
     public Product(String name, String description, double price, int amount) {
         this(name, description, price, amount, new Date());
     }
-    
+
     public Product(String name, String description, double price, int amount, Date publicationDate) {
         this.name = name;
         this.description = description;
@@ -75,7 +75,7 @@ public class Product {
     public void setPrice(double price) {
         this.price = price;
     }
-    
+
     public int getAmount() {
         return amount;
     }
@@ -83,7 +83,7 @@ public class Product {
     public void setAmount(int amount) {
         this.amount = amount;
     }
-    
+
     public Date getPublicationDate() {
         return publicationDate;
     }

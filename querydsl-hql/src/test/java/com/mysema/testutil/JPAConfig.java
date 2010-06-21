@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.testutil;
 
@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 
 /**
  * JPAConfig provides.
- * 
+ *
  * @author tiwe
  * @version $Id$
  */

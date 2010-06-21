@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query;
 
@@ -14,7 +14,7 @@ import net.jcip.annotations.Immutable;
 
 /**
  * SearchResults bundles data for paged search results
- * 
+ *
  * @author tiwe
  */
 @Immutable
@@ -42,7 +42,7 @@ public final class SearchResults<T> {
 
     /**
      * Get the results in List form
-     * 
+     *
      * @return
      */
     public List<T> getResults() {
@@ -51,7 +51,7 @@ public final class SearchResults<T> {
 
     /**
      * Get the number of total results
-     * 
+     *
      * @return
      */
     public long getTotal() {

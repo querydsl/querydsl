@@ -1,11 +1,11 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 
 /**
- * Custom types are comparable to operations but contain the serialization 
+ * Custom types are comparable to operations but contain the serialization
  * templates instead of operator patterns. Custom types are always implementation specific.
  */
 @DefaultAnnotation( { Nonnull.class })

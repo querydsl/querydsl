@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.util;
 
@@ -20,7 +20,7 @@ public final class ArrayUtils {
         }
         return target;
     }
-    
+
     private ArrayUtils(){}
-    
+
 }

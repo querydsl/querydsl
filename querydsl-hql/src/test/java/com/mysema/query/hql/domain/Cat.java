@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.domain;
 
@@ -23,40 +23,40 @@ import org.hibernate.annotations.IndexColumn;
 @Entity
 @DiscriminatorValue("C")
 public class Cat extends Animal {
-    
+
     private int breed;
-    
+
     private Color eyecolor;
-    
+
     @OneToMany
     @JoinTable(name="kittens")
     @IndexColumn(name = "ind")
     private List<Cat> kittens = new ArrayList<Cat>();
-    
+
     @OneToMany
     @JoinTable(name="kittens_set")
     private Set<Cat> kittensSet;
-    
+
 //    @OneToMany
 //    @JoinTable(name="kittens_array")
 //    @IndexColumn(name = "arrayIndex")
 //    private Cat[] kittensArray = new Cat[0];
-    
+
     @ManyToOne
     private Cat mate;
 
     public Cat(){}
-    
+
     public Cat(String name, int id){
         this.setId(id);
         this.setName( name);
     }
-    
+
     public Cat(String name, int id, double bodyWeight){
         this(name, id);
         this.setBodyWeight(bodyWeight);
     }
-    
+
     public int getBreed() {
         return breed;
     }
@@ -79,7 +79,7 @@ public class Cat extends Animal {
 
     public void addKitten(Cat kitten) {
         kittens.add(kitten);
-//        kittensArray = new Cat[]{kitten};        
+//        kittensArray = new Cat[]{kitten};
     }
 
     public Set<Cat> getKittensSet() {
@@ -89,8 +89,5 @@ public class Cat extends Animal {
     public void setKittensSet(Set<Cat> kittensSet) {
         this.kittensSet = kittensSet;
     }
-    
-    
-    
-    
+
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql.serialization;
 
@@ -16,7 +16,7 @@ public abstract class AbstractTest {
     protected JDOQLSubQuery query(){
         return new JDOQLSubQuery();
     }
-    
+
     protected String serialize(SubQuery expr) {
         Expr<?> source = expr.getMetadata().getJoins().get(0).getTarget();
         JDOQLSerializer serializer = new JDOQLSerializer(JDOQLTemplates.DEFAULT, source);

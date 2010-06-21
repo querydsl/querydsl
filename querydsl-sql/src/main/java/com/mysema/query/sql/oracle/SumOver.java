@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql.oracle;
 
@@ -19,22 +19,22 @@ import com.mysema.query.types.expr.ENumber;
 /**
  * SumOver is a fluent type for Oracle specific sum over / partition by / order
  * by constructs
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
 public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A> {
-    
+
     private static final long serialVersionUID = -4130672293308756779L;
 
     // TODO : change this to List<OrderSpecifier<?>>
     private List<Expr<?>> orderBy = new ArrayList<Expr<?>>();
-    
+
     @Nullable
     private Expr<?> partitionBy;
-    
+
     private final Expr<A> target;
-    
+
     public SumOver(Expr<A> expr) {
         super(expr.getType());
         target = expr;
@@ -49,12 +49,12 @@ public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A
         args.add(target);
         if (partitionBy != null){
             builder.append("partition by {1}");
-            args.add(partitionBy);            
+            args.add(partitionBy);
         }
         if (!orderBy.isEmpty()){
             if (partitionBy != null){
                 builder.append(" ");
-            }            
+            }
             builder.append("order by ");
             boolean first = true;
             for (Expr<?> expr : orderBy){
@@ -68,8 +68,8 @@ public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A
         }
         builder.append(")");
         ENumber<A> expr = CNumber.<A>create(
-                (Class<A>)target.getType(), 
-                builder.toString(), 
+                (Class<A>)target.getType(),
+                builder.toString(),
                 args.toArray(new Expr[args.size()]));
         expr.accept(v);
     }
@@ -81,7 +81,7 @@ public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A
             return true;
         }else if (o instanceof SumOver){
             SumOver so = (SumOver)o;
-            return so.target.equals(target) 
+            return so.target.equals(target)
                 && so.partitionBy.equals(partitionBy)
                 && so.orderBy.equals(orderBy);
         }else{
@@ -98,10 +98,10 @@ public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A
         this.orderBy.addAll(Arrays.asList(orderBy));
         return this;
     }
-    
+
     public SumOver<A> partition(Expr<?> partitionBy) {
         this.partitionBy = partitionBy;
         return this;
     }
-    
+
 }

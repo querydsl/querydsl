@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql;
 
@@ -16,15 +16,15 @@ import com.mysema.query.types.path.PMap;
 
 /**
  * Query interface for HQL queries
- * 
+ *
  * @author tiwe
- * 
+ *
  */
 public interface HQLQuery extends Query<HQLQuery>, Projectable {
 
     /**
      * Set the sources of this query
-     * 
+     *
      * @param sources
      * @return
      */
@@ -33,17 +33,17 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
     /**
      * Create an inner join with the given target.
      * Use fetch() to add the fetch parameter to this join.
-     * 
-     * 
+     *
+     *
      * @param <P>
      * @param target
      * @return
      */
     <P> HQLQuery innerJoin(PEntity<P> target);
-    
+
     /**
      * Create an inner join with the given target and alias.
-     * 
+     *
      * @param <P>
      * @param target
      * @param alias
@@ -54,16 +54,16 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
     /**
      * Create an inner join with the given target.
      * Use fetch() to add the fetch parameter to this join.
-     * 
+     *
      * @param <P>
      * @param target
      * @return
      */
     <P> HQLQuery innerJoin(Path<? extends Collection<P>> target);
-    
+
     /**
      * Create an inner join with the given target and alias.
-     * 
+     *
      * @param <P>
      * @param target
      * @param alias
@@ -74,16 +74,16 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
     /**
      * Create an inner join with the given target.
      * Use fetch() to add the fetch parameter to this join.
-     * 
+     *
      * @param <P>
      * @param target
      * @return
      */
-    <P> HQLQuery innerJoin(PMap<?, P, ?> target);    
-    
+    <P> HQLQuery innerJoin(PMap<?, P, ?> target);
+
     /**
      * Create an inner join with the given target and alias.
-     * 
+     *
      * @param <P>
      * @param target
      * @param alias
@@ -94,16 +94,16 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
     /**
      * Create an join with the given target.
      * Use fetch() to add the fetch parameter to this join.
-     * 
+     *
      * @param <P>
      * @param target
      * @return
      */
-    <P> HQLQuery join(PEntity<P> target);    
-    
+    <P> HQLQuery join(PEntity<P> target);
+
     /**
      * Create a join with the given target and alias.
-     * 
+     *
      * @param <P>
      * @param target
      * @param alias
@@ -114,13 +114,13 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
     /**
      * Create an join with the given target.
      * Use fetch() to add the fetch parameter to this join.
-     * 
+     *
      * @param <P>
      * @param target
      * @return
      */
     <P> HQLQuery join(Path<? extends Collection<P>> target);
-    
+
     /**
      * @param <P>
      * @param target
@@ -132,16 +132,16 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
     /**
      * Create an join with the given target.
      * Use fetch() to add the fetch parameter to this join.
-     * 
+     *
      * @param <P>
      * @param target
      * @return
      */
     <P> HQLQuery join(PMap<?, P, ?> target);
-    
+
     /**
      * Create a join with the given target and alias.
-     * 
+     *
      * @param <P>
      * @param target
      * @param alias
@@ -152,16 +152,16 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
     /**
      * Create an left join with the given target.
      * Use fetch() to add the fetch parameter to this join.
-     * 
+     *
      * @param <P>
      * @param target
      * @return
      */
     <P> HQLQuery leftJoin(PEntity<P> target);
-    
+
     /**
      * Create a left join with the given target and alias.
-     * 
+     *
      * @param <P>
      * @param target
      * @param alias
@@ -172,16 +172,16 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
     /**
      * Create an left join with the given target.
      * Use fetch() to add the fetch parameter to this join.
-     * 
+     *
      * @param <P>
      * @param target
      * @return
      */
     <P> HQLQuery leftJoin(Path<? extends Collection<P>> target);
-    
+
     /**
      * Create a left join with the given target and alias.
-     * 
+     *
      * @param <P>
      * @param target
      * @param alias
@@ -192,16 +192,16 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
     /**
      * Create an left join with the given target.
      * Use fetch() to add the fetch parameter to this join.
-     * 
+     *
      * @param <P>
      * @param target
      * @return
      */
     <P> HQLQuery leftJoin(PMap<?, P, ?> target);
-    
+
     /**
      * Create a left join with the given target and alias.
-     * 
+     *
      * @param <P>
      * @param target
      * @param alias
@@ -212,16 +212,16 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
     /**
      * Create an full join with the given target.
      * Use fetch() to add the fetch parameter to this join.
-     * 
+     *
      * @param <P>
      * @param target
      * @return
      */
     <P> HQLQuery fullJoin(PEntity<P> target);
-    
+
     /**
      * Create a full join with the given target and alias.
-     * 
+     *
      * @param <P>
      * @param target
      * @param alias
@@ -232,16 +232,16 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
     /**
      * Create an full join with the given target.
      * Use fetch() to add the fetch parameter to this join.
-     * 
+     *
      * @param <P>
      * @param target
      * @return
      */
     <P> HQLQuery fullJoin(Path<? extends Collection<P>> target);
-    
+
     /**
      * Create a full join with the given target and alias.
-     * 
+     *
      * @param <P>
      * @param target
      * @param alias
@@ -252,16 +252,16 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
     /**
      * Create an full join with the given target.
      * Use fetch() to add the fetch parameter to this join.
-     * 
+     *
      * @param <P>
      * @param target
      * @return
      */
-    <P> HQLQuery fullJoin(PMap<?, P, ?> target); 
-    
+    <P> HQLQuery fullJoin(PMap<?, P, ?> target);
+
     /**
      * Create a full join with the given target and alias.
-     * 
+     *
      * @param <P>
      * @param target
      * @param alias
@@ -271,7 +271,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
 
     /**
      * Add conditions to the with clause
-     * 
+     *
      * @param condition
      * @return
      */
@@ -279,7 +279,7 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
 
     /**
      * Add the "fetch" flag to the last defined join
-     * 
+     *
      * @return
      */
     HQLQuery fetch();
@@ -289,5 +289,5 @@ public interface HQLQuery extends Query<HQLQuery>, Projectable {
       * @return
        */
     HQLQuery fetchAll();
-    
+
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.expr;
 
@@ -11,7 +11,7 @@ import com.mysema.query.types.Expr;
 
 /**
  * QTuple represents a projection of type Tuple
- * 
+ *
  * @author tiwe
  *
  */
@@ -43,7 +43,7 @@ public class QTuple extends EConstructor<Tuple>{
             public Object[] toArray() {
             return args;
             }
-        
+
     };
     }
 

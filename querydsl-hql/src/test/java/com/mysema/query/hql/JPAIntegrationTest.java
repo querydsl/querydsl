@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql;
 
@@ -20,7 +20,7 @@ import com.mysema.testutil.JPATestRunner;
 
 /**
  * HibernatePersistenceTest provides.
- * 
+ *
  * @author tiwe
  * @version $Id$
  */

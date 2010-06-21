@@ -1,13 +1,13 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types;
 
 /**
  * ToStringVisitor is used for toString() serialization in {@link Expr} implementations.
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -20,7 +20,7 @@ public final class ToStringVisitor implements Visitor{
     public ToStringVisitor(Templates templates){
         this.templates = templates;
     }
-    
+
     public String toString() {
         return toString;
     }
@@ -103,13 +103,13 @@ public final class ToStringVisitor implements Visitor{
 
     @Override
     public void visit(SubQuery<?> expr) {
-        toString = expr.getMetadata().toString();        
+        toString = expr.getMetadata().toString();
     }
 
     @Override
     public void visit(Param<?> param) {
         toString = "{" + param.getName() + "}";
-        
+
     }
 
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query;
 
@@ -30,13 +30,13 @@ import com.mysema.query.hql.hibernate.ScrollableResultsIterator;
  *
  */
 public abstract class AbstractHibernateTest extends AbstractStandardTest{
-    
+
     private Session session;
-    
+
     protected HibernateQuery query(){
         return new HibernateQuery(session, getTemplates());
     }
-    
+
     protected JPQLTemplates getTemplates(){
     return HQLTemplates.DEFAULT;
     }
@@ -47,24 +47,24 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
 
     @Override
     protected void save(Object entity) {
-        session.save(entity);        
+        session.save(entity);
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void queryExposure(){
         save(new Cat());
-        
+
         List results = query().from(QCat.cat).createQuery(QCat.cat).list();
         assertNotNull(results);
         assertFalse(results.isEmpty());
     }
-    
+
     @Test
     public void lockMode(){
         query().from(QCat.cat).setLockMode(QCat.cat, LockMode.PESSIMISTIC_WRITE).list(QCat.cat);
     }
-    
+
     @Test
     public void scroll() throws IOException{
         CloseableIterator<Cat> cats = new ScrollableResultsIterator<Cat>(query().from(QCat.cat).createQuery(QCat.cat).scroll());
@@ -72,7 +72,7 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
         while (cats.hasNext()){
             assertNotNull(cats.next());
         }
-        cats.close();               
+        cats.close();
     }
 
     @Test
@@ -87,6 +87,6 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
             assertNotNull(row[0]);
             assertNotNull(row[1]);
         }
-        rows.close();               
+        rows.close();
     }
 }

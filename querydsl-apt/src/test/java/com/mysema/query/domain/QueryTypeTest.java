@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.domain;
 
@@ -22,22 +22,22 @@ public class QueryTypeTest extends AbstractTest{
     public static class QueryTypeEntity{
         @QueryType(PropertyType.SIMPLE)
         public String stringAsSimple;
-        
+
         @QueryType(PropertyType.COMPARABLE)
         public String stringAsComparable;
-        
+
         @QueryType(PropertyType.DATE)
         public String stringAsDate;
-        
+
         @QueryType(PropertyType.DATETIME)
         public String stringAsDateTime;
-        
+
         @QueryType(PropertyType.TIME)
         public String stringAsTime;
-        
+
         @QueryType(PropertyType.NONE)
         public String stringNotInQuerydsl;
-        
+
     }
 
     @Test

@@ -25,7 +25,7 @@ public class Inheritance5Test {
         public void setCreatedOn(Date createdOn) {
             this.createdOn = createdOn;
         }
-        
+
     }
 
     @QuerySupertype
@@ -40,17 +40,17 @@ public class Inheritance5Test {
         public void setId(ID id) {
             this.id = id;
         }
-        
+
     }
 
     @QueryEntity
     public class Entity extends CommonIdentifiable<Long> {
-        
+
     }
-    
+
     @Test
     public void test(){
         assertEquals(PNumber.class, QInheritance5Test_Entity.entity.id.getClass());
     }
-    
+
 }

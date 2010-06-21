@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.path;
 
@@ -24,7 +24,7 @@ public class PDateTime<D extends Comparable> extends EDateTime<D> implements Pat
     private static final long serialVersionUID = -2807916228198184631L;
 
     private final Path<D> pathMixin;
-    
+
     public PDateTime(Class<? extends D> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
@@ -40,14 +40,14 @@ public class PDateTime<D extends Comparable> extends EDateTime<D> implements Pat
 
     @Override
     public void accept(Visitor v) {
-        v.visit(this);        
+        v.visit(this);
     }
-    
+
     @Override
     public boolean equals(Object o) {
         return pathMixin.equals(o);
     }
-    
+
     @Override
     public PathMetadata<?> getMetadata() {
         return pathMixin.getMetadata();
@@ -67,12 +67,12 @@ public class PDateTime<D extends Comparable> extends EDateTime<D> implements Pat
     public EBoolean isNotNull() {
         return pathMixin.isNotNull();
     }
-    
+
     @Override
     public EBoolean isNull() {
         return pathMixin.isNull();
     }
-    
+
     @Override
     public AnnotatedElement getAnnotatedElement(){
         return pathMixin.getAnnotatedElement();

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql.testdomain;
 
@@ -31,7 +31,7 @@ public class Book extends Product {
             String isbn, String publisher) {
         this(name, description, price, amount, author, isbn, publisher, new Date());
     }
-    
+
     public Book(String name, String description, double price, int amount, String author,
             String isbn, String publisher, Date date) {
         super(name, description, price, amount, date);

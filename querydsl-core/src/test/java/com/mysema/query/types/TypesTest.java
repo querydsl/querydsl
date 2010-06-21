@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types;
 
@@ -9,11 +9,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-
 // TODO: Auto-generated Javadoc
 /**
  * TypesTest provides.
- * 
+ *
  * @author tiwe
  * @version $Id$
  */

@@ -10,26 +10,26 @@ import org.junit.Test;
 import com.mysema.query.annotations.QueryEntity;
 
 public class Inheritance7Test {
-    
+
     @QueryEntity
     public static class User{
-        
+
     }
-    
+
     @QueryEntity
     public static class SubCategory extends Category<SubCategory> {
-                
+
     }
-    
+
     @QueryEntity
     public static class Category<T extends Category<T>> implements Comparable<T>{
-     
+
         private User owner;
-        
+
         private T parent;
-        
+
         private Set<T> children;
-        
+
         public User getOwner() {
             return owner;
         }
@@ -46,15 +46,14 @@ public class Inheritance7Test {
         public Set<T> getChildren() {
             return children;
         }
-                
+
     }
-    
+
     @QueryEntity
     public static class SubCategory2 extends Category<SubCategory2> {
-        
-        
+
     }
-    
+
     @Test
     @Ignore
     public void parent(){
@@ -63,7 +62,7 @@ public class Inheritance7Test {
         assertEquals(SubCategory.class, QInheritance7Test_SubCategory.subCategory.parent.getType());
         assertEquals(SubCategory2.class, QInheritance7Test_SubCategory2.subCategory2.parent.getType());
     }
-    
+
     @Test
     @Ignore
     public void children(){
@@ -72,5 +71,5 @@ public class Inheritance7Test {
         assertEquals(SubCategory.class, QInheritance7Test_SubCategory.subCategory.children.getElementType());
         assertEquals(SubCategory2.class, QInheritance7Test_SubCategory2.subCategory2.children.getElementType());
     }
-    
+
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql;
 
@@ -28,12 +28,12 @@ import com.mysema.query.types.path.PEntity;
 
 /**
  * JDOQLSerializer serializes Querydsl queries and expressions into JDOQL strings
- * 
+ *
  * @author tiwe
- * 
+ *
  */
 public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
-    
+
     private static final String COMMA = ", ";
 
     private static final String FROM = "\nFROM ";
@@ -51,7 +51,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     private static final String SELECT = "SELECT ";
 
     private static final String SELECT_COUNT = "SELECT count(";
-    
+
     private static final String SELECT_COUNT_THIS = "SELECT count(this)\n";
 
     private static final String SELECT_DISTINCT = "SELECT DISTINCT ";
@@ -63,23 +63,23 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     private static final String VARIABLES = "\nVARIABLES ";
 
     private static final String WHERE = "\nWHERE ";
-   
+
     private static Comparator<Map.Entry<Object,String>> comparator = new Comparator<Map.Entry<Object,String>>(){
         @Override
         public int compare(Entry<Object, String> o1, Entry<Object, String> o2) {
             return o1.getValue().compareTo(o2.getValue());
-        }        
+        }
     };
 
     private Expr<?> candidatePath;
-    
+
     private List<Object> constants = new ArrayList<Object>();
-    
+
     public JDOQLSerializer(JDOQLTemplates patterns, Expr<?> candidate) {
         super(patterns);
         this.candidatePath = candidate;
     }
-        
+
     public Expr<?> getCandidatePath() {
         return candidatePath;
     }
@@ -104,14 +104,14 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         }
         return OSimple.create(
                 operation.getType(),
-                operation.getOperator(), 
+                operation.getOperator(),
                 args.<Expr<?>>toArray(new Expr[args.size()]));
     }
 
     private Expr<?> regexToLike(String str){
         return EStringConst.create(str.replace(".*", "%").replace(".", "_"));
     }
-    
+
     @SuppressWarnings("unchecked")
     public void serialize(QueryMetadata metadata, boolean forCountRow, boolean subquery) {
         List<? extends Expr<?>> select = metadata.getProjection();
@@ -122,10 +122,10 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         EBoolean having = metadata.getHaving();
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
-        // select 
+        // select
         if (forCountRow) {
             if (joins.size() == 1){
-                append(SELECT_COUNT_THIS);    
+                append(SELECT_COUNT_THIS);
             }else{
                 append(SELECT_COUNT);
                 boolean first = true;
@@ -138,8 +138,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
                 }
                 append(")");
             }
-            
-            
+
         } else if (!select.isEmpty()) {
             if (metadata.isDistinct()){
                 append(SELECT_DISTINCT);
@@ -150,8 +149,8 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             }
             handle(COMMA, select);
         }
-        
-        // from        
+
+        // from
         append(FROM);
         if (source instanceof Operation && subquery){
             handle(source);
@@ -159,29 +158,29 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             append(source.getType().getName());
             if (!source.equals(candidatePath)){
                 append(" ").handle(source);
-            }    
-        }        
+            }
+        }
 
         // where
         if (where != null) {
             append(WHERE).handle(where);
         }
-        
+
         // variables
         if (joins.size() > 1){
             serializeVariables(joins);
-        }        
-        
+        }
+
         // parameters
         if (!subquery && !getConstantToLabel().isEmpty()){
-            serializeParameters(metadata.getParams());    
-        }        
-                
+            serializeParameters(metadata.getParams());
+        }
+
         // group by
         if (!groupBy.isEmpty()) {
             append(GROUP_BY).handle(COMMA, groupBy);
         }
-        
+
         // having
         if (having != null) {
             if (groupBy.isEmpty()) {
@@ -190,7 +189,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             }
             append(HAVING).handle(having);
         }
-        
+
         // order by
         if (!orderBy.isEmpty() && !forCountRow) {
             append(ORDER_BY);
@@ -198,20 +197,20 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             for (OrderSpecifier<?> os : orderBy) {
                 if (!first){
                     append(COMMA);
-                }                    
+                }
                 handle(os.getTarget());
                 append(" " + os.getOrder());
                 first = false;
             }
         }
-        
+
         // range
         if (!forCountRow && metadata.getModifiers().isRestricting()){
             Long limit = metadata.getModifiers().getLimit();
             Long offset = metadata.getModifiers().getOffset();
             serializeModifiers(limit, offset);
         }
-        
+
     }
 
     private void serializeModifiers(@Nullable Long limit, @Nullable Long offset) {
@@ -220,22 +219,22 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             append(String.valueOf(offset));
             if (limit != null){
                 append(COMMA);
-                append(String.valueOf(offset + limit));    
-            }                
+                append(String.valueOf(offset + limit));
+            }
         }else{
             append("0, ").append(String.valueOf(limit));
         }
     }
-    
+
     private void serializeParameters(Map<Param<?>, Object> params) {
         append(PARAMETERS);
         boolean first = true;
         List<Map.Entry<Object, String>> entries = new ArrayList<Map.Entry<Object, String>>(getConstantToLabel().entrySet());
-        Collections.sort(entries, comparator);            
+        Collections.sort(entries, comparator);
         for (Map.Entry<Object, String> entry : entries){
             if (!first){
                 append(COMMA);
-            }            
+            }
             if (Param.class.isInstance(entry.getKey())){
                 Object constant = params.get(entry.getKey());
                 if (constant == null){
@@ -245,8 +244,8 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
                 append(((Param<?>)entry.getKey()).getType().getName());
             }else{
                 constants.add(entry.getKey());
-                append(entry.getKey().getClass().getName());    
-            }            
+                append(entry.getKey().getClass().getName());
+            }
             append(" ").append(entry.getValue());
             first = false;
         }
@@ -255,12 +254,12 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     @SuppressWarnings("unchecked")
     private void serializeVariables(List<JoinExpression> joins) {
         append(VARIABLES);
-        for (int i = 1; i < joins.size(); i++) {                
+        for (int i = 1; i < joins.size(); i++) {
             JoinExpression je = joins.get(i);
             if (i > 1) {
                 append("; ");
             }
-            
+
             // type specifier
             if (je.getTarget() instanceof PEntity) {
                 PEntity<?> pe = (PEntity<?>) je.getTarget();
@@ -295,25 +294,25 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         if (operator.equals(Ops.INSTANCE_OF)) {
             handle(args.get(0)).append(" instanceof ");
             append(((Constant<Class<?>>) args.get(1)).getConstant().getName());
-            
+
         } else if (operator.equals(Ops.MATCHES)){
             // switch from regex to like if the regex expression is an operation
             if (args.get(1) instanceof Operation){
                 operator = Ops.LIKE;
-                args = Arrays.asList(args.get(0), regexToLike((Operation<?>) args.get(1)));                
+                args = Arrays.asList(args.get(0), regexToLike((Operation<?>) args.get(1)));
             }
             super.visitOperation(type, operator, args);
-            
+
         } else if (operator.equals(Ops.NUMCAST)) {
             Class<?> clazz = ((Constant<Class<?>>)args.get(1)).getConstant();
             if (Number.class.isAssignableFrom(clazz) && ClassUtils.wrapperToPrimitive(clazz) != null){
                 clazz = ClassUtils.wrapperToPrimitive(clazz);
             }
             append("(",clazz.getSimpleName(),")").handle(args.get(0));
-            
+
         } else {
             super.visitOperation(type, operator, args);
         }
     }
-       
+
 }

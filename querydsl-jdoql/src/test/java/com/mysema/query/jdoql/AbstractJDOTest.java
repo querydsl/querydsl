@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql;
 
@@ -25,7 +25,7 @@ import com.mysema.query.types.path.PEntity;
 public abstract class AbstractJDOTest {
 
     private static final JDOQLTemplates templates = new JDOQLTemplates();
-    
+
     protected static PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
 
     protected PersistenceManager pm;
@@ -35,7 +35,7 @@ public abstract class AbstractJDOTest {
     protected JDOQLQuery query() {
         return new JDOQLQueryImpl(pm, templates, false);
     }
-    
+
     protected JDOQLQuery detachedQuery() {
         return new JDOQLQueryImpl(pm, templates, true);
     }
@@ -43,7 +43,7 @@ public abstract class AbstractJDOTest {
     protected JDOQLSubQuery sub(){
         return new JDOQLSubQuery();
     }
-    
+
     protected <T> List<T> query(PEntity<T> source, EBoolean condition) {
         return query().from(source).where(condition).list(source);
     }
@@ -51,11 +51,11 @@ public abstract class AbstractJDOTest {
 //    protected JDOQLUpdateClause update(PEntity<?> entity) {
 //        return new JDOQLUpdateClause(pm, entity, templates);
 //    }
-    
+
     protected JDOQLDeleteClause delete(PEntity<?> entity) {
         return new JDOQLDeleteClause(pm, entity, templates);
     }
-    
+
     @Before
     public void setUp() {
         pm = pmf.getPersistenceManager();
@@ -77,10 +77,10 @@ public abstract class AbstractJDOTest {
         PersistenceManager pm = pmf.getPersistenceManager();
         Transaction tx = pm.currentTransaction();
         try {
-            tx.begin();                        
+            tx.begin();
             pm.newQuery(Store.class).deletePersistentAll();
             pm.newQuery(Product.class).deletePersistentAll();
-                        
+
             tx.commit();
         } finally {
             if (tx.isActive()) {

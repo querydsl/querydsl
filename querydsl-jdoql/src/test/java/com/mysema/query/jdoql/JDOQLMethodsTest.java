@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql;
 
@@ -26,21 +26,20 @@ import com.mysema.query.types.expr.EString;
 public class JDOQLMethodsTest extends AbstractJDOTest {
 
     private QProduct product = QProduct.product;
-    
+
     private QStore store = QStore.store;
-    
+
     @Test
     public void test(){
         Product p = query().from(product).limit(1).uniqueResult(product);
         for (EBoolean f : getFilters(
-                product.name, product.description, "A0", 
+                product.name, product.description, "A0",
                 store.products, p,
                 store.productsByName, "A0", p,
                 product.amount)){
             query().from(store, product).where(f).list(store, product);
-        }                    
+        }
     }
-
 
     private <A,K,V> List<EBoolean> getFilters(
             EString str, EString other, String knownString,
@@ -71,10 +70,10 @@ public class JDOQLMethodsTest extends AbstractJDOTest {
            map.get(key).eq(value),
            map.size().gt(0),
            number.abs().gt(0),
-           number.sqrt().gt(0)           
+           number.sqrt().gt(0)
         );
     }
-    
+
     @BeforeClass
     public static void doPersist() {
         // Persistence of a Product and a Book.

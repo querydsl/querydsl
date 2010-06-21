@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.expr;
 
@@ -10,12 +10,11 @@ import com.mysema.query.types.Constant;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Visitor;
 
-
 /**
  * ExprConst represents general constant expressions
- * 
+ *
  * @author tiwe
- * 
+ *
  * @param <D> Java type of constant
  */
 public class ExprConst<D> extends ESimple<D> implements Constant<D> {
@@ -24,7 +23,7 @@ public class ExprConst<D> extends ESimple<D> implements Constant<D> {
 
     /**
      * Factory method for constants
-     * 
+     *
      * @param <D>
      * @param val
      * @return
@@ -32,12 +31,12 @@ public class ExprConst<D> extends ESimple<D> implements Constant<D> {
     @SuppressWarnings("unchecked")
     public static <T> Expr<T> create(T val){
         if (val instanceof Boolean){
-            return (Expr<T>)EBooleanConst.create((Boolean)val);            
+            return (Expr<T>)EBooleanConst.create((Boolean)val);
         }else{
-            return new ExprConst<T>(Assert.notNull(val,"val"));    
+            return new ExprConst<T>(Assert.notNull(val,"val"));
         }
     }
-    
+
     private final D constant;
 
     @SuppressWarnings("unchecked")
@@ -45,12 +44,12 @@ public class ExprConst<D> extends ESimple<D> implements Constant<D> {
         super((Class<D>) constant.getClass());
         this.constant = constant;
     }
-        
+
     @Override
     public void accept(Visitor v) {
-        v.visit(this);        
+        v.visit(this);
     }
-    
+
     @Override
     public EBoolean eq(D s){
         return EBooleanConst.create(constant.equals(s));
@@ -67,25 +66,25 @@ public class ExprConst<D> extends ESimple<D> implements Constant<D> {
             return false;
         }
     }
-    
+
     /**
      * Get the embedded constant
-     * 
+     *
      * @return
      */
     @Override
     public D getConstant() {
         return constant;
     }
-    
+
     @Override
     public int hashCode() {
         return constant.hashCode();
     }
-    
+
     @Override
     public EBoolean ne(D s){
         return EBooleanConst.create(!constant.equals(s));
     }
-    
+
 }

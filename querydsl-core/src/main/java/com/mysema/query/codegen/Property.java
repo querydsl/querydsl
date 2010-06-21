@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -12,7 +12,7 @@ import com.mysema.util.JavaSyntaxUtils;
 
 /**
  * Property represents a property in a query domain type.
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -20,7 +20,7 @@ import com.mysema.util.JavaSyntaxUtils;
 public final class Property implements Comparable<Property> {
 
     private final EntityType declaringType;
-    
+
     private final boolean inherited;
 
     private final String[] inits;
@@ -49,14 +49,14 @@ public final class Property implements Comparable<Property> {
     public int compareTo(Property o) {
         return name.compareToIgnoreCase(o.getName());
     }
-    
+
     public Property createCopy(EntityType model) {
-        Type newType = TypeResolver.resolve(type, declaringType, model);        
+        Type newType = TypeResolver.resolve(type, declaringType, model);
         if (newType != type){
             return new Property(model, name, newType, inits, false);
         }else{
-            return new Property(model, name, type, inits, model.getSuperType() != null);    
-        }        
+            return new Property(model, name, type, inits, model.getSuperType() != null);
+        }
     }
 
     @Override
@@ -67,7 +67,7 @@ public final class Property implements Comparable<Property> {
         result = prime * result + type.hashCode();
         return result;
     }
-    
+
     @Override
     public boolean equals(Object o){
         if (o == this){

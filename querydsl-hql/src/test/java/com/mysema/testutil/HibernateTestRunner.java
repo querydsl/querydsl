@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.testutil;
 
@@ -20,7 +20,7 @@ import com.mysema.query.hql.domain.Domain;
 
 /**
  * HibernateTestRunner provides.
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -56,13 +56,13 @@ public class HibernateTestRunner extends JUnit4ClassRunner {
             AnnotationConfiguration cfg = new AnnotationConfiguration();
             for (Class<?> cl : Domain.classes){
                 cfg.addAnnotatedClass(cl);
-            }            
+            }
             HibernateConfig config = getTestClass().getJavaClass().getAnnotation(HibernateConfig.class);
             Properties props = new Properties();
             InputStream is = HibernateTestRunner.class.getResourceAsStream(config.value());
             if (is == null){
                 throw new IllegalArgumentException("No configuration available at classpath:" + config.value());
-            }                
+            }
             props.load(is);
             cfg.setProperties(props);
             sessionFactory = cfg.buildSessionFactory();
@@ -73,7 +73,7 @@ public class HibernateTestRunner extends JUnit4ClassRunner {
         } finally {
             if (sessionFactory != null){
                 sessionFactory.close();
-            }                
+            }
         }
 
     }

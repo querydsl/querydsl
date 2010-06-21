@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types;
 
@@ -18,7 +18,7 @@ import com.mysema.query.types.expr.ENumber;
 /**
  * Expr represents a general typed expression in a Query instance. The generic type parameter
  * is a reference to the type the expression is bound to.
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -27,36 +27,36 @@ public abstract class Expr<D> implements Serializable{
     private static final long serialVersionUID = 8049453060731070043L;
 
     protected final boolean primitive;
-    
+
     @Nullable
     private volatile String toString;
-    
+
     private final Class<? extends D> type;
-        
+
     public Expr(Class<? extends D> type) {
         this.type = Assert.notNull(type,"type");
-        this.primitive = type.isPrimitive() 
-            || Number.class.isAssignableFrom(type) 
-            || Boolean.class.equals(type) 
+        this.primitive = type.isPrimitive()
+            || Number.class.isAssignableFrom(type)
+            || Boolean.class.equals(type)
             || Character.class.equals(type);
     }
 
     public abstract void accept(Visitor v);
-    
+
     /**
      * Used for safe casts from Path, SubQuery, Operation and Custom to Expr
-     * 
+     *
      * @return
      */
     public final Expr<D> asExpr(){
         return this;
     }
-    
+
     public abstract Expr<D> as(Path<D> alias);
-    
+
     /**
      * Get the <code>count(this)</code> expression
-     * 
+     *
      * @return count(this)
      */
     public abstract ENumber<Long> count();
@@ -70,7 +70,7 @@ public abstract class Expr<D> implements Serializable{
 
     /**
      * Get a <code>this == right</code> expression
-     * 
+     *
      * @param right rhs of the comparison
      * @return
      */
@@ -78,7 +78,7 @@ public abstract class Expr<D> implements Serializable{
 
     /**
      * Get a <code>this == right</code> expression
-     * 
+     *
      * @param right rhs of the comparison
      * @return
      */
@@ -86,7 +86,7 @@ public abstract class Expr<D> implements Serializable{
 
     /**
      * Get the Java type for this expression
-     * 
+     *
      * @return
      */
     public final Class<? extends D> getType() {
@@ -100,10 +100,10 @@ public abstract class Expr<D> implements Serializable{
 
     @Override
     public abstract boolean equals(Object o);
-    
+
     /**
      * Get a <code>this in right</code> expression
-     * 
+     *
      * @param right rhs of the comparison
      * @return
      */
@@ -111,7 +111,7 @@ public abstract class Expr<D> implements Serializable{
 
     /**
      * Get a <code>this in right</code> expression
-     * 
+     *
      * @param right rhs of the comparison
      * @return
      */
@@ -119,7 +119,7 @@ public abstract class Expr<D> implements Serializable{
 
     /**
      * Get a <code>this in right</code> expression
-     * 
+     *
      * @param right rhs of the comparison
      * @return
      */
@@ -127,7 +127,7 @@ public abstract class Expr<D> implements Serializable{
 
     /**
      * Get a <code>this &lt;&gt; right</code> expression
-     * 
+     *
      * @param right rhs of the comparison
      * @return
      */
@@ -135,7 +135,7 @@ public abstract class Expr<D> implements Serializable{
 
     /**
      * Get a <code>this &lt;&gt; right</code> expression
-     * 
+     *
      * @param right rhs of the comparison
      * @return
      */
@@ -143,7 +143,7 @@ public abstract class Expr<D> implements Serializable{
 
     /**
      * Get a <code>this not in right</code> expression
-     * 
+     *
      * @param right rhs of the comparison
      * @return
      */
@@ -151,13 +151,13 @@ public abstract class Expr<D> implements Serializable{
         if (right.size() == 1){
             return ne(right.iterator().next());
         }else{
-            return in(right).not();    
-        }        
+            return in(right).not();
+        }
     }
 
     /**
      * Get a <code>this not in right</code> expression
-     * 
+     *
      * @param right rhs of the comparison
      * @return
      */
@@ -165,13 +165,13 @@ public abstract class Expr<D> implements Serializable{
         if (right.length == 1){
             return ne(right[0]);
         }else{
-            return in(right).not();    
-        }        
+            return in(right).not();
+        }
     }
-    
+
     /**
      * Get a <code>this not in right</code> expression
-     * 
+     *
      * @param right rhs of the comparison
      * @return
      */
@@ -188,5 +188,5 @@ public abstract class Expr<D> implements Serializable{
         }
         return toString;
     }
-    
+
 }

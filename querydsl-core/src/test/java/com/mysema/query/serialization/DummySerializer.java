@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.serialization;
 
@@ -18,18 +18,18 @@ public class DummySerializer extends SerializerBase<DummySerializer>{
 
     @Override
     public void visit(SubQuery<?> query) {
-    // TODO Auto-generated method stub    
+    // TODO Auto-generated method stub
     }
 
     @Override
     public void visit(EConstructor<?> expr) {
-    // TODO Auto-generated method stub    
+    // TODO Auto-generated method stub
     }
 
     @Override
     public void visit(Param<?> param) {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

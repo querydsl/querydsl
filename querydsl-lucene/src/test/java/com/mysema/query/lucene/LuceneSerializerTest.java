@@ -76,7 +76,7 @@ public class LuceneSerializerTest {
     private Searcher searcher;
 
     private QueryMetadata metadata = new DefaultQueryMetadata();
-    
+
     private Document createDocument() {
         Document doc = new Document();
 
@@ -354,7 +354,6 @@ public class LuceneSerializerTest {
     testQuery(floatField.between((float)0.0,(float)2.0), "floatField:[0.0 TO 2.0]", 1);
     }
 
-
     @Test
     public void between_Phrase() throws Exception {
         testQuery(title.between("Jurassic Park", "Kundun"), "title:[jurassic TO kundun]", 1);
@@ -493,7 +492,6 @@ public class LuceneSerializerTest {
         testQuery(gross.gt(900.00), "gross:{900.0 TO *}", 0);
     }
 
-
     @Test
     public void ge() throws Exception {
         testQuery(rating.goe("Bad"), "rating:[bad TO *]", 1);
@@ -544,7 +542,6 @@ public class LuceneSerializerTest {
     testQuery(new BooleanBuilder(gross.goe(900.10)), "gross:[900.1 TO *]", 0);
     }
 
-
     @Test
     @Ignore
     public void fuzzy() throws Exception {
@@ -562,7 +559,6 @@ public class LuceneSerializerTest {
     public void boost() throws Exception {
         fail("Not yet implemented!");
     }
-
 
     @Test
     public void various() throws Exception{

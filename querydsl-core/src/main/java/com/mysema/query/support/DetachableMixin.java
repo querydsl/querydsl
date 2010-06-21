@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.support;
 
@@ -29,26 +29,26 @@ import com.mysema.query.types.query.TimeSubQuery;
 
 /**
  * Mixin style implementation of the Detachable interface
- * 
+ *
  * @author tiwe
  *
  */
 public class DetachableMixin implements Detachable{
 
     private static final ENumber<Long> COUNT_ALL_AGG_EXPR = ONumber.create(Long.class, Ops.AggOps.COUNT_ALL_AGG);
-    
+
     private final QueryMixin<?> queryMixin;
-    
+
     public DetachableMixin(QueryMixin<?> queryMixin){
         this.queryMixin = Assert.notNull(queryMixin,"queryMixin");
     }
-    
+
     @Override
     public ObjectSubQuery<Long> count() {
         queryMixin.addToProjection(COUNT_ALL_AGG_EXPR);
         return new ObjectSubQuery<Long>(Long.class, queryMixin.getMetadata());
     }
-    
+
     @Override
     public EBoolean exists(){
         if (queryMixin.getMetadata().getJoins().isEmpty()){
@@ -69,7 +69,6 @@ public class DetachableMixin implements Detachable{
         queryMixin.addToProjection(args);
         return new ListSubQuery<Object[]>(Object[].class, queryMixin.getMetadata());
     }
-    
 
     @SuppressWarnings("unchecked")
     @Override
@@ -79,7 +78,7 @@ public class DetachableMixin implements Detachable{
     }
 
     @Override
-    public EBoolean notExists(){        
+    public EBoolean notExists(){
         return exists().not();
     }
 
@@ -87,20 +86,20 @@ public class DetachableMixin implements Detachable{
         queryMixin.addToProjection(projection);
         queryMixin.setUnique(true);
     }
-    
+
     @Override
     public BooleanSubQuery unique(EBoolean projection) {
         setUniqueProjection(projection);
         return new BooleanSubQuery(queryMixin.getMetadata());
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public <RT extends Comparable<?>> ComparableSubQuery<RT> unique(EComparable<RT> projection) {
         setUniqueProjection(projection);
         return new ComparableSubQuery<RT>((Class)projection.getType(), queryMixin.getMetadata());
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public <RT extends Comparable<?>> DateSubQuery<RT> unique(EDate<RT> projection) {

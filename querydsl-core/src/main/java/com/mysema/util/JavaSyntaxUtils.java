@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.util;
 
@@ -10,64 +10,64 @@ import java.util.HashSet;
 import java.util.Set;
 
 public final class JavaSyntaxUtils {
-    
+
     private JavaSyntaxUtils(){}
-    
+
     private static final Set<String> reserved = new HashSet<String>(Arrays.asList(
-    "abstract",    
-    "assert",  
-    "boolean",         
-    "break",   
-    "byte",    
+    "abstract",
+    "assert",
+    "boolean",
+    "break",
+    "byte",
     "case",
-    "catch",   
-    "char",    
-    "class",   
-    "const",  
-    "continue",        
+    "catch",
+    "char",
+    "class",
+    "const",
+    "continue",
     "default",
-    "double",  
-    "do",      
-    "else",    
-    "enum",    
-    "extends",         
+    "double",
+    "do",
+    "else",
+    "enum",
+    "extends",
     "false",
-    "final",   
-    "finally",         
-    "float",   
-    "for",     
-    "goto",   
+    "final",
+    "finally",
+    "float",
+    "for",
+    "goto",
     "if",
-    "implements",      
-    "import",  
-    "instanceof",      
-    "int",     
-    "interface",       
+    "implements",
+    "import",
+    "instanceof",
+    "int",
+    "interface",
     "long",
-    "native",  
+    "native",
     "new",
-    "null",    
-    "package",         
-    "private", 
+    "null",
+    "package",
+    "private",
     "protected",
-    "public",  
-    "return",  
-    "short",   
-    "static",  
+    "public",
+    "return",
+    "short",
+    "static",
     "strictfp",
     "super",
-    "switch",  
+    "switch",
     "synchronized",
     "this",
-    "throw",   
-    "throws",  
+    "throw",
+    "throws",
     "transient",
     "true",
-    "try", 
+    "try",
     "void",
     "volatile",
-    "while"));   
-    
+    "while"));
+
     public static boolean isReserved(String str){
         return reserved.contains(str);
     }

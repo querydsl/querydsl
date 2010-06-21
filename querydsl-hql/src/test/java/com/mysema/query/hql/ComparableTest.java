@@ -1,14 +1,14 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql;
 
 import org.junit.Test;
 
 public class ComparableTest extends AbstractQueryTest{
-    
+
     @Test
     public void testBinaryComparisonOperations() {
         // binary comparison operators =, >=, <=, <>, !=, like

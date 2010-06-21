@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -9,12 +9,12 @@ import java.io.IOException;
 
 /**
  * AbstractType is an abstract base class for Type implementations
- * 
+ *
  * @author tiwe
  *
  */
 public abstract class AbstractType implements Type{
-    
+
     @Override
     public String getLocalGenericName(Type context, boolean asArgType){
         try {
@@ -25,7 +25,7 @@ public abstract class AbstractType implements Type{
             throw new CodeGenerationException(e.getMessage(), e);
         }
     }
-    
+
     @Override
     public String getLocalRawName(Type context){
         try {

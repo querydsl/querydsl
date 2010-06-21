@@ -12,7 +12,7 @@ import javax.persistence.PrePersist;
 import org.junit.Test;
 
 public class Superclass2Test {
-    
+
     @MappedSuperclass
     public static class CommonPersistence {
 
@@ -29,12 +29,12 @@ public class Superclass2Test {
         }
 
     }
-    
+
     @Entity
     public static class Subtype extends CommonPersistence{
-        
+
     }
-    
+
     @Test
     public void test(){
         assertNotNull(QSuperclass2Test_Subtype.subtype.createdOn);

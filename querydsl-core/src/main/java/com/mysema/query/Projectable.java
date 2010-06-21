@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query;
 
@@ -16,9 +16,9 @@ import com.mysema.query.types.Expr;
 
 /**
  * Projectable defines default projection methods for {@link Query} implementations.
- * All Querydsl query implementations should implement either this interface or 
+ * All Querydsl query implementations should implement either this interface or
  * {@link SimpleProjectable}.
- * 
+ *
  * @author tiwe
  * @see SimpleProjectable
  */
@@ -37,17 +37,17 @@ public interface Projectable {
 
     /**
      * iterate over the results for the given projection
-     * 
+     *
      * @param first
      * @param second
      * @param rest
      * @return an Iterator over the projection
      */
     CloseableIterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest);
-    
+
     /**
      * iterate over the results for the given projection
-     * 
+     *
      * @param args
      * @return
      */
@@ -55,7 +55,7 @@ public interface Projectable {
 
     /**
      * iterate over the results for the given projection
-     * 
+     *
      * @param <RT>
      *            generic type of the Iteratpr
      * @param projection
@@ -65,17 +65,17 @@ public interface Projectable {
 
     /**
      * iterate over the distinct results for the given projection
-     * 
+     *
      * @param first
      * @param second
      * @param rest
      * @return an Iterator over the projection
      */
     CloseableIterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest);
-    
+
     /**
      * iterate over the distinct results for the given projection
-     * 
+     *
      * @param args
      * @return
      */
@@ -83,7 +83,7 @@ public interface Projectable {
 
     /**
      * iterate over the distinct results for the given projection
-     * 
+     *
      * @param <RT>
      *            generic type of the Iteratpr
      * @param projection
@@ -93,7 +93,7 @@ public interface Projectable {
 
     /**
      * list the results for the given projection
-     * 
+     *
      * @param first
      * @param second
      * @param rest
@@ -101,10 +101,10 @@ public interface Projectable {
      * @return a List over the projection
      */
     List<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest);
-    
+
     /**
      * list the results for the given projection
-     * 
+     *
      * @param args
      * @return
      */
@@ -112,7 +112,7 @@ public interface Projectable {
 
     /**
      * list the results for the given projection
-     * 
+     *
      * @param <RT>
      *            generic type of the List
      * @param projection
@@ -122,7 +122,7 @@ public interface Projectable {
 
     /**
      * list the distinct results for the given projection
-     * 
+     *
      * @param first
      * @param second
      * @param rest
@@ -130,10 +130,10 @@ public interface Projectable {
      * @return a List over the projection
      */
     List<Object[]> listDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest);
-    
+
     /**
      * list the distinct results for the given projection
-     * 
+     *
      * @param args
      * @return
      */
@@ -141,7 +141,7 @@ public interface Projectable {
 
     /**
      * list the distinct results for the given projection
-     * 
+     *
      * @param <RT>
      *            generic type of the List
      * @param projection
@@ -151,25 +151,25 @@ public interface Projectable {
 
     /**
      * list the results for the given projection
-     * 
+     *
      * @param <RT>
      * @param projection
      * @return
      */
     <RT> SearchResults<RT> listResults(Expr<RT> projection);
-    
+
     /**
      * list the distinct results for the given projection
-     * 
+     *
      * @param <RT>
      * @param projection
      * @return
      */
     <RT> SearchResults<RT> listDistinctResults(Expr<RT> projection);
-    
+
     /**
      * return the given projection as a Map instance using key and value for Map population
-     * 
+     *
      * @param <K>
      * @param <V>
      * @param key
@@ -180,7 +180,7 @@ public interface Projectable {
 
     /**
      * return a unique result for the given projection
-     * 
+     *
      * @param first
      * @param second
      * @param rest
@@ -188,10 +188,10 @@ public interface Projectable {
      */
     @Nullable
     Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest);
-    
+
     /**
      * return a unique result for the given projection
-     * 
+     *
      * @param args
      * @return
      */
@@ -200,7 +200,7 @@ public interface Projectable {
 
     /**
      * return a unique result for the given projection
-     * 
+     *
      * @param <RT>
      *            return type
      * @param projection

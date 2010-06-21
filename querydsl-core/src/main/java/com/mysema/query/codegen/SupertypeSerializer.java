@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -20,7 +20,7 @@ import com.mysema.query.types.path.PSimple;
 
 /**
  * SupertypeSerializer is a Serializer implementation for supertypes
- * 
+ *
  * @author tiwe
  *
  */
@@ -35,30 +35,30 @@ public final class SupertypeSerializer extends EntitySerializer{
     protected void constructorsForVariables(CodeWriter writer, EntityType model) {
         // no constructors for variables
     }
-    
+
     @Override
     protected void introDefaultInstance(CodeWriter writer, EntityType model) {
         // no default instance
     }
-    
+
     @Override
     protected void introFactoryMethods(CodeWriter writer, EntityType model) throws IOException {
-        // no factory methods        
+        // no factory methods
     }
-        
+
     @Override
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
         introDelegatePackages(writer, model);
-        
+
         List<Package> packages = new ArrayList<Package>();
         packages.add(PathMetadata.class.getPackage());
-        packages.add(PSimple.class.getPackage());        
+        packages.add(PSimple.class.getPackage());
         if ((model.hasLists() && config.useListAccessors())
                 || !model.getMethods().isEmpty()
                 || !model.getDelegates().isEmpty()
                 || (model.hasMaps() && config.useMapAccessors())){
             packages.add(EComparable.class.getPackage());
-        }        
+        }
         if (!model.getMethods().isEmpty()){
             packages.add(CSimple.class.getPackage());
         }

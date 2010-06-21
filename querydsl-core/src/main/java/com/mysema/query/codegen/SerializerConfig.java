@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -10,22 +10,22 @@ package com.mysema.query.codegen;
  *
  */
 public interface SerializerConfig {
-    
+
     /**
      * @return
      */
     boolean useEntityAccessors();
-    
+
     /**
      * @return
      */
     boolean useListAccessors();
-    
+
     /**
      * @return
      */
     boolean useMapAccessors();
-    
+
     /**
      * @return
      */

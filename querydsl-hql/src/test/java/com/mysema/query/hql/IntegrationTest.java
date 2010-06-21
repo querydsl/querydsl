@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql;
 
@@ -32,7 +32,7 @@ import com.mysema.testutil.HibernateTestRunner;
 
 /**
  * IntegrationTest provides.
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -79,16 +79,16 @@ public class IntegrationTest extends ParsingTest {
     private HibernateDeleteClause delete(PEntity<?> entity){
         return new HibernateDeleteClause(session, entity);
     }
-    
+
     private HibernateUpdateClause update(PEntity<?> entity){
         return new HibernateUpdateClause(session, entity);
     }
-    
+
     @Test
     public void testScroll(){
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));
-        
+
         HibernateQuery query = new HibernateQuery(session);
         ScrollableResults results = query.from(QCat.cat).scroll(ScrollMode.SCROLL_INSENSITIVE, QCat.cat);
         while (results.next()){
@@ -96,60 +96,60 @@ public class IntegrationTest extends ParsingTest {
         }
         results.close();
     }
-    
+
     @Test
     public void testUpdate(){
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));
-        
+
         QCat cat = QCat.cat;
         long amount = update(cat).where(cat.name.eq("Bob"))
             .set(cat.name, "Bobby")
             .set(cat.alive, false)
             .execute();
         assertEquals(1, amount);
-            
+
         assertEquals(0l, query().from(cat).where(cat.name.eq("Bob")).count());
     }
-    
+
     @Test
     public void testUpdate_with_null(){
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));
-        
+
         QCat cat = QCat.cat;
         long amount = update(cat).where(cat.name.eq("Bob"))
             .set(cat.name, null)
             .set(cat.alive, false)
             .execute();
-        assertEquals(1, amount);                
+        assertEquals(1, amount);
     }
-    
+
     @Test
     public void testDelete(){
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));
-        
+
         QCat cat = QCat.cat;
-        long amount = delete(cat).where(cat.name.eq("Bob"))            
+        long amount = delete(cat).where(cat.name.eq("Bob"))
             .execute();
-        assertEquals(1, amount);    
+        assertEquals(1, amount);
     }
-    
+
     @Test
     public void testCollection() throws Exception{
         List<Cat> cats = Arrays.asList(new Cat("Bob",10), new Cat("Steve",11));
         for (Cat cat : cats){
             session.save(cat);
         }
-        
+
         query().from(cat)
             .innerJoin(cat.kittens, kitten)
             .where(kitten.in(cats))
             .parse();
-        
+
     }
-    
+
     public void setSession(Session session) {
         this.session = session;
     }

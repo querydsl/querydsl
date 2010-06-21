@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql;
 
@@ -32,24 +32,24 @@ import com.mysema.util.ResultIterator;
 
 /**
  * Abstract base class for custom implementations of the JDOQLQuery interface.
- * 
+ *
  * @author tiwe
  *
  * @param <Q>
  */
 public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extends ProjectableQuery<Q> implements Closeable{
-    
+
     private final boolean detach;
 
     private List<Object> orderedConstants = new ArrayList<Object>();
-    
+
     @Nullable
     private final PersistenceManager persistenceManager;
 
     private List<Query> queries = new ArrayList<Query>(2);
-    
+
     private final JDOQLTemplates templates;
-    
+
     public AbstractJDOQLQuery(@Nullable PersistenceManager persistenceManager) {
         this(persistenceManager, JDOQLTemplates.DEFAULT, new DefaultQueryMetadata(), false);
     }
@@ -57,7 +57,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     @SuppressWarnings("unchecked")
     public AbstractJDOQLQuery(
             @Nullable PersistenceManager persistenceManager,
-            JDOQLTemplates templates, 
+            JDOQLTemplates templates,
             QueryMetadata metadata, boolean detach) {
         super(new QueryMixin<Q>(metadata));
         this.queryMixin.setSelf((Q) this);
@@ -69,7 +69,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     public void close() throws IOException {
         for (Query query : queries){
             query.closeAll();
-        }        
+        }
     }
 
     public long count() {
@@ -84,18 +84,18 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         }
     }
 
-    private Query createQuery(boolean forCount) {        
+    private Query createQuery(boolean forCount) {
         Expr<?> source = queryMixin.getMetadata().getJoins().get(0).getTarget();
-        
+
         // serialize
         JDOQLSerializer serializer = new JDOQLSerializer(getTemplates(), source);
         serializer.serialize(queryMixin.getMetadata(), forCount, false);
-        
-        // create Query 
+
+        // create Query
         Query query = persistenceManager.newQuery(serializer.toString());
-        orderedConstants = serializer.getConstants();    
-        queries.add(query);               
-        
+        orderedConstants = serializer.getConstants();
+        queries.add(query);
+
         if (!forCount){
             List<? extends Expr<?>> projection = queryMixin.getMetadata().getProjection();
             Class<?> exprType = projection.get(0).getClass();
@@ -105,10 +105,10 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
                 query.setResultClass(projection.get(0).getType());
             }
         }
-        
+
         return query;
     }
-    
+
     @SuppressWarnings("unchecked")
     private <T> T detach(T results){
         if (results instanceof Collection){
@@ -117,7 +117,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
             return persistenceManager.detachCopy(results);
         }
     }
-    
+
     private Object execute(Query query) {
         Object rv;
         if (!orderedConstants.isEmpty()) {
@@ -127,14 +127,14 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         }
         if (isDetach()){
             rv = detach(rv);
-        }        
+        }
         return rv;
     }
 
     public Q from(PEntity<?>... args) {
         return queryMixin.from(args);
     }
-    
+
     public QueryMetadata getMetadata(){
         return queryMixin.getMetadata();
     }
@@ -146,7 +146,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     public boolean isDetach() {
         return detach;
     }
-    
+
     public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
         return new ResultIterator<Object[]>(list(args).iterator(), this);
     }
@@ -158,7 +158,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     @SuppressWarnings("unchecked")
     public List<Object[]> list(Expr<?>[] args) {
         queryMixin.addToProjection(args);
-        Object rv = execute(createQuery(false));        
+        Object rv = execute(createQuery(false));
         reset();
         return (rv instanceof List) ? ((List<Object[]>)rv) : Collections.singletonList((Object[])rv);
     }
@@ -192,7 +192,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     private void reset(){
         queryMixin.getMetadata().reset();
     }
-    
+
     @Override
     public String toString(){
         if (!queryMixin.getMetadata().getJoins().isEmpty()){
@@ -202,7 +202,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
             return serializer.toString().trim();
         }else{
             return super.toString();
-        }        
+        }
     }
 
     @SuppressWarnings("unchecked")

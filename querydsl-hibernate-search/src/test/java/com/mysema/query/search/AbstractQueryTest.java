@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.search;
 
@@ -23,9 +23,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 public abstract class AbstractQueryTest {
-    
+
     private static SessionFactory sessionFactory;
-    
+
     @BeforeClass
     public static void setUpClass() throws IOException{
         FileUtils.deleteDirectory(new File("target/derbydb"));
@@ -33,41 +33,41 @@ public abstract class AbstractQueryTest {
         AnnotationConfiguration cfg = new AnnotationConfiguration();
         cfg.addAnnotatedClass(User.class);
         Properties props = new Properties();
-        InputStream is = SearchQueryTest.class.getResourceAsStream("/derby.properties");  
+        InputStream is = SearchQueryTest.class.getResourceAsStream("/derby.properties");
         props.load(is);
         cfg.setProperties(props);
         sessionFactory = cfg.buildSessionFactory();
     }
-    
+
     @AfterClass
     public static void tearDownClass(){
         sessionFactory.close();
     }
-    
+
     private Session session;
-    
+
     protected Session getSession(){
         return session;
     }
-    
+
     @SuppressWarnings("unchecked")
     @Before
-    public void setUp(){        
+    public void setUp(){
         session = sessionFactory.openSession();
         session.beginTransaction();
-        
+
         // clean up
         List<User> users = session.createQuery("from User").list();
         for (User user : users){
             session.delete(user);
         }
     }
-    
+
     @After
     public void tearDown() throws HibernateException, SQLException{
         if (!session.getTransaction().wasRolledBack()){
-            session.getTransaction().commit();    
-        }        
+            session.getTransaction().commit();
+        }
         session.close();
     }
 

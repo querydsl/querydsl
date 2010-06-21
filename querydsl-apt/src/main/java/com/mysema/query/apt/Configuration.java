@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.apt;
 
@@ -22,7 +22,7 @@ import com.mysema.query.codegen.TypeMappings;
 
 /**
  * Configuration defines the configuration options for APT based Querydsl code generation
- * 
+ *
  * @author tiwe
  *
  */
@@ -32,7 +32,7 @@ public interface Configuration {
      * @return
      */
     TypeMappings getTypeMappings();
-    
+
     /**
      * @param e
      * @param elements
@@ -50,7 +50,7 @@ public interface Configuration {
      */
     @Nullable
     Class<? extends Annotation> getEmbeddableAnn();
-    
+
     /**
      * @return
      */
@@ -60,7 +60,7 @@ public interface Configuration {
      * @return
      */
     Class<? extends Annotation> getEntityAnn();
-    
+
     /**
      * @return
      */
@@ -88,7 +88,7 @@ public interface Configuration {
      */
     @Nullable
     Class<? extends Annotation> getSuperTypeAnn();
-    
+
     /**
      * @return
      */
@@ -127,7 +127,7 @@ public interface Configuration {
      * @return
      */
     boolean isValidField(VariableElement field);
-    
+
     /**
      * @param getter
      * @return
@@ -148,7 +148,7 @@ public interface Configuration {
      * @param b
      */
     void setUseGetters(boolean b);
-    
+
     /**
      * @return
      */

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query;
 
@@ -26,16 +26,16 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 /**
  * DefaultQueryMetadata is the default implementation of the {@link QueryMetadata} interface
- * 
+ *
  * @author tiwe
  */
 //TODO : rename to DefaultQueryModel in Querydsl 2.0
 public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
-    
+
     private static final long serialVersionUID = 317736313966701232L;
 
     private boolean distinct;
-    
+
     private Set<Expr<?>> exprInJoins = new HashSet<Expr<?>>();
 
     private List<Expr<?>> groupBy = new ArrayList<Expr<?>>();
@@ -52,23 +52,23 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     private List<Expr<?>> projection = new ArrayList<Expr<?>>();
 
     private Map<Param<?>,Object> params = new HashMap<Param<?>,Object>();
-    
+
     private boolean unique;
 
     private BooleanBuilder where = new BooleanBuilder();
-        
+
     @Override
     public void addGroupBy(Expr<?>... o) {
         groupBy.addAll(Arrays.<Expr<?>> asList(o));
     }
-    
+
     @Override
     public void addHaving(EBoolean... o) {
         for (EBoolean e : o){
             if (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue()){
-                having.and(e);    
-            }            
-        }            
+                having.and(e);
+            }
+        }
     }
 
     @java.lang.SuppressWarnings("unchecked")
@@ -83,7 +83,6 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             exprInJoins.add(expr);
         }
     }
-
 
     @Override
     public void addJoinCondition(EBoolean o) {
@@ -106,23 +105,23 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     public void addWhere(EBoolean... o) {
         for (EBoolean e : o){
             if (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue()){
-                where.and(e);    
-            }            
-        }            
-    }    
+                where.and(e);
+            }
+        }
+    }
 
     public void clearOrderBy(){
         orderBy = new ArrayList<OrderSpecifier<?>>();
     }
-    
+
     public void clearProjection(){
         projection = new ArrayList<Expr<?>>();
     }
-    
+
     public void clearWhere(){
         where = new BooleanBuilder();
     }
-    
+
     @Override
     public QueryMetadata clone(){
         try {
@@ -130,7 +129,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             clone.exprInJoins = new HashSet<Expr<?>>(exprInJoins);
             clone.groupBy = new ArrayList<Expr<?>>(groupBy);
             clone.having = having.clone();
-            clone.joins = new ArrayList<JoinExpression>(joins); 
+            clone.joins = new ArrayList<JoinExpression>(joins);
             clone.modifiers = new QueryModifiers(modifiers);
             clone.orderBy = new ArrayList<OrderSpecifier<?>>(orderBy);
             clone.projection = new ArrayList<Expr<?>>(projection);
@@ -140,7 +139,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new QueryException(e);
         }
-        
+
     }
 
     private void ensureRoot(Path<?> path){
@@ -173,7 +172,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     public Map<Param<?>,Object> getParams(){
         return params;
     }
-    
+
     @Override
     public List<OrderSpecifier<?>> getOrderBy() {
         return Collections.unmodifiableList(orderBy);
@@ -217,7 +216,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             modifiers = QueryModifiers.limit(limit);
         }else{
             modifiers = new QueryModifiers(limit, modifiers.getOffset());
-        }        
+        }
     }
 
     @Override
@@ -231,7 +230,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             modifiers = QueryModifiers.offset(offset);
         }else{
             modifiers = new QueryModifiers(modifiers.getLimit(), offset);
-        }        
+        }
     }
 
     @Override
@@ -243,5 +242,5 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     public <T> void setParam(Param<T> param, T value) {
         params.put(param, value);
     }
-    
+
 }

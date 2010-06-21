@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.collections;
 
@@ -19,7 +19,7 @@ public class InnerJoinTest extends AbstractQueryTest{
     private QCat cat, kitten;
 
     private List<Cat> cats;
-    
+
     @Before
     public void setUp(){
         super.setUp();
@@ -30,14 +30,14 @@ public class InnerJoinTest extends AbstractQueryTest{
         Cat kate = new Cat("Kate");
         Cat kate2 = new Cat("Kate");
         Cat franz = new Cat("Franz");
-        
+
         bob.setKittens(Collections.singletonList(bob2));
         bob.setKittensByName(Collections.singletonMap(bob2.getName(), bob2));
-        kate.setKittens(Collections.singletonList(kate2));        
+        kate.setKittens(Collections.singletonList(kate2));
         kate.setKittensByName(Collections.singletonMap(kate2.getName(), kate));
         cats = Arrays.asList(bob, bob2, kate, kate2, franz);
     }
-    
+
     @Test
     public void testList(){
         List<Cat> rv = MiniApi.from(cat, cats)
@@ -47,9 +47,9 @@ public class InnerJoinTest extends AbstractQueryTest{
             .list(cat);
         assertEquals("Bob", rv.get(0).getName());
         assertEquals("Kate", rv.get(1).getName());
-        
+
     }
-    
+
     @Test
     public void testMap(){
         List<Cat> rv = MiniApi.from(cat, cats)
@@ -60,5 +60,5 @@ public class InnerJoinTest extends AbstractQueryTest{
         assertEquals("Bob", rv.get(0).getName());
         assertEquals("Kate", rv.get(1).getName());
     }
-         
+
 }

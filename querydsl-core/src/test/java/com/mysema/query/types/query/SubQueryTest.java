@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.query;
 
@@ -21,7 +21,7 @@ import com.mysema.query.types.ToStringVisitor;
 import com.mysema.query.types.Visitor;
 
 public class SubQueryTest {
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void test(){

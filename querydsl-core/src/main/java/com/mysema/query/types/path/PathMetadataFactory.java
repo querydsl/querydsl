@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.path;
 
@@ -21,11 +21,11 @@ import com.mysema.query.types.expr.ExprConst;
  *
  */
 public final class PathMetadataFactory {
-    
+
     public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, Expr<Integer> index) {
         return new PathMetadata<Integer>(parent, index, PathType.ARRAYVALUE);
     }
-    
+
     public static PathMetadata<Integer> forArrayAccess(PArray<?> parent, @Nonnegative int index) {
         return new PathMetadata<Integer>(parent, ENumberConst.create(index), PathType.ARRAYVALUE_CONSTANT);
     }
@@ -57,7 +57,7 @@ public final class PathMetadataFactory {
     public static PathMetadata<String> forVariable(String variable) {
         return new PathMetadata<String>(null, EStringConst.create(Assert.hasLength(variable,"variable"), true), PathType.VARIABLE);
     }
-    
+
     private PathMetadataFactory(){}
 
 }

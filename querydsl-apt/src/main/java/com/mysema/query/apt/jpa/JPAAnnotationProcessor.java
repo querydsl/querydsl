@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.apt.jpa;
 
@@ -27,9 +27,9 @@ import com.mysema.query.apt.Processor;
 @SupportedAnnotationTypes("*")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class JPAAnnotationProcessor extends AbstractProcessor{
-    
+
     protected Class<? extends Annotation> entity, superType, embeddable, skip;
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -39,19 +39,19 @@ public class JPAAnnotationProcessor extends AbstractProcessor{
             superType = (Class)Class.forName("javax.persistence.MappedSuperclass");
             embeddable = (Class)Class.forName("javax.persistence.Embeddable");
             skip = (Class)Class.forName("javax.persistence.Transient");
-            
+
             DefaultConfiguration configuration = createConfiguration(roundEnv);
             Processor processor = new Processor(processingEnv, roundEnv, configuration);
             processor.process();
             return true;
-            
+
         } catch (ClassNotFoundException e) {
             throw new APTException(e.getMessage(), e);
-        }        
+        }
     }
 
     protected DefaultConfiguration createConfiguration(RoundEnvironment roundEnv) throws ClassNotFoundException {
         return new JPAConfiguration(roundEnv, processingEnv.getOptions(), entity, superType, embeddable, skip);
-    }       
-    
+    }
+
 }

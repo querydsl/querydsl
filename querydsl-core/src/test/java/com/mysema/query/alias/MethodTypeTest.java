@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.alias;
 
@@ -19,10 +19,10 @@ public class MethodTypeTest {
     @Test
     public void testGet() throws SecurityException, NoSuchMethodException {
         Method getVal = MethodTypeTest.class.getMethod("getVal");
-        Method hashCode = Object.class.getMethod("hashCode");               
+        Method hashCode = Object.class.getMethod("hashCode");
         Method size = Collection.class.getMethod("size");
         Method toString = Object.class.getMethod("toString");
-                
+
         assertEquals(MethodType.GET_MAPPED_PATH, MethodType.get(ManagedObject.class.getMethod("__mappedPath")));
         assertEquals(MethodType.GETTER, MethodType.get(getVal));
         assertEquals(MethodType.HASH_CODE, MethodType.get(hashCode));
@@ -30,7 +30,7 @@ public class MethodTypeTest {
         assertEquals(MethodType.MAP_ACCESS, MethodType.get(Map.class.getMethod("get", Object.class)));
         assertEquals(MethodType.SIZE, MethodType.get(size));
         assertEquals(MethodType.TO_STRING, MethodType.get(toString));
-        
+
     }
 
     public String getVal(){

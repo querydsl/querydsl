@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql.serialization;
 
@@ -23,7 +23,7 @@ public class ExprSerializationTest {
     private QBook book = QBook.book;
 
     private QProduct product = QProduct.product;
-    
+
     private QStore store = QStore.store;
 
     @Test
@@ -38,7 +38,7 @@ public class ExprSerializationTest {
         assertEquals("this.name == product.name", serialize(book.name.eq(product.name)));
         assertEquals("this == product", serialize(book.eq(product)));
     }
-    
+
     @Test
     public void aggregation(){
         assertEquals("sum(product.price)", serialize(product.price.sum()));
@@ -76,12 +76,12 @@ public class ExprSerializationTest {
     }
 
     @Test
-    public void mapTests() {        
-        assertEquals("store.productsByName.containsKey(a1)", 
+    public void mapTests() {
+        assertEquals("store.productsByName.containsKey(a1)",
                 serialize(store.productsByName.containsKey("")));
-        assertEquals("store.productsByName.containsValue(a1)", 
+        assertEquals("store.productsByName.containsValue(a1)",
                 serialize(store.productsByName.containsValue(new Product())));
-        
+
         assertEquals("store.productsByName.isEmpty()",
                 serialize(store.productsByName.isEmpty()));
         assertEquals("!store.productsByName.isEmpty()",
@@ -118,11 +118,11 @@ public class ExprSerializationTest {
         // TODO matches
         assertEquals("product.name.substring(a1,a2) == a3", serialize(product.name.substring(0, 4).eq("Sony")));
         assertEquals("product.name.substring(a1) == a2", serialize(product.name.substring(5).eq("Discman")));
-        
+
         assertEquals("product.name == \"\"", serialize(product.name.isEmpty()));
         assertEquals("!(product.name == \"\")", serialize(product.name.isNotEmpty()));
     }
-        
+
     private String serialize(Expr<?> expr) {
         return new JDOQLSerializer(JDOQLTemplates.DEFAULT, book).handle(expr).toString();
     }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._mysql;
 
@@ -23,7 +23,7 @@ import com.mysema.testutil.ResourceCheck;
 @ResourceCheck("/mysql.run")
 @Label(Target.MYSQL)
 public class UpdateMySQLTest extends UpdateBaseTest{
-    
+
     @BeforeClass
     public static void setUpClass() throws Exception {
         Connections.initMySQL();

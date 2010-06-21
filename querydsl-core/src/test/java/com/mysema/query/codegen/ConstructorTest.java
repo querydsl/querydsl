@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -23,5 +23,5 @@ public class ConstructorTest {
         assertEquals(c1, c2);
         assertEquals(c1.hashCode(), c2.hashCode());
     }
-    
+
 }

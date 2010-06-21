@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query;
 
@@ -16,11 +16,11 @@ import org.junit.Test;
 import com.mysema.query.types.path.PString;
 
 public class DefaultQueryMetadataTest {
-    
+
     private QueryMetadata md = new DefaultQueryMetadata();
 
     private PString str = new PString("str");
-    
+
     @Test
     public void testGetGroupBy() {
         md.addGroupBy(str);
@@ -38,30 +38,30 @@ public class DefaultQueryMetadataTest {
         md.addJoin(JoinType.DEFAULT, str);
         assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, str)),md.getJoins());
     }
-    
+
     @Test
     public void testGetModifiers() {
         QueryModifiers modifiers = new QueryModifiers(1l,2l);
         md.setModifiers(modifiers);
         assertEquals(modifiers, md.getModifiers());
     }
-    
+
     @Test
     public void setLimit(){
         QueryModifiers modifiers = new QueryModifiers(1l,2l);
         md.setModifiers(modifiers);
         md.setLimit(3l);
-        
+
         assertEquals(Long.valueOf(3l), md.getModifiers().getLimit());
         assertEquals(Long.valueOf(2l), md.getModifiers().getOffset());
     }
-    
+
     @Test
     public void setOffset(){
         QueryModifiers modifiers = new QueryModifiers(1l,1l);
         md.setModifiers(modifiers);
         md.setOffset(2l);
-        
+
         assertEquals(Long.valueOf(1l), md.getModifiers().getLimit());
         assertEquals(Long.valueOf(2l), md.getModifiers().getOffset());
     }
@@ -83,7 +83,7 @@ public class DefaultQueryMetadataTest {
     @Test
     public void testGetWhere() {
         md.addWhere(str.eq("b"), str.isNotEmpty());
-        assertEquals(str.eq("b").and(str.isNotEmpty()), md.getWhere()); 
+        assertEquals(str.eq("b").and(str.isNotEmpty()), md.getWhere());
     }
 
     @Test
@@ -110,7 +110,7 @@ public class DefaultQueryMetadataTest {
         md.addOrderBy(str.asc());
         md.addProjection(str, str.append("abc"));
         md.addWhere(str.eq("b"), str.isNotEmpty());
-        
+
         QueryMetadata clone = md.clone();
         assertEquals(md.getGroupBy(), clone.getGroupBy());
         assertEquals(md.getHaving(), clone.getHaving());
@@ -119,6 +119,6 @@ public class DefaultQueryMetadataTest {
         assertEquals(md.getOrderBy(), clone.getOrderBy());
         assertEquals(md.getProjection(), clone.getProjection());
         assertEquals(md.getWhere(), clone.getWhere());
-        
+
     }
 }

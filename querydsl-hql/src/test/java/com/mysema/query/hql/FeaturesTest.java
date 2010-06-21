@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql;
 
@@ -22,7 +22,7 @@ import com.mysema.query.types.path.PNumber;
 
 /**
  * FeaturesTest provides.
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -149,7 +149,7 @@ public class FeaturesTest extends AbstractQueryTest {
         sum(var(Integer.class)).intValue().gt(0);
 
     }
-    
+
     private <D extends Number & Comparable<?>> PNumber<D> var(Class<D> cl){
         return new PNumber<D>(cl, "var");
     }

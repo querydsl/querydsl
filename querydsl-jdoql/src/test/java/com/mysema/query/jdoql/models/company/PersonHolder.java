@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql.models.company;
 
@@ -10,7 +10,7 @@ import com.mysema.query.annotations.QueryEntity;
 /**
  * Convenience class that can be used in query results for holding Person
  * objects.
- * 
+ *
  * @version $Revision: 1.1 $
  */
 @QueryEntity

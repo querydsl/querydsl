@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.expr;
 
@@ -15,18 +15,18 @@ import com.mysema.query.types.Visitor;
 
 /**
  * OSimple represents a simple operation expression
- * 
+ *
  * @author tiwe
- * 
+ *
  * @param <D>
  */
 public class OSimple<D> extends ESimple<D> implements Operation<D> {
-    
+
     private static final long serialVersionUID = -285668548371034230L;
 
     /**
      * Factory method
-     * 
+     *
      * @param <D>
      * @param type
      * @param op
@@ -36,7 +36,7 @@ public class OSimple<D> extends ESimple<D> implements Operation<D> {
     public static <D> Expr<D> create(Class<D> type, Operator<? super D> op, Expr<?>... args){
         return new OSimple<D>(type, op, args);
     }
-    
+
     private final Operation< D> opMixin;
 
     OSimple(Class<D> type, Operator<? super D> op, Expr<?>... args) {
@@ -50,7 +50,7 @@ public class OSimple<D> extends ESimple<D> implements Operation<D> {
 
     @Override
     public void accept(Visitor v) {
-        v.visit(this);        
+        v.visit(this);
     }
 
     @Override
@@ -67,16 +67,15 @@ public class OSimple<D> extends ESimple<D> implements Operation<D> {
     public Operator<? super D> getOperator() {
         return opMixin.getOperator();
     }
-    
+
     @Override
     public boolean equals(Object o){
         return opMixin.equals(o);
     }
-    
+
     @Override
     public int hashCode(){
         return getType().hashCode();
     }
-    
 
 }

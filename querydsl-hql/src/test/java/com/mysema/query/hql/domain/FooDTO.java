@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.domain;
 
@@ -17,13 +17,13 @@ import com.mysema.query.annotations.QueryProjection;
 
 public class FooDTO {
     String bar;
-    
+
     @Id
     int id;
-    
+
     @CollectionOfElements
     List<String> names;
-    
+
     @Temporal(TemporalType.DATE)
     java.util.Date startDate;
 

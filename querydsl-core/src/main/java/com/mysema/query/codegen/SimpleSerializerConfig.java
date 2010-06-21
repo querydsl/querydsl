@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -12,21 +12,21 @@ import com.mysema.query.annotations.QuerydslConfig;
  *
  */
 public final class SimpleSerializerConfig implements SerializerConfig{
-    
+
     public static final SerializerConfig DEFAULT = new SimpleSerializerConfig(false, false, false, true);
 
     public static SerializerConfig getConfig(QuerydslConfig annotation){
         return new SimpleSerializerConfig(
-                annotation.entityAccessors(), 
-                annotation.listAccessors(), 
+                annotation.entityAccessors(),
+                annotation.listAccessors(),
                 annotation.mapAccessors(),
                 annotation.createDefaultVariable());
     }
-    
+
     private final boolean entityAccessors, listAccessors, mapAccessors, createDefaultVariable;
-    
+
     public SimpleSerializerConfig(
-            boolean entityAccessors, 
+            boolean entityAccessors,
             boolean listAccessors,
             boolean mapAccessors,
             boolean createDefaultVariable){
@@ -45,7 +45,7 @@ public final class SimpleSerializerConfig implements SerializerConfig{
     public boolean useListAccessors() {
         return listAccessors;
     }
-    
+
     @Override
     public boolean useMapAccessors() {
         return mapAccessors;
@@ -55,7 +55,5 @@ public final class SimpleSerializerConfig implements SerializerConfig{
     public boolean createDefaultVariable() {
         return createDefaultVariable;
     }
-    
-    
 
 }

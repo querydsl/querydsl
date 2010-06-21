@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.jpa;
 
@@ -27,7 +27,7 @@ import com.mysema.query.types.Expr;
 
 /**
  * Abstract base class for JPA API based implementations of the HQLQuery interface
- * 
+ *
  * @author tiwe
  *
  * @param <Q>
@@ -35,13 +35,13 @@ import com.mysema.query.types.Expr;
 public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQLQueryBase<Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(JPAQuery.class);
-    
+
     private final JPASessionHolder sessionHolder;
 
     public AbstractJPAQuery(EntityManager em) {
         this(new DefaultSessionHolder(em), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
     }
-    
+
     public AbstractJPAQuery(JPASessionHolder sessionHolder, JPQLTemplates patterns, QueryMetadata metadata) {
         super(metadata, patterns);
         this.sessionHolder = sessionHolder;
@@ -54,10 +54,10 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
         reset();
         return (Long) query.getSingleResult();
     }
-      
+
     /**
-     * Expose the original JPA query for the given projection 
-     * 
+     * Expose the original JPA query for the given projection
+     *
      * @param expr
      * @return
      */
@@ -65,12 +65,12 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
         getQueryMixin().addToProjection(expr);
         String queryString = toString();
         logQuery(queryString);
-        return createQuery(queryString, getMetadata().getModifiers());        
+        return createQuery(queryString, getMetadata().getModifiers());
     }
-    
+
     /**
-     * Expose the original JPA query for the given projection 
-     * 
+     * Expose the original JPA query for the given projection
+     *
      * @param expr
      * @return
      */
@@ -81,10 +81,10 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
         logQuery(queryString);
         return createQuery(queryString, getMetadata().getModifiers());
     }
-    
+
     /**
      * Expose the original JPA query for the given projection
-     * 
+     *
      * @param args
      * @return
      */
@@ -106,7 +106,6 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
                 query.setFirstResult(modifiers.getOffset().intValue());
             }
         }
-        
 
         // set transformer, if necessary
 //        List<? extends Expr<?>> projection = getMetadata().getProjection();
@@ -119,7 +118,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
 //            }
 //            }
 //        }
-        
+
         return query;
     }
 
@@ -130,9 +129,9 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
     public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
         return new IteratorAdapter<RT>(list(projection).iterator());
     }
-    
+
     @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expr<?>[] args) {       
+    public List<Object[]> list(Expr<?>[] args) {
         Query query = createQuery(args);
         reset();
         return query.getResultList();
@@ -163,13 +162,13 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
             return SearchResults.emptyResults();
         }
     }
-    
+
     protected void logQuery(String queryString){
         if (logger.isDebugEnabled()){
-            logger.debug(queryString.replace('\n', ' '));    
-        }        
+            logger.debug(queryString.replace('\n', ' '));
+        }
     }
-    
+
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expr<RT> expr) {
         getQueryMixin().addToProjection(expr);

@@ -6,7 +6,7 @@ import com.mysema.query.types.expr.EStringConst;
 
 /**
  * PhraseElement represents the embedded String as a phrase
- * 
+ *
  * @author tiwe
  *
  */
@@ -15,11 +15,11 @@ public class PhraseElement extends EString{
     private static final long serialVersionUID = 2350215644019186076L;
 
     private final EStringConst string;
-    
+
     public PhraseElement(String str) {
         this.string = (EStringConst) EStringConst.create(str);
     }
-    
+
     @Override
     public void accept(Visitor v) {
         string.accept(v);

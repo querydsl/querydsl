@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -40,16 +40,16 @@ import com.mysema.query.types.path.PTime;
  *
  */
 public class TypeMappings {
-    
+
     @SuppressWarnings("unchecked")
     private final Map<TypeCategory, Class<? extends Custom>> customTypes = new HashMap<TypeCategory, Class<? extends Custom>>();
-    
+
     @SuppressWarnings("unchecked")
     private final Map<TypeCategory, Class<? extends Expr>> exprTypes = new HashMap<TypeCategory, Class<? extends Expr>>();
-    
+
     @SuppressWarnings("unchecked")
     private final Map<TypeCategory, Class<? extends Path>> pathTypes = new HashMap<TypeCategory, Class<? extends Path>>();
-    
+
     public TypeMappings(){
         register(TypeCategory.STRING, EString.class, PString.class, CString.class);
         register(TypeCategory.BOOLEAN, EBoolean.class, PBoolean.class, CBoolean.class);
@@ -65,82 +65,80 @@ public class TypeMappings {
         register(TypeCategory.LIST, Expr.class, PSimple.class, CSimple.class);
         register(TypeCategory.MAP, Expr.class, PSimple.class, CSimple.class);
         register(TypeCategory.SIMPLE, Expr.class, PSimple.class, CSimple.class);
-        
+
         register(TypeCategory.ENTITY, Expr.class, Path.class, CSimple.class);
     }
-    
 
     public String getCustomType(Type type, EntityType model, boolean raw){
         return getCustomType(type, model, raw, false, false);
     }
-    
+
     public String getCustomType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
         return getQueryType(customTypes, type, model, raw, rawParameters, extend);
     }
-    
+
     public String getExprType(Type type, EntityType model, boolean raw){
         return getExprType(type, model, raw, false, false);
     }
-    
+
     public String getExprType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
         return getQueryType(exprTypes, type, model, raw, rawParameters, extend);
     }
-    
+
     public String getPathType(Type type, EntityType model, boolean raw){
         return getPathType(type, model, raw, false, false);
     }
-    
+
     public String getPathType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
         return getQueryType(pathTypes, type, model, raw, rawParameters, extend);
     }
-        
+
     private String getQueryType(Map<TypeCategory, ? extends Class<?>> types, Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
         String typeName = types.get(type.getCategory()).getSimpleName();
         return getQueryType(type, model, typeName, raw, rawParameters, extend);
     }
-    
+
     public String getQueryType(Type type, EntityType model, String typeName, boolean raw, boolean rawParameters, boolean extend){
-        String localName = null;                
+        String localName = null;
         TypeCategory category = type.getCategory();
-        
+
         if (raw && category != TypeCategory.ENTITY){
             return typeName;
         }
-        
+
         if (rawParameters){
             localName = type.getLocalRawName(model);
         }else{
-            localName = type.getLocalGenericName(model, true);    
-        }            
+            localName = type.getLocalGenericName(model, true);
+        }
         if (!type.isFinal() && extend){
             localName = "? extends " + localName;
         }
-        
+
         if (category == TypeCategory.STRING || category == TypeCategory.BOOLEAN){
             return typeName;
-            
+
         }else if (category == TypeCategory.ENTITY){
             String suffix;
             if (!type.getPackageName().isEmpty()){
-                suffix = type.getFullName().substring(type.getPackageName().length()+1).replace('.', '_');                
+                suffix = type.getFullName().substring(type.getPackageName().length()+1).replace('.', '_');
             }else{
-                suffix = type.getFullName().replace('.', '_');    
-            }                        
+                suffix = type.getFullName().replace('.', '_');
+            }
             if (type.getPackageName().equals(model.getPackageName()) || type.getPackageName().isEmpty()){
                 return model.getPrefix() + suffix;
             }else{
                 return type.getPackageName() + "." + model.getPrefix() + suffix;
             }
-            
+
         }else{
             return typeName + "<" + localName + ">";
         }
     }
 
-    
     @SuppressWarnings("unchecked")
-    private void register(TypeCategory category, 
-            Class<? extends Expr> expr, 
+    private void register(TypeCategory category,
+            Class<? extends Expr> expr,
             Class<? extends Path> path,
             Class<? extends Custom> custom){
         exprTypes.put(category, expr);

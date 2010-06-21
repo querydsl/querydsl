@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.search;
 
@@ -27,7 +27,7 @@ import com.mysema.query.types.path.PEntity;
 
 /**
  * SearchQuery is a Query implementation for Hibernate Search
- * 
+ *
  * @author tiwe
  *
  * @param <T>
@@ -41,7 +41,7 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
     private final LuceneSerializer serializer;
 
     private final FullTextSession session;
-    
+
     /**
      * @param session
      * @param path
@@ -50,9 +50,9 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
         this.queryMixin = new QueryMixin<SearchQuery<T>>(this);
         this.session = Assert.notNull(session,"session");
         this.path = Assert.notNull(path,"path");
-        this.serializer = SearchSerializer.DEFAULT;        
+        this.serializer = SearchSerializer.DEFAULT;
     }
-    
+
     /**
      * @param session
      * @param path
@@ -60,7 +60,7 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
     public SearchQuery(Session session, PEntity<T> path) {
         this(Search.getFullTextSession(session), path);
     }
-    
+
     @Override
     public long count() {
         return createQuery(true).getResultSize();
@@ -75,14 +75,14 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
         QueryMetadata metadata = queryMixin.getMetadata();
         Assert.notNull(metadata.getWhere(), "where needs to be set");
         org.apache.lucene.search.Query query = serializer.toQuery(metadata, metadata.getWhere());
-                
+
         FullTextQuery fullTextQuery = session.createFullTextQuery(query, path.getType());
-        
+
         // order
         if (!metadata.getOrderBy().isEmpty() && !forCount){
             fullTextQuery.setSort(serializer.toSort(metadata.getOrderBy()));
         }
-        
+
         // paging
         QueryModifiers modifiers = metadata.getModifiers();
         if (modifiers != null && modifiers.isRestricting() && !forCount){
@@ -92,7 +92,7 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
             if (modifiers.getOffset() != null){
                 fullTextQuery.setFirstResult(modifiers.getOffset().intValue());
             }
-        }        
+        }
         return fullTextQuery;
     }
 
@@ -106,7 +106,7 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
     public List<T> list() {
         return createQuery(false).list();
     }
-    
+
     @Override
     public List<T> listDistinct() {
         return list();
@@ -153,6 +153,6 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
     @Override
     public SearchQuery<T> where(EBoolean... e) {
         return queryMixin.where(e);
-    } 
+    }
 
 }

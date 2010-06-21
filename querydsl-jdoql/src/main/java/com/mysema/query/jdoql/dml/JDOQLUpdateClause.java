@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql.dml;
 
@@ -17,26 +17,26 @@ import com.mysema.query.types.path.NullExpr;
 
 /**
  * UpdateClause implementation for JDO
- * 
+ *
  * @author tiwe
  *
  */
 public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
-    
+
     private final QueryMetadata metadata = new DefaultQueryMetadata();
-    
+
 //    private final PersistenceManager persistenceManager;
-//    
+//
 //    private final JDOQLTemplates templates;
-    
+
 //    public JDOQLUpdateClause(PersistenceManager persistenceManager, PEntity<?> entity){
 //        this(persistenceManager, entity, JDOQLTemplates.DEFAULT);
 //    }
-//    
+//
 //    public JDOQLUpdateClause(PersistenceManager persistenceManager, PEntity<?> entity, JDOQLTemplates templates){
 //        this.persistenceManager = persistenceManager;
 //        this.templates = templates;
-//        metadata.addFrom(entity);        
+//        metadata.addFrom(entity);
 //    }
 
     @Override
@@ -50,22 +50,22 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
     public JDOQLUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++){
             if (values.get(i) != null){
-                metadata.addProjection(((Expr)paths.get(i).asExpr()).eq(values.get(i)));    
+                metadata.addProjection(((Expr)paths.get(i).asExpr()).eq(values.get(i)));
             }else{
                 metadata.addProjection(((Expr)paths.get(i).asExpr()).eq(new NullExpr(paths.get(i).getType())));
-            }            
+            }
         }
         return this;
     }
-    
+
     @Override
     public <T> JDOQLUpdateClause set(Path<T> path, T value) {
         if (value != null){
-            metadata.addProjection(path.asExpr().eq(value));    
+            metadata.addProjection(path.asExpr().eq(value));
         }else{
             metadata.addProjection(path.asExpr().eq(new NullExpr<T>(path.getType())));
         }
-        
+
         return this;
     }
 

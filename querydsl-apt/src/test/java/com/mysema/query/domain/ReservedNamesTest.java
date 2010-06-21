@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.domain;
 
@@ -14,7 +14,7 @@ import org.junit.Test;
 import com.mysema.query.annotations.QueryEntity;
 
 public class ReservedNamesTest {
-    
+
     @QueryEntity
     public static class ReservedNames {
 
@@ -59,7 +59,7 @@ public class ReservedNamesTest {
         }
 
     }
-    
+
     @Test
     public void test() throws SecurityException, NoSuchFieldException{
         Class<?> cl = QReservedNamesTest_ReservedNames.class;

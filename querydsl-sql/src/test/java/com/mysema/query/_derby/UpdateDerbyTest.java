@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._derby;
 
@@ -21,7 +21,7 @@ import com.mysema.testutil.Label;
 @RunWith(FilteringTestRunner.class)
 @Label(Target.DERBY)
 public class UpdateDerbyTest extends UpdateBaseTest{
-    
+
     @BeforeClass
     public static void setUpClass() throws Exception {
         Connections.initDerby();

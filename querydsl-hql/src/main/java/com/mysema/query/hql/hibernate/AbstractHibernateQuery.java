@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.hibernate;
 
@@ -35,36 +35,36 @@ import com.mysema.query.types.Path;
 
 /**
  * Abstract base class for Hibernate API based implementations of the HQLQuery interface
- * 
+ *
  * @author tiwe
  *
  * @param <Q>
  */
 public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>> extends HQLQueryBase<Q>{
-    
+
     private static final Logger logger = LoggerFactory.getLogger(HibernateQuery.class);
 
     private Boolean cacheable, readOnly;
-    
+
     private String cacheRegion;
-    
+
     private int fetchSize = 0;
 
     private final Map<Path<?>,LockMode> lockModes = new HashMap<Path<?>,LockMode>();
 
     private final SessionHolder session;
-    
-    private int timeout = 0;    
+
+    private int timeout = 0;
 
     public AbstractHibernateQuery(Session session) {
         this(new DefaultSessionHolder(session), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
     }
-    
+
     public AbstractHibernateQuery(SessionHolder session, JPQLTemplates patterns, QueryMetadata metadata) {
         super(metadata, patterns);
         this.session = session;
     }
-    
+
     @Override
     public long count() {
         QueryModifiers modifiers = getMetadata().getModifiers();
@@ -78,23 +78,23 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         }else{
             throw new QueryException("Query returned null");
         }
-    }       
-    
+    }
+
     /**
-     * Expose the original Hibernate query for the given projection 
-     * 
+     * Expose the original Hibernate query for the given projection
+     *
      * @param expr
      * @return
      */
     public Query createQuery(Expr<?> expr){
         getQueryMixin().addToProjection(expr);
-        String queryString = toQueryString();        
-        return createQuery(queryString, getMetadata().getModifiers());   
+        String queryString = toQueryString();
+        return createQuery(queryString, getMetadata().getModifiers());
     }
 
     /**
      * Expose the original Hibernate query for the given projection
-     * 
+     *
      * @param expr1
      * @param expr2
      * @param rest
@@ -105,12 +105,12 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         getQueryMixin().addToProjection(rest);
         String queryString = toQueryString();
         logQuery(queryString);
-        return createQuery(queryString, getMetadata().getModifiers());   
+        return createQuery(queryString, getMetadata().getModifiers());
     }
-    
+
     /**
      * Expose the original Hibernate query for the given projection
-     * 
+     *
      * @param args
      * @return
      */
@@ -118,7 +118,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         getQueryMixin().addToProjection(args);
         String queryString = toQueryString();
         logQuery(queryString);
-        return createQuery(queryString, getMetadata().getModifiers());   
+        return createQuery(queryString, getMetadata().getModifiers());
     }
 
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
@@ -131,7 +131,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
             query.setTimeout(timeout);
         }
         if (cacheable != null){
-            query.setCacheable(cacheable);        
+            query.setCacheable(cacheable);
         }
         if (cacheRegion != null){
             query.setCacheRegion(cacheRegion);
@@ -142,7 +142,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         for (Map.Entry<Path<?>, LockMode> entry : lockModes.entrySet()){
             query.setLockMode(entry.getKey().toString(), entry.getValue());
         }
-        
+
         if (modifiers != null && modifiers.isRestricting()) {
             if (modifiers.getLimit() != null) {
                 query.setMaxResults(modifiers.getLimit().intValue());
@@ -151,7 +151,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
                 query.setFirstResult(modifiers.getOffset().intValue());
             }
         }
-        
+
         // set transformer, if necessary
         List<? extends Expr<?>> projection = getMetadata().getProjection();
         if (projection.size() == 1){
@@ -160,10 +160,10 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
             query.setResultTransformer(new ConstructorTransformer((EConstructor<?>) projection.get(0)));
             }
         }
-        
+
         return query;
     }
-        
+
     /**
      * Return the query results as an <tt>Iterator</tt>. If the query
      * contains multiple results pre row, the results are returned in
@@ -223,7 +223,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
                 return new SearchResults<RT>(list, modifiers, total);
             } else {
                 return SearchResults.emptyResults();
-            }   
+            }
         }finally{
             reset();
         }
@@ -231,15 +231,15 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
 
     protected void logQuery(String queryString){
         if (logger.isDebugEnabled()){
-            logger.debug(queryString.replace('\n', ' '));    
-        }        
+            logger.debug(queryString.replace('\n', ' '));
+        }
     }
-    
+
     /**
      * Return the query results as <tt>ScrollableResults</tt>. The
      * scrollability of the returned results depends upon JDBC driver
      * support for scrollable <tt>ResultSet</tt>s.<br>
-     * 
+     *
      * @param mode
      * @param expr
      * @return
@@ -249,12 +249,12 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         reset();
         return query.scroll(mode);
     }
-    
+
     /**
      * Return the query results as <tt>ScrollableResults</tt>. The
      * scrollability of the returned results depends upon JDBC driver
      * support for scrollable <tt>ResultSet</tt>s.<br>
-     * 
+     *
      * @param mode
      * @param expr1
      * @param expr2
@@ -266,12 +266,12 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         reset();
         return query.scroll(mode);
     }
-    
+
     /**
      * Return the query results as <tt>ScrollableResults</tt>. The
      * scrollability of the returned results depends upon JDBC driver
      * support for scrollable <tt>ResultSet</tt>s.<br>
-     * 
+     *
      * @param mode
      * @param args
      * @return
@@ -302,7 +302,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         this.cacheRegion = cacheRegion;
         return (Q)this;
     }
-    
+
     /**
      * Set a fetch size for the underlying JDBC query.
      * @param fetchSize the fetch size
@@ -312,7 +312,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         this.fetchSize = fetchSize;
         return (Q)this;
     }
-    
+
     /**
      * Set the lock mode for the given path.
      */
@@ -321,9 +321,9 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         lockModes.put(path, lockMode);
         return (Q)this;
     }
-    
+
     /**
-     * Entities retrieved by this query will be loaded in 
+     * Entities retrieved by this query will be loaded in
      * a read-only mode where Hibernate will never dirty-check
      * them or make changes persistent.
      *
@@ -333,7 +333,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         this.readOnly = readOnly;
         return (Q)this;
     }
-    
+
     /**
      * Set a timeout for the underlying JDBC query.
      * @param timeout the timeout in seconds
@@ -354,7 +354,5 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         reset();
         return (RT) query.uniqueResult();
     }
-    
-    
 
 }

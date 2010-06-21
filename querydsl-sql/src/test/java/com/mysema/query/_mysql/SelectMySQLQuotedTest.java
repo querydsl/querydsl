@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._mysql;
 
@@ -23,7 +23,7 @@ import com.mysema.testutil.ResourceCheck;
 @ResourceCheck("/mysql.run")
 @Label(Target.MYSQL)
 public class SelectMySQLQuotedTest extends SelectBaseTest{
-    
+
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initMySQL();
@@ -33,20 +33,20 @@ public class SelectMySQLQuotedTest extends SelectBaseTest{
     public void setUpForTest() {
         dialect = new MySQLTemplates(true).newLineToSingleSpace();
     }
-    
+
     @Override
-    public void limitAndOffset2() throws SQLException {     
-        
+    public void limitAndOffset2() throws SQLException {
+
     }
 
     @Override
     public void serialization(){
-        
+
     }
-    
+
     @Override
     public void subQueries() throws SQLException {
-        
+
     }
 
 }

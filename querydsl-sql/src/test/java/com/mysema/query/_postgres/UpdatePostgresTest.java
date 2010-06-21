@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._postgres;
 
@@ -23,7 +23,7 @@ import com.mysema.testutil.ResourceCheck;
 @ResourceCheck("/postgres.run")
 @Label(Target.POSTGRES)
 public class UpdatePostgresTest extends UpdateBaseTest{
-    
+
     @BeforeClass
     public static void setUpClass() throws Exception {
         Connections.initPostgres();

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.jpa;
 
@@ -26,28 +26,28 @@ import com.mysema.query.types.path.PEntity;
 
 /**
  * UpdateClause implementation for JPA
- * 
+ *
  * @author tiwe
  *
  */
 public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
-    
+
     private final EntityManager entityManager;
-    
+
     private final JPQLTemplates templates;
-    
+
     public JPAUpdateClause(EntityManager session, PEntity<?> entity){
         this(session, entity, HQLTemplates.DEFAULT);
     }
-    
+
     public JPAUpdateClause(EntityManager em, PEntity<?> entity, JPQLTemplates templates){
         this.entityManager = em;
         this.templates = templates;
-        metadata.addJoin(JoinType.DEFAULT, entity);        
+        metadata.addJoin(JoinType.DEFAULT, entity);
     }
-    
+
     @Override
     public long execute() {
         HQLSerializer serializer = new HQLSerializer(templates);
@@ -62,23 +62,23 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
     @Override
     public <T> JPAUpdateClause set(Path<T> path, T value) {
         if (value != null){
-            metadata.addProjection(path.asExpr().eq(value));    
+            metadata.addProjection(path.asExpr().eq(value));
         }else{
             metadata.addProjection(path.asExpr().eq(new NullExpr<T>(path.getType())));
         }
-        
+
         return this;
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public JPAUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++){
             if (values.get(i) != null){
-                metadata.addProjection(((Expr)paths.get(i).asExpr()).eq(values.get(i)));    
+                metadata.addProjection(((Expr)paths.get(i).asExpr()).eq(values.get(i)));
             }else{
                 metadata.addProjection(((Expr)paths.get(i).asExpr()).eq(new NullExpr(paths.get(i).getType())));
-            }            
+            }
         }
         return this;
     }

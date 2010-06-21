@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql;
 
@@ -17,21 +17,21 @@ import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QProduct;
 
 public class GroupByTest extends AbstractJDOTest {
-    
+
     private QProduct product = QProduct.product;
-    
+
     @Test
     public void testDistinct() {
         assertEquals(3, query().from(product).listDistinct(product.description).size());
         assertEquals(3, query().from(product).listDistinct(product.price).size());
     }
-    
+
     @Test
     public void testGroupBy() {
         assertEquals(3, query().from(product).groupBy(product.description).list(product.description).size());
         assertEquals(3, query().from(product).groupBy(product.price).list(product.price).size());
     }
-        
+
     @BeforeClass
     public static void doPersist() {
         // Persistence of a Product and a Book.

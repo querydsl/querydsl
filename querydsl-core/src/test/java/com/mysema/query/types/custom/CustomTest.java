@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.custom;
 
@@ -28,12 +28,12 @@ import com.mysema.query.types.expr.EBooleanConst;
 import com.mysema.query.types.path.PString;
 
 public class CustomTest {
-    
+
     @Test
     public void constructors(){
         Visitor visitor = new ToStringVisitor(new JavaTemplates());
         Template template = TemplateFactory.DEFAULT.create("{0}");
-        List<Expr<?>> args = Arrays.<Expr<?>>asList(new PString("a"));        
+        List<Expr<?>> args = Arrays.<Expr<?>>asList(new PString("a"));
         List<Custom<?>> customs = Arrays.<Custom<?>>asList(
             new CBoolean(template, args),
             new CComparable<String>(String.class, template, args),
@@ -64,7 +64,7 @@ public class CustomTest {
     public void factoryMethods(){
         String template = "";
         EBoolean arg = EBooleanConst.TRUE;
-        
+
         CBoolean.create(template, arg);
         CComparable.create(String.class, template, arg);
         CDate.create(Date.class, template, arg);
@@ -74,12 +74,12 @@ public class CustomTest {
         CString.create(template, arg);
         CTime.create(Time.class, template, arg);
     }
-    
+
     @Test
     public void factoryMethods2(){
         Template template = TemplateFactory.DEFAULT.create("");
         EBoolean arg = EBooleanConst.TRUE;
-        
+
         CBoolean.create(template, arg);
         CComparable.create(String.class, template, arg);
         CDate.create(Date.class, template, arg);

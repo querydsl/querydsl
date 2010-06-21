@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.apt.jdo;
 
@@ -27,9 +27,9 @@ import com.mysema.query.apt.Processor;
 @SupportedAnnotationTypes("*")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class JDOAnnotationProcessor extends AbstractProcessor{
-    
+
     private Class<? extends Annotation> entity, embeddable, skip;
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -38,20 +38,20 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
             entity = (Class)Class.forName("javax.jdo.annotations.PersistenceCapable");
             embeddable = (Class)Class.forName("javax.jdo.annotations.EmbeddedOnly");
             skip = (Class)Class.forName("javax.jdo.annotations.NotPersistent");
-            
+
             DefaultConfiguration configuration = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), entity, null, embeddable, skip);
             configuration.setUseGetters(false);
             Processor processor = new Processor(processingEnv, roundEnv, configuration);
             processor.process();
             return true;
-            
+
         } catch (ClassNotFoundException e) {
             throw new APTException(e.getMessage(), e);
         }
-    }       
-    
+    }
+
     protected DefaultConfiguration createConfiguration(RoundEnvironment roundEnv) throws ClassNotFoundException {
         return new JDOConfiguration(roundEnv, processingEnv.getOptions(), entity, null, embeddable, skip);
-    }    
-    
+    }
+
 }

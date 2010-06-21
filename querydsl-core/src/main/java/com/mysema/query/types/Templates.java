@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types;
 
@@ -12,29 +12,28 @@ import javax.annotation.Nullable;
 
 import net.jcip.annotations.Immutable;
 
-
 /**
  * Templates provides operator patterns for query expression serialization
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
 @Immutable
 public class Templates {
-    
+
     private static final TemplateFactory templateFactory = new TemplateFactory();
-    
+
     public static final Templates DEFAULT = new Templates();
-    
+
     private final Map<Operator<?>, Template> templates = new HashMap<Operator<?>, Template>();
 
     private final Map<Operator<?>, Integer> precedence = new HashMap<Operator<?>, Integer>();
 
     protected Templates() {
         //CHECKSTYLE:OFF
-        
+
         add(Ops.LIST, "{0}, {1}");
-        
+
         // boolean
         add(Ops.AND, "{0} && {1}", 36);
         add(Ops.NOT, "!{0}", 3);
@@ -45,16 +44,16 @@ public class Templates {
         // collection
         add(Ops.COL_IS_EMPTY, "empty({0})");
         add(Ops.COL_SIZE, "size({0})");
-        
+
         // array
         add(Ops.ARRAY_SIZE, "size({0})");
-        
+
         // map
         add(Ops.MAP_SIZE, "size({0})");
         add(Ops.MAP_ISEMPTY, "empty({0})");
         add(Ops.CONTAINS_KEY, "containsKey({0},{1})");
         add(Ops.CONTAINS_VALUE, "containsValue({0},{1})");
-        
+
         // comparison
         add(Ops.BETWEEN, "{0} between {1} and {2}", 30);
         add(Ops.GOE, "{0} >= {1}", 20);
@@ -85,7 +84,7 @@ public class Templates {
         add(Ops.IS_NULL, "{0} is null", 26);
         add(Ops.IS_NOT_NULL, "{0} is not null", 26);
         add(Ops.ALIAS, "{0} as {1}");
-        
+
         add(Ops.EXISTS, "exists({0})");
 
         add(Ops.NUMCAST, "cast({0},{1})");
@@ -111,14 +110,14 @@ public class Templates {
         add(Ops.INDEX_OF_2ARGS, "indexOf({0},{1},{2})");
         add(Ops.STRING_IS_EMPTY, "empty({0})");
         add(Ops.LIKE, "{0} like {1}");
-        
+
         add(Ops.StringOps.LTRIM, "ltrim({0})");
         add(Ops.StringOps.RTRIM, "rtrim({0})");
         add(Ops.StringOps.SPACE, "space({0})");
         add(Ops.StringOps.LAST_INDEX, "lastIndexOf({0},{1})");
         add(Ops.StringOps.LAST_INDEX_2ARGS, "lastIndexOf({0},{1},{2})");
         add(Ops.StringOps.SPLIT, "split({0},{1})");
-                
+
         // date time
         add(Ops.DateTimeOps.SYSDATE, "sysdate");
         add(Ops.DateTimeOps.CURRENT_DATE, "current_date()");
@@ -155,38 +154,38 @@ public class Templates {
         add(Ops.MathOps.LOG, "log({0})");
         add(Ops.MathOps.FLOOR, "floor({0})");
         add(Ops.MathOps.EXP, "exp({0})");
-        
+
         // path types
         add(PathType.DELEGATE, "{0}");
         add(PathType.PROPERTY, "{0}.{1s}");
         add(PathType.VARIABLE, "{0s}");
-        
-        for (PathType type : new PathType[] { 
-                PathType.LISTVALUE, 
+
+        for (PathType type : new PathType[] {
+                PathType.LISTVALUE,
                 PathType.MAPVALUE,
                 PathType.MAPVALUE_CONSTANT }) {
             add(type, "{0}.get({1})");
-        }         
+        }
         add(PathType.ARRAYVALUE, "{0}[{1}]");
         add(PathType.LISTVALUE_CONSTANT, "{0}.get({1s})"); // serialized constant
         add(PathType.ARRAYVALUE_CONSTANT, "{0}[{1s}]");    // serialized constant
-        
+
         // case
         add(Ops.CASE, "case {0} end");
         add(Ops.CASE_WHEN,  "when {0} then {1} {2}");
         add(Ops.CASE_ELSE,  "else {0}");
-        
+
         // case for
         add(Ops.CASE_EQ, "case {0} {1} end");
         add(Ops.CASE_EQ_WHEN,  "when {1} then {2} {3}");
         add(Ops.CASE_EQ_ELSE,  "else {0}");
-        
+
         // coalesce
         add(Ops.COALESCE, "coalesce({0})");
-        
+
         // subquery
         add(Ops.EXISTS, "exists {0}");
-        
+
         // numeric aggregates
         add(Ops.AggOps.AVG_AGG, "avg({0})");
         add(Ops.AggOps.MAX_AGG, "max({0})");
@@ -195,7 +194,6 @@ public class Templates {
         add(Ops.AggOps.COUNT_AGG, "count({0})");
         add(Ops.AggOps.COUNT_DISTINCT_AGG, "count(distinct {0})");
         add(Ops.AggOps.COUNT_ALL_AGG, "count(*)");
-        
 
         // quantified expressions
         add(Ops.QuantOps.AVG_IN_COL, "avg({0})");
@@ -203,7 +201,7 @@ public class Templates {
         add(Ops.QuantOps.MIN_IN_COL, "min({0})");
 
         add(Ops.QuantOps.ANY, "any {0}");
-        add(Ops.QuantOps.ALL, "all {0}");        
+        add(Ops.QuantOps.ALL, "all {0}");
         //CHECKSTYLE:ON
     }
 
@@ -217,7 +215,7 @@ public class Templates {
         precedence.put(op, pre);
     }
 
-    @Nullable 
+    @Nullable
     public Template getTemplate(Operator<?> op) {
         return templates.get(op);
     }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -21,22 +21,22 @@ import com.mysema.commons.lang.Assert;
 
 /**
  * ClassType is a minimal implementation of the Type interface
- * 
+ *
  * @author tiwe
  *
  */
 @Immutable
 public final class ClassType extends AbstractType{
-        
+
     private final Class<?> clazz;
-    
+
     private final List<Type> parameters;
-    
+
     @Nullable
     private final Class<?> primitiveClass;
-    
+
     private final TypeCategory typeCategory;
-    
+
     private final boolean visible;
 
     public ClassType(TypeCategory typeCategory, Class<?> clazz, Type... params){
@@ -51,15 +51,15 @@ public final class ClassType extends AbstractType{
         if (clazz.isArray()){
             this.visible = clazz.getComponentType().getPackage().getName().equals("java.lang");
         }else{
-            this.visible = clazz.getPackage().getName().equals("java.lang");    
-        }        
+            this.visible = clazz.getPackage().getName().equals("java.lang");
+        }
     }
-    
+
     @Override
-    public Type asArrayType() {        
+    public Type asArrayType() {
         return new ClassType(TypeCategory.ARRAY, Array.newInstance(clazz, 0).getClass(), this);
     }
-    
+
     @Override
     public Type as(TypeCategory category) {
         if (typeCategory == category){
@@ -96,7 +96,7 @@ public final class ClassType extends AbstractType{
 
     @Override
     public void appendLocalRawName(Type context, Appendable builder) throws IOException {
-        String packageName; 
+        String packageName;
         String name;
         if (clazz.isArray()){
             packageName = clazz.getComponentType().getPackage().getName();
@@ -106,15 +106,14 @@ public final class ClassType extends AbstractType{
             name = clazz.getName();
         }
         if ((visible || context.getPackageName().equals(packageName)) && !packageName.isEmpty()){
-            builder.append(name.substring(packageName.length()+1));    
+            builder.append(name.substring(packageName.length()+1));
         }else{
             builder.append(name);
-        }     
+        }
         if (clazz.isArray()){
             builder.append("[]");
         }
     }
-        
 
     @Override
     public String getPackageName() {
@@ -138,14 +137,14 @@ public final class ClassType extends AbstractType{
 
     @Override
     public Type getSelfOrValueType() {
-        if (typeCategory.isSubCategoryOf(TypeCategory.COLLECTION) 
+        if (typeCategory.isSubCategoryOf(TypeCategory.COLLECTION)
          || typeCategory.isSubCategoryOf(TypeCategory.MAP)){
             return parameters.get(parameters.size()-1);
         }else{
             return this;
         }
     }
-    
+
     @Override
     public String getSimpleName() {
         return clazz.getSimpleName();

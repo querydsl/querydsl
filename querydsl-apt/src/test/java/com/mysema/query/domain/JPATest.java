@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.domain;
 
@@ -14,15 +14,15 @@ import com.mysema.query.domain.JDOTest.JDOEntity;
 import com.mysema.query.types.path.PString;
 
 public class JPATest extends AbstractTest{
-    
+
     @Entity
     public static class JPAEntity{
-        
+
         String prop;
-        
+
         @Transient
         String skipped;
-        
+
         @Transient
         JDOEntity skippedEntity;
     }

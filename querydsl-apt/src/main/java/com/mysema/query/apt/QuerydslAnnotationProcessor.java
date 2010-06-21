@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.apt;
 
@@ -21,7 +21,6 @@ import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerySupertype;
 import com.mysema.query.annotations.QueryTransient;
 
-
 /**
  * @author tiwe
  *
@@ -29,9 +28,9 @@ import com.mysema.query.annotations.QueryTransient;
 @SupportedAnnotationTypes("*")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class QuerydslAnnotationProcessor extends AbstractProcessor{
-    
+
     private Class<? extends Annotation> entity, superType, embeddable, skip;
-    
+
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
@@ -39,12 +38,12 @@ public class QuerydslAnnotationProcessor extends AbstractProcessor{
         superType = QuerySupertype.class;
         embeddable = QueryEmbeddable.class;
         skip = QueryTransient.class;
-        
+
         DefaultConfiguration configuration = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), entity, superType, embeddable, skip);
-        
+
         Processor processor = new Processor(processingEnv, roundEnv, configuration);
         processor.process();
         return true;
-    }       
-    
+    }
+
 }

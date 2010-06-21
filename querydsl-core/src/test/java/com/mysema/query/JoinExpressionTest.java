@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query;
 
@@ -15,9 +15,9 @@ import com.mysema.query.types.expr.EBooleanConst;
 import com.mysema.query.types.path.PString;
 
 public class JoinExpressionTest {
-    
+
     private JoinExpression je = new JoinExpression(JoinType.DEFAULT, new PString("str"));
-    
+
     @Test
     public void testToString(){
     assertEquals("DEFAULT str", je.toString());
@@ -27,7 +27,7 @@ public class JoinExpressionTest {
     public void testAddCondition() {
     je.addCondition(EBooleanConst.TRUE);
     assertEquals(EBooleanConst.TRUE, je.getCondition());
-    
+
     je.addCondition(EBooleanConst.FALSE);
     assertEquals(EBooleanConst.TRUE.and(EBooleanConst.FALSE), je.getCondition());
     }
@@ -35,11 +35,11 @@ public class JoinExpressionTest {
     @Test
     public void testSetFlag() {
     assertFalse(je.hasFlag("X"));
-    
+
     je.setFlag("X");
     assertTrue(je.hasFlag("X"));
     assertFalse(je.hasFlag("Y"));
-    
+
     je.removeFlag("X");
     assertFalse(je.hasFlag("X"));
     }

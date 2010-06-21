@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query;
 
@@ -15,18 +15,18 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
- * JoinExpression is a join element in a {@link Query} instance. 
- * 
+ * JoinExpression is a join element in a {@link Query} instance.
+ *
  * @author tiwe
  */
 public final class JoinExpression {
-    
+
     private BooleanBuilder condition = new BooleanBuilder();
 
     private final Set<Object> flags = new HashSet<Object>();
 
     private final Expr<?> target;
-    
+
     private final JoinType type;
 
     public JoinExpression(JoinType type, Expr<?> target) {
@@ -53,15 +53,15 @@ public final class JoinExpression {
     public void setFlag(Object flag){
         flags.add(flag);
     }
-    
+
     public void removeFlag(Object flag){
         flags.remove(flag);
     }
-    
+
     public boolean hasFlag(Object flag){
         return flags.contains(flag);
     }
-    
+
     public String toString() {
         StringBuilder builder = new StringBuilder();
         builder.append(type).append(" ").append(target);

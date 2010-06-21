@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.domain;
 
@@ -19,27 +19,26 @@ import org.junit.Test;
 
 import com.mysema.query.annotations.QueryInit;
 
-
 /**
  * The Class Account.
  */
 @SuppressWarnings("serial")
 @Entity
 public class Account implements Serializable{
-    
+
     @Transient
     public int transientField;
 
     @Id
     long id;
-    
+
     @ManyToOne
     @QueryInit("pid")
     Person owner;
-    
+
     @Embedded
     EmbeddedType embeddedData;
-        
+
     @Test
     public void test(){
         try {

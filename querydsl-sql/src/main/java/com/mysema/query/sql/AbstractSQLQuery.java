@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql;
 
@@ -40,7 +40,7 @@ import com.mysema.util.ResultSetAdapter;
 
 /**
  * AbstractSQLQuery is the base type for SQL query implementations
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -124,7 +124,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     public Q from(Expr<?>... args) {
         return queryMixin.from(args);
     }
-    
+
     public Q fullJoin(PEntity<?> target) {
         return queryMixin.fullJoin(target);
     }
@@ -132,23 +132,23 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     public Q fullJoin(SubQuery<?> target, Path<?> alias) {
         return queryMixin.fullJoin(target, alias);
     }
-    
+
     public <E> Q fullJoin(ForeignKey<E> key, PEntity<E> entity) {
         return queryMixin.fullJoin(entity).on(key.on(entity));
     }
-    
+
     public Q innerJoin(PEntity<?> target) {
         return queryMixin.innerJoin(target);
     }
-    
+
     public Q innerJoin(SubQuery<?> target, Path<?> alias) {
         return queryMixin.innerJoin(target, alias);
     }
-    
+
     public <E> Q innerJoin(ForeignKey<E> key, PEntity<E> entity) {
         return queryMixin.innerJoin(entity).on(key.on(entity));
     }
-    
+
     public Q join(PEntity<?> target) {
         return queryMixin.join(target);
     }
@@ -160,7 +160,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     public <E> Q join(ForeignKey<E> key, PEntity<E>  entity) {
         return queryMixin.join(entity).on(key.on(entity));
     }
-    
+
     public Q leftJoin(PEntity<?> target) {
         return queryMixin.leftJoin(target);
     }
@@ -168,11 +168,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     public Q leftJoin(SubQuery<?> target, Path<?> alias) {
         return queryMixin.leftJoin(target, alias);
     }
-    
+
     public <E> Q leftJoin(ForeignKey<E> key, PEntity<E>  entity) {
         return queryMixin.leftJoin(entity).on(key.on(entity));
     }
-    
+
     public Q rightJoin(PEntity<?> target) {
         return queryMixin.rightJoin(target);
     }
@@ -180,11 +180,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     public Q rightJoin(SubQuery<?> target, Path<?> alias) {
         return queryMixin.rightJoin(target, alias);
     }
-    
+
     public <E> Q rightJoin(ForeignKey<E> key, PEntity<E>  entity) {
         return queryMixin.rightJoin(entity).on(key.on(entity));
     }
-    
+
     @SuppressWarnings("unchecked")
     private <T> T get(ResultSet rs, int i, Class<T> type) {
         String methodName = "get" + type.getSimpleName();
@@ -208,7 +208,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     public QueryMetadata getMetadata() {
         return queryMixin.getMetadata();
     }
-    
+
     public ResultSet getResults(Expr<?>... exprs) {
         queryMixin.addToProjection(exprs);
         String queryString = buildQueryString(false);
@@ -218,7 +218,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
             final PreparedStatement stmt = conn.prepareStatement(queryString);
             JDBCUtil.setParameters(stmt, constants, getMetadata().getParams());
             ResultSet rs = stmt.executeQuery();
-            
+
             return new ResultSetAdapter(rs) {
                 @Override
                 public void close() throws SQLException {
@@ -241,7 +241,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return templates;
     }
 
-    
     private <RT> UnionBuilder<RT> innerUnion(SubQuery<?>... sq) {
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("Don't mix union and from");
@@ -249,13 +248,13 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         this.sq = sq;
         return new UnionBuilder<RT>();
     }
-    
+
     @Override
     public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
         queryMixin.addToProjection(args);
         return iterateMultiple();
     }
-    
+
     @Override
     public <RT> CloseableIterator<RT> iterate(Expr<RT> expr) {
         queryMixin.addToProjection(expr);
@@ -286,7 +285,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                                 index += ((EConstructor)expr).getArgs().size();
                             }else if (expr.getType().isArray()){
                                 for (int j = index; j < rs.getMetaData().getColumnCount(); j++){
-                                    objects.add(get(rs, index++ + 1, Object.class));                                    
+                                    objects.add(get(rs, index++ + 1, Object.class));
                                 }
                                 i = objects.size();
                             }else{
@@ -319,7 +318,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         }
 
     }
-    
+
     @SuppressWarnings("unchecked")
     private <RT> CloseableIterator<RT> iterateSingle(@Nullable final Expr<RT> expr) {
         String queryString = buildQueryString(false);
@@ -334,7 +333,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                 @Override
                 public RT produceNext(ResultSet rs) {
                     try {
-                        if (expr == null){    
+                        if (expr == null){
                             return (RT) rs.getObject(1);
                         }else if (expr instanceof EConstructor) {
                             return newInstance((EConstructor<RT>) expr, rs, 0);
@@ -372,7 +371,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         }
     }
 
-
     @Override
     public List<Object[]> list(Expr<?>[] args) {
         return IteratorAdapter.asList(iterate(args));
@@ -400,7 +398,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         }
     }
 
-    private <RT> RT newInstance(EConstructor<RT> c, ResultSet rs, int offset) 
+    private <RT> RT newInstance(EConstructor<RT> c, ResultSet rs, int offset)
         throws InstantiationException, IllegalAccessException, InvocationTargetException{
         Object[] args = new Object[c.getArgs().size()];
         for (int i = 0; i < args.length; i++) {

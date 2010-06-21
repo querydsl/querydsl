@@ -46,32 +46,32 @@ public interface NamingStrategy {
      *
      * @param columnName
      * @param namePrefix NOTE : is used in some custom NamingStrategy implementations
-     * @param entityType 
+     * @param entityType
      * @return
      */
     String getPropertyName(String columnName, String namePrefix, EntityType entityType);
-    
+
     /**
      * Convert the given foreign key name to a foreign key property name
-     * 
+     *
      * @param foreignKeyName
      * @param entityType
      * @return
      */
     String getPropertyNameForForeignKey(String foreignKeyName, EntityType entityType);
-    
+
     /**
      * Convert the given primary key name to a primary key property name
-     * 
+     *
      * @param name
      * @param model
      * @return
      */
     String getPropertyNameForPrimaryKey(String name, EntityType model);
-    
+
     /**
      * Convert the given column name and provide the opportunity to add quoted identifiers
-     * 
+     *
      * @param columnName
      * @return
      */
@@ -79,7 +79,7 @@ public interface NamingStrategy {
 
     /**
      * Convert the given table name and provide the opportunity to add quoted identifiers
-     * 
+     *
      * @param tableName
      * @return
      */

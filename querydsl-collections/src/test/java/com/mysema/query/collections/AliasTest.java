@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.collections;
 
@@ -25,7 +25,7 @@ import com.mysema.query.types.path.PString;
 
 /**
  * AliasTEst provides
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -114,7 +114,7 @@ public class AliasTest extends AbstractQueryTest {
         // 6
         from(c, cats).where($(c.getKittens()).contains(other)).list($(c))
                 .iterator();
-        
+
         // 7
         from(c, cats).where($(c.getKittens().isEmpty())).list($(c)).iterator();
 

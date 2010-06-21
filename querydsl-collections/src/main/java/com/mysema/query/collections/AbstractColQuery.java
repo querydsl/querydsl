@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.collections;
 
@@ -28,20 +28,20 @@ import com.mysema.query.types.path.PMap;
 /**
  * AbstractColQuery provides a base class for Collection query implementations.
  * Extend it like this
- * 
+ *
  * <pre>
  * public class MyType extends AbstractColQuery&lt;MyType&gt;{
  *   ...
  * }
  * </pre>
- * 
+ *
  * @see ColQuery
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
 public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends ProjectableQuery<Q> {
-    
+
     private final Map<Expr<?>, Iterable<?>> iterables = new HashMap<Expr<?>, Iterable<?>>();
 
     private final QueryEngine queryEngine;
@@ -52,7 +52,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
         this.queryMixin.setSelf((Q) this);
         this.queryEngine = queryEngine;
     }
-    
+
     @Override
     public long count() {
         try {
@@ -68,7 +68,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
     private <D> Expr<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias){
         return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target.asExpr(), alias.asExpr());
     }
-    
+
     @SuppressWarnings("unchecked")
     private <D> Expr<D> createAlias(PMap<?,D,?> target, Path<D> alias){
         return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target.asExpr(), alias.asExpr());
@@ -80,7 +80,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
         getMetadata().addJoin(JoinType.DEFAULT, entity.asExpr());
         return (Q)this;
     }
-    
+
     public abstract QueryMetadata getMetadata();
 
     protected QueryEngine getQueryEngine(){
@@ -92,28 +92,28 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return (Q)this;
     }
-    
+
     @SuppressWarnings("unchecked")
     public <P> Q innerJoin(PMap<?,P,?> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return (Q)this;
     }
-    
+
     @Override
     public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
         return iterate(new EArrayConstructor<Object>(args));
     }
-    
+
     @Override
-    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {        
+    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
         try {
             queryMixin.addToProjection(projection);
             return new IteratorAdapter<RT>(queryEngine.list(getMetadata(), iterables, projection).iterator());
         }finally{
             reset();
-        }        
+        }
     }
-    
+
     @Override
     public List<Object[]> list(Expr<?>[] args) {
         return list(new EArrayConstructor<Object>(args));
@@ -126,7 +126,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
             return queryEngine.list(getMetadata(), iterables, projection);
         }finally{
             reset();
-        } 
+        }
     }
 
     @Override
@@ -134,16 +134,16 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
         queryMixin.addToProjection(projection);
         long count = queryEngine.count(getMetadata(), iterables);
         if (count > 0l){
-            List<RT> list = queryEngine.list(getMetadata(), iterables, projection);        
-            reset();        
-            return new SearchResults<RT>(list, getMetadata().getModifiers(), count);    
+            List<RT> list = queryEngine.list(getMetadata(), iterables, projection);
+            reset();
+            return new SearchResults<RT>(list, getMetadata().getModifiers(), count);
         }else{
             reset();
             return SearchResults.<RT>emptyResults();
         }
-        
+
     }
-    
+
     private void reset(){
         getMetadata().reset();
     }

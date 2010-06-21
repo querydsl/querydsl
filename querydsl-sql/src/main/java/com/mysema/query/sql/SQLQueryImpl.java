@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql;
 
@@ -12,16 +12,16 @@ import com.mysema.query.QueryMetadata;
 
 /**
  * SQLQueryImpl is a JDBC based implementation of the Querydsl SQLQuery interface
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
 public class SQLQueryImpl extends AbstractSQLQuery<SQLQueryImpl> implements SQLQuery{
-    
+
     /**
      * Create a detached SQLQueryImpl instance
      * The query can be attached via the clone method
-     * 
+     *
      * @param conn Connection to use
      * @param templates SQLTemplates to use
      */
@@ -31,7 +31,7 @@ public class SQLQueryImpl extends AbstractSQLQuery<SQLQueryImpl> implements SQLQ
 
     /**
      * Create a new SQLQueryImpl instance
-     * 
+     *
      * @param conn Connection to use
      * @param templates SQLTemplates to use
      */
@@ -41,7 +41,7 @@ public class SQLQueryImpl extends AbstractSQLQuery<SQLQueryImpl> implements SQLQ
 
     /**
      * Create a new SQLQueryImpl instance
-     * 
+     *
      * @param conn
      * @param templates
      * @param metadata
@@ -52,13 +52,12 @@ public class SQLQueryImpl extends AbstractSQLQuery<SQLQueryImpl> implements SQLQ
 
     /**
      * Clone the state of this query to a new SQLQueryImpl instance with the given Connection
-     * 
+     *
      * @param conn
      * @return
      */
     public SQLQueryImpl clone(Connection conn){
-        return new SQLQueryImpl(conn, getTemplates(), getMetadata().clone());   
+        return new SQLQueryImpl(conn, getTemplates(), getMetadata().clone());
     }
 
-    
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -20,29 +20,29 @@ import com.mysema.util.ReflectionUtils;
 
 /**
  * TypeFactory is a factory class for Type instances
- * 
+ *
  * @author tiwe
- * 
+ *
  */
 public final class TypeFactory {
 
     private final Map<List<java.lang.reflect.Type>, Type> cache = new HashMap<List<java.lang.reflect.Type>, Type>();
-    
+
     private final Collection<Class<? extends Annotation>> entityAnnotations;
 
     @SuppressWarnings("unchecked")
     public TypeFactory(Class<?>... entityAnnotations){
         this.entityAnnotations = (List)Arrays.asList(entityAnnotations);
     }
-    
+
     public TypeFactory(List<Class<? extends Annotation>> entityAnnotations){
         this.entityAnnotations = entityAnnotations;
     }
-    
+
     public Type create(Class<?> cl){
         return create(cl, cl);
     }
-    
+
     public Type create(Class<?> cl, java.lang.reflect.Type genericType) {
         List<java.lang.reflect.Type> key = Arrays.<java.lang.reflect.Type> asList(cl, genericType);
         if (cache.containsKey(key)) {
@@ -58,10 +58,10 @@ public final class TypeFactory {
                     entity = true;
                     break;
                 }
-            }            
+            }
             if (entity){
                 value = new ClassType(TypeCategory.ENTITY, cl);
-                
+
             }else if (cl.isArray()) {
                 value = create(cl.getComponentType()).asArrayType();
 
@@ -80,15 +80,15 @@ public final class TypeFactory {
             } else if (Set.class.isAssignableFrom(cl)) {
                 Type valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
                 value = createSetType(valueInfo);
-                
+
             } else if (Collection.class.isAssignableFrom(cl)) {
                 Type valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
                 value = createCollectionType(valueInfo);
-                
-            }else if (Number.class.isAssignableFrom(cl) && Comparable.class.isAssignableFrom(cl)){    
+
+            }else if (Number.class.isAssignableFrom(cl) && Comparable.class.isAssignableFrom(cl)){
                 value = new ClassType(TypeCategory.NUMERIC, cl);
-                
-            } else {    
+
+            } else {
                 TypeCategory typeCategory = TypeCategory.get(cl.getName());
                 if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)){
                     typeCategory = TypeCategory.COMPARABLE;
@@ -98,23 +98,23 @@ public final class TypeFactory {
             cache.put(key, value);
             return value;
         }
-        
+
     }
-    
+
     public Type createCollectionType(Type valueType) {
         return createComposite(TypeCategory.COLLECTION, Collection.class, valueType);
     }
 
     private Type createComposite(TypeCategory container, Class<?> containerType, Type... parameters) {
-        return new SimpleType(container, 
-                containerType.getName(), 
-                containerType.getPackage().getName(), 
-                containerType.getSimpleName(), 
+        return new SimpleType(container,
+                containerType.getName(),
+                containerType.getPackage().getName(),
+                containerType.getSimpleName(),
                 Modifier.isFinal(containerType.getModifiers()),
                 parameters);
 
     }
-    
+
     public Type createListType(Type valueType) {
         return createComposite(TypeCategory.LIST, List.class, valueType);
     }

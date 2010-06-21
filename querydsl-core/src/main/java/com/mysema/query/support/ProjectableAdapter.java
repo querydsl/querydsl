@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.support;
 
@@ -16,7 +16,7 @@ import com.mysema.query.types.Expr;
 
 /**
  * ProjectableAdapter is an adapter implementation for the Projectable interface
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -27,7 +27,7 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     public ProjectableAdapter(P projectable) {
         this.projectable = Assert.notNull(projectable,"projectable");
     }
-    
+
     protected P getProjectable(){
         return projectable;
     }
@@ -56,7 +56,7 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
         return projectable.iterate(projection);
     }
-    
+
     @Override
     public CloseableIterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return projectable.iterateDistinct(first, second, rest);
@@ -81,7 +81,7 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     public List<Object[]> list(Expr<?>[] args) {
         return projectable.list(args);
     }
-    
+
     @Override
     public <RT> List<RT> list(Expr<RT> projection) {
         return projectable.list(projection);
@@ -96,7 +96,7 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     public List<Object[]> listDistinct(Expr<?>[] args) {
         return projectable.listDistinct(args);
     }
-    
+
     @Override
     public <RT> List<RT> listDistinct(Expr<RT> projection) {
         return projectable.listDistinct(projection);

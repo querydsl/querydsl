@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query;
 
@@ -22,47 +22,47 @@ import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.testutil.ExcludeIn;
 
 public abstract class InsertBaseTest extends AbstractBaseTest{
-        
+
     private void reset() throws SQLException{
         delete(survey).execute();
-        insert(survey).values(1, "Hello World").execute();   
+        insert(survey).values(1, "Hello World").execute();
     }
-    
+
     @Before
     public void setUp() throws SQLException{
         reset();
     }
-    
+
     @After
     public void tearDown() throws SQLException{
         reset();
     }
-    
+
     @Test
     public void insert(){
 //        create table survey (id int,name varchar(30))
-        
+
         // with columns
         insert(survey)
             .columns(survey.id, survey.name)
             .values(3, "Hello").execute();
-        
+
         // without columns
         insert(survey)
             .values(4, "Hello").execute();
-        
+
         // with subquery
         insert(survey)
             .columns(survey.id, survey.name)
             .select(sq().from(survey2).list(survey2.id.add(1), survey2.name))
             .execute();
-        
+
         // with subquery, without columns
         insert(survey)
             .select(sq().from(survey2).list(survey2.id.add(10), survey2.name))
             .execute();
     }
-    
+
     @Test
     @ExcludeIn({Target.HSQLDB, Target.DERBY})
     public void insert_With_Keys() throws SQLException{
@@ -70,25 +70,25 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
         assertTrue(rs.next());
         rs.close();
     }
-    
+
     @Test
     public void insertNull(){
         // with columns
         insert(survey)
             .columns(survey.id, survey.name)
             .values(3, null).execute();
-        
+
         // without columns
         insert(survey)
             .values(4, null).execute();
-        
+
         // with set
         insert(survey)
             .set(survey.id, 5)
             .set(survey.name, null)
             .execute();
     }
-    
+
     @Test
     public void insert_Alternative_Syntax(){
         // with columns
@@ -97,10 +97,10 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
             .set(survey.name, "Hello")
             .execute();
     }
-    
+
     @Test
     public void complex1(){
-        // related to #584795 
+        // related to #584795
         QSurvey survey = new QSurvey("survey");
         QEmployee emp1 = new QEmployee("emp1");
         QEmployee emp2 = new QEmployee("emp2");

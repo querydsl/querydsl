@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql;
 
@@ -16,7 +16,7 @@ import com.mysema.query.codegen.TypeCategory;
 public class DefaultNamingStrategyTest {
 
     private NamingStrategy namingStrategy = new DefaultNamingStrategy();
-    
+
     @Test
     public void testGetClassName() {
         assertEquals("QUserData", namingStrategy.getClassName("Q", "user_data"));

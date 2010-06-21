@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql;
 
@@ -14,7 +14,7 @@ import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.custom.CString;
 
 public class CustomExpressionsTest extends AbstractQueryTest{
-    
+
     public static class MyCustomExpr extends CString {
 
         private static final long serialVersionUID = 1L;
@@ -23,7 +23,7 @@ public class CustomExpressionsTest extends AbstractQueryTest{
             super(new TemplateFactory().create("myCustom({0},{1})"), Arrays.asList(args));
         }
     }
-    
+
     @Test
     public void testCustomExpressions() {
         assertToString("myCustom(cust,cat)", new MyCustomExpr(cust, cat));

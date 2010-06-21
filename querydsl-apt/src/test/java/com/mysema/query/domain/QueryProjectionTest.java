@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.domain;
 
@@ -27,33 +27,33 @@ public class QueryProjectionTest {
     @Entity
     @PersistenceCapable
     public static class EntityWithProjection{
-        
+
         public EntityWithProjection(long id){
-            
+
         }
-        
+
         @QueryProjection
         public EntityWithProjection(String name){
-            
+
         }
-        
+
         @QueryProjection
         public EntityWithProjection(@QueryType(PropertyType.SIMPLE) Long id){
-            
+
         }
-        
+
         @QueryProjection
         public EntityWithProjection(long id, CharSequence name){
-            
+
         }
-        
+
         @QueryProjection
         public EntityWithProjection(String id, CharSequence name){
-            
+
         }
-        
+
     }
-    
+
     @Test
     public void entityCase(){
         QQueryProjectionTest_EntityWithProjection.create(ExprConst.create(0l)).newInstance(0l);
@@ -61,55 +61,55 @@ public class QueryProjectionTest {
         QQueryProjectionTest_EntityWithProjection.create(ENumberConst.create(0l), EStringConst.create("")).newInstance(0l,"");
         QQueryProjectionTest_EntityWithProjection.create(EStringConst.create(""), EStringConst.create("")).newInstance("","");
     }
-    
+
     public static class DTOWithProjection {
-        
+
         public DTOWithProjection(long id){
-            
+
         }
 
         @QueryProjection
         public DTOWithProjection(@QueryType(PropertyType.SIMPLE) Long id){
-            
+
         }
-        
+
         @QueryProjection
         public DTOWithProjection(String name){
-            
+
         }
-                
+
         @QueryProjection
         public DTOWithProjection(EntityWithProjection entity){
-            
+
         }
-        
+
         @QueryProjection
         public DTOWithProjection(long id, CharSequence name){
-            
+
         }
-        
+
         @QueryProjection
         public DTOWithProjection(String id, CharSequence name){
-            
+
         }
-        
+
         @QueryProjection
         public DTOWithProjection(DTOWithProjection dto, long id, Long id2, String str, CharSequence c){
-            
+
         }
-        
+
         @QueryProjection
         public DTOWithProjection(String id, CharSequence name, Map<Long,String> map1, Map<DTOWithProjection, Long> map2){
-            
+
         }
     }
-        
+
     @Test
-    public void dtoCase() throws SecurityException, NoSuchMethodException{   
+    public void dtoCase() throws SecurityException, NoSuchMethodException{
         new QQueryProjectionTest_DTOWithProjection(ExprConst.<Long>create(0l)).newInstance(0l);
         new QQueryProjectionTest_DTOWithProjection(EStringConst.create("")).newInstance("");
         new QQueryProjectionTest_DTOWithProjection(ENumberConst.create(0l), EStringConst.create("")).newInstance(0l,"");
         new QQueryProjectionTest_DTOWithProjection(EStringConst.create(""), EStringConst.create("")).newInstance("","");
-        
+
     }
 }

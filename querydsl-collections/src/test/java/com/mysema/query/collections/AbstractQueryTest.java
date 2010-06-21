@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.collections;
 
@@ -16,7 +16,7 @@ import com.mysema.query.types.Expr;
 
 /**
  * AbstractQueryTest provides
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -31,7 +31,7 @@ public abstract class AbstractQueryTest {
     protected Cat c4 = new Cat("Francis");
 
     protected QCat cat = new QCat("cat");
-    
+
     protected QCat kitten = new QCat("kitten");
 
     protected List<Cat> cats = Arrays.asList(c1, c2, c3, c4);

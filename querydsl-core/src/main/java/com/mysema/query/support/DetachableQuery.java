@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.support;
 
@@ -32,27 +32,27 @@ import com.mysema.query.types.query.TimeSubQuery;
 public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q> implements Detachable {
 
     private final DetachableMixin detachableMixin;
-    
+
     public DetachableQuery(QueryMixin<Q> queryMixin) {
         super(queryMixin);
         this.detachableMixin = new DetachableMixin(queryMixin);
     }
-    
+
     @Override
     public ObjectSubQuery<Long> count(){
         return detachableMixin.count();
     }
-    
+
     @Override
     public EBoolean exists(){
         return detachableMixin.exists();
     }
-    
+
     @Override
     public ListSubQuery<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest) {
         return detachableMixin.list(first, second, rest);
     }
-    
+
     @Override
     public ListSubQuery<Object[]> list(Expr<?>[] args) {
         return detachableMixin.list(args);

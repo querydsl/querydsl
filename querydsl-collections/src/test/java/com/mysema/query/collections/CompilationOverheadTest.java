@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.collections;
 
@@ -14,9 +14,9 @@ import org.junit.Test;
 import com.mysema.query.types.expr.EBoolean;
 
 public class CompilationOverheadTest {
-    
-    private static final QCat cat = QCat.cat; 
-    
+
+    private static final QCat cat = QCat.cat;
+
     @Test
     public void test(){
         List<EBoolean> conditions = Arrays.asList(
@@ -27,20 +27,20 @@ public class CompilationOverheadTest {
             cat.mate.isNotNull().and(cat.mate.name.eq("Kitty")),
             cat.mate.isNotNull().and(cat.mate.name.eq("Kitty")).and(cat.kittens.isEmpty())
         );
-        
+
         // 1st
         for (EBoolean condition : conditions){
             query(condition);
         }
         System.err.println();
-        
+
         // 2nd
         for (EBoolean condition : conditions){
             query(condition);
         }
     }
-    
-    private void query(EBoolean condition){        
+
+    private void query(EBoolean condition){
         long start = System.currentTimeMillis();
         MiniApi.from(cat, Collections.<Cat>emptyList()).where(condition).list(cat);
         long duration = System.currentTimeMillis() - start;

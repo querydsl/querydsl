@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.hibernate;
 
@@ -27,9 +27,9 @@ import com.mysema.query.types.path.PEntity;
 
 /**
  * UpdateClause implementation for JPA
- * 
+ *
  * @author tiwe
- * 
+ *
  */
 public class HibernateUpdateClause implements
         UpdateClause<HibernateUpdateClause> {
@@ -68,10 +68,10 @@ public class HibernateUpdateClause implements
     @Override
     public <T> HibernateUpdateClause set(Path<T> path, T value) {
         if (value != null){
-            metadata.addProjection(path.asExpr().eq(value));    
+            metadata.addProjection(path.asExpr().eq(value));
         }else{
             metadata.addProjection(path.asExpr().eq(new NullExpr<T>(path.getType())));
-        }        
+        }
         return this;
     }
 
@@ -80,11 +80,11 @@ public class HibernateUpdateClause implements
     public HibernateUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++){
             if (values.get(i) != null){
-                metadata.addProjection(((Expr)paths.get(i).asExpr()).eq(values.get(i)));    
+                metadata.addProjection(((Expr)paths.get(i).asExpr()).eq(values.get(i)));
             }else{
                 metadata.addProjection(((Expr)paths.get(i).asExpr()).eq(new NullExpr(paths.get(i).getType())));
             }
-            
+
         }
         return this;
     }

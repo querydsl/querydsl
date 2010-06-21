@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.expr;
 
@@ -28,30 +28,30 @@ public abstract class EDateTime<D extends Comparable> extends EDate<D> {
     private static final EDateTime<Date> CURRENT_DATE = currentDate(Date.class);
 
     private static final EDateTime<Date> CURRENT_TIMESTAMP = currentTimestamp(Date.class);
-    
+
     private static final long serialVersionUID = -6879277113694148047L;
-        
+
     /**
      * Get an expression representing the current date as a EDateTime instance
-     * 
+     *
      * @return
      */
     public static EDateTime<Date> currentDate() {
         return CURRENT_DATE;
     }
-    
+
     /**
      * Get an expression representing the current date as a EDateTime instance
-     * 
+     *
      * @return
      */
     public static <T extends Comparable> EDateTime<T> currentDate(Class<T> cl) {
         return ODateTime.<T>create(cl, Ops.DateTimeOps.CURRENT_DATE);
     }
-    
+
     /**
      * Get an expression representing the current time instant as a EDateTime instance
-     * 
+     *
      * @return
      */
     public static EDateTime<Date> currentTimestamp() {
@@ -60,31 +60,31 @@ public abstract class EDateTime<D extends Comparable> extends EDate<D> {
 
     /**
      * Get an expression representing the current time instant as a EDateTime instance
-     * 
+     *
      * @return
      */
     public static <T extends Comparable> EDateTime<T> currentTimestamp(Class<T> cl) {
         return ODateTime.create(cl, Ops.DateTimeOps.CURRENT_TIMESTAMP);
     }
-    
+
     @Nullable
     private volatile ENumber<Integer> hours, minutes, seconds, milliseconds;
-    
+
     @Nullable
     private volatile EDateTime<D> min, max;
-    
+
     public EDateTime(Class<? extends D> type) {
         super(type);
     }
-    
+
     @Override
     public EDateTime<D> as(Path<D> alias) {
         return ODateTime.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
     }
-    
+
     /**
      * Get a hours expression (range 0-23)
-     * 
+     *
      * @return
      */
     public ENumber<Integer> hour(){
@@ -93,10 +93,10 @@ public abstract class EDateTime<D extends Comparable> extends EDate<D> {
         }
         return hours;
     }
-    
+
     /**
      * Get the maximum value of this expression (aggregation)
-     * 
+     *
      * @return max(this)
      */
     @Override
@@ -106,11 +106,11 @@ public abstract class EDateTime<D extends Comparable> extends EDate<D> {
         }
         return max;
     }
-        
+
     /**
      * Get a milliseconds expression (range 0-999)
      * <p>Is always 0 in HQL and JDOQL modules</p>
-     * 
+     *
      * @return
      */
     public ENumber<Integer> milliSecond(){
@@ -119,10 +119,10 @@ public abstract class EDateTime<D extends Comparable> extends EDate<D> {
         }
         return milliseconds;
     }
-    
+
     /**
      * Get the minimum value of this expression (aggregation)
-     * 
+     *
      * @return min(this)
      */
     @Override
@@ -132,10 +132,10 @@ public abstract class EDateTime<D extends Comparable> extends EDate<D> {
         }
         return min;
     }
-    
+
     /**
      * Get a minutes expression (range 0-59)
-     * 
+     *
      * @return
      */
     public ENumber<Integer> minute(){
@@ -144,10 +144,10 @@ public abstract class EDateTime<D extends Comparable> extends EDate<D> {
         }
         return minutes;
     }
-    
+
     /**
      * Get a seconds expression (range 0-59)
-     * 
+     *
      * @return
      */
     public ENumber<Integer> second(){
@@ -156,5 +156,5 @@ public abstract class EDateTime<D extends Comparable> extends EDate<D> {
         }
         return seconds;
     }
-    
+
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query;
 
@@ -41,36 +41,36 @@ import com.mysema.query.types.expr.QTuple;
 public abstract class AbstractStandardTest {
 
     public static class Projection {
-    
+
     public Projection(String str, Cat cat) {
         }
-    
+
     }
-    
+
     private static final QCat cat = QCat.cat;
-    
+
     private static final QCat otherCat = new QCat("otherCat");
-        
+
     private static final EBoolean cond1 = cat.name.length().gt(0);
-    
+
     private static final EBoolean cond2 = otherCat.name.length().gt(0);
-    
-    private final Date birthDate;    
-    
+
+    private final Date birthDate;
+
     private final java.sql.Date date;
-    
+
     private Projections projections = new Projections(Module.HQL, getTarget()){
         public <A> Collection<Expr<?>> list(EList<A> expr, EList<A> other, A knownElement){
             // NOTE : expr.get(0) is only supported in the where clause
             return Collections.<Expr<?>>singleton(expr.size());
-        }          
+        }
     };
-    
+
     private final List<Cat> savedCats = new ArrayList<Cat>();
-    
+
     private QueryExecution standardTest = new QueryExecution(
             projections, new Filters(projections, Module.HQL, getTarget()), new MatchingFilters(Module.HQL, getTarget())){
-        
+
         @Override
         protected Pair<Projectable, List<Expr<?>>> createQuery() {
             // NOTE : EclipseLink needs extra conditions cond1 and code2
@@ -84,12 +84,11 @@ public abstract class AbstractStandardTest {
             return Pair.of(
                 (Projectable)query().from(cat, otherCat).where(cond1, cond2, filter),
                 Arrays.<Expr<?>>asList(cat.name, otherCat.name));
-        }              
+        }
     };
 
-
     private final java.sql.Time time;
-    
+
     {
         Calendar cal = Calendar.getInstance();
         cal.set(2000, 1, 2, 3, 4);
@@ -98,15 +97,15 @@ public abstract class AbstractStandardTest {
         date = new java.sql.Date(cal.getTimeInMillis());
         time = new java.sql.Time(cal.getTimeInMillis());
     }
-    
+
     protected HQLQuery catQuery(){
         return query().from(cat);
     }
-    
+
     protected abstract Target getTarget();
-    
+
     protected abstract HQLQuery query();
-        
+
     protected abstract void save(Object entity);
 
     @Before
@@ -128,18 +127,18 @@ public abstract class AbstractStandardTest {
             savedCats.add(cat);
             prev = cat;
         }
-        
+
         Cat cat = new Cat("Some",6, 6.0);
         cat.setBirthdate(birthDate);
         save(cat);
         savedCats.add(cat);
     }
-    
+
     @Test
     public void test(){
-        Cat kitten = savedCats.get(0);        
+        Cat kitten = savedCats.get(0);
         Cat noKitten = savedCats.get(savedCats.size()-1);
-        
+
 //        standardTest.runArrayTests(cat.kittensArray, otherCat.kittensArray, kitten, noKitten);
         standardTest.runBooleanTests(cat.name.isNull(), otherCat.kittens.isEmpty());
         standardTest.runCollectionTests(cat.kittens, otherCat.kittens, kitten, noKitten);
@@ -147,32 +146,32 @@ public abstract class AbstractStandardTest {
         standardTest.runDateTimeTests(cat.birthdate, otherCat.birthdate, birthDate);
         standardTest.runListTests(cat.kittens, otherCat.kittens, kitten, noKitten);
 //        standardTest.mapTests(cat.kittensByName, otherCat.kittensByName, "Kitty", kitten);
-        
+
         // int
         standardTest.runNumericCasts(cat.id, otherCat.id, 1);
         standardTest.runNumericTests(cat.id, otherCat.id, 1);
-        
+
         // double
         standardTest.runNumericCasts(cat.bodyWeight, otherCat.bodyWeight, 1.0);
         standardTest.runNumericTests(cat.bodyWeight, otherCat.bodyWeight, 1.0);
-        
+
         standardTest.runStringTests(cat.name, otherCat.name, kitten.getName());
         standardTest.runTimeTests(cat.timeField, otherCat.timeField, time);
-        
-        standardTest.report();        
+
+        standardTest.report();
     }
-    
+
     @Test
     public void testAggregates(){
         // uniqueResult
         assertEquals(Integer.valueOf(1), catQuery().uniqueResult(cat.id.min()));
         assertEquals(Integer.valueOf(6), catQuery().uniqueResult(cat.id.max()));
-        
+
         // list
         assertEquals(Integer.valueOf(1), catQuery().list(cat.id.min()).get(0));
         assertEquals(Integer.valueOf(6), catQuery().list(cat.id.max()).get(0));
     }
-    
+
     @Test
     public void testDistinctResults(){
         System.out.println("-- list results");
@@ -180,69 +179,69 @@ public abstract class AbstractStandardTest {
         assertEquals(2, res.getResults().size());
         assertEquals(6l, res.getTotal());
         System.out.println();
-        
-        System.out.println("-- list distinct results"); 
+
+        System.out.println("-- list distinct results");
         res = catQuery().limit(2).listDistinctResults(cat.birthdate);
         assertEquals(1, res.getResults().size());
-        assertEquals(1l, res.getTotal());        
+        assertEquals(1l, res.getTotal());
         System.out.println();
-        
+
         System.out.println("-- list distinct");
         assertEquals(1, catQuery().listDistinct(cat.birthdate).size());
     }
-    
+
     @Test
     public void testStringOperations(){
         // startsWith
         assertEquals(1, catQuery().where(cat.name.startsWith("R")).count());
         assertEquals(0, catQuery().where(cat.name.startsWith("X")).count());
         assertEquals(1, catQuery().where(cat.name.startsWith("r",false)).count());
-        
+
         // endsWith
-        assertEquals(1, catQuery().where(cat.name.endsWith("h123")).count());                    
+        assertEquals(1, catQuery().where(cat.name.endsWith("h123")).count());
         assertEquals(0, catQuery().where(cat.name.endsWith("X")).count());
         assertEquals(1, catQuery().where(cat.name.endsWith("H123",false)).count());
-        
+
         // contains
         assertEquals(1, catQuery().where(cat.name.contains("eli")).count());
-        
+
         // length
         assertEquals(6, catQuery().where(cat.name.length().gt(0)).count());
-                
+
         // indexOf
         assertEquals(Integer.valueOf(0), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("B")));
         assertEquals(Integer.valueOf(1), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("o")));
-        
-        // case-sensitivity        
+
+        // case-sensitivity
         if (!getTarget().equals(Target.MYSQL)){ // NOTE : locate in MYSQL is case-insensitive
             assertEquals(0, catQuery().where(cat.name.startsWith("r")).count());
             assertEquals(0, catQuery().where(cat.name.endsWith("H123")).count());
             assertEquals(Integer.valueOf(2), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("b")));
         }
-                
+
     }
-    
+
     @Test
-    public void testPaging(){        
+    public void testPaging(){
         // limit
         List<String> names1 = Arrays.asList("Allen123","Bob123");
         assertEquals(names1, catQuery().orderBy(cat.name.asc()).limit(2).list(cat.name));
-        
+
         // offset
         List<String> names2 = Arrays.asList("Felix123","Mary123","Ruth123","Some");
         assertEquals(names2, catQuery().orderBy(cat.name.asc()).offset(2).list(cat.name));
-        
+
         // limit + offset
         List<String> names3 = Arrays.asList("Felix123","Mary123");
         assertEquals(names3, catQuery().orderBy(cat.name.asc()).limit(2).offset(2).list(cat.name));
     }
-    
+
     @Test
     public void testInstanceOf(){
         assertEquals(6l, query().from(cat).where(cat.instanceOf(Cat.class)).count());
         assertEquals(0l, query().from(cat).where(cat.instanceOf(DomesticCat.class)).count());
     }
-    
+
     @Test
     public void tupleProjection(){
     List<Tuple> tuples = query().from(cat).list(new QTuple(cat.name, cat));
@@ -252,7 +251,7 @@ public abstract class AbstractStandardTest {
         assertNotNull(tuple.get(cat));
     }
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void arrayProjection(){
@@ -262,7 +261,7 @@ public abstract class AbstractStandardTest {
         assertNotNull(result[0]);
     }
     }
-    
+
     @Test
     public void constructorProjection(){
     List<Projection> projections = query().from(cat).list(EConstructor.create(Projection.class, cat.name, cat));
@@ -271,24 +270,23 @@ public abstract class AbstractStandardTest {
         assertNotNull(projection);
     }
     }
-    
+
     @Test
     public void testParams(){
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Bob123",query().from(cat).where(cat.name.eq(name)).set(name, "Bob123").uniqueResult(cat.name));
     }
-    
+
     @Test
     public void testParams_anon(){
         Param<String> name = new Param<String>(String.class);
         assertEquals("Bob123",query().from(cat).where(cat.name.eq(name)).set(name, "Bob123").uniqueResult(cat.name));
     }
-    
+
     @Test(expected=ParamNotSetException.class)
     public void testParams_not_set(){
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Bob123",query().from(cat).where(cat.name.eq(name)).uniqueResult(cat.name));
     }
-        
 
 }

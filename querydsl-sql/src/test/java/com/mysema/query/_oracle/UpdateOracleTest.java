@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._oracle;
 
@@ -23,7 +23,7 @@ import com.mysema.testutil.ResourceCheck;
 @ResourceCheck("/oracle.run")
 @Label(Target.ORACLE)
 public class UpdateOracleTest extends UpdateBaseTest{
-    
+
     @BeforeClass
     public static void setUpClass() throws Exception {
         Connections.initOracle();

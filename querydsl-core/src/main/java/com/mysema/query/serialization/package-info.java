@@ -1,11 +1,11 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 
 /**
- * Contains stubs for Serialization of queries 
+ * Contains stubs for Serialization of queries
  */
 
 @DefaultAnnotation( { Nonnull.class })

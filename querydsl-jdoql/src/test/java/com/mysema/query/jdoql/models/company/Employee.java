@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql.models.company;
 
@@ -9,7 +9,7 @@ import com.mysema.query.annotations.QueryEntity;
 
 /**
  * Employee in a company.
- * 
+ *
  * @version $Revision: 1.3 $
  */
 @QueryEntity
@@ -99,7 +99,5 @@ public class Employee extends Person {
     public Department getDepartment() {
         return department;
     }
-    
-    
 
 }

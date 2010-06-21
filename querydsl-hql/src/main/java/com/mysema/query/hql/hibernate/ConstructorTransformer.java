@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.hibernate;
 
@@ -20,11 +20,11 @@ public final class ConstructorTransformer implements ResultTransformer{
     private static final long serialVersionUID = -3625957233853100239L;
 
     private transient EConstructor<?> constructor;
-    
+
     public ConstructorTransformer(EConstructor<?> constructor){
         this.constructor = constructor;
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public List transformList(List collection) {

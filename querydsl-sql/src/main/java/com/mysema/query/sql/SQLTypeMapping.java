@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql;
 
@@ -14,15 +14,15 @@ import javax.annotation.Nullable;
 
 /**
  * SQLTypeMapping defines a mapping from JDBC types to Java classes.
- * 
+ *
  * @author tiwe
  *
  */
 public final class SQLTypeMapping {
-    
+
     private final Map<Integer, Class<?>> sqlToJavaType = new HashMap<Integer, Class<?>>();
-    
-    {        
+
+    {
         // BOOLEAN
         sqlToJavaType.put(Types.BIT, Boolean.class);
         sqlToJavaType.put(Types.BOOLEAN, Boolean.class);
@@ -37,7 +37,7 @@ public final class SQLTypeMapping {
         sqlToJavaType.put(Types.REAL, Float.class);
         sqlToJavaType.put(Types.SMALLINT, Short.class);
         sqlToJavaType.put(Types.TINYINT, Byte.class);
-        
+
         // DATE and TIME
         sqlToJavaType.put(Types.DATE, java.sql.Date.class);
         sqlToJavaType.put(Types.TIME, java.sql.Time.class);
@@ -47,7 +47,7 @@ public final class SQLTypeMapping {
         sqlToJavaType.put(Types.CHAR, String.class);
         sqlToJavaType.put(Types.NCHAR, String.class);
         sqlToJavaType.put(Types.CLOB, String.class);
-        sqlToJavaType.put(Types.NCLOB, String.class);        
+        sqlToJavaType.put(Types.NCLOB, String.class);
         sqlToJavaType.put(Types.LONGVARCHAR, String.class);
         sqlToJavaType.put(Types.LONGNVARCHAR, String.class);
         sqlToJavaType.put(Types.SQLXML, String.class);
@@ -62,13 +62,13 @@ public final class SQLTypeMapping {
         sqlToJavaType.put(Types.DATALINK, Object.class);
         sqlToJavaType.put(Types.JAVA_OBJECT, Object.class);
         sqlToJavaType.put(Types.LONGVARBINARY, Object.class);
-        sqlToJavaType.put(Types.NULL, Object.class);        
-        sqlToJavaType.put(Types.OTHER, Object.class);        
+        sqlToJavaType.put(Types.NULL, Object.class);
+        sqlToJavaType.put(Types.OTHER, Object.class);
         sqlToJavaType.put(Types.REAL, Object.class);
         sqlToJavaType.put(Types.REF, Object.class);
         sqlToJavaType.put(Types.ROWID, Object.class);
         sqlToJavaType.put(Types.STRUCT, Object.class);
-        sqlToJavaType.put(Types.VARBINARY, Object.class);        
+        sqlToJavaType.put(Types.VARBINARY, Object.class);
     }
 
     @Nullable

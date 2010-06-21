@@ -1,14 +1,13 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-
 
 public class PropertyTest {
 
@@ -22,5 +21,5 @@ public class PropertyTest {
     assertEquals(p1, p2);
     assertEquals(p1.hashCode(), p2.hashCode());
     }
-    
+
 }

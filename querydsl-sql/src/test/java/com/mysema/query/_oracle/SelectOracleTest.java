@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._oracle;
 
@@ -43,7 +43,7 @@ public class SelectOracleTest extends SelectBaseTest {
     public void setUpForTest() {
         dialect = new OracleTemplates().newLineToSingleSpace();
     }
-    
+
     @Test
     public void limitAndOffsetInOracle() throws SQLException {
         // limit
@@ -58,7 +58,6 @@ public class SelectOracleTest extends SelectBaseTest {
         expectedQuery =  "select * from (  select a.*, rownum rn from (   select e.ID from EMPLOYEE2 e  ) a) where rn > 3 and rn <= 7";
         query().from(employee).limit(4).offset(3).list(employee.id);
     }
-    
 
     @Test
     public void connectByPrior() throws SQLException{
@@ -69,10 +68,10 @@ public class SelectOracleTest extends SelectBaseTest {
             .connectByPrior(employee.id.eq(employee.superiorId))
             .list(employee.id, employee.lastname, employee.superiorId);
     }
-    
+
     @Test
     public void connectByPrior2() throws SQLException{
-        expectedQuery = 
+        expectedQuery =
                 "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
                 "from EMPLOYEE2 e " +
                 "start with e.ID = ? " +
@@ -82,13 +81,13 @@ public class SelectOracleTest extends SelectBaseTest {
             .connectByPrior(employee.id.eq(employee.superiorId))
             .list(employee.id, employee.lastname, employee.superiorId);
     }
-    
+
     @Test
     public void connectByPrior3() throws SQLException{
-        expectedQuery = 
+        expectedQuery =
                 "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
                 "from EMPLOYEE2 e " +
-                "start with e.ID = ? " +                
+                "start with e.ID = ? " +
                 "connect by prior e.ID = e.SUPERIOR_ID " +
                 "order siblings by e.LASTNAME";
         qo().from(employee)
@@ -97,10 +96,10 @@ public class SelectOracleTest extends SelectBaseTest {
             .orderSiblingsBy(employee.lastname)
             .list(employee.id, employee.lastname, employee.superiorId);
     }
-    
+
     @Test
     public void connectByPrior4() throws SQLException{
-        expectedQuery = 
+        expectedQuery =
                 "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
                 "from EMPLOYEE2 e " +
                 "connect by nocycle prior e.ID = e.SUPERIOR_ID";
@@ -108,17 +107,17 @@ public class SelectOracleTest extends SelectBaseTest {
             .connectByNocyclePrior(employee.id.eq(employee.superiorId))
             .list(employee.id, employee.lastname, employee.superiorId);
     }
-    
+
     @Test
     @Ignore
     public void connectBy() throws SQLException{
         // TODO : come up with a legal case
         qo().from(employee)
             .where(level.eq(-1))
-            .connectBy(level.lt(1000))            
+            .connectBy(level.lt(1000))
             .list(employee.id);
     }
-    
+
     @Test
     public void testSumOver() throws SQLException{
 //        SQL> select deptno,
@@ -135,7 +134,7 @@ public class SelectOracleTest extends SelectBaseTest {
             "sum(e.SALARY) over (partition by e.SUPERIOR_ID order by e.LASTNAME, e.SALARY), " +
             "sum(e.SALARY) over (order by e.SUPERIOR_ID, e.SALARY), " +
             "sum(e.SALARY) over () from EMPLOYEE2 e order by e.SALARY asc, e.SUPERIOR_ID asc";
-        
+
         qo().from(employee)
             .orderBy(employee.salary.asc(), employee.superiorId.asc())
             .list(
@@ -144,7 +143,7 @@ public class SelectOracleTest extends SelectBaseTest {
                sumOver(employee.salary).partition(employee.superiorId).order(employee.lastname, employee.salary),
                sumOver(employee.salary).order(employee.superiorId, employee.salary),
                sumOver(employee.salary));
-        
+
         // shorter version
         QEmployee e = employee;
         qo().from(e)
@@ -154,7 +153,7 @@ public class SelectOracleTest extends SelectBaseTest {
                sumOver(e.salary).order(e.superiorId, e.salary),
                sumOver(e.salary));
     }
-    
+
     protected OracleQuery qo(){
         return new OracleQuery(Connections.getConnection(), dialect){
             @Override
@@ -169,6 +168,5 @@ public class SelectOracleTest extends SelectBaseTest {
             }
         };
     }
-
 
 }

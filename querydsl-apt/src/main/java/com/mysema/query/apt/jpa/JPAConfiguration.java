@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.apt.jpa;
 
@@ -26,8 +26,8 @@ import com.mysema.query.apt.VisitorConfig;
  *
  */
 public class JPAConfiguration extends DefaultConfiguration {
-    
-    private static final List<String> keywords = Arrays.asList(   
+
+    private static final List<String> keywords = Arrays.asList(
     "ABS","ALL","AND","ANY","AS","ASC","AVG","BETWEEN",
     "BIT_LENGTH[51]","BOTH","BY","CASE","CHAR_LENGTH",
     "CHARACTER_LENGTH","CLASS",
@@ -43,9 +43,9 @@ public class JPAConfiguration extends DefaultConfiguration {
     "SQRT","SUBSTRING","SUM","THEN",
     "TRAILING","TRIM","TRUE","TYPE","UNKNOWN","UPDATE","UPPER",
     "VALUE","WHEN","WHERE");
-   
+
     private List<Class<? extends Annotation>> annotations;
-    
+
     public JPAConfiguration(RoundEnvironment roundEnv,Map<String,String> options,
             Class<? extends Annotation> entityAnn,
             Class<? extends Annotation> superTypeAnn,
@@ -54,7 +54,7 @@ public class JPAConfiguration extends DefaultConfiguration {
         super(roundEnv, options, entityAnn, superTypeAnn, embeddableAnn, skipAnn);
         this.annotations = getAnnotations();
     }
-    
+
     @SuppressWarnings("unchecked")
     protected List<Class<? extends Annotation>> getAnnotations() throws ClassNotFoundException{
         List<Class<? extends Annotation>> rv = new ArrayList<Class<? extends Annotation>>();
@@ -74,7 +74,7 @@ public class JPAConfiguration extends DefaultConfiguration {
         }
         return rv;
     }
-    
+
     @Override
     public VisitorConfig getConfig(TypeElement e, List<? extends Element> elements){
         boolean fields = false, methods = false;
@@ -84,28 +84,28 @@ public class JPAConfiguration extends DefaultConfiguration {
                     fields = true;
                 }else if (element.getKind().equals(ElementKind.METHOD)){
                     methods = true;
-                }    
-            }            
-        }    
+                }
+            }
+        }
         if (fields && !methods){
             return VisitorConfig.FIELDS_ONLY;
         }else if (methods && !fields){
             return VisitorConfig.METHODS_ONLY;
         }else{
-            return VisitorConfig.ALL;    
-        }        
-        
+            return VisitorConfig.ALL;
+        }
+
     }
-    
+
     private boolean hasRelevantAnnotation(Element element){
         for (Class<? extends Annotation> annotation : annotations){
             if (element.getAnnotation(annotation) != null){
                 return true;
             }
-        }        
+        }
         return false;
     }
-    
+
     @Override
     public Collection<String> getKeywords(){
     return keywords;

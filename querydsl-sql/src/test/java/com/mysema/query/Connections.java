@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query;
 
@@ -18,9 +18,9 @@ import org.hsqldb.Types;
  *
  */
 public final class Connections {
-    
+
     public static final int TEST_ROW_COUNT = 100;
-    
+
     private static ThreadLocal<Connection> connHolder = new ThreadLocal<Connection>();
 
     private static final String CREATE_TABLE_DATETEST = "create table DATE_TEST(DATE_TEST date)";
@@ -34,7 +34,7 @@ public final class Connections {
     private static final String DROP_TABLE_DATETEST = "drop table DATE_TEST";
 
     private static final String DROP_TABLE_EMPLOYEE2 = "drop table EMPLOYEE2";
-    
+
     private static final String DROP_TABLE_SURVEY = "drop table SURVEY";
 
     private static final String DROP_TABLE_TEST = "drop table TEST";
@@ -44,26 +44,26 @@ public final class Connections {
     private static final String INSERT_INTO_EMPLOYEE = "insert into EMPLOYEE2 " +
         "(ID, FIRSTNAME, LASTNAME, SALARY, DATEFIELD, TIMEFIELD, SUPERIOR_ID) " +
         "values (?,?,?,?,?,?,?)";
-    
+
     private static final String INSERT_INTO_TEST_VALUES = "insert into TEST values(?)";
 
     private static ThreadLocal<Statement> stmtHolder = new ThreadLocal<Statement>();
-    
+
     private static boolean derbyInited, sqlServerInited, h2Inited, hsqlInited, mysqlInited, oracleInited, postgresInited;
-        
+
     public static void close() throws SQLException{
         if (stmtHolder.get() != null){
             stmtHolder.get().close();
-        }            
+        }
         if (connHolder.get() != null){
             connHolder.get().close();
-        }    
+        }
     }
-    
+
     public static Connection getConnection(){
         return connHolder.get();
     }
-    
+
     private static Connection getDerby() throws SQLException, ClassNotFoundException {
         Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         String url = "jdbc:derby:target/demoDB;create=true";
@@ -75,53 +75,53 @@ public final class Connections {
         String url = "jdbc:hsqldb:target/tutorial";
         return DriverManager.getConnection(url, "sa", "");
     }
-    
+
     private static Connection getH2() throws SQLException, ClassNotFoundException{
         Class.forName("org.h2.Driver");
         String url = "jdbc:h2:target/h2";
         return DriverManager.getConnection(url, "sa", "");
     }
-    
+
     private static Connection getMySQL() throws SQLException, ClassNotFoundException {
         Class.forName("com.mysql.jdbc.Driver");
         String url = "jdbc:mysql://localhost:3306/querydsl";
         return DriverManager.getConnection(url, "querydsl", "querydsl");
     }
-    
+
     private static Connection getOracle() throws SQLException, ClassNotFoundException{
         Class.forName("oracle.jdbc.driver.OracleDriver");
         String url = "jdbc:oracle:thin:@localhost:1521:xe";
         return DriverManager.getConnection(url, "querydsl", "querydsl");
     }
-    
+
     private static Connection getPostgres() throws ClassNotFoundException, SQLException{
         Class.forName("org.postgresql.Driver");
         String url = "jdbc:postgresql://localhost:5432/querydsl";
         return DriverManager.getConnection(url, "querydsl","querydsl");
     }
-    
+
     private static Connection getSQLServer() throws ClassNotFoundException, SQLException{
         Class.forName("net.sourceforge.jtds.jdbc.Driver");
         String url = "jdbc:jtds:sqlserver://localhost:1433/querydsl";
         return DriverManager.getConnection(url, "querydsl","querydsl");
     }
-    
+
     public static Statement getStatement(){
         return stmtHolder.get();
     }
-    
-    public static void initDerby() throws SQLException, ClassNotFoundException{     
+
+    public static void initDerby() throws SQLException, ClassNotFoundException{
         Connection c = getDerby();
         connHolder.set(c);
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
-        
+
         if (derbyInited){
             return;
         }
-        
+
         // survey
-        safeExecute(stmt, DROP_TABLE_SURVEY);    
+        safeExecute(stmt, DROP_TABLE_SURVEY);
         stmt.execute(CREATE_TABLE_SURVEY);
         stmt.execute("insert into SURVEY values (1, 'Hello World')");
 
@@ -135,51 +135,51 @@ public final class Connections {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
-            pstmt.executeBatch();    
+            pstmt.executeBatch();
         }finally{
             pstmt.close();
-        }        
+        }
 
         // employee
         // stmt.execute("drop table employee if exists");
         safeExecute(stmt, DROP_TABLE_EMPLOYEE2);
         stmt.execute("create table EMPLOYEE2("
                 + "ID int, "
-                + "FIRSTNAME VARCHAR(50), " 
+                + "FIRSTNAME VARCHAR(50), "
                 + "LASTNAME VARCHAR(50), "
-                + "SALARY decimal(10, 2), " 
+                + "SALARY decimal(10, 2), "
                 + "DATEFIELD date, "
                 + "TIMEFIELD time, "
-                + "SUPERIOR_ID int, "                
+                + "SUPERIOR_ID int, "
                 + "CONSTRAINT PK_employee PRIMARY KEY (ID), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (SUPERIOR_ID) "
                 + "REFERENCES EMPLOYEE2(ID))");
 //        stmt.execute("create index employee_id on employee2(id)");
 //        stmt.execute("create index employee_firstname on employee2(firstname)");
-        
+
         addEmployees(INSERT_INTO_EMPLOYEE);
 
         // date_test and time_test
         safeExecute(stmt, DROP_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_TIMETEST);
-        
-        safeExecute(stmt, DROP_TABLE_DATETEST);        
+
+        safeExecute(stmt, DROP_TABLE_DATETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
         derbyInited = true;
     }
-    
-    public static void initSQLServer() throws SQLException, ClassNotFoundException{        
+
+    public static void initSQLServer() throws SQLException, ClassNotFoundException{
         Connection c = getSQLServer();
         connHolder.set(c);
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
-        
+
         if (sqlServerInited){
             return;
         }
-        
+
         // survey
-        safeExecute(stmt, DROP_TABLE_SURVEY);    
+        safeExecute(stmt, DROP_TABLE_SURVEY);
         stmt.execute(CREATE_TABLE_SURVEY);
         stmt.execute("insert into SURVEY values (1, 'Hello World')");
 
@@ -192,22 +192,22 @@ public final class Connections {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
-            pstmt.executeBatch();    
+            pstmt.executeBatch();
         }finally{
             pstmt.close();
-        }        
+        }
 
         // employee
         // stmt.execute("drop table employee if exists");
         safeExecute(stmt, DROP_TABLE_EMPLOYEE2);
-        stmt.execute("create table EMPLOYEE2(" 
+        stmt.execute("create table EMPLOYEE2("
                 + "ID int, "
-                + "FIRSTNAME VARCHAR(50), " 
+                + "FIRSTNAME VARCHAR(50), "
                 + "LASTNAME VARCHAR(50), "
-                + "SALARY decimal(10, 2), " 
+                + "SALARY decimal(10, 2), "
                 + "DATEFIELD date, "
                 + "TIMEFIELD datetime, "
-                + "SUPERIOR_ID int, "                
+                + "SUPERIOR_ID int, "
                 + "CONSTRAINT PK_employee PRIMARY KEY (ID), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (SUPERIOR_ID) "
                 + "REFERENCES EMPLOYEE2(ID))");
@@ -220,13 +220,13 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_DATETEST);
         sqlServerInited = true;
     }
-    
-    public static void initH2() throws SQLException, ClassNotFoundException{        
+
+    public static void initH2() throws SQLException, ClassNotFoundException{
         Connection c = getH2();
         connHolder.set(c);
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
-        
+
         if (h2Inited){
             return;
         }
@@ -245,16 +245,16 @@ public final class Connections {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
-            pstmt.executeBatch();    
+            pstmt.executeBatch();
         }finally{
             pstmt.close();
-        }        
+        }
 
         // employee
         stmt.execute("drop table EMPLOYEE2 if exists");
-        stmt.execute("create table EMPLOYEE2(" 
+        stmt.execute("create table EMPLOYEE2("
                 + "ID int, "
-                + "FIRSTNAME VARCHAR(50), " 
+                + "FIRSTNAME VARCHAR(50), "
                 + "LASTNAME VARCHAR(50), "
                 + "SALARY decimal(10, 2), "
                 + "DATEFIELD date, "
@@ -272,13 +272,13 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_DATETEST);
         h2Inited = true;
     }
-    
-    public static void initHSQL() throws SQLException, ClassNotFoundException{        
+
+    public static void initHSQL() throws SQLException, ClassNotFoundException{
         Connection c = getHSQL();
         connHolder.set(c);
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
-        
+
         if (hsqlInited){
             return;
         }
@@ -297,16 +297,16 @@ public final class Connections {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
-            pstmt.executeBatch();    
+            pstmt.executeBatch();
         }finally{
             pstmt.close();
-        }        
+        }
 
         // employee
         stmt.execute("drop table EMPLOYEE2 if exists");
-        stmt.execute("create table EMPLOYEE2(" 
+        stmt.execute("create table EMPLOYEE2("
                 + "ID int, "
-                + "FIRSTNAME VARCHAR(50), " 
+                + "FIRSTNAME VARCHAR(50), "
                 + "LASTNAME VARCHAR(50), "
                 + "SALARY decimal(10, 2), "
                 + "DATEFIELD date, "
@@ -324,17 +324,17 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_DATETEST);
         hsqlInited = true;
     }
-    
-    public static void initMySQL() throws SQLException, ClassNotFoundException{        
+
+    public static void initMySQL() throws SQLException, ClassNotFoundException{
         Connection c = getMySQL();
         connHolder.set(c);
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
-        
+
         if (mysqlInited){
             return;
         }
-        
+
         // survey
         stmt.execute("drop table if exists SURVEY");
         stmt.execute(CREATE_TABLE_SURVEY);
@@ -349,16 +349,16 @@ public final class Connections {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
-            pstmt.executeBatch();    
+            pstmt.executeBatch();
         }finally{
             pstmt.close();
-        }       
+        }
 
         // employee
         stmt.execute("drop table if exists EMPLOYEE2");
-        stmt.execute("create table EMPLOYEE2(" 
+        stmt.execute("create table EMPLOYEE2("
                 + "ID int, "
-                + "FIRSTNAME VARCHAR(50), " 
+                + "FIRSTNAME VARCHAR(50), "
                 + "LASTNAME VARCHAR(50), "
                 + "SALARY decimal(10, 2), "
                 + "DATEFIELD date, "
@@ -366,7 +366,7 @@ public final class Connections {
                 + "SUPERIOR_ID int, "
                 + "CONSTRAINT PK_employee PRIMARY KEY (ID), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (SUPERIOR_ID) "
-                + "REFERENCES EMPLOYEE2(ID))");        
+                + "REFERENCES EMPLOYEE2(ID))");
         addEmployees(INSERT_INTO_EMPLOYEE);
 
         // date_test and time_test
@@ -376,22 +376,22 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_DATETEST);
         mysqlInited = true;
     }
-    
-    public static void initOracle() throws SQLException, ClassNotFoundException{       
+
+    public static void initOracle() throws SQLException, ClassNotFoundException{
         Connection c = getOracle();
         connHolder.set(c);
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
-        
+
         if (oracleInited){
             return;
         }
-        
+
         // survey
         safeExecute(stmt, DROP_TABLE_SURVEY);
         stmt.execute("create table SURVEY (id number(10,0),name varchar(30))");
         stmt.execute("insert into SURVEY values (1, 'Hello World')");
-        
+
         // test
         safeExecute(stmt, DROP_TABLE_TEST);
         stmt.execute("create table TEST(name varchar(255))");
@@ -402,15 +402,15 @@ public final class Connections {
             pstmt.addBatch();
         }
         pstmt.executeBatch();
-        
+
         // employee
 
         safeExecute(stmt, DROP_TABLE_EMPLOYEE2);
-        stmt.execute("create table EMPLOYEE2(" 
+        stmt.execute("create table EMPLOYEE2("
                 + "ID number(10,0), "
-                + "FIRSTNAME VARCHAR(50), " 
+                + "FIRSTNAME VARCHAR(50), "
                 + "LASTNAME VARCHAR(50), "
-                + "SALARY decimal(10, 2), " 
+                + "SALARY decimal(10, 2), "
                 + "DATEFIELD date, "
                 + "TIMEFIELD timestamp, "
                 + "SUPERIOR_ID number(10,0), "
@@ -418,26 +418,26 @@ public final class Connections {
                 + "CONSTRAINT FK_superior FOREIGN KEY (SUPERIOR_ID) "
                 + "REFERENCES EMPLOYEE2(ID))");
         addEmployees(INSERT_INTO_EMPLOYEE);
-        
+
         // date_test and time_test
 //      executeSafe("drop table time_test");
 //      stmt.execute("create table time_test(time_test time)");
         safeExecute(stmt, DROP_TABLE_DATETEST);
-        stmt.execute("create table date_test(date_test date)");        
+        stmt.execute("create table date_test(date_test date)");
         oracleInited = true;
     }
-    
-    public static void initPostgres() throws SQLException, ClassNotFoundException{        
+
+    public static void initPostgres() throws SQLException, ClassNotFoundException{
         // NOTE : unquoted identifiers are converted to lower case in Postgres
         Connection c = getPostgres();
         connHolder.set(c);
         Statement stmt = c.createStatement();
         stmtHolder.set(stmt);
-        
+
         if (postgresInited){
             return;
         }
-        
+
         // survey
         safeExecute(stmt, quote(DROP_TABLE_SURVEY,"SURVEY"));
         stmt.execute(quote(CREATE_TABLE_SURVEY,"SURVEY","ID","NAME"));
@@ -453,22 +453,22 @@ public final class Connections {
                 pstmt.setString(1, "name" + i);
                 pstmt.addBatch();
             }
-            pstmt.executeBatch();    
+            pstmt.executeBatch();
         }finally{
             pstmt.close();
-        }        
+        }
 
         // employee
         // stmt.execute("drop table employee if exists");
         safeExecute(stmt, quote(DROP_TABLE_EMPLOYEE2,"EMPLOYEE2"));
-        stmt.execute("create table \"EMPLOYEE2\"(" 
+        stmt.execute("create table \"EMPLOYEE2\"("
                 + "\"ID\" int, "
-                + "\"FIRSTNAME\" VARCHAR(50), " 
+                + "\"FIRSTNAME\" VARCHAR(50), "
                 + "\"LASTNAME\" VARCHAR(50), "
-                + "\"SALARY\" decimal(10, 2), " 
+                + "\"SALARY\" decimal(10, 2), "
                 + "\"DATEFIELD\" date, "
                 + "\"TIMEFIELD\" time, "
-                + "\"SUPERIOR_ID\" int, "                
+                + "\"SUPERIOR_ID\" int, "
                 + "CONSTRAINT PK_employee PRIMARY KEY (\"ID\"), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (\"SUPERIOR_ID\") "
                 + "REFERENCES \"EMPLOYEE2\"(\"ID\"))");
@@ -483,7 +483,7 @@ public final class Connections {
         stmt.execute(quote(CREATE_TABLE_DATETEST, "DATE_TEST"));
         postgresInited = true;
     }
-    
+
     private static void safeExecute(Statement stmt, String sql) {
         try {
             stmt.execute(sql);
@@ -498,7 +498,7 @@ public final class Connections {
         stmt.setInt(1, id);
         stmt.setString(2, firstName);
         stmt.setString(3,lastName);
-        stmt.setDouble(4, salary);        
+        stmt.setDouble(4, salary);
         stmt.setDate(5, Constants.date);
         stmt.setTime(6, Constants.time);
         if (superiorId <= 0){
@@ -509,7 +509,7 @@ public final class Connections {
         stmt.execute();
         stmt.close();
     }
-    
+
     private static void addEmployees(String sql) throws SQLException {
         addEmployee(sql, 1, "Mike", "Smith", 160000, -1);
         addEmployee(sql, 2, "Mary", "Smith", 140000, -1);
@@ -525,7 +525,7 @@ public final class Connections {
         addEmployee(sql, 21, "Helen", "Mason", 50000, 2);
         addEmployee(sql, 22, "Daisy", "Johnson", 40000, 2);
         addEmployee(sql, 23, "Barbara", "Hood", 30000, 2);
-    }    
+    }
 
     private static String quote(String sql, String... identifiers) {
         String rv = sql;
@@ -534,6 +534,6 @@ public final class Connections {
         }
         return rv;
     }
-    
+
     private Connections(){}
 }

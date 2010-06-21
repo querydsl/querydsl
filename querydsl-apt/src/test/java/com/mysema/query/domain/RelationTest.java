@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.domain;
 
@@ -25,7 +25,7 @@ import com.mysema.query.types.path.PSet;
 import com.mysema.query.types.path.PSimple;
 
 public class RelationTest extends AbstractTest{
-    
+
     public enum MyEnum {
         VAR1, VAR2
     }
@@ -34,25 +34,25 @@ public class RelationTest extends AbstractTest{
     public static class Reference {
 
     }
-    
+
     @QueryEntity
     public class GenericRelations{
         Collection<Collection<Reference>> col1;
         Collection<List<Reference>> col2;
         Collection<Collection<? extends Reference>> col3;
         Collection<List<? extends Reference>> col4;
-        
+
         Set<List<Reference>> set1;
         Set<Collection<Reference>> set2;
         Set<List<? extends Reference>> set3;
         Set<Collection<? extends Reference>> set4;
-        
+
         Map<String,List<String>> map1;
         Map<List<String>,String> map2;
         Map<String,List<? extends String>> map3;
         Map<List<? extends String>,String> map4;
     }
-    
+
     @QueryEntity
     @QuerydslConfig(listAccessors=true, mapAccessors=true)
     public class RelationType {
@@ -68,7 +68,7 @@ public class RelationTest extends AbstractTest{
         List<String> list3;
         List<RelationType2<?>> list4;
         List<Reference> list5;
-        
+
         List<List<Reference>> list6;
         List<Collection<Reference>> list7;
 
@@ -78,12 +78,12 @@ public class RelationTest extends AbstractTest{
         Set<String> set2;
         Set<RelationType2<?>> set3;
         Set<Reference> set4;
-        
+
         // .. of Object
         List<Object> listOfObjects;
         Set<Object> setOfObjects;
-        Set<Reference> setOfObjects2;        
-       
+        Set<Reference> setOfObjects2;
+
         // collection
         Collection<RelationType> collection;
         Collection<RelationType2<?>> collection2;
@@ -102,9 +102,9 @@ public class RelationTest extends AbstractTest{
         Map<String, Reference> map7;
         Map<Reference, Reference> map8;
         Map<Reference, String> map9;
-        
+
     }
-    
+
     @Test
     public void test() throws SecurityException, NoSuchFieldException{
         cl = QRelationTest_RelationType.class;
@@ -112,28 +112,28 @@ public class RelationTest extends AbstractTest{
         match(PList.class, "enumList");
         match(PMap.class, "enumMap1");
         match(PMap.class, "enumMap");
-        
+
         match(PList.class, "list");
         match(PList.class, "list2");
         match(PList.class, "list3");
         match(PList.class, "list4");
         match(PList.class, "list5");
-        
+
         match(PSet.class, "set");
         match(PSet.class, "sortedSet");
         match(PSet.class, "set2");
         match(PSet.class, "set3");
         match(PSet.class, "set4");
-        
+
         match(PList.class, "listOfObjects");
         match(PSet.class, "setOfObjects");
         match(PSet.class, "setOfObjects2");
-        
+
         match(PCollection.class, "collection");
         match(PCollection.class, "collection2");
         match(PCollection.class, "collection3");
         match(PCollection.class, "collection4");
-        
+
         match(PMap.class, "map");
         match(PMap.class, "map2");
         match(PMap.class, "map3");
@@ -144,13 +144,13 @@ public class RelationTest extends AbstractTest{
         match(PMap.class, "map8");
         match(PMap.class, "map9");
     }
-    
+
     @Test
     public void listUsage(){
-        String expected = "relationType.list.get(0).set"; 
+        String expected = "relationType.list.get(0).set";
         assertEquals(expected, QRelationTest_RelationType.relationType.list.get(0).set.toString());
         assertEquals(expected, QRelationTest_RelationType.relationType.list(0).set.toString());
-        
+
         assertEquals(List.class, QRelationTest_RelationType.relationType.list.getType());
         assertEquals(Set.class,  QRelationTest_RelationType.relationType.set.getType());
     }

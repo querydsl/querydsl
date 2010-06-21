@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.support;
 
@@ -29,13 +29,13 @@ import com.mysema.query.types.query.TimeSubQuery;
  *
  */
 public class DetachableAdapter implements Detachable{
-    
+
     private final Detachable detachable;
-    
+
     public DetachableAdapter(Detachable detachable){
         this.detachable = detachable;
     }
-    
+
     public ObjectSubQuery<Long> count() {
         return detachable.count();
     }

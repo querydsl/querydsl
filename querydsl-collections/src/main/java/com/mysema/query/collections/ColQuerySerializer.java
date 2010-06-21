@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.collections;
 
@@ -24,7 +24,7 @@ import com.mysema.query.types.expr.ExprConst;
 
 /**
  * ColQuerySerializer is a Serializer implementation for the Java language
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -37,8 +37,8 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
     @Override
     public void visit(Path<?> path) {
         PathType pathType = path.getMetadata().getPathType();
-        
-        if (pathType == PathType.PROPERTY){      
+
+        if (pathType == PathType.PROPERTY){
             // TODO : move this to PathMetadata ?!?
             String prefix = "get";
             if (path.getType() != null && path.getType().equals(Boolean.class)) {
@@ -47,13 +47,13 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
             handle((Expr<?>) path.getMetadata().getParent());
             append(".").append(prefix);
             append(StringUtils.capitalize(path.getMetadata().getExpression().toString()) + "()");
-            
+
         }else{
             List<Expr<?>> args = new ArrayList<Expr<?>>(2);
             if (path.getMetadata().getParent() != null){
                 args.add((Expr<?>)path.getMetadata().getParent());
             }
-            args.add(path.getMetadata().getExpression());            
+            args.add(path.getMetadata().getExpression());
             Template template = getTemplate(pathType);
             for (Template.Element element : template.getElements()){
                 if (element.getStaticText() != null){
@@ -63,14 +63,14 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
                 }else{
                     handle(args.get(element.getIndex()));
                 }
-            } 
+            }
         }
-        
+
     }
 
     @Override
     public void visit(SubQuery<?> expr) {
-        throw new IllegalArgumentException("Not supported");        
+        throw new IllegalArgumentException("Not supported");
     }
 
     private void visitCast(Operator<?> operator, Expr<?> source, Class<?> targetType) {
@@ -103,10 +103,10 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
 
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
-        if (args.size() == 2 
+        if (args.size() == 2
             && Number.class.isAssignableFrom(args.get(0).getType())
             && Number.class.isAssignableFrom(args.get(1).getType())){
-        
+
             if (operator == Ops.AFTER){
                 handle(args.get(0)).append(" > ").handle(args.get(1));
                 return;
@@ -122,7 +122,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
             }
             // TODO : Ops.BETWEEN
         }
-        
+
         if (operator == Ops.STRING_CAST) {
             visitCast(operator, args.get(0), String.class);
         } else if (operator == Ops.NUMCAST) {

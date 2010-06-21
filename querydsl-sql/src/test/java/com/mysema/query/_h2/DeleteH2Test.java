@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._h2;
 
@@ -21,7 +21,7 @@ import com.mysema.testutil.Label;
 @RunWith(FilteringTestRunner.class)
 @Label(Target.H2)
 public class DeleteH2Test extends DeleteBaseTest{
-    
+
     @BeforeClass
     public static void setUpClass() throws Exception {
         Connections.initH2();

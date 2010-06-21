@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types;
 
@@ -16,11 +16,11 @@ public class ExprException extends RuntimeException{
     public ExprException(String msg){
         super(msg);
     }
-    
+
     public ExprException(String msg, Throwable t){
         super(msg, t);
     }
-    
+
     public ExprException(Throwable t){
         super(t);
     }

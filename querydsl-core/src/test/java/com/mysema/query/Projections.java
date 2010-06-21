@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query;
 
@@ -24,32 +24,32 @@ import com.mysema.query.types.path.PathMetadataFactory;
  *
  */
 public class Projections {
-    
+
     private final Module module;
-    
+
     private final Target target;
 
     public Projections(Module module, Target target) {
         this.module = module;
         this.target = target;
     }
-    
+
     public <A> Collection<Expr<?>> array(EArray<A> expr, EArray<A> other, A knownElement){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
         if (!module.equals(Module.RDFBEAN)){
-            rv.add(expr.size());    
-        }        
+            rv.add(expr.size());
+        }
         return rv;
     }
 
     public <A> Collection<Expr<?>> collection(ECollection<?,A> expr, ECollection<?,A> other, A knownElement){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
         if (!module.equals(Module.RDFBEAN)){
-            rv.add(expr.size());    
-        }        
+            rv.add(expr.size());
+        }
         return rv;
     }
-    
+
     @SuppressWarnings("unchecked")
     public <A extends Comparable> Collection<Expr<?>> date(EDate<A> expr, EDate<A> other, A knownValue){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
@@ -58,14 +58,14 @@ public class Projections {
         rv.add(expr.month());
         rv.add(expr.year());
         rv.add(expr.yearMonth());
-        
+
         if (module != Module.COLLECTIONS && module != Module.RDFBEAN){
             rv.add(expr.min());
-            rv.add(expr.max());         
+            rv.add(expr.max());
         }
-        
+
         return rv;
-    } 
+    }
 
     @SuppressWarnings("unchecked")
     public <A extends Comparable> Collection<Expr<?>> dateTime(EDateTime<A> expr, EDateTime<A> other, A knownValue){
@@ -78,12 +78,12 @@ public class Projections {
         rv.add(expr.hour());
         rv.add(expr.minute());
         rv.add(expr.second());
-        
+
         if (module != Module.COLLECTIONS && module != Module.RDFBEAN){
             rv.add(expr.min());
-            rv.add(expr.max());         
+            rv.add(expr.max());
         }
-        
+
         return rv;
     }
 
@@ -91,8 +91,8 @@ public class Projections {
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
         rv.add(expr.get(0));
         if (!module.equals(Module.RDFBEAN)){
-            rv.add(expr.size());    
-        }        
+            rv.add(expr.size());
+        }
         return rv;
     }
 
@@ -100,8 +100,8 @@ public class Projections {
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
         rv.add(expr.get(knownKey));
         if (!module.equals(Module.RDFBEAN)){
-            rv.add(expr.size());    
-        }        
+            rv.add(expr.size());
+        }
         return rv;
     }
 
@@ -111,7 +111,7 @@ public class Projections {
         rv.addAll(numeric(expr, ENumberConst.create(knownValue), forFilter));
         return rv;
     }
-    
+
     @SuppressWarnings("unchecked")
     private <A extends Number & Comparable<A>> Collection<ENumber<?>> numeric(ENumber<A> expr, ENumber<?> other, boolean forFilter){
         HashSet<ENumber<?>> rv = new HashSet<ENumber<?>>();
@@ -119,11 +119,11 @@ public class Projections {
         rv.add(expr.abs());
         rv.add(expr.add(other));
         rv.add(expr.divide(other));
-        
+
         rv.add(expr.multiply(other));
         rv.add(expr.sqrt());
         rv.add(expr.subtract(other));
-        
+
         if (!forFilter && module != Module.COLLECTIONS && module != Module.RDFBEAN){
             rv.add(expr.min());
             rv.add(expr.max());
@@ -131,23 +131,22 @@ public class Projections {
             rv.add(expr.count());
             rv.add(expr.countDistinct());
         }
-                
+
         if (!(other instanceof Constant || module == Module.JDOQL || module == Module.RDFBEAN)){
             CaseBuilder cases = new CaseBuilder();
             rv.add(ENumberConst.create(1).add(cases
                 .when(expr.gt(10)).then(expr)
                 .when(expr.between(0, 10)).then((ENumber)other)
-                .otherwise((ENumber)other)));    
-            
+                .otherwise((ENumber)other)));
+
             rv.add(expr
                     .when((ENumber)other).then(expr)
                     .otherwise((ENumber)other));
         }
-        
-        
+
         return rv;
     }
-    
+
     public <A extends Number & Comparable<A>> Collection<ENumber<?>> numericCasts(ENumber<A> expr, ENumber<A> other, A knownValue){
         if (!target.equals(Target.MYSQL)){
             HashSet<ENumber<?>> rv = new HashSet<ENumber<?>>();
@@ -156,11 +155,11 @@ public class Projections {
             rv.add(expr.floatValue());
             rv.add(expr.intValue());
             rv.add(expr.longValue());
-            rv.add(expr.shortValue());     
-            return rv;    
+            rv.add(expr.shortValue());
+            return rv;
         }else{
             return Collections.emptySet();
-        }        
+        }
     }
 
     public Collection<Expr<String>> string(EString expr, EString other, String knownValue){
@@ -169,45 +168,45 @@ public class Projections {
         rv.addAll(stringProjections(expr, EStringConst.create(knownValue)));
         return rv;
     }
-    
+
     @SuppressWarnings("unchecked")
     public Collection<Expr<String>> stringProjections(EString expr, EString other){
         HashSet<Expr<String>> rv = new HashSet<Expr<String>>();
         rv.add(new PString(PathMetadataFactory.forDelegate(expr)));
-        
+
         rv.add(expr.append("Hello"));
         rv.add(expr.append(other));
-            
+
         rv.add(expr.concat(other));
         rv.add(expr.concat("Hello"));
-           
+
         rv.add(expr.lower());
-            
+
         rv.add(expr.prepend("Hello"));
         rv.add(expr.prepend(other));
-            
+
         rv.add(expr.stringValue());
-            
+
         rv.add(expr.substring(1));
         rv.add(expr.substring(0, 1));
-                
+
         if (!(other instanceof Constant || module == Module.JDOQL || module == Module.RDFBEAN)){
             CaseBuilder cases = new CaseBuilder();
             rv.add(cases.when(expr.eq("A")).then(other)
                         .when(expr.eq("B")).then(expr)
-                        .otherwise(other));    
-            
+                        .otherwise(other));
+
             rv.add(expr.when("A").then(other)
                        .when("B").then(expr)
                        .otherwise(other));
-        }         
-          
+        }
+
         rv.add(expr.trim());
-            
-        rv.add(expr.upper());                       
+
+        rv.add(expr.upper());
         return rv;
     }
-        
+
     @SuppressWarnings("unchecked")
     public <A extends Comparable> Collection<Expr<?>> time(ETime<A> expr, ETime<A> other, A knownValue){
         HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
@@ -217,5 +216,5 @@ public class Projections {
         rv.add(expr.second());
         return rv;
     }
-        
+
 }

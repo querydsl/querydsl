@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._hsqldb;
 
@@ -21,7 +21,7 @@ import com.mysema.testutil.Label;
 @RunWith(FilteringTestRunner.class)
 @Label(Target.HSQLDB)
 public class InsertHsqldbTest extends InsertBaseTest{
-    
+
     @BeforeClass
     public static void setUpClass() throws Exception {
         Connections.initHSQL();

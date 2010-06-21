@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._derby;
 
@@ -24,7 +24,7 @@ import com.mysema.testutil.Label;
 @RunWith(FilteringTestRunner.class)
 @Label(Target.DERBY)
 public class SelectDerbyTest extends SelectBaseTest {
-    
+
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initDerby();
@@ -39,15 +39,15 @@ public class SelectDerbyTest extends SelectBaseTest {
     public void limitAndOffsetInDerby() throws SQLException {
         expectedQuery = "select e.ID from EMPLOYEE2 e offset 3 rows fetch next 4 rows only";
         query().from(employee).limit(4).offset(3).list(employee.id);
-        
+
         // limit
         expectedQuery = "select e.ID from EMPLOYEE2 e fetch first 4 rows only";
         query().from(employee).limit(4).list(employee.id);
-        
+
         // offset
         expectedQuery = "select e.ID from EMPLOYEE2 e offset 3 rows";
         query().from(employee).offset(3).list(employee.id);
-        
+
     }
 
 }

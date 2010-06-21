@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -11,10 +11,9 @@ import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
 
-
 /**
  * SimpleType represents a java type
- * 
+ *
  * @author tiwe
  *
  */
@@ -26,14 +25,14 @@ public final class SimpleType extends AbstractType {
     private final Type[] parameters;
 
     private final TypeCategory typeCategory;
-    
+
     private final boolean visible, finalClass;
-    
+
     public SimpleType(
-            TypeCategory typeCategory, 
+            TypeCategory typeCategory,
             String name,
-            String packageName, 
-            String simpleName, 
+            String packageName,
+            String simpleName,
             boolean finalClass,
             Type... parameters) {
         this.typeCategory = Assert.notNull(typeCategory,"typeCategory");
@@ -41,10 +40,10 @@ public final class SimpleType extends AbstractType {
         this.packageName = Assert.notNull(packageName, "packageName");
         this.simpleName = Assert.notNull(simpleName,"simpleName");
         if (!packageName.isEmpty()){
-            this.localName = name.substring(packageName.length()+1);            
+            this.localName = name.substring(packageName.length()+1);
         }else{
-            this.localName = simpleName;    
-        }        
+            this.localName = simpleName;
+        }
         this.parameters = Assert.notNull(parameters,"parameters");
         this.visible = packageName.equals("java.lang");
         this.finalClass = finalClass;
@@ -57,7 +56,7 @@ public final class SimpleType extends AbstractType {
             return new SimpleType(category, fullName, packageName, simpleName, finalClass, parameters);
         }
     }
-    
+
     @Override
     public Type asArrayType() {
         return new SimpleType(TypeCategory.ARRAY, fullName+"[]", packageName, simpleName+"[]", finalClass, this);
@@ -74,7 +73,7 @@ public final class SimpleType extends AbstractType {
             return false;
         }
     }
-    
+
     @Override
     public TypeCategory getCategory() {
         return typeCategory;
@@ -89,30 +88,30 @@ public final class SimpleType extends AbstractType {
     @Override
     public void appendLocalGenericName(Type context, Appendable builder, boolean asArgType) throws IOException {
         appendLocalRawName(context, builder);
-        if (parameters.length > 0){                        
+        if (parameters.length > 0){
             builder.append("<");
             for (int i = 0; i < parameters.length; i++){
                 if (i > 0){
                     builder.append(",");
                 }
                 if (parameters[i] != null && !parameters[i].getFullName().equals(fullName)){
-                    parameters[i].appendLocalGenericName(context, builder, false);    
+                    parameters[i].appendLocalGenericName(context, builder, false);
                 }else{
                     builder.append("?");
-                }                
-            }            
-            builder.append(">");            
+                }
+            }
+            builder.append(">");
         }
-        
+
     }
 
     @Override
     public void  appendLocalRawName(Type context, Appendable builder) throws IOException{
         if (visible || context.getPackageName().equals(packageName)){
-            builder.append(localName);    
+            builder.append(localName);
         }else{
             builder.append(fullName);
-        }        
+        }
     }
 
     @Override
@@ -137,7 +136,7 @@ public final class SimpleType extends AbstractType {
 
     @Override
     public Type getSelfOrValueType() {
-        if (typeCategory.isSubCategoryOf(TypeCategory.COLLECTION) 
+        if (typeCategory.isSubCategoryOf(TypeCategory.COLLECTION)
          || typeCategory.isSubCategoryOf(TypeCategory.MAP)){
             return parameters[parameters.length - 1];
         }else{
@@ -154,7 +153,7 @@ public final class SimpleType extends AbstractType {
     public boolean hasEntityFields() {
         return false;
     }
-    
+
     @Override
     public int hashCode(){
         return fullName.hashCode();
@@ -175,5 +174,4 @@ public final class SimpleType extends AbstractType {
         return fullName;
     }
 
-    
 }

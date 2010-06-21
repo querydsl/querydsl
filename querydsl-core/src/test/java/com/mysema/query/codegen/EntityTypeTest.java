@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -18,13 +18,13 @@ import com.mysema.query.annotations.QueryExtensions;
 public class EntityTypeTest {
 
     public static class QueryExt implements QueryExtensions{
-        
+
         private final Class<?> value;
-        
+
         public QueryExt(Class<?> value){
             this.value = value;
         }
-        
+
         @Override
         public Class<?> value() {
             return value;
@@ -32,16 +32,16 @@ public class EntityTypeTest {
         @Override
         public Class<? extends Annotation> annotationType() {
             return QueryExtensions.class;
-        }        
+        }
     }
-    
+
     @Test
     public void annotation() throws IOException{
         Annotation annotation = new QueryExt(Object.class);
         ClassType typeModel = new ClassType(TypeCategory.ENTITY, Object.class);
         EntityType entityModel = new EntityType("Q", typeModel);
         entityModel.addAnnotation(annotation);
-        
+
         TypeMappings typeMappings = new TypeMappings();
         EntitySerializer serializer = new EntitySerializer(typeMappings,Collections.<String>emptyList());
         StringWriter writer = new StringWriter();

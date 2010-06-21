@@ -45,9 +45,9 @@ import com.mysema.query.types.path.PathMetadataFactory;
 
 /**
  * Tests for LuceneQuery
- * 
+ *
  * @author vema
- * 
+ *
  */
 public class LuceneQueryTest {
 
@@ -318,7 +318,7 @@ public class LuceneQueryTest {
         Document document = query.uniqueResult();
         assertEquals("Nummisuutarit", document.get("title"));
     }
-    
+
     @Test
     public void uniqueResult_With_Param(){
         Param<String> param = new Param<String>(String.class,"title");
@@ -327,7 +327,7 @@ public class LuceneQueryTest {
         Document document = query.uniqueResult();
         assertEquals("Nummisuutarit", document.get("title"));
     }
-    
+
     @Test(expected=ParamNotSetException.class)
     public void uniqueResult_Param_Not_Set(){
         Param<String> param = new Param<String>(String.class,"title");

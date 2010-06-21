@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.path;
 
@@ -20,29 +20,29 @@ import com.mysema.query.types.expr.OBoolean;
 import com.mysema.util.ReflectionUtils;
 
 /**
- * PathMixin defines a mixin version of the Path interface which can be used 
+ * PathMixin defines a mixin version of the Path interface which can be used
  * as a component and target in actual Path implementations
- * 
+ *
  * @author tiwe
  *
  * @param <T>
  */
 public final class PathMixin<T> implements Path<T>, Serializable {
-    
+
     private static final long serialVersionUID = -2498447742798348162L;
 
     @Nullable
     private volatile EBoolean isnull, isnotnull;
-    
+
     private final PathMetadata<?> metadata;
-    
+
     private final Path<?> root;
-    
+
     private final Expr<T> self;
-    
+
     @Nullable
     private AnnotatedElement annotatedElement;
-    
+
     public PathMixin(Path<T> self, PathMetadata<?> metadata){
         this.self = self.asExpr();
         this.metadata = metadata;
@@ -55,7 +55,7 @@ public final class PathMixin<T> implements Path<T>, Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    public boolean equals(Object o) {      
+    public boolean equals(Object o) {
         if (o == this || o == self){
             return true;
         }else if (o instanceof Path){
@@ -74,7 +74,7 @@ public final class PathMixin<T> implements Path<T>, Serializable {
     public Path<?> getRoot() {
         return root;
     }
-    
+
     @Override
     public Class<? extends T> getType() {
         return self.getType();
@@ -84,7 +84,7 @@ public final class PathMixin<T> implements Path<T>, Serializable {
     public int hashCode() {
         return metadata.hashCode();
     }
-    
+
     @Override
     public EBoolean isNotNull() {
         if (isnotnull == null) {
@@ -92,7 +92,7 @@ public final class PathMixin<T> implements Path<T>, Serializable {
         }
         return isnotnull;
     }
-    
+
     @Override
     public EBoolean isNull() {
         if (isnull == null) {
@@ -107,14 +107,13 @@ public final class PathMixin<T> implements Path<T>, Serializable {
             if (metadata.getPathType() == PathType.PROPERTY){
                 Class<?> beanClass = metadata.getParent().getType();
                 String propertyName = metadata.getExpression().toString();
-                annotatedElement = ReflectionUtils.getAnnotatedElement(beanClass, propertyName, self.getType());                
-                
+                annotatedElement = ReflectionUtils.getAnnotatedElement(beanClass, propertyName, self.getType());
+
             }else{
                 annotatedElement = self.getType();
             }
         }
         return annotatedElement;
     }
-    
 
 }

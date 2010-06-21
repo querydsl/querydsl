@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.annotations;
 
@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 
 /**
  * Defines the paths to be initialized for the annotated property
- * 
+ *
  * @author tiwe
  *
  */
@@ -27,9 +27,9 @@ public @interface QueryInit {
 
     /**
      * Initialized paths
-     * 
+     *
      * @return
      */
     String[] value();
-    
+
 }

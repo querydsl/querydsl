@@ -1,14 +1,13 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-
 
 /**
  * The Class Item.
@@ -17,7 +16,7 @@ import javax.persistence.ManyToOne;
 public class Item {
     @Id
     long id;
-    
+
     @ManyToOne
     Product product;
 }

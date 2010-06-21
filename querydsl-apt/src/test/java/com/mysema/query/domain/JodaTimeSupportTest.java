@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.domain;
 
@@ -21,7 +21,7 @@ import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PTime;
 
 public class JodaTimeSupportTest extends AbstractTest{
-    
+
     @QueryEntity
     public static class JodaTimeSupport {
 

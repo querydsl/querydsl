@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -16,11 +16,11 @@ public class CodeGenerationException extends RuntimeException{
     CodeGenerationException(String msg){
         super(msg);
     }
-    
+
     CodeGenerationException(String msg, Throwable t){
         super(msg, t);
     }
-    
+
     CodeGenerationException(Throwable t){
         super(t);
     }

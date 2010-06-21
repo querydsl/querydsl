@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.search;
 
@@ -16,13 +16,13 @@ public class QUser extends PEntity<User> {
     public QUser(String variable) {
         super(User.class, PathMetadataFactory.forVariable(variable));
     }
-    
+
     public final PString emailAddress = createString("emailAddress");
-    
+
     public final PString firstName = createString("firstName");
-    
+
     public final PString lastName = createString("lastName");
-    
+
     public final PString middleName = createString("middleName");
-    
+
 }

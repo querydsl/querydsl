@@ -12,8 +12,8 @@ import javax.annotation.processing.RoundEnvironment;
 import com.mysema.query.apt.DefaultConfiguration;
 
 public class JDOConfiguration extends DefaultConfiguration{
-    
-    private static final List<String> keywords = Arrays.asList(          
+
+    private static final List<String> keywords = Arrays.asList(
     "AS","ASC",
     "ASCENDING","AVG",
     "BY","COUNT",
@@ -35,7 +35,7 @@ public class JDOConfiguration extends DefaultConfiguration{
             Class<? extends Annotation> skipAnn) throws ClassNotFoundException {
         super(roundEnv, options, entityAnn, superTypeAnn, embeddableAnn, skipAnn);
     }
-    
+
     @Override
     public Collection<String> getKeywords(){
     return keywords;

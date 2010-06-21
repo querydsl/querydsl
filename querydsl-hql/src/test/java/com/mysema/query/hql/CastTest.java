@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql;
 
@@ -15,9 +15,9 @@ import com.mysema.query.types.path.PNumber;
 public class CastTest extends AbstractQueryTest {
 
     private static ENumber<Integer> expr = new PNumber<Integer>(Integer.class,"int");
-    
+
     @Test
-    public void testNumericCast() {        
+    public void testNumericCast() {
         assertEquals(Byte.class, expr.byteValue().getType());
         assertEquals(Double.class, expr.doubleValue().getType());
         assertEquals(Float.class, expr.floatValue().getType());

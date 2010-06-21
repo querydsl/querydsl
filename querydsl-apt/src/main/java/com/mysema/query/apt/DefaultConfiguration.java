@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.apt;
 
@@ -37,12 +37,12 @@ import com.mysema.query.codegen.TypeMappings;
 
 /**
  * DefaultConfiguration is a simple implementation of the Configuration interface
- * 
+ *
  * @author tiwe
  *
  */
 public class DefaultConfiguration implements Configuration {
-    
+
     private static final String QUERYDSL_CREATE_DEFAULT_VARIABLE = "querydsl.createDefaultVariable";
 
     private static final String QUERYDSL_MAP_ACCESSORS = "querydsl.mapAccessors";
@@ -52,34 +52,34 @@ public class DefaultConfiguration implements Configuration {
     private static final String QUERYDSL_ENTITY_ACCESSORS = "querydsl.entityAccessors";
 
     private final TypeMappings typeMappings = new TypeMappings();
-    
+
     private final SerializerConfig defaultSerializerConfig;
-    
+
     private final Serializer dtoSerializer = new DTOSerializer(typeMappings);
-    
+
     private final Serializer embeddableSerializer = new EmbeddableSerializer(typeMappings, getKeywords());
-    
+
     private final Serializer entitySerializer = new EntitySerializer(typeMappings,getKeywords());
-    
+
     private final Serializer supertypeSerializer = new SupertypeSerializer(typeMappings,getKeywords());
-    
+
     private String namePrefix = "Q";
-    
+
     private final Map<String,SerializerConfig> packageToConfig = new HashMap<String,SerializerConfig>();
-    
+
     protected final Class<? extends Annotation> entityAnn;
-    
+
     @Nullable
     protected final Class<? extends Annotation> superTypeAnn, embeddableAnn, skipAnn;
-    
+
     private final Map<String,SerializerConfig> typeToConfig = new HashMap<String,SerializerConfig>();
-    
+
     private boolean useFields = true, useGetters = true;
-    
+
     public DefaultConfiguration(
             RoundEnvironment roundEnv,
-            Map<String, String> options, 
-            Class<? extends Annotation> entityAnn, 
+            Map<String, String> options,
+            Class<? extends Annotation> entityAnn,
             @Nullable Class<? extends Annotation> superTypeAnn,
             @Nullable Class<? extends Annotation> embeddableAnn,
             @Nullable Class<? extends Annotation> skipAnn) {
@@ -94,7 +94,7 @@ public class DefaultConfiguration implements Configuration {
                 PackageElement packageElement = (PackageElement)element;
                 packageToConfig.put(packageElement.getQualifiedName().toString(), config);
             }else if (element instanceof TypeElement){
-                TypeElement typeElement = (TypeElement)element;                
+                TypeElement typeElement = (TypeElement)element;
                 typeToConfig.put(typeElement.getQualifiedName().toString(), config);
             }
         }
@@ -113,16 +113,16 @@ public class DefaultConfiguration implements Configuration {
         }
         if (options.containsKey(QUERYDSL_CREATE_DEFAULT_VARIABLE)){
             createDefaultVariable = Boolean.valueOf(options.get(QUERYDSL_CREATE_DEFAULT_VARIABLE));
-        }        
+        }
         defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors, mapAccessors, createDefaultVariable);
-        
+
     }
-    
+
     @Override
     public VisitorConfig getConfig(TypeElement e, List<? extends Element> elements){
         if (useFields){
             if (useGetters){
-                return VisitorConfig.ALL;        
+                return VisitorConfig.ALL;
             }else{
                 return VisitorConfig.FIELDS_ONLY;
             }
@@ -130,7 +130,7 @@ public class DefaultConfiguration implements Configuration {
             return VisitorConfig.METHODS_ONLY;
         }else{
             return VisitorConfig.NONE;
-        }        
+        }
     }
 
     @Override
@@ -148,7 +148,7 @@ public class DefaultConfiguration implements Configuration {
     public Serializer getEmbeddableSerializer() {
         return embeddableSerializer;
     }
-    
+
     @Override
     public Class<? extends Annotation> getEntityAnn() {
         return entityAnn;
@@ -171,8 +171,8 @@ public class DefaultConfiguration implements Configuration {
         }else if (packageToConfig.containsKey(model.getPackageName())){
             return packageToConfig.get(model.getPackageName());
         }else{
-            return defaultSerializerConfig;    
-        }        
+            return defaultSerializerConfig;
+        }
     }
 
     @Override
@@ -198,9 +198,9 @@ public class DefaultConfiguration implements Configuration {
             return false;
         }else{
             return field.getAnnotation(skipAnn) != null
-            || field.getModifiers().contains(Modifier.TRANSIENT) 
-            || field.getModifiers().contains(Modifier.STATIC);    
-        }        
+            || field.getModifiers().contains(Modifier.TRANSIENT)
+            || field.getModifiers().contains(Modifier.STATIC);
+        }
     }
 
     @Override
@@ -209,10 +209,10 @@ public class DefaultConfiguration implements Configuration {
             return false;
         }else{
             return getter.getAnnotation(skipAnn) != null
-                || getter.getModifiers().contains(Modifier.STATIC);    
-        }        
+                || getter.getModifiers().contains(Modifier.STATIC);
+        }
     }
- 
+
     @Override
     public boolean isUseFields() {
         return useFields;
@@ -236,9 +236,9 @@ public class DefaultConfiguration implements Configuration {
             return true;
         }else{
             return field.getAnnotation(skipAnn) == null
-                && !field.getModifiers().contains(Modifier.TRANSIENT) 
-                && !field.getModifiers().contains(Modifier.STATIC);            
-        }        
+                && !field.getModifiers().contains(Modifier.TRANSIENT)
+                && !field.getModifiers().contains(Modifier.STATIC);
+        }
     }
 
     @Override
@@ -247,8 +247,8 @@ public class DefaultConfiguration implements Configuration {
             return true;
         }else{
             return getter.getAnnotation(skipAnn) == null
-                && !getter.getModifiers().contains(Modifier.STATIC);    
-        }        
+                && !getter.getModifiers().contains(Modifier.STATIC);
+        }
     }
 
     @Override
@@ -260,20 +260,20 @@ public class DefaultConfiguration implements Configuration {
     public void setUseFields(boolean b){
         this.useFields = b;
     }
-    
+
     @Override
     public void setUseGetters(boolean b) {
-        this.useGetters = b;        
+        this.useGetters = b;
     }
 
     @Override
     public TypeMappings getTypeMappings() {
         return typeMappings;
     }
-    
+
     @Override
     public Collection<String> getKeywords(){
     return Collections.emptyList();
     }
-    
+
 }

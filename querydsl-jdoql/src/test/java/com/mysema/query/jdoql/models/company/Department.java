@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql.models.company;
 
@@ -14,7 +14,7 @@ import com.mysema.query.annotations.QueryEntity;
 /**
  * Department in a company. Has a Manager, and a set of Projects being worked
  * on.
- * 
+ *
  * @version $Revision: 1.1 $
  */
 @QueryEntity

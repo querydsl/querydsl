@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql;
 
@@ -35,7 +35,7 @@ import com.mysema.query.types.expr.ENumber;
 
 /**
  * ParsingTest provides.
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -46,34 +46,33 @@ public class ParsingTest extends AbstractQueryTest{
     public void arrayExpr() throws Exception {
         query().from(ord).where(ord.items(0).id.eq(1234l)).parse();
     }
-    
+
     @Test
     public void basic() throws RecognitionException, TokenStreamException{
         query().from(cat, fatcat).select(cat.name, fatcat.name).parse();
     }
-    
+
     @Test
     public void beforeAndAfter() throws RecognitionException,
             TokenStreamException {
-        
+
         EComparable<java.util.Date> ed = catalog.effectiveDate;
         query().from(catalog).where(ed.gt(EDate.currentDate()), ed.goe(EDate.currentDate()),
                 ed.lt(EDate.currentDate()), ed.loe(EDate.currentDate())).select(catalog)
                 .parse();
     }
-    
 
     @Test
     public void complexConstructor() throws Exception {
         query().select(new QFooDTO(bar.count())).from(bar).parse();
     }
-    
+
     @Test
     public void docoExamples910() throws Exception {
         query().select(cat.color, sum(cat.weight), cat.count()).from(cat)
                 .groupBy(cat.color).parse();
     }
-    
+
     @Test
     public void docoExamples910_2() throws Exception {
         query().select(cat.color, sum(cat.weight), cat.count()).from(cat)
@@ -81,8 +80,7 @@ public class ParsingTest extends AbstractQueryTest{
                         cat.color.in(Color.TABBY, Color.BLACK)).parse();
     }
 
-    
-    @Test    
+    @Test
     @Ignore
     public void docoExamples910_3() throws Exception {
         query().select(cat).from(cat).join(cat.kittens, kitten).groupBy(cat)
@@ -90,7 +88,7 @@ public class ParsingTest extends AbstractQueryTest{
                         kitten.count().asc(), sum(kitten.weight).desc())
                 .parse();
     }
-    
+
     @Test
     public void docoExamples911() throws Exception {
         query().from(fatcat).where(
@@ -104,7 +102,7 @@ public class ParsingTest extends AbstractQueryTest{
         query().from(cat).where(
                 sub().from(mate).where(mate.mate.eq(cat)).list(mate).notExists())
                 .parse();
-        
+
         query().from(cat).where(
                 sub().from(mate).where(mate.mate.eq(cat)).exists())
                 .parse();
@@ -113,7 +111,7 @@ public class ParsingTest extends AbstractQueryTest{
                 cat.name.notIn(sub().from(name).list(name.nickName)))
                 .parse();
     }
-    
+
     @Test
     public void docoExamples912() throws Exception {
         query().select(ord.id, sum(price.amount), item.count()).from(ord)
@@ -122,7 +120,7 @@ public class ParsingTest extends AbstractQueryTest{
                         ord.paid.not().and(ord.customer.eq(cust)).and(
                                 price.product.eq(product)).and(
                                 catalog.effectiveDate.gt(EDate.currentDate())).and(
-                                catalog.effectiveDate.gt(all(                                        
+                                catalog.effectiveDate.gt(all(
                                         sub().from(catalog).where(
                                                 catalog.effectiveDate.lt(EDate.currentDate()))
                                              .list(catalog.effectiveDate)))))
@@ -139,7 +137,6 @@ public class ParsingTest extends AbstractQueryTest{
                                 price.product.eq(product)).and(catalog.eq(c2)))
                 .groupBy(ord).having(sum(price.amount).gt(0l)).orderBy(
                         sum(price.amount).desc());
-
 
     }
 
@@ -312,35 +309,34 @@ public class ParsingTest extends AbstractQueryTest{
         query().from(cat).innerJoin(cat.mate, mate).fetch().fetch().parse();
     }
 
-
     @Test
     public void inNotIn() throws Exception {
         query().from(foo).where(foo.bar.in("a", "b", "c")).parse();
 
         query().from(foo).where(foo.bar.notIn("a", "b", "c")).parse();
     }
-    
+
     @Test
     public void joinFlags1() throws RecognitionException, TokenStreamException{
-        query().from(cat).fetchAll().parse();        
+        query().from(cat).fetchAll().parse();
     }
-    
+
     @Test
     public void joinFlags2() throws RecognitionException, TokenStreamException{
-        query().from(cat).fetchAll().from(cat1).fetchAll().parse();        
+        query().from(cat).fetchAll().from(cat1).fetchAll().parse();
     }
 
     @Test
     public void joinFlags3() throws RecognitionException, TokenStreamException{
-        query().from(cat).fetchAll().from(cat1).fetchAll().parse();        
+        query().from(cat).fetchAll().from(cat1).fetchAll().parse();
     }
 
     @Test
     public void joins() throws RecognitionException, TokenStreamException{
         query().from(cat).join(cat.mate).select(cat).parse();
-        
+
         query().from(cat).innerJoin(cat.mate).select(cat).parse();
-        
+
         query().from(cat).leftJoin(cat.mate).select(cat).parse();
     }
 
@@ -352,10 +348,10 @@ public class ParsingTest extends AbstractQueryTest{
     @Test
     public void serialization(){
         QueryHelper query = query();
-        
+
         query.from(cat);
         assertEquals("from Cat cat", query.toString());
-        
+
         query.from(fatcat);
         assertEquals("from Cat cat, Cat fatcat", query.toString());
     }
@@ -410,7 +406,6 @@ public class ParsingTest extends AbstractQueryTest{
         query().select(qat.weight.avg()).from(qat).parse();
     }
 
-    
     @Test
     public void testSum() throws RecognitionException, TokenStreamException {
         query().from(cat).select(sum(cat.kittens.size())).parse();
@@ -437,12 +432,11 @@ public class ParsingTest extends AbstractQueryTest{
         query().from(an).where(an.bodyWeight.sqrt().gt(10.0)).parse();
 
         query().from(an).where(an.bodyWeight.sqrt().divide(2d).gt(10.0)).parse();
-        
+
         query().from(an).where(
                 an.bodyWeight.gt(10).and(
                         an.bodyWeight.lt(100).or(an.bodyWeight.isNull())))
                 .parse();
     }
-    
 
 }

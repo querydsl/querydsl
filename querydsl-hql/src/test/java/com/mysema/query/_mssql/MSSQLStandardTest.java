@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._mssql;
 
@@ -19,10 +19,10 @@ import com.mysema.testutil.HibernateTestRunner;
 @RunWith(HibernateTestRunner.class)
 @HibernateConfig("mssql.properties")
 public abstract class MSSQLStandardTest extends AbstractHibernateTest{
-    
+
     @Override
     protected Target getTarget() {
         return Target.SQLSERVER;
     }
-    
+
 }

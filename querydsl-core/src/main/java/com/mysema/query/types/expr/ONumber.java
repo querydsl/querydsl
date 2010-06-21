@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.expr;
 
@@ -15,19 +15,19 @@ import com.mysema.query.types.Visitor;
 
 /**
  * ONumber represents numeric operations
- * 
+ *
  * @author tiwe
- * 
+ *
  * @param <D>
  */
 public class ONumber<D extends Number & Comparable<?>>
         extends ENumber<D> implements Operation<D> {
-    
+
     private static final long serialVersionUID = -3593040852095778453L;
 
     /**
      * Factory method
-     * 
+     *
      * @param <D>
      * @param type
      * @param op
@@ -37,9 +37,9 @@ public class ONumber<D extends Number & Comparable<?>>
     public static <D extends Number & Comparable<?>> ENumber<D> create(Class<? extends D> type, Operator<? super D> op, Expr<?>... args){
         return new ONumber<D>(type, op, args);
     }
-    
+
     private final Operation<D> opMixin;
-    
+
     ONumber(Class<? extends D> type, Operator<? super D> op, Expr<?>... args) {
         this(type, op, Arrays.asList(args));
     }
@@ -51,7 +51,7 @@ public class ONumber<D extends Number & Comparable<?>>
 
     @Override
     public void accept(Visitor v) {
-        v.visit(this);        
+        v.visit(this);
     }
 
     @Override
@@ -68,15 +68,15 @@ public class ONumber<D extends Number & Comparable<?>>
     public Operator<? super D> getOperator() {
         return opMixin.getOperator();
     }
-    
+
     @Override
     public boolean equals(Object o){
         return opMixin.equals(o);
     }
-    
+
     @Override
     public int hashCode(){
         return getType().hashCode();
     }
-    
+
 }

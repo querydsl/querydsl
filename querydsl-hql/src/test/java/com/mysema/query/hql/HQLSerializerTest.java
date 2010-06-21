@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql;
 
@@ -14,8 +14,8 @@ import com.mysema.query.types.path.PNumber;
 public class HQLSerializerTest {
 
     @Test
-    public void testNormalizeNumericArgs() {        
-        HQLSerializer serializer = new HQLSerializer(HQLTemplates.DEFAULT);        
+    public void testNormalizeNumericArgs() {
+        HQLSerializer serializer = new HQLSerializer(HQLTemplates.DEFAULT);
         PNumber<Double> doublePath = new PNumber<Double>(Double.class, "doublePath");
         serializer.handle(doublePath.add(1));
         serializer.handle(doublePath.between((float)1.0, 1l));

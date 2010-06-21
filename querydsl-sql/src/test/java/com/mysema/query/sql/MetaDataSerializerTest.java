@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql;
 
@@ -29,12 +29,12 @@ import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.SerializerConfig;
 
-public class MetaDataSerializerTest {    
+public class MetaDataSerializerTest {
 
     private Connection conn;
-    
+
     private Statement stmt;
-    
+
     @Before
     public void setUp() throws ClassNotFoundException, SQLException{
         Class.forName("org.hsqldb.jdbcDriver");
@@ -42,56 +42,55 @@ public class MetaDataSerializerTest {
         conn = DriverManager.getConnection(url, "sa", "");
         stmt = conn.createStatement();
     }
-    
+
     @After
     public void tearDown() throws SQLException{
         try{
-            stmt.close();    
+            stmt.close();
         }finally{
-            conn.close();    
+            conn.close();
         }
     }
-    
+
     @Test
     public void testGeneration() throws Exception {
         // normal settings
-        
-        stmt.execute("drop table employee if exists");        
+
+        stmt.execute("drop table employee if exists");
         stmt.execute("drop table survey if exists");
         stmt.execute("drop table date_test if exists");
         stmt.execute("drop table date_time_test if exists");
-                
+
         stmt.execute("create table survey (id int, name varchar(30), "
-                + "CONSTRAINT PK_survey PRIMARY KEY (id, name))");        
-        stmt.execute("create table date_test (d date)");        
-        stmt.execute("create table date_time_test (dt datetime)");        
+                + "CONSTRAINT PK_survey PRIMARY KEY (id, name))");
+        stmt.execute("create table date_test (d date)");
+        stmt.execute("create table date_time_test (dt datetime)");
         stmt.execute("create table employee("
                 + "id INT, "
-                + "firstname VARCHAR(50), " 
+                + "firstname VARCHAR(50), "
                 + "lastname VARCHAR(50), "
-                + "salary DECIMAL(10, 2), " 
+                + "salary DECIMAL(10, 2), "
                 + "datefield DATE, "
                 + "timefield TIME, "
-                + "superior_id int, " 
+                + "superior_id int, "
                 + "survey_id int, "
                 + "survey_name varchar(30), "
                 + "CONSTRAINT PK_employee PRIMARY KEY (id), "
                 + "CONSTRAINT FK_survey FOREIGN KEY (survey_id, survey_name) REFERENCES survey(id,name), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");
-        
-        
+
         String namePrefix = "Q";
         NamingStrategy namingStrategy = new DefaultNamingStrategy();
         // customization of serialization
         MetaDataSerializer serializer = new MetaDataSerializer(namePrefix, namingStrategy){
-            
+
             @Override
             protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
             super.introImports(writer, config, model);
             // adds additional imports
             writer.imports(List.class, Arrays.class);
             }
-            
+
             @Override
             protected void serializeProperties(EntityType model,  SerializerConfig config, CodeWriter writer) throws IOException {
             super.serializeProperties(model, config, writer);
@@ -104,21 +103,21 @@ public class MetaDataSerializerTest {
             }
             // adds accessors for all fields
             writer.publicFinal("List<Expr<?>>", "exprs", "Arrays.<Expr<?>>asList(" + paths.toString() + ")");
-            writer.publicFinal("List<Path<?>>", "paths", "Arrays.<Path<?>>asList(" + paths.toString() + ")");            
+            writer.publicFinal("List<Path<?>>", "paths", "Arrays.<Path<?>>asList(" + paths.toString() + ")");
             }
-            
+
         };
         MetaDataExporter exporter = new MetaDataExporter(
-            namePrefix, 
-            "test", 
-            null, 
-            null, 
-            new File("target/cust"), 
-            namingStrategy, 
+            namePrefix,
+            "test",
+            null,
+            null,
+            new File("target/cust"),
+            namingStrategy,
             serializer);
-        
-        exporter.export(conn.getMetaData());   
-        
+
+        exporter.export(conn.getMetaData());
+
         JavaCompiler compiler = new SimpleCompiler();
         Set<String> classes = exporter.getClasses();
         int compilationResult = compiler.run(null, null, null, classes.toArray(new String[classes.size()]));
@@ -128,5 +127,5 @@ public class MetaDataSerializerTest {
             Assert.fail("Compilation Failed");
         }
     }
-    
+
 }

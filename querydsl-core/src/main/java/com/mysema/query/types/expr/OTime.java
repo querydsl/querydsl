@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.expr;
 
@@ -15,7 +15,7 @@ import com.mysema.query.types.Visitor;
 
 /**
  * OTime represents Time functions
- * 
+ *
  * @author tiwe
  *
  * @param <D>
@@ -26,7 +26,7 @@ public class OTime<D extends Comparable<?>> extends ETime<D> implements Operatio
 
     /**
      * Factory method
-     * 
+     *
      * @param <D>
      * @param type
      * @param op
@@ -36,9 +36,9 @@ public class OTime<D extends Comparable<?>> extends ETime<D> implements Operatio
     public static <D extends Comparable<?>> ETime<D> create(Class<D> type, Operator<? super D> op, Expr<?>... args){
         return new OTime<D>(type, op, args);
     }
-    
+
     private final Operation<D> opMixin;
-    
+
     OTime(Class<D> type, Operator<? super D> op, Expr<?>... args) {
         this(type, op, Arrays.asList(args));
     }
@@ -50,9 +50,9 @@ public class OTime<D extends Comparable<?>> extends ETime<D> implements Operatio
 
     @Override
     public void accept(Visitor v) {
-        v.visit(this);        
+        v.visit(this);
     }
-    
+
     @Override
     public Expr<?> getArg(int index) {
         return opMixin.getArg(index);
@@ -67,15 +67,15 @@ public class OTime<D extends Comparable<?>> extends ETime<D> implements Operatio
     public Operator<? super D> getOperator() {
         return opMixin.getOperator();
     }
-    
+
     @Override
     public boolean equals(Object o){
         return opMixin.equals(o);
     }
-    
+
     @Override
     public int hashCode(){
         return getType().hashCode();
     }
-    
+
 }

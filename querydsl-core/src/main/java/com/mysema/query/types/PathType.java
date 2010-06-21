@@ -1,13 +1,12 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types;
 
 import java.util.Collections;
 import java.util.List;
-
 
 /**
  * PathType represents the relation of a {@link Path} to its parent
@@ -16,31 +15,31 @@ public enum PathType implements Operator<Path<?>> {
     /**
      * Indexed array access (array[i])
      */
-    ARRAYVALUE, 
+    ARRAYVALUE,
     /**
      * Indexed array access with constant (array[i])
      */
-    ARRAYVALUE_CONSTANT, 
+    ARRAYVALUE_CONSTANT,
     /**
-     * 
+     *
      */
-    DELEGATE, 
+    DELEGATE,
     /**
      * Indexed list access (list.get(index))
      */
-    LISTVALUE, 
+    LISTVALUE,
     /**
      * Indexed list access with constant (list.get(index))
      */
-    LISTVALUE_CONSTANT, 
+    LISTVALUE_CONSTANT,
     /**
      * Map value access (map.get(key))
      */
-    MAPVALUE, 
+    MAPVALUE,
     /**
      * Map value access with constant (map.get(key))
      */
-    MAPVALUE_CONSTANT, 
+    MAPVALUE_CONSTANT,
     /**
      * Property of the parent
      */
@@ -49,10 +48,10 @@ public enum PathType implements Operator<Path<?>> {
      * Root path
      */
     VARIABLE;
-    
+
     @Override
     public List<Class<?>> getTypes() {
         return Collections.emptyList();
     }
-    
+
 }

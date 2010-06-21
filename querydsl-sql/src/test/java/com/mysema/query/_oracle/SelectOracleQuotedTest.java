@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._oracle;
 
@@ -33,20 +33,20 @@ public class SelectOracleQuotedTest extends SelectBaseTest {
     public void setUpForTest() {
         dialect = new OracleTemplates(true).newLineToSingleSpace();
     }
-    
+
     @Override
-    public void limitAndOffset2() throws SQLException {     
-        
+    public void limitAndOffset2() throws SQLException {
+
     }
 
     @Override
     public void serialization(){
-        
+
     }
-    
+
     @Override
     public void subQueries() throws SQLException {
-        
+
     }
 
 }

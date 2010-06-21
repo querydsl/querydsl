@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types;
 
@@ -11,20 +11,18 @@ import java.util.List;
 
 import org.junit.Test;
 
-
-
 // TODO: Auto-generated Javadoc
 /**
  * VisitorTest provides.
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
 public class VisitorTest {
-    
+
     /**
      * Test iteration.
-     * 
+     *
      * @throws SecurityException the security exception
      * @throws NoSuchMethodException the no such method exception
      */

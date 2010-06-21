@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.domain;
 
@@ -14,7 +14,6 @@ import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.IndexColumn;
 
-
 /**
  * The Class Department.
  */
@@ -22,11 +21,11 @@ import org.hibernate.annotations.IndexColumn;
 public class Department {
     @ManyToOne
     Company company;
-    
+
     @OneToMany
     @IndexColumn(name = "_index")
     List<Employee> employees;
-    
+
     @Id
     int id;
     String name;

@@ -9,7 +9,7 @@ import com.mysema.query.types.expr.EStringConst;
 
 /**
  * QueryElement wraps a lucene Query
- * 
+ *
  * @author tiwe
  *
  */
@@ -18,18 +18,18 @@ public class QueryElement extends EBoolean{
     private static final long serialVersionUID = 470868107363840155L;
 
     private final Query query;
-    
+
     private volatile EString expr;
-    
+
     public QueryElement(Query query){
         this.query = query;
     }
-    
+
     @Override
     public void accept(Visitor v) {
         if (expr == null){
-            expr = EStringConst.create(query.toString()); 
-        }        
+            expr = EStringConst.create(query.toString());
+        }
         expr.accept(v);
     }
 
@@ -37,7 +37,7 @@ public class QueryElement extends EBoolean{
     public boolean equals(Object o) {
         return o instanceof QueryElement && ((QueryElement)o).query.equals(query);
     }
-    
+
     @Override
     public int hashCode(){
         return query.hashCode();
@@ -46,7 +46,5 @@ public class QueryElement extends EBoolean{
     public Query getQuery() {
         return query;
     }
-    
-    
 
 }

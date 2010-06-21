@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.maven;
 
@@ -19,56 +19,56 @@ import com.mysema.query.sql.MetaDataExporter;
 
 /**
  * MetaDataExportMojo is a goal for MetaDataExporter usage
- * 
+ *
  * @author tiwe
  */
 public class AbstractMetaDataExportMojo extends AbstractMojo{
-    
+
     /**
      * @parameter expression="${project}" readonly=true required=true
      */
     private MavenProject project;
-    
+
     /**
      * @parameter required=true
      */
     private String jdbcDriver;
-        
+
     /**
      * @parameter required=true
      */
     private String jdbcUrl;
-    
+
     /**
      * @parameter
      */
     private String jdbcUser;
-    
+
     /**
      * @parameter
      */
     private String jdbcPassword;
-        
+
     /**
      * @parameter default-value="Q"
      */
     private String namePrefix;
-    
+
     /**
      * @parameter required=true
      */
     private String packageName;
-    
+
     /**
-     * @parameter 
+     * @parameter
      */
     private String schemaPattern;
-    
+
     /**
      * @parameter
      */
     private String tableNamePattern;
-    
+
     /**
      * @parameter required=true
      */
@@ -79,12 +79,12 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         if (isForTest()){
             project.addTestCompileSourceRoot(targetFolder);
         }else{
-            project.addCompileSourceRoot(targetFolder);    
+            project.addCompileSourceRoot(targetFolder);
         }
-        
+
         MetaDataExporter exporter = new MetaDataExporter(
-            namePrefix, 
-            packageName, 
+            namePrefix,
+            packageName,
             schemaPattern,
             tableNamePattern,
             new File(targetFolder));
@@ -106,7 +106,6 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             throw new MojoExecutionException(e.getMessage(), e);
         }
     }
-    
 
     protected boolean isForTest(){
         return false;

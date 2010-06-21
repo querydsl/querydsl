@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.domain;
 
@@ -15,10 +15,10 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Price{
     long amount;
-    
+
     @Id
     long id;
-    
+
     @ManyToOne
     Product product;
 

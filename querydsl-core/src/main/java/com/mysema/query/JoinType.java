@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query;
 
@@ -9,7 +9,7 @@ import net.jcip.annotations.Immutable;
 
 /**
  * JoinType defines the supported join types
- * 
+ *
  * @author tiwe
  */
 @Immutable
@@ -17,7 +17,7 @@ public enum JoinType {
     /**
      * cross join
      */
-    DEFAULT, 
+    DEFAULT,
     /**
      * inner join
      */
@@ -33,10 +33,10 @@ public enum JoinType {
     /**
      * right join
      */
-    RIGHTJOIN,    
+    RIGHTJOIN,
     /**
      * full join
      */
     FULLJOIN;
-    
+
 }

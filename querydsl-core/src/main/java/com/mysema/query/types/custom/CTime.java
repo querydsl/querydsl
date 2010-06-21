@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.custom;
 
@@ -22,29 +22,29 @@ import com.mysema.query.types.expr.ETime;
  * @param <T>
  */
 public class CTime<T extends Comparable<?>> extends ETime<T> implements Custom<T> {
-    
+
     private static final long serialVersionUID = -7684306954555037051L;
 
     public static <T extends Comparable<?>> EComparable<T> create(Class<T> type, String template, Expr<?>... args){
         return new CComparable<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expr<?>>asList(args));
     }
-    
+
     public static <T extends Comparable<?>> EComparable<T> create(Class<T> type, Template template, Expr<?>... args){
         return new CComparable<T>(type, template, Arrays.<Expr<?>>asList(args));
     }
-    
+
     private final Custom<T> customMixin;
 
     public CTime(Class<T> type, Template template, List<Expr<?>> args) {
         super(type);
         customMixin = new CustomMixin<T>(this, args, template);
     }
-    
+
     @Override
     public void accept(Visitor v){
         v.visit(this);
     }
-    
+
     @Override
     public Expr<?> getArg(int index) {
         return customMixin.getArg(index);
@@ -59,12 +59,12 @@ public class CTime<T extends Comparable<?>> extends ETime<T> implements Custom<T
     public Template getTemplate() {
         return customMixin.getTemplate();
     }
-    
+
     @Override
     public boolean equals(Object o){
         return customMixin.equals(o);
     }
-    
+
     @Override
     public int hashCode(){
         return getType().hashCode();

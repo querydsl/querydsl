@@ -20,9 +20,9 @@ import org.junit.Test;
 import com.mysema.codegen.SimpleCompiler;
 
 public class EclipseCompilationTest {
-    
+
     private static final String packagePath = "src/test/apt/com/mysema/query/eclipse/";
-    
+
     @Test
     @Ignore
     public void test() throws IOException{
@@ -34,14 +34,14 @@ public class EclipseCompilationTest {
                 classes.add(file.getPath());
             }
         }
-        
+
         // prepare output
         File out = new File("target/out-eclipse");
         FileUtils.deleteDirectory(out);
         if (!out.mkdirs()){
             Assert.fail("Creation of " + out.getPath() + " failed");
         }
-        
+
         String classPath = SimpleCompiler.getClassPath((URLClassLoader) getClass().getClassLoader());
         JavaCompiler compiler = new EclipseCompiler();
         List<String> options = new ArrayList<String>();
@@ -50,21 +50,21 @@ public class EclipseCompilationTest {
         options.add("-proc:only");
         options.add("-processor");
         options.add(QuerydslAnnotationProcessor.class.getName());
-        options.add("-Aquerydsl.entityAccessors=true");        
+        options.add("-Aquerydsl.entityAccessors=true");
         options.add("-cp");
         options.add(classPath);
         options.add("-source");
         options.add("1.6");
         options.add("-verbose");
-        options.addAll(classes);        
-        
+        options.addAll(classes);
+
         int compilationResult = compiler.run(null, System.out, System.err, options.toArray(new String[options.size()]));
         if(compilationResult == 0){
             System.out.println("Compilation is successful");
         }else{
             Assert.fail("Compilation Failed");
         }
-        
+
         File resultFile = new File("target/out-eclipse/com/mysema/query/eclipse/QSimpleEntity.java");
         assertTrue(resultFile.exists());
         String result = FileUtils.readFileToString(resultFile);

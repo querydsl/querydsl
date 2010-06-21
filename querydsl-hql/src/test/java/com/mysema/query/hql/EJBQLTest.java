@@ -1,14 +1,14 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql;
 
 import org.junit.Test;
 
 public class EJBQLTest extends AbstractQueryTest{
-    
+
     @Test
     public void testEJBQL3Functions() {
         // Any function or operator defined by EJB-QL 3.0: substring(), trim(),
@@ -24,7 +24,7 @@ public class EJBQLTest extends AbstractQueryTest{
         // sqrt(),
         // bit_length(),
         // mod()
-        
+
         assertToString("trim(cat.name)", cat.name.trim());
         assertToString("lower(cat.name)", cat.name.lower());
         assertToString("upper(cat.name)", cat.name.upper());

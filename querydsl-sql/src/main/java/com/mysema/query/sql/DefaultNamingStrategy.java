@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql;
 
@@ -16,21 +16,21 @@ import com.mysema.util.JavaSyntaxUtils;
 /**
  * DefaultNamingStrategy is the default implementation of the NamingStrategy
  * interface
- * 
+ *
  * @author tiwe
- * 
+ *
  */
 public class DefaultNamingStrategy implements NamingStrategy {
-    
+
     private final String reservedSuffix;
-    
+
     public DefaultNamingStrategy() {
         this("Col");
     }
-    
+
     public DefaultNamingStrategy(String reservedSuffix) {
         this.reservedSuffix = reservedSuffix;
-    }    
+    }
 
     @Override
     public String getClassName(String namePrefix, String tableName) {
@@ -47,7 +47,7 @@ public class DefaultNamingStrategy implements NamingStrategy {
             }
         }
         return getDefaultVariableName(namePrefix, entityType);
-    }    
+    }
 
     @Override
     public String getDefaultVariableName(String namePrefix, EntityType entityType) {
@@ -78,7 +78,7 @@ public class DefaultNamingStrategy implements NamingStrategy {
         }
         return propertyName;
     }
-    
+
     @Override
     public String getPropertyNameForPrimaryKey(String primaryKeyName, EntityType entityType) {
         if (primaryKeyName.toLowerCase().startsWith("pk_")){

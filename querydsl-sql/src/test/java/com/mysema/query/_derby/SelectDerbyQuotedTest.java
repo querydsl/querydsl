@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._derby;
 
@@ -21,7 +21,7 @@ import com.mysema.testutil.Label;
 @RunWith(FilteringTestRunner.class)
 @Label(Target.DERBY)
 public class SelectDerbyQuotedTest extends SelectBaseTest {
-    
+
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initDerby();
@@ -33,18 +33,18 @@ public class SelectDerbyQuotedTest extends SelectBaseTest {
     }
 
     @Override
-    public void limitAndOffset2() throws SQLException {     
-        
+    public void limitAndOffset2() throws SQLException {
+
     }
 
     @Override
     public void serialization(){
-        
+
     }
-    
+
     @Override
     public void subQueries() throws SQLException {
-        
+
     }
 
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.jpa;
 
@@ -9,7 +9,7 @@ import javax.persistence.Query;
 
 /**
  * NoSessionHolder is a session holder for detached JPAQuery usage
- * 
+ *
  * @author tiwe
  *
  */

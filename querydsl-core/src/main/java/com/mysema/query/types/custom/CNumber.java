@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.custom;
 
@@ -17,25 +17,25 @@ import com.mysema.query.types.expr.ENumber;
 
 /**
  * CNumber defines custom numeric expressions
- * 
+ *
  * @author tiwe
  *
  * @param <T>
  */
 public class CNumber<T extends Number & Comparable<?>> extends ENumber<T> implements Custom<T> {
-    
+
     private static final long serialVersionUID = 351057421752203377L;
 
     public static <T extends Number & Comparable<?>> ENumber<T> create(Class<T> type, String template, Expr<?>... args){
         return new CNumber<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expr<?>>asList(args));
     }
-    
+
     public static <T extends Number & Comparable<?>> ENumber<T> create(Class<T> type, Template template, Expr<?>... args){
         return new CNumber<T>(type, template, Arrays.<Expr<?>>asList(args));
     }
-    
+
     private final Custom<T> customMixin;
-    
+
     public CNumber(Class<T> type, Template template, List<Expr<?>> args) {
         super(type);
         customMixin = new CustomMixin<T>(this, args, template);
@@ -45,7 +45,7 @@ public class CNumber<T extends Number & Comparable<?>> extends ENumber<T> implem
     public void accept(Visitor v){
         v.visit(this);
     }
-    
+
     @Override
     public Expr<?> getArg(int index) {
         return customMixin.getArg(index);
@@ -60,12 +60,12 @@ public class CNumber<T extends Number & Comparable<?>> extends ENumber<T> implem
     public Template getTemplate() {
         return customMixin.getTemplate();
     }
-    
+
     @Override
     public boolean equals(Object o){
         return customMixin.equals(o);
     }
-    
+
     @Override
     public int hashCode(){
         return getType().hashCode();

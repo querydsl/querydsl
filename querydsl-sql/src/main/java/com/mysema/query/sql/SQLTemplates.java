@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql;
 
@@ -25,97 +25,97 @@ import com.mysema.query.types.Templates;
 /**
  * SQLTemplates extended Templates to provided SQL specific extensions
  * and acts as database specific Dialect for Querydsl SQL
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
 public class SQLTemplates extends Templates {
-    
+
     public static final Operator<Object> CAST = new OperatorImpl<Object>(Object.class, Object.class);
-    
+
     public static final SQLTemplates DEFAULT = new SQLTemplates();
-    
+
     private String asc = " asc";
-    
+
     private final Map<Class<?>, String> class2type = new HashMap<Class<?>, String>();
 
     private String columnAlias = " ";
-    
+
     private String key = "key";
-    
+
     private String count = "count ";
-    
+
     private String countStar = "count(*)";
-    
+
     private String deleteFrom = "delete from ";
-    
+
     private String desc = " desc";
-    
+
     private String distinctCountEnd = ")";
-    
+
     private String distinctCountStart = "count(distinct ";
-    
+
     private String dummyTable = "dual";
-    
+
     private String from = "\nfrom ";
-    
+
     private String fullJoin = "\nfull join ";
-    
+
     private String groupBy = "\ngroup by ";
-    
+
     private String having = "\nhaving ";
-    
+
     private String innerJoin = "\ninner join ";
-    
+
     private String insertInto = "insert into ";
-    
+
     private String mergeInto = "merge into ";
-    
+
     private String join = "\njoin ";
-    
+
     private String leftJoin = "\nleft join ";
-    
+
     private String limitTemplate = "\nlimit {0}";
-    
+
     private String offsetTemplate = "\noffset {0}";
-    
+
     private String on = "\non ";
-    
+
     private String orderBy = "\norder by ";
-    
+
     @Nullable
     private String quoteStr;
-    
+
     private String select = "select ";
-    
+
     private String selectDistinct = "select distinct ";
-    
+
     private String tableAlias = " ";
 
     private String union = "\nunion\n";
-    
+
     private String update = "update ";
 
     private String values = "\nvalues ";
-    
+
     private String where = "\nwhere ";
-    
+
     private String set = "set ";
-    
+
     protected SQLTemplates(){
         this(null);
     }
-    
+
     protected SQLTemplates(@Nullable String quoteStr) {
         this.quoteStr = quoteStr;
-        
+
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
         add(Ops.NOT, "not {0}", 3);
         add(Ops.OR, "{0} or {1}", 38);
         add(Ops.XNOR, "{0} xnor {1}", 39);
         add(Ops.XOR, "{0} xor {1}", 39);
-        
+
         // math
         add(Ops.MathOps.RANDOM, "rand()");
         add(Ops.MathOps.CEIL, "ceiling({0})");
@@ -136,20 +136,20 @@ public class SQLTemplates extends Templates {
         add(Ops.INDEX_OF, "locate({1},{0})-1");
         add(Ops.INDEX_OF_2ARGS, "locate({1},{0},{2}+1)-1");
         add(Ops.STARTS_WITH, "{0} like {1%}");
-        add(Ops.STARTS_WITH_IC, "{0l} like {1%%}");       
+        add(Ops.STARTS_WITH_IC, "{0l} like {1%%}");
         add(Ops.STRING_CONTAINS, "{0} like {%1%}");
         add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%}");
-        add(Ops.STRING_IS_EMPTY, "length({0}) = 0");       
+        add(Ops.STRING_IS_EMPTY, "length({0}) = 0");
         add(Ops.SUBSTR_1ARG, "substr({0},{1}+1)");
         add(Ops.SUBSTR_2ARGS, "substr({0},{1}+1,{2})");
-        
+
         if (quoteStr != null){
             add(PathType.PROPERTY, "{0}." + quoteStr + "{1s}" + quoteStr);
-            add(PathType.VARIABLE, quoteStr + "{0s}" + quoteStr);            
+            add(PathType.VARIABLE, quoteStr + "{0s}" + quoteStr);
         }
-        
+
         add(CAST, "cast({0} as {1s})");
-        
+
         for (Class<?> cl : new Class[] { Boolean.class, Byte.class,
                 Double.class, Float.class, Integer.class, Long.class,
                 Short.class, String.class }) {
@@ -168,7 +168,7 @@ public class SQLTemplates extends Templates {
             class2type.put(cl, type);
         }
     }
-    
+
     public String getAsc() {
         return asc;
     }
@@ -176,7 +176,7 @@ public class SQLTemplates extends Templates {
     public String getTypeForClass(Class<?> cl){
         return class2type.get(cl);
     }
-    
+
     public String getColumnAlias() {
         return columnAlias;
     }
@@ -305,9 +305,9 @@ public class SQLTemplates extends Templates {
                 if (field.getType().equals(String.class)) {
                     Object val = field.get(this);
                     if (val != null){
-                        field.set(this, val.toString().replace('\n',' '));    
+                        field.set(this, val.toString().replace('\n',' '));
                     }
-                    
+
                 }
             } catch (IllegalAccessException e) {
                 throw new QueryException(e.getMessage(), e);
@@ -321,23 +321,23 @@ public class SQLTemplates extends Templates {
             return quoteStr + column + quoteStr;
         }else{
             return column;
-        }        
+        }
     }
 
     public final String quoteTableName(String table){
         if (quoteStr != null){
             return quoteStr + table + quoteStr;
         }else{
-            return table;    
-        }        
+            return table;
+        }
     }
 
     public void serialize(QueryMetadata metadata, boolean forCountRow, SerializationContext context) {
         context.serialize(metadata, forCountRow);
-        
+
         if (!forCountRow && metadata.getModifiers().isRestricting()){
-            serializeModifiers(metadata, context);  
-        }        
+            serializeModifiers(metadata, context);
+        }
     }
 
     protected void serializeModifiers(QueryMetadata metadata, SerializationContext context) {
@@ -377,7 +377,7 @@ public class SQLTemplates extends Templates {
     protected void setDistinctCountEnd(String distinctCountEnd) {
         this.distinctCountEnd = distinctCountEnd;
     }
-    
+
     protected void setDistinctCountStart(String distinctCountStart) {
         this.distinctCountStart = distinctCountStart;
     }
@@ -449,11 +449,11 @@ public class SQLTemplates extends Templates {
     protected void setUpdate(String update) {
         this.update = update;
     }
-    
+
     protected void setValues(String values) {
         this.values = values;
     }
-    
+
     protected void setWhere(String where) {
         this.where = where;
     }
@@ -481,7 +481,5 @@ public class SQLTemplates extends Templates {
     public void setSet(String set) {
         this.set = set;
     }
-    
-    
-    
+
 }

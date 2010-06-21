@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.expr;
 
@@ -17,13 +17,13 @@ import com.mysema.query.types.path.PString;
 public class QTupleTest {
 
     private PString first = new PString("x");
-    
+
     private PNumber<Integer> second = new PNumber<Integer>(Integer.class,"y");
-    
+
     private PBoolean third = new PBoolean("z");
-    
+
     private QTuple tupleExpression = new QTuple(first, second, third);
-    
+
     @Test
     public void testNewInstanceObjectArray() {
     Tuple tuple = tupleExpression.newInstance("1", 42, true);
@@ -34,8 +34,7 @@ public class QTupleTest {
     assertEquals("1", tuple.get(first));
     assertEquals(Integer.valueOf(42), tuple.get(second));
     assertEquals(Boolean.TRUE, tuple.get(third));
-    
-    
+
     }
 
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql;
 
@@ -24,9 +24,9 @@ import com.mysema.query.types.path.PEntity;
  * @param <T>
  */
 public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends ProjectableQuery<T>{
-    
+
     private static final ENumber<Integer> COUNT_ALL_AGG_EXPR = ONumber.create(Integer.class, Ops.AggOps.COUNT_ALL_AGG);
-    
+
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(QueryMetadata metadata) {
         super(new QueryMixin<T>(metadata));
@@ -37,7 +37,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     public long count() {
         return uniqueResult(COUNT_ALL_AGG_EXPR);
     }
-    
+
     public T from(Expr<?>... args) {
         return queryMixin.from(args);
     }
@@ -53,15 +53,15 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     public T fullJoin(SubQuery<?> o, Path<?> alias) {
         return queryMixin.fullJoin(o, alias);
     }
-    
+
     public QueryMetadata getMetadata(){
         return queryMixin.getMetadata();
     }
-    
+
     public <E> T innerJoin(ForeignKey<E> key, PEntity<E> entity) {
         return queryMixin.innerJoin(entity).on(key.on(entity));
     }
-    
+
     public T innerJoin(PEntity<?> o) {
         return queryMixin.innerJoin(o);
     }
@@ -109,6 +109,5 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     public T rightJoin(SubQuery<?> o, Path<?> alias) {
         return queryMixin.rightJoin(o, alias);
     }
-
 
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._h2;
 
@@ -21,7 +21,7 @@ import com.mysema.testutil.Label;
 @RunWith(FilteringTestRunner.class)
 @Label(Target.H2)
 public class SelectH2QuotedTest extends SelectBaseTest {
-    
+
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initH2();
@@ -33,18 +33,18 @@ public class SelectH2QuotedTest extends SelectBaseTest {
     }
 
     @Override
-    public void limitAndOffset2() throws SQLException {     
-        
+    public void limitAndOffset2() throws SQLException {
+
     }
 
     @Override
     public void serialization(){
-        
+
     }
-    
+
     @Override
     public void subQueries() throws SQLException {
-        
+
     }
 
 }

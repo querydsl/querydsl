@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql;
 
@@ -24,7 +24,7 @@ import com.mysema.query.jdoql.testdomain.QProduct;
 public class OrderingTest extends AbstractJDOTest {
 
     private QProduct product = QProduct.product;
-    
+
     @Test
     public void testOrderAsc() {
         List<String> namesAsc = query().from(product).orderBy(

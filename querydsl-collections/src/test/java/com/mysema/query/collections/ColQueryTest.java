@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.collections;
 
@@ -20,7 +20,7 @@ import com.mysema.query.types.path.PString;
 
 /**
  * ColQueryTest provides
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -29,7 +29,7 @@ public class ColQueryTest extends AbstractQueryTest {
     @Test
     public void instanceOf() {
         assertEquals(
-                Arrays.asList(c1, c2), 
+                Arrays.asList(c1, c2),
                 query().from(cat, Arrays.asList(c1, c2)).where(cat.instanceOf(Cat.class)).list(cat));
     }
 

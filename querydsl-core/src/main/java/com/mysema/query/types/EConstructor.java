@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types;
 
@@ -15,21 +15,20 @@ import org.apache.commons.lang.ClassUtils;
 
 import com.mysema.query.types.expr.ESimple;
 
-
 /**
  * EConstructor represents a constructor invocation
- * 
+ *
  * @author tiwe
- * 
+ *
  * @param <D> Java type
  */
 public class EConstructor<D> extends ESimple<D> {
-    
+
     private static final long serialVersionUID = -602747921848073175L;
-    
+
     private static Class<?> normalize(Class<?> clazz){
         if (clazz.isPrimitive()){
-            return ClassUtils.primitiveToWrapper(clazz);                    
+            return ClassUtils.primitiveToWrapper(clazz);
         }else{
             return clazz;
         }
@@ -37,25 +36,25 @@ public class EConstructor<D> extends ESimple<D> {
 
     public static <D> EConstructor<D> create(Class<D> type, Expr<?>... args){
         for (Constructor<?> c : type.getConstructors()){
-            Class<?>[] paramTypes = c.getParameterTypes();            
+            Class<?>[] paramTypes = c.getParameterTypes();
             if (paramTypes.length == args.length){
                 boolean found = true;
-                for (int i = 0; i < paramTypes.length; i++){                    
+                for (int i = 0; i < paramTypes.length; i++){
                     if (!normalize(paramTypes[i]).isAssignableFrom(args[i].getType())){
                         found = false;
                         break;
                     }
                 }
                 if (found){
-                    return new EConstructor<D>(type, paramTypes, args);    
-                }                
-            }            
+                    return new EConstructor<D>(type, paramTypes, args);
+                }
+            }
         }
-        throw new ExprException("Got no matching constructor");        
+        throw new ExprException("Got no matching constructor");
     }
 
     private final List<Expr<?>> args;
-    
+
     private final Class<?>[] parameterTypes;
 
     public EConstructor(Class<D> type, Class<?>[] paramTypes, Expr<?>... args) {
@@ -66,7 +65,7 @@ public class EConstructor<D> extends ESimple<D> {
 
     @Override
     public void accept(Visitor v) {
-        v.visit(this);        
+        v.visit(this);
     }
 
     @Override
@@ -87,19 +86,19 @@ public class EConstructor<D> extends ESimple<D> {
     public int hashCode(){
         return getType().hashCode();
     }
-    
+
     /**
      * Get the constructor invocation arguments
-     * 
+     *
      * @return
      */
     public final List<Expr<?>> getArgs() {
         return args;
     }
-        
+
     /**
      * Create a projection with the given arguments
-     * 
+     *
      * @param args
      * @return
      */

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -13,9 +13,9 @@ import com.mysema.commons.lang.Assert;
 
 @Immutable
 public class Delegate {
-    
+
     private final Type declaringType;
-    
+
     private final Type delegateType;
 
     private final String name;
@@ -23,7 +23,7 @@ public class Delegate {
     private final List<Parameter> parameters;
 
     private final Type returnType;
-    
+
     public Delegate(Type declaringType, Type delegateType, String name, List<Parameter> params, Type returnType) {
         this.declaringType = Assert.notNull(declaringType,"declaringType");
         this.delegateType = Assert.notNull(delegateType,"delegateType");
@@ -38,12 +38,12 @@ public class Delegate {
             return true;
         }else if (o instanceof Delegate){
             Delegate m = (Delegate)o;
-            return m.name.equals(name) && m.parameters.equals(parameters);    
+            return m.name.equals(name) && m.parameters.equals(parameters);
         }else{
             return false;
-        }        
+        }
     }
-    
+
     public Type getDeclaringType() {
         return declaringType;
     }
@@ -55,11 +55,11 @@ public class Delegate {
     public String getName() {
         return name;
     }
-    
+
     public List<Parameter> getParameters() {
         return parameters;
     }
-    
+
     public Type getReturnType() {
         return returnType;
     }
@@ -68,11 +68,10 @@ public class Delegate {
     public int hashCode() {
         return name.hashCode();
     }
-    
+
     @Override
     public String toString(){
         return delegateType.getFullName() + "." + name + " " + parameters;
     }
-    
 
 }

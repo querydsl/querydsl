@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.query;
 
@@ -16,19 +16,19 @@ import com.mysema.query.types.expr.OBoolean;
 
 /**
  * Mixin implementation of the SubQuery interface
- * 
+ *
  * @author tiwe
  *
  */
 public class SubQueryMixin<T> implements SubQuery<T>{
-    
+
     @Nullable
     private volatile EBoolean exists;
-    
+
     private final QueryMetadata metadata;
-    
+
     private final Expr<T> self;
-    
+
     public SubQueryMixin(SubQuery<T> self, QueryMetadata metadata){
         this.self = self.asExpr();
         this.metadata = metadata;
@@ -62,7 +62,7 @@ public class SubQueryMixin<T> implements SubQuery<T>{
     public int hashCode(){
         return self.getType().hashCode();
     }
-    
+
     @Override
     public EBoolean notExists() {
         return exists().not();

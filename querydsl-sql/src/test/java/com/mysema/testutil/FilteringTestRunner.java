@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.testutil;
 
@@ -18,7 +18,7 @@ import com.mysema.query.Target;
 
 /**
  * FilteringTestRunner provides
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -47,7 +47,7 @@ public class FilteringTestRunner extends JUnit4ClassRunner {
     public void run(final RunNotifier notifier) {
         if (run){
             super.run(notifier);
-        }                   
+        }
     }
 
     protected TestMethod wrapMethod(Method method) {

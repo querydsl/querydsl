@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.domain;
 
@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 public class StatusChange {
     @Id
     long id;
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     java.util.Date timeStamp;
 }

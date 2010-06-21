@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.domain;
 
@@ -45,7 +45,7 @@ public class JDOTest extends AbstractTest {
         match(PString.class, "prop");
         assertMissing("skipped");
         assertMissing("skippedEntity");
-        
+
         cl = QJDOTest_JDOEntity2.class;
         match(PString.class, "stringField1");
         match(PString.class, "stringField2");

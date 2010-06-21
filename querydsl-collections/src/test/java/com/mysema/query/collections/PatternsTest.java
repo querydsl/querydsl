@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.collections;
 
@@ -11,9 +11,8 @@ import java.util.regex.Pattern;
 
 import org.junit.Test;
 
-
 public class PatternsTest {
-    
+
     @Test
     public void matches(){
         assertTrue(Pattern.matches("Bob","Bob"));

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.collections;
 
@@ -17,7 +17,7 @@ import com.mysema.query.types.expr.ENumberConst;
 
 /**
  * MathFunctionTest provides
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
@@ -28,18 +28,18 @@ public class MathFunctionTest extends AbstractQueryTest {
         Cat c = alias(Cat.class, "c");
         Expr<Integer> i = ENumberConst.create(1);
         Expr<Double> d = ENumberConst.create(1.0);
-        from(c, cats).list( 
+        from(c, cats).list(
                 MathFunctions.acos(d),
-                MathFunctions.asin(d), 
-                MathFunctions.atan(d), 
+                MathFunctions.asin(d),
+                MathFunctions.atan(d),
                 MathFunctions.cos(d),
-                MathFunctions.sin(d), 
-                ENumber.random(), 
+                MathFunctions.sin(d),
+                ENumber.random(),
                 MathFunctions.pow(d, d),
-                ENumber.min(i, i), 
+                ENumber.min(i, i),
                 ENumber.max(i, i),
-                MathFunctions.log10(d), 
-                MathFunctions.log(d), 
+                MathFunctions.log10(d),
+                MathFunctions.log(d),
                 MathFunctions.exp(d)).iterator();
 
     }

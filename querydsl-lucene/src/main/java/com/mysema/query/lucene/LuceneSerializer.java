@@ -344,8 +344,8 @@ public class LuceneSerializer {
             }
             return split(expr, value.toString());
         }else{
-            return split(expr, expr.toString());    
-        }        
+            return split(expr, expr.toString());
+        }
     }
 
     private String[] createEscapedTerms(QueryMetadata metadata, Expr<?> expr) {
@@ -357,7 +357,7 @@ public class LuceneSerializer {
             return split(expr, QueryParser.escape(value.toString()));
         }else{
             return split(expr, QueryParser.escape(expr.toString()));
-        }        
+        }
     }
 
     private String[] split(Expr<?> expr, String str) {
@@ -382,8 +382,8 @@ public class LuceneSerializer {
         } else if (expr instanceof QueryElement) {
             return ((QueryElement) expr).getQuery();
         } else{
-            throw new IllegalArgumentException("expr was of unsupported type " + expr.getClass().getName());    
-        }        
+            throw new IllegalArgumentException("expr was of unsupported type " + expr.getClass().getName());
+        }
     }
 
     public Sort toSort(List<OrderSpecifier<?>> orderBys) {

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.domain;
 
@@ -19,7 +19,7 @@ import javax.persistence.ManyToOne;
 public class Nationality implements Serializable{
     @ManyToOne
     Calendar calendar;
-    
+
     @Id
     long id;
 }

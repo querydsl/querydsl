@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._mssql;
 
@@ -23,7 +23,7 @@ import com.mysema.testutil.ResourceCheck;
 @ResourceCheck("/sqlserver.run")
 @Label(Target.SQLSERVER)
 public class DeleteMSSQLTest extends DeleteBaseTest{
-    
+
     @BeforeClass
     public static void setUpClass() throws Exception {
         Connections.initSQLServer();

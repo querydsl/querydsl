@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.support;
 
@@ -28,9 +28,9 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>, SimpleProjectable<T>{
 
     private final Projectable projectable;
-    
+
     private final Expr<T> projection;
-    
+
     private final Query<?> query;
 
     @SuppressWarnings("BC_UNCONFIRMED_CAST")
@@ -38,7 +38,7 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
         // NOTE : this is a correct cast which is not handled properly by FindBugs
         this(query, query, projection);
     }
-    
+
     public SimpleQueryAdapter(Query<?> query, Projectable projectable, Expr<T> projection){
         this.query = query;
         this.projectable = projectable;
@@ -104,7 +104,7 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
         query.set(param, value);
         return this;
     }
-    
+
     @Override
     public String toString(){
         return query.toString();
@@ -120,5 +120,5 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
         query.where(e);
         return this;
     }
-    
+
 }

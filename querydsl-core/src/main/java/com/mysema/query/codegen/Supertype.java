@@ -1,14 +1,13 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
-
 /**
  * @author tiwe
- * 
+ *
  */
 public class Supertype {
 
@@ -31,12 +30,12 @@ public class Supertype {
     public void setEntityType(EntityType entityType) {
         this.entityType = entityType;
     }
-    
+
     @Override
     public int hashCode(){
         return type.hashCode();
     }
-    
+
     @Override
     public boolean equals(Object o){
         if (o == this){
@@ -47,7 +46,7 @@ public class Supertype {
             return false;
         }
     }
-    
+
     @Override
     public String toString(){
         return type.toString();

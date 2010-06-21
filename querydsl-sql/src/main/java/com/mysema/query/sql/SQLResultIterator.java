@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql;
 
@@ -17,7 +17,7 @@ import com.mysema.query.QueryException;
 
 /**
  * SQLResultIterator is an Iterator adapter for JDBC result sets with customizable projections
- * 
+ *
  * @author tiwe
  *
  * @param <T>
@@ -28,31 +28,31 @@ public abstract class SQLResultIterator<T> implements CloseableIterator<T> {
     private Boolean next = null;
 
     private final ResultSet rs;
-    
+
     private final Statement stmt;
-    
+
     public SQLResultIterator(Statement stmt, ResultSet rs){
         this.stmt = stmt;
         this.rs = rs;
     }
-    
+
     @Override
     public void close(){
         try{
             try {
                 if (rs != null){
-                    rs.close();    
-                }                
+                    rs.close();
+                }
             } finally {
                 if (stmt != null){
-                    stmt.close();    
-                }                
-            }    
+                    stmt.close();
+                }
+            }
         }catch(SQLException e){
             throw new QueryException(e);
-        }                    
+        }
     }
-    
+
     @Override
     public boolean hasNext() {
         if (next == null){
@@ -65,7 +65,7 @@ public abstract class SQLResultIterator<T> implements CloseableIterator<T> {
         }
         return next;
     }
-    
+
     @Override
     public T next() {
         if (hasNext()){
@@ -77,7 +77,7 @@ public abstract class SQLResultIterator<T> implements CloseableIterator<T> {
     }
 
     protected abstract T produceNext(ResultSet rs);
-    
+
     @Override
     public void remove() {
         try {

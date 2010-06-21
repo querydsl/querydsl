@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.domain;
 
@@ -21,7 +21,7 @@ import org.hibernate.annotations.CollectionOfElements;
 public class Calendar implements Serializable{
     @CollectionOfElements
     Map<String, java.util.Date> holidays;
-    
+
     @Id
     int id;
 }

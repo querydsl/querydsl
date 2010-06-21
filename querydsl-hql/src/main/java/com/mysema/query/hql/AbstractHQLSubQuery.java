@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql;
 
@@ -17,7 +17,7 @@ import com.mysema.query.types.path.PMap;
 
 /**
  * Abstract superclass for SubQuery implementations
- * 
+ *
  * @author tiwe
  *
  * @param <Q>
@@ -25,11 +25,11 @@ import com.mysema.query.types.path.PMap;
 public class AbstractHQLSubQuery<Q extends AbstractHQLSubQuery<Q>> extends DetachableQuery<Q>{
 
     private final HQLQueryMixin<Q> queryMixin;
-    
+
     public AbstractHQLSubQuery() {
         this(new DefaultQueryMetadata());
     }
-    
+
     @SuppressWarnings("unchecked")
     public AbstractHQLSubQuery(QueryMetadata metadata) {
         super(new HQLQueryMixin<Q>(metadata));
@@ -44,7 +44,7 @@ public class AbstractHQLSubQuery<Q extends AbstractHQLSubQuery<Q>> extends Detac
     public <P> Q fullJoin(Path<? extends Collection<P>> target) {
         return queryMixin.fullJoin(target);
     }
-    
+
     public <P> Q fullJoin(Path<? extends Collection<P>> target, Path<P> alias) {
         return queryMixin.fullJoin(target, alias);
     }
@@ -52,39 +52,39 @@ public class AbstractHQLSubQuery<Q extends AbstractHQLSubQuery<Q>> extends Detac
     public <P> Q fullJoin(PEntity<P> target) {
         return queryMixin.fullJoin(target);
     }
-    
+
     public <P> Q fullJoin(PEntity<P> target, PEntity<P> alias) {
         return queryMixin.fullJoin(target, alias);
     }
-    
+
     public <P> Q fullJoin(PMap<?,P,?> target) {
         return queryMixin.fullJoin(target);
     }
-    
+
     public <P> Q fullJoin(PMap<?,P,?> target, Path<P> alias) {
         return queryMixin.fullJoin(target, alias);
     }
-    
+
     public <P> Q innerJoin(Path<? extends Collection<P>> target) {
         return queryMixin.innerJoin(target);
     }
-    
+
     public <P> Q innerJoin(Path<? extends Collection<P>>target, Path<P> alias) {
         return queryMixin.innerJoin(target, alias);
     }
-    
+
     public <P> Q innerJoin(PEntity<P> target) {
         return queryMixin.innerJoin(target);
     }
-    
+
     public <P> Q innerJoin(PEntity<P> target, PEntity<P> alias) {
         return queryMixin.innerJoin(target, alias);
     }
-    
+
     public <P> Q innerJoin(PMap<?,P,?> target) {
         return queryMixin.innerJoin(target);
     }
-    
+
     public <P> Q innerJoin(PMap<?,P,?> target, Path<P> alias) {
         return queryMixin.innerJoin(target, alias);
     }
@@ -92,23 +92,23 @@ public class AbstractHQLSubQuery<Q extends AbstractHQLSubQuery<Q>> extends Detac
     public <P> Q join(Path<? extends Collection<P>> target) {
         return queryMixin.join(target);
     }
-    
+
     public <P> Q join(Path<? extends Collection<P>> target, Path<P> alias) {
         return queryMixin.join(target, alias);
     }
-    
+
     public <P> Q join(PEntity<P> target) {
         return queryMixin.join(target);
     }
-    
+
     public <P> Q join(PEntity<P> target, PEntity<P> alias) {
         return queryMixin.join(target, alias);
     }
-    
+
     public <P> Q join(PMap<?,P,?> target) {
         return queryMixin.join(target);
     }
-    
+
     public <P> Q join(PMap<?,P,?> target, Path<P> alias) {
         return queryMixin.join(target, alias);
     }
@@ -116,39 +116,39 @@ public class AbstractHQLSubQuery<Q extends AbstractHQLSubQuery<Q>> extends Detac
     public <P> Q leftJoin(Path<? extends Collection<P>> target) {
         return queryMixin.leftJoin(target);
     }
-    
+
     public <P> Q leftJoin(Path<? extends Collection<P>> target, Path<P> alias) {
         return queryMixin.leftJoin(target, alias);
     }
-    
+
     public <P> Q leftJoin(PEntity<P> target) {
         return queryMixin.leftJoin(target);
     }
-    
+
     public <P> Q leftJoin(PEntity<P> target, PEntity<P> alias) {
         return queryMixin.leftJoin(target, alias);
     }
-    
+
     public <P> Q leftJoin(PMap<?,P,?> target) {
         return queryMixin.leftJoin(target);
     }
-    
+
     public <P> Q leftJoin(PMap<?,P,?> target, Path<P> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 
     public Q with(EBoolean... conditions){
-        return queryMixin.with(conditions); 
+        return queryMixin.with(conditions);
     }
-    
+
     public String toString(){
         if (!queryMixin.getMetadata().getJoins().isEmpty()){
             HQLSerializer serializer = new HQLSerializer(JPQLTemplates.DEFAULT);
             serializer.serialize(queryMixin.getMetadata(), false, null);
-            return serializer.toString().trim();    
+            return serializer.toString().trim();
         }else{
             return super.toString();
-        }        
+        }
     }
-    
+
 }

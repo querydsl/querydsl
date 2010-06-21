@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.domain;
 
@@ -24,17 +24,17 @@ import org.hibernate.annotations.IndexColumn;
 public class Order {
     @ManyToOne
     Customer customer;
-    
+
     @CollectionOfElements
     @IndexColumn(name = "_index")
     List<Integer> deliveredItemIndices;
-    
+
     @Id
     long id;
-    
+
     @OneToMany
     @IndexColumn(name = "_index")
     List<Item> items, lineItems;
-    
+
     boolean paid;
 }

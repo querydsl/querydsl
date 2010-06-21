@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query;
 
@@ -32,13 +32,13 @@ public class QProjection extends EConstructor<Projection>{
             int index = getArgs().indexOf(expr);
             return index != -1 ? (T) args[index] : null;
             }
-            
+
             @Override
             public <T> Expr<T> getExpr(Expr<T> expr){
             T val = get(expr);
             return val != null ? ExprConst.create(val) : null;
             }
-            
+
             @Override
             public <T> Expr<T> getExpr(int index, Class<T> type){
             T val = (T)args[index];
@@ -49,8 +49,8 @@ public class QProjection extends EConstructor<Projection>{
             public Object[] toArray() {
             return args;
             }
-        
+
     };
     }
-    
+
 }

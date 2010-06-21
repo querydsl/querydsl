@@ -15,16 +15,16 @@ import com.mysema.query.types.Path;
  */
 @SuppressWarnings("unchecked")
 public class JDOTuple implements Tuple{
-    
+
     private final List<Object> indexed = new ArrayList<Object>();
-    
+
     private final Map<String,Object> mapped = new LinkedHashMap<String,Object>();
-    
+
     public void put(Object name, Object value){
     indexed.add(value);
     mapped.put(name.toString(), value);
     }
-    
+
     @Override
     public <T> T get(int index, Class<T> type) {
     return (T) indexed.get(index);
@@ -35,7 +35,7 @@ public class JDOTuple implements Tuple{
     if (expr instanceof Path){
         return (T) mapped.get(((Path)expr).getMetadata().getExpression().toString());
     }else{
-        return (T) mapped.get(expr.toString());    
+        return (T) mapped.get(expr.toString());
     }
     }
 

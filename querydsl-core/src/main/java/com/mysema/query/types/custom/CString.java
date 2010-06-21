@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.custom;
 
@@ -17,33 +17,33 @@ import com.mysema.query.types.expr.EString;
 
 /**
  * CString defines custom String expressions
- * 
+ *
  * @author tiwe
  *
  */
 public class CString extends EString implements Custom<String> {
-    
+
     private static final long serialVersionUID = 3181686132439356614L;
 
     public static EString create(String template, Expr<?>... args){
         return new CString(TemplateFactory.DEFAULT.create(template), Arrays.<Expr<?>>asList(args));
     }
-    
+
     public static EString create(Template template, Expr<?>... args){
         return new CString(template, Arrays.<Expr<?>>asList(args));
     }
-    
+
     private final Custom<String> customMixin;
-    
+
     public CString(Template template, List<Expr<?>> args){
         customMixin = new CustomMixin<String>(this, args, template);
     }
-    
+
     @Override
     public void accept(Visitor v){
         v.visit(this);
     }
-    
+
     @Override
     public Expr<?> getArg(int index) {
         return customMixin.getArg(index);
@@ -58,12 +58,12 @@ public class CString extends EString implements Custom<String> {
     public Template getTemplate() {
         return customMixin.getTemplate();
     }
-    
+
     @Override
     public boolean equals(Object o){
         return customMixin.equals(o);
     }
-    
+
     @Override
     public int hashCode(){
         return getType().hashCode();

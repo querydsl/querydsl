@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql.models.fitness;
 
@@ -12,7 +12,7 @@ import com.mysema.query.annotations.QueryEntity;
 
 /**
  * Gymnasium.
- * 
+ *
  * @version $Revision: 1.1 $
  */
 @QueryEntity

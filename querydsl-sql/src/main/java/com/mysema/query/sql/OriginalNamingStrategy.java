@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql;
 
@@ -11,9 +11,9 @@ import com.mysema.query.codegen.EntityType;
 
 /**
  * OriginalNamingStrategy preserves the table and column names in the conversion
- * 
+ *
  * @author tiwe
- * 
+ *
  */
 public class OriginalNamingStrategy implements NamingStrategy {
 
@@ -37,7 +37,7 @@ public class OriginalNamingStrategy implements NamingStrategy {
         // TODO : escape
         return entityType.getSimpleName();
     }
-    
+
     @Override
     public String getPropertyName(String columnName, String namePrefix, EntityType entityType) {
         return columnName;

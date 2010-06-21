@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.maven;
 
@@ -11,7 +11,7 @@ package com.mysema.query.maven;
  *
  */
 public class TestMetadataExportMojo extends AbstractMetaDataExportMojo{
-    
+
     protected boolean isForTest(){
         return true;
     }

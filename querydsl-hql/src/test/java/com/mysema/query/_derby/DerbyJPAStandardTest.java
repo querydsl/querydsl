@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._derby;
 
@@ -11,8 +11,6 @@ import com.mysema.query.AbstractJPATest;
 import com.mysema.query.Target;
 import com.mysema.testutil.JPAConfig;
 import com.mysema.testutil.JPATestRunner;
-
-
 
 /**
  * @author tiwe
@@ -26,5 +24,5 @@ public class DerbyJPAStandardTest extends AbstractJPATest{
     protected Target getTarget() {
         return Target.DERBY;
     }
-    
+
 }

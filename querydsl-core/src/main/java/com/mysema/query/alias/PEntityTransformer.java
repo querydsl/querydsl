@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.alias;
 
@@ -12,11 +12,11 @@ import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 public final class PEntityTransformer implements Transformer<Pair<Class<?>, String>, PEntity<?>> {
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public PEntity<?> transform(Pair<Class<?>, String> input) {
         return new PEntity(input.getFirst(), PathMetadataFactory.forVariable(input.getSecond()));
     }
-    
+
 }

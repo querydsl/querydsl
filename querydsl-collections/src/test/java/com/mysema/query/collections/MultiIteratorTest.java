@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.collections;
 
@@ -19,15 +19,15 @@ import com.mysema.util.MultiIterator;
 
 /**
  * MultiIteratorTest provides
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
 @SuppressWarnings("unchecked")
 public class MultiIteratorTest extends AbstractIteratorTest {
-    
+
     private MultiIterator it;
-    
+
     private List<Integer> list1 = Arrays.asList(1, 2);
 
     private List<Integer> list2 = Collections.emptyList();
@@ -82,7 +82,7 @@ public class MultiIteratorTest extends AbstractIteratorTest {
         list3 = Arrays.asList(100, 200, 300, 400);
         list4 = Arrays.asList(1000, 2000, 3000, 4000, 5000);
         it = new MultiIterator(Arrays.asList(list1, list2, list3, list4));
-        
+
         List<Object[]> list = new ArrayList<Object[]>();
         for (Object a : row(1, 2)) {
             for (Object b : row(10, 20, 30)) {

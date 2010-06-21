@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql.domain;
 
@@ -28,23 +28,23 @@ public class QEmployee extends PEntity<QEmployee> {
     public Expr<Object[]> all(){
         return CSimple.create(Object[].class, "{0}.*", this);
     }
-    
+
     public final PNumber<java.lang.Integer> id = createNumber("ID", java.lang.Integer.class);
-    
+
     public final PString firstname = createString("FIRSTNAME");
-    
+
     public final PString lastname = createString("LASTNAME");
-    
+
     public final PNumber<BigDecimal> salary = createNumber("SALARY", BigDecimal.class);
-    
+
     public final PDate<java.sql.Date> datefield = createDate("DATEFIELD", java.sql.Date.class);
-    
+
     public final PTime<java.sql.Time> timefield = createTime("TIMEFIELD", java.sql.Time.class);
-    
+
     public final PNumber<java.lang.Integer> superiorId = createNumber("SUPERIOR_ID", java.lang.Integer.class);
-    
+
     public final PrimaryKey<QEmployee> idKey = new PrimaryKey<QEmployee>(this, id);
-    
+
     public final ForeignKey<QEmployee> superiorIdKey = new ForeignKey<QEmployee>(this, superiorId, "ID");
 
     public QEmployee(java.lang.String path) {
@@ -54,5 +54,5 @@ public class QEmployee extends PEntity<QEmployee> {
     public QEmployee(PathMetadata<?> metadata) {
         super(QEmployee.class, metadata);
     }
-    
+
 }

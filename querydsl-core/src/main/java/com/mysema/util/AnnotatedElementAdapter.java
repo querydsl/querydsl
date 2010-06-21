@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.util;
 
@@ -15,9 +15,9 @@ import java.util.Map;
  *
  */
 public class AnnotatedElementAdapter implements AnnotatedElement{
-    
+
     private final Map<Class<?>,Annotation> annotations = new HashMap<Class<?>,Annotation>();
-    
+
     public AnnotatedElementAdapter(AnnotatedElement... elements){
         for (AnnotatedElement element : elements){
             for (Annotation annotation : element.getAnnotations()){

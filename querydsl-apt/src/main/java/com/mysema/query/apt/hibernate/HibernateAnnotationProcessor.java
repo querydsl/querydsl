@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.apt.hibernate;
 
@@ -20,10 +20,10 @@ import com.mysema.query.apt.jpa.JPAAnnotationProcessor;
 @SupportedAnnotationTypes("*")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class HibernateAnnotationProcessor extends JPAAnnotationProcessor{
-    
+
     @Override
     protected DefaultConfiguration createConfiguration(RoundEnvironment roundEnv) throws ClassNotFoundException {
         return new HibernateConfiguration(roundEnv, processingEnv.getOptions(), entity, superType, embeddable, skip);
-    } 
+    }
 
 }

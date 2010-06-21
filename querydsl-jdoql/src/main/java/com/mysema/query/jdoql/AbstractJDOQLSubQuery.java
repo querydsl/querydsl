@@ -15,20 +15,20 @@ import com.mysema.query.types.path.PEntity;
 
 /**
  * Abstract superclass for SubQuery implementations
- * 
+ *
  * @author tiwe
  *
  * @param <Q>
  */
 public class AbstractJDOQLSubQuery<Q extends AbstractJDOQLSubQuery<Q>> extends DetachableQuery<Q>{
-    
+
     /**
-     * 
+     *
      */
     public AbstractJDOQLSubQuery() {
         this(new DefaultQueryMetadata());
     }
-    
+
     /**
      * @param metadata
      */
@@ -37,7 +37,7 @@ public class AbstractJDOQLSubQuery<Q extends AbstractJDOQLSubQuery<Q>> extends D
         super(new QueryMixin<Q>(metadata));
         this.queryMixin.setSelf((Q)this);
     }
-    
+
     public Q from(PEntity<?>... args) {
         return queryMixin.from(args);
     }
@@ -47,7 +47,7 @@ public class AbstractJDOQLSubQuery<Q extends AbstractJDOQLSubQuery<Q>> extends D
         queryMixin.getMetadata().addJoin(JoinType.DEFAULT, OSimple.create(alias.getType(), Ops.ALIAS, target.asExpr(), alias));
         return (Q)this;
     }
-    
+
     @Override
     public String toString(){
         if (!queryMixin.getMetadata().getJoins().isEmpty()){
@@ -57,7 +57,7 @@ public class AbstractJDOQLSubQuery<Q extends AbstractJDOQLSubQuery<Q>> extends D
             return serializer.toString().trim();
         }else{
             return super.toString();
-        } 
+        }
     }
 
 }

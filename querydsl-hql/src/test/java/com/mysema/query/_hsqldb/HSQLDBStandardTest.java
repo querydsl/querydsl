@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._hsqldb;
 
@@ -12,8 +12,6 @@ import com.mysema.query.Target;
 import com.mysema.testutil.HibernateConfig;
 import com.mysema.testutil.HibernateTestRunner;
 
-
-
 /**
  * @author tiwe
  *
@@ -21,7 +19,7 @@ import com.mysema.testutil.HibernateTestRunner;
 @RunWith(HibernateTestRunner.class)
 @HibernateConfig("hsqldb.properties")
 public class HSQLDBStandardTest extends AbstractHibernateTest{
-    
+
     @Override
     protected Target getTarget() {
         return Target.HSQLDB;

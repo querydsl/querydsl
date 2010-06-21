@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.alias;
 
@@ -23,13 +23,13 @@ import com.mysema.query.types.path.*;
 
 /**
  * Alias provides alias factory methods
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
 @SuppressWarnings("PMD")
 public final class Alias {
-    
+
     private static final AliasFactory aliasFactory = new AliasFactory();
 
     private static final PSimple<Object> it = new PSimple<Object>(Object.class, PathMetadataFactory.forVariable("it"));
@@ -38,14 +38,14 @@ public final class Alias {
     //CHECKSTYLE:OFF
     /**
      * Convert the given alias to an expression
-     * 
+     *
      * @param <D>
      * @return
      */
     public static <D extends Expr<?>> D $() {
         return aliasFactory.<D>getCurrentAndReset();
     }
-    
+
     public static <D> PArray<D> $(D[] arg){
     return aliasFactory.<PArray<D>> getCurrentAndReset();
     }
@@ -122,24 +122,24 @@ public final class Alias {
     public static <D> PSet<D> $(Set<D> args) {
         return aliasFactory.<PSet<D>> getCurrentAndReset();
     }
-    
+
     public static PNumber<Short> $(Short arg) {
         return aliasFactory.<PNumber<Short>> getCurrentAndReset();
     }
-    
+
     public static PString $(String arg) {
         return aliasFactory.<PString> getCurrentAndReset();
     }
-    
+
     public static PTime<Time> $(Time arg) {
         return aliasFactory.<PTime<Time>> getCurrentAndReset();
     }
-    
+
     public static PDateTime<Timestamp> $(Timestamp arg) {
         return aliasFactory.<PDateTime<Timestamp>> getCurrentAndReset();
     }
     //CHECKSTYLE:ON
-    
+
     public static <A> A alias(Class<A> cl) {
         return alias(cl, StringUtils.uncapitalize(cl.getSimpleName()));
     }
@@ -154,7 +154,7 @@ public final class Alias {
 
     /**
      * Convert the given alias to an expression
-     * 
+     *
      * @param <D>
      * @param arg
      * @return
@@ -170,8 +170,8 @@ public final class Alias {
             throw new IllegalArgumentException("No path mapped to " + arg);
         }
     }
-    
-    public static void resetAlias() {        
+
+    public static void resetAlias() {
         aliasFactory.reset();
     }
 
@@ -185,7 +185,6 @@ public final class Alias {
         return new PComparable(arg.getClass(), "var"+arg);
     }
 
-
     @SuppressWarnings("unchecked")
     public static <D extends Number & Comparable<D>> PNumber<D> var(D arg) {
         return new PNumber(arg.getClass(), "var" + arg.getClass().getSimpleName()+arg);
@@ -196,7 +195,7 @@ public final class Alias {
         String var = "var"+ arg.getClass().getSimpleName() + "_" + arg.toString().replace(' ', '_');
         return new PathBuilder(arg.getClass(), var);
     }
-    
+
     public static PString var(String arg) {
         return new PString(arg.replace(' ', '_'));
     }

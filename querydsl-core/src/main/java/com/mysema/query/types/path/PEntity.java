@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.path;
 
@@ -25,9 +25,9 @@ import com.mysema.query.types.expr.OBoolean;
 
 /**
  * PEntity represents entity paths
- * 
+ *
  * @author tiwe
- * 
+ *
  * @param <D>
  *            Java type
  */
@@ -59,7 +59,7 @@ public class PEntity<D> extends ESimple<D> implements Path<D> {
 
     /**
      * Cast the path to a subtype querytype
-     * 
+     *
      * @param <T>
      * @param clazz
      * @return
@@ -96,7 +96,7 @@ public class PEntity<D> extends ESimple<D> implements Path<D> {
 
     /**
      * Create a new array path
-     * 
+     *
      * @param <A>
      * @param property
      * @param type
@@ -108,7 +108,7 @@ public class PEntity<D> extends ESimple<D> implements Path<D> {
 
     /**
      * Create a new Boolean path
-     * 
+     *
      * @param propertyName
      * @return
      */
@@ -118,7 +118,7 @@ public class PEntity<D> extends ESimple<D> implements Path<D> {
 
     /**
      * Create a new Collection typed path
-     * 
+     *
      * @param <A>
      * @param property
      * @param type
@@ -130,7 +130,7 @@ public class PEntity<D> extends ESimple<D> implements Path<D> {
 
     /**
      * Create a new Comparable typed path
-     * 
+     *
      * @param <A>
      * @param property
      * @param type
@@ -143,7 +143,7 @@ public class PEntity<D> extends ESimple<D> implements Path<D> {
 
     /**
      * Create a new Date path
-     * 
+     *
      * @param <A>
      * @param property
      * @param type
@@ -156,7 +156,7 @@ public class PEntity<D> extends ESimple<D> implements Path<D> {
 
     /**
      * Create a new DateTime path
-     * 
+     *
      * @param <A>
      * @param property
      * @param type
@@ -169,7 +169,7 @@ public class PEntity<D> extends ESimple<D> implements Path<D> {
 
     /**
      * Create a new List typed path
-     * 
+     *
      * @param <A>
      * @param <E>
      * @param property
@@ -184,7 +184,7 @@ public class PEntity<D> extends ESimple<D> implements Path<D> {
 
     /**
      * Create a new Map typed path
-     * 
+     *
      * @param <K>
      * @param <V>
      * @param <E>
@@ -201,7 +201,7 @@ public class PEntity<D> extends ESimple<D> implements Path<D> {
 
     /**
      * Create a new Number path
-     * 
+     *
      * @param <A>
      * @param property
      * @param type
@@ -214,7 +214,7 @@ public class PEntity<D> extends ESimple<D> implements Path<D> {
 
     /**
      * Create a new Set typed path
-     * 
+     *
      * @param <A>
      * @param property
      * @param type
@@ -226,7 +226,7 @@ public class PEntity<D> extends ESimple<D> implements Path<D> {
 
     /**
      * Create a new Simpe path
-     * 
+     *
      * @param <A>
      * @param path
      * @param type
@@ -239,7 +239,7 @@ public class PEntity<D> extends ESimple<D> implements Path<D> {
 
     /**
      * Create a new String path
-     * 
+     *
      * @param property
      * @return
      */
@@ -249,7 +249,7 @@ public class PEntity<D> extends ESimple<D> implements Path<D> {
 
     /**
      * Create a new Time path
-     * 
+     *
      * @param <A>
      * @param property
      * @param type
@@ -286,7 +286,7 @@ public class PEntity<D> extends ESimple<D> implements Path<D> {
 
     /**
      * Create an <code>this instanceOf type</code> expression
-     * 
+     *
      * @param <B>
      * @param type
      * @return
@@ -304,10 +304,10 @@ public class PEntity<D> extends ESimple<D> implements Path<D> {
     public EBoolean isNull() {
         return pathMixin.isNull();
     }
-    
+
     @Override
     public AnnotatedElement getAnnotatedElement(){
         return pathMixin.getAnnotatedElement();
     }
-    
+
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.collections;
 
@@ -18,13 +18,13 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 
 public class LoadTest {
-    
+
     private QCat cat = QCat.cat;
-    
+
     private DefaultEvaluatorFactory evaluatorFactory = new DefaultEvaluatorFactory(ColQueryTemplates.DEFAULT);
-    
+
     private QueryMetadata metadata = new DefaultQueryMetadata();
-    
+
     @Test
     public void creation(){
         System.out.println("Evaluator creation #1");
@@ -32,20 +32,20 @@ public class LoadTest {
             long s = System.currentTimeMillis();
             evaluatorFactory.create(metadata, Collections.singletonList(cat), cat.name.startsWith("Bob"));
             long e = System.currentTimeMillis();
-            System.out.println(" " + (e-s)+"ms");    
-        }        
+            System.out.println(" " + (e-s)+"ms");
+        }
         System.out.println();
-        
+
         System.out.println("Evaluator creation #2");
         for (int i = 0; i < 5; i++){
             long s = System.currentTimeMillis();
             evaluatorFactory.create(metadata, Collections.singletonList(cat), cat.name.startsWith("Bob" + i));
             long e = System.currentTimeMillis();
-            System.out.println(" " + (e-s)+"ms");    
-        }        
+            System.out.println(" " + (e-s)+"ms");
+        }
         System.out.println();
     }
-    
+
     @Test
     public void test(){
         List<Cat> data = new ArrayList<Cat>(5000);
@@ -58,7 +58,7 @@ public class LoadTest {
                     new Cat("Mary" + i)
             ));
         }
-        
+
         // #1
         System.out.println("Querydsl iteration");
         for (int i = 0; i < 5; i++){
@@ -69,7 +69,7 @@ public class LoadTest {
             System.out.println(" " + (e1-s1)+"ms");
         }
         System.out.println();
-        
+
         // #2
         System.out.println("Normal iteration");
         for (int i = 0; i < 5; i++){
@@ -80,8 +80,8 @@ public class LoadTest {
             }
             assertEquals(1000, bobs2.size());
             long e2 = System.currentTimeMillis();
-            System.out.println(" " + (e2-s2)+"ms");    
-        }        
+            System.out.println(" " + (e2-s2)+"ms");
+        }
         System.out.println();
     }
 

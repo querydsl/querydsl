@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.collections;
 
@@ -17,7 +17,7 @@ import com.mysema.query.types.expr.EBoolean;
 
 /**
  * ColUpdateClause is an implementation of the UpdateClause interface for Querydsl Collections
- * 
+ *
  * @author tiwe
  *
  * @param <T>
@@ -25,20 +25,20 @@ import com.mysema.query.types.expr.EBoolean;
 public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
 
     private final Path<T> expr;
-    
+
     private final Map<Path<?>,Object> paths = new HashMap<Path<?>,Object>();
-    
+
     private final ColQuery query;
-    
+
     public ColUpdateClause(QueryEngine qe, Path<T> expr, Iterable<? extends T> col){
         this.query = new ColQueryImpl(qe).from(expr, col);
         this.expr = expr;
     }
-    
+
     public ColUpdateClause(Path<T> expr, Iterable<? extends T> col){
         this(QueryEngine.DEFAULT, expr, col);
     }
-    
+
     @Override
     public long execute() {
         int rv = 0;
@@ -67,12 +67,11 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
         }
         return this;
     }
-    
+
     @Override
     public ColUpdateClause<T> where(EBoolean... o) {
         query.where(o);
         return this;
     }
-
 
 }

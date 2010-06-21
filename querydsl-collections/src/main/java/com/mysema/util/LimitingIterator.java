@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.util;
 
@@ -12,7 +12,7 @@ import com.mysema.query.QueryModifiers;
 
 /**
  * LimitingIterator provides
- * 
+ *
  * @author tiwe
  * @version $Id$
  */

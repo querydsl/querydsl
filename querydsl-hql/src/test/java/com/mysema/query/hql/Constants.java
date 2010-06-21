@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql;
 
@@ -36,26 +36,26 @@ import com.mysema.query.hql.domain.QStore;
 import com.mysema.query.hql.domain.QUser;
 
 public interface Constants {
-    
+
     QAccount account = new QAccount("account");
 
     QAnimal an = new QAnimal("an");
-    
+
     QBar bar = new QBar("bar");
-    
+
     QCalendar calendar = new QCalendar("calendar");
-    
+
     // QCat
     QCat cat = new QCat("cat");
-    
+
     QCat cat1 = new QCat("cat1");
 
     QCat cat2 = new QCat("cat2");
-    
+
     QCat cat3 = new QCat("cat3");
-    
+
     QCat cat4 = new QCat("cat4");
-    
+
     QCat cat5 = new QCat("cat5");
 
     // QCatalog
@@ -64,11 +64,11 @@ public interface Constants {
     QCat child = new QCat("child");
     // QCompany
     QCompany company = new QCompany("company");
-    
+
     QCompany company1 = new QCompany("company1");
-    
+
     QCompany company2 = new QCompany("company2");
-    
+
     QCompany company3 = new QCompany("company3");
 
     QCompany company4 = new QCompany("company4");
@@ -89,13 +89,13 @@ public interface Constants {
     QCat fatcat = new QCat("fatcat");
 
     QFoo foo = new QFoo("foo");
-    
+
     QFormula form = new QFormula("form");
     // QItem
     QItem item = new QItem("item");
-    
+
     QCat kit = new QCat("kit");
-    
+
     QCat kitten = new QCat("kitten");
 
     QCat kitten2 = new QCat("kitten2");
@@ -108,17 +108,17 @@ public interface Constants {
     QAuditLog log = new QAuditLog("log");
 
     QNamed m = new QNamed("m");
-    
+
     QCat mate = new QCat("mate");
-    
+
     QCat mother = new QCat("mother");
-    
+
     QNamed n = new QNamed("n");
-    
+
     QName name = new QName("name");
-    
+
     QCat offspr = new QCat("offspr");
-    
+
     QOrder ord = new QOrder("ord");
     // Order
     QOrder order = new QOrder("order");
@@ -147,7 +147,7 @@ public interface Constants {
     QCat rival = new QCat("rival");
 
     QShow show = new QShow("show");
-    
+
     QStatus status = new QStatus("status");
 
     QStatusChange statusChange = new QStatusChange("statusChange");
@@ -156,7 +156,7 @@ public interface Constants {
 
     // User
     QUser user = new QUser("user");
-    
+
     QUser user1 = new QUser("user1");
 
     QUser user2 = new QUser("user2");

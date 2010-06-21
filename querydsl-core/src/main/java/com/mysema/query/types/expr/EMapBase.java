@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types.expr;
 
@@ -14,7 +14,7 @@ import com.mysema.query.types.Ops;
 
 /**
  * EMapBase is an abstract base class for EMap implementations
- * 
+ *
  * @author tiwe
  *
  * @param <K>
@@ -24,16 +24,16 @@ public abstract class EMapBase<K,V> extends ESimple<Map<K,V>> implements EMap<K,
 
     private static final long serialVersionUID = 2856001983312366841L;
 
-    @Nullable 
-    private volatile ENumber<Integer> size;    
-    
-    @Nullable 
+    @Nullable
+    private volatile ENumber<Integer> size;
+
+    @Nullable
     private volatile EBoolean empty;
-    
+
     public EMapBase(Class<? extends Map<K, V>> type) {
         super(type);
     }
-    
+
     @Override
     public final EBoolean contains(Expr<K> key, Expr<V> value) {
         return get(key).eq(value);
@@ -58,7 +58,7 @@ public abstract class EMapBase<K,V> extends ESimple<Map<K,V>> implements EMap<K,
     public final EBoolean containsValue(V value) {
         return OBoolean.create(Ops.CONTAINS_VALUE, this, ExprConst.create(value));
     }
-        
+
     @Override
     public final EBoolean isEmpty() {
         if (empty == null){
@@ -66,10 +66,10 @@ public abstract class EMapBase<K,V> extends ESimple<Map<K,V>> implements EMap<K,
         }
         return empty;
     }
-    
+
     @Override
     public final EBoolean isNotEmpty() {
-        return isEmpty().not(); 
+        return isEmpty().not();
     }
 
     @Override

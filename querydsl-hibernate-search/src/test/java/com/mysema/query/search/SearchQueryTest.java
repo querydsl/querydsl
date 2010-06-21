@@ -19,7 +19,6 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.EBoolean;
 
-
 public class SearchQueryTest extends AbstractQueryTest{
 
     private QUser user = new QUser("user");

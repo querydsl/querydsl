@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.hibernate.sql;
 
@@ -24,18 +24,18 @@ import com.mysema.testutil.HibernateTestRunner;
 @RunWith(HibernateTestRunner.class)
 @HibernateConfig("derby.properties")
 public class QueryMutabilityTest{
-    
+
     private static final SQLTemplates derbyTemplates = new DerbyTemplates();
-    
+
     private Session session;
-    
+
     protected HibernateSQLQuery query(){
         return new HibernateSQLQuery(session, derbyTemplates);
     }
     public void setSession(Session session) {
         this.session = session;
     }
-    
+
     @Test
     public void test() throws SecurityException, IllegalArgumentException,
             NoSuchMethodException, IllegalAccessException,
@@ -48,11 +48,11 @@ public class QueryMutabilityTest{
     @Test
     public void testClone(){
         SAnimal cat = new SAnimal("cat");
-        HibernateSQLQuery query = query().from(cat).where(cat.name.isNotNull());        
+        HibernateSQLQuery query = query().from(cat).where(cat.name.isNotNull());
         HibernateSQLQuery query2 = query.clone(session);
         assertEquals(query.getMetadata().getJoins(), query2.getMetadata().getJoins());
         assertEquals(query.getMetadata().getWhere(), query2.getMetadata().getWhere());
         query2.list(cat.id);
     }
-    
+
 }

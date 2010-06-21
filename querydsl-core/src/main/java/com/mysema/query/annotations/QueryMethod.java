@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.annotations;
 
@@ -14,13 +14,13 @@ import java.lang.annotation.Target;
 
 /**
  * Declaration of an extension method
- * 
+ *
  * e.g.
  * <pre>
  * @QueryMethod("{0}.myMethod({1})")
  * public int myMethod(String arg);
  * </pre>
- * 
+ *
  * @author tiwe
  *
  */
@@ -32,10 +32,10 @@ public @interface QueryMethod {
 
     /**
      * Querydsl serialization template for extension method
-     * 
-     * 
+     *
+     *
      * @return
      */
     String value();
-    
+
 }

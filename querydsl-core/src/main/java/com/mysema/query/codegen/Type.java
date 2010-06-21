@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -11,9 +11,9 @@ import javax.annotation.Nullable;
 
 /**
  * Type represents Java types
- * 
+ *
  * @author tiwe
- * 
+ *
  */
 public interface Type {
 
@@ -22,7 +22,7 @@ public interface Type {
      * @param builder
      * @param asArgType
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     void appendLocalGenericName(Type context, Appendable builder, boolean asArgType) throws IOException;
 
@@ -30,21 +30,21 @@ public interface Type {
      * @param context
      * @param builder
      * @return
-     * @throws IOException 
+     * @throws IOException
      */
     void appendLocalRawName(Type context, Appendable builder) throws IOException;
-    
+
     /**
      * @param category
      * @return
      */
     Type as(TypeCategory category);
-    
+
     /**
      * @return
      */
     Type asArrayType();
-    
+
     /**
      * @return
      */
@@ -90,7 +90,7 @@ public interface Type {
      */
     @Nullable
     String getPrimitiveName();
-    
+
     /**
      * @return
      */
@@ -110,7 +110,7 @@ public interface Type {
      * @return
      */
     boolean isFinal();
-    
+
     /**
      * @return
      */
@@ -120,5 +120,5 @@ public interface Type {
      * @return
      */
     String toString();
-    
+
 }

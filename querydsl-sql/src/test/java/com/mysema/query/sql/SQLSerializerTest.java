@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql;
 
@@ -14,7 +14,6 @@ import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.domain.QSurvey;
 
-
 public class SQLSerializerTest {
 
     @Test
@@ -22,15 +21,15 @@ public class SQLSerializerTest {
         QSurvey s = new QSurvey("s");
         BooleanBuilder bb1 = new BooleanBuilder();
         bb1.and(s.name.eq(s.name));
-       
+
         BooleanBuilder bb2 = new BooleanBuilder();
         bb2.or(s.name.eq(s.name));
         bb2.or(s.name.eq(s.name));
-       
+
         String str = new SQLSerializer(SQLTemplates.DEFAULT).handle(bb1.and(bb2)).toString();
         assertEquals("s.NAME = s.NAME and (s.NAME = s.NAME or s.NAME = s.NAME)", str);
     }
-    
+
     @Test
     public void testUpdate(){
         QSurvey survey = new QSurvey("survey");
@@ -39,7 +38,7 @@ public class SQLSerializerTest {
         updateClause.set(survey.name, null);
         assertEquals("update SURVEY\nset ID = ?, NAME = null", updateClause.toString());
     }
-    
+
     @Test
     public void testInsert(){
         QSurvey survey = new QSurvey("survey");

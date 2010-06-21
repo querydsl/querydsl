@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql.oracle;
 
@@ -11,16 +11,15 @@ import org.junit.Test;
 
 import com.mysema.query.types.path.PNumber;
 
-
 public class OracleGrammarTest {
-    
+
     @Test
     public void constants(){
         assertNotNull(OracleGrammar.level);
         assertNotNull(OracleGrammar.rownum);
         assertNotNull(OracleGrammar.sysdate);
     }
-    
+
     @Test
     public void sumOver(){
         PNumber<Integer> intPath = new PNumber<Integer>(Integer.class, "intPath");

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.sql.dml;
 
@@ -32,23 +32,23 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 /**
  * SQLUpdateClause defines a UPDATE clause
- * 
+ *
  * @author tiwe
- * 
+ *
  */
 @SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public class SQLUpdateClause implements UpdateClause<SQLUpdateClause> {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
-    
+
     private final Connection connection;
 
     private final PEntity<?> entity;
 
     private final SQLTemplates templates;
-    
+
     private final List<Pair<Path<?>,?>> updates = new ArrayList<Pair<Path<?>,?>>();
-    
+
     private final BooleanBuilder where = new BooleanBuilder();
 
     public SQLUpdateClause(Connection connection, SQLTemplates templates, PEntity<?> entity) {
@@ -90,9 +90,9 @@ public class SQLUpdateClause implements UpdateClause<SQLUpdateClause> {
     public <T> SQLUpdateClause set(Path<T> path, T value) {
         if (value != null){
             updates.add(Pair.<Path<?>,Object>of(path, value));
-        }else{            
+        }else{
             updates.add(Pair.<Path<?>,Object>of(path, new NullExpr<T>(path.getType())));
-        }        
+        }
         return this;
     }
 
@@ -101,10 +101,10 @@ public class SQLUpdateClause implements UpdateClause<SQLUpdateClause> {
     public SQLUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++){
             if (values.get(i) != null){
-                updates.add(Pair.<Path<?>,Object>of(paths.get(i), values.get(i)));    
+                updates.add(Pair.<Path<?>,Object>of(paths.get(i), values.get(i)));
             }else{
                 updates.add(Pair.<Path<?>,Object>of(paths.get(i), new NullExpr(paths.get(i).getType())));
-            }            
+            }
         }
         return this;
     }

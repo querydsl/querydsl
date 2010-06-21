@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.annotations;
 
@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 
 /**
  * QueryType defines the Querydsl property type for a Domain property
- * 
+ *
  * @author tiwe
  *
  */

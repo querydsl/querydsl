@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.search;
 
@@ -17,11 +17,11 @@ import com.mysema.query.types.Path;
 public class SearchSerializer extends LuceneSerializer{
 
     public static final SearchSerializer DEFAULT = new SearchSerializer(false,true);
-    
+
     public SearchSerializer(boolean lowerCase, boolean splitTerms){
         super(lowerCase, splitTerms);
     }
-    
+
     @Override
     public String toField(Path<?> path) {
         if (path.getAnnotatedElement() != null){

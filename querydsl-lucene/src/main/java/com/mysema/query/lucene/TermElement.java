@@ -6,7 +6,7 @@ import com.mysema.query.types.expr.EStringConst;
 
 /**
  * TermElement represents the embedded String as a term
- * 
+ *
  * @author tiwe
  *
  */
@@ -15,11 +15,11 @@ public class TermElement extends EString{
     private static final long serialVersionUID = 2350215644019186076L;
 
     private final EStringConst string;
-    
+
     public TermElement(String str) {
         this.string = (EStringConst) EStringConst.create(str);
     }
-    
+
     @Override
     public void accept(Visitor v) {
         string.accept(v);

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types;
 
@@ -11,7 +11,6 @@ import org.junit.Test;
 
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.EStringConst;
-
 
 public class EStringConstTest {
 
@@ -23,7 +22,7 @@ public class EStringConstTest {
         assertEquals("ABC", expr("abc").upper().toString());
         assertEquals("ab",  expr("abc").substring(0,2).toString());
     }
-    
+
     @Test
     public void test2(){
         assertEquals("abc", expr("ab").append(expr("c")).toString());
@@ -32,7 +31,7 @@ public class EStringConstTest {
         assertEquals("ABC", expr("abc").upper().toString());
         assertEquals("ab",  expr("abc").substring(0,2).toString());
     }
-    
+
     private EString expr(String str){
         return EStringConst.create(str);
     }

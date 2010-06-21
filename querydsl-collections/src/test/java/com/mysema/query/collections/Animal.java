@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.collections;
 
@@ -15,18 +15,18 @@ import com.mysema.query.annotations.QueryType;
 public class Animal {
 
     protected boolean alive;
-    
+
     protected java.util.Date birthdate = new java.util.Date();
-    
+
     @QueryType(PropertyType.SIMPLE)
     private Date dateAsSimple;
-    
+
     protected int bodyWeight, weight, toes;
-    
+
     protected Color color;
-       
+
     protected int id;
-    
+
     protected String name;
 
     public java.util.Date getBirthdate() {
@@ -100,7 +100,5 @@ public class Animal {
     public void setDateAsSimple(Date dateAsSimple) {
         this.dateAsSimple = dateAsSimple;
     }
-    
-    
 
 }

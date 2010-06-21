@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql;
 
@@ -17,9 +17,9 @@ public class MathTest extends AbstractQueryTest{
         PNumber<Double> path = QCat.cat.bodyWeight;
         assertToString("(cat.bodyWeight - sum(cat.bodyWeight)) * cat.bodyWeight", path.subtract(path.sum()).multiply(path));
     }
-    
+
     @Test
-    public void testArithmeticOperationsInFunctionalWay() {        
+    public void testArithmeticOperationsInFunctionalWay() {
         assertToString("cat.bodyWeight + :a1", cat.bodyWeight.add(10));
         assertToString("cat.bodyWeight - :a1", cat.bodyWeight.subtract(10));
         assertToString("cat.bodyWeight * :a1", cat.bodyWeight.multiply(10));
@@ -42,7 +42,6 @@ public class MathTest extends AbstractQueryTest{
         assertToString("c1.id * (c2.id + c3.id)", c1.id.multiply(c2.id.add(c3.id)));
         assertToString("(c1.id + c2.id) * c3.id", c1.id.add(c2.id).multiply(c3.id));
     }
-    
 
     @Test
     public void testMathematicalOperations() {
@@ -52,5 +51,5 @@ public class MathTest extends AbstractQueryTest{
         cat.bodyWeight.multiply(kitten.bodyWeight);
         cat.bodyWeight.divide(kitten.bodyWeight);
     }
-    
+
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query._oracle;
 
@@ -23,14 +23,14 @@ import com.mysema.testutil.ResourceCheck;
 @ResourceCheck("/oracle.run")
 @Label(Target.ORACLE)
 public class DeleteOracleTest extends DeleteBaseTest{
-    
+
     @BeforeClass
     public static void setUpClass() throws Exception {
         Connections.initOracle();
     }
 
     @Before
-    public void setUp() throws SQLException {        
+    public void setUp() throws SQLException {
         dialect = new OracleTemplates().newLineToSingleSpace();
         super.setUp();
     }

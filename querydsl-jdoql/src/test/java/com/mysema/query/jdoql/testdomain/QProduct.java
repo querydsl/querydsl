@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2009 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.jdoql.testdomain;
 
@@ -20,29 +20,29 @@ import com.mysema.query.types.path.PathMetadataFactory;
  */
 @SuppressWarnings("serial")
 public class QProduct extends PEntity<com.mysema.query.jdoql.testdomain.Product>{
-    
+
     public static final QProduct product = new QProduct("product");
-    
+
     public final PString description = createString("description");
-    
+
     public final PString name = createString("name");
-    
+
     public final PDateTime<java.util.Date> publicationDate = createDateTime("publicationDate",java.util.Date.class);
-    
+
     public final PDate<java.sql.Date> dateField = createDate("dateField", java.sql.Date.class);
-    
+
     public final PTime<java.sql.Time> timeField = createTime("timeField", java.sql.Time.class);
-    
+
     public final PNumber<java.lang.Integer> amount = createNumber("amount",java.lang.Integer.class);
-    
+
     public final PNumber<java.lang.Double> price = createNumber("price",java.lang.Double.class);
-        
+
     public QProduct(java.lang.String path) {
-          this(com.mysema.query.jdoql.testdomain.Product.class, path);        
+          this(com.mysema.query.jdoql.testdomain.Product.class, path);
     }
     public QProduct(Class<? extends com.mysema.query.jdoql.testdomain.Product> cl, java.lang.String path) {
           super(cl, PathMetadataFactory.forVariable(path));
-    }    
+    }
     public QProduct(PathMetadata<?> metadata) {
          super(com.mysema.query.jdoql.testdomain.Product.class, metadata);
     }

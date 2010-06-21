@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types;
 
@@ -18,7 +18,7 @@ import net.jcip.annotations.Immutable;
  */
 @Immutable
 public class OperatorImpl<RT> implements Operator<RT> {
-    
+
     private final List<Class<?>> types;
 
     public OperatorImpl(Class<?> type) {

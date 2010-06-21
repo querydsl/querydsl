@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query;
 
@@ -21,11 +21,11 @@ import com.mysema.query.types.expr.*;
  *
  */
 public class Filters {
-    
+
     private final Projections projections;
-    
+
     private final Module module;
-    
+
     private final Target target;
 
     public Filters(Projections projections, Module module, Target target) {
@@ -50,15 +50,15 @@ public class Filters {
         rv.add(expr.isEmpty());
         rv.add(expr.isNotEmpty());
         if (!module.equals(Module.RDFBEAN)){
-            rv.add(expr.size().gt(0));    
-        }        
+            rv.add(expr.size().gt(0));
+        }
         return rv;
     }
-    
+
     public <A> Collection<EBoolean> array(EArray<A> expr, EArray<A> other, A knownElement){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();        
+        HashSet<EBoolean> rv = new HashSet<EBoolean>();
         if (!module.equals(Module.RDFBEAN)){
-            rv.add(expr.size().gt(0));    
+            rv.add(expr.size().gt(0));
         }
         rv.add(expr.get(0).eq(knownElement));
         return rv;
@@ -75,14 +75,14 @@ public class Filters {
         rv.add(expr.lt(knownValue));
         rv.add(expr.loe(other));
         rv.add(expr.loe(knownValue));
-        
+
         rv.add(expr.in(IntervalImpl.create(knownValue, null)));
         rv.add(expr.in(IntervalImpl.create(null, knownValue)));
-        
+
         return rv;
 
     }
-    
+
     private <A extends Comparable<A>> Collection<EBoolean> dateOrTime(EDateOrTime<A> expr, EDateOrTime<A> other, A knownValue){
     List<EBoolean> rv = new ArrayList<EBoolean>();
     rv.add(expr.after(other));
@@ -99,10 +99,9 @@ public class Filters {
         rv.addAll(dateOrTime(expr, other, knownValue));
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
         rv.add(expr.month().eq(other.month()));
-        rv.add(expr.year().eq(other.year()));    
+        rv.add(expr.year().eq(other.year()));
         return rv;
     }
-    
 
     @SuppressWarnings("unchecked")
     public <A extends Comparable> Collection<EBoolean> dateTime(EDateTime<A> expr, EDateTime<A> other, A knownValue){
@@ -111,32 +110,31 @@ public class Filters {
         rv.addAll(dateOrTime(expr, other, knownValue));
         rv.add(expr.dayOfMonth().eq(1));
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
-          
+
         rv.add(expr.month().eq(1));
         rv.add(expr.month().eq(other.month()));
-          
+
         rv.add(expr.year().eq(2000));
         rv.add(expr.year().eq(other.year()));
-          
+
         rv.add(expr.yearMonth().eq(other.yearMonth()));
-        
+
         rv.add(expr.hour().eq(1));
         rv.add(expr.hour().eq(other.hour()));
-          
+
         rv.add(expr.minute().eq(1));
         rv.add(expr.minute().eq(other.minute()));
-          
+
         rv.add(expr.second().eq(1));
         rv.add(expr.second().eq(other.second()));
         return rv;
     }
 
-
     private <A> Collection<EBoolean> exprFilters(Expr<A> expr, Expr<A> other, A knownValue){
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.add(expr.eq(other));
         rv.add(expr.eq(knownValue));
-            
+
         rv.add(expr.ne(other));
         rv.add(expr.ne(knownValue));
         return rv;
@@ -149,7 +147,6 @@ public class Filters {
         return rv;
     }
 
-
     public <K,V> Collection<EBoolean> map(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue) {
         HashSet<EBoolean> rv = new HashSet<EBoolean>();
         rv.add(expr.containsKey(knownKey));
@@ -159,31 +156,31 @@ public class Filters {
         rv.add(expr.isEmpty());
         rv.add(expr.isNotEmpty());
         if (!module.equals(Module.RDFBEAN)){
-            rv.add(expr.size().gt(0));    
-        }        
+            rv.add(expr.size().gt(0));
+        }
         return rv;
     }
 
     @SuppressWarnings("unchecked")
     public <A extends Number & Comparable<A>> Collection<EBoolean> numeric(ENumber<A> expr, ENumber<A> other, A knownValue){
-        List<EBoolean> rv = new ArrayList<EBoolean>();        
+        List<EBoolean> rv = new ArrayList<EBoolean>();
         for (ENumber<?> num : projections.numeric(expr, other, knownValue, true)){
             rv.add(num.lt(expr));
-        }        
+        }
         rv.add(expr.ne(other));
         rv.add(expr.ne(knownValue));
         rv.add(expr.goe(other));
         rv.add(expr.goe(knownValue));
         rv.add(expr.gt(other));
-        rv.add(expr.gt(knownValue));            
+        rv.add(expr.gt(knownValue));
         rv.add(expr.loe(other));
         rv.add(expr.loe(knownValue));
         rv.add(expr.lt(other));
         rv.add(expr.lt(knownValue));
-        
+
         rv.add(expr.in(1,2,3));
         rv.add(expr.in(1l,2l,3l));
-        
+
         if (expr.getType().equals(Integer.class)){
             ENumber<Integer> eint = (ENumber)expr;
             rv.add(eint.between(1, 2));
@@ -199,10 +196,10 @@ public class Filters {
         }
 
         rv.add(expr.in(IntervalImpl.create(0, 100)));
-        
+
         return rv;
     }
-    
+
     public <A> Collection<EBoolean> pathFilters(Path<A> expr, Path<A> other, A knownValue){
         return Arrays.<EBoolean>asList(
              expr.isNull(),
@@ -216,77 +213,77 @@ public class Filters {
         if (expr instanceof Path && other instanceof Path){
             rv.addAll(pathFilters((Path<String>)expr, (Path<String>)other, knownValue));
         }
-        rv.addAll(comparable(expr, other, knownValue));        
+        rv.addAll(comparable(expr, other, knownValue));
         for (Expr<String> eq : projections.string(expr, other, knownValue)){
             rv.add(eq.eq(other));
-        }            
+        }
         rv.add(expr.between("A", "Z"));
-            
+
         rv.add(expr.charAt(0).eq(knownValue.charAt(0)));
-            
+
         rv.add(expr.notBetween("A", "Z"));
-            
+
         rv.add(expr.contains(other));
         rv.add(expr.contains(knownValue.substring(0,1)));
         rv.add(expr.contains(knownValue.substring(1,2)));
-        
+
         rv.add(expr.contains(other, false));
         rv.add(expr.contains(knownValue.substring(0,1), false));
         rv.add(expr.contains(knownValue.substring(1,2), false));
-            
+
         rv.add(expr.endsWith(other));
         rv.add(expr.endsWith(knownValue.substring(1)));
-        rv.add(expr.endsWith(knownValue.substring(2)));      
-            
+        rv.add(expr.endsWith(knownValue.substring(2)));
+
         rv.add(expr.equalsIgnoreCase(other));
         rv.add(expr.equalsIgnoreCase(knownValue));
-            
+
         rv.add(expr.in(Arrays.asList(knownValue)));
-            
+
         rv.add(expr.indexOf(other).gt(0));
         rv.add(expr.indexOf("X", 1).gt(0));
         rv.add(expr.indexOf(knownValue).gt(0));
-            
+
 //        if (!module.equals(Module.HQL) && !module.equals(Module.JDOQL) && !module.equals(Module.SQL)){
 //            rv.add(expr.lastIndexOf(other).gt(0));
-//            rv.add(expr.lastIndexOf(knownValue).gt(0));    
-//        }        
-            
+//            rv.add(expr.lastIndexOf(knownValue).gt(0));
+//        }
+
         rv.add(expr.in("A","B","C"));
-                        
+
         rv.add(expr.isEmpty());
         rv.add(expr.isNotEmpty());
-            
-        rv.add(expr.length().gt(0));            
-                        
+
+        rv.add(expr.length().gt(0));
+
         rv.add(expr.like(knownValue.substring(0,1)+"%"));
         rv.add(expr.like("%"+knownValue.substring(1)));
-        rv.add(expr.like("%"+knownValue.substring(1,2)+"%"));            
-            
-        if (!target.equals(Target.DERBY) 
+        rv.add(expr.like("%"+knownValue.substring(1,2)+"%"));
+
+        if (!target.equals(Target.DERBY)
          && !target.equals(Target.HSQLDB)
          && !target.equals(Target.H2)
          && !target.equals(Target.SQLSERVER)){
             rv.add(expr.matches(knownValue.substring(0,1)+".*"));
             rv.add(expr.matches(".*"+knownValue.substring(1)));
-            rv.add(expr.matches(".*"+knownValue.substring(1,2)+".*"));    
-        }        
-            
+            rv.add(expr.matches(".*"+knownValue.substring(1,2)+".*"));
+        }
+
         rv.add(expr.notIn("A","B","C"));
-            
+
         rv.add(expr.notBetween("A", "Z"));
         rv.add(expr.notBetween(other, other));
-        
+
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDOQL)){
             // https://issues.apache.org/jira/browse/DERBY-4389
             rv.add(new Coalesce<String>(String.class, expr, other).eq("xxx"));
-        }        
-        
+        }
+
         rv.add(expr.in(IntervalImpl.create("A", "Z")));
-            
+
         return rv;
-    }    
-    
+    }
+
     @SuppressWarnings("unchecked")
     public <A extends Comparable> Collection<EBoolean> time(ETime<A> expr, ETime<A> other, A knownValue){
         List<EBoolean> rv = new ArrayList<EBoolean>();
@@ -297,6 +294,5 @@ public class Filters {
         rv.add(expr.second().eq(other.second()));
         return rv;
     }
-    
 
 }

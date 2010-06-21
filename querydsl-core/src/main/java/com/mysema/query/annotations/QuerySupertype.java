@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.annotations;
 
@@ -16,9 +16,9 @@ import java.lang.annotation.Target;
 @Target(TYPE)
 @Retention(RUNTIME)
 /**
- * Annotation for APT based Domain query type generation. 
+ * Annotation for APT based Domain query type generation.
  */
 // TODO : rename to QSupertype
 public @interface QuerySupertype {
-    
+
 }

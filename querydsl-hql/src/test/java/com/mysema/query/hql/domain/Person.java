@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.domain;
 
@@ -15,7 +15,6 @@ import javax.persistence.TemporalType;
 
 import com.mysema.query.annotations.QueryInit;
 
-
 /**
  * The Class Person.
  */
@@ -24,15 +23,15 @@ import com.mysema.query.annotations.QueryInit;
 public class Person implements Serializable{
     @Temporal(TemporalType.DATE)
     java.util.Date birthDay;
-    
+
     @Id
     long i;
-    
+
     @ManyToOne
     PersonId pid;
-    
+
     String name;
-    
+
     @ManyToOne
     @QueryInit("calendar")
     Nationality nationality;

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.types;
 
@@ -13,7 +13,7 @@ import com.mysema.commons.lang.Assert;
 
 /**
  * OrderSpecifier represents an order-by-element in a Query instance
- * 
+ *
  * @param <A> - Java type of the target expression
  * @author tiwe
  * @version $Id$
@@ -21,11 +21,11 @@ import com.mysema.commons.lang.Assert;
 @SuppressWarnings({"unchecked"})
 @Immutable
 public class OrderSpecifier<A extends Comparable> implements Serializable {
-    
+
     private static final long serialVersionUID = 3427652988262514678L;
 
     private final Order order;
-    
+
     private final Expr<A> target;
 
     public OrderSpecifier(Order order, Expr<A> target) {
@@ -35,7 +35,7 @@ public class OrderSpecifier<A extends Comparable> implements Serializable {
 
     /**
      * Get the order of this specifier
-     * 
+     *
      * @return
      */
     public Order getOrder() {
@@ -44,7 +44,7 @@ public class OrderSpecifier<A extends Comparable> implements Serializable {
 
     /**
      * Get whether the order is ascending or not
-     * 
+     *
      * @return
      */
     public boolean isAscending() {
@@ -53,7 +53,7 @@ public class OrderSpecifier<A extends Comparable> implements Serializable {
 
     /**
      * Get the target expression of this OrderSpecifier
-     * 
+     *
      * @return
      */
     public Expr<A> getTarget() {

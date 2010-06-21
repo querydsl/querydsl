@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql;
 
@@ -17,12 +17,12 @@ import com.mysema.query.types.expr.OSimple;
 /**
  * HQLGrammar provides factory methods for HQL specific operations
  * elements.
- * 
+ *
  * @author tiwe
  * @version $Id$
  */
 public final class HQLGrammar {
-    
+
     private HQLGrammar(){}
 
     /**
@@ -92,7 +92,7 @@ public final class HQLGrammar {
             type = Long.class;
         }else if (type.equals(Float.class)){
             type = Double.class;
-        }            
+        }
         return ONumber.create((Class<D>) type, Ops.AggOps.SUM_AGG, left);
     }
 

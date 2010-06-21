@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.domain;
 
@@ -18,5 +18,5 @@ public class CommonPersistence {
     public void setVersion(Long version) {
         this.version = version;
     }
-        
+
 }

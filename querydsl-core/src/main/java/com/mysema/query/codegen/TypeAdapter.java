@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.codegen;
 
@@ -11,18 +11,18 @@ import com.mysema.commons.lang.Assert;
 
 /**
  * TypeAdapter is a basic adapter implementation for the Type interface
- * 
+ *
  * @author tiwe
  *
  */
 public class TypeAdapter implements Type{
-    
+
     private final Type type;
-    
+
     public TypeAdapter(Type type){
         this.type = Assert.notNull(type,"type");
     }
-    
+
     @Override
     public void appendLocalGenericName(Type context, Appendable builder, boolean asArgType) throws IOException {
         type.appendLocalGenericName(context, builder, false);
@@ -92,12 +92,12 @@ public class TypeAdapter implements Type{
     public Type getSelfOrValueType() {
         return type.getSelfOrValueType();
     }
-    
+
     @Override
     public String getSimpleName() {
         return type.getSimpleName();
     }
-    
+
     protected Type getType(){
         return type;
     }
@@ -116,7 +116,7 @@ public class TypeAdapter implements Type{
     public boolean isFinal() {
         return type.isFinal();
     }
-    
+
     @Override
     public boolean isPrimitive() {
         return type.isPrimitive();

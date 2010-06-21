@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.hql.hibernate;
 
@@ -18,15 +18,15 @@ import com.mysema.commons.lang.Assert;
 public class DefaultSessionHolder implements SessionHolder{
 
     private final Session session;
-    
+
     public DefaultSessionHolder(Session session){
         this.session = Assert.notNull(session,"session");
     }
-    
+
     @Override
     public Query createQuery(String queryString) {
         return session.createQuery(queryString);
-    }    
+    }
 
     @Override
     public SQLQuery createSQLQuery(String queryString) {

@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.query.annotations;
 
@@ -14,9 +14,9 @@ import java.lang.annotation.Target;
 
 /**
  * Declaration of a static delegate method
- * 
+ *
  * TODO : document me!
- * 
+ *
  * @author tiwe
  *
  */
@@ -30,5 +30,5 @@ public @interface QueryDelegate {
      * @return
      */
     Class<?> value();
-    
+
 }
