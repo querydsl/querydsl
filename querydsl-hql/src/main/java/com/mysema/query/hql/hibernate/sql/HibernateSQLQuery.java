@@ -40,7 +40,6 @@ import com.mysema.query.types.Path;
  * @author tiwe
  *
  */
-// TODO : make sure all projection types are supported
 public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>{
     
     private static final Logger logger = LoggerFactory.getLogger(HibernateQuery.class);
