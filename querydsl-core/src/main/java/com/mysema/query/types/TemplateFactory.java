@@ -57,10 +57,10 @@ public class TemplateFactory {
                 Converter<?,?> converter = null;
                 if (str.charAt(0) == '%'){
                     if (str.charAt(1) == '%'){
-                	converter = toEndsWithViaLikeLower;
-                	str = str.substring(2);
+                    converter = toEndsWithViaLikeLower;
+                    str = str.substring(2);
                     }else{
-                	converter = toEndsWithViaLike;
+                    converter = toEndsWithViaLike;
                         str = str.substring(1);
                     }
                     
@@ -77,21 +77,21 @@ public class TemplateFactory {
                       break;
                   case '%' :
                       if (converter == null){
-                	  if (str.charAt(str.length()-2) == '%'){
-                	      converter = toStartsWithViaLikeLower;
-                	      strip = 2;
-                	  }else{
-                	      converter = toStartsWithViaLike;
-                	      strip = 1;
-                	  }
+                      if (str.charAt(str.length()-2) == '%'){
+                          converter = toStartsWithViaLikeLower;
+                          strip = 2;
                       }else{
-                	  if (str.charAt(str.length()-2) == '%'){
-                	      converter = toContainsViaLikeLower;
-                	      strip = 2;
-                	  }else{
-                	      converter = toContainsViaLike;
-                	      strip = 1;
-                	  }
+                          converter = toStartsWithViaLike;
+                          strip = 1;
+                      }
+                      }else{
+                      if (str.charAt(str.length()-2) == '%'){
+                          converter = toContainsViaLikeLower;
+                          strip = 2;
+                      }else{
+                          converter = toContainsViaLike;
+                          strip = 1;
+                      }
                       }
                       break;
                   case 's' : 

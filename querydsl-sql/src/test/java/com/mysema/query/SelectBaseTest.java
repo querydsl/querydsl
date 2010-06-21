@@ -63,10 +63,10 @@ import com.mysema.testutil.Label;
 public abstract class SelectBaseTest extends AbstractBaseTest{
     
     public static class SimpleProjection {
-	
-	public SimpleProjection(String str, String str2) {
+    
+    public SimpleProjection(String str, String str2) {
         }
-	
+    
     }
     
     private QueryExecution standardTest = new QueryExecution(Module.SQL, getClass().getAnnotation(Label.class).value()){        
@@ -590,43 +590,43 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     
     @Test
     public void tupleProjection(){
-	List<Tuple> tuples = query().from(employee).list(new QTuple(employee.firstname, employee.lastname));
-	assertFalse(tuples.isEmpty());
-	for (Tuple tuple : tuples){
-	    assertNotNull(tuple.get(employee.firstname));
-	    assertNotNull(tuple.get(employee.lastname));
-	}
+    List<Tuple> tuples = query().from(employee).list(new QTuple(employee.firstname, employee.lastname));
+    assertFalse(tuples.isEmpty());
+    for (Tuple tuple : tuples){
+        assertNotNull(tuple.get(employee.firstname));
+        assertNotNull(tuple.get(employee.lastname));
+    }
     }
     
     @Test
     public void customProjection(){
-	List<Projection> tuples = query().from(employee).list(new QProjection(employee.firstname, employee.lastname));
-	assertFalse(tuples.isEmpty());
-	for (Projection tuple : tuples){
-	    assertNotNull(tuple.get(employee.firstname));
-	    assertNotNull(tuple.get(employee.lastname));
-	    assertNotNull(tuple.getExpr(employee.firstname));
-	    assertNotNull(tuple.getExpr(employee.lastname));
-	}
+    List<Projection> tuples = query().from(employee).list(new QProjection(employee.firstname, employee.lastname));
+    assertFalse(tuples.isEmpty());
+    for (Projection tuple : tuples){
+        assertNotNull(tuple.get(employee.firstname));
+        assertNotNull(tuple.get(employee.lastname));
+        assertNotNull(tuple.getExpr(employee.firstname));
+        assertNotNull(tuple.getExpr(employee.lastname));
+    }
     }
     
     @SuppressWarnings("unchecked")
     @Test
     public void arrayProjection(){
-	List<String[]> results = query().from(employee).list(new EArrayConstructor<String>(String[].class, employee.firstname));
-	assertFalse(results.isEmpty());
-	for (String[] result : results){
-	    assertNotNull(result[0]);
-	}
+    List<String[]> results = query().from(employee).list(new EArrayConstructor<String>(String[].class, employee.firstname));
+    assertFalse(results.isEmpty());
+    for (String[] result : results){
+        assertNotNull(result[0]);
+    }
     }
     
     @Test
     public void constructorProjection(){
-	List<SimpleProjection> projections =query().from(employee).list(EConstructor.create(SimpleProjection.class, employee.firstname, employee.lastname));
-	assertFalse(projections.isEmpty());
-	for (SimpleProjection projection : projections){
-	    assertNotNull(projection);
-	}
+    List<SimpleProjection> projections =query().from(employee).list(EConstructor.create(SimpleProjection.class, employee.firstname, employee.lastname));
+    assertFalse(projections.isEmpty());
+    for (SimpleProjection projection : projections){
+        assertNotNull(projection);
+    }
     }
     
     @Test

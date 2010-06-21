@@ -389,7 +389,7 @@ public class Processor {
                     String simpleName = model.getUncapSimpleName();
                     String alias = simpleName;
                     if (configuration.getKeywords().contains(simpleName.toUpperCase())){
-                	alias += "1";
+                    alias += "1";
                     }
                     writer.publicStaticFinal(queryType, simpleName, "new " + queryType + "(\"" + alias + "\")");
                 }

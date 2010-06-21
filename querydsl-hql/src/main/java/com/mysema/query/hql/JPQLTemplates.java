@@ -28,7 +28,7 @@ public class JPQLTemplates extends Templates {
     public static final JPQLTemplates DEFAULT = new JPQLTemplates();
     
     protected JPQLTemplates() {
-	//CHECKSTYLE:OFF
+    //CHECKSTYLE:OFF
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
         add(Ops.NOT, "not {0}", 3);

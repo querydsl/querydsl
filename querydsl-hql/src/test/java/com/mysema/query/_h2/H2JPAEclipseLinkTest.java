@@ -23,7 +23,7 @@ import com.mysema.testutil.JPATestRunner;
 public abstract class H2JPAEclipseLinkTest extends AbstractJPATest{
     
     protected JPQLTemplates getTemplates(){
-	return EclipseLinkTemplates.DEFAULT;
+    return EclipseLinkTemplates.DEFAULT;
     }
     
     @Override

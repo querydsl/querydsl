@@ -143,7 +143,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     @Override
     public void visit(EConstructor<?> expr) {
-	handle(", ", expr.getArgs());
+    handle(", ", expr.getArgs());
     }
     
     @Override

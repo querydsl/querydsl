@@ -41,10 +41,10 @@ import com.mysema.query.types.expr.QTuple;
 public abstract class AbstractStandardTest {
 
     public static class Projection {
-	
-	public Projection(String str, Cat cat) {
+    
+    public Projection(String str, Cat cat) {
         }
-	
+    
     }
     
     private static final QCat cat = QCat.cat;
@@ -245,31 +245,31 @@ public abstract class AbstractStandardTest {
     
     @Test
     public void tupleProjection(){
-	List<Tuple> tuples = query().from(cat).list(new QTuple(cat.name, cat));
-	assertFalse(tuples.isEmpty());
-	for (Tuple tuple : tuples){
-	    assertNotNull(tuple.get(cat.name));
-	    assertNotNull(tuple.get(cat));
-	}
+    List<Tuple> tuples = query().from(cat).list(new QTuple(cat.name, cat));
+    assertFalse(tuples.isEmpty());
+    for (Tuple tuple : tuples){
+        assertNotNull(tuple.get(cat.name));
+        assertNotNull(tuple.get(cat));
+    }
     }
     
     @SuppressWarnings("unchecked")
     @Test
     public void arrayProjection(){
-	List<String[]> results = query().from(cat).list(new EArrayConstructor<String>(String[].class, cat.name));
-	assertFalse(results.isEmpty());
-	for (String[] result : results){
-	    assertNotNull(result[0]);
-	}
+    List<String[]> results = query().from(cat).list(new EArrayConstructor<String>(String[].class, cat.name));
+    assertFalse(results.isEmpty());
+    for (String[] result : results){
+        assertNotNull(result[0]);
+    }
     }
     
     @Test
     public void constructorProjection(){
-	List<Projection> projections = query().from(cat).list(EConstructor.create(Projection.class, cat.name, cat));
-	assertFalse(projections.isEmpty());
-	for (Projection projection : projections){
-	    assertNotNull(projection);
-	}
+    List<Projection> projections = query().from(cat).list(EConstructor.create(Projection.class, cat.name, cat));
+    assertFalse(projections.isEmpty());
+    for (Projection projection : projections){
+        assertNotNull(projection);
+    }
     }
     
     @Test

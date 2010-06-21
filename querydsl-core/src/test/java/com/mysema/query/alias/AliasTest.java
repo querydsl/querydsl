@@ -22,8 +22,8 @@ import org.junit.Test;
 public class AliasTest {
     
     public enum Gender{
-	MALE,
-	FEMALE
+    MALE,
+    FEMALE
     }
     
     public interface DomainType{
@@ -91,22 +91,22 @@ public class AliasTest {
     
     @Test
     public void getAny(){
-	DomainType domainType = Alias.alias(DomainType.class);
-	assertEquals(DomainType.class, Alias.getAny(domainType).getType());
-	assertEquals(String.class, Alias.getAny(domainType.getFirstName()).getType());
+    DomainType domainType = Alias.alias(DomainType.class);
+    assertEquals(DomainType.class, Alias.getAny(domainType).getType());
+    assertEquals(String.class, Alias.getAny(domainType.getFirstName()).getType());
     }
 
     @Test
     public void otherMethods(){
-	DomainType domainType = Alias.alias(DomainType.class);
-	assertEquals("domainType", domainType.toString());	
+    DomainType domainType = Alias.alias(DomainType.class);
+    assertEquals("domainType", domainType.toString());    
     }
     
     @Test
     public void var(){
-	assertEquals("it", Alias.var().toString());
-	assertEquals("varInteger1", Alias.var(1).toString());
-	assertEquals("X", Alias.var("X").toString());
-//	assertEquals("", Alias.var(new Object()).toString());
+    assertEquals("it", Alias.var().toString());
+    assertEquals("varInteger1", Alias.var(1).toString());
+    assertEquals("X", Alias.var("X").toString());
+//    assertEquals("", Alias.var(new Object()).toString());
     }
 }

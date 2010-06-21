@@ -47,12 +47,12 @@ public class EArrayConstructor<D> extends EConstructor<D[]> {
     @SuppressWarnings("unchecked")
     @Override
     public D[] newInstance(Object... args){
-	if (args.getClass().getComponentType().equals(elementType)){
-	    return (D[])args;
-	}else{
-	    D[] rv = (D[]) Array.newInstance(elementType, args.length);
-	    System.arraycopy(args, 0, rv, 0, args.length);
-	    return rv;
-	}
+    if (args.getClass().getComponentType().equals(elementType)){
+        return (D[])args;
+    }else{
+        D[] rv = (D[]) Array.newInstance(elementType, args.length);
+        System.arraycopy(args, 0, rv, 0, args.length);
+        return rv;
+    }
     }
 }

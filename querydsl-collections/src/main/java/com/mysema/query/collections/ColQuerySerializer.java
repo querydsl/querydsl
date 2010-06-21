@@ -134,10 +134,10 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
 
     @Override
     public void visit(EConstructor<?> expr) {
-	handle(ExprConst.create(expr));
-	append(".newInstance(");
-	handle(", ", expr.getArgs());
-	append(")");
+    handle(ExprConst.create(expr));
+    append(".newInstance(");
+    handle(", ", expr.getArgs());
+    append(")");
     }
 
 }

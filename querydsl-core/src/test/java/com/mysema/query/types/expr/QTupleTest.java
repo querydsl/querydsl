@@ -26,16 +26,16 @@ public class QTupleTest {
     
     @Test
     public void testNewInstanceObjectArray() {
-	Tuple tuple = tupleExpression.newInstance("1", 42, true);
-	assertEquals(3, tuple.toArray().length);
-	assertEquals("1", tuple.get(0, String.class));
-	assertEquals(Integer.valueOf(42), tuple.get(1, Integer.class));
-	assertEquals(Boolean.TRUE, tuple.get(2, Boolean.class));
-	assertEquals("1", tuple.get(first));
-	assertEquals(Integer.valueOf(42), tuple.get(second));
-	assertEquals(Boolean.TRUE, tuple.get(third));
-	
-	
+    Tuple tuple = tupleExpression.newInstance("1", 42, true);
+    assertEquals(3, tuple.toArray().length);
+    assertEquals("1", tuple.get(0, String.class));
+    assertEquals(Integer.valueOf(42), tuple.get(1, Integer.class));
+    assertEquals(Boolean.TRUE, tuple.get(2, Boolean.class));
+    assertEquals("1", tuple.get(first));
+    assertEquals(Integer.valueOf(42), tuple.get(second));
+    assertEquals(Boolean.TRUE, tuple.get(third));
+    
+    
     }
 
 }

@@ -22,13 +22,13 @@ import org.junit.Test;
  */
 public class VisitorTest {
     
-	/**
-	 * Test iteration.
-	 * 
-	 * @throws SecurityException the security exception
-	 * @throws NoSuchMethodException the no such method exception
-	 */
-	@Test
+    /**
+     * Test iteration.
+     * 
+     * @throws SecurityException the security exception
+     * @throws NoSuchMethodException the no such method exception
+     */
+    @Test
     public void testIteration() throws SecurityException, NoSuchMethodException{
         List<Class<?>> types = new ArrayList<Class<?>>();
 //        types.addAll(Arrays.<Class<?>>asList(Alias.class.getClasses()));

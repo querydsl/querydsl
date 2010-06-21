@@ -13,17 +13,17 @@ import com.mysema.query.types.Templates;
 public class DummySerializer extends SerializerBase<DummySerializer>{
 
     public DummySerializer(Templates patterns) {
-	super(patterns);
+    super(patterns);
     }
 
     @Override
     public void visit(SubQuery<?> query) {
-	// TODO Auto-generated method stub	
+    // TODO Auto-generated method stub    
     }
 
     @Override
     public void visit(EConstructor<?> expr) {
-	// TODO Auto-generated method stub	
+    // TODO Auto-generated method stub    
     }
 
     @Override

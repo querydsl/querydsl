@@ -38,7 +38,7 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
     }
     
     protected JPQLTemplates getTemplates(){
-	return HQLTemplates.DEFAULT;
+    return HQLTemplates.DEFAULT;
     }
 
     public void setSession(Session session) {

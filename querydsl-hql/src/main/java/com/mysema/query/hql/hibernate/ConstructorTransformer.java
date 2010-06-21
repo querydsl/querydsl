@@ -33,7 +33,7 @@ public final class ConstructorTransformer implements ResultTransformer{
 
     @Override
     public Object transformTuple(Object[] tuple, String[] aliases) {
-	return constructor.newInstance(tuple);
+    return constructor.newInstance(tuple);
     }
 
 }

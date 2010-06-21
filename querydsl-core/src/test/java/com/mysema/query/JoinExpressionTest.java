@@ -20,28 +20,28 @@ public class JoinExpressionTest {
     
     @Test
     public void testToString(){
-	assertEquals("DEFAULT str", je.toString());
+    assertEquals("DEFAULT str", je.toString());
     }
 
     @Test
     public void testAddCondition() {
-	je.addCondition(EBooleanConst.TRUE);
-	assertEquals(EBooleanConst.TRUE, je.getCondition());
-	
-	je.addCondition(EBooleanConst.FALSE);
-	assertEquals(EBooleanConst.TRUE.and(EBooleanConst.FALSE), je.getCondition());
+    je.addCondition(EBooleanConst.TRUE);
+    assertEquals(EBooleanConst.TRUE, je.getCondition());
+    
+    je.addCondition(EBooleanConst.FALSE);
+    assertEquals(EBooleanConst.TRUE.and(EBooleanConst.FALSE), je.getCondition());
     }
 
     @Test
     public void testSetFlag() {
-	assertFalse(je.hasFlag("X"));
-	
-	je.setFlag("X");
-	assertTrue(je.hasFlag("X"));
-	assertFalse(je.hasFlag("Y"));
-	
-	je.removeFlag("X");
-	assertFalse(je.hasFlag("X"));
+    assertFalse(je.hasFlag("X"));
+    
+    je.setFlag("X");
+    assertTrue(je.hasFlag("X"));
+    assertFalse(je.hasFlag("Y"));
+    
+    je.removeFlag("X");
+    assertFalse(je.hasFlag("X"));
     }
 
 }

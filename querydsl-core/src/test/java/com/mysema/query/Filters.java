@@ -84,12 +84,12 @@ public class Filters {
     }
     
     private <A extends Comparable<A>> Collection<EBoolean> dateOrTime(EDateOrTime<A> expr, EDateOrTime<A> other, A knownValue){
-	List<EBoolean> rv = new ArrayList<EBoolean>();
-	rv.add(expr.after(other));
+    List<EBoolean> rv = new ArrayList<EBoolean>();
+    rv.add(expr.after(other));
         rv.add(expr.after(knownValue));
         rv.add(expr.before(other));
         rv.add(expr.before(knownValue));
-	return rv;
+    return rv;
     }
 
     @SuppressWarnings("unchecked")

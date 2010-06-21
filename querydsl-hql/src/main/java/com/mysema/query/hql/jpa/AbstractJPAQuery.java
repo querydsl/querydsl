@@ -113,10 +113,10 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
 //        if (projection.size() == 1){
 //            Expr<?> expr = projection.get(0);
 //            if (expr instanceof EConstructor<?>  && !(expr.getClass().equals(EConstructor.class))){
-//        	if (query instanceof HibernateQuery){
-//        	    ((HibernateQuery)query).getHibernateQuery().setResultTransformer(
-//        		    new ConstructorTransformer((EConstructor<?>) projection.get(0)));
-//        	}
+//            if (query instanceof HibernateQuery){
+//                ((HibernateQuery)query).getHibernateQuery().setResultTransformer(
+//                    new ConstructorTransformer((EConstructor<?>) projection.get(0)));
+//            }
 //            }
 //        }
         

@@ -87,35 +87,35 @@ public class MetaDataSerializerTest {
             
             @Override
             protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
-        	super.introImports(writer, config, model);
-        	// adds additional imports
-        	writer.imports(List.class, Arrays.class);
+            super.introImports(writer, config, model);
+            // adds additional imports
+            writer.imports(List.class, Arrays.class);
             }
             
             @Override
             protected void serializeProperties(EntityType model,  SerializerConfig config, CodeWriter writer) throws IOException {
-        	super.serializeProperties(model, config, writer);
-        	StringBuilder paths = new StringBuilder();
-        	for (Property property : model.getProperties()){
-        	    if (paths.length() > 0){
-        		paths.append(", ");
-        	    }
-        	    paths.append(property.getEscapedName());
-        	}
-        	// adds accessors for all fields
-        	writer.publicFinal("List<Expr<?>>", "exprs", "Arrays.<Expr<?>>asList(" + paths.toString() + ")");
-        	writer.publicFinal("List<Path<?>>", "paths", "Arrays.<Path<?>>asList(" + paths.toString() + ")");        	
+            super.serializeProperties(model, config, writer);
+            StringBuilder paths = new StringBuilder();
+            for (Property property : model.getProperties()){
+                if (paths.length() > 0){
+                paths.append(", ");
+                }
+                paths.append(property.getEscapedName());
+            }
+            // adds accessors for all fields
+            writer.publicFinal("List<Expr<?>>", "exprs", "Arrays.<Expr<?>>asList(" + paths.toString() + ")");
+            writer.publicFinal("List<Path<?>>", "paths", "Arrays.<Path<?>>asList(" + paths.toString() + ")");            
             }
             
         };
         MetaDataExporter exporter = new MetaDataExporter(
-        	namePrefix, 
-        	"test", 
-        	null, 
-        	null, 
-        	new File("target/cust"), 
-        	namingStrategy, 
-        	serializer);
+            namePrefix, 
+            "test", 
+            null, 
+            null, 
+            new File("target/cust"), 
+            namingStrategy, 
+            serializer);
         
         exporter.export(conn.getMetaData());   
         

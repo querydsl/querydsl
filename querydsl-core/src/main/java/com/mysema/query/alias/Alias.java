@@ -47,7 +47,7 @@ public final class Alias {
     }
     
     public static <D> PArray<D> $(D[] arg){
-	return aliasFactory.<PArray<D>> getCurrentAndReset();
+    return aliasFactory.<PArray<D>> getCurrentAndReset();
     }
 
     public static PNumber<BigDecimal> $(BigDecimal arg) {

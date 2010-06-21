@@ -23,7 +23,7 @@ public class TermElementTest {
     
     @Test
     public void testEqualsAndHashCode(){
-	TermElement el1 = new TermElement("x"), el2 = new TermElement("x"), el3 = new TermElement("y");
+    TermElement el1 = new TermElement("x"), el2 = new TermElement("x"), el3 = new TermElement("y");
         assertEquals(el1, el2);
         assertFalse(el1.equals(el3));        
         assertEquals(el1.hashCode(), el2.hashCode());

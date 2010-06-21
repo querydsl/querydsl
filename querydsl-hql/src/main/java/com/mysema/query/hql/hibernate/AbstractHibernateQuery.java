@@ -157,7 +157,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         if (projection.size() == 1){
             Expr<?> expr = projection.get(0);
             if (expr instanceof EConstructor<?>  && !(expr.getClass().equals(EConstructor.class))){
-        	query.setResultTransformer(new ConstructorTransformer((EConstructor<?>) projection.get(0)));
+            query.setResultTransformer(new ConstructorTransformer((EConstructor<?>) projection.get(0)));
             }
         }
         

@@ -50,7 +50,7 @@ public final class ToStringVisitor implements Visitor{
         boolean first = true;
         for (Expr<?> arg : e.getArgs()){
             if (!first){
-        	builder.append(", ");
+            builder.append(", ");
             }
             builder.append(arg);
             first = false;

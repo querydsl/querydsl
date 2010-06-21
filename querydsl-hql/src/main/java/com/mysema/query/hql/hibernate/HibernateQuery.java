@@ -47,7 +47,7 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
      * @param templates
      */
     public HibernateQuery(Session session, JPQLTemplates templates) {
-	this(new DefaultSessionHolder(session), templates);
+    this(new DefaultSessionHolder(session), templates);
     }
 
     

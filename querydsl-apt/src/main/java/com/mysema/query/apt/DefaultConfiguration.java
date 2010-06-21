@@ -273,7 +273,7 @@ public class DefaultConfiguration implements Configuration {
     
     @Override
     public Collection<String> getKeywords(){
-	return Collections.emptyList();
+    return Collections.emptyList();
     }
     
 }

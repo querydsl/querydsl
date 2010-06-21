@@ -100,9 +100,9 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
             List<? extends Expr<?>> projection = queryMixin.getMetadata().getProjection();
             Class<?> exprType = projection.get(0).getClass();
             if (exprType.equals(QTuple.class)){
-        	query.setResultClass(JDOTuple.class);
+            query.setResultClass(JDOTuple.class);
             } else if (exprType.equals(EConstructor.class)){
-            	query.setResultClass(projection.get(0).getType());
+                query.setResultClass(projection.get(0).getType());
             }
         }
         

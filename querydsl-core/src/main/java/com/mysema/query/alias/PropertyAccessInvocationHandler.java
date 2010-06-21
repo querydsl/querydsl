@@ -217,8 +217,8 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             
         } else if (type.isArray()){            
             path = new PArray(type, pm);
-	    rv = Array.newInstance(type.getComponentType(), 5);
-	    
+        rv = Array.newInstance(type.getComponentType(), 5);
+        
         } else {
             if (Comparable.class.isAssignableFrom(type)){
                 path = new PComparable(type, pm);

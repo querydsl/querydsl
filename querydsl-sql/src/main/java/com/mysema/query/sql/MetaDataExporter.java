@@ -93,7 +93,7 @@ public class MetaDataExporter {
             @Nullable String schemaPattern, 
             @Nullable String tableNamePattern,
             File targetFolder) {
-	this.namePrefix = Assert.notNull(namePrefix,"namePrefix");
+    this.namePrefix = Assert.notNull(namePrefix,"namePrefix");
         this.packageName = Assert.notNull(packageName,"packageName");
         this.schemaPattern = schemaPattern;
         this.tableNamePattern = tableNamePattern;
@@ -119,7 +119,7 @@ public class MetaDataExporter {
     }
 
     protected EntityType createEntityType(String tableName, String className) {
-	Type classTypeModel = new SimpleType(
+    Type classTypeModel = new SimpleType(
                 TypeCategory.ENTITY, 
                 packageName + "." + className, 
                 packageName, 
@@ -129,12 +129,12 @@ public class MetaDataExporter {
         Method wildcard = new Method(classModel, "all", "{0}.*", Types.OBJECTS);
         classModel.addMethod(wildcard);
         classModel.addAnnotation(new TableImpl(namingStrategy.normalizeTableName(tableName)));
-	return classModel;
+    return classModel;
     }
     
     protected Property createProperty(EntityType classModel, String columnName,
             String propertyName, Type typeModel) {
-	return new Property(
+    return new Property(
                 classModel, 
                 namingStrategy.normalizeColumnName(columnName), 
                 propertyName, 

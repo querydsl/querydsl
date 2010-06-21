@@ -26,14 +26,14 @@ public class TemplateTest {
     
     @Test
     public void like(){
-	TemplateFactory factory = new TemplateFactory();
-	match("[0]",                     factory.create("{0%}"));
-	match("[0]",                     factory.create("{%0}"));
-	match("[0]",                     factory.create("{%0%}"));
-	
-	match("[0]",                     factory.create("{0%%}"));
-	match("[0]",                     factory.create("{%%0}"));
-	match("[0]",                     factory.create("{%%0%%}"));
+    TemplateFactory factory = new TemplateFactory();
+    match("[0]",                     factory.create("{0%}"));
+    match("[0]",                     factory.create("{%0}"));
+    match("[0]",                     factory.create("{%0%}"));
+    
+    match("[0]",                     factory.create("{0%%}"));
+    match("[0]",                     factory.create("{%%0}"));
+    match("[0]",                     factory.create("{%%0%%}"));
     }
 
     private void match(String string, Template template) {
