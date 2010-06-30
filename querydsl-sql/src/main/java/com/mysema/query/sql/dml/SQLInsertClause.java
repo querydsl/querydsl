@@ -72,6 +72,14 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
             throw new QueryException(e);
         }
     }
+    
+    protected void close(ResultSet rs){
+        try {
+            rs.close();
+        } catch (SQLException e) {
+            throw new QueryException(e);
+        }
+    }
 
     @Override
     public SQLInsertClause columns(Path<?>... columns) {
@@ -79,6 +87,38 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
         return this;
     }
 
+    @java.lang.SuppressWarnings("unchecked")
+    public <T> T executeWithKey(Path<T> path){
+        ResultSet rs = executeWithKeys();
+        try{
+            if (rs.next()){
+                return (T) rs.getObject(1);
+            }else{
+                return null;
+            }
+        } catch (SQLException e) {
+            throw new QueryException(e.getMessage(), e);
+        }finally{
+            close(rs);
+        }
+    }
+
+    @java.lang.SuppressWarnings("unchecked")
+    public <T> List<T> executeWithKeys(Path<T> path){
+        ResultSet rs = executeWithKeys();
+        try{
+            List<T> rv = new ArrayList<T>();
+            while (rs.next()){
+                rv.add((T) rs.getObject(1));
+            }
+            return rv;
+        } catch (SQLException e) {
+            throw new QueryException(e.getMessage(), e);
+        }finally{
+            close(rs);
+        }
+    }
+    
     public ResultSet executeWithKeys(){
         SQLSerializer serializer = new SQLSerializer(templates, true);
         serializer.serializeForInsert(entity, columns, values, subQuery);

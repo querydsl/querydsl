@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collections;
 
 import org.junit.After;
 import org.junit.Before;
@@ -68,6 +69,11 @@ public class GeneratedKeysH2Test {
         assertEquals(2, rs.getInt(1));
         assertFalse(rs.next());
 
+        insertClause = new SQLInsertClause(conn, new H2Templates(), entity);
+        assertEquals(3, insertClause.set(entity.name, "World").executeWithKey(entity.id).intValue());
+        
+        insertClause = new SQLInsertClause(conn, new H2Templates(), entity);
+        assertEquals(Collections.singletonList(4), insertClause.set(entity.name, "World").executeWithKeys(entity.id));
     }
 
 }
