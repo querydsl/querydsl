@@ -5,10 +5,6 @@
  */
 package com.mysema.query.types;
 
-import static org.junit.Assert.assertEquals;
-
-import java.lang.reflect.Constructor;
-
 import org.junit.Test;
 
 import com.mysema.query.types.expr.ENumber;
