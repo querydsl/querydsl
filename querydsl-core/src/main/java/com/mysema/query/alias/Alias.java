@@ -80,6 +80,8 @@ public final class Alias {
         PEntity<D> rv = aliasFactory.<PEntity<D>> getCurrentAndReset();
         if (rv != null) {
             return rv;
+        }else if (arg instanceof PEntity<?>){    
+            return (PEntity)arg;
         } else if (arg instanceof ManagedObject) {
             return (PEntity<D>) ((ManagedObject) arg).__mappedPath();
         } else {
