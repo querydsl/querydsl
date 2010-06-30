@@ -1,10 +1,16 @@
-package com.mysema.query.sql;
+/*
+ * 
+ */
+package com.mysema.query._mysql;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -12,28 +18,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mysema.query.QGeneratedKeysEntity;
+import com.mysema.query.sql.H2Templates;
 import com.mysema.query.sql.dml.SQLInsertClause;
-import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PathMetadataFactory;
 
-public class GeneratedKeysTest {
-
-    @Table("GENERATED_KEYS")
-    public static class QGeneratedKeysEntity extends PEntity<QGeneratedKeysEntity>{
-
-        private static final long serialVersionUID = 2002306246819687158L;
-
-        public QGeneratedKeysEntity(String name) {
-            super(QGeneratedKeysEntity.class, PathMetadataFactory.forVariable(name));
-        }
-
-        public final PNumber<java.lang.Integer> id = createNumber("ID", java.lang.Integer.class);
-
-        public final PString name = createString("NAME");
-
-    }
+public abstract class GeneratedKeysMySQLTest {
 
     private Connection conn;
 
@@ -41,9 +30,12 @@ public class GeneratedKeysTest {
 
     @Before
     public void setUp() throws ClassNotFoundException, SQLException{
-        Class.forName("org.h2.Driver");
-        String url = "jdbc:h2:target/h2";
-        conn = DriverManager.getConnection(url, "sa", "");
+//        Class.forName("org.h2.Driver");
+//        String url = "jdbc:h2:target/h2";
+//        conn = DriverManager.getConnection(url, "sa", "");
+        Class.forName("com.mysql.jdbc.Driver");
+        String url = "jdbc:mysql://localhost:3306/querydsl";
+        conn = DriverManager.getConnection(url, "querydsl", "querydsl");
         stmt = conn.createStatement();
     }
 
@@ -58,7 +50,7 @@ public class GeneratedKeysTest {
 
     @Test
     public void test() throws SQLException{
-        stmt.execute("drop table GENERATED_KEYS if exists");
+        stmt.execute("drop table if exists GENERATED_KEYS");
         stmt.execute("create table GENERATED_KEYS(" +
                  "ID int AUTO_INCREMENT PRIMARY KEY, " +
                  "NAME varchar(30))");
@@ -66,6 +58,9 @@ public class GeneratedKeysTest {
         QGeneratedKeysEntity entity = new QGeneratedKeysEntity("entity");
         SQLInsertClause insertClause = new SQLInsertClause(conn, new H2Templates(), entity);
         ResultSet rs = insertClause.set(entity.name, "Hello").executeWithKeys();
+        ResultSetMetaData md = rs.getMetaData();
+        System.out.println(md.getColumnName(1));
+        
         assertTrue(rs.next());
         assertEquals(1, rs.getInt(1));
         assertFalse(rs.next());

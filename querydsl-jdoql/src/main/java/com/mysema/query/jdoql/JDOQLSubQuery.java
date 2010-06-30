@@ -13,7 +13,7 @@ import com.mysema.query.QueryMetadata;
  * @author tiwe
  *
  */
-public class JDOQLSubQuery extends AbstractJDOQLSubQuery<JDOQLSubQuery>{
+public class JDOQLSubQuery extends AbstractJDOQLSubQuery<JDOQLSubQuery> implements JDOQLCommonQuery<JDOQLSubQuery>{
 
     public JDOQLSubQuery() {
         super();

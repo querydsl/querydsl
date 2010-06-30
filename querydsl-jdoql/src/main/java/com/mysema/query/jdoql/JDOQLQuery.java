@@ -10,8 +10,6 @@ import java.io.Closeable;
 import javax.jdo.PersistenceManager;
 
 import com.mysema.query.Projectable;
-import com.mysema.query.Query;
-import com.mysema.query.types.path.PEntity;
 
 /**
  * Query interface for JDOQL queries
@@ -19,7 +17,7 @@ import com.mysema.query.types.path.PEntity;
  * @author tiwe
  *
  */
-public interface JDOQLQuery extends Query<JDOQLQuery>, Projectable, Closeable {
+public interface JDOQLQuery extends JDOQLCommonQuery<JDOQLQuery>, Projectable, Closeable {
 
     /**
      * Clone the state of the query for the given PersistenceManager
@@ -28,13 +26,5 @@ public interface JDOQLQuery extends Query<JDOQLQuery>, Projectable, Closeable {
      * @return
      */
     JDOQLQuery clone(PersistenceManager persistenceManager);
-
-    /**
-     * Add query sources
-     *
-     * @param sources
-     * @return
-     */
-    JDOQLQuery from(PEntity<?>... sources);
 
 }

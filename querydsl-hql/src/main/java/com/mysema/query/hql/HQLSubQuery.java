@@ -13,7 +13,7 @@ import com.mysema.query.QueryMetadata;
  * @author tiwe
  *
  */
-public final class HQLSubQuery extends AbstractHQLSubQuery<HQLSubQuery>{
+public final class HQLSubQuery extends AbstractHQLSubQuery<HQLSubQuery> implements HQLCommonQuery<HQLSubQuery>{
 
     public HQLSubQuery() {
         super();

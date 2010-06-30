@@ -13,7 +13,7 @@ import com.mysema.query.QueryMetadata;
  * @author tiwe
  *
  */
-public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery>{
+public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> implements SQLCommonQuery<SQLSubQuery>{
 
     public SQLSubQuery() {
         super();

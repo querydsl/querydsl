@@ -25,6 +25,7 @@ import com.mysema.query.hql.HibernateSQLSerializer;
 import com.mysema.query.hql.jpa.DefaultSessionHolder;
 import com.mysema.query.hql.jpa.JPASessionHolder;
 import com.mysema.query.hql.jpa.JPAUtil;
+import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
@@ -38,7 +39,7 @@ import com.mysema.query.types.path.PEntity;
  *
  */
 // TODO : add support for constructor projections
-public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery>{
+public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery> implements SQLCommonQuery<JPASQLQuery>{
 
     private static final Logger logger = LoggerFactory.getLogger(JPASQLQuery.class);
 

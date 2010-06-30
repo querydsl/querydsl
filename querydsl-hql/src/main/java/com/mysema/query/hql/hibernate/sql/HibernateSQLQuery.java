@@ -28,6 +28,7 @@ import com.mysema.query.hql.hibernate.HibernateQuery;
 import com.mysema.query.hql.hibernate.HibernateUtil;
 import com.mysema.query.hql.hibernate.SessionHolder;
 import com.mysema.query.hql.hibernate.StatelessSessionHolder;
+import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
@@ -40,7 +41,7 @@ import com.mysema.query.types.Path;
  * @author tiwe
  *
  */
-public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>{
+public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery> implements SQLCommonQuery<HibernateSQLQuery>{
 
     private static final Logger logger = LoggerFactory.getLogger(HibernateQuery.class);
 
