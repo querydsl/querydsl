@@ -14,7 +14,6 @@ import java.io.Writer;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -29,6 +28,7 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.codegen.*;
 import com.mysema.query.sql.support.ForeignKeyData;
 import com.mysema.query.sql.support.InverseForeignKeyData;
+import com.mysema.query.sql.support.KeyDataFactory;
 import com.mysema.query.sql.support.PrimaryKeyData;
 
 /**
@@ -40,20 +40,6 @@ import com.mysema.query.sql.support.PrimaryKeyData;
 public class MetaDataExporter {
 
     private static final Logger logger = LoggerFactory.getLogger(MetaDataExporter.class);
-
-    private static final int FK_PARENT_TABLE_NAME = 3;
-
-    private static final int FK_PARENT_COLUMN_NAME = 4;
-
-    private static final int FK_FOREIGN_TABLE_NAME = 7;
-    
-    private static final int FK_FOREIGN_COLUMN_NAME = 8;
-
-    private static final int PK_NAME = 6;
-
-    private static final int PK_COLUMN_NAME = 4;
-
-    private static final int FK_NAME = 12;
 
     private static final int COLUMN_NAME = 4;
 
@@ -88,6 +74,8 @@ public class MetaDataExporter {
     private final Serializer serializer;
 
     private final SQLTypeMapping sqlTypeMapping = new SQLTypeMapping();
+    
+    private final KeyDataFactory keyDataFactory = new KeyDataFactory();
 
     public MetaDataExporter(
             String namePrefix,
@@ -181,68 +169,15 @@ public class MetaDataExporter {
         EntityType classModel = createEntityType(tableName, className);
 
         // collect primary keys
-        ResultSet primaryKeys = md.getPrimaryKeys(null, schemaPattern, tableName);
-        Map<String,PrimaryKeyData> primaryKeyData = new HashMap<String,PrimaryKeyData>();
-        try{
-            while (primaryKeys.next()){
-                String name = primaryKeys.getString(PK_NAME);
-                String columnName = primaryKeys.getString(PK_COLUMN_NAME);
-
-                PrimaryKeyData data = primaryKeyData.get(name);
-                if (data == null){
-                    data = new PrimaryKeyData(name);
-                    primaryKeyData.put(name, data);
-                }
-                data.add(columnName);
-            }
-        }finally{
-            primaryKeys.close();
-        }
-
+        Map<String,PrimaryKeyData> primaryKeyData = keyDataFactory.getPrimaryKeys(md, schemaPattern, tableName);
         classModel.getData().put(PrimaryKeyData.class, primaryKeyData.values());
-
+        
         // collect foreign keys
-        ResultSet foreignKeys = md.getCrossReference(null, schemaPattern, null, null, schemaPattern, tableName);
-        Map<String,ForeignKeyData> foreignKeyData = new HashMap<String,ForeignKeyData>();
-        try{
-            while (foreignKeys.next()){
-                String name = foreignKeys.getString(FK_NAME);
-                String parentTableName = foreignKeys.getString(FK_PARENT_TABLE_NAME);
-                String parentColumnName = foreignKeys.getString(FK_PARENT_COLUMN_NAME);
-                String foreignColumn = foreignKeys.getString(FK_FOREIGN_COLUMN_NAME);
-                ForeignKeyData data = foreignKeyData.get(name);
-                if (data == null){
-                    data = new ForeignKeyData(name, parentTableName);
-                    foreignKeyData.put(name, data);
-                }
-                data.add(foreignColumn, parentColumnName);
-            }
-        }finally{
-            foreignKeys.close();
-        }
-
+        Map<String,ForeignKeyData> foreignKeyData = keyDataFactory.getImportedKeys(md, schemaPattern, tableName);
         classModel.getData().put(ForeignKeyData.class, foreignKeyData.values());
         
         // collect inverse foreign keys
-        foreignKeys = md.getCrossReference(null, schemaPattern, tableName, null, schemaPattern, null);
-        Map<String,InverseForeignKeyData> inverseForeignKeyData = new HashMap<String,InverseForeignKeyData>();
-        try{
-            while (foreignKeys.next()){
-                String name = foreignKeys.getString(FK_NAME);
-                String parentColumnName = foreignKeys.getString(FK_PARENT_COLUMN_NAME);
-                String foreignTableName = foreignKeys.getString(FK_FOREIGN_TABLE_NAME);
-                String foreignColumn = foreignKeys.getString(FK_FOREIGN_COLUMN_NAME);
-                InverseForeignKeyData data = inverseForeignKeyData.get(name);
-                if (data == null){
-                    data = new InverseForeignKeyData(name, foreignTableName);
-                    inverseForeignKeyData.put(name, data);
-                }
-                data.add(parentColumnName, foreignColumn);
-            }
-        }finally{
-            foreignKeys.close();
-        }
-
+        Map<String,InverseForeignKeyData> inverseForeignKeyData = keyDataFactory.getExportedKeys(md, schemaPattern, tableName);
         classModel.getData().put(InverseForeignKeyData.class, inverseForeignKeyData.values());
 
         // collect columns

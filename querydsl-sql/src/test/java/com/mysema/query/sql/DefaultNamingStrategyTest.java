@@ -20,6 +20,10 @@ public class DefaultNamingStrategyTest {
     @Test
     public void testGetClassName() {
         assertEquals("QUserData", namingStrategy.getClassName("Q", "user_data"));
+        assertEquals("QU", namingStrategy.getClassName("Q", "u"));
+        assertEquals("QUs",namingStrategy.getClassName("Q", "us"));
+        assertEquals("QU", namingStrategy.getClassName("Q", "u_"));
+        assertEquals("QUs",namingStrategy.getClassName("Q", "us_"));
     }
 
     @Test

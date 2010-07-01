@@ -8,7 +8,7 @@ public class ResourceCheckRule implements MethodRule{
 
     @Override
     public Statement apply(Statement base, FrameworkMethod method, Object target) {
-        Class<?> testClass = method.getMethod().getDeclaringClass();
+        Class<?> testClass = target.getClass();
         ResourceCheck rc = testClass.getAnnotation(ResourceCheck.class);
         boolean run = true;
         if (rc != null) {

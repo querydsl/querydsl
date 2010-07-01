@@ -7,10 +7,6 @@ package com.mysema.query.sql;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -19,53 +15,31 @@ import javax.tools.JavaCompiler;
 
 import junit.framework.Assert;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.SimpleCompiler;
+import com.mysema.query.AbstractJDBCTest;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.SerializerConfig;
 
-public class MetaDataSerializerTest {
-
-    private Connection conn;
-
-    private Statement stmt;
-
-    @Before
-    public void setUp() throws ClassNotFoundException, SQLException{
-        Class.forName("org.hsqldb.jdbcDriver");
-        String url = "jdbc:hsqldb:data/tutorial";
-        conn = DriverManager.getConnection(url, "sa", "");
-        stmt = conn.createStatement();
-    }
-
-    @After
-    public void tearDown() throws SQLException{
-        try{
-            stmt.close();
-        }finally{
-            conn.close();
-        }
-    }
+public class MetaDataSerializerTest extends AbstractJDBCTest{
 
     @Test
     public void testGeneration() throws Exception {
         // normal settings
 
-        stmt.execute("drop table employee if exists");
-        stmt.execute("drop table survey if exists");
-        stmt.execute("drop table date_test if exists");
-        stmt.execute("drop table date_time_test if exists");
+        statement.execute("drop table employee if exists");
+        statement.execute("drop table survey if exists");
+        statement.execute("drop table date_test if exists");
+        statement.execute("drop table date_time_test if exists");
 
-        stmt.execute("create table survey (id int, name varchar(30), "
+        statement.execute("create table survey (id int, name varchar(30), "
                 + "CONSTRAINT PK_survey PRIMARY KEY (id, name))");
-        stmt.execute("create table date_test (d date)");
-        stmt.execute("create table date_time_test (dt datetime)");
-        stmt.execute("create table employee("
+        statement.execute("create table date_test (d date)");
+        statement.execute("create table date_time_test (dt datetime)");
+        statement.execute("create table employee("
                 + "id INT, "
                 + "firstname VARCHAR(50), "
                 + "lastname VARCHAR(50), "
@@ -116,7 +90,7 @@ public class MetaDataSerializerTest {
             namingStrategy,
             serializer);
 
-        exporter.export(conn.getMetaData());
+        exporter.export(connection.getMetaData());
 
         JavaCompiler compiler = new SimpleCompiler();
         Set<String> classes = exporter.getClasses();

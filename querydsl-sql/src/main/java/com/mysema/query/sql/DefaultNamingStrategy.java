@@ -34,9 +34,14 @@ public class DefaultNamingStrategy implements NamingStrategy {
 
     @Override
     public String getClassName(String namePrefix, String tableName) {
-        return namePrefix
+        if (tableName.length() > 1){
+            return namePrefix
                 + tableName.substring(0, 1).toUpperCase(Locale.ENGLISH)
-                + toCamelCase(tableName.substring(1));
+                + toCamelCase(tableName.substring(1));    
+        }else{
+            return namePrefix + tableName.toUpperCase(Locale.ENGLISH);
+        }
+        
     }
 
     @Override
@@ -72,11 +77,16 @@ public class DefaultNamingStrategy implements NamingStrategy {
         if (foreignKeyName.toLowerCase().startsWith("fk_")){
             foreignKeyName = foreignKeyName.substring(3) + "_fk";
         }
-        String propertyName = foreignKeyName.substring(0,1).toLowerCase(Locale.ENGLISH) + toCamelCase(foreignKeyName.substring(1));
-        if (JavaSyntaxUtils.isReserved(propertyName)){
-            propertyName += reservedSuffix;
+        if (foreignKeyName.length() > 1){
+            String propertyName = foreignKeyName.substring(0,1).toLowerCase(Locale.ENGLISH) + toCamelCase(foreignKeyName.substring(1));
+            if (JavaSyntaxUtils.isReserved(propertyName)){
+                propertyName += reservedSuffix;
+            }
+            return propertyName;    
+        }else{
+            return foreignKeyName.toLowerCase(Locale.ENGLISH);
         }
-        return propertyName;
+        
     }
     
 
@@ -91,11 +101,16 @@ public class DefaultNamingStrategy implements NamingStrategy {
         if (primaryKeyName.toLowerCase().startsWith("pk_")){
             primaryKeyName = primaryKeyName.substring(3) + "_pk";
         }
-        String propertyName = primaryKeyName.substring(0,1).toLowerCase(Locale.ENGLISH) + toCamelCase(primaryKeyName.substring(1));
-        if (JavaSyntaxUtils.isReserved(propertyName)){
-            propertyName += reservedSuffix;
+        if (primaryKeyName.length() > 1){
+            String propertyName = primaryKeyName.substring(0,1).toLowerCase(Locale.ENGLISH) + toCamelCase(primaryKeyName.substring(1));
+            if (JavaSyntaxUtils.isReserved(propertyName)){
+                propertyName += reservedSuffix;
+            }
+            return propertyName;    
+        }else{
+            return primaryKeyName.toLowerCase(Locale.ENGLISH);
         }
-        return propertyName;
+        
     }
 
     @Override
@@ -112,8 +127,10 @@ public class DefaultNamingStrategy implements NamingStrategy {
         StringBuilder builder = new StringBuilder(str.length());
         for (int i = 0; i < str.length(); i++) {
             if (str.charAt(i) == '_') {
-                builder.append(Character.toUpperCase(str.charAt(i + 1)));
                 i += 1;
+                if (i < str.length()){
+                    builder.append(Character.toUpperCase(str.charAt(i)));    
+                }                               
             } else {
                 builder.append(Character.toLowerCase(str.charAt(i)));
             }

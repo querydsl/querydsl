@@ -8,6 +8,7 @@ package com.mysema.query.sql.support;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.Pair;
 
 /**
@@ -23,8 +24,8 @@ public class ForeignKeyData implements KeyData {
     private final List<Pair<String,String>> columns = new ArrayList<Pair<String,String>>();
 
     public ForeignKeyData(String name, String parentTable) {
-        this.name = name;
-        this.table = parentTable;
+        this.name = Assert.hasLength(name,"name");
+        this.table = Assert.hasLength(parentTable,"parentTable");
     }
 
     public void add(String foreignColumn, String parentColumn){

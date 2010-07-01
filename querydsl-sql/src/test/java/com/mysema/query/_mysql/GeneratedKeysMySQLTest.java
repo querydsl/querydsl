@@ -17,12 +17,17 @@ import java.sql.Statement;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.mysema.query.QGeneratedKeysEntity;
 import com.mysema.query.sql.H2Templates;
 import com.mysema.query.sql.dml.SQLInsertClause;
+import com.mysema.testutil.FilteringTestRunner;
+import com.mysema.testutil.ResourceCheck;
 
-public abstract class GeneratedKeysMySQLTest {
+@RunWith(FilteringTestRunner.class)
+@ResourceCheck("/mysql.run")
+public class GeneratedKeysMySQLTest {
 
     private Connection conn;
 
@@ -30,9 +35,6 @@ public abstract class GeneratedKeysMySQLTest {
 
     @Before
     public void setUp() throws ClassNotFoundException, SQLException{
-//        Class.forName("org.h2.Driver");
-//        String url = "jdbc:h2:target/h2";
-//        conn = DriverManager.getConnection(url, "sa", "");
         Class.forName("com.mysql.jdbc.Driver");
         String url = "jdbc:mysql://localhost:3306/querydsl";
         conn = DriverManager.getConnection(url, "querydsl", "querydsl");

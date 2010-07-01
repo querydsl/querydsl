@@ -251,7 +251,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({HSQLDB,H2,MYSQL})
+    @ExcludeIn({HSQLDB, H2, MYSQL})
     public void offsetOnly(){
         // offset
         query().from(employee)

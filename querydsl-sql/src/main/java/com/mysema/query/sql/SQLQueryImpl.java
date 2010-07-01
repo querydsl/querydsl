@@ -22,7 +22,7 @@ public class SQLQueryImpl extends AbstractSQLQuery<SQLQueryImpl> implements SQLQ
      * Create a detached SQLQueryImpl instance
      * The query can be attached via the clone method
      *
-     * @param conn Connection to use
+     * @param connection Connection to use
      * @param templates SQLTemplates to use
      */
     public SQLQueryImpl(SQLTemplates templates) {

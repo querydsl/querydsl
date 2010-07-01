@@ -13,23 +13,26 @@ public class LabelRule implements MethodRule{
 
     @Override
     public Statement apply(Statement base, FrameworkMethod method, Object target) {
-        Label label = method.getMethod().getDeclaringClass().getAnnotation(Label.class);
+        Label label = target.getClass().getAnnotation(Label.class);
         boolean run = true;
         if (label != null){
-            run = !isIgnored(method.getMethod(), label.value()); 
+            run = isExecuted(method.getMethod(), label.value()); 
         }
         return run ? base : EmptyStatement.DEFAULT;
     }
     
-    private boolean isIgnored(Method method, Target label) {
-        boolean ignore = false;
-        if (label != null) {
-            ExcludeIn ex = method.getAnnotation(ExcludeIn.class);
-            IncludeIn in = method.getAnnotation(IncludeIn.class);
-            ignore |= ex != null && Arrays.asList(ex.value()).contains(label);
-            ignore |= in != null && !Arrays.asList(in.value()).contains(label);
+    private boolean isExecuted(Method method, Target target) {
+        ExcludeIn ex = method.getAnnotation(ExcludeIn.class);
+        // excluded in given targets
+        if (ex != null && Arrays.asList(ex.value()).contains(target)){
+            return false;
         }
-        return ignore;
+        // included only in given targets
+        IncludeIn in = method.getAnnotation(IncludeIn.class);
+        if (in != null && !Arrays.asList(in.value()).contains(target)){
+            return false;
+        }
+        return true;
     }
 
 }

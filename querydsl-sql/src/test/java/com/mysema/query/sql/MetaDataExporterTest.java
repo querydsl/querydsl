@@ -6,21 +6,17 @@
 package com.mysema.query.sql;
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Set;
 
 import javax.tools.JavaCompiler;
 
 import junit.framework.Assert;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.codegen.SimpleCompiler;
+import com.mysema.query.AbstractJDBCTest;
 
 /**
  * MetaDataExporterTest provides
@@ -28,28 +24,7 @@ import com.mysema.codegen.SimpleCompiler;
  * @author tiwe
  * @version $Id$
  */
-public class MetaDataExporterTest {
-
-    private Connection conn;
-
-    private Statement stmt;
-
-    @Before
-    public void setUp() throws ClassNotFoundException, SQLException{
-        Class.forName("org.hsqldb.jdbcDriver");
-        String url = "jdbc:hsqldb:data/tutorial";
-        conn = DriverManager.getConnection(url, "sa", "");
-        stmt = conn.createStatement();
-    }
-
-    @After
-    public void tearDown() throws SQLException{
-        try{
-            stmt.close();
-        }finally{
-            conn.close();
-        }
-    }
+public class MetaDataExporterTest extends AbstractJDBCTest{
 
     @Test
     public void testGeneration() throws Exception {
@@ -78,20 +53,20 @@ public class MetaDataExporterTest {
     }
 
     private void test(String namePrefix, NamingStrategy namingStrategy, String target) throws SQLException{
-        stmt.execute("drop table employee if exists");
+        statement.execute("drop table employee if exists");
 
-        stmt.execute("drop table survey if exists");
-        stmt.execute("create table survey (id int, name varchar(30))");
+        statement.execute("drop table survey if exists");
+        statement.execute("create table survey (id int, name varchar(30))");
 
-        stmt.execute("drop table date_test if exists");
-        stmt.execute("create table date_test (d date)");
+        statement.execute("drop table date_test if exists");
+        statement.execute("create table date_test (d date)");
 
-        stmt.execute("drop table date_time_test if exists");
-        stmt.execute("create table date_time_test (dt datetime)");
+        statement.execute("drop table date_time_test if exists");
+        statement.execute("create table date_time_test (dt datetime)");
 
         MetaDataSerializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);
         MetaDataExporter exporter = new MetaDataExporter(namePrefix, "test", null, null, new File(target), namingStrategy, serializer);
-        exporter.export(conn.getMetaData());
+        exporter.export(connection.getMetaData());
 
         JavaCompiler compiler = new SimpleCompiler();
         Set<String> classes = exporter.getClasses();
