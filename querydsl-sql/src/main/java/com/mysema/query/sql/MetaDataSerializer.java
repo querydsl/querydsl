@@ -83,7 +83,7 @@ public class MetaDataSerializer extends EntitySerializer {
                 if (!first){
                     value.append(", ");
                 }
-                value.append(namingStrategy.getPropertyNameForPrimaryKey(column, model));
+                value.append(namingStrategy.getPropertyName(column, namePrefix, model));
                 first = false;
             }
             value.append(")");
