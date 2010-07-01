@@ -87,6 +87,7 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
         return this;
     }
 
+    @Nullable
     @java.lang.SuppressWarnings("unchecked")
     public <T> T executeWithKey(Path<T> path){
         ResultSet rs = executeWithKeys();
