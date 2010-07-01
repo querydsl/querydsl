@@ -17,7 +17,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.mysema.query.Connections;
 import com.mysema.query.SelectBaseTest;
@@ -25,11 +24,9 @@ import com.mysema.query.Target;
 import com.mysema.query.sql.OracleTemplates;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.oracle.OracleQuery;
-import com.mysema.testutil.FilteringTestRunner;
 import com.mysema.testutil.Label;
 import com.mysema.testutil.ResourceCheck;
 
-@RunWith(FilteringTestRunner.class)
 @ResourceCheck("/oracle.run")
 @Label(Target.ORACLE)
 public class SelectOracleTest extends SelectBaseTest {

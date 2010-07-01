@@ -12,7 +12,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Label provides
+ * ResourceCheck provides
  *
  * @author tiwe
  * @version $Id$
@@ -20,6 +20,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Inherited
-public @interface Label {
-    com.mysema.query.Target value();
+public @interface ResourceCheck {
+    /**
+     * @return
+     */
+    public String value();
 }

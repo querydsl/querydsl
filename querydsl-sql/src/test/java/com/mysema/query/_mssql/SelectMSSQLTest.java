@@ -15,7 +15,6 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 import com.mysema.query.Connections;
 import com.mysema.query.SelectBaseTest;
@@ -27,11 +26,9 @@ import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.ObjectSubQuery;
-import com.mysema.testutil.FilteringTestRunner;
 import com.mysema.testutil.Label;
 import com.mysema.testutil.ResourceCheck;
 
-@RunWith(FilteringTestRunner.class)
 @ResourceCheck("/sqlserver.run")
 @Label(Target.SQLSERVER)
 public class SelectMSSQLTest extends SelectBaseTest {

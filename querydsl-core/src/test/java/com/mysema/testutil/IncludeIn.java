@@ -12,14 +12,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * ResourceCheck provides
+ * ExcludeIn provides
  *
  * @author tiwe
  * @version $Id$
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
+@Target(ElementType.METHOD)
 @Inherited
-public @interface ResourceCheck {
-    public String value();
+public @interface IncludeIn {
+    /**
+     * @return
+     */
+    com.mysema.query.Target[] value();
 }

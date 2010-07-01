@@ -12,14 +12,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * ExcludeIn provides
+ * Label provides
  *
  * @author tiwe
  * @version $Id$
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Target(ElementType.TYPE)
 @Inherited
-public @interface IncludeIn {
-    com.mysema.query.Target[] value();
+public @interface Label {
+    /**
+     * @return
+     */
+    com.mysema.query.Target value();
 }

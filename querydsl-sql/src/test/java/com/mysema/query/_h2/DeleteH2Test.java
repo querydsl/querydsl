@@ -9,16 +9,13 @@ import java.sql.SQLException;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
 
 import com.mysema.query.Connections;
 import com.mysema.query.DeleteBaseTest;
 import com.mysema.query.Target;
 import com.mysema.query.sql.H2Templates;
-import com.mysema.testutil.FilteringTestRunner;
 import com.mysema.testutil.Label;
 
-@RunWith(FilteringTestRunner.class)
 @Label(Target.H2)
 public class DeleteH2Test extends DeleteBaseTest{
 

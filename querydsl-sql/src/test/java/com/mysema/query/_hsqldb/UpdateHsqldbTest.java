@@ -9,16 +9,13 @@ import java.sql.SQLException;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
 
 import com.mysema.query.Connections;
 import com.mysema.query.Target;
 import com.mysema.query.UpdateBaseTest;
 import com.mysema.query.sql.HSQLDBTemplates;
-import com.mysema.testutil.FilteringTestRunner;
 import com.mysema.testutil.Label;
 
-@RunWith(FilteringTestRunner.class)
 @Label(Target.HSQLDB)
 public class UpdateHsqldbTest extends UpdateBaseTest{
 

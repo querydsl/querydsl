@@ -80,14 +80,14 @@ public class BooleanBuilderTest {
 
     @Test
     public void equals(){
-    assertEquals(new BooleanBuilder(first), new BooleanBuilder(first));
-    assertFalse(first.equals(new BooleanBuilder(first)));
-    assertFalse(new BooleanBuilder(first).equals(first));
+        assertEquals(new BooleanBuilder(first), new BooleanBuilder(first));
+        assertFalse(first.equals(new BooleanBuilder(first)));
+        assertFalse(new BooleanBuilder(first).equals(first));
     }
 
     @Test
     public void testHashCode(){
-    assertEquals(new BooleanBuilder(first).hashCode(), new BooleanBuilder(first).hashCode());
+        assertEquals(new BooleanBuilder(first).hashCode(), new BooleanBuilder(first).hashCode());
     }
 
     @Test

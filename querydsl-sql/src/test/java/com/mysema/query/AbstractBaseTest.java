@@ -12,6 +12,9 @@ import java.sql.SQLException;
 import javax.annotation.Nullable;
 
 import org.junit.AfterClass;
+import org.junit.Rule;
+import org.junit.rules.MethodRule;
+import org.junit.runner.RunWith;
 
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLQueryImpl;
@@ -22,7 +25,10 @@ import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.path.PEntity;
+import com.mysema.testutil.FilteringTestRunner;
+import com.mysema.testutil.LabelRule;
 
+@RunWith(FilteringTestRunner.class)
 public abstract class AbstractBaseTest {
 
     @AfterClass
@@ -34,7 +40,10 @@ public abstract class AbstractBaseTest {
 
     @Nullable
     protected String expectedQuery;
-
+    
+    @Rule
+    public static MethodRule labelRule = new LabelRule();
+    
     protected SQLUpdateClause update(PEntity<?> e){
         return new SQLUpdateClause(Connections.getConnection(), dialect, e);
     }

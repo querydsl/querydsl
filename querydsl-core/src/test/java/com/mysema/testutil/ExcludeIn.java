@@ -21,5 +21,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 @Inherited
 public @interface ExcludeIn {
+    /**
+     * @return
+     */
     com.mysema.query.Target[] value();
 }
