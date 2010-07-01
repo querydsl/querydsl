@@ -14,7 +14,10 @@ public class LabelRule implements MethodRule{
     @Override
     public Statement apply(Statement base, FrameworkMethod method, Object target) {
         Label label = method.getMethod().getDeclaringClass().getAnnotation(Label.class);
-        boolean run = label != null && isIgnored(method.getMethod(), label.value());
+        boolean run = true;
+        if (label != null){
+            run = !isIgnored(method.getMethod(), label.value()); 
+        }
         return run ? base : EmptyStatement.DEFAULT;
     }
     

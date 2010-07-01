@@ -28,9 +28,11 @@ public class FilteringTestRunner extends BlockJUnit4ClassRunner {
     }
 
     @Override
-    public void run(final RunNotifier notifier) {
+    public void run(RunNotifier notifier) {
         if (run){
             super.run(notifier);
+        }else{
+            System.err.println("skipping");
         }
     }
 
