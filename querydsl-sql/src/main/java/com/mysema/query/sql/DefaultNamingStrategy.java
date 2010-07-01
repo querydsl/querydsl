@@ -78,6 +78,13 @@ public class DefaultNamingStrategy implements NamingStrategy {
         }
         return propertyName;
     }
+    
+
+    @Override
+    public String getPropertyNameForInverseForeignKey(String foreignKeyName, EntityType entityType) {
+        return "_" + getPropertyNameForForeignKey(foreignKeyName, entityType);
+    }
+
 
     @Override
     public String getPropertyNameForPrimaryKey(String primaryKeyName, EntityType entityType) {

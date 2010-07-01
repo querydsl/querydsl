@@ -85,4 +85,13 @@ public interface NamingStrategy {
      */
     String normalizeTableName(String tableName);
 
+    /**
+     * Convert the given foreign key name to a foreign key property name
+     * 
+     * @param name
+     * @param model
+     * @return
+     */
+    String getPropertyNameForInverseForeignKey(String name, EntityType model);
+
 }

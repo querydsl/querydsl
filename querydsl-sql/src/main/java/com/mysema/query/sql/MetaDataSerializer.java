@@ -18,6 +18,8 @@ import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.TypeMappings;
 import com.mysema.query.sql.support.ForeignKeyData;
+import com.mysema.query.sql.support.InverseForeignKeyData;
+import com.mysema.query.sql.support.KeyData;
 import com.mysema.query.sql.support.PrimaryKeyData;
 
 /**
@@ -68,7 +70,13 @@ public class MetaDataSerializer extends EntitySerializer {
         // foreign keys
         Collection<ForeignKeyData> foreignKeys = (Collection<ForeignKeyData>) model.getData().get(ForeignKeyData.class);
         if (foreignKeys != null){
-            serializeForeignKeys(model, writer, foreignKeys);
+            serializeForeignKeys(model, writer, foreignKeys, false);
+        }
+        
+        // inverse foreign keys
+        Collection<InverseForeignKeyData> inverseForeignKeys = (Collection<InverseForeignKeyData>) model.getData().get(InverseForeignKeyData.class);
+        if (inverseForeignKeys != null){
+            serializeForeignKeys(model, writer, inverseForeignKeys, true);
         }
     }
 
@@ -93,9 +101,14 @@ public class MetaDataSerializer extends EntitySerializer {
     }
 
     protected void serializeForeignKeys(EntityType model, CodeWriter writer,
-            Collection<ForeignKeyData> foreignKeys) throws IOException {
-        for (ForeignKeyData foreignKey : foreignKeys){
-            String fieldName = namingStrategy.getPropertyNameForForeignKey(foreignKey.getName(), model);
+            Collection<? extends KeyData> foreignKeys, boolean inverse) throws IOException {
+        for (KeyData foreignKey : foreignKeys){
+            String fieldName;
+            if (inverse){
+                fieldName = namingStrategy.getPropertyNameForInverseForeignKey(foreignKey.getName(), model);
+            }else{
+                fieldName = namingStrategy.getPropertyNameForForeignKey(foreignKey.getName(), model);
+            }
             String foreignType = namingStrategy.getClassName(namePrefix, foreignKey.getTable());
             StringBuilder value = new StringBuilder();
             value.append("new ForeignKey<"+foreignType+">(this, ");

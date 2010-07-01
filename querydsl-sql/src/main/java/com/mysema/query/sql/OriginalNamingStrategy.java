@@ -49,6 +49,11 @@ public class OriginalNamingStrategy implements NamingStrategy {
     }
 
     @Override
+    public String getPropertyNameForInverseForeignKey(String foreignKeyName, EntityType entityType) {
+        return "_" + foreignKeyName;
+    }
+
+    @Override
     public String getPropertyNameForPrimaryKey(String primaryKeyName, EntityType model) {
         return primaryKeyName;
     }

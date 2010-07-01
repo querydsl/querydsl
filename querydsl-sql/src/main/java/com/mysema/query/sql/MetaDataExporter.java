@@ -28,6 +28,7 @@ import com.mysema.codegen.JavaWriter;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.codegen.*;
 import com.mysema.query.sql.support.ForeignKeyData;
+import com.mysema.query.sql.support.InverseForeignKeyData;
 import com.mysema.query.sql.support.PrimaryKeyData;
 
 /**
@@ -44,6 +45,8 @@ public class MetaDataExporter {
 
     private static final int FK_PARENT_COLUMN_NAME = 4;
 
+    private static final int FK_FOREIGN_TABLE_NAME = 7;
+    
     private static final int FK_FOREIGN_COLUMN_NAME = 8;
 
     private static final int PK_NAME = 6;
@@ -219,6 +222,28 @@ public class MetaDataExporter {
         }
 
         classModel.getData().put(ForeignKeyData.class, foreignKeyData.values());
+        
+        // collect inverse foreign keys
+        foreignKeys = md.getCrossReference(null, schemaPattern, tableName, null, schemaPattern, null);
+        Map<String,InverseForeignKeyData> inverseForeignKeyData = new HashMap<String,InverseForeignKeyData>();
+        try{
+            while (foreignKeys.next()){
+                String name = foreignKeys.getString(FK_NAME);
+                String parentColumnName = foreignKeys.getString(FK_PARENT_COLUMN_NAME);
+                String foreignTableName = foreignKeys.getString(FK_FOREIGN_TABLE_NAME);
+                String foreignColumn = foreignKeys.getString(FK_FOREIGN_COLUMN_NAME);
+                InverseForeignKeyData data = inverseForeignKeyData.get(name);
+                if (data == null){
+                    data = new InverseForeignKeyData(name, foreignTableName);
+                    inverseForeignKeyData.put(name, data);
+                }
+                data.add(parentColumnName, foreignColumn);
+            }
+        }finally{
+            foreignKeys.close();
+        }
+
+        classModel.getData().put(InverseForeignKeyData.class, inverseForeignKeyData.values());
 
         // collect columns
         ResultSet columns = md.getColumns(null, schemaPattern, tableName, null);

@@ -14,7 +14,7 @@ import com.mysema.commons.lang.Pair;
  * @author tiwe
  *
  */
-public class ForeignKeyData implements KeyData {
+public class InverseForeignKeyData implements KeyData{
 
     private final String name;
 
@@ -22,7 +22,7 @@ public class ForeignKeyData implements KeyData {
 
     private final List<Pair<String,String>> columns = new ArrayList<Pair<String,String>>();
 
-    public ForeignKeyData(String name, String parentTable) {
+    public InverseForeignKeyData(String name, String parentTable) {
         this.name = name;
         this.table = parentTable;
     }
