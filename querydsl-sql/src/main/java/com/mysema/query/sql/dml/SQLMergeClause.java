@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.QueryException;
+import com.mysema.query.dml.StoreClause;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expr;
@@ -36,7 +37,7 @@ import com.mysema.util.JDBCUtil;
  *
  */
 @edu.umd.cs.findbugs.annotations.SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
-public class SQLMergeClause {
+public class SQLMergeClause implements StoreClause<SQLMergeClause>{
 
     private static final Logger logger = LoggerFactory.getLogger(SQLMergeClause.class);
 
