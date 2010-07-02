@@ -1,3 +1,6 @@
+/*
+ * 
+ */
 package com.mysema.testutil;
 
 import org.junit.rules.MethodRule;
