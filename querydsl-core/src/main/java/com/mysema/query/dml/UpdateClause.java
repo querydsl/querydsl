@@ -7,8 +7,6 @@ package com.mysema.query.dml;
 
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 
@@ -19,14 +17,7 @@ import com.mysema.query.types.expr.EBoolean;
  *
  * @param <C>
  */
-public interface UpdateClause<C extends UpdateClause<C>> {
-
-    /**
-     * Execute the delete clause and return the amount of updated rows/items
-     *
-     * @return
-     */
-    long execute();
+public interface UpdateClause<C extends UpdateClause<C>> extends StoreClause<C>{
 
     /**
      * Set the paths to be updated
@@ -36,16 +27,6 @@ public interface UpdateClause<C extends UpdateClause<C>> {
      * @return
      */
     C set(List<? extends Path<?>> paths, List<?> values);
-
-    /**
-     * Set the path to be updated
-     *
-     * @param <T>
-     * @param path path to be updated
-     * @param value value to set
-     * @return
-     */
-    <T> C set(Path<T> path, @Nullable T value);
 
     /**
      * Defines the filter constraints
