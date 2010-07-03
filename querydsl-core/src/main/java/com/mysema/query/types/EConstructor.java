@@ -8,6 +8,7 @@ package com.mysema.query.types;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -58,9 +59,13 @@ public class EConstructor<D> extends ESimple<D> {
     private final Class<?>[] parameterTypes;
 
     public EConstructor(Class<D> type, Class<?>[] paramTypes, Expr<?>... args) {
+        this(type, paramTypes, Arrays.asList(args));
+    }
+    
+    public EConstructor(Class<D> type, Class<?>[] paramTypes, List<Expr<?>> args) {
         super(type);
         this.parameterTypes = paramTypes.clone();
-        this.args = Collections.unmodifiableList(Arrays.asList(args));
+        this.args = args;
     }
 
     @Override
