@@ -19,6 +19,8 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.query.QueryException;
 import com.mysema.query.dml.StoreClause;
+import com.mysema.query.sql.SQLQuery;
+import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expr;
@@ -70,7 +72,46 @@ public class SQLMergeClause implements StoreClause<SQLMergeClause>{
         }
     }
 
-    public long execute() {
+    public long execute() {                
+        if (templates.isNativeMerge()){
+            return executeNativeMerge();
+        }else{
+            return executeCompositeMerge();
+        }        
+    }
+
+    @SuppressWarnings("unchecked")
+    private long executeCompositeMerge() {
+        // select 
+        SQLQuery query = new SQLQueryImpl(connection, templates).from(entity);
+        for (int i=0; i < columns.size(); i++){
+            query.where(columns.get(i).asExpr().eq((Expr)values.get(i)));
+        }
+        List<?> ids = query.list(keys.get(0).asExpr());
+        
+        if (!ids.isEmpty()){
+            // update
+            SQLUpdateClause update = new SQLUpdateClause(connection, templates, entity);
+            populate(update);
+            update.where(((Expr)keys.get(0).asExpr()).in(ids));
+            return update.execute();
+        }else{
+            // insert
+            SQLInsertClause insert = new SQLInsertClause(connection, templates, entity);
+            populate(insert);
+            return insert.execute();
+            
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void populate(StoreClause<?> clause) {
+        for (int i = 0; i < columns.size(); i++){
+            clause.set((Path)columns.get(i), (Expr)values.get(i));
+        }
+    }
+
+    private long executeNativeMerge() {
         SQLSerializer serializer = new SQLSerializer(templates, true);
         serializer.serializeForMerge(entity, keys, columns, values, subQuery);
         String queryString = serializer.toString();

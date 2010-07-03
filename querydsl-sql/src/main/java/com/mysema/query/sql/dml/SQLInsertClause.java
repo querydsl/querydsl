@@ -177,7 +177,9 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
     @Override
     public <T> SQLInsertClause set(Path<T> path, T value) {
         columns.add(path);
-        if (value != null){
+        if (value instanceof Expr<?>){ 
+            values.add((Expr<?>)value);        
+        }else if (value != null){
             values.add(ExprConst.create(value));
         }else{
             values.add(new NullExpr<T>(path.getType()));

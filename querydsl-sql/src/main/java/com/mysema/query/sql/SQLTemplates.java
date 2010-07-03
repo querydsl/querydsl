@@ -34,6 +34,8 @@ public class SQLTemplates extends Templates {
     public static final Operator<Object> CAST = new OperatorImpl<Object>(Object.class, Object.class);
 
     public static final SQLTemplates DEFAULT = new SQLTemplates();
+    
+    private boolean nativeMerge;
 
     private String asc = " asc";
 
@@ -482,4 +484,12 @@ public class SQLTemplates extends Templates {
         this.set = set;
     }
 
+    public boolean isNativeMerge() {
+        return nativeMerge;
+    }
+
+    public void setNativeMerge(boolean nativeMerge) {
+        this.nativeMerge = nativeMerge;
+    }
+    
 }
