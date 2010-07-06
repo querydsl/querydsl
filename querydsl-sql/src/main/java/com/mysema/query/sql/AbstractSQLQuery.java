@@ -36,6 +36,7 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.util.JDBCUtil;
+import com.mysema.util.MathUtils;
 import com.mysema.util.ResultSetAdapter;
 
 /**
@@ -187,20 +188,19 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     @SuppressWarnings("unchecked")
     private <T> T get(ResultSet rs, int i, Class<T> type) {
-        String methodName = "get" + type.getSimpleName();
-        if (methodName.equals("getInteger")) {
-            methodName = "getInt";
-        }
-        // TODO : cache methods
         try {
-            return (T) ResultSet.class.getMethod(methodName, int.class).invoke(rs, i);
-        } catch (SecurityException e) {
-            throw new QueryException(e);
-        } catch (IllegalAccessException e) {
-            throw new QueryException(e);
-        } catch (InvocationTargetException e) {
-            throw new QueryException(e);
-        } catch (NoSuchMethodException e) {
+            Object value = rs.getObject(i);
+            if (value != null && !type.isAssignableFrom(value.getClass())){
+                if (Number.class.isAssignableFrom(type)){
+                    return (T)MathUtils.cast((Number)value, (Class)type);
+                }else{
+                    throw new IllegalArgumentException(
+                        "Unable to cast " + value.getClass().getName() + " to " + type.getName());
+                }
+            }else{
+                return (T)value;
+            }
+        } catch (SQLException e) {
             throw new QueryException(e);
         }
     }

@@ -5,12 +5,16 @@
  */
 package com.mysema.util;
 
-import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.sql.Blob;
+import java.sql.Clob;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Map;
-
-import org.apache.commons.lang.ClassUtils;
 
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
@@ -34,36 +38,53 @@ public final class JDBCUtil {
                     o = params.get(o);
                 }
                 setParameter(stmt, counter++, o);
-            } catch (NoSuchMethodException e) {
-                throw new IllegalArgumentException(e);
-            } catch (IllegalAccessException e) {
-                throw new IllegalArgumentException(e);
-            } catch (InvocationTargetException e) {
+            } catch (SQLException e) {
                 throw new IllegalArgumentException(e);
             }
         }
     }
 
-    // TODO : don't use reflection here
-    private static void setParameter(PreparedStatement stmt, int i, Object o) throws NoSuchMethodException,
-        IllegalAccessException, InvocationTargetException {
-        Class<?> type = o.getClass();
-        String methodName = "set" + type.getSimpleName();
-        if (methodName.equals("setInteger")) {
-            methodName = "setInt";
-        }else if (methodName.equals("setCharacter")){
-            methodName = "setString";
-            type = String.class;
-            o = o.toString();
-        }else if (methodName.equals("setDate") && type.equals(java.util.Date.class)) {
-            type = java.sql.Date.class;
-            o = new java.sql.Date(((java.util.Date) o).getTime());
+    private static void setParameter(PreparedStatement stmt, int i, Object o) throws SQLException{
+        Class<?> type = o.getClass();        
+        if (type.equals(BigDecimal.class)){
+            stmt.setBigDecimal(i, (BigDecimal) o);    
+        }else if (type.equals(Blob.class)){
+            stmt.setBlob(i, (Blob) o);    
+        }else if (type.equals(Boolean.class)){
+            stmt.setBoolean(i, (Boolean) o);    
+        }else if (type.equals(Byte.class)){
+            stmt.setByte(i, (Byte)o);    
+        }else if (type.equals(byte[].class)){
+            stmt.setBytes(i, (byte[])o); 
+        }else if (type.equals(Character.class)){
+            stmt.setString(i, String.valueOf(o.toString()));            
+        }else if (type.equals(Clob.class)){
+            stmt.setClob(i, (Clob)o);    
+        }else if (type.equals(java.sql.Date.class)){
+            stmt.setDate(i, (java.sql.Date)o);    
+        }else if (type.equals(java.util.Date.class)){
+            stmt.setDate(i, new java.sql.Date(((java.util.Date)o).getTime()));
+        }else if (type.equals(Double.class)){
+            stmt.setDouble(i, (Double) o);    
+        }else if (type.equals(Float.class)){
+            stmt.setFloat(i, (Float) o);    
+        }else if (type.equals(Integer.class)){
+            stmt.setInt(i, (Integer) o);    
+        }else if (type.equals(Long.class)){
+            stmt.setLong(i, (Long) o);    
+        }else if (type.equals(Short.class)){
+            stmt.setShort(i, (Short) o);    
+        }else if (type.equals(String.class)){
+            stmt.setString(i, (String)o);    
+        }else if (type.equals(Time.class)){
+            stmt.setTime(i, (Time)o);    
+        }else if (type.equals(Timestamp.class)){
+            stmt.setTimestamp(i, (Timestamp)o);    
+        }else if (type.equals(URL.class)){
+            stmt.setURL(i, (URL)o);    
+        }else{
+            stmt.setObject(i, o);
         }
-
-        type = ClassUtils.wrapperToPrimitive(type) != null ? ClassUtils.wrapperToPrimitive(type) : type;
-
-        // TODO : cache methods
-        PreparedStatement.class.getMethod(methodName, int.class, type).invoke(stmt, i, o);
     }
 
 }
