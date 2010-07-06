@@ -53,20 +53,20 @@ public class QBean<T> extends EConstructor<T>{
     }
 
     private Map<String,Expr<?>> createBindings(Expr<?>... args) {
-        HashMap<String,Expr<?>> bindings = new HashMap<String,Expr<?>>(args.length);
+        HashMap<String,Expr<?>> rv = new HashMap<String,Expr<?>>(args.length);
         for (Expr<?> expr : args){
             if (expr instanceof Path<?>){
                 Path<?> path = (Path<?>)expr;
-                bindings.put(path.getMetadata().getExpression().toString(), expr);
+                rv.put(path.getMetadata().getExpression().toString(), expr);
             }else if (expr instanceof Operation<?>){
                 Operation<?> operation = (Operation<?>)expr;
                 Path<?> alias = (Path<?>)operation.getArg(1);
-                bindings.put(alias.getMetadata().getExpression().toString(), expr);
+                rv.put(alias.getMetadata().getExpression().toString(), expr);
             }else{
                 throw new IllegalArgumentException("Unsupported expression " + expr);
             }
         }
-        return bindings;
+        return rv;
     }
     
     @Override
