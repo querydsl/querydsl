@@ -187,6 +187,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     }
 
     @SuppressWarnings("unchecked")
+    @Nullable
     private <T> T get(ResultSet rs, int i, Class<T> type) {
         try {
             Object value = rs.getObject(i);
