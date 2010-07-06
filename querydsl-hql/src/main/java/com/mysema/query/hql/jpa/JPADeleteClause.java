@@ -60,5 +60,12 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause>{
         metadata.addWhere(o);
         return this;
     }
+    
+    @Override
+    public String toString(){
+        HQLSerializer serializer = new HQLSerializer(templates);
+        serializer.serializeForDelete(metadata);
+        return serializer.toString();
+    }
 
 }

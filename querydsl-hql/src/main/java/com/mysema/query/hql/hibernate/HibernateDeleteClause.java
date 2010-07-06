@@ -65,5 +65,12 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
         md.addWhere(o);
         return this;
     }
+    
+    @Override
+    public String toString(){
+        HQLSerializer serializer = new HQLSerializer(templates);
+        serializer.serializeForDelete(md);
+        return serializer.toString();
+    }
 
 }

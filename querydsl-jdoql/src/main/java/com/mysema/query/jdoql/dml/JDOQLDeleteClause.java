@@ -91,5 +91,12 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
         metadata.addWhere(o);
         return this;
     }
+    
+    @Override
+    public String toString(){
+        JDOQLSerializer serializer = new JDOQLSerializer(templates, entity);
+        serializer.handle(metadata.getWhere());
+        return serializer.toString();
+    }
 
 }

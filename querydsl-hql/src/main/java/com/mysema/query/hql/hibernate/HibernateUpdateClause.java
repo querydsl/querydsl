@@ -94,5 +94,12 @@ public class HibernateUpdateClause implements
         metadata.addWhere(o);
         return this;
     }
+    
+    @Override
+    public String toString(){
+        HQLSerializer serializer = new HQLSerializer(templates);
+        serializer.serializeForUpdate(metadata);
+        return serializer.toString();
+    }
 
 }

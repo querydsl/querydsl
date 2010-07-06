@@ -88,5 +88,12 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause> {
         }
         return this;
     }
+    
+    @Override
+    public String toString(){
+        SQLSerializer serializer = new SQLSerializer(templates, true);
+        serializer.serializeForDelete(entity, where.getValue());
+        return serializer.toString();
+    }
 
 }

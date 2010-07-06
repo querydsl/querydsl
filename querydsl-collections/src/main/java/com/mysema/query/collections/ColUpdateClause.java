@@ -73,5 +73,10 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
         query.where(o);
         return this;
     }
+    
+    @Override
+    public String toString(){
+        return "update " + query;
+    }
 
 }

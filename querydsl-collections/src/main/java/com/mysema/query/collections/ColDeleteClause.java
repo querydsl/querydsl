@@ -51,5 +51,10 @@ public class ColDeleteClause<T> implements DeleteClause<ColDeleteClause<T>>{
         query.where(o);
         return this;
     }
+    
+    @Override
+    public String toString(){
+        return "delete " + query.toString();
+    }
 
 }
