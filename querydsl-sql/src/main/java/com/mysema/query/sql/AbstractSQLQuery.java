@@ -66,6 +66,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
             AbstractSQLQuery.this.orderBy(o);
             return this;
         }
+        
+        @Override
+        public String toString(){
+            return AbstractSQLQuery.this.toString();
+        }
 
     }
 
