@@ -41,6 +41,7 @@ public class SQLServerTemplates extends SQLTemplates{
     public SQLServerTemplates(boolean quote){
         super(quote ? "\"" : null);
         addClass2TypeMappings("decimal", Double.class);
+        setDummyTable(null);
 
         // String
         add(Ops.CHAR_AT, "cast(substring({0},{1}+1,1) as char)");

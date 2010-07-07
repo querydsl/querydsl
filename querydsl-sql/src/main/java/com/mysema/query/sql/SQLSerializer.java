@@ -13,6 +13,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryException;
@@ -323,23 +325,26 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
     }
 
-    private void serializeSources(List<JoinExpression> joins) {
-        append(templates.getFrom());
+    private void serializeSources(List<JoinExpression> joins) {        
         if (joins.isEmpty()) {
-            // TODO : disallow usage of dummy table ?!?
-            append(templates.getDummyTable());
-
-        }
-        for (int i = 0; i < joins.size(); i++) {
-            JoinExpression je = joins.get(i);
-            if (i > 0) {
-                append(templates.getJoinSymbol(je.getType()));
+            String dummyTable = templates.getDummyTable();
+            if (!StringUtils.isEmpty(dummyTable)){
+                append(templates.getFrom());
+                append(dummyTable);
             }
-            handleJoinTarget(je);
-            if (je.getCondition() != null) {
-                append(templates.getOn()).handle(je.getCondition());
-            }
-        }
+        }else{
+            append(templates.getFrom());
+            for (int i = 0; i < joins.size(); i++) {
+                JoinExpression je = joins.get(i);
+                if (i > 0) {
+                    append(templates.getJoinSymbol(je.getType()));
+                }
+                handleJoinTarget(je);
+                if (je.getCondition() != null) {
+                    append(templates.getOn()).handle(je.getCondition());
+                }
+            }    
+        }        
     }
 
     @SuppressWarnings("unchecked")
