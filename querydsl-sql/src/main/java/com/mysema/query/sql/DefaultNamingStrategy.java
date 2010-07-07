@@ -65,7 +65,8 @@ public class DefaultNamingStrategy implements NamingStrategy {
 
     @Override
     public String getPropertyName(String columnName, String namePrefix, EntityType entityType) {
-        String propertyName = columnName.substring(0, 1).toLowerCase(Locale.ENGLISH) + toCamelCase(columnName.substring(1));
+        String propertyName = columnName.substring(0, 1).toLowerCase(Locale.ENGLISH) 
+            + toCamelCase(columnName.substring(1));
         if (JavaSyntaxUtils.isReserved(propertyName)){
             propertyName += reservedSuffix;
         }
@@ -78,7 +79,8 @@ public class DefaultNamingStrategy implements NamingStrategy {
             foreignKeyName = foreignKeyName.substring(3) + "_fk";
         }
         if (foreignKeyName.length() > 1){
-            String propertyName = foreignKeyName.substring(0,1).toLowerCase(Locale.ENGLISH) + toCamelCase(foreignKeyName.substring(1));
+            String propertyName = foreignKeyName.substring(0,1).toLowerCase(Locale.ENGLISH) 
+                + toCamelCase(foreignKeyName.substring(1));
             if (JavaSyntaxUtils.isReserved(propertyName)){
                 propertyName += reservedSuffix;
             }
@@ -102,7 +104,8 @@ public class DefaultNamingStrategy implements NamingStrategy {
             primaryKeyName = primaryKeyName.substring(3) + "_pk";
         }
         if (primaryKeyName.length() > 1){
-            String propertyName = primaryKeyName.substring(0,1).toLowerCase(Locale.ENGLISH) + toCamelCase(primaryKeyName.substring(1));
+            String propertyName = primaryKeyName.substring(0,1).toLowerCase(Locale.ENGLISH) 
+                + toCamelCase(primaryKeyName.substring(1));
             if (JavaSyntaxUtils.isReserved(propertyName)){
                 propertyName += reservedSuffix;
             }
