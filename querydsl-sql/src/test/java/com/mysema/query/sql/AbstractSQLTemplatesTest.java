@@ -5,9 +5,14 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.mysema.query.sql.AbstractSQLQuery.UnionBuilder;
+import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.path.PSimple;
 
 public abstract class AbstractSQLTemplatesTest {
+    
+    private static final QSurvey survey1 = new QSurvey("survey1");
+    
+    private static final QSurvey survey2 = new QSurvey("survey2");
     
     protected SQLQueryImpl query = new SQLQueryImpl(createTemplates().newLineToSingleSpace());
     
@@ -36,6 +41,12 @@ public abstract class AbstractSQLTemplatesTest {
         	"(select 2 from dual) " +
         	"union " +
         	"(select 3 from dual)", union.toString());
+    }
+    
+    @Test
+    public void innerJoin(){        
+        query.from(survey1).innerJoin(survey2);
+        assertEquals("from SURVEY survey1 inner join SURVEY survey2", query.toString());
     }
     
     protected SQLSubQuery sq(){
