@@ -53,11 +53,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
         @Override
         @SuppressWarnings("unchecked")
-        public List<RT> list() throws SQLException {
-            if (sq[0].getMetadata().getProjection().size() == 1) {
+        public List<RT> list() {
+            if (union[0].getMetadata().getProjection().size() == 1) {
                 return (List<RT>) IteratorAdapter.asList(AbstractSQLQuery.this.iterateSingle(null));
             } else {
-                return (List<RT>) AbstractSQLQuery.this.iterateMultiple();
+                return (List<RT>) IteratorAdapter.asList(AbstractSQLQuery.this.iterateMultiple());
             }
         }
 
@@ -72,10 +72,53 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
             return AbstractSQLQuery.this.toString();
         }
 
+        @Override
+        public long count() {
+            return AbstractSQLQuery.this.count();
+        }
+
+        @Override
+        public long countDistinct() {
+            return AbstractSQLQuery.this.countDistinct();
+        }
+
+        @Override
+        public List<RT> listDistinct() {
+            queryMixin.setDistinct(true);
+            return list();
+        }
+
+        @Override
+        public SearchResults<RT> listDistinctResults() {
+            queryMixin.setDistinct(true);
+            return listResults();
+        }
+
+        @Override
+        public SearchResults<RT> listResults() {
+            long total = count();
+            try {
+                if (total > 0) {
+                    QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
+                    return new SearchResults<RT>(list(), modifiers, total);
+                } else {
+                    return SearchResults.emptyResults();
+                }
+
+            } finally {
+                reset();
+            }
+        }
+
+        @Override
+        public RT uniqueResult() {
+            List<RT> list = list();
+            return !list.isEmpty() ? list.get(0) : null;
+        }
+
     }
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(AbstractSQLQuery.class);
+    private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
 
     @Nullable
     private final Connection conn;
@@ -84,7 +127,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     private List<Object> constants;
 
     @Nullable
-    private SubQuery<?>[] sq;
+    private SubQuery<?>[] union;
 
     private final SQLTemplates templates;
 
@@ -103,8 +146,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     protected String buildQueryString(boolean forCountRow) {
         SQLSerializer serializer = createSerializer();
-        if (sq != null) {
-            serializer.serializeUnion(sq, queryMixin.getMetadata().getOrderBy());
+        if (union != null) {
+            serializer.serializeUnion(union, queryMixin.getMetadata().getOrderBy());
         } else {
             serializer.serialize(queryMixin.getMetadata(), forCountRow);
         }
@@ -251,7 +294,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("Don't mix union and from");
         }
-        this.sq = sq;
+        this.union = sq;
         return new UnionBuilder<RT>();
     }
 

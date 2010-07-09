@@ -31,6 +31,8 @@ import com.mysema.query.types.Templates;
  */
 public class SQLTemplates extends Templates {
 
+    public static final Operator<Object> UNION = new OperatorImpl<Object>();
+    
     public static final Operator<Object> CAST = new OperatorImpl<Object>(Object.class, Object.class);
 
     public static final SQLTemplates DEFAULT = new SQLTemplates();
@@ -151,6 +153,7 @@ public class SQLTemplates extends Templates {
         }
 
         add(CAST, "cast({0} as {1s})");
+        add(UNION, "{0}\nunion\n{1}");
 
         for (Class<?> cl : new Class[] { Boolean.class, Byte.class,
                 Double.class, Float.class, Integer.class, Long.class,

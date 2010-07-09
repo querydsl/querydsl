@@ -5,9 +5,7 @@
  */
 package com.mysema.query.sql;
 
-import java.sql.SQLException;
-import java.util.List;
-
+import com.mysema.query.SimpleProjectable;
 import com.mysema.query.types.OrderSpecifier;
 
 /**
@@ -17,8 +15,7 @@ import com.mysema.query.types.OrderSpecifier;
  *
  * @param <RT>
  */
-// TODO : provide more projection types
-public interface Union<RT> {
+public interface Union<RT> extends SimpleProjectable<RT>{
 
     /**
      * Define the ordering of the query results
@@ -27,13 +24,5 @@ public interface Union<RT> {
      * @return
      */
     Union<RT> orderBy(OrderSpecifier<?>... o);
-
-    /**
-     * Retrieve the results
-     *
-     * @return
-     * @throws SQLException
-     */
-    List<RT> list() throws SQLException;
 
 }
