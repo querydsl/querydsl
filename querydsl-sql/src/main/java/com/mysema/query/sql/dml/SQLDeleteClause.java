@@ -21,7 +21,6 @@ import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.NullExpr;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.util.JDBCUtil;
 

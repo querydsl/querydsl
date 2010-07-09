@@ -379,7 +379,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
             };
 
         } catch (SQLException e) {
-            throw new QueryException(e);
+            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
 
         } finally {
             reset();

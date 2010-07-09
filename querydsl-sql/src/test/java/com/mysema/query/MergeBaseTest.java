@@ -49,6 +49,14 @@ public abstract class MergeBaseTest extends AbstractBaseTest{
             .set(survey.id, 5)
             .set(survey.name, "Hello World").execute());
     }
+    
+    @Test
+    public void merge_with_Keys_Columns_and_Values_using_null(){
+        // keys + columns + values
+        assertEquals(1, merge(survey).keys(survey.id)
+            .set(survey.id, 5)
+            .set(survey.name, null).execute());
+    }
 
     @Test
     @IncludeIn(Target.H2)

@@ -85,7 +85,11 @@ public class SQLMergeClause implements DMLClause<SQLMergeClause>{
         // select 
         SQLQuery query = new SQLQueryImpl(connection, templates).from(entity);
         for (int i=0; i < columns.size(); i++){
-            query.where(columns.get(i).asExpr().eq((Expr)values.get(i)));
+            if (values.get(i) instanceof NullExpr){
+                query.where(columns.get(i).isNull());
+            }else{
+                query.where(columns.get(i).asExpr().eq((Expr)values.get(i)));    
+            }            
         }
         List<?> ids = query.list(keys.get(0).asExpr());
         

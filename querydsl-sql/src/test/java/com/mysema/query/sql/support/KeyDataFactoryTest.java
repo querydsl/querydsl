@@ -1,6 +1,7 @@
 package com.mysema.query.sql.support;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;

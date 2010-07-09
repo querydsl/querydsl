@@ -6,7 +6,6 @@
 package com.mysema.query.sql.domain;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;

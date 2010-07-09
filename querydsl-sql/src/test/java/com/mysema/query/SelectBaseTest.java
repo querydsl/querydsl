@@ -483,7 +483,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
     
     @Test
-    public void unionProjections() throws IOException{
+    public void union_single_column_projections() throws IOException{
         SubQuery<Integer> sq1 = sq().from(employee).unique(employee.id.max());
         SubQuery<Integer> sq2 = sq().from(employee).unique(employee.id.min());
         
@@ -495,6 +495,29 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         
         // iterator
         CloseableIterator<Integer> iterator = query().union(sq1,sq2).iterate();
+        try{
+            assertTrue(iterator.hasNext());   
+            assertTrue(iterator.next() != null);
+            assertTrue(iterator.next() != null);
+            assertFalse(iterator.hasNext());
+        }finally{
+            iterator.close();
+        }        
+    }
+    
+    @Test
+    public void union_multi_column_projection() throws IOException{
+        SubQuery<Object[]> sq1 = sq().from(employee).unique(employee.id.max(), employee.id.max().subtract(1));
+        SubQuery<Object[]> sq2 = sq().from(employee).unique(employee.id.min(), employee.id.min().subtract(1));
+        
+        // list
+        List<Object[]> list = query().union(sq1, sq2).list();
+        assertEquals(2, list.size());
+        assertTrue(list.get(0) != null);
+        assertTrue(list.get(1) != null);
+        
+        // iterator
+        CloseableIterator<Object[]> iterator = query().union(sq1,sq2).iterate();
         try{
             assertTrue(iterator.hasNext());   
             assertTrue(iterator.next() != null);

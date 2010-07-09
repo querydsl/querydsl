@@ -7,7 +7,8 @@ package com.mysema.query;
 
 import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Constants.survey2;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
