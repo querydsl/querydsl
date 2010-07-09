@@ -481,6 +481,29 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         List<Object[]> list2 = query().union(sq3, sq4).list();
         assertFalse(list2.isEmpty());
     }
+    
+    @Test
+    public void unionProjections() throws IOException{
+        SubQuery<Integer> sq1 = sq().from(employee).unique(employee.id.max());
+        SubQuery<Integer> sq2 = sq().from(employee).unique(employee.id.min());
+        
+        // list
+        List<Integer> list = query().union(sq1, sq2).list();
+        assertEquals(2, list.size());
+        assertTrue(list.get(0) != null);
+        assertTrue(list.get(1) != null);
+        
+        // iterator
+        CloseableIterator<Integer> iterator = query().union(sq1,sq2).iterate();
+        try{
+            assertTrue(iterator.hasNext());   
+            assertTrue(iterator.next() != null);
+            assertTrue(iterator.next() != null);
+            assertFalse(iterator.hasNext());
+        }finally{
+            iterator.close();
+        }        
+    }
 
     @Test
     public void various() throws SQLException {

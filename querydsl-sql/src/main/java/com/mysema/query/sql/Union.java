@@ -5,7 +5,9 @@
  */
 package com.mysema.query.sql;
 
-import com.mysema.query.SimpleProjectable;
+import java.util.List;
+
+import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.types.OrderSpecifier;
 
 /**
@@ -15,7 +17,23 @@ import com.mysema.query.types.OrderSpecifier;
  *
  * @param <RT>
  */
-public interface Union<RT> extends SimpleProjectable<RT>{
+public interface Union<RT>{
+    
+
+    /**
+     * Get the projection as a typed List
+     *
+     * @return
+     */
+    List<RT> list();
+    
+
+    /**
+     * Get the projection as a typed Iterator
+     *
+     * @return
+     */
+    CloseableIterator<RT> iterate();
 
     /**
      * Define the ordering of the query results

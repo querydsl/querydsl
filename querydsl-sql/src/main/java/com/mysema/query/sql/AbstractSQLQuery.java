@@ -55,9 +55,19 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         @SuppressWarnings("unchecked")
         public List<RT> list() {
             if (union[0].getMetadata().getProjection().size() == 1) {
-                return (List<RT>) IteratorAdapter.asList(AbstractSQLQuery.this.iterateSingle(null));
+                return (List<RT>) IteratorAdapter.asList(iterateSingle(null));
             } else {
-                return (List<RT>) IteratorAdapter.asList(AbstractSQLQuery.this.iterateMultiple());
+                return (List<RT>) IteratorAdapter.asList(iterateMultiple());
+            }
+        }
+        
+        @SuppressWarnings("unchecked")
+        @Override
+        public CloseableIterator<RT> iterate() {
+            if (union[0].getMetadata().getProjection().size() == 1) {
+                return (CloseableIterator<RT>) iterateSingle(null);
+            } else {
+                return (CloseableIterator<RT>) iterateMultiple();
             }
         }
 
@@ -70,50 +80,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         @Override
         public String toString(){
             return AbstractSQLQuery.this.toString();
-        }
-
-        @Override
-        public long count() {
-            return AbstractSQLQuery.this.count();
-        }
-
-        @Override
-        public long countDistinct() {
-            return AbstractSQLQuery.this.countDistinct();
-        }
-
-        @Override
-        public List<RT> listDistinct() {
-            queryMixin.setDistinct(true);
-            return list();
-        }
-
-        @Override
-        public SearchResults<RT> listDistinctResults() {
-            queryMixin.setDistinct(true);
-            return listResults();
-        }
-
-        @Override
-        public SearchResults<RT> listResults() {
-            long total = count();
-            try {
-                if (total > 0) {
-                    QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
-                    return new SearchResults<RT>(list(), modifiers, total);
-                } else {
-                    return SearchResults.emptyResults();
-                }
-
-            } finally {
-                reset();
-            }
-        }
-
-        @Override
-        public RT uniqueResult() {
-            List<RT> list = list();
-            return !list.isEmpty() ? list.get(0) : null;
         }
 
     }
