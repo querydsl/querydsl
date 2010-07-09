@@ -16,6 +16,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathType;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ESimple;
 import com.mysema.query.types.expr.OBoolean;
 import com.mysema.util.ReflectionUtils;
 
@@ -38,7 +39,7 @@ public final class PathMixin<T> implements Path<T>, Serializable {
 
     private final Path<?> root;
 
-    private final Expr<T> self;
+    private final ESimple<T> self;
 
     @Nullable
     private AnnotatedElement annotatedElement;
@@ -50,7 +51,7 @@ public final class PathMixin<T> implements Path<T>, Serializable {
     }
 
     @Override
-    public Expr<T> asExpr() {
+    public ESimple<T> asExpr() {
         return self;
     }
 

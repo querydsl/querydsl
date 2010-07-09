@@ -14,7 +14,7 @@ import com.mysema.query.types.expr.EBoolean;
  *
  * @param <C>
  */
-public interface DeleteClause<C extends DeleteClause<C>> {
+public interface DeleteClause<C extends DeleteClause<C>> extends DMLClause<C>{
 
     /**
      * Defines the filter constraints
@@ -24,10 +24,4 @@ public interface DeleteClause<C extends DeleteClause<C>> {
      */
     C where(EBoolean... o);
 
-    /**
-     * Execute the delete clause and return the amount of deleted rows/items
-     *
-     * @return
-     */
-    long execute();
 }

@@ -36,6 +36,15 @@ public abstract class ESimple<D> extends Expr<D> {
     public ESimple(Class<? extends D> type) {
         super(type);
     }
+    
+    /**
+     * Used for safe casts from Path, SubQuery, Operation and Custom to Expr
+     *
+     * @return
+     */
+    public final ESimple<D> asExpr(){
+        return this;
+    }
 
     @Override
     public ENumber<Long> count(){

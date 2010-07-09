@@ -7,6 +7,8 @@ package com.mysema.query.types;
 
 import java.util.List;
 
+import com.mysema.query.types.expr.ESimple;
+
 /**
  * Custom provides base types for custom expressions with integrated
  * serialization templates
@@ -48,6 +50,6 @@ public interface Custom<T> {
      *
      * @return
      */
-    Expr<T> asExpr();
+    ESimple<T> asExpr();
 
 }

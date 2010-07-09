@@ -10,17 +10,17 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.Path;
 
 /**
- * Parent interface for InsertClause and UpdateClause
+ * Parent interface for DeleteClause, InsertClause and UpdateCluase
  * 
  * @author tiwe
  *
  * @param <C>
  */
-public interface StoreClause<C extends StoreClause<C>> {
+public interface DMLClause<C extends DMLClause<C>> {
     
 
     /**
-     * Execute the clause and return the amount of inserted/updated rows/items
+     * Execute the clause and return the amount of deleted/inserted/updated rows/items
      *
      * @return
      */

@@ -7,6 +7,8 @@ package com.mysema.query.types;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ESimple;
+import com.mysema.query.types.query.Detachable;
 
 /**
  *
@@ -46,6 +48,6 @@ public interface SubQuery<T>{
      *
      * @return
      */
-    Expr<T> asExpr();
+    ESimple<T> asExpr();
 
 }

@@ -17,7 +17,7 @@ import com.mysema.query.types.expr.EBoolean;
  *
  * @param <C>
  */
-public interface UpdateClause<C extends UpdateClause<C>> extends StoreClause<C>{
+public interface UpdateClause<C extends UpdateClause<C>> extends DMLClause<C>{
 
     /**
      * Set the paths to be updated

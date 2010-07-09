@@ -11,6 +11,7 @@ import java.util.List;
 import com.mysema.query.types.Custom;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Template;
+import com.mysema.query.types.expr.ESimple;
 
 /**
  * Mixin implementation of the Custom interface
@@ -23,7 +24,7 @@ public final class CustomMixin<T> implements Custom<T>, Serializable {
 
     private static final long serialVersionUID = 6951623726800809083L;
 
-    private final Expr<T> self;
+    private final ESimple<T> self;
 
     private final List<Expr<?>> args;
 
@@ -75,7 +76,7 @@ public final class CustomMixin<T> implements Custom<T>, Serializable {
     }
 
     @Override
-    public Expr<T> asExpr() {
+    public ESimple<T> asExpr() {
         return self;
     }
 }

@@ -12,6 +12,7 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ESimple;
 import com.mysema.query.types.expr.OBoolean;
 
 /**
@@ -27,7 +28,7 @@ public class SubQueryMixin<T> implements SubQuery<T>{
 
     private final QueryMetadata metadata;
 
-    private final Expr<T> self;
+    private final ESimple<T> self;
 
     public SubQueryMixin(SubQuery<T> self, QueryMetadata metadata){
         this.self = self.asExpr();
@@ -69,7 +70,7 @@ public class SubQueryMixin<T> implements SubQuery<T>{
     }
 
     @Override
-    public Expr<T> asExpr() {
+    public ESimple<T> asExpr() {
         return self;
     }
 

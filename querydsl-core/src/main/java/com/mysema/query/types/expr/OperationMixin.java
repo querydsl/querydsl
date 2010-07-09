@@ -26,7 +26,7 @@ public final class OperationMixin<RT> implements Operation<RT>, Serializable {
 
     private final Operator<? super RT> operator;
 
-    private final Expr<RT> self;
+    private final ESimple<RT> self;
 
     public OperationMixin(Operation<RT> self, Operator<? super RT> operator, List<Expr<?>> args){
         this.self = self.asExpr();
@@ -35,7 +35,7 @@ public final class OperationMixin<RT> implements Operation<RT>, Serializable {
     }
 
     @Override
-    public Expr<RT> asExpr() {
+    public ESimple<RT> asExpr() {
         return self;
     }
 

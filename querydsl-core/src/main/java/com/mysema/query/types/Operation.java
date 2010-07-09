@@ -7,6 +7,8 @@ package com.mysema.query.types;
 
 import java.util.List;
 
+import com.mysema.query.types.expr.ESimple;
+
 /**
  * Operation represents an operation with operator and arguments
  *
@@ -20,7 +22,7 @@ public interface Operation<RT> {
      *
      * @return
      */
-    Expr<RT> asExpr();
+    ESimple<RT> asExpr();
 
     /**
      * Get the argument with the given index

@@ -43,15 +43,6 @@ public abstract class Expr<D> implements Serializable{
 
     public abstract void accept(Visitor v);
 
-    /**
-     * Used for safe casts from Path, SubQuery, Operation and Custom to Expr
-     *
-     * @return
-     */
-    public final Expr<D> asExpr(){
-        return this;
-    }
-
     public abstract Expr<D> as(Path<D> alias);
 
     /**

@@ -18,7 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.QueryException;
-import com.mysema.query.dml.StoreClause;
+import com.mysema.query.dml.DMLClause;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLSerializer;
@@ -39,7 +39,7 @@ import com.mysema.util.JDBCUtil;
  *
  */
 @edu.umd.cs.findbugs.annotations.SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
-public class SQLMergeClause implements StoreClause<SQLMergeClause>{
+public class SQLMergeClause implements DMLClause<SQLMergeClause>{
 
     private static final Logger logger = LoggerFactory.getLogger(SQLMergeClause.class);
 
@@ -105,7 +105,7 @@ public class SQLMergeClause implements StoreClause<SQLMergeClause>{
     }
 
     @SuppressWarnings("unchecked")
-    private void populate(StoreClause<?> clause) {
+    private void populate(DMLClause<?> clause) {
         for (int i = 0; i < columns.size(); i++){
             clause.set((Path)columns.get(i), (Expr)values.get(i));
         }

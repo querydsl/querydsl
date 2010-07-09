@@ -8,6 +8,7 @@ package com.mysema.query.types;
 import java.lang.reflect.AnnotatedElement;
 
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ESimple;
 
 /**
  * Path represents a path expression
@@ -21,7 +22,7 @@ public interface Path<C> {
      *
      * @return
      */
-    Expr<C> asExpr();
+    ESimple<C> asExpr();
 
     /**
      * Get the metadata for this path

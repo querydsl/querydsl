@@ -75,7 +75,7 @@ public final class ListSubQuery<A> extends ECollectionBase<List<A>,A> implements
 
     @SuppressWarnings("unchecked")
     public Expr<?> as(Expr<?> alias) {
-        return OSimple.create(alias.getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
+        return OSimple.create(alias.getType(),(Operator)Ops.ALIAS, this, alias);
     }
 
 }
