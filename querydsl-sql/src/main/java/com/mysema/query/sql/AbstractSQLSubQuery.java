@@ -6,12 +6,15 @@
 package com.mysema.query.sql;
 
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 
@@ -33,6 +36,19 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         this.queryMixin.setSelf((Q)this);
     }
 
+    protected Q addFlag(Position position, String prefix, Expr<?> expr){
+        Expr<?> flag = CSimple.create(expr.getType(), prefix + "{0}", expr);
+        return queryMixin.addFlag(new QueryFlag(position, flag));
+    }
+    
+    protected Q addFlag(Position position, String flag){
+        return queryMixin.addFlag(new QueryFlag(position, flag));
+    }
+    
+    protected Q addFlag(Position position, Expr<?> flag){
+        return queryMixin.addFlag(new QueryFlag(position, flag));
+    }
+    
     public Q from(Expr<?>... args){
         return queryMixin.from(args);
     }
