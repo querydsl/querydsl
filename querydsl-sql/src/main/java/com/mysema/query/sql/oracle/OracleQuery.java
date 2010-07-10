@@ -9,8 +9,8 @@ import java.sql.Connection;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.sql.AbstractSQLQuery;
-import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.expr.EBoolean;
@@ -21,13 +21,17 @@ import com.mysema.query.types.expr.EBoolean;
  * @author tiwe
  * @version $Id$
  */
-public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
+public class OracleQuery extends AbstractSQLQuery<OracleQuery> {    
 
-    private EBoolean connectBy, connectByPrior, connectByNocyclePrior;
+    private static final String CONNECT_BY = "\nconnect by ";
 
-    private Expr<?> orderSiblingsBy;
+    private static final String CONNECT_BY_NOCYCLE_PRIOR = "\nconnect by nocycle prior ";
 
-    private EBoolean startWith;
+    private static final String CONNECT_BY_PRIOR = "\nconnect by prior ";
+
+    private static final String ORDER_SIBLINGS_BY = "\norder siblings by ";
+
+    private static final String START_WITH = "\nstart with ";
 
     public OracleQuery(Connection conn, SQLTemplates patterns) {
         super(conn, patterns, new DefaultQueryMetadata());
@@ -38,45 +42,25 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
     }
 
     public OracleQuery connectByPrior(EBoolean cond) {
-        connectByPrior = cond;
-        return this;
+        return addFlag(Position.BEFORE_ORDER, CONNECT_BY_PRIOR, cond);
     }
 
     public OracleQuery connectBy(EBoolean cond) {
-        connectBy = cond;
-        return this;
+        return addFlag(Position.BEFORE_ORDER, CONNECT_BY, cond);
     }
 
     public OracleQuery connectByNocyclePrior(EBoolean cond) {
-        connectByNocyclePrior = cond;
-        return this;
+        return addFlag(Position.BEFORE_ORDER, CONNECT_BY_NOCYCLE_PRIOR, cond);
     }
 
     public <A> OracleQuery startWith(EBoolean cond) {
-        startWith = cond;
-        return this;
+        return addFlag(Position.BEFORE_ORDER, START_WITH, cond);
     }
 
     public OracleQuery orderSiblingsBy(Expr<?> path) {
-        orderSiblingsBy = path;
-        return this;
+        return addFlag(Position.BEFORE_ORDER, ORDER_SIBLINGS_BY, path);
     }
-
-    protected SQLSerializer createSerializer() {
-        return new OracleSerializer(getTemplates(), connectBy, connectByNocyclePrior,
-                connectByPrior, orderSiblingsBy, startWith);
-    }
-
-    /**
-     * Clone the state of this query to a new SQLQueryImpl instance with the given Connection
-     *
-     * @param conn
-     * @return
-     */
-    public OracleQuery clone(Connection conn){
-        return new OracleQuery(conn, getTemplates(), getMetadata().clone());
-    }
-
+    
     // TODO : connect by root
 
     // TODO : connect by iscycle

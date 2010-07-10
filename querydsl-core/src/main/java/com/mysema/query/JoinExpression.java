@@ -5,7 +5,7 @@
  */
 package com.mysema.query;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -23,7 +23,7 @@ public final class JoinExpression {
 
     private BooleanBuilder condition = new BooleanBuilder();
 
-    private final Set<Object> flags = new HashSet<Object>();
+    private final Set<JoinFlag> flags = new LinkedHashSet<JoinFlag>();
 
     private final Expr<?> target;
 
@@ -50,16 +50,16 @@ public final class JoinExpression {
         return type;
     }
 
-    public void setFlag(Object flag){
+    public void addFlag(JoinFlag flag){
         flags.add(flag);
     }
 
-    public void removeFlag(Object flag){
-        flags.remove(flag);
-    }
-
-    public boolean hasFlag(Object flag){
+    public boolean hasFlag(JoinFlag flag){
         return flags.contains(flag);
+    }
+    
+    public Set<JoinFlag> getFlags(){
+        return flags;
     }
 
     public String toString() {

@@ -49,10 +49,6 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
 
     private static final String DELETE = "delete ";
 
-    private static final String FETCH = "fetch ";
-
-    private static final String FETCH_ALL_PROPERTIES = " fetch all properties";
-
     private static final String FROM = "from ";
 
     private static final String GROUP_BY = "\ngroup by ";
@@ -229,12 +225,12 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             if (i > 0) {
                 append(joinTypes.get(je.getType()));
             }
-            if (je.hasFlag(HQLFlags.FETCH) && !forCountRow){
-                append(FETCH);
+            if (je.hasFlag(HQLQueryMixin.FETCH) && !forCountRow){
+                handle(HQLQueryMixin.FETCH);
             }
             handleJoinTarget(je);
-            if (je.hasFlag(HQLFlags.FETCH_ALL) && !forCountRow){
-                append(FETCH_ALL_PROPERTIES);
+            if (je.hasFlag(HQLQueryMixin.FETCH_ALL_PROPERTIES) && !forCountRow){
+                handle(HQLQueryMixin.FETCH_ALL_PROPERTIES);
             }
 
             if (je.getCondition() != null) {

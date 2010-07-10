@@ -21,10 +21,14 @@ import org.slf4j.LoggerFactory;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.JoinExpression;
+import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryException;
+import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
+import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.EConstructor;
@@ -32,6 +36,7 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.query.ListSubQuery;
@@ -109,7 +114,27 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         this.conn = conn;
         this.templates = templates;
     }
+    
+    @SuppressWarnings("unchecked")
+    protected Q addJoinFlag(String flag){
+        List<JoinExpression> joins = queryMixin.getMetadata().getJoins();
+        joins.get(joins.size()-1).addFlag(new JoinFlag(flag));
+        return (Q)this;
+    }
 
+    protected Q addFlag(Position position, String prefix, Expr<?> expr){
+        Expr<?> flag = CSimple.create(expr.getType(), prefix + "{0}", expr);
+        return queryMixin.addFlag(new QueryFlag(position, flag));
+    }
+    
+    protected Q addFlag(Position position, String flag){
+        return queryMixin.addFlag(new QueryFlag(position, flag));
+    }
+    
+    protected Q addFlag(Position position, Expr<?> flag){
+        return queryMixin.addFlag(new QueryFlag(position, flag));
+    }
+    
     protected String buildQueryString(boolean forCountRow) {
         SQLSerializer serializer = createSerializer();
         if (union != null) {

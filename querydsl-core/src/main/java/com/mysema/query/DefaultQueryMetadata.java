@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -56,6 +57,8 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     private boolean unique;
 
     private BooleanBuilder where = new BooleanBuilder();
+    
+    private Set<QueryFlag> flags = new LinkedHashSet<QueryFlag>();
 
     @Override
     public void addGroupBy(Expr<?>... o) {
@@ -135,6 +138,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             clone.projection = new ArrayList<Expr<?>>(projection);
             clone.params = new HashMap<Param<?>,Object>(params);
             clone.where = where.clone();
+            clone.flags = new LinkedHashSet<QueryFlag>(flags);
             return clone;
         } catch (CloneNotSupportedException e) {
             throw new QueryException(e);
@@ -241,6 +245,21 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public <T> void setParam(Param<T> param, T value) {
         params.put(param, value);
+    }
+
+    @Override
+    public void addFlag(QueryFlag flag) {
+        flags.add(flag);        
+    }
+
+    @Override
+    public Set<QueryFlag> getFlags() {
+        return flags;
+    }
+
+    @Override
+    public boolean hasFlag(QueryFlag flag) {
+        return flags.contains(flag);
     }
 
 }

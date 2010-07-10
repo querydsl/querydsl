@@ -8,6 +8,7 @@ package com.mysema.query.support;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
+import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Expr;
@@ -48,6 +49,11 @@ public class QueryMixin<T>{
         this.metadata = Assert.notNull(metadata,"metadata");
     }
 
+    public T addFlag(QueryFlag queryFlag){
+        metadata.addFlag(queryFlag);
+        return self;
+    }
+    
     public T addToProjection(Expr<?>... o) {
         metadata.addProjection(o);
         return self;

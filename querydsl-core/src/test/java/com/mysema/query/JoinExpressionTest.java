@@ -19,29 +19,31 @@ public class JoinExpressionTest {
     private JoinExpression je = new JoinExpression(JoinType.DEFAULT, new PString("str"));
 
     @Test
-    public void testToString(){
-    assertEquals("DEFAULT str", je.toString());
+    public void testToString() {
+        assertEquals("DEFAULT str", je.toString());
     }
 
     @Test
     public void testAddCondition() {
-    je.addCondition(EBooleanConst.TRUE);
-    assertEquals(EBooleanConst.TRUE, je.getCondition());
+        je.addCondition(EBooleanConst.TRUE);
+        assertEquals(EBooleanConst.TRUE, je.getCondition());
 
-    je.addCondition(EBooleanConst.FALSE);
-    assertEquals(EBooleanConst.TRUE.and(EBooleanConst.FALSE), je.getCondition());
+        je.addCondition(EBooleanConst.FALSE);
+        assertEquals(EBooleanConst.TRUE.and(EBooleanConst.FALSE), je.getCondition());
     }
 
     @Test
     public void testSetFlag() {
-    assertFalse(je.hasFlag("X"));
+        JoinFlag x = new JoinFlag("x");
+        JoinFlag y = new JoinFlag("y");
+        assertFalse(je.hasFlag(x));
 
-    je.setFlag("X");
-    assertTrue(je.hasFlag("X"));
-    assertFalse(je.hasFlag("Y"));
-
-    je.removeFlag("X");
-    assertFalse(je.hasFlag("X"));
+        je.addFlag(x);
+        assertTrue(je.hasFlag(x));
+        assertFalse(je.hasFlag(y));
+        
+        je.addFlag(y);
+        assertTrue(je.hasFlag(y));
     }
 
 }

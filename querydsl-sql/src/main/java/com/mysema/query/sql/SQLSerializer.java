@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -19,6 +20,8 @@ import com.mysema.commons.lang.Pair;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.QueryFlag;
+import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.*;
 import com.mysema.query.types.custom.CSimple;
@@ -91,10 +94,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         append(templates.quoteTableName(table));
     }
 
-    protected void beforeOrderBy() {
-        // template method, for subclasses do override
-    }
-
     public List<Object> getConstants(){
         return constants;
     }
@@ -149,6 +148,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         List<? extends Expr<?>> groupBy = metadata.getGroupBy();
         EBoolean having = metadata.getHaving();
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
+        Set<QueryFlag> flags = metadata.getFlags();
 
         List<Expr<?>> sqlSelect = new ArrayList<Expr<?>>();
         for (Expr<?> selectExpr : select) {
@@ -159,10 +159,15 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 sqlSelect.add(selectExpr);
             }
         }
+        
+        // start
+        serialize(Position.START, flags);
 
         // select
         if (forCountRow) {
-            append(templates.getSelect());
+            append(templates.getSelect());            
+            serialize(Position.AFTER_SELECT, flags);
+            
             if (!metadata.isDistinct()){
                 append(templates.getCountStar());
             }else{
@@ -182,37 +187,57 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             } else {
                 append(templates.getSelectDistinct());
             }
+            serialize(Position.AFTER_SELECT, flags);
+            
             handle(COMMA, sqlSelect);
         }
+        serialize(Position.AFTER_PROJECTION, flags);
 
         // from
         serializeSources(joins);
 
-        // where
-        if (where != null) {
+        // where            
+        serialize(Position.BEFORE_FILTERS, flags);
+        if (where != null) {            
             append(templates.getWhere()).handle(where);
-        }
+            serialize(Position.AFTER_FILTERS, flags);
+        }        
 
         // group by
-        if (!groupBy.isEmpty()) {
+        serialize(Position.BEFORE_GROUP_BY, flags);
+        if (!groupBy.isEmpty()) {            
             append(templates.getGroupBy()).handle(COMMA, groupBy);
+            serialize(Position.AFTER_GROUP_BY, flags);
         }
 
         // having
+        serialize(Position.BEFORE_HAVING, flags);
         if (having != null) {
-            if (groupBy.isEmpty()) {
+            if (groupBy.isEmpty()) {                
                 throw new IllegalArgumentException("having, but not groupBy was given");
-            }
+            }            
             append(templates.getHaving()).handle(having);
+            serialize(Position.AFTER_HAVING, flags);
         }
-
-        // TODO : this should be injectted
-        beforeOrderBy();
-
+        
         // order by
+        serialize(Position.BEFORE_ORDER, flags);
         if (!orderBy.isEmpty() && !forCountRow) {
-            serializeOrderBy(orderBy);
+            append(templates.getOrderBy());                       
+            boolean first = true;
+            for (OrderSpecifier<?> os : orderBy) {
+                if (!first){
+                    append(COMMA);
+                }
+                handle(os.getTarget());
+                append(os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc());
+                first = false;
+            }
+            serialize(Position.AFTER_ORDER, flags);
         }
+        
+        // end
+        serialize(Position.END, flags);
 
     }
 
@@ -312,19 +337,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
     }
 
-    private void serializeOrderBy(List<OrderSpecifier<?>> orderBy) {
-        append(templates.getOrderBy());
-        boolean first = true;
-        for (OrderSpecifier<?> os : orderBy) {
-            if (!first){
-                append(COMMA);
-            }
-            handle(os.getTarget());
-            append(os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc());
-            first = false;
-        }
-    }
-
     private void serializeSources(List<JoinExpression> joins) {        
         if (joins.isEmpty()) {
             String dummyTable = templates.getDummyTable();
@@ -342,6 +354,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 handleJoinTarget(je);
                 if (je.getCondition() != null) {
                     append(templates.getOn()).handle(je.getCondition());
+                }
+                for (Object flag : je.getFlags()){
+                    append(flag.toString());
                 }
             }    
         }        

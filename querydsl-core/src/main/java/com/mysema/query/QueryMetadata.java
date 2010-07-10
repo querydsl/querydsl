@@ -8,6 +8,7 @@ package com.mysema.query;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -207,4 +208,20 @@ public interface QueryMetadata extends Serializable {
      * @param value
      */
     <T> void setParam(Param<T> param, T value);
+    
+    /**
+     * @param flag
+     */
+    void addFlag(QueryFlag flag);
+    
+    /**
+     * @param flag
+     * @return
+     */
+    boolean hasFlag(QueryFlag flag); 
+    
+    /**
+     * @return
+     */
+    Set<QueryFlag> getFlags();
 }

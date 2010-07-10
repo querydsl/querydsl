@@ -9,9 +9,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.JoinFlag;
+import com.mysema.query.QueryFlag;
+import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.types.*;
 
 /**
@@ -64,6 +68,10 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         expr.accept(this);
         return self;
     }
+    
+    public S handle(JoinFlag joinFlag) {
+        return handle(joinFlag.getFlag());
+    }
 
     public final S handle(String sep, List<?> expressions) {
         boolean first = true;
@@ -91,6 +99,14 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 handle(element.convert(args.get(element.getIndex())));
             }else{
                 handle(args.get(element.getIndex()));
+            }
+        }
+    }
+
+    protected void serialize(Position position, Set<QueryFlag> flags) {
+        for (QueryFlag flag : flags){
+            if (flag.getPosition() == position){
+                handle(flag.getFlag());
             }
         }
     }
