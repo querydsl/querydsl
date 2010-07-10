@@ -152,7 +152,7 @@ public class SelectOracleTest extends SelectBaseTest {
     }
 
     protected OracleQuery qo(){
-        return new OracleQuery(Connections.getConnection(), dialect){
+        return new OracleQuery(Connections.getConnection(),dialect){
             @Override
             protected String buildQueryString(boolean forCountRow) {
                 String rv = super.buildQueryString(forCountRow);
