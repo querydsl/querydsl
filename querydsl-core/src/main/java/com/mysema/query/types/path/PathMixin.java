@@ -39,7 +39,7 @@ public final class PathMixin<T> implements Path<T>, Serializable {
 
     private final Path<?> root;
 
-    private final ESimple<T> self;
+    private final Expr<T> self;
 
     @Nullable
     private AnnotatedElement annotatedElement;
@@ -51,7 +51,7 @@ public final class PathMixin<T> implements Path<T>, Serializable {
     }
 
     @Override
-    public ESimple<T> asExpr() {
+    public Expr<T> asExpr() {
         return self;
     }
 

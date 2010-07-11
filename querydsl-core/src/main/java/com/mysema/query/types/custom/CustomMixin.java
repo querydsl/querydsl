@@ -24,7 +24,7 @@ public final class CustomMixin<T> implements Custom<T>, Serializable {
 
     private static final long serialVersionUID = 6951623726800809083L;
 
-    private final ESimple<T> self;
+    private final Expr<T> self;
 
     private final List<Expr<?>> args;
 
@@ -76,7 +76,7 @@ public final class CustomMixin<T> implements Custom<T>, Serializable {
     }
 
     @Override
-    public ESimple<T> asExpr() {
+    public Expr<T> asExpr() {
         return self;
     }
 }

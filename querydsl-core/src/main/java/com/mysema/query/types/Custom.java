@@ -7,8 +7,6 @@ package com.mysema.query.types;
 
 import java.util.List;
 
-import com.mysema.query.types.expr.ESimple;
-
 /**
  * Custom provides base types for custom expressions with integrated
  * serialization templates
@@ -17,6 +15,13 @@ import com.mysema.query.types.expr.ESimple;
  * @version $Id$
  */
 public interface Custom<T> {
+
+    /**
+     * Cast to {@link Expr}
+     *
+     * @return
+     */
+    Expr<T> asExpr();
 
     /**
      * Get the argument with the given index
@@ -44,12 +49,5 @@ public interface Custom<T> {
      * @return
      */
     Class<? extends T> getType();
-
-    /**
-     * Cast to {@link Expr}
-     *
-     * @return
-     */
-    ESimple<T> asExpr();
 
 }

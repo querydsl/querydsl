@@ -28,7 +28,7 @@ public class SubQueryMixin<T> implements SubQuery<T>{
 
     private final QueryMetadata metadata;
 
-    private final ESimple<T> self;
+    private final Expr<T> self;
 
     public SubQueryMixin(SubQuery<T> self, QueryMetadata metadata){
         this.self = self.asExpr();
@@ -70,7 +70,7 @@ public class SubQueryMixin<T> implements SubQuery<T>{
     }
 
     @Override
-    public ESimple<T> asExpr() {
+    public Expr<T> asExpr() {
         return self;
     }
 
