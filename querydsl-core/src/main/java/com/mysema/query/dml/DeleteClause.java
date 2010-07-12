@@ -14,7 +14,7 @@ import com.mysema.query.types.expr.EBoolean;
  *
  * @param <C>
  */
-public interface DeleteClause<C extends DeleteClause<C>> extends DMLClause<C>{
+public interface DeleteClause<C extends DeleteClause<C>> extends FilteredClause<C>{
 
     /**
      * Defines the filter constraints

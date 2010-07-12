@@ -45,16 +45,6 @@ public class ColDeleteClause<T> implements DeleteClause<ColDeleteClause<T>>{
         }
         return rv;
     }
-
-    @Override
-    public <P> ColDeleteClause<T> set(Path<P> path, P value) {
-        if (value != null){
-            query.where(path.asExpr().eq(value));
-        }else{
-            query.where(path.isNull());
-        }
-        return this;
-    }
     
     @Override
     public ColDeleteClause<T> where(EBoolean... o) {

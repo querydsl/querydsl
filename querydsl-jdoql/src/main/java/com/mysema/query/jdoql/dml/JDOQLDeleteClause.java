@@ -18,9 +18,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.jdoql.JDOQLSerializer;
 import com.mysema.query.jdoql.JDOQLTemplates;
-import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.NullExpr;
 import com.mysema.query.types.path.PEntity;
 
 /**
@@ -88,16 +86,6 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
         }
     }
     
-    @Override
-    public <T> JDOQLDeleteClause set(Path<T> path, T value) {
-        if (value != null){
-            metadata.addWhere(path.asExpr().eq(value));
-        }else{
-            metadata.addWhere(path.isNull());
-        }
-        return this;
-    }
-
     @Override
     public JDOQLDeleteClause where(EBoolean... o) {
         metadata.addWhere(o);

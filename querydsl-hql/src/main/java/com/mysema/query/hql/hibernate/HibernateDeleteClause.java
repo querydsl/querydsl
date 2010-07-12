@@ -18,9 +18,7 @@ import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.hql.HQLSerializer;
 import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.hql.JPQLTemplates;
-import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.NullExpr;
 import com.mysema.query.types.path.PEntity;
 
 /**
@@ -60,16 +58,6 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
         Query query = session.createQuery(serializer.toString());
         HibernateUtil.setConstants(query, constants, md.getParams());
         return query.executeUpdate();
-    }
-
-    @Override
-    public <T> HibernateDeleteClause set(Path<T> path, T value) {
-        if (value != null){
-            md.addWhere(path.asExpr().eq(value));
-        }else{
-            md.addWhere(path.isNull());
-        }
-        return this;
     }
     
     @Override

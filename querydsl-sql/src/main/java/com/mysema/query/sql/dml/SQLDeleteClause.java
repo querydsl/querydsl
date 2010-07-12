@@ -19,7 +19,6 @@ import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Param;
-import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.util.JDBCUtil;
@@ -82,16 +81,6 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause> {
         }
     }
     
-    @Override
-    public <T> SQLDeleteClause set(Path<T> path, T value) {
-        if (value != null){
-            where.and(path.asExpr().eq(value));
-        }else{
-            where.and(path.isNull());
-        }
-        return this;
-    }
-
     @Override
     public SQLDeleteClause where(EBoolean... o) {
         for (EBoolean e : o){

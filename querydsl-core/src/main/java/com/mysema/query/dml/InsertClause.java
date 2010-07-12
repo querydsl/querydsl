@@ -15,7 +15,7 @@ import com.mysema.query.types.SubQuery;
  *
  * @param <C>
  */
-public interface InsertClause<C extends InsertClause<C>> extends DMLClause<C>{
+public interface InsertClause<C extends InsertClause<C>> extends StoreClause<C>{
 
     /**
      * Define the columns to be populated
