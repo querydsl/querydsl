@@ -7,6 +7,7 @@ package com.mysema.query.sql.ddl;
 
 import java.util.List;
 
+import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.support.ForeignKeyData;
 
 /**
@@ -22,9 +23,12 @@ public class ForeignKeyBuilder {
     private final String name;
     
     private final String[] foreignColumns;
+
+    private final SQLTemplates templates;
     
-    public ForeignKeyBuilder(CreateTableClause clause, List<ForeignKeyData> foreignKeys, String name, String[] columns) {
+    public ForeignKeyBuilder(CreateTableClause clause, SQLTemplates templates, List<ForeignKeyData> foreignKeys, String name, String[] columns) {
         this.clause = clause;
+        this.templates = templates;
         this.foreignKeys = foreignKeys;
         this.name = name;
         this.foreignColumns = columns;
@@ -33,7 +37,9 @@ public class ForeignKeyBuilder {
     public CreateTableClause references(String table, String... parentColumns) {
         ForeignKeyData foreignKey = new ForeignKeyData(name, table);
         for (int i = 0; i < parentColumns.length; i++){
-            foreignKey.add(foreignColumns[i], parentColumns[i]);
+            foreignKey.add(
+                    templates.quoteColumnName(foreignColumns[i]), 
+                    templates.quoteColumnName(parentColumns[i]));
         }
         foreignKeys.add(foreignKey);
         return clause;

@@ -1,4 +1,4 @@
-package com.mysema.query._derby;
+package com.mysema.query._mysql;
 
 import java.sql.SQLException;
 
@@ -8,21 +8,23 @@ import org.junit.BeforeClass;
 import com.mysema.query.Connections;
 import com.mysema.query.CreateTableBaseTest;
 import com.mysema.query.Target;
-import com.mysema.query.sql.DerbyTemplates;
+import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.testutil.Label;
+import com.mysema.testutil.ResourceCheck;
 
-@Label(Target.DERBY)
-public class CreateTableDerbyTest extends CreateTableBaseTest{
+@ResourceCheck("/mysql.run")
+@Label(Target.MYSQL)
+public class CreateTableMySQLTest extends CreateTableBaseTest{
     
     @BeforeClass
     public static void setUpClass() throws Exception {
-        Connections.initDerby();
+        Connections.initMySQL();
     }
 
     @Before
     public void setUp() throws SQLException {
         super.setUp();
-        templates = new DerbyTemplates().newLineToSingleSpace();
+        templates = new MySQLTemplates(true).newLineToSingleSpace();
     }
 
 }

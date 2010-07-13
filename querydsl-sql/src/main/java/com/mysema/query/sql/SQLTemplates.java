@@ -160,7 +160,7 @@ public class SQLTemplates extends Templates {
                 Short.class, String.class }) {
             class2type.put(cl, cl.getSimpleName().toLowerCase(Locale.ENGLISH));
         }
-
+        
         class2type.put(Boolean.class, "bit");
         class2type.put(Byte.class, "tinyint");
         class2type.put(Long.class, "bigint");

@@ -337,7 +337,7 @@ public final class Connections {
 
         // survey
         stmt.execute("drop table if exists SURVEY");
-        stmt.execute(CREATE_TABLE_SURVEY);
+        stmt.execute("create table SURVEY(ID int primary key auto_increment, NAME varchar(30))");
         stmt.execute("insert into SURVEY values (1, 'Hello World');");
 
         // test

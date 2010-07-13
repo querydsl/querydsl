@@ -52,11 +52,11 @@ public abstract class CreateTableBaseTest extends AbstractBaseTest{
         new  CreateTableClause(conn, templates,  "symbol")
         .column("id", Long.class).notNull()
         .column("lexical", String.class).size(1024).notNull()
-        .column("datatype", String.class)
+        .column("datatype", Long.class)
         .column("lang", Integer.class)
-        .column("integer",Long.class)
-        .column("floating",Double.class)
-        .column("datetime",Timestamp.class)
+        .column("intval",Long.class)
+        .column("floatval",Double.class)
+        .column("datetimeval",Timestamp.class)
         .primaryKey("PK_SYMBOL","id")
         .foreignKey("FK_LANG","lang").references("language","id")
         .execute();
@@ -73,7 +73,7 @@ public abstract class CreateTableBaseTest extends AbstractBaseTest{
         .execute();
         
         stmt.execute("select id, text from language");
-        stmt.execute("select id, lexical, datatype, lang, integer, floating, datetime from symbol");
+        stmt.execute("select id, lexical, datatype, lang, intval, floatval, datetimeval from symbol");
         stmt.execute("select model, subject, predicate, object from statement");
     }
 

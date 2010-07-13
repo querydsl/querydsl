@@ -30,6 +30,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.commons.lang.CloseableIterator;
@@ -110,7 +111,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({DERBY})
+    @ExcludeIn({DERBY,MYSQL})
     public void casts() throws SQLException {
         ENumber<?> num = employee.id;
         Expr<?>[] expr = new Expr[] {
@@ -315,6 +316,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
+    @Ignore
     @ExcludeIn({ORACLE, DERBY, SQLSERVER})
     public void selectBooleanExpr() throws SQLException {
         // TODO : FIXME
@@ -322,6 +324,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
+    @Ignore
     @ExcludeIn({ORACLE, DERBY, SQLSERVER})
     public void selectBooleanExpr2() throws SQLException {
         // TODO : FIXME

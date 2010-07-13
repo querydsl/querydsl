@@ -49,7 +49,7 @@ public class CreateTableClause {
     public CreateTableClause(Connection conn, SQLTemplates templates, String table) {
         this.connection = conn;
         this.templates = templates;
-        this.table = table;
+        this.table = templates.quoteTableName(table);
     }
 
     /**
@@ -62,7 +62,7 @@ public class CreateTableClause {
     public CreateTableClause column(String name, Class<?> type) {
         Assert.notNull(name,"name");
         Assert.notNull(type,"type");
-        columns.add(new ColumnData(name, templates.getTypeForClass(type))); 
+        columns.add(new ColumnData(templates.quoteColumnName(name), templates.getTypeForClass(type))); 
         return this;
     }
 
@@ -101,6 +101,9 @@ public class CreateTableClause {
     public CreateTableClause primaryKey(String name, String... columns) {
         Assert.notNull(name,"name");
         Assert.notEmpty(columns,"columns");
+        for (int i = 0; i < columns.length; i++){
+            columns[i] = templates.quoteColumnName(columns[i]);
+        }        
         primaryKey = new PrimaryKeyData(name, columns);
         return this;
     }
@@ -115,7 +118,7 @@ public class CreateTableClause {
     public ForeignKeyBuilder foreignKey(String name, String... columns) {
         Assert.notNull(name,"name");
         Assert.notEmpty(columns,"columns");
-        return new ForeignKeyBuilder(this, foreignKeys, name, columns);
+        return new ForeignKeyBuilder(this, templates, foreignKeys, name, columns);
     }
 
     /**

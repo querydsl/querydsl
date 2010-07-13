@@ -6,7 +6,6 @@
 package com.mysema.query.sql;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 
 import com.mysema.query.types.Ops;
 
@@ -26,17 +25,14 @@ public class MySQLTemplates extends SQLTemplates {
 
     public MySQLTemplates(boolean quote){
         super(quote ? "`" : null);
-        addClass2TypeMappings("signed",
-                Byte.class,
-                Integer.class,
-                Long.class,
-                Short.class,
-                BigInteger.class);
+        addClass2TypeMappings("bool", Boolean.class);
+        addClass2TypeMappings("int", Integer.class);
+        
         addClass2TypeMappings("decimal",
                 Double.class,
                 Float.class,
                 BigDecimal.class);
-        addClass2TypeMappings("char(256)", String.class);
+//        addClass2TypeMappings("text", String.class);
 
         add(Ops.CONCAT, "concat({0}, {1})",0);
         add(Ops.MATCHES, "{0} regexp {1}");
