@@ -23,6 +23,8 @@ import com.mysema.query.sql.support.ForeignKeyData;
 import com.mysema.query.sql.support.PrimaryKeyData;
 
 /**
+ * CreateTableClause defines a CREATE TABLE clause
+ * 
  * @author tiwe
  *
  */
