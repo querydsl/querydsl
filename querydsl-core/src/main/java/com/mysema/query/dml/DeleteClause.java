@@ -5,7 +5,8 @@
  */
 package com.mysema.query.dml;
 
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.FilteredClause;
+
 
 /**
  * DeleteClause defines a generic extensible interface for Delete clauses
@@ -14,14 +15,6 @@ import com.mysema.query.types.expr.EBoolean;
  *
  * @param <C>
  */
-public interface DeleteClause<C extends DeleteClause<C>> extends FilteredClause<C>{
-
-    /**
-     * Defines the filter constraints
-     *
-     * @param o
-     * @return
-     */
-    C where(EBoolean... o);
+public interface DeleteClause<C extends DeleteClause<C>> extends DMLClause<C>, FilteredClause<C>{
 
 }

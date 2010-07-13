@@ -7,8 +7,8 @@ package com.mysema.query.dml;
 
 import java.util.List;
 
+import com.mysema.query.FilteredClause;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.EBoolean;
 
 /**
  * UpdateClause defines a generic extensible interface for Update clauses
@@ -27,13 +27,5 @@ public interface UpdateClause<C extends UpdateClause<C>> extends StoreClause<C>,
      * @return
      */
     C set(List<? extends Path<?>> paths, List<?> values);
-
-    /**
-     * Defines the filter constraints
-     *
-     * @param o
-     * @return
-     */
-    C where(EBoolean... o);
 
 }

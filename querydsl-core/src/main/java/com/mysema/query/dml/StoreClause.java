@@ -16,14 +16,7 @@ import com.mysema.query.types.Path;
  *
  * @param <C>
  */
-public interface StoreClause<C extends StoreClause<C>> {
-    
-    /**
-     * Execute the clause and return the amount of deleted/inserted/updated rows/items
-     *
-     * @return
-     */
-    long execute();
+public interface StoreClause<C extends StoreClause<C>> extends DMLClause<C>{
     
     /**
      * Add a value binding

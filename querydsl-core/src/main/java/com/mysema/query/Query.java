@@ -21,15 +21,7 @@ import com.mysema.query.types.expr.EBoolean;
  * @author tiwe
  * @see SimpleQuery
  */
-public interface Query<Q extends Query<Q>> {
-
-    /**
-     * Defines the filter constraints
-     *
-     * @param o
-     * @return
-     */
-    Q where(EBoolean... o);
+public interface Query<Q extends Query<Q>> extends FilteredClause<Q>{
 
     /**
      * Defines the grouping/aggregation expressions
