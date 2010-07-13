@@ -22,6 +22,8 @@ import com.mysema.query.sql.support.ColumnData;
 import com.mysema.query.sql.support.ForeignKeyData;
 import com.mysema.query.sql.support.PrimaryKeyData;
 
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+
 /**
  * CreateTableClause defines a CREATE TABLE clause
  * 
@@ -50,6 +52,13 @@ public class CreateTableClause {
         this.table = table;
     }
 
+    /**
+     * Add a new column definition
+     * 
+     * @param name
+     * @param type
+     * @return
+     */
     public CreateTableClause column(String name, Class<?> type) {
         Assert.notNull(name,"name");
         Assert.notNull(type,"type");
@@ -61,16 +70,34 @@ public class CreateTableClause {
         return columns.get(columns.size()-1);
     }
     
+    /**
+     * Set the last added column to not null
+     * 
+     * @return
+     */
     public CreateTableClause notNull() {
         lastColumn().setNullAllowed(false);
         return this;
     }
 
+    /**
+     * Set the size of the last column's type
+     * 
+     * @param size
+     * @return
+     */
     public CreateTableClause size(int size) {
         lastColumn().setSize(size);
         return this;
     }
 
+    /**
+     * Set the primary key
+     * 
+     * @param name
+     * @param columns
+     * @return
+     */
     public CreateTableClause primaryKey(String name, String... columns) {
         Assert.notNull(name,"name");
         Assert.notEmpty(columns,"columns");
@@ -78,12 +105,23 @@ public class CreateTableClause {
         return this;
     }
 
+    /**
+     * Add a foreign key
+     * 
+     * @param name
+     * @param columns
+     * @return
+     */
     public ForeignKeyBuilder foreignKey(String name, String... columns) {
         Assert.notNull(name,"name");
         Assert.notEmpty(columns,"columns");
         return new ForeignKeyBuilder(this, foreignKeys, name, columns);
     }
 
+    /**
+     * Execute the clause
+     */
+    @SuppressWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")
     public void execute() {
         StringBuilder builder = new StringBuilder();
         builder.append("CREATE TABLE " + table + " (\n");
@@ -127,17 +165,13 @@ public class CreateTableClause {
             throw new QueryException(e.getMessage(), e);
         }finally{
             if (stmt != null){
-                close(stmt);    
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    throw new QueryException(e);
+                }
             }            
         }        
     }
     
-    protected void close(Statement stmt) {
-        try {
-            stmt.close();
-        } catch (SQLException e) {
-            throw new QueryException(e);
-        }
-    }
-
 }
