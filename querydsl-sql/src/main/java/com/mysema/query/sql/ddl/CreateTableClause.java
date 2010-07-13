@@ -6,7 +6,6 @@
 package com.mysema.query.sql.ddl;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -19,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.QueryException;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.support.ColumnData;
 import com.mysema.query.sql.support.ForeignKeyData;
 import com.mysema.query.sql.support.PrimaryKeyData;
