@@ -26,7 +26,7 @@ public class SelectDerbyQuotedTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        dialect = new DerbyTemplates(true).newLineToSingleSpace();
+        templates = new DerbyTemplates(true).newLineToSingleSpace();
     }
 
     @Override

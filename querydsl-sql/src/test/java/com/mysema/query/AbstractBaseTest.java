@@ -36,7 +36,7 @@ public abstract class AbstractBaseTest {
         Connections.close();
     }
 
-    protected SQLTemplates dialect;
+    protected SQLTemplates templates;
 
     @Nullable
     protected String expectedQuery;
@@ -45,23 +45,23 @@ public abstract class AbstractBaseTest {
     public static MethodRule labelRule = new LabelRule();
     
     protected SQLUpdateClause update(PEntity<?> e){
-        return new SQLUpdateClause(Connections.getConnection(), dialect, e);
+        return new SQLUpdateClause(Connections.getConnection(), templates, e);
     }
 
     protected SQLInsertClause insert(PEntity<?> e){
-        return new SQLInsertClause(Connections.getConnection(), dialect, e);
+        return new SQLInsertClause(Connections.getConnection(), templates, e);
     }
 
     protected SQLDeleteClause delete(PEntity<?> e){
-        return new SQLDeleteClause(Connections.getConnection(), dialect, e);
+        return new SQLDeleteClause(Connections.getConnection(), templates, e);
     }
 
     protected SQLMergeClause merge(PEntity<?> e){
-        return new SQLMergeClause(Connections.getConnection(), dialect, e);
+        return new SQLMergeClause(Connections.getConnection(), templates, e);
     }
 
     protected SQLQuery query() {
-        return new SQLQueryImpl(Connections.getConnection(), dialect) {
+        return new SQLQueryImpl(Connections.getConnection(), templates) {
             @Override
             protected String buildQueryString(boolean countRow) {
                 String rv = super.buildQueryString(countRow);

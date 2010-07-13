@@ -28,7 +28,7 @@ public class SelectPostgresQuotedTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        dialect = new PostgresTemplates(true).newLineToSingleSpace();
+        templates = new PostgresTemplates(true).newLineToSingleSpace();
     }
 
     @Override

@@ -26,7 +26,7 @@ public class UpdateDerbyTest extends UpdateBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        dialect = new DerbyTemplates().newLineToSingleSpace();
+        templates = new DerbyTemplates().newLineToSingleSpace();
         super.setUp();
     }
 

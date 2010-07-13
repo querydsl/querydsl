@@ -28,7 +28,7 @@ public class SelectOracleQuotedTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        dialect = new OracleTemplates(true).newLineToSingleSpace();
+        templates = new OracleTemplates(true).newLineToSingleSpace();
     }
 
     @Override

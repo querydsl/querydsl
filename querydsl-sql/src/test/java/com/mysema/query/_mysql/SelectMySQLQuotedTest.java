@@ -28,7 +28,7 @@ public class SelectMySQLQuotedTest extends SelectBaseTest{
 
     @Before
     public void setUpForTest() {
-        dialect = new MySQLTemplates(true).newLineToSingleSpace();
+        templates = new MySQLTemplates(true).newLineToSingleSpace();
     }
 
     @Override

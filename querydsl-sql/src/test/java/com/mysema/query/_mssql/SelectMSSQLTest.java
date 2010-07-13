@@ -40,7 +40,7 @@ public class SelectMSSQLTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        dialect = new SQLServerTemplates().newLineToSingleSpace();
+        templates = new SQLServerTemplates().newLineToSingleSpace();
     }
 
     @Test

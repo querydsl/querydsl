@@ -29,7 +29,7 @@ public class SelectDerbyTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        dialect = new DerbyTemplates().newLineToSingleSpace();
+        templates = new DerbyTemplates().newLineToSingleSpace();
     }
 
     @Test

@@ -24,7 +24,7 @@ public class SelectH2Test extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        dialect = new H2Templates().newLineToSingleSpace();
+        templates = new H2Templates().newLineToSingleSpace();
     }
 
 }

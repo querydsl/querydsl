@@ -28,7 +28,7 @@ public class SelectMSSQLQuotedTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        dialect = new SQLServerTemplates(true).newLineToSingleSpace();
+        templates = new SQLServerTemplates(true).newLineToSingleSpace();
     }
 
     @Override

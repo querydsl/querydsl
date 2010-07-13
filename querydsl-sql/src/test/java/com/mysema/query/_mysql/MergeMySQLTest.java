@@ -28,7 +28,7 @@ public class MergeMySQLTest extends MergeBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        dialect = new MySQLTemplates().newLineToSingleSpace();
+        templates = new MySQLTemplates().newLineToSingleSpace();
         super.setUp();
     }
 }

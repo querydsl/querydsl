@@ -1,12 +1,6 @@
-/*
- * Copyright (c) 2010 Mysema Ltd.
- * All rights reserved.
- *
- */
-package com.mysema.query.sql.ddl;
+package com.mysema.query;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -15,34 +9,36 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.query.sql.H2Templates;
-import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.ddl.CreateTableClause;
 
-public class CreateTableClauseTest {
+public abstract class CreateTableBaseTest extends AbstractBaseTest{
     
     private Connection conn;
     
-    private SQLTemplates templates = new H2Templates();
-
-    @Before
-    public void setUp() throws ClassNotFoundException, SQLException{
-        Class.forName("org.h2.Driver");
-        String url = "jdbc:h2:target/h2";
-        conn = DriverManager.getConnection(url, "sa", "");
-        
-        Statement stmt = conn.createStatement();
+    private Statement stmt;
+    
+    private static void safeExecute(Statement stmt, String sql) {
         try {
-            stmt.execute("drop table language if exists");
-            stmt.execute("drop table symbol if exists");
-            stmt.execute("drop table statement if exists");    
-        }finally{
-            stmt.close();    
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            // do nothing
         }
     }
-
+    
+    @Before
+    public void setUp() throws SQLException{
+        conn = Connections.getConnection();
+        stmt = conn.createStatement();
+        safeExecute(stmt,"drop table statement");
+        safeExecute(stmt,"drop table symbol");
+        safeExecute(stmt,"drop table language");                   
+    }
+    
     @After
     public void tearDown() throws SQLException{
-        conn.close();
+        if (stmt != null){
+            stmt.close();
+        }
     }
     
     @Test
@@ -76,14 +72,9 @@ public class CreateTableClauseTest {
         .foreignKey("FK_OBJECT","object").references("symbol","id")
         .execute();
         
-        Statement stmt = conn.createStatement();
-        try{
-            stmt.execute("select id, text from language");
-            stmt.execute("select id, lexical, datatype, lang, integer, floating, datetime from symbol");
-            stmt.execute("select model, subject, predicate, object from statement");
-        }finally{
-            stmt.close();
-        }
+        stmt.execute("select id, text from language");
+        stmt.execute("select id, lexical, datatype, lang, integer, floating, datetime from symbol");
+        stmt.execute("select model, subject, predicate, object from statement");
     }
 
 }

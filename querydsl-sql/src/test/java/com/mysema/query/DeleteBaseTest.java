@@ -22,7 +22,7 @@ import com.mysema.testutil.ExcludeIn;
 public abstract class DeleteBaseTest extends AbstractBaseTest{
 
     protected SQLDeleteClause delete(PEntity<?> e){
-        return new SQLDeleteClause(Connections.getConnection(), dialect, e);
+        return new SQLDeleteClause(Connections.getConnection(), templates, e);
     }
 
     private void reset() throws SQLException{

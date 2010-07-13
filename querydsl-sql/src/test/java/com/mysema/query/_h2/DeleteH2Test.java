@@ -26,7 +26,7 @@ public class DeleteH2Test extends DeleteBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        dialect = new H2Templates().newLineToSingleSpace();
+        templates = new H2Templates().newLineToSingleSpace();
         super.setUp();
     }
 

@@ -28,7 +28,7 @@ public class MergeOracleTest extends MergeBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        dialect = new OracleTemplates().newLineToSingleSpace();
+        templates = new OracleTemplates().newLineToSingleSpace();
         super.setUp();
     }
 }

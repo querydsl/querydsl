@@ -26,7 +26,7 @@ public class SelectMySQLTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        dialect = new MySQLTemplates().newLineToSingleSpace();
+        templates = new MySQLTemplates().newLineToSingleSpace();
     }
 
 }

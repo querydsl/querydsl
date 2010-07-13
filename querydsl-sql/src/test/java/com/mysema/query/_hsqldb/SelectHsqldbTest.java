@@ -24,7 +24,7 @@ public class SelectHsqldbTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        dialect = new HSQLDBTemplates().newLineToSingleSpace();
+        templates = new HSQLDBTemplates().newLineToSingleSpace();
     }
 
 }

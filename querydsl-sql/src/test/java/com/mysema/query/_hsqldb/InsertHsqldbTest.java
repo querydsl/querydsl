@@ -26,7 +26,7 @@ public class InsertHsqldbTest extends InsertBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        dialect = new HSQLDBTemplates().newLineToSingleSpace();
+        templates = new HSQLDBTemplates().newLineToSingleSpace();
         super.setUp();
     }
 

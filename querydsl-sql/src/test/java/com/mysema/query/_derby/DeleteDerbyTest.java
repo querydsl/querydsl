@@ -26,7 +26,7 @@ public class DeleteDerbyTest extends DeleteBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        dialect = new DerbyTemplates().newLineToSingleSpace();
+        templates = new DerbyTemplates().newLineToSingleSpace();
         super.setUp();
     }
 

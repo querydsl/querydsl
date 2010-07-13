@@ -28,7 +28,7 @@ public class DeleteMSSQLTest extends DeleteBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        dialect = new SQLServerTemplates().newLineToSingleSpace();
+        templates = new SQLServerTemplates().newLineToSingleSpace();
         super.setUp();
     }
 

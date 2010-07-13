@@ -93,7 +93,9 @@ public class CreateTableClause {
             if (column.getSize() != null){
                 line.append("(" + column.getSize() + ")");
             }
-            line.append(column.isNullAllowed() ? " NULL" : " NOT NULL");            
+            if (!column.isNullAllowed()){
+                line.append(" NOT NULL");
+            }            
             lines.add(line.toString());
         }
         // primary key

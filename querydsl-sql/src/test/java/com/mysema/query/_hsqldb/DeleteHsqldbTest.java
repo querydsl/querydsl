@@ -26,7 +26,7 @@ public class DeleteHsqldbTest extends DeleteBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        dialect = new HSQLDBTemplates().newLineToSingleSpace();
+        templates = new HSQLDBTemplates().newLineToSingleSpace();
         super.setUp();
     }
 

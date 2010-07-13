@@ -38,7 +38,7 @@ public class SelectOracleTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        dialect = new OracleTemplates().newLineToSingleSpace();
+        templates = new OracleTemplates().newLineToSingleSpace();
     }
 
     @Test
@@ -152,7 +152,7 @@ public class SelectOracleTest extends SelectBaseTest {
     }
 
     protected OracleQuery qo(){
-        return new OracleQuery(Connections.getConnection(),dialect){
+        return new OracleQuery(Connections.getConnection(),templates){
             @Override
             protected String buildQueryString(boolean forCountRow) {
                 String rv = super.buildQueryString(forCountRow);

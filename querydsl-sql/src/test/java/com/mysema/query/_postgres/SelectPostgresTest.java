@@ -27,7 +27,7 @@ public class SelectPostgresTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        dialect = new PostgresTemplates().newLineToSingleSpace();
+        templates = new PostgresTemplates().newLineToSingleSpace();
     }
 
 }
