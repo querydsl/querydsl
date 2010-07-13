@@ -5,8 +5,6 @@ package com.mysema.query.sql.support;
 
 import java.util.List;
 
-import com.mysema.commons.lang.Pair;
-
 /**
  * Common interface for ForeignKeyData and InverseForeignKeyData
  * 
@@ -18,7 +16,9 @@ public interface KeyData {
     String getName();
 
     String getTable();
+    
+    List<String> getForeignColumns();
 
-    List<Pair<String, String>> getColumns();
+    List<String> getParentColumns();
 
 }

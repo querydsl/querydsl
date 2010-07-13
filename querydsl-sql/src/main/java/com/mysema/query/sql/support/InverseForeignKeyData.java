@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.commons.lang.Pair;
 
 /**
  * @author tiwe
@@ -20,8 +19,10 @@ public class InverseForeignKeyData implements KeyData{
     private final String name;
 
     private final String table;
-
-    private final List<Pair<String,String>> columns = new ArrayList<Pair<String,String>>();
+    
+    private final List<String> foreignColumns = new ArrayList<String>();
+    
+    private final List<String> parentColumns = new ArrayList<String>();
 
     public InverseForeignKeyData(String name, String parentTable) {
         this.name = Assert.hasLength(name,"name");
@@ -29,7 +30,8 @@ public class InverseForeignKeyData implements KeyData{
     }
 
     public void add(String foreignColumn, String parentColumn){
-        columns.add(Pair.of(foreignColumn, parentColumn));
+        foreignColumns.add(foreignColumn);
+        parentColumns.add(parentColumn);
     }
 
     public String getName() {
@@ -40,8 +42,12 @@ public class InverseForeignKeyData implements KeyData{
         return table;
     }
 
-    public List<Pair<String, String>> getColumns() {
-        return columns;
+    public List<String> getForeignColumns() {
+        return foreignColumns;
+    }
+
+    public List<String> getParentColumns() {
+        return parentColumns;
     }
 
 }

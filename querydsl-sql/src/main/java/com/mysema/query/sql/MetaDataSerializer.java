@@ -112,20 +112,19 @@ public class MetaDataSerializer extends EntitySerializer {
             String foreignType = namingStrategy.getClassName(namePrefix, foreignKey.getTable());
             StringBuilder value = new StringBuilder();
             value.append("new ForeignKey<"+foreignType+">(this, ");
-            if (foreignKey.getColumns().size() == 1){
-                Pair<String,String> pair = foreignKey.getColumns().get(0);
-                value.append(namingStrategy.getPropertyName(pair.getFirst(), namePrefix, model));
-                value.append(", \"" + pair.getSecond() + "\"");
+            if (foreignKey.getForeignColumns().size() == 1){
+                value.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), namePrefix, model));
+                value.append(", \"" + foreignKey.getParentColumns().get(0) + "\"");
             }else{
                 StringBuilder local = new StringBuilder();
                 StringBuilder foreign = new StringBuilder();
-                for (Pair<String,String> pair : foreignKey.getColumns()){
-                    if (local.length() > 0){
+                for (int i = 0; i < foreignKey.getForeignColumns().size(); i++){
+                    if (i > 0){
                         local.append(", ");
                         foreign.append(", ");
                     }
-                    local.append(namingStrategy.getPropertyName(pair.getFirst(), namePrefix, model));
-                    foreign.append("\"" + pair.getSecond() + "\"");
+                    local.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), namePrefix, model));
+                    foreign.append("\"" +foreignKey.getParentColumns().get(0) + "\"");
                 }
                 value.append("Arrays.asList("+local+"), Arrays.asList("+foreign+")");
             }

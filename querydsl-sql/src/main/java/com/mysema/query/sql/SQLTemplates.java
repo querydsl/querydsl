@@ -165,7 +165,10 @@ public class SQLTemplates extends Templates {
         class2type.put(Byte.class, "tinyint");
         class2type.put(Long.class, "bigint");
         class2type.put(Short.class, "smallint");
-        class2type.put(String.class, "varchar");
+        class2type.put(String.class, "varchar");        
+        class2type.put(java.sql.Date.class, "date");
+        class2type.put(java.sql.Time.class, "time");
+        class2type.put(java.sql.Timestamp.class, "timestamp");
     }
 
     public void addClass2TypeMappings(String type, Class<?>... classes) {
