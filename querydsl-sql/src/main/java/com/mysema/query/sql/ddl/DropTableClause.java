@@ -12,6 +12,8 @@ import java.sql.Statement;
 import com.mysema.query.QueryException;
 import com.mysema.query.sql.SQLTemplates;
 
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
+
 /**
  * @author tiwe
  *
@@ -27,6 +29,7 @@ public class DropTableClause {
         this.table = templates.quoteTableName(table);
     }
     
+    @SuppressWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")
     public void execute(){
         Statement stmt = null;
         try{
