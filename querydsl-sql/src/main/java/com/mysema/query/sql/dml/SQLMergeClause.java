@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.query.QueryException;
 import com.mysema.query.dml.StoreClause;
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLSerializer;
@@ -30,7 +31,6 @@ import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.path.NullExpr;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.util.JDBCUtil;
 
 /**
  * SQLMergeClause defines an MERGE INTO clause
@@ -43,6 +43,9 @@ public class SQLMergeClause implements StoreClause<SQLMergeClause>{
 
     private static final Logger logger = LoggerFactory.getLogger(SQLMergeClause.class);
 
+    // TODO : make this injectable via a constructor
+    private static final Configuration configuration = new Configuration();
+    
     private final List<Path<?>> columns = new ArrayList<Path<?>>();
 
     private final Connection connection;
@@ -124,7 +127,7 @@ public class SQLMergeClause implements StoreClause<SQLMergeClause>{
         PreparedStatement stmt = null;
         try {
             stmt = connection.prepareStatement(queryString);
-            JDBCUtil.setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
+            configuration.setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
             return stmt.executeUpdate();
         } catch (SQLException e) {
             throw new QueryException("Caught " + e.getClass().getSimpleName()

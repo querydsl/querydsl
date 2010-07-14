@@ -40,8 +40,6 @@ import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.query.ListSubQuery;
-import com.mysema.util.JDBCUtil;
-import com.mysema.util.MathUtils;
 import com.mysema.util.ResultSetAdapter;
 
 /**
@@ -53,6 +51,9 @@ import com.mysema.util.ResultSetAdapter;
 @edu.umd.cs.findbugs.annotations.SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         ProjectableQuery<Q> {
+    
+    // TODO : make this injectable via a constructor
+    private static final Configuration configuration = new Configuration();
 
     public class UnionBuilder<RT> implements Union<RT> {
 
@@ -225,21 +226,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.rightJoin(entity).on(key.on(entity));
     }
 
-    @SuppressWarnings("unchecked")
     @Nullable
     private <T> T get(ResultSet rs, int i, Class<T> type) {
         try {
-            Object value = rs.getObject(i);
-            if (value != null && !type.isAssignableFrom(value.getClass())){
-                if (Number.class.isAssignableFrom(type)){
-                    return (T)MathUtils.cast((Number)value, (Class)type);
-                }else{
-                    throw new IllegalArgumentException(
-                        "Unable to cast " + value.getClass().getName() + " to " + type.getName());
-                }
-            }else{
-                return (T)value;
-            }
+            return configuration.get(rs, i, type);
         } catch (SQLException e) {
             throw new QueryException(e);
         }
@@ -256,7 +246,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
-            JDBCUtil.setParameters(stmt, constants, getMetadata().getParams());
+            configuration.setParameters(stmt, constants, getMetadata().getParams());
             ResultSet rs = stmt.executeQuery();
 
             return new ResultSetAdapter(rs) {
@@ -307,7 +297,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         try {
             PreparedStatement stmt = conn.prepareStatement(queryString);
             final List<? extends Expr<?>> projection = getMetadata().getProjection();
-            JDBCUtil.setParameters(stmt, constants, getMetadata().getParams());
+            configuration.setParameters(stmt, constants, getMetadata().getParams());
             ResultSet rs = stmt.executeQuery();
 
             return new SQLResultIterator<Object[]>(stmt, rs) {
@@ -365,7 +355,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         logger.debug("query : {}", queryString);
         try {
             PreparedStatement stmt = conn.prepareStatement(queryString);
-            JDBCUtil.setParameters(stmt, constants, getMetadata().getParams());
+            configuration.setParameters(stmt, constants, getMetadata().getParams());
             ResultSet rs = stmt.executeQuery();
 
             return new SQLResultIterator<RT>(stmt, rs) {
@@ -482,7 +472,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         ResultSet rs = null;
         try {
             stmt = conn.prepareStatement(queryString);
-            JDBCUtil.setParameters(stmt, constants, getMetadata().getParams());
+            configuration.setParameters(stmt, constants, getMetadata().getParams());
             rs = stmt.executeQuery();
             rs.next();
             return rs.getLong(1);
@@ -502,4 +492,5 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
             }
         }
     }
+    
 }

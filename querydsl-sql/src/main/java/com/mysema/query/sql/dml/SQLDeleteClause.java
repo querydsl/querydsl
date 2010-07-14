@@ -16,12 +16,12 @@ import org.slf4j.LoggerFactory;
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.QueryException;
 import com.mysema.query.dml.DeleteClause;
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.util.JDBCUtil;
 
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
@@ -34,8 +34,10 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 @SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public class SQLDeleteClause implements DeleteClause<SQLDeleteClause> {
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(SQLDeleteClause.class);
+    private static final Logger logger = LoggerFactory.getLogger(SQLDeleteClause.class);
+
+    // TODO : make this injectable via a constructor
+    private static final Configuration configuration = new Configuration();
 
     private final Connection connection;
 
@@ -70,7 +72,7 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause> {
         PreparedStatement stmt = null;
         try {
             stmt = connection.prepareStatement(queryString);
-            JDBCUtil.setParameters(stmt, serializer.getConstants(), Collections.<Param<?>,Object>emptyMap());
+            configuration.setParameters(stmt, serializer.getConstants(), Collections.<Param<?>,Object>emptyMap());
             return stmt.executeUpdate();
         } catch (SQLException e) {
             throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
