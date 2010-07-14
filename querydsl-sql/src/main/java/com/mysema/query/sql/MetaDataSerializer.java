@@ -12,7 +12,6 @@ import java.util.Collection;
 import java.util.Collections;
 
 import com.mysema.codegen.CodeWriter;
-import com.mysema.commons.lang.Pair;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.SerializerConfig;

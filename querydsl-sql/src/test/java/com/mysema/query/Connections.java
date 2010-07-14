@@ -6,17 +6,28 @@
 package com.mysema.query;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 
 import org.hsqldb.Types;
+
+import com.mysema.query.sql.DerbyTemplates;
+import com.mysema.query.sql.OracleTemplates;
+import com.mysema.query.sql.PostgresTemplates;
+import com.mysema.query.sql.SQLServerTemplates;
+import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.ddl.CreateTableClause;
+import com.mysema.query.sql.ddl.DropTableClause;
 
 /**
  * @author tiwe
  *
  */
+// TODO : concert to use more CreateTableClause
 public final class Connections {
 
     public static final int TEST_ROW_COUNT = 100;
@@ -30,16 +41,6 @@ public final class Connections {
     private static final String CREATE_TABLE_TEST = "create table TEST(NAME varchar(255))";
 
     private static final String CREATE_TABLE_TIMETEST = "create table TIME_TEST(TIME_TEST time)";
-
-    private static final String DROP_TABLE_DATETEST = "drop table DATE_TEST";
-
-    private static final String DROP_TABLE_EMPLOYEE2 = "drop table EMPLOYEE2";
-
-    private static final String DROP_TABLE_SURVEY = "drop table SURVEY";
-
-    private static final String DROP_TABLE_TEST = "drop table TEST";
-
-    private static final String DROP_TABLE_TIMETEST = "drop table TIME_TEST";
 
     private static final String INSERT_INTO_EMPLOYEE = "insert into EMPLOYEE2 " +
         "(ID, FIRSTNAME, LASTNAME, SALARY, DATEFIELD, TIMEFIELD, SUPERIOR_ID) " +
@@ -106,11 +107,21 @@ public final class Connections {
         return DriverManager.getConnection(url, "querydsl","querydsl");
     }
 
+    private static CreateTableClause createTable(SQLTemplates templates, String table){
+        return new CreateTableClause(connHolder.get(), templates, table);
+    }
+    
+    private static void dropTable(SQLTemplates templates, String table){
+        new DropTableClause(connHolder.get(), templates, table).execute();
+    }
+    
     public static Statement getStatement(){
         return stmtHolder.get();
     }
 
+    
     public static void initDerby() throws SQLException, ClassNotFoundException{
+        SQLTemplates templates = new DerbyTemplates();
         Connection c = getDerby();
         connHolder.set(c);
         Statement stmt = c.createStatement();
@@ -121,12 +132,12 @@ public final class Connections {
         }
 
         // survey
-        safeExecute(stmt, DROP_TABLE_SURVEY);
+        dropTable(templates, "SURVEY");
         stmt.execute(CREATE_TABLE_SURVEY);
         stmt.execute("insert into SURVEY values (1, 'Hello World')");
 
         // test
-        safeExecute(stmt, DROP_TABLE_TEST);
+        dropTable(templates, "TEST");
         stmt.execute(CREATE_TABLE_TEST);
         stmt.execute("create index test_name on test(name)");
         PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
@@ -141,34 +152,33 @@ public final class Connections {
         }
 
         // employee
-        // stmt.execute("drop table employee if exists");
-        safeExecute(stmt, DROP_TABLE_EMPLOYEE2);
-        stmt.execute("create table EMPLOYEE2("
-                + "ID int, "
-                + "FIRSTNAME VARCHAR(50), "
-                + "LASTNAME VARCHAR(50), "
-                + "SALARY decimal(10, 2), "
-                + "DATEFIELD date, "
-                + "TIMEFIELD time, "
-                + "SUPERIOR_ID int, "
-                + "CONSTRAINT PK_employee PRIMARY KEY (ID), "
-                + "CONSTRAINT FK_superior FOREIGN KEY (SUPERIOR_ID) "
-                + "REFERENCES EMPLOYEE2(ID))");
-//        stmt.execute("create index employee_id on employee2(id)");
-//        stmt.execute("create index employee_firstname on employee2(firstname)");
-
+        dropTable(templates, "EMPLOYEE2");
+        
+        createTable(templates, "EMPLOYEE2")
+        .column("ID", Integer.class)
+        .column("FIRSTNAME", String.class).size(50)
+        .column("LASTNAME", String.class).size(50)
+        .column("SALARY",Double.class)
+        .column("DATEFIELD",Date.class)
+        .column("TIMEFIELD",Time.class)
+        .column("SUPERIOR_ID",Integer.class)
+        .primaryKey("PK_EMPLOYEE", "ID")
+        .foreignKey("FK_SUPERIOR","SUPERIOR_ID").references("EMPLOYEE2","ID")
+        .execute();
+        
         addEmployees(INSERT_INTO_EMPLOYEE);
 
         // date_test and time_test
-        safeExecute(stmt, DROP_TABLE_TIMETEST);
+        dropTable(templates, "TIME_TEST");
         stmt.execute(CREATE_TABLE_TIMETEST);
 
-        safeExecute(stmt, DROP_TABLE_DATETEST);
+        dropTable(templates, "DATE_TEST");
         stmt.execute(CREATE_TABLE_DATETEST);
         derbyInited = true;
     }
 
     public static void initSQLServer() throws SQLException, ClassNotFoundException{
+        SQLTemplates templates = new SQLServerTemplates();
         Connection c = getSQLServer();
         connHolder.set(c);
         Statement stmt = c.createStatement();
@@ -179,12 +189,12 @@ public final class Connections {
         }
 
         // survey
-        safeExecute(stmt, DROP_TABLE_SURVEY);
+        dropTable(templates, "SURVEY");
         stmt.execute(CREATE_TABLE_SURVEY);
         stmt.execute("insert into SURVEY values (1, 'Hello World')");
 
         // test
-        safeExecute(stmt, DROP_TABLE_TEST);
+        dropTable(templates, "TEST");
         stmt.execute(CREATE_TABLE_TEST);
         PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
         try{
@@ -198,8 +208,7 @@ public final class Connections {
         }
 
         // employee
-        // stmt.execute("drop table employee if exists");
-        safeExecute(stmt, DROP_TABLE_EMPLOYEE2);
+        dropTable(templates, "EMPLOYEE2");
         stmt.execute("create table EMPLOYEE2("
                 + "ID int, "
                 + "FIRSTNAME VARCHAR(50), "
@@ -214,8 +223,8 @@ public final class Connections {
         addEmployees(INSERT_INTO_EMPLOYEE);
 
         // date_test and time_test
-        safeExecute(stmt, DROP_TABLE_TIMETEST);
-        safeExecute(stmt, DROP_TABLE_DATETEST);
+        dropTable(templates, "TIME_TEST");
+        dropTable(templates, "DATE_TEST");
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
         sqlServerInited = true;
@@ -378,6 +387,7 @@ public final class Connections {
     }
 
     public static void initOracle() throws SQLException, ClassNotFoundException{
+        SQLTemplates templates = new OracleTemplates();
         Connection c = getOracle();
         connHolder.set(c);
         Statement stmt = c.createStatement();
@@ -388,12 +398,12 @@ public final class Connections {
         }
 
         // survey
-        safeExecute(stmt, DROP_TABLE_SURVEY);
+        dropTable(templates, "SURVEY");
         stmt.execute("create table SURVEY (id number(10,0),name varchar(30))");
         stmt.execute("insert into SURVEY values (1, 'Hello World')");
 
         // test
-        safeExecute(stmt, DROP_TABLE_TEST);
+        dropTable(templates, "TEST");
         stmt.execute("create table TEST(name varchar(255))");
         String sql  = "insert into TEST values(?)";
         PreparedStatement pstmt = c.prepareStatement(sql);
@@ -404,8 +414,7 @@ public final class Connections {
         pstmt.executeBatch();
 
         // employee
-
-        safeExecute(stmt, DROP_TABLE_EMPLOYEE2);
+        dropTable(templates, "EMPLOYEE2");
         stmt.execute("create table EMPLOYEE2("
                 + "ID number(10,0), "
                 + "FIRSTNAME VARCHAR(50), "
@@ -420,14 +429,13 @@ public final class Connections {
         addEmployees(INSERT_INTO_EMPLOYEE);
 
         // date_test and time_test
-//      executeSafe("drop table time_test");
-//      stmt.execute("create table time_test(time_test time)");
-        safeExecute(stmt, DROP_TABLE_DATETEST);
+        dropTable(templates, "DATE_TEST");
         stmt.execute("create table date_test(date_test date)");
         oracleInited = true;
     }
 
     public static void initPostgres() throws SQLException, ClassNotFoundException{
+        SQLTemplates templates = new PostgresTemplates();
         // NOTE : unquoted identifiers are converted to lower case in Postgres
         Connection c = getPostgres();
         connHolder.set(c);
@@ -439,12 +447,12 @@ public final class Connections {
         }
 
         // survey
-        safeExecute(stmt, quote(DROP_TABLE_SURVEY,"SURVEY"));
+        dropTable(templates, "\"SURVEY\"");
         stmt.execute(quote(CREATE_TABLE_SURVEY,"SURVEY","ID","NAME"));
         stmt.execute("insert into \"SURVEY\" values (1, 'Hello World')");
 
         // test
-        safeExecute(stmt, quote(DROP_TABLE_TEST,"TEST"));
+        dropTable(templates, "\"TEST\"");
         stmt.execute(quote(CREATE_TABLE_TEST,"TEST","NAME"));
         String sql = quote(INSERT_INTO_TEST_VALUES,"TEST");
         PreparedStatement pstmt = c.prepareStatement(sql);
@@ -460,7 +468,7 @@ public final class Connections {
 
         // employee
         // stmt.execute("drop table employee if exists");
-        safeExecute(stmt, quote(DROP_TABLE_EMPLOYEE2,"EMPLOYEE2"));
+        dropTable(templates, "\"EMPLOYEE2\"");
         stmt.execute("create table \"EMPLOYEE2\"("
                 + "\"ID\" int, "
                 + "\"FIRSTNAME\" VARCHAR(50), "
@@ -477,19 +485,11 @@ public final class Connections {
             "values (?,?,?,?,?,?,?)");
 
         // date_test and time_test
-        safeExecute(stmt, quote(DROP_TABLE_TIMETEST, "TIME_TEST"));
-        safeExecute(stmt, quote(DROP_TABLE_DATETEST,"DATE_TEST"));
+        dropTable(templates, "\"TIME_TEST\"");
+        dropTable(templates, "\"DATE_TEST\"");
         stmt.execute(quote(CREATE_TABLE_TIMETEST, "TIME_TEST"));
         stmt.execute(quote(CREATE_TABLE_DATETEST, "DATE_TEST"));
         postgresInited = true;
-    }
-
-    private static void safeExecute(Statement stmt, String sql) {
-        try {
-            stmt.execute(sql);
-        } catch (SQLException e) {
-            // do nothing
-        }
     }
 
     static void addEmployee(String sql, int id, String firstName, String lastName,

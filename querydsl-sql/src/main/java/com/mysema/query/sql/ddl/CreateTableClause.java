@@ -90,6 +90,16 @@ public class CreateTableClause {
         lastColumn().setSize(size);
         return this;
     }
+    
+    /**
+     * Set the last column to auto increment
+     * 
+     * @return
+     */
+    public CreateTableClause autoIncrement(){
+        lastColumn().setAutoIncrement(true);
+        return this;
+    }
 
     /**
      * Set the primary key
@@ -137,8 +147,11 @@ public class CreateTableClause {
                 line.append("(" + column.getSize() + ")");
             }
             if (!column.isNullAllowed()){
-                line.append(" NOT NULL");
+                line.append(templates.getNotNull().toUpperCase());
             }            
+            if (column.isAutoIncrement()){
+                line.append(templates.getAutoIncrement().toUpperCase());
+            }
             lines.add(line.toString());
         }
         // primary key

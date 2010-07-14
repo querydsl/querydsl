@@ -30,7 +30,8 @@ public class DerbyTemplates extends SQLTemplates {
     public DerbyTemplates(boolean quote){
         super(quote ? "\"" : null);
         addClass2TypeMappings("smallint", Byte.class);
-
+        setAutoIncrement(" generated always as identity");
+        
         add(Ops.CONCAT, "varchar({0} || {1})");
         add(Ops.MathOps.ROUND, "floor({0})");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "day({0})");

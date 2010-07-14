@@ -17,6 +17,8 @@ public class ColumnData {
     
     private boolean nullAllowed = true;
     
+    private boolean autoIncrement;
+    
     private Integer size;
 
     public ColumnData(String name, String type) {
@@ -47,7 +49,13 @@ public class ColumnData {
     public Integer getSize() {
         return size;
     }
-    
-    
+
+    public boolean isAutoIncrement() {
+        return autoIncrement;
+    }
+
+    public void setAutoIncrement(boolean autoIncrement) {
+        this.autoIncrement = autoIncrement;
+    }
     
 }

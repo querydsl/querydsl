@@ -106,6 +106,10 @@ public class SQLTemplates extends Templates {
 
     private String set = "set ";
 
+    private String autoIncrement = " auto_increment";
+    
+    private String notNull = " not null";
+    
     protected SQLTemplates(){
         this(null);
     }
@@ -496,6 +500,22 @@ public class SQLTemplates extends Templates {
 
     public void setNativeMerge(boolean nativeMerge) {
         this.nativeMerge = nativeMerge;
+    }
+
+    public String getAutoIncrement() {
+        return autoIncrement;
+    }
+
+    public void setAutoIncrement(String autoIncrement) {
+        this.autoIncrement = autoIncrement;
+    }
+
+    public String getNotNull() {
+        return notNull;
+    }
+
+    public void setNotNull(String notNull) {
+        this.notNull = notNull;
     }
     
 }

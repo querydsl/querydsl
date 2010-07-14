@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.Arrays;
 
 import org.junit.After;
 import org.junit.Before;
@@ -29,9 +30,9 @@ public abstract class CreateTableBaseTest extends AbstractBaseTest{
     public void setUp() throws SQLException{
         conn = Connections.getConnection();
         stmt = conn.createStatement();
-        safeExecute(stmt,"drop table statement");
-        safeExecute(stmt,"drop table symbol");
-        safeExecute(stmt,"drop table language");                   
+        for (String table : Arrays.asList("statement","symbol","language","autoinc")){
+            safeExecute(stmt, "drop table " + table);
+        }                   
     }
     
     @After
@@ -42,7 +43,15 @@ public abstract class CreateTableBaseTest extends AbstractBaseTest{
     }
     
     @Test
-    public void test() throws SQLException{
+    public void autoIncrement(){
+        new  CreateTableClause(conn, templates,  "autoinc")
+        .column("id", Integer.class).notNull().autoIncrement()
+        .primaryKey("PK_AUTOINC","id")
+        .execute();   
+    }
+    
+    @Test
+    public void rdfExample() throws SQLException{               
         new  CreateTableClause(conn, templates,  "language")
         .column("id", Integer.class).notNull()
         .column("text", String.class).size(256).notNull()
