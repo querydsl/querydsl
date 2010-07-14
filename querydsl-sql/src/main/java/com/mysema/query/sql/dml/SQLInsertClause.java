@@ -46,9 +46,6 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
 
-    // TODO : make this injectable via a constructor
-    private static final Configuration configuration = new Configuration();
-    
     private final List<Path<?>> columns = new ArrayList<Path<?>>();
 
     private final Connection connection;
@@ -58,13 +55,17 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
     @Nullable
     private SubQuery<?> subQuery;
 
-    private final SQLTemplates templates;
+    private final Configuration configuration;
 
     private final List<Expr<?>> values = new ArrayList<Expr<?>>();
 
     public SQLInsertClause(Connection connection, SQLTemplates templates, PEntity<?> entity) {
+        this(connection, new Configuration(templates), entity);
+    }
+    
+    public SQLInsertClause(Connection connection, Configuration configuration, PEntity<?> entity) {
         this.connection = connection;
-        this.templates = templates;
+        this.configuration = configuration;
         this.entity = entity;
     }
 
@@ -124,7 +125,7 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
     }
     
     public ResultSet executeWithKeys(){
-        SQLSerializer serializer = new SQLSerializer(templates, true);
+        SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
         serializer.serializeForInsert(entity, columns, values, subQuery);
         String queryString = serializer.toString();
         logger.debug(queryString);
@@ -152,7 +153,7 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
 
     @Override
     public long execute() {
-        SQLSerializer serializer = new SQLSerializer(templates, true);
+        SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
         serializer.serializeForInsert(entity, columns, values, subQuery);
         String queryString = serializer.toString();
         logger.debug(queryString);
@@ -206,7 +207,7 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
 
     @Override
     public String toString(){
-        SQLSerializer serializer = new SQLSerializer(templates, true);
+        SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
         serializer.serializeForInsert(entity, columns, values, subQuery);
         return serializer.toString();
     }

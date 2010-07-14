@@ -43,9 +43,6 @@ public class SQLMergeClause implements StoreClause<SQLMergeClause>{
 
     private static final Logger logger = LoggerFactory.getLogger(SQLMergeClause.class);
 
-    // TODO : make this injectable via a constructor
-    private static final Configuration configuration = new Configuration();
-    
     private final List<Path<?>> columns = new ArrayList<Path<?>>();
 
     private final Connection connection;
@@ -57,13 +54,17 @@ public class SQLMergeClause implements StoreClause<SQLMergeClause>{
     @Nullable
     private SubQuery<?> subQuery;
 
-    private final SQLTemplates templates;
+    private final Configuration configuration;
 
     private final List<Expr<?>> values = new ArrayList<Expr<?>>();
 
     public SQLMergeClause(Connection connection, SQLTemplates templates, PEntity<?> entity) {
+        this(connection, new Configuration(templates), entity);
+    }
+    
+    public SQLMergeClause(Connection connection, Configuration configuration, PEntity<?> entity) {
         this.connection = connection;
-        this.templates = templates;
+        this.configuration = configuration;
         this.entity = entity;
     }
 
@@ -76,7 +77,7 @@ public class SQLMergeClause implements StoreClause<SQLMergeClause>{
     }
 
     public long execute() {                
-        if (templates.isNativeMerge()){
+        if (configuration.getTemplates().isNativeMerge()){
             return executeNativeMerge();
         }else{
             return executeCompositeMerge();
@@ -86,7 +87,7 @@ public class SQLMergeClause implements StoreClause<SQLMergeClause>{
     @SuppressWarnings("unchecked")
     private long executeCompositeMerge() {
         // select 
-        SQLQuery query = new SQLQueryImpl(connection, templates).from(entity);
+        SQLQuery query = new SQLQueryImpl(connection, configuration.getTemplates()).from(entity);
         for (int i=0; i < columns.size(); i++){
             if (values.get(i) instanceof NullExpr){
                 query.where(columns.get(i).isNull());
@@ -98,13 +99,13 @@ public class SQLMergeClause implements StoreClause<SQLMergeClause>{
         
         if (!ids.isEmpty()){
             // update
-            SQLUpdateClause update = new SQLUpdateClause(connection, templates, entity);
+            SQLUpdateClause update = new SQLUpdateClause(connection, configuration.getTemplates(), entity);
             populate(update);
             update.where(((Expr)keys.get(0).asExpr()).in(ids));
             return update.execute();
         }else{
             // insert
-            SQLInsertClause insert = new SQLInsertClause(connection, templates, entity);
+            SQLInsertClause insert = new SQLInsertClause(connection, configuration.getTemplates(), entity);
             populate(insert);
             return insert.execute();
             
@@ -119,7 +120,7 @@ public class SQLMergeClause implements StoreClause<SQLMergeClause>{
     }
 
     private long executeNativeMerge() {
-        SQLSerializer serializer = new SQLSerializer(templates, true);
+        SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
         serializer.serializeForMerge(entity, keys, columns, values, subQuery);
         String queryString = serializer.toString();
         logger.debug(queryString);
@@ -163,7 +164,7 @@ public class SQLMergeClause implements StoreClause<SQLMergeClause>{
 
     @Override
     public String toString(){
-        SQLSerializer serializer = new SQLSerializer(templates, true);
+        SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
         serializer.serializeForMerge(entity, keys, columns, values, subQuery);
         return serializer.toString();
     }

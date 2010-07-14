@@ -51,9 +51,6 @@ import com.mysema.util.ResultSetAdapter;
 @edu.umd.cs.findbugs.annotations.SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         ProjectableQuery<Q> {
-    
-    // TODO : make this injectable via a constructor
-    private static final Configuration configuration = new Configuration();
 
     public class UnionBuilder<RT> implements Union<RT> {
 
@@ -101,19 +98,18 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     @Nullable
     private SubQuery<?>[] union;
 
-    private final SQLTemplates templates;
+    private final Configuration configuration;
 
-    public AbstractSQLQuery(@Nullable Connection conn, SQLTemplates templates) {
-        this(conn, templates, new DefaultQueryMetadata());
+    public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration) {
+        this(conn, configuration, new DefaultQueryMetadata());
     }
 
     @SuppressWarnings("unchecked")
-    public AbstractSQLQuery(@Nullable Connection conn, SQLTemplates templates,
-            QueryMetadata metadata) {
+    public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration, QueryMetadata metadata) {
         super(new QueryMixin<Q>(metadata));
         this.queryMixin.setSelf((Q) this);
         this.conn = conn;
-        this.templates = templates;
+        this.configuration = configuration;
     }
     
     @SuppressWarnings("unchecked")
@@ -159,7 +155,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     }
 
     protected SQLSerializer createSerializer() {
-        return new SQLSerializer(templates);
+        return new SQLSerializer(configuration.getTemplates());
     }
 
     public Q from(Expr<?>... args) {
@@ -267,16 +263,16 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         }
     }
 
-    protected SQLTemplates getTemplates() {
-        return templates;
-    }
-
     private <RT> UnionBuilder<RT> innerUnion(SubQuery<?>... sq) {
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("Don't mix union and from");
         }
         this.union = sq;
         return new UnionBuilder<RT>();
+    }
+
+    protected Configuration getConfiguration() {
+        return configuration;
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.sql.AbstractSQLQuery;
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.OracleTemplates;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expr;
@@ -35,15 +36,15 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
     private static final String START_WITH = "\nstart with ";
 
     public OracleQuery(Connection conn) {
-        super(conn, new OracleTemplates(), new DefaultQueryMetadata());
+        this(conn, new OracleTemplates(), new DefaultQueryMetadata());
     }
     
     public OracleQuery(Connection conn, SQLTemplates templates) {
-        super(conn, templates, new DefaultQueryMetadata());
+        this(conn, templates, new DefaultQueryMetadata());
     }
 
     protected OracleQuery(Connection conn, SQLTemplates templates, QueryMetadata metadata) {
-        super(conn, templates, metadata);
+        super(conn, new Configuration(templates), metadata);
     }
 
     public OracleQuery connectByPrior(EBoolean cond) {

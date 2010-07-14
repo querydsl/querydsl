@@ -24,29 +24,45 @@ import com.mysema.query.types.ParamNotSetException;
  */
 public class Configuration {
     
-    private Map<Class<?>,Type<?>> types = new HashMap<Class<?>,Type<?>>();
+    private static final Map<Class<?>,Type<?>> defaultTypes = new HashMap<Class<?>,Type<?>>();
+    
+    private static void registerDefault(Type<?> type) {
+        defaultTypes.put(type.getReturnedClass(), type);
+    }
 
-    public Configuration() {
-        register(new BigDecimalType());
-        register(new BlobType());
-        register(new BooleanType());
-        register(new BytesType());
-        register(new ByteType());
-        register(new CharacterType());
-        register(new ClobType());
-        register(new DateType());
-        register(new DoubleType());
-        register(new FloatType());
-        register(new IntegerType());
-        register(new LongType());
-        register(new ObjectType());
-        register(new ShortType());
-        register(new StringType());
-        register(new TimestampType());
-        register(new TimeType());
-        register(new URLType());
-        register(new UtilDateType());
-        
+    static{
+        registerDefault(new BigDecimalType());
+        registerDefault(new BlobType());
+        registerDefault(new BooleanType());
+        registerDefault(new BytesType());
+        registerDefault(new ByteType());
+        registerDefault(new CharacterType());
+        registerDefault(new ClobType());
+        registerDefault(new DateType());
+        registerDefault(new DoubleType());
+        registerDefault(new FloatType());
+        registerDefault(new IntegerType());
+        registerDefault(new LongType());
+        registerDefault(new ObjectType());
+        registerDefault(new ShortType());
+        registerDefault(new StringType());
+        registerDefault(new TimestampType());
+        registerDefault(new TimeType());
+        registerDefault(new URLType());
+        registerDefault(new UtilDateType());
+    }
+    
+    private final Map<Class<?>,Type<?>> types = new HashMap<Class<?>,Type<?>>();
+    
+    private final SQLTemplates templates;
+
+    public Configuration(SQLTemplates templates) {        
+          
+        this.templates = templates;
+    }
+    
+    public SQLTemplates getTemplates() {
+        return templates;
     }
 
     public void register(Type<?> type) {
@@ -56,7 +72,9 @@ public class Configuration {
     @SuppressWarnings("unchecked")
     private <T> Type<T> getType(Class<T> clazz){
         if (types.containsKey(clazz)){
-            return (Type<T>) types.get(clazz);    
+            return (Type<T>) types.get(clazz);
+        }else if (defaultTypes.containsKey(clazz)){
+            return (Type<T>) defaultTypes.get(clazz);
         }else{
             throw new IllegalArgumentException("Got not type for " + clazz.getName());
         }        
@@ -76,7 +94,7 @@ public class Configuration {
         
     }
     
-    public void setParameters(PreparedStatement stmt, Collection<Object> objects, Map<Param<?>, Object> params){
+    public void setParameters(PreparedStatement stmt, Collection<?> objects, Map<Param<?>, ?> params){
         int counter = 1;
         for (Object o : objects) {
             try {

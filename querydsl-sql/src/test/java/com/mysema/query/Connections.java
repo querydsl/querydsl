@@ -16,6 +16,9 @@ import java.sql.Time;
 import org.hsqldb.Types;
 
 import com.mysema.query.sql.DerbyTemplates;
+import com.mysema.query.sql.H2Templates;
+import com.mysema.query.sql.HSQLDBTemplates;
+import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.OracleTemplates;
 import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.query.sql.SQLServerTemplates;
@@ -27,7 +30,6 @@ import com.mysema.query.sql.ddl.DropTableClause;
  * @author tiwe
  *
  */
-// TODO : concert to use more CreateTableClause
 public final class Connections {
 
     public static final int TEST_ROW_COUNT = 100;
@@ -154,6 +156,20 @@ public final class Connections {
         // employee
         dropTable(templates, "EMPLOYEE2");
         
+        createEmployeeTable(templates);
+        
+        addEmployees(INSERT_INTO_EMPLOYEE);
+
+        // date_test and time_test
+        dropTable(templates, "TIME_TEST");
+        stmt.execute(CREATE_TABLE_TIMETEST);
+
+        dropTable(templates, "DATE_TEST");
+        stmt.execute(CREATE_TABLE_DATETEST);
+        derbyInited = true;
+    }
+
+    private static void createEmployeeTable(SQLTemplates templates) {
         createTable(templates, "EMPLOYEE2")
         .column("ID", Integer.class)
         .column("FIRSTNAME", String.class).size(50)
@@ -165,16 +181,6 @@ public final class Connections {
         .primaryKey("PK_EMPLOYEE", "ID")
         .foreignKey("FK_SUPERIOR","SUPERIOR_ID").references("EMPLOYEE2","ID")
         .execute();
-        
-        addEmployees(INSERT_INTO_EMPLOYEE);
-
-        // date_test and time_test
-        dropTable(templates, "TIME_TEST");
-        stmt.execute(CREATE_TABLE_TIMETEST);
-
-        dropTable(templates, "DATE_TEST");
-        stmt.execute(CREATE_TABLE_DATETEST);
-        derbyInited = true;
     }
 
     public static void initSQLServer() throws SQLException, ClassNotFoundException{
@@ -209,17 +215,7 @@ public final class Connections {
 
         // employee
         dropTable(templates, "EMPLOYEE2");
-        stmt.execute("create table EMPLOYEE2("
-                + "ID int, "
-                + "FIRSTNAME VARCHAR(50), "
-                + "LASTNAME VARCHAR(50), "
-                + "SALARY decimal(10, 2), "
-                + "DATEFIELD date, "
-                + "TIMEFIELD datetime, "
-                + "SUPERIOR_ID int, "
-                + "CONSTRAINT PK_employee PRIMARY KEY (ID), "
-                + "CONSTRAINT FK_superior FOREIGN KEY (SUPERIOR_ID) "
-                + "REFERENCES EMPLOYEE2(ID))");
+        createEmployeeTable(templates);
         addEmployees(INSERT_INTO_EMPLOYEE);
 
         // date_test and time_test
@@ -231,6 +227,7 @@ public final class Connections {
     }
 
     public static void initH2() throws SQLException, ClassNotFoundException{
+        SQLTemplates templates = new H2Templates();
         Connection c = getH2();
         connHolder.set(c);
         Statement stmt = c.createStatement();
@@ -261,17 +258,7 @@ public final class Connections {
 
         // employee
         stmt.execute("drop table EMPLOYEE2 if exists");
-        stmt.execute("create table EMPLOYEE2("
-                + "ID int, "
-                + "FIRSTNAME VARCHAR(50), "
-                + "LASTNAME VARCHAR(50), "
-                + "SALARY decimal(10, 2), "
-                + "DATEFIELD date, "
-                + "TIMEFIELD time, "
-                + "SUPERIOR_ID int, "
-                + "CONSTRAINT PK_employee PRIMARY KEY (ID), "
-                + "CONSTRAINT FK_superior FOREIGN KEY (SUPERIOR_ID) "
-                + "REFERENCES EMPLOYEE2(ID))");
+        createEmployeeTable(templates);
         addEmployees(INSERT_INTO_EMPLOYEE);
 
         // date_test and time_test
@@ -283,6 +270,7 @@ public final class Connections {
     }
 
     public static void initHSQL() throws SQLException, ClassNotFoundException{
+        SQLTemplates templates = new HSQLDBTemplates();
         Connection c = getHSQL();
         connHolder.set(c);
         Statement stmt = c.createStatement();
@@ -313,17 +301,7 @@ public final class Connections {
 
         // employee
         stmt.execute("drop table EMPLOYEE2 if exists");
-        stmt.execute("create table EMPLOYEE2("
-                + "ID int, "
-                + "FIRSTNAME VARCHAR(50), "
-                + "LASTNAME VARCHAR(50), "
-                + "SALARY decimal(10, 2), "
-                + "DATEFIELD date, "
-                + "TIMEFIELD time, "
-                + "SUPERIOR_ID int, "
-                + "CONSTRAINT PK_employee PRIMARY KEY (ID), "
-                + "CONSTRAINT FK_superior FOREIGN KEY (SUPERIOR_ID) "
-                + "REFERENCES EMPLOYEE2(ID))");
+        createEmployeeTable(templates);
         addEmployees(INSERT_INTO_EMPLOYEE);
 
         // date_test and time_test
@@ -335,6 +313,7 @@ public final class Connections {
     }
 
     public static void initMySQL() throws SQLException, ClassNotFoundException{
+        SQLTemplates templates = new MySQLTemplates();
         Connection c = getMySQL();
         connHolder.set(c);
         Statement stmt = c.createStatement();
@@ -365,17 +344,7 @@ public final class Connections {
 
         // employee
         stmt.execute("drop table if exists EMPLOYEE2");
-        stmt.execute("create table EMPLOYEE2("
-                + "ID int, "
-                + "FIRSTNAME VARCHAR(50), "
-                + "LASTNAME VARCHAR(50), "
-                + "SALARY decimal(10, 2), "
-                + "DATEFIELD date, "
-                + "TIMEFIELD time, "
-                + "SUPERIOR_ID int, "
-                + "CONSTRAINT PK_employee PRIMARY KEY (ID), "
-                + "CONSTRAINT FK_superior FOREIGN KEY (SUPERIOR_ID) "
-                + "REFERENCES EMPLOYEE2(ID))");
+        createEmployeeTable(templates);
         addEmployees(INSERT_INTO_EMPLOYEE);
 
         // date_test and time_test
@@ -415,17 +384,7 @@ public final class Connections {
 
         // employee
         dropTable(templates, "EMPLOYEE2");
-        stmt.execute("create table EMPLOYEE2("
-                + "ID number(10,0), "
-                + "FIRSTNAME VARCHAR(50), "
-                + "LASTNAME VARCHAR(50), "
-                + "SALARY decimal(10, 2), "
-                + "DATEFIELD date, "
-                + "TIMEFIELD timestamp, "
-                + "SUPERIOR_ID number(10,0), "
-                + "CONSTRAINT PK_employee PRIMARY KEY (ID), "
-                + "CONSTRAINT FK_superior FOREIGN KEY (SUPERIOR_ID) "
-                + "REFERENCES EMPLOYEE2(ID))");
+        createEmployeeTable(templates);
         addEmployees(INSERT_INTO_EMPLOYEE);
 
         // date_test and time_test
@@ -435,7 +394,7 @@ public final class Connections {
     }
 
     public static void initPostgres() throws SQLException, ClassNotFoundException{
-        SQLTemplates templates = new PostgresTemplates();
+        SQLTemplates templates = new PostgresTemplates(true);
         // NOTE : unquoted identifiers are converted to lower case in Postgres
         Connection c = getPostgres();
         connHolder.set(c);
@@ -469,17 +428,7 @@ public final class Connections {
         // employee
         // stmt.execute("drop table employee if exists");
         dropTable(templates, "\"EMPLOYEE2\"");
-        stmt.execute("create table \"EMPLOYEE2\"("
-                + "\"ID\" int, "
-                + "\"FIRSTNAME\" VARCHAR(50), "
-                + "\"LASTNAME\" VARCHAR(50), "
-                + "\"SALARY\" decimal(10, 2), "
-                + "\"DATEFIELD\" date, "
-                + "\"TIMEFIELD\" time, "
-                + "\"SUPERIOR_ID\" int, "
-                + "CONSTRAINT PK_employee PRIMARY KEY (\"ID\"), "
-                + "CONSTRAINT FK_superior FOREIGN KEY (\"SUPERIOR_ID\") "
-                + "REFERENCES \"EMPLOYEE2\"(\"ID\"))");
+        createEmployeeTable(templates);
         addEmployees("insert into \"EMPLOYEE2\" " +
             "(\"ID\", \"FIRSTNAME\", \"LASTNAME\", \"SALARY\", \"DATEFIELD\", \"TIMEFIELD\", \"SUPERIOR_ID\") " +
             "values (?,?,?,?,?,?,?)");

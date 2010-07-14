@@ -41,24 +41,26 @@ public class SQLUpdateClause implements UpdateClause<SQLUpdateClause> {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
 
-    // TODO : make this injectable via a constructor
-    private static final Configuration configuration = new Configuration();
-
     private final Connection connection;
 
     private final PEntity<?> entity;
 
-    private final SQLTemplates templates;
+    private final Configuration configuration;
 
     private final List<Pair<Path<?>,?>> updates = new ArrayList<Pair<Path<?>,?>>();
 
     private final BooleanBuilder where = new BooleanBuilder();
 
     public SQLUpdateClause(Connection connection, SQLTemplates templates, PEntity<?> entity) {
+        this(connection, new Configuration(templates), entity);
+    }
+    
+    public SQLUpdateClause(Connection connection, Configuration configuration, PEntity<?> entity) {
         this.connection = connection;
-        this.templates = templates;
+        this.configuration = configuration;
         this.entity = entity;
     }
+
 
     protected void close(PreparedStatement stmt) {
         try {
@@ -70,7 +72,7 @@ public class SQLUpdateClause implements UpdateClause<SQLUpdateClause> {
 
     @Override
     public long execute() {
-        SQLSerializer serializer = new SQLSerializer(templates, true);
+        SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
         serializer.serializeForUpdate(entity, updates, where.getValue());
         String queryString = serializer.toString();
         logger.debug(queryString);
@@ -122,7 +124,7 @@ public class SQLUpdateClause implements UpdateClause<SQLUpdateClause> {
 
     @Override
     public String toString(){
-        SQLSerializer serializer = new SQLSerializer(templates, true);
+        SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
         serializer.serializeForUpdate(entity, updates, where.getValue());
         return serializer.toString();
     }

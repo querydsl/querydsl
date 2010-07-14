@@ -26,7 +26,7 @@ public class SQLQueryImpl extends AbstractSQLQuery<SQLQueryImpl> implements SQLQ
      * @param templates SQLTemplates to use
      */
     public SQLQueryImpl(SQLTemplates templates) {
-        super(null, templates, new DefaultQueryMetadata());
+        super(null, new Configuration(templates), new DefaultQueryMetadata());
     }
 
     /**
@@ -36,7 +36,17 @@ public class SQLQueryImpl extends AbstractSQLQuery<SQLQueryImpl> implements SQLQ
      * @param templates SQLTemplates to use
      */
     public SQLQueryImpl(Connection conn, SQLTemplates templates) {
-        super(conn, templates, new DefaultQueryMetadata());
+        super(conn, new Configuration(templates), new DefaultQueryMetadata());
+    }
+    
+    /**
+     * Create a new SQLQueryImpl instance
+     *
+     * @param conn Connection to use
+     * @param configuration
+     */
+    public SQLQueryImpl(Connection conn, Configuration configuration) {
+        super(conn, configuration, new DefaultQueryMetadata());
     }
 
     /**
@@ -46,8 +56,8 @@ public class SQLQueryImpl extends AbstractSQLQuery<SQLQueryImpl> implements SQLQ
      * @param templates
      * @param metadata
      */
-    protected SQLQueryImpl(Connection conn, SQLTemplates templates, QueryMetadata metadata) {
-        super(conn, templates, metadata);
+    protected SQLQueryImpl(Connection conn, Configuration configuration, QueryMetadata metadata) {
+        super(conn, configuration, metadata);
     }
 
     /**
@@ -57,7 +67,7 @@ public class SQLQueryImpl extends AbstractSQLQuery<SQLQueryImpl> implements SQLQ
      * @return
      */
     public SQLQueryImpl clone(Connection conn){
-        return new SQLQueryImpl(conn, getTemplates(), getMetadata().clone());
+        return new SQLQueryImpl(conn, getConfiguration(), getMetadata().clone());
     }
 
 }

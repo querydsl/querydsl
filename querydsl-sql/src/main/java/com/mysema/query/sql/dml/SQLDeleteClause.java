@@ -36,21 +36,21 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause> {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLDeleteClause.class);
 
-    // TODO : make this injectable via a constructor
-    private static final Configuration configuration = new Configuration();
-
     private final Connection connection;
 
     private final PEntity<?> entity;
 
     private final BooleanBuilder where = new BooleanBuilder();
 
-    private final SQLTemplates templates;
+    private final Configuration configuration;
 
-    public SQLDeleteClause(Connection connection, SQLTemplates templates,
-            PEntity<?> entity) {
+    public SQLDeleteClause(Connection connection, SQLTemplates templates, PEntity<?> entity) {
+        this(connection, new Configuration(templates), entity);
+    }
+    
+    public SQLDeleteClause(Connection connection, Configuration configuration, PEntity<?> entity) {
         this.connection = connection;
-        this.templates = templates;
+        this.configuration = configuration;
         this.entity = entity;
     }
 
@@ -64,7 +64,7 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause> {
 
     @Override
     public long execute() {
-        SQLSerializer serializer = new SQLSerializer(templates, true);
+        SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
         serializer.serializeForDelete(entity, where.getValue());
         String queryString = serializer.toString();
         logger.debug(queryString);
@@ -93,7 +93,7 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause> {
     
     @Override
     public String toString(){
-        SQLSerializer serializer = new SQLSerializer(templates, true);
+        SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
         serializer.serializeForDelete(entity, where.getValue());
         return serializer.toString();
     }

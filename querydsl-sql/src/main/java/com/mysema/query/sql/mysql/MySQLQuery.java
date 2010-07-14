@@ -10,9 +10,11 @@ import java.sql.Connection;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.sql.AbstractSQLQuery;
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.SQLTemplates;
 
@@ -23,15 +25,15 @@ import com.mysema.query.sql.SQLTemplates;
 public class MySQLQuery extends AbstractSQLQuery<MySQLQuery>{
     
     public MySQLQuery(Connection conn) {
-        super(conn, new MySQLTemplates());
+        this(conn, new MySQLTemplates(), new DefaultQueryMetadata());
     }
     
     public MySQLQuery(Connection conn, SQLTemplates templates) {
-        super(conn, templates);
+        this(conn, templates, new DefaultQueryMetadata());
     }
     
     protected MySQLQuery(Connection conn, SQLTemplates templates, QueryMetadata metadata) {
-        super(conn, templates, metadata);
+        super(conn, new Configuration(templates), metadata);
     }
     
     public MySQLQuery bigResult(){
