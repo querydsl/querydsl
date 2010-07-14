@@ -79,7 +79,8 @@ public class MatchingFilters {
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDOQL)){
             rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
-            if (!target.equals(Target.SQLSERVER)){
+            
+            if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL)){
                 rv.add(expr.week().eq(other.week()));
             }
         }
@@ -109,7 +110,8 @@ public class MatchingFilters {
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDOQL)){
             rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
-            if (!target.equals(Target.SQLSERVER)){
+            
+            if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL)){
                 rv.add(expr.week().eq(other.week()));
             }
         }
