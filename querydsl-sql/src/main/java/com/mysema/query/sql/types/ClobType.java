@@ -9,8 +9,7 @@ import java.sql.Clob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import org.hsqldb.Types;
+import java.sql.Types;
 
 /**
  * @author tiwe
