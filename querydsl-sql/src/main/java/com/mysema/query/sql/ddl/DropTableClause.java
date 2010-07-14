@@ -15,6 +15,8 @@ import com.mysema.query.sql.SQLTemplates;
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 /**
+ * DropTableClause defines a DROP TABLE clause
+ * 
  * @author tiwe
  *
  */
@@ -36,7 +38,7 @@ public class DropTableClause {
             stmt = connection.createStatement();
             stmt.execute("DROP TABLE " + table);
         } catch (SQLException e) {
-            // do not throw
+            // do not rethrow
         }finally{
             if (stmt != null){
                 try {
