@@ -6,7 +6,6 @@
 package com.mysema.query.sql.types;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
@@ -14,12 +13,7 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class LongType implements Type<Long>{
-
-    @Override
-    public Long getValue(ResultSet rs, int startIndex) throws SQLException {
-        return rs.getLong(startIndex);
-    }
+public class LongType extends AbstractNumberType<Long>{
 
     @Override
     public Class<Long> getReturnedClass() {

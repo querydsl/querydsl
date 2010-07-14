@@ -6,7 +6,6 @@
 package com.mysema.query.sql.types;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
@@ -14,12 +13,7 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class DoubleType implements Type<Double>{
-
-    @Override
-    public Double getValue(ResultSet rs, int startIndex) throws SQLException {
-        return rs.getDouble(startIndex);
-    }
+public class DoubleType extends AbstractNumberType<Double>{
 
     @Override
     public Class<Double> getReturnedClass() {

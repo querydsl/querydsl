@@ -18,7 +18,8 @@ public class BooleanType implements Type<Boolean>{
 
     @Override
     public Boolean getValue(ResultSet rs, int startIndex) throws SQLException {
-        return rs.getBoolean(startIndex);
+        Object value = rs.getObject(startIndex);
+        return value instanceof Boolean ? (Boolean)value : null;
     }
 
     @Override

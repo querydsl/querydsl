@@ -6,7 +6,6 @@
 package com.mysema.query.sql.types;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
@@ -14,12 +13,7 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class ShortType implements Type<Short>{
-
-    @Override
-    public Short getValue(ResultSet rs, int startIndex) throws SQLException {
-        return rs.getShort(startIndex);
-    }
+public class ShortType extends AbstractNumberType<Short>{
 
     @Override
     public Class<Short> getReturnedClass() {

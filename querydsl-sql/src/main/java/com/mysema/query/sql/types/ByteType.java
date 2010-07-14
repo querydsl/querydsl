@@ -6,7 +6,6 @@
 package com.mysema.query.sql.types;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
@@ -14,12 +13,7 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class ByteType implements Type<Byte>{
-
-    @Override
-    public Byte getValue(ResultSet rs, int startIndex) throws SQLException {
-        return rs.getByte(startIndex);
-    }
+public class ByteType extends AbstractNumberType<Byte>{
 
     @Override
     public Class<Byte> getReturnedClass() {

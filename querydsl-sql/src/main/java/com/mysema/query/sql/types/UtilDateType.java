@@ -19,7 +19,7 @@ public class UtilDateType implements Type<Date>{
     
     @Override
     public Date getValue(ResultSet rs, int startIndex) throws SQLException {
-        return rs.getDate(startIndex);
+        return rs.getTimestamp(startIndex);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class UtilDateType implements Type<Date>{
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, Date value) throws SQLException {
-        st.setDate(startIndex, new java.sql.Date(value.getTime()));
+        st.setTimestamp(startIndex, new java.sql.Timestamp(value.getTime()));
     }
 
     @Override

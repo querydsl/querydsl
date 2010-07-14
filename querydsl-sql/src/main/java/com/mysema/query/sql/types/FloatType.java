@@ -6,7 +6,6 @@
 package com.mysema.query.sql.types;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
@@ -14,12 +13,7 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class FloatType implements Type<Float>{
-
-    @Override
-    public Float getValue(ResultSet rs, int startIndex) throws SQLException {
-        return rs.getFloat(startIndex);
-    }
+public class FloatType extends AbstractNumberType<Float>{
 
     @Override
     public Class<Float> getReturnedClass() {
