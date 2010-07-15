@@ -72,7 +72,7 @@ public interface CodeWriter extends Appendable{
     CodeWriter privateStaticFinal(String type, String name, String value) throws IOException;
 
     CodeWriter protectedField(String type, String name) throws IOException;
-
+    
     CodeWriter protectedFinal(String type, String name) throws IOException;
 
     CodeWriter protectedFinal(String type, String name, String value) throws IOException;

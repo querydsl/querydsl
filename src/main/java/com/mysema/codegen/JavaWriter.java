@@ -50,6 +50,8 @@ public final class JavaWriter implements Appendable, CodeWriter{
     private static final String PRIVATE_STATIC_FINAL = "private static final ";
 
     private static final String PROTECTED = "protected ";
+    
+    private static final String PROTECTED_FINAL = "protected final ";
 
     private static final String PUBLIC = "public ";
 
@@ -393,12 +395,12 @@ public final class JavaWriter implements Appendable, CodeWriter{
     
     @Override
     public JavaWriter protectedFinal(String type, String name) throws IOException {
-        return field(PROTECTED, type, name);        
+        return field(PROTECTED_FINAL, type, name);        
     }
 
     @Override
     public JavaWriter protectedFinal(String type, String name, String value) throws IOException {
-        return field(PROTECTED, type, name, value);
+        return field(PROTECTED_FINAL, type, name, value);
     }
 
     @Override
