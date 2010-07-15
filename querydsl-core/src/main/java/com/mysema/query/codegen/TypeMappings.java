@@ -66,6 +66,7 @@ public class TypeMappings {
         register(TypeCategory.MAP, Expr.class, PSimple.class, CSimple.class);
         register(TypeCategory.SIMPLE, Expr.class, PSimple.class, CSimple.class);
 
+        register(TypeCategory.CUSTOM, Expr.class, Path.class, CSimple.class);
         register(TypeCategory.ENTITY, Expr.class, Path.class, CSimple.class);
     }
 
@@ -102,7 +103,7 @@ public class TypeMappings {
         String localName = null;
         TypeCategory category = type.getCategory();
 
-        if (raw && category != TypeCategory.ENTITY){
+        if (raw && category != TypeCategory.ENTITY && category != TypeCategory.CUSTOM){
             return typeName;
         }
 
@@ -118,7 +119,7 @@ public class TypeMappings {
         if (category == TypeCategory.STRING || category == TypeCategory.BOOLEAN){
             return typeName;
 
-        }else if (category == TypeCategory.ENTITY){
+        }else if (category == TypeCategory.ENTITY || category == TypeCategory.CUSTOM){
             String suffix;
             if (!type.getPackageName().isEmpty()){
                 suffix = type.getFullName().substring(type.getPackageName().length()+1).replace('.', '_');

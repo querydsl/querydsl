@@ -1,6 +1,6 @@
 package com.mysema.query.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.sql.Date;
 
@@ -9,6 +9,7 @@ import org.junit.Test;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryEntity;
+import com.mysema.query.annotations.QuerydslConfig;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PBoolean;
 import com.mysema.query.types.path.PDate;
@@ -48,7 +49,10 @@ public class QueryExtensions8Test {
     
 
     @QueryEntity
+    @QuerydslConfig(entityAccessors=true)
     public static class Entity {
+        
+        Entity superior;
         
         Date dateVal;
         

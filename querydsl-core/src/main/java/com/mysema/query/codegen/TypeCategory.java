@@ -70,6 +70,11 @@ public enum TypeCategory {
         "org.joda.time.DateTime",
         "org.joda.time.DateMidnight"),
     /**
+     * 
+     */
+    CUSTOM(null),    
+        
+    /**
      *
      */
     ENTITY(null),

@@ -104,8 +104,12 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         return annotations;
     }
 
-    public TypeCategory getCategory() {
-        return TypeCategory.ENTITY;
+    public TypeCategory getCategory() {       
+        if (getType().getCategory() == TypeCategory.ENTITY || !properties.isEmpty()){
+            return TypeCategory.ENTITY;    
+        }else{
+            return TypeCategory.CUSTOM;
+        }        
     }
 
     public Set<Constructor> getConstructors() {

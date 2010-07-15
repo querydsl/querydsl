@@ -579,7 +579,19 @@ public class EntitySerializer implements Serializer{
             writer.publicFinal(type, field.getEscapedName());
         }
     }
-
+    
+    private void customField(EntityType model, Property field, SerializerConfig config, CodeWriter writer) throws IOException {
+        String queryType = typeMappings.getPathType(field.getType(), model, false);
+        writer.line("// custom");
+        if (field.isInherited()){
+            writer.line("// inherited");
+            writer.publicFinal(queryType, field.getEscapedName(),"_super." + field.getEscapedName());
+        }else{
+            String value = NEW + queryType + "(forProperty(\"" + field.getName() + "\"))";
+            writer.publicFinal(queryType, field.getEscapedName(), value);
+        }
+    }
+    
     protected void serializeProperties(EntityType model,  SerializerConfig config, CodeWriter writer) throws IOException {
         for (Property property : model.getProperties()){
             String queryType = typeMappings.getPathType(property.getType(), model, false);
@@ -610,6 +622,9 @@ public class EntitySerializer implements Serializer{
                 break;
             case NUMERIC:
                 serialize(model, property, queryType, writer, "createNumber", localRawName +DOT_CLASS);
+                break;
+            case CUSTOM:                
+                customField(model, property, config, writer);
                 break;
             case ARRAY:
                 localGenericName = property.getParameter(0).getLocalGenericName(model, true);
@@ -646,12 +661,14 @@ public class EntitySerializer implements Serializer{
                 queryType = typeMappings.getPathType(property.getParameter(0), model, true);
 
                 serialize(model, property, "PList<" + localGenericName+ COMMA + genericQueryType +  ">", writer, "createList", localRawName+DOT_CLASS, queryType +DOT_CLASS);
-                break;
+                break;                
             case ENTITY:
                 entityField(model, property, config, writer);
                 break;
             }
         }
     }
+
+
 
 }
