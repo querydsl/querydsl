@@ -11,9 +11,9 @@ import java.util.List;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.ObjectUtils;
-
 import net.jcip.annotations.Immutable;
+
+import org.apache.commons.lang.ObjectUtils;
 
 /**
  * QueryModifiers combines limit and offset info into a single type.

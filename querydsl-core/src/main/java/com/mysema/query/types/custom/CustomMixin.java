@@ -11,7 +11,6 @@ import java.util.List;
 import com.mysema.query.types.Custom;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Template;
-import com.mysema.query.types.expr.ESimple;
 
 /**
  * Mixin implementation of the Custom interface

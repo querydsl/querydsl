@@ -6,12 +6,12 @@
 package com.mysema.query.types;
 
 import static com.mysema.query.types.Converter.toContainsViaLike;
-import static com.mysema.query.types.Converter.toEndsWithViaLike;
-import static com.mysema.query.types.Converter.toStartsWithViaLike;
 import static com.mysema.query.types.Converter.toContainsViaLikeLower;
+import static com.mysema.query.types.Converter.toEndsWithViaLike;
 import static com.mysema.query.types.Converter.toEndsWithViaLikeLower;
-import static com.mysema.query.types.Converter.toStartsWithViaLikeLower;
 import static com.mysema.query.types.Converter.toLowerCase;
+import static com.mysema.query.types.Converter.toStartsWithViaLike;
+import static com.mysema.query.types.Converter.toStartsWithViaLikeLower;
 import static com.mysema.query.types.Converter.toUpperCase;
 
 import java.util.ArrayList;
