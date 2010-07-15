@@ -42,7 +42,17 @@ import com.mysema.query.annotations.QueryExtensions;
 import com.mysema.query.annotations.QueryMethod;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QuerydslVariables;
-import com.mysema.query.codegen.*;
+import com.mysema.query.codegen.Delegate;
+import com.mysema.query.codegen.EntityType;
+import com.mysema.query.codegen.Method;
+import com.mysema.query.codegen.Parameter;
+import com.mysema.query.codegen.Serializer;
+import com.mysema.query.codegen.SerializerConfig;
+import com.mysema.query.codegen.Supertype;
+import com.mysema.query.codegen.Type;
+import com.mysema.query.codegen.TypeCategory;
+import com.mysema.query.codegen.TypeFactory;
+import com.mysema.query.codegen.TypeMappings;
 
 /**
  * Processor handles the actual work in the Querydsl APT module
@@ -144,7 +154,7 @@ public class Processor {
         }
         processDTOs();
 
-        // remove entity types from embeddables
+        // remove entity types from extensionTypes
         for (String key : entityTypes.keySet()){
             extensionTypes.remove(key);
         }
@@ -152,23 +162,23 @@ public class Processor {
         // serialize models
         Messager msg = env.getMessager();
         if (!actualSupertypes.isEmpty()){
-            msg.printMessage(Kind.NOTE, "serializing super types");
+            msg.printMessage(Kind.NOTE, "Serializing Supertypes");
             serialize(configuration.getSupertypeSerializer(), actualSupertypes.values());
         }
         if (!entityTypes.isEmpty()){
-            msg.printMessage(Kind.NOTE, "serializing entity types");
+            msg.printMessage(Kind.NOTE, "Serializing Entity types");
             serialize(configuration.getEntitySerializer(), entityTypes.values());
         }
         if (!extensionTypes.isEmpty()){
-            msg.printMessage(Kind.NOTE, "serializing extension types");
+            msg.printMessage(Kind.NOTE, "Serializing Extension types");
             serialize(configuration.getEmbeddableSerializer(), extensionTypes.values());
         }
         if (!embeddables.isEmpty()){
-            msg.printMessage(Kind.NOTE, "serializing embeddable types");
+            msg.printMessage(Kind.NOTE, "Serializing Embeddable types");
             serialize(configuration.getEmbeddableSerializer(), embeddables.values());
         }
         if (!dtos.isEmpty()){
-            msg.printMessage(Kind.NOTE, "serializing dto types");
+            msg.printMessage(Kind.NOTE, "Serializing DTO types");
             serialize(configuration.getDTOSerializer(), dtos.values());
         }
 
@@ -249,6 +259,7 @@ public class Processor {
     }
 
     private void processDelegateMethods(){
+        Set<EntityType> types = new HashSet<EntityType>();
         for (Element delegateMethod : roundEnv.getElementsAnnotatedWith(QueryDelegate.class)){
             ExecutableElement method = (ExecutableElement)delegateMethod;
             Element element = delegateMethod.getEnclosingElement();
@@ -276,8 +287,14 @@ public class Processor {
 
             if (entityType != null){
                 entityType.addDelegate(new Delegate(entityType, delegateType, name, parameters, returnType));
-            }
-
+                types.add(entityType);
+            }            
+        }
+        
+        for (EntityType type : types){
+            if (type.getOriginalCategory() != TypeCategory.SIMPLE){
+                extensionTypes.put(type.getFullName(), type);
+            }            
         }
     }
 

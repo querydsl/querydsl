@@ -10,7 +10,6 @@ import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerySupertype;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EBooleanConst;
-import com.mysema.query.types.path.PString;
 
 public class DelegateTest {
 

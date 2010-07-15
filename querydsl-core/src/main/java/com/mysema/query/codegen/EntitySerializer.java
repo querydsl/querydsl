@@ -5,7 +5,20 @@
  */
 package com.mysema.query.codegen;
 
-import static com.mysema.codegen.Symbols.*;
+import static com.mysema.codegen.Symbols.ASSIGN;
+import static com.mysema.codegen.Symbols.COMMA;
+import static com.mysema.codegen.Symbols.DOT;
+import static com.mysema.codegen.Symbols.DOT_CLASS;
+import static com.mysema.codegen.Symbols.EMPTY;
+import static com.mysema.codegen.Symbols.NEW;
+import static com.mysema.codegen.Symbols.QUOTE;
+import static com.mysema.codegen.Symbols.RETURN;
+import static com.mysema.codegen.Symbols.SEMICOLON;
+import static com.mysema.codegen.Symbols.SPACE;
+import static com.mysema.codegen.Symbols.STAR;
+import static com.mysema.codegen.Symbols.SUPER;
+import static com.mysema.codegen.Symbols.THIS;
+import static com.mysema.codegen.Symbols.UNCHECKED;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -25,12 +38,14 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.EComparable;
+import com.mysema.query.types.path.PBoolean;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PSimple;
+import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.PathMetadataFactory;
 
@@ -61,13 +76,19 @@ public class EntitySerializer implements Serializer{
         boolean hasEntityFields = model.hasEntityFields();
         String thisOrSuper = hasEntityFields ? THIS : SUPER;
 
+        boolean stringOrBoolean = model.getOriginalCategory() == TypeCategory.STRING || model.getOriginalCategory() == TypeCategory.BOOLEAN;
+        
         // 1
         constructorsForVariables(writer, model);
 
         // 2
         if (!hasEntityFields){
             writer.beginConstructor("PEntity<? extends "+genericName+"> entity");
-            writer.line("super(entity.getType(),entity.getMetadata());");
+            if (stringOrBoolean){
+                writer.line("super(entity.getMetadata());");    
+            }else{
+                writer.line("super(entity.getType(),entity.getMetadata());");
+            }            
             writer.end();
         }
 
@@ -81,7 +102,11 @@ public class EntitySerializer implements Serializer{
                 writer.suppressWarnings(UNCHECKED);
             }
             writer.beginConstructor(PATH_METADATA);
-            writer.line("super(", localName.equals(genericName) ? EMPTY : "(Class)", localName, ".class, metadata);");
+            if (stringOrBoolean){
+                writer.line("super(metadata);");   
+            }else{
+                writer.line("super(", localName.equals(genericName) ? EMPTY : "(Class)", localName, ".class, metadata);");    
+            }            
             writer.end();
         }
 
@@ -215,13 +240,21 @@ public class EntitySerializer implements Serializer{
             case DATETIME: pathType = PDateTime.class; break;
             case TIME: pathType = PTime.class; break;
             case NUMERIC: pathType = PNumber.class; break;
+            case STRING: pathType = PString.class; break;
+            case BOOLEAN: pathType = PBoolean.class; break;
             default : pathType = PEntity.class;
         }
 
         for (Annotation annotation : model.getAnnotations()){
             writer.annotation(annotation);
         }
-        writer.beginClass(queryType, pathType.getSimpleName() + "<" + localName + ">");
+        
+        if (category == TypeCategory.BOOLEAN || category == TypeCategory.STRING){
+            writer.beginClass(queryType, pathType.getSimpleName());
+        }else{
+            writer.beginClass(queryType, pathType.getSimpleName() + "<" + localName + ">");    
+        }
+        
 
         // TODO : generate proper serialVersionUID here
         writer.privateStaticFinal("long", "serialVersionUID", String.valueOf(model.hashCode()));
@@ -352,6 +385,9 @@ public class EntitySerializer implements Serializer{
 
     protected void introSuper(CodeWriter writer, EntityType model) throws IOException {
         EntityType superType = model.getSuperType().getEntityType();
+        if (superType == null){
+            throw new IllegalStateException("Supertype is null for " + model);
+        }
         String superQueryType = typeMappings.getPathType(superType, model, false);
 
         if (!superType.hasEntityFields()){
@@ -406,7 +442,7 @@ public class EntitySerializer implements Serializer{
         // body start
         writer.beginLine(RETURN + custType + ".create(");
         String fullName = method.getReturnType().getFullName();
-        if (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName())){
+        if (custType.equals("CSimple") || (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName()))){
             method.getReturnType().appendLocalRawName(model, writer);
             writer.append(".class, ");
         }
