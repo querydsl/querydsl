@@ -37,15 +37,13 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
  *
  */
 @SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
-public class SQLUpdateClause implements UpdateClause<SQLUpdateClause> {
+public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<SQLUpdateClause> {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
 
     private final Connection connection;
 
     private final PEntity<?> entity;
-
-    private final Configuration configuration;
 
     private final List<Pair<Path<?>,?>> updates = new ArrayList<Pair<Path<?>,?>>();
 
@@ -56,8 +54,8 @@ public class SQLUpdateClause implements UpdateClause<SQLUpdateClause> {
     }
     
     public SQLUpdateClause(Connection connection, Configuration configuration, PEntity<?> entity) {
+        super(configuration);
         this.connection = connection;
-        this.configuration = configuration;
         this.entity = entity;
     }
 
@@ -80,7 +78,7 @@ public class SQLUpdateClause implements UpdateClause<SQLUpdateClause> {
         PreparedStatement stmt = null;
         try {
             stmt = connection.prepareStatement(queryString);
-            configuration.setParameters(stmt, serializer.getConstants(), Collections.<Param<?>,Object>emptyMap());
+            setParameters(stmt, serializer.getConstants(), Collections.<Param<?>,Object>emptyMap());
             return stmt.executeUpdate();
         } catch (SQLException e) {
             throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);

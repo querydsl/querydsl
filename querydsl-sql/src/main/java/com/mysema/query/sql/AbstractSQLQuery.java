@@ -11,7 +11,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -34,6 +36,8 @@ import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Param;
+import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.custom.CSimple;
@@ -242,7 +246,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
-            configuration.setParameters(stmt, constants, getMetadata().getParams());
+            setParameters(stmt, constants, getMetadata().getParams());
             ResultSet rs = stmt.executeQuery();
 
             return new ResultSetAdapter(rs) {
@@ -293,7 +297,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         try {
             PreparedStatement stmt = conn.prepareStatement(queryString);
             final List<? extends Expr<?>> projection = getMetadata().getProjection();
-            configuration.setParameters(stmt, constants, getMetadata().getParams());
+            setParameters(stmt, constants, getMetadata().getParams());
             ResultSet rs = stmt.executeQuery();
 
             return new SQLResultIterator<Object[]>(stmt, rs) {
@@ -351,7 +355,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         logger.debug("query : {}", queryString);
         try {
             PreparedStatement stmt = conn.prepareStatement(queryString);
-            configuration.setParameters(stmt, constants, getMetadata().getParams());
+            setParameters(stmt, constants, getMetadata().getParams());
             ResultSet rs = stmt.executeQuery();
 
             return new SQLResultIterator<RT>(stmt, rs) {
@@ -441,6 +445,23 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         queryMixin.getMetadata().reset();
         constants = null;
     }
+    
+    protected void setParameters(PreparedStatement stmt, Collection<?> objects, Map<Param<?>, ?> params){
+        int counter = 1;
+        for (Object o : objects) {
+            try {
+                if (Param.class.isInstance(o)){
+                    if (!params.containsKey(o)){
+                        throw new ParamNotSetException((Param<?>) o);
+                    }
+                    o = params.get(o);
+                }
+                counter += configuration.set(stmt, counter, o);
+            } catch (SQLException e) {
+                throw new IllegalArgumentException(e);
+            }
+        }
+    }
 
     @Override
     public String toString() {
@@ -468,7 +489,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         ResultSet rs = null;
         try {
             stmt = conn.prepareStatement(queryString);
-            configuration.setParameters(stmt, constants, getMetadata().getParams());
+            setParameters(stmt, constants, getMetadata().getParams());
             rs = stmt.executeQuery();
             rs.next();
             return rs.getLong(1);

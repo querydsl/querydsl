@@ -42,7 +42,7 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
  *
  */
 @SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
-public class SQLInsertClause implements InsertClause<SQLInsertClause> {
+public class SQLInsertClause extends AbstractSQLClause implements InsertClause<SQLInsertClause> {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
 
@@ -55,8 +55,6 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
     @Nullable
     private SubQuery<?> subQuery;
 
-    private final Configuration configuration;
-
     private final List<Expr<?>> values = new ArrayList<Expr<?>>();
 
     public SQLInsertClause(Connection connection, SQLTemplates templates, PEntity<?> entity) {
@@ -64,8 +62,8 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
     }
     
     public SQLInsertClause(Connection connection, Configuration configuration, PEntity<?> entity) {
+        super(configuration);
         this.connection = connection;
-        this.configuration = configuration;
         this.entity = entity;
     }
 
@@ -132,7 +130,7 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
 
         try {
             final PreparedStatement stmt = connection.prepareStatement(queryString);
-            configuration.setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
+            setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
 
@@ -161,7 +159,7 @@ public class SQLInsertClause implements InsertClause<SQLInsertClause> {
         PreparedStatement stmt = null;
         try {
             stmt = connection.prepareStatement(queryString);
-            configuration.setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
+            setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
             return stmt.executeUpdate();
         } catch (SQLException e) {
             throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);

@@ -32,7 +32,7 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
  *
  */
 @SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
-public class SQLDeleteClause implements DeleteClause<SQLDeleteClause> {
+public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<SQLDeleteClause> {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLDeleteClause.class);
 
@@ -42,15 +42,13 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause> {
 
     private final BooleanBuilder where = new BooleanBuilder();
 
-    private final Configuration configuration;
-
     public SQLDeleteClause(Connection connection, SQLTemplates templates, PEntity<?> entity) {
         this(connection, new Configuration(templates), entity);
     }
     
     public SQLDeleteClause(Connection connection, Configuration configuration, PEntity<?> entity) {
+        super(configuration);
         this.connection = connection;
-        this.configuration = configuration;
         this.entity = entity;
     }
 
@@ -72,7 +70,7 @@ public class SQLDeleteClause implements DeleteClause<SQLDeleteClause> {
         PreparedStatement stmt = null;
         try {
             stmt = connection.prepareStatement(queryString);
-            configuration.setParameters(stmt, serializer.getConstants(), Collections.<Param<?>,Object>emptyMap());
+            setParameters(stmt, serializer.getConstants(), Collections.<Param<?>,Object>emptyMap());
             return stmt.executeUpdate();
         } catch (SQLException e) {
             throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);

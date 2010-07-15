@@ -21,6 +21,7 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
         return new OracleTemplates();
     }    
     
+    @SuppressWarnings("unchecked")
     @Test
     public void union(){        
         PSimple<Integer> one = new PSimple<Integer>(Integer.class,"1");

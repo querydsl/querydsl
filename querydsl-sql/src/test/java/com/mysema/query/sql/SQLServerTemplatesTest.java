@@ -27,6 +27,7 @@ public class SQLServerTemplatesTest extends AbstractSQLTemplatesTest{
         return new SQLServerTemplates();
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void union(){        
         PSimple<Integer> one = new PSimple<Integer>(Integer.class,"1");

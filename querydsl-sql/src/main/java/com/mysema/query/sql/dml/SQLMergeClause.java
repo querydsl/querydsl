@@ -39,7 +39,7 @@ import com.mysema.query.types.path.PEntity;
  *
  */
 @edu.umd.cs.findbugs.annotations.SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
-public class SQLMergeClause implements StoreClause<SQLMergeClause>{
+public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQLMergeClause>{
 
     private static final Logger logger = LoggerFactory.getLogger(SQLMergeClause.class);
 
@@ -54,8 +54,6 @@ public class SQLMergeClause implements StoreClause<SQLMergeClause>{
     @Nullable
     private SubQuery<?> subQuery;
 
-    private final Configuration configuration;
-
     private final List<Expr<?>> values = new ArrayList<Expr<?>>();
 
     public SQLMergeClause(Connection connection, SQLTemplates templates, PEntity<?> entity) {
@@ -63,8 +61,8 @@ public class SQLMergeClause implements StoreClause<SQLMergeClause>{
     }
     
     public SQLMergeClause(Connection connection, Configuration configuration, PEntity<?> entity) {
+        super(configuration);
         this.connection = connection;
-        this.configuration = configuration;
         this.entity = entity;
     }
 
@@ -128,7 +126,7 @@ public class SQLMergeClause implements StoreClause<SQLMergeClause>{
         PreparedStatement stmt = null;
         try {
             stmt = connection.prepareStatement(queryString);
-            configuration.setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
+            setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
             return stmt.executeUpdate();
         } catch (SQLException e) {
             throw new QueryException("Caught " + e.getClass().getSimpleName()
