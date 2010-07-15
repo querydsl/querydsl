@@ -385,9 +385,6 @@ public class EntitySerializer implements Serializer{
 
     protected void introSuper(CodeWriter writer, EntityType model) throws IOException {
         EntityType superType = model.getSuperType().getEntityType();
-        if (superType == null){
-            throw new IllegalStateException("Supertype is null for " + model);
-        }
         String superQueryType = typeMappings.getPathType(superType, model, false);
 
         if (!superType.hasEntityFields()){
