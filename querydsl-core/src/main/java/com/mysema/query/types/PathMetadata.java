@@ -39,7 +39,7 @@ public final class PathMetadata<T> implements Serializable{
         this.expression = expression;
         this.pathType = type;
         this.root = parent != null ? parent.getRoot() : null;
-        this.hashCode = new HashCodeBuilder().append(expression).append(parent).append(pathType).hashCode();
+        this.hashCode = new HashCodeBuilder().append(expression).append(parent).append(pathType).toHashCode();
     }
 
     @Override
