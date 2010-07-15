@@ -5,7 +5,7 @@
  */
 
 /**
- * DML operations support for Querydsl SQL
+ * Types for de/serialization to ResultSet and PreparedStatement
  */
 @DefaultAnnotation( { Nonnull.class })
 package com.mysema.query.sql.types;

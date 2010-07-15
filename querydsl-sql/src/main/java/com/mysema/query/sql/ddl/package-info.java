@@ -5,10 +5,10 @@
  */
 
 /**
- * MySQL support
+ * DDL operations support
  */
 @DefaultAnnotation( { Nonnull.class })
-package com.mysema.query.sql.mysql;
+package com.mysema.query.sql.ddl;
 
 import javax.annotation.Nonnull;
 

@@ -5,7 +5,7 @@
  */
 
 /**
- * DML operations support for Querydsl SQL
+ * SQL Server support
  */
 @DefaultAnnotation( { Nonnull.class })
 package com.mysema.query.sql.mssql;
