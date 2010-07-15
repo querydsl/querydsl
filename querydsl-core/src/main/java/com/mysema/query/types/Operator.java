@@ -15,7 +15,7 @@ import java.util.List;
  * @param <RT>
  */
 public interface Operator<RT> {
-
+    
     /**
      * Get the types related to this operator symbols
      *

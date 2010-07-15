@@ -8,8 +8,9 @@ package com.mysema.query.types;
 import static java.util.Collections.unmodifiableList;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
+
+import com.mysema.commons.lang.Assert;
 
 import net.jcip.annotations.Immutable;
 
@@ -19,22 +20,26 @@ import net.jcip.annotations.Immutable;
 @Immutable
 public class OperatorImpl<RT> implements Operator<RT> {
 
+    private final String id;
+    
     private final List<Class<?>> types;
 
-    public OperatorImpl(Class<?> type) {
-        this(Collections.<Class<?>> singletonList(type));
+    public OperatorImpl(String id, Class<?>... types) {
+        this(id, Arrays.<Class<?>> asList(types));
     }
 
-    public OperatorImpl(Class<?>... types) {
-        this(Arrays.<Class<?>> asList(types));
-    }
-
-    public OperatorImpl(List<Class<?>> types) {
+    public OperatorImpl(String id, List<Class<?>> types) {
+        this.id = Assert.notNull(id,"id");
         this.types = unmodifiableList(types);
     }
 
     @Override
     public List<Class<?>> getTypes() {
         return types;
+    }
+    
+    @Override
+    public String toString(){
+        return id;
     }
 }

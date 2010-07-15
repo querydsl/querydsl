@@ -21,9 +21,9 @@ import com.mysema.query.types.Templates;
  */
 public class JPQLTemplates extends Templates {
 
-    public static final Operator<Object> CAST = new OperatorImpl<Object>(Object.class, Object.class);
+    public static final Operator<Object> CAST = new OperatorImpl<Object>("CAST",Object.class, Object.class);
 
-    public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>(Object.class, Object.class);
+    public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>("MEMBER_OF",Object.class, Object.class);
 
     public static final JPQLTemplates DEFAULT = new JPQLTemplates();
 

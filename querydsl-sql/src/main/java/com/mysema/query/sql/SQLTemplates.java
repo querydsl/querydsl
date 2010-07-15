@@ -31,9 +31,9 @@ import com.mysema.query.types.Templates;
  */
 public class SQLTemplates extends Templates {
 
-    public static final Operator<Object> UNION = new OperatorImpl<Object>();
+    public static final Operator<Object> UNION = new OperatorImpl<Object>("UNION");
     
-    public static final Operator<Object> CAST = new OperatorImpl<Object>(Object.class, Object.class);
+    public static final Operator<Object> CAST = new OperatorImpl<Object>("CAST",Object.class, Object.class);
 
     public static final SQLTemplates DEFAULT = new SQLTemplates();
     
