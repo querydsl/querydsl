@@ -144,6 +144,22 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         return super.getCategory();
     }
 
+    @Override
+    public String getPackageName(){
+        String pkg = super.getPackageName();
+        return pkg.equals("java.lang") ? "com.mysema.query.types" : pkg;
+    }
+    
+    @Override
+    public String getFullName(){
+        String name = super.getFullName();
+        if (name.startsWith("java.lang.")){
+            return "com.mysema.query.types." + name.substring(10);
+        }else{
+            return name;
+        }
+    }
+    
     public String getPrefix(){
         return prefix;
     }
@@ -203,5 +219,21 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         }
         return field;
     }
-
+    
+    @Override
+    public boolean equals(Object o){
+        if (o == this){
+            return true;
+        }else if (o instanceof Type){
+            return getFullName().equals(((Type)o).getFullName());    
+        }else{
+            return false;
+        }        
+    }
+    
+    @Override
+    public int hashCode(){
+        return getFullName().hashCode();
+    }
+    
 }
