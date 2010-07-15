@@ -247,7 +247,7 @@ public class SimpleTypesTest extends AbstractTest{
         match(PNumber.class, "ddouble2");
         match(PNumber.class, "ffloat");
         match(PNumber.class, "ffloat2");
-        match(PNumber.class, "iint");
+//        match(PNumber.class, "iint");
         match(PNumber.class, "iint2");
         match(PNumber.class, "llong");
         match(PNumber.class, "llong2");

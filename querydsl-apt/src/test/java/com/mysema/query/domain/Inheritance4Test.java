@@ -26,9 +26,9 @@ public class Inheritance4Test extends AbstractTest{
 
     @QueryEntity
     public class EntityWithNumber extends EntityWithComparable{
-        private Integer field;
+        private Long field;
 
-        public Integer getField() {
+        public Long getField() {
             return field;
         }
 

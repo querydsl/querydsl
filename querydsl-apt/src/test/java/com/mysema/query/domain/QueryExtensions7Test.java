@@ -9,9 +9,10 @@ import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryExtensions;
 import com.mysema.query.annotations.QueryMethod;
-import com.mysema.query.types.QByte;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EBooleanConst;
+
+import ext.java.lang.QByte;
 
 @Ignore
 public class QueryExtensions7Test {

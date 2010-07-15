@@ -147,17 +147,13 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     @Override
     public String getPackageName(){
         String pkg = super.getPackageName();
-        return pkg.equals("java.lang") ? "com.mysema.query.types" : pkg;
+        return pkg.startsWith("java.") ? "ext." + pkg : pkg;
     }
     
     @Override
     public String getFullName(){
         String name = super.getFullName();
-        if (name.startsWith("java.lang.")){
-            return "com.mysema.query.types." + name.substring(10);
-        }else{
-            return name;
-        }
+        return name.startsWith("java.") ? "ext." + name : name;
     }
     
     public String getPrefix(){
