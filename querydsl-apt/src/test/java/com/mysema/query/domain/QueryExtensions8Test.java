@@ -30,12 +30,12 @@ public class QueryExtensions8Test {
     }
     
     @QueryDelegate(Boolean.class)
-    public static EBoolean isFalse(PBoolean expr){
+    public static EBoolean isFalse1(PBoolean expr){
         return expr.isNull().or(expr.eq(false));
     }
     
     @QueryDelegate(Boolean.class)
-    public static EBoolean isTrue(PBoolean expr){
+    public static EBoolean isTrue1(PBoolean expr){
         return expr.isNotNull();
     }
 
@@ -44,8 +44,8 @@ public class QueryExtensions8Test {
     }
     
     @QueryDelegate(Integer.class)
-    public static EBoolean eq(PNumber<Integer> intValue, FileSize size){
-        return intValue.eq(size.bytes);
+    public static EBoolean eq(PNumber<Integer> intVal, FileSize size){
+        return intVal.eq(size.bytes);
     }
     
 
@@ -74,11 +74,11 @@ public class QueryExtensions8Test {
         
         assertEquals(
             "entity.booleanVal is null || entity.booleanVal = false",
-            entity.booleanVal.isFalse().toString());
+            entity.booleanVal.isFalse1().toString());
         
         assertEquals(
                 "entity.booleanVal is not null",
-                entity.booleanVal.isTrue().toString());
+                entity.booleanVal.isTrue1().toString());
         
         assertEquals(
             "entity.intVal = 1000",

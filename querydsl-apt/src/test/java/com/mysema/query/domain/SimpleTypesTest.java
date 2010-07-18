@@ -259,7 +259,7 @@ public class SimpleTypesTest extends AbstractTest{
 
         match(PDateTime.class, "date");
         match(PDateTime.class, "calendar");
-        match(PDateTime.class, "timestamp");
+//        match(PDateTime.class, "timestamp");
 
         match(PTime.class, "time");
 
