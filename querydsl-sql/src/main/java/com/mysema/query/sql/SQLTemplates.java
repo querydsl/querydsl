@@ -31,21 +31,22 @@ import com.mysema.query.types.Templates;
  */
 public class SQLTemplates extends Templates {
 
-    public static final Operator<Object> UNION = new OperatorImpl<Object>("UNION");
-    
     public static final Operator<Object> CAST = new OperatorImpl<Object>("CAST",Object.class, Object.class);
-
-    public static final SQLTemplates DEFAULT = new SQLTemplates();
     
-    private boolean nativeMerge;
+    public static final SQLTemplates DEFAULT = new SQLTemplates();
 
-    private String asc = " asc";
+    public static final Operator<Object> UNION = new OperatorImpl<Object>("UNION");
 
     private final Map<Class<?>, String> class2type = new HashMap<Class<?>, String>();
 
-    private String columnAlias = " ";
+    @Nullable
+    private String quoteStr;
 
-    private String key = "key";
+    private String asc = " asc";
+
+    private String autoIncrement = " auto_increment";
+
+    private String columnAlias = " ";
 
     private String count = "count ";
 
@@ -73,13 +74,19 @@ public class SQLTemplates extends Templates {
 
     private String insertInto = "insert into ";
 
-    private String mergeInto = "merge into ";
-
     private String join = "\njoin ";
+
+    private String key = "key";
 
     private String leftJoin = "\nleft join ";
 
     private String limitTemplate = "\nlimit {0}";
+
+    private String mergeInto = "merge into ";
+
+    private boolean nativeMerge;
+
+    private String notNull = " not null";
 
     private String offsetTemplate = "\noffset {0}";
 
@@ -87,12 +94,11 @@ public class SQLTemplates extends Templates {
 
     private String orderBy = "\norder by ";
 
-    @Nullable
-    private String quoteStr;
-
     private String select = "select ";
 
     private String selectDistinct = "select distinct ";
+
+    private String set = "set ";
 
     private String tableAlias = " ";
 
@@ -101,14 +107,8 @@ public class SQLTemplates extends Templates {
     private String update = "update ";
 
     private String values = "\nvalues ";
-
-    private String where = "\nwhere ";
-
-    private String set = "set ";
-
-    private String autoIncrement = " auto_increment";
     
-    private String notNull = " not null";
+    private String where = "\nwhere ";
     
     protected SQLTemplates(){
         this(null);
@@ -185,8 +185,8 @@ public class SQLTemplates extends Templates {
         return asc;
     }
 
-    public String getTypeForClass(Class<?> cl){
-        return class2type.get(cl);
+    public String getAutoIncrement() {
+        return autoIncrement;
     }
 
     public String getColumnAlias() {
@@ -259,12 +259,24 @@ public class SQLTemplates extends Templates {
         return ", ";
     }
 
+    public String getKey() {
+        return key;
+    }
+
     public String getLeftJoin() {
         return leftJoin;
     }
 
     public String getLimitTemplate() {
         return limitTemplate;
+    }
+
+    public String getMergeInto() {
+        return mergeInto;
+    }
+
+    public String getNotNull() {
+        return notNull;
     }
 
     public String getOffsetTemplate() {
@@ -287,8 +299,16 @@ public class SQLTemplates extends Templates {
         return selectDistinct;
     }
 
+    public String getSet() {
+        return set;
+    }
+
     public String getTableAlias() {
         return tableAlias;
+    }
+
+    public String getTypeForClass(Class<?> cl){
+        return class2type.get(cl);
     }
 
     public String getUnion() {
@@ -305,6 +325,10 @@ public class SQLTemplates extends Templates {
 
     public String getWhere() {
         return where;
+    }
+
+    public boolean isNativeMerge() {
+        return nativeMerge;
     }
 
     public boolean isSupportsAlias() {
@@ -364,6 +388,10 @@ public class SQLTemplates extends Templates {
 
     protected void setAsc(String asc) {
         this.asc = asc;
+    }
+
+    protected void setAutoIncrement(String autoIncrement) {
+        this.autoIncrement = autoIncrement;
     }
 
     protected void setColumnAlias(String columnAlias) {
@@ -426,8 +454,24 @@ public class SQLTemplates extends Templates {
         this.join = join;
     }
 
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     protected void setLeftJoin(String leftJoin) {
         this.leftJoin = leftJoin;
+    }
+
+    protected void setMergeInto(String mergeInto) {
+        this.mergeInto = mergeInto;
+    }
+
+    protected void setNativeMerge(boolean nativeMerge) {
+        this.nativeMerge = nativeMerge;
+    }
+
+    protected void setNotNull(String notNull) {
+        this.notNull = notNull;
     }
 
     protected void setOffsetTemplate(String offsetTemplate) {
@@ -450,6 +494,10 @@ public class SQLTemplates extends Templates {
         this.selectDistinct = selectDistinct;
     }
 
+    protected void setSet(String set) {
+        this.set = set;
+    }
+
     protected void setTableAlias(String tableAlias) {
         this.tableAlias = tableAlias;
     }
@@ -468,54 +516,6 @@ public class SQLTemplates extends Templates {
 
     protected void setWhere(String where) {
         this.where = where;
-    }
-
-    public String getMergeInto() {
-        return mergeInto;
-    }
-
-    public void setMergeInto(String mergeInto) {
-        this.mergeInto = mergeInto;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    public String getSet() {
-        return set;
-    }
-
-    public void setSet(String set) {
-        this.set = set;
-    }
-
-    public boolean isNativeMerge() {
-        return nativeMerge;
-    }
-
-    public void setNativeMerge(boolean nativeMerge) {
-        this.nativeMerge = nativeMerge;
-    }
-
-    public String getAutoIncrement() {
-        return autoIncrement;
-    }
-
-    public void setAutoIncrement(String autoIncrement) {
-        this.autoIncrement = autoIncrement;
-    }
-
-    public String getNotNull() {
-        return notNull;
-    }
-
-    public void setNotNull(String notNull) {
-        this.notNull = notNull;
     }
     
 }
