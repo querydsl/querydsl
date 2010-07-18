@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  *
  */
-package com.mysema.query.jdoql;
+package com.mysema.query.jdoql.sql;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -22,22 +22,23 @@ import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.support.ProjectableQuery;
-import com.mysema.query.support.QueryMixin;
+import com.mysema.query.jdoql.JDOTuple;
+import com.mysema.query.sql.SQLCommonQuery;
+import com.mysema.query.sql.SQLSerializer;
+import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.expr.QTuple;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.util.ResultIterator;
 
 /**
- * Abstract base class for custom implementations of the JDOQLQuery interface.
+ * JDOSQLQuery is an SQLQuery implementation that uses JDO's SQL query functionality
+ * to execute queries
  *
  * @author tiwe
  *
- * @param <Q>
  */
-public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extends ProjectableQuery<Q> implements Closeable{
+public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements SQLCommonQuery<JDOSQLQuery>, Closeable{
 
     private final boolean detach;
 
@@ -48,19 +49,17 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
 
     private List<Query> queries = new ArrayList<Query>(2);
 
-    private final JDOQLTemplates templates;
+    private final SQLTemplates templates;
 
-    public AbstractJDOQLQuery(@Nullable PersistenceManager persistenceManager) {
-        this(persistenceManager, JDOQLTemplates.DEFAULT, new DefaultQueryMetadata(), false);
+    public JDOSQLQuery(@Nullable PersistenceManager persistenceManager, SQLTemplates templates) {
+        this(persistenceManager, templates, new DefaultQueryMetadata(), false);
     }
 
-    @SuppressWarnings("unchecked")
-    public AbstractJDOQLQuery(
+    public JDOSQLQuery(
             @Nullable PersistenceManager persistenceManager,
-            JDOQLTemplates templates,
+            SQLTemplates templates,
             QueryMetadata metadata, boolean detach) {
-        super(new QueryMixin<Q>(metadata));
-        this.queryMixin.setSelf((Q) this);
+        super(metadata);
         this.templates = templates;
         this.persistenceManager = persistenceManager;
         this.detach = detach;
@@ -85,11 +84,8 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     }
 
     private Query createQuery(boolean forCount) {
-        Expr<?> source = queryMixin.getMetadata().getJoins().get(0).getTarget();
-
-        // serialize
-        JDOQLSerializer serializer = new JDOQLSerializer(getTemplates(), source);
-        serializer.serialize(queryMixin.getMetadata(), forCount, false);
+        SQLSerializer serializer = new SQLSerializer(templates);
+        serializer.serialize(queryMixin.getMetadata(), forCount);
 
         // create Query
         Query query = persistenceManager.newQuery(serializer.toString());
@@ -131,16 +127,8 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         return rv;
     }
 
-    public Q from(PEntity<?>... args) {
-        return queryMixin.from(args);
-    }
-
     public QueryMetadata getMetadata(){
         return queryMixin.getMetadata();
-    }
-
-    public JDOQLTemplates getTemplates() {
-        return templates;
     }
 
     public boolean isDetach() {
@@ -196,9 +184,8 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     @Override
     public String toString(){
         if (!queryMixin.getMetadata().getJoins().isEmpty()){
-            Expr<?> source = queryMixin.getMetadata().getJoins().get(0).getTarget();
-            JDOQLSerializer serializer = new JDOQLSerializer(getTemplates(), source);
-            serializer.serialize(queryMixin.getMetadata(), false, false);
+            SQLSerializer serializer = new SQLSerializer(templates);
+            serializer.serialize(queryMixin.getMetadata(), false);
             return serializer.toString().trim();
         }else{
             return super.toString();
@@ -213,4 +200,6 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         reset();
         return (RT) execute(query);
     }
+
+
 }

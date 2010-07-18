@@ -36,6 +36,13 @@
       <artifactId>querydsl-apt</artifactId>
       <version>${project.parent.version}</version>
     </dependency>        
+    
+    <!-- optional -->
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-sql</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>      
 
     <!-- test -->
 
