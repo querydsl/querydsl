@@ -23,7 +23,16 @@ import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.serialization.SerializerBase;
-import com.mysema.query.types.*;
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.EConstructor;
+import com.mysema.query.types.Expr;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.Order;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Param;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ExprConst;
@@ -98,15 +107,15 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         return constants;
     }
 
+    @SuppressWarnings("unchecked")
     private List<Expr<?>> getIdentifierColumns(List<JoinExpression> joins) {
-        // TODO : get only identifier columns, maybe from @Table annotation
         try {
             List<Expr<?>> columns = new ArrayList<Expr<?>>();
             for (JoinExpression j : joins) {
-                for (Field field : j.getTarget().getClass().getFields()) {
-                    if (Expr.class.isAssignableFrom(field.getType())){
-                        Expr<?> column = (Expr<?>) field.get(j.getTarget());
-                        columns.add(column);
+                for (Field field : j.getTarget().getClass().getFields()) {                    
+                    if (PrimaryKey.class.isAssignableFrom(field.getType())){
+                        field.setAccessible(true);
+                        columns.addAll(((PrimaryKey)field.get(j.getTarget())).getLocalColumns());
                     }
                 }
             }
@@ -173,8 +182,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }else{
                 append(templates.getDistinctCountStart());
                 if (sqlSelect.isEmpty()){
-                    List<Expr<?>> columns = getIdentifierColumns(joins);
-                    handle(columns.get(0));
+                    handle(getIdentifierColumns(joins).get(0));
                 }else{
                     handle(COMMA, sqlSelect);
                 }

@@ -158,7 +158,27 @@
           </execution>
         </executions>    
       </plugin>   
-    </plugins>
+      <plugin>
+        <groupId>com.mysema.querydsl</groupId>
+        <artifactId>querydsl-maven-plugin</artifactId>
+        <version>${project.version}</version>
+        <configuration>
+          <jdbcDriver>org.hsqldb.jdbcDriver</jdbcDriver>
+          <jdbcUrl>jdbc:hsqldb:target/jdo</jdbcUrl>
+          <packageName>com.mysema.query.jdoql.test.domain.sql</packageName>
+		  <userName>sa</userName>
+          <targetFolder>src/test/java</targetFolder>
+          <namePrefix>S</namePrefix>
+        </configuration>
+        <dependencies>
+		    <dependency>
+		      <groupId>hsqldb</groupId>
+		      <artifactId>hsqldb</artifactId>
+		      <version>1.8.0.7</version>
+		    </dependency>
+        </dependencies>
+      </plugin>    
+    </plugins>	  
   </build>
 
 </project>

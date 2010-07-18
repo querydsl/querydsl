@@ -20,9 +20,10 @@ import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.PathMetadataFactory;
 
-@SuppressWarnings("all")
 @Table("EMPLOYEE2")
 public class QEmployee extends PEntity<QEmployee> {
+
+    private static final long serialVersionUID = 1394463749655231079L;
 
     public Expr<Object[]> all(){
         return CSimple.create(Object[].class, "{0}.*", this);

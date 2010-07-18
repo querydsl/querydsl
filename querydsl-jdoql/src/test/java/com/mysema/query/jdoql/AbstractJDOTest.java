@@ -25,7 +25,7 @@ import com.mysema.query.types.path.PEntity;
 public abstract class AbstractJDOTest {
 
     private static final JDOQLTemplates templates = new JDOQLTemplates();
-
+    
     protected static PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
 
     protected PersistenceManager pm;
@@ -47,10 +47,6 @@ public abstract class AbstractJDOTest {
     protected <T> List<T> query(PEntity<T> source, EBoolean condition) {
         return query().from(source).where(condition).list(source);
     }
-
-//    protected JDOQLUpdateClause update(PEntity<?> entity) {
-//        return new JDOQLUpdateClause(pm, entity, templates);
-//    }
 
     protected JDOQLDeleteClause delete(PEntity<?> entity) {
         return new JDOQLDeleteClause(pm, entity, templates);
@@ -80,7 +76,6 @@ public abstract class AbstractJDOTest {
             tx.begin();
             pm.newQuery(Store.class).deletePersistentAll();
             pm.newQuery(Product.class).deletePersistentAll();
-
             tx.commit();
         } finally {
             if (tx.isActive()) {

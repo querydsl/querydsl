@@ -13,9 +13,10 @@ import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathMetadataFactory;
 
-@SuppressWarnings("all")
 @Table("TEST")
 public class QTest_ extends PEntity<java.lang.Object> {
+
+    private static final long serialVersionUID = -8421112749591552595L;
 
     public Expr<Object[]> all(){
         return CSimple.create(Object[].class, "{0}.*", this);

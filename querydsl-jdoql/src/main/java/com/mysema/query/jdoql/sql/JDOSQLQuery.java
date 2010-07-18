@@ -16,6 +16,9 @@ import javax.annotation.Nullable;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryException;
@@ -39,6 +42,8 @@ import com.mysema.util.ResultIterator;
  *
  */
 public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements SQLCommonQuery<JDOSQLQuery>, Closeable{
+    
+    private static final Logger logger = LoggerFactory.getLogger(JDOSQLQuery.class);
 
     private final boolean detach;
 
@@ -88,7 +93,10 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         serializer.serialize(queryMixin.getMetadata(), forCount);
 
         // create Query
-        Query query = persistenceManager.newQuery(serializer.toString());
+        if (logger.isDebugEnabled()){
+            logger.debug(serializer.toString());
+        }
+        Query query = persistenceManager.newQuery("javax.jdo.query.SQL",serializer.toString());
         orderedConstants = serializer.getConstants();
         queries.add(query);
 
@@ -100,6 +108,8 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
             } else if (exprType.equals(EConstructor.class)){
                 query.setResultClass(projection.get(0).getType());
             }
+        }else{
+            query.setResultClass(Long.class);
         }
 
         return query;
@@ -164,7 +174,6 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         queryMixin.addToProjection(expr);
         Query countQuery = createQuery(true);
         countQuery.setUnique(true);
-        countQuery.setResult("count(this)");
         long total = (Long) execute(countQuery);
         if (total > 0) {
             QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
