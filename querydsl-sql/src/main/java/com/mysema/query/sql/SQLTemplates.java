@@ -30,13 +30,13 @@ import com.mysema.query.types.Templates;
  * @version $Id$
  */
 public class SQLTemplates extends Templates {
-
+    
     public static final Operator<Object> CAST = new OperatorImpl<Object>("CAST",Object.class, Object.class);
     
-    public static final SQLTemplates DEFAULT = new SQLTemplates();
-
     public static final Operator<Object> UNION = new OperatorImpl<Object>("UNION");
 
+    public static final SQLTemplates DEFAULT = new SQLTemplates();
+    
     private final Map<Class<?>, String> class2type = new HashMap<Class<?>, String>();
 
     @Nullable
