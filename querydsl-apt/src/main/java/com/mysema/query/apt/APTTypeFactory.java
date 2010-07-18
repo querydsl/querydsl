@@ -416,7 +416,7 @@ public final class APTTypeFactory {
         for (TypeMirror t : type.getInterfaces()){
             String name = t.toString();
             if (name.contains("<")){
-                name = name.substring(0, name.indexOf("<"));
+                name = name.substring(0, name.indexOf('<'));
             }
             // interface is directly implemented
             if (name.equals(iface.getQualifiedName().toString())){
