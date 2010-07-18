@@ -15,7 +15,11 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
+import com.mysema.query.codegen.Serializer;
+import com.mysema.query.sql.DefaultNamingStrategy;
 import com.mysema.query.sql.MetaDataExporter;
+import com.mysema.query.sql.MetaDataSerializer;
+import com.mysema.query.sql.NamingStrategy;
 
 /**
  * MetaDataExportMojo is a goal for MetaDataExporter usage
@@ -81,13 +85,12 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         }else{
             project.addCompileSourceRoot(targetFolder);
         }
-
+        NamingStrategy namingStrategy = new DefaultNamingStrategy();
+        Serializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);        
         MetaDataExporter exporter = new MetaDataExporter(
-            namePrefix,
-            packageName,
-            schemaPattern,
-            tableNamePattern,
-            new File(targetFolder));
+                namePrefix, packageName,
+                schemaPattern, tableNamePattern, new File(targetFolder),
+                namingStrategy, serializer, null);
         try {
             Class.forName(jdbcDriver);
             Connection conn = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);

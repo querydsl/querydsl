@@ -72,33 +72,32 @@ public class MetaDataExporter {
     private final String schemaPattern, tableNamePattern;
 
     private final Serializer serializer;
+    
+    @Nullable
+    private final Serializer beanSerializer;
 
     private final SQLTypeMapping sqlTypeMapping = new SQLTypeMapping();
     
     private final KeyDataFactory keyDataFactory = new KeyDataFactory();
+    
+    public MetaDataExporter(
+            String namePrefix,
+            String packageName,
+            File targetFolder,
+            NamingStrategy namingStrategy,
+            Serializer serializer){
+        this(namePrefix, packageName, null, null, targetFolder, namingStrategy, serializer, null);
+    }
 
     public MetaDataExporter(
             String namePrefix,
             String packageName,
             @Nullable String schemaPattern,
             @Nullable String tableNamePattern,
-            File targetFolder) {
-    this.namePrefix = Assert.notNull(namePrefix,"namePrefix");
-        this.packageName = Assert.notNull(packageName,"packageName");
-        this.schemaPattern = schemaPattern;
-        this.tableNamePattern = tableNamePattern;
-        this.targetFolder = Assert.notNull(targetFolder,"targetFolder");
-        this.namingStrategy = new DefaultNamingStrategy();
-        this.serializer = new MetaDataSerializer(namePrefix, namingStrategy);
-    }
-
-    public MetaDataExporter(String namePrefix,
-            String packageName,
-            @Nullable String schemaPattern,
-            @Nullable String tableNamePattern,
             File targetFolder,
             NamingStrategy namingStrategy,
-            MetaDataSerializer serializer){
+            Serializer serializer,
+            @Nullable EntitySerializer beanSerializer){
         this.namePrefix = Assert.notNull(namePrefix,"namePrefix");
         this.packageName = Assert.notNull(packageName,"packageName");
         this.schemaPattern = schemaPattern;
@@ -106,6 +105,7 @@ public class MetaDataExporter {
         this.targetFolder = Assert.notNull(targetFolder,"targetFolder");
         this.namingStrategy = Assert.notNull(namingStrategy,"namingStrategy");
         this.serializer = Assert.notNull(serializer, "serializer");
+        this.beanSerializer = beanSerializer;
     }
 
     protected EntityType createEntityType(String tableName, String className) {
@@ -166,6 +166,9 @@ public class MetaDataExporter {
     private void handleTable(DatabaseMetaData md, ResultSet tables) throws SQLException {
         String tableName = tables.getString(TABLE_NAME);
         String className = namingStrategy.getClassName(namePrefix, tableName);
+        if (beanSerializer != null){
+            className = className.substring(namePrefix.length());
+        }        
         EntityType classModel = createEntityType(tableName, className);
 
         // collect primary keys
@@ -194,19 +197,30 @@ public class MetaDataExporter {
         serialize(classModel);
     }
 
-    private void serialize(EntityType type) {
-        String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + ".java";
+    private void serialize(EntityType type) {        
         try {
-            File targetFile = new File(targetFolder, path);
-            classes.add(targetFile.getPath());
-            Writer writer = writerFor(targetFile);
-            try{
-                serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
-            }finally{
-                writer.close();
+            String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + ".java";
+            if (beanSerializer != null){
+                write(beanSerializer, path, type);
+                String otherPath = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
+                write(serializer, otherPath, type);
+            }else{
+                write(serializer, path, type);
             }
+            
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    private void write(Serializer serializer, String path, EntityType type) throws IOException {
+        File targetFile = new File(targetFolder, path);
+        classes.add(targetFile.getPath());
+        Writer writer = writerFor(targetFile);
+        try{
+            serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        }finally{
+            writer.close();
         }
     }
 

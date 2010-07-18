@@ -81,15 +81,7 @@ public class MetaDataSerializerTest extends AbstractJDBCTest{
             }
 
         };
-        MetaDataExporter exporter = new MetaDataExporter(
-            namePrefix,
-            "test",
-            null,
-            null,
-            new File("target/cust"),
-            namingStrategy,
-            serializer);
-
+        MetaDataExporter exporter = new MetaDataExporter(namePrefix,"test",new File("target/cust"),namingStrategy,serializer);
         exporter.export(connection.getMetaData());
 
         JavaCompiler compiler = new SimpleCompiler();

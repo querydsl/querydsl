@@ -65,7 +65,7 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
         statement.execute("create table date_time_test (dt datetime)");
 
         MetaDataSerializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);
-        MetaDataExporter exporter = new MetaDataExporter(namePrefix, "test", null, null, new File(target), namingStrategy, serializer);
+        MetaDataExporter exporter = new MetaDataExporter(namePrefix, "test", new File(target), namingStrategy, serializer);
         exporter.export(connection.getMetaData());
 
         JavaCompiler compiler = new SimpleCompiler();
