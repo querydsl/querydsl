@@ -16,6 +16,8 @@ import javax.annotation.Nullable;
 import com.mysema.query.sql.types.*;
 
 /**
+ * Configuration for SQLQuery instances
+ * 
  * @author tiwe
  *
  */

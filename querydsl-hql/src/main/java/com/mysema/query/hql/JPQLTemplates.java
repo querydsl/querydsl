@@ -17,7 +17,8 @@ import com.mysema.query.types.Templates;
  * serialization
  *
  * @author tiwe
- * @version $Id$
+ * @see HQLTemplates
+ * @see EclipseLinkTemplates
  */
 public class JPQLTemplates extends Templates {
 

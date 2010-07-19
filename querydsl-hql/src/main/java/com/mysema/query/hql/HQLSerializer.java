@@ -31,7 +31,7 @@ import com.mysema.query.types.path.PEntity;
 import com.mysema.util.MathUtils;
 
 /**
- * HQLSerializer serializes querydsl expressions into HQL syntax.
+ * HQLSerializer serializes Querydsl expressions into HQL syntax.
  *
  * @author tiwe
  * @version $Id$

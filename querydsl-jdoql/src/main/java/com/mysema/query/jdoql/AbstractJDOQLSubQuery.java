@@ -22,16 +22,10 @@ import com.mysema.query.types.path.PEntity;
  */
 public class AbstractJDOQLSubQuery<Q extends AbstractJDOQLSubQuery<Q>> extends DetachableQuery<Q>{
 
-    /**
-     *
-     */
     public AbstractJDOQLSubQuery() {
         this(new DefaultQueryMetadata());
     }
 
-    /**
-     * @param metadata
-     */
     @SuppressWarnings("unchecked")
     public AbstractJDOQLSubQuery(QueryMetadata metadata) {
         super(new QueryMixin<Q>(metadata));

@@ -19,6 +19,8 @@ import com.mysema.query.types.expr.ONumber;
 import com.mysema.query.types.path.PEntity;
 
 /**
+ * Abstract super class for SQLQuery implementation for JPA and Hibernate
+ * 
  * @author tiwe
  *
  * @param <T>

@@ -12,6 +12,8 @@ import org.hibernate.StatelessSession;
 import com.mysema.commons.lang.Assert;
 
 /**
+ * SessionHolder implementation using StatelessSession
+ * 
  * @author tiwe
  *
  */

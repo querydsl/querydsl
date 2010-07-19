@@ -19,7 +19,6 @@ import com.mysema.query.types.OrderSpecifier;
  */
 public interface Union<RT>{
     
-
     /**
      * Get the projection as a typed List
      *
@@ -27,7 +26,6 @@ public interface Union<RT>{
      */
     List<RT> list();
     
-
     /**
      * Get the projection as a typed Iterator
      *

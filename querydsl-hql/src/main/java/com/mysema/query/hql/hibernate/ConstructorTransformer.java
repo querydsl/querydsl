@@ -12,6 +12,8 @@ import org.hibernate.transform.ResultTransformer;
 import com.mysema.query.types.EConstructor;
 
 /**
+ * ConstructorTransformer is a ResultTransformer implementation using the EConstructor for transformation
+ * 
  * @author tiwe
  *
  */
@@ -19,7 +21,7 @@ public final class ConstructorTransformer implements ResultTransformer{
 
     private static final long serialVersionUID = -3625957233853100239L;
 
-    private transient EConstructor<?> constructor;
+    private final transient EConstructor<?> constructor;
 
     public ConstructorTransformer(EConstructor<?> constructor){
         this.constructor = constructor;
@@ -33,7 +35,7 @@ public final class ConstructorTransformer implements ResultTransformer{
 
     @Override
     public Object transformTuple(Object[] tuple, String[] aliases) {
-    return constructor.newInstance(tuple);
+        return constructor.newInstance(tuple);
     }
 
 }

@@ -11,6 +11,8 @@ import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.support.ForeignKeyData;
 
 /**
+ * ForeignKeyBuilder is part of the fluent interface of CreateTableClause
+ * 
  * @author tiwe
  *
  */

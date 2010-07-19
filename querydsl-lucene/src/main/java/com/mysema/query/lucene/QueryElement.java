@@ -8,7 +8,7 @@ import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.EStringConst;
 
 /**
- * QueryElement wraps a lucene Query
+ * QueryElement wraps a Lucene Query
  *
  * @author tiwe
  *

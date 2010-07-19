@@ -42,10 +42,6 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
 
     private final FullTextSession session;
 
-    /**
-     * @param session
-     * @param path
-     */
     public SearchQuery(FullTextSession session, PEntity<T> path) {
         this.queryMixin = new QueryMixin<SearchQuery<T>>(this);
         this.session = Assert.notNull(session,"session");
@@ -53,10 +49,6 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
         this.serializer = SearchSerializer.DEFAULT;
     }
 
-    /**
-     * @param session
-     * @param path
-     */
     public SearchQuery(Session session, PEntity<T> path) {
         this(Search.getFullTextSession(session), path);
     }

@@ -10,6 +10,8 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 
 /**
+ * JDOTuple is a Tuple implementation for JDOQuery instances
+ * 
  * @author tiwe
  *
  */

@@ -19,6 +19,8 @@ import com.mysema.query.types.expr.ONumber;
 import com.mysema.query.types.path.PEntity;
 
 /**
+ * Base class for JDO based SQLQuery implementations
+ * 
  * @author tiwe
  *
  * @param <T>

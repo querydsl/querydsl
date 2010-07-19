@@ -14,6 +14,9 @@ import com.mysema.query.types.Constant;
 import com.mysema.query.types.Path;
 
 /**
+ * HibernateSQLSerializer extends the SQLSerializer to extract referenced entity paths and change some
+ * serialization formats 
+ * 
  * @author tiwe
  *
  */

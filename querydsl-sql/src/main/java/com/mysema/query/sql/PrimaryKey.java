@@ -8,6 +8,8 @@ package com.mysema.query.sql;
 import java.util.Arrays;
 import java.util.List;
 
+import net.jcip.annotations.Immutable;
+
 import com.mysema.query.types.Path;
 import com.mysema.query.types.path.PEntity;
 
@@ -15,10 +17,8 @@ import com.mysema.query.types.path.PEntity;
  * PrimaryKey defines a primary key on table
  *
  * @author tiwe
- *
- * @param <E>
- * @param <P>
  */
+@Immutable
 public class PrimaryKey <E>{
 
     private final PEntity<?> entity;

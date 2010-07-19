@@ -10,7 +10,7 @@ import com.mysema.query.types.Ops;
 import com.mysema.query.types.PathType;
 
 /**
- * HQLTemplates extends JPQLTemplates with Hibernate specific fixes
+ * HQLTemplates extends JPQLTemplates with Hibernate specific extensions
  *
  * @author tiwe
  *

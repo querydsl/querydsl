@@ -11,6 +11,8 @@ import com.mysema.query.lucene.LuceneSerializer;
 import com.mysema.query.types.Path;
 
 /**
+ * SearchSerializer extends the LuceneSerializer to use {@link Field} annotation data from paths 
+ * 
  * @author tiwe
  *
  */

@@ -12,37 +12,21 @@ import java.sql.SQLException;
 import javax.annotation.Nullable;
 
 /**
+ * Defines the de/serialization of a typed Java object from a ResultSet or to a PreparedStatement
+ * 
  * @author tiwe
  *
  * @param <T>
  */
 public interface Type<T> {
 
-    /**
-     * @return
-     */
     int[] getSQLTypes();
 
-    /**
-     * @return
-     */
     Class<T> getReturnedClass();
 
-    /**
-     * @param rs
-     * @param startIndex
-     * @return
-     * @throws SQLException
-     */
     @Nullable
     T getValue(ResultSet rs, int startIndex) throws SQLException;
 
-    /**
-     * @param st
-     * @param startIndex
-     * @param value
-     * @throws SQLException
-     */
     void setValue(PreparedStatement st, int startIndex, T value) throws SQLException;
 
 }

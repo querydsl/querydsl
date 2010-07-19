@@ -19,7 +19,10 @@ import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.SQLTemplates;
 
 /**
+ * MySQLQuery provides MySQL related extensions to SQLQuery
+ * 
  * @author tiwe
+ * @see SQLQuery
  *
  */
 public class MySQLQuery extends AbstractSQLQuery<MySQLQuery>{

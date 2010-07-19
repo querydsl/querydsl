@@ -10,6 +10,8 @@ import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
 
 /**
+ * AbstractSQLClause is a superclass for SQL based DMLClause implementations
+ * 
  * @author tiwe
  *
  */

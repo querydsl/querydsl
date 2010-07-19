@@ -8,6 +8,8 @@ package com.mysema.query.sql;
 import java.util.Arrays;
 import java.util.List;
 
+import net.jcip.annotations.Immutable;
+
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
@@ -23,6 +25,7 @@ import com.mysema.query.types.path.PSimple;
  * @param <E>
  * @param <P>
  */
+@Immutable
 public class ForeignKey <E>{
 
     private final PEntity<?> entity;

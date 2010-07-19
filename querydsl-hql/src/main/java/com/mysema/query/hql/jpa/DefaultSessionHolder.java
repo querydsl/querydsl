@@ -9,6 +9,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 /**
+ * Default implementation of the JPQSessionHolder interface
+ * 
  * @author tiwe
  *
  */

@@ -26,7 +26,7 @@ import com.mysema.query.types.path.NullExpr;
 import com.mysema.query.types.path.PEntity;
 
 /**
- * UpdateClause implementation for JPA
+ * UpdateClause implementation for Hibernate
  *
  * @author tiwe
  *

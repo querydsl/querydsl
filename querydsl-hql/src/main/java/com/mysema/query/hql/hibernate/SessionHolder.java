@@ -17,12 +17,16 @@ import org.hibernate.SQLQuery;
 public interface SessionHolder {
 
     /**
+     * Create a JPQL query for the given query string
+     * 
      * @param queryString
      * @return
      */
     Query createQuery(String queryString);
 
     /**
+     * Create an SQL query for the given query string
+     * 
      * @param queryString
      * @return
      */

@@ -22,6 +22,8 @@ import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PMap;
 
 /**
+ * HQLQueryMixin extends QueryMixin to support JPQL join construction
+ * 
  * @author tiwe
  *
  * @param <T>

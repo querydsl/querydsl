@@ -7,13 +7,19 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+/**
+ * Defines the related SQL table column for a property
+ * 
+ * @author tiwe
+ *
+ */
 @Documented
 @Target({FIELD,METHOD})
 @Retention(RUNTIME)
 public @interface Column {
     
     /**
-     * @return
+     * @return column name
      */
     String value();
 

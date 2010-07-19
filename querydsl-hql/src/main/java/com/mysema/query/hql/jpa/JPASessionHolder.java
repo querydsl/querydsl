@@ -14,12 +14,16 @@ import javax.persistence.Query;
 public interface JPASessionHolder {
 
     /**
+     * Create a JPQL query for the given query string
+     * 
      * @param queryString
      * @return
      */
     Query createQuery(String queryString);
 
     /**
+     * Create an SQL query for the given query string
+     * 
      * @param queryString
      * @return
      */

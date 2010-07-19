@@ -8,7 +8,7 @@ package com.mysema.query.hql;
 import com.mysema.query.QueryMetadata;
 
 /**
- * HQLSubQuery is a subquery builder class for HQL/JPAQL
+ * HQLSubQuery is a subquery class for JPQL
  *
  * @author tiwe
  *

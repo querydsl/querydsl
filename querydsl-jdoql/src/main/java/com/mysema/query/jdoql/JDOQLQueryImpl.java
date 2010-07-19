@@ -60,6 +60,8 @@ public final class JDOQLQueryImpl extends AbstractJDOQLQuery<JDOQLQueryImpl> imp
     }
 
     /**
+     * Create a new JDOQLQueryImpl instance
+     * 
      * @param persistenceManager
      * @param templates
      * @param metadata

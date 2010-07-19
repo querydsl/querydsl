@@ -3,6 +3,8 @@ package com.mysema.query.sql;
 import java.lang.annotation.Annotation;
 
 /**
+ * ColumnImpl is an implementation for the Column annotation
+ * 
  * @author tiwe
  *
  */
