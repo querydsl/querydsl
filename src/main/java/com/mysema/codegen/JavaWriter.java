@@ -86,16 +86,10 @@ public final class JavaWriter implements Appendable, CodeWriter{
     @Override
     public JavaWriter annotation(Annotation annotation) throws IOException {
         append(indent).append("@").appendType(annotation.annotationType()).append("(");
-        boolean first = true;        
-        for (Method method : annotation.annotationType().getDeclaredMethods()){            
+        Method[] methods = annotation.annotationType().getDeclaredMethods();
+        if (methods.length == 1 && methods[0].getName().equals("value")){
             try {
-                Object value = method.invoke(annotation);
-                if (value == null){
-                    continue;
-                }else if (!first){
-                    append(COMMA);
-                }
-                append(method.getName()+"=");                
+                Object value = methods[0].invoke(annotation);
                 annotationConstant(value);
             } catch (IllegalArgumentException e) {
                 throw new CodegenException(e);
@@ -103,9 +97,29 @@ public final class JavaWriter implements Appendable, CodeWriter{
                 throw new CodegenException(e);
             } catch (InvocationTargetException e) {
                 throw new CodegenException(e);
-            }
-            first = false;
-        }        
+            }            
+        }else{
+            boolean first = true;        
+            for (Method method : methods){            
+                try {
+                    Object value = method.invoke(annotation);
+                    if (value == null){
+                        continue;
+                    }else if (!first){
+                        append(COMMA);
+                    }
+                    append(method.getName()+"=");                
+                    annotationConstant(value);
+                } catch (IllegalArgumentException e) {
+                    throw new CodegenException(e);
+                } catch (IllegalAccessException e) {
+                    throw new CodegenException(e);
+                } catch (InvocationTargetException e) {
+                    throw new CodegenException(e);
+                }
+                first = false;
+            }    
+        }                
         return append(")").nl();
      }    
     
