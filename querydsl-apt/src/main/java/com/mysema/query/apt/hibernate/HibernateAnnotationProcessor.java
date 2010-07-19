@@ -14,6 +14,8 @@ import com.mysema.query.apt.DefaultConfiguration;
 import com.mysema.query.apt.jpa.JPAAnnotationProcessor;
 
 /**
+ * Extended JPAAnnotationProcessor which takes Hibernate specific annotations into account
+ * 
  * @author tiwe
  *
  */

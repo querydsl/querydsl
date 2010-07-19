@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Empty implementation of the ListSource interface
+ * 
  * @author tiwe
  *
  * @param <T>

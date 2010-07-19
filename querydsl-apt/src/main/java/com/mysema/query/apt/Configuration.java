@@ -28,130 +28,53 @@ import com.mysema.query.codegen.TypeMappings;
  */
 public interface Configuration {
 
-    /**
-     * @return
-     */
     TypeMappings getTypeMappings();
 
-    /**
-     * @param e
-     * @param elements
-     * @return
-     */
     VisitorConfig getConfig(TypeElement e, List<? extends Element> elements);
 
-    /**
-     * @return
-     */
     Serializer getDTOSerializer();
 
-    /**
-     * @return
-     */
     @Nullable
     Class<? extends Annotation> getEmbeddableAnn();
 
-    /**
-     * @return
-     */
     Serializer getEmbeddableSerializer();
 
-    /**
-     * @return
-     */
     Class<? extends Annotation> getEntityAnn();
 
-    /**
-     * @return
-     */
     Serializer getEntitySerializer();
 
-    /**
-     * @return
-     */
     String getNamePrefix();
 
-    /**
-     * @param model
-     * @return
-     */
     SerializerConfig getSerializerConfig(EntityType model);
 
-    /**
-     * @return
-     */
     @Nullable
     Class<? extends Annotation> getSkipAnn();
 
-    /**
-     * @return
-     */
     @Nullable
     Class<? extends Annotation> getSuperTypeAnn();
 
-    /**
-     * @return
-     */
     Serializer getSupertypeSerializer();
 
-    /**
-     * @param field
-     * @return
-     */
     boolean isBlockedField(VariableElement field);
 
-    /**
-     * @param getter
-     * @return
-     */
     boolean isBlockedGetter(ExecutableElement getter);
 
-    /**
-     * @return
-     */
     boolean isUseFields();
 
-    /**
-     * @return
-     */
     boolean isUseGetters();
 
-    /**
-     * @param constructor
-     * @return
-     */
     boolean isValidConstructor(ExecutableElement constructor);
 
-    /**
-     * @param field
-     * @return
-     */
     boolean isValidField(VariableElement field);
 
-    /**
-     * @param getter
-     * @return
-     */
     boolean isValidGetter(ExecutableElement getter);
 
-    /**
-     * @param namePrefix
-     */
     void setNamePrefix(String namePrefix);
 
-    /**
-     * @param b
-     */
     void setUseFields(boolean b);
 
-    /**
-     * @param b
-     */
     void setUseGetters(boolean b);
 
-    /**
-     * @return
-     */
     Collection<String> getKeywords();
 
 }

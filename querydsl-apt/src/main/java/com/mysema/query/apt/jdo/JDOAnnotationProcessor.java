@@ -21,6 +21,8 @@ import com.mysema.query.apt.DefaultConfiguration;
 import com.mysema.query.apt.Processor;
 
 /**
+ * AnnotationProcessor for JDO which takes @PersistenceCapable, @EmbeddedOnly and @NotPersistent into account
+ * 
  * @author tiwe
  *
  */

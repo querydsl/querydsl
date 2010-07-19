@@ -11,6 +11,10 @@ import com.mysema.commons.lang.Pair;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PathMetadataFactory;
 
+/**
+ * @author tiwe
+ *
+ */
 public final class PEntityTransformer implements Transformer<Pair<Class<?>, String>, PEntity<?>> {
 
     @SuppressWarnings("unchecked")

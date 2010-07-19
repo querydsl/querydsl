@@ -11,6 +11,8 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.custom.CString;
 
 /**
+ * JoinFlag defines a join related flag using an Expr instance
+ * 
  * @author tiwe
  *
  */

@@ -11,7 +11,7 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.QueryModifiers;
 
 /**
- * LimitingIterator provides
+ * LimitingIterator is and Iterator adapter which takes limit and offset into account
  *
  * @author tiwe
  * @version $Id$

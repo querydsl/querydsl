@@ -11,22 +11,29 @@ import javax.annotation.processing.RoundEnvironment;
 
 import com.mysema.query.apt.DefaultConfiguration;
 
+/**
+ * Configuration for {@link JDOAnnotationProcessor}
+ * 
+ * @author tiwe
+ * @see JDOAnnotationProcessor
+ *
+ */
 public class JDOConfiguration extends DefaultConfiguration{
 
     private static final List<String> keywords = Arrays.asList(
-    "AS","ASC",
-    "ASCENDING","AVG",
-    "BY","COUNT",
-    "DESC","DESCENDING",
-    "DISTINCT","EXCLUDE",
-    "FROM","GROUP",
-    "HAVING","INTO",
-    "MAX","MIN",
-    "ORDER","PARAMETERS",
-    "RANGE","SELECT",
-    "SUBCLASSES","SUM",
-    "UNIQUE","VARIABLES",
-        "WHERE");
+            "AS","ASC",
+            "ASCENDING","AVG",
+            "BY","COUNT",
+            "DESC","DESCENDING",
+            "DISTINCT","EXCLUDE",
+            "FROM","GROUP",
+            "HAVING","INTO",
+            "MAX","MIN",
+            "ORDER","PARAMETERS",
+            "RANGE","SELECT",
+            "SUBCLASSES","SUM",
+            "UNIQUE","VARIABLES",
+            "WHERE");
 
     public JDOConfiguration(RoundEnvironment roundEnv,Map<String,String> options,
             Class<? extends Annotation> entityAnn,
@@ -38,7 +45,7 @@ public class JDOConfiguration extends DefaultConfiguration{
 
     @Override
     public Collection<String> getKeywords(){
-    return keywords;
+        return keywords;
     }
 
 }

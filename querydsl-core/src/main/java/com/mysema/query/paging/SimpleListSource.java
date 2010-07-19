@@ -11,6 +11,8 @@ import java.util.List;
 import com.mysema.commons.lang.Assert;
 
 /**
+ * {@link List} based implementation of the ListSource interface
+ * 
  * @author tiwe
  *
  * @param <T>

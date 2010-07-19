@@ -25,7 +25,7 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QueryType;
 import com.mysema.query.annotations.QuerydslConfig;
-import com.mysema.query.codegen.DTOSerializer;
+import com.mysema.query.codegen.ProjectionSerializer;
 import com.mysema.query.codegen.EmbeddableSerializer;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.EntityType;
@@ -55,7 +55,7 @@ public class DefaultConfiguration implements Configuration {
 
     private final SerializerConfig defaultSerializerConfig;
 
-    private final Serializer dtoSerializer = new DTOSerializer(typeMappings);
+    private final Serializer dtoSerializer = new ProjectionSerializer(typeMappings);
 
     private final Serializer embeddableSerializer = new EmbeddableSerializer(typeMappings, getKeywords());
 

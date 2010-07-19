@@ -20,7 +20,7 @@ import org.apache.commons.lang.ClassUtils;
 import com.mysema.commons.lang.Assert;
 
 /**
- * ClassType is a minimal implementation of the Type interface
+ * ClassType is a minimal {@link Class} based implementation of the {@link Type} interface
  *
  * @author tiwe
  *

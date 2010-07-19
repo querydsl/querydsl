@@ -21,6 +21,8 @@ import com.mysema.query.types.expr.EBoolean;
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 /**
+ * SimpleQueryAdapter is an apdater implementation for the SimpleQuery and SimpleProjectabl interfaces
+ * 
  * @author tiwe
  *
  * @param <T>

@@ -13,7 +13,7 @@ import org.apache.commons.collections15.comparators.ComparableComparator;
 import com.mysema.codegen.Evaluator;
 
 /**
- * MultiComparator compares
+ * MultiComparator compares 
  *
  * @author tiwe
  * @version $Id$

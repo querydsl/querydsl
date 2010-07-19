@@ -91,6 +91,6 @@ public class SerializerTest {
 
     @Test
     public void DTOSerializer() throws IOException{
-        new DTOSerializer(typeMappings).serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        new ProjectionSerializer(typeMappings).serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
     }
 }

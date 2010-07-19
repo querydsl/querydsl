@@ -16,6 +16,8 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.path.PEntity;
 
 /**
+ * MethodType defines the supported method types used in the Alias functionality
+ * 
  * @author tiwe
  *
  */

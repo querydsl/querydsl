@@ -36,6 +36,8 @@ import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PTime;
 
 /**
+ * TypeMappings defines mappings from Java types to {@link Expr}, {@link Path} and {@link Custom} types
+ * 
  * @author tiwe
  *
  */

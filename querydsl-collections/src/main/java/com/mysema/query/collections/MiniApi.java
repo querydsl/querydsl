@@ -17,6 +17,7 @@ import com.mysema.query.types.Path;
  * @author tiwe
  * @version $Id$
  */
+// TODO : rename for 2.0
 public final class MiniApi {
 
     public static <A> ColDeleteClause<A> delete(Path<A> path, Collection<A> col){

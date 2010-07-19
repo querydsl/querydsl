@@ -10,10 +10,9 @@ import org.apache.commons.collections15.Transformer;
 import com.mysema.codegen.Evaluator;
 
 /**
+ * Transformer implementation which uses and Evaluator for transformation
+ * 
  * @author tiwe
- *
- * @param <S>
- * @param <T>
  */
 public class EvaluatorTransformer<S, T> implements Transformer<S, T> {
 

@@ -6,6 +6,8 @@
 package com.mysema.query.codegen;
 
 /**
+ * TypeResolver provides type resolving funcationlity for resolving generic type variables to concrete types
+ * 
  * @author tiwe
  *
  */

@@ -11,6 +11,12 @@ import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
 
+/**
+ * Delegate defines a delegate method which dispatches to an external static method
+ * 
+ * @author tiwe
+ *
+ */
 @Immutable
 public class Delegate {
 

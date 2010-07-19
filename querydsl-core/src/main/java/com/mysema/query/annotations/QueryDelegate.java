@@ -15,8 +15,6 @@ import java.lang.annotation.Target;
 /**
  * Declaration of a static delegate method
  *
- * TODO : document me!
- *
  * @author tiwe
  *
  */

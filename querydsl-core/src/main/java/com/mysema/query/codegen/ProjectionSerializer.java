@@ -17,17 +17,17 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.expr.ENumber;
 
 /**
- * DTOSerializer is a Serializer implementation for DTO types
+ * ProjectionSerializer is a Serializer implementation for DTO types
  *
  * @author tiwe
  *
  */
 @Immutable
-public final class DTOSerializer implements Serializer{
+public final class ProjectionSerializer implements Serializer{
 
     private final TypeMappings typeMappings;
 
-    public DTOSerializer(TypeMappings typeMappings){
+    public ProjectionSerializer(TypeMappings typeMappings){
         this.typeMappings = Assert.notNull(typeMappings,"typeMappings");
     }
 
@@ -45,7 +45,7 @@ public final class DTOSerializer implements Serializer{
         writer.imports(Expr.class.getPackage(), ENumber.class.getPackage());
 
         // javadoc
-        writer.javadoc(queryType + " is a Querydsl DTO type for " + simpleName);
+        writer.javadoc(queryType + " is a Querydsl Projection type for " + simpleName);
 
         // class header
 //        writer.suppressWarnings("serial");

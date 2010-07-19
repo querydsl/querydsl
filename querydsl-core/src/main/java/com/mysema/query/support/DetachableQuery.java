@@ -25,6 +25,8 @@ import com.mysema.query.types.query.StringSubQuery;
 import com.mysema.query.types.query.TimeSubQuery;
 
 /**
+ * DetachableQuery is a base class for queries which implement the Query and Detachable interfaces
+ * 
  * @author tiwe
  *
  * @param <Q>

@@ -18,13 +18,31 @@ import javax.annotation.Nullable;
  */
 public interface Type<T> {
 
+    /**
+     * @return
+     */
     int[] getSQLTypes();
 
+    /**
+     * @return
+     */
     Class<T> getReturnedClass();
 
+    /**
+     * @param rs
+     * @param startIndex
+     * @return
+     * @throws SQLException
+     */
     @Nullable
     T getValue(ResultSet rs, int startIndex) throws SQLException;
 
+    /**
+     * @param st
+     * @param startIndex
+     * @param value
+     * @throws SQLException
+     */
     void setValue(PreparedStatement st, int startIndex, T value) throws SQLException;
 
 }

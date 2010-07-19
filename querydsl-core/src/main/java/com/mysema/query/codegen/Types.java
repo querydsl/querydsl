@@ -6,6 +6,8 @@
 package com.mysema.query.codegen;
 
 /**
+ * Types provides {@link Type} constants
+ * 
  * @author tiwe
  *
  */

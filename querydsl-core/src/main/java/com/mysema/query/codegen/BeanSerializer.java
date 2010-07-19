@@ -9,6 +9,12 @@ import org.apache.commons.lang.StringUtils;
 
 import com.mysema.codegen.CodeWriter;
 
+/**
+ * BeanSerializer is a Serializer implementation which serializes EntityType instances into JavaBean classes
+ * 
+ * @author tiwe
+ *
+ */
 public class BeanSerializer implements Serializer{
 
     @Override

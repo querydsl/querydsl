@@ -21,6 +21,7 @@ import com.mysema.query.types.expr.ESimple;
  *
  * @param <D> Java type
  */
+// TODO : rename to something else, since the subclasses do not use constructor invocation
 public class EConstructor<D> extends ESimple<D> {
 
     private static final long serialVersionUID = -602747921848073175L;

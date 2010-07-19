@@ -15,8 +15,11 @@ import javax.annotation.processing.RoundEnvironment;
 import com.mysema.query.apt.jpa.JPAConfiguration;
 
 /**
+ * Configuration for {@link HibernateAnnotationProcessor}
+ * 
  * @author tiwe
- *
+ * @see HibernateAnnotationProcessor
+ * @see JPAConfiguration
  */
 public class HibernateConfiguration extends JPAConfiguration{
 

@@ -21,6 +21,8 @@ import com.mysema.query.apt.DefaultConfiguration;
 import com.mysema.query.apt.Processor;
 
 /**
+ * AnnotationProcessor for JPA which takes @Entity, @MappedSuperclass, @Embeddable and @Transient into account
+ * 
  * @author tiwe
  *
  */
