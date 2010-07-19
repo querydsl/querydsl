@@ -5,6 +5,10 @@
  */
 package com.mysema.query.codegen;
 
+import java.lang.annotation.Annotation;
+import java.util.HashSet;
+import java.util.Set;
+
 import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
@@ -26,6 +30,8 @@ public final class Property implements Comparable<Property> {
     private final String[] inits;
 
     private final String name, escapedName;
+    
+    private final Set<Annotation> annotations = new HashSet<Annotation>();
 
     private final Type type;
 
@@ -46,6 +52,10 @@ public final class Property implements Comparable<Property> {
         this.inherited = inherited;
     }
 
+    public void addAnnotation(Annotation annotation){
+        annotations.add(annotation);
+    }
+    
     public int compareTo(Property o) {
         return name.compareToIgnoreCase(o.getName());
     }
@@ -57,6 +67,10 @@ public final class Property implements Comparable<Property> {
         }else{
             return new Property(model, name, type, inits, model.getSuperType() != null);
         }
+    }
+    
+    public Set<Annotation> getAnnotations() {
+        return annotations;
     }
 
     @Override

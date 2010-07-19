@@ -97,7 +97,7 @@ public class MetaDataExporter {
             File targetFolder,
             NamingStrategy namingStrategy,
             Serializer serializer,
-            @Nullable EntitySerializer beanSerializer){
+            @Nullable Serializer beanSerializer){
         this.namePrefix = Assert.notNull(namePrefix,"namePrefix");
         this.packageName = Assert.notNull(packageName,"packageName");
         this.schemaPattern = schemaPattern;
@@ -109,22 +109,22 @@ public class MetaDataExporter {
     }
 
     protected EntityType createEntityType(String tableName, String className) {
-    Type classTypeModel = new SimpleType(
+        Type classTypeModel = new SimpleType(
                 TypeCategory.ENTITY,
                 packageName + "." + className,
                 packageName,
                 className,
                 false);
-        EntityType classModel = new EntityType("", classTypeModel);
+        EntityType classModel = new EntityType(beanSerializer == null ? "" : namePrefix, classTypeModel);
         Method wildcard = new Method(classModel, "all", "{0}.*", Types.OBJECTS);
         classModel.addMethod(wildcard);
         classModel.addAnnotation(new TableImpl(namingStrategy.normalizeTableName(tableName)));
-    return classModel;
+        return classModel;
     }
 
     protected Property createProperty(EntityType classModel, String columnName,
             String propertyName, Type typeModel) {
-    return new Property(
+        return new Property(
                 classModel,
                 namingStrategy.normalizeColumnName(columnName),
                 propertyName,
@@ -160,7 +160,9 @@ public class MetaDataExporter {
             fieldType = TypeCategory.NUMERIC;
         }
         Type typeModel = new ClassType(fieldType, clazz);
-        classModel.addProperty(createProperty(classModel, columnName, propertyName, typeModel));
+        Property property = createProperty(classModel, columnName, propertyName, typeModel);
+        property.addAnnotation(new ColumnImpl(namingStrategy.normalizeColumnName(columnName)));
+        classModel.addProperty(property);
     }
 
     private void handleTable(DatabaseMetaData md, ResultSet tables) throws SQLException {
@@ -202,6 +204,7 @@ public class MetaDataExporter {
             String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + ".java";
             if (beanSerializer != null){
                 write(beanSerializer, path, type);
+                type.getAnnotations().clear();
                 String otherPath = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
                 write(serializer, otherPath, type);
             }else{

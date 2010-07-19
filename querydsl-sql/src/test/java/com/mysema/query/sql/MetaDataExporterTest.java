@@ -17,6 +17,7 @@ import org.junit.Test;
 
 import com.mysema.codegen.SimpleCompiler;
 import com.mysema.query.AbstractJDBCTest;
+import com.mysema.query.codegen.BeanSerializer;
 
 /**
  * MetaDataExporterTest provides
@@ -34,25 +35,26 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
         // TODO : test for name conflicts
 
         // normal settings
-        test("Q", defaultNaming, "target/1");
+        test("Q", defaultNaming, "target/1", false);
+        test("Q", defaultNaming, "target/11", true);
 
         // without prefix
-        test("", defaultNaming, "target/2");
+        test("", defaultNaming, "target/2", false);
 
         // with long prefix
-        test("QDSL", defaultNaming, "target/3");
+        test("QDSL", defaultNaming, "target/3",false);
 
         // with different namingStrategy
-        test("Q", originalNaming, "target/4");
+        test("Q", originalNaming, "target/4",false);
 
         // without prefix
-        test("", originalNaming, "target/5");
+        test("", originalNaming, "target/5",false);
 
         // with long prefix
-        test("QDSL", originalNaming, "target/6");
+        test("QDSL", originalNaming, "target/6",false);
     }
 
-    private void test(String namePrefix, NamingStrategy namingStrategy, String target) throws SQLException{
+    private void test(String namePrefix, NamingStrategy namingStrategy, String target, boolean withBeans) throws SQLException{
         statement.execute("drop table employee if exists");
 
         statement.execute("drop table survey if exists");
@@ -65,7 +67,12 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
         statement.execute("create table date_time_test (dt datetime)");
 
         MetaDataSerializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);
-        MetaDataExporter exporter = new MetaDataExporter(namePrefix, "test", new File(target), namingStrategy, serializer);
+        MetaDataExporter exporter;
+        if (withBeans){
+            exporter = new MetaDataExporter(namePrefix, "test", null, null, new File(target), namingStrategy, serializer, new BeanSerializer());
+        }else{
+            exporter = new MetaDataExporter(namePrefix, "test", new File(target), namingStrategy, serializer);
+        }
         exporter.export(connection.getMetaData());
 
         JavaCompiler compiler = new SimpleCompiler();

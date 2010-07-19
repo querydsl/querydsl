@@ -8,7 +8,7 @@ package com.mysema.query.sql;
 import java.lang.annotation.Annotation;
 
 /**
- * TableImppl is an implementation for the Table annotation
+ * TableImpl is an implementation for the Table annotation
  *
  * @author tiwe
  *

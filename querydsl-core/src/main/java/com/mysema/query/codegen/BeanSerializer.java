@@ -2,6 +2,8 @@ package com.mysema.query.codegen;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -18,8 +20,12 @@ public class BeanSerializer implements Serializer{
             writer.packageDecl(model.getPackageName());
         }
         
+        // imports
+        Set<Class<?>> imports = getAnnotationTypes(model);
+        writer.imports(imports.toArray(new Class[imports.size()]));
+        
         // javadoc        
-        writer.javadoc(simpleName + " is a Querydsl bean type for " + simpleName);
+        writer.javadoc(simpleName + " is a Querydsl bean type");
         
         // header
         for (Annotation annotation : model.getAnnotations()){
@@ -29,6 +35,9 @@ public class BeanSerializer implements Serializer{
         
         // fields
         for (Property property : model.getProperties()){
+            for (Annotation annotation : property.getAnnotations()){
+                writer.annotation(annotation);
+            }
             String propertyType = property.getType().getLocalGenericName(model, false);
             writer.privateField(propertyType, property.getEscapedName());
         }
@@ -43,12 +52,25 @@ public class BeanSerializer implements Serializer{
             writer.line("return ", propertyName, ";");
             writer.end();
             // setter
-            writer.beginPublicMethod("void", "set"+StringUtils.capitalize(propertyName), propertyType, propertyName);
+            writer.beginPublicMethod("void", "set"+StringUtils.capitalize(propertyName), propertyType + " " + propertyName);
             writer.line("this.", propertyName, " = ", propertyName, ";");
             writer.end();
         }
         
         writer.end();
+    }
+
+    private Set<Class<?>> getAnnotationTypes(EntityType model) {
+        Set<Class<?>> imports = new HashSet<Class<?>>();
+        for (Annotation annotation : model.getAnnotations()){
+            imports.add(annotation.annotationType());
+        }
+        for (Property property : model.getProperties()){
+            for (Annotation annotation : property.getAnnotations()){
+                imports.add(annotation.annotationType());
+            }
+        }
+        return imports;
     }
 
 }
