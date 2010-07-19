@@ -3,8 +3,9 @@ package com.mysema.query.codegen;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.mysema.codegen.CodeWriter;
-import com.sun.xml.internal.ws.util.StringUtils;
 
 public class BeanSerializer implements Serializer{
 
