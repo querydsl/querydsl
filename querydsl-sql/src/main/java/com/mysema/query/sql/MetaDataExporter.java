@@ -204,7 +204,6 @@ public class MetaDataExporter {
             String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + ".java";
             if (beanSerializer != null){
                 write(beanSerializer, path, type);
-                type.getAnnotations().clear();
                 String otherPath = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
                 write(serializer, otherPath, type);
             }else{

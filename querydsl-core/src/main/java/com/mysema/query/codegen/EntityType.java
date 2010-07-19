@@ -28,7 +28,7 @@ import com.mysema.commons.lang.Assert;
  */
 public final class EntityType extends TypeAdapter implements Comparable<EntityType> {
 
-    private final Set<Annotation> annotations = new HashSet<Annotation>();
+    private final Map<Class<?>,Annotation> annotations = new HashMap<Class<?>,Annotation>();
 
     private final Set<Constructor> constructors = new HashSet<Constructor>();
 
@@ -62,7 +62,7 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     }
 
     public void addAnnotation(Annotation annotation){
-        annotations.add(annotation);
+        annotations.put(annotation.annotationType(), annotation);
     }
 
     public void addConstructor(Constructor co) {
@@ -99,9 +99,14 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     public int compareTo(EntityType o) {
         return getType().getSimpleName().compareTo(o.getType().getSimpleName());
     }
+    
+    @SuppressWarnings("unchecked")
+    public <T extends Annotation> T getAnnotation(Class<T> type){
+        return (T) annotations.get(type);
+    }
 
-    public Set<Annotation> getAnnotations() {
-        return annotations;
+    public Collection<Annotation> getAnnotations() {
+        return annotations.values();
     }
 
     public TypeCategory getCategory() {       

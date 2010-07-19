@@ -6,8 +6,9 @@
 package com.mysema.query.codegen;
 
 import java.lang.annotation.Annotation;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.jcip.annotations.Immutable;
 
@@ -31,7 +32,7 @@ public final class Property implements Comparable<Property> {
 
     private final String name, escapedName;
     
-    private final Set<Annotation> annotations = new HashSet<Annotation>();
+    private final Map<Class<?>,Annotation> annotations = new HashMap<Class<?>,Annotation>();
 
     private final Type type;
 
@@ -53,7 +54,7 @@ public final class Property implements Comparable<Property> {
     }
 
     public void addAnnotation(Annotation annotation){
-        annotations.add(annotation);
+        annotations.put(annotation.annotationType(), annotation);
     }
     
     public int compareTo(Property o) {
@@ -69,8 +70,13 @@ public final class Property implements Comparable<Property> {
         }
     }
     
-    public Set<Annotation> getAnnotations() {
-        return annotations;
+    @SuppressWarnings("unchecked")
+    public <T extends Annotation> T getAnnotation(Class<T> type){
+        return (T) annotations.get(type);
+    }
+    
+    public Collection<Annotation> getAnnotations() {
+        return annotations.values();
     }
 
     @Override
