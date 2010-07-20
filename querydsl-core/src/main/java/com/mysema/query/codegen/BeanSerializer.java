@@ -51,7 +51,6 @@ public class BeanSerializer implements Serializer{
         // accessors
         for (Property property : model.getProperties()){
             String propertyName = property.getEscapedName();
-            // TODO : serialize property annotations
             String propertyType = property.getType().getLocalGenericName(model, false);
             // getter
             writer.beginPublicMethod(propertyType, "get"+StringUtils.capitalize(propertyName));

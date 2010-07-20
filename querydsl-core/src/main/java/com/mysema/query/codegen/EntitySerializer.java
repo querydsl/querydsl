@@ -5,26 +5,15 @@
  */
 package com.mysema.query.codegen;
 
-import static com.mysema.codegen.Symbols.ASSIGN;
-import static com.mysema.codegen.Symbols.COMMA;
-import static com.mysema.codegen.Symbols.DOT;
-import static com.mysema.codegen.Symbols.DOT_CLASS;
-import static com.mysema.codegen.Symbols.EMPTY;
-import static com.mysema.codegen.Symbols.NEW;
-import static com.mysema.codegen.Symbols.QUOTE;
-import static com.mysema.codegen.Symbols.RETURN;
-import static com.mysema.codegen.Symbols.SEMICOLON;
-import static com.mysema.codegen.Symbols.SPACE;
-import static com.mysema.codegen.Symbols.STAR;
-import static com.mysema.codegen.Symbols.SUPER;
-import static com.mysema.codegen.Symbols.THIS;
-import static com.mysema.codegen.Symbols.UNCHECKED;
+import static com.mysema.codegen.Symbols.*;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.jcip.annotations.Immutable;
 
@@ -38,16 +27,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.EComparable;
-import com.mysema.query.types.path.PBoolean;
-import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PDate;
-import com.mysema.query.types.path.PDateTime;
-import com.mysema.query.types.path.PEntity;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PSimple;
-import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PTime;
-import com.mysema.query.types.path.PathMetadataFactory;
+import com.mysema.query.types.path.*;
 
 /**
  * EntitySerializer is a Serializer implementation for entity types
@@ -329,9 +309,7 @@ public class EntitySerializer implements Serializer{
         packages.add(PSimple.class.getPackage());
         if (!model.getConstructors().isEmpty()
                 || !model.getMethods().isEmpty()
-                || !model.getDelegates().isEmpty()
-                || (model.hasLists() && config.useListAccessors())
-                || (model.hasMaps() && config.useMapAccessors())){
+                || !model.getDelegates().isEmpty()){
             packages.add(EComparable.class.getPackage());
         }
         if (!model.getMethods().isEmpty()){
@@ -342,11 +320,14 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void introDelegatePackages(CodeWriter writer, EntityType model) throws IOException {
+        Set<String> packages = new HashSet<String>();
         for (Delegate delegate : model.getDelegates()){
             if (!delegate.getDelegateType().getPackageName().equals(model.getPackageName())){
-                String packageName = delegate.getDelegateType().getPackageName();
-                writer.line("import " + packageName + ".*;");
+                packages.add(delegate.getDelegateType().getPackageName());                
             }
+        }
+        for (String pkg : packages){
+            writer.line("import " + pkg + ".*;");
         }
     }
 
