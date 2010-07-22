@@ -653,5 +653,13 @@ entityPath.getMap("map", String.class, String.class).get("key");
 </programlisting>
       
   </sect1>
+  
+  <sect1>
+  
+    <title>Parameters</title>
+    
+    <para>TODO</para>
+  
+  </sect1>
                    
 </chapter>    

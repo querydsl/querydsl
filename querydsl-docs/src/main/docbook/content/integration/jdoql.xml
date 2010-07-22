@@ -373,4 +373,12 @@ WHERE this.weeklyhours >
           
   </sect2>      
   
+  <sect2>
+  
+  <title>Using Native SQL</title>
+  
+  <para>TODO</para>
+  
+  </sect2>
+  
 </sect1>

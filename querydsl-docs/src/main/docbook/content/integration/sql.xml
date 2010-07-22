@@ -33,6 +33,10 @@ exporter.export(conn.getMetaData());
   The generated types have the table name transformed to mixed case as the class name and a similar mixed case transformation
   applied to the columns which are available as property paths in the query type.
   </para>
+ 
+  <para>
+  In addition to this primary key and foreign key constraints are provided as fields which can be used for compact join declarations ... TODO 
+  </para>
   
  </sect2>
  
@@ -127,6 +131,12 @@ WHERE c.first_name = 'Bob'
           <listitem><para>tested with version 1.8.0.7</para></listitem>
         </itemizedlist>        
       </listitem>
+	<listitem>
+        <para>com.mysema.query.sql.H2Templates</para>
+        <itemizedlist>
+          <listitem><para>tested with H2 1.2.133</para></listitem>
+        </itemizedlist>
+      </listitem>      
       <listitem>
         <para>com.mysema.query.sql.MySQLTemplates</para>
         <itemizedlist>
@@ -228,6 +238,30 @@ GROUP BY c.last_name
   
   <sect2>
   
+    <title>Union queries</title>
+    
+    <para>TODO</para>
+  
+  </sect2>
+  
+  <sect2>
+  
+    <title>Query extension support</title>
+    
+    <para>TODO</para>
+  
+  </sect2>
+  
+  <sect2>
+  
+    <title>Using DDL commands</title>
+    
+    <para>TODO</para>
+  
+  </sect2>
+  
+  <sect2>
+  
     <title>Using Data manipulation commands</title>
     
     <para>Insert examples :</para>
@@ -284,6 +318,14 @@ update(survey).set(survey.name, "S").execute()
     }
 ]]></programlisting>
   
+  </sect2>
+  
+  <sect2>
+  
+    <title>User types</title>
+    
+    <para>TODO</para>
+    
   </sect2>
   
 </sect1>    

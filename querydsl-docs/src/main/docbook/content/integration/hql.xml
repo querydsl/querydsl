@@ -2,7 +2,7 @@
 
 <sect1 id="hql_integration" revision="1">
 
-  <title>Querying JPA/Hibernate sources</title>
+  <title>Querying JPA sources</title>
 
   <para>
     Querydsl defines a general statically typed syntax for querying on top of
@@ -12,8 +12,8 @@
     </para>
     
   <para>
-  Querydsl for JPA/Hibernate is an alternative to both HQL and Criteria queries. It combines the dynamic nature
-  of Criteria queries with the expressiveness of HQL and all that in a fully typesafe manner.  
+  Querydsl for JPA/Hibernate is an alternative to both JPQL and Criteria queries. It combines the dynamic nature
+  of Criteria queries with the expressiveness of JPQL and all that in a fully typesafe manner.  
   </para>
 
   <sect2>
@@ -98,7 +98,7 @@
     </para>
     
     <para>
-      Now you are able to construct JPAQL/HQL query instances and instances of
+      Now you are able to construct JPQL query instances and instances of
       the query domain model.
     </para>
 
@@ -197,7 +197,7 @@ QCustomer customer = new QCustomer("myCustomer");
 
   <sect2>
 
-    <title>Querying with HQL</title>
+    <title>Querying</title>
 
     <para>
       For the HQL-module HibernateQuery is the main Query implementation. It is
@@ -259,7 +259,7 @@ query.form(customer)
     .where(customer.firstName.eq("Bob").and(customer.lastName.eq("Wilson")));
 ]]></programlisting>
 
-  <para>In native HQL form the query would be written like this : </para>
+  <para>In native JPQL form the query would be written like this : </para>
   
 <programlisting>
 from Customer as customer
@@ -272,7 +272,7 @@ from Customer as customer
   
   <title>Using joins</title>
   
-  <para>Querydsl supports the following join variants in HQL/JPAQL : inner join, join, left join and full join.
+  <para>Querydsl supports the following join variants in JPQL : inner join, join, left join and full join.
     Join usage is typesafe, and follows the following pattern :</para>
     
 <programlisting language="java"><![CDATA[  
@@ -282,7 +282,7 @@ query.from(cat)
     .list(cat);
 ]]></programlisting>
 
- <para>The native HQL version of the query would be </para>
+ <para>The native JPQL version of the query would be </para>
   
 <programlisting>
 from Cat as cat
@@ -299,7 +299,7 @@ query.from(cat)
     .list(cat);
 ]]></programlisting>
 
-<para>With the following HQL version</para>    
+<para>With the following JPQL version</para>    
   
 <programlisting>  
 from Cat as cat
@@ -348,7 +348,7 @@ query.from(customer)
     .list(customer);
 ]]></programlisting>
 
-  <para>which is equivalent to the following native HQL</para>  
+  <para>which is equivalent to the following native JPQL</para>  
 
 <programlisting>  
 from Customer as customer
@@ -369,7 +369,7 @@ query.from(customer)
     .list(customer.lastName);
 ]]></programlisting>
 
-  <para>which is equivalent to the following native HQL</para>  
+  <para>which is equivalent to the following native JPQL</para>  
 
 <programlisting>  
 select customer.lastName
@@ -382,7 +382,7 @@ select customer.lastName
   
   <sect2>  
   <title>Delete clauses</title>
-  <para>Delete clauses in Querydsl HQL follow a simple delete-where-execute form. Here are some examples :</para>
+  <para>Delete clauses in Querydsl JPQL follow a simple delete-where-execute form. Here are some examples :</para>
     
 <programlisting language="java"><![CDATA[   
 QCat cat = QCat.cat;
@@ -400,7 +400,7 @@ new HibernateDeleteClause(session, cat).where(cat.kittens.isNotEmpty()).execute(
   
   <sect2>  
   <title>Update clauses</title>
-  <para>Update clauses in Querydsl HQL follow a simple update-set/where-execute form. Here are some examples :</para>
+  <para>Update clauses in Querydsl JPQL follow a simple update-set/where-execute form. Here are some examples :</para>
   
 <programlisting language="java"><![CDATA[   
 QCat cat = QCat.cat;
