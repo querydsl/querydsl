@@ -25,15 +25,21 @@
 <dependency>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-apt</artifactId>
-  <version>0.5.4</version>
+  <version>1.8.2</version>
   <scope>provided</scope>
 </dependency>        
     
 <dependency>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-jdoql</artifactId>
-  <version>0.5.4</version>
+  <version>1.8.2</version>
 </dependency>
+
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  <version>1.6.1</version>
+</dependency>    
 ]]></programlisting>
 
     <para>
@@ -332,7 +338,7 @@ new JDOQLDeleteClause(pm, cat).where(cat.kittens.isNotEmpty()).execute();
   for the query. unique is used for a unique result and list for a list result.</para>
 
 <programlisting language="java"><![CDATA[
-query().from(department)
+query.from(department)
     .where(department.employees.size().eq(
         new JDOQLSubQuery().from(d).unique(AggregationFunctions.max(d.employees.size()))
      )).list(department);  
@@ -349,7 +355,7 @@ WHERE this.employees.size() ==
   <para>Another example</para>
 
 <programlisting language="java"><![CDATA[
-query().from(employee)
+query.from(employee)
     .where(employee.weeklyhours.gt(
         new JDOQLSubQuery().from(employee.department.employees, e)
         .where(e.manager.eq(employee.manager))

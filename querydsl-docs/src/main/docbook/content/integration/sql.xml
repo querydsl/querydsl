@@ -16,13 +16,15 @@
 java.sql.Connection conn; // connection of database containing the schema to use
 // obtain Connection etc.
 
+NamingStrategy namingStrategy = new DefaultNamingStrategy();
+MetaDataSerializer serializer = new MetaDataSerializer("Q",namingStrategy);            
 MetaDataExporter exporter = new MetaDataExporter(
-  "Q",                                        // namePrefix
-  "com.myproject.domain",                     // target package
-  null,                                       // schema name pattern 
-  null,                                       // table name pattern 
-  new File("target/generated-sources/java")); // target source folder
-exporter.export(conn.getMetaData());
+    "Q",                       // namePrefix 
+    "com.myproject.mydomain",  // target package  
+    new File("src/main/java"), // target source folder
+    namingStrategy,            // naming strategy
+    serializer);               // serializer
+exporter.export(conn.getMetaData());  
 ]]></programlisting>
 
   <para>This declares that the database schema is to be mirrored into the com.myproject.domain package in the src/main/java folder.</para>

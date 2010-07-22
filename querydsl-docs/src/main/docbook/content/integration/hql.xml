@@ -28,15 +28,21 @@
 <dependency>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-apt</artifactId>
-  <version>0.5.4</version>
+  <version>1.8.2</version>
   <scope>provided</scope>
 </dependency>    
     
 <dependency>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-hql</artifactId>
-  <version>0.5.4</version>
+  <version>1.8.2</version>
 </dependency>
+
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  <version>1.6.1</version>
+</dependency>   
 ]]></programlisting>
 
     <para>
@@ -422,7 +428,7 @@ new HibernateUpdateClause(session, cat).where(cat.name.eq("Bob"))
   unique is used for a unique (single) result and list for a list result.</para>
 
 <programlisting language="java"><![CDATA[
-query().from(department)
+query.from(department)
     .where(department.employees.size().eq(
         new HQLSubQuery().from(d).unique(d.employees.size().max())
      )).list(department);
@@ -431,7 +437,7 @@ query().from(department)
   <para>Another example</para>
 
 <programlisting language="java"><![CDATA[
-query().from(employee)
+query.from(employee)
     .where(employee.weeklyhours.gt(
         new HQLSubQuery().from(employee.department.employees, e)
         .where(e.manager.eq(employee.manager))
