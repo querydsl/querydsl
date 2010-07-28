@@ -97,7 +97,7 @@ exporter.export(conn.getMetaData());
 QCustomer customer = new QCustomer("c");
 
 SQLTemplates dialect = new HSQLDBTemplates(); // SQL-dialect
-SQLQuery query = SQLQueryImpl(connection, dialect); 
+SQLQuery query = new SQLQueryImpl(connection, dialect); 
 List<String> lastNames = query.from(customer)
     .where(customer.firstName.eq("Bob"))
     .list(customer.lastName);
