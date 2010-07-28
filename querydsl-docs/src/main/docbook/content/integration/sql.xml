@@ -268,56 +268,55 @@ GROUP BY c.last_name
     
 <programlisting language="java"><![CDATA[    
 // with columns
-insert(survey)
+new SQLInsertClause(conn, dialect, survey)
     .columns(survey.id, survey.name)
     .values(3, "Hello").execute();
 
 // without columns
-insert(survey)
+new SQLInsertClause(conn, dialect, survey)
     .values(4, "Hello").execute();
 
 // with subquery
-insert(survey)
+new SQLInsertClause(conn, dialect, survey)
     .columns(survey.id, survey.name)
-    .select(s().from(survey2).list(survey2.id.add(1), survey2.name))
+    .select(new SQLSubQuery().from(survey2).list(survey2.id.add(1), survey2.name))
     .execute();
 
 // with subquery, without columns
-insert(survey)
-    .select(s().from(survey2).list(survey2.id.add(10), survey2.name))
+new SQLInsertClause(conn, dialect, survey)
+    .select(new SQLSubQuery().from(survey2).list(survey2.id.add(10), survey2.name))
     .execute();
 ]]></programlisting>
 
-  <para>Using the following methods :</para>
-
-<programlisting language="java"><![CDATA[    
-    protected SQLInsertClause insert(PEntity<?> e){
-        return new SQLInsertClause(getConnection(), dialect, e);
-    }   
-    
-    protected SQLSubQuery s(){
-        return new SQLSubQuery();
-    }    
-]]></programlisting>    
 
    <para>Update examples :</para> 
   
 <programlisting language="java"><![CDATA[  
 // update with where
-update(survey).where(survey.name.eq("XXX")).set(survey.name, "S").execute();
+new SQLUpdateClause(conn, dialect, survey)
+    .where(survey.name.eq("XXX"))
+    .set(survey.name, "S")
+    .execute();
   
 // update without where
-update(survey).set(survey.name, "S").execute()  
+new SQLUpdateClause(conn, dialect, survey)
+    .set(survey.name, "S")
+    .execute()  
 ]]></programlisting>
 
-  <para>Using the following methods :</para>
+  <para>Delete examples :</para>
+
+<programlisting language="java"><![CDATA[    
+// delete with where
+new SQLDelecteClause(conn, dialect, survey)
+    .where(survey.name.eq("XXX"))
+    .execute();
   
-<programlisting language="java"><![CDATA[  
-    protected SQLUpdateClause update(PEntity<?> e){
-        return new SQLUpdateClause(Connections.getConnection(), dialect, e);
-    }
-]]></programlisting>
-  
+// delete without where
+new SQLDelecteClause(conn, dialect, survey)
+    .execute()  
+]]></programlisting>  
+
   </sect2>
   
   <sect2>
