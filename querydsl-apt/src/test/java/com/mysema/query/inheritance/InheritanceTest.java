@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.domain;
+package com.mysema.query.inheritance;
 
 import static org.junit.Assert.assertNotNull;
 

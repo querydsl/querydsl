@@ -1,10 +1,12 @@
-package com.mysema.query.domain;
+package com.mysema.query.inheritance;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
+import com.mysema.query.domain.CommonIdentifiable;
+import com.mysema.query.domain.CommonPersistence;
 import com.mysema.query.types.path.PNumber;
 
 public class Inheritance8Test {

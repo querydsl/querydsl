@@ -1,10 +1,11 @@
-package com.mysema.query.domain;
+package com.mysema.query.inheritance;
 
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
+import com.mysema.query.domain.SuperSupertype;
 
 /**
  * related to https://bugs.launchpad.net/querydsl/+bug/538148
