@@ -44,7 +44,14 @@ public class MultiComparator<T> implements Comparator<T>, Serializable {
 
     private int innerCompare(Object[] o1, Object[] o2) {
         for (int i = 0; i < o1.length; i++) {
-            int res = naturalOrder.compare(o1[i], o2[i]);
+            int res;
+            if (o1[i] == null){
+                res = o2[i] == null ? 0 : -1;
+            }else if (o2[i] == null){
+                res = 1;
+            }else{
+                res = naturalOrder.compare(o1[i], o2[i]);    
+            }            
             if (res != 0) {
                 return asc[i] ? res : -res;
             }
