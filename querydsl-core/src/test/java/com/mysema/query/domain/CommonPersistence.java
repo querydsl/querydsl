@@ -9,6 +9,7 @@ import com.mysema.query.annotations.QuerySupertype;
 
 @QuerySupertype
 public class CommonPersistence {
+    
     private Long version;
 
     public Long getVersion() {

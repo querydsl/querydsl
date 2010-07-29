@@ -22,9 +22,15 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
     }
     
     @Test
-    public void processInheritance() throws IOException{
-        File file = new File("src/test/java/com/mysema/query/inheritance/", "Inheritance3Test.java");
-        process(QuerydslAnnotationProcessor.class, Collections.singletonList(file.getPath()),"qdsl");
+    public void processInheritance3() throws IOException{
+        String path = new File("src/test/java/com/mysema/query/inheritance/Inheritance3Test.java").getPath();
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"inheritance");
+    }
+    
+    @Test
+    public void processInheritance8() throws IOException{
+        String path = new File("src/test/java/com/mysema/query/inheritance/Inheritance8Test.java").getPath();
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"inheritance");
     }
 
     @Test

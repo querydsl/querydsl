@@ -13,7 +13,7 @@ package com.mysema.query.codegen;
  */
 public final class TypeResolver {
 
-    public static Type resolve(Type type, Type declaringType, EntityType context){
+    public static Type resolve(Type type, Type declaringType, EntityType context){        
         Type resolved = type;
 
         // handle generic types
