@@ -44,13 +44,33 @@ public class Inheritance3Test extends AbstractTest{
     public class GenericSupertypeS extends GenericSupertypeC<String>{
 
     }
+    
+    @QueryEntity
+    public class GenericSupertypeS2 extends GenericSupertype<String>{
+
+    }
 
     @Test
-    public void test1() throws SecurityException, NoSuchFieldException{
+    public void GenericSupertype() throws SecurityException, NoSuchFieldException{
         cl = QInheritance3Test_GenericSupertype.class;
-        match(PSimple.class, "field");
-
+        match(PSimple.class, "field");    
+    }
+    
+    @Test
+    public void GenericSupertypeC() throws SecurityException, NoSuchFieldException{
+        cl = QInheritance3Test_GenericSupertypeC.class;
+        match(PSimple.class, "field");    
+    }
+    
+    @Test
+    public void GenericSupertypeS() throws SecurityException, NoSuchFieldException{
         cl = QInheritance3Test_GenericSupertypeS.class;
+        match(PString.class, "field");
+    }
+    
+    @Test
+    public void GenericSupertypeS2() throws SecurityException, NoSuchFieldException{
+        cl = QInheritance3Test_GenericSupertypeS2.class;
         match(PString.class, "field");
     }
 

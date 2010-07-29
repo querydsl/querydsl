@@ -210,7 +210,6 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         for (Delegate delegate : entityType.getDelegates()){
             addDelegate(delegate);
         }
-
         for (Property property : entityType.getProperties()){
             if (!property.isInherited()){
                 addProperty(property.createCopy(this));

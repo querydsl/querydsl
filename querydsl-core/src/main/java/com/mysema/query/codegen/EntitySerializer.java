@@ -235,7 +235,6 @@ public class EntitySerializer implements Serializer{
             writer.beginClass(queryType, pathType.getSimpleName() + "<" + localName + ">");    
         }
         
-
         // TODO : generate proper serialVersionUID here
         writer.privateStaticFinal("long", "serialVersionUID", String.valueOf(model.hashCode()));
     }
@@ -560,10 +559,15 @@ public class EntitySerializer implements Serializer{
     
     private void customField(EntityType model, Property field, SerializerConfig config, CodeWriter writer) throws IOException {
         String queryType = typeMappings.getPathType(field.getType(), model, false);
-        writer.line("// custom");
+        writer.line("// custom");        
         if (field.isInherited()){
             writer.line("// inherited");
-            writer.publicFinal(queryType, field.getEscapedName(),"_super." + field.getEscapedName());
+            Supertype superType = model.getSuperType();
+            if (!superType.getEntityType().hasEntityFields()){
+                writer.publicFinal(queryType, field.getEscapedName(),"_super." + field.getEscapedName());    
+            }else{
+                writer.publicFinal(queryType, field.getEscapedName());
+            }            
         }else{
             String value = NEW + queryType + "(forProperty(\"" + field.getName() + "\"))";
             writer.publicFinal(queryType, field.getEscapedName(), value);

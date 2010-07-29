@@ -115,6 +115,7 @@ public class Processor {
             if (entityType != null){
                 sdecl.setEntityType(entityType);
                 model.include(sdecl);
+                System.err.println(model.getSimpleName() + " " + entityType.getSimpleName());
                 for (Supertype type : sdecl.getEntityType().getSuperTypes()) {
                     stypeStack.push(type);
                 }

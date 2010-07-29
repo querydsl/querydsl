@@ -61,12 +61,12 @@ public final class Property implements Comparable<Property> {
         return name.compareToIgnoreCase(o.getName());
     }
 
-    public Property createCopy(EntityType model) {
-        Type newType = TypeResolver.resolve(type, declaringType, model);
+    public Property createCopy(EntityType targetModel) {
+        Type newType = TypeResolver.resolve(type, declaringType, targetModel);
         if (newType != type){
-            return new Property(model, name, newType, inits, false);
+            return new Property(targetModel, name, newType, inits, false);
         }else{
-            return new Property(model, name, type, inits, model.getSuperType() != null);
+            return new Property(targetModel, name, type, inits, targetModel.getSuperType() != null);
         }
     }
     

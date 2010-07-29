@@ -25,7 +25,7 @@ public final class TypeResolver {
         if(resolved.getParameterCount() > 0){
             resolved = resolveWithParameters(resolved, declaringType, context);
         }
-
+        
         return resolved;
     }
 

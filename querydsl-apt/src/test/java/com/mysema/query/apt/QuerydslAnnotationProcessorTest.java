@@ -20,6 +20,12 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
         File file = new File(packagePath, "AbstractEntityTest.java");
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(file.getPath()),"qdsl");
     }
+    
+    @Test
+    public void processInheritance() throws IOException{
+        File file = new File("src/test/java/com/mysema/query/inheritance/", "Inheritance3Test.java");
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(file.getPath()),"qdsl");
+    }
 
     @Test
     public void processAll() throws IOException{
@@ -38,5 +44,4 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
         // JDO
         process(JDOAnnotationProcessor.class, classes,"jdo");
     }
-
 }
