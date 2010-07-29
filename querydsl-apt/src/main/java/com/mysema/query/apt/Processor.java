@@ -106,21 +106,17 @@ public class Processor {
 
     }
 
-    private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes) {
-        Deque<Supertype> stypeStack = new ArrayDeque<Supertype>();
-        stypeStack.addAll(model.getSuperTypes());
-        while (!stypeStack.isEmpty()) {
-            Supertype sdecl = stypeStack.pop();
-            EntityType entityType = superTypes.get(sdecl.getType().getFullName());
-            if (entityType != null){
-                sdecl.setEntityType(entityType);
-                model.include(sdecl);
-                System.err.println(model.getSimpleName() + " " + entityType.getSimpleName());
-                for (Supertype type : sdecl.getEntityType().getSuperTypes()) {
-                    stypeStack.push(type);
+    private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes, Set<EntityType> handled) {
+        if (handled.add(model)){
+            for (Supertype supertype : model.getSuperTypes()){
+                EntityType entityType = superTypes.get(supertype.getType().getFullName());
+                if (entityType != null){
+                    addSupertypeFields(entityType, superTypes, handled);
+                    supertype.setEntityType(entityType);
+                    model.include(supertype);
                 }
             }
-        }
+        }        
     }
 
     private void handleExtensionType(TypeMirror type, Element element) {
@@ -238,8 +234,9 @@ public class Processor {
         allSupertypes.putAll(types);
 
         // add supertype fields
+        Set<EntityType> handled = new HashSet<EntityType>();
         for (EntityType type : types.values()) {
-            addSupertypeFields(type, allSupertypes);
+            addSupertypeFields(type, allSupertypes, handled);
         }
     }
 
@@ -327,8 +324,9 @@ public class Processor {
         allSupertypes.putAll(embeddables);
 
         // add super type fields
+        Set<EntityType> handled = new HashSet<EntityType>();
         for (EntityType embeddable : embeddables.values()) {
-            addSupertypeFields(embeddable, allSupertypes);
+            addSupertypeFields(embeddable, allSupertypes, handled);
         }
     }
 
