@@ -8,8 +8,6 @@ package com.mysema.util;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import org.apache.commons.collections15.comparators.ComparableComparator;
-
 import com.mysema.codegen.Evaluator;
 
 /**
@@ -18,9 +16,11 @@ import com.mysema.codegen.Evaluator;
  * @author tiwe
  * @version $Id$
  */
+
 public class MultiComparator<T> implements Comparator<T>, Serializable {
 
-    private static final Comparator<Object> naturalOrder = ComparableComparator.getInstance();
+    @SuppressWarnings("unchecked")
+    private static final Comparator<Object> naturalOrder = (Comparator)new NullSafeComparableComparator();
 
     private static final long serialVersionUID = 1121416260773566299L;
 
