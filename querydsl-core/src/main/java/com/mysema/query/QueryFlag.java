@@ -5,6 +5,8 @@
  */
 package com.mysema.query;
 
+import java.io.Serializable;
+
 import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
@@ -18,8 +20,10 @@ import com.mysema.query.types.custom.CString;
  *
  */
 @Immutable
-public class QueryFlag {
+public class QueryFlag implements Serializable{
     
+    private static final long serialVersionUID = -7131081607441961628L;
+
     public enum Position {        
         
         START,

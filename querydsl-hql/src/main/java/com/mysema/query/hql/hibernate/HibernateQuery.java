@@ -27,7 +27,7 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
      * The query can be attached via the clone method
      */
     public HibernateQuery() {
-        this(NoSessionHolder.DEFAULT, HQLTemplates.DEFAULT);
+        super(NoSessionHolder.DEFAULT, HQLTemplates.DEFAULT, new DefaultQueryMetadata());
     }
 
     /**
@@ -36,7 +36,16 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
      * @param session
      */
     public HibernateQuery(Session session) {
-        this(new DefaultSessionHolder(session), HQLTemplates.DEFAULT);
+        super(new DefaultSessionHolder(session), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
+    }
+    
+    /**
+     * Creates a new Session bound query
+     *
+     * @param session
+     */
+    public HibernateQuery(Session session, QueryMetadata metadata) {
+        super(new DefaultSessionHolder(session), HQLTemplates.DEFAULT, metadata);
     }
 
     /**
@@ -46,7 +55,7 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
      * @param templates
      */
     public HibernateQuery(Session session, JPQLTemplates templates) {
-    this(new DefaultSessionHolder(session), templates);
+        super(new DefaultSessionHolder(session), templates, new DefaultQueryMetadata());
     }
 
     /**
@@ -55,7 +64,7 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
      * @param session
      */
     public HibernateQuery(StatelessSession session) {
-        this(new StatelessSessionHolder(session), HQLTemplates.DEFAULT);
+        super(new StatelessSessionHolder(session), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
     }
 
     /**

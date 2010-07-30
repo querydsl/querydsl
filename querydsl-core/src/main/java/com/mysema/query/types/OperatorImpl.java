@@ -20,6 +20,8 @@ import com.mysema.commons.lang.Assert;
 @Immutable
 public class OperatorImpl<RT> implements Operator<RT> {
 
+    private static final long serialVersionUID = -2435035383548549877L;
+
     private final String id;
     
     private final List<Class<?>> types;
@@ -34,8 +36,29 @@ public class OperatorImpl<RT> implements Operator<RT> {
     }
 
     @Override
+    public String getId(){
+        return id;
+    }
+    
+    @Override
     public List<Class<?>> getTypes() {
         return types;
+    }
+    
+    @Override
+    public boolean equals(Object o){
+        if (o == this){
+            return true;
+        }else if (o instanceof Operator<?>){
+            return ((Operator<?>)o).getId().equals(id);
+        }else{
+            return false;
+        }
+    }
+    
+    @Override
+    public int hashCode(){
+        return id.hashCode();
     }
     
     @Override

@@ -5,6 +5,7 @@
  */
 package com.mysema.query;
 
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -19,7 +20,9 @@ import com.mysema.query.types.expr.EBoolean;
  *
  * @author tiwe
  */
-public final class JoinExpression {
+public final class JoinExpression implements Serializable{
+
+    private static final long serialVersionUID = -1131755765747174886L;
 
     private BooleanBuilder condition = new BooleanBuilder();
 

@@ -64,5 +64,22 @@ public class OrderSpecifier<A extends Comparable> implements Serializable {
     public String toString() {
         return target + " " + order;
     }
+    
+    @Override
+    public boolean equals(Object o){
+        if (o == this){
+            return true;
+        }else if (o instanceof OrderSpecifier){
+            OrderSpecifier<?> os = (OrderSpecifier)o;
+            return os.order.equals(order) && os.target.equals(target);
+        }else{
+            return false;
+        }
+    }
+    
+    @Override
+    public int hashCode(){
+        return target.hashCode();
+    }
 
 }

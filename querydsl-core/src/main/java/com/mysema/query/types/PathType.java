@@ -54,4 +54,9 @@ public enum PathType implements Operator<Path<?>> {
         return Collections.emptyList();
     }
 
+    @Override
+    public String getId() {
+        return name();
+    }
+
 }

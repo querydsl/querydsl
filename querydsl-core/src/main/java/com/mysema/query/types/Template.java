@@ -109,5 +109,20 @@ public final class Template implements Serializable{
     public String toString() {
         return template;
     }
+    
+    public boolean equals(Object o){
+        if (o == this){
+            return true;
+        }else if (o instanceof Template){
+            return ((Template)o).template.equals(template);
+        }else{
+            return false;
+        }
+    }
+    
+    @Override
+    public int hashCode(){
+        return template.hashCode();
+    }
 
 }

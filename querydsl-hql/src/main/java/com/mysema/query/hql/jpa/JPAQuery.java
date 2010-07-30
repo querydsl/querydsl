@@ -37,6 +37,15 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements HQLQue
     public JPAQuery(EntityManager entityManager) {
         super(new DefaultSessionHolder(entityManager), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
     }
+    
+    /**
+     * Creates a new EntityManager bound query
+     *
+     * @param entityManager
+     */
+    public JPAQuery(EntityManager entityManager, QueryMetadata metadata) {
+        super(new DefaultSessionHolder(entityManager), HQLTemplates.DEFAULT, metadata);
+    }
 
     /**
      * Creates a new query

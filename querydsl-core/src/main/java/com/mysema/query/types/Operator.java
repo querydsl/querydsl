@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,7 +15,12 @@ import java.util.List;
  *
  * @param <RT>
  */
-public interface Operator<RT> {
+public interface Operator<RT> extends Serializable{
+    
+    /**
+     * @return
+     */
+    String getId();
     
     /**
      * Get the types related to this operator symbols
