@@ -59,6 +59,8 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
     }
 
     /**
+     * Creates a new Session bound query
+     * 
      * @param session
      * @param templates
      */
@@ -67,6 +69,8 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
     }
 
     /**
+     * Creates a new Session bound query
+     * 
      * @param session
      * @param templates
      * @param metadata

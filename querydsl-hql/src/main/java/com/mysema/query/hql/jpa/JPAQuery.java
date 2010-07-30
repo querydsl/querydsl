@@ -49,6 +49,8 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements HQLQue
     }
 
     /**
+     * Creates a new query
+     * 
      * @param session
      * @param templates
      * @param metadata
