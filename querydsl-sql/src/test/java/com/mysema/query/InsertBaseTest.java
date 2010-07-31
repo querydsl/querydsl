@@ -80,7 +80,7 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     }
     
     @Test
-    public void insertBatch2(){
+    public void insertBatch_with_subquery(){
         SQLInsertClause insert = insert(survey)
             .columns(survey.id, survey.name)
             .select(sq().from(survey2).list(survey2.id.add(20), survey2.name))
