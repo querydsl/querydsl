@@ -6,7 +6,7 @@ import java.io.*;
 @Entity
 public class JavaWriterTest {
 
-    @org.junit.Test(timeout=0)
+    @org.junit.Test
     public void test() {
     }
 

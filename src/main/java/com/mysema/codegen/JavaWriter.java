@@ -85,12 +85,14 @@ public final class JavaWriter implements Appendable, CodeWriter{
     
     @Override
     public JavaWriter annotation(Annotation annotation) throws IOException {
-        append(indent).append("@").appendType(annotation.annotationType()).append("(");
+        append(indent).append("@").appendType(annotation.annotationType());
         Method[] methods = annotation.annotationType().getDeclaredMethods();
         if (methods.length == 1 && methods[0].getName().equals("value")){
             try {
                 Object value = methods[0].invoke(annotation);
+                append("(");
                 annotationConstant(value);
+                append(")");
             } catch (IllegalArgumentException e) {
                 throw new CodegenException(e);
             } catch (IllegalAccessException e) {
@@ -103,10 +105,12 @@ public final class JavaWriter implements Appendable, CodeWriter{
             for (Method method : methods){            
                 try {
                     Object value = method.invoke(annotation);
-                    if (value == null){
+                    if (value == null || value.equals(method.getDefaultValue())){
                         continue;
                     }else if (!first){
                         append(COMMA);
+                    }else{
+                        append("(");
                     }
                     append(method.getName()+"=");                
                     annotationConstant(value);
@@ -118,9 +122,12 @@ public final class JavaWriter implements Appendable, CodeWriter{
                     throw new CodegenException(e);
                 }
                 first = false;
-            }    
-        }                
-        return append(")").nl();
+            }               
+            if (!first){
+                append(")");    
+            }        
+        }        
+        return nl();
      }    
     
 
@@ -133,7 +140,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
     private void annotationConstant(Object value) throws IOException{
          if (value instanceof Class){
              appendType((Class)value).append(".class");             
-         }else if (value instanceof Number){
+         }else if (value instanceof Number || value instanceof Boolean){
              append(value.toString());
          }else if (value instanceof Enum){
              Enum enumValue = (Enum)value;
