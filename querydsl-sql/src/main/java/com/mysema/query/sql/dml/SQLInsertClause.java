@@ -46,8 +46,6 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
 
     private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
 
-    private final List<Path<?>> columns = new ArrayList<Path<?>>();
-
     private final Connection connection;
 
     private final PEntity<?> entity;
@@ -55,8 +53,14 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
     @Nullable
     private SubQuery<?> subQuery;
 
+    private final List<SQLInsertBatch> batches = new ArrayList<SQLInsertBatch>();
+    
+    private final List<Path<?>> columns = new ArrayList<Path<?>>();
+    
     private final List<Expr<?>> values = new ArrayList<Expr<?>>();
 
+    private transient String queryString;
+    
     public SQLInsertClause(Connection connection, SQLTemplates templates, PEntity<?> entity) {
         this(connection, new Configuration(templates), entity);
     }
@@ -65,6 +69,14 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         super(configuration);
         this.connection = connection;
         this.entity = entity;
+    }
+    
+    public SQLInsertClause addBatch() {
+        batches.add(new SQLInsertBatch(columns, values, subQuery));
+        columns.clear();
+        values.clear();
+        subQuery = null;
+        return this;
     }
 
     protected void close(PreparedStatement stmt) {
@@ -122,18 +134,47 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         }
     }
     
-    public ResultSet executeWithKeys(){
+    private PreparedStatement createStatement() throws SQLException{
         SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
-        serializer.serializeForInsert(entity, columns, values, subQuery);
-        String queryString = serializer.toString();
-        logger.debug(queryString);
-
-        try {
-            final PreparedStatement stmt = connection.prepareStatement(queryString);
+        PreparedStatement stmt = null;
+        if (batches.isEmpty()){
+            serializer.serializeForInsert(entity, columns, values, subQuery);
+            queryString = serializer.toString();
+            logger.debug(queryString);        
+            stmt = connection.prepareStatement(queryString);
+            setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());    
+        }else{
+            serializer.serializeForInsert(entity, batches.get(0).getColumns(), batches.get(0).getValues(), batches.get(0).getSubQuery());
+            queryString = serializer.toString();
+            logger.debug(queryString);        
+            stmt = connection.prepareStatement(queryString);
+            
+            // add first batch
             setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
-            stmt.executeUpdate();
+            stmt.addBatch();
+            
+            // add other batches
+            for (int i = 1; i < batches.size(); i++){
+                SQLInsertBatch batch = batches.get(i);
+                serializer = new SQLSerializer(configuration.getTemplates(), true);
+                // TODO : add support for dry serialization (without SQL construction)
+                serializer.serializeForInsert(entity, batch.getColumns(), batch.getValues(), batch.getSubQuery());
+                setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
+                stmt.addBatch();
+            }
+        }
+        return stmt;        
+    }
+    
+    public ResultSet executeWithKeys(){        
+        try {
+            final PreparedStatement stmt = createStatement();
+            if (batches.isEmpty()){
+                stmt.executeUpdate();    
+            }else{
+                stmt.executeBatch();
+            }               
             ResultSet rs = stmt.getGeneratedKeys();
-
             return new ResultSetAdapter(rs){
                 @Override
                 public void close() throws SQLException {
@@ -151,16 +192,18 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
 
     @Override
     public long execute() {
-        SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
-        serializer.serializeForInsert(entity, columns, values, subQuery);
-        String queryString = serializer.toString();
-        logger.debug(queryString);
-
         PreparedStatement stmt = null;
-        try {
-            stmt = connection.prepareStatement(queryString);
-            setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
-            return stmt.executeUpdate();
+        try {            
+            stmt = createStatement();
+            if (batches.isEmpty()){
+                return stmt.executeUpdate();    
+            }else{
+                long rv = 0;
+                for (int i : stmt.executeBatch()){
+                    rv += i;
+                }
+                return rv;
+            }            
         } catch (SQLException e) {
             throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
         } finally {
@@ -171,8 +214,8 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
     }
 
     @Override
-    public SQLInsertClause select(SubQuery<?> subQuery) {
-        this.subQuery = subQuery;
+    public SQLInsertClause select(SubQuery<?> sq) {
+        subQuery = sq;
         return this;
     }
 
@@ -209,5 +252,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         serializer.serializeForInsert(entity, columns, values, subQuery);
         return serializer.toString();
     }
+
+
 
 }

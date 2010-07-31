@@ -7,6 +7,7 @@ package com.mysema.query;
 
 import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Constants.survey2;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.ResultSet;
@@ -62,6 +63,36 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
         insert(survey)
             .select(sq().from(survey2).list(survey2.id.add(10), survey2.name))
             .execute();
+    }
+    
+    @Test
+    public void insertBatch(){
+        SQLInsertClause insert = insert(survey)
+            .set(survey.id, 5)
+            .set(survey.name, "5")
+            .addBatch();
+        
+        insert.set(survey.id, 6)
+            .set(survey.name, "6")
+            .addBatch();
+     
+        assertEquals(2, insert.execute());
+    }
+    
+    @Test
+    public void insertBatch2(){
+        SQLInsertClause insert = insert(survey)
+            .columns(survey.id, survey.name)
+            .select(sq().from(survey2).list(survey2.id.add(20), survey2.name))
+            .addBatch();
+        
+        insert(survey)
+            .columns(survey.id, survey.name)
+            .select(sq().from(survey2).list(survey2.id.add(40), survey2.name))
+            .addBatch();
+        
+        insert.execute();
+//        assertEquals(1, insert.execute());
     }
 
     @Test
