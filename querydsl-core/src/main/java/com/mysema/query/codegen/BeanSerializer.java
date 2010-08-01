@@ -3,6 +3,8 @@ package com.mysema.query.codegen;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -38,6 +40,12 @@ public class BeanSerializer implements Serializer{
         
         // imports
         Set<Class<?>> imports = getAnnotationTypes(model);
+        if (model.hasLists()){
+            imports.add(List.class);
+        }
+        if (model.hasMaps()){
+            imports.add(Map.class);
+        }
         writer.imports(imports.toArray(new Class[imports.size()]));
         
         // javadoc        
