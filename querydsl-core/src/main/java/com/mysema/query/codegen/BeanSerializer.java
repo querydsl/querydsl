@@ -17,6 +17,16 @@ import com.mysema.codegen.CodeWriter;
  */
 public class BeanSerializer implements Serializer{
 
+    private final String javadocSuffix;
+    
+    public BeanSerializer() {
+        this(" is a Querydsl bean type");
+    }
+    
+    public BeanSerializer(String javadocSuffix) {
+        this.javadocSuffix = javadocSuffix;
+    }
+    
     @Override
     public void serialize(EntityType model, SerializerConfig serializerConfig, CodeWriter writer) throws IOException {
         String simpleName = model.getSimpleName();
@@ -31,7 +41,7 @@ public class BeanSerializer implements Serializer{
         writer.imports(imports.toArray(new Class[imports.size()]));
         
         // javadoc        
-        writer.javadoc(simpleName + " is a Querydsl bean type");
+        writer.javadoc(simpleName + javadocSuffix);
         
         // header
         for (Annotation annotation : model.getAnnotations()){
