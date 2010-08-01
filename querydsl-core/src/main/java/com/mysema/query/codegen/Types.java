@@ -5,6 +5,10 @@
  */
 package com.mysema.query.codegen;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.net.URI;
+
 /**
  * Types provides {@link Type} constants
  * 
@@ -36,5 +40,11 @@ public final class Types {
     public static final Type SHORT = new ClassType(TypeCategory.NUMERIC, Short.class, short.class);
 
     public static final Type STRING = new ClassType(TypeCategory.STRING, String.class);
-
+    
+    public static final Type BIG_DECIMAL = new ClassType(TypeCategory.NUMERIC, BigDecimal.class);
+    
+    public static final Type BIG_INTEGER = new ClassType(TypeCategory.NUMERIC, BigInteger.class);
+    
+    public static final Type URI = new ClassType(TypeCategory.COMPARABLE, URI.class);
+    
 }
