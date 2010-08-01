@@ -13,6 +13,7 @@ import java.lang.annotation.Annotation;
  * @author tiwe
  *
  */
+@SuppressWarnings("all")
 public class TableImpl implements Table{
 
     private final String table;

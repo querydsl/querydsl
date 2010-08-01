@@ -8,6 +8,7 @@ import java.lang.annotation.Annotation;
  * @author tiwe
  *
  */
+@SuppressWarnings("all")
 public class ColumnImpl implements Column{
 
     private final String column;
