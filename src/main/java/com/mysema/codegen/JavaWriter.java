@@ -33,6 +33,8 @@ import org.apache.commons.lang.StringUtils;
  */
 public final class JavaWriter implements Appendable, CodeWriter{
     
+    private static final int INDENT_SPACES = 4;
+    
     private static final String EXTENDS = " extends ";
         
     private static final String IMPLEMENTS = " implements ";
@@ -40,8 +42,6 @@ public final class JavaWriter implements Appendable, CodeWriter{
     private static final String IMPORT = "import ";
 
     private static final String IMPORT_STATIC = "import static ";
-
-    private static final int INDENT_SPACES = 4;
 
     private static final String PACKAGE = "package ";
 
