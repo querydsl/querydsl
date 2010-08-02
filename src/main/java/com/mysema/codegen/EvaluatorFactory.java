@@ -54,7 +54,7 @@ public class EvaluatorFactory {
         this.compilationOptions = Arrays.asList("-classpath", classpath, "-g:none");
     }
 
-    private void compile(String source, Type<?> projectionType,
+    private void compile(String source, Class<?> projectionType,
             String[] names, Type<?>[] types, String id, Map<String,Object> constants) throws IOException {
         // create source
         StringWriter writer = new StringWriter();
@@ -62,7 +62,7 @@ public class EvaluatorFactory {
         javaw.beginClass(id, null);
         String[] params = new String[names.length];
         for (int i = 0; i < params.length; i++) {
-            params[i] = ClassUtils.getName(types[i]) + " " + names[i];
+            params[i] = types[i].getGenericName() + " " + names[i];
         }
         
         for (Map.Entry<String,Object> entry : constants.entrySet()){
@@ -105,9 +105,9 @@ public class EvaluatorFactory {
             Map<String,Object> constants) {
         Type<?>[] types = new Type[classes.length];
         for (int i = 0; i < types.length; i++){
-            types[i] = new Type(classes[i]);
+            types[i] = new ClassType(classes[i]);
         }
-        return createEvaluator(source, new Type(projectionType), names, types, classes, constants);
+        return createEvaluator(source, projectionType, names, types, classes, constants);
     }
 
     /**
@@ -123,7 +123,7 @@ public class EvaluatorFactory {
      */
     public <T> Evaluator<T> createEvaluator(
                 String source,
-                Type<? extends T> projection, 
+                Class<? extends T> projection, 
                 String[] names, 
                 Type<?>[] types,  
                 Class<?>[] classes,
@@ -147,7 +147,7 @@ public class EvaluatorFactory {
             }
 
             Method method = clazz.getMethod("eval", classes);
-            return new MethodEvaluator<T>(method, object, projection.getJavaClass());
+            return new MethodEvaluator<T>(method, object, projection);
         } catch (ClassNotFoundException e) {
             throw new CodegenException(e);
         } catch (SecurityException e) {
@@ -168,7 +168,7 @@ public class EvaluatorFactory {
 
     }
     
-    protected String toId(String source, Type<?> returnType, Type<?>... types) {
+    protected String toId(String source, Class<?> returnType, Type<?>... types) {
         StringBuilder b = new StringBuilder("Q");
         b.append("_").append(source.hashCode());
         b.append("_").append(returnType.getName().hashCode());

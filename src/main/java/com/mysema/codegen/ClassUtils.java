@@ -30,31 +30,7 @@ public final class ClassUtils {
             return cl.getName().replace('$', '.');
         }
     }
-    
-    public static String getName(Type<?> cl){
-        return getName(cl, Collections.singleton("java.lang"), Collections.<String>emptySet());
-    }
-    
-    public static String getName(Type<?> type, Set<String> packages, Set<String> classes){
-        if (type.getParameters().isEmpty()){
-            return getName(type.getJavaClass(), packages, classes);
-        }else{
-            StringBuilder builder = new StringBuilder();
-            builder.append(getName(type.getJavaClass(), packages, classes));
-            builder.append("<");
-            boolean first = true;
-            for (Type<?> parameter : type.getParameters()){
-                builder.append(getName(parameter, packages, classes));
-                if (!first){
-                    builder.append(",");
-                }
-                first = false;
-            }
-            builder.append(">");
-            return builder.toString();
-        }
-    }
-    
+        
     public static Class<?> normalize(Class<?> clazz){
         if (List.class.isAssignableFrom(clazz)){
             return List.class;
