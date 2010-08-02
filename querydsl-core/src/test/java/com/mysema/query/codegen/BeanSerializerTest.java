@@ -1,5 +1,7 @@
 package com.mysema.query.codegen;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -35,7 +37,7 @@ public class BeanSerializerTest {
         type.addProperty(new Property(type, "collection", new ClassType(TypeCategory.COLLECTION, Collection.class, typeModel), new String[0]));
         type.addProperty(new Property(type, "listField", new ClassType(TypeCategory.LIST, List.class, typeModel), new String[0]));
         type.addProperty(new Property(type, "setField", new ClassType(TypeCategory.SET, Set.class, typeModel), new String[0]));
-        type.addProperty(new Property(type, "arrayField", new ClassType(TypeCategory.ARRAY, String[].class, typeModel), new String[0]));
+        type.addProperty(new Property(type, "arrayField", new ClassType(TypeCategory.ARRAY, String[].class), new String[0]));
         type.addProperty(new Property(type, "mapField", new ClassType(TypeCategory.MAP, List.class, typeModel, typeModel), new String[0]));
         type.addProperty(new Property(type, "superTypeField", new TypeExtends(new ClassType(TypeCategory.MAP, List.class, typeModel, typeModel)), new String[0]));
         type.addProperty(new Property(type, "extendsTypeField", new TypeSuper(new ClassType(TypeCategory.MAP, List.class, typeModel, typeModel)), new String[0]));
@@ -59,7 +61,23 @@ public class BeanSerializerTest {
     public void test() throws IOException{
         BeanSerializer serializer = new BeanSerializer();
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
-        System.out.println(writer);
+        String str = writer.toString();
+        for (String prop : Arrays.asList(
+                "String[] arrayField;",
+                "Boolean boolean_;",
+                "java.util.Collection<DomainClass> collection;",
+                "Comparable comparable;",
+                "java.util.Date date;",
+                "DomainClass entityField;",
+                "Object extendsTypeField;",
+                "Integer integer;",
+                "java.util.List<DomainClass> listField;",
+                "java.util.List<DomainClass,DomainClass> mapField;",
+                "java.util.Set<DomainClass> setField;",
+                "java.util.List<DomainClass,DomainClass> superTypeField;",
+                "java.sql.Time time;")){
+            assertTrue(prop + " was not contained", str.contains(prop));
+        }
     }
     
 }

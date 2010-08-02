@@ -16,16 +16,7 @@ import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.ETime;
 import com.mysema.query.types.expr.ONumber;
-import com.mysema.query.types.query.BooleanSubQuery;
-import com.mysema.query.types.query.ComparableSubQuery;
-import com.mysema.query.types.query.DateSubQuery;
-import com.mysema.query.types.query.DateTimeSubQuery;
-import com.mysema.query.types.query.Detachable;
-import com.mysema.query.types.query.ListSubQuery;
-import com.mysema.query.types.query.NumberSubQuery;
-import com.mysema.query.types.query.ObjectSubQuery;
-import com.mysema.query.types.query.StringSubQuery;
-import com.mysema.query.types.query.TimeSubQuery;
+import com.mysema.query.types.query.*;
 
 /**
  * Mixin style implementation of the Detachable interface

@@ -90,8 +90,23 @@ public final class ClassType extends AbstractType{
     }
 
     @Override
-    public void appendLocalGenericName(Type context, Appendable builder, boolean asArgType) throws IOException {
+    public void appendLocalGenericName(Type context, Appendable builder, boolean asArgType) throws IOException {        
         appendLocalRawName(context, builder);
+        if (!parameters.isEmpty()){
+            String fullName = clazz.getName();
+            builder.append("<");
+            for (int i = 0; i < parameters.size(); i++){
+                if (i > 0){
+                    builder.append(",");
+                }
+                if (parameters.get(i) != null && !parameters.get(i).getFullName().equals(fullName)){
+                    parameters.get(i).appendLocalGenericName(context, builder, false);
+                }else{
+                    builder.append("?");
+                }
+            }
+            builder.append(">");
+        }
     }
 
     @Override

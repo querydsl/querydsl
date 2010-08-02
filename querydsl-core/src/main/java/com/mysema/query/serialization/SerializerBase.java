@@ -16,18 +16,7 @@ import com.mysema.query.BooleanBuilder;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.Custom;
-import com.mysema.query.types.EConstructor;
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.Param;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathType;
-import com.mysema.query.types.Template;
-import com.mysema.query.types.Templates;
-import com.mysema.query.types.Visitor;
+import com.mysema.query.types.*;
 
 /**
  * SerializerBase is a stub for Serializer implementations

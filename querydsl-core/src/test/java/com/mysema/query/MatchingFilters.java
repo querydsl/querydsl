@@ -9,22 +9,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.expr.EArray;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.ECollection;
-import com.mysema.query.types.expr.EComparable;
-import com.mysema.query.types.expr.EDate;
-import com.mysema.query.types.expr.EDateConst;
-import com.mysema.query.types.expr.EDateTime;
-import com.mysema.query.types.expr.EDateTimeConst;
-import com.mysema.query.types.expr.EList;
-import com.mysema.query.types.expr.EMap;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.ENumberConst;
-import com.mysema.query.types.expr.EString;
-import com.mysema.query.types.expr.EStringConst;
-import com.mysema.query.types.expr.ETime;
-import com.mysema.query.types.expr.ETimeConst;
+import com.mysema.query.types.expr.*;
 
 /**
  * @author tiwe

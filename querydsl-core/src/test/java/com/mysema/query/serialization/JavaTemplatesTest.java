@@ -14,7 +14,6 @@ import org.junit.Test;
 
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
-import com.mysema.query.types.path.PString;
 
 public class JavaTemplatesTest {
 
