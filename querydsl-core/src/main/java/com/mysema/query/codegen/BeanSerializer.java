@@ -19,6 +19,8 @@ import com.mysema.codegen.CodeWriter;
  */
 public class BeanSerializer implements Serializer{
 
+    // TODO : this could be generalized, as it is not very Querydsl-specific
+    
     private final String javadocSuffix;
     
     public BeanSerializer() {
