@@ -131,6 +131,9 @@ public class TypeTest {
         assertTrue(locale.isFinal());
         assertTrue(locale2.isFinal());
         assertFalse(stringList.isFinal());
+        
+        assertTrue(Types.STRING.isFinal());
+        assertTrue(Types.LONG.isFinal());
     }
 
     @Test
