@@ -5,7 +5,8 @@
  */
 package com.mysema.codegen.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -17,6 +18,7 @@ public class TypeCategoryTest {
         assertTrue(TypeCategory.STRING.isSubCategoryOf(TypeCategory.COMPARABLE));
         assertTrue(TypeCategory.NUMERIC.isSubCategoryOf(TypeCategory.COMPARABLE));
         assertTrue(TypeCategory.COMPARABLE.isSubCategoryOf(TypeCategory.SIMPLE));
+        assertFalse(TypeCategory.ENTITY.isSubCategoryOf(TypeCategory.SIMPLE));
     }
-
+    
 }

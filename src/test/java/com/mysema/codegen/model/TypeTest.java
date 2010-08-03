@@ -33,6 +33,11 @@ public class TypeTest {
     private Type stringMap = new ClassType<Map>(TypeCategory.MAP, Map.class, Types.STRING, Types.STRING);
     
     private Type stringMap2 = new SimpleType(Types.MAP, Types.STRING, Types.STRING);
+   
+    @Test
+    public void arrayType(){
+        assertEquals("Object[]",Types.OBJECTS.getGenericName(true).toString());
+    }
     
     @Test
     public void testEquals(){
