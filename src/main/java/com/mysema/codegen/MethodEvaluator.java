@@ -6,6 +6,8 @@ package com.mysema.codegen;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import javax.annotation.Nullable;
+
 /**
  * @author tiwe
  *
@@ -15,11 +17,12 @@ public final class MethodEvaluator<T> implements Evaluator<T> {
     
     private final Method method;
     
+    @Nullable
     private final Object object;
     
     private final Class<? extends T> projectionType;
 
-    MethodEvaluator(Method method, Object object, Class<? extends T> projectionType) {
+    MethodEvaluator(Method method, @Nullable Object object, Class<? extends T> projectionType) {
         this.method = method;
         this.object = object;
         this.projectionType = projectionType;
