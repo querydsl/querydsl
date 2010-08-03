@@ -7,6 +7,7 @@ package com.mysema.query.sql;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +16,7 @@ import javax.tools.JavaCompiler;
 
 import junit.framework.Assert;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.codegen.CodeWriter;
@@ -25,11 +27,10 @@ import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.SerializerConfig;
 
 public class MetaDataSerializerTest extends AbstractJDBCTest{
-
-    @Test
-    public void testGeneration() throws Exception {
-        // normal settings
-
+    
+    @Before
+    public void setUp() throws SQLException, ClassNotFoundException{
+        super.setUp();
         statement.execute("drop table employee if exists");
         statement.execute("drop table survey if exists");
         statement.execute("drop table date_test if exists");
@@ -51,8 +52,23 @@ public class MetaDataSerializerTest extends AbstractJDBCTest{
                 + "survey_name varchar(30), "
                 + "CONSTRAINT PK_employee PRIMARY KEY (id), "
                 + "CONSTRAINT FK_survey FOREIGN KEY (survey_id, survey_name) REFERENCES survey(id,name), "
-                + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");
+                + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");       
+    }
 
+    @Test
+    public void normal_serialization() throws SQLException{
+        String namePrefix = "Q";
+        NamingStrategy namingStrategy = new DefaultNamingStrategy();
+        // customization of serialization
+        MetaDataSerializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);
+        MetaDataExporter exporter = new MetaDataExporter(namePrefix,"test",new File("target/cust1"),namingStrategy,serializer);
+        exporter.export(connection.getMetaData());
+
+        compile(exporter);
+    }
+    
+    @Test
+    public void custom_serialization() throws Exception {
         String namePrefix = "Q";
         NamingStrategy namingStrategy = new DefaultNamingStrategy();
         // customization of serialization
@@ -81,9 +97,13 @@ public class MetaDataSerializerTest extends AbstractJDBCTest{
             }
 
         };
-        MetaDataExporter exporter = new MetaDataExporter(namePrefix,"test",new File("target/cust"),namingStrategy,serializer);
+        MetaDataExporter exporter = new MetaDataExporter(namePrefix,"test",new File("target/cust2"),namingStrategy,serializer);
         exporter.export(connection.getMetaData());
 
+        compile(exporter);
+    }
+
+    private void compile(MetaDataExporter exporter) {
         JavaCompiler compiler = new SimpleCompiler();
         Set<String> classes = exporter.getClasses();
         int compilationResult = compiler.run(null, null, null, classes.toArray(new String[classes.size()]));

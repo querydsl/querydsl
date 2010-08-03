@@ -8,6 +8,7 @@ package com.mysema.query.sql;
 import static com.mysema.codegen.Symbols.NEW;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -49,10 +50,29 @@ public class MetaDataSerializer extends EntitySerializer {
         writer.publicStaticFinal(queryType, variableName, NEW + queryType + "(\"" + alias + "\")");
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
         super.introImports(writer, config, model);
         writer.imports(Table.class.getPackage());
+        
+        boolean multiKeys = false;
+        multiKeys |= hasMultiKeys((Collection<ForeignKeyData>) model.getData().get(ForeignKeyData.class));
+        multiKeys |= hasMultiKeys((Collection<InverseForeignKeyData>) model.getData().get(InverseForeignKeyData.class));
+        if (multiKeys){
+            writer.imports(Arrays.class);
+        }
+    }
+        
+    private boolean hasMultiKeys(Collection<? extends KeyData> foreignKeys){
+        if (foreignKeys != null){
+            for (KeyData foreignKey : foreignKeys){
+                if (foreignKey.getForeignColumns().size() > 1){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @SuppressWarnings("unchecked")
