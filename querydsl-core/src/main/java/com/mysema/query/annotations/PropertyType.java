@@ -48,7 +48,7 @@ public enum PropertyType {
     @Nullable
     private final TypeCategory category;
     
-    PropertyType(TypeCategory category){
+    PropertyType(@Nullable TypeCategory category){
         this.category = category;
     }
     

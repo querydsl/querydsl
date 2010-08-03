@@ -35,7 +35,7 @@ public final class TypeResolver {
 
     private static Type resolveTypeExtends(TypeExtends typeExtends, Type declaringType, EntityType subtype){
         // typeExtends without variable name can't be resolved
-        if (typeExtends.getVarName() == null){
+        if (typeExtends.getVarName() == null){ //NOSONAR
             return typeExtends;
         }
 
