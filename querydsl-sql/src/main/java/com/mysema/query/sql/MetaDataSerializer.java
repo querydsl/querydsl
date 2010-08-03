@@ -36,7 +36,7 @@ public class MetaDataSerializer extends EntitySerializer {
     private final NamingStrategy namingStrategy;
 
     public MetaDataSerializer(String namePrefix, NamingStrategy namingStrategy) {
-    // TODO : supply reserved SQL keywords
+        // TODO : supply reserved SQL keywords
         super(new TypeMappings(),Collections.<String>emptyList());
         this.namePrefix = namePrefix;
         this.namingStrategy = namingStrategy;
