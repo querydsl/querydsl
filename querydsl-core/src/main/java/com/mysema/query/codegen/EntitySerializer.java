@@ -66,7 +66,11 @@ public class EntitySerializer implements Serializer{
 
         // 2
         if (!hasEntityFields){
-            writer.beginConstructor("PEntity<? extends "+genericName+"> entity");
+            if (model.isFinal()){
+                writer.beginConstructor("PEntity<"+genericName+"> entity");
+            }else{
+                writer.beginConstructor("PEntity<? extends "+genericName+"> entity");    
+            }            
             if (stringOrBoolean){
                 writer.line("super(entity.getMetadata());");    
             }else{
@@ -105,7 +109,11 @@ public class EntitySerializer implements Serializer{
 
         // 5
         if (hasEntityFields){
-            writer.beginConstructor("Class<? extends "+genericName+"> type", PATH_METADATA, "PathInits inits");
+            if (model.isFinal()){
+                writer.beginConstructor("Class<"+genericName+"> type", PATH_METADATA, "PathInits inits");
+            }else{
+                writer.beginConstructor("Class<? extends "+genericName+"> type", PATH_METADATA, "PathInits inits");    
+            }            
             writer.line("super(type, metadata, inits);");
             initEntityFields(writer, config, model);
             writer.end();

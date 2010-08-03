@@ -5,6 +5,8 @@
  */
 package com.mysema.query.annotations;
 
+import javax.annotation.Nullable;
+
 import com.mysema.codegen.model.TypeCategory;
 
 /**
@@ -43,12 +45,14 @@ public enum PropertyType {
      */
     ENTITY(TypeCategory.ENTITY);
     
+    @Nullable
     private final TypeCategory category;
     
     PropertyType(TypeCategory category){
         this.category = category;
     }
     
+    @Nullable
     public TypeCategory getCategory(){
         return category;
     }

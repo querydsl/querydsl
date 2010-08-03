@@ -126,8 +126,8 @@ public final class APTTypeFactory {
                 name, 
                 packageName, 
                 simpleName,
-                typeElement.getModifiers().contains(Modifier.FINAL),
                 false,
+                typeElement.getModifiers().contains(Modifier.FINAL),
                 params);
     }
 

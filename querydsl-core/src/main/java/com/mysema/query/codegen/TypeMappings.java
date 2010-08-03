@@ -117,7 +117,7 @@ public class TypeMappings {
             localName = model.getGenericName(true,type);
         }
         if (!type.isFinal() && extend){
-            localName = "? extends " + localName;
+            localName = localName.equals("Object") ? "?" : "? extends " + localName;
         }
 
         if (category == TypeCategory.STRING || category == TypeCategory.BOOLEAN){
