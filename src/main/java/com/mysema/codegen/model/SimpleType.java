@@ -65,9 +65,9 @@ public class SimpleType implements Type {
     
     @Override
     public Type asArrayType() {
-        String fullName = getFullName()+"[]";
-        String simpleName = getSimpleName()+"[]";
-        return new SimpleType(TypeCategory.ARRAY, fullName, getPackageName(), simpleName, false, false);
+        String newFullName = getFullName()+"[]";
+        String newSimpleName = getSimpleName()+"[]";
+        return new SimpleType(TypeCategory.ARRAY, newFullName, getPackageName(), newSimpleName, false, false);
     }
     
 

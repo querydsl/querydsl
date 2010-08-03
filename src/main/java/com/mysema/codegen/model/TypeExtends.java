@@ -7,12 +7,15 @@ package com.mysema.codegen.model;
 
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 /**
  * @author tiwe
  *
  */
 public class TypeExtends extends TypeAdapter{
 
+    @Nullable
     private final String varName;
 
     public TypeExtends(String varName, Type type) {

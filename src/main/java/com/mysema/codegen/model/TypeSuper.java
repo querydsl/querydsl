@@ -7,6 +7,8 @@ package com.mysema.codegen.model;
 
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 
 /**
  * TypeSuper is a Type for type variables and wildcard types
@@ -18,6 +20,7 @@ public class TypeSuper extends TypeAdapter{
 
     private final Type superType;
 
+    @Nullable
     private final String varName;
 
     public TypeSuper(String varName, Type type) {
