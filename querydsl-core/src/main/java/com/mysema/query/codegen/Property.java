@@ -12,6 +12,7 @@ import java.util.Map;
 
 import net.jcip.annotations.Immutable;
 
+import com.mysema.codegen.model.Type;
 import com.mysema.commons.lang.Assert;
 import com.mysema.util.JavaSyntaxUtils;
 
@@ -117,7 +118,7 @@ public final class Property implements Comparable<Property> {
     }
 
     public Type getParameter(int i) {
-        return type.getParameter(i);
+        return type.getParameters().get(i);
     }
 
     public Type getType() {

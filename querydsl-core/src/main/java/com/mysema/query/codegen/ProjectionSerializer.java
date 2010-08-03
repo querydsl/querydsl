@@ -6,12 +6,16 @@
 package com.mysema.query.codegen;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.Set;
 
 import net.jcip.annotations.Immutable;
 
 import org.apache.commons.collections15.Transformer;
 
 import com.mysema.codegen.CodeWriter;
+import com.mysema.codegen.model.Constructor;
+import com.mysema.codegen.model.Parameter;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.expr.ENumber;
@@ -62,6 +66,7 @@ public final class ProjectionSerializer implements Serializer{
         // intro
         intro(model, writer);
 
+        final Set<String> packages = Collections.singleton(model.getPackageName());
         final String localName = model.getLocalRawName();
 
         for (Constructor c : model.getConstructors()){
@@ -77,6 +82,7 @@ public final class ProjectionSerializer implements Serializer{
             writer.beginLine("super(" + localName + ".class");
             writer.append(", new Class[]{");
             boolean first = true;
+            
             for (Parameter p : c.getParameters()){
                 if (!first){
                     writer.append(", ");
@@ -84,7 +90,7 @@ public final class ProjectionSerializer implements Serializer{
                 if (p.getType().getPrimitiveName() != null){
                     writer.append(p.getType().getPrimitiveName()+".class");
                 }else{
-                    p.getType().appendLocalRawName(model, writer);
+                    writer.append(p.getType().getRawName(packages, Collections.<String>emptySet()));
                     writer.append(".class");
                 }
                 first = false;

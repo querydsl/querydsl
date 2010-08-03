@@ -5,6 +5,8 @@
  */
 package com.mysema.query.codegen;
 
+import com.mysema.codegen.model.Type;
+
 /**
  * @author tiwe
  *

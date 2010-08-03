@@ -2,6 +2,7 @@ package com.mysema.query.codegen;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +20,6 @@ import com.mysema.codegen.CodeWriter;
  */
 public class BeanSerializer implements Serializer{
 
-    // TODO : this could be generalized, as it is not very Querydsl-specific
-    
     private final String javadocSuffix;
     
     public BeanSerializer() {
@@ -41,14 +40,15 @@ public class BeanSerializer implements Serializer{
         }
         
         // imports
-        Set<Class<?>> imports = getAnnotationTypes(model);
+        Set<String> importedPackages = Collections.singleton(model.getPackageName());
+        Set<String> importedClasses = getAnnotationTypes(model);
         if (model.hasLists()){
-            imports.add(List.class);
+            importedClasses.add(List.class.getName());
         }
         if (model.hasMaps()){
-            imports.add(Map.class);
+            importedClasses.add(Map.class.getName());
         }
-        writer.imports(imports.toArray(new Class[imports.size()]));
+        writer.importClasses(importedClasses.toArray(new String[importedClasses.size()]));
         
         // javadoc        
         writer.javadoc(simpleName + javadocSuffix);
@@ -64,14 +64,14 @@ public class BeanSerializer implements Serializer{
             for (Annotation annotation : property.getAnnotations()){
                 writer.annotation(annotation);
             }
-            String propertyType = property.getType().getLocalGenericName(model, false);
+            String propertyType = property.getType().getGenericName(true, importedPackages, importedClasses);
             writer.privateField(propertyType, property.getEscapedName());
         }
         
         // accessors
         for (Property property : model.getProperties()){
             String propertyName = property.getEscapedName();
-            String propertyType = property.getType().getLocalGenericName(model, false);
+            String propertyType = property.getType().getGenericName(true, importedPackages, importedClasses);
             // getter
             writer.beginPublicMethod(propertyType, "get"+StringUtils.capitalize(propertyName));
             writer.line("return ", propertyName, ";");
@@ -85,14 +85,14 @@ public class BeanSerializer implements Serializer{
         writer.end();
     }
 
-    private Set<Class<?>> getAnnotationTypes(EntityType model) {
-        Set<Class<?>> imports = new HashSet<Class<?>>();
+    private Set<String> getAnnotationTypes(EntityType model) {
+        Set<String> imports = new HashSet<String>();
         for (Annotation annotation : model.getAnnotations()){
-            imports.add(annotation.annotationType());
+            imports.add(annotation.annotationType().getName());
         }
         for (Property property : model.getProperties()){
             for (Annotation annotation : property.getAnnotations()){
-                imports.add(annotation.annotationType());
+                imports.add(annotation.annotationType().getName());
             }
         }
         return imports;

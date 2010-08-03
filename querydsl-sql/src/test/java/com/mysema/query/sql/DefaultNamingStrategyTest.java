@@ -9,9 +9,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.codegen.ClassType;
+import com.mysema.codegen.model.Types;
 import com.mysema.query.codegen.EntityType;
-import com.mysema.query.codegen.TypeCategory;
 
 public class DefaultNamingStrategyTest {
 
@@ -28,8 +27,7 @@ public class DefaultNamingStrategyTest {
 
     @Test
     public void testGetPropertyName() {
-        ClassType typeModel = new ClassType(TypeCategory.ENTITY, Object.class);
-        EntityType entityModel = new EntityType("Q", typeModel);
+        EntityType entityModel = new EntityType("Q", Types.OBJECT);
         assertEquals("whileCol", namingStrategy.getPropertyName("while", "Q", entityModel));
         assertEquals("name", namingStrategy.getPropertyName("name", "Q", entityModel));
         assertEquals("userId", namingStrategy.getPropertyName("user_id", "Q", entityModel));

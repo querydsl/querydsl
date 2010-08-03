@@ -10,6 +10,10 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+
 public class MethodTest {
 
     private TypeFactory typeFactory = new TypeFactory();
@@ -26,7 +30,7 @@ public class MethodTest {
     @Test
     public void createCopy(){
         Method method = new Method(typeFactory.create(String.class), "method", "abc", typeFactory.create(String.class));
-        Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false);
+        Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false,false);
         EntityType type = new EntityType("Q", typeModel);
         assertNotNull(method.createCopy(type));
     }

@@ -5,6 +5,8 @@
  */
 package com.mysema.query.annotations;
 
+import com.mysema.codegen.model.TypeCategory;
+
 /**
  * PropertyType defines the Path type to be used for a Domain property
  *
@@ -15,30 +17,40 @@ public enum PropertyType {
     /**
      * for PComparable fields
      */
-    COMPARABLE,
+    COMPARABLE(TypeCategory.COMPARABLE),
     /**
      * for custom PDate fields
      */
-    DATE,
+    DATE(TypeCategory.DATE),
     /**
      * for custom PDateTime fields
      */
-    DATETIME,
+    DATETIME(TypeCategory.DATETIME),
     /**
      * to skip properties
      */
-    NONE,
+    NONE(null),
     /**
      * for PSimple fields
      */
-    SIMPLE,
+    SIMPLE(TypeCategory.SIMPLE),
     /**
      * for custom PTime fields
      */
-    TIME,
+    TIME(TypeCategory.TIME),
     /**
      *
      */
-    ENTITY
+    ENTITY(TypeCategory.ENTITY);
+    
+    private final TypeCategory category;
+    
+    PropertyType(TypeCategory category){
+        this.category = category;
+    }
+    
+    public TypeCategory getCategory(){
+        return category;
+    }
 
 }

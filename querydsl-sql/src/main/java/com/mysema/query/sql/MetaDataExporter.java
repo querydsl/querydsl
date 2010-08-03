@@ -24,8 +24,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.codegen.JavaWriter;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.Types;
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.codegen.*;
+import com.mysema.query.codegen.EntityType;
+import com.mysema.query.codegen.Method;
+import com.mysema.query.codegen.Property;
+import com.mysema.query.codegen.Serializer;
+import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.sql.support.ForeignKeyData;
 import com.mysema.query.sql.support.InverseForeignKeyData;
 import com.mysema.query.sql.support.KeyDataFactory;
@@ -114,6 +123,7 @@ public class MetaDataExporter {
                 packageName + "." + className,
                 packageName,
                 className,
+                false,
                 false);
         EntityType classModel = new EntityType(beanSerializer == null ? "" : namePrefix, classTypeModel);
         Method wildcard = new Method(classModel, "all", "{0}.*", Types.OBJECTS);

@@ -31,15 +31,15 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.WildcardType;
 
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.TypeExtends;
+import com.mysema.codegen.model.TypeSuper;
+import com.mysema.codegen.model.Types;
 import com.mysema.query.codegen.EntityType;
-import com.mysema.query.codegen.SimpleType;
 import com.mysema.query.codegen.Supertype;
-import com.mysema.query.codegen.Type;
-import com.mysema.query.codegen.TypeCategory;
-import com.mysema.query.codegen.TypeExtends;
 import com.mysema.query.codegen.TypeFactory;
-import com.mysema.query.codegen.TypeSuper;
-import com.mysema.query.codegen.Types;
 
 /**
  * APTTypeModelFactory is a factory for APT inspection based TypeModel creation
@@ -71,8 +71,6 @@ public final class APTTypeFactory {
 
     private final ProcessingEnvironment env;
 
-    private final TypeFactory factory;
-
     private final TypeElement numberType, comparableType;
 
     private boolean doubleIndexEntities = true;
@@ -81,7 +79,6 @@ public final class APTTypeFactory {
             TypeFactory factory, List<Class<? extends Annotation>> annotations){
         this.env = env;
         this.configuration = configuration;
-        this.factory = factory;
         this.defaultValue = factory.create(Object.class);
         this.entityAnnotations = annotations;
         this.numberType = env.getElementUtils().getTypeElement(Number.class.getName());
@@ -124,10 +121,14 @@ public final class APTTypeFactory {
         for (int i = 0; i < params.length; i++){
             params[i] = create(typeArgs.get(i));
         }
-        return new SimpleType(category,
-            name, packageName, simpleName,
-            typeElement.getModifiers().contains(Modifier.FINAL),
-            params);
+        return new SimpleType(
+                category,
+                name, 
+                packageName, 
+                simpleName,
+                typeElement.getModifiers().contains(Modifier.FINAL),
+                false,
+                params);
     }
 
     @Nullable
@@ -182,7 +183,7 @@ public final class APTTypeFactory {
         if (!i.hasNext()){
             throw new TypeArgumentsException(simpleName);
         }
-        return factory.createCollectionType(create(i.next()));
+        return new SimpleType(Types.COLLECTION, create(i.next()));
     }
 
     @Nullable
@@ -201,7 +202,7 @@ public final class APTTypeFactory {
                 if (key.size() > 1 && key.get(0).equals(entityModel.getFullName()) && doubleIndexEntities){
                     List<String> newKey = new ArrayList<String>();
                     newKey.add(entityModel.getFullName());
-                    for (int i = 0; i < entityModel.getParameterCount(); i++){
+                    for (int i = 0; i < entityModel.getParameters().size(); i++){
                         newKey.add("?");
                     }
                     if (!entityTypeCache.containsKey(newKey)){
@@ -286,7 +287,7 @@ public final class APTTypeFactory {
         if (!i.hasNext()){
             throw new TypeArgumentsException(simpleName);
         }
-        return factory.createListType(create(i.next()));
+        return new SimpleType(Types.LIST, create(i.next()));
     }
 
     private Type createMapType(String simpleName,
@@ -294,7 +295,7 @@ public final class APTTypeFactory {
         if (!i.hasNext()){
             throw new TypeArgumentsException(simpleName);
         }
-        return factory.createMapType(create(i.next()), create(i.next()));
+        return new SimpleType(Types.MAP, create(i.next()), create(i.next()));
     }
 
     private Type createSetType(String simpleName,
@@ -302,7 +303,7 @@ public final class APTTypeFactory {
         if (!i.hasNext()){
             throw new TypeArgumentsException(simpleName);
         }
-        return factory.createSetType(create(i.next()));
+        return new SimpleType(Types.SET, create(i.next()));
     }
 
     private Set<Type> getSupertypes(TypeMirror type, Type value) {

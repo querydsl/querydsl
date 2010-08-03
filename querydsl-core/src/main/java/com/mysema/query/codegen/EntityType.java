@@ -5,9 +5,9 @@
  */
 package com.mysema.query.codegen;
 
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -18,6 +18,10 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.mysema.codegen.model.Constructor;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeAdapter;
+import com.mysema.codegen.model.TypeCategory;
 import com.mysema.commons.lang.Assert;
 
 /**
@@ -49,6 +53,8 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     private final Map<Object,Object> data = new HashMap<Object,Object>();
 
     private String uncapSimpleName;
+    
+    private final Set<String> packages;
 
     public EntityType(String prefix, Type type) {
         this(prefix, type, new HashSet<Supertype>());
@@ -59,6 +65,7 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         this.prefix = Assert.notNull(prefix,"prefix");
         this.uncapSimpleName = StringUtils.uncapitalize(type.getSimpleName());
         this.superTypes = superTypes;
+        this.packages = Collections.singleton(getPackageName());
     }
 
     public void addAnnotation(Annotation annotation){
@@ -69,12 +76,12 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         constructors.add(co);
     }
 
-    public void addMethod(Method method){
-        methods.add(method);
-    }
-
     public void addDelegate(Delegate delegate){
         delegates.add(delegate);
+    }
+
+    public void addMethod(Method method){
+        methods.add(method);
     }
 
     public void addProperty(Property field) {
@@ -100,6 +107,17 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         return getType().getSimpleName().compareTo(o.getType().getSimpleName());
     }
     
+    @Override
+    public boolean equals(Object o){
+        if (o == this){
+            return true;
+        }else if (o instanceof Type){
+            return getFullName().equals(((Type)o).getFullName());    
+        }else{
+            return false;
+        }        
+    }
+
     @SuppressWarnings("unchecked")
     public <T extends Annotation> T getAnnotation(Class<T> type){
         return (T) annotations.get(type);
@@ -121,32 +139,34 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         return constructors;
     }
 
-    public String getLocalGenericName(){
-        try {
-            StringBuilder builder = new StringBuilder();
-            getType().appendLocalGenericName(this, builder, false);
-            return builder.toString();
-        } catch (IOException e) {
-            throw new CodeGenerationException(e.getMessage(), e);
-        }
-    }
-
-    public String getLocalRawName() {
-        try {
-            StringBuilder builder = new StringBuilder();
-            getType().appendLocalRawName(this, builder);
-            return builder.toString();
-        } catch (IOException e) {
-            throw new CodeGenerationException(e.getMessage(), e);
-        }
-    }
-
-    public Set<Method> getMethods(){
-        return methods;
+    public Map<Object, Object> getData() {
+        return data;
     }
 
     public Set<Delegate> getDelegates(){
         return delegates;
+    }
+
+    @Override
+    public String getFullName(){
+        String name = super.getFullName();
+        return name.startsWith("java.") ? "ext." + name : name;
+    }
+
+    public String getGenericName(boolean asArgType, Type type){
+        return type.getGenericName(asArgType, packages, Collections.<String>emptySet());
+    }
+
+    public String getLocalGenericName(){
+        return getType().getGenericName(true, packages, Collections.<String>emptySet());
+    }
+    
+    public String getLocalRawName() {
+        return getType().getRawName(packages, Collections.<String>emptySet());
+    }
+    
+    public Set<Method> getMethods(){
+        return methods;
     }
 
     public TypeCategory getOriginalCategory(){
@@ -158,19 +178,17 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         String pkg = super.getPackageName();
         return pkg.startsWith("java.") ? "ext." + pkg : pkg;
     }
-    
-    @Override
-    public String getFullName(){
-        String name = super.getFullName();
-        return name.startsWith("java.") ? "ext." + name : name;
-    }
-    
+
     public String getPrefix(){
         return prefix;
     }
 
     public Set<Property> getProperties() {
         return properties;
+    }
+
+    public String getRawName(Type type) {
+        return type.getRawName(packages, Collections.<String>emptySet());
     }
 
     @Nullable
@@ -190,16 +208,17 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         return hasEntityFields;
     }
 
+    @Override
+    public int hashCode(){
+        return getFullName().hashCode();
+    }
+    
     public boolean hasLists() {
         return hasLists;
     }
-
+    
     public boolean hasMaps() {
         return hasMaps;
-    }
-
-    public Map<Object, Object> getData() {
-        return data;
     }
 
     public void include(Supertype supertype) {
@@ -214,28 +233,12 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
             addProperty(property.createCopy(this));
         }
     }
-
+    
     private Property validateField(Property field) {
         if (field.getName().equals(uncapSimpleName)) {
             uncapSimpleName = StringUtils.uncapitalize(getType().getSimpleName())+ (escapeSuffix++);
         }
         return field;
-    }
-    
-    @Override
-    public boolean equals(Object o){
-        if (o == this){
-            return true;
-        }else if (o instanceof Type){
-            return getFullName().equals(((Type)o).getFullName());    
-        }else{
-            return false;
-        }        
-    }
-    
-    @Override
-    public int hashCode(){
-        return getFullName().hashCode();
     }
     
 }

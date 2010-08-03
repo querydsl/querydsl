@@ -22,17 +22,17 @@ import net.jcip.annotations.Immutable;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.mysema.codegen.model.Constructor;
+import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryInit;
 import com.mysema.query.annotations.QueryMethod;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.codegen.Constructor;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Method;
-import com.mysema.query.codegen.Parameter;
 import com.mysema.query.codegen.Property;
-import com.mysema.query.codegen.Type;
-import com.mysema.query.codegen.TypeCategory;
 
 /**
  * EntityElementVisitor is a an APT visitor for entity types
@@ -57,7 +57,7 @@ public final class ElementHandler{
         if (element.getAnnotation(QueryType.class) != null){
             QueryType qt = element.getAnnotation(QueryType.class);
             if (qt.value() != PropertyType.NONE){
-                TypeCategory typeCategory = TypeCategory.get(qt.value());
+                TypeCategory typeCategory = qt.value().getCategory();
                 rv = rv.as(typeCategory);
             }
         }
@@ -81,7 +81,7 @@ public final class ElementHandler{
         try{
             Type fieldType = typeFactory.create(field.asType());
             if (field.getAnnotation(QueryType.class) != null){
-                TypeCategory typeCategory = TypeCategory.get(field.getAnnotation(QueryType.class).value());
+                TypeCategory typeCategory = field.getAnnotation(QueryType.class).value().getCategory();
                 if (typeCategory == null){
                     blockedProperties.add(name);
                     return;
@@ -109,7 +109,7 @@ public final class ElementHandler{
         try{
             Type propertyType = typeFactory.create(method.getReturnType());
             if (method.getAnnotation(QueryType.class) != null){
-                TypeCategory typeCategory = TypeCategory.get(method.getAnnotation(QueryType.class).value());
+                TypeCategory typeCategory = method.getAnnotation(QueryType.class).value().getCategory();
                 if (typeCategory == null){
                     blockedProperties.add(propertyName);
                     return;

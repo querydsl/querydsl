@@ -15,6 +15,9 @@ import java.util.Locale;
 
 import org.junit.Test;
 
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+
 public class TypeFactoryTest {
 
     private TypeFactory factory = new TypeFactory();

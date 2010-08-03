@@ -8,6 +8,8 @@ package com.mysema.query.codegen;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
 import com.mysema.query.types.Custom;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
@@ -110,9 +112,9 @@ public class TypeMappings {
         }
 
         if (rawParameters){
-            localName = type.getLocalRawName(model);
+            localName = model.getRawName(type);
         }else{
-            localName = type.getLocalGenericName(model, true);
+            localName = model.getGenericName(true,type);
         }
         if (!type.isFinal() && extend){
             localName = "? extends " + localName;

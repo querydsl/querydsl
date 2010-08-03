@@ -13,6 +13,8 @@ import java.util.Collections;
 import org.junit.Test;
 
 import com.mysema.codegen.JavaWriter;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.TypeCategory;
 import com.mysema.query.annotations.QueryExtensions;
 
 public class EntityTypeTest {

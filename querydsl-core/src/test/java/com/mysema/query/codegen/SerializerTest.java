@@ -20,6 +20,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.codegen.JavaWriter;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Constructor;
+import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.TypeExtends;
+import com.mysema.codegen.model.TypeSuper;
 
 /**
  * SerializerTest provides.
@@ -41,7 +49,7 @@ public class SerializerTest {
         TypeFactory typeFactory = new TypeFactory();
 
         // type
-        Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false);
+        Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false, false);
         type = new EntityType("Q", typeModel);
 
         // property

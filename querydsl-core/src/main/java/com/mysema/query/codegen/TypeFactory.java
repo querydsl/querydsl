@@ -6,7 +6,6 @@
 package com.mysema.query.codegen;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,6 +15,11 @@ import java.util.Set;
 
 import org.apache.commons.lang.ClassUtils;
 
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.Types;
 import com.mysema.util.ReflectionUtils;
 
 /**
@@ -43,6 +47,7 @@ public final class TypeFactory {
         return create(cl, cl);
     }
 
+    @SuppressWarnings("unchecked")
     public Type create(Class<?> cl, java.lang.reflect.Type genericType) {
         List<java.lang.reflect.Type> key = Arrays.<java.lang.reflect.Type> asList(cl, genericType);
         if (cache.containsKey(key)) {
@@ -71,19 +76,19 @@ public final class TypeFactory {
             } else if (Map.class.isAssignableFrom(cl)) {
                 Type keyInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
                 Type valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 1));
-                value = createMapType(keyInfo, valueInfo);
+                value = new SimpleType(Types.MAP, keyInfo, valueInfo);
 
             } else if (List.class.isAssignableFrom(cl)) {
                 Type valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
-                value = createListType(valueInfo);
+                value = new SimpleType(Types.LIST,valueInfo);
 
             } else if (Set.class.isAssignableFrom(cl)) {
                 Type valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
-                value = createSetType(valueInfo);
+                value = new SimpleType(Types.SET, valueInfo);
 
             } else if (Collection.class.isAssignableFrom(cl)) {
                 Type valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
-                value = createCollectionType(valueInfo);
+                value = new SimpleType(Types.COLLECTION, valueInfo);
 
             }else if (Number.class.isAssignableFrom(cl) && Comparable.class.isAssignableFrom(cl)){
                 value = new ClassType(TypeCategory.NUMERIC, cl);
@@ -99,32 +104,6 @@ public final class TypeFactory {
             return value;
         }
 
-    }
-
-    public Type createCollectionType(Type valueType) {
-        return createComposite(TypeCategory.COLLECTION, Collection.class, valueType);
-    }
-
-    private Type createComposite(TypeCategory container, Class<?> containerType, Type... parameters) {
-        return new SimpleType(container,
-                containerType.getName(),
-                containerType.getPackage().getName(),
-                containerType.getSimpleName(),
-                Modifier.isFinal(containerType.getModifiers()),
-                parameters);
-
-    }
-
-    public Type createListType(Type valueType) {
-        return createComposite(TypeCategory.LIST, List.class, valueType);
-    }
-
-    public Type createMapType(Type keyType, Type valueType) {
-        return createComposite(TypeCategory.MAP, Map.class, keyType, valueType);
-    }
-
-    public Type createSetType(Type valueType) {
-        return createComposite(TypeCategory.SET, Collection.class, valueType);
     }
 
 }

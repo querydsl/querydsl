@@ -11,6 +11,9 @@ import java.util.List;
 
 import net.jcip.annotations.Immutable;
 
+import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
 import com.mysema.commons.lang.Assert;
 
 /**

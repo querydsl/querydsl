@@ -21,7 +21,11 @@ import org.apache.commons.lang.ClassUtils;
 
 import com.mysema.codegen.Evaluator;
 import com.mysema.codegen.EvaluatorFactory;
-import com.mysema.codegen.Type;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.Types;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
@@ -89,7 +93,7 @@ public class DefaultEvaluatorFactory {
 
         String javaSource = serializer.toString();
         if (projection instanceof EConstructor<?>){
-            javaSource = "("+com.mysema.codegen.ClassUtils.getName(projection.getType())+")(" + javaSource+")";
+            javaSource = "("+com.mysema.codegen.support.ClassUtils.getName(projection.getType())+")(" + javaSource+")";
         }
 
         return factory.createEvaluator("return " + javaSource +";", projection.getType(), names, types, constants);
@@ -105,7 +109,7 @@ public class DefaultEvaluatorFactory {
      */
     @SuppressWarnings("unchecked")
     public <T> Evaluator<List<T>> createEvaluator(QueryMetadata metadata, Expr<? extends T> source, EBoolean filter){
-        String typeName = com.mysema.codegen.ClassUtils.getName(source.getType());
+        String typeName = com.mysema.codegen.support.ClassUtils.getName(source.getType());
         ColQuerySerializer ser = new ColQuerySerializer(templates);
         ser.append("java.util.List<"+typeName+"> rv = new java.util.ArrayList<"+typeName+">();\n");
         ser.append("for (" + typeName + " "+ source + " : " + source + "_){\n");
@@ -118,8 +122,8 @@ public class DefaultEvaluatorFactory {
         Map<Object,String> constantToLabel = ser.getConstantToLabel();
         Map<String, Object> constants = getConstants(metadata, constantToLabel);
 
-        Type sourceType = new Type(source.getType());
-        Type sourceListType = new Type(Iterable.class, sourceType);
+        Type sourceType = new ClassType(TypeCategory.SIMPLE,source.getType());
+        ClassType sourceListType = new ClassType(TypeCategory.SIMPLE,Iterable.class, sourceType);
 
         return factory.createEvaluator(
                 ser.toString(),
@@ -149,7 +153,7 @@ public class DefaultEvaluatorFactory {
         // creating context
         for (JoinExpression join : joins){
             Expr<?> target = join.getTarget();
-            String typeName = com.mysema.codegen.ClassUtils.getName(target.getType());
+            String typeName = com.mysema.codegen.support.ClassUtils.getName(target.getType());
             if (vars.length() > 0){
                 vars.append(",");
             }
@@ -157,7 +161,7 @@ public class DefaultEvaluatorFactory {
                 ser.append("for (" + typeName + " "+ target + " : " + target + "_){\n");
                 vars.append(target);
                 sourceNames.add(target+"_");
-                sourceTypes.add(new Type(Iterable.class, new Type(target.getType())));
+                sourceTypes.add(new SimpleType(Types.ITERABLE, new ClassType(TypeCategory.SIMPLE,target.getType())));
                 sourceClasses.add(Iterable.class);
 
             }else if (join.getType() == JoinType.INNERJOIN){
@@ -197,7 +201,7 @@ public class DefaultEvaluatorFactory {
         Map<Object,String> constantToLabel = ser.getConstantToLabel();
         Map<String, Object> constants = getConstants(metadata, constantToLabel);
 
-        Type projectionType = new Type(List.class, new Type(Object[].class));
+        ClassType projectionType = new ClassType(TypeCategory.LIST, List.class, Types.OBJECTS);
         return factory.createEvaluator(
                 ser.toString(),
                 projectionType,

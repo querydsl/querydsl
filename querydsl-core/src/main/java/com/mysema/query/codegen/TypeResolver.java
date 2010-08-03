@@ -5,6 +5,10 @@
  */
 package com.mysema.query.codegen;
 
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeExtends;
+
 /**
  * TypeResolver provides type resolving funcationlity for resolving generic type variables to concrete types
  * 
@@ -22,7 +26,7 @@ public final class TypeResolver {
         }
 
         // handle generic type parameters
-        if(resolved.getParameterCount() > 0){
+        if(!resolved.getParameters().isEmpty()){
             resolved = resolveWithParameters(resolved, declaringType, context);
         }
         
@@ -37,8 +41,8 @@ public final class TypeResolver {
 
         // get parameter index of var in declaring type
         int index = -1;
-        for (int i = 0; i < declaringType.getParameterCount(); i++){
-            Type param = declaringType.getParameter(i);
+        for (int i = 0; i < declaringType.getParameters().size(); i++){
+            Type param = declaringType.getParameters().get(i);
             if (param instanceof TypeExtends && ((TypeExtends)param).getVarName().equals(typeExtends.getVarName())){
                 index = i;
             }
@@ -50,7 +54,7 @@ public final class TypeResolver {
             while (!type.getType().equals(declaringType)){
                 type = type.getEntityType().getSuperType();
             }
-            return type.getType().getParameter(index);
+            return type.getType().getParameters().get(index);
         }else{
             // TODO : error
             return typeExtends;
@@ -58,10 +62,10 @@ public final class TypeResolver {
     }
 
     private static Type resolveWithParameters(Type type, Type declaringType, EntityType context) {
-        Type[] params = new Type[type.getParameterCount()];
+        Type[] params = new Type[type.getParameters().size()];
         boolean transformed = false;
-        for (int i = 0; i < type.getParameterCount(); i++){
-            Type param = type.getParameter(i);
+        for (int i = 0; i < type.getParameters().size(); i++){
+            Type param = type.getParameters().get(i);
             if (param != null){
                 params[i] = resolve(param, declaringType, context);
                 if (params[i] != param){
@@ -70,9 +74,14 @@ public final class TypeResolver {
             }
         }
         if (transformed){
-            return new SimpleType(type.getCategory(),
-                type.getFullName(), type.getPackageName(), type.getSimpleName(),
-                type.isFinal(), params);
+            return new SimpleType(
+                    type.getCategory(),
+                    type.getFullName(), 
+                    type.getPackageName(), 
+                    type.getSimpleName(),
+                    type.isFinal(),
+                    type.isPrimitive(),
+                    params);
         }else{
             return type;
         }

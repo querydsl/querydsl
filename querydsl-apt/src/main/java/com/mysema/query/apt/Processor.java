@@ -36,6 +36,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.codegen.JavaWriter;
+import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryExtensions;
@@ -45,12 +48,9 @@ import com.mysema.query.annotations.QuerydslVariables;
 import com.mysema.query.codegen.Delegate;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Method;
-import com.mysema.query.codegen.Parameter;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.Supertype;
-import com.mysema.query.codegen.Type;
-import com.mysema.query.codegen.TypeCategory;
 import com.mysema.query.codegen.TypeFactory;
 import com.mysema.query.codegen.TypeMappings;
 

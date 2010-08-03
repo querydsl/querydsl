@@ -6,16 +6,23 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.codegen.JavaWriter;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Constructor;
+import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.TypeExtends;
+import com.mysema.codegen.model.TypeSuper;
+import com.mysema.codegen.model.Types;
 
 public class BeanSerializerTest {
     
@@ -29,16 +36,16 @@ public class BeanSerializerTest {
         TypeFactory typeFactory = new TypeFactory();
 
         // type
-        Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false);
+        Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false,false);
         type = new EntityType("Q", typeModel);
 
         // property
         type.addProperty(new Property(type, "entityField", type, new String[0]));
-        type.addProperty(new Property(type, "collection", new ClassType(TypeCategory.COLLECTION, Collection.class, typeModel), new String[0]));
-        type.addProperty(new Property(type, "listField", new ClassType(TypeCategory.LIST, List.class, typeModel), new String[0]));
-        type.addProperty(new Property(type, "setField", new ClassType(TypeCategory.SET, Set.class, typeModel), new String[0]));
+        type.addProperty(new Property(type, "collection", new SimpleType(Types.COLLECTION, typeModel), new String[0]));
+        type.addProperty(new Property(type, "listField", new SimpleType(Types.LIST, typeModel), new String[0]));
+        type.addProperty(new Property(type, "setField", new SimpleType(Types.SET, typeModel), new String[0]));
         type.addProperty(new Property(type, "arrayField", new ClassType(TypeCategory.ARRAY, String[].class), new String[0]));
-        type.addProperty(new Property(type, "mapField", new ClassType(TypeCategory.MAP, List.class, typeModel, typeModel), new String[0]));
+        type.addProperty(new Property(type, "mapField", new SimpleType(Types.MAP, typeModel, typeModel), new String[0]));
         type.addProperty(new Property(type, "superTypeField", new TypeExtends(new ClassType(TypeCategory.MAP, List.class, typeModel, typeModel)), new String[0]));
         type.addProperty(new Property(type, "extendsTypeField", new TypeSuper(new ClassType(TypeCategory.MAP, List.class, typeModel, typeModel)), new String[0]));
 
@@ -62,6 +69,7 @@ public class BeanSerializerTest {
         BeanSerializer serializer = new BeanSerializer();
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         String str = writer.toString();
+        System.err.println(str);
         for (String prop : Arrays.asList(
                 "String[] arrayField;",
                 "Boolean boolean_;",
@@ -71,10 +79,10 @@ public class BeanSerializerTest {
                 "DomainClass entityField;",
                 "Object extendsTypeField;",
                 "Integer integer;",
-                "java.util.List<DomainClass> listField;",
-                "java.util.List<DomainClass,DomainClass> mapField;",
-                "java.util.Set<DomainClass> setField;",
-                "java.util.List<DomainClass,DomainClass> superTypeField;",
+                "List<DomainClass> listField;",
+                "Map<DomainClass,DomainClass> mapField;",
+                "Set<DomainClass> setField;",
+                "List<DomainClass,DomainClass> superTypeField;",
                 "java.sql.Time time;")){
             assertTrue(prop + " was not contained", str.contains(prop));
         }
