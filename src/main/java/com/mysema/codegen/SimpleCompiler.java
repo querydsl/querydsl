@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+import javax.annotation.Nullable;
 import javax.lang.model.SourceVersion;
 import javax.tools.DiagnosticListener;
 import javax.tools.JavaCompiler;
@@ -54,6 +55,7 @@ public class SimpleCompiler implements JavaCompiler{
     
     private final ClassLoader classLoader;
     
+    @Nullable
     private String classPath;    
     
     private final JavaCompiler compiler;

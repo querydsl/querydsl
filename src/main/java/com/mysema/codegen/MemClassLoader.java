@@ -17,6 +17,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
 import javax.tools.JavaFileObject.Kind;
@@ -55,6 +56,7 @@ public final class MemClassLoader extends ClassLoader {
     }
     
     @Override
+    @Nullable
     protected URL findResource(String name) {
         URL retValue = super.findResource(name);
         if(retValue != null) {
@@ -73,6 +75,7 @@ public final class MemClassLoader extends ClassLoader {
         }
     }
     
+    @Nullable
     private JavaFileObject getFileObject(String n) {
         LocationAndKind key;
         String name;                
@@ -94,6 +97,7 @@ public final class MemClassLoader extends ClassLoader {
     }
 
     @Override
+    @Nullable
     public InputStream getResourceAsStream(String name) {
         JavaFileObject jfo = getFileObject(name);
         if (jfo != null) {
