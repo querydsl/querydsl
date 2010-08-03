@@ -103,10 +103,10 @@ public class ClassType<T> implements Type {
                 if (!first){
                     builder.append(",");
                 }
-                if (parameter == null || parameter.equals(this)){
+                if (parameter == null || parameter.getFullName().equals(getFullName())){
                     builder.append("?");
                 }else{
-                    builder.append(parameter.getGenericName(true, packages, classes));    
+                    builder.append(parameter.getGenericName(false, packages, classes));    
                 }                
                 first = false;
             }

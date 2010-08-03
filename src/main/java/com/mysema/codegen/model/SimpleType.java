@@ -110,10 +110,10 @@ public class SimpleType implements Type {
                 if (!first){
                     builder.append(",");
                 }
-                if (parameter == null || parameter.equals(this)){
+                if (parameter == null || parameter.getFullName().equals(fullName)){
                     builder.append("?");
                 }else{
-                    builder.append(parameter.getGenericName(true, packages, classes));    
+                    builder.append(parameter.getGenericName(false, packages, classes));    
                 }                
                 first = false;
             }
