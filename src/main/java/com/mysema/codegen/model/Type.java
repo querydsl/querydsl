@@ -12,8 +12,6 @@ import javax.annotation.Nullable;
 
 /**
  * @author tiwe
- *
- * @param <T>
  */
 public interface Type {
     

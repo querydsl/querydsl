@@ -15,8 +15,6 @@ import net.jcip.annotations.Immutable;
 
 /**
  * @author tiwe
- *
- * @param <T>
  */
 @Immutable
 public class SimpleType implements Type {
