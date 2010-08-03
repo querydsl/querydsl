@@ -56,15 +56,15 @@ public class MetaDataSerializer extends EntitySerializer {
         super.introImports(writer, config, model);
         writer.imports(Table.class.getPackage());
         
-        boolean multiKeys = false;
-        multiKeys |= hasMultiKeys((Collection<ForeignKeyData>) model.getData().get(ForeignKeyData.class));
-        multiKeys |= hasMultiKeys((Collection<InverseForeignKeyData>) model.getData().get(InverseForeignKeyData.class));
-        if (multiKeys){
+        boolean multiColumns = false;
+        multiColumns |= hasMultiColumnKeys((Collection<ForeignKeyData>) model.getData().get(ForeignKeyData.class));
+        multiColumns |= hasMultiColumnKeys((Collection<InverseForeignKeyData>) model.getData().get(InverseForeignKeyData.class));
+        if (multiColumns){
             writer.imports(Arrays.class);
         }
     }
         
-    private boolean hasMultiKeys(Collection<? extends KeyData> foreignKeys){
+    private boolean hasMultiColumnKeys(Collection<? extends KeyData> foreignKeys){
         if (foreignKeys != null){
             for (KeyData foreignKey : foreignKeys){
                 if (foreignKey.getForeignColumns().size() > 1){
