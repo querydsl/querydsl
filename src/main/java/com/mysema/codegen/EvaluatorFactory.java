@@ -23,6 +23,12 @@ import javax.tools.StandardLocation;
 import javax.tools.ToolProvider;
 import javax.tools.JavaCompiler.CompilationTask;
 
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.support.ClassUtils;
+
+
 
 /**
  * EvaluatorFactory is a factory implementation for creating Evaluator instances
@@ -54,15 +60,15 @@ public class EvaluatorFactory {
         this.compilationOptions = Arrays.asList("-classpath", classpath, "-g:none");
     }
 
-    private void compile(String source, Class<?> projectionType,
-            String[] names, Type<?>[] types, String id, Map<String,Object> constants) throws IOException {
+    private void compile(String source, Type projectionType,
+            String[] names, Type[] types, String id, Map<String,Object> constants) throws IOException {
         // create source
         StringWriter writer = new StringWriter();
         JavaWriter javaw = new JavaWriter(writer);
         javaw.beginClass(id, null);
         String[] params = new String[names.length];
         for (int i = 0; i < params.length; i++) {
-            params[i] = types[i].getGenericName() + " " + names[i];
+            params[i] = types[i].getGenericName(true) + " " + names[i];
         }
         
         for (Map.Entry<String,Object> entry : constants.entrySet()){
@@ -71,9 +77,9 @@ public class EvaluatorFactory {
         }
 
         if (constants.isEmpty()){
-            javaw.beginStaticMethod(ClassUtils.getName(projectionType), "eval", params);    
+            javaw.beginStaticMethod(projectionType.getGenericName(false), "eval", params);    
         }else{
-            javaw.beginPublicMethod(ClassUtils.getName(projectionType), "eval", params);
+            javaw.beginPublicMethod(projectionType.getGenericName(false), "eval", params);
         }        
         javaw.append(source);
         javaw.end();
@@ -103,11 +109,11 @@ public class EvaluatorFactory {
             String[] names, 
             Class<?>[] classes,  
             Map<String,Object> constants) {
-        Type<?>[] types = new Type[classes.length];
+        Type[] types = new Type[classes.length];
         for (int i = 0; i < types.length; i++){
-            types[i] = new ClassType(classes[i]);
+            types[i] = new ClassType(TypeCategory.SIMPLE,classes[i]);
         }
-        return createEvaluator(source, projectionType, names, types, classes, constants);
+        return createEvaluator(source, new ClassType(TypeCategory.SIMPLE,projectionType), names, types, classes, constants);
     }
 
     /**
@@ -123,13 +129,13 @@ public class EvaluatorFactory {
      */
     public <T> Evaluator<T> createEvaluator(
                 String source,
-                Class<? extends T> projection, 
+                ClassType<? extends T> projection, 
                 String[] names, 
-                Type<?>[] types,  
+                Type[] types,  
                 Class<?>[] classes,
                 Map<String,Object> constants) {
         try {
-            String id = toId(source, projection, types);
+            String id = toId(source, projection.getJavaClass(), types);
             Class<?> clazz;
             try{
                 clazz = loader.loadClass(id);
@@ -147,7 +153,7 @@ public class EvaluatorFactory {
             }
 
             Method method = clazz.getMethod("eval", classes);
-            return new MethodEvaluator<T>(method, object, projection);
+            return new MethodEvaluator<T>(method, object, projection.getJavaClass());
         } catch (ClassNotFoundException e) {
             throw new CodegenException(e);
         } catch (SecurityException e) {
@@ -168,12 +174,12 @@ public class EvaluatorFactory {
 
     }
     
-    protected String toId(String source, Class<?> returnType, Type<?>... types) {
+    protected String toId(String source, Class<?> returnType, Type... types) {
         StringBuilder b = new StringBuilder("Q");
         b.append("_").append(source.hashCode());
         b.append("_").append(returnType.getName().hashCode());
-        for (Type<?> type : types) {
-            b.append("_").append(type.getName().hashCode());
+        for (Type type : types) {
+            b.append("_").append(type.getFullName().hashCode());
         }
         return b.toString().replace('-', '0');
     }

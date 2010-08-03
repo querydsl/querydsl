@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
+ *
+ */
 package com.mysema.codegen;
 
 import static org.junit.Assert.*;
@@ -9,14 +14,19 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+
+
 public class ComplexEvaluationTest {
     
     private EvaluatorFactory factory = new EvaluatorFactory((URLClassLoader) getClass().getClassLoader());
     
     @Test
     @SuppressWarnings("unchecked")
-    public void testComplex(){ClassType<String> stringType = new ClassType<String>(String.class);
-        Type<List> resultType = new ClassType<List>(List.class, stringType);
+    public void testComplex(){ClassType<String> stringType = new ClassType<String>(TypeCategory.STRING,String.class);
+        ClassType<List> resultType = new ClassType<List>(TypeCategory.LIST,List.class, stringType);
         StringBuilder source = new StringBuilder();
         source.append("java.util.List<String> rv = new java.util.ArrayList<String>();\n");
         source.append("for (String a : a_){\n");
@@ -30,7 +40,7 @@ public class ComplexEvaluationTest {
         
         Evaluator<List> evaluator = factory.createEvaluator(
             source.toString(), 
-            List.class, 
+            resultType, 
             new String[]{"a_","b_"}, 
             new Type[]{resultType, resultType},
             new Class[]{List.class,List.class},

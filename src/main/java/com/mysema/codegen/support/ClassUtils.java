@@ -3,7 +3,7 @@
  * All rights reserved.
  * 
  */
-package com.mysema.codegen;
+package com.mysema.codegen.support;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -24,8 +24,16 @@ public final class ClassUtils {
     public static String getName(Class<?> cl, Set<String> packages, Set<String> classes) {
         if (cl.isArray()) {
             return getName(cl.getComponentType(), packages, classes) + "[]";
-        } else if (cl.getPackage() == null || packages.contains(cl.getPackage().getName()) || classes.contains(cl.getName())) {
-            return cl.getSimpleName().replace('$', '.');
+        } else if (cl.getPackage() == null 
+                || cl.getPackage().getName().equals("java.lang") 
+                || packages.contains(cl.getPackage().getName()) 
+                || classes.contains(cl.getName())) {
+            if (cl.getPackage() != null){
+                String localName = cl.getName().substring(cl.getPackage().getName().length()+1);
+                return localName.replace('$', '.');
+            }else{
+                return cl.getSimpleName().replace('$', '.');    
+            }
         } else {
             return cl.getName().replace('$', '.');
         }

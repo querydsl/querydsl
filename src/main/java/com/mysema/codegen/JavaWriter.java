@@ -8,7 +8,6 @@ package com.mysema.codegen;
 import static com.mysema.codegen.Symbols.ASSIGN;
 import static com.mysema.codegen.Symbols.COMMA;
 import static com.mysema.codegen.Symbols.DOT;
-import static com.mysema.codegen.Symbols.NEWLINE;
 import static com.mysema.codegen.Symbols.QUOTE;
 import static com.mysema.codegen.Symbols.SEMICOLON;
 import static com.mysema.codegen.Symbols.SPACE;
@@ -25,15 +24,14 @@ import org.apache.commons.collections15.Transformer;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
+
 /**
  * JavaWriter is the default implementation of the CodeWriter interface
  * 
  * @author tiwe
  *
  */
-public final class JavaWriter implements Appendable, CodeWriter{
-    
-    private static final int INDENT_SPACES = 4;
+public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
     
     private static final String EXTENDS = " extends ";
         
@@ -65,27 +63,20 @@ public final class JavaWriter implements Appendable, CodeWriter{
 
     private static final String PUBLIC_STATIC_FINAL = "public static final ";
     
-    private final Appendable appendable;
-    
     private final Set<String> importedClasses = new HashSet<String>();
     
     private final Set<String> importedPackages = new HashSet<String>();
     
-    private String indent = "";
-    
     private String type;
     
     public JavaWriter(Appendable appendable){
-        if (appendable == null){
-            throw new IllegalArgumentException("appendable is null");
-        }
-        this.appendable = appendable;
+        super(appendable);
         this.importedPackages.add("java.lang");
     }
     
     @Override
     public JavaWriter annotation(Annotation annotation) throws IOException {
-        append(indent).append("@").appendType(annotation.annotationType());
+        beginLine().append("@").appendType(annotation.annotationType());
         Method[] methods = annotation.annotationType().getDeclaredMethods();
         if (methods.length == 1 && methods[0].getName().equals("value")){
             try {
@@ -133,7 +124,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
 
     @Override
     public JavaWriter annotation(Class<? extends Annotation> annotation) throws IOException{
-        return append(indent).append("@").appendType(annotation).nl();
+        return beginLine().append("@").appendType(annotation).nl();
     }
     
     @SuppressWarnings("unchecked")
@@ -152,25 +143,6 @@ public final class JavaWriter implements Appendable, CodeWriter{
          }
      }
     
-    
-    @Override
-    public JavaWriter append(char c) throws IOException {
-        appendable.append(c);
-        return this;
-    }
- 
-    @Override
-    public JavaWriter append(CharSequence csq) throws IOException {
-        appendable.append(csq);
-        return this;
-    }
-
-    @Override
-    public JavaWriter append(CharSequence csq, int start, int end) throws IOException {
-        appendable.append(csq, start, end);
-        return this;
-    }
-
     private JavaWriter appendType(Class<?> type) throws IOException{
         if (importedClasses.contains(type.getName()) || importedPackages.contains(type.getPackage().getName())){
             append(type.getSimpleName());
@@ -186,7 +158,7 @@ public final class JavaWriter implements Appendable, CodeWriter{
     
     @Override
     public JavaWriter beginClass(String simpleName, String superClass, String... interfaces) throws IOException{
-        append(indent + PUBLIC_CLASS + simpleName);
+        beginLine(PUBLIC_CLASS + simpleName);
         if (superClass != null){
             append(EXTENDS + superClass);
         }
@@ -206,19 +178,19 @@ public final class JavaWriter implements Appendable, CodeWriter{
  
     @Override
     public <T> JavaWriter beginConstructor(Collection<T> parameters, Transformer<T,String> transformer) throws IOException {
-        append(indent + PUBLIC + type).params(parameters, transformer).append(" {").nl();
+        beginLine(PUBLIC + type).params(parameters, transformer).append(" {").nl();
         return goIn();        
     }
     
     @Override
     public JavaWriter beginConstructor(String... parameters) throws IOException{
-        append(indent + PUBLIC + type).params(parameters).append(" {").nl();
+        beginLine(PUBLIC + type).params(parameters).append(" {").nl();
         return goIn();
     }
     
     @Override
     public JavaWriter beginInterface(String simpleName, String... interfaces) throws IOException {
-        append(indent + PUBLIC_INTERFACE + simpleName);
+        beginLine(PUBLIC_INTERFACE + simpleName);
         if (interfaces.length > 0){
             append(EXTENDS);
             append(StringUtils.join(interfaces, COMMA));
@@ -234,17 +206,10 @@ public final class JavaWriter implements Appendable, CodeWriter{
         
     }
  
-    @Override
-    public JavaWriter beginLine(String... segments) throws IOException {
-        append(indent);
-        for (String segment : segments){
-            append(segment);
-        }
-        return this;
-    }
+
     
     private JavaWriter beginMethod(String modifiers, String returnType, String methodName, String... args) throws IOException{
-        append(indent + modifiers + returnType + SPACE + methodName).params(args).append(" {").nl();
+        beginLine(modifiers + returnType + SPACE + methodName).params(args).append(" {").nl();
         return goIn();
     }
     
@@ -285,18 +250,6 @@ public final class JavaWriter implements Appendable, CodeWriter{
     
     private JavaWriter field(String modifier, String type, String name, String value) throws IOException{
         return stmt(modifier + type + SPACE + name + ASSIGN + value).nl();
-    }
-
-    private JavaWriter goIn(){
-        indent += "    ";
-        return this;
-    }
-    
-    private JavaWriter goOut(){
-        if (indent.length() >= INDENT_SPACES){
-            indent = indent.substring(0, indent.length() - INDENT_SPACES);
-        }
-        return this;
     }
 
     @Override
@@ -346,20 +299,6 @@ public final class JavaWriter implements Appendable, CodeWriter{
             line(" * " + line);
         }
         return line(" */");
-    }
-    
-    @Override
-    public JavaWriter line(String... segments) throws IOException{
-        append(indent);
-        for (String segment : segments){
-            append(segment);
-        }        
-        return nl();
-    }
-    
-    @Override
-    public JavaWriter nl() throws IOException {
-        return append(NEWLINE);        
     }
 
     @Override
@@ -450,10 +389,6 @@ public final class JavaWriter implements Appendable, CodeWriter{
             line(IMPORT_STATIC + cl.getName() + ".*;");
         }
         return this;
-    }
-
-    private JavaWriter stmt(String stmt) throws IOException{
-        return line(stmt + SEMICOLON);
     }
     
     @Override

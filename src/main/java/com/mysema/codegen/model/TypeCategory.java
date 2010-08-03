@@ -1,0 +1,137 @@
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
+ *
+ */
+package com.mysema.codegen.model;
+
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * TypeCategory defines the expression type used for a Field
+ *
+ * @author tiwe
+ *
+ */
+public enum TypeCategory {
+    /**
+     *
+     */
+    SIMPLE(null),
+    /**
+     *
+     */
+    MAP(null),
+    /**
+     *
+     */
+    COLLECTION(null),
+    /**
+     *
+     */
+    LIST(COLLECTION),
+    /**
+     *
+     */
+    SET(COLLECTION),
+    /**
+     *
+     */
+    ARRAY(null),
+    /**
+     *
+     */
+    COMPARABLE(SIMPLE),
+    /**
+     *
+     */
+    BOOLEAN(COMPARABLE, Boolean.class.getName()),
+    /**
+     *
+     */
+    DATE(COMPARABLE, java.sql.Date.class.getName(), "org.joda.time.LocalDate"),
+    /**
+     *
+     */
+    DATETIME(COMPARABLE,
+        java.util.Calendar.class.getName(),
+        java.util.Date.class.getName(),
+        java.sql.Timestamp.class.getName(),
+        "org.joda.time.LocalDateTime",
+        "org.joda.time.Instant",
+        "org.joda.time.DateTime",
+        "org.joda.time.DateMidnight"),
+    /**
+     * 
+     */
+    CUSTOM(null),    
+        
+    /**
+     *
+     */
+    ENTITY(null),
+
+    /**
+     *
+     */
+    NUMERIC(COMPARABLE),
+    /**
+     *
+     */
+    STRING(COMPARABLE, String.class.getName()),
+    /**
+     *
+     */
+    TIME(COMPARABLE, java.sql.Time.class.getName(), "org.joda.time.LocalTime");
+
+    private final TypeCategory superType;
+
+    private final Set<String> types;
+
+    TypeCategory(TypeCategory superType, String... types){
+        this.superType = superType;
+        this.types = new HashSet<String>(types.length);
+        for (String type : types){
+            this.types.add(type);
+        }
+    }
+
+    public TypeCategory getSuperType() {
+        return superType;
+    }
+
+    public boolean supports(Class<?> cl){
+        return supports(cl.getName());
+    }
+
+    public boolean supports(String className){
+        return types.contains(className);
+    }
+
+    /**
+     * transitive and reflexive subCategoryOf check
+     *
+     * @param ancestor
+     * @return
+     */
+    public boolean isSubCategoryOf(TypeCategory ancestor){
+        if (this == ancestor){
+            return true;
+        }else if (superType == null){
+            return false;
+        }else{
+            return superType == ancestor || superType.isSubCategoryOf(ancestor);
+        }
+    }
+
+    public static TypeCategory get(String className){
+        for (TypeCategory category : values()){
+            if (category.supports(className)){
+                return category;
+            }
+        }
+        return SIMPLE;
+    }
+
+}

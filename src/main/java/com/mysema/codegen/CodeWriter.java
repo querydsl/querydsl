@@ -33,7 +33,7 @@ public interface CodeWriter extends Appendable{
 
     CodeWriter beginInterface(String simpleName, String... interfaces) throws IOException;
 
-    JavaWriter beginLine(String... segments) throws IOException;
+    CodeWriter beginLine(String... segments) throws IOException;
 
     <T> CodeWriter beginPublicMethod(String returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException;
 
