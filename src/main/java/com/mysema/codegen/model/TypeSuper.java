@@ -5,6 +5,7 @@
  */
 package com.mysema.codegen.model;
 
+import java.util.Collections;
 import java.util.Set;
 
 import javax.annotation.Nullable;
@@ -37,11 +38,7 @@ public class TypeSuper extends TypeAdapter{
     
     @Override
     public String getGenericName(boolean asArgType){
-        if (!asArgType){
-            return "? super " + superType.getGenericName(true);
-        }else{
-            return super.getGenericName(asArgType);
-        }
+        return getGenericName(asArgType, Collections.<String>emptySet(),Collections.<String>emptySet());
     }
 
     @Override

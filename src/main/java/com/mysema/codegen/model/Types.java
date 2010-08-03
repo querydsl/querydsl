@@ -18,6 +18,7 @@ import java.util.Set;
  * @author tiwe
  *
  */
+@SuppressWarnings("unchecked")
 public final class Types {
 
     public static final ClassType<Object> OBJECT = new ClassType<Object>(TypeCategory.SIMPLE,Object.class);
@@ -33,7 +34,7 @@ public final class Types {
     public static final ClassType<Byte> BYTE = new ClassType<Byte>(TypeCategory.NUMERIC,Byte.class, byte.class);
     
     public static final ClassType<Character> CHAR = new ClassType<Character>(TypeCategory.COMPARABLE,Character.class, char.class);
-
+    
     public static final ClassType<Collection> COLLECTION = new ClassType<Collection>(TypeCategory.COLLECTION, Collection.class, OBJECT);
 
     public static final ClassType<Double> DOUBLE = new ClassType<Double>(TypeCategory.NUMERIC,Double.class, double.class);
