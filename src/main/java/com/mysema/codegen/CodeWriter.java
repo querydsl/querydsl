@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.collections15.Transformer;
 
 /**
@@ -25,7 +27,7 @@ public interface CodeWriter extends Appendable{
 
     CodeWriter beginClass(String simpleName) throws IOException;
 
-    CodeWriter beginClass(String simpleName, String superClass, String... interfaces) throws IOException;
+    CodeWriter beginClass(String simpleName, @Nullable String superClass, String... interfaces) throws IOException;
 
     <T> CodeWriter beginConstructor(Collection<T> params, Transformer<T, String> transformer) throws IOException;
 

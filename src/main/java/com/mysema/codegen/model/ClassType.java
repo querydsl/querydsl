@@ -11,6 +11,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import com.mysema.codegen.support.ClassUtils;
 
 /**
@@ -26,13 +28,14 @@ public class ClassType<T> implements Type {
     
     private final List<Type> parameters;
     
+    @Nullable
     private final Class<?> primitiveClass;
     
-    public ClassType(TypeCategory category, Class<T> javaClass, Class<?> primitiveClass) {
+    public ClassType(TypeCategory category, Class<T> javaClass, @Nullable Class<?> primitiveClass) {
         this(category, javaClass, primitiveClass, Collections.<Type>emptyList());
     }
         
-    public ClassType(TypeCategory category, Class<T> javaClass, Class<?> primitiveClass, List<Type> parameters) {
+    public ClassType(TypeCategory category, Class<T> javaClass, @Nullable Class<?> primitiveClass, List<Type> parameters) {
         this.category = category;
         this.javaClass = javaClass;
         this.primitiveClass = primitiveClass;
