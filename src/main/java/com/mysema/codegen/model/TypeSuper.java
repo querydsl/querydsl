@@ -50,6 +50,7 @@ public class TypeSuper extends TypeAdapter{
         }
     }
     
+    @Nullable
     public String getVarName(){
         return varName;
     }

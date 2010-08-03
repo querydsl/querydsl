@@ -43,6 +43,7 @@ public class TypeExtends extends TypeAdapter{
         }
     }
 
+    @Nullable
     public String getVarName(){
         return varName;
     }
