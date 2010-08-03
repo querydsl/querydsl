@@ -24,6 +24,10 @@ public class TypeTest {
         
     private ClassType<Locale> locale = new ClassType<Locale>(TypeCategory.SIMPLE,Locale.class);
     
+    private Type string = Types.STRING;
+    
+    private Type string2 = new SimpleType(string);
+    
     private Type locale2 = new SimpleType(locale);
     
     private Type stringList = new ClassType<List>(TypeCategory.LIST, List.class, Types.STRING);
@@ -61,6 +65,9 @@ public class TypeTest {
         assertEquals("java.util.List<String>",stringList2.getGenericName(true));
         assertEquals("java.util.Map<String,String>", stringMap.getGenericName(true));
         assertEquals("java.util.Map<String,String>", stringMap2.getGenericName(true));
+        
+        assertEquals("String", string.getGenericName(true));
+        assertEquals("String", string2.getGenericName(true));
     }
 
     @Test
@@ -69,6 +76,9 @@ public class TypeTest {
         assertEquals("java.util.Locale",locale2.getRawName(emptyStrings,emptyStrings));
         assertEquals("java.util.List",stringList.getRawName(emptyStrings,emptyStrings));
         assertEquals("java.util.List",stringList2.getRawName(emptyStrings,emptyStrings));
+        
+        assertEquals("String", string.getRawName(emptyStrings, emptyStrings));
+        assertEquals("String", string2.getRawName(emptyStrings, emptyStrings));
     }
 
     @Test

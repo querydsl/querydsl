@@ -139,7 +139,7 @@ public class SimpleType implements Type {
 
     @Override
     public String getRawName(Set<String> packages, Set<String> classes) {
-        if (packages.contains(packageName) || classes.contains(fullName)){
+        if (packages.contains(packageName) || "java.lang".equals(packageName) || classes.contains(fullName)){
             return localName;
         }else{
             return fullName;
