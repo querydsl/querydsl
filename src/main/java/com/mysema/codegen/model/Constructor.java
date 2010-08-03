@@ -7,6 +7,9 @@ package com.mysema.codegen.model;
 
 import java.util.Collection;
 
+import net.jcip.annotations.Immutable;
+
+@Immutable
 public final class Constructor {
 
     private final Collection<Parameter> parameters;

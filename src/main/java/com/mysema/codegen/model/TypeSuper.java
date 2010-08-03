@@ -10,6 +10,8 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import net.jcip.annotations.Immutable;
+
 
 /**
  * TypeSuper is a Type for type variables and wildcard types
@@ -17,6 +19,7 @@ import javax.annotation.Nullable;
  * @author tiwe
  *
  */
+@Immutable
 public class TypeSuper extends TypeAdapter{
 
     private final Type superType;

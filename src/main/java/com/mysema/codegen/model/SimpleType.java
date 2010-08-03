@@ -10,12 +10,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import net.jcip.annotations.Immutable;
+
 
 /**
  * @author tiwe
  *
  * @param <T>
  */
+@Immutable
 public class SimpleType implements Type {
 
     private final TypeCategory category;

@@ -5,12 +5,15 @@
  */
 package com.mysema.codegen.model;
 
+import net.jcip.annotations.Immutable;
+
 /**
  * Parameter represents a parameter in a Constructor
  *
  * @author tiwe
  * @version $Id$
  */
+@Immutable
 public final class Parameter {
 
     private final String name;

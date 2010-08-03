@@ -10,10 +10,13 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import net.jcip.annotations.Immutable;
+
 /**
  * @author tiwe
  *
  */
+@Immutable
 public class TypeExtends extends TypeAdapter{
 
     @Nullable

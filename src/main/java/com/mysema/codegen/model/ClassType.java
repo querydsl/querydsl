@@ -13,6 +13,8 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import net.jcip.annotations.Immutable;
+
 import com.mysema.codegen.support.ClassUtils;
 
 /**
@@ -20,6 +22,7 @@ import com.mysema.codegen.support.ClassUtils;
  *
  * @param <T>
  */
+@Immutable
 public class ClassType<T> implements Type {
 
     private final TypeCategory category;
