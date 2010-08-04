@@ -10,26 +10,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.jdo.annotations.Element;
-import javax.jdo.annotations.Inheritance;
-import javax.jdo.annotations.InheritanceStrategy;
-import javax.jdo.annotations.Join;
-import javax.jdo.annotations.Key;
-import javax.jdo.annotations.PersistenceCapable;
-import javax.jdo.annotations.Value;
+import javax.jdo.annotations.*;
 
 @PersistenceCapable
 @Inheritance(strategy = InheritanceStrategy.NEW_TABLE)
+@FetchGroups({
+    @FetchGroup(name="products", members={@Persistent(name="products")})
+})
 public class Store {
 
     private String name;
 
-//    @Persistent
     @Join
     @Element(types=Product.class)
     private List<Product> products = new ArrayList<Product>();
 
-//    @Persistent
     @Join
     @Key(types=String.class)
     @Value(types=Product.class)

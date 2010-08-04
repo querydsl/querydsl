@@ -7,9 +7,12 @@ package com.mysema.query.jdoql.testdomain;
 
 import java.util.Date;
 
+import javax.jdo.annotations.FetchGroup;
+import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.Inheritance;
 import javax.jdo.annotations.InheritanceStrategy;
 import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
 
 /**
  * Definition of a Book. Extends basic Product class.

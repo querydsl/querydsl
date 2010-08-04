@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 import javax.jdo.PersistenceManager;
@@ -49,6 +51,11 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     private List<Query> queries = new ArrayList<Query>(2);
 
     private final JDOQLTemplates templates;
+    
+    private Set<String> fetchGroups = new HashSet<String>();
+    
+    @Nullable
+    private Integer maxFetchDepth;
 
     public AbstractJDOQLQuery(@Nullable PersistenceManager persistenceManager) {
         this(persistenceManager, JDOQLTemplates.DEFAULT, new DefaultQueryMetadata(), false);
@@ -64,6 +71,12 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         this.templates = templates;
         this.persistenceManager = persistenceManager;
         this.detach = detach;
+    }
+
+    @SuppressWarnings("unchecked")
+    public Q addFetchGroup(String fetchGroupName) {
+        fetchGroups.add(fetchGroupName);
+        return (Q)this;
     }
 
     public void close() throws IOException {
@@ -103,6 +116,13 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
                 query.setResultClass(JDOTuple.class);
             } else if (exprType.equals(EConstructor.class)){
                 query.setResultClass(projection.get(0).getType());
+            }
+            
+            if (!fetchGroups.isEmpty()){
+                query.getFetchPlan().setGroups(fetchGroups);
+            }
+            if (maxFetchDepth != null){
+                query.getFetchPlan().setMaxFetchDepth(maxFetchDepth);
             }
         }
 
@@ -192,6 +212,13 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     private void reset(){
         queryMixin.getMetadata().reset();
     }
+
+    @SuppressWarnings("unchecked")
+    public Q setMaxFetchDepth(int depth) {
+        maxFetchDepth = depth;
+        return (Q)this;
+    }
+    
 
     @Override
     public String toString(){

@@ -34,7 +34,6 @@ public class GroupByTest extends AbstractJDOTest {
 
     @BeforeClass
     public static void doPersist() {
-        // Persistence of a Product and a Book.
         PersistenceManager pm = pmf.getPersistenceManager();
         Transaction tx = pm.currentTransaction();
         try {

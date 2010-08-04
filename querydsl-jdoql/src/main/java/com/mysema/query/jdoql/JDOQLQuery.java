@@ -27,4 +27,24 @@ public interface JDOQLQuery extends JDOQLCommonQuery<JDOQLQuery>, Projectable, C
      */
     JDOQLQuery clone(PersistenceManager persistenceManager);
 
+    /**
+     * Add the fetch group to the set of active fetch groups.
+     * 
+     * @param string
+     * @return
+     */
+    JDOQLQuery addFetchGroup(String fetchGroupName);
+
+    /**
+     * Set the maximum fetch depth when fetching. 
+     * A value of 0 has no meaning and will throw a JDOUserException.
+     * A value of -1 means that no limit is placed on fetching.
+     * A positive integer will result in that number of references from the
+     * initial object to be fetched.
+     * 
+     * @param maxFetchDepth
+     * @return
+     */
+    JDOQLQuery setMaxFetchDepth(int maxFetchDepth);
+
 }
