@@ -140,7 +140,7 @@ public class AbstractHQLSubQuery<Q extends AbstractHQLSubQuery<Q>> extends Detac
     public Q with(EBoolean... conditions){
         return queryMixin.with(conditions);
     }
-
+    
     public String toString(){
         if (!queryMixin.getMetadata().getJoins().isEmpty()){
             HQLSerializer serializer = new HQLSerializer(JPQLTemplates.DEFAULT);
