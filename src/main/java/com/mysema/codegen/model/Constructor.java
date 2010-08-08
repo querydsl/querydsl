@@ -9,6 +9,10 @@ import java.util.Collection;
 
 import net.jcip.annotations.Immutable;
 
+/**
+ * @author tiwe
+ *
+ */
 @Immutable
 public final class Constructor {
 

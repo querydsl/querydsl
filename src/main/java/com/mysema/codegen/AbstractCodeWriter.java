@@ -10,8 +10,6 @@ import static com.mysema.codegen.Symbols.SEMICOLON;
 
 import java.io.IOException;
 
-
-
 /**
  * @author tiwe
  *
