@@ -35,7 +35,7 @@ import com.mysema.query.codegen.Method;
 import com.mysema.query.codegen.Property;
 
 /**
- * EntityElementVisitor is a an APT visitor for entity types
+ * ElementHandler is a an APT visitor for entity types
  *
  * @author tiwe
  *

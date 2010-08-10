@@ -23,7 +23,6 @@ import java.lang.annotation.Target;
 @Documented
 @Target({FIELD,METHOD,PARAMETER})
 @Retention(RUNTIME)
-// TODO : rename to QType
 public @interface QueryType {
 
     /**

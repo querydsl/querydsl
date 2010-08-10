@@ -42,7 +42,7 @@ import com.mysema.query.codegen.Supertype;
 import com.mysema.query.codegen.TypeFactory;
 
 /**
- * APTTypeModelFactory is a factory for APT inspection based TypeModel creation
+ * APTTypeFactory is a factory for APT inspection based TypeModel creation
  *
  * @author tiwe
  *

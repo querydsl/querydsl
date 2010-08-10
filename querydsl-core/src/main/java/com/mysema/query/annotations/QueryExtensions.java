@@ -22,7 +22,6 @@ import java.lang.annotation.Target;
 @Documented
 @Target(TYPE)
 @Retention(RUNTIME)
-// TODO : rename to Extensions
 public @interface QueryExtensions {
 
     /**

@@ -18,7 +18,6 @@ import java.lang.annotation.Target;
 /**
  * Annotation for APT based Domain query type generation. Annotate Domain types with this annotation.
  */
-// TODO : rename to QEntity
 public @interface QueryEntity {
 
 }

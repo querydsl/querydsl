@@ -12,6 +12,8 @@ import javax.annotation.Nullable;
 
 import net.jcip.annotations.Immutable;
 
+import org.apache.commons.collections15.Transformer;
+
 /**
  * Template for {@link Operation}, {@link Custom} and {@link Path} serialization
  *
@@ -34,15 +36,16 @@ public final class Template implements Serializable{
         private final String staticText;
 
         @Nullable
-        private final transient Converter<?,?> converter;
+        private final transient Transformer<Expr<?>,Expr<?>> transformer;
 
         private final boolean asString;
 
         private final String toString;
 
-        Element(int index, Converter<?,?> converter) {
+        @SuppressWarnings("unchecked")
+        Element(int index, Transformer<? extends Expr<?>,? extends Expr<?>> transformer) {
             this.asString = false;
-            this.converter = converter;
+            this.transformer = (Transformer)transformer;
             this.index = index;
             this.staticText = null;
             this.toString = String.valueOf(index);
@@ -50,7 +53,7 @@ public final class Template implements Serializable{
 
         Element(int index, boolean asString) {
             this.asString = asString;
-            this.converter = null;
+            this.transformer = null;
             this.index = index;
             this.staticText = null;
             this.toString = index + (asString ? "s" : "");
@@ -58,7 +61,7 @@ public final class Template implements Serializable{
 
         Element(String text) {
             this.asString = false;
-            this.converter = null;
+            this.transformer = null;
             this.index = -1;
             this.staticText = text;
             this.toString = "'" + staticText + "'";
@@ -78,12 +81,11 @@ public final class Template implements Serializable{
         }
 
         public boolean hasConverter(){
-            return converter != null;
+            return transformer != null;
         }
 
-        @SuppressWarnings("unchecked")
         public Expr<?> convert(Expr<?> source){
-            return ((Converter)converter).convert(source);
+            return transformer.transform(source);
         }
 
         @Override
