@@ -28,7 +28,7 @@
     <dependency>
       <groupId>com.mysema.commons</groupId>
       <artifactId>mysema-commons-lang</artifactId>
-      <version>0.1.8</version>
+      <version>0.1.9</version>
     </dependency>
     <dependency>
       <groupId>com.mysema.codegen</groupId>

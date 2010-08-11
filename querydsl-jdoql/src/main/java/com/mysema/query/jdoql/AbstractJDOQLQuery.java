@@ -19,6 +19,7 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
 import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
@@ -30,7 +31,6 @@ import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.expr.QTuple;
 import com.mysema.query.types.path.PEntity;
-import com.mysema.util.ResultIterator;
 
 /**
  * Abstract base class for custom implementations of the JDOQLQuery interface.
@@ -168,11 +168,11 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     }
 
     public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
-        return new ResultIterator<Object[]>(list(args).iterator(), this);
+        return new IteratorAdapter<Object[]>(list(args).iterator(), this);
     }
 
     public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
-        return new ResultIterator<RT>(list(projection).iterator(), this);
+        return new IteratorAdapter<RT>(list(projection).iterator(), this);
     }
 
     @SuppressWarnings("unchecked")
