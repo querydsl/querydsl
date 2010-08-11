@@ -60,19 +60,24 @@ public class DefaultQueryEngine implements QueryEngine {
         }
     }
 
-    private List<?> distinct(List<?> list) {
+    private <T> List<T> distinct(List<T> list) {
+        List<T> rv = new ArrayList<T>(list.size());
         if (!list.isEmpty() && list.get(0).getClass().isArray()){
             Set set = new HashSet(list.size());
-            List rv = new ArrayList(list.size());
-            for (Object o : list){
+            for (T o : list){
                 if (set.add(Arrays.asList((Object[])o))){
                     rv.add(o);
                 }
             }
             return rv;
-        }else{
-            return new ArrayList(new HashSet(list));
+        }else{            
+            for (T o : list){
+                if (!rv.contains(o)){
+                    rv.add(o);
+                }
+            }
         }
+        return rv;
     }
 
     private List evaluateMultipleSources(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables, boolean count) {

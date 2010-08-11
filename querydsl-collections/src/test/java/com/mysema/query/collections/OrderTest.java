@@ -7,8 +7,10 @@ package com.mysema.query.collections;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -36,9 +38,27 @@ public class OrderTest extends AbstractQueryTest {
 
         // TODO : more tests
     }
+    
+    @Test
+    public void test2(){
+        List<String> orderedNames = Arrays.asList("Alex","Bob","Francis","Kitty"); 
+        assertEquals(orderedNames, query().from(cat,cats).orderBy(cat.name.asc()).list(cat.name));
+        assertEquals(orderedNames, query().from(cat,cats).orderBy(cat.name.asc()).listDistinct(cat.name));
+    }
+    
+    @Test
+    public void with_count(){
+        ColQuery q = new ColQueryImpl();
+        q.from(cat, cats);
+        long size = q.countDistinct();
+        assertTrue(size > 0);
+        q.offset(0).limit(10);
+        q.orderBy(cat.name.asc());
+        assertEquals(Arrays.asList("Alex","Bob","Francis","Kitty"), q.listDistinct(cat.name));
+    }
 
     @Test
-    public void test_with_null(){
+    public void with_null(){
         List<Cat> cats = Arrays.asList(new Cat(), new Cat("Bob"));        
         assertEquals(cats, query().from(cat, cats).orderBy(cat.name.asc()).list(cat));
         assertEquals(Arrays.asList(cats.get(1), cats.get(0)), query().from(cat, cats).orderBy(cat.name.desc()).list(cat));
