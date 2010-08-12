@@ -45,6 +45,8 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
 
     private static final String PRIVATE = "private ";
     
+    private static final String PRIVATE_FINAL = "private final ";
+    
     private static final String PRIVATE_STATIC_FINAL = "private static final ";
 
     private static final String PROTECTED = "protected ";
@@ -335,12 +337,12 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
     
     @Override
     public JavaWriter privateFinal(String type, String name) throws IOException {
-        return field(PRIVATE, type, name);        
+        return field(PRIVATE_FINAL, type, name);        
     }
     
     @Override
     public JavaWriter privateFinal(String type, String name, String value) throws IOException {
-        return field(PRIVATE, type, name, value);
+        return field(PRIVATE_FINAL, type, name, value);
     }
 
     @Override
