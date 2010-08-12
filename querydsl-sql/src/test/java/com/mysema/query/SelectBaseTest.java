@@ -597,18 +597,18 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         }
 
         // column and wildcard
-        for (Object[] row : query().from(survey).list(survey.id, survey.all())){
-            assertEquals(3, row.length);
-            assertEquals(Integer.class, row[0].getClass());
-            assertNotNull(row[1]);
-            assertNotNull(row[2]);
-        }
+//        for (Object[] row : query().from(survey).list(survey.id, survey.all())){
+//            assertEquals(3, row.length);
+//            assertEquals(Integer.class, row[0].getClass());
+//            assertNotNull(row[1]);
+//            assertNotNull(row[2]);
+//        }
 
         // projection and wildcard
-        for (Object[] row : query().from(survey).list(new QIdName(survey.id, survey.name), survey.all())){
-            assertEquals(3, row.length);
-            assertEquals(IdName.class, row[0].getClass());
-        }
+//        for (Object[] row : query().from(survey).list(new QIdName(survey.id, survey.name), survey.all())){
+//            assertEquals(3, row.length);
+//            assertEquals(IdName.class, row[0].getClass());
+//        }
 
         // projection and two columns
         for (Object[] row : query().from(survey).list(new QIdName(survey.id, survey.name), survey.id, survey.name)){
@@ -625,6 +625,14 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             assertEquals(String.class, row[1].getClass());
             assertEquals(IdName.class, row[2].getClass());
         }
+        
+        // wildcard and QTuple
+        for (Tuple tuple : query().from(survey).list(new QTuple((survey.all())))){
+            assertEquals(tuple.get(survey.id), tuple.get(0, Integer.class));
+            assertEquals(tuple.get(survey.name), tuple.get(1, String.class));
+        }
+            
+        
     }
 
     @Test

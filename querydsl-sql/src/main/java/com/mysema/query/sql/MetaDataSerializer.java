@@ -15,6 +15,7 @@ import java.util.Collections;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.EntityType;
+import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.TypeMappings;
 import com.mysema.query.sql.support.ForeignKeyData;
@@ -79,6 +80,20 @@ public class MetaDataSerializer extends EntitySerializer {
     @Override
     protected void serializeProperties(EntityType model,  SerializerConfig config, CodeWriter writer) throws IOException {
         super.serializeProperties(model, config, writer);
+        
+        // wildcard
+        StringBuilder paths = new StringBuilder();
+        for (Property property : model.getProperties()){
+            if (paths.length() > 0){
+                paths.append(", ");
+            }
+            paths.append(property.getEscapedName());
+        }
+
+        writer.privateFinal("Expr<?>[]", "all", "new Expr[]{" + paths.toString() + "}");
+        writer.beginPublicMethod("Expr<?>[]", "all");
+        writer.line("return all;");
+        writer.end();
 
         // primary keys
         Collection<PrimaryKeyData> primaryKeys = (Collection<PrimaryKeyData>) model.getData().get(PrimaryKeyData.class);

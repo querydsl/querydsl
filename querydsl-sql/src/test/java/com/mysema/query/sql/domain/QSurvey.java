@@ -9,7 +9,6 @@ import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.Table;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
@@ -21,13 +20,15 @@ public class QSurvey extends PEntity<QSurvey> {
 
     private static final long serialVersionUID = -7427577079709192842L;
 
-    public Expr<Object[]> all(){
-        return CSimple.create(Object[].class, "{0}.*", this);
-    }
-
     public final PString name = createString("NAME");
 
     public final PNumber<java.lang.Integer> id = createNumber("ID", java.lang.Integer.class);
+
+    private final Expr<?>[] all = new Expr[]{id, name};
+
+    public Expr<?>[] all() {
+        return all;
+    }
     
     public final PrimaryKey<QSurvey> idKey = new PrimaryKey<QSurvey>(this,id);
 

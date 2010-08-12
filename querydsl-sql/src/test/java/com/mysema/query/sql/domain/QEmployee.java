@@ -12,7 +12,6 @@ import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.Table;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
@@ -24,10 +23,6 @@ import com.mysema.query.types.path.PathMetadataFactory;
 public class QEmployee extends PEntity<QEmployee> {
 
     private static final long serialVersionUID = 1394463749655231079L;
-
-    public Expr<Object[]> all(){
-        return CSimple.create(Object[].class, "{0}.*", this);
-    }
 
     public final PNumber<java.lang.Integer> id = createNumber("ID", java.lang.Integer.class);
 
@@ -43,10 +38,17 @@ public class QEmployee extends PEntity<QEmployee> {
 
     public final PNumber<java.lang.Integer> superiorId = createNumber("SUPERIOR_ID", java.lang.Integer.class);
 
+    private final Expr<?>[] all = new Expr[]{id, firstname, lastname, salary, datefield, timefield, superiorId};
+
+    public Expr<?>[] all() {
+        return all;
+    }
+
     public final PrimaryKey<QEmployee> idKey = new PrimaryKey<QEmployee>(this, id);
 
     public final ForeignKey<QEmployee> superiorIdKey = new ForeignKey<QEmployee>(this, superiorId, "ID");
 
+    
     public QEmployee(java.lang.String path) {
         super(QEmployee.class, PathMetadataFactory.forVariable(path));
     }

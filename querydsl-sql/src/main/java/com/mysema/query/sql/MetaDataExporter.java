@@ -28,10 +28,8 @@ import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.model.Types;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.codegen.EntityType;
-import com.mysema.query.codegen.Method;
 import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SimpleSerializerConfig;
@@ -126,8 +124,6 @@ public class MetaDataExporter {
                 false,
                 false);
         EntityType classModel = new EntityType(beanSerializer == null ? "" : namePrefix, classTypeModel);
-        Method wildcard = new Method(classModel, "all", "{0}.*", Types.OBJECTS);
-        classModel.addMethod(wildcard);
         classModel.addAnnotation(new TableImpl(namingStrategy.normalizeTableName(tableName)));
         return classModel;
     }
