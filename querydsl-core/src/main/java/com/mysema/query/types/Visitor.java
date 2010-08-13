@@ -26,7 +26,7 @@ public interface Visitor {
     /**
      * @param expr
      */
-    void visit(EConstructor<?> expr);
+    void visit(FactoryExpression<?> expr);
 
     /**
      * @param expr

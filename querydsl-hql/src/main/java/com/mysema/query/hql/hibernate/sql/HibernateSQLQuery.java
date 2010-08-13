@@ -30,8 +30,8 @@ import com.mysema.query.hql.hibernate.SessionHolder;
 import com.mysema.query.hql.hibernate.StatelessSessionHolder;
 import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Path;
 
 /**
@@ -107,8 +107,8 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
         }
         // set result transformer, if projection is an EConstructor instance
         List<? extends Expr<?>> projection = queryMixin.getMetadata().getProjection();
-        if (projection.size() == 1 && projection.get(0) instanceof EConstructor){
-            query.setResultTransformer(new ConstructorTransformer((EConstructor<?>) projection.get(0)));
+        if (projection.size() == 1 && projection.get(0) instanceof FactoryExpression){
+            query.setResultTransformer(new ConstructorTransformer((FactoryExpression<?>) projection.get(0)));
         }
         if (fetchSize > 0){
             query.setFetchSize(fetchSize);

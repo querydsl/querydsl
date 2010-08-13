@@ -275,8 +275,8 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     public void visit(Path<?> expr){
         // only wrap a PathCollection, if it the pathType is PROPERTY
         boolean wrap = wrapElements
-            && (Collection.class.isAssignableFrom(expr.getType()) || Map.class.isAssignableFrom(expr.getType()))
-            && expr.getMetadata().getPathType().equals(PathType.PROPERTY);
+        && (Collection.class.isAssignableFrom(expr.getType()) || Map.class.isAssignableFrom(expr.getType()))
+        && expr.getMetadata().getPathType().equals(PathType.PROPERTY);
         if (wrap) {
             append("elements(");
         }
@@ -287,15 +287,15 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     }
 
     @Override
-    public void visit(EConstructor<?> expr) {
-    if (expr.getClass().equals(EConstructor.class)){
-        append("new " + expr.getType().getName() + "(");
-        handle(", ", expr.getArgs());
-        append(")");
-    }else{
-        // serialize arguments only
-        super.visit(expr);
-    }
+    public void visit(FactoryExpression<?> expr) {
+        if (expr instanceof EConstructor<?>){
+            append("new " + expr.getType().getName() + "(");
+            handle(", ", expr.getArgs());
+            append(")");
+        }else{
+            // serialize arguments only
+            super.visit(expr);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -305,14 +305,14 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
 
         if (operator.equals(Ops.IN)){
             if (args.get(1) instanceof Path){
-            super.visitOperation(type, JPQLTemplates.MEMBER_OF, args);
+                super.visitOperation(type, JPQLTemplates.MEMBER_OF, args);
             }else{
-            super.visitOperation(type, operator, args);
+                super.visitOperation(type, operator, args);
             }
 
         } else if (operator.equals(Ops.INSTANCE_OF)) {
             if (templates.isTypeAsString()){
-            List<Expr<?>> newArgs = new ArrayList<Expr<?>>(args);
+                List<Expr<?>> newArgs = new ArrayList<Expr<?>>(args);
                 Class<?> cl = ((Class<?>) ((Constant<?>) newArgs.get(1)).getConstant());
                 // use discriminator value instead of fqnm
                 if (cl.getAnnotation(DiscriminatorValue.class) != null){
@@ -322,7 +322,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
                 }
                 super.visitOperation(type, operator, newArgs);
             }else{
-            super.visitOperation(type, operator, args);
+                super.visitOperation(type, operator, args);
             }
 
         } else if (operator.equals(Ops.NUMCAST)) {
@@ -372,7 +372,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             List<Expr<?>> newArgs = new ArrayList<Expr<?>>(args.size());
             for (Expr<?> arg : args){
                 if (arg instanceof Constant && Number.class.isAssignableFrom(arg.getType())
-                    && !arg.getType().equals(numType)){
+                        && !arg.getType().equals(numType)){
                     Number number = (Number) ((Constant)arg).getConstant();
                     newArgs.add(ExprConst.create(MathUtils.cast(number, (Class)numType)));
                 }else{

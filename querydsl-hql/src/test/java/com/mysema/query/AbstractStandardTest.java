@@ -32,6 +32,7 @@ import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EList;
+import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.QTuple;
 
 /**
@@ -42,9 +43,19 @@ public abstract class AbstractStandardTest {
 
     public static class Projection {
 
-    public Projection(String str, Cat cat) {
+        public Projection(String str, Cat cat) {
         }
 
+    }
+    
+    public static class QProjection extends EConstructor<Projection>{
+        
+        private static final long serialVersionUID = -5866362075090550839L;
+
+        public QProjection(EString str, QCat cat){
+            super(Projection.class, new Class[]{String.class, Cat.class}, new Expr[]{str, cat});
+        }
+        
     }
 
     private static final QCat cat = QCat.cat;
@@ -75,15 +86,15 @@ public abstract class AbstractStandardTest {
         protected Pair<Projectable, List<Expr<?>>> createQuery() {
             // NOTE : EclipseLink needs extra conditions cond1 and code2
             return Pair.of(
-                (Projectable)query().from(cat, otherCat).where(cond1, cond2),
-                Arrays.<Expr<?>>asList());
+                    (Projectable)query().from(cat, otherCat).where(cond1, cond2),
+                    Arrays.<Expr<?>>asList());
         }
         @Override
         protected Pair<Projectable, List<Expr<?>>> createQuery(EBoolean filter) {
             // NOTE : EclipseLink needs extra conditions cond1 and code2
             return Pair.of(
-                (Projectable)query().from(cat, otherCat).where(cond1, cond2, filter),
-                Arrays.<Expr<?>>asList(cat.name, otherCat.name));
+                    (Projectable)query().from(cat, otherCat).where(cond1, cond2, filter),
+                    Arrays.<Expr<?>>asList(cat.name, otherCat.name));
         }
     };
 
@@ -139,13 +150,13 @@ public abstract class AbstractStandardTest {
         Cat kitten = savedCats.get(0);
         Cat noKitten = savedCats.get(savedCats.size()-1);
 
-//        standardTest.runArrayTests(cat.kittensArray, otherCat.kittensArray, kitten, noKitten);
+        //        standardTest.runArrayTests(cat.kittensArray, otherCat.kittensArray, kitten, noKitten);
         standardTest.runBooleanTests(cat.name.isNull(), otherCat.kittens.isEmpty());
         standardTest.runCollectionTests(cat.kittens, otherCat.kittens, kitten, noKitten);
         standardTest.runDateTests(cat.dateField, otherCat.dateField, date);
         standardTest.runDateTimeTests(cat.birthdate, otherCat.birthdate, birthDate);
         standardTest.runListTests(cat.kittens, otherCat.kittens, kitten, noKitten);
-//        standardTest.mapTests(cat.kittensByName, otherCat.kittensByName, "Kitty", kitten);
+        //        standardTest.mapTests(cat.kittensByName, otherCat.kittensByName, "Kitty", kitten);
 
         // int
         standardTest.runNumericCasts(cat.id, otherCat.id, 1);
@@ -244,31 +255,40 @@ public abstract class AbstractStandardTest {
 
     @Test
     public void tupleProjection(){
-    List<Tuple> tuples = query().from(cat).list(new QTuple(cat.name, cat));
-    assertFalse(tuples.isEmpty());
-    for (Tuple tuple : tuples){
-        assertNotNull(tuple.get(cat.name));
-        assertNotNull(tuple.get(cat));
-    }
+        List<Tuple> tuples = query().from(cat).list(new QTuple(cat.name, cat));
+        assertFalse(tuples.isEmpty());
+        for (Tuple tuple : tuples){
+            assertNotNull(tuple.get(cat.name));
+            assertNotNull(tuple.get(cat));
+        }
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void arrayProjection(){
-    List<String[]> results = query().from(cat).list(new EArrayConstructor<String>(String[].class, cat.name));
-    assertFalse(results.isEmpty());
-    for (String[] result : results){
-        assertNotNull(result[0]);
-    }
+        List<String[]> results = query().from(cat).list(new EArrayConstructor<String>(String[].class, cat.name));
+        assertFalse(results.isEmpty());
+        for (String[] result : results){
+            assertNotNull(result[0]);
+        }
     }
 
     @Test
     public void constructorProjection(){
-    List<Projection> projections = query().from(cat).list(EConstructor.create(Projection.class, cat.name, cat));
-    assertFalse(projections.isEmpty());
-    for (Projection projection : projections){
-        assertNotNull(projection);
+        List<Projection> projections = query().from(cat).list(EConstructor.create(Projection.class, cat.name, cat));
+        assertFalse(projections.isEmpty());
+        for (Projection projection : projections){
+            assertNotNull(projection);
+        }
     }
+    
+    @Test
+    public void constructorProjection2(){
+        List<Projection> projections = query().from(cat).list(new QProjection(cat.name, cat));
+        assertFalse(projections.isEmpty());
+        for (Projection projection : projections){
+            assertNotNull(projection);
+        }
     }
 
     @Test

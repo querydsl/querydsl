@@ -21,8 +21,7 @@ import com.mysema.query.types.expr.ESimple;
  *
  * @param <D> Java type
  */
-// TODO : rename to something else, since the subclasses do not use constructor invocation
-public class EConstructor<D> extends ESimple<D> {
+public class EConstructor<D> extends ESimple<D> implements FactoryExpression<D> {
 
     private static final long serialVersionUID = -602747921848073175L;
 
@@ -91,21 +90,10 @@ public class EConstructor<D> extends ESimple<D> {
         return getType().hashCode();
     }
 
-    /**
-     * Get the constructor invocation arguments
-     *
-     * @return
-     */
     public final List<Expr<?>> getArgs() {
         return args;
     }
 
-    /**
-     * Create a projection with the given arguments
-     *
-     * @param args
-     * @return
-     */
     public D newInstance(Object... args){
         try {
             return (D) getType().getConstructor(parameterTypes).newInstance(args);

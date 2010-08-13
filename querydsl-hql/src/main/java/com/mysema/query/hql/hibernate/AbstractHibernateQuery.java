@@ -31,6 +31,7 @@ import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.hql.JPQLTemplates;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Path;
 
 /**
@@ -156,8 +157,8 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         List<? extends Expr<?>> projection = getMetadata().getProjection();
         if (projection.size() == 1){
             Expr<?> expr = projection.get(0);
-            if (expr instanceof EConstructor<?>  && !(expr.getClass().equals(EConstructor.class))){
-            query.setResultTransformer(new ConstructorTransformer((EConstructor<?>) projection.get(0)));
+            if (expr instanceof FactoryExpression<?>  && !(expr instanceof EConstructor<?>)){
+                query.setResultTransformer(new ConstructorTransformer((FactoryExpression<?>) projection.get(0)));
             }
         }
 

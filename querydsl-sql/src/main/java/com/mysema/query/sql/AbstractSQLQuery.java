@@ -35,6 +35,7 @@ import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
@@ -310,9 +311,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                         int index = 0;
                         for (int i = 0; i < projection.size(); i++){
                             Expr<?> expr = projection.get(i);
-                            if (expr instanceof EConstructor){
-                                objects.add(newInstance((EConstructor)expr, rs, index));
-                                index += ((EConstructor)expr).getArgs().size();
+                            if (expr instanceof FactoryExpression){
+                                objects.add(newInstance((FactoryExpression)expr, rs, index));
+                                index += ((FactoryExpression)expr).getArgs().size();
                             }else if (expr.getType().isArray()){
                                 for (int j = index; j < rs.getMetaData().getColumnCount(); j++){
                                     objects.add(get(rs, index++ + 1, Object.class));
@@ -365,8 +366,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                     try {
                         if (expr == null){
                             return (RT) rs.getObject(1);
-                        }else if (expr instanceof EConstructor) {
-                            return newInstance((EConstructor<RT>) expr, rs, 0);
+                        }else if (expr instanceof FactoryExpression) {
+                            return newInstance((FactoryExpression<RT>) expr, rs, 0);
                         }else if (expr.getType().isArray()){
                             Object[] rv = new Object[rs.getMetaData().getColumnCount()];
                             for (int i = 0; i < rv.length; i++){
@@ -428,7 +429,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         }
     }
 
-    private <RT> RT newInstance(EConstructor<RT> c, ResultSet rs, int offset)
+    private <RT> RT newInstance(FactoryExpression<RT> c, ResultSet rs, int offset)
         throws InstantiationException, IllegalAccessException, InvocationTargetException{
         Object[] args = new Object[c.getArgs().size()];
         for (int i = 0; i < args.length; i++) {

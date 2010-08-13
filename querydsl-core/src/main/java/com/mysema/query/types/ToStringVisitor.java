@@ -44,7 +44,7 @@ public final class ToStringVisitor implements Visitor{
     }
 
     @Override
-    public void visit(EConstructor<?> e) {
+    public void visit(FactoryExpression<?> e) {
         StringBuilder builder = new StringBuilder();
         builder.append("new ").append(e.getType().getSimpleName()).append("(");
         boolean first = true;

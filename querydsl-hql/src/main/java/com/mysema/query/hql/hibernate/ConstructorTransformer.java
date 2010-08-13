@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.hibernate.transform.ResultTransformer;
 
-import com.mysema.query.types.EConstructor;
+import com.mysema.query.types.FactoryExpression;
 
 /**
  * ConstructorTransformer is a ResultTransformer implementation using the EConstructor for transformation
@@ -21,9 +21,9 @@ public final class ConstructorTransformer implements ResultTransformer{
 
     private static final long serialVersionUID = -3625957233853100239L;
 
-    private final transient EConstructor<?> constructor;
+    private final transient FactoryExpression<?> constructor;
 
-    public ConstructorTransformer(EConstructor<?> constructor){
+    public ConstructorTransformer(FactoryExpression<?> constructor){
         this.constructor = constructor;
     }
 

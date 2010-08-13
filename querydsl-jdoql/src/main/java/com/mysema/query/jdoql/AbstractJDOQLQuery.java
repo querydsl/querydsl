@@ -27,8 +27,8 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.expr.QTuple;
 import com.mysema.query.types.path.PEntity;
 
@@ -114,7 +114,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
             Class<?> exprType = projection.get(0).getClass();
             if (exprType.equals(QTuple.class)){
                 query.setResultClass(JDOTuple.class);
-            } else if (exprType.equals(EConstructor.class)){
+            } else if (FactoryExpression.class.isAssignableFrom(exprType)){
                 query.setResultClass(projection.get(0).getType());
             }
             

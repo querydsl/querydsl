@@ -68,7 +68,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         expr.accept(this);
         return self;
     }
-    
+
     public S handle(JoinFlag joinFlag) {
         return handle(joinFlag.getFlag());
     }
@@ -156,8 +156,8 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     @Override
-    public void visit(EConstructor<?> expr) {
-    handle(", ", expr.getArgs());
+    public void visit(FactoryExpression<?> expr) {
+        handle(", ", expr.getArgs());
     }
 
     @Override

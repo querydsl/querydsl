@@ -12,8 +12,8 @@ import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.Constant;
-import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
@@ -104,8 +104,8 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
         if (args.size() == 2
-            && Number.class.isAssignableFrom(args.get(0).getType())
-            && Number.class.isAssignableFrom(args.get(1).getType())){
+                && Number.class.isAssignableFrom(args.get(0).getType())
+                && Number.class.isAssignableFrom(args.get(1).getType())){
 
             if (operator == Ops.AFTER){
                 handle(args.get(0)).append(" > ").handle(args.get(1));
@@ -133,11 +133,11 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
     }
 
     @Override
-    public void visit(EConstructor<?> expr) {
-    handle(ExprConst.create(expr));
-    append(".newInstance(");
-    handle(", ", expr.getArgs());
-    append(")");
+    public void visit(FactoryExpression<?> expr) {
+        handle(ExprConst.create(expr));
+        append(".newInstance(");
+        handle(", ", expr.getArgs());
+        append(")");
     }
 
 }

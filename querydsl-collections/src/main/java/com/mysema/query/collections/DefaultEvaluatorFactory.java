@@ -29,8 +29,8 @@ import com.mysema.codegen.model.Types;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
@@ -92,7 +92,7 @@ public class DefaultEvaluatorFactory {
         }
 
         String javaSource = serializer.toString();
-        if (projection instanceof EConstructor<?>){
+        if (projection instanceof FactoryExpression<?>){
             javaSource = "("+com.mysema.codegen.support.ClassUtils.getName(projection.getType())+")(" + javaSource+")";
         }
 

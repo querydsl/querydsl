@@ -105,7 +105,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
             Class<?> exprType = projection.get(0).getClass();
             if (exprType.equals(QTuple.class)){
                 query.setResultClass(JDOTuple.class);
-            } else if (exprType.equals(EConstructor.class)){
+            } else if (EConstructor.class.isAssignableFrom(exprType)){
                 query.setResultClass(projection.get(0).getType());
             }
         }else{

@@ -84,13 +84,13 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
     @Test
     @Override
     public void tupleProjection(){
-    // not yet supported with JPA
+        // not yet supported with JPA
     }
 
     @Test
     @Override
     public void arrayProjection(){
-    // not yet supported with JPA
+        // not yet supported with JPA
     }
 
 }

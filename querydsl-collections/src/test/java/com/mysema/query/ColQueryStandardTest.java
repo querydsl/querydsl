@@ -32,7 +32,7 @@ public class ColQueryStandardTest {
 
     public static class Projection {
 
-    public Projection(String str, Cat cat) {
+        public Projection(String str, Cat cat) {
         }
 
     }
@@ -59,14 +59,14 @@ public class ColQueryStandardTest {
         @Override
         protected Pair<Projectable,List<Expr<?>>> createQuery() {
             return Pair.of(
-                (Projectable)MiniApi.from(cat, data).from(otherCat, data),
-                Collections.<Expr<?>>emptyList());
+                    (Projectable)MiniApi.from(cat, data).from(otherCat, data),
+                    Collections.<Expr<?>>emptyList());
         }
         @Override
         protected Pair<Projectable,List<Expr<?>>> createQuery(EBoolean filter) {
             return Pair.of(
                     (Projectable)MiniApi.from(cat, data).from(otherCat, data).where(filter),
-                Collections.<Expr<?>>singletonList(cat.name));
+                    Collections.<Expr<?>>singletonList(cat.name));
         }
     };
 
@@ -92,30 +92,30 @@ public class ColQueryStandardTest {
 
     @Test
     public void tupleProjection(){
-    List<Tuple> tuples = MiniApi.from(cat, data).list(new QTuple(cat.name, cat.birthdate));
-    for (Tuple tuple : tuples){
-        assertNotNull(tuple.get(cat.name));
-        assertNotNull(tuple.get(cat.birthdate));
-    }
+        List<Tuple> tuples = MiniApi.from(cat, data).list(new QTuple(cat.name, cat.birthdate));
+        for (Tuple tuple : tuples){
+            assertNotNull(tuple.get(cat.name));
+            assertNotNull(tuple.get(cat.birthdate));
+        }
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void arrayProjection(){
-    List<String[]> results =  MiniApi.from(cat, data).list(new EArrayConstructor<String>(String[].class, cat.name));
-    assertFalse(results.isEmpty());
-    for (String[] result : results){
-        assertNotNull(result[0]);
-    }
+        List<String[]> results =  MiniApi.from(cat, data).list(new EArrayConstructor<String>(String[].class, cat.name));
+        assertFalse(results.isEmpty());
+        for (String[] result : results){
+            assertNotNull(result[0]);
+        }
     }
 
     @Test
     public void constructorProjection(){
-    List<Projection> projections =  MiniApi.from(cat, data).list(EConstructor.create(Projection.class, cat.name, cat));
-    assertFalse(projections.isEmpty());
-    for (Projection projection : projections){
-        assertNotNull(projection);
-    }
+        List<Projection> projections =  MiniApi.from(cat, data).list(EConstructor.create(Projection.class, cat.name, cat));
+        assertFalse(projections.isEmpty());
+        for (Projection projection : projections){
+            assertNotNull(projection);
+        }
     }
 
     @Test
