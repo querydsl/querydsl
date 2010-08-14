@@ -71,6 +71,11 @@ public class QTuple extends ESimple<Tuple> implements FactoryExpression<Tuple>{
             return false;
         }
     }
+    
+    @Override
+    public int hashCode(){
+        return getType().hashCode();
+    }
 
     @Override
     public List<Expr<?>> getArgs() {

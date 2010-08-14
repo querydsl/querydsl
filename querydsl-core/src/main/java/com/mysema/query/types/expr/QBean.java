@@ -106,6 +106,11 @@ public class QBean<T> extends ESimple<T> implements FactoryExpression<T>{
             return false;
         }
     }
+    
+    @Override
+    public int hashCode(){
+        return getType().hashCode();
+    }
 
     @Override
     public List<Expr<?>> getArgs() {

@@ -79,4 +79,10 @@ public class EArrayConstructor<D> extends ESimple<D[]> implements FactoryExpress
             return false;
         }
     }
+    
+    @Override
+    public int hashCode(){
+        return getType().hashCode();
+    }
+    
 }
