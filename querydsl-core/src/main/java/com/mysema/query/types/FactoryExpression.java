@@ -8,6 +8,9 @@ package com.mysema.query.types;
 import java.util.List;
 
 /**
+ * FactoryExpression represents factory expressions such as JavaBean or 
+ * Constructor projections
+ * 
  * @author tiwe
  *
  * @param <D>
