@@ -87,10 +87,5 @@ public abstract class AbstractCodeWriter<T extends AbstractCodeWriter<T>> implem
     public T nl() throws IOException {
         return append(NEWLINE);        
     }
-    
-
-    protected T stmt(String stmt) throws IOException{
-        return line(stmt + SEMICOLON);
-    }
 
 }

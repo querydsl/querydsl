@@ -247,15 +247,15 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
  
     @Override
     public JavaWriter field(Type type, String name) throws IOException {
-        return stmt(type + SPACE + name).nl();
+        return line(type + SPACE + name + SEMICOLON).nl();
     }
 
     private JavaWriter field(String modifier, Type type, String name) throws IOException{
-        return stmt(modifier + type + SPACE + name).nl();
+        return line(modifier + type + SPACE + name + SEMICOLON).nl();
     }
     
     private JavaWriter field(String modifier, Type type, String name, String value) throws IOException{
-        return stmt(modifier + type + SPACE + name + ASSIGN + value).nl();
+        return line(modifier + type + SPACE + name + ASSIGN + value + SEMICOLON).nl();
     }
 
     @Override
