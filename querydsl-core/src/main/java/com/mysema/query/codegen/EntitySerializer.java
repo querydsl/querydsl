@@ -41,6 +41,7 @@ import com.mysema.query.types.path.*;
 @Immutable
 public class EntitySerializer implements Serializer{
 
+    // TODO : replace with class reference
     private static final String PATH_METADATA = "PathMetadata<?> metadata";
 
     protected final TypeMappings typeMappings;
@@ -67,8 +68,10 @@ public class EntitySerializer implements Serializer{
         // 2
         if (!hasEntityFields){
             if (model.isFinal()){
+                // TODO : replace with class reference
                 writer.beginConstructor("PEntity<"+genericName+"> entity");
             }else{
+                // TODO : replace with class reference
                 writer.beginConstructor("PEntity<? extends "+genericName+"> entity");    
             }            
             if (stringOrBoolean){
@@ -271,6 +274,7 @@ public class EntitySerializer implements Serializer{
             if (!localName.equals(genericName)){
                 writer.suppressWarnings(UNCHECKED);
             }
+            // TODO : replace with class reference
             writer.beginStaticMethod("EConstructor<" + genericName + ">", "create", c.getParameters(), new Transformer<Parameter, String>(){
                 @Override
                 public String transform(Parameter p) {
@@ -279,6 +283,7 @@ public class EntitySerializer implements Serializer{
             });
 
             // body
+            // TODO : replace with class reference
             writer.beginLine("return new EConstructor<" + genericName + ">(");
             if (!localName.equals(genericName)){
                 writer.append("(Class)");
@@ -338,9 +343,10 @@ public class EntitySerializer implements Serializer{
                 packages.add(delegate.getDelegateType().getPackageName());                
             }
         }
-        for (String pkg : packages){
-            writer.line("import " + pkg + ".*;");
-        }
+//        for (String pkg : packages){            
+//            writer.line("import " + pkg + ".*;");
+//        }
+        writer.importPackages(packages.toArray(new String[packages.size()]));
     }
 
     protected void introInits(CodeWriter writer, EntityType model) throws IOException {
@@ -434,6 +440,7 @@ public class EntitySerializer implements Serializer{
         // body start
         writer.beginLine(RETURN + custType + ".create(");
         String fullName = method.getReturnType().getFullName();
+        // TODO : replace with class reference
         if (custType.equals("CSimple") || (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName()))){
             writer.append(model.getRawName(method.getReturnType()));
             writer.append(".class, ");
@@ -468,6 +475,7 @@ public class EntitySerializer implements Serializer{
         writer.append(QUOTE + StringEscapeUtils.escapeJava(method.getTemplate()) + QUOTE);
         writer.append(", this");
         for (Parameter p : method.getParameters()){
+            // TODO : replace with class reference
             writer.append(COMMA + "ExprConst.create(" + p.getName() + ")");
         }
         writer.append(");\n");
@@ -627,16 +635,19 @@ public class EntitySerializer implements Serializer{
             case ARRAY:
                 localGenericName = model.getGenericName(true, property.getType());
                 localGenericName = localGenericName.substring(0, localGenericName.length()-2);
+                // TODO : replace with class reference
                 serialize(model, property, "PArray<" + localGenericName + ">", writer, "createArray",localRawName+DOT_CLASS);
                 break;
             case COLLECTION:
                 localGenericName = model.getGenericName(true, property.getParameter(0));
                 localRawName = model.getRawName(property.getParameter(0));
+                // TODO : replace with class reference
                 serialize(model, property, "PCollection<" + localGenericName + ">", writer, "createCollection",localRawName+DOT_CLASS);
                 break;
             case SET:
                 localGenericName = model.getGenericName(true, property.getParameter(0));
                 localRawName = model.getRawName(property.getParameter(0));
+                // TODO : replace with class reference
                 serialize(model, property, "PSet<" + localGenericName + ">", writer, "createSet",localRawName+DOT_CLASS);
                 break;
             case MAP:
@@ -647,6 +658,7 @@ public class EntitySerializer implements Serializer{
                 String valueType = model.getRawName(property.getParameter(1));
                 queryType = typeMappings.getPathType(property.getParameter(1), model, true);
 
+                // TODO : replace with class reference
                 serialize(model, property, "PMap<"+genericKey+COMMA+genericValue+COMMA+genericQueryType+">",
                         writer, "this.<"+genericKey+COMMA+genericValue+COMMA+genericQueryType+">createMap",
                         keyType+DOT_CLASS,
@@ -659,6 +671,7 @@ public class EntitySerializer implements Serializer{
                 localRawName = model.getRawName(property.getParameter(0));
                 queryType = typeMappings.getPathType(property.getParameter(0), model, true);
 
+                // TODO : replace with class reference
                 serialize(model, property, "PList<" + localGenericName+ COMMA + genericQueryType +  ">", writer, "createList", localRawName+DOT_CLASS, queryType +DOT_CLASS);
                 break;                
             case ENTITY:

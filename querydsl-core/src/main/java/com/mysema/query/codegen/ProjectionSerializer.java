@@ -53,6 +53,7 @@ public final class ProjectionSerializer implements Serializer{
 
         // class header
 //        writer.suppressWarnings("serial");
+        // TODO : replace with class reference
         writer.beginClass(queryType, "EConstructor<" + localName + ">");
         writer.privateStaticFinal("long", "serialVersionUID", String.valueOf(model.hashCode()));
     }
