@@ -1,9 +1,9 @@
-public class ConstructorTests {
+public class JavaWriterTest {
 
-    public ConstructorTests(String a, String b) {
+    public JavaWriterTest(String a, String b) {
     }
 
-    public ConstructorTests(String a) {
+    public JavaWriterTest(String a) {
     }
 
 }

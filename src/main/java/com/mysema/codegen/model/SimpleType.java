@@ -32,6 +32,10 @@ public class SimpleType implements Type {
             type.isPrimitive(), type.isFinal(), Arrays.asList(parameters));
     }
     
+    public SimpleType(String fullName, String packageName, String simpleName) {
+        this(TypeCategory.SIMPLE, fullName, packageName, simpleName, false, false, Collections.<Type>emptyList());
+    }
+    
     public SimpleType(TypeCategory category, String fullName, String packageName, String simpleName, 
             boolean primitiveClass, boolean finalClass,
             List<Type> parameters) {

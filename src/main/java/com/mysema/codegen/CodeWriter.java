@@ -13,6 +13,8 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.collections15.Transformer;
 
+import com.mysema.codegen.model.Type;
+
 /**
  * CodeWriter defines an interface for serializing Java source code
  * 
@@ -25,29 +27,29 @@ public interface CodeWriter extends Appendable{
 
     CodeWriter annotation(Class<? extends Annotation> annotation) throws IOException;
 
-    CodeWriter beginClass(String simpleName) throws IOException;
+    CodeWriter beginClass(Type type) throws IOException;
 
-    CodeWriter beginClass(String simpleName, @Nullable String superClass, String... interfaces) throws IOException;
+    CodeWriter beginClass(Type type, @Nullable Type superClass, Type... interfaces) throws IOException;
 
     <T> CodeWriter beginConstructor(Collection<T> params, Transformer<T, String> transformer) throws IOException;
 
     CodeWriter beginConstructor(String... params) throws IOException;
 
-    CodeWriter beginInterface(String simpleName, String... interfaces) throws IOException;
+    CodeWriter beginInterface(Type type, Type... interfaces) throws IOException;
 
     CodeWriter beginLine(String... segments) throws IOException;
 
-    <T> CodeWriter beginPublicMethod(String returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException;
+    <T> CodeWriter beginPublicMethod(Type returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException;
 
-    CodeWriter beginPublicMethod(String returnType, String methodName, String... args) throws IOException;
+    CodeWriter beginPublicMethod(Type returnType, String methodName, String... args) throws IOException;
 
-    <T> CodeWriter beginStaticMethod(String type, String name, Collection<T> params, Transformer<T, String> transformer) throws IOException;
+    <T> CodeWriter beginStaticMethod(Type type, String name, Collection<T> params, Transformer<T, String> transformer) throws IOException;
 
-    CodeWriter beginStaticMethod(String returnType, String methodName, String... args) throws IOException;
+    CodeWriter beginStaticMethod(Type returnType, String methodName, String... args) throws IOException;
 
     CodeWriter end() throws IOException;
 
-    CodeWriter field(String type, String name) throws IOException;
+    CodeWriter field(Type type, String name) throws IOException;
 
     CodeWriter imports(Class<?>... imports) throws IOException;
 
@@ -65,27 +67,27 @@ public interface CodeWriter extends Appendable{
 
     CodeWriter packageDecl(String packageName) throws IOException;
     
-    CodeWriter privateField(String type, String name) throws IOException;
+    CodeWriter privateField(Type type, String name) throws IOException;
 
-    CodeWriter privateFinal(String type, String name) throws IOException;
+    CodeWriter privateFinal(Type type, String name) throws IOException;
 
-    CodeWriter privateFinal(String type, String name, String value) throws IOException;
+    CodeWriter privateFinal(Type type, String name, String value) throws IOException;
 
-    CodeWriter privateStaticFinal(String type, String name, String value) throws IOException;
+    CodeWriter privateStaticFinal(Type type, String name, String value) throws IOException;
 
-    CodeWriter protectedField(String type, String name) throws IOException;
+    CodeWriter protectedField(Type type, String name) throws IOException;
     
-    CodeWriter protectedFinal(String type, String name) throws IOException;
+    CodeWriter protectedFinal(Type type, String name) throws IOException;
 
-    CodeWriter protectedFinal(String type, String name, String value) throws IOException;
+    CodeWriter protectedFinal(Type type, String name, String value) throws IOException;
     
-    CodeWriter publicField(String type, String name) throws IOException;
+    CodeWriter publicField(Type type, String name) throws IOException;
 
-    CodeWriter publicFinal(String type, String name) throws IOException;
+    CodeWriter publicFinal(Type type, String name) throws IOException;
 
-    CodeWriter publicFinal(String type, String name, String value) throws IOException;
+    CodeWriter publicFinal(Type type, String name, String value) throws IOException;
 
-    CodeWriter publicStaticFinal(String type, String name, String value) throws IOException;
+    CodeWriter publicStaticFinal(Type type, String name, String value) throws IOException;
 
     CodeWriter staticimports(Class<?>... imports) throws IOException;
 

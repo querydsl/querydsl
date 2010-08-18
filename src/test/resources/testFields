@@ -1,4 +1,4 @@
-public class FieldTests {
+public class JavaWriterTest {
 
     private String privateField;
 

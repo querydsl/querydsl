@@ -34,7 +34,7 @@ public class ClassType<T> implements Type {
     @Nullable
     private final Class<?> primitiveClass;
     
-    public ClassType(TypeCategory category, Class<T> javaClass, @Nullable Class<?> primitiveClass) {
+    public ClassType(TypeCategory category, Class<T> javaClass, Class<?> primitiveClass) {
         this(category, javaClass, primitiveClass, Collections.<Type>emptyList());
     }
         

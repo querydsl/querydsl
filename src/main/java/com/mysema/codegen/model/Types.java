@@ -20,7 +20,7 @@ import java.util.Set;
  */
 @SuppressWarnings("unchecked")
 public final class Types {
-
+    
     public static final ClassType<Object> OBJECT = new ClassType<Object>(TypeCategory.SIMPLE,Object.class);
     
     public static final ClassType<Object[]> OBJECTS = new ClassType<Object[]>(TypeCategory.ARRAY,Object[].class);
@@ -60,6 +60,8 @@ public final class Types {
     public static final ClassType<String> STRING = new ClassType<String>(TypeCategory.STRING,String.class);
     
     public static final ClassType<URI> URI = new ClassType<URI>(TypeCategory.COMPARABLE,URI.class);
+    
+    public static final ClassType<Void> VOID = new ClassType<Void>(TypeCategory.SIMPLE, void.class);
     
     private Types(){}
     

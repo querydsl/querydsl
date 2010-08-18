@@ -24,9 +24,9 @@ import javax.tools.ToolProvider;
 import javax.tools.JavaCompiler.CompilationTask;
 
 import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.support.ClassUtils;
 
 
 
@@ -60,26 +60,29 @@ public class EvaluatorFactory {
         this.compilationOptions = Arrays.asList("-classpath", classpath, "-g:none");
     }
 
+    @SuppressWarnings("unchecked")
     private void compile(String source, Type projectionType,
             String[] names, Type[] types, String id, Map<String,Object> constants) throws IOException {
         // create source
         StringWriter writer = new StringWriter();
         JavaWriter javaw = new JavaWriter(writer);
-        javaw.beginClass(id, null);
+        SimpleType idType = new SimpleType(id, "", id);
+        javaw.beginClass(idType, null);
         String[] params = new String[names.length];
         for (int i = 0; i < params.length; i++) {
             params[i] = types[i].getGenericName(true) + " " + names[i];
         }
         
         for (Map.Entry<String,Object> entry : constants.entrySet()){
-            String className = ClassUtils.getName(ClassUtils.normalize(entry.getValue().getClass()));
-            javaw.publicField(className, entry.getKey());
+//            String className = ClassUtils.getName(ClassUtils.normalize(entry.getValue().getClass()));
+            Type type = new ClassType(TypeCategory.SIMPLE, entry.getValue().getClass());
+            javaw.publicField(type, entry.getKey());
         }
 
         if (constants.isEmpty()){
-            javaw.beginStaticMethod(projectionType.getGenericName(false), "eval", params);    
+            javaw.beginStaticMethod(projectionType, "eval", params);    
         }else{
-            javaw.beginPublicMethod(projectionType.getGenericName(false), "eval", params);
+            javaw.beginPublicMethod(projectionType, "eval", params);
         }        
         javaw.append(source);
         javaw.end();

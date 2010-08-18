@@ -17,8 +17,13 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-public class JavaWriterTest {
+import com.mysema.codegen.model.Factory;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.Types;
 
+public class JavaWriterTest {
+    
     private static final Transformer<String,String> transformer = new Transformer<String,String>(){
 	@Override
         public String transform(String input) {
@@ -29,6 +34,8 @@ public class JavaWriterTest {
     private StringWriter w;
     
     private CodeWriter writer;
+
+    private Type testType, testType2, testSuperType, testInterface1, testInterface2;
     
     private static void match(String resource, String text) throws IOException{
         // TODO : try to compile ?
@@ -40,7 +47,12 @@ public class JavaWriterTest {
     @Before
     public void setUp(){
         w = new StringWriter();
-        writer = new JavaWriter(w);   
+        writer = new JavaWriter(w);
+        testType = Factory.type(JavaWriterTest.class);
+        testType2 = new SimpleType("com.mysema.codegen.Test","com.mysema.codegen","Test");
+        testSuperType = new SimpleType("com.mysema.codegen.Superclass","com.mysema.codegen","Superclass");
+        testInterface1 = new SimpleType("com.mysema.codegen.TestInterface1","com.mysema.codegen","TestInterface1");
+        testInterface2 = new SimpleType("com.mysema.codegen.TestInterface2","com.mysema.codegen","TestInterface2");
     }
 
     
@@ -48,9 +60,9 @@ public class JavaWriterTest {
     public void testBasic() throws IOException {        
         writer.packageDecl("com.mysema.codegen");
         writer.imports(IOException.class, StringWriter.class, Test.class);
-        writer.beginClass("JavaWriterTest");
+        writer.beginClass(testType);
         writer.annotation(Test.class);
-        writer.beginPublicMethod("void", "test");
+        writer.beginPublicMethod(Types.VOID, "test");
         writer.line("// TODO");
         writer.end();
         writer.end();
@@ -60,7 +72,7 @@ public class JavaWriterTest {
     
     @Test
     public void testExtends() throws IOException{
-        writer.beginClass("Test", "Superclass");
+        writer.beginClass(testType2, testSuperType);
         writer.end();
         
         match("/testExtends", w.toString());
@@ -68,7 +80,7 @@ public class JavaWriterTest {
     
     @Test
     public void testImplements() throws IOException{
-        writer.beginClass("Test", null, "TestInterface1","TestInterface2");
+        writer.beginClass(testType2, null, testInterface1,testInterface2);
         writer.end();
         
         match("/testImplements", w.toString());
@@ -78,7 +90,7 @@ public class JavaWriterTest {
     public void testInterface() throws IOException{
         writer.packageDecl("com.mysema.codegen");
         writer.imports(IOException.class, StringWriter.class, Test.class);
-        writer.beginInterface("JavaWriterTest");
+        writer.beginInterface(testType);
         writer.end();
         
         match("/testInterface", w.toString());
@@ -86,7 +98,7 @@ public class JavaWriterTest {
     
     @Test
     public void testInterface2() throws IOException{
-        writer.beginInterface("Test", "Test1");
+        writer.beginInterface(testType2, testInterface1);
         writer.end();
         
         match("/testInterface2", w.toString());
@@ -97,7 +109,7 @@ public class JavaWriterTest {
         writer.packageDecl("com.mysema.codegen");
         writer.imports(IOException.class, StringWriter.class, Test.class);
         writer.javadoc("JavaWriterTest is a test class");
-        writer.beginClass("JavaWriterTest");
+        writer.beginClass(testType);
         writer.end();
                 
         match("/testJavadoc", w.toString());
@@ -109,9 +121,9 @@ public class JavaWriterTest {
         writer.packageDecl("com.mysema.codegen");
         writer.imports(IOException.class, StringWriter.class);
         writer.annotation(Entity.class);
-        writer.beginClass("JavaWriterTest");
+        writer.beginClass(testType);
         writer.annotation(Test.class);
-        writer.beginPublicMethod("void", "test");
+        writer.beginPublicMethod(Types.VOID, "test");
         writer.end();
         writer.end();
                 
@@ -123,7 +135,7 @@ public class JavaWriterTest {
         writer.packageDecl("com.mysema.codegen");
         writer.imports(IOException.class.getPackage(), StringWriter.class.getPackage());
         writer.annotation(Entity.class);
-        writer.beginClass("JavaWriterTest");
+        writer.beginClass(testType);
         writer.annotation(new Test(){
             @Override
             public Class<? extends Throwable> expected() {
@@ -139,7 +151,7 @@ public class JavaWriterTest {
             public Class<? extends Annotation> annotationType() {
                 return Test.class;
             }});
-        writer.beginPublicMethod("void", "test");
+        writer.beginPublicMethod(Types.VOID, "test");
         writer.end();
         writer.end();
                 
@@ -148,19 +160,19 @@ public class JavaWriterTest {
     
     @Test
     public void testFields() throws IOException{
-        writer.beginClass("FieldTests");
+        writer.beginClass(testType);
         // private
-        writer.privateField("String", "privateField");
-        writer.privateStaticFinal("String", "privateStaticFinal", "\"val\"");
+        writer.privateField(Types.STRING, "privateField");
+        writer.privateStaticFinal(Types.STRING, "privateStaticFinal", "\"val\"");
         // protected
-        writer.protectedField("String","protectedField");
+        writer.protectedField(Types.STRING,"protectedField");
         // field
-        writer.field("String","field");
+        writer.field(Types.STRING,"field");
         // public
-        writer.publicField("String","publicField");
-        writer.publicStaticFinal("String", "publicStaticFinal", "\"val\"");
-        writer.publicFinal("String", "publicFinalField");
-        writer.publicFinal("String", "publicFinalField2", "\"val\"");
+        writer.publicField(Types.STRING,"publicField");
+        writer.publicStaticFinal(Types.STRING, "publicStaticFinal", "\"val\"");
+        writer.publicFinal(Types.STRING, "publicFinalField");
+        writer.publicFinal(Types.STRING, "publicFinalField2", "\"val\"");
         
         writer.end();
         
@@ -169,7 +181,7 @@ public class JavaWriterTest {
     
     @Test
     public void testMethods() throws IOException{
-        writer.beginClass("MethodTests");
+        writer.beginClass(testType);
         // private
         
         // protected
@@ -177,11 +189,11 @@ public class JavaWriterTest {
         // method
         
         // public
-        writer.beginPublicMethod("String", "publicMethod", Arrays.asList("String a"), transformer);
+        writer.beginPublicMethod(Types.STRING, "publicMethod", Arrays.asList("String a"), transformer);
         writer.line("return null;");
         writer.end();
         
-        writer.beginStaticMethod("String", "staticMethod", Arrays.asList("String a"), transformer);
+        writer.beginStaticMethod(Types.STRING, "staticMethod", Arrays.asList("String a"), transformer);
         writer.line("return null;");
         writer.end();
         
@@ -192,7 +204,7 @@ public class JavaWriterTest {
     
     @Test
     public void testConstructors() throws IOException{
-	writer.beginClass("ConstructorTests");
+	writer.beginClass(testType);
 	
 	writer.beginConstructor(Arrays.asList("String a","String b"), transformer);
 	writer.end();
@@ -225,7 +237,7 @@ public class JavaWriterTest {
     @Test
     public void testSuppressWarnings() throws IOException{
 	writer.suppressWarnings("unused");
-        writer.privateField("String", "test");
+        writer.privateField(Types.STRING, "test");
         
         match("/testSuppressWarnings", w.toString());
     }

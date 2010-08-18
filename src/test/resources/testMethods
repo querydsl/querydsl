@@ -1,4 +1,4 @@
-public class MethodTests {
+public class JavaWriterTest {
 
     public String publicMethod(String a) {
         return null;

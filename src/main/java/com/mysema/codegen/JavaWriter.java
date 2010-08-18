@@ -24,6 +24,8 @@ import org.apache.commons.collections15.Transformer;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
+import com.mysema.codegen.model.Type;
+
 
 /**
  * JavaWriter is the default implementation of the CodeWriter interface
@@ -69,7 +71,7 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
     
     private final Set<String> importedPackages = new HashSet<String>();
     
-    private String type;
+    private Type type;
     
     public JavaWriter(Appendable appendable){
         super(appendable);
@@ -154,84 +156,86 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
         return this;
     }
 
-    public JavaWriter beginClass(String simpleName) throws IOException{
-        return beginClass(simpleName, null);
+    @Override
+    public JavaWriter beginClass(Type type) throws IOException{
+        return beginClass(type, null);
     }
     
     @Override
-    public JavaWriter beginClass(String simpleName, String superClass, String... interfaces) throws IOException{
-        beginLine(PUBLIC_CLASS + simpleName);
+    public JavaWriter beginClass(Type type, Type superClass, Type... interfaces) throws IOException{
+        importedPackages.add(type.getPackageName());
+        beginLine(PUBLIC_CLASS + type.getSimpleName());
         if (superClass != null){
-            append(EXTENDS + superClass);
+            append(EXTENDS + superClass.getGenericName(false, importedPackages, importedClasses));
         }
         if (interfaces.length > 0){
-            append(IMPLEMENTS);//.join(COMMA, interfaces);
-            append(StringUtils.join(interfaces, COMMA));
+            append(IMPLEMENTS);
+            for (int i = 0; i < interfaces.length; i++){
+                if (i > 0){
+                    append(COMMA);
+                }
+                append(interfaces[i].getGenericName(false, importedPackages, importedClasses));
+            }
         }
         append(" {").nl().nl();
         goIn();
-        
-        type = simpleName;
-        if (type.contains("<")){
-            type = type.substring(0, type.indexOf('<'));
-        }
+        this.type = type;
         return this;
     }
  
     @Override
     public <T> JavaWriter beginConstructor(Collection<T> parameters, Transformer<T,String> transformer) throws IOException {
-        beginLine(PUBLIC + type).params(parameters, transformer).append(" {").nl();
+        beginLine(PUBLIC + type.getSimpleName()).params(parameters, transformer).append(" {").nl();
         return goIn();        
     }
     
     @Override
     public JavaWriter beginConstructor(String... parameters) throws IOException{
-        beginLine(PUBLIC + type).params(parameters).append(" {").nl();
+        beginLine(PUBLIC + type.getSimpleName()).params(parameters).append(" {").nl();
         return goIn();
     }
     
     @Override
-    public JavaWriter beginInterface(String simpleName, String... interfaces) throws IOException {
-        beginLine(PUBLIC_INTERFACE + simpleName);
+    public JavaWriter beginInterface(Type type, Type... interfaces) throws IOException {
+        importedPackages.add(type.getPackageName());
+        beginLine(PUBLIC_INTERFACE + type.getGenericName(false, importedPackages, importedClasses));
         if (interfaces.length > 0){
             append(EXTENDS);
-            append(StringUtils.join(interfaces, COMMA));
+            for (int i = 0; i < interfaces.length; i++){
+                if (i > 0){
+                    append(COMMA);
+                }
+                append(interfaces[i].getGenericName(false, importedPackages, importedClasses));
+            }
         }
         append(" {").nl().nl();
         goIn();
-        
-        type = simpleName;
-        if (type.contains("<")){
-            type = type.substring(0, type.indexOf('<'));
-        }
-        return this;
-        
+        this.type = type;
+        return this;        
     }
- 
-
     
-    private JavaWriter beginMethod(String modifiers, String returnType, String methodName, String... args) throws IOException{
+    private JavaWriter beginMethod(String modifiers, Type returnType, String methodName, String... args) throws IOException{
         beginLine(modifiers + returnType + SPACE + methodName).params(args).append(" {").nl();
         return goIn();
     }
     
     @Override
-    public <T> JavaWriter beginPublicMethod(String returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException {
+    public <T> JavaWriter beginPublicMethod(Type returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException {
         return beginMethod(PUBLIC, returnType, methodName, transform(parameters, transformer));
     }
 
     @Override
-    public JavaWriter beginPublicMethod(String returnType, String methodName, String... args) throws IOException{
+    public JavaWriter beginPublicMethod(Type returnType, String methodName, String... args) throws IOException{
         return beginMethod(PUBLIC, returnType, methodName, args);
     }
     
     @Override
-    public <T> JavaWriter beginStaticMethod(String returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException {
+    public <T> JavaWriter beginStaticMethod(Type returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException {
         return beginMethod(PUBLIC_STATIC, returnType, methodName, transform(parameters, transformer));
     }
 
     @Override
-    public JavaWriter beginStaticMethod(String returnType, String methodName, String... args) throws IOException{
+    public JavaWriter beginStaticMethod(Type returnType, String methodName, String... args) throws IOException{
         return beginMethod(PUBLIC_STATIC, returnType, methodName, args);
     }
     
@@ -242,15 +246,15 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
     }
  
     @Override
-    public JavaWriter field(String type, String name) throws IOException {
+    public JavaWriter field(Type type, String name) throws IOException {
         return stmt(type + SPACE + name).nl();
     }
 
-    private JavaWriter field(String modifier, String type, String name) throws IOException{
+    private JavaWriter field(String modifier, Type type, String name) throws IOException{
         return stmt(modifier + type + SPACE + name).nl();
     }
     
-    private JavaWriter field(String modifier, String type, String name, String value) throws IOException{
+    private JavaWriter field(String modifier, Type type, String name, String value) throws IOException{
         return stmt(modifier + type + SPACE + name + ASSIGN + value).nl();
     }
 
@@ -331,57 +335,57 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
     }
     
     @Override
-    public JavaWriter privateField(String type, String name) throws IOException {
+    public JavaWriter privateField(Type type, String name) throws IOException {
         return field(PRIVATE, type, name);
     }
     
     @Override
-    public JavaWriter privateFinal(String type, String name) throws IOException {
+    public JavaWriter privateFinal(Type type, String name) throws IOException {
         return field(PRIVATE_FINAL, type, name);        
     }
     
     @Override
-    public JavaWriter privateFinal(String type, String name, String value) throws IOException {
+    public JavaWriter privateFinal(Type type, String name, String value) throws IOException {
         return field(PRIVATE_FINAL, type, name, value);
     }
 
     @Override
-    public JavaWriter privateStaticFinal(String type, String name, String value) throws IOException {
+    public JavaWriter privateStaticFinal(Type type, String name, String value) throws IOException {
         return field(PRIVATE_STATIC_FINAL, type, name, value);
     }
         
     @Override
-    public JavaWriter protectedField(String type, String name) throws IOException {
+    public JavaWriter protectedField(Type type, String name) throws IOException {
         return field(PROTECTED, type, name);        
     }
     
     @Override
-    public JavaWriter protectedFinal(String type, String name) throws IOException {
+    public JavaWriter protectedFinal(Type type, String name) throws IOException {
         return field(PROTECTED_FINAL, type, name);        
     }
 
     @Override
-    public JavaWriter protectedFinal(String type, String name, String value) throws IOException {
+    public JavaWriter protectedFinal(Type type, String name, String value) throws IOException {
         return field(PROTECTED_FINAL, type, name, value);
     }
 
     @Override
-    public JavaWriter publicField(String type, String name) throws IOException {
+    public JavaWriter publicField(Type type, String name) throws IOException {
         return field(PUBLIC, type, name);
     }
     
     @Override
-    public JavaWriter publicFinal(String type, String name) throws IOException {
+    public JavaWriter publicFinal(Type type, String name) throws IOException {
         return field(PUBLIC_FINAL, type, name);        
     }
     
     @Override
-    public JavaWriter publicFinal(String type, String name, String value) throws IOException {
+    public JavaWriter publicFinal(Type type, String name, String value) throws IOException {
         return field(PUBLIC_FINAL, type, name, value);
     }
     
     @Override
-    public JavaWriter publicStaticFinal(String type, String name, String value) throws IOException {
+    public JavaWriter publicStaticFinal(Type type, String name, String value) throws IOException {
         return field(PUBLIC_STATIC_FINAL, type, name, value);
     }
 

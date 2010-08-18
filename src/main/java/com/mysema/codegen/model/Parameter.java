@@ -49,4 +49,8 @@ public final class Parameter {
         return type.hashCode();
     }
 
+    @Override
+    public String toString(){
+        return type + " " + name;
+    }
 }
