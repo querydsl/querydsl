@@ -17,7 +17,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.codegen.model.Factory;
+import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.Types;
@@ -48,7 +48,7 @@ public class JavaWriterTest {
     public void setUp(){
         w = new StringWriter();
         writer = new JavaWriter(w);
-        testType = Factory.type(JavaWriterTest.class);
+        testType = new ClassType<JavaWriterTest>(JavaWriterTest.class);
         testType2 = new SimpleType("com.mysema.codegen.Test","com.mysema.codegen","Test");
         testSuperType = new SimpleType("com.mysema.codegen.Superclass","com.mysema.codegen","Superclass");
         testInterface1 = new SimpleType("com.mysema.codegen.TestInterface1","com.mysema.codegen","TestInterface1");

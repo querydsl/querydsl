@@ -34,15 +34,9 @@ public class ClassType<T> implements Type {
     @Nullable
     private final Class<?> primitiveClass;
     
-    public ClassType(TypeCategory category, Class<T> javaClass, Class<?> primitiveClass) {
-        this(category, javaClass, primitiveClass, Collections.<Type>emptyList());
-    }
-        
-    public ClassType(TypeCategory category, Class<T> javaClass, @Nullable Class<?> primitiveClass, List<Type> parameters) {
-        this.category = category;
-        this.javaClass = javaClass;
-        this.primitiveClass = primitiveClass;
-        this.parameters = parameters;
+
+    public ClassType(Class<T> javaClass) {
+        this(TypeCategory.SIMPLE, javaClass, null, Collections.<Type>emptyList());
     }
     
     public ClassType(TypeCategory category, Class<T> javaClass, List<Type> parameters) {
@@ -53,6 +47,17 @@ public class ClassType<T> implements Type {
         this(category, clazz, null, Arrays.asList(parameters));
     }
     
+    public ClassType(TypeCategory category, Class<T> javaClass, Class<?> primitiveClass) {
+        this(category, javaClass, primitiveClass, Collections.<Type>emptyList());
+    }
+        
+    public ClassType(TypeCategory category, Class<T> javaClass, @Nullable Class<?> primitiveClass, List<Type> parameters) {
+        this.category = category;
+        this.javaClass = javaClass;
+        this.primitiveClass = primitiveClass;
+        this.parameters = parameters;
+    }
+        
     @Override
     public Type as(TypeCategory c) {
         if (category == c){
