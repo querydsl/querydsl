@@ -32,13 +32,17 @@ public class SimpleType implements Type {
             type.isPrimitive(), type.isFinal(), Arrays.asList(parameters));
     }
     
-    public SimpleType(String fullName, String packageName, String simpleName) {
-        this(TypeCategory.SIMPLE, fullName, packageName, simpleName, false, false, Collections.<Type>emptyList());
+    public SimpleType(String fullName, String packageName, String simpleName, Type... parameters) {
+        this(TypeCategory.SIMPLE, fullName, packageName, simpleName, false, false, Arrays.asList(parameters));
+    }
+    
+    public SimpleType(TypeCategory typeCategory, String fullName, String packageName, String simpleName, boolean p, boolean f, Type... parameters) {
+        this(typeCategory, fullName, packageName, simpleName, p, f, Arrays
+                .asList(parameters));
     }
     
     public SimpleType(TypeCategory category, String fullName, String packageName, String simpleName, 
-            boolean primitiveClass, boolean finalClass,
-            List<Type> parameters) {
+            boolean primitiveClass, boolean finalClass, List<Type> parameters) {
         this.category = category;
         this.fullName = fullName;
         this.packageName = packageName;
@@ -51,12 +55,6 @@ public class SimpleType implements Type {
         this.primitiveClass = primitiveClass;
         this.finalClass = finalClass;
         this.parameters = parameters;
-    }
-
-    public SimpleType(TypeCategory typeCategory, String fullName, String packageName, String simpleName, 
-            boolean p, boolean f, Type... parameters) {
-        this(typeCategory, fullName, packageName, simpleName, p, f, Arrays
-                .asList(parameters));
     }
 
     @Override
