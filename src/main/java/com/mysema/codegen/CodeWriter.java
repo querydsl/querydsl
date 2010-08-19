@@ -24,6 +24,10 @@ import com.mysema.codegen.model.Type;
  */
 public interface CodeWriter extends Appendable{
 
+    String getRawName(Type type);
+    
+    String getGenericName(boolean asArgType, Type type);
+    
     CodeWriter annotation(Annotation annotation) throws IOException;
 
     CodeWriter annotation(Class<? extends Annotation> annotation) throws IOException;

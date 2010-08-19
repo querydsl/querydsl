@@ -257,6 +257,16 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
     private JavaWriter field(String modifier, Type type, String name, String value) throws IOException{
         return line(modifier + type.getGenericName(true, packages, classes) + SPACE + name + ASSIGN + value + SEMICOLON).nl();
     }
+    
+    @Override
+    public String getGenericName(boolean asArgType, Type type) {
+        return type.getGenericName(asArgType, packages, classes);
+    }
+
+    @Override
+    public String getRawName(Type type) {
+        return type.getRawName(packages, classes);
+    }
 
     @Override
     public JavaWriter imports(Class<?>... imports) throws IOException{
@@ -422,5 +432,6 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
         }
         return rv;
     }
+
 
 }
