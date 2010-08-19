@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.serialization;
+package com.mysema.query.types;
 
 import java.util.ArrayList;
 import java.util.HashMap;

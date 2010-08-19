@@ -16,7 +16,7 @@ import org.junit.Test;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.serialization.JavaTemplates;
+import com.mysema.query.types.JavaTemplates;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.ToStringVisitor;
 import com.mysema.query.types.Visitor;

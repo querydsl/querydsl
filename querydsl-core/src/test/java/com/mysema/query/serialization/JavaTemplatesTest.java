@@ -12,6 +12,7 @@ import java.lang.reflect.Field;
 
 import org.junit.Test;
 
+import com.mysema.query.types.JavaTemplates;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 

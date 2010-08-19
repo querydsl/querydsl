@@ -5,7 +5,7 @@
  */
 package com.mysema.query.collections;
 
-import com.mysema.query.serialization.JavaTemplates;
+import com.mysema.query.types.JavaTemplates;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.PathType;
 

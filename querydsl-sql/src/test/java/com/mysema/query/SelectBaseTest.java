@@ -35,7 +35,6 @@ import org.junit.Test;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.Pair;
-import com.mysema.query.functions.MathFunctions;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLSubQuery;
@@ -52,7 +51,6 @@ import com.mysema.query.types.expr.Coalesce;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.ENumberConst;
 import com.mysema.query.types.expr.QTuple;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PathBuilder;
@@ -230,26 +228,26 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
                 .list(employee.firstname));
     }
 
-    @SuppressWarnings("unchecked")
-    @Test
-    @ExcludeIn({DERBY})
-    public void mathFunctions() throws SQLException {
-        Expr<Double> d = ENumberConst.create(1.0);
-        for (Expr<?> e : Arrays.<Expr<?>> asList(
-                MathFunctions.acos(d),
-                MathFunctions.asin(d),
-                MathFunctions.atan(d),
-                MathFunctions.cos(d),
-                MathFunctions.tan(d),
-                MathFunctions.sin(d),
-                ENumber.random(),
-                MathFunctions.pow(d, d),
-                MathFunctions.log10(d),
-                MathFunctions.log(d),
-                MathFunctions.exp(d))) {
-            query().from(employee).list((Expr<? extends Comparable>) e);
-        }
-    }
+//    @SuppressWarnings("unchecked")
+//    @Test
+//    @ExcludeIn({DERBY})
+//    public void mathFunctions() throws SQLException {
+//        Expr<Double> d = ENumberConst.create(1.0);
+//        for (Expr<?> e : Arrays.<Expr<?>> asList(
+//                MathFunctions.acos(d),
+//                MathFunctions.asin(d),
+//                MathFunctions.atan(d),
+//                MathFunctions.cos(d),
+//                MathFunctions.tan(d),
+//                MathFunctions.sin(d),
+//                ENumber.random(),
+//                MathFunctions.pow(d, d),
+//                MathFunctions.log10(d),
+//                MathFunctions.log(d),
+//                MathFunctions.exp(d))) {
+//            query().from(employee).list((Expr<? extends Comparable>) e);
+//        }
+//    }
 
     @Test
     @ExcludeIn({HSQLDB, H2, MYSQL})

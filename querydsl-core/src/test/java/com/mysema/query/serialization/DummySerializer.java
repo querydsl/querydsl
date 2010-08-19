@@ -7,6 +7,7 @@ package com.mysema.query.serialization;
 
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Param;
+import com.mysema.query.types.SerializerBase;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.Templates;
 

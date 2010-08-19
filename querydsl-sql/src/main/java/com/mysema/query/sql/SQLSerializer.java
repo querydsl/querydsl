@@ -22,7 +22,6 @@ import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
-import com.mysema.query.serialization.SerializerBase;
 import com.mysema.query.types.*;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.EBoolean;

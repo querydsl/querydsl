@@ -3,13 +3,10 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.serialization;
+package com.mysema.query.types;
 
 import java.lang.reflect.Field;
 
-import com.mysema.query.types.OperatorImpl;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Templates;
 
 /**
  * JavaTemplates extends Template to provide Java syntax compliant serialization

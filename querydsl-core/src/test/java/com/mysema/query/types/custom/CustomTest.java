@@ -16,9 +16,9 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.serialization.JavaTemplates;
 import com.mysema.query.types.Custom;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.JavaTemplates;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.ToStringVisitor;

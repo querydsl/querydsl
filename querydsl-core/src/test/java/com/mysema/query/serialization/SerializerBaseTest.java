@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.mysema.query.types.JavaTemplates;
 import com.mysema.query.types.custom.CString;
 import com.mysema.query.types.expr.EStringConst;
 import com.mysema.query.types.path.PString;
