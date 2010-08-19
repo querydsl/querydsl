@@ -5,9 +5,7 @@
  */
 package com.mysema.query.types.expr;
 
-import com.mysema.query.BooleanBuilder;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.Interval;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
@@ -163,23 +161,6 @@ public abstract class EComparable<D extends Comparable> extends EComparableBase<
      */
     public final EBoolean loe(Expr<D> right) {
         return OBoolean.create(Ops.BOE, this, right);
-    }
-
-    /**
-     * Get <code>this in period</code> expression
-     *
-     * @param period
-     * @return
-     */
-    public EBoolean in(Interval<D> period) {
-        BooleanBuilder builder = new BooleanBuilder();
-        if (period.getBegin() != null) {
-            builder.and(goe(period.getBegin()));
-        }
-        if (period.getEnd() != null) {
-            builder.and(loe(period.getEnd()));
-        }
-        return builder.getValue();
     }
 
 }

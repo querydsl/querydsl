@@ -10,6 +10,10 @@ import org.apache.commons.collections15.Transformer;
 import com.mysema.query.types.expr.EString;
 import com.mysema.query.types.expr.EStringEscape;
 
+/**
+ * @author tiwe
+ *
+ */
 public final class Converters {
     
     private Converters(){}

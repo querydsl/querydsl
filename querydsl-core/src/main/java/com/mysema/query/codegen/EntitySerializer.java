@@ -642,7 +642,7 @@ public class EntitySerializer implements Serializer{
                 queryType = typeMappings.getPathType(property.getParameter(1), model, true);
 
                 serialize(model, property, new ClassType(PMap.class, getRaw(property.getParameter(0)), getRaw(property.getParameter(1)), genericQueryType),
-                        writer, "this.<"+genericKey+COMMA+genericValue+COMMA+genericQueryType+">createMap",
+                        writer, "this.<" + genericKey + COMMA + genericValue + COMMA + model.getRawName(genericQueryType) + ">createMap",
                         keyType+DOT_CLASS,
                         valueType+DOT_CLASS,
                         queryType+DOT_CLASS);
@@ -652,7 +652,7 @@ public class EntitySerializer implements Serializer{
                 localRawName = model.getRawName(property.getParameter(0));
                 queryType = typeMappings.getPathType(property.getParameter(0), model, true);
 
-                serialize(model, property, new ClassType(PList.class, getRaw(property.getParameter(0)), genericQueryType), writer, "createList", localRawName + DOT_CLASS, queryType +DOT_CLASS);
+                serialize(model, property, new ClassType(PList.class, getRaw(property.getParameter(0)), genericQueryType), writer, "createList", localRawName + DOT_CLASS, model.getRawName(queryType) + DOT_CLASS);
                 break;                
             case ENTITY:
                 entityField(model, property, config, writer);
@@ -662,7 +662,7 @@ public class EntitySerializer implements Serializer{
     }
 
     private Type getRaw(Type type) {
-        if (type instanceof EntityType){
+        if (type instanceof EntityType && type.getPackageName().startsWith("ext.java")){
             return type;
         }else{
             return new SimpleType(type, type.getParameters());    

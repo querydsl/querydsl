@@ -9,13 +9,16 @@ import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryEmbeddable;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerySupertype;
-import com.mysema.query.types.Interval;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EBooleanConst;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 
 public class QueryExtensions10Test {
+    
+    public interface Interval<T>{
+        
+    }
     
     /**
      * Adds a period filter
