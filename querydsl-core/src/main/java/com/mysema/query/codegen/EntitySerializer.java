@@ -62,8 +62,8 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void constructors(EntityType model, SerializerConfig config, CodeWriter writer) throws IOException {
-        String localName = model.getLocalRawName();
-        String genericName = model.getLocalGenericName();
+        String localName = writer.getRawName(model);
+        String genericName = writer.getGenericName(true, model);
 
         boolean hasEntityFields = model.hasEntityFields();
         String thisOrSuper = hasEntityFields ? THIS : SUPER;
@@ -135,8 +135,8 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void constructorsForVariables(CodeWriter writer, EntityType model) throws IOException {
-        String localName = model.getLocalRawName();
-        String genericName = model.getLocalGenericName();
+        String localName = writer.getRawName(model);
+        String genericName = writer.getGenericName(true, model);
 
         boolean hasEntityFields = model.hasEntityFields();
         String thisOrSuper = hasEntityFields ? THIS : SUPER;
@@ -154,7 +154,7 @@ public class EntitySerializer implements Serializer{
         Type queryType = typeMappings.getPathType(field.getType(), model, false);
         writer.beginPublicMethod(queryType, field.getEscapedName());
         writer.line("if (", field.getEscapedName(), " == null){");
-        writer.line("    ", field.getEscapedName(), " = new ", model.getRawName(queryType), "(forProperty(\"", field.getName(), "\"));");
+        writer.line("    ", field.getEscapedName(), " = new ", writer.getRawName(queryType), "(forProperty(\"", field.getName(), "\"));");
         writer.line("}");
         writer.line(RETURN, field.getEscapedName(), SEMICOLON);
         writer.end();
@@ -187,7 +187,7 @@ public class EntitySerializer implements Serializer{
         Supertype superType = model.getSuperType();
         if (superType != null && superType.getEntityType().hasEntityFields()){
             Type superQueryType = typeMappings.getPathType(superType.getEntityType(), model, false);
-            writer.line("this._super = new " + model.getRawName(superQueryType) + "(type, metadata, inits);");
+            writer.line("this._super = new " + writer.getRawName(superQueryType) + "(type, metadata, inits);");
         }
 
         for (Property field : model.getProperties()){
@@ -206,7 +206,7 @@ public class EntitySerializer implements Serializer{
             boolean hasEntityFields = field.getType() instanceof EntityType && ((EntityType)field.getType()).hasEntityFields();
             writer.line("this." + field.getEscapedName() + ASSIGN,
                 "inits.isInitialized(\""+field.getName()+"\") ? ",
-                NEW + model.getRawName(queryType) + "(forProperty(\"" + field.getName() + "\")",
+                NEW + writer.getRawName(queryType) + "(forProperty(\"" + field.getName() + "\")",
                 hasEntityFields ? (", inits.get(\""+field.getName()+"\")") : EMPTY,
                 ") : null;");
         }else if (!config.useEntityAccessors()){
@@ -275,8 +275,8 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void introFactoryMethods(CodeWriter writer, final EntityType model) throws IOException {
-        String localName = model.getLocalRawName();
-        String genericName = model.getLocalGenericName();
+        String localName = writer.getRawName(model);
+        String genericName = writer.getGenericName(true, model);
 
         for (Constructor c : model.getConstructors()){
             // begin
@@ -307,7 +307,7 @@ public class EntitySerializer implements Serializer{
                 if (p.getType().getPrimitiveName() != null){
                     writer.append(p.getType().getPrimitiveName()+DOT_CLASS);
                 }else{
-                    writer.append(model.getRawName(p.getType()));
+                    writer.append(writer.getRawName(p.getType()));
                     writer.append(DOT_CLASS);
                 }
                 first = false;
@@ -392,7 +392,7 @@ public class EntitySerializer implements Serializer{
         EntityType superType = model.getSuperType().getEntityType();
         Type superQueryType = typeMappings.getPathType(superType, model, false);
         if (!superType.hasEntityFields()){
-            writer.publicFinal(superQueryType, "_super", NEW + model.getRawName(superQueryType) + "(this)");
+            writer.publicFinal(superQueryType, "_super", NEW + writer.getRawName(superQueryType) + "(this)");
         }else{
             writer.publicFinal(superQueryType, "_super");
         }
@@ -441,9 +441,9 @@ public class EntitySerializer implements Serializer{
         // body start
         writer.beginLine(RETURN + custType.getSimpleName() + ".create(");
         String fullName = method.getReturnType().getFullName();
-        // TODO : replace with class reference
-        if (custType.equals("CSimple") || (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName()))){
-            writer.append(model.getRawName(method.getReturnType()));
+        if (custType.getSimpleName().equals(CSimple.class.getSimpleName()) 
+        || (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName()))){
+            writer.append(writer.getRawName(method.getReturnType()));
             writer.append(".class, ");
         }
         writer.append(QUOTE + StringEscapeUtils.escapeJava(method.getTemplate()) + QUOTE);
@@ -458,13 +458,14 @@ public class EntitySerializer implements Serializer{
     }
 
     private void normalArgsMethod(final EntityType model, Method method, CodeWriter writer, Type exprType, Type custType) throws IOException {
-        writer.beginPublicMethod(exprType, method.getName(), method.getParameters().toArray(new Parameter[method.getParameters().size()]));
+        Parameter[] params = method.getParameters().toArray(new Parameter[method.getParameters().size()]);
+        writer.beginPublicMethod(exprType, method.getName(),params);
 
         // body start
         writer.beginLine(RETURN + custType + ".create(");
         String fullName = method.getReturnType().getFullName();
         if (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName())){
-            writer.append(model.getRawName(method.getReturnType()));
+            writer.append(writer.getRawName(method.getReturnType()));
             writer.append(".class, ");
         }
         writer.append(QUOTE + StringEscapeUtils.escapeJava(method.getTemplate()) + QUOTE);
@@ -480,7 +481,8 @@ public class EntitySerializer implements Serializer{
     }
 
     private void delegate(final EntityType model, Delegate delegate, SerializerConfig config, CodeWriter writer) throws IOException {
-        writer.beginPublicMethod(delegate.getReturnType(), delegate.getName(), delegate.getParameters().toArray(new Parameter[0]));
+        Parameter[] params = delegate.getParameters().toArray(new Parameter[delegate.getParameters().size()]);
+        writer.beginPublicMethod(delegate.getReturnType(), delegate.getName(), params);
 
         // body start
         writer.beginLine(RETURN + delegate.getDelegateType().getSimpleName() + "."+delegate.getName()+"(");
@@ -581,7 +583,7 @@ public class EntitySerializer implements Serializer{
                 writer.publicFinal(queryType, field.getEscapedName());
             }            
         }else{
-            String value = NEW + model.getRawName(queryType) + "(forProperty(\"" + field.getName() + "\"))";
+            String value = NEW + writer.getRawName(queryType) + "(forProperty(\"" + field.getName() + "\"))";
             writer.publicFinal(queryType, field.getEscapedName(), value);
         }
     }
@@ -592,7 +594,7 @@ public class EntitySerializer implements Serializer{
             // strips of "? extends " etc
             Type propertyType = new SimpleType(property.getType(), property.getType().getParameters());
             Type queryType = typeMappings.getPathType(propertyType, model, false);
-            String localRawName = model.getRawName(property.getType());
+            String localRawName = writer.getRawName(property.getType());
 
             switch(property.getType().getCategory()){
             case STRING:
@@ -626,33 +628,33 @@ public class EntitySerializer implements Serializer{
                 serialize(model, property, new ClassType(PArray.class, property.getType().getComponentType()), writer, "createArray", localRawName + DOT_CLASS);
                 break;
             case COLLECTION:
-                localRawName = model.getRawName(property.getParameter(0));
+                localRawName = writer.getRawName(property.getParameter(0));
                 serialize(model, property, new ClassType(PCollection.class, getRaw(property.getParameter(0))), writer, "createCollection", localRawName + DOT_CLASS);
                 break;
             case SET:
-                localRawName = model.getRawName(property.getParameter(0));
+                localRawName = writer.getRawName(property.getParameter(0));
                 serialize(model, property, new ClassType(PSet.class, getRaw(property.getParameter(0))), writer, "createSet", localRawName + DOT_CLASS);
                 break;
             case MAP:
-                String genericKey = model.getGenericName(true, property.getParameter(0));
-                String genericValue = model.getGenericName(true, property.getParameter(1));
+                String genericKey = writer.getGenericName(true, property.getParameter(0));
+                String genericValue = writer.getGenericName(true, property.getParameter(1));
                 Type genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(1)), model, false);
-                String keyType = model.getRawName(property.getParameter(0));
-                String valueType = model.getRawName(property.getParameter(1));
+                String keyType = writer.getRawName(property.getParameter(0));
+                String valueType = writer.getRawName(property.getParameter(1));
                 queryType = typeMappings.getPathType(property.getParameter(1), model, true);
 
                 serialize(model, property, new ClassType(PMap.class, getRaw(property.getParameter(0)), getRaw(property.getParameter(1)), genericQueryType),
-                        writer, "this.<" + genericKey + COMMA + genericValue + COMMA + model.getRawName(genericQueryType) + ">createMap",
+                        writer, "this.<" + genericKey + COMMA + genericValue + COMMA + writer.getRawName(genericQueryType) + ">createMap",
                         keyType+DOT_CLASS,
                         valueType+DOT_CLASS,
                         queryType+DOT_CLASS);
                 break;
             case LIST:
                 genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false);
-                localRawName = model.getRawName(property.getParameter(0));
+                localRawName = writer.getRawName(property.getParameter(0));
                 queryType = typeMappings.getPathType(property.getParameter(0), model, true);
 
-                serialize(model, property, new ClassType(PList.class, getRaw(property.getParameter(0)), genericQueryType), writer, "createList", localRawName + DOT_CLASS, model.getRawName(queryType) + DOT_CLASS);
+                serialize(model, property, new ClassType(PList.class, getRaw(property.getParameter(0)), genericQueryType), writer, "createList", localRawName + DOT_CLASS, writer.getRawName(queryType) + DOT_CLASS);
                 break;                
             case ENTITY:
                 entityField(model, property, config, writer);

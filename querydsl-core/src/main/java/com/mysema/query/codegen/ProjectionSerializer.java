@@ -6,8 +6,6 @@
 package com.mysema.query.codegen;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Set;
 
 import net.jcip.annotations.Immutable;
 
@@ -71,9 +69,8 @@ public final class ProjectionSerializer implements Serializer{
         // intro
         intro(model, writer);
 
-        final Set<String> packages = Collections.singleton(model.getPackageName());
-        final String localName = model.getLocalRawName();
-
+        String localName = writer.getRawName(model);
+        
         for (Constructor c : model.getConstructors()){
             // begin
             writer.beginConstructor(c.getParameters(), new Transformer<Parameter,Parameter>(){
@@ -95,7 +92,7 @@ public final class ProjectionSerializer implements Serializer{
                 if (p.getType().getPrimitiveName() != null){
                     writer.append(p.getType().getPrimitiveName()+".class");
                 }else{
-                    writer.append(p.getType().getRawName(packages, Collections.<String>emptySet()));
+                    writer.append(writer.getRawName(p.getType()));
                     writer.append(".class");
                 }
                 first = false;

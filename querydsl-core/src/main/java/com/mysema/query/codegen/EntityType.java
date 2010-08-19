@@ -7,7 +7,6 @@ package com.mysema.query.codegen;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -54,8 +53,6 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
 
     private String uncapSimpleName;
     
-    private final Set<String> packages;
-
     public EntityType(String prefix, Type type) {
         this(prefix, type, new HashSet<Supertype>());
     }
@@ -65,7 +62,6 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         this.prefix = Assert.notNull(prefix,"prefix");
         this.uncapSimpleName = StringUtils.uncapitalize(type.getSimpleName());
         this.superTypes = superTypes;
-        this.packages = Collections.singleton(getPackageName());
     }
 
     public void addAnnotation(Annotation annotation){
@@ -153,18 +149,6 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         return name.startsWith("java.") ? "ext." + name : name;
     }
 
-    public String getGenericName(boolean asArgType, Type type){
-        return type.getGenericName(asArgType, packages, Collections.<String>emptySet());
-    }
-
-    public String getLocalGenericName(){
-        return getType().getGenericName(true, packages, Collections.<String>emptySet());
-    }
-    
-    public String getLocalRawName() {
-        return getType().getRawName(packages, Collections.<String>emptySet());
-    }
-    
     public Set<Method> getMethods(){
         return methods;
     }
@@ -185,10 +169,6 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
 
     public Set<Property> getProperties() {
         return properties;
-    }
-
-    public String getRawName(Type type) {
-        return type.getRawName(packages, Collections.<String>emptySet());
     }
 
     @Nullable
