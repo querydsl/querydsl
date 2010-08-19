@@ -644,10 +644,8 @@ public class EntitySerializer implements Serializer{
                 queryType = typeMappings.getPathType(property.getParameter(1), model, true);
 
                 serialize(model, property, new ClassType(PMap.class, getRaw(property.getParameter(0)), getRaw(property.getParameter(1)), genericQueryType),
-                        writer, "this.<" + genericKey + COMMA + genericValue + COMMA + writer.getRawName(genericQueryType) + ">createMap",
-                        keyType+DOT_CLASS,
-                        valueType+DOT_CLASS,
-                        queryType+DOT_CLASS);
+                        writer, "this.<" + genericKey + COMMA + genericValue + COMMA + writer.getGenericName(true, genericQueryType) + ">createMap",
+                        keyType+DOT_CLASS, valueType+DOT_CLASS, writer.getRawName(queryType)+DOT_CLASS);
                 break;
             case LIST:
                 genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false);
