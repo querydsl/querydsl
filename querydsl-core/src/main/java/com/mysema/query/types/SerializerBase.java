@@ -102,12 +102,15 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         }
     }
 
-    protected void serialize(Position position, Set<QueryFlag> flags) {
+    protected boolean serialize(Position position, Set<QueryFlag> flags) {
+        boolean handled = false;
         for (QueryFlag flag : flags){
             if (flag.getPosition() == position){
                 handle(flag.getFlag());
+                handled = true;
             }
         }
+        return handled;
     }
 
     public void setConstantPrefix(String prefix){

@@ -28,6 +28,8 @@ public class QueryFlag implements Serializable{
         
         START,
         
+        START_OVERRIDE,
+        
         AFTER_SELECT,
         
         AFTER_PROJECTION,

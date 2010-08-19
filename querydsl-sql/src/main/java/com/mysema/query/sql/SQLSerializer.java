@@ -239,21 +239,33 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     }
 
-    public void serializeForDelete(PEntity<?> entity, EBoolean where) {
+    public void serializeForDelete(QueryMetadata metadata, PEntity<?> entity) {
         this.entity = entity;
-        append(templates.getDeleteFrom());
+        
+        serialize(Position.START, metadata.getFlags());
+        
+        if (!serialize(Position.START_OVERRIDE, metadata.getFlags())){
+            append(templates.getDeleteFrom());    
+        }        
         handle(entity);
-        if (where != null) {
+        if (metadata.getWhere() != null) {
             skipParent = true;
-            append(templates.getWhere()).handle(where);
+            append(templates.getWhere()).handle(metadata.getWhere());
             skipParent = false;
         }
+        
+        serialize(Position.END, metadata.getFlags());
     }
 
-    public void serializeForMerge(PEntity<?> entity, List<Path<?>> keys,
+    public void serializeForMerge(QueryMetadata metadata, PEntity<?> entity, List<Path<?>> keys,
             List<Path<?>> columns, List<Expr<?>> values, @Nullable SubQuery<?> subQuery) {
         this.entity = entity;
-        append(templates.getMergeInto());
+        
+        serialize(Position.START, metadata.getFlags());
+        
+        if (!serialize(Position.START_OVERRIDE, metadata.getFlags())){
+            append(templates.getMergeInto());    
+        }        
         handle(entity);
         append(" ");
         // columns
@@ -279,12 +291,19 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             append(templates.getValues());
             append("(").handle(COMMA, values).append(") ");
         }
+        
+        serialize(Position.END, metadata.getFlags());
     }
 
-    public void serializeForInsert(PEntity<?> entity, List<Path<?>> columns,
+    public void serializeForInsert(QueryMetadata metadata, PEntity<?> entity, List<Path<?>> columns,
             List<Expr<?>> values, @Nullable SubQuery<?> subQuery) {
         this.entity = entity;
-        append(templates.getInsertInto());
+        
+        serialize(Position.START, metadata.getFlags());
+        
+        if (!serialize(Position.START_OVERRIDE, metadata.getFlags())){
+            append(templates.getInsertInto());    
+        }        
         handle(entity);
         // columns
         if (!columns.isEmpty()){
@@ -305,12 +324,18 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             handle(COMMA, values);
             append(")");
         }
+        
+        serialize(Position.END, metadata.getFlags());
     }
 
-    public void serializeForUpdate(PEntity<?> entity,
-            List<Pair<Path<?>, ?>> updates, EBoolean where) {
+    public void serializeForUpdate(QueryMetadata metadata, PEntity<?> entity, List<Pair<Path<?>, ?>> updates) {
         this.entity = entity;
-        append(templates.getUpdate());
+        
+        serialize(Position.START, metadata.getFlags());
+        
+        if (!serialize(Position.START_OVERRIDE, metadata.getFlags())){
+            append(templates.getUpdate());    
+        }        
         handle(entity);
         append("\n");
         append(templates.getSet());
@@ -330,9 +355,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             first = false;
         }
         skipParent = false;
-        if (where != null) {
-            append(templates.getWhere()).handle(where);
+        if (metadata.getWhere() != null) {
+            append(templates.getWhere()).handle(metadata.getWhere());
         }
+        
+        serialize(Position.END, metadata.getFlags());
     }
 
     private void serializeSources(List<JoinExpression> joins) {        

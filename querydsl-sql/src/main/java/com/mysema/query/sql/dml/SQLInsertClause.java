@@ -19,7 +19,11 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryException;
+import com.mysema.query.QueryFlag;
+import com.mysema.query.QueryMetadata;
+import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.dml.InsertClause;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLSerializer;
@@ -49,6 +53,8 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
     private final Connection connection;
 
     private final PEntity<?> entity;
+    
+    private final QueryMetadata metadata = new DefaultQueryMetadata();
 
     @Nullable
     private SubQuery<?> subQuery;
@@ -69,6 +75,11 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         super(configuration);
         this.connection = connection;
         this.entity = entity;
+    }
+    
+    public SQLInsertClause addFlag(Position position, String flag){
+        metadata.addFlag(new QueryFlag(position, flag));
+        return this;
     }
     
     public SQLInsertClause addBatch() {
@@ -138,13 +149,13 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
         PreparedStatement stmt = null;
         if (batches.isEmpty()){
-            serializer.serializeForInsert(entity, columns, values, subQuery);
+            serializer.serializeForInsert(metadata, entity, columns, values, subQuery);
             queryString = serializer.toString();
             logger.debug(queryString);        
             stmt = connection.prepareStatement(queryString);
             setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());    
         }else{
-            serializer.serializeForInsert(entity, batches.get(0).getColumns(), batches.get(0).getValues(), batches.get(0).getSubQuery());
+            serializer.serializeForInsert(metadata, entity, batches.get(0).getColumns(), batches.get(0).getValues(), batches.get(0).getSubQuery());
             queryString = serializer.toString();
             logger.debug(queryString);        
             stmt = connection.prepareStatement(queryString);
@@ -158,7 +169,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
                 SQLInsertBatch batch = batches.get(i);
                 serializer = new SQLSerializer(configuration.getTemplates(), true);
                 // TODO : add support for dry serialization (without SQL construction)
-                serializer.serializeForInsert(entity, batch.getColumns(), batch.getValues(), batch.getSubQuery());
+                serializer.serializeForInsert(metadata, entity, batch.getColumns(), batch.getValues(), batch.getSubQuery());
                 setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
                 stmt.addBatch();
             }
@@ -249,7 +260,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
     @Override
     public String toString(){
         SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
-        serializer.serializeForInsert(entity, columns, values, subQuery);
+        serializer.serializeForInsert(metadata, entity, columns, values, subQuery);
         return serializer.toString();
     }
 

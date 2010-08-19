@@ -33,7 +33,6 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.OrderSpecifier;

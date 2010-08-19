@@ -17,7 +17,11 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryException;
+import com.mysema.query.QueryFlag;
+import com.mysema.query.QueryMetadata;
+import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.dml.StoreClause;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLQuery;
@@ -49,6 +53,8 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
 
     private final PEntity<?> entity;
 
+    private final QueryMetadata metadata = new DefaultQueryMetadata();
+    
     private final List<Path<?>> keys = new ArrayList<Path<?>>();
 
     @Nullable
@@ -64,6 +70,11 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
         super(configuration);
         this.connection = connection;
         this.entity = entity;
+    }
+    
+    public SQLMergeClause addFlag(Position position, String flag){
+        metadata.addFlag(new QueryFlag(position, flag));
+        return this;
     }
 
     protected void close(PreparedStatement stmt) {
@@ -119,7 +130,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
 
     private long executeNativeMerge() {
         SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
-        serializer.serializeForMerge(entity, keys, columns, values, subQuery);
+        serializer.serializeForMerge(metadata, entity, keys, columns, values, subQuery);
         String queryString = serializer.toString();
         logger.debug(queryString);
 
@@ -163,7 +174,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
     @Override
     public String toString(){
         SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
-        serializer.serializeForMerge(entity, keys, columns, values, subQuery);
+        serializer.serializeForMerge(metadata, entity, keys, columns, values, subQuery);
         return serializer.toString();
     }
 

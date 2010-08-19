@@ -13,8 +13,11 @@ import java.util.Collections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysema.query.BooleanBuilder;
+import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryException;
+import com.mysema.query.QueryFlag;
+import com.mysema.query.QueryMetadata;
+import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLSerializer;
@@ -40,8 +43,8 @@ public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<S
 
     private final PEntity<?> entity;
 
-    private final BooleanBuilder where = new BooleanBuilder();
-
+    private final QueryMetadata metadata = new DefaultQueryMetadata();
+    
     public SQLDeleteClause(Connection connection, SQLTemplates templates, PEntity<?> entity) {
         this(connection, new Configuration(templates), entity);
     }
@@ -50,6 +53,11 @@ public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<S
         super(configuration);
         this.connection = connection;
         this.entity = entity;
+    }
+    
+    public SQLDeleteClause addFlag(Position position, String flag){
+        metadata.addFlag(new QueryFlag(position, flag));
+        return this;
     }
 
     protected void close(PreparedStatement stmt) {
@@ -63,7 +71,7 @@ public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<S
     @Override
     public long execute() {
         SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
-        serializer.serializeForDelete(entity, where.getValue());
+        serializer.serializeForDelete(metadata, entity);
         String queryString = serializer.toString();
         logger.debug(queryString);
 
@@ -83,16 +91,14 @@ public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<S
     
     @Override
     public SQLDeleteClause where(EBoolean... o) {
-        for (EBoolean e : o){
-            where.and(e);
-        }
+        metadata.addWhere(o);
         return this;
     }
     
     @Override
     public String toString(){
         SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
-        serializer.serializeForDelete(entity, where.getValue());
+        serializer.serializeForDelete(metadata, entity);
         return serializer.toString();
     }
 
