@@ -3,9 +3,9 @@ package com.mysema.query.hql;
 import java.util.Collection;
 
 import com.mysema.query.Query;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PMap;
 
 /**
@@ -24,7 +24,7 @@ public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
      * @param sources
      * @return
      */
-    Q from(PEntity<?>... sources);
+    Q from(EntityPath<?>... sources);
 
     /**
      * Create an inner join with the given target.
@@ -35,7 +35,7 @@ public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
      * @param target
      * @return
      */
-    <P> Q innerJoin(PEntity<P> target);
+    <P> Q innerJoin(EntityPath<P> target);
 
     /**
      * Create an inner join with the given target and alias.
@@ -45,7 +45,7 @@ public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
      * @param alias
      * @return
      */
-    <P> Q innerJoin(PEntity<P> target, PEntity<P> alias);
+    <P> Q innerJoin(EntityPath<P> target, EntityPath<P> alias);
 
     /**
      * Create an inner join with the given target.
@@ -95,7 +95,7 @@ public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
      * @param target
      * @return
      */
-    <P> Q join(PEntity<P> target);
+    <P> Q join(EntityPath<P> target);
 
     /**
      * Create a join with the given target and alias.
@@ -105,7 +105,7 @@ public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
      * @param alias
      * @return
      */
-    <P> Q join(PEntity<P> target, PEntity<P> alias);
+    <P> Q join(EntityPath<P> target, EntityPath<P> alias);
 
     /**
      * Create an join with the given target.
@@ -153,7 +153,7 @@ public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
      * @param target
      * @return
      */
-    <P> Q leftJoin(PEntity<P> target);
+    <P> Q leftJoin(EntityPath<P> target);
 
     /**
      * Create a left join with the given target and alias.
@@ -163,7 +163,7 @@ public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
      * @param alias
      * @return
      */
-    <P> Q leftJoin(PEntity<P> target, PEntity<P> alias);
+    <P> Q leftJoin(EntityPath<P> target, EntityPath<P> alias);
 
     /**
      * Create an left join with the given target.
@@ -213,7 +213,7 @@ public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
      * @param target
      * @return
      */
-    <P> Q fullJoin(PEntity<P> target);
+    <P> Q fullJoin(EntityPath<P> target);
 
     /**
      * Create a full join with the given target and alias.
@@ -223,7 +223,7 @@ public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
      * @param alias
      * @return
      */
-    <P> Q fullJoin(PEntity<P> target, PEntity<P> alias);
+    <P> Q fullJoin(EntityPath<P> target, EntityPath<P> alias);
 
     /**
      * Create an full join with the given target.

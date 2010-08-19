@@ -18,8 +18,8 @@ import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.hql.HQLSerializer;
 import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.hql.JPQLTemplates;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.PEntity;
 
 /**
  * DeleteClause implementation for Hibernate
@@ -35,18 +35,18 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
 
     private final JPQLTemplates templates;
 
-    public HibernateDeleteClause(Session session, PEntity<?> entity){
+    public HibernateDeleteClause(Session session, EntityPath<?> entity){
         this(new DefaultSessionHolder(session), entity, HQLTemplates.DEFAULT);
     }
 
-    public HibernateDeleteClause(StatelessSession session, PEntity<?> entity){
+    public HibernateDeleteClause(StatelessSession session, EntityPath<?> entity){
         this(new StatelessSessionHolder(session), entity, HQLTemplates.DEFAULT);
     }
 
-    public HibernateDeleteClause(SessionHolder session, PEntity<?> entity, JPQLTemplates templates){
+    public HibernateDeleteClause(SessionHolder session, EntityPath<?> entity, JPQLTemplates templates){
         this.session = session;
         this.templates = templates;
-        md.addJoin(JoinType.DEFAULT, entity);
+        md.addJoin(JoinType.DEFAULT, entity.asExpr());
     }
 
     @Override

@@ -18,7 +18,7 @@ import org.apache.commons.collections15.map.LazyMap;
 
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.EntityPathBase;
 
 /**
  * AliasFactory is a factory class for alias creation
@@ -31,8 +31,8 @@ public class AliasFactory {
     private final ThreadLocal<Expr<?>> current = new ThreadLocal<Expr<?>>();
 
     // caches top level paths (class/var as key)
-    private final Map<Pair<Class<?>,String>, PEntity<?>> pathCache =
-        LazyMap.decorate(new HashMap<Pair<Class<?>,String>,PEntity<?>>(), new PEntityTransformer());
+    private final Map<Pair<Class<?>,String>, EntityPathBase<?>> pathCache =
+        LazyMap.decorate(new HashMap<Pair<Class<?>,String>,EntityPathBase<?>>(), new PEntityTransformer());
 
     private final Map<Pair<Class<?>,Expr<?>>, ManagedObject> proxyCache =
         LazyMap.decorate(

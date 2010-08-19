@@ -27,10 +27,10 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.expr.QTuple;
-import com.mysema.query.types.path.PEntity;
 
 /**
  * Abstract base class for custom implementations of the JDOQLQuery interface.
@@ -151,7 +151,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         return rv;
     }
 
-    public Q from(PEntity<?>... args) {
+    public Q from(EntityPath<?>... args) {
         return queryMixin.from(args);
     }
 

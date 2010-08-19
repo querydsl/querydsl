@@ -10,8 +10,8 @@ import java.util.List;
 
 import net.jcip.annotations.Immutable;
 
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.path.PEntity;
 
 /**
  * PrimaryKey defines a primary key on table
@@ -21,20 +21,20 @@ import com.mysema.query.types.path.PEntity;
 @Immutable
 public class PrimaryKey <E>{
 
-    private final PEntity<?> entity;
+    private final EntityPath<?> entity;
 
     private final List<? extends Path<?>> localColumns;
 
-    public PrimaryKey(PEntity<?> entity, Path<?>... localColumns) {
+    public PrimaryKey(EntityPath<?> entity, Path<?>... localColumns) {
         this(entity, Arrays.asList(localColumns));
     }
 
-    public PrimaryKey(PEntity<?> entity, List<? extends Path<?>> localColumns) {
+    public PrimaryKey(EntityPath<?> entity, List<? extends Path<?>> localColumns) {
         this.entity = entity;
         this.localColumns = localColumns;
     }
 
-    public PEntity<?> getEntity(){
+    public EntityPath<?> getEntity(){
         return entity;
     }
 

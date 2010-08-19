@@ -10,7 +10,8 @@ import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.PNumber;
 
 /**
@@ -18,7 +19,7 @@ import com.mysema.query.types.path.PNumber;
  */
 @SuppressWarnings("serial")
 @com.mysema.query.sql.Table(value="KITTENS_SET")
-public class SKittensSet extends PEntity<SKittensSet> {
+public class SKittensSet extends EntityPathBase<SKittensSet> {
 
     public final PNumber<Integer> animalId = createNumber("ANIMAL_ID", Integer.class);
 
@@ -28,7 +29,7 @@ public class SKittensSet extends PEntity<SKittensSet> {
         super(SKittensSet.class, forVariable(variable));
     }
 
-    public SKittensSet(PEntity<? extends SKittensSet> entity) {
+    public SKittensSet(BeanPath<? extends SKittensSet> entity) {
         super(entity.getType(),entity.getMetadata());
     }
 

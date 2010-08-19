@@ -27,7 +27,7 @@ public class EntitySerializerTest {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
         EntityType entityType = new EntityType("Q",type);        
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
-        assertTrue(writer.toString().contains("public class QEntity extends PEntity<Entity> {"));
+        assertTrue(writer.toString().contains("public class QEntity extends EntityPathBase<Entity> {"));
     }
     
     @Test
@@ -36,7 +36,7 @@ public class EntitySerializerTest {
         EntityType entityType = new EntityType("Q",type);        
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         System.out.println(writer);
-        assertTrue(writer.toString().contains("public class QLocale extends PEntity<java.util.Locale> {"));
+        assertTrue(writer.toString().contains("public class QLocale extends EntityPathBase<java.util.Locale> {"));
     }
 
 }

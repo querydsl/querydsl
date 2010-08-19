@@ -10,7 +10,8 @@ import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.PNumber;
 
 /**
@@ -18,7 +19,7 @@ import com.mysema.query.types.path.PNumber;
  */
 @SuppressWarnings("serial")
 @com.mysema.query.sql.Table(value="FORMULA")
-public class SFormula extends PEntity<SFormula> {
+public class SFormula extends EntityPathBase<SFormula> {
 
     public final PNumber<Integer> id = createNumber("ID", Integer.class);
 
@@ -28,7 +29,7 @@ public class SFormula extends PEntity<SFormula> {
         super(SFormula.class, forVariable(variable));
     }
 
-    public SFormula(PEntity<? extends SFormula> entity) {
+    public SFormula(BeanPath<? extends SFormula> entity) {
         super(entity.getType(),entity.getMetadata());
     }
 

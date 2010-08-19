@@ -10,8 +10,9 @@ import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 
@@ -20,7 +21,7 @@ import com.mysema.query.types.path.PString;
  */
 @SuppressWarnings("serial")
 @com.mysema.query.sql.Table(value="ANIMAL")
-public class SAnimal extends PEntity<SAnimal> {
+public class SAnimal extends EntityPathBase<SAnimal>{
 
     public final PNumber<Short> alive = createNumber("ALIVE", Short.class);
 
@@ -54,7 +55,7 @@ public class SAnimal extends PEntity<SAnimal> {
         super(SAnimal.class, forVariable(variable));
     }
 
-    public SAnimal(PEntity<? extends SAnimal> entity) {
+    public SAnimal(BeanPath<? extends SAnimal> entity) {
         super(entity.getType(),entity.getMetadata());
     }
 

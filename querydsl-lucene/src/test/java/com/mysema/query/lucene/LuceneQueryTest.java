@@ -38,7 +38,7 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathMetadataFactory;
@@ -51,7 +51,7 @@ import com.mysema.query.types.path.PathMetadataFactory;
  */
 public class LuceneQueryTest {
 
-    public class QDocument extends PEntity<Document> {
+    public class QDocument extends EntityPathBase<Document> {
 
         private static final long serialVersionUID = -4872833626508344081L;
 

@@ -12,19 +12,19 @@ import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.Table;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.PDate;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 @Table("EMPLOYEE2")
-public class QEmployee extends PEntity<QEmployee> {
+public class QEmployee extends EntityPathBase<QEmployee> {
 
     private static final long serialVersionUID = 1394463749655231079L;
 
-    public final PNumber<java.lang.Integer> id = createNumber("ID", java.lang.Integer.class);
+    public final PNumber<Integer> id = createNumber("ID", Integer.class);
 
     public final PString firstname = createString("FIRSTNAME");
 
@@ -36,7 +36,7 @@ public class QEmployee extends PEntity<QEmployee> {
 
     public final PTime<java.sql.Time> timefield = createTime("TIMEFIELD", java.sql.Time.class);
 
-    public final PNumber<java.lang.Integer> superiorId = createNumber("SUPERIOR_ID", java.lang.Integer.class);
+    public final PNumber<Integer> superiorId = createNumber("SUPERIOR_ID", Integer.class);
 
     private final Expr<?>[] all = new Expr[]{id, firstname, lastname, salary, datefield, timefield, superiorId};
 
@@ -49,7 +49,7 @@ public class QEmployee extends PEntity<QEmployee> {
     public final ForeignKey<QEmployee> superiorIdKey = new ForeignKey<QEmployee>(this, superiorId, "ID");
 
     
-    public QEmployee(java.lang.String path) {
+    public QEmployee(String path) {
         super(QEmployee.class, PathMetadataFactory.forVariable(path));
     }
 

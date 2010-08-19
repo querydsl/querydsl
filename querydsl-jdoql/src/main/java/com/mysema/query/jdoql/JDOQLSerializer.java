@@ -23,7 +23,6 @@ import com.mysema.query.types.*;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EStringConst;
 import com.mysema.query.types.expr.OSimple;
-import com.mysema.query.types.path.PEntity;
 
 /**
  * JDOQLSerializer serializes Querydsl queries and expressions into JDOQL strings
@@ -260,8 +259,8 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             }
 
             // type specifier
-            if (je.getTarget() instanceof PEntity) {
-                PEntity<?> pe = (PEntity<?>) je.getTarget();
+            if (je.getTarget() instanceof EntityPath) {
+                EntityPath<?> pe = (EntityPath<?>) je.getTarget();
                 if (pe.getMetadata().getParent() == null) {
                     append(pe.getType().getName()).append(" ");
                 }

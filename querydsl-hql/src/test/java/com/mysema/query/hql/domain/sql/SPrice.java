@@ -10,7 +10,8 @@ import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.PNumber;
 
 /**
@@ -18,7 +19,7 @@ import com.mysema.query.types.path.PNumber;
  */
 @SuppressWarnings("serial")
 @com.mysema.query.sql.Table(value="PRICE")
-public class SPrice extends PEntity<SPrice> {
+public class SPrice extends EntityPathBase<SPrice> {
 
     public final PNumber<Long> amount = createNumber("AMOUNT", Long.class);
 
@@ -30,7 +31,7 @@ public class SPrice extends PEntity<SPrice> {
         super(SPrice.class, forVariable(variable));
     }
 
-    public SPrice(PEntity<? extends SPrice> entity) {
+    public SPrice(BeanPath<? extends SPrice> entity) {
         super(entity.getType(),entity.getMetadata());
     }
 

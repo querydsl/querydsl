@@ -8,9 +8,10 @@ import com.mysema.query.sql.Table;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PTime;
@@ -20,7 +21,7 @@ import com.mysema.query.types.path.PTime;
  * SProduct is a Querydsl query type for SProduct
  */
 @Table(value="PRODUCT")
-public class SProduct extends PEntity<SProduct> {
+public class SProduct extends EntityPathBase<SProduct> {
 
     private static final long serialVersionUID = -590374403;
 
@@ -54,7 +55,7 @@ public class SProduct extends PEntity<SProduct> {
         super(SProduct.class, forVariable(variable));
     }
 
-    public SProduct(PEntity<? extends SProduct> entity) {
+    public SProduct(BeanPath<? extends SProduct> entity) {
         super(entity.getType(),entity.getMetadata());
     }
 

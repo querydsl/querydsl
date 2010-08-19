@@ -11,10 +11,10 @@ import java.util.List;
 import net.jcip.annotations.Immutable;
 
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PSimple;
 
 /**
@@ -28,23 +28,23 @@ import com.mysema.query.types.path.PSimple;
 @Immutable
 public class ForeignKey <E>{
 
-    private final PEntity<?> entity;
+    private final EntityPath<?> entity;
 
     private final List<? extends Path<?>> localColumns;
 
     private final List<String> foreignColumns;
 
-    public ForeignKey(PEntity<?> entity, Path<?> localColumn, String foreignColumn) {
+    public ForeignKey(EntityPath<?> entity, Path<?> localColumn, String foreignColumn) {
         this(entity, Arrays.<Path<?>>asList(localColumn), Arrays.asList(foreignColumn));
     }
 
-    public ForeignKey(PEntity<?> entity, List<? extends Path<?>> localColumns, List<String> foreignColumns) {
+    public ForeignKey(EntityPath<?> entity, List<? extends Path<?>> localColumns, List<String> foreignColumns) {
         this.entity = entity;
         this.localColumns = localColumns;
         this.foreignColumns = foreignColumns;
     }
 
-    public PEntity<?> getEntity(){
+    public EntityPath<?> getEntity(){
         return entity;
     }
 
@@ -57,7 +57,7 @@ public class ForeignKey <E>{
     }
 
     @SuppressWarnings("unchecked")
-    public EBoolean on(PEntity<E> entity){
+    public EBoolean on(EntityPath<E> entity){
         BooleanBuilder builder = new BooleanBuilder();
         for (int i = 0; i < localColumns.size(); i++){
             Expr local = localColumns.get(i).asExpr();

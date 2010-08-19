@@ -11,12 +11,12 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.support.QueryMixin;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.PEntity;
 
 /**
  * Abstract superclass for SubQuery implementations
@@ -53,11 +53,11 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.from(args);
     }
 
-    public <E> Q fullJoin(ForeignKey<E> key, PEntity<E> entity) {
+    public <E> Q fullJoin(ForeignKey<E> key, EntityPath<E> entity) {
         return queryMixin.fullJoin(entity).on(key.on(entity));
     }
 
-    public Q fullJoin(PEntity<?> target) {
+    public Q fullJoin(EntityPath<?> target) {
         return queryMixin.fullJoin(target);
     }
 
@@ -65,11 +65,11 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.fullJoin(target, alias);
     }
 
-    public <E> Q innerJoin(ForeignKey<E> key, PEntity<E> entity) {
+    public <E> Q innerJoin(ForeignKey<E> key, EntityPath<E> entity) {
         return queryMixin.innerJoin(entity).on(key.on(entity));
     }
 
-    public Q innerJoin(PEntity<?> target) {
+    public Q innerJoin(EntityPath<?> target) {
         return queryMixin.innerJoin(target);
     }
 
@@ -77,11 +77,11 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.innerJoin(target, alias);
     }
 
-    public <E> Q join(ForeignKey<E> key, PEntity<E>  entity) {
+    public <E> Q join(ForeignKey<E> key, EntityPath<E>  entity) {
         return queryMixin.join(entity).on(key.on(entity));
     }
 
-    public Q join(PEntity<?> target) {
+    public Q join(EntityPath<?> target) {
         return queryMixin.join(target);
     }
 
@@ -89,11 +89,11 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.join(target, alias);
     }
 
-    public <E> Q leftJoin(ForeignKey<E> key, PEntity<E>  entity) {
+    public <E> Q leftJoin(ForeignKey<E> key, EntityPath<E>  entity) {
         return queryMixin.leftJoin(entity).on(key.on(entity));
     }
 
-    public Q leftJoin(PEntity<?> target) {
+    public Q leftJoin(EntityPath<?> target) {
         return queryMixin.leftJoin(target);
     }   
 
@@ -105,11 +105,11 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.on(conditions);
     }
 
-    public <E> Q rightJoin(ForeignKey<E> key, PEntity<E>  entity) {
+    public <E> Q rightJoin(ForeignKey<E> key, EntityPath<E>  entity) {
         return queryMixin.rightJoin(entity).on(key.on(entity));
     }
 
-    public Q rightJoin(PEntity<?> target) {
+    public Q rightJoin(EntityPath<?> target) {
         return queryMixin.leftJoin(target);
     }
 

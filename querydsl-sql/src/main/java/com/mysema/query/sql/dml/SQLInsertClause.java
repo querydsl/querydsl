@@ -28,13 +28,13 @@ import com.mysema.query.dml.InsertClause;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.path.NullExpr;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.util.ResultSetAdapter;
 
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
@@ -52,7 +52,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
 
     private final Connection connection;
 
-    private final PEntity<?> entity;
+    private final EntityPath<?> entity;
     
     private final QueryMetadata metadata = new DefaultQueryMetadata();
 
@@ -67,11 +67,11 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
 
     private transient String queryString;
     
-    public SQLInsertClause(Connection connection, SQLTemplates templates, PEntity<?> entity) {
+    public SQLInsertClause(Connection connection, SQLTemplates templates, EntityPath<?> entity) {
         this(connection, new Configuration(templates), entity);
     }
     
-    public SQLInsertClause(Connection connection, Configuration configuration, PEntity<?> entity) {
+    public SQLInsertClause(Connection connection, Configuration configuration, EntityPath<?> entity) {
         super(configuration);
         this.connection = connection;
         this.entity = entity;

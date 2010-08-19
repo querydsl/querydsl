@@ -25,11 +25,11 @@ import com.mysema.query.dml.UpdateClause;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.NullExpr;
-import com.mysema.query.types.path.PEntity;
 
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
@@ -46,17 +46,17 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
 
     private final Connection connection;
 
-    private final PEntity<?> entity;
+    private final EntityPath<?> entity;
 
     private final List<Pair<Path<?>,?>> updates = new ArrayList<Pair<Path<?>,?>>();
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
     
-    public SQLUpdateClause(Connection connection, SQLTemplates templates, PEntity<?> entity) {
+    public SQLUpdateClause(Connection connection, SQLTemplates templates, EntityPath<?> entity) {
         this(connection, new Configuration(templates), entity);
     }
     
-    public SQLUpdateClause(Connection connection, Configuration configuration, PEntity<?> entity) {
+    public SQLUpdateClause(Connection connection, Configuration configuration, EntityPath<?> entity) {
         super(configuration);
         this.connection = connection;
         this.entity = entity;

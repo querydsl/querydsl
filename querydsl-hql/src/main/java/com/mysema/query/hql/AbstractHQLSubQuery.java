@@ -10,9 +10,9 @@ import java.util.Collection;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PMap;
 
 /**
@@ -37,7 +37,7 @@ public class AbstractHQLSubQuery<Q extends AbstractHQLSubQuery<Q>> extends Detac
         this.queryMixin = (HQLQueryMixin<Q>) super.queryMixin;
     }
 
-    public Q from(PEntity<?>... o) {
+    public Q from(EntityPath<?>... o) {
         return queryMixin.from(o);
     }
 
@@ -49,11 +49,11 @@ public class AbstractHQLSubQuery<Q extends AbstractHQLSubQuery<Q>> extends Detac
         return queryMixin.fullJoin(target, alias);
     }
 
-    public <P> Q fullJoin(PEntity<P> target) {
+    public <P> Q fullJoin(EntityPath<P> target) {
         return queryMixin.fullJoin(target);
     }
 
-    public <P> Q fullJoin(PEntity<P> target, PEntity<P> alias) {
+    public <P> Q fullJoin(EntityPath<P> target, EntityPath<P> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
@@ -73,11 +73,11 @@ public class AbstractHQLSubQuery<Q extends AbstractHQLSubQuery<Q>> extends Detac
         return queryMixin.innerJoin(target, alias);
     }
 
-    public <P> Q innerJoin(PEntity<P> target) {
+    public <P> Q innerJoin(EntityPath<P> target) {
         return queryMixin.innerJoin(target);
     }
 
-    public <P> Q innerJoin(PEntity<P> target, PEntity<P> alias) {
+    public <P> Q innerJoin(EntityPath<P> target, EntityPath<P> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
@@ -97,11 +97,11 @@ public class AbstractHQLSubQuery<Q extends AbstractHQLSubQuery<Q>> extends Detac
         return queryMixin.join(target, alias);
     }
 
-    public <P> Q join(PEntity<P> target) {
+    public <P> Q join(EntityPath<P> target) {
         return queryMixin.join(target);
     }
 
-    public <P> Q join(PEntity<P> target, PEntity<P> alias) {
+    public <P> Q join(EntityPath<P> target, EntityPath<P> alias) {
         return queryMixin.join(target, alias);
     }
 
@@ -121,11 +121,11 @@ public class AbstractHQLSubQuery<Q extends AbstractHQLSubQuery<Q>> extends Detac
         return queryMixin.leftJoin(target, alias);
     }
 
-    public <P> Q leftJoin(PEntity<P> target) {
+    public <P> Q leftJoin(EntityPath<P> target) {
         return queryMixin.leftJoin(target);
     }
 
-    public <P> Q leftJoin(PEntity<P> target, PEntity<P> alias) {
+    public <P> Q leftJoin(EntityPath<P> target, EntityPath<P> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 

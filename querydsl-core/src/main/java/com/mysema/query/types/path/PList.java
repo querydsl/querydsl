@@ -43,7 +43,8 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
             PComparable.class,
             PDate.class,
             PDateTime.class,
-            PEntity.class,
+            BeanPath.class,
+            EntityPathBase.class,
             PNumber.class,
             PSimple.class,
             PTime.class

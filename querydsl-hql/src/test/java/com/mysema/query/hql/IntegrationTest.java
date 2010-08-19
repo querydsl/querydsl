@@ -26,7 +26,7 @@ import com.mysema.query.hql.hibernate.HibernateDeleteClause;
 import com.mysema.query.hql.hibernate.HibernateQuery;
 import com.mysema.query.hql.hibernate.HibernateUpdateClause;
 import com.mysema.query.hql.hibernate.HibernateUtil;
-import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.EntityPath;
 import com.mysema.testutil.HibernateConfig;
 import com.mysema.testutil.HibernateTestRunner;
 
@@ -76,11 +76,11 @@ public class IntegrationTest extends ParsingTest {
         // NOTE : commented out, because HQLSDB doesn't support these queries
     }
 
-    private HibernateDeleteClause delete(PEntity<?> entity){
+    private HibernateDeleteClause delete(EntityPath<?> entity){
         return new HibernateDeleteClause(session, entity);
     }
 
-    private HibernateUpdateClause update(PEntity<?> entity){
+    private HibernateUpdateClause update(EntityPath<?> entity){
         return new HibernateUpdateClause(session, entity);
     }
 

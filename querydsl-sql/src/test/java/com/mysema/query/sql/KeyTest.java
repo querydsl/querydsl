@@ -7,7 +7,8 @@ package com.mysema.query.sql;
 
 import org.junit.Test;
 
-import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PathMetadataFactory;
 
@@ -15,7 +16,7 @@ import com.mysema.query.types.path.PathMetadataFactory;
 public class KeyTest {
 
     @Table("USER")
-    public static class QUser extends PEntity<QUser>{
+    public static class QUser extends BeanPath<QUser> implements EntityPath<QUser>{
 
         public final PNumber<Integer> id = createNumber("ID", Integer.class);
 
@@ -36,7 +37,7 @@ public class KeyTest {
     }
 
     @Table("DEPARTMENT")
-    public static class QDepartment extends PEntity<QDepartment>{
+    public static class QDepartment extends BeanPath<QDepartment> implements EntityPath<QDepartment>{
 
         public final PNumber<Integer> id = createNumber("ID", Integer.class);
 
@@ -53,7 +54,7 @@ public class KeyTest {
     }
 
     @Table("COMPANY")
-    public static class QCompany extends PEntity<QCompany>{
+    public static class QCompany extends BeanPath<QCompany> implements EntityPath<QCompany>{
 
         public final PNumber<Integer> id = createNumber("ID", Integer.class);
 

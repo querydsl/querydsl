@@ -26,7 +26,6 @@ import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EStringConst;
 import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.OSimple;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.util.MathUtils;
 
 /**
@@ -92,8 +91,8 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     @SuppressWarnings("unchecked")
     private void handleJoinTarget(JoinExpression je) {
         // type specifier
-        if (je.getTarget() instanceof PEntity) {
-            PEntity<?> pe = (PEntity<?>) je.getTarget();
+        if (je.getTarget() instanceof EntityPath) {
+            EntityPath<?> pe = (EntityPath<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
                 String pn = pe.getType().getPackage().getName();
                 String typeName = pe.getType().getName().substring(pn.length() + 1);

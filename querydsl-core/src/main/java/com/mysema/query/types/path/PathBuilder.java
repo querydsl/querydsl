@@ -19,7 +19,7 @@ import com.mysema.query.types.PathMetadata;
  *
  * @param <D>
  */
-public final class PathBuilder<D> extends PEntity<D>{
+public final class PathBuilder<D> extends EntityPathBase<D> {
 
     private static final long serialVersionUID = -1666357914232685088L;
 

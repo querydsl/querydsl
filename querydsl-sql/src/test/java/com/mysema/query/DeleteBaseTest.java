@@ -16,12 +16,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.sql.dml.SQLDeleteClause;
-import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.EntityPath;
 import com.mysema.testutil.ExcludeIn;
 
 public abstract class DeleteBaseTest extends AbstractBaseTest{
 
-    protected SQLDeleteClause delete(PEntity<?> e){
+    protected SQLDeleteClause delete(EntityPath<?> e){
         return new SQLDeleteClause(Connections.getConnection(), templates, e);
     }
 

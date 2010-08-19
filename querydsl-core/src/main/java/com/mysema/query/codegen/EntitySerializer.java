@@ -76,10 +76,10 @@ public class EntitySerializer implements Serializer{
         // 2
         if (!hasEntityFields){
             if (model.isFinal()){
-                Type type = new ClassType(PEntity.class, model);
+                Type type = new ClassType(BeanPath.class, model);
                 writer.beginConstructor(new Parameter("entity", type));
             }else{
-                Type type = new ClassType(PEntity.class, new TypeExtends(model));
+                Type type = new ClassType(BeanPath.class, new TypeExtends(model));
                 writer.beginConstructor(new Parameter("entity", type));    
             }            
             if (stringOrBoolean){
@@ -246,7 +246,7 @@ public class EntitySerializer implements Serializer{
             case NUMERIC: pathType = PNumber.class; break;
             case STRING: pathType = PString.class; break;
             case BOOLEAN: pathType = PBoolean.class; break;
-            default : pathType = PEntity.class;
+            default : pathType = EntityPathBase.class;
         }
 
         for (Annotation annotation : model.getAnnotations()){

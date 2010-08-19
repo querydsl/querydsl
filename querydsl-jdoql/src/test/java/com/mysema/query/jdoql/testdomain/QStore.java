@@ -6,8 +6,8 @@
 package com.mysema.query.jdoql.testdomain;
 
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.PCollection;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PMap;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathMetadataFactory;
@@ -17,7 +17,7 @@ import com.mysema.query.types.path.PathMetadataFactory;
  *
  */
 @SuppressWarnings("serial")
-public class QStore extends PEntity<com.mysema.query.jdoql.testdomain.Store>{
+public class QStore extends EntityPathBase<com.mysema.query.jdoql.testdomain.Store>{
 
     public static final QStore store = new QStore("store");
 

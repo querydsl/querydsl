@@ -10,8 +10,9 @@ import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 
@@ -20,7 +21,7 @@ import com.mysema.query.types.path.PString;
  */
 @SuppressWarnings("serial")
 @com.mysema.query.sql.Table(value="PERSON")
-public class SPerson extends PEntity<SPerson> {
+public class SPerson extends EntityPathBase<SPerson> {
 
     public final PComparable<java.util.Date> birthday = createComparable("BIRTHDAY", java.util.Date.class);
 
@@ -36,7 +37,7 @@ public class SPerson extends PEntity<SPerson> {
         super(SPerson.class, forVariable(variable));
     }
 
-    public SPerson(PEntity<? extends SPerson> entity) {
+    public SPerson(BeanPath<? extends SPerson> entity) {
         super(entity.getType(),entity.getMetadata());
     }
 

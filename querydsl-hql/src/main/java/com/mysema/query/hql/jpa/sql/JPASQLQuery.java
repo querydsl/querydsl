@@ -27,9 +27,8 @@ import com.mysema.query.hql.jpa.JPASessionHolder;
 import com.mysema.query.hql.jpa.JPAUtil;
 import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.path.PEntity;
 
 /**
  * JPASQLQuery is an SQLQuery implementation that uses Hibernate's Native SQL functionality
@@ -45,7 +44,7 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery> implements 
 
     private Map<Object,String> constants;
 
-    private List<Path<?>> entityPaths;
+//    private List<Path<?>> entityPaths;
 
     private final JPASessionHolder session;
 
@@ -68,7 +67,7 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery> implements 
         HibernateSQLSerializer serializer = new HibernateSQLSerializer(sqlTemplates);
         serializer.serialize(queryMixin.getMetadata(), forCountRow);
         constants = serializer.getConstantToLabel();
-        entityPaths = serializer.getEntityPaths();
+//        entityPaths = serializer.getEntityPaths();
         return serializer.toString();
     }
 
@@ -86,7 +85,7 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery> implements 
         logQuery(queryString);
         List<? extends Expr<?>> projection = queryMixin.getMetadata().getProjection();
         Query query;
-        if (projection.get(0) instanceof PEntity){
+        if (projection.get(0) instanceof EntityPath){
             if (projection.size() == 1){
                 query = session.createSQLQuery(queryString, projection.get(0).getType());
             }else{
@@ -155,7 +154,7 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery> implements 
 
     protected void reset() {
         queryMixin.getMetadata().reset();
-        entityPaths = null;
+//        entityPaths = null;
         constants = null;
     }
 

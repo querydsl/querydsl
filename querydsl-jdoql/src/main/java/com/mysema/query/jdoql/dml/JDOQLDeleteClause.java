@@ -18,8 +18,8 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.jdoql.JDOQLSerializer;
 import com.mysema.query.jdoql.JDOQLTemplates;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.PEntity;
 
 /**
  * DeleteClause implementation for JDO
@@ -35,24 +35,24 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
 
     private final JDOQLTemplates templates;
 
-    private final PEntity<?> entity;
+    private final EntityPath<?> entity;
 
-    public JDOQLDeleteClause(PersistenceManager pm, PEntity<?> entity){
+    public JDOQLDeleteClause(PersistenceManager pm, EntityPath<?> entity){
         this(pm, entity, JDOQLTemplates.DEFAULT);
     }
 
-    public JDOQLDeleteClause(PersistenceManager persistenceManager, PEntity<?> entity, JDOQLTemplates templates){
+    public JDOQLDeleteClause(PersistenceManager persistenceManager, EntityPath<?> entity, JDOQLTemplates templates){
         this.entity = entity;
         this.persistenceManager = persistenceManager;
         this.templates = templates;
-        metadata.addJoin(JoinType.DEFAULT, entity);
+        metadata.addJoin(JoinType.DEFAULT, entity.asExpr());
     }
 
     @Override
     public long execute() {
         Query query = persistenceManager.newQuery(entity.getType());
         if (metadata.getWhere() != null){
-            JDOQLSerializer serializer = new JDOQLSerializer(templates, entity);
+            JDOQLSerializer serializer = new JDOQLSerializer(templates, entity.asExpr());
             serializer.handle(metadata.getWhere());
             query.setFilter(serializer.toString());
             Map<Object,String> constToLabel = serializer.getConstantToLabel();
@@ -94,7 +94,7 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
     
     @Override
     public String toString(){
-        JDOQLSerializer serializer = new JDOQLSerializer(templates, entity);
+        JDOQLSerializer serializer = new JDOQLSerializer(templates, entity.asExpr());
         serializer.handle(metadata.getWhere());
         return serializer.toString();
     }

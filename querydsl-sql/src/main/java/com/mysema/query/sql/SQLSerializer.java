@@ -26,7 +26,6 @@ import com.mysema.query.types.*;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ExprConst;
-import com.mysema.query.types.path.PEntity;
 
 /**
  * SqlSerializer serializes Querydsl queries into SQL
@@ -69,7 +68,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     private boolean skipParent;
 
-    private PEntity<?> entity;
+    private EntityPath<?> entity;
 
     private final SQLTemplates templates;
 
@@ -125,8 +124,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     @SuppressWarnings("unchecked")
     private void handleJoinTarget(JoinExpression je) {
         // type specifier
-        if (je.getTarget() instanceof PEntity && templates.isSupportsAlias()) {
-            PEntity<?> pe = (PEntity<?>) je.getTarget();
+        if (je.getTarget() instanceof EntityPath && templates.isSupportsAlias()) {
+            EntityPath<?> pe = (EntityPath<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
                 appendAsTableName(pe);
                 append(templates.getTableAlias());
@@ -239,7 +238,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     }
 
-    public void serializeForDelete(QueryMetadata metadata, PEntity<?> entity) {
+    public void serializeForDelete(QueryMetadata metadata, EntityPath<?> entity) {
         this.entity = entity;
         
         serialize(Position.START, metadata.getFlags());
@@ -247,7 +246,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())){
             append(templates.getDeleteFrom());    
         }        
-        handle(entity);
+        handle(entity.asExpr());
         if (metadata.getWhere() != null) {
             skipParent = true;
             append(templates.getWhere()).handle(metadata.getWhere());
@@ -257,7 +256,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         serialize(Position.END, metadata.getFlags());
     }
 
-    public void serializeForMerge(QueryMetadata metadata, PEntity<?> entity, List<Path<?>> keys,
+    public void serializeForMerge(QueryMetadata metadata, EntityPath<?> entity, List<Path<?>> keys,
             List<Path<?>> columns, List<Expr<?>> values, @Nullable SubQuery<?> subQuery) {
         this.entity = entity;
         
@@ -266,7 +265,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())){
             append(templates.getMergeInto());    
         }        
-        handle(entity);
+        handle(entity.asExpr());
         append(" ");
         // columns
         if (!columns.isEmpty()){
@@ -295,7 +294,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         serialize(Position.END, metadata.getFlags());
     }
 
-    public void serializeForInsert(QueryMetadata metadata, PEntity<?> entity, List<Path<?>> columns,
+    public void serializeForInsert(QueryMetadata metadata, EntityPath<?> entity, List<Path<?>> columns,
             List<Expr<?>> values, @Nullable SubQuery<?> subQuery) {
         this.entity = entity;
         
@@ -304,7 +303,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())){
             append(templates.getInsertInto());    
         }        
-        handle(entity);
+        handle(entity.asExpr());
         // columns
         if (!columns.isEmpty()){
             append("(");
@@ -328,7 +327,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         serialize(Position.END, metadata.getFlags());
     }
 
-    public void serializeForUpdate(QueryMetadata metadata, PEntity<?> entity, List<Pair<Path<?>, ?>> updates) {
+    public void serializeForUpdate(QueryMetadata metadata, EntityPath<?> entity, List<Pair<Path<?>, ?>> updates) {
         this.entity = entity;
         
         serialize(Position.START, metadata.getFlags());
@@ -336,7 +335,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())){
             append(templates.getUpdate());    
         }        
-        handle(entity);
+        handle(entity.asExpr());
         append("\n");
         append(templates.getSet());
         boolean first = true;

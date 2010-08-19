@@ -7,11 +7,11 @@ import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.support.QueryMixin;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.OSimple;
-import com.mysema.query.types.path.PEntity;
 
 /**
  * Abstract superclass for SubQuery implementations
@@ -32,13 +32,13 @@ public class AbstractJDOQLSubQuery<Q extends AbstractJDOQLSubQuery<Q>> extends D
         this.queryMixin.setSelf((Q)this);
     }
 
-    public Q from(PEntity<?>... args) {
+    public Q from(EntityPath<?>... args) {
         return queryMixin.from(args);
     }
 
     @SuppressWarnings("unchecked")
-    public <P> Q from(Path<? extends Collection<P>> target, PEntity<P> alias){
-        queryMixin.getMetadata().addJoin(JoinType.DEFAULT, OSimple.create(alias.getType(), Ops.ALIAS, target.asExpr(), alias));
+    public <P> Q from(Path<? extends Collection<P>> target, EntityPath<P> alias){
+        queryMixin.getMetadata().addJoin(JoinType.DEFAULT, OSimple.create(alias.getType(), Ops.ALIAS, target.asExpr(), alias.asExpr()));
         return (Q)this;
     }
 

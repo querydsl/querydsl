@@ -192,7 +192,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else if (List.class.isAssignableFrom(type)) {
             Class<Object> elementType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
-            path = new PList<Object,PEntity<Object>>(elementType, (Class)PEntity.class, pm);
+            path = new PList<Object,EntityPathBase<Object>>(elementType, (Class)EntityPathBase.class, pm);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Set.class.isAssignableFrom(type)) {
@@ -208,7 +208,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
         } else if (Map.class.isAssignableFrom(type)) {
             Class<Object> keyType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
             Class<Object> valueType = (Class)ReflectionUtils.getTypeParameter(genericType, 1);
-            path = new PMap<Object,Object,PEntity<Object>>(keyType, valueType, (Class)PEntity.class, pm);
+            path = new PMap<Object,Object,EntityPathBase<Object>>(keyType, valueType, (Class)EntityPathBase.class, pm);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Enum.class.isAssignableFrom(type)) {
@@ -223,7 +223,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             if (Comparable.class.isAssignableFrom(type)){
                 path = new PComparable(type, pm);
             }else{
-                path = new PEntity<T>((Class<T>) type, pm);
+                path = new EntityPathBase<T>((Class<T>) type, pm);
             }
             if (!Modifier.isFinal(type.getModifiers())){
                 rv = aliasFactory.createAliasForProperty(type, parent, path);

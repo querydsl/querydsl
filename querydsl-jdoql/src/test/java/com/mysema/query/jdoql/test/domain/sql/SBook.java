@@ -8,7 +8,8 @@ import com.mysema.query.sql.Table;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 
@@ -17,7 +18,7 @@ import com.mysema.query.types.path.PString;
  * SBook is a Querydsl query type for SBook
  */
 @Table(value="BOOK")
-public class SBook extends PEntity<SBook> {
+public class SBook extends EntityPathBase<SBook> {
 
     private static final long serialVersionUID = -1566558053;
 
@@ -39,7 +40,7 @@ public class SBook extends PEntity<SBook> {
         super(SBook.class, forVariable(variable));
     }
 
-    public SBook(PEntity<? extends SBook> entity) {
+    public SBook(BeanPath<? extends SBook> entity) {
         super(entity.getType(),entity.getMetadata());
     }
 

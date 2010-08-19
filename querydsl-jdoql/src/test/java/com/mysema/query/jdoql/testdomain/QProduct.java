@@ -6,9 +6,9 @@
 package com.mysema.query.jdoql.testdomain;
 
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PTime;
@@ -19,7 +19,7 @@ import com.mysema.query.types.path.PathMetadataFactory;
  *
  */
 @SuppressWarnings("serial")
-public class QProduct extends PEntity<com.mysema.query.jdoql.testdomain.Product>{
+public class QProduct extends EntityPathBase<com.mysema.query.jdoql.testdomain.Product>{
 
     public static final QProduct product = new QProduct("product");
 

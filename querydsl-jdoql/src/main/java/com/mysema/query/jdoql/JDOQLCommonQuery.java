@@ -1,7 +1,7 @@
 package com.mysema.query.jdoql;
 
 import com.mysema.query.Query;
-import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.EntityPath;
 
 /**
  * JDOQLCommonQuery is a parent interface for JDOQLQuery and JDOQLSubQuery
@@ -18,6 +18,6 @@ public interface JDOQLCommonQuery<Q extends JDOQLCommonQuery<Q>> extends Query<Q
      * @param sources
      * @return
      */
-    Q from(PEntity<?>... sources);
+    Q from(EntityPath<?>... sources);
 
 }

@@ -24,7 +24,7 @@ import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
-import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.EntityPath;
 import com.mysema.testutil.FilteringTestRunner;
 import com.mysema.testutil.LabelRule;
 
@@ -44,19 +44,19 @@ public abstract class AbstractBaseTest {
     @Rule
     public static MethodRule labelRule = new LabelRule();
     
-    protected SQLUpdateClause update(PEntity<?> e){
+    protected SQLUpdateClause update(EntityPath<?> e){
         return new SQLUpdateClause(Connections.getConnection(), templates, e);
     }
 
-    protected SQLInsertClause insert(PEntity<?> e){
+    protected SQLInsertClause insert(EntityPath<?> e){
         return new SQLInsertClause(Connections.getConnection(), templates, e);
     }
 
-    protected SQLDeleteClause delete(PEntity<?> e){
+    protected SQLDeleteClause delete(EntityPath<?> e){
         return new SQLDeleteClause(Connections.getConnection(), templates, e);
     }
 
-    protected SQLMergeClause merge(PEntity<?> e){
+    protected SQLMergeClause merge(EntityPath<?> e){
         return new SQLMergeClause(Connections.getConnection(), templates, e);
     }
 

@@ -19,11 +19,11 @@ import com.mysema.query.dml.UpdateClause;
 import com.mysema.query.hql.HQLSerializer;
 import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.hql.JPQLTemplates;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.NullExpr;
-import com.mysema.query.types.path.PEntity;
 
 /**
  * UpdateClause implementation for Hibernate
@@ -40,18 +40,18 @@ public class HibernateUpdateClause implements
 
     private final JPQLTemplates templates;
 
-    public HibernateUpdateClause(Session session, PEntity<?> entity) {
+    public HibernateUpdateClause(Session session, EntityPath<?> entity) {
         this(new DefaultSessionHolder(session), entity, HQLTemplates.DEFAULT);
     }
 
-    public HibernateUpdateClause(StatelessSession session, PEntity<?> entity) {
+    public HibernateUpdateClause(StatelessSession session, EntityPath<?> entity) {
         this(new StatelessSessionHolder(session), entity, HQLTemplates.DEFAULT);
     }
 
-    public HibernateUpdateClause(SessionHolder session, PEntity<?> entity, JPQLTemplates templates) {
+    public HibernateUpdateClause(SessionHolder session, EntityPath<?> entity, JPQLTemplates templates) {
         this.session = session;
         this.templates = templates;
-        metadata.addJoin(JoinType.DEFAULT, entity);
+        metadata.addJoin(JoinType.DEFAULT, entity.asExpr());
     }
 
     @Override

@@ -10,9 +10,10 @@ import java.util.Map;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.ProjectableQuery;
+import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PMap;
 
 /**
@@ -67,7 +68,7 @@ public abstract class HQLQueryBase<Q extends HQLQueryBase<Q>> extends Projectabl
         return queryMixin.fetchAll();
     }
 
-    public Q from(PEntity<?>... args) {
+    public Q from(EntityPath<?>... args) {
         return queryMixin.from(args);
     }
 
@@ -79,11 +80,11 @@ public abstract class HQLQueryBase<Q extends HQLQueryBase<Q>> extends Projectabl
         return queryMixin.fullJoin(target, alias);
     }
 
-    public <P> Q fullJoin(PEntity<P> target) {
+    public <P> Q fullJoin(EntityPath<P> target) {
         return queryMixin.fullJoin(target);
     }
 
-    public <P> Q fullJoin(PEntity<P> target, PEntity<P> alias) {
+    public <P> Q fullJoin(EntityPath<P> target, EntityPath<P> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
@@ -107,11 +108,11 @@ public abstract class HQLQueryBase<Q extends HQLQueryBase<Q>> extends Projectabl
         return queryMixin.innerJoin(target, alias);
     }
 
-    public <P> Q innerJoin(PEntity<P> target) {
+    public <P> Q innerJoin(EntityPath<P> target) {
         return queryMixin.innerJoin(target);
     }
 
-    public <P> Q innerJoin(PEntity<P> target, PEntity<P> alias) {
+    public <P> Q innerJoin(EntityPath<P> target, EntityPath<P> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
@@ -131,11 +132,11 @@ public abstract class HQLQueryBase<Q extends HQLQueryBase<Q>> extends Projectabl
         return queryMixin.innerJoin(target, alias);
     }
 
-    public <P> Q join(PEntity<P> target) {
+    public <P> Q join(EntityPath<P> target) {
         return queryMixin.innerJoin(target);
     }
 
-    public <P> Q join(PEntity<P> target, PEntity<P> alias) {
+    public <P> Q join(EntityPath<P> target, EntityPath<P> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
@@ -155,11 +156,11 @@ public abstract class HQLQueryBase<Q extends HQLQueryBase<Q>> extends Projectabl
         return queryMixin.leftJoin(target, alias);
     }
 
-    public <P> Q leftJoin(PEntity<P> target) {
+    public <P> Q leftJoin(EntityPath<P> target) {
         return queryMixin.leftJoin(target);
     }
 
-    public <P> Q leftJoin(PEntity<P> target, PEntity<P> alias) {
+    public <P> Q leftJoin(EntityPath<P> target, EntityPath<P> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 

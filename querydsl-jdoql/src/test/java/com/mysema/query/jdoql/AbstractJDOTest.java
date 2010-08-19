@@ -19,8 +19,8 @@ import org.junit.Before;
 import com.mysema.query.jdoql.dml.JDOQLDeleteClause;
 import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.Store;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.PEntity;
 
 public abstract class AbstractJDOTest {
 
@@ -44,11 +44,11 @@ public abstract class AbstractJDOTest {
         return new JDOQLSubQuery();
     }
 
-    protected <T> List<T> query(PEntity<T> source, EBoolean condition) {
-        return query().from(source).where(condition).list(source);
+    protected <T> List<T> query(EntityPath<T> source, EBoolean condition) {
+        return query().from(source).where(condition).list(source.asExpr());
     }
 
-    protected JDOQLDeleteClause delete(PEntity<?> entity) {
+    protected JDOQLDeleteClause delete(EntityPath<?> entity) {
         return new JDOQLDeleteClause(pm, entity, templates);
     }
 

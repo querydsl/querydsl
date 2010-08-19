@@ -10,7 +10,8 @@ import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 
@@ -19,7 +20,7 @@ import com.mysema.query.types.path.PString;
  */
 @SuppressWarnings("serial")
 @com.mysema.query.sql.Table(value="ITEM")
-public class SItem extends PEntity<SItem> {
+public class SItem extends EntityPathBase<SItem> {
 
     public final PNumber<Long> currentstatusId = createNumber("CURRENTSTATUS_ID", Long.class);
 
@@ -37,7 +38,7 @@ public class SItem extends PEntity<SItem> {
         super(SItem.class, forVariable(variable));
     }
 
-    public SItem(PEntity<? extends SItem> entity) {
+    public SItem(BeanPath<? extends SItem> entity) {
         super(entity.getType(),entity.getMetadata());
     }
 

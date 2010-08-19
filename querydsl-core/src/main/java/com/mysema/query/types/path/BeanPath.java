@@ -24,14 +24,14 @@ import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.expr.OBoolean;
 
 /**
- * PEntity represents entity paths
+ * BeanPath represents bean paths
  *
  * @author tiwe
  *
  * @param <D>
  *            Java type
  */
-public class PEntity<D> extends ESimple<D> implements Path<D> {
+public class BeanPath<D> extends ESimple<D> implements Path<D> {
 
     private static final long serialVersionUID = -1845524024957822731L;
 
@@ -42,11 +42,11 @@ public class PEntity<D> extends ESimple<D> implements Path<D> {
 
     private final Path<D> pathMixin;
 
-    public PEntity(Class<? extends D> type, PathMetadata<?> metadata) {
+    public BeanPath(Class<? extends D> type, PathMetadata<?> metadata) {
         this(type, metadata, null);
     }
 
-    public PEntity(Class<? extends D> type, PathMetadata<?> metadata, @Nullable PathInits inits) {
+    public BeanPath(Class<? extends D> type, PathMetadata<?> metadata, @Nullable PathInits inits) {
         super(type);
         this.pathMixin = new PathMixin<D>(this, metadata);
         this.inits = inits;
@@ -65,7 +65,7 @@ public class PEntity<D> extends ESimple<D> implements Path<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <T extends PEntity<? extends D>> T as(Class<T> clazz) {
+    public <T extends BeanPath<? extends D>> T as(Class<T> clazz) {
         try {
             if (!casts.containsKey(clazz)) {
                 T rv;

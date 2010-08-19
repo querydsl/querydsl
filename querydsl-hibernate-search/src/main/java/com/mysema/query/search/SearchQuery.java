@@ -20,10 +20,10 @@ import com.mysema.query.SimpleProjectable;
 import com.mysema.query.SimpleQuery;
 import com.mysema.query.lucene.LuceneSerializer;
 import com.mysema.query.support.QueryMixin;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.PEntity;
 
 /**
  * SearchQuery is a Query implementation for Hibernate Search
@@ -34,7 +34,7 @@ import com.mysema.query.types.path.PEntity;
  */
 public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjectable<T>{
 
-    private final PEntity<T> path;
+    private final EntityPath<T> path;
 
     private final QueryMixin<SearchQuery<T>> queryMixin;
 
@@ -42,14 +42,14 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
 
     private final FullTextSession session;
 
-    public SearchQuery(FullTextSession session, PEntity<T> path) {
+    public SearchQuery(FullTextSession session, EntityPath<T> path) {
         this.queryMixin = new QueryMixin<SearchQuery<T>>(this);
         this.session = Assert.notNull(session,"session");
         this.path = Assert.notNull(path,"path");
         this.serializer = SearchSerializer.DEFAULT;
     }
 
-    public SearchQuery(Session session, PEntity<T> path) {
+    public SearchQuery(Session session, EntityPath<T> path) {
         this(Search.getFullTextSession(session), path);
     }
 

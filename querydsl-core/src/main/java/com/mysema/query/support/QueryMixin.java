@@ -13,6 +13,7 @@ import com.mysema.query.JoinType;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
@@ -21,7 +22,6 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.OSimple;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PMap;
 
 /**
@@ -99,14 +99,21 @@ public class QueryMixin<T>{
         }
         return self;
     }
-
-    public <P> T fullJoin(PEntity<P> target) {
-        metadata.addJoin(JoinType.FULLJOIN, target);
+    
+    public T from(EntityPath<?>... args) {
+        for (EntityPath<?> arg : args){
+            metadata.addJoin(JoinType.DEFAULT, arg.asExpr());
+        }
         return self;
     }
 
-    public <P> T fullJoin(PEntity<P> target, PEntity<P> alias) {
-        metadata.addJoin(JoinType.FULLJOIN, createAlias(target, alias));
+    public <P> T fullJoin(EntityPath<P> target) {
+        metadata.addJoin(JoinType.FULLJOIN, target.asExpr());
+        return self;
+    }
+
+    public <P> T fullJoin(EntityPath<P> target, EntityPath<P> alias) {
+        metadata.addJoin(JoinType.FULLJOIN, createAlias(target.asExpr(), alias));
         return self;
     }
     
@@ -154,13 +161,13 @@ public class QueryMixin<T>{
         return self;
     }
     
-    public <P> T innerJoin(PEntity<P> target) {
-        metadata.addJoin(JoinType.INNERJOIN, target);
+    public <P> T innerJoin(EntityPath<P> target) {
+        metadata.addJoin(JoinType.INNERJOIN, target.asExpr());
         return self;
     }
 
-    public <P> T innerJoin(PEntity<P> target, PEntity<P> alias) {
-        metadata.addJoin(JoinType.INNERJOIN, createAlias(target, alias));
+    public <P> T innerJoin(EntityPath<P> target, EntityPath<P> alias) {
+        metadata.addJoin(JoinType.INNERJOIN, createAlias(target.asExpr(), alias));
         return self;
     }
 
@@ -198,13 +205,13 @@ public class QueryMixin<T>{
         return metadata.isUnique();
     }
     
-    public <P> T join(PEntity<P> target) {
-        metadata.addJoin(JoinType.JOIN, target);
+    public <P> T join(EntityPath<P> target) {
+        metadata.addJoin(JoinType.JOIN, target.asExpr());
         return self;
     }
 
-    public <P> T join(PEntity<P> target, PEntity<P> alias) {
-        metadata.addJoin(JoinType.JOIN, createAlias(target, alias));
+    public <P> T join(EntityPath<P> target, EntityPath<P> alias) {
+        metadata.addJoin(JoinType.JOIN, createAlias(target.asExpr(), alias));
         return getSelf();
     }
 
@@ -234,13 +241,13 @@ public class QueryMixin<T>{
         return self;
     }
     
-    public <P> T leftJoin(PEntity<P> target) {
-        metadata.addJoin(JoinType.LEFTJOIN, target);
+    public <P> T leftJoin(EntityPath<P> target) {
+        metadata.addJoin(JoinType.LEFTJOIN, target.asExpr());
         return self;
     }
 
-    public <P> T leftJoin(PEntity<P> target, PEntity<P> alias) {
-        metadata.addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
+    public <P> T leftJoin(EntityPath<P> target, EntityPath<P> alias) {
+        metadata.addJoin(JoinType.LEFTJOIN, createAlias(target.asExpr(), alias));
         return getSelf();
     }
 
@@ -297,13 +304,13 @@ public class QueryMixin<T>{
         return self;
     }
 
-    public <P> T rightJoin(PEntity<P> target) {
-        metadata.addJoin(JoinType.RIGHTJOIN, target);
+    public <P> T rightJoin(EntityPath<P> target) {
+        metadata.addJoin(JoinType.RIGHTJOIN, target.asExpr());
         return self;
     }
 
-    public <P> T rightJoin(PEntity<P> target, PEntity<P> alias) {
-        metadata.addJoin(JoinType.RIGHTJOIN, createAlias(target, alias));
+    public <P> T rightJoin(EntityPath<P> target, EntityPath<P> alias) {
+        metadata.addJoin(JoinType.RIGHTJOIN, createAlias(target.asExpr(), alias));
         return getSelf();
     }
 

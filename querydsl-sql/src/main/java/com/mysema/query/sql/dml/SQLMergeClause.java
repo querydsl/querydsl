@@ -28,13 +28,13 @@ import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.path.NullExpr;
-import com.mysema.query.types.path.PEntity;
 
 /**
  * SQLMergeClause defines an MERGE INTO clause
@@ -51,7 +51,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
 
     private final Connection connection;
 
-    private final PEntity<?> entity;
+    private final EntityPath<?> entity;
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
     
@@ -62,11 +62,11 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
 
     private final List<Expr<?>> values = new ArrayList<Expr<?>>();
 
-    public SQLMergeClause(Connection connection, SQLTemplates templates, PEntity<?> entity) {
+    public SQLMergeClause(Connection connection, SQLTemplates templates, EntityPath<?> entity) {
         this(connection, new Configuration(templates), entity);
     }
     
-    public SQLMergeClause(Connection connection, Configuration configuration, PEntity<?> entity) {
+    public SQLMergeClause(Connection connection, Configuration configuration, EntityPath<?> entity) {
         super(configuration);
         this.connection = connection;
         this.entity = entity;
@@ -96,7 +96,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
     @SuppressWarnings("unchecked")
     private long executeCompositeMerge() {
         // select 
-        SQLQuery query = new SQLQueryImpl(connection, configuration.getTemplates()).from(entity);
+        SQLQuery query = new SQLQueryImpl(connection, configuration.getTemplates()).from(entity.asExpr());
         for (int i=0; i < columns.size(); i++){
             if (values.get(i) instanceof NullExpr){
                 query.where(columns.get(i).isNull());

@@ -10,7 +10,8 @@ import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.PNumber;
 
 /**
@@ -18,7 +19,7 @@ import com.mysema.query.types.path.PNumber;
  */
 @SuppressWarnings("serial")
 @com.mysema.query.sql.Table(value="NATIONALITY")
-public class SNationality extends PEntity<SNationality> {
+public class SNationality extends EntityPathBase<SNationality> {
 
     public final PNumber<Integer> calendarId = createNumber("CALENDAR_ID", Integer.class);
 
@@ -28,7 +29,7 @@ public class SNationality extends PEntity<SNationality> {
         super(SNationality.class, forVariable(variable));
     }
 
-    public SNationality(PEntity<? extends SNationality> entity) {
+    public SNationality(BeanPath<? extends SNationality> entity) {
         super(entity.getType(),entity.getMetadata());
     }
 

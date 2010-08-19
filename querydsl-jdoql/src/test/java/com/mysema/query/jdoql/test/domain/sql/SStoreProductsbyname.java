@@ -8,7 +8,8 @@ import com.mysema.query.sql.Table;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.path.PEntity;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 
@@ -17,7 +18,7 @@ import com.mysema.query.types.path.PString;
  * SStoreProductsbyname is a Querydsl query type for SStoreProductsbyname
  */
 @Table(value="STORE_PRODUCTSBYNAME")
-public class SStoreProductsbyname extends PEntity<SStoreProductsbyname> {
+public class SStoreProductsbyname extends EntityPathBase<SStoreProductsbyname> {
 
     private static final long serialVersionUID = 764053781;
 
@@ -39,7 +40,7 @@ public class SStoreProductsbyname extends PEntity<SStoreProductsbyname> {
         super(SStoreProductsbyname.class, forVariable(variable));
     }
 
-    public SStoreProductsbyname(PEntity<? extends SStoreProductsbyname> entity) {
+    public SStoreProductsbyname(BeanPath<? extends SStoreProductsbyname> entity) {
         super(entity.getType(),entity.getMetadata());
     }
 

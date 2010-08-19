@@ -10,8 +10,9 @@ import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 
@@ -20,7 +21,7 @@ import com.mysema.query.types.path.PString;
  */
 @SuppressWarnings("serial")
 @com.mysema.query.sql.Table(value="CALENDAR_HOLIDAYS")
-public class SCalendarHolidays extends PEntity<SCalendarHolidays> {
+public class SCalendarHolidays extends EntityPathBase<SCalendarHolidays> {
 
     public final PNumber<Integer> calendarId = createNumber("CALENDAR_ID", Integer.class);
 
@@ -32,7 +33,7 @@ public class SCalendarHolidays extends PEntity<SCalendarHolidays> {
         super(SCalendarHolidays.class, forVariable(variable));
     }
 
-    public SCalendarHolidays(PEntity<? extends SCalendarHolidays> entity) {
+    public SCalendarHolidays(BeanPath<? extends SCalendarHolidays> entity) {
         super(entity.getType(),entity.getMetadata());
     }
 

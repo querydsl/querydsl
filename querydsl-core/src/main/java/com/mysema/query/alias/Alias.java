@@ -18,6 +18,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.path.*;
 
@@ -76,14 +77,14 @@ public final class Alias {
 
     @SuppressWarnings("unchecked")
     @Nullable
-    public static <D> PEntity<D> $(D arg) {
-        PEntity<D> rv = aliasFactory.<PEntity<D>> getCurrentAndReset();
+    public static <D> EntityPathBase<D> $(D arg) {
+        EntityPathBase<D> rv = aliasFactory.<EntityPathBase<D>> getCurrentAndReset();
         if (rv != null) {
             return rv;
-        }else if (arg instanceof PEntity<?>){    
-            return (PEntity)arg;
+        }else if (arg instanceof EntityPath<?>){    
+            return (EntityPathBase)arg;
         } else if (arg instanceof ManagedObject) {
-            return (PEntity<D>) ((ManagedObject) arg).__mappedPath();
+            return (EntityPathBase<D>) ((ManagedObject) arg).__mappedPath();
         } else {
             return null;
         }
@@ -193,7 +194,7 @@ public final class Alias {
     }
 
     @SuppressWarnings("unchecked")
-    public static <D> PEntity<D> var(D arg) {
+    public static <D> EntityPathBase<D> var(D arg) {
         String var = "var"+ arg.getClass().getSimpleName() + "_" + arg.toString().replace(' ', '_');
         return new PathBuilder(arg.getClass(), var);
     }

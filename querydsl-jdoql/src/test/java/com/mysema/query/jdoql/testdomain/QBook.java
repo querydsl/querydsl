@@ -6,8 +6,8 @@
 package com.mysema.query.jdoql.testdomain;
 
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.PDateTime;
-import com.mysema.query.types.path.PEntity;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathMetadataFactory;
@@ -17,7 +17,7 @@ import com.mysema.query.types.path.PathMetadataFactory;
  *
  */
 @SuppressWarnings("serial")
-public class QBook extends PEntity<com.mysema.query.jdoql.testdomain.Book>{
+public class QBook extends EntityPathBase<com.mysema.query.jdoql.testdomain.Book>{
 
     public static final QBook book = new QBook("book");
 

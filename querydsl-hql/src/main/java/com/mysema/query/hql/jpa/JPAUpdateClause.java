@@ -18,11 +18,11 @@ import com.mysema.query.dml.UpdateClause;
 import com.mysema.query.hql.HQLSerializer;
 import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.hql.JPQLTemplates;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.NullExpr;
-import com.mysema.query.types.path.PEntity;
 
 /**
  * UpdateClause implementation for JPA
@@ -38,14 +38,14 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
 
     private final JPQLTemplates templates;
 
-    public JPAUpdateClause(EntityManager session, PEntity<?> entity){
+    public JPAUpdateClause(EntityManager session, EntityPath<?> entity){
         this(session, entity, HQLTemplates.DEFAULT);
     }
 
-    public JPAUpdateClause(EntityManager em, PEntity<?> entity, JPQLTemplates templates){
+    public JPAUpdateClause(EntityManager em, EntityPath<?> entity, JPQLTemplates templates){
         this.entityManager = em;
         this.templates = templates;
-        metadata.addJoin(JoinType.DEFAULT, entity);
+        metadata.addJoin(JoinType.DEFAULT, entity.asExpr());
     }
 
     @Override
