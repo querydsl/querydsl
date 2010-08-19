@@ -34,6 +34,7 @@ public class ClassType implements Type {
     @Nullable
     private final Class<?> primitiveClass;
     
+    @Nullable
     private Type arrayType, componentType;
 
     public ClassType(Class<?> javaClass, Type... parameters) {

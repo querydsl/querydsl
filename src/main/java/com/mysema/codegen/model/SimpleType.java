@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import net.jcip.annotations.Immutable;
 
 
@@ -27,6 +29,7 @@ public class SimpleType implements Type {
     
     private final boolean primitiveClass, finalClass;
     
+    @Nullable
     private Type arrayType, componentType;
 
     public SimpleType(String fullName, String packageName, String simpleName, Type... parameters) {
