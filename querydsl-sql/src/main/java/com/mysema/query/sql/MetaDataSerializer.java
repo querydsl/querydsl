@@ -13,6 +13,9 @@ import java.util.Collection;
 import java.util.Collections;
 
 import com.mysema.codegen.CodeWriter;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
@@ -22,6 +25,7 @@ import com.mysema.query.sql.support.ForeignKeyData;
 import com.mysema.query.sql.support.InverseForeignKeyData;
 import com.mysema.query.sql.support.KeyData;
 import com.mysema.query.sql.support.PrimaryKeyData;
+import com.mysema.query.types.Expr;
 
 /**
  * MetaDataSerializer defines the Query type serialization logic for MetaDataExporter.
@@ -47,8 +51,8 @@ public class MetaDataSerializer extends EntitySerializer {
     protected void introDefaultInstance(CodeWriter writer, EntityType entityType) throws IOException {
         String variableName = namingStrategy.getDefaultVariableName(namePrefix, entityType);
         String alias = namingStrategy.getDefaultAlias(namePrefix, entityType);
-        String queryType = typeMappings.getPathType(entityType, entityType, true);
-        writer.publicStaticFinal(queryType, variableName, NEW + queryType + "(\"" + alias + "\")");
+        Type queryType = typeMappings.getPathType(entityType, entityType, true);
+        writer.publicStaticFinal(queryType, variableName, NEW + queryType.getSimpleName() + "(\"" + alias + "\")");
     }
 
     @SuppressWarnings("unchecked")
@@ -90,8 +94,9 @@ public class MetaDataSerializer extends EntitySerializer {
             paths.append(property.getEscapedName());
         }
 
-        writer.privateFinal("Expr<?>[]", "all", "new Expr[]{" + paths.toString() + "}");
-        writer.beginPublicMethod("Expr<?>[]", "all");
+        Type type = new ClassType(Expr.class, (Type)null).asArrayType();
+        writer.privateFinal(type, "all", "new Expr[]{" + paths.toString() + "}");
+        writer.beginPublicMethod(type, "all");
         writer.line("return all;");
         writer.end();
 
@@ -116,10 +121,10 @@ public class MetaDataSerializer extends EntitySerializer {
 
     protected void serializePrimaryKeys(EntityType model, CodeWriter writer,
             Collection<PrimaryKeyData> primaryKeys) throws IOException {
-        String queryType = typeMappings.getPathType(model, model, true);
+        Type queryType = typeMappings.getPathType(model, model, true);
         for (PrimaryKeyData primaryKey : primaryKeys){
             String fieldName = namingStrategy.getPropertyNameForPrimaryKey(primaryKey.getName(), model);
-            StringBuilder value = new StringBuilder("new PrimaryKey<"+queryType+">(this, ");
+            StringBuilder value = new StringBuilder("new PrimaryKey<"+queryType.getSimpleName()+">(this, ");
             boolean first = true;
             for (String column : primaryKey.getColumns()){
                 if (!first){
@@ -129,7 +134,8 @@ public class MetaDataSerializer extends EntitySerializer {
                 first = false;
             }
             value.append(")");
-            writer.publicFinal("PrimaryKey<"+queryType+">", fieldName, value.toString());
+            Type type = new ClassType(PrimaryKey.class, queryType);
+            writer.publicFinal(type, fieldName, value.toString());
         }
 
     }
@@ -163,7 +169,8 @@ public class MetaDataSerializer extends EntitySerializer {
                 value.append("Arrays.asList("+local+"), Arrays.asList("+foreign+")");
             }
             value.append(")");
-            writer.publicFinal("ForeignKey<"+foreignType+">", fieldName, value.toString());
+            Type type = new ClassType(ForeignKey.class, new SimpleType(model.getPackageName()+"."+foreignType,model.getPackageName(),foreignType));
+            writer.publicFinal(type, fieldName, value.toString());
         }
     }
 }

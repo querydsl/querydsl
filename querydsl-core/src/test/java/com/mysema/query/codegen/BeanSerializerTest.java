@@ -85,9 +85,9 @@ public class BeanSerializerTest {
                 "Object extendsTypeField;",
                 "Integer integer;",
                 "List<DomainClass> listField;",
-                "Map<DomainClass,DomainClass> mapField;",
+                "Map<DomainClass, DomainClass> mapField;",
                 "Set<DomainClass> setField;",
-                "List<DomainClass,DomainClass> superTypeField;",
+                "List<DomainClass, DomainClass> superTypeField;",
                 "java.sql.Time time;")){
             assertTrue(prop + " was not contained", str.contains(prop));
         }

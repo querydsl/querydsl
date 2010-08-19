@@ -7,7 +7,6 @@ package com.mysema.query.codegen;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +15,8 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.codegen.CodeWriter;
+import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.Types;
 
 /**
  * BeanSerializer is a Serializer implementation which serializes EntityType instances into JavaBean classes
@@ -45,7 +46,6 @@ public class BeanSerializer implements Serializer{
         }
         
         // imports
-        Set<String> importedPackages = Collections.singleton(model.getPackageName());
         Set<String> importedClasses = getAnnotationTypes(model);
         if (model.hasLists()){
             importedClasses.add(List.class.getName());
@@ -62,27 +62,26 @@ public class BeanSerializer implements Serializer{
         for (Annotation annotation : model.getAnnotations()){
             writer.annotation(annotation);
         }               
-        writer.beginClass(simpleName);
+        writer.beginClass(model);
         
         // fields
         for (Property property : model.getProperties()){
             for (Annotation annotation : property.getAnnotations()){
                 writer.annotation(annotation);
             }
-            String propertyType = property.getType().getGenericName(true, importedPackages, importedClasses);
-            writer.privateField(propertyType, property.getEscapedName());
+            writer.privateField(property.getType(), property.getEscapedName());
         }
         
         // accessors
         for (Property property : model.getProperties()){
             String propertyName = property.getEscapedName();
-            String propertyType = property.getType().getGenericName(true, importedPackages, importedClasses);
             // getter
-            writer.beginPublicMethod(propertyType, "get"+StringUtils.capitalize(propertyName));
+            writer.beginPublicMethod(property.getType(), "get"+StringUtils.capitalize(propertyName));
             writer.line("return ", propertyName, ";");
             writer.end();
             // setter
-            writer.beginPublicMethod("void", "set"+StringUtils.capitalize(propertyName), propertyType + " " + propertyName);
+            Parameter parameter = new Parameter(propertyName, property.getType());
+            writer.beginPublicMethod(Types.VOID, "set"+StringUtils.capitalize(propertyName), parameter);
             writer.line("this.", propertyName, " = ", propertyName, ";");
             writer.end();
         }

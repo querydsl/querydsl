@@ -18,6 +18,7 @@ import javax.annotation.Nullable;
  *
  * @param <T>
  */
+// TODO : rename this since it clashes with com.mysema.codegen.model.Type
 public interface Type<T> {
 
     int[] getSQLTypes();

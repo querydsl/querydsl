@@ -47,7 +47,6 @@ public final class TypeFactory {
         return create(cl, cl);
     }
 
-    @SuppressWarnings("unchecked")
     public Type create(Class<?> cl, java.lang.reflect.Type genericType) {
         List<java.lang.reflect.Type> key = Arrays.<java.lang.reflect.Type> asList(cl, genericType);
         if (cache.containsKey(key)) {

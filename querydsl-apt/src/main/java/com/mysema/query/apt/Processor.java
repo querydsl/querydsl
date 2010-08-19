@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.commons.lang.Assert;
@@ -361,8 +362,8 @@ public class Processor {
             msg.printMessage(Kind.NOTE, model.getFullName() + " is processed");
             try {
                 String packageName = model.getPackageName();
-                String localName = configuration.getTypeMappings().getPathType(model, model, true);
-                String className = packageName.length() > 0 ? (packageName + "." + localName) : localName;
+                Type type = configuration.getTypeMappings().getPathType(model, model, true);
+                String className = packageName.length() > 0 ? (packageName + "." + type.getSimpleName()) : type.getSimpleName();
 
                 if (env.getElementUtils().getTypeElement(className) == null){
                     JavaFileObject fileObject = env.getFiler().createSourceFile(className);
@@ -395,19 +396,20 @@ public class Processor {
             try{
                 JavaWriter writer = new JavaWriter(w);
                 writer.packageDecl(packageName);
+                Type simpleType = new SimpleType(packageName + "." + vars.value(), packageName, vars.value());
                 if (vars.asInterface()){
-                    writer.beginInterface(vars.value());
+                    writer.beginInterface(simpleType);
                 }else{
-                    writer.beginClass(vars.value(), null);
+                    writer.beginClass(simpleType, null);
                 }
                 for (EntityType model : models){
-                    String queryType = typeMappings.getPathType(model, model, true);
+                    Type queryType = typeMappings.getPathType(model, model, true);
                     String simpleName = model.getUncapSimpleName();
                     String alias = simpleName;
                     if (configuration.getKeywords().contains(simpleName.toUpperCase())){
                     alias += "1";
                     }
-                    writer.publicStaticFinal(queryType, simpleName, "new " + queryType + "(\"" + alias + "\")");
+                    writer.publicStaticFinal(queryType, simpleName, "new " + queryType.getSimpleName() + "(\"" + alias + "\")");
                 }
                 writer.end();
             }finally{

@@ -8,8 +8,11 @@ package com.mysema.query.codegen;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.TypeExtends;
 import com.mysema.query.types.Custom;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
@@ -45,14 +48,11 @@ import com.mysema.query.types.path.PTime;
  */
 public class TypeMappings {
 
-    @SuppressWarnings("unchecked")
-    private final Map<TypeCategory, Class<? extends Custom>> customTypes = new HashMap<TypeCategory, Class<? extends Custom>>();
+    private final Map<TypeCategory, ClassType> customTypes = new HashMap<TypeCategory, ClassType>();
 
-    @SuppressWarnings("unchecked")
-    private final Map<TypeCategory, Class<? extends Expr>> exprTypes = new HashMap<TypeCategory, Class<? extends Expr>>();
+    private final Map<TypeCategory, ClassType> exprTypes = new HashMap<TypeCategory, ClassType>();
 
-    @SuppressWarnings("unchecked")
-    private final Map<TypeCategory, Class<? extends Path>> pathTypes = new HashMap<TypeCategory, Class<? extends Path>>();
+    private final Map<TypeCategory, ClassType> pathTypes = new HashMap<TypeCategory, ClassType>();
 
     public TypeMappings(){
         register(TypeCategory.STRING, EString.class, PString.class, CString.class);
@@ -74,81 +74,74 @@ public class TypeMappings {
         register(TypeCategory.ENTITY, Expr.class, Path.class, CSimple.class);
     }
 
-    public String getCustomType(Type type, EntityType model, boolean raw){
+    public Type getCustomType(Type type, EntityType model, boolean raw){
         return getCustomType(type, model, raw, false, false);
     }
 
-    public String getCustomType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
+    public Type getCustomType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
         return getQueryType(customTypes, type, model, raw, rawParameters, extend);
     }
 
-    public String getExprType(Type type, EntityType model, boolean raw){
+    public Type getExprType(Type type, EntityType model, boolean raw){
         return getExprType(type, model, raw, false, false);
     }
 
-    public String getExprType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
+    public Type getExprType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
         return getQueryType(exprTypes, type, model, raw, rawParameters, extend);
     }
 
-    public String getPathType(Type type, EntityType model, boolean raw){
+    public Type getPathType(Type type, EntityType model, boolean raw){
         return getPathType(type, model, raw, false, false);
     }
 
-    public String getPathType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
+    public Type getPathType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
         return getQueryType(pathTypes, type, model, raw, rawParameters, extend);
     }
 
-    private String getQueryType(Map<TypeCategory, ? extends Class<?>> types, Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
-        String typeName = types.get(type.getCategory()).getSimpleName();
-        return getQueryType(type, model, typeName, raw, rawParameters, extend);
+    private Type getQueryType(Map<TypeCategory, ClassType> types, Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
+        Type exprType = types.get(type.getCategory());
+        return getQueryType(type, model, exprType, raw, rawParameters, extend);
     }
 
-    public String getQueryType(Type type, EntityType model, String typeName, boolean raw, boolean rawParameters, boolean extend){
-        String localName = null;
+    public Type getQueryType(Type type, EntityType model, Type exprType, boolean raw, boolean rawParameters, boolean extend){
         TypeCategory category = type.getCategory();
-
         if (raw && category != TypeCategory.ENTITY && category != TypeCategory.CUSTOM){
-            return typeName;
-        }
-
-        if (rawParameters){
-            localName = model.getRawName(type);
-        }else{
-            localName = model.getGenericName(true,type);
-        }
-        if (!type.isFinal() && extend){
-            localName = localName.equals("Object") ? "?" : "? extends " + localName;
-        }
-
-        if (category == TypeCategory.STRING || category == TypeCategory.BOOLEAN){
-            return typeName;
+            return exprType;
+            
+        }else if (category == TypeCategory.STRING || category == TypeCategory.BOOLEAN){
+            return exprType;
 
         }else if (category == TypeCategory.ENTITY || category == TypeCategory.CUSTOM){
-            String suffix;
-            if (!type.getPackageName().isEmpty()){
-                suffix = type.getFullName().substring(type.getPackageName().length()+1).replace('.', '_');
-            }else{
-                suffix = type.getFullName().replace('.', '_');
-            }
-            if (type.getPackageName().equals(model.getPackageName()) || type.getPackageName().isEmpty()){
-                return model.getPrefix() + suffix;
-            }else{
-                return type.getPackageName() + "." + model.getPrefix() + suffix;
+            String packageName = type.getPackageName();
+            String simpleName;
+            if (type.getPackageName().isEmpty()){
+                simpleName = model.getPrefix()+type.getFullName().replace('.', '_');
+                return new SimpleType(category, simpleName, "", simpleName, false, false);
+            }else{                
+                simpleName = model.getPrefix()+type.getFullName().substring(packageName.length()+1).replace('.', '_');
+                return new SimpleType(category, packageName+"."+simpleName, packageName, simpleName, false, false);
             }
 
-        }else{
-            return typeName + "<" + localName + ">";
+        }else{    
+            if (rawParameters){
+                type = new SimpleType(type);
+            }
+            if (!type.isFinal() && extend){
+                type = new TypeExtends(type);
+            }
+            return new SimpleType(exprType, type);
+            
         }
     }
-
+    
     @SuppressWarnings("unchecked")
-    private void register(TypeCategory category,
+    public void register(TypeCategory category,
             Class<? extends Expr> expr,
             Class<? extends Path> path,
             Class<? extends Custom> custom){
-        exprTypes.put(category, expr);
-        pathTypes.put(category, path);
-        customTypes.put(category, custom);
+        exprTypes.put(category, new ClassType(expr));
+        pathTypes.put(category, new ClassType(path));
+        customTypes.put(category, new ClassType(custom));
     }
 
 }

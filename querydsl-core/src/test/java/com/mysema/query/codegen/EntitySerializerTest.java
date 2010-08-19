@@ -35,6 +35,7 @@ public class EntitySerializerTest {
         SimpleType type = new SimpleType(TypeCategory.ENTITY, "java.util.Locale", "java.util", "Locale",false,false);
         EntityType entityType = new EntityType("Q",type);        
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        System.out.println(writer);
         assertTrue(writer.toString().contains("public class QLocale extends PEntity<java.util.Locale> {"));
     }
 

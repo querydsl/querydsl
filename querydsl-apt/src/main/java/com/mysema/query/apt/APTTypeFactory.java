@@ -379,10 +379,10 @@ public final class APTTypeFactory {
         switch (t.getKind()) {
         case BOOLEAN: return Types.BOOLEAN;
         case BYTE: return Types.BYTE;
-        case CHAR: return Types.CHAR;
+        case CHAR: return Types.CHARACTER;
         case DOUBLE: return Types.DOUBLE;
         case FLOAT: return Types.FLOAT;
-        case INT: return Types.INT;
+        case INT: return Types.INTEGER;
         case LONG: return Types.LONG;
         case SHORT: return Types.SHORT;
         }

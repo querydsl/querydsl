@@ -107,7 +107,6 @@ public class DefaultEvaluatorFactory {
      * @param filter
      * @return
      */
-    @SuppressWarnings("unchecked")
     public <T> Evaluator<List<T>> createEvaluator(QueryMetadata metadata, Expr<? extends T> source, EBoolean filter){
         String typeName = com.mysema.codegen.support.ClassUtils.getName(source.getType());
         ColQuerySerializer ser = new ColQuerySerializer(templates);

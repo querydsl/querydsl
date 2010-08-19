@@ -14,9 +14,14 @@ import net.jcip.annotations.Immutable;
 import org.apache.commons.collections15.Transformer;
 
 import com.mysema.codegen.CodeWriter;
+import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Constructor;
 import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.Types;
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.expr.ENumber;
 
@@ -37,8 +42,7 @@ public final class ProjectionSerializer implements Serializer{
 
     protected void intro(EntityType model, CodeWriter writer) throws IOException {
         String simpleName = model.getSimpleName();
-        String queryType = typeMappings.getPathType(model, model, false);
-        String localName = model.getLocalRawName();
+        Type queryType = typeMappings.getPathType(model, model, false);
 
         // package
         if (!model.getPackageName().isEmpty()){
@@ -53,9 +57,9 @@ public final class ProjectionSerializer implements Serializer{
 
         // class header
 //        writer.suppressWarnings("serial");
-        // TODO : replace with class reference
-        writer.beginClass(queryType, "EConstructor<" + localName + ">");
-        writer.privateStaticFinal("long", "serialVersionUID", String.valueOf(model.hashCode()));
+        Type superType = new ClassType(TypeCategory.SIMPLE, EConstructor.class, model);
+        writer.beginClass(queryType, superType);
+        writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()));
     }
 
     protected void outro(EntityType model, CodeWriter writer) throws IOException {
@@ -72,10 +76,10 @@ public final class ProjectionSerializer implements Serializer{
 
         for (Constructor c : model.getConstructors()){
             // begin
-            writer.beginConstructor(c.getParameters(), new Transformer<Parameter,String>(){
+            writer.beginConstructor(c.getParameters(), new Transformer<Parameter,Parameter>(){
                 @Override
-                public String transform(Parameter p) {
-                    return typeMappings.getExprType(p.getType(), model, false, false, true) + " " + p.getName();
+                public Parameter transform(Parameter p) {
+                    return new Parameter(p.getName(), typeMappings.getExprType(p.getType(), model, false, false, true));
                 }
             });
 

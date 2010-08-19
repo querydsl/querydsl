@@ -9,13 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-// TODO: Auto-generated Javadoc
-/**
- * TypesTest provides.
- *
- * @author tiwe
- * @version $Id$
- */
+
 public class TypesTest {
 
     @Test
@@ -25,9 +19,6 @@ public class TypesTest {
         }
     }
 
-    /**
-     * Test path.
-     */
     @Test
     public void testPath() {
         for (Class<?> cl : Path.class.getClasses()) {

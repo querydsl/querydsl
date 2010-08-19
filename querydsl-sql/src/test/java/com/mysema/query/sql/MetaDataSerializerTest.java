@@ -21,10 +21,16 @@ import org.junit.Test;
 
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.SimpleCompiler;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.Types;
 import com.mysema.query.AbstractJDBCTest;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.SerializerConfig;
+import com.mysema.query.types.Expr;
+import com.mysema.query.types.Path;
 
 public class MetaDataSerializerTest extends AbstractJDBCTest{
     
@@ -92,8 +98,8 @@ public class MetaDataSerializerTest extends AbstractJDBCTest{
                     paths.append(property.getEscapedName());
                 }
                 // adds accessors for all fields
-                writer.publicFinal("List<Expr<?>>", "exprs", "Arrays.<Expr<?>>asList(" + paths.toString() + ")");
-                writer.publicFinal("List<Path<?>>", "paths", "Arrays.<Path<?>>asList(" + paths.toString() + ")");
+                writer.publicFinal(new SimpleType(Types.LIST, new ClassType(Expr.class, (Type)null)), "exprs", "Arrays.<Expr<?>>asList(" + paths.toString() + ")");
+                writer.publicFinal(new SimpleType(Types.LIST, new ClassType(Path.class, (Type)null)), "paths", "Arrays.<Path<?>>asList(" + paths.toString() + ")");
             }
 
         };
