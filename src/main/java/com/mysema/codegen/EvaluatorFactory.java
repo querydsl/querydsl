@@ -129,6 +129,7 @@ public class EvaluatorFactory {
      * @param constants
      * @return
      */
+    @SuppressWarnings("unchecked")
     public <T> Evaluator<T> createEvaluator(
                 String source,
                 ClassType projection, 
