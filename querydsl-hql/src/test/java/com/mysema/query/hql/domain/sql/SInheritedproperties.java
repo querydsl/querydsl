@@ -1,26 +1,23 @@
-/*
- * Copyright (c) 2010 Mysema Ltd.
- * All rights reserved.
- *
- */
 package com.mysema.query.hql.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.path.PathMetadataFactory.*;
 
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.*;
+
+import com.mysema.query.sql.*;
+import java.util.*;
+
 
 /**
  * SInheritedproperties is a Querydsl query type for SInheritedproperties
  */
-@SuppressWarnings("serial")
-@com.mysema.query.sql.Table(value="INHERITEDPROPERTIES")
-public class SInheritedproperties extends EntityPathBase<SInheritedproperties> {
+@Table("INHERITEDPROPERTIES")
+public class SInheritedproperties extends BeanPath<SInheritedproperties> implements RelationalPath<SInheritedproperties> {
+
+    private static final long serialVersionUID = -2093604956;
+
+    public static final SInheritedproperties inheritedproperties = new SInheritedproperties("INHERITEDPROPERTIES");
 
     public final PString classproperty = createString("CLASSPROPERTY");
 
@@ -30,20 +27,39 @@ public class SInheritedproperties extends EntityPathBase<SInheritedproperties> {
 
     public final PString superclassproperty = createString("SUPERCLASSPROPERTY");
 
+    private Expr[] _all;
+
+    public final PrimaryKey<SInheritedproperties> sql100819184434080 = new PrimaryKey<SInheritedproperties>(this, id);
+
     public SInheritedproperties(String variable) {
         super(SInheritedproperties.class, forVariable(variable));
     }
 
     public SInheritedproperties(BeanPath<? extends SInheritedproperties> entity) {
-        super(entity.getType(),entity.getMetadata());
+        super(entity.getType(), entity.getMetadata());
     }
 
     public SInheritedproperties(PathMetadata<?> metadata) {
         super(SInheritedproperties.class, metadata);
     }
 
-    public Expr<Object[]> all() {
-        return CSimple.create(Object[].class, "{0}.*", this);
+    public Expr[] all() {
+        if (_all == null) {
+            _all = new Expr[]{classproperty, id, stringassimple, superclassproperty};
+        }
+        return _all;
+    }
+
+    public PrimaryKey<SInheritedproperties> getPrimaryKey() {
+        return sql100819184434080;
+    }
+
+    public List<ForeignKey<?>> getForeignKeys() {
+        return Collections.<ForeignKey<?>>emptyList();
+    }
+
+    public List<ForeignKey<?>> getInverseForeignKeys() {
+        return Collections.<ForeignKey<?>>emptyList();
     }
 
 }

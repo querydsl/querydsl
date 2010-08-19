@@ -33,14 +33,14 @@ public class QBook extends EntityPathBase<com.mysema.query.jdoql.testdomain.Book
 
     public final PDateTime<java.util.Date> publicationDate = createDateTime("publicationDate",java.util.Date.class);
 
-    public final PNumber<java.lang.Integer> amount = createNumber("amount",java.lang.Integer.class);
+    public final PNumber<Integer> amount = createNumber("amount",Integer.class);
 
-    public final PNumber<java.lang.Double> price = createNumber("price",java.lang.Double.class);
+    public final PNumber<Double> price = createNumber("price",Double.class);
 
-    public QBook(java.lang.String path) {
+    public QBook(String path) {
           this(com.mysema.query.jdoql.testdomain.Book.class, path);
     }
-    public QBook(Class<? extends com.mysema.query.jdoql.testdomain.Book> cl, java.lang.String path) {
+    public QBook(Class<? extends com.mysema.query.jdoql.testdomain.Book> cl, String path) {
           super(cl, PathMetadataFactory.forVariable(path));
     }
     public QBook(PathMetadata<?> metadata) {

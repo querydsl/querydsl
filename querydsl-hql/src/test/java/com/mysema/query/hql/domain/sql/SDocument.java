@@ -1,48 +1,63 @@
-/*
- * Copyright (c) 2010 Mysema Ltd.
- * All rights reserved.
- *
- */
 package com.mysema.query.hql.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.path.PathMetadataFactory.*;
 
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.*;
+
+import com.mysema.query.sql.*;
+import java.util.*;
+
 
 /**
  * SDocument is a Querydsl query type for SDocument
  */
-@SuppressWarnings("serial")
-@com.mysema.query.sql.Table(value="DOCUMENT")
-public class SDocument extends EntityPathBase<SDocument> {
+@Table("DOCUMENT")
+public class SDocument extends BeanPath<SDocument> implements RelationalPath<SDocument> {
+
+    private static final long serialVersionUID = 1919248740;
+
+    public static final SDocument document = new SDocument("DOCUMENT");
 
     public final PNumber<Integer> id = createNumber("ID", Integer.class);
 
     public final PString name = createString("NAME");
 
-    public final PComparable<java.util.Date> validto = createComparable("VALIDTO", java.util.Date.class);
+    public final PDate<java.sql.Date> validto = createDate("VALIDTO", java.sql.Date.class);
+
+    private Expr[] _all;
+
+    public final PrimaryKey<SDocument> sql100819184432950 = new PrimaryKey<SDocument>(this, id);
 
     public SDocument(String variable) {
         super(SDocument.class, forVariable(variable));
     }
 
     public SDocument(BeanPath<? extends SDocument> entity) {
-        super(entity.getType(),entity.getMetadata());
+        super(entity.getType(), entity.getMetadata());
     }
 
     public SDocument(PathMetadata<?> metadata) {
         super(SDocument.class, metadata);
     }
 
-    public Expr<Object[]> all() {
-        return CSimple.create(Object[].class, "{0}.*", this);
+    public Expr[] all() {
+        if (_all == null) {
+            _all = new Expr[]{id, name, validto};
+        }
+        return _all;
+    }
+
+    public PrimaryKey<SDocument> getPrimaryKey() {
+        return sql100819184432950;
+    }
+
+    public List<ForeignKey<?>> getForeignKeys() {
+        return Collections.<ForeignKey<?>>emptyList();
+    }
+
+    public List<ForeignKey<?>> getInverseForeignKeys() {
+        return Collections.<ForeignKey<?>>emptyList();
     }
 
 }

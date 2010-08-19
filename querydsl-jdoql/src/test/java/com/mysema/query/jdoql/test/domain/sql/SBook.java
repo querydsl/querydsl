@@ -2,14 +2,18 @@ package com.mysema.query.jdoql.test.domain.sql;
 
 import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
+import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.Table;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 
@@ -18,7 +22,7 @@ import com.mysema.query.types.path.PString;
  * SBook is a Querydsl query type for SBook
  */
 @Table(value="BOOK")
-public class SBook extends EntityPathBase<SBook> {
+public class SBook extends BeanPath<SBook> implements RelationalPath<SBook>{
 
     private static final long serialVersionUID = -1566558053;
 
@@ -50,6 +54,21 @@ public class SBook extends EntityPathBase<SBook> {
 
     public Expr<Object[]> all() {
         return CSimple.create(Object[].class, "{0}.*", this);
+    }
+
+    @Override
+    public Collection<ForeignKey<?>> getForeignKeys() {
+        return Arrays.<ForeignKey<?>>asList(bookFk1);
+    }
+
+    @Override
+    public Collection<ForeignKey<?>> getInverseForeignKeys() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public PrimaryKey<SBook> getPrimaryKey() {
+        return sysIdx65;
     }
 
 }

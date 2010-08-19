@@ -1,27 +1,23 @@
-/*
- * Copyright (c) 2010 Mysema Ltd.
- * All rights reserved.
- *
- */
 package com.mysema.query.hql.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.path.PathMetadataFactory.*;
 
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.*;
+
+import com.mysema.query.sql.*;
+import java.util.*;
+
 
 /**
  * SSimpletypes is a Querydsl query type for SSimpletypes
  */
-@SuppressWarnings("serial")
-@com.mysema.query.sql.Table(value="SIMPLETYPES")
-public class SSimpletypes extends EntityPathBase<SSimpletypes> {
+@Table("SIMPLETYPES")
+public class SSimpletypes extends BeanPath<SSimpletypes> implements RelationalPath<SSimpletypes> {
+
+    private static final long serialVersionUID = -171311842;
+
+    public static final SSimpletypes simpletypes = new SSimpletypes("SIMPLETYPES");
 
     public final PNumber<Short> bbyte = createNumber("BBYTE", Short.class);
 
@@ -29,11 +25,11 @@ public class SSimpletypes extends EntityPathBase<SSimpletypes> {
 
     public final PNumber<java.math.BigDecimal> bigdecimal = createNumber("BIGDECIMAL", java.math.BigDecimal.class);
 
-    public final PComparable<Character> cchar = createComparable("CCHAR", Character.class);
+    public final PString cchar = createString("CCHAR");
 
-    public final PComparable<Character> cchar2 = createComparable("CCHAR2", Character.class);
+    public final PString cchar2 = createString("CCHAR2");
 
-    public final PComparable<java.util.Date> date = createComparable("DATE", java.util.Date.class);
+    public final PDate<java.sql.Date> date = createDate("DATE", java.sql.Date.class);
 
     public final PNumber<Double> ddouble = createNumber("DDOUBLE", Double.class);
 
@@ -57,24 +53,43 @@ public class SSimpletypes extends EntityPathBase<SSimpletypes> {
 
     public final PString sstring = createString("SSTRING");
 
-    public final PComparable<java.sql.Time> time = createComparable("TIME", java.sql.Time.class);
+    public final PTime<java.sql.Time> time = createTime("TIME", java.sql.Time.class);
 
-    public final PComparable<java.util.Date> timestamp = createComparable("TIMESTAMP", java.util.Date.class);
+    public final PDateTime<Date> timestamp = createDateTime("TIMESTAMP", Date.class);
+
+    private Expr[] _all;
+
+    public final PrimaryKey<SSimpletypes> sql100819184438610 = new PrimaryKey<SSimpletypes>(this, id);
 
     public SSimpletypes(String variable) {
         super(SSimpletypes.class, forVariable(variable));
     }
 
     public SSimpletypes(BeanPath<? extends SSimpletypes> entity) {
-        super(entity.getType(),entity.getMetadata());
+        super(entity.getType(), entity.getMetadata());
     }
 
     public SSimpletypes(PathMetadata<?> metadata) {
         super(SSimpletypes.class, metadata);
     }
 
-    public Expr<Object[]> all() {
-        return CSimple.create(Object[].class, "{0}.*", this);
+    public Expr[] all() {
+        if (_all == null) {
+            _all = new Expr[]{bbyte, bbyte2, bigdecimal, cchar, cchar2, date, ddouble, ddouble2, ffloat, ffloat2, id, iint, iint2, llocale, llong, llong2, sstring, time, timestamp};
+        }
+        return _all;
+    }
+
+    public PrimaryKey<SSimpletypes> getPrimaryKey() {
+        return sql100819184438610;
+    }
+
+    public List<ForeignKey<?>> getForeignKeys() {
+        return Collections.<ForeignKey<?>>emptyList();
+    }
+
+    public List<ForeignKey<?>> getInverseForeignKeys() {
+        return Collections.<ForeignKey<?>>emptyList();
     }
 
 }

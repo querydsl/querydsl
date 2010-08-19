@@ -1,44 +1,65 @@
-/*
- * Copyright (c) 2010 Mysema Ltd.
- * All rights reserved.
- *
- */
 package com.mysema.query.hql.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.path.PathMetadataFactory.*;
 
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.*;
+
+import com.mysema.query.sql.*;
+import java.util.*;
+
 
 /**
  * SKittensSet is a Querydsl query type for SKittensSet
  */
-@SuppressWarnings("serial")
-@com.mysema.query.sql.Table(value="KITTENS_SET")
-public class SKittensSet extends EntityPathBase<SKittensSet> {
+@Table("KITTENS_SET")
+public class SKittensSet extends BeanPath<SKittensSet> implements RelationalPath<SKittensSet> {
+
+    private static final long serialVersionUID = 1191166719;
+
+    public static final SKittensSet kittensSet = new SKittensSet("KITTENS_SET");
 
     public final PNumber<Integer> animalId = createNumber("ANIMAL_ID", Integer.class);
 
     public final PNumber<Integer> kittenssetId = createNumber("KITTENSSET_ID", Integer.class);
+
+    private Expr[] _all;
+
+    public final PrimaryKey<SKittensSet> sql100819184440700 = new PrimaryKey<SKittensSet>(this, animalId, kittenssetId);
+
+    public final ForeignKey<SAnimal> fk4fccad6f10a6f310 = new ForeignKey<SAnimal>(this, kittenssetId, "ID");
+
+    public final ForeignKey<SAnimal> fk4fccad6fa295046a = new ForeignKey<SAnimal>(this, animalId, "ID");
 
     public SKittensSet(String variable) {
         super(SKittensSet.class, forVariable(variable));
     }
 
     public SKittensSet(BeanPath<? extends SKittensSet> entity) {
-        super(entity.getType(),entity.getMetadata());
+        super(entity.getType(), entity.getMetadata());
     }
 
     public SKittensSet(PathMetadata<?> metadata) {
         super(SKittensSet.class, metadata);
     }
 
-    public Expr<Object[]> all() {
-        return CSimple.create(Object[].class, "{0}.*", this);
+    public Expr[] all() {
+        if (_all == null) {
+            _all = new Expr[]{animalId, kittenssetId};
+        }
+        return _all;
+    }
+
+    public PrimaryKey<SKittensSet> getPrimaryKey() {
+        return sql100819184440700;
+    }
+
+    public List<ForeignKey<?>> getForeignKeys() {
+        return Arrays.<ForeignKey<?>>asList(fk4fccad6f10a6f310, fk4fccad6fa295046a);
+    }
+
+    public List<ForeignKey<?>> getInverseForeignKeys() {
+        return Collections.<ForeignKey<?>>emptyList();
     }
 
 }

@@ -33,7 +33,6 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.OrderSpecifier;
@@ -166,7 +165,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.from(args);
     }
 
-    public Q fullJoin(EntityPath<?> target) {
+    public Q fullJoin(RelationalPath<?> target) {
         return queryMixin.fullJoin(target);
     }
 
@@ -174,11 +173,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.fullJoin(target, alias);
     }
 
-    public <E> Q fullJoin(ForeignKey<E> key, EntityPath<E> entity) {
+    public <E> Q fullJoin(ForeignKey<E> key, RelationalPath<E> entity) {
         return queryMixin.fullJoin(entity).on(key.on(entity));
     }
 
-    public Q innerJoin(EntityPath<?> target) {
+    public Q innerJoin(RelationalPath<?> target) {
         return queryMixin.innerJoin(target);
     }
 
@@ -186,11 +185,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.innerJoin(target, alias);
     }
 
-    public <E> Q innerJoin(ForeignKey<E> key, EntityPath<E> entity) {
+    public <E> Q innerJoin(ForeignKey<E> key, RelationalPath<E> entity) {
         return queryMixin.innerJoin(entity).on(key.on(entity));
     }
 
-    public Q join(EntityPath<?> target) {
+    public Q join(RelationalPath<?> target) {
         return queryMixin.join(target);
     }
 
@@ -198,11 +197,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.join(target, alias);
     }
 
-    public <E> Q join(ForeignKey<E> key, EntityPath<E>  entity) {
+    public <E> Q join(ForeignKey<E> key, RelationalPath<E>  entity) {
         return queryMixin.join(entity).on(key.on(entity));
     }
 
-    public Q leftJoin(EntityPath<?> target) {
+    public Q leftJoin(RelationalPath<?> target) {
         return queryMixin.leftJoin(target);
     }
 
@@ -210,11 +209,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.leftJoin(target, alias);
     }
 
-    public <E> Q leftJoin(ForeignKey<E> key, EntityPath<E>  entity) {
+    public <E> Q leftJoin(ForeignKey<E> key, RelationalPath<E>  entity) {
         return queryMixin.leftJoin(entity).on(key.on(entity));
     }
 
-    public Q rightJoin(EntityPath<?> target) {
+    public Q rightJoin(RelationalPath<?> target) {
         return queryMixin.rightJoin(target);
     }
 
@@ -222,7 +221,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.rightJoin(target, alias);
     }
 
-    public <E> Q rightJoin(ForeignKey<E> key, EntityPath<E>  entity) {
+    public <E> Q rightJoin(ForeignKey<E> key, RelationalPath<E>  entity) {
         return queryMixin.rightJoin(entity).on(key.on(entity));
     }
 

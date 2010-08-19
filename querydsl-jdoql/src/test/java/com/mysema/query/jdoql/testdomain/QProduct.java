@@ -33,14 +33,14 @@ public class QProduct extends EntityPathBase<com.mysema.query.jdoql.testdomain.P
 
     public final PTime<java.sql.Time> timeField = createTime("timeField", java.sql.Time.class);
 
-    public final PNumber<java.lang.Integer> amount = createNumber("amount",java.lang.Integer.class);
+    public final PNumber<Integer> amount = createNumber("amount",Integer.class);
 
-    public final PNumber<java.lang.Double> price = createNumber("price",java.lang.Double.class);
+    public final PNumber<Double> price = createNumber("price",Double.class);
 
-    public QProduct(java.lang.String path) {
+    public QProduct(String path) {
           this(com.mysema.query.jdoql.testdomain.Product.class, path);
     }
-    public QProduct(Class<? extends com.mysema.query.jdoql.testdomain.Product> cl, java.lang.String path) {
+    public QProduct(Class<? extends com.mysema.query.jdoql.testdomain.Product> cl, String path) {
           super(cl, PathMetadataFactory.forVariable(path));
     }
     public QProduct(PathMetadata<?> metadata) {

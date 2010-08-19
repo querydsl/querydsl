@@ -26,9 +26,9 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.dml.InsertClause;
 import com.mysema.query.sql.Configuration;
+import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
@@ -52,7 +52,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
 
     private final Connection connection;
 
-    private final EntityPath<?> entity;
+    private final RelationalPath<?> entity;
     
     private final QueryMetadata metadata = new DefaultQueryMetadata();
 
@@ -67,11 +67,11 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
 
     private transient String queryString;
     
-    public SQLInsertClause(Connection connection, SQLTemplates templates, EntityPath<?> entity) {
+    public SQLInsertClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         this(connection, new Configuration(templates), entity);
     }
     
-    public SQLInsertClause(Connection connection, Configuration configuration, EntityPath<?> entity) {
+    public SQLInsertClause(Connection connection, Configuration configuration, RelationalPath<?> entity) {
         super(configuration);
         this.connection = connection;
         this.entity = entity;

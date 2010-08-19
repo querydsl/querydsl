@@ -68,7 +68,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     private boolean skipParent;
 
-    private EntityPath<?> entity;
+    private RelationalPath<?> entity;
 
     private final SQLTemplates templates;
 
@@ -124,8 +124,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     @SuppressWarnings("unchecked")
     private void handleJoinTarget(JoinExpression je) {
         // type specifier
-        if (je.getTarget() instanceof EntityPath && templates.isSupportsAlias()) {
-            EntityPath<?> pe = (EntityPath<?>) je.getTarget();
+        if (je.getTarget() instanceof RelationalPath && templates.isSupportsAlias()) {
+            RelationalPath<?> pe = (RelationalPath<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
                 appendAsTableName(pe);
                 append(templates.getTableAlias());
@@ -238,7 +238,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     }
 
-    public void serializeForDelete(QueryMetadata metadata, EntityPath<?> entity) {
+    public void serializeForDelete(QueryMetadata metadata, RelationalPath<?> entity) {
         this.entity = entity;
         
         serialize(Position.START, metadata.getFlags());
@@ -256,7 +256,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         serialize(Position.END, metadata.getFlags());
     }
 
-    public void serializeForMerge(QueryMetadata metadata, EntityPath<?> entity, List<Path<?>> keys,
+    public void serializeForMerge(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> keys,
             List<Path<?>> columns, List<Expr<?>> values, @Nullable SubQuery<?> subQuery) {
         this.entity = entity;
         
@@ -294,7 +294,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         serialize(Position.END, metadata.getFlags());
     }
 
-    public void serializeForInsert(QueryMetadata metadata, EntityPath<?> entity, List<Path<?>> columns,
+    public void serializeForInsert(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> columns,
             List<Expr<?>> values, @Nullable SubQuery<?> subQuery) {
         this.entity = entity;
         
@@ -327,7 +327,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         serialize(Position.END, metadata.getFlags());
     }
 
-    public void serializeForUpdate(QueryMetadata metadata, EntityPath<?> entity, List<Pair<Path<?>, ?>> updates) {
+    public void serializeForUpdate(QueryMetadata metadata, RelationalPath<?> entity, List<Pair<Path<?>, ?>> updates) {
         this.entity = entity;
         
         serialize(Position.START, metadata.getFlags());

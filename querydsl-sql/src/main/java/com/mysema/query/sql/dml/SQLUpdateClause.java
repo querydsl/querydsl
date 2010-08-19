@@ -23,9 +23,9 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.dml.UpdateClause;
 import com.mysema.query.sql.Configuration;
+import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
@@ -46,17 +46,17 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
 
     private final Connection connection;
 
-    private final EntityPath<?> entity;
+    private final RelationalPath<?> entity;
 
     private final List<Pair<Path<?>,?>> updates = new ArrayList<Pair<Path<?>,?>>();
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
     
-    public SQLUpdateClause(Connection connection, SQLTemplates templates, EntityPath<?> entity) {
+    public SQLUpdateClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         this(connection, new Configuration(templates), entity);
     }
     
-    public SQLUpdateClause(Connection connection, Configuration configuration, EntityPath<?> entity) {
+    public SQLUpdateClause(Connection connection, Configuration configuration, RelationalPath<?> entity) {
         super(configuration);
         this.connection = connection;
         this.entity = entity;

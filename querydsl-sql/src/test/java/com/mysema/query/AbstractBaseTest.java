@@ -16,6 +16,7 @@ import org.junit.Rule;
 import org.junit.rules.MethodRule;
 import org.junit.runner.RunWith;
 
+import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLSubQuery;
@@ -24,7 +25,6 @@ import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
-import com.mysema.query.types.EntityPath;
 import com.mysema.testutil.FilteringTestRunner;
 import com.mysema.testutil.LabelRule;
 
@@ -44,19 +44,19 @@ public abstract class AbstractBaseTest {
     @Rule
     public static MethodRule labelRule = new LabelRule();
     
-    protected SQLUpdateClause update(EntityPath<?> e){
+    protected SQLUpdateClause update(RelationalPath<?> e){
         return new SQLUpdateClause(Connections.getConnection(), templates, e);
     }
 
-    protected SQLInsertClause insert(EntityPath<?> e){
+    protected SQLInsertClause insert(RelationalPath<?> e){
         return new SQLInsertClause(Connections.getConnection(), templates, e);
     }
 
-    protected SQLDeleteClause delete(EntityPath<?> e){
+    protected SQLDeleteClause delete(RelationalPath<?> e){
         return new SQLDeleteClause(Connections.getConnection(), templates, e);
     }
 
-    protected SQLMergeClause merge(EntityPath<?> e){
+    protected SQLMergeClause merge(RelationalPath<?> e){
         return new SQLMergeClause(Connections.getConnection(), templates, e);
     }
 

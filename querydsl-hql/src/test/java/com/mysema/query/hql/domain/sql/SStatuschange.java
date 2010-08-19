@@ -1,45 +1,63 @@
-/*
- * Copyright (c) 2010 Mysema Ltd.
- * All rights reserved.
- *
- */
 package com.mysema.query.hql.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.path.PathMetadataFactory.*;
 
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.*;
+
+import com.mysema.query.sql.*;
+import java.util.*;
+
 
 /**
  * SStatuschange is a Querydsl query type for SStatuschange
  */
-@SuppressWarnings("serial")
-@com.mysema.query.sql.Table(value="STATUSCHANGE")
-public class SStatuschange extends EntityPathBase<SStatuschange> {
+@Table("STATUSCHANGE")
+public class SStatuschange extends BeanPath<SStatuschange> implements RelationalPath<SStatuschange> {
+
+    private static final long serialVersionUID = 1953690091;
+
+    public static final SStatuschange statuschange = new SStatuschange("STATUSCHANGE");
 
     public final PNumber<Long> id = createNumber("ID", Long.class);
 
-    public final PComparable<java.util.Date> timestamp = createComparable("TIMESTAMP", java.util.Date.class);
+    public final PDateTime<Date> timestamp = createDateTime("TIMESTAMP", Date.class);
+
+    private Expr[] _all;
+
+    public final PrimaryKey<SStatuschange> sql100819184439140 = new PrimaryKey<SStatuschange>(this, id);
+
+    public final ForeignKey<SItemStatuschange> _fkc2c9ebee2f721e35 = new ForeignKey<SItemStatuschange>(this, id, "STATUSCHANGES_ID");
 
     public SStatuschange(String variable) {
         super(SStatuschange.class, forVariable(variable));
     }
 
     public SStatuschange(BeanPath<? extends SStatuschange> entity) {
-        super(entity.getType(),entity.getMetadata());
+        super(entity.getType(), entity.getMetadata());
     }
 
     public SStatuschange(PathMetadata<?> metadata) {
         super(SStatuschange.class, metadata);
     }
 
-    public Expr<Object[]> all() {
-        return CSimple.create(Object[].class, "{0}.*", this);
+    public Expr[] all() {
+        if (_all == null) {
+            _all = new Expr[]{id, timestamp};
+        }
+        return _all;
+    }
+
+    public PrimaryKey<SStatuschange> getPrimaryKey() {
+        return sql100819184439140;
+    }
+
+    public List<ForeignKey<?>> getForeignKeys() {
+        return Collections.<ForeignKey<?>>emptyList();
+    }
+
+    public List<ForeignKey<?>> getInverseForeignKeys() {
+        return Arrays.<ForeignKey<?>>asList(_fkc2c9ebee2f721e35);
     }
 
 }

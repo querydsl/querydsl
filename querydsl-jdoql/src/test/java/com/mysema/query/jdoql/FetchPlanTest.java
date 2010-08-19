@@ -36,6 +36,7 @@ public class FetchPlanTest extends AbstractJDOTest{
         super.tearDown();
     }
     
+    @SuppressWarnings("unchecked")
     @Test
     public void listProducts() throws Exception{
         QProduct product = QProduct.product;
@@ -56,6 +57,7 @@ public class FetchPlanTest extends AbstractJDOTest{
         assertEquals(2, jdoQuery.getFetchPlan().getMaxFetchDepth());
     }
     
+    @SuppressWarnings("unchecked")
     @Test
     public void listStores() throws Exception{
         QStore store = QStore.store;

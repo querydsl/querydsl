@@ -129,9 +129,9 @@ public class JPADerbySQLTest {
         assertEquals(6, rows.size());
         print(rows);
 
-        rows = query().from(cat).list(cat.id, cat.all());
-        assertEquals(6, rows.size());
-        print(rows);
+//        rows = query().from(cat).list(cat.id, cat.all());
+//        assertEquals(6, rows.size());
+//        print(rows);
     }
 
     private void print(Iterable<Object[]> rows){

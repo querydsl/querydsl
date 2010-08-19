@@ -6,16 +6,20 @@
 package com.mysema.query.sql;
 
 import static com.mysema.codegen.Symbols.NEW;
+import static com.mysema.codegen.Symbols.UNCHECKED;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.Types;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
@@ -26,6 +30,8 @@ import com.mysema.query.sql.support.InverseForeignKeyData;
 import com.mysema.query.sql.support.KeyData;
 import com.mysema.query.sql.support.PrimaryKeyData;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.path.BeanPath;
 
 /**
  * MetaDataSerializer defines the Query type serialization logic for MetaDataExporter.
@@ -35,6 +41,8 @@ import com.mysema.query.types.Expr;
  *
  */
 public class MetaDataSerializer extends EntitySerializer {
+    
+    private static final Type FOREIGNKEY_TYPE = new ClassType(ForeignKey.class, (Type)null);
 
     private final String namePrefix;
 
@@ -47,6 +55,27 @@ public class MetaDataSerializer extends EntitySerializer {
         this.namingStrategy = namingStrategy;
     }
 
+    @SuppressWarnings(UNCHECKED)
+    protected void introClassHeader(CodeWriter writer, EntityType model) throws IOException {
+        Type queryType = typeMappings.getPathType(model, model, true);
+
+        TypeCategory category = model.getOriginalCategory();
+        Class<? extends Path> pathType = BeanPath.class;
+
+        for (Annotation annotation : model.getAnnotations()){
+            writer.annotation(annotation);
+        }        
+        if (category == TypeCategory.BOOLEAN || category == TypeCategory.STRING){
+            writer.beginClass(queryType, new ClassType(pathType), 
+                    new ClassType(RelationalPath.class, model));
+        }else{
+            writer.beginClass(queryType, new ClassType(category,pathType, model),
+                    new ClassType(RelationalPath.class, model));    
+        }
+        
+        writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()));
+    }
+    
     @Override
     protected void introDefaultInstance(CodeWriter writer, EntityType entityType) throws IOException {
         String variableName = namingStrategy.getDefaultVariableName(namePrefix, entityType);
@@ -55,51 +84,22 @@ public class MetaDataSerializer extends EntitySerializer {
         writer.publicStaticFinal(queryType, variableName, NEW + queryType.getSimpleName() + "(\"" + alias + "\")");
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
         super.introImports(writer, config, model);
-        writer.imports(Table.class.getPackage());
-        
-        boolean multiColumns = false;
-        multiColumns |= hasMultiColumnKeys((Collection<ForeignKeyData>) model.getData().get(ForeignKeyData.class));
-        multiColumns |= hasMultiColumnKeys((Collection<InverseForeignKeyData>) model.getData().get(InverseForeignKeyData.class));
-        if (multiColumns){
-            writer.imports(Arrays.class);
-        }
+        writer.imports(Table.class.getPackage(), List.class.getPackage());        
     }
         
-    private boolean hasMultiColumnKeys(Collection<? extends KeyData> foreignKeys){
-        if (foreignKeys != null){
-            for (KeyData foreignKey : foreignKeys){
-                if (foreignKey.getForeignColumns().size() > 1){
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void serializeProperties(EntityType model,  SerializerConfig config, CodeWriter writer) throws IOException {
+    protected void serializeProperties(EntityType model,  SerializerConfig config, CodeWriter writer) throws IOException {        
         super.serializeProperties(model, config, writer);
         
         // wildcard
-        StringBuilder paths = new StringBuilder();
-        for (Property property : model.getProperties()){
-            if (paths.length() > 0){
-                paths.append(", ");
-            }
-            paths.append(property.getEscapedName());
-        }
-
         Type type = new ClassType(Expr.class, (Type)null).asArrayType();
-        writer.privateFinal(type, "all", "new Expr[]{" + paths.toString() + "}");
-        writer.beginPublicMethod(type, "all");
-        writer.line("return all;");
-        writer.end();
-
+        writer.privateField(type, "_all");
+        
         // primary keys
         Collection<PrimaryKeyData> primaryKeys = (Collection<PrimaryKeyData>) model.getData().get(PrimaryKeyData.class);
         if (primaryKeys != null){
@@ -113,10 +113,82 @@ public class MetaDataSerializer extends EntitySerializer {
         }
         
         // inverse foreign keys
-        Collection<InverseForeignKeyData> inverseForeignKeys = (Collection<InverseForeignKeyData>) model.getData().get(InverseForeignKeyData.class);
+        Collection<InverseForeignKeyData> inverseForeignKeys = (Collection<InverseForeignKeyData>)
+            model.getData().get(InverseForeignKeyData.class);
         if (inverseForeignKeys != null){
             serializeForeignKeys(model, writer, inverseForeignKeys, true);
         }
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    protected void outro(EntityType model, CodeWriter writer) throws IOException {        
+        // wildcard
+        StringBuilder paths = new StringBuilder();
+        for (Property property : model.getProperties()){
+            if (paths.length() > 0){
+                paths.append(", ");
+            }
+            paths.append(property.getEscapedName());
+        }
+        
+        Type type = new ClassType(Expr.class, (Type)null).asArrayType();
+        writer.beginPublicMethod(type, "all");
+        writer.line("if (_all == null) {");
+        writer.line("    _all = ", "new Expr[]{", paths.toString(), "};");
+        writer.line("}");
+        writer.line("return _all;");
+        writer.end();
+
+        // primary keys
+        Collection<PrimaryKeyData> primaryKeys = (Collection<PrimaryKeyData>) model.getData().get(PrimaryKeyData.class);
+        if (primaryKeys != null && !primaryKeys.isEmpty()){
+            PrimaryKeyData primaryKey = primaryKeys.iterator().next();
+            writer.beginPublicMethod(new ClassType(PrimaryKey.class, model), "getPrimaryKey");
+            writer.line("return ", namingStrategy.getPropertyNameForPrimaryKey(primaryKey.getName(), model), ";");
+            writer.end();
+        }else{
+            writer.beginPublicMethod(new ClassType(PrimaryKey.class, model), "getPrimaryKey");
+            writer.line("return null;");
+            writer.end();
+        }
+
+        // foreign keys
+        Collection<ForeignKeyData> foreignKeys = (Collection<ForeignKeyData>) model.getData().get(ForeignKeyData.class);
+        writer.beginPublicMethod(new SimpleType(Types.LIST, FOREIGNKEY_TYPE), "getForeignKeys");
+        if (foreignKeys != null && !foreignKeys.isEmpty()){
+            StringBuilder builder = new StringBuilder();
+            for (ForeignKeyData key : foreignKeys){
+                if (builder.length() > 0){
+                    builder.append(", ");
+                }
+                builder.append(namingStrategy.getPropertyNameForForeignKey(key.getName(), model));
+            }
+            writer.line("return Arrays.<ForeignKey<?>>asList(",builder.toString(),");");
+        }else{
+            writer.line("return Collections.<ForeignKey<?>>emptyList();");
+        }
+        writer.end();
+        
+        // inverse foreign keys
+        Collection<InverseForeignKeyData> inverseForeignKeys = (Collection<InverseForeignKeyData>)
+            model.getData().get(InverseForeignKeyData.class);
+        writer.beginPublicMethod(new SimpleType(Types.LIST, FOREIGNKEY_TYPE), "getInverseForeignKeys");
+        if (inverseForeignKeys != null && !inverseForeignKeys.isEmpty()){
+            StringBuilder builder = new StringBuilder();
+            for (InverseForeignKeyData key : inverseForeignKeys){
+                if (builder.length() > 0){
+                    builder.append(", ");
+                }
+                builder.append(namingStrategy.getPropertyNameForInverseForeignKey(key.getName(), model));
+            }
+            writer.line("return Arrays.<ForeignKey<?>>asList(",builder.toString(),");");
+        }else{
+            writer.line("return Collections.<ForeignKey<?>>emptyList();");
+        }
+        writer.end();
+        
+        super.outro(model, writer);
     }
 
     protected void serializePrimaryKeys(EntityType model, CodeWriter writer,
@@ -169,7 +241,8 @@ public class MetaDataSerializer extends EntitySerializer {
                 value.append("Arrays.asList("+local+"), Arrays.asList("+foreign+")");
             }
             value.append(")");
-            Type type = new ClassType(ForeignKey.class, new SimpleType(model.getPackageName()+"."+foreignType,model.getPackageName(),foreignType));
+            Type type = new ClassType(ForeignKey.class, 
+                    new SimpleType(model.getPackageName()+"."+foreignType,model.getPackageName(),foreignType));
             writer.publicFinal(type, fieldName, value.toString());
         }
     }

@@ -1,44 +1,65 @@
-/*
- * Copyright (c) 2010 Mysema Ltd.
- * All rights reserved.
- *
- */
 package com.mysema.query.hql.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.path.PathMetadataFactory.*;
 
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.*;
+
+import com.mysema.query.sql.*;
+import java.util.*;
+
 
 /**
  * SCatalogPrice is a Querydsl query type for SCatalogPrice
  */
-@SuppressWarnings("serial")
-@com.mysema.query.sql.Table(value="CATALOG_PRICE")
-public class SCatalogPrice extends EntityPathBase<SCatalogPrice> {
+@Table("CATALOG_PRICE")
+public class SCatalogPrice extends BeanPath<SCatalogPrice> implements RelationalPath<SCatalogPrice> {
+
+    private static final long serialVersionUID = -1748773767;
+
+    public static final SCatalogPrice catalogPrice = new SCatalogPrice("CATALOG_PRICE");
 
     public final PNumber<Integer> catalogId = createNumber("CATALOG_ID", Integer.class);
 
     public final PNumber<Long> pricesId = createNumber("PRICES_ID", Long.class);
+
+    private Expr[] _all;
+
+    public final PrimaryKey<SCatalogPrice> sql100819184431880 = new PrimaryKey<SCatalogPrice>(this, catalogId, pricesId);
+
+    public final ForeignKey<SPrice> fke4eb7d639d62434f = new ForeignKey<SPrice>(this, pricesId, "ID");
+
+    public final ForeignKey<SCatalog> fke4eb7d63f28fe670 = new ForeignKey<SCatalog>(this, catalogId, "ID");
 
     public SCatalogPrice(String variable) {
         super(SCatalogPrice.class, forVariable(variable));
     }
 
     public SCatalogPrice(BeanPath<? extends SCatalogPrice> entity) {
-        super(entity.getType(),entity.getMetadata());
+        super(entity.getType(), entity.getMetadata());
     }
 
     public SCatalogPrice(PathMetadata<?> metadata) {
         super(SCatalogPrice.class, metadata);
     }
 
-    public Expr<Object[]> all() {
-        return CSimple.create(Object[].class, "{0}.*", this);
+    public Expr[] all() {
+        if (_all == null) {
+            _all = new Expr[]{catalogId, pricesId};
+        }
+        return _all;
+    }
+
+    public PrimaryKey<SCatalogPrice> getPrimaryKey() {
+        return sql100819184431880;
+    }
+
+    public List<ForeignKey<?>> getForeignKeys() {
+        return Arrays.<ForeignKey<?>>asList(fke4eb7d639d62434f, fke4eb7d63f28fe670);
+    }
+
+    public List<ForeignKey<?>> getInverseForeignKeys() {
+        return Collections.<ForeignKey<?>>emptyList();
     }
 
 }

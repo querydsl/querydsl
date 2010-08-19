@@ -1,47 +1,65 @@
-/*
- * Copyright (c) 2010 Mysema Ltd.
- * All rights reserved.
- *
- */
 package com.mysema.query.hql.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.path.PathMetadataFactory.*;
 
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.*;
+
+import com.mysema.query.sql.*;
+import java.util.*;
+
 
 /**
  * SShowActs is a Querydsl query type for SShowActs
  */
-@SuppressWarnings("serial")
-@com.mysema.query.sql.Table(value="SHOW_ACTS")
-public class SShowActs extends EntityPathBase<SShowActs> {
+@Table("SHOW_ACTS")
+public class SShowActs extends BeanPath<SShowActs> implements RelationalPath<SShowActs> {
+
+    private static final long serialVersionUID = 718125831;
+
+    public static final SShowActs showActs = new SShowActs("SHOW_ACTS");
+
+    public final PString actsKey = createString("ACTS_KEY");
 
     public final PString element = createString("ELEMENT");
 
-    public final PString mapkey = createString("MAPKEY");
-
     public final PNumber<Integer> showId = createNumber("SHOW_ID", Integer.class);
+
+    private Expr[] _all;
+
+    public final PrimaryKey<SShowActs> sql100819184438340 = new PrimaryKey<SShowActs>(this, actsKey, showId);
+
+    public final ForeignKey<SShow> fk5f6ee0319084d04 = new ForeignKey<SShow>(this, showId, "ID");
 
     public SShowActs(String variable) {
         super(SShowActs.class, forVariable(variable));
     }
 
     public SShowActs(BeanPath<? extends SShowActs> entity) {
-        super(entity.getType(),entity.getMetadata());
+        super(entity.getType(), entity.getMetadata());
     }
 
     public SShowActs(PathMetadata<?> metadata) {
         super(SShowActs.class, metadata);
     }
 
-    public Expr<Object[]> all() {
-        return CSimple.create(Object[].class, "{0}.*", this);
+    public Expr[] all() {
+        if (_all == null) {
+            _all = new Expr[]{actsKey, element, showId};
+        }
+        return _all;
+    }
+
+    public PrimaryKey<SShowActs> getPrimaryKey() {
+        return sql100819184438340;
+    }
+
+    public List<ForeignKey<?>> getForeignKeys() {
+        return Arrays.<ForeignKey<?>>asList(fk5f6ee0319084d04);
+    }
+
+    public List<ForeignKey<?>> getInverseForeignKeys() {
+        return Collections.<ForeignKey<?>>emptyList();
     }
 
 }

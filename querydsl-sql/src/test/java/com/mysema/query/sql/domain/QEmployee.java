@@ -6,13 +6,17 @@
 package com.mysema.query.sql.domain;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
+import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.Table;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.EntityPathBase;
+import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
@@ -20,7 +24,7 @@ import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 @Table("EMPLOYEE2")
-public class QEmployee extends EntityPathBase<QEmployee> {
+public class QEmployee extends BeanPath<QEmployee> implements RelationalPath<QEmployee>{
 
     private static final long serialVersionUID = 1394463749655231079L;
 
@@ -55,6 +59,21 @@ public class QEmployee extends EntityPathBase<QEmployee> {
 
     public QEmployee(PathMetadata<?> metadata) {
         super(QEmployee.class, metadata);
+    }
+
+    @Override
+    public Collection<ForeignKey<?>> getForeignKeys() {
+        return Arrays.<ForeignKey<?>>asList(superiorIdKey);
+    }
+
+    @Override
+    public Collection<ForeignKey<?>> getInverseForeignKeys() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public PrimaryKey<QEmployee> getPrimaryKey() {
+        return idKey;
     }
 
 }

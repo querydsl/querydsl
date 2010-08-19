@@ -20,9 +20,9 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.sql.Configuration;
+import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.expr.EBoolean;
 
@@ -41,15 +41,15 @@ public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<S
 
     private final Connection connection;
 
-    private final EntityPath<?> entity;
+    private final RelationalPath<?> entity;
 
     private final QueryMetadata metadata = new DefaultQueryMetadata();
     
-    public SQLDeleteClause(Connection connection, SQLTemplates templates, EntityPath<?> entity) {
+    public SQLDeleteClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         this(connection, new Configuration(templates), entity);
     }
     
-    public SQLDeleteClause(Connection connection, Configuration configuration, EntityPath<?> entity) {
+    public SQLDeleteClause(Connection connection, Configuration configuration, RelationalPath<?> entity) {
         super(configuration);
         this.connection = connection;
         this.entity = entity;

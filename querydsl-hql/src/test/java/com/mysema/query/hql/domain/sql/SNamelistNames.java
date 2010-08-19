@@ -1,45 +1,61 @@
-/*
- * Copyright (c) 2010 Mysema Ltd.
- * All rights reserved.
- *
- */
 package com.mysema.query.hql.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.path.PathMetadataFactory.*;
 
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.*;
+
+import com.mysema.query.sql.*;
+import java.util.*;
+
 
 /**
  * SNamelistNames is a Querydsl query type for SNamelistNames
  */
-@SuppressWarnings("serial")
-@com.mysema.query.sql.Table(value="NAMELIST_NAMES")
-public class SNamelistNames extends EntityPathBase<SNamelistNames> {
+@Table("NAMELIST_NAMES")
+public class SNamelistNames extends BeanPath<SNamelistNames> implements RelationalPath<SNamelistNames> {
+
+    private static final long serialVersionUID = -1506785162;
+
+    public static final SNamelistNames namelistNames = new SNamelistNames("NAMELIST_NAMES");
 
     public final PString element = createString("ELEMENT");
 
     public final PNumber<Long> namelistId = createNumber("NAMELIST_ID", Long.class);
+
+    private Expr[] _all;
+
+    public final ForeignKey<SNamelist> fkd6c82d72b8406ca4 = new ForeignKey<SNamelist>(this, namelistId, "ID");
 
     public SNamelistNames(String variable) {
         super(SNamelistNames.class, forVariable(variable));
     }
 
     public SNamelistNames(BeanPath<? extends SNamelistNames> entity) {
-        super(entity.getType(),entity.getMetadata());
+        super(entity.getType(), entity.getMetadata());
     }
 
     public SNamelistNames(PathMetadata<?> metadata) {
         super(SNamelistNames.class, metadata);
     }
 
-    public Expr<Object[]> all() {
-        return CSimple.create(Object[].class, "{0}.*", this);
+    public Expr[] all() {
+        if (_all == null) {
+            _all = new Expr[]{element, namelistId};
+        }
+        return _all;
+    }
+
+    public PrimaryKey<SNamelistNames> getPrimaryKey() {
+        return null;
+    }
+
+    public List<ForeignKey<?>> getForeignKeys() {
+        return Arrays.<ForeignKey<?>>asList(fkd6c82d72b8406ca4);
+    }
+
+    public List<ForeignKey<?>> getInverseForeignKeys() {
+        return Collections.<ForeignKey<?>>emptyList();
     }
 
 }

@@ -15,13 +15,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.dml.SQLDeleteClause;
-import com.mysema.query.types.EntityPath;
 import com.mysema.testutil.ExcludeIn;
 
 public abstract class DeleteBaseTest extends AbstractBaseTest{
 
-    protected SQLDeleteClause delete(EntityPath<?> e){
+    protected SQLDeleteClause delete(RelationalPath<?> e){
         return new SQLDeleteClause(Connections.getConnection(), templates, e);
     }
 

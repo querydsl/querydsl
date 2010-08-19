@@ -5,18 +5,23 @@
  */
 package com.mysema.query.sql.domain;
 
+import java.util.Collection;
+import java.util.Collections;
+
+import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
+import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.Table;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.EntityPathBase;
+import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 
 @Table("SURVEY")
-public class QSurvey extends EntityPathBase<QSurvey> {
+public class QSurvey extends BeanPath<QSurvey> implements RelationalPath<QSurvey>{
 
     private static final long serialVersionUID = -7427577079709192842L;
 
@@ -39,4 +44,20 @@ public class QSurvey extends EntityPathBase<QSurvey> {
     public QSurvey(PathMetadata<?> metadata) {
         super(QSurvey.class, metadata);
     }
+
+    @Override
+    public Collection<ForeignKey<?>> getForeignKeys() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public Collection<ForeignKey<?>> getInverseForeignKeys() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public PrimaryKey<QSurvey> getPrimaryKey() {
+        return idKey; 
+    }
+    
 }

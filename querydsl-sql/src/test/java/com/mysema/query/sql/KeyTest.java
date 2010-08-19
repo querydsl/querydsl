@@ -5,9 +5,12 @@
  */
 package com.mysema.query.sql;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 import org.junit.Test;
 
-import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PathMetadataFactory;
@@ -16,7 +19,7 @@ import com.mysema.query.types.path.PathMetadataFactory;
 public class KeyTest {
 
     @Table("USER")
-    public static class QUser extends BeanPath<QUser> implements EntityPath<QUser>{
+    public static class QUser extends BeanPath<QUser> implements RelationalPath<QUser>{
 
         public final PNumber<Integer> id = createNumber("ID", Integer.class);
 
@@ -34,10 +37,25 @@ public class KeyTest {
             super(QUser.class, PathMetadataFactory.forVariable(path));
         }
 
+        @Override
+        public Collection<ForeignKey<?>> getForeignKeys() {
+            return Arrays.<ForeignKey<?>>asList(departmentKey, superiorIdKey);
+        }
+
+        @Override
+        public Collection<ForeignKey<?>> getInverseForeignKeys() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public PrimaryKey<QUser> getPrimaryKey() {
+            return idKey;
+        }
+
     }
 
     @Table("DEPARTMENT")
-    public static class QDepartment extends BeanPath<QDepartment> implements EntityPath<QDepartment>{
+    public static class QDepartment extends BeanPath<QDepartment> implements RelationalPath<QDepartment>{
 
         public final PNumber<Integer> id = createNumber("ID", Integer.class);
 
@@ -51,10 +69,25 @@ public class KeyTest {
             super(QDepartment.class, PathMetadataFactory.forVariable(path));
         }
 
+        @Override
+        public Collection<ForeignKey<?>> getForeignKeys() {
+            return Arrays.<ForeignKey<?>>asList(companyKey);
+        }
+
+        @Override
+        public Collection<ForeignKey<?>> getInverseForeignKeys() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public PrimaryKey<QDepartment> getPrimaryKey() {
+            return idKey;
+        }
+
     }
 
     @Table("COMPANY")
-    public static class QCompany extends BeanPath<QCompany> implements EntityPath<QCompany>{
+    public static class QCompany extends BeanPath<QCompany> implements RelationalPath<QCompany>{
 
         public final PNumber<Integer> id = createNumber("ID", Integer.class);
 
@@ -62,6 +95,21 @@ public class KeyTest {
 
         public QCompany(String path) {
             super(QCompany.class, PathMetadataFactory.forVariable(path));
+        }
+
+        @Override
+        public Collection<ForeignKey<?>> getForeignKeys() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public Collection<ForeignKey<?>> getInverseForeignKeys() {
+            return Collections.emptyList();
+        }
+
+        @Override
+        public PrimaryKey<QCompany> getPrimaryKey() {
+            return idKey;
         }
 
     }

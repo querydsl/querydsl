@@ -85,7 +85,7 @@ public class EntitySerializer implements Serializer{
             if (stringOrBoolean){
                 writer.line("super(entity.getMetadata());");    
             }else{
-                writer.line("super(entity.getType(),entity.getMetadata());");
+                writer.line("super(entity.getType(), entity.getMetadata());");
             }            
             writer.end();
         }

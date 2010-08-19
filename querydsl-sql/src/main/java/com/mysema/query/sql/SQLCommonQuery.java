@@ -4,7 +4,6 @@
 package com.mysema.query.sql;
 
 import com.mysema.query.Query;
-import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
@@ -33,7 +32,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q fullJoin(EntityPath<?> o);
+    Q fullJoin(RelationalPath<?> o);
 
     /**
      * Adds an inner join to the given target
@@ -41,7 +40,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q innerJoin(EntityPath<?> o);
+    Q innerJoin(RelationalPath<?> o);
 
     /**
      * Adds a join to the given target
@@ -49,7 +48,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q join(EntityPath<?> o);
+    Q join(RelationalPath<?> o);
 
     /**
      * Adds a left join to the given target
@@ -57,7 +56,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q leftJoin(EntityPath<?> o);
+    Q leftJoin(RelationalPath<?> o);
 
     /**
      * Adds a right join to the given target
@@ -65,7 +64,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q rightJoin(EntityPath<?> o);
+    Q rightJoin(RelationalPath<?> o);
 
     /**
      * Adds a full join to the given target
@@ -73,7 +72,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    <E> Q fullJoin(ForeignKey<E> key, EntityPath<E> entity);
+    <E> Q fullJoin(ForeignKey<E> key, RelationalPath<E> entity);
 
     /**
      * Adds an inner join to the given target
@@ -81,7 +80,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    <E> Q innerJoin(ForeignKey<E> foreign, EntityPath<E> entity);
+    <E> Q innerJoin(ForeignKey<E> foreign, RelationalPath<E> entity);
 
     /**
      * Adds a join to the given target
@@ -89,7 +88,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    <E> Q join(ForeignKey<E> foreign, EntityPath<E> entity);
+    <E> Q join(ForeignKey<E> foreign, RelationalPath<E> entity);
 
     /**
      * Adds a left join to the given target
@@ -97,7 +96,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    <E> Q leftJoin(ForeignKey<E> foreign, EntityPath<E> entity);
+    <E> Q leftJoin(ForeignKey<E> foreign, RelationalPath<E> entity);
 
     /**
      * Adds a right join to the given target
@@ -105,7 +104,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    <E> Q rightJoin(ForeignKey<E> foreign, EntityPath<E> entity);
+    <E> Q rightJoin(ForeignKey<E> foreign, RelationalPath<E> entity);
 
     /**
      * Adds a full join to the given target

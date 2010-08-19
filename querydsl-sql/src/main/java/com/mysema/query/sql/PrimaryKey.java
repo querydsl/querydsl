@@ -10,7 +10,6 @@ import java.util.List;
 
 import net.jcip.annotations.Immutable;
 
-import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Path;
 
 /**
@@ -21,20 +20,20 @@ import com.mysema.query.types.Path;
 @Immutable
 public class PrimaryKey <E>{
 
-    private final EntityPath<?> entity;
+    private final RelationalPath<?> entity;
 
     private final List<? extends Path<?>> localColumns;
 
-    public PrimaryKey(EntityPath<?> entity, Path<?>... localColumns) {
+    public PrimaryKey(RelationalPath<?> entity, Path<?>... localColumns) {
         this(entity, Arrays.asList(localColumns));
     }
 
-    public PrimaryKey(EntityPath<?> entity, List<? extends Path<?>> localColumns) {
+    public PrimaryKey(RelationalPath<?> entity, List<? extends Path<?>> localColumns) {
         this.entity = entity;
         this.localColumns = localColumns;
     }
 
-    public EntityPath<?> getEntity(){
+    public RelationalPath<?> getEntity(){
         return entity;
     }
 
