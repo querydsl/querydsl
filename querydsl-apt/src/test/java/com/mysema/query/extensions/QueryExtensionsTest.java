@@ -5,6 +5,7 @@
  */
 package com.mysema.query.extensions;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -91,5 +92,11 @@ public class QueryExtensionsTest {
         var.getName();
         var.getMap();
         var.getList();
+    }
+    
+    @Test
+    public void cachedMethods(){
+        QQueryExtensionsTest_Point var = new QQueryExtensionsTest_Point(PathMetadataFactory.forVariable("var"));        
+        assertTrue(var.getName() == var.getName());
     }
 }

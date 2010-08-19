@@ -419,8 +419,13 @@ public class EntitySerializer implements Serializer{
         writer.beginPublicMethod(queryType, escapedName, new Parameter("key", new ClassType(Expr.class, field.getParameter(0))));
         writer.line(RETURN + escapedName + ".get(key);").end();
     }
+    
+    protected void methodField(EntityType model, Method method, SerializerConfig config, CodeWriter writer) throws IOException {
+        Type exprType = typeMappings.getExprType(method.getReturnType(), model, false, true, false);
+        writer.privateField(exprType, method.getName()+"_");
+    }
 
-    protected void method(final EntityType model, Method method, SerializerConfig config, CodeWriter writer) throws IOException {
+    protected void method(EntityType model, Method method, SerializerConfig config, CodeWriter writer) throws IOException {
         Type exprType = typeMappings.getExprType(method.getReturnType(), model, false, true, false);
         Type custType = typeMappings.getCustomType(method.getReturnType(), model, true);
 
@@ -438,22 +443,36 @@ public class EntitySerializer implements Serializer{
             }
         });
 
-        // body start
-        writer.beginLine(RETURN + custType.getSimpleName() + ".create(");
-        String fullName = method.getReturnType().getFullName();
-        if (custType.getSimpleName().equals(CSimple.class.getSimpleName()) 
-        || (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName()))){
-            writer.append(writer.getRawName(method.getReturnType()));
-            writer.append(".class, ");
+        if (method.getParameters().isEmpty()){
+            writer.line("if (", method.getName(), "_ == null) {");
+            writer.beginLine("    " + method.getName() + "_ = " + custType.getSimpleName() + ".create(");
+            String fullName = method.getReturnType().getFullName();
+            if (custType.getSimpleName().equals(CSimple.class.getSimpleName()) 
+            || (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName()))){
+                writer.append(writer.getRawName(method.getReturnType()));
+                writer.append(".class, ");
+            }
+            writer.append(QUOTE + StringEscapeUtils.escapeJava(method.getTemplate()) + QUOTE);
+            writer.append(", this);\n");      
+            writer.line("}");
+            writer.line("return ", method.getName(), "_;");
+            
+        }else{
+            writer.beginLine(RETURN + custType.getSimpleName() + ".create(");
+            String fullName = method.getReturnType().getFullName();
+            if (custType.getSimpleName().equals(CSimple.class.getSimpleName()) 
+            || (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName()))){
+                writer.append(writer.getRawName(method.getReturnType()));
+                writer.append(".class, ");
+            }
+            writer.append(QUOTE + StringEscapeUtils.escapeJava(method.getTemplate()) + QUOTE);
+            writer.append(", this");
+            for (Parameter p : method.getParameters()){
+                writer.append(COMMA + p.getName());
+            }
+            writer.append(");\n");            
         }
-        writer.append(QUOTE + StringEscapeUtils.escapeJava(method.getTemplate()) + QUOTE);
-        writer.append(", this");
-        for (Parameter p : method.getParameters()){
-            writer.append(COMMA + p.getName());
-        }
-        writer.append(");\n");
 
-        // body end
         writer.end();
     }
 
@@ -516,7 +535,14 @@ public class EntitySerializer implements Serializer{
 
         // properties
         serializeProperties(model, config, writer);
-
+        
+        // method fields
+        for (Method method : model.getMethods()){
+            if (method.getParameters().isEmpty()){
+                methodField(model, method, config, writer);    
+            }            
+        }
+        
         // constructors
         constructors(model, config, writer);
 
