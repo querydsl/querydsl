@@ -24,6 +24,7 @@ import javax.tools.ToolProvider;
 import javax.tools.JavaCompiler.CompilationTask;
 
 import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
@@ -59,8 +60,7 @@ public class EvaluatorFactory {
         this.loader = fileManager.getClassLoader(StandardLocation.CLASS_OUTPUT);
         this.compilationOptions = Arrays.asList("-classpath", classpath, "-g:none");
     }
-
-    @SuppressWarnings("unchecked")
+    
     private void compile(String source, Type projectionType,
             String[] names, Type[] types, String id, Map<String,Object> constants) throws IOException {
         // create source
@@ -68,9 +68,9 @@ public class EvaluatorFactory {
         JavaWriter javaw = new JavaWriter(writer);
         SimpleType idType = new SimpleType(id, "", id);
         javaw.beginClass(idType, null);
-        String[] params = new String[names.length];
+        Parameter[] params = new Parameter[names.length];
         for (int i = 0; i < params.length; i++) {
-            params[i] = types[i].getGenericName(true) + " " + names[i];
+            params[i] = new Parameter(names[i], types[i]);
         }
         
         for (Map.Entry<String,Object> entry : constants.entrySet()){
@@ -105,7 +105,6 @@ public class EvaluatorFactory {
 
     }
     
-    @SuppressWarnings("unchecked")
     public <T> Evaluator<T> createEvaluator(
             String source,
             Class<? extends T> projectionType, 
@@ -132,7 +131,7 @@ public class EvaluatorFactory {
      */
     public <T> Evaluator<T> createEvaluator(
                 String source,
-                ClassType<? extends T> projection, 
+                ClassType projection, 
                 String[] names, 
                 Type[] types,  
                 Class<?>[] classes,
@@ -156,7 +155,7 @@ public class EvaluatorFactory {
             }
 
             Method method = clazz.getMethod("eval", classes);
-            return new MethodEvaluator<T>(method, object, projection.getJavaClass());
+            return new MethodEvaluator<T>(method, object, (Class)projection.getJavaClass());
         } catch (ClassNotFoundException e) {
             throw new CodegenException(e);
         } catch (SecurityException e) {

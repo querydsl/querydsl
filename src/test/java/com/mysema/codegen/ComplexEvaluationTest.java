@@ -17,6 +17,7 @@ import org.junit.Test;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.Types;
 
 
 public class ComplexEvaluationTest {
@@ -25,8 +26,8 @@ public class ComplexEvaluationTest {
     
     @Test
     @SuppressWarnings("unchecked")
-    public void testComplex(){ClassType<String> stringType = new ClassType<String>(TypeCategory.STRING,String.class);
-        ClassType<List> resultType = new ClassType<List>(TypeCategory.LIST,List.class, stringType);
+    public void testComplex(){
+        ClassType resultType = new ClassType(TypeCategory.LIST,List.class, Types.STRING);
         StringBuilder source = new StringBuilder();
         source.append("java.util.List<String> rv = new java.util.ArrayList<String>();\n");
         source.append("for (String a : a_){\n");

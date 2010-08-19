@@ -18,16 +18,17 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.Types;
 
 public class JavaWriterTest {
-    
-    private static final Transformer<String,String> transformer = new Transformer<String,String>(){
-	@Override
-        public String transform(String input) {
-	    return input;
+
+    private static final Transformer<Parameter,Parameter> transformer = new Transformer<Parameter,Parameter>(){
+        @Override
+        public Parameter transform(Parameter input) {
+            return input;
         }	
     };
     
@@ -48,7 +49,7 @@ public class JavaWriterTest {
     public void setUp(){
         w = new StringWriter();
         writer = new JavaWriter(w);
-        testType = new ClassType<JavaWriterTest>(JavaWriterTest.class);
+        testType = new ClassType(JavaWriterTest.class);
         testType2 = new SimpleType("com.mysema.codegen.Test","com.mysema.codegen","Test");
         testSuperType = new SimpleType("com.mysema.codegen.Superclass","com.mysema.codegen","Superclass");
         testInterface1 = new SimpleType("com.mysema.codegen.TestInterface1","com.mysema.codegen","TestInterface1");
@@ -189,11 +190,11 @@ public class JavaWriterTest {
         // method
         
         // public
-        writer.beginPublicMethod(Types.STRING, "publicMethod", Arrays.asList("String a"), transformer);
+        writer.beginPublicMethod(Types.STRING, "publicMethod", Arrays.asList(new Parameter("a", Types.STRING)), transformer);
         writer.line("return null;");
         writer.end();
         
-        writer.beginStaticMethod(Types.STRING, "staticMethod", Arrays.asList("String a"), transformer);
+        writer.beginStaticMethod(Types.STRING, "staticMethod", Arrays.asList(new Parameter("a", Types.STRING)), transformer);
         writer.line("return null;");
         writer.end();
         
@@ -206,10 +207,10 @@ public class JavaWriterTest {
     public void testConstructors() throws IOException{
 	writer.beginClass(testType);
 	
-	writer.beginConstructor(Arrays.asList("String a","String b"), transformer);
+	writer.beginConstructor(Arrays.asList(new Parameter("a", Types.STRING), new Parameter("b", Types.STRING)), transformer);
 	writer.end();
 	
-	writer.beginConstructor("String a");
+	writer.beginConstructor(new Parameter("a", Types.STRING));
 	writer.end();
 	
 	writer.end();

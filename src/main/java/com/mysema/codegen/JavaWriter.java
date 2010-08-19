@@ -22,8 +22,8 @@ import java.util.Set;
 
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
 
+import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
 
 
@@ -67,15 +67,15 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
 
     private static final String PUBLIC_STATIC_FINAL = "public static final ";
     
-    private final Set<String> importedClasses = new HashSet<String>();
+    private final Set<String> classes = new HashSet<String>();
     
-    private final Set<String> importedPackages = new HashSet<String>();
+    private final Set<String> packages = new HashSet<String>();
     
     private Type type;
     
     public JavaWriter(Appendable appendable){
         super(appendable);
-        this.importedPackages.add("java.lang");
+        this.packages.add("java.lang");
     }
     
     @Override
@@ -148,7 +148,7 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
      }
     
     private JavaWriter appendType(Class<?> type) throws IOException{
-        if (importedClasses.contains(type.getName()) || importedPackages.contains(type.getPackage().getName())){
+        if (classes.contains(type.getName()) || packages.contains(type.getPackage().getName())){
             append(type.getSimpleName());
         }else{
             append(type.getName());
@@ -163,10 +163,10 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
     
     @Override
     public JavaWriter beginClass(Type type, Type superClass, Type... interfaces) throws IOException{
-        importedPackages.add(type.getPackageName());
+        packages.add(type.getPackageName());
         beginLine(PUBLIC_CLASS + type.getSimpleName());
         if (superClass != null){
-            append(EXTENDS + superClass.getGenericName(false, importedPackages, importedClasses));
+            append(EXTENDS + superClass.getGenericName(false, packages, classes));
         }
         if (interfaces.length > 0){
             append(IMPLEMENTS);
@@ -174,7 +174,7 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
                 if (i > 0){
                     append(COMMA);
                 }
-                append(interfaces[i].getGenericName(false, importedPackages, importedClasses));
+                append(interfaces[i].getGenericName(false, packages, classes));
             }
         }
         append(" {").nl().nl();
@@ -184,28 +184,28 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
     }
  
     @Override
-    public <T> JavaWriter beginConstructor(Collection<T> parameters, Transformer<T,String> transformer) throws IOException {
+    public <T> JavaWriter beginConstructor(Collection<T> parameters, Transformer<T,Parameter> transformer) throws IOException {
         beginLine(PUBLIC + type.getSimpleName()).params(parameters, transformer).append(" {").nl();
         return goIn();        
     }
     
     @Override
-    public JavaWriter beginConstructor(String... parameters) throws IOException{
+    public JavaWriter beginConstructor(Parameter... parameters) throws IOException{
         beginLine(PUBLIC + type.getSimpleName()).params(parameters).append(" {").nl();
         return goIn();
     }
     
     @Override
     public JavaWriter beginInterface(Type type, Type... interfaces) throws IOException {
-        importedPackages.add(type.getPackageName());
-        beginLine(PUBLIC_INTERFACE + type.getGenericName(false, importedPackages, importedClasses));
+        packages.add(type.getPackageName());
+        beginLine(PUBLIC_INTERFACE + type.getGenericName(false, packages, classes));
         if (interfaces.length > 0){
             append(EXTENDS);
             for (int i = 0; i < interfaces.length; i++){
                 if (i > 0){
                     append(COMMA);
                 }
-                append(interfaces[i].getGenericName(false, importedPackages, importedClasses));
+                append(interfaces[i].getGenericName(false, packages, classes));
             }
         }
         append(" {").nl().nl();
@@ -214,28 +214,28 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
         return this;        
     }
     
-    private JavaWriter beginMethod(String modifiers, Type returnType, String methodName, String... args) throws IOException{
-        beginLine(modifiers + returnType + SPACE + methodName).params(args).append(" {").nl();
+    private JavaWriter beginMethod(String modifiers, Type returnType, String methodName, Parameter... args) throws IOException{
+        beginLine(modifiers + returnType.getGenericName(true, packages, classes) + SPACE + methodName).params(args).append(" {").nl();
         return goIn();
     }
     
     @Override
-    public <T> JavaWriter beginPublicMethod(Type returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException {
+    public <T> JavaWriter beginPublicMethod(Type returnType, String methodName, Collection<T> parameters, Transformer<T, Parameter> transformer) throws IOException {
         return beginMethod(PUBLIC, returnType, methodName, transform(parameters, transformer));
     }
 
     @Override
-    public JavaWriter beginPublicMethod(Type returnType, String methodName, String... args) throws IOException{
+    public JavaWriter beginPublicMethod(Type returnType, String methodName, Parameter... args) throws IOException{
         return beginMethod(PUBLIC, returnType, methodName, args);
     }
     
     @Override
-    public <T> JavaWriter beginStaticMethod(Type returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException {
+    public <T> JavaWriter beginStaticMethod(Type returnType, String methodName, Collection<T> parameters, Transformer<T, Parameter> transformer) throws IOException {
         return beginMethod(PUBLIC_STATIC, returnType, methodName, transform(parameters, transformer));
     }
 
     @Override
-    public JavaWriter beginStaticMethod(Type returnType, String methodName, String... args) throws IOException{
+    public JavaWriter beginStaticMethod(Type returnType, String methodName, Parameter... args) throws IOException{
         return beginMethod(PUBLIC_STATIC, returnType, methodName, args);
     }
     
@@ -247,21 +247,21 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
  
     @Override
     public JavaWriter field(Type type, String name) throws IOException {
-        return line(type.getGenericName(false, importedPackages, importedClasses) + SPACE + name + SEMICOLON).nl();
+        return line(type.getGenericName(true, packages, classes) + SPACE + name + SEMICOLON).nl();
     }
 
     private JavaWriter field(String modifier, Type type, String name) throws IOException{
-        return line(modifier + type.getGenericName(false, importedPackages, importedClasses) + SPACE + name + SEMICOLON).nl();
+        return line(modifier + type.getGenericName(true, packages, classes) + SPACE + name + SEMICOLON).nl();
     }
     
     private JavaWriter field(String modifier, Type type, String name, String value) throws IOException{
-        return line(modifier + type.getGenericName(false, importedPackages, importedClasses) + SPACE + name + ASSIGN + value + SEMICOLON).nl();
+        return line(modifier + type.getGenericName(true, packages, classes) + SPACE + name + ASSIGN + value + SEMICOLON).nl();
     }
 
     @Override
     public JavaWriter imports(Class<?>... imports) throws IOException{
         for (Class<?> cl : imports){
-            importedClasses.add(cl.getName());
+            classes.add(cl.getName());
             line(IMPORT + cl.getName() + SEMICOLON);
         }
         nl();
@@ -271,7 +271,7 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
     @Override
     public JavaWriter imports(Package... imports) throws IOException {
         for (Package p : imports){
-            importedPackages.add(p.getName());
+            packages.add(p.getName());
             line(IMPORT + p.getName() + ".*;");
         }
         nl();
@@ -281,7 +281,7 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
     @Override
     public JavaWriter importClasses(String... imports) throws IOException{
         for (String cl : imports){
-            importedClasses.add(cl);
+            classes.add(cl);
             line(IMPORT + cl + SEMICOLON);
         }
         nl();
@@ -291,7 +291,7 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
     @Override
     public JavaWriter importPackages(String... imports) throws IOException {
         for (String p : imports){
-            importedPackages.add(p);
+            packages.add(p);
             line(IMPORT + p + ".*;");
         }
         nl();
@@ -309,28 +309,40 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
 
     @Override
     public JavaWriter packageDecl(String packageName) throws IOException{
-        importedPackages.add(packageName);
+        packages.add(packageName);
         return line(PACKAGE + packageName + SEMICOLON).nl();
     }
     
-    private <T> JavaWriter params(Collection<T> parameters, Transformer<T,String> transformer) throws IOException{
+    private <T> JavaWriter params(Collection<T> parameters, Transformer<T,Parameter> transformer) throws IOException{
         append("(");
         boolean first = true;
         for (T param : parameters){
             if (!first){
                 append(COMMA);
             }
-            append(transformer.transform(param));
+            param(transformer.transform(param));
             first = false;
         }
         append(")");
         return this;
     }
 
-    private JavaWriter params(String... params) throws IOException{
+    private JavaWriter params(Parameter... params) throws IOException{
         append("(");
-        append(StringUtils.join(params, COMMA));
+        for (int i = 0; i < params.length; i++){
+            if (i > 0){
+                append(COMMA);
+            }
+            param(params[i]);
+        }
         append(")");
+        return this;
+    }
+    
+    private JavaWriter param(Parameter parameter) throws IOException{
+        append(parameter.getType().getGenericName(true, packages, classes));
+        append(" ");
+        append(parameter.getName());
         return this;
     }
     
@@ -402,8 +414,8 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
         return line("@SuppressWarnings(\"" + type +"\")");
     }
 
-    private <T> String[] transform(Collection<T> parameters, Transformer<T,String> transformer){
-        String[] rv = new String[parameters.size()];
+    private <T> Parameter[] transform(Collection<T> parameters, Transformer<T,Parameter> transformer){
+        Parameter[] rv = new Parameter[parameters.size()];
         int i = 0; 
         for (T value : parameters){
             rv[i++] = transformer.transform(value);

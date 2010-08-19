@@ -6,7 +6,6 @@
 package com.mysema.codegen;
 
 import static com.mysema.codegen.Symbols.NEWLINE;
-import static com.mysema.codegen.Symbols.SEMICOLON;
 
 import java.io.IOException;
 

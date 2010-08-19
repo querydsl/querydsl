@@ -26,19 +26,21 @@ public class SimpleType implements Type {
     private final List<Type> parameters;
     
     private final boolean primitiveClass, finalClass;
-
-    public SimpleType(Type type, Type... parameters) {
-        this(type.getCategory(), type.getFullName(), type.getPackageName(), type.getSimpleName(), 
-            type.isPrimitive(), type.isFinal(), Arrays.asList(parameters));
-    }
     
+    private Type arrayType, componentType;
+
     public SimpleType(String fullName, String packageName, String simpleName, Type... parameters) {
         this(TypeCategory.SIMPLE, fullName, packageName, simpleName, false, false, Arrays.asList(parameters));
     }
     
-    public SimpleType(TypeCategory typeCategory, String fullName, String packageName, String simpleName, boolean p, boolean f, Type... parameters) {
-        this(typeCategory, fullName, packageName, simpleName, p, f, Arrays
-                .asList(parameters));
+    public SimpleType(Type type, List<Type> parameters) {
+        this(type.getCategory(), type.getFullName(), type.getPackageName(), type.getSimpleName(), 
+            type.isPrimitive(), type.isFinal(), parameters);
+    }
+    
+    public SimpleType(Type type, Type... parameters) {
+        this(type.getCategory(), type.getFullName(), type.getPackageName(), type.getSimpleName(), 
+            type.isPrimitive(), type.isFinal(), Arrays.asList(parameters));
     }
     
     public SimpleType(TypeCategory category, String fullName, String packageName, String simpleName, 
@@ -56,6 +58,11 @@ public class SimpleType implements Type {
         this.finalClass = finalClass;
         this.parameters = parameters;
     }
+    
+    public SimpleType(TypeCategory typeCategory, String fullName, String packageName, String simpleName, boolean p, boolean f, Type... parameters) {
+        this(typeCategory, fullName, packageName, simpleName, p, f, Arrays
+                .asList(parameters));
+    }
 
     @Override
     public Type as(TypeCategory c) {
@@ -68,11 +75,13 @@ public class SimpleType implements Type {
     
     @Override
     public Type asArrayType() {
-        String newFullName = getFullName()+"[]";
-        String newSimpleName = getSimpleName()+"[]";
-        return new SimpleType(TypeCategory.ARRAY, newFullName, getPackageName(), newSimpleName, false, false);
+        if (arrayType == null){
+            String newFullName = getFullName()+"[]";
+            String newSimpleName = getSimpleName()+"[]";
+            arrayType = new SimpleType(TypeCategory.ARRAY, newFullName, getPackageName(), newSimpleName, false, false);    
+        }
+        return arrayType;
     }
-    
 
     @Override
     public boolean equals(Object o){
@@ -85,9 +94,23 @@ public class SimpleType implements Type {
             return false;
         }
     }
-    
+
     public TypeCategory getCategory() {
         return category;
+    }
+    
+    @Override
+    public Type getComponentType() {
+        if (fullName.endsWith("[]")){
+            if (componentType == null){
+                String newFullName = fullName.substring(0, fullName.length()-2);
+                String newSimpleName = simpleName.substring(0, simpleName.length()-2);
+                componentType = new SimpleType(TypeCategory.SIMPLE, newFullName, getPackageName(), newSimpleName, false, false);    
+            }
+            return componentType;
+        }else{
+            return null;
+        }        
     }
     
     @Override
@@ -111,7 +134,7 @@ public class SimpleType implements Type {
             boolean first = true;
             for (Type parameter : parameters){                
                 if (!first){
-                    builder.append(",");
+                    builder.append(", ");
                 }
                 if (parameter == null || parameter.getFullName().equals(fullName)){
                     builder.append("?");
@@ -153,7 +176,7 @@ public class SimpleType implements Type {
     public String getSimpleName() {
         return simpleName;
     }
-
+    
     @Override
     public int hashCode(){
         return fullName.hashCode();
@@ -168,9 +191,10 @@ public class SimpleType implements Type {
     public boolean isPrimitive() {
         return primitiveClass;
     }
-    
+
     public String toString(){
         return getGenericName(true);
     }
+
     
 }

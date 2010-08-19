@@ -23,39 +23,40 @@ import com.mysema.codegen.support.ClassUtils;
  * @param <T>
  */
 @Immutable
-public class ClassType<T> implements Type {
+public class ClassType implements Type {
 
     private final TypeCategory category;
     
-    private final Class<T> javaClass;
+    private final Class<?> javaClass;
     
     private final List<Type> parameters;
     
     @Nullable
     private final Class<?> primitiveClass;
     
+    private Type arrayType, componentType;
 
-    public ClassType(Class<T> javaClass) {
-        this(TypeCategory.SIMPLE, javaClass, null, Collections.<Type>emptyList());
+    public ClassType(Class<?> javaClass, Type... parameters) {
+        this(TypeCategory.SIMPLE, javaClass, null, Arrays.asList(parameters));
     }
     
-    public ClassType(TypeCategory category, Class<T> javaClass, List<Type> parameters) {
-        this(category, javaClass, null, parameters);
+    public ClassType(TypeCategory category, Class<?> javaClass, Class<?> primitiveClass) {
+        this(category, javaClass, primitiveClass, Collections.<Type>emptyList());
     }    
     
-    public ClassType(TypeCategory category, Class<T> clazz, Type... parameters) {
-        this(category, clazz, null, Arrays.asList(parameters));
-    }
-    
-    public ClassType(TypeCategory category, Class<T> javaClass, Class<?> primitiveClass) {
-        this(category, javaClass, primitiveClass, Collections.<Type>emptyList());
-    }
-        
-    public ClassType(TypeCategory category, Class<T> javaClass, @Nullable Class<?> primitiveClass, List<Type> parameters) {
+    public ClassType(TypeCategory category, Class<?> javaClass, @Nullable Class<?> primitiveClass, List<Type> parameters) {
         this.category = category;
         this.javaClass = javaClass;
         this.primitiveClass = primitiveClass;
         this.parameters = parameters;
+    }
+    
+    public ClassType(TypeCategory category, Class<?> javaClass, List<Type> parameters) {
+        this(category, javaClass, null, parameters);
+    }
+        
+    public ClassType(TypeCategory category, Class<?> clazz, Type... parameters) {
+        this(category, clazz, null, Arrays.asList(parameters));
     }
         
     @Override
@@ -63,17 +64,19 @@ public class ClassType<T> implements Type {
         if (category == c){
             return this;
         }else{
-            return new ClassType<T>(c, javaClass);
+            return new ClassType(c, javaClass);
         }
     }
 
     @Override
     public Type asArrayType() {
-        String fullName = javaClass.getName()+"[]";
-        String simpleName = javaClass.getSimpleName()+"[]";
-        return new SimpleType(TypeCategory.ARRAY, fullName, getPackageName(), simpleName, false, false);
+        if (arrayType == null){
+            String fullName = javaClass.getName()+"[]";
+            String simpleName = javaClass.getSimpleName()+"[]";
+            arrayType = new SimpleType(TypeCategory.ARRAY, fullName, getPackageName(), simpleName, false, false);    
+        }
+        return arrayType;
     }
-    
 
     @Override
     public boolean equals(Object o){
@@ -86,9 +89,18 @@ public class ClassType<T> implements Type {
             return false;
         }
     }
-    
+
     public TypeCategory getCategory() {
         return category;
+    }
+    
+    @Override
+    public Type getComponentType() {
+        Class<?> clazz = javaClass.getComponentType();
+        if (clazz != null && componentType == null){
+            componentType = new ClassType(TypeCategory.SIMPLE, clazz);
+        }
+        return componentType;
     }
     
     @Override
@@ -112,7 +124,7 @@ public class ClassType<T> implements Type {
             boolean first = true;
             for (Type parameter : parameters){                
                 if (!first){
-                    builder.append(",");
+                    builder.append(", ");
                 }
                 if (parameter == null || parameter.getFullName().equals(getFullName())){
                     builder.append("?");
@@ -126,13 +138,17 @@ public class ClassType<T> implements Type {
         }
     }
 
-    public Class<T> getJavaClass() {
+    public Class<?> getJavaClass() {
         return javaClass;
     }
 
     @Override
     public String getPackageName() {
-        return javaClass.getPackage().getName();
+        if (javaClass.getPackage() != null){
+            return javaClass.getPackage().getName();
+        }else{
+            return "";
+        }
     }
 
     @Override
@@ -154,17 +170,17 @@ public class ClassType<T> implements Type {
     public String getSimpleName() {
         return javaClass.getSimpleName();
     }
-    
+
     @Override
     public int hashCode(){
         return javaClass.getName().hashCode();
     }
-
+    
     @Override
     public boolean isFinal() {
         return Modifier.isFinal(javaClass.getModifiers());
     }
-    
+
     @Override
     public boolean isPrimitive() {
 //        return javaClass.isPrimitive();

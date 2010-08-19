@@ -36,6 +36,11 @@ public class TypeAdapter implements Type{
     }
 
     @Override
+    public Type getComponentType() {
+        return type.getComponentType();
+    }
+
+    @Override
     public boolean equals(Object o){
         return type.equals(o);
     }

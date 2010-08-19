@@ -22,7 +22,7 @@ public class TypeTest {
 
     private Set<String> emptyStrings = Collections.<String>emptySet();
         
-    private ClassType<Locale> locale = new ClassType<Locale>(TypeCategory.SIMPLE,Locale.class);
+    private ClassType locale = new ClassType(TypeCategory.SIMPLE,Locale.class);
     
     private Type string = Types.STRING;
     
@@ -30,11 +30,11 @@ public class TypeTest {
     
     private Type locale2 = new SimpleType(locale);
     
-    private Type stringList = new ClassType<List>(TypeCategory.LIST, List.class, Types.STRING);
+    private Type stringList = new ClassType(TypeCategory.LIST, List.class, Types.STRING);
     
     private Type stringList2 = new SimpleType(Types.LIST, Types.STRING);
     
-    private Type stringMap = new ClassType<Map>(TypeCategory.MAP, Map.class, Types.STRING, Types.STRING);
+    private Type stringMap = new ClassType(TypeCategory.MAP, Map.class, Types.STRING, Types.STRING);
     
     private Type stringMap2 = new SimpleType(Types.MAP, Types.STRING, Types.STRING);
    
@@ -63,8 +63,8 @@ public class TypeTest {
         assertEquals("java.util.Locale",locale2.getGenericName(true));
         assertEquals("java.util.List<String>",stringList.getGenericName(true));
         assertEquals("java.util.List<String>",stringList2.getGenericName(true));
-        assertEquals("java.util.Map<String,String>", stringMap.getGenericName(true));
-        assertEquals("java.util.Map<String,String>", stringMap2.getGenericName(true));
+        assertEquals("java.util.Map<String, String>", stringMap.getGenericName(true));
+        assertEquals("java.util.Map<String, String>", stringMap2.getGenericName(true));
         
         assertEquals("String", string.getGenericName(true));
         assertEquals("String", string2.getGenericName(true));

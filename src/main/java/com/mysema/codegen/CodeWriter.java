@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.collections15.Transformer;
 
+import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
 
 /**
@@ -31,21 +32,21 @@ public interface CodeWriter extends Appendable{
 
     CodeWriter beginClass(Type type, @Nullable Type superClass, Type... interfaces) throws IOException;
 
-    <T> CodeWriter beginConstructor(Collection<T> params, Transformer<T, String> transformer) throws IOException;
+    <T> CodeWriter beginConstructor(Collection<T> params, Transformer<T, Parameter> transformer) throws IOException;
 
-    CodeWriter beginConstructor(String... params) throws IOException;
+    CodeWriter beginConstructor(Parameter... params) throws IOException;
 
     CodeWriter beginInterface(Type type, Type... interfaces) throws IOException;
 
     CodeWriter beginLine(String... segments) throws IOException;
 
-    <T> CodeWriter beginPublicMethod(Type returnType, String methodName, Collection<T> parameters, Transformer<T, String> transformer) throws IOException;
+    <T> CodeWriter beginPublicMethod(Type returnType, String methodName, Collection<T> parameters, Transformer<T, Parameter> transformer) throws IOException;
 
-    CodeWriter beginPublicMethod(Type returnType, String methodName, String... args) throws IOException;
+    CodeWriter beginPublicMethod(Type returnType, String methodName, Parameter... args) throws IOException;
 
-    <T> CodeWriter beginStaticMethod(Type type, String name, Collection<T> params, Transformer<T, String> transformer) throws IOException;
+    <T> CodeWriter beginStaticMethod(Type type, String name, Collection<T> params, Transformer<T, Parameter> transformer) throws IOException;
 
-    CodeWriter beginStaticMethod(Type returnType, String methodName, String... args) throws IOException;
+    CodeWriter beginStaticMethod(Type returnType, String methodName, Parameter... args) throws IOException;
 
     CodeWriter end() throws IOException;
 

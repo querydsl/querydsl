@@ -19,6 +19,9 @@ public interface Type {
     
     Type asArrayType();
     
+    @Nullable
+    Type getComponentType();
+    
     TypeCategory getCategory();
     
     String getFullName();
