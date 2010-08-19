@@ -28,6 +28,7 @@ import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.support.ClassUtils;
 
 
 
@@ -74,8 +75,7 @@ public class EvaluatorFactory {
         }
         
         for (Map.Entry<String,Object> entry : constants.entrySet()){
-//            String className = ClassUtils.getName(ClassUtils.normalize(entry.getValue().getClass()));
-            Type type = new ClassType(TypeCategory.SIMPLE, entry.getValue().getClass());
+            Type type = new ClassType(TypeCategory.SIMPLE, ClassUtils.normalize(entry.getValue().getClass()));
             javaw.publicField(type, entry.getKey());
         }
 
