@@ -57,7 +57,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     private boolean unique;
 
     private BooleanBuilder where = new BooleanBuilder();
-    
+
     private Set<QueryFlag> flags = new LinkedHashSet<QueryFlag>();
 
     @Override

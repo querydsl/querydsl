@@ -34,7 +34,7 @@ public final class BooleanBuilder extends EBoolean implements Cloneable, Operati
     public BooleanBuilder() {  }
 
     public BooleanBuilder(EBoolean initial){
-    expr = initial;
+        expr = initial;
     }
 
     @Override
@@ -103,13 +103,13 @@ public final class BooleanBuilder extends EBoolean implements Cloneable, Operati
 
     @Override
     public List<Expr<?>> getArgs() {
-    return Collections.<Expr<?>>singletonList(expr);
+        return Collections.<Expr<?>>singletonList(expr);
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public Operator<? super Boolean> getOperator() {
-    return (Operator)PathType.DELEGATE;
+        return (Operator)PathType.DELEGATE;
     }
 
     @Nullable
