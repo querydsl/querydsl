@@ -23,7 +23,6 @@ import com.mysema.query.types.expr.EBoolean;
  *
  * @author tiwe
  */
-// TODO : rename to QueryModel in Querydsl 2.0
 public interface QueryMetadata extends Serializable {
 
     /**

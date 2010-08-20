@@ -8,18 +8,28 @@ package com.mysema.query;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
 
 import org.junit.Test;
 
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.types.path.PString;
+import com.mysema.util.ReflectionUtils;
 
 public class DefaultQueryMetadataTest {
 
@@ -34,6 +44,7 @@ public class DefaultQueryMetadataTest {
         metadata.addGroupBy(expr);
         metadata.addHaving(expr.isEmpty());
         metadata.addJoin(JoinType.DEFAULT, expr);
+        metadata.getJoins().get(0).addFlag(new JoinFlag(""));
         metadata.addJoinCondition(expr.isEmpty());
         metadata.addOrderBy(expr.asc());
         metadata.addProjection(expr);
@@ -60,6 +71,36 @@ public class DefaultQueryMetadataTest {
         assertEquals(metadata.getParams(),    metadata2.getParams());
         assertEquals(metadata.getProjection(),metadata2.getProjection());
         assertEquals(metadata.getWhere(),     metadata2.getWhere());
+    }
+    
+    @Test
+    public void testFullySerizable(){
+        Set<Class<?>> checked = new HashSet<Class<?>>();
+        checked.addAll(Arrays.<Class<?>>asList(List.class, Set.class, Map.class, Class.class, String.class, Object.class));
+        Stack<Class<?>> classes = new Stack<Class<?>>();
+        classes.add(DefaultQueryMetadata.class);
+        while (!classes.isEmpty()){            
+            Class<?> clazz = classes.pop();
+            checked.add(clazz);
+            if (!Serializable.class.isAssignableFrom(clazz) && !clazz.isPrimitive()){                
+                fail(clazz.getName() + " is not serializable");
+            }            
+            for (Field field : clazz.getDeclaredFields()){
+                Set<Class<?>> types = new HashSet<Class<?>>(3);
+                types.add(field.getType());
+                if (field.getType().getComponentType() != null){
+                    types.add(field.getType().getComponentType());
+                }
+                if (Collection.class.isAssignableFrom(field.getType())){
+                    types.add(ReflectionUtils.getTypeParameter(field.getGenericType(), 0)); 
+                }else if (Map.class.isAssignableFrom(field.getType())){
+                    types.add(ReflectionUtils.getTypeParameter(field.getGenericType(), 0));
+                    types.add(ReflectionUtils.getTypeParameter(field.getGenericType(), 1));
+                }
+                types.removeAll(checked);
+                classes.addAll(types);
+            }
+        }
     }
     
     @Test

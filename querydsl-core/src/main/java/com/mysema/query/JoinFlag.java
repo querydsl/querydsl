@@ -5,6 +5,8 @@
  */
 package com.mysema.query;
 
+import java.io.Serializable;
+
 import net.jcip.annotations.Immutable;
 
 import com.mysema.query.types.Expr;
@@ -17,7 +19,9 @@ import com.mysema.query.types.custom.CString;
  *
  */
 @Immutable
-public class JoinFlag {
+public class JoinFlag implements Serializable{
+    
+    private static final long serialVersionUID = -688265393547206465L;
     
     private final Expr<?> flag;
     

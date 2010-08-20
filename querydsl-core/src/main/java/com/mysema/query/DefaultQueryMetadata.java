@@ -30,7 +30,6 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
  *
  * @author tiwe
  */
-//TODO : rename to DefaultQueryModel in Querydsl 2.0
 public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     private static final long serialVersionUID = 317736313966701232L;
@@ -52,6 +51,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     private List<Expr<?>> projection = new ArrayList<Expr<?>>();
 
+    // NOTE : this is not necessarily serializable
     private Map<Param<?>,Object> params = new HashMap<Param<?>,Object>();
 
     private boolean unique;
