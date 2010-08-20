@@ -1,0 +1,316 @@
+    <sect1>
+      <title>Configuration</title>
+      
+    <sect2>
+      <title>Path initialization</title>
+    
+      <para>
+      By default Querydsl initializes only direct reference properties. In cases where longer initialization paths
+      are required, these have to be annotated in the domain types via com.mysema.query.annotations.QueryInit usage.
+      QueryInit is used on properties where deep initializations are needed. The following example demonstrates the
+      usage.       
+      </para>
+      
+      <programlisting language="java"><![CDATA[
+@Entity      
+class Event {
+    @QueryInit("customer")
+    Account account;
+}      
+
+@Entity
+class Account{
+    Customer customer;    
+}
+
+@Entity
+class Customer{
+    String name;
+    // ...
+}
+]]></programlisting>      
+    
+    <para>
+    This example enforces the initialization of the account.customer path, when an Event path is initialized
+    as a root path / variable. The path initialization format supports wildcards as well, e.g. "customer.*" or just "*".
+    </para>
+    
+    <para>
+    The declarative path initialization replaces the manual one, which required the entity fields to be non-final. The
+    declarative format has the benefit to be applied to all top level instances of a Query type and to enable the usage
+    of final entity fields. 
+    </para>
+    
+    <para>
+    Declarative path initialization is the preferred initialization strategy, but manual initialization can be activated
+    via the QuerydslConfig annotation, which is described below.
+    </para>
+    
+    </sect2>
+    
+    <sect2>
+      <title>Customization of serialization</title>
+      
+      <para>
+      The serialization of Querydsl can be customized via QuerydslConfig annotations on packages and types. They customize the 
+      serialization of the annotated package or type.
+      </para>
+      
+      <para>
+      The serialization options are 
+      <emphasis>entityAccessors</emphasis> to generate accessor methods for entity paths instead of public final fields (default : false)), 
+      <emphasis>listAccessors</emphasis> to generate listProperty(int index) style methods (default : false), 
+      <emphasis>mapAccessors</emphasis> to generate mapProperty(Key key) style accessor methods (default : false) and
+	  <emphasis>createDefaultVariable</emphasis> to generate the default variable (default : true).
+      </para>
+	  
+	  <para>Examples</para>
+	  
+	  <para>Customization of Entity type serialization</para>
+	  
+	  <programlisting language="java"><![CDATA[
+@QuerydslConfig(entityAccessors=true)
+@Entity
+public class User {
+	//...
+}  	  
+]]></programlisting>
+
+    <para>Customization of package content</para>
+	
+     <programlisting language="java"><![CDATA[
+@QuerydslConfig(listAccessors=true)
+package com.mysema.query.domain.rel;
+
+import com.mysema.query.annotations.QuerydslConfig;
+]]></programlisting>
+
+    <para>
+    If you want to customize the serializer configuration globally, you can do this via the APT options 
+	<emphasis>querydsl.entityAccessors</emphasis>, 
+	<emphasis>querydsl.listAccessors</emphasis>, 
+	<emphasis>querydsl.mapAccessors</emphasis> and
+	<emphasis>querydsl.createDefaultVariable</emphasis>.
+	</para>
+    
+	<para>Using the Maven APT plugin this works for example like this : </para>
+	
+    <programlisting language="xml"><![CDATA[
+<project>
+  <build>
+  <plugins>
+    ...
+    <plugin>
+      <groupId>com.mysema.maven</groupId>
+      <artifactId>maven-apt-plugin</artifactId>
+      <version>0.3.2</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>process</goal>
+          </goals>
+          <configuration>
+            <outputDirectory>target/generated-sources/java</outputDirectory>
+            <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+            <options>
+              <querydsl.entityAccessors>true</querydsl.entityAccessors>
+            </options>			
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+    ...
+  </plugins>
+  </build>
+</project>
+]]></programlisting>	
+	
+	
+    </sect2>
+    
+    <sect2 id="custom_types">
+      <title>Custom type mappings</title>
+      
+      <para>
+      Custom type mappings can be used on properties to override the derived Path type. This can be useful for example in cases where
+      comparison and String operations should be blocked on certain String paths or Date / Time support for custom
+      types needs to be added. Support for Date / Time types of the Joda time API and JDK (java.util.Date, Calendar and subtypes) 
+      is built in, but other APIs might need to be supported using this feature.
+      </para>
+      
+      <para>The following example demonstrates the usage :</para>
+      
+      <programlisting language="java"><![CDATA[
+@Entity      
+public class MyEntity{      
+    @QueryType(PropertyType.SIMPLE)
+    public String stringAsSimple;
+        
+    @QueryType(PropertyType.COMPARABLE)
+    public String stringAsComparable;
+        
+    @QueryType(PropertyType.NONE)
+    public String stringNotInQuerydsl;    
+}        
+]]></programlisting>          
+    
+      <para>The value PropertyType.NONE can be used to skip a property in the Querydsl query type generation. This case is different
+      from @Transient or @QueryTransient annotated properties, where properties are not persisted. PropertyType.NONE just omits the
+      property from the Querydsl query type.</para>
+    
+    </sect2>      
+
+    <sect2>
+    <title>Custom methods in query types</title>
+  
+    <para>
+    Querydsl provides the possibility to annotate methods for mirroring in query types. Methods can either be annotated 
+    directly in the context of the class where they belong or in query extension interfaces, if the target class is only available for
+    annotation.
+    </para>
+  
+    <para>Example 1</para>
+    
+<programlisting language="java"><![CDATA[    
+public class Point{
+  // ...   
+}
+
+@QueryExtensions(Point.class)
+public interface PointOperations {
+
+   @QueryMethod("geo_distance({0}, {1})")
+   int geoDistance(Point otherPoint);
+
+}    
+]]></programlisting>
+
+    <para>The first example describes indirect annotation via QueryExtensions usage. Let's assume that Point is a class of
+    an external library which has to be used as such without the possibility of customization in source form.</para>
+    
+    <para>To make a geoDistance(Point) method available in the Querydsl query type for Point, a query extension interface is used.
+    Via the QueryExtensions annotation the interface is bound to the Point class and via the QueryMethod annotation the geoDistance method
+    is declared to be mirrored into the Point query type with a serialization pattern of "geo_distance({0}, {1})".</para>
+    
+    <para>The serialization patterns of query methods have the host object itself always as the first argument and the method parameters
+    as further arguments.</para>
+    
+    <para>Example 2</para>
+    
+<programlisting language="java"><![CDATA[
+public class Point{
+
+    @QueryMethod("geo_distance({0}, {1})")
+    int geoDistance(Point otherPoint){
+       // dummy implementation
+        return 0;
+    }
+   
+}
+]]></programlisting>    
+
+  <para>The second example features the same use case as in the first example, but this time the Point class is annotated directly.
+  This approach is feasible, if the related domain type is available for annotation and APT post processing.</para>
+  
+    </sect2>    
+	
+	<sect2>
+		<title>Delegate methods</title>
+		
+	<para>Instead of custom methods with serialization templates, static delegates can be used.</para>
+	
+	<para>To declare a static method as a delegate method add the QueryDelegate annotation with the corresponding domain type as a value and provide a method 
+	signature that takes the corresponding Querydsl query type as the first argument.</para>  
+	
+	
+	<para>Here is a simple example from a unit test: </para>
+	
+<programlisting language="java"><![CDATA[   
+    @QueryEntity
+    public static class User{
+       
+        String name;
+       
+        User manager;
+       
+    }
+   
+    @QueryDelegate(User.class)
+    public static EBoolean isManagedBy(QUser user, User other){
+        return user.manager.eq(other);
+    }
+   
+]]></programlisting>    	
+
+
+	<para>And the generated methods in the QUser query type :</para>
+
+<programlisting language="java"><![CDATA[   
+    public EBoolean isManagedBy(Qser other) {
+        return com.mysema.query.domain.DelegateTest.isManagedBy(this, other);
+    }
+	
+]]></programlisting>    		
+		
+	<para>Delegate methods can also be used to extend built-in types. Here are some examples </para>
+
+<programlisting language="java"><![CDATA[   	
+public class QueryExtensions {
+
+    @QueryDelegate(Date.class)
+    public static EBoolean inPeriod(PDate<Date> date, Pair<Date,Date> period){
+        return date.goe(period.getFirst()).and(date.loe(period.getSecond()));
+    }
+
+    @QueryDelegate(Timestamp.class)
+    public static EBoolean inDatePeriod(PDateTime<Timestamp> timestamp, Pair<Date,Date> period){
+        Timestamp first = new Timestamp(DateUtils.truncate(period.getFirst(), Calendar.DAY_OF_MONTH).getTime());
+        Calendar second = Calendar.getInstance();
+        second.setTime(DateUtils.truncate(period.getSecond(), Calendar.DAY_OF_MONTH));
+        second.add(1, Calendar.DAY_OF_MONTH);
+        return timestamp.goe(first).and(timestamp.lt(new Timestamp(second.getTimeInMillis())));
+    }
+    
+}    
+]]></programlisting>    	  
+
+   <para>When delegate methods are declared for builtin types then subclasses with the proper delegate method usages are created : </para>
+   
+<programlisting language="java"><![CDATA[      
+public class QDate extends PDate<java.sql.Date> {
+
+    public QDate(BeanPath<? extends java.sql.Date> entity) {
+        super(entity.getType(), entity.getMetadata());
+    }
+
+    public QDate(PathMetadata<?> metadata) {
+        super(java.sql.Date.class, metadata);
+    }
+
+    public EBoolean inPeriod(com.mysema.commons.lang.Pair<java.sql.Date, java.sql.Date> period) {
+        return QueryExtensions.inPeriod(this, period);
+    }
+
+}
+
+public class QTimestamp extends PDateTime<java.sql.Timestamp> {
+
+    public QTimestamp(BeanPath<? extends java.sql.Timestamp> entity) {
+        super(entity.getType(), entity.getMetadata());
+    }
+
+    public QTimestamp(PathMetadata<?> metadata) {
+        super(java.sql.Timestamp.class, metadata);
+    }
+
+    public EBoolean inDatePeriod(com.mysema.commons.lang.Pair<java.sql.Date, java.sql.Date> period) {
+        return QueryExtensions.inDatePeriod(this, period);
+    }
+
+
+}
+]]></programlisting>    
+		
+	</sect2>
+    
+    </sect1>

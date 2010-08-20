@@ -50,8 +50,6 @@
     <xi:include href="content/tutorials.xml"/>
     
     <xi:include href="content/general.xml"/>                
-    <xi:include href="content/configuration.xml"/>
-    <xi:include href="content/best-practices.xml"/>
     <xi:include href="content/troubleshooting.xml"/>
     
 </book>

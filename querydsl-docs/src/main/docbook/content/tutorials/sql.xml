@@ -248,15 +248,115 @@ GROUP BY c.last_name
   
     <title>Query extension support</title>
     
-    <para>TODO</para>
-  
+    <para>Custom query extensions to support engine specific syntax can be created by subclassing AbstractSQLQuery and adding flagging methods like 
+    in the given MySQLQuery example : </para>
+    
+<programlisting language="java"><![CDATA[          
+public class MySQLQuery extends AbstractSQLQuery<MySQLQuery>{
+    
+    public MySQLQuery(Connection conn) {
+        this(conn, new MySQLTemplates(), new DefaultQueryMetadata());
+    }
+    
+    public MySQLQuery(Connection conn, SQLTemplates templates) {
+        this(conn, templates, new DefaultQueryMetadata());
+    }
+    
+    protected MySQLQuery(Connection conn, SQLTemplates templates, QueryMetadata metadata) {
+        super(conn, new Configuration(templates), metadata);
+    }
+    
+    public MySQLQuery bigResult(){
+        return addFlag(Position.AFTER_SELECT, "SQL_BIG_RESULT ");
+    }
+    
+    public MySQLQuery bufferResult(){
+        return addFlag(Position.AFTER_SELECT, "SQL_BUFFER_RESULT ");
+    }
+ 
+ 
+    // ...   
+}        
+]]></programlisting>   
+
+  <para>The flags are custom SQL snippets that can be inserted at specific points in the serialization. 
+  The supported positions are the enums of the com.mysema.query.QueryFlag.Position enum class.</para>
+    
   </sect2>
   
   <sect2>
   
     <title>Using DDL commands</title>
     
-    <para>TODO</para>
+    <para>CREATE TABLE commands can be used in fluent form via the CreateTableClause. Here are some examples : </para>
+    
+<programlisting language="java"><![CDATA[      
+new CreateTableClause(conn, templates, "language")
+	.column("id", Integer.class).notNull()
+	.column("text", String.class).size(256).notNull()
+	.primaryKey("PK_LANGUAGE","id")
+	.execute();
+
+new CreateTableClause(conn, templates, "symbol")
+	.column("id", Long.class).notNull()
+	.column("lexical", String.class).size(1024).notNull()
+	.column("datatype", Long.class)
+	.column("lang", Integer.class)
+	.column("intval",Long.class)
+	.column("floatval",Double.class)
+	.column("datetimeval",Timestamp.class)
+	.primaryKey("PK_SYMBOL","id")
+	.foreignKey("FK_LANG","lang").references("language","id")
+	.execute();
+
+new CreateTableClause(conn, templates, "statement")
+	.column("model", Long.class)
+	.column("subject", Long.class).notNull()
+	.column("predicate", Long.class).notNull()
+	.column("object", Long.class).notNull()
+	.foreignKey("FK_MODEL","model").references("symbol","id")
+	.foreignKey("FK_SUBJECT","subject").references("symbol","id")
+	.foreignKey("FK_PREDICATE","predicate").references("symbol","id")
+	.foreignKey("FK_OBJECT","object").references("symbol","id")
+	.execute();    
+]]></programlisting>        
+  
+  <para>The constructor of CreateTableClause takes the connection, the templates and the table name. The rest is declared via
+  column, primaryKey and foreignKey invocations. 
+  </para>
+  
+  <para>Here are the corresponding CREATE TABLE clauses as they are executed.</para>
+  
+<programlisting language="sql"><![CDATA[      
+ CREATE TABLE language (
+  id INTEGER NOT NULL,
+  text VARCHAR(256) NOT NULL,
+  CONSTRAINT PK_LANGUAGE PRIMARY KEY(id)
+)
+
+ CREATE TABLE symbol (
+  id BIGINT NOT NULL,
+  lexical VARCHAR(1024) NOT NULL,
+  datatype BIGINT,
+  lang INTEGER,
+  intval BIGINT,
+  floatval DOUBLE,
+  datetimeval TIMESTAMP,
+  CONSTRAINT PK_SYMBOL PRIMARY KEY(id),
+  CONSTRAINT FK_LANG FOREIGN KEY(lang) REFERENCES language(id)
+)
+
+ CREATE TABLE statement (
+  model BIGINT,
+  subject BIGINT NOT NULL,
+  predicate BIGINT NOT NULL,
+  object BIGINT NOT NULL,
+  CONSTRAINT FK_MODEL FOREIGN KEY(model) REFERENCES symbol(id),
+  CONSTRAINT FK_SUBJECT FOREIGN KEY(subject) REFERENCES symbol(id),
+  CONSTRAINT FK_PREDICATE FOREIGN KEY(predicate) REFERENCES symbol(id),
+  CONSTRAINT FK_OBJECT FOREIGN KEY(object) REFERENCES symbol(id)
+)  
+]]></programlisting>   
   
   </sect2>
   
