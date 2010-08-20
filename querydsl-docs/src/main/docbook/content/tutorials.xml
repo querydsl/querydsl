@@ -1,0 +1,18 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<chapter id="tutorials" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <title>Tutorials</title>
+    
+    <para>
+    Instead of a general Getting started guide we provide integration
+    guides for the main backends of Querydsl.
+    </para>
+    
+    <xi:include href="tutorials/jdo.xml" />
+    <xi:include href="tutorials/jpa.xml" />
+    <xi:include href="tutorials/collections.xml" />
+    <xi:include href="tutorials/sql.xml" />
+    <xi:include href="tutorials/lucene.xml" />
+    <xi:include href="tutorials/hibernate-search.xml" />
+    
+</chapter>    

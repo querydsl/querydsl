@@ -47,13 +47,12 @@
     <xi:include href="content/preface.xml"/>    
     
     <xi:include href="content/intro.xml" />
-    <xi:include href="content/getting-started.xml"/>
-    <xi:include href="content/advanced.xml"/>                
+    <xi:include href="content/tutorials.xml"/>
+    
+    <xi:include href="content/general.xml"/>                
+    <xi:include href="content/configuration.xml"/>
+    <xi:include href="content/best-practices.xml"/>
     <xi:include href="content/troubleshooting.xml"/>
     
-    <!-- 
-    <xi:include href="content/internals.xml"/>
-     -->
-
 </book>
 
