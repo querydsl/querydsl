@@ -80,18 +80,22 @@ public class DefaultQueryMetadataTest {
     @Test
     public void testFullySerizable(){
         Set<Class<?>> checked = new HashSet<Class<?>>();
-        checked.addAll(Arrays.<Class<?>>asList(List.class, Set.class, Map.class, Class.class, String.class, Object.class));
+        checked.addAll(Arrays.<Class<?>>asList(List.class, Set.class, Map.class, Object.class, String.class, Class.class));
         Stack<Class<?>> classes = new Stack<Class<?>>();
         classes.addAll(Arrays.<Class<?>>asList(PNumber.class, ONumber.class, CNumber.class, BeanPath.class, DefaultQueryMetadata.class));
         while (!classes.isEmpty()){            
             Class<?> clazz = classes.pop();
             checked.add(clazz);
-            if (!Serializable.class.isAssignableFrom(clazz) && !clazz.isPrimitive()){                
+            if (!Serializable.class.isAssignableFrom(clazz) && !clazz.isPrimitive()){     
+                System.out.println(clazz.getName());
                 fail(clazz.getName() + " is not serializable");
             }            
             for (Field field : clazz.getDeclaredFields()){
                 Set<Class<?>> types = new HashSet<Class<?>>(3);
                 types.add(field.getType());
+                if (field.getType().getSuperclass() != null){
+                    types.add(field.getType().getSuperclass());    
+                }                
                 if (field.getType().getComponentType() != null){
                     types.add(field.getType().getComponentType());
                 }
