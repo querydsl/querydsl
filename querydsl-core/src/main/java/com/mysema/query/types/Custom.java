@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ import java.util.List;
  * @author tiwe
  * @version $Id$
  */
-public interface Custom<T> {
+public interface Custom<T> extends Serializable{
 
     /**
      * Cast to {@link Expr}

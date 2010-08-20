@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types;
 
+import java.io.Serializable;
 import java.lang.reflect.AnnotatedElement;
 
 import com.mysema.query.types.expr.EBoolean;
@@ -15,7 +16,7 @@ import com.mysema.query.types.expr.EBoolean;
  * @author tiwe
  * @version $Id$
  */
-public interface Path<C> {
+public interface Path<C>  extends Serializable {
     /**
      * Cast to {@link Expr}
      *
