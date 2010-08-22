@@ -10,7 +10,7 @@
 		<title>Creating the Querydsl query types</title>
 		<para>
 			See
-			<link linkend="hql_integration">Querying JPA/Hibernate sources</link>
+			<link linkend="jpa_integration">Querying JPA/Hibernate sources</link>
 			for instructions on how to create query types.
 		</para>
 	</sect2>
