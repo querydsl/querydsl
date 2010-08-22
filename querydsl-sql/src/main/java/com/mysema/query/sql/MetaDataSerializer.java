@@ -142,19 +142,19 @@ public class MetaDataSerializer extends EntitySerializer {
 
         // primary keys
         Collection<PrimaryKeyData> primaryKeys = (Collection<PrimaryKeyData>) model.getData().get(PrimaryKeyData.class);
+        writer.annotation(Override.class);
+        writer.beginPublicMethod(new ClassType(PrimaryKey.class, model), "getPrimaryKey");
         if (primaryKeys != null && !primaryKeys.isEmpty()){
             PrimaryKeyData primaryKey = primaryKeys.iterator().next();
-            writer.beginPublicMethod(new ClassType(PrimaryKey.class, model), "getPrimaryKey");
-            writer.line("return ", namingStrategy.getPropertyNameForPrimaryKey(primaryKey.getName(), model), ";");
-            writer.end();
+            writer.line("return ", namingStrategy.getPropertyNameForPrimaryKey(primaryKey.getName(), model), ";");            
         }else{
-            writer.beginPublicMethod(new ClassType(PrimaryKey.class, model), "getPrimaryKey");
             writer.line("return null;");
-            writer.end();
         }
+        writer.end();
 
         // foreign keys
         Collection<ForeignKeyData> foreignKeys = (Collection<ForeignKeyData>) model.getData().get(ForeignKeyData.class);
+        writer.annotation(Override.class);
         writer.beginPublicMethod(new SimpleType(Types.LIST, FOREIGNKEY_TYPE), "getForeignKeys");
         if (foreignKeys != null && !foreignKeys.isEmpty()){
             StringBuilder builder = new StringBuilder();
@@ -166,13 +166,14 @@ public class MetaDataSerializer extends EntitySerializer {
             }
             writer.line("return Arrays.<ForeignKey<?>>asList(",builder.toString(),");");
         }else{
-            writer.line("return Collections.<ForeignKey<?>>emptyList();");
+            writer.line("return Collections.emptyList();");
         }
         writer.end();
         
         // inverse foreign keys
         Collection<InverseForeignKeyData> inverseForeignKeys = (Collection<InverseForeignKeyData>)
             model.getData().get(InverseForeignKeyData.class);
+        writer.annotation(Override.class);
         writer.beginPublicMethod(new SimpleType(Types.LIST, FOREIGNKEY_TYPE), "getInverseForeignKeys");
         if (inverseForeignKeys != null && !inverseForeignKeys.isEmpty()){
             StringBuilder builder = new StringBuilder();
@@ -184,7 +185,7 @@ public class MetaDataSerializer extends EntitySerializer {
             }
             writer.line("return Arrays.<ForeignKey<?>>asList(",builder.toString(),");");
         }else{
-            writer.line("return Collections.<ForeignKey<?>>emptyList();");
+            writer.line("return Collections.emptyList();");
         }
         writer.end();
         
