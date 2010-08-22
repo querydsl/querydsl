@@ -7,10 +7,12 @@ package com.mysema.query.support;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static com.mysema.query.alias.Alias.*;
 
 import org.junit.Test;
 
 import com.mysema.query.JoinExpression;
+import com.mysema.query.alias.Alias;
 import com.mysema.query.domain.QCommonPersistence;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PathMetadataFactory;
@@ -40,6 +42,54 @@ public class QueryMixinTest {
         JoinExpression je = mixin.getMetadata().getJoins().get(0);
         assertEquals(entity, je.getTarget());
         assertNull(je.getCondition());
+    }
+    
+    @Test
+    public void applyJoins(){
+        DummyEntity e = Alias.alias(DummyEntity.class);
+        DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");
+        
+        // inner join
+        mixin.innerJoin($(e));
+        mixin.innerJoin($(e.getOther()),$(e2));
+        mixin.innerJoin($(e.getList()),$(e2));
+        mixin.innerJoin($(e.getList()));
+        mixin.innerJoin($(e.getMap()),$(e2));
+        mixin.innerJoin($(e.getMap()));
+        
+        // join
+        mixin.join($(e));
+        mixin.join($(e.getOther()),$(e2));
+        mixin.join($(e.getList()),$(e2));
+        mixin.join($(e.getList()));
+        mixin.join($(e.getMap()),$(e2));
+        mixin.join($(e.getMap()));
+        
+        // left join
+        mixin.leftJoin($(e));
+        mixin.leftJoin($(e.getOther()),$(e2));
+        mixin.leftJoin($(e.getList()),$(e2));
+        mixin.leftJoin($(e.getList()));
+        mixin.leftJoin($(e.getMap()),$(e2));
+        mixin.leftJoin($(e.getMap()));
+        
+        // right join
+        mixin.rightJoin($(e));
+        mixin.rightJoin($(e.getOther()),$(e2));
+        mixin.rightJoin($(e.getList()),$(e2));
+        mixin.rightJoin($(e.getList()));
+        mixin.rightJoin($(e.getMap()),$(e2));
+        mixin.rightJoin($(e.getMap()));
+        
+        // full join
+        mixin.fullJoin($(e));
+        mixin.fullJoin($(e.getOther()),$(e2));
+        mixin.fullJoin($(e.getList()),$(e2));
+        mixin.fullJoin($(e.getList()));
+        mixin.fullJoin($(e.getMap()),$(e2));
+        mixin.fullJoin($(e.getMap()));
+        
+        assertEquals(6, mixin.getMetadata().getJoins().size());
     }
 
 }
