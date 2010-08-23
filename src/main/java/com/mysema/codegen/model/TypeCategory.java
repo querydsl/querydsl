@@ -67,6 +67,10 @@ public enum TypeCategory {
     /**
      * 
      */
+    ENUM(COMPARABLE),
+    /**
+     * 
+     */
     CUSTOM(null),    
         
     /**
