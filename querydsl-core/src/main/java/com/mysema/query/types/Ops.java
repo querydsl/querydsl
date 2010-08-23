@@ -43,6 +43,7 @@ public interface Ops {
     Operator<String> STRING_CAST = new OperatorImpl<String>("STING_CAST",Object.class);
     Operator<Object> ALIAS = new OperatorImpl<Object>("ALIAS");
     Operator<Object> LIST = new OperatorImpl<Object>("LIST");
+    Operator<Integer> ORDINAL = new OperatorImpl<Integer>("ORDINAL");
 
     // collection
     Operator<Boolean> IN = new OperatorImpl<Boolean>("IN",OBJECT_X_2); // cmp. contains
