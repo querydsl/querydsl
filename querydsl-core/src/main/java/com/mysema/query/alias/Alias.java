@@ -66,6 +66,10 @@ public final class Alias {
     public static PNumber<Byte> $(Byte arg) {
         return aliasFactory.<PNumber<Byte>> getCurrentAndReset();
     }
+    
+    public static <T extends Enum<T>> PEnum<T> $(T arg){
+        return aliasFactory.<PEnum<T>> getCurrentAndReset();
+    }
 
     public static <D> PCollection<D> $(Collection<D> args) {
         return aliasFactory.<PCollection<D>> getCurrentAndReset();

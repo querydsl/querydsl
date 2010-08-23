@@ -23,6 +23,7 @@ public class JavaTemplates extends Templates {
         add(Ops.IS_NULL, "{0} == null");
         add(Ops.IS_NOT_NULL, "{0} != null");
         add(Ops.INSTANCE_OF, "{0} instanceof {1}");
+        add(Ops.ORDINAL, "{0}.ordinal()");
 
         // collection
         add(Ops.IN, "{1}.contains({0})");

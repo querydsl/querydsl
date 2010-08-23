@@ -212,16 +212,17 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Enum.class.isAssignableFrom(type)) {
-            path = new PComparable(type, pm);
+            path = new PEnum(type, pm);
             rv = type.getEnumConstants()[0];
 
         } else if (type.isArray()){
             path = new PArray(type, pm);
-        rv = Array.newInstance(type.getComponentType(), 5);
+            rv = Array.newInstance(type.getComponentType(), 5);
 
         } else {
             if (Comparable.class.isAssignableFrom(type)){
-                path = new PComparable(type, pm);
+                path = new PComparable(type, pm);                
+                
             }else{
                 path = new EntityPathBase<T>((Class<T>) type, pm);
             }

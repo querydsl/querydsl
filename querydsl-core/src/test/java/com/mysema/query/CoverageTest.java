@@ -133,6 +133,7 @@ public class CoverageTest {
 
             Ops.LIST,
             Ops.COALESCE,
+            Ops.ORDINAL, // TODO: add support
 
             // aggregation
             Ops.AggOps.AVG_AGG,
