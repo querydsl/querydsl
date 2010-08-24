@@ -421,10 +421,19 @@ new SQLDelecteClause(conn, dialect, survey)
   
   <sect2>
   
+    <title>Batch support in DML clauses</title>
+    
+    <para>TODO</para>
+    
+  </sect2>    
+  
+  <sect2>
+  
     <title>User types</title>
     
     <para>TODO</para>
     
   </sect2>
+  
   
 </sect1>    
