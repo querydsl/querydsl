@@ -70,7 +70,7 @@ exporter.export(conn.getMetaData());
       * tableNamePattern    
     -->    
     <packageName>com.myproject.domain</packageName>
-    <targetFolder>target/generated-sources/java</targetFolder>
+    <targetFolder>${project.basedir}/target/generated-sources/java</targetFolder> 
   </configuration>
   <dependencies>
     <dependency>
