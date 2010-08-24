@@ -21,6 +21,7 @@ import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.annotations.QuerydslConfig;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PDateTime;
+import com.mysema.query.types.path.PEnum;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PSimple;
 import com.mysema.query.types.path.PString;
@@ -28,6 +29,11 @@ import com.mysema.query.types.path.PTime;
 
 public class SimpleTypesTest extends AbstractTest{
 
+    public enum MyEnum{
+        VAL1,
+        VAL2
+    }
+    
     public static class CustomLiteral {
 
     }
@@ -215,6 +221,8 @@ public class SimpleTypesTest extends AbstractTest{
 
         @QueryTransient
         String skipMe;
+        
+        MyEnum myEnum;
     }
 
     @Test
@@ -269,13 +277,10 @@ public class SimpleTypesTest extends AbstractTest{
         match(PSimple.class, "clazz");
         match(PSimple.class, "packageAsLiteral");
 
-//        CustomLiteral customLiteral;
-//        CustomComparableLiteral customComparableLiteral;
-//        CustomNumber customNumber;
-//        CustomComparableNumber customComparableNumber;
-
         match(PSimple.class, "clob");
         match(PSimple.class, "blob");
+        
+        match(PEnum.class, "myEnum");
     }
 
     @Test

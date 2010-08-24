@@ -38,6 +38,7 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
     private static final Set<Class<?>> typedClasses = new HashSet<Class<?>>(Arrays.<Class<?>>asList(
             PathBuilder.class,
             PComparable.class,
+            PEnum.class,
             PDate.class,
             PDateTime.class,
             BeanPath.class,

@@ -41,6 +41,7 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
     private static final Set<Class<?>> typedClasses = new HashSet<Class<?>>(Arrays.<Class<?>>asList(
             PathBuilder.class,
             PComparable.class,
+            PEnum.class,
             PDate.class,
             PDateTime.class,
             BeanPath.class,
