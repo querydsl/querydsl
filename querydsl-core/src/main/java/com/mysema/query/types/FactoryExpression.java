@@ -7,6 +7,8 @@ package com.mysema.query.types;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 /**
  * FactoryExpression represents factory expressions such as JavaBean or 
  * Constructor projections
@@ -43,6 +45,7 @@ public interface FactoryExpression<D> {
      * @param args
      * @return
      */
+    @Nullable
     D newInstance(Object... args);
 
 }
