@@ -8,9 +8,11 @@ package com.mysema.query.sql;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.Test;
 
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PathMetadataFactory;
@@ -38,6 +40,11 @@ public class KeyTest {
         }
 
         @Override
+        public List<Expr<?>> getColumns() {
+            return Arrays.<Expr<?>>asList(id, department, superiorId);
+        }
+        
+        @Override
         public Collection<ForeignKey<?>> getForeignKeys() {
             return Arrays.<ForeignKey<?>>asList(departmentKey, superiorIdKey);
         }
@@ -51,6 +58,7 @@ public class KeyTest {
         public PrimaryKey<QUser> getPrimaryKey() {
             return idKey;
         }
+        
 
     }
 
@@ -67,6 +75,11 @@ public class KeyTest {
 
         public QDepartment(String path) {
             super(QDepartment.class, PathMetadataFactory.forVariable(path));
+        }
+        
+        @Override
+        public List<Expr<?>> getColumns() {
+            return Arrays.<Expr<?>>asList(id, company);
         }
 
         @Override
@@ -97,6 +110,11 @@ public class KeyTest {
             super(QCompany.class, PathMetadataFactory.forVariable(path));
         }
 
+        @Override
+        public List<Expr<?>> getColumns() {
+            return Arrays.<Expr<?>>asList(id);
+        }
+        
         @Override
         public Collection<ForeignKey<?>> getForeignKeys() {
             return Collections.emptyList();

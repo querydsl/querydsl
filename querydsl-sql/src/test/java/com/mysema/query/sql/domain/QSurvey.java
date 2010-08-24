@@ -5,8 +5,10 @@
  */
 package com.mysema.query.sql.domain;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
@@ -43,6 +45,11 @@ public class QSurvey extends BeanPath<QSurvey> implements RelationalPath<QSurvey
 
     public QSurvey(PathMetadata<?> metadata) {
         super(QSurvey.class, metadata);
+    }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.asList(all);
     }
 
     @Override

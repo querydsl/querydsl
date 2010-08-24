@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
@@ -61,6 +62,11 @@ public class QEmployee extends BeanPath<QEmployee> implements RelationalPath<QEm
         super(QEmployee.class, metadata);
     }
 
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.asList(all);
+    }
+    
     @Override
     public Collection<ForeignKey<?>> getForeignKeys() {
         return Arrays.<ForeignKey<?>>asList(superiorIdKey);

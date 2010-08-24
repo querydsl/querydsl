@@ -3,13 +3,16 @@
  */
 package com.mysema.query;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.Table;
+import com.mysema.query.types.Expr;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.PNumber;
 import com.mysema.query.types.path.PString;
@@ -41,6 +44,11 @@ public class QGeneratedKeysEntity extends BeanPath<QGeneratedKeysEntity> impleme
     @Override
     public PrimaryKey<QGeneratedKeysEntity> getPrimaryKey() {
         return null;
+    }
+
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(id, name);
     }
 
 }

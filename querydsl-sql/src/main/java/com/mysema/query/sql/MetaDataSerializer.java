@@ -42,6 +42,11 @@ import com.mysema.query.types.path.BeanPath;
  */
 public class MetaDataSerializer extends EntitySerializer {
     
+    private static final Type EXPR_ARRAY_TYPE = new SimpleType(
+            Expr.class.getName()+"<?>[]", 
+            Expr.class.getPackage().getName(),
+            Expr.class.getSimpleName()+"<?>[]");
+
     private static final Type FOREIGNKEY_TYPE = new ClassType(ForeignKey.class, (Type)null);
 
     private final String namePrefix;
@@ -132,14 +137,21 @@ public class MetaDataSerializer extends EntitySerializer {
             paths.append(property.getEscapedName());
         }
         
-        Type type = new ClassType(Expr.class, (Type)null).asArrayType();
-        writer.beginPublicMethod(type, "all");
+        Type returnType = EXPR_ARRAY_TYPE;
+        writer.beginPublicMethod(returnType, "all");
         writer.line("if (_all == null) {");
         writer.line("    _all = ", "new Expr[]{", paths.toString(), "};");
         writer.line("}");
         writer.line("return _all;");
         writer.end();
 
+        // columns
+        returnType = new SimpleType(Types.LIST, new ClassType(Expr.class, (Type)null));
+        writer.annotation(Override.class);
+        writer.beginPublicMethod(returnType, "getColumns");
+        writer.line("return Arrays.asList(all());");
+        writer.end();
+        
         // primary keys
         Collection<PrimaryKeyData> primaryKeys = (Collection<PrimaryKeyData>) model.getData().get(PrimaryKeyData.class);
         writer.annotation(Override.class);
