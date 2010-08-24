@@ -71,7 +71,7 @@ public final class APTTypeFactory {
 
     private final ProcessingEnvironment env;
 
-    private final TypeElement numberType, comparableType;
+    private final TypeElement numberType, comparableType, enumType;
 
     private boolean doubleIndexEntities = true;
 
@@ -83,6 +83,7 @@ public final class APTTypeFactory {
         this.entityAnnotations = annotations;
         this.numberType = env.getElementUtils().getTypeElement(Number.class.getName());
         this.comparableType = env.getElementUtils().getTypeElement(Comparable.class.getName());
+        this.enumType = env.getElementUtils().getTypeElement(Enum.class.getName());
     }
 
     private void appendToKey(List<String> key, DeclaredType t, boolean deep) {
@@ -170,7 +171,11 @@ public final class APTTypeFactory {
                 && isImplemented(typeElement, comparableType)
                 && isSubType(typeElement, numberType)){
             typeCategory = TypeCategory.NUMERIC;
-
+            
+        }else if (typeCategory != TypeCategory.ENUM
+                && isSubType(typeElement, enumType)){
+            typeCategory = TypeCategory.ENUM;
+            
         }else if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE)
                 && isImplemented(typeElement, comparableType)){
             typeCategory = TypeCategory.COMPARABLE;

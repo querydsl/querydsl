@@ -240,6 +240,7 @@ public class EntitySerializer implements Serializer{
         Class<? extends Path> pathType;
         switch(category){
             case COMPARABLE : pathType = PComparable.class; break;
+            case ENUM: pathType = PEnum.class; break;
             case DATE: pathType = PDate.class; break;
             case DATETIME: pathType = PDateTime.class; break;
             case TIME: pathType = PTime.class; break;
@@ -634,6 +635,9 @@ public class EntitySerializer implements Serializer{
                 break;
             case COMPARABLE:
                 serialize(model, property, queryType, writer, "createComparable", localRawName + DOT_CLASS);
+                break;
+            case ENUM:
+                serialize(model, property, queryType, writer, "createEnum", localRawName + DOT_CLASS);
                 break;
             case DATE:
                 serialize(model, property, queryType, writer, "createDate", localRawName + DOT_CLASS);

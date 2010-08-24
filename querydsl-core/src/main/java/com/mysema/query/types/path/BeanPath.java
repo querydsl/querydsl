@@ -140,6 +140,18 @@ public class BeanPath<D> extends ESimple<D> implements Path<D> {
     protected <A extends Comparable> PComparable<A> createComparable(String property, Class<? super A> type) {
         return new PComparable<A>((Class) type, this, property);
     }
+    
+    /**
+     * @param <A>
+     * @param property
+     * @param type
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    protected <A extends Enum<A>> PEnum<A> createEnum(String property, Class<A> type) {
+        return new PEnum<A>((Class) type, this, property);
+    }
+
 
     /**
      * Create a new Date path

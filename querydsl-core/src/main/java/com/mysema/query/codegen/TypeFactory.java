@@ -91,7 +91,10 @@ public final class TypeFactory {
 
             }else if (Number.class.isAssignableFrom(cl) && Comparable.class.isAssignableFrom(cl)){
                 value = new ClassType(TypeCategory.NUMERIC, cl);
-
+                
+            }else if (Enum.class.isAssignableFrom(cl)){ 
+                value = new ClassType(TypeCategory.ENUM, cl);
+                
             } else {
                 TypeCategory typeCategory = TypeCategory.get(cl.getName());
                 if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)){

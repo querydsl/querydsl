@@ -22,15 +22,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.EComparable;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.PBoolean;
-import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PDate;
-import com.mysema.query.types.path.PDateTime;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PSimple;
-import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PTime;
+import com.mysema.query.types.path.*;
 
 /**
  * EmbeddableSerializer is a Serializer implementation for embeddable types
@@ -53,6 +45,7 @@ public final class EmbeddableSerializer extends EntitySerializer{
         Class<? extends Path> pathType;
         switch(category){
             case COMPARABLE : pathType = PComparable.class; break;
+            case ENUM: pathType = PEnum.class; break;
             case DATE: pathType = PDate.class; break;
             case DATETIME: pathType = PDateTime.class; break;
             case TIME: pathType = PTime.class; break;

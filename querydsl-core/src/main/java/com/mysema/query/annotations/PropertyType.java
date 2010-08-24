@@ -17,27 +17,31 @@ import com.mysema.codegen.model.TypeCategory;
  */
 public enum PropertyType {
     /**
-     * for PComparable fields
+     * 
      */
-    COMPARABLE(TypeCategory.COMPARABLE),
+    COMPARABLE(TypeCategory.COMPARABLE),    
     /**
-     * for custom PDate fields
+     * 
+     */
+    ENUM(TypeCategory.ENUM),
+    /**
+     * 
      */
     DATE(TypeCategory.DATE),
     /**
-     * for custom PDateTime fields
+     * 
      */
     DATETIME(TypeCategory.DATETIME),
     /**
-     * to skip properties
+     * 
      */
     NONE(null),
     /**
-     * for PSimple fields
+     * 
      */
     SIMPLE(TypeCategory.SIMPLE),
     /**
-     * for custom PTime fields
+     * 
      */
     TIME(TypeCategory.TIME),
     /**
