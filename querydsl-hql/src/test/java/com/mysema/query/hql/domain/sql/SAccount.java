@@ -62,5 +62,10 @@ public class SAccount extends BeanPath<SAccount> implements RelationalPath<SAcco
         return Collections.<ForeignKey<?>>emptyList();
     }
 
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
+
 }
 

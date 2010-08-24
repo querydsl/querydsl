@@ -61,6 +61,11 @@ public class SCatalogPrice extends BeanPath<SCatalogPrice> implements Relational
     public List<ForeignKey<?>> getInverseForeignKeys() {
         return Collections.<ForeignKey<?>>emptyList();
     }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 
 }
 

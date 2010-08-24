@@ -63,6 +63,11 @@ public class SOrder extends BeanPath<SOrder> implements RelationalPath<SOrder> {
     public List<ForeignKey<?>> getInverseForeignKeys() {
         return Arrays.<ForeignKey<?>>asList(_fk27fbe3fee803b049);
     }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 
 }
 

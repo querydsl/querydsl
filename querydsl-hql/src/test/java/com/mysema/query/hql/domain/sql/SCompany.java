@@ -67,6 +67,11 @@ public class SCompany extends BeanPath<SCompany> implements RelationalPath<SComp
     public List<ForeignKey<?>> getInverseForeignKeys() {
         return Arrays.<ForeignKey<?>>asList(_fka9601f72555fdbf0, _fk4d495f4555fdbf0, _fk4afd4ace555fdbf0);
     }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 
 }
 

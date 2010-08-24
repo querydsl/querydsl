@@ -93,6 +93,11 @@ public class SAnimal extends BeanPath<SAnimal> implements RelationalPath<SAnimal
     public List<ForeignKey<?>> getInverseForeignKeys() {
         return Arrays.<ForeignKey<?>>asList(_fkd60087cca295046a, _fk4fccad6fa295046a, _fk4fccad6f10a6f310, _fk752a7a1c920d02c1, _fkd60087cc7a9f89a);
     }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 
 }
 

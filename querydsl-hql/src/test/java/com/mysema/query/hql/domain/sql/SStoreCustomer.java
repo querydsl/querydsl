@@ -59,6 +59,11 @@ public class SStoreCustomer extends BeanPath<SStoreCustomer> implements Relation
     public List<ForeignKey<?>> getInverseForeignKeys() {
         return Collections.<ForeignKey<?>>emptyList();
     }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 
 }
 

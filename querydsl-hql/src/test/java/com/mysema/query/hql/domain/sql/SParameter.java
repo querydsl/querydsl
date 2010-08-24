@@ -57,6 +57,11 @@ public class SParameter extends BeanPath<SParameter> implements RelationalPath<S
     public List<ForeignKey<?>> getInverseForeignKeys() {
         return Arrays.<ForeignKey<?>>asList(_fk3ad7e94694c3fef0);
     }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 
 }
 

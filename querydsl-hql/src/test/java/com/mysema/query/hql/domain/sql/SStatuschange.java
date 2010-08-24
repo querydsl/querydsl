@@ -60,5 +60,9 @@ public class SStatuschange extends BeanPath<SStatuschange> implements Relational
         return Arrays.<ForeignKey<?>>asList(_fkc2c9ebee2f721e35);
     }
 
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 }
 

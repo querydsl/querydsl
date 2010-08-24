@@ -63,6 +63,11 @@ public class SKittens extends BeanPath<SKittens> implements RelationalPath<SKitt
     public List<ForeignKey<?>> getInverseForeignKeys() {
         return Collections.<ForeignKey<?>>emptyList();
     }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 
 }
 

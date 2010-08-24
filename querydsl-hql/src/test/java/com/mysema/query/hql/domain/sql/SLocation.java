@@ -60,5 +60,9 @@ public class SLocation extends BeanPath<SLocation> implements RelationalPath<SLo
         return Arrays.<ForeignKey<?>>asList(_fk4c808c12adf2d04);
     }
 
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 }
 

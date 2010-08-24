@@ -64,5 +64,9 @@ public class SName extends BeanPath<SName> implements RelationalPath<SName> {
         return Arrays.<ForeignKey<?>>asList(_fk27fbe3fe4707a44);
     }
 
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 }
 

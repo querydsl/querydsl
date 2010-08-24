@@ -62,5 +62,9 @@ public class SCalendarHolidays extends BeanPath<SCalendarHolidays> implements Re
         return Collections.<ForeignKey<?>>emptyList();
     }
 
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 }
 

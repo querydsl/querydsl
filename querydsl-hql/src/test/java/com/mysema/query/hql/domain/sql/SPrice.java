@@ -63,6 +63,11 @@ public class SPrice extends BeanPath<SPrice> implements RelationalPath<SPrice> {
     public List<ForeignKey<?>> getInverseForeignKeys() {
         return Arrays.<ForeignKey<?>>asList(_fke4eb7d639d62434f);
     }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 
 }
 

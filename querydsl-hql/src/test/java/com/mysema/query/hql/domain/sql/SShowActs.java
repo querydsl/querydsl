@@ -61,6 +61,11 @@ public class SShowActs extends BeanPath<SShowActs> implements RelationalPath<SSh
     public List<ForeignKey<?>> getInverseForeignKeys() {
         return Collections.<ForeignKey<?>>emptyList();
     }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 
 }
 

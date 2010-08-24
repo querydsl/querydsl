@@ -58,5 +58,9 @@ public class SNamed extends BeanPath<SNamed> implements RelationalPath<SNamed> {
         return Collections.<ForeignKey<?>>emptyList();
     }
 
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 }
 

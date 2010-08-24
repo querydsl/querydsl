@@ -5,6 +5,7 @@ import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
@@ -67,6 +68,11 @@ public class SStore extends BeanPath<SStore> implements RelationalPath<SStore> {
     @Override
     public PrimaryKey<SStore> getPrimaryKey() {
         return sysIdx51;
+    }
+
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(name, storeId);
     }
 
 }

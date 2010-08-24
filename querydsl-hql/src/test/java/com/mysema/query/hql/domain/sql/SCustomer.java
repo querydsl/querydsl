@@ -68,5 +68,9 @@ public class SCustomer extends BeanPath<SCustomer> implements RelationalPath<SCu
         return Arrays.<ForeignKey<?>>asList(_fk808055bcf27d6c8d, _fk8b7256f15325d064);
     }
 
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 }
 

@@ -70,5 +70,9 @@ public class SPerson extends BeanPath<SPerson> implements RelationalPath<SPerson
         return Arrays.<ForeignKey<?>>asList(_fk1d0c220d257b5f1c);
     }
 
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 }
 

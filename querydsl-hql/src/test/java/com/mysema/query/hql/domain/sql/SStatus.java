@@ -61,6 +61,11 @@ public class SStatus extends BeanPath<SStatus> implements RelationalPath<SStatus
     public List<ForeignKey<?>> getInverseForeignKeys() {
         return Arrays.<ForeignKey<?>>asList(_fk22ef33eedeba64, _fk22ef33bb4e150b);
     }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 
 }
 

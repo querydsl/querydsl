@@ -58,5 +58,9 @@ public class SShow extends BeanPath<SShow> implements RelationalPath<SShow> {
         return Arrays.<ForeignKey<?>>asList(_fk5f6ee0319084d04);
     }
 
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 }
 

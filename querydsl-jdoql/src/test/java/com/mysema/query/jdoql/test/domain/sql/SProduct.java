@@ -5,6 +5,7 @@ import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
@@ -84,6 +85,11 @@ public class SProduct extends BeanPath<SProduct> implements RelationalPath<SProd
     @Override
     public PrimaryKey<SProduct> getPrimaryKey() {
         return sysIdx47;
+    }
+
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(amount, datefield, description, name, price, productId, publicationdate, timefield);
     }
 
 }

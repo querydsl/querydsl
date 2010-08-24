@@ -59,6 +59,11 @@ public class SAuditlog extends BeanPath<SAuditlog> implements RelationalPath<SAu
     public List<ForeignKey<?>> getInverseForeignKeys() {
         return Collections.<ForeignKey<?>>emptyList();
     }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 
 }
 

@@ -62,5 +62,9 @@ public class SInheritedproperties extends BeanPath<SInheritedproperties> impleme
         return Collections.<ForeignKey<?>>emptyList();
     }
 
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 }
 

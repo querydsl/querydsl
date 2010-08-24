@@ -61,6 +61,11 @@ public class SPersonid extends BeanPath<SPersonid> implements RelationalPath<SPe
     public List<ForeignKey<?>> getInverseForeignKeys() {
         return Arrays.<ForeignKey<?>>asList(_fk8e48877578234709);
     }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 
 }
 

@@ -137,8 +137,8 @@ public class MetaDataSerializer extends EntitySerializer {
             paths.append(property.getEscapedName());
         }
         
-        Type returnType = EXPR_ARRAY_TYPE;
-        writer.beginPublicMethod(returnType, "all");
+        Type type = EXPR_ARRAY_TYPE;
+        writer.beginPublicMethod(type, "all");
         writer.line("if (_all == null) {");
         writer.line("    _all = ", "new Expr[]{", paths.toString(), "};");
         writer.line("}");
@@ -146,9 +146,9 @@ public class MetaDataSerializer extends EntitySerializer {
         writer.end();
 
         // columns
-        returnType = new SimpleType(Types.LIST, new ClassType(Expr.class, (Type)null));
+        type = new SimpleType(Types.LIST, new ClassType(Expr.class, (Type)null));
         writer.annotation(Override.class);
-        writer.beginPublicMethod(returnType, "getColumns");
+        writer.beginPublicMethod(type, "getColumns");
         writer.line("return Arrays.asList(all());");
         writer.end();
         

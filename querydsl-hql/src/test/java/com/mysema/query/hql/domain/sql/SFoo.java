@@ -59,6 +59,11 @@ public class SFoo extends BeanPath<SFoo> implements RelationalPath<SFoo> {
     public List<ForeignKey<?>> getInverseForeignKeys() {
         return Collections.<ForeignKey<?>>emptyList();
     }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 
 }
 

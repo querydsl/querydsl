@@ -62,5 +62,9 @@ public class SKittensSet extends BeanPath<SKittensSet> implements RelationalPath
         return Collections.<ForeignKey<?>>emptyList();
     }
 
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 }
 

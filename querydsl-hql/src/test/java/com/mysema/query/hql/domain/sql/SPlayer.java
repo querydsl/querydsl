@@ -57,6 +57,11 @@ public class SPlayer extends BeanPath<SPlayer> implements RelationalPath<SPlayer
     public List<ForeignKey<?>> getInverseForeignKeys() {
         return Arrays.<ForeignKey<?>>asList(_fkd5dc571ff51f2004);
     }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 
 }
 

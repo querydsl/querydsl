@@ -62,5 +62,9 @@ public class SNationality extends BeanPath<SNationality> implements RelationalPa
         return Arrays.<ForeignKey<?>>asList(_fk8e488775e9d94490);
     }
 
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 }
 

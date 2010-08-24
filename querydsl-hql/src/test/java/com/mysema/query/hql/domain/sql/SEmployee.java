@@ -65,6 +65,11 @@ public class SEmployee extends BeanPath<SEmployee> implements RelationalPath<SEm
     public List<ForeignKey<?>> getInverseForeignKeys() {
         return Arrays.<ForeignKey<?>>asList(_fk9bdfd45d8e79ac65);
     }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 
 }
 

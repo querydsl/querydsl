@@ -61,6 +61,11 @@ public class SStore extends BeanPath<SStore> implements RelationalPath<SStore> {
     public List<ForeignKey<?>> getInverseForeignKeys() {
         return Arrays.<ForeignKey<?>>asList(_fk808055bc828daef0);
     }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 
 }
 

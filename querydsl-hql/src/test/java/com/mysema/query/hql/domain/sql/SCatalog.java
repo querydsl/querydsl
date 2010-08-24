@@ -60,5 +60,9 @@ public class SCatalog extends BeanPath<SCatalog> implements RelationalPath<SCata
         return Arrays.<ForeignKey<?>>asList(_fke4eb7d63f28fe670);
     }
 
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 }
 

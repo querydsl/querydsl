@@ -59,6 +59,11 @@ public class SCalendar extends BeanPath<SCalendar> implements RelationalPath<SCa
     public List<ForeignKey<?>> getInverseForeignKeys() {
         return Arrays.<ForeignKey<?>>asList(_fk68f2659ca61b9464, _fk31ce1edca61b9464);
     }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 
 }
 

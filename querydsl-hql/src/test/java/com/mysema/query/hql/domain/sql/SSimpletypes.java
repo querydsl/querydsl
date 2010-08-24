@@ -92,5 +92,9 @@ public class SSimpletypes extends BeanPath<SSimpletypes> implements RelationalPa
         return Collections.<ForeignKey<?>>emptyList();
     }
 
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 }
 

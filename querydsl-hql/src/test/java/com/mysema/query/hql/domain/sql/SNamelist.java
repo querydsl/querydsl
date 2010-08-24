@@ -58,5 +58,9 @@ public class SNamelist extends BeanPath<SNamelist> implements RelationalPath<SNa
         return Arrays.<ForeignKey<?>>asList(_fkd6c82d72b8406ca4);
     }
 
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 }
 

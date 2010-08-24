@@ -79,6 +79,11 @@ public class SItem extends BeanPath<SItem> implements RelationalPath<SItem> {
     public List<ForeignKey<?>> getInverseForeignKeys() {
         return Arrays.<ForeignKey<?>>asList(_fk3e07a1891bee4d44, _fkc2c9ebee9e7e0323, _fk22ef33a549aeb0, _fk49cc129a549aeb0);
     }
+    
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 
 }
 

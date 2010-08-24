@@ -66,5 +66,9 @@ public class SUser extends BeanPath<SUser> implements RelationalPath<SUser> {
         return Collections.<ForeignKey<?>>emptyList();
     }
 
+    @Override
+    public List<Expr<?>> getColumns() {
+        return Arrays.<Expr<?>>asList(all());
+    }
 }
 
