@@ -11,7 +11,6 @@ import java.util.Map;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.PMap;
