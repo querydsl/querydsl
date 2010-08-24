@@ -48,9 +48,15 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
 
     private final RelationalPath<?> entity;
 
-    private final List<Pair<Path<?>,?>> updates = new ArrayList<Pair<Path<?>,?>>();
+    private final List<QueryMetadata> batchMetadata = new ArrayList<QueryMetadata>();
+    
+    private final List<List<Pair<Path<?>,?>>> batchUpdates = new ArrayList<List<Pair<Path<?>,?>>>();
+    
+    private List<Pair<Path<?>,?>> updates = new ArrayList<Pair<Path<?>,?>>();
 
-    private final QueryMetadata metadata = new DefaultQueryMetadata();
+    private QueryMetadata metadata = new DefaultQueryMetadata();
+    
+    private transient String queryString;
     
     public SQLUpdateClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         this(connection, new Configuration(templates), entity);
@@ -66,7 +72,14 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
     }
-
+    
+    public SQLUpdateClause addBatch() {
+        batchUpdates.add(updates);
+        batchMetadata.add(metadata);
+        updates = new ArrayList<Pair<Path<?>,?>>();
+        metadata = new DefaultQueryMetadata();
+        return this;
+    }
 
     protected void close(PreparedStatement stmt) {
         try {
@@ -76,18 +89,51 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
         }
     }
 
-    @Override
-    public long execute() {
-        SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
-        serializer.serializeForUpdate(metadata, entity, updates);
-        String queryString = serializer.toString();
-        logger.debug(queryString);
-
-        PreparedStatement stmt = null;
-        try {
+    private PreparedStatement createStatement() throws SQLException{
+        PreparedStatement stmt;
+        if (batchUpdates.isEmpty()){
+            SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
+            serializer.serializeForUpdate(metadata, entity, updates);
+            queryString = serializer.toString();
+            logger.debug(queryString);
             stmt = connection.prepareStatement(queryString);
             setParameters(stmt, serializer.getConstants(), Collections.<Param<?>,Object>emptyMap());
-            return stmt.executeUpdate();
+        }else{
+            SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
+            serializer.serializeForUpdate(batchMetadata.get(0), entity, batchUpdates.get(0));
+            queryString = serializer.toString();
+            logger.debug(queryString);
+            
+            // add first batch
+            stmt = connection.prepareStatement(queryString);
+            setParameters(stmt, serializer.getConstants(), Collections.<Param<?>,Object>emptyMap());
+            stmt.addBatch();
+            
+            // add other batches
+            for (int i = 1; i < batchUpdates.size(); i++){
+                serializer = new SQLSerializer(configuration.getTemplates(), true);
+                serializer.serializeForUpdate(batchMetadata.get(i), entity, batchUpdates.get(i));
+                setParameters(stmt, serializer.getConstants(), Collections.<Param<?>,Object>emptyMap());
+                stmt.addBatch();
+            }
+        }
+        return stmt;
+    }
+    
+    @Override
+    public long execute() {
+        PreparedStatement stmt = null;
+        try {
+            stmt = createStatement();
+            if (batchUpdates.isEmpty()){
+                return stmt.executeUpdate();    
+            }else{
+                long rv = 0;
+                for (int i : stmt.executeBatch()){
+                    rv += i;
+                }
+                return rv;
+            }  
         } catch (SQLException e) {
             throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
         } finally {

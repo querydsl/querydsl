@@ -16,6 +16,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.Path;
 
 public abstract class UpdateBaseTest extends AbstractBaseTest{
@@ -83,6 +84,17 @@ public abstract class UpdateBaseTest extends AbstractBaseTest{
     public void setNull2(){
         long count = query().from(survey).count();
         assertEquals(count, update(survey).set(survey.name, null).execute());
+    }
+    
+    @Test
+    public void batch() throws SQLException{
+        insert(survey).values(2, "A").execute();
+        insert(survey).values(3, "B").execute();
+        
+        SQLUpdateClause update = update(survey);
+        update.set(survey.name, "AA").where(survey.name.eq("A")).addBatch();
+        update.set(survey.name, "BB").where(survey.name.eq("B")).addBatch();
+        assertEquals(2, update.execute());        
     }
 
 }
