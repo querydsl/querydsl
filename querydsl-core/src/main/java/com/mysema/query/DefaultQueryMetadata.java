@@ -74,15 +74,25 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         }
     }
 
-    @java.lang.SuppressWarnings("unchecked")
-    @SuppressWarnings("unchecked")
     @Override
     public void addJoin(JoinType joinType, Expr<?> expr) {
         if (!exprInJoins.contains(expr)) {
-            if (expr instanceof Path && joinType == JoinType.DEFAULT){
+            if (expr instanceof Path<?> && joinType == JoinType.DEFAULT){
                 ensureRoot((Path<?>) expr);
             }
             joins.add(new JoinExpression(joinType, expr));
+            exprInJoins.add(expr);
+        }
+    }
+    
+    @Override
+    public void addJoin(JoinExpression join){
+        Expr<?> expr = join.getTarget();
+        if (!exprInJoins.contains(expr)) {
+            if (expr instanceof Path<?> && join.getType() == JoinType.DEFAULT){
+                ensureRoot((Path<?>) expr);
+            }
+            joins.add(join);
             exprInJoins.add(expr);
         }
     }
