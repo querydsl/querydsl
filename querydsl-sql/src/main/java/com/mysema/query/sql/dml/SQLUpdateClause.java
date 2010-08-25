@@ -9,9 +9,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.commons.collections15.BeanMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -174,5 +177,31 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
         SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
         serializer.serializeForUpdate(metadata, entity, updates);
         return serializer.toString();
+    }
+
+    @SuppressWarnings("unchecked")
+    public SQLUpdateClause populate(Object bean) {
+        try {
+            Collection<? extends Path<?>> primaryKeyColumns = entity.getPrimaryKey() != null 
+                    ? entity.getPrimaryKey().getLocalColumns() 
+                    : Collections.<Path<?>>emptyList();
+            BeanMap map = new BeanMap(bean);
+            for (Map.Entry entry : map.entrySet()){
+                String property = entry.getKey().toString();
+                if (!property.equals("class")){
+                    Path path = (Path<?>) entity.getClass().getField(property).get(entity);
+                    if (!primaryKeyColumns.contains(path)){
+                        set(path, entry.getValue());    
+                    }    
+                }                                
+            }
+            return this;
+        } catch (SecurityException e) {
+            throw new QueryException(e);
+        } catch (IllegalAccessException e) {
+            throw new QueryException(e);
+        } catch (NoSuchFieldException e) {
+            throw new QueryException(e);
+        }            
     }
 }

@@ -14,9 +14,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.collections15.BeanMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,12 +113,11 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
     }
 
     @Nullable
-    @java.lang.SuppressWarnings("unchecked")
     public <T> T executeWithKey(Path<T> path){
         ResultSet rs = executeWithKeys();
         try{
             if (rs.next()){
-                return (T) rs.getObject(1);
+                return configuration.get(rs, 1, path.getType());
             }else{
                 return null;
             }
@@ -127,13 +128,12 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         }
     }
 
-    @java.lang.SuppressWarnings("unchecked")
     public <T> List<T> executeWithKeys(Path<T> path){
         ResultSet rs = executeWithKeys();
         try{
             List<T> rv = new ArrayList<T>();
             while (rs.next()){
-                rv.add((T) rs.getObject(1));
+                rv.add(configuration.get(rs, 1, path.getType()));
             }
             return rv;
         } catch (SQLException e) {
@@ -266,6 +266,25 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         return serializer.toString();
     }
 
-
+    @SuppressWarnings("unchecked")
+    public SQLInsertClause populate(Object bean) {
+        try {
+            BeanMap map = new BeanMap(bean);
+            for (Map.Entry entry : map.entrySet()){
+                String property = entry.getKey().toString();
+                if (!property.equals("class")){
+                    Path path = (Path<?>) entity.getClass().getField(property).get(entity);
+                    set(path, entry.getValue());    
+                }                
+            }
+            return this;
+        } catch (SecurityException e) {
+            throw new QueryException(e);
+        } catch (IllegalAccessException e) {
+            throw new QueryException(e);
+        } catch (NoSuchFieldException e) {
+            throw new QueryException(e);
+        }            
+    }
 
 }
