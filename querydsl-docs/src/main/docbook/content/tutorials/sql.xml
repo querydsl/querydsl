@@ -424,8 +424,70 @@ new SQLDelecteClause(conn, dialect, survey)
     <title>Batch support in DML clauses</title>
     
     <para>TODO</para>
+	
+<programlisting language="java"><![CDATA[   	
+
+    @Test
+    public void updateExample() throws SQLException{
+        insert(survey).values(2, "A").execute();
+        insert(survey).values(3, "B").execute();
+
+        SQLUpdateClause update = update(survey);
+        update.set(survey.name, "AA").where(survey.name.eq("A")).addBatch();
+        update.set(survey.name, "BB").where(survey.name.eq("B")).addBatch();
+        assertEquals(2, update.execute());
+    }
+
+    @Test
+    public void deleteExample() throws SQLException{
+        insert(survey).values(2, "A").execute();
+        insert(survey).values(3, "B").execute();
+
+        SQLDeleteClause delete = delete(survey);
+        delete.where(survey.name.eq("A")).addBatch();
+        delete.where(survey.name.eq("B")).addBatch();
+        assertEquals(2, delete.execute());
+    }
+
+    @Test
+    public void insertExample(){
+        SQLInsertClause insert = insert(survey);
+        insert.set(survey.id, 5).set(survey.name, "5").addBatch();
+        insert.set(survey.id, 6).set(survey.name, "6").addBatch();
+        assertEquals(2, insert.execute());
+    }
+]]></programlisting>  		
+	
     
   </sect2>    
+  
+  <sect2>
+  	
+	<title>Bean class generation</title>
+	
+	<para>TODO</para>
+  	
+<programlisting language="java"><![CDATA[    	
+    private QEmployee e = new QEmployee("e");
+    
+    @Test
+    public void Insert_Update_and_Delete(){       
+        // Insert
+        Employee employee = new Employee();
+        employee.setFirstname("John");
+        Integer id = insert(e).populate(employee).executeWithKey(e.id);
+        employee.setId(id);
+
+        // Update
+        employee.setLastname("Smith");
+        assertEquals(1l, update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
+
+        // Delete (no changes needed)
+        assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
+    }	
+]]></programlisting>  	
+  	
+  </sect2>
   
   <sect2>
   
