@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -142,14 +143,18 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         }
     }
     
-    private PreparedStatement createStatement() throws SQLException{
+    private PreparedStatement createStatement(boolean withKeys) throws SQLException{
         SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
         PreparedStatement stmt = null;
         if (batches.isEmpty()){
             serializer.serializeForInsert(metadata, entity, columns, values, subQuery);
             queryString = serializer.toString();
             logger.debug(queryString);        
-            stmt = connection.prepareStatement(queryString);
+            if (withKeys){
+                stmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);                
+            }else{
+                stmt = connection.prepareStatement(queryString);
+            }            
             setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());    
         }else{
             serializer.serializeForInsert(metadata, entity, batches.get(0).getColumns(), batches.get(0).getValues(), batches.get(0).getSubQuery());
@@ -176,7 +181,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
     
     public ResultSet executeWithKeys(){        
         try {
-            final PreparedStatement stmt = createStatement();
+            final PreparedStatement stmt = createStatement(true);
             if (batches.isEmpty()){
                 stmt.executeUpdate();    
             }else{
@@ -202,7 +207,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
     public long execute() {
         PreparedStatement stmt = null;
         try {            
-            stmt = createStatement();
+            stmt = createStatement(false);
             if (batches.isEmpty()){
                 return stmt.executeUpdate();    
             }else{

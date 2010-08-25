@@ -106,7 +106,6 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
         assertNotNull(insert(survey).set(survey.name, "Hello you").executeWithKey(survey.id));
     }
     
-
     @Test
     public void insertNull(){
         // with columns
