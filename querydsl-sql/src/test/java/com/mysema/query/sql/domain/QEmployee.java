@@ -25,7 +25,7 @@ import com.mysema.query.types.path.PTime;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 @Table("EMPLOYEE2")
-public class QEmployee extends BeanPath<QEmployee> implements RelationalPath<QEmployee>{
+public class QEmployee extends BeanPath<Employee> implements RelationalPath<Employee>{
 
     private static final long serialVersionUID = 1394463749655231079L;
 
@@ -49,17 +49,17 @@ public class QEmployee extends BeanPath<QEmployee> implements RelationalPath<QEm
         return all;
     }
 
-    public final PrimaryKey<QEmployee> idKey = new PrimaryKey<QEmployee>(this, id);
+    public final PrimaryKey<Employee> idKey = new PrimaryKey<Employee>(this, id);
 
-    public final ForeignKey<QEmployee> superiorIdKey = new ForeignKey<QEmployee>(this, superiorId, "ID");
+    public final ForeignKey<Employee> superiorIdKey = new ForeignKey<Employee>(this, superiorId, "ID");
 
     
     public QEmployee(String path) {
-        super(QEmployee.class, PathMetadataFactory.forVariable(path));
+        super(Employee.class, PathMetadataFactory.forVariable(path));
     }
 
     public QEmployee(PathMetadata<?> metadata) {
-        super(QEmployee.class, metadata);
+        super(Employee.class, metadata);
     }
 
     @Override
@@ -78,7 +78,7 @@ public class QEmployee extends BeanPath<QEmployee> implements RelationalPath<QEm
     }
 
     @Override
-    public PrimaryKey<QEmployee> getPrimaryKey() {
+    public PrimaryKey<Employee> getPrimaryKey() {
         return idKey;
     }
 
