@@ -2,6 +2,7 @@ package com.mysema.query.sql.domain;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Time;
 
 import com.mysema.query.sql.Column;
 import com.mysema.query.sql.Table;
@@ -25,7 +26,7 @@ public class Employee {
     private Date datefield;
     
     @Column("TIMEFIELD")
-    private Date timefield;
+    private Time timefield;
     
     @Column("SUPERIOR_ID")
     private Integer superiorId;
@@ -70,11 +71,11 @@ public class Employee {
         this.datefield = datefield;
     }
 
-    public Date getTimefield() {
+    public Time getTimefield() {
         return timefield;
     }
 
-    public void setTimefield(Date timefield) {
+    public void setTimefield(Time timefield) {
         this.timefield = timefield;
     }
 

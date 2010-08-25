@@ -5,6 +5,7 @@
  */
 package com.mysema.query.sql;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +44,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQuery;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.QBean;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.util.ResultSetAdapter;
 
@@ -283,10 +286,28 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return iterateMultiple();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <RT> CloseableIterator<RT> iterate(Expr<RT> expr) {
-        queryMixin.addToProjection(expr);
-        return iterateSingle(expr);
+        if (expr instanceof RelationalPath<?>){
+            try{
+                Map<String,Expr<?>> bindings = new HashMap<String,Expr<?>>();
+                for (Field field : expr.getClass().getFields()){
+                    if (Expr.class.isAssignableFrom(field.getType())){
+                        field.setAccessible(true);
+                        Expr<?> column = (Expr<?>) field.get(expr);
+                        bindings.put(field.getName(), column);
+                    }
+                }
+                QBean<RT> bean = new QBean(expr.getType(), bindings);
+                return iterate(bean);
+            }catch(IllegalAccessException e){
+                throw new QueryException(e);
+            }
+        }else{
+            queryMixin.addToProjection(expr);
+            return iterateSingle(expr);    
+        }    
     }
 
     private CloseableIterator<Object[]> iterateMultiple() {

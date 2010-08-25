@@ -12,7 +12,7 @@ public abstract class BeanPopulationBaseTest extends AbstractBaseTest{
     private QEmployee e = new QEmployee("e");
     
     @Test
-    public void Insert_Update_and_Delete(){       
+    public void Insert_Update_Query_and_Delete(){       
         // Insert
         Employee employee = new Employee();
         employee.setFirstname("John");
@@ -23,6 +23,10 @@ public abstract class BeanPopulationBaseTest extends AbstractBaseTest{
         employee.setLastname("Smith");
         assertEquals(1l, update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
 
+        // Query
+        Employee smith = query().from(e).where(e.lastname.eq("Smith")).uniqueResult(e);
+        assertEquals("John", smith.getFirstname());
+        
         // Delete (no changes needed)
         assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
     }
