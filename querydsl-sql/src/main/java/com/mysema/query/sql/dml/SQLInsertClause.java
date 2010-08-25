@@ -148,22 +148,12 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         PreparedStatement stmt = null;
         if (batches.isEmpty()){
             serializer.serializeForInsert(metadata, entity, columns, values, subQuery);
-            queryString = serializer.toString();
-            logger.debug(queryString);        
-            if (withKeys){
-                stmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);                
-            }else{
-                stmt = connection.prepareStatement(queryString);
-            }            
-            setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());    
+            stmt = prepareStatementAndSetParameters(serializer, withKeys);    
         }else{
             serializer.serializeForInsert(metadata, entity, batches.get(0).getColumns(), batches.get(0).getValues(), batches.get(0).getSubQuery());
-            queryString = serializer.toString();
-            logger.debug(queryString);        
-            stmt = connection.prepareStatement(queryString);
+            stmt = prepareStatementAndSetParameters(serializer, withKeys);
             
             // add first batch
-            setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
             stmt.addBatch();
             
             // add other batches
@@ -177,6 +167,19 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
             }
         }
         return stmt;        
+    }
+
+    private PreparedStatement prepareStatementAndSetParameters(SQLSerializer serializer, boolean withKeys) throws SQLException {
+        queryString = serializer.toString();
+        logger.debug(queryString);        
+        PreparedStatement stmt;
+        if (withKeys){
+            stmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);                
+        }else{
+            stmt = connection.prepareStatement(queryString);
+        }            
+        setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
+        return stmt;
     }
     
     public ResultSet executeWithKeys(){        
