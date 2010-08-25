@@ -28,6 +28,8 @@ import com.mysema.query.types.path.PathMetadataFactory;
 public class QEmployee extends BeanPath<Employee> implements RelationalPath<Employee>{
 
     private static final long serialVersionUID = 1394463749655231079L;
+    
+    public static final QEmployee employee = new QEmployee("EMPLOYEE2");
 
     public final PNumber<Integer> id = createNumber("ID", Integer.class);
 

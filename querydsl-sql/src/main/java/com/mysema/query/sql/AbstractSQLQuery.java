@@ -7,6 +7,7 @@ package com.mysema.query.sql;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -293,7 +294,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
             try{
                 Map<String,Expr<?>> bindings = new HashMap<String,Expr<?>>();
                 for (Field field : expr.getClass().getFields()){
-                    if (Expr.class.isAssignableFrom(field.getType())){
+                    if (Expr.class.isAssignableFrom(field.getType()) && !Modifier.isStatic(field.getModifiers())){
                         field.setAccessible(true);
                         Expr<?> column = (Expr<?>) field.get(expr);
                         bindings.put(field.getName(), column);

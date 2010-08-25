@@ -26,6 +26,8 @@ import com.mysema.query.types.path.PathMetadataFactory;
 public class QSurvey extends BeanPath<QSurvey> implements RelationalPath<QSurvey>{
 
     private static final long serialVersionUID = -7427577079709192842L;
+    
+    public static final QSurvey survey = new QSurvey("SURVEY");
 
     public final PString name = createString("NAME");
 
