@@ -206,10 +206,10 @@ public class MetaDataSerializer extends EntitySerializer {
 
     protected void serializePrimaryKeys(EntityType model, CodeWriter writer,
             Collection<PrimaryKeyData> primaryKeys) throws IOException {
-        Type queryType = typeMappings.getPathType(model, model, true);
+//        Type queryType = typeMappings.getPathType(model, model, true);
         for (PrimaryKeyData primaryKey : primaryKeys){
             String fieldName = namingStrategy.getPropertyNameForPrimaryKey(primaryKey.getName(), model);
-            StringBuilder value = new StringBuilder("new PrimaryKey<"+queryType.getSimpleName()+">(this, ");
+            StringBuilder value = new StringBuilder("new PrimaryKey<"+model.getSimpleName()+">(this, ");
             boolean first = true;
             for (String column : primaryKey.getColumns()){
                 if (!first){
@@ -219,7 +219,7 @@ public class MetaDataSerializer extends EntitySerializer {
                 first = false;
             }
             value.append(")");
-            Type type = new ClassType(PrimaryKey.class, queryType);
+            Type type = new ClassType(PrimaryKey.class, model);
             writer.publicFinal(type, fieldName, value.toString());
         }
 

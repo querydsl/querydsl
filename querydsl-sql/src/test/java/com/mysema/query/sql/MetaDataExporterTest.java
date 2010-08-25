@@ -65,6 +65,19 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
 
         statement.execute("drop table date_time_test if exists");
         statement.execute("create table date_time_test (dt datetime)");
+        
+        statement.execute("create table employee("
+                + "id INT, "
+                + "firstname VARCHAR(50), "
+                + "lastname VARCHAR(50), "
+                + "salary DECIMAL(10, 2), "
+                + "datefield DATE, "
+                + "timefield TIME, "
+                + "superior_id int, "
+                + "survey_id int, "
+                + "survey_name varchar(30), "
+                + "CONSTRAINT PK_employee PRIMARY KEY (id), "
+                + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");       
 
         MetaDataSerializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);
         MetaDataExporter exporter;
