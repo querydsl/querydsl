@@ -471,7 +471,7 @@ new SQLDelecteClause(conn, dialect, survey)
     private QEmployee e = new QEmployee("e");
     
     @Test
-    public void Insert_Update_and_Delete(){       
+    public void Insert_Update_Query_and_Delete(){       
         // Insert
         Employee employee = new Employee();
         employee.setFirstname("John");
@@ -482,9 +482,13 @@ new SQLDelecteClause(conn, dialect, survey)
         employee.setLastname("Smith");
         assertEquals(1l, update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
 
-        // Delete (no changes needed)
+        // Query
+        Employee smith = query().from(e).where(e.lastname.eq("Smith")).uniqueResult(e);
+        assertEquals("John", smith.getFirstname());
+        
+        // Delete 
         assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
-    }	
+    }
 ]]></programlisting>  	
   	
   </sect2>
