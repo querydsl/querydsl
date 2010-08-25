@@ -8,6 +8,7 @@ package com.mysema.query;
 import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Constants.survey2;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.ResultSet;
@@ -101,7 +102,10 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
         ResultSet rs = insert(survey).set(survey.name, "Hello World").executeWithKeys();
         assertTrue(rs.next());
         rs.close();
+        
+        assertNotNull(insert(survey).set(survey.name, "Hello you").executeWithKey(survey.id));
     }
+    
 
     @Test
     public void insertNull(){

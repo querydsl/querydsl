@@ -51,7 +51,6 @@ import com.mysema.util.ResultSetAdapter;
  * @author tiwe
  * @version $Id$
  */
-@edu.umd.cs.findbugs.annotations.SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         ProjectableQuery<Q> {
 

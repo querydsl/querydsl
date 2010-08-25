@@ -28,15 +28,12 @@ import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.expr.EBoolean;
 
-import edu.umd.cs.findbugs.annotations.SuppressWarnings;
-
 /**
  * SQLDeleteClause defines a DELETE clause
  *
  * @author tiwe
  *
  */
-@SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<SQLDeleteClause> {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLDeleteClause.class);

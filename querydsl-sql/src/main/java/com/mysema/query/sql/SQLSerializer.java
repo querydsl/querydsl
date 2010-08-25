@@ -5,7 +5,6 @@
  */
 package com.mysema.query.sql;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -18,7 +17,6 @@ import org.apache.commons.lang.StringUtils;
 
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.JoinExpression;
-import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
@@ -98,23 +96,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     @SuppressWarnings("unchecked")
     private List<Expr<?>> getIdentifierColumns(List<JoinExpression> joins) {
-        try {
-            List<Expr<?>> columns = new ArrayList<Expr<?>>();
-            for (JoinExpression j : joins) {
-                for (Field field : j.getTarget().getClass().getFields()) {                    
-                    if (PrimaryKey.class.isAssignableFrom(field.getType())){
-                        field.setAccessible(true);
-                        columns.addAll(((PrimaryKey)field.get(j.getTarget())).getLocalColumns());
-                    }
-                }
-            }
-            return columns;
-        } catch (IllegalArgumentException e) {
-            throw new QueryException(e);
-        } catch (IllegalAccessException e) {
-            throw new QueryException(e);
-        }
-
+        JoinExpression join = joins.get(0);
+        RelationalPath path = (RelationalPath)join.getTarget();
+        if (path.getPrimaryKey() != null){
+            return path.getPrimaryKey().getLocalColumns();
+        }else{
+            return path.getColumns();
+        }        
     }
 
     protected SQLTemplates getTemplates(){
@@ -171,7 +159,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }else{
                 append(templates.getDistinctCountStart());
                 if (sqlSelect.isEmpty()){
-                    handle(getIdentifierColumns(joins).get(0));
+                    handle(COMMA, getIdentifierColumns(joins));
                 }else{
                     handle(COMMA, sqlSelect);
                 }

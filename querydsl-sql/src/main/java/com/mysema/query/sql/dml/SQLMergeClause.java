@@ -42,7 +42,6 @@ import com.mysema.query.types.path.NullExpr;
  * @author tiwe
  *
  */
-@edu.umd.cs.findbugs.annotations.SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQLMergeClause>{
 
     private static final Logger logger = LoggerFactory.getLogger(SQLMergeClause.class);

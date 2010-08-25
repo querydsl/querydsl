@@ -31,15 +31,12 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.NullExpr;
 
-import edu.umd.cs.findbugs.annotations.SuppressWarnings;
-
 /**
  * SQLUpdateClause defines a UPDATE clause
  *
  * @author tiwe
  *
  */
-@SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<SQLUpdateClause> {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);

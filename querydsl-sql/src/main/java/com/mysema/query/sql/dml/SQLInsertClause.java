@@ -37,15 +37,12 @@ import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.path.NullExpr;
 import com.mysema.util.ResultSetAdapter;
 
-import edu.umd.cs.findbugs.annotations.SuppressWarnings;
-
 /**
  * SQLInsertClause defines an INSERT INTO clause
  *
  * @author tiwe
  *
  */
-@SuppressWarnings("SQL_PREPARED_STATEMENT_GENERATED_FROM_NONCONSTANT_STRING")
 public class SQLInsertClause extends AbstractSQLClause implements InsertClause<SQLInsertClause> {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
