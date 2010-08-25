@@ -80,7 +80,10 @@ public class QBean<T> extends ESimple<T> implements FactoryExpression<T>{
             T rv = getType().newInstance();
             BeanMap beanMap = new BeanMap(rv);
             for (Map.Entry<String,Expr<?>> entry : bindings.entrySet()){
-                beanMap.put(entry.getKey(), args[this.args.indexOf(entry.getValue())]);
+                Object value = args[this.args.indexOf(entry.getValue())];
+                if (value != null){
+                    beanMap.put(entry.getKey(), value);    
+                }                
             }
             return rv;
         } catch (InstantiationException e) {
