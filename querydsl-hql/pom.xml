@@ -71,7 +71,7 @@
 	<dependency>
 	  <groupId>org.eclipse.persistence</groupId>
 	  <artifactId>eclipselink</artifactId>
-	  <version>2.1.0-SNAPSHOT</version>
+	  <version>2.2.0-SNAPSHOT</version>
 	  <scope>test</scope>
     </dependency>
 		
@@ -130,7 +130,7 @@
 	
     <repository>
       <id>EclipseLink Repo</id>
-      <url>http://www.eclipse.org/downloads/download.php?r=1&amp;nf=1&amp;file=/rt/eclipselink/maven.repo</url>
+      <url>http://ftp.us.xemacs.org/pub/mirrors/eclipse/rt/eclipselink/maven.repo</url>
     </repository>    	
   </repositories>  
 

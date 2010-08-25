@@ -42,6 +42,11 @@ public class EclipseLinkTemplates extends JPQLTemplates{
         add(Ops.DateTimeOps.WEEK, "func('week',{0})");
         add(Ops.DateTimeOps.YEAR, "func('year',{0})");
         add(Ops.DateTimeOps.YEAR_MONTH, "func('year',{0}) * 100 + func('month',{0})");
+        
+        // H2 specific cast
+        // proper fix depends on https://bugs.eclipse.org/bugs/show_bug.cgi?id=315087
+        add(CAST, "func('convert', {0}, {1s})");
+        add(Ops.CHAR_AT, "substring({0},{1}+1,1)");
 
     }
 
