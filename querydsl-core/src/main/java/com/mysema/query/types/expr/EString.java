@@ -133,12 +133,21 @@ public abstract class EString extends EComparable<String> {
      * @return this.contains(str)
      * @see java.lang.String#contains(CharSequence)
      */
+    @Deprecated
     public EBoolean contains(Expr<String> str, boolean caseSensitive) {
         if (caseSensitive){
             return contains(str);
         }else{
             return OBoolean.create(Ops.STRING_CONTAINS_IC, this, str);
         }
+    }
+    
+    /**
+     * @param str
+     * @return
+     */
+    public EBoolean containsIgnoreCase(Expr<String> str) {
+        return OBoolean.create(Ops.STRING_CONTAINS_IC, this, str);
     }
 
     /**
@@ -149,10 +158,19 @@ public abstract class EString extends EComparable<String> {
      * @return this.contains(str)
      * @see java.lang.String#contains(CharSequence)
      */
+    @Deprecated
     public EBoolean contains(String str, boolean caseSensitive) {
         return contains(EStringConst.create(str), caseSensitive);
     }
 
+    /**
+     * @param str
+     * @return
+     */
+    public EBoolean containsIgnoreCase(String str) {
+        return containsIgnoreCase(EStringConst.create(str));
+    }
+    
     /**
      * Returns true if this ends with str
      *
@@ -172,12 +190,21 @@ public abstract class EString extends EComparable<String> {
      * @return
      * @see java.lang.String#endsWith(String)
      */
+    @Deprecated
     public EBoolean endsWith(Expr<String> str, boolean caseSensitive) {
         if (caseSensitive){
             return endsWith(str);
         }else{
             return OBoolean.create(Ops.ENDS_WITH_IC, this, str);
         }
+    }
+    
+    /**
+     * @param str
+     * @return
+     */
+    public EBoolean endsWithIgnoreCase(Expr<String> str){
+        return OBoolean.create(Ops.ENDS_WITH_IC, this, str);
     }
 
     /**
@@ -199,8 +226,17 @@ public abstract class EString extends EComparable<String> {
      * @return
      * @see java.lang.String#endsWith(String)
      */
+    @Deprecated
     public EBoolean endsWith(String str, boolean caseSensitive) {
         return endsWith(EStringConst.create(str), caseSensitive);
+    }
+    
+    /**
+     * @param str
+     * @return
+     */
+    public EBoolean endsWithIgnoreCase(String str) {
+        return endsWithIgnoreCase(EStringConst.create(str));
     }
 
     /**
@@ -413,12 +449,21 @@ public abstract class EString extends EComparable<String> {
      * @return
      * @see java.lang.String#startsWith(String)
      */
+    @Deprecated
     public EBoolean startsWith(Expr<String> str, boolean caseSensitive) {
         if (caseSensitive){
             return startsWith(str);
         }else{
             return OBoolean.create(Ops.STARTS_WITH_IC, this, str);
         }
+    }
+    
+    /**
+     * @param str
+     * @return
+     */
+    public EBoolean startsWithIgnoreCase(Expr<String> str) {
+        return OBoolean.create(Ops.STARTS_WITH_IC, this, str);
     }
 
     /**
@@ -440,8 +485,17 @@ public abstract class EString extends EComparable<String> {
      * @return
      * @see java.lang.String#startsWith(String)
      */
+    @Deprecated
     public EBoolean startsWith(String str, boolean caseSensitive) {
         return startsWith(EStringConst.create(str), caseSensitive);
+    }
+    
+    /**
+     * @param str
+     * @return
+     */
+    public EBoolean startsWithIgnoreCase(String str) {
+        return startsWithIgnoreCase(EStringConst.create(str));
     }
 
     /* (non-Javadoc)
