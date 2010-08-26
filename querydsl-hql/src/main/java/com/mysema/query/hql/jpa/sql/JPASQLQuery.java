@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.slf4j.Logger;
@@ -170,7 +171,12 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery> implements 
     public <RT> RT uniqueResult(Expr<RT> expr) {
         Query query = createQuery(expr);
         reset();
-        return (RT) query.getSingleResult();
+        try{
+            return (RT) query.getSingleResult();    
+        }catch(NoResultException e){
+            logger.debug(e.getMessage(),e);
+            return null;            
+        }
     }
 
 }

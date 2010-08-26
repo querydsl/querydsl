@@ -6,10 +6,12 @@
 package com.mysema.query.hql.jpa.sql;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 
@@ -138,6 +140,12 @@ public class JPADerbySQLTest {
         for (Object[] row : rows){
             System.out.println(Arrays.asList(row));
         }
+    }
+    
+    @Test
+    public void null_as_uniqueResult(){
+        SAnimal cat = new SAnimal("cat");
+        assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString())).uniqueResult(cat.name));
     }
 
 }
