@@ -13,7 +13,7 @@ import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.EBoolean;
 
@@ -60,7 +60,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.fullJoin(target);
     }
 
-    public Q fullJoin(SubQuery<?> target, Path<?> alias) {
+    public Q fullJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
@@ -72,7 +72,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.innerJoin(target);
     }
 
-    public Q innerJoin(SubQuery<?> target, Path<?> alias) {
+    public Q innerJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
@@ -84,7 +84,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.join(target);
     }
 
-    public Q join(SubQuery<?> target, Path<?> alias) {
+    public Q join(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.join(target, alias);
     }
 
@@ -96,7 +96,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.leftJoin(target);
     }   
 
-    public Q leftJoin(SubQuery<?> target, Path<?> alias) {
+    public Q leftJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 
@@ -112,7 +112,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.leftJoin(target);
     }
 
-    public Q rightJoin(SubQuery<?> target, Path<?> alias) {
+    public Q rightJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 

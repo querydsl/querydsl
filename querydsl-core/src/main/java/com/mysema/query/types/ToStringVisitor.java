@@ -102,7 +102,7 @@ public final class ToStringVisitor implements Visitor{
     }
 
     @Override
-    public void visit(SubQuery<?> expr) {
+    public void visit(SubQueryExpression<?> expr) {
         toString = expr.getMetadata().toString();
     }
 

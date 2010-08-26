@@ -13,7 +13,7 @@ import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
 import com.mysema.query.types.expr.ONumber;
@@ -52,7 +52,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
         return queryMixin.fullJoin(o);
     }
 
-    public T fullJoin(SubQuery<?> o, Path<?> alias) {
+    public T fullJoin(SubQueryExpression<?> o, Path<?> alias) {
         return queryMixin.fullJoin(o, alias);
     }
 
@@ -68,7 +68,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
         return queryMixin.innerJoin(o);
     }
 
-    public T innerJoin(SubQuery<?> o, Path<?> alias) {
+    public T innerJoin(SubQueryExpression<?> o, Path<?> alias) {
         return queryMixin.innerJoin(o, alias);
     }
 
@@ -80,7 +80,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
         return queryMixin.join(o);
     }
 
-    public T join(SubQuery<?> o, Path<?> alias) {
+    public T join(SubQueryExpression<?> o, Path<?> alias) {
         return queryMixin.join(o, alias);
     }
 
@@ -92,7 +92,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
         return queryMixin.leftJoin(o);
     }
 
-    public T leftJoin(SubQuery<?> o, Path<?> alias) {
+    public T leftJoin(SubQueryExpression<?> o, Path<?> alias) {
         return queryMixin.leftJoin(o, alias);
     }
 
@@ -108,7 +108,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
         return queryMixin.rightJoin(o);
     }
 
-    public T rightJoin(SubQuery<?> o, Path<?> alias) {
+    public T rightJoin(SubQueryExpression<?> o, Path<?> alias) {
         return queryMixin.rightJoin(o, alias);
     }
 

@@ -7,7 +7,7 @@ package com.mysema.query.sql;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.OSimple;
 
 /**
@@ -26,7 +26,7 @@ public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> implements SQL
         super(metadata);
     }
 
-    public Expr<?> union(SubQuery<?>... sq){
+    public Expr<?> union(SubQueryExpression<?>... sq){
         Expr<?> rv = sq[0].asExpr();
         for (int i = 1; i < sq.length; i++){
             rv = OSimple.create(rv.getType(), SQLTemplates.UNION, rv, sq[i].asExpr());

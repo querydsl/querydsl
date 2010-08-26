@@ -35,7 +35,7 @@ import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.path.NullExpr;
 import com.mysema.util.ResultSetAdapter;
@@ -57,7 +57,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
     private final QueryMetadata metadata = new DefaultQueryMetadata();
 
     @Nullable
-    private SubQuery<?> subQuery;
+    private SubQueryExpression<?> subQuery;
 
     private final List<SQLInsertBatch> batches = new ArrayList<SQLInsertBatch>();
     
@@ -230,7 +230,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
     }
 
     @Override
-    public SQLInsertClause select(SubQuery<?> sq) {
+    public SQLInsertClause select(SubQueryExpression<?> sq) {
         subQuery = sq;
         return this;
     }

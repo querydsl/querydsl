@@ -245,7 +245,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     public void serializeForMerge(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> keys,
-            List<Path<?>> columns, List<Expr<?>> values, @Nullable SubQuery<?> subQuery) {
+            List<Path<?>> columns, List<Expr<?>> values, @Nullable SubQueryExpression<?> subQuery) {
         this.entity = entity;
         
         serialize(Position.START, metadata.getFlags());
@@ -283,7 +283,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     public void serializeForInsert(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> columns,
-            List<Expr<?>> values, @Nullable SubQuery<?> subQuery) {
+            List<Expr<?>> values, @Nullable SubQueryExpression<?> subQuery) {
         this.entity = entity;
         
         serialize(Position.START, metadata.getFlags());
@@ -375,7 +375,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     @SuppressWarnings("unchecked")
-    public void serializeUnion(SubQuery[] sqs, List<OrderSpecifier<?>> orderBy) {
+    public void serializeUnion(SubQueryExpression[] sqs, List<OrderSpecifier<?>> orderBy) {
         // union
         handle(templates.getUnion(), (List)Arrays.asList(sqs));
 
@@ -437,7 +437,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     @Override
-    public void visit(SubQuery<?> query) {
+    public void visit(SubQueryExpression<?> query) {
         append("(");
         serialize(query.getMetadata(), false);
         append(")");

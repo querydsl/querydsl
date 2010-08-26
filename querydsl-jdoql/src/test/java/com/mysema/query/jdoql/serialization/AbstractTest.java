@@ -9,7 +9,7 @@ import com.mysema.query.jdoql.JDOQLSerializer;
 import com.mysema.query.jdoql.JDOQLSubQuery;
 import com.mysema.query.jdoql.JDOQLTemplates;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.SubQueryExpression;
 
 public abstract class AbstractTest {
 
@@ -17,7 +17,7 @@ public abstract class AbstractTest {
         return new JDOQLSubQuery();
     }
 
-    protected String serialize(SubQuery expr) {
+    protected String serialize(SubQueryExpression expr) {
         Expr<?> source = expr.getMetadata().getJoins().get(0).getTarget();
         JDOQLSerializer serializer = new JDOQLSerializer(JDOQLTemplates.DEFAULT, source);
         serializer.serialize(expr.getMetadata(), false, false);

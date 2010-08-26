@@ -279,7 +279,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     }
 
     @Override
-    public void visit(SubQuery<?> query) {
+    public void visit(SubQueryExpression<?> query) {
         append("(");
         serialize(query.getMetadata(), false, true);
         append(")");

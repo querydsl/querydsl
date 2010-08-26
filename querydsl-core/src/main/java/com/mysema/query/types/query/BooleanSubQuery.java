@@ -6,7 +6,7 @@
 package com.mysema.query.types.query;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 
@@ -15,7 +15,7 @@ import com.mysema.query.types.expr.EBoolean;
  *
  * @author tiwe
  */
-public final class BooleanSubQuery extends EBoolean implements SubQuery<Boolean>{
+public final class BooleanSubQuery extends EBoolean implements SubQueryExpression<Boolean>{
 
     private static final long serialVersionUID = -64156984110154969L;
 

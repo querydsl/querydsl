@@ -6,7 +6,7 @@
 package com.mysema.query.types.query;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ENumber;
@@ -19,7 +19,7 @@ import com.mysema.query.types.expr.ENumber;
  * @param <JM>
  * @param <A>
  */
-public final class NumberSubQuery<A extends Number & Comparable<?>> extends ENumber<A> implements SubQuery<A>{
+public final class NumberSubQuery<A extends Number & Comparable<?>> extends ENumber<A> implements SubQueryExpression<A>{
 
     private static final long serialVersionUID = -64156984110154969L;
 

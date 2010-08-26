@@ -46,7 +46,7 @@ import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.Coalesce;
 import com.mysema.query.types.expr.EArrayConstructor;
 import com.mysema.query.types.expr.EBoolean;
@@ -148,8 +148,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @SuppressWarnings("unchecked")
     @Test(expected=IllegalArgumentException.class)
     public void illegalUnion() throws SQLException {
-        SubQuery<Integer> sq1 = sq().from(employee).unique(employee.id.max());
-        SubQuery<Integer> sq2 = sq().from(employee).unique(employee.id.max());
+        SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id.max());
+        SubQueryExpression<Integer> sq2 = sq().from(employee).unique(employee.id.max());
         query().from(employee).union(sq1, sq2).list();
     }
 
@@ -465,8 +465,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     public void union() throws SQLException {
         // union
-        SubQuery<Integer> sq1 = sq().from(employee).unique(employee.id.max());
-        SubQuery<Integer> sq2 = sq().from(employee).unique(employee.id.min());
+        SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id.max());
+        SubQueryExpression<Integer> sq2 = sq().from(employee).unique(employee.id.min());
         List<Integer> list = query().union(sq1, sq2).list();
         assertFalse(list.isEmpty());
 
@@ -486,8 +486,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @SuppressWarnings("unchecked")
     @Test
     public void union_single_column_projections() throws IOException{
-        SubQuery<Integer> sq1 = sq().from(employee).unique(employee.id.max());
-        SubQuery<Integer> sq2 = sq().from(employee).unique(employee.id.min());
+        SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id.max());
+        SubQueryExpression<Integer> sq2 = sq().from(employee).unique(employee.id.min());
         
         // list
         List<Integer> list = query().union(sq1, sq2).list();
@@ -509,8 +509,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     
     @Test
     public void union_multi_column_projection() throws IOException{
-        SubQuery<Object[]> sq1 = sq().from(employee).unique(employee.id.max(), employee.id.max().subtract(1));
-        SubQuery<Object[]> sq2 = sq().from(employee).unique(employee.id.min(), employee.id.min().subtract(1));
+        SubQueryExpression<Object[]> sq1 = sq().from(employee).unique(employee.id.max(), employee.id.max().subtract(1));
+        SubQueryExpression<Object[]> sq2 = sq().from(employee).unique(employee.id.min(), employee.id.min().subtract(1));
         
         // list
         List<Object[]> list = query().union(sq1, sq2).list();
@@ -635,7 +635,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     public void whereExists() throws SQLException {
-        SubQuery<Integer> sq1 = sq().from(employee).unique(employee.id.max());
+        SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id.max());
 
         query().from(employee).where(sq1.exists()).count();
 

@@ -19,7 +19,7 @@ import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.OSimple;
 import com.mysema.query.types.path.PMap;
@@ -88,7 +88,7 @@ public class QueryMixin<T>{
         return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias.asExpr());
     }
 
-    protected <D> Expr<D> createAlias(SubQuery<D> path, Path<D> alias){
+    protected <D> Expr<D> createAlias(SubQueryExpression<D> path, Path<D> alias){
         assertRoot(alias);
         return path.asExpr().as(alias);
     }
@@ -138,7 +138,7 @@ public class QueryMixin<T>{
     }
     
     @SuppressWarnings("unchecked")
-    public <P> T fullJoin(SubQuery<P> target, Path alias) {
+    public <P> T fullJoin(SubQueryExpression<P> target, Path alias) {
         metadata.addJoin(JoinType.FULLJOIN, createAlias(target, alias));
         return self;
     }
@@ -192,7 +192,7 @@ public class QueryMixin<T>{
     }
 
     @SuppressWarnings("unchecked")
-    public <P> T innerJoin(SubQuery<P> target, Path alias) {
+    public <P> T innerJoin(SubQueryExpression<P> target, Path alias) {
         metadata.addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return self;
     }
@@ -236,7 +236,7 @@ public class QueryMixin<T>{
     }
 
     @SuppressWarnings("unchecked")
-    public <P> T join(SubQuery<P> target, Path alias) {
+    public <P> T join(SubQueryExpression<P> target, Path alias) {
         metadata.addJoin(JoinType.JOIN, createAlias(target, alias));
         return self;
     }
@@ -272,7 +272,7 @@ public class QueryMixin<T>{
     }
 
     @SuppressWarnings("unchecked")
-    public <P> T leftJoin(SubQuery<P> target, Path alias) {
+    public <P> T leftJoin(SubQueryExpression<P> target, Path alias) {
         metadata.addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
         return self;
     }
@@ -335,7 +335,7 @@ public class QueryMixin<T>{
     }
 
     @SuppressWarnings("unchecked")
-    public <P> T rightJoin(SubQuery<P> target, Path alias) {
+    public <P> T rightJoin(SubQueryExpression<P> target, Path alias) {
         metadata.addJoin(JoinType.RIGHTJOIN, createAlias(target, alias));
         return self;
     }

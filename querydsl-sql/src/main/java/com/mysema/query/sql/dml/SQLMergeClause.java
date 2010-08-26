@@ -32,7 +32,7 @@ import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.ExprConst;
 import com.mysema.query.types.path.NullExpr;
 
@@ -57,7 +57,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
     private final List<Path<?>> keys = new ArrayList<Path<?>>();
 
     @Nullable
-    private SubQuery<?> subQuery;
+    private SubQueryExpression<?> subQuery;
 
     private final List<Expr<?>> values = new ArrayList<Expr<?>>();
 
@@ -155,7 +155,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
         return this;
     }
 
-    public SQLMergeClause select(SubQuery<?> subQuery) {
+    public SQLMergeClause select(SubQueryExpression<?> subQuery) {
         this.subQuery = subQuery;
         return this;
     }

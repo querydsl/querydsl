@@ -263,7 +263,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     }
 
     @Override
-    public void visit(SubQuery<?> query) {
+    public void visit(SubQueryExpression<?> query) {
         append("(");
         serialize(query.getMetadata(), false, null);
         append(")");
@@ -328,8 +328,8 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             String typeName = targetType.getSimpleName().toLowerCase(Locale.ENGLISH);
             visitOperation(targetType, JPQLTemplates.CAST, Arrays.<Expr<?>>asList(args.get(0), ExprConst.create(typeName)));
 
-        } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQuery){
-            SubQuery subQuery = (SubQuery) args.get(0);
+        } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQueryExpression){
+            SubQueryExpression subQuery = (SubQueryExpression) args.get(0);
             append("exists (");
             serialize(subQuery.getMetadata(), false, "1");
             append(")");

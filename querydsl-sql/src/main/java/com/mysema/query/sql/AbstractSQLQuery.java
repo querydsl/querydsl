@@ -42,7 +42,7 @@ import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.custom.CSimple;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.QBean;
@@ -102,7 +102,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     private List<Object> constants;
 
     @Nullable
-    private SubQuery<?>[] union;
+    private SubQueryExpression<?>[] union;
 
     private final Configuration configuration;
 
@@ -172,7 +172,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.fullJoin(target);
     }
 
-    public Q fullJoin(SubQuery<?> target, Path<?> alias) {
+    public Q fullJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
@@ -184,7 +184,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.innerJoin(target);
     }
 
-    public Q innerJoin(SubQuery<?> target, Path<?> alias) {
+    public Q innerJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
@@ -196,7 +196,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.join(target);
     }
 
-    public Q join(SubQuery<?> target, Path<?> alias) {
+    public Q join(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.join(target, alias);
     }
 
@@ -208,7 +208,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.leftJoin(target);
     }
 
-    public Q leftJoin(SubQuery<?> target, Path<?> alias) {
+    public Q leftJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 
@@ -220,7 +220,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.rightJoin(target);
     }
 
-    public Q rightJoin(SubQuery<?> target, Path<?> alias) {
+    public Q rightJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.rightJoin(target, alias);
     }
 
@@ -269,7 +269,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         }
     }
 
-    private <RT> UnionBuilder<RT> innerUnion(SubQuery<?>... sq) {
+    private <RT> UnionBuilder<RT> innerUnion(SubQueryExpression<?>... sq) {
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("Don't mix union and from");
         }
@@ -492,7 +492,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return innerUnion(sq);
     }
 
-    public <RT> UnionBuilder<RT> union(SubQuery<RT>... sq) {
+    public <RT> UnionBuilder<RT> union(SubQueryExpression<RT>... sq) {
         return innerUnion(sq);
     }
 

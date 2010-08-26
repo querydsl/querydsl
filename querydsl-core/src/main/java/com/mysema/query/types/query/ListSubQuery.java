@@ -11,7 +11,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
-import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.ECollectionBase;
@@ -24,7 +24,7 @@ import com.mysema.query.types.expr.OSimple;
  *
  * @param <A>
  */
-public final class ListSubQuery<A> extends ECollectionBase<List<A>,A> implements SubQuery<List<A>>{
+public final class ListSubQuery<A> extends ECollectionBase<List<A>,A> implements SubQueryExpression<List<A>>{
 
     private static final long serialVersionUID = 3399354334765602960L;
 

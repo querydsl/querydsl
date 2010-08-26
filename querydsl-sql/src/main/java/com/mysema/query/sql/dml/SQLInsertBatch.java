@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.SubQueryExpression;
 
 /**
  * @author tiwe
@@ -23,9 +23,9 @@ public class SQLInsertBatch {
     private final List<Expr<?>> values = new ArrayList<Expr<?>>();
     
     @Nullable
-    private final SubQuery<?> subQuery;
+    private final SubQueryExpression<?> subQuery;
     
-    public SQLInsertBatch(List<Path<?>> c, List<Expr<?>> v, @Nullable SubQuery<?> sq) {
+    public SQLInsertBatch(List<Path<?>> c, List<Expr<?>> v, @Nullable SubQueryExpression<?> sq) {
         columns.addAll(c);
         values.addAll(v);
         subQuery = sq;
@@ -39,7 +39,7 @@ public class SQLInsertBatch {
         return values;
     }
 
-    public SubQuery<?> getSubQuery() {
+    public SubQueryExpression<?> getSubQuery() {
         return subQuery;
     }
     

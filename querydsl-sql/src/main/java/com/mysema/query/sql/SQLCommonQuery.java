@@ -6,7 +6,7 @@ package com.mysema.query.sql;
 import com.mysema.query.Query;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.EBoolean;
 
 /**
@@ -112,7 +112,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q fullJoin(SubQuery<?> o, Path<?> alias);
+    Q fullJoin(SubQueryExpression<?> o, Path<?> alias);
 
     /**
      * Adds an inner join to the given target
@@ -120,7 +120,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q innerJoin(SubQuery<?> o, Path<?> alias);
+    Q innerJoin(SubQueryExpression<?> o, Path<?> alias);
 
     /**
      * Adds a join to the given target
@@ -128,7 +128,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q join(SubQuery<?> o, Path<?> alias);
+    Q join(SubQueryExpression<?> o, Path<?> alias);
 
     /**
      * Adds a left join to the given target
@@ -136,7 +136,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q leftJoin(SubQuery<?> o, Path<?> alias);
+    Q leftJoin(SubQueryExpression<?> o, Path<?> alias);
 
     /**
      * Adds a right join to the given target
@@ -144,7 +144,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q rightJoin(SubQuery<?> o, Path<?> alias);
+    Q rightJoin(SubQueryExpression<?> o, Path<?> alias);
 
     /**
      * Defines a filter to the last added join

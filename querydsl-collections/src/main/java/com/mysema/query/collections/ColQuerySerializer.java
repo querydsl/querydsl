@@ -60,7 +60,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
     }
 
     @Override
-    public void visit(SubQuery<?> expr) {
+    public void visit(SubQueryExpression<?> expr) {
         throw new IllegalArgumentException("Not supported");
     }
 

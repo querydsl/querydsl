@@ -19,7 +19,7 @@ import com.mysema.query.types.query.Detachable;
  *
  * @param <T>
  */
-public interface SubQuery<T>{
+public interface SubQueryExpression<T>{
 
     /**
      * Get an exists(this) expression for the subquery

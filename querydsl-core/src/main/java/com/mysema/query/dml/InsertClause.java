@@ -6,7 +6,7 @@
 package com.mysema.query.dml;
 
 import com.mysema.query.types.Path;
-import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.SubQueryExpression;
 
 /**
  * InsertClause defines a generic extensible interface for Insert clauses
@@ -31,7 +31,7 @@ public interface InsertClause<C extends InsertClause<C>> extends StoreClause<C>{
      * @param subQuery
      * @return
      */
-    C select(SubQuery<?> subQuery);
+    C select(SubQueryExpression<?> subQuery);
 
     /**
      * Define the value bindings

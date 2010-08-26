@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 
 import com.mysema.query.Projectable;
 import com.mysema.query.types.Expr;
-import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.query.ListSubQuery;
 
 /**
@@ -37,7 +37,7 @@ public interface SQLQuery extends SQLCommonQuery<SQLQuery>, Projectable {
      * @param sq
      * @return
      */
-    <RT> Union<RT> union(SubQuery<RT>... sq);
+    <RT> Union<RT> union(SubQueryExpression<RT>... sq);
 
     /**
      * Clone the state of the Query for the given Connection

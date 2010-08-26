@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Ops;
-import com.mysema.query.types.SubQuery;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.OBoolean;
 
@@ -20,7 +20,7 @@ import com.mysema.query.types.expr.OBoolean;
  * @author tiwe
  *
  */
-public class SubQueryMixin<T> implements SubQuery<T>{
+public class SubQueryMixin<T> implements SubQueryExpression<T>{
 
     @Nullable
     private volatile EBoolean exists;
@@ -29,7 +29,7 @@ public class SubQueryMixin<T> implements SubQuery<T>{
 
     private final Expr<T> self;
 
-    public SubQueryMixin(SubQuery<T> self, QueryMetadata metadata){
+    public SubQueryMixin(SubQueryExpression<T> self, QueryMetadata metadata){
         this.self = self.asExpr();
         this.metadata = metadata;
     }
@@ -38,8 +38,8 @@ public class SubQueryMixin<T> implements SubQuery<T>{
     public boolean equals(Object o){
         if (o == this || o == self){
             return true;
-        }else if (o instanceof SubQuery){
-            SubQuery<T> s = (SubQuery<T>)o;
+        }else if (o instanceof SubQueryExpression){
+            SubQueryExpression<T> s = (SubQueryExpression<T>)o;
             return s.getMetadata().equals(metadata);
         }else{
             return false;
