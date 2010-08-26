@@ -5,6 +5,7 @@
  */
 package com.mysema.query;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -16,6 +17,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -307,6 +309,11 @@ public abstract class AbstractStandardTest {
     public void testParams_not_set(){
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Bob123",query().from(cat).where(cat.name.eq(name)).uniqueResult(cat.name));
+    }
+    
+    @Test
+    public void null_as_uniqueResult(){
+        assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString())).uniqueResult(cat));
     }
 
 }

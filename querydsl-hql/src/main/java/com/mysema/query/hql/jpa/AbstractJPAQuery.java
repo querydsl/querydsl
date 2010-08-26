@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.slf4j.Logger;
@@ -176,6 +177,12 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
         logQuery(queryString);
         Query query = createQuery(queryString, null);
         reset();
-        return (RT) query.getSingleResult();
+        try{
+            return (RT) query.getSingleResult();    
+        }catch(NoResultException e){
+            logger.debug(e.getMessage(),e);
+            return null;            
+        }
+        
     }
 }
