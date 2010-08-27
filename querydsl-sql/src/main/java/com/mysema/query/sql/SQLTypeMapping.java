@@ -24,51 +24,55 @@ public final class SQLTypeMapping {
 
     {
         // BOOLEAN
-        types.put(Types.BIT, Boolean.class);
-        types.put(Types.BOOLEAN, Boolean.class);
+        register(Types.BIT, Boolean.class);
+        register(Types.BOOLEAN, Boolean.class);
 
         // NUMERIC
-        types.put(Types.BIGINT, Long.class);
-        types.put(Types.DECIMAL, BigDecimal.class);
-        types.put(Types.DOUBLE, Double.class);
-        types.put(Types.FLOAT, Float.class);
-        types.put(Types.INTEGER, Integer.class);
-        types.put(Types.NUMERIC, BigDecimal.class);
-        types.put(Types.REAL, Float.class);
-        types.put(Types.SMALLINT, Short.class);
-        types.put(Types.TINYINT, Byte.class);
+        register(Types.BIGINT, Long.class);
+        register(Types.DECIMAL, BigDecimal.class);
+        register(Types.DOUBLE, Double.class);
+        register(Types.FLOAT, Float.class);
+        register(Types.INTEGER, Integer.class);
+        register(Types.NUMERIC, BigDecimal.class);
+        register(Types.REAL, Float.class);
+        register(Types.SMALLINT, Short.class);
+        register(Types.TINYINT, Byte.class);
 
         // DATE and TIME
-        types.put(Types.DATE, java.sql.Date.class);
-        types.put(Types.TIME, java.sql.Time.class);
-        types.put(Types.TIMESTAMP, java.util.Date.class);
+        register(Types.DATE, java.sql.Date.class);
+        register(Types.TIME, java.sql.Time.class);
+        register(Types.TIMESTAMP, java.util.Date.class);
 
         // TEXT
-        types.put(Types.CHAR, String.class);
-        types.put(Types.NCHAR, String.class);
-        types.put(Types.CLOB, String.class);
-        types.put(Types.NCLOB, String.class);
-        types.put(Types.LONGVARCHAR, String.class);
-        types.put(Types.LONGNVARCHAR, String.class);
-        types.put(Types.SQLXML, String.class);
-        types.put(Types.VARCHAR, String.class);
-        types.put(Types.NVARCHAR, String.class);
+        register(Types.CHAR, String.class);
+        register(Types.NCHAR, String.class);
+        register(Types.CLOB, String.class);
+        register(Types.NCLOB, String.class);
+        register(Types.LONGVARCHAR, String.class);
+        register(Types.LONGNVARCHAR, String.class);
+        register(Types.SQLXML, String.class);
+        register(Types.VARCHAR, String.class);
+        register(Types.NVARCHAR, String.class);
 
         // OTHER
-        types.put(Types.ARRAY, Object[].class);
-        types.put(Types.BINARY, Object.class);
-        types.put(Types.BLOB, Object.class);
-        types.put(Types.DISTINCT, Object.class);
-        types.put(Types.DATALINK, Object.class);
-        types.put(Types.JAVA_OBJECT, Object.class);
-        types.put(Types.LONGVARBINARY, Object.class);
-        types.put(Types.NULL, Object.class);
-        types.put(Types.OTHER, Object.class);
-        types.put(Types.REAL, Object.class);
-        types.put(Types.REF, Object.class);
-        types.put(Types.ROWID, Object.class);
-        types.put(Types.STRUCT, Object.class);
-        types.put(Types.VARBINARY, Object.class);
+        register(Types.ARRAY, Object[].class);
+        register(Types.BINARY, Object.class);
+        register(Types.BLOB, Object.class);
+        register(Types.DISTINCT, Object.class);
+        register(Types.DATALINK, Object.class);
+        register(Types.JAVA_OBJECT, Object.class);
+        register(Types.LONGVARBINARY, Object.class);
+        register(Types.NULL, Object.class);
+        register(Types.OTHER, Object.class);
+        register(Types.REAL, Object.class);
+        register(Types.REF, Object.class);
+        register(Types.ROWID, Object.class);
+        register(Types.STRUCT, Object.class);
+        register(Types.VARBINARY, Object.class);
+    }
+    
+    public void register(int sqlType, Class<?> javaType){
+        types.put(sqlType, javaType);
     }
 
     @Nullable

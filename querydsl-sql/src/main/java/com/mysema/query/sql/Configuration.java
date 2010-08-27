@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import com.mysema.commons.lang.Pair;
 import com.mysema.query.sql.types.*;
 
 /**
@@ -51,13 +52,17 @@ public class Configuration {
         registerDefault(new UtilDateType());
     }
     
-    private final Map<Class<?>,Type<?>> types = new HashMap<Class<?>,Type<?>>();
+    private final Map<Class<?>,Type<?>> typeByClass = new HashMap<Class<?>,Type<?>>();
+    
+    private final Map<Pair<String,String>, Type<?>> typeByColumn = new HashMap<Pair<String,String>,Type<?>>();
+    
+    private final SQLTypeMapping typeMapping;
     
     private final SQLTemplates templates;
 
-    public Configuration(SQLTemplates templates) {        
-          
+    public Configuration(SQLTemplates templates) {       
         this.templates = templates;
+        this.typeMapping = new SQLTypeMapping();
     }
     
     public SQLTemplates getTemplates() {
@@ -65,7 +70,7 @@ public class Configuration {
     }
 
     public void register(Type<?> type) {
-        types.put(type.getReturnedClass(), type);
+        typeByClass.put(type.getReturnedClass(), type);
     }
     
     @Nullable    
@@ -83,13 +88,21 @@ public class Configuration {
     
     @SuppressWarnings("unchecked")
     private <T> Type<T> getType(Class<T> clazz){
-        if (types.containsKey(clazz)){
-            return (Type<T>) types.get(clazz);
+        if (typeByClass.containsKey(clazz)){
+            return (Type<T>) typeByClass.get(clazz);
         }else if (defaultTypes.containsKey(clazz)){
             return (Type<T>) defaultTypes.get(clazz);
         }else{
             throw new IllegalArgumentException("Got not type for " + clazz.getName());
         }        
+    }
+
+    public void setType(int sqlType, Class<?> javaType) {
+        typeMapping.register(sqlType, javaType);
+    }
+
+    public void setType(String table, String column, Type<?> type) {
+        typeByColumn.put(Pair.of(table, column), type);        
     }
     
 
