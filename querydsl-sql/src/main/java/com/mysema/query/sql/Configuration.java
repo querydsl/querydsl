@@ -8,13 +8,10 @@ package com.mysema.query.sql;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.mysema.commons.lang.Pair;
-import com.mysema.query.sql.types.*;
+import com.mysema.query.sql.types.Type;
 
 /**
  * Configuration for SQLQuery instances
@@ -23,8 +20,6 @@ import com.mysema.query.sql.types.*;
  *
  */
 public class Configuration {
-    
-    private final Map<Pair<String,String>, Type<?>> typeByColumn = new HashMap<Pair<String,String>,Type<?>>();
     
     private final SQLTypeMapping sqlTypeMapping;
     
@@ -64,7 +59,7 @@ public class Configuration {
     }
 
     public void setType(String table, String column, Type<?> type) {
-        typeByColumn.put(Pair.of(table, column), type);        
+        javaTypeMapping.setType(table, column, type);
     }
     
 
