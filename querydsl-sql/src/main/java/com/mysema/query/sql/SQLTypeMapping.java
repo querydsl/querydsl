@@ -20,56 +20,62 @@ import javax.annotation.Nullable;
  */
 public final class SQLTypeMapping {
 
-    private final Map<Integer, Class<?>> types = new HashMap<Integer, Class<?>>();
-
-    {
+    private static final Map<Integer, Class<?>> defaultTypes = new HashMap<Integer, Class<?>>();
+    
+    static{
         // BOOLEAN
-        register(Types.BIT, Boolean.class);
-        register(Types.BOOLEAN, Boolean.class);
+        registerDefault(Types.BIT, Boolean.class);
+        registerDefault(Types.BOOLEAN, Boolean.class);
 
         // NUMERIC
-        register(Types.BIGINT, Long.class);
-        register(Types.DECIMAL, BigDecimal.class);
-        register(Types.DOUBLE, Double.class);
-        register(Types.FLOAT, Float.class);
-        register(Types.INTEGER, Integer.class);
-        register(Types.NUMERIC, BigDecimal.class);
-        register(Types.REAL, Float.class);
-        register(Types.SMALLINT, Short.class);
-        register(Types.TINYINT, Byte.class);
+        registerDefault(Types.BIGINT, Long.class);
+        registerDefault(Types.DECIMAL, BigDecimal.class);
+        registerDefault(Types.DOUBLE, Double.class);
+        registerDefault(Types.FLOAT, Float.class);
+        registerDefault(Types.INTEGER, Integer.class);
+        registerDefault(Types.NUMERIC, BigDecimal.class);
+        registerDefault(Types.REAL, Float.class);
+        registerDefault(Types.SMALLINT, Short.class);
+        registerDefault(Types.TINYINT, Byte.class);
 
         // DATE and TIME
-        register(Types.DATE, java.sql.Date.class);
-        register(Types.TIME, java.sql.Time.class);
-        register(Types.TIMESTAMP, java.util.Date.class);
+        registerDefault(Types.DATE, java.sql.Date.class);
+        registerDefault(Types.TIME, java.sql.Time.class);
+        registerDefault(Types.TIMESTAMP, java.util.Date.class);
 
         // TEXT
-        register(Types.CHAR, String.class);
-        register(Types.NCHAR, String.class);
-        register(Types.CLOB, String.class);
-        register(Types.NCLOB, String.class);
-        register(Types.LONGVARCHAR, String.class);
-        register(Types.LONGNVARCHAR, String.class);
-        register(Types.SQLXML, String.class);
-        register(Types.VARCHAR, String.class);
-        register(Types.NVARCHAR, String.class);
+        registerDefault(Types.CHAR, String.class);
+        registerDefault(Types.NCHAR, String.class);
+        registerDefault(Types.CLOB, String.class);
+        registerDefault(Types.NCLOB, String.class);
+        registerDefault(Types.LONGVARCHAR, String.class);
+        registerDefault(Types.LONGNVARCHAR, String.class);
+        registerDefault(Types.SQLXML, String.class);
+        registerDefault(Types.VARCHAR, String.class);
+        registerDefault(Types.NVARCHAR, String.class);
 
         // OTHER
-        register(Types.ARRAY, Object[].class);
-        register(Types.BINARY, Object.class);
-        register(Types.BLOB, Object.class);
-        register(Types.DISTINCT, Object.class);
-        register(Types.DATALINK, Object.class);
-        register(Types.JAVA_OBJECT, Object.class);
-        register(Types.LONGVARBINARY, Object.class);
-        register(Types.NULL, Object.class);
-        register(Types.OTHER, Object.class);
-        register(Types.REAL, Object.class);
-        register(Types.REF, Object.class);
-        register(Types.ROWID, Object.class);
-        register(Types.STRUCT, Object.class);
-        register(Types.VARBINARY, Object.class);
+        registerDefault(Types.ARRAY, Object[].class);
+        registerDefault(Types.BINARY, Object.class);
+        registerDefault(Types.BLOB, Object.class);
+        registerDefault(Types.DISTINCT, Object.class);
+        registerDefault(Types.DATALINK, Object.class);
+        registerDefault(Types.JAVA_OBJECT, Object.class);
+        registerDefault(Types.LONGVARBINARY, Object.class);
+        registerDefault(Types.NULL, Object.class);
+        registerDefault(Types.OTHER, Object.class);
+        registerDefault(Types.REAL, Object.class);
+        registerDefault(Types.REF, Object.class);
+        registerDefault(Types.ROWID, Object.class);
+        registerDefault(Types.STRUCT, Object.class);
+        registerDefault(Types.VARBINARY, Object.class);
     }
+    
+    private static void registerDefault(int sqlType, Class<?> javaType){
+        defaultTypes.put(sqlType, javaType);
+    }
+    
+    private final Map<Integer, Class<?>> types = new HashMap<Integer, Class<?>>();
     
     public void register(int sqlType, Class<?> javaType){
         types.put(sqlType, javaType);
@@ -77,7 +83,11 @@ public final class SQLTypeMapping {
 
     @Nullable
     public Class<?> get(int sqlType) {
-        return types.get(sqlType);
+        if (types.containsKey(sqlType)){
+            return types.get(sqlType);
+        }else{
+            return defaultTypes.get(sqlType);
+        }        
     }
 
 }

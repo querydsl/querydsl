@@ -24,81 +24,43 @@ import com.mysema.query.sql.types.*;
  */
 public class Configuration {
     
-    private static final Map<Class<?>,Type<?>> defaultTypes = new HashMap<Class<?>,Type<?>>();
-    
-    private static void registerDefault(Type<?> type) {
-        defaultTypes.put(type.getReturnedClass(), type);
-    }
-
-    static{
-        registerDefault(new BigDecimalType());
-        registerDefault(new BlobType());
-        registerDefault(new BooleanType());
-        registerDefault(new BytesType());
-        registerDefault(new ByteType());
-        registerDefault(new CharacterType());
-        registerDefault(new ClobType());
-        registerDefault(new DateType());
-        registerDefault(new DoubleType());
-        registerDefault(new FloatType());
-        registerDefault(new IntegerType());
-        registerDefault(new LongType());
-        registerDefault(new ObjectType());
-        registerDefault(new ShortType());
-        registerDefault(new StringType());
-        registerDefault(new TimestampType());
-        registerDefault(new TimeType());
-        registerDefault(new URLType());
-        registerDefault(new UtilDateType());
-    }
-    
-    private final Map<Class<?>,Type<?>> typeByClass = new HashMap<Class<?>,Type<?>>();
-    
     private final Map<Pair<String,String>, Type<?>> typeByColumn = new HashMap<Pair<String,String>,Type<?>>();
     
-    private final SQLTypeMapping typeMapping;
+    private final SQLTypeMapping sqlTypeMapping;
+    
+    private final JavaTypeMapping javaTypeMapping;
     
     private final SQLTemplates templates;
 
     public Configuration(SQLTemplates templates) {       
         this.templates = templates;
-        this.typeMapping = new SQLTypeMapping();
-    }
-    
-    public SQLTemplates getTemplates() {
-        return templates;
+        this.sqlTypeMapping = new SQLTypeMapping();
+        this.javaTypeMapping = new JavaTypeMapping();
     }
 
-    public void register(Type<?> type) {
-        typeByClass.put(type.getReturnedClass(), type);
+    public SQLTemplates getTemplates() {
+        return templates;
     }
     
     @Nullable    
     public <T> T get(ResultSet rs, int i, Class<T> clazz) throws SQLException {        
-        Type<T> type = getType(clazz);
+        Type<T> type = javaTypeMapping.getType(clazz);
         return type.getValue(rs, i);
+    }
+    
+    public void register(Type<?> type) {
+        javaTypeMapping.register(type);
     }
     
     @SuppressWarnings("unchecked")
     public <T> int set(PreparedStatement stmt, int i, T value) throws SQLException{
-        Type<T> type = getType((Class)value.getClass());
+        Type<T> type = javaTypeMapping.getType((Class)value.getClass());
         type.setValue(stmt, i, value);
         return type.getSQLTypes().length;        
     }
-    
-    @SuppressWarnings("unchecked")
-    private <T> Type<T> getType(Class<T> clazz){
-        if (typeByClass.containsKey(clazz)){
-            return (Type<T>) typeByClass.get(clazz);
-        }else if (defaultTypes.containsKey(clazz)){
-            return (Type<T>) defaultTypes.get(clazz);
-        }else{
-            throw new IllegalArgumentException("Got not type for " + clazz.getName());
-        }        
-    }
 
     public void setType(int sqlType, Class<?> javaType) {
-        typeMapping.register(sqlType, javaType);
+        sqlTypeMapping.register(sqlType, javaType);
     }
 
     public void setType(String table, String column, Type<?> type) {
