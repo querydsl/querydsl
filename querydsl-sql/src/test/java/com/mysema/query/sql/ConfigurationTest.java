@@ -1,6 +1,6 @@
 package com.mysema.query.sql;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.sql.Types;
 
@@ -28,5 +28,5 @@ public class ConfigurationTest {
         
         assertEquals(Gender.class, configuration.getJavaType(java.sql.Types.VARCHAR, "person", "gender"));
     }
-
+    
 }

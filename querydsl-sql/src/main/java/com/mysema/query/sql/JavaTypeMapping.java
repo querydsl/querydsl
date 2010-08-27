@@ -48,7 +48,7 @@ public class JavaTypeMapping {
     
     @Nullable
     public Type<?> getType(String table, String column){
-        return typeByColumn.get(Pair.of(table, column)); 
+        return typeByColumn.get(Pair.of(table.toLowerCase(), column.toLowerCase())); 
     }
     
     @SuppressWarnings("unchecked")
@@ -67,7 +67,7 @@ public class JavaTypeMapping {
     }
 
     public void setType(String table, String column, Type<?> type) {
-        typeByColumn.put(Pair.of(table, column), type);        
+        typeByColumn.put(Pair.of(table.toLowerCase(), column.toLowerCase()), type);        
     }
     
 }

@@ -75,7 +75,14 @@
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>    
-    
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>1.4</version>
+      <!-- license : Apache License 2.0 -->
+	  <scope>test</scope>
+    </dependency>    
+	
   </dependencies>
   
   <build>
