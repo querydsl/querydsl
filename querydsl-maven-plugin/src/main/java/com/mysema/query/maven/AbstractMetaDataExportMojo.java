@@ -89,8 +89,10 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         Serializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);        
         MetaDataExporter exporter = new MetaDataExporter(
                 namePrefix, packageName,
-                schemaPattern, tableNamePattern, new File(targetFolder),
+                new File(targetFolder),
                 namingStrategy, serializer, null);
+        exporter.setSchemaPattern(schemaPattern);
+        exporter.setTableNamePattern(tableNamePattern);
         try {
             Class.forName(jdbcDriver);
             Connection conn = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);

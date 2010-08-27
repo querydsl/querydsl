@@ -82,7 +82,7 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
         MetaDataSerializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);
         MetaDataExporter exporter;
         if (withBeans){
-            exporter = new MetaDataExporter(namePrefix, "test", null, null, new File(target), namingStrategy, serializer, new BeanSerializer());
+            exporter = new MetaDataExporter(namePrefix, "test", new File(target), namingStrategy, serializer, new BeanSerializer());
         }else{
             exporter = new MetaDataExporter(namePrefix, "test", new File(target), namingStrategy, serializer);
         }

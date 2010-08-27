@@ -21,6 +21,8 @@ import com.mysema.query.sql.types.Type;
  */
 public class Configuration {
     
+    public static final Configuration DEFAULT = new Configuration(new SQLTemplates());
+    
     private final SQLTypeMapping sqlTypeMapping;
     
     private final JavaTypeMapping javaTypeMapping;
@@ -35,6 +37,15 @@ public class Configuration {
 
     public SQLTemplates getTemplates() {
         return templates;
+    }
+    
+    public Class<?> getJavaType(int sqlType, String tableName, String columnName) {
+        Type<?> type = javaTypeMapping.getType(tableName, columnName);
+        if (type != null){
+            return type.getReturnedClass();
+        }else{
+            return sqlTypeMapping.get(sqlType);
+        }
     }
     
     @Nullable    
@@ -61,7 +72,6 @@ public class Configuration {
     public void setType(String table, String column, Type<?> type) {
         javaTypeMapping.setType(table, column, type);
     }
-    
 
-    
+        
 }

@@ -76,14 +76,14 @@ public class MetaDataExporter {
     private final NamingStrategy namingStrategy;
 
     @Nullable
-    private final String schemaPattern, tableNamePattern;
+    private String schemaPattern, tableNamePattern;
 
     private final Serializer serializer;
     
     @Nullable
     private final Serializer beanSerializer;
 
-    private final SQLTypeMapping sqlTypeMapping = new SQLTypeMapping();
+    private Configuration configuration = Configuration.DEFAULT;
     
     private final KeyDataFactory keyDataFactory = new KeyDataFactory();
     
@@ -93,22 +93,18 @@ public class MetaDataExporter {
             File targetFolder,
             NamingStrategy namingStrategy,
             Serializer serializer){
-        this(namePrefix, packageName, null, null, targetFolder, namingStrategy, serializer, null);
+        this(namePrefix, packageName, targetFolder, namingStrategy, serializer, null);
     }
 
     public MetaDataExporter(
             String namePrefix,
             String packageName,
-            @Nullable String schemaPattern,
-            @Nullable String tableNamePattern,
             File targetFolder,
             NamingStrategy namingStrategy,
             Serializer serializer,
             @Nullable Serializer beanSerializer){
         this.namePrefix = Assert.notNull(namePrefix,"namePrefix");
         this.packageName = Assert.notNull(packageName,"packageName");
-        this.schemaPattern = schemaPattern;
-        this.tableNamePattern = tableNamePattern;
         this.targetFolder = Assert.notNull(targetFolder,"targetFolder");
         this.namingStrategy = Assert.notNull(namingStrategy,"namingStrategy");
         this.serializer = Assert.notNull(serializer, "serializer");
@@ -154,10 +150,10 @@ public class MetaDataExporter {
         return classes;
     }
 
-    private void handleColumn(EntityType classModel, ResultSet columns) throws SQLException {
+    private void handleColumn(EntityType classModel, String tableName, ResultSet columns) throws SQLException {
         String columnName = columns.getString(COLUMN_NAME);
         String propertyName = namingStrategy.getPropertyName(columnName, namePrefix, classModel);
-        Class<?> clazz = sqlTypeMapping.get(columns.getInt(COLUMN_TYPE));
+        Class<?> clazz = configuration.getJavaType(columns.getInt(COLUMN_TYPE), tableName, columnName);
         if (clazz == null){
             throw new RuntimeException("No java type for " + columns.getString(6));
         }
@@ -195,7 +191,7 @@ public class MetaDataExporter {
         ResultSet columns = md.getColumns(null, schemaPattern, tableName, null);
         try{
             while (columns.next()) {
-                handleColumn(classModel, columns);
+                handleColumn(classModel, tableName, columns);
             }
         }finally{
             columns.close();
@@ -232,4 +228,16 @@ public class MetaDataExporter {
         }
     }
 
+    public void setSchemaPattern(String schemaPattern) {
+        this.schemaPattern = schemaPattern;
+    }
+
+    public void setTableNamePattern(String tableNamePattern) {
+        this.tableNamePattern = tableNamePattern;
+    }
+
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
+    
 }

@@ -3,6 +3,8 @@ package com.mysema.query.sql;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.sql.types.*;
 
@@ -43,6 +45,11 @@ public class JavaTypeMapping {
     private final Map<Class<?>,Type<?>> typeByClass = new HashMap<Class<?>,Type<?>>();
 
     private final Map<Pair<String,String>, Type<?>> typeByColumn = new HashMap<Pair<String,String>,Type<?>>();
+    
+    @Nullable
+    public Type<?> getType(String table, String column){
+        return typeByColumn.get(Pair.of(table, column)); 
+    }
     
     @SuppressWarnings("unchecked")
     public <T> Type<T> getType(Class<T> clazz){
