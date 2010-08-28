@@ -120,43 +120,43 @@ WHERE c.first_name = 'Bob'
     
     <itemizedlist>
       <listitem>
-        <para>com.mysema.query.sql.DerbyTemplates</para>
+        <para>DerbyTemplates</para>
         <itemizedlist>
           <listitem><para>tested with version 10.5.3</para></listitem>
         </itemizedlist>        
       </listitem>
       <listitem>
-        <para>com.mysema.query.sql.HSQLDBTemplates</para>
+        <para>HSQLDBTemplates</para>
         <itemizedlist>
           <listitem><para>tested with version 1.8.0.7</para></listitem>
         </itemizedlist>        
       </listitem>
 	<listitem>
-        <para>com.mysema.query.sql.H2Templates</para>
+        <para>H2Templates</para>
         <itemizedlist>
           <listitem><para>tested with H2 1.2.133</para></listitem>
         </itemizedlist>
       </listitem>      
       <listitem>
-        <para>com.mysema.query.sql.MySQLTemplates</para>
+        <para>MySQLTemplates</para>
         <itemizedlist>
           <listitem><para>tested with MySQL CE 5.1</para></listitem>
         </itemizedlist>
       </listitem>
       <listitem>
-        <para>com.mysema.query.sql.OracleTemplates</para>
+        <para>OracleTemplates</para>
         <itemizedlist>
           <listitem><para>tested with Oracle 10g XE</para></listitem>
         </itemizedlist>
       </listitem>
       <listitem>
-        <para>com.mysema.query.sql.PostgresTemplates</para>
+        <para>PostgresTemplates</para>
         <itemizedlist>
           <listitem><para>tested with Postgres 8.4</para></listitem>
         </itemizedlist>
       </listitem>
       <listitem>
-        <para>com.mysema.query.sql.SQLServerTemplates</para>
+        <para>SQLServerTemplates</para>
         <itemizedlist>
           <listitem><para>tested with SQL Server 2008</para></listitem>
         </itemizedlist>
