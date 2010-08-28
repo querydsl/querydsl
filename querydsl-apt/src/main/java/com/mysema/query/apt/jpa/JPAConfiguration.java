@@ -53,7 +53,7 @@ public class JPAConfiguration extends DefaultConfiguration {
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
             Class<? extends Annotation> skipAnn) throws ClassNotFoundException {
-        super(roundEnv, options, entityAnn, superTypeAnn, embeddableAnn, skipAnn);
+        super(roundEnv, options, null, entityAnn, superTypeAnn, embeddableAnn, skipAnn);
         this.annotations = getAnnotations();
     }
 

@@ -41,7 +41,7 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
             embeddable = (Class)Class.forName("javax.jdo.annotations.EmbeddedOnly");
             skip = (Class)Class.forName("javax.jdo.annotations.NotPersistent");
 
-            DefaultConfiguration configuration = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), entity, null, embeddable, skip);
+            DefaultConfiguration configuration = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), null, entity, null, embeddable, skip);
             configuration.setUseGetters(false);
             Processor processor = new Processor(processingEnv, roundEnv, configuration);
             processor.process();

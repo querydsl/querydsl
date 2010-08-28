@@ -35,11 +35,14 @@ public interface Configuration {
     Serializer getDTOSerializer();
 
     @Nullable
-    Class<? extends Annotation> getEmbeddableAnn();
+    Class<? extends Annotation> getEntitiesAnnotation();
+    
+    @Nullable
+    Class<? extends Annotation> getEmbeddableAnnotation();
 
     Serializer getEmbeddableSerializer();
 
-    Class<? extends Annotation> getEntityAnn();
+    Class<? extends Annotation> getEntityAnnotation();
 
     Serializer getEntitySerializer();
 
@@ -48,10 +51,10 @@ public interface Configuration {
     SerializerConfig getSerializerConfig(EntityType model);
 
     @Nullable
-    Class<? extends Annotation> getSkipAnn();
+    Class<? extends Annotation> getSkipAnnotation();
 
     @Nullable
-    Class<? extends Annotation> getSuperTypeAnn();
+    Class<? extends Annotation> getSuperTypeAnnotation();
 
     Serializer getSupertypeSerializer();
 

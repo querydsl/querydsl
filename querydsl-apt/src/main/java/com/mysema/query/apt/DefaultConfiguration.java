@@ -70,7 +70,7 @@ public class DefaultConfiguration implements Configuration {
     protected final Class<? extends Annotation> entityAnn;
 
     @Nullable
-    protected final Class<? extends Annotation> superTypeAnn, embeddableAnn, skipAnn;
+    protected final Class<? extends Annotation> entitiesAnn, superTypeAnn, embeddableAnn, skipAnn;
 
     private final Map<String,SerializerConfig> typeToConfig = new HashMap<String,SerializerConfig>();
 
@@ -79,10 +79,12 @@ public class DefaultConfiguration implements Configuration {
     public DefaultConfiguration(
             RoundEnvironment roundEnv,
             Map<String, String> options,
+            @Nullable Class<? extends Annotation> entitiesAnn,
             Class<? extends Annotation> entityAnn,
             @Nullable Class<? extends Annotation> superTypeAnn,
             @Nullable Class<? extends Annotation> embeddableAnn,
             @Nullable Class<? extends Annotation> skipAnn) {
+        this.entitiesAnn = entitiesAnn;
         this.entityAnn = Assert.notNull(entityAnn,"entityAnn");
         this.superTypeAnn = superTypeAnn;
         this.embeddableAnn = embeddableAnn;
@@ -137,10 +139,16 @@ public class DefaultConfiguration implements Configuration {
     public Serializer getDTOSerializer() {
         return dtoSerializer;
     }
+    
+    @Override
+    @Nullable
+    public Class<? extends Annotation> getEntitiesAnnotation() {
+        return entitiesAnn;
+    }
 
     @Override
     @Nullable
-    public Class<? extends Annotation> getEmbeddableAnn() {
+    public Class<? extends Annotation> getEmbeddableAnnotation() {
         return embeddableAnn;
     }
 
@@ -150,7 +158,7 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
-    public Class<? extends Annotation> getEntityAnn() {
+    public Class<? extends Annotation> getEntityAnnotation() {
         return entityAnn;
     }
 
@@ -177,13 +185,13 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     @Nullable
-    public Class<? extends Annotation> getSkipAnn() {
+    public Class<? extends Annotation> getSkipAnnotation() {
         return skipAnn;
     }
 
     @Override
     @Nullable
-    public Class<? extends Annotation> getSuperTypeAnn() {
+    public Class<? extends Annotation> getSuperTypeAnnotation() {
         return superTypeAnn;
     }
 

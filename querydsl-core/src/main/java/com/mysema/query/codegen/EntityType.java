@@ -37,8 +37,6 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
 
     private int escapeSuffix = 1;
 
-    private boolean hasLists, hasMaps, hasEntityFields;
-
     private final Set<Method> methods = new HashSet<Method>();
 
     private final Set<Delegate> delegates = new HashSet<Delegate>();
@@ -82,16 +80,6 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
 
     public void addProperty(Property field) {
         properties.add(validateField(field));
-        switch(field.getType().getCategory()){
-        case MAP:
-            hasMaps = true;
-            break;
-        case LIST:
-            hasLists = true;
-            break;
-        case ENTITY:
-            hasEntityFields = true;
-        }
     }
 
     public void addSupertype(Supertype entityType){
@@ -184,21 +172,30 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         return uncapSimpleName;
     }
 
-    public boolean hasEntityFields() {
-        return hasEntityFields;
-    }
-
     @Override
     public int hashCode(){
         return getFullName().hashCode();
     }
     
+    public boolean hasEntityFields() {
+        return hasPropertyWithType(TypeCategory.ENTITY);
+    }
+    
     public boolean hasLists() {
-        return hasLists;
+        return hasPropertyWithType(TypeCategory.LIST);
     }
     
     public boolean hasMaps() {
-        return hasMaps;
+        return hasPropertyWithType(TypeCategory.MAP);
+    }
+    
+    private boolean hasPropertyWithType(TypeCategory category){
+        for (Property property : properties){
+            if (property.getType().getCategory() == category){
+                return true;
+            }
+        }
+        return false;
     }
 
     public void include(Supertype supertype) {
