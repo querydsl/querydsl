@@ -470,7 +470,26 @@ new SQLDelecteClause(conn, dialect, survey)
   	
 	<title>Bean class generation</title>
 	
-	<para>TODO</para>
+	<para>To create JavaBean DTO types for the tables of your schema use the MetaDataExporter like this :</para>
+	
+<programlisting language="java"><![CDATA[  
+java.sql.Connection conn; // connection of database containing the schema to use
+// obtain Connection etc.
+
+NamingStrategy namingStrategy = new DefaultNamingStrategy();
+MetaDataSerializer serializer = new MetaDataSerializer("Q",namingStrategy);            
+MetaDataExporter exporter = new MetaDataExporter(
+    "Q",                       // namePrefix 
+    "com.myproject.mydomain",  // target package  
+    new File("src/main/java"), // target source folder
+    namingStrategy,            // naming strategy
+    serializer,				   // serializer for Q-types								
+    new BeanSerializer());     // serializer for Bean types          
+exporter.export(conn.getMetaData());  
+]]></programlisting>	
+  	
+	<para>Now you can use the bean types as arguments to the populate method in DML clauses and you can project directly
+		to bean types in queries. Here is a simple example in JUnit form :</para>  	
   	
 <programlisting language="java"><![CDATA[    	
     private QEmployee e = new QEmployee("e");
