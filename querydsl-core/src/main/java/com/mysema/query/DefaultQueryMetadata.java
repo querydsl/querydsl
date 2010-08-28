@@ -23,8 +23,6 @@ import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.EBoolean;
 
-import edu.umd.cs.findbugs.annotations.SuppressWarnings;
-
 /**
  * DefaultQueryMetadata is the default implementation of the {@link QueryMetadata} interface
  *
