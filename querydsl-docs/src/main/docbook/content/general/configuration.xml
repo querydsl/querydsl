@@ -312,5 +312,45 @@ public class QTimestamp extends PDateTime<java.sql.Timestamp> {
 ]]></programlisting>    
 		
 	</sect2>
+	
+	<sect2>
+	
+		<title>Query type generation for not annotated types</title>
+		
+		<para>
+		It is possible to create Querydsl query types for not annotated types by creating @QueryEntities annotations.
+		Just place a QueryEntities annotation into a package of your choice and the classes to mirrored in the value attribute.
+		</para>
+		
+		<para>To actually create the types use the com.mysema.query.apt.QuerydslAnnotationProcessor. In Maven you do it like this :</para>
+		
+    <programlisting language="xml"><![CDATA[
+<project>
+  <build>
+  <plugins>
+    ...
+    <plugin>
+      <groupId>com.mysema.maven</groupId>
+      <artifactId>maven-apt-plugin</artifactId>
+      <version>0.3.2</version>
+      <executions>
+        <execution>
+          <goals>
+            <goal>process</goal>
+          </goals>
+          <configuration>
+            <outputDirectory>target/generated-sources/java</outputDirectory>
+            <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
+    ...
+  </plugins>
+  </build>
+</project>
+]]></programlisting>		
+		
+	</sect2>
     
     </sect1>
