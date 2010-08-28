@@ -71,8 +71,7 @@ public class BeanPath<D> extends ESimple<D> implements Path<D> {
                 T rv;
                 if (inits != null) {
                     rv = clazz.getConstructor(PathMetadata.class,
-                            PathInits.class).newInstance(this.getMetadata(),
-                            inits);
+                            PathInits.class).newInstance(this.getMetadata(), inits);
                 } else {
                     rv = (T) clazz.getConstructor(PathMetadata.class)
                             .newInstance(this.getMetadata());
