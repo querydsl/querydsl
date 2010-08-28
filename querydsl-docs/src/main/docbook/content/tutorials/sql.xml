@@ -492,10 +492,10 @@ exporter.export(conn.getMetaData());
 		to bean types in queries. Here is a simple example in JUnit form :</para>  	
   	
 <programlisting language="java"><![CDATA[    	
-    private QEmployee e = new QEmployee("e");
-    
     @Test
-    public void Insert_Update_Query_and_Delete(){       
+    public void Insert_Update_Query_and_Delete(){
+        QEmployee e = new QEmployee("e");
+           
         // Insert
         Employee employee = new Employee();
         employee.setFirstname("John");
