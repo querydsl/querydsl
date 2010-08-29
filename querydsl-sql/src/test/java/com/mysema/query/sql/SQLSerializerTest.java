@@ -7,6 +7,9 @@ package com.mysema.query.sql;
 
 import static org.junit.Assert.assertEquals;
 
+import java.sql.Connection;
+
+import org.easymock.EasyMock;
 import org.junit.Test;
 
 import com.mysema.query.BooleanBuilder;
@@ -32,8 +35,9 @@ public class SQLSerializerTest {
 
     @Test
     public void testUpdate(){
+        Connection connection = EasyMock.createMock(Connection.class);
         QSurvey survey = new QSurvey("survey");
-        SQLUpdateClause updateClause = new SQLUpdateClause(null,SQLTemplates.DEFAULT,survey);
+        SQLUpdateClause updateClause = new SQLUpdateClause(connection,SQLTemplates.DEFAULT,survey);
         updateClause.set(survey.id, 1);
         updateClause.set(survey.name, null);
         assertEquals("update SURVEY\nset ID = ?, NAME = null", updateClause.toString());
@@ -41,8 +45,9 @@ public class SQLSerializerTest {
 
     @Test
     public void testInsert(){
+        Connection connection = EasyMock.createMock(Connection.class);
         QSurvey survey = new QSurvey("survey");
-        SQLInsertClause insertClause = new SQLInsertClause(null,SQLTemplates.DEFAULT,survey);
+        SQLInsertClause insertClause = new SQLInsertClause(connection,SQLTemplates.DEFAULT,survey);
         insertClause.set(survey.id, 1);
         insertClause.set(survey.name, null);
         assertEquals("insert into SURVEY(ID, NAME)\nvalues (?, null)", insertClause.toString());

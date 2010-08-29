@@ -60,6 +60,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     private static final String COMMA = ", ";
 
+    private final List<Path<?>> constantPaths = new ArrayList<Path<?>>();
+    
     private final List<Object> constants = new ArrayList<Object>();
 
     private final boolean dml;

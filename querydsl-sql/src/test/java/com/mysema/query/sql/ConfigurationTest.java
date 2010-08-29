@@ -12,10 +12,6 @@ import com.mysema.query.sql.types.StringType;
 
 public class ConfigurationTest {
     
-    public class EncryptedString extends StringType{
-        
-    }
-    
     SQLTemplates templates = new H2Templates();
     Configuration configuration = new Configuration(templates);
     

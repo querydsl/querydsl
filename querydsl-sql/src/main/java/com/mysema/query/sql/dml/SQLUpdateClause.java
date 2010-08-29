@@ -18,6 +18,7 @@ import org.apache.commons.collections15.BeanMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryException;
@@ -64,8 +65,8 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
     
     public SQLUpdateClause(Connection connection, Configuration configuration, RelationalPath<?> entity) {
         super(configuration);
-        this.connection = connection;
-        this.entity = entity;
+        this.connection = Assert.notNull(connection,"connection");
+        this.entity = Assert.notNull(entity,"entity");
     }
     
     public SQLUpdateClause addFlag(Position position, String flag){

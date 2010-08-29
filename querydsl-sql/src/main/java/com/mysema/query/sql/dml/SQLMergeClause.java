@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag;
@@ -67,8 +68,8 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
     
     public SQLMergeClause(Connection connection, Configuration configuration, RelationalPath<?> entity) {
         super(configuration);
-        this.connection = connection;
-        this.entity = entity;
+        this.connection = Assert.notNull(connection,"connection");
+        this.entity = Assert.notNull(entity,"entity");
     }
     
     public SQLMergeClause addFlag(Position position, String flag){
