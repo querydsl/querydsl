@@ -117,7 +117,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         ResultSet rs = executeWithKeys();
         try{
             if (rs.next()){
-                return configuration.get(rs, 1, path.getType());
+                return configuration.get(rs, path, 1, path.getType());
             }else{
                 return null;
             }
@@ -133,7 +133,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         try{
             List<T> rv = new ArrayList<T>();
             while (rs.next()){
-                rv.add(configuration.get(rs, 1, path.getType()));
+                rv.add(configuration.get(rs, path, 1, path.getType()));
             }
             return rv;
         } catch (SQLException e) {

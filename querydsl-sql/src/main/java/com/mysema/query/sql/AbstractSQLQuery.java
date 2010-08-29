@@ -228,15 +228,16 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.rightJoin(entity).on(key.on(entity));
     }
 
+    @SuppressWarnings("unchecked")
     @Nullable
-    private <T> T get(ResultSet rs, int i, Class<T> type) {
-        try {
-            return configuration.get(rs, i, type);
-        } catch (SQLException e) {
-            throw new QueryException(e);
-        }
+    private <T> T get(ResultSet rs, Expr<?> expr, int i, Class<T> type) throws SQLException {
+        return configuration.get(rs, expr instanceof Path ? (Path)expr : null, i, type);
     }
-
+    
+    private int set(PreparedStatement stmt, Path<?> path, int i, Object value) throws SQLException{
+        return configuration.set(stmt, path, i, value);
+    }
+    
     public QueryMetadata getMetadata() {
         return queryMixin.getMetadata();
     }
@@ -335,11 +336,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                                 index += ((FactoryExpression)expr).getArgs().size();
                             }else if (expr.getType().isArray()){
                                 for (int j = index; j < rs.getMetaData().getColumnCount(); j++){
-                                    objects.add(get(rs, index++ + 1, Object.class));
+                                    objects.add(get(rs, expr, index++ + 1, Object.class));
                                 }
                                 i = objects.size();
                             }else{
-                                objects.add(get(rs, index++ + 1, expr.getType()));
+                                objects.add(get(rs, expr, index++ + 1, expr.getType()));
                             }
                         }
                         return objects.toArray();
@@ -394,7 +395,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                             }
                             return (RT) rv;
                         } else{
-                            return (RT) get(rs, 1, expr.getType());
+                            return (RT) get(rs, expr, 1, expr.getType());
                         }
                     } catch (IllegalAccessException e) {
                         close();
@@ -449,10 +450,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     }
 
     private <RT> RT newInstance(FactoryExpression<RT> c, ResultSet rs, int offset)
-        throws InstantiationException, IllegalAccessException, InvocationTargetException{
+        throws InstantiationException, IllegalAccessException, InvocationTargetException, SQLException{
         Object[] args = new Object[c.getArgs().size()];
         for (int i = 0; i < args.length; i++) {
-            args[i] = get(rs, offset + i + 1, c.getArgs().get(i).getType());
+            args[i] = get(rs, c.getArgs().get(i), offset + i + 1, c.getArgs().get(i).getType());
         }
         return c.newInstance(args);
     }
@@ -476,7 +477,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                     }
                     o = params.get(o);
                 }
-                counter += configuration.set(stmt, counter, o);
+                counter += set(stmt, null, counter, o);
             } catch (SQLException e) {
                 throw new IllegalArgumentException(e);
             }

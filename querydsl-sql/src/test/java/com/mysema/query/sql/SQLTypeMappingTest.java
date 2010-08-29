@@ -15,7 +15,7 @@ public class SQLTypeMappingTest {
 
     @Test
     public void testGet() throws IllegalArgumentException, IllegalAccessException {
-        SQLTypeMapping mapping = new SQLTypeMapping();
+        JDBCTypeMapping mapping = new JDBCTypeMapping();
         for (Field field : java.sql.Types.class.getFields()){
             if (field.getType().equals(int.class)){
                 int val = field.getInt(null);

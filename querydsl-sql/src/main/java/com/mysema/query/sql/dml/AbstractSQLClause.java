@@ -38,7 +38,7 @@ public class AbstractSQLClause {
                     }
                     o = params.get(o);
                 }
-                counter += configuration.set(stmt, counter, o);
+                counter += configuration.set(stmt, null, counter, o);
             } catch (SQLException e) {
                 throw new IllegalArgumentException(e);
             }

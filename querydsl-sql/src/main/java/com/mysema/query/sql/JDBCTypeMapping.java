@@ -13,12 +13,12 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 /**
- * SQLTypeMapping defines a mapping from JDBC types to Java classes.
+ * JDBCTypeMapping defines a mapping from JDBC types to Java classes.
  *
  * @author tiwe
  *
  */
-public final class SQLTypeMapping {
+public final class JDBCTypeMapping {
 
     private static final Map<Integer, Class<?>> defaultTypes = new HashMap<Integer, Class<?>>();
     
