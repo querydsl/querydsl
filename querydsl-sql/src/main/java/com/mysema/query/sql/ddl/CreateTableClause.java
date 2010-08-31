@@ -196,8 +196,8 @@ public class CreateTableClause {
             stmt.execute(builder.toString());
             
             for (IndexData index : indexes){
-                String columns = StringUtils.join(index.getColumns(),", ");
-                String sql = "CREATE INDEX " + index.getName() + " ON " + table + "(" + columns+ ")";
+                String indexColumns = StringUtils.join(index.getColumns(),", ");
+                String sql = "CREATE INDEX " + index.getName() + " ON " + table + "(" + indexColumns+ ")";
                 logger.info(sql);
                 stmt.execute(sql);
             }
