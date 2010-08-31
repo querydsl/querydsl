@@ -31,6 +31,7 @@ public class DefaultNamingStrategyTest {
         assertEquals("whileCol", namingStrategy.getPropertyName("while", "Q", entityModel));
         assertEquals("name", namingStrategy.getPropertyName("name", "Q", entityModel));
         assertEquals("userId", namingStrategy.getPropertyName("user_id", "Q", entityModel));
+        assertEquals("accountEventId", namingStrategy.getPropertyName("accountEvent_id", "Q", entityModel));
     }
 
 }

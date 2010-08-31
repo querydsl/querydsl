@@ -77,6 +77,11 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      * @parameter required=true
      */
     private String targetFolder;
+    
+    /**
+     * @parameter
+     */
+    private String namingStrategyClass;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -85,7 +90,20 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         }else{
             project.addCompileSourceRoot(targetFolder);
         }
-        NamingStrategy namingStrategy = new DefaultNamingStrategy();
+        NamingStrategy namingStrategy;
+        if (namingStrategyClass != null){
+            try {
+                namingStrategy = (NamingStrategy) Class.forName(namingStrategyClass).newInstance();
+            } catch (InstantiationException e) {
+                throw new MojoExecutionException(e.getMessage(),e);
+            } catch (IllegalAccessException e) {
+                throw new MojoExecutionException(e.getMessage(),e);
+            } catch (ClassNotFoundException e) {
+                throw new MojoExecutionException(e.getMessage(),e);
+            }
+        }else{
+            namingStrategy = new DefaultNamingStrategy();
+        }
         Serializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);        
         MetaDataExporter exporter = new MetaDataExporter(
                 namePrefix, packageName,

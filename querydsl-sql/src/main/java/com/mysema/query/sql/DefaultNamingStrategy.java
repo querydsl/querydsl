@@ -115,6 +115,7 @@ public class DefaultNamingStrategy implements NamingStrategy {
     }
 
     protected String toCamelCase(String str) {
+        boolean toLower = str.toUpperCase().equals(str);
         StringBuilder builder = new StringBuilder(str.length());
         for (int i = 0; i < str.length(); i++) {
             if (str.charAt(i) == '_') {
@@ -122,8 +123,10 @@ public class DefaultNamingStrategy implements NamingStrategy {
                 if (i < str.length()){
                     builder.append(Character.toUpperCase(str.charAt(i)));    
                 }                               
-            } else {
+            } else if (toLower){
                 builder.append(Character.toLowerCase(str.charAt(i)));
+            } else{
+                builder.append(str.charAt(i));
             }
         }
         return builder.toString();
