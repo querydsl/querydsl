@@ -20,6 +20,7 @@ import com.mysema.query.QueryException;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.support.ColumnData;
 import com.mysema.query.sql.support.ForeignKeyData;
+import com.mysema.query.sql.support.IndexData;
 import com.mysema.query.sql.support.PrimaryKeyData;
 
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
@@ -41,6 +42,8 @@ public class CreateTableClause {
     private final String table;
     
     private final List<ColumnData> columns = new ArrayList<ColumnData>();
+
+    private final List<IndexData> indexes = new ArrayList<IndexData>();
     
     private PrimaryKeyData primaryKey;
     
@@ -117,6 +120,20 @@ public class CreateTableClause {
         primaryKey = new PrimaryKeyData(name, columns);
         return this;
     }
+    
+    /**
+     * Add an index
+     * 
+     * @param name
+     * @param columns
+     * @return
+     */
+    public CreateTableClause index(String name, String... columns){
+        Assert.notNull(name,"name");
+        Assert.notEmpty(columns,"columns");
+        indexes.add(new IndexData(name, columns));
+        return this;
+    }
 
     /**
      * Add a foreign key
@@ -177,6 +194,13 @@ public class CreateTableClause {
         try{
             stmt = connection.createStatement();
             stmt.execute(builder.toString());
+            
+            for (IndexData index : indexes){
+                String columns = StringUtils.join(index.getColumns(),", ");
+                String sql = "CREATE INDEX " + index.getName() + " ON " + table + "(" + columns+ ")";
+                logger.info(sql);
+                stmt.execute(sql);
+            }
         } catch (SQLException e) {
             throw new QueryException(e.getMessage(), e);
         }finally{

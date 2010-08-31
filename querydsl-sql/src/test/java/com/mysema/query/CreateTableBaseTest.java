@@ -84,6 +84,8 @@ public abstract class CreateTableBaseTest extends AbstractBaseTest{
         .foreignKey("FK_SUBJECT","subject").references("symbol","id")
         .foreignKey("FK_PREDICATE","predicate").references("symbol","id")
         .foreignKey("FK_OBJECT","object").references("symbol","id")
+        .index("msp", "model","subject","predicate")
+        .index("mp", "model","predicate")
         .execute();
         
         stmt.execute("select id, text from language");
