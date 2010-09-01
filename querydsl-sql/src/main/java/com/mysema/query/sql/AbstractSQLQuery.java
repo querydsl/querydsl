@@ -102,6 +102,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     private List<Object> constants;
 
     @Nullable
+    private List<Path<?>> constantPaths;
+    
+    @Nullable
     private SubQueryExpression<?>[] union;
 
     private final Configuration configuration;
@@ -146,6 +149,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
             serializer.serialize(queryMixin.getMetadata(), forCountRow);
         }
         constants = serializer.getConstants();
+        constantPaths = serializer.getConstantPaths();
         return serializer.toString();
     }
 
@@ -249,7 +253,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
         try {
             final PreparedStatement stmt = conn.prepareStatement(queryString);
-            setParameters(stmt, constants, getMetadata().getParams());
+            setParameters(stmt, constants, constantPaths, getMetadata().getParams());
             ResultSet rs = stmt.executeQuery();
 
             return new ResultSetAdapter(rs) {
@@ -318,7 +322,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         try {
             PreparedStatement stmt = conn.prepareStatement(queryString);
             final List<? extends Expr<?>> projection = getMetadata().getProjection();
-            setParameters(stmt, constants, getMetadata().getParams());
+            setParameters(stmt, constants, constantPaths, getMetadata().getParams());
             ResultSet rs = stmt.executeQuery();
 
             return new SQLResultIterator<Object[]>(stmt, rs) {
@@ -376,7 +380,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         logger.debug("query : {}", queryString);
         try {
             PreparedStatement stmt = conn.prepareStatement(queryString);
-            setParameters(stmt, constants, getMetadata().getParams());
+            setParameters(stmt, constants, constantPaths, getMetadata().getParams());
             ResultSet rs = stmt.executeQuery();
 
             return new SQLResultIterator<RT>(stmt, rs) {
@@ -467,9 +471,13 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         constants = null;
     }
     
-    protected void setParameters(PreparedStatement stmt, Collection<?> objects, Map<Param<?>, ?> params){
+    protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths, Map<Param<?>, ?> params){
+        if (objects.size() != constantPaths.size()){
+            throw new IllegalArgumentException("Expected " + objects.size() + " paths, but got " + constantPaths.size());
+        }
         int counter = 1;
-        for (Object o : objects) {
+        for (int i = 0; i < objects.size(); i++){
+            Object o = objects.get(i);        
             try {
                 if (Param.class.isInstance(o)){
                     if (!params.containsKey(o)){
@@ -477,7 +485,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                     }
                     o = params.get(o);
                 }
-                counter += set(stmt, null, counter, o);
+                counter += set(stmt, constantPaths.get(i), counter, o);
             } catch (SQLException e) {
                 throw new IllegalArgumentException(e);
             }
@@ -510,7 +518,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         ResultSet rs = null;
         try {
             stmt = conn.prepareStatement(queryString);
-            setParameters(stmt, constants, getMetadata().getParams());
+            setParameters(stmt, constants, constantPaths, getMetadata().getParams());
             rs = stmt.executeQuery();
             rs.next();
             return rs.getLong(1);

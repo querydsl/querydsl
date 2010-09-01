@@ -11,6 +11,7 @@ import java.sql.SQLException;
 
 import javax.annotation.Nullable;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.sql.types.Type;
 import com.mysema.query.types.Path;
 

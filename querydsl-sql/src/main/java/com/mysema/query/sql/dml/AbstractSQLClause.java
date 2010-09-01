@@ -7,12 +7,13 @@ package com.mysema.query.sql.dml;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
+import com.mysema.query.types.Path;
 
 /**
  * AbstractSQLClause is a superclass for SQL based DMLClause implementations
@@ -28,9 +29,13 @@ public class AbstractSQLClause {
         this.configuration = configuration;
     }
     
-    protected void setParameters(PreparedStatement stmt, Collection<?> objects, Map<Param<?>, ?> params){
+    protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths, Map<Param<?>, ?> params){
+        if (objects.size() != constantPaths.size()){
+            throw new IllegalArgumentException("Expected " + objects.size() + " paths, but got " + constantPaths.size());
+        }
         int counter = 1;
-        for (Object o : objects) {
+        for (int i = 0; i < objects.size(); i++){
+            Object o = objects.get(i);
             try {
                 if (Param.class.isInstance(o)){
                     if (!params.containsKey(o)){
@@ -38,7 +43,7 @@ public class AbstractSQLClause {
                     }
                     o = params.get(o);
                 }
-                counter += configuration.set(stmt, null, counter, o);
+                counter += configuration.set(stmt, constantPaths.get(i), counter, o);
             } catch (SQLException e) {
                 throw new IllegalArgumentException(e);
             }

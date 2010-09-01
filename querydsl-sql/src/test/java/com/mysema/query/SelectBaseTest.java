@@ -367,9 +367,9 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     public void stringFunctions2() throws SQLException {
         for (EBoolean where : Arrays.<EBoolean> asList(
                 employee.firstname.startsWith("a"),
-                employee.firstname.startsWith("a", false),
+                employee.firstname.startsWithIgnoreCase("a"),
                 employee.firstname.endsWith("a"),
-                employee.firstname.endsWith("a", false))) {
+                employee.firstname.endsWithIgnoreCase("a"))) {
             query().from(employee).where(where).list(employee.firstname);
         }
     }

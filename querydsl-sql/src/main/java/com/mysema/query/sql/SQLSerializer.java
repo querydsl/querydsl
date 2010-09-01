@@ -95,6 +95,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     public List<Object> getConstants(){
         return constants;
     }
+    
+    public List<Path<?>> getConstantPaths(){
+        return constantPaths;
+    }
 
     @SuppressWarnings("unchecked")
     private List<Expr<?>> getIdentifierColumns(List<JoinExpression> joins) {
@@ -276,6 +280,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             append("\n");
             serialize(subQuery.getMetadata(), false);
         }else{
+            for (int i = 0; i < columns.size(); i++){
+                if (values.get(i) instanceof Constant<?>){
+                    constantPaths.add((Path<?>)columns.get(i));
+                }
+            }
+            
             // values
             append(templates.getValues());
             append("(").handle(COMMA, values).append(") ");
@@ -306,15 +316,23 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (subQuery != null){
             append("\n");
             serialize(subQuery.getMetadata(), false);
+                        
         }else{
+            for (int i = 0; i < columns.size(); i++){
+                if (values.get(i) instanceof Constant<?>){
+                    constantPaths.add((Path<?>)columns.get(i));
+                }
+            }
+            
             // values
             append(templates.getValues());
             append("(");
             handle(COMMA, values);
-            append(")");
+            append(")");            
         }
         
         serialize(Position.END, metadata.getFlags());
+        
     }
 
     public void serializeForUpdate(QueryMetadata metadata, RelationalPath<?> entity, List<Pair<Path<?>, ?>> updates) {
@@ -333,12 +351,16 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         for (Pair<Path<?>,?> update : updates){
             if (!first){
                 append(COMMA);
-            }
+            }                        
             handle(update.getFirst().asExpr());
             append(" = ");
             if (update.getSecond() instanceof Expr<?>){
+                if (update.getSecond() instanceof Constant<?>){
+                    constantPaths.add(update.getFirst());
+                }
                 handle((Expr<?>)update.getSecond());
             }else{
+                constantPaths.add(update.getFirst());
                 handle(ExprConst.create(update.getSecond()));
             }
             first = false;
@@ -409,12 +431,22 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 }
                 append("?");
                 constants.add(o);
+                // TODO : update constantPaths if necessary
                 first = false;
             }
             append(")");
+            
+            int size = ((Collection)expr.getConstant()).size() - 1;
+            for (int i = 0; i < size; i++){
+                constantPaths.add(constantPaths.get(constantPaths.size()-1));
+            }
         }else{
             append("?");
+            
             constants.add(expr.getConstant());
+            if (constantPaths.size() < constants.size()){
+                constantPaths.add(null);
+            }
         }
     }
 
@@ -422,6 +454,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     public void visit(Param<?> param){
         append("?");
         constants.add(param);
+        if (constantPaths.size() < constants.size()){
+            constantPaths.add(null);
+        }
     }
 
     public void visit(Path<?> path) {
@@ -447,6 +482,14 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
+        if (args.size() == 2 
+         && args.get(0) instanceof Path<?> 
+         && args.get(1) instanceof Constant<?>
+         && operator != Ops.STRING_CAST 
+         && operator != Ops.NUMCAST
+         && operator != SQLTemplates.CAST){
+            constantPaths.add((Path<?>)args.get(0));
+        }        
         if (operator.equals(Ops.STRING_CAST)) {
             String typeName = templates.getTypeForClass(String.class);
             visitOperation(String.class, SQLTemplates.CAST, Arrays.<Expr<?>>asList(args.get(0), ExprConst.create(typeName)));

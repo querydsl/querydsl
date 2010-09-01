@@ -10,12 +10,12 @@ import java.sql.Types;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.AbstractJDBCTest;
 import com.mysema.query.alias.AliasTest.Gender;
 import com.mysema.query.sql.dml.SQLInsertClause;
+import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.types.EnumByNameType;
 import com.mysema.query.sql.types.StringType;
 
@@ -61,16 +61,30 @@ public class CustomTypesTest extends AbstractJDBCTest{
     }
     
     @Test
-    @Ignore
-    public void insert_and_query(){
-        // FIXME
+    public void insert_query_update(){
         QPerson person = QPerson.person;
         
         // insert
         SQLInsertClause insert = new SQLInsertClause(connection, configuration, person);
+        insert.set(person.id, 10);
         insert.set(person.firstname, "Bob");
         insert.set(person.gender, Gender.MALE);
         assertEquals(1l, insert.execute());
+        
+        // query
+        SQLQuery query = new SQLQueryImpl(connection, configuration);
+        assertEquals(Gender.MALE, query.from(person).where(person.id.eq(10)).uniqueResult(person.gender));
+        
+        // update
+        SQLUpdateClause update = new SQLUpdateClause(connection, configuration, person);
+        update.set(person.gender, Gender.FEMALE);
+        update.set(person.firstname, "Jane");
+        update.where(person.id.eq(10));
+        update.execute();
+        
+        // query
+        query = new SQLQueryImpl(connection, configuration);
+        assertEquals(Gender.FEMALE, query.from(person).where(person.id.eq(10)).uniqueResult(person.gender));
     }
     
 }

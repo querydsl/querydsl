@@ -163,7 +163,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
                 serializer = new SQLSerializer(configuration.getTemplates(), true);
                 // TODO : add support for dry serialization (without SQL construction)
                 serializer.serializeForInsert(metadata, entity, batch.getColumns(), batch.getValues(), batch.getSubQuery());
-                setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
+                setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
                 stmt.addBatch();
             }
         }
@@ -179,7 +179,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         }else{
             stmt = connection.prepareStatement(queryString);
         }            
-        setParameters(stmt, serializer.getConstants(),Collections.<Param<?>,Object>emptyMap());
+        setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
         return stmt;
     }
     
