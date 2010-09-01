@@ -31,9 +31,13 @@ public class SimpleType implements Type {
     
     @Nullable
     private Type arrayType, componentType;
-
+    
     public SimpleType(String fullName, String packageName, String simpleName, Type... parameters) {
         this(TypeCategory.SIMPLE, fullName, packageName, simpleName, false, false, Arrays.asList(parameters));
+    }
+
+    public SimpleType(String simpleName){
+        this(TypeCategory.SIMPLE, simpleName, "", simpleName, false, false);
     }
     
     public SimpleType(Type type, List<Type> parameters) {
