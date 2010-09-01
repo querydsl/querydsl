@@ -107,7 +107,7 @@ public class ScalaWriterTest {
         writer.end();
         writer.end();
         
-//        match("/testBasic", w.toString());
+        System.out.println(w);
     }
     
     @Test
@@ -115,7 +115,7 @@ public class ScalaWriterTest {
         writer.beginClass(testType2, testSuperType);
         writer.end();
         
-//        match("/testExtends", w.toString());
+        System.out.println(w);
     }
     
     @Test
@@ -123,7 +123,7 @@ public class ScalaWriterTest {
         writer.beginClass(testType2, null, testInterface1,testInterface2);
         writer.end();
         
-//        match("/testImplements", w.toString());
+        System.out.println(w);
     }
     
     @Test
@@ -133,7 +133,7 @@ public class ScalaWriterTest {
         writer.beginInterface(testType);
         writer.end();
         
-//        match("/testInterface", w.toString());
+        System.out.println(w);
     }
     
     @Test
@@ -141,7 +141,7 @@ public class ScalaWriterTest {
         writer.beginInterface(testType2, testInterface1);
         writer.end();
         
-//        match("/testInterface2", w.toString());
+        System.out.println(w);
     }
     
     @Test
@@ -152,7 +152,7 @@ public class ScalaWriterTest {
         writer.beginClass(testType);
         writer.end();
                 
-//        match("/testJavadoc", w.toString());
+        System.out.println(w);
     }
 
     
@@ -167,7 +167,7 @@ public class ScalaWriterTest {
         writer.end();
         writer.end();
                 
-//        match("/testAnnotations", w.toString());
+        System.out.println(w);
     }
     
     @Test
@@ -195,7 +195,7 @@ public class ScalaWriterTest {
         writer.end();
         writer.end();
                 
-//        match("/testAnnotations2", w.toString());
+        System.out.println(w);
     }
     
     @Test
@@ -216,7 +216,7 @@ public class ScalaWriterTest {
         
         writer.end();
         
-//        match("/testFields", w.toString());
+        System.out.println(w);
     }
     
     @Test
@@ -239,7 +239,7 @@ public class ScalaWriterTest {
         
         writer.end();
         
-//        match("/testMethods", w.toString());
+        System.out.println(w);
     }
     
     @Test
@@ -254,7 +254,7 @@ public class ScalaWriterTest {
         
         writer.end();
         
-//        match("/testConstructors", w.toString());
+        System.out.println(w);
         
     }
 

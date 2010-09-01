@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.Types;
 
 /**
  * @author tiwe
@@ -51,6 +52,8 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
 
     private static final String PUBLIC_CLASS = "class ";
 
+    private static final String VAR = "var ";
+    
     private static final String VAL = "val ";
 
     private static final String TRAIT = "trait ";
@@ -204,7 +207,12 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
 
     private ScalaWriter beginMethod(String modifiers, Type returnType, String methodName, Parameter... args) throws IOException{
 //        beginLine(modifiers + returnType.getGenericName(true, packages, classes) + SPACE + methodName).params(args).append(" {").nl();
-        beginLine(modifiers + methodName).params(args).append(" {").nl();
+        if (returnType.equals(Types.VOID)){
+            beginLine(modifiers + methodName).params(args).append(" {").nl();    
+        }else{
+            beginLine(modifiers + methodName).params(args).append(": " + getGenericName(true, returnType)).append(" {").nl();
+        }
+        
         return goIn();
     }
     
@@ -235,7 +243,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     }
     
     public ScalaWriter field(Type type, String name) throws IOException {
-        return line(name + ": " + getGenericName(true, type) + SPACE + SEMICOLON).nl();
+        return line(VAR + name + ": " + getGenericName(true, type) + SEMICOLON).nl();
     }
 
     private ScalaWriter field(String modifier, Type type, String name) throws IOException{
@@ -413,7 +421,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
 
     @Override
     public ScalaWriter publicField(Type type, String name) throws IOException {
-        return field(PUBLIC, type, name);
+        return field(VAR, type, name);
     }
     
     @Override
