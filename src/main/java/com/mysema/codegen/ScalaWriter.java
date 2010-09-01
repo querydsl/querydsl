@@ -26,7 +26,7 @@ import com.mysema.codegen.model.Type;
  *
  */
 public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
-   
+    
     private static final String DEF = "def ";
     
     private static final String EXTENDS = " extends ";
@@ -41,17 +41,17 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
 
     private static final String PRIVATE = "private ";
     
-    private static final String PRIVATE_FINAL = "private final ";
+    private static final String PRIVATE_VAL = "private val ";
     
     private static final String PROTECTED = "protected ";
     
-    private static final String PROTECTED_FINAL = "protected final ";
+    private static final String PROTECTED_VAL = "protected val ";
 
     private static final String PUBLIC = "public ";
 
     private static final String PUBLIC_CLASS = "class ";
 
-    private static final String PUBLIC_FINAL = "public final ";
+    private static final String VAL = "val ";
 
     private static final String TRAIT = "trait ";
     
@@ -153,7 +153,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
         packages.add(type.getPackageName());
         beginLine(PUBLIC_CLASS + type.getSimpleName());
         if (superClass != null){
-            append(EXTENDS + superClass.getGenericName(false, packages, classes));
+            append(EXTENDS + getGenericName(false, superClass));
         }
         if (interfaces.length > 0){
             append(IMPLEMENTS);
@@ -161,7 +161,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
                 if (i > 0){
                     append(COMMA);
                 }
-                append(interfaces[i].getGenericName(false, packages, classes));
+                append(getGenericName(false, interfaces[i]));
             }
         }
         append(" {").nl().nl();
@@ -186,14 +186,14 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     public ScalaWriter beginInterface(Type type, Type... interfaces)
             throws IOException {
         packages.add(type.getPackageName());
-        beginLine(TRAIT + type.getGenericName(false, packages, classes));
+        beginLine(TRAIT + getGenericName(false, type));
         if (interfaces.length > 0){
             append(EXTENDS);
             for (int i = 0; i < interfaces.length; i++){
                 if (i > 0){
                     append(COMMA);
                 }
-                append(interfaces[i].getGenericName(false, packages, classes));
+                append(getGenericName(false, interfaces[i]));
             }
         }
         append(" {").nl().nl();
@@ -235,25 +235,56 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     }
     
     public ScalaWriter field(Type type, String name) throws IOException {
-        return line(type.getGenericName(true, packages, classes) + SPACE + name + SEMICOLON).nl();
+        return line(name + ": " + getGenericName(true, type) + SPACE + SEMICOLON).nl();
     }
 
     private ScalaWriter field(String modifier, Type type, String name) throws IOException{
-        return line(modifier + type.getGenericName(true, packages, classes) + SPACE + name + SEMICOLON).nl();
+        return line(modifier + name + ": " + getGenericName(true, type) + SEMICOLON).nl();
     }
     
     private ScalaWriter field(String modifier, Type type, String name, String value) throws IOException{
-        return line(modifier + type.getGenericName(true, packages, classes) + SPACE + name + ASSIGN + value + SEMICOLON).nl();
+        return line(modifier + name + ": " + getGenericName(true, type) + ASSIGN + value + SEMICOLON).nl();
     }
     
     @Override
     public String getGenericName(boolean asArgType, Type type) {
-        return type.getGenericName(asArgType, packages, classes);
+        if (type.getParameters().isEmpty()){
+            return getRawName(type);
+        }else{
+            StringBuilder builder = new StringBuilder();
+            builder.append(getRawName(type));
+            builder.append("[");
+            boolean first = true;
+            String fullName = type.getFullName();
+            for (Type parameter : type.getParameters()){                
+                if (!first){
+                    builder.append(", ");
+                }
+                if (parameter == null || parameter.getFullName().equals(fullName)){
+                    builder.append("?");
+                }else{
+                    builder.append(getGenericName(false, parameter));    
+                }                
+                first = false;
+            }
+            builder.append("]");
+            return builder.toString();
+        }
     }
 
     @Override
     public String getRawName(Type type) {
-        return type.getRawName(packages, classes);
+        String fullName = type.getFullName();
+        String packageName = type.getPackageName();
+        if (packages.contains(packageName) || "java.lang".equals(packageName) || classes.contains(fullName)){
+            if (packageName.length() > 0){
+                return fullName.substring(packageName.length()+1);    
+            }else{
+                return fullName;
+            }  
+        }else{
+            return fullName;
+        }
     }
 
     @Override
@@ -341,7 +372,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     private ScalaWriter param(Parameter parameter) throws IOException{
         append(parameter.getName());
         append(": ");
-        append(parameter.getType().getGenericName(true, packages, classes));
+        append(getGenericName(true, parameter.getType()));
         return this;
     }
 
@@ -352,17 +383,17 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     
     @Override
     public ScalaWriter privateFinal(Type type, String name) throws IOException {
-        return field(PRIVATE_FINAL, type, name);        
+        return field(PRIVATE_VAL, type, name);        
     }
     
     @Override
     public ScalaWriter privateFinal(Type type, String name, String value) throws IOException {
-        return field(PRIVATE_FINAL, type, name, value);
+        return field(PRIVATE_VAL, type, name, value);
     }
 
     @Override
     public ScalaWriter privateStaticFinal(Type type, String name, String value) throws IOException {
-        return field(PRIVATE_FINAL, type, name, value);
+        return field(PRIVATE_VAL, type, name, value);
     }
         
     @Override
@@ -372,12 +403,12 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     
     @Override
     public ScalaWriter protectedFinal(Type type, String name) throws IOException {
-        return field(PROTECTED_FINAL, type, name);        
+        return field(PROTECTED_VAL, type, name);        
     }
 
     @Override
     public ScalaWriter protectedFinal(Type type, String name, String value) throws IOException {
-        return field(PROTECTED_FINAL, type, name, value);
+        return field(PROTECTED_VAL, type, name, value);
     }
 
     @Override
@@ -387,17 +418,17 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     
     @Override
     public ScalaWriter publicFinal(Type type, String name) throws IOException {
-        return field(PUBLIC_FINAL, type, name);        
+        return field(VAL, type, name);        
     }
     
     @Override
     public ScalaWriter publicFinal(Type type, String name, String value) throws IOException {
-        return field(PUBLIC_FINAL, type, name, value);
+        return field(VAL, type, name, value);
     }
     
     @Override
     public ScalaWriter publicStaticFinal(Type type, String name, String value) throws IOException {
-        return field(PUBLIC_FINAL, type, name, value);
+        return field(VAL, type, name, value);
     }
 
     @Override
