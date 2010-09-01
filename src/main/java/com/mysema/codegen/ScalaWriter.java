@@ -43,8 +43,6 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     
     private static final String PRIVATE_FINAL = "private final ";
     
-    private static final String PRIVATE_STATIC_FINAL = "private static final ";
-
     private static final String PROTECTED = "protected ";
     
     private static final String PROTECTED_FINAL = "protected final ";
@@ -56,10 +54,6 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     private static final String PUBLIC_FINAL = "public final ";
 
     private static final String TRAIT = "trait ";
-
-    private static final String PUBLIC_STATIC = "public static ";
-
-    private static final String PUBLIC_STATIC_FINAL = "public static final ";
     
     private final Set<String> classes = new HashSet<String>();
     
@@ -368,7 +362,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
 
     @Override
     public ScalaWriter privateStaticFinal(Type type, String name, String value) throws IOException {
-        return field(PRIVATE_STATIC_FINAL, type, name, value);
+        return field(PRIVATE_FINAL, type, name, value);
     }
         
     @Override
@@ -403,7 +397,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     
     @Override
     public ScalaWriter publicStaticFinal(Type type, String name, String value) throws IOException {
-        return field(PUBLIC_STATIC_FINAL, type, name, value);
+        return field(PUBLIC_FINAL, type, name, value);
     }
 
     @Override
