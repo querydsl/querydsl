@@ -257,7 +257,7 @@ public class EntitySerializer implements Serializer{
         if (category == TypeCategory.BOOLEAN || category == TypeCategory.STRING){
             writer.beginClass(queryType, new ClassType(pathType));
         }else{
-            writer.beginClass(queryType, new ClassType(category,pathType, model));    
+            writer.beginClass(queryType, new ClassType(category, pathType, model));    
         }
         
         // TODO : generate proper serialVersionUID here
