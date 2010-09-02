@@ -15,6 +15,7 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
+import com.mysema.query.codegen.BeanSerializer;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.sql.DefaultNamingStrategy;
 import com.mysema.query.sql.MetaDataExporter;
@@ -82,6 +83,11 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      * @parameter
      */
     private String namingStrategyClass;
+    
+    /**
+     * @parameter default-value=false
+     */
+    private boolean exportBeans;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -104,11 +110,15 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         }else{
             namingStrategy = new DefaultNamingStrategy();
         }
-        Serializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);        
+        Serializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);    
+        Serializer beanSerializer = null;
+        if (exportBeans){
+            beanSerializer = new BeanSerializer();
+        }
         MetaDataExporter exporter = new MetaDataExporter(
                 namePrefix, packageName,
                 new File(targetFolder),
-                namingStrategy, serializer, null);
+                namingStrategy, serializer, beanSerializer);
         exporter.setSchemaPattern(schemaPattern);
         exporter.setTableNamePattern(tableNamePattern);
         try {

@@ -36,6 +36,8 @@ import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.sql.support.ForeignKeyData;
 import com.mysema.query.sql.support.InverseForeignKeyData;
 import com.mysema.query.sql.support.KeyDataFactory;
+import com.mysema.query.sql.support.MaxImpl;
+import com.mysema.query.sql.support.NotNullImpl;
 import com.mysema.query.sql.support.PrimaryKeyData;
 
 /**
@@ -52,6 +54,10 @@ public class MetaDataExporter {
 
     private static final int COLUMN_TYPE = 5;
 
+    private static final int COLUMN_SIZE = 7;
+    
+    private static final int COLUMN_NULLABLE = 11;
+    
     private static final int TABLE_NAME = 3;
 
     private static Writer writerFor(File file) {
@@ -163,6 +169,14 @@ public class MetaDataExporter {
         Type typeModel = new ClassType(fieldType, clazz);
         Property property = createProperty(classModel, columnName, propertyName, typeModel);
         property.addAnnotation(new ColumnImpl(namingStrategy.normalizeColumnName(columnName)));
+        int nullable = columns.getInt(COLUMN_NULLABLE);
+        if (nullable == DatabaseMetaData.columnNoNulls){
+            property.addAnnotation(new NotNullImpl());
+        }
+        int size = columns.getInt(COLUMN_SIZE);
+        if (size > 0){
+            property.addAnnotation(new MaxImpl(size));
+        }
         classModel.addProperty(property);
     }
 
