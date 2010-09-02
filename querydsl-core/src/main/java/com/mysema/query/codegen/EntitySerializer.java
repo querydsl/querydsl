@@ -238,16 +238,21 @@ public class EntitySerializer implements Serializer{
 
         TypeCategory category = model.getOriginalCategory();
         Class<? extends Path> pathType;
-        switch(category){
-            case COMPARABLE : pathType = PComparable.class; break;
-            case ENUM: pathType = PEnum.class; break;
-            case DATE: pathType = PDate.class; break;
-            case DATETIME: pathType = PDateTime.class; break;
-            case TIME: pathType = PTime.class; break;
-            case NUMERIC: pathType = PNumber.class; break;
-            case STRING: pathType = PString.class; break;
-            case BOOLEAN: pathType = PBoolean.class; break;
-            default : pathType = EntityPathBase.class;
+        
+        if (model.getProperties().isEmpty()){
+            switch(category){
+                case COMPARABLE : pathType = PComparable.class; break;
+                case ENUM: pathType = PEnum.class; break;
+                case DATE: pathType = PDate.class; break;
+                case DATETIME: pathType = PDateTime.class; break;
+                case TIME: pathType = PTime.class; break;
+                case NUMERIC: pathType = PNumber.class; break;
+                case STRING: pathType = PString.class; break;
+                case BOOLEAN: pathType = PBoolean.class; break;
+                default : pathType = EntityPathBase.class;
+            }    
+        }else{
+            pathType = EntityPathBase.class;
         }
 
         for (Annotation annotation : model.getAnnotations()){

@@ -155,13 +155,6 @@ public final class APTTypeFactory {
     }
 
     private Type createClassType(DeclaredType t, TypeElement typeElement) {
-        // entity type
-        for (Class<? extends Annotation> entityAnn : entityAnnotations){
-            if (typeElement.getAnnotation(entityAnn) != null){
-                return create(typeElement, TypeCategory.ENTITY,  t.getTypeArguments());
-            }
-        }
-
         // other
         String name = typeElement.getQualifiedName().toString();
         TypeCategory typeCategory = TypeCategory.get(name);
@@ -175,7 +168,25 @@ public final class APTTypeFactory {
                 && isImplemented(typeElement, comparableType)){
             typeCategory = TypeCategory.COMPARABLE;
         }
-        return create(typeElement, typeCategory, t.getTypeArguments());
+        
+        if (typeCategory == TypeCategory.SIMPLE){
+            for (Class<? extends Annotation> entityAnn : entityAnnotations){
+                if (typeElement.getAnnotation(entityAnn) != null){
+                    typeCategory = TypeCategory.ENTITY;
+                }
+            }
+        }
+        
+        Type type = create(typeElement, typeCategory, t.getTypeArguments());
+        
+        // entity type
+        for (Class<? extends Annotation> entityAnn : entityAnnotations){
+            if (typeElement.getAnnotation(entityAnn) != null){
+                return new EntityType(configuration.getNamePrefix(), type);
+            }
+        }
+        
+        return type;
     }
 
     private Type createCollectionType(String simpleName,
@@ -196,7 +207,12 @@ public final class APTTypeFactory {
             entityTypeCache.put(key, null);
             Type value = handle(type);
             if (value != null){
-                EntityType entityModel = new EntityType(configuration.getNamePrefix(), value);
+                EntityType entityModel = null;
+                if (value instanceof EntityType){
+                    entityModel = (EntityType)value;
+                }else{
+                    entityModel = new EntityType(configuration.getNamePrefix(), value);
+                }
                 entityTypeCache.put(key, entityModel);
 
                 if (key.size() > 1 && key.get(0).equals(entityModel.getFullName()) && doubleIndexEntities){
@@ -221,14 +237,15 @@ public final class APTTypeFactory {
     }
 
     private Type createEnumType(DeclaredType t, TypeElement typeElement) {
+        // fallback
+        Type enumType = create(typeElement, TypeCategory.ENUM, t.getTypeArguments());
+        
         for (Class<? extends Annotation> entityAnn : entityAnnotations){
             if (typeElement.getAnnotation(entityAnn) != null){
-                return create(typeElement, TypeCategory.ENTITY, t.getTypeArguments());
+                return new EntityType(configuration.getNamePrefix(), enumType);
             }
-        }
-
-        // fallback
-        return create(typeElement, TypeCategory.ENUM, t.getTypeArguments());
+        }        
+        return enumType;
     }
 
     private Type createInterfaceType(DeclaredType t, TypeElement typeElement) {

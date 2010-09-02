@@ -1,0 +1,37 @@
+package com.mysema.query.domain;
+
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
+import com.mysema.query.annotations.QueryEmbeddable;
+import com.mysema.query.annotations.QueryEntity;
+
+public class ComparableTest {
+    
+    @QueryEntity
+    public class CustomComparable implements Comparable<CustomComparable>{
+
+        @Override
+        public int compareTo(CustomComparable o) {
+            return 0;
+        }
+        
+    }
+    
+    @QueryEmbeddable
+    public class CustomComparable2 implements Comparable<CustomComparable2>{
+
+        @Override
+        public int compareTo(CustomComparable2 o) {
+            return 0;
+        }
+        
+    }
+    
+    @Test
+    public void test(){
+        assertNotNull(QComparableTest_CustomComparable.customComparable.asc());
+    }
+
+}
