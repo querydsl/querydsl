@@ -6,18 +6,23 @@
     <format>zip</format>
   </formats>
   <files>
-    <!-- 
-    <file>
-      <source>README.txt</source>
-      <outputDirectory>/</outputDirectory>
-      <filtered>true</filtered>
-    </file>
-     -->
     <file>
       <source>../querydsl-root/LICENSE.txt</source>
       <outputDirectory>/</outputDirectory>
-    </file>
+    </file>	
   </files>
+  <fileSets>
+    <fileSet>
+      <directory>target</directory>
+      <includes>
+        <include>*.jar</include>
+      </includes>
+	  <excludes>
+	    <exclude>*-sources.jar</exclude>	
+	  </excludes>	
+	  <outputDirectory>/lib</outputDirectory>
+    </fileSet>
+  </fileSets>	  
   <dependencySets>
     <dependencySet>
       <outputDirectory>lib</outputDirectory>
