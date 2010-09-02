@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -102,6 +103,8 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
                     Object value = method.invoke(annotation);
                     if (value == null || value.equals(method.getDefaultValue())){
                         continue;
+                    }else if (value.getClass().isArray() && Arrays.equals((Object[])value, (Object[])method.getDefaultValue())){
+                        continue;
                     }else if (!first){
                         append(COMMA);
                     }else{
@@ -133,7 +136,18 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
     
     @SuppressWarnings("unchecked")
     private void annotationConstant(Object value) throws IOException{
-         if (value instanceof Class){
+         if (value.getClass().isArray()){
+             append("{");
+             boolean first = true;
+             for (Object o : (Object[])value){
+                 if (!first){
+                     append(", ");
+                 }
+                 annotationConstant(o);
+                 first = false;
+             }
+             append("}");
+         }else if (value instanceof Class){
              appendType((Class)value).append(".class");             
          }else if (value instanceof Number || value instanceof Boolean){
              append(value.toString());

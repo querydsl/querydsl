@@ -46,5 +46,23 @@ public class AnnotationTest {
         writer.annotation(getClass().getMethod("testMethodAnnotation").getAnnotation(Test.class));
         assertEquals("@org.junit.Test", w.toString().trim());
     }
+    
+    @Test
+    public void testMin() throws IOException{
+        writer.annotation(new MinImpl(10));
+        assertEquals("@javax.validation.constraints.Min(value=10)", w.toString().trim());
+    }
+    
+    @Test
+    public void testMax() throws IOException{
+        writer.annotation(new MaxImpl(10));
+        assertEquals("@javax.validation.constraints.Max(value=10)", w.toString().trim());
+    }
+    
+    @Test
+    public void testNotNull() throws IOException{
+        writer.annotation(new NotNullImpl());
+        assertEquals("@javax.validation.constraints.NotNull", w.toString().trim());
+    }
 
 }
