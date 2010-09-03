@@ -64,7 +64,7 @@ public class DefaultNamingStrategy implements NamingStrategy {
     @Override
     public String getPropertyNameForForeignKey(String foreignKeyName, EntityType entityType) {
         if (foreignKeyName.toLowerCase().startsWith("fk_")){
-            foreignKeyName = foreignKeyName.substring(3) + "_fk";
+            foreignKeyName = foreignKeyName.substring(3) + "_" + foreignKeyName.substring(0,2);
         }
         if (foreignKeyName.length() > 1){
             String propertyName = foreignKeyName.substring(0,1).toLowerCase(Locale.ENGLISH) 
@@ -89,7 +89,7 @@ public class DefaultNamingStrategy implements NamingStrategy {
     @Override
     public String getPropertyNameForPrimaryKey(String primaryKeyName, EntityType entityType) {
         if (primaryKeyName.toLowerCase().startsWith("pk_")){
-            primaryKeyName = primaryKeyName.substring(3) + "_pk";
+            primaryKeyName = primaryKeyName.substring(3) + "_" + primaryKeyName.substring(0,2);
         }
         if (primaryKeyName.length() > 1){
             String propertyName = primaryKeyName.substring(0,1).toLowerCase(Locale.ENGLISH) 

@@ -34,4 +34,17 @@ public class DefaultNamingStrategyTest {
         assertEquals("accountEventId", namingStrategy.getPropertyName("accountEvent_id", "Q", entityModel));
     }
 
+    @Test
+    public void testGetPropertyNameForInverseForeignKey(){
+        EntityType entityModel = new EntityType("Q", Types.OBJECT);
+        assertEquals("_superiorFk", namingStrategy.getPropertyNameForInverseForeignKey("fk_superior", entityModel));
+    }
+    
+    @Test
+    public void testGetPropertyNameForForeignKey(){
+        EntityType entityModel = new EntityType("Q", Types.OBJECT);
+        assertEquals("superiorFk", namingStrategy.getPropertyNameForForeignKey("fk_superior", entityModel));
+        assertEquals("superiorFk", namingStrategy.getPropertyNameForForeignKey("FK_SUPERIOR", entityModel));        
+    }
+    
 }
