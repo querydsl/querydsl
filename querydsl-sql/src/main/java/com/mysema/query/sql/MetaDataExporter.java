@@ -36,9 +36,9 @@ import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.sql.support.ForeignKeyData;
 import com.mysema.query.sql.support.InverseForeignKeyData;
 import com.mysema.query.sql.support.KeyDataFactory;
-import com.mysema.query.sql.support.MaxImpl;
 import com.mysema.query.sql.support.NotNullImpl;
 import com.mysema.query.sql.support.PrimaryKeyData;
+import com.mysema.query.sql.support.SizeImpl;
 
 /**
  * MetadataExporter exports JDBC metadata to Querydsl query types
@@ -174,8 +174,8 @@ public class MetaDataExporter {
             property.addAnnotation(new NotNullImpl());
         }
         int size = columns.getInt(COLUMN_SIZE);
-        if (size > 0){
-            property.addAnnotation(new MaxImpl(size));
+        if (size > 0 && clazz.equals(String.class)){
+            property.addAnnotation(new SizeImpl(0, size));
         }
         classModel.addProperty(property);
     }
