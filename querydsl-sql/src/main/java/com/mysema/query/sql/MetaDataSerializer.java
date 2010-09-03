@@ -163,7 +163,7 @@ public class MetaDataSerializer extends EntitySerializer {
             writer.line("return null;");
         }
         writer.end();
-
+        
         // foreign keys
         Collection<ForeignKeyData> foreignKeys = (Collection<ForeignKeyData>) model.getData().get(ForeignKeyData.class);
         writer.annotation(Override.class);
@@ -206,7 +206,6 @@ public class MetaDataSerializer extends EntitySerializer {
 
     protected void serializePrimaryKeys(EntityType model, CodeWriter writer,
             Collection<PrimaryKeyData> primaryKeys) throws IOException {
-//        Type queryType = typeMappings.getPathType(model, model, true);
         for (PrimaryKeyData primaryKey : primaryKeys){
             String fieldName = namingStrategy.getPropertyNameForPrimaryKey(primaryKey.getName(), model);
             StringBuilder value = new StringBuilder("new PrimaryKey<"+model.getSimpleName()+">(this, ");
@@ -235,6 +234,9 @@ public class MetaDataSerializer extends EntitySerializer {
                 fieldName = namingStrategy.getPropertyNameForForeignKey(foreignKey.getName(), model);
             }
             String foreignType = namingStrategy.getClassName(namePrefix, foreignKey.getTable());
+            if (!model.getPrefix().isEmpty()){
+                foreignType = foreignType.substring(namePrefix.length());
+            }
             StringBuilder value = new StringBuilder();
             value.append("new ForeignKey<"+foreignType+">(this, ");
             if (foreignKey.getForeignColumns().size() == 1){
