@@ -56,7 +56,7 @@ public class SQLQueryImpl extends AbstractSQLQuery<SQLQueryImpl> implements SQLQ
      * @param templates
      * @param metadata
      */
-    protected SQLQueryImpl(Connection conn, Configuration configuration, QueryMetadata metadata) {
+    public SQLQueryImpl(Connection conn, Configuration configuration, QueryMetadata metadata) {
         super(conn, configuration, metadata);
     }
 
