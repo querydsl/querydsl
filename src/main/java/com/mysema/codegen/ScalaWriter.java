@@ -283,7 +283,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
         String fullName = type.getFullName();
         String packageName = type.getPackageName();
         String rv = fullName;
-        if (packages.contains(packageName) || "java.lang".equals(packageName) || classes.contains(fullName)){
+        if (packages.contains(packageName) || classes.contains(fullName)){
             if (packageName.length() > 0){
                 rv = fullName.substring(packageName.length()+1);    
             }  

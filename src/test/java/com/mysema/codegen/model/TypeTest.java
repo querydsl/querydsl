@@ -20,7 +20,9 @@ import org.junit.Test;
 
 public class TypeTest {
 
-    private Set<String> emptyStrings = Collections.<String>emptySet();
+    private Set<String> packages = Collections.singleton("java.lang");
+    
+    private Set<String> classes = Collections.emptySet();
         
     private ClassType locale = new ClassType(TypeCategory.SIMPLE,Locale.class);
     
@@ -72,21 +74,21 @@ public class TypeTest {
 
     @Test
     public void testGetRawName() {
-        assertEquals("java.util.Locale",locale.getRawName(emptyStrings,emptyStrings));
-        assertEquals("java.util.Locale",locale2.getRawName(emptyStrings,emptyStrings));
-        assertEquals("java.util.List",stringList.getRawName(emptyStrings,emptyStrings));
-        assertEquals("java.util.List",stringList2.getRawName(emptyStrings,emptyStrings));
+        assertEquals("java.util.Locale",locale.getRawName(packages, classes));
+        assertEquals("java.util.Locale",locale2.getRawName(packages, classes));
+        assertEquals("java.util.List",stringList.getRawName(packages, classes));
+        assertEquals("java.util.List",stringList2.getRawName(packages, classes));
         
-        assertEquals("String", string.getRawName(emptyStrings, emptyStrings));
-        assertEquals("String", string2.getRawName(emptyStrings, emptyStrings));
+        assertEquals("String", string.getRawName(packages, classes));
+        assertEquals("String", string2.getRawName(packages, classes));
     }
 
     @Test
     public void testGetGenericNameBooleanSetOfStringSetOfString() {
-        assertEquals("java.util.Locale",locale.getGenericName(true, emptyStrings, emptyStrings));
-        assertEquals("java.util.Locale",locale2.getGenericName(true, emptyStrings, emptyStrings));
-        assertEquals("java.util.List<String>",stringList.getGenericName(true,emptyStrings,emptyStrings));
-        assertEquals("java.util.List<String>",stringList2.getGenericName(true,emptyStrings,emptyStrings));
+        assertEquals("java.util.Locale",locale.getGenericName(true, packages, classes));
+        assertEquals("java.util.Locale",locale2.getGenericName(true, packages, classes));
+        assertEquals("java.util.List<String>",stringList.getGenericName(true,packages, classes));
+        assertEquals("java.util.List<String>",stringList2.getGenericName(true,packages, classes));
     }
 
     @Test

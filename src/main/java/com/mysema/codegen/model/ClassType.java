@@ -111,7 +111,7 @@ public class ClassType implements Type {
 
     @Override
     public String getGenericName(boolean asArgType) {
-        return getGenericName(asArgType, Collections.<String>emptySet(), Collections.<String>emptySet());
+        return getGenericName(asArgType, Collections.singleton("java.lang"), Collections.<String>emptySet());
     }
 
     @Override

@@ -24,8 +24,7 @@ public final class ClassUtils {
     public static String getName(Class<?> cl, Set<String> packages, Set<String> classes) {
         if (cl.isArray()) {
             return getName(cl.getComponentType(), packages, classes) + "[]";
-        } else if (cl.getPackage() == null 
-                || cl.getPackage().getName().equals("java.lang") 
+        } else if (cl.getPackage() == null  
                 || packages.contains(cl.getPackage().getName()) 
                 || classes.contains(cl.getName())) {
             if (cl.getPackage() != null){

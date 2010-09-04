@@ -127,7 +127,7 @@ public class SimpleType implements Type {
 
     @Override
     public String getGenericName(boolean asArgType) {
-        return getGenericName(asArgType, Collections.<String>emptySet(), Collections.<String>emptySet());
+        return getGenericName(asArgType, Collections.singleton("java.lang"), Collections.<String>emptySet());
     }
 
     @Override
@@ -172,7 +172,7 @@ public class SimpleType implements Type {
 
     @Override
     public String getRawName(Set<String> packages, Set<String> classes) {
-        if (packages.contains(packageName) || "java.lang".equals(packageName) || classes.contains(fullName)){
+        if (packages.contains(packageName) || classes.contains(fullName)){
             return localName;
         }else{
             return fullName;
