@@ -182,7 +182,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     public Map<Param<?>,Object> getParams(){
-        return params;
+        return Collections.unmodifiableMap(params);
     }
 
     @Override
