@@ -5,7 +5,6 @@ import static com.mysema.codegen.Symbols.COMMA;
 import static com.mysema.codegen.Symbols.DOT;
 import static com.mysema.codegen.Symbols.QUOTE;
 import static com.mysema.codegen.Symbols.SEMICOLON;
-import static com.mysema.codegen.Symbols.SPACE;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -206,7 +205,6 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     }
 
     private ScalaWriter beginMethod(String modifiers, Type returnType, String methodName, Parameter... args) throws IOException{
-//        beginLine(modifiers + returnType.getGenericName(true, packages, classes) + SPACE + methodName).params(args).append(" {").nl();
         if (returnType.equals(Types.VOID)){
             beginLine(modifiers + methodName).params(args).append(" {").nl();    
         }else{
@@ -284,14 +282,16 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     public String getRawName(Type type) {
         String fullName = type.getFullName();
         String packageName = type.getPackageName();
+        String rv = fullName;
         if (packages.contains(packageName) || "java.lang".equals(packageName) || classes.contains(fullName)){
             if (packageName.length() > 0){
-                return fullName.substring(packageName.length()+1);    
-            }else{
-                return fullName;
+                rv = fullName.substring(packageName.length()+1);    
             }  
+        }
+        if (rv.endsWith("[]")){
+            return "Array[" + rv.substring(0, rv.length()-2) + "]";
         }else{
-            return fullName;
+            return rv;
         }
     }
 

@@ -11,7 +11,6 @@ import java.util.List;
 
 import org.apache.commons.collections15.Transformer;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.codegen.model.ClassType;
@@ -59,9 +58,7 @@ public class ScalaWriterTest {
     }
     
     @Test
-    @Ignore
     public void arrays() throws IOException{
-        // FIXME
 //        def main(args: Array[String]) {
         writer.beginClass(new SimpleType("Main"));
         writer.beginPublicMethod(Types.VOID, "main", new Parameter("args",Types.STRING.asArrayType()));
