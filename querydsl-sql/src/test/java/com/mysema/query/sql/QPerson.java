@@ -32,7 +32,7 @@ public class QPerson extends BeanPath<QPerson> implements RelationalPath<QPerson
 
     public final PString securedid = createString("SECUREDID");
 
-    private Expr[] _all;
+    private Expr<?>[] _all;
 
     public final PrimaryKey<QPerson> sysIdx118 = new PrimaryKey<QPerson>(this, id);
 
