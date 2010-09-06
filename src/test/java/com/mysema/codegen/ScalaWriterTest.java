@@ -61,12 +61,14 @@ public class ScalaWriterTest {
     public void arrays() throws IOException{
 //        def main(args: Array[String]) {
         writer.beginClass(new SimpleType("Main"));
+        writer.field(Types.STRING.asArrayType(), "stringArray");
         writer.beginPublicMethod(Types.VOID, "main", new Parameter("args",Types.STRING.asArrayType()));
         writer.line("//");
         writer.end();        
         writer.end();
         
         System.out.println(w);
+        assertTrue(w.toString().contains("var stringArray: Array[String];"));
         assertTrue(w.toString().contains("def main(args: Array[String])"));
     }
     
