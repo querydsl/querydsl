@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types;
 
+import javax.annotation.Nullable;
+
 /**
  * Visitor defines a Visitor signature for {@link Expr} instances.
  *
@@ -16,36 +18,43 @@ public interface Visitor<R,C>{
     /**
      * @param expr
      */
-    R visit(Constant<?> expr, C context);
+    @Nullable
+    R visit(Constant<?> expr, @Nullable C context);
 
     /**
      * @param expr
      */
-    R visit(Custom<?> expr, C context);
+    @Nullable
+    R visit(Custom<?> expr, @Nullable C context);
 
     /**
      * @param expr
      */
-    R visit(FactoryExpression<?> expr, C context);
+    @Nullable
+    R visit(FactoryExpression<?> expr, @Nullable C context);
 
     /**
      * @param expr
      */
-    R visit(Operation<?> expr, C context);
+    @Nullable
+    R visit(Operation<?> expr, @Nullable C context);
 
     /**
      * @param expr
      */
-    R visit(Path<?> expr, C context);
+    @Nullable
+    R visit(Path<?> expr, @Nullable C context);
 
     /**
      * @param expr
      */
-    R visit(SubQueryExpression<?> expr, C context);
+    @Nullable
+    R visit(SubQueryExpression<?> expr, @Nullable C context);
 
     /**
      * @param expr
      */
-    R visit(Param<?> expr, C context);
+    @Nullable
+    R visit(Param<?> expr, @Nullable C context);
 
 }
