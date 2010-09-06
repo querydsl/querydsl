@@ -41,7 +41,7 @@ public abstract class Expr<D> implements Serializable{
             || Character.class.equals(type);
     }
 
-    public abstract <R,C> R accept(Visitor<R,C> v, C context);
+    public abstract <R,C> R accept(Visitor<R,C> v, @Nullable C context);
 
     public abstract Expr<D> as(Path<D> alias);
 

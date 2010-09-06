@@ -90,10 +90,8 @@ public final class ToStringVisitor implements Visitor<String,Templates>{
             }else{
                 throw new IllegalArgumentException("No pattern for " + p.getMetadata().getPathType());
             }
-        } else if (expr != null) {
+        } else {
             return expr.toString();
-        }else{
-            throw new IllegalArgumentException("Illegal path " + p);
         }
     }
 
