@@ -38,14 +38,14 @@ public final class BooleanBuilder extends EBoolean implements Cloneable, Operati
     }
 
     @Override
-    public void accept(Visitor v) {
+    public <R,C> R accept(Visitor<R,C> v, C context) {
         if (expr != null){
-            expr.accept(v);
+            return expr.accept(v, context);
         }else{
             throw new QueryException("BooleanBuilder has no value");
         }
     }
-
+    
     @Override
     public BooleanBuilder and(@Nullable EBoolean right) {
         if (right != null){

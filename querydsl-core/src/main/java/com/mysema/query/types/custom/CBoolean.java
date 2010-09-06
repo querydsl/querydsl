@@ -40,8 +40,8 @@ public class CBoolean extends EBoolean implements Custom<Boolean> {
     }
 
     @Override
-    public void accept(Visitor v){
-        v.visit(this);
+    public <R,C> R accept(Visitor<R,C> v, C context) {
+        return v.visit(this, context);
     }
 
     @Override

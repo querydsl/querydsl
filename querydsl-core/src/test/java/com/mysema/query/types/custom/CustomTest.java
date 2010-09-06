@@ -21,8 +21,8 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.JavaTemplates;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
+import com.mysema.query.types.Templates;
 import com.mysema.query.types.ToStringVisitor;
-import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.expr.EBooleanConst;
 import com.mysema.query.types.path.PString;
@@ -31,7 +31,7 @@ public class CustomTest {
 
     @Test
     public void constructors(){
-        Visitor visitor = new ToStringVisitor(new JavaTemplates());
+        Templates templates = new JavaTemplates();
         Template template = TemplateFactory.DEFAULT.create("{0}");
         List<Expr<?>> args = Arrays.<Expr<?>>asList(new PString("a"));
         List<Custom<?>> customs = Arrays.<Custom<?>>asList(
@@ -55,7 +55,7 @@ public class CustomTest {
                 assertFalse(custom.equals(prev));
             }
             assertEquals(custom.asExpr().getType().hashCode(), custom.hashCode());
-            custom.asExpr().accept(visitor);
+            custom.asExpr().accept(ToStringVisitor.DEFAULT, templates);
             prev = custom;
         }
     }

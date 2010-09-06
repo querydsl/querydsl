@@ -16,8 +16,8 @@ public class PhraseElementTest {
         PString title = new PString("title");
         LuceneSerializer serializer = new LuceneSerializer(false,false);
         QueryMetadata metadata = new DefaultQueryMetadata();
-        assertEquals("title:Hello World", serializer.toQuery(metadata, title.eq("Hello World")).toString());
-        assertEquals("title:\"Hello World\"", serializer.toQuery(metadata, title.eq(new PhraseElement("Hello World"))).toString());
+        assertEquals("title:Hello World", serializer.toQuery(title.eq("Hello World"), metadata).toString());
+        assertEquals("title:\"Hello World\"", serializer.toQuery(title.eq(new PhraseElement("Hello World")), metadata).toString());
     }
 
     @Test

@@ -25,7 +25,7 @@ import com.mysema.query.types.expr.ENumber;
 public abstract class Expr<D> implements Serializable{
 
     private static final long serialVersionUID = 8049453060731070043L;
-
+    
     protected final boolean primitive;
 
     @Nullable
@@ -41,7 +41,7 @@ public abstract class Expr<D> implements Serializable{
             || Character.class.equals(type);
     }
 
-    public abstract void accept(Visitor v);
+    public abstract <R,C> R accept(Visitor<R,C> v, C context);
 
     public abstract Expr<D> as(Path<D> alias);
 
@@ -172,10 +172,8 @@ public abstract class Expr<D> implements Serializable{
 
     @Override
     public final String toString() {
-        if (toString == null) {
-            Visitor visitor = new ToStringVisitor(Templates.DEFAULT);
-            this.accept(visitor);
-            toString = visitor.toString();
+        if (toString == null) {            
+            toString = accept(ToStringVisitor.DEFAULT, Templates.DEFAULT);
         }
         return toString;
     }

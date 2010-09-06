@@ -26,11 +26,11 @@ public class QueryElement extends EBoolean{
     }
 
     @Override
-    public void accept(Visitor v) {
+    public <R,C> R accept(Visitor<R,C> v, C context) {
         if (expr == null){
             expr = EStringConst.create(query.toString());
         }
-        expr.accept(v);
+        return expr.accept(v, context);
     }
 
     @Override

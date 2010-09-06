@@ -42,7 +42,7 @@ public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A
 
     @SuppressWarnings("unchecked")
     @Override
-    public void accept(Visitor v) {
+    public <R,C> R accept(Visitor<R,C> v, C context) {
         List<Expr<?>> args = new ArrayList<Expr<?>>();
         StringBuilder builder = new StringBuilder();
         builder.append("sum({0}) over (");
@@ -71,7 +71,7 @@ public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A
                 (Class<A>)target.getType(),
                 builder.toString(),
                 args.toArray(new Expr[args.size()]));
-        expr.accept(v);
+        return expr.accept(v, context);
     }
 
     @SuppressWarnings("unchecked")

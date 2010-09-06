@@ -18,15 +18,15 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.JavaTemplates;
 import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.Templates;
 import com.mysema.query.types.ToStringVisitor;
-import com.mysema.query.types.Visitor;
 
 public class SubQueryTest {
 
     @SuppressWarnings("unchecked")
     @Test
     public void test(){
-        Visitor visitor = new ToStringVisitor(new JavaTemplates());
+        Templates templates = new JavaTemplates();
         QueryMetadata metadata = new DefaultQueryMetadata();
         List<SubQueryExpression> subQueries = Arrays.<SubQueryExpression>asList(
                 new BooleanSubQuery(metadata),
@@ -50,7 +50,7 @@ public class SubQueryTest {
                 assertEquals(sq, prev);
             }
             assertEquals(sq.asExpr().getType().hashCode(), sq.hashCode());
-            sq.asExpr().accept(visitor);
+            sq.asExpr().accept(ToStringVisitor.DEFAULT, templates);
             prev = sq;
         }
     }

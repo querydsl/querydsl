@@ -41,7 +41,7 @@ public class RowNumber extends ESimple<Long>{
     }
 
     @Override
-    public void accept(Visitor v) {
+    public <R,C> R accept(Visitor<R,C> v, C context) {
         List<Expr<?>> args = new ArrayList<Expr<?>>(partitionBy.size() + orderBy.size());
         StringBuilder builder = new StringBuilder("row_number() over (");
         if (!partitionBy.isEmpty()){
@@ -64,7 +64,7 @@ public class RowNumber extends ESimple<Long>{
 
         ENumber<Long> expr = CNumber.create(Long.class, builder.toString(),
                 args.toArray(new Expr[args.size()]));
-        expr.accept(v);
+        return expr.accept(v, context);
     }
 
     // TODO : externalize

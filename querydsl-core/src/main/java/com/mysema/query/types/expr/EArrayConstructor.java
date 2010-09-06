@@ -46,8 +46,9 @@ public class EArrayConstructor<D> extends ESimple<D[]> implements FactoryExpress
         return elementType;
     }
 
-    public void accept(Visitor v){
-        v.visit(this);
+    @Override
+    public <R,C> R accept(Visitor<R,C> v, C context) {
+        return v.visit(this, context);
     }
 
     @SuppressWarnings("unchecked")

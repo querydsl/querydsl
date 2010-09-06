@@ -56,49 +56,49 @@ public class LuceneSerializer {
         this.splitTerms = splitTerms;
     }
 
-    private Query toQuery(QueryMetadata metadata, Operation<?> operation) {
+    private Query toQuery(Operation<?> operation, QueryMetadata metadata) {
         Operator<?> op = operation.getOperator();
         if (op == Ops.OR) {
-            return toTwoHandSidedQuery(metadata, operation, Occur.SHOULD);
+            return toTwoHandSidedQuery(operation, Occur.SHOULD, metadata);
         } else if (op == Ops.AND) {
-            return toTwoHandSidedQuery(metadata, operation, Occur.MUST);
+            return toTwoHandSidedQuery(operation, Occur.MUST, metadata);
         } else if (op == Ops.NOT) {
             BooleanQuery bq = new BooleanQuery();
-            bq.add(new BooleanClause(toQuery(metadata, operation.getArg(0)), Occur.MUST_NOT));
+            bq.add(new BooleanClause(toQuery(operation.getArg(0), metadata), Occur.MUST_NOT));
             return bq;
         } else if (op == Ops.LIKE) {
-            return like(metadata, operation);
+            return like(operation, metadata);
         } else if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE || op == Ops.EQ_IGNORE_CASE) {
-            return eq(metadata, operation);
+            return eq(operation, metadata);
         } else if (op == Ops.NE_OBJECT || op == Ops.NE_PRIMITIVE) {
-            return ne(metadata, operation);
+            return ne(operation, metadata);
         } else if (op == Ops.STARTS_WITH || op == Ops.STARTS_WITH_IC) {
             return startsWith(metadata, operation);
         } else if (op == Ops.ENDS_WITH || op == Ops.ENDS_WITH_IC) {
-            return endsWith(metadata, operation);
+            return endsWith(operation, metadata);
         } else if (op == Ops.STRING_CONTAINS || op == Ops.STRING_CONTAINS_IC) {
-            return stringContains(metadata, operation);
+            return stringContains(operation, metadata);
         } else if (op == Ops.BETWEEN) {
-            return between(metadata, operation);
+            return between(operation, metadata);
         } else if (op == Ops.IN) {
-            return in(metadata, operation);
+            return in(operation, metadata);
         } else if (op == Ops.LT || op == Ops.BEFORE) {
-            return lt(metadata, operation);
+            return lt(operation, metadata);
         } else if (op == Ops.GT || op == Ops.AFTER) {
-            return gt(metadata, operation);
+            return gt(operation, metadata);
         } else if (op == Ops.LOE || op == Ops.BOE) {
-            return le(metadata, operation);
+            return le(operation, metadata);
         } else if (op == Ops.GOE || op == Ops.AOE) {
-            return ge(metadata, operation);
+            return ge(operation, metadata);
         } else if (op == PathType.DELEGATE) {
-            return toQuery(metadata, operation.getArg(0));
+            return toQuery(operation.getArg(0), metadata);
         }
         throw new UnsupportedOperationException("Illegal operation " + operation);
     }
 
-    private Query toTwoHandSidedQuery(QueryMetadata metadata, Operation<?> operation, Occur occur) {
-        Query lhs = toQuery(metadata, operation.getArg(0));
-        Query rhs = toQuery(metadata, operation.getArg(1));
+    private Query toTwoHandSidedQuery(Operation<?> operation, Occur occur, QueryMetadata metadata) {
+        Query lhs = toQuery(operation.getArg(0), metadata);
+        Query rhs = toQuery(operation.getArg(1), metadata);
         BooleanQuery bq = new BooleanQuery();
         bq.add(createBooleanClause(lhs, occur));
         bq.add(createBooleanClause(rhs, occur));
@@ -120,10 +120,10 @@ public class LuceneSerializer {
         return new BooleanClause(query, occur);
     }
 
-    private Query like(QueryMetadata metadata, Operation<?> operation) {
+    private Query like(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
-        String[] terms = createTerms(metadata, operation.getArg(1));
+        String[] terms = createTerms(operation.getArg(1), metadata);
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
             for (String s : terms) {
@@ -135,14 +135,14 @@ public class LuceneSerializer {
     }
 
     @SuppressWarnings("unchecked")
-    private Query eq(QueryMetadata metadata, Operation<?> operation) {
+    private Query eq(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
         if (Number.class.isAssignableFrom(operation.getArg(1).getType())) {
             return new TermQuery(new Term(field, convertNumber(((Constant<Number>) operation
                     .getArg(1)).getConstant())));
         }
-        return eq(metadata, field, createTerms(metadata, operation.getArg(1)));
+        return eq(field, createTerms(operation.getArg(1), metadata), metadata);
     }
 
     private String convertNumber(Number number) {
@@ -168,7 +168,7 @@ public class LuceneSerializer {
         }
     }
 
-    private Query eq(QueryMetadata metadata, String field, String[] terms) {
+    private Query eq(String field, String[] terms, QueryMetadata metadata) {
         if (terms.length > 1) {
             PhraseQuery pq = new PhraseQuery();
             for (String s : terms) {
@@ -180,26 +180,26 @@ public class LuceneSerializer {
     }
 
     @SuppressWarnings("unchecked")
-    private Query in(QueryMetadata metadata, Operation<?> operation) {
+    private Query in(Operation<?> operation, QueryMetadata metadata) {
         String field = toField(operation.getArg(0));
         Collection values = (Collection) ((Constant) operation.getArg(1)).getConstant();
         BooleanQuery bq = new BooleanQuery();
         for (Object value : values) {
-            bq.add(eq(metadata, field, StringUtils.split(value.toString())), Occur.SHOULD);
+            bq.add(eq(field, StringUtils.split(value.toString()), metadata), Occur.SHOULD);
         }
         return bq;
     }
 
-    private Query ne(QueryMetadata metadata, Operation<?> operation) {
+    private Query ne(Operation<?> operation, QueryMetadata metadata) {
         BooleanQuery bq = new BooleanQuery();
-        bq.add(new BooleanClause(eq(metadata, operation), Occur.MUST_NOT));
+        bq.add(new BooleanClause(eq(operation, metadata), Occur.MUST_NOT));
         return bq;
     }
 
     private Query startsWith(QueryMetadata metadata, Operation<?> operation) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
-        String[] terms = createEscapedTerms(metadata, operation.getArg(1));
+        String[] terms = createEscapedTerms(operation.getArg(1), metadata);
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
             for (int i = 0; i < terms.length; ++i) {
@@ -211,10 +211,10 @@ public class LuceneSerializer {
         return new PrefixQuery(new Term(field, normalize(terms[0])));
     }
 
-    private Query stringContains(QueryMetadata metadata, Operation<?> operation) {
+    private Query stringContains(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
-        String[] terms = createEscapedTerms(metadata, operation.getArg(1));
+        String[] terms = createEscapedTerms(operation.getArg(1), metadata);
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
             for (String s : terms) {
@@ -225,10 +225,10 @@ public class LuceneSerializer {
         return new WildcardQuery(new Term(field, "*" + normalize(terms[0]) + "*"));
     }
 
-    private Query endsWith(QueryMetadata metadata, Operation<?> operation) {
+    private Query endsWith(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
-        String[] terms = createEscapedTerms(metadata, operation.getArg(1));
+        String[] terms = createEscapedTerms(operation.getArg(1), metadata);
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
             for (int i = 0; i < terms.length; ++i) {
@@ -240,34 +240,34 @@ public class LuceneSerializer {
         return new WildcardQuery(new Term(field, "*" + normalize(terms[0])));
     }
 
-    private Query between(QueryMetadata metadata, Operation<?> operation) {
+    private Query between(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         // TODO Phrase not properly supported
-        return range(metadata, toField(operation.getArg(0)), operation.getArg(1), operation.getArg(2), true, true);
+        return range(toField(operation.getArg(0)), operation.getArg(1), operation.getArg(2), true, true, metadata);
     }
 
-    private Query lt(QueryMetadata metadata, Operation<?> operation) {
+    private Query lt(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
-        return range(metadata, toField(operation.getArg(0)), null, operation.getArg(1), false, false);
+        return range(toField(operation.getArg(0)), null, operation.getArg(1), false, false, metadata);
     }
 
-    private Query gt(QueryMetadata metadata, Operation<?> operation) {
+    private Query gt(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
-        return range(metadata, toField(operation.getArg(0)), operation.getArg(1), null, false, false);
+        return range(toField(operation.getArg(0)), operation.getArg(1), null, false, false, metadata);
     }
 
-    private Query le(QueryMetadata metadata, Operation<?> operation) {
+    private Query le(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
-        return range(metadata, toField(operation.getArg(0)), null, operation.getArg(1), true, true);
+        return range(toField(operation.getArg(0)), null, operation.getArg(1), true, true, metadata);
     }
 
-    private Query ge(QueryMetadata metadata, Operation<?> operation) {
+    private Query ge(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
-        return range(metadata, toField(operation.getArg(0)), operation.getArg(1), null, true, true);
+        return range(toField(operation.getArg(0)), operation.getArg(1), null, true, true, metadata);
     }
 
     @SuppressWarnings("unchecked")
-    private Query range(QueryMetadata metadata, String field, Expr<?> min, Expr<?> max, boolean minInc, boolean maxInc) {
+    private Query range(String field, Expr<?> min, Expr<?> max, boolean minInc, boolean maxInc, QueryMetadata metadata) {
         if (min != null && Number.class.isAssignableFrom(min.getType()) || max != null
                 && Number.class.isAssignableFrom(max.getType())) {
             Class<? extends Number> numType = (Class) (min != null ? min.getType() : max.getType());
@@ -275,7 +275,7 @@ public class LuceneSerializer {
                     : ((Constant) min).getConstant()), (Number) (max == null ? null
                     : ((Constant) max).getConstant()), minInc, maxInc);
         }
-        return stringRange(metadata, field, min, max, minInc, maxInc);
+        return stringRange(field, min, max, minInc, maxInc, metadata);
     }
 
     private <N extends Number> NumericRangeQuery<?> numericRange(Class<N> clazz, String field,
@@ -296,13 +296,13 @@ public class LuceneSerializer {
         }
     }
 
-    private Query stringRange(QueryMetadata metadata, String field, Expr<?> min, Expr<?> max, boolean minInc, boolean maxInc) {
+    private Query stringRange(String field, Expr<?> min, Expr<?> max, boolean minInc, boolean maxInc, QueryMetadata metadata) {
         if (min == null) {
-            return new TermRangeQuery(field, null, normalize(createTerms(metadata, max)[0]), minInc, maxInc);
+            return new TermRangeQuery(field, null, normalize(createTerms(max, metadata)[0]), minInc, maxInc);
         } else if (max == null) {
-            return new TermRangeQuery(field, normalize(createTerms(metadata, min)[0]), null, minInc, maxInc);
+            return new TermRangeQuery(field, normalize(createTerms(min, metadata)[0]), null, minInc, maxInc);
         } else {
-            return new TermRangeQuery(field, normalize(createTerms(metadata, min)[0]), normalize(createTerms(metadata, max)[0]), minInc, maxInc);
+            return new TermRangeQuery(field, normalize(createTerms(min, metadata)[0]), normalize(createTerms(max, metadata)[0]), minInc, maxInc);
         }
     }
 
@@ -336,7 +336,7 @@ public class LuceneSerializer {
         }
     }
 
-    private String[] createTerms(QueryMetadata metadata, Expr<?> expr) {
+    private String[] createTerms(Expr<?> expr, QueryMetadata metadata) {
         if (expr instanceof Param<?>){
             Object value = metadata.getParams().get(expr);
             if (value == null){
@@ -348,7 +348,7 @@ public class LuceneSerializer {
         }
     }
 
-    private String[] createEscapedTerms(QueryMetadata metadata, Expr<?> expr) {
+    private String[] createEscapedTerms(Expr<?> expr, QueryMetadata metadata) {
         if (expr instanceof Param<?>){
             Object value = metadata.getParams().get(expr);
             if (value == null){
@@ -376,9 +376,9 @@ public class LuceneSerializer {
         return lowerCase ? s.toLowerCase(Locale.ENGLISH) : s;
     }
 
-    public Query toQuery(QueryMetadata metadata, Expr<?> expr) {
+    public Query toQuery(Expr<?> expr, QueryMetadata metadata) {
         if (expr instanceof Operation<?>) {
-            return toQuery(metadata, (Operation<?>) expr);
+            return toQuery((Operation<?>) expr, metadata);
         } else if (expr instanceof QueryElement) {
             return ((QueryElement) expr).getQuery();
         } else{

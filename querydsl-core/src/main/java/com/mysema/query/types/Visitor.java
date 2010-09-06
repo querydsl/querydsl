@@ -11,41 +11,41 @@ package com.mysema.query.types;
  * @author tiwe
  * @version $Id$
  */
-public interface Visitor {
+public interface Visitor<R,C>{
 
     /**
      * @param expr
      */
-    void visit(Constant<?> expr);
+    R visit(Constant<?> expr, C context);
 
     /**
      * @param expr
      */
-    void visit(Custom<?> expr);
+    R visit(Custom<?> expr, C context);
 
     /**
      * @param expr
      */
-    void visit(FactoryExpression<?> expr);
+    R visit(FactoryExpression<?> expr, C context);
 
     /**
      * @param expr
      */
-    void visit(Operation<?> expr);
+    R visit(Operation<?> expr, C context);
 
     /**
      * @param expr
      */
-    void visit(Path<?> expr);
+    R visit(Path<?> expr, C context);
 
     /**
-     * @param query
+     * @param expr
      */
-    void visit(SubQueryExpression<?> query);
+    R visit(SubQueryExpression<?> expr, C context);
 
     /**
-     * @param param
+     * @param expr
      */
-    void visit(Param<?> param);
+    R visit(Param<?> expr, C context);
 
 }

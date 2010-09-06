@@ -11,22 +11,14 @@ package com.mysema.query.types;
  * @author tiwe
  * @version $Id$
  */
-public final class ToStringVisitor implements Visitor{
+public final class ToStringVisitor implements Visitor<String,Templates>{
+    
+    public static final ToStringVisitor DEFAULT = new ToStringVisitor();
 
-    private final Templates templates;
-
-    private String toString = "?";
-
-    public ToStringVisitor(Templates templates){
-        this.templates = templates;
-    }
-
-    public String toString() {
-        return toString;
-    }
-
+    private ToStringVisitor(){}
+    
     @Override
-    public void visit(Custom<?> expr) {
+    public String visit(Custom<?> expr, Templates templates) {
         StringBuilder builder = new StringBuilder();
         for (Template.Element element : expr.getTemplate().getElements()){
             if (element.getStaticText() != null){
@@ -35,16 +27,16 @@ public final class ToStringVisitor implements Visitor{
                 builder.append(expr.getArg(element.getIndex()));
             }
         }
-        toString = builder.toString();
+        return builder.toString();
     }
 
     @Override
-    public void visit(Constant<?> e) {
-        toString = e.getConstant().toString();
+    public String visit(Constant<?> e, Templates templates) {
+        return e.getConstant().toString();
     }
 
     @Override
-    public void visit(FactoryExpression<?> e) {
+    public String visit(FactoryExpression<?> e, Templates templates) {
         StringBuilder builder = new StringBuilder();
         builder.append("new ").append(e.getType().getSimpleName()).append("(");
         boolean first = true;
@@ -56,11 +48,11 @@ public final class ToStringVisitor implements Visitor{
             first = false;
         }
         builder.append(")");
-        toString = builder.toString();
+        return builder.toString();
     }
 
     @Override
-    public void visit(Operation<?> o) {
+    public String visit(Operation<?> o, Templates templates) {
         Template template = templates.getTemplate(o.getOperator());
         if (template != null) {
             StringBuilder builder = new StringBuilder();
@@ -71,14 +63,14 @@ public final class ToStringVisitor implements Visitor{
                     builder.append(o.getArg(element.getIndex()));
                 }
             }
-            toString = builder.toString();
+            return builder.toString();
         } else {
-            toString = "unknown operation with args " + o.getArgs();
+            return "unknown operation with args " + o.getArgs();
         }
     }
 
     @Override
-    public void visit(Path<?> p) {
+    public String visit(Path<?> p, Templates templates) {
         Path<?> parent = p.getMetadata().getParent();
         Expr<?> expr = p.getMetadata().getExpression();
         if (parent != null) {
@@ -94,22 +86,25 @@ public final class ToStringVisitor implements Visitor{
                         builder.append(expr);
                     }
                 }
-                toString = builder.toString();
+                return builder.toString();
+            }else{
+                throw new IllegalArgumentException("No pattern for " + p.getMetadata().getPathType());
             }
         } else if (expr != null) {
-            toString = expr.toString();
+            return expr.toString();
+        }else{
+            throw new IllegalArgumentException("Illegal path " + p);
         }
     }
 
     @Override
-    public void visit(SubQueryExpression<?> expr) {
-        toString = expr.getMetadata().toString();
+    public String visit(SubQueryExpression<?> expr, Templates templates) {
+        return expr.getMetadata().toString();
     }
 
     @Override
-    public void visit(Param<?> param) {
-        toString = "{" + param.getName() + "}";
-
+    public String visit(Param<?> param, Templates templates) {
+        return "{" + param.getName() + "}";
     }
 
 }

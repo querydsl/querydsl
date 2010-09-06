@@ -71,7 +71,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
         if (queryMixin.getMetadata().getWhere() == null) {
             throw new QueryException("Where clause was null.");
         }
-        return serializer.toQuery(queryMixin.getMetadata(), queryMixin.getMetadata().getWhere());
+        return serializer.toQuery(queryMixin.getMetadata().getWhere(), queryMixin.getMetadata());
     }
 
     @Override

@@ -16,8 +16,8 @@ public class TermElementTest {
         PString title = new PString("title");
         LuceneSerializer serializer = new LuceneSerializer(false,true);
         QueryMetadata metadata = new DefaultQueryMetadata();
-        assertEquals("title:\"Hello World\"", serializer.toQuery(metadata, title.eq("Hello World")).toString());
-        assertEquals("title:Hello World", serializer.toQuery(metadata, title.eq(new TermElement("Hello World"))).toString());
+        assertEquals("title:\"Hello World\"", serializer.toQuery(title.eq("Hello World"), metadata).toString());
+        assertEquals("title:Hello World", serializer.toQuery(title.eq(new TermElement("Hello World")), metadata).toString());
     }
 
     @Test

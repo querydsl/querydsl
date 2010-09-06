@@ -23,7 +23,7 @@ import com.mysema.query.QueryFlag.Position;
  * @author tiwe
  * @version $Id$
  */
-public abstract class SerializerBase<S extends SerializerBase<S>> implements Visitor {
+public abstract class SerializerBase<S extends SerializerBase<S>> implements Visitor<Void,Void> {
 
     private final StringBuilder builder = new StringBuilder();
 
@@ -64,7 +64,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     public S handle(Expr<?> expr) {
-        expr.accept(this);
+        expr.accept(this, null);
         return self;
     }
 
@@ -130,7 +130,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     @Override
-    public void visit(Constant<?> expr) {
+    public Void visit(Constant<?> expr, Void context) {
         if (!constantToLabel.containsKey(expr.getConstant())) {
             String constLabel = constantPrefix + (constantToLabel.size() + 1);
             constantToLabel.put(expr.getConstant(), constLabel);
@@ -138,10 +138,11 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         } else {
             append(constantToLabel.get(expr.getConstant()));
         }
+        return null;
     }
 
     @Override
-    public void visit(Param<?> param){
+    public Void visit(Param<?> param, Void context){
         String paramLabel;
         if (param.isAnon()){
             paramLabel = anonParamPrefix + param.getName();
@@ -150,25 +151,29 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         }
         constantToLabel.put(param, paramLabel);
         append(paramLabel);
+        return null;
     }
 
     @Override
-    public void visit(Custom<?> expr) {
+    public Void visit(Custom<?> expr, Void context) {
         handleTemplate(expr.getTemplate(), expr.getArgs());
+        return null;
     }
 
     @Override
-    public void visit(FactoryExpression<?> expr) {
+    public Void visit(FactoryExpression<?> expr, Void context) {
         handle(", ", expr.getArgs());
+        return null;
     }
 
     @Override
-    public void visit(Operation<?> expr) {
+    public Void visit(Operation<?> expr, Void context) {
         visitOperation(expr.getType(), expr.getOperator(), expr.getArgs());
+        return null;
     }
 
     @Override
-    public void visit(Path<?> path) {
+    public Void visit(Path<?> path, Void context) {
         PathType pathType = path.getMetadata().getPathType();
         Template template = templates.getTemplate(pathType);
         List<Expr<?>> args = new ArrayList<Expr<?>>();
@@ -177,6 +182,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         }
         args.add(path.getMetadata().getExpression());
         handleTemplate(template, args);
+        return null;
     }
 
     @SuppressWarnings("unchecked")

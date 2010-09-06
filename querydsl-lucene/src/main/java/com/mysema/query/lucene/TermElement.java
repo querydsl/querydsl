@@ -21,8 +21,8 @@ public class TermElement extends EString{
     }
 
     @Override
-    public void accept(Visitor v) {
-        string.accept(v);
+    public <R,C> R accept(Visitor<R,C> v, C context) {
+        return string.accept(v, context);
     }
 
     @Override

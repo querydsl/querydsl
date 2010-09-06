@@ -42,8 +42,8 @@ public class Coalesce<T extends Comparable> extends EComparable<T>{
     }
 
     @Override
-    public void accept(Visitor v) {
-        OSimple.create(getType(), Ops.COALESCE, getExpressionList()).accept(v);
+    public <R,C> R accept(Visitor<R,C> v, C context) {
+        return OSimple.create(getType(), Ops.COALESCE, getExpressionList()).accept(v, context);
     }
 
     public final Coalesce<T> add(Expr<T> expr){

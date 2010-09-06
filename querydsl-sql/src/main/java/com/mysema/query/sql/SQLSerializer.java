@@ -421,7 +421,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public void visit(Constant<?> expr) {
+    public Void visit(Constant<?> expr, Void context) {
         if (expr.getConstant() instanceof Collection){
             append("(");
             boolean first = true;
@@ -448,36 +448,40 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 constantPaths.add(null);
             }
         }
+        return null;
     }
 
     @Override
-    public void visit(Param<?> param){
+    public Void visit(Param<?> param, Void context){
         append("?");
         constants.add(param);
         if (constantPaths.size() < constants.size()){
             constantPaths.add(null);
         }
+        return null;
     }
 
-    public void visit(Path<?> path) {
+    public Void visit(Path<?> path, Void context) {
         if (dml){
             if (path.equals(entity)){
                 appendAsTableName(path);
             }else if (entity.equals(path.getMetadata().getParent()) && skipParent){
                 appendAsColumnName(path);
             }else{
-                super.visit(path);
+                super.visit(path, context);
             }
         }else{
-            super.visit(path);
+            super.visit(path, context);
         }
+        return null;
     }
 
     @Override
-    public void visit(SubQueryExpression<?> query) {
+    public Void visit(SubQueryExpression<?> query, Void context) {
         append("(");
         serialize(query.getMetadata(), false);
         append(")");
+        return null;
     }
 
     @Override

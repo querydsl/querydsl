@@ -41,10 +41,10 @@ public class CTime<T extends Comparable<?>> extends ETime<T> implements Custom<T
     }
 
     @Override
-    public void accept(Visitor v){
-        v.visit(this);
+    public <R,C> R accept(Visitor<R,C> v, C context) {
+        return v.visit(this, context);
     }
-
+    
     @Override
     public Expr<?> getArg(int index) {
         return customMixin.getArg(index);

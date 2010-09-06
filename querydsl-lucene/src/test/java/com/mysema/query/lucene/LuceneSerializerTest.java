@@ -129,13 +129,13 @@ public class LuceneSerializerTest {
     }
 
     private void testQuery(Expr<?> expr, int expectedHits) throws Exception {
-        Query query = serializer.toQuery(metadata, expr);
+        Query query = serializer.toQuery(expr, metadata);
         TopDocs docs = searcher.search(query, 100);
         assertEquals(expectedHits, docs.totalHits);
     }
 
     private void testQuery(Expr<?> expr, String expectedQuery, int expectedHits) throws Exception {
-        Query query = serializer.toQuery(metadata, expr);
+        Query query = serializer.toQuery(expr, metadata);
         TopDocs docs = searcher.search(query, 100);
         assertEquals(expectedHits, docs.totalHits);
         assertEquals(expectedQuery, query.toString());
@@ -143,8 +143,8 @@ public class LuceneSerializerTest {
 
     @Test
     public void queryElement() throws Exception{
-        Query query1 = serializer.toQuery(metadata, author.like("Michael"));
-        Query query2 = serializer.toQuery(metadata, text.like("Text"));
+        Query query1 = serializer.toQuery(author.like("Michael"), metadata);
+        Query query2 = serializer.toQuery(text.like("Text"), metadata);
 
         EBoolean query = EBoolean.anyOf(
             new QueryElement(query1),

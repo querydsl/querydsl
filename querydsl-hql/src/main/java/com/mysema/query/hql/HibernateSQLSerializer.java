@@ -29,7 +29,7 @@ public final class HibernateSQLSerializer extends SQLSerializer{
     }
 
     @Override
-    public void visit(Constant<?> expr) {
+    public Void visit(Constant<?> expr, Void context) {
         if (!getConstantToLabel().containsKey(expr.getConstant())) {
             String constLabel = getConstantPrefix() + (getConstantToLabel().size() + 1);
             getConstantToLabel().put(expr.getConstant(), constLabel);
@@ -37,17 +37,19 @@ public final class HibernateSQLSerializer extends SQLSerializer{
         } else {
             append(":"+getConstantToLabel().get(expr.getConstant()));
         }
+        return null;
     }
 
     @Override
-    public void visit(Path<?> path) {
+    public Void visit(Path<?> path, Void context) {
         if (path.getMetadata().getParent() == null && !path.getType().equals(path.getClass())){
-            super.visit(path);
+            super.visit(path, context);
             append(".*");
             entityPaths.add(path);
         }else{
-            super.visit(path);
+            super.visit(path, context);
         }
+        return null;
     }
 
     public List<Path<?>> getEntityPaths() {

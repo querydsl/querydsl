@@ -1,64 +1,49 @@
 package com.mysema.query.types;
 
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.Custom;
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Param;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.Visitor;
 
 /**
  * @author tiwe
  *
  */
-public class ExtractorVisitor implements Visitor{
-
-    private Expr<?> expr;
+public final class ExtractorVisitor implements Visitor<Expr<?>,Void>{
     
-    public ExtractorVisitor(Expr<?> e) {
-        e.accept(this);
-    }
+    public static final ExtractorVisitor DEFAULT = new ExtractorVisitor();
+    
+    private ExtractorVisitor(){}
     
     @Override
-    public void visit(Constant<?> expr) {
-        this.expr = expr.asExpr();
+    public Expr<?> visit(Constant<?> expr, Void context) {
+        return expr.asExpr();
     }
 
     @Override
-    public void visit(Custom<?> expr) {
-        this.expr = expr.asExpr();
+    public Expr<?> visit(Custom<?> expr, Void context) {
+        return expr.asExpr();
     }
 
     @Override
-    public void visit(FactoryExpression<?> expr) {
-        this.expr = expr.asExpr();
+    public Expr<?> visit(FactoryExpression<?> expr, Void context) {
+        return expr.asExpr();
     }
 
     @Override
-    public void visit(Operation<?> expr) {
-        this.expr = expr.asExpr();
+    public Expr<?> visit(Operation<?> expr, Void context) {
+        return expr.asExpr();
     }
 
     @Override
-    public void visit(Path<?> expr) {
-        this.expr = expr.asExpr();
+    public Expr<?> visit(Path<?> expr, Void context) {
+        return expr.asExpr();
     }
 
     @Override
-    public void visit(SubQueryExpression<?> expr) {
-        this.expr = expr.asExpr();
+    public Expr<?> visit(SubQueryExpression<?> expr, Void context) {
+        return expr.asExpr();
     }
 
     @Override
-    public void visit(Param<?> expr) {
-        this.expr = expr.asExpr();
-    }
-
-    public Expr<?> getExpr() {
-        return expr;
+    public Expr<?> visit(Param<?> expr, Void context) {
+        return expr.asExpr();
     }
     
 }

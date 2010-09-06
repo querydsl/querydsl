@@ -37,9 +37,10 @@ public class PTime<D extends Comparable> extends ETime<D> implements Path<D>{
     public PTime(Class<? extends D> type, String var) {
         this(type, PathMetadataFactory.forVariable(var));
     }
+    
     @Override
-    public void accept(Visitor v) {
-        v.visit(this);
+    public <R,C> R accept(Visitor<R,C> v, C context) {
+        return v.visit(this, context);
     }
 
     @Override

@@ -270,19 +270,21 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     }
 
     @Override
-    public void visit(Path<?> path) {
+    public Void visit(Path<?> path, Void context) {
         if (path.equals(candidatePath)) {
             append(THIS);
         } else {
-            super.visit(path);
+            super.visit(path, context);
         }
+        return null;
     }
 
     @Override
-    public void visit(SubQueryExpression<?> query) {
+    public Void visit(SubQueryExpression<?> query, Void context) {
         append("(");
         serialize(query.getMetadata(), false, true);
         append(")");
+        return null;
     }
 
     @SuppressWarnings("unchecked")

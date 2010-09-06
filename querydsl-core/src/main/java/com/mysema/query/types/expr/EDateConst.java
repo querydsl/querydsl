@@ -35,8 +35,8 @@ public final class EDateConst<D extends java.util.Date> extends EDate<D> impleme
     }
 
     @Override
-    public void accept(Visitor v) {
-        v.visit(this);
+    public <R,C> R accept(Visitor<R,C> v, C context) {
+        return v.visit(this, context);
     }
 
     @Override

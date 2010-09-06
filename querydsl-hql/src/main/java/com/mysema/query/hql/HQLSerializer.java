@@ -238,7 +238,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     }
 
     @Override
-    public void visit(Constant<?> expr) {
+    public Void visit(Constant<?> expr, Void context) {
         boolean wrap = templates.wrapConstant(expr);
         if (wrap) {
             append("(");
@@ -254,23 +254,26 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         if (wrap) {
             append(")");
         }
+        return null;
     }
 
     @Override
-    public void visit(Param<?> param){
+    public Void visit(Param<?> param, Void context){
         append(":");
-        super.visit(param);
+        super.visit(param, context);
+        return null;
     }
 
     @Override
-    public void visit(SubQueryExpression<?> query) {
+    public Void visit(SubQueryExpression<?> query, Void context) {
         append("(");
         serialize(query.getMetadata(), false, null);
         append(")");
+        return null;
     }
 
     @Override
-    public void visit(Path<?> expr){
+    public Void visit(Path<?> expr, Void context){
         // only wrap a PathCollection, if it the pathType is PROPERTY
         boolean wrap = wrapElements
         && (Collection.class.isAssignableFrom(expr.getType()) || Map.class.isAssignableFrom(expr.getType()))
@@ -278,22 +281,24 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         if (wrap) {
             append("elements(");
         }
-        super.visit((Path<?>) expr);
+        super.visit(expr, context);
         if (wrap) {
             append(")");
         }
+        return null;
     }
 
     @Override
-    public void visit(FactoryExpression<?> expr) {
+    public Void visit(FactoryExpression<?> expr, Void context) {
         if (expr instanceof EConstructor<?>){
             append("new " + expr.getType().getName() + "(");
             handle(", ", expr.getArgs());
             append(")");
         }else{
             // serialize arguments only
-            super.visit(expr);
+            super.visit(expr, context);
         }
+        return null;
     }
 
     @SuppressWarnings("unchecked")

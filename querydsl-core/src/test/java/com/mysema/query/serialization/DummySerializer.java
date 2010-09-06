@@ -14,23 +14,22 @@ import com.mysema.query.types.Templates;
 public class DummySerializer extends SerializerBase<DummySerializer>{
 
     public DummySerializer(Templates patterns) {
-    super(patterns);
+        super(patterns);
     }
 
     @Override
-    public void visit(SubQueryExpression<?> query) {
-    // TODO Auto-generated method stub
+    public Void visit(SubQueryExpression<?> query, Void context) {
+        return null;
     }
 
     @Override
-    public void visit(FactoryExpression<?> expr) {
-    // TODO Auto-generated method stub
+    public Void visit(FactoryExpression<?> expr, Void context) {
+        return null;
     }
 
     @Override
-    public void visit(Param<?> param) {
-        // TODO Auto-generated method stub
-
+    public Void visit(Param<?> expr, Void context) {
+        return null;
     }
 
 }

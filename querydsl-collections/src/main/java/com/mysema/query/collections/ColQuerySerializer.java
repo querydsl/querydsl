@@ -26,7 +26,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
     }
 
     @Override
-    public void visit(Path<?> path) {
+    public Void visit(Path<?> path, Void context) {
         PathType pathType = path.getMetadata().getPathType();
 
         if (pathType == PathType.PROPERTY){
@@ -56,11 +56,12 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
                 }
             }
         }
+        return null;
 
     }
 
     @Override
-    public void visit(SubQueryExpression<?> expr) {
+    public Void visit(SubQueryExpression<?> expr, Void context) {
         throw new IllegalArgumentException("Not supported");
     }
 
@@ -124,11 +125,12 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
     }
 
     @Override
-    public void visit(FactoryExpression<?> expr) {
+    public Void visit(FactoryExpression<?> expr, Void context) {
         handle(ExprConst.create(expr));
         append(".newInstance(");
         handle(", ", expr.getArgs());
         append(")");
+        return null;
     }
 
 }
