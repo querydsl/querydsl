@@ -13,8 +13,8 @@ import com.mysema.query.types.Templates;
 
 public class DummySerializer extends SerializerBase<DummySerializer>{
 
-    public DummySerializer(Templates patterns) {
-        super(patterns);
+    public DummySerializer(Templates templates) {
+        super(templates);
     }
 
     @Override

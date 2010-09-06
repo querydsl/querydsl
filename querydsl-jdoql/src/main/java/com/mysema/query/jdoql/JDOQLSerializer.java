@@ -73,8 +73,8 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
 
     private List<Object> constants = new ArrayList<Object>();
 
-    public JDOQLSerializer(JDOQLTemplates patterns, Expr<?> candidate) {
-        super(patterns);
+    public JDOQLSerializer(JDOQLTemplates templates, Expr<?> candidate) {
+        super(templates);
         this.candidatePath = candidate;
     }
 

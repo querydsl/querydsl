@@ -40,8 +40,8 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     private final Templates templates;
 
-    public SerializerBase(Templates patterns) {
-        this.templates = Assert.notNull(patterns,"patterns");
+    public SerializerBase(Templates templates) {
+        this.templates = Assert.notNull(templates,"templates");
     }
 
     public S append(String... str) {

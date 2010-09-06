@@ -21,8 +21,8 @@ import com.mysema.query.types.expr.ExprConst;
  */
 public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer> {
 
-    public ColQuerySerializer(ColQueryTemplates patterns) {
-        super(patterns);
+    public ColQuerySerializer(ColQueryTemplates templates) {
+        super(templates);
     }
 
     @Override
