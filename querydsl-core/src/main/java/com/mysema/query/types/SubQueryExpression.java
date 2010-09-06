@@ -11,7 +11,7 @@ import com.mysema.query.types.query.Detachable;
 
 /**
  *
- * SubQuery represents a sub query. The actual construction of a subquery
+ * SubQueryExpression represents a sub query. The actual construction of a subquery
  * is done via an {@link Detachable} instance.
  *
  * @author tiwe
