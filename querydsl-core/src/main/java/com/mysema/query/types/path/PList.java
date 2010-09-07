@@ -38,19 +38,6 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
 
     private static final long serialVersionUID = 3302301599074388860L;
 
-    private static final Set<Class<?>> typedClasses = new HashSet<Class<?>>(Arrays.<Class<?>>asList(
-            PathBuilder.class,
-            PComparable.class,
-            PEnum.class,
-            PDate.class,
-            PDateTime.class,
-            BeanPath.class,
-            EntityPathBase.class,
-            PNumber.class,
-            PSimple.class,
-            PTime.class
-            ));
-
     private final Map<Integer,Q> cache = new HashMap<Integer,Q>();
 
     private final Class<E> elementType;
@@ -169,13 +156,13 @@ public class PList<E, Q extends Expr<E>> extends ECollectionBase<List<E>,E> impl
             InstantiationException, IllegalAccessException,
             InvocationTargetException {
         if (constructor == null) {
-            if (typedClasses.contains(queryType)){
+            if (Constants.typedClasses.contains(queryType)){
                 constructor = queryType.getConstructor(Class.class, PathMetadata.class);
             }else{
                 constructor = queryType.getConstructor(PathMetadata.class);
             }
         }
-        if (typedClasses.contains(queryType)){
+        if (Constants.typedClasses.contains(queryType)){
             return constructor.newInstance(getElementType(), pm);
         }else{
             return constructor.newInstance(pm);

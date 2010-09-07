@@ -35,19 +35,6 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
 
     private static final long serialVersionUID = -9113333728412016832L;
 
-    private static final Set<Class<?>> typedClasses = new HashSet<Class<?>>(Arrays.<Class<?>>asList(
-            PathBuilder.class,
-            PComparable.class,
-            PEnum.class,
-            PDate.class,
-            PDateTime.class,
-            BeanPath.class,
-            EntityPathBase.class,            
-            PNumber.class,
-            PSimple.class,
-            PTime.class
-            ));
-
     private final Class<K> keyType;
 
     private final Path<Map<K,V>> pathMixin;
@@ -162,13 +149,13 @@ public class PMap<K, V, E extends Expr<V>> extends EMapBase<K, V> implements Pat
         InstantiationException, IllegalAccessException,
         InvocationTargetException {
         if (constructor == null){
-            if (typedClasses.contains(queryType)){
+            if (Constants.typedClasses.contains(queryType)){
                 constructor = queryType.getConstructor(Class.class, PathMetadata.class);
             }else{
                 constructor = queryType.getConstructor(PathMetadata.class);
             }
         }
-        if (typedClasses.contains(queryType)){
+        if (Constants.typedClasses.contains(queryType)){
             return constructor.newInstance(getValueType(), pm);
         }else{
             return constructor.newInstance(pm);

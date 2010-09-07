@@ -98,6 +98,17 @@ public class BeanPath<D> extends ESimple<D> implements Path<D> {
     }
 
     /**
+     * Template method for tracking child path creation
+     * 
+     * @param <P>
+     * @param path
+     * @return
+     */
+    protected <P extends Path<?>> P add(P path){
+        return path;
+    }
+    
+    /**
      * Create a new array path
      *
      * @param <A>
@@ -106,17 +117,17 @@ public class BeanPath<D> extends ESimple<D> implements Path<D> {
      * @return
      */
     protected <A> PArray<A> createArray(String property, Class<? super A[]> type) {
-        return new PArray<A>(type, forProperty(property));
+        return add(new PArray<A>(type, forProperty(property)));
     }
 
     /**
      * Create a new Boolean path
      *
-     * @param propertyName
+     * @param property
      * @return
      */
-    protected PBoolean createBoolean(String propertyName) {
-        return new PBoolean(this, propertyName);
+    protected PBoolean createBoolean(String property) {
+        return add(new PBoolean(forProperty(property)));
     }
 
     /**
@@ -128,7 +139,7 @@ public class BeanPath<D> extends ESimple<D> implements Path<D> {
      * @return
      */
     protected <A> PCollection<A> createCollection(String property, Class<? super A> type) {
-        return new PCollection<A>(type, type.getSimpleName(), forProperty(property));
+        return add(new PCollection<A>(type, type.getSimpleName(), forProperty(property)));
     }
 
     /**
@@ -141,7 +152,7 @@ public class BeanPath<D> extends ESimple<D> implements Path<D> {
      */
     @SuppressWarnings("unchecked")
     protected <A extends Comparable> PComparable<A> createComparable(String property, Class<? super A> type) {
-        return new PComparable<A>((Class) type, this, property);
+        return add(new PComparable<A>((Class) type, forProperty(property)));
     }
     
     /**
@@ -152,7 +163,7 @@ public class BeanPath<D> extends ESimple<D> implements Path<D> {
      */
     @SuppressWarnings("unchecked")
     protected <A extends Enum<A>> PEnum<A> createEnum(String property, Class<A> type) {
-        return new PEnum<A>((Class) type, this, property);
+        return add(new PEnum<A>((Class) type, forProperty(property)));
     }
 
 
@@ -166,7 +177,7 @@ public class BeanPath<D> extends ESimple<D> implements Path<D> {
      */
     @SuppressWarnings("unchecked")
     protected <A extends Comparable> PDate<A> createDate(String property, Class<? super A> type) {
-        return new PDate<A>((Class) type, forProperty(property));
+        return add(new PDate<A>((Class) type, forProperty(property)));
     }
 
     /**
@@ -179,7 +190,7 @@ public class BeanPath<D> extends ESimple<D> implements Path<D> {
      */
     @SuppressWarnings("unchecked")
     protected <A extends Comparable> PDateTime<A> createDateTime(String property, Class<? super A> type) {
-        return new PDateTime<A>((Class) type, this, property);
+        return add(new PDateTime<A>((Class) type, forProperty(property)));
     }
 
     /**
@@ -194,7 +205,7 @@ public class BeanPath<D> extends ESimple<D> implements Path<D> {
      */
     @SuppressWarnings("unchecked")
     protected <A, E extends Expr<A>> PList<A, E> createList(String property, Class<? super A> type, Class<? super E> queryType) {
-        return new PList<A, E>(type, (Class) queryType, forProperty(property));
+        return add(new PList<A, E>(type, (Class) queryType, forProperty(property)));
     }
 
     /**
@@ -211,7 +222,7 @@ public class BeanPath<D> extends ESimple<D> implements Path<D> {
      */
     @SuppressWarnings("unchecked")
     protected <K, V, E extends Expr<V>> PMap<K, V, E> createMap(String property, Class<? super K> key, Class<? super V> value, Class<? super E> queryType) {
-        return new PMap<K, V, E>(key, value, (Class) queryType, forProperty(property));
+        return add(new PMap<K, V, E>(key, value, (Class) queryType, forProperty(property)));
     }
 
     /**
@@ -224,7 +235,7 @@ public class BeanPath<D> extends ESimple<D> implements Path<D> {
      */
     @SuppressWarnings("unchecked")
     protected <A extends Number & Comparable<?>> PNumber<A> createNumber(String property, Class<? super A> type) {
-        return new PNumber<A>((Class) type, this, property);
+        return add(new PNumber<A>((Class) type, forProperty(property)));
     }
 
     /**
@@ -236,20 +247,20 @@ public class BeanPath<D> extends ESimple<D> implements Path<D> {
      * @return
      */
     protected <A> PSet<A> createSet(String property, Class<? super A> type) {
-        return new PSet<A>(type, type.getSimpleName(), forProperty(property));
+        return add(new PSet<A>(type, type.getSimpleName(), forProperty(property)));
     }
 
     /**
      * Create a new Simpe path
      *
      * @param <A>
-     * @param path
+     * @param property
      * @param type
      * @return
      */
     @SuppressWarnings("unchecked")
-    protected <A> PSimple<A> createSimple(String path, Class<? super A> type) {
-        return new PSimple<A>((Class<A>) type, this, path);
+    protected <A> PSimple<A> createSimple(String property, Class<? super A> type) {
+        return add(new PSimple<A>((Class<A>) type, forProperty(property)));
     }
 
     /**
@@ -259,7 +270,7 @@ public class BeanPath<D> extends ESimple<D> implements Path<D> {
      * @return
      */
     protected PString createString(String property) {
-        return new PString(this, property);
+        return add(new PString(forProperty(property)));
     }
 
     /**
@@ -272,7 +283,7 @@ public class BeanPath<D> extends ESimple<D> implements Path<D> {
      */
     @SuppressWarnings("unchecked")
     protected <A extends Comparable> PTime<A> createTime(String property, Class<? super A> type) {
-        return new PTime<A>((Class) type, this, property);
+        return add(new PTime<A>((Class) type, forProperty(property)));
     }
 
     @Override
