@@ -20,12 +20,12 @@ class QuerySyntaxTest {
         query.from(c).innerJoin(b).from(c1) 
             .where(c1.name like "a%") 
             .orderBy(c.name asc) 
-            //.list(c) 
+            .list(c) 
         
 //      select(count("b.id"), "c.name").from(Category as "c" join (Book as "b")).list
      
         query.from(c).innerJoin(b)
-            //.list(b.id count)
+            .list(b.id count)
     }
     
     @Test
@@ -44,6 +44,6 @@ class QuerySyntaxTest {
             .innerJoin(department.companyKey, company);
     }
 
-    def query() = new SQLQueryImpl(SQLTemplates.DEFAULT);
+    def query() = new SQLSubQuery();
 
 }
