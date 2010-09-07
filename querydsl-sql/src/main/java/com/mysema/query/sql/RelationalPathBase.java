@@ -23,6 +23,9 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     @Nullable
     private PrimaryKey<T> primaryKey;
     
+    @Nullable
+    private Expr<?>[] all;
+    
     private final List<Expr<?>> columns = new ArrayList<Expr<?>>();
     
     private final List<ForeignKey<?>> foreignKeys = new ArrayList<ForeignKey<?>>();
@@ -52,6 +55,26 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
         ForeignKey<F> foreignKey = new ForeignKey<F>(this, local, foreign);
         foreignKeys.add(foreignKey);
         return foreignKey;
+    }
+    
+    protected <F> ForeignKey<F> createInvForeignKey(Path<?> local, String foreign){
+        ForeignKey<F> foreignKey = new ForeignKey<F>(this, local, foreign);
+        inverseForeignKeys.add(foreignKey);
+        return foreignKey;
+    }
+    
+    protected <F> ForeignKey<F> createInvForeignKey(List<? extends Path<?>> local, List<String> foreign){
+        ForeignKey<F> foreignKey = new ForeignKey<F>(this, local, foreign);
+        inverseForeignKeys.add(foreignKey);
+        return foreignKey;
+    }
+    
+    public Expr<?>[] all() {
+        if (all == null || all.length != columns.size()){
+            all = new Expr[columns.size()];
+            columns.toArray(all);
+        }
+        return all;
     }
     
     @Override
