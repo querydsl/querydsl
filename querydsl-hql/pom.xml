@@ -60,11 +60,11 @@
       <version>${project.parent.version}</version>
     </dependency>
     
-    <!-- optional -->
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-sql</artifactId>
       <version>${project.parent.version}</version>
+      <scope>optional</scope>
     </dependency>    
 	
     <!-- test -->
