@@ -42,6 +42,10 @@ public class BeanPath<D> extends ESimple<D> implements Path<D> {
 
     private final Path<D> pathMixin;
 
+    public BeanPath(Class<? extends D> type, String variable) {
+        this(type, PathMetadataFactory.forVariable(variable), null);
+    }
+
     public BeanPath(Class<? extends D> type, PathMetadata<?> metadata) {
         this(type, metadata, null);
     }

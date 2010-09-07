@@ -12,7 +12,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Before;
@@ -25,8 +24,6 @@ import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
-import com.mysema.codegen.model.TypeExtends;
-import com.mysema.codegen.model.TypeSuper;
 import com.mysema.codegen.model.Types;
 
 public class BeanSerializerTest {
@@ -38,8 +35,6 @@ public class BeanSerializerTest {
     @SuppressWarnings("unchecked")
     @Before
     public void setUp(){
-        TypeFactory typeFactory = new TypeFactory();
-
         // type
         Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false,false);
         type = new EntityType("Q", typeModel);
@@ -51,8 +46,6 @@ public class BeanSerializerTest {
         type.addProperty(new Property(type, "setField", new SimpleType(Types.SET, typeModel), new String[0]));
         type.addProperty(new Property(type, "arrayField", new ClassType(TypeCategory.ARRAY, String[].class), new String[0]));
         type.addProperty(new Property(type, "mapField", new SimpleType(Types.MAP, typeModel, typeModel), new String[0]));
-        type.addProperty(new Property(type, "superTypeField", new TypeExtends(new ClassType(TypeCategory.MAP, List.class, typeModel, typeModel)), new String[0]));
-        type.addProperty(new Property(type, "extendsTypeField", new TypeSuper(new ClassType(TypeCategory.MAP, List.class, typeModel, typeModel)), new String[0]));
 
         for (Class<?> cl : Arrays.asList(Boolean.class, Comparable.class, Integer.class, Date.class, java.sql.Date.class, java.sql.Time.class)){
             Type classType = new ClassType(TypeCategory.get(cl.getName()), cl);
@@ -65,7 +58,7 @@ public class BeanSerializerTest {
         type.addConstructor(new Constructor(Arrays.asList(firstName, lastName)));
 
         // method
-        Method method = new Method(typeFactory.create(String.class), "method", "abc", typeFactory.create(String.class));
+        Method method = new Method(Types.STRING, "method", "abc", Types.STRING);
         type.addMethod(method);
     }
 
@@ -82,12 +75,12 @@ public class BeanSerializerTest {
                 "Comparable comparable;",
                 "java.util.Date date;",
                 "DomainClass entityField;",
-                "Object extendsTypeField;",
+//                "Object extendsTypeField;",
                 "Integer integer;",
                 "List<DomainClass> listField;",
                 "Map<DomainClass, DomainClass> mapField;",
                 "Set<DomainClass> setField;",
-                "List<DomainClass, DomainClass> superTypeField;",
+//                "List<DomainClass, DomainClass> superTypeField;",
                 "java.sql.Time time;")){
             assertTrue(prop + " was not contained", str.contains(prop));
         }
