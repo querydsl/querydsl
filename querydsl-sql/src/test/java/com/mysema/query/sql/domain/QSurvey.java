@@ -25,7 +25,7 @@ public class QSurvey extends RelationalPathBase<QSurvey>{
 
     public final PNumber<Integer> id = createNumber("ID", Integer.class);
     
-    public final PrimaryKey<QSurvey> idKey = createPrimaryKey(this,id);
+    public final PrimaryKey<QSurvey> idKey = createPrimaryKey(id);
 
     public QSurvey(String path) {
         super(QSurvey.class, PathMetadataFactory.forVariable(path));

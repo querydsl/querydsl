@@ -46,6 +46,7 @@ import com.mysema.query.types.EConstructor;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.Coalesce;
 import com.mysema.query.types.expr.EArrayConstructor;
@@ -584,6 +585,14 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         assertNotNull(row[1]);
 
     }
+    
+    @Test
+    public void all(){
+        for (Expr<?> expr : survey.all()){
+            Path<?> path = (Path<?>)expr;
+            assertEquals(survey, path.getMetadata().getParent());
+        }
+    }
 
     @Test
     public void variousMultiProjections(){
@@ -625,9 +634,9 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         }
         
         // wildcard and QTuple
-        for (Tuple tuple : query().from(survey).list(new QTuple((survey.all())))){
-            assertEquals(tuple.get(survey.id), tuple.get(0, Integer.class));
-            assertEquals(tuple.get(survey.name), tuple.get(1, String.class));
+        for (Tuple tuple : query().from(survey).list(new QTuple(survey.all()))){
+            assertNotNull(tuple.get(survey.id));
+            assertNotNull(tuple.get(survey.name));
         }
             
         

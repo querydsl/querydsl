@@ -39,7 +39,7 @@ public class QEmployee extends RelationalPathBase<Employee> {
 
     public final PNumber<Integer> superiorId = createNumber("SUPERIOR_ID", Integer.class);
 
-    public final PrimaryKey<Employee> idKey = createPrimaryKey(this, id);
+    public final PrimaryKey<Employee> idKey = createPrimaryKey(id);
 
     public final ForeignKey<Employee> superiorIdKey = createForeignKey(superiorId, "ID");
     
