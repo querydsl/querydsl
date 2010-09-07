@@ -41,7 +41,8 @@
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-sql</artifactId>
       <version>${project.parent.version}</version>
-      <scope>optional</scope>
+      <scope>compile</scope>
+      <optional>true</optional> 
     </dependency>      
 
     <!-- test -->
