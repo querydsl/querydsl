@@ -43,8 +43,7 @@ class ScalaBeanSerializer extends Serializer {
             importedClasses.add(classOf[Map[_,_]].getName);
         }
         
-//        writer.importClasses(importedClasses.toArray(new Array[String](0)));
-        importedClasses.foreach({ writer.importClasses(_)})
+        importedClasses.foreach( { writer.importClasses(_)} )
                
         // javadoc        
         writer.javadoc(simpleName + javadocSuffix);
@@ -57,9 +56,7 @@ class ScalaBeanSerializer extends Serializer {
         
         // properties
         for (property <- model.getProperties()){
-            for (annotation <- property.getAnnotations){
-                writer.annotation(annotation);
-            }
+        	property.getAnnotations.foreach( {writer.annotation(_);} )
             if (javaBeanSupport){
                 //writer.annotation(classOf[BeanProperty]);
                 writer.line("@BeanProperty");
@@ -72,13 +69,13 @@ class ScalaBeanSerializer extends Serializer {
 
     def getAnnotationTypes(model: EntityType): Set[String] = {
         var imports = new HashSet[String]();
-        for (annotation <- model.getAnnotations()){
+        for (annotation <- model.getAnnotations){
             imports.add(annotation.annotationType.getName);
         }
-        for (property <- model.getProperties()){
-            for (annotation <- property.getAnnotations()){
-                imports.add(annotation.annotationType.getName);
-            }
+        for (property <- model.getProperties){
+        	for (annotation <- property.getAnnotations){
+        	    imports.add(annotation.annotationType.getName);
+        	}
         }
         imports;
     }
