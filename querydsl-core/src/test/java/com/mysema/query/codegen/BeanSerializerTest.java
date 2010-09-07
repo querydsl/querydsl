@@ -40,16 +40,16 @@ public class BeanSerializerTest {
         type = new EntityType("Q", typeModel);
 
         // property
-        type.addProperty(new Property(type, "entityField", type, new String[0]));
-        type.addProperty(new Property(type, "collection", new SimpleType(Types.COLLECTION, typeModel), new String[0]));
-        type.addProperty(new Property(type, "listField", new SimpleType(Types.LIST, typeModel), new String[0]));
-        type.addProperty(new Property(type, "setField", new SimpleType(Types.SET, typeModel), new String[0]));
-        type.addProperty(new Property(type, "arrayField", new ClassType(TypeCategory.ARRAY, String[].class), new String[0]));
-        type.addProperty(new Property(type, "mapField", new SimpleType(Types.MAP, typeModel, typeModel), new String[0]));
+        type.addProperty(new Property(type, "entityField", type));
+        type.addProperty(new Property(type, "collection", new SimpleType(Types.COLLECTION, typeModel)));
+        type.addProperty(new Property(type, "listField", new SimpleType(Types.LIST, typeModel)));
+        type.addProperty(new Property(type, "setField", new SimpleType(Types.SET, typeModel)));
+        type.addProperty(new Property(type, "arrayField", new ClassType(TypeCategory.ARRAY, String[].class)));
+        type.addProperty(new Property(type, "mapField", new SimpleType(Types.MAP, typeModel, typeModel)));
 
         for (Class<?> cl : Arrays.asList(Boolean.class, Comparable.class, Integer.class, Date.class, java.sql.Date.class, java.sql.Time.class)){
             Type classType = new ClassType(TypeCategory.get(cl.getName()), cl);
-            type.addProperty(new Property(type, StringUtils.uncapitalize(cl.getSimpleName()), classType, new String[0]));
+            type.addProperty(new Property(type, StringUtils.uncapitalize(cl.getSimpleName()), classType));
         }
 
         // constructor

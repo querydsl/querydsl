@@ -37,6 +37,10 @@ public final class Property implements Comparable<Property> {
 
     private final Type type;
 
+    public Property(EntityType declaringType, String name, Type type) {
+        this(declaringType, name, type, new String[0], false);
+    }
+    
     public Property(EntityType declaringType, String name, Type type, String[] inits) {
         this(declaringType, name, type, inits, false);
     }
