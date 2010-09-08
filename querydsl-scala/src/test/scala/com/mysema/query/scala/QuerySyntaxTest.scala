@@ -7,7 +7,7 @@ import org.junit.Assert._
 class QuerySyntaxTest {
     
     @Test
-    def querySyntax(){
+    def Query_Syntax(){
 //      select()
 //          .from(Category as "c" join (Book as "b"), Category as "c1")
 //          .where("c1.name" like "a%")
@@ -29,7 +29,7 @@ class QuerySyntaxTest {
     }
     
     @Test
-    def keyUsage(){
+    def Key_Usage(){
         val user = new QUser("user");
         val user2 = new QUser("user2");
         val department = new QDepartment("department");

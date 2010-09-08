@@ -17,6 +17,8 @@ object Conversions {
     
     def not(b: EBoolean): EBoolean = b.not()
     
+    implicit def _simple(s: Object): PSimple[_] = $(s);
+    
     implicit def _boolean(b: Boolean): PBoolean = $(b);
     
     implicit def _string(s: String): PString = $(s);

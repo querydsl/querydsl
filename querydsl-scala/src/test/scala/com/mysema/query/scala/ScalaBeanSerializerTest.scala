@@ -50,7 +50,7 @@ class ScalaBeanSerializerTest {
 
     @Test
     @throws(classOf[java.io.IOException])
-    def test(){
+    def Print(){
         var serializer = new ScalaBeanSerializer();
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer));
         var str = writer.toString();

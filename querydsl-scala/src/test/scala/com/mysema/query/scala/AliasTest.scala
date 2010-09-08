@@ -2,6 +2,7 @@ package com.mysema.query.scala
 
 import com.mysema.query.alias.Alias._
 import com.mysema.query.types.path._
+import com.mysema.query.sql.SQLSubQuery
 
 import com.mysema.query.scala.Conversions._
 
@@ -14,12 +15,12 @@ class AliasTest {
     var domainType = alias(classOf[DomainType])
     
     @Test
-    def test(){        
+    def Explicit_Cast(){        
         assertEquals("domainType.firstName", $(domainType.firstName).toString);
     }
     
     @Test
-    def implicitDefs1(){
+    def Implicit_Cast1(){
         var path: PString = domainType.firstName;
         assertEquals("domainType.firstName like Hello", (path like "Hello").toString());
         assertEquals("domainType.firstName ASC",        (path asc).toString());       
@@ -28,7 +29,7 @@ class AliasTest {
     }
     
     @Test
-    def implicitDefs2(){
+    def Implicit_Cast2(){
         assertEquals("domainType.firstName like Hello", (domainType.firstName like "Hello").toString());
         assertEquals("domainType.firstName ASC",        (domainType.firstName asc).toString());
         
@@ -51,6 +52,32 @@ class AliasTest {
 //        assertEquals("domainType.firstName = Hello",    (domainType.firstName eq "Hello").toString());
 //        assertEquals("domainType.firstName != Hello",   (domainType.firstName ne "Hello").toString());
     }
+    
+    //@Test
+    def Expression_in_SubQuery(){
+        // list
+        query().from (domainType) 
+          .where (domainType.firstName like "Rob%")                
+          .orderBy (domainType.firstName asc)
+          .list ($(domainType));            // FIXME
+        
+        // unique result
+        query().from (domainType) 
+          .where (domainType.firstName like "Rob%")                
+          .orderBy (domainType.firstName asc)
+          .unique ($(domainType));            // FIXME
+        
+        // long where
+        query().from (domainType) 
+          .where (
+              domainType.firstName like "Rob%",
+              domainType.lastName like "An%"
+           )                
+          .orderBy (domainType.firstName asc)
+          .list ($(domainType));            // FIXME
+    }
+    
+    def query() = new SQLSubQuery();
     
 }
 

@@ -11,7 +11,7 @@ class ExpressionTest {
    var num = new PNumber(classOf[Integer],"num");
        
    @Test
-   def operations(){
+   def Operations(){
        // string
        assertEquals("str = a",  (str eq "a").toString);
        assertEquals("str != a", (str ne "a").toString);
