@@ -48,7 +48,7 @@ public interface Detachable {
     ListSubQuery<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest);
 
     /**
-     *
+     * Create a projection expression for the given projection
      *
      * @param args
      * @return
