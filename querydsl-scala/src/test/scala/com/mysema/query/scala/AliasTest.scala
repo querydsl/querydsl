@@ -3,21 +3,15 @@ package com.mysema.query.scala
 import com.mysema.query.alias.Alias._
 import com.mysema.query.types.path._
 
+import com.mysema.query.scala.Conversions._
+
 import org.junit.Test
 import org.junit.Assert._
+
 
 class AliasTest {
 
     var domainType = alias(classOf[DomainType])
-    
-    implicit def _boolean(b: Boolean): PBoolean = $(b);
-    implicit def _string(s: String): PString = $(s);
-    implicit def _comparable(c: Comparable[_]): PComparable[_] = $(c);
-    implicit def _date(d: java.sql.Date): PDate[java.sql.Date] = $(d);
-    implicit def _dateTime(d: java.util.Date): PDateTime[java.util.Date] = $(d);
-    implicit def _time(t: java.sql.Time): PTime[java.sql.Time] = $(t);
-    //implicit def num(num: Number): PNumber[_] = $(num);
-    
     
     @Test
     def test(){        
@@ -37,6 +31,8 @@ class AliasTest {
     def implicitDefs2(){
         assertEquals("domainType.firstName like Hello", (domainType.firstName like "Hello").toString());
         assertEquals("domainType.firstName ASC",        (domainType.firstName asc).toString());
+        
+        // FIXME : "eq" and "ne" are already reserved
 //        assertEquals("domainType.firstName = Hello",    (domainType.firstName eq "Hello").toString());
 //        assertEquals("domainType.firstName != Hello",   (domainType.firstName ne "Hello").toString());
     }
