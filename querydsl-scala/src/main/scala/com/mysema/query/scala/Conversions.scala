@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
+ *
+ */
 package com.mysema.query.scala;
 
 import com.mysema.query.alias.Alias._
@@ -14,5 +19,5 @@ object Conversions {
     implicit def _date(d: java.sql.Date): PDate[java.sql.Date] = $(d);
     implicit def _dateTime(d: java.util.Date): PDateTime[java.util.Date] = $(d);
     implicit def _time(t: java.sql.Time): PTime[java.sql.Time] = $(t);
-    //implicit def num[N <: Number>](n: N): PNumber[N] = $(n);
+    //implicit def num[N <: Number & Comparable[N]](n: N): PNumber[N] = $(n);
 }
