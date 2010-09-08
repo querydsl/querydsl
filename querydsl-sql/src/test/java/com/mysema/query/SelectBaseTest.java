@@ -39,6 +39,7 @@ import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.Wildcard;
 import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QIdName;
@@ -83,7 +84,20 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
                 Collections.<Expr<?>>singletonList(employee.firstname));
         }
     };
+    
+    @Test
+    public void wildcardAll() {
+        expectedQuery = "select * from EMPLOYEE2 e";
+        query().from(employee).uniqueResult(Wildcard.all);
+    }
 
+    @Test
+    public void countAll() {
+        expectedQuery = "select count(*) as rowCount from EMPLOYEE2 e";
+        PNumber<Long> rowCount = new PNumber<Long>(Long.class, "rowCount");
+        query().from(employee).uniqueResult(Wildcard.count().as(rowCount));
+    }
+    
     @Test
     public void aggregate(){
         int min = 30000, avg = 65000, max = 160000;
@@ -211,7 +225,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         query().from(employee).limit(4).offset(3).list(employee.id);
 
     }
-
+    
     @Test
     public void limitAndOffsetAndOrder(){
         // limit
