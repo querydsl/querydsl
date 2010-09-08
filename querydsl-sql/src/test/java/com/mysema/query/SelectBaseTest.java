@@ -90,7 +90,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         expectedQuery = "select * from EMPLOYEE2 e";
         query().from(employee).uniqueResult(Wildcard.all);
     }
-
+    
     @Test
     public void countAll() {
         expectedQuery = "select count(*) as rowCount from EMPLOYEE2 e";
