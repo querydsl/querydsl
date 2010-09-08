@@ -24,7 +24,7 @@ public class AnnotatedElementAdapter implements AnnotatedElement{
                 annotations.put(annotation.annotationType(), annotation);
             }
         }
-    }
+    } 
 
     @SuppressWarnings("unchecked")
     @Override
