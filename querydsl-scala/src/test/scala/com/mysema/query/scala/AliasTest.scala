@@ -32,6 +32,21 @@ class AliasTest {
         assertEquals("domainType.firstName like Hello", (domainType.firstName like "Hello").toString());
         assertEquals("domainType.firstName ASC",        (domainType.firstName asc).toString());
         
+        // and
+        var andClause = (domainType.firstName like "An%") and (domainType.firstName like "Be%");
+        assertEquals("domainType.firstName like An% && domainType.firstName like Be%", andClause.toString);
+              
+        // or
+        var orClause = (domainType.firstName like "An%") or (domainType.firstName like "Be%");
+        assertEquals("domainType.firstName like An% || domainType.firstName like Be%", orClause.toString);
+
+        // not
+        var notClause = (domainType.firstName like "An%") not;
+        assertEquals("!domainType.firstName like An%", notClause.toString);
+        
+        notClause = not (domainType.firstName like "An%");
+        assertEquals("!domainType.firstName like An%", notClause.toString);
+        
         // FIXME : "eq" and "ne" are already reserved
 //        assertEquals("domainType.firstName = Hello",    (domainType.firstName eq "Hello").toString());
 //        assertEquals("domainType.firstName != Hello",   (domainType.firstName ne "Hello").toString());

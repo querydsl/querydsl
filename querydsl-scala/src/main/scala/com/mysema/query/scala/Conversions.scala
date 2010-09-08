@@ -6,6 +6,7 @@
 package com.mysema.query.scala;
 
 import com.mysema.query.alias.Alias._
+import com.mysema.query.types.expr._
 import com.mysema.query.types.path._
 
 /**
@@ -13,6 +14,8 @@ import com.mysema.query.types.path._
  *
  */
 object Conversions {
+    
+    def not(b: EBoolean): EBoolean = b.not()
     
     implicit def _boolean(b: Boolean): PBoolean = $(b);
     
