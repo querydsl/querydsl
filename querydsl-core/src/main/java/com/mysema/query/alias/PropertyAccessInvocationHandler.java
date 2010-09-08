@@ -78,16 +78,19 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
                 rv = newInstance(ptyClass, genericType, proxy, ptyName, pm);
             }
             aliasFactory.setCurrent(propToExpr.get(ptyName));
+            
+        } else if (methodType == MethodType.SCALA_GETTER) {
+            String ptyName = method.getName();
+            Class<?> ptyClass = method.getReturnType();
+            Type genericType = method.getGenericReturnType();
 
-//        } else if (methodType == MethodType.SIZE) {
-//            Object propKey = "_size";
-//            if (propToObj.containsKey(propKey)) {
-//                rv = propToObj.get(propKey);
-//            } else {
-//                PathMetadata<Integer> pm = PathMetadata.forSize((PCollection<?>) path);
-//                rv = newInstance(Integer.class, Integer.class, proxy, propKey, pm);
-//            }
-//            aliasFactory.setCurrent(propToExpr.get(propKey));
+            if (propToObj.containsKey(ptyName)) {
+                rv = propToObj.get(ptyName);
+            } else {
+                PathMetadata<String> pm = PathMetadataFactory.forProperty((Path<?>) hostExpression, ptyName);
+                rv = newInstance(ptyClass, genericType, proxy, ptyName, pm);
+            }
+            aliasFactory.setCurrent(propToExpr.get(ptyName));
 
         } else if (methodType == MethodType.LIST_ACCESS) {
             // TODO : manage cases where the argument is based on a property invocation

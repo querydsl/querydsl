@@ -49,7 +49,11 @@ public enum MethodType{
     /**
      *
      */
-    TO_STRING("toString",String.class, Object.class);
+    TO_STRING("toString",String.class, Object.class),
+    /**
+     *
+     */
+    SCALA_GETTER(".+", Object.class, Object.class),;
 
     private final Pattern pattern;
 
