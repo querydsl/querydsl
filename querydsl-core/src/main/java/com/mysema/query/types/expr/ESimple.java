@@ -14,6 +14,7 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.path.PSimple;
 
 /**
  * ESimple is the base class for Expr implementations. It provides default implementations
@@ -134,13 +135,23 @@ public abstract class ESimple<D> extends Expr<D> {
     }
 
     /**
-     * Create an alias for the operation
+     * Create an alias for the expression
      *
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Expr<D> as(Path<D> alias) {
+    public ESimple<D> as(Path<D> alias) {
         return OSimple.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
+    }
+    
+    /**
+     * Create an alias for the expression
+     *
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public ESimple<D> as(String alias) {
+        return OSimple.create(getType(),(Operator)Ops.ALIAS, this, new PSimple<D>(getType(), alias));
     }
 
 }

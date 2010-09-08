@@ -5,7 +5,10 @@
  */
 package com.mysema.query.types.expr;
 
+import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.path.PSimple;
 
 /**
  * @author tiwe
@@ -18,6 +21,18 @@ public abstract class EEnum<T extends Enum<T>> extends EComparable<T> {
 
     public EEnum(Class<? extends T> type) {
         super(type);
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public EEnum<T> as(Path<T> alias) {
+        return OEnum.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public EEnum<T> as(String alias) {
+        return OEnum.create(getType(),(Operator)Ops.ALIAS, this, new PSimple(getType(), alias));
     }
 
     /**

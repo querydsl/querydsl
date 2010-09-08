@@ -10,6 +10,7 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.path.PSimple;
 
 /**
  * EBoolean represents boolean expressions
@@ -51,6 +52,12 @@ public abstract class EBoolean extends EComparable<Boolean> {
     @Override
     public EBoolean as(Path<Boolean> alias) {
         return OBoolean.create((Operator)Ops.ALIAS, this, alias.asExpr());
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public EBoolean as(String alias) {
+        return OBoolean.create((Operator)Ops.ALIAS, this, new PSimple(getType(), alias));
     }
 
     /**

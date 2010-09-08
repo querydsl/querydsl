@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.path.PSimple;
 
 /**
  * EDateTime represents Date / Time expressions
@@ -80,6 +81,11 @@ public abstract class EDateTime<D extends Comparable> extends EDate<D> {
     @Override
     public EDateTime<D> as(Path<D> alias) {
         return ODateTime.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
+    }
+    
+    @Override
+    public EDateTime as(String alias) {
+        return ODateTime.create(getType(), (Operator)Ops.ALIAS, this, new PSimple(getType(), alias));
     }
 
     /**

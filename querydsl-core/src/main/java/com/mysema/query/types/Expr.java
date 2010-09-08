@@ -44,6 +44,8 @@ public abstract class Expr<D> implements Serializable{
     public abstract <R,C> R accept(Visitor<R,C> v, @Nullable C context);
 
     public abstract Expr<D> as(Path<D> alias);
+    
+    public abstract Expr<D> as(String alias);
 
     /**
      * Get the <code>count(this)</code> expression

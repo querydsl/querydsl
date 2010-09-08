@@ -17,6 +17,7 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Ops.MathOps;
+import com.mysema.query.types.path.PSimple;
 import com.mysema.util.MathUtils;
 
 /**
@@ -80,6 +81,12 @@ public abstract class ENumber<D extends Number & Comparable<?>> extends ECompara
     @Override
     public ENumber<D> as(Path<D> alias) {
         return ONumber.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public ENumber<D> as(String alias) {
+        return ONumber.create(getType(),(Operator)Ops.ALIAS, this, new PSimple(getType(), alias));
     }
 
     /**

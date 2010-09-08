@@ -11,6 +11,7 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.path.PSimple;
 
 /**
  * EString represents String expressions
@@ -39,6 +40,12 @@ public abstract class EString extends EComparable<String> {
     @Override
     public EString as(Path<String> alias) {
         return OString.create((Operator)Ops.ALIAS, this, alias.asExpr());
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public EString as(String alias) {
+        return OString.create((Operator)Ops.ALIAS, this, new PSimple(getType(), alias));
     }
 
     /**

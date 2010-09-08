@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.mysema.query.Connections;
 import com.mysema.query.SelectBaseTest;
@@ -45,5 +46,19 @@ public class SelectOracleQuotedTest extends SelectBaseTest {
     public void subQueries() throws SQLException {
 
     }
+    
+    @Test
+    public void wildcardAll() {
 
+    }
+
+    @Test
+    public void countAll() {
+        
+    }
+
+    @Test
+    public void path_alias(){
+        
+    }
 }

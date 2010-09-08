@@ -12,6 +12,7 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.path.PSimple;
 
 /**
  * EDate represents Date expressions
@@ -65,6 +66,11 @@ public abstract class EDate<D extends Comparable> extends EDateOrTime<D> {
         return ODate.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
     }
 
+    @Override
+    public EDate as(String alias) {
+        return ODate.create(getType(), (Operator)Ops.ALIAS, this, new PSimple(getType(), alias));
+    }
+    
     /**
      * Get a day of month expression (range 1-31)
      *

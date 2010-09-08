@@ -33,7 +33,7 @@ public class OSimple<D> extends ESimple<D> implements Operation<D> {
      * @param args
      * @return
      */
-    public static <D> Expr<D> create(Class<D> type, Operator<? super D> op, Expr<?>... args){
+    public static <D> ESimple<D> create(Class<D> type, Operator<? super D> op, Expr<?>... args){
         return new OSimple<D>(type, op, args);
     }
 

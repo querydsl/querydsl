@@ -65,7 +65,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     public static class SimpleProjection {
 
-    public SimpleProjection(String str, String str2) {
+        public SimpleProjection(String str, String str2) {
         }
 
     }
@@ -74,30 +74,30 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         @Override
         protected Pair<Projectable, List<Expr<?>>> createQuery() {
             return Pair.of(
-                (Projectable)query().from(employee, employee2),
-                Collections.<Expr<?>>emptyList());
+                    (Projectable)query().from(employee, employee2),
+                    Collections.<Expr<?>>emptyList());
         }
         @Override
         protected Pair<Projectable, List<Expr<?>>> createQuery(EBoolean filter) {
             return Pair.of(
-                (Projectable)query().from(employee, employee2).where(filter),
-                Collections.<Expr<?>>singletonList(employee.firstname));
+                    (Projectable)query().from(employee, employee2).where(filter),
+                    Collections.<Expr<?>>singletonList(employee.firstname));
         }
     };
-    
+
     @Test
     public void wildcardAll() {
         expectedQuery = "select * from EMPLOYEE2 e";
         query().from(employee).uniqueResult(Wildcard.all);
     }
-    
+
     @Test
     public void countAll() {
         expectedQuery = "select count(*) as rowCount from EMPLOYEE2 e";
         PNumber<Long> rowCount = new PNumber<Long>(Long.class, "rowCount");
         query().from(employee).uniqueResult(Wildcard.count().as(rowCount));
     }
-    
+
     @Test
     public void aggregate(){
         int min = 30000, avg = 65000, max = 160000;
@@ -171,7 +171,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     public void join() throws Exception {
         for (String name : query().from(survey, survey2)
-            .where(survey.id.eq(survey2.id)).list(survey.name)) {
+                .where(survey.id.eq(survey2.id)).list(survey.name)) {
             System.out.println(name);
         }
     }
@@ -190,13 +190,13 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     public void compactJoin(){
         // verbose
         query().from(employee).innerJoin(employee2)
-            .on(employee.superiorId.eq(employee2.id))
-            .list(employee.id, employee2.id);
+        .on(employee.superiorId.eq(employee2.id))
+        .list(employee.id, employee2.id);
 
         // compact
         query().from(employee)
-            .innerJoin(employee.superiorIdKey, employee2)
-            .list(employee.id, employee2.id);
+        .innerJoin(employee.superiorIdKey, employee2)
+        .list(employee.id, employee2.id);
 
     }
 
@@ -204,13 +204,13 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     public void limitAndOffset() throws SQLException {
         // limit
         query().from(employee)
-            .orderBy(employee.firstname.asc())
-            .limit(4).list(employee.id);
+        .orderBy(employee.firstname.asc())
+        .limit(4).list(employee.id);
 
         // limit and offset
         query().from(employee)
-            .orderBy(employee.firstname.asc())
-            .limit(4).offset(3).list(employee.id);
+        .orderBy(employee.firstname.asc())
+        .limit(4).offset(3).list(employee.id);
     }
 
     @Test
@@ -225,7 +225,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         query().from(employee).limit(4).offset(3).list(employee.id);
 
     }
-    
+
     @Test
     public void limitAndOffsetAndOrder(){
         // limit
@@ -243,34 +243,34 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
                 .list(employee.firstname));
     }
 
-//    @SuppressWarnings("unchecked")
-//    @Test
-//    @ExcludeIn({DERBY})
-//    public void mathFunctions() throws SQLException {
-//        Expr<Double> d = ENumberConst.create(1.0);
-//        for (Expr<?> e : Arrays.<Expr<?>> asList(
-//                MathFunctions.acos(d),
-//                MathFunctions.asin(d),
-//                MathFunctions.atan(d),
-//                MathFunctions.cos(d),
-//                MathFunctions.tan(d),
-//                MathFunctions.sin(d),
-//                ENumber.random(),
-//                MathFunctions.pow(d, d),
-//                MathFunctions.log10(d),
-//                MathFunctions.log(d),
-//                MathFunctions.exp(d))) {
-//            query().from(employee).list((Expr<? extends Comparable>) e);
-//        }
-//    }
+    //    @SuppressWarnings("unchecked")
+    //    @Test
+    //    @ExcludeIn({DERBY})
+    //    public void mathFunctions() throws SQLException {
+    //        Expr<Double> d = ENumberConst.create(1.0);
+    //        for (Expr<?> e : Arrays.<Expr<?>> asList(
+    //                MathFunctions.acos(d),
+    //                MathFunctions.asin(d),
+    //                MathFunctions.atan(d),
+    //                MathFunctions.cos(d),
+    //                MathFunctions.tan(d),
+    //                MathFunctions.sin(d),
+    //                ENumber.random(),
+    //                MathFunctions.pow(d, d),
+    //                MathFunctions.log10(d),
+    //                MathFunctions.log(d),
+    //                MathFunctions.exp(d))) {
+    //            query().from(employee).list((Expr<? extends Comparable>) e);
+    //        }
+    //    }
 
     @Test
     @ExcludeIn({HSQLDB, H2, MYSQL})
     public void offsetOnly(){
         // offset
         query().from(employee)
-            .orderBy(employee.firstname.asc())
-            .offset(3).list(employee.id);
+        .orderBy(employee.firstname.asc())
+        .offset(3).list(employee.id);
     }
 
     @Test
@@ -392,11 +392,11 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     public void subQueries() throws SQLException {
         // subquery in where block
         expectedQuery = "select e.ID from EMPLOYEE2 e "
-                + "where e.ID = (select max(e.ID) "
-                + "from EMPLOYEE2 e)";
+            + "where e.ID = (select max(e.ID) "
+            + "from EMPLOYEE2 e)";
         List<Integer> list = query().from(employee)
-            .where(employee.id.eq(sq().from(employee).unique(employee.id.max())))
-            .list(employee.id);
+        .where(employee.id.eq(sq().from(employee).unique(employee.id.max())))
+        .list(employee.id);
         assertFalse(list.isEmpty());
     }
 
@@ -413,17 +413,21 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         PNumber<BigDecimal> sal = new PNumber<BigDecimal>(BigDecimal.class, "sal");
         PathBuilder<Object[]> sq = new PathBuilder<Object[]>(Object[].class, "sq");
         SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
-        serializer.handle(sq().from(employee)
-            .list(employee.salary.add(employee.salary).add(employee.salary).as(sal)).as(sq));
+        
+        serializer.handle(
+                sq()
+                .from(employee)
+                .list(employee.salary.add(employee.salary).add(employee.salary).as(sal))
+                .as(sq));
         assertEquals("(select (e.SALARY + e.SALARY + e.SALARY) as sal\nfrom EMPLOYEE2 e) as sq", serializer.toString());
     }
 
     @Test
     public void complexSubQuery(){
-//        query.from(
-//            subQuery.from(Table.table)
-//            .list(Table.table.field1.add(Table.table.field2).add(Table.table.field3).as("myCalculation"))).
-//            list(myCalculation.avg(), myCalculation.min(). myCalculation.max());
+        //        query.from(
+        //            subQuery.from(Table.table)
+        //            .list(Table.table.field1.add(Table.table.field2).add(Table.table.field3).as("myCalculation"))).
+        //            list(myCalculation.avg(), myCalculation.min(). myCalculation.max());
 
         // alias for the salary
         PNumber<BigDecimal> sal = new PNumber<BigDecimal>(BigDecimal.class, "sal");
@@ -433,9 +437,9 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         query().from(
                 sq().from(employee)
                 .list(employee.salary.add(employee.salary).add(employee.salary).as(sal)).as(sq)
-              ).list(sq.get(sal).avg(), sq.get(sal).min(), sq.get(sal).max());
+        ).list(sq.get(sal).avg(), sq.get(sal).min(), sq.get(sal).max());
 
-//        select avg(sq.sal), min(sq.sal), max(sq.sal) from (select (e.SALARY + e.SALARY + e.SALARY) as sal from EMPLOYEE2 e) as sq
+        //        select avg(sq.sal), min(sq.sal), max(sq.sal) from (select (e.SALARY + e.SALARY + e.SALARY) as sal from EMPLOYEE2 e) as sq
     }
 
     @Test
@@ -451,29 +455,29 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
         // right join
         // FIXME
-//        query().from(employee).rightJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
+        //        query().from(employee).rightJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
 
         // FIXME
         // full join
-//        query().from(employee).fullJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
+        //        query().from(employee).fullJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
 
     }
 
     @Test
     public void syntaxForEmployee() throws SQLException {
         query().from(employee).groupBy(employee.superiorId)
-            .orderBy(employee.superiorId.asc())
-            .list(employee.salary.avg(),employee.id.max());
+        .orderBy(employee.superiorId.asc())
+        .list(employee.salary.avg(),employee.id.max());
 
         query().from(employee).groupBy(employee.superiorId)
-            .having(employee.id.max().gt(5))
-            .orderBy(employee.superiorId.asc())
-            .list(employee.salary.avg(), employee.id.max());
+        .having(employee.id.max().gt(5))
+        .orderBy(employee.superiorId.asc())
+        .list(employee.salary.avg(), employee.id.max());
 
         query().from(employee).groupBy(employee.superiorId)
-            .having(employee.superiorId.isNotNull())
-            .orderBy(employee.superiorId.asc())
-            .list(employee.salary.avg(),employee.id.max());
+        .having(employee.superiorId.isNotNull())
+        .orderBy(employee.superiorId.asc())
+        .list(employee.salary.avg(),employee.id.max());
     }
 
     @SuppressWarnings("unchecked")
@@ -497,19 +501,19 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         List<Object[]> list2 = query().union(sq3, sq4).list();
         assertFalse(list2.isEmpty());
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void union_single_column_projections() throws IOException{
         SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id.max());
         SubQueryExpression<Integer> sq2 = sq().from(employee).unique(employee.id.min());
-        
+
         // list
         List<Integer> list = query().union(sq1, sq2).list();
         assertEquals(2, list.size());
         assertTrue(list.get(0) != null);
         assertTrue(list.get(1) != null);
-        
+
         // iterator
         CloseableIterator<Integer> iterator = query().union(sq1,sq2).iterate();
         try{
@@ -521,18 +525,18 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             iterator.close();
         }        
     }
-    
+
     @Test
     public void union_multi_column_projection() throws IOException{
         SubQueryExpression<Object[]> sq1 = sq().from(employee).unique(employee.id.max(), employee.id.max().subtract(1));
         SubQueryExpression<Object[]> sq2 = sq().from(employee).unique(employee.id.min(), employee.id.min().subtract(1));
-        
+
         // list
         List<Object[]> list = query().union(sq1, sq2).list();
         assertEquals(2, list.size());
         assertTrue(list.get(0) != null);
         assertTrue(list.get(1) != null);
-        
+
         // iterator
         CloseableIterator<Object[]> iterator = query().union(sq1,sq2).iterate();
         try{
@@ -599,7 +603,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         assertNotNull(row[1]);
 
     }
-    
+
     @Test
     public void all(){
         for (Expr<?> expr : survey.all()){
@@ -618,18 +622,18 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         }
 
         // column and wildcard
-//        for (Object[] row : query().from(survey).list(survey.id, survey.all())){
-//            assertEquals(3, row.length);
-//            assertEquals(Integer.class, row[0].getClass());
-//            assertNotNull(row[1]);
-//            assertNotNull(row[2]);
-//        }
+        //        for (Object[] row : query().from(survey).list(survey.id, survey.all())){
+        //            assertEquals(3, row.length);
+        //            assertEquals(Integer.class, row[0].getClass());
+        //            assertNotNull(row[1]);
+        //            assertNotNull(row[2]);
+        //        }
 
         // projection and wildcard
-//        for (Object[] row : query().from(survey).list(new QIdName(survey.id, survey.name), survey.all())){
-//            assertEquals(3, row.length);
-//            assertEquals(IdName.class, row[0].getClass());
-//        }
+        //        for (Object[] row : query().from(survey).list(new QIdName(survey.id, survey.name), survey.all())){
+        //            assertEquals(3, row.length);
+        //            assertEquals(IdName.class, row[0].getClass());
+        //        }
 
         // projection and two columns
         for (Object[] row : query().from(survey).list(new QIdName(survey.id, survey.name), survey.id, survey.name)){
@@ -646,14 +650,14 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             assertEquals(String.class, row[1].getClass());
             assertEquals(IdName.class, row[2].getClass());
         }
-        
+
         // wildcard and QTuple
         for (Tuple tuple : query().from(survey).list(new QTuple(survey.all()))){
             assertNotNull(tuple.get(survey.id));
             assertNotNull(tuple.get(survey.name));
         }
-            
-        
+
+
     }
 
     @Test
@@ -667,43 +671,43 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     public void tupleProjection(){
-    List<Tuple> tuples = query().from(employee).list(new QTuple(employee.firstname, employee.lastname));
-    assertFalse(tuples.isEmpty());
-    for (Tuple tuple : tuples){
-        assertNotNull(tuple.get(employee.firstname));
-        assertNotNull(tuple.get(employee.lastname));
-    }
+        List<Tuple> tuples = query().from(employee).list(new QTuple(employee.firstname, employee.lastname));
+        assertFalse(tuples.isEmpty());
+        for (Tuple tuple : tuples){
+            assertNotNull(tuple.get(employee.firstname));
+            assertNotNull(tuple.get(employee.lastname));
+        }
     }
 
     @Test
     public void customProjection(){
-    List<Projection> tuples = query().from(employee).list(new QProjection(employee.firstname, employee.lastname));
-    assertFalse(tuples.isEmpty());
-    for (Projection tuple : tuples){
-        assertNotNull(tuple.get(employee.firstname));
-        assertNotNull(tuple.get(employee.lastname));
-        assertNotNull(tuple.getExpr(employee.firstname));
-        assertNotNull(tuple.getExpr(employee.lastname));
-    }
+        List<Projection> tuples = query().from(employee).list(new QProjection(employee.firstname, employee.lastname));
+        assertFalse(tuples.isEmpty());
+        for (Projection tuple : tuples){
+            assertNotNull(tuple.get(employee.firstname));
+            assertNotNull(tuple.get(employee.lastname));
+            assertNotNull(tuple.getExpr(employee.firstname));
+            assertNotNull(tuple.getExpr(employee.lastname));
+        }
     }
 
     @SuppressWarnings("unchecked")
     @Test
     public void arrayProjection(){
-    List<String[]> results = query().from(employee).list(new EArrayConstructor<String>(String[].class, employee.firstname));
-    assertFalse(results.isEmpty());
-    for (String[] result : results){
-        assertNotNull(result[0]);
-    }
+        List<String[]> results = query().from(employee).list(new EArrayConstructor<String>(String[].class, employee.firstname));
+        assertFalse(results.isEmpty());
+        for (String[] result : results){
+            assertNotNull(result[0]);
+        }
     }
 
     @Test
     public void constructorProjection(){
-    List<SimpleProjection> projections =query().from(employee).list(EConstructor.create(SimpleProjection.class, employee.firstname, employee.lastname));
-    assertFalse(projections.isEmpty());
-    for (SimpleProjection projection : projections){
-        assertNotNull(projection);
-    }
+        List<SimpleProjection> projections =query().from(employee).list(EConstructor.create(SimpleProjection.class, employee.firstname, employee.lastname));
+        assertFalse(projections.isEmpty());
+        for (SimpleProjection projection : projections){
+            assertNotNull(projection);
+        }
     }
 
     @Test
@@ -739,9 +743,21 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         assertEquals(2, query().from(employee).where(first.or(second)).count());
 
         assertEquals(0, query().from(employee).where(
-            employee.firstname.eq("Mike"),
-            employee.lastname.eq("Smith").or(employee.firstname.eq("Joe")),
-            employee.lastname.eq("Divis")
+                employee.firstname.eq("Mike"),
+                employee.lastname.eq("Smith").or(employee.firstname.eq("Joe")),
+                employee.lastname.eq("Divis")
         ).count());
+    }
+
+    @Test
+    @ExcludeIn({DERBY,HSQLDB})
+    public void path_alias(){
+        expectedQuery = "select e.LASTNAME, sum(e.SALARY) as salarySum from EMPLOYEE2 e group by e.LASTNAME having salarySum > ?";
+
+        ENumber<BigDecimal> salarySum = employee.salary.sum().as("salarySum");        
+        query().from(employee)
+        .groupBy(employee.lastname)
+        .having(salarySum.gt(10000))
+        .list(employee.lastname, salarySum);
     }
 }

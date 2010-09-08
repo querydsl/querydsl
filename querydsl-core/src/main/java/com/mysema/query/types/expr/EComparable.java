@@ -9,6 +9,7 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.path.PSimple;
 
 /**
  * EComparable extends EComparableBase to provide comparison methods.
@@ -25,10 +26,15 @@ public abstract class EComparable<D extends Comparable> extends EComparableBase<
     public EComparable(Class<? extends D> type) {
         super(type);
     }
-
+    
     @Override
     public EComparable<D> as(Path<D> alias) {
         return OComparable.create(getType(),(Operator)Ops.ALIAS, this, alias.asExpr());
+    }
+    
+    @Override
+    public EComparable<D> as(String alias) {
+        return OComparable.create(getType(),(Operator)Ops.ALIAS, this, new PSimple(getType(), alias));
     }
 
     /**

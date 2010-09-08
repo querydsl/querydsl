@@ -32,6 +32,8 @@ import com.mysema.query.types.expr.ExprConst;
  * @version $Id$
  */
 public class SQLSerializer extends SerializerBase<SQLSerializer> {
+    
+    enum Stage {SELECT, FROM, WHERE, GROUP_BY, HAVING, ORDER_BY}
 
     private final SerializationContext context = new SerializationContext(){
 
@@ -65,6 +67,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     private final List<Object> constants = new ArrayList<Object>();
 
     private final boolean dml;
+    
+    private Stage stage = Stage.SELECT;
 
     private boolean skipParent;
 
@@ -152,10 +156,13 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }
         }
         
+        
         // start
         serialize(Position.START, flags);
 
         // select
+        Stage oldStage = stage;
+        stage = Stage.SELECT;
         if (forCountRow) {
             append(templates.getSelect());            
             serialize(Position.AFTER_SELECT, flags);
@@ -185,9 +192,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         serialize(Position.AFTER_PROJECTION, flags);
 
         // from
+        stage = Stage.FROM;
         serializeSources(joins);
-
-        // where            
+        
+        // where          
+        stage = Stage.WHERE;
         serialize(Position.BEFORE_FILTERS, flags);
         if (where != null) {            
             append(templates.getWhere()).handle(where);
@@ -195,6 +204,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }        
 
         // group by
+        stage = Stage.GROUP_BY;
         serialize(Position.BEFORE_GROUP_BY, flags);
         if (!groupBy.isEmpty()) {            
             append(templates.getGroupBy()).handle(COMMA, groupBy);
@@ -202,6 +212,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
 
         // having
+        stage = Stage.HAVING;
         serialize(Position.BEFORE_HAVING, flags);
         if (having != null) {
             if (groupBy.isEmpty()) {                
@@ -212,6 +223,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
         
         // order by
+        stage = Stage.ORDER_BY;
         serialize(Position.BEFORE_ORDER, flags);
         if (!orderBy.isEmpty() && !forCountRow) {
             append(templates.getOrderBy());                       
@@ -229,6 +241,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         
         // end
         serialize(Position.END, flags);
+        
+        // reset stage
+        stage = oldStage;
 
     }
 
@@ -503,6 +518,14 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             String typeName = templates.getTypeForClass(targetType);
             visitOperation(targetType, SQLTemplates.CAST, Arrays.<Expr<?>>asList(args.get(0), ExprConst.create(typeName)));
 
+        } else if (operator.equals(Ops.ALIAS)){
+            if (stage == Stage.SELECT || stage == Stage.FROM){
+                super.visitOperation(type, operator, args);
+            }else{
+                // handle only target
+                handle(args.get(1));
+            }
+            
         } else {
             super.visitOperation(type, operator, args);
         }
