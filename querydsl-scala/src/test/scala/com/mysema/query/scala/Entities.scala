@@ -5,39 +5,27 @@ import com.mysema.query.types.path._
 import java.util.{Arrays, Collections}
 
 @Table("USER")
-class QUser(path: String) extends BeanPath[QUser](classOf[QUser], path) with RelationalPath[QUser]{
+class QUser(path: String) extends RelationalPathBase[QUser](classOf[QUser], path){
     val id = createNumber("ID", classOf[Integer]);
     val department = createNumber("DEPARTMENT", classOf[Integer]);
     val superiorId = createNumber("SUPERIOR_ID", classOf[Integer]);
-    val idKey = new PrimaryKey[QUser](this, id);
-    val departmentKey = new ForeignKey[QDepartment](this, department, "ID");
-    val superiorIdKey = new ForeignKey[QUser](this, superiorId,"ID");
-    def getColumns() = Arrays.asList(id, department, superiorId);
-    def getForeignKeys() = Arrays.asList(departmentKey, superiorIdKey);
-    def getInverseForeignKeys() = Collections.emptyList();
-    def getPrimaryKey() = idKey
+    val idKey = createPrimaryKey(id);
+    val departmentKey: ForeignKey[QDepartment] = createForeignKey(department, "ID");
+    val superiorIdKey: ForeignKey[QUser] = createForeignKey(superiorId,"ID");
 }
 
 @Table("DEPARTMENT")
-class QDepartment(path: String) extends BeanPath[QDepartment](classOf[QDepartment], path) with RelationalPath[QDepartment]{
+class QDepartment(path: String) extends RelationalPathBase[QDepartment](classOf[QDepartment], path){
     val id = createNumber("ID", classOf[Integer]);
     val company = createNumber("COMPANY", classOf[Integer]);
-    val idKey = new PrimaryKey[QDepartment](this, id);
-    val companyKey = new ForeignKey[QCompany](this, company, "ID");
-    def getColumns() = Arrays.asList(id, company)
-    def getForeignKeys() = Arrays.asList(companyKey);
-    def getInverseForeignKeys() = Collections.emptyList();
-    def getPrimaryKey() = idKey;
+    val idKey = createPrimaryKey(id);
+    val companyKey: ForeignKey[QCompany] = createForeignKey(company, "ID");
 }
 
 @Table("COMPANY")
-class QCompany(path: String) extends BeanPath[QCompany](classOf[QCompany], path) with RelationalPath[QCompany]{
+class QCompany(path: String) extends RelationalPathBase[QCompany](classOf[QCompany], path){
     val id = createNumber("ID", classOf[Integer]);
-    val idKey = new PrimaryKey[QCompany](this, id);
-    def getColumns() = Arrays.asList(id);
-    def getForeignKeys() = Collections.emptyList();
-    def getInverseForeignKeys() = Collections.emptyList();    
-    def getPrimaryKey() = idKey;
+    val idKey = createPrimaryKey(id);
 }
 
 //class Category extends Record[Category] {
@@ -47,15 +35,11 @@ class QCompany(path: String) extends BeanPath[QCompany](classOf[QCompany], path)
 //}
 
 @Table("CATEGORY")
-class QCategory(path: String) extends BeanPath[QCategory](classOf[QCategory], path) with RelationalPath[QCategory] {
+class QCategory(path: String) extends RelationalPathBase[QCategory](classOf[QCategory], path){
     val id = createNumber("ID", classOf[Integer]);
     val name = createString("NAME");
-    val idKey = new PrimaryKey[QCategory](this, id);
-    val _categoryKey = new ForeignKey[QBook](this, id, "category");
-    def getColumns() = Arrays.asList(id, name);
-    def getForeignKeys() = Collections.emptyList();
-    def getInverseForeignKeys() = Collections.emptyList();    
-    def getPrimaryKey() = idKey;
+    val idKey = createPrimaryKey(id);
+    val _categoryKey: ForeignKey[QBook] = createInvForeignKey(id, "category");
 }
 
 //class Book extends Record[Book] {
@@ -65,14 +49,10 @@ class QCategory(path: String) extends BeanPath[QCategory](classOf[QCategory], pa
 //}
 
 @Table("BOOK")
-class QBook(path: String) extends BeanPath[QBook](classOf[QBook], path) with RelationalPath[QBook] {
+class QBook(path: String) extends RelationalPathBase[QBook](classOf[QBook], path){
     val id = createNumber("ID",classOf[Integer]);
     val title = createString("TITLE")
     val category = createNumber("CATEGORY", classOf[Integer])
-    val idKey = new PrimaryKey[QBook](this, id);
-    val categoryKey = new ForeignKey[QCategory](this, category, "ID");
-    def getColumns() = Arrays.asList(id, title, category);
-    def getForeignKeys() = Arrays.asList(categoryKey)
-    def getInverseForeignKeys() = Collections.emptyList();    
-    def getPrimaryKey() = idKey;
+    val idKey = createPrimaryKey(id);
+    val categoryKey: ForeignKey[QCategory] = createForeignKey(category, "ID");
 }

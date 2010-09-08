@@ -36,8 +36,13 @@
     <module>../querydsl-maven-plugin</module>
     <module>../querydsl-hql</module>    
     <module>../querydsl-jdoql</module>
+    
+    <!-- Lucene related -->
     <module>../querydsl-lucene</module>
-    <module>../querydsl-hibernate-search</module>        
+    <module>../querydsl-hibernate-search</module>
+    
+    <!-- Languages -->        
+    <module>../querydsl-scala</module>
   </modules>
 
   <dependencies>
