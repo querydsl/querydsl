@@ -17,19 +17,19 @@ object Conversions {
     
     def not(b: EBoolean): EBoolean = b.not()
     
-    implicit def _simple(s: Object): PSimple[_] = $(s);
+    implicit def booleanPath(b: Boolean): PBoolean = $(b);
     
-    implicit def _boolean(b: Boolean): PBoolean = $(b);
+    implicit def stringPath(s: String): PString = $(s);
     
-    implicit def _string(s: String): PString = $(s);
+    implicit def datePath(d: java.sql.Date): PDate[java.sql.Date] = $(d);
     
-    implicit def _comparable(c: Comparable[_]): PComparable[_] = $(c);
+    implicit def dateTimePath(d: java.util.Date): PDateTime[java.util.Date] = $(d);
     
-    implicit def _date(d: java.sql.Date): PDate[java.sql.Date] = $(d);
+    implicit def timePath(t: java.sql.Time): PTime[java.sql.Time] = $(t);
+        
+    implicit def comparablePath(c: Comparable[_]): PComparable[_] = $(c);
     
-    implicit def _dateTime(d: java.util.Date): PDateTime[java.util.Date] = $(d);
-    
-    implicit def _time(t: java.sql.Time): PTime[java.sql.Time] = $(t);
+    implicit def simplePath(s: Object): PSimple[_] = $(s);
     
     //implicit def num[N <: Number & Comparable[N]](n: N): PNumber[N] = $(n);
     

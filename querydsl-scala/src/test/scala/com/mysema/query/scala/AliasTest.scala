@@ -53,22 +53,22 @@ class AliasTest {
 //        assertEquals("domainType.firstName != Hello",   (domainType.firstName ne "Hello").toString());
     }
     
-    //@Test
+    @Test
     def Expression_in_SubQuery(){
         // list
-        query().from (domainType) 
+        query().from ($(domainType)) 
           .where (domainType.firstName like "Rob%")                
           .orderBy (domainType.firstName asc)
           .list ($(domainType));            // FIXME
         
         // unique result
-        query().from (domainType) 
+        query().from ($(domainType)) 
           .where (domainType.firstName like "Rob%")                
           .orderBy (domainType.firstName asc)
           .unique ($(domainType));            // FIXME
         
         // long where
-        query().from (domainType) 
+        query().from ($(domainType))            
           .where (
               domainType.firstName like "Rob%",
               domainType.lastName like "An%"
