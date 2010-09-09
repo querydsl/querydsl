@@ -20,7 +20,7 @@ public class HSQLDBTemplates extends SQLTemplates {
     }
 
     public HSQLDBTemplates(boolean quote){
-        super(quote ? "\"" : null);
+        super("\"", quote);
         setAutoIncrement(" identity");
         add(Ops.MathOps.ROUND, "round({0},0)");
         add(Ops.TRIM, "trim(both from {0})");

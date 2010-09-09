@@ -24,7 +24,7 @@ public class MySQLTemplates extends SQLTemplates {
     }
 
     public MySQLTemplates(boolean quote){
-        super(quote ? "`" : null);
+        super("`", quote);
         addClass2TypeMappings("bool", Boolean.class);
         addClass2TypeMappings("int", Integer.class);
         

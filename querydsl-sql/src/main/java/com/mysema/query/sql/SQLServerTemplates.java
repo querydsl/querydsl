@@ -39,7 +39,7 @@ public class SQLServerTemplates extends SQLTemplates{
     }
 
     public SQLServerTemplates(boolean quote){
-        super(quote ? "\"" : null);
+        super("\"", quote);
         addClass2TypeMappings("decimal", Double.class);
         setDummyTable("");
 

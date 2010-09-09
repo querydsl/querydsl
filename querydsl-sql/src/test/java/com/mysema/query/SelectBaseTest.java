@@ -603,6 +603,12 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         assertNotNull(row[1]);
 
     }
+    
+    @Test
+    public void aliasQuotes() {
+        expectedQuery = "select firstname as \"First Name\" from EMPLOYEE2 e";
+        query().from(employee).list(employee.firstname.as("First Name"));
+    }
 
     @Test
     public void all(){

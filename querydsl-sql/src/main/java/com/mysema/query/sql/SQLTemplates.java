@@ -6,12 +6,18 @@
 package com.mysema.query.sql;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
@@ -37,10 +43,13 @@ public class SQLTemplates extends Templates {
 
     public static final SQLTemplates DEFAULT = new SQLTemplates();
     
+    private static final Pattern IDENTIFIER_CHARS = Pattern.compile("[a-zA-Z0-9_\\-]+");
+    
     private final Map<Class<?>, String> class2type = new HashMap<Class<?>, String>();
 
-    @Nullable
     private String quoteStr;
+    
+    private boolean useQuotes;
 
     private String asc = " asc";
 
@@ -109,13 +118,14 @@ public class SQLTemplates extends Templates {
     private String values = "\nvalues ";
     
     private String where = "\nwhere ";
-    
-    protected SQLTemplates(){
-        this(null);
-    }
 
-    protected SQLTemplates(@Nullable String quoteStr) {
-        this.quoteStr = quoteStr;
+    protected SQLTemplates() {
+        this("\"", false);
+    }
+    
+    protected SQLTemplates(String quoteStr, boolean useQuotes) {
+        this.quoteStr = Assert.notNull(quoteStr, "quoteStr");
+        this.useQuotes = useQuotes;
 
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
@@ -353,21 +363,25 @@ public class SQLTemplates extends Templates {
     }
 
     public final String quoteColumnName(String column){
-        if (quoteStr != null){
-            return quoteStr + column + quoteStr;
-        }else{
-            return column;
-        }
+        return quoteIdentifier(column);
     }
 
     public final String quoteTableName(String table){
-        if (quoteStr != null){
-            return quoteStr + table + quoteStr;
+        return quoteIdentifier(table);
+    }
+    
+    protected String quoteIdentifier(String identifier){
+        if (useQuotes || requiresQuotes(identifier)){
+            return quoteStr + identifier + quoteStr;
         }else{
-            return table;
+            return identifier;
         }
     }
 
+    protected boolean requiresQuotes(String identifier) {
+        return !IDENTIFIER_CHARS.matcher(identifier).matches();
+    }
+    
     public void serialize(QueryMetadata metadata, boolean forCountRow, SerializationContext context) {
         context.serialize(metadata, forCountRow);
 

@@ -28,7 +28,7 @@ public class DerbyTemplates extends SQLTemplates {
     }
 
     public DerbyTemplates(boolean quote){
-        super(quote ? "\"" : null);
+        super("\"", quote);
         addClass2TypeMappings("smallint", Byte.class);
         setAutoIncrement(" generated always as identity");
         

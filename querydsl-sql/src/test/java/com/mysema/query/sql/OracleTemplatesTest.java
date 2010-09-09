@@ -10,7 +10,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.mysema.query.sql.AbstractSQLQuery.UnionBuilder;
-import com.mysema.query.types.path.PSimple;
+import com.mysema.query.types.Expr;
+import com.mysema.query.types.custom.CSimple;
+import com.mysema.query.types.path.PNumber;
 
 
 
@@ -24,10 +26,10 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
     @SuppressWarnings("unchecked")
     @Test
     public void union(){        
-        PSimple<Integer> one = new PSimple<Integer>(Integer.class,"1");
-        PSimple<Integer> two = new PSimple<Integer>(Integer.class,"2");
-        PSimple<Integer> three = new PSimple<Integer>(Integer.class,"3");
-        PSimple<Integer> col1 = new PSimple<Integer>(Integer.class,"col1");
+        Expr<Integer> one = CSimple.create(Integer.class,"1");
+        Expr<Integer> two = CSimple.create(Integer.class,"2");
+        Expr<Integer> three = CSimple.create(Integer.class,"3");
+        PNumber<Integer> col1 = new PNumber<Integer>(Integer.class,"col1");
         UnionBuilder union = query.union(
             sq().unique(one.as(col1)),
             sq().unique(two),

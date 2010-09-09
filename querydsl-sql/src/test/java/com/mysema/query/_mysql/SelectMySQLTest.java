@@ -5,6 +5,7 @@
  */
 package com.mysema.query._mysql;
 
+import static com.mysema.query.Constants.employee;
 import static com.mysema.query.Constants.survey;
 
 import org.junit.Before;
@@ -31,6 +32,13 @@ public class SelectMySQLTest extends SelectBaseTest {
     @Before
     public void setUpForTest() {
         templates = new MySQLTemplates().newLineToSingleSpace();
+    }
+
+    @Test
+    @Override
+    public void aliasQuotes() {
+        expectedQuery = "select firstname as `First Name` from EMPLOYEE2 e";
+        query().from(employee).list(employee.firstname.as("First Name"));
     }
 
     @Test

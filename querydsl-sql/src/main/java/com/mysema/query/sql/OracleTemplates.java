@@ -38,7 +38,7 @@ public class OracleTemplates extends SQLTemplates {
     }
 
     public OracleTemplates(boolean quote){
-        super(quote ? "\"" : null);
+        super("\"", quote);
         // type mappings
         addClass2TypeMappings("number(3,0)", Byte.class);
         addClass2TypeMappings("number(1,0)", Boolean.class);
