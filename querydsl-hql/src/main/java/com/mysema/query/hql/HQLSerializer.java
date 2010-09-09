@@ -88,15 +88,19 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         this.templates = templates;
     }
 
-    @SuppressWarnings("unchecked")
     private void handleJoinTarget(JoinExpression je) {
         // type specifier
-        if (je.getTarget() instanceof EntityPath) {
+        if (je.getTarget() instanceof EntityPath<?>) {
             EntityPath<?> pe = (EntityPath<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
-                String pn = pe.getType().getPackage().getName();
-                String typeName = pe.getType().getName().substring(pn.length() + 1);
-                append(typeName).append(" ");
+                if (pe.getType().getPackage() != null){
+                    String pn = pe.getType().getPackage().getName();
+                    String typeName = pe.getType().getName().substring(pn.length() + 1);
+                    append(typeName);    
+                }else{
+                    append(pe.getType().getName());
+                }                
+                append(" ");
             }
         }
         handle(je.getTarget());
