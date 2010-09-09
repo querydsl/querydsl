@@ -19,7 +19,6 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.Ops;
-import com.mysema.query.types.PathType;
 import com.mysema.query.types.Templates;
 
 /**
