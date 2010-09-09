@@ -22,7 +22,7 @@ import com.mysema.query.types.Ops;
 import com.mysema.query.types.Templates;
 
 /**
- * SQLTemplates extended Templates to provided SQL specific extensions
+ * SQLTemplates extends Templates to provides SQL specific extensions
  * and acts as database specific Dialect for Querydsl SQL
  *
  * @author tiwe
