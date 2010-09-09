@@ -27,6 +27,7 @@ import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.testutil.FilteringTestRunner;
 import com.mysema.testutil.LabelRule;
+import com.mysema.testutil.SkipForAnnotationRule;
 
 @RunWith(FilteringTestRunner.class)
 public abstract class AbstractBaseTest {
@@ -40,6 +41,9 @@ public abstract class AbstractBaseTest {
 
     @Nullable
     protected String expectedQuery;
+    
+    @Rule
+    public static MethodRule skipForQuoted = new SkipForAnnotationRule(SkipForQuoted.class, SkipForQuoted.class);
     
     @Rule
     public static MethodRule labelRule = new LabelRule();

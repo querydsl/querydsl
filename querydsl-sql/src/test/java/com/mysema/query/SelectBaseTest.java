@@ -86,12 +86,14 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     };
 
     @Test
+    @SkipForQuoted
     public void wildcardAll() {
         expectedQuery = "select * from EMPLOYEE2 e";
         query().from(employee).uniqueResult(Wildcard.all);
     }
 
     @Test
+    @SkipForQuoted
     public void countAll() {
         expectedQuery = "select count(*) as rowCount from EMPLOYEE2 e";
         PNumber<Long> rowCount = new PNumber<Long>(Long.class, "rowCount");
@@ -215,6 +217,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     @ExcludeIn({ORACLE,DERBY,SQLSERVER})
+    @SkipForQuoted
     public void limitAndOffset2() throws SQLException {
         // limit
         expectedQuery = "select e.ID from EMPLOYEE2 e limit ?";
@@ -350,6 +353,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
+    @SkipForQuoted
     public void serialization(){
         SQLQuery query = query();
 
@@ -388,7 +392,9 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             query().from(employee).where(where).list(employee.firstname);
         }
     }
+    
     @Test
+    @SkipForQuoted
     public void subQueries() throws SQLException {
         // subquery in where block
         expectedQuery = "select e.ID from EMPLOYEE2 e "
@@ -757,6 +763,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     @ExcludeIn({DERBY,HSQLDB})
+    @SkipForQuoted
     public void path_alias(){
         expectedQuery = "select e.LASTNAME, sum(e.SALARY) as salarySum from EMPLOYEE2 e group by e.LASTNAME having salarySum > ?";
 
