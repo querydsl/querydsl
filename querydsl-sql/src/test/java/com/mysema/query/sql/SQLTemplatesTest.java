@@ -8,6 +8,8 @@ package com.mysema.query.sql;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.regex.Pattern;
+
 import org.junit.Test;
 
 import com.mysema.query.types.Template;
@@ -26,4 +28,12 @@ public class SQLTemplatesTest {
         serializer.handle(CSimple.create(Object.class, template, ENumberConst.create(5)));
         assertEquals("fetch first 5 rows only", serializer.toString());
     }
+    
+    @Test
+    public void quote(){
+        Pattern pattern = Pattern.compile("[a-zA-Z0-9_\\-]+");
+        assertTrue(pattern.matcher("a1").matches());
+        assertTrue(pattern.matcher("a").matches());
+    }
+    
 }

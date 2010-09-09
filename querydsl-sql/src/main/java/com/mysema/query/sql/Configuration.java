@@ -22,7 +22,7 @@ import com.mysema.query.types.Path;
  */
 public class Configuration {
     
-    public static final Configuration DEFAULT = new Configuration(new SQLTemplates());
+    public static final Configuration DEFAULT = new Configuration(new SQLTemplates("\"",false));
     
     private final JDBCTypeMapping jdbcTypeMapping = new JDBCTypeMapping();
     

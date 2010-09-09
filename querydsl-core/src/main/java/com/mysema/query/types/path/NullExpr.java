@@ -5,19 +5,27 @@
  */
 package com.mysema.query.types.path;
 
+import java.util.Collections;
+
+import com.mysema.query.types.Expr;
+import com.mysema.query.types.TemplateFactory;
+import com.mysema.query.types.custom.CSimple;
+
 /**
+ * NullExpr defines a general null expression
+ * 
  * @author tiwe
  *
  * @param <T>
  */
-public class NullExpr<T> extends PSimple<T>{
+public class NullExpr<T> extends CSimple<T>{
 
     public static final NullExpr<Object> DEFAULT = new NullExpr<Object>(Object.class);
 
     private static final long serialVersionUID = -5311968198973316411L;
 
     public NullExpr(Class<? extends T> type) {
-        super(type, "null");
+        super(type,TemplateFactory.DEFAULT.create("null"), Collections.<Expr<?>>emptyList());
     }
 
 }

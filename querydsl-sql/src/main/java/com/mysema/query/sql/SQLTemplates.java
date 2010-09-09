@@ -6,16 +6,10 @@
 package com.mysema.query.sql;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.regex.Pattern;
-
-import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.JoinType;
@@ -41,7 +35,7 @@ public class SQLTemplates extends Templates {
     
     public static final Operator<Object> UNION = new OperatorImpl<Object>("UNION");
 
-    public static final SQLTemplates DEFAULT = new SQLTemplates();
+    public static final SQLTemplates DEFAULT = new SQLTemplates("\"",false);
     
     private static final Pattern IDENTIFIER_CHARS = Pattern.compile("[a-zA-Z0-9_\\-]+");
     
@@ -118,10 +112,6 @@ public class SQLTemplates extends Templates {
     private String values = "\nvalues ";
     
     private String where = "\nwhere ";
-
-    protected SQLTemplates() {
-        this("\"", false);
-    }
     
     protected SQLTemplates(String quoteStr, boolean useQuotes) {
         this.quoteStr = Assert.notNull(quoteStr, "quoteStr");
@@ -160,11 +150,6 @@ public class SQLTemplates extends Templates {
         add(Ops.STRING_IS_EMPTY, "length({0}) = 0");
         add(Ops.SUBSTR_1ARG, "substr({0},{1}+1)");
         add(Ops.SUBSTR_2ARGS, "substr({0},{1}+1,{2})");
-
-        if (quoteStr != null){
-            add(PathType.PROPERTY, "{0}." + quoteStr + "{1s}" + quoteStr);
-            add(PathType.VARIABLE, quoteStr + "{0s}" + quoteStr);
-        }
 
         add(CAST, "cast({0} as {1s})");
         add(UNION, "{0}\nunion\n{1}");
@@ -361,16 +346,8 @@ public class SQLTemplates extends Templates {
         }
         return this;
     }
-
-    public final String quoteColumnName(String column){
-        return quoteIdentifier(column);
-    }
-
-    public final String quoteTableName(String table){
-        return quoteIdentifier(table);
-    }
     
-    protected String quoteIdentifier(String identifier){
+    public String quoteIdentifier(String identifier){
         if (useQuotes || requiresQuotes(identifier)){
             return quoteStr + identifier + quoteStr;
         }else{

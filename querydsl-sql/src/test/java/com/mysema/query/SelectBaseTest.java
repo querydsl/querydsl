@@ -606,7 +606,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     
     @Test
     public void aliasQuotes() {
-        expectedQuery = "select firstname as \"First Name\" from EMPLOYEE2 e";
+        expectedQuery = "select e.FIRSTNAME as \"First Name\" from EMPLOYEE2 e";
         query().from(employee).list(employee.firstname.as("First Name"));
     }
 

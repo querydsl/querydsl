@@ -40,8 +40,8 @@ public class ForeignKeyBuilder {
         ForeignKeyData foreignKey = new ForeignKeyData(name, table);
         for (int i = 0; i < parentColumns.length; i++){
             foreignKey.add(
-                    templates.quoteColumnName(foreignColumns[i]), 
-                    templates.quoteColumnName(parentColumns[i]));
+                templates.quoteIdentifier(foreignColumns[i]), 
+                templates.quoteIdentifier(parentColumns[i]));
         }
         foreignKeys.add(foreignKey);
         return clause;

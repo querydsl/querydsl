@@ -28,7 +28,7 @@ public class DropTableClause {
     
     public DropTableClause(Connection conn, SQLTemplates templates, String table) {
         this.connection = conn;
-        this.table = templates.quoteTableName(table);
+        this.table = templates.quoteIdentifier(table);
     }
     
     @SuppressWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")

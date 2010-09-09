@@ -88,12 +88,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     private void appendAsColumnName(Path<?> path){
         String column = path.getMetadata().getExpression().toString();
-        append(templates.quoteColumnName(column));
+        append(templates.quoteIdentifier(column));
     }
 
     private void appendAsTableName(Path<?> path){
         String table = path.getAnnotatedElement().getAnnotation(Table.class).value();
-        append(templates.quoteTableName(table));
+        append(templates.quoteIdentifier(table));
     }
 
     public List<Object> getConstants(){
@@ -480,14 +480,21 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (dml){
             if (path.equals(entity)){
                 appendAsTableName(path);
+                return null;
             }else if (entity.equals(path.getMetadata().getParent()) && skipParent){
                 appendAsColumnName(path);
-            }else{
-                super.visit(path, context);
+                return null;
             }
-        }else{
-            super.visit(path, context);
         }
+        if (path.getMetadata().getPathType() == PathType.DELEGATE){
+            handle(path.getMetadata().getExpression());
+            return null;
+            
+        }else if (path.getMetadata().getParent() != null){
+            visit(path.getMetadata().getParent(), context);
+            append(".");
+        }
+        append(templates.quoteIdentifier(path.getMetadata().getExpression().toString()));    
         return null;
     }
 
