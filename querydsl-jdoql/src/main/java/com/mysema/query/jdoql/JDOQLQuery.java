@@ -5,8 +5,6 @@
  */
 package com.mysema.query.jdoql;
 
-import java.io.Closeable;
-
 import javax.jdo.PersistenceManager;
 
 import com.mysema.query.Projectable;
@@ -17,7 +15,7 @@ import com.mysema.query.Projectable;
  * @author tiwe
  *
  */
-public interface JDOQLQuery extends JDOQLCommonQuery<JDOQLQuery>, Projectable, Closeable {
+public interface JDOQLQuery extends JDOQLCommonQuery<JDOQLQuery>, Projectable {
 
     /**
      * Clone the state of the query for the given PersistenceManager
@@ -46,5 +44,10 @@ public interface JDOQLQuery extends JDOQLCommonQuery<JDOQLQuery>, Projectable, C
      * @return
      */
     JDOQLQuery setMaxFetchDepth(int maxFetchDepth);
+    
+    /**
+     * 
+     */
+    void close();
 
 }

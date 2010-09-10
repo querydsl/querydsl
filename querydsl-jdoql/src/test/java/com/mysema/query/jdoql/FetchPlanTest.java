@@ -2,7 +2,6 @@ package com.mysema.query.jdoql;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -27,11 +26,7 @@ public class FetchPlanTest extends AbstractJDOTest{
     @After
     public void tearDown() {
         if (query != null){
-            try {
-                query.close();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            query.close();
         }
         super.tearDown();
     }

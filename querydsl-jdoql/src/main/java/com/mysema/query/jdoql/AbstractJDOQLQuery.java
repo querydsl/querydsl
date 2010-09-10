@@ -39,8 +39,15 @@ import com.mysema.query.types.expr.QTuple;
  *
  * @param <Q>
  */
-public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extends ProjectableQuery<Q> implements Closeable{
+public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extends ProjectableQuery<Q>{
 
+    private final Closeable closeable = new Closeable(){
+        @Override
+        public void close() throws IOException {
+            AbstractJDOQLQuery.this.close();            
+        }        
+    };
+    
     private final boolean detach;
 
     private List<Object> orderedConstants = new ArrayList<Object>();
@@ -79,7 +86,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         return (Q)this;
     }
 
-    public void close() throws IOException {
+    public void close() {
         for (Query query : queries){
             query.closeAll();
         }
@@ -168,11 +175,11 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     }
 
     public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
-        return new IteratorAdapter<Object[]>(list(args).iterator(), this);
+        return new IteratorAdapter<Object[]>(list(args).iterator(), closeable);
     }
 
     public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
-        return new IteratorAdapter<RT>(list(projection).iterator(), this);
+        return new IteratorAdapter<RT>(list(projection).iterator(), closeable);
     }
 
     @SuppressWarnings("unchecked")

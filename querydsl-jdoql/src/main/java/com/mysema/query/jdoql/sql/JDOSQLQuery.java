@@ -41,9 +41,16 @@ import com.mysema.query.types.expr.QTuple;
  * @author tiwe
  *
  */
-public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements SQLCommonQuery<JDOSQLQuery>, Closeable{
+public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements SQLCommonQuery<JDOSQLQuery>{
     
     private static final Logger logger = LoggerFactory.getLogger(JDOSQLQuery.class);
+    
+    private final Closeable closeable = new Closeable(){
+        @Override
+        public void close() throws IOException {
+            JDOSQLQuery.this.close();            
+        }        
+    };
 
     private final boolean detach;
 
@@ -70,7 +77,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         this.detach = detach;
     }
 
-    public void close() throws IOException {
+    public void close() {
         for (Query query : queries){
             query.closeAll();
         }
@@ -146,11 +153,11 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     }
 
     public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
-        return new IteratorAdapter<Object[]>(list(args).iterator(), this);
+        return new IteratorAdapter<Object[]>(list(args).iterator(), closeable);
     }
 
     public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
-        return new IteratorAdapter<RT>(list(projection).iterator(), this);
+        return new IteratorAdapter<RT>(list(projection).iterator(), closeable);
     }
 
     @SuppressWarnings("unchecked")
