@@ -182,9 +182,6 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
 
         // having
         if (having != null) {
-            if (groupBy.isEmpty()) {
-                throw new IllegalArgumentException("having, but not groupBy was given");
-            }
             append(HAVING).handle(having);
         }
 

@@ -181,10 +181,6 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
 
         // having
         if (having != null) {
-            if (groupBy.isEmpty()) {
-                throw new IllegalArgumentException(
-                        "having, but not groupBy was given");
-            }
             append(HAVING).handle(having);
         }
 

@@ -215,9 +215,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         stage = Stage.HAVING;
         serialize(Position.BEFORE_HAVING, flags);
         if (having != null) {
-            if (groupBy.isEmpty()) {                
-                throw new IllegalArgumentException("having, but not groupBy was given");
-            }            
             append(templates.getHaving()).handle(having);
             serialize(Position.AFTER_HAVING, flags);
         }
