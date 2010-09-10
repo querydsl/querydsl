@@ -38,6 +38,14 @@ public class Configuration {
         return templates;
     }
     
+    /**
+     * Get the java type for the given jdbc type, table name and column name
+     * 
+     * @param sqlType
+     * @param tableName
+     * @param columnName
+     * @return
+     */
     public Class<?> getJavaType(int sqlType, String tableName, String columnName) {
         Type<?> type = javaTypeMapping.getType(tableName, columnName);
         if (type != null){
@@ -47,12 +55,30 @@ public class Configuration {
         }
     }
     
+    /**
+     * @param <T>
+     * @param rs
+     * @param path
+     * @param i
+     * @param clazz
+     * @return
+     * @throws SQLException
+     */
     @Nullable    
     public <T> T get(ResultSet rs, @Nullable Path<?> path, int i, Class<T> clazz) throws SQLException {        
         Type<T> type = getType(path, clazz);
         return type.getValue(rs, i);
     }
     
+    /**
+     * @param <T>
+     * @param stmt
+     * @param path
+     * @param i
+     * @param value
+     * @return
+     * @throws SQLException
+     */
     @SuppressWarnings("unchecked")
     public <T> int set(PreparedStatement stmt, Path<?> path, int i, T value) throws SQLException{
         Type<T> type = getType(path, (Class)value.getClass());
@@ -73,14 +99,32 @@ public class Configuration {
         return javaTypeMapping.getType(clazz);
     }
     
+    /**
+     * Register the given Type
+     * 
+     * @param type
+     */
     public void register(Type<?> type) {
         javaTypeMapping.register(type);
     }
         
-    public void setType(int sqlType, Class<?> javaType) {
-        jdbcTypeMapping.register(sqlType, javaType);
+    /**
+     * Set the java type for the given JDBC type
+     * 
+     * @param jdbcType
+     * @param javaType
+     */
+    public void setType(int jdbcType, Class<?> javaType) {
+        jdbcTypeMapping.register(jdbcType, javaType);
     }
 
+    /**
+     * Set the java type for the given table and column
+     * 
+     * @param table
+     * @param column
+     * @param type
+     */
     public void setType(String table, String column, Type<?> type) {
         javaTypeMapping.setType(table, column, type);
     }
