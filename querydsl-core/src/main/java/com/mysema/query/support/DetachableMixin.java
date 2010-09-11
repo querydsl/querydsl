@@ -6,6 +6,7 @@
 package com.mysema.query.support;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expr;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.EBoolean;
@@ -36,8 +37,7 @@ public class DetachableMixin implements Detachable{
 
     @Override
     public ObjectSubQuery<Long> count() {
-        queryMixin.addToProjection(COUNT_ALL_AGG_EXPR);
-        return new ObjectSubQuery<Long>(Long.class, queryMixin.getMetadata());
+        return new ObjectSubQuery<Long>(Long.class, projection(COUNT_ALL_AGG_EXPR));
     }
 
     @Override
@@ -50,22 +50,18 @@ public class DetachableMixin implements Detachable{
 
     @Override
     public ListSubQuery<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest) {
-        queryMixin.addToProjection(first, second);
-        queryMixin.addToProjection(rest);
-        return new ListSubQuery<Object[]>(Object[].class, queryMixin.getMetadata());
+        return new ListSubQuery<Object[]>(Object[].class, projection(first, second, rest));
     }
 
     @Override
     public ListSubQuery<Object[]> list(Expr<?>[] args) {
-        queryMixin.addToProjection(args);
-        return new ListSubQuery<Object[]>(Object[].class, queryMixin.getMetadata());
+        return new ListSubQuery<Object[]>(Object[].class, projection(args));
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <RT> ListSubQuery<RT> list(Expr<RT> projection) {
-        queryMixin.addToProjection(projection);
-        return new ListSubQuery<RT>((Class)projection.getType(), queryMixin.getMetadata());
+        return new ListSubQuery<RT>((Class)projection.getType(), projection(projection));
     }
 
     @Override
@@ -73,77 +69,92 @@ public class DetachableMixin implements Detachable{
         return exists().not();
     }
 
-    private void setUniqueProjection(Expr<?> projection){
-        queryMixin.addToProjection(projection);
-        queryMixin.setUnique(true);
-    }
-
     @Override
     public BooleanSubQuery unique(EBoolean projection) {
-        setUniqueProjection(projection);
-        return new BooleanSubQuery(queryMixin.getMetadata());
+        return new BooleanSubQuery(uniqueProjection(projection));
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <RT extends Comparable<?>> ComparableSubQuery<RT> unique(EComparable<RT> projection) {
-        setUniqueProjection(projection);
-        return new ComparableSubQuery<RT>((Class)projection.getType(), queryMixin.getMetadata());
+        return new ComparableSubQuery<RT>((Class)projection.getType(), uniqueProjection(projection));
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <RT extends Comparable<?>> DateSubQuery<RT> unique(EDate<RT> projection) {
-        setUniqueProjection(projection);
-        return new DateSubQuery<RT>((Class)projection.getType(), queryMixin.getMetadata());
+        return new DateSubQuery<RT>((Class)projection.getType(), uniqueProjection(projection));
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <RT extends Comparable<?>> DateTimeSubQuery<RT> unique(EDateTime<RT> projection) {
-        setUniqueProjection(projection);
-        return new DateTimeSubQuery<RT>((Class)projection.getType(), queryMixin.getMetadata());
+        return new DateTimeSubQuery<RT>((Class)projection.getType(), uniqueProjection(projection));
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <RT extends Number & Comparable<?>> NumberSubQuery<RT> unique(ENumber<RT> projection) {
-        setUniqueProjection(projection);
-        return new NumberSubQuery<RT>((Class)projection.getType(), queryMixin.getMetadata());
+        return new NumberSubQuery<RT>((Class)projection.getType(), uniqueProjection(projection));
     }
 
     @Override
     public StringSubQuery unique(EString projection) {
-        setUniqueProjection(projection);
-        return new StringSubQuery(queryMixin.getMetadata());
+        return new StringSubQuery(uniqueProjection(projection));
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <RT extends Comparable<?>> TimeSubQuery<RT> unique(ETime<RT> projection) {
-        setUniqueProjection(projection);
-        return new TimeSubQuery<RT>((Class)projection.getType(), queryMixin.getMetadata());
+        return new TimeSubQuery<RT>((Class)projection.getType(), uniqueProjection(projection));
     }
 
     @Override
     public ObjectSubQuery<Object[]> unique(Expr<?> first, Expr<?> second, Expr<?>... rest) {
-        queryMixin.addToProjection(first, second);
-        queryMixin.addToProjection(rest);
-        queryMixin.setUnique(true);
-        return new ObjectSubQuery<Object[]>(Object[].class, queryMixin.getMetadata());
+        return new ObjectSubQuery<Object[]>(Object[].class, uniqueProjection(first, second, rest));
     }
+
 
     @Override
     public ObjectSubQuery<Object[]> unique(Expr<?>[] args) {
-        queryMixin.addToProjection(args);
-        queryMixin.setUnique(true);
-        return new ObjectSubQuery<Object[]>(Object[].class, queryMixin.getMetadata());
+        return new ObjectSubQuery<Object[]>(Object[].class, uniqueProjection(args));
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <RT> ObjectSubQuery<RT> unique(Expr<RT> projection) {
-        setUniqueProjection(projection);
-        return new ObjectSubQuery<RT>((Class)projection.getType(), queryMixin.getMetadata());
+        return new ObjectSubQuery<RT>((Class)projection.getType(), uniqueProjection(projection));
     }
+    
+    private QueryMetadata projection(Expr<?>... projection){
+        QueryMetadata metadata = queryMixin.getMetadata().clone();
+        for (Expr<?> expr : projection){
+            metadata.addProjection(expr);    
+        }
+        return metadata;        
+    }
+    
+    private QueryMetadata projection(Expr<?> first, Expr<?> second, Expr<?>[] rest) {
+        QueryMetadata metadata = queryMixin.getMetadata().clone();
+        metadata.addProjection(first);    
+        metadata.addProjection(second);    
+        for (Expr<?> expr : rest){
+            metadata.addProjection(expr);    
+        }
+        return metadata;   
+    }
+    
+    private QueryMetadata uniqueProjection(Expr<?>... projection){
+        QueryMetadata metadata = projection(projection);
+        metadata.setUnique(true);
+        return metadata;
+    }
+    
+
+    private QueryMetadata uniqueProjection(Expr<?> first, Expr<?> second, Expr<?>[] rest) {
+        QueryMetadata metadata = projection(first, second, rest);
+        metadata.setUnique(true);
+        return metadata;
+    }
+    
 }
