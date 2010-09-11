@@ -13,7 +13,7 @@ import org.junit.Test;
 public class TypeCategoryTest {
 
     @Test
-    public void testIsSubCategoryOf() {
+    public void IsSubCategoryOf() {
         assertTrue(TypeCategory.BOOLEAN.isSubCategoryOf(TypeCategory.COMPARABLE));
         assertTrue(TypeCategory.STRING.isSubCategoryOf(TypeCategory.COMPARABLE));
         assertTrue(TypeCategory.NUMERIC.isSubCategoryOf(TypeCategory.COMPARABLE));

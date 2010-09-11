@@ -22,7 +22,7 @@ import org.junit.Test;
 public class ClassUtilsTest {
 
     @Test
-    public void testGetName() {
+    public void GetName() {
         assertEquals("Object", ClassUtils.getName(Object.class));
         assertEquals("Object[]", ClassUtils.getName(Object[].class));
         assertEquals("int", ClassUtils.getName(int.class));
@@ -33,7 +33,7 @@ public class ClassUtilsTest {
     }
     
     @Test
-    public void testNormalize(){
+    public void Normalize(){
         assertEquals(List.class, ClassUtils.normalize(ArrayList.class));
         assertEquals(Set.class, ClassUtils.normalize(HashSet.class));
         assertEquals(Map.class, ClassUtils.normalize(HashMap.class));

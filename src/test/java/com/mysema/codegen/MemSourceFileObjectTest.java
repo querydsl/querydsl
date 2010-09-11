@@ -14,20 +14,20 @@ import org.junit.Test;
 public class MemSourceFileObjectTest {
     
     @Test
-    public void test(){
+    public void Simple(){
         MemSourceFileObject obj = new MemSourceFileObject("Test", "Hello World");
         assertEquals("Hello World", obj.getCharContent(true).toString());
     }
 
     @Test
-    public void testOpenWriter() throws IOException {
+    public void OpenWriter() throws IOException {
         MemSourceFileObject obj = new MemSourceFileObject("Test");
         obj.openWriter().write("Hello World");
         assertEquals("Hello World", obj.getCharContent(true).toString());
     }
     
     @Test
-    public void testOpenWriter2() throws IOException {
+    public void OpenWriter2() throws IOException {
         MemSourceFileObject obj = new MemSourceFileObject("Test");
         obj.openWriter().append("Hello World");
         assertEquals("Hello World", obj.getCharContent(true).toString());

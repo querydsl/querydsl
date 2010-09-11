@@ -26,7 +26,7 @@ public class ComplexEvaluationTest {
     
     @Test
     @SuppressWarnings("unchecked")
-    public void testComplex(){
+    public void Complex(){
         ClassType resultType = new ClassType(TypeCategory.LIST,List.class, Types.STRING);
         StringBuilder source = new StringBuilder();
         source.append("java.util.List<String> rv = new java.util.ArrayList<String>();\n");

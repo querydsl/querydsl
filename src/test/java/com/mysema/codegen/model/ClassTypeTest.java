@@ -23,7 +23,7 @@ public class ClassTypeTest {
 //    }
 
     @Test
-    public void as(){
+    public void As(){
         assertEquals(TypeCategory.COMPARABLE, stringType.as(TypeCategory.COMPARABLE).getCategory());
     }
 

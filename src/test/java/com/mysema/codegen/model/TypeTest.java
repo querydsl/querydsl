@@ -46,7 +46,7 @@ public class TypeTest {
     }
     
     @Test
-    public void testEquals(){
+    public void Equals(){
         assertEquals(locale, locale2);
         assertEquals(locale2, locale);
         assertEquals(stringList, stringList2);
@@ -54,13 +54,13 @@ public class TypeTest {
     }
     
     @Test
-    public void testHashcode(){
+    public void Hashcode(){
         assertEquals(locale.hashCode(), locale2.hashCode());
         assertEquals(stringList.hashCode(), stringList2.hashCode());
     }
     
     @Test
-    public void testGetGenericNameBoolean() {
+    public void GetGenericNameBoolean() {
         assertEquals("java.util.Locale",locale.getGenericName(true));
         assertEquals("java.util.Locale",locale2.getGenericName(true));
         assertEquals("java.util.List<String>",stringList.getGenericName(true));
@@ -73,7 +73,7 @@ public class TypeTest {
     }
 
     @Test
-    public void testGetRawName() {
+    public void GetRawName() {
         assertEquals("java.util.Locale",locale.getRawName(packages, classes));
         assertEquals("java.util.Locale",locale2.getRawName(packages, classes));
         assertEquals("java.util.List",stringList.getRawName(packages, classes));
@@ -84,7 +84,7 @@ public class TypeTest {
     }
 
     @Test
-    public void testGetGenericNameBooleanSetOfStringSetOfString() {
+    public void GetGenericNameBooleanSetOfStringSetOfString() {
         assertEquals("java.util.Locale",locale.getGenericName(true, packages, classes));
         assertEquals("java.util.Locale",locale2.getGenericName(true, packages, classes));
         assertEquals("java.util.List<String>",stringList.getGenericName(true,packages, classes));
@@ -92,7 +92,7 @@ public class TypeTest {
     }
 
     @Test
-    public void testGetFullName() {
+    public void GetFullName() {
         assertEquals("java.util.Locale",locale.getFullName());
         assertEquals("java.util.Locale",locale2.getFullName());
         assertEquals("java.util.List",stringList.getFullName());
@@ -100,7 +100,7 @@ public class TypeTest {
     }
 
     @Test
-    public void testGetPackageName() {
+    public void GetPackageName() {
         assertEquals("java.util",locale.getPackageName());
         assertEquals("java.util",locale2.getPackageName());
         assertEquals("java.util",stringList.getPackageName());
@@ -108,7 +108,7 @@ public class TypeTest {
     }
 
     @Test
-    public void testGetParameters() {
+    public void GetParameters() {
         assertEquals(Collections.emptyList(), locale.getParameters());
         assertEquals(Collections.emptyList(), locale2.getParameters());
         assertEquals(Collections.singletonList(Types.STRING), stringList.getParameters());
@@ -116,7 +116,7 @@ public class TypeTest {
     }
 
     @Test
-    public void testGetSimpleName() {
+    public void GetSimpleName() {
         assertEquals("Locale",locale.getSimpleName());
         assertEquals("Locale",locale2.getSimpleName());
         assertEquals("List",stringList.getSimpleName());
@@ -124,12 +124,12 @@ public class TypeTest {
     }
 
     @Test
-    public void testGetJavaClass() {
+    public void GetJavaClass() {
         assertEquals(Locale.class,locale.getJavaClass());
     }
 
     @Test
-    public void testIsFinal() {
+    public void IsFinal() {
         assertTrue(locale.isFinal());
         assertTrue(locale2.isFinal());
         assertFalse(stringList.isFinal());
@@ -139,7 +139,7 @@ public class TypeTest {
     }
 
     @Test
-    public void testIsPrimitive() {
+    public void IsPrimitive() {
         assertFalse(locale.isPrimitive());
         assertFalse(locale2.isPrimitive());
         assertFalse(stringList.isPrimitive());
@@ -147,7 +147,7 @@ public class TypeTest {
     }
 
     @Test
-    public void testGetCategory() {
+    public void GetCategory() {
         assertEquals(TypeCategory.SIMPLE, locale.getCategory());
         assertEquals(TypeCategory.SIMPLE, locale2.getCategory());
         assertEquals(TypeCategory.LIST, stringList.getCategory());
@@ -155,13 +155,13 @@ public class TypeTest {
     }
 
     @Test
-    public void testAs() {
+    public void As() {
         assertEquals(TypeCategory.SIMPLE, stringList.as(TypeCategory.SIMPLE).getCategory());
         assertEquals(TypeCategory.SIMPLE, stringList2.as(TypeCategory.SIMPLE).getCategory());
     }
 
     @Test
-    public void testGetPrimitiveName() {
+    public void GetPrimitiveName() {
         assertNull(locale.getPrimitiveName());
         assertNull(locale2.getPrimitiveName());
         assertNull(stringList.getPrimitiveName());
@@ -169,7 +169,7 @@ public class TypeTest {
     }
 
     @Test
-    public void testToString() {
+    public void ToString() {
         assertEquals("java.util.Locale",locale.toString());
         assertEquals("java.util.Locale",locale2.toString());
         assertEquals("java.util.List<String>",stringList.toString());
@@ -177,7 +177,7 @@ public class TypeTest {
     }
 
     @Test
-    public void testAsArrayType() {
+    public void AsArrayType() {
         assertEquals("java.util.Locale[]", locale.asArrayType().getFullName());
         assertEquals(TypeCategory.ARRAY, locale.asArrayType().getCategory());
         assertEquals("java.util.Locale[]", locale2.asArrayType().getFullName());

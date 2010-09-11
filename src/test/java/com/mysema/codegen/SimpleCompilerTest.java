@@ -24,7 +24,7 @@ public class SimpleCompilerTest {
     }
 
     @Test
-    public void testRun() {
+    public void Run() {
         new File("target/out").mkdir();
         JavaCompiler compiler = new SimpleCompiler();
         System.out.println(compiler.getClass().getName());

@@ -58,7 +58,7 @@ public class JavaWriterTest {
 
     
     @Test
-    public void testBasic() throws IOException {        
+    public void Basic() throws IOException {        
         writer.packageDecl("com.mysema.codegen");
         writer.imports(IOException.class, StringWriter.class, Test.class);
         writer.beginClass(testType);
@@ -72,7 +72,7 @@ public class JavaWriterTest {
     }
     
     @Test
-    public void testExtends() throws IOException{
+    public void Extends() throws IOException{
         writer.beginClass(testType2, testSuperType);
         writer.end();
         
@@ -80,7 +80,7 @@ public class JavaWriterTest {
     }
     
     @Test
-    public void testImplements() throws IOException{
+    public void Implements() throws IOException{
         writer.beginClass(testType2, null, testInterface1,testInterface2);
         writer.end();
         
@@ -88,7 +88,7 @@ public class JavaWriterTest {
     }
     
     @Test
-    public void testInterface() throws IOException{
+    public void Interface() throws IOException{
         writer.packageDecl("com.mysema.codegen");
         writer.imports(IOException.class, StringWriter.class, Test.class);
         writer.beginInterface(testType);
@@ -98,7 +98,7 @@ public class JavaWriterTest {
     }
     
     @Test
-    public void testInterface2() throws IOException{
+    public void Interface2() throws IOException{
         writer.beginInterface(testType2, testInterface1);
         writer.end();
         
@@ -106,7 +106,7 @@ public class JavaWriterTest {
     }
     
     @Test
-    public void testJavadoc() throws IOException{
+    public void Javadoc() throws IOException{
         writer.packageDecl("com.mysema.codegen");
         writer.imports(IOException.class, StringWriter.class, Test.class);
         writer.javadoc("JavaWriterTest is a test class");
@@ -118,7 +118,7 @@ public class JavaWriterTest {
 
     
     @Test
-    public void testAnnotations() throws IOException{
+    public void Annotations() throws IOException{
         writer.packageDecl("com.mysema.codegen");
         writer.imports(IOException.class, StringWriter.class);
         writer.annotation(Entity.class);
@@ -132,7 +132,7 @@ public class JavaWriterTest {
     }
     
     @Test
-    public void testAnnotations2() throws IOException{
+    public void Annotations2() throws IOException{
         writer.packageDecl("com.mysema.codegen");
         writer.imports(IOException.class.getPackage(), StringWriter.class.getPackage());
         writer.annotation(Entity.class);
@@ -160,7 +160,7 @@ public class JavaWriterTest {
     }
     
     @Test
-    public void testFields() throws IOException{
+    public void Fields() throws IOException{
         writer.beginClass(testType);
         // private
         writer.privateField(Types.STRING, "privateField");
@@ -181,7 +181,7 @@ public class JavaWriterTest {
     }
     
     @Test
-    public void testMethods() throws IOException{
+    public void Methods() throws IOException{
         writer.beginClass(testType);
         // private
         
@@ -204,7 +204,7 @@ public class JavaWriterTest {
     }
     
     @Test
-    public void testConstructors() throws IOException{
+    public void Constructors() throws IOException{
 	writer.beginClass(testType);
 	
 	writer.beginConstructor(Arrays.asList(new Parameter("a", Types.STRING), new Parameter("b", Types.STRING)), transformer);
@@ -220,7 +220,7 @@ public class JavaWriterTest {
     }
     
     @Test
-    public void testImports() throws IOException{
+    public void Imports() throws IOException{
 	writer.staticimports(Arrays.class);
 	
         match("/testImports", w.toString());
@@ -228,7 +228,7 @@ public class JavaWriterTest {
     
 
     @Test
-    public void testImports2() throws IOException{
+    public void Imports2() throws IOException{
         writer.importPackages("java.lang.reflect","java.util");
         
         match("/testImports2", w.toString());
@@ -236,7 +236,7 @@ public class JavaWriterTest {
     
     
     @Test
-    public void testSuppressWarnings() throws IOException{
+    public void SuppressWarnings() throws IOException{
 	writer.suppressWarnings("unused");
         writer.privateField(Types.STRING, "test");
         

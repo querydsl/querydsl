@@ -52,7 +52,7 @@ public class EvaluatorFactoryTest {
     }
     
     @Test
-    public void testSimple(){               
+    public void Simple(){               
         for (String expr : Arrays.asList("a.equals(b)", "a.startsWith(b)", "a.equalsIgnoreCase(b)")){
             long start = System.currentTimeMillis();
             evaluate(expr, boolean.class, names, strings, Arrays.asList("a","b"), Collections.<String,Object>emptyMap());
@@ -69,7 +69,7 @@ public class EvaluatorFactoryTest {
     }
     
     @Test
-    public void testResults(){
+    public void Results(){
         // String + String
         test("a + b", String.class, names, strings, Arrays.asList("Hello ", "World"), "Hello World");
         
@@ -81,7 +81,7 @@ public class EvaluatorFactoryTest {
     }
     
     @Test
-    public void testWithConstants(){
+    public void WithConstants(){
         Map<String,Object> constants = new HashMap<String,Object>();
         constants.put("x", "Hello World");
         List<Class<?>> types = Arrays.<Class<?>>asList(String.class);
@@ -91,7 +91,7 @@ public class EvaluatorFactoryTest {
     }
     
     @Test
-    public void testCustomType(){
+    public void CustomType(){
         test("a.getName()", String.class, 
                 Collections.singletonList("a"), Collections.<Class<?>>singletonList(TestEntity.class),
                 Arrays.asList(new TestEntity("Hello World")), "Hello World");                
