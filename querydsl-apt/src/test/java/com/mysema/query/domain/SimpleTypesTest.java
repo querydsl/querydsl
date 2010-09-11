@@ -16,8 +16,10 @@ import java.util.Locale;
 
 import org.junit.Test;
 
+import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryTransient;
+import com.mysema.query.annotations.QueryType;
 import com.mysema.query.annotations.QuerydslConfig;
 import com.mysema.query.types.path.PComparable;
 import com.mysema.query.types.path.PDateTime;
@@ -223,6 +225,16 @@ public class SimpleTypesTest extends AbstractTest{
         String skipMe;
         
         MyEnum myEnum;
+        
+        int[] intArray;
+        byte[] byteArray;
+        long[] longArray;
+        float[] floatArray;
+        double[] doubleArray;
+        short[] shortArray;
+        
+        @QueryType(PropertyType.SIMPLE)
+        byte[] byteArrayAsSimple;
     }
 
     @Test
