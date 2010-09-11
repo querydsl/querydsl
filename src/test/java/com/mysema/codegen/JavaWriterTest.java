@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.io.IOUtils;
@@ -56,6 +57,11 @@ public class JavaWriterTest {
         testInterface2 = new SimpleType("com.mysema.codegen.TestInterface2","com.mysema.codegen","TestInterface2");
     }
 
+    @Test
+    public void Primitive_Arrays(){
+        ClassType byteArray = new ClassType(byte[].class);
+        assertEquals("byte[]", writer.getRawName(byteArray));
+    }
     
     @Test
     public void Basic() throws IOException {        

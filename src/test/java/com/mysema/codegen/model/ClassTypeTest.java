@@ -8,6 +8,7 @@ package com.mysema.codegen.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import java.util.Collections;
 import java.util.Map;
 
 import org.junit.Test;
@@ -37,4 +38,10 @@ public class ClassTypeTest {
         assertFalse(mapType.isPrimitive());
     }
 
+    @Test
+    public void Primitive_Arrays(){
+        ClassType byteArray = new ClassType(byte[].class);
+        assertEquals("byte[]", byteArray.getRawName(Collections.singleton("java.lang"), Collections.<String>emptySet()));
+    }
+    
 }

@@ -39,11 +39,10 @@ public class AnnotationTest {
         writer.annotation(getClass().getAnnotation(TestAnnotation3.class));
         assertEquals("@com.mysema.codegen.TestAnnotation3(type=java.lang.annotation.ElementType.ANNOTATION_TYPE)", w.toString().trim());
     }
-    
-    
+        
     @Test
     public void MethodAnnotation() throws IOException, SecurityException, NoSuchMethodException {        
-        writer.annotation(getClass().getMethod("testMethodAnnotation").getAnnotation(Test.class));
+        writer.annotation(getClass().getMethod("MethodAnnotation").getAnnotation(Test.class));
         assertEquals("@org.junit.Test", w.toString().trim());
     }
     
