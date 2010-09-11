@@ -106,7 +106,7 @@ public class ClassType implements Type {
     
     @Override
     public String getFullName() {
-        return javaClass.getName();
+        return ClassUtils.getFullName(javaClass);   
     }
 
     @Override

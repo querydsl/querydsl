@@ -42,6 +42,15 @@ public class ClassTypeTest {
     public void Primitive_Arrays(){
         ClassType byteArray = new ClassType(byte[].class);
         assertEquals("byte[]", byteArray.getRawName(Collections.singleton("java.lang"), Collections.<String>emptySet()));
+        assertEquals("byte[]", byteArray.getSimpleName());
+        assertEquals("byte[]", byteArray.getFullName());
     }
     
+    @Test
+    public void Array(){
+        ClassType byteArray = new ClassType(Byte[].class);
+        assertEquals("Byte[]", byteArray.getRawName(Collections.singleton("java.lang"), Collections.<String>emptySet()));
+        assertEquals("Byte[]", byteArray.getSimpleName());
+        assertEquals("java.lang.Byte[]", byteArray.getFullName());
+    }
 }

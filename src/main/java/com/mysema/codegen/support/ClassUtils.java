@@ -21,6 +21,15 @@ public final class ClassUtils {
         return getName(cl, Collections.singleton("java.lang"), Collections.<String>emptySet());
     }
     
+
+    public static String getFullName(Class<?> cl) {
+        if (cl.isArray()){
+            return getFullName(cl.getComponentType()) + "[]";
+        }else{
+            return cl.getName();
+        }
+    }
+    
     public static String getName(Class<?> cl, Set<String> packages, Set<String> classes) {
         if (cl.isArray()) {
             return getName(cl.getComponentType(), packages, classes) + "[]";
@@ -53,4 +62,5 @@ public final class ClassUtils {
     }
 
     private ClassUtils(){}
+
 }
