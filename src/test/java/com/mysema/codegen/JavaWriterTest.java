@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
 import java.util.Arrays;
-import java.util.Collections;
 
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.io.IOUtils;
