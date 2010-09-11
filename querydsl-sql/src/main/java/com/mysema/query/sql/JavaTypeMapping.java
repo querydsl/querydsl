@@ -58,13 +58,16 @@ public class JavaTypeMapping {
     
     @SuppressWarnings("unchecked")
     public <T> Type<T> getType(Class<T> clazz){
-        if (typeByClass.containsKey(clazz)){
-            return (Type<T>) typeByClass.get(clazz);
-        }else if (defaultTypes.containsKey(clazz)){
-            return (Type<T>) defaultTypes.get(clazz);
-        }else{
-            throw new IllegalArgumentException("Got not type for " + clazz.getName());
-        }        
+        Class<?> cl = clazz;
+        while (!cl.equals(Object.class)){
+            if (typeByClass.containsKey(cl)){
+                return (Type<T>) typeByClass.get(cl);
+            }else if (defaultTypes.containsKey(cl)){
+                return (Type<T>) defaultTypes.get(cl);
+            }    
+            cl = cl.getSuperclass(); 
+        }
+        throw new IllegalArgumentException("Got not type for " + clazz.getName());        
     }
     
     public void register(Type<?> type) {
