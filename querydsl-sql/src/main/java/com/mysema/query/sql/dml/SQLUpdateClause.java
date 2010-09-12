@@ -112,7 +112,7 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
             
             // add other batches
             for (int i = 1; i < batchUpdates.size(); i++){
-                serializer = new SQLSerializer(configuration.getTemplates(), true);
+                serializer = new SQLSerializer(configuration.getTemplates(), true, true);
                 serializer.serializeForUpdate(batchMetadata.get(i), entity, batchUpdates.get(i));
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
                 stmt.addBatch();

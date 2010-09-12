@@ -68,6 +68,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     private final boolean dml;
     
+    private final boolean dry;
+    
     private Stage stage = Stage.SELECT;
 
     private boolean skipParent;
@@ -77,13 +79,18 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     private final SQLTemplates templates;
 
     public SQLSerializer(SQLTemplates templates) {
-        this(templates, false);
+        this(templates, false, false);
+    }
+    
+    public SQLSerializer(SQLTemplates templates, boolean dml) {
+        this(templates, dml, false);
     }
 
-    public SQLSerializer(SQLTemplates templates, boolean dml) {
-        super(templates);
+    public SQLSerializer(SQLTemplates templates, boolean dml, boolean dry) {
+        super(templates, dry);
         this.templates = templates;
         this.dml = dml;
+        this.dry = dry;
     }
 
     private void appendAsColumnName(Path<?> path){
@@ -246,9 +253,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     public void serializeForDelete(QueryMetadata metadata, RelationalPath<?> entity) {
         this.entity = entity;
-        
-        serialize(Position.START, metadata.getFlags());
-        
+        serialize(Position.START, metadata.getFlags());        
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())){
             append(templates.getDeleteFrom());    
         }        
@@ -257,9 +262,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             skipParent = true;
             append(templates.getWhere()).handle(metadata.getWhere());
             skipParent = false;
-        }
-        
+        }        
         serialize(Position.END, metadata.getFlags());
+        
     }
 
     public void serializeForMerge(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> keys,
