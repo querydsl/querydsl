@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.mysema.query.sql.dml;
 
 import java.util.ArrayList;
@@ -14,12 +11,10 @@ import com.mysema.query.types.Expr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 
-/**
- * @author tiwe
- *
- */
 @Immutable
-public class SQLInsertBatch {        
+public class SQLMergeBatch {
+    
+    private final List<Path<?>> keys;
     
     private final List<Path<?>> columns;
     
@@ -28,10 +23,15 @@ public class SQLInsertBatch {
     @Nullable
     private final SubQueryExpression<?> subQuery;
     
-    public SQLInsertBatch(List<Path<?>> c, List<Expr<?>> v, @Nullable SubQueryExpression<?> sq) {
+    public SQLMergeBatch(List<Path<?>> k, List<Path<?>> c, List<Expr<?>> v, @Nullable SubQueryExpression<?> sq) {
+        keys = new ArrayList<Path<?>>(k);
         columns = new ArrayList<Path<?>>(c);
         values = new ArrayList<Expr<?>>(v);
         subQuery = sq;
+    }
+    
+    public List<Path<?>> getKeys(){
+        return keys;
     }
 
     public List<Path<?>> getColumns() {
@@ -45,6 +45,5 @@ public class SQLInsertBatch {
     public SubQueryExpression<?> getSubQuery() {
         return subQuery;
     }
-    
-    
+
 }

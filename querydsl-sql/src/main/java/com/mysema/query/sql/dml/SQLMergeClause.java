@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -59,8 +60,12 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
 
     @Nullable
     private SubQueryExpression<?> subQuery;
+    
+    private final List<SQLMergeBatch> batches = new ArrayList<SQLMergeBatch>();
 
     private final List<Expr<?>> values = new ArrayList<Expr<?>>();
+    
+    private transient String queryString;
 
     public SQLMergeClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         this(connection, new Configuration(templates), entity);
@@ -74,6 +79,25 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
     
     public SQLMergeClause addFlag(Position position, String flag){
         metadata.addFlag(new QueryFlag(position, flag));
+        return this;
+    }
+    
+
+    public SQLMergeClause addBatch() {
+        if (!configuration.getTemplates().isNativeMerge()){
+            throw new IllegalStateException("batch only supported for databases that support native merge");
+        }
+        
+        batches.add(new SQLMergeBatch(keys, columns, values, subQuery));
+        columns.clear();
+        values.clear();
+        keys.clear();
+        subQuery = null;
+        return this;
+    }
+    
+    public SQLMergeClause columns(Path<?>... columns) {
+        this.columns.addAll(Arrays.asList(columns));
         return this;
     }
 
@@ -94,7 +118,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
     }
 
     @SuppressWarnings("unchecked")
-    private long executeCompositeMerge() {
+    private long executeCompositeMerge() {        
         // select 
         SQLQuery query = new SQLQueryImpl(connection, configuration.getTemplates()).from(entity.asExpr());
         for (int i=0; i < columns.size(); i++){
@@ -127,21 +151,54 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
             clause.set((Path)columns.get(i), (Expr)values.get(i));
         }
     }
-
-    private long executeNativeMerge() {
+    
+    private PreparedStatement createStatement() throws SQLException{
         SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
-        serializer.serializeForMerge(metadata, entity, keys, columns, values, subQuery);
-        String queryString = serializer.toString();
-        logger.debug(queryString);
-
         PreparedStatement stmt = null;
-        try {
+        if (batches.isEmpty()){
+            serializer.serializeForMerge(metadata, entity, keys, columns, values, subQuery);
+            queryString = serializer.toString();
+            logger.debug(queryString);
             stmt = connection.prepareStatement(queryString);
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
-            return stmt.executeUpdate();
+        }else{
+            serializer.serializeForMerge(metadata, entity, 
+                    batches.get(0).getKeys(), batches.get(0).getColumns(), 
+                    batches.get(0).getValues(), batches.get(0).getSubQuery());
+            queryString = serializer.toString();
+            logger.debug(queryString);
+            stmt = connection.prepareStatement(queryString);
+            
+            // add first batch
+            stmt.addBatch();
+            
+            // add other batches
+            for (int i = 1; i < batches.size(); i++){
+                SQLMergeBatch batch = batches.get(i);
+                serializer = new SQLSerializer(configuration.getTemplates(), true);
+                serializer.serializeForMerge(metadata, entity, batch.getKeys(), batch.getColumns(), batch.getValues(), batch.getSubQuery());
+                setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
+                stmt.addBatch();
+            }
+        }
+        return stmt;
+    }
+
+    private long executeNativeMerge() {
+        PreparedStatement stmt = null;
+        try {
+            stmt = createStatement();
+            if (batches.isEmpty()){
+                return stmt.executeUpdate();    
+            }else{
+                long rv = 0;
+                for (int i : stmt.executeBatch()){
+                    rv += i;
+                }
+                return rv;
+            }            
         } catch (SQLException e) {
-            throw new QueryException("Caught " + e.getClass().getSimpleName()
-                    + " for " + queryString, e);
+            throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
         } finally {
             if (stmt != null) {
                 close(stmt);
