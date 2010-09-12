@@ -68,8 +68,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     private final boolean dml;
     
-    private final boolean dry;
-    
     private Stage stage = Stage.SELECT;
 
     private boolean skipParent;
@@ -90,7 +88,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         super(templates, dry);
         this.templates = templates;
         this.dml = dml;
-        this.dry = dry;
     }
 
     private void appendAsColumnName(Path<?> path){
