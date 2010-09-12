@@ -134,6 +134,16 @@ public class CreateTableClause {
         indexes.add(new IndexData(name, columns));
         return this;
     }
+    
+    /**
+     * Set the last added index to unique
+     * 
+     * @return
+     */
+    public CreateTableClause unique(){
+        indexes.get(indexes.size()-1).setUnique(true);
+        return this;
+    }
 
     /**
      * Add a foreign key
@@ -154,7 +164,7 @@ public class CreateTableClause {
     @SuppressWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")
     public void execute() {
         StringBuilder builder = new StringBuilder();
-        builder.append("CREATE TABLE " + table + " (\n");
+        builder.append(templates.getCreateTable() + table + " (\n");
         List<String> lines = new ArrayList<String>(columns.size() + foreignKeys.size() + 1);
         // columns 
         for (ColumnData column : columns){
@@ -171,6 +181,7 @@ public class CreateTableClause {
             }
             lines.add(line.toString());
         }
+        
         // primary key
         if (primaryKey != null){
             StringBuilder line = new StringBuilder();
@@ -178,6 +189,7 @@ public class CreateTableClause {
             line.append("PRIMARY KEY(" + StringUtils.join(primaryKey.getColumns(), ", ") +")");
             lines.add(line.toString());
         }
+        
         // foreign keys
         for (ForeignKeyData foreignKey : foreignKeys){
             StringBuilder line = new StringBuilder();
@@ -195,9 +207,14 @@ public class CreateTableClause {
             stmt = connection.createStatement();
             stmt.execute(builder.toString());
             
+            // indexes
             for (IndexData index : indexes){
                 String indexColumns = StringUtils.join(index.getColumns(),", ");
-                String sql = "CREATE INDEX " + index.getName() + " ON " + table + "(" + indexColumns+ ")";
+                String prefix = templates.getCreateIndex();
+                if (index.isUnique()){
+                    prefix = templates.getCreateUniqueIndex();
+                }
+                String sql = prefix + index.getName() + templates.getOn() + table + "(" + indexColumns+ ")";
                 logger.info(sql);
                 stmt.execute(sql);
             }

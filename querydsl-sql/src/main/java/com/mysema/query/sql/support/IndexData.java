@@ -10,6 +10,8 @@ public class IndexData {
     private final String name;
     
     private final String[] columns;
+
+    private boolean unique;
     
     public IndexData(String name, String[] columns) {
         this.name = name;
@@ -22,6 +24,14 @@ public class IndexData {
 
     public String[] getColumns() {
         return columns;
+    }
+
+    public boolean isUnique() {
+        return unique;
+    }
+
+    public void setUnique(boolean unique) {
+        this.unique = unique;
     }
     
     

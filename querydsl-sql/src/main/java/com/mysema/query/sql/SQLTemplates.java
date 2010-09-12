@@ -44,6 +44,8 @@ public class SQLTemplates extends Templates {
     
     private boolean useQuotes;
 
+    private String createTable = "create table ";
+    
     private String asc = " asc";
 
     private String autoIncrement = " auto_increment";
@@ -111,6 +113,10 @@ public class SQLTemplates extends Templates {
     private String values = "\nvalues ";
     
     private String where = "\nwhere ";
+    
+    private String createIndex = "create index ";
+    
+    private String createUniqueIndex = "create unique index ";
     
     protected SQLTemplates(String quoteStr, boolean useQuotes) {
         this.quoteStr = Assert.notNull(quoteStr, "quoteStr");
@@ -328,6 +334,18 @@ public class SQLTemplates extends Templates {
     public boolean isSupportsAlias() {
         return true;
     }
+    
+    public String getCreateIndex() {
+        return createIndex;
+    }
+    
+    public String getCreateUniqueIndex() {
+        return createUniqueIndex;
+    }
+    
+    public String getCreateTable() {
+        return createTable;
+    }
 
     public SQLTemplates newLineToSingleSpace() {
         for (Field field : SQLTemplates.class.getDeclaredFields()) {
@@ -508,4 +526,16 @@ public class SQLTemplates extends Templates {
         this.where = where;
     }
     
+    protected void setCreateIndex(String createIndex) {
+        this.createIndex = createIndex;
+    }
+    
+    protected void setCreateUniqueIndex(String createUniqueIndex) {
+        this.createUniqueIndex = createUniqueIndex;
+    }
+
+    protected void setCreateTable(String createTable) {
+        this.createTable = createTable;
+    }
+
 }
