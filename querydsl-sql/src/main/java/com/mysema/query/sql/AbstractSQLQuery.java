@@ -5,6 +5,7 @@
  */
 package com.mysema.query.sql;
 
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -506,8 +507,21 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     @Override
     public <RT> RT uniqueResult(Expr<RT> expr) {
-        List<RT> list = list(expr);
-        return !list.isEmpty() ? list.get(0) : null;
+        CloseableIterator<RT> iterator = iterate(expr);
+        try{
+            if (iterator.hasNext()){
+                return iterator.next();
+            }else{
+                return null;
+            }
+        }finally{
+            try {
+                iterator.close();
+            } catch (IOException e) {
+                throw new QueryException(e);
+            }
+        }
+        
     }
 
     private long unsafeCount() throws SQLException {
