@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.NotImplementedException;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.BooleanClause.Occur;
 import org.bson.BSON;
 import org.bson.BSONDecoder;
 import org.bson.BSONEncoder;
@@ -33,13 +36,22 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.SimpleProjectable;
 import com.mysema.query.SimpleQuery;
 import com.mysema.query.support.QueryMixin;
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.Custom;
 import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.Expr;
+import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.Operation;
+import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathType;
 import com.mysema.query.types.SerializerBase;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.Templates;
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EBoolean;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.PString;
@@ -156,14 +168,13 @@ public class MongoDBTest {
         private final EntityPath<K> ePath;
         private final Datastore ds;
         private final DBCollection coll;
-        private final MongodbSerializer serializer = new MongodbSerializer(new MongodbTemplates());
+        private final MongodbSerializer serializer = new MongodbSerializer();
 
-        public MongodbQuery(Datastore datastore, DBCollection collection, EntityPath<K> entityPath) {
+        public MongodbQuery(Datastore datastore, EntityPath<K> entityPath) {
             queryMixin = new QueryMixin<MongodbQuery<K>>(this);
-            //ds = datastore;
-            coll = collection;
             ePath = entityPath;
             ds = datastore;
+            coll = ds.getCollection(ePath.getType());
         }
         
         @Override
@@ -233,9 +244,8 @@ public class MongoDBTest {
 
         @Override
         public long count() {
-            return createMorphiaQuery().countAll();
-            //return coll.count(createQuery());
-            
+            //return createMorphiaQuery().countAll();
+            return coll.count(createQuery());
         }
 
         @Override
@@ -245,29 +255,20 @@ public class MongoDBTest {
         }
         
 
-        private Query<? extends K> createMorphiaQuery() {
-            QueryMetadata metadata = queryMixin.getMetadata();
-            Assert.notNull(metadata.getWhere(), "where needs to be set");
-          
-            
-            return ds.createQuery(ePath.getType()).filter("firstName", "Juuso"); //where(" firstName : \"Juuso\" ");
-        }
+//        private Query<? extends K> createMorphiaQuery() {
+//            QueryMetadata metadata = queryMixin.getMetadata();
+//            Assert.notNull(metadata.getWhere(), "where needs to be set");
+//          
+//            
+//            return ds.createQuery(ePath.getType()).filter("firstName", "Juuso"); //where(" firstName : \"Juuso\" ");
+//        }
         
         private DBObject createQuery(){
             QueryMetadata metadata = queryMixin.getMetadata();
             Assert.notNull(metadata.getWhere(), "where needs to be set");
             
-            //Query<? extends K> q = ds.createQuery(ePath.getType());
-                        
-            serializer.handle(metadata.getWhere());
+            return (DBObject) serializer.handle(metadata.getWhere());
             
-            
-            //String q = "{" + serializer.toString() +"}";
-            
-            DBObject query = new BasicDBObject().append("firstName", "Juuso");
-            
-              
-            return query;
             
 //            org.apache.lucene.search.Query query = serializer.toQuery(metadata.getWhere(), metadata);
 //
@@ -295,28 +296,102 @@ public class MongoDBTest {
     
     
     
-    public static class MongodbSerializer extends SerializerBase<MongodbSerializer> {
+    
+    public static class MongodbSerializer implements Visitor<Object, Void> {
 
-        public MongodbSerializer(Templates templates) {
-            super(templates);
+        public MongodbSerializer() {
+            //BasicDBObject o = new BasicDBObject();
+            //o.append("firstName", "Juuso");
+            
+            //o.append("firstName", new BasicDBObject("$ne", "Juuso"));
+            //o.append("age", 3);
+        }
+
+        
+        
+        public Object handle(Expr<?> where) {
+            return where.accept(this, null);
+        }
+
+
+
+        @Override
+        public Object visit(Constant<?> expr, Void context) {
+            return expr.getConstant();
         }
 
         @Override
-        public Void visit(SubQueryExpression<?> expr, Void context) {
-            throw new NotImplementedException();
+        public Object visit(Custom<?> expr, Void context) {
+            // TODO Auto-generated method stub
+            return null;
         }
-                
-    }
-    
-    public static class MongodbTemplates extends Templates {
-        
-        public MongodbTemplates() {
-            add(Ops.EQ_PRIMITIVE, "{0} : {1}");
-            add(Ops.EQ_OBJECT, "{0} : {1}");
+
+        @Override
+        public Object visit(FactoryExpression<?> expr, Void context) {
+            // TODO Auto-generated method stub
+            return null;
         }
-        
+
+        @Override
+        public Object visit(Operation<?> expr, Void context) {
+            Operator<?> op = expr.getOperator();
+//            if (op == Ops.OR) {
+//                return toTwoHandSidedQuery(operation, Occur.SHOULD, metadata);
+//            } else if (op == Ops.AND) {
+//                return toTwoHandSidedQuery(operation, Occur.MUST, metadata);
+//            } else if (op == Ops.NOT) {
+//                BooleanQuery bq = new BooleanQuery();
+//                bq.add(new BooleanClause(toQuery(operation.getArg(0), metadata), Occur.MUST_NOT));
+//                return bq;
+//            } else if (op == Ops.LIKE) {
+//                return like(operation, metadata);
+            if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE || op == Ops.EQ_IGNORE_CASE) {
+                return new BasicDBObject((String)expr.getArg(0).accept(this, null), expr.getArg(1).accept(this, null));
+            } 
+//            else if (op == Ops.NE_OBJECT || op == Ops.NE_PRIMITIVE) {
+//                return ne(operation, metadata);
+//            } else if (op == Ops.STARTS_WITH || op == Ops.STARTS_WITH_IC) {
+//                return startsWith(metadata, operation);
+//            } else if (op == Ops.ENDS_WITH || op == Ops.ENDS_WITH_IC) {
+//                return endsWith(operation, metadata);
+//            } else if (op == Ops.STRING_CONTAINS || op == Ops.STRING_CONTAINS_IC) {
+//                return stringContains(operation, metadata);
+//            } else if (op == Ops.BETWEEN) {
+//                return between(operation, metadata);
+//            } else if (op == Ops.IN) {
+//                return in(operation, metadata);
+//            } else if (op == Ops.LT || op == Ops.BEFORE) {
+//                return lt(operation, metadata);
+//            } else if (op == Ops.GT || op == Ops.AFTER) {
+//                return gt(operation, metadata);
+//            } else if (op == Ops.LOE || op == Ops.BOE) {
+//                return le(operation, metadata);
+//            } else if (op == Ops.GOE || op == Ops.AOE) {
+//                return ge(operation, metadata);
+//            } else if (op == PathType.DELEGATE) {
+//                return toQuery(operation.getArg(0), metadata);
+//            }
+            throw new UnsupportedOperationException("Illegal operation " + expr);
+        }
+
+        @Override
+        public Object visit(Path<?> expr, Void context) {
+            return expr.getMetadata().getExpression().toString();
+        }
+
+        @Override
+        public Object visit(SubQueryExpression<?> expr, Void context) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
+        @Override
+        public Object visit(Param<?> expr, Void context) {
+            // TODO Auto-generated method stub
+            return null;
+        }
+
     }
-    
     
     
     //@Test
@@ -330,23 +405,15 @@ public class MongoDBTest {
         ds.delete(ds.createQuery(TestUser.class));
         
         
-        Mongo m = new Mongo();
-        DB db = m.getDB(dbname);
-        DBCollection coll = db.getCollection(collname);
-        //coll.remove(new BasicDBObject());
-        
-        
         TestUser u1 = new TestUser("Juuso", "Juhlava");
-        //coll.insert(morphia.toDBObject(u1));
         ds.save(u1);
         
         u1 = new TestUser("Laila", "Laiha");
-        //coll.insert(morphia.toDBObject(u1));
         ds.save(u1);
 
         QTestUser u = new QTestUser("u");
         
-        MongodbQuery<TestUser> query = new MongodbQuery<TestUser>(ds, coll, u);
+        MongodbQuery<TestUser> query = new MongodbQuery<TestUser>(ds, u);
         query.where(u.firstName.eq("Juuso"));
         
         
