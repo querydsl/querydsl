@@ -31,13 +31,43 @@ public class MongodbSerializerTest {
         entityPath = new PathBuilder<Object>(Object.class, "obj");
         title = entityPath.getString("title");
         year = entityPath.getNumber("year", Integer.class);
+        gross = entityPath.getNumber("gross", Double.class);
+        longField = entityPath.getNumber("longField", Long.class);
+        shortField = entityPath.getNumber("shortField", Short.class);
+        byteField = entityPath.getNumber("byteField", Byte.class);
+        floatField = entityPath.getNumber("floatField", Float.class);
     }
     
     @Test
     public void testEquals() {
         assertQuery(title.eq("A"), dbo("title","A"));
         assertQuery(year.eq(1), dbo("year",1));
+        assertQuery(gross.eq(1.0D), dbo("gross", 1.0D));
+        assertQuery(longField.eq(1L), dbo("longField", 1L));
+        assertQuery(shortField.eq((short)1), dbo("shortField", 1));
+        assertQuery(byteField.eq((byte)1), dbo("byteField", 1L));
+        assertQuery(floatField.eq(1.0F), dbo("floatField", 1.0F));
     }
+    
+    @Test
+    public void testEqAndEq() {
+        assertQuery(
+            title.eq("A").and(year.eq(1)), 
+            dbo("title","A").append("year", 1)
+        );
+        
+        assertQuery(
+            title.eq("A").and(year.eq(1).and(gross.eq(1.0D))), 
+            dbo("title","A").append("year", 1).append("gross", 1.0D)
+        );
+    }
+    
+    @Test
+    public void testNotEq() {
+        assertQuery(title.ne("A"), dbo("title", dbo("$ne", "A")));
+    }
+    
+    
     
     private void assertQuery(Expr<?> e, BasicDBObject expected) {
         BasicDBObject result = (BasicDBObject) serializer.handle(e);

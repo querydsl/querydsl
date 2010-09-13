@@ -20,13 +20,13 @@ import com.mysema.query.types.Visitor;
  */
 public class MongodbSerializer implements Visitor<Object, Void> {
 
-        public MongodbSerializer() {
-            //BasicDBObject o = new BasicDBObject();
-            //o.append("firstName", "Juuso");
-            
-            //o.append("firstName", new BasicDBObject("$ne", "Juuso"));
-            //o.append("age", 3);
-        }
+//        public MongodbSerializer() {
+//            //BasicDBObject o = new BasicDBObject();
+//            //o.append("firstName", "Juuso");
+//            
+//            //o.append("firstName", new BasicDBObject("$ne", "Juuso"));
+//            //o.append("age", 3);
+//        }
 
         
         
@@ -50,6 +50,14 @@ public class MongodbSerializer implements Visitor<Object, Void> {
             // TODO Auto-generated method stub
             return null;
         }
+        
+        private String leftAsString(Operation<?> expr) {
+            return (String)expr.getArg(0).accept(this, null);
+        }
+        
+        private Object rightAsObj(Operation<?> expr) {
+            return expr.getArg(1).accept(this, null);
+        }
 
         @Override
         public Object visit(Operation<?> expr, Void context) {
@@ -65,10 +73,17 @@ public class MongodbSerializer implements Visitor<Object, Void> {
 //            } else if (op == Ops.LIKE) {
 //                return like(operation, metadata);
             if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE || op == Ops.EQ_IGNORE_CASE) {
-                return new BasicDBObject((String)expr.getArg(0).accept(this, null), expr.getArg(1).accept(this, null));
-            } 
-//            else if (op == Ops.NE_OBJECT || op == Ops.NE_PRIMITIVE) {
-//                return ne(operation, metadata);
+                return new BasicDBObject(leftAsString(expr), rightAsObj(expr));
+            }
+            if (op == Ops.AND) {
+              BasicDBObject left = (BasicDBObject) handle(expr.getArg(0));
+              BasicDBObject right = (BasicDBObject) handle(expr.getArg(1));
+              left.putAll(right.toMap());
+              return left;
+            }
+            if (op == Ops.NE_OBJECT || op == Ops.NE_PRIMITIVE) {
+              return new BasicDBObject(leftAsString(expr), new BasicDBObject("$ne", rightAsObj(expr)));  
+            }
 //            } else if (op == Ops.STARTS_WITH || op == Ops.STARTS_WITH_IC) {
 //                return startsWith(metadata, operation);
 //            } else if (op == Ops.ENDS_WITH || op == Ops.ENDS_WITH_IC) {
