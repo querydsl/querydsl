@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.mysema.querydsl</groupId>
+    <artifactId>querydsl-root</artifactId>
+    <version>1.9.6-SNAPSHOT</version>
+  </parent>
+
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-mongodb</artifactId>
+  <name>Querydsl - Mongodb support</name>
+  <description>Mongodb support for querydsl</description>
+  <packaging>jar</packaging>
+  
+  <dependencies>   
+    <dependency>
+		<groupId>org.apache.lucene</groupId>
+		<artifactId>lucene-core</artifactId>
+		<version>3.0.0</version>
+        <scope>provided</scope>
+	</dependency>    
+ 
+    <dependency>   
+        <groupId>org.mongodb</groupId>
+        <artifactId>mongo-java-driver</artifactId>
+        <version>2.1</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>com.google.code.morphia</groupId>
+        <artifactId>morphia</artifactId>
+        <version>0.95</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-core</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+    
+    <!-- test -->
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-core</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>    
+  </dependencies>
+
+</project>
