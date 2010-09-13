@@ -32,6 +32,7 @@ import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
@@ -123,9 +124,9 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
         SQLQuery query = new SQLQueryImpl(connection, configuration.getTemplates()).from(entity);
         for (int i=0; i < columns.size(); i++){
             if (values.get(i) instanceof NullExpr){
-                query.where(columns.get(i).isNull());
+                query.where(ExpressionUtils.isNull(columns.get(i)));
             }else{
-                query.where(columns.get(i).eq((Expression)values.get(i)));    
+                query.where(ExpressionUtils.eq(columns.get(i),(Expression)values.get(i)));    
             }            
         }
         List<?> ids = query.list(keys.get(0));
@@ -134,7 +135,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
             // update
             SQLUpdateClause update = new SQLUpdateClause(connection, configuration.getTemplates(), entity);
             populate(update);
-            update.where(((Expression)keys.get(0)).in(ids));
+            update.where(ExpressionUtils.in((Expression)keys.get(0),ids));
             return update.execute();
         }else{
             // insert

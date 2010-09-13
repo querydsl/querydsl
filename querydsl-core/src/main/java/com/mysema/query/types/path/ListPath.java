@@ -136,16 +136,6 @@ public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionExpres
     }
 
     @Override
-    public BooleanExpression isNotNull() {
-        return pathMixin.isNotNull();
-    }
-
-    @Override
-    public BooleanExpression isNull() {
-        return pathMixin.isNull();
-    }
-
-    @Override
     public AnnotatedElement getAnnotatedElement(){
         return pathMixin.getAnnotatedElement();
     }

@@ -115,9 +115,9 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         List<? extends Expression<?>> select = metadata.getProjection();
         List<JoinExpression> joins = metadata.getJoins();
         Expression<?> source = joins.get(0).getTarget();
-        BooleanExpression where = metadata.getWhere();
+        Predicate where = metadata.getWhere();
         List<? extends Expression<?>> groupBy = metadata.getGroupBy();
-        BooleanExpression having = metadata.getHaving();
+        Predicate having = metadata.getHaving();
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
         // select

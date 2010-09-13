@@ -61,17 +61,7 @@ public class StringPath extends StringExpression implements Path<String> {
     public int hashCode() {
         return pathMixin.hashCode();
     }
-
-    @Override
-    public BooleanExpression isNotNull() {
-        return pathMixin.isNotNull();
-    }
-
-    @Override
-    public BooleanExpression isNull() {
-        return pathMixin.isNull();
-    }
-
+    
     @Override
     public AnnotatedElement getAnnotatedElement(){
         return pathMixin.getAnnotatedElement();

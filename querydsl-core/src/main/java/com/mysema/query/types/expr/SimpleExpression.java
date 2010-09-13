@@ -37,6 +37,9 @@ public abstract class SimpleExpression<D> implements Expression<D> {
     @Nullable
     private volatile NumberExpression<Long> countDistinct;
 
+    @Nullable
+    private volatile BooleanExpression isnull, isnotnull;
+    
     protected final boolean primitive;
     
     @Nullable
@@ -51,6 +54,31 @@ public abstract class SimpleExpression<D> implements Expression<D> {
             || Boolean.class.equals(type)
             || Character.class.equals(type);
     }
+    
+    /**
+     * Create a <code>this is not null</code> expression
+     *
+     * @return
+     */
+    public BooleanExpression isNotNull() {
+        if (isnotnull == null) {
+            isnotnull = BooleanOperation.create(Ops.IS_NOT_NULL, this);
+        }
+        return isnotnull;
+    }
+
+    /**
+     * Create a <code>this is null</code> expression
+     *
+     * @return
+     */
+    public BooleanExpression isNull() {
+        if (isnull == null) {
+            isnull = BooleanOperation.create(Ops.IS_NULL, this);
+        }
+        return isnull;
+    }
+
 
     /**
      * Create an alias for the expression

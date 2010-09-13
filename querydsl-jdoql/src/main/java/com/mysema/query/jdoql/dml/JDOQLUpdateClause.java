@@ -11,8 +11,9 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.UpdateClause;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.NullExpr;
 
 /**
@@ -50,9 +51,9 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
     public JDOQLUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++){
             if (values.get(i) != null){
-                metadata.addProjection(((Expression)paths.get(i)).eq(values.get(i)));
+                metadata.addProjection(ExpressionUtils.eq(((Expression)paths.get(i)), values.get(i)));
             }else{
-                metadata.addProjection(((Expression)paths.get(i)).eq(new NullExpr(paths.get(i).getType())));
+                metadata.addProjection(ExpressionUtils.eq(((Expression)paths.get(i)), new NullExpr(paths.get(i).getType())));
             }
         }
         return this;
@@ -61,16 +62,16 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
     @Override
     public <T> JDOQLUpdateClause set(Path<T> path, T value) {
         if (value != null){
-            metadata.addProjection(path.eq(value));
+            metadata.addProjection(ExpressionUtils.eq(path, value));
         }else{
-            metadata.addProjection(path.eq(new NullExpr<T>(path.getType())));
+            metadata.addProjection(ExpressionUtils.eq(path, new NullExpr<T>(path.getType())));
         }
 
         return this;
     }
 
     @Override
-    public JDOQLUpdateClause where(BooleanExpression... o) {
+    public JDOQLUpdateClause where(Predicate... o) {
         metadata.addWhere(o);
         return this;
     }

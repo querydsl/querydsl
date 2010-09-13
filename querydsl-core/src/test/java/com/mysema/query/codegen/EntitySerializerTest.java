@@ -46,7 +46,7 @@ public class EntitySerializerTest {
         EntityType entityType = new EntityType("Q",type);
         entityType.addProperty(new Property(entityType, "bytes", new ClassType(byte[].class)));
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
-        assertTrue(writer.toString().contains("public final PSimple<byte[]> bytes"));
+        assertTrue(writer.toString().contains("public final SimplePath<byte[]> bytes"));
     }
 
 }

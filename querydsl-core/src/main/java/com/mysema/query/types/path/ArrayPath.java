@@ -100,16 +100,6 @@ public class ArrayPath<E> extends SimpleExpression<E[]> implements Path<E[]>, Ar
     }
 
     @Override
-    public BooleanExpression isNotNull() {
-        return pathMixin.isNotNull();
-    }
-
-    @Override
-    public BooleanExpression isNull() {
-        return pathMixin.isNull();
-    }
-
-    @Override
     public AnnotatedElement getAnnotatedElement(){
         return pathMixin.getAnnotatedElement();
     }

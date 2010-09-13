@@ -26,11 +26,11 @@ public class SimpleTemplate<T> extends SimpleExpression<T> implements TemplateEx
 
     private static final long serialVersionUID = -4697578522909045745L;
 
-    public static <T> Expression<T> create(Class<? extends T> type, String template, Expression<?>... args){
+    public static <T> SimpleExpression<T> create(Class<? extends T> type, String template, Expression<?>... args){
         return new SimpleTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expression<?>>asList(args));
     }
 
-    public static <T> Expression<T> create(Class<? extends T> type, Template template, Expression<?>... args){
+    public static <T> SimpleExpression<T> create(Class<? extends T> type, Template template, Expression<?>... args){
         return new SimpleTemplate<T>(type, template, Arrays.<Expression<?>>asList(args));
     }
 

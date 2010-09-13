@@ -12,8 +12,9 @@ import net.jcip.annotations.Immutable;
 
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.SimplePath;
 
 /**
@@ -56,12 +57,12 @@ public class ForeignKey <E>{
     }
 
     @SuppressWarnings("unchecked")
-    public BooleanExpression on(RelationalPath<E> entity){
+    public Predicate on(RelationalPath<E> entity){
         BooleanBuilder builder = new BooleanBuilder();
         for (int i = 0; i < localColumns.size(); i++){
-            Expression local = localColumns.get(i).asExpr();
-            Expression foreign = new SimplePath(local.getType(), entity, foreignColumns.get(i));
-            builder.and(local.eq(foreign));
+            Expression<?> local = localColumns.get(i);
+            Expression<Object> foreign = new SimplePath(local.getType(), entity, foreignColumns.get(i));
+            builder.and(ExpressionUtils.eq(local,foreign));
         }
         return builder.getValue();
     }

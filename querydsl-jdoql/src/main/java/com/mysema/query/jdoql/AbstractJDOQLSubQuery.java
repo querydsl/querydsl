@@ -38,7 +38,7 @@ public class AbstractJDOQLSubQuery<Q extends AbstractJDOQLSubQuery<Q>> extends D
 
     @SuppressWarnings("unchecked")
     public <P> Q from(Path<? extends Collection<P>> target, EntityPath<P> alias){
-        queryMixin.getMetadata().addJoin(JoinType.DEFAULT, SimpleOperation.create(alias.getType(), Ops.ALIAS, target.asExpr(), alias.asExpr()));
+        queryMixin.getMetadata().addJoin(JoinType.DEFAULT, SimpleOperation.create(alias.getType(), Ops.ALIAS, target, alias));
         return (Q)this;
     }
 

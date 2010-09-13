@@ -19,7 +19,7 @@ import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.jdoql.JDOQLSerializer;
 import com.mysema.query.jdoql.JDOQLTemplates;
 import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.Predicate;
 
 /**
  * DeleteClause implementation for JDO
@@ -87,7 +87,7 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
     }
     
     @Override
-    public JDOQLDeleteClause where(BooleanExpression... o) {
+    public JDOQLDeleteClause where(Predicate... o) {
         metadata.addWhere(o);
         return this;
     }

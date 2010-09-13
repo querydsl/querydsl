@@ -132,11 +132,10 @@ public final class NumberConstant<D extends Number & Comparable<?>> extends Numb
         return NumberConstant.create(MathUtils.sum(constant, right));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <N extends Number & Comparable<?>> NumberExpression<D> add(Expression<N> right) {
-        if (right instanceof Constant){
-            return add(((Constant<Number>)right).getConstant());
+        if (right instanceof Constant<?>){
+            return add(((Constant<N>)right).getConstant());
         }else{
             return super.add(right);
         }
@@ -147,11 +146,10 @@ public final class NumberConstant<D extends Number & Comparable<?>> extends Numb
         return NumberConstant.create(MathUtils.difference(constant, right));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <N extends Number & Comparable<?>> NumberExpression<D> subtract(Expression<N> right) {
-        if (right instanceof Constant){
-            return subtract(((Constant<Number>)right).getConstant());
+        if (right instanceof Constant<?>){
+            return subtract(((Constant<N>)right).getConstant());
         }else{
             return super.subtract(right);
         }

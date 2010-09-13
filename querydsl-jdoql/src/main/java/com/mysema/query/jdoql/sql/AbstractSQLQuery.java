@@ -13,8 +13,8 @@ import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 
@@ -96,7 +96,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
         return queryMixin.leftJoin(o, alias);
     }
 
-    public T on(BooleanExpression... conditions) {
+    public T on(Predicate... conditions) {
         return queryMixin.on(conditions);
     }
 

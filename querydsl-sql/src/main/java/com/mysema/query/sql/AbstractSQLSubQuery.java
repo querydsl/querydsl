@@ -13,9 +13,9 @@ import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.custom.SimpleTemplate;
-import com.mysema.query.types.expr.BooleanExpression;
 
 /**
  * Abstract superclass for SubQuery implementations
@@ -100,7 +100,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.leftJoin(target, alias);
     }
 
-    public Q on(BooleanExpression... conditions){
+    public Q on(Predicate... conditions){
         return queryMixin.on(conditions);
     }
 

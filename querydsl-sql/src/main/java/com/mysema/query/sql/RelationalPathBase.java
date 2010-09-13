@@ -79,7 +79,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     
     @Override
     protected <P extends Path<?>> P add(P path){
-        columns.add(path.asExpr());
+        columns.add(path);
         return path;
     }
     

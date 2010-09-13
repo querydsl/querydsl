@@ -7,8 +7,6 @@ package com.mysema.query.types;
 
 import java.lang.reflect.AnnotatedElement;
 
-import com.mysema.query.types.expr.BooleanExpression;
-
 /**
  * Path represents a path expression
  *
@@ -30,23 +28,6 @@ public interface Path<C> extends Expression<C> {
      * @return
      */
     Path<?> getRoot();
-
-    /**
-     * Create a <code>this is not null</code> expression
-     *
-     * @return
-     */
-    // TODO : move isNotNull to Expr ?!?
-    BooleanExpression isNotNull();
-
-    /**
-     * Create a <code>this is null</code> expression
-     *
-     *
-     * @return
-     */
-    // TODO : move isNull to Expr ?!?
-    BooleanExpression isNull();
 
     /**
      * Return the annotated element related to the given path

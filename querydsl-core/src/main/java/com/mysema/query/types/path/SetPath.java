@@ -80,16 +80,6 @@ public class SetPath<E> extends CollectionExpressionBase<Set<E>,E> implements Pa
     }
 
     @Override
-    public BooleanExpression isNotNull() {
-        return pathMixin.isNotNull();
-    }
-
-    @Override
-    public BooleanExpression isNull() {
-        return pathMixin.isNull();
-    }
-
-    @Override
     public AnnotatedElement getAnnotatedElement(){
         return pathMixin.getAnnotatedElement();
     }

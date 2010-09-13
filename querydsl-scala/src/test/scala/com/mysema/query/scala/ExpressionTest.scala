@@ -7,8 +7,8 @@ import org.junit.Assert._
 
 class ExpressionTest {
     
-   var str = new PString("str");
-   var num = new PNumber(classOf[Integer],"num");
+   var str = new StringPath("str");
+   var num = new NumberPath(classOf[Integer],"num");
        
    @Test
    def Operations(){

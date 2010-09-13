@@ -64,16 +64,6 @@ public class DatePath<D extends Comparable> extends DateExpression<D> implements
     }
 
     @Override
-    public BooleanExpression isNotNull() {
-        return pathMixin.isNotNull();
-    }
-
-    @Override
-    public BooleanExpression isNull() {
-        return pathMixin.isNull();
-    }
-
-    @Override
     public AnnotatedElement getAnnotatedElement(){
         return pathMixin.getAnnotatedElement();
     }

@@ -10,8 +10,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.mysema.query.sql.AbstractSQLQuery.UnionBuilder;
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.custom.SimpleTemplate;
+import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.path.NumberPath;
 
 
@@ -26,9 +26,9 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
     @SuppressWarnings("unchecked")
     @Test
     public void union(){        
-        Expression<Integer> one = SimpleTemplate.create(Integer.class,"1");
-        Expression<Integer> two = SimpleTemplate.create(Integer.class,"2");
-        Expression<Integer> three = SimpleTemplate.create(Integer.class,"3");
+        SimpleExpression<Integer> one = SimpleTemplate.create(Integer.class,"1");
+        SimpleExpression<Integer> two = SimpleTemplate.create(Integer.class,"2");
+        SimpleExpression<Integer> three = SimpleTemplate.create(Integer.class,"3");
         NumberPath<Integer> col1 = new NumberPath<Integer>(Integer.class,"col1");
         UnionBuilder union = query.union(
             sq().unique(one.as(col1)),

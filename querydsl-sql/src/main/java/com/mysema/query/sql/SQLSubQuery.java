@@ -27,9 +27,9 @@ public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> implements SQL
     }
 
     public Expression<?> union(SubQueryExpression<?>... sq){
-        Expression<?> rv = sq[0].asExpr();
+        Expression<?> rv = sq[0];
         for (int i = 1; i < sq.length; i++){
-            rv = SimpleOperation.create(rv.getType(), SQLTemplates.UNION, rv, sq[i].asExpr());
+            rv = SimpleOperation.create(rv.getType(), SQLTemplates.UNION, rv, sq[i]);
         }
         return rv;
     }

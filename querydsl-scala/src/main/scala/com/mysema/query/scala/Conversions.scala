@@ -15,21 +15,21 @@ import com.mysema.query.types.path._
  */
 object Conversions {
     
-    def not(b: EBoolean): EBoolean = b.not()
+    def not(b: BooleanExpression): BooleanExpression = b.not()
     
-    implicit def booleanPath(b: Boolean): PBoolean = $(b);
+    implicit def booleanPath(b: Boolean): BooleanPath = $(b);
     
-    implicit def stringPath(s: String): PString = $(s);
+    implicit def stringPath(s: String): StringPath = $(s);
     
-    implicit def datePath(d: java.sql.Date): PDate[java.sql.Date] = $(d);
+    implicit def datePath(d: java.sql.Date): DatePath[java.sql.Date] = $(d);
     
-    implicit def dateTimePath(d: java.util.Date): PDateTime[java.util.Date] = $(d);
+    implicit def dateTimePath(d: java.util.Date): DateTimePath[java.util.Date] = $(d);
     
-    implicit def timePath(t: java.sql.Time): PTime[java.sql.Time] = $(t);
+    implicit def timePath(t: java.sql.Time): TimePath[java.sql.Time] = $(t);
         
-    implicit def comparablePath(c: Comparable[_]): PComparable[_] = $(c);
+    implicit def comparablePath(c: Comparable[_]): ComparablePath[_] = $(c);
     
-    implicit def simplePath(s: Object): PSimple[_] = $(s);
+    implicit def simplePath(s: Object): SimplePath[_] = $(s);
     
     //implicit def num[N <: Number & Comparable[N]](n: N): PNumber[N] = $(n);
     

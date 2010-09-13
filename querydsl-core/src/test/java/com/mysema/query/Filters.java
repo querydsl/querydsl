@@ -199,7 +199,7 @@ public class Filters {
         return rv;
     }
 
-    public <A> Collection<BooleanExpression> pathFilters(Path<A> expr, Path<A> other, A knownValue){
+    public <A> Collection<BooleanExpression> pathFilters(SimpleExpression<A> expr, SimpleExpression<A> other, A knownValue){
         return Arrays.<BooleanExpression>asList(
              expr.isNull(),
              expr.isNotNull()
@@ -210,7 +210,7 @@ public class Filters {
     public Collection<BooleanExpression> string(StringExpression expr, StringExpression other, String knownValue){
         List<BooleanExpression> rv = new ArrayList<BooleanExpression>();
         if (expr instanceof Path && other instanceof Path){
-            rv.addAll(pathFilters((Path<String>)expr, (Path<String>)other, knownValue));
+            rv.addAll(pathFilters(expr, other, knownValue));
         }
         rv.addAll(comparable(expr, other, knownValue));
         for (SimpleExpression<String> eq : projections.string(expr, other, knownValue)){

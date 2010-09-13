@@ -144,9 +144,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     private void serializeForQuery(QueryMetadata metadata, boolean forCountRow) {
         List<? extends Expression<?>> select = metadata.getProjection();
         List<JoinExpression> joins = metadata.getJoins();
-        BooleanExpression where = metadata.getWhere();
+        Predicate where = metadata.getWhere();
         List<? extends Expression<?>> groupBy = metadata.getGroupBy();
-        BooleanExpression having = metadata.getHaving();
+        Predicate having = metadata.getHaving();
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
         Set<QueryFlag> flags = metadata.getFlags();
 
@@ -254,7 +254,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())){
             append(templates.getDeleteFrom());    
         }        
-        handle(entity.asExpr());
+        handle(entity);
         if (metadata.getWhere() != null) {
             skipParent = true;
             append(templates.getWhere()).handle(metadata.getWhere());
@@ -273,7 +273,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())){
             append(templates.getMergeInto());    
         }        
-        handle(entity.asExpr());
+        handle(entity);
         append(" ");
         // columns
         if (!columns.isEmpty()){
@@ -317,7 +317,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())){
             append(templates.getInsertInto());    
         }        
-        handle(entity.asExpr());
+        handle(entity);
         // columns
         if (!columns.isEmpty()){
             append("(");
@@ -357,7 +357,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())){
             append(templates.getUpdate());    
         }        
-        handle(entity.asExpr());
+        handle(entity);
         append("\n");
         append(templates.getSet());
         boolean first = true;
@@ -366,7 +366,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             if (!first){
                 append(COMMA);
             }                        
-            handle(update.getFirst().asExpr());
+            handle(update.getFirst());
             append(" = ");
             if (update.getSecond() instanceof Expression<?>){
                 if (update.getSecond() instanceof Constant<?>){

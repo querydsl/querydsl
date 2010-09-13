@@ -15,13 +15,13 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.query.types.path.MapPath;
 
@@ -74,7 +74,7 @@ public class QueryMixin<T>{
 
     protected <D> Expression<D> createAlias(Expression<D> path, Path<D> alias){
         assertRoot(alias);
-        return path.as(alias);
+        return ExpressionUtils.as(path, alias);
     }
 
     @SuppressWarnings("unchecked")
@@ -91,7 +91,7 @@ public class QueryMixin<T>{
 
     protected <D> Expression<D> createAlias(SubQueryExpression<D> path, Path<D> alias){
         assertRoot(alias);
-        return path.as(alias);
+        return ExpressionUtils.as(path, alias);
     }
 
     public T from(Expression<?>... args) {
@@ -288,8 +288,8 @@ public class QueryMixin<T>{
         return self;
     }
 
-    public T on(BooleanExpression... conditions){
-        for (BooleanExpression condition : conditions){
+    public T on(Predicate... conditions){
+        for (Predicate condition : conditions){
             metadata.addJoinCondition(condition);
         }
         return self;

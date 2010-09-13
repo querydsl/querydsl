@@ -42,9 +42,9 @@ import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.custom.SimpleTemplate;
-import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.QBean;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.util.ResultSetAdapter;
@@ -462,7 +462,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return c.newInstance(args);
     }
 
-    public Q on(BooleanExpression... conditions) {
+    public Q on(Predicate... conditions) {
         return queryMixin.on(conditions);
     }
 

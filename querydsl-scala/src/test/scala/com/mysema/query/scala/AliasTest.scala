@@ -21,7 +21,7 @@ class AliasTest {
     
     @Test
     def Implicit_Cast1(){
-        var path: PString = domainType.firstName;
+        var path: StringPath = domainType.firstName;
         assertEquals("domainType.firstName like Hello", (path like "Hello").toString());
         assertEquals("domainType.firstName ASC",        (path asc).toString());       
         assertEquals("domainType.firstName = Hello",    (path eq "Hello").toString());

@@ -299,7 +299,7 @@ public class EntitySerializer implements Serializer{
 
             // body
             // TODO : replace with class reference
-            writer.beginLine("return new EConstructor<" + genericName + ">(");
+            writer.beginLine("return new ConstructorExpression<" + genericName + ">(");
             if (!localName.equals(genericName)){
                 writer.append("(Class)");
             }
@@ -497,7 +497,7 @@ public class EntitySerializer implements Serializer{
         writer.append(", this");
         for (Parameter p : method.getParameters()){
             // TODO : replace with class reference
-            writer.append(COMMA + "ExprConst.create(" + p.getName() + ")");
+            writer.append(COMMA + "SimpleConstant.create(" + p.getName() + ")");
         }
         writer.append(");\n");
 
@@ -620,7 +620,6 @@ public class EntitySerializer implements Serializer{
         }
     }
     
-    // FIXME
     protected void serializeProperties(EntityType model,  SerializerConfig config, CodeWriter writer) throws IOException {
         for (Property property : model.getProperties()){
             // strips of "? extends " etc

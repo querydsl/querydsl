@@ -31,9 +31,6 @@ public final class PathMixin<T> extends MixinBase<T> implements Path<T> {
 
     private static final long serialVersionUID = -2498447742798348162L;
 
-    @Nullable
-    private volatile BooleanExpression isnull, isnotnull;
-
     private final PathMetadata<?> metadata;
 
     private final Path<?> root;
@@ -73,22 +70,6 @@ public final class PathMixin<T> extends MixinBase<T> implements Path<T> {
     @Override
     public int hashCode() {
         return metadata.hashCode();
-    }
-
-    @Override
-    public BooleanExpression isNotNull() {
-        if (isnotnull == null) {
-            isnotnull = BooleanOperation.create(Ops.IS_NOT_NULL, self);
-        }
-        return isnotnull;
-    }
-
-    @Override
-    public BooleanExpression isNull() {
-        if (isnull == null) {
-            isnull = BooleanOperation.create(Ops.IS_NULL, self);
-        }
-        return isnull;
     }
 
     @Override
