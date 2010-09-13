@@ -19,11 +19,11 @@ public class SNamelistNames extends BeanPath<SNamelistNames> implements Relation
 
     public static final SNamelistNames namelistNames = new SNamelistNames("NAMELIST_NAMES");
 
-    public final PString element = createString("ELEMENT");
+    public final StringPath element = createString("ELEMENT");
 
-    public final PNumber<Long> namelistId = createNumber("NAMELIST_ID", Long.class);
+    public final NumberPath<Long> namelistId = createNumber("NAMELIST_ID", Long.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final ForeignKey<SNamelist> fkd6c82d72b8406ca4 = new ForeignKey<SNamelist>(this, namelistId, "ID");
 
@@ -39,9 +39,9 @@ public class SNamelistNames extends BeanPath<SNamelistNames> implements Relation
         super(SNamelistNames.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{element, namelistId};
+            _all = new Expression[]{element, namelistId};
         }
         return _all;
     }
@@ -59,8 +59,8 @@ public class SNamelistNames extends BeanPath<SNamelistNames> implements Relation
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

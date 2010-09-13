@@ -36,11 +36,11 @@ import com.mysema.query.MatchingFilters;
 import com.mysema.query.Module;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.Target;
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EStringConst;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.StringConstant;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.PathBuilder;
 
 /**
@@ -52,17 +52,17 @@ import com.mysema.query.types.path.PathBuilder;
 public class LuceneSerializerTest {
     private LuceneSerializer serializer;
     private PathBuilder<Object> entityPath;
-    private PString title;
-    private PString author;
-    private PString text;
-    private PString rating;
-    private PNumber<Integer> year;
-    private PNumber<Double> gross;
+    private StringPath title;
+    private StringPath author;
+    private StringPath text;
+    private StringPath rating;
+    private NumberPath<Integer> year;
+    private NumberPath<Double> gross;
 
-    private PNumber<Long> longField;
-    private PNumber<Short> shortField;
-    private PNumber<Byte> byteField;
-    private PNumber<Float> floatField;
+    private NumberPath<Long> longField;
+    private NumberPath<Short> shortField;
+    private NumberPath<Byte> byteField;
+    private NumberPath<Float> floatField;
 
     private static final String YEAR_PREFIX_CODED = NumericUtils.intToPrefixCoded(1990);
     private static final String GROSS_PREFIX_CODED = NumericUtils.doubleToPrefixCoded(900.00);
@@ -128,13 +128,13 @@ public class LuceneSerializerTest {
         searcher.close();
     }
 
-    private void testQuery(Expr<?> expr, int expectedHits) throws Exception {
+    private void testQuery(Expression<?> expr, int expectedHits) throws Exception {
         Query query = serializer.toQuery(expr, metadata);
         TopDocs docs = searcher.search(query, 100);
         assertEquals(expectedHits, docs.totalHits);
     }
 
-    private void testQuery(Expr<?> expr, String expectedQuery, int expectedHits) throws Exception {
+    private void testQuery(Expression<?> expr, String expectedQuery, int expectedHits) throws Exception {
         Query query = serializer.toQuery(expr, metadata);
         TopDocs docs = searcher.search(query, 100);
         assertEquals(expectedHits, docs.totalHits);
@@ -146,7 +146,7 @@ public class LuceneSerializerTest {
         Query query1 = serializer.toQuery(author.like("Michael"), metadata);
         Query query2 = serializer.toQuery(text.like("Text"), metadata);
 
-        EBoolean query = EBoolean.anyOf(
+        BooleanExpression query = BooleanExpression.anyOf(
             new QueryElement(query1),
             new QueryElement(query2)
         );
@@ -563,17 +563,17 @@ public class LuceneSerializerTest {
     @Test
     public void various() throws Exception{
         MatchingFilters filters = new MatchingFilters(Module.LUCENE, Target.LUCENE);
-        for (EBoolean filter : filters.string(title, EStringConst.create("Jurassic"))){
+        for (BooleanExpression filter : filters.string(title, StringConstant.create("Jurassic"))){
             System.out.println(filter);
             testQuery(filter, 1);
         }
 
-        for (EBoolean filter : filters.string(author, EStringConst.create("Michael Crichton"))){
+        for (BooleanExpression filter : filters.string(author, StringConstant.create("Michael Crichton"))){
             System.out.println(filter);
             testQuery(filter, 1);
         }
 
-        for (EBoolean filter : filters.string(title, EStringConst.create("1990"))){
+        for (BooleanExpression filter : filters.string(title, StringConstant.create("1990"))){
             System.out.println(filter);
             testQuery(filter, 0);
         }

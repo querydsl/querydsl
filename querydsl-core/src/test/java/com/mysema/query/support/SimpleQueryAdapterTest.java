@@ -10,7 +10,7 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.StringPath;
 
 
 public class SimpleQueryAdapterTest {
@@ -19,7 +19,7 @@ public class SimpleQueryAdapterTest {
     public void test(){
         DummyQuery query = new DummyQuery();
         DummyProjectable projectable = new DummyProjectable();
-        SimpleQueryAdapter simpleQuery = new SimpleQueryAdapter(query, projectable, new PString("a"));
+        SimpleQueryAdapter simpleQuery = new SimpleQueryAdapter(query, projectable, new StringPath("a"));
         
         simpleQuery.count();
         simpleQuery.countDistinct();

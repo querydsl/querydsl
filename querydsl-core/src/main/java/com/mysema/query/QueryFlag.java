@@ -10,8 +10,8 @@ import java.io.Serializable;
 import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.custom.CString;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.custom.StringTemplate;
 
 /**
  * Defines a positioned flag in a query for customization of query serialization
@@ -56,13 +56,13 @@ public class QueryFlag implements Serializable{
     
     private final Position position;
     
-    private final Expr<?> flag;
+    private final Expression<?> flag;
     
     public QueryFlag(Position position, String flag) {
-        this(position, CString.create(flag));
+        this(position, StringTemplate.create(flag));
     }
     
-    public QueryFlag(Position position, Expr<?> flag) {
+    public QueryFlag(Position position, Expression<?> flag) {
         this.position = Assert.notNull(position,"position");
         this.flag = Assert.notNull(flag,"flag");        
     }
@@ -71,7 +71,7 @@ public class QueryFlag implements Serializable{
         return position;
     }
 
-    public Expr<?> getFlag() {
+    public Expression<?> getFlag() {
         return flag;
     }
 

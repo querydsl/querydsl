@@ -12,10 +12,10 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.Predicate;
 
 /**
  * QueryMetadata defines query metadata such as query sources, filtering
@@ -30,14 +30,14 @@ public interface QueryMetadata extends Serializable {
      *
      * @param o
      */
-    void addGroupBy(Expr<?>... o);
+    void addGroupBy(Expression<?>... o);
 
     /**
      * Add the given having expressions
      *
      * @param o
      */
-    void addHaving(EBoolean... o);
+    void addHaving(Predicate... o);
 
     /**
      * Add the given query join
@@ -45,7 +45,7 @@ public interface QueryMetadata extends Serializable {
      * @param joinType
      * @param expr
      */
-    void addJoin(JoinType joinType, Expr<?> expr);
+    void addJoin(JoinType joinType, Expression<?> expr);
     
     /**
      * Add the given query join
@@ -58,7 +58,7 @@ public interface QueryMetadata extends Serializable {
      *
      * @param o
      */
-    void addJoinCondition(EBoolean o);
+    void addJoinCondition(Predicate o);
 
     /**
      * Add the given order specifiers
@@ -72,14 +72,14 @@ public interface QueryMetadata extends Serializable {
      *
      * @param o
      */
-    void addProjection(Expr<?>... o);
+    void addProjection(Expression<?>... o);
 
     /**
      * Add the given where expressions
      *
      * @param o
      */
-    void addWhere(EBoolean... o);
+    void addWhere(Predicate... o);
 
     /**
      * Clear the order expressions
@@ -108,7 +108,7 @@ public interface QueryMetadata extends Serializable {
      *
      * @return
      */
-    List<? extends Expr<?>> getGroupBy();
+    List<? extends Expression<?>> getGroupBy();
 
     /**
      * Get the having expressions
@@ -116,7 +116,7 @@ public interface QueryMetadata extends Serializable {
      * @return
      */
     @Nullable
-    EBoolean getHaving();
+    Predicate getHaving();
 
     /**
      * Get the query joins
@@ -145,7 +145,7 @@ public interface QueryMetadata extends Serializable {
      *
      * @return
      */
-    List<? extends Expr<?>> getProjection();
+    List<? extends Expression<?>> getProjection();
 
     /**
      * Get the parameters
@@ -161,7 +161,7 @@ public interface QueryMetadata extends Serializable {
      * @return
      */
     @Nullable
-    EBoolean getWhere();
+    Predicate getWhere();
 
     /**
      * Get whether the projection is distinct

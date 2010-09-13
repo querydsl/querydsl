@@ -15,10 +15,10 @@ import org.joda.time.Partial;
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
-import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PDate;
-import com.mysema.query.types.path.PDateTime;
-import com.mysema.query.types.path.PTime;
+import com.mysema.query.types.path.ComparablePath;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.TimePath;
 
 public class JodaTimeSupportTest extends AbstractTest{
 
@@ -44,12 +44,12 @@ public class JodaTimeSupportTest extends AbstractTest{
     @Test
     public void test() throws SecurityException, NoSuchFieldException {
         cl = QJodaTimeSupportTest_JodaTimeSupport.class;
-        match(PDateTime.class, "dateMidnight");
-        match(PDateTime.class, "dateTime");
-        match(PDateTime.class, "instant");
-        match(PDate.class, "localDate");
-        match(PDateTime.class, "localDateTime");
-        match(PTime.class, "localTime");
-        match(PComparable.class, "partial");
+        match(DateTimePath.class, "dateMidnight");
+        match(DateTimePath.class, "dateTime");
+        match(DateTimePath.class, "instant");
+        match(DatePath.class, "localDate");
+        match(DateTimePath.class, "localDateTime");
+        match(TimePath.class, "localTime");
+        match(ComparablePath.class, "partial");
     }
 }

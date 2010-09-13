@@ -19,9 +19,9 @@ public class SNamelist extends BeanPath<SNamelist> implements RelationalPath<SNa
 
     public static final SNamelist namelist = new SNamelist("NAMELIST");
 
-    public final PNumber<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SNamelist> sql100819184435410 = new PrimaryKey<SNamelist>(this, id);
 
@@ -39,9 +39,9 @@ public class SNamelist extends BeanPath<SNamelist> implements RelationalPath<SNa
         super(SNamelist.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{id};
+            _all = new Expression[]{id};
         }
         return _all;
     }
@@ -59,8 +59,8 @@ public class SNamelist extends BeanPath<SNamelist> implements RelationalPath<SNa
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 }
 

@@ -14,11 +14,11 @@ import com.mysema.commons.lang.Pair;
 import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerydslConfig;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.PBoolean;
-import com.mysema.query.types.path.PDate;
-import com.mysema.query.types.path.PDateTime;
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.path.BooleanPath;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.NumberPath;
 
 public class QueryExtensions9Test {
     
@@ -29,12 +29,12 @@ public class QueryExtensions9Test {
     
     
     @QueryDelegate(Date.class)
-    public static EBoolean inPeriod(PDate<Date> date, Pair<Date,Date> period){
+    public static BooleanExpression inPeriod(DatePath<Date> date, Pair<Date,Date> period){
         return date.goe(period.getFirst()).and(date.loe(period.getSecond()));
     }
 
     @QueryDelegate(Timestamp.class)
-    public static EBoolean inDatePeriod(PDateTime<Timestamp> timestamp, Pair<Date,Date> period){
+    public static BooleanExpression inDatePeriod(DateTimePath<Timestamp> timestamp, Pair<Date,Date> period){
         Timestamp first = new Timestamp(DateUtils.truncate(period.getFirst(), Calendar.DAY_OF_MONTH).getTime());
         Calendar second = Calendar.getInstance();
         second.setTime(DateUtils.truncate(period.getSecond(), Calendar.DAY_OF_MONTH));
@@ -43,12 +43,12 @@ public class QueryExtensions9Test {
     }
 
     @QueryDelegate(Boolean.class)
-    public static EBoolean isFalse2(PBoolean expr){
+    public static BooleanExpression isFalse2(BooleanPath expr){
         return expr.isNull().or(expr.eq(false));
     }
     
     @QueryDelegate(Boolean.class)
-    public static EBoolean isTrue2(PBoolean expr){
+    public static BooleanExpression isTrue2(BooleanPath expr){
         return expr.isNotNull().and(expr.eq(true));
     }
 
@@ -57,7 +57,7 @@ public class QueryExtensions9Test {
     }
     
     @QueryDelegate(Integer.class)
-    public static EBoolean atMost(PNumber<Integer> intValue, FileSize size){
+    public static BooleanExpression atMost(NumberPath<Integer> intValue, FileSize size){
         return intValue.loe(size.bytes);
     }
     

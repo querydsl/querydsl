@@ -8,15 +8,15 @@ public final class Constants {
     
     static final Set<Class<?>> typedClasses = new HashSet<Class<?>>(Arrays.<Class<?>>asList(
             PathBuilder.class,
-            PComparable.class,
-            PEnum.class,
-            PDate.class,
-            PDateTime.class,
+            ComparablePath.class,
+            EnumPath.class,
+            DatePath.class,
+            DateTimePath.class,
             BeanPath.class,
             EntityPathBase.class,
-            PNumber.class,
-            PSimple.class,
-            PTime.class
+            NumberPath.class,
+            SimplePath.class,
+            TimePath.class
             ));
 
 }

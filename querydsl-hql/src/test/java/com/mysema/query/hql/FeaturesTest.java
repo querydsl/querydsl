@@ -17,8 +17,8 @@ import org.junit.Test;
 
 import com.mysema.query.hql.domain.QAccount;
 import com.mysema.query.hql.domain.QInheritedProperties;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.path.NumberPath;
 
 /**
  * FeaturesTest provides.
@@ -139,7 +139,7 @@ public class FeaturesTest extends AbstractQueryTest {
         assertEquals(BigDecimal.class, sum(var(BigDecimal.class)).getType());
 
         // sum to var
-        ENumber<Long> sum = (ENumber) sum(var(Integer.class)); // via Java level cast
+        NumberExpression<Long> sum = (NumberExpression) sum(var(Integer.class)); // via Java level cast
         sum = sum(var(Integer.class)).longValue();
         assertNotNull(sum);
 
@@ -150,8 +150,8 @@ public class FeaturesTest extends AbstractQueryTest {
 
     }
 
-    private <D extends Number & Comparable<?>> PNumber<D> var(Class<D> cl){
-        return new PNumber<D>(cl, "var");
+    private <D extends Number & Comparable<?>> NumberPath<D> var(Class<D> cl){
+        return new NumberPath<D>(cl, "var");
     }
 
 }

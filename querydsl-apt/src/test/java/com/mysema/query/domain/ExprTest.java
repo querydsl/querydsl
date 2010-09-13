@@ -15,19 +15,19 @@ import java.util.TreeSet;
 
 import org.junit.Test;
 
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EBooleanConst;
-import com.mysema.query.types.expr.ENumberConst;
-import com.mysema.query.types.expr.EString;
-import com.mysema.query.types.expr.EStringConst;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanConstant;
+import com.mysema.query.types.expr.NumberConstant;
+import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.expr.StringConstant;
 
 public class ExprTest {
 
     @SuppressWarnings("unchecked")
     @Test
     public void test() throws Throwable {
-        List<Expr<?>> exprs = new ArrayList<Expr<?>>();
+        List<Expression<?>> exprs = new ArrayList<Expression<?>>();
         exprs.add(QAnimalTest_Animal.animal);
         exprs.add(QAnimalTest_Cat.cat);
         exprs.add(QConstructorTest_Category.category);
@@ -54,38 +54,38 @@ public class ExprTest {
         exprs.add(QReservedNamesTest_ReservedNames.reservedNames);
         exprs.add(QSimpleTypesTest_SimpleTypes.simpleTypes);
 
-        exprs.add(EStringConst.create("Hello World!"));
-        exprs.add(ENumberConst.create(1000));
-        exprs.add(ENumberConst.create(10l));
-        exprs.add(EBooleanConst.TRUE);
-        exprs.add(EBooleanConst.FALSE);
+        exprs.add(StringConstant.create("Hello World!"));
+        exprs.add(NumberConstant.create(1000));
+        exprs.add(NumberConstant.create(10l));
+        exprs.add(BooleanConstant.TRUE);
+        exprs.add(BooleanConstant.FALSE);
 
-        Set<Expr<?>> toVisit = new HashSet<Expr<?>>();
+        Set<Expression<?>> toVisit = new HashSet<Expression<?>>();
 
         // all entities
         toVisit.addAll(exprs);
         // and all their direct properties
-        for (Expr<?> expr : exprs){
+        for (Expression<?> expr : exprs){
             for (Field field : expr.getClass().getFields()){
                 Object rv = field.get(expr);
-                if (rv instanceof Expr){
-                    if (rv instanceof EString){
-                        EString str = (EString)rv;
+                if (rv instanceof Expression){
+                    if (rv instanceof StringExpression){
+                        StringExpression str = (StringExpression)rv;
                         toVisit.add(str.toLowerCase());
                         toVisit.add(str.charAt(0));
                         toVisit.add(str.isEmpty());
-                    }else if (rv instanceof EBoolean){
-                        EBoolean b = (EBoolean)rv;
+                    }else if (rv instanceof BooleanExpression){
+                        BooleanExpression b = (BooleanExpression)rv;
                         toVisit.add(b.not());
                     }
-                    toVisit.add((Expr<?>) rv);
+                    toVisit.add((Expression<?>) rv);
                 }
             }
         }
 
         Set<String> failures = new TreeSet<String>();
 
-        for (Expr<?> expr : toVisit){
+        for (Expression<?> expr : toVisit){
             for (Method method : expr.getClass().getMethods()){
                 if (method.getName().equals("getArg")) continue;
                 if (method.getReturnType() != void.class

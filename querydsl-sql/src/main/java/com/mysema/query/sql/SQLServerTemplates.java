@@ -10,7 +10,7 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.sql.mssql.RowNumber;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.NumberPath;
 
 /**
  * SQLServerTemplates is an SQL dialect for Microsoft SQL Server
@@ -22,7 +22,7 @@ import com.mysema.query.types.path.PNumber;
  */
 public class SQLServerTemplates extends SQLTemplates{
 
-    private static final PNumber<Long> rowNumber = new PNumber<Long>(Long.class, "row_number");
+    private static final NumberPath<Long> rowNumber = new NumberPath<Long>(Long.class, "row_number");
 
     private String limitOffsetTemplate = "row_number > {0} and row_number <= {1}";
 

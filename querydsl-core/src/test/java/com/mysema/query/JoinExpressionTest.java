@@ -11,12 +11,12 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.mysema.query.types.expr.EBooleanConst;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.expr.BooleanConstant;
+import com.mysema.query.types.path.StringPath;
 
 public class JoinExpressionTest {
 
-    private JoinExpression je = new JoinExpression(JoinType.DEFAULT, new PString("str"));
+    private JoinExpression je = new JoinExpression(JoinType.DEFAULT, new StringPath("str"));
 
     @Test
     public void testToString() {
@@ -25,11 +25,11 @@ public class JoinExpressionTest {
 
     @Test
     public void testAddCondition() {
-        je.addCondition(EBooleanConst.TRUE);
-        assertEquals(EBooleanConst.TRUE, je.getCondition());
+        je.addCondition(BooleanConstant.TRUE);
+        assertEquals(BooleanConstant.TRUE, je.getCondition());
 
-        je.addCondition(EBooleanConst.FALSE);
-        assertEquals(EBooleanConst.TRUE.and(EBooleanConst.FALSE), je.getCondition());
+        je.addCondition(BooleanConstant.FALSE);
+        assertEquals(BooleanConstant.TRUE.and(BooleanConstant.FALSE), je.getCondition());
     }
 
     @Test

@@ -13,10 +13,10 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.SimpleProjectable;
 import com.mysema.query.SimpleQuery;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.Predicate;
 
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
@@ -31,17 +31,17 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
 
     private final Projectable projectable;
 
-    private final Expr<T> projection;
+    private final Expression<T> projection;
 
     private final Query<?> query;
 
     @SuppressWarnings("BC_UNCONFIRMED_CAST")
-    public <Q extends Query<?> & Projectable> SimpleQueryAdapter(Q query, Expr<T> projection){
+    public <Q extends Query<?> & Projectable> SimpleQueryAdapter(Q query, Expression<T> projection){
         // NOTE : this is a correct cast which is not handled properly by FindBugs
         this(query, query, projection);
     }
 
-    public SimpleQueryAdapter(Query<?> query, Projectable projectable, Expr<T> projection){
+    public SimpleQueryAdapter(Query<?> query, Projectable projectable, Expression<T> projection){
         this.query = query;
         this.projectable = projectable;
         this.projection = projection;
@@ -118,7 +118,7 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     }
 
     @Override
-    public SimpleQueryAdapter<T> where(EBoolean... e) {
+    public SimpleQueryAdapter<T> where(Predicate... e) {
         query.where(e);
         return this;
     }

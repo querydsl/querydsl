@@ -19,9 +19,9 @@ public class SCalendar extends BeanPath<SCalendar> implements RelationalPath<SCa
 
     public static final SCalendar calendar = new SCalendar("CALENDAR");
 
-    public final PNumber<Integer> id = createNumber("ID", Integer.class);
+    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SCalendar> sql100819184430980 = new PrimaryKey<SCalendar>(this, id);
 
@@ -41,9 +41,9 @@ public class SCalendar extends BeanPath<SCalendar> implements RelationalPath<SCa
         super(SCalendar.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{id};
+            _all = new Expression[]{id};
         }
         return _all;
     }
@@ -61,8 +61,8 @@ public class SCalendar extends BeanPath<SCalendar> implements RelationalPath<SCa
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

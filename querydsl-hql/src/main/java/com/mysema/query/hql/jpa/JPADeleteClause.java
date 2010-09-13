@@ -18,7 +18,7 @@ import com.mysema.query.hql.HQLSerializer;
 import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.hql.JPQLTemplates;
 import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.Predicate;
 
 /**
  * DeleteClause implementation for JPA
@@ -41,7 +41,7 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause>{
     public JPADeleteClause(EntityManager entityManager, EntityPath<?> entity, JPQLTemplates templates){
         this.entityManager = entityManager;
         this.templates = templates;
-        metadata.addJoin(JoinType.DEFAULT, entity.asExpr());
+        metadata.addJoin(JoinType.DEFAULT, entity);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause>{
     }
     
     @Override
-    public JPADeleteClause where(EBoolean... o) {
+    public JPADeleteClause where(Predicate... o) {
         metadata.addWhere(o);
         return this;
     }

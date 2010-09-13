@@ -29,7 +29,7 @@ import com.mysema.query.AbstractJDBCTest;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.SerializerConfig;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 
 public class MetaDataSerializerTest extends AbstractJDBCTest{
@@ -98,7 +98,7 @@ public class MetaDataSerializerTest extends AbstractJDBCTest{
                     paths.append(property.getEscapedName());
                 }
                 // adds accessors for all fields
-                writer.publicFinal(new SimpleType(Types.LIST, new ClassType(Expr.class, (Type)null)), "exprs", "Arrays.<Expr<?>>asList(" + paths.toString() + ")");
+                writer.publicFinal(new SimpleType(Types.LIST, new ClassType(Expression.class, (Type)null)), "exprs", "Arrays.<Expr<?>>asList(" + paths.toString() + ")");
                 writer.publicFinal(new SimpleType(Types.LIST, new ClassType(Path.class, (Type)null)), "paths", "Arrays.<Path<?>>asList(" + paths.toString() + ")");
             }
 

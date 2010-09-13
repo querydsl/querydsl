@@ -9,7 +9,7 @@ import java.util.Collection;
 
 import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.Predicate;
 
 /**
  * ColDeleteClause is an implementation of the DeleteClause interface for the Querydsl Collections module
@@ -39,7 +39,7 @@ public class ColDeleteClause<T> implements DeleteClause<ColDeleteClause<T>>{
     @Override
     public long execute() {
         int rv = 0;
-        for (T match : query.list(expr.asExpr())){
+        for (T match : query.list(expr)){
             col.remove(match);
             rv++;
         }
@@ -47,7 +47,7 @@ public class ColDeleteClause<T> implements DeleteClause<ColDeleteClause<T>>{
     }
     
     @Override
-    public ColDeleteClause<T> where(EBoolean... o) {
+    public ColDeleteClause<T> where(Predicate... o) {
         query.where(o);
         return this;
     }

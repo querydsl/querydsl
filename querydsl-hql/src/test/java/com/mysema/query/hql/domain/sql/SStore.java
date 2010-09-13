@@ -19,11 +19,11 @@ public class SStore extends BeanPath<SStore> implements RelationalPath<SStore> {
 
     public static final SStore store = new SStore("STORE");
 
-    public final PNumber<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    public final PNumber<Long> locationId = createNumber("LOCATION_ID", Long.class);
+    public final NumberPath<Long> locationId = createNumber("LOCATION_ID", Long.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SStore> sql100819184439380 = new PrimaryKey<SStore>(this, id);
 
@@ -43,9 +43,9 @@ public class SStore extends BeanPath<SStore> implements RelationalPath<SStore> {
         super(SStore.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{id, locationId};
+            _all = new Expression[]{id, locationId};
         }
         return _all;
     }
@@ -63,8 +63,8 @@ public class SStore extends BeanPath<SStore> implements RelationalPath<SStore> {
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

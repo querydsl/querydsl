@@ -10,7 +10,7 @@ import java.util.Collection;
 import com.mysema.query.Projectable;
 import com.mysema.query.SimpleQuery;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.path.PMap;
+import com.mysema.query.types.path.MapPath;
 
 /**
  * Query interface for Collection queries
@@ -55,6 +55,6 @@ public interface ColQuery extends SimpleQuery<ColQuery>, Projectable {
      * @param alias
      * @return
      */
-    <P> ColQuery innerJoin(PMap<?,P,?> mapPath, Path<P> alias);
+    <P> ColQuery innerJoin(MapPath<?,P,?> mapPath, Path<P> alias);
 
 }

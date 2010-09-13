@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 
 /**
  * QueryEngine defines an interface for the evaluation of ColQuery queries
@@ -31,7 +31,7 @@ public interface QueryEngine {
      * @param iterables
      * @return
      */
-    long count(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables);
+    long count(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables);
 
     /**
      * Evaluate the given query and return the projection as a list
@@ -40,6 +40,6 @@ public interface QueryEngine {
      * @param iterables
      * @return
      */
-    <T> List<T> list(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables, Expr<T> projection);
+    <T> List<T> list(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables, Expression<T> projection);
 
 }

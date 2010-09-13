@@ -19,7 +19,7 @@ import com.mysema.query.dml.DeleteClause;
 import com.mysema.query.jdoql.JDOQLSerializer;
 import com.mysema.query.jdoql.JDOQLTemplates;
 import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.BooleanExpression;
 
 /**
  * DeleteClause implementation for JDO
@@ -45,14 +45,14 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
         this.entity = entity;
         this.persistenceManager = persistenceManager;
         this.templates = templates;
-        metadata.addJoin(JoinType.DEFAULT, entity.asExpr());
+        metadata.addJoin(JoinType.DEFAULT, entity);
     }
 
     @Override
     public long execute() {
         Query query = persistenceManager.newQuery(entity.getType());
         if (metadata.getWhere() != null){
-            JDOQLSerializer serializer = new JDOQLSerializer(templates, entity.asExpr());
+            JDOQLSerializer serializer = new JDOQLSerializer(templates, entity);
             serializer.handle(metadata.getWhere());
             query.setFilter(serializer.toString());
             Map<Object,String> constToLabel = serializer.getConstantToLabel();
@@ -87,14 +87,14 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
     }
     
     @Override
-    public JDOQLDeleteClause where(EBoolean... o) {
+    public JDOQLDeleteClause where(BooleanExpression... o) {
         metadata.addWhere(o);
         return this;
     }
     
     @Override
     public String toString(){
-        JDOQLSerializer serializer = new JDOQLSerializer(templates, entity.asExpr());
+        JDOQLSerializer serializer = new JDOQLSerializer(templates, entity);
         serializer.handle(metadata.getWhere());
         return serializer.toString();
     }

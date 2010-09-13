@@ -15,13 +15,13 @@ import org.junit.Test;
 
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.NumberPath;
 
 public class PagingTest extends AbstractQueryTest {
 
     private List<Integer> ints = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9);
 
-    private PNumber<Integer> var = new PNumber<Integer>(Integer.class, "var");
+    private NumberPath<Integer> var = new NumberPath<Integer>(Integer.class, "var");
 
     @Test
     public void test() {

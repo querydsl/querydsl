@@ -8,8 +8,8 @@ package com.mysema.query.hql;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.mysema.query.types.EConstructor;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.expr.ConstructorExpression;
 
 public class ConstructorsTest extends AbstractQueryTest{
 
@@ -17,11 +17,11 @@ public class ConstructorsTest extends AbstractQueryTest{
 
     }
 
-    public static final class _BookmarkDTO extends EConstructor<BookmarkDTO> {
+    public static final class _BookmarkDTO extends ConstructorExpression<BookmarkDTO> {
 
         private static final long serialVersionUID = 2664671413344744578L;
 
-        public _BookmarkDTO(Expr<java.lang.String> address) {
+        public _BookmarkDTO(Expression<java.lang.String> address) {
             super(BookmarkDTO.class, new Class[] { String.class }, address);
         }
     }
@@ -29,8 +29,8 @@ public class ConstructorsTest extends AbstractQueryTest{
     @Test
     @Ignore
     public void testConstructors() {
-        EConstructor<com.mysema.query.hql.domain.Cat> c =
-                new EConstructor<com.mysema.query.hql.domain.Cat>(
+        ConstructorExpression<com.mysema.query.hql.domain.Cat> c =
+                new ConstructorExpression<com.mysema.query.hql.domain.Cat>(
                 com.mysema.query.hql.domain.Cat.class,
                 new Class[]{String.class},
                 cat.name);

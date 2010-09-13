@@ -11,11 +11,11 @@ import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.Table;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.CSimple;
+import com.mysema.query.types.custom.SimpleTemplate;
 import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.NumberPath;
 
 
 /**
@@ -28,11 +28,11 @@ public class SStoreProducts extends BeanPath<SStoreProducts> implements Relation
 
     public static final SStoreProducts storeProducts = new SStoreProducts("STORE_PRODUCTS");
 
-    public final PNumber<Integer> idx = createNumber("IDX", Integer.class);
+    public final NumberPath<Integer> idx = createNumber("IDX", Integer.class);
 
-    public final PNumber<Long> productIdEid = createNumber("PRODUCT_ID_EID", Long.class);
+    public final NumberPath<Long> productIdEid = createNumber("PRODUCT_ID_EID", Long.class);
 
-    public final PNumber<Long> storeIdOid = createNumber("STORE_ID_OID", Long.class);
+    public final NumberPath<Long> storeIdOid = createNumber("STORE_ID_OID", Long.class);
 
     public final PrimaryKey<SStoreProducts> sysIdx55 = new PrimaryKey<SStoreProducts>(this, idx, storeIdOid);
 
@@ -52,8 +52,8 @@ public class SStoreProducts extends BeanPath<SStoreProducts> implements Relation
         super(SStoreProducts.class, metadata);
     }
 
-    public Expr<Object[]> all() {
-        return CSimple.create(Object[].class, "{0}.*", this);
+    public Expression<Object[]> all() {
+        return SimpleTemplate.create(Object[].class, "{0}.*", this);
     }
 
     @Override
@@ -72,8 +72,8 @@ public class SStoreProducts extends BeanPath<SStoreProducts> implements Relation
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(idx, productIdEid, storeIdOid);
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(idx, productIdEid, storeIdOid);
     }
 
 }

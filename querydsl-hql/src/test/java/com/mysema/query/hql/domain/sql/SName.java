@@ -19,15 +19,15 @@ public class SName extends BeanPath<SName> implements RelationalPath<SName> {
 
     public static final SName name = new SName("NAME");
 
-    public final PString firstname = createString("FIRSTNAME");
+    public final StringPath firstname = createString("FIRSTNAME");
 
-    public final PNumber<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    public final PString lastname = createString("LASTNAME");
+    public final StringPath lastname = createString("LASTNAME");
 
-    public final PString nickname = createString("NICKNAME");
+    public final StringPath nickname = createString("NICKNAME");
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SName> sql100819184435150 = new PrimaryKey<SName>(this, id);
 
@@ -45,9 +45,9 @@ public class SName extends BeanPath<SName> implements RelationalPath<SName> {
         super(SName.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{firstname, id, lastname, nickname};
+            _all = new Expression[]{firstname, id, lastname, nickname};
         }
         return _all;
     }
@@ -65,8 +65,8 @@ public class SName extends BeanPath<SName> implements RelationalPath<SName> {
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 }
 

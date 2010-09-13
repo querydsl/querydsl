@@ -11,9 +11,9 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EBooleanConst;
-import com.mysema.query.types.path.PBoolean;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanConstant;
+import com.mysema.query.types.path.BooleanPath;
 
 /**
  * CascadingBooleanTest provides.
@@ -23,9 +23,9 @@ import com.mysema.query.types.path.PBoolean;
  */
 public class BooleanBuilderTest {
 
-    private EBoolean first = EBooleanConst.TRUE;
+    private BooleanExpression first = BooleanConstant.TRUE;
 
-    private EBoolean second = EBooleanConst.FALSE;
+    private BooleanExpression second = BooleanConstant.FALSE;
 
     @Test
     public void test(){
@@ -96,7 +96,7 @@ public class BooleanBuilderTest {
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(first);
         assertEquals("true", builder.toString());
-        builder.or(new PBoolean("condition"));
+        builder.or(new BooleanPath("condition"));
         assertEquals("true || condition", builder.toString());
     }
 }

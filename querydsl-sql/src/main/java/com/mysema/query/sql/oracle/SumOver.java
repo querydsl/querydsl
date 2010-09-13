@@ -11,10 +11,10 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.custom.CNumber;
-import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.custom.NumberTemplate;
+import com.mysema.query.types.expr.NumberExpression;
 
 /**
  * SumOver is a fluent type for Oracle specific sum over / partition by / order
@@ -23,19 +23,19 @@ import com.mysema.query.types.expr.ENumber;
  * @author tiwe
  * @version $Id$
  */
-public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A> {
+public class SumOver<A extends Number & Comparable<? super A>> extends NumberExpression<A> {
 
     private static final long serialVersionUID = -4130672293308756779L;
 
     // TODO : change this to List<OrderSpecifier<?>>
-    private List<Expr<?>> orderBy = new ArrayList<Expr<?>>();
+    private List<Expression<?>> orderBy = new ArrayList<Expression<?>>();
 
     @Nullable
-    private Expr<?> partitionBy;
+    private Expression<?> partitionBy;
 
-    private final Expr<A> target;
+    private final Expression<A> target;
 
-    public SumOver(Expr<A> expr) {
+    public SumOver(Expression<A> expr) {
         super(expr.getType());
         target = expr;
     }
@@ -43,7 +43,7 @@ public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A
     @SuppressWarnings("unchecked")
     @Override
     public <R,C> R accept(Visitor<R,C> v, C context) {
-        List<Expr<?>> args = new ArrayList<Expr<?>>();
+        List<Expression<?>> args = new ArrayList<Expression<?>>();
         StringBuilder builder = new StringBuilder();
         builder.append("sum({0}) over (");
         args.add(target);
@@ -57,7 +57,7 @@ public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A
             }
             builder.append("order by ");
             boolean first = true;
-            for (Expr<?> expr : orderBy){
+            for (Expression<?> expr : orderBy){
                 if (!first){
                     builder.append(", ");
                 }
@@ -67,10 +67,10 @@ public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A
             }
         }
         builder.append(")");
-        ENumber<A> expr = CNumber.<A>create(
+        NumberExpression<A> expr = NumberTemplate.<A>create(
                 (Class<A>)target.getType(),
                 builder.toString(),
-                args.toArray(new Expr[args.size()]));
+                args.toArray(new Expression[args.size()]));
         return expr.accept(v, context);
     }
 
@@ -94,12 +94,12 @@ public class SumOver<A extends Number & Comparable<? super A>> extends ENumber<A
         return target.hashCode();
     }
 
-    public SumOver<A> order(Expr<?>... orderBy) {
+    public SumOver<A> order(Expression<?>... orderBy) {
         this.orderBy.addAll(Arrays.asList(orderBy));
         return this;
     }
 
-    public SumOver<A> partition(Expr<?> partitionBy) {
+    public SumOver<A> partition(Expression<?> partitionBy) {
         this.partitionBy = partitionBy;
         return this;
     }

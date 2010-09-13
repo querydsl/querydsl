@@ -19,13 +19,13 @@ public class SCalendarHolidays extends BeanPath<SCalendarHolidays> implements Re
 
     public static final SCalendarHolidays calendarHolidays = new SCalendarHolidays("CALENDAR_HOLIDAYS");
 
-    public final PNumber<Integer> calendarId = createNumber("CALENDAR_ID", Integer.class);
+    public final NumberPath<Integer> calendarId = createNumber("CALENDAR_ID", Integer.class);
 
-    public final PDateTime<Date> element = createDateTime("ELEMENT", Date.class);
+    public final DateTimePath<Date> element = createDateTime("ELEMENT", Date.class);
 
-    public final PString holidaysKey = createString("HOLIDAYS_KEY");
+    public final StringPath holidaysKey = createString("HOLIDAYS_KEY");
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SCalendarHolidays> sql100819184431240 = new PrimaryKey<SCalendarHolidays>(this, calendarId, holidaysKey);
 
@@ -43,9 +43,9 @@ public class SCalendarHolidays extends BeanPath<SCalendarHolidays> implements Re
         super(SCalendarHolidays.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{calendarId, element, holidaysKey};
+            _all = new Expression[]{calendarId, element, holidaysKey};
         }
         return _all;
     }
@@ -63,8 +63,8 @@ public class SCalendarHolidays extends BeanPath<SCalendarHolidays> implements Re
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 }
 

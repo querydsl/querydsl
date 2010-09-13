@@ -7,11 +7,11 @@ package com.mysema.query.sql.oracle;
 
 import java.util.Date;
 
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.expr.EDate;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.path.PDate;
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.expr.DateExpression;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.NumberPath;
 
 /**
  * Convenience functions and constants for Oracle DB usage
@@ -23,13 +23,13 @@ public final class OracleGrammar {
 
     private OracleGrammar(){}
 
-    public static final ENumber<Integer> level = new PNumber<Integer>(Integer.class, "level");
+    public static final NumberExpression<Integer> level = new NumberPath<Integer>(Integer.class, "level");
 
-    public static final ENumber<Integer> rownum = new PNumber<Integer>(Integer.class, "rownum");
+    public static final NumberExpression<Integer> rownum = new NumberPath<Integer>(Integer.class, "rownum");
 
-    public static final EDate<Date> sysdate = new PDate<Date>(Date.class, "sysdate");
+    public static final DateExpression<Date> sysdate = new DatePath<Date>(Date.class, "sysdate");
 
-    public static <A extends Number & Comparable<? super A>> SumOver<A> sumOver(Expr<A> expr) {
+    public static <A extends Number & Comparable<? super A>> SumOver<A> sumOver(Expression<A> expr) {
         return new SumOver<A>(expr);
     }
 

@@ -16,7 +16,7 @@ import com.mysema.query.types.Operation;
 
 public class PNumberTest {
 
-    private PNumber<Byte> bytePath = new PNumber<Byte>(Byte.class, "bytePath");
+    private NumberPath<Byte> bytePath = new NumberPath<Byte>(Byte.class, "bytePath");
 
     @SuppressWarnings("unchecked")
     @Test

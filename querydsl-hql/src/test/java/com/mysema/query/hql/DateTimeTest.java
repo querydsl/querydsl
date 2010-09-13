@@ -7,19 +7,19 @@ package com.mysema.query.hql;
 
 import org.junit.Test;
 
-import com.mysema.query.types.expr.EDate;
-import com.mysema.query.types.expr.EDateTime;
-import com.mysema.query.types.expr.ETime;
+import com.mysema.query.types.expr.DateExpression;
+import com.mysema.query.types.expr.DateTimeExpression;
+import com.mysema.query.types.expr.TimeExpression;
 
 public class DateTimeTest extends AbstractQueryTest {
 
     @Test
     public void testDateOperations() {
         // current_date(), current_time(), current_timestamp()
-        assertToString("current_date()", EDate.currentDate());
-        assertToString("current_date()", EDateTime.currentDate());
-        assertToString("current_time()", ETime.currentTime());
-        assertToString("current_timestamp()", EDateTime.currentTimestamp());
+        assertToString("current_date()", DateExpression.currentDate());
+        assertToString("current_date()", DateTimeExpression.currentDate());
+        assertToString("current_time()", TimeExpression.currentTime());
+        assertToString("current_timestamp()", DateTimeExpression.currentTimestamp());
         // second(...), minute(...), hour(...), day(...), month(...), year(...),
         catalog.effectiveDate.second();
         catalog.effectiveDate.minute();

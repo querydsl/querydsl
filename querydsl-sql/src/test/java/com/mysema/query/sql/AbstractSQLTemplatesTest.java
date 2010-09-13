@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import com.mysema.query.sql.AbstractSQLQuery.UnionBuilder;
 import com.mysema.query.sql.domain.QSurvey;
-import com.mysema.query.types.path.PSimple;
+import com.mysema.query.types.path.SimplePath;
 
 public abstract class AbstractSQLTemplatesTest {
     
@@ -25,17 +25,17 @@ public abstract class AbstractSQLTemplatesTest {
     
     @Test
     public void noFrom(){
-        query.getMetadata().addProjection(new PSimple<Integer>(Integer.class,"1"));
+        query.getMetadata().addProjection(new SimplePath<Integer>(Integer.class,"1"));
         assertEquals("select 1 from dual", query.toString());
     }
     
     @SuppressWarnings("unchecked")
     @Test
     public void union(){        
-        PSimple<Integer> one = new PSimple<Integer>(Integer.class,"1");
-        PSimple<Integer> two = new PSimple<Integer>(Integer.class,"2");
-        PSimple<Integer> three = new PSimple<Integer>(Integer.class,"3");
-        PSimple<Integer> col1 = new PSimple<Integer>(Integer.class,"col1");
+        SimplePath<Integer> one = new SimplePath<Integer>(Integer.class,"1");
+        SimplePath<Integer> two = new SimplePath<Integer>(Integer.class,"2");
+        SimplePath<Integer> three = new SimplePath<Integer>(Integer.class,"3");
+        SimplePath<Integer> col1 = new SimplePath<Integer>(Integer.class,"col1");
         UnionBuilder union = query.union(
             sq().unique(one.as(col1)),
             sq().unique(two),

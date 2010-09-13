@@ -20,7 +20,7 @@ import com.mysema.query.jdoql.dml.JDOQLDeleteClause;
 import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.Store;
 import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.BooleanExpression;
 
 public abstract class AbstractJDOTest {
 
@@ -44,7 +44,7 @@ public abstract class AbstractJDOTest {
         return new JDOQLSubQuery();
     }
 
-    protected <T> List<T> query(EntityPath<T> source, EBoolean condition) {
+    protected <T> List<T> query(EntityPath<T> source, BooleanExpression condition) {
         return query().from(source).where(condition).list(source.asExpr());
     }
 

@@ -10,13 +10,13 @@ import java.util.Collections;
 import java.util.HashSet;
 
 import com.mysema.query.types.Constant;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.*;
-import com.mysema.query.types.path.PDate;
-import com.mysema.query.types.path.PDateTime;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PTime;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.path.TimePath;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 /**
@@ -34,16 +34,16 @@ public class Projections {
         this.target = target;
     }
 
-    public <A> Collection<Expr<?>> array(EArray<A> expr, EArray<A> other, A knownElement){
-        HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
+    public <A> Collection<Expression<?>> array(ArrayExpression<A> expr, ArrayExpression<A> other, A knownElement){
+        HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.size());
         }
         return rv;
     }
 
-    public <A> Collection<Expr<?>> collection(ECollection<?,A> expr, ECollection<?,A> other, A knownElement){
-        HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
+    public <A> Collection<Expression<?>> collection(CollectionExpression<?,A> expr, CollectionExpression<?,A> other, A knownElement){
+        HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.size());
         }
@@ -51,9 +51,9 @@ public class Projections {
     }
 
     @SuppressWarnings("unchecked")
-    public <A extends Comparable> Collection<Expr<?>> date(EDate<A> expr, EDate<A> other, A knownValue){
-        HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
-        rv.add(new PDate<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
+    public <A extends Comparable> Collection<Expression<?>> date(DateExpression<A> expr, DateExpression<A> other, A knownValue){
+        HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
+        rv.add(new DatePath<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
         rv.add(expr.dayOfMonth());
         rv.add(expr.month());
         rv.add(expr.year());
@@ -68,9 +68,9 @@ public class Projections {
     }
 
     @SuppressWarnings("unchecked")
-    public <A extends Comparable> Collection<Expr<?>> dateTime(EDateTime<A> expr, EDateTime<A> other, A knownValue){
-        HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
-        rv.add(new PDateTime<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
+    public <A extends Comparable> Collection<Expression<?>> dateTime(DateTimeExpression<A> expr, DateTimeExpression<A> other, A knownValue){
+        HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
+        rv.add(new DateTimePath<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
         rv.add(expr.dayOfMonth());
         rv.add(expr.month());
         rv.add(expr.year());
@@ -87,8 +87,8 @@ public class Projections {
         return rv;
     }
 
-    public <A> Collection<Expr<?>> list(EList<A> expr, EList<A> other, A knownElement){
-        HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
+    public <A> Collection<Expression<?>> list(ListExpression<A> expr, ListExpression<A> other, A knownElement){
+        HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
         rv.add(expr.get(0));
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.size());
@@ -96,8 +96,8 @@ public class Projections {
         return rv;
     }
 
-    public <K,V> Collection<Expr<?>> map(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue) {
-        HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
+    public <K,V> Collection<Expression<?>> map(MapExpression<K,V> expr, MapExpression<K,V> other, K knownKey, V knownValue) {
+        HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
         rv.add(expr.get(knownKey));
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.size());
@@ -105,17 +105,17 @@ public class Projections {
         return rv;
     }
 
-    public <A extends Number & Comparable<A>> Collection<ENumber<?>> numeric(ENumber<A> expr, ENumber<A> other, A knownValue, boolean forFilter){
-        HashSet<ENumber<?>> rv = new HashSet<ENumber<?>>();
+    public <A extends Number & Comparable<A>> Collection<NumberExpression<?>> numeric(NumberExpression<A> expr, NumberExpression<A> other, A knownValue, boolean forFilter){
+        HashSet<NumberExpression<?>> rv = new HashSet<NumberExpression<?>>();
         rv.addAll(numeric(expr, other, forFilter));
-        rv.addAll(numeric(expr, ENumberConst.create(knownValue), forFilter));
+        rv.addAll(numeric(expr, NumberConstant.create(knownValue), forFilter));
         return rv;
     }
 
     @SuppressWarnings("unchecked")
-    private <A extends Number & Comparable<A>> Collection<ENumber<?>> numeric(ENumber<A> expr, ENumber<?> other, boolean forFilter){
-        HashSet<ENumber<?>> rv = new HashSet<ENumber<?>>();
-        rv.add(new PNumber<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
+    private <A extends Number & Comparable<A>> Collection<NumberExpression<?>> numeric(NumberExpression<A> expr, NumberExpression<?> other, boolean forFilter){
+        HashSet<NumberExpression<?>> rv = new HashSet<NumberExpression<?>>();
+        rv.add(new NumberPath<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
         rv.add(expr.abs());
         rv.add(expr.add(other));
         rv.add(expr.divide(other));
@@ -134,22 +134,22 @@ public class Projections {
 
         if (!(other instanceof Constant || module == Module.JDOQL || module == Module.RDFBEAN)){
             CaseBuilder cases = new CaseBuilder();
-            rv.add(ENumberConst.create(1).add(cases
+            rv.add(NumberConstant.create(1).add(cases
                 .when(expr.gt(10)).then(expr)
-                .when(expr.between(0, 10)).then((ENumber)other)
-                .otherwise((ENumber)other)));
+                .when(expr.between(0, 10)).then((NumberExpression)other)
+                .otherwise((NumberExpression)other)));
 
             rv.add(expr
-                    .when((ENumber)other).then(expr)
-                    .otherwise((ENumber)other));
+                    .when((NumberExpression)other).then(expr)
+                    .otherwise((NumberExpression)other));
         }
 
         return rv;
     }
 
-    public <A extends Number & Comparable<A>> Collection<ENumber<?>> numericCasts(ENumber<A> expr, ENumber<A> other, A knownValue){
+    public <A extends Number & Comparable<A>> Collection<NumberExpression<?>> numericCasts(NumberExpression<A> expr, NumberExpression<A> other, A knownValue){
         if (!target.equals(Target.MYSQL)){
-            HashSet<ENumber<?>> rv = new HashSet<ENumber<?>>();
+            HashSet<NumberExpression<?>> rv = new HashSet<NumberExpression<?>>();
             rv.add(expr.byteValue());
             rv.add(expr.doubleValue());
             rv.add(expr.floatValue());
@@ -162,17 +162,17 @@ public class Projections {
         }
     }
 
-    public Collection<Expr<String>> string(EString expr, EString other, String knownValue){
-        HashSet<Expr<String>> rv = new HashSet<Expr<String>>();
+    public Collection<SimpleExpression<String>> string(StringExpression expr, StringExpression other, String knownValue){
+        HashSet<SimpleExpression<String>> rv = new HashSet<SimpleExpression<String>>();
         rv.addAll(stringProjections(expr, other));
-        rv.addAll(stringProjections(expr, EStringConst.create(knownValue)));
+        rv.addAll(stringProjections(expr, StringConstant.create(knownValue)));
         return rv;
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<Expr<String>> stringProjections(EString expr, EString other){
-        HashSet<Expr<String>> rv = new HashSet<Expr<String>>();
-        rv.add(new PString(PathMetadataFactory.forDelegate(expr)));
+    public Collection<SimpleExpression<String>> stringProjections(StringExpression expr, StringExpression other){
+        HashSet<SimpleExpression<String>> rv = new HashSet<SimpleExpression<String>>();
+        rv.add(new StringPath(PathMetadataFactory.forDelegate(expr)));
 
         rv.add(expr.append("Hello"));
         rv.add(expr.append(other));
@@ -208,9 +208,9 @@ public class Projections {
     }
 
     @SuppressWarnings("unchecked")
-    public <A extends Comparable> Collection<Expr<?>> time(ETime<A> expr, ETime<A> other, A knownValue){
-        HashSet<Expr<?>> rv = new HashSet<Expr<?>>();
-        rv.add(new PTime<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
+    public <A extends Comparable> Collection<Expression<?>> time(TimeExpression<A> expr, TimeExpression<A> other, A knownValue){
+        HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
+        rv.add(new TimePath<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
         rv.add(expr.hour());
         rv.add(expr.minute());
         rv.add(expr.second());

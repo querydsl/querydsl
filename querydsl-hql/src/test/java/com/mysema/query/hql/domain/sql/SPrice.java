@@ -19,13 +19,13 @@ public class SPrice extends BeanPath<SPrice> implements RelationalPath<SPrice> {
 
     public static final SPrice price = new SPrice("PRICE");
 
-    public final PNumber<Long> amount = createNumber("AMOUNT", Long.class);
+    public final NumberPath<Long> amount = createNumber("AMOUNT", Long.class);
 
-    public final PNumber<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    public final PNumber<Long> productId = createNumber("PRODUCT_ID", Long.class);
+    public final NumberPath<Long> productId = createNumber("PRODUCT_ID", Long.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SPrice> sql100819184437800 = new PrimaryKey<SPrice>(this, id);
 
@@ -45,9 +45,9 @@ public class SPrice extends BeanPath<SPrice> implements RelationalPath<SPrice> {
         super(SPrice.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{amount, id, productId};
+            _all = new Expression[]{amount, id, productId};
         }
         return _all;
     }
@@ -65,8 +65,8 @@ public class SPrice extends BeanPath<SPrice> implements RelationalPath<SPrice> {
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

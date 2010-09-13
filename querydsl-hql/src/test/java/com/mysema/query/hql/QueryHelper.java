@@ -21,7 +21,7 @@ import antlr.collections.AST;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.SearchResults;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 
 class QueryHelper extends HQLQueryBase<QueryHelper> {
 
@@ -34,17 +34,17 @@ class QueryHelper extends HQLQueryBase<QueryHelper> {
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
+    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
         throw new UnsupportedOperationException();
     }
 
     @Nullable
-    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
+    public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
         throw new UnsupportedOperationException();
     }
 
     @Nullable
-    public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
+    public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         throw new UnsupportedOperationException();
     }
 
@@ -66,7 +66,7 @@ class QueryHelper extends HQLQueryBase<QueryHelper> {
         }
     }
 
-    public QueryHelper select(Expr<?>... exprs) {
+    public QueryHelper select(Expression<?>... exprs) {
         getQueryMixin().addToProjection(exprs);
         return this;
     }

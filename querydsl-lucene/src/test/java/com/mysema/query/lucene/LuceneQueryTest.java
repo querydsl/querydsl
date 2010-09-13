@@ -39,8 +39,8 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 /**
@@ -59,15 +59,15 @@ public class LuceneQueryTest {
             super(Document.class, PathMetadataFactory.forVariable(var));
         }
 
-        public final PNumber<Integer> year = createNumber("year", Integer.class);
-        public final PString title = createString("title");
-        public final PNumber<Double> gross = createNumber("gross", Double.class);
+        public final NumberPath<Integer> year = createNumber("year", Integer.class);
+        public final StringPath title = createString("title");
+        public final NumberPath<Double> gross = createNumber("gross", Double.class);
     }
 
     private LuceneQuery query;
-    private PString title;
-    private PNumber<Integer> year;
-    private PNumber<Double> gross;
+    private StringPath title;
+    private NumberPath<Integer> year;
+    private NumberPath<Double> gross;
 
     private RAMDirectory idx;
     private IndexWriter writer;

@@ -12,8 +12,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.mysema.query.types.expr.CaseBuilder;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.StringExpression;
 
 public class CaseBuilderTest {
 
@@ -27,7 +27,7 @@ public class CaseBuilderTest {
     @Test
     public void booleanTyped(){
         Customer c = alias(Customer.class, "customer");
-        Expr<Boolean> cases = new CaseBuilder()
+        Expression<Boolean> cases = new CaseBuilder()
             .when($(c.getAnnualSpending()).gt(10000)).then(true)
             .otherwise(false);
 
@@ -41,7 +41,7 @@ public class CaseBuilderTest {
     @Test
     public void numberTyped(){
         Customer c = alias(Customer.class, "customer");
-        ENumber<Integer> cases = new CaseBuilder()
+        NumberExpression<Integer> cases = new CaseBuilder()
             .when($(c.getAnnualSpending()).gt(10000)).then(1)
             .when($(c.getAnnualSpending()).gt(5000)).then(2)
             .when($(c.getAnnualSpending()).gt(2000)).then(3)
@@ -66,7 +66,7 @@ public class CaseBuilderTest {
 //        END
 
         Customer c = alias(Customer.class, "customer");
-        EString cases = new CaseBuilder()
+        StringExpression cases = new CaseBuilder()
             .when($(c.getAnnualSpending()).gt(10000)).then("Premier")
             .when($(c.getAnnualSpending()).gt(5000)).then("Gold")
             .when($(c.getAnnualSpending()).gt(2000)).then("Silver")

@@ -10,9 +10,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.mysema.query.sql.AbstractSQLQuery.UnionBuilder;
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.custom.SimpleTemplate;
+import com.mysema.query.types.path.NumberPath;
 
 
 
@@ -26,10 +26,10 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
     @SuppressWarnings("unchecked")
     @Test
     public void union(){        
-        Expr<Integer> one = CSimple.create(Integer.class,"1");
-        Expr<Integer> two = CSimple.create(Integer.class,"2");
-        Expr<Integer> three = CSimple.create(Integer.class,"3");
-        PNumber<Integer> col1 = new PNumber<Integer>(Integer.class,"col1");
+        Expression<Integer> one = SimpleTemplate.create(Integer.class,"1");
+        Expression<Integer> two = SimpleTemplate.create(Integer.class,"2");
+        Expression<Integer> three = SimpleTemplate.create(Integer.class,"3");
+        NumberPath<Integer> col1 = new NumberPath<Integer>(Integer.class,"col1");
         UnionBuilder union = query.union(
             sq().unique(one.as(col1)),
             sq().unique(two),

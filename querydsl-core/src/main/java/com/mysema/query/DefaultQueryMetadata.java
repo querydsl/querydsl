@@ -17,11 +17,11 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.Predicate;
 
 /**
  * DefaultQueryMetadata is the default implementation of the {@link QueryMetadata} interface
@@ -34,9 +34,9 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     private boolean distinct;
 
-    private Set<Expr<?>> exprInJoins = new HashSet<Expr<?>>();
+    private Set<Expression<?>> exprInJoins = new HashSet<Expression<?>>();
 
-    private List<Expr<?>> groupBy = new ArrayList<Expr<?>>();
+    private List<Expression<?>> groupBy = new ArrayList<Expression<?>>();
 
     private BooleanBuilder having = new BooleanBuilder();
 
@@ -47,7 +47,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     private List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
 
-    private List<Expr<?>> projection = new ArrayList<Expr<?>>();
+    private List<Expression<?>> projection = new ArrayList<Expression<?>>();
 
     // NOTE : this is not necessarily serializable
     private Map<Param<?>,Object> params = new HashMap<Param<?>,Object>();
@@ -59,13 +59,13 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     private Set<QueryFlag> flags = new LinkedHashSet<QueryFlag>();
 
     @Override
-    public void addGroupBy(Expr<?>... o) {
-        groupBy.addAll(Arrays.<Expr<?>> asList(o));
+    public void addGroupBy(Expression<?>... o) {
+        groupBy.addAll(Arrays.<Expression<?>> asList(o));
     }
 
     @Override
-    public void addHaving(EBoolean... o) {
-        for (EBoolean e : o){
+    public void addHaving(Predicate... o) {
+        for (Predicate e : o){
             if (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue()){
                 having.and(e);
             }
@@ -73,7 +73,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     @Override
-    public void addJoin(JoinType joinType, Expr<?> expr) {
+    public void addJoin(JoinType joinType, Expression<?> expr) {
         if (!exprInJoins.contains(expr)) {
             if (expr instanceof Path<?> && joinType == JoinType.DEFAULT){
                 ensureRoot((Path<?>) expr);
@@ -85,7 +85,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     
     @Override
     public void addJoin(JoinExpression join){
-        Expr<?> expr = join.getTarget();
+        Expression<?> expr = join.getTarget();
         if (!exprInJoins.contains(expr)) {
             if (expr instanceof Path<?> && join.getType() == JoinType.DEFAULT){
                 ensureRoot((Path<?>) expr);
@@ -96,7 +96,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     @Override
-    public void addJoinCondition(EBoolean o) {
+    public void addJoinCondition(Predicate o) {
         if (!joins.isEmpty()) {
             joins.get(joins.size() - 1).addCondition(o);
         }
@@ -108,13 +108,13 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     @Override
-    public void addProjection(Expr<?>... o) {
+    public void addProjection(Expression<?>... o) {
         projection.addAll(Arrays.asList(o));
     }
 
     @Override
-    public void addWhere(EBoolean... o) {
-        for (EBoolean e : o){
+    public void addWhere(Predicate... o) {
+        for (Predicate e : o){
             if (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue()){
                 where.and(e);
             }
@@ -126,7 +126,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     public void clearProjection(){
-        projection = new ArrayList<Expr<?>>();
+        projection = new ArrayList<Expression<?>>();
     }
 
     public void clearWhere(){
@@ -137,13 +137,13 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     public QueryMetadata clone(){
         try {
             DefaultQueryMetadata clone = (DefaultQueryMetadata) super.clone();
-            clone.exprInJoins = new HashSet<Expr<?>>(exprInJoins);
-            clone.groupBy = new ArrayList<Expr<?>>(groupBy);
+            clone.exprInJoins = new HashSet<Expression<?>>(exprInJoins);
+            clone.groupBy = new ArrayList<Expression<?>>(groupBy);
             clone.having = having.clone();
             clone.joins = new ArrayList<JoinExpression>(joins);
             clone.modifiers = new QueryModifiers(modifiers);
             clone.orderBy = new ArrayList<OrderSpecifier<?>>(orderBy);
-            clone.projection = new ArrayList<Expr<?>>(projection);
+            clone.projection = new ArrayList<Expression<?>>(projection);
             clone.params = new HashMap<Param<?>,Object>(params);
             clone.where = where.clone();
             clone.flags = new LinkedHashSet<QueryFlag>(flags);
@@ -161,12 +161,12 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     @Override
-    public List<? extends Expr<?>> getGroupBy() {
+    public List<? extends Expression<?>> getGroupBy() {
         return Collections.unmodifiableList(groupBy);
     }
 
     @Override
-    public EBoolean getHaving() {
+    public Predicate getHaving() {
         return having.hasValue() ? having.getValue() : null;
     }
 
@@ -191,12 +191,12 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     @Override
-    public List<? extends Expr<?>> getProjection() {
+    public List<? extends Expression<?>> getProjection() {
         return Collections.unmodifiableList(projection);
     }
 
     @Override
-    public EBoolean getWhere() {
+    public Predicate getWhere() {
         return where.hasValue() ? where.getValue() : null;
     }
 

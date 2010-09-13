@@ -19,13 +19,13 @@ public class SDocument extends BeanPath<SDocument> implements RelationalPath<SDo
 
     public static final SDocument document = new SDocument("DOCUMENT");
 
-    public final PNumber<Integer> id = createNumber("ID", Integer.class);
+    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
-    public final PString name = createString("NAME");
+    public final StringPath name = createString("NAME");
 
-    public final PDate<java.sql.Date> validto = createDate("VALIDTO", java.sql.Date.class);
+    public final DatePath<java.sql.Date> validto = createDate("VALIDTO", java.sql.Date.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SDocument> sql100819184432950 = new PrimaryKey<SDocument>(this, id);
 
@@ -41,9 +41,9 @@ public class SDocument extends BeanPath<SDocument> implements RelationalPath<SDo
         super(SDocument.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{id, name, validto};
+            _all = new Expression[]{id, name, validto};
         }
         return _all;
     }
@@ -61,8 +61,8 @@ public class SDocument extends BeanPath<SDocument> implements RelationalPath<SDo
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

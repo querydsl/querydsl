@@ -10,17 +10,17 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.mysema.query.Tuple;
-import com.mysema.query.types.path.PBoolean;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.BooleanPath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
 
 public class QTupleTest {
 
-    private PString first = new PString("x");
+    private StringPath first = new StringPath("x");
 
-    private PNumber<Integer> second = new PNumber<Integer>(Integer.class,"y");
+    private NumberPath<Integer> second = new NumberPath<Integer>(Integer.class,"y");
 
-    private PBoolean third = new PBoolean("z");
+    private BooleanPath third = new BooleanPath("z");
 
     private QTuple tupleExpression = new QTuple(first, second, third);
 

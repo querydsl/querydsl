@@ -27,7 +27,7 @@ import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Param;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.Predicate;
 
 /**
  * SQLDeleteClause defines a DELETE clause
@@ -133,7 +133,7 @@ public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<S
     }
     
     @Override
-    public SQLDeleteClause where(EBoolean... o) {
+    public SQLDeleteClause where(Predicate... o) {
         metadata.addWhere(o);
         return this;
     }

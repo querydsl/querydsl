@@ -9,13 +9,13 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.StringPath;
 
 public class CoalesceTest {
 
-    private final PString firstname = new PString("firstname");
+    private final StringPath firstname = new StringPath("firstname");
 
-    private final PString lastname = new PString("lastname");
+    private final StringPath lastname = new StringPath("lastname");
 
     @Test
     public void withList(){

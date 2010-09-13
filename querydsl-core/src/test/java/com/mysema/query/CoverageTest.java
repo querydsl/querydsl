@@ -19,7 +19,7 @@ import java.util.Set;
 import org.junit.Test;
 
 import com.mysema.query.alias.Alias;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
@@ -63,7 +63,7 @@ public class CoverageTest {
     public void test() throws IllegalArgumentException, IllegalAccessException{
         // make sure all Operators are covered in expression factory methods
         Set<Operator<?>> usedOperators = new HashSet<Operator<?>>();
-        List<Expr<?>> exprs = new ArrayList<Expr<?>>();
+        List<Expression<?>> exprs = new ArrayList<Expression<?>>();
 
         Entity entity = Alias.alias(Entity.class, "entity");
         // numeric
@@ -101,7 +101,7 @@ public class CoverageTest {
         exprs.addAll(projections.map($(entity.getMap()), $(entity.getMap()), "", ""));
         exprs.addAll(filters.map($(entity.getMap()), $(entity.getMap()), "", ""));
 
-        for (Expr<?> e : exprs){
+        for (Expression<?> e : exprs){
             if (e instanceof Operation){
                 Operation<?> op = (Operation<?>)e;
                 if (op.getArg(0) instanceof Operation){

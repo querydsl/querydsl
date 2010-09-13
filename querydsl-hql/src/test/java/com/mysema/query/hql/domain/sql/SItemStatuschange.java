@@ -19,11 +19,11 @@ public class SItemStatuschange extends BeanPath<SItemStatuschange> implements Re
 
     public static final SItemStatuschange itemStatuschange = new SItemStatuschange("ITEM_STATUSCHANGE");
 
-    public final PNumber<Long> itemId = createNumber("ITEM_ID", Long.class);
+    public final NumberPath<Long> itemId = createNumber("ITEM_ID", Long.class);
 
-    public final PNumber<Long> statuschangesId = createNumber("STATUSCHANGES_ID", Long.class);
+    public final NumberPath<Long> statuschangesId = createNumber("STATUSCHANGES_ID", Long.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final ForeignKey<SItem> fkc2c9ebee9e7e0323 = new ForeignKey<SItem>(this, itemId, "ID");
 
@@ -41,9 +41,9 @@ public class SItemStatuschange extends BeanPath<SItemStatuschange> implements Re
         super(SItemStatuschange.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{itemId, statuschangesId};
+            _all = new Expression[]{itemId, statuschangesId};
         }
         return _all;
     }
@@ -61,8 +61,8 @@ public class SItemStatuschange extends BeanPath<SItemStatuschange> implements Re
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

@@ -5,12 +5,12 @@
  */
 package com.mysema.query.types.custom;
 
-import java.io.Serializable;
 import java.util.List;
 
-import com.mysema.query.types.Custom;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
+import com.mysema.query.types.TemplateExpression;
+import com.mysema.query.types.expr.MixinBase;
 
 /**
  * Mixin implementation of the Custom interface
@@ -19,29 +19,29 @@ import com.mysema.query.types.Template;
  *
  * @param <T>
  */
-public final class CustomMixin<T> implements Custom<T>, Serializable {
+public final class CustomMixin<T> extends MixinBase<T> implements TemplateExpression<T> {
 
     private static final long serialVersionUID = 6951623726800809083L;
 
-    private final Expr<T> self;
+    private final Expression<T> self;
 
-    private final List<Expr<?>> args;
+    private final List<Expression<?>> args;
 
     private final Template template;
 
-    public CustomMixin(Custom<T> self, List<Expr<?>> args, Template template){
-        this.self = self.asExpr();
+    public CustomMixin(TemplateExpression<T> self, List<Expression<?>> args, Template template){
+        this.self = self;
         this.args = args;
         this.template = template;
     }
 
     @Override
-    public Expr<?> getArg(int index) {
+    public Expression<?> getArg(int index) {
         return getArgs().get(index);
     }
 
     @Override
-    public List<Expr<?>> getArgs() {
+    public List<Expression<?>> getArgs() {
         return args;
     }
 
@@ -55,8 +55,8 @@ public final class CustomMixin<T> implements Custom<T>, Serializable {
     public boolean equals(Object o) {
        if (o == this){
            return true;
-       }else if (o instanceof Custom){
-           Custom c = (Custom)o;
+       }else if (o instanceof TemplateExpression){
+           TemplateExpression c = (TemplateExpression)o;
            return c.getTemplate().equals(template)
                && c.getType().equals(self.getType());
        }else{
@@ -69,13 +69,4 @@ public final class CustomMixin<T> implements Custom<T>, Serializable {
         return getType().hashCode();
     }
 
-    @Override
-    public Class<? extends T> getType() {
-        return self.getType();
-    }
-
-    @Override
-    public Expr<T> asExpr() {
-        return self;
-    }
 }

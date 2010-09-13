@@ -7,21 +7,21 @@ package com.mysema.query;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 
 public interface Projection {
 
     @Nullable
-    <T> T get(Expr<T> expr);
+    <T> T get(Expression<T> expr);
 
     @Nullable
     <T> T get(int index, Class<T> type);
 
     @Nullable
-    <T> Expr<T> getExpr(Expr<T> expr);
+    <T> Expression<T> getExpr(Expression<T> expr);
 
     @Nullable
-    <T> Expr<T> getExpr(int index, Class<T> type);
+    <T> Expression<T> getExpr(int index, Class<T> type);
 
     Object[] toArray();
 

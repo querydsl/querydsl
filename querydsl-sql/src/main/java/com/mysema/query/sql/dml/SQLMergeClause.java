@@ -31,11 +31,11 @@ import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.ExprConst;
+import com.mysema.query.types.expr.SimpleConstant;
 import com.mysema.query.types.path.NullExpr;
 
 /**
@@ -63,7 +63,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
     
     private final List<SQLMergeBatch> batches = new ArrayList<SQLMergeBatch>();
 
-    private final List<Expr<?>> values = new ArrayList<Expr<?>>();
+    private final List<Expression<?>> values = new ArrayList<Expression<?>>();
     
     private transient String queryString;
 
@@ -120,21 +120,21 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
     @SuppressWarnings("unchecked")
     private long executeCompositeMerge() {        
         // select 
-        SQLQuery query = new SQLQueryImpl(connection, configuration.getTemplates()).from(entity.asExpr());
+        SQLQuery query = new SQLQueryImpl(connection, configuration.getTemplates()).from(entity);
         for (int i=0; i < columns.size(); i++){
             if (values.get(i) instanceof NullExpr){
                 query.where(columns.get(i).isNull());
             }else{
-                query.where(columns.get(i).asExpr().eq((Expr)values.get(i)));    
+                query.where(columns.get(i).eq((Expression)values.get(i)));    
             }            
         }
-        List<?> ids = query.list(keys.get(0).asExpr());
+        List<?> ids = query.list(keys.get(0));
         
         if (!ids.isEmpty()){
             // update
             SQLUpdateClause update = new SQLUpdateClause(connection, configuration.getTemplates(), entity);
             populate(update);
-            update.where(((Expr)keys.get(0).asExpr()).in(ids));
+            update.where(((Expression)keys.get(0)).in(ids));
             return update.execute();
         }else{
             // insert
@@ -148,7 +148,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
     @SuppressWarnings("unchecked")
     private void populate(StoreClause<?> clause) {
         for (int i = 0; i < columns.size(); i++){
-            clause.set((Path)columns.get(i), (Expr)values.get(i));
+            clause.set((Path)columns.get(i), (Expression)values.get(i));
         }
     }
     
@@ -221,7 +221,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
     public <T> SQLMergeClause set(Path<T> path, @Nullable T value) {
         columns.add(path);
         if (value != null){
-            values.add(ExprConst.create(value));
+            values.add(SimpleConstant.create(value));
         }else{
             values.add(new NullExpr<T>(path.getType()));
         }
@@ -237,10 +237,10 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
 
     public SQLMergeClause values(Object... v) {
         for (Object value : v) {
-            if (value instanceof Expr<?>) {
-                values.add((Expr<?>) value);
+            if (value instanceof Expression<?>) {
+                values.add((Expression<?>) value);
             } else if (value != null){
-                values.add(ExprConst.create(value));
+                values.add(SimpleConstant.create(value));
             }else{
                 values.add(NullExpr.DEFAULT);
             }

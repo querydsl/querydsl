@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 
 import net.jcip.annotations.Immutable;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 
@@ -23,14 +23,14 @@ public class SQLInsertBatch {
     
     private final List<Path<?>> columns;
     
-    private final List<Expr<?>> values;
+    private final List<Expression<?>> values;
     
     @Nullable
     private final SubQueryExpression<?> subQuery;
     
-    public SQLInsertBatch(List<Path<?>> c, List<Expr<?>> v, @Nullable SubQueryExpression<?> sq) {
+    public SQLInsertBatch(List<Path<?>> c, List<Expression<?>> v, @Nullable SubQueryExpression<?> sq) {
         columns = new ArrayList<Path<?>>(c);
-        values = new ArrayList<Expr<?>>(v);
+        values = new ArrayList<Expression<?>>(v);
         subQuery = sq;
     }
 
@@ -38,7 +38,7 @@ public class SQLInsertBatch {
         return columns;
     }
 
-    public List<Expr<?>> getValues() {
+    public List<Expression<?>> getValues() {
         return values;
     }
 

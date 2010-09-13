@@ -19,15 +19,15 @@ public class SEmployee extends BeanPath<SEmployee> implements RelationalPath<SEm
 
     public static final SEmployee employee = new SEmployee("EMPLOYEE");
 
-    public final PNumber<Integer> companyId = createNumber("COMPANY_ID", Integer.class);
+    public final NumberPath<Integer> companyId = createNumber("COMPANY_ID", Integer.class);
 
-    public final PString firstname = createString("FIRSTNAME");
+    public final StringPath firstname = createString("FIRSTNAME");
 
-    public final PNumber<Integer> id = createNumber("ID", Integer.class);
+    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
-    public final PString lastname = createString("LASTNAME");
+    public final StringPath lastname = createString("LASTNAME");
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SEmployee> sql100819184433200 = new PrimaryKey<SEmployee>(this, id);
 
@@ -47,9 +47,9 @@ public class SEmployee extends BeanPath<SEmployee> implements RelationalPath<SEm
         super(SEmployee.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{companyId, firstname, id, lastname};
+            _all = new Expression[]{companyId, firstname, id, lastname};
         }
         return _all;
     }
@@ -67,8 +67,8 @@ public class SEmployee extends BeanPath<SEmployee> implements RelationalPath<SEm
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

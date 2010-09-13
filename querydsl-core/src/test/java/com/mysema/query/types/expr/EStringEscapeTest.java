@@ -13,7 +13,7 @@ public class EStringEscapeTest {
 
     @Test
     public void testEscapeForLike() {
-        assertEquals("a\\%b\\_c", EStringEscape.escapeForLike(EStringConst.create("a%b_c")).toString());
+        assertEquals("a\\%b\\_c", StringEscape.escapeForLike(StringConstant.create("a%b_c")).toString());
     }
 
 }

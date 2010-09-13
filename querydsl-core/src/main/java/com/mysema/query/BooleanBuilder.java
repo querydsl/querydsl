@@ -12,28 +12,30 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.ObjectUtils;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.PathType;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.BooleanExpression;
 
 /**
- * BooleanBuilder is a cascading builder for {@link EBoolean} expressions.
+ * BooleanBuilder is a cascading builder for {@link BooleanExpression} expressions.
  *
  * @author tiwe
  */
-public final class BooleanBuilder extends EBoolean implements Cloneable, Operation<Boolean>{
+public final class BooleanBuilder extends BooleanExpression implements Cloneable, Operation<Boolean>{
 
     private static final long serialVersionUID = -4129485177345542519L;
 
     @Nullable
-    private EBoolean expr;
+    private Predicate expr;
 
     public BooleanBuilder() {  }
 
-    public BooleanBuilder(EBoolean initial){
+    public BooleanBuilder(BooleanExpression initial){
         expr = initial;
     }
 
@@ -47,12 +49,12 @@ public final class BooleanBuilder extends EBoolean implements Cloneable, Operati
     }
     
     @Override
-    public BooleanBuilder and(@Nullable EBoolean right) {
+    public BooleanBuilder and(@Nullable Predicate right) {
         if (right != null){
             if (expr == null){
                 expr = right;
             }else{
-                expr = expr.and(right);
+                expr = ExpressionUtils.and(expr, right);
             }
         }
         return this;
@@ -65,15 +67,15 @@ public final class BooleanBuilder extends EBoolean implements Cloneable, Operati
      * @param args
      * @return
      */
-    public BooleanBuilder andAnyOf(EBoolean... args) {
+    public BooleanBuilder andAnyOf(Predicate... args) {
         if (args.length > 0){
-            and(anyOf(args));
+            and(ExpressionUtils.anyOf(args));
         }
         return this;
     }
 
-    public BooleanBuilder andNot(EBoolean right) {
-        return and(right.not());
+    public BooleanBuilder andNot(Predicate right) {
+        return and(ExpressionUtils.not(right));
     }
 
     @Override
@@ -93,7 +95,7 @@ public final class BooleanBuilder extends EBoolean implements Cloneable, Operati
     }
 
     @Override
-    public Expr<?> getArg(int index) {
+    public Expression<?> getArg(int index) {
         if (index == 0){
             return expr;
         }else{
@@ -102,8 +104,8 @@ public final class BooleanBuilder extends EBoolean implements Cloneable, Operati
     }
 
     @Override
-    public List<Expr<?>> getArgs() {
-        return Collections.<Expr<?>>singletonList(expr);
+    public List<Expression<?>> getArgs() {
+        return Collections.<Expression<?>>singletonList(expr);
     }
 
     @SuppressWarnings("unchecked")
@@ -113,7 +115,7 @@ public final class BooleanBuilder extends EBoolean implements Cloneable, Operati
     }
 
     @Nullable
-    public EBoolean getValue(){
+    public Predicate getValue(){
         return expr;
     }
 
@@ -134,18 +136,18 @@ public final class BooleanBuilder extends EBoolean implements Cloneable, Operati
     @Override
     public BooleanBuilder not(){
         if (expr != null){
-            expr = expr.not();
+            expr = ExpressionUtils.not(expr);
         }
         return this;
     }
 
     @Override
-    public BooleanBuilder or(@Nullable EBoolean right) {
+    public BooleanBuilder or(@Nullable Predicate right) {
         if (right != null){
             if (expr == null){
                 expr = right;
             }else{
-                expr = expr.or(right);
+                expr = ExpressionUtils.or(expr, right);
             }
         }
         return this;
@@ -158,15 +160,15 @@ public final class BooleanBuilder extends EBoolean implements Cloneable, Operati
      * @param args
      * @return
      */
-    public BooleanBuilder orAllOf(EBoolean... args) {
+    public BooleanBuilder orAllOf(Predicate... args) {
         if (args.length > 0){
-            or(allOf(args));
+            or(ExpressionUtils.allOf(args));
         }
         return this;
     }
 
-    public BooleanBuilder orNot(EBoolean right){
+    public BooleanBuilder orNot(BooleanExpression right){
         return or(right.not());
     }
-
+    
 }

@@ -33,7 +33,7 @@ public class VisitorTest {
         types.addAll(Arrays.<Class<?>>asList(Operation.class.getClasses()));
         types.addAll(Arrays.<Class<?>>asList(Path.class.getClasses()));
         for (Class<?> innerType : types){
-            if (!innerType.isInterface() && Expr.class.isAssignableFrom(innerType)){
+            if (!innerType.isInterface() && Expression.class.isAssignableFrom(innerType)){
                 Visitor.class.getDeclaredMethod("visit",innerType);
             }
         }

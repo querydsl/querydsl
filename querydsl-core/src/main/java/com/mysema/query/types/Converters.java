@@ -7,8 +7,8 @@ package com.mysema.query.types;
 
 import org.apache.commons.collections15.Transformer;
 
-import com.mysema.query.types.expr.EString;
-import com.mysema.query.types.expr.EStringEscape;
+import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.expr.StringEscape;
 
 /**
  * @author tiwe
@@ -18,59 +18,59 @@ public final class Converters {
     
     private Converters(){}
     
-    public static final Transformer<EString,EString> toLowerCase = new Transformer<EString,EString>(){
+    public static final Transformer<StringExpression,StringExpression> toLowerCase = new Transformer<StringExpression,StringExpression>(){
         @Override
-        public EString transform(EString arg) {
+        public StringExpression transform(StringExpression arg) {
             return arg.toLowerCase();
         }
     };
 
-    public static final Transformer<EString,EString> toUpperCase = new Transformer<EString,EString>(){
+    public static final Transformer<StringExpression,StringExpression> toUpperCase = new Transformer<StringExpression,StringExpression>(){
         @Override
-        public EString transform(EString arg) {
+        public StringExpression transform(StringExpression arg) {
             return arg.toUpperCase();
         }
     };
 
-    public static final Transformer<EString,EString> toStartsWithViaLike = new Transformer<EString,EString>(){
+    public static final Transformer<StringExpression,StringExpression> toStartsWithViaLike = new Transformer<StringExpression,StringExpression>(){
         @Override
-        public EString transform(EString arg) {
-            return EStringEscape.escapeForLike(arg).append("%");
+        public StringExpression transform(StringExpression arg) {
+            return StringEscape.escapeForLike(arg).append("%");
         }
     };
 
-    public static final Transformer<EString,EString> toStartsWithViaLikeLower = new Transformer<EString,EString>(){
+    public static final Transformer<StringExpression,StringExpression> toStartsWithViaLikeLower = new Transformer<StringExpression,StringExpression>(){
         @Override
-        public EString transform(EString arg) {
-            return EStringEscape.escapeForLike(arg).append("%").lower();
+        public StringExpression transform(StringExpression arg) {
+            return StringEscape.escapeForLike(arg).append("%").lower();
         }
     };
 
-    public static final Transformer<EString,EString> toEndsWithViaLike = new Transformer<EString,EString>(){
+    public static final Transformer<StringExpression,StringExpression> toEndsWithViaLike = new Transformer<StringExpression,StringExpression>(){
         @Override
-        public EString transform(EString arg) {
-            return EStringEscape.escapeForLike(arg).prepend("%");
+        public StringExpression transform(StringExpression arg) {
+            return StringEscape.escapeForLike(arg).prepend("%");
         }
     };
 
-    public static final Transformer<EString,EString> toEndsWithViaLikeLower = new Transformer<EString,EString>(){
+    public static final Transformer<StringExpression,StringExpression> toEndsWithViaLikeLower = new Transformer<StringExpression,StringExpression>(){
         @Override
-        public EString transform(EString arg) {
-            return EStringEscape.escapeForLike(arg).prepend("%").lower();
+        public StringExpression transform(StringExpression arg) {
+            return StringEscape.escapeForLike(arg).prepend("%").lower();
         }
     };
 
-    public static final Transformer<EString,EString> toContainsViaLike = new Transformer<EString,EString>(){
+    public static final Transformer<StringExpression,StringExpression> toContainsViaLike = new Transformer<StringExpression,StringExpression>(){
         @Override
-        public EString transform(EString arg) {
-            return EStringEscape.escapeForLike(arg).prepend("%").append("%");
+        public StringExpression transform(StringExpression arg) {
+            return StringEscape.escapeForLike(arg).prepend("%").append("%");
         }
     };
 
-    public static final Transformer<EString,EString> toContainsViaLikeLower = new Transformer<EString,EString>(){
+    public static final Transformer<StringExpression,StringExpression> toContainsViaLikeLower = new Transformer<StringExpression,StringExpression>(){
         @Override
-        public EString transform(EString arg) {
-            return EStringEscape.escapeForLike(arg).prepend("%").append("%").lower();
+        public StringExpression transform(StringExpression arg) {
+            return StringEscape.escapeForLike(arg).prepend("%").append("%").lower();
         }
     };
 

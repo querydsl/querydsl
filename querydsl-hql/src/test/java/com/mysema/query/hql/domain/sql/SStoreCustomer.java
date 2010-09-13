@@ -19,11 +19,11 @@ public class SStoreCustomer extends BeanPath<SStoreCustomer> implements Relation
 
     public static final SStoreCustomer storeCustomer = new SStoreCustomer("STORE_CUSTOMER");
 
-    public final PNumber<Integer> customersId = createNumber("CUSTOMERS_ID", Integer.class);
+    public final NumberPath<Integer> customersId = createNumber("CUSTOMERS_ID", Integer.class);
 
-    public final PNumber<Long> storeId = createNumber("STORE_ID", Long.class);
+    public final NumberPath<Long> storeId = createNumber("STORE_ID", Long.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final ForeignKey<SStore> fk808055bc828daef0 = new ForeignKey<SStore>(this, storeId, "ID");
 
@@ -41,9 +41,9 @@ public class SStoreCustomer extends BeanPath<SStoreCustomer> implements Relation
         super(SStoreCustomer.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{customersId, storeId};
+            _all = new Expression[]{customersId, storeId};
         }
         return _all;
     }
@@ -61,8 +61,8 @@ public class SStoreCustomer extends BeanPath<SStoreCustomer> implements Relation
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

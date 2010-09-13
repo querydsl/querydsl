@@ -30,7 +30,7 @@ import com.mysema.query.hql.hibernate.SessionHolder;
 import com.mysema.query.hql.hibernate.StatelessSessionHolder;
 import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Path;
 
@@ -90,7 +90,7 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
         return new HibernateSQLQuery(new DefaultSessionHolder(session), sqlTemplates, getMetadata().clone());
     }
 
-    public Query createQuery(Expr<?>... args){
+    public Query createQuery(Expression<?>... args){
         queryMixin.addToProjection(args);
         return createQuery(toQueryString());
     }
@@ -106,7 +106,7 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
             query.addEntity(path.toString(), path.getType());
         }
         // set result transformer, if projection is an EConstructor instance
-        List<? extends Expr<?>> projection = queryMixin.getMetadata().getProjection();
+        List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
         if (projection.size() == 1 && projection.get(0) instanceof FactoryExpression){
             query.setResultTransformer(new ConstructorTransformer((FactoryExpression<?>) projection.get(0)));
         }
@@ -130,7 +130,7 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Object[]> list(Expr<?>[] projection) {
+    public List<Object[]> list(Expression<?>[] projection) {
         Query query = createQuery(projection);
         reset();
         return query.list();
@@ -138,24 +138,24 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
 
     @SuppressWarnings("unchecked")
     @Override
-    public <RT> List<RT> list(Expr<RT> projection) {
+    public <RT> List<RT> list(Expression<RT> projection) {
         Query query = createQuery(projection);
         reset();
         return query.list();
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
+    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
         return new IteratorAdapter<Object[]>(list(args).iterator());
     }
 
     @Override
-    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
+    public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
         return new IteratorAdapter<RT>(list(projection).iterator());
     }
 
     @Override
-    public <RT> SearchResults<RT> listResults(Expr<RT> projection) {
+    public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
         // TODO : handle entity projections as well
         queryMixin.addToProjection(projection);
         Query query = createQuery(toCountRowsString());
@@ -195,7 +195,7 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
     }
 
     @SuppressWarnings("unchecked")
-    public <RT> RT uniqueResult(Expr<RT> expr) {
+    public <RT> RT uniqueResult(Expression<RT> expr) {
         Query query = createQuery(expr);
         reset();
         return (RT) query.uniqueResult();

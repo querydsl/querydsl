@@ -5,7 +5,6 @@
  */
 package com.mysema.query.types;
 
-import java.io.Serializable;
 
 /**
  * Constant represents a general constant expression.
@@ -14,7 +13,7 @@ import java.io.Serializable;
  *
  * @param <D>
  */
-public interface Constant<D> extends Serializable{
+public interface Constant<D> extends Expression<D>{
 
     /**
      * Get the constant
@@ -22,12 +21,5 @@ public interface Constant<D> extends Serializable{
      * @return
      */
     D getConstant();
-
-    /**
-     * Cast to {@link Expr}
-     *
-     * @return
-     */
-    Expr<D> asExpr();
 
 }

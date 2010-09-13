@@ -17,7 +17,7 @@ import org.junit.Test;
 
 import com.mysema.query.SearchResults;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.BooleanExpression;
 
 public class SearchQueryTest extends AbstractQueryTest{
 
@@ -41,7 +41,7 @@ public class SearchQueryTest extends AbstractQueryTest{
 
     @Test
     public void basicTests(){
-        EBoolean filter = user.emailAddress.eq("bob@example.com");
+        BooleanExpression filter = user.emailAddress.eq("bob@example.com");
 
         // count
         assertEquals(1, query().where(filter).count());
@@ -59,7 +59,7 @@ public class SearchQueryTest extends AbstractQueryTest{
 
     @Test
     public void ordering(){
-        EBoolean filter = user.middleName.eq("X");
+        BooleanExpression filter = user.middleName.eq("X");
         // asc
         List<String> asc = getFirstNames(query().where(filter).orderBy(user.firstName.asc()).list());
         assertEquals(Arrays.asList("Anton","Barbara","John","Robert"), asc);
@@ -71,7 +71,7 @@ public class SearchQueryTest extends AbstractQueryTest{
 
     @Test
     public void paging(){
-        EBoolean filter = user.middleName.eq("X");
+        BooleanExpression filter = user.middleName.eq("X");
         OrderSpecifier<?> order = user.firstName.asc();
 
         // limit
@@ -89,7 +89,7 @@ public class SearchQueryTest extends AbstractQueryTest{
 
     @Test
     public void listResults(){
-        EBoolean filter = user.middleName.eq("X");
+        BooleanExpression filter = user.middleName.eq("X");
         SearchResults<User> users = query().where(filter).orderBy(user.firstName.asc()).limit(2).listResults();
         List<String> asc = getFirstNames(users.getResults());
         assertEquals(Arrays.asList("Anton","Barbara"), asc);

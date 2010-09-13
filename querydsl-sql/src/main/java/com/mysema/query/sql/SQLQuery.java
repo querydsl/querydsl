@@ -9,7 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 
 import com.mysema.query.Projectable;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.query.ListSubQuery;
 
@@ -53,5 +53,5 @@ public interface SQLQuery extends SQLCommonQuery<SQLQuery>, Projectable {
      * @param args
      * @return
      */
-    ResultSet getResults(Expr<?>... args);
+    ResultSet getResults(Expression<?>... args);
 }

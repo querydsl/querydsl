@@ -20,8 +20,8 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.expr.EComparable;
+import com.mysema.query.types.custom.SimpleTemplate;
+import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.path.*;
 
 /**
@@ -45,14 +45,14 @@ public final class EmbeddableSerializer extends EntitySerializer{
         Class<? extends Path> pathType;
         if (model.getProperties().isEmpty()){
             switch(category){
-                case COMPARABLE : pathType = PComparable.class; break;
-                case ENUM: pathType = PEnum.class; break;
-                case DATE: pathType = PDate.class; break;
-                case DATETIME: pathType = PDateTime.class; break;
-                case TIME: pathType = PTime.class; break;
-                case NUMERIC: pathType = PNumber.class; break;
-                case STRING: pathType = PString.class; break;
-                case BOOLEAN: pathType = PBoolean.class; break;
+                case COMPARABLE : pathType = ComparablePath.class; break;
+                case ENUM: pathType = EnumPath.class; break;
+                case DATE: pathType = DatePath.class; break;
+                case DATETIME: pathType = DateTimePath.class; break;
+                case TIME: pathType = TimePath.class; break;
+                case NUMERIC: pathType = NumberPath.class; break;
+                case STRING: pathType = StringPath.class; break;
+                case BOOLEAN: pathType = BooleanPath.class; break;
                 default : pathType = BeanPath.class;
             }
         }else{
@@ -94,15 +94,15 @@ public final class EmbeddableSerializer extends EntitySerializer{
 
         List<Package> packages = new ArrayList<Package>();
         packages.add(PathMetadata.class.getPackage());
-        packages.add(PSimple.class.getPackage());
+        packages.add(SimplePath.class.getPackage());
         if ((model.hasLists() && config.useListAccessors())
                 || !model.getMethods().isEmpty()
                 || !model.getDelegates().isEmpty()
                 || (model.hasMaps() && config.useMapAccessors())){
-            packages.add(EComparable.class.getPackage());
+            packages.add(ComparableExpression.class.getPackage());
         }
         if (!model.getMethods().isEmpty()){
-            packages.add(CSimple.class.getPackage());
+            packages.add(SimpleTemplate.class.getPackage());
         }
         writer.imports(packages.toArray(new Package[packages.size()]));
     }

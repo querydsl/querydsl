@@ -7,9 +7,9 @@ package com.mysema.query.jdoql.testdomain;
 
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.PCollection;
-import com.mysema.query.types.path.PMap;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.CollectionPath;
+import com.mysema.query.types.path.MapPath;
+import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 /**
@@ -21,17 +21,17 @@ public class QStore extends EntityPathBase<com.mysema.query.jdoql.testdomain.Sto
 
     public static final QStore store = new QStore("store");
 
-    public final PString name = createString("name");
+    public final StringPath name = createString("name");
 
-    public final PMap<String,Product,QProduct> productsByName = this.<String,Product,QProduct>createMap("productsByName",String.class,Product.class,QProduct.class);
+    public final MapPath<String,Product,QProduct> productsByName = this.<String,Product,QProduct>createMap("productsByName",String.class,Product.class,QProduct.class);
 
-    public final PCollection<Product> products = createCollection("products",Product.class);
+    public final CollectionPath<Product> products = createCollection("products",Product.class);
 
     public QProduct productsByName(String key) {
         return new QProduct(PathMetadataFactory.forMapAccess(productsByName,key));
     }
 
-    public QProduct productsByName(com.mysema.query.types.Expr<String> key) {
+    public QProduct productsByName(com.mysema.query.types.Expression<String> key) {
         return new QProduct(PathMetadataFactory.forMapAccess(productsByName,key));
     }
 

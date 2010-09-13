@@ -19,13 +19,13 @@ public class SOrder extends BeanPath<SOrder> implements RelationalPath<SOrder> {
 
     public static final SOrder order = new SOrder("ORDER_");
 
-    public final PNumber<Integer> customerId = createNumber("CUSTOMER_ID", Integer.class);
+    public final NumberPath<Integer> customerId = createNumber("CUSTOMER_ID", Integer.class);
 
-    public final PNumber<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    public final PNumber<Short> paid = createNumber("PAID", Short.class);
+    public final NumberPath<Short> paid = createNumber("PAID", Short.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SOrder> sql100819184436320 = new PrimaryKey<SOrder>(this, id);
 
@@ -45,9 +45,9 @@ public class SOrder extends BeanPath<SOrder> implements RelationalPath<SOrder> {
         super(SOrder.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{customerId, id, paid};
+            _all = new Expression[]{customerId, id, paid};
         }
         return _all;
     }
@@ -65,8 +65,8 @@ public class SOrder extends BeanPath<SOrder> implements RelationalPath<SOrder> {
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

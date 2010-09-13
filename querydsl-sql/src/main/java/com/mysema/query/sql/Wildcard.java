@@ -5,9 +5,9 @@
  */
 package com.mysema.query.sql;
 
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.custom.SimpleTemplate;
+import com.mysema.query.types.expr.NumberExpression;
 
 /**
  * Wildcard provides shortcuts for the wildcard (*) and wildcard count (count(*)) expressions
@@ -19,11 +19,11 @@ public final class Wildcard {
 
     private static final long serialVersionUID = -675749944676437551L;
 
-    public static final Expr<Object[]> all = CSimple.create(Object[].class, "*");
+    public static final Expression<Object[]> all = SimpleTemplate.create(Object[].class, "*");
 
     private Wildcard() {}
     
-    public static ENumber<Long> count() {
+    public static NumberExpression<Long> count() {
         return all.count();
     }
 

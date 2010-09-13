@@ -19,11 +19,11 @@ public class SStatus extends BeanPath<SStatus> implements RelationalPath<SStatus
 
     public static final SStatus status = new SStatus("STATUS");
 
-    public final PNumber<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    public final PString name = createString("NAME");
+    public final StringPath name = createString("NAME");
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SStatus> sql100819184438880 = new PrimaryKey<SStatus>(this, id);
 
@@ -43,9 +43,9 @@ public class SStatus extends BeanPath<SStatus> implements RelationalPath<SStatus
         super(SStatus.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{id, name};
+            _all = new Expression[]{id, name};
         }
         return _all;
     }
@@ -63,8 +63,8 @@ public class SStatus extends BeanPath<SStatus> implements RelationalPath<SStatus
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

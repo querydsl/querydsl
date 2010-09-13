@@ -20,9 +20,9 @@ import org.apache.commons.lang.ClassUtils;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.*;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EStringConst;
-import com.mysema.query.types.expr.OSimple;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.StringConstant;
+import com.mysema.query.types.expr.SimpleOperation;
 
 /**
  * JDOQLSerializer serializes Querydsl queries and expressions into JDOQL strings
@@ -69,16 +69,16 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         }
     };
 
-    private Expr<?> candidatePath;
+    private Expression<?> candidatePath;
 
     private List<Object> constants = new ArrayList<Object>();
 
-    public JDOQLSerializer(JDOQLTemplates templates, Expr<?> candidate) {
+    public JDOQLSerializer(JDOQLTemplates templates, Expression<?> candidate) {
         super(templates);
         this.candidatePath = candidate;
     }
 
-    public Expr<?> getCandidatePath() {
+    public Expression<?> getCandidatePath() {
         return candidatePath;
     }
 
@@ -87,9 +87,9 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     }
 
     @SuppressWarnings("unchecked")
-    private <T> Expr<?> regexToLike(Operation<T> operation) {
-        List<Expr<?>> args = new ArrayList<Expr<?>>();
-        for (Expr<?> arg : operation.getArgs()){
+    private <T> Expression<?> regexToLike(Operation<T> operation) {
+        List<Expression<?>> args = new ArrayList<Expression<?>>();
+        for (Expression<?> arg : operation.getArgs()){
             if (!arg.getType().equals(String.class)){
                 args.add(arg);
             }else if (arg instanceof Constant){
@@ -100,24 +100,24 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
                 args.add(arg);
             }
         }
-        return OSimple.create(
+        return SimpleOperation.create(
                 operation.getType(),
                 operation.getOperator(),
-                args.<Expr<?>>toArray(new Expr[args.size()]));
+                args.<Expression<?>>toArray(new Expression[args.size()]));
     }
 
-    private Expr<?> regexToLike(String str){
-        return EStringConst.create(str.replace(".*", "%").replace(".", "_"));
+    private Expression<?> regexToLike(String str){
+        return StringConstant.create(str.replace(".*", "%").replace(".", "_"));
     }
 
     @SuppressWarnings("unchecked")
     public void serialize(QueryMetadata metadata, boolean forCountRow, boolean subquery) {
-        List<? extends Expr<?>> select = metadata.getProjection();
+        List<? extends Expression<?>> select = metadata.getProjection();
         List<JoinExpression> joins = metadata.getJoins();
-        Expr<?> source = joins.get(0).getTarget();
-        EBoolean where = metadata.getWhere();
-        List<? extends Expr<?>> groupBy = metadata.getGroupBy();
-        EBoolean having = metadata.getHaving();
+        Expression<?> source = joins.get(0).getTarget();
+        BooleanExpression where = metadata.getWhere();
+        List<? extends Expression<?>> groupBy = metadata.getGroupBy();
+        BooleanExpression having = metadata.getHaving();
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
         // select
@@ -285,7 +285,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
+    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expression<?>> args) {
         // TODO : these should be handled as serialization patterns
         if (operator.equals(Ops.INSTANCE_OF)) {
             handle(args.get(0)).append(" instanceof ");

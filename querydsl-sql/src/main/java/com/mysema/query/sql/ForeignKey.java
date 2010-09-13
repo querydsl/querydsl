@@ -11,10 +11,10 @@ import java.util.List;
 import net.jcip.annotations.Immutable;
 
 import com.mysema.query.BooleanBuilder;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.PSimple;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.path.SimplePath;
 
 /**
  * ForeignKey defines a foreign key on a table to another table
@@ -56,11 +56,11 @@ public class ForeignKey <E>{
     }
 
     @SuppressWarnings("unchecked")
-    public EBoolean on(RelationalPath<E> entity){
+    public BooleanExpression on(RelationalPath<E> entity){
         BooleanBuilder builder = new BooleanBuilder();
         for (int i = 0; i < localColumns.size(); i++){
-            Expr local = localColumns.get(i).asExpr();
-            Expr foreign = new PSimple(local.getType(), entity, foreignColumns.get(i));
+            Expression local = localColumns.get(i).asExpr();
+            Expression foreign = new SimplePath(local.getType(), entity, foreignColumns.get(i));
             builder.and(local.eq(foreign));
         }
         return builder.getValue();

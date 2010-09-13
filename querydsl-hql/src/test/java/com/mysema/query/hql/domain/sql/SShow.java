@@ -19,9 +19,9 @@ public class SShow extends BeanPath<SShow> implements RelationalPath<SShow> {
 
     public static final SShow show = new SShow("SHOW");
 
-    public final PNumber<Integer> id = createNumber("ID", Integer.class);
+    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SShow> sql100819184438080 = new PrimaryKey<SShow>(this, id);
 
@@ -39,9 +39,9 @@ public class SShow extends BeanPath<SShow> implements RelationalPath<SShow> {
         super(SShow.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{id};
+            _all = new Expression[]{id};
         }
         return _all;
     }
@@ -59,8 +59,8 @@ public class SShow extends BeanPath<SShow> implements RelationalPath<SShow> {
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 }
 

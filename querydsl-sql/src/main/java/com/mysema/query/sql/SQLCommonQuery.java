@@ -4,10 +4,10 @@
 package com.mysema.query.sql;
 
 import com.mysema.query.Query;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.BooleanExpression;
 
 /**
  * SQLCommonQuery is a common interface for SQLQuery and SQLSubQuery
@@ -24,7 +24,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q from(Expr<?>... o);
+    Q from(Expression<?>... o);
 
     /**
      * Adds a full join to the given target
@@ -152,7 +152,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param conditions
      * @return
      */
-    Q on(EBoolean... conditions);
+    Q on(BooleanExpression... conditions);
 
 
 }

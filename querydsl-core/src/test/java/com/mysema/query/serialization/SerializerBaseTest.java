@@ -10,9 +10,9 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.mysema.query.types.JavaTemplates;
-import com.mysema.query.types.custom.CString;
-import com.mysema.query.types.expr.EStringConst;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.custom.StringTemplate;
+import com.mysema.query.types.expr.StringConstant;
+import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.PathBuilder;
 
 public class SerializerBaseTest {
@@ -20,7 +20,7 @@ public class SerializerBaseTest {
     @Test
     public void test(){
     DummySerializer serializer = new DummySerializer(new JavaTemplates());
-    PString strPath = new PString("str");
+    StringPath strPath = new StringPath("str");
     // path
     serializer.handle(strPath);
     // operation
@@ -28,9 +28,9 @@ public class SerializerBaseTest {
     // long path
     serializer.handle(new PathBuilder<Object>(Object.class,"p").getList("l",Map.class).get(0));
     // constant
-    serializer.handle(EStringConst.create(""));
+    serializer.handle(StringConstant.create(""));
     // custom
-    serializer.handle(CString.create("xxx",EStringConst.create("")));
+    serializer.handle(StringTemplate.create("xxx",StringConstant.create("")));
     }
 
 }

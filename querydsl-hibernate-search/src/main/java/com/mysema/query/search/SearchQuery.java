@@ -23,7 +23,7 @@ import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.Predicate;
 
 /**
  * SearchQuery is a Query implementation for Hibernate Search
@@ -143,7 +143,7 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
     }
 
     @Override
-    public SearchQuery<T> where(EBoolean... e) {
+    public SearchQuery<T> where(Predicate... e) {
         return queryMixin.where(e);
     }
 

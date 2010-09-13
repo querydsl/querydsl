@@ -59,7 +59,7 @@ public class PathBuilderTest {
     @Test
     public void getArray(){
         PathBuilder<User> entityPath = new PathBuilder<User>(User.class, "entity");
-        PArray<String> array = entityPath.getArray("array", String[].class);
+        ArrayPath<String> array = entityPath.getArray("array", String[].class);
         assertEquals(String[].class, array.getType());
         assertEquals(String.class, array.getElementType());
     }
@@ -67,14 +67,14 @@ public class PathBuilderTest {
     @Test
     public void getList(){
         PathBuilder<User> entityPath = new PathBuilder<User>(User.class, "entity");
-        entityPath.getList("list", String.class, PString.class).get(0).lower();
+        entityPath.getList("list", String.class, StringPath.class).get(0).lower();
         entityPath.getList("list", String.class).get(0);
     }
 
     @Test
     public void getMap(){
         PathBuilder<User> entityPath = new PathBuilder<User>(User.class, "entity");
-        entityPath.getMap("map", String.class, String.class, PString.class).get("").lower();
+        entityPath.getMap("map", String.class, String.class, StringPath.class).get("").lower();
         entityPath.getMap("map", String.class, String.class).get("");
     }
 
@@ -95,9 +95,9 @@ public class PathBuilderTest {
     @Test
     public void get(){
         PathBuilder<User> entity = new PathBuilder<User>(User.class, "entity");
-        PNumber<Integer> intPath = new PNumber<Integer>(Integer.class, "int");
-        PString strPath = new PString("str");
-        PBoolean booleanPath = new PBoolean("boolean");
+        NumberPath<Integer> intPath = new NumberPath<Integer>(Integer.class, "int");
+        StringPath strPath = new StringPath("str");
+        BooleanPath booleanPath = new BooleanPath("boolean");
 
         assertEquals("entity.int", entity.get(intPath).toString());
         assertEquals("entity.str", entity.get(strPath).toString());

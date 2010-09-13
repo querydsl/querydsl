@@ -11,10 +11,10 @@ import com.mysema.commons.lang.Pair;
 import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerydslConfig;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.PBoolean;
-import com.mysema.query.types.path.PDate;
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.path.BooleanPath;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.NumberPath;
 
 public class QueryExtensions8Test {
     
@@ -25,17 +25,17 @@ public class QueryExtensions8Test {
     
     
     @QueryDelegate(Date.class)
-    public static EBoolean inPeriod(PDate<Date> date, Pair<Date,Date> period){
+    public static BooleanExpression inPeriod(DatePath<Date> date, Pair<Date,Date> period){
         return date.goe(period.getFirst()).and(date.loe(period.getSecond()));
     }
     
     @QueryDelegate(Boolean.class)
-    public static EBoolean isFalse1(PBoolean expr){
+    public static BooleanExpression isFalse1(BooleanPath expr){
         return expr.isNull().or(expr.eq(false));
     }
     
     @QueryDelegate(Boolean.class)
-    public static EBoolean isTrue1(PBoolean expr){
+    public static BooleanExpression isTrue1(BooleanPath expr){
         return expr.isNotNull();
     }
 
@@ -44,7 +44,7 @@ public class QueryExtensions8Test {
     }
     
     @QueryDelegate(Integer.class)
-    public static EBoolean eq(PNumber<Integer> intVal, FileSize size){
+    public static BooleanExpression eq(NumberPath<Integer> intVal, FileSize size){
         return intVal.eq(size.bytes);
     }
     

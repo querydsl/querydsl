@@ -16,7 +16,7 @@ import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QBook;
 import com.mysema.query.jdoql.testdomain.QProduct;
 import com.mysema.query.jdoql.testdomain.QStore;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 
 public class ExprSerializationTest {
 
@@ -123,7 +123,7 @@ public class ExprSerializationTest {
         assertEquals("!(product.name == \"\")", serialize(product.name.isNotEmpty()));
     }
 
-    private String serialize(Expr<?> expr) {
+    private String serialize(Expression<?> expr) {
         return new JDOQLSerializer(JDOQLTemplates.DEFAULT, book).handle(expr).toString();
     }
 

@@ -10,11 +10,11 @@ import org.junit.Test;
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PDate;
-import com.mysema.query.types.path.PDateTime;
-import com.mysema.query.types.path.PSimple;
-import com.mysema.query.types.path.PTime;
+import com.mysema.query.types.path.ComparablePath;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.path.TimePath;
 
 public class QueryTypeTest extends AbstractTest{
 
@@ -43,10 +43,10 @@ public class QueryTypeTest extends AbstractTest{
     @Test
     public void test() throws SecurityException, NoSuchFieldException{
         cl = QQueryTypeTest_QueryTypeEntity.class;
-        match(PSimple.class, "stringAsSimple");
-        match(PComparable.class, "stringAsComparable");
-        match(PDate.class, "stringAsDate");
-        match(PDateTime.class, "stringAsDateTime");
-        match(PTime.class, "stringAsTime");
+        match(SimplePath.class, "stringAsSimple");
+        match(ComparablePath.class, "stringAsComparable");
+        match(DatePath.class, "stringAsDate");
+        match(DateTimePath.class, "stringAsDateTime");
+        match(TimePath.class, "stringAsTime");
     }
 }

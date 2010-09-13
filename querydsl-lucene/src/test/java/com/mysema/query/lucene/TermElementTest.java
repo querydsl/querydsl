@@ -7,13 +7,13 @@ import org.junit.Test;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.StringPath;
 
 public class TermElementTest {
 
     @Test
     public void test(){
-        PString title = new PString("title");
+        StringPath title = new StringPath("title");
         LuceneSerializer serializer = new LuceneSerializer(false,true);
         QueryMetadata metadata = new DefaultQueryMetadata();
         assertEquals("title:\"Hello World\"", serializer.toQuery(title.eq("Hello World"), metadata).toString());

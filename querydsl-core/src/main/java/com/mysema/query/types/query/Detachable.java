@@ -5,14 +5,14 @@
  */
 package com.mysema.query.types.query;
 
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EComparable;
-import com.mysema.query.types.expr.EDate;
-import com.mysema.query.types.expr.EDateTime;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.EString;
-import com.mysema.query.types.expr.ETime;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.ComparableExpression;
+import com.mysema.query.types.expr.DateExpression;
+import com.mysema.query.types.expr.DateTimeExpression;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.expr.TimeExpression;
 
 /**
  * Detachable defines methods for the construction of SubQuery instances
@@ -34,7 +34,7 @@ public interface Detachable {
      *
      * @return
      */
-    EBoolean exists();
+    BooleanExpression exists();
 
     /**
      * Create a projection expression for the given projection
@@ -45,7 +45,7 @@ public interface Detachable {
      *            rest
      * @return a List over the projection
      */
-    ListSubQuery<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest);
+    ListSubQuery<Object[]> list(Expression<?> first, Expression<?> second, Expression<?>... rest);
 
     /**
      * Create a projection expression for the given projection
@@ -53,7 +53,7 @@ public interface Detachable {
      * @param args
      * @return
      */
-    ListSubQuery<Object[]> list(Expr<?>[] args);
+    ListSubQuery<Object[]> list(Expression<?>[] args);
 
     /**
      * Create a projection expression for the given projection
@@ -63,14 +63,14 @@ public interface Detachable {
      * @param projection
      * @return a List over the projection
      */
-    <RT> ListSubQuery<RT> list(Expr<RT> projection);
+    <RT> ListSubQuery<RT> list(Expression<RT> projection);
 
     /**
      * Create an not exists(this) expression
      *
      * @return
      */
-    EBoolean notExists();
+    BooleanExpression notExists();
 
     /**
      * Create a projection expression for the given projection
@@ -80,7 +80,7 @@ public interface Detachable {
      * @param rest
      * @return
      */
-    ObjectSubQuery<Object[]> unique(Expr<?> first, Expr<?> second, Expr<?>... rest);
+    ObjectSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, Expression<?>... rest);
 
     /**
      * Create a projection expression for the given projection
@@ -88,7 +88,7 @@ public interface Detachable {
      * @param args
      * @return
      */
-    ObjectSubQuery<Object[]> unique(Expr<?>[] args);
+    ObjectSubQuery<Object[]> unique(Expression<?>[] args);
 
     /**
      * Create a subquery expression for the given projection
@@ -98,7 +98,7 @@ public interface Detachable {
      * @param projection
      * @return the result or null for an empty result
      */
-    <RT> ObjectSubQuery<RT> unique(Expr<RT> projection);
+    <RT> ObjectSubQuery<RT> unique(Expression<RT> projection);
 
     /**
      * Create a subquery expression for the given projection
@@ -106,7 +106,7 @@ public interface Detachable {
      * @param projection
      * @return
      */
-    BooleanSubQuery unique(EBoolean projection);
+    BooleanSubQuery unique(BooleanExpression projection);
 
     /**
      * Create a subquery expression for the given projection
@@ -114,16 +114,7 @@ public interface Detachable {
      * @param projection
      * @return
      */
-    StringSubQuery unique(EString projection);
-
-    /**
-     * Create a subquery expression for the given projection
-     *
-     * @param <RT>
-     * @param projection
-     * @return
-     */
-    <RT extends Comparable<?>> ComparableSubQuery<RT> unique(EComparable<RT> projection);
+    StringSubQuery unique(StringExpression projection);
 
     /**
      * Create a subquery expression for the given projection
@@ -132,7 +123,7 @@ public interface Detachable {
      * @param projection
      * @return
      */
-    <RT extends Comparable<?>> DateSubQuery<RT> unique(EDate<RT> projection);
+    <RT extends Comparable<?>> ComparableSubQuery<RT> unique(ComparableExpression<RT> projection);
 
     /**
      * Create a subquery expression for the given projection
@@ -141,7 +132,7 @@ public interface Detachable {
      * @param projection
      * @return
      */
-    <RT extends Comparable<?>> DateTimeSubQuery<RT> unique(EDateTime<RT> projection);
+    <RT extends Comparable<?>> DateSubQuery<RT> unique(DateExpression<RT> projection);
 
     /**
      * Create a subquery expression for the given projection
@@ -150,7 +141,7 @@ public interface Detachable {
      * @param projection
      * @return
      */
-    <RT extends Comparable<?>> TimeSubQuery<RT> unique(ETime<RT> projection);
+    <RT extends Comparable<?>> DateTimeSubQuery<RT> unique(DateTimeExpression<RT> projection);
 
     /**
      * Create a subquery expression for the given projection
@@ -159,6 +150,15 @@ public interface Detachable {
      * @param projection
      * @return
      */
-    <RT extends Number & Comparable<?>> NumberSubQuery<RT> unique(ENumber<RT> projection);
+    <RT extends Comparable<?>> TimeSubQuery<RT> unique(TimeExpression<RT> projection);
+
+    /**
+     * Create a subquery expression for the given projection
+     *
+     * @param <RT>
+     * @param projection
+     * @return
+     */
+    <RT extends Number & Comparable<?>> NumberSubQuery<RT> unique(NumberExpression<RT> projection);
 
 }

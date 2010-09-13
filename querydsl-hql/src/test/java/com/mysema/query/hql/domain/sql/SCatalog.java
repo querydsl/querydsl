@@ -19,11 +19,11 @@ public class SCatalog extends BeanPath<SCatalog> implements RelationalPath<SCata
 
     public static final SCatalog catalog = new SCatalog("CATALOG");
 
-    public final PDate<java.sql.Date> effectivedate = createDate("EFFECTIVEDATE", java.sql.Date.class);
+    public final DatePath<java.sql.Date> effectivedate = createDate("EFFECTIVEDATE", java.sql.Date.class);
 
-    public final PNumber<Integer> id = createNumber("ID", Integer.class);
+    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SCatalog> sql100819184431520 = new PrimaryKey<SCatalog>(this, id);
 
@@ -41,9 +41,9 @@ public class SCatalog extends BeanPath<SCatalog> implements RelationalPath<SCata
         super(SCatalog.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{effectivedate, id};
+            _all = new Expression[]{effectivedate, id};
         }
         return _all;
     }
@@ -61,8 +61,8 @@ public class SCatalog extends BeanPath<SCatalog> implements RelationalPath<SCata
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 }
 

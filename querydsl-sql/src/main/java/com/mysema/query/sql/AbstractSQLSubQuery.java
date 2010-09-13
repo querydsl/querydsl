@@ -11,11 +11,11 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.custom.SimpleTemplate;
+import com.mysema.query.types.expr.BooleanExpression;
 
 /**
  * Abstract superclass for SubQuery implementations
@@ -35,8 +35,8 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         this.queryMixin.setSelf((Q)this);
     }
 
-    protected Q addFlag(Position position, String prefix, Expr<?> expr){
-        Expr<?> flag = CSimple.create(expr.getType(), prefix + "{0}", expr);
+    protected Q addFlag(Position position, String prefix, Expression<?> expr){
+        Expression<?> flag = SimpleTemplate.create(expr.getType(), prefix + "{0}", expr);
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
     
@@ -44,11 +44,11 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
     
-    protected Q addFlag(Position position, Expr<?> flag){
+    protected Q addFlag(Position position, Expression<?> flag){
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
     
-    public Q from(Expr<?>... args){
+    public Q from(Expression<?>... args){
         return queryMixin.from(args);
     }
 
@@ -100,7 +100,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.leftJoin(target, alias);
     }
 
-    public Q on(EBoolean... conditions){
+    public Q on(BooleanExpression... conditions){
         return queryMixin.on(conditions);
     }
 

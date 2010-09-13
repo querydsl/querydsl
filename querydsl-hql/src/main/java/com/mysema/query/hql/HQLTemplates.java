@@ -57,7 +57,7 @@ public class HQLTemplates extends JPQLTemplates{
     }
 
     public boolean wrapConstant(Constant<?> expr) {
-        Class<?> type = expr.asExpr().getType();
+        Class<?> type = expr.getType();
         return type.isArray() || Collection.class.isAssignableFrom(type);
     }
 

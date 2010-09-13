@@ -12,7 +12,7 @@ import java.util.List;
 import org.junit.Before;
 
 import com.mysema.query.alias.Alias;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 
 /**
  * AbstractQueryTest provides
@@ -73,7 +73,7 @@ public abstract class AbstractQueryTest {
         List<Object> res = new ArrayList<Object>();
 
         @Override
-        public <RT> List<RT> list(Expr<RT> projection) {
+        public <RT> List<RT> list(Expression<RT> projection) {
             boolean array = projection.getType().isArray();
             List<RT> rv = super.list(projection);
             for (Object o : rv) {

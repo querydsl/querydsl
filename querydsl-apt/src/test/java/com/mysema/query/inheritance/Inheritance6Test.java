@@ -9,8 +9,8 @@ import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerySupertype;
-import com.mysema.query.types.path.PDateTime;
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.NumberPath;
 
 /**
  * Test multiple level superclasses with generics.
@@ -63,17 +63,17 @@ public class Inheritance6Test {
     @Test
     public void intermediate_superclass_should_contain_fields_from_top_superclass() {
          QInheritance6Test_Translation translation = QInheritance6Test_Gloss.gloss._super;
-         assertEquals(PDateTime.class, translation.createdOn.getClass());
+         assertEquals(DateTimePath.class, translation.createdOn.getClass());
     }
 
     @Test
     public void gloss_subtype_should_contain_fields_from_top_superclass() {
-        assertEquals(PDateTime.class, QInheritance6Test_Gloss.gloss.createdOn.getClass());
+        assertEquals(DateTimePath.class, QInheritance6Test_Gloss.gloss.createdOn.getClass());
     }
 
     @Test
     public void gloss_subtype_should_contain_id_from_top_superclass() {
-        assertEquals(PNumber.class, QInheritance6Test_Gloss.gloss.id.getClass());
+        assertEquals(NumberPath.class, QInheritance6Test_Gloss.gloss.id.getClass());
     }
 
 }

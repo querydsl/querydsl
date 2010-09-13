@@ -6,9 +6,9 @@
 package com.mysema.query.sql;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.OSimple;
+import com.mysema.query.types.expr.SimpleOperation;
 
 /**
  * SQLSubQuery is a subquery implementation for SQL queries
@@ -26,10 +26,10 @@ public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> implements SQL
         super(metadata);
     }
 
-    public Expr<?> union(SubQueryExpression<?>... sq){
-        Expr<?> rv = sq[0].asExpr();
+    public Expression<?> union(SubQueryExpression<?>... sq){
+        Expression<?> rv = sq[0].asExpr();
         for (int i = 1; i < sq.length; i++){
-            rv = OSimple.create(rv.getType(), SQLTemplates.UNION, rv, sq[i].asExpr());
+            rv = SimpleOperation.create(rv.getType(), SQLTemplates.UNION, rv, sq[i].asExpr());
         }
         return rv;
     }

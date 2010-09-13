@@ -6,7 +6,7 @@
 package com.mysema.query.types;
 
 /**
- * ToStringVisitor is used for toString() serialization in {@link Expr} implementations.
+ * ToStringVisitor is used for toString() serialization in {@link Expression} implementations.
  *
  * @author tiwe
  * @version $Id$
@@ -18,7 +18,7 @@ public final class ToStringVisitor implements Visitor<String,Templates>{
     private ToStringVisitor(){}
     
     @Override
-    public String visit(Custom<?> expr, Templates templates) {
+    public String visit(TemplateExpression<?> expr, Templates templates) {
         StringBuilder builder = new StringBuilder();
         for (Template.Element element : expr.getTemplate().getElements()){
             if (element.getStaticText() != null){
@@ -40,7 +40,7 @@ public final class ToStringVisitor implements Visitor<String,Templates>{
         StringBuilder builder = new StringBuilder();
         builder.append("new ").append(e.getType().getSimpleName()).append("(");
         boolean first = true;
-        for (Expr<?> arg : e.getArgs()){
+        for (Expression<?> arg : e.getArgs()){
             if (!first){
             builder.append(", ");
             }
@@ -72,7 +72,7 @@ public final class ToStringVisitor implements Visitor<String,Templates>{
     @Override
     public String visit(Path<?> p, Templates templates) {
         Path<?> parent = p.getMetadata().getParent();
-        Expr<?> expr = p.getMetadata().getExpression();
+        Expression<?> expr = p.getMetadata().getExpression();
         if (parent != null) {
             Template pattern = templates.getTemplate(p.getMetadata().getPathType());
             if (pattern != null) {

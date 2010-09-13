@@ -8,14 +8,14 @@ package com.mysema.query.types.query;
 import java.util.List;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.ECollectionBase;
-import com.mysema.query.types.expr.OSimple;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.CollectionExpressionBase;
+import com.mysema.query.types.expr.SimpleOperation;
 
 /**
  * List result subquery
@@ -24,7 +24,7 @@ import com.mysema.query.types.expr.OSimple;
  *
  * @param <A>
  */
-public final class ListSubQuery<A> extends ECollectionBase<List<A>,A> implements SubQueryExpression<List<A>>{
+public final class ListSubQuery<A> extends CollectionExpressionBase<List<A>,A> implements SubQueryExpression<List<A>>{
 
     private static final long serialVersionUID = 3399354334765602960L;
 
@@ -50,7 +50,7 @@ public final class ListSubQuery<A> extends ECollectionBase<List<A>,A> implements
     }
 
     @Override
-    public EBoolean exists() {
+    public BooleanExpression exists() {
         return subQueryMixin.exists();
     }
 
@@ -69,13 +69,13 @@ public final class ListSubQuery<A> extends ECollectionBase<List<A>,A> implements
     }
 
     @Override
-    public EBoolean notExists() {
+    public BooleanExpression notExists() {
         return subQueryMixin.notExists();
     }
 
     @SuppressWarnings("unchecked")
-    public Expr<?> as(Expr<?> alias) {
-        return OSimple.create(alias.getType(),(Operator)Ops.ALIAS, this, alias);
+    public Expression<?> as(Expression<?> alias) {
+        return SimpleOperation.create(alias.getType(),(Operator)Ops.ALIAS, this, alias);
     }
 
 }

@@ -19,11 +19,11 @@ public class SLocation extends BeanPath<SLocation> implements RelationalPath<SLo
 
     public static final SLocation location = new SLocation("LOCATION");
 
-    public final PNumber<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    public final PString name = createString("NAME");
+    public final StringPath name = createString("NAME");
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SLocation> sql100819184434890 = new PrimaryKey<SLocation>(this, id);
 
@@ -41,9 +41,9 @@ public class SLocation extends BeanPath<SLocation> implements RelationalPath<SLo
         super(SLocation.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{id, name};
+            _all = new Expression[]{id, name};
         }
         return _all;
     }
@@ -61,8 +61,8 @@ public class SLocation extends BeanPath<SLocation> implements RelationalPath<SLo
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 }
 

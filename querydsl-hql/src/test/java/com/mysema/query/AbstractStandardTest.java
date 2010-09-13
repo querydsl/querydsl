@@ -27,14 +27,14 @@ import com.mysema.query.hql.HQLQuery;
 import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.DomesticCat;
 import com.mysema.query.hql.domain.QCat;
-import com.mysema.query.types.EConstructor;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.expr.EArrayConstructor;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EList;
-import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.ArrayConstructorExpression;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.ConstructorExpression;
+import com.mysema.query.types.expr.ListExpression;
+import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.expr.QTuple;
 
 /**
@@ -50,12 +50,12 @@ public abstract class AbstractStandardTest {
 
     }
     
-    public static class QProjection extends EConstructor<Projection>{
+    public static class QProjection extends ConstructorExpression<Projection>{
         
         private static final long serialVersionUID = -5866362075090550839L;
 
-        public QProjection(EString str, QCat cat){
-            super(Projection.class, new Class[]{String.class, Cat.class}, new Expr[]{str, cat});
+        public QProjection(StringExpression str, QCat cat){
+            super(Projection.class, new Class[]{String.class, Cat.class}, new Expression[]{str, cat});
         }
         
     }
@@ -64,18 +64,18 @@ public abstract class AbstractStandardTest {
 
     private static final QCat otherCat = new QCat("otherCat");
 
-    private static final EBoolean cond1 = cat.name.length().gt(0);
+    private static final BooleanExpression cond1 = cat.name.length().gt(0);
 
-    private static final EBoolean cond2 = otherCat.name.length().gt(0);
+    private static final BooleanExpression cond2 = otherCat.name.length().gt(0);
 
     private final Date birthDate;
 
     private final java.sql.Date date;
 
     private Projections projections = new Projections(Module.HQL, getTarget()){
-        public <A> Collection<Expr<?>> list(EList<A> expr, EList<A> other, A knownElement){
+        public <A> Collection<Expression<?>> list(ListExpression<A> expr, ListExpression<A> other, A knownElement){
             // NOTE : expr.get(0) is only supported in the where clause
-            return Collections.<Expr<?>>singleton(expr.size());
+            return Collections.<Expression<?>>singleton(expr.size());
         }
     };
 
@@ -85,18 +85,18 @@ public abstract class AbstractStandardTest {
             projections, new Filters(projections, Module.HQL, getTarget()), new MatchingFilters(Module.HQL, getTarget())){
 
         @Override
-        protected Pair<Projectable, List<Expr<?>>> createQuery() {
+        protected Pair<Projectable, List<Expression<?>>> createQuery() {
             // NOTE : EclipseLink needs extra conditions cond1 and code2
             return Pair.of(
                     (Projectable)query().from(cat, otherCat).where(cond1, cond2),
-                    Arrays.<Expr<?>>asList());
+                    Arrays.<Expression<?>>asList());
         }
         @Override
-        protected Pair<Projectable, List<Expr<?>>> createQuery(EBoolean filter) {
+        protected Pair<Projectable, List<Expression<?>>> createQuery(BooleanExpression filter) {
             // NOTE : EclipseLink needs extra conditions cond1 and code2
             return Pair.of(
                     (Projectable)query().from(cat, otherCat).where(cond1, cond2, filter),
-                    Arrays.<Expr<?>>asList(cat.name, otherCat.name));
+                    Arrays.<Expression<?>>asList(cat.name, otherCat.name));
         }
     };
 
@@ -268,7 +268,7 @@ public abstract class AbstractStandardTest {
     @SuppressWarnings("unchecked")
     @Test
     public void arrayProjection(){
-        List<String[]> results = query().from(cat).list(new EArrayConstructor<String>(String[].class, cat.name));
+        List<String[]> results = query().from(cat).list(new ArrayConstructorExpression<String>(String[].class, cat.name));
         assertFalse(results.isEmpty());
         for (String[] result : results){
             assertNotNull(result[0]);
@@ -277,7 +277,7 @@ public abstract class AbstractStandardTest {
 
     @Test
     public void constructorProjection(){
-        List<Projection> projections = query().from(cat).list(EConstructor.create(Projection.class, cat.name, cat));
+        List<Projection> projections = query().from(cat).list(ConstructorExpression.create(Projection.class, cat.name, cat));
         assertFalse(projections.isEmpty());
         for (Projection projection : projections){
             assertNotNull(projection);

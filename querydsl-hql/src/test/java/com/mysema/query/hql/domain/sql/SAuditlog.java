@@ -19,11 +19,11 @@ public class SAuditlog extends BeanPath<SAuditlog> implements RelationalPath<SAu
 
     public static final SAuditlog auditlog = new SAuditlog("AUDITLOG");
 
-    public final PNumber<Integer> id = createNumber("ID", Integer.class);
+    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
-    public final PNumber<Long> itemId = createNumber("ITEM_ID", Long.class);
+    public final NumberPath<Long> itemId = createNumber("ITEM_ID", Long.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SAuditlog> sql100819184430350 = new PrimaryKey<SAuditlog>(this, id);
 
@@ -41,9 +41,9 @@ public class SAuditlog extends BeanPath<SAuditlog> implements RelationalPath<SAu
         super(SAuditlog.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{id, itemId};
+            _all = new Expression[]{id, itemId};
         }
         return _all;
     }
@@ -61,8 +61,8 @@ public class SAuditlog extends BeanPath<SAuditlog> implements RelationalPath<SAu
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

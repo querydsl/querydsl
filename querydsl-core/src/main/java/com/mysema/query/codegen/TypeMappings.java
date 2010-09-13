@@ -13,38 +13,38 @@ import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.TypeExtends;
-import com.mysema.query.types.Custom;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.TemplateExpression;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.custom.CBoolean;
-import com.mysema.query.types.custom.CComparable;
-import com.mysema.query.types.custom.CDate;
-import com.mysema.query.types.custom.CDateTime;
-import com.mysema.query.types.custom.CEnum;
-import com.mysema.query.types.custom.CNumber;
-import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.custom.CString;
-import com.mysema.query.types.custom.CTime;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EComparable;
-import com.mysema.query.types.expr.EDate;
-import com.mysema.query.types.expr.EDateTime;
-import com.mysema.query.types.expr.EEnum;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.EString;
-import com.mysema.query.types.expr.ETime;
-import com.mysema.query.types.path.PBoolean;
-import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PDate;
-import com.mysema.query.types.path.PDateTime;
-import com.mysema.query.types.path.PEnum;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PSimple;
-import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PTime;
+import com.mysema.query.types.custom.BooleanTemplate;
+import com.mysema.query.types.custom.ComparableTemplate;
+import com.mysema.query.types.custom.DateTemplate;
+import com.mysema.query.types.custom.DateTimeTemplate;
+import com.mysema.query.types.custom.EnumTemplate;
+import com.mysema.query.types.custom.NumberTemplate;
+import com.mysema.query.types.custom.SimpleTemplate;
+import com.mysema.query.types.custom.StringTemplate;
+import com.mysema.query.types.custom.TimeTemplate;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.ComparableExpression;
+import com.mysema.query.types.expr.DateExpression;
+import com.mysema.query.types.expr.DateTimeExpression;
+import com.mysema.query.types.expr.EnumExpression;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.expr.TimeExpression;
+import com.mysema.query.types.path.BooleanPath;
+import com.mysema.query.types.path.ComparablePath;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.EnumPath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.path.TimePath;
 
 /**
- * TypeMappings defines mappings from Java types to {@link Expr}, {@link Path} and {@link Custom} types
+ * TypeMappings defines mappings from Java types to {@link Expression}, {@link Path} and {@link TemplateExpression} types
  * 
  * @author tiwe
  *
@@ -58,24 +58,24 @@ public class TypeMappings {
     private final Map<TypeCategory, ClassType> pathTypes = new HashMap<TypeCategory, ClassType>();
 
     public TypeMappings(){
-        register(TypeCategory.STRING, EString.class, PString.class, CString.class);
-        register(TypeCategory.BOOLEAN, EBoolean.class, PBoolean.class, CBoolean.class);
-        register(TypeCategory.COMPARABLE, EComparable.class, PComparable.class, CComparable.class);
-        register(TypeCategory.ENUM, EEnum.class, PEnum.class, CEnum.class);
-        register(TypeCategory.DATE, EDate.class, PDate.class, CDate.class);
-        register(TypeCategory.DATETIME, EDateTime.class, PDateTime.class, CDateTime.class);
-        register(TypeCategory.TIME, ETime.class, PTime.class, CTime.class);
-        register(TypeCategory.NUMERIC, ENumber.class, PNumber.class, CNumber.class);
+        register(TypeCategory.STRING, StringExpression.class, StringPath.class, StringTemplate.class);
+        register(TypeCategory.BOOLEAN, BooleanExpression.class, BooleanPath.class, BooleanTemplate.class);
+        register(TypeCategory.COMPARABLE, ComparableExpression.class, ComparablePath.class, ComparableTemplate.class);
+        register(TypeCategory.ENUM, EnumExpression.class, EnumPath.class, EnumTemplate.class);
+        register(TypeCategory.DATE, DateExpression.class, DatePath.class, DateTemplate.class);
+        register(TypeCategory.DATETIME, DateTimeExpression.class, DateTimePath.class, DateTimeTemplate.class);
+        register(TypeCategory.TIME, TimeExpression.class, TimePath.class, TimeTemplate.class);
+        register(TypeCategory.NUMERIC, NumberExpression.class, NumberPath.class, NumberTemplate.class);
 
-        register(TypeCategory.ARRAY, Expr.class, PSimple.class, CSimple.class);
-        register(TypeCategory.COLLECTION, Expr.class, PSimple.class, CSimple.class);
-        register(TypeCategory.SET, Expr.class, PSimple.class, CSimple.class);
-        register(TypeCategory.LIST, Expr.class, PSimple.class, CSimple.class);
-        register(TypeCategory.MAP, Expr.class, PSimple.class, CSimple.class);
-        register(TypeCategory.SIMPLE, Expr.class, PSimple.class, CSimple.class);
+        register(TypeCategory.ARRAY, Expression.class, SimplePath.class, SimpleTemplate.class);
+        register(TypeCategory.COLLECTION, Expression.class, SimplePath.class, SimpleTemplate.class);
+        register(TypeCategory.SET, Expression.class, SimplePath.class, SimpleTemplate.class);
+        register(TypeCategory.LIST, Expression.class, SimplePath.class, SimpleTemplate.class);
+        register(TypeCategory.MAP, Expression.class, SimplePath.class, SimpleTemplate.class);
+        register(TypeCategory.SIMPLE, Expression.class, SimplePath.class, SimpleTemplate.class);
 
-        register(TypeCategory.CUSTOM, Expr.class, Path.class, CSimple.class);
-        register(TypeCategory.ENTITY, Expr.class, Path.class, CSimple.class);
+        register(TypeCategory.CUSTOM, Expression.class, Path.class, SimpleTemplate.class);
+        register(TypeCategory.ENTITY, Expression.class, Path.class, SimpleTemplate.class);
     }
 
     public Type getCustomType(Type type, EntityType model, boolean raw){
@@ -140,9 +140,9 @@ public class TypeMappings {
     
     @SuppressWarnings("unchecked")
     public void register(TypeCategory category,
-            Class<? extends Expr> expr,
+            Class<? extends Expression> expr,
             Class<? extends Path> path,
-            Class<? extends Custom> custom){
+            Class<? extends TemplateExpression> custom){
         exprTypes.put(category, new ClassType(expr));
         pathTypes.put(category, new ClassType(path));
         customTypes.put(category, new ClassType(custom));

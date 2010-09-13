@@ -7,7 +7,7 @@ package com.mysema.query;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 
 /**
  * Tuple defines an interface for generic query result projection
@@ -36,7 +36,7 @@ public interface Tuple {
      * @return
      */
     @Nullable
-    <T> T get(Expr<T> expr);
+    <T> T get(Expression<T> expr);
 
     /**
      * Get the content as an Object array

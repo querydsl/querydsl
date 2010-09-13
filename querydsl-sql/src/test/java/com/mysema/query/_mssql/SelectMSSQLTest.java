@@ -21,9 +21,9 @@ import com.mysema.query.SelectBaseTest;
 import com.mysema.query.Target;
 import com.mysema.query.sql.SQLServerTemplates;
 import com.mysema.query.sql.mssql.RowNumber;
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.path.PSimple;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.custom.SimpleTemplate;
+import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.ObjectSubQuery;
 import com.mysema.testutil.Label;
@@ -47,7 +47,7 @@ public class SelectMSSQLTest extends SelectBaseTest {
     public void manualPaging(){
         RowNumber rowNumber = rowNumber().orderBy(employee.lastname.asc()).as(rn);
         // TODO : create a short cut for wild card
-        Expr<Object[]> all = CSimple.create(Object[].class, "*");
+        Expression<Object[]> all = SimpleTemplate.create(Object[].class, "*");
 
         // simple
         System.out.println("#1");
@@ -59,7 +59,7 @@ public class SelectMSSQLTest extends SelectBaseTest {
         // with subquery, generic alias
         System.out.println("#2");
         ListSubQuery<Object[]> sub = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
-        PSimple<Object[]> subAlias = new PSimple<Object[]>(Object[].class, "s");
+        SimplePath<Object[]> subAlias = new SimplePath<Object[]>(Object[].class, "s");
         for (Object[] row : query().from(sub.as(subAlias)).list(all)){
             System.out.println(Arrays.asList(row));
         }
@@ -68,7 +68,7 @@ public class SelectMSSQLTest extends SelectBaseTest {
         // with subquery, only row number
         System.out.println("#3");
         ObjectSubQuery<Long> sub2 = sq().from(employee).unique(rowNumber);
-        PSimple<Long> subAlias2 = new PSimple<Long>(Long.class, "s");
+        SimplePath<Long> subAlias2 = new SimplePath<Long>(Long.class, "s");
         for (Object[] row : query().from(sub2.as(subAlias2)).list(all)){
             System.out.println(Arrays.asList(row));
         }

@@ -19,13 +19,13 @@ public class SPersonid extends BeanPath<SPersonid> implements RelationalPath<SPe
 
     public static final SPersonid personid = new SPersonid("PERSONID");
 
-    public final PString country = createString("COUNTRY");
+    public final StringPath country = createString("COUNTRY");
 
-    public final PNumber<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    public final PNumber<Integer> medicarenumber = createNumber("MEDICARENUMBER", Integer.class);
+    public final NumberPath<Integer> medicarenumber = createNumber("MEDICARENUMBER", Integer.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SPersonid> sql100819184437170 = new PrimaryKey<SPersonid>(this, id);
 
@@ -43,9 +43,9 @@ public class SPersonid extends BeanPath<SPersonid> implements RelationalPath<SPe
         super(SPersonid.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{country, id, medicarenumber};
+            _all = new Expression[]{country, id, medicarenumber};
         }
         return _all;
     }
@@ -63,8 +63,8 @@ public class SPersonid extends BeanPath<SPersonid> implements RelationalPath<SPe
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

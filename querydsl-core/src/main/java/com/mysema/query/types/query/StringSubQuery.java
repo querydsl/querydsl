@@ -8,15 +8,15 @@ package com.mysema.query.types.query;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.StringExpression;
 
 /**
  * Single result subquery
  *
  * @author tiwe
  */
-public final class StringSubQuery extends EString implements SubQueryExpression<String>{
+public final class StringSubQuery extends StringExpression implements SubQueryExpression<String>{
 
     private static final long serialVersionUID = -64156984110154969L;
 
@@ -37,7 +37,7 @@ public final class StringSubQuery extends EString implements SubQueryExpression<
     }
 
     @Override
-    public EBoolean exists() {
+    public BooleanExpression exists() {
         return subQueryMixin.exists();
     }
 
@@ -52,7 +52,7 @@ public final class StringSubQuery extends EString implements SubQueryExpression<
     }
 
     @Override
-    public EBoolean notExists() {
+    public BooleanExpression notExists() {
         return subQueryMixin.notExists();
     }
 

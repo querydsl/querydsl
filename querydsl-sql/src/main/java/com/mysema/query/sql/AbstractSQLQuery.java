@@ -36,15 +36,15 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.custom.SimpleTemplate;
+import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.QBean;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.util.ResultSetAdapter;
@@ -128,8 +128,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return (Q)this;
     }
 
-    protected Q addFlag(Position position, String prefix, Expr<?> expr){
-        Expr<?> flag = CSimple.create(expr.getType(), prefix + "{0}", expr);
+    protected Q addFlag(Position position, String prefix, Expression<?> expr){
+        Expression<?> flag = SimpleTemplate.create(expr.getType(), prefix + "{0}", expr);
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
     
@@ -137,7 +137,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
     
-    protected Q addFlag(Position position, Expr<?> flag){
+    protected Q addFlag(Position position, Expression<?> flag){
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
     
@@ -168,7 +168,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return new SQLSerializer(configuration.getTemplates());
     }
 
-    public Q from(Expr<?>... args) {
+    public Q from(Expression<?>... args) {
         return queryMixin.from(args);
     }
 
@@ -234,7 +234,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     @SuppressWarnings("unchecked")
     @Nullable
-    private <T> T get(ResultSet rs, Expr<?> expr, int i, Class<T> type) throws SQLException {
+    private <T> T get(ResultSet rs, Expression<?> expr, int i, Class<T> type) throws SQLException {
         return configuration.get(rs, expr instanceof Path ? (Path)expr : null, i, type);
     }
     
@@ -246,7 +246,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return queryMixin.getMetadata();
     }
 
-    public ResultSet getResults(Expr<?>... exprs) {
+    public ResultSet getResults(Expression<?>... exprs) {
         queryMixin.addToProjection(exprs);
         String queryString = buildQueryString(false);
         logger.debug("query : {}", queryString);
@@ -287,21 +287,21 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
+    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
         queryMixin.addToProjection(args);
         return iterateMultiple();
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <RT> CloseableIterator<RT> iterate(Expr<RT> expr) {
+    public <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
         if (expr instanceof RelationalPath<?>){
             try{
-                Map<String,Expr<?>> bindings = new HashMap<String,Expr<?>>();
+                Map<String,Expression<?>> bindings = new HashMap<String,Expression<?>>();
                 for (Field field : expr.getClass().getFields()){
-                    if (Expr.class.isAssignableFrom(field.getType()) && !Modifier.isStatic(field.getModifiers())){
+                    if (Expression.class.isAssignableFrom(field.getType()) && !Modifier.isStatic(field.getModifiers())){
                         field.setAccessible(true);
-                        Expr<?> column = (Expr<?>) field.get(expr);
+                        Expression<?> column = (Expression<?>) field.get(expr);
                         bindings.put(field.getName(), column);
                     }
                 }
@@ -321,7 +321,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         logger.debug("query : {}", queryString);
         try {
             PreparedStatement stmt = conn.prepareStatement(queryString);
-            final List<? extends Expr<?>> projection = getMetadata().getProjection();
+            final List<? extends Expression<?>> projection = getMetadata().getProjection();
             setParameters(stmt, constants, constantPaths, getMetadata().getParams());
             ResultSet rs = stmt.executeQuery();
 
@@ -334,7 +334,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                         List<Object> objects = new ArrayList<Object>(projection.size());
                         int index = 0;
                         for (int i = 0; i < projection.size(); i++){
-                            Expr<?> expr = projection.get(i);
+                            Expression<?> expr = projection.get(i);
                             if (expr instanceof FactoryExpression){
                                 objects.add(newInstance((FactoryExpression)expr, rs, index));
                                 index += ((FactoryExpression)expr).getArgs().size();
@@ -375,7 +375,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     }
 
     @SuppressWarnings("unchecked")
-    private <RT> CloseableIterator<RT> iterateSingle(@Nullable final Expr<RT> expr) {
+    private <RT> CloseableIterator<RT> iterateSingle(@Nullable final Expression<RT> expr) {
         String queryString = buildQueryString(false);
         logger.debug("query : {}", queryString);
         try {
@@ -427,17 +427,17 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     }
 
     @Override
-    public List<Object[]> list(Expr<?>[] args) {
+    public List<Object[]> list(Expression<?>[] args) {
         return IteratorAdapter.asList(iterate(args));
     }
 
     @Override
-    public <RT> List<RT> list(Expr<RT> expr) {
+    public <RT> List<RT> list(Expression<RT> expr) {
         return IteratorAdapter.asList(iterate(expr));
     }
 
     @Override
-    public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
+    public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         queryMixin.addToProjection(expr);
         long total = count();
         try {
@@ -462,7 +462,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return c.newInstance(args);
     }
 
-    public Q on(EBoolean... conditions) {
+    public Q on(BooleanExpression... conditions) {
         return queryMixin.on(conditions);
     }
 
@@ -506,7 +506,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     }
 
     @Override
-    public <RT> RT uniqueResult(Expr<RT> expr) {
+    public <RT> RT uniqueResult(Expression<RT> expr) {
         CloseableIterator<RT> iterator = iterate(expr);
         try{
             if (iterator.hasNext()){

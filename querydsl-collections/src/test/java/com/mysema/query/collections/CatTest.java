@@ -9,7 +9,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.mysema.query.types.path.PSimple;
+import com.mysema.query.types.path.SimplePath;
 
 public class CatTest {
 
@@ -20,11 +20,11 @@ public class CatTest {
 
     @Test
     public void stringAsSimple() throws SecurityException, NoSuchFieldException {
-        assertTrue(QCat.cat.stringAsSimple.getClass().equals(PSimple.class));
+        assertTrue(QCat.cat.stringAsSimple.getClass().equals(SimplePath.class));
     }
 
     @Test
     public void dateAsSimple(){
-        assertTrue(QCat.cat.dateAsSimple.getClass().equals(PSimple.class));
+        assertTrue(QCat.cat.dateAsSimple.getClass().equals(SimplePath.class));
     }
 }

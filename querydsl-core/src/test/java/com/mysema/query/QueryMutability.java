@@ -11,7 +11,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 
 public final class QueryMutability {
 
@@ -26,7 +26,7 @@ public final class QueryMutability {
         this.metadata = (QueryMetadata) query.getClass().getMethod("getMetadata").invoke(query);
     }
 
-    public void test(Expr<?> p1, Expr<?> p2) throws IOException {
+    public void test(Expression<?> p1, Expression<?> p2) throws IOException {
         System.err.println("count");
         query.count();
         assertProjectionEmpty();

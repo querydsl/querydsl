@@ -8,9 +8,10 @@ package com.mysema.query.types.path;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.expr.SimpleExpression;
 
 /**
  * PathBuilder is an extension to PEntity for dynamic path construction
@@ -87,7 +88,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param type
      * @return
      */
-    public <A> PArray<A> getArray(String property, Class<A[]> type) {
+    public <A> ArrayPath<A> getArray(String property, Class<A[]> type) {
         return super.createArray(property, type);
     }
 
@@ -95,7 +96,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param path
      * @return
      */
-    public PBoolean get(PBoolean path){
+    public BooleanPath get(BooleanPath path){
         return getBoolean(toString(path));
     }
 
@@ -105,7 +106,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param propertyName property name
      * @return
      */
-    public PBoolean getBoolean(String propertyName) {
+    public BooleanPath getBoolean(String propertyName) {
         return super.createBoolean(propertyName);
     }
 
@@ -117,7 +118,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param type
      * @return
      */
-    public <A> PCollection<A> getCollection(String property, Class<A> type) {
+    public <A> CollectionPath<A> getCollection(String property, Class<A> type) {
         return super.createCollection(property, type);
     }
 
@@ -127,7 +128,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <A extends Comparable<?>> PComparable<A> get(PComparable<A> path){
+    public <A extends Comparable<?>> ComparablePath<A> get(ComparablePath<A> path){
         return getComparable(toString(path), (Class<A>)path.getType());
     }
 
@@ -139,7 +140,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param type
      * @return
      */
-    public <A extends Comparable<?>> PComparable<A> getComparable(String property, Class<A> type) {
+    public <A extends Comparable<?>> ComparablePath<A> getComparable(String property, Class<A> type) {
         return super.createComparable(property, type);
     }
 
@@ -149,7 +150,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <A extends Comparable<?>> PDate<A> get(PDate<A> path){
+    public <A extends Comparable<?>> DatePath<A> get(DatePath<A> path){
         return getDate(toString(path), (Class<A>)path.getType());
     }
 
@@ -161,7 +162,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param type
      * @return
      */
-    public <A extends Comparable<?>> PDate<A> getDate(String property, Class<A> type) {
+    public <A extends Comparable<?>> DatePath<A> getDate(String property, Class<A> type) {
         return super.createDate(property, type);
     }
 
@@ -171,7 +172,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <A extends Comparable<?>> PDateTime<A> get(PDateTime<A> path){
+    public <A extends Comparable<?>> DateTimePath<A> get(DateTimePath<A> path){
         return getDateTime(toString(path), (Class<A>)path.getType());
     }
 
@@ -183,7 +184,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param type
      * @return
      */
-    public <A extends Comparable<?>> PDateTime<A> getDateTime(String property, Class<A> type) {
+    public <A extends Comparable<?>> DateTimePath<A> getDateTime(String property, Class<A> type) {
         return super.createDateTime(property, type);
     }
 
@@ -195,7 +196,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param type
      * @return
      */
-    public <A> PList<A, PathBuilder<A>> getList(String property, Class<A> type) {
+    public <A> ListPath<A, PathBuilder<A>> getList(String property, Class<A> type) {
         return super.createList(property, type, PathBuilder.class);
     }
 
@@ -209,7 +210,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param queryType
      * @return
      */
-    public <A, E extends Expr<A>> PList<A, E> getList(String property, Class<A> type, Class<E> queryType) {
+    public <A, E extends SimpleExpression<A>> ListPath<A, E> getList(String property, Class<A> type, Class<E> queryType) {
         return super.createList(property, type, queryType);
     }
 
@@ -223,7 +224,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param value
      * @return
      */
-    public <K, V> PMap<K, V, PathBuilder<V>> getMap(String property, Class<K> key, Class<V> value) {
+    public <K, V> MapPath<K, V, PathBuilder<V>> getMap(String property, Class<K> key, Class<V> value) {
         return super.<K,V,PathBuilder<V>>createMap(property, key, value, PathBuilder.class);
     }
 
@@ -239,7 +240,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param queryType
      * @return
      */
-    public <K, V, E extends Expr<V>> PMap<K, V, E> getMap(String property, Class<K> key, Class<V> value, Class<E> queryType) {
+    public <K, V, E extends SimpleExpression<V>> MapPath<K, V, E> getMap(String property, Class<K> key, Class<V> value, Class<E> queryType) {
         return super.<K,V,E>createMap(property, key, value, queryType);
     }
 
@@ -249,7 +250,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <A extends Number & Comparable<?>> PNumber<A> get(PNumber<A> path){
+    public <A extends Number & Comparable<?>> NumberPath<A> get(NumberPath<A> path){
         return getNumber(toString(path), (Class<A>)path.getType());
     }
 
@@ -261,7 +262,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param type
      * @return
      */
-    public <A extends Number & Comparable<?>> PNumber<A> getNumber(String property, Class<A> type) {
+    public <A extends Number & Comparable<?>> NumberPath<A> getNumber(String property, Class<A> type) {
         return super.createNumber(property, type);
     }
 
@@ -273,7 +274,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param type
      * @return
      */
-    public <A> PSet<A> getSet(String property, Class<A> type) {
+    public <A> SetPath<A> getSet(String property, Class<A> type) {
         return super.createSet(property, type);
     }
 
@@ -295,7 +296,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param type
      * @return
      */
-    public <A> PSimple<A> getSimple(String property, Class<A> type) {
+    public <A> SimplePath<A> getSimple(String property, Class<A> type) {
         return super.createSimple(property, type);
     }
 
@@ -303,7 +304,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param path
      * @return
      */
-    public PString get(PString path){
+    public StringPath get(StringPath path){
         return getString(toString(path));
     }
 
@@ -313,7 +314,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param property property name
      * @return
      */
-    public PString getString(String property) {
+    public StringPath getString(String property) {
         return super.createString(property);
     }
 
@@ -322,7 +323,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param path
      */
     @SuppressWarnings("unchecked")
-    public <A extends Comparable<?>> PTime<A> get(PTime<A> path){
+    public <A extends Comparable<?>> TimePath<A> get(TimePath<A> path){
         return getTime(toString(path), (Class<A>)path.getType());
     }
 
@@ -334,7 +335,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param type
      * @return
      */
-    public <A extends Comparable<?>> PTime<A> getTime(String property, Class<A> type) {
+    public <A extends Comparable<?>> TimePath<A> getTime(String property, Class<A> type) {
         return super.createTime(property, type);
     }
 

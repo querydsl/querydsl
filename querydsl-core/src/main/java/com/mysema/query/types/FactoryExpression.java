@@ -17,14 +17,8 @@ import javax.annotation.Nullable;
  *
  * @param <D>
  */
-public interface FactoryExpression<D> {
-    /**
-     * Cast to {@link Expr}
-     *
-     * @return
-     */
-    Expr<D> asExpr();
-
+public interface FactoryExpression<D> extends Expression<D>{
+    
     /**
      * Get the type of this path
      *
@@ -37,7 +31,7 @@ public interface FactoryExpression<D> {
      *
      * @return
      */
-    List<Expr<?>> getArgs();
+    List<Expression<?>> getArgs();
 
     /**
      * Create a projection with the given arguments

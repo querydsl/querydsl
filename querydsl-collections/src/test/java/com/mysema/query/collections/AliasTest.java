@@ -20,8 +20,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.alias.Alias;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
 
 /**
  * AliasTEst provides
@@ -146,7 +146,7 @@ public class AliasTest extends AbstractQueryTest {
 
     @Test
     public void testVarious1() {
-        PString str = new PString("str");
+        StringPath str = new StringPath("str");
         for (String s : from(str, "a", "ab", "cd", "de").where(
                 str.startsWith("a")).list(str)) {
             assertTrue(s.equals("a") || s.equals("ab"));
@@ -166,7 +166,7 @@ public class AliasTest extends AbstractQueryTest {
 
     @Test
     public void testVarious3() {
-        PNumber<Integer> num = new PNumber<Integer>(Integer.class, "num");
+        NumberPath<Integer> num = new NumberPath<Integer>(Integer.class, "num");
         for (Integer i : from(num, 1, 2, 3, 4).where(num.lt(4)).list(num)) {
             System.out.println(i);
         }

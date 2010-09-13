@@ -19,11 +19,11 @@ public class SNamed extends BeanPath<SNamed> implements RelationalPath<SNamed> {
 
     public static final SNamed named = new SNamed("NAMED");
 
-    public final PNumber<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    public final PString name = createString("NAME");
+    public final StringPath name = createString("NAME");
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SNamed> sql100819184435830 = new PrimaryKey<SNamed>(this, id);
 
@@ -39,9 +39,9 @@ public class SNamed extends BeanPath<SNamed> implements RelationalPath<SNamed> {
         super(SNamed.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{id, name};
+            _all = new Expression[]{id, name};
         }
         return _all;
     }
@@ -59,8 +59,8 @@ public class SNamed extends BeanPath<SNamed> implements RelationalPath<SNamed> {
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 }
 

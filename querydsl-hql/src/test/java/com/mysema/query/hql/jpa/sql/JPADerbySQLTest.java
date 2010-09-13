@@ -26,7 +26,7 @@ import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.hql.domain.sql.SAnimal;
 import com.mysema.query.sql.DerbyTemplates;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.EConstructor;
+import com.mysema.query.types.expr.ConstructorExpression;
 import com.mysema.testutil.JPAConfig;
 import com.mysema.testutil.JPATestRunner;
 
@@ -116,7 +116,7 @@ public class JPADerbySQLTest {
         // not yet supported
         SAnimal cat = new SAnimal("cat");
 
-        List<Cat> cats = query().from(cat).orderBy(cat.name.asc()).list(EConstructor.create(Cat.class, cat.name, cat.id));
+        List<Cat> cats = query().from(cat).orderBy(cat.name.asc()).list(ConstructorExpression.create(Cat.class, cat.name, cat.id));
         assertEquals(6, cats.size());
         for (Cat c : cats){
             System.out.println(c.getName());

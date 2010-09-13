@@ -5,10 +5,9 @@
  */
 package com.mysema.query.types;
 
-import java.io.Serializable;
 import java.lang.reflect.AnnotatedElement;
 
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.BooleanExpression;
 
 /**
  * Path represents a path expression
@@ -16,13 +15,7 @@ import com.mysema.query.types.expr.EBoolean;
  * @author tiwe
  * @version $Id$
  */
-public interface Path<C>  extends Serializable {
-    /**
-     * Cast to {@link Expr}
-     *
-     * @return
-     */
-    Expr<C> asExpr();
+public interface Path<C> extends Expression<C> {
 
     /**
      * Get the metadata for this path
@@ -39,19 +32,12 @@ public interface Path<C>  extends Serializable {
     Path<?> getRoot();
 
     /**
-     * Get the type of this path
-     *
-     * @return
-     */
-    Class<? extends C> getType();
-
-    /**
      * Create a <code>this is not null</code> expression
      *
      * @return
      */
     // TODO : move isNotNull to Expr ?!?
-    EBoolean isNotNull();
+    BooleanExpression isNotNull();
 
     /**
      * Create a <code>this is null</code> expression
@@ -60,7 +46,7 @@ public interface Path<C>  extends Serializable {
      * @return
      */
     // TODO : move isNull to Expr ?!?
-    EBoolean isNull();
+    BooleanExpression isNull();
 
     /**
      * Return the annotated element related to the given path

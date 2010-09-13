@@ -19,17 +19,17 @@ public class SUser extends BeanPath<SUser> implements RelationalPath<SUser> {
 
     public static final SUser user = new SUser("USER_");
 
-    public final PNumber<Integer> companyId = createNumber("COMPANY_ID", Integer.class);
+    public final NumberPath<Integer> companyId = createNumber("COMPANY_ID", Integer.class);
 
-    public final PString firstname = createString("FIRSTNAME");
+    public final StringPath firstname = createString("FIRSTNAME");
 
-    public final PNumber<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    public final PString lastname = createString("LASTNAME");
+    public final StringPath lastname = createString("LASTNAME");
 
-    public final PString username = createString("USERNAME");
+    public final StringPath username = createString("USERNAME");
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SUser> sql100819184439940 = new PrimaryKey<SUser>(this, id);
 
@@ -47,9 +47,9 @@ public class SUser extends BeanPath<SUser> implements RelationalPath<SUser> {
         super(SUser.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{companyId, firstname, id, lastname, username};
+            _all = new Expression[]{companyId, firstname, id, lastname, username};
         }
         return _all;
     }
@@ -67,8 +67,8 @@ public class SUser extends BeanPath<SUser> implements RelationalPath<SUser> {
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 }
 

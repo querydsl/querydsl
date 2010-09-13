@@ -72,7 +72,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return templates.getTemplate(op);
     }
 
-    public S handle(Expr<?> expr) {
+    public S handle(Expression<?> expr) {
         expr.accept(this, null);
         return self;
     }
@@ -87,8 +87,8 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
             if (!first) {
                 append(sep);
             }
-            if (expr instanceof Expr<?>){
-                handle((Expr<?>)expr);
+            if (expr instanceof Expression<?>){
+                handle((Expression<?>)expr);
             }else{
                 throw new IllegalArgumentException("Unsupported type " + expr.getClass().getName());
             }
@@ -97,7 +97,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         return self;
     }
 
-    private void handleTemplate(Template template, List<Expr<?>> args){
+    private void handleTemplate(Template template, List<Expression<?>> args){
         for (Template.Element element : template.getElements()){
             if (element.getStaticText() != null){
                 append(element.getStaticText());
@@ -164,7 +164,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     @Override
-    public Void visit(Custom<?> expr, Void context) {
+    public Void visit(TemplateExpression<?> expr, Void context) {
         handleTemplate(expr.getTemplate(), expr.getArgs());
         return null;
     }
@@ -185,9 +185,9 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     public Void visit(Path<?> path, Void context) {
         PathType pathType = path.getMetadata().getPathType();
         Template template = templates.getTemplate(pathType);
-        List<Expr<?>> args = new ArrayList<Expr<?>>();
+        List<Expression<?>> args = new ArrayList<Expression<?>>();
         if (path.getMetadata().getParent() != null){
-            args.add((Expr<?>) path.getMetadata().getParent());
+            args.add((Expression<?>) path.getMetadata().getParent());
         }
         args.add(path.getMetadata().getExpression());
         handleTemplate(template, args);
@@ -195,7 +195,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     @SuppressWarnings("unchecked")
-    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
+    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expression<?>> args) {
         Template template = templates.getTemplate(operator);
         if (template == null) {
             throw new IllegalArgumentException("Got no pattern for " + operator);
@@ -209,7 +209,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
             }else{
                 int i = element.getIndex();
                 boolean wrap = false;
-                Expr arg = args.get(i);
+                Expression arg = args.get(i);
                 if (arg instanceof BooleanBuilder){
                     arg = ((BooleanBuilder)arg).getValue();
                 }

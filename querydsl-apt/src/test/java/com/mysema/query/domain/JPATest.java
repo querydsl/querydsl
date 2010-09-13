@@ -11,7 +11,7 @@ import javax.persistence.Transient;
 import org.junit.Test;
 
 import com.mysema.query.domain.JDOTest.JDOEntity;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.StringPath;
 
 public class JPATest extends AbstractTest{
 
@@ -30,7 +30,7 @@ public class JPATest extends AbstractTest{
     @Test
     public void test() throws SecurityException, NoSuchFieldException{
         cl = QJPATest_JPAEntity.class;
-        match(PString.class, "prop");
+        match(StringPath.class, "prop");
         assertMissing("skipped");
         assertMissing("skippedEntity");
     }

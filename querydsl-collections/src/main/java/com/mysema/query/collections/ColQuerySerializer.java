@@ -11,7 +11,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.types.*;
-import com.mysema.query.types.expr.ExprConst;
+import com.mysema.query.types.expr.SimpleConstant;
 
 /**
  * ColQuerySerializer is a Serializer implementation for the Java language
@@ -35,14 +35,14 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
             if (path.getType() != null && path.getType().equals(Boolean.class)) {
                 prefix = "is";
             }
-            handle((Expr<?>) path.getMetadata().getParent());
+            handle((Expression<?>) path.getMetadata().getParent());
             append(".").append(prefix);
             append(StringUtils.capitalize(path.getMetadata().getExpression().toString()) + "()");
 
         }else{
-            List<Expr<?>> args = new ArrayList<Expr<?>>(2);
+            List<Expression<?>> args = new ArrayList<Expression<?>>(2);
             if (path.getMetadata().getParent() != null){
-                args.add((Expr<?>)path.getMetadata().getParent());
+                args.add((Expression<?>)path.getMetadata().getParent());
             }
             args.add(path.getMetadata().getExpression());
             Template template = getTemplate(pathType);
@@ -65,7 +65,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
         throw new IllegalArgumentException("Not supported");
     }
 
-    private void visitCast(Operator<?> operator, Expr<?> source, Class<?> targetType) {
+    private void visitCast(Operator<?> operator, Expression<?> source, Class<?> targetType) {
         if (Number.class.isAssignableFrom(source.getType()) && !Constant.class.isInstance(source)) {
             append("new ").append(source.getType().getSimpleName()).append("(");
             handle(source);
@@ -94,7 +94,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
     }
 
     @Override
-    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
+    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expression<?>> args) {
         if (args.size() == 2
                 && Number.class.isAssignableFrom(args.get(0).getType())
                 && Number.class.isAssignableFrom(args.get(1).getType())){
@@ -126,7 +126,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
 
     @Override
     public Void visit(FactoryExpression<?> expr, Void context) {
-        handle(ExprConst.create(expr));
+        handle(SimpleConstant.create(expr));
         append(".newInstance(");
         handle(", ", expr.getArgs());
         append(")");

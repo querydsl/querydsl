@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.*;
 
@@ -33,8 +33,8 @@ public class Filters {
         this.target = target;
     }
 
-    public Collection<EBoolean> booleanFilters(EBoolean expr, EBoolean other){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    public Collection<BooleanExpression> booleanFilters(BooleanExpression expr, BooleanExpression other){
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.add(expr.and(other));
         rv.add(expr.or(other));
         rv.add(expr.not().and(other.not()));
@@ -43,8 +43,8 @@ public class Filters {
         return rv;
     }
 
-    public <A> Collection<EBoolean> collection(ECollection<?,A> expr, ECollection<?,A> other, A knownElement){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    public <A> Collection<BooleanExpression> collection(CollectionExpression<?,A> expr, CollectionExpression<?,A> other, A knownElement){
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.add(expr.contains(knownElement));
         rv.add(expr.isEmpty());
         rv.add(expr.isNotEmpty());
@@ -54,8 +54,8 @@ public class Filters {
         return rv;
     }
 
-    public <A> Collection<EBoolean> array(EArray<A> expr, EArray<A> other, A knownElement){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    public <A> Collection<BooleanExpression> array(ArrayExpression<A> expr, ArrayExpression<A> other, A knownElement){
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.size().gt(0));
         }
@@ -63,8 +63,8 @@ public class Filters {
         return rv;
     }
 
-    private <A extends Comparable<A>> Collection<EBoolean> comparable(EComparable<A> expr, EComparable<A> other, A knownValue){
-        List<EBoolean> rv = new ArrayList<EBoolean>();
+    private <A extends Comparable<A>> Collection<BooleanExpression> comparable(ComparableExpression<A> expr, ComparableExpression<A> other, A knownValue){
+        List<BooleanExpression> rv = new ArrayList<BooleanExpression>();
         rv.addAll(exprFilters(expr, other, knownValue));
         rv.add(expr.gt(other));
         rv.add(expr.gt(knownValue));
@@ -82,8 +82,8 @@ public class Filters {
 
     }
 
-    private <A extends Comparable<A>> Collection<EBoolean> dateOrTime(EDateOrTime<A> expr, EDateOrTime<A> other, A knownValue){
-    List<EBoolean> rv = new ArrayList<EBoolean>();
+    private <A extends Comparable<A>> Collection<BooleanExpression> dateOrTime(TemporalExpression<A> expr, TemporalExpression<A> other, A knownValue){
+    List<BooleanExpression> rv = new ArrayList<BooleanExpression>();
     rv.add(expr.after(other));
         rv.add(expr.after(knownValue));
         rv.add(expr.before(other));
@@ -92,8 +92,8 @@ public class Filters {
     }
 
     @SuppressWarnings("unchecked")
-    public <A extends Comparable> Collection<EBoolean> date(EDate<A> expr, EDate<A> other, A knownValue){
-        List<EBoolean> rv = new ArrayList<EBoolean>();
+    public <A extends Comparable> Collection<BooleanExpression> date(DateExpression<A> expr, DateExpression<A> other, A knownValue){
+        List<BooleanExpression> rv = new ArrayList<BooleanExpression>();
         rv.addAll(comparable(expr, other, knownValue));
         rv.addAll(dateOrTime(expr, other, knownValue));
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
@@ -103,8 +103,8 @@ public class Filters {
     }
 
     @SuppressWarnings("unchecked")
-    public <A extends Comparable> Collection<EBoolean> dateTime(EDateTime<A> expr, EDateTime<A> other, A knownValue){
-        List<EBoolean> rv = new ArrayList<EBoolean>();
+    public <A extends Comparable> Collection<BooleanExpression> dateTime(DateTimeExpression<A> expr, DateTimeExpression<A> other, A knownValue){
+        List<BooleanExpression> rv = new ArrayList<BooleanExpression>();
         rv.addAll(comparable(expr, other, knownValue));
         rv.addAll(dateOrTime(expr, other, knownValue));
         rv.add(expr.dayOfMonth().eq(1));
@@ -129,8 +129,8 @@ public class Filters {
         return rv;
     }
 
-    private <A> Collection<EBoolean> exprFilters(Expr<A> expr, Expr<A> other, A knownValue){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    private <A> Collection<BooleanExpression> exprFilters(SimpleExpression<A> expr, SimpleExpression<A> other, A knownValue){
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.add(expr.eq(other));
         rv.add(expr.eq(knownValue));
 
@@ -139,15 +139,15 @@ public class Filters {
         return rv;
     }
 
-    public <A> Collection<EBoolean> list(EList<A> expr, EList<A> other, A knownElement){
-        List<EBoolean> rv = new ArrayList<EBoolean>();
+    public <A> Collection<BooleanExpression> list(ListExpression<A> expr, ListExpression<A> other, A knownElement){
+        List<BooleanExpression> rv = new ArrayList<BooleanExpression>();
         rv.addAll(collection(expr, other, knownElement));
         rv.add(expr.get(0).eq(knownElement));
         return rv;
     }
 
-    public <K,V> Collection<EBoolean> map(EMap<K,V> expr, EMap<K,V> other, K knownKey, V knownValue) {
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    public <K,V> Collection<BooleanExpression> map(MapExpression<K,V> expr, MapExpression<K,V> other, K knownKey, V knownValue) {
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.add(expr.containsKey(knownKey));
         rv.add(expr.containsValue(knownValue));
         rv.add(expr.get(knownKey).eq(knownValue));
@@ -161,9 +161,9 @@ public class Filters {
     }
 
     @SuppressWarnings("unchecked")
-    public <A extends Number & Comparable<A>> Collection<EBoolean> numeric(ENumber<A> expr, ENumber<A> other, A knownValue){
-        List<EBoolean> rv = new ArrayList<EBoolean>();
-        for (ENumber<?> num : projections.numeric(expr, other, knownValue, true)){
+    public <A extends Number & Comparable<A>> Collection<BooleanExpression> numeric(NumberExpression<A> expr, NumberExpression<A> other, A knownValue){
+        List<BooleanExpression> rv = new ArrayList<BooleanExpression>();
+        for (NumberExpression<?> num : projections.numeric(expr, other, knownValue, true)){
             rv.add(num.lt(expr));
         }
         rv.add(expr.ne(other));
@@ -181,16 +181,16 @@ public class Filters {
         rv.add(expr.in(1l,2l,3l));
 
         if (expr.getType().equals(Integer.class)){
-            ENumber<Integer> eint = (ENumber)expr;
+            NumberExpression<Integer> eint = (NumberExpression)expr;
             rv.add(eint.between(1, 2));
             rv.add(eint.notBetween(1, 2));
             rv.add(eint.mod(5).eq(0));
         }else if (expr.getType().equals(Double.class)){
-            ENumber<Double> edouble = (ENumber)expr;
+            NumberExpression<Double> edouble = (NumberExpression)expr;
             rv.add(edouble.between(1.0, 2.0));
             rv.add(edouble.notBetween(1.0, 2.0));
         }else if (expr.getType().equals(Long.class)){
-            ENumber<Long> elong = (ENumber)expr;
+            NumberExpression<Long> elong = (NumberExpression)expr;
             rv.add(elong.mod(5l).eq(0l));
         }
 
@@ -199,21 +199,21 @@ public class Filters {
         return rv;
     }
 
-    public <A> Collection<EBoolean> pathFilters(Path<A> expr, Path<A> other, A knownValue){
-        return Arrays.<EBoolean>asList(
+    public <A> Collection<BooleanExpression> pathFilters(Path<A> expr, Path<A> other, A knownValue){
+        return Arrays.<BooleanExpression>asList(
              expr.isNull(),
              expr.isNotNull()
         );
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<EBoolean> string(EString expr, EString other, String knownValue){
-        List<EBoolean> rv = new ArrayList<EBoolean>();
+    public Collection<BooleanExpression> string(StringExpression expr, StringExpression other, String knownValue){
+        List<BooleanExpression> rv = new ArrayList<BooleanExpression>();
         if (expr instanceof Path && other instanceof Path){
             rv.addAll(pathFilters((Path<String>)expr, (Path<String>)other, knownValue));
         }
         rv.addAll(comparable(expr, other, knownValue));
-        for (Expr<String> eq : projections.string(expr, other, knownValue)){
+        for (SimpleExpression<String> eq : projections.string(expr, other, knownValue)){
             rv.add(eq.eq(other));
         }
         rv.add(expr.between("A", "Z"));
@@ -284,8 +284,8 @@ public class Filters {
     }
 
     @SuppressWarnings("unchecked")
-    public <A extends Comparable> Collection<EBoolean> time(ETime<A> expr, ETime<A> other, A knownValue){
-        List<EBoolean> rv = new ArrayList<EBoolean>();
+    public <A extends Comparable> Collection<BooleanExpression> time(TimeExpression<A> expr, TimeExpression<A> other, A knownValue){
+        List<BooleanExpression> rv = new ArrayList<BooleanExpression>();
         rv.addAll(comparable(expr, other, knownValue));
         rv.addAll(dateOrTime(expr, other, knownValue));
         rv.add(expr.hour().eq(other.hour()));

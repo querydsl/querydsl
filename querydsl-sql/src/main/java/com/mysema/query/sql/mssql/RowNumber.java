@@ -10,14 +10,14 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.custom.CNumber;
-import com.mysema.query.types.expr.EComparable;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.ESimple;
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.custom.NumberTemplate;
+import com.mysema.query.types.expr.ComparableExpression;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.SimpleExpression;
+import com.mysema.query.types.path.NumberPath;
 
 /**
  * RowNumber supports row_number constructs for MS SQL Server
@@ -25,16 +25,16 @@ import com.mysema.query.types.path.PNumber;
  * @author tiwe
  *
  */
-public class RowNumber extends ESimple<Long>{
+public class RowNumber extends SimpleExpression<Long>{
 
     private static final long serialVersionUID = 3499501725767772281L;
 
-    private final List<Expr<?>> partitionBy = new ArrayList<Expr<?>>();
+    private final List<Expression<?>> partitionBy = new ArrayList<Expression<?>>();
 
     private final List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
 
     @Nullable
-    private PNumber<Long> target;
+    private NumberPath<Long> target;
 
     public RowNumber() {
         super(Long.class);
@@ -42,7 +42,7 @@ public class RowNumber extends ESimple<Long>{
 
     @Override
     public <R,C> R accept(Visitor<R,C> v, C context) {
-        List<Expr<?>> args = new ArrayList<Expr<?>>(partitionBy.size() + orderBy.size());
+        List<Expression<?>> args = new ArrayList<Expression<?>>(partitionBy.size() + orderBy.size());
         StringBuilder builder = new StringBuilder("row_number() over (");
         if (!partitionBy.isEmpty()){
             builder.append("partition by ");
@@ -62,15 +62,15 @@ public class RowNumber extends ESimple<Long>{
             args.add(target);
         }
 
-        ENumber<Long> expr = CNumber.create(Long.class, builder.toString(),
-                args.toArray(new Expr[args.size()]));
+        NumberExpression<Long> expr = NumberTemplate.create(Long.class, builder.toString(),
+                args.toArray(new Expression[args.size()]));
         return expr.accept(v, context);
     }
 
     // TODO : externalize
-    private void appendPartition(List<Expr<?>> args, StringBuilder builder) {
+    private void appendPartition(List<Expression<?>> args, StringBuilder builder) {
         boolean first = true;
-        for (Expr<?> expr : partitionBy){
+        for (Expression<?> expr : partitionBy){
             if (!first){
                 builder.append(", ");
             }
@@ -81,7 +81,7 @@ public class RowNumber extends ESimple<Long>{
     }
 
     // TODO : externalize
-    private void appendOrder(List<Expr<?>> args, StringBuilder builder) {
+    private void appendOrder(List<Expression<?>> args, StringBuilder builder) {
         boolean first = true;
         for (OrderSpecifier<?> expr : orderBy){
             if (!first){
@@ -103,21 +103,21 @@ public class RowNumber extends ESimple<Long>{
         return this;
     }
 
-    public RowNumber orderBy(EComparable<?>... order){
-        for (EComparable<?> o : order){
+    public RowNumber orderBy(ComparableExpression<?>... order){
+        for (ComparableExpression<?> o : order){
             orderBy.add(o.asc());
         }
         return this;
     }
 
-    public RowNumber partitionBy(Expr<?>... exprs){
-        for (Expr<?> expr : exprs){
+    public RowNumber partitionBy(Expression<?>... exprs){
+        for (Expression<?> expr : exprs){
             partitionBy.add(expr);
         }
         return this;
     }
 
-    public RowNumber as(PNumber<Long> target){
+    public RowNumber as(NumberPath<Long> target){
         this.target = target;
         return this;
     }

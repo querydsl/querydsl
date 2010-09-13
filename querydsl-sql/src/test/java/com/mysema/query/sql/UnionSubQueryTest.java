@@ -9,8 +9,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.path.PSimple;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.path.SimplePath;
 
 public class UnionSubQueryTest {
     
@@ -20,11 +20,11 @@ public class UnionSubQueryTest {
     
     @Test
     public void unionSubQuery(){
-        PSimple<Integer> one = new PSimple<Integer>(Integer.class,"1");
-        PSimple<Integer> two = new PSimple<Integer>(Integer.class,"2");
-        PSimple<Integer> three = new PSimple<Integer>(Integer.class,"3");
-        PSimple<Integer> col1 = new PSimple<Integer>(Integer.class,"col1");
-        Expr<?> union = sq().union(
+        SimplePath<Integer> one = new SimplePath<Integer>(Integer.class,"1");
+        SimplePath<Integer> two = new SimplePath<Integer>(Integer.class,"2");
+        SimplePath<Integer> three = new SimplePath<Integer>(Integer.class,"3");
+        SimplePath<Integer> col1 = new SimplePath<Integer>(Integer.class,"col1");
+        Expression<?> union = sq().union(
             sq().unique(one.as(col1)),
             sq().unique(two),
             sq().unique(three));

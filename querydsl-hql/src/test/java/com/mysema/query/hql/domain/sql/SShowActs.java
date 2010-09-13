@@ -19,13 +19,13 @@ public class SShowActs extends BeanPath<SShowActs> implements RelationalPath<SSh
 
     public static final SShowActs showActs = new SShowActs("SHOW_ACTS");
 
-    public final PString actsKey = createString("ACTS_KEY");
+    public final StringPath actsKey = createString("ACTS_KEY");
 
-    public final PString element = createString("ELEMENT");
+    public final StringPath element = createString("ELEMENT");
 
-    public final PNumber<Integer> showId = createNumber("SHOW_ID", Integer.class);
+    public final NumberPath<Integer> showId = createNumber("SHOW_ID", Integer.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SShowActs> sql100819184438340 = new PrimaryKey<SShowActs>(this, actsKey, showId);
 
@@ -43,9 +43,9 @@ public class SShowActs extends BeanPath<SShowActs> implements RelationalPath<SSh
         super(SShowActs.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{actsKey, element, showId};
+            _all = new Expression[]{actsKey, element, showId};
         }
         return _all;
     }
@@ -63,8 +63,8 @@ public class SShowActs extends BeanPath<SShowActs> implements RelationalPath<SSh
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

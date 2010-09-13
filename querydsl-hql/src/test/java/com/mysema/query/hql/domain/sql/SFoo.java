@@ -19,13 +19,13 @@ public class SFoo extends BeanPath<SFoo> implements RelationalPath<SFoo> {
 
     public static final SFoo foo = new SFoo("FOO");
 
-    public final PString bar = createString("BAR");
+    public final StringPath bar = createString("BAR");
 
-    public final PNumber<Integer> id = createNumber("ID", Integer.class);
+    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
-    public final PDate<java.sql.Date> startdate = createDate("STARTDATE", java.sql.Date.class);
+    public final DatePath<java.sql.Date> startdate = createDate("STARTDATE", java.sql.Date.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SFoo> sql100819184433460 = new PrimaryKey<SFoo>(this, id);
 
@@ -41,9 +41,9 @@ public class SFoo extends BeanPath<SFoo> implements RelationalPath<SFoo> {
         super(SFoo.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{bar, id, startdate};
+            _all = new Expression[]{bar, id, startdate};
         }
         return _all;
     }
@@ -61,8 +61,8 @@ public class SFoo extends BeanPath<SFoo> implements RelationalPath<SFoo> {
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

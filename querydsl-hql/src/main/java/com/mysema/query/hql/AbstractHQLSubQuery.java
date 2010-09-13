@@ -12,8 +12,8 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.PMap;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.path.MapPath;
 
 /**
  * Abstract superclass for SubQuery implementations
@@ -57,11 +57,11 @@ public class AbstractHQLSubQuery<Q extends AbstractHQLSubQuery<Q>> extends Detac
         return queryMixin.fullJoin(target, alias);
     }
 
-    public <P> Q fullJoin(PMap<?,P,?> target) {
+    public <P> Q fullJoin(MapPath<?,P,?> target) {
         return queryMixin.fullJoin(target);
     }
 
-    public <P> Q fullJoin(PMap<?,P,?> target, Path<P> alias) {
+    public <P> Q fullJoin(MapPath<?,P,?> target, Path<P> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
@@ -81,11 +81,11 @@ public class AbstractHQLSubQuery<Q extends AbstractHQLSubQuery<Q>> extends Detac
         return queryMixin.innerJoin(target, alias);
     }
 
-    public <P> Q innerJoin(PMap<?,P,?> target) {
+    public <P> Q innerJoin(MapPath<?,P,?> target) {
         return queryMixin.innerJoin(target);
     }
 
-    public <P> Q innerJoin(PMap<?,P,?> target, Path<P> alias) {
+    public <P> Q innerJoin(MapPath<?,P,?> target, Path<P> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
@@ -105,11 +105,11 @@ public class AbstractHQLSubQuery<Q extends AbstractHQLSubQuery<Q>> extends Detac
         return queryMixin.join(target, alias);
     }
 
-    public <P> Q join(PMap<?,P,?> target) {
+    public <P> Q join(MapPath<?,P,?> target) {
         return queryMixin.join(target);
     }
 
-    public <P> Q join(PMap<?,P,?> target, Path<P> alias) {
+    public <P> Q join(MapPath<?,P,?> target, Path<P> alias) {
         return queryMixin.join(target, alias);
     }
 
@@ -129,15 +129,15 @@ public class AbstractHQLSubQuery<Q extends AbstractHQLSubQuery<Q>> extends Detac
         return queryMixin.leftJoin(target, alias);
     }
 
-    public <P> Q leftJoin(PMap<?,P,?> target) {
+    public <P> Q leftJoin(MapPath<?,P,?> target) {
         return queryMixin.leftJoin(target);
     }
 
-    public <P> Q leftJoin(PMap<?,P,?> target, Path<P> alias) {
+    public <P> Q leftJoin(MapPath<?,P,?> target, Path<P> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 
-    public Q with(EBoolean... conditions){
+    public Q with(BooleanExpression... conditions){
         return queryMixin.with(conditions);
     }
     

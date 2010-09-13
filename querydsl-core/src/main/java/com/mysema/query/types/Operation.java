@@ -5,7 +5,6 @@
  */
 package com.mysema.query.types;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -14,14 +13,7 @@ import java.util.List;
  * @author tiwe
  * @version $Id$
  */
-public interface Operation<RT> extends Serializable{
-
-    /**
-     * Cast to {@link Expr}
-     *
-     * @return
-     */
-    Expr<RT> asExpr();
+public interface Operation<RT> extends Expression<RT>{
 
     /**
      * Get the argument with the given index
@@ -29,14 +21,14 @@ public interface Operation<RT> extends Serializable{
      * @param index
      * @return
      */
-    Expr<?> getArg(int index);
+    Expression<?> getArg(int index);
 
     /**
      * Get the arguments of this operation
      *
      * @return
      */
-    List<Expr<?>> getArgs();
+    List<Expression<?>> getArgs();
 
     /**
      * Get the operator symbol for this operation
@@ -44,12 +36,5 @@ public interface Operation<RT> extends Serializable{
      * @return
      */
     Operator<? super RT> getOperator();
-
-    /**
-     * Get the type of this operation
-     *
-     * @return
-     */
-    Class<? extends RT> getType();
 
 }

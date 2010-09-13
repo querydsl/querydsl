@@ -20,11 +20,11 @@ import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.expr.EArrayConstructor;
+import com.mysema.query.types.expr.ArrayConstructorExpression;
 import com.mysema.util.MultiComparator;
 
 /**
@@ -43,7 +43,7 @@ public class DefaultQueryEngine implements QueryEngine {
     }
 
     @Override
-    public long count(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables){
+    public long count(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables){
         if (metadata.getJoins().size() == 1){
             return evaluateSingleSource(metadata, iterables, true).size();
         }else{
@@ -52,7 +52,7 @@ public class DefaultQueryEngine implements QueryEngine {
     }
 
     @Override
-    public <T> List<T> list(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables, Expr<T> projection){
+    public <T> List<T> list(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables, Expression<T> projection){
         if (metadata.getJoins().size() == 1){
             return evaluateSingleSource(metadata, iterables, false);
         }else{
@@ -80,7 +80,7 @@ public class DefaultQueryEngine implements QueryEngine {
         return rv;
     }
 
-    private List evaluateMultipleSources(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables, boolean count) {
+    private List evaluateMultipleSources(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables, boolean count) {
         // from where
         Evaluator<List<Object[]>> ev = evaluatorFactory.createEvaluator(metadata, metadata.getJoins(), metadata.getWhere());
         List<Iterable<?>> iterableList = new ArrayList<Iterable<?>>(metadata.getJoins().size());
@@ -92,7 +92,7 @@ public class DefaultQueryEngine implements QueryEngine {
         List<?> list = ev.evaluate(iterableList.toArray());
 
         if (!count && !list.isEmpty()){
-            List<Expr<?>> sources = new ArrayList<Expr<?>>();
+            List<Expression<?>> sources = new ArrayList<Expression<?>>();
             for (JoinExpression join : metadata.getJoins()){
                 if (join.getType() == JoinType.DEFAULT){
                     sources.add(join.getTarget());
@@ -124,9 +124,9 @@ public class DefaultQueryEngine implements QueryEngine {
         return list;
     }
 
-    private List evaluateSingleSource(QueryMetadata metadata, Map<Expr<?>, Iterable<?>> iterables, boolean count) {
-        Expr<?> source = metadata.getJoins().get(0).getTarget();
-        List<Expr<?>> sources = Collections.<Expr<?>>singletonList(source);
+    private List evaluateSingleSource(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables, boolean count) {
+        Expression<?> source = metadata.getJoins().get(0).getTarget();
+        List<Expression<?>> sources = Collections.<Expression<?>>singletonList(source);
         Iterable<?> iterable = iterables.values().iterator().next();
         List<?> list;
         if (iterable instanceof List){
@@ -172,22 +172,22 @@ public class DefaultQueryEngine implements QueryEngine {
 
     }
 
-    private void order(QueryMetadata metadata, List<Expr<?>> sources, List<?> list) {
+    private void order(QueryMetadata metadata, List<Expression<?>> sources, List<?> list) {
         // create a projection for the order
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
-        Expr<Object>[] orderByExpr = new Expr[orderBy.size()];
+        Expression<Object>[] orderByExpr = new Expression[orderBy.size()];
         boolean[] directions = new boolean[orderBy.size()];
         for (int i = 0; i < orderBy.size(); i++) {
-            orderByExpr[i] = (Expr) orderBy.get(i).getTarget();
+            orderByExpr[i] = (Expression) orderBy.get(i).getTarget();
             directions[i] = orderBy.get(i).getOrder() == Order.ASC;
         }
-        Expr<?> expr = new EArrayConstructor<Object>(Object[].class, orderByExpr);
+        Expression<?> expr = new ArrayConstructorExpression<Object>(Object[].class, orderByExpr);
         Evaluator orderEvaluator = evaluatorFactory.create(metadata, sources, expr);
 
         Collections.sort(list, new MultiComparator(orderEvaluator, directions));
     }
 
-    private List<?> project(QueryMetadata metadata, List<Expr<?>> sources, List<?> list) {
+    private List<?> project(QueryMetadata metadata, List<Expression<?>> sources, List<?> list) {
         Evaluator projectionEvaluator = evaluatorFactory.create(metadata, sources, metadata.getProjection().get(0));
         EvaluatorTransformer transformer = new EvaluatorTransformer(projectionEvaluator);
         list = IteratorUtils.toList(IteratorUtils.transformedIterator(list.iterator(), transformer));

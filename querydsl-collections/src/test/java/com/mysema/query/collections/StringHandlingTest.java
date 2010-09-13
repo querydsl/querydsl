@@ -13,7 +13,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.StringPath;
 
 /**
  * StringHandlingTest provides
@@ -29,9 +29,9 @@ public class StringHandlingTest extends AbstractQueryTest {
 
     private List<String> data = Arrays.asList("abc", "aBC", "def");
 
-    private final PString a = new PString("a");
+    private final StringPath a = new StringPath("a");
 
-    private final PString b = new PString("b");
+    private final StringPath b = new StringPath("b");
 
     @Test
     public void equalsIgnoreCase() {

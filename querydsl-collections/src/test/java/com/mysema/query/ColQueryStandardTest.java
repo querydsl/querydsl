@@ -20,12 +20,12 @@ import com.mysema.commons.lang.Pair;
 import com.mysema.query.collections.Cat;
 import com.mysema.query.collections.MiniApi;
 import com.mysema.query.collections.QCat;
-import com.mysema.query.types.EConstructor;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.expr.EArrayConstructor;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ArrayConstructorExpression;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.ConstructorExpression;
 import com.mysema.query.types.expr.QTuple;
 
 public class ColQueryStandardTest {
@@ -57,16 +57,16 @@ public class ColQueryStandardTest {
 
     private QueryExecution standardTest = new QueryExecution(Module.COLLECTIONS, Target.MEM){
         @Override
-        protected Pair<Projectable,List<Expr<?>>> createQuery() {
+        protected Pair<Projectable,List<Expression<?>>> createQuery() {
             return Pair.of(
                     (Projectable)MiniApi.from(cat, data).from(otherCat, data),
-                    Collections.<Expr<?>>emptyList());
+                    Collections.<Expression<?>>emptyList());
         }
         @Override
-        protected Pair<Projectable,List<Expr<?>>> createQuery(EBoolean filter) {
+        protected Pair<Projectable,List<Expression<?>>> createQuery(BooleanExpression filter) {
             return Pair.of(
                     (Projectable)MiniApi.from(cat, data).from(otherCat, data).where(filter),
-                    Collections.<Expr<?>>singletonList(cat.name));
+                    Collections.<Expression<?>>singletonList(cat.name));
         }
     };
 
@@ -102,7 +102,7 @@ public class ColQueryStandardTest {
     @SuppressWarnings("unchecked")
     @Test
     public void arrayProjection(){
-        List<String[]> results =  MiniApi.from(cat, data).list(new EArrayConstructor<String>(String[].class, cat.name));
+        List<String[]> results =  MiniApi.from(cat, data).list(new ArrayConstructorExpression<String>(String[].class, cat.name));
         assertFalse(results.isEmpty());
         for (String[] result : results){
             assertNotNull(result[0]);
@@ -111,7 +111,7 @@ public class ColQueryStandardTest {
 
     @Test
     public void constructorProjection(){
-        List<Projection> projections =  MiniApi.from(cat, data).list(EConstructor.create(Projection.class, cat.name, cat));
+        List<Projection> projections =  MiniApi.from(cat, data).list(ConstructorExpression.create(Projection.class, cat.name, cat));
         assertFalse(projections.isEmpty());
         for (Projection projection : projections){
             assertNotNull(projection);

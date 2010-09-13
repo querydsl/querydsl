@@ -7,11 +7,11 @@ package com.mysema.query.jdoql.testdomain;
 
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.PDate;
-import com.mysema.query.types.path.PDateTime;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PTime;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.path.TimePath;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 /**
@@ -23,19 +23,19 @@ public class QProduct extends EntityPathBase<com.mysema.query.jdoql.testdomain.P
 
     public static final QProduct product = new QProduct("product");
 
-    public final PString description = createString("description");
+    public final StringPath description = createString("description");
 
-    public final PString name = createString("name");
+    public final StringPath name = createString("name");
 
-    public final PDateTime<java.util.Date> publicationDate = createDateTime("publicationDate",java.util.Date.class);
+    public final DateTimePath<java.util.Date> publicationDate = createDateTime("publicationDate",java.util.Date.class);
 
-    public final PDate<java.sql.Date> dateField = createDate("dateField", java.sql.Date.class);
+    public final DatePath<java.sql.Date> dateField = createDate("dateField", java.sql.Date.class);
 
-    public final PTime<java.sql.Time> timeField = createTime("timeField", java.sql.Time.class);
+    public final TimePath<java.sql.Time> timeField = createTime("timeField", java.sql.Time.class);
 
-    public final PNumber<Integer> amount = createNumber("amount",Integer.class);
+    public final NumberPath<Integer> amount = createNumber("amount",Integer.class);
 
-    public final PNumber<Double> price = createNumber("price",Double.class);
+    public final NumberPath<Double> price = createNumber("price",Double.class);
 
     public QProduct(String path) {
           this(com.mysema.query.jdoql.testdomain.Product.class, path);

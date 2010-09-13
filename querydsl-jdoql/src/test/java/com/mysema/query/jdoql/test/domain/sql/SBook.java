@@ -11,12 +11,12 @@ import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.Table;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.CSimple;
+import com.mysema.query.types.custom.SimpleTemplate;
 import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
 
 
 /**
@@ -29,13 +29,13 @@ public class SBook extends BeanPath<SBook> implements RelationalPath<SBook>{
 
     public static final SBook book = new SBook("BOOK");
 
-    public final PString author = createString("AUTHOR");
+    public final StringPath author = createString("AUTHOR");
 
-    public final PNumber<Long> bookId = createNumber("BOOK_ID", Long.class);
+    public final NumberPath<Long> bookId = createNumber("BOOK_ID", Long.class);
 
-    public final PString isbn = createString("ISBN");
+    public final StringPath isbn = createString("ISBN");
 
-    public final PString publisher = createString("PUBLISHER");
+    public final StringPath publisher = createString("PUBLISHER");
 
     public final PrimaryKey<SBook> sysIdx65 = new PrimaryKey<SBook>(this, bookId);
 
@@ -53,8 +53,8 @@ public class SBook extends BeanPath<SBook> implements RelationalPath<SBook>{
         super(SBook.class, metadata);
     }
 
-    public Expr<Object[]> all() {
-        return CSimple.create(Object[].class, "{0}.*", this);
+    public Expression<Object[]> all() {
+        return SimpleTemplate.create(Object[].class, "{0}.*", this);
     }
 
     @Override
@@ -73,8 +73,8 @@ public class SBook extends BeanPath<SBook> implements RelationalPath<SBook>{
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(author, bookId, isbn, publisher);
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(author, bookId, isbn, publisher);
     }
 
 }

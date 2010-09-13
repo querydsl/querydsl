@@ -19,11 +19,11 @@ public class SCatalogPrice extends BeanPath<SCatalogPrice> implements Relational
 
     public static final SCatalogPrice catalogPrice = new SCatalogPrice("CATALOG_PRICE");
 
-    public final PNumber<Integer> catalogId = createNumber("CATALOG_ID", Integer.class);
+    public final NumberPath<Integer> catalogId = createNumber("CATALOG_ID", Integer.class);
 
-    public final PNumber<Long> pricesId = createNumber("PRICES_ID", Long.class);
+    public final NumberPath<Long> pricesId = createNumber("PRICES_ID", Long.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SCatalogPrice> sql100819184431880 = new PrimaryKey<SCatalogPrice>(this, catalogId, pricesId);
 
@@ -43,9 +43,9 @@ public class SCatalogPrice extends BeanPath<SCatalogPrice> implements Relational
         super(SCatalogPrice.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{catalogId, pricesId};
+            _all = new Expression[]{catalogId, pricesId};
         }
         return _all;
     }
@@ -63,8 +63,8 @@ public class SCatalogPrice extends BeanPath<SCatalogPrice> implements Relational
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

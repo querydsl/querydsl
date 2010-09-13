@@ -12,8 +12,8 @@ import java.util.Set;
 import org.apache.commons.lang.builder.EqualsBuilder;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.Predicate;
 
 /**
  * JoinExpression is a join element in a {@link Query} instance.
@@ -28,24 +28,24 @@ public final class JoinExpression implements Serializable{
 
     private final Set<JoinFlag> flags = new LinkedHashSet<JoinFlag>();
 
-    private final Expr<?> target;
+    private final Expression<?> target;
 
     private final JoinType type;
 
-    public JoinExpression(JoinType type, Expr<?> target) {
+    public JoinExpression(JoinType type, Expression<?> target) {
         this.type = Assert.notNull(type,"type");
         this.target = Assert.notNull(target,"target");
     }
 
-    public EBoolean getCondition() {
+    public Predicate getCondition() {
         return condition.getValue();
     }
 
-    public void addCondition(EBoolean c) {
+    public void addCondition(Predicate c) {
         condition.and(c);
     }
 
-    public Expr<?> getTarget() {
+    public Expression<?> getTarget() {
         return target;
     }
 

@@ -19,13 +19,13 @@ public class SDepartment extends BeanPath<SDepartment> implements RelationalPath
 
     public static final SDepartment department = new SDepartment("DEPARTMENT");
 
-    public final PNumber<Integer> companyId = createNumber("COMPANY_ID", Integer.class);
+    public final NumberPath<Integer> companyId = createNumber("COMPANY_ID", Integer.class);
 
-    public final PNumber<Integer> id = createNumber("ID", Integer.class);
+    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
-    public final PString name = createString("NAME");
+    public final StringPath name = createString("NAME");
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SDepartment> sql100819184432690 = new PrimaryKey<SDepartment>(this, id);
 
@@ -43,9 +43,9 @@ public class SDepartment extends BeanPath<SDepartment> implements RelationalPath
         super(SDepartment.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{companyId, id, name};
+            _all = new Expression[]{companyId, id, name};
         }
         return _all;
     }
@@ -63,8 +63,8 @@ public class SDepartment extends BeanPath<SDepartment> implements RelationalPath
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

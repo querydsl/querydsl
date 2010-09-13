@@ -14,8 +14,8 @@ import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.domain.AbstractTest;
-import com.mysema.query.types.path.PSimple;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.path.StringPath;
 
 public class Inheritance3Test extends AbstractTest{
 
@@ -53,25 +53,25 @@ public class Inheritance3Test extends AbstractTest{
     @Test
     public void GenericSupertype() throws SecurityException, NoSuchFieldException{
         cl = QInheritance3Test_GenericSupertype.class;
-        match(PSimple.class, "field");    
+        match(SimplePath.class, "field");    
     }
     
     @Test
     public void GenericSupertypeC() throws SecurityException, NoSuchFieldException{
         cl = QInheritance3Test_GenericSupertypeC.class;
-        match(PSimple.class, "field");    
+        match(SimplePath.class, "field");    
     }
     
     @Test
     public void GenericSupertypeS() throws SecurityException, NoSuchFieldException{
         cl = QInheritance3Test_GenericSupertypeS.class;
-        match(PString.class, "field");
+        match(StringPath.class, "field");
     }
     
     @Test
     public void GenericSupertypeS2() throws SecurityException, NoSuchFieldException{
         cl = QInheritance3Test_GenericSupertypeS2.class;
-        match(PString.class, "field");
+        match(StringPath.class, "field");
     }
 
 }

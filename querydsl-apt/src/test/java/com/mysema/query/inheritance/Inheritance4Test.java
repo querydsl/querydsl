@@ -9,9 +9,9 @@ import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.domain.AbstractTest;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PSimple;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.path.StringPath;
 
 public class Inheritance4Test extends AbstractTest{
 
@@ -48,13 +48,13 @@ public class Inheritance4Test extends AbstractTest{
     @Test
     public void test() throws SecurityException, NoSuchFieldException{
         cl = QInheritance4Test_EntityWithComparable.class;
-        match(PSimple.class, "field");
+        match(SimplePath.class, "field");
 
         cl = QInheritance4Test_EntityWithNumber.class;
-        match(PNumber.class, "field");
+        match(NumberPath.class, "field");
 
         cl = QInheritance4Test_EntityWithString.class;
-        match(PString.class, "field");
+        match(StringPath.class, "field");
 
     }
 }

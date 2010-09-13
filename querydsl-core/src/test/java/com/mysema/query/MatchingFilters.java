@@ -8,7 +8,7 @@ package com.mysema.query;
 import java.util.Collection;
 import java.util.HashSet;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.*;
 
 /**
@@ -26,8 +26,8 @@ public class MatchingFilters {
         this.target = target;
     }
 
-    public <A> Collection<EBoolean> array(EArray<A> expr,  EArray<A> other, A knownElement, A missingElement){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    public <A> Collection<BooleanExpression> array(ArrayExpression<A> expr,  ArrayExpression<A> other, A knownElement, A missingElement){
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
 //        rv.add(expr.isEmpty().not());
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.size().gt(0));
@@ -35,8 +35,8 @@ public class MatchingFilters {
         return rv;
     }
 
-    public <A> Collection<EBoolean> collection(ECollection<?,A> expr,  ECollection<?,A> other, A knownElement, A missingElement){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    public <A> Collection<BooleanExpression> collection(CollectionExpression<?,A> expr,  CollectionExpression<?,A> other, A knownElement, A missingElement){
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.contains(knownElement));
             rv.add(expr.contains(missingElement).not());
@@ -47,8 +47,8 @@ public class MatchingFilters {
     }
 
     @SuppressWarnings("unchecked")
-    private <A extends Comparable> Collection<EBoolean> comparable(EComparable<A> expr,  Expr<A> other){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    private <A extends Comparable> Collection<BooleanExpression> comparable(ComparableExpression<A> expr,  Expression<A> other){
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.add(expr.eq(other));
         rv.add(expr.goe(other));
         rv.add(expr.loe(other));
@@ -56,8 +56,8 @@ public class MatchingFilters {
         return rv;
     }
 
-    public Collection<EBoolean> date(EDate<java.sql.Date> expr, EDate<java.sql.Date> other){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    public Collection<BooleanExpression> date(DateExpression<java.sql.Date> expr, DateExpression<java.sql.Date> other){
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.addAll(comparable(expr, other));
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
 
@@ -76,15 +76,15 @@ public class MatchingFilters {
         return rv;
     }
 
-    public Collection<EBoolean> date(EDate<java.sql.Date> expr, EDate<java.sql.Date> other, java.sql.Date knownValue){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    public Collection<BooleanExpression> date(DateExpression<java.sql.Date> expr, DateExpression<java.sql.Date> other, java.sql.Date knownValue){
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.addAll(date(expr, other));
-        rv.addAll(date(expr, EDateConst.create(knownValue)));
+        rv.addAll(date(expr, DateConstant.create(knownValue)));
         return rv;
     }
 
-    public Collection<EBoolean> dateTime(EDateTime<java.util.Date> expr, EDateTime<java.util.Date> other){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    public Collection<BooleanExpression> dateTime(DateTimeExpression<java.util.Date> expr, DateTimeExpression<java.util.Date> other){
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.addAll(comparable(expr, other));
         rv.add(expr.milliSecond().eq(other.milliSecond()));
         rv.add(expr.second().eq(other.second()));
@@ -107,19 +107,19 @@ public class MatchingFilters {
         return rv;
     }
 
-    public Collection<EBoolean> dateTime(EDateTime<java.util.Date> expr, EDateTime<java.util.Date> other, java.util.Date knownValue){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    public Collection<BooleanExpression> dateTime(DateTimeExpression<java.util.Date> expr, DateTimeExpression<java.util.Date> other, java.util.Date knownValue){
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.addAll(dateTime(expr, other));
-        rv.addAll(dateTime(expr, EDateTimeConst.create(knownValue)));
+        rv.addAll(dateTime(expr, DateTimeConstant.create(knownValue)));
         return rv;
     }
 
-    public <A> Collection<EBoolean> list(EList<A> expr, EList<A> other, A knownElement, A missingElement){
+    public <A> Collection<BooleanExpression> list(ListExpression<A> expr, ListExpression<A> other, A knownElement, A missingElement){
         return collection(expr, other, knownElement, missingElement);
     }
 
-    public <K,V> Collection<EBoolean> map(EMap<K,V> expr, EMap<K,V> other,  K knownKey, V knownValue, K missingKey, V missingValue) {
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    public <K,V> Collection<BooleanExpression> map(MapExpression<K,V> expr, MapExpression<K,V> other,  K knownKey, V knownValue, K missingKey, V missingValue) {
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.add(expr.containsKey(knownKey));
         rv.add(expr.containsKey(missingKey).not());
         rv.add(expr.containsValue(knownValue));
@@ -130,15 +130,15 @@ public class MatchingFilters {
         return rv;
     }
 
-    public <A extends Number & Comparable<A>> Collection<EBoolean> numeric( ENumber<A> expr, ENumber<A> other, A knownValue){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    public <A extends Number & Comparable<A>> Collection<BooleanExpression> numeric( NumberExpression<A> expr, NumberExpression<A> other, A knownValue){
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.addAll(numeric(expr, other));
-        rv.addAll(numeric(expr, ENumberConst.create(knownValue)));
+        rv.addAll(numeric(expr, NumberConstant.create(knownValue)));
         return rv;
     }
 
-    public <A extends Number & Comparable<A>> Collection<EBoolean> numeric( ENumber<A> expr, ENumber<A> other){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    public <A extends Number & Comparable<A>> Collection<BooleanExpression> numeric( NumberExpression<A> expr, NumberExpression<A> other){
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.add(expr.eq(other));
         rv.add(expr.goe(other));
         rv.add(expr.gt(other.subtract(1)));
@@ -150,8 +150,8 @@ public class MatchingFilters {
         return rv;
     }
 
-    public Collection<EBoolean> string(EString expr, EString other){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    public Collection<BooleanExpression> string(StringExpression expr, StringExpression other){
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         if (module != Module.LUCENE){
             rv.addAll(comparable(expr, other));
 
@@ -248,15 +248,15 @@ public class MatchingFilters {
         return rv;
     }
 
-    public Collection<EBoolean> string(EString expr, EString other,  String knownValue){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    public Collection<BooleanExpression> string(StringExpression expr, StringExpression other,  String knownValue){
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.addAll(string(expr, other));
-        rv.addAll(string(expr, EStringConst.create(knownValue)));
+        rv.addAll(string(expr, StringConstant.create(knownValue)));
         return rv;
     }
 
-    public Collection<EBoolean> time(ETime<java.sql.Time> expr,  ETime<java.sql.Time> other){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    public Collection<BooleanExpression> time(TimeExpression<java.sql.Time> expr,  TimeExpression<java.sql.Time> other){
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.addAll(comparable(expr, other));
         rv.add(expr.milliSecond().eq(other.milliSecond()));
         rv.add(expr.second().eq(other.second()));
@@ -265,10 +265,10 @@ public class MatchingFilters {
         return rv;
     }
 
-    public Collection<EBoolean> time(ETime<java.sql.Time> expr,  ETime<java.sql.Time> other, java.sql.Time knownValue){
-        HashSet<EBoolean> rv = new HashSet<EBoolean>();
+    public Collection<BooleanExpression> time(TimeExpression<java.sql.Time> expr,  TimeExpression<java.sql.Time> other, java.sql.Time knownValue){
+        HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.addAll(time(expr, other));
-        rv.addAll(time(expr, ETimeConst.create(knownValue)));
+        rv.addAll(time(expr, TimeConstant.create(knownValue)));
         return rv;
     }
 }

@@ -12,7 +12,7 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.Projectable;
 import com.mysema.query.SearchResults;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 
 /**
  * ProjectableAdapter is an adapter implementation for the Projectable interface
@@ -43,77 +43,77 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public CloseableIterator<Object[]> iterate(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return projectable.iterate(first, second, rest);
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
+    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
         return projectable.iterate(args);
     }
 
     @Override
-    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
+    public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
         return projectable.iterate(projection);
     }
 
     @Override
-    public CloseableIterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public CloseableIterator<Object[]> iterateDistinct(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return projectable.iterateDistinct(first, second, rest);
     }
 
     @Override
-    public CloseableIterator<Object[]> iterateDistinct(Expr<?>[] args) {
+    public CloseableIterator<Object[]> iterateDistinct(Expression<?>[] args) {
         return projectable.iterateDistinct(args);
     }
 
     @Override
-    public <RT> CloseableIterator<RT> iterateDistinct(Expr<RT> projection) {
+    public <RT> CloseableIterator<RT> iterateDistinct(Expression<RT> projection) {
         return projectable.iterateDistinct(projection);
     }
 
     @Override
-    public List<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public List<Object[]> list(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return projectable.list(first, second, rest);
     }
 
     @Override
-    public List<Object[]> list(Expr<?>[] args) {
+    public List<Object[]> list(Expression<?>[] args) {
         return projectable.list(args);
     }
 
     @Override
-    public <RT> List<RT> list(Expr<RT> projection) {
+    public <RT> List<RT> list(Expression<RT> projection) {
         return projectable.list(projection);
     }
 
     @Override
-    public List<Object[]> listDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public List<Object[]> listDistinct(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return projectable.listDistinct(first, second, rest);
     }
 
     @Override
-    public List<Object[]> listDistinct(Expr<?>[] args) {
+    public List<Object[]> listDistinct(Expression<?>[] args) {
         return projectable.listDistinct(args);
     }
 
     @Override
-    public <RT> List<RT> listDistinct(Expr<RT> projection) {
+    public <RT> List<RT> listDistinct(Expression<RT> projection) {
         return projectable.listDistinct(projection);
     }
 
     @Override
-    public <RT> SearchResults<RT> listDistinctResults(Expr<RT> expr) {
+    public <RT> SearchResults<RT> listDistinctResults(Expression<RT> expr) {
         return projectable.listDistinctResults(expr);
     }
 
     @Override
-    public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
+    public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         return projectable.listResults(expr);
     }
 
     @Override
-    public <K, V> Map<K, V> map(Expr<K> key, Expr<V> value) {
+    public <K, V> Map<K, V> map(Expression<K> key, Expression<V> value) {
         return projectable.map(key, value);
     }
 
@@ -122,17 +122,17 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
-    public Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public Object[] uniqueResult(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return projectable.uniqueResult(first, second, rest);
     }
 
     @Override
-    public Object[] uniqueResult(Expr<?>[] args) {
+    public Object[] uniqueResult(Expression<?>[] args) {
         return projectable.uniqueResult(args);
     }
 
     @Override
-    public <RT> RT uniqueResult(Expr<RT> expr) {
+    public <RT> RT uniqueResult(Expression<RT> expr) {
         return projectable.uniqueResult(expr);
     }
 

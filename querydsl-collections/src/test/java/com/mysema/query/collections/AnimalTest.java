@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.mysema.query.types.path.PSimple;
+import com.mysema.query.types.path.SimplePath;
 
 public class AnimalTest {
 
@@ -23,7 +23,7 @@ public class AnimalTest {
 
     @Test
     public void dateAsSimple(){
-        assertTrue(QAnimal.animal.dateAsSimple.getClass().equals(PSimple.class));
+        assertTrue(QAnimal.animal.dateAsSimple.getClass().equals(SimplePath.class));
     }
 
 }

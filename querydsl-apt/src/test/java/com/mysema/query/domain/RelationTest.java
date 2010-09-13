@@ -18,11 +18,11 @@ import org.junit.Test;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerydslConfig;
 import com.mysema.query.domain.rel.RelationType2;
-import com.mysema.query.types.path.PCollection;
-import com.mysema.query.types.path.PEnum;
-import com.mysema.query.types.path.PList;
-import com.mysema.query.types.path.PMap;
-import com.mysema.query.types.path.PSet;
+import com.mysema.query.types.path.CollectionPath;
+import com.mysema.query.types.path.EnumPath;
+import com.mysema.query.types.path.ListPath;
+import com.mysema.query.types.path.MapPath;
+import com.mysema.query.types.path.SetPath;
 
 public class RelationTest extends AbstractTest{
 
@@ -108,41 +108,41 @@ public class RelationTest extends AbstractTest{
     @Test
     public void test() throws SecurityException, NoSuchFieldException{
         cl = QRelationTest_RelationType.class;
-        match(PEnum.class, "enumProperty");
-        match(PList.class, "enumList");
-        match(PMap.class, "enumMap1");
-        match(PMap.class, "enumMap");
+        match(EnumPath.class, "enumProperty");
+        match(ListPath.class, "enumList");
+        match(MapPath.class, "enumMap1");
+        match(MapPath.class, "enumMap");
 
-        match(PList.class, "list");
-        match(PList.class, "list2");
-        match(PList.class, "list3");
-        match(PList.class, "list4");
-        match(PList.class, "list5");
+        match(ListPath.class, "list");
+        match(ListPath.class, "list2");
+        match(ListPath.class, "list3");
+        match(ListPath.class, "list4");
+        match(ListPath.class, "list5");
 
-        match(PSet.class, "set");
-        match(PSet.class, "sortedSet");
-        match(PSet.class, "set2");
-        match(PSet.class, "set3");
-        match(PSet.class, "set4");
+        match(SetPath.class, "set");
+        match(SetPath.class, "sortedSet");
+        match(SetPath.class, "set2");
+        match(SetPath.class, "set3");
+        match(SetPath.class, "set4");
 
-        match(PList.class, "listOfObjects");
-        match(PSet.class, "setOfObjects");
-        match(PSet.class, "setOfObjects2");
+        match(ListPath.class, "listOfObjects");
+        match(SetPath.class, "setOfObjects");
+        match(SetPath.class, "setOfObjects2");
 
-        match(PCollection.class, "collection");
-        match(PCollection.class, "collection2");
-        match(PCollection.class, "collection3");
-        match(PCollection.class, "collection4");
+        match(CollectionPath.class, "collection");
+        match(CollectionPath.class, "collection2");
+        match(CollectionPath.class, "collection3");
+        match(CollectionPath.class, "collection4");
 
-        match(PMap.class, "map");
-        match(PMap.class, "map2");
-        match(PMap.class, "map3");
-        match(PMap.class, "map4");
-        match(PMap.class, "map5");
-        match(PMap.class, "map6");
-        match(PMap.class, "map7");
-        match(PMap.class, "map8");
-        match(PMap.class, "map9");
+        match(MapPath.class, "map");
+        match(MapPath.class, "map2");
+        match(MapPath.class, "map3");
+        match(MapPath.class, "map4");
+        match(MapPath.class, "map5");
+        match(MapPath.class, "map6");
+        match(MapPath.class, "map7");
+        match(MapPath.class, "map8");
+        match(MapPath.class, "map9");
     }
 
     @Test

@@ -14,8 +14,8 @@ import com.mysema.query.sql.AbstractSQLQuery;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.OracleTemplates;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.expr.BooleanExpression;
 
 /**
  * OracleQuery provides Oracle specific extensions to the base SQL query type
@@ -47,23 +47,23 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
         super(conn, new Configuration(templates), metadata);
     }
 
-    public OracleQuery connectByPrior(EBoolean cond) {
+    public OracleQuery connectByPrior(BooleanExpression cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY_PRIOR, cond);
     }
 
-    public OracleQuery connectBy(EBoolean cond) {
+    public OracleQuery connectBy(BooleanExpression cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY, cond);
     }
 
-    public OracleQuery connectByNocyclePrior(EBoolean cond) {
+    public OracleQuery connectByNocyclePrior(BooleanExpression cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY_NOCYCLE_PRIOR, cond);
     }
 
-    public <A> OracleQuery startWith(EBoolean cond) {
+    public <A> OracleQuery startWith(BooleanExpression cond) {
         return addFlag(Position.BEFORE_ORDER, START_WITH, cond);
     }
 
-    public OracleQuery orderSiblingsBy(Expr<?> path) {
+    public OracleQuery orderSiblingsBy(Expression<?> path) {
         return addFlag(Position.BEFORE_ORDER, ORDER_SIBLINGS_BY, path);
     }
     

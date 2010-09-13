@@ -19,13 +19,13 @@ public class SKittens extends BeanPath<SKittens> implements RelationalPath<SKitt
 
     public static final SKittens kittens = new SKittens("KITTENS");
 
-    public final PNumber<Integer> animalId = createNumber("ANIMAL_ID", Integer.class);
+    public final NumberPath<Integer> animalId = createNumber("ANIMAL_ID", Integer.class);
 
-    public final PNumber<Integer> ind = createNumber("IND", Integer.class);
+    public final NumberPath<Integer> ind = createNumber("IND", Integer.class);
 
-    public final PNumber<Integer> kittensId = createNumber("KITTENS_ID", Integer.class);
+    public final NumberPath<Integer> kittensId = createNumber("KITTENS_ID", Integer.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SKittens> sql100819184440200 = new PrimaryKey<SKittens>(this, animalId, ind);
 
@@ -45,9 +45,9 @@ public class SKittens extends BeanPath<SKittens> implements RelationalPath<SKitt
         super(SKittens.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{animalId, ind, kittensId};
+            _all = new Expression[]{animalId, ind, kittensId};
         }
         return _all;
     }
@@ -65,8 +65,8 @@ public class SKittens extends BeanPath<SKittens> implements RelationalPath<SKitt
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

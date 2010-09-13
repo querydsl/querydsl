@@ -5,7 +5,7 @@
  */
 package com.mysema.query;
 
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.Predicate;
 
 /**
  * Parent interface for clauses with a filter
@@ -22,6 +22,6 @@ public interface FilteredClause<C extends FilteredClause<C>> {
      * @param o
      * @return
      */
-    C where(EBoolean... o);
+    C where(Predicate... o);
 
 }

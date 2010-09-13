@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerySupertype;
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.NumberPath;
 
 public class Inheritance5Test {
 
@@ -50,7 +50,7 @@ public class Inheritance5Test {
 
     @Test
     public void test(){
-        assertEquals(PNumber.class, QInheritance5Test_Entity.entity.id.getClass());
+        assertEquals(NumberPath.class, QInheritance5Test_Entity.entity.id.getClass());
     }
 
 }

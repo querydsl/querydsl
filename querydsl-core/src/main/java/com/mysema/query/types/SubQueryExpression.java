@@ -6,7 +6,7 @@
 package com.mysema.query.types;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.query.Detachable;
 
 /**
@@ -19,14 +19,14 @@ import com.mysema.query.types.query.Detachable;
  *
  * @param <T>
  */
-public interface SubQueryExpression<T>{
+public interface SubQueryExpression<T> extends Expression<T>{
 
     /**
      * Get an exists(this) expression for the subquery
      *
      * @return
      */
-    EBoolean exists();
+    BooleanExpression exists();
 
     /**
      * Get the query metadata for the subquery
@@ -40,13 +40,6 @@ public interface SubQueryExpression<T>{
      *
      * @return
      */
-    EBoolean notExists();
-
-    /**
-     * Cast to {@link Expr}
-     *
-     * @return
-     */
-    Expr<T> asExpr();
+    BooleanExpression notExists();
 
 }

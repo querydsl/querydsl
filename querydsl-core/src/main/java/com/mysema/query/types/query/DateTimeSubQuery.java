@@ -8,8 +8,8 @@ package com.mysema.query.types.query;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EDateTime;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.DateTimeExpression;
 
 /**
  * Single result subquery
@@ -18,7 +18,7 @@ import com.mysema.query.types.expr.EDateTime;
  *
  * @param <A>
  */
-public final class DateTimeSubQuery<A extends Comparable<?>> extends EDateTime<A> implements SubQueryExpression<A>{
+public final class DateTimeSubQuery<A extends Comparable<?>> extends DateTimeExpression<A> implements SubQueryExpression<A>{
 
     private static final long serialVersionUID = -64156984110154969L;
 
@@ -40,7 +40,7 @@ public final class DateTimeSubQuery<A extends Comparable<?>> extends EDateTime<A
     }
 
     @Override
-    public EBoolean exists() {
+    public BooleanExpression exists() {
         return subQueryMixin.exists();
     }
 
@@ -55,7 +55,7 @@ public final class DateTimeSubQuery<A extends Comparable<?>> extends EDateTime<A
     }
 
     @Override
-    public EBoolean notExists() {
+    public BooleanExpression notExists() {
         return subQueryMixin.notExists();
     }
 

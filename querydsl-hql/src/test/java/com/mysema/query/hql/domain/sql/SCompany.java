@@ -19,13 +19,13 @@ public class SCompany extends BeanPath<SCompany> implements RelationalPath<SComp
 
     public static final SCompany company = new SCompany("COMPANY");
 
-    public final PNumber<Integer> ceoId = createNumber("CEO_ID", Integer.class);
+    public final NumberPath<Integer> ceoId = createNumber("CEO_ID", Integer.class);
 
-    public final PNumber<Integer> id = createNumber("ID", Integer.class);
+    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
-    public final PString name = createString("NAME");
+    public final StringPath name = createString("NAME");
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SCompany> sql100819184432220 = new PrimaryKey<SCompany>(this, id);
 
@@ -49,9 +49,9 @@ public class SCompany extends BeanPath<SCompany> implements RelationalPath<SComp
         super(SCompany.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{ceoId, id, name};
+            _all = new Expression[]{ceoId, id, name};
         }
         return _all;
     }
@@ -69,8 +69,8 @@ public class SCompany extends BeanPath<SCompany> implements RelationalPath<SComp
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

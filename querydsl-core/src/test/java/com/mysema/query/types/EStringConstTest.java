@@ -9,8 +9,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.types.expr.EString;
-import com.mysema.query.types.expr.EStringConst;
+import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.expr.StringConstant;
 
 public class EStringConstTest {
 
@@ -32,7 +32,7 @@ public class EStringConstTest {
         assertEquals("ab",  expr("abc").substring(0,2).toString());
     }
 
-    private EString expr(String str){
-        return EStringConst.create(str);
+    private StringExpression expr(String str){
+        return StringConstant.create(str);
     }
 }

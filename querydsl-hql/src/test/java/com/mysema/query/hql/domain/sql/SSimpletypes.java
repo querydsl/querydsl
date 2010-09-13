@@ -19,45 +19,45 @@ public class SSimpletypes extends BeanPath<SSimpletypes> implements RelationalPa
 
     public static final SSimpletypes simpletypes = new SSimpletypes("SIMPLETYPES");
 
-    public final PNumber<Short> bbyte = createNumber("BBYTE", Short.class);
+    public final NumberPath<Short> bbyte = createNumber("BBYTE", Short.class);
 
-    public final PNumber<Short> bbyte2 = createNumber("BBYTE2", Short.class);
+    public final NumberPath<Short> bbyte2 = createNumber("BBYTE2", Short.class);
 
-    public final PNumber<java.math.BigDecimal> bigdecimal = createNumber("BIGDECIMAL", java.math.BigDecimal.class);
+    public final NumberPath<java.math.BigDecimal> bigdecimal = createNumber("BIGDECIMAL", java.math.BigDecimal.class);
 
-    public final PString cchar = createString("CCHAR");
+    public final StringPath cchar = createString("CCHAR");
 
-    public final PString cchar2 = createString("CCHAR2");
+    public final StringPath cchar2 = createString("CCHAR2");
 
-    public final PDate<java.sql.Date> date = createDate("DATE", java.sql.Date.class);
+    public final DatePath<java.sql.Date> date = createDate("DATE", java.sql.Date.class);
 
-    public final PNumber<Double> ddouble = createNumber("DDOUBLE", Double.class);
+    public final NumberPath<Double> ddouble = createNumber("DDOUBLE", Double.class);
 
-    public final PNumber<Double> ddouble2 = createNumber("DDOUBLE2", Double.class);
+    public final NumberPath<Double> ddouble2 = createNumber("DDOUBLE2", Double.class);
 
-    public final PNumber<Double> ffloat = createNumber("FFLOAT", Double.class);
+    public final NumberPath<Double> ffloat = createNumber("FFLOAT", Double.class);
 
-    public final PNumber<Double> ffloat2 = createNumber("FFLOAT2", Double.class);
+    public final NumberPath<Double> ffloat2 = createNumber("FFLOAT2", Double.class);
 
-    public final PNumber<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    public final PNumber<Integer> iint = createNumber("IINT", Integer.class);
+    public final NumberPath<Integer> iint = createNumber("IINT", Integer.class);
 
-    public final PNumber<Integer> iint2 = createNumber("IINT2", Integer.class);
+    public final NumberPath<Integer> iint2 = createNumber("IINT2", Integer.class);
 
-    public final PString llocale = createString("LLOCALE");
+    public final StringPath llocale = createString("LLOCALE");
 
-    public final PNumber<Long> llong = createNumber("LLONG", Long.class);
+    public final NumberPath<Long> llong = createNumber("LLONG", Long.class);
 
-    public final PNumber<Long> llong2 = createNumber("LLONG2", Long.class);
+    public final NumberPath<Long> llong2 = createNumber("LLONG2", Long.class);
 
-    public final PString sstring = createString("SSTRING");
+    public final StringPath sstring = createString("SSTRING");
 
-    public final PTime<java.sql.Time> time = createTime("TIME", java.sql.Time.class);
+    public final TimePath<java.sql.Time> time = createTime("TIME", java.sql.Time.class);
 
-    public final PDateTime<Date> timestamp = createDateTime("TIMESTAMP", Date.class);
+    public final DateTimePath<Date> timestamp = createDateTime("TIMESTAMP", Date.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SSimpletypes> sql100819184438610 = new PrimaryKey<SSimpletypes>(this, id);
 
@@ -73,9 +73,9 @@ public class SSimpletypes extends BeanPath<SSimpletypes> implements RelationalPa
         super(SSimpletypes.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{bbyte, bbyte2, bigdecimal, cchar, cchar2, date, ddouble, ddouble2, ffloat, ffloat2, id, iint, iint2, llocale, llong, llong2, sstring, time, timestamp};
+            _all = new Expression[]{bbyte, bbyte2, bigdecimal, cchar, cchar2, date, ddouble, ddouble2, ffloat, ffloat2, id, iint, iint2, llocale, llong, llong2, sstring, time, timestamp};
         }
         return _all;
     }
@@ -93,8 +93,8 @@ public class SSimpletypes extends BeanPath<SSimpletypes> implements RelationalPa
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 }
 

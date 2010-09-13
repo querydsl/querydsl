@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.mysema.query.Tuple;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 
 /**
@@ -33,7 +33,7 @@ public class JDOTuple implements Tuple{
     }
 
     @Override
-    public <T> T get(Expr<T> expr) {
+    public <T> T get(Expression<T> expr) {
         if (expr instanceof Path){
             return (T) mapped.get(((Path)expr).getMetadata().getExpression().toString());
         }else{

@@ -8,7 +8,7 @@ package com.mysema.query.types;
 import javax.annotation.Nullable;
 
 /**
- * Visitor defines a Visitor signature for {@link Expr} instances.
+ * Visitor defines a Visitor signature for {@link Expression} instances.
  *
  * @author tiwe
  * @version $Id$
@@ -25,7 +25,7 @@ public interface Visitor<R,C>{
      * @param expr
      */
     @Nullable
-    R visit(Custom<?> expr, @Nullable C context);
+    R visit(TemplateExpression<?> expr, @Nullable C context);
 
     /**
      * @param expr

@@ -14,15 +14,16 @@ import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.OSimple;
-import com.mysema.query.types.path.PMap;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.SimpleOperation;
+import com.mysema.query.types.path.MapPath;
 
 /**
  * Mixin style Query implementation
@@ -59,7 +60,7 @@ public class QueryMixin<T>{
         return self;
     }
     
-    public T addToProjection(Expr<?>... o) {
+    public T addToProjection(Expression<?>... o) {
         metadata.addProjection(o);
         return self;
     }
@@ -71,30 +72,30 @@ public class QueryMixin<T>{
         return p;
     }
 
-    protected <D> Expr<D> createAlias(Expr<D> path, Path<D> alias){
+    protected <D> Expression<D> createAlias(Expression<D> path, Path<D> alias){
         assertRoot(alias);
         return path.as(alias);
     }
 
     @SuppressWarnings("unchecked")
-    protected <D> Expr<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias){
+    protected <D> Expression<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias){
         assertRoot(alias);
-        return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target.asExpr(), alias.asExpr());
+        return SimpleOperation.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
     }
 
     @SuppressWarnings("unchecked")
-    protected <D> Expr<D> createAlias(PMap<?,D,?> target, Path<D> alias){
+    protected <D> Expression<D> createAlias(MapPath<?,D,?> target, Path<D> alias){
         assertRoot(alias);
-        return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias.asExpr());
+        return SimpleOperation.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
     }
 
-    protected <D> Expr<D> createAlias(SubQueryExpression<D> path, Path<D> alias){
+    protected <D> Expression<D> createAlias(SubQueryExpression<D> path, Path<D> alias){
         assertRoot(alias);
-        return path.asExpr().as(alias);
+        return path.as(alias);
     }
 
-    public T from(Expr<?>... args) {
-        for (Expr<?> arg : args){
+    public T from(Expression<?>... args) {
+        for (Expression<?> arg : args){
             metadata.addJoin(JoinType.DEFAULT, arg);
         }
         return self;
@@ -102,23 +103,23 @@ public class QueryMixin<T>{
     
     public T from(EntityPath<?>... args) {
         for (EntityPath<?> arg : args){
-            metadata.addJoin(JoinType.DEFAULT, arg.asExpr());
+            metadata.addJoin(JoinType.DEFAULT, arg);
         }
         return self;
     }
 
     public <P> T fullJoin(EntityPath<P> target) {
-        metadata.addJoin(JoinType.FULLJOIN, target.asExpr());
+        metadata.addJoin(JoinType.FULLJOIN, target);
         return self;
     }
 
     public <P> T fullJoin(EntityPath<P> target, EntityPath<P> alias) {
-        metadata.addJoin(JoinType.FULLJOIN, createAlias(target.asExpr(), alias));
+        metadata.addJoin(JoinType.FULLJOIN, createAlias(target, alias));
         return self;
     }
     
     public <P> T fullJoin(Path<? extends Collection<P>> target) {
-        metadata.addJoin(JoinType.FULLJOIN, target.asExpr());
+        metadata.addJoin(JoinType.FULLJOIN, target);
         return self;
     }
 
@@ -127,12 +128,12 @@ public class QueryMixin<T>{
         return self;
     }
 
-    public <P> T fullJoin(PMap<?,P,?> target) {
+    public <P> T fullJoin(MapPath<?,P,?> target) {
         metadata.addJoin(JoinType.FULLJOIN, target);
         return self;
     }
 
-    public <P> T fullJoin(PMap<?,P,?> target, Path<P> alias) {
+    public <P> T fullJoin(MapPath<?,P,?> target, Path<P> alias) {
         metadata.addJoin(JoinType.FULLJOIN, createAlias(target, alias));
         return self;
     }
@@ -151,28 +152,28 @@ public class QueryMixin<T>{
         return self;
     }
 
-    public T groupBy(Expr<?>... o) {
+    public T groupBy(Expression<?>... o) {
         metadata.addGroupBy(o);
         return self;
     }
 
-    public T having(EBoolean... o) {
+    public T having(Predicate... o) {
         metadata.addHaving(o);
         return self;
     }
     
     public <P> T innerJoin(EntityPath<P> target) {
-        metadata.addJoin(JoinType.INNERJOIN, target.asExpr());
+        metadata.addJoin(JoinType.INNERJOIN, target);
         return self;
     }
 
     public <P> T innerJoin(EntityPath<P> target, EntityPath<P> alias) {
-        metadata.addJoin(JoinType.INNERJOIN, createAlias(target.asExpr(), alias));
+        metadata.addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return self;
     }
 
     public <P> T innerJoin(Path<? extends Collection<P>> target) {
-        metadata.addJoin(JoinType.INNERJOIN, target.asExpr());
+        metadata.addJoin(JoinType.INNERJOIN, target);
         return self;
     }
 
@@ -181,12 +182,12 @@ public class QueryMixin<T>{
         return self;
     }
 
-    public <P> T innerJoin(PMap<?,P,?> target) {
+    public <P> T innerJoin(MapPath<?,P,?> target) {
         metadata.addJoin(JoinType.INNERJOIN, target);
         return self;
     }
 
-    public <P> T innerJoin(PMap<?,P,?> target, Path<P> alias) {
+    public <P> T innerJoin(MapPath<?,P,?> target, Path<P> alias) {
         metadata.addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return self;
     }
@@ -206,17 +207,17 @@ public class QueryMixin<T>{
     }
     
     public <P> T join(EntityPath<P> target) {
-        metadata.addJoin(JoinType.JOIN, target.asExpr());
+        metadata.addJoin(JoinType.JOIN, target);
         return self;
     }
 
     public <P> T join(EntityPath<P> target, EntityPath<P> alias) {
-        metadata.addJoin(JoinType.JOIN, createAlias(target.asExpr(), alias));
+        metadata.addJoin(JoinType.JOIN, createAlias(target, alias));
         return getSelf();
     }
 
     public <P> T join(Path<? extends Collection<P>> target) {
-        metadata.addJoin(JoinType.JOIN, target.asExpr());
+        metadata.addJoin(JoinType.JOIN, target);
         return getSelf();
     }
 
@@ -225,12 +226,12 @@ public class QueryMixin<T>{
         return getSelf();
     }
     
-    public <P> T join(PMap<?,P,?> target) {
+    public <P> T join(MapPath<?,P,?> target) {
         metadata.addJoin(JoinType.JOIN, target);
         return getSelf();
     }
 
-    public <P> T join(PMap<?,P,?> target, Path<P> alias) {       
+    public <P> T join(MapPath<?,P,?> target, Path<P> alias) {       
         metadata.addJoin(JoinType.JOIN, createAlias(target, alias));
         return getSelf();
     }
@@ -242,17 +243,17 @@ public class QueryMixin<T>{
     }
     
     public <P> T leftJoin(EntityPath<P> target) {
-        metadata.addJoin(JoinType.LEFTJOIN, target.asExpr());
+        metadata.addJoin(JoinType.LEFTJOIN, target);
         return self;
     }
 
     public <P> T leftJoin(EntityPath<P> target, EntityPath<P> alias) {
-        metadata.addJoin(JoinType.LEFTJOIN, createAlias(target.asExpr(), alias));
+        metadata.addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
         return getSelf();
     }
 
     public <P> T leftJoin(Path<? extends Collection<P>> target) {
-        metadata.addJoin(JoinType.LEFTJOIN, target.asExpr());
+        metadata.addJoin(JoinType.LEFTJOIN, target);
         return getSelf();
     }
 
@@ -261,12 +262,12 @@ public class QueryMixin<T>{
         return getSelf();
     }
 
-    public <P> T leftJoin(PMap<?,P,?> target) {
+    public <P> T leftJoin(MapPath<?,P,?> target) {
         metadata.addJoin(JoinType.LEFTJOIN, target);
         return getSelf();
     }
 
-    public <P> T leftJoin(PMap<?,P,?> target, Path<P> alias) {
+    public <P> T leftJoin(MapPath<?,P,?> target, Path<P> alias) {
         metadata.addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
         return getSelf();
     }
@@ -287,8 +288,8 @@ public class QueryMixin<T>{
         return self;
     }
 
-    public T on(EBoolean... conditions){
-        for (EBoolean condition : conditions){
+    public T on(BooleanExpression... conditions){
+        for (BooleanExpression condition : conditions){
             metadata.addJoinCondition(condition);
         }
         return self;
@@ -305,17 +306,17 @@ public class QueryMixin<T>{
     }
 
     public <P> T rightJoin(EntityPath<P> target) {
-        metadata.addJoin(JoinType.RIGHTJOIN, target.asExpr());
+        metadata.addJoin(JoinType.RIGHTJOIN, target);
         return self;
     }
 
     public <P> T rightJoin(EntityPath<P> target, EntityPath<P> alias) {
-        metadata.addJoin(JoinType.RIGHTJOIN, createAlias(target.asExpr(), alias));
+        metadata.addJoin(JoinType.RIGHTJOIN, createAlias(target, alias));
         return getSelf();
     }
 
     public <P> T rightJoin(Path<? extends Collection<P>> target) {
-        metadata.addJoin(JoinType.RIGHTJOIN, target.asExpr());
+        metadata.addJoin(JoinType.RIGHTJOIN, target);
         return getSelf();
     }
 
@@ -324,12 +325,12 @@ public class QueryMixin<T>{
         return getSelf();
     }
 
-    public <P> T rightJoin(PMap<?,P,?> target) {
+    public <P> T rightJoin(MapPath<?,P,?> target) {
         metadata.addJoin(JoinType.RIGHTJOIN, target);
         return getSelf();
     }
 
-    public <P> T rightJoin(PMap<?,P,?> target, Path<P> alias) {
+    public <P> T rightJoin(MapPath<?,P,?> target, Path<P> alias) {
         metadata.addJoin(JoinType.RIGHTJOIN, createAlias(target, alias));
         return getSelf();
     }
@@ -361,7 +362,7 @@ public class QueryMixin<T>{
         return metadata.toString();
     }
     
-    public T where(EBoolean... o) {
+    public T where(Predicate... o) {
         metadata.addWhere(o);
         return self;
     }

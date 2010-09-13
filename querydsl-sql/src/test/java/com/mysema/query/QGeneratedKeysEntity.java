@@ -12,10 +12,10 @@ import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.Table;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 @Table("GENERATED_KEYS")
@@ -27,9 +27,9 @@ public class QGeneratedKeysEntity extends BeanPath<QGeneratedKeysEntity> impleme
         super(QGeneratedKeysEntity.class, PathMetadataFactory.forVariable(name));
     }
 
-    public final PNumber<Integer> id = createNumber("ID", Integer.class);
+    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
-    public final PString name = createString("NAME");
+    public final StringPath name = createString("NAME");
 
     @Override
     public Collection<ForeignKey<?>> getForeignKeys() {
@@ -47,8 +47,8 @@ public class QGeneratedKeysEntity extends BeanPath<QGeneratedKeysEntity> impleme
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(id, name);
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(id, name);
     }
 
 }

@@ -27,12 +27,12 @@ import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QProduct;
 import com.mysema.query.jdoql.testdomain.QStore;
 import com.mysema.query.jdoql.testdomain.Store;
-import com.mysema.query.types.EConstructor;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.expr.EArrayConstructor;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.ArrayConstructorExpression;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.ConstructorExpression;
 import com.mysema.query.types.expr.QTuple;
 
 public class JDOQLQueryStandardTest extends AbstractJDOTest {
@@ -98,16 +98,16 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
 
     private QueryExecution standardTest = new QueryExecution(Module.JDOQL, Target.HSQLDB){
         @Override
-        protected Pair<Projectable, List<Expr<?>>> createQuery() {
+        protected Pair<Projectable, List<Expression<?>>> createQuery() {
             return Pair.of(
                 (Projectable)query().from(store, product, otherProduct),
-                Arrays.<Expr<?>>asList(store, product, otherProduct));
+                Arrays.<Expression<?>>asList(store, product, otherProduct));
         }
         @Override
-        protected Pair<Projectable, List<Expr<?>>> createQuery(EBoolean filter) {
+        protected Pair<Projectable, List<Expression<?>>> createQuery(BooleanExpression filter) {
             return Pair.of(
                 (Projectable)query().from(store, product, otherProduct).where(filter),
-                Arrays.<Expr<?>>asList(store, product, otherProduct));
+                Arrays.<Expression<?>>asList(store, product, otherProduct));
         }
     };
 
@@ -158,7 +158,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
     @Ignore
     public void arrayProjection(){
     // typed array not supported
-    List<String[]> results = query().from(store).list(new EArrayConstructor<String>(String[].class, store.name));
+    List<String[]> results = query().from(store).list(new ArrayConstructorExpression<String>(String[].class, store.name));
     assertFalse(results.isEmpty());
     for (String[] result : results){
         assertNotNull(result);
@@ -168,7 +168,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
 
     @Test
     public void constructorProjection(){
-    List<Projection> projections = query().from(store).list(EConstructor.create(Projection.class, store.name));
+    List<Projection> projections = query().from(store).list(ConstructorExpression.create(Projection.class, store.name));
     assertFalse(projections.isEmpty());
     for (Projection projection : projections){
         assertNotNull(projection);

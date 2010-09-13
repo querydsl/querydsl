@@ -28,22 +28,22 @@ import java.util.Stack;
 import org.junit.Test;
 
 import com.mysema.query.QueryFlag.Position;
-import com.mysema.query.types.custom.CNumber;
-import com.mysema.query.types.expr.ONumber;
+import com.mysema.query.types.custom.NumberTemplate;
+import com.mysema.query.types.expr.NumberOperation;
 import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
 import com.mysema.util.ReflectionUtils;
 
 public class DefaultQueryMetadataTest {
 
     private QueryMetadata metadata = new DefaultQueryMetadata();
 
-    private PString str = new PString("str");
+    private StringPath str = new StringPath("str");
 
     @Test
     public void testSerialization() throws IOException, ClassNotFoundException{
-        PString expr = new PString("str");
+        StringPath expr = new StringPath("str");
         metadata.addFlag(new QueryFlag(Position.AFTER_FILTERS, ""));
         metadata.addGroupBy(expr);
         metadata.addHaving(expr.isEmpty());
@@ -82,7 +82,7 @@ public class DefaultQueryMetadataTest {
         Set<Class<?>> checked = new HashSet<Class<?>>();
         checked.addAll(Arrays.<Class<?>>asList(List.class, Set.class, Map.class, Object.class, String.class, Class.class));
         Stack<Class<?>> classes = new Stack<Class<?>>();
-        classes.addAll(Arrays.<Class<?>>asList(PNumber.class, ONumber.class, CNumber.class, BeanPath.class, DefaultQueryMetadata.class));
+        classes.addAll(Arrays.<Class<?>>asList(NumberPath.class, NumberOperation.class, NumberTemplate.class, BeanPath.class, DefaultQueryMetadata.class));
         while (!classes.isEmpty()){            
             Class<?> clazz = classes.pop();
             checked.add(clazz);

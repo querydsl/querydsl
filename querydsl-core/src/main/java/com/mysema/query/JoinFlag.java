@@ -9,8 +9,8 @@ import java.io.Serializable;
 
 import net.jcip.annotations.Immutable;
 
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.custom.CString;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.custom.StringTemplate;
 
 /**
  * JoinFlag defines a join related flag using an Expr instance
@@ -23,13 +23,13 @@ public class JoinFlag implements Serializable{
     
     private static final long serialVersionUID = -688265393547206465L;
     
-    private final Expr<?> flag;
+    private final Expression<?> flag;
     
     public JoinFlag(String flag) {
-        this.flag = CString.create(flag);
+        this.flag = StringTemplate.create(flag);
     }
     
-    public JoinFlag(Expr<?> flag) {
+    public JoinFlag(Expression<?> flag) {
         this.flag = flag;
     }
     
@@ -54,7 +54,7 @@ public class JoinFlag implements Serializable{
         return flag.toString();
     }
 
-    public Expr<?> getFlag() {
+    public Expression<?> getFlag() {
         return flag;
     }
 

@@ -30,8 +30,8 @@ import com.mysema.query.jdoql.JDOTuple;
 import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.EConstructor;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.expr.ConstructorExpression;
 import com.mysema.query.types.expr.QTuple;
 
 /**
@@ -108,11 +108,11 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         queries.add(query);
 
         if (!forCount){
-            List<? extends Expr<?>> projection = queryMixin.getMetadata().getProjection();
+            List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
             Class<?> exprType = projection.get(0).getClass();
             if (exprType.equals(QTuple.class)){
                 query.setResultClass(JDOTuple.class);
-            } else if (EConstructor.class.isAssignableFrom(exprType)){
+            } else if (ConstructorExpression.class.isAssignableFrom(exprType)){
                 query.setResultClass(projection.get(0).getType());
             }
         }else{
@@ -152,16 +152,16 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         return detach;
     }
 
-    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
+    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
         return new IteratorAdapter<Object[]>(list(args).iterator(), closeable);
     }
 
-    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
+    public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
         return new IteratorAdapter<RT>(list(projection).iterator(), closeable);
     }
 
     @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expr<?>[] args) {
+    public List<Object[]> list(Expression<?>[] args) {
         queryMixin.addToProjection(args);
         Object rv = execute(createQuery(false));
         reset();
@@ -169,7 +169,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     }
 
     @SuppressWarnings("unchecked")
-    public <RT> List<RT> list(Expr<RT> expr) {
+    public <RT> List<RT> list(Expression<RT> expr) {
         queryMixin.addToProjection(expr);
         Object rv = execute(createQuery(false));
         reset();
@@ -177,7 +177,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     }
 
     @SuppressWarnings("unchecked")
-    public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
+    public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         queryMixin.addToProjection(expr);
         Query countQuery = createQuery(true);
         countQuery.setUnique(true);
@@ -209,7 +209,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     }
 
     @SuppressWarnings("unchecked")
-    public <RT> RT uniqueResult(Expr<RT> expr) {
+    public <RT> RT uniqueResult(Expression<RT> expr) {
         queryMixin.addToProjection(expr);
         Query query = createQuery(false);
         query.setUnique(true);

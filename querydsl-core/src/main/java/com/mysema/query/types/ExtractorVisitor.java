@@ -5,45 +5,45 @@ package com.mysema.query.types;
  * @author tiwe
  *
  */
-public final class ExtractorVisitor implements Visitor<Expr<?>,Void>{
+public final class ExtractorVisitor implements Visitor<Expression<?>,Void>{
     
     public static final ExtractorVisitor DEFAULT = new ExtractorVisitor();
     
     private ExtractorVisitor(){}
     
     @Override
-    public Expr<?> visit(Constant<?> expr, Void context) {
-        return expr.asExpr();
+    public Expression<?> visit(Constant<?> expr, Void context) {
+        return expr;
     }
 
     @Override
-    public Expr<?> visit(Custom<?> expr, Void context) {
-        return expr.asExpr();
+    public Expression<?> visit(TemplateExpression<?> expr, Void context) {
+        return expr;
     }
 
     @Override
-    public Expr<?> visit(FactoryExpression<?> expr, Void context) {
-        return expr.asExpr();
+    public Expression<?> visit(FactoryExpression<?> expr, Void context) {
+        return expr;
     }
 
     @Override
-    public Expr<?> visit(Operation<?> expr, Void context) {
-        return expr.asExpr();
+    public Expression<?> visit(Operation<?> expr, Void context) {
+        return expr;
     }
 
     @Override
-    public Expr<?> visit(Path<?> expr, Void context) {
-        return expr.asExpr();
+    public Expression<?> visit(Path<?> expr, Void context) {
+        return expr;
     }
 
     @Override
-    public Expr<?> visit(SubQueryExpression<?> expr, Void context) {
-        return expr.asExpr();
+    public Expression<?> visit(SubQueryExpression<?> expr, Void context) {
+        return expr;
     }
 
     @Override
-    public Expr<?> visit(Param<?> expr, Void context) {
-        return expr.asExpr();
+    public Expression<?> visit(Param<?> expr, Void context) {
+        return expr;
     }
     
 }

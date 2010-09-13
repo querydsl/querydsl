@@ -12,8 +12,8 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-import com.mysema.query.types.expr.ETime;
-import com.mysema.query.types.expr.ETimeConst;
+import com.mysema.query.types.expr.TimeExpression;
+import com.mysema.query.types.expr.TimeConstant;
 
 public class ETimeConstTest {
 
@@ -26,7 +26,7 @@ public class ETimeConstTest {
         cal.set(Calendar.MILLISECOND,  3);
         System.out.println(cal.getTime());
 
-        ETime<Time> time = ETimeConst.create(new Time(cal.getTimeInMillis()));
+        TimeExpression<Time> time = TimeConstant.create(new Time(cal.getTimeInMillis()));
         assertEquals("13",   time.hour().toString());
         assertEquals("30",   time.minute().toString());
         assertEquals("12",   time.second().toString());

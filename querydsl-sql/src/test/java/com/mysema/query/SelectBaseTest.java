@@ -43,18 +43,18 @@ import com.mysema.query.sql.Wildcard;
 import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QIdName;
-import com.mysema.query.types.EConstructor;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.Coalesce;
-import com.mysema.query.types.expr.EArrayConstructor;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.ArrayConstructorExpression;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.ConstructorExpression;
+import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.QTuple;
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.ObjectSubQuery;
@@ -72,16 +72,16 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     private QueryExecution standardTest = new QueryExecution(Module.SQL, getClass().getAnnotation(Label.class).value()){
         @Override
-        protected Pair<Projectable, List<Expr<?>>> createQuery() {
+        protected Pair<Projectable, List<Expression<?>>> createQuery() {
             return Pair.of(
                     (Projectable)query().from(employee, employee2),
-                    Collections.<Expr<?>>emptyList());
+                    Collections.<Expression<?>>emptyList());
         }
         @Override
-        protected Pair<Projectable, List<Expr<?>>> createQuery(EBoolean filter) {
+        protected Pair<Projectable, List<Expression<?>>> createQuery(BooleanExpression filter) {
             return Pair.of(
                     (Projectable)query().from(employee, employee2).where(filter),
-                    Collections.<Expr<?>>singletonList(employee.firstname));
+                    Collections.<Expression<?>>singletonList(employee.firstname));
         }
     };
 
@@ -96,7 +96,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @SkipForQuoted
     public void countAll() {
         expectedQuery = "select count(*) as rowCount from EMPLOYEE2 e";
-        PNumber<Long> rowCount = new PNumber<Long>(Long.class, "rowCount");
+        NumberPath<Long> rowCount = new NumberPath<Long>(Long.class, "rowCount");
         query().from(employee).uniqueResult(Wildcard.count().as(rowCount));
     }
 
@@ -128,8 +128,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     @ExcludeIn({DERBY,MYSQL})
     public void casts() throws SQLException {
-        ENumber<?> num = employee.id;
-        Expr<?>[] expr = new Expr[] {
+        NumberExpression<?> num = employee.id;
+        Expression<?>[] expr = new Expression[] {
                 num.byteValue(),
                 num.doubleValue(),
                 num.floatValue(),
@@ -138,7 +138,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
                 num.shortValue(),
                 num.stringValue() };
 
-        for (Expr<?> e : expr) {
+        for (Expression<?> e : expr) {
             for (Object o : query().from(employee).list(e)){
                 assertEquals(e.getType(), o.getClass());
             }
@@ -384,7 +384,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     public void stringFunctions2() throws SQLException {
-        for (EBoolean where : Arrays.<EBoolean> asList(
+        for (BooleanExpression where : Arrays.<BooleanExpression> asList(
                 employee.firstname.startsWith("a"),
                 employee.firstname.startsWithIgnoreCase("a"),
                 employee.firstname.endsWith("a"),
@@ -416,7 +416,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         query.from(survey2);
         assertEquals("from SURVEY s, SURVEY s2", query.toString());
 
-        PNumber<BigDecimal> sal = new PNumber<BigDecimal>(BigDecimal.class, "sal");
+        NumberPath<BigDecimal> sal = new NumberPath<BigDecimal>(BigDecimal.class, "sal");
         PathBuilder<Object[]> sq = new PathBuilder<Object[]>(Object[].class, "sq");
         SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
         
@@ -436,7 +436,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         //            list(myCalculation.avg(), myCalculation.min(). myCalculation.max());
 
         // alias for the salary
-        PNumber<BigDecimal> sal = new PNumber<BigDecimal>(BigDecimal.class, "sal");
+        NumberPath<BigDecimal> sal = new NumberPath<BigDecimal>(BigDecimal.class, "sal");
         // alias for the subquery
         PathBuilder<Object[]> sq = new PathBuilder<Object[]>(Object[].class, "sq");
         // query execution
@@ -502,8 +502,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         assertFalse(list.isEmpty());
 
         // union #2
-        ObjectSubQuery<Object[]> sq3 = sq().from(employee).unique(new Expr[]{employee.id.max()});
-        ObjectSubQuery<Object[]> sq4 = sq().from(employee).unique(new Expr[]{employee.id.min()});
+        ObjectSubQuery<Object[]> sq3 = sq().from(employee).unique(new Expression[]{employee.id.max()});
+        ObjectSubQuery<Object[]> sq4 = sq().from(employee).unique(new Expression[]{employee.id.min()});
         List<Object[]> list2 = query().union(sq3, sq4).list();
         assertFalse(list2.isEmpty());
     }
@@ -619,7 +619,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     public void all(){
-        for (Expr<?> expr : survey.all()){
+        for (Expression<?> expr : survey.all()){
             Path<?> path = (Path<?>)expr;
             assertEquals(survey, path.getMetadata().getParent());
         }
@@ -707,7 +707,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @SuppressWarnings("unchecked")
     @Test
     public void arrayProjection(){
-        List<String[]> results = query().from(employee).list(new EArrayConstructor<String>(String[].class, employee.firstname));
+        List<String[]> results = query().from(employee).list(new ArrayConstructorExpression<String>(String[].class, employee.firstname));
         assertFalse(results.isEmpty());
         for (String[] result : results){
             assertNotNull(result[0]);
@@ -716,7 +716,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     public void constructorProjection(){
-        List<SimpleProjection> projections =query().from(employee).list(EConstructor.create(SimpleProjection.class, employee.firstname, employee.lastname));
+        List<SimpleProjection> projections =query().from(employee).list(ConstructorExpression.create(SimpleProjection.class, employee.firstname, employee.lastname));
         assertFalse(projections.isEmpty());
         for (SimpleProjection projection : projections){
             assertNotNull(projection);
@@ -751,8 +751,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     public void complex_boolean(){
-        EBoolean first = employee.firstname.eq("Mike").and(employee.lastname.eq("Smith"));
-        EBoolean second = employee.firstname.eq("Joe").and(employee.lastname.eq("Divis"));
+        BooleanExpression first = employee.firstname.eq("Mike").and(employee.lastname.eq("Smith"));
+        BooleanExpression second = employee.firstname.eq("Joe").and(employee.lastname.eq("Divis"));
         assertEquals(2, query().from(employee).where(first.or(second)).count());
 
         assertEquals(0, query().from(employee).where(
@@ -768,7 +768,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     public void path_alias(){
         expectedQuery = "select e.LASTNAME, sum(e.SALARY) as salarySum from EMPLOYEE2 e group by e.LASTNAME having salarySum > ?";
 
-        ENumber<BigDecimal> salarySum = employee.salary.sum().as("salarySum");        
+        NumberExpression<BigDecimal> salarySum = employee.salary.sum().as("salarySum");        
         query().from(employee)
         .groupBy(employee.lastname)
         .having(salarySum.gt(10000))

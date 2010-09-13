@@ -14,7 +14,7 @@ import org.junit.Test;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.domain.QCommonPersistence;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 public class QueryMixinTest {
@@ -31,7 +31,7 @@ public class QueryMixinTest {
         assertEquals(1, mixin.getMetadata().getJoins().size());
         JoinExpression je = mixin.getMetadata().getJoins().get(0);
         assertEquals(entity, je.getTarget());
-        assertEquals(EBoolean.allOf(entity.version.isNull(), entity.version.isNotNull()), je.getCondition());
+        assertEquals(BooleanExpression.allOf(entity.version.isNull(), entity.version.isNotNull()), je.getCondition());
     }
 
     @Test

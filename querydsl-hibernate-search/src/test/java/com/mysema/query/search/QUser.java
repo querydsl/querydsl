@@ -6,7 +6,7 @@
 package com.mysema.query.search;
 
 import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 public class QUser extends EntityPathBase<User> {
@@ -17,12 +17,12 @@ public class QUser extends EntityPathBase<User> {
         super(User.class, PathMetadataFactory.forVariable(variable));
     }
 
-    public final PString emailAddress = createString("emailAddress");
+    public final StringPath emailAddress = createString("emailAddress");
 
-    public final PString firstName = createString("firstName");
+    public final StringPath firstName = createString("firstName");
 
-    public final PString lastName = createString("lastName");
+    public final StringPath lastName = createString("lastName");
 
-    public final PString middleName = createString("middleName");
+    public final StringPath middleName = createString("middleName");
 
 }

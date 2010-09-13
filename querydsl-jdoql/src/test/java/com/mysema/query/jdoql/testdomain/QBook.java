@@ -7,9 +7,9 @@ package com.mysema.query.jdoql.testdomain;
 
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.PDateTime;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 /**
@@ -21,21 +21,21 @@ public class QBook extends EntityPathBase<com.mysema.query.jdoql.testdomain.Book
 
     public static final QBook book = new QBook("book");
 
-    public final PString author = createString("author");
+    public final StringPath author = createString("author");
 
-    public final PString description = createString("description");
+    public final StringPath description = createString("description");
 
-    public final PString isbn = createString("isbn");
+    public final StringPath isbn = createString("isbn");
 
-    public final PString name = createString("name");
+    public final StringPath name = createString("name");
 
-    public final PString publisher = createString("publisher");
+    public final StringPath publisher = createString("publisher");
 
-    public final PDateTime<java.util.Date> publicationDate = createDateTime("publicationDate",java.util.Date.class);
+    public final DateTimePath<java.util.Date> publicationDate = createDateTime("publicationDate",java.util.Date.class);
 
-    public final PNumber<Integer> amount = createNumber("amount",Integer.class);
+    public final NumberPath<Integer> amount = createNumber("amount",Integer.class);
 
-    public final PNumber<Double> price = createNumber("price",Double.class);
+    public final NumberPath<Double> price = createNumber("price",Double.class);
 
     public QBook(String path) {
           this(com.mysema.query.jdoql.testdomain.Book.class, path);

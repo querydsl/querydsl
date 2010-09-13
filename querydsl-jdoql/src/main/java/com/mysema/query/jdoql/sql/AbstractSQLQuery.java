@@ -10,13 +10,13 @@ import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.ONumber;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.NumberOperation;
 
 /**
  * Base class for JDO based SQLQuery implementations
@@ -27,7 +27,7 @@ import com.mysema.query.types.expr.ONumber;
  */
 public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends ProjectableQuery<T>{
 
-    private static final ENumber<Integer> COUNT_ALL_AGG_EXPR = ONumber.create(Integer.class, Ops.AggOps.COUNT_ALL_AGG);
+    private static final NumberExpression<Integer> COUNT_ALL_AGG_EXPR = NumberOperation.create(Integer.class, Ops.AggOps.COUNT_ALL_AGG);
 
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(QueryMetadata metadata) {
@@ -40,7 +40,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
         return uniqueResult(COUNT_ALL_AGG_EXPR);
     }
 
-    public T from(Expr<?>... args) {
+    public T from(Expression<?>... args) {
         return queryMixin.from(args);
     }
 
@@ -96,7 +96,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
         return queryMixin.leftJoin(o, alias);
     }
 
-    public T on(EBoolean... conditions) {
+    public T on(BooleanExpression... conditions) {
         return queryMixin.on(conditions);
     }
 

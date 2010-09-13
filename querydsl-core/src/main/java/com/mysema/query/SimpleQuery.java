@@ -9,7 +9,7 @@ import javax.annotation.Nonnegative;
 
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.Predicate;
 
 /**
  * SimpleQuery defines a simple querying interface than {@link Query}
@@ -27,7 +27,7 @@ public interface SimpleQuery<Q extends SimpleQuery<Q>> {
      * @param e
      * @return
      */
-    Q where(EBoolean... e);
+    Q where(Predicate... e);
 
     /**
      * Defines the limit / max results for the query results

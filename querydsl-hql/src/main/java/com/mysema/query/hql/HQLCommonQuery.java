@@ -5,8 +5,8 @@ import java.util.Collection;
 import com.mysema.query.Query;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.path.PMap;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.path.MapPath;
 
 /**
  * HQLCommonQuery is a common interface for HQLQuery and HQLSubQuery
@@ -75,7 +75,7 @@ public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
      * @param target
      * @return
      */
-    <P> Q innerJoin(PMap<?, P, ?> target);
+    <P> Q innerJoin(MapPath<?, P, ?> target);
 
     /**
      * Create an inner join with the given target and alias.
@@ -85,7 +85,7 @@ public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
      * @param alias
      * @return
      */
-    <P> Q innerJoin(PMap<?, P, ?> target, Path<P> alias);
+    <P> Q innerJoin(MapPath<?, P, ?> target, Path<P> alias);
 
     /**
      * Create an join with the given target.
@@ -133,7 +133,7 @@ public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
      * @param target
      * @return
      */
-    <P> Q join(PMap<?, P, ?> target);
+    <P> Q join(MapPath<?, P, ?> target);
 
     /**
      * Create a join with the given target and alias.
@@ -143,7 +143,7 @@ public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
      * @param alias
      * @return
      */
-    <P> Q join(PMap<?, P, ?> target, Path<P> alias);
+    <P> Q join(MapPath<?, P, ?> target, Path<P> alias);
 
     /**
      * Create an left join with the given target.
@@ -193,7 +193,7 @@ public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
      * @param target
      * @return
      */
-    <P> Q leftJoin(PMap<?, P, ?> target);
+    <P> Q leftJoin(MapPath<?, P, ?> target);
 
     /**
      * Create a left join with the given target and alias.
@@ -203,7 +203,7 @@ public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
      * @param alias
      * @return
      */
-    <P> Q leftJoin(PMap<?, P, ?> target, Path<P> alias);
+    <P> Q leftJoin(MapPath<?, P, ?> target, Path<P> alias);
 
     /**
      * Create an full join with the given target.
@@ -253,7 +253,7 @@ public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
      * @param target
      * @return
      */
-    <P> Q fullJoin(PMap<?, P, ?> target);
+    <P> Q fullJoin(MapPath<?, P, ?> target);
 
     /**
      * Create a full join with the given target and alias.
@@ -263,7 +263,7 @@ public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
      * @param alias
      * @return
      */
-    <P> Q fullJoin(PMap<?, P, ?> target, Path<P> alias);
+    <P> Q fullJoin(MapPath<?, P, ?> target, Path<P> alias);
 
     /**
      * Add conditions to the with clause
@@ -271,6 +271,6 @@ public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
      * @param condition
      * @return
      */
-    Q with(EBoolean... condition);
+    Q with(BooleanExpression... condition);
 
 }

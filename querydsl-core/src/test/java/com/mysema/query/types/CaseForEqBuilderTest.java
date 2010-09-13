@@ -12,8 +12,8 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.StringExpression;
 
 public class CaseForEqBuilderTest {
 
@@ -28,7 +28,7 @@ public class CaseForEqBuilderTest {
     public void numberTyped(){
         Customer c = alias(Customer.class, "customer");
 
-        ENumber<Integer> cases = $(c.getAnnualSpending())
+        NumberExpression<Integer> cases = $(c.getAnnualSpending())
             .when(1000l).then(1)
             .when(2000l).then(2)
             .when(5000l).then(3)
@@ -47,7 +47,7 @@ public class CaseForEqBuilderTest {
     public void stringTyped(){
         Customer c = alias(Customer.class, "customer");
 
-        EString cases = $(c.getAnnualSpending())
+        StringExpression cases = $(c.getAnnualSpending())
             .when(1000l).then("bronze")
             .when(2000l).then("silver")
             .when(5000l).then("gold")
@@ -61,7 +61,7 @@ public class CaseForEqBuilderTest {
     public void booleanTyped(){
         Customer c = alias(Customer.class, "customer");
 
-        Expr<Boolean> cases = $(c.getAnnualSpending())
+        Expression<Boolean> cases = $(c.getAnnualSpending())
             .when(1000l).then(true)
             .otherwise(false);
 

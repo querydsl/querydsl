@@ -9,29 +9,29 @@ import java.util.List;
 import org.junit.Test;
 
 import com.mysema.query.types.Path;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.StringPath;
 
 public class ESimpleTest {
     
     @Test
     public void as_usage(){
-        ESimple<String> str = new PString("str");
+        SimpleExpression<String> str = new StringPath("str");
         assertEquals("str as alias", str.as("alias").toString());
-        assertEquals("str as alias", str.as(new PString("alias")).toString());
+        assertEquals("str as alias", str.as(new StringPath("alias")).toString());
     }
     
     @Test
     public void Subclasses_Override_As() throws SecurityException, NoSuchMethodException{
         List<Class<?>> classes = Arrays.<Class<?>>asList(
-                EBoolean.class, 
-                EComparable.class, 
-                EDate.class, 
-                EDateTime.class, 
-                EEnum.class,
-                ENumber.class, 
-                ESimple.class,
-                EString.class, 
-                ETime.class);
+                BooleanExpression.class, 
+                ComparableExpression.class, 
+                DateExpression.class, 
+                DateTimeExpression.class, 
+                EnumExpression.class,
+                NumberExpression.class, 
+                SimpleExpression.class,
+                StringExpression.class, 
+                TimeExpression.class);
         
         for (Class<?> cl : classes){
             Method asPath = cl.getDeclaredMethod("as", Path.class);

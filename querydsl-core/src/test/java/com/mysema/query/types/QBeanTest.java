@@ -15,9 +15,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.types.expr.QBean;
-import com.mysema.query.types.path.PBoolean;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.BooleanPath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.path.PathBuilderFactory;
 
@@ -72,11 +72,11 @@ public class QBeanTest {
     
     private PathBuilder<Entity> entity;
     
-    private PString name;
+    private StringPath name;
     
-    private PNumber<Integer> age;
+    private NumberPath<Integer> age;
     
-    private PBoolean married;
+    private BooleanPath married;
     
     @Before
     public void setUp(){
@@ -106,7 +106,7 @@ public class QBeanTest {
     
     @Test
     public void with_Class_and_Map(){
-        Map<String,Expr<?>> bindings = new LinkedHashMap<String,Expr<?>>();
+        Map<String,Expression<?>> bindings = new LinkedHashMap<String,Expression<?>>();
         bindings.put("name", name);
         bindings.put("age", age);
         bindings.put("married", married);
@@ -119,7 +119,7 @@ public class QBeanTest {
     
     @Test
     public void with_Class_and_Alias(){
-        PString name2 = new PString("name2");
+        StringPath name2 = new StringPath("name2");
         QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, name.as(name2), age, married);
         Entity bean = beanProjection.newInstance("Fritz", 30, true);
         assertNull(bean.getName());

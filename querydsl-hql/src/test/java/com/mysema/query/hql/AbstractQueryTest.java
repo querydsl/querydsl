@@ -7,7 +7,7 @@ package com.mysema.query.hql;
 
 import static org.junit.Assert.assertEquals;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 
 public abstract class AbstractQueryTest implements Constants{
 
@@ -19,7 +19,7 @@ public abstract class AbstractQueryTest implements Constants{
         return new HQLSubQuery();
     }
 
-    protected static void assertToString(String expected, Expr<?> expr) {
+    protected static void assertToString(String expected, Expression<?> expr) {
         HQLSerializer serializer = new HQLSerializer(HQLTemplates.DEFAULT);
         assertEquals(expected, serializer.handle(expr).toString().replace("\n", " "));
     }

@@ -267,7 +267,7 @@ public class LuceneSerializer {
     }
 
     @SuppressWarnings("unchecked")
-    private Query range(String field, Expr<?> min, Expr<?> max, boolean minInc, boolean maxInc, QueryMetadata metadata) {
+    private Query range(String field, Expression<?> min, Expression<?> max, boolean minInc, boolean maxInc, QueryMetadata metadata) {
         if (min != null && Number.class.isAssignableFrom(min.getType()) || max != null
                 && Number.class.isAssignableFrom(max.getType())) {
             Class<? extends Number> numType = (Class) (min != null ? min.getType() : max.getType());
@@ -296,7 +296,7 @@ public class LuceneSerializer {
         }
     }
 
-    private Query stringRange(String field, Expr<?> min, Expr<?> max, boolean minInc, boolean maxInc, QueryMetadata metadata) {
+    private Query stringRange(String field, Expression<?> min, Expression<?> max, boolean minInc, boolean maxInc, QueryMetadata metadata) {
         if (min == null) {
             return new TermRangeQuery(field, null, normalize(createTerms(max, metadata)[0]), minInc, maxInc);
         } else if (max == null) {
@@ -307,7 +307,7 @@ public class LuceneSerializer {
     }
 
     @SuppressWarnings("unchecked")
-    private String toField(Expr<?> expr) {
+    private String toField(Expression<?> expr) {
         if (expr instanceof Path) {
             return toField((Path<?>) expr);
         } else if (expr instanceof Operation) {
@@ -324,7 +324,7 @@ public class LuceneSerializer {
     }
 
     private void verifyArguments(Operation<?> operation) {
-        List<Expr<?>> arguments = operation.getArgs();
+        List<Expression<?>> arguments = operation.getArgs();
         for (int i = 1; i < arguments.size(); ++i) {
             if (!(arguments.get(i) instanceof Constant<?>)
                     && !(arguments.get(i) instanceof Param<?>)
@@ -336,7 +336,7 @@ public class LuceneSerializer {
         }
     }
 
-    private String[] createTerms(Expr<?> expr, QueryMetadata metadata) {
+    private String[] createTerms(Expression<?> expr, QueryMetadata metadata) {
         if (expr instanceof Param<?>){
             Object value = metadata.getParams().get(expr);
             if (value == null){
@@ -348,7 +348,7 @@ public class LuceneSerializer {
         }
     }
 
-    private String[] createEscapedTerms(Expr<?> expr, QueryMetadata metadata) {
+    private String[] createEscapedTerms(Expression<?> expr, QueryMetadata metadata) {
         if (expr instanceof Param<?>){
             Object value = metadata.getParams().get(expr);
             if (value == null){
@@ -360,7 +360,7 @@ public class LuceneSerializer {
         }
     }
 
-    private String[] split(Expr<?> expr, String str) {
+    private String[] split(Expression<?> expr, String str) {
         if (expr instanceof PhraseElement) {
             return StringUtils.split(str);
         } else if (expr instanceof TermElement) {
@@ -376,7 +376,7 @@ public class LuceneSerializer {
         return lowerCase ? s.toLowerCase(Locale.ENGLISH) : s;
     }
 
-    public Query toQuery(Expr<?> expr, QueryMetadata metadata) {
+    public Query toQuery(Expression<?> expr, QueryMetadata metadata) {
         if (expr instanceof Operation<?>) {
             return toQuery((Operation<?>) expr, metadata);
         } else if (expr instanceof QueryElement) {

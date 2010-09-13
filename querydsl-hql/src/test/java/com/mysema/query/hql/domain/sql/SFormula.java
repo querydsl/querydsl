@@ -19,11 +19,11 @@ public class SFormula extends BeanPath<SFormula> implements RelationalPath<SForm
 
     public static final SFormula formula = new SFormula("FORMULA");
 
-    public final PNumber<Integer> id = createNumber("ID", Integer.class);
+    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
-    public final PNumber<Long> parameterId = createNumber("PARAMETER_ID", Long.class);
+    public final NumberPath<Long> parameterId = createNumber("PARAMETER_ID", Long.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SFormula> sql100819184433810 = new PrimaryKey<SFormula>(this, id);
 
@@ -41,9 +41,9 @@ public class SFormula extends BeanPath<SFormula> implements RelationalPath<SForm
         super(SFormula.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{id, parameterId};
+            _all = new Expression[]{id, parameterId};
         }
         return _all;
     }
@@ -61,8 +61,8 @@ public class SFormula extends BeanPath<SFormula> implements RelationalPath<SForm
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

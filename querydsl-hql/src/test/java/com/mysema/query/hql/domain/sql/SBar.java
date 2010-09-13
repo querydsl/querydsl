@@ -19,11 +19,11 @@ public class SBar extends BeanPath<SBar> implements RelationalPath<SBar> {
 
     public static final SBar bar = new SBar("BAR");
 
-    public final PDate<java.sql.Date> date = createDate("DATE", java.sql.Date.class);
+    public final DatePath<java.sql.Date> date = createDate("DATE", java.sql.Date.class);
 
-    public final PNumber<Integer> id = createNumber("ID", Integer.class);
+    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SBar> sql100819184430740 = new PrimaryKey<SBar>(this, id);
 
@@ -39,9 +39,9 @@ public class SBar extends BeanPath<SBar> implements RelationalPath<SBar> {
         super(SBar.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{date, id};
+            _all = new Expression[]{date, id};
         }
         return _all;
     }
@@ -59,8 +59,8 @@ public class SBar extends BeanPath<SBar> implements RelationalPath<SBar> {
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

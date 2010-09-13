@@ -19,9 +19,9 @@ public class SParameter extends BeanPath<SParameter> implements RelationalPath<S
 
     public static final SParameter parameter = new SParameter("PARAMETER");
 
-    public final PNumber<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SParameter> sql100819184436610 = new PrimaryKey<SParameter>(this, id);
 
@@ -39,9 +39,9 @@ public class SParameter extends BeanPath<SParameter> implements RelationalPath<S
         super(SParameter.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{id};
+            _all = new Expression[]{id};
         }
         return _all;
     }
@@ -59,8 +59,8 @@ public class SParameter extends BeanPath<SParameter> implements RelationalPath<S
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

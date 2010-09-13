@@ -19,19 +19,19 @@ public class SItem extends BeanPath<SItem> implements RelationalPath<SItem> {
 
     public static final SItem item = new SItem("ITEM");
 
-    public final PNumber<Long> currentstatusId = createNumber("CURRENTSTATUS_ID", Long.class);
+    public final NumberPath<Long> currentstatusId = createNumber("CURRENTSTATUS_ID", Long.class);
 
-    public final PString dtype = createString("DTYPE");
+    public final StringPath dtype = createString("DTYPE");
 
-    public final PNumber<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    public final PNumber<Integer> name = createNumber("NAME", Integer.class);
+    public final NumberPath<Integer> name = createNumber("NAME", Integer.class);
 
-    public final PNumber<Long> productId = createNumber("PRODUCT_ID", Long.class);
+    public final NumberPath<Long> productId = createNumber("PRODUCT_ID", Long.class);
 
-    public final PNumber<Long> statusId = createNumber("STATUS_ID", Long.class);
+    public final NumberPath<Long> statusId = createNumber("STATUS_ID", Long.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SItem> sql100819184434350 = new PrimaryKey<SItem>(this, id);
 
@@ -61,9 +61,9 @@ public class SItem extends BeanPath<SItem> implements RelationalPath<SItem> {
         super(SItem.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{currentstatusId, dtype, id, name, productId, statusId};
+            _all = new Expression[]{currentstatusId, dtype, id, name, productId, statusId};
         }
         return _all;
     }
@@ -81,8 +81,8 @@ public class SItem extends BeanPath<SItem> implements RelationalPath<SItem> {
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

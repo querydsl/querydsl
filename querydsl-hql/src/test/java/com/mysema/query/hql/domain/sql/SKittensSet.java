@@ -19,11 +19,11 @@ public class SKittensSet extends BeanPath<SKittensSet> implements RelationalPath
 
     public static final SKittensSet kittensSet = new SKittensSet("KITTENS_SET");
 
-    public final PNumber<Integer> animalId = createNumber("ANIMAL_ID", Integer.class);
+    public final NumberPath<Integer> animalId = createNumber("ANIMAL_ID", Integer.class);
 
-    public final PNumber<Integer> kittenssetId = createNumber("KITTENSSET_ID", Integer.class);
+    public final NumberPath<Integer> kittenssetId = createNumber("KITTENSSET_ID", Integer.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SKittensSet> sql100819184440700 = new PrimaryKey<SKittensSet>(this, animalId, kittenssetId);
 
@@ -43,9 +43,9 @@ public class SKittensSet extends BeanPath<SKittensSet> implements RelationalPath
         super(SKittensSet.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{animalId, kittenssetId};
+            _all = new Expression[]{animalId, kittenssetId};
         }
         return _all;
     }
@@ -63,8 +63,8 @@ public class SKittensSet extends BeanPath<SKittensSet> implements RelationalPath
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 }
 

@@ -19,17 +19,17 @@ public class SPerson extends BeanPath<SPerson> implements RelationalPath<SPerson
 
     public static final SPerson person = new SPerson("PERSON");
 
-    public final PDate<java.sql.Date> birthday = createDate("BIRTHDAY", java.sql.Date.class);
+    public final DatePath<java.sql.Date> birthday = createDate("BIRTHDAY", java.sql.Date.class);
 
-    public final PNumber<Long> i = createNumber("I", Long.class);
+    public final NumberPath<Long> i = createNumber("I", Long.class);
 
-    public final PString name = createString("NAME");
+    public final StringPath name = createString("NAME");
 
-    public final PNumber<Long> nationalityId = createNumber("NATIONALITY_ID", Long.class);
+    public final NumberPath<Long> nationalityId = createNumber("NATIONALITY_ID", Long.class);
 
-    public final PNumber<Long> pidId = createNumber("PID_ID", Long.class);
+    public final NumberPath<Long> pidId = createNumber("PID_ID", Long.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SPerson> sql100819184436900 = new PrimaryKey<SPerson>(this, i);
 
@@ -51,9 +51,9 @@ public class SPerson extends BeanPath<SPerson> implements RelationalPath<SPerson
         super(SPerson.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{birthday, i, name, nationalityId, pidId};
+            _all = new Expression[]{birthday, i, name, nationalityId, pidId};
         }
         return _all;
     }
@@ -71,8 +71,8 @@ public class SPerson extends BeanPath<SPerson> implements RelationalPath<SPerson
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 }
 

@@ -1,8 +1,8 @@
 package com.mysema.query.lucene;
 
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.EString;
-import com.mysema.query.types.expr.EStringConst;
+import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.expr.StringConstant;
 
 /**
  * TermElement represents the embedded String as a term
@@ -10,14 +10,14 @@ import com.mysema.query.types.expr.EStringConst;
  * @author tiwe
  *
  */
-public class TermElement extends EString{
+public class TermElement extends StringExpression{
 
     private static final long serialVersionUID = 2350215644019186076L;
 
-    private final EStringConst string;
+    private final StringConstant string;
 
     public TermElement(String str) {
-        this.string = (EStringConst) EStringConst.create(str);
+        this.string = (StringConstant) StringConstant.create(str);
     }
 
     @Override

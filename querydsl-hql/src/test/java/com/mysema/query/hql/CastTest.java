@@ -9,12 +9,12 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.path.NumberPath;
 
 public class CastTest extends AbstractQueryTest {
 
-    private static ENumber<Integer> expr = new PNumber<Integer>(Integer.class,"int");
+    private static NumberExpression<Integer> expr = new NumberPath<Integer>(Integer.class,"int");
 
     @Test
     public void testNumericCast() {

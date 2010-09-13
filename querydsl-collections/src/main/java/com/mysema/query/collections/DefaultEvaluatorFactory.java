@@ -29,12 +29,12 @@ import com.mysema.codegen.model.Types;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.Predicate;
 
 /**
  * DefaultEvaluatorFactory extends the EvaluatorFactory class to provide Java source
@@ -71,7 +71,7 @@ public class DefaultEvaluatorFactory {
      * @param projection
      * @return
      */
-    public <T> Evaluator<T> create(QueryMetadata metadata, List<? extends Expr<?>> sources, Expr<T> projection) {
+    public <T> Evaluator<T> create(QueryMetadata metadata, List<? extends Expression<?>> sources, Expression<T> projection) {
         ColQuerySerializer serializer = new ColQuerySerializer(templates);
         serializer.handle(projection);
 
@@ -107,7 +107,7 @@ public class DefaultEvaluatorFactory {
      * @param filter
      * @return
      */
-    public <T> Evaluator<List<T>> createEvaluator(QueryMetadata metadata, Expr<? extends T> source, EBoolean filter){
+    public <T> Evaluator<List<T>> createEvaluator(QueryMetadata metadata, Expression<? extends T> source, Predicate filter){
         String typeName = com.mysema.codegen.support.ClassUtils.getName(source.getType());
         ColQuerySerializer ser = new ColQuerySerializer(templates);
         ser.append("java.util.List<"+typeName+"> rv = new java.util.ArrayList<"+typeName+">();\n");
@@ -141,7 +141,7 @@ public class DefaultEvaluatorFactory {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Evaluator<List<Object[]>> createEvaluator(QueryMetadata metadata, List<JoinExpression> joins, @Nullable EBoolean filter){
+    public Evaluator<List<Object[]>> createEvaluator(QueryMetadata metadata, List<JoinExpression> joins, @Nullable Predicate filter){
         List<String> sourceNames = new ArrayList<String>();
         List<Type> sourceTypes = new ArrayList<Type>();
         List<Class> sourceClasses = new ArrayList<Class>();
@@ -151,7 +151,7 @@ public class DefaultEvaluatorFactory {
 
         // creating context
         for (JoinExpression join : joins){
-            Expr<?> target = join.getTarget();
+            Expression<?> target = join.getTarget();
             String typeName = com.mysema.codegen.support.ClassUtils.getName(target.getType());
             if (vars.length() > 0){
                 vars.append(",");

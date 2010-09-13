@@ -7,10 +7,11 @@ package com.mysema.query.types;
 
 import org.junit.Test;
 
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.ENumberConst;
-import com.mysema.query.types.expr.EString;
-import com.mysema.query.types.expr.EStringConst;
+import com.mysema.query.types.expr.ConstructorExpression;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.NumberConstant;
+import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.expr.StringConstant;
 
 public class EConstructorTest {
 
@@ -35,33 +36,33 @@ public class EConstructorTest {
 
     @Test
     public void test_Constructor(){
-        ENumber<Long> longVal = ENumberConst.create(1l);
-        EString stringVal = EStringConst.create("");
-        new EConstructor<Projection>(Projection.class, new Class[]{long.class, String.class}, longVal, stringVal).newInstance(0l,"");
+        NumberExpression<Long> longVal = NumberConstant.create(1l);
+        StringExpression stringVal = StringConstant.create("");
+        new ConstructorExpression<Projection>(Projection.class, new Class[]{long.class, String.class}, longVal, stringVal).newInstance(0l,"");
     }
 
     @Test
     public void test_create(){
-        ENumber<Long> longVal = ENumberConst.create(1l);
-        EString stringVal = EStringConst.create("");
-        EConstructor.create(Projection.class, longVal, stringVal).newInstance(0l,"");
+        NumberExpression<Long> longVal = NumberConstant.create(1l);
+        StringExpression stringVal = StringConstant.create("");
+        ConstructorExpression.create(Projection.class, longVal, stringVal).newInstance(0l,"");
     }
 
     @Test
     public void test_create2(){
-        ENumber<Long> longVal = ENumberConst.create(1l);
-        EConstructor.create(Projection.class, longVal).newInstance(0l);
+        NumberExpression<Long> longVal = NumberConstant.create(1l);
+        ConstructorExpression.create(Projection.class, longVal).newInstance(0l);
     }
 
     @Test
     public void test_create3(){
-        EConstructor.create(Projection.class).newInstance();
+        ConstructorExpression.create(Projection.class).newInstance();
     }
 
     @Test
     public void test_create4(){
-        EString stringVal = EStringConst.create("");
-        EConstructor.create(Projection.class, stringVal).newInstance("");
+        StringExpression stringVal = StringConstant.create("");
+        ConstructorExpression.create(Projection.class, stringVal).newInstance("");
     }
 
 }

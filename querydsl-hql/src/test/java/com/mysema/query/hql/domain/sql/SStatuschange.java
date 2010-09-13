@@ -19,11 +19,11 @@ public class SStatuschange extends BeanPath<SStatuschange> implements Relational
 
     public static final SStatuschange statuschange = new SStatuschange("STATUSCHANGE");
 
-    public final PNumber<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    public final PDateTime<Date> timestamp = createDateTime("TIMESTAMP", Date.class);
+    public final DateTimePath<Date> timestamp = createDateTime("TIMESTAMP", Date.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SStatuschange> sql100819184439140 = new PrimaryKey<SStatuschange>(this, id);
 
@@ -41,9 +41,9 @@ public class SStatuschange extends BeanPath<SStatuschange> implements Relational
         super(SStatuschange.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{id, timestamp};
+            _all = new Expression[]{id, timestamp};
         }
         return _all;
     }
@@ -61,8 +61,8 @@ public class SStatuschange extends BeanPath<SStatuschange> implements Relational
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 }
 

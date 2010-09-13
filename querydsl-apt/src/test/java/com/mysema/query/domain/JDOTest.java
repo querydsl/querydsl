@@ -10,7 +10,7 @@ import javax.jdo.annotations.PersistenceCapable;
 
 import org.junit.Test;
 
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.StringPath;
 
 public class JDOTest extends AbstractTest {
 
@@ -42,13 +42,13 @@ public class JDOTest extends AbstractTest {
     @Test
     public void test() throws SecurityException, NoSuchFieldException {
         cl = QJDOTest_JDOEntity.class;
-        match(PString.class, "prop");
+        match(StringPath.class, "prop");
         assertMissing("skipped");
         assertMissing("skippedEntity");
 
         cl = QJDOTest_JDOEntity2.class;
-        match(PString.class, "stringField1");
-        match(PString.class, "stringField2");
+        match(StringPath.class, "stringField1");
+        match(StringPath.class, "stringField2");
     }
 
 }

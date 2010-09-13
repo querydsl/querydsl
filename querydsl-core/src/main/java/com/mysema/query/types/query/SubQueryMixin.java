@@ -8,11 +8,12 @@ package com.mysema.query.types.query;
 import javax.annotation.Nullable;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.OBoolean;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanOperation;
+import com.mysema.query.types.expr.MixinBase;
 
 /**
  * Mixin implementation of the SubQuery interface
@@ -20,17 +21,19 @@ import com.mysema.query.types.expr.OBoolean;
  * @author tiwe
  *
  */
-public class SubQueryMixin<T> implements SubQueryExpression<T>{
+public class SubQueryMixin<T> extends MixinBase<T> implements SubQueryExpression<T>{
+
+    private static final long serialVersionUID = 6775967804458163L;
 
     @Nullable
-    private volatile EBoolean exists;
+    private volatile BooleanExpression exists;
 
     private final QueryMetadata metadata;
 
-    private final Expr<T> self;
+    private final Expression<T> self;
 
     public SubQueryMixin(SubQueryExpression<T> self, QueryMetadata metadata){
-        this.self = self.asExpr();
+        this.self = self;
         this.metadata = metadata;
     }
 
@@ -47,9 +50,9 @@ public class SubQueryMixin<T> implements SubQueryExpression<T>{
     }
 
     @Override
-    public EBoolean exists() {
+    public BooleanExpression exists() {
         if (exists == null){
-            exists = OBoolean.create(Ops.EXISTS, self);
+            exists = BooleanOperation.create(Ops.EXISTS, self);
         }
         return exists;
     }
@@ -64,13 +67,8 @@ public class SubQueryMixin<T> implements SubQueryExpression<T>{
     }
 
     @Override
-    public EBoolean notExists() {
+    public BooleanExpression notExists() {
         return exists().not();
-    }
-
-    @Override
-    public Expr<T> asExpr() {
-        return self;
     }
 
 }

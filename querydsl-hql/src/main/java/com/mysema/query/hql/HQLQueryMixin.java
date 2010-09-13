@@ -11,7 +11,7 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.BooleanExpression;
 
 /**
  * HQLQueryMixin extends QueryMixin to support JPQL join construction
@@ -48,8 +48,8 @@ public class HQLQueryMixin<T> extends QueryMixin<T> {
         return getSelf();
     }
 
-    public T with(EBoolean... conditions){
-        for (EBoolean condition : conditions){
+    public T with(BooleanExpression... conditions){
+        for (BooleanExpression condition : conditions){
             getMetadata().addJoinCondition(condition);
         }
         return getSelf();

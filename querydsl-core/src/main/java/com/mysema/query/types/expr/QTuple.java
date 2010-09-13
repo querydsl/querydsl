@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.mysema.query.Tuple;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Visitor;
 
@@ -19,11 +19,11 @@ import com.mysema.query.types.Visitor;
  * @author tiwe
  * 
  */
-public class QTuple extends ESimple<Tuple> implements FactoryExpression<Tuple>{
+public class QTuple extends SimpleExpression<Tuple> implements FactoryExpression<Tuple>{
 
-    private final List<Expr<?>> args;
+    private final List<Expression<?>> args;
     
-    public QTuple(Expr<?>... args) {
+    public QTuple(Expression<?>... args) {
         super(Tuple.class);
         this.args = Arrays.asList(args);
     }
@@ -41,7 +41,7 @@ public class QTuple extends ESimple<Tuple> implements FactoryExpression<Tuple>{
             }
 
             @Override
-            public <T> T get(Expr<T> expr) {
+            public <T> T get(Expression<T> expr) {
                 int index = getArgs().indexOf(expr);
                 return index != -1 ? (T) args[index] : null;
             }
@@ -78,7 +78,7 @@ public class QTuple extends ESimple<Tuple> implements FactoryExpression<Tuple>{
     }
 
     @Override
-    public List<Expr<?>> getArgs() {
+    public List<Expression<?>> getArgs() {
         return args;
     }
 

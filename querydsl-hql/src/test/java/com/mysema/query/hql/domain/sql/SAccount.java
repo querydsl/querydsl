@@ -19,13 +19,13 @@ public class SAccount extends BeanPath<SAccount> implements RelationalPath<SAcco
 
     public static final SAccount account = new SAccount("ACCOUNT");
 
-    public final PNumber<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    public final PNumber<Long> ownerI = createNumber("OWNER_I", Long.class);
+    public final NumberPath<Long> ownerI = createNumber("OWNER_I", Long.class);
 
-    public final PString somedata = createString("SOMEDATA");
+    public final StringPath somedata = createString("SOMEDATA");
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SAccount> sql100819184429820 = new PrimaryKey<SAccount>(this, id);
 
@@ -43,9 +43,9 @@ public class SAccount extends BeanPath<SAccount> implements RelationalPath<SAcco
         super(SAccount.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{id, ownerI, somedata};
+            _all = new Expression[]{id, ownerI, somedata};
         }
         return _all;
     }
@@ -63,8 +63,8 @@ public class SAccount extends BeanPath<SAccount> implements RelationalPath<SAcco
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

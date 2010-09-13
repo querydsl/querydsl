@@ -12,7 +12,7 @@ import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 
 /**
  * Projectable defines default projection methods for {@link Query} implementations.
@@ -43,7 +43,7 @@ public interface Projectable {
      * @param rest
      * @return an Iterator over the projection
      */
-    CloseableIterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest);
+    CloseableIterator<Object[]> iterate(Expression<?> first, Expression<?> second, Expression<?>... rest);
 
     /**
      * iterate over the results for the given projection
@@ -51,7 +51,7 @@ public interface Projectable {
      * @param args
      * @return
      */
-    CloseableIterator<Object[]> iterate(Expr<?>[] args);
+    CloseableIterator<Object[]> iterate(Expression<?>[] args);
 
     /**
      * iterate over the results for the given projection
@@ -61,7 +61,7 @@ public interface Projectable {
      * @param projection
      * @return an Iterator over the projection
      */
-    <RT> CloseableIterator<RT> iterate(Expr<RT> projection);
+    <RT> CloseableIterator<RT> iterate(Expression<RT> projection);
 
     /**
      * iterate over the distinct results for the given projection
@@ -71,7 +71,7 @@ public interface Projectable {
      * @param rest
      * @return an Iterator over the projection
      */
-    CloseableIterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest);
+    CloseableIterator<Object[]> iterateDistinct(Expression<?> first, Expression<?> second, Expression<?>... rest);
 
     /**
      * iterate over the distinct results for the given projection
@@ -79,7 +79,7 @@ public interface Projectable {
      * @param args
      * @return
      */
-    CloseableIterator<Object[]> iterateDistinct(Expr<?>[] args);
+    CloseableIterator<Object[]> iterateDistinct(Expression<?>[] args);
 
     /**
      * iterate over the distinct results for the given projection
@@ -89,7 +89,7 @@ public interface Projectable {
      * @param projection
      * @return an Iterator over the projection
      */
-    <RT> CloseableIterator<RT> iterateDistinct(Expr<RT> projection);
+    <RT> CloseableIterator<RT> iterateDistinct(Expression<RT> projection);
 
     /**
      * list the results for the given projection
@@ -100,7 +100,7 @@ public interface Projectable {
      *            rest
      * @return a List over the projection
      */
-    List<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest);
+    List<Object[]> list(Expression<?> first, Expression<?> second, Expression<?>... rest);
 
     /**
      * list the results for the given projection
@@ -108,7 +108,7 @@ public interface Projectable {
      * @param args
      * @return
      */
-    List<Object[]> list(Expr<?>[] args);
+    List<Object[]> list(Expression<?>[] args);
 
     /**
      * list the results for the given projection
@@ -118,7 +118,7 @@ public interface Projectable {
      * @param projection
      * @return a List over the projection
      */
-    <RT> List<RT> list(Expr<RT> projection);
+    <RT> List<RT> list(Expression<RT> projection);
 
     /**
      * list the distinct results for the given projection
@@ -129,7 +129,7 @@ public interface Projectable {
      *            rest
      * @return a List over the projection
      */
-    List<Object[]> listDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest);
+    List<Object[]> listDistinct(Expression<?> first, Expression<?> second, Expression<?>... rest);
 
     /**
      * list the distinct results for the given projection
@@ -137,7 +137,7 @@ public interface Projectable {
      * @param args
      * @return
      */
-    List<Object[]> listDistinct(Expr<?>[] args);
+    List<Object[]> listDistinct(Expression<?>[] args);
 
     /**
      * list the distinct results for the given projection
@@ -147,7 +147,7 @@ public interface Projectable {
      * @param projection
      * @return a List over the projection
      */
-    <RT> List<RT> listDistinct(Expr<RT> projection);
+    <RT> List<RT> listDistinct(Expression<RT> projection);
 
     /**
      * list the results for the given projection
@@ -156,7 +156,7 @@ public interface Projectable {
      * @param projection
      * @return
      */
-    <RT> SearchResults<RT> listResults(Expr<RT> projection);
+    <RT> SearchResults<RT> listResults(Expression<RT> projection);
 
     /**
      * list the distinct results for the given projection
@@ -165,7 +165,7 @@ public interface Projectable {
      * @param projection
      * @return
      */
-    <RT> SearchResults<RT> listDistinctResults(Expr<RT> projection);
+    <RT> SearchResults<RT> listDistinctResults(Expression<RT> projection);
 
     /**
      * return the given projection as a Map instance using key and value for Map population
@@ -176,7 +176,7 @@ public interface Projectable {
      * @param value
      * @return
      */
-    <K,V> Map<K,V> map(Expr<K> key, Expr<V> value);
+    <K,V> Map<K,V> map(Expression<K> key, Expression<V> value);
 
     /**
      * return a unique result for the given projection
@@ -187,7 +187,7 @@ public interface Projectable {
      * @return
      */
     @Nullable
-    Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest);
+    Object[] uniqueResult(Expression<?> first, Expression<?> second, Expression<?>... rest);
 
     /**
      * return a unique result for the given projection
@@ -196,7 +196,7 @@ public interface Projectable {
      * @return
      */
     @Nullable
-    Object[] uniqueResult(Expr<?>[] args);
+    Object[] uniqueResult(Expression<?>[] args);
 
     /**
      * return a unique result for the given projection
@@ -207,6 +207,6 @@ public interface Projectable {
      * @return the result or null for an empty result
      */
     @Nullable
-    <RT> RT uniqueResult(Expr<RT> projection);
+    <RT> RT uniqueResult(Expression<RT> projection);
 
 }

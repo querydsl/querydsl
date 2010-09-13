@@ -29,10 +29,10 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.hql.HQLQueryBase;
 import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.hql.JPQLTemplates;
-import com.mysema.query.types.EConstructor;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.expr.ConstructorExpression;
 
 /**
  * Abstract base class for Hibernate API based implementations of the HQLQuery interface
@@ -87,7 +87,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * @param expr
      * @return
      */
-    public Query createQuery(Expr<?> expr){
+    public Query createQuery(Expression<?> expr){
         getQueryMixin().addToProjection(expr);
         String queryString = toQueryString();
         return createQuery(queryString, getMetadata().getModifiers());
@@ -101,7 +101,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * @param rest
      * @return
      */
-    public Query createQuery(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest){
+    public Query createQuery(Expression<?> expr1, Expression<?> expr2, Expression<?>... rest){
         getQueryMixin().addToProjection(expr1, expr2);
         getQueryMixin().addToProjection(rest);
         String queryString = toQueryString();
@@ -115,7 +115,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * @param args
      * @return
      */
-    public Query createQuery(Expr<?>[] args){
+    public Query createQuery(Expression<?>[] args){
         getQueryMixin().addToProjection(args);
         String queryString = toQueryString();
         logQuery(queryString);
@@ -154,10 +154,10 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         }
 
         // set transformer, if necessary
-        List<? extends Expr<?>> projection = getMetadata().getProjection();
+        List<? extends Expression<?>> projection = getMetadata().getProjection();
         if (projection.size() == 1){
-            Expr<?> expr = projection.get(0);
-            if (expr instanceof FactoryExpression<?>  && !(expr instanceof EConstructor<?>)){
+            Expression<?> expr = projection.get(0);
+            if (expr instanceof FactoryExpression<?>  && !(expr instanceof ConstructorExpression<?>)){
                 query.setResultTransformer(new ConstructorTransformer((FactoryExpression<?>) projection.get(0)));
             }
         }
@@ -174,7 +174,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * SQL query returns identifiers only.<br>
      */
     @SuppressWarnings("unchecked")
-    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
+    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
         Query query = createQuery(args);
         reset();
         return new IteratorAdapter<Object[]>(query.iterate());
@@ -189,27 +189,27 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * SQL query returns identifiers only.<br>
      */
     @SuppressWarnings("unchecked")
-    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
+    public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
         Query query = createQuery(projection);
         reset();
         return new IteratorAdapter<RT>(query.iterate());
     }
 
     @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expr<?>[] args) {
+    public List<Object[]> list(Expression<?>[] args) {
         Query query = createQuery(args);
         reset();
         return query.list();
     }
 
     @SuppressWarnings("unchecked")
-    public <RT> List<RT> list(Expr<RT> expr) {
+    public <RT> List<RT> list(Expression<RT> expr) {
         Query query = createQuery(expr);
         reset();
         return query.list();
     }
 
-    public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
+    public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         getQueryMixin().addToProjection(expr);
         Query query = createQuery(toCountRowsString(), null);
         long total = (Long) query.uniqueResult();
@@ -245,7 +245,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * @param expr
      * @return
      */
-    public ScrollableResults scroll(ScrollMode mode, Expr<?> expr) {
+    public ScrollableResults scroll(ScrollMode mode, Expression<?> expr) {
         Query query = createQuery(expr);
         reset();
         return query.scroll(mode);
@@ -262,7 +262,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * @param rest
      * @return
      */
-    public ScrollableResults scroll(ScrollMode mode, Expr<?> expr1, Expr<?> expr2, Expr<?>... rest) {
+    public ScrollableResults scroll(ScrollMode mode, Expression<?> expr1, Expression<?> expr2, Expression<?>... rest) {
         Query query = createQuery(expr1, expr2, rest);
         reset();
         return query.scroll(mode);
@@ -277,7 +277,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * @param args
      * @return
      */
-    public ScrollableResults scroll(ScrollMode mode, Expr<?>[] args) {
+    public ScrollableResults scroll(ScrollMode mode, Expression<?>[] args) {
         Query query = createQuery(args);
         reset();
         return query.scroll(mode);
@@ -346,7 +346,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     }
 
     @SuppressWarnings("unchecked")
-    public <RT> RT uniqueResult(Expr<RT> expr) {
+    public <RT> RT uniqueResult(Expression<RT> expr) {
         getQueryMixin().addToProjection(expr);
         QueryModifiers modifiers = getMetadata().getModifiers();
         String queryString = toQueryString();

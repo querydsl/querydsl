@@ -10,8 +10,8 @@ import java.util.List;
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
-import com.mysema.query.types.path.PList;
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.ListPath;
+import com.mysema.query.types.path.NumberPath;
 
 public class InterfaceTypeTest extends AbstractTest{
 
@@ -65,19 +65,19 @@ public class InterfaceTypeTest extends AbstractTest{
     @Test
     public void QInterfaceType_reation2() throws SecurityException, NoSuchFieldException{
         cl = QInterfaceTypeTest_InterfaceType.class;
-        match(PList.class, "relation2");
+        match(ListPath.class, "relation2");
     }
 
     @Test
     public void QInterfaceType_reation3() throws SecurityException, NoSuchFieldException{
         cl = QInterfaceTypeTest_InterfaceType.class;
-        match(PList.class, "relation3");
+        match(ListPath.class, "relation3");
     }
 
     @Test
     public void QInterfaceType_reation4() throws SecurityException, NoSuchFieldException{
         cl = QInterfaceTypeTest_InterfaceType.class;
-        match(PNumber.class, "relation4");
+        match(NumberPath.class, "relation4");
     }
 
     @Test

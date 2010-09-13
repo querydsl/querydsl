@@ -7,10 +7,10 @@ package com.mysema.query;
 
 import javax.annotation.Nonnegative;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.Predicate;
 
 /**
  * Query provides a query interface of the fluent query DSL.
@@ -29,7 +29,7 @@ public interface Query<Q extends Query<Q>> extends FilteredClause<Q>{
      * @param o
      * @return
      */
-    Q groupBy(Expr<?>... o);
+    Q groupBy(Expression<?>... o);
 
     /**
      * Defines the filters for aggregation
@@ -37,7 +37,7 @@ public interface Query<Q extends Query<Q>> extends FilteredClause<Q>{
      * @param o
      * @return
      */
-    Q having(EBoolean... o);
+    Q having(Predicate... o);
 
     /**
      * Defines the order expressions

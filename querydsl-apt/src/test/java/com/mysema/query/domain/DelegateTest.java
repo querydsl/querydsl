@@ -8,8 +8,8 @@ import org.junit.Test;
 import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerySupertype;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EBooleanConst;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanConstant;
 
 public class DelegateTest {
 
@@ -40,18 +40,18 @@ public class DelegateTest {
     }
 
     @QueryDelegate(User.class)
-    public static EBoolean isManagedBy(QDelegateTest_User user, User other){
-        return EBooleanConst.TRUE;
+    public static BooleanExpression isManagedBy(QDelegateTest_User user, User other){
+        return BooleanConstant.TRUE;
     }
 
     @QueryDelegate(User.class)
-    public static EBoolean isManagedBy(QDelegateTest_User user, QDelegateTest_User other){
-        return EBooleanConst.TRUE;
+    public static BooleanExpression isManagedBy(QDelegateTest_User user, QDelegateTest_User other){
+        return BooleanConstant.TRUE;
     }
 
     @QueryDelegate(User.class)
-    public static EBoolean simpleMethod(QDelegateTest_User user){
-        return EBooleanConst.TRUE;
+    public static BooleanExpression simpleMethod(QDelegateTest_User user){
+        return BooleanConstant.TRUE;
     }
 
 //    @QueryDelegate(DelegateTest.User.class)

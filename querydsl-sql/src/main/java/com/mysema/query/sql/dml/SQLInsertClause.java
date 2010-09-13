@@ -33,11 +33,11 @@ import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.ExprConst;
+import com.mysema.query.types.expr.SimpleConstant;
 import com.mysema.query.types.path.NullExpr;
 import com.mysema.util.ResultSetAdapter;
 
@@ -64,7 +64,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
     
     private final List<Path<?>> columns = new ArrayList<Path<?>>();
     
-    private final List<Expr<?>> values = new ArrayList<Expr<?>>();
+    private final List<Expression<?>> values = new ArrayList<Expression<?>>();
 
     private transient String queryString;
     
@@ -238,10 +238,10 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
     @Override
     public <T> SQLInsertClause set(Path<T> path, T value) {
         columns.add(path);
-        if (value instanceof Expr<?>){ 
-            values.add((Expr<?>)value);        
+        if (value instanceof Expression<?>){ 
+            values.add((Expression<?>)value);        
         }else if (value != null){
-            values.add(ExprConst.create(value));
+            values.add(SimpleConstant.create(value));
         }else{
             values.add(new NullExpr<T>(path.getType()));
         }
@@ -251,10 +251,10 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
     @Override
     public SQLInsertClause values(Object... v) {
         for (Object value : v) {
-            if (value instanceof Expr<?>) {
-                values.add((Expr<?>) value);
+            if (value instanceof Expression<?>) {
+                values.add((Expression<?>) value);
             } else if (value != null){
-                values.add(ExprConst.create(value));
+                values.add(SimpleConstant.create(value));
             }else{
                 values.add(NullExpr.DEFAULT);
             }

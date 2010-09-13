@@ -15,7 +15,7 @@ import org.apache.commons.collections15.IteratorUtils;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.Projectable;
 import com.mysema.query.SearchResults;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 
 /**
  * ProjectableQuery extends the QueryBase class to provide default
@@ -38,69 +38,69 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Override
-    public final CloseableIterator<Object[]> iterate(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public final CloseableIterator<Object[]> iterate(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return iterate(merge(first, second, rest));
     }
 
     @Override
-    public final CloseableIterator<Object[]> iterateDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public final CloseableIterator<Object[]> iterateDistinct(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         queryMixin.setDistinct(true);
         return iterate(first, second, rest);
     }
 
     @Override
-    public final CloseableIterator<Object[]> iterateDistinct(Expr<?>[] args) {
+    public final CloseableIterator<Object[]> iterateDistinct(Expression<?>[] args) {
         queryMixin.setDistinct(true);
         return iterate(args);
     }
 
     @Override
-    public final <RT> CloseableIterator<RT> iterateDistinct(Expr<RT> projection) {
+    public final <RT> CloseableIterator<RT> iterateDistinct(Expression<RT> projection) {
         queryMixin.setDistinct(true);
         return iterate(projection);
     }
 
     @Override
-    public final List<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public final List<Object[]> list(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return list(merge(first, second, rest));
     }
 
     @Override
-    public List<Object[]> list(Expr<?>[] args) {
+    public List<Object[]> list(Expression<?>[] args) {
         return IteratorUtils.toList(iterate(args));
     }
 
     @Override
-    public <RT> List<RT> list(Expr<RT> projection) {
+    public <RT> List<RT> list(Expression<RT> projection) {
         return IteratorUtils.toList(iterate(projection));
     }
 
     @Override
-    public final List<Object[]> listDistinct(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public final List<Object[]> listDistinct(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         queryMixin.setDistinct(true);
         return list(first, second, rest);
     }
 
-    public final List<Object[]> listDistinct(Expr<?>[] args) {
+    public final List<Object[]> listDistinct(Expression<?>[] args) {
         queryMixin.setDistinct(true);
         return list(args);
     }
 
     @Override
-    public final <RT> List<RT> listDistinct(Expr<RT> projection) {
+    public final <RT> List<RT> listDistinct(Expression<RT> projection) {
         queryMixin.setDistinct(true);
         return list(projection);
     }
 
     @Override
-    public final <RT> SearchResults<RT> listDistinctResults(Expr<RT> projection){
+    public final <RT> SearchResults<RT> listDistinctResults(Expression<RT> projection){
         queryMixin.setDistinct(true);
         return listResults(projection);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public final <K, V> Map<K, V> map(Expr<K> key, Expr<V> value) {
+    public final <K, V> Map<K, V> map(Expression<K> key, Expression<V> value) {
         List<Object[]> list = list(key, value);
         Map<K, V> results = new LinkedHashMap<K, V>(list.size());
         for (Object[] row : list){
@@ -109,8 +109,8 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
         return results;
     }
 
-    private Expr<?>[] merge(Expr<?> first, Expr<?> second, Expr<?>... rest){
-        Expr<?>[] args = new Expr<?>[rest.length + 2];
+    private Expression<?>[] merge(Expression<?> first, Expression<?> second, Expression<?>... rest){
+        Expression<?>[] args = new Expression<?>[rest.length + 2];
         args[0] = first;
         args[1] = second;
         System.arraycopy(rest, 0, args, 2, rest.length);
@@ -118,18 +118,18 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Override
-    public final Object[] uniqueResult(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public final Object[] uniqueResult(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return uniqueResult(merge(first, second, rest));
     }
 
-    public Object[] uniqueResult(Expr<?>[] args) {
+    public Object[] uniqueResult(Expression<?>[] args) {
         queryMixin.setUnique(true);
         Iterator<Object[]> it = iterate(args);
         return it.hasNext() ? it.next() : null;
     }
 
     @Override
-    public <RT> RT uniqueResult(Expr<RT> expr) {
+    public <RT> RT uniqueResult(Expression<RT> expr) {
         queryMixin.setUnique(true);
         limit(1l);
         Iterator<RT> it = iterate(expr);

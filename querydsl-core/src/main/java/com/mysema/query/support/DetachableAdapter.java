@@ -5,14 +5,14 @@
  */
 package com.mysema.query.support;
 
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EComparable;
-import com.mysema.query.types.expr.EDate;
-import com.mysema.query.types.expr.EDateTime;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.EString;
-import com.mysema.query.types.expr.ETime;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.ComparableExpression;
+import com.mysema.query.types.expr.DateExpression;
+import com.mysema.query.types.expr.DateTimeExpression;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.expr.TimeExpression;
 import com.mysema.query.types.query.*;
 
 /**
@@ -33,7 +33,7 @@ public class DetachableAdapter implements Detachable{
         return detachable.count();
     }
 
-    public EBoolean exists() {
+    public BooleanExpression exists() {
         return detachable.exists();
     }
 
@@ -41,59 +41,59 @@ public class DetachableAdapter implements Detachable{
         return detachable;
     }
 
-    public ListSubQuery<Object[]> list(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public ListSubQuery<Object[]> list(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return detachable.list(first, second, rest);
     }
 
-    public ListSubQuery<Object[]> list(Expr<?>[] args) {
+    public ListSubQuery<Object[]> list(Expression<?>[] args) {
         return detachable.list(args);
     }
 
-    public <RT> ListSubQuery<RT> list(Expr<RT> projection) {
+    public <RT> ListSubQuery<RT> list(Expression<RT> projection) {
         return detachable.list(projection);
     }
 
-    public EBoolean notExists() {
+    public BooleanExpression notExists() {
         return detachable.notExists();
     }
 
-    public BooleanSubQuery unique(EBoolean projection) {
+    public BooleanSubQuery unique(BooleanExpression projection) {
         return detachable.unique(projection);
     }
 
-    public <RT extends Comparable<?>> ComparableSubQuery<RT> unique(EComparable<RT> projection) {
+    public <RT extends Comparable<?>> ComparableSubQuery<RT> unique(ComparableExpression<RT> projection) {
         return detachable.unique(projection);
     }
 
-    public <RT extends Comparable<?>> DateSubQuery<RT> unique(EDate<RT> projection) {
+    public <RT extends Comparable<?>> DateSubQuery<RT> unique(DateExpression<RT> projection) {
         return detachable.unique(projection);
     }
 
-    public <RT extends Comparable<?>> DateTimeSubQuery<RT> unique(EDateTime<RT> projection) {
+    public <RT extends Comparable<?>> DateTimeSubQuery<RT> unique(DateTimeExpression<RT> projection) {
         return detachable.unique(projection);
     }
 
-    public <RT extends Number & Comparable<?>> NumberSubQuery<RT> unique(ENumber<RT> projection) {
+    public <RT extends Number & Comparable<?>> NumberSubQuery<RT> unique(NumberExpression<RT> projection) {
         return detachable.unique(projection);
     }
 
-    public StringSubQuery unique(EString projection) {
+    public StringSubQuery unique(StringExpression projection) {
         return detachable.unique(projection);
     }
 
-    public <RT extends Comparable<?>> TimeSubQuery<RT> unique(ETime<RT> projection) {
+    public <RT extends Comparable<?>> TimeSubQuery<RT> unique(TimeExpression<RT> projection) {
         return detachable.unique(projection);
     }
 
-    public ObjectSubQuery<Object[]> unique(Expr<?> first, Expr<?> second, Expr<?>... rest) {
+    public ObjectSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return detachable.unique(first, second, rest);
     }
 
-    public ObjectSubQuery<Object[]> unique(Expr<?>[] args) {
+    public ObjectSubQuery<Object[]> unique(Expression<?>[] args) {
         return detachable.unique(args);
     }
 
-    public <RT> ObjectSubQuery<RT> unique(Expr<RT> projection) {
+    public <RT> ObjectSubQuery<RT> unique(Expression<RT> projection) {
         return detachable.unique(projection);
     }
 

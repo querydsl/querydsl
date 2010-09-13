@@ -14,8 +14,8 @@ import org.junit.Test;
 
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
-import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.expr.ENumberConst;
+import com.mysema.query.types.custom.SimpleTemplate;
+import com.mysema.query.types.expr.NumberConstant;
 
 public class SQLTemplatesTest {
 
@@ -25,7 +25,7 @@ public class SQLTemplatesTest {
         assertTrue(template.getElements().get(1).isAsString());
 
         SQLSerializer serializer = new SQLSerializer(new DerbyTemplates());
-        serializer.handle(CSimple.create(Object.class, template, ENumberConst.create(5)));
+        serializer.handle(SimpleTemplate.create(Object.class, template, NumberConstant.create(5)));
         assertEquals("fetch first 5 rows only", serializer.toString());
     }
     

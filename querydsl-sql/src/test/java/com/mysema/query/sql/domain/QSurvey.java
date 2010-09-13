@@ -9,8 +9,8 @@ import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 
@@ -21,9 +21,9 @@ public class QSurvey extends RelationalPathBase<QSurvey>{
     
     public static final QSurvey survey = new QSurvey("SURVEY");
 
-    public final PString name = createString("NAME");
+    public final StringPath name = createString("NAME");
 
-    public final PNumber<Integer> id = createNumber("ID", Integer.class);
+    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
     
     public final PrimaryKey<QSurvey> idKey = createPrimaryKey(id);
 

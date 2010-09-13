@@ -14,9 +14,9 @@ import net.jcip.annotations.Immutable;
 
 import com.mysema.codegen.CodeWriter;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.expr.EComparable;
-import com.mysema.query.types.path.PSimple;
+import com.mysema.query.types.custom.SimpleTemplate;
+import com.mysema.query.types.expr.ComparableExpression;
+import com.mysema.query.types.path.SimplePath;
 
 /**
  * SupertypeSerializer is a Serializer implementation for supertypes
@@ -52,15 +52,15 @@ public final class SupertypeSerializer extends EntitySerializer{
 
         List<Package> packages = new ArrayList<Package>();
         packages.add(PathMetadata.class.getPackage());
-        packages.add(PSimple.class.getPackage());
+        packages.add(SimplePath.class.getPackage());
         if ((model.hasLists() && config.useListAccessors())
                 || !model.getMethods().isEmpty()
                 || !model.getDelegates().isEmpty()
                 || (model.hasMaps() && config.useMapAccessors())){
-            packages.add(EComparable.class.getPackage());
+            packages.add(ComparableExpression.class.getPackage());
         }
         if (!model.getMethods().isEmpty()){
-            packages.add(CSimple.class.getPackage());
+            packages.add(SimpleTemplate.class.getPackage());
         }
         writer.imports(packages.toArray(new Package[packages.size()]));
     }

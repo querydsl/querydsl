@@ -24,7 +24,7 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.hql.HQLQueryBase;
 import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.hql.JPQLTemplates;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 
 /**
  * Abstract base class for JPA API based implementations of the HQLQuery interface
@@ -62,7 +62,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
      * @param expr
      * @return
      */
-    public Query createQuery(Expr<?> expr){
+    public Query createQuery(Expression<?> expr){
         getQueryMixin().addToProjection(expr);
         String queryString = toString();
         logQuery(queryString);
@@ -75,7 +75,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
      * @param expr
      * @return
      */
-    public Query createQuery(Expr<?> expr1, Expr<?> expr2, Expr<?>... rest){
+    public Query createQuery(Expression<?> expr1, Expression<?> expr2, Expression<?>... rest){
         getQueryMixin().addToProjection(expr1, expr2);
         getQueryMixin().addToProjection(rest);
         String queryString = toString();
@@ -89,7 +89,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
      * @param args
      * @return
      */
-    public Query createQuery(Expr<?>[] args){
+    public Query createQuery(Expression<?>[] args){
         getQueryMixin().addToProjection(args);
         String queryString = toString();
         logQuery(queryString);
@@ -123,29 +123,29 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
         return query;
     }
 
-    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
+    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
         return new IteratorAdapter<Object[]>(list(args).iterator());
     }
 
-    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
+    public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
         return new IteratorAdapter<RT>(list(projection).iterator());
     }
 
     @SuppressWarnings("unchecked")
-    public List<Object[]> list(Expr<?>[] args) {
+    public List<Object[]> list(Expression<?>[] args) {
         Query query = createQuery(args);
         reset();
         return query.getResultList();
     }
 
     @SuppressWarnings("unchecked")
-    public <RT> List<RT> list(Expr<RT> expr) {
+    public <RT> List<RT> list(Expression<RT> expr) {
         Query query = createQuery(expr);
         reset();
         return query.getResultList();
     }
 
-    public <RT> SearchResults<RT> listResults(Expr<RT> expr) {
+    public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         getQueryMixin().addToProjection(expr);
         Query query = createQuery(toCountRowsString(), null);
         long total = (Long) query.getSingleResult();
@@ -171,7 +171,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends HQ
     }
 
     @SuppressWarnings("unchecked")
-    public <RT> RT uniqueResult(Expr<RT> expr) {
+    public <RT> RT uniqueResult(Expression<RT> expr) {
         getQueryMixin().addToProjection(expr);
         String queryString = toQueryString();
         logQuery(queryString);

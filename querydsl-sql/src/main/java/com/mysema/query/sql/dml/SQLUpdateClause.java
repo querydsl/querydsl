@@ -32,7 +32,7 @@ import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.NullExpr;
 
 /**
@@ -168,7 +168,7 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
     }
 
     @Override
-    public SQLUpdateClause where(EBoolean... o) {
+    public SQLUpdateClause where(Predicate... o) {
         metadata.addWhere(o);
         return this;
     }

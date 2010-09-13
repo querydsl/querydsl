@@ -15,12 +15,12 @@ import java.util.List;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPath;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.CSimple;
+import com.mysema.query.types.custom.SimpleTemplate;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.NumberPath;
 
 /**
  * SKittensArray is a Querydsl query type for SKittensArray
@@ -29,11 +29,11 @@ import com.mysema.query.types.path.PNumber;
 @com.mysema.query.sql.Table(value="KITTENS_ARRAY")
 public class SKittensArray extends EntityPathBase<SKittensArray> implements RelationalPath<SKittensArray>{
 
-    public final PNumber<Integer> animalId = createNumber("ANIMAL_ID", Integer.class);
+    public final NumberPath<Integer> animalId = createNumber("ANIMAL_ID", Integer.class);
 
-    public final PNumber<Integer> arrayindex = createNumber("ARRAYINDEX", Integer.class);
+    public final NumberPath<Integer> arrayindex = createNumber("ARRAYINDEX", Integer.class);
 
-    public final PNumber<Integer> kittensarrayId = createNumber("KITTENSARRAY_ID", Integer.class);
+    public final NumberPath<Integer> kittensarrayId = createNumber("KITTENSARRAY_ID", Integer.class);
 
     public SKittensArray(String variable) {
         super(SKittensArray.class, forVariable(variable));
@@ -47,13 +47,13 @@ public class SKittensArray extends EntityPathBase<SKittensArray> implements Rela
         super(SKittensArray.class, metadata);
     }
 
-    public Expr<Object[]> all() {
-        return CSimple.create(Object[].class, "{0}.*", this);
+    public Expression<Object[]> all() {
+        return SimpleTemplate.create(Object[].class, "{0}.*", this);
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(animalId, arrayindex, kittensarrayId);
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(animalId, arrayindex, kittensarrayId);
     }
 
     @Override

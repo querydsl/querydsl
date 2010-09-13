@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import com.mysema.query.alias.Alias;
 import com.mysema.query.hql.hibernate.HibernateQuery;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.StringPath;
 
 public class InnerJoinTest {
 
@@ -25,7 +25,7 @@ public class InnerJoinTest {
     @Test
     public void subQuery(){
         Entity alias = Alias.alias(Entity.class);
-        PString path = new PString("path");
+        StringPath path = new StringPath("path");
         HQLSubQuery subQuery = new HQLSubQuery();
         subQuery.from($(alias));
         subQuery.fullJoin($(alias.getNames()), path);
@@ -37,7 +37,7 @@ public class InnerJoinTest {
     @Test
     public void query(){
         Entity alias = Alias.alias(Entity.class);
-        PString path = new PString("path");
+        StringPath path = new StringPath("path");
         HQLQuery query = new HibernateQuery(new DummySessionHolder(), HQLTemplates.DEFAULT);
         query.from($(alias));
         query.fullJoin($(alias.getNames()), path);

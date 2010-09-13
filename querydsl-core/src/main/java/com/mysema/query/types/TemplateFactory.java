@@ -47,7 +47,7 @@ public class TemplateFactory {
                 }
                 String str = template.substring(m.start() + 1, m.end() - 1).toLowerCase(Locale.ENGLISH);
                 boolean asString = false;
-                Transformer<? extends Expr<?>, ? extends Expr<?>> transformer = null;
+                Transformer<? extends Expression<?>, ? extends Expression<?>> transformer = null;
                 if (str.charAt(0) == '%'){
                     if (str.charAt(1) == '%'){
                         transformer = Converters.toEndsWithViaLikeLower;

@@ -17,11 +17,11 @@ import org.junit.Test;
 import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.jdoql.testdomain.QProduct;
 import com.mysema.query.jdoql.testdomain.QStore;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.ECollection;
-import com.mysema.query.types.expr.EMap;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.expr.EString;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.CollectionExpression;
+import com.mysema.query.types.expr.MapExpression;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.StringExpression;
 
 public class JDOQLMethodsTest extends AbstractJDOTest {
 
@@ -32,7 +32,7 @@ public class JDOQLMethodsTest extends AbstractJDOTest {
     @Test
     public void test(){
         Product p = query().from(product).limit(1).uniqueResult(product);
-        for (EBoolean f : getFilters(
+        for (BooleanExpression f : getFilters(
                 product.name, product.description, "A0",
                 store.products, p,
                 store.productsByName, "A0", p,
@@ -41,12 +41,12 @@ public class JDOQLMethodsTest extends AbstractJDOTest {
         }
     }
 
-    private <A,K,V> List<EBoolean> getFilters(
-            EString str, EString other, String knownString,
-            ECollection<?,A> list, A element,
-            EMap<K,V> map, K key, V value,
-            ENumber<Integer> number){
-        return Arrays.<EBoolean>asList(
+    private <A,K,V> List<BooleanExpression> getFilters(
+            StringExpression str, StringExpression other, String knownString,
+            CollectionExpression<?,A> list, A element,
+            MapExpression<K,V> map, K key, V value,
+            NumberExpression<Integer> number){
+        return Arrays.<BooleanExpression>asList(
            // java.lang.String
            str.startsWith(knownString),
            str.endsWith(knownString),

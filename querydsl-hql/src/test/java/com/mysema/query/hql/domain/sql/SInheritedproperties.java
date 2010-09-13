@@ -19,15 +19,15 @@ public class SInheritedproperties extends BeanPath<SInheritedproperties> impleme
 
     public static final SInheritedproperties inheritedproperties = new SInheritedproperties("INHERITEDPROPERTIES");
 
-    public final PString classproperty = createString("CLASSPROPERTY");
+    public final StringPath classproperty = createString("CLASSPROPERTY");
 
-    public final PNumber<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    public final PString stringassimple = createString("STRINGASSIMPLE");
+    public final StringPath stringassimple = createString("STRINGASSIMPLE");
 
-    public final PString superclassproperty = createString("SUPERCLASSPROPERTY");
+    public final StringPath superclassproperty = createString("SUPERCLASSPROPERTY");
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SInheritedproperties> sql100819184434080 = new PrimaryKey<SInheritedproperties>(this, id);
 
@@ -43,9 +43,9 @@ public class SInheritedproperties extends BeanPath<SInheritedproperties> impleme
         super(SInheritedproperties.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{classproperty, id, stringassimple, superclassproperty};
+            _all = new Expression[]{classproperty, id, stringassimple, superclassproperty};
         }
         return _all;
     }
@@ -63,8 +63,8 @@ public class SInheritedproperties extends BeanPath<SInheritedproperties> impleme
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 }
 

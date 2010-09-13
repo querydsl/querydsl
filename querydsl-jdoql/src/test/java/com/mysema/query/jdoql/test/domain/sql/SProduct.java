@@ -11,15 +11,15 @@ import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.Table;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.CSimple;
+import com.mysema.query.types.custom.SimpleTemplate;
 import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.PDate;
-import com.mysema.query.types.path.PDateTime;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PTime;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.path.TimePath;
 
 
 /**
@@ -32,21 +32,21 @@ public class SProduct extends BeanPath<SProduct> implements RelationalPath<SProd
 
     public static final SProduct product = new SProduct("PRODUCT");
 
-    public final PNumber<Integer> amount = createNumber("AMOUNT", Integer.class);
+    public final NumberPath<Integer> amount = createNumber("AMOUNT", Integer.class);
 
-    public final PDate<java.sql.Date> datefield = createDate("DATEFIELD", java.sql.Date.class);
+    public final DatePath<java.sql.Date> datefield = createDate("DATEFIELD", java.sql.Date.class);
 
-    public final PString description = createString("DESCRIPTION");
+    public final StringPath description = createString("DESCRIPTION");
 
-    public final PString name = createString("NAME");
+    public final StringPath name = createString("NAME");
 
-    public final PNumber<Double> price = createNumber("PRICE", Double.class);
+    public final NumberPath<Double> price = createNumber("PRICE", Double.class);
 
-    public final PNumber<Long> productId = createNumber("PRODUCT_ID", Long.class);
+    public final NumberPath<Long> productId = createNumber("PRODUCT_ID", Long.class);
 
-    public final PDateTime<java.util.Date> publicationdate = createDateTime("PUBLICATIONDATE", java.util.Date.class);
+    public final DateTimePath<java.util.Date> publicationdate = createDateTime("PUBLICATIONDATE", java.util.Date.class);
 
-    public final PTime<java.sql.Time> timefield = createTime("TIMEFIELD", java.sql.Time.class);
+    public final TimePath<java.sql.Time> timefield = createTime("TIMEFIELD", java.sql.Time.class);
 
     public final PrimaryKey<SProduct> sysIdx47 = new PrimaryKey<SProduct>(this, productId);
 
@@ -68,8 +68,8 @@ public class SProduct extends BeanPath<SProduct> implements RelationalPath<SProd
         super(SProduct.class, metadata);
     }
 
-    public Expr<Object[]> all() {
-        return CSimple.create(Object[].class, "{0}.*", this);
+    public Expression<Object[]> all() {
+        return SimpleTemplate.create(Object[].class, "{0}.*", this);
     }
 
     @Override
@@ -88,8 +88,8 @@ public class SProduct extends BeanPath<SProduct> implements RelationalPath<SProd
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(amount, datefield, description, name, price, productId, publicationdate, timefield);
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(amount, datefield, description, name, price, productId, publicationdate, timefield);
     }
 
 }

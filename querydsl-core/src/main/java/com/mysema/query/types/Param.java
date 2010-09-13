@@ -6,7 +6,7 @@
 package com.mysema.query.types;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.expr.ESimple;
+import com.mysema.query.types.expr.SimpleExpression;
 
 /**
  * Param defines a parameter in a query with an optional name
@@ -15,7 +15,7 @@ import com.mysema.query.types.expr.ESimple;
  *
  * @param <T>
  */
-public class Param<T> extends ESimple<T> {
+public class Param<T> extends SimpleExpression<T> {
 
     private static final long serialVersionUID = -6872502615009012503L;
 

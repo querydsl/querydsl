@@ -14,9 +14,9 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.expr.ENumber;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.path.StringPath;
 
 /**
  * ColQueryTest provides
@@ -51,12 +51,12 @@ public class ColQueryTest extends AbstractQueryTest {
 
     @Test
     public void testCast() {
-        ENumber<?> num = cat.id;
-        Expr<?>[] expr = new Expr[] { num.byteValue(), num.doubleValue(),
+        NumberExpression<?> num = cat.id;
+        Expression<?>[] expr = new Expression[] { num.byteValue(), num.doubleValue(),
                 num.floatValue(), num.intValue(), num.longValue(),
                 num.shortValue(), num.stringValue() };
 
-        for (Expr<?> e : expr) {
+        for (Expression<?> e : expr) {
             query().from(cat, Arrays.asList(c1, c2)).list(e);
         }
 
@@ -101,8 +101,8 @@ public class ColQueryTest extends AbstractQueryTest {
 
     @Test
     public void testVarious() {
-        PString a = new PString("a");
-        PString b = new PString("b");
+        StringPath a = new StringPath("a");
+        StringPath b = new StringPath("b");
         for (Object[] strs : from(a, "aa", "bb", "cc")
                 .from(b, Arrays.asList("a","b"))
                 .where(a.startsWith(b)).list(a, b)) {

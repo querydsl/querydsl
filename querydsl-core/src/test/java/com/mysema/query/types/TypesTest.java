@@ -14,8 +14,8 @@ public class TypesTest {
 
     @Test
     public void testExpr() {
-        for (Class<?> cl : Expr.class.getClasses()) {
-            assertTrue(cl.getName(), Expr.class.isAssignableFrom(cl));
+        for (Class<?> cl : Expression.class.getClasses()) {
+            assertTrue(cl.getName(), Expression.class.isAssignableFrom(cl));
         }
     }
 
@@ -24,7 +24,7 @@ public class TypesTest {
         for (Class<?> cl : Path.class.getClasses()) {
             assertTrue(cl.getName(), Path.class.isAssignableFrom(cl));
             if (!cl.isInterface()) {
-                assertTrue(cl.getName(), Expr.class.isAssignableFrom(cl));
+                assertTrue(cl.getName(), Expression.class.isAssignableFrom(cl));
             }
         }
     }

@@ -9,17 +9,17 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.TemplateFactory;
-import com.mysema.query.types.custom.CString;
+import com.mysema.query.types.custom.StringTemplate;
 
 public class CustomExpressionsTest extends AbstractQueryTest{
 
-    public static class MyCustomExpr extends CString {
+    public static class MyCustomExpr extends StringTemplate {
 
         private static final long serialVersionUID = 1L;
 
-        public MyCustomExpr(Expr<?>... args) {
+        public MyCustomExpr(Expression<?>... args) {
             super(new TemplateFactory().create("myCustom({0},{1})"), Arrays.asList(args));
         }
     }

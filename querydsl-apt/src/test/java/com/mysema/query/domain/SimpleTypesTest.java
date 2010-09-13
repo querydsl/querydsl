@@ -21,13 +21,13 @@ import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.annotations.QueryType;
 import com.mysema.query.annotations.QuerydslConfig;
-import com.mysema.query.types.path.PComparable;
-import com.mysema.query.types.path.PDateTime;
-import com.mysema.query.types.path.PEnum;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PSimple;
-import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PTime;
+import com.mysema.query.types.path.ComparablePath;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.EnumPath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.path.TimePath;
 
 public class SimpleTypesTest extends AbstractTest{
 
@@ -258,65 +258,65 @@ public class SimpleTypesTest extends AbstractTest{
     @Test
     public void testSimpleTypes() throws SecurityException, NoSuchFieldException{
         cl = QSimpleTypesTest_SimpleTypes.class;
-        match(PNumber.class, "id");
-        match(PNumber.class, "bigDecimal");
-        match(PNumber.class, "bigInteger");
+        match(NumberPath.class, "id");
+        match(NumberPath.class, "bigDecimal");
+        match(NumberPath.class, "bigInteger");
 //        match(PNumber.class, "bbyte");
-        match(PNumber.class, "bbyte2");
-        match(PNumber.class, "ddouble");
-        match(PNumber.class, "ddouble2");
-        match(PNumber.class, "ffloat");
-        match(PNumber.class, "ffloat2");
+        match(NumberPath.class, "bbyte2");
+        match(NumberPath.class, "ddouble");
+        match(NumberPath.class, "ddouble2");
+        match(NumberPath.class, "ffloat");
+        match(NumberPath.class, "ffloat2");
 //        match(PNumber.class, "iint");
-        match(PNumber.class, "iint2");
-        match(PNumber.class, "llong");
-        match(PNumber.class, "llong2");
+        match(NumberPath.class, "iint2");
+        match(NumberPath.class, "llong");
+        match(NumberPath.class, "llong2");
 
-        match(PComparable.class, "cchar");
-        match(PComparable.class, "cchar2");
+        match(ComparablePath.class, "cchar");
+        match(ComparablePath.class, "cchar2");
 
-        match(PString.class, "sstring");
+        match(StringPath.class, "sstring");
 
-        match(PDateTime.class, "date");
-        match(PDateTime.class, "calendar");
+        match(DateTimePath.class, "date");
+        match(DateTimePath.class, "calendar");
 //        match(PDateTime.class, "timestamp");
 
-        match(PTime.class, "time");
+        match(TimePath.class, "time");
 
-        match(PSimple.class, "llocale");
-        match(PSimple.class, "serializable");
-        match(PSimple.class, "object");
-        match(PSimple.class, "clazz");
-        match(PSimple.class, "packageAsLiteral");
+        match(SimplePath.class, "llocale");
+        match(SimplePath.class, "serializable");
+        match(SimplePath.class, "object");
+        match(SimplePath.class, "clazz");
+        match(SimplePath.class, "packageAsLiteral");
 
-        match(PSimple.class, "clob");
-        match(PSimple.class, "blob");
+        match(SimplePath.class, "clob");
+        match(SimplePath.class, "blob");
         
-        match(PEnum.class, "myEnum");
+        match(EnumPath.class, "myEnum");
     }
 
     @Test
     public void customLiteral() throws SecurityException, NoSuchFieldException{
         cl = QSimpleTypesTest_SimpleTypes.class;
-        match(PSimple.class, "customLiteral");
+        match(SimplePath.class, "customLiteral");
     }
 
     @Test
     public void customComparableLiteral() throws SecurityException, NoSuchFieldException{
         cl = QSimpleTypesTest_SimpleTypes.class;
-        match(PComparable.class, "customComparableLiteral");
+        match(ComparablePath.class, "customComparableLiteral");
     }
 
     @Test
     public void customNumber() throws SecurityException, NoSuchFieldException{
         cl = QSimpleTypesTest_SimpleTypes.class;
-        match(PSimple.class, "customNumber");
+        match(SimplePath.class, "customNumber");
     }
 
     @Test
     public void customComparableNumber() throws SecurityException, NoSuchFieldException{
         cl = QSimpleTypesTest_SimpleTypes.class;
-        match(PNumber.class, "customComparableNumber");
+        match(NumberPath.class, "customComparableNumber");
     }
 
     @Test(expected=NoSuchFieldException.class)

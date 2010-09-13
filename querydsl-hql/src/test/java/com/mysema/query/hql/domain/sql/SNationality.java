@@ -19,11 +19,11 @@ public class SNationality extends BeanPath<SNationality> implements RelationalPa
 
     public static final SNationality nationality = new SNationality("NATIONALITY");
 
-    public final PNumber<Integer> calendarId = createNumber("CALENDAR_ID", Integer.class);
+    public final NumberPath<Integer> calendarId = createNumber("CALENDAR_ID", Integer.class);
 
-    public final PNumber<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SNationality> sql100819184436080 = new PrimaryKey<SNationality>(this, id);
 
@@ -43,9 +43,9 @@ public class SNationality extends BeanPath<SNationality> implements RelationalPa
         super(SNationality.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{calendarId, id};
+            _all = new Expression[]{calendarId, id};
         }
         return _all;
     }
@@ -63,8 +63,8 @@ public class SNationality extends BeanPath<SNationality> implements RelationalPa
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 }
 

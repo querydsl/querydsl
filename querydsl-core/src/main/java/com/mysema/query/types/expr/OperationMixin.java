@@ -5,11 +5,10 @@
  */
 package com.mysema.query.types.expr;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 
@@ -18,45 +17,35 @@ import com.mysema.query.types.Operator;
  *
  * @param <RT>
  */
-public final class OperationMixin<RT> implements Operation<RT>, Serializable {
+public final class OperationMixin<RT> extends MixinBase<RT> implements Operation<RT>{
 
     private static final long serialVersionUID = 4796432056083507588L;
 
-    private final List<Expr<?>> args;
+    private final List<Expression<?>> args;
 
     private final Operator<? super RT> operator;
 
-    private final Expr<RT> self;
+    private final Expression<RT> self;
 
-    public OperationMixin(Operation<RT> self, Operator<? super RT> operator, List<Expr<?>> args){
-        this.self = self.asExpr();
+    public OperationMixin(Operation<RT> self, Operator<? super RT> operator, List<Expression<?>> args){
+        this.self = self;
         this.operator = operator;
         this.args = Collections.unmodifiableList(args);
     }
 
     @Override
-    public Expr<RT> asExpr() {
-        return self;
-    }
-
-    @Override
-    public Expr<?> getArg(int i) {
+    public Expression<?> getArg(int i) {
         return args.get(i);
     }
 
     @Override
-    public List<Expr<?>> getArgs() {
+    public List<Expression<?>> getArgs() {
         return args;
     }
 
     @Override
     public Operator<? super RT> getOperator() {
         return operator;
-    }
-
-    @Override
-    public Class<? extends RT> getType() {
-        return self.getType();
     }
 
     @SuppressWarnings("unchecked")

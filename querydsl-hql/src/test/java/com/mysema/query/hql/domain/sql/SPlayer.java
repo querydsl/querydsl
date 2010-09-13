@@ -19,9 +19,9 @@ public class SPlayer extends BeanPath<SPlayer> implements RelationalPath<SPlayer
 
     public static final SPlayer player = new SPlayer("PLAYER");
 
-    public final PNumber<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SPlayer> sql100819184437420 = new PrimaryKey<SPlayer>(this, id);
 
@@ -39,9 +39,9 @@ public class SPlayer extends BeanPath<SPlayer> implements RelationalPath<SPlayer
         super(SPlayer.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{id};
+            _all = new Expression[]{id};
         }
         return _all;
     }
@@ -59,8 +59,8 @@ public class SPlayer extends BeanPath<SPlayer> implements RelationalPath<SPlayer
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

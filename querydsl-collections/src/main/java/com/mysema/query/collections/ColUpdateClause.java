@@ -13,7 +13,7 @@ import org.apache.commons.collections15.BeanMap;
 
 import com.mysema.query.dml.UpdateClause;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.Predicate;
 
 /**
  * ColUpdateClause is an implementation of the UpdateClause interface for Querydsl Collections
@@ -42,7 +42,7 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
     @Override
     public long execute() {
         int rv = 0;
-        for (T match : query.list(expr.asExpr())){
+        for (T match : query.list(expr)){
             BeanMap beanMap = new BeanMap(match);
             for (Map.Entry<Path<?>,Object> entry : paths.entrySet()){
                 // TODO : support deep updates as well
@@ -69,7 +69,7 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
     }
 
     @Override
-    public ColUpdateClause<T> where(EBoolean... o) {
+    public ColUpdateClause<T> where(Predicate... o) {
         query.where(o);
         return this;
     }

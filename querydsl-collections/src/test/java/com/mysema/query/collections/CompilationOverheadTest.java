@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.BooleanExpression;
 
 public class CompilationOverheadTest {
 
@@ -19,7 +19,7 @@ public class CompilationOverheadTest {
 
     @Test
     public void test(){
-        List<EBoolean> conditions = Arrays.asList(
+        List<BooleanExpression> conditions = Arrays.asList(
             cat.mate.isNull(),
             cat.mate.isNotNull(),
             cat.mate.name.eq("Kitty"),
@@ -29,18 +29,18 @@ public class CompilationOverheadTest {
         );
 
         // 1st
-        for (EBoolean condition : conditions){
+        for (BooleanExpression condition : conditions){
             query(condition);
         }
         System.err.println();
 
         // 2nd
-        for (EBoolean condition : conditions){
+        for (BooleanExpression condition : conditions){
             query(condition);
         }
     }
 
-    private void query(EBoolean condition){
+    private void query(BooleanExpression condition){
         long start = System.currentTimeMillis();
         MiniApi.from(cat, Collections.<Cat>emptyList()).where(condition).list(cat);
         long duration = System.currentTimeMillis() - start;

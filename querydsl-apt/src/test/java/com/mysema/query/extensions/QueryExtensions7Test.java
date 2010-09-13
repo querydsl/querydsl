@@ -9,8 +9,8 @@ import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryExtensions;
 import com.mysema.query.annotations.QueryMethod;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EBooleanConst;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanConstant;
 
 import ext.java.lang.QByte;
 
@@ -35,8 +35,8 @@ public class QueryExtensions7Test {
     }
     
     @QueryDelegate(Byte.class)
-    public static EBoolean isNumeric(QByte byteValue){
-        return EBooleanConst.TRUE;
+    public static BooleanExpression isNumeric(QByte byteValue){
+        return BooleanConstant.TRUE;
     }
     
     @Test

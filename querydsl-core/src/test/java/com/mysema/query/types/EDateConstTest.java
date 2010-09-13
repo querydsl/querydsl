@@ -12,8 +12,8 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-import com.mysema.query.types.expr.EDate;
-import com.mysema.query.types.expr.EDateConst;
+import com.mysema.query.types.expr.DateExpression;
+import com.mysema.query.types.expr.DateConstant;
 
 public class EDateConstTest {
 
@@ -26,7 +26,7 @@ public class EDateConstTest {
         cal.set(Calendar.YEAR,  2000);
         System.out.println(cal.getTime());
 
-        EDate<Date> date = EDateConst.create(new Date(cal.getTimeInMillis()));
+        DateExpression<Date> date = DateConstant.create(new Date(cal.getTimeInMillis()));
         assertEquals("1",   date.dayOfMonth().toString());
         assertEquals("1",   date.month().toString());
         assertEquals("2000",date.year().toString());

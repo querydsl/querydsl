@@ -14,8 +14,8 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.query.types.expr.EString;
-import com.mysema.query.types.expr.EStringConst;
+import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.expr.StringConstant;
 
 public class PathMetadataTest {
 
@@ -30,9 +30,9 @@ public class PathMetadataTest {
     @SuppressWarnings("unchecked")
     @Test
     public void test() throws Exception{
-        Field field = EStringConst.class.getDeclaredField("CACHE");
+        Field field = StringConstant.class.getDeclaredField("CACHE");
         field.setAccessible(true);
-        Map<String, EString> cache = (Map) field.get(null);
+        Map<String, StringExpression> cache = (Map) field.get(null);
         System.out.println(cache.size() + " entries in EString cache");
 
         // numbers

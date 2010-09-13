@@ -12,10 +12,10 @@ import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.PDate;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PTime;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.path.TimePath;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 @Table("EMPLOYEE2")
@@ -25,19 +25,19 @@ public class QEmployee extends RelationalPathBase<Employee> {
     
     public static final QEmployee employee = new QEmployee("EMPLOYEE2");
 
-    public final PNumber<Integer> id = createNumber("ID", Integer.class);
+    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
-    public final PString firstname = createString("FIRSTNAME");
+    public final StringPath firstname = createString("FIRSTNAME");
 
-    public final PString lastname = createString("LASTNAME");
+    public final StringPath lastname = createString("LASTNAME");
 
-    public final PNumber<BigDecimal> salary = createNumber("SALARY", BigDecimal.class);
+    public final NumberPath<BigDecimal> salary = createNumber("SALARY", BigDecimal.class);
 
-    public final PDate<java.sql.Date> datefield = createDate("DATEFIELD", java.sql.Date.class);
+    public final DatePath<java.sql.Date> datefield = createDate("DATEFIELD", java.sql.Date.class);
 
-    public final PTime<java.sql.Time> timefield = createTime("TIMEFIELD", java.sql.Time.class);
+    public final TimePath<java.sql.Time> timefield = createTime("TIMEFIELD", java.sql.Time.class);
 
-    public final PNumber<Integer> superiorId = createNumber("SUPERIOR_ID", Integer.class);
+    public final NumberPath<Integer> superiorId = createNumber("SUPERIOR_ID", Integer.class);
 
     public final PrimaryKey<Employee> idKey = createPrimaryKey(id);
 

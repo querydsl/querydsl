@@ -9,13 +9,13 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.NumberPath;
 
 public class SumOverTest {
 
     @Test
     public void test(){
-    PNumber<Integer> intPath = new PNumber<Integer>(Integer.class, "intPath");
+    NumberPath<Integer> intPath = new NumberPath<Integer>(Integer.class, "intPath");
     SumOver<Integer> sumOver = new SumOver<Integer>(intPath);
     sumOver.order(intPath);
     sumOver.partition(intPath);

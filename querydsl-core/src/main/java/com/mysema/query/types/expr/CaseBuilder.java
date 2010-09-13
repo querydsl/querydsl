@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 
@@ -35,20 +35,20 @@ public final class CaseBuilder {
     private static class CaseElement<A> {
 
         @Nullable
-        private final EBoolean condition;
+        private final BooleanExpression condition;
 
-        private final Expr<A> target;
+        private final Expression<A> target;
 
-        public CaseElement(@Nullable EBoolean condition, Expr<A> target){
+        public CaseElement(@Nullable BooleanExpression condition, Expression<A> target){
             this.condition = condition;
             this.target = target;
         }
 
-        public EBoolean getCondition() {
+        public BooleanExpression getCondition() {
             return condition;
         }
 
-        public Expr<A> getTarget() {
+        public Expression<A> getTarget() {
             return target;
         }
 
@@ -61,7 +61,7 @@ public final class CaseBuilder {
      *
      * @param <A>
      */
-    public abstract static class Cases<A, Q extends Expr<A>> {
+    public abstract static class Cases<A, Q extends Expression<A>> {
 
         private final List<CaseElement<A>> cases = new ArrayList<CaseElement<A>>();
 
@@ -71,26 +71,26 @@ public final class CaseBuilder {
             this.type = type;
         }
 
-        Cases<A,Q> addCase(EBoolean condition, Expr<A> expr) {
+        Cases<A,Q> addCase(BooleanExpression condition, Expression<A> expr) {
             cases.add(0, new CaseElement<A>(condition, expr));
             return this;
         }
 
-        protected abstract Q createResult(Class<A> type, Expr<A> last);
+        protected abstract Q createResult(Class<A> type, Expression<A> last);
 
         public Q otherwise(A constant) {
-            return otherwise(ExprConst.create(constant));
+            return otherwise(SimpleConstant.create(constant));
         }
 
-        public Q otherwise(Expr<A> expr) {
+        public Q otherwise(Expression<A> expr) {
             cases.add(0, new CaseElement<A>(null, expr));
-            Expr<A> last = null;
+            Expression<A> last = null;
             for (CaseElement<A> element : cases){
                 if (last == null){
-                    last = OSimple.create(type, Ops.CASE_ELSE,
+                    last = SimpleOperation.create(type, Ops.CASE_ELSE,
                             element.getTarget());
                 }else{
-                    last = OSimple.create(type, Ops.CASE_WHEN,
+                    last = SimpleOperation.create(type, Ops.CASE_WHEN,
                             element.getCondition(),
                             element.getTarget(),
                             last);
@@ -99,7 +99,7 @@ public final class CaseBuilder {
             return createResult(type, last);
         }
 
-        public CaseWhen<A,Q> when(EBoolean b) {
+        public CaseWhen<A,Q> when(BooleanExpression b) {
             return new CaseWhen<A,Q>(this, b);
         }
 
@@ -112,22 +112,22 @@ public final class CaseBuilder {
      *
      * @param <A>
      */
-    public static class CaseWhen<A,Q extends Expr<A>> {
+    public static class CaseWhen<A,Q extends Expression<A>> {
 
-        private final EBoolean b;
+        private final BooleanExpression b;
 
         private final Cases<A,Q> cases;
 
-        public CaseWhen(Cases<A,Q> cases, EBoolean b) {
+        public CaseWhen(Cases<A,Q> cases, BooleanExpression b) {
             this.cases = cases;
             this.b = b;
         }
 
         public Cases<A,Q> then(A constant) {
-            return then(ExprConst.create(constant));
+            return then(SimpleConstant.create(constant));
         }
 
-        public Cases<A,Q> then(Expr<A> expr) {
+        public Cases<A,Q> then(Expression<A> expr) {
             return cases.addCase(b, expr);
         }
     }
@@ -140,59 +140,59 @@ public final class CaseBuilder {
      */
     public static class Initial {
 
-        private final EBoolean when;
+        private final BooleanExpression when;
 
-        public Initial(EBoolean b) {
+        public Initial(BooleanExpression b) {
             this.when = b;
         }
 
-        public <A> Cases<A,Expr<A>> then(A constant) {
-            return then(ExprConst.create(constant));
+        public <A> Cases<A,Expression<A>> then(A constant) {
+            return then(SimpleConstant.create(constant));
         }
 
-        public Cases<String,EString> then(EString expr){
-            return new Cases<String,EString>(String.class){
+        public Cases<String,StringExpression> then(StringExpression expr){
+            return new Cases<String,StringExpression>(String.class){
                 @SuppressWarnings("unchecked")
                 @Override
-                protected EString createResult(Class<String> type, Expr<String> last) {
-                    return OString.create((Operator)Ops.CASE, last);
+                protected StringExpression createResult(Class<String> type, Expression<String> last) {
+                    return StringOperation.create((Operator)Ops.CASE, last);
                 }
 
             }.addCase(when, expr);
         }
 
         @SuppressWarnings("unchecked")
-        public <A> Cases<A, Expr<A>> then(Expr<A> expr) {
-            return new Cases<A,Expr<A>>((Class)expr.getType()){
+        public <A> Cases<A, Expression<A>> then(Expression<A> expr) {
+            return new Cases<A,Expression<A>>((Class)expr.getType()){
                 @Override
-                protected Expr<A> createResult(Class<A> type, Expr<A> last) {
-                    return OSimple.create(type, Ops.CASE, last);
+                protected Expression<A> createResult(Class<A> type, Expression<A> last) {
+                    return SimpleOperation.create(type, Ops.CASE, last);
                 }
 
             }.addCase(when, expr);
         }
 
         @SuppressWarnings("unchecked")
-        public <A extends Number & Comparable<?>> Cases<A, ENumber<A>> then(ENumber<A> expr) {
-            return new Cases<A, ENumber<A>>((Class)expr.getType()){
+        public <A extends Number & Comparable<?>> Cases<A, NumberExpression<A>> then(NumberExpression<A> expr) {
+            return new Cases<A, NumberExpression<A>>((Class)expr.getType()){
                 @Override
-                protected ENumber<A> createResult(Class<A> type, Expr<A> last) {
-                    return ONumber.create(type, (Operator)Ops.CASE, last);
+                protected NumberExpression<A> createResult(Class<A> type, Expression<A> last) {
+                    return NumberOperation.create(type, (Operator)Ops.CASE, last);
                 }
 
             }.addCase(when, expr);
         }
 
-        public Cases<String, EString> then(String str){
-            return then(EStringConst.create(str));
+        public Cases<String, StringExpression> then(String str){
+            return then(StringConstant.create(str));
         }
 
-        public <A extends Number & Comparable<?>> Cases<A, ENumber<A>> then(A num){
-            return then(ENumberConst.create(num));
+        public <A extends Number & Comparable<?>> Cases<A, NumberExpression<A>> then(A num){
+            return then(NumberConstant.create(num));
         }
     }
 
-    public Initial when(EBoolean b) {
+    public Initial when(BooleanExpression b) {
         return new Initial(b);
     }
 

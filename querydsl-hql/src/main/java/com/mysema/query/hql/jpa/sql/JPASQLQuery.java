@@ -29,7 +29,7 @@ import com.mysema.query.hql.jpa.JPAUtil;
 import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 
 /**
  * JPASQLQuery is an SQLQuery implementation that uses Hibernate's Native SQL functionality
@@ -76,7 +76,7 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery> implements 
         return new JPASQLQuery(new DefaultSessionHolder(entityManager), sqlTemplates, getMetadata().clone());
     }
 
-    public Query createQuery(Expr<?>... args){
+    public Query createQuery(Expression<?>... args){
         queryMixin.addToProjection(args);
         return createQuery(toQueryString());
     }
@@ -84,7 +84,7 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery> implements 
     @SuppressWarnings("unchecked")
     private Query createQuery(String queryString) {
         logQuery(queryString);
-        List<? extends Expr<?>> projection = queryMixin.getMetadata().getProjection();
+        List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
         Query query;
         if (projection.get(0) instanceof EntityPath){
             if (projection.size() == 1){
@@ -103,7 +103,7 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery> implements 
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Object[]> list(Expr<?>[] args) {
+    public List<Object[]> list(Expression<?>[] args) {
         Query query = createQuery(args);
         reset();
         return query.getResultList();
@@ -111,24 +111,24 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery> implements 
 
     @SuppressWarnings("unchecked")
     @Override
-    public <RT> List<RT> list(Expr<RT> projection) {
+    public <RT> List<RT> list(Expression<RT> projection) {
         Query query = createQuery(projection);
         reset();
         return query.getResultList();
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
+    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
         return new IteratorAdapter<Object[]>(list(args).iterator());
     }
 
     @Override
-    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
+    public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
         return new IteratorAdapter<RT>(list(projection).iterator());
     }
 
     @Override
-    public <RT> SearchResults<RT> listResults(Expr<RT> projection) {
+    public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
         // TODO : handle entity projections as well
         queryMixin.addToProjection(projection);
         Query query = createQuery(toCountRowsString());
@@ -168,7 +168,7 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery> implements 
     }
 
     @SuppressWarnings("unchecked")
-    public <RT> RT uniqueResult(Expr<RT> expr) {
+    public <RT> RT uniqueResult(Expression<RT> expr) {
         Query query = createQuery(expr);
         reset();
         try{

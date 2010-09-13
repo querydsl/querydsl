@@ -21,9 +21,9 @@ import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.types.*;
-import com.mysema.query.types.custom.CSimple;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.ExprConst;
+import com.mysema.query.types.custom.SimpleTemplate;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.SimpleConstant;
 
 /**
  * SqlSerializer serializes Querydsl queries into SQL
@@ -50,11 +50,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
         @Override
         public void handle(String template, Object... args) {
-            Expr<?>[] exprs = new Expr[args.length];
+            Expression<?>[] exprs = new Expression[args.length];
             for (int i = 0; i < args.length; i++){
-                exprs[i] = ExprConst.create(args[i]);
+                exprs[i] = SimpleConstant.create(args[i]);
             }
-            SQLSerializer.this.handle(CSimple.create(Object.class, template, exprs));
+            SQLSerializer.this.handle(SimpleTemplate.create(Object.class, template, exprs));
 
         }
 
@@ -109,7 +109,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     @SuppressWarnings("unchecked")
-    private List<Expr<?>> getIdentifierColumns(List<JoinExpression> joins) {
+    private List<Expression<?>> getIdentifierColumns(List<JoinExpression> joins) {
         JoinExpression join = joins.get(0);
         RelationalPath path = (RelationalPath)join.getTarget();
         if (path.getPrimaryKey() != null){
@@ -142,16 +142,16 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     @SuppressWarnings("unchecked")
     private void serializeForQuery(QueryMetadata metadata, boolean forCountRow) {
-        List<? extends Expr<?>> select = metadata.getProjection();
+        List<? extends Expression<?>> select = metadata.getProjection();
         List<JoinExpression> joins = metadata.getJoins();
-        EBoolean where = metadata.getWhere();
-        List<? extends Expr<?>> groupBy = metadata.getGroupBy();
-        EBoolean having = metadata.getHaving();
+        BooleanExpression where = metadata.getWhere();
+        List<? extends Expression<?>> groupBy = metadata.getGroupBy();
+        BooleanExpression having = metadata.getHaving();
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
         Set<QueryFlag> flags = metadata.getFlags();
 
-        List<Expr<?>> sqlSelect = new ArrayList<Expr<?>>();
-        for (Expr<?> selectExpr : select) {
+        List<Expression<?>> sqlSelect = new ArrayList<Expression<?>>();
+        for (Expression<?> selectExpr : select) {
             if (selectExpr instanceof FactoryExpression) {
                 // transforms constructor arguments into individual select expressions
                 sqlSelect.addAll(((FactoryExpression<?>) selectExpr).getArgs());
@@ -265,7 +265,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     public void serializeForMerge(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> keys,
-            List<Path<?>> columns, List<Expr<?>> values, @Nullable SubQueryExpression<?> subQuery) {
+            List<Path<?>> columns, List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
         this.entity = entity;
         
         serialize(Position.START, metadata.getFlags());
@@ -309,7 +309,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     public void serializeForInsert(QueryMetadata metadata, RelationalPath<?> entity, List<Path<?>> columns,
-            List<Expr<?>> values, @Nullable SubQueryExpression<?> subQuery) {
+            List<Expression<?>> values, @Nullable SubQueryExpression<?> subQuery) {
         this.entity = entity;
         
         serialize(Position.START, metadata.getFlags());
@@ -368,14 +368,14 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             }                        
             handle(update.getFirst().asExpr());
             append(" = ");
-            if (update.getSecond() instanceof Expr<?>){
+            if (update.getSecond() instanceof Expression<?>){
                 if (update.getSecond() instanceof Constant<?>){
                     constantPaths.add(update.getFirst());
                 }
-                handle((Expr<?>)update.getSecond());
+                handle((Expression<?>)update.getSecond());
             }else{
                 constantPaths.add(update.getFirst());
-                handle(ExprConst.create(update.getSecond()));
+                handle(SimpleConstant.create(update.getSecond()));
             }
             first = false;
         }
@@ -506,7 +506,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     @Override
-    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
+    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expression<?>> args) {
         if (args.size() == 2 
          && args.get(0) instanceof Path<?> 
          && args.get(1) instanceof Constant<?>
@@ -517,12 +517,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }        
         if (operator.equals(Ops.STRING_CAST)) {
             String typeName = templates.getTypeForClass(String.class);
-            visitOperation(String.class, SQLTemplates.CAST, Arrays.<Expr<?>>asList(args.get(0), ExprConst.create(typeName)));
+            visitOperation(String.class, SQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), SimpleConstant.create(typeName)));
 
         } else if (operator.equals(Ops.NUMCAST)) {
             Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
             String typeName = templates.getTypeForClass(targetType);
-            visitOperation(targetType, SQLTemplates.CAST, Arrays.<Expr<?>>asList(args.get(0), ExprConst.create(typeName)));
+            visitOperation(targetType, SQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), SimpleConstant.create(typeName)));
 
         } else if (operator.equals(Ops.ALIAS)){
             if (stage == Stage.SELECT || stage == Stage.FROM){

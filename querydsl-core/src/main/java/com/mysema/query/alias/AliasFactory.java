@@ -17,7 +17,7 @@ import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.map.LazyMap;
 
 import com.mysema.commons.lang.Pair;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.path.EntityPathBase;
 
 /**
@@ -28,18 +28,18 @@ import com.mysema.query.types.path.EntityPathBase;
  */
 public class AliasFactory {
 
-    private final ThreadLocal<Expr<?>> current = new ThreadLocal<Expr<?>>();
+    private final ThreadLocal<Expression<?>> current = new ThreadLocal<Expression<?>>();
 
     // caches top level paths (class/var as key)
     private final Map<Pair<Class<?>,String>, EntityPathBase<?>> pathCache =
         LazyMap.decorate(new HashMap<Pair<Class<?>,String>,EntityPathBase<?>>(), new PEntityTransformer());
 
-    private final Map<Pair<Class<?>,Expr<?>>, ManagedObject> proxyCache =
+    private final Map<Pair<Class<?>,Expression<?>>, ManagedObject> proxyCache =
         LazyMap.decorate(
-            new HashMap<Pair<Class<?>,Expr<?>>,ManagedObject>(),
-            new Transformer<Pair<Class<?>,Expr<?>>,ManagedObject>(){
+            new HashMap<Pair<Class<?>,Expression<?>>,ManagedObject>(),
+            new Transformer<Pair<Class<?>,Expression<?>>,ManagedObject>(){
                 @Override
-                public ManagedObject transform(Pair<Class<?>, Expr<?>> input) {
+                public ManagedObject transform(Pair<Class<?>, Expression<?>> input) {
                     return (ManagedObject) createProxy(input.getFirst(), input.getSecond());
                 }
             });
@@ -51,7 +51,7 @@ public class AliasFactory {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <A> A createAliasForExpr(Class<A> cl, Expr<? extends A> expr) {
+    public <A> A createAliasForExpr(Class<A> cl, Expression<? extends A> expr) {
         return (A) proxyCache.get(Pair.of(cl, expr));
     }
 
@@ -62,7 +62,7 @@ public class AliasFactory {
      * @param path
      * @return
      */
-    public <A> A createAliasForProperty(Class<A> cl, Object parent, Expr<?> path) {
+    public <A> A createAliasForProperty(Class<A> cl, Object parent, Expression<?> path) {
         return createProxy(cl, path);
     }
 
@@ -74,7 +74,7 @@ public class AliasFactory {
      */
     @SuppressWarnings("unchecked")
     public <A> A createAliasForVariable(Class<A> cl, String var) {
-        Expr<?> path = pathCache.get(Pair.of(cl, var));
+        Expression<?> path = pathCache.get(Pair.of(cl, var));
         return (A) proxyCache.get(Pair.of(cl, path));
     }
 
@@ -85,7 +85,7 @@ public class AliasFactory {
      * @return
      */
     @SuppressWarnings("unchecked")
-    private <A> A createProxy(Class<A> cl, Expr<?> path) {
+    private <A> A createProxy(Class<A> cl, Expression<?> path) {
         Enhancer enhancer = new Enhancer();
         enhancer.setClassLoader(AliasFactory.class.getClassLoader());
         if (cl.isInterface()) {
@@ -106,7 +106,7 @@ public class AliasFactory {
      */
     @SuppressWarnings("unchecked")
     @Nullable
-    public <A extends Expr<?>> A getCurrent() {
+    public <A extends Expression<?>> A getCurrent() {
         return (A) current.get();
     }
 
@@ -115,7 +115,7 @@ public class AliasFactory {
      * @return
      */
     @Nullable
-    public <A extends Expr<?>> A getCurrentAndReset() {
+    public <A extends Expression<?>> A getCurrentAndReset() {
         A rv = this.<A> getCurrent();
         reset();
         return rv;
@@ -131,7 +131,7 @@ public class AliasFactory {
     /**
      * @param path
      */
-    public void setCurrent(Expr<?> path) {
+    public void setCurrent(Expression<?> path) {
         current.set(path);
     }
 

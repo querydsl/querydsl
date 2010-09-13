@@ -7,7 +7,7 @@ package com.mysema.query.sql;
 
 import org.junit.Test;
 
-import com.mysema.query.types.path.PNumber;
+import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 @SuppressWarnings("serial")
@@ -16,11 +16,11 @@ public class KeyTest {
     @Table("USER")
     public static class QUser extends RelationalPathBase<QUser>{
 
-        public final PNumber<Integer> id = createNumber("ID", Integer.class);
+        public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
-        public final PNumber<Integer> department = createNumber("DEPARTMENT", Integer.class);
+        public final NumberPath<Integer> department = createNumber("DEPARTMENT", Integer.class);
 
-        public final PNumber<Integer> superiorId = createNumber("SUPERIOR_ID", Integer.class);
+        public final NumberPath<Integer> superiorId = createNumber("SUPERIOR_ID", Integer.class);
 
         public final PrimaryKey<QUser> idKey = createPrimaryKey(id);
 
@@ -37,9 +37,9 @@ public class KeyTest {
     @Table("DEPARTMENT")
     public static class QDepartment extends RelationalPathBase<QDepartment> {
 
-        public final PNumber<Integer> id = createNumber("ID", Integer.class);
+        public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
-        public final PNumber<Integer> company = createNumber("COMPANY", Integer.class);
+        public final NumberPath<Integer> company = createNumber("COMPANY", Integer.class);
 
         public final PrimaryKey<QDepartment> idKey = createPrimaryKey(id);
 
@@ -54,7 +54,7 @@ public class KeyTest {
     @Table("COMPANY")
     public static class QCompany extends RelationalPathBase<QCompany> {
 
-        public final PNumber<Integer> id = createNumber("ID", Integer.class);
+        public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
         public final PrimaryKey<QCompany> idKey = createPrimaryKey(id);
 

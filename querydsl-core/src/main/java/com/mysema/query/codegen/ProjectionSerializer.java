@@ -19,9 +19,9 @@ import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.EConstructor;
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.expr.ConstructorExpression;
+import com.mysema.query.types.expr.NumberExpression;
 
 /**
  * ProjectionSerializer is a Serializer implementation for DTO types
@@ -48,14 +48,14 @@ public final class ProjectionSerializer implements Serializer{
         }
 
         // imports
-        writer.imports(Expr.class.getPackage(), ENumber.class.getPackage());
+        writer.imports(Expression.class.getPackage(), NumberExpression.class.getPackage());
 
         // javadoc
         writer.javadoc(queryType + " is a Querydsl Projection type for " + simpleName);
 
         // class header
 //        writer.suppressWarnings("serial");
-        Type superType = new ClassType(TypeCategory.SIMPLE, EConstructor.class, model);
+        Type superType = new ClassType(TypeCategory.SIMPLE, ConstructorExpression.class, model);
         writer.beginClass(queryType, superType);
         writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()));
     }

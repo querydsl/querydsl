@@ -5,18 +5,18 @@
  */
 package com.mysema.query.types.path;
 
-import java.io.Serializable;
 import java.lang.reflect.AnnotatedElement;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathType;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.OBoolean;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanOperation;
+import com.mysema.query.types.expr.MixinBase;
 import com.mysema.util.ReflectionUtils;
 
 /**
@@ -27,31 +27,26 @@ import com.mysema.util.ReflectionUtils;
  *
  * @param <T>
  */
-public final class PathMixin<T> implements Path<T>, Serializable {
+public final class PathMixin<T> extends MixinBase<T> implements Path<T> {
 
     private static final long serialVersionUID = -2498447742798348162L;
 
     @Nullable
-    private volatile EBoolean isnull, isnotnull;
+    private volatile BooleanExpression isnull, isnotnull;
 
     private final PathMetadata<?> metadata;
 
     private final Path<?> root;
 
-    private final Expr<T> self;
+    private final Expression<T> self;
 
     @Nullable
     private AnnotatedElement annotatedElement;
 
     public PathMixin(Path<T> self, PathMetadata<?> metadata){
-        this.self = self.asExpr();
+        this.self = self;
         this.metadata = metadata;
         this.root = metadata.getRoot() != null ? metadata.getRoot() : self;
-    }
-
-    @Override
-    public Expr<T> asExpr() {
-        return self;
     }
 
     @SuppressWarnings("unchecked")
@@ -76,27 +71,22 @@ public final class PathMixin<T> implements Path<T>, Serializable {
     }
 
     @Override
-    public Class<? extends T> getType() {
-        return self.getType();
-    }
-
-    @Override
     public int hashCode() {
         return metadata.hashCode();
     }
 
     @Override
-    public EBoolean isNotNull() {
+    public BooleanExpression isNotNull() {
         if (isnotnull == null) {
-            isnotnull = OBoolean.create(Ops.IS_NOT_NULL, self);
+            isnotnull = BooleanOperation.create(Ops.IS_NOT_NULL, self);
         }
         return isnotnull;
     }
 
     @Override
-    public EBoolean isNull() {
+    public BooleanExpression isNull() {
         if (isnull == null) {
-            isnull = OBoolean.create(Ops.IS_NULL, self);
+            isnull = BooleanOperation.create(Ops.IS_NULL, self);
         }
         return isnull;
     }

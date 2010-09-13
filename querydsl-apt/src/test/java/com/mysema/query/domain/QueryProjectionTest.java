@@ -16,9 +16,9 @@ import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.types.expr.ENumberConst;
-import com.mysema.query.types.expr.EStringConst;
-import com.mysema.query.types.expr.ExprConst;
+import com.mysema.query.types.expr.NumberConstant;
+import com.mysema.query.types.expr.StringConstant;
+import com.mysema.query.types.expr.SimpleConstant;
 
 public class QueryProjectionTest {
 
@@ -56,10 +56,10 @@ public class QueryProjectionTest {
 
     @Test
     public void entityCase(){
-        QQueryProjectionTest_EntityWithProjection.create(ExprConst.create(0l)).newInstance(0l);
-        QQueryProjectionTest_EntityWithProjection.create(EStringConst.create("")).newInstance("");
-        QQueryProjectionTest_EntityWithProjection.create(ENumberConst.create(0l), EStringConst.create("")).newInstance(0l,"");
-        QQueryProjectionTest_EntityWithProjection.create(EStringConst.create(""), EStringConst.create("")).newInstance("","");
+        QQueryProjectionTest_EntityWithProjection.create(SimpleConstant.create(0l)).newInstance(0l);
+        QQueryProjectionTest_EntityWithProjection.create(StringConstant.create("")).newInstance("");
+        QQueryProjectionTest_EntityWithProjection.create(NumberConstant.create(0l), StringConstant.create("")).newInstance(0l,"");
+        QQueryProjectionTest_EntityWithProjection.create(StringConstant.create(""), StringConstant.create("")).newInstance("","");
     }
 
     public static class DTOWithProjection {
@@ -106,10 +106,10 @@ public class QueryProjectionTest {
 
     @Test
     public void dtoCase() throws SecurityException, NoSuchMethodException{
-        new QQueryProjectionTest_DTOWithProjection(ExprConst.<Long>create(0l)).newInstance(0l);
-        new QQueryProjectionTest_DTOWithProjection(EStringConst.create("")).newInstance("");
-        new QQueryProjectionTest_DTOWithProjection(ENumberConst.create(0l), EStringConst.create("")).newInstance(0l,"");
-        new QQueryProjectionTest_DTOWithProjection(EStringConst.create(""), EStringConst.create("")).newInstance("","");
+        new QQueryProjectionTest_DTOWithProjection(SimpleConstant.<Long>create(0l)).newInstance(0l);
+        new QQueryProjectionTest_DTOWithProjection(StringConstant.create("")).newInstance("");
+        new QQueryProjectionTest_DTOWithProjection(NumberConstant.create(0l), StringConstant.create("")).newInstance(0l,"");
+        new QQueryProjectionTest_DTOWithProjection(StringConstant.create(""), StringConstant.create("")).newInstance("","");
 
     }
 }

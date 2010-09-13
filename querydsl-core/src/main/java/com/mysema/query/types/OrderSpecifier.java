@@ -26,9 +26,9 @@ public class OrderSpecifier<A extends Comparable> implements Serializable {
 
     private final Order order;
 
-    private final Expr<A> target;
+    private final Expression<A> target;
 
-    public OrderSpecifier(Order order, Expr<A> target) {
+    public OrderSpecifier(Order order, Expression<A> target) {
         this.order = Assert.notNull(order,"order");
         this.target = Assert.notNull(target,"target");
     }
@@ -56,7 +56,7 @@ public class OrderSpecifier<A extends Comparable> implements Serializable {
      *
      * @return
      */
-    public Expr<A> getTarget() {
+    public Expression<A> getTarget() {
         return target;
     }
 

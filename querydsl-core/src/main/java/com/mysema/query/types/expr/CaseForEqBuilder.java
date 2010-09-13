@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 
@@ -37,104 +37,104 @@ public final class CaseForEqBuilder<D> {
     private static class CaseElement<D> {
 
         @Nullable
-        private final Expr<? extends D> eq;
+        private final Expression<? extends D> eq;
 
-        private final Expr<?> target;
+        private final Expression<?> target;
 
-        public CaseElement(@Nullable Expr<? extends D> eq, Expr<?> target){
+        public CaseElement(@Nullable Expression<? extends D> eq, Expression<?> target){
             this.eq = eq;
             this.target = target;
         }
 
-        public Expr<? extends D> getEq() {
+        public Expression<? extends D> getEq() {
             return eq;
         }
 
-        public Expr<?> getTarget() {
+        public Expression<?> getTarget() {
             return target;
         }
 
     }
 
-    private final Expr<D> base;
+    private final Expression<D> base;
 
-    private final Expr<? extends D> other;
+    private final Expression<? extends D> other;
 
     private final List<CaseElement<D>> caseElements = new ArrayList<CaseElement<D>>();
 
     private Class<?> type;
 
-    public CaseForEqBuilder(Expr<D> base, Expr<? extends D> other) {
+    public CaseForEqBuilder(Expression<D> base, Expression<? extends D> other) {
         this.base = base;
         this.other = other;
     }
 
-    public <T> Cases<T,Expr<T>> then(Expr<T> then){
+    public <T> Cases<T,Expression<T>> then(Expression<T> then){
         type = then.getType();
-        return new Cases<T,Expr<T>>(){
+        return new Cases<T,Expression<T>>(){
             @Override
-            protected Expr<T> createResult(Class<T> type, Expr<T> last) {
-                return OSimple.create((Class<T>)type, Ops.CASE_EQ, base, last);
+            protected Expression<T> createResult(Class<T> type, Expression<T> last) {
+                return SimpleOperation.create((Class<T>)type, Ops.CASE_EQ, base, last);
             }
         }.when(other).then(then);
     }
 
-    public <T> Cases<T,Expr<T>> then(T then){
-        return then(ExprConst.create(then));
+    public <T> Cases<T,Expression<T>> then(T then){
+        return then(SimpleConstant.create(then));
     }
 
-    public <T extends Number & Comparable<?>> Cases<T,ENumber<T>> then(T then){
-        return then(ENumberConst.create(then));
+    public <T extends Number & Comparable<?>> Cases<T,NumberExpression<T>> then(T then){
+        return then(NumberConstant.create(then));
     }
 
-    public <T extends Number & Comparable<?>> Cases<T,ENumber<T>> then(ENumber<T> then){
+    public <T extends Number & Comparable<?>> Cases<T,NumberExpression<T>> then(NumberExpression<T> then){
         type = then.getType();
-        return new Cases<T,ENumber<T>>(){
+        return new Cases<T,NumberExpression<T>>(){
             @SuppressWarnings("unchecked")
             @Override
-            protected ENumber<T> createResult(Class<T> type, Expr<T> last) {
-                return ONumber.create(type, (Operator)Ops.CASE_EQ, base, last);
+            protected NumberExpression<T> createResult(Class<T> type, Expression<T> last) {
+                return NumberOperation.create(type, (Operator)Ops.CASE_EQ, base, last);
             }
 
         }.when(other).then(then);
     }
 
-    public Cases<String,EString> then(EString then){
+    public Cases<String,StringExpression> then(StringExpression then){
         type = then.getType();
-        return new Cases<String,EString>(){
+        return new Cases<String,StringExpression>(){
             @SuppressWarnings("unchecked")
             @Override
-            protected EString createResult(Class<String> type, Expr<String> last) {
-                return OString.create((Operator)Ops.CASE_EQ, base, last);
+            protected StringExpression createResult(Class<String> type, Expression<String> last) {
+                return StringOperation.create((Operator)Ops.CASE_EQ, base, last);
             }
 
         }.when(other).then(then);
     }
 
-    public Cases<String,EString> then(String then){
-        return then(EStringConst.create(then));
+    public Cases<String,StringExpression> then(String then){
+        return then(StringConstant.create(then));
     }
 
-    public abstract class Cases<T, Q extends Expr<T>> {
+    public abstract class Cases<T, Q extends Expression<T>> {
 
-        public CaseWhen<T,Q> when(Expr<? extends D> when){
+        public CaseWhen<T,Q> when(Expression<? extends D> when){
             return new CaseWhen<T,Q>(this, when);
         }
 
         public CaseWhen<T,Q> when(D when){
-            return when(ExprConst.create(when));
+            return when(SimpleConstant.create(when));
         }
 
         @SuppressWarnings("unchecked")
-        public Q otherwise(Expr<T> otherwise){
+        public Q otherwise(Expression<T> otherwise){
             caseElements.add(0, new CaseElement<D>(null, otherwise));
-            Expr<T> last = null;
+            Expression<T> last = null;
             for (CaseElement<D> element : caseElements){
                 if (last == null){
-                    last = OSimple.create((Class<T>)type, Ops.CASE_EQ_ELSE,
+                    last = SimpleOperation.create((Class<T>)type, Ops.CASE_EQ_ELSE,
                             element.getTarget());
                 }else{
-                    last = OSimple.create((Class<T>)type, Ops.CASE_EQ_WHEN,
+                    last = SimpleOperation.create((Class<T>)type, Ops.CASE_EQ_WHEN,
                             base,
                             element.getEq(),
                             element.getTarget(),
@@ -144,31 +144,31 @@ public final class CaseForEqBuilder<D> {
             return createResult((Class<T>)type, last);
         }
 
-        protected abstract Q createResult(Class<T> type, Expr<T> last);
+        protected abstract Q createResult(Class<T> type, Expression<T> last);
 
         public Q otherwise(T otherwise){
-            return otherwise(ExprConst.create(otherwise));
+            return otherwise(SimpleConstant.create(otherwise));
         }
     }
 
-    public class CaseWhen<T, Q extends Expr<T>> {
+    public class CaseWhen<T, Q extends Expression<T>> {
 
         private final Cases<T, Q> cases;
 
-        private final Expr<? extends D> when;
+        private final Expression<? extends D> when;
 
-        public CaseWhen(Cases<T, Q> cases, Expr<? extends D> when) {
+        public CaseWhen(Cases<T, Q> cases, Expression<? extends D> when) {
             this.cases = cases;
             this.when = when;
         }
 
-        public Cases<T, Q> then(Expr<T> then){
+        public Cases<T, Q> then(Expression<T> then){
             caseElements.add(0, new CaseElement<D>(when, then));
             return cases;
         }
 
         public Cases<T, Q> then(T then){
-            return then(ExprConst.create(then));
+            return then(SimpleConstant.create(then));
         }
 
     }

@@ -8,10 +8,10 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.OSimple;
+import com.mysema.query.types.expr.SimpleOperation;
 
 /**
  * Abstract superclass for SubQuery implementations
@@ -38,14 +38,14 @@ public class AbstractJDOQLSubQuery<Q extends AbstractJDOQLSubQuery<Q>> extends D
 
     @SuppressWarnings("unchecked")
     public <P> Q from(Path<? extends Collection<P>> target, EntityPath<P> alias){
-        queryMixin.getMetadata().addJoin(JoinType.DEFAULT, OSimple.create(alias.getType(), Ops.ALIAS, target.asExpr(), alias.asExpr()));
+        queryMixin.getMetadata().addJoin(JoinType.DEFAULT, SimpleOperation.create(alias.getType(), Ops.ALIAS, target.asExpr(), alias.asExpr()));
         return (Q)this;
     }
 
     @Override
     public String toString(){
         if (!queryMixin.getMetadata().getJoins().isEmpty()){
-            Expr<?> source = queryMixin.getMetadata().getJoins().get(0).getTarget();
+            Expression<?> source = queryMixin.getMetadata().getJoins().get(0).getTarget();
             JDOQLSerializer serializer = new JDOQLSerializer(JDOQLTemplates.DEFAULT, source);
             serializer.serialize(queryMixin.getMetadata(), false, false);
             return serializer.toString().trim();

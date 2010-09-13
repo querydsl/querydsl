@@ -19,11 +19,11 @@ public class SPlayerScores extends BeanPath<SPlayerScores> implements Relational
 
     public static final SPlayerScores playerScores = new SPlayerScores("PLAYER_SCORES");
 
-    public final PNumber<Integer> element = createNumber("ELEMENT", Integer.class);
+    public final NumberPath<Integer> element = createNumber("ELEMENT", Integer.class);
 
-    public final PNumber<Long> playerId = createNumber("PLAYER_ID", Long.class);
+    public final NumberPath<Long> playerId = createNumber("PLAYER_ID", Long.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final ForeignKey<SPlayer> fkd5dc571ff51f2004 = new ForeignKey<SPlayer>(this, playerId, "ID");
 
@@ -39,9 +39,9 @@ public class SPlayerScores extends BeanPath<SPlayerScores> implements Relational
         super(SPlayerScores.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{element, playerId};
+            _all = new Expression[]{element, playerId};
         }
         return _all;
     }
@@ -59,8 +59,8 @@ public class SPlayerScores extends BeanPath<SPlayerScores> implements Relational
     }
     
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 
 }

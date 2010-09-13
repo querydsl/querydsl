@@ -41,7 +41,7 @@ public class SubQueryTest {
         );
         SubQueryExpression prev = null;
         for (SubQueryExpression sq : subQueries){
-            assertNotNull(sq.asExpr());
+            assertNotNull(sq);
             assertNotNull(sq.exists());
             assertNotNull(sq.getMetadata());
             assertNotNull(sq.notExists());
@@ -49,8 +49,8 @@ public class SubQueryTest {
             if (prev != null){
                 assertEquals(sq, prev);
             }
-            assertEquals(sq.asExpr().getType().hashCode(), sq.hashCode());
-            sq.asExpr().accept(ToStringVisitor.DEFAULT, templates);
+            assertEquals(sq.getType().hashCode(), sq.hashCode());
+            sq.accept(ToStringVisitor.DEFAULT, templates);
             prev = sq;
         }
     }

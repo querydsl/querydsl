@@ -15,7 +15,7 @@ import net.jcip.annotations.Immutable;
 import org.apache.commons.collections15.Transformer;
 
 /**
- * Template for {@link Operation}, {@link Custom} and {@link Path} serialization
+ * Template for {@link Operation}, {@link TemplateExpression} and {@link Path} serialization
  *
  * @author tiwe
  *
@@ -36,14 +36,14 @@ public final class Template implements Serializable{
         private final String staticText;
 
         @Nullable
-        private final transient Transformer<Expr<?>,Expr<?>> transformer;
+        private final transient Transformer<Expression<?>,Expression<?>> transformer;
 
         private final boolean asString;
 
         private final String toString;
 
         @SuppressWarnings("unchecked")
-        Element(int index, Transformer<? extends Expr<?>,? extends Expr<?>> transformer) {
+        Element(int index, Transformer<? extends Expression<?>,? extends Expression<?>> transformer) {
             this.asString = false;
             this.transformer = (Transformer)transformer;
             this.index = index;
@@ -84,7 +84,7 @@ public final class Template implements Serializable{
             return transformer != null;
         }
 
-        public Expr<?> convert(Expr<?> source){
+        public Expression<?> convert(Expression<?> source){
             return transformer.transform(source);
         }
 

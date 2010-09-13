@@ -18,12 +18,12 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.SearchResults;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.EArrayConstructor;
-import com.mysema.query.types.expr.OSimple;
-import com.mysema.query.types.path.PMap;
+import com.mysema.query.types.expr.ArrayConstructorExpression;
+import com.mysema.query.types.expr.SimpleOperation;
+import com.mysema.query.types.path.MapPath;
 
 /**
  * AbstractColQuery provides a base class for Collection query implementations.
@@ -42,7 +42,7 @@ import com.mysema.query.types.path.PMap;
  */
 public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends ProjectableQuery<Q> {
 
-    private final Map<Expr<?>, Iterable<?>> iterables = new HashMap<Expr<?>, Iterable<?>>();
+    private final Map<Expression<?>, Iterable<?>> iterables = new HashMap<Expression<?>, Iterable<?>>();
 
     private final QueryEngine queryEngine;
 
@@ -65,19 +65,19 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
     }
 
     @SuppressWarnings("unchecked")
-    private <D> Expr<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias){
-        return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target.asExpr(), alias.asExpr());
+    private <D> Expression<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias){
+        return SimpleOperation.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
     }
 
     @SuppressWarnings("unchecked")
-    private <D> Expr<D> createAlias(PMap<?,D,?> target, Path<D> alias){
-        return OSimple.create((Class<D>)alias.getType(), Ops.ALIAS, target.asExpr(), alias.asExpr());
+    private <D> Expression<D> createAlias(MapPath<?,D,?> target, Path<D> alias){
+        return SimpleOperation.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
     }
 
     @SuppressWarnings("unchecked")
     public <A> Q from(Path<A> entity, Iterable<? extends A> col) {
-        iterables.put(entity.asExpr(), col);
-        getMetadata().addJoin(JoinType.DEFAULT, entity.asExpr());
+        iterables.put(entity, col);
+        getMetadata().addJoin(JoinType.DEFAULT, entity);
         return (Q)this;
     }
 
@@ -94,18 +94,18 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
     }
 
     @SuppressWarnings("unchecked")
-    public <P> Q innerJoin(PMap<?,P,?> target, Path<P> alias) {
+    public <P> Q innerJoin(MapPath<?,P,?> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return (Q)this;
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expr<?>[] args) {
-        return iterate(new EArrayConstructor<Object>(args));
+    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
+        return iterate(new ArrayConstructorExpression<Object>(args));
     }
 
     @Override
-    public <RT> CloseableIterator<RT> iterate(Expr<RT> projection) {
+    public <RT> CloseableIterator<RT> iterate(Expression<RT> projection) {
         try {
             queryMixin.addToProjection(projection);
             return new IteratorAdapter<RT>(queryEngine.list(getMetadata(), iterables, projection).iterator());
@@ -115,12 +115,12 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
     }
 
     @Override
-    public List<Object[]> list(Expr<?>[] args) {
-        return list(new EArrayConstructor<Object>(args));
+    public List<Object[]> list(Expression<?>[] args) {
+        return list(new ArrayConstructorExpression<Object>(args));
     }
 
     @Override
-    public <RT> List<RT> list(Expr<RT> projection) {
+    public <RT> List<RT> list(Expression<RT> projection) {
         try {
             queryMixin.addToProjection(projection);
             return queryEngine.list(getMetadata(), iterables, projection);
@@ -130,7 +130,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
     }
 
     @Override
-    public <RT> SearchResults<RT> listResults(Expr<RT> projection) {
+    public <RT> SearchResults<RT> listResults(Expression<RT> projection) {
         queryMixin.addToProjection(projection);
         long count = queryEngine.count(getMetadata(), iterables);
         if (count > 0l){

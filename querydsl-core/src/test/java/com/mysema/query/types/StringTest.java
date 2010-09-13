@@ -17,7 +17,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.mysema.query.types.expr.EArrayConstructor;
+import com.mysema.query.types.expr.ArrayConstructorExpression;
+import com.mysema.query.types.expr.ConstructorExpression;
 
 /**
  * StringTest provides.
@@ -80,11 +81,11 @@ public class StringTest {
         assertEquals("lower(alias.name)", $(alias.getName()).lower().toString());
 
         // EConstructor
-        EConstructor<SomeType> someType = new EConstructor<SomeType>(SomeType.class, new Class[]{SomeType.class}, $(alias));
+        ConstructorExpression<SomeType> someType = new ConstructorExpression<SomeType>(SomeType.class, new Class[]{SomeType.class}, $(alias));
         assertEquals("new SomeType(alias)", someType.toString());
 
         // EArrayConstructor
-        EArrayConstructor<SomeType> someTypeArray = new EArrayConstructor<SomeType>(SomeType[].class,$(alias));
+        ArrayConstructorExpression<SomeType> someTypeArray = new ArrayConstructorExpression<SomeType>(SomeType[].class,$(alias));
         assertEquals("new SomeType[](alias)", someTypeArray.toString());
     }
 

@@ -5,14 +5,14 @@
  */
 package com.mysema.query.sql.domain;
 
-import com.mysema.query.types.EConstructor;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.expr.ConstructorExpression;
 
-public class QIdName extends EConstructor<IdName> {
+public class QIdName extends ConstructorExpression<IdName> {
 
     private static final long serialVersionUID = 5770565824515003611L;
 
-    public QIdName(Expr<java.lang.Integer> id, Expr<java.lang.String> name) {
+    public QIdName(Expression<java.lang.Integer> id, Expression<java.lang.String> name) {
         super(IdName.class, new Class[]{int.class, String.class}, id, name);
     }
 

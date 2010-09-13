@@ -19,13 +19,13 @@ public class SCustomer extends BeanPath<SCustomer> implements RelationalPath<SCu
 
     public static final SCustomer customer = new SCustomer("CUSTOMER");
 
-    public final PNumber<Long> currentorderId = createNumber("CURRENTORDER_ID", Long.class);
+    public final NumberPath<Long> currentorderId = createNumber("CURRENTORDER_ID", Long.class);
 
-    public final PNumber<Integer> id = createNumber("ID", Integer.class);
+    public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
-    public final PNumber<Long> nameId = createNumber("NAME_ID", Long.class);
+    public final NumberPath<Long> nameId = createNumber("NAME_ID", Long.class);
 
-    private Expr[] _all;
+    private Expression[] _all;
 
     public final PrimaryKey<SCustomer> sql100819184432460 = new PrimaryKey<SCustomer>(this, id);
 
@@ -49,9 +49,9 @@ public class SCustomer extends BeanPath<SCustomer> implements RelationalPath<SCu
         super(SCustomer.class, metadata);
     }
 
-    public Expr[] all() {
+    public Expression[] all() {
         if (_all == null) {
-            _all = new Expr[]{currentorderId, id, nameId};
+            _all = new Expression[]{currentorderId, id, nameId};
         }
         return _all;
     }
@@ -69,8 +69,8 @@ public class SCustomer extends BeanPath<SCustomer> implements RelationalPath<SCu
     }
 
     @Override
-    public List<Expr<?>> getColumns() {
-        return Arrays.<Expr<?>>asList(all());
+    public List<Expression<?>> getColumns() {
+        return Arrays.<Expression<?>>asList(all());
     }
 }
 

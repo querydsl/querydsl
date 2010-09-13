@@ -22,10 +22,11 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.*;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EStringConst;
-import com.mysema.query.types.expr.ExprConst;
-import com.mysema.query.types.expr.OSimple;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.ConstructorExpression;
+import com.mysema.query.types.expr.StringConstant;
+import com.mysema.query.types.expr.SimpleConstant;
+import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.util.MathUtils;
 
 /**
@@ -108,9 +109,9 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
 
     // TODO : generalize this!
     @SuppressWarnings("unchecked")
-    private <T> Expr<?> regexToLike(Operation<T> operation) {
-        List<Expr<?>> args = new ArrayList<Expr<?>>();
-        for (Expr<?> arg : operation.getArgs()){
+    private <T> Expression<?> regexToLike(Operation<T> operation) {
+        List<Expression<?>> args = new ArrayList<Expression<?>>();
+        for (Expression<?> arg : operation.getArgs()){
             if (!arg.getType().equals(String.class)){
                 args.add(arg);
             }else if (arg instanceof Constant){
@@ -121,22 +122,22 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
                 args.add(arg);
             }
         }
-        return OSimple.create(
+        return SimpleOperation.create(
                 operation.getType(),
                 operation.getOperator(),
-                args.<Expr<?>>toArray(new Expr[args.size()]));
+                args.<Expression<?>>toArray(new Expression[args.size()]));
     }
 
-    private Expr<?> regexToLike(String str){
-        return EStringConst.create(str.replace(".*", "%").replace(".", "_"));
+    private Expression<?> regexToLike(String str){
+        return StringConstant.create(str.replace(".*", "%").replace(".", "_"));
     }
 
     public void serialize(QueryMetadata metadata, boolean forCountRow, @Nullable String projection) {
-        List<? extends Expr<?>> select = metadata.getProjection();
+        List<? extends Expression<?>> select = metadata.getProjection();
         List<JoinExpression> joins = metadata.getJoins();
-        EBoolean where = metadata.getWhere();
-        List<? extends Expr<?>> groupBy = metadata.getGroupBy();
-        EBoolean having = metadata.getHaving();
+        Predicate where = metadata.getWhere();
+        List<? extends Expression<?>> groupBy = metadata.getGroupBy();
+        Predicate having = metadata.getHaving();
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
         // select
@@ -291,7 +292,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
 
     @Override
     public Void visit(FactoryExpression<?> expr, Void context) {
-        if (expr instanceof EConstructor<?>){
+        if (expr instanceof ConstructorExpression<?>){
             append("new " + expr.getType().getName() + "(");
             handle(", ", expr.getArgs());
             append(")");
@@ -303,7 +304,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     }
 
     @SuppressWarnings("unchecked")
-    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expr<?>> args) {
+    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expression<?>> args) {
         boolean old = wrapElements;
         wrapElements = templates.wrapElements(operator);
 
@@ -316,13 +317,13 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
 
         } else if (operator.equals(Ops.INSTANCE_OF)) {
             if (templates.isTypeAsString()){
-                List<Expr<?>> newArgs = new ArrayList<Expr<?>>(args);
+                List<Expression<?>> newArgs = new ArrayList<Expression<?>>(args);
                 Class<?> cl = ((Class<?>) ((Constant<?>) newArgs.get(1)).getConstant());
                 // use discriminator value instead of fqnm
                 if (cl.getAnnotation(DiscriminatorValue.class) != null){
-                    newArgs.set(1, EStringConst.create(cl.getAnnotation(DiscriminatorValue.class).value()));
+                    newArgs.set(1, StringConstant.create(cl.getAnnotation(DiscriminatorValue.class).value()));
                 }else{
-                    newArgs.set(1, EStringConst.create(cl.getName()));
+                    newArgs.set(1, StringConstant.create(cl.getName()));
                 }
                 super.visitOperation(type, operator, newArgs);
             }else{
@@ -332,7 +333,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
         } else if (operator.equals(Ops.NUMCAST)) {
             Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
             String typeName = targetType.getSimpleName().toLowerCase(Locale.ENGLISH);
-            visitOperation(targetType, JPQLTemplates.CAST, Arrays.<Expr<?>>asList(args.get(0), ExprConst.create(typeName)));
+            visitOperation(targetType, JPQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), SimpleConstant.create(typeName)));
 
         } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQueryExpression){
             SubQueryExpression subQuery = (SubQueryExpression) args.get(0);
@@ -341,7 +342,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             append(")");
 
         } else if (operator.equals(Ops.MATCHES)){
-            List<Expr<?>> newArgs = new ArrayList<Expr<?>>(args);
+            List<Expression<?>> newArgs = new ArrayList<Expression<?>>(args);
             if (newArgs.get(1) instanceof Constant){
                 newArgs.set(1, regexToLike(newArgs.get(1).toString()));
             }else if (newArgs.get(1) instanceof Operation){
@@ -360,10 +361,10 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
     }
 
     @SuppressWarnings("unchecked")
-    private List<Expr<?>> normalizeNumericArgs(List<Expr<?>> args) {
+    private List<Expression<?>> normalizeNumericArgs(List<Expression<?>> args) {
         boolean hasConstants = false;
         Class<? extends Number> numType = null;
-        for (Expr<?> arg : args){
+        for (Expression<?> arg : args){
             if (Number.class.isAssignableFrom(arg.getType())){
                 if (arg instanceof Constant){
                     hasConstants = true;
@@ -373,12 +374,12 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             }
         }
         if (hasConstants && numType != null){
-            List<Expr<?>> newArgs = new ArrayList<Expr<?>>(args.size());
-            for (Expr<?> arg : args){
+            List<Expression<?>> newArgs = new ArrayList<Expression<?>>(args.size());
+            for (Expression<?> arg : args){
                 if (arg instanceof Constant && Number.class.isAssignableFrom(arg.getType())
                         && !arg.getType().equals(numType)){
                     Number number = (Number) ((Constant)arg).getConstant();
-                    newArgs.add(ExprConst.create(MathUtils.cast(number, (Class)numType)));
+                    newArgs.add(SimpleConstant.create(MathUtils.cast(number, (Class)numType)));
                 }else{
                     newArgs.add(arg);
                 }

@@ -8,7 +8,7 @@ package com.mysema.query.types.expr;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Visitor;
 
@@ -22,58 +22,58 @@ import com.mysema.query.types.Visitor;
  * @param <T>
  */
 @SuppressWarnings("unchecked")
-public class Coalesce<T extends Comparable> extends EComparable<T>{
+public class Coalesce<T extends Comparable> extends ComparableExpression<T>{
 
     private static final long serialVersionUID = 445439522266250417L;
 
-    private final List<Expr<? extends T>> exprs = new ArrayList<Expr<? extends T>>();
+    private final List<Expression<? extends T>> exprs = new ArrayList<Expression<? extends T>>();
 
-    public Coalesce(Class<? extends T> type, Expr...exprs){
+    public Coalesce(Class<? extends T> type, Expression...exprs){
         // NOTE : type parameters for the varargs, would result in compiler warnings
         super(type);
-        for (Expr expr : exprs){
+        for (Expression expr : exprs){
             add(expr);
         }
     }
 
-    public Coalesce(Expr... exprs){
+    public Coalesce(Expression... exprs){
         // NOTE : type parameters for the varargs, would result in compiler warnings
         this((Class<T>)(exprs.length > 0 ? exprs[0].getType() : Object.class), exprs);
     }
 
     @Override
     public <R,C> R accept(Visitor<R,C> v, C context) {
-        return OSimple.create(getType(), Ops.COALESCE, getExpressionList()).accept(v, context);
+        return SimpleOperation.create(getType(), Ops.COALESCE, getExpressionList()).accept(v, context);
     }
 
-    public final Coalesce<T> add(Expr<T> expr){
+    public final Coalesce<T> add(Expression<T> expr){
         this.exprs.add(expr);
         return this;
     }
 
     public final Coalesce<T> add(T constant){
-        this.exprs.add(ExprConst.create(constant));
+        this.exprs.add(SimpleConstant.create(constant));
         return this;
     }
 
-    public EDate<T> asDate(){
-        return (EDate<T>) ODate.create(getType(), Ops.COALESCE, getExpressionList());
+    public DateExpression<T> asDate(){
+        return (DateExpression<T>) DateOperation.create(getType(), Ops.COALESCE, getExpressionList());
     }
 
-    public EDateTime<T> asDateTime(){
-        return (EDateTime<T>) ODateTime.create(getType(), Ops.COALESCE, getExpressionList());
+    public DateTimeExpression<T> asDateTime(){
+        return (DateTimeExpression<T>) DateTimeOperation.create(getType(), Ops.COALESCE, getExpressionList());
     }
 
-    public ENumber<?> asNumber(){
-        return ONumber.create((Class)getType(), Ops.COALESCE, getExpressionList());
+    public NumberExpression<?> asNumber(){
+        return NumberOperation.create((Class)getType(), Ops.COALESCE, getExpressionList());
     }
 
-    public EString asString(){
-        return OString.create(Ops.COALESCE, getExpressionList());
+    public StringExpression asString(){
+        return StringOperation.create(Ops.COALESCE, getExpressionList());
     }
 
-    public ETime<T> asTime(){
-        return (ETime<T>) OTime.create(getType(), Ops.COALESCE, getExpressionList());
+    public TimeExpression<T> asTime(){
+        return (TimeExpression<T>) TimeOperation.create(getType(), Ops.COALESCE, getExpressionList());
     }
 
     @Override
@@ -88,10 +88,10 @@ public class Coalesce<T extends Comparable> extends EComparable<T>{
         }
     }
 
-    private Expr<?> getExpressionList(){
-        Expr<?> arg = exprs.get(0);
+    private Expression<?> getExpressionList(){
+        Expression<?> arg = exprs.get(0);
         for (int i = 1; i < exprs.size(); i++){
-            arg = OSimple.create(List.class, Ops.LIST, arg, exprs.get(i));
+            arg = SimpleOperation.create(List.class, Ops.LIST, arg, exprs.get(i));
         }
         return arg;
     }

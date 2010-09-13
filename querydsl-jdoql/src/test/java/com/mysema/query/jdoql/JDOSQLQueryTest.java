@@ -17,8 +17,8 @@ import com.mysema.query.jdoql.test.domain.sql.SProduct;
 import com.mysema.query.jdoql.testdomain.Product;
 import com.mysema.query.sql.HSQLDBTemplates;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.EConstructor;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.ConstructorExpression;
 
 public class JDOSQLQueryTest extends AbstractJDOTest{
     
@@ -55,7 +55,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
     @Test
     public void scalarQueries(){
         SProduct product = SProduct.product;
-        EBoolean filter = product.name.startsWith("A");
+        BooleanExpression filter = product.name.startsWith("A");
         
         // count
         assertEquals(10l, sql().from(product).where(filter).count());
@@ -95,7 +95,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
 
         List<Product> products = sql()
             .from(product)
-            .list(EConstructor.create(Product.class, product.name, product.description, product.price, product.amount));
+            .list(ConstructorExpression.create(Product.class, product.name, product.description, product.price, product.amount));
         assertEquals(30, products.size());
         for (Product p : products){
             assertNotNull(p.getName());

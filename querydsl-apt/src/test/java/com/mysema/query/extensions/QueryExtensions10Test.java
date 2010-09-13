@@ -9,10 +9,10 @@ import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryEmbeddable;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerySupertype;
-import com.mysema.query.types.expr.EBoolean;
-import com.mysema.query.types.expr.EBooleanConst;
-import com.mysema.query.types.path.PDate;
-import com.mysema.query.types.path.PDateTime;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanConstant;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.DateTimePath;
 
 public class QueryExtensions10Test {
     
@@ -24,16 +24,16 @@ public class QueryExtensions10Test {
      * Adds a period filter
      */
     @QueryDelegate(Date.class)
-    public static EBoolean period(PDate<Date> expr, Interval<Date> period) {
-        return EBooleanConst.TRUE;
+    public static BooleanExpression period(DatePath<Date> expr, Interval<Date> period) {
+        return BooleanConstant.TRUE;
     }
 
     /**
      * Adds a timestamp period filter on a timestamp expression
      */
     @QueryDelegate(Timestamp.class)
-    public static EBoolean period(PDateTime<Timestamp> expr, Interval<Timestamp> period) {
-        return EBooleanConst.TRUE;
+    public static BooleanExpression period(DateTimePath<Timestamp> expr, Interval<Timestamp> period) {
+        return BooleanConstant.TRUE;
     }
     
     @QueryEmbeddable

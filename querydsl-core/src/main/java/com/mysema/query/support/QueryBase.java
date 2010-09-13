@@ -6,10 +6,10 @@
 package com.mysema.query.support;
 
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.Predicate;
 
 /**
  * QueryBase provides a stub for Query implementations
@@ -25,11 +25,11 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
         this.queryMixin = queryMixin;
     }
 
-    public Q groupBy(Expr<?>... o) {
+    public Q groupBy(Expression<?>... o) {
         return queryMixin.groupBy(o);
     }
 
-    public Q having(EBoolean... o) {
+    public Q having(Predicate... o) {
         return queryMixin.having(o);
     }
 
@@ -37,7 +37,7 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
         return queryMixin.orderBy(o);
     }
 
-    public Q where(EBoolean... o) {
+    public Q where(Predicate... o) {
         return queryMixin.where(o);
     }
 

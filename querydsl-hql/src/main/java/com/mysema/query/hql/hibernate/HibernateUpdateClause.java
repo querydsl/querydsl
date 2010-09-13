@@ -20,9 +20,9 @@ import com.mysema.query.hql.HQLSerializer;
 import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.hql.JPQLTemplates;
 import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.NullExpr;
 
 /**
@@ -51,7 +51,7 @@ public class HibernateUpdateClause implements
     public HibernateUpdateClause(SessionHolder session, EntityPath<?> entity, JPQLTemplates templates) {
         this.session = session;
         this.templates = templates;
-        metadata.addJoin(JoinType.DEFAULT, entity.asExpr());
+        metadata.addJoin(JoinType.DEFAULT, entity);
     }
 
     @Override
@@ -68,9 +68,9 @@ public class HibernateUpdateClause implements
     @Override
     public <T> HibernateUpdateClause set(Path<T> path, T value) {
         if (value != null){
-            metadata.addProjection(path.asExpr().eq(value));
+            metadata.addProjection(path.eq(value));
         }else{
-            metadata.addProjection(path.asExpr().eq(new NullExpr<T>(path.getType())));
+            metadata.addProjection(path.eq(new NullExpr<T>(path.getType())));
         }
         return this;
     }
@@ -80,9 +80,9 @@ public class HibernateUpdateClause implements
     public HibernateUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++){
             if (values.get(i) != null){
-                metadata.addProjection(((Expr)paths.get(i).asExpr()).eq(values.get(i)));
+                metadata.addProjection(((Expression)paths.get(i)).eq(values.get(i)));
             }else{
-                metadata.addProjection(((Expr)paths.get(i).asExpr()).eq(new NullExpr(paths.get(i).getType())));
+                metadata.addProjection(((Expression)paths.get(i)).eq(new NullExpr(paths.get(i).getType())));
             }
 
         }
@@ -90,7 +90,7 @@ public class HibernateUpdateClause implements
     }
 
     @Override
-    public HibernateUpdateClause where(EBoolean... o) {
+    public HibernateUpdateClause where(Predicate... o) {
         metadata.addWhere(o);
         return this;
     }

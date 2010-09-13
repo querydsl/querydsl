@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryMethod;
-import com.mysema.query.types.path.PComparable;
+import com.mysema.query.types.path.ComparablePath;
 import com.mysema.query.types.path.PathMetadataFactory;
 
 public class QueryExtensions3Test {
@@ -57,7 +57,7 @@ public class QueryExtensions3Test {
 
     @Test
     public void test_Point_has_right_type(){
-        assertEquals(PComparable.class, QQueryExtensions3Test_Point.class.getSuperclass());
-        assertEquals(PComparable.class, QQueryExtensions3Test_Entity.entity.point.getClass().getSuperclass());
+        assertEquals(ComparablePath.class, QQueryExtensions3Test_Point.class.getSuperclass());
+        assertEquals(ComparablePath.class, QQueryExtensions3Test_Entity.entity.point.getClass().getSuperclass());
     }
 }

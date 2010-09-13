@@ -24,7 +24,7 @@ import com.mysema.query.SimpleQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.expr.BooleanExpression;
 
 /**
  * LuceneQuery is a Querydsl query implementation for Lucene queries.
@@ -187,7 +187,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
     }
 
     @Override
-    public LuceneQuery where(EBoolean... e) {
+    public LuceneQuery where(BooleanExpression... e) {
         return queryMixin.where(e);
     }
 

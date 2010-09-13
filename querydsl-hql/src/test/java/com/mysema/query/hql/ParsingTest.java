@@ -29,9 +29,9 @@ import com.mysema.query.hql.domain.QFamily;
 import com.mysema.query.hql.domain.QFooDTO;
 import com.mysema.query.hql.domain.QItem;
 import com.mysema.query.hql.domain.QProduct;
-import com.mysema.query.types.expr.EComparable;
-import com.mysema.query.types.expr.EDate;
-import com.mysema.query.types.expr.ENumber;
+import com.mysema.query.types.expr.ComparableExpression;
+import com.mysema.query.types.expr.DateExpression;
+import com.mysema.query.types.expr.NumberExpression;
 
 /**
  * ParsingTest provides.
@@ -56,9 +56,9 @@ public class ParsingTest extends AbstractQueryTest{
     public void beforeAndAfter() throws RecognitionException,
             TokenStreamException {
 
-        EComparable<java.util.Date> ed = catalog.effectiveDate;
-        query().from(catalog).where(ed.gt(EDate.currentDate()), ed.goe(EDate.currentDate()),
-                ed.lt(EDate.currentDate()), ed.loe(EDate.currentDate())).select(catalog)
+        ComparableExpression<java.util.Date> ed = catalog.effectiveDate;
+        query().from(catalog).where(ed.gt(DateExpression.currentDate()), ed.goe(DateExpression.currentDate()),
+                ed.lt(DateExpression.currentDate()), ed.loe(DateExpression.currentDate())).select(catalog)
                 .parse();
     }
 
@@ -119,10 +119,10 @@ public class ParsingTest extends AbstractQueryTest{
                 .from(catalog).join(catalog.prices, price).where(
                         ord.paid.not().and(ord.customer.eq(cust)).and(
                                 price.product.eq(product)).and(
-                                catalog.effectiveDate.gt(EDate.currentDate())).and(
+                                catalog.effectiveDate.gt(DateExpression.currentDate())).and(
                                 catalog.effectiveDate.gt(all(
                                         sub().from(catalog).where(
-                                                catalog.effectiveDate.lt(EDate.currentDate()))
+                                                catalog.effectiveDate.lt(DateExpression.currentDate()))
                                              .list(catalog.effectiveDate)))))
                 .groupBy(ord).having(sum(price.amount).gt(0l)).orderBy(
                         sum(price.amount).desc());
@@ -358,7 +358,7 @@ public class ParsingTest extends AbstractQueryTest{
 
     @Test
     public void testCasts() throws Exception {
-        ENumber<Double> bw = cat.bodyWeight;
+        NumberExpression<Double> bw = cat.bodyWeight;
         query().from(cat).select(bw.byteValue(), bw.doubleValue(), bw.floatValue(),
                 bw.intValue(), bw.longValue(), bw.shortValue(),
                 bw.stringValue()).parse();

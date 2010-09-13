@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import net.jcip.annotations.Immutable;
 
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 
@@ -18,15 +18,15 @@ public class SQLMergeBatch {
     
     private final List<Path<?>> columns;
     
-    private final List<Expr<?>> values;
+    private final List<Expression<?>> values;
     
     @Nullable
     private final SubQueryExpression<?> subQuery;
     
-    public SQLMergeBatch(List<Path<?>> k, List<Path<?>> c, List<Expr<?>> v, @Nullable SubQueryExpression<?> sq) {
+    public SQLMergeBatch(List<Path<?>> k, List<Path<?>> c, List<Expression<?>> v, @Nullable SubQueryExpression<?> sq) {
         keys = new ArrayList<Path<?>>(k);
         columns = new ArrayList<Path<?>>(c);
-        values = new ArrayList<Expr<?>>(v);
+        values = new ArrayList<Expression<?>>(v);
         subQuery = sq;
     }
     
@@ -38,7 +38,7 @@ public class SQLMergeBatch {
         return columns;
     }
 
-    public List<Expr<?>> getValues() {
+    public List<Expression<?>> getValues() {
         return values;
     }
 
