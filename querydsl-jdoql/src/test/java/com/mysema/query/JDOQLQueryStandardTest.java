@@ -22,11 +22,11 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.commons.lang.Pair;
-import com.mysema.query.jdoql.AbstractJDOTest;
-import com.mysema.query.jdoql.testdomain.Product;
-import com.mysema.query.jdoql.testdomain.QProduct;
-import com.mysema.query.jdoql.testdomain.QStore;
-import com.mysema.query.jdoql.testdomain.Store;
+import com.mysema.query.jdo.AbstractJDOTest;
+import com.mysema.query.jdo.test.domain.Product;
+import com.mysema.query.jdo.test.domain.QProduct;
+import com.mysema.query.jdo.test.domain.QStore;
+import com.mysema.query.jdo.test.domain.Store;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
