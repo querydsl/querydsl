@@ -34,6 +34,7 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.custom.SimpleTemplate;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.ConstructorExpression;

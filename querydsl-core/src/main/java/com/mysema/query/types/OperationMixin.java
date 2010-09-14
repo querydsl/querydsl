@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,18 +15,20 @@ import java.util.List;
  *
  * @param <RT>
  */
-public final class OperationMixin<RT> extends MixinBase<RT> implements Operation<RT>{
-
+public class OperationMixin<RT> extends MixinBase<RT> implements Operation<RT>{
+    
     private static final long serialVersionUID = 4796432056083507588L;
 
     private final List<Expression<?>> args;
 
     private final Operator<? super RT> operator;
 
-    private final Expression<RT> self;
-
-    public OperationMixin(Operation<RT> self, Operator<? super RT> operator, List<Expression<?>> args){
-        this.self = self;
+    public OperationMixin(Class<? extends RT> type, Operator<? super RT> operator, Expression<?>... args){
+        this(type, operator, Arrays.asList(args));
+    }
+    
+    public OperationMixin(Class<? extends RT> type, Operator<? super RT> operator, List<Expression<?>> args){
+        super(type);
         this.operator = operator;
         this.args = Collections.unmodifiableList(args);
     }
@@ -48,21 +51,26 @@ public final class OperationMixin<RT> extends MixinBase<RT> implements Operation
     @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o){
-        if (o == this || o == self){
+        if (o == this){
             return true;
         }else if (o instanceof Operation){
             Operation op = (Operation)o;
             return op.getOperator().equals(operator)
                 && op.getArgs().equals(args)
-                && op.getType().equals(self.getType());
+                && op.getType().equals(type);
         }else{
             return false;
         }
     }
 
     @Override
-    public int hashCode(){
-        return self.getType().hashCode();
+    public <R, C> R accept(Visitor<R, C> v, C context) {
+        return v.visit(this, context);
     }
-
+    
+    @Override
+    public int hashCode(){
+        return type.hashCode();
+    }
+    
 }

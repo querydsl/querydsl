@@ -5,8 +5,8 @@ package com.mysema.query;
 
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.Table;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.PathMetadataFactory;
 import com.mysema.query.types.path.StringPath;
 
 @Table("GENERATED_KEYS")

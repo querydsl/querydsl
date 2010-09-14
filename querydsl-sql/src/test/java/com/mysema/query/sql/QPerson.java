@@ -7,10 +7,10 @@ package com.mysema.query.sql;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.EnumPath;
 import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.PathMetadataFactory;
 import com.mysema.query.types.path.StringPath;
 
 @Table("PERSON")

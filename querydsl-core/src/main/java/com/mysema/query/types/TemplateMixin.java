@@ -15,18 +15,16 @@ import java.util.List;
  *
  * @param <T>
  */
-public final class TemplateMixin<T> extends MixinBase<T> implements TemplateExpression<T> {
+public class TemplateMixin<T> extends MixinBase<T> implements TemplateExpression<T> {
 
     private static final long serialVersionUID = 6951623726800809083L;
-
-    private final Expression<T> self;
 
     private final List<Expression<?>> args;
 
     private final Template template;
 
-    public TemplateMixin(TemplateExpression<T> self, List<Expression<?>> args, Template template){
-        this.self = self;
+    public TemplateMixin(Class<? extends T> type, List<Expression<?>> args, Template template){
+        super(type);
         this.args = args;
         this.template = template;
     }
@@ -54,7 +52,7 @@ public final class TemplateMixin<T> extends MixinBase<T> implements TemplateExpr
        }else if (o instanceof TemplateExpression){
            TemplateExpression c = (TemplateExpression)o;
            return c.getTemplate().equals(template)
-               && c.getType().equals(self.getType());
+               && c.getType().equals(type);
        }else{
            return false;
        }
@@ -63,6 +61,11 @@ public final class TemplateMixin<T> extends MixinBase<T> implements TemplateExpr
     @Override
     public int hashCode(){
         return getType().hashCode();
+    }
+    
+    @Override
+    public <R, C> R accept(Visitor<R, C> v, C context) {
+        return v.visit(this, context);
     }
 
 }

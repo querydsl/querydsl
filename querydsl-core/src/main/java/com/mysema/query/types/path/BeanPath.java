@@ -16,6 +16,7 @@ import com.mysema.query.types.ExpressionException;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.PathMixin;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -52,7 +53,7 @@ public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
 
     public BeanPath(Class<? extends D> type, PathMetadata<?> metadata, @Nullable PathInits inits) {
         super(type);
-        this.pathMixin = new PathMixin<D>(this, metadata);
+        this.pathMixin = new PathMixin<D>(type, metadata);
         this.inits = inits;
     }
 

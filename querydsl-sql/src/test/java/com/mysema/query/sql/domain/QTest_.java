@@ -7,9 +7,9 @@ package com.mysema.query.sql.domain;
 
 import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.path.PathMetadataFactory;
 
 @Table("TEST")
 public class QTest_ extends EntityPathBase<Object> {

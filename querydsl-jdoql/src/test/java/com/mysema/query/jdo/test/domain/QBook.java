@@ -6,11 +6,11 @@
 package com.mysema.query.jdo.test.domain;
 
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.DateTimePath;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.path.PathMetadataFactory;
 
 /**
  * QBook is a Querydsl query type for Book

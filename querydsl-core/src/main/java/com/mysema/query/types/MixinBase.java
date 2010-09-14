@@ -1,5 +1,6 @@
 package com.mysema.query.types;
 
+import javax.annotation.Nullable;
 
 /**
  * @author tiwe
@@ -8,16 +9,27 @@ package com.mysema.query.types;
  */
 public abstract class MixinBase<T> implements Expression<T>{
 
-    private static final long serialVersionUID = 3368323881036494054L;
+    private static final long serialVersionUID = -8862014178653364345L;
 
-    @Override
-    public final <R, C> R accept(Visitor<R, C> v, C context) {
-        throw new UnsupportedOperationException();
+    protected final Class<? extends T> type;
+    
+    @Nullable
+    private volatile String toString;
+
+    public MixinBase(Class<? extends T> type){
+        this.type = type;
     }
-
-    @Override
+    
     public final Class<? extends T> getType() {
-        throw new UnsupportedOperationException();
+        return type;
+    }
+    
+    @Override
+    public final String toString() {
+        if (toString == null) {            
+            toString = accept(ToStringVisitor.DEFAULT, Templates.DEFAULT);
+        }
+        return toString;
     }
     
 }

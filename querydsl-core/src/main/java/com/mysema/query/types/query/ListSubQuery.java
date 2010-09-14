@@ -37,7 +37,7 @@ public final class ListSubQuery<A> extends CollectionExpressionBase<List<A>,A> i
     public ListSubQuery(Class<A> elementType, QueryMetadata md) {
         super((Class)List.class);
         this.elementType = elementType;
-        this.subQueryMixin = new SubQueryMixin<List<A>>(this,md);
+        this.subQueryMixin = new SubQueryMixin<List<A>>((Class)List.class, md);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.mysema.query.jdo.test.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;

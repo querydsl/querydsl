@@ -5,9 +5,9 @@
  */
 package com.mysema.query.search;
 
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.path.PathMetadataFactory;
 
 public class QUser extends EntityPathBase<User> {
 

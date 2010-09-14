@@ -9,6 +9,7 @@ import java.lang.reflect.AnnotatedElement;
 
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.PathMixin;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.DateExpression;
@@ -31,7 +32,7 @@ public class DatePath<D extends Comparable> extends DateExpression<D> implements
 
     public DatePath(Class<? extends D> type, PathMetadata<?> metadata) {
         super(type);
-        this.pathMixin = new PathMixin<D>(this, metadata);
+        this.pathMixin = new PathMixin<D>(type, metadata);
     }
 
     public DatePath(Class<? extends D> type, String var) {

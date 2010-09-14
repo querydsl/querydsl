@@ -37,7 +37,7 @@ public class CollectionPath<E> extends CollectionExpressionBase<Collection<E>,E>
         super((Class)Collection.class);
         this.elementType = (Class<E>) Assert.notNull(type,"type");
         this.entityName = Assert.notNull(entityName,"entityName");
-        this.pathMixin = new PathMixin<Collection<E>>(this, metadata);
+        this.pathMixin = new PathMixin<Collection<E>>((Class)Collection.class, metadata);
     }
 
     @Override

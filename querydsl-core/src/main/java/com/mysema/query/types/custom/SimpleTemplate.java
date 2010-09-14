@@ -39,7 +39,7 @@ public class SimpleTemplate<T> extends SimpleExpression<T> implements TemplateEx
 
     public SimpleTemplate(Class<? extends T> type, Template template, List<Expression<?>> args) {
         super(type);
-        customMixin = new TemplateMixin<T>(this, args, template);
+        customMixin = new TemplateMixin<T>(type, args, template);
     }
 
     @Override

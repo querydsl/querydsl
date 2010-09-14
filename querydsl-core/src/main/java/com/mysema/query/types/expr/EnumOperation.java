@@ -46,7 +46,7 @@ public class EnumOperation<D extends Enum<D>> extends EnumExpression<D> implemen
 
     EnumOperation(Class<? extends D> type, Operator<? super D> op, List<Expression<?>> args) {
         super(type);
-        this.opMixin = new OperationMixin<D>(this, op, args);
+        this.opMixin = new OperationMixin<D>(type, op, args);
     }
 
     @Override

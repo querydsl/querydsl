@@ -9,6 +9,7 @@ import java.lang.reflect.AnnotatedElement;
 
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.PathMixin;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -31,7 +32,7 @@ public class BooleanPath extends BooleanExpression implements Path<Boolean> {
     }
 
     public BooleanPath(PathMetadata<?> metadata) {
-        this.pathMixin = new PathMixin<Boolean>(this, metadata);
+        this.pathMixin = new PathMixin<Boolean>(Boolean.class, metadata);
     }
 
     public BooleanPath(String var) {

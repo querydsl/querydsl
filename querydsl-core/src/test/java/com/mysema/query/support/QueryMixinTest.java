@@ -14,8 +14,8 @@ import org.junit.Test;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.domain.QCommonPersistence;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.path.PathMetadataFactory;
 
 public class QueryMixinTest {
 

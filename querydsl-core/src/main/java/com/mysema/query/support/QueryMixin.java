@@ -15,13 +15,13 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.ExpressionUtils;
 import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.query.types.path.MapPath;
 
@@ -66,7 +66,7 @@ public class QueryMixin<T>{
     }
 
     private <P extends Path<?>> P assertRoot(P p){
-        if (p.getRoot() != p){
+        if (!p.getRoot().equals(p)){
             throw new IllegalArgumentException(p + " is not a root path");
         }
         return p;

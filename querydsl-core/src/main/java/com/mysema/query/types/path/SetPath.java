@@ -37,7 +37,7 @@ public class SetPath<E> extends CollectionExpressionBase<Set<E>,E> implements Pa
         super((Class)Set.class);
         this.elementType = (Class<E>) Assert.notNull(type,"type");
         this.entityName = Assert.notNull(entityName,"entityName");
-        this.pathMixin = new PathMixin<Set<E>>(this, metadata);
+        this.pathMixin = new PathMixin<Set<E>>((Class)Set.class, metadata);
     }
 
     @Override

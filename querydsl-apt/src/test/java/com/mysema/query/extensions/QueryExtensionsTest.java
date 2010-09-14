@@ -18,7 +18,7 @@ import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEmbeddable;
 import com.mysema.query.annotations.QueryMethod;
-import com.mysema.query.types.path.PathMetadataFactory;
+import com.mysema.query.types.PathMetadataFactory;
 
 public class QueryExtensionsTest {
 

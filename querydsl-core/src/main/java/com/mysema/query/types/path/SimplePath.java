@@ -9,6 +9,7 @@ import java.lang.reflect.AnnotatedElement;
 
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.PathMixin;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.SimpleExpression;
@@ -32,7 +33,7 @@ public class SimplePath<D> extends SimpleExpression<D> implements Path<D> {
 
     public SimplePath(Class<? extends D> type, PathMetadata<?> metadata) {
         super(type);
-        this.pathMixin = new PathMixin<D>(this, metadata);
+        this.pathMixin = new PathMixin<D>(type, metadata);
     }
 
     public SimplePath(Class<? extends D> type, String var) {

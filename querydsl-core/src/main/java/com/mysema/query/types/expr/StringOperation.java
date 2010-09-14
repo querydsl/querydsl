@@ -35,7 +35,7 @@ public class StringOperation extends StringExpression implements Operation<Strin
     }
 
     StringOperation(Operator<? super String> op, List<Expression<?>> args) {
-        this.opMixin = new OperationMixin<String>(this, op, args);
+        this.opMixin = new OperationMixin<String>(String.class, op, args);
     }
 
     @Override

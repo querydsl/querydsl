@@ -12,7 +12,7 @@ import org.junit.Test;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryExtensions;
 import com.mysema.query.annotations.QueryMethod;
-import com.mysema.query.types.path.PathMetadataFactory;
+import com.mysema.query.types.PathMetadataFactory;
 
 public class QueryExtensions2Test {
 

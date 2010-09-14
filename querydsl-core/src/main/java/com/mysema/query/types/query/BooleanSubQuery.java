@@ -23,7 +23,7 @@ public final class BooleanSubQuery extends BooleanExpression implements SubQuery
     private final SubQueryMixin<Boolean> subQueryMixin;
 
     public BooleanSubQuery(QueryMetadata md) {
-        subQueryMixin = new SubQueryMixin<Boolean>(this, md);
+        subQueryMixin = new SubQueryMixin<Boolean>(Boolean.class, md);
     }
 
     @Override

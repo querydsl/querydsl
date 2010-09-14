@@ -24,7 +24,7 @@ public final class StringSubQuery extends StringExpression implements SubQueryEx
     private final SubQueryMixin<String> subQueryMixin;
 
     public StringSubQuery(QueryMetadata md) {
-        subQueryMixin = new SubQueryMixin<String>(this,md);
+        subQueryMixin = new SubQueryMixin<String>(String.class, md);
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.PathMixin;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.ArrayExpression;
@@ -43,7 +44,7 @@ public class ArrayPath<E> extends SimpleExpression<E[]> implements Path<E[]>, Ar
     @SuppressWarnings("unchecked")
     public ArrayPath(Class<? super E[]> type, PathMetadata<?> metadata) {
         super((Class)type);
-        this.pathMixin = new PathMixin<E[]>(this, metadata);
+        this.pathMixin = new PathMixin<E[]>((Class)type, metadata);
         this.componentType = (Class<E>) Assert.notNull(type.getComponentType(),"componentType");
     }
 
@@ -79,7 +80,6 @@ public class ArrayPath<E> extends SimpleExpression<E[]> implements Path<E[]>, Ar
         return new SimplePath<E>(componentType, md);
     }
 
-    //    @Override
     public Class<E> getElementType() {
         return componentType;
     }

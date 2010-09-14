@@ -13,13 +13,13 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang.ObjectUtils;
 
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.ExpressionUtils;
 
 /**
  * BooleanBuilder is a cascading builder for {@link BooleanExpression} expressions.
@@ -75,7 +75,7 @@ public final class BooleanBuilder extends BooleanExpression implements Cloneable
     }
 
     public BooleanBuilder andNot(Predicate right) {
-        return and(ExpressionUtils.not(right));
+        return and(right.not());
     }
 
     @Override
@@ -135,7 +135,7 @@ public final class BooleanBuilder extends BooleanExpression implements Cloneable
     @Override
     public BooleanBuilder not(){
         if (expr != null){
-            expr = ExpressionUtils.not(expr);
+            expr = expr.not();
         }
         return this;
     }
@@ -166,7 +166,7 @@ public final class BooleanBuilder extends BooleanExpression implements Cloneable
         return this;
     }
 
-    public BooleanBuilder orNot(BooleanExpression right){
+    public BooleanBuilder orNot(Predicate right){
         return or(right.not());
     }
     

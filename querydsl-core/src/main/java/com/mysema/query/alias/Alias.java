@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.*;
 
 /**

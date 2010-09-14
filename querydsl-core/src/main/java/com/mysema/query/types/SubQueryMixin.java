@@ -26,16 +26,14 @@ public class SubQueryMixin<T> extends MixinBase<T> implements SubQueryExpression
 
     private final QueryMetadata metadata;
 
-    private final Expression<T> self;
-
-    public SubQueryMixin(SubQueryExpression<T> self, QueryMetadata metadata){
-        this.self = self;
+    public SubQueryMixin(Class<? extends T> type, QueryMetadata metadata){
+        super(type);
         this.metadata = metadata;
     }
 
     @SuppressWarnings("unchecked")
     public boolean equals(Object o){
-        if (o == this || o == self){
+        if (o == this){
             return true;
         }else if (o instanceof SubQueryExpression){
             SubQueryExpression<T> s = (SubQueryExpression<T>)o;
@@ -48,7 +46,7 @@ public class SubQueryMixin<T> extends MixinBase<T> implements SubQueryExpression
     @Override
     public BooleanExpression exists() {
         if (exists == null){
-            exists = BooleanOperation.create(Ops.EXISTS, self);
+            exists = BooleanOperation.create(Ops.EXISTS, this);
         }
         return exists;
     }
@@ -59,12 +57,17 @@ public class SubQueryMixin<T> extends MixinBase<T> implements SubQueryExpression
     }
 
     public int hashCode(){
-        return self.getType().hashCode();
+        return type.hashCode();
     }
 
     @Override
     public BooleanExpression notExists() {
         return exists().not();
+    }
+    
+    @Override
+    public <R, C> R accept(Visitor<R, C> v, C context) {
+        return v.visit(this, context);
     }
 
 }

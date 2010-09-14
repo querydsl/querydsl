@@ -36,7 +36,7 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
     }
 
     BooleanOperation(Operator<? super Boolean> op, List<Expression<?>> args) {
-        opMixin = new OperationMixin<Boolean>(this, op, args);
+        opMixin = new OperationMixin<Boolean>(Boolean.class, op, args);
     }
 
     @Override

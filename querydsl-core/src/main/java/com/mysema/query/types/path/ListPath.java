@@ -19,6 +19,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.PathMixin;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.CollectionExpressionBase;
@@ -52,7 +53,7 @@ public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionExpres
         super((Class)List.class);
         this.elementType = (Class<E>) Assert.notNull(elementType,"type");
         this.queryType = queryType;
-        this.pathMixin = new PathMixin<List<E>>(this, metadata);
+        this.pathMixin = new PathMixin<List<E>>((Class)List.class, metadata);
     }
 
     @Override

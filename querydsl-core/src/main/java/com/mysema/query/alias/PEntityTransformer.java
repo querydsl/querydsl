@@ -8,8 +8,8 @@ package com.mysema.query.alias;
 import org.apache.commons.collections15.Transformer;
 
 import com.mysema.commons.lang.Pair;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.PathMetadataFactory;
 
 /**
  * @author tiwe

@@ -19,7 +19,7 @@ import com.mysema.util.ReflectionUtils;
  *
  * @param <T>
  */
-public final class PathMixin<T> extends MixinBase<T> implements Path<T> {
+public class PathMixin<T> extends MixinBase<T> implements Path<T> {
 
     private static final long serialVersionUID = -2498447742798348162L;
 
@@ -27,20 +27,18 @@ public final class PathMixin<T> extends MixinBase<T> implements Path<T> {
 
     private final Path<?> root;
 
-    private final Expression<T> self;
-
     @Nullable
     private AnnotatedElement annotatedElement;
 
-    public PathMixin(Path<T> self, PathMetadata<?> metadata){
-        this.self = self;
+    public PathMixin(Class<? extends T> type, PathMetadata<?> metadata){
+        super(type);
         this.metadata = metadata;
-        this.root = metadata.getRoot() != null ? metadata.getRoot() : self;
+        this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
     @SuppressWarnings("unchecked")
     public boolean equals(Object o) {
-        if (o == this || o == self){
+        if (o == this){
             return true;
         }else if (o instanceof Path){
             return ((Path<?>) o).getMetadata().equals(metadata);
@@ -70,13 +68,18 @@ public final class PathMixin<T> extends MixinBase<T> implements Path<T> {
             if (metadata.getPathType() == PathType.PROPERTY){
                 Class<?> beanClass = metadata.getParent().getType();
                 String propertyName = metadata.getExpression().toString();
-                annotatedElement = ReflectionUtils.getAnnotatedElement(beanClass, propertyName, self.getType());
+                annotatedElement = ReflectionUtils.getAnnotatedElement(beanClass, propertyName, type);
 
             }else{
-                annotatedElement = self.getType();
+                annotatedElement = type;
             }
         }
         return annotatedElement;
+    }
+
+    @Override
+    public <R, C> R accept(Visitor<R, C> v, C context) {
+        return v.visit(this, context);
     }
 
 }

@@ -9,9 +9,9 @@ import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.path.PathMetadataFactory;
 
 
 @Table("SURVEY")

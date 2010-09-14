@@ -27,7 +27,7 @@ public final class ComparableSubQuery<A extends Comparable<?>> extends Comparabl
 
     public ComparableSubQuery(Class<A> type, QueryMetadata md) {
         super(type);
-        subQueryMixin = new SubQueryMixin<A>(this,md);
+        subQueryMixin = new SubQueryMixin<A>(type, md);
     }
 
     @Override

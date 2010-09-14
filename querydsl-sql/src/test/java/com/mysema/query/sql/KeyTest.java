@@ -7,8 +7,8 @@ package com.mysema.query.sql;
 
 import org.junit.Test;
 
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.PathMetadataFactory;
 
 @SuppressWarnings("serial")
 public class KeyTest {

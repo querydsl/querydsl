@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.SimpleExpression;
 
 /**

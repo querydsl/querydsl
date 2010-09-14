@@ -39,7 +39,7 @@ public class NumberTemplate<T extends Number & Comparable<?>> extends NumberExpr
 
     public NumberTemplate(Class<T> type, Template template, List<Expression<?>> args) {
         super(type);
-        customMixin = new TemplateMixin<T>(this, args, template);
+        customMixin = new TemplateMixin<T>(type, args, template);
     }
 
     @Override

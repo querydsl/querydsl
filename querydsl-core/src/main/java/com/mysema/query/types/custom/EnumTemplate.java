@@ -39,7 +39,7 @@ public class EnumTemplate<T extends Enum<T>> extends EnumExpression<T> implement
 
     public EnumTemplate(Class<T> type, Template template, List<Expression<?>> args) {
         super(type);
-        customMixin = new TemplateMixin<T>(this, args, template);
+        customMixin = new TemplateMixin<T>(type, args, template);
     }
 
     @Override

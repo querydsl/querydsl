@@ -11,13 +11,13 @@ import java.util.HashSet;
 
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.*;
 import com.mysema.query.types.path.DatePath;
 import com.mysema.query.types.path.DateTimePath;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.TimePath;
-import com.mysema.query.types.path.PathMetadataFactory;
 
 /**
  * @author tiwe

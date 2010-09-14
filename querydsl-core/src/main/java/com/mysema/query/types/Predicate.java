@@ -5,5 +5,10 @@ package com.mysema.query.types;
  *
  */
 public interface Predicate extends Expression<Boolean>{
+    
+    /**
+     * @return
+     */
+    Predicate not();
 
 }

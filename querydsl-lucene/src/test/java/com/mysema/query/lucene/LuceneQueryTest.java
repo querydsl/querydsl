@@ -38,10 +38,10 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.path.PathMetadataFactory;
 
 /**
  * Tests for LuceneQuery

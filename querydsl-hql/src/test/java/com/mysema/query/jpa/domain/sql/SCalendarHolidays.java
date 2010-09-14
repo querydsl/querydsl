@@ -1,6 +1,6 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 import java.util.Date;
 

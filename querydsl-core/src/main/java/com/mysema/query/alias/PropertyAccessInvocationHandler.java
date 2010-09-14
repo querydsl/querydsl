@@ -30,6 +30,7 @@ import org.apache.commons.lang.StringUtils;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.CollectionExpression;
 import com.mysema.query.types.expr.MapExpression;
 import com.mysema.query.types.path.*;

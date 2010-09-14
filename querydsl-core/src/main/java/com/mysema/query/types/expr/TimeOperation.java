@@ -46,7 +46,7 @@ public class TimeOperation<D extends Comparable<?>> extends TimeExpression<D> im
 
     TimeOperation(Class<D> type, Operator<? super D> op, List<Expression<?>> args) {
         super(type);
-        this.opMixin = new OperationMixin<D>(this, op, args);
+        this.opMixin = new OperationMixin<D>(type, op, args);
     }
 
     @Override

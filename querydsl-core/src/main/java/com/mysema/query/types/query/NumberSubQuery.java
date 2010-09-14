@@ -28,7 +28,7 @@ public final class NumberSubQuery<A extends Number & Comparable<?>> extends Numb
 
     public NumberSubQuery(Class<A> type, QueryMetadata md) {
         super(type);
-        subQueryMixin = new SubQueryMixin<A>(this,md);
+        subQueryMixin = new SubQueryMixin<A>(type, md);
     }
 
     @Override

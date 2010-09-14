@@ -3,18 +3,17 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types.path;
+package com.mysema.query.types;
 
 import javax.annotation.Nonnegative;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.PathType;
 import com.mysema.query.types.expr.NumberConstant;
 import com.mysema.query.types.expr.SimpleConstant;
 import com.mysema.query.types.expr.StringConstant;
+import com.mysema.query.types.path.ArrayPath;
+import com.mysema.query.types.path.ListPath;
+import com.mysema.query.types.path.MapPath;
 
 /**
  * @author tiwe

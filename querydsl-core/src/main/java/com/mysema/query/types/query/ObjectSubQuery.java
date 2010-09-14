@@ -27,7 +27,7 @@ public final class ObjectSubQuery<A> extends SimpleExpression<A> implements SubQ
 
     public ObjectSubQuery(Class<A> type, QueryMetadata md) {
         super(type);
-        subQueryMixin = new SubQueryMixin<A>(this,md);
+        subQueryMixin = new SubQueryMixin<A>(type, md);
     }
 
     @Override

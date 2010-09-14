@@ -47,7 +47,7 @@ public class DateOperation<D extends Comparable<?>> extends
 
     DateOperation(Class<D> type, Operator<? super D> op, List<Expression<?>> args) {
         super(type);
-        this.opMixin = new OperationMixin<D>(this, op, args);
+        this.opMixin = new OperationMixin<D>(type, op, args);
     }
 
     @Override
