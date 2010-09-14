@@ -17,12 +17,11 @@ public abstract class AbstractTest {
         return new JDOQLSubQuery();
     }
 
-    protected String serialize(SubQueryExpression expr) {
+    protected String serialize(SubQueryExpression<?> expr) {
         Expression<?> source = expr.getMetadata().getJoins().get(0).getTarget();
         JDOQLSerializer serializer = new JDOQLSerializer(JDOQLTemplates.DEFAULT, source);
         serializer.serialize(expr.getMetadata(), false, false);
         String rv = serializer.toString().replace('\n', ' ');
-//        System.out.println(rv);
         return rv;
     }
 

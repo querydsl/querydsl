@@ -166,7 +166,7 @@
         <configuration>
           <jdbcDriver>org.hsqldb.jdbcDriver</jdbcDriver>
           <jdbcUrl>jdbc:hsqldb:target/jdo</jdbcUrl>
-          <packageName>com.mysema.query.jdoql.test.domain.sql</packageName>
+          <packageName>com.mysema.query.jdo.test.domain.sql</packageName>
 		  <userName>sa</userName>
           <targetFolder>src/test/java</targetFolder>
           <namePrefix>S</namePrefix>

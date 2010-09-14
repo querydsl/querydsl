@@ -27,9 +27,9 @@ public class SubqueriesTest extends AbstractTest{
     @Test
     public void test1(){
         assertEquals(
-          "SELECT this FROM com.mysema.query.jdoql.models.company.Department " +
+          "SELECT this FROM com.mysema.query.jdo.models.company.Department " +
           "WHERE this.employees.size() == " +
-          "(SELECT max(d.employees.size()) FROM com.mysema.query.jdoql.models.company.Department d)",
+          "(SELECT max(d.employees.size()) FROM com.mysema.query.jdo.models.company.Department d)",
 
           serialize(query().from(department).where(department.employees.size().eq(
                query().from(d).unique(d.employees.size().max())
@@ -42,7 +42,7 @@ public class SubqueriesTest extends AbstractTest{
     @Test
     public void test2(){
         assertEquals(
-          "SELECT this FROM com.mysema.query.jdoql.models.company.Employee " +
+          "SELECT this FROM com.mysema.query.jdo.models.company.Employee " +
           "WHERE this.weeklyhours > " +
           "(SELECT avg(e.weeklyhours) FROM this.department.employees e)",
 
@@ -59,7 +59,7 @@ public class SubqueriesTest extends AbstractTest{
     @Test
     public void test3(){
         assertEquals(
-          "SELECT this FROM com.mysema.query.jdoql.models.company.Employee " +
+          "SELECT this FROM com.mysema.query.jdo.models.company.Employee " +
           "WHERE this.weeklyhours > " +
           "(SELECT avg(e.weeklyhours) FROM this.department.employees e WHERE e.manager == this.manager)",
 
@@ -73,9 +73,9 @@ public class SubqueriesTest extends AbstractTest{
     @Test
     public void test4(){
         assertEquals(
-          "SELECT this FROM com.mysema.query.jdoql.models.company.Employee " +
+          "SELECT this FROM com.mysema.query.jdo.models.company.Employee " +
           "WHERE this.weeklyhours > " +
-          "(SELECT avg(e.weeklyhours) FROM com.mysema.query.jdoql.models.company.Employee e)",
+          "(SELECT avg(e.weeklyhours) FROM com.mysema.query.jdo.models.company.Employee e)",
 
           serialize(query().from(employee).where(employee.weeklyhours.gt(
                query().from(e).unique(e.weeklyhours.avg())
@@ -89,9 +89,9 @@ public class SubqueriesTest extends AbstractTest{
     @Test
     public void test5(){
         assertEquals(
-          "SELECT this FROM com.mysema.query.jdoql.models.company.Employee " +
+          "SELECT this FROM com.mysema.query.jdo.models.company.Employee " +
           "WHERE this.weeklyhours == e.weeklyhours && this.firstName == a1 " +
-          "VARIABLES com.mysema.query.jdoql.models.company.Employee e " +
+          "VARIABLES com.mysema.query.jdo.models.company.Employee e " +
           "PARAMETERS java.lang.String a1",
 
           serialize(query().from(employee, e)

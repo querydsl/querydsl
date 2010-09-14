@@ -22,7 +22,7 @@ public class QuerySerializationTest extends AbstractTest{
     public void selectFromWhereOrder(){
         assertEquals(
             "SELECT UNIQUE this.name " +
-            "FROM com.mysema.query.jdoql.testdomain.Product " +
+            "FROM com.mysema.query.jdo.test.domain.Product " +
             "WHERE this.name == a1 " +
             "PARAMETERS java.lang.String a1 " +
             "ORDER BY this.name ASC",
@@ -37,7 +37,7 @@ public class QuerySerializationTest extends AbstractTest{
     public void selectFromWhereGroupBy(){
         assertEquals(
             "SELECT this.name " +
-            "FROM com.mysema.query.jdoql.testdomain.Product " +
+            "FROM com.mysema.query.jdo.test.domain.Product " +
             "WHERE this.name.startsWith(a1) || this.name.endsWith(a2) " +
             "PARAMETERS java.lang.String a1, java.lang.String a2 " +
             "GROUP BY this.price",
@@ -52,9 +52,9 @@ public class QuerySerializationTest extends AbstractTest{
     public void selectFrom2Sources(){
         assertEquals(
             "SELECT this.name " +
-            "FROM com.mysema.query.jdoql.testdomain.Product " +
+            "FROM com.mysema.query.jdo.test.domain.Product " +
             "WHERE this.name == other.name " +
-            "VARIABLES com.mysema.query.jdoql.testdomain.Product other",
+            "VARIABLES com.mysema.query.jdo.test.domain.Product other",
 
             serialize(query().from(product, other)
               .where(product.name.eq(other.name))
@@ -65,9 +65,9 @@ public class QuerySerializationTest extends AbstractTest{
     public void withSubQuery(){
         assertEquals(
             "SELECT this.price " +
-            "FROM com.mysema.query.jdoql.testdomain.Product " +
+            "FROM com.mysema.query.jdo.test.domain.Product " +
             "WHERE this.price < " +
-            "(SELECT avg(other.price) FROM com.mysema.query.jdoql.testdomain.Product other)",
+            "(SELECT avg(other.price) FROM com.mysema.query.jdo.test.domain.Product other)",
 
             serialize(query().from(product)
               .where(product.price.lt(query().from(other).unique(other.price.avg())))
@@ -79,8 +79,8 @@ public class QuerySerializationTest extends AbstractTest{
         // FIXME : how to model this ?!?
         assertEquals(
             "SELECT this.name " +
-            "FROM com.mysema.query.jdoql.testdomain.Product " +
-            "WHERE (SELECT other.price FROM com.mysema.query.jdoql.testdomain.Product other WHERE other.name == a1).contains(this.price) " +
+            "FROM com.mysema.query.jdo.test.domain.Product " +
+            "WHERE (SELECT other.price FROM com.mysema.query.jdo.test.domain.Product other WHERE other.name == a1).contains(this.price) " +
             "PARAMETERS java.lang.String a1",
 
             serialize(query().from(product)
@@ -92,8 +92,8 @@ public class QuerySerializationTest extends AbstractTest{
     public void  instanceofQuery(){
         assertEquals(
             "SELECT this " +
-            "FROM com.mysema.query.jdoql.testdomain.Product " +
-            "WHERE this instanceof com.mysema.query.jdoql.testdomain.Book",
+            "FROM com.mysema.query.jdo.test.domain.Product " +
+            "WHERE this instanceof com.mysema.query.jdo.test.domain.Book",
 
             serialize(query().from(product)
               .where(product.instanceOf(Book.class))

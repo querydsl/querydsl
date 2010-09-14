@@ -29,7 +29,7 @@ public class ExprSerializationTest {
     @Test
     public void instanceOf() {
         assertEquals(
-                "product instanceof com.mysema.query.jdoql.testdomain.Book",
+                "product instanceof com.mysema.query.jdo.test.domain.Book",
                 serialize(product.instanceOf(Book.class)));
     }
 
