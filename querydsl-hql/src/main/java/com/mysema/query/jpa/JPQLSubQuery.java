@@ -13,7 +13,7 @@ import com.mysema.query.QueryMetadata;
  * @author tiwe
  *
  */
-public final class JPQLSubQuery extends AbstractJQLSubQuery<JPQLSubQuery> implements JPQLCommonQuery<JPQLSubQuery>{
+public final class JPQLSubQuery extends AbstractJPQLSubQuery<JPQLSubQuery> implements JPQLCommonQuery<JPQLSubQuery>{
 
     public JPQLSubQuery() {
         super();

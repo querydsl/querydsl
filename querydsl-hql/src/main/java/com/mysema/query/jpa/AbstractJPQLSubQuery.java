@@ -22,16 +22,16 @@ import com.mysema.query.types.path.MapPath;
  *
  * @param <Q>
  */
-public class AbstractJQLSubQuery<Q extends AbstractJQLSubQuery<Q>> extends DetachableQuery<Q>{
+public class AbstractJPQLSubQuery<Q extends AbstractJPQLSubQuery<Q>> extends DetachableQuery<Q>{
 
     private final JPQLQueryMixin<Q> queryMixin;
 
-    public AbstractJQLSubQuery() {
+    public AbstractJPQLSubQuery() {
         this(new DefaultQueryMetadata());
     }
 
     @SuppressWarnings("unchecked")
-    public AbstractJQLSubQuery(QueryMetadata metadata) {
+    public AbstractJPQLSubQuery(QueryMetadata metadata) {
         super(new JPQLQueryMixin<Q>(metadata));
         super.queryMixin.setSelf((Q)this);
         this.queryMixin = (JPQLQueryMixin<Q>) super.queryMixin;
