@@ -21,10 +21,6 @@ public enum PathType implements Operator<Path<?>> {
      */
     ARRAYVALUE_CONSTANT,
     /**
-     *
-     */
-    DELEGATE,
-    /**
      * Indexed list access (list.get(index))
      */
     LISTVALUE,

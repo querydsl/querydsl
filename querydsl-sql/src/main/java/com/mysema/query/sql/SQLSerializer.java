@@ -484,11 +484,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 return null;
             }
         }
-        if (path.getMetadata().getPathType() == PathType.DELEGATE){
-            handle(path.getMetadata().getExpression());
-            return null;
-            
-        }else if (path.getMetadata().getParent() != null){
+        if (path.getMetadata().getParent() != null){
             visit(path.getMetadata().getParent(), context);
             append(".");
         }

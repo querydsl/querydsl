@@ -53,7 +53,6 @@ public class Projections {
     @SuppressWarnings("unchecked")
     public <A extends Comparable> Collection<Expression<?>> date(DateExpression<A> expr, DateExpression<A> other, A knownValue){
         HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
-        rv.add(new DatePath<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
         rv.add(expr.dayOfMonth());
         rv.add(expr.month());
         rv.add(expr.year());
@@ -70,7 +69,6 @@ public class Projections {
     @SuppressWarnings("unchecked")
     public <A extends Comparable> Collection<Expression<?>> dateTime(DateTimeExpression<A> expr, DateTimeExpression<A> other, A knownValue){
         HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
-        rv.add(new DateTimePath<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
         rv.add(expr.dayOfMonth());
         rv.add(expr.month());
         rv.add(expr.year());
@@ -115,7 +113,6 @@ public class Projections {
     @SuppressWarnings("unchecked")
     private <A extends Number & Comparable<A>> Collection<NumberExpression<?>> numeric(NumberExpression<A> expr, NumberExpression<?> other, boolean forFilter){
         HashSet<NumberExpression<?>> rv = new HashSet<NumberExpression<?>>();
-        rv.add(new NumberPath<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
         rv.add(expr.abs());
         rv.add(expr.add(other));
         rv.add(expr.divide(other));
@@ -172,7 +169,6 @@ public class Projections {
     @SuppressWarnings("unchecked")
     public Collection<SimpleExpression<String>> stringProjections(StringExpression expr, StringExpression other){
         HashSet<SimpleExpression<String>> rv = new HashSet<SimpleExpression<String>>();
-        rv.add(new StringPath(PathMetadataFactory.forDelegate(expr)));
 
         rv.add(expr.append("Hello"));
         rv.add(expr.append(other));
@@ -210,7 +206,6 @@ public class Projections {
     @SuppressWarnings("unchecked")
     public <A extends Comparable> Collection<Expression<?>> time(TimeExpression<A> expr, TimeExpression<A> other, A knownValue){
         HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
-        rv.add(new TimePath<A>(expr.getType(), PathMetadataFactory.forDelegate(expr)));
         rv.add(expr.hour());
         rv.add(expr.minute());
         rv.add(expr.second());

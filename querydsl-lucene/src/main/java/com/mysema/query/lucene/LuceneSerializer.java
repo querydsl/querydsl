@@ -90,7 +90,7 @@ public class LuceneSerializer {
             return le(operation, metadata);
         } else if (op == Ops.GOE || op == Ops.AOE) {
             return ge(operation, metadata);
-        } else if (op == PathType.DELEGATE) {
+        } else if (op == Ops.DELEGATE){
             return toQuery(operation.getArg(0), metadata);
         }
         throw new UnsupportedOperationException("Illegal operation " + operation);

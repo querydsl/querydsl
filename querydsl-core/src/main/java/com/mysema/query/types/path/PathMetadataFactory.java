@@ -30,10 +30,6 @@ public final class PathMetadataFactory {
         return new PathMetadata<Integer>(parent, NumberConstant.create(index), PathType.ARRAYVALUE_CONSTANT);
     }
 
-    public static <T> PathMetadata<T> forDelegate(Expression<T> target){
-        return new PathMetadata<T>(null, target, PathType.DELEGATE);
-    }
-
     public static PathMetadata<Integer> forListAccess(ListPath<?, ?> parent, Expression<Integer> index) {
         return new PathMetadata<Integer>(parent, index, PathType.LISTVALUE);
     }

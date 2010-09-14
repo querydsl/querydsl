@@ -121,7 +121,8 @@ public class CoverageTest {
             Ops.ARRAY_SIZE,
             Ops.MOD,
             Ops.STRING_CAST,
-
+            Ops.DELEGATE,
+            
             Ops.XOR,
             Ops.XNOR,
 
