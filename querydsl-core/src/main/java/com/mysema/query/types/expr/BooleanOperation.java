@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
+import com.mysema.query.types.OperationMixin;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Visitor;

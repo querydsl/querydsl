@@ -3,17 +3,12 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types.path;
+package com.mysema.query.types;
 
 import java.lang.reflect.AnnotatedElement;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.PathType;
-import com.mysema.query.types.expr.MixinBase;
 import com.mysema.util.ReflectionUtils;
 
 /**

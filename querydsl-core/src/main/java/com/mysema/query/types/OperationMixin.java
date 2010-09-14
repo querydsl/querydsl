@@ -3,14 +3,11 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types.expr;
+package com.mysema.query.types;
 
 import java.util.Collections;
 import java.util.List;
 
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Operator;
 
 /**
  * @author tiwe

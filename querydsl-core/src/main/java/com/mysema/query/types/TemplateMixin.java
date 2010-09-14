@@ -3,23 +3,19 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types.custom;
+package com.mysema.query.types;
 
 import java.util.List;
 
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Template;
-import com.mysema.query.types.TemplateExpression;
-import com.mysema.query.types.expr.MixinBase;
 
 /**
- * Mixin implementation of the Custom interface
+ * Mixin implementation of the TemplateExpression interface
  *
  * @author tiwe
  *
  * @param <T>
  */
-public final class CustomMixin<T> extends MixinBase<T> implements TemplateExpression<T> {
+public final class TemplateMixin<T> extends MixinBase<T> implements TemplateExpression<T> {
 
     private static final long serialVersionUID = 6951623726800809083L;
 
@@ -29,7 +25,7 @@ public final class CustomMixin<T> extends MixinBase<T> implements TemplateExpres
 
     private final Template template;
 
-    public CustomMixin(TemplateExpression<T> self, List<Expression<?>> args, Template template){
+    public TemplateMixin(TemplateExpression<T> self, List<Expression<?>> args, Template template){
         this.self = self;
         this.args = args;
         this.template = template;

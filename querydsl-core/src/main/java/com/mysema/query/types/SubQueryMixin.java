@@ -3,17 +3,13 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types.query;
+package com.mysema.query.types;
 
 import javax.annotation.Nullable;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.BooleanOperation;
-import com.mysema.query.types.expr.MixinBase;
 
 /**
  * Mixin implementation of the SubQuery interface

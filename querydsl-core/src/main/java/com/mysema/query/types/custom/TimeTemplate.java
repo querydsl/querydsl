@@ -12,6 +12,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateFactory;
+import com.mysema.query.types.TemplateMixin;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.TimeExpression;
 
@@ -36,7 +37,7 @@ public class TimeTemplate<T extends Comparable<?>> extends TimeExpression<T> imp
 
     public TimeTemplate(Class<T> type, Template template, List<Expression<?>> args) {
         super(type);
-        customMixin = new CustomMixin<T>(this, args, template);
+        customMixin = new TemplateMixin<T>(this, args, template);
     }
 
     @Override

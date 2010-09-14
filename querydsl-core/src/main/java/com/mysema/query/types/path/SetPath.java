@@ -11,6 +11,7 @@ import java.util.Set;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMixin;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.CollectionExpressionBase;
 

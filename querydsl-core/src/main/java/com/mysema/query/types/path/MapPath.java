@@ -16,6 +16,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMixin;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.MapExpressionBase;
 import com.mysema.query.types.expr.SimpleExpression;

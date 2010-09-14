@@ -1,7 +1,5 @@
-package com.mysema.query.types.expr;
+package com.mysema.query.types;
 
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Visitor;
 
 /**
  * @author tiwe
