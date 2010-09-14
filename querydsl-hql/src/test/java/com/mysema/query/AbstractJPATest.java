@@ -14,11 +14,11 @@ import javax.persistence.EntityManager;
 
 import org.junit.Test;
 
-import com.mysema.query.hql.HQLTemplates;
-import com.mysema.query.hql.JPQLTemplates;
-import com.mysema.query.hql.domain.Cat;
 import com.mysema.query.hql.domain.QCat;
-import com.mysema.query.hql.jpa.JPAQuery;
+import com.mysema.query.jpa.HQLTemplates;
+import com.mysema.query.jpa.JPQLTemplates;
+import com.mysema.query.jpa.domain.Cat;
+import com.mysema.query.jpa.impl.JPAQuery;
 
 /**
  * @author tiwe

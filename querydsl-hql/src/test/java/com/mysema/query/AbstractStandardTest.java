@@ -23,10 +23,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.commons.lang.Pair;
-import com.mysema.query.hql.HQLQuery;
-import com.mysema.query.hql.domain.Cat;
-import com.mysema.query.hql.domain.DomesticCat;
 import com.mysema.query.hql.domain.QCat;
+import com.mysema.query.jpa.HQLQuery;
+import com.mysema.query.jpa.domain.Cat;
+import com.mysema.query.jpa.domain.DomesticCat;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;

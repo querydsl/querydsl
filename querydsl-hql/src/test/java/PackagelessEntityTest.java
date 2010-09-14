@@ -2,7 +2,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.mysema.query.hql.HQLSubQuery;
+import com.mysema.query.jpa.HQLSubQuery;
 import com.mysema.query.types.path.PathBuilder;
 
 

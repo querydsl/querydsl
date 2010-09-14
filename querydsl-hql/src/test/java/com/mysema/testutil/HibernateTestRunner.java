@@ -16,7 +16,7 @@ import org.junit.internal.runners.InitializationError;
 import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.notification.RunNotifier;
 
-import com.mysema.query.hql.domain.Domain;
+import com.mysema.query.jpa.domain.Domain;
 
 /**
  * HibernateTestRunner provides.

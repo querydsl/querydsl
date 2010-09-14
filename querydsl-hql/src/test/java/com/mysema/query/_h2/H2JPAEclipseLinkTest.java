@@ -10,8 +10,8 @@ import org.junit.runner.RunWith;
 
 import com.mysema.query.AbstractJPATest;
 import com.mysema.query.Target;
-import com.mysema.query.hql.EclipseLinkTemplates;
-import com.mysema.query.hql.JPQLTemplates;
+import com.mysema.query.jpa.EclipseLinkTemplates;
+import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.testutil.JPAConfig;
 import com.mysema.testutil.JPATestRunner;
 
