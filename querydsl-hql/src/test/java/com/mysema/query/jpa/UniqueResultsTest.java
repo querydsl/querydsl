@@ -5,15 +5,14 @@
  */
 package com.mysema.query.jpa;
 
-import static com.mysema.query.hql.domain.QCat.cat;
 import static org.junit.Assert.assertEquals;
 
 import org.hibernate.Session;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.domain.Cat;
+import static com.mysema.query.jpa.domain.QCat.cat;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.testutil.HibernateConfig;
 import com.mysema.testutil.HibernateTestRunner;

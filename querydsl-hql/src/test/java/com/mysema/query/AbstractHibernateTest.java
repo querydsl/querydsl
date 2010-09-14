@@ -18,10 +18,10 @@ import org.hibernate.Session;
 import org.junit.Test;
 
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.jpa.domain.Cat;
+import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.query.jpa.hibernate.ScrollableResultsIterator;
 

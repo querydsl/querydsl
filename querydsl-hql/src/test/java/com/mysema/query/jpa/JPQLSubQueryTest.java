@@ -1,11 +1,10 @@
 package com.mysema.query.jpa;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.hql.domain.QCat;
-import com.mysema.query.jpa.JPQLSubQuery;
+import com.mysema.query.jpa.domain.QCat;
 
 public class JPQLSubQueryTest {
     

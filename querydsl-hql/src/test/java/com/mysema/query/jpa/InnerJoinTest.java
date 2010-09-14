@@ -12,9 +12,6 @@ import java.util.List;
 import org.junit.Test;
 
 import com.mysema.query.alias.Alias;
-import com.mysema.query.jpa.JPQLQuery;
-import com.mysema.query.jpa.JPQLSubQuery;
-import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.query.types.path.StringPath;
 

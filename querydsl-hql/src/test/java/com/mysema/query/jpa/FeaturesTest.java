@@ -15,8 +15,8 @@ import java.math.BigInteger;
 
 import org.junit.Test;
 
-import com.mysema.query.hql.domain.QAccount;
-import com.mysema.query.hql.domain.QInheritedProperties;
+import com.mysema.query.jpa.domain.QAccount;
+import com.mysema.query.jpa.domain.QInheritedProperties;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.path.NumberPath;
 

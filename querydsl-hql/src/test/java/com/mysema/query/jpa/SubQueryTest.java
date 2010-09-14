@@ -9,8 +9,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.jpa.JPQLSubQuery;
-
 public class SubQueryTest extends AbstractQueryTest{
 
     @Test(expected=IllegalArgumentException.class)

@@ -9,8 +9,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.jpa.JPQLSerializer;
-import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.types.path.NumberPath;
 
 public class JPQLSerializerTest {

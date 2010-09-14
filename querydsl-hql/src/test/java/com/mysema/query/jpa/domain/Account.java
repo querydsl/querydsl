@@ -18,7 +18,6 @@ import javax.persistence.Transient;
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryInit;
-import com.mysema.query.hql.domain.QAccount;
 
 /**
  * The Class Account.

@@ -5,10 +5,10 @@
  */
 package com.mysema.query;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,10 +23,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.commons.lang.Pair;
-import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.DomesticCat;
+import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
@@ -34,8 +34,8 @@ import com.mysema.query.types.expr.ArrayConstructorExpression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ConstructorExpression;
 import com.mysema.query.types.expr.ListExpression;
-import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.expr.QTuple;
+import com.mysema.query.types.expr.StringExpression;
 
 /**
  * @author tiwe

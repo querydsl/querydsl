@@ -18,17 +18,7 @@ import org.junit.Test;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
-import com.mysema.query.hql.domain.QFamily;
-import com.mysema.query.hql.domain.QFooDTO;
-import com.mysema.query.hql.domain.QItem;
-import com.mysema.query.hql.domain.QProduct;
-import com.mysema.query.jpa.domain.Cat;
-import com.mysema.query.jpa.domain.Catalog;
-import com.mysema.query.jpa.domain.Color;
-import com.mysema.query.jpa.domain.Customer;
-import com.mysema.query.jpa.domain.DomesticCat;
-import com.mysema.query.jpa.domain.Payment;
-import com.mysema.query.jpa.domain.Product;
+import com.mysema.query.jpa.domain.*;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.NumberExpression;

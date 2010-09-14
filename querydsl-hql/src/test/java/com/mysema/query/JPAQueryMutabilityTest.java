@@ -13,7 +13,7 @@ import javax.persistence.EntityManager;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.mysema.query.hql.domain.QCat;
+import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.testutil.JPAConfig;
 import com.mysema.testutil.JPATestRunner;

@@ -16,7 +16,6 @@ import org.junit.runner.RunWith;
 
 import com.mysema.query.QueryMutability;
 import com.mysema.query.jpa.domain.sql.SAnimal;
-import com.mysema.query.jpa.hibernate.sql.HibernateSQLQuery;
 import com.mysema.query.sql.DerbyTemplates;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.testutil.HibernateConfig;

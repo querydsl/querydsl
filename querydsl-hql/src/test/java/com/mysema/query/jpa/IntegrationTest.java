@@ -20,8 +20,8 @@ import org.junit.runner.RunWith;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
-import com.mysema.query.hql.domain.QCat;
 import com.mysema.query.jpa.domain.Cat;
+import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.hibernate.HibernateDeleteClause;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.query.jpa.hibernate.HibernateUpdateClause;

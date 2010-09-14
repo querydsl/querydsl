@@ -7,9 +7,6 @@ package com.mysema.query.jpa;
 
 import static org.junit.Assert.assertEquals;
 
-import com.mysema.query.jpa.JPQLSerializer;
-import com.mysema.query.jpa.JPQLSubQuery;
-import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.types.Expression;
 
 public abstract class AbstractQueryTest implements Constants{

@@ -9,13 +9,13 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.hql.domain.QAnimal;
-import com.mysema.query.hql.domain.QCat;
-import com.mysema.query.hql.domain.QInheritedProperties;
-import com.mysema.query.hql.domain.QSuperclass;
 import com.mysema.query.jpa.domain.Animal;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.InheritedProperties;
+import com.mysema.query.jpa.domain.QAnimal;
+import com.mysema.query.jpa.domain.QCat;
+import com.mysema.query.jpa.domain.QInheritedProperties;
+import com.mysema.query.jpa.domain.QSuperclass;
 
 public class TypeCastTest {
 

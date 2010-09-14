@@ -7,7 +7,7 @@ package com.mysema.query.jpa;
 
 import org.junit.Test;
 
-import com.mysema.query.hql.domain.QCat;
+import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.types.path.NumberPath;
 
 public class MathTest extends AbstractQueryTest{
