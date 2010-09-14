@@ -10,8 +10,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mysema.query.jdo.models.fitness.QGym;
 import com.mysema.query.jdo.models.fitness.Wardrobe;
-import com.mysema.query.jdoql.models.fitness.QGym;
 
 /**
  * Tests for JDOQL queries of collections and maps.

@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.jdo.JDOQLSubQuery;
 import com.mysema.query.jdo.test.domain.QProduct;
 
 public class JDOQLSubQueryTest {

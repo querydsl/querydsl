@@ -16,10 +16,6 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 
-import com.mysema.query.jdo.JDOQLQuery;
-import com.mysema.query.jdo.JDOQLQueryImpl;
-import com.mysema.query.jdo.JDOQLSubQuery;
-import com.mysema.query.jdo.JDOQLTemplates;
 import com.mysema.query.jdo.dml.JDOQLDeleteClause;
 import com.mysema.query.jdo.test.domain.Product;
 import com.mysema.query.jdo.test.domain.Store;

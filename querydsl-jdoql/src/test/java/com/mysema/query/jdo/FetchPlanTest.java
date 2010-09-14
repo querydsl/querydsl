@@ -15,8 +15,6 @@ import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.mysema.query.jdo.AbstractJDOQLQuery;
-import com.mysema.query.jdo.JDOQLQuery;
 import com.mysema.query.jdo.test.domain.Product;
 import com.mysema.query.jdo.test.domain.QProduct;
 import com.mysema.query.jdo.test.domain.QStore;

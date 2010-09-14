@@ -8,7 +8,6 @@ import java.lang.reflect.InvocationTargetException;
 import org.junit.Test;
 
 import com.mysema.query.QueryMutability;
-import com.mysema.query.jdo.JDOQLQueryImpl;
 import com.mysema.query.jdo.test.domain.QProduct;
 
 public class QueryMutabilityTest extends AbstractJDOTest{

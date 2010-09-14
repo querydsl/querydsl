@@ -7,8 +7,8 @@ package com.mysema.query.jdo.test.domain;
 
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.CollectionPath;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.MapPath;
 import com.mysema.query.types.path.StringPath;
 

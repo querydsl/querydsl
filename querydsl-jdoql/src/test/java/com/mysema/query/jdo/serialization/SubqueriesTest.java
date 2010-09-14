@@ -9,8 +9,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.jdoql.models.company.QDepartment;
-import com.mysema.query.jdoql.models.company.QEmployee;
+import com.mysema.query.jdo.models.company.QDepartment;
+import com.mysema.query.jdo.models.company.QEmployee;
 
 public class SubqueriesTest extends AbstractTest{
 
