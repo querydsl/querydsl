@@ -1,19 +1,22 @@
 package com.mysema.query.hql.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.*;
+import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 
-import com.mysema.query.types.*;
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.sql.*;
-import java.util.*;
+import com.mysema.query.sql.ForeignKey;
+import com.mysema.query.sql.PrimaryKey;
+import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.RelationalPathBase;
+import com.mysema.query.sql.Table;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.NumberPath;
 
 
 /**
  * SNationality is a Querydsl query type for SNationality
  */
 @Table("NATIONALITY")
-public class SNationality extends BeanPath<SNationality> implements RelationalPath<SNationality> {
+public class SNationality extends RelationalPathBase<SNationality> implements RelationalPath<SNationality> {
 
     private static final long serialVersionUID = 1320834259;
 
@@ -23,9 +26,7 @@ public class SNationality extends BeanPath<SNationality> implements RelationalPa
 
     public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    private Expression[] _all;
-
-    public final PrimaryKey<SNationality> sql100819184436080 = new PrimaryKey<SNationality>(this, id);
+    public final PrimaryKey<SNationality> sql100819184436080 = createPrimaryKey(id);
 
     public final ForeignKey<SCalendar> fk68f2659ca61b9464 = new ForeignKey<SCalendar>(this, calendarId, "ID");
 
@@ -42,29 +43,6 @@ public class SNationality extends BeanPath<SNationality> implements RelationalPa
     public SNationality(PathMetadata<?> metadata) {
         super(SNationality.class, metadata);
     }
-
-    public Expression[] all() {
-        if (_all == null) {
-            _all = new Expression[]{calendarId, id};
-        }
-        return _all;
-    }
-
-    public PrimaryKey<SNationality> getPrimaryKey() {
-        return sql100819184436080;
-    }
-
-    public List<ForeignKey<?>> getForeignKeys() {
-        return Arrays.<ForeignKey<?>>asList(fk68f2659ca61b9464);
-    }
-
-    public List<ForeignKey<?>> getInverseForeignKeys() {
-        return Arrays.<ForeignKey<?>>asList(_fk8e488775e9d94490);
-    }
-
-    @Override
-    public List<Expression<?>> getColumns() {
-        return Arrays.<Expression<?>>asList(all());
-    }
+    
 }
 

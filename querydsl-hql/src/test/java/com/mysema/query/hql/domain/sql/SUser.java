@@ -1,19 +1,23 @@
 package com.mysema.query.hql.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.*;
+import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 
-import com.mysema.query.types.*;
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.sql.*;
-import java.util.*;
+import com.mysema.query.sql.ForeignKey;
+import com.mysema.query.sql.PrimaryKey;
+import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.RelationalPathBase;
+import com.mysema.query.sql.Table;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
 
 
 /**
  * SUser is a Querydsl query type for SUser
  */
 @Table("USER_")
-public class SUser extends BeanPath<SUser> implements RelationalPath<SUser> {
+public class SUser extends RelationalPathBase<SUser> implements RelationalPath<SUser> {
 
     private static final long serialVersionUID = 501289108;
 
@@ -29,11 +33,9 @@ public class SUser extends BeanPath<SUser> implements RelationalPath<SUser> {
 
     public final StringPath username = createString("USERNAME");
 
-    private Expression[] _all;
+    public final PrimaryKey<SUser> sql100819184439940 = createPrimaryKey(id);
 
-    public final PrimaryKey<SUser> sql100819184439940 = new PrimaryKey<SUser>(this, id);
-
-    public final ForeignKey<SCompany> fk4d495f4555fdbf0 = new ForeignKey<SCompany>(this, companyId, "ID");
+    public final ForeignKey<SCompany> fk4d495f4555fdbf0 = this.<SCompany>createForeignKey(companyId, "ID");
 
     public SUser(String variable) {
         super(SUser.class, forVariable(variable));
@@ -47,28 +49,5 @@ public class SUser extends BeanPath<SUser> implements RelationalPath<SUser> {
         super(SUser.class, metadata);
     }
 
-    public Expression[] all() {
-        if (_all == null) {
-            _all = new Expression[]{companyId, firstname, id, lastname, username};
-        }
-        return _all;
-    }
-
-    public PrimaryKey<SUser> getPrimaryKey() {
-        return sql100819184439940;
-    }
-
-    public List<ForeignKey<?>> getForeignKeys() {
-        return Arrays.<ForeignKey<?>>asList(fk4d495f4555fdbf0);
-    }
-
-    public List<ForeignKey<?>> getInverseForeignKeys() {
-        return Collections.<ForeignKey<?>>emptyList();
-    }
-
-    @Override
-    public List<Expression<?>> getColumns() {
-        return Arrays.<Expression<?>>asList(all());
-    }
 }
 

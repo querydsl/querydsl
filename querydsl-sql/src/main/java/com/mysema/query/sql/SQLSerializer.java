@@ -22,7 +22,6 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.types.*;
 import com.mysema.query.types.custom.SimpleTemplate;
-import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.SimpleConstant;
 
 /**

@@ -51,7 +51,7 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
     public JDOQLUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++){
             if (values.get(i) != null){
-                metadata.addProjection(ExpressionUtils.eq(((Expression)paths.get(i)), values.get(i)));
+                metadata.addProjection(ExpressionUtils.eqConst(((Expression)paths.get(i)), values.get(i)));
             }else{
                 metadata.addProjection(ExpressionUtils.eq(((Expression)paths.get(i)), new NullExpr(paths.get(i).getType())));
             }
@@ -62,7 +62,7 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
     @Override
     public <T> JDOQLUpdateClause set(Path<T> path, T value) {
         if (value != null){
-            metadata.addProjection(ExpressionUtils.eq(path, value));
+            metadata.addProjection(ExpressionUtils.eqConst(path, value));
         }else{
             metadata.addProjection(ExpressionUtils.eq(path, new NullExpr<T>(path.getType())));
         }

@@ -98,7 +98,7 @@ public class MetaDataSerializerTest extends AbstractJDBCTest{
                     paths.append(property.getEscapedName());
                 }
                 // adds accessors for all fields
-                writer.publicFinal(new SimpleType(Types.LIST, new ClassType(Expression.class, (Type)null)), "exprs", "Arrays.<Expr<?>>asList(" + paths.toString() + ")");
+                writer.publicFinal(new SimpleType(Types.LIST, new ClassType(Expression.class, (Type)null)), "exprs", "Arrays.<Expression<?>>asList(" + paths.toString() + ")");
                 writer.publicFinal(new SimpleType(Types.LIST, new ClassType(Path.class, (Type)null)), "paths", "Arrays.<Path<?>>asList(" + paths.toString() + ")");
             }
 

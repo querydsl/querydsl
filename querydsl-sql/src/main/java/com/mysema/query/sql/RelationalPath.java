@@ -11,7 +11,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.Expression;
+import com.mysema.query.types.Path;
 
 /**
  * RelationalPath extends EntityPath to provide access to relational metadata
@@ -26,7 +26,7 @@ public interface RelationalPath<T> extends EntityPath<T>{
      * 
      * @return
      */
-    List<Expression<?>> getColumns();
+    List<Path<?>> getColumns();
 
     /**
      * Get the primary key for this relation or null if none exists

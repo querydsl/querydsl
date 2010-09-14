@@ -2,18 +2,11 @@ package com.mysema.query.jdoql.test.domain.sql;
 
 import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
-import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.Table;
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.SimpleTemplate;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.DatePath;
 import com.mysema.query.types.path.DateTimePath;
@@ -26,7 +19,7 @@ import com.mysema.query.types.path.TimePath;
  * SProduct is a Querydsl query type for SProduct
  */
 @Table(value="PRODUCT")
-public class SProduct extends BeanPath<SProduct> implements RelationalPath<SProduct>{
+public class SProduct extends RelationalPathBase<SProduct> {
 
     private static final long serialVersionUID = -590374403;
 
@@ -48,7 +41,7 @@ public class SProduct extends BeanPath<SProduct> implements RelationalPath<SProd
 
     public final TimePath<java.sql.Time> timefield = createTime("TIMEFIELD", java.sql.Time.class);
 
-    public final PrimaryKey<SProduct> sysIdx47 = new PrimaryKey<SProduct>(this, productId);
+    public final PrimaryKey<SProduct> sysIdx47 = createPrimaryKey(productId);
 
     public final ForeignKey<SStoreProducts> _storeProductsFk2 = new ForeignKey<SStoreProducts>(this, productId, "PRODUCT_ID_EID");
 
@@ -67,30 +60,6 @@ public class SProduct extends BeanPath<SProduct> implements RelationalPath<SProd
     public SProduct(PathMetadata<?> metadata) {
         super(SProduct.class, metadata);
     }
-
-    public Expression<Object[]> all() {
-        return SimpleTemplate.create(Object[].class, "{0}.*", this);
-    }
-
-    @Override
-    public Collection<ForeignKey<?>> getForeignKeys() {
-        return Collections.emptyList();
-    }
-
-    @Override
-    public Collection<ForeignKey<?>> getInverseForeignKeys() {
-        return Arrays.<ForeignKey<?>>asList(_storeProductsFk2, _bookFk1, _storeProductsbynameFk2);
-    }
-
-    @Override
-    public PrimaryKey<SProduct> getPrimaryKey() {
-        return sysIdx47;
-    }
-
-    @Override
-    public List<Expression<?>> getColumns() {
-        return Arrays.<Expression<?>>asList(amount, datefield, description, name, price, productId, publicationdate, timefield);
-    }
-
+    
 }
 

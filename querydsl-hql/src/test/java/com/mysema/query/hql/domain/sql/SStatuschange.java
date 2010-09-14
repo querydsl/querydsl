@@ -1,19 +1,25 @@
 package com.mysema.query.hql.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.*;
+import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 
-import com.mysema.query.types.*;
-import com.mysema.query.types.path.*;
+import java.util.Date;
 
-import com.mysema.query.sql.*;
-import java.util.*;
+import com.mysema.query.sql.ForeignKey;
+import com.mysema.query.sql.PrimaryKey;
+import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.RelationalPathBase;
+import com.mysema.query.sql.Table;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.NumberPath;
 
 
 /**
  * SStatuschange is a Querydsl query type for SStatuschange
  */
 @Table("STATUSCHANGE")
-public class SStatuschange extends BeanPath<SStatuschange> implements RelationalPath<SStatuschange> {
+public class SStatuschange extends RelationalPathBase<SStatuschange> implements RelationalPath<SStatuschange> {
 
     private static final long serialVersionUID = 1953690091;
 
@@ -23,9 +29,7 @@ public class SStatuschange extends BeanPath<SStatuschange> implements Relational
 
     public final DateTimePath<Date> timestamp = createDateTime("TIMESTAMP", Date.class);
 
-    private Expression[] _all;
-
-    public final PrimaryKey<SStatuschange> sql100819184439140 = new PrimaryKey<SStatuschange>(this, id);
+    public final PrimaryKey<SStatuschange> sql100819184439140 = createPrimaryKey(id);
 
     public final ForeignKey<SItemStatuschange> _fkc2c9ebee2f721e35 = new ForeignKey<SItemStatuschange>(this, id, "STATUSCHANGES_ID");
 
@@ -40,29 +44,6 @@ public class SStatuschange extends BeanPath<SStatuschange> implements Relational
     public SStatuschange(PathMetadata<?> metadata) {
         super(SStatuschange.class, metadata);
     }
-
-    public Expression[] all() {
-        if (_all == null) {
-            _all = new Expression[]{id, timestamp};
-        }
-        return _all;
-    }
-
-    public PrimaryKey<SStatuschange> getPrimaryKey() {
-        return sql100819184439140;
-    }
-
-    public List<ForeignKey<?>> getForeignKeys() {
-        return Collections.<ForeignKey<?>>emptyList();
-    }
-
-    public List<ForeignKey<?>> getInverseForeignKeys() {
-        return Arrays.<ForeignKey<?>>asList(_fkc2c9ebee2f721e35);
-    }
-
-    @Override
-    public List<Expression<?>> getColumns() {
-        return Arrays.<Expression<?>>asList(all());
-    }
+    
 }
 

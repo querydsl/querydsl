@@ -1,19 +1,22 @@
 package com.mysema.query.hql.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.*;
+import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 
-import com.mysema.query.types.*;
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.sql.*;
-import java.util.*;
+import com.mysema.query.sql.ForeignKey;
+import com.mysema.query.sql.PrimaryKey;
+import com.mysema.query.sql.RelationalPathBase;
+import com.mysema.query.sql.Table;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
 
 
 /**
  * SItem is a Querydsl query type for SItem
  */
 @Table("ITEM")
-public class SItem extends BeanPath<SItem> implements RelationalPath<SItem> {
+public class SItem extends RelationalPathBase<SItem> {
 
     private static final long serialVersionUID = 500932572;
 
@@ -31,9 +34,7 @@ public class SItem extends BeanPath<SItem> implements RelationalPath<SItem> {
 
     public final NumberPath<Long> statusId = createNumber("STATUS_ID", Long.class);
 
-    private Expression[] _all;
-
-    public final PrimaryKey<SItem> sql100819184434350 = new PrimaryKey<SItem>(this, id);
+    public final PrimaryKey<SItem> sql100819184434350 = createPrimaryKey(id);
 
     public final ForeignKey<SItem> fk22ef33a549aeb0 = new ForeignKey<SItem>(this, productId, "ID");
 
@@ -59,30 +60,6 @@ public class SItem extends BeanPath<SItem> implements RelationalPath<SItem> {
 
     public SItem(PathMetadata<?> metadata) {
         super(SItem.class, metadata);
-    }
-
-    public Expression[] all() {
-        if (_all == null) {
-            _all = new Expression[]{currentstatusId, dtype, id, name, productId, statusId};
-        }
-        return _all;
-    }
-
-    public PrimaryKey<SItem> getPrimaryKey() {
-        return sql100819184434350;
-    }
-
-    public List<ForeignKey<?>> getForeignKeys() {
-        return Arrays.<ForeignKey<?>>asList(fk22ef33a549aeb0, fk22ef33eedeba64, fk22ef33bb4e150b);
-    }
-
-    public List<ForeignKey<?>> getInverseForeignKeys() {
-        return Arrays.<ForeignKey<?>>asList(_fk3e07a1891bee4d44, _fkc2c9ebee9e7e0323, _fk22ef33a549aeb0, _fk49cc129a549aeb0);
-    }
-    
-    @Override
-    public List<Expression<?>> getColumns() {
-        return Arrays.<Expression<?>>asList(all());
     }
 
 }

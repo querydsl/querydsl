@@ -1,19 +1,21 @@
 package com.mysema.query.hql.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.*;
+import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 
-import com.mysema.query.types.*;
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.sql.*;
-import java.util.*;
+import com.mysema.query.sql.ForeignKey;
+import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.RelationalPathBase;
+import com.mysema.query.sql.Table;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.NumberPath;
 
 
 /**
  * SPlayerScores is a Querydsl query type for SPlayerScores
  */
 @Table("PLAYER_SCORES")
-public class SPlayerScores extends BeanPath<SPlayerScores> implements RelationalPath<SPlayerScores> {
+public class SPlayerScores extends RelationalPathBase<SPlayerScores> implements RelationalPath<SPlayerScores> {
 
     private static final long serialVersionUID = -855115221;
 
@@ -22,8 +24,6 @@ public class SPlayerScores extends BeanPath<SPlayerScores> implements Relational
     public final NumberPath<Integer> element = createNumber("ELEMENT", Integer.class);
 
     public final NumberPath<Long> playerId = createNumber("PLAYER_ID", Long.class);
-
-    private Expression[] _all;
 
     public final ForeignKey<SPlayer> fkd5dc571ff51f2004 = new ForeignKey<SPlayer>(this, playerId, "ID");
 
@@ -37,30 +37,6 @@ public class SPlayerScores extends BeanPath<SPlayerScores> implements Relational
 
     public SPlayerScores(PathMetadata<?> metadata) {
         super(SPlayerScores.class, metadata);
-    }
-
-    public Expression[] all() {
-        if (_all == null) {
-            _all = new Expression[]{element, playerId};
-        }
-        return _all;
-    }
-
-    public PrimaryKey<SPlayerScores> getPrimaryKey() {
-        return null;
-    }
-
-    public List<ForeignKey<?>> getForeignKeys() {
-        return Arrays.<ForeignKey<?>>asList(fkd5dc571ff51f2004);
-    }
-
-    public List<ForeignKey<?>> getInverseForeignKeys() {
-        return Collections.<ForeignKey<?>>emptyList();
-    }
-    
-    @Override
-    public List<Expression<?>> getColumns() {
-        return Arrays.<Expression<?>>asList(all());
     }
 
 }

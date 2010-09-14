@@ -1,19 +1,22 @@
 package com.mysema.query.hql.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.*;
+import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 
-import com.mysema.query.types.*;
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.sql.*;
-import java.util.*;
+import com.mysema.query.sql.ForeignKey;
+import com.mysema.query.sql.PrimaryKey;
+import com.mysema.query.sql.RelationalPathBase;
+import com.mysema.query.sql.Table;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
 
 
 /**
  * SCompany is a Querydsl query type for SCompany
  */
 @Table("COMPANY")
-public class SCompany extends BeanPath<SCompany> implements RelationalPath<SCompany> {
+public class SCompany extends RelationalPathBase<SCompany> {
 
     private static final long serialVersionUID = 1400239892;
 
@@ -25,9 +28,7 @@ public class SCompany extends BeanPath<SCompany> implements RelationalPath<SComp
 
     public final StringPath name = createString("NAME");
 
-    private Expression[] _all;
-
-    public final PrimaryKey<SCompany> sql100819184432220 = new PrimaryKey<SCompany>(this, id);
+    public final PrimaryKey<SCompany> sql100819184432220 = createPrimaryKey(id);
 
     public final ForeignKey<SEmployee> fk9bdfd45d8e79ac65 = new ForeignKey<SEmployee>(this, ceoId, "ID");
 
@@ -49,29 +50,6 @@ public class SCompany extends BeanPath<SCompany> implements RelationalPath<SComp
         super(SCompany.class, metadata);
     }
 
-    public Expression[] all() {
-        if (_all == null) {
-            _all = new Expression[]{ceoId, id, name};
-        }
-        return _all;
-    }
-
-    public PrimaryKey<SCompany> getPrimaryKey() {
-        return sql100819184432220;
-    }
-
-    public List<ForeignKey<?>> getForeignKeys() {
-        return Arrays.<ForeignKey<?>>asList(fk9bdfd45d8e79ac65);
-    }
-
-    public List<ForeignKey<?>> getInverseForeignKeys() {
-        return Arrays.<ForeignKey<?>>asList(_fka9601f72555fdbf0, _fk4d495f4555fdbf0, _fk4afd4ace555fdbf0);
-    }
-    
-    @Override
-    public List<Expression<?>> getColumns() {
-        return Arrays.<Expression<?>>asList(all());
-    }
 
 }
 

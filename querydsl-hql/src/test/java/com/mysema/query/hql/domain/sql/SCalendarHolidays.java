@@ -1,19 +1,25 @@
 package com.mysema.query.hql.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.*;
+import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 
-import com.mysema.query.types.*;
-import com.mysema.query.types.path.*;
+import java.util.Date;
 
-import com.mysema.query.sql.*;
-import java.util.*;
+import com.mysema.query.sql.ForeignKey;
+import com.mysema.query.sql.PrimaryKey;
+import com.mysema.query.sql.RelationalPathBase;
+import com.mysema.query.sql.Table;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
 
 
 /**
  * SCalendarHolidays is a Querydsl query type for SCalendarHolidays
  */
 @Table("CALENDAR_HOLIDAYS")
-public class SCalendarHolidays extends BeanPath<SCalendarHolidays> implements RelationalPath<SCalendarHolidays> {
+public class SCalendarHolidays extends RelationalPathBase<SCalendarHolidays> {
 
     private static final long serialVersionUID = 1051026370;
 
@@ -25,9 +31,7 @@ public class SCalendarHolidays extends BeanPath<SCalendarHolidays> implements Re
 
     public final StringPath holidaysKey = createString("HOLIDAYS_KEY");
 
-    private Expression[] _all;
-
-    public final PrimaryKey<SCalendarHolidays> sql100819184431240 = new PrimaryKey<SCalendarHolidays>(this, calendarId, holidaysKey);
+    public final PrimaryKey<SCalendarHolidays> sql100819184431240 = createPrimaryKey(calendarId, holidaysKey);
 
     public final ForeignKey<SCalendar> fk31ce1edca61b9464 = new ForeignKey<SCalendar>(this, calendarId, "ID");
 
@@ -43,28 +47,5 @@ public class SCalendarHolidays extends BeanPath<SCalendarHolidays> implements Re
         super(SCalendarHolidays.class, metadata);
     }
 
-    public Expression[] all() {
-        if (_all == null) {
-            _all = new Expression[]{calendarId, element, holidaysKey};
-        }
-        return _all;
-    }
-
-    public PrimaryKey<SCalendarHolidays> getPrimaryKey() {
-        return sql100819184431240;
-    }
-
-    public List<ForeignKey<?>> getForeignKeys() {
-        return Arrays.<ForeignKey<?>>asList(fk31ce1edca61b9464);
-    }
-
-    public List<ForeignKey<?>> getInverseForeignKeys() {
-        return Collections.<ForeignKey<?>>emptyList();
-    }
-
-    @Override
-    public List<Expression<?>> getColumns() {
-        return Arrays.<Expression<?>>asList(all());
-    }
 }
 

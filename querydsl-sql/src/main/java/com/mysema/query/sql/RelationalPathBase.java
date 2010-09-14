@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
@@ -24,9 +23,9 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     private PrimaryKey<T> primaryKey;
     
     @Nullable
-    private Expression<?>[] all;
+    private Path<?>[] all;
     
-    private final List<Expression<?>> columns = new ArrayList<Expression<?>>();
+    private final List<Path<?>> columns = new ArrayList<Path<?>>();
     
     private final List<ForeignKey<?>> foreignKeys = new ArrayList<ForeignKey<?>>();
     
@@ -69,9 +68,9 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
         return foreignKey;
     }
     
-    public Expression<?>[] all() {
+    public Path<?>[] all() {
         if (all == null || all.length != columns.size()){
-            all = new Expression[columns.size()];
+            all = new Path[columns.size()];
             columns.toArray(all);
         }
         return all;
@@ -84,7 +83,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     }
     
     @Override
-    public List<Expression<?>> getColumns() {
+    public List<Path<?>> getColumns() {
         return columns;
     }
 

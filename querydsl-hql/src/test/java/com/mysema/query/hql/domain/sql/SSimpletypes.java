@@ -1,19 +1,27 @@
 package com.mysema.query.hql.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.*;
+import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 
-import com.mysema.query.types.*;
-import com.mysema.query.types.path.*;
+import java.util.Date;
 
-import com.mysema.query.sql.*;
-import java.util.*;
+import com.mysema.query.sql.PrimaryKey;
+import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.RelationalPathBase;
+import com.mysema.query.sql.Table;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.path.TimePath;
 
 
 /**
  * SSimpletypes is a Querydsl query type for SSimpletypes
  */
 @Table("SIMPLETYPES")
-public class SSimpletypes extends BeanPath<SSimpletypes> implements RelationalPath<SSimpletypes> {
+public class SSimpletypes extends RelationalPathBase<SSimpletypes> implements RelationalPath<SSimpletypes> {
 
     private static final long serialVersionUID = -171311842;
 
@@ -57,9 +65,7 @@ public class SSimpletypes extends BeanPath<SSimpletypes> implements RelationalPa
 
     public final DateTimePath<Date> timestamp = createDateTime("TIMESTAMP", Date.class);
 
-    private Expression[] _all;
-
-    public final PrimaryKey<SSimpletypes> sql100819184438610 = new PrimaryKey<SSimpletypes>(this, id);
+    public final PrimaryKey<SSimpletypes> sql100819184438610 = createPrimaryKey(id);
 
     public SSimpletypes(String variable) {
         super(SSimpletypes.class, forVariable(variable));
@@ -73,28 +79,5 @@ public class SSimpletypes extends BeanPath<SSimpletypes> implements RelationalPa
         super(SSimpletypes.class, metadata);
     }
 
-    public Expression[] all() {
-        if (_all == null) {
-            _all = new Expression[]{bbyte, bbyte2, bigdecimal, cchar, cchar2, date, ddouble, ddouble2, ffloat, ffloat2, id, iint, iint2, llocale, llong, llong2, sstring, time, timestamp};
-        }
-        return _all;
-    }
-
-    public PrimaryKey<SSimpletypes> getPrimaryKey() {
-        return sql100819184438610;
-    }
-
-    public List<ForeignKey<?>> getForeignKeys() {
-        return Collections.<ForeignKey<?>>emptyList();
-    }
-
-    public List<ForeignKey<?>> getInverseForeignKeys() {
-        return Collections.<ForeignKey<?>>emptyList();
-    }
-
-    @Override
-    public List<Expression<?>> getColumns() {
-        return Arrays.<Expression<?>>asList(all());
-    }
 }
 

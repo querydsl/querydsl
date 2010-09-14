@@ -1,19 +1,20 @@
 package com.mysema.query.hql.domain.sql;
 
-import static com.mysema.query.types.path.PathMetadataFactory.*;
+import static com.mysema.query.types.path.PathMetadataFactory.forVariable;
 
-import com.mysema.query.types.*;
-import com.mysema.query.types.path.*;
-
-import com.mysema.query.sql.*;
-import java.util.*;
+import com.mysema.query.sql.ForeignKey;
+import com.mysema.query.sql.RelationalPathBase;
+import com.mysema.query.sql.Table;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.NumberPath;
 
 
 /**
  * SItemStatuschange is a Querydsl query type for SItemStatuschange
  */
 @Table("ITEM_STATUSCHANGE")
-public class SItemStatuschange extends BeanPath<SItemStatuschange> implements RelationalPath<SItemStatuschange> {
+public class SItemStatuschange extends RelationalPathBase<SItemStatuschange> {
 
     private static final long serialVersionUID = 675000350;
 
@@ -22,8 +23,6 @@ public class SItemStatuschange extends BeanPath<SItemStatuschange> implements Re
     public final NumberPath<Long> itemId = createNumber("ITEM_ID", Long.class);
 
     public final NumberPath<Long> statuschangesId = createNumber("STATUSCHANGES_ID", Long.class);
-
-    private Expression[] _all;
 
     public final ForeignKey<SItem> fkc2c9ebee9e7e0323 = new ForeignKey<SItem>(this, itemId, "ID");
 
@@ -39,30 +38,6 @@ public class SItemStatuschange extends BeanPath<SItemStatuschange> implements Re
 
     public SItemStatuschange(PathMetadata<?> metadata) {
         super(SItemStatuschange.class, metadata);
-    }
-
-    public Expression[] all() {
-        if (_all == null) {
-            _all = new Expression[]{itemId, statuschangesId};
-        }
-        return _all;
-    }
-
-    public PrimaryKey<SItemStatuschange> getPrimaryKey() {
-        return null;
-    }
-
-    public List<ForeignKey<?>> getForeignKeys() {
-        return Arrays.<ForeignKey<?>>asList(fkc2c9ebee9e7e0323, fkc2c9ebee2f721e35);
-    }
-
-    public List<ForeignKey<?>> getInverseForeignKeys() {
-        return Collections.<ForeignKey<?>>emptyList();
-    }
-    
-    @Override
-    public List<Expression<?>> getColumns() {
-        return Arrays.<Expression<?>>asList(all());
     }
 
 }

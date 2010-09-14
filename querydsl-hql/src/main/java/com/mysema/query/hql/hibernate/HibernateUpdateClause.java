@@ -21,6 +21,7 @@ import com.mysema.query.hql.HQLTemplates;
 import com.mysema.query.hql.JPQLTemplates;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.NullExpr;
@@ -68,9 +69,9 @@ public class HibernateUpdateClause implements
     @Override
     public <T> HibernateUpdateClause set(Path<T> path, T value) {
         if (value != null){
-            metadata.addProjection(path.eq(value));
+            metadata.addProjection(ExpressionUtils.eqConst(path, value));
         }else{
-            metadata.addProjection(path.eq(new NullExpr<T>(path.getType())));
+            metadata.addProjection(ExpressionUtils.eq(path, new NullExpr<T>(path.getType())));
         }
         return this;
     }
@@ -80,9 +81,9 @@ public class HibernateUpdateClause implements
     public HibernateUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++){
             if (values.get(i) != null){
-                metadata.addProjection(((Expression)paths.get(i)).eq(values.get(i)));
+                metadata.addProjection(ExpressionUtils.eqConst((Expression)paths.get(i), values.get(i)));
             }else{
-                metadata.addProjection(((Expression)paths.get(i)).eq(new NullExpr(paths.get(i).getType())));
+                metadata.addProjection(ExpressionUtils.eq(((Expression)paths.get(i)), new NullExpr(paths.get(i).getType())));
             }
 
         }

@@ -45,7 +45,7 @@ public abstract class AbstractJDOTest {
     }
 
     protected <T> List<T> query(EntityPath<T> source, BooleanExpression condition) {
-        return query().from(source).where(condition).list(source.asExpr());
+        return query().from(source).where(condition).list(source);
     }
 
     protected JDOQLDeleteClause delete(EntityPath<?> entity) {

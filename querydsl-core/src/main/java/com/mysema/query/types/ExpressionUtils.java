@@ -49,7 +49,7 @@ public final class ExpressionUtils {
         return SimpleOperation.create(source.getType(),(Operator)Ops.ALIAS, source, new SimplePath<D>(source.getType(), alias));
     }
 
-    public static <D> Predicate eq(Expression<D> left, D constant) {
+    public static <D> Predicate eqConst(Expression<D> left, D constant) {
         return eq(left, SimpleConstant.create(constant));
     }
     
@@ -57,13 +57,13 @@ public final class ExpressionUtils {
         if (isPrimitive(left.getType())) {
             return BooleanOperation.create(Ops.EQ_PRIMITIVE, left, right);
         } else {
-            return BooleanOperation.create(Ops.EQ_OBJECT, right, right);
+            return BooleanOperation.create(Ops.EQ_OBJECT, left, right);
         }
     }
     
     public static <D> Predicate in(Expression<D> left, Collection<? extends D> right) {
         if (right.size() == 1){
-            return eq(left, right.iterator().next());
+            return eqConst(left, right.iterator().next());
         }else{
             return BooleanOperation.create(Ops.IN, left, SimpleConstant.create(right));
         }
@@ -92,11 +92,15 @@ public final class ExpressionUtils {
             || Character.class.equals(type);
     }
     
+    public static <D> Predicate neConst(Expression<D> left, D constant) {
+        return ne(left, SimpleConstant.create(constant));
+    }
+    
     public static <D> Predicate ne(Expression<D> left, Expression<? super D> right) {
         if (isPrimitive(left.getType())) {
             return BooleanOperation.create(Ops.NE_PRIMITIVE, left, right);
         } else {
-            return BooleanOperation.create(Ops.NE_OBJECT, right, right);
+            return BooleanOperation.create(Ops.NE_OBJECT, left, right);
         }
     }
     
