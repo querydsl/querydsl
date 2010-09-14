@@ -5,10 +5,10 @@
  */
 
 /**
- * JDOQL support for Querydsl
+ * DML operations support for Querydsl JDOQL
  */
 @DefaultAnnotation( { Nonnull.class })
-package com.mysema.query.jdoql;
+package com.mysema.query.jdo.dml;
 
 import javax.annotation.Nonnull;
 

@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.jdoql.dml;
+package com.mysema.query.jdo.dml;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +16,8 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DeleteClause;
-import com.mysema.query.jdoql.JDOQLSerializer;
-import com.mysema.query.jdoql.JDOQLTemplates;
+import com.mysema.query.jdo.JDOQLSerializer;
+import com.mysema.query.jdo.JDOQLTemplates;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Predicate;
 

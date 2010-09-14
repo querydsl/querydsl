@@ -1,22 +1,23 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
+ * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
  *
  */
-package com.mysema.query.jdoql;
+package com.mysema.query.jdo.sql;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Nullable;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
@@ -25,29 +26,32 @@ import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.support.ProjectableQuery;
-import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.EntityPath;
+import com.mysema.query.jdo.JDOTuple;
+import com.mysema.query.sql.SQLCommonQuery;
+import com.mysema.query.sql.SQLSerializer;
+import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.expr.ConstructorExpression;
 import com.mysema.query.types.expr.QTuple;
 
 /**
- * Abstract base class for custom implementations of the JDOQLQuery interface.
+ * JDOSQLQuery is an SQLQuery implementation that uses JDO's SQL query functionality
+ * to execute queries
  *
  * @author tiwe
  *
- * @param <Q>
  */
-public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extends ProjectableQuery<Q>{
-
+public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements SQLCommonQuery<JDOSQLQuery>{
+    
+    private static final Logger logger = LoggerFactory.getLogger(JDOSQLQuery.class);
+    
     private final Closeable closeable = new Closeable(){
         @Override
         public void close() throws IOException {
-            AbstractJDOQLQuery.this.close();            
+            JDOSQLQuery.this.close();            
         }        
     };
-    
+
     private final boolean detach;
 
     private List<Object> orderedConstants = new ArrayList<Object>();
@@ -57,33 +61,20 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
 
     private List<Query> queries = new ArrayList<Query>(2);
 
-    private final JDOQLTemplates templates;
-    
-    private Set<String> fetchGroups = new HashSet<String>();
-    
-    @Nullable
-    private Integer maxFetchDepth;
+    private final SQLTemplates templates;
 
-    public AbstractJDOQLQuery(@Nullable PersistenceManager persistenceManager) {
-        this(persistenceManager, JDOQLTemplates.DEFAULT, new DefaultQueryMetadata(), false);
+    public JDOSQLQuery(@Nullable PersistenceManager persistenceManager, SQLTemplates templates) {
+        this(persistenceManager, templates, new DefaultQueryMetadata(), false);
     }
 
-    @SuppressWarnings("unchecked")
-    public AbstractJDOQLQuery(
+    public JDOSQLQuery(
             @Nullable PersistenceManager persistenceManager,
-            JDOQLTemplates templates,
+            SQLTemplates templates,
             QueryMetadata metadata, boolean detach) {
-        super(new QueryMixin<Q>(metadata));
-        this.queryMixin.setSelf((Q) this);
+        super(metadata);
         this.templates = templates;
         this.persistenceManager = persistenceManager;
         this.detach = detach;
-    }
-
-    @SuppressWarnings("unchecked")
-    public Q addFetchGroup(String fetchGroupName) {
-        fetchGroups.add(fetchGroupName);
-        return (Q)this;
     }
 
     public void close() {
@@ -105,14 +96,14 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     }
 
     private Query createQuery(boolean forCount) {
-        Expression<?> source = queryMixin.getMetadata().getJoins().get(0).getTarget();
-
-        // serialize
-        JDOQLSerializer serializer = new JDOQLSerializer(getTemplates(), source);
-        serializer.serialize(queryMixin.getMetadata(), forCount, false);
+        SQLSerializer serializer = new SQLSerializer(templates);
+        serializer.serialize(queryMixin.getMetadata(), forCount);
 
         // create Query
-        Query query = persistenceManager.newQuery(serializer.toString());
+        if (logger.isDebugEnabled()){
+            logger.debug(serializer.toString());
+        }
+        Query query = persistenceManager.newQuery("javax.jdo.query.SQL",serializer.toString());
         orderedConstants = serializer.getConstants();
         queries.add(query);
 
@@ -121,16 +112,11 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
             Class<?> exprType = projection.get(0).getClass();
             if (exprType.equals(QTuple.class)){
                 query.setResultClass(JDOTuple.class);
-            } else if (FactoryExpression.class.isAssignableFrom(exprType)){
+            } else if (ConstructorExpression.class.isAssignableFrom(exprType)){
                 query.setResultClass(projection.get(0).getType());
             }
-            
-            if (!fetchGroups.isEmpty()){
-                query.getFetchPlan().setGroups(fetchGroups);
-            }
-            if (maxFetchDepth != null){
-                query.getFetchPlan().setMaxFetchDepth(maxFetchDepth);
-            }
+        }else{
+            query.setResultClass(Long.class);
         }
 
         return query;
@@ -158,16 +144,8 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         return rv;
     }
 
-    public Q from(EntityPath<?>... args) {
-        return queryMixin.from(args);
-    }
-
     public QueryMetadata getMetadata(){
         return queryMixin.getMetadata();
-    }
-
-    public JDOQLTemplates getTemplates() {
-        return templates;
     }
 
     public boolean isDetach() {
@@ -203,7 +181,6 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         queryMixin.addToProjection(expr);
         Query countQuery = createQuery(true);
         countQuery.setUnique(true);
-        countQuery.setResult("count(this)");
         long total = (Long) execute(countQuery);
         if (total > 0) {
             QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
@@ -220,19 +197,11 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         queryMixin.getMetadata().reset();
     }
 
-    @SuppressWarnings("unchecked")
-    public Q setMaxFetchDepth(int depth) {
-        maxFetchDepth = depth;
-        return (Q)this;
-    }
-    
-
     @Override
     public String toString(){
         if (!queryMixin.getMetadata().getJoins().isEmpty()){
-            Expression<?> source = queryMixin.getMetadata().getJoins().get(0).getTarget();
-            JDOQLSerializer serializer = new JDOQLSerializer(getTemplates(), source);
-            serializer.serialize(queryMixin.getMetadata(), false, false);
+            SQLSerializer serializer = new SQLSerializer(templates);
+            serializer.serialize(queryMixin.getMetadata(), false);
             return serializer.toString().trim();
         }else{
             return super.toString();
@@ -247,4 +216,6 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         reset();
         return (RT) execute(query);
     }
+
+
 }

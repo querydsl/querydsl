@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.jdoql;
+package com.mysema.query.jdo;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.jdoql;
+package com.mysema.query.jdo;
 
 import com.mysema.query.types.JavaTemplates;
 import com.mysema.query.types.Ops;

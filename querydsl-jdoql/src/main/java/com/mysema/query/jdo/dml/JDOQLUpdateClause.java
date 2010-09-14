@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.jdoql.dml;
+package com.mysema.query.jdo.dml;
 
 import java.util.List;
 

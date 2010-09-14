@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.jdoql.sql;
+package com.mysema.query.jdo.sql;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.ForeignKey;
