@@ -9,14 +9,15 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.DateTimeExpression;
 import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.NumberOperation;
 import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.expr.TimeExpression;
-import com.mysema.query.types.expr.NumberOperation;
 import com.mysema.query.types.query.*;
 
 /**
@@ -70,7 +71,7 @@ public class DetachableMixin implements Detachable{
     }
 
     @Override
-    public BooleanSubQuery unique(BooleanExpression projection) {
+    public BooleanSubQuery unique(Predicate projection) {
         return new BooleanSubQuery(uniqueProjection(projection));
     }
 

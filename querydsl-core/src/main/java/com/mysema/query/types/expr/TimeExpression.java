@@ -15,7 +15,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.path.SimplePath;
 
 /**
- * ETime represents Time expressions
+ * TimeExpression represents Time expressions
  *
  * @author tiwe
  *

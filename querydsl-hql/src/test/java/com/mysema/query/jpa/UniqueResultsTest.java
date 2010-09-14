@@ -12,7 +12,7 @@ import org.hibernate.Session;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.mysema.query.jpa.HQLQuery;
+import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.testutil.HibernateConfig;
@@ -37,7 +37,7 @@ public class UniqueResultsTest {
         assertEquals(Long.valueOf(3), query().from(cat).uniqueResult(cat.count()));
     }
 
-    private HQLQuery query(){
+    private JPQLQuery query(){
         return new HibernateQuery(session);
     }
 

@@ -15,7 +15,7 @@ import com.mysema.query.types.Ops;
 import com.mysema.query.types.Visitor;
 
 /**
- * OBoolean represents boolean operations
+ * BooleanOperation represents boolean operations
  *
  * @author tiwe
  *

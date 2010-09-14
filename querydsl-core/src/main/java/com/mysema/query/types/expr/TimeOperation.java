@@ -14,7 +14,7 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.Visitor;
 
 /**
- * OTime represents Time functions
+ * TimeOperation represents Time functions
  *
  * @author tiwe
  *

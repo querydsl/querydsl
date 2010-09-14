@@ -7,9 +7,9 @@ package com.mysema.query.jpa;
 
 import static com.mysema.query.alias.Alias.$;
 import static com.mysema.query.alias.Alias.alias;
-import static com.mysema.query.jpa.HQLGrammar.all;
-import static com.mysema.query.jpa.HQLGrammar.some;
-import static com.mysema.query.jpa.HQLGrammar.sum;
+import static com.mysema.query.jpa.JPQLGrammar.all;
+import static com.mysema.query.jpa.JPQLGrammar.some;
+import static com.mysema.query.jpa.JPQLGrammar.sum;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Ignore;

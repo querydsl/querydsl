@@ -34,7 +34,7 @@ import com.mysema.util.MathUtils;
  * @author tiwe
  * @version $Id$
  */
-public class HQLSerializer extends SerializerBase<HQLSerializer> {
+public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     private static final Set<Operator<?>> NUMERIC = new HashSet<Operator<?>>(Arrays.<Operator<?>>asList(
             Ops.ADD, Ops.SUB, Ops.MULT, Ops.DIV,
@@ -83,7 +83,7 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
 
     private boolean wrapElements = false;
 
-    public HQLSerializer(JPQLTemplates templates) {
+    public JPQLSerializer(JPQLTemplates templates) {
         super(templates);
         this.templates = templates;
     }
@@ -224,12 +224,12 @@ public class HQLSerializer extends SerializerBase<HQLSerializer> {
             if (i > 0) {
                 append(joinTypes.get(je.getType()));
             }
-            if (je.hasFlag(HQLQueryMixin.FETCH) && !forCountRow){
-                handle(HQLQueryMixin.FETCH);
+            if (je.hasFlag(JPQLQueryMixin.FETCH) && !forCountRow){
+                handle(JPQLQueryMixin.FETCH);
             }
             handleJoinTarget(je);
-            if (je.hasFlag(HQLQueryMixin.FETCH_ALL_PROPERTIES) && !forCountRow){
-                handle(HQLQueryMixin.FETCH_ALL_PROPERTIES);
+            if (je.hasFlag(JPQLQueryMixin.FETCH_ALL_PROPERTIES) && !forCountRow){
+                handle(JPQLQueryMixin.FETCH_ALL_PROPERTIES);
             }
 
             if (je.getCondition() != null) {

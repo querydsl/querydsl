@@ -13,7 +13,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 
 /**
- * ECollectionBase is an abstract base class for ECollection implementations
+ * CollectionExpressionBase is an abstract base class for ECollection implementations
  *
  * @author tiwe
  *

@@ -1,14 +1,14 @@
-package com.mysema.query.types;
+package com.mysema.query.types.expr;
 
 import java.util.Collection;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.BooleanOperation;
-import com.mysema.query.types.expr.SimpleConstant;
-import com.mysema.query.types.expr.SimpleExpression;
-import com.mysema.query.types.expr.SimpleOperation;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.SimplePath;
 
 /**

@@ -24,7 +24,7 @@ import org.junit.Test;
 
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.hql.domain.QCat;
-import com.mysema.query.jpa.HQLQuery;
+import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.DomesticCat;
 import com.mysema.query.types.Expression;
@@ -111,13 +111,13 @@ public abstract class AbstractStandardTest {
         time = new java.sql.Time(cal.getTimeInMillis());
     }
 
-    protected HQLQuery catQuery(){
+    protected JPQLQuery catQuery(){
         return query().from(cat);
     }
 
     protected abstract Target getTarget();
 
-    protected abstract HQLQuery query();
+    protected abstract JPQLQuery query();
 
     protected abstract void save(Object entity);
 

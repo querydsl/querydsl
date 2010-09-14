@@ -16,7 +16,7 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.NumberExpression;
 
 /**
- * CNumber defines custom numeric expressions
+ * NumberTemplate defines custom numeric expressions
  *
  * @author tiwe
  *

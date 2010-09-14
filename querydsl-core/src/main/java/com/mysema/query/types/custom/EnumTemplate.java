@@ -16,7 +16,7 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EnumExpression;
 
 /**
- * CEnum defines custom enum expressions
+ * EnumTemplate defines custom enum expressions
  *
  * @author tiwe
  *

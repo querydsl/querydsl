@@ -15,7 +15,7 @@ import com.mysema.query.types.path.MapPath;
  *
  * @param <Q>
  */
-public interface HQLCommonQuery<Q extends HQLCommonQuery<Q>>  extends Query<Q> {
+public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q> {
     
 
     /**

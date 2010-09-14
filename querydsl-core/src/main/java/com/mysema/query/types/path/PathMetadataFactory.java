@@ -13,8 +13,8 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathType;
 import com.mysema.query.types.expr.NumberConstant;
-import com.mysema.query.types.expr.StringConstant;
 import com.mysema.query.types.expr.SimpleConstant;
+import com.mysema.query.types.expr.StringConstant;
 
 /**
  * @author tiwe

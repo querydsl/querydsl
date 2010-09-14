@@ -21,11 +21,11 @@ import com.mysema.query.types.path.MapPath;
  * @author tiwe
  * @version $Id$
  */
-public abstract class HQLQueryBase<Q extends HQLQueryBase<Q>> extends ProjectableQuery<Q> {
+public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends ProjectableQuery<Q> {
 
     private Map<Object,String> constants;
 
-    private final HQLQueryMixin<Q> queryMixin;
+    private final JPQLQueryMixin<Q> queryMixin;
 
     private final JPQLTemplates templates;
 
@@ -33,15 +33,15 @@ public abstract class HQLQueryBase<Q extends HQLQueryBase<Q>> extends Projectabl
         return templates;
     }
 
-    protected HQLQueryMixin<Q> getQueryMixin(){
+    protected JPQLQueryMixin<Q> getQueryMixin(){
         return queryMixin;
     }
 
     @SuppressWarnings("unchecked")
-    public HQLQueryBase(QueryMetadata md, JPQLTemplates templates) {
-        super(new HQLQueryMixin<Q>(md));
+    public JPQLQueryBase(QueryMetadata md, JPQLTemplates templates) {
+        super(new JPQLQueryMixin<Q>(md));
         super.queryMixin.setSelf((Q) this);
-        this.queryMixin = (HQLQueryMixin) super.queryMixin;
+        this.queryMixin = (JPQLQueryMixin) super.queryMixin;
         this.templates = templates;
     }
 
@@ -49,7 +49,7 @@ public abstract class HQLQueryBase<Q extends HQLQueryBase<Q>> extends Projectabl
         if (queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("No joins given");
         }
-        HQLSerializer serializer = new HQLSerializer(templates);
+        JPQLSerializer serializer = new JPQLSerializer(templates);
         serializer.serialize(queryMixin.getMetadata(), forCountRow, null);
         constants = serializer.getConstantToLabel();
         return serializer.toString();

@@ -12,16 +12,15 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionException;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.SimpleExpression;
-import com.mysema.query.types.expr.SimpleConstant;
 import com.mysema.query.types.expr.BooleanOperation;
+import com.mysema.query.types.expr.SimpleConstant;
+import com.mysema.query.types.expr.SimpleExpression;
 
 /**
  * BeanPath represents bean paths

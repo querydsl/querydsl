@@ -14,7 +14,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.path.SimplePath;
 
 /**
- * EString represents String expressions
+ * StringExpression represents String expressions
  *
  * @author tiwe
  * @see java.lang.String

@@ -20,13 +20,12 @@ import com.mysema.query.types.ExpressionException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.CollectionExpressionBase;
 import com.mysema.query.types.expr.ListExpression;
 import com.mysema.query.types.expr.SimpleExpression;
 
 /**
- * PList represents list paths
+ * ListPath represents list paths
  *
  * @author tiwe
  *

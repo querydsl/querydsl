@@ -13,13 +13,13 @@ import com.mysema.query.QueryMetadata;
  * @author tiwe
  *
  */
-public final class HQLSubQuery extends AbstractHQLSubQuery<HQLSubQuery> implements HQLCommonQuery<HQLSubQuery>{
+public final class JPQLSubQuery extends AbstractJQLSubQuery<JPQLSubQuery> implements JPQLCommonQuery<JPQLSubQuery>{
 
-    public HQLSubQuery() {
+    public JPQLSubQuery() {
         super();
     }
 
-    public HQLSubQuery(QueryMetadata metadata) {
+    public JPQLSubQuery(QueryMetadata metadata) {
         super(metadata);
     }
 

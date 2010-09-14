@@ -14,7 +14,7 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.Visitor;
 
 /**
- * ODate represents Date operations
+ * DateOperation represents Date operations
  *
  * @author tiwe
  *

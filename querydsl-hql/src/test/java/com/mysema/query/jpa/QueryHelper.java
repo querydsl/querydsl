@@ -21,11 +21,11 @@ import antlr.collections.AST;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.SearchResults;
-import com.mysema.query.jpa.HQLQueryBase;
+import com.mysema.query.jpa.JPQLQueryBase;
 import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.types.Expression;
 
-class QueryHelper extends HQLQueryBase<QueryHelper> {
+class QueryHelper extends JPQLQueryBase<QueryHelper> {
 
     public QueryHelper() {
         super(new DefaultQueryMetadata(), HQLTemplates.DEFAULT);

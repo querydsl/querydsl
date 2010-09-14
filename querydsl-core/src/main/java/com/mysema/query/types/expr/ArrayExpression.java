@@ -10,7 +10,7 @@ import javax.annotation.Nonnegative;
 import com.mysema.query.types.Expression;
 
 /**
- * EArray defines an interface for array typed expression
+ * ArrayExpression defines an interface for array typed expression
  *
  * @author tiwe
  *

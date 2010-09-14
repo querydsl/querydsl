@@ -167,6 +167,9 @@ public abstract class SimpleExpression<D> implements Expression<D> {
     public final Class<? extends D> getType() {
         return type;
     }
+    
+    @Override
+    public abstract boolean equals(Object o);
 
     @Override
     public int hashCode() {

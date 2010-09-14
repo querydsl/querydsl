@@ -16,7 +16,7 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
 
 /**
- * CBoolean is a custom boolean expression
+ * BooleanTemplate is a custom boolean expression
  *
  * @author tiwe
  *

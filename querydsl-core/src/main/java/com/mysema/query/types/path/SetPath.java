@@ -12,11 +12,10 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.CollectionExpressionBase;
 
 /**
- * PSet represents set paths
+ * SetPath represents set paths
  *
  * @author tiwe
  *

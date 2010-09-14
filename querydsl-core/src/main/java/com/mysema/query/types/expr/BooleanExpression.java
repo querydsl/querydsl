@@ -14,7 +14,7 @@ import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.SimplePath;
 
 /**
- * EBoolean represents boolean expressions
+ * BooleanExpression represents boolean expressions
  *
  * @author tiwe
  * @see java.lang.Boolean

@@ -10,11 +10,10 @@ import java.lang.reflect.AnnotatedElement;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.EnumExpression;
 
 /**
- * PEnum represents enum paths
+ * EnumPath represents enum paths
  *
  * @author tiwe
  *

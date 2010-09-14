@@ -13,19 +13,19 @@ import com.mysema.query.Projectable;
  * @author tiwe
  *
  */
-public interface HQLQuery extends HQLCommonQuery<HQLQuery>, Projectable {
+public interface JPQLQuery extends JPQLCommonQuery<JPQLQuery>, Projectable {
 
     /**
      * Add the "fetch" flag to the last defined join
      *
      * @return
      */
-    HQLQuery fetch();
+    JPQLQuery fetch();
 
     /**
       * Add the "fetch all properties" flag to the last defined join.
       * @return
        */
-    HQLQuery fetchAll();
+    JPQLQuery fetchAll();
 
 }

@@ -13,7 +13,7 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
 
 /**
- * PBoolean represents boolean path expressions
+ * BooleanPath represents boolean path expressions
  *
  * @author tiwe
  * @see java.lang.Boolean

@@ -14,7 +14,7 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.Visitor;
 
 /**
- * OComparable represents Comparable operations
+ * ComparableOperation represents Comparable operations
  *
  * @author tiwe
  *

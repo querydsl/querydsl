@@ -19,6 +19,8 @@ import javax.annotation.Nullable;
 public interface Expression<D> extends Serializable{
     
     /**
+     * Accept the visitor with the given context
+     * 
      * @param <R>
      * @param <C>
      * @param v
@@ -28,6 +30,8 @@ public interface Expression<D> extends Serializable{
     <R,C> R accept(Visitor<R,C> v, @Nullable C context);
     
     /**
+     * Get the java type for this expression
+     * 
      * @return
      */
     Class<? extends D> getType();

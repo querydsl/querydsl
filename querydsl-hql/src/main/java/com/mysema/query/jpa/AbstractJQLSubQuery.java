@@ -22,19 +22,19 @@ import com.mysema.query.types.path.MapPath;
  *
  * @param <Q>
  */
-public class AbstractHQLSubQuery<Q extends AbstractHQLSubQuery<Q>> extends DetachableQuery<Q>{
+public class AbstractJQLSubQuery<Q extends AbstractJQLSubQuery<Q>> extends DetachableQuery<Q>{
 
-    private final HQLQueryMixin<Q> queryMixin;
+    private final JPQLQueryMixin<Q> queryMixin;
 
-    public AbstractHQLSubQuery() {
+    public AbstractJQLSubQuery() {
         this(new DefaultQueryMetadata());
     }
 
     @SuppressWarnings("unchecked")
-    public AbstractHQLSubQuery(QueryMetadata metadata) {
-        super(new HQLQueryMixin<Q>(metadata));
+    public AbstractJQLSubQuery(QueryMetadata metadata) {
+        super(new JPQLQueryMixin<Q>(metadata));
         super.queryMixin.setSelf((Q)this);
-        this.queryMixin = (HQLQueryMixin<Q>) super.queryMixin;
+        this.queryMixin = (JPQLQueryMixin<Q>) super.queryMixin;
     }
 
     public Q from(EntityPath<?>... o) {
@@ -143,7 +143,7 @@ public class AbstractHQLSubQuery<Q extends AbstractHQLSubQuery<Q>> extends Detac
     
     public String toString(){
         if (!queryMixin.getMetadata().getJoins().isEmpty()){
-            HQLSerializer serializer = new HQLSerializer(JPQLTemplates.DEFAULT);
+            JPQLSerializer serializer = new JPQLSerializer(JPQLTemplates.DEFAULT);
             serializer.serialize(queryMixin.getMetadata(), false, null);
             return serializer.toString().trim();
         }else{

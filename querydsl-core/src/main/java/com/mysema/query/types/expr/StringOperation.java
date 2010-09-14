@@ -14,7 +14,7 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.Visitor;
 
 /**
- * OString represents a String typed operation
+ * StringOperation represents a String typed operation
  *
  * @author tiwe
  *

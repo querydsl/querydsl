@@ -10,7 +10,7 @@ import org.hibernate.StatelessSession;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.jpa.HQLQuery;
+import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPQLTemplates;
 
@@ -20,7 +20,7 @@ import com.mysema.query.jpa.JPQLTemplates;
  * @author tiwe
  *
  */
-public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery> implements HQLQuery{
+public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery> implements JPQLQuery{
 
     /**
      * Creates a detached query

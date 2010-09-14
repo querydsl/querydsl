@@ -16,7 +16,7 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.ComparableExpression;
 
 /**
- * CComparable defines custom comparable expressions
+ * ComparableTemplate defines custom comparable expressions
  *
  * @author tiwe
  *

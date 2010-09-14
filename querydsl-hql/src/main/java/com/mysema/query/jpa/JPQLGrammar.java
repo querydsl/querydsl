@@ -21,9 +21,9 @@ import com.mysema.query.types.expr.SimpleOperation;
  * @author tiwe
  * @version $Id$
  */
-public final class HQLGrammar {
+public final class JPQLGrammar {
 
-    private HQLGrammar(){}
+    private JPQLGrammar(){}
 
     public static <D> Expression<D> all(CollectionExpression<?,D> col) {
         return SimpleOperation.create(col.getElementType(), Ops.QuantOps.ALL, (Expression<?>)col);

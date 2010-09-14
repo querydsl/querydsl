@@ -12,7 +12,7 @@ import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 
 /**
- * EComparableBase represents comparable expressions
+ * ComparableExpressionBase represents comparable expressions
  *
  * @author tiwe
  *

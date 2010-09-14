@@ -20,19 +20,19 @@ import com.mysema.query.types.expr.BooleanExpression;
  *
  * @param <T>
  */
-public class HQLQueryMixin<T> extends QueryMixin<T> {
+public class JPQLQueryMixin<T> extends QueryMixin<T> {
     
     public static final JoinFlag FETCH = new JoinFlag("fetch ");
     
     public static final JoinFlag FETCH_ALL_PROPERTIES = new JoinFlag(" fetch all properties");
     
-    public HQLQueryMixin() {}
+    public JPQLQueryMixin() {}
 
-    public HQLQueryMixin(QueryMetadata metadata) {
+    public JPQLQueryMixin(QueryMetadata metadata) {
         super(metadata);
     }
 
-    public HQLQueryMixin(T self, QueryMetadata metadata) {
+    public JPQLQueryMixin(T self, QueryMetadata metadata) {
         super(self, metadata);
     }
 

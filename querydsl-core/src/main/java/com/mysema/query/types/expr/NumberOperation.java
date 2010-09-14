@@ -14,7 +14,7 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.Visitor;
 
 /**
- * ONumber represents numeric operations
+ * NumberOperation represents numeric operations
  *
  * @author tiwe
  *

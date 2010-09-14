@@ -10,7 +10,7 @@ import java.util.Collection;
 import com.mysema.query.types.Expression;
 
 /**
- * ECollection represents java.util.Collection typed expressions
+ * CollectionExpression represents java.util.Collection typed expressions
  *
  * @author tiwe
  *

@@ -21,7 +21,7 @@ import com.mysema.query.types.path.SimplePath;
 import com.mysema.util.MathUtils;
 
 /**
- * ENumber represents a numeric expression
+ * NumberExpression represents a numeric expression
  *
  * @author tiwe
  *

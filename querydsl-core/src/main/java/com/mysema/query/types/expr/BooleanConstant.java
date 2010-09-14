@@ -9,7 +9,7 @@ import com.mysema.query.types.Constant;
 import com.mysema.query.types.Visitor;
 
 /**
- * EBooleanConst provides constants for Boolean.TRUE and Boolean.FALSE
+ * BooleanConstant provides constants for Boolean.TRUE and Boolean.FALSE
  *
  * @author tiwe
  *

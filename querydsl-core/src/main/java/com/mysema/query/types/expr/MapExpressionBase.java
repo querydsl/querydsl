@@ -13,7 +13,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 
 /**
- * EMapBase is an abstract base class for EMap implementations
+ * MapExpressionBase is an abstract base class for EMap implementations
  *
  * @author tiwe
  *

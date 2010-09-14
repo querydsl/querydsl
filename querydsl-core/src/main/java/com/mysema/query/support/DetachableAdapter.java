@@ -6,7 +6,7 @@
 package com.mysema.query.support;
 
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.DateTimeExpression;
@@ -33,7 +33,7 @@ public class DetachableAdapter implements Detachable{
         return detachable.count();
     }
 
-    public BooleanExpression exists() {
+    public Predicate exists() {
         return detachable.exists();
     }
 
@@ -53,11 +53,11 @@ public class DetachableAdapter implements Detachable{
         return detachable.list(projection);
     }
 
-    public BooleanExpression notExists() {
+    public Predicate notExists() {
         return detachable.notExists();
     }
 
-    public BooleanSubQuery unique(BooleanExpression projection) {
+    public BooleanSubQuery unique(Predicate projection) {
         return detachable.unique(projection);
     }
 

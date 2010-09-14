@@ -14,7 +14,7 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.DeleteClause;
-import com.mysema.query.jpa.HQLSerializer;
+import com.mysema.query.jpa.JPQLSerializer;
 import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.types.EntityPath;
@@ -46,7 +46,7 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause>{
 
     @Override
     public long execute() {
-        HQLSerializer serializer = new HQLSerializer(templates);
+        JPQLSerializer serializer = new JPQLSerializer(templates);
         serializer.serializeForDelete(metadata);
         Map<Object,String> constants = serializer.getConstantToLabel();
 
@@ -63,7 +63,7 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause>{
     
     @Override
     public String toString(){
-        HQLSerializer serializer = new HQLSerializer(templates);
+        JPQLSerializer serializer = new JPQLSerializer(templates);
         serializer.serializeForDelete(metadata);
         return serializer.toString();
     }

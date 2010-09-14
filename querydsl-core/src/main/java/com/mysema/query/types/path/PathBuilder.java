@@ -8,7 +8,6 @@ package com.mysema.query.types.path;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.expr.SimpleExpression;

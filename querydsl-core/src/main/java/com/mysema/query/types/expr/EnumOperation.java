@@ -14,14 +14,13 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.Visitor;
 
 /**
- * OEnum represents enum operations
+ * EnumOperation represents enum operations
  *
  * @author tiwe
  *
  * @param <D>
  */
-public class EnumOperation<D extends Enum<D>>
-        extends EnumExpression<D> implements Operation<D> {
+public class EnumOperation<D extends Enum<D>> extends EnumExpression<D> implements Operation<D> {
 
     private static final long serialVersionUID = -3593040852095778453L;
 

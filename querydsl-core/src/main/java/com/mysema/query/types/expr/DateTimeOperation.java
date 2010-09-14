@@ -14,13 +14,12 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.Visitor;
 
 /**
- * ODateTime represents DateTime operations
+ * DateTimeOperation represents DateTime operations
  *
  * @author tiwe
  *
  * @param <D>
  */
-
 public class DateTimeOperation<D extends Comparable<?>> extends DateTimeExpression<D> implements Operation<D> {
 
     private static final long serialVersionUID = 6523293814317168556L;

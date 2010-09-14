@@ -16,7 +16,7 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.StringExpression;
 
 /**
- * CString defines custom String expressions
+ * StringTemplate defines custom String expressions
  *
  * @author tiwe
  *

@@ -6,7 +6,7 @@
 package com.mysema.query.types.query;
 
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.DateTimeExpression;
@@ -34,7 +34,7 @@ public interface Detachable {
      *
      * @return
      */
-    BooleanExpression exists();
+    Predicate exists();
 
     /**
      * Create a projection expression for the given projection
@@ -70,7 +70,7 @@ public interface Detachable {
      *
      * @return
      */
-    BooleanExpression notExists();
+    Predicate notExists();
 
     /**
      * Create a projection expression for the given projection
@@ -106,7 +106,7 @@ public interface Detachable {
      * @param projection
      * @return
      */
-    BooleanSubQuery unique(BooleanExpression projection);
+    BooleanSubQuery unique(Predicate projection);
 
     /**
      * Create a subquery expression for the given projection

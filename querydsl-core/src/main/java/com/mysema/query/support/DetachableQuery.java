@@ -6,6 +6,7 @@
 package com.mysema.query.support;
 
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.DateExpression;
@@ -62,7 +63,7 @@ public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q>
     }
 
     @Override
-    public BooleanSubQuery unique(BooleanExpression projection) {
+    public BooleanSubQuery unique(Predicate projection) {
         return detachableMixin.unique(projection);
     }
 

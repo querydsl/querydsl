@@ -17,13 +17,12 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.ArrayExpression;
-import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.NumberExpression;
-import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.expr.NumberOperation;
+import com.mysema.query.types.expr.SimpleExpression;
 
 /**
- * PArray represents an array typed path
+ * ArrayPath represents an array typed path
  *
  * @author tiwe
  *

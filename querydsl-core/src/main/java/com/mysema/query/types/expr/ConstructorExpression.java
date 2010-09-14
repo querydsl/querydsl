@@ -18,7 +18,7 @@ import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Visitor;
 
 /**
- * EConstructor represents a constructor invocation
+ * ConstructorExpression represents a constructor invocation
  *
  * @author tiwe
  *

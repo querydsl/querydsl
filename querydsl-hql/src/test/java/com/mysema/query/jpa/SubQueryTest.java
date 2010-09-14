@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.jpa.HQLSubQuery;
+import com.mysema.query.jpa.JPQLSubQuery;
 
 public class SubQueryTest extends AbstractQueryTest{
 
@@ -20,7 +20,7 @@ public class SubQueryTest extends AbstractQueryTest{
 
     @Test
     public void serialization(){
-        HQLSubQuery query = sub();
+        JPQLSubQuery query = sub();
 
         query.from(cat);
         assertEquals("from Cat cat", query.toString());

@@ -20,7 +20,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Visitor;
 
 /**
- * EStringConst represents String constants
+ * StringConstant represents String constants
  *
  * @author tiwe
  *

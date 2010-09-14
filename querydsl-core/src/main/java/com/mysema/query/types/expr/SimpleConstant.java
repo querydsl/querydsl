@@ -10,7 +10,7 @@ import com.mysema.query.types.Constant;
 import com.mysema.query.types.Visitor;
 
 /**
- * ExprConst represents general constant expressions
+ * SimpleConstant represents general constant expressions
  *
  * @author tiwe
  *

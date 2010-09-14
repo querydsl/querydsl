@@ -4,14 +4,14 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.hql.domain.QCat;
-import com.mysema.query.jpa.HQLQuery;
+import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
 
-public class HQLQueryTest {
+public class JPQLQueryTest {
 
     private QCat cat = QCat.cat;
     
-    private HQLQuery query = new HibernateQuery();
+    private JPQLQuery query = new HibernateQuery();
     
     @Before
     public void setUp(){

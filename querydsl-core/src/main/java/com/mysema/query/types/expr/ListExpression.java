@@ -12,7 +12,7 @@ import javax.annotation.Nonnegative;
 import com.mysema.query.types.Expression;
 
 /**
- * EList represents java.util.List typed expressions
+ * ListExpression represents java.util.List typed expressions
  *
  * @author tiwe
  *

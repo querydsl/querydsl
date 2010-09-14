@@ -16,7 +16,7 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.SimpleExpression;
 
 /**
- * CSimple defines custom simple expressions
+ * SimpleTemplate defines custom simple expressions
  *
  * @author tiwe
  *

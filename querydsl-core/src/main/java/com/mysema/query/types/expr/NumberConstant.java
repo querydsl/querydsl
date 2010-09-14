@@ -12,7 +12,7 @@ import com.mysema.query.types.Visitor;
 import com.mysema.util.MathUtils;
 
 /**
- * ENumberConst represents numeric constants
+ * NumberConstant represents numeric constants
  *
  * @author tiwe
  *

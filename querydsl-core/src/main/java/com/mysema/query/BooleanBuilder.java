@@ -13,13 +13,13 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang.ObjectUtils;
 
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.ExpressionUtils;
 
 /**
  * BooleanBuilder is a cascading builder for {@link BooleanExpression} expressions.

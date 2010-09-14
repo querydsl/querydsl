@@ -8,7 +8,7 @@ package com.mysema.query.types.expr;
 import com.mysema.query.types.Expression;
 
 /**
- * EMap represents java.util.Map typed expressions
+ * MapExpression represents java.util.Map typed expressions
  *
  * @author tiwe
  *

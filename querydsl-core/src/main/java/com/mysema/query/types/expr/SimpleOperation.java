@@ -14,7 +14,7 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.Visitor;
 
 /**
- * OSimple represents a simple operation expression
+ * SimpleOperation represents a simple operation expression
  *
  * @author tiwe
  *

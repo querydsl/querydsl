@@ -8,7 +8,7 @@ package com.mysema.query.types.expr;
 import com.mysema.query.types.Expression;
 
 /**
- * EDateOrTime is a supertype for Date/Time related types
+ * TemporalExpression is a supertype for Date/Time related types
  *
  * @author tiwe
  *

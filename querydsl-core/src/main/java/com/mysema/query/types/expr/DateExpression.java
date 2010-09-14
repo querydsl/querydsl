@@ -15,7 +15,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.path.SimplePath;
 
 /**
- * EDate represents Date expressions
+ * DateExpression represents Date expressions
  * The date representation is compatible with the Gregorian calendar.
  *
  * @param <D>

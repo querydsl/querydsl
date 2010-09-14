@@ -5,7 +5,7 @@
  */
 package com.mysema.query.jpa;
 
-import static com.mysema.query.jpa.HQLGrammar.sum;
+import static com.mysema.query.jpa.JPQLGrammar.sum;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
