@@ -30,6 +30,10 @@ public class PathMixin<T> extends MixinBase<T> implements Path<T> {
     @Nullable
     private AnnotatedElement annotatedElement;
 
+    public PathMixin(Class<? extends T> type, String variable){
+        this(type, PathMetadataFactory.forVariable(variable));
+    }
+    
     public PathMixin(Class<? extends T> type, PathMetadata<?> metadata){
         super(type);
         this.metadata = metadata;

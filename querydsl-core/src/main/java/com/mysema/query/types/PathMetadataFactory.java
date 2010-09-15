@@ -8,12 +8,6 @@ package com.mysema.query.types;
 import javax.annotation.Nonnegative;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.expr.NumberConstant;
-import com.mysema.query.types.expr.SimpleConstant;
-import com.mysema.query.types.expr.StringConstant;
-import com.mysema.query.types.path.ArrayPath;
-import com.mysema.query.types.path.ListPath;
-import com.mysema.query.types.path.MapPath;
 
 /**
  * @author tiwe
@@ -21,36 +15,36 @@ import com.mysema.query.types.path.MapPath;
  */
 public final class PathMetadataFactory {
 
-    public static PathMetadata<Integer> forArrayAccess(ArrayPath<?> parent, Expression<Integer> index) {
+    public static PathMetadata<Integer> forArrayAccess(Path<?> parent, Expression<Integer> index) {
         return new PathMetadata<Integer>(parent, index, PathType.ARRAYVALUE);
     }
 
-    public static PathMetadata<Integer> forArrayAccess(ArrayPath<?> parent, @Nonnegative int index) {
-        return new PathMetadata<Integer>(parent, NumberConstant.create(index), PathType.ARRAYVALUE_CONSTANT);
+    public static PathMetadata<Integer> forArrayAccess(Path<?> parent, @Nonnegative int index) {
+        return new PathMetadata<Integer>(parent, new ConstantMixin<Integer>(index), PathType.ARRAYVALUE_CONSTANT);
     }
 
-    public static PathMetadata<Integer> forListAccess(ListPath<?, ?> parent, Expression<Integer> index) {
+    public static PathMetadata<Integer> forListAccess(Path<?> parent, Expression<Integer> index) {
         return new PathMetadata<Integer>(parent, index, PathType.LISTVALUE);
     }
 
-    public static PathMetadata<Integer> forListAccess(ListPath<?, ?> parent, @Nonnegative int index) {
-        return new PathMetadata<Integer>(parent, NumberConstant.create(index), PathType.LISTVALUE_CONSTANT);
+    public static PathMetadata<Integer> forListAccess(Path<?> parent, @Nonnegative int index) {
+        return new PathMetadata<Integer>(parent, new ConstantMixin<Integer>(index), PathType.LISTVALUE_CONSTANT);
     }
 
-    public static <KT> PathMetadata<KT> forMapAccess(MapPath<?, ?, ?> parent, Expression<KT> key) {
+    public static <KT> PathMetadata<KT> forMapAccess(Path<?> parent, Expression<KT> key) {
         return new PathMetadata<KT>(parent, key, PathType.MAPVALUE);
     }
 
-    public static <KT> PathMetadata<KT> forMapAccess(MapPath<?, ?, ?> parent, KT key) {
-        return new PathMetadata<KT>(parent, SimpleConstant.create(key), PathType.MAPVALUE_CONSTANT);
+    public static <KT> PathMetadata<KT> forMapAccess(Path<?> parent, KT key) {
+        return new PathMetadata<KT>(parent, new ConstantMixin<KT>(key), PathType.MAPVALUE_CONSTANT);
     }
 
     public static PathMetadata<String> forProperty(Path<?> parent, String property) {
-        return new PathMetadata<String>(parent, StringConstant.create(Assert.hasLength(property,"property"), true), PathType.PROPERTY);
+        return new PathMetadata<String>(parent, new ConstantMixin<String>(Assert.hasLength(property,"property")), PathType.PROPERTY);
     }
 
     public static PathMetadata<String> forVariable(String variable) {
-        return new PathMetadata<String>(null, StringConstant.create(Assert.hasLength(variable,"variable"), true), PathType.VARIABLE);
+        return new PathMetadata<String>(null, new ConstantMixin<String>(Assert.hasLength(variable,"variable")), PathType.VARIABLE);
     }
 
     private PathMetadataFactory(){}

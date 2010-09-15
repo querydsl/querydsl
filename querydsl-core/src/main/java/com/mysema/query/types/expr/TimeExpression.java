@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.PathMixin;
 
 /**
  * TimeExpression represents Time expressions
@@ -42,7 +42,7 @@ public abstract class TimeExpression<D extends Comparable> extends TemporalExpre
     
     @Override
     public TimeExpression<D> as(String alias) {
-        return TimeOperation.create(getType(), (Operator)Ops.ALIAS, this, new SimplePath(getType(), alias));
+        return TimeOperation.create(getType(), (Operator)Ops.ALIAS, this, new PathMixin<D>(getType(), alias));
     }
 
     /**

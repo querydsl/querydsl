@@ -11,7 +11,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.PathMixin;
 
 /**
  * StringExpression represents String expressions
@@ -45,7 +45,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     @SuppressWarnings("unchecked")
     @Override
     public StringExpression as(String alias) {
-        return StringOperation.create((Operator)Ops.ALIAS, this, new SimplePath(getType(), alias));
+        return StringOperation.create((Operator)Ops.ALIAS, this, new PathMixin<String>(getType(), alias));
     }
 
     /**

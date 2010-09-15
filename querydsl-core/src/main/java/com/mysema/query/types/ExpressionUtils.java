@@ -43,7 +43,7 @@ public final class ExpressionUtils {
     }
     
     public static <D> Expression<D> as(Expression<D> source, String alias) {
-        return as(source, new PathMixin<D>(source.getType(), PathMetadataFactory.forVariable(alias)));
+        return as(source, new PathMixin<D>(source.getType(), alias));
     }
 
     public static <D> Predicate eqConst(Expression<D> left, D constant) {

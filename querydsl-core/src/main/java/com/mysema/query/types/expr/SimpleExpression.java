@@ -15,9 +15,9 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMixin;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.ToStringVisitor;
-import com.mysema.query.types.path.SimplePath;
 
 /**
  * ESimple is the base class for Expr implementations. It provides default implementations
@@ -97,7 +97,7 @@ public abstract class SimpleExpression<D> implements Expression<D> {
      */
     @SuppressWarnings("unchecked")
     public SimpleExpression<D> as(String alias) {
-        return SimpleOperation.create(getType(),(Operator)Ops.ALIAS, this, new SimplePath<D>(getType(), alias));
+        return SimpleOperation.create(getType(),(Operator)Ops.ALIAS, this, new PathMixin<D>(getType(), alias));
     }
 
     /**
