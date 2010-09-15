@@ -35,9 +35,9 @@ public class BasicsTest extends AbstractJDOTest {
     public void serialization() throws IOException{
         JDOQLQuery query = query();
 
-        assertEquals("FROM com.mysema.query.jdoql.testdomain.Product", query.from(product).toString());
-        assertEquals("FROM com.mysema.query.jdoql.testdomain.Product" +
-            "\nVARIABLES com.mysema.query.jdoql.testdomain.Product product2",
+        assertEquals("FROM com.mysema.query.jdo.test.domain.Product", query.from(product).toString());
+        assertEquals("FROM com.mysema.query.jdo.test.domain.Product" +
+            "\nVARIABLES com.mysema.query.jdo.test.domain.Product product2",
             query.from(product2).toString());
 
         query.where(product.ne(product2)).list(product, product2);
@@ -48,9 +48,9 @@ public class BasicsTest extends AbstractJDOTest {
     public void subQuerySerialization() throws IOException{
         JDOQLSubQuery query = sub();
 
-        assertEquals("FROM com.mysema.query.jdoql.testdomain.Product", query.from(product).toString());
-        assertEquals("FROM com.mysema.query.jdoql.testdomain.Product" +
-            "\nVARIABLES com.mysema.query.jdoql.testdomain.Product product2",
+        assertEquals("FROM com.mysema.query.jdo.test.domain.Product", query.from(product).toString());
+        assertEquals("FROM com.mysema.query.jdo.test.domain.Product" +
+            "\nVARIABLES com.mysema.query.jdo.test.domain.Product product2",
             query.from(product2).toString());
 
     }

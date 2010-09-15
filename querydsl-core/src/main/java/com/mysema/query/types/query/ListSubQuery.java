@@ -11,10 +11,10 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.SubQueryMixin;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.CollectionExpressionBase;
 import com.mysema.query.types.expr.SimpleOperation;
 
@@ -51,7 +51,7 @@ public final class ListSubQuery<A> extends CollectionExpressionBase<List<A>,A> i
     }
 
     @Override
-    public BooleanExpression exists() {
+    public Predicate exists() {
         return subQueryMixin.exists();
     }
 
@@ -70,7 +70,7 @@ public final class ListSubQuery<A> extends CollectionExpressionBase<List<A>,A> i
     }
 
     @Override
-    public BooleanExpression notExists() {
+    public Predicate notExists() {
         return subQueryMixin.notExists();
     }
 

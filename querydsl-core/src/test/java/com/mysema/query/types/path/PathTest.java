@@ -110,4 +110,13 @@ public class PathTest {
         assertNotNull(property4.getAnnotation(Nullable.class));
 
     }
+    
+    @Test
+    public void equals(){
+        assertEquals(new StringPath("s"),  new StringPath("s"));
+        assertEquals(new BooleanPath("b"), new BooleanPath("b"));
+        assertEquals(new NumberPath<Integer>(Integer.class,"n"), new NumberPath<Integer>(Integer.class,"n"));
+        
+    }
+    
 }

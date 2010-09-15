@@ -29,5 +29,20 @@ public class ConstantMixin<T> extends MixinBase<T> implements Constant<T> {
     public <R, C> R accept(Visitor<R, C> v, C context) {
         return v.visit(this, context);
     }
+    
+    @Override
+    public boolean equals(Object o){
+        if (o == this){
+            return true;
+        }else if (o instanceof Constant<?>){
+            return ((Constant<?>)o).getConstant().equals(constant);
+        }else{
+            return false;
+        }
+    }
+    
+    public int hashCode(){
+        return constant.hashCode();
+    }
 
 }

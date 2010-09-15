@@ -10,7 +10,6 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.DateTimeExpression;
@@ -42,7 +41,7 @@ public class DetachableMixin implements Detachable{
     }
 
     @Override
-    public BooleanExpression exists(){
+    public Predicate exists(){
         if (queryMixin.getMetadata().getJoins().isEmpty()){
             throw new IllegalArgumentException("No sources given");
         }
@@ -66,7 +65,7 @@ public class DetachableMixin implements Detachable{
     }
 
     @Override
-    public BooleanExpression notExists(){
+    public Predicate notExists(){
         return exists().not();
     }
 

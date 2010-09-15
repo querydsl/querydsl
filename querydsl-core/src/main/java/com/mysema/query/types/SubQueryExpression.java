@@ -6,7 +6,6 @@
 package com.mysema.query.types;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.query.Detachable;
 
 /**
@@ -26,7 +25,7 @@ public interface SubQueryExpression<T> extends Expression<T>{
      *
      * @return
      */
-    BooleanExpression exists();
+    Predicate exists();
 
     /**
      * Get the query metadata for the subquery
@@ -40,6 +39,6 @@ public interface SubQueryExpression<T> extends Expression<T>{
      *
      * @return
      */
-    BooleanExpression notExists();
+    Predicate notExists();
 
 }

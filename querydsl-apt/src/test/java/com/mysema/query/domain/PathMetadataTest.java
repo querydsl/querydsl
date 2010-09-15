@@ -12,10 +12,11 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
-import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.expr.StringConstant;
+import com.mysema.query.types.expr.StringExpression;
 
 public class PathMetadataTest {
 
@@ -29,6 +30,7 @@ public class PathMetadataTest {
 
     @SuppressWarnings("unchecked")
     @Test
+    @Ignore
     public void test() throws Exception{
         Field field = StringConstant.class.getDeclaredField("CACHE");
         field.setAccessible(true);

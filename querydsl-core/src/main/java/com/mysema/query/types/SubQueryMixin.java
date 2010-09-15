@@ -8,8 +8,6 @@ package com.mysema.query.types;
 import javax.annotation.Nullable;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.BooleanOperation;
 
 /**
  * Mixin implementation of the SubQuery interface
@@ -22,7 +20,7 @@ public class SubQueryMixin<T> extends MixinBase<T> implements SubQueryExpression
     private static final long serialVersionUID = 6775967804458163L;
 
     @Nullable
-    private volatile BooleanExpression exists;
+    private volatile Predicate exists;
 
     private final QueryMetadata metadata;
 
@@ -44,9 +42,9 @@ public class SubQueryMixin<T> extends MixinBase<T> implements SubQueryExpression
     }
 
     @Override
-    public BooleanExpression exists() {
+    public Predicate exists() {
         if (exists == null){
-            exists = BooleanOperation.create(Ops.EXISTS, this);
+            exists = new PredicateOperation(Ops.EXISTS, this);
         }
         return exists;
     }
@@ -61,7 +59,7 @@ public class SubQueryMixin<T> extends MixinBase<T> implements SubQueryExpression
     }
 
     @Override
-    public BooleanExpression notExists() {
+    public Predicate notExists() {
         return exists().not();
     }
     

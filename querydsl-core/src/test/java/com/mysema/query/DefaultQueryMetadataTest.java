@@ -67,6 +67,7 @@ public class DefaultQueryMetadataTest {
         in.close();
         
         assertEquals(metadata.getFlags(),     metadata2.getFlags());
+        assertEquals(metadata.getGroupBy().get(0),   metadata2.getGroupBy().get(0));
         assertEquals(metadata.getGroupBy(),   metadata2.getGroupBy());
         assertEquals(metadata.getHaving(),    metadata2.getHaving());
         assertEquals(metadata.getJoins(),     metadata2.getJoins());
