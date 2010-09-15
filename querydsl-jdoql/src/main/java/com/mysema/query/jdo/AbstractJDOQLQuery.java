@@ -30,7 +30,7 @@ import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.expr.QTuple;
+import com.mysema.query.types.QTuple;
 
 /**
  * Abstract base class for custom implementations of the JDOQLQuery interface.

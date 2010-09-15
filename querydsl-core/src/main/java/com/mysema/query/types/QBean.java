@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types.expr;
+package com.mysema.query.types;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,11 +14,6 @@ import java.util.Map;
 import org.apache.commons.collections15.BeanMap;
 
 import com.mysema.query.QueryException;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.Visitor;
 
 /**
  * QBean is a JavaBean populating projection type
@@ -27,10 +22,12 @@ import com.mysema.query.types.Visitor;
  *
  * @param <T>
  */
-public class QBean<T> extends SimpleExpression<T> implements FactoryExpression<T>{
+public class QBean<T> implements FactoryExpression<T>{
  
     private static final long serialVersionUID = -8210214512730989778L;
 
+    private final Class<T> type;
+    
     private final Map<String,Expression<?>> bindings;
     
     private final List<Expression<?>> args;
@@ -46,13 +43,13 @@ public class QBean<T> extends SimpleExpression<T> implements FactoryExpression<T
     }
         
     public QBean(Class<T> type, Map<String,Expression<?>> bindings) {
-        super(type);
+        this.type = type;
         this.args = new ArrayList<Expression<?>>(bindings.values());        
         this.bindings = bindings;
     }
     
     public QBean(Class<T> type, Expression<?>... args) {
-        super(type);
+        this.type = type;
         this.args = Arrays.asList(args);
         bindings = createBindings(args);        
     }
@@ -118,6 +115,11 @@ public class QBean<T> extends SimpleExpression<T> implements FactoryExpression<T
     @Override
     public List<Expression<?>> getArgs() {
         return args;
+    }
+
+    @Override
+    public Class<? extends T> getType() {
+        return type;
     }    
 
 }

@@ -14,7 +14,6 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.query.types.expr.QBean;
 import com.mysema.query.types.path.BooleanPath;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;

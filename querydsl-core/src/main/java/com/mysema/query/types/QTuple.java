@@ -3,15 +3,12 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types.expr;
+package com.mysema.query.types;
 
 import java.util.Arrays;
 import java.util.List;
 
 import com.mysema.query.Tuple;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Visitor;
 
 /**
  * QTuple represents a projection of type Tuple
@@ -19,12 +16,11 @@ import com.mysema.query.types.Visitor;
  * @author tiwe
  * 
  */
-public class QTuple extends SimpleExpression<Tuple> implements FactoryExpression<Tuple>{
+public class QTuple implements FactoryExpression<Tuple>{
 
     private final List<Expression<?>> args;
     
     public QTuple(Expression<?>... args) {
-        super(Tuple.class);
         this.args = Arrays.asList(args);
     }
 
@@ -80,6 +76,11 @@ public class QTuple extends SimpleExpression<Tuple> implements FactoryExpression
     @Override
     public List<Expression<?>> getArgs() {
         return args;
+    }
+
+    @Override
+    public Class<? extends Tuple> getType() {
+        return Tuple.class;
     }
 
 }

@@ -12,7 +12,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.Tuple;
-import com.mysema.query.types.expr.QTuple;
+import com.mysema.query.types.QTuple;
 
 public class SerializationTest extends AbstractQueryTest{
 

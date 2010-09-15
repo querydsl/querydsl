@@ -10,6 +10,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.mysema.query.Tuple;
+import com.mysema.query.types.QTuple;
 import com.mysema.query.types.path.BooleanPath;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
