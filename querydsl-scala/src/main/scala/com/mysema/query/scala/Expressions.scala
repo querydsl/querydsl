@@ -143,9 +143,9 @@ trait NumberExpression[T <: Number with Comparable[T] ] extends ComparableExpres
 
     def _round(): NumberExpression[T];
 
-    def _as(right: Path[T]): NumberExpression[T];
+//    override def _as(right: Path[T]) = number(getType, ALIAS.asInstanceOf[Operator[T]], this, right);
 
-    def _as(right: String): NumberExpression[T];
+//    override def _as(alias: String): NumberExpression[T] = _as(new PathImpl[T](getType, alias));
 
     def _sum(): NumberExpression[T];
 
@@ -201,9 +201,9 @@ trait BooleanExpression extends ComparableExpression[java.lang.Boolean] {
 
     def _or(right: Predicate): BooleanExpression;
 
-    def _as(right: Path[Boolean]): BooleanExpression;
+    override def _as(right: Path[T]) = boolean(ALIAS.asInstanceOf[Operator[T]], this, right);
 
-    def _as(right: String): BooleanExpression;
+    override def _as(alias: String): BooleanExpression[T] = _as(new PathImpl[T](getType, alias));
 
     def _not(): BooleanExpression;
 
@@ -269,9 +269,9 @@ trait StringExpression extends ComparableExpression[String] {
 
     def _prepend(right: String): StringExpression;
 
-    def _as(right: Path[String]): StringExpression;
+    override def _as(right: Path[String]): StringExpression;
 
-    def _as(right: String): StringExpression;
+    override def _as(right: String): StringExpression;
 
     def _stringValue(): StringExpression;
 
@@ -313,9 +313,9 @@ trait TemporalExpression[T <: Comparable[_]] extends ComparableExpression[T] {
 
 trait TimeExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
-    def _as(right: Path[T]): TimeExpression[T];
+    override def _as(right: Path[T]): TimeExpression[T];
 
-    def _as(right: String): TimeExpression[T];
+    override def _as(right: String): TimeExpression[T];
 
     def _hour(): NumberExpression[Integer];
 
@@ -333,9 +333,9 @@ trait DateTimeExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
     def _max(): DateTimeExpression[T];
 
-    def _as(right: Path[T]): DateTimeExpression[T];
+    override def _as(right: Path[T]): DateTimeExpression[T];
 
-    def _as(right: String): DateTimeExpression[T];
+    override def _as(right: String): DateTimeExpression[T];
     
     def _dayOfMonth(): NumberExpression[Integer];
 
@@ -367,9 +367,9 @@ trait DateExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
     def _max(): DateExpression[T];
 
-    def _as(right: Path[T]): DateExpression[T];
+    override def _as(right: Path[T]): DateExpression[T];
 
-    def _as(right: String): DateExpression[T];
+    override def _as(right: String): DateExpression[T];
 
     def _dayOfMonth(): NumberExpression[Integer];
 
@@ -389,11 +389,11 @@ trait DateExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
 trait EnumExpression[T <: Enum[T]] extends ComparableExpression[T] {
 
-    def _ordinal() = number(classOf[Integer]
+    def _ordinal() = number(classOf[Integer], Ops.ORDINAL, this);
 
-    def _as(right: Path[T]): EnumExpression[T];
+    override def _as(right: Path[T]): EnumExpression[T];
 
-    def _as(right: String): EnumExpression[T];
+    override def _as(right: String): EnumExpression[T];
 
 }
 
