@@ -15,6 +15,8 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.Sort;
 
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
@@ -77,6 +79,11 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
     @Override
     public LuceneQuery limit(long limit) {
         return queryMixin.limit(limit);
+    }
+    
+    public CloseableIterator<Document> iterate(){
+        // TODO : optimize
+        return new IteratorAdapter<Document>(list().iterator());
     }
 
     @Override

@@ -13,6 +13,8 @@ import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -86,6 +88,11 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
             }
         }
         return fullTextQuery;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public CloseableIterator<T> iterate(){
+        return new IteratorAdapter<T>(createQuery(false).iterate());
     }
 
     @Override

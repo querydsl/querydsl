@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mysema.commons.lang.CloseableIterator;
+
 /**
  * SimpleProjectable defines a simpler projection interface than {@link Projectable}.
  *
@@ -16,6 +18,13 @@ import javax.annotation.Nullable;
  * @see Projectable
  */
 public interface SimpleProjectable<T> {
+    
+    /**
+     * Get the projection as a typed closeable Iterator
+     * 
+     * @return
+     */
+    CloseableIterator<T> iterate();
 
     /**
      * Get the projection as a typed List

@@ -7,6 +7,7 @@ package com.mysema.query.support;
 
 import java.util.List;
 
+import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
 import com.mysema.query.QueryModifiers;
@@ -61,6 +62,11 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     public SimpleQueryAdapter<T> limit(long limit) {
         query.limit(limit);
         return this;
+    }
+    
+    @Override
+    public CloseableIterator<T> iterate(){
+        return projectable.iterate(projection);
     }
 
     @Override
