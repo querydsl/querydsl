@@ -25,14 +25,14 @@
 <dependency>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-apt</artifactId>
-  <version>1.8.2</version>
+  <version>${querydsl.version}</version>
   <scope>provided</scope>
 </dependency>        
     
 <dependency>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-jdoql</artifactId>
-  <version>1.8.2</version>
+  <version>${querydsl.version}</version>
 </dependency>
 
 <dependency>
