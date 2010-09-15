@@ -114,7 +114,7 @@ public class MongodbSerializerTest {
         assertEquals(expected.toString(), result.toString());
     }
 
-    private static BasicDBObject dbo(String key, Object... value) {
+    public static BasicDBObject dbo(String key, Object... value) {
         if (value.length == 1) {
             return new BasicDBObject(key, value[0]);
         }
