@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.path.StringPath;
 
-public class ESimpleTest {
+public class SimpleExpressionTest {
     
     @Test
     public void as_usage(){

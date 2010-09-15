@@ -14,7 +14,7 @@ import org.junit.Test;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Operation;
 
-public class PNumberTest {
+public class NumberPathTest {
 
     private NumberPath<Byte> bytePath = new NumberPath<Byte>(Byte.class, "bytePath");
 

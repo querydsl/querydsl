@@ -13,7 +13,7 @@ import com.mysema.query.types.expr.NumberConstant;
 import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.expr.StringConstant;
 
-public class EConstructorTest {
+public class ConstructorExpressionTest {
 
     public static class Projection{
 

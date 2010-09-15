@@ -12,7 +12,7 @@ import org.junit.Test;
 import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.expr.StringConstant;
 
-public class EStringConstTest {
+public class StringConstantTest {
 
     @Test
     public void test(){

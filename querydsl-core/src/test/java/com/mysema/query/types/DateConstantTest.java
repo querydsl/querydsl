@@ -15,7 +15,7 @@ import org.junit.Test;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.DateConstant;
 
-public class EDateConstTest {
+public class DateConstantTest {
 
     @Test
     public void test(){

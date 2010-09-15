@@ -15,7 +15,7 @@ import org.junit.Test;
 import com.mysema.query.types.expr.DateTimeExpression;
 import com.mysema.query.types.expr.DateTimeConstant;
 
-public class EDateTimeConstTest {
+public class DateTimeConstantTest {
 
     @Test
     public void test(){

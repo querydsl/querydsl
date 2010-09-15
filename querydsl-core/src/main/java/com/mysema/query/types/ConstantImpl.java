@@ -10,6 +10,8 @@ package com.mysema.query.types;
  */
 public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
 
+    // TODO : add cacheing for Numbers & Strings
+    
     private static final long serialVersionUID = -3898138057967814118L;
 
     private final T constant;

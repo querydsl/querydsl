@@ -1,41 +1,59 @@
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
+ *
+ */
 package com.mysema.query.scala;
 
 import com.mysema.query.types._;
+import com.mysema.query.types.Ops._;
+
+import com.mysema.query.scala.Constants._;
+import com.mysema.query.scala.Operations._;
+
 import java.util.Collection;
+import java.util.Arrays._;
+
+object Constants {
+    
+    def constant[T](value: T) = new ConstantImpl(value);
+    
+}
 
 trait SimpleExpression[T] extends Expression[T] {
 
-    def _count(): NumberExpression[Integer];
+    def _count() = number[java.lang.Long](classOf[java.lang.Long], AggOps.COUNT_AGG, this);
 
-    def _in(right: Collection[T]): BooleanExpression;
+    def _in(right: Collection[T]) = boolean(IN, this, constant(right));
 
-    def _in(right: Array[T]): BooleanExpression;
+    def _in(right: T*) : BooleanOperation = _in(asList(right:_*));
 
-    def _in(right: CollectionExpression[T]): BooleanExpression;
+    def _in(right: CollectionExpression[T]) = boolean(IN, this, right);
 
-    def _eq(right: T): BooleanExpression;
+    def _eq(right: T): BooleanExpression = _eq(constant(right));
 
-    def _eq(right: Expression[T]): BooleanExpression;
+    def _eq(right: Expression[T]) = boolean(EQ_OBJECT, this, right);
 
-    def _as(right: Path[T]): SimpleExpression[T];
+    // TODO : get rid of asInstanceOf
+    def _as(right: Path[T]): SimpleExpression[T] = simple(getType, ALIAS.asInstanceOf[Operator[T]], this, right);
 
-    def _as(right: String): SimpleExpression[T];
+    def _as(alias: String): SimpleExpression[T] = _as(new PathImpl[T](getType, alias)); 
 
-    def _countDistinct(): NumberExpression[Long];
+    def _countDistinct() = number[java.lang.Long](classOf[java.lang.Long], AggOps.COUNT_DISTINCT_AGG, this);
 
-    def _isNotNull(): BooleanExpression;
+    def _isNotNull() = boolean(IS_NOT_NULL, this);
 
-    def _isNull(): BooleanExpression;
+    def _isNull() = boolean(IS_NULL, this);
 
-    def _ne(right: T): BooleanExpression;
+    def _ne(right: T): BooleanExpression = _ne(constant(right));
 
-    def _ne(right: Expression[T]): BooleanExpression;
+    def _ne(right: Expression[T]) = boolean(NE_OBJECT, this, right);
 
-    def _notIn(right: Collection[T]): BooleanExpression;
+    def _notIn(right: Collection[T]) = _in(right)._not();
 
-    def _notIn(right: Array[T]): BooleanExpression;
+    def _notIn(right: T*) = _in(right:_*)._not();
 
-    def _notIn(right: CollectionExpression[T]): BooleanExpression;
+    def _notIn(right: CollectionExpression[T]) = _in(right)._not();
 
 }
 
@@ -43,43 +61,53 @@ trait CollectionExpression[T] extends SimpleExpression[T] {
     
 }
 
-trait ComparableExpression[T] extends SimpleExpression[T] {
+trait ComparableExpressionBase[T <: Comparable[_]] extends SimpleExpression[T] {
+    
+    def _asc = new OrderSpecifier[T](Order.ASC, this); 
+    
+    def _desc = new OrderSpecifier[T](Order.DESC, this);
+    
+}
 
-    def _lt(right: T): BooleanExpression;
+trait ComparableExpression[T <: Comparable[_]] extends ComparableExpressionBase[T] {
 
-    def _lt(right: Expression[T]): BooleanExpression;
+    def _lt(right: T) : BooleanExpression = _lt(constant(right));
 
-    def _as(right: Path[T]): ComparableExpression[T];
+    def _lt(right: Expression[T]): BooleanExpression = boolean(BEFORE, this, right); 
 
-    def _as(right: String): ComparableExpression[T];
+    // TODO : get rid of asInstanceOf
+    override def _as(right: Path[T]) = comparable(getType, ALIAS.asInstanceOf[Operator[T]], this, right);
 
-    def _between(left: T, right: T): BooleanExpression;
+    override def _as(alias: String): ComparableExpression[T] = _as(new PathImpl[T](getType, alias));
 
-    def _between(left: Expression[T], right: Expression[T]): BooleanExpression;
+    def _between(left: T, right: T): BooleanExpression = _between(constant(left), constant(right));
 
-    def _notBetween(left: T, right: T): BooleanExpression;
+    def _between(left: Expression[T], right: Expression[T]) = boolean(BETWEEN, this, left, right);;
 
-    def _notBetween(left: Expression[T], right: Expression[T]): BooleanExpression;
+    def _notBetween(left: T, right: T): BooleanExpression = _notBetween(constant(left), constant(right));
 
-    def _gt(right: T): BooleanExpression;
+    def _notBetween(left: Expression[T], right: Expression[T]) = _between(left, right)._not();
 
-    def _gt(right: Expression[T]): BooleanExpression;
+    def _gt(right: T): BooleanExpression = _gt(constant(right));
 
-    def _goe(right: T): BooleanExpression;
+    def _gt(right: Expression[T]) = boolean(AFTER, this, right);
 
-    def _goe(right: Expression[T]): BooleanExpression;
+    def _goe(right: T): BooleanExpression = _goe(constant(right));
 
-    def _loe(right: T): BooleanExpression;
+    def _goe(right: Expression[T]) = boolean(AOE, this, right);
 
-    def _loe(right: Expression[T]): BooleanExpression;
+    def _loe(right: T): BooleanExpression = _loe(constant(right));
+
+    def _loe(right: Expression[T]) = boolean(BOE, this, right);
 
 }
 
-trait NumberExpression[T] extends SimpleExpression[T] {
+trait NumberExpression[T <: Number with Comparable[T] ] extends ComparableExpressionBase[T] {
 
-    def _add(right: Expression[Number]): NumberExpression[T];
+    // TODO : get rid of asInstanceOf
+//    def _add(right: Expression[Number]) = number(getType, ADD, this, right);
 
-    def _add(right: Number): NumberExpression[T];
+//    def _add(right: Number) : NumberExpression[T] = _add(constant(right));
 
     def _abs(): NumberExpression[T];
 
@@ -89,23 +117,23 @@ trait NumberExpression[T] extends SimpleExpression[T] {
 
     def _max(): NumberExpression[T];
 
-    def _lt(right: Number): BooleanExpression;
+    def _lt(right: Number) : BooleanExpression = _lt(constant(right));
 
     def _lt(right: Expression[Number]): BooleanExpression;
 
     def _in(right: Array[Number]): BooleanExpression;
 
-    def _byteValue(): NumberExpression[Byte];
+    def _byteValue(): NumberExpression[java.lang.Byte];
 
-    def _doubleValue(): NumberExpression[Double];
+    def _doubleValue(): NumberExpression[java.lang.Double];
 
-    def _floatValue(): NumberExpression[Float];
+    def _floatValue(): NumberExpression[java.lang.Float];
 
-    def _intValue(): NumberExpression[Integer];
+    def _intValue(): NumberExpression[java.lang.Integer];
 
-    def _longValue(): NumberExpression[Long];
+    def _longValue(): NumberExpression[java.lang.Long];
 
-    def _shortValue(): NumberExpression[Short];
+    def _shortValue(): NumberExpression[java.lang.Short];
 
     def _ceil(): NumberExpression[T];
 
@@ -167,7 +195,7 @@ trait NumberExpression[T] extends SimpleExpression[T] {
 
 }
 
-trait BooleanExpression extends ComparableExpression[Boolean] {
+trait BooleanExpression extends ComparableExpression[java.lang.Boolean] {
 
     def _and(right: Predicate): BooleanExpression;
 
@@ -271,7 +299,7 @@ trait StringExpression extends ComparableExpression[String] {
 
 }
 
-trait TemporalExpression[T] extends ComparableExpression[T] {
+trait TemporalExpression[T <: Comparable[_]] extends ComparableExpression[T] {
 
     def _after(right: T): BooleanExpression;
 
@@ -283,7 +311,7 @@ trait TemporalExpression[T] extends ComparableExpression[T] {
 
 }
 
-trait TimeExpression[T] extends TemporalExpression[T] {
+trait TimeExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
     def _as(right: Path[T]): TimeExpression[T];
 
@@ -299,7 +327,7 @@ trait TimeExpression[T] extends TemporalExpression[T] {
 
 }
 
-trait DateTimeExpression[T] extends TemporalExpression[T] {
+trait DateTimeExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
     def _min(): DateTimeExpression[T];
 
@@ -333,7 +361,7 @@ trait DateTimeExpression[T] extends TemporalExpression[T] {
 
 }
 
-trait DateExpression[T] extends TemporalExpression[T] {
+trait DateExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
     def _min(): DateExpression[T];
 
@@ -359,9 +387,9 @@ trait DateExpression[T] extends TemporalExpression[T] {
 
 }
 
-trait EnumExpression[T] extends ComparableExpression[T] {
+trait EnumExpression[T <: Enum[T]] extends ComparableExpression[T] {
 
-    def _ordinal(): NumberExpression[Integer];
+    def _ordinal() = number(classOf[Integer]
 
     def _as(right: Path[T]): EnumExpression[T];
 

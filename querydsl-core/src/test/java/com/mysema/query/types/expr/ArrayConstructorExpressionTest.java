@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import com.mysema.query.types.path.StringPath;
 
-public class EArrayConstructorTest {
+public class ArrayConstructorExpressionTest {
 
     @SuppressWarnings("unchecked")
     @Test

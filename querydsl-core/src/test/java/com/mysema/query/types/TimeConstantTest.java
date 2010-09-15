@@ -15,7 +15,7 @@ import org.junit.Test;
 import com.mysema.query.types.expr.TimeExpression;
 import com.mysema.query.types.expr.TimeConstant;
 
-public class ETimeConstTest {
+public class TimeConstantTest {
 
     @Test
     public void test(){
