@@ -24,7 +24,7 @@ import com.mysema.query.types.PathMixin;
  * @see <a href="http://en.wikipedia.org/wiki/Gregorian_calendar">Gregorian calendar</a>
  */
 @SuppressWarnings({"unchecked"})
-public abstract class DateTimeExpression<D extends Comparable> extends DateExpression<D> {
+public abstract class DateTimeExpression<D extends Comparable> extends TemporalExpression<D> {
 
     private static final DateTimeExpression<Date> CURRENT_DATE = currentDate(Date.class);
 
@@ -67,12 +67,20 @@ public abstract class DateTimeExpression<D extends Comparable> extends DateExpre
     public static <T extends Comparable> DateTimeExpression<T> currentTimestamp(Class<T> cl) {
         return DateTimeOperation.create(cl, Ops.DateTimeOps.CURRENT_TIMESTAMP);
     }
+    
+
+    @Nullable
+    private volatile NumberExpression<Integer> dayOfMonth, dayOfWeek, dayOfYear;
 
     @Nullable
     private volatile NumberExpression<Integer> hours, minutes, seconds, milliseconds;
 
+    
     @Nullable
     private volatile DateTimeExpression<D> min, max;
+
+    @Nullable
+    private volatile NumberExpression<Integer> week, month, year, yearMonth;
 
     public DateTimeExpression(Class<? extends D> type) {
         super(type);
@@ -82,10 +90,48 @@ public abstract class DateTimeExpression<D extends Comparable> extends DateExpre
     public DateTimeExpression<D> as(Path<D> alias) {
         return DateTimeOperation.create(getType(),(Operator)Ops.ALIAS, this, alias);
     }
-    
+
     @Override
     public DateTimeExpression as(String alias) {
         return DateTimeOperation.create(getType(), (Operator)Ops.ALIAS, this, new PathMixin<D>(getType(), alias));
+    }
+
+    /**
+     * Get a day of month expression (range 1-31)
+     *
+     * @return
+     */
+    public NumberExpression<Integer> dayOfMonth(){
+        if (dayOfMonth == null){
+            dayOfMonth = NumberOperation.create(Integer.class, Ops.DateTimeOps.DAY_OF_MONTH, this);
+        }
+        return dayOfMonth;
+    }
+
+    /**
+     * Get a day of week expression (range 1-7 / SUN-SAT)
+     * <p>NOT supported in JDOQL and not in Derby</p>
+     *
+     * @return
+     */
+    public NumberExpression<Integer> dayOfWeek() {
+        if (dayOfWeek == null){
+            dayOfWeek = NumberOperation.create(Integer.class, Ops.DateTimeOps.DAY_OF_WEEK, this);
+        }
+        return dayOfWeek;
+    }
+
+    /**
+     * Get a day of year expression (range 1-356)
+     * <p>NOT supported in JDOQL and not in Derby</p>
+     *
+     * @return
+     */
+    public NumberExpression<Integer> dayOfYear() {
+        if (dayOfYear == null){
+            dayOfYear = NumberOperation.create(Integer.class, Ops.DateTimeOps.DAY_OF_YEAR, this);
+        }
+        return dayOfYear;
     }
 
     /**
@@ -105,7 +151,6 @@ public abstract class DateTimeExpression<D extends Comparable> extends DateExpre
      *
      * @return max(this)
      */
-    @Override
     public DateTimeExpression<D> max(){
         if (max == null){
             max = DateTimeOperation.create((Class<D>)getType(), Ops.AggOps.MAX_AGG, this);
@@ -125,13 +170,12 @@ public abstract class DateTimeExpression<D extends Comparable> extends DateExpre
         }
         return milliseconds;
     }
-
+    
     /**
      * Get the minimum value of this expression (aggregation)
      *
      * @return min(this)
      */
-    @Override
     public DateTimeExpression<D> min(){
         if (min == null){
             min = DateTimeOperation.create((Class<D>)getType(), Ops.AggOps.MIN_AGG, this);
@@ -152,6 +196,18 @@ public abstract class DateTimeExpression<D extends Comparable> extends DateExpre
     }
 
     /**
+     * Get a month expression (range 1-12 / JAN-DEC)
+     *
+     * @return
+     */
+    public NumberExpression<Integer> month(){
+        if (month == null){
+            month = NumberOperation.create(Integer.class, Ops.DateTimeOps.MONTH, this);
+        }
+        return month;
+    }
+
+    /**
      * Get a seconds expression (range 0-59)
      *
      * @return
@@ -161,6 +217,42 @@ public abstract class DateTimeExpression<D extends Comparable> extends DateExpre
             seconds = NumberOperation.create(Integer.class, Ops.DateTimeOps.SECOND, this);
         }
         return seconds;
+    }
+
+    /**
+     * Get a week expression
+     *
+     * @return
+     */
+    public NumberExpression<Integer> week() {
+        if (week == null){
+            week = NumberOperation.create(Integer.class, Ops.DateTimeOps.WEEK,  this);
+        }
+        return week;
+    }
+
+    /**
+     * Get a year expression
+     *
+     * @return
+     */
+    public NumberExpression<Integer> year(){
+        if (year == null){
+            year = NumberOperation.create(Integer.class, Ops.DateTimeOps.YEAR, this);
+        }
+        return year;
+    }
+
+    /**
+     * Get a year / month expression
+     *
+     * @return
+     */
+    public NumberExpression<Integer> yearMonth(){
+        if (yearMonth == null){
+            yearMonth = NumberOperation.create(Integer.class, Ops.DateTimeOps.YEAR_MONTH, this);
+        }
+        return yearMonth;
     }
 
 }

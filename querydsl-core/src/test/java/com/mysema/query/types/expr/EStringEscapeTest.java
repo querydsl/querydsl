@@ -9,6 +9,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.mysema.query.types.StringEscape;
+
 public class EStringEscapeTest {
 
     @Test

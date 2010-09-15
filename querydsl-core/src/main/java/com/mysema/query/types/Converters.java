@@ -8,7 +8,6 @@ package com.mysema.query.types;
 import org.apache.commons.collections15.Transformer;
 
 import com.mysema.query.types.expr.StringExpression;
-import com.mysema.query.types.expr.StringEscape;
 
 /**
  * @author tiwe

@@ -13,8 +13,6 @@ import java.util.Map;
 
 import org.apache.commons.collections15.BeanMap;
 
-import com.mysema.query.QueryException;
-
 /**
  * QBean is a JavaBean populating projection type
  * 
@@ -84,9 +82,9 @@ public class QBean<T> implements FactoryExpression<T>{
             }
             return rv;
         } catch (InstantiationException e) {
-            throw new QueryException(e.getMessage(),e);
+            throw new ExpressionException(e.getMessage(),e);
         } catch (IllegalAccessException e) {
-            throw new QueryException(e.getMessage(),e);
+            throw new ExpressionException(e.getMessage(),e);
         }                
     }
 

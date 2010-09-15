@@ -3,9 +3,10 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types.expr;
+package com.mysema.query.types;
 
-import com.mysema.query.types.Constant;
+import com.mysema.query.types.expr.StringConstant;
+import com.mysema.query.types.expr.StringExpression;
 
 // TODO : move somewhere else
 public final class StringEscape {

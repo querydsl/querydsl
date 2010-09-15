@@ -101,16 +101,6 @@ public abstract class SimpleExpression<D> implements Expression<D> {
     }
 
     /**
-     * Used for safe casts from Path, SubQuery, Operation and Custom to Expr
-     *
-     * @return
-     */
-    public final SimpleExpression<D> asExpr(){
-        return this;
-    }
-
-
-    /**
      * Get the <code>count(this)</code> expression
      *
      * @return count(this)
