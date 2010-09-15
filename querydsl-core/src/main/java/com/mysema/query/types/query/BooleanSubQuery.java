@@ -8,7 +8,7 @@ package com.mysema.query.types.query;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.SubQueryMixin;
+import com.mysema.query.types.SubQueryImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
 
@@ -21,10 +21,10 @@ public final class BooleanSubQuery extends BooleanExpression implements SubQuery
 
     private static final long serialVersionUID = -64156984110154969L;
 
-    private final SubQueryMixin<Boolean> subQueryMixin;
+    private final SubQueryImpl<Boolean> subQueryMixin;
 
     public BooleanSubQuery(QueryMetadata md) {
-        subQueryMixin = new SubQueryMixin<Boolean>(Boolean.class, md);
+        subQueryMixin = new SubQueryImpl<Boolean>(Boolean.class, md);
     }
 
     @Override

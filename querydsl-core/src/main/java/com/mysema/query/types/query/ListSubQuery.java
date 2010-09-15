@@ -13,7 +13,7 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.SubQueryMixin;
+import com.mysema.query.types.SubQueryImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.CollectionExpressionBase;
 import com.mysema.query.types.expr.SimpleOperation;
@@ -31,13 +31,13 @@ public final class ListSubQuery<A> extends CollectionExpressionBase<List<A>,A> i
 
     private final Class<A> elementType;
 
-    private final SubQueryMixin<List<A>> subQueryMixin;
+    private final SubQueryImpl<List<A>> subQueryMixin;
 
     @SuppressWarnings("unchecked")
     public ListSubQuery(Class<A> elementType, QueryMetadata md) {
         super((Class)List.class);
         this.elementType = elementType;
-        this.subQueryMixin = new SubQueryMixin<List<A>>((Class)List.class, md);
+        this.subQueryMixin = new SubQueryImpl<List<A>>((Class)List.class, md);
     }
 
     @Override

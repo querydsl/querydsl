@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @param <T>
  */
-public class TemplateMixin<T> extends MixinBase<T> implements TemplateExpression<T> {
+public class TemplateImpl<T> extends ExpressionBase<T> implements TemplateExpression<T> {
 
     private static final long serialVersionUID = 6951623726800809083L;
 
@@ -23,7 +23,7 @@ public class TemplateMixin<T> extends MixinBase<T> implements TemplateExpression
 
     private final Template template;
 
-    public TemplateMixin(Class<? extends T> type, List<Expression<?>> args, Template template){
+    public TemplateImpl(Class<? extends T> type, List<Expression<?>> args, Template template){
         super(type);
         this.args = args;
         this.template = template;

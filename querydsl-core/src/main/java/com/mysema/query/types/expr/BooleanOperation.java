@@ -10,7 +10,7 @@ import java.util.List;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
-import com.mysema.query.types.OperationMixin;
+import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Visitor;
@@ -36,7 +36,7 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
     }
 
     BooleanOperation(Operator<? super Boolean> op, List<Expression<?>> args) {
-        opMixin = new OperationMixin<Boolean>(Boolean.class, op, args);
+        opMixin = new OperationImpl<Boolean>(Boolean.class, op, args);
     }
 
     @Override

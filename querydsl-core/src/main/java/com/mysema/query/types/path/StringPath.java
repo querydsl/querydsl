@@ -10,7 +10,7 @@ import java.lang.reflect.AnnotatedElement;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.PathMixin;
+import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.StringExpression;
 
@@ -31,7 +31,7 @@ public class StringPath extends StringExpression implements Path<String> {
     }
 
     public StringPath(PathMetadata<?> metadata) {
-        this.pathMixin = new PathMixin<String>(String.class, metadata);
+        this.pathMixin = new PathImpl<String>(String.class, metadata);
     }
 
     public StringPath(String var) {

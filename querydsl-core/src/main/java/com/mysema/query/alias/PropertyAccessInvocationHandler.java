@@ -33,7 +33,8 @@ import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.CollectionExpression;
 import com.mysema.query.types.expr.MapExpression;
-import com.mysema.query.types.path.*;
+import com.mysema.query.types.path.ListPath;
+import com.mysema.query.types.path.MapPath;
 import com.mysema.util.ReflectionUtils;
 
 /**
@@ -55,9 +56,12 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
     private final Map<Object, Object> propToObj = new HashMap<Object, Object>();
 
-    public PropertyAccessInvocationHandler(Expression<?> host, AliasFactory aliasFactory) {
+    private final PathFactory pathFactory;
+    
+    public PropertyAccessInvocationHandler(Expression<?> host, AliasFactory aliasFactory, PathFactory pathFactory) {
         this.hostExpression = host;
         this.aliasFactory = aliasFactory;
+        this.pathFactory = pathFactory;
     }
 
     //CHECKSTYLE:OFF
@@ -133,102 +137,103 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
     @SuppressWarnings({ "unchecked"})
     @Nullable
-    private <T> T newInstance(Class<T> type, Type genericType, Object parent, Object propKey, PathMetadata<?> pm) {
+    private <T> T newInstance(Class<T> type, Type genericType, Object parent, Object propKey, PathMetadata<?> metadata) {
         Expression<?> path;
         Object rv;
 
         if (String.class.equals(type)) {
-            path = new StringPath(pm);
+            path = pathFactory.createStringPath(metadata);
             // null is used as a return value to block method invocations on Strings
             rv = null;
 
         } else if (Integer.class.equals(type) || int.class.equals(type)) {
-            path = new NumberPath<Integer>(Integer.class, pm);
+            path = pathFactory.createNumberPath(Integer.class, metadata);
             rv = Integer.valueOf(RETURN_VALUE);
 
         } else if (Byte.class.equals(type) || byte.class.equals(type)) {
-            path = new NumberPath<Byte>(Byte.class, pm);
+            path = pathFactory.createNumberPath(Byte.class, metadata);
             rv = Byte.valueOf((byte)RETURN_VALUE);
 
         } else if (java.util.Date.class.equals(type)) {
-            path = new DateTimePath<Date>(Date.class, pm);
+            path = pathFactory.createDateTimePath((Class)type, metadata);
             rv = new Date();
 
         } else if (java.sql.Timestamp.class.equals(type)) {
-            path = new DateTimePath<Timestamp>(Timestamp.class, pm);
+            path = pathFactory.createDateTimePath((Class)type, metadata);
             rv = new Timestamp(System.currentTimeMillis());
 
         } else if (java.sql.Date.class.equals(type)) {
-            path = new DatePath<java.sql.Date>(java.sql.Date.class, pm);
+            path = pathFactory.createDatePath((Class)type, metadata);
             rv = new java.sql.Date(System.currentTimeMillis());
 
         } else if (java.sql.Time.class.equals(type)) {
-            path = new TimePath<java.sql.Time>(java.sql.Time.class, pm);
+            path = pathFactory.createTimePath((Class)type, metadata);
             rv = new java.sql.Time(System.currentTimeMillis());
 
         } else if (Long.class.equals(type) || long.class.equals(type)) {
-            path = new NumberPath<Long>(Long.class, pm);
+            path = pathFactory.createNumberPath(Long.class, metadata);
             rv = Long.valueOf(RETURN_VALUE);
 
         } else if (Short.class.equals(type) || short.class.equals(type)) {
-            path = new NumberPath<Short>(Short.class, pm);
+            path = pathFactory.createNumberPath(Short.class, metadata);
             rv = Short.valueOf((short) RETURN_VALUE);
 
         } else if (Double.class.equals(type) || double.class.equals(type)) {
-            path = new NumberPath<Double>(Double.class, pm);
+            path = pathFactory.createNumberPath(Double.class, metadata);
             rv = Double.valueOf(RETURN_VALUE);
 
         } else if (Float.class.equals(type) || float.class.equals(type)) {
-            path = new NumberPath<Float>(Float.class, pm);
+            path = pathFactory.createNumberPath(Float.class, metadata);
             rv = Float.valueOf(RETURN_VALUE);
 
         } else if (BigInteger.class.equals(type)) {
-            path = new NumberPath<BigInteger>(BigInteger.class, pm);
+            path = pathFactory.createNumberPath((Class)type, metadata);
             rv = BigInteger.valueOf(RETURN_VALUE);
 
         } else if (BigDecimal.class.equals(type)) {
-            path = new NumberPath<BigDecimal>(BigDecimal.class, pm);
+            path = pathFactory.createNumberPath((Class)type, metadata);
             rv = BigDecimal.valueOf(RETURN_VALUE);
 
         } else if (Boolean.class.equals(type) || boolean.class.equals(type)) {
-            path = new BooleanPath(pm);
+            path = pathFactory.createBooleanPath(metadata);
             rv = Boolean.TRUE;
 
         } else if (List.class.isAssignableFrom(type)) {
             Class<Object> elementType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
-            path = new ListPath<Object,EntityPathBase<Object>>(elementType, (Class)EntityPathBase.class, pm);
+            path = pathFactory.createListPath(elementType, metadata);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Set.class.isAssignableFrom(type)) {
             Class<?> elementType = ReflectionUtils.getTypeParameter(genericType, 0);
-            path = new SetPath(elementType, elementType.getName(), pm);
+            path = pathFactory.createSetPath(elementType, metadata);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Collection.class.isAssignableFrom(type)) {
             Class<?> elementType = ReflectionUtils.getTypeParameter(genericType, 0);
-            path = new CollectionPath(elementType, elementType.getSimpleName(), pm);
+            path = pathFactory.createCollectionPath(elementType, metadata);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Map.class.isAssignableFrom(type)) {
             Class<Object> keyType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
             Class<Object> valueType = (Class)ReflectionUtils.getTypeParameter(genericType, 1);
-            path = new MapPath<Object,Object,EntityPathBase<Object>>(keyType, valueType, (Class)EntityPathBase.class, pm);
+            path = pathFactory.createMapPath(keyType, valueType, metadata);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Enum.class.isAssignableFrom(type)) {
-            path = new EnumPath(type, pm);
+            path = pathFactory.createEnumPath((Class)type, metadata);
             rv = type.getEnumConstants()[0];
 
         } else if (type.isArray()){
-            path = new ArrayPath(type, pm);
+            path = pathFactory.createArrayPath((Class)type, metadata);
             rv = Array.newInstance(type.getComponentType(), 5);
 
         } else {
-            if (Comparable.class.isAssignableFrom(type)){
-                path = new ComparablePath(type, pm);                
-                
+            if (Number.class.isAssignableFrom(type)){
+                path = pathFactory.createNumberPath((Class)type, metadata);                
+            }else if (Comparable.class.isAssignableFrom(type)){
+                path = pathFactory.createComparablePath((Class)type, metadata);                               
             }else{
-                path = new EntityPathBase<T>((Class<T>) type, pm);
+                path = pathFactory.createEntityPath(type, metadata);
             }
             if (!Modifier.isFinal(type.getModifiers())){
                 rv = aliasFactory.createAliasForProperty(type, parent, path);

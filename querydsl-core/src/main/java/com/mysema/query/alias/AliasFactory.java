@@ -44,6 +44,12 @@ public class AliasFactory {
                 }
             });
 
+    private final PathFactory pathFactory;
+    
+    public AliasFactory(PathFactory pathFactory){
+        this.pathFactory = pathFactory; 
+    }
+    
     /**
      * @param <A>
      * @param cl
@@ -95,7 +101,7 @@ public class AliasFactory {
             enhancer.setInterfaces(new Class[] { ManagedObject.class });
         }
         // creates one handler per proxy
-        MethodInterceptor handler = new PropertyAccessInvocationHandler(path, this);
+        MethodInterceptor handler = new PropertyAccessInvocationHandler(path, this, pathFactory);
         enhancer.setCallback(handler);
         return (A) enhancer.create();
     }

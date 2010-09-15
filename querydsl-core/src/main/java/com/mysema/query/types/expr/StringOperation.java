@@ -10,7 +10,7 @@ import java.util.List;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
-import com.mysema.query.types.OperationMixin;
+import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Visitor;
 
@@ -35,7 +35,7 @@ public class StringOperation extends StringExpression implements Operation<Strin
     }
 
     StringOperation(Operator<? super String> op, List<Expression<?>> args) {
-        this.opMixin = new OperationMixin<String>(String.class, op, args);
+        this.opMixin = new OperationImpl<String>(String.class, op, args);
     }
 
     @Override

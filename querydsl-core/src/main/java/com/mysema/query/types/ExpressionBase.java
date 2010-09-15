@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
  *
  * @param <T>
  */
-public abstract class MixinBase<T> implements Expression<T>{
+public abstract class ExpressionBase<T> implements Expression<T>{
 
     private static final long serialVersionUID = -8862014178653364345L;
 
@@ -21,7 +21,7 @@ public abstract class MixinBase<T> implements Expression<T>{
     @Nullable
     private volatile String toString;
 
-    public MixinBase(Class<? extends T> type){
+    public ExpressionBase(Class<? extends T> type){
         this.type = type;
     }
     

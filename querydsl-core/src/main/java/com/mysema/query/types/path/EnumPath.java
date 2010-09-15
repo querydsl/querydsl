@@ -10,7 +10,7 @@ import java.lang.reflect.AnnotatedElement;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.PathMixin;
+import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EnumExpression;
 
@@ -33,7 +33,7 @@ public class EnumPath<D extends Enum<D>> extends EnumExpression<D> implements Pa
 
     public EnumPath(Class<? extends D> type, PathMetadata<?> metadata) {
         super(type);
-        this.pathMixin = new PathMixin<D>(type, metadata);
+        this.pathMixin = new PathImpl<D>(type, metadata);
     }
 
     public EnumPath(Class<? extends D> type, String var) {

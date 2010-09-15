@@ -17,7 +17,7 @@ import com.mysema.query.types.ExpressionException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.PathMixin;
+import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.MapExpressionBase;
 import com.mysema.query.types.expr.SimpleExpression;
@@ -51,7 +51,7 @@ public class MapPath<K, V, E extends SimpleExpression<V>> extends MapExpressionB
         this.keyType = (Class<K>) keyType;
         this.valueType = (Class<V>) valueType;
         this.queryType = queryType;
-        this.pathMixin = new PathMixin<Map<K,V>>((Class)Map.class, metadata);
+        this.pathMixin = new PathImpl<Map<K,V>>((Class)Map.class, metadata);
     }
 
     protected PathMetadata<K> forMapAccess(K key){

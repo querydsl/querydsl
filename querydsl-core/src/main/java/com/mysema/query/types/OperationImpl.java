@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @param <RT>
  */
-public class OperationMixin<RT> extends MixinBase<RT> implements Operation<RT>{
+public class OperationImpl<RT> extends ExpressionBase<RT> implements Operation<RT>{
     
     private static final long serialVersionUID = 4796432056083507588L;
 
@@ -23,11 +23,11 @@ public class OperationMixin<RT> extends MixinBase<RT> implements Operation<RT>{
 
     private final Operator<? super RT> operator;
 
-    public OperationMixin(Class<? extends RT> type, Operator<? super RT> operator, Expression<?>... args){
+    public OperationImpl(Class<? extends RT> type, Operator<? super RT> operator, Expression<?>... args){
         this(type, operator, Arrays.asList(args));
     }
     
-    public OperationMixin(Class<? extends RT> type, Operator<? super RT> operator, List<Expression<?>> args){
+    public OperationImpl(Class<? extends RT> type, Operator<? super RT> operator, List<Expression<?>> args){
         super(type);
         this.operator = operator;
         this.args = Collections.unmodifiableList(args);

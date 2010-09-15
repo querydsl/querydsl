@@ -16,7 +16,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMixin;
+import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Ops.MathOps;
 import com.mysema.util.MathUtils;
 
@@ -86,7 +86,7 @@ public abstract class NumberExpression<D extends Number & Comparable<?>> extends
     @SuppressWarnings("unchecked")
     @Override
     public NumberExpression<D> as(String alias) {
-        return NumberOperation.create(getType(),(Operator)Ops.ALIAS, this, new PathMixin<D>(getType(), alias));
+        return NumberOperation.create(getType(),(Operator)Ops.ALIAS, this, new PathImpl<D>(getType(), alias));
     }
 
     /**

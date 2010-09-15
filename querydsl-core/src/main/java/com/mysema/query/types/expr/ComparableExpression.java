@@ -9,7 +9,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMixin;
+import com.mysema.query.types.PathImpl;
 
 /**
  * ComparableExpression extends EComparableBase to provide comparison methods.
@@ -34,7 +34,7 @@ public abstract class ComparableExpression<D extends Comparable> extends Compara
     
     @Override
     public ComparableExpression<D> as(String alias) {
-        return ComparableOperation.create(getType(),(Operator)Ops.ALIAS, this, new PathMixin<D>(getType(), alias));
+        return ComparableOperation.create(getType(),(Operator)Ops.ALIAS, this, new PathImpl<D>(getType(), alias));
     }
 
     /**

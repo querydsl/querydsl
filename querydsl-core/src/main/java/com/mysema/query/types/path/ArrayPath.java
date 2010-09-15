@@ -16,7 +16,7 @@ import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.PathMixin;
+import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.ArrayExpression;
 import com.mysema.query.types.expr.NumberExpression;
@@ -44,7 +44,7 @@ public class ArrayPath<E> extends SimpleExpression<E[]> implements Path<E[]>, Ar
     @SuppressWarnings("unchecked")
     public ArrayPath(Class<? super E[]> type, PathMetadata<?> metadata) {
         super((Class)type);
-        this.pathMixin = new PathMixin<E[]>((Class)type, metadata);
+        this.pathMixin = new PathImpl<E[]>((Class)type, metadata);
         this.componentType = (Class<E>) Assert.notNull(type.getComponentType(),"componentType");
     }
 

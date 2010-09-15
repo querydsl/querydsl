@@ -10,14 +10,12 @@ import java.util.Collection;
 
 import javax.annotation.Nullable;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionBase;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMixin;
-import com.mysema.query.types.Templates;
-import com.mysema.query.types.ToStringVisitor;
+import com.mysema.query.types.PathImpl;
 
 /**
  * ESimple is the base class for Expr implementations. It provides default implementations
@@ -27,7 +25,7 @@ import com.mysema.query.types.ToStringVisitor;
  *
  * @param <D>
  */
-public abstract class SimpleExpression<D> implements Expression<D> {
+public abstract class SimpleExpression<D> extends ExpressionBase<D> {
 
     private static final long serialVersionUID = -4405387187738167105L;
 
@@ -42,13 +40,8 @@ public abstract class SimpleExpression<D> implements Expression<D> {
     
     protected final boolean primitive;
     
-    @Nullable
-    private volatile String toString;
-
-    private final Class<? extends D> type;
-
     public SimpleExpression(Class<? extends D> type) {
-        this.type = Assert.notNull(type,"type");
+        super(type);
         this.primitive = type.isPrimitive()
             || Number.class.isAssignableFrom(type)
             || Boolean.class.equals(type)
@@ -97,7 +90,7 @@ public abstract class SimpleExpression<D> implements Expression<D> {
      */
     @SuppressWarnings("unchecked")
     public SimpleExpression<D> as(String alias) {
-        return SimpleOperation.create(getType(),(Operator)Ops.ALIAS, this, new PathMixin<D>(getType(), alias));
+        return SimpleOperation.create(getType(),(Operator)Ops.ALIAS, this, new PathImpl<D>(getType(), alias));
     }
 
     /**
@@ -149,15 +142,6 @@ public abstract class SimpleExpression<D> implements Expression<D> {
         }
     }
 
-    /**
-     * Get the Java type for this expression
-     *
-     * @return
-     */
-    public final Class<? extends D> getType() {
-        return type;
-    }
-    
     @Override
     public abstract boolean equals(Object o);
 
@@ -269,13 +253,6 @@ public abstract class SimpleExpression<D> implements Expression<D> {
         return in(right).not();
     }
 
-    @Override
-    public final String toString() {
-        if (toString == null) {            
-            toString = accept(ToStringVisitor.DEFAULT, Templates.DEFAULT);
-        }
-        return toString;
-    }
 
     /**
      * Get a case expression builder

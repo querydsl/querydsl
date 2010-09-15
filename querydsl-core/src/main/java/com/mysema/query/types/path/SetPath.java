@@ -11,7 +11,7 @@ import java.util.Set;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.PathMixin;
+import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.CollectionExpressionBase;
 
@@ -37,7 +37,7 @@ public class SetPath<E> extends CollectionExpressionBase<Set<E>,E> implements Pa
         super((Class)Set.class);
         this.elementType = (Class<E>) Assert.notNull(type,"type");
         this.entityName = Assert.notNull(entityName,"entityName");
-        this.pathMixin = new PathMixin<Set<E>>((Class)Set.class, metadata);
+        this.pathMixin = new PathImpl<Set<E>>((Class)Set.class, metadata);
     }
 
     @Override

@@ -8,7 +8,7 @@ package com.mysema.query.types.query;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.SubQueryMixin;
+import com.mysema.query.types.SubQueryImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.StringExpression;
 
@@ -21,10 +21,10 @@ public final class StringSubQuery extends StringExpression implements SubQueryEx
 
     private static final long serialVersionUID = -64156984110154969L;
 
-    private final SubQueryMixin<String> subQueryMixin;
+    private final SubQueryImpl<String> subQueryMixin;
 
     public StringSubQuery(QueryMetadata md) {
-        subQueryMixin = new SubQueryMixin<String>(String.class, md);
+        subQueryMixin = new SubQueryImpl<String>(String.class, md);
     }
 
     @Override

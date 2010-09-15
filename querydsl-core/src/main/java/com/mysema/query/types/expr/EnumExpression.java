@@ -8,7 +8,7 @@ package com.mysema.query.types.expr;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMixin;
+import com.mysema.query.types.PathImpl;
 
 /**
  * @author tiwe
@@ -32,7 +32,7 @@ public abstract class EnumExpression<T extends Enum<T>> extends ComparableExpres
     @SuppressWarnings("unchecked")
     @Override
     public EnumExpression<T> as(String alias) {
-        return EnumOperation.create(getType(),(Operator)Ops.ALIAS, this, new PathMixin<T>(getType(), alias));
+        return EnumOperation.create(getType(),(Operator)Ops.ALIAS, this, new PathImpl<T>(getType(), alias));
     }
 
     /**

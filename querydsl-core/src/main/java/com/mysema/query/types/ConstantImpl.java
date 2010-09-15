@@ -8,14 +8,14 @@ package com.mysema.query.types;
 /**
  * @author tiwe
  */
-public class ConstantMixin<T> extends MixinBase<T> implements Constant<T> {
+public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
 
     private static final long serialVersionUID = -3898138057967814118L;
 
     private final T constant;
     
     @SuppressWarnings("unchecked")
-    public ConstantMixin(T constant){
+    public ConstantImpl(T constant){
         super((Class)constant.getClass());
         this.constant = constant;
     }

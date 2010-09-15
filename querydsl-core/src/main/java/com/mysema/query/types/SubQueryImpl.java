@@ -15,7 +15,7 @@ import com.mysema.query.QueryMetadata;
  * @author tiwe
  *
  */
-public class SubQueryMixin<T> extends MixinBase<T> implements SubQueryExpression<T>{
+public class SubQueryImpl<T> extends ExpressionBase<T> implements SubQueryExpression<T>{
 
     private static final long serialVersionUID = 6775967804458163L;
 
@@ -24,7 +24,7 @@ public class SubQueryMixin<T> extends MixinBase<T> implements SubQueryExpression
 
     private final QueryMetadata metadata;
 
-    public SubQueryMixin(Class<? extends T> type, QueryMetadata metadata){
+    public SubQueryImpl(Class<? extends T> type, QueryMetadata metadata){
         super(type);
         this.metadata = metadata;
     }

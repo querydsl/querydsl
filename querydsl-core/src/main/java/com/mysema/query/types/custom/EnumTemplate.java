@@ -12,7 +12,7 @@ import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
-import com.mysema.query.types.TemplateMixin;
+import com.mysema.query.types.TemplateImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.EnumExpression;
 
@@ -39,7 +39,7 @@ public class EnumTemplate<T extends Enum<T>> extends EnumExpression<T> implement
 
     public EnumTemplate(Class<T> type, Template template, List<Expression<?>> args) {
         super(type);
-        customMixin = new TemplateMixin<T>(type, args, template);
+        customMixin = new TemplateImpl<T>(type, args, template);
     }
 
     @Override

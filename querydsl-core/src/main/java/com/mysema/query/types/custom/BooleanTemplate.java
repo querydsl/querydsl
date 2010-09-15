@@ -12,7 +12,7 @@ import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
-import com.mysema.query.types.TemplateMixin;
+import com.mysema.query.types.TemplateImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
 
@@ -37,7 +37,7 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
     private final TemplateExpression<Boolean> customMixin;
 
     public BooleanTemplate(Template template, List<Expression<?>> args){
-        customMixin = new TemplateMixin<Boolean>(Boolean.class, args, template);
+        customMixin = new TemplateImpl<Boolean>(Boolean.class, args, template);
     }
 
     @Override

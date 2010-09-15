@@ -10,7 +10,7 @@ import java.util.List;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
-import com.mysema.query.types.OperationMixin;
+import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Visitor;
 
@@ -46,7 +46,7 @@ public class EnumOperation<D extends Enum<D>> extends EnumExpression<D> implemen
 
     EnumOperation(Class<? extends D> type, Operator<? super D> op, List<Expression<?>> args) {
         super(type);
-        this.opMixin = new OperationMixin<D>(type, op, args);
+        this.opMixin = new OperationImpl<D>(type, op, args);
     }
 
     @Override

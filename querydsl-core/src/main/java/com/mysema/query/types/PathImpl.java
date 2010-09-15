@@ -12,14 +12,14 @@ import javax.annotation.Nullable;
 import com.mysema.util.ReflectionUtils;
 
 /**
- * PathMixin defines a mixin version of the Path interface which can be used
+ * PathImpl defines a mixin version of the Path interface which can be used
  * as a component and target in actual Path implementations
  *
  * @author tiwe
  *
  * @param <T>
  */
-public class PathMixin<T> extends MixinBase<T> implements Path<T> {
+public class PathImpl<T> extends ExpressionBase<T> implements Path<T> {
 
     private static final long serialVersionUID = -2498447742798348162L;
 
@@ -30,11 +30,11 @@ public class PathMixin<T> extends MixinBase<T> implements Path<T> {
     @Nullable
     private AnnotatedElement annotatedElement;
 
-    public PathMixin(Class<? extends T> type, String variable){
+    public PathImpl(Class<? extends T> type, String variable){
         this(type, PathMetadataFactory.forVariable(variable));
     }
     
-    public PathMixin(Class<? extends T> type, PathMetadata<?> metadata){
+    public PathImpl(Class<? extends T> type, PathMetadata<?> metadata){
         super(type);
         this.metadata = metadata;
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;

@@ -39,15 +39,15 @@ public final class ExpressionUtils {
     }
     
     public static <D> Expression<D> as(Expression<D> source, Path<D> alias) {
-        return new OperationMixin<D>(source.getType(), Ops.ALIAS, source, alias);
+        return new OperationImpl<D>(source.getType(), Ops.ALIAS, source, alias);
     }
     
     public static <D> Expression<D> as(Expression<D> source, String alias) {
-        return as(source, new PathMixin<D>(source.getType(), alias));
+        return as(source, new PathImpl<D>(source.getType(), alias));
     }
 
     public static <D> Predicate eqConst(Expression<D> left, D constant) {
-        return eq(left, new ConstantMixin<D>(constant));
+        return eq(left, new ConstantImpl<D>(constant));
     }
     
     public static <D> Predicate eq(Expression<D> left, Expression<? super D> right) {
@@ -62,7 +62,7 @@ public final class ExpressionUtils {
         if (right.size() == 1){
             return eqConst(left, right.iterator().next());
         }else{
-            return new PredicateOperation(Ops.IN, left, new ConstantMixin<Collection<?>>(right));
+            return new PredicateOperation(Ops.IN, left, new ConstantImpl<Collection<?>>(right));
         }
     }
     
@@ -82,7 +82,7 @@ public final class ExpressionUtils {
     }
     
     public static <D> Predicate neConst(Expression<D> left, D constant) {
-        return ne(left, new ConstantMixin<D>(constant));
+        return ne(left, new ConstantImpl<D>(constant));
     }
     
     public static <D> Predicate ne(Expression<D> left, Expression<? super D> right) {

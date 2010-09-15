@@ -12,7 +12,7 @@ import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
-import com.mysema.query.types.TemplateMixin;
+import com.mysema.query.types.TemplateImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.StringExpression;
 
@@ -37,7 +37,7 @@ public class StringTemplate extends StringExpression implements TemplateExpressi
     private final TemplateExpression<String> customMixin;
 
     public StringTemplate(Template template, List<Expression<?>> args){
-        customMixin = new TemplateMixin<String>(String.class, args, template);
+        customMixin = new TemplateImpl<String>(String.class, args, template);
     }
 
     @Override

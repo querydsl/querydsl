@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMixin;
+import com.mysema.query.types.PathImpl;
 
 /**
  * DateTimeExpression represents Date / Time expressions
@@ -93,7 +93,7 @@ public abstract class DateTimeExpression<D extends Comparable> extends TemporalE
 
     @Override
     public DateTimeExpression as(String alias) {
-        return DateTimeOperation.create(getType(), (Operator)Ops.ALIAS, this, new PathMixin<D>(getType(), alias));
+        return DateTimeOperation.create(getType(), (Operator)Ops.ALIAS, this, new PathImpl<D>(getType(), alias));
     }
 
     /**

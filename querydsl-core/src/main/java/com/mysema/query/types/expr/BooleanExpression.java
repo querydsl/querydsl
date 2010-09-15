@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMixin;
+import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Predicate;
 
 /**
@@ -58,7 +58,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
     @SuppressWarnings("unchecked")
     @Override
     public BooleanExpression as(String alias) {
-        return BooleanOperation.create((Operator)Ops.ALIAS, this, new PathMixin(getType(), alias));
+        return BooleanOperation.create((Operator)Ops.ALIAS, this, new PathImpl(getType(), alias));
     }
 
     /**
