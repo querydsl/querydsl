@@ -15,7 +15,7 @@ import com.mysema.query.types.path._
  */
 object Conversions {
     
-    def not(b: BooleanExpression): BooleanExpression = b._not()
+    def not(b: com.mysema.query.types.expr.BooleanExpression): com.mysema.query.types.expr.BooleanExpression = b.not()
     
     implicit def booleanPath(b: Boolean): BooleanPath = $(b);
     

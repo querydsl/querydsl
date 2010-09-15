@@ -75,7 +75,7 @@ trait ComparableExpression[T] extends SimpleExpression[T] {
 
 }
 
-trait NumberExpression[T] extends ComparableExpression[T] {
+trait NumberExpression[T] extends SimpleExpression[T] {
 
     def _add(right: Expression[Number]): NumberExpression[T];
 
