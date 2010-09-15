@@ -14,17 +14,34 @@
   <description>Mongodb support for Querydsl</description>
   <packaging>jar</packaging>
   
-  <dependencies>  
+  <dependencies>   
     <dependency>   
         <groupId>org.mongodb</groupId>
         <artifactId>mongo-java-driver</artifactId>
         <version>2.1</version>
-    </dependency>    
+    </dependency>
+    
     <dependency>
         <groupId>com.google.code.morphia</groupId>
         <artifactId>morphia</artifactId>
         <version>0.95</version>
-    </dependency>    
+    </dependency>
+    <!-- Optional Jars (for certain features) but required by maven for bulding. -->
+    <dependency>
+        <groupId>cglib</groupId>
+        <artifactId>cglib-nodep</artifactId>
+        <version>[2.1_3,)</version>
+        <type>jar</type>
+        <optional>true</optional>
+    </dependency>
+    <dependency>
+        <groupId>com.thoughtworks.proxytoys</groupId>
+        <artifactId>proxytoys</artifactId>
+        <version>1.0</version>
+        <type>jar</type>
+        <optional>true</optional>
+    </dependency>
+    
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
@@ -40,5 +57,23 @@
       <type>test-jar</type>
     </dependency>    
   </dependencies>
+  
+  <repositories>
+    <repository>
+      <releases>
+        <enabled>true</enabled>
+        <checksumPolicy>warn</checksumPolicy>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <checksumPolicy>fail</checksumPolicy>
+      </snapshots>
+      <id>morphia_repo</id>
+      <name>Morphia Repository</name>
+      <url>http://morphia.googlecode.com/svn/mavenrepo/</url>
+      <layout>default</layout>
+    </repository>
+  </repositories>
+  
 
 </project>
