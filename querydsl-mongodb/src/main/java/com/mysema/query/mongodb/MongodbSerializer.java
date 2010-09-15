@@ -1,40 +1,20 @@
 package com.mysema.query.mongodb;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 import org.bson.BSONObject;
 
 import com.mongodb.BasicDBObject;
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.Custom;
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Param;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.Visitor;
+import com.mysema.query.types.*;
 
 /**
- * Serializes the given QueryDSL query to a DBObject querty format MongoDB understands.
+ * Serializes the given QueryDSL query to a DBObject querty format MongoDB
+ * understands.
  * 
  * @author laimw
  * 
  */
 public class MongodbSerializer implements Visitor<Object, Void> {
-
-    // public MongodbSerializer() {
-    // //BasicDBObject o = new BasicDBObject();
-    // //o.append("firstName", "Juuso");
-    //
-    // //o.append("firstName", new BasicDBObject("$ne", "Juuso"));
-    // //o.append("age", 3);
-    // }
 
     public Object handle(Expr<?> where) {
         return where.accept(this, null);
@@ -76,11 +56,15 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         // return toTwoHandSidedQuery(operation, Occur.SHOULD, metadata);
         // } else if (op == Ops.NOT) {
         // BooleanQuery bq = new BooleanQuery();
-        // bq.add(new BooleanClause(toQuery(operation.getArg(0), metadata), Occur.MUST_NOT));
+        // bq.add(new BooleanClause(toQuery(operation.getArg(0), metadata),
+        // Occur.MUST_NOT));
         // return bq;
         // } else if (op == Ops.LIKE) {
         // return like(operation, metadata);
-        if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE /* || op == Ops.EQ_IGNORE_CASE */) {
+        if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE /*
+                                                           * || op ==
+                                                           * Ops.EQ_IGNORE_CASE
+                                                           */) {
             return dbo(asString(expr, 0), asObj(expr, 1));
         }
         if (op == Ops.AND) {
@@ -95,7 +79,8 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         // return startsWith(metadata, operation);
         // } else if (op == Ops.ENDS_WITH || op == Ops.ENDS_WITH_IC) {
         // return endsWith(operation, metadata);
-        // } else if (op == Ops.STRING_CONTAINS || op == Ops.STRING_CONTAINS_IC) {
+        // } else if (op == Ops.STRING_CONTAINS || op == Ops.STRING_CONTAINS_IC)
+        // {
         // return stringContains(operation, metadata);
         if (op == Ops.BETWEEN) {
             BasicDBObject value = new BasicDBObject("$gt", asObj(expr, 1));
@@ -103,8 +88,9 @@ public class MongodbSerializer implements Visitor<Object, Void> {
             return dbo(asString(expr, 0), value);
         }
         if (op == Ops.IN) {
-            Collection<?> values = (Collection<?>) ((Constant<?>) expr.getArg(1)).getConstant();
-            return dbo(asString(expr, 0), dbo("$in",values.toArray()));
+            Collection<?> values = (Collection<?>) ((Constant<?>) expr
+                    .getArg(1)).getConstant();
+            return dbo(asString(expr, 0), dbo("$in", values.toArray()));
         }
         if (op == Ops.LT || op == Ops.BEFORE) {
             return dbo(asString(expr, 0), dbo("$lt", asObj(expr, 1)));

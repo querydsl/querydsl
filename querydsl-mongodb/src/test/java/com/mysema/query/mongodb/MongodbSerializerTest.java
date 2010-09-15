@@ -3,11 +3,8 @@ package com.mysema.query.mongodb;
 import static junit.framework.Assert.assertEquals;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import org.bson.BSONObject;
 import org.junit.Before;
 import org.junit.Test;
 
