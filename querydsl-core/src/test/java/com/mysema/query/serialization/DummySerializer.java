@@ -6,7 +6,7 @@
 package com.mysema.query.serialization;
 
 import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Param;
+import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.SerializerBase;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.Templates;
@@ -28,7 +28,7 @@ public class DummySerializer extends SerializerBase<DummySerializer>{
     }
 
     @Override
-    public Void visit(Param<?> expr, Void context) {
+    public Void visit(ParamExpression<?> expr, Void context) {
         return null;
     }
 

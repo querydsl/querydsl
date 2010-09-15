@@ -18,10 +18,10 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.query.types.path.MapPath;
 

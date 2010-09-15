@@ -23,8 +23,8 @@ import com.mysema.query.SimpleProjectable;
 import com.mysema.query.SimpleQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Param;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.Param;
 
 /**
  * LuceneQuery is a Querydsl query implementation for Lucene queries.

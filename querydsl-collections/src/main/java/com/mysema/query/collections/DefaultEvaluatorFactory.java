@@ -32,9 +32,9 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operation;
-import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.Param;
 
 /**
  * DefaultEvaluatorFactory extends the EvaluatorFactory class to provide Java source

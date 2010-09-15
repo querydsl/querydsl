@@ -33,9 +33,9 @@ import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.Param;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.expr.SimpleConstant;
 import com.mysema.query.types.path.NullExpr;
 

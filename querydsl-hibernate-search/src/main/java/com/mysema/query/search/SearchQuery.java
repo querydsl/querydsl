@@ -22,8 +22,8 @@ import com.mysema.query.lucene.LuceneSerializer;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Param;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.Param;
 
 /**
  * SearchQuery is a Query implementation for Hibernate Search

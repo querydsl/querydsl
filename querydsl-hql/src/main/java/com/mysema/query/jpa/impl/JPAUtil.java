@@ -9,8 +9,8 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
-import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
+import com.mysema.query.types.expr.Param;
 
 /**
  * Utility methods for JPA

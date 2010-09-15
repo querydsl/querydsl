@@ -259,7 +259,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     }
 
     @Override
-    public Void visit(Param<?> param, Void context){
+    public Void visit(ParamExpression<?> param, Void context){
         append(":");
         super.visit(param, context);
         return null;

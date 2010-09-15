@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.mysema.query.sql.Configuration;
-import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.expr.Param;
 
 /**
  * AbstractSQLClause is a superclass for SQL based DMLClause implementations

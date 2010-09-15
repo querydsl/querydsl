@@ -47,7 +47,7 @@ public final class ExtractorVisitor implements Visitor<Expression<?>,Void>{
     }
 
     @Override
-    public Expression<?> visit(Param<?> expr, Void context) {
+    public Expression<?> visit(ParamExpression<?> expr, Void context) {
         return expr;
     }
     

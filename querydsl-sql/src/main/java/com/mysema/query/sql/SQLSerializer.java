@@ -465,7 +465,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     @Override
-    public Void visit(Param<?> param, Void context){
+    public Void visit(ParamExpression<?> param, Void context){
         append("?");
         constants.add(param);
         if (constantPaths.size() < constants.size()){

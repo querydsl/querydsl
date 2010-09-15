@@ -10,6 +10,8 @@ import static org.junit.Assert.assertFalse;
 
 import org.junit.Test;
 
+import com.mysema.query.types.expr.Param;
+
 public class ParamTest {
 
     Param<String> param11 = new Param<String>(String.class, "param1");

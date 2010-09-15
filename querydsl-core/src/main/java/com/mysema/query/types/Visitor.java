@@ -55,6 +55,6 @@ public interface Visitor<R,C>{
      * @param expr
      */
     @Nullable
-    R visit(Param<?> expr, @Nullable C context);
+    R visit(ParamExpression<?> expr, @Nullable C context);
 
 }

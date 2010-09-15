@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types;
 
+import com.mysema.query.types.expr.Param;
+
 /**
  * @author tiwe
  *

@@ -101,7 +101,7 @@ public final class ToStringVisitor implements Visitor<String,Templates>{
     }
 
     @Override
-    public String visit(Param<?> param, Templates templates) {
+    public String visit(ParamExpression<?> param, Templates templates) {
         return "{" + param.getName() + "}";
     }
 

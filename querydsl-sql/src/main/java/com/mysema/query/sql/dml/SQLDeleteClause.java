@@ -26,8 +26,8 @@ import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.Param;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.Param;
 
 /**
  * SQLDeleteClause defines a DELETE clause

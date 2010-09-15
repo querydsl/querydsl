@@ -9,8 +9,8 @@ import javax.annotation.Nonnegative;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Param;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.Param;
 
 /**
  * Query provides a query interface of the fluent query DSL.

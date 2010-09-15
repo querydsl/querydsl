@@ -28,11 +28,11 @@ import com.mysema.query.jdo.test.domain.QProduct;
 import com.mysema.query.jdo.test.domain.QStore;
 import com.mysema.query.jdo.test.domain.Store;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.expr.ArrayConstructorExpression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ConstructorExpression;
+import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.expr.QTuple;
 
 public class JDOQLQueryStandardTest extends AbstractJDOTest {

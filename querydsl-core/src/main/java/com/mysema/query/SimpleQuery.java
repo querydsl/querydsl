@@ -8,8 +8,8 @@ package com.mysema.query;
 import javax.annotation.Nonnegative;
 
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Param;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.Param;
 
 /**
  * SimpleQuery defines a simple querying interface than {@link Query}

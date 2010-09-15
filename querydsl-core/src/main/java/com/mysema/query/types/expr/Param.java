@@ -3,10 +3,11 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types;
+package com.mysema.query.types.expr;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.expr.SimpleExpression;
+import com.mysema.query.types.ParamExpression;
+import com.mysema.query.types.Visitor;
 
 /**
  * Param defines a parameter in a query with an optional name
@@ -15,7 +16,7 @@ import com.mysema.query.types.expr.SimpleExpression;
  *
  * @param <T>
  */
-public class Param<T> extends SimpleExpression<T> {
+public class Param<T> extends SimpleExpression<T> implements ParamExpression<T>{
 
     private static final long serialVersionUID = -6872502615009012503L;
 

@@ -22,8 +22,8 @@ import org.hibernate.type.LongType;
 import org.hibernate.type.ShortType;
 import org.hibernate.type.Type;
 
-import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
+import com.mysema.query.types.expr.Param;
 
 /**
  * Utility methods for Hibernate

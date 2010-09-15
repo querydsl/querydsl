@@ -8,8 +8,8 @@ package com.mysema.query.support;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Param;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.Param;
 
 /**
  * QueryBase provides a stub for Query implementations

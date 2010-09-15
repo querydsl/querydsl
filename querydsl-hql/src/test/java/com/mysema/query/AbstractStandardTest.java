@@ -28,12 +28,12 @@ import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.DomesticCat;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.Param;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.expr.ArrayConstructorExpression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ConstructorExpression;
 import com.mysema.query.types.expr.ListExpression;
+import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.expr.QTuple;
 import com.mysema.query.types.expr.StringExpression;
 

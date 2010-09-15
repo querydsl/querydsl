@@ -151,7 +151,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     @Override
-    public Void visit(Param<?> param, Void context){
+    public Void visit(ParamExpression<?> param, Void context){
         String paramLabel;
         if (param.isAnon()){
             paramLabel = anonParamPrefix + param.getName();
