@@ -30,6 +30,6 @@ class OperationMixin[T](t: Class[T], operator: Operator[T], args: Array[Expressi
     
 }
 
-// SubQueryMixin
+// TODO : SubQueryMixin
 
-// ConstantMixin
+// TODO : ConstantMixin
