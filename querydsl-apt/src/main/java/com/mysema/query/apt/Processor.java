@@ -32,9 +32,6 @@ import javax.lang.model.util.ElementFilter;
 import javax.tools.JavaFileObject;
 import javax.tools.Diagnostic.Kind;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.SimpleType;
@@ -64,7 +61,7 @@ import com.mysema.query.codegen.TypeMappings;
  */
 public class Processor {
 
-    private static final Logger logger = LoggerFactory.getLogger(Processor.class);
+//    private static final Logger logger = LoggerFactory.getLogger(Processor.class);
 
     private final Map<String, EntityType> actualSupertypes  = new HashMap<String, EntityType>();
 
@@ -429,7 +426,7 @@ public class Processor {
                 }
 
             } catch (IOException e) {
-                logger.error(e.getMessage(), e);
+//                logger.error(e.getMessage(), e);
                 msg.printMessage(Kind.ERROR, e.getMessage());
             }
         }
@@ -464,7 +461,7 @@ public class Processor {
                 w.close();
             }
         } catch (IOException e) {
-            logger.error(e.getMessage(), e);
+//            logger.error(e.getMessage(), e);
             env.getMessager().printMessage(Kind.ERROR, e.getMessage());
         }
 
