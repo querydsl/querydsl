@@ -563,17 +563,17 @@ public class LuceneSerializerTest {
     @Test
     public void various() throws Exception{
         MatchingFilters filters = new MatchingFilters(Module.LUCENE, Target.LUCENE);
-        for (BooleanExpression filter : filters.string(title, new StringConstant("Jurassic"))){
+        for (BooleanExpression filter : filters.string(title, StringConstant.create("Jurassic"))){
             System.out.println(filter);
             testQuery(filter, 1);
         }
 
-        for (BooleanExpression filter : filters.string(author, new StringConstant("Michael Crichton"))){
+        for (BooleanExpression filter : filters.string(author, StringConstant.create("Michael Crichton"))){
             System.out.println(filter);
             testQuery(filter, 1);
         }
 
-        for (BooleanExpression filter : filters.string(title, new StringConstant("1990"))){
+        for (BooleanExpression filter : filters.string(title, StringConstant.create("1990"))){
             System.out.println(filter);
             testQuery(filter, 0);
         }

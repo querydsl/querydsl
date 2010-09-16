@@ -37,14 +37,14 @@ public class ConstructorExpressionTest {
     @Test
     public void test_Constructor(){
         NumberExpression<Long> longVal = NumberConstant.create(1l);
-        StringExpression stringVal = new StringConstant("");
+        StringExpression stringVal = StringConstant.create("");
         new ConstructorExpression<Projection>(Projection.class, new Class[]{long.class, String.class}, longVal, stringVal).newInstance(0l,"");
     }
 
     @Test
     public void test_create(){
         NumberExpression<Long> longVal = NumberConstant.create(1l);
-        StringExpression stringVal = new StringConstant("");
+        StringExpression stringVal = StringConstant.create("");
         ConstructorExpression.create(Projection.class, longVal, stringVal).newInstance(0l,"");
     }
 
@@ -61,7 +61,7 @@ public class ConstructorExpressionTest {
 
     @Test
     public void test_create4(){
-        StringExpression stringVal = new StringConstant("");
+        StringExpression stringVal = StringConstant.create("");
         ConstructorExpression.create(Projection.class, stringVal).newInstance("");
     }
 

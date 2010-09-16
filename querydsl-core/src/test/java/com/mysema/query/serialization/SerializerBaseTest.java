@@ -28,9 +28,9 @@ public class SerializerBaseTest {
         // long path
         serializer.handle(new PathBuilder<Object>(Object.class,"p").getList("l",Map.class).get(0));
         // constant
-        serializer.handle(new StringConstant(""));
+        serializer.handle(StringConstant.create(""));
     //  custom
-    serializer.handle(StringTemplate.create("xxx", new StringConstant("")));
+    serializer.handle(StringTemplate.create("xxx", StringConstant.create("")));
     }
 
 }

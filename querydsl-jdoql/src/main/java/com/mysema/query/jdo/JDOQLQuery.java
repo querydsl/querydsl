@@ -5,6 +5,8 @@
  */
 package com.mysema.query.jdo;
 
+import java.io.Closeable;
+
 import javax.jdo.PersistenceManager;
 
 import com.mysema.query.Projectable;
@@ -15,7 +17,7 @@ import com.mysema.query.Projectable;
  * @author tiwe
  *
  */
-public interface JDOQLQuery extends JDOQLCommonQuery<JDOQLQuery>, Projectable {
+public interface JDOQLQuery extends JDOQLCommonQuery<JDOQLQuery>, Projectable, Closeable{
 
     /**
      * Clone the state of the query for the given PersistenceManager
@@ -48,6 +50,7 @@ public interface JDOQLQuery extends JDOQLCommonQuery<JDOQLQuery>, Projectable {
     /**
      * 
      */
+    @Override
     void close();
 
 }

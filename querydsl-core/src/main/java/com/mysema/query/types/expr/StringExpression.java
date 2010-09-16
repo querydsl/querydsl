@@ -65,7 +65,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return this + str
      */
     public StringExpression append(String str) {
-        return append(new StringConstant(str));
+        return append(StringConstant.create(str));
     }
 
     /**
@@ -129,7 +129,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#contains(CharSequence)
      */
     public BooleanExpression contains(String str) {
-        return contains(new StringConstant(str));
+        return contains(StringConstant.create(str));
     }
 
     /**
@@ -167,7 +167,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      */
     @Deprecated
     public BooleanExpression contains(String str, boolean caseSensitive) {
-        return contains(new StringConstant(str), caseSensitive);
+        return contains(StringConstant.create(str), caseSensitive);
     }
 
     /**
@@ -175,7 +175,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return
      */
     public BooleanExpression containsIgnoreCase(String str) {
-        return containsIgnoreCase(new StringConstant(str));
+        return containsIgnoreCase(StringConstant.create(str));
     }
     
     /**
@@ -222,7 +222,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#endsWith(String)
      */
     public BooleanExpression endsWith(String str) {
-        return endsWith(new StringConstant(str));
+        return endsWith(StringConstant.create(str));
     }
 
     /**
@@ -235,7 +235,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      */
     @Deprecated
     public BooleanExpression endsWith(String str, boolean caseSensitive) {
-        return endsWith(new StringConstant(str), caseSensitive);
+        return endsWith(StringConstant.create(str), caseSensitive);
     }
     
     /**
@@ -243,7 +243,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return
      */
     public BooleanExpression endsWithIgnoreCase(String str) {
-        return endsWithIgnoreCase(new StringConstant(str));
+        return endsWithIgnoreCase(StringConstant.create(str));
     }
 
     /**
@@ -267,7 +267,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#equalsIgnoreCase(String)
      */
     public BooleanExpression equalsIgnoreCase(String str) {
-        return equalsIgnoreCase(new StringConstant(str));
+        return equalsIgnoreCase(StringConstant.create(str));
     }
 
     /**
@@ -289,7 +289,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#indexOf(String)
      */
     public NumberExpression<Integer> indexOf(String str) {
-        return indexOf(new StringConstant(str));
+        return indexOf(StringConstant.create(str));
     }
 
     /**
@@ -301,7 +301,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#indexOf(String, int)
      */
     public NumberExpression<Integer> indexOf(String str, int i) {
-        return indexOf(new StringConstant(str), i);
+        return indexOf(StringConstant.create(str), i);
     }
 
     /**
@@ -358,7 +358,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return
      */
     public BooleanExpression like(String str){
-        return BooleanOperation.create(Ops.LIKE, this, new StringConstant(str));
+        return BooleanOperation.create(Ops.LIKE, this, StringConstant.create(str));
     }
 
     /**
@@ -403,7 +403,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#matches(String)
      */
     public BooleanExpression matches(String regex){
-        return matches(new StringConstant(regex));
+        return matches(StringConstant.create(regex));
     }
 
     /**
@@ -423,7 +423,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return str + this
      */
     public StringExpression prepend(String str) {
-        return prepend(new StringConstant(str));
+        return prepend(StringConstant.create(str));
     }
 
     /**
@@ -434,7 +434,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#split(String)
      */
     public Expression<String[]> split(String regex) {
-        return SimpleOperation.create(String[].class, Ops.StringOps.SPLIT, this, new StringConstant(regex));
+        return SimpleOperation.create(String[].class, Ops.StringOps.SPLIT, this, StringConstant.create(regex));
     }
 
     /**
@@ -481,7 +481,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#startsWith(String)
      */
     public BooleanExpression startsWith(String str) {
-        return startsWith(new StringConstant(str));
+        return startsWith(StringConstant.create(str));
     }
 
     /**
@@ -494,7 +494,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      */
     @Deprecated
     public BooleanExpression startsWith(String str, boolean caseSensitive) {
-        return startsWith(new StringConstant(str), caseSensitive);
+        return startsWith(StringConstant.create(str), caseSensitive);
     }
     
     /**
@@ -502,7 +502,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return
      */
     public BooleanExpression startsWithIgnoreCase(String str) {
-        return startsWithIgnoreCase(new StringConstant(str));
+        return startsWithIgnoreCase(StringConstant.create(str));
     }
 
     /* (non-Javadoc)

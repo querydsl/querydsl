@@ -12,17 +12,28 @@ import java.util.List;
 import java.util.Map;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.expr.NumberConstant;
+import com.mysema.query.types.expr.NumberExpression;
 
 /**
  * @author tiwe
  */
+@SuppressWarnings("unchecked")
 public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
 
     private static final long serialVersionUID = -3898138057967814118L;
     
-    private static final Map<String,Constant<String>> CACHE;
-
     private static final int CACHE_SIZE = 256;
+    
+    private static final NumberExpression<Byte>[] BYTES = new NumberExpression[CACHE_SIZE];
+
+    private static final NumberExpression<Integer>[] INTEGERS = new NumberExpression[CACHE_SIZE];
+    
+    private static final NumberExpression<Long>[] LONGS = new NumberExpression[CACHE_SIZE];
+
+    private static final NumberExpression<Short>[] SHORTS = new NumberExpression[CACHE_SIZE];
+
+    private static final Map<String,Constant<String>> STRINGS;
 
     static{
         List<String> strs = new ArrayList<String>(Arrays.asList("", ".", ".*", "%"));
@@ -30,30 +41,62 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
             strs.add(String.valueOf(i));
         }
 
-        CACHE = new HashMap<String,Constant<String>>(strs.size());
+        STRINGS = new HashMap<String,Constant<String>>(strs.size());
         for (String str : strs){
-            CACHE.put(str, new ConstantImpl<String>(str));
+            STRINGS.put(str, new ConstantImpl<String>(str));
+        }
+        
+        for (int i = 0; i < CACHE_SIZE; i++){
+            INTEGERS[i] = new NumberConstant<Integer>(Integer.class, Integer.valueOf(i));
+            SHORTS[i] = new NumberConstant<Short>(Short.class, Short.valueOf((short)i));
+            BYTES[i] = new NumberConstant<Byte>(Byte.class, Byte.valueOf((byte)i));
+            LONGS[i] = new NumberConstant<Long>(Long.class, Long.valueOf(i));
+        }
+    }
+
+    public static NumberExpression<Byte> create(byte i){
+        if (i >= 0 && i < CACHE_SIZE){
+            return BYTES[i];
+        }else{
+            return new NumberConstant<Byte>(Byte.class, Byte.valueOf(i));
+        }
+    }
+
+    public static NumberExpression<Integer> create(int i){
+        if (i >= 0 && i < CACHE_SIZE){
+            return INTEGERS[i];
+        }else{
+            return new NumberConstant<Integer>(Integer.class, Integer.valueOf(i));
+        }
+    }
+
+    public static NumberExpression<Long> create(long i){
+        if (i >= 0 && i < CACHE_SIZE){
+            return LONGS[(int)i];
+        }else{
+            return new NumberConstant<Long>(Long.class, Long.valueOf(i));
+        }
+    }
+
+    public static NumberExpression<Short> create(short i){
+        if (i >= 0 && i < CACHE_SIZE){
+            return SHORTS[i];
+        }else{
+            return new NumberConstant<Short>(Short.class, Short.valueOf(i));
         }
     }
     
-
-    /**
-     * Factory method for constants
-     *
-     * @param str
-     * @return
-     */
     public static Constant<String> create(String str){
         return create(str, false);
     }
 
     public static Constant<String> create(String str, boolean populateCache) {
-        if (CACHE.containsKey(str)){
-            return CACHE.get(str);
+        if (STRINGS.containsKey(str)){
+            return STRINGS.get(str);
         }else{
             Constant<String> rv = new ConstantImpl<String>(Assert.notNull(str,"str"));
             if (populateCache){
-                CACHE.put(str, rv);
+                STRINGS.put(str, rv);
             }
             return rv;
         }
@@ -61,22 +104,16 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
 
     private final T constant;
     
-    @SuppressWarnings("unchecked")
     public ConstantImpl(T constant){
         super((Class)constant.getClass());
         this.constant = constant;
     }
     
     @Override
-    public T getConstant() {
-        return constant;
-    }
-
-    @Override
     public <R, C> R accept(Visitor<R, C> v, C context) {
         return v.visit(this, context);
     }
-    
+
     @Override
     public boolean equals(Object o){
         if (o == this){
@@ -86,6 +123,11 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
         }else{
             return false;
         }
+    }
+    
+    @Override
+    public T getConstant() {
+        return constant;
     }
     
     public int hashCode(){

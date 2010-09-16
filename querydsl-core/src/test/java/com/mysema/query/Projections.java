@@ -162,7 +162,7 @@ public class Projections {
     public Collection<SimpleExpression<String>> string(StringExpression expr, StringExpression other, String knownValue){
         HashSet<SimpleExpression<String>> rv = new HashSet<SimpleExpression<String>>();
         rv.addAll(stringProjections(expr, other));
-        rv.addAll(stringProjections(expr, new StringConstant(knownValue)));
+        rv.addAll(stringProjections(expr, StringConstant.create(knownValue)));
         return rv;
     }
 

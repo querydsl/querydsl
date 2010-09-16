@@ -112,7 +112,7 @@ public final class CaseForEqBuilder<D> {
     }
 
     public Cases<String,StringExpression> then(String then){
-        return then(new StringConstant(then));
+        return then(StringConstant.create(then));
     }
 
     public abstract class Cases<T, Q extends Expression<T>> {

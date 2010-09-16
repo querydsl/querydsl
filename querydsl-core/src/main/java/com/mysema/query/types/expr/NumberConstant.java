@@ -22,61 +22,6 @@ public final class NumberConstant<D extends Number & Comparable<?>> extends Numb
 
     private static final long serialVersionUID = 2958824808974260439L;
 
-    private static final int CACHE_SIZE = 256;
-
-    @SuppressWarnings("unchecked")
-    private static final NumberExpression<Byte>[] BYTES = new NumberExpression[CACHE_SIZE];
-
-    @SuppressWarnings("unchecked")
-    private static final NumberExpression<Integer>[] INTEGERS = new NumberExpression[CACHE_SIZE];
-
-    @SuppressWarnings("unchecked")
-    private static final NumberExpression<Long>[] LONGS = new NumberExpression[CACHE_SIZE];
-
-    @SuppressWarnings("unchecked")
-    private static final NumberExpression<Short>[] SHORTS = new NumberExpression[CACHE_SIZE];
-
-    static{
-        for (int i = 0; i < CACHE_SIZE; i++){
-            INTEGERS[i] = new NumberConstant<Integer>(Integer.class, Integer.valueOf(i));
-            SHORTS[i] = new NumberConstant<Short>(Short.class, Short.valueOf((short)i));
-            BYTES[i] = new NumberConstant<Byte>(Byte.class, Byte.valueOf((byte)i));
-            LONGS[i] = new NumberConstant<Long>(Long.class, Long.valueOf(i));
-        }
-    }
-
-    public static NumberExpression<Byte> create(byte i){
-        if (i >= 0 && i < CACHE_SIZE){
-            return BYTES[i];
-        }else{
-            return new NumberConstant<Byte>(Byte.class, Byte.valueOf(i));
-        }
-    }
-
-    public static NumberExpression<Integer> create(int i){
-        if (i >= 0 && i < CACHE_SIZE){
-            return INTEGERS[i];
-        }else{
-            return new NumberConstant<Integer>(Integer.class, Integer.valueOf(i));
-        }
-    }
-
-    public static NumberExpression<Long> create(long i){
-        if (i >= 0 && i < CACHE_SIZE){
-            return LONGS[(int)i];
-        }else{
-            return new NumberConstant<Long>(Long.class, Long.valueOf(i));
-        }
-    }
-
-    public static NumberExpression<Short> create(short i){
-        if (i >= 0 && i < CACHE_SIZE){
-            return SHORTS[i];
-        }else{
-            return new NumberConstant<Short>(Short.class, Short.valueOf(i));
-        }
-    }
-
     /**
      * Factory method
      *
@@ -91,7 +36,7 @@ public final class NumberConstant<D extends Number & Comparable<?>> extends Numb
 
     private final D constant;
 
-    NumberConstant(Class<? extends D> type, D constant) {
+    public NumberConstant(Class<? extends D> type, D constant) {
         super(type);
         this.constant = constant;
     }

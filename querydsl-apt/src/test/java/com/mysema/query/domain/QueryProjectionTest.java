@@ -57,9 +57,9 @@ public class QueryProjectionTest {
     @Test
     public void entityCase(){
         QQueryProjectionTest_EntityWithProjection.create(SimpleConstant.create(0l)).newInstance(0l);
-        QQueryProjectionTest_EntityWithProjection.create(new StringConstant("")).newInstance("");
-        QQueryProjectionTest_EntityWithProjection.create(NumberConstant.create(0l), new StringConstant("")).newInstance(0l,"");
-        QQueryProjectionTest_EntityWithProjection.create(new StringConstant(""), new StringConstant("")).newInstance("","");
+        QQueryProjectionTest_EntityWithProjection.create(StringConstant.create("")).newInstance("");
+        QQueryProjectionTest_EntityWithProjection.create(NumberConstant.create(0l), StringConstant.create("")).newInstance(0l,"");
+        QQueryProjectionTest_EntityWithProjection.create(StringConstant.create(""), StringConstant.create("")).newInstance("","");
     }
 
     public static class DTOWithProjection {
@@ -107,9 +107,9 @@ public class QueryProjectionTest {
     @Test
     public void dtoCase() throws SecurityException, NoSuchMethodException{
         new QQueryProjectionTest_DTOWithProjection(SimpleConstant.<Long>create(0l)).newInstance(0l);
-        new QQueryProjectionTest_DTOWithProjection(new StringConstant("")).newInstance("");
-        new QQueryProjectionTest_DTOWithProjection(NumberConstant.create(0l), new StringConstant("")).newInstance(0l,"");
-        new QQueryProjectionTest_DTOWithProjection(new StringConstant(""), new StringConstant("")).newInstance("","");
+        new QQueryProjectionTest_DTOWithProjection(StringConstant.create("")).newInstance("");
+        new QQueryProjectionTest_DTOWithProjection(NumberConstant.create(0l), StringConstant.create("")).newInstance(0l,"");
+        new QQueryProjectionTest_DTOWithProjection(StringConstant.create(""), StringConstant.create("")).newInstance("","");
 
     }
 }

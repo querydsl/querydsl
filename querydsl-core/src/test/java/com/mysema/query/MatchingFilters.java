@@ -251,7 +251,7 @@ public class MatchingFilters {
     public Collection<BooleanExpression> string(StringExpression expr, StringExpression other,  String knownValue){
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.addAll(string(expr, other));
-        rv.addAll(string(expr, new StringConstant(knownValue)));
+        rv.addAll(string(expr, StringConstant.create(knownValue)));
         return rv;
     }
 

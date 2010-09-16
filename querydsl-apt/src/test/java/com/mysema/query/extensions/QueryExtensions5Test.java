@@ -57,11 +57,11 @@ public class QueryExtensions5Test {
     public void test_prop_and_method_available(){
         assertNotNull(QQueryExtensions5Test_Entity.entity.prop);
         assertNotNull(QQueryExtensions5Test_Entity.entity.method());
-        assertNotNull(QQueryExtensions5Test_Entity.entity.method(new StringConstant("")));
+        assertNotNull(QQueryExtensions5Test_Entity.entity.method(StringConstant.create("")));
 
         assertNotNull(QQueryExtensions5Test_Entity2.entity2.prop);
         assertNotNull(QQueryExtensions5Test_Entity2.entity2.method());
-        assertNotNull(QQueryExtensions5Test_Entity2.entity2.method(new StringConstant("")));
+        assertNotNull(QQueryExtensions5Test_Entity2.entity2.method(StringConstant.create("")));
     }
 
 }

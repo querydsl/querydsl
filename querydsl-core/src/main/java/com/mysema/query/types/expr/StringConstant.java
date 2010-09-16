@@ -22,6 +22,10 @@ import com.mysema.query.types.Visitor;
 public final class StringConstant extends StringExpression implements Constant<String>{
 
     private static final long serialVersionUID = 5182804405789674556L;
+    
+    public static StringExpression create(String str){
+        return new StringConstant(str);
+    }
 
     private final String constant;
 
@@ -31,7 +35,7 @@ public final class StringConstant extends StringExpression implements Constant<S
     @Nullable
     private volatile StringExpression lower, trim, upper;
 
-    public StringConstant(String constant){
+    StringConstant(String constant){
         this.constant = constant;
     }
 
