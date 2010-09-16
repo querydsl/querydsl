@@ -21,7 +21,7 @@ public final class Converters {
         @Override
         public Expression<String> transform(Expression<String> arg) {
             if (arg instanceof Constant<?>){
-                return new ConstantImpl<String>(arg.toString().toLowerCase());
+                return ConstantImpl.create(arg.toString().toLowerCase());
             }else{
                 return new OperationImpl<String>(String.class, Ops.LOWER, arg);
             }
@@ -32,7 +32,7 @@ public final class Converters {
         @Override
         public Expression<String> transform(Expression<String> arg) {
             if (arg instanceof Constant<?>){
-                return new ConstantImpl<String>(arg.toString().toUpperCase());
+                return ConstantImpl.create(arg.toString().toUpperCase());
             }else{
                 return new OperationImpl<String>(String.class, Ops.UPPER, arg);
             }
@@ -43,9 +43,9 @@ public final class Converters {
         @Override
         public Expression<String> transform(Expression<String> arg) {
             if (arg instanceof Constant<?>){
-                return new ConstantImpl<String>(escapeForLike((Constant<String>)arg) + "%"); 
+                return ConstantImpl.create(escapeForLike((Constant<String>)arg) + "%"); 
             }else{
-                return new OperationImpl<String>(String.class, Ops.CONCAT, arg, new ConstantImpl<String>("%"));
+                return new OperationImpl<String>(String.class, Ops.CONCAT, arg, ConstantImpl.create("%"));
             }
         }
     };
@@ -54,9 +54,9 @@ public final class Converters {
         @Override
         public Expression<String> transform(Expression<String> arg) {
             if (arg instanceof Constant<?>){
-                return new ConstantImpl<String>(escapeForLike((Constant<String>)arg).toLowerCase() + "%"); 
+                return ConstantImpl.create(escapeForLike((Constant<String>)arg).toLowerCase() + "%"); 
             }else{
-                Expression<String> concated = new OperationImpl<String>(String.class, Ops.CONCAT, arg, new ConstantImpl<String>("%"));
+                Expression<String> concated = new OperationImpl<String>(String.class, Ops.CONCAT, arg, ConstantImpl.create("%"));
                 return new OperationImpl<String>(String.class, Ops.LOWER, concated);
             }
         }
@@ -66,9 +66,9 @@ public final class Converters {
         @Override
         public Expression<String> transform(Expression<String> arg) {
             if (arg instanceof Constant<?>){
-                return new ConstantImpl<String>("%" + escapeForLike((Constant<String>)arg)); 
+                return ConstantImpl.create("%" + escapeForLike((Constant<String>)arg)); 
             }else{
-                return new OperationImpl<String>(String.class, Ops.CONCAT, new ConstantImpl<String>("%"), arg);
+                return new OperationImpl<String>(String.class, Ops.CONCAT, ConstantImpl.create("%"), arg);
             }
         }
     };
@@ -77,9 +77,9 @@ public final class Converters {
         @Override
         public Expression<String> transform(Expression<String> arg) {
             if (arg instanceof Constant<?>){
-                return new ConstantImpl<String>("%" + escapeForLike((Constant<String>)arg).toLowerCase()); 
+                return ConstantImpl.create("%" + escapeForLike((Constant<String>)arg).toLowerCase()); 
             }else{
-                Expression<String> concated = new OperationImpl<String>(String.class, Ops.CONCAT, new ConstantImpl<String>("%"), arg);
+                Expression<String> concated = new OperationImpl<String>(String.class, Ops.CONCAT, ConstantImpl.create("%"), arg);
                 return new OperationImpl<String>(String.class, Ops.LOWER, concated);
             }
         }
@@ -89,10 +89,10 @@ public final class Converters {
         @Override
         public Expression<String> transform(Expression<String> arg) {
             if (arg instanceof Constant<?>){
-                return new ConstantImpl<String>("%" + escapeForLike((Constant<String>)arg) + "%"); 
+                return ConstantImpl.create("%" + escapeForLike((Constant<String>)arg) + "%"); 
             }else{
-                Expression<String> concated = new OperationImpl<String>(String.class, Ops.CONCAT, new ConstantImpl<String>("%"), arg);
-                return new OperationImpl<String>(String.class, Ops.CONCAT, concated, new ConstantImpl<String>("%"));
+                Expression<String> concated = new OperationImpl<String>(String.class, Ops.CONCAT, ConstantImpl.create("%"), arg);
+                return new OperationImpl<String>(String.class, Ops.CONCAT, concated, ConstantImpl.create("%"));
             }
         }
     };
@@ -101,10 +101,10 @@ public final class Converters {
         @Override
         public Expression<String> transform(Expression<String> arg) {
             if (arg instanceof Constant<?>){
-                return new ConstantImpl<String>("%" + escapeForLike((Constant<String>)arg).toLowerCase() + "%"); 
+                return ConstantImpl.create("%" + escapeForLike((Constant<String>)arg).toLowerCase() + "%"); 
             }else{
-                Expression<String> concated = new OperationImpl<String>(String.class, Ops.CONCAT, new ConstantImpl<String>("%"), arg);
-                concated = new OperationImpl<String>(String.class, Ops.CONCAT, concated, new ConstantImpl<String>("%"));
+                Expression<String> concated = new OperationImpl<String>(String.class, Ops.CONCAT, ConstantImpl.create("%"), arg);
+                concated = new OperationImpl<String>(String.class, Ops.CONCAT, concated, ConstantImpl.create("%"));
                 return new OperationImpl<String>(String.class, Ops.LOWER, concated);
             }
         }
