@@ -52,8 +52,7 @@ class PathFactoryImpl extends PathFactory {
     // TODO
     def createArrayPath[T](t: Class[Array[T with Object]], md: PathMetadata[_]) = null;
     
-    // TODO
-    def createEntityPath[T](t: Class[T], md: PathMetadata[_]) = Paths.simple(t, md);
+    def createEntityPath[T](t: Class[T], md: PathMetadata[_]) = Paths.entity(t, md);
     
     def createSimplePath[T](t: Class[T], md: PathMetadata[_]) = Paths.simple(t, md);
     
@@ -73,16 +72,12 @@ class PathFactoryImpl extends PathFactory {
     
     def createStringPath(md: PathMetadata[_]) = Paths.string(md);
     
-    // TODO
-    def createListPath[T](t: Class[T], md: PathMetadata[_]) = null;
+    def createListPath[T](t: Class[T], md: PathMetadata[_]) = Paths.list(t, md);
 
-    // TODO
-    def createSetPath[T](t: Class[T], md: PathMetadata[_]) = null;
+    def createSetPath[T](t: Class[T], md: PathMetadata[_]) = Paths.set(t, md);
     
-    // TODO
-    def createCollectionPath[T](t: Class[T], md: PathMetadata[_]) = null;
+    def createCollectionPath[T](t: Class[T], md: PathMetadata[_]) = Paths.collection(t, md);
     
-    // TODO
-    def createMapPath[K,V](k: Class[K], v: Class[V], md: PathMetadata[_]) = null;
+    def createMapPath[K,V](k: Class[K], v: Class[V], md: PathMetadata[_]) = Paths.map(k, v, md);
     
 }

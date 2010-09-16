@@ -59,7 +59,27 @@ trait SimpleExpression[T] extends Expression[T] {
 
 }
 
-trait CollectionExpression[T] extends SimpleExpression[T] {
+trait CollectionExpression[T] extends SimpleExpression[java.util.Collection[T]] {
+    
+    // TODO
+    
+}
+
+trait SetExpression[T] extends SimpleExpression[java.util.Set[T]] {
+    
+    // TODO
+    
+}
+
+trait ListExpression[T] extends SimpleExpression[java.util.List[T]] {
+    
+    // TODO
+    
+}
+
+trait MapExpression[K,V] extends SimpleExpression[java.util.Map[K,V]] {
+    
+    // TODO
     
 }
 
