@@ -59,6 +59,12 @@ trait SimpleExpression[T] extends Expression[T] {
 
 }
 
+trait ArrayExpression[T <: Array[_]] extends SimpleExpression[T] {
+    
+    // TODO
+    
+}
+
 trait CollectionExpression[T] extends SimpleExpression[java.util.Collection[T]] {
     
     // TODO

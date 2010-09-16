@@ -51,8 +51,7 @@ object Conversions {
 
 class PathFactoryImpl extends PathFactory {
     
-    // TODO
-    def createArrayPath[T](t: Class[Array[T with Object]], md: PathMetadata[_]) = null;
+    def createArrayPath[T](t: Class[Array[T with Object]], md: PathMetadata[_]) = Paths.array(t, md);
     
     def createEntityPath[T](t: Class[T], md: PathMetadata[_]) = Paths.entity(t, md);
     

@@ -8,6 +8,8 @@ import com.mysema.query.types.PathMetadataFactory._;
  *
  */
 object Paths {
+    
+    def array[T <: Array[_]](t: Class[T], md: PathMetadata[_]) = new ArrayPath[T](t, md);
 
     def simple[T](t: Class[_ <: T], md: PathMetadata[_]) = new SimplePath[T](t, md);
     
@@ -42,6 +44,13 @@ class SimplePath[T](t: Class[_ <: T], md: PathMetadata[_] )
     extends PathImpl[T](t, md) with SimpleExpression[T]{
     
     def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
+    
+}
+
+class ArrayPath[T <: Array[_]](t: Class[T], md: PathMetadata[_] ) 
+    extends PathImpl[T](t, md) with ArrayExpression[T]{
+    
+    def this(t: Class[T], variable: String) = this(t, forVariable(variable));
     
 }
 
