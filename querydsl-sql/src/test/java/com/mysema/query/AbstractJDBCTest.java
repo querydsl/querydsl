@@ -20,7 +20,7 @@ public abstract class AbstractJDBCTest {
     protected Statement statement;
 
     @Before
-    public void setUp() throws ClassNotFoundException, SQLException{
+    public void setUp() throws ClassNotFoundException, SQLException {
         Class.forName("org.hsqldb.jdbcDriver");
         String url = "jdbc:hsqldb:mem:testdb";
         connection = DriverManager.getConnection(url, "sa", "");
