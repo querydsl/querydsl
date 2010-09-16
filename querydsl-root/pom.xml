@@ -47,18 +47,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.6.1</version>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.6.1</version>
-	  <scope>provided</scope>
-    </dependency>    
-
-    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.8.1</version>
@@ -78,6 +66,22 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
+  <dependencyManagement>
+  	<dependencies>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.6.1</version>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>1.6.1</version>
+  	    <scope>provided</scope>
+      </dependency>    
+  	</dependencies>
+  </dependencyManagement>
 
   <organization>
     <name>Mysema Ltd</name>
