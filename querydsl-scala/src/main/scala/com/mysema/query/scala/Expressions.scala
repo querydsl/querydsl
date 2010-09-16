@@ -14,6 +14,7 @@ import java.util.Arrays._;
 
 object Constants {
     
+    // FIXME
     //def constant(value: java.lang.Integer) = ConstantImpl.create(value.intValue);
     
     def constant(value: String) = ConstantImpl.create(value);
