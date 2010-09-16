@@ -29,6 +29,8 @@ object Conversions {
     
     def alias[T](cl: Class[T], expr: Expression[_ <: T]): T = aliasFactory.createAliasForExpr(cl, expr);
     
+    // implicit conversions
+    
     implicit def booleanPath(b: java.lang.Boolean): BooleanPath = aliasFactory.getCurrentAndReset();
     
     implicit def stringPath(s: String): StringPath = aliasFactory.getCurrentAndReset();
@@ -43,7 +45,7 @@ object Conversions {
     
     implicit def simplePath(s: Object): SimplePath[_] = aliasFactory.getCurrentAndReset();
     
-    //implicit def num[N <: Number with Comparable[N]](n: N): NumberPath[N] = $(n);
+    implicit def numberPath[N <: Number with Comparable[N]](n: N): NumberPath[N] = aliasFactory.getCurrentAndReset();
     
 }
 
