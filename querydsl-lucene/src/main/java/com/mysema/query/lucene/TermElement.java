@@ -1,8 +1,9 @@
 package com.mysema.query.lucene;
 
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.StringExpression;
-import com.mysema.query.types.expr.StringConstant;
 
 /**
  * TermElement represents the embedded String as a term
@@ -14,10 +15,10 @@ public class TermElement extends StringExpression{
 
     private static final long serialVersionUID = 2350215644019186076L;
 
-    private final StringConstant string;
+    private final Constant<String> string;
 
     public TermElement(String str) {
-        this.string = (StringConstant) StringConstant.create(str);
+        this.string = ConstantImpl.create(str);
     }
 
     @Override

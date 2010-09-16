@@ -33,6 +33,6 @@ public class StringConstantTest {
     }
 
     private StringExpression expr(String str){
-        return StringConstant.create(str);
+        return new StringConstant(str);
     }
 }

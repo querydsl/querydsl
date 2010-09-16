@@ -9,8 +9,8 @@ import javax.annotation.Nonnegative;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.expr.Param;
 
 /**
  * Query provides a query interface of the fluent query DSL.
@@ -79,6 +79,6 @@ public interface Query<Q extends Query<Q>> extends FilteredClause<Q>{
      * @param value
      * @return
      */
-    <T> Q set(Param<T> param, T value);
+    <T> Q set(ParamExpression<T> param, T value);
 
 }

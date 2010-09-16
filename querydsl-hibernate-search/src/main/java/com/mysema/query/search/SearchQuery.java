@@ -24,8 +24,8 @@ import com.mysema.query.lucene.LuceneSerializer;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.expr.Param;
 
 /**
  * SearchQuery is a Query implementation for Hibernate Search
@@ -139,7 +139,7 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
     }
 
     @Override
-    public <P> SearchQuery<T> set(Param<P> param, P value) {
+    public <P> SearchQuery<T> set(ParamExpression<P> param, P value) {
         return queryMixin.set(param, value);
     }
 

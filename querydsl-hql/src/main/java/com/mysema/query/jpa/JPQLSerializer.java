@@ -128,7 +128,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     }
 
     private Expression<?> regexToLike(String str){
-        return StringConstant.create(str.replace(".*", "%").replace(".", "_"));
+        return ConstantImpl.create(str.replace(".*", "%").replace(".", "_"));
     }
 
     public void serialize(QueryMetadata metadata, boolean forCountRow, @Nullable String projection) {
@@ -320,9 +320,9 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 Class<?> cl = ((Class<?>) ((Constant<?>) newArgs.get(1)).getConstant());
                 // use discriminator value instead of fqnm
                 if (cl.getAnnotation(DiscriminatorValue.class) != null){
-                    newArgs.set(1, StringConstant.create(cl.getAnnotation(DiscriminatorValue.class).value()));
+                    newArgs.set(1, ConstantImpl.create(cl.getAnnotation(DiscriminatorValue.class).value()));
                 }else{
-                    newArgs.set(1, StringConstant.create(cl.getName()));
+                    newArgs.set(1, ConstantImpl.create(cl.getName()));
                 }
                 super.visitOperation(type, operator, newArgs);
             }else{

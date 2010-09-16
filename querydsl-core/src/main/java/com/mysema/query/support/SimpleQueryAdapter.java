@@ -16,8 +16,8 @@ import com.mysema.query.SimpleProjectable;
 import com.mysema.query.SimpleQuery;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.expr.Param;
 
 import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
@@ -108,7 +108,7 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     }
 
     @Override
-    public <P> SimpleQueryAdapter<T> set(Param<P> param, P value) {
+    public <P> SimpleQueryAdapter<T> set(ParamExpression<P> param, P value) {
         query.set(param, value);
         return this;
     }

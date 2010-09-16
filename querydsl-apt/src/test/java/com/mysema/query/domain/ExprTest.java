@@ -54,7 +54,7 @@ public class ExprTest {
         exprs.add(QReservedNamesTest_ReservedNames.reservedNames);
         exprs.add(QSimpleTypesTest_SimpleTypes.simpleTypes);
 
-        exprs.add(StringConstant.create("Hello World!"));
+        exprs.add(new StringConstant("Hello World!"));
         exprs.add(NumberConstant.create(1000));
         exprs.add(NumberConstant.create(10l));
         exprs.add(BooleanConstant.TRUE);

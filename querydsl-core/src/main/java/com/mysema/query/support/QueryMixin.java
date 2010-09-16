@@ -18,10 +18,10 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.query.types.path.MapPath;
 
@@ -341,7 +341,7 @@ public class QueryMixin<T>{
         return self;
     }
 
-    public <P> T set(Param<P> param, P value){
+    public <P> T set(ParamExpression<P> param, P value){
         metadata.setParam(param, value);
         return self;
     }

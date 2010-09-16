@@ -39,6 +39,7 @@ import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
@@ -471,7 +472,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         constants = null;
     }
     
-    protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths, Map<Param<?>, ?> params){
+    protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths, Map<ParamExpression<?>, ?> params){
         if (objects.size() != constantPaths.size()){
             throw new IllegalArgumentException("Expected " + objects.size() + " paths, but got " + constantPaths.size());
         }

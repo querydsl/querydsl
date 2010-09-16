@@ -19,9 +19,9 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.expr.Param;
 
 /**
  * DefaultQueryMetadata is the default implementation of the {@link QueryMetadata} interface
@@ -50,7 +50,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     private List<Expression<?>> projection = new ArrayList<Expression<?>>();
 
     // NOTE : this is not necessarily serializable
-    private Map<Param<?>,Object> params = new HashMap<Param<?>,Object>();
+    private Map<ParamExpression<?>,Object> params = new HashMap<ParamExpression<?>,Object>();
 
     private boolean unique;
 
@@ -144,7 +144,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             clone.modifiers = new QueryModifiers(modifiers);
             clone.orderBy = new ArrayList<OrderSpecifier<?>>(orderBy);
             clone.projection = new ArrayList<Expression<?>>(projection);
-            clone.params = new HashMap<Param<?>,Object>(params);
+            clone.params = new HashMap<ParamExpression<?>,Object>(params);
             clone.where = where.clone();
             clone.flags = new LinkedHashSet<QueryFlag>(flags);
             return clone;
@@ -181,7 +181,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         return modifiers;
     }
 
-    public Map<Param<?>,Object> getParams(){
+    public Map<ParamExpression<?>,Object> getParams(){
         return Collections.unmodifiableMap(params);
     }
 
@@ -213,7 +213,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public void reset() {
         clearProjection();
-        params = new HashMap<Param<?>,Object>();
+        params = new HashMap<ParamExpression<?>,Object>();
         modifiers = new QueryModifiers();
     }
 
@@ -251,7 +251,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     @Override
-    public <T> void setParam(Param<T> param, T value) {
+    public <T> void setParam(ParamExpression<T> param, T value) {
         params.put(param, value);
     }
 

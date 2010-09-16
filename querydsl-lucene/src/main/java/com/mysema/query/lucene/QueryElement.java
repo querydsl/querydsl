@@ -2,10 +2,10 @@ package com.mysema.query.lucene;
 
 import org.apache.lucene.search.Query;
 
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.StringExpression;
-import com.mysema.query.types.expr.StringConstant;
 
 /**
  * QueryElement wraps a Lucene Query
@@ -19,7 +19,7 @@ public class QueryElement extends BooleanExpression{
 
     private final Query query;
 
-    private volatile StringExpression expr;
+    private volatile Constant<String> expr;
 
     public QueryElement(Query query){
         this.query = query;
@@ -28,7 +28,7 @@ public class QueryElement extends BooleanExpression{
     @Override
     public <R,C> R accept(Visitor<R,C> v, C context) {
         if (expr == null){
-            expr = StringConstant.create(query.toString());
+            expr = ConstantImpl.create(query.toString());
         }
         return expr.accept(v, context);
     }

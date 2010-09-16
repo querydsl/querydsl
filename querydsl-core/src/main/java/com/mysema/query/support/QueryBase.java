@@ -8,8 +8,8 @@ package com.mysema.query.support;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.expr.Param;
 
 /**
  * QueryBase provides a stub for Query implementations
@@ -57,7 +57,7 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
         return queryMixin.restrict(modifiers);
     }
 
-    public <P> Q set(Param<P> param, P value){
+    public <P> Q set(ParamExpression<P> param, P value){
         return queryMixin.set(param, value);
     }
 

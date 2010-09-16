@@ -184,7 +184,7 @@ public final class CaseBuilder {
         }
 
         public Cases<String, StringExpression> then(String str){
-            return then(StringConstant.create(str));
+            return then(new StringConstant(str));
         }
 
         public <A extends Number & Comparable<?>> Cases<A, NumberExpression<A>> then(A num){

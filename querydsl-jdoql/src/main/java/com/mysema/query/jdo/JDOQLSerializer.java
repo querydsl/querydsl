@@ -22,7 +22,6 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.*;
 import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.expr.SimpleOperation;
-import com.mysema.query.types.expr.StringConstant;
 
 /**
  * JDOQLSerializer serializes Querydsl queries and expressions into JDOQL strings
@@ -107,7 +106,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     }
 
     private Expression<?> regexToLike(String str){
-        return StringConstant.create(str.replace(".*", "%").replace(".", "_"));
+        return ConstantImpl.create(str.replace(".*", "%").replace(".", "_"));
     }
 
     @SuppressWarnings("unchecked")
@@ -220,7 +219,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         }
     }
 
-    private void serializeParameters(Map<Param<?>, Object> params) {
+    private void serializeParameters(Map<ParamExpression<?>, Object> params) {
         append(PARAMETERS);
         boolean first = true;
         List<Map.Entry<Object, String>> entries = new ArrayList<Map.Entry<Object, String>>(getConstantToLabel().entrySet());

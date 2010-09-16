@@ -25,8 +25,8 @@ import com.mysema.query.SimpleProjectable;
 import com.mysema.query.SimpleQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.expr.Param;
 
 /**
  * LuceneQuery is a Querydsl query implementation for Lucene queries.
@@ -169,7 +169,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
     }
 
     @Override
-    public <T> LuceneQuery set(Param<T> param, T value) {
+    public <T> LuceneQuery set(ParamExpression<T> param, T value) {
         return queryMixin.set(param, value);
     }
 

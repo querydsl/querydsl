@@ -5,16 +5,10 @@
  */
 package com.mysema.query.types.expr;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Visitor;
@@ -27,45 +21,7 @@ import com.mysema.query.types.Visitor;
  */
 public final class StringConstant extends StringExpression implements Constant<String>{
 
-    private static final Map<String,StringExpression> CACHE;
-
-    private static final int CACHE_SIZE = 256;
-
     private static final long serialVersionUID = 5182804405789674556L;
-
-    static{
-        List<String> strs = new ArrayList<String>(Arrays.asList("", ".", ".*", "%"));
-        for (int i = 0; i < CACHE_SIZE; i++){
-            strs.add(String.valueOf(i));
-        }
-
-        CACHE = new HashMap<String,StringExpression>(strs.size());
-        for (String str : strs){
-            CACHE.put(str, new StringConstant(str));
-        }
-    }
-
-    /**
-     * Factory method for constants
-     *
-     * @param str
-     * @return
-     */
-    public static StringExpression create(String str){
-        return create(str, false);
-    }
-
-    public static StringExpression create(String str, boolean populateCache) {
-        if (CACHE.containsKey(str)){
-            return CACHE.get(str);
-        }else{
-            StringExpression rv = new StringConstant(Assert.notNull(str,"str"));
-            if (populateCache){
-                CACHE.put(str, rv);
-            }
-            return rv;
-        }
-    }
 
     private final String constant;
 
@@ -75,7 +31,7 @@ public final class StringConstant extends StringExpression implements Constant<S
     @Nullable
     private volatile StringExpression lower, trim, upper;
 
-    StringConstant(String constant){
+    public StringConstant(String constant){
         this.constant = constant;
     }
 
@@ -96,7 +52,7 @@ public final class StringConstant extends StringExpression implements Constant<S
 
     @Override
     public StringExpression append(String s) {
-        return StringConstant.create(constant + s);
+        return new StringConstant(constant + s);
     }
 
     @Override
@@ -162,7 +118,7 @@ public final class StringConstant extends StringExpression implements Constant<S
     @Override
     public StringExpression lower() {
         if (lower == null) {
-            lower = StringConstant.create(constant.toLowerCase(Locale.ENGLISH));
+            lower = new StringConstant(constant.toLowerCase(Locale.ENGLISH));
         }
         return lower;
     }
@@ -189,7 +145,7 @@ public final class StringConstant extends StringExpression implements Constant<S
 
     @Override
     public StringExpression prepend(String s) {
-        return StringConstant.create(s + constant);
+        return new StringConstant(s + constant);
     }
 
     @Override
@@ -199,12 +155,12 @@ public final class StringConstant extends StringExpression implements Constant<S
 
     @Override
     public StringExpression substring(int beginIndex) {
-        return StringConstant.create(constant.substring(beginIndex));
+        return new StringConstant(constant.substring(beginIndex));
     }
 
     @Override
     public StringExpression substring(int beginIndex, int endIndex) {
-        return StringConstant.create(constant.substring(beginIndex, endIndex));
+        return new StringConstant(constant.substring(beginIndex, endIndex));
     }
 
     @Override
@@ -220,7 +176,7 @@ public final class StringConstant extends StringExpression implements Constant<S
     @Override
     public StringExpression trim() {
         if (trim == null) {
-            trim = StringConstant.create(constant.trim());
+            trim = new StringConstant(constant.trim());
         }
         return trim;
     }
@@ -228,7 +184,7 @@ public final class StringConstant extends StringExpression implements Constant<S
     @Override
     public StringExpression upper() {
         if (upper == null){
-            upper = StringConstant.create(constant.toUpperCase(Locale.ENGLISH));
+            upper = new StringConstant(constant.toUpperCase(Locale.ENGLISH));
         }
         return upper;
     }

@@ -14,8 +14,8 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.expr.Param;
 
 /**
  * QueryMetadata defines query metadata such as query sources, filtering
@@ -152,7 +152,7 @@ public interface QueryMetadata extends Serializable {
      *
      * @return
      */
-    Map<Param<?>,Object> getParams();
+    Map<ParamExpression<?>,Object> getParams();
 
     /**
      * Get the expressions aggregated into a single boolean expression or null,
@@ -212,7 +212,7 @@ public interface QueryMetadata extends Serializable {
      * @param param
      * @param value
      */
-    <T> void setParam(Param<T> param, T value);
+    <T> void setParam(ParamExpression<T> param, T value);
     
     /**
      * @param flag
