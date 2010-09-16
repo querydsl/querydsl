@@ -131,23 +131,6 @@ public abstract class StringExpression extends ComparableExpression<String> {
     public BooleanExpression contains(String str) {
         return contains(StringConstant.create(str));
     }
-
-    /**
-     * Returns true if the given String is contained
-     *
-     * @param str
-     * @param caseSensitive case sensitivity of operation
-     * @return this.contains(str)
-     * @see java.lang.String#contains(CharSequence)
-     */
-    @Deprecated
-    public BooleanExpression contains(Expression<String> str, boolean caseSensitive) {
-        if (caseSensitive){
-            return contains(str);
-        }else{
-            return BooleanOperation.create(Ops.STRING_CONTAINS_IC, this, str);
-        }
-    }
     
     /**
      * @param str
@@ -156,20 +139,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     public BooleanExpression containsIgnoreCase(Expression<String> str) {
         return BooleanOperation.create(Ops.STRING_CONTAINS_IC, this, str);
     }
-
-    /**
-     * Returns true if the given String is contained
-     *
-     * @param str
-     * @param caseSensitive case sensitivity of operation
-     * @return this.contains(str)
-     * @see java.lang.String#contains(CharSequence)
-     */
-    @Deprecated
-    public BooleanExpression contains(String str, boolean caseSensitive) {
-        return contains(StringConstant.create(str), caseSensitive);
-    }
-
+   
     /**
      * @param str
      * @return
@@ -187,23 +157,6 @@ public abstract class StringExpression extends ComparableExpression<String> {
      */
     public BooleanExpression endsWith(Expression<String> str) {
         return BooleanOperation.create(Ops.ENDS_WITH, this, str);
-    }
-
-    /**
-     * Returns true if this ends with str
-     *
-     * @param str
-     * @param caseSensitive case sensitivity of operation
-     * @return
-     * @see java.lang.String#endsWith(String)
-     */
-    @Deprecated
-    public BooleanExpression endsWith(Expression<String> str, boolean caseSensitive) {
-        if (caseSensitive){
-            return endsWith(str);
-        }else{
-            return BooleanOperation.create(Ops.ENDS_WITH_IC, this, str);
-        }
     }
     
     /**
@@ -223,19 +176,6 @@ public abstract class StringExpression extends ComparableExpression<String> {
      */
     public BooleanExpression endsWith(String str) {
         return endsWith(StringConstant.create(str));
-    }
-
-    /**
-     * Returns true if this ends with str
-     *
-     * @param str
-     * @param caseSensitive
-     * @return
-     * @see java.lang.String#endsWith(String)
-     */
-    @Deprecated
-    public BooleanExpression endsWith(String str, boolean caseSensitive) {
-        return endsWith(StringConstant.create(str), caseSensitive);
     }
     
     /**
@@ -447,23 +387,6 @@ public abstract class StringExpression extends ComparableExpression<String> {
     public BooleanExpression startsWith(Expression<String> str) {
         return BooleanOperation.create(Ops.STARTS_WITH, this, str);
     }
-
-    /**
-     * Return true if this starts with str
-     *
-     * @param str
-     * @param caseSensitive
-     * @return
-     * @see java.lang.String#startsWith(String)
-     */
-    @Deprecated
-    public BooleanExpression startsWith(Expression<String> str, boolean caseSensitive) {
-        if (caseSensitive){
-            return startsWith(str);
-        }else{
-            return BooleanOperation.create(Ops.STARTS_WITH_IC, this, str);
-        }
-    }
     
     /**
      * @param str
@@ -482,19 +405,6 @@ public abstract class StringExpression extends ComparableExpression<String> {
      */
     public BooleanExpression startsWith(String str) {
         return startsWith(StringConstant.create(str));
-    }
-
-    /**
-     * Return true if this starts with str
-     *
-     * @param str
-     * @param caseSensitive
-     * @return
-     * @see java.lang.String#startsWith(String)
-     */
-    @Deprecated
-    public BooleanExpression startsWith(String str, boolean caseSensitive) {
-        return startsWith(StringConstant.create(str), caseSensitive);
     }
     
     /**

@@ -166,21 +166,22 @@ public class MatchingFilters {
         rv.add(expr.contains(other.substring(1)));
         rv.add(expr.contains(other.substring(2)));
 
-        rv.add(expr.contains(other, false));
-        rv.add(expr.contains(other.lower(), false));
-        rv.add(expr.contains(other.upper(), false));
-        rv.add(expr.contains(other.substring(0,1),false));
-        rv.add(expr.contains(other.substring(0,2).lower(),false));
-        rv.add(expr.contains(other.substring(1,2).upper(),false));
-        rv.add(expr.contains(other.substring(1).lower(),false));
-        rv.add(expr.contains(other.substring(2).upper(),false));
+        rv.add(expr.containsIgnoreCase(other));
+        rv.add(expr.containsIgnoreCase(other.lower()));
+        rv.add(expr.containsIgnoreCase(other.upper()));
+        rv.add(expr.containsIgnoreCase(other.substring(0,1)));
+        rv.add(expr.containsIgnoreCase(other.substring(0,2).lower()));
+        rv.add(expr.containsIgnoreCase(other.substring(1,2).upper()));
+        rv.add(expr.containsIgnoreCase(other.substring(1).lower()));
+        rv.add(expr.containsIgnoreCase(other.substring(2).upper()));
 
         rv.add(expr.endsWith(other));
-        rv.add(expr.endsWith(other,false));
         rv.add(expr.endsWith(other.substring(1)));
         rv.add(expr.endsWith(other.substring(2)));
-        rv.add(expr.endsWith(other.substring(1),false));
-        rv.add(expr.endsWith(other.substring(2),false));
+        
+        rv.add(expr.endsWithIgnoreCase(other));        
+        rv.add(expr.endsWithIgnoreCase(other.substring(1)));
+        rv.add(expr.endsWithIgnoreCase(other.substring(2)));
 
         rv.add(expr.eq(other));
         rv.add(expr.equalsIgnoreCase(other));
@@ -230,12 +231,13 @@ public class MatchingFilters {
             rv.add(expr.ne(other));
         }
 
-        rv.add(expr.startsWith(other));
-        rv.add(expr.startsWith(other,false));
-        rv.add(expr.startsWith(other.substring(0,1)));
-        rv.add(expr.startsWith(other.substring(0,1),false));
+        rv.add(expr.startsWith(other));        
+        rv.add(expr.startsWith(other.substring(0,1)));        
         rv.add(expr.startsWith(other.substring(0,2)));
-        rv.add(expr.startsWith(other.substring(0,2),false));
+        
+        rv.add(expr.startsWithIgnoreCase(other));
+        rv.add(expr.startsWithIgnoreCase(other.substring(0,1)));
+        rv.add(expr.startsWithIgnoreCase(other.substring(0,2)));
 
         if (module != Module.LUCENE){
             rv.add(expr.substring(0,1).eq(other.substring(0,1)));

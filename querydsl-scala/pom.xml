@@ -78,7 +78,22 @@
           </execution>
         </executions>        
       </plugin>
+	  
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-eclipse-plugin</artifactId>
+	    <configuration>
+          <buildcommands>
+            <buildcommand>org.scala-ide.sdt.core.scalabuilder</buildcommand>
+          </buildcommands>	    	
+          <projectnatures>          	
+            <projectnature>org.scala-ide.sdt.core.scalanature</projectnature>
+			<projectnature>org.eclipse.jdt.core.javanature</projectnature>
+          </projectnatures>	    	
+		</configuration>	
+      </plugin>	  
     </plugins>
+	
   </build>
 
 </project>

@@ -174,7 +174,6 @@ public abstract class NumberExpression<D extends Number & Comparable<?>> extends
         if (type.equals(getType())){
             return (NumberExpression<A>) this;
         }else{
-//            return super.castToNum(type);
             return NumberOperation.create(type, Ops.NUMCAST, this, SimpleConstant.create(type));
         }
     }

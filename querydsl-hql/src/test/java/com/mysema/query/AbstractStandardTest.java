@@ -208,12 +208,12 @@ public abstract class AbstractStandardTest {
         // startsWith
         assertEquals(1, catQuery().where(cat.name.startsWith("R")).count());
         assertEquals(0, catQuery().where(cat.name.startsWith("X")).count());
-        assertEquals(1, catQuery().where(cat.name.startsWith("r",false)).count());
+        assertEquals(1, catQuery().where(cat.name.startsWithIgnoreCase("r")).count());
 
         // endsWith
         assertEquals(1, catQuery().where(cat.name.endsWith("h123")).count());
         assertEquals(0, catQuery().where(cat.name.endsWith("X")).count());
-        assertEquals(1, catQuery().where(cat.name.endsWith("H123",false)).count());
+        assertEquals(1, catQuery().where(cat.name.endsWithIgnoreCase("H123")).count());
 
         // contains
         assertEquals(1, catQuery().where(cat.name.contains("eli")).count());
