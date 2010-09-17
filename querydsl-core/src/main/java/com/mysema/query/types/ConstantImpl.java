@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.expr.NumberConstant;
-import com.mysema.query.types.expr.NumberExpression;
 
 /**
  * @author tiwe
@@ -25,13 +23,13 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
     
     private static final int CACHE_SIZE = 256;
     
-    private static final NumberExpression<Byte>[] BYTES = new NumberExpression[CACHE_SIZE];
+    private static final Constant<Byte>[] BYTES = new Constant[CACHE_SIZE];
 
-    private static final NumberExpression<Integer>[] INTEGERS = new NumberExpression[CACHE_SIZE];
+    private static final Constant<Integer>[] INTEGERS = new Constant[CACHE_SIZE];
     
-    private static final NumberExpression<Long>[] LONGS = new NumberExpression[CACHE_SIZE];
+    private static final Constant<Long>[] LONGS = new Constant[CACHE_SIZE];
 
-    private static final NumberExpression<Short>[] SHORTS = new NumberExpression[CACHE_SIZE];
+    private static final Constant<Short>[] SHORTS = new Constant[CACHE_SIZE];
 
     private static final Map<String,Constant<String>> STRINGS;
 
@@ -47,42 +45,42 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
         }
         
         for (int i = 0; i < CACHE_SIZE; i++){
-            INTEGERS[i] = new NumberConstant<Integer>(Integer.class, Integer.valueOf(i));
-            SHORTS[i] = new NumberConstant<Short>(Short.class, Short.valueOf((short)i));
-            BYTES[i] = new NumberConstant<Byte>(Byte.class, Byte.valueOf((byte)i));
-            LONGS[i] = new NumberConstant<Long>(Long.class, Long.valueOf(i));
+            INTEGERS[i] = new ConstantImpl<Integer>(Integer.class, Integer.valueOf(i));
+            SHORTS[i] = new ConstantImpl<Short>(Short.class, Short.valueOf((short)i));
+            BYTES[i] = new ConstantImpl<Byte>(Byte.class, Byte.valueOf((byte)i));
+            LONGS[i] = new ConstantImpl<Long>(Long.class, Long.valueOf(i));
         }
     }
 
-    public static NumberExpression<Byte> create(byte i){
+    public static Constant<Byte> create(byte i){
         if (i >= 0 && i < CACHE_SIZE){
             return BYTES[i];
         }else{
-            return new NumberConstant<Byte>(Byte.class, Byte.valueOf(i));
+            return new ConstantImpl<Byte>(Byte.class, Byte.valueOf(i));
         }
     }
 
-    public static NumberExpression<Integer> create(int i){
+    public static Constant<Integer> create(int i){
         if (i >= 0 && i < CACHE_SIZE){
             return INTEGERS[i];
         }else{
-            return new NumberConstant<Integer>(Integer.class, Integer.valueOf(i));
+            return new ConstantImpl<Integer>(Integer.class, Integer.valueOf(i));
         }
     }
 
-    public static NumberExpression<Long> create(long i){
+    public static Constant<Long> create(long i){
         if (i >= 0 && i < CACHE_SIZE){
             return LONGS[(int)i];
         }else{
-            return new NumberConstant<Long>(Long.class, Long.valueOf(i));
+            return new ConstantImpl<Long>(Long.class, Long.valueOf(i));
         }
     }
 
-    public static NumberExpression<Short> create(short i){
+    public static Constant<Short> create(short i){
         if (i >= 0 && i < CACHE_SIZE){
             return SHORTS[i];
         }else{
-            return new NumberConstant<Short>(Short.class, Short.valueOf(i));
+            return new ConstantImpl<Short>(Short.class, Short.valueOf(i));
         }
     }
     
@@ -109,7 +107,11 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
     private final T constant;
     
     public ConstantImpl(T constant){
-        super((Class)constant.getClass());
+        this((Class)constant.getClass(), constant);
+    }
+    
+    public ConstantImpl(Class<T> type, T constant){
+        super(type);
         this.constant = constant;
     }
     
