@@ -58,7 +58,7 @@ public interface Ops {
     Operator<Boolean> CONTAINS_KEY = new OperatorImpl<Boolean>("CONTAINS_KEY",OBJECT_X_2);
     Operator<Boolean> CONTAINS_VALUE = new OperatorImpl<Boolean>("CONTAINS_VALUE",OBJECT_X_2);
     Operator<Number> MAP_SIZE = new OperatorImpl<Number>("MAP_SIZE",Object.class);
-    Operator<Boolean> MAP_ISEMPTY = new OperatorImpl<Boolean>("MAP_ISEMPTY",Object.class);
+    Operator<Boolean> MAP_IS_EMPTY = new OperatorImpl<Boolean>("MAP_IS_EMPTY",Object.class);
 
     // Boolean
     Operator<Boolean> AND = new OperatorImpl<Boolean>("AND",BOOLEAN_X_2);

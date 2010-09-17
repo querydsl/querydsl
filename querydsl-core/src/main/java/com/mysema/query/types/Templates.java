@@ -50,7 +50,7 @@ public class Templates {
 
         // map
         add(Ops.MAP_SIZE, "size({0})");
-        add(Ops.MAP_ISEMPTY, "empty({0})");
+        add(Ops.MAP_IS_EMPTY, "empty({0})");
         add(Ops.CONTAINS_KEY, "containsKey({0},{1})");
         add(Ops.CONTAINS_VALUE, "containsValue({0},{1})");
 

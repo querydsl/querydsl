@@ -34,7 +34,7 @@ public class JavaTemplates extends Templates {
         add(Ops.ARRAY_SIZE, "{0}.length");
 
         // map
-        add(Ops.MAP_ISEMPTY, "{0}.isEmpty()");
+        add(Ops.MAP_IS_EMPTY, "{0}.isEmpty()");
         add(Ops.MAP_SIZE, "{0}.size()");
         add(Ops.CONTAINS_KEY, "{0}.containsKey({1})");
         add(Ops.CONTAINS_VALUE, "{0}.containsValue({1})");

@@ -63,7 +63,7 @@ public abstract class MapExpressionBase<K,V> extends SimpleExpression<Map<K,V>> 
     @Override
     public final BooleanExpression isEmpty() {
         if (empty == null){
-            empty = BooleanOperation.create(Ops.MAP_ISEMPTY, this);
+            empty = BooleanOperation.create(Ops.MAP_IS_EMPTY, this);
         }
         return empty;
     }
