@@ -5,12 +5,12 @@ import java.sql.Timestamp;
 
 import org.junit.Test;
 
+import com.mysema.query.BooleanConstant;
 import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryEmbeddable;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerySupertype;
 import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.BooleanConstant;
 import com.mysema.query.types.path.DatePath;
 import com.mysema.query.types.path.DateTimePath;
 

@@ -12,7 +12,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.BooleanConstant;
 import com.mysema.query.types.path.BooleanPath;
 
 /**

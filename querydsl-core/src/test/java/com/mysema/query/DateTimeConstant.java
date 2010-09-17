@@ -3,10 +3,12 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types.expr;
+package com.mysema.query;
 
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Visitor;
+import com.mysema.query.types.expr.DateTimeExpression;
+import com.mysema.query.types.expr.NumberExpression;
 
 /**
  * @author tiwe

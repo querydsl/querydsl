@@ -9,6 +9,7 @@ import java.util.Collection;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 
@@ -35,7 +36,7 @@ public abstract class CollectionExpressionBase<C extends Collection<E>, E> exten
 
     @Override
     public final BooleanExpression contains(E child) {
-        return contains(SimpleConstant.create(child));
+        return contains(new ConstantImpl<E>(child));
     }
 
     @Override

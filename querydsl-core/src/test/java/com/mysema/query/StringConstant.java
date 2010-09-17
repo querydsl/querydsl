@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types.expr;
+package com.mysema.query;
 
 import java.util.Locale;
 
@@ -12,6 +12,10 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Visitor;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.SimpleExpression;
+import com.mysema.query.types.expr.StringExpression;
 
 /**
  * StringConstant represents String constants

@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types.expr;
 
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
@@ -45,7 +46,7 @@ public abstract class ComparableExpression<D extends Comparable> extends Compara
      * @return
      */
     public final BooleanExpression between(D from, D to) {
-        return BooleanOperation.create(Ops.BETWEEN, this, SimpleConstant.create(from), SimpleConstant.create(to));
+        return BooleanOperation.create(Ops.BETWEEN, this, new ConstantImpl<D>(from), new ConstantImpl<D>(to));
     }
 
     /**
@@ -89,7 +90,7 @@ public abstract class ComparableExpression<D extends Comparable> extends Compara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public BooleanExpression gt(D right) {
-        return gt(SimpleConstant.create(right));
+        return gt(new ConstantImpl(right));
     }
 
     /**
@@ -111,7 +112,7 @@ public abstract class ComparableExpression<D extends Comparable> extends Compara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public BooleanExpression goe(D right) {
-        return goe(SimpleConstant.create(right));
+        return goe(new ConstantImpl(right));
     }
 
     /**
@@ -133,7 +134,7 @@ public abstract class ComparableExpression<D extends Comparable> extends Compara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final BooleanExpression lt(D right) {
-        return lt(SimpleConstant.create(right));
+        return lt(new ConstantImpl(right));
     }
 
     /**
@@ -155,7 +156,7 @@ public abstract class ComparableExpression<D extends Comparable> extends Compara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final BooleanExpression loe(D right) {
-        return BooleanOperation.create(Ops.BOE, this, SimpleConstant.create(right));
+        return BooleanOperation.create(Ops.BOE, this, new ConstantImpl(right));
     }
 
     /**

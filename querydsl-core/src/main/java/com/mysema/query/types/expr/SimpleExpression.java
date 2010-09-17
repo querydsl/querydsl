@@ -7,9 +7,11 @@ package com.mysema.query.types.expr;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionBase;
 import com.mysema.query.types.Operator;
@@ -125,7 +127,7 @@ public abstract class SimpleExpression<D> extends ExpressionBase<D> {
      * @return
      */
     public BooleanExpression eq(D right) {
-        return eq(SimpleConstant.create(right));
+        return eq(new ConstantImpl<D>(right));
     }
 
     /**
@@ -160,7 +162,7 @@ public abstract class SimpleExpression<D> extends ExpressionBase<D> {
         if (right.size() == 1){
             return eq(right.iterator().next());
         }else{
-            return BooleanOperation.create(Ops.IN, this, SimpleConstant.create(right));
+            return BooleanOperation.create(Ops.IN, this, new ConstantImpl<Collection<? extends D>>(right));
         }
     }
     
@@ -174,7 +176,7 @@ public abstract class SimpleExpression<D> extends ExpressionBase<D> {
         if (right.length == 1){
             return eq(right[0]);
         }else{
-            return BooleanOperation.create(Ops.IN, this, SimpleConstant.create(Arrays.asList(right)));
+            return BooleanOperation.create(Ops.IN, this, new ConstantImpl<List<D>>(Arrays.asList(right)));
         }
     }
 
@@ -196,7 +198,7 @@ public abstract class SimpleExpression<D> extends ExpressionBase<D> {
      * @return
      */
     public BooleanExpression ne(D right) {
-        return ne(SimpleConstant.create(right));
+        return ne(new ConstantImpl<D>(right));
     }
 
     /**
@@ -261,7 +263,7 @@ public abstract class SimpleExpression<D> extends ExpressionBase<D> {
      * @return
      */
     public CaseForEqBuilder<D> when(D other){
-        return new CaseForEqBuilder<D>(this, SimpleConstant.create(other));
+        return new CaseForEqBuilder<D>(this, new ConstantImpl<D>(other));
     }
 
     /**

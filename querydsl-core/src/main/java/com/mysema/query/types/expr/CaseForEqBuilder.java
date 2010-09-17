@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
@@ -80,14 +81,19 @@ public final class CaseForEqBuilder<D> {
     }
 
     public <T> Cases<T,Expression<T>> then(T then){
-        return then(SimpleConstant.create(then));
+        return then(new ConstantImpl<T>(then));
     }
 
     public <T extends Number & Comparable<?>> Cases<T,NumberExpression<T>> then(T then){
-        return then(NumberConstant.create(then));
+//        return then(NumberConstant.create(then));
+        return thenNumber(new ConstantImpl<T>(then));
     }
 
     public <T extends Number & Comparable<?>> Cases<T,NumberExpression<T>> then(NumberExpression<T> then){
+        return thenNumber(then);
+    }
+    
+    public <T extends Number & Comparable<?>> Cases<T,NumberExpression<T>> thenNumber(Expression<T> then){
         type = then.getType();
         return new Cases<T,NumberExpression<T>>(){
             @SuppressWarnings("unchecked")
@@ -100,6 +106,15 @@ public final class CaseForEqBuilder<D> {
     }
 
     public Cases<String,StringExpression> then(StringExpression then){
+        return thenString(then);
+    }
+
+    public Cases<String,StringExpression> then(String then){
+//        return then(StringConstant.create(then));
+        return thenString(ConstantImpl.create(then));
+    }
+    
+    private Cases<String,StringExpression> thenString(Expression<String> then){
         type = then.getType();
         return new Cases<String,StringExpression>(){
             @SuppressWarnings("unchecked")
@@ -111,10 +126,6 @@ public final class CaseForEqBuilder<D> {
         }.when(other).then(then);
     }
 
-    public Cases<String,StringExpression> then(String then){
-        return then(StringConstant.create(then));
-    }
-
     public abstract class Cases<T, Q extends Expression<T>> {
 
         public CaseWhen<T,Q> when(Expression<? extends D> when){
@@ -122,7 +133,7 @@ public final class CaseForEqBuilder<D> {
         }
 
         public CaseWhen<T,Q> when(D when){
-            return when(SimpleConstant.create(when));
+            return when(new ConstantImpl<D>(when));
         }
 
         @SuppressWarnings("unchecked")
@@ -147,7 +158,7 @@ public final class CaseForEqBuilder<D> {
         protected abstract Q createResult(Class<T> type, Expression<T> last);
 
         public Q otherwise(T otherwise){
-            return otherwise(SimpleConstant.create(otherwise));
+            return otherwise(new ConstantImpl<T>(otherwise));
         }
     }
 
@@ -168,7 +179,7 @@ public final class CaseForEqBuilder<D> {
         }
 
         public Cases<T, Q> then(T then){
-            return then(SimpleConstant.create(then));
+            return then(new ConstantImpl<T>(then));
         }
 
     }

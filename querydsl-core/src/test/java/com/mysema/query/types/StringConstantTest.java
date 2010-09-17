@@ -9,8 +9,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.mysema.query.StringConstant;
 import com.mysema.query.types.expr.StringExpression;
-import com.mysema.query.types.expr.StringConstant;
 
 public class StringConstantTest {
 

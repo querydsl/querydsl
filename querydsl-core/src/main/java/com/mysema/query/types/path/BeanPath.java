@@ -12,16 +12,16 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.ExpressionException;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.BooleanOperation;
-import com.mysema.query.types.expr.SimpleConstant;
 import com.mysema.query.types.expr.SimpleExpression;
 
 /**
@@ -319,7 +319,7 @@ public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
      * @return
      */
     public <B extends D> BooleanExpression instanceOf(Class<B> type) {
-        return BooleanOperation.create(Ops.INSTANCE_OF, this, SimpleConstant.create(type));
+        return BooleanOperation.create(Ops.INSTANCE_OF, this, new ConstantImpl<Class<B>>(type));
     }
 
     @Override

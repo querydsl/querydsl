@@ -7,6 +7,7 @@ package com.mysema.query.types.expr;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
@@ -65,7 +66,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return this + str
      */
     public StringExpression append(String str) {
-        return append(StringConstant.create(str));
+        return append(ConstantImpl.create(str));
     }
 
     /**
@@ -87,7 +88,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#charAt(int)
      */
     public SimpleExpression<Character> charAt(int i) {
-        return charAt(NumberConstant.create(i));
+        return charAt(ConstantImpl.create(i));
     }
 
     /**
@@ -129,7 +130,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#contains(CharSequence)
      */
     public BooleanExpression contains(String str) {
-        return contains(StringConstant.create(str));
+        return contains(ConstantImpl.create(str));
     }
     
     /**
@@ -145,7 +146,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return
      */
     public BooleanExpression containsIgnoreCase(String str) {
-        return containsIgnoreCase(StringConstant.create(str));
+        return containsIgnoreCase(ConstantImpl.create(str));
     }
     
     /**
@@ -175,7 +176,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#endsWith(String)
      */
     public BooleanExpression endsWith(String str) {
-        return endsWith(StringConstant.create(str));
+        return endsWith(ConstantImpl.create(str));
     }
     
     /**
@@ -183,7 +184,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return
      */
     public BooleanExpression endsWithIgnoreCase(String str) {
-        return endsWithIgnoreCase(StringConstant.create(str));
+        return endsWithIgnoreCase(ConstantImpl.create(str));
     }
 
     /**
@@ -207,7 +208,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#equalsIgnoreCase(String)
      */
     public BooleanExpression equalsIgnoreCase(String str) {
-        return equalsIgnoreCase(StringConstant.create(str));
+        return equalsIgnoreCase(ConstantImpl.create(str));
     }
 
     /**
@@ -229,7 +230,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#indexOf(String)
      */
     public NumberExpression<Integer> indexOf(String str) {
-        return indexOf(StringConstant.create(str));
+        return indexOf(ConstantImpl.create(str));
     }
 
     /**
@@ -241,7 +242,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#indexOf(String, int)
      */
     public NumberExpression<Integer> indexOf(String str, int i) {
-        return indexOf(StringConstant.create(str), i);
+        return indexOf(ConstantImpl.create(str), i);
     }
 
     /**
@@ -252,7 +253,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return
      */
     public NumberExpression<Integer> indexOf(Expression<String> str, int i) {
-        return NumberOperation.create(Integer.class, Ops.INDEX_OF_2ARGS, this, str, NumberConstant.create(i));
+        return NumberOperation.create(Integer.class, Ops.INDEX_OF_2ARGS, this, str, ConstantImpl.create(i));
     }
 
     /**
@@ -298,7 +299,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return
      */
     public BooleanExpression like(String str){
-        return BooleanOperation.create(Ops.LIKE, this, StringConstant.create(str));
+        return BooleanOperation.create(Ops.LIKE, this, ConstantImpl.create(str));
     }
 
     /**
@@ -343,7 +344,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#matches(String)
      */
     public BooleanExpression matches(String regex){
-        return matches(StringConstant.create(regex));
+        return matches(ConstantImpl.create(regex));
     }
 
     /**
@@ -363,7 +364,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return str + this
      */
     public StringExpression prepend(String str) {
-        return prepend(StringConstant.create(str));
+        return prepend(ConstantImpl.create(str));
     }
 
     /**
@@ -374,7 +375,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#split(String)
      */
     public Expression<String[]> split(String regex) {
-        return SimpleOperation.create(String[].class, Ops.StringOps.SPLIT, this, StringConstant.create(regex));
+        return SimpleOperation.create(String[].class, Ops.StringOps.SPLIT, this, ConstantImpl.create(regex));
     }
 
     /**
@@ -404,7 +405,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#startsWith(String)
      */
     public BooleanExpression startsWith(String str) {
-        return startsWith(StringConstant.create(str));
+        return startsWith(ConstantImpl.create(str));
     }
     
     /**
@@ -412,7 +413,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return
      */
     public BooleanExpression startsWithIgnoreCase(String str) {
-        return startsWithIgnoreCase(StringConstant.create(str));
+        return startsWithIgnoreCase(ConstantImpl.create(str));
     }
 
     /* (non-Javadoc)
@@ -430,7 +431,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#substring(int)
      */
     public StringExpression substring(int beginIndex) {
-        return StringOperation.create(Ops.SUBSTR_1ARG, this, NumberConstant.create(beginIndex));
+        return StringOperation.create(Ops.SUBSTR_1ARG, this, ConstantImpl.create(beginIndex));
     }
 
     /**
@@ -442,7 +443,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#substring(int, int)
      */
     public StringExpression substring(int beginIndex, int endIndex) {
-        return StringOperation.create(Ops.SUBSTR_2ARGS, this, NumberConstant.create(beginIndex), NumberConstant.create(endIndex));
+        return StringOperation.create(Ops.SUBSTR_2ARGS, this, ConstantImpl.create(beginIndex), ConstantImpl.create(endIndex));
     }
 
     /**

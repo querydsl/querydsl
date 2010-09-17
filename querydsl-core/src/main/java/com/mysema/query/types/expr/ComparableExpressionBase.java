@@ -7,6 +7,7 @@ package com.mysema.query.types.expr;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
@@ -54,7 +55,7 @@ public abstract class ComparableExpressionBase<D extends Comparable> extends Sim
      * @return
      */
     public <A extends Number & Comparable<? super A>> NumberExpression<A> castToNum(Class<A> type) {
-        return NumberOperation.create(type, Ops.NUMCAST, this, SimpleConstant.create(type));
+        return NumberOperation.create(type, Ops.NUMCAST, this, new ConstantImpl(type));
     }
 
     /**

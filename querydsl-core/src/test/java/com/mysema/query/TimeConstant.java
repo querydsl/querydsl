@@ -3,12 +3,14 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types.expr;
+package com.mysema.query;
 
 import java.util.Calendar;
 
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Visitor;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.TimeExpression;
 
 /**
  * @author tiwe

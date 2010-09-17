@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 
@@ -46,7 +47,7 @@ public abstract class MapExpressionBase<K,V> extends SimpleExpression<Map<K,V>> 
 
     @Override
     public final BooleanExpression containsKey(K key) {
-        return BooleanOperation.create(Ops.CONTAINS_KEY, this, SimpleConstant.create(key));
+        return BooleanOperation.create(Ops.CONTAINS_KEY, this, new ConstantImpl<K>(key));
     }
 
     @Override
@@ -56,7 +57,7 @@ public abstract class MapExpressionBase<K,V> extends SimpleExpression<Map<K,V>> 
 
     @Override
     public final BooleanExpression containsValue(V value) {
-        return BooleanOperation.create(Ops.CONTAINS_VALUE, this, SimpleConstant.create(value));
+        return BooleanOperation.create(Ops.CONTAINS_VALUE, this, new ConstantImpl<V>(value));
     }
 
     @Override

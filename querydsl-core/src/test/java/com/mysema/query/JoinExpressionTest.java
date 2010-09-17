@@ -11,7 +11,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.mysema.query.types.expr.BooleanConstant;
 import com.mysema.query.types.path.StringPath;
 
 public class JoinExpressionTest {

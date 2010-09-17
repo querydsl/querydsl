@@ -9,10 +9,10 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
+import com.mysema.query.StringConstant;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryExtensions;
 import com.mysema.query.annotations.QueryMethod;
-import com.mysema.query.types.expr.StringConstant;
 
 public class QueryExtensions5Test {
 

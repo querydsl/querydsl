@@ -5,12 +5,12 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.mysema.query.BooleanConstant;
 import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryExtensions;
 import com.mysema.query.annotations.QueryMethod;
 import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.BooleanConstant;
 
 import ext.java.lang.QByte;
 

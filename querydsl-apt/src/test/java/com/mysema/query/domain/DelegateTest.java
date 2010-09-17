@@ -5,11 +5,11 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
+import com.mysema.query.BooleanConstant;
 import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerySupertype;
 import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.BooleanConstant;
 
 public class DelegateTest {
 

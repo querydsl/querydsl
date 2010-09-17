@@ -12,13 +12,13 @@ import javax.persistence.Entity;
 
 import org.junit.Test;
 
+import com.mysema.query.NumberConstant;
+import com.mysema.query.SimpleConstant;
+import com.mysema.query.StringConstant;
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.types.expr.NumberConstant;
-import com.mysema.query.types.expr.StringConstant;
-import com.mysema.query.types.expr.SimpleConstant;
 
 public class QueryProjectionTest {
 

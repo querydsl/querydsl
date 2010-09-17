@@ -15,12 +15,12 @@ import java.util.TreeSet;
 
 import org.junit.Test;
 
+import com.mysema.query.BooleanConstant;
+import com.mysema.query.NumberConstant;
+import com.mysema.query.StringConstant;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.BooleanConstant;
-import com.mysema.query.types.expr.NumberConstant;
 import com.mysema.query.types.expr.StringExpression;
-import com.mysema.query.types.expr.StringConstant;
 
 public class ExprTest {
 

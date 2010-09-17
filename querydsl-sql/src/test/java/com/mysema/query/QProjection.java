@@ -7,7 +7,6 @@ package com.mysema.query;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.ConstructorExpression;
-import com.mysema.query.types.expr.SimpleConstant;
 
 public class QProjection extends ConstructorExpression<Projection>{
 

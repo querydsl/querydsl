@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.mysema.query.BooleanConstant;
 import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.JavaTemplates;
@@ -24,7 +25,6 @@ import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.ToStringVisitor;
 import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.BooleanConstant;
 import com.mysema.query.types.path.StringPath;
 
 public class CustomTest {

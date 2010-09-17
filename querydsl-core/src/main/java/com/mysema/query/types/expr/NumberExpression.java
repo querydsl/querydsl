@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
@@ -118,7 +119,7 @@ public abstract class NumberExpression<D extends Number & Comparable<?>> extends
      * @return this + right
      */
     public <N extends Number & Comparable<N>> NumberExpression<D> add(N right) {
-        return NumberOperation.create(getType(), Ops.ADD, this, NumberConstant.create(right));
+        return NumberOperation.create(getType(), Ops.ADD, this, new ConstantImpl<N>(right));
     }
 
     /**
@@ -174,7 +175,7 @@ public abstract class NumberExpression<D extends Number & Comparable<?>> extends
         if (type.equals(getType())){
             return (NumberExpression<A>) this;
         }else{
-            return NumberOperation.create(type, Ops.NUMCAST, this, SimpleConstant.create(type));
+            return NumberOperation.create(type, Ops.NUMCAST, this, new ConstantImpl<Class<A>>(type));
         }
     }
 
@@ -210,7 +211,7 @@ public abstract class NumberExpression<D extends Number & Comparable<?>> extends
      * @return this / right
      */
     public <N extends Number & Comparable<?>> NumberExpression<Double> divide(N right) {
-        return NumberOperation.create(Double.class, Ops.DIV, this, NumberConstant.create(right));
+        return NumberOperation.create(Double.class, Ops.DIV, this, new ConstantImpl<N>(right));
     }
 
     /**
@@ -257,7 +258,7 @@ public abstract class NumberExpression<D extends Number & Comparable<?>> extends
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> BooleanExpression goe(A right) {
-        return goe(NumberConstant.create(cast(right)));
+        return goe(new ConstantImpl<D>(cast(right)));
     }
 
     /**
@@ -281,7 +282,7 @@ public abstract class NumberExpression<D extends Number & Comparable<?>> extends
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> BooleanExpression gt(A right) {
-        return gt(NumberConstant.create(cast(right)));
+        return gt(new ConstantImpl<D>(cast(right)));
     }
 
     /**
@@ -293,7 +294,7 @@ public abstract class NumberExpression<D extends Number & Comparable<?>> extends
      * @return
      */
     public final <A extends Number & Comparable<?>> BooleanExpression between(A from, A to) {
-        return BooleanOperation.create(Ops.BETWEEN, this, SimpleConstant.create(from), SimpleConstant.create(to));
+        return BooleanOperation.create(Ops.BETWEEN, this, new ConstantImpl<A>(from), new ConstantImpl<A>(to));
     }
 
     /**
@@ -357,7 +358,7 @@ public abstract class NumberExpression<D extends Number & Comparable<?>> extends
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> BooleanExpression loe(A right) {
-        return loe(NumberConstant.create(cast(right)));
+        return loe(new ConstantImpl<D>(cast(right)));
     }
 
     /**
@@ -391,7 +392,7 @@ public abstract class NumberExpression<D extends Number & Comparable<?>> extends
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final <A extends Number & Comparable<?>> BooleanExpression lt(A right) {
-        return lt(NumberConstant.create(cast(right)));
+        return lt(new ConstantImpl<D>(cast(right)));
     }
 
     /**
@@ -445,7 +446,7 @@ public abstract class NumberExpression<D extends Number & Comparable<?>> extends
      * @return
      */
     public NumberExpression<D> mod(D num){
-        return NumberOperation.create(getType(), Ops.MOD, this, NumberConstant.create(num));
+        return NumberOperation.create(getType(), Ops.MOD, this, new ConstantImpl<D>(num));
     }
 
     /**
@@ -465,7 +466,7 @@ public abstract class NumberExpression<D extends Number & Comparable<?>> extends
      * @return this * right
      */
     public <N extends Number & Comparable<N>> NumberExpression<D> multiply(N right) {
-        return NumberOperation.create(getType(), Ops.MULT, this, NumberConstant.create(right));
+        return NumberOperation.create(getType(), Ops.MULT, this, new ConstantImpl<N>(right));
     }
 
     /**
@@ -533,7 +534,7 @@ public abstract class NumberExpression<D extends Number & Comparable<?>> extends
      * @return this - right
      */
     public <N extends Number & Comparable<?>> NumberExpression<D> subtract(N right) {
-        return NumberOperation.create(getType(), Ops.SUB, this, NumberConstant.create(right));
+        return NumberOperation.create(getType(), Ops.SUB, this, new ConstantImpl<N>(right));
     }
 
     /**

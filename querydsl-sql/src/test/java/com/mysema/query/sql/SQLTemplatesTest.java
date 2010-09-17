@@ -12,10 +12,10 @@ import java.util.regex.Pattern;
 
 import org.junit.Test;
 
+import com.mysema.query.NumberConstant;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.custom.SimpleTemplate;
-import com.mysema.query.types.expr.NumberConstant;
 
 public class SQLTemplatesTest {
 

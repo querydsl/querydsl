@@ -9,9 +9,9 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.mysema.query.StringConstant;
 import com.mysema.query.types.JavaTemplates;
 import com.mysema.query.types.custom.StringTemplate;
-import com.mysema.query.types.expr.StringConstant;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.path.StringPath;
 

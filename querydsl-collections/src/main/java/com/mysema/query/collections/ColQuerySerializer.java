@@ -10,8 +10,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.mysema.query.SimpleConstant;
 import com.mysema.query.types.*;
-import com.mysema.query.types.expr.SimpleConstant;
 
 /**
  * ColQuerySerializer is a Serializer implementation for the Java language

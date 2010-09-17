@@ -23,6 +23,7 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.SimpleConstant;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.dml.StoreClause;
 import com.mysema.query.sql.Configuration;
@@ -36,7 +37,6 @@ import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.Param;
-import com.mysema.query.types.expr.SimpleConstant;
 import com.mysema.query.types.path.NullExpr;
 
 /**

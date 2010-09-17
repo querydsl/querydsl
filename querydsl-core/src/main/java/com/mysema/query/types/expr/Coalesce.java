@@ -8,6 +8,7 @@ package com.mysema.query.types.expr;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Visitor;
@@ -52,7 +53,7 @@ public class Coalesce<T extends Comparable> extends ComparableExpression<T>{
     }
 
     public final Coalesce<T> add(T constant){
-        this.exprs.add(SimpleConstant.create(constant));
+        this.exprs.add(new ConstantImpl<T>(constant));
         return this;
     }
 

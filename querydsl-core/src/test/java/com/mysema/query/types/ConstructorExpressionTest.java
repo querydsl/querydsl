@@ -7,11 +7,11 @@ package com.mysema.query.types;
 
 import org.junit.Test;
 
+import com.mysema.query.NumberConstant;
+import com.mysema.query.StringConstant;
 import com.mysema.query.types.expr.ConstructorExpression;
 import com.mysema.query.types.expr.NumberExpression;
-import com.mysema.query.types.expr.NumberConstant;
 import com.mysema.query.types.expr.StringExpression;
-import com.mysema.query.types.expr.StringConstant;
 
 public class ConstructorExpressionTest {
 

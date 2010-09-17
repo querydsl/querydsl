@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
@@ -79,7 +80,7 @@ public final class CaseBuilder {
         protected abstract Q createResult(Class<A> type, Expression<A> last);
 
         public Q otherwise(A constant) {
-            return otherwise(SimpleConstant.create(constant));
+            return otherwise(new ConstantImpl<A>(constant));
         }
 
         public Q otherwise(Expression<A> expr) {
@@ -124,7 +125,7 @@ public final class CaseBuilder {
         }
 
         public Cases<A,Q> then(A constant) {
-            return then(SimpleConstant.create(constant));
+            return then(new ConstantImpl<A>(constant));
         }
 
         public Cases<A,Q> then(Expression<A> expr) {
@@ -147,10 +148,14 @@ public final class CaseBuilder {
         }
 
         public <A> Cases<A,Expression<A>> then(A constant) {
-            return then(SimpleConstant.create(constant));
+            return then(new ConstantImpl<A>(constant));
         }
 
         public Cases<String,StringExpression> then(StringExpression expr){
+            return thenString(expr);
+        }
+        
+        private Cases<String,StringExpression> thenString(Expression<String> expr){
             return new Cases<String,StringExpression>(String.class){
                 @SuppressWarnings("unchecked")
                 @Override
@@ -171,9 +176,13 @@ public final class CaseBuilder {
 
             }.addCase(when, expr);
         }
-
-        @SuppressWarnings("unchecked")
+        
         public <A extends Number & Comparable<?>> Cases<A, NumberExpression<A>> then(NumberExpression<A> expr) {
+            return thenNumber(expr);
+        }
+        
+        @SuppressWarnings("unchecked")
+        private <A extends Number & Comparable<?>> Cases<A, NumberExpression<A>> thenNumber(Expression<A> expr) {
             return new Cases<A, NumberExpression<A>>((Class)expr.getType()){
                 @Override
                 protected NumberExpression<A> createResult(Class<A> type, Expression<A> last) {
@@ -184,11 +193,11 @@ public final class CaseBuilder {
         }
 
         public Cases<String, StringExpression> then(String str){
-            return then(StringConstant.create(str));
+            return thenString(ConstantImpl.create(str));
         }
 
         public <A extends Number & Comparable<?>> Cases<A, NumberExpression<A>> then(A num){
-            return then(NumberConstant.create(num));
+            return thenNumber(new ConstantImpl<A>(num));
         }
     }
 

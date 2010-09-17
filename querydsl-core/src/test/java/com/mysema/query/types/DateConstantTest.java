@@ -12,8 +12,8 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
+import com.mysema.query.DateConstant;
 import com.mysema.query.types.expr.DateExpression;
-import com.mysema.query.types.expr.DateConstant;
 
 public class DateConstantTest {
 

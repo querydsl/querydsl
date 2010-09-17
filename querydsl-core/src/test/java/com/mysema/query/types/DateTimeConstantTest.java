@@ -12,8 +12,8 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import com.mysema.query.DateTimeConstant;
 import com.mysema.query.types.expr.DateTimeExpression;
-import com.mysema.query.types.expr.DateTimeConstant;
 
 public class DateTimeConstantTest {
 

@@ -498,7 +498,7 @@ public class EntitySerializer implements Serializer{
         writer.append(", this");
         for (Parameter p : method.getParameters()){
             // TODO : replace with class reference
-            writer.append(COMMA + "SimpleConstant.create(" + p.getName() + ")");
+            writer.append(COMMA + "new ConstantImpl(" + p.getName() + ")");
         }
         writer.append(");\n");
 
