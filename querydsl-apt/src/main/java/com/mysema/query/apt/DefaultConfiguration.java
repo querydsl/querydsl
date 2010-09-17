@@ -51,6 +51,8 @@ public class DefaultConfiguration implements Configuration {
 
     private static final String QUERYDSL_ENTITY_ACCESSORS = "querydsl.entityAccessors";
 
+    private static final String DEFAULT_OVERWRITE = "defaultOverwrite";
+
     private final TypeMappings typeMappings = new TypeMappings();
 
     private final SerializerConfig defaultSerializerConfig;
@@ -74,7 +76,7 @@ public class DefaultConfiguration implements Configuration {
 
     private final Map<String,SerializerConfig> typeToConfig = new HashMap<String,SerializerConfig>();
 
-    private boolean useFields = true, useGetters = true;
+    private boolean useFields = true, useGetters = true, defaultOverwrite = false;
 
     public DefaultConfiguration(
             RoundEnvironment roundEnv,
@@ -116,6 +118,10 @@ public class DefaultConfiguration implements Configuration {
         if (options.containsKey(QUERYDSL_CREATE_DEFAULT_VARIABLE)){
             createDefaultVariable = Boolean.valueOf(options.get(QUERYDSL_CREATE_DEFAULT_VARIABLE));
         }
+        if (options.containsKey(DEFAULT_OVERWRITE)){
+            defaultOverwrite = Boolean.valueOf(options.get(DEFAULT_OVERWRITE));
+        }
+        
         defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors, mapAccessors, createDefaultVariable);
 
     }
@@ -219,6 +225,11 @@ public class DefaultConfiguration implements Configuration {
             return getter.getAnnotation(skipAnn) != null
                 || getter.getModifiers().contains(Modifier.STATIC);
         }
+    }
+
+    @Override
+    public boolean isDefaultOverwrite() {
+        return defaultOverwrite;
     }
 
     @Override

@@ -418,11 +418,21 @@ public class Processor {
                 FileObject sourceFile = getSourceFile(model.getFullName());
                 FileObject generatedFile = filer.getResource(StandardLocation.SOURCE_OUTPUT, packageName, type.getSimpleName() + ".java");
                 
-//                msg.printMessage(Kind.NOTE, "Query class: " + (qFile != null ? qFile.getName() + " lastModified = " + qFile.getLastModified() : "n/a")
-//                        + " - typeElement: " + env.getElementUtils().getTypeElement(className)
-//                        + " - sourceElement : " + (sFile != null ? sFile.getLastModified() : "null"));
-                
-                if ((sourceFile == null && generatedFile.getLastModified() == 0) || (sourceFile != null && generatedFile.getLastModified() <= sourceFile.getLastModified())) {
+                boolean generate;
+                // Source file is accessible and exists
+                if (sourceFile != null && sourceFile.getLastModified() > 0) {
+                    // Generate if source has changed since Q-type was last time generated
+                    generate = generatedFile.getLastModified() <= sourceFile.getLastModified();
+                } else {
+                    // Play safe and generate as we don't know if source has changed or not
+                    if (configuration.isDefaultOverwrite()) {
+                        generate = true;
+                    } else {
+                        generate = generatedFile.getLastModified() <= 0;
+                    }
+                }
+
+                if (generate) {
                     msg.printMessage(Kind.NOTE, "Generating " + className + " for " + model.getFullName());
                     
                     JavaFileObject fileObject = env.getFiler().createSourceFile(className);
@@ -436,7 +446,7 @@ public class Processor {
                         }
                     }
                 }else{
-                    msg.printMessage(Kind.NOTE, className + " is up-to-date");
+                    msg.printMessage(Kind.NOTE, className + " is up-to-date ");
                 }
 
             } catch (IOException e) {
@@ -446,7 +456,6 @@ public class Processor {
     }
 
     private FileObject getSourceFile(String fullName) throws IOException {
-//        Messager msg = env.getMessager();
         Elements elementUtils = env.getElementUtils();
 
         TypeElement sourceElement = elementUtils.getTypeElement(fullName);
@@ -457,19 +466,15 @@ public class Processor {
             if (sourceElement.getNestingKind().isNested()) {
                 sourceElement = (TypeElement) sourceElement.getEnclosingElement();
             }
-//            msg.printMessage(Kind.NOTE, fullName + " is from " + sourceElement.getQualifiedName());
             
             PackageElement packageElement = elementUtils.getPackageOf(sourceElement);
-            
-//            msg.printMessage(Kind.NOTE, "packageElement = " + (packageElement != null ? packageElement.getQualifiedName() : "null"));
     
-            try{
+            try {
                 return env.getFiler().getResource(StandardLocation.SOURCE_PATH, 
                         packageElement.getQualifiedName(), 
                         sourceElement.getSimpleName() + ".java");    
-            }catch(NullPointerException e){
-                throw new IllegalStateException(
-                        "Make sure that the -sourcepath parameter is given to the Compiler", e);
+            } catch(Exception e) {
+                return null;
             }
             
         }

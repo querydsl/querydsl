@@ -74,4 +74,6 @@ public interface Configuration {
 
     Collection<String> getKeywords();
 
+    boolean isDefaultOverwrite();
+
 }
