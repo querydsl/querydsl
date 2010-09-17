@@ -3,13 +3,17 @@ package com.mysema.query.mongodb;
 import static junit.framework.Assert.assertEquals;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.mysema.query.types.Expr;
+import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.path.PDate;
 import com.mysema.query.types.path.PDateTime;
 import com.mysema.query.types.path.PNumber;
@@ -108,7 +112,22 @@ public class MongodbSerializerTest {
         assertQuery(year.in(1,2,3), dbo("year", dbo("$in", 1,2,3)));        
     }
     
+    @Test
+    public void testOrderBy() {
+        DBObject orderBy = serializer.toSort(sortList(year.asc()));
+        assertEquals(dbo("year", 1), orderBy);
+
+        orderBy = serializer.toSort(sortList(year.desc()));
+        assertEquals(dbo("year", -1), orderBy);
+
+        orderBy = serializer.toSort(sortList(year.desc(), title.asc()));
+        assertEquals(dbo("year", -1).append("title", 1), orderBy);
+    }
     
+    private List<OrderSpecifier<?>> sortList(OrderSpecifier<?> ... order) {
+        return Arrays.asList(order);
+    }
+
     private void assertQuery(Expr<?> e, BasicDBObject expected) {
         BasicDBObject result = (BasicDBObject) serializer.handle(e);
         assertEquals(expected.toString(), result.toString());

@@ -72,8 +72,7 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
 
         @Override
         public MongodbQuery<K> orderBy(OrderSpecifier<?>... o) {
-            // TODO Auto-generated method stub
-            return null;
+            return queryMixin.orderBy(o);
         }
 
         @Override
@@ -84,12 +83,13 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
 
         @Override
         public List<K> list() {
-//            QueryMetadata metadata = queryMixin.getMetadata();
-            //List<OrderSpecifier<?>> orderBys = metadata.getOrderBy();
+            QueryMetadata metadata = queryMixin.getMetadata();
             //Long queryLimit = metadata.getModifiers().getLimit();
             //Long queryOffset = metadata.getModifiers().getOffset();
-
             DBCursor cursor = coll.find(createQuery());
+            if(metadata.getOrderBy().size() > 0) {
+                cursor.sort(serializer.toSort(metadata.getOrderBy()));
+            }
             List<K> results = new ArrayList<K>(cursor.size());
             for (DBObject dbObject : cursor) {
                 results.add(morphia.fromDBObject(ePath.getType(), dbObject, cache ));

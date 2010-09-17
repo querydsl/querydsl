@@ -1,11 +1,25 @@
 package com.mysema.query.mongodb;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.bson.BSONObject;
 
 import com.mongodb.BasicDBObject;
-import com.mysema.query.types.*;
+import com.mongodb.DBObject;
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.Custom;
+import com.mysema.query.types.Expr;
+import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.Operation;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.Order;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Param;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.Visitor;
 
 /**
  * Serializes the given QueryDSL query to a DBObject querty format MongoDB
@@ -18,6 +32,15 @@ public class MongodbSerializer implements Visitor<Object, Void> {
 
     public Object handle(Expr<?> where) {
         return where.accept(this, null);
+    }
+    
+    public DBObject toSort(List<OrderSpecifier<?>> orderBys) {
+        BasicDBObject sort = new BasicDBObject();
+        for (OrderSpecifier<?> orderBy : orderBys) {
+            Object key = orderBy.getTarget().accept(this, null);
+            sort.append(key.toString(), orderBy.getOrder() == Order.ASC ? 1 : -1);
+        }
+        return sort;
     }
 
     @Override
