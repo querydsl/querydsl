@@ -23,7 +23,6 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.SimpleConstant;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.dml.StoreClause;
 import com.mysema.query.sql.Configuration;
@@ -32,6 +31,7 @@ import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Path;
@@ -222,7 +222,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
     public <T> SQLMergeClause set(Path<T> path, @Nullable T value) {
         columns.add(path);
         if (value != null){
-            values.add(SimpleConstant.create(value));
+            values.add(new ConstantImpl<T>(value));
         }else{
             values.add(new NullExpr<T>(path.getType()));
         }
@@ -241,7 +241,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
             if (value instanceof Expression<?>) {
                 values.add((Expression<?>) value);
             } else if (value != null){
-                values.add(SimpleConstant.create(value));
+                values.add(new ConstantImpl(value));
             }else{
                 values.add(NullExpr.DEFAULT);
             }

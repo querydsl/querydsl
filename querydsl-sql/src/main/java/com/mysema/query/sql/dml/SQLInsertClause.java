@@ -27,13 +27,13 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.SimpleConstant;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.dml.InsertClause;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
@@ -241,7 +241,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         if (value instanceof Expression<?>){ 
             values.add((Expression<?>)value);        
         }else if (value != null){
-            values.add(SimpleConstant.create(value));
+            values.add(new ConstantImpl<T>(value));
         }else{
             values.add(new NullExpr<T>(path.getType()));
         }
@@ -254,7 +254,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
             if (value instanceof Expression<?>) {
                 values.add((Expression<?>) value);
             } else if (value != null){
-                values.add(SimpleConstant.create(value));
+                values.add(new ConstantImpl(value));
             }else{
                 values.add(NullExpr.DEFAULT);
             }

@@ -19,7 +19,6 @@ import com.mysema.commons.lang.Pair;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.SimpleConstant;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.types.*;
 import com.mysema.query.types.custom.SimpleTemplate;
@@ -51,7 +50,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         public void handle(String template, Object... args) {
             Expression<?>[] exprs = new Expression[args.length];
             for (int i = 0; i < args.length; i++){
-                exprs[i] = SimpleConstant.create(args[i]);
+                exprs[i] = new ConstantImpl(args[i]);
             }
             SQLSerializer.this.handle(SimpleTemplate.create(Object.class, template, exprs));
 
@@ -374,7 +373,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 handle((Expression<?>)update.getSecond());
             }else{
                 constantPaths.add(update.getFirst());
-                handle(SimpleConstant.create(update.getSecond()));
+                handle(new ConstantImpl(update.getSecond()));
             }
             first = false;
         }
@@ -512,12 +511,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }        
         if (operator.equals(Ops.STRING_CAST)) {
             String typeName = templates.getTypeForClass(String.class);
-            visitOperation(String.class, SQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), SimpleConstant.create(typeName)));
+            visitOperation(String.class, SQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator.equals(Ops.NUMCAST)) {
             Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
             String typeName = templates.getTypeForClass(targetType);
-            visitOperation(targetType, SQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), SimpleConstant.create(typeName)));
+            visitOperation(targetType, SQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator.equals(Ops.ALIAS)){
             if (stage == Stage.SELECT || stage == Stage.FROM){
