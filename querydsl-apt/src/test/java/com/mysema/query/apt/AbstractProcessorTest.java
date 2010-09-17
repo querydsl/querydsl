@@ -43,6 +43,8 @@ public abstract class AbstractProcessorTest {
         options.add("-proc:only");
         options.add("-processor");
         options.add(processorClass.getName());
+        options.add("-sourcepath");
+        options.add("src/test/java");
         options.addAll(classes);
         int compilationResult = compiler.run(null, null, null, options.toArray(new String[options.size()]));
         if(compilationResult == 0){

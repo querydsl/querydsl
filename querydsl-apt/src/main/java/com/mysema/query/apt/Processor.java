@@ -415,14 +415,14 @@ public class Processor {
 
                 Filer filer = env.getFiler();
 
-                FileObject sFile = getSourceFile(model.getFullName());
-                FileObject qFile = filer.getResource(StandardLocation.SOURCE_OUTPUT, packageName, type.getSimpleName() + ".java");
+                FileObject sourceFile = getSourceFile(model.getFullName());
+                FileObject generatedFile = filer.getResource(StandardLocation.SOURCE_OUTPUT, packageName, type.getSimpleName() + ".java");
                 
 //                msg.printMessage(Kind.NOTE, "Query class: " + (qFile != null ? qFile.getName() + " lastModified = " + qFile.getLastModified() : "n/a")
 //                        + " - typeElement: " + env.getElementUtils().getTypeElement(className)
 //                        + " - sourceElement : " + (sFile != null ? sFile.getLastModified() : "null"));
                 
-                if ((sFile == null && qFile.getLastModified() == 0) || (sFile != null && qFile.getLastModified() <= sFile.getLastModified())) {
+                if ((sourceFile == null && generatedFile.getLastModified() == 0) || (sourceFile != null && generatedFile.getLastModified() <= sourceFile.getLastModified())) {
                     msg.printMessage(Kind.NOTE, "Generating " + className + " for " + model.getFullName());
                     
                     JavaFileObject fileObject = env.getFiler().createSourceFile(className);
@@ -440,14 +440,13 @@ public class Processor {
                 }
 
             } catch (IOException e) {
-//                logger.error(e.getMessage(), e);
                 msg.printMessage(Kind.ERROR, e.getMessage());
             }
         }
     }
 
     private FileObject getSourceFile(String fullName) throws IOException {
-        Messager msg = env.getMessager();
+//        Messager msg = env.getMessager();
         Elements elementUtils = env.getElementUtils();
 
         TypeElement sourceElement = elementUtils.getTypeElement(fullName);
@@ -499,7 +498,6 @@ public class Processor {
                 w.close();
             }
         } catch (IOException e) {
-//            logger.error(e.getMessage(), e);
             env.getMessager().printMessage(Kind.ERROR, e.getMessage());
         }
 

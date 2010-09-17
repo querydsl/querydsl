@@ -24,15 +24,21 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
     @Test
     public void processInheritance3() throws IOException{
         String path = new File("src/test/java/com/mysema/query/inheritance/Inheritance3Test.java").getPath();
-        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"inheritance");
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"inheritance3");
     }
     
     @Test
     public void processInheritance8() throws IOException{
         String path = new File("src/test/java/com/mysema/query/inheritance/Inheritance8Test.java").getPath();
-        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"inheritance");
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"inheritance8");
     }
 
+    @Test
+    public void processInheritance10() throws IOException{
+        String path = new File("src/test/java/com/mysema/query/inheritance/Inheritance10Test.java").getPath();
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"inheritance10");
+    }
+    
     @Test
     public void processAll() throws IOException{
         // works only in Eclipse for the moment
