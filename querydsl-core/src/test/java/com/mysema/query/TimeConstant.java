@@ -16,7 +16,7 @@ import com.mysema.query.types.expr.TimeExpression;
  * @author tiwe
  *
  */
-public final class TimeConstant<D extends java.util.Date> extends TimeExpression<D> implements Constant<D>{
+final class TimeConstant<D extends java.util.Date> extends TimeExpression<D> implements Constant<D>{
 
     private static final long serialVersionUID = -7835941761930555480L;
 

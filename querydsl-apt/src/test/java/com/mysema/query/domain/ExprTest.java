@@ -15,9 +15,7 @@ import java.util.TreeSet;
 
 import org.junit.Test;
 
-import com.mysema.query.BooleanConstant;
-import com.mysema.query.NumberConstant;
-import com.mysema.query.StringConstant;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.StringExpression;
@@ -54,11 +52,11 @@ public class ExprTest {
         exprs.add(QReservedNamesTest_ReservedNames.reservedNames);
         exprs.add(QSimpleTypesTest_SimpleTypes.simpleTypes);
 
-        exprs.add(StringConstant.create("Hello World!"));
-        exprs.add(NumberConstant.create(1000));
-        exprs.add(NumberConstant.create(10l));
-        exprs.add(BooleanConstant.TRUE);
-        exprs.add(BooleanConstant.FALSE);
+        exprs.add(ConstantImpl.create("Hello World!"));
+        exprs.add(ConstantImpl.create(1000));
+        exprs.add(ConstantImpl.create(10l));
+        exprs.add(ConstantImpl.TRUE);
+        exprs.add(ConstantImpl.FALSE);
 
         Set<Expression<?>> toVisit = new HashSet<Expression<?>>();
 

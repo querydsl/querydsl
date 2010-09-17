@@ -9,7 +9,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.mysema.query.StringConstant;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.JavaTemplates;
 import com.mysema.query.types.custom.StringTemplate;
 import com.mysema.query.types.path.PathBuilder;
@@ -28,9 +28,9 @@ public class SerializerBaseTest {
         // long path
         serializer.handle(new PathBuilder<Object>(Object.class,"p").getList("l",Map.class).get(0));
         // constant
-        serializer.handle(StringConstant.create(""));
-    //  custom
-    serializer.handle(StringTemplate.create("xxx", StringConstant.create("")));
+        serializer.handle(ConstantImpl.create(""));
+        //  custom
+        serializer.handle(StringTemplate.create("xxx", ConstantImpl.create("")));
     }
 
 }

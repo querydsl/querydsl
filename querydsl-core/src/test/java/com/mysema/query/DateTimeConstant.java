@@ -14,7 +14,7 @@ import com.mysema.query.types.expr.NumberExpression;
  * @author tiwe
  *
  */
-public final class DateTimeConstant<D extends java.util.Date> extends DateTimeExpression<D> implements Constant<D>{
+final class DateTimeConstant<D extends java.util.Date> extends DateTimeExpression<D> implements Constant<D>{
 
     private static final long serialVersionUID = 4578416585568476532L;
 

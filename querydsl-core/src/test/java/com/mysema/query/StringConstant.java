@@ -23,7 +23,7 @@ import com.mysema.query.types.expr.StringExpression;
  * @author tiwe
  *
  */
-public final class StringConstant extends StringExpression implements Constant<String>{
+final class StringConstant extends StringExpression implements Constant<String>{
 
     private static final long serialVersionUID = 5182804405789674556L;
     

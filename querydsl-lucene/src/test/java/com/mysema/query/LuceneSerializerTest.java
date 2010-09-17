@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.lucene;
+package com.mysema.query;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -37,6 +37,8 @@ import com.mysema.query.Module;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.StringConstant;
 import com.mysema.query.Target;
+import com.mysema.query.lucene.LuceneSerializer;
+import com.mysema.query.lucene.QueryElement;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.NumberPath;

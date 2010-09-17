@@ -12,10 +12,9 @@ import java.lang.reflect.Field;
 import java.util.Map;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import com.mysema.query.StringConstant;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.expr.StringExpression;
 
 public class PathMetadataTest {
@@ -30,12 +29,11 @@ public class PathMetadataTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    @Ignore
     public void test() throws Exception{
-        Field field = StringConstant.class.getDeclaredField("CACHE");
+        Field field = ConstantImpl.class.getDeclaredField("STRINGS");
         field.setAccessible(true);
         Map<String, StringExpression> cache = (Map) field.get(null);
-        System.out.println(cache.size() + " entries in EString cache");
+        System.out.println(cache.size() + " entries in ConstantImpl string cache");
 
         // numbers
         assertTrue(cache.containsKey("0"));

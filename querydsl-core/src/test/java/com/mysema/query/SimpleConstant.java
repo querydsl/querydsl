@@ -18,7 +18,7 @@ import com.mysema.query.types.expr.SimpleExpression;
  *
  * @param <D> Java type of constant
  */
-public class SimpleConstant<D> extends SimpleExpression<D> implements Constant<D> {
+final class SimpleConstant<D> extends SimpleExpression<D> implements Constant<D> {
 
     private static final long serialVersionUID = -3211963259241932307L;
 

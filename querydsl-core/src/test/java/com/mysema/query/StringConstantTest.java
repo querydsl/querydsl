@@ -3,13 +3,12 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types;
+package com.mysema.query;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.StringConstant;
 import com.mysema.query.types.expr.StringExpression;
 
 public class StringConstantTest {

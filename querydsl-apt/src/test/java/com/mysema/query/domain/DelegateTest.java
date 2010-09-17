@@ -5,11 +5,11 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-import com.mysema.query.BooleanConstant;
 import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerySupertype;
-import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.ConstantImpl;
+import com.mysema.query.types.Expression;
 
 public class DelegateTest {
 
@@ -40,18 +40,18 @@ public class DelegateTest {
     }
 
     @QueryDelegate(User.class)
-    public static BooleanExpression isManagedBy(QDelegateTest_User user, User other){
-        return BooleanConstant.TRUE;
+    public static Expression<Boolean> isManagedBy(QDelegateTest_User user, User other){
+        return ConstantImpl.TRUE;
     }
 
     @QueryDelegate(User.class)
-    public static BooleanExpression isManagedBy(QDelegateTest_User user, QDelegateTest_User other){
-        return BooleanConstant.TRUE;
+    public static Expression<Boolean> isManagedBy(QDelegateTest_User user, QDelegateTest_User other){
+        return ConstantImpl.TRUE;
     }
 
     @QueryDelegate(User.class)
-    public static BooleanExpression simpleMethod(QDelegateTest_User user){
-        return BooleanConstant.TRUE;
+    public static Expression<Boolean> simpleMethod(QDelegateTest_User user){
+        return ConstantImpl.TRUE;
     }
 
 //    @QueryDelegate(DelegateTest.User.class)

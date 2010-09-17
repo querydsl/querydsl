@@ -15,7 +15,7 @@ import com.mysema.query.types.expr.BooleanExpression;
  * @author tiwe
  *
  */
-public final class BooleanConstant extends BooleanExpression implements Constant<Boolean>{
+final class BooleanConstant extends BooleanExpression implements Constant<Boolean>{
 
     public static final BooleanExpression FALSE = new BooleanConstant(Boolean.FALSE);
 

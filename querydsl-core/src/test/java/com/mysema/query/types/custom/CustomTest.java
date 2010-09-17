@@ -16,15 +16,15 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.BooleanConstant;
-import com.mysema.query.types.TemplateExpression;
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.JavaTemplates;
 import com.mysema.query.types.Template;
+import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.ToStringVisitor;
-import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.StringPath;
 
 public class CustomTest {
@@ -63,7 +63,7 @@ public class CustomTest {
     @Test
     public void factoryMethods(){
         String template = "";
-        BooleanExpression arg = BooleanConstant.TRUE;
+        Constant<Boolean> arg = ConstantImpl.TRUE;
 
         BooleanTemplate.create(template, arg);
         ComparableTemplate.create(String.class, template, arg);
@@ -78,7 +78,7 @@ public class CustomTest {
     @Test
     public void factoryMethods2(){
         Template template = TemplateFactory.DEFAULT.create("");
-        BooleanExpression arg = BooleanConstant.TRUE;
+        Constant<Boolean> arg = ConstantImpl.TRUE;
 
         BooleanTemplate.create(template, arg);
         ComparableTemplate.create(String.class, template, arg);

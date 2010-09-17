@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types;
+package com.mysema.query;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,7 +12,6 @@ import java.util.Calendar;
 
 import org.junit.Test;
 
-import com.mysema.query.DateConstant;
 import com.mysema.query.types.expr.DateExpression;
 
 public class DateConstantTest {

@@ -5,12 +5,12 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.mysema.query.BooleanConstant;
 import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryExtensions;
 import com.mysema.query.annotations.QueryMethod;
-import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.ConstantImpl;
+import com.mysema.query.types.Expression;
 
 import ext.java.lang.QByte;
 
@@ -35,8 +35,8 @@ public class QueryExtensions7Test {
     }
     
     @QueryDelegate(Byte.class)
-    public static BooleanExpression isNumeric(QByte byteValue){
-        return BooleanConstant.TRUE;
+    public static Expression<Boolean> isNumeric(QByte byteValue){
+        return ConstantImpl.TRUE;
     }
     
     @Test

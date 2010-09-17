@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 import org.junit.Test;
 
-import com.mysema.query.NumberConstant;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.custom.SimpleTemplate;
@@ -25,7 +25,7 @@ public class SQLTemplatesTest {
         assertTrue(template.getElements().get(1).isAsString());
 
         SQLSerializer serializer = new SQLSerializer(new DerbyTemplates());
-        serializer.handle(SimpleTemplate.create(Object.class, template, NumberConstant.create(5)));
+        serializer.handle(SimpleTemplate.create(Object.class, template, ConstantImpl.create(5)));
         assertEquals("fetch first 5 rows only", serializer.toString());
     }
     

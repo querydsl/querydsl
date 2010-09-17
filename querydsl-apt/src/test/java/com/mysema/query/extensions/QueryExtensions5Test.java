@@ -7,12 +7,13 @@ package com.mysema.query.extensions;
 
 import static org.junit.Assert.assertNotNull;
 
+import org.eclipse.jdt.internal.compiler.impl.StringConstant;
 import org.junit.Test;
 
-import com.mysema.query.StringConstant;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryExtensions;
 import com.mysema.query.annotations.QueryMethod;
+import com.mysema.query.types.ConstantImpl;
 
 public class QueryExtensions5Test {
 
@@ -57,11 +58,11 @@ public class QueryExtensions5Test {
     public void test_prop_and_method_available(){
         assertNotNull(QQueryExtensions5Test_Entity.entity.prop);
         assertNotNull(QQueryExtensions5Test_Entity.entity.method());
-        assertNotNull(QQueryExtensions5Test_Entity.entity.method(StringConstant.create("")));
+        assertNotNull(QQueryExtensions5Test_Entity.entity.method(ConstantImpl.create("")));
 
         assertNotNull(QQueryExtensions5Test_Entity2.entity2.prop);
         assertNotNull(QQueryExtensions5Test_Entity2.entity2.method());
-        assertNotNull(QQueryExtensions5Test_Entity2.entity2.method(StringConstant.create("")));
+        assertNotNull(QQueryExtensions5Test_Entity2.entity2.method(ConstantImpl.create("")));
     }
 
 }

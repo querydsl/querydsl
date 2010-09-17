@@ -32,6 +32,10 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
     private static final Constant<Short>[] SHORTS = new Constant[CACHE_SIZE];
 
     private static final Map<String,Constant<String>> STRINGS;
+    
+    public static final Constant<Boolean> FALSE = new ConstantImpl<Boolean>(Boolean.FALSE);
+
+    public static final Constant<Boolean> TRUE = new ConstantImpl<Boolean>(Boolean.TRUE);
 
     static{
         List<String> strs = new ArrayList<String>(Arrays.asList("", ".", ".*", "%"));
