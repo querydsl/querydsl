@@ -89,8 +89,6 @@ trait SetExpression[T] extends CollectionExpressionBase[java.util.Set[T]] { }
 
 trait ListExpression[T] extends CollectionExpressionBase[java.util.List[T]] {
     
-    // TODO : get(Expression[Integer]) / get(Integer)
-    
 }
 
 trait MapExpression[K,V] extends SimpleExpression[java.util.Map[K,V]] with ParametrizedExpression[java.util.Map[K,V]]{
@@ -108,8 +106,6 @@ trait MapExpression[K,V] extends SimpleExpression[java.util.Map[K,V]] with Param
     def _containsValue(v: V) = boolean(CONTAINS_KEY, this, constant(v));
     
     def _containsValue(v: Expression[V]) = boolean(CONTAINS_KEY, this, v);
-    
-    // TODO : get
     
 }
 

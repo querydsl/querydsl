@@ -38,6 +38,14 @@ class AliasTest {
     }
     
     @Test
+    def Number_Usage(){
+        assertEquals("domainType.scalaInt < 5", (domainType.scalaInt _lt 5).toString);
+        assertEquals("domainType.javaInt < 5", (domainType.javaInt _lt 5).toString);
+        assertEquals("domainType.scalaInt between 2 and 3", (domainType.scalaInt _between (2,3)).toString);
+        assertEquals("domainType.javaInt between 2 and 3", (domainType.javaInt _between (2,3)).toString);
+    }
+    
+    @Test
     def Java_Collection_Usage(){
         // size
         assertEquals("size(domainType.javaCollection)", (domainType.javaCollection _size).toString);

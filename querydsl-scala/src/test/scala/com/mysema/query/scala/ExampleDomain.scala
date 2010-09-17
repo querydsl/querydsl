@@ -2,6 +2,10 @@ package com.mysema.query.scala;
 
 class DomainType {    
     
+    var scalaInt: Int = _;
+    
+    var javaInt: Integer = null;
+    
     var firstName: String = null;
     
     var lastName: String = null;

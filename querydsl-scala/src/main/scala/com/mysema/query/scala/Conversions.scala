@@ -40,23 +40,20 @@ object Conversions {
     implicit def timePath(t: java.sql.Time): TimePath[java.sql.Time] = aliasFactory.getCurrentAndReset();
         
     implicit def comparablePath(c: Comparable[_]): ComparablePath[_] = aliasFactory.getCurrentAndReset();
-    
-    //implicit def simplePath(s: Object): SimplePath[_] = aliasFactory.getCurrentAndReset();
-    
-    implicit def entityPath(arg: Object): EntityPathImpl[_] = {
-        var rv : EntityPathImpl[_] = aliasFactory.getCurrentAndReset();
-        if (rv != null) {
-            rv;
-        }else {
-            arg match {
-                case x:EntityPathImpl[_] => x;
-                case x:ManagedObject => x.__mappedPath.asInstanceOf[EntityPathImpl[_]];
-                case _ => null;
-            }
-        }
-    }
-    
+        
     implicit def numberPath[N <: Number with Comparable[N]](n: N): NumberPath[N] = aliasFactory.getCurrentAndReset();
+    
+    implicit def bytePath(n: Byte): NumberPath[java.lang.Byte] = aliasFactory.getCurrentAndReset();
+    
+    implicit def intPath(n: Int): NumberPath[Integer] = aliasFactory.getCurrentAndReset();
+    
+    implicit def longPath(n: Long): NumberPath[java.lang.Long] = aliasFactory.getCurrentAndReset();
+    
+    implicit def shortPath(n: Short): NumberPath[java.lang.Short] = aliasFactory.getCurrentAndReset();
+    
+    implicit def doublePath(n: Double): NumberPath[java.lang.Double] = aliasFactory.getCurrentAndReset();
+    
+    implicit def floatPath(n: Float): NumberPath[java.lang.Float] = aliasFactory.getCurrentAndReset();
     
     implicit def scalaCollectionPath[T](c: scala.Collection[T]): CollectionPath[T] = aliasFactory.getCurrentAndReset();
     
@@ -73,6 +70,21 @@ object Conversions {
     implicit def javaSetPath[T](c: java.util.Set[T]): SetPath[T] = aliasFactory.getCurrentAndReset();
     
     implicit def javaMapPath[K,V](l: java.util.Map[K,V]): MapPath[K,V] = aliasFactory.getCurrentAndReset();
+    
+    //implicit def simplePath(s: Object): SimplePath[_] = aliasFactory.getCurrentAndReset();
+    
+    implicit def entityPath(arg: Object): EntityPathImpl[_] = {
+        var rv : EntityPathImpl[_] = aliasFactory.getCurrentAndReset();
+        if (rv != null) {
+            rv;
+        }else {
+            arg match {
+                case x:EntityPathImpl[_] => x;
+                case x:ManagedObject => x.__mappedPath.asInstanceOf[EntityPathImpl[_]];
+                case _ => null;
+            }
+        }
+    }    
     
 }
 
