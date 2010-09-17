@@ -3,6 +3,7 @@ package com.mysema.query.mongodb;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -22,24 +23,26 @@ public class MongodbQueryTest {
     private Datastore ds = morphia.createDatastore(dbname);
     private QUser user = new QUser("user");
 
+    User u1, u2, u3, u4; 
 
     @Before
     public void before() {
         ds.delete(ds.createQuery(User.class));
+        
+        u1 = addUser("Jaakko", "Jantunen");
+        u2 = addUser("Jaakki", "Jantunen");
+        u3 = addUser("Jaana", "Aakkonen");
+        u4 = addUser("Jaana", "BeekkoNen");
     }
 
     @Test
     public void testEqInAndOrderByQueries() {
-        User u1 = addUser("Jaakko", "Jantunen");
-        User u2 = addUser("Jaakki", "Jantunen");
-        User u3 = addUser("Jaana", "Aakkonen");
-        User u4 = addUser("Jaana", "Beekkonen");
-
+       
         assertQuery(user.firstName.eq("Jaakko"), u1);
         assertQuery(user.lastName.eq("Aakkonen"), u3);
         
         assertQuery(user.firstName.in("Jaakko","Teppo"), u1);
-        assertQuery(user.lastName.in("Aakkonen","Beekkonen"), u3, u4);
+        assertQuery(user.lastName.in("Aakkonen","BeekkoNen"), u3, u4);
         
         assertQuery(user.firstName.eq("Jouko"));
         
@@ -53,14 +56,30 @@ public class MongodbQueryTest {
         assertQuery(where(user.firstName.eq("Jaana"), user.lastName.eq("Aakkonen")), u3);
         
     }
+    
+    @Test
+    public void testStartsWithEndsWith() {
+        
+        assertQuery(user.firstName.startsWith("Jaan"), u3, u4);
+        assertQuery(user.firstName.startsWith("jaan"));
+        assertQuery(user.firstName.startsWithIgnoreCase("jaan"), u3, u4);
+
+        assertQuery(user.lastName.endsWith("unen"), u2, u1);
+        
+        assertQuery(user.lastName.endsWithIgnoreCase("onen"), u3, u4);
+        
+    }
+    
+    
 
     private void assertQuery(EBoolean e, User ... expected) {
-        assertQuery(e, user.lastName.asc(), expected );
+        assertQuery(where(e).orderBy(user.lastName.asc(), user.firstName.asc()), expected );
     }
     
     private void assertQuery(EBoolean e, OrderSpecifier<?> orderBy, User ... expected ) {
         assertQuery(where(e).orderBy(orderBy), expected);
     }
+
     
     private MongodbQuery<User> where(EBoolean ... e) {
         return new MongodbQuery<User>(morphia, ds, user).where(e);

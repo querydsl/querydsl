@@ -2,6 +2,7 @@ package com.mysema.query.mongodb;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.bson.BSONObject;
 
@@ -60,11 +61,11 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         return null;
     }
 
-    private String asString(Operation<?> expr, int index) {
-        return (String) expr.getArg(index).accept(this, null);
+    private String dboKey(Operation<?> expr, int index) {
+        return (String) dboValue(expr, index);
     }
 
-    private Object asObj(Operation<?> expr, int index) {
+    private Object dboValue(Operation<?> expr, int index) {
         return expr.getArg(index).accept(this, null);
     }
 
@@ -88,7 +89,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
                                                            * || op ==
                                                            * Ops.EQ_IGNORE_CASE
                                                            */) {
-            return dbo(asString(expr, 0), asObj(expr, 1));
+            return dbo(dboKey(expr, 0), dboValue(expr, 1));
         }
         if (op == Ops.AND) {
             BasicDBObject left = (BasicDBObject) handle(expr.getArg(0));
@@ -96,36 +97,48 @@ public class MongodbSerializer implements Visitor<Object, Void> {
             return left;
         }
         if (op == Ops.NE_OBJECT || op == Ops.NE_PRIMITIVE) {
-            return dbo(asString(expr, 0), dbo("$ne", asObj(expr, 1)));
+            return dbo(dboKey(expr, 0), dbo("$ne", dboValue(expr, 1)));
         }
-        // } else if (op == Ops.STARTS_WITH || op == Ops.STARTS_WITH_IC) {
-        // return startsWith(metadata, operation);
-        // } else if (op == Ops.ENDS_WITH || op == Ops.ENDS_WITH_IC) {
+        if (op == Ops.STARTS_WITH) {
+            return dbo(dboKey(expr, 0), Pattern.compile("^" + dboValue(expr, 1)));
+        }
+        if (op == Ops.STARTS_WITH_IC) {
+            return dbo(dboKey(expr, 0),
+                    Pattern.compile("^" + dboValue(expr, 1), Pattern.CASE_INSENSITIVE));
+        }
+        if (op == Ops.ENDS_WITH) {
+            return dbo(dboKey(expr, 0), Pattern.compile(dboValue(expr, 1) + "$"));
+        }
+        if (op == Ops.ENDS_WITH_IC) {
+            return dbo(dboKey(expr, 0),
+                    Pattern.compile(dboValue(expr, 1) + "$", Pattern.CASE_INSENSITIVE));
+        }
+  // } else if (op == Ops.ENDS_WITH || op == Ops.ENDS_WITH_IC) {
         // return endsWith(operation, metadata);
         // } else if (op == Ops.STRING_CONTAINS || op == Ops.STRING_CONTAINS_IC)
         // {
         // return stringContains(operation, metadata);
         if (op == Ops.BETWEEN) {
-            BasicDBObject value = new BasicDBObject("$gt", asObj(expr, 1));
-            value.append("$lt", asObj(expr, 2));
-            return dbo(asString(expr, 0), value);
+            BasicDBObject value = new BasicDBObject("$gt", dboValue(expr, 1));
+            value.append("$lt", dboValue(expr, 2));
+            return dbo(dboKey(expr, 0), value);
         }
         if (op == Ops.IN) {
             Collection<?> values = (Collection<?>) ((Constant<?>) expr
                     .getArg(1)).getConstant();
-            return dbo(asString(expr, 0), dbo("$in", values.toArray()));
+            return dbo(dboKey(expr, 0), dbo("$in", values.toArray()));
         }
         if (op == Ops.LT || op == Ops.BEFORE) {
-            return dbo(asString(expr, 0), dbo("$lt", asObj(expr, 1)));
+            return dbo(dboKey(expr, 0), dbo("$lt", dboValue(expr, 1)));
         }
         if (op == Ops.GT || op == Ops.AFTER) {
-            return dbo(asString(expr, 0), dbo("$gt", asObj(expr, 1)));
+            return dbo(dboKey(expr, 0), dbo("$gt", dboValue(expr, 1)));
         }
         if (op == Ops.LOE || op == Ops.BOE) {
-            return dbo(asString(expr, 0), dbo("$lte", asObj(expr, 1)));
+            return dbo(dboKey(expr, 0), dbo("$lte", dboValue(expr, 1)));
         }
         if (op == Ops.GOE || op == Ops.AOE) {
-            return dbo(asString(expr, 0), dbo("$gte", asObj(expr, 1)));
+            return dbo(dboKey(expr, 0), dbo("$gte", dboValue(expr, 1)));
         }
         // } else if (op == PathType.DELEGATE) {
         // return toQuery(operation.getArg(0), metadata);

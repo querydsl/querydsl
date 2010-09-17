@@ -124,6 +124,19 @@ public class MongodbSerializerTest {
         assertEquals(dbo("year", -1).append("title", 1), orderBy);
     }
     
+    @Test
+    public void testStartsEndsWith() {
+        assertQuery(title.startsWith("A"), 
+                dbo("title", dbo("$regex", "^A").append("$options", "")));
+        assertQuery(title.startsWithIgnoreCase("A"),
+                dbo("title", dbo("$regex", "^A").append("$options", "i")));
+        
+        assertQuery(title.endsWith("A"), 
+                dbo("title", dbo("$regex", "A$").append("$options", "")));
+        assertQuery(title.endsWithIgnoreCase("A"),
+                dbo("title", dbo("$regex", "A$").append("$options", "i")));
+    }
+    
     private List<OrderSpecifier<?>> sortList(OrderSpecifier<?> ... order) {
         return Arrays.asList(order);
     }
