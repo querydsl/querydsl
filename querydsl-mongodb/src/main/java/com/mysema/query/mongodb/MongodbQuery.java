@@ -10,6 +10,8 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mysema.commons.lang.Assert;
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -18,8 +20,8 @@ import com.mysema.query.SimpleQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Param;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.ParamExpression;
+import com.mysema.query.types.Predicate;
 
 /**
  * MongoDb query
@@ -28,8 +30,7 @@ import com.mysema.query.types.expr.EBoolean;
  *
  * @param <K>
  */
-public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
-        SimpleProjectable<K> {
+public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProjectable<K> {
         
         private final QueryMixin<MongodbQuery<K>> queryMixin;
         private final EntityPath<K> ePath;
@@ -48,7 +49,7 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
         }
         
         @Override
-        public MongodbQuery<K> where(EBoolean... e) {
+        public MongodbQuery<K> where(Predicate... e) {
            return queryMixin.where(e);
         }
 
@@ -76,11 +77,16 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
         }
 
         @Override
-        public <T> MongodbQuery<K> set(Param<T> param, T value) {
+        public <T> MongodbQuery<K> set(ParamExpression<T> param, T value) {
             // TODO Auto-generated method stub
             return null;
         }
 
+        public CloseableIterator<K> iterate(){
+            // TODO : optimize
+            return new IteratorAdapter<K>(list().iterator());
+        }
+        
         @Override
         public List<K> list() {
             QueryMetadata metadata = queryMixin.getMetadata();

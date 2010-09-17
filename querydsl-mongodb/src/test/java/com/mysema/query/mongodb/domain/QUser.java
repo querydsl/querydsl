@@ -1,9 +1,8 @@
 package com.mysema.query.mongodb.domain;
 
-import com.mysema.query.mongodb.domain.User;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.PString;
-import com.mysema.query.types.path.PathMetadataFactory;
+import com.mysema.query.types.path.StringPath;
 
 public class QUser extends EntityPathBase<User> {
 
@@ -13,8 +12,8 @@ public class QUser extends EntityPathBase<User> {
         super(User.class, PathMetadataFactory.forVariable(var));
     }
 
-    public final PString id = createString("id");
-    public final PString firstName = createString("firstName");
-    public final PString lastName = createString("lastName");
+    public final StringPath id = createString("id");
+    public final StringPath firstName = createString("firstName");
+    public final StringPath lastName = createString("lastName");
 
 }

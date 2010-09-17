@@ -8,19 +8,7 @@ import org.bson.BSONObject;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.mysema.query.types.Constant;
-import com.mysema.query.types.Custom;
-import com.mysema.query.types.Expr;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Operation;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Order;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Param;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.Visitor;
+import com.mysema.query.types.*;
 
 /**
  * Serializes the given QueryDSL query to a DBObject querty format MongoDB
@@ -31,7 +19,7 @@ import com.mysema.query.types.Visitor;
  */
 public class MongodbSerializer implements Visitor<Object, Void> {
 
-    public Object handle(Expr<?> where) {
+    public Object handle(Expression<?> where) {
         return where.accept(this, null);
     }
     
@@ -50,7 +38,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
     }
 
     @Override
-    public Object visit(Custom<?> expr, Void context) {
+    public Object visit(TemplateExpression<?> expr, Void context) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -158,7 +146,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
     }
 
     @Override
-    public Object visit(Param<?> expr, Void context) {
+    public Object visit(ParamExpression<?> expr, Void context) {
         // TODO Auto-generated method stub
         return null;
     }

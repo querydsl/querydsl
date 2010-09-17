@@ -12,29 +12,29 @@ import org.junit.Test;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
-import com.mysema.query.types.Expr;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.path.PDate;
-import com.mysema.query.types.path.PDateTime;
-import com.mysema.query.types.path.PNumber;
-import com.mysema.query.types.path.PString;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
+import com.mysema.query.types.path.StringPath;
 
 public class MongodbSerializerTest {
     
     private PathBuilder<Object> entityPath;
-    private PString title;
-    private PNumber<Integer> year;
-    private PNumber<Double> gross;
+    private StringPath title;
+    private NumberPath<Integer> year;
+    private NumberPath<Double> gross;
 
-    private PNumber<Long> longField;
-    private PNumber<Short> shortField;
-    private PNumber<Byte> byteField;
-    private PNumber<Float> floatField;
+    private NumberPath<Long> longField;
+    private NumberPath<Short> shortField;
+    private NumberPath<Byte> byteField;
+    private NumberPath<Float> floatField;
     
-    private PDate<Date> date;
+    private DatePath<Date> date;
     private Date dateVal = new Date();
-    private PDateTime<Timestamp> dateTime;
+    private DateTimePath<Timestamp> dateTime;
     private Timestamp dateTimeVal = new Timestamp(System.currentTimeMillis());
  
     private MongodbSerializer serializer;
@@ -141,7 +141,7 @@ public class MongodbSerializerTest {
         return Arrays.asList(order);
     }
 
-    private void assertQuery(Expr<?> e, BasicDBObject expected) {
+    private void assertQuery(Expression<?> e, BasicDBObject expected) {
         BasicDBObject result = (BasicDBObject) serializer.handle(e);
         assertEquals(expected.toString(), result.toString());
     }

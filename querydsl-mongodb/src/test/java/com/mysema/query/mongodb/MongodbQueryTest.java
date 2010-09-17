@@ -3,7 +3,6 @@ package com.mysema.query.mongodb;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -14,7 +13,7 @@ import com.google.code.morphia.Morphia;
 import com.mysema.query.mongodb.domain.QUser;
 import com.mysema.query.mongodb.domain.User;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.expr.EBoolean;
+import com.mysema.query.types.Predicate;
 
 public class MongodbQueryTest {
 
@@ -72,16 +71,16 @@ public class MongodbQueryTest {
     
     
 
-    private void assertQuery(EBoolean e, User ... expected) {
+    private void assertQuery(Predicate e, User ... expected) {
         assertQuery(where(e).orderBy(user.lastName.asc(), user.firstName.asc()), expected );
     }
     
-    private void assertQuery(EBoolean e, OrderSpecifier<?> orderBy, User ... expected ) {
+    private void assertQuery(Predicate e, OrderSpecifier<?> orderBy, User ... expected ) {
         assertQuery(where(e).orderBy(orderBy), expected);
     }
 
     
-    private MongodbQuery<User> where(EBoolean ... e) {
+    private MongodbQuery<User> where(Predicate ... e) {
         return new MongodbQuery<User>(morphia, ds, user).where(e);
     }
     
