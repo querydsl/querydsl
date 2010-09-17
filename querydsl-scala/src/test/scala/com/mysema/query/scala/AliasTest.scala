@@ -1,10 +1,9 @@
-package com.mysema.query.scala
-
-import com.mysema.query.types.path._
-import com.mysema.query.sql.SQLSubQuery
+package com.mysema.query.scala;
 
 import com.mysema.query.scala.Conversions._
+import com.mysema.query.sql.SQLSubQuery
 
+import com.mysema.query.types.path._
 import org.junit.Test
 import org.junit.Assert._
 
@@ -12,25 +11,15 @@ import org.junit.Assert._
 class AliasTest {
 
     var domainType = alias(classOf[DomainType])
-    
-//    @Test
-//    def Explicit_Cast(){        
-//        assertEquals("domainType.firstName", $(domainType.firstName).toString);
-//    }
-    
+
     @Test
-    def Implicit_Cast1(){
-        var path: StringPath = domainType.firstName;
-        assertEquals("domainType.firstName like Hello", (path _like "Hello").toString());
-        assertEquals("domainType.firstName ASC",        (path _asc).toString());       
-        assertEquals("domainType.firstName = Hello",    (path _eq "Hello").toString());
-        assertEquals("domainType.firstName != Hello",   (path _ne "Hello").toString());      
-    }
-    
-    @Test
-    def Implicit_Cast2(){
+    def String_Usage(){
+        // eq, ne
+        assertEquals("domainType.firstName = Hello", (domainType.firstName _eq "Hello").toString());
+        assertEquals("domainType.firstName != Hello", (domainType.firstName _ne "Hello").toString());
+        
         assertEquals("domainType.firstName like Hello", (domainType.firstName _like "Hello").toString());
-        assertEquals("domainType.firstName ASC",        (domainType.firstName _asc).toString());
+        assertEquals("domainType.firstName ASC", (domainType.firstName _asc).toString());
         
         // and
         var andClause = (domainType.firstName _like "An%") _and (domainType.firstName _like "Be%");
@@ -45,11 +34,48 @@ class AliasTest {
         assertEquals("!domainType.firstName like An%", notClause.toString);
         
         notClause = not (domainType.firstName _like "An%");
-        assertEquals("!domainType.firstName like An%", notClause.toString);
+        assertEquals("!domainType.firstName like An%", notClause.toString);                       
+    }
+    
+    @Test
+    def Java_Collection_Usage(){
+        // size
+        assertEquals("size(domainType.javaCollection)", (domainType.javaCollection _size).toString);
+        assertEquals("size(domainType.javaSet)", (domainType.javaSet _size).toString);
+        assertEquals("size(domainType.javaList)", (domainType.javaList _size).toString);
+        assertEquals("size(domainType.javaMap)", (domainType.javaMap _size).toString);
         
-        // FIXME : "eq" and "ne" are already reserved
-//        assertEquals("domainType.firstName = Hello",    (domainType.firstName eq "Hello").toString());
-//        assertEquals("domainType.firstName != Hello",   (domainType.firstName ne "Hello").toString());
+        // is Empty
+        assertEquals("empty(domainType.javaCollection)", (domainType.javaCollection _isEmpty).toString);
+        assertEquals("empty(domainType.javaSet)", (domainType.javaSet _isEmpty).toString);
+        assertEquals("empty(domainType.javaList)", (domainType.javaList _isEmpty).toString);
+        assertEquals("empty(domainType.javaMap)", (domainType.javaMap _isEmpty).toString);
+        
+        // get
+        assertEquals("domainType.javaList.get(0) is not null", (domainType.javaList.get(0) _isNotNull).toString);
+        assertEquals("domainType.javaMap.get(xxx) is null", (domainType.javaMap.get("xxx") _isNull).toString);
+        
+        // get + like
+        assertEquals("startsWith(domainType.javaMap.get(xxx),X)", (domainType.javaMap.get("xxx") _startsWith "X").toString);
+    }
+    
+    @Test
+    def Scala_Collection_Usage(){
+        // size
+        assertEquals("size(domainType.scalaList)", (domainType.scalaList _size).toString);
+        assertEquals("size(domainType.scalaMap)", (domainType.scalaMap _size).toString);
+        
+        // is Empty
+        assertEquals("empty(domainType.scalaList)", (domainType.scalaList _isEmpty).toString);
+        assertEquals("empty(domainType.scalaMap)", (domainType.scalaMap _isEmpty).toString);
+        
+        // get
+        assertEquals("domainType.scalaList.get(0) is not null", (domainType.scalaList(0) _isNotNull).toString);
+        assertEquals("domainType.scalaList.get(0) is not null", (domainType.scalaList(0) _isNotNull).toString);
+        assertEquals("domainType.scalaMap.get(xxx) is null", (domainType.scalaMap("xxx") _isNull).toString);
+        
+        // get + like
+        assertEquals("startsWith(domainType.scalaMap.get(xxx),X)", (domainType.scalaMap("xxx") _startsWith "X").toString);
     }
     
 //    @Test
@@ -80,10 +106,3 @@ class AliasTest {
     
 }
 
-class DomainType {    
-    
-    var firstName: String = null;
-    
-    var lastName: String = null;
-    
-}

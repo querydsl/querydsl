@@ -66,12 +66,16 @@ class CollectionPath[T](t: Class[_ <: T], md: PathMetadata[_] )
     
     def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
     
+    def getParameter(i: Int) = t;
+    
 }
 
 class SetPath[T](t: Class[_ <: T], md: PathMetadata[_] ) 
     extends PathImpl[java.util.Set[T]](classOf[java.util.Set[T]], md) with SetExpression[T]{
     
     def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
+    
+    def getParameter(i: Int) = t;
     
 }
 
@@ -80,12 +84,16 @@ class ListPath[T](t: Class[_ <: T], md: PathMetadata[_] )
     
     def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
     
+    def getParameter(i: Int) = t;
+    
 }
 
 class MapPath[K,V](k: Class[_ <: K], v: Class[_ <: V], md: PathMetadata[_] ) 
     extends PathImpl[java.util.Map[K,V]](classOf[java.util.Map[K,V]], md) with MapExpression[K,V]{
     
     def this(k: Class[_ <: K], v: Class[_ <: V], variable: String) = this(k, v, forVariable(variable));
+    
+    def getParameter(i: Int): Class[_] = { if (i == 0) k else v }
     
 }
 

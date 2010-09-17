@@ -8,8 +8,6 @@ package com.mysema.query.scala;
 import com.mysema.query.alias._;
 
 import com.mysema.query.types._
-import com.mysema.query.types.expr._
-import com.mysema.query.types.path._
 
 import org.apache.commons.lang.StringUtils;
 
@@ -43,9 +41,38 @@ object Conversions {
         
     implicit def comparablePath(c: Comparable[_]): ComparablePath[_] = aliasFactory.getCurrentAndReset();
     
-    implicit def simplePath(s: Object): SimplePath[_] = aliasFactory.getCurrentAndReset();
+    //implicit def simplePath(s: Object): SimplePath[_] = aliasFactory.getCurrentAndReset();
+    
+    implicit def entityPath(arg: Object): EntityPathImpl[_] = {
+        var rv : EntityPathImpl[_] = aliasFactory.getCurrentAndReset();
+        if (rv != null) {
+            rv;
+        }else {
+            arg match {
+                case x:EntityPathImpl[_] => x;
+                case x:ManagedObject => x.__mappedPath.asInstanceOf[EntityPathImpl[_]];
+                case _ => null;
+            }
+        }
+    }
     
     implicit def numberPath[N <: Number with Comparable[N]](n: N): NumberPath[N] = aliasFactory.getCurrentAndReset();
+    
+    implicit def scalaCollectionPath[T](c: scala.Collection[T]): CollectionPath[T] = aliasFactory.getCurrentAndReset();
+    
+    implicit def scalaListPath[T](l: scala.List[T]): ListPath[T] = aliasFactory.getCurrentAndReset();
+    
+    implicit def scalaSetPath[T](c: scala.collection.Set[T]): SetPath[T] = aliasFactory.getCurrentAndReset();
+    
+    implicit def scalaMapPath[K,V](l: scala.collection.Map[K,V]): MapPath[K,V] = aliasFactory.getCurrentAndReset();    
+    
+    implicit def javaCollectionPath[T](c: java.util.Collection[T]): CollectionPath[T] = aliasFactory.getCurrentAndReset();
+    
+    implicit def javaListPath[T](l: java.util.List[T]): ListPath[T] = aliasFactory.getCurrentAndReset();
+    
+    implicit def javaSetPath[T](c: java.util.Set[T]): SetPath[T] = aliasFactory.getCurrentAndReset();
+    
+    implicit def javaMapPath[K,V](l: java.util.Map[K,V]): MapPath[K,V] = aliasFactory.getCurrentAndReset();
     
 }
 
@@ -80,5 +107,13 @@ class PathFactoryImpl extends PathFactory {
     def createCollectionPath[T](t: Class[T], md: PathMetadata[_]) = Paths.collection(t, md);
     
     def createMapPath[K,V](k: Class[K], v: Class[V], md: PathMetadata[_]) = Paths.map(k, v, md);
+    
+    def isCollectionType(cl: Class[_]) = classOf[java.util.Collection[_]].isAssignableFrom(cl) || classOf[scala.Collection[_]].isAssignableFrom(cl);
+    
+    def isSetType(cl: Class[_]) = classOf[java.util.Set[_]].isAssignableFrom(cl) || classOf[scala.collection.Set[_]].isAssignableFrom(cl);
+    
+    def isListType(cl: Class[_]) = classOf[java.util.List[_]].isAssignableFrom(cl) || classOf[scala.List[_]].isAssignableFrom(cl);
+    
+    def isMapType(cl: Class[_]) = classOf[java.util.Map[_,_]].isAssignableFrom(cl) || classOf[scala.collection.Map[_,_]].isAssignableFrom(cl);
     
 }

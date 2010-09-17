@@ -4,11 +4,14 @@
  *
  */
 package com.mysema.query.scala;
+
 import com.mysema.query.scala.Constants._
 import com.mysema.query.scala.Operations._
 
 import com.mysema.query.types._
+import com.mysema.query.types.PathMetadataFactory._ 
 import com.mysema.query.types.Ops._
+
 import java.util.Collection
 import java.util.Arrays._;
 
@@ -61,31 +64,52 @@ trait SimpleExpression[T] extends Expression[T] {
 
 trait ArrayExpression[T <: Array[_]] extends SimpleExpression[T] {
     
-    // TODO
+    def _size() = number[Integer](classOf[Integer], Ops.ARRAY_SIZE, this);
+    
+//    def _get(index: Integer) = Paths.simple(getType.getComponentType, forArrayAccess(this, index.intValue));
     
 }
 
-trait CollectionExpression[T] extends SimpleExpression[java.util.Collection[T]] {
+trait CollectionExpressionBase[T <: Collection[_]] extends SimpleExpression[T] with ParametrizedExpression[T] {
     
-    // TODO
+    def _size() = number[Integer](classOf[Integer], COL_SIZE, this);
+    
+    def _isEmpty() = boolean(COL_IS_EMPTY, this);
+    
+    def _isNotEmpty() = _isEmpty().not;
+    
+    def _contains(child: T) = boolean(IN, constant(child), this);
+    
+    def _contains(child: Expression[T]) = boolean(IN, child, this);
+}
+
+trait CollectionExpression[T] extends CollectionExpressionBase[java.util.Collection[T]] { }
+
+trait SetExpression[T] extends CollectionExpressionBase[java.util.Set[T]] { }
+
+trait ListExpression[T] extends CollectionExpressionBase[java.util.List[T]] {
+    
+    // TODO : get(Expression[Integer]) / get(Integer)
     
 }
 
-trait SetExpression[T] extends SimpleExpression[java.util.Set[T]] {
+trait MapExpression[K,V] extends SimpleExpression[java.util.Map[K,V]] with ParametrizedExpression[java.util.Map[K,V]]{
     
-    // TODO
+    def _size() = number[Integer](classOf[Integer], MAP_SIZE, this);
     
-}
-
-trait ListExpression[T] extends SimpleExpression[java.util.List[T]] {
+    def _isEmpty() = boolean(MAP_IS_EMPTY, this);
     
-    // TODO
+    def _isNotEmpty() = _isEmpty().not;
     
-}
-
-trait MapExpression[K,V] extends SimpleExpression[java.util.Map[K,V]] {
+    def _containsKey(k: K) = boolean(CONTAINS_KEY, this, constant(k));
     
-    // TODO
+    def _containsKey(k: Expression[K]) = boolean(CONTAINS_KEY, this, k);
+    
+    def _containsValue(v: V) = boolean(CONTAINS_KEY, this, constant(v));
+    
+    def _containsValue(v: Expression[V]) = boolean(CONTAINS_KEY, this, v);
+    
+    // TODO : get
     
 }
 
