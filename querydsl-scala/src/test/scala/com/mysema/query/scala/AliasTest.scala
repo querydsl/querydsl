@@ -86,10 +86,11 @@ class AliasTest {
         assertEquals("startsWith(domainType.scalaMap.get(xxx),X)", (domainType.scalaMap("xxx") _startsWith "X").toString);
     }
     
-//    @Test
-//    def Expression_in_SubQuery(){
+    @Test
+    def Expression_in_SubQuery(){
 //        // list
-//        query().from (domainType) 
+//        query()
+//          .from (domainType) 
 //          .where (domainType.firstName _like "Rob%")                
 //          .orderBy (domainType.firstName _asc)
 //          .list (domainType);            // FIXME
@@ -108,7 +109,7 @@ class AliasTest {
 //           )                
 //          .orderBy (domainType.firstName _asc)
 //          .list (domainType);            // FIXME
-//    }
+    }
     
     def query() = new SQLSubQuery();
     
