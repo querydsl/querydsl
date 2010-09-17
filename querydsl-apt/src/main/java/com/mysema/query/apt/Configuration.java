@@ -72,12 +72,6 @@ public interface Configuration {
 
     boolean isValidGetter(ExecutableElement getter);
 
-    void setNamePrefix(String namePrefix);
-
-    void setUseFields(boolean b);
-
-    void setUseGetters(boolean b);
-
     Collection<String> getKeywords();
 
 }

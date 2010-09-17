@@ -259,17 +259,14 @@ public class DefaultConfiguration implements Configuration {
         }
     }
 
-    @Override
     public void setNamePrefix(String namePrefix) {
         this.namePrefix = namePrefix;
     }
 
-    @Override
     public void setUseFields(boolean b){
         this.useFields = b;
     }
 
-    @Override
     public void setUseGetters(boolean b) {
         this.useGetters = b;
     }
