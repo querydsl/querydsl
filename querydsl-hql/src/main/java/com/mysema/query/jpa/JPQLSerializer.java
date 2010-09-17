@@ -21,8 +21,6 @@ import javax.persistence.DiscriminatorValue;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.SimpleConstant;
-import com.mysema.query.StringConstant;
 import com.mysema.query.types.*;
 import com.mysema.query.types.expr.ConstructorExpression;
 import com.mysema.query.types.expr.SimpleOperation;
@@ -332,7 +330,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         } else if (operator.equals(Ops.NUMCAST)) {
             Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
             String typeName = targetType.getSimpleName().toLowerCase(Locale.ENGLISH);
-            visitOperation(targetType, JPQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), SimpleConstant.create(typeName)));
+            visitOperation(targetType, JPQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQueryExpression){
             SubQueryExpression subQuery = (SubQueryExpression) args.get(0);
@@ -378,7 +376,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 if (arg instanceof Constant && Number.class.isAssignableFrom(arg.getType())
                         && !arg.getType().equals(numType)){
                     Number number = (Number) ((Constant)arg).getConstant();
-                    newArgs.add(SimpleConstant.create(MathUtils.cast(number, (Class)numType)));
+                    newArgs.add(new ConstantImpl(MathUtils.cast(number, (Class)numType)));
                 }else{
                     newArgs.add(arg);
                 }
