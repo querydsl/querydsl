@@ -80,7 +80,7 @@
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>maven-apt-plugin</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
         <configuration>
           <outputDirectory>target/generated-test-sources/java</outputDirectory>
           <showWarnings>true</showWarnings>
