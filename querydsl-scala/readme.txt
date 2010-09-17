@@ -10,3 +10,7 @@ _          : (domainType.firstName like_ "An%") and_ (domainType.firstName like_
 
 $          : (domainType.firstName $like "An%") $and (domainType.firstName $like "Be%")
 
+
+TODO :
+
+* Hibernate test
