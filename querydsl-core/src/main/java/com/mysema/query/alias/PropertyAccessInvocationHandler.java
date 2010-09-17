@@ -13,12 +13,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -94,7 +91,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             }
             aliasFactory.setCurrent(propToExpr.get(ptyName));
 
-        } else if (methodType == MethodType.LIST_ACCESS) {
+        } else if (methodType == MethodType.LIST_ACCESS || methodType == MethodType.SCALA_LIST_ACCESS) {
             // TODO : manage cases where the argument is based on a property invocation
             Object propKey = Arrays.asList(MethodType.LIST_ACCESS, args[0]);
             if (propToObj.containsKey(propKey)) {
@@ -106,7 +103,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             }
             aliasFactory.setCurrent(propToExpr.get(propKey));
 
-        } else if (methodType == MethodType.MAP_ACCESS) {
+        } else if (methodType == MethodType.MAP_ACCESS || methodType == MethodType.SCALA_MAP_ACCESS) {
             Object propKey = Arrays.asList(MethodType.MAP_ACCESS, args[0]);
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
@@ -127,7 +124,9 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             rv = hostExpression;
 
         } else {
-            throw new IllegalArgumentException("Invocation of " + method.getName() + " not supported");
+            throw new IllegalArgumentException(
+                    "Invocation of " + method.getName() + 
+                    " with types " + Arrays.asList(method.getParameterTypes()) + " not supported");
         }
         return rv;
     }
@@ -195,25 +194,25 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             path = pathFactory.createBooleanPath(metadata);
             rv = Boolean.TRUE;
 
-        } else if (List.class.isAssignableFrom(type)) {
+        } else if (pathFactory.isMapType(type)) {
+            Class<Object> keyType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
+            Class<Object> valueType = (Class)ReflectionUtils.getTypeParameter(genericType, 1);
+            path = pathFactory.createMapPath(keyType, valueType, metadata);
+            rv = aliasFactory.createAliasForProperty(type, parent, path);
+            
+        } else if (pathFactory.isListType(type)) {
             Class<Object> elementType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
             path = pathFactory.createListPath(elementType, metadata);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
-        } else if (Set.class.isAssignableFrom(type)) {
+        } else if (pathFactory.isSetType(type)) {
             Class<?> elementType = ReflectionUtils.getTypeParameter(genericType, 0);
             path = pathFactory.createSetPath(elementType, metadata);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
-        } else if (Collection.class.isAssignableFrom(type)) {
+        } else if (pathFactory.isCollectionType(type)) {
             Class<?> elementType = ReflectionUtils.getTypeParameter(genericType, 0);
             path = pathFactory.createCollectionPath(elementType, metadata);
-            rv = aliasFactory.createAliasForProperty(type, parent, path);
-
-        } else if (Map.class.isAssignableFrom(type)) {
-            Class<Object> keyType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
-            Class<Object> valueType = (Class)ReflectionUtils.getTypeParameter(genericType, 1);
-            path = pathFactory.createMapPath(keyType, valueType, metadata);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
         } else if (Enum.class.isAssignableFrom(type)) {

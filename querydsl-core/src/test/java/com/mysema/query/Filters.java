@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.*;
 

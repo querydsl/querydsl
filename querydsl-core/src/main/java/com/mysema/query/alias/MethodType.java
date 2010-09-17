@@ -53,7 +53,15 @@ public enum MethodType{
     /**
      *
      */
-    SCALA_GETTER(".+", Object.class, Object.class),;
+    SCALA_GETTER(".+", Object.class, Object.class),
+    /**
+     *
+     */
+    SCALA_LIST_ACCESS("apply", Object.class, Object.class, int.class),
+    /**
+     *
+     */
+    SCALA_MAP_ACCESS("get", Object.class, Object.class, Object.class);
 
     private final Pattern pattern;
 
