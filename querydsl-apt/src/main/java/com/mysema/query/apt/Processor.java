@@ -463,9 +463,15 @@ public class Processor {
             
 //            msg.printMessage(Kind.NOTE, "packageElement = " + (packageElement != null ? packageElement.getQualifiedName() : "null"));
     
-            return env.getFiler().getResource(StandardLocation.SOURCE_PATH, 
-                    packageElement.getQualifiedName(), 
-                    sourceElement.getSimpleName() + ".java");
+            try{
+                return env.getFiler().getResource(StandardLocation.SOURCE_PATH, 
+                        packageElement.getQualifiedName(), 
+                        sourceElement.getSimpleName() + ".java");    
+            }catch(NullPointerException e){
+                throw new IllegalStateException(
+                        "Make sure that the -sourcepath parameter is given to the Compiler", e);
+            }
+            
         }
     }
 
