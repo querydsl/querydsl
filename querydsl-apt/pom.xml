@@ -10,7 +10,7 @@
 
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-apt</artifactId>
-  <version>1.9.7.1-SNAPSHOT</version>
+  <version>1.9.7-SNAPSHOT</version>
   <name>Querydsl - APT support</name>
   <description>source code generation for querydsl</description>
   <packaging>jar</packaging>
