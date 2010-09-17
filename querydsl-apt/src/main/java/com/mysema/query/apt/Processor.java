@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.RoundEnvironment;
@@ -29,7 +30,10 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
+import javax.lang.model.util.Elements;
+import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
+import javax.tools.StandardLocation;
 import javax.tools.Diagnostic.Kind;
 
 import com.mysema.codegen.JavaWriter;
@@ -404,13 +408,23 @@ public class Processor {
     private void serialize(Serializer serializer, Collection<EntityType> models) {
         Messager msg = env.getMessager();
         for (EntityType model : models) {
-            msg.printMessage(Kind.NOTE, model.getFullName() + " is processed");
             try {
                 String packageName = model.getPackageName();
                 Type type = configuration.getTypeMappings().getPathType(model, model, true);
                 String className = packageName.length() > 0 ? (packageName + "." + type.getSimpleName()) : type.getSimpleName();
 
-                if (env.getElementUtils().getTypeElement(className) == null){
+                Filer filer = env.getFiler();
+
+                FileObject sFile = getSourceFile(model.getFullName());
+                FileObject qFile = filer.getResource(StandardLocation.SOURCE_OUTPUT, packageName, type.getSimpleName() + ".java");
+                
+//                msg.printMessage(Kind.NOTE, "Query class: " + (qFile != null ? qFile.getName() + " lastModified = " + qFile.getLastModified() : "n/a")
+//                        + " - typeElement: " + env.getElementUtils().getTypeElement(className)
+//                        + " - sourceElement : " + (sFile != null ? sFile.getLastModified() : "null"));
+                
+                if ((sFile == null && qFile.getLastModified() == 0) || (sFile != null && qFile.getLastModified() <= sFile.getLastModified())) {
+                    msg.printMessage(Kind.NOTE, "Generating " + className + " for " + model.getFullName());
+                    
                     JavaFileObject fileObject = env.getFiler().createSourceFile(className);
                     Writer writer = fileObject.openWriter();
                     try {
@@ -422,13 +436,37 @@ public class Processor {
                         }
                     }
                 }else{
-                    msg.printMessage(Kind.NOTE, className + " already available");
+                    msg.printMessage(Kind.NOTE, className + " is up-to-date");
                 }
 
             } catch (IOException e) {
 //                logger.error(e.getMessage(), e);
                 msg.printMessage(Kind.ERROR, e.getMessage());
             }
+        }
+    }
+
+    private FileObject getSourceFile(String fullName) throws IOException {
+        Messager msg = env.getMessager();
+        Elements elementUtils = env.getElementUtils();
+
+        TypeElement sourceElement = elementUtils.getTypeElement(fullName);
+        
+        if (sourceElement == null) {
+            return null;
+        } else {
+            if (sourceElement.getNestingKind().isNested()) {
+                sourceElement = (TypeElement) sourceElement.getEnclosingElement();
+            }
+//            msg.printMessage(Kind.NOTE, fullName + " is from " + sourceElement.getQualifiedName());
+            
+            PackageElement packageElement = elementUtils.getPackageOf(sourceElement);
+            
+//            msg.printMessage(Kind.NOTE, "packageElement = " + (packageElement != null ? packageElement.getQualifiedName() : "null"));
+    
+            return env.getFiler().getResource(StandardLocation.SOURCE_PATH, 
+                    packageElement.getQualifiedName(), 
+                    sourceElement.getSimpleName() + ".java");
         }
     }
 

@@ -10,6 +10,7 @@
 
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-apt</artifactId>
+  <version>1.9.7.1-SNAPSHOT</version>
   <name>Querydsl - APT support</name>
   <description>source code generation for querydsl</description>
   <packaging>jar</packaging>
@@ -79,8 +80,10 @@
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>maven-apt-plugin</artifactId>
+        <version>1.0-SNAPSHOT</version>
         <configuration>
           <outputDirectory>target/generated-test-sources/java</outputDirectory>
+          <showWarnings>true</showWarnings>
         </configuration>
         <executions>          
           <execution>
