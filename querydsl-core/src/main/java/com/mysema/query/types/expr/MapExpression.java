@@ -5,7 +5,10 @@
  */
 package com.mysema.query.types.expr;
 
+import java.util.Map;
+
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ParametrizedExpression;
 
 /**
  * MapExpression represents java.util.Map typed expressions
@@ -16,7 +19,7 @@ import com.mysema.query.types.Expression;
  * @param <V> value type
  * @see java.util.Map
  */
-public interface MapExpression<K, V> {
+public interface MapExpression<K, V> extends ParametrizedExpression<Map<K,V>>{
 
     /**
      * @param key

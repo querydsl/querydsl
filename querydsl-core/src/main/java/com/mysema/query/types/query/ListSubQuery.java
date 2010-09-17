@@ -78,5 +78,14 @@ public final class ListSubQuery<A> extends CollectionExpressionBase<List<A>,A> i
     public Expression<?> as(Expression<?> alias) {
         return SimpleOperation.create(alias.getType(),(Operator)Ops.ALIAS, this, alias);
     }
+    
+    @Override
+    public Class<?> getParameter(int index) {
+        if (index == 0){
+            return elementType;
+        }else{
+            throw new IndexOutOfBoundsException(String.valueOf(index));
+        }
+    }
 
 }

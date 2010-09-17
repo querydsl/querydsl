@@ -83,5 +83,14 @@ public class SetPath<E> extends CollectionExpressionBase<Set<E>,E> implements Pa
     public AnnotatedElement getAnnotatedElement(){
         return pathMixin.getAnnotatedElement();
     }
+    
+    @Override
+    public Class<?> getParameter(int index) {
+        if (index == 0){
+            return elementType;
+        }else{
+            throw new IndexOutOfBoundsException(String.valueOf(index));
+        }
+    }
 
 }

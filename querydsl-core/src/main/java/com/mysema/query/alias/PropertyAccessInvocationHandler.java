@@ -28,13 +28,10 @@ import net.sf.cglib.proxy.MethodProxy;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ParametrizedExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.expr.CollectionExpression;
-import com.mysema.query.types.expr.MapExpression;
-import com.mysema.query.types.path.ListPath;
-import com.mysema.query.types.path.MapPath;
 import com.mysema.util.ReflectionUtils;
 
 /**
@@ -103,8 +100,8 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {
-                PathMetadata<Integer> pm = PathMetadataFactory.forListAccess((ListPath<?, ?>) hostExpression, (Integer) args[0]);
-                Class<?> elementType = ((CollectionExpression<?,?>) hostExpression).getElementType();
+                PathMetadata<Integer> pm = PathMetadataFactory.forListAccess((Path<?>)hostExpression, (Integer) args[0]);
+                Class<?> elementType = ((ParametrizedExpression<?>) hostExpression).getParameter(0);
                 rv = newInstance(elementType, elementType, proxy, propKey, pm);
             }
             aliasFactory.setCurrent(propToExpr.get(propKey));
@@ -114,8 +111,8 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {
-                PathMetadata<?> pm = PathMetadataFactory.forMapAccess((MapPath<?, ?, ?>) hostExpression, args[0]);
-                Class<?> valueType = ((MapExpression<?, ?>) hostExpression).getValueType();
+                PathMetadata<?> pm = PathMetadataFactory.forMapAccess((Path<?>)hostExpression, args[0]);
+                Class<?> valueType = ((ParametrizedExpression<?>) hostExpression).getParameter(1);
                 rv = newInstance(valueType, valueType, proxy, propKey, pm);
             }
             aliasFactory.setCurrent(propToExpr.get(propKey));

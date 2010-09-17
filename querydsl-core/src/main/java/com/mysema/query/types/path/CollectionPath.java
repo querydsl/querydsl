@@ -10,8 +10,8 @@ import java.util.Collection;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathImpl;
+import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.CollectionExpressionBase;
 
@@ -84,4 +84,15 @@ public class CollectionPath<E> extends CollectionExpressionBase<Collection<E>,E>
         return pathMixin.getAnnotatedElement();
     }
 
+    @Override
+    public Class<?> getParameter(int index) {
+        if (index == 0){
+            return elementType;
+        }else{
+            throw new IndexOutOfBoundsException(String.valueOf(index));
+        }
+    }
+
+    
+    
 }

@@ -158,4 +158,13 @@ public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionExpres
         }
     }
 
+    @Override
+    public Class<?> getParameter(int index) {
+        if (index == 0){
+            return elementType;
+        }else{
+            throw new IndexOutOfBoundsException(String.valueOf(index));
+        }
+    }
+
 }

@@ -8,6 +8,7 @@ package com.mysema.query.types.expr;
 import java.util.Collection;
 
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ParametrizedExpression;
 
 /**
  * CollectionExpression represents java.util.Collection typed expressions
@@ -17,7 +18,7 @@ import com.mysema.query.types.Expression;
  * @param <E>
  * @see java.util.Collection
  */
-public interface CollectionExpression<C extends Collection<E>, E>{
+public interface CollectionExpression<C extends Collection<E>, E> extends ParametrizedExpression<C>{
 
     /**
      * Get an expression for <code>this.contains(child)</code>

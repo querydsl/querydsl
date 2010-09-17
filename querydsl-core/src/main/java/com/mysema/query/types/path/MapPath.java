@@ -150,5 +150,16 @@ public class MapPath<K, V, E extends SimpleExpression<V>> extends MapExpressionB
             return constructor.newInstance(pm);
         }
     }
+    
+    @Override
+    public Class<?> getParameter(int index) {
+        if (index == 0){
+            return keyType;
+        }else if (index == 1){    
+            return valueType;
+        }else{
+            throw new IndexOutOfBoundsException(String.valueOf(index));
+        }
+    }
 
 }
