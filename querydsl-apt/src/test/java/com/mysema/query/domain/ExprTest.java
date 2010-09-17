@@ -85,6 +85,7 @@ public class ExprTest {
 
         for (Expression<?> expr : toVisit){
             for (Method method : expr.getClass().getMethods()){
+                if (method.getName().equals("getParameter")) continue;
                 if (method.getName().equals("getArg")) continue;
                 if (method.getReturnType() != void.class
                  && !method.getReturnType().isPrimitive()){
