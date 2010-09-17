@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.mysema.query.SimpleConstant;
 import com.mysema.query.types.*;
 
 /**
@@ -124,9 +123,10 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Void visit(FactoryExpression<?> expr, Void context) {
-        handle(SimpleConstant.create(expr));
+        handle(new ConstantImpl(expr));
         append(".newInstance(");
         handle(", ", expr.getArgs());
         append(")");
