@@ -45,12 +45,16 @@ class SimplePath[T](t: Class[_ <: T], md: PathMetadata[_] )
     
     def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
     
+    def ~ = this
+    
 }
 
 class ArrayPath[T <: Array[_]](t: Class[T], md: PathMetadata[_] ) 
     extends PathImpl[T](t, md) with ArrayExpression[T]{
     
     def this(t: Class[T], variable: String) = this(t, forVariable(variable));
+    
+    def ~ = this
     
 }
 
@@ -59,12 +63,15 @@ class EntityPathImpl[T](t: Class[_ <: T], md: PathMetadata[_] )
     
     def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
     
+    def ~ = this
 }
 
 class CollectionPath[T](t: Class[_ <: T], md: PathMetadata[_] ) 
     extends PathImpl[java.util.Collection[T]](classOf[java.util.Collection[T]], md) with CollectionExpression[T]{
     
     def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
+    
+    def ~ = this
     
     def getParameter(i: Int) = t;
     
@@ -75,6 +82,8 @@ class SetPath[T](t: Class[_ <: T], md: PathMetadata[_] )
     
     def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
     
+    def ~ = this
+    
     def getParameter(i: Int) = t;
     
 }
@@ -83,6 +92,8 @@ class ListPath[T](t: Class[_ <: T], md: PathMetadata[_] )
     extends PathImpl[java.util.List[T]](classOf[java.util.List[T]], md) with ListExpression[T]{
     
     def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
+    
+    def ~ = this
     
     def getParameter(i: Int) = t;
     
@@ -93,6 +104,8 @@ class MapPath[K,V](k: Class[_ <: K], v: Class[_ <: V], md: PathMetadata[_] )
     
     def this(k: Class[_ <: K], v: Class[_ <: V], variable: String) = this(k, v, forVariable(variable));
     
+    def ~ = this
+    
     def getParameter(i: Int): Class[_] = { if (i == 0) k else v }
     
 }
@@ -102,18 +115,23 @@ class ComparablePath[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_] )
     
     def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
     
+    def ~ = this
 }
 
 class NumberPath[T <: Number with Comparable[T]](t: Class[_ <: T], md: PathMetadata[_] ) 
     extends PathImpl[T](t, md) with NumberExpression[T]{
 
     def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
+    
+    def ~ = this
 }
 
 class BooleanPath(md: PathMetadata[_] ) 
     extends PathImpl[java.lang.Boolean](classOf[java.lang.Boolean], md) with BooleanExpression{
     
     def this(variable: String) = this(forVariable(variable));
+    
+    def ~ = this
     
 }
 
@@ -122,12 +140,16 @@ class StringPath(md: PathMetadata[_] )
     
     def this(variable: String) = this(forVariable(variable));
     
+    def ~ = this
+    
 }
 
 class DatePath[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_] ) 
     extends PathImpl[T](t, md) with DateExpression[T]{
     
     def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
+    
+    def ~ = this
     
 }
 
@@ -136,6 +158,8 @@ class DateTimePath[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_] )
     
     def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
     
+    def ~ = this
+    
 }
 
 class TimePath[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_] ) 
@@ -143,11 +167,15 @@ class TimePath[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_] )
     
     def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
     
+    def ~ = this
+    
 }
 
 class EnumPath[T <: Enum[T]](t: Class[_ <: T], md: PathMetadata[_] ) 
     extends PathImpl[T](t, md) with EnumExpression[T]{
     
     def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
+    
+    def ~ = this
     
 }

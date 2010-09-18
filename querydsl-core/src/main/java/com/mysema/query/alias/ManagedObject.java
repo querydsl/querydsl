@@ -5,7 +5,7 @@
  */
 package com.mysema.query.alias;
 
-import com.mysema.query.types.path.EntityPathBase;
+import com.mysema.query.types.EntityPath;
 
 /**
  * MagagedObject is a tagging interface for CGLIB alias proxies
@@ -17,6 +17,6 @@ public interface ManagedObject {
     /**
      * @return
      */
-    EntityPathBase<?> __mappedPath();
+    EntityPath<?> __mappedPath();
 
 }

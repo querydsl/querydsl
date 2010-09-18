@@ -126,33 +126,6 @@ class AliasTest {
     def Array_Usage(){
         assertEquals("size(domainType.array)", (domainType.array $size).toString());
     }
-    
-    @Test
-    def Expression_in_SubQuery(){
-//        // list
-//        query()
-//          .from (domainType) 
-//          .where (domainType.firstName _like "Rob%")                
-//          .orderBy (domainType.firstName _asc)
-//          .list (domainType);            // FIXME
-//        
-//        // unique result
-//        query().from (domainType) 
-//          .where (domainType.firstName _like "Rob%")                
-//          .orderBy (domainType.firstName _asc)
-//          .unique (domainType);            // FIXME
-//        
-//        // long where
-//        query().from (domainType)            
-//          .where (
-//              domainType.firstName _like "Rob%",
-//              domainType.lastName _like "An%"
-//           )                
-//          .orderBy (domainType.firstName _asc)
-//          .list (domainType);            // FIXME
-    }
-    
-    def query() = new SQLSubQuery();
-    
+        
 }
 

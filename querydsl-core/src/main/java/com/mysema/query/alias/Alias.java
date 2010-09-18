@@ -32,7 +32,7 @@ import com.mysema.query.types.path.*;
 @SuppressWarnings("PMD")
 public final class Alias {
 
-    private static final AliasFactory aliasFactory = new AliasFactory(new DefaultPathFactory());
+    private static final AliasFactory aliasFactory = new AliasFactory(new DefaultPathFactory(), new DefaultTypeSystem());
 
     private static final SimplePath<Object> it = new SimplePath<Object>(Object.class, PathMetadataFactory.forVariable("it"));
 

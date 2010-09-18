@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.path.EntityPathBase;
+import com.mysema.query.types.EntityPath;
 
 /**
  * MethodType defines the supported method types used in the Alias functionality
@@ -25,7 +25,7 @@ public enum MethodType{
     /**
      *
      */
-    GET_MAPPED_PATH("__mappedPath", EntityPathBase.class, ManagedObject.class),
+    GET_MAPPED_PATH("__mappedPath", EntityPath.class, ManagedObject.class),
     /**
      *
      */

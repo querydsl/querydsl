@@ -96,24 +96,4 @@ public class DefaultPathFactory implements PathFactory{
         return new TimePath<T>(type, metadata);
     }
 
-    @Override
-    public boolean isCollectionType(Class<?> cl) {
-        return Collection.class.isAssignableFrom(cl);
-    }
-
-    @Override
-    public boolean isListType(Class<?> cl) {
-        return List.class.isAssignableFrom(cl);
-    }
-    
-    @Override
-    public boolean isSetType(Class<?> cl) {
-        return Set.class.isAssignableFrom(cl);
-    }
-
-    @Override
-    public boolean isMapType(Class<?> cl) {
-        return Map.class.isAssignableFrom(cl);
-    }
-
 }

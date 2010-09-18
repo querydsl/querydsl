@@ -14,5 +14,3 @@ $          : (domainType.firstName $like "An%") $and (domainType.firstName $like
 TODO :
 
 * Resolve paths in operation handling as well
-
-* Hibernate test

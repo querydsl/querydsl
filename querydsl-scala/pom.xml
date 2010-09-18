@@ -43,7 +43,13 @@
       <artifactId>querydsl-sql</artifactId>
       <version>${project.parent.version}</version>
       <scope>test</scope>
-    </dependency>            
+    </dependency>
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-hql</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>test</scope>
+    </dependency>                            
   </dependencies>
   
   <repositories>

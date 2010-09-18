@@ -17,8 +17,9 @@ import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.map.LazyMap;
 
 import com.mysema.commons.lang.Pair;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.path.EntityPathBase;
+import com.mysema.query.types.PathMetadataFactory;
 
 /**
  * AliasFactory is a factory class for alias creation
@@ -30,10 +31,13 @@ public class AliasFactory {
 
     private final ThreadLocal<Expression<?>> current = new ThreadLocal<Expression<?>>();
 
+    private final PathFactory pathFactory;
+    
+    private final TypeSystem typeSystem;
+    
     // caches top level paths (class/var as key)
-    private final Map<Pair<Class<?>,String>, EntityPathBase<?>> pathCache =
-        LazyMap.decorate(new HashMap<Pair<Class<?>,String>,EntityPathBase<?>>(), new PEntityTransformer());
-
+    private final Map<Pair<Class<?>,String>, EntityPath<?>> pathCache;
+        
     private final Map<Pair<Class<?>,Expression<?>>, ManagedObject> proxyCache =
         LazyMap.decorate(
             new HashMap<Pair<Class<?>,Expression<?>>,ManagedObject>(),
@@ -43,11 +47,19 @@ public class AliasFactory {
                     return (ManagedObject) createProxy(input.getFirst(), input.getSecond());
                 }
             });
-
-    private final PathFactory pathFactory;
     
-    public AliasFactory(PathFactory pathFactory){
+    public AliasFactory(final PathFactory pathFactory, TypeSystem typeSystem){
         this.pathFactory = pathFactory; 
+        this.typeSystem = typeSystem;
+        this.pathCache = LazyMap.decorate(new HashMap<Pair<Class<?>,String>,EntityPath<?>>(), 
+            new Transformer<Pair<Class<?>, String>, EntityPath<?>>() {
+                @Override
+                public EntityPath<?> transform( Pair<Class<?>, String> input) {
+                    return (EntityPath<?>)pathFactory.createEntityPath(
+                            input.getFirst(), 
+                            PathMetadataFactory.forVariable(input.getSecond()));
+                }
+            });
     }
     
     /**
@@ -109,7 +121,7 @@ public class AliasFactory {
             enhancer.setInterfaces(new Class[] { ManagedObject.class });
         }
         // creates one handler per proxy
-        MethodInterceptor handler = new PropertyAccessInvocationHandler(path, this, pathFactory);
+        MethodInterceptor handler = new PropertyAccessInvocationHandler(path, this, pathFactory, typeSystem);
         enhancer.setCallback(handler);
         return (A) enhancer.create();
     }

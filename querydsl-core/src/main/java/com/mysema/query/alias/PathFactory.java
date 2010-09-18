@@ -18,15 +18,7 @@ import com.mysema.query.types.PathMetadata;
  *
  */
 public interface PathFactory {
-    
-    boolean isCollectionType(Class<?> cl);
-    
-    boolean isSetType(Class<?> cl);
-    
-    boolean isListType(Class<?> cl);
-    
-    boolean isMapType(Class<?> cl);
-    
+        
     <T> Path<T[]> createArrayPath(Class<T[]> type, PathMetadata<?> metadata);
     
     <T> Path<T> createEntityPath(Class<T> type, PathMetadata<?> metadata);

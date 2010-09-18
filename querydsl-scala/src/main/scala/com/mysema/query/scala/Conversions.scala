@@ -17,7 +17,7 @@ import org.apache.commons.lang.StringUtils;
  */
 object Conversions {
     
-    val aliasFactory = new AliasFactory(new PathFactoryImpl());
+    val aliasFactory = new AliasFactory(new PathFactoryImpl(), new TypeSystemImpl());
     
     def not(b: BooleanExpression) = b.not;
     
@@ -73,16 +73,29 @@ object Conversions {
     
     implicit def javaMapPath[K,V](l: java.util.Map[K,V]): MapPath[K,V] = aliasFactory.getCurrentAndReset();
     
+//    implicit def expression[T](arg: T): Expression[T] = {
+//        var rv : Expression[T] = aliasFactory.getCurrentAndReset();
+//        if (rv != null){
+//            rv;
+//        }else{
+//            arg match {
+//                case x:Expression[T] => x;
+//                case x:ManagedObject => x.__mappedPath.asInstanceOf[Expression[T]];
+//                case _               => null;
+//            }
+//        }
+//    }
+    
     //implicit def simplePath(s: Object): SimplePath[_] = aliasFactory.getCurrentAndReset();
     
-    implicit def entityPath(arg: Object): EntityPathImpl[_] = {
-        var rv : EntityPathImpl[_] = aliasFactory.getCurrentAndReset();
+    implicit def entityPath[T](arg: T): EntityPathImpl[T] = {
+        var rv : EntityPathImpl[T] = aliasFactory.getCurrentAndReset();
         if (rv != null) {
             rv;
         }else {
             arg match {
-                case x:EntityPathImpl[_] => x;
-                case x:ManagedObject     => x.__mappedPath.asInstanceOf[EntityPathImpl[_]];
+                case x:EntityPathImpl[T] => x;
+                case x:ManagedObject     => x.__mappedPath.asInstanceOf[EntityPathImpl[T]];
                 case _                   => null;
             }
         }
@@ -121,6 +134,10 @@ class PathFactoryImpl extends PathFactory {
     def createCollectionPath[T](t: Class[T], md: PathMetadata[_]) = Paths.collection(t, md);
     
     def createMapPath[K,V](k: Class[K], v: Class[V], md: PathMetadata[_]) = Paths.map(k, v, md);
+        
+}
+
+class TypeSystemImpl extends TypeSystem {
     
     def isCollectionType(cl: Class[_]) = classOf[java.util.Collection[_]].isAssignableFrom(cl) || classOf[scala.Collection[_]].isAssignableFrom(cl);
     

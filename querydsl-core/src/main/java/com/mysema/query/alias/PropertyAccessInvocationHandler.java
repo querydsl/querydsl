@@ -52,10 +52,14 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
     private final PathFactory pathFactory;
     
-    public PropertyAccessInvocationHandler(Expression<?> host, AliasFactory aliasFactory, PathFactory pathFactory) {
+    private final TypeSystem typeSystem;
+    
+    public PropertyAccessInvocationHandler(Expression<?> host, AliasFactory aliasFactory, 
+            PathFactory pathFactory, TypeSystem typeSystem) {
         this.hostExpression = host;
         this.aliasFactory = aliasFactory;
         this.pathFactory = pathFactory;
+        this.typeSystem = typeSystem;
     }
 
     //CHECKSTYLE:OFF
@@ -194,23 +198,23 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             path = pathFactory.createBooleanPath(metadata);
             rv = Boolean.TRUE;
 
-        } else if (pathFactory.isMapType(type)) {
+        } else if (typeSystem.isMapType(type)) {
             Class<Object> keyType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
             Class<Object> valueType = (Class)ReflectionUtils.getTypeParameter(genericType, 1);
             path = pathFactory.createMapPath(keyType, valueType, metadata);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
             
-        } else if (pathFactory.isListType(type)) {
+        } else if (typeSystem.isListType(type)) {
             Class<Object> elementType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
             path = pathFactory.createListPath(elementType, metadata);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
-        } else if (pathFactory.isSetType(type)) {
+        } else if (typeSystem.isSetType(type)) {
             Class<?> elementType = ReflectionUtils.getTypeParameter(genericType, 0);
             path = pathFactory.createSetPath(elementType, metadata);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
 
-        } else if (pathFactory.isCollectionType(type)) {
+        } else if (typeSystem.isCollectionType(type)) {
             Class<?> elementType = ReflectionUtils.getTypeParameter(genericType, 0);
             path = pathFactory.createCollectionPath(elementType, metadata);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
