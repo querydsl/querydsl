@@ -11,7 +11,7 @@
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-sql</artifactId>
   <name>Querydsl - SQL support</name>
-  <description>SQL support for querydsl</description>
+  <description>SQL support for Querydsl</description>
   <packaging>jar</packaging>
 
   <dependencies>

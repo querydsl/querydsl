@@ -11,7 +11,7 @@
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-lucene</artifactId>
   <name>Querydsl - Lucene support</name>
-  <description>Lucene support for querydsl</description>
+  <description>Lucene support for Querydsl</description>
   <packaging>jar</packaging>
   
   <dependencies>   

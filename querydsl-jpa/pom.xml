@@ -10,8 +10,8 @@
 
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-hql</artifactId>
-  <name>Querydsl - HQL/JPAQL support</name>
-  <description>HQL/JPAQL support for querydsl</description>
+  <name>Querydsl - JPA support</name>
+  <description>JPA support for Querydsl</description>
   <packaging>jar</packaging>
   
   <properties>

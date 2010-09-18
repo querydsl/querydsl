@@ -46,7 +46,7 @@
     </dependency>
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-hql</artifactId>
+      <artifactId>querydsl-jpa</artifactId>
       <version>${project.parent.version}</version>
       <scope>test</scope>
     </dependency>                            

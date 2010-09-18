@@ -6,7 +6,7 @@
   <artifactId>querydsl-root</artifactId>
   <version>1.9.7-SNAPSHOT</version>
   <name>Querydsl</name>
-  <description>parent project for querydsl modules</description>
+  <description>parent project for Querydsl modules</description>
   <url>http://source.mysema.com/display/querydsl</url>
   <parent>
     <groupId>com.mysema.home</groupId>
@@ -34,8 +34,8 @@
     <module>../querydsl-collections</module>           
     <module>../querydsl-sql</module>    
     <module>../querydsl-maven-plugin</module>
-    <module>../querydsl-hql</module>    
-    <module>../querydsl-jdoql</module>
+    <module>../querydsl-jpa</module>    
+    <module>../querydsl-jdo</module>
     
     <!-- Lucene related -->
     <module>../querydsl-lucene</module>
@@ -117,6 +117,15 @@
         <role>Developer</role>
       </roles>
     </developer>
+    <developer>
+      <id>laim</id>
+      <name>Lassi Immonen</name>
+      <email>lassi.immonen@mysema.com</email>
+      <organization>Mysema Ltd</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>    
   </developers>
 
   <licenses>

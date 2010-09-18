@@ -12,7 +12,7 @@
   <artifactId>querydsl-apt</artifactId>
   <version>1.9.7-SNAPSHOT</version>
   <name>Querydsl - APT support</name>
-  <description>source code generation for querydsl</description>
+  <description>APT based Source code generation for Querydsl</description>
   <packaging>jar</packaging>
 
   <properties>
