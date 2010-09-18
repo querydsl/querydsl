@@ -19,7 +19,7 @@ object Conversions {
     
     val aliasFactory = new AliasFactory(new PathFactoryImpl());
     
-    def not(b: BooleanExpression) = b._not()
+    def not(b: BooleanExpression) = b.not;
     
     def alias[T](cl: Class[T]): T = alias(cl, StringUtils.uncapitalize(cl.getSimpleName)); 
 
@@ -28,6 +28,8 @@ object Conversions {
     def alias[T](cl: Class[T], expr: Expression[_ <: T]): T = aliasFactory.createAliasForExpr(cl, expr);
     
     // implicit conversions
+    
+    implicit def arrayPath[T <: Array[_]](a: T): ArrayPath[T] = aliasFactory.getCurrentAndReset();
     
     implicit def booleanPath(b: java.lang.Boolean): BooleanPath = aliasFactory.getCurrentAndReset();
     
@@ -80,8 +82,8 @@ object Conversions {
         }else {
             arg match {
                 case x:EntityPathImpl[_] => x;
-                case x:ManagedObject => x.__mappedPath.asInstanceOf[EntityPathImpl[_]];
-                case _ => null;
+                case x:ManagedObject     => x.__mappedPath.asInstanceOf[EntityPathImpl[_]];
+                case _                   => null;
             }
         }
     }    

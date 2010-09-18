@@ -26,216 +26,216 @@ object Constants {
 }
 
 trait SimpleExpression[T] extends Expression[T] {
+    
+    def $eq(right: T): BooleanExpression = $eq(constant(right)); // XXX "is"
 
-    def _count() = number[java.lang.Long](classOf[java.lang.Long], AggOps.COUNT_AGG, this);
+    def $eq(right: Expression[T]) = boolean(EQ_OBJECT, this, right); // XXX "is"
+    
+    def $ne(right: T): BooleanExpression = $ne(constant(right)); // XXX "<>" / "isnt" / "isNot"
+    
+    def $ne(right: Expression[T]) = boolean(NE_OBJECT, this, right); // XXX "isNot"    
+        
+    def $count() = number[java.lang.Long](classOf[java.lang.Long], AggOps.COUNT_AGG, this);
 
-    def _in(right: Collection[T]) = boolean(IN, this, constant(right));
+    def $in(right: Collection[T]) = boolean(IN, this, constant(right));
 
-    def _in(right: T*) : BooleanOperation = _in(asList(right:_*));
+    def $in(right: T*) : BooleanOperation = $in(asList(right:_*));
 
-    def _in(right: CollectionExpression[T]) = boolean(IN, this, right);
-
-    def _eq(right: T): BooleanExpression = _eq(constant(right)); // XXX "is"
-
-    def _eq(right: Expression[T]) = boolean(EQ_OBJECT, this, right); // XXX "is"
+    def $in(right: CollectionExpression[T]) = boolean(IN, this, right);
 
     // TODO : get rid of asInstanceOf
-    def _as(right: Path[T]): SimpleExpression[T] = simple(getType, ALIAS.asInstanceOf[Operator[T]], this, right);
+    def $as(right: Path[T]): SimpleExpression[T] = simple(getType, ALIAS.asInstanceOf[Operator[T]], this, right);
 
-    def _as(alias: String): SimpleExpression[T] = _as(new PathImpl[T](getType, alias)); 
+    def $as(alias: String): SimpleExpression[T] = $as(new PathImpl[T](getType, alias)); 
 
-    def _countDistinct() = number[java.lang.Long](classOf[java.lang.Long], AggOps.COUNT_DISTINCT_AGG, this);
+    def $countDistinct() = number[java.lang.Long](classOf[java.lang.Long], AggOps.COUNT_DISTINCT_AGG, this);
 
-    def _isNotNull() = boolean(IS_NOT_NULL, this);
+    def $isNotNull() = boolean(IS_NOT_NULL, this);
 
-    def _isNull() = boolean(IS_NULL, this);
+    def $isNull() = boolean(IS_NULL, this);
+    
+    def $notIn(right: Collection[T]) = $in(right).not;
 
-    def _ne(right: T): BooleanExpression = _ne(constant(right)); // XXX "isnt" / "isNot"
+    def $notIn(right: T*) = $in(right:_*).not;
 
-    def _ne(right: Expression[T]) = boolean(NE_OBJECT, this, right); // XXX "isNot"
-
-    def _notIn(right: Collection[T]) = _in(right)._not();
-
-    def _notIn(right: T*) = _in(right:_*)._not();
-
-    def _notIn(right: CollectionExpression[T]) = _in(right)._not();
-
+    def $notIn(right: CollectionExpression[T]) = $in(right).not;
+    
 }
 
 trait ArrayExpression[T <: Array[_]] extends SimpleExpression[T] {
     
-    def _size() = number[Integer](classOf[Integer], Ops.ARRAY_SIZE, this);
+    def $size() = number[Integer](classOf[Integer], Ops.ARRAY_SIZE, this);
     
-//    def _get(index: Integer) = Paths.simple(getType.getComponentType, forArrayAccess(this, index.intValue));
+//    def $get(index: Integer) = Paths.simple(getType.getComponentType, forArrayAccess(this, index.intValue));
     
 }
 
-trait CollectionExpressionBase[T <: Collection[_]] extends SimpleExpression[T] with ParametrizedExpression[T] {
+trait CollectionExpressionBase[T <: Collection[C],C] extends SimpleExpression[T] with ParametrizedExpression[T] {
     
-    def _size() = number[Integer](classOf[Integer], COL_SIZE, this);
+    def $size() = number[Integer](classOf[Integer], COL_SIZE, this);
     
-    def _isEmpty() = boolean(COL_IS_EMPTY, this);
+    def $isEmpty() = boolean(COL_IS_EMPTY, this);
     
-    def _isNotEmpty() = _isEmpty().not;
+    def $isNotEmpty() = $isEmpty().not;
     
-    def _contains(child: T) = boolean(IN, constant(child), this);
+    def $contains(child: C) = boolean(IN, constant(child), this);
     
-    def _contains(child: Expression[T]) = boolean(IN, child, this);
+    def $contains(child: Expression[C]) = boolean(IN, child, this);
 }
 
-trait CollectionExpression[T] extends CollectionExpressionBase[java.util.Collection[T]] { }
+trait CollectionExpression[T] extends CollectionExpressionBase[java.util.Collection[T],T] { }
 
-trait SetExpression[T] extends CollectionExpressionBase[java.util.Set[T]] { }
+trait SetExpression[T] extends CollectionExpressionBase[java.util.Set[T],T] { }
 
-trait ListExpression[T] extends CollectionExpressionBase[java.util.List[T]] {
+trait ListExpression[T] extends CollectionExpressionBase[java.util.List[T],T] {
     
 }
 
 trait MapExpression[K,V] extends SimpleExpression[java.util.Map[K,V]] with ParametrizedExpression[java.util.Map[K,V]]{
     
-    def _size() = number[Integer](classOf[Integer], MAP_SIZE, this);
+    def $size() = number[Integer](classOf[Integer], MAP_SIZE, this);
     
-    def _isEmpty() = boolean(MAP_IS_EMPTY, this);
+    def $isEmpty() = boolean(MAP_IS_EMPTY, this);
     
-    def _isNotEmpty() = _isEmpty().not;
+    def $isNotEmpty() = $isEmpty().not;
     
-    def _containsKey(k: K) = boolean(CONTAINS_KEY, this, constant(k));
+    def $containsKey(k: K) = boolean(CONTAINS_KEY, this, constant(k));
     
-    def _containsKey(k: Expression[K]) = boolean(CONTAINS_KEY, this, k);
+    def $containsKey(k: Expression[K]) = boolean(CONTAINS_KEY, this, k);
     
-    def _containsValue(v: V) = boolean(CONTAINS_KEY, this, constant(v));
+    def $containsValue(v: V) = boolean(CONTAINS_KEY, this, constant(v));
     
-    def _containsValue(v: Expression[V]) = boolean(CONTAINS_KEY, this, v);
+    def $containsValue(v: Expression[V]) = boolean(CONTAINS_KEY, this, v);
     
 }
 
 trait ComparableExpressionBase[T <: Comparable[_]] extends SimpleExpression[T] {
     
-    def _asc = new OrderSpecifier[T](Order.ASC, this); 
+    def asc = new OrderSpecifier[T](Order.ASC, this); 
     
-    def _desc = new OrderSpecifier[T](Order.DESC, this);
+    def desc = new OrderSpecifier[T](Order.DESC, this);
     
 }
 
 trait ComparableExpression[T <: Comparable[_]] extends ComparableExpressionBase[T] {
 
-    def _lt(right: T) : BooleanExpression = _lt(constant(right));
+    def $lt(right: T) : BooleanExpression = $lt(constant(right));
 
-    def _lt(right: Expression[T]): BooleanExpression = boolean(BEFORE, this, right); 
+    def $lt(right: Expression[T]): BooleanExpression = boolean(BEFORE, this, right); 
 
     // TODO : get rid of asInstanceOf
-    override def _as(right: Path[T]) = comparable(getType, ALIAS.asInstanceOf[Operator[T]], this, right);
+    override def $as(right: Path[T]) = comparable(getType, ALIAS.asInstanceOf[Operator[T]], this, right);
 
-    override def _as(alias: String): ComparableExpression[T] = _as(new PathImpl[T](getType, alias));
+    override def $as(alias: String): ComparableExpression[T] = $as(new PathImpl[T](getType, alias));
 
-    def _between(left: T, right: T): BooleanExpression = _between(constant(left), constant(right));
+    def $between(left: T, right: T): BooleanExpression = $between(constant(left), constant(right));
 
-    def _between(left: Expression[T], right: Expression[T]) = boolean(BETWEEN, this, left, right);;
+    def $between(left: Expression[T], right: Expression[T]) = boolean(BETWEEN, this, left, right);;
 
-    def _notBetween(left: T, right: T): BooleanExpression = _notBetween(constant(left), constant(right));
+    def $notBetween(left: T, right: T): BooleanExpression = $notBetween(constant(left), constant(right));
 
-    def _notBetween(left: Expression[T], right: Expression[T]) = _between(left, right)._not();
+    def $notBetween(left: Expression[T], right: Expression[T]) = $between(left, right).not;
 
-    def _gt(right: T): BooleanExpression = _gt(constant(right));
+    def $gt(right: T): BooleanExpression = $gt(constant(right));
 
-    def _gt(right: Expression[T]) = boolean(AFTER, this, right);
+    def $gt(right: Expression[T]) = boolean(AFTER, this, right);
 
-    def _goe(right: T): BooleanExpression = _goe(constant(right));
+    def $goe(right: T): BooleanExpression = $goe(constant(right));
 
-    def _goe(right: Expression[T]) = boolean(AOE, this, right);
+    def $goe(right: Expression[T]) = boolean(AOE, this, right);
 
-    def _loe(right: T): BooleanExpression = _loe(constant(right));
+    def $loe(right: T): BooleanExpression = $loe(constant(right));
 
-    def _loe(right: Expression[T]) = boolean(BOE, this, right);
+    def $loe(right: Expression[T]) = boolean(BOE, this, right);
 
 }
 
 trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpressionBase[T] {
-
-    def _add(right: Expression[Number]) = number[T](getType, ADD, this, right);
-
-    def _add(right: Number) : NumberExpression[T] = _add(constant(right));
-
-    def _abs() = number[T](getType, MathOps.ABS, this);
-
-    def _sqrt() = number[java.lang.Double](classOf[java.lang.Double], MathOps.SQRT, this);
-
-    def _min() = number[T](getType, AggOps.MIN_AGG, this);
-
-    def _max() = number[T](getType, AggOps.MAX_AGG, this);
-
-    def _lt(right: Number) : BooleanExpression = _lt(constant(right));
-
-    def _lt(right: Expression[Number]) = boolean(Ops.LT, this, right);
-
-    def _in(right: Array[Number]) = boolean(IN, this, constant(asList(right:_*)));
-
-    def _byteValue() = castToNum(classOf[java.lang.Byte]);
-
-    def _doubleValue() = castToNum(classOf[java.lang.Double]);
-
-    def _floatValue() = castToNum(classOf[java.lang.Float]);
-
-    def _intValue() = castToNum(classOf[java.lang.Integer]);
-
-    def _longValue() = castToNum(classOf[java.lang.Long]);
-
-    def _shortValue() = castToNum(classOf[java.lang.Short]);
-
-    def _ceil() = number[T](getType, MathOps.CEIL, this);
-
-    def _floor() = number[T](getType, MathOps.FLOOR, this);
-
-    def _round() = number[T](getType, MathOps.ROUND, this);
-
-//    override def _as(right: Path[T]) = number(getType, ALIAS.asInstanceOf[Operator[T]], this, right);
-
-//    override def _as(alias: String): NumberExpression[T] = _as(new PathImpl[T](getType, alias));
-
-    def _sum() = number[T](getType, AggOps.SUM_AGG, this);
-
-    def _avg() = number[T](getType, AggOps.AVG_AGG, this);
-
-    def _divide(right: Expression[Number]) = number[T](getType, Ops.MULT, this, right);
-
-    def _divide(right: Number): NumberExpression[T] = _divide(constant(right));
-
-    def _goe(right: Number): BooleanExpression = _goe(constant(right));
-
-    def _goe(right: Expression[Number]) = boolean(Ops.GOE, this, right);
-
-    def _gt(right: Number): BooleanExpression = _gt(constant(right));
-
-    def _gt(right: Expression[Number]) = boolean(Ops.GT, this, right);
-
-    def _between(left: Number, right: Number): BooleanExpression = _between(constant(left), constant(right));
-
-    def _between(left: Expression[Number], right: Expression[Number]) = boolean(Ops.BETWEEN, this, left, right);
-
-    def _notBetween(left: Number, right: Number): BooleanExpression = _between(left, right)._not();
-
-    def _notBetween(left: Expression[Number], right: Expression[Number]) = _between(left, right)._not();
-
-    def _loe(right: Number): BooleanExpression = _loe(constant(right));
-
-    def _loe(right: Expression[Number]) = boolean(Ops.LOE, this, right);
-
-    def _mod(right: Expression[Number]) = number[T](getType, Ops.MOD, this, right);
-
-    def _mod(right: Number): NumberExpression[T] = _mod(constant(right));
-
-    def _multiply(right: Expression[Number]) = number[T](getType, Ops.MULT, this, right);
-
-    def _multiply(right: Number): NumberExpression[T] = _multiply(constant(right));
-
-    def _negate() = _multiply(-1);
-
-    def _subtract(right: Expression[Number]) = number[T](getType, Ops.SUB, this, right);
-
-    def _subtract(right: Number): NumberExpression[T] = _subtract(constant(right));
-
-    def _notIn(right: Array[Number]) = boolean(IN, this, constant(asList(right:_*)))._not();
     
+    def $add(right: Expression[Number]) = number[T](getType, ADD, this, right);
+
+    def $add(right: Number) : NumberExpression[T] = $add(constant(right));
+   
+    def $goe(right: Number): BooleanExpression = $goe(constant(right));
+
+    def $goe(right: Expression[Number]) = boolean(Ops.GOE, this, right);
+
+    def $gt(right: Number): BooleanExpression = $gt(constant(right));
+
+    def $gt(right: Expression[Number]) = boolean(Ops.GT, this, right);
+
+    def $between(left: Number, right: Number): BooleanExpression = $between(constant(left), constant(right));
+
+    def $between(left: Expression[Number], right: Expression[Number]) = boolean(Ops.BETWEEN, this, left, right);
+
+    def $notBetween(left: Number, right: Number): BooleanExpression = $between(left, right).not;
+
+    def $notBetween(left: Expression[Number], right: Expression[Number]) = $between(left, right).not;
+
+    def $loe(right: Number): BooleanExpression = $loe(constant(right));
+
+    def $loe(right: Expression[Number]) = boolean(Ops.LOE, this, right);
+        
+    def $lt(right: Number) : BooleanExpression = $lt(constant(right));
+
+    def $lt(right: Expression[Number]) = boolean(Ops.LT, this, right);
+
+    def $in(right: Array[Number]) = boolean(IN, this, constant(asList(right:_*)));
+
+    def $min() = number[T](getType, AggOps.MIN_AGG, this);
+
+    def $max() = number[T](getType, AggOps.MAX_AGG, this);
+
+    def $sum() = number[T](getType, AggOps.SUM_AGG, this);
+
+    def $avg() = number[T](getType, AggOps.AVG_AGG, this);
+    
+    def $subtract(right: Expression[Number]) = number[T](getType, Ops.SUB, this, right);
+
+    def $subtract(right: Number): NumberExpression[T] = $subtract(constant(right));    
+    
+    def $notIn(right: Array[Number]) = boolean(IN, this, constant(asList(right:_*))).not;
+    
+    def $divide(right: Expression[Number]) = number[T](getType, Ops.DIV, this, right);
+
+    def $divide(right: Number): NumberExpression[T] = $divide(constant(right));
+
+    def $multiply(right: Expression[Number]) = number[T](getType, Ops.MULT, this, right);
+
+    def $multiply(right: Number): NumberExpression[T] = $multiply(constant(right));    
+
+    def $negate() = $multiply(-1);
+    
+    def $mod(right: Expression[Number]) = number[T](getType, Ops.MOD, this, right);
+
+    def $mod(right: Number): NumberExpression[T] = $mod(constant(right));
+    
+    def $sqrt() = number[java.lang.Double](classOf[java.lang.Double], MathOps.SQRT, this);
+    
+    def $abs() = number[T](getType, MathOps.ABS, this);
+    
+    def $byteValue() = castToNum(classOf[java.lang.Byte]);
+
+    def $doubleValue() = castToNum(classOf[java.lang.Double]);
+
+    def $floatValue() = castToNum(classOf[java.lang.Float]);
+
+    def $intValue() = castToNum(classOf[java.lang.Integer]);
+
+    def $longValue() = castToNum(classOf[java.lang.Long]);
+
+    def $shortValue() = castToNum(classOf[java.lang.Short]);
+
+    def $ceil() = number[T](getType, MathOps.CEIL, this);
+
+    def $floor() = number[T](getType, MathOps.FLOOR, this);
+
+    def $round() = number[T](getType, MathOps.ROUND, this);
+
+//    override def $as(right: Path[T]) = number(getType, ALIAS.asInstanceOf[Operator[T]], this, right);
+
+//    override def $as(alias: String): NumberExpression[T] = $as(new PathImpl[T](getType, alias));
+        
     private def castToNum[A <: Number with Comparable[A]](t : Class[A]): NumberExpression[A] = {
         if (t.equals(getType)){
             this.asInstanceOf[NumberExpression[A]];
@@ -248,205 +248,205 @@ trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpress
 
 trait BooleanExpression extends ComparableExpression[java.lang.Boolean] with Predicate {
 
-    def _and(right: Predicate) = boolean(Ops.AND, this, right);
-
-    def _or(right: Predicate) = boolean(Ops.OR, this, right);
-
-    //override def _as(right: Path[java.lang.Boolean]) = boolean(ALIAS.asInstanceOf[Operator[java.lang.Boolean]], this, right);
-
-    //override def _as(alias: String): BooleanExpression = _as(new PathImpl[java.lang.Boolean](getType, alias));
-
-    def _not() = boolean(Ops.NOT, this);
+    def $and(right: Predicate) = boolean(Ops.AND, this, right);
     
-    def not() = _not();
+    def $or(right: Predicate) = boolean(Ops.OR, this, right);
+    
+    def $not() = not();
+    
+    def not() = boolean(Ops.NOT, this);
+    
+    //override def $as(right: Path[java.lang.Boolean]) = boolean(ALIAS.asInstanceOf[Operator[java.lang.Boolean]], this, right);
 
+    //override def $as(alias: String): BooleanExpression = $as(new PathImpl[java.lang.Boolean](getType, alias));
+    
 }
 
 trait StringExpression extends ComparableExpression[String] {
+    
+    def $like(right: String): BooleanExpression = $like(constant(right));
 
-    def _append(right: Expression[String]) = string(Ops.CONCAT, this, right);
+    def $like(right: Expression[String]) = boolean(Ops.LIKE, this, right);
+       
+    def $append(right: Expression[String]) = string(Ops.CONCAT, this, right); // XXX "||"
+    
+    def $append(right: String): StringExpression = $append(constant(right));
 
-    def _append(right: String): StringExpression = _append(constant(right));
+    def $concat(right: Expression[String]) = $append(right); 
 
-    def _indexOf(right: Expression[String]) = number[Integer](classOf[Integer], Ops.INDEX_OF, this, right); // XXX "index" / "idxOf" :( (?)
+    def $concat(right: String) = $append(right);
+    
+    def $prepend(right: Expression[String]) = string(Ops.CONCAT, right, this);
 
-    def _indexOf(right: String): NumberExpression[Integer] = _indexOf(constant(right)); // XXX "index" (?)
+    def $prepend(right: String) : StringExpression = $prepend(constant(right));    
+    
+    def $stringValue() = this;
 
-    def _indexOf(left: String, right: Int): NumberExpression[Integer] = _indexOf(constant(left), right); // XXX "index" (?)
+    def $lower() = $toLowerCase();
 
-    def _indexOf(left: Expression[String], right: Int) = number[Integer](classOf[Integer], Ops.INDEX_OF_2ARGS, this, left, constant(right)); // XXX "index" (?)
+    def $upper() = $toUpperCase();
+    
+    def $matches(right: Expression[String]) = boolean(Ops.MATCHES, this, right); // XXX "matchesExpr"
 
-    def _charAt(right: Expression[Integer]) = simple(classOf[Character], Ops.CHAR_AT, this, right); // XXX "char"
+    def $matches(right: String): BooleanExpression = $matches(constant(right)); // XXX "matchesExpr"
+        
+    def $indexOf(right: Expression[String]) = number[Integer](classOf[Integer], Ops.INDEX_OF, this, right); // XXX "index" / "idxOf" :( (?)
 
-    def _charAt(right: Integer): SimpleExpression[Character] = _charAt(constant(right)); // XXX "char"
+    def $indexOf(right: String): NumberExpression[Integer] = $indexOf(constant(right)); // XXX "index" (?)
 
-    def _concat(right: Expression[String]) = _append(right); // XXX "concatenate" / "merge"
+    def $indexOf(left: String, right: Int): NumberExpression[Integer] = $indexOf(constant(left), right); // XXX "index" (?)
 
-    def _concat(right: String) = _append(right); // XXX "concatenate" / "merge"
+    def $indexOf(left: Expression[String], right: Int) = number[Integer](classOf[Integer], Ops.INDEX_OF_2ARGS, this, left, constant(right)); // XXX "index" (?)
 
-    def _contains(right: Expression[String]) = boolean(Ops.STRING_CONTAINS, this, right); // XXX "has" / "haz" ;)
+    def $charAt(right: Expression[Integer]) = simple(classOf[Character], Ops.CHAR_AT, this, right); // XXX "char"
 
-    def _contains(right: String) : BooleanExpression = _contains(constant(right)); // XXX "has"
+    def $charAt(right: Integer): SimpleExpression[Character] = $charAt(constant(right)); // XXX "char"
 
-    def _endsWith(right: Expression[String]) = boolean(Ops.ENDS_WITH, this, right); // XXX "ends" / "endsIn"
+    def $contains(right: Expression[String]) = boolean(Ops.STRING_CONTAINS, this, right); // XXX "has" / "haz" ;)
 
-    def _endsWith(right: String): BooleanExpression = _endsWith(constant(right)); // XXX "ends" / "endsIn"
+    def $contains(right: String) : BooleanExpression = $contains(constant(right)); // XXX "has"
 
-    def _equalsIgnoreCase(right: Expression[String]) = boolean(Ops.EQ_IGNORE_CASE, this, right); // XXX "isIgnoreCase" / "eqIgnoreCase"
+    def $endsWith(right: Expression[String]) = boolean(Ops.ENDS_WITH, this, right); // XXX "ends" / "endsIn"
 
-    def _equalsIgnoreCase(right: String): BooleanExpression = _equalsIgnoreCase(constant(right)); // XXX "isIgnoreCase" / "eqIgnoreCase"
+    def $endsWith(right: String): BooleanExpression = $endsWith(constant(right)); // XXX "ends" / "endsIn"
 
-    def _isEmpty() = boolean(Ops.STRING_IS_EMPTY, this); // XXX "empty"
+    def $equalsIgnoreCase(right: Expression[String]) = boolean(Ops.EQ_IGNORE_CASE, this, right); // XXX "isIgnoreCase" / "eqIgnoreCase"
 
-    def _length() = number[Integer](classOf[Integer], Ops.STRING_LENGTH, this); // XXX "size" (RichString problem?) / "len"
+    def $equalsIgnoreCase(right: String): BooleanExpression = $equalsIgnoreCase(constant(right)); // XXX "isIgnoreCase" / "eqIgnoreCase"
 
-    def _matches(right: Expression[String]) = boolean(Ops.MATCHES, this, right); // XXX "matchesExpr"
+    def $isEmpty() = boolean(Ops.STRING_IS_EMPTY, this); // XXX "empty"
 
-    def _matches(right: String): BooleanExpression = _matches(constant(right)); // XXX "matchesExpr"
+    def $length() = number[Integer](classOf[Integer], Ops.STRING_LENGTH, this); // XXX "size" (RichString problem?) / "len"
 
-    def _startsWith(right: Expression[String]) = boolean(Ops.STARTS_WITH, this, right); // XXX "beginsWith"
+    def $startsWith(right: Expression[String]) = boolean(Ops.STARTS_WITH, this, right); // XXX "beginsWith"
 
-    def _startsWith(right: String) : BooleanExpression = _startsWith(constant(right)); // XXX "beginsWith"
+    def $startsWith(right: String) : BooleanExpression = $startsWith(constant(right)); // XXX "beginsWith"
 
-    def _substring(right: Int) = string(Ops.SUBSTR_1ARG, this, constant(right)); // XXX "substr" / "subString" / "sub"
+    def $substring(right: Int) = string(Ops.SUBSTR_1ARG, this, constant(right)); // XXX "substr" / "subString" / "sub"
 
-    def _substring(right: Int, arg1: Int) = string(Ops.SUBSTR_2ARGS, this, constant(right), constant(arg1)); // XXX "substr" / "subString" / "sub"
+    def $substring(right: Int, arg1: Int) = string(Ops.SUBSTR_2ARGS, this, constant(right), constant(arg1)); // XXX "substr" / "subString" / "sub"
 
-    def _toLowerCase() = string(Ops.LOWER); // XXX "lower"
+    def $toLowerCase() = string(Ops.LOWER, this); // XXX "lower"
 
-    def _toUpperCase() = string(Ops.UPPER); // XXX "upper"
+    def $toUpperCase() = string(Ops.UPPER, this); // XXX "upper"
 
-    def _trim() = string(Ops.TRIM); // XXX ???
+    def $trim() = string(Ops.TRIM, this); // XXX ???
 
-    def _prepend(right: Expression[String]) = string(Ops.CONCAT, right, this);
+    //override def $as(right: Path[String]): StringExpression;
 
-    def _prepend(right: String) : StringExpression = _prepend(constant(right));
+    //override def $as(right: String): StringExpression;
 
-    //override def _as(right: Path[String]): StringExpression;
+    def $containsIgnoreCase(right: Expression[String]) = boolean(Ops.STRING_CONTAINS_IC, this, right); // XXX "hasIgnoreCase"
 
-    //override def _as(right: String): StringExpression;
+    def $containsIgnoreCase(right: String): BooleanExpression = $containsIgnoreCase(constant(right)); // ...
 
-    def _stringValue() = this;
+    def $endsWithIgnoreCase(right: Expression[String]) = boolean(Ops.ENDS_WITH_IC, this, right);
 
-    def _lower() = _toLowerCase();
+    def $endsWithIgnoreCase(right: String): BooleanExpression = $endsWithIgnoreCase(constant(right));
 
-    def _upper() = _toUpperCase();
+    def $isNotEmpty() = $isEmpty().not;
 
-    def _containsIgnoreCase(right: Expression[String]) = boolean(Ops.STRING_CONTAINS_IC, this, right); // XXX "hasIgnoreCase"
+    def $startsWithIgnoreCase(right: Expression[String]) = boolean(Ops.STARTS_WITH_IC, this, right);
 
-    def _containsIgnoreCase(right: String): BooleanExpression = _containsIgnoreCase(constant(right)); // ...
-
-    def _endsWithIgnoreCase(right: Expression[String]) = boolean(Ops.ENDS_WITH_IC, this, right);
-
-    def _endsWithIgnoreCase(right: String): BooleanExpression = _endsWithIgnoreCase(constant(right));
-
-    def _isNotEmpty() = _isEmpty()._not();
-
-    def _like(right: String): BooleanExpression = _like(constant(right));
-
-    def _like(right: Expression[String]) = boolean(Ops.LIKE, this, right);
-
-    def _startsWithIgnoreCase(right: Expression[String]) = boolean(Ops.STARTS_WITH_IC, this, right);
-
-    def _startsWithIgnoreCase(right: String): BooleanExpression = _startsWithIgnoreCase(constant(right));
+    def $startsWithIgnoreCase(right: String): BooleanExpression = $startsWithIgnoreCase(constant(right));
 
 }
 
 trait TemporalExpression[T <: Comparable[_]] extends ComparableExpression[T] {
 
-    def _after(right: T) = _gt(right);
+    def $after(right: T) = $gt(right);
 
-    def _after(right: Expression[T]) = _gt(right);
+    def $after(right: Expression[T]) = $gt(right);
 
-    def _before(right: T) = _lt(right);
+    def $before(right: T) = $lt(right);
 
-    def _before(right: Expression[T]) = _lt(right);
+    def $before(right: Expression[T]) = $lt(right);
 
 }
 
 trait TimeExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
-    //override def _as(right: Path[T]): TimeExpression[T];
+    //override def $as(right: Path[T]): TimeExpression[T];
 
-    //override def _as(right: String): TimeExpression[T];
+    //override def $as(right: String): TimeExpression[T];
 
-    def _hour() = number(classOf[Integer], DateTimeOps.HOUR, this);
+    def $hour() = number(classOf[Integer], DateTimeOps.HOUR, this);
 
-    def _minute() = number(classOf[Integer], DateTimeOps.MINUTE, this);
+    def $minute() = number(classOf[Integer], DateTimeOps.MINUTE, this);
 
-    def _second() = number(classOf[Integer], DateTimeOps.SECOND, this);
+    def $second() = number(classOf[Integer], DateTimeOps.SECOND, this);
 
-    def _milliSecond() = number(classOf[Integer], DateTimeOps.MILLISECOND, this);
+    def $milliSecond() = number(classOf[Integer], DateTimeOps.MILLISECOND, this);
 
 }
 
 trait DateTimeExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
-    def _min() = dateTime(getType, AggOps.MIN_AGG, this);
+    def $min() = dateTime(getType, AggOps.MIN_AGG, this);
 
-    def _max() = dateTime(getType, AggOps.MAX_AGG, this);
+    def $max() = dateTime(getType, AggOps.MAX_AGG, this);
 
-    //override def _as(right: Path[T]): DateTimeExpression[T];
+    //override def $as(right: Path[T]): DateTimeExpression[T];
 
-    //override def _as(right: String): DateTimeExpression[T];
+    //override def $as(right: String): DateTimeExpression[T];
     
-    def _dayOfMonth() = number(classOf[Integer], DateTimeOps.DAY_OF_MONTH, this);
+    def $dayOfMonth() = number(classOf[Integer], DateTimeOps.DAY_OF_MONTH, this);
 
-    def _dayOfWeek() = number(classOf[Integer], DateTimeOps.DAY_OF_WEEK, this);
+    def $dayOfWeek() = number(classOf[Integer], DateTimeOps.DAY_OF_WEEK, this);
 
-    def _dayOfYear() = number(classOf[Integer], DateTimeOps.DAY_OF_YEAR, this);
+    def $dayOfYear() = number(classOf[Integer], DateTimeOps.DAY_OF_YEAR, this);
 
-    def _week() = number(classOf[Integer], DateTimeOps.WEEK, this);
+    def $week() = number(classOf[Integer], DateTimeOps.WEEK, this);
 
-    def _month() = number(classOf[Integer], DateTimeOps.MONTH, this);
+    def $month() = number(classOf[Integer], DateTimeOps.MONTH, this);
 
-    def _year() = number(classOf[Integer], DateTimeOps.YEAR, this);
+    def $year() = number(classOf[Integer], DateTimeOps.YEAR, this);
 
-    def _yearMonth() = number(classOf[Integer], DateTimeOps.YEAR_MONTH, this);    
+    def $yearMonth() = number(classOf[Integer], DateTimeOps.YEAR_MONTH, this);    
 
-    def _hour() = number(classOf[Integer], DateTimeOps.HOUR, this);
+    def $hour() = number(classOf[Integer], DateTimeOps.HOUR, this);
 
-    def _minute() = number(classOf[Integer], DateTimeOps.MINUTE, this);
+    def $minute() = number(classOf[Integer], DateTimeOps.MINUTE, this);
 
-    def _second() = number(classOf[Integer], DateTimeOps.SECOND, this);
+    def $second() = number(classOf[Integer], DateTimeOps.SECOND, this);
 
-    def _milliSecond() = number(classOf[Integer], DateTimeOps.DAY_OF_YEAR, this);
+    def $milliSecond() = number(classOf[Integer], DateTimeOps.DAY_OF_YEAR, this);
 
 }
 
 trait DateExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
-    def _min() = date(getType, AggOps.MIN_AGG, this);
+    def $min() = date(getType, AggOps.MIN_AGG, this);
 
-    def _max() = date(getType, AggOps.MAX_AGG, this);
+    def $max() = date(getType, AggOps.MAX_AGG, this);
 
-    //override def _as(right: Path[T]): DateExpression[T];
+    //override def $as(right: Path[T]): DateExpression[T];
 
-    //override def _as(right: String): DateExpression[T];
+    //override def $as(right: String): DateExpression[T];
 
-    def _dayOfMonth() = number(classOf[Integer], DateTimeOps.DAY_OF_MONTH, this);
+    def $dayOfMonth() = number(classOf[Integer], DateTimeOps.DAY_OF_MONTH, this);
 
-    def _dayOfWeek() = number(classOf[Integer], DateTimeOps.DAY_OF_WEEK, this);
+    def $dayOfWeek() = number(classOf[Integer], DateTimeOps.DAY_OF_WEEK, this);
 
-    def _dayOfYear() = number(classOf[Integer], DateTimeOps.DAY_OF_YEAR, this);
+    def $dayOfYear() = number(classOf[Integer], DateTimeOps.DAY_OF_YEAR, this);
 
-    def _week() = number(classOf[Integer], DateTimeOps.WEEK, this);
+    def $week() = number(classOf[Integer], DateTimeOps.WEEK, this);
 
-    def _month() = number(classOf[Integer], DateTimeOps.MONTH, this);
+    def $month() = number(classOf[Integer], DateTimeOps.MONTH, this);
 
-    def _year() = number(classOf[Integer], DateTimeOps.YEAR, this);
+    def $year() = number(classOf[Integer], DateTimeOps.YEAR, this);
 
-    def _yearMonth() = number(classOf[Integer], DateTimeOps.YEAR_MONTH, this);
+    def $yearMonth() = number(classOf[Integer], DateTimeOps.YEAR_MONTH, this);
 
 }
 
 trait EnumExpression[T <: Enum[T]] extends ComparableExpression[T] {
 
-    def _ordinal() = number(classOf[Integer], Ops.ORDINAL, this);
+    def $ordinal() = number(classOf[Integer], Ops.ORDINAL, this);
 
-    //override def _as(right: Path[T]): EnumExpression[T];
+    //override def $as(right: Path[T]): EnumExpression[T];
 
-    //override def _as(right: String): EnumExpression[T];
+    //override def $as(right: String): EnumExpression[T];
 
 }
 
