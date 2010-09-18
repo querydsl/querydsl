@@ -7,6 +7,7 @@ package com.mysema.query.scala;
 
 import com.mysema.query.scala.Constants._
 import com.mysema.query.scala.Operations._
+import com.mysema.query.scala.Conversions.aliasFactory
 
 import com.mysema.query.types._
 import com.mysema.query.types.PathMetadataFactory._ 
@@ -23,15 +24,6 @@ object Constants {
     
     def constant[T](value: T) = new ConstantImpl(value);
     
-}
-
-object Resolver {
-    
-    def resolve(value: java.lang.Integer) = ConstantImpl.create(value.intValue);
-    
-    def resolve(value: String) = ConstantImpl.create(value);
-    
-    def resolve[T](value: T) = new ConstantImpl(value);
 }
 
 trait SimpleExpression[T] extends Expression[T] {
