@@ -51,6 +51,8 @@ public class AliasFactory {
     }
     
     /**
+     * Create an alias instance for the given class and Expression
+     * 
      * @param <A>
      * @param cl
      * @param expr
@@ -62,6 +64,8 @@ public class AliasFactory {
     }
 
     /**
+     * Create an alias instance for the given class, parent and path
+     * 
      * @param <A>
      * @param cl
      * @param parent
@@ -73,6 +77,8 @@ public class AliasFactory {
     }
 
     /**
+     * Create an alias instance for the given class and variable name
+     * 
      * @param <A>
      * @param cl
      * @param var
@@ -85,6 +91,8 @@ public class AliasFactory {
     }
 
     /**
+     * Create a proxy instance for the given class and path
+     * 
      * @param <A>
      * @param cl
      * @param path
@@ -107,6 +115,8 @@ public class AliasFactory {
     }
 
     /**
+     * Get the current thread bound expression without reseting it
+     * 
      * @param <A>
      * @return
      */
@@ -117,6 +127,8 @@ public class AliasFactory {
     }
 
     /**
+     * Get the current thread bound expression and reset it
+     * 
      * @param <A>
      * @return
      */
@@ -128,17 +140,19 @@ public class AliasFactory {
     }
 
     /**
-     *
+     * Reset the thread bound expression to null
      */
     public void reset() {
         current.set(null);
     }
 
     /**
-     * @param path
+     * Set the thread bound expression to the given value
+     * 
+     * @param expr
      */
-    public void setCurrent(Expression<?> path) {
-        current.set(path);
+    public void setCurrent(Expression<?> expr) {
+        current.set(expr);
     }
 
 }
