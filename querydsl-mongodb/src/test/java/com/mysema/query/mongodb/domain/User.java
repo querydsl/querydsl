@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
+ *
+ */
 package com.mysema.query.mongodb.domain;
 
 import org.bson.types.ObjectId;

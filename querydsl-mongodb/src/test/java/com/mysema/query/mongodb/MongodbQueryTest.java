@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
+ *
+ */
 package com.mysema.query.mongodb;
 
 import static junit.framework.Assert.assertEquals;
