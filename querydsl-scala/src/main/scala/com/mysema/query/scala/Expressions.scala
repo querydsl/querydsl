@@ -25,6 +25,15 @@ object Constants {
     
 }
 
+object Resolver {
+    
+    def resolve(value: java.lang.Integer) = ConstantImpl.create(value.intValue);
+    
+    def resolve(value: String) = ConstantImpl.create(value);
+    
+    def resolve[T](value: T) = new ConstantImpl(value);
+}
+
 trait SimpleExpression[T] extends Expression[T] {
     
     def $eq(right: T): BooleanExpression = $eq(constant(right)); // XXX "is"

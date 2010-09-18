@@ -73,31 +73,14 @@ object Conversions {
     
     implicit def javaMapPath[K,V](l: java.util.Map[K,V]): MapPath[K,V] = aliasFactory.getCurrentAndReset();
     
-//    implicit def expression[T](arg: T): Expression[T] = {
-//        var rv : Expression[T] = aliasFactory.getCurrentAndReset();
-//        if (rv != null){
-//            rv;
-//        }else{
-//            arg match {
-//                case x:Expression[T] => x;
-//                case x:ManagedObject => x.__mappedPath.asInstanceOf[Expression[T]];
-//                case _               => null;
-//            }
-//        }
-//    }
-    
     //implicit def simplePath(s: Object): SimplePath[_] = aliasFactory.getCurrentAndReset();
     
     implicit def entityPath[T](arg: T): EntityPathImpl[T] = {
-        var rv : EntityPathImpl[T] = aliasFactory.getCurrentAndReset();
-        if (rv != null) {
-            rv;
-        }else {
-            arg match {
-                case x:EntityPathImpl[T] => x;
-                case x:ManagedObject     => x.__mappedPath.asInstanceOf[EntityPathImpl[T]];
-                case _                   => null;
-            }
+        val rv = Option(aliasFactory.getCurrentAndReset());
+        rv.getOrElse(arg) match {
+            case x:EntityPathImpl[T] => x;
+            case x:ManagedObject     => x.__mappedPath.asInstanceOf[EntityPathImpl[T]];
+            case _                   => null;
         }
     }    
     
