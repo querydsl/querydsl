@@ -80,7 +80,7 @@ class ScalaMetaDataSerializer(val namingStrategy: NamingStrategy) extends Serial
         writer.end();
     }
     
-    def serializeProperty(var property: Property){
+    def serializeProperty(property: Property){
         val methodName: String = property.getType.getCategory match {
             case COMPARABLE => "createComparable";
             case BOOLEAN => "createBoolean";
@@ -121,7 +121,7 @@ class ScalaMetaDataSerializer(val namingStrategy: NamingStrategy) extends Serial
     }
 
     @throws(classOf[IOException])
-    def serializeForeignKeys(model: EntityType, writer: CodeWriter, foreignKeys Collection[_ <: KeyData] , inverse: Boolean){
+    def serializeForeignKeys(model: EntityType, writer: CodeWriter, foreignKeys: Collection[_ <: KeyData] , inverse: Boolean){
         for (foreignKey <- foreignKeys){
             var fieldName: String = null;
             if (inverse){
@@ -133,7 +133,7 @@ class ScalaMetaDataSerializer(val namingStrategy: NamingStrategy) extends Serial
             if (!model.getPrefix.isEmpty){
                 foreignType = foreignType.substring(namePrefix.length);
             }
-            val value: = new StringBuilder();
+            val value = new StringBuilder();
             if (inverse){
                 value.append("createInvForeignKey(");
             }else{
@@ -145,13 +145,15 @@ class ScalaMetaDataSerializer(val namingStrategy: NamingStrategy) extends Serial
             }else{
                 val local = new StringBuilder();
                 val foreign = new StringBuilder();
-                for (int i = 0; i < foreignKey.getForeignColumns().size(); i++){
+                var i = 0;
+                while (i < foreignKey.getForeignColumns().size()){
                     if (i > 0){
                         local.append(", ");
                         foreign.append(", ");
                     }
                     local.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), namePrefix, model));
                     foreign.append("\"" +foreignKey.getParentColumns.get(0) + "\"");
+                    i++;
                 }
                 value.append("Arrays.asList("+local+"), Arrays.asList("+foreign+")");
             }
