@@ -1,9 +1,4 @@
-/*
- * Copyright (c) 2010 Mysema Ltd.
- * All rights reserved.
- *
- */
-package com.mysema.query.scala
+package com.mysema.query.scala.sql
 
 import com.mysema.query.codegen.{Serializer, EntityType, SerializerConfig}
 import com.mysema.codegen.CodeWriter
@@ -15,15 +10,9 @@ import java.io.IOException
 import scala.reflect.BeanProperty
 import scala.collection.JavaConversions._
 
-/**
- * @author tiwe
- *
- */
-class ScalaBeanSerializer extends Serializer {
+class ScalaMetaDataSerializer extends Serializer {
     
-    val javaBeanSupport = true;
-    
-    val javadocSuffix = " is a Querydsl bean type";
+    val javadocSuffix = " is a Querydsl query type";
     
     @throws(classOf[IOException])
     def serialize(model: EntityType, serializerConfig: SerializerConfig, writer: CodeWriter) {
@@ -56,13 +45,14 @@ class ScalaBeanSerializer extends Serializer {
         
         // properties
         for (property <- model.getProperties()){
-            property.getAnnotations.foreach( {writer.annotation(_);} )
-            if (javaBeanSupport){
-                //writer.annotation(classOf[BeanProperty]);
-                writer.line("@BeanProperty");
-            }            
             writer.publicField(property.getType(), property.getEscapedName);
         }
+        
+        // TODO : primary key
+        
+        // TODO : foreign keys
+        
+        // TODO : inverse foreign keys
                 
         writer.end();
     }
@@ -72,12 +62,7 @@ class ScalaBeanSerializer extends Serializer {
         for (annotation <- model.getAnnotations){
             imports.add(annotation.annotationType.getName);
         }
-        for (property <- model.getProperties){
-            for (annotation <- property.getAnnotations){
-                imports.add(annotation.annotationType.getName);
-            }
-        }
         imports;
-    }
+    }    
     
 }
