@@ -1,8 +1,3 @@
-/*
- * Copyright (c) 2010 Mysema Ltd.
- * All rights reserved.
- *
- */
 package com.mysema.query.scala.sql
 
 import com.mysema.query.codegen._

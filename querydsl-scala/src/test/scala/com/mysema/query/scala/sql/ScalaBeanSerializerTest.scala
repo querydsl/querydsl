@@ -1,4 +1,4 @@
-package com.mysema.query.scala
+package com.mysema.query.scala.sql
 
 import org.apache.commons.lang.StringUtils
 import com.mysema.codegen._;
@@ -51,7 +51,7 @@ class ScalaBeanSerializerTest {
     @Test
     @throws(classOf[java.io.IOException])
     def Print(){
-        var serializer = new ScalaBeanSerializer();
+        var serializer = new com.mysema.query.scala.sql.ScalaBeanSerializer();
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer));
         var str = writer.toString();
         System.err.println(str);
