@@ -12,7 +12,7 @@ import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
-import com.mysema.query.types.TemplateImpl;
+import com.mysema.query.types.TemplateExpressionImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
 
@@ -34,10 +34,10 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
         return new BooleanTemplate(template, Arrays.<Expression<?>>asList(args));
     }
 
-    private final TemplateExpression<Boolean> customMixin;
+    private final TemplateExpression<Boolean> templateMixin;
 
     public BooleanTemplate(Template template, List<Expression<?>> args){
-        customMixin = new TemplateImpl<Boolean>(Boolean.class, args, template);
+        templateMixin = new TemplateExpressionImpl<Boolean>(Boolean.class, args, template);
     }
 
     @Override
@@ -47,22 +47,22 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
 
     @Override
     public Expression<?> getArg(int index) {
-        return customMixin.getArg(index);
+        return templateMixin.getArg(index);
     }
 
     @Override
     public List<Expression<?>> getArgs() {
-        return customMixin.getArgs();
+        return templateMixin.getArgs();
     }
 
     @Override
     public Template getTemplate() {
-        return customMixin.getTemplate();
+        return templateMixin.getTemplate();
     }
 
     @Override
     public boolean equals(Object o){
-        return customMixin.equals(o);
+        return templateMixin.equals(o);
     }
 
     @Override

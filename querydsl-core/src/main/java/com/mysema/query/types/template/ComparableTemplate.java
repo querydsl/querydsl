@@ -12,7 +12,7 @@ import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
-import com.mysema.query.types.TemplateImpl;
+import com.mysema.query.types.TemplateExpressionImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.ComparableExpression;
 
@@ -35,11 +35,11 @@ public class ComparableTemplate<T extends Comparable<?>> extends ComparableExpre
         return new ComparableTemplate<T>(type, template, Arrays.<Expression<?>>asList(args));
     }
 
-    private final TemplateExpression<T> customMixin;
+    private final TemplateExpression<T> templateMixin;
 
     public ComparableTemplate(Class<T> type, Template template, List<Expression<?>> args) {
         super(type);
-        customMixin = new TemplateImpl<T>(type, args, template);
+        templateMixin = new TemplateExpressionImpl<T>(type, args, template);
     }
 
     @Override
@@ -49,22 +49,22 @@ public class ComparableTemplate<T extends Comparable<?>> extends ComparableExpre
 
     @Override
     public Expression<?> getArg(int index) {
-        return customMixin.getArg(index);
+        return templateMixin.getArg(index);
     }
 
     @Override
     public List<Expression<?>> getArgs() {
-        return customMixin.getArgs();
+        return templateMixin.getArgs();
     }
 
     @Override
     public Template getTemplate() {
-        return customMixin.getTemplate();
+        return templateMixin.getTemplate();
     }
 
     @Override
     public boolean equals(Object o){
-        return customMixin.equals(o);
+        return templateMixin.equals(o);
     }
 
     @Override

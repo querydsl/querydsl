@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 import com.mysema.util.ReflectionUtils;
 
 /**
- * PathImpl defines a mixin version of the Path interface which can be used
+ * PathImpl defines a default implementation of the Path interface which can be used
  * as a component and target in actual Path implementations
  *
  * @author tiwe

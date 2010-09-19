@@ -11,7 +11,7 @@ import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.template.StringTemplate;
+import com.mysema.query.types.TemplateExpressionImpl;
 
 /**
  * Defines a positioned flag in a query for customization of query serialization
@@ -59,7 +59,7 @@ public class QueryFlag implements Serializable{
     private final Expression<?> flag;
     
     public QueryFlag(Position position, String flag) {
-        this(position, StringTemplate.create(flag));
+        this(position, TemplateExpressionImpl.create(flag));
     }
     
     public QueryFlag(Position position, Expression<?> flag) {

@@ -5,17 +5,18 @@
  */
 package com.mysema.query.types;
 
+import java.util.Arrays;
 import java.util.List;
 
 
 /**
- * Mixin implementation of the TemplateExpression interface
+ * Default implementation of the TemplateExpression interface
  *
  * @author tiwe
  *
  * @param <T>
  */
-public class TemplateImpl<T> extends ExpressionBase<T> implements TemplateExpression<T> {
+public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements TemplateExpression<T> {
 
     private static final long serialVersionUID = 6951623726800809083L;
 
@@ -23,7 +24,15 @@ public class TemplateImpl<T> extends ExpressionBase<T> implements TemplateExpres
 
     private final Template template;
 
-    public TemplateImpl(Class<? extends T> type, List<Expression<?>> args, Template template){
+    public static Expression<String> create(String template, Expression<?>... args){
+        return create(TemplateFactory.DEFAULT.create(template), args);
+    }
+
+    public static Expression<String> create(Template template, Expression<?>... args){
+        return new TemplateExpressionImpl<String>(String.class, Arrays.<Expression<?>>asList(args), template);
+    }
+    
+    public TemplateExpressionImpl(Class<? extends T> type, List<Expression<?>> args, Template template){
         super(type);
         this.args = args;
         this.template = template;

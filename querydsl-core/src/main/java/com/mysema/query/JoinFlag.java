@@ -10,7 +10,7 @@ import java.io.Serializable;
 import net.jcip.annotations.Immutable;
 
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.template.StringTemplate;
+import com.mysema.query.types.TemplateExpressionImpl;
 
 /**
  * JoinFlag defines a join related flag using an Expr instance
@@ -26,7 +26,7 @@ public class JoinFlag implements Serializable{
     private final Expression<?> flag;
     
     public JoinFlag(String flag) {
-        this.flag = StringTemplate.create(flag);
+        this.flag = TemplateExpressionImpl.create(flag);
     }
     
     public JoinFlag(Expression<?> flag) {

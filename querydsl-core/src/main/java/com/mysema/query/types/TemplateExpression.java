@@ -8,7 +8,7 @@ package com.mysema.query.types;
 import java.util.List;
 
 /**
- * Custom provides base types for custom expressions with integrated
+ * TemplateExpression provides base types for custom expressions with integrated
  * serialization templates
  *
  * @author tiwe

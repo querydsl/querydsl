@@ -11,9 +11,9 @@ import org.junit.Test;
 
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.JavaTemplates;
+import com.mysema.query.types.TemplateExpressionImpl;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.template.StringTemplate;
 
 public class SerializerBaseTest {
 
@@ -30,7 +30,7 @@ public class SerializerBaseTest {
         // constant
         serializer.handle(ConstantImpl.create(""));
         //  custom
-        serializer.handle(StringTemplate.create("xxx", ConstantImpl.create("")));
+        serializer.handle(TemplateExpressionImpl.create("xxx", ConstantImpl.create("")));
     }
 
 }
