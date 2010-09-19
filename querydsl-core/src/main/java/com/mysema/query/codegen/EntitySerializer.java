@@ -35,10 +35,10 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.custom.SimpleTemplate;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.ConstructorExpression;
 import com.mysema.query.types.path.*;
+import com.mysema.query.types.template.SimpleTemplate;
 
 /**
  * EntitySerializer is a Serializer implementation for entity types

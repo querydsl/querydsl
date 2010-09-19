@@ -13,11 +13,11 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.custom.NumberTemplate;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.template.NumberTemplate;
 
 /**
  * RowNumber supports row_number constructs for MS SQL Server

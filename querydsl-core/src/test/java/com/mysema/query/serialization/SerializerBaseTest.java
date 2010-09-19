@@ -11,9 +11,9 @@ import org.junit.Test;
 
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.JavaTemplates;
-import com.mysema.query.types.custom.StringTemplate;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.template.StringTemplate;
 
 public class SerializerBaseTest {
 

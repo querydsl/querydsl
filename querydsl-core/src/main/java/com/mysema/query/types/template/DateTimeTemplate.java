@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types.custom;
+package com.mysema.query.types.template;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,30 +14,30 @@ import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.TemplateImpl;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.expr.DateTimeExpression;
 
 /**
- * StringTemplate defines custom String expressions
- *
  * @author tiwe
  *
+ * @param <T>
  */
-public class StringTemplate extends StringExpression implements TemplateExpression<String> {
+public class DateTimeTemplate<T extends Comparable<?>> extends DateTimeExpression<T> implements TemplateExpression<T> {
 
-    private static final long serialVersionUID = 3181686132439356614L;
+    private static final long serialVersionUID = -2289699666347576749L;
 
-    public static StringExpression create(String template, Expression<?>... args){
-        return new StringTemplate(TemplateFactory.DEFAULT.create(template), Arrays.<Expression<?>>asList(args));
+    public static <T extends Comparable<?>> DateTimeExpression<T> create(Class<T> type, String template, Expression<?>... args){
+        return new DateTimeTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expression<?>>asList(args));
     }
 
-    public static StringExpression create(Template template, Expression<?>... args){
-        return new StringTemplate(template, Arrays.<Expression<?>>asList(args));
+    public static <T extends Comparable<?>> DateTimeExpression<T> create(Class<T> type, Template template, Expression<?>... args){
+        return new DateTimeTemplate<T>(type, template, Arrays.<Expression<?>>asList(args));
     }
 
-    private final TemplateExpression<String> customMixin;
+    private final TemplateExpression<T> customMixin;
 
-    public StringTemplate(Template template, List<Expression<?>> args){
-        customMixin = new TemplateImpl<String>(String.class, args, template);
+    public DateTimeTemplate(Class<T> type, Template template, List<Expression<?>> args) {
+        super(type);
+        customMixin = new TemplateImpl<T>(type, args, template);
     }
 
     @Override

@@ -9,7 +9,7 @@
  * templates instead of operator patterns. Custom types are always implementation specific.
  */
 @DefaultAnnotation( { Nonnull.class })
-package com.mysema.query.types.custom;
+package com.mysema.query.types.template;
 
 import javax.annotation.Nonnull;
 

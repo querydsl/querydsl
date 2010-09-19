@@ -5,9 +5,9 @@
  */
 package com.mysema.query.sql;
 
-import com.mysema.query.types.custom.SimpleTemplate;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.SimpleExpression;
+import com.mysema.query.types.template.SimpleTemplate;
 
 /**
  * Wildcard provides shortcuts for the wildcard (*) and wildcard count (count(*)) expressions

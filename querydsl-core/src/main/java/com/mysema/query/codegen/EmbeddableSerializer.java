@@ -20,9 +20,9 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.SimpleTemplate;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.path.*;
+import com.mysema.query.types.template.SimpleTemplate;
 
 /**
  * EmbeddableSerializer is a Serializer implementation for embeddable types

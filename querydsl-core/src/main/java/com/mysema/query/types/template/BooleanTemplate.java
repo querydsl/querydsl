@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types.custom;
+package com.mysema.query.types.template;
 
 import java.util.Arrays;
 import java.util.List;

@@ -21,7 +21,7 @@ import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.types.*;
-import com.mysema.query.types.custom.SimpleTemplate;
+import com.mysema.query.types.template.SimpleTemplate;
 
 /**
  * SqlSerializer serializes Querydsl queries into SQL

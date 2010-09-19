@@ -11,7 +11,7 @@ import net.jcip.annotations.Immutable;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.custom.StringTemplate;
+import com.mysema.query.types.template.StringTemplate;
 
 /**
  * Defines a positioned flag in a query for customization of query serialization

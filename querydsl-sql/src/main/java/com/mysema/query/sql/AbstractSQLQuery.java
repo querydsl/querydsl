@@ -45,9 +45,9 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.QBean;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.custom.SimpleTemplate;
 import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.query.ListSubQuery;
+import com.mysema.query.types.template.SimpleTemplate;
 import com.mysema.util.ResultSetAdapter;
 
 /**

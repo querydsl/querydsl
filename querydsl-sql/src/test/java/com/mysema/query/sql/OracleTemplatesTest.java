@@ -10,9 +10,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.mysema.query.sql.AbstractSQLQuery.UnionBuilder;
-import com.mysema.query.types.custom.SimpleTemplate;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.template.SimpleTemplate;
 
 
 

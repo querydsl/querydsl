@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.TemplateFactory;
-import com.mysema.query.types.custom.StringTemplate;
+import com.mysema.query.types.template.StringTemplate;
 
 public class CustomExpressionsTest extends AbstractQueryTest{
 

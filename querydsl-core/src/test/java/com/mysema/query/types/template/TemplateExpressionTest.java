@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types.custom;
+package com.mysema.query.types.template;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -26,8 +26,16 @@ import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.ToStringVisitor;
 import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.template.BooleanTemplate;
+import com.mysema.query.types.template.ComparableTemplate;
+import com.mysema.query.types.template.DateTemplate;
+import com.mysema.query.types.template.DateTimeTemplate;
+import com.mysema.query.types.template.NumberTemplate;
+import com.mysema.query.types.template.SimpleTemplate;
+import com.mysema.query.types.template.StringTemplate;
+import com.mysema.query.types.template.TimeTemplate;
 
-public class CustomTest {
+public class TemplateExpressionTest {
 
     @Test
     public void constructors(){

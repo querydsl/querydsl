@@ -14,9 +14,9 @@ import net.jcip.annotations.Immutable;
 
 import com.mysema.codegen.CodeWriter;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.custom.SimpleTemplate;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.template.SimpleTemplate;
 
 /**
  * SupertypeSerializer is a Serializer implementation for supertypes

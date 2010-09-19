@@ -22,10 +22,10 @@ import com.mysema.query.Target;
 import com.mysema.query.sql.SQLServerTemplates;
 import com.mysema.query.sql.mssql.RowNumber;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.custom.SimpleTemplate;
 import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.ObjectSubQuery;
+import com.mysema.query.types.template.SimpleTemplate;
 import com.mysema.testutil.Label;
 import com.mysema.testutil.ResourceCheck;
 

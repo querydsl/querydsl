@@ -16,15 +16,6 @@ import com.mysema.codegen.model.TypeExtends;
 import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.custom.BooleanTemplate;
-import com.mysema.query.types.custom.ComparableTemplate;
-import com.mysema.query.types.custom.DateTemplate;
-import com.mysema.query.types.custom.DateTimeTemplate;
-import com.mysema.query.types.custom.EnumTemplate;
-import com.mysema.query.types.custom.NumberTemplate;
-import com.mysema.query.types.custom.SimpleTemplate;
-import com.mysema.query.types.custom.StringTemplate;
-import com.mysema.query.types.custom.TimeTemplate;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.DateExpression;
@@ -42,6 +33,15 @@ import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.TimePath;
+import com.mysema.query.types.template.BooleanTemplate;
+import com.mysema.query.types.template.ComparableTemplate;
+import com.mysema.query.types.template.DateTemplate;
+import com.mysema.query.types.template.DateTimeTemplate;
+import com.mysema.query.types.template.EnumTemplate;
+import com.mysema.query.types.template.NumberTemplate;
+import com.mysema.query.types.template.SimpleTemplate;
+import com.mysema.query.types.template.StringTemplate;
+import com.mysema.query.types.template.TimeTemplate;
 
 /**
  * TypeMappings defines mappings from Java types to {@link Expression}, {@link Path} and {@link TemplateExpression} types

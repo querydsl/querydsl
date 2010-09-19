@@ -28,11 +28,11 @@ import java.util.Stack;
 import org.junit.Test;
 
 import com.mysema.query.QueryFlag.Position;
-import com.mysema.query.types.custom.NumberTemplate;
 import com.mysema.query.types.expr.NumberOperation;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.util.ReflectionUtils;
 
 public class DefaultQueryMetadataTest {

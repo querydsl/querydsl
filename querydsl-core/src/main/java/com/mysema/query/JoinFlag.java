@@ -10,7 +10,7 @@ import java.io.Serializable;
 import net.jcip.annotations.Immutable;
 
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.custom.StringTemplate;
+import com.mysema.query.types.template.StringTemplate;
 
 /**
  * JoinFlag defines a join related flag using an Expr instance

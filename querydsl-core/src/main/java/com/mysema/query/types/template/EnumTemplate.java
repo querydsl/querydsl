@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types.custom;
+package com.mysema.query.types.template;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,30 +14,30 @@ import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.TemplateImpl;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.EnumExpression;
 
 /**
- * NumberTemplate defines custom numeric expressions
+ * EnumTemplate defines custom enum expressions
  *
  * @author tiwe
  *
  * @param <T>
  */
-public class NumberTemplate<T extends Number & Comparable<?>> extends NumberExpression<T> implements TemplateExpression<T> {
+public class EnumTemplate<T extends Enum<T>> extends EnumExpression<T> implements TemplateExpression<T> {
 
     private static final long serialVersionUID = 351057421752203377L;
 
-    public static <T extends Number & Comparable<?>> NumberExpression<T> create(Class<T> type, String template, Expression<?>... args){
-        return new NumberTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expression<?>>asList(args));
+    public static <T extends Enum<T>> EnumExpression<T> create(Class<T> type, String template, Expression<?>... args){
+        return new EnumTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expression<?>>asList(args));
     }
 
-    public static <T extends Number & Comparable<?>> NumberExpression<T> create(Class<T> type, Template template, Expression<?>... args){
-        return new NumberTemplate<T>(type, template, Arrays.<Expression<?>>asList(args));
+    public static <T extends Enum<T>> EnumExpression<T> create(Class<T> type, Template template, Expression<?>... args){
+        return new EnumTemplate<T>(type, template, Arrays.<Expression<?>>asList(args));
     }
 
     private final TemplateExpression<T> customMixin;
 
-    public NumberTemplate(Class<T> type, Template template, List<Expression<?>> args) {
+    public EnumTemplate(Class<T> type, Template template, List<Expression<?>> args) {
         super(type);
         customMixin = new TemplateImpl<T>(type, args, template);
     }

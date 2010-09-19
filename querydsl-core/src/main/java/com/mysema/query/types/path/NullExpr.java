@@ -9,7 +9,7 @@ import java.util.Collections;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.TemplateFactory;
-import com.mysema.query.types.custom.SimpleTemplate;
+import com.mysema.query.types.template.SimpleTemplate;
 
 /**
  * NullExpr defines a general null expression

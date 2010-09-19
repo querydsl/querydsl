@@ -13,8 +13,8 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.custom.NumberTemplate;
 import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.template.NumberTemplate;
 
 /**
  * SumOver is a fluent type for Oracle specific sum over / partition by / order
