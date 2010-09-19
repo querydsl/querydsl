@@ -25,7 +25,7 @@ class ScalaMetaDataSerializerTest {
         entityType = new EntityType("Q", typeModel);
 
         // properties
-        List(classOf[Boolean], classOf[Comparable[_]], classOf[Integer], classOf[java.util.Date], classOf[java.sql.Date], classOf[java.sql.Time])
+        List(classOf[java.lang.Boolean], classOf[Comparable[_]], classOf[Integer], classOf[java.util.Date], classOf[java.sql.Date], classOf[java.sql.Time])
         .foreach(cl => {
             var classType = new ClassType(TypeCategory.get(cl.getName), cl);
             entityType.addProperty(new Property(entityType, StringUtils.uncapitalize(cl.getSimpleName), classType, new Array[String](0)));

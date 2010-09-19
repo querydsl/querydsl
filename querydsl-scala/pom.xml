@@ -30,6 +30,14 @@
 		<scope>provided</scope>
 	</dependency>
     
+    <!-- provided -->
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-sql</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    
     <!-- test -->
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
@@ -38,12 +46,7 @@
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>
-    <dependency>
-      <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-sql</artifactId>
-      <version>${project.parent.version}</version>
-      <scope>test</scope>
-    </dependency>
+    
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-jpa</artifactId>

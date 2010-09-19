@@ -1,7 +1,8 @@
 package com.mysema.query.scala.sql
 
-import com.mysema.query.codegen.{Serializer, EntityType, SerializerConfig}
+import com.mysema.query.codegen._
 import com.mysema.codegen.CodeWriter
+import com.mysema.codegen.model.TypeCategory._
 import com.mysema.query
 
 import java.util._
@@ -11,6 +12,8 @@ import scala.reflect.BeanProperty
 import scala.collection.JavaConversions._
 
 class ScalaMetaDataSerializer extends Serializer {
+    
+    val typeMappings = new TypeMappings();
     
     val javadocSuffix = " is a Querydsl query type";
     
@@ -24,6 +27,9 @@ class ScalaMetaDataSerializer extends Serializer {
         }
         
         // imports
+        writer.importPackages("com.mysema.query.sql");
+        writer.importPackages("com.mysema.query.types.path");
+        
         var importedClasses: Set[String] = getAnnotationTypes(model);
         if (model.hasLists()){
             importedClasses.add(classOf[List[_]].getName);
@@ -41,14 +47,34 @@ class ScalaMetaDataSerializer extends Serializer {
         for (annotation <- model.getAnnotations){
             writer.annotation(annotation);
         }               
-        writer.beginClass(model);
+
+        val queryType = typeMappings.getPathType(model, model, true);
+        writer.beginClass(queryType);
         
         // properties
         for (property <- model.getProperties()){
-            writer.publicField(property.getType(), property.getEscapedName);
+            val methodName: String = property.getType.getCategory match {
+                case COMPARABLE => "createComparable";
+                case BOOLEAN => "createBoolean";
+                case DATE => "createDate";
+                case DATETIME => "createDateTime";
+                case ENUM => "createEnum";
+                case NUMERIC => "createNumber";
+                case STRING => "createString";
+                case SIMPLE => "createSimple";
+                case TIME => "createTime";
+            }
+            var ptype = typeMappings.getPathType(property.getType, model, false);
+            var value: String = null;
+            if (property.getType.getCategory == BOOLEAN || property.getType.getCategory == STRING){
+                value = methodName + "(\"" + property.getName + "\")";  
+            }else{
+                value = methodName + "(\"" + property.getName + "\", classOf[" + writer.getRawName(property.getType) + "])";                
+            }
+            writer.publicFinal(ptype, property.getEscapedName, value);
         }
         
-        // TODO : primary key
+        // TODO : primary keys
         
         // TODO : foreign keys
         

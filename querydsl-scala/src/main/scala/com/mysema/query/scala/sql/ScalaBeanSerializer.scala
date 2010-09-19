@@ -3,9 +3,9 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.scala
+package com.mysema.query.scala.sql
 
-import com.mysema.query.codegen.{Serializer, EntityType, SerializerConfig}
+import com.mysema.query.codegen._
 import com.mysema.codegen.CodeWriter
 import com.mysema.query
 

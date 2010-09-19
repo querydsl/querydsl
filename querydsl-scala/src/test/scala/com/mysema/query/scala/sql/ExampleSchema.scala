@@ -1,8 +1,12 @@
-package com.mysema.query.scala
+package com.mysema.query.scala.sql
 
 import com.mysema.query.sql._
 import com.mysema.query.types.path._
 import java.util.{Arrays, Collections}
+
+object QUser {
+    def as(path: String) = new QUser(path);
+}
 
 @Table("USER")
 class QUser(path: String) extends RelationalPathBase[QUser](classOf[QUser], path){
@@ -14,12 +18,20 @@ class QUser(path: String) extends RelationalPathBase[QUser](classOf[QUser], path
     val superiorIdKey: ForeignKey[QUser] = createForeignKey(superiorId,"ID");
 }
 
+object QDepartment {
+    def as(path: String) = new QDepartment(path);
+}
+
 @Table("DEPARTMENT")
 class QDepartment(path: String) extends RelationalPathBase[QDepartment](classOf[QDepartment], path){
     val id = createNumber("ID", classOf[Integer]);
     val company = createNumber("COMPANY", classOf[Integer]);
     val idKey = createPrimaryKey(id);
     val companyKey: ForeignKey[QCompany] = createForeignKey(company, "ID");
+}
+
+object QCompany {
+    def as(path: String) = new QCompany(path);
 }
 
 @Table("COMPANY")
@@ -34,6 +46,10 @@ class QCompany(path: String) extends RelationalPathBase[QCompany](classOf[QCompa
 //  val books = oneToMany(Book.category)    // allows navigating between associations transparently
 //}
 
+object QCategory {
+    def as(path: String) = new QCategory(path);
+}
+
 @Table("CATEGORY")
 class QCategory(path: String) extends RelationalPathBase[QCategory](classOf[QCategory], path){
     val id = createNumber("ID", classOf[Integer]);
@@ -47,6 +63,10 @@ class QCategory(path: String) extends RelationalPathBase[QCategory](classOf[QCat
 //  val title = field(Book.title)
 //  val category = manyToOne(Book.category)
 //}
+
+object QBook {
+    def as(path: String) = new QBook(path);
+}
 
 @Table("BOOK")
 class QBook(path: String) extends RelationalPathBase[QBook](classOf[QBook], path){

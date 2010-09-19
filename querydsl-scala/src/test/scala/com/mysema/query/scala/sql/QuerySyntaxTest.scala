@@ -1,10 +1,17 @@
-package com.mysema.query.scala
+package com.mysema.query.scala.sql
 
 import com.mysema.query.sql._
 import org.junit.Test
 import org.junit.Assert._
 
 class QuerySyntaxTest {
+    
+    @Test
+    def Path_Creation(){
+        var c1 = new QCategory("c");
+        var c2 = QCategory as "c";
+        assertEquals(c1, c2);
+    }
     
     @Test
     def Query_Syntax(){
