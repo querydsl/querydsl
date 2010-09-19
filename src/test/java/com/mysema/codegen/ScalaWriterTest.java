@@ -30,7 +30,7 @@ public class ScalaWriterTest {
     
     private Writer w = new StringWriter();
     
-    private ScalaWriter writer = new ScalaWriter(w);
+    private ScalaWriter writer = new ScalaWriter(w, true);
     
     private Type testType, testType2, testSuperType, testInterface1, testInterface2;
     
@@ -44,7 +44,25 @@ public class ScalaWriterTest {
     }
     
     @Test
-    public void beanAccessors() throws IOException{
+    public void CustomHeader() throws IOException{
+//        class QDepartment(path: String) extends RelationalPathBase[QDepartment](classOf[QDepartment], path){
+//            val id = createNumber("ID", classOf[Integer]);
+//            val company = createNumber("COMPANY", classOf[Integer]);
+//            val idKey = createPrimaryKey(id);
+//            val companyKey: ForeignKey[QCompany] = createForeignKey(company, "ID");
+//        }
+        writer.beginClass("QDepartment(path: String) extends RelationalPathBase[QDepartment](classOf[QDepartment], path)");
+        writer.publicFinal(Types.OBJECT, "id", "createNumber(\"ID\", classOf[Integer])");
+        writer.publicFinal(Types.OBJECT, "company", "createNumber(\"COMPANY\", classOf[Integer])");
+        writer.publicFinal(Types.OBJECT, "idKey", "createPrimaryKey(id)");
+        writer.publicFinal(Types.OBJECT, "companyKey", "createForeignKey(company,\"ID\")");
+        writer.end();
+        
+        System.out.println(w);
+    }
+    
+    @Test
+    public void BeanAccessors() throws IOException{
         writer.beginClass(new SimpleType("Person"));        
         writer.beginPublicMethod(Types.STRING, "getName");
         writer.line("\"Daniel Spiewak\"");
@@ -58,7 +76,7 @@ public class ScalaWriterTest {
     }
     
     @Test
-    public void arrays() throws IOException{
+    public void Arrays() throws IOException{
 //        def main(args: Array[String]) {
         writer.beginClass(new SimpleType("Main"));
         writer.field(Types.STRING.asArrayType(), "stringArray");
@@ -73,7 +91,7 @@ public class ScalaWriterTest {
     }
     
     @Test
-    public void trait() throws IOException{
+    public void Trait() throws IOException{
         // trait MyTrait
         writer.beginInterface(new SimpleType("MyTrait"));
         writer.line("//");
@@ -84,7 +102,7 @@ public class ScalaWriterTest {
     }
     
     @Test
-    public void fields() throws IOException{
+    public void Field() throws IOException{
 //        private val people: List[Person]
         writer.imports(List.class);
         writer.beginClass(new SimpleType("Main"));

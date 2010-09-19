@@ -63,11 +63,18 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     
     private Type type;
     
+    private final boolean compact;
+    
     public ScalaWriter(Appendable appendable){
-        super(appendable);
-        this.packages.add("java.lang");
+        this(appendable, false);
     }
 
+    public ScalaWriter(Appendable appendable, boolean compact){
+        super(appendable);
+        this.packages.add("java.lang");
+        this.compact = compact;
+    }
+    
     @Override
     public ScalaWriter annotation(Annotation annotation) throws IOException {
         beginLine().append("@").appendType(annotation.annotationType());
@@ -144,6 +151,12 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
         }
         return this;
     }
+    
+    public ScalaWriter beginClass(String header) throws IOException{
+        line(PUBLIC_CLASS, header);
+        goIn();
+        return this;
+    }
 
     @Override
     public ScalaWriter beginClass(Type type) throws IOException {
@@ -153,7 +166,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     @Override
     public ScalaWriter beginClass(Type type, Type superClass, Type... interfaces) throws IOException {
         packages.add(type.getPackageName());
-        beginLine(PUBLIC_CLASS + type.getSimpleName());
+        beginLine(PUBLIC_CLASS, type.getSimpleName());
         if (superClass != null){
             append(EXTENDS + getGenericName(false, superClass));
         }
@@ -241,15 +254,18 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     }
     
     public ScalaWriter field(Type type, String name) throws IOException {
-        return line(VAR + name + ": " + getGenericName(true, type) + SEMICOLON).nl();
+        line(VAR + name + ": " + getGenericName(true, type) + SEMICOLON);
+        return compact ? this : nl();
     }
 
     private ScalaWriter field(String modifier, Type type, String name) throws IOException{
-        return line(modifier + name + ": " + getGenericName(true, type) + SEMICOLON).nl();
+        line(modifier + name + ": " + getGenericName(true, type) + SEMICOLON);
+        return compact ? this : nl();
     }
     
     private ScalaWriter field(String modifier, Type type, String name, String value) throws IOException{
-        return line(modifier + name + ": " + getGenericName(true, type) + ASSIGN + value + SEMICOLON).nl();
+        line(modifier + name + ": " + getGenericName(true, type) + ASSIGN + value + SEMICOLON);
+        return compact ? this : nl();
     }
     
     @Override
