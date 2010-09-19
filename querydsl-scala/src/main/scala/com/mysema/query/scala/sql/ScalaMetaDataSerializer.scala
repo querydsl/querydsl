@@ -80,6 +80,7 @@ class ScalaMetaDataSerializer(val namingStrategy: NamingStrategy) extends Serial
         writer.end();
     }
     
+    // TODO : rename to serializeProperties
     def serializeProperty(property: Property){
         val methodName: String = property.getType.getCategory match {
             case COMPARABLE => "createComparable";
