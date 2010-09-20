@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.Messager;
 import javax.annotation.processing.ProcessingEnvironment;
@@ -455,28 +456,24 @@ public class Processor {
         }
     }
 
+    @Nullable
     private FileObject getSourceFile(String fullName) throws IOException {
         Elements elementUtils = env.getElementUtils();
-
-        TypeElement sourceElement = elementUtils.getTypeElement(fullName);
-        
+        TypeElement sourceElement = elementUtils.getTypeElement(fullName);        
         if (sourceElement == null) {
             return null;
         } else {
             if (sourceElement.getNestingKind().isNested()) {
                 sourceElement = (TypeElement) sourceElement.getEnclosingElement();
-            }
-            
-            PackageElement packageElement = elementUtils.getPackageOf(sourceElement);
-    
+            }            
+            PackageElement packageElement = elementUtils.getPackageOf(sourceElement);    
             try {
                 return env.getFiler().getResource(StandardLocation.SOURCE_PATH, 
                         packageElement.getQualifiedName(), 
                         sourceElement.getSimpleName() + ".java");    
             } catch(Exception e) {
                 return null;
-            }
-            
+            }            
         }
     }
 
