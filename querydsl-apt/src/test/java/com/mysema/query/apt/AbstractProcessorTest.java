@@ -34,7 +34,10 @@ public abstract class AbstractProcessorTest {
         if (!out.mkdirs()){
             Assert.fail("Creation of " + out.getPath() + " failed");
         }
-
+        compile(processorClass, classes, target);
+    } 
+    
+    protected void compile(Class<? extends AbstractProcessor> processorClass, List<String> classes, String target) throws IOException{
         JavaCompiler compiler = new SimpleCompiler();
         System.out.println(compiler.getClass().getName());
         List<String> options = new ArrayList<String>(classes.size() + 3);
