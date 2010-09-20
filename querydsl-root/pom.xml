@@ -159,7 +159,7 @@
       <plugin>       
         <artifactId>maven-assembly-plugin</artifactId>
         <version>2.2-beta-5</version>
-        <configuration>
+		<configuration>
           <descriptors>
             <descriptor>../querydsl-root/src/main/assembly.xml</descriptor>
           </descriptors>

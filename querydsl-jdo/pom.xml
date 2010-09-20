@@ -153,6 +153,26 @@
           </execution>
         </executions>
       </plugin> 
+	  
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+		<executions>
+		  <execution>
+		  	<id>apt-one-jar</id>
+			<goals>
+			  <goal>single</goal>	
+			</goals>
+			<phase>package</phase>
+		  	<configuration>
+              <descriptors>
+                <descriptor>src/main/assembly.xml</descriptor>
+              </descriptors>
+			  <outputDirectory>${project.build.directory}</outputDirectory>
+            </configuration>
+		  </execution>	
+		</executions>         
+      </plugin>	  	  
+	  
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>maven-apt-plugin</artifactId>
@@ -168,6 +188,7 @@
           </execution>
         </executions>    
       </plugin>   
+	  
       <plugin>
         <groupId>com.mysema.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>

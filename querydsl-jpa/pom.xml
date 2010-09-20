@@ -165,11 +165,21 @@
 	  
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-        </configuration>
+		<executions>
+		  <execution>
+		  	<id>apt-one-jar</id>
+			<goals>
+			  <goal>single</goal>	
+			</goals>
+			<phase>package</phase>
+		  	<configuration>
+              <descriptors>
+                <descriptor>src/main/assembly.xml</descriptor>
+              </descriptors>
+			  <outputDirectory>${project.build.directory}</outputDirectory>
+            </configuration>
+		  </execution>	
+		</executions>        
       </plugin>	  
 	     
       <plugin>
