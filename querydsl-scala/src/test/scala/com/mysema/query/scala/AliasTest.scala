@@ -11,20 +11,25 @@ import org.junit.Assert._
 class AliasTest {
 
     var domainType = alias(classOf[DomainType])
+    
+    @Test
+    def Path_eq_Path(){
+        assertEquals("domainType.firstName = domainType.lastName", (domainType.firstName $eq domainType.lastName).toString);
+    }
 
     @Test
     def String_Usage(){
         // eq, ne
-        assertEquals("domainType.firstName = Hello", (domainType.firstName $eq "Hello").toString());
-        assertEquals("domainType.firstName != Hello", (domainType.firstName $ne "Hello").toString());
-        assertEquals("domainType.firstName != Hello", (domainType.firstName $ne "Hello").toString());
+        assertEquals("domainType.firstName = Hello", (domainType.firstName $eq "Hello").toString);
+        assertEquals("domainType.firstName != Hello", (domainType.firstName $ne "Hello").toString);
+        assertEquals("domainType.firstName != Hello", (domainType.firstName $ne "Hello").toString);
         
-        assertEquals("domainType.firstName like Hello", (domainType.firstName $like "Hello").toString());
+        assertEquals("domainType.firstName like Hello", (domainType.firstName $like "Hello").toString);
         assertEquals("domainType.firstName ASC", (domainType.firstName asc).toString());
         
         // append
-        assertEquals("domainType.firstName + x", (domainType.firstName $append "x").toString());
-        assertEquals("domainType.firstName + x", (domainType.firstName $append "x").toString());
+        assertEquals("domainType.firstName + x", (domainType.firstName $append "x").toString);
+        assertEquals("domainType.firstName + x", (domainType.firstName $append "x").toString);
         
         // and
         var andClause = (domainType.firstName $like "An%") $and (domainType.firstName $like "Be%");

@@ -122,12 +122,14 @@ class PathFactoryImpl extends PathFactory {
 
 class TypeSystemImpl extends TypeSystem {
     
-    def isCollectionType(cl: Class[_]) = classOf[java.util.Collection[_]].isAssignableFrom(cl) || classOf[scala.Collection[_]].isAssignableFrom(cl);
+    val system = new DefaultTypeSystem();
     
-    def isSetType(cl: Class[_]) = classOf[java.util.Set[_]].isAssignableFrom(cl) || classOf[scala.collection.Set[_]].isAssignableFrom(cl);
+    def isCollectionType(cl: Class[_]) = system.isCollectionType(cl) || classOf[scala.Collection[_]].isAssignableFrom(cl);
     
-    def isListType(cl: Class[_]) = classOf[java.util.List[_]].isAssignableFrom(cl) || classOf[scala.List[_]].isAssignableFrom(cl);
+    def isSetType(cl: Class[_]) = system.isSetType(cl) || classOf[scala.collection.Set[_]].isAssignableFrom(cl);
     
-    def isMapType(cl: Class[_]) = classOf[java.util.Map[_,_]].isAssignableFrom(cl) || classOf[scala.collection.Map[_,_]].isAssignableFrom(cl);
+    def isListType(cl: Class[_]) = system.isListType(cl) || classOf[scala.List[_]].isAssignableFrom(cl);
+    
+    def isMapType(cl: Class[_]) = system.isMapType(cl) || classOf[scala.collection.Map[_,_]].isAssignableFrom(cl);
     
 }

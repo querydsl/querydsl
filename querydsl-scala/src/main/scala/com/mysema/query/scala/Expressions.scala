@@ -6,8 +6,11 @@
 package com.mysema.query.scala;
 
 import com.mysema.query.scala.Constants._
+import com.mysema.query.scala.Resolver._
 import com.mysema.query.scala.Operations._
-import com.mysema.query.scala.Conversions.aliasFactory
+import com.mysema.query.scala.Conversions._
+
+import com.mysema.query.alias.ManagedObject;
 
 import com.mysema.query.types._
 import com.mysema.query.types.PathMetadataFactory._ 
@@ -26,19 +29,32 @@ object Constants {
     
 }
 
+object Resolver {
+    
+    def resolve[T](arg: T) = {
+        val path = Option(aliasFactory.getCurrentAndReset());
+        path.getOrElse(arg) match {
+            case x:Path[T]           => x;
+            case x:ManagedObject     => x.__mappedPath.asInstanceOf[Path[T]];
+            case _                   => constant(arg);
+        }
+    }
+    
+}
+
 trait SimpleExpression[T] extends Expression[T] {
     
-    def $eq(right: T): BooleanExpression = $eq(constant(right)); // XXX "is"
+    def $eq(right: T): BooleanExpression = $eq(resolve(right)); // XXX "is"
 
     def $eq(right: Expression[T]) = boolean(EQ_OBJECT, this, right); // XXX "is"
     
-    def $ne(right: T): BooleanExpression = $ne(constant(right)); // XXX "<>" / "isnt" / "isNot"
+    def $ne(right: T): BooleanExpression = $ne(resolve(right)); // XXX "<>" / "isnt" / "isNot"
     
     def $ne(right: Expression[T]) = boolean(NE_OBJECT, this, right); // XXX "isNot"    
         
     def $count() = number[java.lang.Long](classOf[java.lang.Long], AggOps.COUNT_AGG, this);
 
-    def $in(right: Collection[T]) = boolean(IN, this, constant(right));
+    def $in(right: Collection[T]) = boolean(IN, this, resolve(right));
 
     def $in(right: T*) : BooleanOperation = $in(asList(right:_*));
 
@@ -79,7 +95,7 @@ trait CollectionExpressionBase[T <: Collection[C],C] extends SimpleExpression[T]
     
     def $isNotEmpty() = $isEmpty().not;
     
-    def $contains(child: C) = boolean(IN, constant(child), this);
+    def $contains(child: C) = boolean(IN, resolve(child), this);
     
     def $contains(child: Expression[C]) = boolean(IN, child, this);
 }
@@ -100,11 +116,11 @@ trait MapExpression[K,V] extends SimpleExpression[java.util.Map[K,V]] with Param
     
     def $isNotEmpty() = $isEmpty().not;
     
-    def $containsKey(k: K) = boolean(CONTAINS_KEY, this, constant(k));
+    def $containsKey(k: K) = boolean(CONTAINS_KEY, this, resolve(k));
     
     def $containsKey(k: Expression[K]) = boolean(CONTAINS_KEY, this, k);
     
-    def $containsValue(v: V) = boolean(CONTAINS_KEY, this, constant(v));
+    def $containsValue(v: V) = boolean(CONTAINS_KEY, this, resolve(v));
     
     def $containsValue(v: Expression[V]) = boolean(CONTAINS_KEY, this, v);
     
@@ -313,7 +329,7 @@ trait StringExpression extends ComparableExpression[String] {
 
     def $equalsIgnoreCase(right: Expression[String]) = boolean(Ops.EQ_IGNORE_CASE, this, right); // XXX "isIgnoreCase" / "eqIgnoreCase"
 
-    def $equalsIgnoreCase(right: String): BooleanExpression = $equalsIgnoreCase(constant(right)); // XXX "isIgnoreCase" / "eqIgnoreCase"
+    def $equalsIgnoreCase(right: String): BooleanExpression = $equalsIgnoreCase(resolve(right)); // XXX "isIgnoreCase" / "eqIgnoreCase"
 
     def $isEmpty() = boolean(Ops.STRING_IS_EMPTY, this); // XXX "empty"
 
