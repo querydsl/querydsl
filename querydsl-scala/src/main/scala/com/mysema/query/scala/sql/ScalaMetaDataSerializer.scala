@@ -57,6 +57,7 @@ class ScalaMetaDataSerializer(val namingStrategy: NamingStrategy) extends Serial
         //QUser(path: String) extends RelationalPathBase[QUser](classOf[QUser], path)
         var modelName = writer.getRawName(model);
         var queryTypeName = writer.getRawName(queryType);
+        // TODO : refactor to String.format
         var classHeader = queryTypeName + "(path: String) extends RelationalPathBase[" + modelName + "](classOf[" + modelName + "], path)";
         writer.asInstanceOf[ScalaWriter].beginClass(classHeader);
         
