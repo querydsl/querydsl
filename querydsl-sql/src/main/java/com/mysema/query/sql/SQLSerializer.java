@@ -373,7 +373,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 handle((Expression<?>)update.getSecond());
             }else{
                 constantPaths.add(update.getFirst());
-                handle(new ConstantImpl(update.getSecond()));
+                handle(new ConstantImpl<Object>(update.getSecond()));
             }
             first = false;
         }
