@@ -7,7 +7,7 @@ package com.mysema.query.sql.support;
 
 import java.lang.annotation.Annotation;
 
-import javax.validation.ConstraintPayload;
+import javax.validation.Payload;
 import javax.validation.constraints.*;
 
 /**
@@ -34,11 +34,6 @@ public class MaxImpl implements Max{
     }
 
     @Override
-    public Class<? extends ConstraintPayload>[] payload() {
-        return new Class[0];
-    }
-
-    @Override
     public long value() {
         return value;
     }
@@ -46,6 +41,11 @@ public class MaxImpl implements Max{
     @Override
     public Class<? extends Annotation> annotationType() {
         return Max.class;
+    }
+
+    @Override
+    public Class<? extends Payload>[] payload() {
+        return new Class[0];
     }
 
 }

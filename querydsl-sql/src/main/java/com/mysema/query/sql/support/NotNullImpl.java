@@ -7,7 +7,7 @@ package com.mysema.query.sql.support;
 
 import java.lang.annotation.Annotation;
 
-import javax.validation.ConstraintPayload;
+import javax.validation.Payload;
 import javax.validation.constraints.*;
 
 /**
@@ -28,13 +28,13 @@ public class NotNullImpl implements NotNull{
     }
 
     @Override
-    public Class<? extends ConstraintPayload>[] payload() {
-        return new Class[0];
+    public Class<? extends Annotation> annotationType() {
+        return NotNull.class;
     }
 
     @Override
-    public Class<? extends Annotation> annotationType() {
-        return NotNull.class;
+    public Class<? extends Payload>[] payload() {
+        return new Class[0];
     }
 
 }

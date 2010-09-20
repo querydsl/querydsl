@@ -7,7 +7,7 @@ package com.mysema.query.sql.support;
 
 import java.lang.annotation.Annotation;
 
-import javax.validation.ConstraintPayload;
+import javax.validation.Payload;
 import javax.validation.constraints.Size;
 
 /**
@@ -35,7 +35,7 @@ public class SizeImpl implements Size {
     }
 
     @Override
-    public Class<? extends ConstraintPayload>[] payload() {
+    public Class<? extends Payload>[] payload() {
         return new Class[0];
     }
 
