@@ -32,81 +32,91 @@ import com.mysema.query.types.Predicate;
  * MongoDb query
  * 
  * @author laimw
- *
+ * 
  * @param <K>
  */
-public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProjectable<K> {
-        
-        private final QueryMixin<MongodbQuery<K>> queryMixin;
-        private final EntityPath<K> ePath;
-        private final Morphia morphia;
-        private final Datastore ds;
-        private final DBCollection coll;
-        private final MongodbSerializer serializer = new MongodbSerializer();
-        private final DefaultEntityCache cache = new DefaultEntityCache();
+public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
+        SimpleProjectable<K> {
 
+    private final QueryMixin<MongodbQuery<K>> queryMixin;
+    
+    private final EntityPath<K> ePath;
+    
+    private final Morphia morphia;
+    
+    private final Datastore ds;
+    
+    private final DBCollection coll;
+    
+    private final MongodbSerializer serializer = new MongodbSerializer();
+    
+    private final DefaultEntityCache cache = new DefaultEntityCache();
+    
     public MongodbQuery(Morphia morphiaParam, Datastore datastore,
             EntityPath<K> entityPath) {
-            queryMixin = new QueryMixin<MongodbQuery<K>>(this);
-            ePath = entityPath;
-            ds = datastore;
-            morphia = morphiaParam;
-            coll = ds.getCollection(ePath.getType());
-        }
-        
-        @Override
-        public MongodbQuery<K> where(Predicate... e) {
-           return queryMixin.where(e);
-        }
+        queryMixin = new QueryMixin<MongodbQuery<K>>(this);
+        ePath = entityPath;
+        ds = datastore;
+        morphia = morphiaParam;
+        coll = ds.getCollection(ePath.getType());
+    }
 
-        @Override
-        public MongodbQuery<K> limit(long limit) {
+    @Override
+    public MongodbQuery<K> where(Predicate... e) {
+        return queryMixin.where(e);
+    }
+
+    @Override
+    public MongodbQuery<K> limit(long limit) {
         return queryMixin.limit(limit);
-        }
+    }
 
-        @Override
-        public MongodbQuery<K> offset(long offset) {
+    @Override
+    public MongodbQuery<K> offset(long offset) {
         return queryMixin.offset(offset);
-        }
+    }
 
-        @Override
-        public MongodbQuery<K> restrict(QueryModifiers modifiers) {
+    @Override
+    public MongodbQuery<K> restrict(QueryModifiers modifiers) {
         return queryMixin.restrict(modifiers);
-        }
+    }
 
-        @Override
-        public MongodbQuery<K> orderBy(OrderSpecifier<?>... o) {
-            return queryMixin.orderBy(o);
-        }
+    @Override
+    public MongodbQuery<K> orderBy(OrderSpecifier<?>... o) {
+        return queryMixin.orderBy(o);
+    }
 
-        @Override
-        public <T> MongodbQuery<K> set(ParamExpression<T> param, T value) {
+    @Override
+    public <T> MongodbQuery<K> set(ParamExpression<T> param, T value) {
         return queryMixin.set(param, value);
-        }
+    }
 
-        public CloseableIterator<K> iterate(){
+    public CloseableIterator<K> iterate() {
         final DBCursor cursor = createCursor();
-        return new CloseableIterator<K>(){
+        return new CloseableIterator<K>() {
             @Override
             public boolean hasNext() {
                 return cursor.hasNext();
             }
+
             @Override
             public K next() {
                 DBObject dbObject = cursor.next();
                 return morphia.fromDBObject(ePath.getType(), dbObject, cache);
             }
+
             @Override
             public void remove() {
             }
+
             @Override
             public void close() throws IOException {
-            }            
+            }
         };
-        }
-        
-        @Override
-        public List<K> list() {
+    }
+
+    @Override
+    public List<K> list() {
         DBCursor cursor = createCursor();
         List<K> results = new ArrayList<K>(cursor.size());
         for (DBObject dbObject : cursor) {
@@ -116,61 +126,58 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProj
     }
 
     private DBCursor createCursor() {
-            QueryMetadata metadata = queryMixin.getMetadata();
-            //Long queryLimit = metadata.getModifiers().getLimit();
-            //Long queryOffset = metadata.getModifiers().getOffset();
-            DBCursor cursor = coll.find(createQuery());
-            if(metadata.getOrderBy().size() > 0) {
-                cursor.sort(serializer.toSort(metadata.getOrderBy()));
-            }
-        return cursor;
+        QueryMetadata metadata = queryMixin.getMetadata();
+        // Long queryLimit = metadata.getModifiers().getLimit();
+        // Long queryOffset = metadata.getModifiers().getOffset();
+        DBCursor cursor = coll.find(createQuery());
+        if (metadata.getOrderBy().size() > 0) {
+            cursor.sort(serializer.toSort(metadata.getOrderBy()));
         }
+        return cursor;
+    }
 
-        @Override
-        public List<K> listDistinct() {
+    @Override
+    public List<K> listDistinct() {
         queryMixin.setDistinct(true);
         return list();
-        }
+    }
 
-        @Override
-        public K uniqueResult() {
+    @Override
+    public K uniqueResult() {
         throw new UnsupportedOperationException();
-        }
+    }
 
-        @Override
-        public SearchResults<K> listResults() {
+    @Override
+    public SearchResults<K> listResults() {
         throw new UnsupportedOperationException();
-        }
+    }
 
-        @Override
-        public SearchResults<K> listDistinctResults() {
+    @Override
+    public SearchResults<K> listDistinctResults() {
         throw new UnsupportedOperationException();
-        }
+    }
 
-        @Override
-        public long count() {
-            return coll.count(createQuery());
-        }
+    @Override
+    public long count() {
+        return coll.count(createQuery());
+    }
 
-        @Override
-        public long countDistinct() {
+    @Override
+    public long countDistinct() {
         queryMixin.setDistinct(true);
         return count();
-        }
-        
-        
-        private DBObject createQuery(){
-            QueryMetadata metadata = queryMixin.getMetadata();
-            Assert.notNull(metadata.getWhere(), "where needs to be set");
-            
-            return (DBObject) serializer.handle(metadata.getWhere());
-        }
-
-        @Override
-        public String toString() {
-            return createQuery().toString();
-        }
-        
-        
-        
     }
+
+    private DBObject createQuery() {
+        QueryMetadata metadata = queryMixin.getMetadata();
+        Assert.notNull(metadata.getWhere(), "where needs to be set");
+
+        return (DBObject) serializer.handle(metadata.getWhere());
+    }
+
+    @Override
+    public String toString() {
+        return createQuery().toString();
+    }
+
+}
