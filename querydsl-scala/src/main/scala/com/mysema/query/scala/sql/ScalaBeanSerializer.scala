@@ -47,6 +47,7 @@ class ScalaBeanSerializer extends Serializer {
         for (annotation <- model.getAnnotations){
             writer.annotation(annotation);
         }               
+        
         writer.beginClass(model);
         
         // properties

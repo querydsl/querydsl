@@ -1,6 +1,7 @@
 package com.mysema.query.scala.sql
 
 import com.mysema.codegen.CodeWriter
+import com.mysema.codegen.ScalaWriter
 import com.mysema.codegen.model._
 import com.mysema.codegen.model.TypeCategory._
 
@@ -53,7 +54,11 @@ class ScalaMetaDataSerializer(val namingStrategy: NamingStrategy) extends Serial
         }               
 
         val queryType = typeMappings.getPathType(model, model, true);
-        writer.beginClass(queryType);
+        //QUser(path: String) extends RelationalPathBase[QUser](classOf[QUser], path)
+        var modelName = writer.getRawName(model);
+        var queryTypeName = writer.getRawName(queryType);
+        var classHeader = queryTypeName + "(path: String) extends RelationalPathBase[" + modelName + "](classOf[" + modelName + "], path)";
+        writer.asInstanceOf[ScalaWriter].beginClass(classHeader);
         
         // properties
         for (property <- model.getProperties()){
