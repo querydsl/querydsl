@@ -44,14 +44,12 @@ public class MongodbSerializer implements Visitor<Object, Void> {
 
     @Override
     public Object visit(TemplateExpression<?> expr, Void context) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Object visit(FactoryExpression<?> expr, Void context) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     private String dboKey(Operation<?> expr, int index) {
@@ -108,33 +106,25 @@ public class MongodbSerializer implements Visitor<Object, Void> {
 //      if (op == Ops.OR)
         if (op == Ops.NE_OBJECT || op == Ops.NE_PRIMITIVE) {
             return dbo(dboKey(expr, 0), dbo("$ne", dboValue(expr, 1)));
-        }
-        if (op == Ops.STARTS_WITH) {
+        }else if (op == Ops.STARTS_WITH) {
             return dbo(dboKey(expr, 0), Pattern.compile("^" + regexValue(expr, 1)));
-        }
-        if (op == Ops.STARTS_WITH_IC) {
+        }else if (op == Ops.STARTS_WITH_IC) {
             return dbo(dboKey(expr, 0),
                     Pattern.compile("^" + regexValue(expr, 1), Pattern.CASE_INSENSITIVE));
-        }
-        if (op == Ops.ENDS_WITH) {
+        }else if (op == Ops.ENDS_WITH) {
             return dbo(dboKey(expr, 0), Pattern.compile(regexValue(expr, 1) + "$"));
-        }
-        if (op == Ops.ENDS_WITH_IC) {
+        }else if (op == Ops.ENDS_WITH_IC) {
             return dbo(dboKey(expr, 0),
                     Pattern.compile(regexValue(expr, 1) + "$", Pattern.CASE_INSENSITIVE));
-        }
-        if (op == Ops.EQ_IGNORE_CASE) {
+        }else if (op == Ops.EQ_IGNORE_CASE) {
             return dbo(dboKey(expr, 0),
                     Pattern.compile(regexValue(expr, 1), Pattern.CASE_INSENSITIVE));
-        }
-        if (op == Ops.STRING_CONTAINS) {
+        }else if (op == Ops.STRING_CONTAINS) {
             return dbo(dboKey(expr, 0), Pattern.compile(".*" + regexValue(expr, 1) + ".*"));
-        }
-        if (op == Ops.STRING_CONTAINS_IC) {
+        }else if (op == Ops.STRING_CONTAINS_IC) {
             return dbo(dboKey(expr, 0),
                     Pattern.compile(".*" + regexValue(expr, 1) + ".*", Pattern.CASE_INSENSITIVE));
-        }
-        if (op == Ops.EQ_IGNORE_CASE) {
+        }else if (op == Ops.EQ_IGNORE_CASE) {
             return dbo(dboKey(expr, 0),
                     Pattern.compile(regexValue(expr, 1), Pattern.CASE_INSENSITIVE));
         }
@@ -143,34 +133,22 @@ public class MongodbSerializer implements Visitor<Object, Void> {
          
         if (op == Ops.MATCHES) {
             return dbo(dboKey(expr, 0), Pattern.compile(dboValue(expr, 1).toString()));
-        }
-        
-        if (op == Ops.BETWEEN) {
+        }else if (op == Ops.BETWEEN) {
             BasicDBObject value = new BasicDBObject("$gt", dboValue(expr, 1));
             value.append("$lt", dboValue(expr, 2));
             return dbo(dboKey(expr, 0), value);
-        }
-        
-        if (op == Ops.IN) {
-            Collection<?> values = (Collection<?>) ((Constant<?>) expr
-                    .getArg(1)).getConstant();
+        }else if (op == Ops.IN) {
+            Collection<?> values = (Collection<?>) ((Constant<?>) expr.getArg(1)).getConstant();
             return dbo(dboKey(expr, 0), dbo("$in", values.toArray()));
-        }
-        if (op == Ops.LT || op == Ops.BEFORE) {
+        }else if (op == Ops.LT || op == Ops.BEFORE) {
             return dbo(dboKey(expr, 0), dbo("$lt", dboValue(expr, 1)));
-        }
-        if (op == Ops.GT || op == Ops.AFTER) {
+        }else if (op == Ops.GT || op == Ops.AFTER) {
             return dbo(dboKey(expr, 0), dbo("$gt", dboValue(expr, 1)));
-        }
-        if (op == Ops.LOE || op == Ops.BOE) {
+        }else if (op == Ops.LOE || op == Ops.BOE) {
             return dbo(dboKey(expr, 0), dbo("$lte", dboValue(expr, 1)));
-        }
-        if (op == Ops.GOE || op == Ops.AOE) {
+        }else if (op == Ops.GOE || op == Ops.AOE) {
             return dbo(dboKey(expr, 0), dbo("$gte", dboValue(expr, 1)));
         }
-        // } else if (op == PathType.DELEGATE) {
-        // return toQuery(operation.getArg(0), metadata);
-        // }
         throw new UnsupportedOperationException("Illegal operation " + expr);
     }
 
@@ -181,14 +159,12 @@ public class MongodbSerializer implements Visitor<Object, Void> {
 
     @Override
     public Object visit(SubQueryExpression<?> expr, Void context) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Object visit(ParamExpression<?> expr, Void context) {
-        // TODO Auto-generated method stub
-        return null;
+        throw new UnsupportedOperationException();
     }
 
 }
