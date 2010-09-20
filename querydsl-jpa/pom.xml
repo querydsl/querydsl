@@ -213,7 +213,7 @@
         <configuration>
           <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
           <jdbcUrl>jdbc:derby:target/derbydb;create=true</jdbcUrl>
-          <packageName>com.mysema.query.hql.domain.sql</packageName>
+          <packageName>com.mysema.query.jpa.domain.sql</packageName>
           <targetFolder>src/test/java</targetFolder>
           <namePrefix>S</namePrefix>
         </configuration>
