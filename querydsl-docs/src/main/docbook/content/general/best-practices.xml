@@ -11,7 +11,7 @@
     of the simple type name. For the type Account this would be account :</para>
     
 <programlisting language="java"><![CDATA[     
-public class QAccount extends PEntity<Account>{
+public class QAccount extends EntityPathBase<Account>{
       
     public static final QAccount account = new QAccount("account");
     
@@ -51,7 +51,7 @@ public class QAccount extends PEntity<Account>{
   <para>For HQL usage :</para>
   
 <programlisting language="java"><![CDATA[ 
-protected HQLQuery from(PEntity<?>... o) {
+protected HQLQuery from(EntityPath<?>... o) {
     return new HqlQueryImpl(session).from(o);
 } 
 ]]></programlisting>  
@@ -59,7 +59,7 @@ protected HQLQuery from(PEntity<?>... o) {
   <para>For JDO usage : </para>
   
 <programlisting language="java"><![CDATA[
-protected JDOQLQuery from(PEntity<?>... o) {
+protected JDOQLQuery from(EntityPath<?>... o) {
     return new JDOQLQueryImpl(persistenceManager).from(o);
 }        
 ]]></programlisting>         

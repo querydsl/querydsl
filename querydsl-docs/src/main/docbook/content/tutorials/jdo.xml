@@ -31,7 +31,7 @@
     
 <dependency>
   <groupId>com.mysema.querydsl</groupId>
-  <artifactId>querydsl-jdoql</artifactId>
+  <artifactId>querydsl-jdo</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
 
@@ -55,7 +55,7 @@
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>maven-apt-plugin</artifactId>
-        <version>0.3.2</version>
+        <version>1.0</version>
         <executions>
           <execution>
             <goals>

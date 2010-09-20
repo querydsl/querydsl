@@ -131,7 +131,7 @@ for (String name : from(cat,cats)
     <plugin>
       <groupId>com.mysema.maven</groupId>
       <artifactId>maven-apt-plugin</artifactId>
-      <version>0.3.2</version>
+      <version>1.0</version>
       <executions>
         <execution>
           <goals>

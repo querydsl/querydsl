@@ -8,8 +8,8 @@
       
       <para>
       To avoid a generic signature in Querydsl query types the type hierarchies are flattened. The result is that
-      all generated query types are direct subclasses of com.mysema.query.types.path.PEntity and cannot be directly cast
-      to their Querydsl supertypes.
+      all generated query types are direct subclasses of com.mysema.query.types.path.EntityPathBase or com.mysema.query.types.path.BeanPath
+	   and cannot be directly cast to their Querydsl supertypes.
       </para>
       
       <para>
@@ -19,12 +19,12 @@
       
       <programlisting language="java"><![CDATA[
 // from Account
-QAccount extends PEntity<Account>{
+QAccount extends EntityPathBase<Account>{
     // ...
 }
 
 // from BankAccount extends Account
-QBankAccount extends PEntity<BankAccount>{
+QBankAccount extends EntityPathBase<BankAccount>{
 
     public final QAccount _super = new QAccount(this);
     
@@ -32,7 +32,7 @@ QBankAccount extends PEntity<BankAccount>{
 }            
 ]]></programlisting>      
     
-    <para>To cast from a supertype to a subtype you can use the as-method of the PEntity class :</para>
+    <para>To cast from a supertype to a subtype you can use the as-method of the EntityPathBase class :</para>
     
     <programlisting language="java"><![CDATA[
 QAccount account = new QAccount("account");
@@ -74,7 +74,7 @@ class CustomerDTO {
 
 <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
-HQLQuery query = new HibernateQuery(session);
+JPQLQuery query = new HibernateQuery(session);
 List<CustomerDTO> dtos = qry.from(customer).list(new QCustomerDTO(customer.id, customer.name));     
 ]]></programlisting>     
 
@@ -99,7 +99,7 @@ class Customer {
 
 <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
-HQLQuery query = new HibernateQuery(session);
+JPQLQuery query = new HibernateQuery(session);
 List<Customer> dtos = qry.from(customer).list(new QCustomer.create(customer.id, customer.name));   
 ]]></programlisting>   
     
@@ -142,7 +142,7 @@ public List<Customer> getCustomer(String... names){
     
 <programlisting language="java"><![CDATA[    
 QCustomer customer = QCustomer.customer;    
-Expr<String> cases = new CaseBuilder()
+Expression<String> cases = new CaseBuilder()
     .when(customer.annualSpending.gt(10000)).then("Premier")
     .when(customer.annualSpending.gt(5000)).then("Gold")
     .when(customer.annualSpending.gt(2000)).then("Silver")
@@ -154,7 +154,7 @@ Expr<String> cases = new CaseBuilder()
     
 <programlisting language="java"><![CDATA[    
 QCustomer customer = QCustomer.customer;    
-Expr<String> cases = customer.annualSpending
+Expression<String> cases = customer.annualSpending
     .when(10000).then("Premier")
     .when(5000).then("Gold")
     .when(2000).then("Silver")
@@ -170,7 +170,7 @@ Expr<String> cases = customer.annualSpending
     <title>Dynamic path usage</title>
     
     <para>
-    For dynamic path generation the PathBuilder class can be used. It extends PEntity and can be used
+    For dynamic path generation the PathBuilder class can be used. It extends EntityPathBase and can be used
     as an alternative to class generation and alias-usage for path generation. 
     </para>
     

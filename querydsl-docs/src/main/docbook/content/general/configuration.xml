@@ -103,7 +103,7 @@ import com.mysema.query.annotations.QuerydslConfig;
     <plugin>
       <groupId>com.mysema.maven</groupId>
       <artifactId>maven-apt-plugin</artifactId>
-      <version>0.3.2</version>
+      <version>1.0</version>
       <executions>
         <execution>
           <goals>
@@ -236,7 +236,7 @@ public class Point{
     }
    
     @QueryDelegate(User.class)
-    public static EBoolean isManagedBy(QUser user, User other){
+    public static BooleanPath isManagedBy(QUser user, User other){
         return user.manager.eq(other);
     }
    
@@ -246,7 +246,7 @@ public class Point{
 	<para>And the generated methods in the QUser query type :</para>
 
 <programlisting language="java"><![CDATA[   
-    public EBoolean isManagedBy(Qser other) {
+    public BooleanPath isManagedBy(Qser other) {
         return com.mysema.query.domain.DelegateTest.isManagedBy(this, other);
     }
 	
@@ -258,12 +258,12 @@ public class Point{
 public class QueryExtensions {
 
     @QueryDelegate(Date.class)
-    public static EBoolean inPeriod(PDate<Date> date, Pair<Date,Date> period){
+    public static BooleanPath inPeriod(DatePath<Date> date, Pair<Date,Date> period){
         return date.goe(period.getFirst()).and(date.loe(period.getSecond()));
     }
 
     @QueryDelegate(Timestamp.class)
-    public static EBoolean inDatePeriod(PDateTime<Timestamp> timestamp, Pair<Date,Date> period){
+    public static BooleanPath inDatePeriod(DateTimePath<Timestamp> timestamp, Pair<Date,Date> period){
         Timestamp first = new Timestamp(DateUtils.truncate(period.getFirst(), Calendar.DAY_OF_MONTH).getTime());
         Calendar second = Calendar.getInstance();
         second.setTime(DateUtils.truncate(period.getSecond(), Calendar.DAY_OF_MONTH));
@@ -287,7 +287,7 @@ public class QDate extends PDate<java.sql.Date> {
         super(java.sql.Date.class, metadata);
     }
 
-    public EBoolean inPeriod(com.mysema.commons.lang.Pair<java.sql.Date, java.sql.Date> period) {
+    public BooleanPath inPeriod(com.mysema.commons.lang.Pair<java.sql.Date, java.sql.Date> period) {
         return QueryExtensions.inPeriod(this, period);
     }
 
@@ -303,10 +303,9 @@ public class QTimestamp extends PDateTime<java.sql.Timestamp> {
         super(java.sql.Timestamp.class, metadata);
     }
 
-    public EBoolean inDatePeriod(com.mysema.commons.lang.Pair<java.sql.Date, java.sql.Date> period) {
+    public BooleanPath inDatePeriod(com.mysema.commons.lang.Pair<java.sql.Date, java.sql.Date> period) {
         return QueryExtensions.inDatePeriod(this, period);
     }
-
 
 }
 ]]></programlisting>    
@@ -332,7 +331,7 @@ public class QTimestamp extends PDateTime<java.sql.Timestamp> {
     <plugin>
       <groupId>com.mysema.maven</groupId>
       <artifactId>maven-apt-plugin</artifactId>
-      <version>0.3.2</version>
+      <version>1.0</version>
       <executions>
         <execution>
           <goals>

@@ -13,16 +13,16 @@
   <para>With fields year and title a manually created query type could look something like this :</para>
   
   <programlisting language="java"><![CDATA[ 
-public class QDocument extends PEntity<Document>{
+public class QDocument extends EntityPathBase<Document>{
     private static final long serialVersionUID = -4872833626508344081L;
         
     public QDocument(String var) {
         super(Document.class, PathMetadataFactory.forVariable(var));
     }
 
-    public final PString year = createString("year");
+    public final StringPath year = createString("year");
         
-    public final PString title = createString("title");
+    public final StringPath title = createString("title");
 }
 ]]></programlisting>  
 

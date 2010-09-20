@@ -34,7 +34,7 @@
     
 <dependency>
   <groupId>com.mysema.querydsl</groupId>
-  <artifactId>querydsl-hql</artifactId>
+  <artifactId>querydsl-jpa</artifactId>
   <version>${querydsl.version}</version>
 </dependency>
 
@@ -45,7 +45,7 @@
 </dependency>   
 ]]></programlisting>
 
-    <para>
+  <para>
       And now, configure the Maven APT plugin :
   </para>
 
@@ -57,7 +57,7 @@
     <plugin>
       <groupId>com.mysema.maven</groupId>
       <artifactId>maven-apt-plugin</artifactId>
-      <version>0.3.2</version>
+      <version>1.0</version>
       <executions>
         <execution>
           <goals>
@@ -200,20 +200,20 @@ QCustomer customer = new QCustomer("myCustomer");
     <title>Querying</title>
 
     <para>
-      For the HQL-module HibernateQuery is the main Query implementation. It is
+      For the JPA-module HibernateQuery is the main Query implementation. It is
       instantiated like this :
     </para>
 
     <programlisting language="java"><![CDATA[
 // where session is a Hibernate session
-HQLQuery query = new HibernateQuery (session); 
+JPQLQuery query = new HibernateQuery (session); 
 ]]></programlisting>
 
    <para>To use the JPA API instead of the Hibernate API, you can instantiate a JPAQuery like this :</para>
 
     <programlisting language="java"><![CDATA[
 // where entityManager is a JPA EntityManager   
-HQLQuery query = new JPAQuery (entityManager); 
+JPQLQuery query = new JPAQuery (entityManager); 
 ]]></programlisting>
 
     <para>
@@ -223,7 +223,7 @@ HQLQuery query = new JPAQuery (entityManager);
 
     <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
-HQLQuery query = new HibernateQuery (session);
+JPQLQuery query = new HibernateQuery (session);
 Customer bob = query.from(customer)
   .where(customer.firstName.eq("Bob"))
   .uniqueResult(customer);
@@ -236,7 +236,7 @@ Customer bob = query.from(customer)
   </para>
   
   <para>
-    To create a query with multiple sources you just use the HQLQuery interface like this :
+    To create a query with multiple sources you just use the JPQLQuery interface like this :
   </para>
 
     <programlisting language="java"><![CDATA[
@@ -313,7 +313,7 @@ from Cat as cat
   
   <title>General usage</title>
   
-  <para>Use the the cascading methods of the HQLQuery interface like this</para>
+  <para>Use the the cascading methods of the JPQLQuery interface like this</para>
   
   <para><emphasis>from :</emphasis> Define the query sources here.</para>
   
@@ -382,7 +382,7 @@ select customer.lastName
   
   <sect2>  
   <title>Delete clauses</title>
-  <para>Delete clauses in Querydsl JPQL follow a simple delete-where-execute form. Here are some examples :</para>
+  <para>Delete clauses in Querydsl JPA follow a simple delete-where-execute form. Here are some examples :</para>
     
 <programlisting language="java"><![CDATA[   
 QCat cat = QCat.cat;
@@ -400,7 +400,7 @@ new HibernateDeleteClause(session, cat).where(cat.kittens.isNotEmpty()).execute(
   
   <sect2>  
   <title>Update clauses</title>
-  <para>Update clauses in Querydsl JPQL follow a simple update-set/where-execute form. Here are some examples :</para>
+  <para>Update clauses in Querydsl JPA follow a simple update-set/where-execute form. Here are some examples :</para>
   
 <programlisting language="java"><![CDATA[   
 QCat cat = QCat.cat;
@@ -422,7 +422,7 @@ new HibernateUpdateClause(session, cat).where(cat.name.eq("Bob"))
   
   <title>Subqueries</title>
   
-  <para>To create a subquery you create a HQLSubQuery instance, define the query parameters 
+  <para>To create a subquery you create a JPQLSubQuery instance, define the query parameters 
   via from, where etc and use
   unique or list to create a subquery, which is just a type-safe Querydsl expression for the query.
   unique is used for a unique (single) result and list for a list result.</para>
@@ -430,7 +430,7 @@ new HibernateUpdateClause(session, cat).where(cat.name.eq("Bob"))
 <programlisting language="java"><![CDATA[
 query.from(department)
     .where(department.employees.size().eq(
-        new HQLSubQuery().from(d).unique(d.employees.size().max())
+        new JPQLSubQuery().from(d).unique(d.employees.size().max())
      )).list(department);
 ]]></programlisting>   
 
@@ -439,7 +439,7 @@ query.from(department)
 <programlisting language="java"><![CDATA[
 query.from(employee)
     .where(employee.weeklyhours.gt(
-        new HQLSubQuery().from(employee.department.employees, e)
+        new JPQLSubQuery().from(employee.department.employees, e)
         .where(e.manager.eq(employee.manager))
         .unique(e.weeklyhours.avg())
     )).list(employee);
