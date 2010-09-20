@@ -187,12 +187,12 @@
               <packages>com.mysema.query.collections*</packages>
             </group>
             <group>
-              <title>HQL/JPAQL</title>
-              <packages>com.mysema.query.hql*</packages>
+              <title>JPA</title>
+              <packages>com.mysema.query.jpa*</packages>
             </group>
             <group>
-              <title>JDOQL</title>
-              <packages>com.mysema.query.jdoql*</packages>
+              <title>JDO</title>
+              <packages>com.mysema.query.jdo*</packages>
             </group>
             <group>
               <title>SQL</title>
