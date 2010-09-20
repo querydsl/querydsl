@@ -43,6 +43,7 @@ public class MongodbQueryTest {
     public void testEqInAndOrderByQueries() {
        
         assertQuery(user.firstName.eq("Jaakko"), u1);
+        assertQuery(user.firstName.equalsIgnoreCase("jaakko"), u1);
         assertQuery(user.lastName.eq("Aakkonen"), u3);
         
         assertQuery(user.firstName.in("Jaakko","Teppo"), u1);
@@ -59,10 +60,12 @@ public class MongodbQueryTest {
         //This shoud produce 'and' also
         assertQuery(where(user.firstName.eq("Jaana"), user.lastName.eq("Aakkonen")), u3);
         
+        assertQuery(user.firstName.ne("Jaana"), u2, u1);
+        
     }
     
     @Test
-    public void testStartsWithEndsWith() {
+    public void testRegexQueries() {
         
         assertQuery(user.firstName.startsWith("Jaan"), u3, u4);
         assertQuery(user.firstName.startsWith("jaan"));
@@ -72,10 +75,19 @@ public class MongodbQueryTest {
         
         assertQuery(user.lastName.endsWithIgnoreCase("onen"), u3, u4);
         
+        assertQuery(user.lastName.contains("oN"), u4);
+        assertQuery(user.lastName.containsIgnoreCase("on"), u3, u4);
+        
+        assertQuery(user.firstName.matches(".*aa.*[^i]$"), u3, u4, u1);
     }
     
+    @Test
+    public void testNot() {
+        assertQuery(user.firstName.eq("Jaakko").not(), u3, u4, u2);
+        assertQuery(user.firstName.ne("Jaakko").not(), u1);
+        assertQuery(user.firstName.matches("Jaakko").not(), u3, u4, u2);
+    }
     
-
     private void assertQuery(Predicate e, User ... expected) {
         assertQuery(where(e).orderBy(user.lastName.asc(), user.firstName.asc()), expected );
     }
@@ -90,6 +102,7 @@ public class MongodbQueryTest {
     }
     
     private void assertQuery(MongodbQuery<User> query, User ... expected ) {
+        System.out.println(query.toString());
         List<User> results = query.list();
         
         assertNotNull(results);

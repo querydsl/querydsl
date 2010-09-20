@@ -130,16 +130,37 @@ public class MongodbSerializerTest {
     }
     
     @Test
-    public void testStartsEndsWith() {
+    public void testRegexcases() {
         assertQuery(title.startsWith("A"), 
-                dbo("title", dbo("$regex", "^A").append("$options", "")));
+                dbo("title", dbo("$regex", "^\\QA\\E").append("$options", "")));
         assertQuery(title.startsWithIgnoreCase("A"),
-                dbo("title", dbo("$regex", "^A").append("$options", "i")));
+                dbo("title", dbo("$regex", "^\\QA\\E").append("$options", "i")));
         
         assertQuery(title.endsWith("A"), 
-                dbo("title", dbo("$regex", "A$").append("$options", "")));
+                dbo("title", dbo("$regex", "\\QA\\E$").append("$options", "")));
         assertQuery(title.endsWithIgnoreCase("A"),
-                dbo("title", dbo("$regex", "A$").append("$options", "i")));
+                dbo("title", dbo("$regex", "\\QA\\E$").append("$options", "i")));
+        
+        assertQuery(title.equalsIgnoreCase("A"),
+                dbo("title", dbo("$regex", "\\QA\\E").append("$options", "i")));
+        
+        assertQuery(title.contains("A"), 
+                dbo("title", dbo("$regex", ".*\\QA\\E.*").append("$options", "")));
+        assertQuery(title.containsIgnoreCase("A"),
+                dbo("title", dbo("$regex", ".*\\QA\\E.*").append("$options", "i")));
+        
+        assertQuery(title.matches(".*A^"),
+                dbo("title", dbo("$regex", ".*A^").append("$options", "")));
+        
+    }
+    
+    @Test
+    public void testNot() {
+        assertQuery(title.eq("A").not(), dbo("title", dbo("$ne","A")));
+        
+        assertQuery(title.lt("A").not().and(year.ne(1800)), 
+                dbo("title", dbo("$not", dbo("$lt","A"))).
+                append("year", dbo("$ne", 1800)));
     }
     
     private List<OrderSpecifier<?>> sortList(OrderSpecifier<?> ... order) {

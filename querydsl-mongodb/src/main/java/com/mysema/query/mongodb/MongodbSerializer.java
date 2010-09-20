@@ -62,6 +62,10 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         return expr.getArg(index).accept(this, null);
     }
 
+    private String regexValue(Operation<?> expr, int index) {
+        return Pattern.quote(expr.getArg(index).accept(this, null).toString());
+    }
+    
     private BasicDBObject dbo(String key, Object value) {
         return new BasicDBObject(key, value);
     }
@@ -78,10 +82,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         // return bq;
         // } else if (op == Ops.LIKE) {
         // return like(operation, metadata);
-        if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE /*
-                                                           * || op ==
-                                                           * Ops.EQ_IGNORE_CASE
-                                                           */) {
+        if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE ) {
             return dbo(dboKey(expr, 0), dboValue(expr, 1));
         }
         if (op == Ops.AND) {
@@ -89,33 +90,67 @@ public class MongodbSerializer implements Visitor<Object, Void> {
             left.putAll((BSONObject) handle(expr.getArg(1)));
             return left;
         }
+        if (op == Ops.NOT) {
+            //Handle the not's child            
+            BasicDBObject arg = (BasicDBObject) handle(expr.getArg(0));
+            
+            //Only support the first key, let's see if there
+            //is cases where this will get broken
+            String key = arg.keySet().iterator().next();
+            
+            Operator<?> subOp = ((Operation<?>) expr.getArg(0)).getOperator();
+            if (subOp != Ops.EQ_OBJECT && subOp != Ops.EQ_PRIMITIVE)
+                return dbo(key, dbo("$not", arg.get(key)));
+            else
+                return dbo(key, dbo("$ne", arg.get(key)));
+        }
+        
+//      if (op == Ops.OR)
         if (op == Ops.NE_OBJECT || op == Ops.NE_PRIMITIVE) {
             return dbo(dboKey(expr, 0), dbo("$ne", dboValue(expr, 1)));
         }
         if (op == Ops.STARTS_WITH) {
-            return dbo(dboKey(expr, 0), Pattern.compile("^" + dboValue(expr, 1)));
+            return dbo(dboKey(expr, 0), Pattern.compile("^" + regexValue(expr, 1)));
         }
         if (op == Ops.STARTS_WITH_IC) {
             return dbo(dboKey(expr, 0),
-                    Pattern.compile("^" + dboValue(expr, 1), Pattern.CASE_INSENSITIVE));
+                    Pattern.compile("^" + regexValue(expr, 1), Pattern.CASE_INSENSITIVE));
         }
         if (op == Ops.ENDS_WITH) {
-            return dbo(dboKey(expr, 0), Pattern.compile(dboValue(expr, 1) + "$"));
+            return dbo(dboKey(expr, 0), Pattern.compile(regexValue(expr, 1) + "$"));
         }
         if (op == Ops.ENDS_WITH_IC) {
             return dbo(dboKey(expr, 0),
-                    Pattern.compile(dboValue(expr, 1) + "$", Pattern.CASE_INSENSITIVE));
+                    Pattern.compile(regexValue(expr, 1) + "$", Pattern.CASE_INSENSITIVE));
         }
-  // } else if (op == Ops.ENDS_WITH || op == Ops.ENDS_WITH_IC) {
-        // return endsWith(operation, metadata);
-        // } else if (op == Ops.STRING_CONTAINS || op == Ops.STRING_CONTAINS_IC)
-        // {
-        // return stringContains(operation, metadata);
+        if (op == Ops.EQ_IGNORE_CASE) {
+            return dbo(dboKey(expr, 0),
+                    Pattern.compile(regexValue(expr, 1), Pattern.CASE_INSENSITIVE));
+        }
+        if (op == Ops.STRING_CONTAINS) {
+            return dbo(dboKey(expr, 0), Pattern.compile(".*" + regexValue(expr, 1) + ".*"));
+        }
+        if (op == Ops.STRING_CONTAINS_IC) {
+            return dbo(dboKey(expr, 0),
+                    Pattern.compile(".*" + regexValue(expr, 1) + ".*", Pattern.CASE_INSENSITIVE));
+        }
+        if (op == Ops.EQ_IGNORE_CASE) {
+            return dbo(dboKey(expr, 0),
+                    Pattern.compile(regexValue(expr, 1), Pattern.CASE_INSENSITIVE));
+        }
+        //if (op == Ops.EXISTS)
+//        if (op == Ops.MOD)
+         
+        if (op == Ops.MATCHES) {
+            return dbo(dboKey(expr, 0), Pattern.compile(dboValue(expr, 1).toString()));
+        }
+        
         if (op == Ops.BETWEEN) {
             BasicDBObject value = new BasicDBObject("$gt", dboValue(expr, 1));
             value.append("$lt", dboValue(expr, 2));
             return dbo(dboKey(expr, 0), value);
         }
+        
         if (op == Ops.IN) {
             Collection<?> values = (Collection<?>) ((Constant<?>) expr
                     .getArg(1)).getConstant();
