@@ -71,7 +71,10 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
 
     public ScalaWriter(Appendable appendable, boolean compact){
         super(appendable);
-        this.packages.add("java.lang");
+        this.classes.add("java.lang.String");
+        this.classes.add("java.lang.Object");
+        this.classes.add("java.lang.Integer");
+        this.classes.add("java.lang.Comparable");
         this.compact = compact;
     }
     
