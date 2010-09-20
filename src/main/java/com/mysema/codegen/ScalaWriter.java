@@ -50,6 +50,8 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     private static final String PUBLIC = "public ";
 
     private static final String PUBLIC_CLASS = "class ";
+    
+    private static final String PUBLIC_OBJECT = "object ";
 
     private static final String VAR = "var ";
     
@@ -155,8 +157,14 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
         return this;
     }
     
-    public ScalaWriter beginClass(String header) throws IOException{
-        line(PUBLIC_CLASS, header);
+    public ScalaWriter beginObject(String header) throws IOException {
+        line(PUBLIC_OBJECT, header, " {");
+        goIn();
+        return this;
+    }
+    
+    public ScalaWriter beginClass(String header) throws IOException {
+        line(PUBLIC_CLASS, header, " {");
         goIn();
         return this;
     }
@@ -308,7 +316,11 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
             }  
         }
         if (rv.endsWith("[]")){
-            return "Array[" + rv.substring(0, rv.length()-2) + "]";
+            rv = rv.substring(0, rv.length()-2);
+            if (classes.contains(rv)){
+                rv = rv.substring(packageName.length()+1);
+            }            
+            return "Array[" + rv + "]";
         }else{
             return rv;
         }
