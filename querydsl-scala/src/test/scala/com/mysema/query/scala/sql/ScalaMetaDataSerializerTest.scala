@@ -3,7 +3,9 @@ package com.mysema.query.scala.sql
 import org.apache.commons.lang.StringUtils
 import com.mysema.codegen._;
 import com.mysema.codegen.model._;
+
 import com.mysema.query.codegen._;
+import com.mysema.query.sql._
 
 import java.io.StringWriter;
 
@@ -35,7 +37,8 @@ class ScalaMetaDataSerializerTest {
     @Test
     @throws(classOf[java.io.IOException])
     def Print(){
-        var serializer = new ScalaMetaDataSerializer();
+        var namingStrategy = new DefaultNamingStrategy();
+        var serializer = new ScalaMetaDataSerializer(namingStrategy);
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer));
         var str = writer.toString();
         System.err.println(str);
