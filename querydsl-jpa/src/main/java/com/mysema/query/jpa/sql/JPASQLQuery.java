@@ -8,6 +8,7 @@ package com.mysema.query.jpa.sql;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
@@ -43,6 +44,7 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery> implements 
 
     private static final Logger logger = LoggerFactory.getLogger(JPASQLQuery.class);
 
+    @Nullable
     private Map<Object,String> constants;
 
 //    private List<Path<?>> entityPaths;

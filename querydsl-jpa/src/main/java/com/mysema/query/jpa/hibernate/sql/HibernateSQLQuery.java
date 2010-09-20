@@ -8,6 +8,8 @@ package com.mysema.query.jpa.hibernate.sql;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
@@ -49,8 +51,10 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
 
     private String cacheRegion;
 
+    @Nullable
     private Map<Object,String> constants;
 
+    @Nullable
     private List<Path<?>> entityPaths;
 
     private int fetchSize = 0;
