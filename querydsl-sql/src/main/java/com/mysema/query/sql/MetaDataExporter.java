@@ -23,7 +23,9 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
+import com.mysema.codegen.ScalaWriter;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
@@ -92,6 +94,8 @@ public class MetaDataExporter {
     private Configuration configuration = Configuration.DEFAULT;
     
     private final KeyDataFactory keyDataFactory = new KeyDataFactory();
+    
+    private boolean createScalaSources = false;
     
     public MetaDataExporter(
             String namePrefix,
@@ -216,10 +220,11 @@ public class MetaDataExporter {
 
     private void serialize(EntityType type) {        
         try {
-            String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + ".java";
+            String fileSuffix = createScalaSources ? ".scala" : ".java";
+            String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
             if (beanSerializer != null){
                 write(beanSerializer, path, type);
-                String otherPath = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + ".java";
+                String otherPath = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + fileSuffix;
                 write(serializer, otherPath, type);
             }else{
                 write(serializer, path, type);
@@ -233,11 +238,12 @@ public class MetaDataExporter {
     private void write(Serializer serializer, String path, EntityType type) throws IOException {
         File targetFile = new File(targetFolder, path);
         classes.add(targetFile.getPath());
-        Writer writer = writerFor(targetFile);
+        Writer w = writerFor(targetFile);
         try{
-            serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+            CodeWriter writer = createScalaSources ? new ScalaWriter(w) : new JavaWriter(w);
+            serializer.serialize(type, SimpleSerializerConfig.DEFAULT, writer);
         }finally{
-            writer.close();
+            w.close();
         }
     }
 
@@ -252,5 +258,10 @@ public class MetaDataExporter {
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
+
+    public void setCreateScalaSources(boolean createScalaSources) {
+        this.createScalaSources = createScalaSources;
+    }
+    
     
 }

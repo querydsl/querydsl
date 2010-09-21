@@ -35,10 +35,9 @@ class ScalaMetaDataSerializerTest {
     }
 
     @Test
-    @throws(classOf[java.io.IOException])
     def Print(){
         var namingStrategy = new DefaultNamingStrategy();
-        var serializer = new ScalaMetaDataSerializer(namingStrategy);
+        var serializer = new ScalaMetaDataSerializer("Q",namingStrategy);
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer));
         var str = writer.toString();
         System.err.println(str);

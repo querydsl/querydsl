@@ -49,7 +49,6 @@ class ScalaBeanSerializerTest {
     }
 
     @Test
-    @throws(classOf[java.io.IOException])
     def Print(){
         var serializer = new com.mysema.query.scala.sql.ScalaBeanSerializer();
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer));

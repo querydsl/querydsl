@@ -50,7 +50,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         public void handle(String template, Object... args) {
             Expression<?>[] exprs = new Expression[args.length];
             for (int i = 0; i < args.length; i++){
-                exprs[i] = new ConstantImpl(args[i]);
+                exprs[i] = new ConstantImpl<Object>(args[i]);
             }
             SQLSerializer.this.handle(SimpleTemplate.create(Object.class, template, exprs));
 

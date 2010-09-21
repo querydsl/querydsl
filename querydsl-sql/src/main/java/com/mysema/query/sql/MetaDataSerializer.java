@@ -161,7 +161,7 @@ public class MetaDataSerializer extends EntitySerializer {
             }
             value.append(")");
             Type type = new ClassType(ForeignKey.class, 
-                    new SimpleType(model.getPackageName()+"."+foreignType,model.getPackageName(),foreignType));
+                    new SimpleType(model.getPackageName()+"."+foreignType, model.getPackageName(), foreignType));
             writer.publicFinal(type, fieldName, value.toString());
         }
     }

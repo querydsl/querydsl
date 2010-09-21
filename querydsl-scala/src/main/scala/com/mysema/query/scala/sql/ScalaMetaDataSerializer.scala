@@ -16,13 +16,14 @@ import java.io.IOException
 import scala.reflect.BeanProperty
 import scala.collection.JavaConversions._
 
-class ScalaMetaDataSerializer(val namingStrategy: NamingStrategy) extends Serializer {
+class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: NamingStrategy) extends Serializer {
     
     val typeMappings = new TypeMappings();
     
+    val classHeaderFormat = "%1$s(path: String) extends RelationalPathBase[%2$s](classOf[%2$s], path)";
+    
     val javadocSuffix = " is a Querydsl query type";
     
-    @throws(classOf[IOException])
     def serialize(model: EntityType, serializerConfig: SerializerConfig, writer: CodeWriter) {
         val simpleName: String = model.getSimpleName;
         
@@ -32,10 +33,10 @@ class ScalaMetaDataSerializer(val namingStrategy: NamingStrategy) extends Serial
         }
         
         // imports
-        writer.importPackages("com.mysema.query.sql");
-        writer.importPackages("com.mysema.query.types.path");
+        writer.importPackages("com.mysema.query.sql", "com.mysema.query.types.path");
         
         var importedClasses: Set[String] = getAnnotationTypes(model);
+        importedClasses.add("java.util.Arrays");
         if (model.hasLists()){
             importedClasses.add(classOf[List[_]].getName);
         }
@@ -57,14 +58,11 @@ class ScalaMetaDataSerializer(val namingStrategy: NamingStrategy) extends Serial
         //QUser(path: String) extends RelationalPathBase[QUser](classOf[QUser], path)
         var modelName = writer.getRawName(model);
         var queryTypeName = writer.getRawName(queryType);
-        // TODO : refactor to String.format
-        var classHeader = queryTypeName + "(path: String) extends RelationalPathBase[" + modelName + "](classOf[" + modelName + "], path)";
+        var classHeader = String.format(classHeaderFormat, queryTypeName, modelName);
         writer.asInstanceOf[ScalaWriter].beginClass(classHeader);
         
         // properties
-        for (property <- model.getProperties()){
-            serializeProperty(model, writer, property);
-        }
+        serializeProperties(model, writer, model.getProperties);
         
         // primary keys
         val primaryKeys: Collection[PrimaryKeyData] = 
@@ -90,30 +88,30 @@ class ScalaMetaDataSerializer(val namingStrategy: NamingStrategy) extends Serial
         writer.end();
     }
     
-    // TODO : rename to serializeProperties
-    def serializeProperty(model: EntityType, writer: CodeWriter, property: Property){
-        val methodName: String = property.getType.getCategory match {
-            case COMPARABLE => "createComparable";
-            case BOOLEAN => "createBoolean";
-            case DATE => "createDate";
-            case DATETIME => "createDateTime";
-            case ENUM => "createEnum";
-            case NUMERIC => "createNumber";
-            case STRING => "createString";
-            case SIMPLE => "createSimple";
-            case TIME => "createTime";
-        }
-        var ptype = typeMappings.getPathType(property.getType, model, false);
-        var value: String = null;
-        if (property.getType.getCategory == BOOLEAN || property.getType.getCategory == STRING){
-            value = methodName + "(\"" + property.getName + "\")";  
-        }else{
-            value = methodName + "(\"" + property.getName + "\", classOf[" + writer.getRawName(property.getType) + "])";                
-        }
-        writer.publicFinal(ptype, property.getEscapedName, value);
+    def serializeProperties(model: EntityType, writer: CodeWriter, properties: Collection[Property]){
+        for (property <- properties){
+            val methodName: String = property.getType.getCategory match {
+                case COMPARABLE => "createComparable";
+                case BOOLEAN => "createBoolean";
+                case DATE => "createDate";
+                case DATETIME => "createDateTime";
+                case ENUM => "createEnum";
+                case NUMERIC => "createNumber";
+                case STRING => "createString";
+                case SIMPLE => "createSimple";
+                case TIME => "createTime";
+            }
+            var ptype = typeMappings.getPathType(property.getType, model, false);
+            var value: String = null;
+            if (property.getType.getCategory == BOOLEAN || property.getType.getCategory == STRING){
+                value = methodName + "(\"" + property.getName + "\")";  
+            }else{
+                value = methodName + "(\"" + property.getName + "\", classOf[" + writer.getRawName(property.getType) + "])";                
+            }
+            writer.publicFinal(ptype, property.getEscapedName, value);    
+        }        
     }
     
-    @throws(classOf[IOException])
     def serializePrimaryKeys(model: EntityType, writer: CodeWriter, primaryKeys: Collection[PrimaryKeyData]) {
         for (primaryKey <- primaryKeys){
             val fieldName = namingStrategy.getPropertyNameForPrimaryKey(primaryKey.getName(), model);
@@ -123,7 +121,7 @@ class ScalaMetaDataSerializer(val namingStrategy: NamingStrategy) extends Serial
                 if (!first){
                     value.append(", ");
                 }
-                value.append(namingStrategy.getPropertyName(column, model.getPrefix, model));
+                value.append(namingStrategy.getPropertyName(column, namePrefix, model));
                 first = false;
             }
             value.append(")");
@@ -131,7 +129,6 @@ class ScalaMetaDataSerializer(val namingStrategy: NamingStrategy) extends Serial
         }
     }
 
-    @throws(classOf[IOException])
     def serializeForeignKeys(model: EntityType, writer: CodeWriter, foreignKeys: Collection[_ <: KeyData] , inverse: Boolean){
         for (foreignKey <- foreignKeys){
             var fieldName: String = null;
@@ -140,9 +137,9 @@ class ScalaMetaDataSerializer(val namingStrategy: NamingStrategy) extends Serial
             }else{
                 fieldName = namingStrategy.getPropertyNameForForeignKey(foreignKey.getName, model);
             }
-            var foreignType: String = namingStrategy.getClassName(model.getPrefix, foreignKey.getTable);
+            var foreignType: String = namingStrategy.getClassName(namePrefix, foreignKey.getTable);
             if (!model.getPrefix.isEmpty){
-                foreignType = foreignType.substring(model.getPrefix.length);
+                foreignType = foreignType.substring(namePrefix.length);
             }
             val value = new StringBuilder();
             if (inverse){
@@ -151,7 +148,7 @@ class ScalaMetaDataSerializer(val namingStrategy: NamingStrategy) extends Serial
                 value.append("createForeignKey(");    
             }            
             if (foreignKey.getForeignColumns.size == 1){
-                value.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns.get(0), model.getPrefix, model));
+                value.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns.get(0), namePrefix, model));
                 value.append(", \"" + foreignKey.getParentColumns().get(0) + "\"");
             }else{
                 val local = new StringBuilder();
@@ -162,9 +159,9 @@ class ScalaMetaDataSerializer(val namingStrategy: NamingStrategy) extends Serial
                         local.append(", ");
                         foreign.append(", ");
                     }
-                    local.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), model.getPrefix, model));
+                    local.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), namePrefix, model));
                     foreign.append("\"" +foreignKey.getParentColumns.get(0) + "\"");
-                    i += i;
+                    i += 1;
                 }
                 value.append("Arrays.asList("+local+"), Arrays.asList("+foreign+")");
             }

@@ -20,7 +20,6 @@ class ScalaBeanSerializer extends Serializer {
     
     val javadocSuffix = " is a Querydsl bean type";
     
-    @throws(classOf[IOException])
     def serialize(model: EntityType, serializerConfig: SerializerConfig, writer: CodeWriter) {
         val simpleName: String = model.getSimpleName;
         
