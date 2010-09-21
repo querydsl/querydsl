@@ -31,18 +31,18 @@ public final class BooleanBuilder extends BooleanExpression implements Cloneable
     private static final long serialVersionUID = -4129485177345542519L;
 
     @Nullable
-    private Predicate expr;
+    private Predicate predicate;
 
     public BooleanBuilder() {  }
 
     public BooleanBuilder(BooleanExpression initial){
-        expr = initial;
+        predicate = initial;
     }
 
     @Override
     public <R,C> R accept(Visitor<R,C> v, C context) {
-        if (expr != null){
-            return expr.accept(v, context);
+        if (predicate != null){
+            return predicate.accept(v, context);
         }else{
             throw new QueryException("BooleanBuilder has no value");
         }
@@ -51,10 +51,10 @@ public final class BooleanBuilder extends BooleanExpression implements Cloneable
     @Override
     public BooleanBuilder and(@Nullable Predicate right) {
         if (right != null){
-            if (expr == null){
-                expr = right;
+            if (predicate == null){
+                predicate = right;
             }else{
-                expr = ExpressionUtils.and(expr, right);
+                predicate = ExpressionUtils.and(predicate, right);
             }
         }
         return this;
@@ -88,7 +88,7 @@ public final class BooleanBuilder extends BooleanExpression implements Cloneable
         if (o == this){
             return true;
         }else if (o instanceof BooleanBuilder){
-            return ObjectUtils.equals(((BooleanBuilder)o).getValue(), expr);
+            return ObjectUtils.equals(((BooleanBuilder)o).getValue(), predicate);
         }else{
             return false;
         }
@@ -97,7 +97,7 @@ public final class BooleanBuilder extends BooleanExpression implements Cloneable
     @Override
     public Expression<?> getArg(int index) {
         if (index == 0){
-            return expr;
+            return predicate;
         }else{
             throw new IndexOutOfBoundsException();
         }
@@ -105,7 +105,7 @@ public final class BooleanBuilder extends BooleanExpression implements Cloneable
 
     @Override
     public List<Expression<?>> getArgs() {
-        return Collections.<Expression<?>>singletonList(expr);
+        return Collections.<Expression<?>>singletonList(predicate);
     }
 
     @Override
@@ -115,12 +115,12 @@ public final class BooleanBuilder extends BooleanExpression implements Cloneable
 
     @Nullable
     public Predicate getValue(){
-        return expr;
+        return predicate;
     }
 
     @Override
     public int hashCode(){
-        return expr != null ? expr.hashCode() : super.hashCode();
+        return predicate != null ? predicate.hashCode() : super.hashCode();
     }
 
     /**
@@ -129,13 +129,13 @@ public final class BooleanBuilder extends BooleanExpression implements Cloneable
      * @return
      */
     public boolean hasValue(){
-        return expr != null;
+        return predicate != null;
     }
 
     @Override
     public BooleanBuilder not(){
-        if (expr != null){
-            expr = expr.not();
+        if (predicate != null){
+            predicate = predicate.not();
         }
         return this;
     }
@@ -143,10 +143,10 @@ public final class BooleanBuilder extends BooleanExpression implements Cloneable
     @Override
     public BooleanBuilder or(@Nullable Predicate right) {
         if (right != null){
-            if (expr == null){
-                expr = right;
+            if (predicate == null){
+                predicate = right;
             }else{
-                expr = ExpressionUtils.or(expr, right);
+                predicate = ExpressionUtils.or(predicate, right);
             }
         }
         return this;
