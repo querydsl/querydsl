@@ -473,6 +473,11 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     }
     
     @Override
+    public ScalaWriter publicField(Type type, String name, String value) throws IOException {
+        return field(VAR, type, name, value);
+    }
+    
+    @Override
     public ScalaWriter publicFinal(Type type, String name) throws IOException {
         return field(VAL, type, name);        
     }

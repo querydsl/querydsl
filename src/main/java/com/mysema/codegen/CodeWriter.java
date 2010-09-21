@@ -87,6 +87,8 @@ public interface CodeWriter extends Appendable{
     CodeWriter protectedFinal(Type type, String name, String value) throws IOException;
     
     CodeWriter publicField(Type type, String name) throws IOException;
+    
+    CodeWriter publicField(Type type, String name, String value) throws IOException;
 
     CodeWriter publicFinal(Type type, String name) throws IOException;
 

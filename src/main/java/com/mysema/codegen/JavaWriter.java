@@ -411,6 +411,11 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
     }
     
     @Override
+    public JavaWriter publicField(Type type, String name, String value) throws IOException {
+        return field(PUBLIC, type, name, value);
+    }
+    
+    @Override
     public JavaWriter publicFinal(Type type, String name) throws IOException {
         return field(PUBLIC_FINAL, type, name);        
     }
