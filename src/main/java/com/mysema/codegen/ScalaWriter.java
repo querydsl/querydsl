@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -102,7 +103,10 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
             for (Method method : methods){            
                 try {
                     Object value = method.invoke(annotation);
-                    if (value == null || value.equals(method.getDefaultValue())){
+                    if (value == null 
+                     || value.equals(method.getDefaultValue())
+                     || (value.getClass().isArray() 
+                     && Arrays.equals((Object[])value, (Object[])method.getDefaultValue()))){
                         continue;
                     }else if (!first){
                         append(COMMA);
@@ -134,19 +138,32 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     
     @SuppressWarnings("unchecked")
     private void annotationConstant(Object value) throws IOException{
-         if (value instanceof Class){
-             appendType((Class)value).append(".class");             
-         }else if (value instanceof Number || value instanceof Boolean){
-             append(value.toString());
-         }else if (value instanceof Enum){
-             Enum enumValue = (Enum)value;
-             append(enumValue.getDeclaringClass().getName()+DOT+enumValue.name());
-         }else if (value instanceof String){
-             append(QUOTE + StringEscapeUtils.escapeJava(value.toString()) + QUOTE);
-         }else{
-             throw new IllegalArgumentException("Unsupported annotation value : " + value);
-         }
-     }
+        if (value.getClass().isArray()){
+            append("Array(");
+            boolean first = true;
+            for (Object o : (Object[])value){
+                if (!first){
+                    append(", ");
+                }
+                annotationConstant(o);
+                first = false;
+            }
+            append(")");        
+        }else if (value instanceof Class){
+            append("classOf[");
+            appendType((Class)value);
+            append("]");
+        }else if (value instanceof Number || value instanceof Boolean){
+            append(value.toString());
+        }else if (value instanceof Enum){
+            Enum enumValue = (Enum)value;
+            append(enumValue.getDeclaringClass().getName()+DOT+enumValue.name());
+        }else if (value instanceof String){
+            append(QUOTE + StringEscapeUtils.escapeJava(value.toString()) + QUOTE);
+        }else{
+            throw new IllegalArgumentException("Unsupported annotation value : " + value);
+        }
+    }
     
     private ScalaWriter appendType(Class<?> type) throws IOException{
         if (classes.contains(type.getName()) || packages.contains(type.getPackage().getName())){

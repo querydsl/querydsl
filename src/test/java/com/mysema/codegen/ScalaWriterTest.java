@@ -9,6 +9,8 @@ import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.validation.constraints.Max;
+
 import org.apache.commons.collections15.Transformer;
 import org.junit.Before;
 import org.junit.Test;
@@ -172,6 +174,18 @@ public class ScalaWriterTest {
         System.out.println(w);
     }
 
+    @Test
+    public void AnnotationConstant() throws IOException{
+        Max annotation = new MaxImpl(0l){
+            @Override
+            public Class<?>[] groups() {
+                return new Class[]{Object.class, String.class};
+            }
+        };
+        writer.annotation(annotation);
+        
+        System.out.println(w);        
+    }
     
     @Test
     public void Annotations() throws IOException{
