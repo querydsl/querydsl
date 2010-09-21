@@ -31,6 +31,7 @@ class ScalaBeanSerializer extends Serializer {
         
         // imports
         var importedClasses: Set[String] = getAnnotationTypes(model);
+        importedClasses.add("scala.reflect.BeanProperty");
         if (model.hasLists()){
             importedClasses.add(classOf[List[_]].getName);
         }
