@@ -54,7 +54,6 @@ class ScalaBeanSerializer extends Serializer {
         for (property <- model.getProperties()){
             property.getAnnotations.foreach( {writer.annotation(_);} )
             if (javaBeanSupport){
-                //writer.annotation(classOf[BeanProperty]);
                 writer.line("@BeanProperty");
             }            
             writer.publicField(property.getType(), property.getEscapedName, "_");

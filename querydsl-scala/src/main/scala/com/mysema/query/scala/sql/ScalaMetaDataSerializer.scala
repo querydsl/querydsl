@@ -55,7 +55,6 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
         }               
 
         val queryType = typeMappings.getPathType(model, model, true);
-        //QUser(path: String) extends RelationalPathBase[QUser](classOf[QUser], path)
         var modelName = writer.getRawName(model);
         var queryTypeName = writer.getRawName(queryType);
         var classHeader = String.format(classHeaderFormat, queryTypeName, modelName);

@@ -64,6 +64,12 @@ class JPAIntegrationTest {
         assertEquals(2, query from department count);
         assertEquals(1, query from company count);
         
+        entityManager.flush();
+        
+        assertEquals(2, query from user list user size);
+        assertEquals(2, query from department list user size);
+        assertEquals(1, query from company list user size);
+        
         assertEquals("Bob", query from user where (user.userName $eq "Bob") uniqueResult user.userName);
         assertEquals("Bob", query from user where (user.userName $like "Bo%") uniqueResult user.userName);        
         assertEquals("Ann", query from user where (user.department.name $eq "Sales") uniqueResult user.userName);
@@ -74,23 +80,23 @@ class JPAIntegrationTest {
 }
 
 @Entity
-class User(@BeanProperty @Id        val id: Integer,
-           @BeanProperty            val userName: String,
-           @BeanProperty @ManyToOne val department: Department)
+class User(@BeanProperty @Id        var id: Integer,
+           @BeanProperty            var userName: String,
+           @BeanProperty @ManyToOne var department: Department)
 
 @Entity
 class Department(
 
     @BeanProperty
     @Id
-    val id: Integer,
+    var id: Integer,
     
     @BeanProperty
-    val name: String,
+    var name: String,
     
     @ManyToOne
     @BeanProperty
-    val company: Company
+    var company: Company
 )
 
 @Entity
@@ -98,14 +104,14 @@ class Company (
  
     @BeanProperty
     @Id
-    val id : Integer,
+    var id : Integer,
     
     @BeanProperty
-    val name: String,
+    var name: String,
     
     @BeanProperty
     @OneToMany(mappedBy="company")
-    val departments: java.util.Set[Department]
+    var departments: java.util.Set[Department]
     
     
 )
