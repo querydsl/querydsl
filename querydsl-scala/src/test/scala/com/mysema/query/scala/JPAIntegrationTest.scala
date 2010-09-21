@@ -18,27 +18,27 @@ class JPAIntegrationTest {
         var entityManagerFactory = Persistence.createEntityManagerFactory("hsqldb");
         entityManager = entityManagerFactory.createEntityManager();
         
-        val company = new Company(1, "Example", null);
-//        company.name = "Example";
-//        company.id = 1;
+        val company = new Company();
+        company.name = "Example";
+        company.id = 1;
         
-        val department1 = new Department(2, "HR", company);
-//        department1.id = 2;
-//        department1.name = "HR";
-//        department1.company = company;
-        val department2 = new Department(3, "Sales", company);
-//        department2.id = 3;
-//        department2.name = "Sales";
-//        department2.company = company;
+        val department1 = new Department();
+        department1.id = 2;
+        department1.name = "HR";
+        department1.company = company;
+        val department2 = new Department();
+        department2.id = 3;
+        department2.name = "Sales";
+        department2.company = company;
         
-        val user1 = new User(4, "Bob", department1);
-        val user2 = new User(5, "Ann", department2);
-//        user1.id = 4;
-//        user2.id = 5;
-//        user1.userName = "Bob";         
-//        user2.userName = "Ann";        
-//        user1.department = department1;
-//        user2.department  = department2;
+        val user1 = new User();
+        val user2 = new User();
+        user1.id = 4;
+        user2.id = 5;
+        user1.userName = "Bob";         
+        user2.userName = "Ann";        
+        user1.department = department1;
+        user2.department  = department2;
         
         entityManager.getTransaction().begin();
         
@@ -67,8 +67,8 @@ class JPAIntegrationTest {
         entityManager.flush();
         
         assertEquals(2, query from user list user size);
-        assertEquals(2, query from department list user size);
-        assertEquals(1, query from company list user size);
+        assertEquals(2, query from department list department size);
+        assertEquals(1, query from company list company size);
         
         assertEquals("Bob", query from user where (user.userName $eq "Bob") uniqueResult user.userName);
         assertEquals("Bob", query from user where (user.userName $like "Bo%") uniqueResult user.userName);        
@@ -80,38 +80,23 @@ class JPAIntegrationTest {
 }
 
 @Entity
-class User(@BeanProperty @Id        var id: Integer,
-           @BeanProperty            var userName: String,
-           @BeanProperty @ManyToOne var department: Department)
+class User {
+    @BeanProperty @Id        var id: Integer = _;
+    @BeanProperty            var userName: String = _;
+    @BeanProperty @ManyToOne var department: Department = _;           
+}           
 
 @Entity
-class Department(
-
-    @BeanProperty
-    @Id
-    var id: Integer,
-    
-    @BeanProperty
-    var name: String,
-    
-    @ManyToOne
-    @BeanProperty
-    var company: Company
-)
+class Department {
+    @BeanProperty @Id        var id: Integer = _;    
+    @BeanProperty            var name: String = _;    
+    @BeanProperty @ManyToOne var company: Company = _;
+}
 
 @Entity
-class Company (
- 
-    @BeanProperty
-    @Id
-    var id : Integer,
-    
-    @BeanProperty
-    var name: String,
-    
-    @BeanProperty
-    @OneToMany(mappedBy="company")
-    var departments: java.util.Set[Department]
-    
-    
-)
+class Company { 
+    @BeanProperty @Id        var id : Integer = _;
+    @BeanProperty            var name: String = _;
+    @BeanProperty @OneToMany(mappedBy="company")
+                             var departments: java.util.Set[Department] = _;    
+}    

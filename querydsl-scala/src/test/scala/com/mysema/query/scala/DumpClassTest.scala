@@ -3,6 +3,8 @@ package com.mysema.query.scala
 import com.mysema.query.jpa.impl.JPAQuery
 import com.mysema.query.scala.Conversions._
 
+import com.mysema.query.annotations._
+
 import javax.persistence._;
 import org.junit.{Test,Before,After};
 import org.junit.Assert._
@@ -15,7 +17,7 @@ class DumpClassTest {
 
     @Test
     def test(){
-        List(classOf[U], classOf[D], classOf[C]).foreach(cl => 
+        List(classOf[Class1], classOf[Class2]).foreach(cl => 
         {
               println(cl.getName);
               cl.getDeclaredFields.foreach( f =>  {
@@ -33,39 +35,17 @@ class DumpClassTest {
     }
 }
 
-@Entity
-class U(   @BeanProperty @Id        var id: Integer,
-           @BeanProperty            var userName: String,
-           @BeanProperty @ManyToOne var department: Department)
-
-@Entity
-class D(
-
-    @BeanProperty
-    @Id
-    var id: Integer,
-    
-    @BeanProperty
-    var name: String,
-    
-    @ManyToOne
-    @BeanProperty
-    var company: C
+@QueryEntity
+class Class1(   
+           @BeanProperty @Id        var id: Integer,
+           @BeanProperty            var str: String,
+           @BeanProperty @ManyToOne var manyToOne: Class1
 )
-
-@Entity
-class C (
- 
-    @BeanProperty
-    @Id
-    var id : Integer,
-    
-    @BeanProperty
-    var name: String,
-    
-    @BeanProperty
-    @OneToMany(mappedBy="company")
-    var departments: java.util.Set[D]
-    
-    
-)
+           
+           
+@QueryEntity
+class Class2 {   
+           @BeanProperty @Id        var id: Integer = _;
+           @BeanProperty            var str: Class2 = _;
+           @BeanProperty @ManyToOne var manyToOne: Class2 = _
+}
