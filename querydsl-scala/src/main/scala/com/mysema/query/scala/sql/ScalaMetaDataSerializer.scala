@@ -166,7 +166,9 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
                 value.append("Arrays.asList("+local+"), Arrays.asList("+foreign+")");
             }
             value.append(")");
-            val t = new ClassType(classOf[ForeignKey[_]], new SimpleType(model.getPackageName+"."+foreignType, model.getPackageName, foreignType));
+            val t = new ClassType(
+                    classOf[ForeignKey[_]], 
+                    new SimpleType(model.getPackageName+"."+foreignType, model.getPackageName, foreignType));
             writer.publicFinal(t, fieldName, value.toString());
         }
     }

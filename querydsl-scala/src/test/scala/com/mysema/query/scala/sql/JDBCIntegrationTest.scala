@@ -63,7 +63,6 @@ class JDBCIntegrationTest {
     }
     
     @Test
-    @Ignore
     def Generation_with_Beantypes(){
         var namingStrategy = new DefaultNamingStrategy();
         var serializer = new ScalaMetaDataSerializer("Q",namingStrategy);

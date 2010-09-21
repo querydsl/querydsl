@@ -38,7 +38,7 @@ class ScalaBeanSerializer extends Serializer {
             importedClasses.add(classOf[Map[_,_]].getName);
         }
         
-        importedClasses.foreach( { writer.importClasses(_)} )
+        writer.importClasses(importedClasses.toArray(new Array[String](0)):_*);
                
         // javadoc        
         writer.javadoc(simpleName + javadocSuffix);
@@ -57,7 +57,7 @@ class ScalaBeanSerializer extends Serializer {
                 //writer.annotation(classOf[BeanProperty]);
                 writer.line("@BeanProperty");
             }            
-            writer.publicField(property.getType(), property.getEscapedName);
+            writer.publicField(property.getType(), property.getEscapedName, "_");
         }
                 
         writer.end();
