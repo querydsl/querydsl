@@ -18,31 +18,31 @@ class JPAIntegrationTest {
         var entityManagerFactory = Persistence.createEntityManagerFactory("hsqldb");
         entityManager = entityManagerFactory.createEntityManager();
         
-        val company = new Company();
-        company.name = "Example";
-        company.id = 1;
+        val company = new Company(1, "Example", null);
+//        company.name = "Example";
+//        company.id = 1;
         
-        val department1 = new Department();
-        department1.id = 2;
-        department1.name = "HR";
-        department1.company = company;
-        val department2 = new Department();
-        department2.id = 3;
-        department2.name = "Sales";
-        department2.company = company;
+        val department1 = new Department(2, "HR", company);
+//        department1.id = 2;
+//        department1.name = "HR";
+//        department1.company = company;
+        val department2 = new Department(3, "Sales", company);
+//        department2.id = 3;
+//        department2.name = "Sales";
+//        department2.company = company;
         
-        val user1 = new User();
-        val user2 = new User();
-        user1.id = 4;
-        user2.id = 5;
-        user1.userName = "Bob";         
-        user2.userName = "Ann";        
-        user1.department = department1;
-        user2.department  = department2;
+        val user1 = new User(4, "Bob", department1);
+        val user2 = new User(5, "Ann", department2);
+//        user1.id = 4;
+//        user2.id = 5;
+//        user1.userName = "Bob";         
+//        user2.userName = "Ann";        
+//        user1.department = department1;
+//        user2.department  = department2;
         
         entityManager.getTransaction().begin();
         
-        List(company, department1, department2, user1, user2).foreach( {entityManager.persist(_);} );
+        List(company, department1, department2, user1, user2).foreach( {entityManager.persist(_)} );
         entityManager.flush();
     }
     
@@ -56,9 +56,9 @@ class JPAIntegrationTest {
     
     @Test
     def test(){
-        var user = alias(classOf[User]);
-        var department = alias(classOf[Department]);
-        var company = alias(classOf[Company]);
+        val user = alias(classOf[User]);
+        val department = alias(classOf[Department]);
+        val company = alias(classOf[Company]);
         
         assertEquals(2, query from user count);
         assertEquals(2, query from department count);
@@ -74,48 +74,38 @@ class JPAIntegrationTest {
 }
 
 @Entity
-class User {
-    
-    @BeanProperty
-    @Id
-    var id: Integer = _
-    
-    @BeanProperty
-    var userName: String = _
-    
-    @ManyToOne
-    @BeanProperty
-    var department: Department = _
-}
+class User(@BeanProperty @Id        val id: Integer,
+           @BeanProperty            val userName: String,
+           @BeanProperty @ManyToOne val department: Department)
 
 @Entity
-class Department {
+class Department(
 
     @BeanProperty
     @Id
-    var id: Integer = _
+    val id: Integer,
     
     @BeanProperty
-    var name: String = _
+    val name: String,
     
     @ManyToOne
     @BeanProperty
-    var company: Company = _
-}
+    val company: Company
+)
 
 @Entity
-class Company {
+class Company (
  
     @BeanProperty
     @Id
-    var id : Integer = _
+    val id : Integer,
     
     @BeanProperty
-    var name: String = _
+    val name: String,
     
     @BeanProperty
     @OneToMany(mappedBy="company")
-    var departments: java.util.Set[Department] = _
+    val departments: java.util.Set[Department]
     
     
-}
+)
