@@ -114,17 +114,21 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
     def serializePrimaryKeys(model: EntityType, writer: CodeWriter, primaryKeys: Collection[PrimaryKeyData]) {
         for (primaryKey <- primaryKeys){
             val fieldName = namingStrategy.getPropertyNameForPrimaryKey(primaryKey.getName(), model);
-            val value: StringBuilder = new StringBuilder("createPrimaryKey(");
-            var first = true;
-            for (column <- primaryKey.getColumns()){
-                if (!first){
-                    value.append(", ");
-                }
-                value.append(namingStrategy.getPropertyName(column, namePrefix, model));
-                first = false;
-            }
+            val value = new StringBuilder("createPrimaryKey(");
+//            var first = true;
+//            for (column <- primaryKey.getColumns()){
+//                if (!first){
+//                    value.append(", ");
+//                }
+//                value.append(namingStrategy.getPropertyName(column, namePrefix, model));
+//                first = false;
+//            }
+            value.append(primaryKey.getColumns().map({ column =>
+                namingStrategy.getPropertyName(column, namePrefix, model)
+            }).mkString(", "));
+            
             value.append(")");
-            writer.publicFinal(new ClassType(classOf[PrimaryKey[_]], model), fieldName, value.toString());
+            writer.publicFinal(new ClassType(classOf[PrimaryKey[_]], model), fieldName, value.toString);
         }
     }
 
