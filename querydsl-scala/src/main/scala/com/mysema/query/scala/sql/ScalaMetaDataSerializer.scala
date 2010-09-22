@@ -88,7 +88,7 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
     }
     
     def serializeProperties(model: EntityType, writer: CodeWriter, properties: Collection[Property]){
-        for (property <- properties){
+        properties foreach { property =>
             val methodName: String = property.getType.getCategory match {
                 case COMPARABLE => "createComparable";
                 case BOOLEAN => "createBoolean";
@@ -112,28 +112,19 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
     }
     
     def serializePrimaryKeys(model: EntityType, writer: CodeWriter, primaryKeys: Collection[PrimaryKeyData]) {
-        for (primaryKey <- primaryKeys){
+        primaryKeys foreach { primaryKey =>
             val fieldName = namingStrategy.getPropertyNameForPrimaryKey(primaryKey.getName(), model);
             val value = new StringBuilder("createPrimaryKey(");
-//            var first = true;
-//            for (column <- primaryKey.getColumns()){
-//                if (!first){
-//                    value.append(", ");
-//                }
-//                value.append(namingStrategy.getPropertyName(column, namePrefix, model));
-//                first = false;
-//            }
             value.append(primaryKey.getColumns().map({ column =>
                 namingStrategy.getPropertyName(column, namePrefix, model)
             }).mkString(", "));
-            
             value.append(")");
             writer.publicFinal(new ClassType(classOf[PrimaryKey[_]], model), fieldName, value.toString);
         }
     }
 
     def serializeForeignKeys(model: EntityType, writer: CodeWriter, foreignKeys: Collection[_ <: KeyData] , inverse: Boolean){
-        for (foreignKey <- foreignKeys){
+        foreignKeys foreach { foreignKey =>
             var fieldName: String = null;
             if (inverse){
                 fieldName = namingStrategy.getPropertyNameForInverseForeignKey(foreignKey.getName, model);
@@ -177,10 +168,8 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
     }
 
     def getAnnotationTypes(model: EntityType): Set[String] = {
-        var imports = new HashSet[String]();
-        for (annotation <- model.getAnnotations){
-            imports.add(annotation.annotationType.getName);
-        }
+        val imports = new HashSet[String]();
+        imports.addAll(model.getAnnotations.map(_.annotationType.getName))
         imports;
     }    
     
