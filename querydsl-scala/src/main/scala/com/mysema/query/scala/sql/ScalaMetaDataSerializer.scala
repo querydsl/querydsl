@@ -45,15 +45,13 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
       importedClasses.add(classOf[Map[_, _]].getName);
     }
 
-    importedClasses.foreach({ writer.importClasses(_) })
+    writer.importClasses(importedClasses.toArray: _*);
 
     // javadoc        
     writer.javadoc(simpleName + javadocSuffix);
 
     // header
-    model.getAnnotations foreach { annotation =>
-      writer.annotation(annotation);
-    }
+    model.getAnnotations.foreach(writer.annotation(_));
 
     val queryType = typeMappings.getPathType(model, model, true);
     var modelName = writer.getRawName(model);

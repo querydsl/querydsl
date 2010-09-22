@@ -25,13 +25,15 @@ class ScalaBeanSerializer extends Serializer {
     val simpleName = model.getSimpleName;
 
     // package
-    if (!model.getPackageName.isEmpty()) {
+    if (!model.getPackageName.isEmpty) {
       writer.packageDecl(model.getPackageName);
     }
 
     // imports
     val importedClasses = getAnnotationTypes(model);
-    importedClasses.add("scala.reflect.BeanProperty");
+    if (javaBeanSupport) {
+      importedClasses.add("scala.reflect.BeanProperty");    
+    }    
     if (model.hasLists()) {
       importedClasses.add(classOf[List[_]].getName);
     }
