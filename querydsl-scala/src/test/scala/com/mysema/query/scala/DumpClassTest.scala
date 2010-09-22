@@ -35,9 +35,9 @@ class DumpClassTest {
 
 @QueryEntity
 class Class1(
-  @BeanProperty@Id var id: Integer,
+  @BeanProperty @Id var id: Integer,
   @BeanProperty var str: String,
-  @BeanProperty@ManyToOne var manyToOne: Class1)
+  @BeanProperty @ManyToOne var manyToOne: Class1)
 
 @QueryEntity
 class Class2 {
