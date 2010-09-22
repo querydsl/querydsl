@@ -15,31 +15,31 @@ import org.junit.Assert._
 import scala.collection.JavaConversions._
 
 class ScalaMetaDataSerializerTest {
-    
-    var entityType: EntityType = null;
-    
-    val writer = new StringWriter();
-    
-    @Before
-    def setUp(){
-        // type
-        val typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false,false);
-        entityType = new EntityType("Q", typeModel);
 
-        // properties
-        List(classOf[java.lang.Boolean], classOf[Comparable[_]], classOf[Integer], classOf[java.util.Date], classOf[java.sql.Date], classOf[java.sql.Time])
-        .foreach(cl => {
-            var classType = new ClassType(TypeCategory.get(cl.getName), cl);
-            entityType.addProperty(new Property(entityType, StringUtils.uncapitalize(cl.getSimpleName), classType, new Array[String](0)));
-        })        
-    }
+  var entityType: EntityType = null;
 
-    @Test
-    def Print(){
-        val namingStrategy = new DefaultNamingStrategy();
-        val serializer = new ScalaMetaDataSerializer("Q",namingStrategy);
-        serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer));
-        val str = writer.toString();
-        System.err.println(str);
-    }
+  val writer = new StringWriter();
+
+  @Before
+  def setUp() {
+    // type
+    val typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false, false);
+    entityType = new EntityType("Q", typeModel);
+
+    // properties
+    List(classOf[java.lang.Boolean], classOf[Comparable[_]], classOf[Integer], classOf[java.util.Date], classOf[java.sql.Date], classOf[java.sql.Time])
+      .foreach(cl => {
+        var classType = new ClassType(TypeCategory.get(cl.getName), cl);
+        entityType.addProperty(new Property(entityType, StringUtils.uncapitalize(cl.getSimpleName), classType, new Array[String](0)));
+      })
+  }
+
+  @Test
+  def Print() {
+    val namingStrategy = new DefaultNamingStrategy();
+    val serializer = new ScalaMetaDataSerializer("Q", namingStrategy);
+    serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer));
+    val str = writer.toString();
+    System.err.println(str);
+  }
 }

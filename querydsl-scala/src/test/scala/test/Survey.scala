@@ -12,16 +12,16 @@ import scala.reflect.BeanProperty;
 @Table("SURVEY")
 class Survey {
 
-    @Column("ID")
-    @NotNull
-    @BeanProperty
-    var id: Integer = _;
+  @Column("ID")
+  @NotNull
+  @BeanProperty
+  var id: Integer = _;
 
-    @Column("NAME")
-    @NotNull
-    @Size(max=30)
-    @BeanProperty
-    var name: String = _;
+  @Column("NAME")
+  @NotNull
+  @Size(max = 30)
+  @BeanProperty
+  var name: String = _;
 
 }
 

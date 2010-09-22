@@ -12,11 +12,11 @@ import java.util.Arrays;
  */
 @Table("SURVEY")
 class QSurvey(path: String) extends RelationalPathBase[Survey](classOf[Survey], path) {
-    val id: NumberPath[Integer] = createNumber("ID", classOf[Integer]);
+  val id: NumberPath[Integer] = createNumber("ID", classOf[Integer]);
 
-    val name: StringPath = createString("NAME");
+  val name: StringPath = createString("NAME");
 
-    val sysIdx54: PrimaryKey[Survey] = createPrimaryKey(id, name);
+  val sysIdx54: PrimaryKey[Survey] = createPrimaryKey(id, name);
 
 }
 
