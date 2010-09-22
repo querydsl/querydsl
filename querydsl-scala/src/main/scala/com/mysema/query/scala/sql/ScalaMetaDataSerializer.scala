@@ -15,6 +15,7 @@ import java.io.IOException
 
 import scala.reflect.BeanProperty
 import scala.collection.JavaConversions._
+import scala.collection.mutable.Set
 
 class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: NamingStrategy) extends Serializer {
 
@@ -35,7 +36,7 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
     // imports
     writer.importPackages("com.mysema.query.sql", "com.mysema.query.types.path");
 
-    var importedClasses: Set[String] = getAnnotationTypes(model);
+    var importedClasses = getAnnotationTypes(model);
     importedClasses.add("java.util.Arrays");
     if (model.hasLists()) {
       importedClasses.add(classOf[List[_]].getName);
@@ -50,7 +51,7 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
     writer.javadoc(simpleName + javadocSuffix);
 
     // header
-    for (annotation <- model.getAnnotations) {
+    model.getAnnotations foreach { annotation =>
       writer.annotation(annotation);
     }
 
@@ -168,9 +169,8 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
   }
 
   def getAnnotationTypes(model: EntityType): Set[String] = {
-    val imports = new HashSet[String]();
-    imports.addAll(model.getAnnotations.map(_.annotationType.getName))
-    imports;
+    val imports = Set();
+    imports ++ (model.getAnnotations.map(_.annotationType.getName))
   }
 
 }
