@@ -52,7 +52,26 @@ class ScalaBeanSerializerTest {
   def Print() {
     val serializer = new com.mysema.query.scala.sql.ScalaBeanSerializer();
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer));
-    val str = writer.toString();
-    System.err.println(str);
+    val str = writer.toString().replaceAll("\\s+", " ");
+    assertTrue(str.contains("package com.mysema.query;"));
+    assertTrue(str.contains("import scala.reflect.BeanProperty;"));
+    assertTrue(str.contains("import java.util.List;"));
+    assertTrue(str.contains("import java.util.Map;"));
+    assertTrue(str.contains("/**"));
+    assertTrue(str.contains("* DomainClass is a Querydsl bean type"));
+    assertTrue(str.contains("*/"));
+    assertTrue(str.contains("class DomainClass {"));
+    assertTrue(str.contains("@BeanProperty var arrayField: Array[String] = _;"));
+    assertTrue(str.contains("@BeanProperty var boolean_: boolean = _;"));
+    assertTrue(str.contains("@BeanProperty var collection: java.util.Collection[DomainClass] = _;"));
+    assertTrue(str.contains("@BeanProperty var comparable: Comparable = _;"));
+    assertTrue(str.contains("@BeanProperty var date: java.util.Date = _;"));
+    assertTrue(str.contains("@BeanProperty var entityField: DomainClass = _;"));
+    assertTrue(str.contains("@BeanProperty var integer: Integer = _;"));
+    assertTrue(str.contains("@BeanProperty var listField: List[DomainClass] = _;"));
+    assertTrue(str.contains("@BeanProperty var mapField: Map[DomainClass, DomainClass] = _;"));
+    assertTrue(str.contains("@BeanProperty var setField: java.util.Set[DomainClass] = _;"));
+    assertTrue(str.contains("@BeanProperty var time: java.sql.Time = _;"));
+    assertTrue(str.contains("}"));
   }
 }
