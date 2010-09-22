@@ -41,6 +41,9 @@
     <module>../querydsl-lucene</module>
     <module>../querydsl-hibernate-search</module>
     
+    <!-- NoSQL -->
+    <module>../querydsl-mongodb</module>
+    
     <!-- Languages -->        
     <module>../querydsl-scala</module>
   </modules>
