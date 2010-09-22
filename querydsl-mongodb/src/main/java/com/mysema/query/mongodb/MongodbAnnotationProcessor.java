@@ -27,18 +27,17 @@ import com.mysema.query.apt.Processor;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class MongodbAnnotationProcessor extends AbstractProcessor{
 
-    private Class<? extends Annotation> entities, entity, superType, embeddable, skip;
+    private Class<? extends Annotation> entities, entity, embeddable, skip;
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
         entities = QueryEntities.class;
         entity = Entity.class;
-        superType = null;
         embeddable = Embedded.class;
         skip = Transient.class;
 
-        DefaultConfiguration configuration = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), entities, entity, superType, embeddable, skip);
+        DefaultConfiguration configuration = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), entities, entity, null, embeddable, skip);
 
         Processor processor = new Processor(processingEnv, roundEnv, configuration);
         processor.process();
