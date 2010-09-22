@@ -9,6 +9,7 @@ import java.io.IOException
 
 import scala.reflect.BeanProperty
 import scala.collection.JavaConversions._
+import scala.collection.mutable.Set
 
 /**
  * @author tiwe
@@ -38,7 +39,7 @@ class ScalaBeanSerializer extends Serializer {
             importedClasses.add(classOf[Map[_,_]].getName);
         }
         
-        writer.importClasses(importedClasses.toArray(new Array[String](0)):_*);
+        writer.importClasses(importedClasses.toArray:_*);
                
         // javadoc        
         writer.javadoc(simpleName + javadocSuffix);
@@ -61,12 +62,11 @@ class ScalaBeanSerializer extends Serializer {
     }
 
     def getAnnotationTypes(model: EntityType): Set[String] = {
-        var imports = new HashSet[String]();
-        imports.addAll(model.getAnnotations.map(_.annotationType.getName))
+        val imports: Set[String] = Set()
+        imports ++ model.getAnnotations.map(_.annotationType.getName)
         // flatMap flattens the results of the map-function.
         // E.g. List(List(1,2,3), List(4,5,6)).flatMap(_.map(_*3)) ends up as List(3, 6, 9, 12, 15, 18).
-        imports.addAll(model.getProperties.flatMap(_.getAnnotations.map(_.annotationType.getName)))
-        imports;
+        imports ++ model.getProperties.flatMap(_.getAnnotations.map(_.annotationType.getName))
     }
     
 }
