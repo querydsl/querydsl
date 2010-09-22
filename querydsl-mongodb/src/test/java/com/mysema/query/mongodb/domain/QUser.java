@@ -5,8 +5,12 @@
  */
 package com.mysema.query.mongodb.domain;
 
+import java.util.Date;
+
 import com.mysema.query.types.PathMetadataFactory;
+import com.mysema.query.types.path.DatePath;
 import com.mysema.query.types.path.EntityPathBase;
+import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 
 public class QUser extends EntityPathBase<User> {
@@ -21,4 +25,6 @@ public class QUser extends EntityPathBase<User> {
     public final StringPath firstName = createString("firstName");
     public final StringPath lastName = createString("lastName");
 
+    public final DatePath<Date> created = createDate("date", Date.class);
+    public final NumberPath<Integer> age = createNumber("age", Integer.class);
 }

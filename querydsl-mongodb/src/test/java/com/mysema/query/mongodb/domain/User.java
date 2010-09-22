@@ -5,6 +5,8 @@
  */
 package com.mysema.query.mongodb.domain;
 
+import java.util.Date;
+
 import org.bson.types.ObjectId;
 
 import com.google.code.morphia.annotations.Entity;
@@ -18,11 +20,20 @@ public class User {
     String firstName;
     String lastName;
     
+    Date created;
+    
+    int age;
+    
     public User() {
     }
 
     public User(String firstName, String lastName) {
         this.firstName = firstName; this.lastName = lastName;
+        this.created = new Date();
+    }
+    
+    public User(String firstName, String lastName, int age, Date created) {
+        this.firstName = firstName; this.lastName = lastName; this.age = age; this.created = created;
     }
 
     @Override

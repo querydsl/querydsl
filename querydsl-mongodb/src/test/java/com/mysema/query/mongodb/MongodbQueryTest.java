@@ -8,6 +8,7 @@ package com.mysema.query.mongodb;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Before;
@@ -88,6 +89,36 @@ public class MongodbQueryTest {
         assertQuery(user.firstName.matches("Jaakko").not(), u3, u4, u2);
     }
     
+    //This is not supported yet
+//    @Test
+//    public void testUniqueResult() {
+//        
+//        addUser("Dille", "Duplikaatti");
+//        addUser("Dille", "Duplikaatti");
+//        
+//        assertEquals(2, where(user.firstName.eq("Dille")).count());
+//        assertEquals(1, where(user.firstName.eq("Dille")).countDistinct());
+//        
+//    }
+    
+    @Test
+    public void testIterate() {
+
+        User a = addUser("A", "A");
+        User b = addUser("A1", "B");
+        User c = addUser("A2", "C");
+
+        Iterator<User> i = where(user.firstName.startsWith("A"))
+                            .orderBy(user.firstName.asc())
+                            .iterate();
+
+        assertEquals(a, i.next());
+        assertEquals(b, i.next());
+        assertEquals(c, i.next());
+        assertEquals(false, i.hasNext());
+
+    }
+    
     private void assertQuery(Predicate e, User ... expected) {
         assertQuery(where(e).orderBy(user.lastName.asc(), user.firstName.asc()), expected );
     }
@@ -102,7 +133,7 @@ public class MongodbQueryTest {
     }
     
     private void assertQuery(MongodbQuery<User> query, User ... expected ) {
-        System.out.println(query.toString());
+        //System.out.println(query.toString());
         List<User> results = query.list();
         
         assertNotNull(results);

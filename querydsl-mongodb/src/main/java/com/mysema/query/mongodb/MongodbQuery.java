@@ -138,8 +138,7 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
 
     @Override
     public List<K> listDistinct() {
-        queryMixin.setDistinct(true);
-        return list();
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -164,8 +163,7 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
 
     @Override
     public long countDistinct() {
-        queryMixin.setDistinct(true);
-        return count();
+        throw new UnsupportedOperationException();
     }
 
     private DBObject createQuery() {
