@@ -1,0 +1,14 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<sect1 id="lucene_integration" revision="1">
+  
+  <title>Querying Mongodb</title>
+  
+  <para>This chapter describes the querying functionality of the Mongodb module.</para>
+  
+  <sect2>
+  
+    <para>TODO</para>
+    
+  </sect2>
+</sect1>
