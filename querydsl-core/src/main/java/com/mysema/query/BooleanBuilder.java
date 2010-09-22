@@ -26,7 +26,7 @@ import com.mysema.query.types.expr.BooleanExpression;
  *
  * @author tiwe
  */
-public final class BooleanBuilder extends BooleanExpression implements Cloneable, Operation<Boolean>{
+public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boolean>{
 
     private static final long serialVersionUID = -4129485177345542519L;
 
@@ -48,7 +48,6 @@ public final class BooleanBuilder extends BooleanExpression implements Cloneable
         }
     }
     
-    @Override
     public BooleanBuilder and(@Nullable Predicate right) {
         if (right != null){
             if (predicate == null){
@@ -140,7 +139,6 @@ public final class BooleanBuilder extends BooleanExpression implements Cloneable
         return this;
     }
 
-    @Override
     public BooleanBuilder or(@Nullable Predicate right) {
         if (right != null){
             if (predicate == null){
@@ -168,6 +166,16 @@ public final class BooleanBuilder extends BooleanExpression implements Cloneable
 
     public BooleanBuilder orNot(Predicate right){
         return or(right.not());
+    }
+
+    @Override
+    public Class<? extends Boolean> getType() {
+        return Boolean.class;
+    }
+    
+    @Override
+    public String toString(){
+        return predicate != null ? predicate.toString() : super.toString();
     }
     
 }
