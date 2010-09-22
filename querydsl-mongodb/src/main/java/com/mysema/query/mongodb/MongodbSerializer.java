@@ -70,15 +70,6 @@ public class MongodbSerializer implements Visitor<Object, Void> {
     @Override
     public Object visit(Operation<?> expr, Void context) {
         Operator<?> op = expr.getOperator();
-        // if (op == Ops.OR) {
-        // return toTwoHandSidedQuery(operation, Occur.SHOULD, metadata);
-        // } else if (op == Ops.NOT) {
-        // BooleanQuery bq = new BooleanQuery();
-        // bq.add(new BooleanClause(toQuery(operation.getArg(0), metadata),
-        // Occur.MUST_NOT));
-        // return bq;
-        // } else if (op == Ops.LIKE) {
-        // return like(operation, metadata);
         if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE ) {
             return dbo(dboKey(expr, 0), dboValue(expr, 1));
         }
