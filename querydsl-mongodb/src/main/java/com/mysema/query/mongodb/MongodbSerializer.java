@@ -16,8 +16,7 @@ import com.mongodb.DBObject;
 import com.mysema.query.types.*;
 
 /**
- * Serializes the given QueryDSL query to a DBObject querty format MongoDB
- * understands.
+ * Serializes the given Querydsl query to a DBObject query for MongoDB
  * 
  * @author laimw
  * 

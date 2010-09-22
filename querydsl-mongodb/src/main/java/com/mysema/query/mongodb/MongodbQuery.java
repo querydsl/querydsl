@@ -28,7 +28,7 @@ import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Predicate;
 
 /**
- * MongoDb query
+ * Mongodb query
  * 
  * @author laimw
  * 

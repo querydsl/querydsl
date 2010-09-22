@@ -148,17 +148,14 @@ public class MongodbQueryTest {
     private void assertQuery(Predicate e, OrderSpecifier<?> orderBy, User ... expected ) {
         assertQuery(where(e).orderBy(orderBy), expected);
     }
-
     
     private MongodbQuery<User> where(Predicate ... e) {
-        return new MongodbQuery<User>(morphia, ds, user).where(e);
+        return query().where(e);
     }
     
     private MongodbQuery<User> query() {
         return new MongodbQuery<User>(morphia, ds, user);
     }
-    
-    
     
     private void assertQuery(MongodbQuery<User> query, User ... expected ) {
         //System.out.println(query.toString());
