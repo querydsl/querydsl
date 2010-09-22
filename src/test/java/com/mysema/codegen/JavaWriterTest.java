@@ -6,6 +6,7 @@
 package com.mysema.codegen;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -21,6 +22,7 @@ import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
 
 public class JavaWriterTest {
@@ -56,6 +58,24 @@ public class JavaWriterTest {
         testInterface2 = new SimpleType("com.mysema.codegen.TestInterface2","com.mysema.codegen","TestInterface2");
     }
 
+    @Test
+    public void Arrays() throws IOException{
+        writer.beginClass(new SimpleType("Main"));
+        writer.field(Types.STRING.asArrayType(), "stringArray");
+        writer.beginPublicMethod(Types.VOID, "main", new Parameter("args",Types.STRING.asArrayType()));
+        writer.line("//");
+        writer.end();        
+        writer.beginPublicMethod(Types.VOID, "main2", new Parameter("args",new ClassType(TypeCategory.ARRAY,String[].class)));
+        writer.line("//");
+        writer.end();        
+        writer.end();
+        
+        System.out.println(w);
+        assertTrue(w.toString().contains("String[] stringArray;"));
+        assertTrue(w.toString().contains("public void main(String[] args) {"));
+        assertTrue(w.toString().contains("public void main2(String[] args) {"));
+    }
+    
     @Test
     public void Primitive_Arrays(){
         ClassType byteArray = new ClassType(byte[].class);
