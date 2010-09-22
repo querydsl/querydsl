@@ -28,11 +28,18 @@
 	  <excludes>
 	  	<exclude>cglib:cglib</exclude>
 		<exclude>com.mysema.querydsl:querydsl-sql</exclude>
-	    <exclude>org.hibernate:hibernate-entitymanager</exclude>
+	    <exclude>com.mysema.querydsl:querydsl-jpa</exclude>
 		<exclude>org.slf4j:slf4j-api</exclude>
-		<exclude>org.slf4j:slf4j-log4j12</exclude>				
+		<exclude>org.slf4j:slf4j-log4j12</exclude>					
 	  </excludes>
     </dependencySet>
+    <dependencySet>
+      <unpack>true</unpack>
+	  <scope>provided</scope>
+	  <includes>
+	  	<include>org.hibernate:hibernate-annotations</include>					
+	  </includes>
+    </dependencySet>	
   </dependencySets>
 </assembly>
 
