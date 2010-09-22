@@ -23,8 +23,8 @@ import com.mysema.query.types.*;
  */
 public class MongodbSerializer implements Visitor<Object, Void> {
 
-    public Object handle(Expression<?> where) {
-        return where != null ? where.accept(this, null) : new BasicDBObject();
+    public Object handle(Expression<?> expression) {
+        return expression.accept(this, null);
     }
     
     public DBObject toSort(List<OrderSpecifier<?>> orderBys) {

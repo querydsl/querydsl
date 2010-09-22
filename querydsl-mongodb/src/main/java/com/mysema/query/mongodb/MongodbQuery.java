@@ -12,6 +12,7 @@ import java.util.List;
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
 import com.google.code.morphia.mapping.cache.DefaultEntityCache;
+import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -37,6 +38,8 @@ import com.mysema.query.types.Predicate;
 public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
         SimpleProjectable<K> {
 
+    private static final MongodbSerializer serializer = new MongodbSerializer();
+    
     private final QueryMixin<MongodbQuery<K>> queryMixin;
     
     private final EntityPath<K> ePath;
@@ -46,8 +49,6 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
     private final Datastore ds;
     
     private final DBCollection coll;
-    
-    private final MongodbSerializer serializer = new MongodbSerializer();
     
     private final DefaultEntityCache cache = new DefaultEntityCache();
     
@@ -175,7 +176,12 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
 
     private DBObject createQuery() {
         QueryMetadata metadata = queryMixin.getMetadata();
-        return (DBObject) serializer.handle(metadata.getWhere());
+        if (metadata.getWhere() != null){
+            return (DBObject) serializer.handle(metadata.getWhere());    
+        }else{
+            return new BasicDBObject();
+        }
+        
     }
 
     @Override
