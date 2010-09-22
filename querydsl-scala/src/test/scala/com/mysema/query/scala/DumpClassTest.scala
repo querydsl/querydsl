@@ -21,14 +21,12 @@ class DumpClassTest {
       {
         println(cl.getName);
         cl.getDeclaredFields.foreach(f => {
-          println(f.getName);
-          println(" " + java.util.Arrays.asList(f.getAnnotations: _*));
-
+          val annotations = java.util.Arrays.asList(f.getAnnotations: _*).map("@" + _.annotationType.getSimpleName).mkString(" ");
+          println(" field " + annotations + " " + f.getName);
         });
-        println();
-        cl.getDeclaredMethods.foreach(m => {
-          println(m.getName);
-          println(" " + java.util.Arrays.asList(m.getReturnType.getAnnotations: _*));
+        cl.getDeclaredMethods.foreach(m => {          
+          val annotations = java.util.Arrays.asList(m.getReturnType.getAnnotations: _*).map("@" + _.annotationType.getSimpleName).mkString(" ");
+          println(" method " + annotations + " " + m.getName);
         });
         println();
       });
