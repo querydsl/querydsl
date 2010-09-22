@@ -21,7 +21,7 @@ class ScalaBeanSerializerTest {
     @Before
     def setUp(){
         // type
-        var typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false,false);
+        val typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false,false);
         entityType = new EntityType("Q", typeModel);
 
         // property
@@ -39,20 +39,20 @@ class ScalaBeanSerializerTest {
         })
         
         // constructor
-        var firstName = new Parameter("firstName", new ClassType(TypeCategory.STRING, classOf[String]));
-        var lastName = new Parameter("lastName", new ClassType(TypeCategory.STRING, classOf[String]));
+        val firstName = new Parameter("firstName", new ClassType(TypeCategory.STRING, classOf[String]));
+        val lastName = new Parameter("lastName", new ClassType(TypeCategory.STRING, classOf[String]));
         entityType.addConstructor(new Constructor(List(firstName, lastName)));
 
         // method
-        var method = new Method(Types.STRING, "method", "abc", Types.STRING);
+        val method = new Method(Types.STRING, "method", "abc", Types.STRING);
         entityType.addMethod(method);
     }
 
     @Test
     def Print(){
-        var serializer = new com.mysema.query.scala.sql.ScalaBeanSerializer();
+        val serializer = new com.mysema.query.scala.sql.ScalaBeanSerializer();
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer));
-        var str = writer.toString();
+        val str = writer.toString();
         System.err.println(str);
     }
 }

@@ -18,12 +18,12 @@ class ScalaMetaDataSerializerTest {
     
     var entityType: EntityType = null;
     
-    var writer = new StringWriter();
+    val writer = new StringWriter();
     
     @Before
     def setUp(){
         // type
-        var typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false,false);
+        val typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false,false);
         entityType = new EntityType("Q", typeModel);
 
         // properties
@@ -36,10 +36,10 @@ class ScalaMetaDataSerializerTest {
 
     @Test
     def Print(){
-        var namingStrategy = new DefaultNamingStrategy();
-        var serializer = new ScalaMetaDataSerializer("Q",namingStrategy);
+        val namingStrategy = new DefaultNamingStrategy();
+        val serializer = new ScalaMetaDataSerializer("Q",namingStrategy);
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer));
-        var str = writer.toString();
+        val str = writer.toString();
         System.err.println(str);
     }
 }

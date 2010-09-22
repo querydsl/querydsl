@@ -8,8 +8,8 @@ class QuerySyntaxTest {
     
     @Test
     def Path_Creation(){
-        var c1 = new QCategory("c");
-        var c2 = QCategory as "c";
+        val c1 = new QCategory("c");
+        val c2 = QCategory as "c";
         assertEquals(c1, c2);
     }
     
@@ -21,9 +21,9 @@ class QuerySyntaxTest {
 //          .addOrder(asc("c.name"))
 //          .list
         
-        var c = new QCategory("c");
-        var c1 = new QCategory("c1"); 
-        var b = new QBook("b");
+        val c = new QCategory("c");
+        val c1 = new QCategory("c1"); 
+        val b = new QBook("b");
         query.from(c).innerJoin(b).from(c1) 
             .where(c1.name like "a%") 
             .orderBy(c.name asc) 
