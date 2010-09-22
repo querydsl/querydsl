@@ -19,6 +19,7 @@ import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
 
 public class ScalaWriterTest {
@@ -85,11 +86,15 @@ public class ScalaWriterTest {
         writer.beginPublicMethod(Types.VOID, "main", new Parameter("args",Types.STRING.asArrayType()));
         writer.line("//");
         writer.end();        
+        writer.beginPublicMethod(Types.VOID, "main2", new Parameter("args",new ClassType(TypeCategory.ARRAY,String[].class)));
+        writer.line("//");
+        writer.end();        
         writer.end();
         
         System.out.println(w);
         assertTrue(w.toString().contains("var stringArray: Array[String];"));
         assertTrue(w.toString().contains("def main(args: Array[String])"));
+        assertTrue(w.toString().contains("def main2(args: Array[String])"));
     }
     
     @Test

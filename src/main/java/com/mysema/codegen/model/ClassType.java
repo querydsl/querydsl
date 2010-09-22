@@ -145,11 +145,7 @@ public class ClassType implements Type {
 
     @Override
     public String getPackageName() {
-        if (javaClass.getPackage() != null){
-            return javaClass.getPackage().getName();
-        }else{
-            return "";
-        }
+        return ClassUtils.getPackageName(javaClass);
     }
 
     @Override

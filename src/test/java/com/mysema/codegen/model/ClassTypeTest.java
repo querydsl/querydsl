@@ -24,6 +24,12 @@ public class ClassTypeTest {
 //    }
 
     @Test
+    public void ArrayType(){
+        Type type = new ClassType(TypeCategory.ARRAY,String[].class);
+        assertEquals("java.lang", type.getPackageName());
+    }
+    
+    @Test
     public void As(){
         assertEquals(TypeCategory.COMPARABLE, stringType.as(TypeCategory.COMPARABLE).getCategory());
     }

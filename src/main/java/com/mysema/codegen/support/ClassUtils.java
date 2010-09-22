@@ -30,6 +30,16 @@ public final class ClassUtils {
         }
     }
     
+    public static String getPackageName(Class<?> cl){
+        if (cl.isArray()){
+            return getPackageName(cl.getComponentType());
+        }else if (cl.getPackage() != null){
+            return cl.getPackage().getName();
+        }else{
+            return "";
+        }
+    }
+    
     public static String getName(Class<?> cl, Set<String> packages, Set<String> classes) {
         if (cl.isArray()) {
             return getName(cl.getComponentType(), packages, classes) + "[]";
