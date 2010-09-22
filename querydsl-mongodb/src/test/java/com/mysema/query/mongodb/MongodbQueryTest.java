@@ -8,6 +8,7 @@ package com.mysema.query.mongodb;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,11 +34,11 @@ public class MongodbQueryTest {
     @Before
     public void before() {
         ds.delete(ds.createQuery(User.class));
-        
-        u1 = addUser("Jaakko", "Jantunen");
-        u2 = addUser("Jaakki", "Jantunen");
-        u3 = addUser("Jaana", "Aakkonen");
-        u4 = addUser("Jaana", "BeekkoNen");
+
+        u1 = addUser("Jaakko", "Jantunen", 20);
+        u2 = addUser("Jaakki", "Jantunen", 30);
+        u3 = addUser("Jaana", "Aakkonen", 40);
+        u4 = addUser("Jaana", "BeekkoNen", 50);
     }
 
     @Test
@@ -89,6 +90,7 @@ public class MongodbQueryTest {
         assertQuery(user.firstName.matches("Jaakko").not(), u3, u4, u2);
     }
     
+    
     //This is not supported yet
 //    @Test
 //    public void testUniqueResult() {
@@ -118,6 +120,22 @@ public class MongodbQueryTest {
         assertEquals(false, i.hasNext());
 
     }
+    
+    @Test
+    public void testUniqueResultAndLimitAndOffset() {
+        
+        MongodbQuery<User> q = query().where(user.firstName.startsWith("Ja")).orderBy(user.age.asc());
+        
+        assertEquals(4, q.list().size());
+        
+        assertEquals(u1, q.uniqueResult());
+        
+        
+        
+        
+    }
+    
+    
     //TODO
     // - test dates
     // - test with empty values and nulls
@@ -135,6 +153,12 @@ public class MongodbQueryTest {
     private MongodbQuery<User> where(Predicate ... e) {
         return new MongodbQuery<User>(morphia, ds, user).where(e);
     }
+    
+    private MongodbQuery<User> query() {
+        return new MongodbQuery<User>(morphia, ds, user);
+    }
+    
+    
     
     private void assertQuery(MongodbQuery<User> query, User ... expected ) {
         //System.out.println(query.toString());
@@ -154,6 +178,12 @@ public class MongodbQueryTest {
 
     private User addUser(String first, String last) {
         User user = new User(first, last);
+        ds.save(user);
+        return user;
+    }
+    
+    private User addUser(String first, String last, int age) {
+        User user = new User(first, last, age, new Date());
         ds.save(user);
         return user;
     }

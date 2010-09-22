@@ -25,7 +25,7 @@ import com.mysema.query.types.*;
 public class MongodbSerializer implements Visitor<Object, Void> {
 
     public Object handle(Expression<?> where) {
-        return where.accept(this, null);
+        return where != null ? where.accept(this, null) : new BasicDBObject();
     }
     
     public DBObject toSort(List<OrderSpecifier<?>> orderBys) {
@@ -83,12 +83,14 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE ) {
             return dbo(dboKey(expr, 0), dboValue(expr, 1));
         }
-        if (op == Ops.AND) {
+        
+        else if (op == Ops.AND) {
             BasicDBObject left = (BasicDBObject) handle(expr.getArg(0));
             left.putAll((BSONObject) handle(expr.getArg(1)));
             return left;
         }
-        if (op == Ops.NOT) {
+        
+        else if (op == Ops.NOT) {
             //Handle the not's child            
             BasicDBObject arg = (BasicDBObject) handle(expr.getArg(0));
             
@@ -104,49 +106,77 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         }
         
 //      if (op == Ops.OR)
-        if (op == Ops.NE_OBJECT || op == Ops.NE_PRIMITIVE) {
+        else if (op == Ops.NE_OBJECT || op == Ops.NE_PRIMITIVE) {
             return dbo(dboKey(expr, 0), dbo("$ne", dboValue(expr, 1)));
-        }else if (op == Ops.STARTS_WITH) {
+        }
+        
+        else if (op == Ops.STARTS_WITH) {
             return dbo(dboKey(expr, 0), Pattern.compile("^" + regexValue(expr, 1)));
-        }else if (op == Ops.STARTS_WITH_IC) {
+        }
+        
+        else if (op == Ops.STARTS_WITH_IC) {
             return dbo(dboKey(expr, 0),
                     Pattern.compile("^" + regexValue(expr, 1), Pattern.CASE_INSENSITIVE));
-        }else if (op == Ops.ENDS_WITH) {
+        }
+        
+        else if (op == Ops.ENDS_WITH) {
             return dbo(dboKey(expr, 0), Pattern.compile(regexValue(expr, 1) + "$"));
-        }else if (op == Ops.ENDS_WITH_IC) {
+        }
+        
+        else if (op == Ops.ENDS_WITH_IC) {
             return dbo(dboKey(expr, 0),
                     Pattern.compile(regexValue(expr, 1) + "$", Pattern.CASE_INSENSITIVE));
-        }else if (op == Ops.EQ_IGNORE_CASE) {
+        }
+        
+        else if (op == Ops.EQ_IGNORE_CASE) {
             return dbo(dboKey(expr, 0),
                     Pattern.compile(regexValue(expr, 1), Pattern.CASE_INSENSITIVE));
-        }else if (op == Ops.STRING_CONTAINS) {
+        }
+        
+        else if (op == Ops.STRING_CONTAINS) {
             return dbo(dboKey(expr, 0), Pattern.compile(".*" + regexValue(expr, 1) + ".*"));
-        }else if (op == Ops.STRING_CONTAINS_IC) {
+        }
+        
+        else if (op == Ops.STRING_CONTAINS_IC) {
             return dbo(dboKey(expr, 0),
                     Pattern.compile(".*" + regexValue(expr, 1) + ".*", Pattern.CASE_INSENSITIVE));
-        }else if (op == Ops.EQ_IGNORE_CASE) {
+        }
+        
+        else if (op == Ops.EQ_IGNORE_CASE) {
             return dbo(dboKey(expr, 0),
                     Pattern.compile(regexValue(expr, 1), Pattern.CASE_INSENSITIVE));
         }
         //if (op == Ops.EXISTS)
 //        if (op == Ops.MOD)
-         
-        if (op == Ops.MATCHES) {
+        
+        else if (op == Ops.MATCHES) {
             return dbo(dboKey(expr, 0), Pattern.compile(dboValue(expr, 1).toString()));
-        }else if (op == Ops.BETWEEN) {
+        }
+        
+        else if (op == Ops.BETWEEN) {
             BasicDBObject value = new BasicDBObject("$gt", dboValue(expr, 1));
             value.append("$lt", dboValue(expr, 2));
             return dbo(dboKey(expr, 0), value);
-        }else if (op == Ops.IN) {
+        }
+        
+        else if (op == Ops.IN) {
             Collection<?> values = (Collection<?>) ((Constant<?>) expr.getArg(1)).getConstant();
             return dbo(dboKey(expr, 0), dbo("$in", values.toArray()));
-        }else if (op == Ops.LT || op == Ops.BEFORE) {
+        }
+        
+        else if (op == Ops.LT || op == Ops.BEFORE) {
             return dbo(dboKey(expr, 0), dbo("$lt", dboValue(expr, 1)));
-        }else if (op == Ops.GT || op == Ops.AFTER) {
+        }
+        
+        else if (op == Ops.GT || op == Ops.AFTER) {
             return dbo(dboKey(expr, 0), dbo("$gt", dboValue(expr, 1)));
-        }else if (op == Ops.LOE || op == Ops.BOE) {
+        }
+        
+        else if (op == Ops.LOE || op == Ops.BOE) {
             return dbo(dboKey(expr, 0), dbo("$lte", dboValue(expr, 1)));
-        }else if (op == Ops.GOE || op == Ops.AOE) {
+        }
+        
+        else if (op == Ops.GOE || op == Ops.AOE) {
             return dbo(dboKey(expr, 0), dbo("$gte", dboValue(expr, 1)));
         }
         throw new UnsupportedOperationException("Illegal operation " + expr);

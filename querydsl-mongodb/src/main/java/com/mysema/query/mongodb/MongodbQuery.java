@@ -15,7 +15,6 @@ import com.google.code.morphia.mapping.cache.DefaultEntityCache;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
-import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
@@ -132,6 +131,9 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
         QueryMetadata metadata = queryMixin.getMetadata();
         // Long queryLimit = metadata.getModifiers().getLimit();
         // Long queryOffset = metadata.getModifiers().getOffset();
+        
+        //This is bit weird, but without it, repeated lists fail to have valid objects
+        cache.flush();
         DBCursor cursor = coll.find(createQuery());
         if (metadata.getOrderBy().size() > 0) {
             cursor.sort(serializer.toSort(metadata.getOrderBy()));
@@ -146,8 +148,8 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
 
     @Override
     public K uniqueResult() {
-        //TODO Do this
-        throw new UnsupportedOperationException();
+        DBCursor c = createCursor().limit(1);
+        return c.hasNext() ? morphia.fromDBObject(ePath.getType(), c.next(), cache) : null;
     }
 
     @Override
@@ -173,8 +175,6 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
 
     private DBObject createQuery() {
         QueryMetadata metadata = queryMixin.getMetadata();
-        Assert.notNull(metadata.getWhere(), "where needs to be set");
-
         return (DBObject) serializer.handle(metadata.getWhere());
     }
 

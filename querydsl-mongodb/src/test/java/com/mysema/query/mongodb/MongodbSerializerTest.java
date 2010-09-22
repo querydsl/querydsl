@@ -163,6 +163,7 @@ public class MongodbSerializerTest {
                 append("year", dbo("$ne", 1800)));
     }
     
+    
     private List<OrderSpecifier<?>> sortList(OrderSpecifier<?> ... order) {
         return Arrays.asList(order);
     }
