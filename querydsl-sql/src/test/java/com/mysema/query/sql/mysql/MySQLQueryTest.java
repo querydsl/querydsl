@@ -108,13 +108,13 @@ public class MySQLQueryTest {
     @Test
     public void testIntoOutfile() {
         query.intoOutfile(new File("target/out"));
-        assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc INTO OUTFILE 'target/out'", toString(query));
+        assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc INTO OUTFILE 'target" + File.separator + "out'", toString(query));
     }
     
     @Test
     public void testIntoDumpfile() {
         query.intoDumpfile(new File("target/out"));
-        assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc INTO DUMPFILE 'target/out'", toString(query));
+        assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc INTO DUMPFILE 'target" + File.separator + "out'", toString(query));
     }
 
     @Test
