@@ -68,16 +68,19 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
 
     @Override
     public MongodbQuery<K> limit(long limit) {
+        //TODO Add support
         return queryMixin.limit(limit);
     }
 
     @Override
     public MongodbQuery<K> offset(long offset) {
+        //TODO Add support
         return queryMixin.offset(offset);
     }
 
     @Override
     public MongodbQuery<K> restrict(QueryModifiers modifiers) {
+        //TODO Implement this
         return queryMixin.restrict(modifiers);
     }
 
@@ -143,11 +146,13 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
 
     @Override
     public K uniqueResult() {
+        //TODO Do this
         throw new UnsupportedOperationException();
     }
 
     @Override
     public SearchResults<K> listResults() {
+        //TODO Do this
         throw new UnsupportedOperationException();
     }
 

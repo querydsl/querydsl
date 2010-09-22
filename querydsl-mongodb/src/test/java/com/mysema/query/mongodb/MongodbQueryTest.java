@@ -118,6 +118,10 @@ public class MongodbQueryTest {
         assertEquals(false, i.hasNext());
 
     }
+    //TODO
+    // - test dates
+    // - test with empty values and nulls
+    // - test more complex ands
     
     private void assertQuery(Predicate e, User ... expected) {
         assertQuery(where(e).orderBy(user.lastName.asc(), user.firstName.asc()), expected );
