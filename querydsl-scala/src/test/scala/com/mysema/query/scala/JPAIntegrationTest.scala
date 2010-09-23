@@ -8,6 +8,7 @@ import org.junit.{ Test, Before, After };
 import org.junit.Assert._
 
 import scala.reflect.BeanProperty;
+import scala.annotation.target._;
 
 class JPAIntegrationTest {
 
@@ -18,9 +19,7 @@ class JPAIntegrationTest {
     var entityManagerFactory = Persistence.createEntityManagerFactory("hsqldb");
     entityManager = entityManagerFactory.createEntityManager();
 
-    val company = new Company();
-    company.name = "Example";
-    company.id = 1;
+    val company = new Company(1, "Example", null);
 
     val department1 = new Department();
     department1.id = 2;
@@ -107,10 +106,20 @@ class Department {
 class Company {
   @BeanProperty
   @Id
-  var id: Integer = _;
+  var id: Integer = _
   @BeanProperty
-  var name: String = _;
+  var name: String = _
   @BeanProperty
   @OneToMany(mappedBy = "company")
-  var departments: java.util.Set[Department] = _;
+  var departments: java.util.Set[Department] = _
+
+  def this(id: Integer,
+           name: String,
+           departments: java.util.Set[Department]) {
+    this()
+    this.id = id;
+    this.name = name;
+    this.departments = departments;
+  }
+
 }
