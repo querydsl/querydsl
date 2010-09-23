@@ -17,6 +17,8 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.TimeExpression;
 
 /**
+ * TimeTemplate defines custom time expressions
+ * 
  * @author tiwe
  *
  * @param <T>

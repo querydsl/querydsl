@@ -12,9 +12,9 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.UpdateClause;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.NullExpr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.path.NullExpr;
 
 /**
  * UpdateClause implementation for JDO

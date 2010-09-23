@@ -20,8 +20,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 
 /**
- * ESimple is the base class for Expr implementations. It provides default implementations
- * for most of the abstract methods in {@link Expression}
+ * SimpleExpression is the base class for Expression implementations.
  *
  * @author tiwe
  *

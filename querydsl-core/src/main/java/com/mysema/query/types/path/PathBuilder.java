@@ -14,7 +14,7 @@ import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.SimpleExpression;
 
 /**
- * PathBuilder is an extension to PEntity for dynamic path construction
+ * PathBuilder is an extension to EntityPathBase for dynamic path construction
  *
  * @author tiwe
  *

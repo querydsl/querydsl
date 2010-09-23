@@ -11,6 +11,8 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 
 /**
+ * EnumExpression represents Enum typed expressions
+ * 
  * @author tiwe
  *
  * @param <T>

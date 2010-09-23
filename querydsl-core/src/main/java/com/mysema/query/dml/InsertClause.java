@@ -9,7 +9,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 
 /**
- * InsertClause defines a generic extensible interface for Insert clauses
+ * InsertClause defines a generic interface for Insert clauses
  *
  * @author tiwe
  *

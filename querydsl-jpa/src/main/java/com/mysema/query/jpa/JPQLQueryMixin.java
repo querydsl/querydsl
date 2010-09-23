@@ -14,7 +14,7 @@ import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.expr.BooleanExpression;
 
 /**
- * HQLQueryMixin extends QueryMixin to support JPQL join construction
+ * JPQLQueryMixin extends QueryMixin to support JPQL join construction
  * 
  * @author tiwe
  *

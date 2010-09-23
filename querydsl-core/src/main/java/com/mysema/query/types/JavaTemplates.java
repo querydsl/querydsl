@@ -9,7 +9,7 @@ import java.lang.reflect.Field;
 
 
 /**
- * JavaTemplates extends Template to provide Java syntax compliant serialization
+ * JavaTemplates extends Templates to provide Java syntax compliant serialization
  * of Querydsl expressions
  *
  * @author tiwe

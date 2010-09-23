@@ -27,7 +27,7 @@ import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.util.MathUtils;
 
 /**
- * HQLSerializer serializes Querydsl expressions into HQL syntax.
+ * JPQLSerializer serializes Querydsl expressions into JPQL syntax.
  *
  * @author tiwe
  * @version $Id$

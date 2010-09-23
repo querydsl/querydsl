@@ -27,7 +27,7 @@ import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.types.Expression;
 
 /**
- * Abstract base class for JPA API based implementations of the HQLQuery interface
+ * Abstract base class for JPA API based implementations of the JPQLQuery interface
  *
  * @author tiwe
  *

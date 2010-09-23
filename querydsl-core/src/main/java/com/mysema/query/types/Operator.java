@@ -18,6 +18,8 @@ import java.util.List;
 public interface Operator<RT> extends Serializable{
     
     /**
+     * Get the unique id for this Operator
+     * 
      * @return
      */
     String getId();

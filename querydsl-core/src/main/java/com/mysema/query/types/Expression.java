@@ -10,7 +10,7 @@ import java.io.Serializable;
 import javax.annotation.Nullable;
 
 /**
- * Expr represents a general typed expression in a Query instance. The generic type parameter
+ * Expression defines a general typed expression in a Query instance. The generic type parameter
  * is a reference to the type the expression is bound to.
  *
  * @author tiwe

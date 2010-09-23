@@ -36,20 +36,11 @@ public final class QueryModifiers implements Serializable{
     @Nullable
     private final Long limit, offset;
 
-    /**
-     * Instantiates a new query modifiers.
-     */
     public QueryModifiers() {
         limit = null;
         offset = null;
     }
 
-    /**
-     * Instantiates a new query modifiers.
-     *
-     * @param limit the limit
-     * @param offset the offset
-     */
     public QueryModifiers(@Nullable Long limit, @Nullable Long offset) {
         this.limit = limit;
         if (limit != null && limit <= 0) {
@@ -61,29 +52,16 @@ public final class QueryModifiers implements Serializable{
         }
     }
 
-    /**
-     * @param modifiers
-     */
     public QueryModifiers(QueryModifiers modifiers) {
         this.limit = modifiers.getLimit();
         this.offset = modifiers.getOffset();
     }
 
-    /**
-     * Gets the limit.
-     *
-     * @return the limit
-     */
     @Nullable
     public Long getLimit() {
         return limit;
     }
 
-    /**
-     * Gets the offset.
-     *
-     * @return the offset
-     */
     @Nullable
     public Long getOffset() {
         return offset;

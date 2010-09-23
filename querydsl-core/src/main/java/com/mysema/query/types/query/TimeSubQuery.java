@@ -13,7 +13,7 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.TimeExpression;
 
 /**
- * Single result subquery
+ * Time typed single result subquery
  *
  * @author tiwe
  *

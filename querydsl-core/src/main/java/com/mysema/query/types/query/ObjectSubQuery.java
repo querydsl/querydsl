@@ -13,7 +13,7 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.SimpleExpression;
 
 /**
- * Single result subquery
+ * Object typed single result subquery
  *
  * @author tiwe
  *

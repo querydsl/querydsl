@@ -8,6 +8,8 @@ package com.mysema.query.types;
 import javax.annotation.Nullable;
 
 /**
+ * ExpressionBase is the base class for Expression implementations
+ * 
  * @author tiwe
  *
  * @param <T>

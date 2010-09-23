@@ -11,6 +11,8 @@ import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.PathMetadata;
 
 /**
+ * EntityPathBase provides a base class for EntityPath implementations
+ * 
  * @author tiwe
  *
  * @param <D>

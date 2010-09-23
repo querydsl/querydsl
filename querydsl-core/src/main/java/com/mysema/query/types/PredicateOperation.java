@@ -6,6 +6,8 @@
 package com.mysema.query.types;
 
 /**
+ * PredicateOperation provides a Boolean typed Operation implemenentation 
+ * 
  * @author tiwe
  *
  */

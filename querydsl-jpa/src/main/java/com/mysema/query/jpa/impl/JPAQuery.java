@@ -14,7 +14,7 @@ import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPQLTemplates;
 
 /**
- * JPAQuery is the default implementation of the HQLQuery interface for JPA
+ * JPAQuery is the default implementation of the JPQLQuery interface for JPA
  *
  * @author tiwe
  *

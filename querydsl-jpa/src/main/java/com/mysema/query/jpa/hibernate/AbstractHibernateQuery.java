@@ -35,7 +35,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.ConstructorExpression;
 
 /**
- * Abstract base class for Hibernate API based implementations of the HQLQuery interface
+ * Abstract base class for Hibernate API based implementations of the JPQL interface
  *
  * @author tiwe
  *

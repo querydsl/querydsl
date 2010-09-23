@@ -15,6 +15,8 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.DateExpression;
 
 /**
+ * DatePath presents Date paths
+ * 
  * @author tiwe
  *
  * @param <D>

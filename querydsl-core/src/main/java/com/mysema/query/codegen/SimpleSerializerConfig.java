@@ -7,7 +7,7 @@ package com.mysema.query.codegen;
 
 import net.jcip.annotations.Immutable;
 
-import com.mysema.query.annotations.QuerydslConfig;
+import com.mysema.query.annotations.Config;
 
 /**
  * SimpleSerializerConfig is the default implementation of the SerializerConfig interface
@@ -20,7 +20,7 @@ public final class SimpleSerializerConfig implements SerializerConfig{
 
     public static final SerializerConfig DEFAULT = new SimpleSerializerConfig(false, false, false, true);
 
-    public static SerializerConfig getConfig(QuerydslConfig annotation){
+    public static SerializerConfig getConfig(Config annotation){
         return new SimpleSerializerConfig(
                 annotation.entityAccessors(),
                 annotation.listAccessors(),

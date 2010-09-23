@@ -13,7 +13,7 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.ComparableExpression;
 
 /**
- * Single result subquery
+ * Comparable typed single result subquery
  *
  * @author tiwe
  *

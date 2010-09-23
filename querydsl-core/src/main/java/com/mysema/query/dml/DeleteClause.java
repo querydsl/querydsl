@@ -9,7 +9,7 @@ import com.mysema.query.FilteredClause;
 
 
 /**
- * DeleteClause defines a generic extensible interface for Delete clauses
+ * DeleteClause defines a generic interface for Delete clauses
  *
  * @author tiwe
  *

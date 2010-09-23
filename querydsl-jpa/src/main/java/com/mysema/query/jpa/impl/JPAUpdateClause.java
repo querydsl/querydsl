@@ -21,9 +21,9 @@ import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.NullExpr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.path.NullExpr;
 
 /**
  * UpdateClause implementation for JPA

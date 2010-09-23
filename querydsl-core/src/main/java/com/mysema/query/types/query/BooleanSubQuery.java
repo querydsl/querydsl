@@ -13,7 +13,7 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
 
 /**
- * Single result subquery
+ * Boolean typed single result subquery
  *
  * @author tiwe
  */

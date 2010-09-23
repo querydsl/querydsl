@@ -22,7 +22,7 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
 
 /**
- * BooleanBuilder is a cascading builder for {@link BooleanExpression} expressions.
+ * BooleanBuilder is a cascading builder for {@link Predicate} expressions.
  *
  * @author tiwe
  */

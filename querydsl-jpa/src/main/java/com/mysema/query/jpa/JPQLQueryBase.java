@@ -16,7 +16,7 @@ import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.MapPath;
 
 /**
- * HQLQueryBase is a base Query class for HQL
+ * JPQLQueryBase is a base Query class for JPQL queries
  *
  * @author tiwe
  * @version $Id$

@@ -15,6 +15,8 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.TimeExpression;
 
 /**
+ * TimePath represented Time paths
+ * 
  * @author tiwe
  *
  * @param <D>

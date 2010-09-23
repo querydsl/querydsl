@@ -22,8 +22,7 @@ import java.lang.annotation.Target;
 @Documented
 @Target({PACKAGE})
 @Retention(RUNTIME)
-// TODO : rename to Variables
-public @interface QuerydslVariables {
+public @interface Variables {
 
     /**
      * Simple name of the variables class

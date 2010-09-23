@@ -22,8 +22,7 @@ import java.lang.annotation.Target;
 @Documented
 @Target({PACKAGE,TYPE})
 @Retention(RUNTIME)
-// TODO : rename to Config
-public @interface QuerydslConfig {
+public @interface Config {
 
     /**
      * Created entity field initialization accessors

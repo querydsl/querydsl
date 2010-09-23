@@ -3,12 +3,10 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types.path;
+package com.mysema.query.types;
 
 import java.util.Collections;
 
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.template.SimpleTemplate;
 
 /**

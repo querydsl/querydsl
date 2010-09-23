@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 import com.mysema.query.QueryMetadata;
 
 /**
- * Mixin implementation of the SubQuery interface
+ * SubQueryImpl is the default implementation of the SubQuery interface
  *
  * @author tiwe
  *

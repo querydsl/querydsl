@@ -8,7 +8,7 @@ package com.mysema.query;
 import com.mysema.query.types.Predicate;
 
 /**
- * Parent interface for clauses with a filter
+ * Parent interface for clauses with a filter condition
  * 
  * @author tiwe
  *
@@ -17,7 +17,7 @@ import com.mysema.query.types.Predicate;
 public interface FilteredClause<C extends FilteredClause<C>> {
 
     /**
-     * Defines the filter constraints
+     * Adds the given filter conditions
      * 
      * @param o
      * @return

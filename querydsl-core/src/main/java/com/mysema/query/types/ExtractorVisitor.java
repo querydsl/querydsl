@@ -7,6 +7,8 @@ package com.mysema.query.types;
 
 
 /**
+ * ExtractorVisitor is a Visitor implementation for Expression extraction
+ * 
  * @author tiwe
  *
  */

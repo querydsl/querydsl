@@ -16,7 +16,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.types.Constant;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.JavaTemplates;
@@ -26,14 +25,6 @@ import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.ToStringVisitor;
 import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.template.BooleanTemplate;
-import com.mysema.query.types.template.ComparableTemplate;
-import com.mysema.query.types.template.DateTemplate;
-import com.mysema.query.types.template.DateTimeTemplate;
-import com.mysema.query.types.template.NumberTemplate;
-import com.mysema.query.types.template.SimpleTemplate;
-import com.mysema.query.types.template.StringTemplate;
-import com.mysema.query.types.template.TimeTemplate;
 
 public class TemplateExpressionTest {
 
@@ -71,7 +62,7 @@ public class TemplateExpressionTest {
     @Test
     public void factoryMethods(){
         String template = "";
-        Constant<Boolean> arg = ConstantImpl.TRUE;
+        Expression<Boolean> arg = ConstantImpl.create(true);
 
         BooleanTemplate.create(template, arg);
         ComparableTemplate.create(String.class, template, arg);
@@ -86,7 +77,7 @@ public class TemplateExpressionTest {
     @Test
     public void factoryMethods2(){
         Template template = TemplateFactory.DEFAULT.create("");
-        Constant<Boolean> arg = ConstantImpl.TRUE;
+        Expression<Boolean> arg = ConstantImpl.create(true);
 
         BooleanTemplate.create(template, arg);
         ComparableTemplate.create(String.class, template, arg);

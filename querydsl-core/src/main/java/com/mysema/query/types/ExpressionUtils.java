@@ -11,6 +11,8 @@ import javax.annotation.Nullable;
 
 
 /**
+ * Utilities for constructing common operation instances
+ * 
  * @author tiwe
  *
  */

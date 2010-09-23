@@ -14,6 +14,8 @@ import java.util.Map;
 import com.mysema.commons.lang.Assert;
 
 /**
+ * ConstantImpl is the default implementation of the Constant interface
+ * 
  * @author tiwe
  */
 @SuppressWarnings("unchecked")
@@ -33,9 +35,9 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
 
     private static final Map<String,Constant<String>> STRINGS;
     
-    public static final Constant<Boolean> FALSE = new ConstantImpl<Boolean>(Boolean.FALSE);
+    private static final Constant<Boolean> FALSE = new ConstantImpl<Boolean>(Boolean.FALSE);
 
-    public static final Constant<Boolean> TRUE = new ConstantImpl<Boolean>(Boolean.TRUE);
+    private static final Constant<Boolean> TRUE = new ConstantImpl<Boolean>(Boolean.TRUE);
 
     static{
         List<String> strs = new ArrayList<String>(Arrays.asList("", ".", ".*", "%"));
@@ -56,6 +58,10 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
         }
     }
 
+    public static Constant<Boolean> create(boolean b){
+        return b ? TRUE : FALSE;
+    }
+    
     public static Constant<Byte> create(byte i){
         if (i >= 0 && i < CACHE_SIZE){
             return BYTES[i];

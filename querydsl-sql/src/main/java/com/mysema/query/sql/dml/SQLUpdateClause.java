@@ -30,10 +30,10 @@ import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.types.NullExpr;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.Param;
-import com.mysema.query.types.path.NullExpr;
 
 /**
  * SQLUpdateClause defines a UPDATE clause

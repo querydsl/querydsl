@@ -85,7 +85,6 @@ public final class CaseForEqBuilder<D> {
     }
 
     public <T extends Number & Comparable<?>> Cases<T,NumberExpression<T>> then(T then){
-//        return then(NumberConstant.create(then));
         return thenNumber(new ConstantImpl<T>(then));
     }
 
@@ -110,7 +109,6 @@ public final class CaseForEqBuilder<D> {
     }
 
     public Cases<String,StringExpression> then(String then){
-//        return then(StringConstant.create(then));
         return thenString(ConstantImpl.create(then));
     }
     

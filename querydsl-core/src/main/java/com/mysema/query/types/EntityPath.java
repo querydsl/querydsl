@@ -6,6 +6,8 @@
 package com.mysema.query.types;
 
 /**
+ * EntityPath is the common interface for entity path expressions
+ * 
  * @author tiwe
  *
  * @param <T>

@@ -13,7 +13,7 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.NumberExpression;
 
 /**
- * Single result subquery
+ * Number typed single result subquery
  *
  * @author tiwe
  *

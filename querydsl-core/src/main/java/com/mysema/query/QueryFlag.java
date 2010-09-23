@@ -14,7 +14,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.TemplateExpressionImpl;
 
 /**
- * Defines a positioned flag in a query for customization of query serialization
+ * Defines a positioned flag in a Query for customization of query serialization
  * 
  * @author tiwe
  *
@@ -26,30 +26,69 @@ public class QueryFlag implements Serializable{
 
     public enum Position {        
         
+        /**
+         * Start of the query 
+         */
         START,
         
+        /**
+         * Override for the first element (e.g SELECT, INSERT)
+         */
         START_OVERRIDE,
         
+        /**
+         * After the first element (after select)
+         */
         AFTER_SELECT,
         
+        /**
+         * After the projection (after select ...)
+         */
         AFTER_PROJECTION,
         
+        /**
+         * Before the filter conditions (where)
+         */
         BEFORE_FILTERS,
         
+        /**
+         * After the filter conditions (where)
+         */
         AFTER_FILTERS,
         
+        /**
+         * Before group by
+         */
         BEFORE_GROUP_BY,
         
+        /**
+         * After group by 
+         */
         AFTER_GROUP_BY,
         
+        /**
+         * Before having
+         */
         BEFORE_HAVING,
         
+        /**
+         * After having
+         */
         AFTER_HAVING,
         
+        /**
+         * Before order (by)
+         */
         BEFORE_ORDER,
         
+        /**
+         * After order (by)
+         */
         AFTER_ORDER,
         
+        /**
+         * After all other tokens 
+         */
         END        
         
     }

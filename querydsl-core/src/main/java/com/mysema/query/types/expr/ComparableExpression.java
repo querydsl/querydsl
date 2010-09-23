@@ -13,7 +13,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 
 /**
- * ComparableExpression extends EComparableBase to provide comparison methods.
+ * ComparableExpression extends ComparableExpressionBase to provide comparison methods.
  *
  * @author tiwe
  *

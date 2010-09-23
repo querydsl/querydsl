@@ -15,7 +15,7 @@ import com.mysema.query.types.expr.NumberOperation;
 import com.mysema.query.types.expr.SimpleOperation;
 
 /**
- * HQLGrammar provides factory methods for HQL specific operations
+ * JPQLGrammar provides factory methods for JPQL specific operations
  * elements.
  *
  * @author tiwe

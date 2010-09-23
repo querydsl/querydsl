@@ -11,6 +11,8 @@ import java.util.List;
 
 
 /**
+ * OperationImpl is the default implementation of the Operation interface
+ * 
  * @author tiwe
  *
  * @param <RT>

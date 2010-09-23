@@ -10,6 +10,8 @@ import javax.annotation.Nonnegative;
 import com.mysema.commons.lang.Assert;
 
 /**
+ * PathMetadataFactory is a factory class for Path construction
+ * 
  * @author tiwe
  *
  */

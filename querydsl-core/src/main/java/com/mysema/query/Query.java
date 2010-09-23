@@ -13,7 +13,7 @@ import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Predicate;
 
 /**
- * Query provides a query interface of the fluent query DSL.
+ * Query defines the main query interface of the fluent query language.
  *
  * <p>Note that the from method has been left out, since there are implementation
  * specific variants of it.</p>

@@ -17,6 +17,8 @@ import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.DateExpression;
 
 /**
+ * DateTemplate defines custom date expressions
+ * 
  * @author tiwe
  *
  * @param <T>

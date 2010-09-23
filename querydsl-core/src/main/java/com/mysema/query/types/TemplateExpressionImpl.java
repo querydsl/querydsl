@@ -8,7 +8,6 @@ package com.mysema.query.types;
 import java.util.Arrays;
 import java.util.List;
 
-
 /**
  * Default implementation of the TemplateExpression interface
  *

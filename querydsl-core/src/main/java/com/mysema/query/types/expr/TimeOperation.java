@@ -15,7 +15,7 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.Visitor;
 
 /**
- * TimeOperation represents Time functions
+ * TimeOperation represents Time operations
  *
  * @author tiwe
  *

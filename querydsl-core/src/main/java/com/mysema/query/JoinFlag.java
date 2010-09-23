@@ -13,7 +13,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.TemplateExpressionImpl;
 
 /**
- * JoinFlag defines a join related flag using an Expr instance
+ * JoinFlag defines a join related flag using an Expression instance
  * 
  * @author tiwe
  *

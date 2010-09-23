@@ -5,7 +5,7 @@
  */
 
 /**
- * HQL for Hibernate
+ * JPQL for Hibernate
  */
 @DefaultAnnotation( { Nonnull.class })
 package com.mysema.query.jpa.hibernate;

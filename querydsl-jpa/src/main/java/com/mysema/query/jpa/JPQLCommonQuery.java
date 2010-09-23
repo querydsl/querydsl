@@ -9,7 +9,7 @@ import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.MapPath;
 
 /**
- * HQLCommonQuery is a common interface for HQLQuery and HQLSubQuery
+ * JPQLCommonQuery is a common interface for HQLQuery and HQLSubQuery
  * 
  * @author tiwe
  *

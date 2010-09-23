@@ -15,7 +15,7 @@ import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Visitor;
 
 /**
- * ArrayConstructorExpression extends {@link ConstructorExpression} to represent array initializers
+ * ArrayConstructorExpression extends {@link SimpleExpression} to represent array initializers
  *
  * @author tiwe
  *

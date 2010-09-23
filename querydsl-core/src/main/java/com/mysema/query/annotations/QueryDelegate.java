@@ -21,7 +21,6 @@ import java.lang.annotation.Target;
 @Documented
 @Target({METHOD})
 @Retention(RUNTIME)
-// TODO : rename to Delegate
 public @interface QueryDelegate {
 
     /**

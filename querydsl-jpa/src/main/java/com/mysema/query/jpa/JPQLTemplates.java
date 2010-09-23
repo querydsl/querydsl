@@ -13,7 +13,7 @@ import com.mysema.query.types.PathType;
 import com.mysema.query.types.Templates;
 
 /**
- * JPQLTemplates extends Templates to provide operator patterns for HQL
+ * JPQLTemplates extends Templates to provide operator patterns for JPQL
  * serialization
  *
  * @author tiwe

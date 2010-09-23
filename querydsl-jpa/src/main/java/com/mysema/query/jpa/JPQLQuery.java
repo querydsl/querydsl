@@ -8,7 +8,7 @@ package com.mysema.query.jpa;
 import com.mysema.query.Projectable;
 
 /**
- * Query interface for HQL queries
+ * Query interface for JPQL queries
  *
  * @author tiwe
  *
