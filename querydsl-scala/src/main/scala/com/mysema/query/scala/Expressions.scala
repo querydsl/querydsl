@@ -138,9 +138,9 @@ trait MapExpression[K, V] extends SimpleExpression[java.util.Map[K, V]] with Par
 
 trait ComparableExpressionBase[T <: Comparable[_]] extends SimpleExpression[T] {
 
-  def asc = new OrderSpecifier[T](Order.ASC, this);
+  def asc() = new OrderSpecifier[T](Order.ASC, this);
 
-  def desc = new OrderSpecifier[T](Order.DESC, this);
+  def desc() = new OrderSpecifier[T](Order.DESC, this);
 
 }
 
