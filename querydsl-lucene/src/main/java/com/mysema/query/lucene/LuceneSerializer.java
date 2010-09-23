@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.QueryParser;
@@ -22,7 +24,14 @@ import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.util.NumericUtils;
 
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.*;
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.Operation;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.ParamNotSetException;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.Param;
 
 /**
@@ -268,7 +277,7 @@ public class LuceneSerializer {
     }
 
     @SuppressWarnings("unchecked")
-    private Query range(String field, Expression<?> min, Expression<?> max, boolean minInc, boolean maxInc, QueryMetadata metadata) {
+    private Query range(String field, @Nullable Expression<?> min, @Nullable Expression<?> max, boolean minInc, boolean maxInc, QueryMetadata metadata) {
         if (min != null && Number.class.isAssignableFrom(min.getType()) || max != null
                 && Number.class.isAssignableFrom(max.getType())) {
             Class<? extends Number> numType = (Class) (min != null ? min.getType() : max.getType());
@@ -280,7 +289,7 @@ public class LuceneSerializer {
     }
 
     private <N extends Number> NumericRangeQuery<?> numericRange(Class<N> clazz, String field,
-            N min, N max, boolean minInc, boolean maxInc) {
+            @Nullable N min, @Nullable N max, boolean minInc, boolean maxInc) {
         if (clazz.equals(Integer.class)) {
             return NumericRangeQuery.newIntRange(field, (Integer) min, (Integer) max, minInc, maxInc);
         } else if (clazz.equals(Double.class)) {
@@ -297,7 +306,8 @@ public class LuceneSerializer {
         }
     }
 
-    private Query stringRange(String field, Expression<?> min, Expression<?> max, boolean minInc, boolean maxInc, QueryMetadata metadata) {
+    private Query stringRange(String field, @Nullable Expression<?> min, @Nullable Expression<?> max, 
+            boolean minInc, boolean maxInc, QueryMetadata metadata) {
         if (min == null) {
             return new TermRangeQuery(field, null, normalize(createTerms(max, metadata)[0]), minInc, maxInc);
         } else if (max == null) {

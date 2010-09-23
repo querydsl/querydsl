@@ -1,5 +1,7 @@
 package com.mysema.query.lucene;
 
+import javax.annotation.Nullable;
+
 import org.apache.lucene.search.Query;
 
 import com.mysema.query.types.Constant;
@@ -19,6 +21,7 @@ public class QueryElement extends BooleanExpression{
 
     private final Query query;
 
+    @Nullable
     private volatile Constant<String> expr;
 
     public QueryElement(Query query){
