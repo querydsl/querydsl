@@ -1,6 +1,6 @@
 package com.mysema.query.scala;
 
-class DomainType {
+class Person {
   var scalaInt: Int = _;
 
   var javaInt: Integer = null;

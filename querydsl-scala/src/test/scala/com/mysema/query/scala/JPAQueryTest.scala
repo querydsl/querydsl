@@ -9,7 +9,7 @@ import org.junit.Assert._
 
 class JPAQueryTest {
 
-  var domainType = alias(classOf[DomainType])
+  var domainType = alias(classOf[Person])
 
   @Test
   def OneLiner() {
