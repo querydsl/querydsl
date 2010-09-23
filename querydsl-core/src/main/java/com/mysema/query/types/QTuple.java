@@ -5,6 +5,7 @@
  */
 package com.mysema.query.types;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,6 +23,13 @@ public class QTuple implements FactoryExpression<Tuple>{
     
     public QTuple(Expression<?>... args) {
         this.args = Arrays.asList(args);
+    }
+    
+    public QTuple(Expression<?>[]... args) {
+        this.args = new ArrayList<Expression<?>>();
+        for (Expression<?>[] exprs: args){
+            this.args.addAll(Arrays.asList(exprs));
+        }
     }
 
     private static final long serialVersionUID = -2640616030595420465L;
