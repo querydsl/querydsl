@@ -51,6 +51,9 @@ public class MergeH2Test extends MergeBaseTest{
             .addBatch();
      
         assertEquals(2, merge.execute());
+        
+        assertEquals(1l, query().from(survey).where(survey.name.eq("5")).count());
+        assertEquals(1l, query().from(survey).where(survey.name.eq("6")).count());
     }
     
     @Test

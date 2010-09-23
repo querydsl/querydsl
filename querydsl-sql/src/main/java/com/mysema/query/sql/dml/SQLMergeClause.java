@@ -169,6 +169,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
             queryString = serializer.toString();
             logger.debug(queryString);
             stmt = connection.prepareStatement(queryString);
+            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
             
             // add first batch
             stmt.addBatch();
