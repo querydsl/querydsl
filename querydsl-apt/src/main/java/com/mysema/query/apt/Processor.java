@@ -48,7 +48,7 @@ import com.mysema.query.annotations.QueryEntities;
 import com.mysema.query.annotations.QueryExtensions;
 import com.mysema.query.annotations.QueryMethod;
 import com.mysema.query.annotations.QueryProjection;
-import com.mysema.query.annotations.QuerydslVariables;
+import com.mysema.query.annotations.Variables;
 import com.mysema.query.codegen.Delegate;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Method;
@@ -188,9 +188,9 @@ public class Processor {
         }
 
         // serialize variable classes
-        for (Element element : roundEnv.getElementsAnnotatedWith(QuerydslVariables.class)){
+        for (Element element : roundEnv.getElementsAnnotatedWith(Variables.class)){
             if (element instanceof PackageElement){
-                QuerydslVariables vars = element.getAnnotation(QuerydslVariables.class);
+                Variables vars = element.getAnnotation(Variables.class);
                 PackageElement packageElement = (PackageElement)element;
                 List<EntityType> models = new ArrayList<EntityType>();
                 for (EntityType model : entityTypes.values()){
@@ -477,7 +477,7 @@ public class Processor {
         }
     }
 
-    private void serializeVariableList(String packageName, QuerydslVariables vars, List<EntityType> models){
+    private void serializeVariableList(String packageName, Variables vars, List<EntityType> models){
         String className = packageName + "." + vars.value();
         TypeMappings typeMappings = configuration.getTypeMappings();
         try{

@@ -25,7 +25,7 @@ public class QueryExtensions10Test {
      */
     @QueryDelegate(Date.class)
     public static Expression<Boolean> period(DatePath<Date> expr, Interval<Date> period) {
-        return ConstantImpl.TRUE;
+        return ConstantImpl.create(true);
     }
 
     /**
@@ -33,7 +33,7 @@ public class QueryExtensions10Test {
      */
     @QueryDelegate(Timestamp.class)
     public static Expression<Boolean> period(DateTimePath<Timestamp> expr, Interval<Timestamp> period) {
-        return ConstantImpl.TRUE;
+        return ConstantImpl.create(true);
     }
     
     @QueryEmbeddable

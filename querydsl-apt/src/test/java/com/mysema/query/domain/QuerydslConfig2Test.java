@@ -10,11 +10,11 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
-import com.mysema.query.annotations.QuerydslConfig;
+import com.mysema.query.annotations.Config;
 
 public class QuerydslConfig2Test {
 
-    @QuerydslConfig(entityAccessors=true)
+    @Config(entityAccessors=true)
     @QueryEntity
     public static class Entity extends Superclass{
 
@@ -22,7 +22,7 @@ public class QuerydslConfig2Test {
 
     }
 
-    @QuerydslConfig(createDefaultVariable=false)
+    @Config(createDefaultVariable=false)
     @QueryEntity
     public static class Entity2 extends Superclass2{
 
@@ -36,7 +36,7 @@ public class QuerydslConfig2Test {
         Entity prop2;
     }
 
-    @QuerydslConfig(entityAccessors=true)
+    @Config(entityAccessors=true)
     @QueryEntity
     public static class Superclass2{
 

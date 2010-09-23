@@ -7,8 +7,6 @@ package com.mysema.query.types;
 
 import java.util.Collections;
 
-import com.mysema.query.types.template.SimpleTemplate;
-
 /**
  * NullExpr defines a general null expression
  * 
@@ -16,14 +14,14 @@ import com.mysema.query.types.template.SimpleTemplate;
  *
  * @param <T>
  */
-public class NullExpr<T> extends SimpleTemplate<T>{
+public class NullExpr<T> extends TemplateExpressionImpl<T>{
 
     public static final NullExpr<Object> DEFAULT = new NullExpr<Object>(Object.class);
 
     private static final long serialVersionUID = -5311968198973316411L;
 
     public NullExpr(Class<? extends T> type) {
-        super(type,TemplateFactory.DEFAULT.create("null"), Collections.<Expression<?>>emptyList());
+        super(type, Collections.<Expression<?>>emptyList(), TemplateFactory.DEFAULT.create("null"));
     }
 
 }

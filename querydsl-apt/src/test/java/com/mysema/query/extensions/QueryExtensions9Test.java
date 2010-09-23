@@ -13,7 +13,7 @@ import org.junit.Test;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryEntity;
-import com.mysema.query.annotations.QuerydslConfig;
+import com.mysema.query.annotations.Config;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.BooleanPath;
 import com.mysema.query.types.path.DatePath;
@@ -63,7 +63,7 @@ public class QueryExtensions9Test {
     
 
     @QueryEntity
-    @QuerydslConfig(entityAccessors=true)
+    @Config(entityAccessors=true)
     public static class Entity {
         
         Entity superior;

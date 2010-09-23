@@ -41,17 +41,17 @@ public class DelegateTest {
 
     @QueryDelegate(User.class)
     public static Expression<Boolean> isManagedBy(QDelegateTest_User user, User other){
-        return ConstantImpl.TRUE;
+        return ConstantImpl.create(true);
     }
 
     @QueryDelegate(User.class)
     public static Expression<Boolean> isManagedBy(QDelegateTest_User user, QDelegateTest_User other){
-        return ConstantImpl.TRUE;
+        return ConstantImpl.create(true);
     }
 
     @QueryDelegate(User.class)
     public static Expression<Boolean> simpleMethod(QDelegateTest_User user){
-        return ConstantImpl.TRUE;
+        return ConstantImpl.create(true);
     }
 
 //    @QueryDelegate(DelegateTest.User.class)

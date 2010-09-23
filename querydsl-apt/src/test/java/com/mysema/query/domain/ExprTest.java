@@ -55,8 +55,8 @@ public class ExprTest {
         exprs.add(ConstantImpl.create("Hello World!"));
         exprs.add(ConstantImpl.create(1000));
         exprs.add(ConstantImpl.create(10l));
-        exprs.add(ConstantImpl.TRUE);
-        exprs.add(ConstantImpl.FALSE);
+        exprs.add(ConstantImpl.create(true));
+        exprs.add(ConstantImpl.create(false));
 
         Set<Expression<?>> toVisit = new HashSet<Expression<?>>();
 

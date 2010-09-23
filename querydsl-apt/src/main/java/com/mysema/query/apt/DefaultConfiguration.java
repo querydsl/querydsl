@@ -22,13 +22,13 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.annotations.Config;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.annotations.QuerydslConfig;
-import com.mysema.query.codegen.ProjectionSerializer;
 import com.mysema.query.codegen.EmbeddableSerializer;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.EntityType;
+import com.mysema.query.codegen.ProjectionSerializer;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.SimpleSerializerConfig;
@@ -91,8 +91,8 @@ public class DefaultConfiguration implements Configuration {
         this.superTypeAnn = superTypeAnn;
         this.embeddableAnn = embeddableAnn;
         this.skipAnn = skipAnn;
-        for (Element element : roundEnv.getElementsAnnotatedWith(QuerydslConfig.class)){
-            QuerydslConfig querydslConfig = element.getAnnotation(QuerydslConfig.class);
+        for (Element element : roundEnv.getElementsAnnotatedWith(Config.class)){
+            Config querydslConfig = element.getAnnotation(Config.class);
             SerializerConfig config = SimpleSerializerConfig.getConfig(querydslConfig);
             if (element instanceof PackageElement){
                 PackageElement packageElement = (PackageElement)element;

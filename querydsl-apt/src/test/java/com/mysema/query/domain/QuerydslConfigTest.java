@@ -13,18 +13,18 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
-import com.mysema.query.annotations.QuerydslConfig;
+import com.mysema.query.annotations.Config;
 
 public class QuerydslConfigTest {
 
-    @QuerydslConfig(entityAccessors=true)
+    @Config(entityAccessors=true)
     @QueryEntity
     public static class Superclass{
 
         Entity prop3;
     }
 
-    @QuerydslConfig(entityAccessors=true, listAccessors = true, mapAccessors= true)
+    @Config(entityAccessors=true, listAccessors = true, mapAccessors= true)
     @QueryEntity
     public static class Entity extends Superclass{
 

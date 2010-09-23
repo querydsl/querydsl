@@ -36,7 +36,7 @@ public class QueryExtensions7Test {
     
     @QueryDelegate(Byte.class)
     public static Expression<Boolean> isNumeric(QByte byteValue){
-        return ConstantImpl.TRUE;
+        return ConstantImpl.create(true);
     }
     
     @Test
