@@ -13,23 +13,23 @@ import com.mysema.query.types._;
  */
 object Operations {
 
-  def simple[T](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*) = new SimpleOperation[T](t, operator, args: _*);
+  def simple[T](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*): SimpleExpression[T] = new SimpleOperation[T](t, operator, args: _*);
 
-  def comparable[T <: Comparable[_]](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*) = new ComparableOperation[T](t, operator, args: _*);
+  def comparable[T <: Comparable[_]](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*): ComparableExpression[T] = new ComparableOperation[T](t, operator, args: _*);
 
-  def date[T <: Comparable[_]](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*) = new DateOperation[T](t, operator, args: _*);
+  def date[T <: Comparable[_]](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*): DateExpression[T] = new DateOperation[T](t, operator, args: _*);
 
-  def dateTime[T <: Comparable[_]](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*) = new DateTimeOperation[T](t, operator, args: _*);
+  def dateTime[T <: Comparable[_]](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*): DateTimeExpression[T] = new DateTimeOperation[T](t, operator, args: _*);
 
-  def time[T <: Comparable[_]](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*) = new TimeOperation[T](t, operator, args: _*);
+  def time[T <: Comparable[_]](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*): TimeExpression[T] = new TimeOperation[T](t, operator, args: _*);
 
-  def number[T <: Number with Comparable[T]](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*) = new NumberOperation[T](t, operator, args: _*);
+  def number[T <: Number with Comparable[T]](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*): NumberExpression[T] = new NumberOperation[T](t, operator, args: _*);
 
-  def boolean(operator: Operator[_ >: java.lang.Boolean], args: Expression[_]*) = new BooleanOperation(operator, args: _*);
+  def boolean(operator: Operator[_ >: java.lang.Boolean], args: Expression[_]*): BooleanExpression = new BooleanOperation(operator, args: _*);
 
-  def string(operator: Operator[_ >: String], args: Expression[_]*) = new StringOperation(operator, args: _*);
+  def string(operator: Operator[_ >: String], args: Expression[_]*): StringExpression = new StringOperation(operator, args: _*);
 
-  def enum[T <: Enum[T]](t: Class[T], operator: Operator[_ >: T], args: Expression[_]*) = new EnumOperation[T](t, operator, args: _*);
+  def enum[T <: Enum[T]](t: Class[T], operator: Operator[_ >: T], args: Expression[_]*): EnumExpression[T] = new EnumOperation[T](t, operator, args: _*);
 }
 
 class SimpleOperation[T](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*)
