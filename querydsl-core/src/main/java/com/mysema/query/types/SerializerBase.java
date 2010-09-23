@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.BooleanBuilder;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
@@ -210,8 +209,8 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 int i = element.getIndex();
                 boolean wrap = false;
                 Expression arg = args.get(i);
-                if (arg instanceof BooleanBuilder){
-                    arg = ((BooleanBuilder)arg).getValue();
+                if (arg instanceof Operation && ((Operation)arg).getOperator() == Ops.DELEGATE){
+                    arg = ((Operation)arg).getArg(0);
                 }
                 if (arg instanceof Operation){
                     wrap = precedence < templates.getPrecedence(((Operation<?>) arg).getOperator());
