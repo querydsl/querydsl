@@ -9,7 +9,7 @@ import org.junit.Test
 
 class AliasTest {
 
-  var domainType = alias(classOf[DomainType])
+  val domainType = alias(classOf[DomainType])
 
   def assertEquals(expected: String, actual: Any) {
     org.junit.Assert.assertEquals(expected, actual.toString);
@@ -45,23 +45,21 @@ class AliasTest {
 
   @Test
   def String_And {
-    var andClause = (domainType.firstName $like "An%") $and (domainType.firstName $like "Be%");
+    val andClause = (domainType.firstName $like "An%") $and (domainType.firstName $like "Be%");
     assertEquals("domainType.firstName like An% && domainType.firstName like Be%", andClause);
   }
 
   @Test
   def String_Or {
-    var orClause = (domainType.firstName $like "An%") $or (domainType.firstName $like "Be%");
+    val orClause = (domainType.firstName $like "An%") $or (domainType.firstName $like "Be%");
     assertEquals("domainType.firstName like An% || domainType.firstName like Be%", orClause);
   }
 
   @Test
   def String_Not {
-    var notClause = (domainType.firstName $like "An%") not;
-    assertEquals("!domainType.firstName like An%", notClause.toString);
+    assertEquals("!domainType.firstName like An%", (domainType.firstName $like "An%") not);
 
-    notClause = not(domainType.firstName $like "An%");
-    assertEquals("!domainType.firstName like An%", notClause.toString);
+    assertEquals("!domainType.firstName like An%", not(domainType.firstName $like "An%"));
   }
 
   @Test
