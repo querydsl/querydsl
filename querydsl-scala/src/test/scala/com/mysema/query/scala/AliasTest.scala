@@ -183,7 +183,7 @@ class AliasTest {
   
   @Test
   def I_Used_To_Be_Complex_Now_I_Am_Simple() {
-      val expr = person.firstName $startsWith "amin";
+      val expr = person.firstName $endsWith "amin";
       assertEquals("endsWith(person.firstName,amin)", expr);
   }
 }
