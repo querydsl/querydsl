@@ -63,8 +63,8 @@ class AliasTest {
     
     // between
     // FIXME
-//    assertEquals("domainType.scalaInt between 2 and 3", (domainType.scalaInt $between (2, 3)).toString);
-//    assertEquals("domainType.javaInt between 2 and 3", (domainType.javaInt $between (2, 3)).toString);
+    assertEquals("domainType.scalaInt between 2 and 3", (domainType.scalaInt $between (2, 3)).toString);
+    assertEquals("domainType.javaInt between 2 and 3", (domainType.javaInt $between (2, 3)).toString);
     
     // FIXME
 //    assertEquals("domainType.scalaInt between domainType.javaInt and domainType.javaDouble", 
