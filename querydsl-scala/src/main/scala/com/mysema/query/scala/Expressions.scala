@@ -177,35 +177,37 @@ trait ComparableExpression[T <: Comparable[_]] extends ComparableExpressionBase[
   
 }
 
+//type ExpressionNumber = Expression[_ <: Number]
+
 trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpressionBase[T] {
 
-  def $add(right: Expression[Number]) = number[T](getType, ADD, this, right);
+  def $add(right: Expression[_ <: Number]) = number[T](getType, ADD, this, right);
 
   def $add(right: Number): NumberExpression[T] = $add(resolve(right));
 
   def $goe(right: Number): BooleanExpression = $goe(resolve(right));
 
-  def $goe(right: Expression[Number]) = boolean(Ops.GOE, this, right);
+  def $goe(right: Expression[_ <: Number]) = boolean(Ops.GOE, this, right);
 
   def $gt(right: Number): BooleanExpression = $gt(resolve(right));
 
-  def $gt(right: Expression[Number]) = boolean(Ops.GT, this, right);
+  def $gt(right: Expression[_ <: Number]) = boolean(Ops.GT, this, right);
 
-  def $between(left: Number, right: Number): BooleanExpression = $between(resolve(left), resolve(right));
+  def $between(left: Number, right: Number) = boolean(Ops.BETWEEN, this, resolve(left), resolve(right));
 
-  def $between(left: Expression[Number], right: Expression[Number]) = boolean(Ops.BETWEEN, this, left, right);
+  def $between(left: NumberExpression[_ <: Number], right: NumberExpression[_ <: Number]) = boolean(Ops.BETWEEN, this, left, right);
 
   def $notBetween(left: Number, right: Number): BooleanExpression = $between(left, right).not;
 
-  def $notBetween(left: Expression[Number], right: Expression[Number]) = $between(left, right).not;
+  def $notBetween(left: NumberExpression[_  <: Number], right: NumberExpression[_ <: Number]) = $between(left, right).not;
 
   def $loe(right: Number): BooleanExpression = $loe(resolve(right));
 
-  def $loe(right: Expression[Number]) = boolean(Ops.LOE, this, right);
+  def $loe(right: Expression[_ <: Number]) = boolean(Ops.LOE, this, right);
 
   def $lt(right: Number): BooleanExpression = $lt(resolve(right));
 
-  def $lt(right: Expression[Number]) = boolean(Ops.LT, this, right);
+  def $lt(right: Expression[_ <: Number]) = boolean(Ops.LT, this, right);
 
   def $in(right: Array[Number]) = boolean(IN, this, resolve(asList(right: _*)));
 
@@ -217,23 +219,23 @@ trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpress
 
   def $avg() = number[T](getType, AggOps.AVG_AGG, this);
 
-  def $subtract(right: Expression[Number]) = number[T](getType, Ops.SUB, this, right);
+  def $subtract(right: Expression[_ <: Number]) = number[T](getType, Ops.SUB, this, right);
 
   def $subtract(right: Number): NumberExpression[T] = $subtract(resolve(right));
 
-  def $notIn(right: Array[Number]) = boolean(IN, this, resolve(asList(right: _*))).not;
+  def $notIn(right: Array[_ <: Number]) = boolean(IN, this, resolve(asList(right: _*))).not;
 
-  def $divide(right: Expression[Number]) = number[T](getType, Ops.DIV, this, right);
+  def $divide(right: Expression[_ <: Number]) = number[T](getType, Ops.DIV, this, right);
 
   def $divide(right: Number): NumberExpression[T] = $divide(resolve(right));
 
-  def $multiply(right: Expression[Number]) = number[T](getType, Ops.MULT, this, right);
+  def $multiply(right: Expression[_ <: Number]) = number[T](getType, Ops.MULT, this, right);
 
   def $multiply(right: Number): NumberExpression[T] = $multiply(resolve(right));
 
   def $negate() = $multiply(-1);
 
-  def $mod(right: Expression[Number]) = number[T](getType, Ops.MOD, this, right);
+  def $mod(right: Expression[_ <: Number]) = number[T](getType, Ops.MOD, this, right);
 
   def $mod(right: Number): NumberExpression[T] = $mod(resolve(right));
 

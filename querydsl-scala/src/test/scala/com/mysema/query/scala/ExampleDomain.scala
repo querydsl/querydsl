@@ -5,6 +5,8 @@ class DomainType {
 
   var javaInt: Integer = null;
 
+  var javaDouble: java.lang.Double = null;
+  
   var firstName: String = null;
 
   var lastName: String = null;

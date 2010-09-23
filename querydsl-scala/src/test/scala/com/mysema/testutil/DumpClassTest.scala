@@ -1,4 +1,4 @@
-package com.mysema.query.scala
+package com.mysema.testutil
 
 import com.mysema.query.jpa.impl.JPAQuery
 import com.mysema.query.scala.Conversions._
