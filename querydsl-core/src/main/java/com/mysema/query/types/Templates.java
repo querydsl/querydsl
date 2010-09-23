@@ -100,7 +100,7 @@ public class Templates {
         add(Ops.MATCHES, "matches({0},{1})");
         add(Ops.STARTS_WITH, "startsWith({0},{1})");
         add(Ops.STARTS_WITH_IC, "startsWithIgnoreCase({0},{1})");
-        add(Ops.ENDS_WITH, "endsWith({0},{1}");
+        add(Ops.ENDS_WITH, "endsWith({0},{1})");
         add(Ops.ENDS_WITH_IC, "endsWithIgnoreCase({0},{1})");
         add(Ops.STRING_CONTAINS, "contains({0},{1})");
         add(Ops.STRING_CONTAINS_IC, "containsIc({0},{1})");
