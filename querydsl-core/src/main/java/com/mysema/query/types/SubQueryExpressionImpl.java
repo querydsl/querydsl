@@ -15,7 +15,7 @@ import com.mysema.query.QueryMetadata;
  * @author tiwe
  *
  */
-public class SubQueryImpl<T> extends ExpressionBase<T> implements SubQueryExpression<T>{
+public class SubQueryExpressionImpl<T> extends ExpressionBase<T> implements SubQueryExpression<T>{
 
     private static final long serialVersionUID = 6775967804458163L;
 
@@ -24,7 +24,7 @@ public class SubQueryImpl<T> extends ExpressionBase<T> implements SubQueryExpres
 
     private final QueryMetadata metadata;
 
-    public SubQueryImpl(Class<? extends T> type, QueryMetadata metadata){
+    public SubQueryExpressionImpl(Class<? extends T> type, QueryMetadata metadata){
         super(type);
         this.metadata = metadata;
     }

@@ -8,7 +8,7 @@ package com.mysema.query.types.query;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.SubQueryImpl;
+import com.mysema.query.types.SubQueryExpressionImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.TimeExpression;
 
@@ -23,11 +23,11 @@ public final class TimeSubQuery<A extends Comparable<?>> extends TimeExpression<
 
     private static final long serialVersionUID = -64156984110154969L;
 
-    private final SubQueryImpl<A> subQueryMixin;
+    private final SubQueryExpressionImpl<A> subQueryMixin;
 
     public TimeSubQuery(Class<A> type, QueryMetadata md) {
         super(type);
-        subQueryMixin = new SubQueryImpl<A>(type, md);
+        subQueryMixin = new SubQueryExpressionImpl<A>(type, md);
     }
 
     @Override
