@@ -476,7 +476,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     public Void visit(Path<?> path, Void context) {
         if (dml){
-            if (path.equals(entity)){
+            if (path.equals(entity) && path instanceof RelationalPath<?>){
                 appendAsTableName((RelationalPath<?>)path);
                 return null;
             }else if (entity.equals(path.getMetadata().getParent()) && skipParent){
