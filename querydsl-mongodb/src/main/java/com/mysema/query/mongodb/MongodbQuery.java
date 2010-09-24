@@ -68,19 +68,16 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
 
     @Override
     public MongodbQuery<K> limit(long limit) {
-        //TODO Add support
         return queryMixin.limit(limit);
     }
 
     @Override
     public MongodbQuery<K> offset(long offset) {
-        //TODO Add support
         return queryMixin.offset(offset);
     }
 
     @Override
     public MongodbQuery<K> restrict(QueryModifiers modifiers) {
-        //TODO Implement this
         return queryMixin.restrict(modifiers);
     }
 
@@ -127,15 +124,20 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
         }
         return results;
     }
-
+    
     private DBCursor createCursor() {
         QueryMetadata metadata = queryMixin.getMetadata();
-        // Long queryLimit = metadata.getModifiers().getLimit();
-        // Long queryOffset = metadata.getModifiers().getOffset();
+        QueryModifiers modifiers = metadata.getModifiers();
         
         //This is bit weird, but without it, repeated lists fail to have valid objects
         cache.flush();
         DBCursor cursor = coll.find(createQuery());
+        if (modifiers.getLimit() != null){
+            cursor.limit(modifiers.getLimit().intValue());
+        }
+        if (modifiers.getOffset() != null){
+            cursor.skip(modifiers.getOffset().intValue());
+        }
         if (metadata.getOrderBy().size() > 0) {
             cursor.sort(serializer.toSort(metadata.getOrderBy()));
         }
@@ -144,7 +146,7 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
 
     @Override
     public List<K> listDistinct() {
-        throw new UnsupportedOperationException();
+        return list();
     }
 
     @Override
@@ -155,13 +157,17 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
 
     @Override
     public SearchResults<K> listResults() {
-        //TODO Do this
-        throw new UnsupportedOperationException();
+        long total = count();
+        if (total > 0l){
+            return new SearchResults<K>(list(), queryMixin.getMetadata().getModifiers(), total);
+        }else{
+            return SearchResults.emptyResults();
+        }
     }
 
     @Override
     public SearchResults<K> listDistinctResults() {
-        throw new UnsupportedOperationException();
+        return listResults();
     }
 
     @Override
@@ -171,7 +177,7 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
 
     @Override
     public long countDistinct() {
-        throw new UnsupportedOperationException();
+        return count();
     }
 
     private DBObject createQuery() {

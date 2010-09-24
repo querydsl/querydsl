@@ -8,6 +8,8 @@ package com.mysema.query.mongodb;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -17,6 +19,7 @@ import org.junit.Test;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
+import com.mysema.query.SearchResults;
 import com.mysema.query.mongodb.domain.QUser;
 import com.mysema.query.mongodb.domain.User;
 import com.mysema.query.types.OrderSpecifier;
@@ -51,6 +54,39 @@ public class MongodbQueryTest {
         assertEquals(4, query().count());
     }
 
+    @Test
+    public void testOrder(){
+        List<User> users = query().orderBy(user.age.asc()).list();
+        assertEquals(Arrays.asList(u1, u2, u3, u4), users);
+        
+        users = query().orderBy(user.age.desc()).list();
+        assertEquals(Arrays.asList(u4, u3, u2, u1), users);
+    }
+    
+    @Test
+    public void testRestrict(){
+        assertEquals(Arrays.asList(u1, u2), query().limit(2).orderBy(user.age.asc()).list());
+        assertEquals(Arrays.asList(u2, u3), query().limit(2).offset(1).orderBy(user.age.asc()).list());
+    }
+    
+    @Test
+    public void testListResults(){
+        SearchResults<User> results = query().limit(2).orderBy(user.age.asc()).listResults();
+        assertEquals(4l, results.getTotal());
+        assertEquals(2, results.getResults().size());
+        
+        results = query().offset(2).orderBy(user.age.asc()).listResults();
+        assertEquals(4l, results.getTotal());
+        assertEquals(2, results.getResults().size());
+    }
+    
+    @Test
+    public void testEmptyResults(){
+        SearchResults<User> results = query().where(user.firstName.eq("XXX")).listResults();
+        assertEquals(0l, results.getTotal());
+        assertEquals(Collections.emptyList(), results.getResults());
+    }
+    
     @Test
     public void testEqInAndOrderByQueries() {
        
@@ -132,17 +168,10 @@ public class MongodbQueryTest {
     }
     
     @Test
-    public void testUniqueResultAndLimitAndOffset() {
-        
-        MongodbQuery<User> q = query().where(user.firstName.startsWith("Ja")).orderBy(user.age.asc());
-        
-        assertEquals(4, q.list().size());
-        
-        assertEquals(u1, q.uniqueResult());
-        
-        
-        
-        
+    public void testUniqueResultAndLimitAndOffset() {        
+        MongodbQuery<User> q = query().where(user.firstName.startsWith("Ja")).orderBy(user.age.asc());        
+        assertEquals(4, q.list().size());        
+        assertEquals(u1, q.uniqueResult());             
     }
     
     
