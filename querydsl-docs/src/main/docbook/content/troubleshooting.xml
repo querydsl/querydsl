@@ -75,6 +75,7 @@ Querydsl is tested against JDK 6.0 only, as we use APT extensively, which is ava
 If you want to use it with JDK 5.0 you might want to try to compile Querydsl yourself.
 </para>
 
+<!-- 
 <para>
 To use Querydsl with JDK 5.0 you also need to exclude querydsl-hql-apt and include querydsl-apt-jdk5 like this :
 </para>
@@ -99,6 +100,7 @@ To use Querydsl with JDK 5.0 you also need to exclude querydsl-hql-apt and inclu
  <scope>provided</scope>
 </dependency>
 ]]></programlisting>
+-->
 
 </sect1>
 
