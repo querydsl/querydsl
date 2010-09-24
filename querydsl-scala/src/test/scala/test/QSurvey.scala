@@ -7,9 +7,11 @@ import com.mysema.query.sql.Table;
 
 import java.util.Arrays;
 
-/**
- * Survey is a Querydsl query type
- */
+
+object QSurvey {
+    def as(variable: String) = new QSurvey(variable);
+}
+
 @Table("SURVEY")
 class QSurvey(path: String) extends RelationalPathBase[Survey](classOf[Survey], path) {
   val id: NumberPath[Integer] = createNumber("ID", classOf[Integer]);

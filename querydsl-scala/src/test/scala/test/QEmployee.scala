@@ -7,9 +7,10 @@ import com.mysema.query.sql.Table;
 
 import java.util.Arrays;
 
-/**
- * Employee is a Querydsl query type
- */
+object QEmployee {
+    def as(variable: String) = new QEmployee(variable);
+}
+
 @Table("EMPLOYEE")
 class QEmployee(path: String) extends RelationalPathBase[Employee](classOf[Employee], path) {
   val firstname: StringPath = createString("FIRSTNAME");

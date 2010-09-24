@@ -15,11 +15,11 @@ class QuerySyntaxTest {
 
   @Test
   def Query_Syntax() {
-    //      select()
-    //          .from(Category as "c" join (Book as "b"), Category as "c1")
-    //          .where("c1.name" like "a%")
-    //          .addOrder(asc("c.name"))
-    //          .list
+    //  select()
+    //      .from(Category as "c" join (Book as "b"), Category as "c1")
+    //      .where("c1.name" like "a%")
+    //      .addOrder(asc("c.name"))
+    //      .list
 
     val c = new QCategory("c");
     val c1 = new QCategory("c1");
@@ -29,7 +29,7 @@ class QuerySyntaxTest {
       .orderBy(c.name asc)
       .list(c)
 
-    //      select(count("b.id"), "c.name").from(Category as "c" join (Book as "b")).list
+    //  select(count("b.id"), "c.name").from(Category as "c" join (Book as "b")).list
 
     query.from(c).innerJoin(b)
       .list(b.id count)
