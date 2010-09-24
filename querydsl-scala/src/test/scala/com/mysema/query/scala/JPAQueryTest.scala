@@ -9,41 +9,47 @@ import org.junit.Assert._
 
 class JPAQueryTest {
 
-  var domainType = alias(classOf[Person])
+  var person = alias(classOf[Person])
 
   @Test
   def OneLiner() {
-    query from (domainType) where (domainType.firstName $like "Rob%") unique (domainType);
+    query from (person) where (person.firstName $like "Rob%") unique (person);
   }
 
   @Test
   def Projections() {
-    query from (domainType) list (domainType)
-    query from (domainType) list (domainType.firstName)
-    query from (domainType) list (domainType.firstName, domainType.lastName)
+    query from (person) list (person)
+    query from (person) list (person.firstName)
+    query from (person) list (person.firstName, person.lastName)
 
-    query from domainType list domainType.firstName
+    query from person list person.firstName
   }
 
   @Test
   def Filters() {
-    query from (domainType) where (domainType.firstName $isEmpty) count;
-    query from (domainType) where (domainType.firstName $isEmpty, domainType.lastName $isNotNull) list (domainType);
+    query from (person) where (person.firstName $isEmpty) count;
+    query from (person) where (person.firstName $isEmpty, person.lastName $isNotNull) list (person);
   }
 
   @Test
   def Order() {
-    query from (domainType) orderBy (domainType.firstName asc) list (domainType);
+    query from (person) orderBy (person.firstName asc) list (person);
   }
 
   @Test
   def Various() {
     // list
-    query from (domainType) where (domainType.firstName $like "Rob%") list (domainType);
+    query from (person) where (person.firstName $like "Rob%") list (person);
     // unique result
-    query from (domainType) where (domainType.firstName $like "Rob%") unique (domainType);
+    query from (person) where (person.firstName $like "Rob%") unique (person);
     // long where
-    query from (domainType) where (domainType.firstName $like "Rob%", domainType.lastName $like "An%") list (domainType)
+    query from (person) where (person.firstName $like "Rob%", person.lastName $like "An%") list (person)
+  }
+  
+  @Test
+  def Complex() {
+      query from person where (person.firstName $like "An%") $and (person.lastName $isNotNull) list person;
+      
   }
 
   def query() = new JPQLSubQuery()

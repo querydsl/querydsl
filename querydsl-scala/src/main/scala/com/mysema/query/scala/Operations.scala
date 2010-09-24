@@ -30,7 +30,9 @@ object Operations {
   def string(operator: Operator[_ >: String], args: Expression[_]*): StringExpression = new StringOperation(operator, args: _*);
 
   def enum[T <: Enum[T]](t: Class[T], operator: Operator[_ >: T], args: Expression[_]*): EnumExpression[T] = new EnumOperation[T](t, operator, args: _*);
+
 }
+
 
 class SimpleOperation[T](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*)
   extends OperationImpl[T](t, operator, args: _*) with SimpleExpression[T] {

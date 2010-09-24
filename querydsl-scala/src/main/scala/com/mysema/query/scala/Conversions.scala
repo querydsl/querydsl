@@ -19,14 +19,26 @@ object Conversions {
 
   val aliasFactory = new AliasFactory(new PathFactoryImpl(), new TypeSystemImpl());
 
-  def not(b: BooleanExpression) = b.not;
-
   def alias[T](cl: Class[T]): T = alias(cl, StringUtils.uncapitalize(cl.getSimpleName));
 
   def alias[T](cl: Class[T], variable: String): T = aliasFactory.createAliasForVariable(cl, variable);
 
   def alias[T](cl: Class[T], expr: Expression[_ <: T]): T = aliasFactory.createAliasForExpr(cl, expr);
 
+  // prefix functions
+  
+  def not(b: BooleanExpression) = b.not;
+  
+  def count(e: SimpleExpression[_]) = e.$count();
+  
+  def min(e: NumberExpression[_]) = e.$min();
+
+  def max(e: NumberExpression[_]) = e.$max();
+  
+  def sum(e: NumberExpression[_]) = e.$sum();
+  
+  def avg(e: NumberExpression[_]) = e.$avg();  
+  
   // implicit conversions
 
   implicit def arrayPath[T <: Array[_]](a: T): ArrayPath[T] = aliasFactory.getCurrentAndReset();

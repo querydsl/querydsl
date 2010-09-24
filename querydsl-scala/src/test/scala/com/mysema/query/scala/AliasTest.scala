@@ -191,5 +191,11 @@ class AliasTest {
     assertEquals("endsWith(person.firstName,amin)",  person.firstName $endsWith "amin");
   }
   
+  @Test
+  def Prefix(){
+      assertEquals("count(person)", count(person));
+      assertEquals("min(person.javaInt)", min(person.javaInt));
+  }
+  
 }
 
