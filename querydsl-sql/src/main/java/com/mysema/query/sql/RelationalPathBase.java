@@ -102,4 +102,9 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
         return primaryKey;
     }
 
+    @Override
+    public String getTableName() {
+        return getType().getAnnotation(Table.class).value();
+    }
+
 }

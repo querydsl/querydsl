@@ -89,7 +89,7 @@ public class Configuration {
     @SuppressWarnings("unchecked")
     private <T> Type<T> getType(@Nullable Path<?> path, Class<T> clazz){
         if (path != null && path.getMetadata().getParent() instanceof RelationalPath){
-            String table = path.getMetadata().getParent().getAnnotatedElement().getAnnotation(Table.class).value();
+            String table = ((RelationalPath)path.getMetadata().getParent()).getTableName();
             String column = path.getMetadata().getExpression().toString();
             Type<T> type = (Type)javaTypeMapping.getType(table, column);
             if (type != null){

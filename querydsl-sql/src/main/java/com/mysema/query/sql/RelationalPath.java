@@ -22,6 +22,13 @@ import com.mysema.query.types.Path;
 public interface RelationalPath<T> extends EntityPath<T>{
     
     /**
+     * Get the table name
+     * 
+     * @return
+     */
+    String getTableName();
+    
+    /**
      * Get all columns
      * 
      * @return

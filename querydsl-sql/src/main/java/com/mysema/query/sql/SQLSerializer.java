@@ -94,8 +94,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         append(templates.quoteIdentifier(column));
     }
 
-    private void appendAsTableName(Path<?> path){
-        String table = path.getAnnotatedElement().getAnnotation(Table.class).value();
+    private void appendAsTableName(RelationalPath<?> path){
+        String table = path.getTableName();
         append(templates.quoteIdentifier(table));
     }
 
@@ -477,7 +477,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     public Void visit(Path<?> path, Void context) {
         if (dml){
             if (path.equals(entity)){
-                appendAsTableName(path);
+                appendAsTableName((RelationalPath<?>)path);
                 return null;
             }else if (entity.equals(path.getMetadata().getParent()) && skipParent){
                 appendAsColumnName(path);
