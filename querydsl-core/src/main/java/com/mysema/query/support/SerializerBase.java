@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types;
+package com.mysema.query.support;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +15,8 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
+import com.mysema.query.types.*;
+import com.mysema.query.types.Template.Element;
 
 /**
  * SerializerBase is a stub for Serializer implementations

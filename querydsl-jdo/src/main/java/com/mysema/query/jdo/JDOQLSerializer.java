@@ -19,6 +19,7 @@ import org.apache.commons.lang.ClassUtils;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.*;
 import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.expr.SimpleOperation;

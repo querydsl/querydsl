@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.*;
 
 /**
