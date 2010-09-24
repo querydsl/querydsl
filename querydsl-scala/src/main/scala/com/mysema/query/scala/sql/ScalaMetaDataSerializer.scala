@@ -23,9 +23,10 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
 
   val classHeaderFormat = "%1$s(path: String) extends RelationalPathBase[%2$s](classOf[%2$s], path)";
 
-  val javadocSuffix = " is a Querydsl query type";
+  //val javadocSuffix = " is a Querydsl query type";
 
   def serialize(model: EntityType, serializerConfig: SerializerConfig, writer: CodeWriter) {
+    val scalaWriter = writer.asInstanceOf[ScalaWriter];
     val simpleName: String = model.getSimpleName;
 
     // package
@@ -48,8 +49,8 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
     writer.importClasses(importedClasses.toArray: _*);
 
     // javadoc        
-    writer.javadoc(simpleName + javadocSuffix);
-
+    //writer.javadoc(simpleName + javadocSuffix);
+    
     // header
     model.getAnnotations.foreach(writer.annotation(_));
 
@@ -57,7 +58,12 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
     var modelName = writer.getRawName(model);
     var queryTypeName = writer.getRawName(queryType);
     var classHeader = String.format(classHeaderFormat, queryTypeName, modelName);
-    writer.asInstanceOf[ScalaWriter].beginClass(classHeader);
+        
+    scalaWriter.beginObject(queryTypeName);
+    scalaWriter.line("def as(variable: String) = new ", queryTypeName, "(variable)");
+    scalaWriter.end();
+    
+    scalaWriter.beginClass(classHeader);
 
     // properties
     serializeProperties(model, writer, model.getProperties);
