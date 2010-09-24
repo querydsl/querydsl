@@ -40,6 +40,16 @@ public class MongodbQueryTest {
         u3 = addUser("Jaana", "Aakkonen", 40);
         u4 = addUser("Jaana", "BeekkoNen", 50);
     }
+    
+    @Test
+    public void testUniqueResult(){
+        assertEquals("Jantunen", where(user.firstName.eq("Jaakko")).uniqueResult().getLastName());
+    }
+    
+    @Test
+    public void testCount(){
+        assertEquals(4, query().count());
+    }
 
     @Test
     public void testEqInAndOrderByQueries() {

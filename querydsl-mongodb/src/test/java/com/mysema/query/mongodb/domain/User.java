@@ -15,14 +15,15 @@ import com.google.code.morphia.annotations.Id;
 @Entity
 public class User {
     
-    @Id ObjectId id;
+    private @Id ObjectId id;
     
-    String firstName;
-    String lastName;
+    private String firstName;
     
-    Date created;
+    private String lastName;
     
-    int age;
+    private Date created;
+    
+    private int age;
     
     public User() {
     }
@@ -40,6 +41,46 @@ public class User {
     public String toString() {
         return "TestUser [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName
                 + "]";
+    }
+    
+    public ObjectId getId() {
+        return id;
+    }
+
+    public void setId(ObjectId id) {
+        this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     @Override
