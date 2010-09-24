@@ -49,7 +49,7 @@ import com.mysema.query.types.template.TimeTemplate;
  * @author tiwe
  *
  */
-public class TypeMappings {
+public final class TypeMappings {
 
     private final Map<TypeCategory, ClassType> customTypes = new HashMap<TypeCategory, ClassType>();
 

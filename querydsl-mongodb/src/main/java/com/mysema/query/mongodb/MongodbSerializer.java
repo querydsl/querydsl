@@ -89,10 +89,11 @@ public class MongodbSerializer implements Visitor<Object, Void> {
             String key = arg.keySet().iterator().next();
             
             Operator<?> subOp = ((Operation<?>) expr.getArg(0)).getOperator();
-            if (subOp != Ops.EQ_OBJECT && subOp != Ops.EQ_PRIMITIVE)
-                return dbo(key, dbo("$not", arg.get(key)));
-            else
+            if (subOp != Ops.EQ_OBJECT && subOp != Ops.EQ_PRIMITIVE){
+                return dbo(key, dbo("$not", arg.get(key)));   
+            }else{
                 return dbo(key, dbo("$ne", arg.get(key)));
+            }                
         }
         
 //      if (op == Ops.OR)

@@ -23,5 +23,7 @@ public final class Constants {
             SimplePath.class,
             TimePath.class
             ));
+    
+    private Constants(){}
 
 }

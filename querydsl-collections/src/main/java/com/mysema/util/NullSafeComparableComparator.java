@@ -1,5 +1,6 @@
 package com.mysema.util;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
@@ -7,8 +8,10 @@ import java.util.Comparator;
  *
  * @param <T>
  */
-public class NullSafeComparableComparator<T extends Comparable<T>> implements Comparator<T>{
+public class NullSafeComparableComparator<T extends Comparable<T>> implements Comparator<T>, Serializable{
     
+    private static final long serialVersionUID = 5681808684776488757L;
+
     @Override
     public int compare(T obj1, T obj2) {
         if (obj1 == null){
