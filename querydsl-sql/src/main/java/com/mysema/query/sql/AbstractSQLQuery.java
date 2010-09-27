@@ -5,7 +5,6 @@
  */
 package com.mysema.query.sql;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
@@ -516,11 +515,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                 return null;
             }
         }finally{
-            try {
-                iterator.close();
-            } catch (IOException e) {
-                throw new QueryException(e);
-            }
+            iterator.close();
         }
         
     }

@@ -24,7 +24,7 @@ import com.mysema.query.sql.mssql.RowNumber;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.query.ListSubQuery;
-import com.mysema.query.types.query.ObjectSubQuery;
+import com.mysema.query.types.query.SimpleSubQuery;
 import com.mysema.query.types.template.SimpleTemplate;
 import com.mysema.testutil.Label;
 import com.mysema.testutil.ResourceCheck;
@@ -67,7 +67,7 @@ public class SelectMSSQLTest extends SelectBaseTest {
 
         // with subquery, only row number
         System.out.println("#3");
-        ObjectSubQuery<Long> sub2 = sq().from(employee).unique(rowNumber);
+        SimpleSubQuery<Long> sub2 = sq().from(employee).unique(rowNumber);
         SimplePath<Long> subAlias2 = new SimplePath<Long>(Long.class, "s");
         for (Object[] row : query().from(sub2.as(subAlias2)).list(all)){
             System.out.println(Arrays.asList(row));

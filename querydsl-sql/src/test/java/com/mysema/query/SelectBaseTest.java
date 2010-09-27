@@ -48,16 +48,17 @@ import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.QTuple;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.Coalesce;
 import com.mysema.query.types.expr.ArrayConstructorExpression;
 import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.Coalesce;
 import com.mysema.query.types.expr.ConstructorExpression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.query.ListSubQuery;
-import com.mysema.query.types.query.ObjectSubQuery;
+import com.mysema.query.types.query.NumberSubQuery;
+import com.mysema.query.types.query.SimpleSubQuery;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.Label;
 
@@ -502,8 +503,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         assertFalse(list.isEmpty());
 
         // union #2
-        ObjectSubQuery<Object[]> sq3 = sq().from(employee).unique(new Expression[]{employee.id.max()});
-        ObjectSubQuery<Object[]> sq4 = sq().from(employee).unique(new Expression[]{employee.id.min()});
+        SimpleSubQuery<Object[]> sq3 = sq().from(employee).unique(new Expression[]{employee.id.max()});
+        SimpleSubQuery<Object[]> sq4 = sq().from(employee).unique(new Expression[]{employee.id.min()});
         List<Object[]> list2 = query().union(sq3, sq4).list();
         assertFalse(list2.isEmpty());
     }
@@ -675,7 +676,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     public void whereExists() throws SQLException {
-        SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id.max());
+        NumberSubQuery<Integer> sq1 = sq().from(employee).unique(employee.id.max());
 
         query().from(employee).where(sq1.exists()).count();
 

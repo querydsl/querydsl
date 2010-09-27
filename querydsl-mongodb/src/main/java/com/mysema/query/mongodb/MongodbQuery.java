@@ -5,7 +5,6 @@
  */
 package com.mysema.query.mongodb;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,7 +109,7 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
             }
 
             @Override
-            public void close() throws IOException {
+            public void close() {
             }
         };
     }

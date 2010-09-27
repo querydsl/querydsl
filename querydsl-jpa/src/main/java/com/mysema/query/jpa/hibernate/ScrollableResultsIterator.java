@@ -5,7 +5,6 @@
  */
 package com.mysema.query.jpa.hibernate;
 
-import java.io.IOException;
 import java.util.NoSuchElementException;
 
 import javax.annotation.Nullable;
@@ -40,12 +39,8 @@ public class ScrollableResultsIterator<T> implements CloseableIterator<T> {
     }
 
     @Override
-    public void close() throws IOException {
-        try {
-            results.close();
-        } catch (Exception e) {
-            throw new IOException(e);
-        }
+    public void close(){
+        results.close();
     }
 
     @Override
