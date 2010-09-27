@@ -22,18 +22,18 @@ public class ConfigurationTest {
     @Test
     public void Various(){
         Configuration configuration = new Configuration(new H2Templates());
-        configuration.setType(Types.DATE, java.util.Date.class);
-        configuration.setType("person", "secureId", new EncryptedString());
-        configuration.setType("person", "gender",  new EnumByNameType<Gender>(Gender.class));
-        configuration.register(new StringType());        
+        configuration.setJavaType(Types.DATE, java.util.Date.class);
+        configuration.registerCustomType("person", "secureId", new EncryptedString());
+        configuration.registerCustomType("person", "gender",  new EnumByNameType<Gender>(Gender.class));
+        configuration.registerCustomType(new StringType());        
         assertEquals(Gender.class, configuration.getJavaType(java.sql.Types.VARCHAR, "person", "gender"));
     }
     
     @Test
     public void Custom_Type(){
         Configuration configuration = new Configuration(new H2Templates());
-        configuration.setType(Types.BLOB, InputStream.class);
-        configuration.register(new InputStreamType());        
+        configuration.setJavaType(Types.BLOB, InputStream.class);
+        configuration.registerCustomType(new InputStreamType());        
         assertEquals(InputStream.class, configuration.getJavaType(Types.BLOB, "", ""));
     }
     

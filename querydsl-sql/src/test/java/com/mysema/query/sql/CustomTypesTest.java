@@ -43,10 +43,10 @@ public class CustomTypesTest extends AbstractJDBCTest{
         
         // create configuration
         configuration = new Configuration(new HSQLDBTemplates());
-        configuration.setType(Types.DATE, java.util.Date.class);
-        configuration.setType("person", "secureId", new EncryptedString());
-        configuration.setType("person", "gender",  new EnumByNameType<Gender>(Gender.class));
-        configuration.register(new StringType());
+        configuration.setJavaType(Types.DATE, java.util.Date.class);
+        configuration.registerCustomType("person", "secureId", new EncryptedString());
+        configuration.registerCustomType("person", "gender",  new EnumByNameType<Gender>(Gender.class));
+        configuration.registerCustomType(new StringType());
 
     }
 
