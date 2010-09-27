@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>2.0.0-beta-2</version>
+    <version>2.0.0-beta-2-SNAPSHOT</version>
   </parent>
 
   <groupId>com.mysema.querydsl</groupId>
