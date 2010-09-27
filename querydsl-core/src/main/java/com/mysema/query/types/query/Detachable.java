@@ -7,6 +7,7 @@ package com.mysema.query.types.query;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.DateTimeExpression;
@@ -27,14 +28,14 @@ public interface Detachable {
      *
      * @return
      */
-    ObjectSubQuery<Long> count();
+    SimpleSubQuery<Long> count();
 
     /**
      * Create an exists(this) expression
      *
      * @return
      */
-    Predicate exists();
+    BooleanExpression exists();
 
     /**
      * Create a projection expression for the given projection
@@ -70,7 +71,7 @@ public interface Detachable {
      *
      * @return
      */
-    Predicate notExists();
+    BooleanExpression notExists();
 
     /**
      * Create a projection expression for the given projection
@@ -80,7 +81,7 @@ public interface Detachable {
      * @param rest
      * @return
      */
-    ObjectSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, Expression<?>... rest);
+    SimpleSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, Expression<?>... rest);
 
     /**
      * Create a projection expression for the given projection
@@ -88,7 +89,7 @@ public interface Detachable {
      * @param args
      * @return
      */
-    ObjectSubQuery<Object[]> unique(Expression<?>[] args);
+    SimpleSubQuery<Object[]> unique(Expression<?>[] args);
 
     /**
      * Create a subquery expression for the given projection
@@ -98,7 +99,7 @@ public interface Detachable {
      * @param projection
      * @return the result or null for an empty result
      */
-    <RT> ObjectSubQuery<RT> unique(Expression<RT> projection);
+    <RT> SimpleSubQuery<RT> unique(Expression<RT> projection);
 
     /**
      * Create a subquery expression for the given projection

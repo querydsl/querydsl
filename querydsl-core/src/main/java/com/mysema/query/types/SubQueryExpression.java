@@ -21,24 +21,10 @@ import com.mysema.query.types.query.Detachable;
 public interface SubQueryExpression<T> extends Expression<T>{
 
     /**
-     * Get an exists(this) expression for the subquery
-     *
-     * @return
-     */
-    Predicate exists();
-
-    /**
      * Get the query metadata for the subquery
      *
      * @return
      */
     QueryMetadata getMetadata();
-
-    /**
-     * Get a not exists(this) expression for the subquery
-     *
-     * @return
-     */
-    Predicate notExists();
 
 }

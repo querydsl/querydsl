@@ -7,6 +7,7 @@ package com.mysema.query.support;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.DateTimeExpression;
@@ -29,11 +30,11 @@ public class DetachableAdapter implements Detachable{
         this.detachable = detachable;
     }
 
-    public ObjectSubQuery<Long> count() {
+    public SimpleSubQuery<Long> count() {
         return detachable.count();
     }
 
-    public Predicate exists() {
+    public BooleanExpression exists() {
         return detachable.exists();
     }
 
@@ -53,7 +54,7 @@ public class DetachableAdapter implements Detachable{
         return detachable.list(projection);
     }
 
-    public Predicate notExists() {
+    public BooleanExpression notExists() {
         return detachable.notExists();
     }
 
@@ -85,15 +86,15 @@ public class DetachableAdapter implements Detachable{
         return detachable.unique(projection);
     }
 
-    public ObjectSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public SimpleSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return detachable.unique(first, second, rest);
     }
 
-    public ObjectSubQuery<Object[]> unique(Expression<?>[] args) {
+    public SimpleSubQuery<Object[]> unique(Expression<?>[] args) {
         return detachable.unique(args);
     }
 
-    public <RT> ObjectSubQuery<RT> unique(Expression<RT> projection) {
+    public <RT> SimpleSubQuery<RT> unique(Expression<RT> projection) {
         return detachable.unique(projection);
     }
 

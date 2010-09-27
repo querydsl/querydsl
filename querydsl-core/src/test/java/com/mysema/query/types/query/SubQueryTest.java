@@ -17,7 +17,6 @@ import org.junit.Test;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.JavaTemplates;
-import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.ToStringVisitor;
 
@@ -28,19 +27,19 @@ public class SubQueryTest {
     public void test(){
         Templates templates = new JavaTemplates();
         QueryMetadata metadata = new DefaultQueryMetadata();
-        List<SubQueryExpression> subQueries = Arrays.<SubQueryExpression>asList(
+        List<ExtendedSubQueryExpression> subQueries = Arrays.<ExtendedSubQueryExpression>asList(
                 new BooleanSubQuery(metadata),
                 new ComparableSubQuery(Date.class,metadata),
                 new DateSubQuery(Date.class,metadata),
                 new DateTimeSubQuery(Date.class,metadata),
                 new ListSubQuery(Date.class,metadata),
                 new NumberSubQuery(Integer.class,metadata),
-                new ObjectSubQuery(String.class,metadata),
+                new SimpleSubQuery(String.class,metadata),
                 new StringSubQuery(metadata),
                 new TimeSubQuery(Date.class,metadata)
         );
-        SubQueryExpression prev = null;
-        for (SubQueryExpression sq : subQueries){
+        ExtendedSubQueryExpression prev = null;
+        for (ExtendedSubQueryExpression sq : subQueries){
             assertNotNull(sq);
             assertNotNull(sq.exists());
             assertNotNull(sq.getMetadata());

@@ -7,15 +7,18 @@ package com.mysema.query.types.query;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.SubQueryExpressionImpl;
 import com.mysema.query.types.Visitor;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.CollectionExpressionBase;
+import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.expr.SimpleOperation;
 
 /**
@@ -25,13 +28,16 @@ import com.mysema.query.types.expr.SimpleOperation;
  *
  * @param <A>
  */
-public final class ListSubQuery<A> extends CollectionExpressionBase<List<A>,A> implements SubQueryExpression<List<A>>{
+public final class ListSubQuery<A> extends CollectionExpressionBase<List<A>,A> implements ExtendedSubQueryExpression<List<A>>{
 
     private static final long serialVersionUID = 3399354334765602960L;
 
     private final Class<A> elementType;
 
     private final SubQueryExpressionImpl<List<A>> subQueryMixin;
+    
+    @Nullable
+    private volatile BooleanExpression exists;
 
     @SuppressWarnings("unchecked")
     public ListSubQuery(Class<A> elementType, QueryMetadata md) {
@@ -51,8 +57,11 @@ public final class ListSubQuery<A> extends CollectionExpressionBase<List<A>,A> i
     }
 
     @Override
-    public Predicate exists() {
-        return subQueryMixin.exists();
+    public BooleanExpression exists() {
+        if (exists == null){
+            exists = BooleanOperation.create(Ops.EXISTS, this);
+        }
+        return exists;
     }
 
     public Class<A> getElementType() {
@@ -70,12 +79,12 @@ public final class ListSubQuery<A> extends CollectionExpressionBase<List<A>,A> i
     }
 
     @Override
-    public Predicate notExists() {
-        return subQueryMixin.notExists();
+    public BooleanExpression notExists() {
+        return exists().not();
     }
 
     @SuppressWarnings("unchecked")
-    public Expression<?> as(Expression<?> alias) {
+    public SimpleExpression<?> as(Expression<?> alias) {
         return SimpleOperation.create(alias.getType(),(Operator)Ops.ALIAS, this, alias);
     }
     

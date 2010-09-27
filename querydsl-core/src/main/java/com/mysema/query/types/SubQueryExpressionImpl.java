@@ -5,8 +5,6 @@
  */
 package com.mysema.query.types;
 
-import javax.annotation.Nullable;
-
 import com.mysema.query.QueryMetadata;
 
 /**
@@ -18,9 +16,6 @@ import com.mysema.query.QueryMetadata;
 public class SubQueryExpressionImpl<T> extends ExpressionBase<T> implements SubQueryExpression<T>{
 
     private static final long serialVersionUID = 6775967804458163L;
-
-    @Nullable
-    private volatile Predicate exists;
 
     private final QueryMetadata metadata;
 
@@ -42,25 +37,12 @@ public class SubQueryExpressionImpl<T> extends ExpressionBase<T> implements SubQ
     }
 
     @Override
-    public Predicate exists() {
-        if (exists == null){
-            exists = new PredicateOperation(Ops.EXISTS, this);
-        }
-        return exists;
-    }
-
-    @Override
     public QueryMetadata getMetadata() {
         return metadata;
     }
 
     public int hashCode(){
         return type.hashCode();
-    }
-
-    @Override
-    public Predicate notExists() {
-        return exists().not();
     }
     
     @Override

@@ -157,7 +157,7 @@ final class StringConstant extends StringExpression implements Constant<String>{
     }
 
     @Override
-    public Expression<String[]> split(String regex) {
+    public SimpleExpression<String[]> split(String regex) {
         return SimpleConstant.create(constant.split(regex));
     }
 

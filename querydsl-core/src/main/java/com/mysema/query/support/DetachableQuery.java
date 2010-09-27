@@ -7,6 +7,7 @@ package com.mysema.query.support;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.DateTimeExpression;
@@ -32,12 +33,12 @@ public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q>
     }
 
     @Override
-    public ObjectSubQuery<Long> count(){
+    public SimpleSubQuery<Long> count(){
         return detachableMixin.count();
     }
 
     @Override
-    public Predicate exists(){
+    public BooleanExpression exists(){
         return detachableMixin.exists();
     }
 
@@ -57,7 +58,7 @@ public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q>
     }
 
     @Override
-    public Predicate notExists(){
+    public BooleanExpression notExists(){
         return detachableMixin.notExists();
     }
 
@@ -97,17 +98,17 @@ public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q>
     }
 
     @Override
-    public ObjectSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public SimpleSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return detachableMixin.unique(first, second, rest);
     }
 
     @Override
-    public ObjectSubQuery<Object[]> unique(Expression<?>[] args) {
+    public SimpleSubQuery<Object[]> unique(Expression<?>[] args) {
         return detachableMixin.unique(args);
     }
 
     @Override
-    public <RT> ObjectSubQuery<RT> unique(Expression<RT> projection) {
+    public <RT> SimpleSubQuery<RT> unique(Expression<RT> projection) {
         return detachableMixin.unique(projection);
     }
 

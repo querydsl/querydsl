@@ -16,7 +16,6 @@ import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.types.*;
-import com.mysema.query.types.Template.Element;
 
 /**
  * SerializerBase is a stub for Serializer implementations

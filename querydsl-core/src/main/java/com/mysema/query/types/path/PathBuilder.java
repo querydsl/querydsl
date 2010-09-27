@@ -284,7 +284,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <A> Path<A> get(Path<A> path){
+    public <A> SimplePath<A> get(Path<A> path){
         return getSimple(toString(path), (Class<A>)path.getType());
     }
 

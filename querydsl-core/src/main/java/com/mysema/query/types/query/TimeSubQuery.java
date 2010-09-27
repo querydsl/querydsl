@@ -5,11 +5,14 @@
  */
 package com.mysema.query.types.query;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.SubQueryExpressionImpl;
 import com.mysema.query.types.Visitor;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.TimeExpression;
 
 /**
@@ -19,11 +22,14 @@ import com.mysema.query.types.expr.TimeExpression;
  *
  * @param <A>
  */
-public final class TimeSubQuery<A extends Comparable<?>> extends TimeExpression<A> implements SubQueryExpression<A>{
+public final class TimeSubQuery<A extends Comparable<?>> extends TimeExpression<A> implements ExtendedSubQueryExpression<A>{
 
     private static final long serialVersionUID = -64156984110154969L;
 
     private final SubQueryExpressionImpl<A> subQueryMixin;
+    
+    @Nullable
+    private volatile BooleanExpression exists;
 
     public TimeSubQuery(Class<A> type, QueryMetadata md) {
         super(type);
@@ -41,10 +47,12 @@ public final class TimeSubQuery<A extends Comparable<?>> extends TimeExpression<
     }
 
     @Override
-    public Predicate exists() {
-        return subQueryMixin.exists();
+    public BooleanExpression exists() {
+        if (exists == null){
+            exists = BooleanOperation.create(Ops.EXISTS, this);
+        }
+        return exists;
     }
-
     @Override
     public QueryMetadata getMetadata() {
         return subQueryMixin.getMetadata();
@@ -56,8 +64,8 @@ public final class TimeSubQuery<A extends Comparable<?>> extends TimeExpression<
     }
 
     @Override
-    public Predicate notExists() {
-        return subQueryMixin.notExists();
+    public BooleanExpression notExists() {
+        return exists().not();
     }
 
 }

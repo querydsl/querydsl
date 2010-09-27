@@ -10,6 +10,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.DateTimeExpression;
@@ -36,12 +37,12 @@ public class DetachableMixin implements Detachable{
     }
 
     @Override
-    public ObjectSubQuery<Long> count() {
-        return new ObjectSubQuery<Long>(Long.class, projection(COUNT_ALL_AGG_EXPR));
+    public SimpleSubQuery<Long> count() {
+        return new SimpleSubQuery<Long>(Long.class, projection(COUNT_ALL_AGG_EXPR));
     }
 
     @Override
-    public Predicate exists(){
+    public BooleanExpression exists(){
         if (queryMixin.getMetadata().getJoins().isEmpty()){
             throw new IllegalArgumentException("No sources given");
         }
@@ -65,7 +66,7 @@ public class DetachableMixin implements Detachable{
     }
 
     @Override
-    public Predicate notExists(){
+    public BooleanExpression notExists(){
         return exists().not();
     }
 
@@ -110,20 +111,20 @@ public class DetachableMixin implements Detachable{
     }
 
     @Override
-    public ObjectSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, Expression<?>... rest) {
-        return new ObjectSubQuery<Object[]>(Object[].class, uniqueProjection(first, second, rest));
+    public SimpleSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+        return new SimpleSubQuery<Object[]>(Object[].class, uniqueProjection(first, second, rest));
     }
 
 
     @Override
-    public ObjectSubQuery<Object[]> unique(Expression<?>[] args) {
-        return new ObjectSubQuery<Object[]>(Object[].class, uniqueProjection(args));
+    public SimpleSubQuery<Object[]> unique(Expression<?>[] args) {
+        return new SimpleSubQuery<Object[]>(Object[].class, uniqueProjection(args));
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <RT> ObjectSubQuery<RT> unique(Expression<RT> projection) {
-        return new ObjectSubQuery<RT>((Class)projection.getType(), uniqueProjection(projection));
+    public <RT> SimpleSubQuery<RT> unique(Expression<RT> projection) {
+        return new SimpleSubQuery<RT>((Class)projection.getType(), uniqueProjection(projection));
     }
     
     private QueryMetadata projection(Expression<?>... projection){

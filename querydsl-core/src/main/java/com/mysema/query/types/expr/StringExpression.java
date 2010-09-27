@@ -374,7 +374,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return this.split(regex)
      * @see java.lang.String#split(String)
      */
-    public Expression<String[]> split(String regex) {
+    public SimpleExpression<String[]> split(String regex) {
         return SimpleOperation.create(String[].class, Ops.StringOps.SPLIT, this, ConstantImpl.create(regex));
     }
 
