@@ -64,7 +64,6 @@ public final class JDBCTypeMapping {
         registerDefault(Types.LONGVARBINARY, Object.class);
         registerDefault(Types.NULL, Object.class);
         registerDefault(Types.OTHER, Object.class);
-        registerDefault(Types.REAL, Object.class);
         registerDefault(Types.REF, Object.class);
         registerDefault(Types.ROWID, Object.class);
         registerDefault(Types.STRUCT, Object.class);
