@@ -13,18 +13,17 @@ import org.junit.Assert._
 
 class ProjectionTest {
     
-    val person = alias(classOf[Person])
+  val person = alias(classOf[Person])
 
-    @Test
-    def QBean(){
-        // FIXME
-//        val bean = new QBean(classOf[Person], person.firstName, person.lastName)        
-    }
+  @Test
+  def QBean(){
+    //val bean = new QBean(classOf[Person], person.firstName, person.lastName)        
+  }
     
-    @Test
-    def QTuple(){
-        val tuple = new QTuple(person.firstName, person.lastName);
-        assertEquals(asList(person.firstName.~, person.lastName.~), tuple.getArgs);
-    }
+  @Test
+  def QTuple(){
+    val tuple = new QTuple(person.firstName, person.lastName);
+    assertEquals(asList(person.firstName.~, person.lastName.~), tuple.getArgs);
+  }
     
 }
