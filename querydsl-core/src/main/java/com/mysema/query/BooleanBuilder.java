@@ -19,7 +19,6 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.BooleanExpression;
 
 /**
  * BooleanBuilder is a cascading builder for {@link Predicate} expressions.
@@ -35,7 +34,7 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
 
     public BooleanBuilder() {  }
 
-    public BooleanBuilder(BooleanExpression initial){
+    public BooleanBuilder(Predicate initial){
         predicate = initial;
     }
 
