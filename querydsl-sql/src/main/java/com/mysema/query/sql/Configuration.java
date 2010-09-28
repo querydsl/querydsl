@@ -120,14 +120,4 @@ public class Configuration {
         javaTypeMapping.setType(table, column, type);
     }
 
-//    /**
-//     * Set the given java type to be used for the given JDBC type
-//     * 
-//     * @param jdbcType
-//     * @param javaType
-//     */
-//    public void setJavaType(int jdbcType, Class<?> javaType) {
-//        jdbcTypeMapping.register(jdbcType, javaType);
-//    }    
-        
 }
