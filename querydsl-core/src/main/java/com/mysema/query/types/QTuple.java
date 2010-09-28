@@ -17,15 +17,17 @@ import com.mysema.query.Tuple;
  * @author tiwe
  * 
  */
-public class QTuple implements FactoryExpression<Tuple>{
+public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<Tuple>{
 
     private final List<Expression<?>> args;
     
     public QTuple(Expression<?>... args) {
+        super(Tuple.class);
         this.args = Arrays.asList(args);
     }
     
     public QTuple(Expression<?>[]... args) {
+        super(Tuple.class);
         this.args = new ArrayList<Expression<?>>();
         for (Expression<?>[] exprs: args){
             this.args.addAll(Arrays.asList(exprs));
@@ -84,11 +86,6 @@ public class QTuple implements FactoryExpression<Tuple>{
     @Override
     public List<Expression<?>> getArgs() {
         return args;
-    }
-
-    @Override
-    public Class<? extends Tuple> getType() {
-        return Tuple.class;
     }
 
 }

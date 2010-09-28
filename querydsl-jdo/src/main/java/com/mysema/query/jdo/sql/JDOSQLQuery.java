@@ -30,9 +30,9 @@ import com.mysema.query.jdo.JDOTuple;
 import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.QTuple;
-import com.mysema.query.types.expr.ConstructorExpression;
 
 /**
  * JDOSQLQuery is an SQLQuery implementation that uses JDO's SQL query functionality

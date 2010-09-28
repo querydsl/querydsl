@@ -7,7 +7,6 @@ package com.mysema.query.types;
 
 import org.junit.Test;
 
-import com.mysema.query.types.expr.ConstructorExpression;
 
 public class ConstructorExpressionTest {
 

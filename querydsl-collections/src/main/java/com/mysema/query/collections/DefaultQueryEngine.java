@@ -20,11 +20,11 @@ import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.expr.ArrayConstructorExpression;
 import com.mysema.util.MultiComparator;
 
 /**

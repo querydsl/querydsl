@@ -19,8 +19,8 @@ import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.expr.ConstructorExpression;
 import com.mysema.query.types.expr.NumberExpression;
 
 /**

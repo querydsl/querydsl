@@ -8,8 +8,8 @@ package com.mysema.query.jpa;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.expr.ConstructorExpression;
 
 public class ConstructorsTest extends AbstractQueryTest{
 

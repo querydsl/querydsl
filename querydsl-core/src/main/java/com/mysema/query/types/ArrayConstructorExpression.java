@@ -3,25 +3,22 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types.expr;
+package com.mysema.query.types;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Visitor;
 
 /**
- * ArrayConstructorExpression extends {@link SimpleExpression} to represent array initializers
+ * ArrayConstructorExpression extends {@link ExpressionBase} to represent array initializers
  *
  * @author tiwe
  *
  * @param <D> component type
  */
-public class ArrayConstructorExpression<D> extends SimpleExpression<D[]> implements FactoryExpression<D[]> {
+public class ArrayConstructorExpression<D> extends ExpressionBase<D[]> implements FactoryExpression<D[]> {
 
     private static final long serialVersionUID = 8667880104290226505L;
 

@@ -5,8 +5,8 @@
  */
 package com.mysema.query.sql.domain;
 
+import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.expr.ConstructorExpression;
 
 public class QIdName extends ConstructorExpression<IdName> {
 

@@ -17,8 +17,8 @@ import com.mysema.query.jdo.test.domain.Product;
 import com.mysema.query.jdo.test.domain.sql.SProduct;
 import com.mysema.query.sql.HSQLDBTemplates;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.ConstructorExpression;
 
 public class JDOSQLQueryTest extends AbstractJDOTest{
     

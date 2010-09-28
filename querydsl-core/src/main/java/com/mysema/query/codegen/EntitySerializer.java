@@ -31,12 +31,12 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.TypeExtends;
 import com.mysema.codegen.model.Types;
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.ComparableExpression;
-import com.mysema.query.types.expr.ConstructorExpression;
 import com.mysema.query.types.path.*;
 import com.mysema.query.types.template.SimpleTemplate;
 

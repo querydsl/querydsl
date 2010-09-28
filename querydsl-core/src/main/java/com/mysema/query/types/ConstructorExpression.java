@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.types.expr;
+package com.mysema.query.types;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -12,11 +12,6 @@ import java.util.List;
 
 import org.apache.commons.lang.ClassUtils;
 
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionException;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.Visitor;
-
 /**
  * ConstructorExpression represents a constructor invocation
  *
@@ -24,7 +19,7 @@ import com.mysema.query.types.Visitor;
  *
  * @param <D> Java type
  */
-public class ConstructorExpression<D> extends SimpleExpression<D> implements FactoryExpression<D> {
+public class ConstructorExpression<D> extends ExpressionBase<D> implements FactoryExpression<D> {
 
     private static final long serialVersionUID = -602747921848073175L;
 

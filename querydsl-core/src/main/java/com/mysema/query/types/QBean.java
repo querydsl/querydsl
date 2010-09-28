@@ -20,12 +20,10 @@ import org.apache.commons.collections15.BeanMap;
  *
  * @param <T>
  */
-public class QBean<T> implements FactoryExpression<T>{
+public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
  
     private static final long serialVersionUID = -8210214512730989778L;
 
-    private final Class<T> type;
-    
     private final Map<String,Expression<?>> bindings;
     
     private final List<Expression<?>> args;
@@ -41,13 +39,13 @@ public class QBean<T> implements FactoryExpression<T>{
     }
         
     public QBean(Class<T> type, Map<String,Expression<?>> bindings) {
-        this.type = type;
+        super(type);
         this.args = new ArrayList<Expression<?>>(bindings.values());        
         this.bindings = bindings;
     }
     
     public QBean(Class<T> type, Expression<?>... args) {
-        this.type = type;
+        super(type);
         this.args = Arrays.asList(args);
         bindings = createBindings(args);        
     }
@@ -114,10 +112,5 @@ public class QBean<T> implements FactoryExpression<T>{
     public List<Expression<?>> getArgs() {
         return args;
     }
-
-    @Override
-    public Class<? extends T> getType() {
-        return type;
-    }    
 
 }

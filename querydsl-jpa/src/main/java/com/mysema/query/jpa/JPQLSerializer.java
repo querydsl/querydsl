@@ -23,7 +23,6 @@ import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.*;
-import com.mysema.query.types.expr.ConstructorExpression;
 import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.util.MathUtils;
 

@@ -29,10 +29,10 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.jpa.JPQLQueryBase;
 import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPQLTemplates;
+import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.ConstructorExpression;
 
 /**
  * Abstract base class for Hibernate API based implementations of the JPQL interface

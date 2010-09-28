@@ -26,7 +26,7 @@ import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain.sql.SAnimal;
 import com.mysema.query.sql.DerbyTemplates;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.expr.ConstructorExpression;
+import com.mysema.query.types.ConstructorExpression;
 import com.mysema.testutil.JPAConfig;
 import com.mysema.testutil.JPATestRunner;
 

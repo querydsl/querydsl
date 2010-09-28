@@ -9,6 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.path.StringPath;
 
 public class ArrayConstructorExpressionTest {

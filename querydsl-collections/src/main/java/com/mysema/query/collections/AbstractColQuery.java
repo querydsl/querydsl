@@ -18,10 +18,10 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.SearchResults;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
+import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.ArrayConstructorExpression;
 import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.query.types.path.MapPath;
 

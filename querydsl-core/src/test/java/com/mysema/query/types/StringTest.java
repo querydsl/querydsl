@@ -17,8 +17,6 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.mysema.query.types.expr.ArrayConstructorExpression;
-import com.mysema.query.types.expr.ConstructorExpression;
 
 /**
  * StringTest provides.

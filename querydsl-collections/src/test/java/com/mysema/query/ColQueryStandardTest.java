@@ -20,12 +20,12 @@ import com.mysema.commons.lang.Pair;
 import com.mysema.query.collections.Cat;
 import com.mysema.query.collections.MiniApi;
 import com.mysema.query.collections.QCat;
+import com.mysema.query.types.ArrayConstructorExpression;
+import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.QTuple;
-import com.mysema.query.types.expr.ArrayConstructorExpression;
 import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.ConstructorExpression;
 import com.mysema.query.types.expr.Param;
 
 public class ColQueryStandardTest {
