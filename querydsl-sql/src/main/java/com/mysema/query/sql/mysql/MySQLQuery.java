@@ -28,15 +28,19 @@ import com.mysema.query.sql.SQLTemplates;
 public class MySQLQuery extends AbstractSQLQuery<MySQLQuery>{
     
     public MySQLQuery(Connection conn) {
-        this(conn, new MySQLTemplates(), new DefaultQueryMetadata());
+        this(conn, new Configuration(new MySQLTemplates()), new DefaultQueryMetadata());
     }
     
     public MySQLQuery(Connection conn, SQLTemplates templates) {
-        this(conn, templates, new DefaultQueryMetadata());
+        this(conn, new Configuration(templates), new DefaultQueryMetadata());
     }
     
-    protected MySQLQuery(Connection conn, SQLTemplates templates, QueryMetadata metadata) {
-        super(conn, new Configuration(templates), metadata);
+    public MySQLQuery(Connection conn, Configuration configuration) {
+        this(conn, configuration, new DefaultQueryMetadata());
+    }
+    
+    public MySQLQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
+        super(conn, configuration, metadata);
     }
     
     public MySQLQuery bigResult(){

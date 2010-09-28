@@ -11,7 +11,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.Types;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
@@ -23,6 +22,7 @@ import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.types.EnumByNameType;
 import com.mysema.query.sql.types.StringType;
+import com.mysema.query.sql.types.UtilDateType;
 
 public class CustomTypesTest extends AbstractJDBCTest{
     
@@ -43,10 +43,11 @@ public class CustomTypesTest extends AbstractJDBCTest{
         
         // create configuration
         configuration = new Configuration(new HSQLDBTemplates());
-        configuration.setJavaType(Types.DATE, java.util.Date.class);
-        configuration.registerCustomType("person", "secureId", new EncryptedString());
-        configuration.registerCustomType("person", "gender",  new EnumByNameType<Gender>(Gender.class));
-        configuration.registerCustomType(new StringType());
+//        configuration.setJavaType(Types.DATE, java.util.Date.class);
+        configuration.register(new UtilDateType());
+        configuration.register("person", "secureId", new EncryptedString());
+        configuration.register("person", "gender",  new EnumByNameType<Gender>(Gender.class));
+        configuration.register(new StringType());
 
     }
 

@@ -104,7 +104,8 @@ public class Configuration {
      * 
      * @param type
      */
-    public void registerCustomType(Type<?> type) {
+    public void register(Type<?> type) {
+        jdbcTypeMapping.register(type.getSQLTypes()[0], type.getReturnedClass());
         javaTypeMapping.register(type);
     }
 
@@ -115,18 +116,18 @@ public class Configuration {
      * @param column
      * @param type
      */
-    public void registerCustomType(String table, String column, Type<?> type) {
+    public void register(String table, String column, Type<?> type) {
         javaTypeMapping.setType(table, column, type);
     }
 
-    /**
-     * Set the given java type to be used for the given JDBC type
-     * 
-     * @param jdbcType
-     * @param javaType
-     */
-    public void setJavaType(int jdbcType, Class<?> javaType) {
-        jdbcTypeMapping.register(jdbcType, javaType);
-    }    
+//    /**
+//     * Set the given java type to be used for the given JDBC type
+//     * 
+//     * @param jdbcType
+//     * @param javaType
+//     */
+//    public void setJavaType(int jdbcType, Class<?> javaType) {
+//        jdbcTypeMapping.register(jdbcType, javaType);
+//    }    
         
 }
