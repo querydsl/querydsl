@@ -12,7 +12,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.MapPath;
 
 /**
@@ -137,7 +137,7 @@ public class AbstractJPQLSubQuery<Q extends AbstractJPQLSubQuery<Q>> extends Det
         return queryMixin.leftJoin(target, alias);
     }
 
-    public Q with(BooleanExpression... conditions){
+    public Q with(Predicate... conditions){
         return queryMixin.with(conditions);
     }
     

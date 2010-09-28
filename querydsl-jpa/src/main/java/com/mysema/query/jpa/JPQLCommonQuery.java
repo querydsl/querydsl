@@ -5,7 +5,7 @@ import java.util.Collection;
 import com.mysema.query.Query;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.MapPath;
 
 /**
@@ -271,6 +271,6 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param condition
      * @return
      */
-    Q with(BooleanExpression... condition);
+    Q with(Predicate... condition);
 
 }

@@ -15,7 +15,7 @@ import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.OracleTemplates;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.Predicate;
 
 /**
  * OracleQuery provides Oracle specific extensions to the base SQL query type
@@ -47,19 +47,19 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
         super(conn, new Configuration(templates), metadata);
     }
 
-    public OracleQuery connectByPrior(BooleanExpression cond) {
+    public OracleQuery connectByPrior(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY_PRIOR, cond);
     }
 
-    public OracleQuery connectBy(BooleanExpression cond) {
+    public OracleQuery connectBy(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY, cond);
     }
 
-    public OracleQuery connectByNocyclePrior(BooleanExpression cond) {
+    public OracleQuery connectByNocyclePrior(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY_NOCYCLE_PRIOR, cond);
     }
 
-    public <A> OracleQuery startWith(BooleanExpression cond) {
+    public <A> OracleQuery startWith(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, START_WITH, cond);
     }
 
