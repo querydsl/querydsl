@@ -11,6 +11,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.Deque;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -85,5 +90,20 @@ public final class ReflectionUtils {
         }
         return null;
     }
-
+    
+    public static Set<Class<?>> getImplementedInterfaces(Class<?> cl){
+        Set<Class<?>> interfaces = new HashSet<Class<?>>();
+        Deque<Class<?>> classes = new ArrayDeque<Class<?>>();
+        classes.add(cl);
+        while (!classes.isEmpty()){
+            Class<?> c = classes.pop();
+            interfaces.addAll(Arrays.asList(c.getInterfaces()));
+            if (c.getSuperclass() != null){
+                classes.add(c.getSuperclass());    
+            }            
+            classes.addAll(Arrays.asList(c.getInterfaces()));
+        }
+        return interfaces;
+    }
+    
 }

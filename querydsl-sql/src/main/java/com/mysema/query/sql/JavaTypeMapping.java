@@ -7,11 +7,13 @@ package com.mysema.query.sql;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.sql.types.*;
+import com.mysema.util.ReflectionUtils;
 
 /**
  * @author tiwe
@@ -48,7 +50,9 @@ public class JavaTypeMapping {
     }
     
     private final Map<Class<?>,Type<?>> typeByClass = new HashMap<Class<?>,Type<?>>();
-
+    
+    private final Map<Class<?>,Type<?>> resolvedTypesByClass = new HashMap<Class<?>,Type<?>>();
+    
     private final Map<Pair<String,String>, Type<?>> typeByColumn = new HashMap<Pair<String,String>,Type<?>>();
     
     @Nullable
@@ -58,20 +62,48 @@ public class JavaTypeMapping {
     
     @SuppressWarnings("unchecked")
     public <T> Type<T> getType(Class<T> clazz){
+        Type<?> resolvedType = resolvedTypesByClass.get(clazz);
+        if (resolvedType == null) {
+            resolvedType = findType(clazz);
+            if (resolvedType != null) {
+                resolvedTypesByClass.put(clazz, resolvedType);
+            }
+        }
+        if (resolvedType == null) {
+            throw new IllegalArgumentException("Got not type for " + clazz.getName());
+        } else {
+            return (Type<T>) resolvedType;
+        }
+    }
+    
+    private Type<?> findType(Class<?> clazz) {
+        //Look for a registered type in the class hierarchy
         Class<?> cl = clazz;
         while (!cl.equals(Object.class)){
             if (typeByClass.containsKey(cl)){
-                return (Type<T>) typeByClass.get(cl);
+                return typeByClass.get(cl);
             }else if (defaultTypes.containsKey(cl)){
-                return (Type<T>) defaultTypes.get(cl);
+                return defaultTypes.get(cl);
             }    
             cl = cl.getSuperclass(); 
         }
-        throw new IllegalArgumentException("Got not type for " + clazz.getName());        
+        
+        //Look for a registered type in any implemented interfaces
+        Set<Class<?>> interfaces = ReflectionUtils.getImplementedInterfaces(clazz);
+        for (Class<?> itf : interfaces) {
+            if (typeByClass.containsKey(itf)){
+                return typeByClass.get(itf);
+            }else if (defaultTypes.containsKey(itf)){
+                return defaultTypes.get(itf);
+            }
+        }
+        return null;
     }
     
     public void register(Type<?> type) {
         typeByClass.put(type.getReturnedClass(), type);
+        // Clear previous resolved types, so they won't impact future lookups
+        resolvedTypesByClass.clear();
     }
 
     public void setType(String table, String column, Type<?> type) {
