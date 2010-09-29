@@ -348,7 +348,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         
     }
 
-    public void serializeForUpdate(QueryMetadata metadata, RelationalPath<?> entity, List<Pair<Path<?>, ?>> updates) {
+    public void serializeForUpdate(QueryMetadata metadata, RelationalPath<?> entity, List<Pair<Path<?>, Expression<?>>> updates) {
         this.entity = entity;
         
         serialize(Position.START, metadata.getFlags());
@@ -361,21 +361,16 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         append(templates.getSet());
         boolean first = true;
         skipParent = true;
-        for (Pair<Path<?>,?> update : updates){
+        for (Pair<Path<?>,Expression<?>> update : updates){
             if (!first){
                 append(COMMA);
             }                        
             handle(update.getFirst());
             append(" = ");
-            if (update.getSecond() instanceof Expression<?>){
-                if (update.getSecond() instanceof Constant<?>){
-                    constantPaths.add(update.getFirst());
-                }
-                handle((Expression<?>)update.getSecond());
-            }else{
+            if (update.getSecond() instanceof Constant<?>){
                 constantPaths.add(update.getFirst());
-                handle(new ConstantImpl<Object>(update.getSecond()));
             }
+            handle(update.getSecond());
             first = false;
         }
         skipParent = false;

@@ -60,8 +60,8 @@ public class ForeignKey <E>{
     public Predicate on(RelationalPath<E> entity){
         BooleanBuilder builder = new BooleanBuilder();
         for (int i = 0; i < localColumns.size(); i++){
-            Expression<?> local = localColumns.get(i);
-            Expression<Object> foreign = new SimplePath(local.getType(), entity, foreignColumns.get(i));
+            Expression<Object> local = (Expression<Object>)localColumns.get(i);
+            Expression<?> foreign = new SimplePath(local.getType(), entity, foreignColumns.get(i));
             builder.and(ExpressionUtils.eq(local,foreign));
         }
         return builder.getValue();

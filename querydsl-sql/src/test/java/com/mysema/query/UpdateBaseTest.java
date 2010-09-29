@@ -71,6 +71,11 @@ public abstract class UpdateBaseTest extends AbstractBaseTest{
         assertEquals(count, query().from(survey).where(survey.name.eq("S")).count());
 
     }
+    
+    @Test
+    public void test3(){
+        update(survey).set(survey.name, survey.name.append("X")).execute();
+    }
 
     @Test
     public void setNull(){
@@ -83,7 +88,7 @@ public abstract class UpdateBaseTest extends AbstractBaseTest{
     @Test
     public void setNull2(){
         long count = query().from(survey).count();
-        assertEquals(count, update(survey).set(survey.name, null).execute());
+        assertEquals(count, update(survey).set(survey.name, (String)null).execute());
     }
     
     @Test

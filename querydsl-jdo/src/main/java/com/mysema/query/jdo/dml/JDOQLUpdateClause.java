@@ -66,14 +66,21 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
         }else{
             metadata.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
         }
-
         return this;
     }
 
+
+    @Override
+    public <T> JDOQLUpdateClause set(Path<T> path, Expression<? extends T> expression) {
+        metadata.addProjection(ExpressionUtils.eq(path, expression));
+        return this;
+    }
+    
     @Override
     public JDOQLUpdateClause where(Predicate... o) {
         metadata.addWhere(o);
         return this;
     }
+
 
 }

@@ -52,7 +52,7 @@ public final class ExpressionUtils {
         return eq(left, new ConstantImpl<D>(constant));
     }
     
-    public static <D> Predicate eq(Expression<D> left, Expression<? super D> right) {
+    public static <D> Predicate eq(Expression<D> left, Expression<? extends D> right) {
         if (isPrimitive(left.getType())) {
             return new PredicateOperation(Ops.EQ_PRIMITIVE, left, right);
         } else {

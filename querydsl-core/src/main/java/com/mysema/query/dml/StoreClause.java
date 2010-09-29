@@ -7,6 +7,7 @@ package com.mysema.query.dml;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 
 /**
@@ -27,6 +28,16 @@ public interface StoreClause<C extends StoreClause<C>> extends DMLClause<C>{
      * @return
      */
     <T> C set(Path<T> path, @Nullable T value);
+    
+    /**
+     * Add an expression binding
+     * 
+     * @param <T>
+     * @param path
+     * @param expression
+     * @return
+     */
+    <T> C set(Path<T> path, Expression<? extends T> expression);
 
 
 }

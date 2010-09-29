@@ -247,6 +247,13 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         }
         return this;
     }
+    
+    @Override
+    public <T> SQLInsertClause set(Path<T> path, Expression<? extends T> expression) {
+        columns.add(path);
+        values.add(expression);
+        return this;
+    }
 
     @Override
     public SQLInsertClause values(Object... v) {
@@ -254,7 +261,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
             if (value instanceof Expression<?>) {
                 values.add((Expression<?>) value);
             } else if (value != null){
-                values.add(new ConstantImpl(value));
+                values.add(new ConstantImpl<Object>(value));
             }else{
                 values.add(NullExpression.DEFAULT);
             }

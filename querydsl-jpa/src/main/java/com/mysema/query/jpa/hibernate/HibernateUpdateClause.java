@@ -75,6 +75,13 @@ public class HibernateUpdateClause implements
         }
         return this;
     }
+    
+
+    @Override
+    public <T> HibernateUpdateClause set(Path<T> path, Expression<? extends T> expression) {
+        metadata.addProjection(ExpressionUtils.eq(path, expression));
+        return this;
+    }
 
     @SuppressWarnings("unchecked")
     @Override
@@ -102,5 +109,6 @@ public class HibernateUpdateClause implements
         serializer.serializeForUpdate(metadata);
         return serializer.toString();
     }
+
 
 }

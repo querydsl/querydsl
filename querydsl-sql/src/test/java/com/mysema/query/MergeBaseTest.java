@@ -55,7 +55,7 @@ public abstract class MergeBaseTest extends AbstractBaseTest{
         // keys + columns + values
         assertEquals(1, merge(survey).keys(survey.id)
             .set(survey.id, 5)
-            .set(survey.name, null).execute());
+            .set(survey.name, (String)null).execute());
     }
 
     @Test

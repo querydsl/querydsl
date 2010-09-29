@@ -12,6 +12,7 @@ import java.util.Map;
 import org.apache.commons.collections15.BeanMap;
 
 import com.mysema.query.dml.UpdateClause;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 
@@ -59,6 +60,13 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
         paths.put(path, value);
         return this;
     }
+    
+
+    @Override
+    public <U> ColUpdateClause<T> set(Path<U> path, Expression<? extends U> expression) {
+        // TODO : implement
+        throw new UnsupportedOperationException();
+    }
 
     @Override
     public ColUpdateClause<T> set(List<? extends Path<?>> p, List<?> v) {
@@ -78,5 +86,6 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
     public String toString(){
         return "update " + query;
     }
+
 
 }

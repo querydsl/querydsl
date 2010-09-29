@@ -149,7 +149,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
     @SuppressWarnings("unchecked")
     private void populate(StoreClause<?> clause) {
         for (int i = 0; i < columns.size(); i++){
-            clause.set((Path)columns.get(i), (Expression)values.get(i));
+            clause.set((Path)columns.get(i), (Object)values.get(i));
         }
     }
     
@@ -229,6 +229,13 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
         }
         return this;
     }
+    
+    @Override
+    public <T> SQLMergeClause set(Path<T> path, Expression<? extends T> expression) {
+        columns.add(path);
+        values.add(expression);
+        return this;
+    }
 
     @Override
     public String toString(){
@@ -242,7 +249,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
             if (value instanceof Expression<?>) {
                 values.add((Expression<?>) value);
             } else if (value != null){
-                values.add(new ConstantImpl(value));
+                values.add(new ConstantImpl<Object>(value));
             }else{
                 values.add(NullExpression.DEFAULT);
             }

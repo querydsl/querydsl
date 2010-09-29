@@ -39,7 +39,7 @@ public class SQLSerializerTest {
         QSurvey survey = new QSurvey("survey");
         SQLUpdateClause updateClause = new SQLUpdateClause(connection,SQLTemplates.DEFAULT,survey);
         updateClause.set(survey.id, 1);
-        updateClause.set(survey.name, null);
+        updateClause.set(survey.name, (String)null);
         assertEquals("update SURVEY\nset ID = ?, NAME = null", updateClause.toString());
     }
 
@@ -49,7 +49,7 @@ public class SQLSerializerTest {
         QSurvey survey = new QSurvey("survey");
         SQLInsertClause insertClause = new SQLInsertClause(connection,SQLTemplates.DEFAULT,survey);
         insertClause.set(survey.id, 1);
-        insertClause.set(survey.name, null);
+        insertClause.set(survey.name, (String)null);
         assertEquals("insert into SURVEY(ID, NAME)\nvalues (?, null)", insertClause.toString());
     }
 }

@@ -30,6 +30,8 @@ import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.types.ConstantImpl;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.NullExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
@@ -51,9 +53,9 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
 
     private final List<QueryMetadata> batchMetadata = new ArrayList<QueryMetadata>();
     
-    private final List<List<Pair<Path<?>,?>>> batchUpdates = new ArrayList<List<Pair<Path<?>,?>>>();
+    private final List<List<Pair<Path<?>,Expression<?>>>> batchUpdates = new ArrayList<List<Pair<Path<?>,Expression<?>>>>();
     
-    private List<Pair<Path<?>,?>> updates = new ArrayList<Pair<Path<?>,?>>();
+    private List<Pair<Path<?>,Expression<?>>> updates = new ArrayList<Pair<Path<?>,Expression<?>>>();
 
     private QueryMetadata metadata = new DefaultQueryMetadata();
     
@@ -77,7 +79,7 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
     public SQLUpdateClause addBatch() {
         batchUpdates.add(updates);
         batchMetadata.add(metadata);
-        updates = new ArrayList<Pair<Path<?>,?>>();
+        updates = new ArrayList<Pair<Path<?>,Expression<?>>>();
         metadata = new DefaultQueryMetadata();
         return this;
     }
@@ -146,11 +148,19 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
 
     @Override
     public <T> SQLUpdateClause set(Path<T> path, T value) {
-        if (value != null){
-            updates.add(Pair.<Path<?>,Object>of(path, value));
+        if (value instanceof Expression<?>){
+            updates.add(Pair.<Path<?>,Expression<?>>of(path, (Expression<?>)value));
+        }else if (value != null){
+            updates.add(Pair.<Path<?>,Expression<?>>of(path, new ConstantImpl<Object>(value)));
         }else{
-            updates.add(Pair.<Path<?>,Object>of(path, new NullExpression<T>(path.getType())));
+            updates.add(Pair.<Path<?>,Expression<?>>of(path, new NullExpression<T>(path.getType())));
         }
+        return this;
+    }
+    
+    @Override
+    public <T> SQLUpdateClause set(Path<T> path, Expression<? extends T> expression) {
+        updates.add(Pair.<Path<?>,Expression<?>>of(path, expression));
         return this;
     }
 
@@ -158,10 +168,12 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
     @Override
     public SQLUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++){
-            if (values.get(i) != null){
-                updates.add(Pair.<Path<?>,Object>of(paths.get(i), values.get(i)));
+            if (values.get(i) instanceof Expression) {
+                updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), (Expression<?>)values.get(i)));
+            }else if (values.get(i) != null){
+                updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), new ConstantImpl<Object>(values.get(i))));
             }else{
-                updates.add(Pair.<Path<?>,Object>of(paths.get(i), new NullExpression(paths.get(i).getType())));
+                updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), new NullExpression(paths.get(i).getType())));
             }
         }
         return this;

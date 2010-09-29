@@ -123,7 +123,7 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
         // with set
         insert(survey)
             .set(survey.id, 5)
-            .set(survey.name, null)
+            .set(survey.name, (String)null)
             .execute();
     }
 
