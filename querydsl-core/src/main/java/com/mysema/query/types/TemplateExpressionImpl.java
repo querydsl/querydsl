@@ -8,6 +8,8 @@ package com.mysema.query.types;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mysema.commons.lang.Assert;
+
 /**
  * Default implementation of the TemplateExpression interface
  *
@@ -33,8 +35,8 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
     
     public TemplateExpressionImpl(Class<? extends T> type, List<Expression<?>> args, Template template){
         super(type);
-        this.args = args;
-        this.template = template;
+        this.args = Assert.notNull(args,"args");
+        this.template = Assert.notNull(template,"template");
     }
 
     @Override

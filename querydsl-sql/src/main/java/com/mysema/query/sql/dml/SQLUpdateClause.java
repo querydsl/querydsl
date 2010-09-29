@@ -30,7 +30,7 @@ import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.types.NullExpr;
+import com.mysema.query.types.NullExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.Param;
@@ -149,7 +149,7 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
         if (value != null){
             updates.add(Pair.<Path<?>,Object>of(path, value));
         }else{
-            updates.add(Pair.<Path<?>,Object>of(path, new NullExpr<T>(path.getType())));
+            updates.add(Pair.<Path<?>,Object>of(path, new NullExpression<T>(path.getType())));
         }
         return this;
     }
@@ -161,7 +161,7 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
             if (values.get(i) != null){
                 updates.add(Pair.<Path<?>,Object>of(paths.get(i), values.get(i)));
             }else{
-                updates.add(Pair.<Path<?>,Object>of(paths.get(i), new NullExpr(paths.get(i).getType())));
+                updates.add(Pair.<Path<?>,Object>of(paths.get(i), new NullExpression(paths.get(i).getType())));
             }
         }
         return this;

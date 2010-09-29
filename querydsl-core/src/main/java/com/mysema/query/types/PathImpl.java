@@ -9,6 +9,7 @@ import java.lang.reflect.AnnotatedElement;
 
 import javax.annotation.Nullable;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.util.ReflectionUtils;
 
 /**
@@ -35,7 +36,7 @@ public class PathImpl<T> extends ExpressionBase<T> implements Path<T> {
     
     public PathImpl(Class<? extends T> type, PathMetadata<?> metadata){
         super(type);
-        this.metadata = metadata;
+        this.metadata = Assert.notNull(metadata,"metadata");
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 

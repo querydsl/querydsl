@@ -35,7 +35,7 @@ import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.NullExpr;
+import com.mysema.query.types.NullExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.Param;
@@ -243,7 +243,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         }else if (value != null){
             values.add(new ConstantImpl<T>(value));
         }else{
-            values.add(new NullExpr<T>(path.getType()));
+            values.add(new NullExpression<T>(path.getType()));
         }
         return this;
     }
@@ -256,7 +256,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
             } else if (value != null){
                 values.add(new ConstantImpl(value));
             }else{
-                values.add(NullExpr.DEFAULT);
+                values.add(NullExpression.DEFAULT);
             }
         }
         return this;

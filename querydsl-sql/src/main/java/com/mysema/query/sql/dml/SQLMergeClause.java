@@ -34,7 +34,7 @@ import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.NullExpr;
+import com.mysema.query.types.NullExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.Param;
@@ -123,7 +123,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
         // select 
         SQLQuery query = new SQLQueryImpl(connection, configuration.getTemplates()).from(entity);
         for (int i=0; i < columns.size(); i++){
-            if (values.get(i) instanceof NullExpr){
+            if (values.get(i) instanceof NullExpression){
                 query.where(ExpressionUtils.isNull(columns.get(i)));
             }else{
                 query.where(ExpressionUtils.eq(columns.get(i),(Expression)values.get(i)));    
@@ -225,7 +225,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
         if (value != null){
             values.add(new ConstantImpl<T>(value));
         }else{
-            values.add(new NullExpr<T>(path.getType()));
+            values.add(new NullExpression<T>(path.getType()));
         }
         return this;
     }
@@ -244,7 +244,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
             } else if (value != null){
                 values.add(new ConstantImpl(value));
             }else{
-                values.add(NullExpr.DEFAULT);
+                values.add(NullExpression.DEFAULT);
             }
         }
         return this;

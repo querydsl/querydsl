@@ -22,7 +22,7 @@ import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.NullExpr;
+import com.mysema.query.types.NullExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 
@@ -71,7 +71,7 @@ public class HibernateUpdateClause implements
         if (value != null){
             metadata.addProjection(ExpressionUtils.eqConst(path, value));
         }else{
-            metadata.addProjection(ExpressionUtils.eq(path, new NullExpr<T>(path.getType())));
+            metadata.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
         }
         return this;
     }
@@ -83,7 +83,7 @@ public class HibernateUpdateClause implements
             if (values.get(i) != null){
                 metadata.addProjection(ExpressionUtils.eqConst((Expression)paths.get(i), values.get(i)));
             }else{
-                metadata.addProjection(ExpressionUtils.eq(((Expression)paths.get(i)), new NullExpr(paths.get(i).getType())));
+                metadata.addProjection(ExpressionUtils.eq(((Expression)paths.get(i)), new NullExpression(paths.get(i).getType())));
             }
 
         }
