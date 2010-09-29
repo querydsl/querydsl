@@ -75,7 +75,8 @@ public class JavaTypeMapping {
             return (Type<T>) resolvedType;
         }
     }
-    
+
+    @Nullable
     private Type<?> findType(Class<?> clazz) {
         //Look for a registered type in the class hierarchy
         Class<?> cl = clazz;
