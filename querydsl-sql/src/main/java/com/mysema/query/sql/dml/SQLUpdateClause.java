@@ -163,6 +163,12 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
         updates.add(Pair.<Path<?>,Expression<?>>of(path, expression));
         return this;
     }
+    
+    @Override
+    public <T> SQLUpdateClause setNull(Path<T> path) {
+        updates.add(Pair.<Path<?>,Expression<?>>of(path, new NullExpression<T>(path.getType())));
+        return this;
+    }
 
     @java.lang.SuppressWarnings("unchecked")
     @Override

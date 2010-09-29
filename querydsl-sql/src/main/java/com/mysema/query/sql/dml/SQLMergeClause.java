@@ -238,6 +238,13 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
     }
 
     @Override
+    public <T> SQLMergeClause setNull(Path<T> path){
+        columns.add(path);
+        values.add(new NullExpression<T>(path.getType()));
+        return this;
+    }
+    
+    @Override
     public String toString(){
         SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
         serializer.serializeForMerge(metadata, entity, keys, columns, values, subQuery);

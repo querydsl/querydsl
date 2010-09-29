@@ -77,6 +77,12 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
     }
     
     @Override
+    public <T> JDOQLUpdateClause setNull(Path<T> path){
+        metadata.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
+        return this;
+    }
+    
+    @Override
     public JDOQLUpdateClause where(Predicate... o) {
         metadata.addWhere(o);
         return this;

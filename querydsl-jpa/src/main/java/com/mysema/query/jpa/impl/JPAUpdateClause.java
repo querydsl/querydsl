@@ -75,6 +75,12 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
         metadata.addProjection(ExpressionUtils.eq(path, expression));
         return this;
     }
+    
+    @Override
+    public <T> JPAUpdateClause setNull(Path<T> path){
+        metadata.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
+        return this;
+    }
 
     @SuppressWarnings("unchecked")
     @Override

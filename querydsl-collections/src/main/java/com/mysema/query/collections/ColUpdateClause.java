@@ -67,6 +67,12 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
         // TODO : implement
         throw new UnsupportedOperationException();
     }
+    
+    @Override
+    public <U> ColUpdateClause<T> setNull(Path<U> path){
+        paths.put(path, null);
+        return this;
+    }
 
     @Override
     public ColUpdateClause<T> set(List<? extends Path<?>> p, List<?> v) {

@@ -38,6 +38,14 @@ public interface StoreClause<C extends StoreClause<C>> extends DMLClause<C>{
      * @return
      */
     <T> C set(Path<T> path, Expression<? extends T> expression);
+    
+    /**
+     * Bind the given path to null
+     * 
+     * @param path
+     * @return
+     */
+    <T> C setNull(Path<T> path);
 
 
 }
