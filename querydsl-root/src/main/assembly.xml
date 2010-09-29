@@ -19,41 +19,33 @@
         <include>*.jar</include>
       </includes>
 	  <excludes>
-	  	<exclude>*apt*.jar</exclude>
+	  	<exclude>*-one-jar.jar</exclude>
 	    <exclude>*-sources.jar</exclude>	
 	  </excludes>	
-	  <outputDirectory>/lib/mandatory</outputDirectory>
+	  <outputDirectory>/lib/all</outputDirectory>
     </fileSet>
-	<fileSet>
-	  <directory>target</directory>
+
+    <fileSet>
+      <directory>target</directory>
       <includes>
-        <include>*-sources.jar</include>
-      </includes>
-	  <outputDirectory>/sources</outputDirectory>
-	</fileSet>	
-	<fileSet>
-	  <directory>target</directory>
-      <includes>
-        <include>*apt*.jar</include>
+        <include>*-one-jar.jar</include>
       </includes>
 	  <outputDirectory>/lib/apt</outputDirectory>
-	</fileSet>	
+    </fileSet>
+<!-- 	
+	<fileSet>
+	  <directory>target</directory>
+	  <includes>
+	    <include>*-sources.jar</include>	
+	  </includes>	
+	  <outputDirectory>/sources</outputDirectory>	  	
+	</fileSet>
+-->	
   </fileSets>
   	  
   <dependencySets>
     <dependencySet>
-      <outputDirectory>lib/mandatory</outputDirectory>
-	  <excludes>
-		<exclude>com.mysema.querydsl:querydsl-apt</exclude>
-	  </excludes>
+      <outputDirectory>lib/all</outputDirectory>
     </dependencySet>
-    <dependencySet>
-      <outputDirectory>lib/mandatory</outputDirectory>
-	  <includes>
-	  	<include>com.mysema.querydsl:querydsl-core</include>
-		<include>com.mysema.querydsl:querydsl-apt</include>
-	  </includes>
-    </dependencySet>	
   </dependencySets>
-  
 </assembly>
