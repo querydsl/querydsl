@@ -5,7 +5,6 @@
  */
 package com.mysema.query.types;
 
-
 /**
  * Constant represents a general constant expression.
  *
