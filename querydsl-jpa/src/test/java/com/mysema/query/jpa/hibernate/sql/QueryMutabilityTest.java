@@ -37,7 +37,7 @@ public class QueryMutabilityTest{
     }
 
     @Test
-    public void test() throws SecurityException, IllegalArgumentException,
+    public void QueryMutability() throws SecurityException, IllegalArgumentException,
             NoSuchMethodException, IllegalAccessException,
             InvocationTargetException, IOException {
         SAnimal cat = new SAnimal("cat");
@@ -46,7 +46,7 @@ public class QueryMutabilityTest{
     }
 
     @Test
-    public void testClone(){
+    public void Clone(){
         SAnimal cat = new SAnimal("cat");
         HibernateSQLQuery query = query().from(cat).where(cat.name.isNotNull());
         HibernateSQLQuery query2 = query.clone(session);

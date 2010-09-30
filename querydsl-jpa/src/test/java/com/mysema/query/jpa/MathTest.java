@@ -13,13 +13,13 @@ import com.mysema.query.types.path.NumberPath;
 public class MathTest extends AbstractQueryTest{
 
     @Test
-    public void test(){
+    public void (){
         NumberPath<Double> path = QCat.cat.bodyWeight;
         assertToString("(cat.bodyWeight - sum(cat.bodyWeight)) * cat.bodyWeight", path.subtract(path.sum()).multiply(path));
     }
 
     @Test
-    public void testArithmeticOperationsInFunctionalWay() {
+    public void ArithmeticOperationsInFunctionalWay() {
         assertToString("cat.bodyWeight + :a1", cat.bodyWeight.add(10));
         assertToString("cat.bodyWeight - :a1", cat.bodyWeight.subtract(10));
         assertToString("cat.bodyWeight * :a1", cat.bodyWeight.multiply(10));
@@ -44,7 +44,7 @@ public class MathTest extends AbstractQueryTest{
     }
 
     @Test
-    public void testMathematicalOperations() {
+    public void MathematicalOperations() {
         // mathematical operators +, -, *, /
         cat.bodyWeight.add(kitten.bodyWeight);
         cat.bodyWeight.subtract(kitten.bodyWeight);

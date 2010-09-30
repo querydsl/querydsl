@@ -52,7 +52,7 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
 
     @SuppressWarnings("unchecked")
     @Test
-    public void queryExposure(){
+    public void QueryExposure(){
         save(new Cat());
 
         List results = query().from(QCat.cat).createQuery(QCat.cat).list();
@@ -61,12 +61,12 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
     }
 
     @Test
-    public void lockMode(){
+    public void LockMode(){
         query().from(QCat.cat).setLockMode(QCat.cat, LockMode.PESSIMISTIC_WRITE).list(QCat.cat);
     }
 
     @Test
-    public void scroll() throws IOException{
+    public void Scroll() throws IOException{
         CloseableIterator<Cat> cats = new ScrollableResultsIterator<Cat>(query().from(QCat.cat).createQuery(QCat.cat).scroll());
         assertTrue(cats.hasNext());
         while (cats.hasNext()){
@@ -76,7 +76,7 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
     }
 
     @Test
-    public void scrollArray() throws IOException{
+    public void ScrollArray() throws IOException{
         CloseableIterator<Object[]> rows = new ScrollableResultsIterator<Object[]>(query()
                 .from(QCat.cat)
                 .createQuery(QCat.cat.name, QCat.cat.birthdate).scroll(),true);

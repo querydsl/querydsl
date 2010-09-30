@@ -54,17 +54,17 @@ public class JPAIntegrationTest extends ParsingTest {
 
     @Override
     @Test
-    public void testGroupBy() throws Exception {
+    public void GroupBy() throws Exception {
         // NOTE : commented out, because HQLSDB doesn't support these queries
     }
 
     @Test
-    public void testOrderBy() throws Exception {
+    public void OrderBy() throws Exception {
         // NOTE : commented out, because HQLSDB doesn't support these queries
     }
 
     @Test
-    public void testDocoExamples910() throws Exception {
+    public void DocoExamples910() throws Exception {
         // NOTE : commented out, because HQLSDB doesn't support these queries
     }
 

@@ -47,7 +47,7 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
 
     @SuppressWarnings("unchecked")
     @Test
-    public void queryExposure(){
+    public void QueryExposure(){
         save(new Cat());
 
         List results = query().from(QCat.cat).createQuery(QCat.cat).getResultList();
@@ -83,13 +83,13 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
 
     @Test
     @Override
-    public void tupleProjection(){
+    public void TupleProjection(){
         // not yet supported with JPA
     }
 
     @Test
     @Override
-    public void arrayProjection(){
+    public void ArrayProjection(){
         // not yet supported with JPA
     }
 

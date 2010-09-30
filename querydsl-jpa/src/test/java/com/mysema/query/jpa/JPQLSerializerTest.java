@@ -14,7 +14,7 @@ import com.mysema.query.types.path.NumberPath;
 public class JPQLSerializerTest {
 
     @Test
-    public void testNormalizeNumericArgs() {
+    public void NormalizeNumericArgs() {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         NumberPath<Double> doublePath = new NumberPath<Double>(Double.class, "doublePath");
         serializer.handle(doublePath.add(1));

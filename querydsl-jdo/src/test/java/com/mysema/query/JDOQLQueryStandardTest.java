@@ -120,7 +120,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
     private QStore otherStore = new QStore("otherStore");
 
     @Test
-    public void test(){
+    public void StandardTest(){
         Product p = query().from(product).where(product.name.eq(productName)).limit(1).uniqueResult(product);
         Product p2 = query().from(product).where(product.name.startsWith(otherName)).limit(1).uniqueResult(product);
         standardTest.noProjections();
@@ -176,19 +176,19 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
     }
 
     @Test
-    public void testParams(){
+    public void Params(){
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("ABC0",query().from(product).where(product.name.eq(name)).set(name, "ABC0").uniqueResult(product.name));
     }
 
     @Test
-    public void testParams_anon(){
+    public void Params_anon(){
         Param<String> name = new Param<String>(String.class);
         assertEquals("ABC0",query().from(product).where(product.name.eq(name)).set(name, "ABC0").uniqueResult(product.name));
     }
 
     @Test(expected=ParamNotSetException.class)
-    public void testParams_not_set(){
+    public void Params_not_set(){
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("ABC0",query().from(product).where(product.name.eq(name)).uniqueResult(product.name));
     }

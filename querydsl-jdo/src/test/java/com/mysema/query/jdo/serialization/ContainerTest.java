@@ -31,7 +31,7 @@ public class ContainerTest extends AbstractTest{
      * Tests NOT contains in Map.values
      */
     @Test
-    public void testNotContainsValuesInMapFields() {
+    public void NotContainsValuesInMapFields() {
 
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
 //                + "WHERE !this.wardrobes.containsValue(wrd) "
@@ -77,7 +77,7 @@ public class ContainerTest extends AbstractTest{
     /**
      * Tests NOT contains in Map.keys
      */
-    @Test public void testNotContainsKeysInMapFields() {
+    @Test public void NotContainsKeysInMapFields() {
 
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
 //                + "WHERE !this.wardrobes2.containsKey(wrd) "
@@ -123,7 +123,7 @@ public class ContainerTest extends AbstractTest{
     /**
      * Tests NOT contains in Map.entry
      */
-    @Test public void testNotContainsEntryInMapFields() {
+    @Test public void NotContainsEntryInMapFields() {
         // NOTE : containsEntry is not supported in Querydsl
 
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
@@ -143,7 +143,7 @@ public class ContainerTest extends AbstractTest{
     /**
      * Tests get
      */
-    @Test public void testGetInMapFields() {
+    @Test public void GetInMapFields() {
 
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
 //                + "WHERE this.wardrobes.get(wrd.model) == wrd "
@@ -160,7 +160,7 @@ public class ContainerTest extends AbstractTest{
     /**
      * Tests get method used in ordering
      */
-    @Test public void testGetInOrderingInMapFields() {
+    @Test public void GetInOrderingInMapFields() {
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
 //                + "PARAMETERS org.jpox.samples.models.fitness.Wardrobe wrd");
 //        .setOrdering("this.wardrobes.get(wrd.model).model ascending");

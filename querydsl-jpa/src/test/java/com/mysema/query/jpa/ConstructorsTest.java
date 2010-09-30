@@ -28,7 +28,7 @@ public class ConstructorsTest extends AbstractQueryTest{
 
     @Test
     @Ignore
-    public void testConstructors() {
+    public void Constructors() {
         ConstructorExpression<com.mysema.query.jpa.domain.Cat> c =
                 new ConstructorExpression<com.mysema.query.jpa.domain.Cat>(
                 com.mysema.query.jpa.domain.Cat.class,

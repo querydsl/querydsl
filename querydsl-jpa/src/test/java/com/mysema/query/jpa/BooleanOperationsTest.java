@@ -14,7 +14,7 @@ import com.mysema.query.BooleanBuilder;
 public class BooleanOperationsTest extends AbstractQueryTest {
 
     @Test
-    public void testBooleanOperations() {
+    public void BooleanOperations() {
         assertToString("cust is null or cat is null", cust.isNull().or(cat.isNull()));
         assertToString("cust is null and cat is null", cust.isNull()
                 .and(cat.isNull()));
@@ -26,7 +26,7 @@ public class BooleanOperationsTest extends AbstractQueryTest {
     }
 
     @Test
-    public void testLogicalOperations() {
+    public void LogicalOperations() {
         // logical operations and, or, not
         assertToString("cat = kitten or kitten = cat", cat.eq(kitten).or(kitten.eq(cat)));
         assertToString("cat = kitten and kitten = cat", cat.eq(kitten).and(kitten.eq(cat)));
@@ -35,7 +35,7 @@ public class BooleanOperationsTest extends AbstractQueryTest {
     }
 
     @Test
-    public void booleanBuilder1(){
+    public void BooleanBuilder1(){
         BooleanBuilder bb1 = new BooleanBuilder();
         bb1.and(cat.eq(cat));
 
@@ -47,7 +47,7 @@ public class BooleanOperationsTest extends AbstractQueryTest {
     }
 
     @Test
-    public void booleanBuilder2(){
+    public void BooleanBuilder2(){
         BooleanBuilder bb1 = new BooleanBuilder();
         bb1.and(cat.eq(cat));
 
@@ -59,7 +59,7 @@ public class BooleanOperationsTest extends AbstractQueryTest {
     }
 
     @Test
-    public void booleanBuilderWithNull(){
+    public void BooleanBuilderWithNull(){
         assertEquals("from Cat cat", sub().from(cat).where(new BooleanBuilder()).toString());
         assertEquals("from Cat cat\ngroup by cat.name",
                 sub().from(cat).groupBy(cat.name).having(new BooleanBuilder()).toString());

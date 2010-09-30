@@ -21,13 +21,13 @@ public class GroupByTest extends AbstractJDOTest {
     private QProduct product = QProduct.product;
 
     @Test
-    public void testDistinct() {
+    public void Distinct() {
         assertEquals(3, query().from(product).listDistinct(product.description).size());
         assertEquals(3, query().from(product).listDistinct(product.price).size());
     }
 
     @Test
-    public void testGroupBy() {
+    public void GroupBy() {
         assertEquals(3, query().from(product).groupBy(product.description).list(product.description).size());
         assertEquals(3, query().from(product).groupBy(product.price).list(product.price).size());
     }

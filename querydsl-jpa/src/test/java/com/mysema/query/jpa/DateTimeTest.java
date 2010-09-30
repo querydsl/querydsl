@@ -14,7 +14,7 @@ import com.mysema.query.types.expr.TimeExpression;
 public class DateTimeTest extends AbstractQueryTest {
 
     @Test
-    public void testDateOperations() {
+    public void DateOperations() {
         // current_date(), current_time(), current_timestamp()
         assertToString("current_date()", DateExpression.currentDate());
         assertToString("current_date()", DateTimeExpression.currentDate());

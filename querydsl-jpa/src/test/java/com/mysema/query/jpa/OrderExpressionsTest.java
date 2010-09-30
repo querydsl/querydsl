@@ -10,7 +10,7 @@ import org.junit.Test;
 public class OrderExpressionsTest extends AbstractQueryTest {
 
     @Test
-    public void testOrderExpressionInFunctionalWay() {
+    public void OrderExpressionInFunctionalWay() {
         cat.bodyWeight.asc();
         cat.bodyWeight.add(kitten.bodyWeight).asc();
     }

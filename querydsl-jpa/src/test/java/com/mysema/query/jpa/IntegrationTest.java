@@ -62,17 +62,17 @@ public class IntegrationTest extends ParsingTest {
 
     @Override
     @Test
-    public void testGroupBy() throws Exception {
+    public void GroupBy() throws Exception {
         // NOTE : commented out, because HQLSDB doesn't support these queries
     }
 
     @Test
-    public void testOrderBy() throws Exception {
+    public void OrderBy() throws Exception {
         // NOTE : commented out, because HQLSDB doesn't support these queries
     }
 
     @Test
-    public void testDocoExamples910() throws Exception {
+    public void DocoExamples910() throws Exception {
         // NOTE : commented out, because HQLSDB doesn't support these queries
     }
 
@@ -85,7 +85,7 @@ public class IntegrationTest extends ParsingTest {
     }
 
     @Test
-    public void testScroll(){
+    public void Scroll(){
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));
 
@@ -98,7 +98,7 @@ public class IntegrationTest extends ParsingTest {
     }
 
     @Test
-    public void testUpdate(){
+    public void Update(){
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));
 
@@ -113,7 +113,7 @@ public class IntegrationTest extends ParsingTest {
     }
 
     @Test
-    public void testUpdate_with_null(){
+    public void Update_with_null(){
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));
 
@@ -126,7 +126,7 @@ public class IntegrationTest extends ParsingTest {
     }
 
     @Test
-    public void testDelete(){
+    public void Delete(){
         session.save(new Cat("Bob",10));
         session.save(new Cat("Steve",11));
 
@@ -137,7 +137,7 @@ public class IntegrationTest extends ParsingTest {
     }
 
     @Test
-    public void testCollection() throws Exception{
+    public void Collection() throws Exception{
         List<Cat> cats = Arrays.asList(new Cat("Bob",10), new Cat("Steve",11));
         for (Cat cat : cats){
             session.save(cat);

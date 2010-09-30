@@ -32,7 +32,7 @@ public class BasicsTest extends AbstractJDOTest {
     private final QProduct product2 = new QProduct("product2");
 
     @Test
-    public void serialization() throws IOException{
+    public void Serialization() throws IOException{
         JDOQLQuery query = query();
 
         assertEquals("FROM com.mysema.query.jdo.test.domain.Product", query.from(product).toString());
@@ -45,7 +45,7 @@ public class BasicsTest extends AbstractJDOTest {
     }
 
     @Test
-    public void subQuerySerialization() throws IOException{
+    public void SubQuerySerialization() throws IOException{
         JDOQLSubQuery query = sub();
 
         assertEquals("FROM com.mysema.query.jdo.test.domain.Product", query.from(product).toString());
@@ -56,32 +56,32 @@ public class BasicsTest extends AbstractJDOTest {
     }
 
     @Test
-    public void delete(){
+    public void Delete(){
         long count = query().from(product).count();
         assertEquals(0, delete(product).where(product.name.eq("XXX")).execute());
         assertEquals(count, delete(product).execute());
     }
 
     @Test
-    public void countTests() {
+    public void CountTests() {
         assertEquals("count", 2, query().from(product).count());
     }
 
     @Test
-    public void simpleTest() throws IOException{
+    public void SimpleTest() throws IOException{
         JDOQLQuery query = new JDOQLQueryImpl(pm, templates, false);
         assertEquals("Sony Discman", query.from(product).where(product.name.eq("Sony Discman")).uniqueResult(product.name));
         query.close();
     }
 
     @Test
-    public void projectionTests() {
+    public void ProjectionTests() {
         assertEquals("Sony Discman", query().from(product).where(
                 product.name.eq("Sony Discman")).uniqueResult(product.name));
     }
 
     @Test
-    public void basicTests() {
+    public void BasicTests() {
         assertEquals("list", 2, query().from(product).list(product).size());
         assertEquals("list", 2, query().from(product).list(product.name,product.description).size());
         assertEquals("list", 1, query().from(book).list(book).size());
@@ -91,14 +91,14 @@ public class BasicsTest extends AbstractJDOTest {
 
     @Test
     @Ignore
-    public void detachedResults(){
+    public void DdetachedResults(){
         for (Product p : detachedQuery().from(product).list(product)){
             System.out.println(p);
         }
     }
 
     @Test
-    public void booleanTests() {
+    public void BooleanTests() {
         // boolean
         assertEquals("and", 1,
             query(product, product.name.eq("Sony Discman").and(product.price.loe(300.00))).size());
@@ -109,7 +109,7 @@ public class BasicsTest extends AbstractJDOTest {
     }
 
     @Test
-    public void collectionTests() {
+    public void CollectionTests() {
         // collection
         // TODO contains
         // TODO get
@@ -120,7 +120,7 @@ public class BasicsTest extends AbstractJDOTest {
     }
 
     @Test
-    public void numericTests() {
+    public void NumericTests() {
         // numeric
         assertEquals("eq", 1, query(product, product.price.eq(200.00)).size());
         assertEquals("eq", 0, query(product, product.price.eq(100.00)).size());
@@ -139,7 +139,7 @@ public class BasicsTest extends AbstractJDOTest {
     }
 
     @Test
-    public void stringTests() {
+    public void StringTests() {
         // string
         assertEquals("startsWith", 1, query(product,product.name.startsWith("Sony Discman")).size());
         assertEquals("endsWith", 1, query(product,product.name.endsWith("Discman")).size());

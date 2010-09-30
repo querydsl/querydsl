@@ -176,7 +176,7 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    public void testAggregates(){
+    public void Aggregates(){
         // uniqueResult
         assertEquals(Integer.valueOf(1), catQuery().uniqueResult(cat.id.min()));
         assertEquals(Integer.valueOf(6), catQuery().uniqueResult(cat.id.max()));
@@ -187,7 +187,7 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    public void testDistinctResults(){
+    public void DistinctResults(){
         System.out.println("-- list results");
         SearchResults<Date> res = catQuery().limit(2).listResults(cat.birthdate);
         assertEquals(2, res.getResults().size());
@@ -205,7 +205,7 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    public void testStringOperations(){
+    public void StringOperations(){
         // startsWith
         assertEquals(1, catQuery().where(cat.name.startsWith("R")).count());
         assertEquals(0, catQuery().where(cat.name.startsWith("X")).count());
@@ -236,7 +236,7 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    public void testPaging(){
+    public void Paging(){
         // limit
         List<String> names1 = Arrays.asList("Allen123","Bob123");
         assertEquals(names1, catQuery().orderBy(cat.name.asc()).limit(2).list(cat.name));
@@ -251,13 +251,13 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    public void testInstanceOf(){
+    public void InstanceOf(){
         assertEquals(6l, query().from(cat).where(cat.instanceOf(Cat.class)).count());
         assertEquals(0l, query().from(cat).where(cat.instanceOf(DomesticCat.class)).count());
     }
 
     @Test
-    public void tupleProjection(){
+    public void TupleProjection(){
         List<Tuple> tuples = query().from(cat).list(new QTuple(cat.name, cat));
         assertFalse(tuples.isEmpty());
         for (Tuple tuple : tuples){
@@ -268,7 +268,7 @@ public abstract class AbstractStandardTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void arrayProjection(){
+    public void ArrayProjection(){
         List<String[]> results = query().from(cat).list(new ArrayConstructorExpression<String>(String[].class, cat.name));
         assertFalse(results.isEmpty());
         for (String[] result : results){
@@ -277,7 +277,7 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    public void constructorProjection(){
+    public void ConstructorProjection(){
         List<Projection> projections = query().from(cat).list(ConstructorExpression.create(Projection.class, cat.name, cat));
         assertFalse(projections.isEmpty());
         for (Projection projection : projections){
@@ -286,7 +286,7 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
-    public void constructorProjection2(){
+    public void ConstructorProjection2(){
         List<Projection> projections = query().from(cat).list(new QProjection(cat.name, cat));
         assertFalse(projections.isEmpty());
         for (Projection projection : projections){
@@ -295,25 +295,25 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    public void testParams(){
+    public void Params(){
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Bob123",query().from(cat).where(cat.name.eq(name)).set(name, "Bob123").uniqueResult(cat.name));
     }
 
     @Test
-    public void testParams_anon(){
+    public void Params_anon(){
         Param<String> name = new Param<String>(String.class);
         assertEquals("Bob123",query().from(cat).where(cat.name.eq(name)).set(name, "Bob123").uniqueResult(cat.name));
     }
 
     @Test(expected=ParamNotSetException.class)
-    public void testParams_not_set(){
+    public void Params_not_set(){
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Bob123",query().from(cat).where(cat.name.eq(name)).uniqueResult(cat.name));
     }
     
     @Test
-    public void null_as_uniqueResult(){
+    public void Null_as_uniqueResult(){
         assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString())).uniqueResult(cat));
     }
 

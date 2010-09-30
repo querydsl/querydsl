@@ -30,7 +30,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
     
 
     @Test
-    public void count(){
+    public void Count(){
         SProduct product = SProduct.product;
         
         // total
@@ -53,7 +53,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
     
 
     @Test
-    public void scalarQueries(){
+    public void ScalarQueries(){
         SProduct product = SProduct.product;
         BooleanExpression filter = product.name.startsWith("A");
         
@@ -90,7 +90,7 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
     }
 
     @Test
-    public void entityProjections(){
+    public void EntityProjections(){
         SProduct product = SProduct.product;
 
         List<Product> products = sql()

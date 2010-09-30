@@ -33,7 +33,7 @@ public class FetchPlanTest extends AbstractJDOTest{
     
     @SuppressWarnings("unchecked")
     @Test
-    public void listProducts() throws Exception{
+    public void ListProducts() throws Exception{
         QProduct product = QProduct.product;
         query = query();
         query.from(product)
@@ -54,7 +54,7 @@ public class FetchPlanTest extends AbstractJDOTest{
     
     @SuppressWarnings("unchecked")
     @Test
-    public void listStores() throws Exception{
+    public void ListStores() throws Exception{
         QStore store = QStore.store;
         query = query(); 
         query.from(store)

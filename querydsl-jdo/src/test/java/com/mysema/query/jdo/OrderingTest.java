@@ -26,7 +26,7 @@ public class OrderingTest extends AbstractJDOTest {
     private QProduct product = QProduct.product;
 
     @Test
-    public void testOrderAsc() {
+    public void OrderAsc() {
         List<String> namesAsc = query().from(product).orderBy(
                 product.name.asc(), product.description.desc()).list(
                 product.name);
@@ -41,7 +41,7 @@ public class OrderingTest extends AbstractJDOTest {
     }
 
     @Test
-    public void testOrderDesc() {
+    public void OrderDesc() {
         List<String> namesDesc = query().from(product).orderBy(
                 product.name.desc()).list(product.name);
         assertEquals(30, namesDesc.size());
@@ -55,7 +55,7 @@ public class OrderingTest extends AbstractJDOTest {
     }
 
     @Test
-    public void testTabularResults() {
+    public void TabularResults() {
         List<Object[]> rows = query().from(product).orderBy(product.name.asc())
                 .list(product.name, product.description);
         assertEquals(30, rows.size());

@@ -10,7 +10,7 @@ import org.junit.Test;
 public class EJBQLTest extends AbstractQueryTest{
 
     @Test
-    public void testEJBQL3Functions() {
+    public void EJBQL3Functions() {
         // Any function or operator defined by EJB-QL 3.0: substring(), trim(),
         // lower(), upper(), length(), locate(), abs(), sqrt(), bit_length(),
         // mod()

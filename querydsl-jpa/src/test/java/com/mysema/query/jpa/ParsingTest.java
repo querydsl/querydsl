@@ -33,17 +33,17 @@ public class ParsingTest extends AbstractQueryTest{
 
     @Test
     @Ignore
-    public void arrayExpr() throws Exception {
+    public void ArrayExpr() throws Exception {
         query().from(ord).where(ord.items(0).id.eq(1234l)).parse();
     }
 
     @Test
-    public void basic() throws RecognitionException, TokenStreamException{
+    public void Basic() throws RecognitionException, TokenStreamException{
         query().from(cat, fatcat).select(cat.name, fatcat.name).parse();
     }
 
     @Test
-    public void beforeAndAfter() throws RecognitionException,
+    public void BeforeAndAfter() throws RecognitionException,
             TokenStreamException {
 
         ComparableExpression<java.util.Date> ed = catalog.effectiveDate;
@@ -53,18 +53,18 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
-    public void complexConstructor() throws Exception {
+    public void ComplexConstructor() throws Exception {
         query().select(new QFooDTO(bar.count())).from(bar).parse();
     }
 
     @Test
-    public void docoExamples910() throws Exception {
+    public void DocoExamples910() throws Exception {
         query().select(cat.color, sum(cat.weight), cat.count()).from(cat)
                 .groupBy(cat.color).parse();
     }
 
     @Test
-    public void docoExamples910_2() throws Exception {
+    public void DocoExamples910_2() throws Exception {
         query().select(cat.color, sum(cat.weight), cat.count()).from(cat)
                 .groupBy(cat.color).having(
                         cat.color.in(Color.TABBY, Color.BLACK)).parse();
@@ -72,7 +72,7 @@ public class ParsingTest extends AbstractQueryTest{
 
     @Test
     @Ignore
-    public void docoExamples910_3() throws Exception {
+    public void DocoExamples910_3() throws Exception {
         query().select(cat).from(cat).join(cat.kittens, kitten).groupBy(cat)
                 .having(kitten.weight.avg().gt(100.0)).orderBy(
                         kitten.count().asc(), sum(kitten.weight).desc())
@@ -80,7 +80,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
-    public void docoExamples911() throws Exception {
+    public void DocoExamples911() throws Exception {
         query().from(fatcat).where(
                 fatcat.weight.gt(sub().from(cat).unique(cat.weight.avg())))
                 .parse();
@@ -103,7 +103,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
-    public void docoExamples912() throws Exception {
+    public void DocoExamples912() throws Exception {
         query().select(ord.id, sum(price.amount), item.count()).from(ord)
                 .join(ord.lineItems, item).join(item.product, product)
                 .from(catalog).join(catalog.prices, price).where(
@@ -131,7 +131,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
-    public void docoExamples92() throws Exception {
+    public void DocoExamples92() throws Exception {
         query().from(cat).parse();
 
         query().from(cat).parse();
@@ -144,7 +144,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
-    public void docoExamples93() throws Exception {
+    public void DocoExamples93() throws Exception {
 
         query().from(cat).innerJoin(cat.mate, mate).leftJoin(cat.kittens, kitten).parse();
 
@@ -156,7 +156,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
-    public void docoExamples93_viaAlias() throws Exception {
+    public void DocoExamples93_viaAlias() throws Exception {
         Cat c = alias(Cat.class, "cat");
         Cat k = alias(Cat.class, "kittens");
         Cat m = alias(Cat.class, "mate");
@@ -171,7 +171,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
-    public void docoExamples94() throws Exception {
+    public void DocoExamples94() throws Exception {
         query().select(cat.mate).from(cat).innerJoin(cat.mate, mate).parse();
 
         query().select(cat.mate).from(cat).parse();
@@ -190,21 +190,21 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
-    public void docoExamples95() throws Exception {
+    public void DocoExamples95() throws Exception {
         query().select(cat.weight.avg(), cat.weight.sum(),
                 cat.weight.max(), cat.count()).from(cat)
                 .parse();
     }
 
     @Test
-    public void docoExamples96() throws Exception {
+    public void DocoExamples96() throws Exception {
         query().from(cat).parse();
 
         query().from(m, n).where(n.name.eq(m.name)).parse();
     }
 
     @Test
-    public void docoExamples97() throws Exception {
+    public void DocoExamples97() throws Exception {
         query().select(foo).from(foo, bar).where(foo.startDate.eq(bar.date)).parse();
 
         query().from(cat).where(cat.mate.name.isNotNull()).parse();
@@ -232,7 +232,7 @@ public class ParsingTest extends AbstractQueryTest{
 
     @Test
     @Ignore
-    public void docoExamples98() throws Exception {
+    public void DocoExamples98() throws Exception {
         query().from(cat).where(cat.name.between("A", "B")).parse();
 
         query().from(cat).where(cat.name.in("Foo", "Bar", "Baz")).parse();
@@ -280,20 +280,20 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
-    public void docoExamples99() throws Exception {
+    public void DocoExamples99() throws Exception {
         query().from(cat).orderBy(cat.name.asc(), cat.weight.desc(),
                 cat.birthdate.asc()).parse();
     }
 
     @Test
-    public void dubleLiteral() throws Exception {
+    public void DoubleLiteral() throws Exception {
         query().from(cat).where(cat.weight.lt((int) 3.1415)).parse();
 
         query().from(cat).where(cat.weight.gt((int) 3.1415e3)).parse();
     }
 
     @Test
-    public void fetch() throws RecognitionException, TokenStreamException{
+    public void Fetch() throws RecognitionException, TokenStreamException{
         query().from(cat).innerJoin(cat.mate, mate).fetch().parse();
 
         query().from(cat).innerJoin(cat.mate, mate).fetch().fetch().parse();
@@ -347,7 +347,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
-    public void testCasts() throws Exception {
+    public void Casts() throws Exception {
         NumberExpression<Double> bw = cat.bodyWeight;
         query().from(cat).select(bw.byteValue(), bw.doubleValue(), bw.floatValue(),
                 bw.intValue(), bw.longValue(), bw.shortValue(),
@@ -357,14 +357,14 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
-    public void testGroupBy() throws Exception {
+    public void GroupBy() throws Exception {
         query().from(qat).groupBy(qat.breed).parse();
 
         query().from(qat).groupBy(qat.breed, qat.eyecolor).parse();
     }
 
     @Test
-    public void testNot() throws Exception {
+    public void Not() throws Exception {
         query().from(cat).where(cat.kittens.size().lt(1).not()).parse();
 
         query().from(cat).where(cat.kittens.size().gt(1).not()).parse();
@@ -383,21 +383,21 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
-    public void testOrderBy() throws Exception {
+    public void OrderBy() throws Exception {
         query().from(qat).orderBy(qat.toes.avg().asc()).parse();
 
         query().from(qat).orderBy(an.bodyWeight.sqrt().divide(2.0).asc()).parse();
     }
 
     @Test
-    public void testSelect() throws Exception {
+    public void Select() throws Exception {
 //        query().select(Ops.AggOps.COUNT_ALL_AGG_EXPR).from(qat).parse();
 
         query().select(qat.weight.avg()).from(qat).parse();
     }
 
     @Test
-    public void testSum() throws RecognitionException, TokenStreamException {
+    public void Sum() throws RecognitionException, TokenStreamException {
         query().from(cat).select(sum(cat.kittens.size())).parse();
 
         query().from(cat).where(sum(cat.kittens.size()).gt(0)).select(cat).parse();
@@ -413,7 +413,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
-    public void testWhere() throws Exception {
+    public void Where() throws Exception {
 
         query().from(qat).where(qat.name.in("crater", "bean", "fluffy")).parse();
 

@@ -18,42 +18,42 @@ public class JPQLQueryTest {
     }
     
     @Test(expected=IllegalArgumentException.class)
-    public void testInnerJoinPEntityOfPPEntityOfP() {
+    public void InnerJoinPEntityOfPPEntityOfP() {
         query.innerJoin(cat.mate, cat.mate);
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void testInnerJoinPathOfQextendsCollectionOfPPathOfP() {
+    public void InnerJoinPathOfQextendsCollectionOfPPathOfP() {
         query.innerJoin(cat.kittens, cat.mate);
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void testJoinPEntityOfPPEntityOfP() {
+    public void JoinPEntityOfPPEntityOfP() {
         query.join(cat.mate, cat.mate);
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void testJoinPathOfQextendsCollectionOfPPathOfP() {
+    public void JoinPathOfQextendsCollectionOfPPathOfP() {
         query.join(cat.kittens, cat.mate);
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void testLeftJoinPEntityOfPPEntityOfP() {
+    public void LeftJoinPEntityOfPPEntityOfP() {
         query.leftJoin(cat.mate, cat.mate);
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void testLeftJoinPathOfQextendsCollectionOfPPathOfP() {
+    public void LeftJoinPathOfQextendsCollectionOfPPathOfP() {
         query.leftJoin(cat.kittens, cat.mate);
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void testFullJoinPEntityOfPPEntityOfP() {
+    public void FullJoinPEntityOfPPEntityOfP() {
         query.fullJoin(cat.mate, cat.mate);
     }
 
     @Test(expected=IllegalArgumentException.class)
-    public void testFullJoinPathOfQextendsCollectionOfPPathOfP() {
+    public void FullJoinPathOfQextendsCollectionOfPPathOfP() {
         query.fullJoin(cat.kittens, cat.mate);
     }
 

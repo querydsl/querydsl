@@ -10,7 +10,7 @@ import org.junit.Test;
 public class ComparableTest extends AbstractQueryTest{
 
     @Test
-    public void testBinaryComparisonOperations() {
+    public void BinaryComparisonOperations() {
         // binary comparison operators =, >=, <=, <>, !=, like
         assertToString("cat.bodyWeight = kitten.bodyWeight",  cat.bodyWeight.eq(kitten.bodyWeight));
         assertToString("cat.bodyWeight >= kitten.bodyWeight", cat.bodyWeight.goe(kitten.bodyWeight));
