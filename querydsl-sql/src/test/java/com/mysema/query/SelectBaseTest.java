@@ -35,6 +35,8 @@ import org.junit.Test;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.Pair;
+import com.mysema.query.sql.Beans;
+import com.mysema.query.sql.QBeans;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLSubQuery;
@@ -246,28 +248,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
                 .limit(4).offset(2)
                 .list(employee.firstname));
     }
-
-    //    @SuppressWarnings("unchecked")
-    //    @Test
-    //    @ExcludeIn({DERBY})
-    //    public void mathFunctions() throws SQLException {
-    //        Expr<Double> d = ENumberConst.create(1.0);
-    //        for (Expr<?> e : Arrays.<Expr<?>> asList(
-    //                MathFunctions.acos(d),
-    //                MathFunctions.asin(d),
-    //                MathFunctions.atan(d),
-    //                MathFunctions.cos(d),
-    //                MathFunctions.tan(d),
-    //                MathFunctions.sin(d),
-    //                ENumber.random(),
-    //                MathFunctions.pow(d, d),
-    //                MathFunctions.log10(d),
-    //                MathFunctions.log(d),
-    //                MathFunctions.exp(d))) {
-    //            query().from(employee).list((Expr<? extends Comparable>) e);
-    //        }
-    //    }
-
+    
     @Test
     @ExcludeIn({HSQLDB, H2, MYSQL})
     public void offsetOnly(){
@@ -571,16 +552,24 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    public void variousSingleProjections(){
+    public void single_column(){
         // single column
         for (String s : query().from(survey).list(survey.name)){
             assertNotNull(s);
         }
 
+    }
+
+    @Test
+    public void unique_single(){
         // unique single
         String s = query().from(survey).uniqueResult(survey.name);
         assertNotNull(s);
 
+    }
+
+    @Test
+    public void constructor_projection(){
         // constructor projection
         for (IdName idAndName : query().from(survey).list(new QIdName(survey.id, survey.name))){
             assertNotNull(idAndName);
@@ -588,12 +577,20 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             assertNotNull(idAndName.getName());
         }
 
+    }
+
+    @Test
+    public void unique_constructor_projection(){
         // unique constructor projection
         IdName idAndName = query().from(survey).uniqueResult(new QIdName(survey.id, survey.name));
         assertNotNull(idAndName);
         assertNotNull(idAndName.getId());
         assertNotNull(idAndName.getName());
 
+    }
+
+    @Test
+    public void wildcard(){
         // wildcard
         for (Object[] row : query().from(survey).list(survey.all())){
             assertNotNull(row);
@@ -602,6 +599,10 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             assertNotNull(row[1]);
         }
 
+    }
+
+    @Test
+    public void unique_wildcard(){
         // unique wildcard
         Object[] row = query().from(survey).uniqueResult(survey.all());
         assertNotNull(row);
@@ -627,28 +628,17 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    public void variousMultiProjections(){
+    public void TwoColumns(){
         // two columns
         for (Object[] row : query().from(survey).list(survey.id, survey.name)){
             assertEquals(2, row.length);
             assertEquals(Integer.class, row[0].getClass());
             assertEquals(String.class, row[1].getClass());
-        }
+        }        
+    }
 
-        // column and wildcard
-        //        for (Object[] row : query().from(survey).list(survey.id, survey.all())){
-        //            assertEquals(3, row.length);
-        //            assertEquals(Integer.class, row[0].getClass());
-        //            assertNotNull(row[1]);
-        //            assertNotNull(row[2]);
-        //        }
-
-        // projection and wildcard
-        //        for (Object[] row : query().from(survey).list(new QIdName(survey.id, survey.name), survey.all())){
-        //            assertEquals(3, row.length);
-        //            assertEquals(IdName.class, row[0].getClass());
-        //        }
-
+    @Test
+    public void Projection_and_TwoColumns(){
         // projection and two columns
         for (Object[] row : query().from(survey).list(new QIdName(survey.id, survey.name), survey.id, survey.name)){
             assertEquals(3, row.length);
@@ -656,7 +646,10 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             assertEquals(Integer.class, row[1].getClass());
             assertEquals(String.class, row[2].getClass());
         }
+    }
 
+    @Test
+    public void TwoColumns_and_Projection(){
         // two columns and projection
         for (Object[] row : query().from(survey).list(survey.id, survey.name, new QIdName(survey.id, survey.name))){
             assertEquals(3, row.length);
@@ -664,14 +657,26 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             assertEquals(String.class, row[1].getClass());
             assertEquals(IdName.class, row[2].getClass());
         }
+    }
 
+    @Test
+    public void Wildcard_and_QTuple(){
         // wildcard and QTuple
         for (Tuple tuple : query().from(survey).list(new QTuple(survey.all()))){
             assertNotNull(tuple.get(survey.id));
             assertNotNull(tuple.get(survey.name));
         }
-
-
+    }
+    
+    @Test
+    @Ignore
+    public void Beans(){
+        List<Beans> rows = query().from(survey, employee).list(new QBeans(survey, employee));
+        assertFalse(rows.isEmpty());
+        for (Beans row : rows){
+            assertNotNull(row.get(survey));
+            assertNotNull(row.get(employee));
+        }
     }
 
     @Test
