@@ -18,10 +18,10 @@ import com.mysema.query.jdo.test.domain.Product;
 import com.mysema.query.jdo.test.domain.QProduct;
 import com.mysema.query.jdo.test.domain.QStore;
 import com.mysema.query.types.expr.BooleanExpression;
-import com.mysema.query.types.expr.CollectionExpression;
-import com.mysema.query.types.expr.MapExpression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.path.CollectionPath;
+import com.mysema.query.types.path.MapPath;
 
 public class JDOQLMethodsTest extends AbstractJDOTest {
 
@@ -43,8 +43,8 @@ public class JDOQLMethodsTest extends AbstractJDOTest {
 
     private <A,K,V> List<BooleanExpression> getFilters(
             StringExpression str, StringExpression other, String knownString,
-            CollectionExpression<?,A> list, A element,
-            MapExpression<K,V> map, K key, V value,
+            CollectionPath<A> list, A element,
+            MapPath<K,V, ?> map, K key, V value,
             NumberExpression<Integer> number){
         return Arrays.<BooleanExpression>asList(
            // java.lang.String

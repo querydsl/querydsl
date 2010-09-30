@@ -3,10 +3,11 @@ package com.mysema.query.jpa;
 import java.util.Collection;
 
 import com.mysema.query.Query;
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.path.MapPath;
 
 /**
  * JPQLCommonQuery is a common interface for HQLQuery and HQLSubQuery
@@ -55,7 +56,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param target
      * @return
      */
-    <P> Q innerJoin(Path<? extends Collection<P>> target);
+    <P> Q innerJoin(CollectionExpression<?,?> target);
 
     /**
      * Create an inner join with the given target and alias.
@@ -65,7 +66,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param alias
      * @return
      */
-    <P> Q innerJoin(Path<? extends Collection<P>> target, Path<P> alias);
+    <P> Q innerJoin(CollectionExpression<?,P> target, Path<P> alias);
 
     /**
      * Create an inner join with the given target.
@@ -75,7 +76,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param target
      * @return
      */
-    <P> Q innerJoin(MapPath<?, P, ?> target);
+    <P> Q innerJoin(MapExpression<?, P> target);
 
     /**
      * Create an inner join with the given target and alias.
@@ -85,7 +86,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param alias
      * @return
      */
-    <P> Q innerJoin(MapPath<?, P, ?> target, Path<P> alias);
+    <P> Q innerJoin(MapExpression<?, P> target, Path<P> alias);
 
     /**
      * Create an join with the given target.
@@ -115,7 +116,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param target
      * @return
      */
-    <P> Q join(Path<? extends Collection<P>> target);
+    <P> Q join(CollectionExpression<?,P> target);
 
     /**
      * @param <P>
@@ -123,7 +124,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param alias
      * @return
      */
-    <P> Q join(Path<? extends Collection<P>> target, Path<P> alias);
+    <P> Q join(CollectionExpression<?,P> target, Path<P> alias);
 
     /**
      * Create an join with the given target.
@@ -133,7 +134,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param target
      * @return
      */
-    <P> Q join(MapPath<?, P, ?> target);
+    <P> Q join(MapExpression<?, P> target);
 
     /**
      * Create a join with the given target and alias.
@@ -143,7 +144,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param alias
      * @return
      */
-    <P> Q join(MapPath<?, P, ?> target, Path<P> alias);
+    <P> Q join(MapExpression<?, P> target, Path<P> alias);
 
     /**
      * Create an left join with the given target.
@@ -173,7 +174,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param target
      * @return
      */
-    <P> Q leftJoin(Path<? extends Collection<P>> target);
+    <P> Q leftJoin(CollectionExpression<?,P> target);
 
     /**
      * Create a left join with the given target and alias.
@@ -183,7 +184,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param alias
      * @return
      */
-    <P> Q leftJoin(Path<? extends Collection<P>> target, Path<P> alias);
+    <P> Q leftJoin(CollectionExpression<?,P> target, Path<P> alias);
 
     /**
      * Create an left join with the given target.
@@ -193,7 +194,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param target
      * @return
      */
-    <P> Q leftJoin(MapPath<?, P, ?> target);
+    <P> Q leftJoin(MapExpression<?, P> target);
 
     /**
      * Create a left join with the given target and alias.
@@ -203,7 +204,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param alias
      * @return
      */
-    <P> Q leftJoin(MapPath<?, P, ?> target, Path<P> alias);
+    <P> Q leftJoin(MapExpression<?, P> target, Path<P> alias);
 
     /**
      * Create an full join with the given target.
@@ -233,7 +234,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param target
      * @return
      */
-    <P> Q fullJoin(Path<? extends Collection<P>> target);
+    <P> Q fullJoin(CollectionExpression<?,?> target);
 
     /**
      * Create a full join with the given target and alias.
@@ -243,7 +244,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param alias
      * @return
      */
-    <P> Q fullJoin(Path<? extends Collection<P>> target, Path<P> alias);
+    <P> Q fullJoin(CollectionExpression<?,P> target, Path<P> alias);
 
     /**
      * Create an full join with the given target.
@@ -253,7 +254,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param target
      * @return
      */
-    <P> Q fullJoin(MapPath<?, P, ?> target);
+    <P> Q fullJoin(MapExpression<?, P> target);
 
     /**
      * Create a full join with the given target and alias.
@@ -263,7 +264,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param alias
      * @return
      */
-    <P> Q fullJoin(MapPath<?, P, ?> target, Path<P> alias);
+    <P> Q fullJoin(MapExpression<?, P> target, Path<P> alias);
 
     /**
      * Add conditions to the with clause

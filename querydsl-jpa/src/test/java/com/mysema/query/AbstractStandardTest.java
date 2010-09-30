@@ -36,6 +36,7 @@ import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ListExpression;
 import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.path.ListPath;
 
 /**
  * @author tiwe
@@ -73,7 +74,7 @@ public abstract class AbstractStandardTest {
     private final java.sql.Date date;
 
     private Projections projections = new Projections(Module.HQL, getTarget()){
-        public <A> Collection<Expression<?>> list(ListExpression<A> expr, ListExpression<A> other, A knownElement){
+        public <A> Collection<Expression<?>> list(ListPath<A,?> expr, ListExpression<A> other, A knownElement){
             // NOTE : expr.get(0) is only supported in the where clause
             return Collections.<Expression<?>>singleton(expr.size());
         }
