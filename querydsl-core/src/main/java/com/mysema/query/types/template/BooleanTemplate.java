@@ -37,7 +37,7 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
     private final TemplateExpression<Boolean> templateMixin;
 
     public BooleanTemplate(Template template, List<Expression<?>> args){
-        templateMixin = new TemplateExpressionImpl<Boolean>(Boolean.class, args, template);
+        templateMixin = new TemplateExpressionImpl<Boolean>(Boolean.class, template, args);
     }
 
     @Override

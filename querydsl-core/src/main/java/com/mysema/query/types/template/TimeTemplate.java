@@ -39,7 +39,7 @@ public class TimeTemplate<T extends Comparable<?>> extends TimeExpression<T> imp
 
     public TimeTemplate(Class<T> type, Template template, List<Expression<?>> args) {
         super(type);
-        templateMixin = new TemplateExpressionImpl<T>(type, args, template);
+        templateMixin = new TemplateExpressionImpl<T>(type, template, args);
     }
 
     @Override

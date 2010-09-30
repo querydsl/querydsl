@@ -15,7 +15,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.template.SimpleTemplate;
+import com.mysema.query.types.TemplateExpressionImpl;
 
 /**
  * Abstract superclass for SubQuery implementations
@@ -36,7 +36,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     }
 
     protected Q addFlag(Position position, String prefix, Expression<?> expr){
-        Expression<?> flag = SimpleTemplate.create(expr.getType(), prefix + "{0}", expr);
+        Expression<?> flag = TemplateExpressionImpl.create(expr.getType(), prefix + "{0}", expr);
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
     

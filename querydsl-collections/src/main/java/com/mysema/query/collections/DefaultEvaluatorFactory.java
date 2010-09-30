@@ -32,9 +32,9 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operation;
+import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.expr.Param;
 
 /**
  * DefaultEvaluatorFactory extends the EvaluatorFactory class to provide Java source
@@ -213,10 +213,10 @@ public class DefaultEvaluatorFactory {
     private Map<String, Object> getConstants(QueryMetadata metadata, Map<Object, String> constantToLabel) {
         Map<String,Object> constants = new HashMap<String,Object>();
         for (Map.Entry<Object,String> entry : constantToLabel.entrySet()){
-            if (entry.getKey() instanceof Param<?>){
+            if (entry.getKey() instanceof ParamExpression<?>){
                 Object value = metadata.getParams().get(entry.getKey());
                 if (value == null){
-                    throw new ParamNotSetException((Param<?>) entry.getKey());
+                    throw new ParamNotSetException((ParamExpression<?>) entry.getKey());
                 }
                 constants.put(entry.getValue(), value);
             }else{

@@ -55,6 +55,15 @@
       <version>2.2</version>
     </dependency>
     
+    <!--  test -->
+    
+    <dependency>
+      <groupId>jdepend</groupId>
+      <artifactId>jdepend</artifactId>
+      <version>2.9.1</version>
+      <scope>test</scope>
+	</dependency>
+    
   </dependencies>
   
   <build>

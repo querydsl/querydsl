@@ -37,7 +37,7 @@ public class StringTemplate extends StringExpression implements TemplateExpressi
     private final TemplateExpression<String> templateMixin;
 
     public StringTemplate(Template template, List<Expression<?>> args){
-        templateMixin = new TemplateExpressionImpl<String>(String.class, args, template);
+        templateMixin = new TemplateExpressionImpl<String>(String.class, template, args);
     }
 
     @Override

@@ -11,12 +11,11 @@ import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.NumberExpression;
-import com.mysema.query.types.expr.NumberOperation;
 
 /**
  * Abstract super class for SQLQuery implementation for JPA and Hibernate
@@ -27,7 +26,7 @@ import com.mysema.query.types.expr.NumberOperation;
  */
 public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends ProjectableQuery<T>{
 
-    private static final NumberExpression<Integer> COUNT_ALL_AGG_EXPR = NumberOperation.create(Integer.class, Ops.AggOps.COUNT_ALL_AGG);
+    private static final Expression<Integer> COUNT_ALL_AGG_EXPR = OperationImpl.create(Integer.class, Ops.AggOps.COUNT_ALL_AGG);
 
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(QueryMetadata metadata) {

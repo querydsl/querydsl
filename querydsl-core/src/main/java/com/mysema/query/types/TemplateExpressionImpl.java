@@ -25,15 +25,15 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
 
     private final Template template;
 
-    public static Expression<String> create(String template, Expression<?>... args){
-        return create(TemplateFactory.DEFAULT.create(template), args);
+    public static <C> Expression<C> create(Class<C> cl, String template, Expression<?>... args){
+        return create(cl, TemplateFactory.DEFAULT.create(template), args);
     }
 
-    public static Expression<String> create(Template template, Expression<?>... args){
-        return new TemplateExpressionImpl<String>(String.class, Arrays.<Expression<?>>asList(args), template);
+    public static <C> Expression<C> create(Class<C> cl, Template template, Expression<?>... args){
+        return new TemplateExpressionImpl<C>(cl, template, Arrays.<Expression<?>>asList(args));
     }
     
-    public TemplateExpressionImpl(Class<? extends T> type, List<Expression<?>> args, Template template){
+    public TemplateExpressionImpl(Class<? extends T> type, Template template, List<Expression<?>> args){
         super(type);
         this.args = Assert.notNull(args,"args");
         this.template = Assert.notNull(template,"template");

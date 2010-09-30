@@ -26,7 +26,7 @@ public class JoinFlag implements Serializable{
     private final Expression<?> flag;
     
     public JoinFlag(String flag) {
-        this.flag = TemplateExpressionImpl.create(flag);
+        this.flag = TemplateExpressionImpl.create(Object.class, flag);
     }
     
     public JoinFlag(Expression<?> flag) {

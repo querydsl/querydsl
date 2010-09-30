@@ -98,7 +98,7 @@ public class QueryFlag implements Serializable{
     private final Expression<?> flag;
     
     public QueryFlag(Position position, String flag) {
-        this(position, TemplateExpressionImpl.create(flag));
+        this(position, TemplateExpressionImpl.create(Object.class, flag));
     }
     
     public QueryFlag(Position position, Expression<?> flag) {

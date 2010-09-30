@@ -22,7 +22,6 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.*;
-import com.mysema.query.types.template.SimpleTemplate;
 
 /**
  * SqlSerializer serializes Querydsl queries into SQL
@@ -53,7 +52,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             for (int i = 0; i < args.length; i++){
                 exprs[i] = new ConstantImpl<Object>(args[i]);
             }
-            SQLSerializer.this.handle(SimpleTemplate.create(Object.class, template, exprs));
+            SQLSerializer.this.handle(TemplateExpressionImpl.create(Object.class, template, exprs));
 
         }
 

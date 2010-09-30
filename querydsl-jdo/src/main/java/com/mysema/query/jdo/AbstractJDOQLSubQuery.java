@@ -1,17 +1,12 @@
 package com.mysema.query.jdo;
 
-import java.util.Collection;
-
 import com.mysema.query.DefaultQueryMetadata;
-import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.support.QueryMixin;
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.Ops;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.SimpleOperation;
 
 /**
  * Abstract superclass for SubQuery implementations
@@ -36,10 +31,8 @@ public class AbstractJDOQLSubQuery<Q extends AbstractJDOQLSubQuery<Q>> extends D
         return queryMixin.from(args);
     }
 
-    @SuppressWarnings("unchecked")
-    public <P> Q from(Path<? extends Collection<P>> target, EntityPath<P> alias){
-        queryMixin.getMetadata().addJoin(JoinType.DEFAULT, SimpleOperation.create(alias.getType(), Ops.ALIAS, target, alias));
-        return (Q)this;
+    public <P> Q from(CollectionExpression<?,P> target, EntityPath<P> alias){
+        return queryMixin.join(target, alias);
     }
 
     @Override

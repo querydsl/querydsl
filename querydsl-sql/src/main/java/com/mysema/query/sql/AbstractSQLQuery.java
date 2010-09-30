@@ -44,7 +44,6 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.QBean;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.template.SimpleTemplate;
 import com.mysema.util.ResultSetAdapter;
@@ -479,9 +478,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         for (int i = 0; i < objects.size(); i++){
             Object o = objects.get(i);        
             try {
-                if (Param.class.isInstance(o)){
+                if (ParamExpression.class.isInstance(o)){
                     if (!params.containsKey(o)){
-                        throw new ParamNotSetException((Param<?>) o);
+                        throw new ParamNotSetException((ParamExpression<?>) o);
                     }
                     o = params.get(o);
                 }

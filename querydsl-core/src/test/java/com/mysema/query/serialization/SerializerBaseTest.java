@@ -30,7 +30,7 @@ public class SerializerBaseTest {
         // constant
         serializer.handle(ConstantImpl.create(""));
         //  custom
-        serializer.handle(TemplateExpressionImpl.create("xxx", ConstantImpl.create("")));
+        serializer.handle(TemplateExpressionImpl.create(Object.class, "xxx", ConstantImpl.create("")));
     }
 
 }

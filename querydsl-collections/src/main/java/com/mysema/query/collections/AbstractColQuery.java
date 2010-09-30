@@ -5,7 +5,6 @@
  */
 package com.mysema.query.collections;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,11 +18,12 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.ArrayConstructorExpression;
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.MapExpression;
+import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.SimpleOperation;
-import com.mysema.query.types.path.MapPath;
 
 /**
  * AbstractColQuery provides a base class for Collection query implementations.
@@ -65,13 +65,13 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
     }
 
     @SuppressWarnings("unchecked")
-    private <D> Expression<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias){
-        return SimpleOperation.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
+    private <D> Expression<D> createAlias(CollectionExpression<?,D> target, Path<D> alias){
+        return OperationImpl.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
     }
 
     @SuppressWarnings("unchecked")
-    private <D> Expression<D> createAlias(MapPath<?,D,?> target, Path<D> alias){
-        return SimpleOperation.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
+    private <D> Expression<D> createAlias(MapExpression<?,D> target, Path<D> alias){
+        return OperationImpl.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
     }
 
     @SuppressWarnings("unchecked")
@@ -88,13 +88,13 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
     }
 
     @SuppressWarnings("unchecked")
-    public <P> Q innerJoin(Path<? extends Collection<P>> target, Path<P> alias) {
+    public <P> Q innerJoin(CollectionExpression<?, P> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return (Q)this;
     }
 
     @SuppressWarnings("unchecked")
-    public <P> Q innerJoin(MapPath<?,P,?> target, Path<P> alias) {
+    public <P> Q innerJoin(MapExpression<?,P> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return (Q)this;
     }

@@ -7,8 +7,8 @@ package com.mysema.query.sql;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.expr.SimpleOperation;
 
 /**
  * SQLSubQuery is a subquery implementation for SQL queries
@@ -29,7 +29,7 @@ public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> implements SQL
     public Expression<?> union(SubQueryExpression<?>... sq){
         Expression<?> rv = sq[0];
         for (int i = 1; i < sq.length; i++){
-            rv = SimpleOperation.create(rv.getType(), SQLTemplates.UNION, rv, sq[i]);
+            rv = OperationImpl.create(rv.getType(), SQLTemplates.UNION, rv, sq[i]);
         }
         return rv;
     }
