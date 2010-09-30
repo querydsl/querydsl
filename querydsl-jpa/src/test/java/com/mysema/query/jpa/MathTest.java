@@ -13,7 +13,7 @@ import com.mysema.query.types.path.NumberPath;
 public class MathTest extends AbstractQueryTest{
 
     @Test
-    public void (){
+    public void test(){
         NumberPath<Double> path = QCat.cat.bodyWeight;
         assertToString("(cat.bodyWeight - sum(cat.bodyWeight)) * cat.bodyWeight", path.subtract(path.sum()).multiply(path));
     }
