@@ -24,6 +24,10 @@ public class OperationImpl<RT> extends ExpressionBase<RT> implements Operation<R
     private final List<Expression<?>> args;
 
     private final Operator<? super RT> operator;
+    
+    public static <RT> Operation<RT> create(Class<? extends RT> type, Operator<? super RT> operator, Expression<?>... args){
+        return new OperationImpl<RT>(type, operator, args);
+    }
 
     public OperationImpl(Class<? extends RT> type, Operator<? super RT> operator, Expression<?>... args){
         this(type, operator, Arrays.asList(args));

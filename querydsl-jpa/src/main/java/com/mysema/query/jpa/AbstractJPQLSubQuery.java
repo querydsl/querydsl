@@ -5,15 +5,14 @@
  */
 package com.mysema.query.jpa;
 
-import java.util.Collection;
-
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.path.MapPath;
 
 /**
  * Abstract superclass for SubQuery implementations
@@ -41,11 +40,11 @@ public class AbstractJPQLSubQuery<Q extends AbstractJPQLSubQuery<Q>> extends Det
         return queryMixin.from(o);
     }
 
-    public <P> Q fullJoin(Path<? extends Collection<P>> target) {
+    public <P> Q fullJoin(CollectionExpression<?,P> target) {
         return queryMixin.fullJoin(target);
     }
 
-    public <P> Q fullJoin(Path<? extends Collection<P>> target, Path<P> alias) {
+    public <P> Q fullJoin(CollectionExpression<?,P> target, Path<P> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
@@ -57,19 +56,19 @@ public class AbstractJPQLSubQuery<Q extends AbstractJPQLSubQuery<Q>> extends Det
         return queryMixin.fullJoin(target, alias);
     }
 
-    public <P> Q fullJoin(MapPath<?,P,?> target) {
+    public <P> Q fullJoin(MapExpression<?,P> target) {
         return queryMixin.fullJoin(target);
     }
 
-    public <P> Q fullJoin(MapPath<?,P,?> target, Path<P> alias) {
+    public <P> Q fullJoin(MapExpression<?,P> target, Path<P> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
-    public <P> Q innerJoin(Path<? extends Collection<P>> target) {
+    public <P> Q innerJoin(CollectionExpression<?,P> target) {
         return queryMixin.innerJoin(target);
     }
 
-    public <P> Q innerJoin(Path<? extends Collection<P>>target, Path<P> alias) {
+    public <P> Q innerJoin(CollectionExpression<?,P> target, Path<P> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
@@ -81,19 +80,19 @@ public class AbstractJPQLSubQuery<Q extends AbstractJPQLSubQuery<Q>> extends Det
         return queryMixin.innerJoin(target, alias);
     }
 
-    public <P> Q innerJoin(MapPath<?,P,?> target) {
+    public <P> Q innerJoin(MapExpression<?,P> target) {
         return queryMixin.innerJoin(target);
     }
 
-    public <P> Q innerJoin(MapPath<?,P,?> target, Path<P> alias) {
+    public <P> Q innerJoin(MapExpression<?,P> target, Path<P> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
-    public <P> Q join(Path<? extends Collection<P>> target) {
+    public <P> Q join(CollectionExpression<?,P> target) {
         return queryMixin.join(target);
     }
 
-    public <P> Q join(Path<? extends Collection<P>> target, Path<P> alias) {
+    public <P> Q join(CollectionExpression<?,P> target, Path<P> alias) {
         return queryMixin.join(target, alias);
     }
 
@@ -105,19 +104,19 @@ public class AbstractJPQLSubQuery<Q extends AbstractJPQLSubQuery<Q>> extends Det
         return queryMixin.join(target, alias);
     }
 
-    public <P> Q join(MapPath<?,P,?> target) {
+    public <P> Q join(MapExpression<?,P> target) {
         return queryMixin.join(target);
     }
 
-    public <P> Q join(MapPath<?,P,?> target, Path<P> alias) {
+    public <P> Q join(MapExpression<?,P> target, Path<P> alias) {
         return queryMixin.join(target, alias);
     }
 
-    public <P> Q leftJoin(Path<? extends Collection<P>> target) {
+    public <P> Q leftJoin(CollectionExpression<?,P> target) {
         return queryMixin.leftJoin(target);
     }
 
-    public <P> Q leftJoin(Path<? extends Collection<P>> target, Path<P> alias) {
+    public <P> Q leftJoin(CollectionExpression<?,P> target, Path<P> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 
@@ -129,11 +128,11 @@ public class AbstractJPQLSubQuery<Q extends AbstractJPQLSubQuery<Q>> extends Det
         return queryMixin.leftJoin(target, alias);
     }
 
-    public <P> Q leftJoin(MapPath<?,P,?> target) {
+    public <P> Q leftJoin(MapExpression<?,P> target) {
         return queryMixin.leftJoin(target);
     }
 
-    public <P> Q leftJoin(MapPath<?,P,?> target, Path<P> alias) {
+    public <P> Q leftJoin(MapExpression<?,P> target, Path<P> alias) {
         return queryMixin.leftJoin(target, alias);
     }
 

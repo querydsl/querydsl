@@ -1,7 +1,5 @@
 package com.mysema.query.jpa;
 
-import java.util.Collection;
-
 import com.mysema.query.Query;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.EntityPath;
@@ -56,7 +54,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param target
      * @return
      */
-    <P> Q innerJoin(CollectionExpression<?,?> target);
+    <P> Q innerJoin(CollectionExpression<?,P> target);
 
     /**
      * Create an inner join with the given target and alias.
@@ -234,7 +232,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @param target
      * @return
      */
-    <P> Q fullJoin(CollectionExpression<?,?> target);
+    <P> Q fullJoin(CollectionExpression<?,P> target);
 
     /**
      * Create a full join with the given target and alias.
