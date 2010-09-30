@@ -8,8 +8,11 @@ package com.mysema.query;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.expr.*;
+import com.mysema.query.types.path.ListPath;
 
 /**
  * @author tiwe
@@ -35,7 +38,7 @@ public class MatchingFilters {
         return rv;
     }
 
-    public <A> Collection<BooleanExpression> collection(CollectionExpression<?,A> expr,  CollectionExpression<?,A> other, A knownElement, A missingElement){
+    public <A> Collection<BooleanExpression> collection(CollectionExpressionBase<?,A> expr,  CollectionExpression<?,A> other, A knownElement, A missingElement){
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.contains(knownElement));
@@ -114,11 +117,11 @@ public class MatchingFilters {
         return rv;
     }
 
-    public <A> Collection<BooleanExpression> list(ListExpression<A> expr, ListExpression<A> other, A knownElement, A missingElement){
+    public <A> Collection<BooleanExpression> list(ListPath<A,?> expr, ListExpression<A> other, A knownElement, A missingElement){
         return collection(expr, other, knownElement, missingElement);
     }
 
-    public <K,V> Collection<BooleanExpression> map(MapExpression<K,V> expr, MapExpression<K,V> other,  K knownKey, V knownValue, K missingKey, V missingValue) {
+    public <K,V> Collection<BooleanExpression> map(MapExpressionBase<K,V> expr, MapExpression<K,V> other,  K knownKey, V knownValue, K missingKey, V missingValue) {
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.add(expr.containsKey(knownKey));
         rv.add(expr.containsKey(missingKey).not());

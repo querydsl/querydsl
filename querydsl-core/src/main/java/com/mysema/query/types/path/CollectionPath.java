@@ -50,7 +50,6 @@ public class CollectionPath<E> extends CollectionExpressionBase<Collection<E>,E>
         return pathMixin.equals(o);
     }
 
-    @Override
     public Class<E> getElementType() {
         return elementType;
     }

@@ -9,6 +9,7 @@ import java.util.Collection;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
@@ -34,17 +35,16 @@ public abstract class CollectionExpressionBase<C extends Collection<E>, E> exten
         super(type);
     }
 
-    @Override
     public final BooleanExpression contains(E child) {
         return contains(new ConstantImpl<E>(child));
     }
 
-    @Override
     public final BooleanExpression contains(Expression<E> child) {
         return BooleanOperation.create(Ops.IN, child, this);
     }
 
-    @Override
+    public abstract Class<E> getElementType();
+    
     public final BooleanExpression isEmpty() {
         if (empty == null){
             empty = BooleanOperation.create(Ops.COL_IS_EMPTY, this);
@@ -52,12 +52,10 @@ public abstract class CollectionExpressionBase<C extends Collection<E>, E> exten
         return empty;
     }
 
-    @Override
     public final BooleanExpression isNotEmpty() {
         return isEmpty().not();
     }
 
-    @Override
     public final NumberExpression<Integer> size() {
         if (size == null) {
             size = NumberOperation.create(Integer.class, Ops.COL_SIZE, this);
@@ -65,4 +63,6 @@ public abstract class CollectionExpressionBase<C extends Collection<E>, E> exten
         return size;
     }
 
+    
+    
 }

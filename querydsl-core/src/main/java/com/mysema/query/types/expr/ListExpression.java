@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.annotation.Nonnegative;
 
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Expression;
 
 /**

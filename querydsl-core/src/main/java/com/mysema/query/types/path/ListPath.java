@@ -116,7 +116,6 @@ public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionExpres
         }
     }
 
-    @Override
     public Class<E> getElementType() {
         return elementType;
     }

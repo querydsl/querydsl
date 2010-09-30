@@ -14,8 +14,11 @@ import java.util.List;
 import junit.framework.Assert;
 
 import com.mysema.commons.lang.Pair;
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.expr.*;
+import com.mysema.query.types.path.ListPath;
 
 /**
  * The Class StandardTest.
@@ -266,7 +269,7 @@ public abstract class QueryExecution {
         runFilterQueries(filters.booleanFilters(expr, other), false);
     }
 
-    public final <A> void runCollectionTests(CollectionExpression<?,A> expr, CollectionExpression<?,A> other, A knownElement, A missingElement){
+    public final <A> void runCollectionTests(CollectionExpressionBase<?,A> expr, CollectionExpression<?,A> other, A knownElement, A missingElement){
         runFilterQueries(matchers.collection(expr, other, knownElement, missingElement), true);
         runFilterQueries(filters.collection(expr, other, knownElement), false);
         runProjectionQueries(projections.collection(expr, other, knownElement));
@@ -284,13 +287,13 @@ public abstract class QueryExecution {
         runProjectionQueries(projections.dateTime(expr, other, knownValue));
     }
 
-    public final <A> void runListTests(ListExpression<A> expr, ListExpression<A> other, A knownElement, A missingElement){
+    public final <A> void runListTests(ListPath<A,?> expr, ListExpression<A> other, A knownElement, A missingElement){
         runFilterQueries(matchers.list(expr, other, knownElement, missingElement), true);
         runFilterQueries(filters.list(expr, other, knownElement), false);
         runProjectionQueries(projections.list(expr, other, knownElement));
     }
 
-    public final <K,V> void runMapTests(MapExpression<K,V> expr, MapExpression<K,V> other, K knownKey, V knownValue, K missingKey, V missingValue) {
+    public final <K,V> void runMapTests(MapExpressionBase<K,V> expr, MapExpression<K,V> other, K knownKey, V knownValue, K missingKey, V missingValue) {
         runFilterQueries(matchers.map(expr, other, knownKey, knownValue, missingKey, missingValue), true);
         runFilterQueries(filters.map(expr, other, knownKey, knownValue), false);
         runProjectionQueries(projections.map(expr, other, knownKey, knownValue));

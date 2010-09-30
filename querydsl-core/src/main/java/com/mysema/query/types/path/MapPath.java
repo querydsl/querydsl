@@ -104,7 +104,6 @@ public class MapPath<K, V, E extends SimpleExpression<V>> extends MapExpressionB
         }
     }
 
-    @Override
     public Class<K> getKeyType() {
         return keyType;
     }
@@ -119,7 +118,6 @@ public class MapPath<K, V, E extends SimpleExpression<V>> extends MapExpressionB
         return pathMixin.getRoot();
     }
 
-    @Override
     public Class<V> getValueType() {
         return valueType;
     }

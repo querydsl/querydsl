@@ -9,9 +9,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.expr.*;
+import com.mysema.query.types.path.ListPath;
 
 /**
  * @author tiwe
@@ -36,7 +39,7 @@ public class Projections {
         return rv;
     }
 
-    public <A> Collection<Expression<?>> collection(CollectionExpression<?,A> expr, CollectionExpression<?,A> other, A knownElement){
+    public <A> Collection<Expression<?>> collection(CollectionExpressionBase<?,A> expr, CollectionExpression<?,A> other, A knownElement){
         HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.size());
@@ -79,7 +82,7 @@ public class Projections {
         return rv;
     }
 
-    public <A> Collection<Expression<?>> list(ListExpression<A> expr, ListExpression<A> other, A knownElement){
+    public <A> Collection<Expression<?>> list(ListPath<A,?> expr, ListExpression<A> other, A knownElement){
         HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
         rv.add(expr.get(0));
         if (!module.equals(Module.RDFBEAN)){
@@ -88,7 +91,7 @@ public class Projections {
         return rv;
     }
 
-    public <K,V> Collection<Expression<?>> map(MapExpression<K,V> expr, MapExpression<K,V> other, K knownKey, V knownValue) {
+    public <K,V> Collection<Expression<?>> map(MapExpressionBase<K,V> expr, MapExpression<K,V> other, K knownKey, V knownValue) {
         HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
         rv.add(expr.get(knownKey));
         if (!module.equals(Module.RDFBEAN)){

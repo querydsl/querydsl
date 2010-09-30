@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.Ops;
 
 /**
@@ -35,32 +36,30 @@ public abstract class MapExpressionBase<K,V> extends SimpleExpression<Map<K,V>> 
         super(type);
     }
 
-    @Override
     public final BooleanExpression contains(Expression<K> key, Expression<V> value) {
         return get(key).eq(value);
     }
 
-    @Override
     public final BooleanExpression containsKey(Expression<K> key) {
         return BooleanOperation.create(Ops.CONTAINS_KEY, this, key);
     }
 
-    @Override
     public final BooleanExpression containsKey(K key) {
         return BooleanOperation.create(Ops.CONTAINS_KEY, this, new ConstantImpl<K>(key));
     }
 
-    @Override
     public final BooleanExpression containsValue(Expression<V> value) {
         return BooleanOperation.create(Ops.CONTAINS_VALUE, this, value);
     }
 
-    @Override
     public final BooleanExpression containsValue(V value) {
         return BooleanOperation.create(Ops.CONTAINS_VALUE, this, new ConstantImpl<V>(value));
     }
+    
+    public abstract SimpleExpression<V> get(Expression<K> key);
 
-    @Override
+    public abstract SimpleExpression<V> get(K key);
+
     public final BooleanExpression isEmpty() {
         if (empty == null){
             empty = BooleanOperation.create(Ops.MAP_IS_EMPTY, this);
@@ -68,12 +67,10 @@ public abstract class MapExpressionBase<K,V> extends SimpleExpression<Map<K,V>> 
         return empty;
     }
 
-    @Override
     public final BooleanExpression isNotEmpty() {
         return isEmpty().not();
     }
 
-    @Override
     public final NumberExpression<Integer> size() {
         if (size == null) {
             size = NumberOperation.create(Integer.class, Ops.MAP_SIZE, this);

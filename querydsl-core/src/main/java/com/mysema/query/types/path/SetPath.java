@@ -50,7 +50,6 @@ public class SetPath<E> extends CollectionExpressionBase<Set<E>,E> implements Pa
         return pathMixin.equals(o);
     }
 
-    @Override
     public Class<E> getElementType() {
         return elementType;
     }
