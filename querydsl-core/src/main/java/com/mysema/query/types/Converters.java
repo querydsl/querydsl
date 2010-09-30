@@ -5,7 +5,7 @@
  */
 package com.mysema.query.types;
 
-import static com.mysema.query.types.StringEscape.escapeForLike;
+import static com.mysema.util.StringEscape.escapeForLike;
 
 import org.apache.commons.collections15.Transformer;
 
