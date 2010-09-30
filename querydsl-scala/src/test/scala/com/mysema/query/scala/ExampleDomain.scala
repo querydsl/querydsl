@@ -3,25 +3,27 @@ package com.mysema.query.scala;
 class Person {
   var scalaInt: Int = _;
 
-  var javaInt: Integer = null;
+  var javaInt: Integer = _;
 
-  var javaDouble: java.lang.Double = null;
+  var javaDouble: java.lang.Double = _;
   
-  var firstName: String = null;
+  var firstName: String = _;
 
-  var lastName: String = null;
+  var lastName: String = _;
 
-  var scalaList: scala.List[String] = null;
+  var scalaList: scala.List[String] = _;
 
-  var scalaMap: scala.collection.Map[String, String] = null;
+  var scalaMap: scala.collection.Map[String, String] = _;
 
-  var javaCollection: java.util.Collection[String] = null;
+  var javaCollection: java.util.Collection[String] = _;
 
-  var javaSet: java.util.Set[String] = null;
+  var javaSet: java.util.Set[String] = _;
 
-  var javaList: java.util.List[String] = null;
+  var javaList: java.util.List[String] = _;
 
-  var javaMap: java.util.Map[String, String] = null;
+  var javaMap: java.util.Map[String, String] = _;
 
+  var listOfPersons: java.util.List[Person] = _;
+  
   var array: Array[String] = _;
 }

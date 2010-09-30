@@ -17,6 +17,15 @@ class JPAQueryTest {
   }
 
   @Test
+  def Joins(){
+      // FIXME
+//    query from (person) innerJoin (person.listOfPersons, person)
+//    query from (person) join (person.listOfPersons, person)
+//    query from (person) leftJoin (person.listOfPersons, person)
+//    query from (person) fullJoin (person.listOfPersons, person)
+  }
+  
+  @Test
   def Projections() {
     query from (person) list (person)
     query from (person) list (person.firstName)
@@ -48,8 +57,7 @@ class JPAQueryTest {
   
   @Test
   def Complex() {
-      query from person where (person.firstName $like "An%") $and (person.lastName $isNotNull) list person;
-      
+      query from person where (person.firstName $like "An%") $and (person.lastName $isNotNull) list person;      
   }
 
   def query() = new JPQLSubQuery()

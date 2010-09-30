@@ -97,7 +97,7 @@ trait ArrayExpression[T <: Array[_]] extends SimpleExpression[T] {
 
 }
 
-trait CollectionExpressionBase[T <: Collection[C], C] extends SimpleExpression[T] with ParametrizedExpression[T] {
+trait CollectionExpressionBase[T <: Collection[C], C] extends SimpleExpression[T] with com.mysema.query.types.CollectionExpression[T,C] {
 
   def $size() = number[Integer](classOf[Integer], COL_SIZE, this);
 
@@ -118,7 +118,7 @@ trait ListExpression[T] extends CollectionExpressionBase[java.util.List[T], T] {
 
 }
 
-trait MapExpression[K, V] extends SimpleExpression[java.util.Map[K, V]] with ParametrizedExpression[java.util.Map[K, V]] {
+trait MapExpression[K, V] extends SimpleExpression[java.util.Map[K, V]] with com.mysema.query.types.MapExpression[K,V] {
 
   def $size() = number[Integer](classOf[Integer], MAP_SIZE, this);
 
