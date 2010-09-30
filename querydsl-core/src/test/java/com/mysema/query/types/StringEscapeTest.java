@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.mysema.query.types.ConstantImpl;
-import com.mysema.query.types.StringEscape;
+import com.mysema.util.StringEscape;
 
 public class StringEscapeTest {
 
