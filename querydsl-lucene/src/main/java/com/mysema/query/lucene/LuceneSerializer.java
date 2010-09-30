@@ -30,10 +30,9 @@ import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.Param;
-
 /**
  * Serializes Querydsl queries to Lucene queries.
  *
@@ -338,7 +337,7 @@ public class LuceneSerializer {
         List<Expression<?>> arguments = operation.getArgs();
         for (int i = 1; i < arguments.size(); ++i) {
             if (!(arguments.get(i) instanceof Constant<?>)
-                    && !(arguments.get(i) instanceof Param<?>)
+                    && !(arguments.get(i) instanceof ParamExpression<?>)
                     && !(arguments.get(i) instanceof PhraseElement)
                     && !(arguments.get(i) instanceof TermElement)) {
                 throw new IllegalArgumentException("operand was of unsupported type "
@@ -348,10 +347,10 @@ public class LuceneSerializer {
     }
 
     private String[] createTerms(Expression<?> expr, QueryMetadata metadata) {
-        if (expr instanceof Param<?>){
+        if (expr instanceof ParamExpression<?>){
             Object value = metadata.getParams().get(expr);
             if (value == null){
-                throw new ParamNotSetException((Param<?>) expr);
+                throw new ParamNotSetException((ParamExpression<?>) expr);
             }
             return split(expr, value.toString());
         }else{
@@ -360,10 +359,10 @@ public class LuceneSerializer {
     }
 
     private String[] createEscapedTerms(Expression<?> expr, QueryMetadata metadata) {
-        if (expr instanceof Param<?>){
+        if (expr instanceof ParamExpression<?>){
             Object value = metadata.getParams().get(expr);
             if (value == null){
-                throw new ParamNotSetException((Param<?>) expr);
+                throw new ParamNotSetException((ParamExpression<?>) expr);
             }
             return split(expr, QueryParser.escape(value.toString()));
         }else{
