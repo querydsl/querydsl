@@ -10,6 +10,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.lang.ClassUtils;
 
 /**
@@ -53,6 +55,9 @@ public class ConstructorExpression<D> extends ExpressionBase<D> implements Facto
     private final List<Expression<?>> args;
 
     private final Class<?>[] parameterTypes;
+    
+    @Nullable
+    private transient Constructor<?> constructor;
 
     public ConstructorExpression(Class<D> type, Class<?>[] paramTypes, Expression<?>... args) {
         this(type, paramTypes, Arrays.asList(args));
@@ -92,9 +97,13 @@ public class ConstructorExpression<D> extends ExpressionBase<D> implements Facto
         return args;
     }
 
+    @SuppressWarnings("unchecked")
     public D newInstance(Object... args){
         try {
-            return (D) getType().getConstructor(parameterTypes).newInstance(args);
+            if (constructor == null){
+                constructor = getType().getConstructor(parameterTypes);
+            }            
+            return (D) constructor.newInstance(args);
         } catch (SecurityException e) {
            throw new ExpressionException(e.getMessage(), e);
         } catch (NoSuchMethodException e) {
