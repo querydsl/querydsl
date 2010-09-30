@@ -48,7 +48,7 @@ public abstract class CreateTableBaseTest extends AbstractBaseTest{
     }
     
     @Test
-    public void autoIncrement(){
+    public void AutoIncrement(){
         new  CreateTableClause(conn, templates,  "autoinc")
         .column("id", Integer.class).notNull().autoIncrement()
         .primaryKey("PK_AUTOINC","id")
@@ -56,7 +56,7 @@ public abstract class CreateTableBaseTest extends AbstractBaseTest{
     }
     
     @Test
-    public void rdfExample() throws SQLException{               
+    public void RdfExample() throws SQLException{               
         new  CreateTableClause(conn, templates,  "language")
         .column("id", Integer.class).notNull()
         .column("text", String.class).size(256).notNull()

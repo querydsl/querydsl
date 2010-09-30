@@ -36,14 +36,14 @@ public abstract class MergeBaseTest extends AbstractBaseTest{
 
     @Test
     @IncludeIn(Target.H2)
-    public void merge_with_Keys_and_Values(){
+    public void Merge_with_Keys_and_Values(){
         // NOTE : doesn't work with composite merge implementation
         // keys + values
         assertEquals(1, merge(survey).keys(survey.id).values(5, "Hello World").execute());
     }
 
     @Test
-    public void merge_with_Keys_Columns_and_Values(){
+    public void Merge_with_Keys_Columns_and_Values(){
         // keys + columns + values
         assertEquals(1, merge(survey).keys(survey.id)
             .set(survey.id, 5)
@@ -51,7 +51,7 @@ public abstract class MergeBaseTest extends AbstractBaseTest{
     }
     
     @Test
-    public void merge_with_Keys_Columns_and_Values_using_null(){
+    public void Merge_with_Keys_Columns_and_Values_using_null(){
         // keys + columns + values
         assertEquals(1, merge(survey).keys(survey.id)
             .set(survey.id, 5)
@@ -60,7 +60,7 @@ public abstract class MergeBaseTest extends AbstractBaseTest{
 
     @Test
     @IncludeIn(Target.H2)
-    public void merge_with_Keys_and_SubQuery(){    
+    public void Merge_with_Keys_and_SubQuery(){    
         assertEquals(1, insert(survey).set(survey.id, 6).set(survey.name, "H").execute());
 
         // keys + subquery

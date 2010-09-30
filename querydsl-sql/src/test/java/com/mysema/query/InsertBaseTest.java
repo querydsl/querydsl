@@ -42,7 +42,7 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    public void insert(){
+    public void Insert(){
 //        create table survey (id int,name varchar(30))
 
         // with columns
@@ -67,7 +67,7 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     }
     
     @Test
-    public void insertBatch(){
+    public void Insert_Batch(){
         SQLInsertClause insert = insert(survey)
             .set(survey.id, 5)
             .set(survey.name, "55")
@@ -84,7 +84,7 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     }
     
     @Test
-    public void insertBatch_with_subquery(){
+    public void InsertBatch_with_Subquery(){
         SQLInsertClause insert = insert(survey)
             .columns(survey.id, survey.name)
             .select(sq().from(survey2).list(survey2.id.add(20), survey2.name))
@@ -101,7 +101,7 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
 
     @Test
     @ExcludeIn({Target.HSQLDB, Target.DERBY})
-    public void insert_With_Keys() throws SQLException{
+    public void Insert_With_Keys() throws SQLException{
         ResultSet rs = insert(survey).set(survey.name, "Hello World").executeWithKeys();
         assertTrue(rs.next());
         rs.close();
@@ -110,7 +110,7 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     }
     
     @Test
-    public void insertNull(){
+    public void Insert_Null(){
         // with columns
         insert(survey)
             .columns(survey.id, survey.name)
@@ -128,7 +128,7 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    public void insert_Alternative_Syntax(){
+    public void Insert_Alternative_Syntax(){
         // with columns
         insert(survey)
             .set(survey.id, 3)
@@ -137,7 +137,7 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    public void complex1(){
+    public void Complex1(){
         // related to #584795
         QSurvey survey = new QSurvey("survey");
         QEmployee emp1 = new QEmployee("emp1");

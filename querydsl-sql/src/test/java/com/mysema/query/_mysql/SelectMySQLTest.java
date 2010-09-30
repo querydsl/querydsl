@@ -36,13 +36,13 @@ public class SelectMySQLTest extends SelectBaseTest {
 
     @Test
     @Override
-    public void aliasQuotes() {
+    public void Alias_Quotes() {
         expectedQuery = "select e.FIRSTNAME as `First Name` from EMPLOYEE2 e";
         query().from(employee).list(employee.firstname.as("First Name"));
     }
 
     @Test
-    public void extensions(){
+    public void Extensions(){
         mysqlQuery().from(survey).bigResult().list(survey.id);
         mysqlQuery().from(survey).bufferResult().list(survey.id);
         mysqlQuery().from(survey).cache().list(survey.id);        
