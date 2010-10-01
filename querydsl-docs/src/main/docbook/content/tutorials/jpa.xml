@@ -422,7 +422,7 @@ new HibernateUpdateClause(session, cat).where(cat.name.eq("Bob"))
   
   <title>Subqueries</title>
   
-  <para>To create a subquery you create a JPQLSubQuery instance, define the query parameters 
+  <para>To create a subquery you create a HibernateQuery instance, define the query parameters 
   via from, where etc and use
   unique or list to create a subquery, which is just a type-safe Querydsl expression for the query.
   unique is used for a unique (single) result and list for a list result.</para>
@@ -430,7 +430,7 @@ new HibernateUpdateClause(session, cat).where(cat.name.eq("Bob"))
 <programlisting language="java"><![CDATA[
 query.from(department)
     .where(department.employees.size().eq(
-        new JPQLSubQuery().from(d).unique(d.employees.size().max())
+        new HibernateQuery().from(d).unique(d.employees.size().max())
      )).list(department);
 ]]></programlisting>   
 
@@ -439,11 +439,13 @@ query.from(department)
 <programlisting language="java"><![CDATA[
 query.from(employee)
     .where(employee.weeklyhours.gt(
-        new JPQLSubQuery().from(employee.department.employees, e)
+        new HibernateQuery().from(employee.department.employees, e)
         .where(e.manager.eq(employee.manager))
         .unique(e.weeklyhours.avg())
     )).list(employee);
 ]]></programlisting>  
+
+	<para>For JPA based sub query usage, use the JPASubQuery instead.</para>
 
   </sect2>      
   
