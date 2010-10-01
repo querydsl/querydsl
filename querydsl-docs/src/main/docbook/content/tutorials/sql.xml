@@ -517,6 +517,34 @@ exporter.export(conn.getMetaData());
   	
   </sect2>
   
+<sect2>
+		
+		<title>Custom syntax expressions</title>
+		
+		<para>
+		If you need to specify SQL function calls in Querydsl you can use TemplateExpressions to express them. For general
+		expressions you can use the SimpleTemplate class and for typed expressions BooleanTemplate, ComparableTemplate, DateTemplate,
+		DateTimeTemplate, EnumTemplate, NumberTemplate, StringTemplate and TimeTemplate.
+		</para>
+		
+		<para>Here is an example for SimpleTemplate usage :</para>
+		
+		<programlisting language="java"><![CDATA[
+Expression<?> arg1 = ...;
+Expression<?> arg2 = ...;
+Expression<String> expression = SimpleTemplate.create(String.class, "myfunction({0},{1})", arg1, arg2);		
+]]></programlisting>     
+
+		<para>And here is an example for a Number typed template expression :</para>
+		
+<programlisting language="java"><![CDATA[
+Expression<?> arg1 = ...;
+Expression<?> arg2 = ...;
+NumberExpression<Integer> expression = NumberTemplate.create(Integer.class, "myfunction({0},{1})", arg1, arg2);		
+]]></programlisting>     		
+		
+	</sect2>	  
+  
   <sect2>
   
     <title>User types</title>
