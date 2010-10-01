@@ -45,17 +45,17 @@ public class MongodbQueryTest {
     }
     
     @Test
-    public void testUniqueResult(){
+    public void UniqueResult(){
         assertEquals("Jantunen", where(user.firstName.eq("Jaakko")).uniqueResult().getLastName());
     }
     
     @Test
-    public void testCount(){
+    public void Count(){
         assertEquals(4, query().count());
     }
 
     @Test
-    public void testOrder(){
+    public void Order(){
         List<User> users = query().orderBy(user.age.asc()).list();
         assertEquals(Arrays.asList(u1, u2, u3, u4), users);
         
@@ -64,13 +64,13 @@ public class MongodbQueryTest {
     }
     
     @Test
-    public void testRestrict(){
+    public void Restrict(){
         assertEquals(Arrays.asList(u1, u2), query().limit(2).orderBy(user.age.asc()).list());
         assertEquals(Arrays.asList(u2, u3), query().limit(2).offset(1).orderBy(user.age.asc()).list());
     }
     
     @Test
-    public void testListResults(){
+    public void ListResults(){
         SearchResults<User> results = query().limit(2).orderBy(user.age.asc()).listResults();
         assertEquals(4l, results.getTotal());
         assertEquals(2, results.getResults().size());
@@ -81,14 +81,14 @@ public class MongodbQueryTest {
     }
     
     @Test
-    public void testEmptyResults(){
+    public void EmptyResults(){
         SearchResults<User> results = query().where(user.firstName.eq("XXX")).listResults();
         assertEquals(0l, results.getTotal());
         assertEquals(Collections.emptyList(), results.getResults());
     }
     
     @Test
-    public void testEqInAndOrderByQueries() {
+    public void EqInAndOrderByQueries() {
        
         assertQuery(user.firstName.eq("Jaakko"), u1);
         assertQuery(user.firstName.equalsIgnoreCase("jaakko"), u1);
@@ -113,7 +113,7 @@ public class MongodbQueryTest {
     }
     
     @Test
-    public void testRegexQueries() {
+    public void RegexQueries() {
         
         assertQuery(user.firstName.startsWith("Jaan"), u3, u4);
         assertQuery(user.firstName.startsWith("jaan"));
@@ -130,16 +130,20 @@ public class MongodbQueryTest {
     }
     
     @Test
-    public void testNot() {
+    public void Not() {
         assertQuery(user.firstName.eq("Jaakko").not(), u3, u4, u2);
         assertQuery(user.firstName.ne("Jaakko").not(), u1);
         assertQuery(user.firstName.matches("Jaakko").not(), u3, u4, u2);
     }
     
+    @Test
+    public void Or(){
+        assertQuery(user.lastName.eq("Aakkonen").or(user.lastName.eq("BeekkoNen")), u3, u4);
+    }
     
     //This is not supported yet
 //    @Test
-//    public void testUniqueResult() {
+//    public void UniqueResult() {
 //        
 //        addUser("Dille", "Duplikaatti");
 //        addUser("Dille", "Duplikaatti");
@@ -150,7 +154,7 @@ public class MongodbQueryTest {
 //    }
     
     @Test
-    public void testIterate() {
+    public void Iterate() {
 
         User a = addUser("A", "A");
         User b = addUser("A1", "B");
@@ -168,7 +172,7 @@ public class MongodbQueryTest {
     }
     
     @Test
-    public void testUniqueResultAndLimitAndOffset() {        
+    public void UniqueResultAndLimitAndOffset() {        
         MongodbQuery<User> q = query().where(user.firstName.startsWith("Ja")).orderBy(user.age.asc());        
         assertEquals(4, q.list().size());        
         assertEquals(u1, q.uniqueResult());             

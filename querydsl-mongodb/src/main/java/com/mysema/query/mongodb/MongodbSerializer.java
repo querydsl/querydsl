@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import org.bson.BSONObject;
 
+import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mysema.query.types.*;
@@ -51,11 +52,11 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         throw new UnsupportedOperationException();
     }
 
-    private String dboKey(Operation<?> expr, int index) {
-        return (String) dboValue(expr, index);
+    private String asDBKey(Operation<?> expr, int index) {
+        return (String) asDBValue(expr, index);
     }
 
-    private Object dboValue(Operation<?> expr, int index) {
+    private Object asDBValue(Operation<?> expr, int index) {
         return expr.getArg(index).accept(this, null);
     }
 
@@ -63,7 +64,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         return Pattern.quote(expr.getArg(index).accept(this, null).toString());
     }
     
-    private BasicDBObject dbo(String key, Object value) {
+    private BasicDBObject asDBObject(String key, Object value) {
         return new BasicDBObject(key, value);
     }
 
@@ -71,7 +72,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
     public Object visit(Operation<?> expr, Void context) {
         Operator<?> op = expr.getOperator();
         if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE ) {
-            return dbo(dboKey(expr, 0), dboValue(expr, 1));
+            return asDBObject(asDBKey(expr, 0), asDBValue(expr, 1));
         }
         
         else if (op == Ops.AND) {
@@ -90,85 +91,91 @@ public class MongodbSerializer implements Visitor<Object, Void> {
             
             Operator<?> subOp = ((Operation<?>) expr.getArg(0)).getOperator();
             if (subOp != Ops.EQ_OBJECT && subOp != Ops.EQ_PRIMITIVE){
-                return dbo(key, dbo("$not", arg.get(key)));   
+                return asDBObject(key, asDBObject("$not", arg.get(key)));   
             }else{
-                return dbo(key, dbo("$ne", arg.get(key)));
-            }                
+                return asDBObject(key, asDBObject("$ne", arg.get(key)));
+            }                       
         }
         
-//      if (op == Ops.OR)
+        else if (op == Ops.OR){
+            BasicDBList list = new BasicDBList();
+            list.add((BasicDBObject) handle(expr.getArg(0)));
+            list.add((BasicDBObject) handle(expr.getArg(1)));
+            return asDBObject("$or", list);
+        }
+        
         else if (op == Ops.NE_OBJECT || op == Ops.NE_PRIMITIVE) {
-            return dbo(dboKey(expr, 0), dbo("$ne", dboValue(expr, 1)));
+            return asDBObject(asDBKey(expr, 0), asDBObject("$ne", asDBValue(expr, 1)));
         }
         
         else if (op == Ops.STARTS_WITH) {
-            return dbo(dboKey(expr, 0), Pattern.compile("^" + regexValue(expr, 1)));
+            return asDBObject(asDBKey(expr, 0), Pattern.compile("^" + regexValue(expr, 1)));
         }
         
         else if (op == Ops.STARTS_WITH_IC) {
-            return dbo(dboKey(expr, 0),
+            return asDBObject(asDBKey(expr, 0),
                     Pattern.compile("^" + regexValue(expr, 1), Pattern.CASE_INSENSITIVE));
         }
         
         else if (op == Ops.ENDS_WITH) {
-            return dbo(dboKey(expr, 0), Pattern.compile(regexValue(expr, 1) + "$"));
+            return asDBObject(asDBKey(expr, 0), Pattern.compile(regexValue(expr, 1) + "$"));
         }
         
         else if (op == Ops.ENDS_WITH_IC) {
-            return dbo(dboKey(expr, 0),
+            return asDBObject(asDBKey(expr, 0),
                     Pattern.compile(regexValue(expr, 1) + "$", Pattern.CASE_INSENSITIVE));
         }
         
         else if (op == Ops.EQ_IGNORE_CASE) {
-            return dbo(dboKey(expr, 0),
+            return asDBObject(asDBKey(expr, 0),
                     Pattern.compile(regexValue(expr, 1), Pattern.CASE_INSENSITIVE));
         }
         
         else if (op == Ops.STRING_CONTAINS) {
-            return dbo(dboKey(expr, 0), Pattern.compile(".*" + regexValue(expr, 1) + ".*"));
+            return asDBObject(asDBKey(expr, 0), Pattern.compile(".*" + regexValue(expr, 1) + ".*"));
         }
         
         else if (op == Ops.STRING_CONTAINS_IC) {
-            return dbo(dboKey(expr, 0),
+            return asDBObject(asDBKey(expr, 0),
                     Pattern.compile(".*" + regexValue(expr, 1) + ".*", Pattern.CASE_INSENSITIVE));
         }
         
         else if (op == Ops.EQ_IGNORE_CASE) {
-            return dbo(dboKey(expr, 0),
+            return asDBObject(asDBKey(expr, 0),
                     Pattern.compile(regexValue(expr, 1), Pattern.CASE_INSENSITIVE));
         }
         //if (op == Ops.EXISTS)
 //        if (op == Ops.MOD)
         
         else if (op == Ops.MATCHES) {
-            return dbo(dboKey(expr, 0), Pattern.compile(dboValue(expr, 1).toString()));
+            return asDBObject(asDBKey(expr, 0), Pattern.compile(asDBValue(expr, 1).toString()));
         }
         
         else if (op == Ops.BETWEEN) {
-            BasicDBObject value = new BasicDBObject("$gt", dboValue(expr, 1));
-            value.append("$lt", dboValue(expr, 2));
-            return dbo(dboKey(expr, 0), value);
+            BasicDBObject value = new BasicDBObject("$gt", asDBValue(expr, 1));
+            value.append("$lt", asDBValue(expr, 2));
+            return asDBObject(asDBKey(expr, 0), value);
         }
         
         else if (op == Ops.IN) {
             Collection<?> values = (Collection<?>) ((Constant<?>) expr.getArg(1)).getConstant();
-            return dbo(dboKey(expr, 0), dbo("$in", values.toArray()));
+            return asDBObject(asDBKey(expr, 0), asDBObject("$in", values.toArray()));
         }
         
         else if (op == Ops.LT || op == Ops.BEFORE) {
-            return dbo(dboKey(expr, 0), dbo("$lt", dboValue(expr, 1)));
+            return asDBObject(asDBKey(expr, 0), asDBObject("$lt", asDBValue(expr, 1)));
         }
         
         else if (op == Ops.GT || op == Ops.AFTER) {
-            return dbo(dboKey(expr, 0), dbo("$gt", dboValue(expr, 1)));
+            return asDBObject(asDBKey(expr, 0), asDBObject("$gt", asDBValue(expr, 1)));
         }
         
         else if (op == Ops.LOE || op == Ops.BOE) {
-            return dbo(dboKey(expr, 0), dbo("$lte", dboValue(expr, 1)));
+            return asDBObject(asDBKey(expr, 0), asDBObject("$lte", asDBValue(expr, 1)));
         }
         
         else if (op == Ops.GOE || op == Ops.AOE) {
-            return dbo(dboKey(expr, 0), dbo("$gte", dboValue(expr, 1)));
+            return asDBObject(asDBKey(expr, 0), asDBObject("$gte", asDBValue(expr, 1)));
         }
         throw new UnsupportedOperationException("Illegal operation " + expr);
     }

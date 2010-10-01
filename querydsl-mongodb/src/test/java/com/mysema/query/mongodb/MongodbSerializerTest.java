@@ -60,7 +60,7 @@ public class MongodbSerializerTest {
     }
     
     @Test
-    public void testEquals() {
+    public void Equals() {
         assertQuery(title.eq("A"), dbo("title","A"));
         assertQuery(year.eq(1), dbo("year",1));
         assertQuery(gross.eq(1.0D), dbo("gross", 1.0D));
@@ -74,7 +74,7 @@ public class MongodbSerializerTest {
     }
     
     @Test
-    public void testEqAndEq() {
+    public void EqAndEq() {
         assertQuery(
             title.eq("A").and(year.eq(1)), 
             dbo("title","A").append("year", 1)
@@ -87,12 +87,12 @@ public class MongodbSerializerTest {
     }
     
     @Test
-    public void testNotEq() {
+    public void NotEq() {
         assertQuery(title.ne("A"), dbo("title", dbo("$ne", "A")));
     }
     
     @Test
-    public void testLessAndGreaterAndBetween() {
+    public void LessAndGreaterAndBetween() {
         
         assertQuery(title.lt("A"), dbo("title", dbo("$lt", "A")));
         assertQuery(year.gt(1), dbo("year", dbo("$gt", 1)));
@@ -113,12 +113,12 @@ public class MongodbSerializerTest {
     }
     
     @Test
-    public void testIn() {
+    public void In() {
         assertQuery(year.in(1,2,3), dbo("year", dbo("$in", 1,2,3)));        
     }
     
     @Test
-    public void testOrderBy() {
+    public void OrderBy() {
         DBObject orderBy = serializer.toSort(sortList(year.asc()));
         assertEquals(dbo("year", 1), orderBy);
 
@@ -130,7 +130,7 @@ public class MongodbSerializerTest {
     }
     
     @Test
-    public void testRegexcases() {
+    public void Regexcases() {
         assertQuery(title.startsWith("A"), 
                 dbo("title", dbo("$regex", "^\\QA\\E").append("$options", "")));
         assertQuery(title.startsWithIgnoreCase("A"),
@@ -155,7 +155,7 @@ public class MongodbSerializerTest {
     }
     
     @Test
-    public void testNot() {
+    public void Not() {
         assertQuery(title.eq("A").not(), dbo("title", dbo("$ne","A")));
         
         assertQuery(title.lt("A").not().and(year.ne(1800)), 
