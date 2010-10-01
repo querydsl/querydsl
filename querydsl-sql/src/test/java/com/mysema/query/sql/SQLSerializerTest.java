@@ -19,8 +19,38 @@ import com.mysema.query.sql.domain.QSurvey;
 
 public class SQLSerializerTest {
 
+    private Connection connection = EasyMock.createMock(Connection.class);
+
     @Test
-    public void testBoolean(){
+    public void InnerJoin(){        
+        SQLQuery query = new SQLQueryImpl(connection,SQLTemplates.DEFAULT);
+        query.from(new QSurvey("s1")).innerJoin(new QSurvey("s2"));
+        assertEquals("from SURVEY s1\ninner join SURVEY s2", query.toString());
+    }
+    
+    @Test
+    public void LeftJoin(){        
+        SQLQuery query = new SQLQueryImpl(connection,SQLTemplates.DEFAULT);
+        query.from(new QSurvey("s1")).leftJoin(new QSurvey("s2"));
+        assertEquals("from SURVEY s1\nleft join SURVEY s2", query.toString());
+    }
+    
+    @Test
+    public void RightJoin(){        
+        SQLQuery query = new SQLQueryImpl(connection,SQLTemplates.DEFAULT);
+        query.from(new QSurvey("s1")).rightJoin(new QSurvey("s2"));
+        assertEquals("from SURVEY s1\nright join SURVEY s2", query.toString());
+    }
+    
+    @Test
+    public void FullJoin(){        
+        SQLQuery query = new SQLQueryImpl(connection,SQLTemplates.DEFAULT);
+        query.from(new QSurvey("s1")).fullJoin(new QSurvey("s2"));
+        assertEquals("from SURVEY s1\nfull join SURVEY s2", query.toString());
+    }
+    
+    @Test
+    public void Boolean(){
         QSurvey s = new QSurvey("s");
         BooleanBuilder bb1 = new BooleanBuilder();
         bb1.and(s.name.eq(s.name));
@@ -34,8 +64,7 @@ public class SQLSerializerTest {
     }
 
     @Test
-    public void testUpdate(){
-        Connection connection = EasyMock.createMock(Connection.class);
+    public void Update(){
         QSurvey survey = new QSurvey("survey");
         SQLUpdateClause updateClause = new SQLUpdateClause(connection,SQLTemplates.DEFAULT,survey);
         updateClause.set(survey.id, 1);
@@ -44,8 +73,7 @@ public class SQLSerializerTest {
     }
 
     @Test
-    public void testInsert(){
-        Connection connection = EasyMock.createMock(Connection.class);
+    public void Insert(){
         QSurvey survey = new QSurvey("survey");
         SQLInsertClause insertClause = new SQLInsertClause(connection,SQLTemplates.DEFAULT,survey);
         insertClause.set(survey.id, 1);

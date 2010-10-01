@@ -83,6 +83,8 @@ public class SQLTemplates extends Templates {
     private String key = "key";
 
     private String leftJoin = "\nleft join ";
+    
+    private String rightJoin = "\nright join ";;
 
     private String limitTemplate = "\nlimit {0}";
 
@@ -251,10 +253,11 @@ public class SQLTemplates extends Templates {
 
     public String getJoinSymbol(JoinType joinType){
         switch (joinType) {
-            case FULLJOIN:  return fullJoin;
-            case INNERJOIN: return innerJoin;
             case JOIN:      return join;
+            case INNERJOIN: return innerJoin;
+            case FULLJOIN:  return fullJoin;
             case LEFTJOIN:  return leftJoin;
+            case RIGHTJOIN: return rightJoin;
         }
         return ", ";
     }
@@ -265,6 +268,10 @@ public class SQLTemplates extends Templates {
 
     public String getLeftJoin() {
         return leftJoin;
+    }
+    
+    public String getRightJoin() {
+        return rightJoin;
     }
 
     public String getLimitTemplate() {
@@ -468,6 +475,10 @@ public class SQLTemplates extends Templates {
 
     protected void setLeftJoin(String leftJoin) {
         this.leftJoin = leftJoin;
+    }
+    
+    protected void setRightJoin(String rightJoin) {
+        this.rightJoin = rightJoin;
     }
 
     protected void setMergeInto(String mergeInto) {
