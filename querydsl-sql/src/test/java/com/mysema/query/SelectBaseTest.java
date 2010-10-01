@@ -652,6 +652,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         assertFalse(list2.isEmpty());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void Union_Multi_Column_Projection() throws IOException{
         SubQueryExpression<Object[]> sq1 = sq().from(employee).unique(employee.id.max(), employee.id.max().subtract(1));
