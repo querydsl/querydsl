@@ -32,7 +32,7 @@
       </includes>
 	  <outputDirectory>/lib/apt</outputDirectory>
     </fileSet>
-<!--  	
+
 	<fileSet>
 	  <directory>target</directory>
 	  <includes>
@@ -40,7 +40,18 @@
 	  </includes>	
 	  <outputDirectory>/src</outputDirectory>	  	
 	</fileSet>
--->
+	
+	<fileSet>
+	  <directory>../querydsl-core/target</directory>
+	  <includes>
+	    <include>*-sources.jar</include>	
+	  </includes>	
+	  <excludes>
+	  	<exclude>*-test-sources.jar</exclude>
+	  </excludes>	
+	  <outputDirectory>/src</outputDirectory>	  	
+	</fileSet>	
+
   </fileSets>
   	  
   <dependencySets>
