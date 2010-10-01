@@ -158,7 +158,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         if (projection.size() == 1){
             Expression<?> expr = projection.get(0);
             if (expr instanceof FactoryExpression<?>  && !(expr instanceof ConstructorExpression<?>)){
-                query.setResultTransformer(new ConstructorTransformer((FactoryExpression<?>) projection.get(0)));
+                query.setResultTransformer(new FactoryExpressionTransformer((FactoryExpression<?>) projection.get(0)));
             }
         }
 

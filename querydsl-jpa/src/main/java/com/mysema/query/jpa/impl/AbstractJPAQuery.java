@@ -5,6 +5,7 @@
  */
 package com.mysema.query.jpa.impl;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -18,13 +19,16 @@ import org.slf4j.LoggerFactory;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.jpa.JPQLQueryBase;
 import com.mysema.query.jpa.HQLTemplates;
+import com.mysema.query.jpa.JPQLQueryBase;
 import com.mysema.query.jpa.JPQLTemplates;
+import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.FactoryExpression;
 
 /**
  * Abstract base class for JPA API based implementations of the JPQLQuery interface
@@ -108,17 +112,32 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
             }
         }
 
-        // set transformer, if necessary
-//        List<? extends Expr<?>> projection = getMetadata().getProjection();
-//        if (projection.size() == 1){
-//            Expr<?> expr = projection.get(0);
-//            if (expr instanceof EConstructor<?>  && !(expr.getClass().equals(EConstructor.class))){
-//            if (query instanceof HibernateQuery){
-//                ((HibernateQuery)query).getHibernateQuery().setResultTransformer(
-//                    new ConstructorTransformer((EConstructor<?>) projection.get(0)));
-//            }
-//            }
-//        }
+        // set transformer, if necessary and possible
+        List<? extends Expression<?>> projection = getMetadata().getProjection();
+        if (projection.size() == 1){
+            Expression<?> expr = projection.get(0);
+            if (expr instanceof FactoryExpression<?>  && !(expr instanceof ConstructorExpression<?>)){
+                if (query.getClass().getName().startsWith("org.hibernate")){
+                    try {
+                        Class<?> cl = Class.forName("com.mysema.query.jpa.impl.JPAQueryTransformerTask");
+                        cl.getConstructor(Query.class, FactoryExpression.class).newInstance(query, expr);
+                    } catch (ClassNotFoundException e) {
+                        throw new QueryException(e.getMessage(), e);
+                    } catch (SecurityException e) {
+                        throw new QueryException(e.getMessage(), e);
+                    } catch (InstantiationException e) {
+                        throw new QueryException(e.getMessage(), e);
+                    } catch (IllegalAccessException e) {
+                        throw new QueryException(e.getMessage(), e);
+                    } catch (InvocationTargetException e) {
+                        throw new QueryException(e.getMessage(), e);
+                    } catch (NoSuchMethodException e) {
+                        throw new QueryException(e.getMessage(), e);
+                    }
+                    
+                }
+            }
+        }
 
         return query;
     }

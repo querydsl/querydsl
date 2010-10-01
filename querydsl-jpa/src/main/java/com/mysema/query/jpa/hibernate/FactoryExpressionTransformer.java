@@ -12,18 +12,18 @@ import org.hibernate.transform.ResultTransformer;
 import com.mysema.query.types.FactoryExpression;
 
 /**
- * ConstructorTransformer is a ResultTransformer implementation using the EConstructor for transformation
+ * FactoryExpressionTransformer is a ResultTransformer implementation using the EConstructor for transformation
  * 
  * @author tiwe
  *
  */
-public final class ConstructorTransformer implements ResultTransformer{
+public final class FactoryExpressionTransformer implements ResultTransformer{
 
     private static final long serialVersionUID = -3625957233853100239L;
 
     private final transient FactoryExpression<?> constructor;
 
-    public ConstructorTransformer(FactoryExpression<?> constructor){
+    public FactoryExpressionTransformer(FactoryExpression<?> constructor){
         this.constructor = constructor;
     }
 

@@ -24,7 +24,7 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.jpa.AbstractSQLQuery;
 import com.mysema.query.jpa.HibernateSQLSerializer;
-import com.mysema.query.jpa.hibernate.ConstructorTransformer;
+import com.mysema.query.jpa.hibernate.FactoryExpressionTransformer;
 import com.mysema.query.jpa.hibernate.DefaultSessionHolder;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.query.jpa.hibernate.HibernateUtil;
@@ -112,7 +112,7 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
         // set result transformer, if projection is an EConstructor instance
         List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
         if (projection.size() == 1 && projection.get(0) instanceof FactoryExpression){
-            query.setResultTransformer(new ConstructorTransformer((FactoryExpression<?>) projection.get(0)));
+            query.setResultTransformer(new FactoryExpressionTransformer((FactoryExpression<?>) projection.get(0)));
         }
         if (fetchSize > 0){
             query.setFetchSize(fetchSize);

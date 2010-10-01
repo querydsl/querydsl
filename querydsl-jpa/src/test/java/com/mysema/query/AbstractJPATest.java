@@ -56,41 +56,15 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
     }
 
 //    @Test
-//    public void testQuery(){
-//        String queryStr = "select cat.name, otherCat.name " +
-//            "from Cat cat, Cat otherCat " +
-//            "where length(cat.name) > :a1 and length(otherCat.name) > :a1 and locate(otherCat.name,cat.name) - 1 > :a1";
-//
-//        javax.persistence.Query query = entityManager.createQuery(queryStr);
-//        query.setParameter("a1", 1);
-//        query.getResultList();
+//    @Override
+//    public void TupleProjection(){
+//        // not yet supported with JPA
 //    }
-
+//
 //    @Test
-//    public void testQuery2(){
-//        String queryStr = "select cat.name, otherCat.name " +
-//            "from Cat cat, Cat otherCat " +
-//            "where length(cat.name) > :a1 and length(otherCat.name) > :a1 and " +
-//            "cat.name like concat(:a2,concat(substring(otherCat.name,:a3+1,:a4),:a2))";
-//
-//        javax.persistence.Query query = entityManager.createQuery(queryStr);
-//        query.setParameter("a1", 0);
-//        query.setParameter("a2", "XXX");
-//        query.setParameter("a3",0);
-//        query.setParameter("a4",0);
-//        query.getResultList();
+//    @Override
+//    public void ArrayProjection(){
+//        // not yet supported with JPA
 //    }
-
-    @Test
-    @Override
-    public void TupleProjection(){
-        // not yet supported with JPA
-    }
-
-    @Test
-    @Override
-    public void ArrayProjection(){
-        // not yet supported with JPA
-    }
 
 }
