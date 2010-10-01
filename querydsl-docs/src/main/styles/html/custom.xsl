@@ -115,7 +115,12 @@
 
   <xsl:template match='xslthl:number'>
     <span class="hl-value"><xsl:apply-templates/></span>
+  </xsl:template>
+  
+  <xsl:template match='xslthl:doccomment'>
+    <xsl:apply-templates/>
   </xsl:template>    
+  
   
 
 </xsl:stylesheet>
