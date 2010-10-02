@@ -91,7 +91,7 @@ public class BasicsTest extends AbstractJDOTest {
 
     @Test
     @Ignore
-    public void DdetachedResults(){
+    public void DetachedResults(){
         for (Product p : detachedQuery().from(product).list(product)){
             System.out.println(p);
         }
