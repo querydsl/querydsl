@@ -16,7 +16,7 @@ import com.mysema.query.types.path.PathInits;
 public class TypeCastTest {
 
     @Test
-    public void cast() {
+    public void Cast() {
         QAnimal animal = QAnimal.animal;
         QCat cat = new QCat(animal.getMetadata(), new PathInits("*"));
         System.out.println(cat);

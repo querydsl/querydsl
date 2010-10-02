@@ -42,7 +42,7 @@ public class DefaultQueryMetadataTest {
     private StringPath str = new StringPath("str");
 
     @Test
-    public void testSerialization() throws IOException, ClassNotFoundException{
+    public void Serialization() throws IOException, ClassNotFoundException{
         StringPath expr = new StringPath("str");
         metadata.addFlag(new QueryFlag(Position.AFTER_FILTERS, ""));
         metadata.addGroupBy(expr);
@@ -79,7 +79,7 @@ public class DefaultQueryMetadataTest {
     }
     
     @Test
-    public void testFullySerizable(){
+    public void FullySerizable(){
         Set<Class<?>> checked = new HashSet<Class<?>>();
         checked.addAll(Arrays.<Class<?>>asList(List.class, Set.class, Map.class, Object.class, String.class, Class.class));
         Stack<Class<?>> classes = new Stack<Class<?>>();
@@ -113,25 +113,25 @@ public class DefaultQueryMetadataTest {
     }
     
     @Test
-    public void testGetGroupBy() {
+    public void GetGroupBy() {
         metadata.addGroupBy(str);
         assertEquals(Arrays.asList(str), metadata.getGroupBy());
     }
 
     @Test
-    public void testGetHaving() {
+    public void GetHaving() {
         metadata.addHaving(str.isNotNull());
         assertEquals(str.isNotNull(), metadata.getHaving());
     }
 
     @Test
-    public void testGetJoins() {
+    public void GetJoins() {
         metadata.addJoin(JoinType.DEFAULT, str);
         assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, str)),metadata.getJoins());
     }
 
     @Test
-    public void testGetModifiers() {
+    public void GetModifiers() {
         QueryModifiers modifiers = new QueryModifiers(1l,2l);
         metadata.setModifiers(modifiers);
         assertEquals(modifiers, metadata.getModifiers());
@@ -159,40 +159,40 @@ public class DefaultQueryMetadataTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testGetOrderBy() {
+    public void GetOrderBy() {
         metadata.addOrderBy(str.asc());
         metadata.addOrderBy(str.desc());
         assertEquals(Arrays.asList(str.asc(),str.desc()), metadata.getOrderBy());
     }
 
     @Test
-    public void testGetProjection() {
+    public void GetProjection() {
         metadata.addProjection(str, str.append("abc"));
         assertEquals(Arrays.asList(str, str.append("abc")), metadata.getProjection());
     }
 
     @Test
-    public void testGetWhere() {
+    public void GetWhere() {
         metadata.addWhere(str.eq("b"), str.isNotEmpty());
         assertEquals(str.eq("b").and(str.isNotEmpty()), metadata.getWhere());
     }
 
     @Test
-    public void testIsDistinct() {
+    public void IsDistinct() {
         assertFalse(metadata.isDistinct());
         metadata.setDistinct(true);
         assertTrue(metadata.isDistinct());
     }
 
     @Test
-    public void testIsUnique() {
+    public void IsUnique() {
         assertFalse(metadata.isUnique());
         metadata.setUnique(true);
         assertTrue(metadata.isUnique());
     }
 
     @Test
-    public void testClone(){
+    public void Clone(){
         metadata.addGroupBy(str);
         metadata.addHaving(str.isNotNull());
         metadata.addJoin(JoinType.DEFAULT, str);

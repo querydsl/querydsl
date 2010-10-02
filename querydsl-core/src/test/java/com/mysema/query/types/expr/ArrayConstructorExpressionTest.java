@@ -16,16 +16,16 @@ public class ArrayConstructorExpressionTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testNewInstanceObjectArray() {
-    ArrayConstructorExpression<String> constructor = new ArrayConstructorExpression<String>(String[].class,  new StringPath("test"), new StringPath("test2"));
+    public void NewInstanceObjectArray() {
+        ArrayConstructorExpression<String> constructor = new ArrayConstructorExpression<String>(String[].class,  new StringPath(""), new StringPath("2"));
 
-    String[] strings = constructor.newInstance((Object[])new String[]{"1", "2"});
-    assertEquals("1", strings[0]);
-    assertEquals("2", strings[1]);
+        String[] strings = constructor.newInstance((Object[])new String[]{"1", "2"});
+        assertEquals("1", strings[0]);
+        assertEquals("2", strings[1]);
 
-    strings = constructor.newInstance(new Object[]{"1", "2"});
-    assertEquals("1", strings[0]);
-    assertEquals("2", strings[1]);
+        strings = constructor.newInstance(new Object[]{"1", "2"});
+        assertEquals("1", strings[0]);
+        assertEquals("2", strings[1]);
 
     }
 

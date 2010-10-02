@@ -23,7 +23,7 @@ public class InnerJoinTest {
     }
 
     @Test
-    public void subQuery(){
+    public void SubQuery(){
         Entity alias = Alias.alias(Entity.class);
         StringPath path = new StringPath("path");
         JPQLSubQuery subQuery = new JPQLSubQuery();
@@ -35,7 +35,7 @@ public class InnerJoinTest {
     }
 
     @Test
-    public void query(){
+    public void Query(){
         Entity alias = Alias.alias(Entity.class);
         StringPath path = new StringPath("path");
         JPQLQuery query = new HibernateQuery(new DummySessionHolder(), HQLTemplates.DEFAULT);

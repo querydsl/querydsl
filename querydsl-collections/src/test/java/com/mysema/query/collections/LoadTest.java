@@ -26,7 +26,7 @@ public class LoadTest {
     private QueryMetadata metadata = new DefaultQueryMetadata();
 
     @Test
-    public void creation(){
+    public void Creation(){
         System.out.println("Evaluator creation #1");
         for (int i = 0; i < 5; i++){
             long s = System.currentTimeMillis();

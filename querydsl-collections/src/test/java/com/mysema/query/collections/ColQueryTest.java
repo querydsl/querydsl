@@ -34,7 +34,7 @@ public class ColQueryTest extends AbstractQueryTest {
     }
 
     @Test
-    public void testAfterAndBefore() {
+    public void AfterAndBefore() {
         query().from(cat, Arrays.asList(c1, c2))
         .where(cat.birthdate.lt(new Date()),
                 cat.birthdate.loe(new Date()), cat.birthdate.gt(new Date()),
@@ -43,14 +43,14 @@ public class ColQueryTest extends AbstractQueryTest {
     }
 
     @Test
-    public void testArrayProjection() {
+    public void ArrayProjection() {
         // select pairs of cats with different names
         query().from(cat, cats).from(otherCat, cats).where(cat.name.ne(otherCat.name)).list(cat.name, otherCat.name);
         assertEquals(4*3, last.res.size());
     }
 
     @Test
-    public void testCast() {
+    public void Cast() {
         NumberExpression<?> num = cat.id;
         Expression<?>[] expr = new Expression[] { num.byteValue(), num.doubleValue(),
                 num.floatValue(), num.intValue(), num.longValue(),
@@ -63,7 +63,7 @@ public class ColQueryTest extends AbstractQueryTest {
     }
 
     @Test
-    public void testPrimitives() {
+    public void Primitives() {
         // select cats with kittens
         query().from(cat, cats).where(cat.kittens.size().ne(0)).list(cat.name);
         assertTrue(last.res.size() == 4);
@@ -74,7 +74,7 @@ public class ColQueryTest extends AbstractQueryTest {
     }
 
     @Test
-    public void testSimpleCases() {
+    public void SimpleCases() {
         // select all cat names
         query().from(cat, cats).list(cat.name);
         assertTrue(last.res.size() == 4);
@@ -100,7 +100,7 @@ public class ColQueryTest extends AbstractQueryTest {
     }
 
     @Test
-    public void testVarious() {
+    public void Various() {
         StringPath a = new StringPath("a");
         StringPath b = new StringPath("b");
         for (Object[] strs : from(a, "aa", "bb", "cc")

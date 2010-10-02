@@ -42,7 +42,7 @@ public class AliasTest extends AbstractQueryTest {
     }
 
     @Test
-    public void testAliasVariations1() {
+    public void AliasVariations1() {
         // 1st
         QCat cat = new QCat("cat");
         for (String name : from(cat, cats).where(cat.kittens.size().gt(0))
@@ -66,7 +66,7 @@ public class AliasTest extends AbstractQueryTest {
     }
 
     @Test
-    public void testAliasVariations2() {
+    public void AliasVariations2() {
         // 1st
         QCat cat = new QCat("cat");
         for (String name : from(cat, cats).where(cat.name.matches("fri.*")).list(
@@ -83,7 +83,7 @@ public class AliasTest extends AbstractQueryTest {
     }
 
     @Test
-    public void testAlias3() {
+    public void Alias3() {
         QCat cat = new QCat("cat");
         Cat other = new Cat();
         Cat c = alias(Cat.class, "cat");
@@ -145,7 +145,7 @@ public class AliasTest extends AbstractQueryTest {
     }
 
     @Test
-    public void testVarious1() {
+    public void Various1() {
         StringPath str = new StringPath("str");
         for (String s : from(str, "a", "ab", "cd", "de").where(
                 str.startsWith("a")).list(str)) {
@@ -155,7 +155,7 @@ public class AliasTest extends AbstractQueryTest {
     }
 
     @Test
-    public void testVarious2() {
+    public void Various2() {
         for (Object o : from(var(), 1, 2, "abc", 5, 3).where(var().ne("abc")).list(
                 var())) {
             int i = (Integer) o;
@@ -165,7 +165,7 @@ public class AliasTest extends AbstractQueryTest {
     }
 
     @Test
-    public void testVarious3() {
+    public void Various3() {
         NumberPath<Integer> num = new NumberPath<Integer>(Integer.class, "num");
         for (Integer i : from(num, 1, 2, 3, 4).where(num.lt(4)).list(num)) {
             System.out.println(i);

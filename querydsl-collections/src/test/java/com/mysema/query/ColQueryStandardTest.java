@@ -91,7 +91,7 @@ public class ColQueryStandardTest {
     }
 
     @Test
-    public void tupleProjection(){
+    public void TupleProjection(){
         List<Tuple> tuples = MiniApi.from(cat, data).list(new QTuple(cat.name, cat.birthdate));
         for (Tuple tuple : tuples){
             assertNotNull(tuple.get(cat.name));
@@ -101,7 +101,7 @@ public class ColQueryStandardTest {
 
     @SuppressWarnings("unchecked")
     @Test
-    public void arrayProjection(){
+    public void ArrayProjection(){
         List<String[]> results =  MiniApi.from(cat, data).list(new ArrayConstructorExpression<String>(String[].class, cat.name));
         assertFalse(results.isEmpty());
         for (String[] result : results){
@@ -110,7 +110,7 @@ public class ColQueryStandardTest {
     }
 
     @Test
-    public void constructorProjection(){
+    public void ConstructorProjection(){
         List<Projection> projections =  MiniApi.from(cat, data).list(ConstructorExpression.create(Projection.class, cat.name, cat));
         assertFalse(projections.isEmpty());
         for (Projection projection : projections){
@@ -119,19 +119,19 @@ public class ColQueryStandardTest {
     }
 
     @Test
-    public void params(){
+    public void Params(){
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Bob", MiniApi.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").uniqueResult(cat.name));
     }
 
     @Test
-    public void params_anon(){
+    public void Params_anon(){
         Param<String> name = new Param<String>(String.class);
         assertEquals("Bob", MiniApi.from(cat, data).where(cat.name.eq(name)).set(name,"Bob").uniqueResult(cat.name));
     }
 
     @Test(expected=ParamNotSetException.class)
-    public void params_not_set(){
+    public void Params_not_set(){
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Bob", MiniApi.from(cat, data).where(cat.name.eq(name)).uniqueResult(cat.name));
     }

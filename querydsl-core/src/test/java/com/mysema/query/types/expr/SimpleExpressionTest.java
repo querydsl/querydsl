@@ -19,7 +19,7 @@ import com.mysema.query.types.path.StringPath;
 public class SimpleExpressionTest {
     
     @Test
-    public void as_usage(){
+    public void As_usage(){
         SimpleExpression<String> str = new StringPath("str");
         assertEquals("str as alias", str.as("alias").toString());
         assertEquals("str as alias", str.as(new StringPath("alias")).toString());

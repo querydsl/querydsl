@@ -46,7 +46,7 @@ public class OrderTest extends AbstractQueryTest {
     }
     
     @Test
-    public void with_count(){
+    public void With_count(){
         ColQuery q = new ColQueryImpl();
         q.from(cat, cats);
         long size = q.countDistinct();
@@ -57,7 +57,7 @@ public class OrderTest extends AbstractQueryTest {
     }
 
     @Test
-    public void with_null(){
+    public void With_null(){
         List<Cat> cats = Arrays.asList(new Cat(), new Cat("Bob"));        
         assertEquals(cats, query().from(cat, cats).orderBy(cat.name.asc()).list(cat));
         assertEquals(Arrays.asList(cats.get(1), cats.get(0)), query().from(cat, cats).orderBy(cat.name.desc()).list(cat));

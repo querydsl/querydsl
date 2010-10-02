@@ -14,7 +14,7 @@ import org.junit.Test;
 public class PatternsTest {
 
     @Test
-    public void matches(){
+    public void Matches(){
         assertTrue(Pattern.matches("Bob","Bob"));
         assertTrue(Pattern.matches("^Bob$","Bob"));
         assertTrue(Pattern.matches("^Bo.*","Bob"));

@@ -8,7 +8,6 @@ package com.mysema.query;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.types.expr.BooleanExpression;
@@ -27,14 +26,14 @@ public class BooleanBuilderTest {
     private BooleanExpression second = BooleanConstant.FALSE;
 
     @Test
-    public void test(){
+    public void Basic(){
 //        new BooleanBuilder().and(first).or(second);
         assertEquals(first.or(second).toString(),
             new BooleanBuilder().and(first).or(second).toString());
     }
 
     @Test
-    public void advanced(){
+    public void Advanced(){
         BooleanBuilder builder = new BooleanBuilder();
         builder.andAnyOf(first, second, first);
         builder.orAllOf(first, second, first);
@@ -42,7 +41,7 @@ public class BooleanBuilderTest {
     }
 
     @Test
-    public void ifThenElse(){
+    public void If_Then_Else(){
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(null);
         builder.or(null);
@@ -51,47 +50,46 @@ public class BooleanBuilderTest {
     }
 
     @Test
-    public void nullSupport(){
+    public void Null_Support(){
         assertEquals(first, first.and(null));
         assertEquals(first, first.or(null));
     }
 
     @Test
-    public void andNot(){
+    public void And_Not(){
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(first).andNot(second);
         assertEquals(first.and(second.not()), builder.getValue());
     }
 
     @Test
-    public void orNot(){
+    public void Or_Not(){
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(first).orNot(second);
         assertEquals(first.or(second.not()), builder.getValue());
     }
 
     @Test
-    public void not(){
+    public void Not(){
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(first).not();
         assertEquals(first.not(), builder.getValue());
     }
 
     @Test
-    public void equals(){
+    public void Equals(){
         assertEquals(new BooleanBuilder(first), new BooleanBuilder(first));
         assertFalse(first.equals(new BooleanBuilder(first)));
         assertFalse(new BooleanBuilder(first).equals(first));
     }
 
     @Test
-    public void testHashCode(){
+    public void HashCode(){
         assertEquals(new BooleanBuilder(first).hashCode(), new BooleanBuilder(first).hashCode());
     }
 
     @Test
-    @Ignore // FIXME
-    public void testToString(){
+    public void ToString(){
         BooleanBuilder builder = new BooleanBuilder();
         builder.and(first);
         assertEquals("true", builder.toString());

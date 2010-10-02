@@ -52,7 +52,7 @@ public class JPAQueryMutabilityTest{
     }
 
     @Test
-    public void testClone(){
+    public void Clone(){
         SAnimal cat = new SAnimal("cat");
         JPASQLQuery query = query().from(cat).where(cat.name.isNotNull());
         JPASQLQuery query2 = query.clone(entityManager);

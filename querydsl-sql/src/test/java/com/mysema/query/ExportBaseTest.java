@@ -23,7 +23,7 @@ import com.mysema.testutil.FilteringTestRunner;
 public abstract class ExportBaseTest {
     
     @Test
-    public void export() throws SQLException{
+    public void Export() throws SQLException{
         File folder = new File("target", getClass().getSimpleName());
         folder.mkdirs();
         NamingStrategy namingStrategy = new DefaultNamingStrategy();

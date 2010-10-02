@@ -19,7 +19,7 @@ import com.mysema.query.types.Ops;
 public class JavaTemplatesTest {
 
     @Test
-    public void testMappings() throws IllegalArgumentException, IllegalAccessException {
+    public void Mappings() throws IllegalArgumentException, IllegalAccessException {
         JavaTemplates templates = new JavaTemplates();
         int matched = 0;
         for (Field field : Ops.class.getFields()){

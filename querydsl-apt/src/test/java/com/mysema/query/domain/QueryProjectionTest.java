@@ -53,7 +53,7 @@ public class QueryProjectionTest {
     }
 
     @Test
-    public void entityCase(){
+    public void Entity_Case(){
         QQueryProjectionTest_EntityWithProjection.create(ConstantImpl.create(0l)).newInstance(0l);
 //        QQueryProjectionTest_EntityWithProjection.create(ConstantImpl.create("")).newInstance("");
 //        QQueryProjectionTest_EntityWithProjection.create(ConstantImpl.create(0l), ConstantImpl.create("")).newInstance(0l,"");
@@ -103,7 +103,7 @@ public class QueryProjectionTest {
     }
 
     @Test
-    public void dtoCase() throws SecurityException, NoSuchMethodException{
+    public void Dto_Case() throws SecurityException, NoSuchMethodException{
         new QQueryProjectionTest_DTOWithProjection(ConstantImpl.create(0l)).newInstance(0l);
 //        new QQueryProjectionTest_DTOWithProjection(StringConstant.create("")).newInstance("");
 //        new QQueryProjectionTest_DTOWithProjection(ConstantImpl.create(0l), StringConstant.create("")).newInstance(0l,"");

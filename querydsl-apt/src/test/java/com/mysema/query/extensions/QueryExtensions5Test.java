@@ -55,7 +55,7 @@ public class QueryExtensions5Test {
     }
 
     @Test
-    public void test_prop_and_method_available(){
+    public void Prop_and_Method_available(){
         assertNotNull(QQueryExtensions5Test_Entity.entity.prop);
         assertNotNull(QQueryExtensions5Test_Entity.entity.method());
         assertNotNull(QQueryExtensions5Test_Entity.entity.method(ConstantImpl.create("")));

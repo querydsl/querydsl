@@ -25,7 +25,7 @@ public class CaseBuilderTest {
     }
 
     @Test
-    public void booleanTyped(){
+    public void BooleanTyped(){
         Customer c = alias(Customer.class, "customer");
         Expression<Boolean> cases = new CaseBuilder()
             .when($(c.getAnnualSpending()).gt(10000)).then(true)
@@ -39,7 +39,7 @@ public class CaseBuilderTest {
     }
 
     @Test
-    public void numberTyped(){
+    public void NumberTyped(){
         Customer c = alias(Customer.class, "customer");
         NumberExpression<Integer> cases = new CaseBuilder()
             .when($(c.getAnnualSpending()).gt(10000)).then(1)
@@ -57,7 +57,7 @@ public class CaseBuilderTest {
     }
 
     @Test
-    public void stringTyped(){
+    public void StringTyped(){
 //        CASE
 //          WHEN c.annualSpending > 10000 THEN 'Premier'
 //          WHEN c.annualSpending >  5000 THEN 'Gold'

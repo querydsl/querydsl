@@ -58,7 +58,7 @@ public class QueryExtensions4Test {
     }
 
     @Test
-    public void test_CustomNumber_has_right_type(){
+    public void CustomNumber_Has_Right_Type(){
         assertEquals(NumberPath.class, QQueryExtensions4Test_CustomNumber.class.getSuperclass());
         assertEquals(NumberPath.class, QQueryExtensions4Test_Entity.entity.number.getClass().getSuperclass());
     }

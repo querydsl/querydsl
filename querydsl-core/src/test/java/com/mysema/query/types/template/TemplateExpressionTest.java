@@ -29,7 +29,7 @@ import com.mysema.query.types.path.StringPath;
 public class TemplateExpressionTest {
 
     @Test
-    public void constructors(){
+    public void Constructors(){
         Templates templates = new JavaTemplates();
         Template template = TemplateFactory.DEFAULT.create("{0}");
         List<Expression<?>> args = Arrays.<Expression<?>>asList(new StringPath("a"));
@@ -60,7 +60,7 @@ public class TemplateExpressionTest {
     }
 
     @Test
-    public void factoryMethods(){
+    public void FactoryMethods(){
         String template = "";
         Expression<Boolean> arg = ConstantImpl.create(true);
 
@@ -75,7 +75,7 @@ public class TemplateExpressionTest {
     }
 
     @Test
-    public void factoryMethods2(){
+    public void FactoryMethods2(){
         Template template = TemplateFactory.DEFAULT.create("");
         Expression<Boolean> arg = ConstantImpl.create(true);
 

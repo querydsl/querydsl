@@ -28,20 +28,20 @@ public class DistinctTest extends AbstractQueryTest {
     private List<Integer> list2 = Arrays.asList(2, 2, 3, 3, 3, 4, 4, 4, 4, 4);
 
     @Test
-    public void singleSource() {
+    public void SingleSource() {
         assertEquals(list1, MiniApi.from(intVar1, list1).list(intVar1));
         assertEquals(Arrays.asList(1, 2, 3, 4), MiniApi.from(intVar1, list1).listDistinct(intVar1));
         assertEquals(Arrays.asList(2, 3, 4), MiniApi.from(intVar2, list2).listDistinct(intVar2));
     }
 
     @Test
-    public void bothSources() {
+    public void BothSources() {
         assertEquals(100, MiniApi.from(intVar1, list1).from(intVar2, list2).list(intVar1, intVar2).size());
         assertEquals(12, MiniApi.from(intVar1, list1).from(intVar2, list2).listDistinct(intVar1, intVar2).size());
     }
 
     @Test
-    public void countDistinct() {
+    public void CountDistinct() {
         assertEquals(10, MiniApi.from(intVar1, list1).count());
         assertEquals(4, MiniApi.from(intVar1, list1).countDistinct());
         assertEquals(3, MiniApi.from(intVar2, list2).countDistinct());

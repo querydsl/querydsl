@@ -46,7 +46,7 @@ public class ExtendsAndSuperTest {
     }
 
     @Test
-    public void validate(){
+    public void Validate(){
         QExtendsAndSuperTest_ExtendsAndSuper var = QExtendsAndSuperTest_ExtendsAndSuper.extendsAndSuper;
         assertEquals(Object.class, var.extendsCol.getElementType());
         assertEquals(CharSequence.class, var.extendsCol2.getElementType());

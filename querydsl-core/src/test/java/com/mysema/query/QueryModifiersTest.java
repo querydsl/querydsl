@@ -15,7 +15,7 @@ import org.junit.Test;
 public class QueryModifiersTest {
 
     @Test
-    public void testLimit() {
+    public void Limit() {
         QueryModifiers modifiers = QueryModifiers.limit(12l);
         assertEquals(Long.valueOf(12), modifiers.getLimit());
         assertNull(modifiers.getOffset());
@@ -23,7 +23,7 @@ public class QueryModifiersTest {
     }
 
     @Test
-    public void testOffset() {
+    public void Offset() {
         QueryModifiers modifiers = QueryModifiers.offset(12l);
         assertEquals(Long.valueOf(12), modifiers.getOffset());
         assertNull(modifiers.getLimit());
@@ -31,7 +31,7 @@ public class QueryModifiersTest {
     }
 
     @Test
-    public void testBoth(){
+    public void Both(){
         QueryModifiers modifiers = new QueryModifiers(1l,2l);
         assertEquals(Long.valueOf(1), modifiers.getLimit());
         assertEquals(Long.valueOf(2), modifiers.getOffset());
@@ -39,7 +39,7 @@ public class QueryModifiersTest {
     }
 
     @Test
-    public void testEmpty(){
+    public void Empty(){
         QueryModifiers modifiers = new QueryModifiers(null, null);
         assertNull(modifiers.getLimit());
         assertNull(modifiers.getOffset());
@@ -47,14 +47,14 @@ public class QueryModifiersTest {
     }
 
     @Test
-    public void testHashCode(){
-    QueryModifiers modifiers1 = new QueryModifiers(null, null);
-    QueryModifiers modifiers2 = new QueryModifiers(1l, null);
-    QueryModifiers modifiers3 = new QueryModifiers(null, 1l);
+    public void HashCode(){
+        QueryModifiers modifiers1 = new QueryModifiers(null, null);
+        QueryModifiers modifiers2 = new QueryModifiers(1l, null);
+        QueryModifiers modifiers3 = new QueryModifiers(null, 1l);
 
-    assertEquals(modifiers1.hashCode(), new QueryModifiers().hashCode());
-    assertEquals(modifiers2.hashCode(), QueryModifiers.limit(1l).hashCode());
-    assertEquals(modifiers3.hashCode(), QueryModifiers.offset(1l).hashCode());
+        assertEquals(modifiers1.hashCode(), new QueryModifiers().hashCode());
+        assertEquals(modifiers2.hashCode(), QueryModifiers.limit(1l).hashCode());
+        assertEquals(modifiers3.hashCode(), QueryModifiers.offset(1l).hashCode());
     }
 
     @Test(expected=IllegalArgumentException.class)

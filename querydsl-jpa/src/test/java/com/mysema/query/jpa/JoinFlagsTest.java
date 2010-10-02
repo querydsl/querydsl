@@ -12,7 +12,7 @@ import org.junit.Test;
 public class JoinFlagsTest extends AbstractQueryTest{
 
     @Test
-    public void fetchAll(){
+    public void FetchAll(){
         QueryHelper query1 = query().from(cat).fetchAll().where(cat.name.isNotNull());
         assertEquals("from Cat cat fetch all properties\nwhere cat.name is not null", query1.toString());
 
@@ -21,7 +21,7 @@ public class JoinFlagsTest extends AbstractQueryTest{
     }
 
     @Test
-    public void fetch(){
+    public void Fetch(){
         QueryHelper query = query().from(cat).innerJoin(cat.mate, cat1).fetch();
         assertEquals("from Cat cat\n  inner join fetch cat.mate as cat1", query.toString());
     }

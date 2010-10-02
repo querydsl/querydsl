@@ -68,10 +68,10 @@ public class EclipseCompilationTest {
         File resultFile = new File("target/out-eclipse/com/mysema/query/eclipse/QSimpleEntity.java");
         assertTrue(resultFile.exists());
         String result = FileUtils.readFileToString(resultFile);
-        assertTrue(result.contains("PNumber<java.math.BigDecimal> bigDecimalProp"));
-        assertTrue(result.contains("PNumber<Integer> integerProp"));
-        assertTrue(result.contains("PNumber<Integer> intProp"));
-        assertTrue(result.contains("PString stringProp"));
+        assertTrue(result.contains("NumberPath<java.math.BigDecimal> bigDecimalProp"));
+        assertTrue(result.contains("NumberPath<Integer> integerProp"));
+        assertTrue(result.contains("NumberPath<Integer> intProp"));
+        assertTrue(result.contains("StringPath stringProp"));
     }
 
 }

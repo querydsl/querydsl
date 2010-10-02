@@ -47,7 +47,7 @@ public class QueryExtensions2Test {
     }
 
     @Test
-    public void viaEntity(){
+    public void Via_Entity(){
         QQueryExtensions2Test_Point point = new QQueryExtensions2Test_Point(PathMetadataFactory.forVariable("point"));
         QQueryExtensions2Test_Entity.entity.point.geoDistance(point);
 

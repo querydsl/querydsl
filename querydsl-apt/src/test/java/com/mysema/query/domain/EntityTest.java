@@ -84,7 +84,7 @@ public class EntityTest extends AbstractTest{
 
     @SuppressWarnings("unchecked")
     @Test
-    public void testConstructors() throws SecurityException, NoSuchMethodException{
+    public void Constructors() throws SecurityException, NoSuchMethodException{
         Class[] types = new Class[]{Class.class, PathMetadata.class, PathInits.class};
         QEntityTest_Entity1.class.getConstructor(types);
         QEntityTest_Entity2.class.getConstructor(types);
@@ -96,7 +96,7 @@ public class EntityTest extends AbstractTest{
 
     @SuppressWarnings("unchecked")
     @Test(expected=NoSuchMethodException.class)
-    public void testConstructors2() throws SecurityException, NoSuchMethodException{
+    public void Constructors2() throws SecurityException, NoSuchMethodException{
         Class[] types = new Class[]{Class.class, PathMetadata.class, PathInits.class};
         QEntityTest_EntityNoReferences.class.getConstructor(types);
     }

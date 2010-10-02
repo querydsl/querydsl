@@ -15,7 +15,7 @@ import org.junit.Test;
 public class ColUpdateClauseTest {
 
     @Test
-    public void testExecute() {
+    public void Execute() {
         QCat cat = QCat.cat;
         List<Cat> cats = Arrays.asList(new Cat("Ann"), new Cat("Bob"), new Cat("John"), new Cat("Carl"));
 

@@ -13,7 +13,7 @@ import org.junit.Test;
 public class PathBuilderFactoryTest {
 
     @Test
-    public void testCreate() {
+    public void Create() {
         PathBuilderFactory factory = new PathBuilderFactory();
         PathBuilder<Object> pathBuilder = factory.create(Object.class);
         assertEquals("object", pathBuilder.toString());

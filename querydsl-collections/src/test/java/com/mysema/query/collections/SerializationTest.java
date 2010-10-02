@@ -23,7 +23,7 @@ public class SerializationTest extends AbstractQueryTest{
     private QTuple tuple = new QTuple(cat, otherCat);
 
     @Test
-    public void oneSource_list(){
+    public void OneSource_list(){
         query().from(cat, cats).list(cat);
     }
 
@@ -32,7 +32,7 @@ public class SerializationTest extends AbstractQueryTest{
     }
 
     @Test
-    public void twoSources_list(){
+    public void TwoSources_list(){
         query().from(cat,cats).from(otherCat, cats).list(cat);
     }
 
@@ -41,7 +41,7 @@ public class SerializationTest extends AbstractQueryTest{
     }
 
     @Test
-    public void oneSource_filteredList(){
+    public void OneSource_filteredList(){
         query().from(cat, cats).where(cat.name.eq("Kitty")).list(cat);
     }
 
@@ -56,7 +56,7 @@ public class SerializationTest extends AbstractQueryTest{
     }
 
     @Test
-    public void oneSource_projectedList(){
+    public void OneSource_projectedList(){
         query().from(cat, cats).list(cat.name);
     }
 
@@ -69,7 +69,7 @@ public class SerializationTest extends AbstractQueryTest{
     }
 
     @Test
-    public void oneSource_filtered_projectedList(){
+    public void OneSource_filtered_projectedList(){
         query().from(cat, cats).where(cat.name.eq("Kitty")).list(cat.name);
     }
 
@@ -84,7 +84,7 @@ public class SerializationTest extends AbstractQueryTest{
     }
 
     @Test
-    public void oneSource_filtered_projectedUnique(){
+    public void OneSource_filtered_projectedUnique(){
         query().from(cat, cats).where(cat.name.eq("Kitty")).uniqueResult(cat.name);
     }
 
@@ -99,7 +99,7 @@ public class SerializationTest extends AbstractQueryTest{
 
     @Test
     @Ignore
-    public void join_list(){
+    public void Join_list(){
         query().from(cat, cats).innerJoin(cat.kittens, kitten).where(kitten.name.eq("Kitty")).list(cat);
     }
 

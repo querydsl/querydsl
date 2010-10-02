@@ -23,27 +23,27 @@ public class SearchResultsTest {
 
     @Test
     public void getResults(){
-    assertEquals(list, results.getResults());
+        assertEquals(list, results.getResults());
     }
 
     @Test
     public void getTotal(){
-    assertEquals(20l , results.getTotal());
+        assertEquals(20l , results.getTotal());
     }
 
     @Test
     public void isEmpty(){
-    assertFalse(results.isEmpty());
+        assertFalse(results.isEmpty());
     }
 
     @Test
     public void getLimit(){
-    assertEquals(10l, results.getLimit());
+        assertEquals(10l, results.getLimit());
     }
 
     @Test
     public void getOffset(){
-    assertEquals(0l, results.getOffset());
+        assertEquals(0l, results.getOffset());
     }
 
     @Test

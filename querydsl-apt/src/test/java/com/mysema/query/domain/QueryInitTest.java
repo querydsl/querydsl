@@ -70,7 +70,7 @@ public class QueryInitTest {
     }
 
     @Test
-    public void basicInits(){
+    public void Basic_Inits(){
         // e2
         assertNotNull(e1.e2);
         assertNotNull(e1.e2.e3.e4);
@@ -84,12 +84,12 @@ public class QueryInitTest {
     }
 
     @Test
-    public void deepSuperInits(){
+    public void Deep_Super_Inits(){
         assertNotNull(e1.e22._super.e333);
     }
 
     @Test
-    public void rootSuperInits(){
+    public void Root_Super_Inits(){
         assertNotNull(e2.e3333.e4);
         assertNotNull(e2._super.e3333.e4);
     }

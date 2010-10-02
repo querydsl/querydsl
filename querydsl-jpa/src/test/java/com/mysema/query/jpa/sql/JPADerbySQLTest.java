@@ -58,7 +58,7 @@ public class JPADerbySQLTest {
     }
 
     @Test
-    public void scalarQueries(){
+    public void ScalarQueries(){
         SAnimal cat = new SAnimal("cat");
 
         // count
@@ -90,7 +90,7 @@ public class JPADerbySQLTest {
     }
 
     @Test
-    public void entityQueries(){
+    public void EntityQueries(){
         SAnimal cat = new SAnimal("cat");
         SAnimal mate = new SAnimal("mate");
         QCat catEntity = QCat.cat;
@@ -112,7 +112,7 @@ public class JPADerbySQLTest {
 
     @Test
     @Ignore
-    public void entityProjections(){
+    public void EntityProjections(){
         // not yet supported
         SAnimal cat = new SAnimal("cat");
 
@@ -124,7 +124,7 @@ public class JPADerbySQLTest {
     }
 
     @Test
-    public void wildcard(){
+    public void Wildcard(){
         SAnimal cat = new SAnimal("cat");
 
         List<Object[]> rows = query().from(cat).list(cat.all());
@@ -143,7 +143,7 @@ public class JPADerbySQLTest {
     }
     
     @Test
-    public void null_as_uniqueResult(){
+    public void Null_as_uniqueResult(){
         SAnimal cat = new SAnimal("cat");
         assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString())).uniqueResult(cat.name));
     }

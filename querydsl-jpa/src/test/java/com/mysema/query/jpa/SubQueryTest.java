@@ -12,12 +12,12 @@ import org.junit.Test;
 public class SubQueryTest extends AbstractQueryTest{
 
     @Test(expected=IllegalArgumentException.class)
-    public void wrongUsage(){
+    public void WrongUsage(){
         sub().exists();
     }
 
     @Test
-    public void serialization(){
+    public void Serialization(){
         JPQLSubQuery query = sub();
 
         query.from(cat);
@@ -28,7 +28,7 @@ public class SubQueryTest extends AbstractQueryTest{
     }
 
     @Test
-    public void joins(){
+    public void Joins(){
         assertEquals("from Cat cat\n  inner join cat.mate", sub().from(cat).innerJoin(cat.mate).toString());
         assertEquals("from Cat cat\n  left join cat.mate", sub().from(cat).leftJoin(cat.mate).toString());
         assertEquals("from Cat cat\n  full join cat.mate", sub().from(cat).fullJoin(cat.mate).toString());
@@ -36,17 +36,17 @@ public class SubQueryTest extends AbstractQueryTest{
     }
 
     @Test
-    public void uniqueProjection(){
+    public void UniqueProjection(){
         assertToString("(select cat from Cat cat)", sub().from(cat).unique(cat));
     }
 
     @Test
-    public void listProjection(){
+    public void ListProjection(){
         assertToString("(select cat from Cat cat)", sub().from(cat).list(cat));
     }
 
     @Test
-    public void exists(){
+    public void Exists(){
         assertToString("exists (select 1 from Cat cat)",                        sub().from(cat).exists());
         assertToString("exists (select 1 from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).exists());
         assertToString("exists (select 1 from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).unique(cat).exists());

@@ -29,7 +29,7 @@ public class DetachableAdapterTest {
     }
     
     @Test
-    public void testProjections(){
+    public void Projections(){
         DummyEntity e = Alias.alias(DummyEntity.class);
         queryMixin.from((EntityPath)$(e));
         assertNotNull(detachable.exists());

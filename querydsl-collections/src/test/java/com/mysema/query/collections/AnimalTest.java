@@ -15,14 +15,14 @@ import com.mysema.query.types.path.SimplePath;
 public class AnimalTest {
 
     @Test
-    public void testCast(){
+    public void Cast(){
         QCat cat = QAnimal.animal.as(QCat.class);
         assertEquals(QAnimal.animal.getMetadata(), cat.getMetadata());
         assertEquals("animal", cat.toString());
     }
 
     @Test
-    public void dateAsSimple(){
+    public void Date_As_Simple(){
         assertTrue(QAnimal.animal.dateAsSimple.getClass().equals(SimplePath.class));
     }
 

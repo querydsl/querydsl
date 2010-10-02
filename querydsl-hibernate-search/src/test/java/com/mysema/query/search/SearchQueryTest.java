@@ -40,7 +40,7 @@ public class SearchQueryTest extends AbstractQueryTest{
     }
 
     @Test
-    public void basicTests(){
+    public void BasicTests(){
         BooleanExpression filter = user.emailAddress.eq("bob@example.com");
 
         // count
@@ -58,7 +58,7 @@ public class SearchQueryTest extends AbstractQueryTest{
     }
 
     @Test
-    public void ordering(){
+    public void Ordering(){
         BooleanExpression filter = user.middleName.eq("X");
         // asc
         List<String> asc = getFirstNames(query().where(filter).orderBy(user.firstName.asc()).list());
@@ -70,7 +70,7 @@ public class SearchQueryTest extends AbstractQueryTest{
     }
 
     @Test
-    public void paging(){
+    public void Paging(){
         BooleanExpression filter = user.middleName.eq("X");
         OrderSpecifier<?> order = user.firstName.asc();
 
@@ -88,7 +88,7 @@ public class SearchQueryTest extends AbstractQueryTest{
     }
 
     @Test
-    public void listResults(){
+    public void ListResults(){
         BooleanExpression filter = user.middleName.eq("X");
         SearchResults<User> users = query().where(filter).orderBy(user.firstName.asc()).limit(2).listResults();
         List<String> asc = getFirstNames(users.getResults());

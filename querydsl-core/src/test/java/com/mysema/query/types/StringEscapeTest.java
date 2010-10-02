@@ -15,7 +15,7 @@ import com.mysema.util.StringEscape;
 public class StringEscapeTest {
 
     @Test
-    public void testEscapeForLike() {
+    public void EscapeForLike() {
         assertEquals("a\\%b\\_c", StringEscape.escapeForLike(new ConstantImpl<String>("a%b_c")).toString());
     }
 

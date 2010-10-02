@@ -74,7 +74,7 @@ public class AliasTest {
     }
 
     @Test
-    public void basicUsage(){
+    public void BasicUsage(){
         DomainType domainType = Alias.alias(DomainType.class);
         assertEquals("lower(domainType.firstName)", $(domainType.getFirstName()).lower().toString());
         assertEquals("domainType.age", $(domainType.getAge()).toString());
@@ -97,27 +97,27 @@ public class AliasTest {
     }
     
     @Test
-    public void scalaAccessors(){
+    public void ScalaAccessors(){
         ScalaAccessors scalaAccessors = Alias.alias(ScalaAccessors.class);
         assertEquals("scalaAccessors.firstName", $(scalaAccessors.firstName()).toString());
         assertEquals("scalaAccessors.lastName",  $(scalaAccessors.lastName()).toString());
     }
 
     @Test
-    public void getAny(){
+    public void GetAny(){
         DomainType domainType = Alias.alias(DomainType.class);
         assertEquals(DomainType.class, Alias.getAny(domainType).getType());
         assertEquals(String.class, Alias.getAny(domainType.getFirstName()).getType());
     }
 
     @Test
-    public void otherMethods(){
+    public void OtherMethods(){
         DomainType domainType = Alias.alias(DomainType.class);
         assertEquals("domainType", domainType.toString());
     }
 
     @Test
-    public void var(){
+    public void Var(){
         assertEquals("it", Alias.var().toString());
         assertEquals("varInteger1", Alias.var(1).toString());
         assertEquals("X", Alias.var("X").toString());

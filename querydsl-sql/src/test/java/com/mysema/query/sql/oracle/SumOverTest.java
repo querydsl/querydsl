@@ -15,12 +15,12 @@ public class SumOverTest {
 
     @Test
     public void test(){
-    NumberPath<Integer> intPath = new NumberPath<Integer>(Integer.class, "intPath");
-    SumOver<Integer> sumOver = new SumOver<Integer>(intPath);
-    sumOver.order(intPath);
-    sumOver.partition(intPath);
+        NumberPath<Integer> intPath = new NumberPath<Integer>(Integer.class, "intPath");
+        SumOver<Integer> sumOver = new SumOver<Integer>(intPath);
+        sumOver.order(intPath);
+        sumOver.partition(intPath);
 
-    assertEquals("sum(intPath) over (partition by intPath order by intPath)", sumOver.toString());
+        assertEquals("sum(intPath) over (partition by intPath order by intPath)", sumOver.toString());
     }
 
 }

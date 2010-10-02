@@ -14,17 +14,17 @@ import com.mysema.query.types.path.SimplePath;
 public class CatTest {
 
     @Test(expected=NoSuchFieldException.class)
-    public void testSkippedField() throws SecurityException, NoSuchFieldException{
+    public void SkippedField() throws SecurityException, NoSuchFieldException{
         QCat.class.getField("skippedField");
     }
 
     @Test
-    public void stringAsSimple() throws SecurityException, NoSuchFieldException {
+    public void StringAsSimple() throws SecurityException, NoSuchFieldException {
         assertTrue(QCat.cat.stringAsSimple.getClass().equals(SimplePath.class));
     }
 
     @Test
-    public void dateAsSimple(){
+    public void DateAsSimple(){
         assertTrue(QCat.cat.dateAsSimple.getClass().equals(SimplePath.class));
     }
 }

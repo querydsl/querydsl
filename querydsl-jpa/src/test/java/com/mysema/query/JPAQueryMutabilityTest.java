@@ -70,7 +70,7 @@ public class JPAQueryMutabilityTest{
     }
 
     @Test
-    public void testClone(){
+    public void Clone(){
         QCat cat = QCat.cat;
         JPAQuery query = query().from(cat).where(cat.name.isNotNull());
         JPAQuery query2 = query.clone(entityManager);

@@ -21,7 +21,7 @@ public class ParamTest {
     Param<String> param4 = new Param<String>(String.class);
 
     @Test
-    public void testIdentity(){
+    public void Identity(){
         assertEquals(param11, param12);
         assertFalse(param11.equals(param2));
         assertFalse(param11.equals(param3));
@@ -29,7 +29,7 @@ public class ParamTest {
     }
 
     @Test
-    public void testGetNotSetMessage(){
+    public void GetNotSetMessage(){
         assertEquals("The parameter param1 needs to be set", param11.getNotSetMessage());
         assertEquals("A parameter of type java.lang.String was not set", param4.getNotSetMessage());
     }

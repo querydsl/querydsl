@@ -24,7 +24,7 @@ public class QueryMixinTest {
     private QCommonPersistence entity = new QCommonPersistence(PathMetadataFactory.forVariable("entity"));
 
     @Test
-    public void getJoins_with_condition(){
+    public void GetJoins_with_condition(){
         mixin.innerJoin(entity);
         mixin.on(entity.version.isNull(), entity.version.isNotNull());
 
@@ -35,7 +35,7 @@ public class QueryMixinTest {
     }
 
     @Test
-    public void getJoins_no_condition(){
+    public void GetJoins_no_condition(){
         mixin.innerJoin(entity);
 
         assertEquals(1, mixin.getMetadata().getJoins().size());
@@ -45,7 +45,7 @@ public class QueryMixinTest {
     }
     
     @Test
-    public void applyJoins(){
+    public void ApplyJoins(){
         DummyEntity e = Alias.alias(DummyEntity.class);
         DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");
         

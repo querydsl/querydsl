@@ -38,7 +38,7 @@ public class EntityTypeTest {
     }
 
     @Test
-    public void annotation() throws IOException{
+    public void Annotation() throws IOException{
         Annotation annotation = new QueryExt(Object.class);
         ClassType typeModel = new ClassType(TypeCategory.ENTITY, Object.class);
         EntityType entityModel = new EntityType("Q", typeModel);

@@ -18,12 +18,12 @@ public class JoinExpressionTest {
     private JoinExpression je = new JoinExpression(JoinType.DEFAULT, new StringPath("str"));
 
     @Test
-    public void testToString() {
+    public void ToString() {
         assertEquals("DEFAULT str", je.toString());
     }
 
     @Test
-    public void testAddCondition() {
+    public void AddCondition() {
         je.addCondition(BooleanConstant.TRUE);
         assertEquals(BooleanConstant.TRUE, je.getCondition());
 
@@ -32,7 +32,7 @@ public class JoinExpressionTest {
     }
 
     @Test
-    public void testSetFlag() {
+    public void SetFlag() {
         JoinFlag x = new JoinFlag("x");
         JoinFlag y = new JoinFlag("y");
         assertFalse(je.hasFlag(x));

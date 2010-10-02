@@ -28,7 +28,7 @@ public class DetachableQueryTest {
     }
     
     @Test
-    public void testProjections(){
+    public void Projections(){
         DummyEntity e = Alias.alias(DummyEntity.class);
         query.from((EntityPath)$(e));
         assertNotNull(detachable.exists());

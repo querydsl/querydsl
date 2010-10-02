@@ -38,7 +38,7 @@ public class TypeFactoryTest {
     }
 
     @Test
-    public void getFieldType(){
+    public void GetFieldType(){
         for (Class<?> cl : Arrays.<Class<?>>asList(Blob.class, Clob.class, Locale.class, Class.class, Serializable.class)){
             assertEquals("wrong type for " + cl.getName(), TypeCategory.SIMPLE, factory.create(cl).getCategory());
         }

@@ -39,7 +39,7 @@ public class InnerJoinTest extends AbstractQueryTest{
     }
 
     @Test
-    public void testList(){
+    public void List(){
         List<Cat> rv = MiniApi.from(cat, cats)
             .innerJoin(cat.kittens, kitten)
             .where(cat.name.eq(kitten.name))
@@ -51,7 +51,7 @@ public class InnerJoinTest extends AbstractQueryTest{
     }
 
     @Test
-    public void testMap(){
+    public void Map(){
         List<Cat> rv = MiniApi.from(cat, cats)
             .innerJoin(cat.kittensByName, kitten)
             .where(cat.name.eq(kitten.name))

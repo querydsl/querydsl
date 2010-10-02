@@ -42,7 +42,7 @@ public class Inheritance10Test {
     }
 
     @Test
-    public void Supertype_fields(){
+    public void Supertype_Fields(){
         assertEquals(Object.class, QInheritance10Test_Supertype.supertype.fields.getKeyType());
         assertEquals(Object.class, QInheritance10Test_Supertype.supertype.fields.getValueType());
 

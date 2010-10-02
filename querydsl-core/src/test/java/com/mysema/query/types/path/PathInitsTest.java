@@ -13,26 +13,26 @@ import org.junit.Test;
 public class PathInitsTest {
 
     @Test
-    public void testDefault(){
-        assertFalse(PathInits.DEFAULT.isInitialized("test"));
+    public void Default(){
+        assertFalse(PathInits.DEFAULT.isInitialized(""));
     }
 
     @Test
-    public void test2(){
-        PathInits testInits = new PathInits("test.test2").get("test");
-        assertFalse(testInits.isInitialized("test1"));
-        assertTrue(testInits.isInitialized("test2"));
+    public void test(){
+        PathInits Inits = new PathInits(".2").get("");
+        assertFalse(Inits.isInitialized("1"));
+        assertTrue(Inits.isInitialized("2"));
     }
 
     @Test
-    public void testWildcard(){
-        assertTrue(new PathInits("*").isInitialized("test"));
+    public void Wildcard(){
+        assertTrue(new PathInits("*").isInitialized(""));
     }
 
     @Test
-    public void testWildcard2(){
-        PathInits testInits = new PathInits("test.*").get("test");
-        assertTrue(testInits.isInitialized("test1"));
-        assertTrue(testInits.isInitialized("test2"));
+    public void Wildcard2(){
+        PathInits Inits = new PathInits(".*").get("");
+        assertTrue(Inits.isInitialized("1"));
+        assertTrue(Inits.isInitialized("2"));
     }
 }

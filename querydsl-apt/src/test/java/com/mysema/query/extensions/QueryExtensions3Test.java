@@ -56,7 +56,7 @@ public class QueryExtensions3Test {
     }
 
     @Test
-    public void test_Point_has_right_type(){
+    public void Point_Has_Right_Type(){
         assertEquals(ComparablePath.class, QQueryExtensions3Test_Point.class.getSuperclass());
         assertEquals(ComparablePath.class, QQueryExtensions3Test_Entity.entity.point.getClass().getSuperclass());
     }

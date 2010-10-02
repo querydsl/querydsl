@@ -238,7 +238,7 @@ public class SimpleTypesTest extends AbstractTest{
     }
 
     @Test
-    public void listAccess(){
+    public void List_Access(){
         // date / time
         QSimpleTypesTest_SimpleTypes.simpleTypes.dateList.get(0).after(new Date());
         QSimpleTypesTest_SimpleTypes.simpleTypes.timeList.get(0).after(new Time(0l));
@@ -256,7 +256,7 @@ public class SimpleTypesTest extends AbstractTest{
     }
 
     @Test
-    public void testSimpleTypes() throws SecurityException, NoSuchFieldException{
+    public void Simple_Types() throws SecurityException, NoSuchFieldException{
         cl = QSimpleTypesTest_SimpleTypes.class;
         match(NumberPath.class, "id");
         match(NumberPath.class, "bigDecimal");
@@ -296,36 +296,36 @@ public class SimpleTypesTest extends AbstractTest{
     }
 
     @Test
-    public void customLiteral() throws SecurityException, NoSuchFieldException{
+    public void Custom_Literal() throws SecurityException, NoSuchFieldException{
         cl = QSimpleTypesTest_SimpleTypes.class;
         match(SimplePath.class, "customLiteral");
     }
 
     @Test
-    public void customComparableLiteral() throws SecurityException, NoSuchFieldException{
+    public void Custom_ComparableLiteral() throws SecurityException, NoSuchFieldException{
         cl = QSimpleTypesTest_SimpleTypes.class;
         match(ComparablePath.class, "customComparableLiteral");
     }
 
     @Test
-    public void customNumber() throws SecurityException, NoSuchFieldException{
+    public void Custom_Number() throws SecurityException, NoSuchFieldException{
         cl = QSimpleTypesTest_SimpleTypes.class;
         match(SimplePath.class, "customNumber");
     }
 
     @Test
-    public void customComparableNumber() throws SecurityException, NoSuchFieldException{
+    public void Custom_ComparableNumber() throws SecurityException, NoSuchFieldException{
         cl = QSimpleTypesTest_SimpleTypes.class;
         match(NumberPath.class, "customComparableNumber");
     }
 
     @Test(expected=NoSuchFieldException.class)
-    public void skippedField1() throws SecurityException, NoSuchFieldException {
+    public void Skipped_Field1() throws SecurityException, NoSuchFieldException {
         QSimpleTypesTest_SimpleTypes.class.getField("skipMe");
     }
 
     @Test(expected=NoSuchFieldException.class)
-    public void skippedField2() throws SecurityException, NoSuchFieldException {
+    public void Skipped_Field2() throws SecurityException, NoSuchFieldException {
         QSimpleTypesTest_SimpleTypes.class.getField("test");
     }
 

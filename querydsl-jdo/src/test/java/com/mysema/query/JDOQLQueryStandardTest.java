@@ -142,7 +142,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
     }
 
     @Test
-    public void tupleProjection(){
+    public void TupleProjection(){
         List<Tuple> tuples = query().from(product).list(new QTuple(product.name, product.price));
         assertFalse(tuples.isEmpty());
         for (Tuple tuple : tuples){
@@ -156,7 +156,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
 
     @Test
     @Ignore
-    public void arrayProjection(){
+    public void ArrayProjection(){
         // typed array not supported
         List<String[]> results = query().from(store).list(new ArrayConstructorExpression<String>(String[].class, store.name));
         assertFalse(results.isEmpty());
@@ -167,7 +167,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
     }
 
     @Test
-    public void constructorProjection(){
+    public void ConstructorProjection(){
         List<Projection> projections = query().from(store).list(ConstructorExpression.create(Projection.class, store.name));
         assertFalse(projections.isEmpty());
         for (Projection projection : projections){

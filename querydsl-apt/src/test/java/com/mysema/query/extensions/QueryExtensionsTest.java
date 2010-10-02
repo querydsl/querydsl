@@ -87,7 +87,7 @@ public class QueryExtensionsTest {
     }
 
     @Test
-    public void subClasses(){
+    public void SubClasses(){
         QQueryExtensionsTest_SubPoint var = new QQueryExtensionsTest_SubPoint(PathMetadataFactory.forVariable("var"));
         var.getName();
         var.getMap();
@@ -95,7 +95,7 @@ public class QueryExtensionsTest {
     }
     
     @Test
-    public void cachedMethods(){
+    public void CachedMethods(){
         QQueryExtensionsTest_Point var = new QQueryExtensionsTest_Point(PathMetadataFactory.forVariable("var"));        
         assertTrue(var.getName() == var.getName());
     }

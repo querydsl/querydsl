@@ -12,7 +12,7 @@ import org.junit.Test;
 public class SearchSerializerTest {
 
     @Test
-    public void testToField() {
+    public void ToField() {
         SearchSerializer serializer = SearchSerializer.DEFAULT;
         QUser user = new QUser("user");
         assertEquals("email", serializer.toField(user.emailAddress));

@@ -66,7 +66,7 @@ public class OrderingTest extends AbstractJDOTest {
     }
 
     @Test
-    public void paging() {
+    public void Paging() {
         assertEquals(Arrays.asList("A0", "A1"), query().from(product).orderBy(
                 product.name.asc()).limit(2).list(product.name));
         assertEquals(Arrays.asList("A2", "A3", "A4"), query().from(product)
@@ -76,7 +76,7 @@ public class OrderingTest extends AbstractJDOTest {
     }
 
     @Test
-    public void searchResults() {
+    public void SearchResults() {
         SearchResults<String> results = query().from(product).orderBy(
                 product.name.asc()).limit(2).listResults(product.name);
         assertEquals(Arrays.asList("A0", "A1"), results.getResults());

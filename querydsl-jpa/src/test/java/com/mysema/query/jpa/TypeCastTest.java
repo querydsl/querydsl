@@ -20,7 +20,7 @@ import com.mysema.query.jpa.domain.QSuperclass;
 public class TypeCastTest {
 
     @Test
-    public void mappedSuperclass(){
+    public void MappedSuperclass(){
         QInheritedProperties subClass = QInheritedProperties.inheritedProperties;
         QSuperclass superClass = subClass._super;
 
@@ -40,7 +40,7 @@ public class TypeCastTest {
 //    }
 
     @Test
-    public void subClassToSuper(){
+    public void SubClassToSuper(){
         QCat cat = QCat.cat;
         QAnimal animal = new QAnimal(cat);
 
@@ -50,7 +50,7 @@ public class TypeCastTest {
     }
 
     @Test
-    public void subClassToSuper2(){
+    public void SubClassToSuper2(){
         QCat cat = QCat.cat;
         QAnimal animal = new QAnimal(cat.getMetadata());
 
@@ -60,7 +60,7 @@ public class TypeCastTest {
     }
 
     @Test
-    public void superClassToSub(){
+    public void SuperClassToSub(){
         QAnimal animal = QAnimal.animal;
         QCat cat = new QCat(animal.getMetadata());
 

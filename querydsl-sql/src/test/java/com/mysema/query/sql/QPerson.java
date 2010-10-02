@@ -5,7 +5,6 @@
  */
 package com.mysema.query.sql;
 
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.BeanPath;
