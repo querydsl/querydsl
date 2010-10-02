@@ -62,7 +62,7 @@ public class SQLSerializerTest {
         String str = new SQLSerializer(SQLTemplates.DEFAULT).handle(bb1.and(bb2)).toString();
         assertEquals("s.NAME = s.NAME and (s.NAME = s.NAME or s.NAME = s.NAME)", str);
     }
-
+    
     @Test
     public void Update(){
         QSurvey survey = new QSurvey("survey");

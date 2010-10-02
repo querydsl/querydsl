@@ -499,7 +499,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     @SkipForQuoted
-    public void SsubQueries() throws SQLException {
+    public void SubQueries() throws SQLException {
         // subquery in where block
         expectedQuery = "select e.ID from EMPLOYEE2 e "
             + "where e.ID = (select max(e.ID) "

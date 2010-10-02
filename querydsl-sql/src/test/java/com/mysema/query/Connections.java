@@ -406,12 +406,12 @@ public final class Connections {
         }
 
         // survey
-        dropTable(templates, "\"SURVEY\"");
+        dropTable(templates, "SURVEY");
         stmt.execute(quote(CREATE_TABLE_SURVEY,"SURVEY","ID","NAME"));
         stmt.execute("insert into \"SURVEY\" values (1, 'Hello World')");
 
         // test
-        dropTable(templates, "\"TEST\"");
+        dropTable(templates, "TEST");
         stmt.execute(quote(CREATE_TABLE_TEST,"TEST","NAME"));
         String sql = quote(INSERT_INTO_TEST_VALUES,"TEST");
         PreparedStatement pstmt = c.prepareStatement(sql);
@@ -427,15 +427,15 @@ public final class Connections {
 
         // employee
         // stmt.execute("drop table employee if exists");
-        dropTable(templates, "\"EMPLOYEE2\"");
+        dropTable(templates, "EMPLOYEE2");
         createEmployeeTable(templates);
         addEmployees("insert into \"EMPLOYEE2\" " +
             "(\"ID\", \"FIRSTNAME\", \"LASTNAME\", \"SALARY\", \"DATEFIELD\", \"TIMEFIELD\", \"SUPERIOR_ID\") " +
             "values (?,?,?,?,?,?,?)");
 
         // date_test and time_test
-        dropTable(templates, "\"TIME_TEST\"");
-        dropTable(templates, "\"DATE_TEST\"");
+        dropTable(templates, "TIME_TEST");
+        dropTable(templates, "DATE_TEST");
         stmt.execute(quote(CREATE_TABLE_TIMETEST, "TIME_TEST"));
         stmt.execute(quote(CREATE_TABLE_DATETEST, "DATE_TEST"));
         postgresInited = true;

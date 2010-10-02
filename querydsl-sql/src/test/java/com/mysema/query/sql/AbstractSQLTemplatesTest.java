@@ -24,14 +24,14 @@ public abstract class AbstractSQLTemplatesTest {
     protected abstract SQLTemplates createTemplates();
     
     @Test
-    public void noFrom(){
+    public void NoFrom(){
         query.getMetadata().addProjection(new SimplePath<Integer>(Integer.class,"1"));
         assertEquals("select 1 from dual", query.toString());
     }
     
     @SuppressWarnings("unchecked")
     @Test
-    public void union(){        
+    public void Union(){        
         SimplePath<Integer> one = new SimplePath<Integer>(Integer.class,"1");
         SimplePath<Integer> two = new SimplePath<Integer>(Integer.class,"2");
         SimplePath<Integer> three = new SimplePath<Integer>(Integer.class,"3");
@@ -49,7 +49,7 @@ public abstract class AbstractSQLTemplatesTest {
     }
     
     @Test
-    public void innerJoin(){        
+    public void InnerJoin(){        
         query.from(survey1).innerJoin(survey2);
         assertEquals("from SURVEY survey1 inner join SURVEY survey2", query.toString());
     }

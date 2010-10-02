@@ -33,98 +33,98 @@ public class MySQLQueryTest {
 //  WHERE col1=1 AND col2=2 AND col3=3;
     
     @Test
-    public void testUseIndex(){
+    public void UseIndex(){
         query.useIndex("col1_index");        
         assertEquals("select survey.NAME from SURVEY survey USE_INDEX (col1_index) order by survey.NAME asc", toString(query));
     }
     
     @Test
-    public void testUseIndex2(){        
+    public void UseIndex2(){        
         query.useIndex("col1_index","col2_index");        
         assertEquals("select survey.NAME from SURVEY survey USE_INDEX (col1_index, col2_index) order by survey.NAME asc", toString(query));
     }
     
     @Test
-    public void testHighPriority() {
+    public void HighPriority() {
         query.highPriority();
         assertEquals("select HIGH_PRIORITY survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
     }
 
     @Test
-    public void testStraightJoin() {
+    public void StraightJoin() {
         query.straightJoin();
         assertEquals("select STRAIGHT_JOIN survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
     }
 
     @Test
-    public void testSmallResult() {
+    public void SmallResult() {
         query.smallResult();
         assertEquals("select SQL_SMALL_RESULT survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
     }
 
     @Test
-    public void testBigResult() {
+    public void BigResult() {
         query.bigResult();
         assertEquals("select SQL_BIG_RESULT survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
     }
 
     @Test
-    public void testBufferResult() {
+    public void BufferResult() {
         query.bufferResult();
         assertEquals("select SQL_BUFFER_RESULT survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
     }
 
     @Test
-    public void testCache() {
+    public void Cache() {
         query.cache();
         assertEquals("select SQL_CACHE survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
     }
 
     @Test
-    public void testNoCache() {
+    public void NoCache() {
         query.noCache();
         assertEquals("select SQL_NO_CACHE survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
     }
 
     @Test
-    public void testCalcFoundRows() {
+    public void CalcFoundRows() {
         query.calcFoundRows();
         assertEquals("select SQL_CALC_FOUND_ROWS survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
     }
 
     @Test
-    public void testWithRollup() {
+    public void WithRollup() {
         query.groupBy(survey.name);
         query.withRollup();
         assertEquals("select survey.NAME from SURVEY survey group by survey.NAME WITH ROLLUP  order by survey.NAME asc", toString(query));
     }
 
     @Test
-    public void testForUpdate() {
+    public void ForUpdate() {
         query.forUpdate();
         assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc FOR UPDATE", toString(query));
     }
 
     @Test
-    public void testIntoOutfile() {
+    public void IntoOutfile() {
         query.intoOutfile(new File("target/out"));
         assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc INTO OUTFILE 'target" + File.separator + "out'", toString(query));
     }
     
     @Test
-    public void testIntoDumpfile() {
+    public void IntoDumpfile() {
         query.intoDumpfile(new File("target/out"));
         assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc INTO DUMPFILE 'target" + File.separator + "out'", toString(query));
     }
 
     @Test
-    public void testIntoString() {
+    public void IntoString() {
         query.into("var1");
         assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc INTO var1", toString(query));
     }
 
     @Test
-    public void testLockInShareMode() {
+    public void LockInShareMode() {
         query.lockInShareMode();
         assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc LOCK IN SHARE MODE", toString(query));
     }

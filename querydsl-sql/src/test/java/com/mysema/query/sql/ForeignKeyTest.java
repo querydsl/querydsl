@@ -18,7 +18,7 @@ import com.mysema.query.types.Path;
 public class ForeignKeyTest {
 
     @Test
-    public void testOn() {
+    public void On() {
         QEmployee employee = new QEmployee("employee");
         QEmployee employee2 = new QEmployee("employee2");
 

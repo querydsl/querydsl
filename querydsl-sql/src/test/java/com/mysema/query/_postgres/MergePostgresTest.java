@@ -28,7 +28,7 @@ public class MergePostgresTest extends MergeBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        templates = new PostgresTemplates().newLineToSingleSpace();
+        templates = new PostgresTemplates(true).newLineToSingleSpace();
         super.setUp();
     }
 }

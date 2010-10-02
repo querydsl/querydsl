@@ -17,7 +17,7 @@ public class SQLServerTemplatesTest extends AbstractSQLTemplatesTest{
     
     @Override
     @Test
-    public void noFrom(){
+    public void NoFrom(){
         query.getMetadata().addProjection(new SimplePath<Integer>(Integer.class,"1"));
         assertEquals("select 1", query.toString());
     }
@@ -29,7 +29,8 @@ public class SQLServerTemplatesTest extends AbstractSQLTemplatesTest{
 
     @SuppressWarnings("unchecked")
     @Test
-    public void union(){        
+    @Override
+    public void Union(){        
         SimplePath<Integer> one = new SimplePath<Integer>(Integer.class,"1");
         SimplePath<Integer> two = new SimplePath<Integer>(Integer.class,"2");
         SimplePath<Integer> three = new SimplePath<Integer>(Integer.class,"3");

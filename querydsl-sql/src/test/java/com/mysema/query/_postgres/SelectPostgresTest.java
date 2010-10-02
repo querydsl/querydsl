@@ -10,14 +10,15 @@ import org.junit.BeforeClass;
 
 import com.mysema.query.Connections;
 import com.mysema.query.SelectBaseTest;
+import com.mysema.query.SkipForQuoted;
 import com.mysema.query.Target;
 import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.testutil.Label;
 import com.mysema.testutil.ResourceCheck;
 
-// ignored, because the tables are created in upper case and Postgres normalizes unquoted identifiers to lower case
-@ResourceCheck("DO.NOT.RUN")
+@ResourceCheck("/postgres.run")
 @Label(Target.POSTGRES)
+@SkipForQuoted
 public class SelectPostgresTest extends SelectBaseTest {
 
     @BeforeClass
@@ -27,7 +28,7 @@ public class SelectPostgresTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        templates = new PostgresTemplates().newLineToSingleSpace();
+        templates = new PostgresTemplates(true).newLineToSingleSpace();
     }
 
 }

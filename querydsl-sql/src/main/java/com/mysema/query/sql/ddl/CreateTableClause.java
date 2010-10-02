@@ -117,7 +117,7 @@ public class CreateTableClause {
         for (int i = 0; i < columns.length; i++){
             columns[i] = templates.quoteIdentifier(columns[i]);
         }        
-        primaryKey = new PrimaryKeyData(name, columns);
+        primaryKey = new PrimaryKeyData(templates.quoteIdentifier(name), columns);
         return this;
     }
     
@@ -155,7 +155,7 @@ public class CreateTableClause {
     public ForeignKeyBuilder foreignKey(String name, String... columns) {
         Assert.notNull(name,"name");
         Assert.notEmpty(columns,"columns");
-        return new ForeignKeyBuilder(this, templates, foreignKeys, name, columns);
+        return new ForeignKeyBuilder(this, templates, foreignKeys, templates.quoteIdentifier(name), columns);
     }
 
     /**

@@ -28,7 +28,7 @@ public class DeletePostgresTest extends DeleteBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        templates = new PostgresTemplates().newLineToSingleSpace();
+        templates = new PostgresTemplates(true).newLineToSingleSpace();
         super.setUp();
     }
 

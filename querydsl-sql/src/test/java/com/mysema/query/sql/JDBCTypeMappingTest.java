@@ -9,7 +9,7 @@ import org.junit.Test;
 public class JDBCTypeMappingTest {
 
     @Test
-    public void testGet() {
+    public void Get() {
         JDBCTypeMapping typeMapping = new JDBCTypeMapping();
         assertEquals(Float.class, typeMapping.get(Types.FLOAT));
         assertEquals(Float.class, typeMapping.get(Types.REAL));

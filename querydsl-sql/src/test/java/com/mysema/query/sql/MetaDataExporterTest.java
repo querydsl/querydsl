@@ -28,7 +28,7 @@ import com.mysema.query.codegen.BeanSerializer;
 public class MetaDataExporterTest extends AbstractJDBCTest{
 
     @Test
-    public void testGeneration() throws Exception {
+    public void Generation() throws Exception {
         NamingStrategy defaultNaming = new DefaultNamingStrategy();
         NamingStrategy originalNaming = new OriginalNamingStrategy();
 

@@ -17,7 +17,7 @@ public class DefaultNamingStrategyTest {
     private NamingStrategy namingStrategy = new DefaultNamingStrategy();
 
     @Test
-    public void testGetClassName() {
+    public void GetClassName() {
         assertEquals("QUserData", namingStrategy.getClassName("Q", "user_data"));
         assertEquals("QU", namingStrategy.getClassName("Q", "u"));
         assertEquals("QUs",namingStrategy.getClassName("Q", "us"));
@@ -26,7 +26,7 @@ public class DefaultNamingStrategyTest {
     }
 
     @Test
-    public void testGetPropertyName() {
+    public void GetPropertyName() {
         EntityType entityModel = new EntityType("Q", Types.OBJECT);
         assertEquals("whileCol", namingStrategy.getPropertyName("while", "Q", entityModel));
         assertEquals("name", namingStrategy.getPropertyName("name", "Q", entityModel));
@@ -35,13 +35,13 @@ public class DefaultNamingStrategyTest {
     }
 
     @Test
-    public void testGetPropertyNameForInverseForeignKey(){
+    public void GetPropertyNameForInverseForeignKey(){
         EntityType entityModel = new EntityType("Q", Types.OBJECT);
         assertEquals("_superiorFk", namingStrategy.getPropertyNameForInverseForeignKey("fk_superior", entityModel));
     }
     
     @Test
-    public void testGetPropertyNameForForeignKey(){
+    public void GetPropertyNameForForeignKey(){
         EntityType entityModel = new EntityType("Q", Types.OBJECT);
         assertEquals("superiorFk", namingStrategy.getPropertyNameForForeignKey("fk_superior", entityModel));
         assertEquals("superiorFk", namingStrategy.getPropertyNameForForeignKey("FK_SUPERIOR", entityModel));        

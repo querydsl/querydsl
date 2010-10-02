@@ -30,7 +30,7 @@ public class SQLTemplatesTest {
     }
     
     @Test
-    public void quote(){
+    public void Quote(){
         Pattern pattern = Pattern.compile("[a-zA-Z0-9_\\-]+");
         assertTrue(pattern.matcher("a1").matches());
         assertTrue(pattern.matcher("a").matches());

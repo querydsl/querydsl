@@ -100,12 +100,17 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({Target.HSQLDB, Target.DERBY})
+    @ExcludeIn({Target.HSQLDB, Target.DERBY, Target.POSTGRES})
     public void Insert_With_Keys() throws SQLException{
         ResultSet rs = insert(survey).set(survey.name, "Hello World").executeWithKeys();
         assertTrue(rs.next());
+        assertTrue(rs.getObject(1) != null);
         rs.close();
-        
+    }
+    
+    @Test
+    @ExcludeIn({Target.HSQLDB, Target.DERBY, Target.POSTGRES})
+    public void Insert_With_Keys_Projected() throws SQLException{
         assertNotNull(insert(survey).set(survey.name, "Hello you").executeWithKey(survey.id));
     }
     

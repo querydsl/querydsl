@@ -19,7 +19,7 @@ public class UnionSubQueryTest {
     private SQLSerializer serializer = new SQLSerializer(templates);    
     
     @Test
-    public void unionSubQuery(){
+    public void UnionSubQuery(){
         SimplePath<Integer> one = new SimplePath<Integer>(Integer.class,"1");
         SimplePath<Integer> two = new SimplePath<Integer>(Integer.class,"2");
         SimplePath<Integer> three = new SimplePath<Integer>(Integer.class,"3");

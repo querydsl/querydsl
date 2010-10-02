@@ -17,6 +17,8 @@ import org.junit.Test;
 
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.dml.SQLDeleteClause;
+import com.mysema.query.sql.domain.QEmployee;
+import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.testutil.ExcludeIn;
 
 public abstract class DeleteBaseTest extends AbstractBaseTest{
@@ -42,14 +44,14 @@ public abstract class DeleteBaseTest extends AbstractBaseTest{
 
     @Test
     @ExcludeIn(MYSQL)
-    public void test() throws SQLException{
+    public void Delete() throws SQLException{
         long count = query().from(survey).count();
         assertEquals(0, delete(survey).where(survey.name.eq("XXX")).execute());
         assertEquals(count, delete(survey).execute());
     }
     
     @Test
-    public void batch() throws SQLException{
+    public void Batch() throws SQLException{
         insert(survey).values(2, "A").execute();
         insert(survey).values(3, "B").execute();
         
@@ -57,6 +59,15 @@ public abstract class DeleteBaseTest extends AbstractBaseTest{
         delete.where(survey.name.eq("A")).addBatch();
         delete.where(survey.name.eq("B")).addBatch();
         assertEquals(2, delete.execute());        
+    }
+    
+    @Test
+    public void Delete_with_SubQuery_exists(){
+        QSurvey survey1 = new QSurvey("s1");
+        QEmployee employee = new QEmployee("e");
+        SQLDeleteClause delete = delete(survey1);
+        delete.where(survey1.name.eq("XXX"), sq().from(employee).where(survey1.id.eq(employee.id)).exists());
+        delete.execute();
     }
 
 }

@@ -16,7 +16,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.dml.SQLUpdateClause;
+import com.mysema.query.sql.domain.QEmployee;
+import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.Path;
 
 public abstract class UpdateBaseTest extends AbstractBaseTest{
@@ -37,7 +40,7 @@ public abstract class UpdateBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    public void test() throws SQLException{
+    public void Update() throws SQLException{
 
         // original state
         long count = query().from(survey).count();
@@ -54,7 +57,7 @@ public abstract class UpdateBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    public void test2() throws SQLException{
+    public void Update2() throws SQLException{
         List<Path<?>> paths = Collections.<Path<?>>singletonList(survey.name);
         List<?> values = Collections.singletonList("S");
 
@@ -73,12 +76,12 @@ public abstract class UpdateBaseTest extends AbstractBaseTest{
     }
     
     @Test
-    public void test3(){
+    public void Update3(){
         update(survey).set(survey.name, survey.name.append("X")).execute();
     }
 
     @Test
-    public void setNull(){
+    public void SetNull(){
         List<Path<?>> paths = Collections.<Path<?>>singletonList(survey.name);
         List<?> values = Collections.singletonList(null);
         long count = query().from(survey).count();
@@ -86,13 +89,13 @@ public abstract class UpdateBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    public void setNull2(){
+    public void SetNull2(){
         long count = query().from(survey).count();
         assertEquals(count, update(survey).set(survey.name, (String)null).execute());
     }
     
     @Test
-    public void batch() throws SQLException{
+    public void Batch() throws SQLException{
         insert(survey).values(2, "A").execute();
         insert(survey).values(3, "B").execute();
         
@@ -100,6 +103,26 @@ public abstract class UpdateBaseTest extends AbstractBaseTest{
         update.set(survey.name, "AA").where(survey.name.eq("A")).addBatch();
         update.set(survey.name, "BB").where(survey.name.eq("B")).addBatch();
         assertEquals(2, update.execute());        
+    }
+    
+    @Test
+    public void Update_with_SubQuery_exists(){
+        QSurvey survey1 = new QSurvey("s1");
+        QEmployee employee = new QEmployee("e");
+        SQLUpdateClause update = update(survey1);
+        update.set(survey1.name, "AA");
+        update.where(new SQLSubQuery().from(employee).where(survey1.id.eq(employee.id)).exists());
+        update.execute();
+    }
+    
+    @Test
+    public void Update_with_SubQuery_notExists(){
+        QSurvey survey1 = new QSurvey("s1");
+        QEmployee employee = new QEmployee("e");
+        SQLUpdateClause update = update(survey1);
+        update.set(survey1.name, "AA");
+        update.where(sq().from(employee).where(survey1.id.eq(employee.id)).notExists());
+        update.execute();
     }
 
 }

@@ -28,7 +28,7 @@ public class InsertPostgresTest extends InsertBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        templates = new PostgresTemplates().newLineToSingleSpace();
+        templates = new PostgresTemplates(true).newLineToSingleSpace();
         super.setUp();
     }
 

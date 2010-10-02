@@ -25,7 +25,7 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
     
     @SuppressWarnings("unchecked")
     @Test
-    public void union(){        
+    public void Union(){        
         SimpleExpression<Integer> one = SimpleTemplate.create(Integer.class,"1");
         SimpleExpression<Integer> two = SimpleTemplate.create(Integer.class,"2");
         SimpleExpression<Integer> three = SimpleTemplate.create(Integer.class,"3");

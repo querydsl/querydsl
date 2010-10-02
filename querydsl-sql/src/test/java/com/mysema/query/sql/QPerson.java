@@ -28,8 +28,6 @@ public class QPerson extends RelationalPathBase<QPerson> {
 
     public final StringPath securedid = createString("SECUREDID");
 
-    private Expression<?>[] _all;
-
     public final PrimaryKey<QPerson> sysIdx118 = createPrimaryKey(id);
 
     public QPerson(String variable) {
