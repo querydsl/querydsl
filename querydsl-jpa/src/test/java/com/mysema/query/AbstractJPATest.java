@@ -33,7 +33,7 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
     }
 
     protected JPQLTemplates getTemplates(){
-    return HQLTemplates.DEFAULT;
+        return HQLTemplates.DEFAULT;
     }
 
     public void setEntityManager(EntityManager entityManager) {
