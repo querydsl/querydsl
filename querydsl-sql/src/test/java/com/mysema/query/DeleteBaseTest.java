@@ -69,5 +69,14 @@ public abstract class DeleteBaseTest extends AbstractBaseTest{
         delete.where(survey1.name.eq("XXX"), sq().from(employee).where(survey1.id.eq(employee.id)).exists());
         delete.execute();
     }
+    
+    @Test
+    public void Delete_with_SubQuery_exists2(){
+        QSurvey survey1 = new QSurvey("s1");
+        QEmployee employee = new QEmployee("e");
+        SQLDeleteClause delete = delete(survey1);
+        delete.where(survey1.name.eq("XXX"), sq().from(employee).where(survey1.name.eq(employee.lastname)).exists());
+        delete.execute();
+    }
 
 }

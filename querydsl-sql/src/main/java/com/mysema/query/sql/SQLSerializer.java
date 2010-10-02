@@ -254,9 +254,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }        
         handle(entity);
         if (metadata.getWhere() != null) {
-            skipParent = true;
             append(templates.getWhere()).handle(metadata.getWhere());
-            skipParent = false;
         }        
         serialize(Position.END, metadata.getFlags());
         
@@ -373,6 +371,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             first = false;
         }
         skipParent = false;
+        
         if (metadata.getWhere() != null) {
             append(templates.getWhere()).handle(metadata.getWhere());
         }

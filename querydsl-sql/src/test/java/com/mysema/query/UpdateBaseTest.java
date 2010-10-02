@@ -116,6 +116,16 @@ public abstract class UpdateBaseTest extends AbstractBaseTest{
     }
     
     @Test
+    public void Update_with_SubQuery_exists2(){
+        QSurvey survey1 = new QSurvey("s1");
+        QEmployee employee = new QEmployee("e");
+        SQLUpdateClause update = update(survey1);
+        update.set(survey1.name, "AA");
+        update.where(new SQLSubQuery().from(employee).where(survey1.name.eq(employee.lastname)).exists());
+        update.execute();
+    }
+    
+    @Test
     public void Update_with_SubQuery_notExists(){
         QSurvey survey1 = new QSurvey("s1");
         QEmployee employee = new QEmployee("e");

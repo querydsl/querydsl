@@ -13,8 +13,10 @@ import org.easymock.EasyMock;
 import org.junit.Test;
 
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
+import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
 
 public class SQLSerializerTest {
@@ -79,5 +81,17 @@ public class SQLSerializerTest {
         insertClause.set(survey.id, 1);
         insertClause.set(survey.name, (String)null);
         assertEquals("insert into SURVEY(ID, NAME)\nvalues (?, null)", insertClause.toString());
+    }
+    
+    @Test
+    public void Delete_with_SubQuery_exists(){
+        QSurvey survey1 = new QSurvey("s1");
+        QEmployee employee = new QEmployee("e");
+        SQLDeleteClause delete = new SQLDeleteClause(connection, SQLTemplates.DEFAULT,survey1);
+        delete.where(survey1.name.eq("XXX"), new SQLSubQuery().from(employee).where(survey1.id.eq(employee.id)).exists());
+        assertEquals("delete from SURVEY\n" +
+        	     "where SURVEY.NAME = ? and exists (select 1\n" +
+        	     "from EMPLOYEE2 e\n" +
+        	     "where SURVEY.ID = e.ID)", delete.toString());
     }
 }
