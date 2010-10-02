@@ -55,16 +55,4 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
         assertFalse(results.isEmpty());
     }
 
-//    @Test
-//    @Override
-//    public void TupleProjection(){
-//        // not yet supported with JPA
-//    }
-//
-//    @Test
-//    @Override
-//    public void ArrayProjection(){
-//        // not yet supported with JPA
-//    }
-
 }
