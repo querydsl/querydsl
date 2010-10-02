@@ -17,7 +17,7 @@ public class ArrayConstructorExpressionTest {
     @SuppressWarnings("unchecked")
     @Test
     public void NewInstanceObjectArray() {
-        ArrayConstructorExpression<String> constructor = new ArrayConstructorExpression<String>(String[].class,  new StringPath(""), new StringPath("2"));
+        ArrayConstructorExpression<String> constructor = new ArrayConstructorExpression<String>(String[].class,  new StringPath("test"), new StringPath("test2"));
 
         String[] strings = constructor.newInstance((Object[])new String[]{"1", "2"});
         assertEquals("1", strings[0]);
