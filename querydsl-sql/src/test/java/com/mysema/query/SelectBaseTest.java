@@ -16,6 +16,7 @@ import static com.mysema.query.Target.H2;
 import static com.mysema.query.Target.HSQLDB;
 import static com.mysema.query.Target.MYSQL;
 import static com.mysema.query.Target.ORACLE;
+import static com.mysema.query.Target.POSTGRES;
 import static com.mysema.query.Target.SQLSERVER;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -61,8 +62,7 @@ import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.NumberSubQuery;
 import com.mysema.query.types.query.SimpleSubQuery;
-import com.mysema.testutil.ExcludeIn;
-import com.mysema.testutil.Label;
+import com.mysema.testutil.*;
 
 public abstract class SelectBaseTest extends AbstractBaseTest{
 
@@ -211,8 +211,6 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
                 sq().from(employee)
                 .list(employee.salary.add(employee.salary).add(employee.salary).as(sal)).as(sq)
         ).list(sq.get(sal).avg(), sq.get(sal).min(), sq.get(sal).max());
-
-        //        select avg(sq.sal), min(sq.sal), max(sq.sal) from (select (e.SALARY + e.SALARY + e.SALARY) as sal from EMPLOYEE2 e) as sq
     }
 
     @Test
@@ -235,7 +233,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     public void Constructor_Projection2(){
-        List<SimpleProjection> projections =query().from(employee).list(ConstructorExpression.create(SimpleProjection.class, employee.firstname, employee.lastname));
+        List<SimpleProjection> projections =query().from(employee).list(
+                ConstructorExpression.create(SimpleProjection.class, employee.firstname, employee.lastname));
         assertFalse(projections.isEmpty());
         for (SimpleProjection projection : projections){
             assertNotNull(projection);
@@ -252,7 +251,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     
     @Test
     public void Custom_Projection(){
-        List<Projection> tuples = query().from(employee).list(new QProjection(employee.firstname, employee.lastname));
+        List<Projection> tuples = query().from(employee).list(
+                new QProjection(employee.firstname, employee.lastname));
         assertFalse(tuples.isEmpty());
         for (Projection tuple : tuples){
             assertNotNull(tuple.get(employee.firstname));
@@ -286,6 +286,35 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             System.out.println(name);
         }
     }
+    
+    @Test
+    public void Inner_Join() throws SQLException {
+        query().from(employee).innerJoin(employee2)
+            .on(employee.superiorIdKey.on(employee2))
+            .list(employee.id, employee2.id);
+    }
+
+    @Test
+    public void Left_Join() throws SQLException {
+        query().from(employee).leftJoin(employee2)
+            .on(employee.superiorIdKey.on(employee2))
+            .list(employee.id, employee2.id);
+    }
+    
+    @Test
+    public void Right_Join() throws SQLException {
+        query().from(employee).rightJoin(employee2)
+            .on(employee.superiorIdKey.on(employee2))
+            .list(employee.id, employee2.id);
+    }
+    
+    @Test
+    @IncludeIn({POSTGRES})
+    public void Full_Join() throws SQLException {
+        query().from(employee).fullJoin(employee2)
+            .on(employee.superiorIdKey.on(employee2))
+            .list(employee.id, employee2.id);
+    }
 
     @Test
     public void Joins() throws SQLException {
@@ -298,27 +327,33 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    public void Limit_And_Offset() throws SQLException {
+    public void Limit() throws SQLException {
         // limit
         query().from(employee)
         .orderBy(employee.firstname.asc())
         .limit(4).list(employee.id);
-
+    }
+    
+    @Test
+    public void Limit_And_Offset() throws SQLException {
         // limit and offset
         query().from(employee)
         .orderBy(employee.firstname.asc())
         .limit(4).offset(3).list(employee.id);
     }
-
+    
     @Test
-    public void Limit_and_Offset_and_Order(){
+    public void Limitt_and_Order(){
         // limit
         List<String> names1 = Arrays.asList("Barbara","Daisy","Helen","Jennifer");
         assertEquals(names1, query().from(employee)
                 .orderBy(employee.firstname.asc())
                 .limit(4)
                 .list(employee.firstname));
+    }
 
+    @Test
+    public void Limit_and_Offset_and_Order(){
         // limit + offset
         List<String> names2 = Arrays.asList("Helen","Jennifer","Jim","Joe");
         assertEquals(names2, query().from(employee)
@@ -391,7 +426,6 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     
     @Test
     public void Projection() throws IOException{
-        // TODO : add assertions
         CloseableIterator<Object[]> results = query().from(survey).iterate(survey.all());
         assertTrue(results.hasNext());
         while (results.hasNext()){
@@ -540,36 +574,41 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
     
     @Test
-    public void SubQueryJoin(){
+    public void SubQuery_InnerJoin(){
         ListSubQuery<Integer> sq = sq().from(employee2).list(employee2.id);
         QEmployee sqEmp = new QEmployee("sq");
-
-        // inner join
         query().from(employee).innerJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
 
-        // left join
+    }
+    
+    @Test
+    public void SubQuery_LeftJoin(){
+        ListSubQuery<Integer> sq = sq().from(employee2).list(employee2.id);
+        QEmployee sqEmp = new QEmployee("sq");
         query().from(employee).leftJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
 
-        // right join
-        // FIXME
-        //        query().from(employee).rightJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
-
-        // FIXME
-        // full join
-        //        query().from(employee).fullJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
+    }
+    
+    @Test
+    public void SubQuery_RightJoin(){
+        ListSubQuery<Integer> sq = sq().from(employee2).list(employee2.id);
+        QEmployee sqEmp = new QEmployee("sq");
+        query().from(employee).rightJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
 
     }
-
+    
     @Test
     public void SubQuerySerialization(){
         SQLSubQuery query = sq();
-
         query.from(survey);
         assertEquals("from SURVEY s", query.toString());
 
         query.from(survey2);
         assertEquals("from SURVEY s, SURVEY s2", query.toString());
-
+    }
+    
+    @Test
+    public void SubQuerySerialization2(){
         NumberPath<BigDecimal> sal = new NumberPath<BigDecimal>(BigDecimal.class, "sal");
         PathBuilder<Object[]> sq = new PathBuilder<Object[]>(Object[].class, "sq");
         SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
