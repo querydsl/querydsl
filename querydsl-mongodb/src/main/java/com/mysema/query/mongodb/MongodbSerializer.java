@@ -73,6 +73,9 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         Operator<?> op = expr.getOperator();
         if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE ) {
             return asDBObject(asDBKey(expr, 0), asDBValue(expr, 1));
+            
+        }else if (op == Ops.STRING_IS_EMPTY){
+            return asDBObject(asDBKey(expr, 0), "");
         }
         
         else if (op == Ops.AND) {
@@ -90,7 +93,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
             String key = arg.keySet().iterator().next();
             
             Operator<?> subOp = ((Operation<?>) expr.getArg(0)).getOperator();
-            if (subOp != Ops.EQ_OBJECT && subOp != Ops.EQ_PRIMITIVE){
+            if (subOp != Ops.EQ_OBJECT && subOp != Ops.EQ_PRIMITIVE && subOp != Ops.STRING_IS_EMPTY){
                 return asDBObject(key, asDBObject("$not", arg.get(key)));   
             }else{
                 return asDBObject(key, asDBObject("$ne", arg.get(key)));
@@ -176,7 +179,16 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         
         else if (op == Ops.GOE || op == Ops.AOE) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$gte", asDBValue(expr, 1)));
+            
+        }else if (op == Ops.IS_NULL){
+            return asDBObject(asDBKey(expr, 0), asDBObject("$exists", false));
+            
+        }else if (op == Ops.IS_NOT_NULL){
+            return asDBObject(asDBKey(expr, 0), asDBObject("$exists", true));
+            
         }
+        
+        
         throw new UnsupportedOperationException("Illegal operation " + expr);
     }
 

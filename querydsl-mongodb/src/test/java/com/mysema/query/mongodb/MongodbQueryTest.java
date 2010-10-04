@@ -8,6 +8,7 @@ package com.mysema.query.mongodb;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -24,6 +25,7 @@ import com.mysema.query.mongodb.domain.QUser;
 import com.mysema.query.mongodb.domain.User;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.path.StringPath;
 
 public class MongodbQueryTest {
 
@@ -130,6 +132,21 @@ public class MongodbQueryTest {
     }
     
     @Test
+    public void IsNotNull(){
+        assertQuery(user.firstName.isNotNull(), u3, u4, u2, u1);
+    }
+    
+    @Test
+    public void IsNull(){
+        assertQuery(user.firstName.isNull());
+    }
+    
+    @Test
+    public void IsEmpty(){
+        assertQuery(user.firstName.isEmpty());
+    }
+    
+    @Test
     public void Not() {
         assertQuery(user.firstName.eq("Jaakko").not(), u3, u4, u2);
         assertQuery(user.firstName.ne("Jaakko").not(), u1);
@@ -178,6 +195,38 @@ public class MongodbQueryTest {
         assertEquals(u1, q.uniqueResult());             
     }
     
+    @Test
+    public void Various(){
+        StringPath str = user.lastName;
+        List<Predicate> predicates = new ArrayList<Predicate>();        
+        predicates.add(str.between("a", "b"));
+        predicates.add(str.contains("a"));
+        predicates.add(str.containsIgnoreCase("a"));
+        predicates.add(str.endsWith("a"));
+        predicates.add(str.endsWithIgnoreCase("a"));
+        predicates.add(str.eq("a"));
+        predicates.add(str.equalsIgnoreCase("a"));
+        predicates.add(str.goe("a"));
+        predicates.add(str.gt("a"));
+        predicates.add(str.in("a","b","c"));
+        predicates.add(str.isEmpty());
+        predicates.add(str.isNotNull());
+        predicates.add(str.isNull());
+//        predicates.add(str.like("a"));
+        predicates.add(str.loe("a"));
+        predicates.add(str.lt("a"));
+        predicates.add(str.matches("a"));
+        predicates.add(str.ne("a"));
+        predicates.add(str.notBetween("a", "b"));
+        predicates.add(str.notIn("a","b","c"));
+        predicates.add(str.startsWith("a"));
+        predicates.add(str.startsWithIgnoreCase("a"));
+        
+        for (Predicate predicate : predicates){
+            where(predicate).count();
+            where(predicate.not()).count();
+        }
+    }
     
     //TODO
     // - test dates
