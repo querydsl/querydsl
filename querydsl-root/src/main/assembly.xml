@@ -56,6 +56,7 @@
   	  
   <dependencySets>
     <dependencySet>
+      <scope>provided</scope>
       <outputDirectory>lib/all</outputDirectory>
     </dependencySet>
   </dependencySets>
