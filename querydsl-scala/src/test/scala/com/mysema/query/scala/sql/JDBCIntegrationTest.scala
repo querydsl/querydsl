@@ -90,7 +90,6 @@ class JDBCIntegrationTest {
     assertEquals("def", query from survey where (survey.id eq 2) uniqueResult survey.name);
     assertEquals("Bob", query from employee where (employee.lastname eq "Smith") uniqueResult employee.firstname);
     assertEquals("John", query from employee where (employee.lastname eq "Doe") uniqueResult employee.firstname);
-
   }
 
   @After
