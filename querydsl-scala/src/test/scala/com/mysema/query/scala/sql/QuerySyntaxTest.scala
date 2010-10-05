@@ -1,6 +1,7 @@
 package com.mysema.query.scala.sql
 
 import com.mysema.query.sql._
+
 import org.junit.Test
 import org.junit.Assert._
 
