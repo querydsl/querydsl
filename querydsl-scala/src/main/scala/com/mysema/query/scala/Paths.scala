@@ -45,7 +45,7 @@ class SimplePath[T](t: Class[_ <: T], md: PathMetadata[_])
 
   def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
 
-  def ~ = this
+  def expr = this
 
 }
 
@@ -54,7 +54,7 @@ class ArrayPath[T <: Array[_]](t: Class[T], md: PathMetadata[_])
 
   def this(t: Class[T], variable: String) = this(t, forVariable(variable));
 
-  def ~ = this
+  def expr = this
 
 }
 
@@ -63,7 +63,7 @@ class EntityPathImpl[T](t: Class[_ <: T], md: PathMetadata[_])
 
   def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
 
-  def ~ = this
+  def expr = this
 }
 
 class CollectionPath[T](t: Class[_ <: T], md: PathMetadata[_])
@@ -71,7 +71,7 @@ class CollectionPath[T](t: Class[_ <: T], md: PathMetadata[_])
 
   def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
 
-  def ~ = this
+  def expr = this
 
   def getParameter(i: Int) = t;
 
@@ -82,7 +82,7 @@ class SetPath[T](t: Class[_ <: T], md: PathMetadata[_])
 
   def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
 
-  def ~ = this
+  def expr = this
 
   def getParameter(i: Int) = t;
 
@@ -93,7 +93,7 @@ class ListPath[T](t: Class[_ <: T], md: PathMetadata[_])
 
   def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
 
-  def ~ = this
+  def expr = this
 
   def getParameter(i: Int) = t;
 
@@ -104,7 +104,7 @@ class MapPath[K, V](k: Class[_ <: K], v: Class[_ <: V], md: PathMetadata[_])
 
   def this(k: Class[_ <: K], v: Class[_ <: V], variable: String) = this(k, v, forVariable(variable));
 
-  def ~ = this
+  def expr = this
 
   def getParameter(i: Int): Class[_] = { if (i == 0) k else v }
 
@@ -115,7 +115,7 @@ class ComparablePath[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_])
 
   def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
 
-  def ~ = this
+  def expr = this
 }
 
 class NumberPath[T <: Number with Comparable[T]](t: Class[_ <: T], md: PathMetadata[_])
@@ -123,7 +123,7 @@ class NumberPath[T <: Number with Comparable[T]](t: Class[_ <: T], md: PathMetad
 
   def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
 
-  def ~ = this
+  def expr = this
 }
 
 class BooleanPath(md: PathMetadata[_])
@@ -131,7 +131,7 @@ class BooleanPath(md: PathMetadata[_])
 
   def this(variable: String) = this(forVariable(variable));
 
-  def ~ = this
+  def expr = this
 
 }
 
@@ -140,7 +140,7 @@ class StringPath(md: PathMetadata[_])
 
   def this(variable: String) = this(forVariable(variable));
 
-  def ~ = this
+  def expr = this
 
 }
 
@@ -149,7 +149,7 @@ class DatePath[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_])
 
   def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
 
-  def ~ = this
+  def expr = this
 
 }
 
@@ -158,7 +158,7 @@ class DateTimePath[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_])
 
   def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
 
-  def ~ = this
+  def expr = this
 
 }
 
@@ -167,7 +167,7 @@ class TimePath[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_])
 
   def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
 
-  def ~ = this
+  def expr = this
 
 }
 
@@ -176,6 +176,6 @@ class EnumPath[T <: Enum[T]](t: Class[_ <: T], md: PathMetadata[_])
 
   def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
 
-  def ~ = this
+  def expr = this
 
 }

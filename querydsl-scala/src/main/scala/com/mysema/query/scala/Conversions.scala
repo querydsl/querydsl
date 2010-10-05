@@ -43,7 +43,7 @@ object Conversions {
 
   implicit def arrayPath[T <: Array[_]](a: T): ArrayPath[T] = aliasFactory.getCurrentAndReset();
 
-  implicit def booleanPath(b: java.lang.Boolean): BooleanPath = aliasFactory.getCurrentAndReset();
+  implicit def booleanPath(b: java.lang.Boolean): BooleanExpression = aliasFactory.getCurrentAndReset();
 
   implicit def stringPath(s: String): StringPath = aliasFactory.getCurrentAndReset();
 
