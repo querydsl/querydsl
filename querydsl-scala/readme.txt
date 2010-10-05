@@ -10,3 +10,18 @@ _          : (domainType.firstName like_ "An%") and_ (domainType.firstName like_
 
 $          : (domainType.firstName $like "An%") $and (domainType.firstName $like "Be%")
 
+
+
+
+// query from (person) where (person.age < 5) unique (person.firstName);
+               RelationalPath Predicate               Expression
+               
+* any    -> Expression               
+               
+* any    -> RelationalPath
+
+* String -> StringFunctions
+* Number -> NumberFunctions
+...
+
+                
