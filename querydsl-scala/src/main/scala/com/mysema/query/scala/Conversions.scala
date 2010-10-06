@@ -29,21 +29,21 @@ object Conversions {
   
   def not(b: BooleanExpression) = b.not;
   
-  def count(e: SimpleExpression[_]) = e.$count();
+  def count(e: SimpleExpression[_]) = e.count();
   
-  def min(e: NumberExpression[_]) = e.$min();
+  def min(e: NumberExpression[_]) = e.min();
 
-  def max(e: NumberExpression[_]) = e.$max();
+  def max(e: NumberExpression[_]) = e.max();
   
-  def sum(e: NumberExpression[_]) = e.$sum();
+  def sum(e: NumberExpression[_]) = e.sum();
   
-  def avg(e: NumberExpression[_]) = e.$avg();  
+  def avg(e: NumberExpression[_]) = e.avg();  
   
   // implicit conversions
 
   implicit def arrayPath[T <: Array[_]](a: T): ArrayPath[T] = aliasFactory.getCurrentAndReset();
 
-  implicit def booleanPath(b: java.lang.Boolean): BooleanExpression = aliasFactory.getCurrentAndReset();
+  implicit def booleanPath(b: java.lang.Boolean): BooleanFunctions = aliasFactory.getCurrentAndReset();
 
   implicit def stringPath(s: String): StringPath = aliasFactory.getCurrentAndReset();
 

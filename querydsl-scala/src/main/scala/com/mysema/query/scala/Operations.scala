@@ -36,54 +36,45 @@ object Operations {
 
 class SimpleOperation[T](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*)
   extends OperationImpl[T](t, operator, args: _*) with SimpleExpression[T] {
-
-  def expr = this  
+    
 }
 
 class ComparableOperation[T <: Comparable[_]](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*)
   extends OperationImpl[T](t, operator, args: _*) with ComparableExpression[T] {
-
-  def expr = this
+    
 }
 
 class NumberOperation[T <: Number with Comparable[T]](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*)
   extends OperationImpl[T](t, operator, args: _*) with NumberExpression[T] {
-
-  def expr = this    
+    
 }
 
 class BooleanOperation(operator: Operator[_ >: java.lang.Boolean], args: Expression[_]*)
   extends OperationImpl[java.lang.Boolean](classOf[java.lang.Boolean], operator, args: _*) with BooleanExpression {
-
-  def expr = this
+    
 }
 
 class StringOperation(operator: Operator[_ >: String], args: Expression[_]*)
   extends OperationImpl[String](classOf[String], operator, args: _*) with StringExpression {
-
-  def expr = this    
+    
 }
 
 class DateOperation[T <: Comparable[_]](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*)
   extends OperationImpl[T](t, operator, args: _*) with DateExpression[T] {
-
-  def expr = this    
+    
 }
 
 class DateTimeOperation[T <: Comparable[_]](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*)
   extends OperationImpl[T](t, operator, args: _*) with DateTimeExpression[T] {
-
-  def expr = this    
+    
 }
 
 class TimeOperation[T <: Comparable[_]](t: Class[_ <: T], operator: Operator[_ >: T], args: Expression[_]*)
   extends OperationImpl[T](t, operator, args: _*) with TimeExpression[T] {
-
-  def expr = this    
+    
 }
 
 class EnumOperation[T <: Enum[T]](t: Class[T], operator: Operator[_ >: T], args: Expression[_]*)
   extends OperationImpl[T](t, operator, args: _*) with EnumExpression[T] {
-
-  def expr = this    
+    
 }

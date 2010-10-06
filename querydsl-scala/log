@@ -1,0 +1,1975 @@
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Querydsl - Scala support
+[INFO]    task-segment: [clean, package]
+[INFO] ------------------------------------------------------------------------
+[INFO] [clean:clean {execution: default-clean}]
+[INFO] Deleting file set: /home/tiwe/work/workspace/querydsl-scala/target (included: [**], excluded: [])
+[INFO] [resources:resources {execution: default-resources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory /home/tiwe/work/workspace/querydsl-scala/src/main/resources
+[INFO] [compiler:compile {execution: default-compile}]
+[INFO] Nothing to compile - all classes are up to date
+[INFO] [scala:compile {execution: default}]
+[INFO] Checking for multiple versions of scala
+[INFO] includes = [**/*.scala,**/*.java,]
+[INFO] excludes = []
+[INFO] /home/tiwe/work/workspace/querydsl-scala/src/main/scala:-1: info: compiling
+[INFO] Compiling 7 source files to /home/tiwe/work/workspace/querydsl-scala/target/classes at 1286373021744
+[INFO] [[syntax trees at end of typer]]// Scala source: Conversions.scala
+[INFO] package com.mysema.query.scala {
+[INFO]   import com.mysema.query.alias._;
+[INFO]   import com.mysema.query.types._;
+[INFO]   import org.apache.commons.lang.StringUtils;
+[INFO]   final object Conversions extends java.lang.Object with ScalaObject {
+[INFO]     def this(): object com.mysema.query.scala.Conversions = {
+[INFO]       Conversions.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] val aliasFactory: com.mysema.query.alias.AliasFactory = new com.mysema.query.alias.AliasFactory(new PathFactoryImpl(), new TypeSystemImpl());
+[INFO]     <stable> <accessor> def aliasFactory: com.mysema.query.alias.AliasFactory = Conversions.this.aliasFactory;
+[INFO]     def alias[T >: Nothing <: Any](cl: Class[T]): T = Conversions.this.alias[T](cl, org.apache.commons.lang.StringUtils.uncapitalize(cl.getSimpleName()));
+[INFO]     def alias[T >: Nothing <: Any](cl: Class[T], variable: String): T = Conversions.this.aliasFactory.createAliasForVariable[T](cl, variable);
+[INFO]     def alias[T >: Nothing <: Any](cl: Class[T], expr: com.mysema.query.types.Expression[_ <: T]): T = Conversions.this.aliasFactory.createAliasForExpr[T](cl, expr);
+[INFO]     def not(b: com.mysema.query.scala.BooleanExpression): com.mysema.query.scala.BooleanExpression = b.not();
+[INFO]     def count(e: com.mysema.query.scala.SimpleExpression[_]): com.mysema.query.scala.NumberExpression[java.lang.Long] = e.count();
+[INFO]     def min(e: com.mysema.query.scala.NumberExpression[_]): com.mysema.query.scala.NumberExpression[_] = e.min();
+[INFO]     def max(e: com.mysema.query.scala.NumberExpression[_]): com.mysema.query.scala.NumberExpression[_] = e.max();
+[INFO]     def sum(e: com.mysema.query.scala.NumberExpression[_]): com.mysema.query.scala.NumberExpression[_] = e.sum();
+[INFO]     def avg(e: com.mysema.query.scala.NumberExpression[_]): com.mysema.query.scala.NumberExpression[_] = e.avg();
+[INFO]     implicit def arrayPath[T >: Nothing <: Array[_]](a: T): com.mysema.query.scala.ArrayPath[T] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def booleanPath(b: java.lang.Boolean): com.mysema.query.scala.BooleanFunctions = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def stringPath(s: String): com.mysema.query.scala.StringPath = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def datePath(d: java.sql.Date): com.mysema.query.scala.DatePath[java.sql.Date] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def dateTimePath(d: java.util.Date): com.mysema.query.scala.DateTimePath[java.util.Date] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def timePath(t: java.sql.Time): com.mysema.query.scala.TimePath[java.sql.Time] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def comparablePath(c: java.lang.Comparable[_]): com.mysema.query.scala.ComparablePath[_] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def numberPath[N >: Nothing <: java.lang.Number with java.lang.Comparable[N]](n: N): com.mysema.query.scala.NumberPath[N] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def bytePath(n: Byte): com.mysema.query.scala.NumberPath[java.lang.Byte] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def intPath(n: Int): com.mysema.query.scala.NumberPath[Integer] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def longPath(n: Long): com.mysema.query.scala.NumberPath[java.lang.Long] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def shortPath(n: Short): com.mysema.query.scala.NumberPath[java.lang.Short] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def doublePath(n: Double): com.mysema.query.scala.NumberPath[java.lang.Double] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def floatPath(n: Float): com.mysema.query.scala.NumberPath[java.lang.Float] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def scalaCollectionPath[T >: Nothing <: Any](c: Collection[T]): com.mysema.query.scala.CollectionPath[T] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def scalaListPath[T >: Nothing <: Any](l: List[T]): com.mysema.query.scala.ListPath[T] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def scalaSetPath[T >: Nothing <: Any](c: scala.collection.Set[T]): com.mysema.query.scala.SetPath[T] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def scalaMapPath[K >: Nothing <: Any, V >: Nothing <: Any](l: scala.collection.Map[K,V]): com.mysema.query.scala.MapPath[K,V] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def javaCollectionPath[T >: Nothing <: Any](c: java.util.Collection[T]): com.mysema.query.scala.CollectionPath[T] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def javaListPath[T >: Nothing <: Any](l: java.util.List[T]): com.mysema.query.scala.ListPath[T] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def javaSetPath[T >: Nothing <: Any](c: java.util.Set[T]): com.mysema.query.scala.SetPath[T] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def javaMapPath[K >: Nothing <: Any, V >: Nothing <: Any](l: java.util.Map[K,V]): com.mysema.query.scala.MapPath[K,V] = Conversions.this.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]     implicit def entityPath[T >: Nothing <: Any](arg: T): com.mysema.query.scala.EntityPathImpl[T] = {
+[INFO]       val rv: Option[Nothing] = scala.Option.apply[Nothing](Conversions.this.aliasFactory.getCurrentAndReset[Nothing]());
+[INFO]       rv.getOrElse[T](arg) match {
+[INFO]         case (x @ (_: com.mysema.query.scala.EntityPathImpl[T])) => x
+[INFO]         case (x @ (_: com.mysema.query.alias.ManagedObject)) => x.__mappedPath().asInstanceOf[com.mysema.query.scala.EntityPathImpl[T]]
+[INFO]         case _ => null
+[INFO]       }
+[INFO]     }
+[INFO]   };
+[INFO]   class PathFactoryImpl extends java.lang.Object with com.mysema.query.alias.PathFactory with ScalaObject {
+[INFO]     def this(): com.mysema.query.scala.PathFactoryImpl = {
+[INFO]       PathFactoryImpl.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     def createArrayPath[T >: Nothing <: Any](t: Class[Array[T with java.lang.Object]], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.ArrayPath[Array[T with java.lang.Object]] = Paths.array[Array[T with java.lang.Object]](t, md);
+[INFO]     def createEntityPath[T >: Nothing <: Any](t: Class[T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.EntityPathImpl[T] = Paths.entity[T](t, md);
+[INFO]     def createSimplePath[T >: Nothing <: Any](t: Class[T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.SimplePath[T] = Paths.simple[T](t, md);
+[INFO]     def createComparablePath[T >: Nothing <: java.lang.Comparable[_]](t: Class[T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.ComparablePath[T] = Paths.comparable[T](t, md);
+[INFO]     def createEnumPath[T >: Nothing <: java.lang.Enum[T]](t: Class[T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.EnumPath[T] = Paths.enum[T](t, md);
+[INFO]     def createDatePath[T >: Nothing <: java.lang.Comparable[_]](t: Class[T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.DatePath[T] = Paths.date[T](t, md);
+[INFO]     def createTimePath[T >: Nothing <: java.lang.Comparable[_]](t: Class[T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.TimePath[T] = Paths.time[T](t, md);
+[INFO]     def createDateTimePath[T >: Nothing <: java.lang.Comparable[_]](t: Class[T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.DateTimePath[T] = Paths.dateTime[T](t, md);
+[INFO]     def createNumberPath[T >: Nothing <: java.lang.Number with java.lang.Comparable[T]](t: Class[T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.NumberPath[T] = Paths.number[T](t, md);
+[INFO]     def createBooleanPath(md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.BooleanPath = Paths.boolean(md);
+[INFO]     def createStringPath(md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.StringPath = Paths.string(md);
+[INFO]     def createListPath[T >: Nothing <: Any](t: Class[T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.ListPath[T] = Paths.list[T](t, md);
+[INFO]     def createSetPath[T >: Nothing <: Any](t: Class[T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.SetPath[T] = Paths.set[T](t, md);
+[INFO]     def createCollectionPath[T >: Nothing <: Any](t: Class[T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.CollectionPath[T] = Paths.collection[T](t, md);
+[INFO]     def createMapPath[K >: Nothing <: Any, V >: Nothing <: Any](k: Class[K], v: Class[V], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.MapPath[K,V] = Paths.map[K, V](k, v, md)
+[INFO]   };
+[INFO]   class TypeSystemImpl extends java.lang.Object with com.mysema.query.alias.TypeSystem with ScalaObject {
+[INFO]     def this(): com.mysema.query.scala.TypeSystemImpl = {
+[INFO]       TypeSystemImpl.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] val system: com.mysema.query.alias.DefaultTypeSystem = new com.mysema.query.alias.DefaultTypeSystem();
+[INFO]     <stable> <accessor> def system: com.mysema.query.alias.DefaultTypeSystem = TypeSystemImpl.this.system;
+[INFO]     def isCollectionType(cl: Class[_]): Boolean = TypeSystemImpl.this.system.isCollectionType(cl).||(classOf[scala.collection.Iterable].isAssignableFrom(cl));
+[INFO]     def isSetType(cl: Class[_]): Boolean = TypeSystemImpl.this.system.isSetType(cl).||(classOf[scala.collection.Set].isAssignableFrom(cl));
+[INFO]     def isListType(cl: Class[_]): Boolean = TypeSystemImpl.this.system.isListType(cl).||(classOf[scala.collection.immutable.List].isAssignableFrom(cl));
+[INFO]     def isMapType(cl: Class[_]): Boolean = TypeSystemImpl.this.system.isMapType(cl).||(classOf[scala.collection.Map].isAssignableFrom(cl))
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: Expressions.scala
+[INFO] package com.mysema.query.scala {
+[INFO]   import com.mysema.query.scala.Constants._;
+[INFO]   import com.mysema.query.scala.Resolver._;
+[INFO]   import com.mysema.query.scala.Operations._;
+[INFO]   import com.mysema.query.scala.Conversions.aliasFactory;
+[INFO]   import com.mysema.query.alias.ManagedObject;
+[INFO]   import com.mysema.query.types._;
+[INFO]   import com.mysema.query.types.PathMetadataFactory._;
+[INFO]   import com.mysema.query.types.Ops._;
+[INFO]   import java.util.Collection;
+[INFO]   import java.util.Arrays._;
+[INFO]   final object Constants extends java.lang.Object with ScalaObject {
+[INFO]     def this(): object com.mysema.query.scala.Constants = {
+[INFO]       Constants.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     def constant(value: Integer): com.mysema.query.types.Constant[java.lang.Integer] = com.mysema.query.types.ConstantImpl.create(value.intValue());
+[INFO]     def constant(value: String): com.mysema.query.types.Constant[java.lang.String] = com.mysema.query.types.ConstantImpl.create(value);
+[INFO]     def constant[T >: Nothing <: Any](value: T): com.mysema.query.types.ConstantImpl[T] = new com.mysema.query.types.ConstantImpl[T](value)
+[INFO]   };
+[INFO]   final object Resolver extends java.lang.Object with ScalaObject {
+[INFO]     def this(): object com.mysema.query.scala.Resolver = {
+[INFO]       Resolver.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     def resolve(arg: Integer): com.mysema.query.types.Expression[Integer] = {
+[INFO]       val path: com.mysema.query.types.Path[Integer] = com.mysema.query.scala.Conversions.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]       if (path.!=(null))
+[INFO]         path
+[INFO]       else
+[INFO]         com.mysema.query.scala.Constants.constant(arg)
+[INFO]     };
+[INFO]     def resolve(arg: String): com.mysema.query.types.Expression[String] = {
+[INFO]       val path: com.mysema.query.types.Path[String] = com.mysema.query.scala.Conversions.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]       if (path.!=(null))
+[INFO]         path
+[INFO]       else
+[INFO]         com.mysema.query.scala.Constants.constant(arg)
+[INFO]     };
+[INFO]     def resolve[T >: Nothing <: Any](arg: T): com.mysema.query.types.Expression[T] = {
+[INFO]       val path: com.mysema.query.types.Path[T] = com.mysema.query.scala.Conversions.aliasFactory.getCurrentAndReset[Nothing]();
+[INFO]       if (path.!=(null))
+[INFO]         path
+[INFO]       else
+[INFO]         arg match {
+[INFO]         case (x @ (_: com.mysema.query.types.Path[T])) => x
+[INFO]         case (x @ (_: com.mysema.query.alias.ManagedObject)) => x.__mappedPath().asInstanceOf[com.mysema.query.types.Path[T]]
+[INFO]         case _ => com.mysema.query.scala.Constants.constant[T](arg)
+[INFO]       }
+[INFO]     }
+[INFO]   };
+[INFO]   abstract trait SimpleExpression[T >: Nothing <: Any] extends java.lang.Object with com.mysema.query.types.Expression[T] with ScalaObject {
+[INFO]     def /*SimpleExpression*/$init$(): Unit = {
+[INFO]       ()
+[INFO]     };
+[INFO]     def as(right: com.mysema.query.types.Path[T]): com.mysema.query.scala.SimpleExpression[T] = com.mysema.query.scala.Operations.simple[T](SimpleExpression.this.getType(), com.mysema.query.types.Ops.ALIAS.asInstanceOf[com.mysema.query.types.Operator[T]], this, right);
+[INFO]     def as(alias: String): com.mysema.query.scala.SimpleExpression[T] = SimpleExpression.this.as(new com.mysema.query.types.PathImpl[T](SimpleExpression.this.getType(), alias));
+[INFO]     def is(right: T): com.mysema.query.scala.BooleanExpression = SimpleExpression.this.=(right);
+[INFO]     def is(right: com.mysema.query.types.Expression[T]): com.mysema.query.scala.BooleanExpression = SimpleExpression.this.=(right);
+[INFO]     def =(right: T): com.mysema.query.scala.BooleanExpression = SimpleExpression.this.=(com.mysema.query.scala.Resolver.resolve[T](right));
+[INFO]     def =(right: com.mysema.query.types.Expression[T]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.EQ_OBJECT, this, right);
+[INFO]     def <>(right: T): com.mysema.query.scala.BooleanExpression = SimpleExpression.this.$ne(right);
+[INFO]     def <>(right: com.mysema.query.types.Expression[T]): com.mysema.query.scala.BooleanExpression = SimpleExpression.this.$ne(right);
+[INFO]     def $ne(right: T): com.mysema.query.scala.BooleanExpression = SimpleExpression.this.$ne(com.mysema.query.scala.Resolver.resolve[T](right));
+[INFO]     def $ne(right: com.mysema.query.types.Expression[T]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.NE_OBJECT, this, right);
+[INFO]     def count(): com.mysema.query.scala.NumberExpression[java.lang.Long] = com.mysema.query.scala.Operations.number[java.lang.Long](classOf[java.lang.Long], com.mysema.query.types.Ops.AggOps.COUNT_AGG, this);
+[INFO]     def in(right: java.util.Collection[T]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.IN, this, com.mysema.query.scala.Resolver.resolve[java.util.Collection[T]](right));
+[INFO]     def in(right: T*): com.mysema.query.scala.BooleanExpression = SimpleExpression.this.in(java.util.Arrays.asList[T]((right: _*)));
+[INFO]     def in(right: com.mysema.query.scala.CollectionExpression[T]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.IN, this, right);
+[INFO]     def countDistinct(): com.mysema.query.scala.NumberExpression[java.lang.Long] = com.mysema.query.scala.Operations.number[java.lang.Long](classOf[java.lang.Long], com.mysema.query.types.Ops.AggOps.COUNT_DISTINCT_AGG, this);
+[INFO]     def isNotNull(): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.IS_NOT_NULL, this);
+[INFO]     def isNull(): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.IS_NULL, this);
+[INFO]     def notIn(right: java.util.Collection[T]): com.mysema.query.scala.BooleanExpression = SimpleExpression.this.in(right).not();
+[INFO]     def notIn(right: T*): com.mysema.query.scala.BooleanExpression = SimpleExpression.this.in((right: _*)).not();
+[INFO]     def notIn(right: com.mysema.query.scala.CollectionExpression[T]): com.mysema.query.scala.BooleanExpression = SimpleExpression.this.in(right).not()
+[INFO]   };
+[INFO]   abstract trait ArrayExpression[T >: Nothing <: Array[_]] extends java.lang.Object with com.mysema.query.scala.SimpleExpression[T] with ScalaObject {
+[INFO]     def /*ArrayExpression*/$init$(): Unit = {
+[INFO]       ()
+[INFO]     };
+[INFO]     def size(): com.mysema.query.scala.NumberExpression[Integer] = com.mysema.query.scala.Operations.number[Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.ARRAY_SIZE, this)
+[INFO]   };
+[INFO]   abstract trait CollectionExpressionBase[T >: Nothing <: java.util.Collection[C], C >: Nothing <: Any] extends java.lang.Object with com.mysema.query.scala.SimpleExpression[T] with com.mysema.query.types.CollectionExpression[T,C] with ScalaObject {
+[INFO]     def /*CollectionExpressionBase*/$init$(): Unit = {
+[INFO]       ()
+[INFO]     };
+[INFO]     def size(): com.mysema.query.scala.NumberExpression[Integer] = com.mysema.query.scala.Operations.number[Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.COL_SIZE, this);
+[INFO]     def isEmpty(): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.COL_IS_EMPTY, this);
+[INFO]     def isNotEmpty(): com.mysema.query.scala.BooleanExpression = CollectionExpressionBase.this.isEmpty().not();
+[INFO]     def contains(child: C): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.IN, com.mysema.query.scala.Resolver.resolve[C](child), this);
+[INFO]     def contains(child: com.mysema.query.types.Expression[C]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.IN, child, this)
+[INFO]   };
+[INFO]   abstract trait CollectionExpression[T >: Nothing <: Any] extends java.lang.Object with com.mysema.query.scala.CollectionExpressionBase[java.util.Collection[T],T] {
+[INFO]     <empty>
+[INFO]   };
+[INFO]   abstract trait SetExpression[T >: Nothing <: Any] extends java.lang.Object with com.mysema.query.scala.CollectionExpressionBase[java.util.Set[T],T] {
+[INFO]     <empty>
+[INFO]   };
+[INFO]   abstract trait ListExpression[T >: Nothing <: Any] extends java.lang.Object with com.mysema.query.scala.CollectionExpressionBase[java.util.List[T],T] {
+[INFO]     <empty>
+[INFO]   };
+[INFO]   abstract trait MapExpression[K >: Nothing <: Any, V >: Nothing <: Any] extends java.lang.Object with com.mysema.query.scala.SimpleExpression[java.util.Map[K,V]] with com.mysema.query.types.MapExpression[K,V] with ScalaObject {
+[INFO]     def /*MapExpression*/$init$(): Unit = {
+[INFO]       ()
+[INFO]     };
+[INFO]     def size(): com.mysema.query.scala.NumberExpression[Integer] = com.mysema.query.scala.Operations.number[Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.MAP_SIZE, this);
+[INFO]     def isEmpty(): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.MAP_IS_EMPTY, this);
+[INFO]     def isNotEmpty(): com.mysema.query.scala.BooleanExpression = MapExpression.this.isEmpty().not();
+[INFO]     def containsKey(k: K): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.CONTAINS_KEY, this, com.mysema.query.scala.Resolver.resolve[K](k));
+[INFO]     def containsKey(k: com.mysema.query.types.Expression[K]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.CONTAINS_KEY, this, k);
+[INFO]     def containsValue(v: V): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.CONTAINS_KEY, this, com.mysema.query.scala.Resolver.resolve[V](v));
+[INFO]     def containsValue(v: com.mysema.query.types.Expression[V]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.CONTAINS_KEY, this, v)
+[INFO]   };
+[INFO]   abstract trait ComparableExpressionBase[T >: Nothing <: java.lang.Comparable[_]] extends java.lang.Object with com.mysema.query.scala.SimpleExpression[T] with ScalaObject {
+[INFO]     def /*ComparableExpressionBase*/$init$(): Unit = {
+[INFO]       ()
+[INFO]     };
+[INFO]     def asc(): com.mysema.query.types.OrderSpecifier[T] = new com.mysema.query.types.OrderSpecifier[T](value ASC, this);
+[INFO]     def desc(): com.mysema.query.types.OrderSpecifier[T] = new com.mysema.query.types.OrderSpecifier[T](value DESC, this)
+[INFO]   };
+[INFO]   abstract trait ComparableExpression[T >: Nothing <: java.lang.Comparable[_]] extends java.lang.Object with com.mysema.query.scala.ComparableExpressionBase[T] with ScalaObject {
+[INFO]     def /*ComparableExpression*/$init$(): Unit = {
+[INFO]       ()
+[INFO]     };
+[INFO]     def <(right: T): com.mysema.query.scala.BooleanExpression = ComparableExpression.this.lt(right);
+[INFO]     def <(right: com.mysema.query.types.Expression[T]): com.mysema.query.scala.BooleanExpression = ComparableExpression.this.lt(right);
+[INFO]     def >(right: T): com.mysema.query.scala.BooleanExpression = ComparableExpression.this.gt(right);
+[INFO]     def >(right: com.mysema.query.types.Expression[T]): com.mysema.query.scala.BooleanExpression = ComparableExpression.this.gt(right);
+[INFO]     def >=(right: T): com.mysema.query.scala.BooleanExpression = ComparableExpression.this.goe(right);
+[INFO]     def >=(right: com.mysema.query.types.Expression[T]): com.mysema.query.scala.BooleanExpression = ComparableExpression.this.goe(right);
+[INFO]     def <=(right: T): com.mysema.query.scala.BooleanExpression = ComparableExpression.this.loe(right);
+[INFO]     def <=(right: com.mysema.query.types.Expression[T]): com.mysema.query.scala.BooleanExpression = ComparableExpression.this.loe(right);
+[INFO]     def lt(right: T): com.mysema.query.scala.BooleanExpression = ComparableExpression.this.lt(com.mysema.query.scala.Resolver.resolve[T](right));
+[INFO]     def lt(right: com.mysema.query.types.Expression[T]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.BEFORE, this, right);
+[INFO]     def between(left: T, right: T): com.mysema.query.scala.BooleanExpression = ComparableExpression.this.between(com.mysema.query.scala.Resolver.resolve[T](left), com.mysema.query.scala.Resolver.resolve[T](right));
+[INFO]     def between(left: com.mysema.query.types.Expression[T], right: com.mysema.query.types.Expression[T]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.BETWEEN, this, left, right);
+[INFO]     def notBetween(left: T, right: T): com.mysema.query.scala.BooleanExpression = ComparableExpression.this.notBetween(com.mysema.query.scala.Resolver.resolve[T](left), com.mysema.query.scala.Resolver.resolve[T](right));
+[INFO]     def notBetween(left: com.mysema.query.types.Expression[T], right: com.mysema.query.types.Expression[T]): com.mysema.query.scala.BooleanExpression = ComparableExpression.this.between(left, right).not();
+[INFO]     def gt(right: T): com.mysema.query.scala.BooleanExpression = ComparableExpression.this.gt(com.mysema.query.scala.Resolver.resolve[T](right));
+[INFO]     def gt(right: com.mysema.query.types.Expression[T]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.AFTER, this, right);
+[INFO]     def goe(right: T): com.mysema.query.scala.BooleanExpression = ComparableExpression.this.goe(com.mysema.query.scala.Resolver.resolve[T](right));
+[INFO]     def goe(right: com.mysema.query.types.Expression[T]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.AOE, this, right);
+[INFO]     def loe(right: T): com.mysema.query.scala.BooleanExpression = ComparableExpression.this.loe(com.mysema.query.scala.Resolver.resolve[T](right));
+[INFO]     def loe(right: com.mysema.query.types.Expression[T]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.BOE, this, right);
+[INFO]     override def as(right: com.mysema.query.types.Path[T]): com.mysema.query.scala.ComparableExpression[T] = com.mysema.query.scala.Operations.comparable[T](ComparableExpression.this.getType(), com.mysema.query.types.Ops.ALIAS.asInstanceOf[com.mysema.query.types.Operator[T]], this, right);
+[INFO]     override def as(alias: String): com.mysema.query.scala.ComparableExpression[T] = ComparableExpression.this.as(new com.mysema.query.types.PathImpl[T](ComparableExpression.this.getType(), alias))
+[INFO]   };
+[INFO]   abstract trait NumberExpression[T >: Nothing <: java.lang.Number with java.lang.Comparable[T]] extends java.lang.Object with com.mysema.query.scala.ComparableExpressionBase[T] with ScalaObject {
+[INFO]     def /*NumberExpression*/$init$(): Unit = {
+[INFO]       ()
+[INFO]     };
+[INFO]     type NumberExpr = com.mysema.query.types.Expression[_ <: java.lang.Number];
+[INFO]     type NumberArray = Array[_ <: java.lang.Number];
+[INFO]     def <(right: java.lang.Number): com.mysema.query.scala.BooleanExpression = NumberExpression.this.lt(right);
+[INFO]     def <(right: NumberExpression.this.NumberExpr): com.mysema.query.scala.BooleanExpression = NumberExpression.this.lt(right);
+[INFO]     def >(right: java.lang.Number): com.mysema.query.scala.BooleanExpression = NumberExpression.this.gt(right);
+[INFO]     def >(right: NumberExpression.this.NumberExpr): com.mysema.query.scala.BooleanExpression = NumberExpression.this.gt(right);
+[INFO]     def >=(right: java.lang.Number): com.mysema.query.scala.BooleanExpression = NumberExpression.this.goe(right);
+[INFO]     def >=(right: NumberExpression.this.NumberExpr): com.mysema.query.scala.BooleanExpression = NumberExpression.this.goe(right);
+[INFO]     def <=(right: java.lang.Number): com.mysema.query.scala.BooleanExpression = NumberExpression.this.loe(right);
+[INFO]     def <=(right: NumberExpression.this.NumberExpr): com.mysema.query.scala.BooleanExpression = NumberExpression.this.loe(right);
+[INFO]     def add(right: NumberExpression.this.NumberExpr): com.mysema.query.scala.NumberExpression[T] = com.mysema.query.scala.Operations.number[T](NumberExpression.this.getType(), com.mysema.query.types.Ops.ADD, this, right);
+[INFO]     def add(right: java.lang.Number): com.mysema.query.scala.NumberExpression[T] = NumberExpression.this.add(com.mysema.query.scala.Resolver.resolve[java.lang.Number](right));
+[INFO]     def goe(right: java.lang.Number): com.mysema.query.scala.BooleanExpression = NumberExpression.this.goe(com.mysema.query.scala.Resolver.resolve[java.lang.Number](right));
+[INFO]     def goe(right: NumberExpression.this.NumberExpr): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.GOE, this, right);
+[INFO]     def gt(right: java.lang.Number): com.mysema.query.scala.BooleanExpression = NumberExpression.this.gt(com.mysema.query.scala.Resolver.resolve[java.lang.Number](right));
+[INFO]     def gt(right: NumberExpression.this.NumberExpr): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.GT, this, right);
+[INFO]     def between(left: java.lang.Number, right: java.lang.Number): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.BETWEEN, this, com.mysema.query.scala.Resolver.resolve[java.lang.Number](left), com.mysema.query.scala.Resolver.resolve[java.lang.Number](right));
+[INFO]     def between(left: NumberExpression.this.NumberExpr, right: NumberExpression.this.NumberExpr): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.BETWEEN, this, left, right);
+[INFO]     def notBetween(left: java.lang.Number, right: java.lang.Number): com.mysema.query.scala.BooleanExpression = NumberExpression.this.between(left, right).not();
+[INFO]     def notBetween(left: NumberExpression.this.NumberExpr, right: NumberExpression.this.NumberExpr): com.mysema.query.scala.BooleanExpression = NumberExpression.this.between(left, right).not();
+[INFO]     def loe(right: java.lang.Number): com.mysema.query.scala.BooleanExpression = NumberExpression.this.loe(com.mysema.query.scala.Resolver.resolve[java.lang.Number](right));
+[INFO]     def loe(right: NumberExpression.this.NumberExpr): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.LOE, this, right);
+[INFO]     def lt(right: java.lang.Number): com.mysema.query.scala.BooleanExpression = NumberExpression.this.lt(com.mysema.query.scala.Resolver.resolve[java.lang.Number](right));
+[INFO]     def lt(right: NumberExpression.this.NumberExpr): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.LT, this, right);
+[INFO]     def in(right: NumberExpression.this.NumberArray): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.IN, this, com.mysema.query.scala.Resolver.resolve[java.util.List[_$5]](java.util.Arrays.asList[_$5]((right: _*))));
+[INFO]     def min(): com.mysema.query.scala.NumberExpression[T] = com.mysema.query.scala.Operations.number[T](NumberExpression.this.getType(), com.mysema.query.types.Ops.AggOps.MIN_AGG, this);
+[INFO]     def max(): com.mysema.query.scala.NumberExpression[T] = com.mysema.query.scala.Operations.number[T](NumberExpression.this.getType(), com.mysema.query.types.Ops.AggOps.MAX_AGG, this);
+[INFO]     def sum(): com.mysema.query.scala.NumberExpression[T] = com.mysema.query.scala.Operations.number[T](NumberExpression.this.getType(), com.mysema.query.types.Ops.AggOps.SUM_AGG, this);
+[INFO]     def avg(): com.mysema.query.scala.NumberExpression[T] = com.mysema.query.scala.Operations.number[T](NumberExpression.this.getType(), com.mysema.query.types.Ops.AggOps.AVG_AGG, this);
+[INFO]     def subtract(right: NumberExpression.this.NumberExpr): com.mysema.query.scala.NumberExpression[T] = com.mysema.query.scala.Operations.number[T](NumberExpression.this.getType(), com.mysema.query.types.Ops.SUB, this, right);
+[INFO]     def subtract(right: java.lang.Number): com.mysema.query.scala.NumberExpression[T] = NumberExpression.this.subtract(com.mysema.query.scala.Resolver.resolve[java.lang.Number](right));
+[INFO]     def notIn(right: NumberExpression.this.NumberArray): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.IN, this, com.mysema.query.scala.Resolver.resolve[java.util.List[_$5]](java.util.Arrays.asList[_$5]((right: _*)))).not();
+[INFO]     def divide(right: NumberExpression.this.NumberExpr): com.mysema.query.scala.NumberExpression[T] = com.mysema.query.scala.Operations.number[T](NumberExpression.this.getType(), com.mysema.query.types.Ops.DIV, this, right);
+[INFO]     def divide(right: java.lang.Number): com.mysema.query.scala.NumberExpression[T] = NumberExpression.this.divide(com.mysema.query.scala.Resolver.resolve[java.lang.Number](right));
+[INFO]     def multiply(right: NumberExpression.this.NumberExpr): com.mysema.query.scala.NumberExpression[T] = com.mysema.query.scala.Operations.number[T](NumberExpression.this.getType(), com.mysema.query.types.Ops.MULT, this, right);
+[INFO]     def multiply(right: java.lang.Number): com.mysema.query.scala.NumberExpression[T] = NumberExpression.this.multiply(com.mysema.query.scala.Resolver.resolve[java.lang.Number](right));
+[INFO]     def negate(): com.mysema.query.scala.NumberExpression[T] = NumberExpression.this.multiply(scala.this.Predef.int2Integer(-1));
+[INFO]     def mod(right: NumberExpression.this.NumberExpr): com.mysema.query.scala.NumberExpression[T] = com.mysema.query.scala.Operations.number[T](NumberExpression.this.getType(), com.mysema.query.types.Ops.MOD, this, right);
+[INFO]     def mod(right: java.lang.Number): com.mysema.query.scala.NumberExpression[T] = NumberExpression.this.mod(com.mysema.query.scala.Resolver.resolve[java.lang.Number](right));
+[INFO]     def sqrt(): com.mysema.query.scala.NumberExpression[java.lang.Double] = com.mysema.query.scala.Operations.number[java.lang.Double](classOf[java.lang.Double], com.mysema.query.types.Ops.MathOps.SQRT, this);
+[INFO]     def abs(): com.mysema.query.scala.NumberExpression[T] = com.mysema.query.scala.Operations.number[T](NumberExpression.this.getType(), com.mysema.query.types.Ops.MathOps.ABS, this);
+[INFO]     def $byteValue(): com.mysema.query.scala.NumberExpression[java.lang.Byte] = NumberExpression.this.castToNum[java.lang.Byte](classOf[java.lang.Byte]);
+[INFO]     def $doubleValue(): com.mysema.query.scala.NumberExpression[java.lang.Double] = NumberExpression.this.castToNum[java.lang.Double](classOf[java.lang.Double]);
+[INFO]     def $floatValue(): com.mysema.query.scala.NumberExpression[java.lang.Float] = NumberExpression.this.castToNum[java.lang.Float](classOf[java.lang.Float]);
+[INFO]     def $intValue(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = NumberExpression.this.castToNum[java.lang.Integer](classOf[java.lang.Integer]);
+[INFO]     def $longValue(): com.mysema.query.scala.NumberExpression[java.lang.Long] = NumberExpression.this.castToNum[java.lang.Long](classOf[java.lang.Long]);
+[INFO]     def $shortValue(): com.mysema.query.scala.NumberExpression[java.lang.Short] = NumberExpression.this.castToNum[java.lang.Short](classOf[java.lang.Short]);
+[INFO]     def ceil(): com.mysema.query.scala.NumberExpression[T] = com.mysema.query.scala.Operations.number[T](NumberExpression.this.getType(), com.mysema.query.types.Ops.MathOps.CEIL, this);
+[INFO]     def floor(): com.mysema.query.scala.NumberExpression[T] = com.mysema.query.scala.Operations.number[T](NumberExpression.this.getType(), com.mysema.query.types.Ops.MathOps.FLOOR, this);
+[INFO]     def round(): com.mysema.query.scala.NumberExpression[T] = com.mysema.query.scala.Operations.number[T](NumberExpression.this.getType(), com.mysema.query.types.Ops.MathOps.ROUND, this);
+[INFO]     private def castToNum[A >: Nothing <: java.lang.Number with java.lang.Comparable[A]](t: Class[A]): com.mysema.query.scala.NumberExpression[A] = if (t.equals(NumberExpression.this.getType()))
+[INFO]       this.asInstanceOf[com.mysema.query.scala.NumberExpression[A]]
+[INFO]     else
+[INFO]       com.mysema.query.scala.Operations.number[A](t, com.mysema.query.types.Ops.NUMCAST, this, com.mysema.query.scala.Constants.constant[Class[A]](t));
+[INFO]     override def as(right: com.mysema.query.types.Path[T]): com.mysema.query.scala.NumberExpression[T] = com.mysema.query.scala.Operations.number[T](NumberExpression.this.getType(), com.mysema.query.types.Ops.ALIAS.asInstanceOf[com.mysema.query.types.Operator[T]], this, right);
+[INFO]     override def as(alias: String): com.mysema.query.scala.NumberExpression[T] = NumberExpression.this.as(new com.mysema.query.types.PathImpl[T](NumberExpression.this.getType(), alias))
+[INFO]   };
+[INFO]   abstract trait BooleanFunctions extends scala.AnyRef {
+[INFO]     def and(right: com.mysema.query.types.Predicate): com.mysema.query.scala.BooleanExpression;
+[INFO]     def or(right: com.mysema.query.types.Predicate): com.mysema.query.scala.BooleanExpression;
+[INFO]     def not(): com.mysema.query.scala.BooleanExpression
+[INFO]   };
+[INFO]   abstract trait BooleanExpression extends java.lang.Object with com.mysema.query.scala.ComparableExpression[java.lang.Boolean] with com.mysema.query.types.Predicate with com.mysema.query.scala.BooleanFunctions with ScalaObject {
+[INFO]     def /*BooleanExpression*/$init$(): Unit = {
+[INFO]       ()
+[INFO]     };
+[INFO]     def and(right: com.mysema.query.types.Predicate): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.AND, this, right);
+[INFO]     def or(right: com.mysema.query.types.Predicate): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.OR, this, right);
+[INFO]     def not(): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.NOT, this);
+[INFO]     override def as(right: com.mysema.query.types.Path[java.lang.Boolean]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.ALIAS.asInstanceOf[com.mysema.query.types.Operator[java.lang.Boolean]], this, right);
+[INFO]     override def as(alias: String): com.mysema.query.scala.BooleanExpression = BooleanExpression.this.as(new com.mysema.query.types.PathImpl[java.lang.Boolean](BooleanExpression.this.getType(), alias))
+[INFO]   };
+[INFO]   abstract trait StringExpression extends java.lang.Object with com.mysema.query.scala.ComparableExpression[String] with ScalaObject {
+[INFO]     def /*StringExpression*/$init$(): Unit = {
+[INFO]       ()
+[INFO]     };
+[INFO]     def like(right: String): com.mysema.query.scala.BooleanExpression = StringExpression.this.like(com.mysema.query.scala.Resolver.resolve(right));
+[INFO]     def like(right: com.mysema.query.types.Expression[String]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.LIKE, this, right);
+[INFO]     def append(right: com.mysema.query.types.Expression[String]): com.mysema.query.scala.StringExpression = com.mysema.query.scala.Operations.string(com.mysema.query.types.Ops.CONCAT, this, right);
+[INFO]     def append(right: String): com.mysema.query.scala.StringExpression = StringExpression.this.append(com.mysema.query.scala.Resolver.resolve(right));
+[INFO]     def concat(right: com.mysema.query.types.Expression[String]): com.mysema.query.scala.StringExpression = StringExpression.this.append(right);
+[INFO]     def concat(right: String): com.mysema.query.scala.StringExpression = StringExpression.this.append(right);
+[INFO]     def prepend(right: com.mysema.query.types.Expression[String]): com.mysema.query.scala.StringExpression = com.mysema.query.scala.Operations.string(com.mysema.query.types.Ops.CONCAT, right, this);
+[INFO]     def prepend(right: String): com.mysema.query.scala.StringExpression = StringExpression.this.prepend(com.mysema.query.scala.Resolver.resolve(right));
+[INFO]     def stringValue(): com.mysema.query.scala.StringExpression = this;
+[INFO]     def lower(): com.mysema.query.scala.StringExpression = StringExpression.this.toLowerCase();
+[INFO]     def upper(): com.mysema.query.scala.StringExpression = StringExpression.this.toUpperCase();
+[INFO]     def matches(right: com.mysema.query.types.Expression[String]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.MATCHES, this, right);
+[INFO]     def matches(right: String): com.mysema.query.scala.BooleanExpression = StringExpression.this.matches(com.mysema.query.scala.Resolver.resolve(right));
+[INFO]     def indexOf(right: com.mysema.query.types.Expression[String]): com.mysema.query.scala.NumberExpression[Integer] = com.mysema.query.scala.Operations.number[Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.INDEX_OF, this, right);
+[INFO]     def indexOf(right: String): com.mysema.query.scala.NumberExpression[Integer] = StringExpression.this.indexOf(com.mysema.query.scala.Resolver.resolve(right));
+[INFO]     def indexOf(left: String, right: Int): com.mysema.query.scala.NumberExpression[Integer] = StringExpression.this.indexOf(com.mysema.query.scala.Resolver.resolve(left), right);
+[INFO]     def indexOf(left: com.mysema.query.types.Expression[String], right: Int): com.mysema.query.scala.NumberExpression[Integer] = com.mysema.query.scala.Operations.number[Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.INDEX_OF_2ARGS, this, left, com.mysema.query.scala.Resolver.resolve[Int](right));
+[INFO]     def charAt(right: com.mysema.query.types.Expression[Integer]): com.mysema.query.scala.SimpleExpression[java.lang.Character] = com.mysema.query.scala.Operations.simple[java.lang.Character](classOf[java.lang.Character], com.mysema.query.types.Ops.CHAR_AT, this, right);
+[INFO]     def charAt(right: Integer): com.mysema.query.scala.SimpleExpression[Character] = StringExpression.this.charAt(com.mysema.query.scala.Resolver.resolve(right));
+[INFO]     def contains(right: com.mysema.query.types.Expression[String]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.STRING_CONTAINS, this, right);
+[INFO]     def contains(right: String): com.mysema.query.scala.BooleanExpression = StringExpression.this.contains(com.mysema.query.scala.Resolver.resolve(right));
+[INFO]     def endsWith(right: com.mysema.query.types.Expression[String]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.ENDS_WITH, this, right);
+[INFO]     def endsWith(right: String): com.mysema.query.scala.BooleanExpression = StringExpression.this.endsWith(com.mysema.query.scala.Resolver.resolve(right));
+[INFO]     def equalsIgnoreCase(right: com.mysema.query.types.Expression[String]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.EQ_IGNORE_CASE, this, right);
+[INFO]     def equalsIgnoreCase(right: String): com.mysema.query.scala.BooleanExpression = StringExpression.this.equalsIgnoreCase(com.mysema.query.scala.Resolver.resolve(right));
+[INFO]     def isEmpty(): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.STRING_IS_EMPTY, this);
+[INFO]     def length(): com.mysema.query.scala.NumberExpression[Integer] = com.mysema.query.scala.Operations.number[Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.STRING_LENGTH, this);
+[INFO]     def startsWith(right: com.mysema.query.types.Expression[String]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.STARTS_WITH, this, right);
+[INFO]     def startsWith(right: String): com.mysema.query.scala.BooleanExpression = StringExpression.this.startsWith(com.mysema.query.scala.Resolver.resolve(right));
+[INFO]     def substring(right: Int): com.mysema.query.scala.StringExpression = com.mysema.query.scala.Operations.string(com.mysema.query.types.Ops.SUBSTR_1ARG, this, com.mysema.query.scala.Resolver.resolve[Int](right));
+[INFO]     def substring(right: Int, arg1: Int): com.mysema.query.scala.StringExpression = com.mysema.query.scala.Operations.string(com.mysema.query.types.Ops.SUBSTR_2ARGS, this, com.mysema.query.scala.Resolver.resolve[Int](right), com.mysema.query.scala.Resolver.resolve[Int](arg1));
+[INFO]     def toLowerCase(): com.mysema.query.scala.StringExpression = com.mysema.query.scala.Operations.string(com.mysema.query.types.Ops.LOWER, this);
+[INFO]     def toUpperCase(): com.mysema.query.scala.StringExpression = com.mysema.query.scala.Operations.string(com.mysema.query.types.Ops.UPPER, this);
+[INFO]     def trim(): com.mysema.query.scala.StringExpression = com.mysema.query.scala.Operations.string(com.mysema.query.types.Ops.TRIM, this);
+[INFO]     def containsIgnoreCase(right: com.mysema.query.types.Expression[String]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.STRING_CONTAINS_IC, this, right);
+[INFO]     def containsIgnoreCase(right: String): com.mysema.query.scala.BooleanExpression = StringExpression.this.containsIgnoreCase(com.mysema.query.scala.Resolver.resolve(right));
+[INFO]     def endsWithIgnoreCase(right: com.mysema.query.types.Expression[String]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.ENDS_WITH_IC, this, right);
+[INFO]     def endsWithIgnoreCase(right: String): com.mysema.query.scala.BooleanExpression = StringExpression.this.endsWithIgnoreCase(com.mysema.query.scala.Resolver.resolve(right));
+[INFO]     def isNotEmpty(): com.mysema.query.scala.BooleanExpression = StringExpression.this.isEmpty().not();
+[INFO]     def startsWithIgnoreCase(right: com.mysema.query.types.Expression[String]): com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Operations.boolean(com.mysema.query.types.Ops.STARTS_WITH_IC, this, right);
+[INFO]     def startsWithIgnoreCase(right: String): com.mysema.query.scala.BooleanExpression = StringExpression.this.startsWithIgnoreCase(com.mysema.query.scala.Resolver.resolve(right));
+[INFO]     override def as(right: com.mysema.query.types.Path[String]): com.mysema.query.scala.StringExpression = com.mysema.query.scala.Operations.string(com.mysema.query.types.Ops.ALIAS.asInstanceOf[com.mysema.query.types.Operator[String]], this, right);
+[INFO]     override def as(alias: String): com.mysema.query.scala.StringExpression = StringExpression.this.as(new com.mysema.query.types.PathImpl[String](StringExpression.this.getType(), alias))
+[INFO]   };
+[INFO]   abstract trait TemporalExpression[T >: Nothing <: java.lang.Comparable[_]] extends java.lang.Object with com.mysema.query.scala.ComparableExpression[T] with ScalaObject {
+[INFO]     def /*TemporalExpression*/$init$(): Unit = {
+[INFO]       ()
+[INFO]     };
+[INFO]     def after(right: T): com.mysema.query.scala.BooleanExpression = TemporalExpression.this.gt(right);
+[INFO]     def after(right: com.mysema.query.types.Expression[T]): com.mysema.query.scala.BooleanExpression = TemporalExpression.this.gt(right);
+[INFO]     def before(right: T): com.mysema.query.scala.BooleanExpression = TemporalExpression.this.lt(right);
+[INFO]     def before(right: com.mysema.query.types.Expression[T]): com.mysema.query.scala.BooleanExpression = TemporalExpression.this.lt(right)
+[INFO]   };
+[INFO]   abstract trait TimeExpression[T >: Nothing <: java.lang.Comparable[_]] extends java.lang.Object with com.mysema.query.scala.TemporalExpression[T] with ScalaObject {
+[INFO]     def /*TimeExpression*/$init$(): Unit = {
+[INFO]       ()
+[INFO]     };
+[INFO]     def hour(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.HOUR, this);
+[INFO]     def minute(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.MINUTE, this);
+[INFO]     def second(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.SECOND, this);
+[INFO]     def milliSecond(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.MILLISECOND, this);
+[INFO]     override def as(right: com.mysema.query.types.Path[T]): com.mysema.query.scala.TimeExpression[T] = com.mysema.query.scala.Operations.time[T](TimeExpression.this.getType(), com.mysema.query.types.Ops.ALIAS.asInstanceOf[com.mysema.query.types.Operator[T]], this, right);
+[INFO]     override def as(alias: String): com.mysema.query.scala.TimeExpression[T] = TimeExpression.this.as(new com.mysema.query.types.PathImpl[T](TimeExpression.this.getType(), alias))
+[INFO]   };
+[INFO]   abstract trait DateTimeExpression[T >: Nothing <: java.lang.Comparable[_]] extends java.lang.Object with com.mysema.query.scala.TemporalExpression[T] with ScalaObject {
+[INFO]     def /*DateTimeExpression*/$init$(): Unit = {
+[INFO]       ()
+[INFO]     };
+[INFO]     def min(): com.mysema.query.scala.DateTimeExpression[java.lang.Comparable[_]] = com.mysema.query.scala.Operations.dateTime[java.lang.Comparable[_]](DateTimeExpression.this.getType(), com.mysema.query.types.Ops.AggOps.MIN_AGG, this);
+[INFO]     def max(): com.mysema.query.scala.DateTimeExpression[java.lang.Comparable[_]] = com.mysema.query.scala.Operations.dateTime[java.lang.Comparable[_]](DateTimeExpression.this.getType(), com.mysema.query.types.Ops.AggOps.MAX_AGG, this);
+[INFO]     def dayOfMonth(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.DAY_OF_MONTH, this);
+[INFO]     def dayOfWeek(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.DAY_OF_WEEK, this);
+[INFO]     def dayOfYear(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.DAY_OF_YEAR, this);
+[INFO]     def week(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.WEEK, this);
+[INFO]     def month(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.MONTH, this);
+[INFO]     def year(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.YEAR, this);
+[INFO]     def yearMonth(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.YEAR_MONTH, this);
+[INFO]     def hour(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.HOUR, this);
+[INFO]     def minute(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.MINUTE, this);
+[INFO]     def second(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.SECOND, this);
+[INFO]     def milliSecond(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.DAY_OF_YEAR, this);
+[INFO]     override def as(right: com.mysema.query.types.Path[T]): com.mysema.query.scala.DateTimeExpression[T] = com.mysema.query.scala.Operations.dateTime[T](DateTimeExpression.this.getType(), com.mysema.query.types.Ops.ALIAS.asInstanceOf[com.mysema.query.types.Operator[T]], this, right);
+[INFO]     override def as(alias: String): com.mysema.query.scala.DateTimeExpression[T] = DateTimeExpression.this.as(new com.mysema.query.types.PathImpl[T](DateTimeExpression.this.getType(), alias))
+[INFO]   };
+[INFO]   abstract trait DateExpression[T >: Nothing <: java.lang.Comparable[_]] extends java.lang.Object with com.mysema.query.scala.TemporalExpression[T] with ScalaObject {
+[INFO]     def /*DateExpression*/$init$(): Unit = {
+[INFO]       ()
+[INFO]     };
+[INFO]     def min(): com.mysema.query.scala.DateExpression[java.lang.Comparable[_]] = com.mysema.query.scala.Operations.date[java.lang.Comparable[_]](DateExpression.this.getType(), com.mysema.query.types.Ops.AggOps.MIN_AGG, this);
+[INFO]     def max(): com.mysema.query.scala.DateExpression[java.lang.Comparable[_]] = com.mysema.query.scala.Operations.date[java.lang.Comparable[_]](DateExpression.this.getType(), com.mysema.query.types.Ops.AggOps.MAX_AGG, this);
+[INFO]     def dayOfMonth(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.DAY_OF_MONTH, this);
+[INFO]     def dayOfWeek(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.DAY_OF_WEEK, this);
+[INFO]     def dayOfYear(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.DAY_OF_YEAR, this);
+[INFO]     def week(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.WEEK, this);
+[INFO]     def month(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.MONTH, this);
+[INFO]     def year(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.YEAR, this);
+[INFO]     def yearMonth(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.DateTimeOps.YEAR_MONTH, this);
+[INFO]     override def as(right: com.mysema.query.types.Path[T]): com.mysema.query.scala.DateExpression[T] = com.mysema.query.scala.Operations.date[T](DateExpression.this.getType(), com.mysema.query.types.Ops.ALIAS.asInstanceOf[com.mysema.query.types.Operator[T]], this, right);
+[INFO]     override def as(alias: String): com.mysema.query.scala.DateExpression[T] = DateExpression.this.as(new com.mysema.query.types.PathImpl[T](DateExpression.this.getType(), alias))
+[INFO]   };
+[INFO]   abstract trait EnumExpression[T >: Nothing <: java.lang.Enum[T]] extends java.lang.Object with com.mysema.query.scala.ComparableExpression[T] with ScalaObject {
+[INFO]     def /*EnumExpression*/$init$(): Unit = {
+[INFO]       ()
+[INFO]     };
+[INFO]     def ordinal(): com.mysema.query.scala.NumberExpression[java.lang.Integer] = com.mysema.query.scala.Operations.number[java.lang.Integer](classOf[java.lang.Integer], com.mysema.query.types.Ops.ORDINAL, this);
+[INFO]     override def as(right: com.mysema.query.types.Path[T]): com.mysema.query.scala.EnumExpression[T] = com.mysema.query.scala.Operations.enum[T](EnumExpression.this.getType().asInstanceOf[Class[T]], com.mysema.query.types.Ops.ALIAS.asInstanceOf[com.mysema.query.types.Operator[T]], this, right);
+[INFO]     override def as(alias: String): com.mysema.query.scala.EnumExpression[T] = EnumExpression.this.as(new com.mysema.query.types.PathImpl[T](EnumExpression.this.getType(), alias))
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: Operations.scala
+[INFO] package com.mysema.query.scala {
+[INFO]   import com.mysema.query.types._;
+[INFO]   final object Operations extends java.lang.Object with ScalaObject {
+[INFO]     def this(): object com.mysema.query.scala.Operations = {
+[INFO]       Operations.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     def simple[T >: Nothing <: Any](t: Class[_ <: T], operator: com.mysema.query.types.Operator[_ >: T], args: com.mysema.query.types.Expression[_]*): com.mysema.query.scala.SimpleExpression[T] = new com.mysema.query.scala.SimpleOperation[T](t, operator, (args: _*));
+[INFO]     def comparable[T >: Nothing <: java.lang.Comparable[_]](t: Class[_ <: T], operator: com.mysema.query.types.Operator[_ >: T], args: com.mysema.query.types.Expression[_]*): com.mysema.query.scala.ComparableExpression[T] = new com.mysema.query.scala.ComparableOperation[T](t, operator, (args: _*));
+[INFO]     def date[T >: Nothing <: java.lang.Comparable[_]](t: Class[_ <: T], operator: com.mysema.query.types.Operator[_ >: T], args: com.mysema.query.types.Expression[_]*): com.mysema.query.scala.DateExpression[T] = new com.mysema.query.scala.DateOperation[T](t, operator, (args: _*));
+[INFO]     def dateTime[T >: Nothing <: java.lang.Comparable[_]](t: Class[_ <: T], operator: com.mysema.query.types.Operator[_ >: T], args: com.mysema.query.types.Expression[_]*): com.mysema.query.scala.DateTimeExpression[T] = new com.mysema.query.scala.DateTimeOperation[T](t, operator, (args: _*));
+[INFO]     def time[T >: Nothing <: java.lang.Comparable[_]](t: Class[_ <: T], operator: com.mysema.query.types.Operator[_ >: T], args: com.mysema.query.types.Expression[_]*): com.mysema.query.scala.TimeExpression[T] = new com.mysema.query.scala.TimeOperation[T](t, operator, (args: _*));
+[INFO]     def number[T >: Nothing <: java.lang.Number with java.lang.Comparable[T]](t: Class[_ <: T], operator: com.mysema.query.types.Operator[_ >: T], args: com.mysema.query.types.Expression[_]*): com.mysema.query.scala.NumberExpression[T] = new com.mysema.query.scala.NumberOperation[T](t, operator, (args: _*));
+[INFO]     def boolean(operator: com.mysema.query.types.Operator[_ >: java.lang.Boolean], args: com.mysema.query.types.Expression[_]*): com.mysema.query.scala.BooleanExpression = new BooleanOperation(operator, (args: _*));
+[INFO]     def string(operator: com.mysema.query.types.Operator[_ >: String], args: com.mysema.query.types.Expression[_]*): com.mysema.query.scala.StringExpression = new StringOperation(operator, (args: _*));
+[INFO]     def enum[T >: Nothing <: java.lang.Enum[T]](t: Class[T], operator: com.mysema.query.types.Operator[_ >: T], args: com.mysema.query.types.Expression[_]*): com.mysema.query.scala.EnumExpression[T] = new com.mysema.query.scala.EnumOperation[T](t, operator, (args: _*))
+[INFO]   };
+[INFO]   class SimpleOperation[T >: Nothing <: Any] extends com.mysema.query.types.OperationImpl[T] with com.mysema.query.scala.SimpleExpression[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[_ <: T] = _;
+[INFO]     <paramaccessor> private[this] val operator: com.mysema.query.types.Operator[_ >: T] = _;
+[INFO]     <paramaccessor> private[this] val args: com.mysema.query.types.Expression[_]* = _;
+[INFO]     def this(t: Class[_ <: T], operator: com.mysema.query.types.Operator[_ >: T], args: com.mysema.query.types.Expression[_]*): com.mysema.query.scala.SimpleOperation[T] = {
+[INFO]       SimpleOperation.super.this(t, operator, (args: _*));
+[INFO]       ()
+[INFO]     };
+[INFO]     <empty>
+[INFO]   };
+[INFO]   class ComparableOperation[T >: Nothing <: java.lang.Comparable[_]] extends com.mysema.query.types.OperationImpl[T] with com.mysema.query.scala.ComparableExpression[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[_ <: T] = _;
+[INFO]     <paramaccessor> private[this] val operator: com.mysema.query.types.Operator[_ >: T] = _;
+[INFO]     <paramaccessor> private[this] val args: com.mysema.query.types.Expression[_]* = _;
+[INFO]     def this(t: Class[_ <: T], operator: com.mysema.query.types.Operator[_ >: T], args: com.mysema.query.types.Expression[_]*): com.mysema.query.scala.ComparableOperation[T] = {
+[INFO]       ComparableOperation.super.this(t, operator, (args: _*));
+[INFO]       ()
+[INFO]     };
+[INFO]     <empty>
+[INFO]   };
+[INFO]   class NumberOperation[T >: Nothing <: java.lang.Number with java.lang.Comparable[T]] extends com.mysema.query.types.OperationImpl[T] with com.mysema.query.scala.NumberExpression[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[_ <: T] = _;
+[INFO]     <paramaccessor> private[this] val operator: com.mysema.query.types.Operator[_ >: T] = _;
+[INFO]     <paramaccessor> private[this] val args: com.mysema.query.types.Expression[_]* = _;
+[INFO]     def this(t: Class[_ <: T], operator: com.mysema.query.types.Operator[_ >: T], args: com.mysema.query.types.Expression[_]*): com.mysema.query.scala.NumberOperation[T] = {
+[INFO]       NumberOperation.super.this(t, operator, (args: _*));
+[INFO]       ()
+[INFO]     };
+[INFO]     <empty>
+[INFO]   };
+[INFO]   class BooleanOperation extends com.mysema.query.types.OperationImpl[java.lang.Boolean] with com.mysema.query.scala.BooleanExpression with ScalaObject {
+[INFO]     <paramaccessor> private[this] val operator: com.mysema.query.types.Operator[_ >: java.lang.Boolean] = _;
+[INFO]     <paramaccessor> private[this] val args: com.mysema.query.types.Expression[_]* = _;
+[INFO]     def this(operator: com.mysema.query.types.Operator[_ >: java.lang.Boolean], args: com.mysema.query.types.Expression[_]*): com.mysema.query.scala.BooleanOperation = {
+[INFO]       BooleanOperation.super.this(classOf[java.lang.Boolean], operator, (args: _*));
+[INFO]       ()
+[INFO]     };
+[INFO]     <empty>
+[INFO]   };
+[INFO]   class StringOperation extends com.mysema.query.types.OperationImpl[String] with com.mysema.query.scala.StringExpression with ScalaObject {
+[INFO]     <paramaccessor> private[this] val operator: com.mysema.query.types.Operator[_ >: String] = _;
+[INFO]     <paramaccessor> private[this] val args: com.mysema.query.types.Expression[_]* = _;
+[INFO]     def this(operator: com.mysema.query.types.Operator[_ >: String], args: com.mysema.query.types.Expression[_]*): com.mysema.query.scala.StringOperation = {
+[INFO]       StringOperation.super.this(classOf[java.lang.String], operator, (args: _*));
+[INFO]       ()
+[INFO]     };
+[INFO]     <empty>
+[INFO]   };
+[INFO]   class DateOperation[T >: Nothing <: java.lang.Comparable[_]] extends com.mysema.query.types.OperationImpl[T] with com.mysema.query.scala.DateExpression[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[_ <: T] = _;
+[INFO]     <paramaccessor> private[this] val operator: com.mysema.query.types.Operator[_ >: T] = _;
+[INFO]     <paramaccessor> private[this] val args: com.mysema.query.types.Expression[_]* = _;
+[INFO]     def this(t: Class[_ <: T], operator: com.mysema.query.types.Operator[_ >: T], args: com.mysema.query.types.Expression[_]*): com.mysema.query.scala.DateOperation[T] = {
+[INFO]       DateOperation.super.this(t, operator, (args: _*));
+[INFO]       ()
+[INFO]     };
+[INFO]     <empty>
+[INFO]   };
+[INFO]   class DateTimeOperation[T >: Nothing <: java.lang.Comparable[_]] extends com.mysema.query.types.OperationImpl[T] with com.mysema.query.scala.DateTimeExpression[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[_ <: T] = _;
+[INFO]     <paramaccessor> private[this] val operator: com.mysema.query.types.Operator[_ >: T] = _;
+[INFO]     <paramaccessor> private[this] val args: com.mysema.query.types.Expression[_]* = _;
+[INFO]     def this(t: Class[_ <: T], operator: com.mysema.query.types.Operator[_ >: T], args: com.mysema.query.types.Expression[_]*): com.mysema.query.scala.DateTimeOperation[T] = {
+[INFO]       DateTimeOperation.super.this(t, operator, (args: _*));
+[INFO]       ()
+[INFO]     };
+[INFO]     <empty>
+[INFO]   };
+[INFO]   class TimeOperation[T >: Nothing <: java.lang.Comparable[_]] extends com.mysema.query.types.OperationImpl[T] with com.mysema.query.scala.TimeExpression[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[_ <: T] = _;
+[INFO]     <paramaccessor> private[this] val operator: com.mysema.query.types.Operator[_ >: T] = _;
+[INFO]     <paramaccessor> private[this] val args: com.mysema.query.types.Expression[_]* = _;
+[INFO]     def this(t: Class[_ <: T], operator: com.mysema.query.types.Operator[_ >: T], args: com.mysema.query.types.Expression[_]*): com.mysema.query.scala.TimeOperation[T] = {
+[INFO]       TimeOperation.super.this(t, operator, (args: _*));
+[INFO]       ()
+[INFO]     };
+[INFO]     <empty>
+[INFO]   };
+[INFO]   class EnumOperation[T >: Nothing <: java.lang.Enum[T]] extends com.mysema.query.types.OperationImpl[T] with com.mysema.query.scala.EnumExpression[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[T] = _;
+[INFO]     <paramaccessor> private[this] val operator: com.mysema.query.types.Operator[_ >: T] = _;
+[INFO]     <paramaccessor> private[this] val args: com.mysema.query.types.Expression[_]* = _;
+[INFO]     def this(t: Class[T], operator: com.mysema.query.types.Operator[_ >: T], args: com.mysema.query.types.Expression[_]*): com.mysema.query.scala.EnumOperation[T] = {
+[INFO]       EnumOperation.super.this(t, operator, (args: _*));
+[INFO]       ()
+[INFO]     };
+[INFO]     <empty>
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: Paths.scala
+[INFO] package com.mysema.query.scala {
+[INFO]   import com.mysema.query.types._;
+[INFO]   import com.mysema.query.types.PathMetadataFactory._;
+[INFO]   final object Paths extends java.lang.Object with ScalaObject {
+[INFO]     def this(): object com.mysema.query.scala.Paths = {
+[INFO]       Paths.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     def array[T >: Nothing <: Array[_]](t: Class[T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.ArrayPath[T] = new com.mysema.query.scala.ArrayPath[T](t, md);
+[INFO]     def simple[T >: Nothing <: Any](t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.SimplePath[T] = new com.mysema.query.scala.SimplePath[T](t, md);
+[INFO]     def entity[T >: Nothing <: Any](t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.EntityPathImpl[T] = new com.mysema.query.scala.EntityPathImpl[T](t, md);
+[INFO]     def collection[T >: Nothing <: Any](t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.CollectionPath[T] = new com.mysema.query.scala.CollectionPath[T](t, md);
+[INFO]     def set[T >: Nothing <: Any](t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.SetPath[T] = new com.mysema.query.scala.SetPath[T](t, md);
+[INFO]     def list[T >: Nothing <: Any](t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.ListPath[T] = new com.mysema.query.scala.ListPath[T](t, md);
+[INFO]     def map[K >: Nothing <: Any, V >: Nothing <: Any](k: Class[_ <: K], v: Class[_ <: V], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.MapPath[K,V] = new com.mysema.query.scala.MapPath[K,V](k, v, md);
+[INFO]     def comparable[T >: Nothing <: java.lang.Comparable[_]](t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.ComparablePath[T] = new com.mysema.query.scala.ComparablePath[T](t, md);
+[INFO]     def date[T >: Nothing <: java.lang.Comparable[_]](t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.DatePath[T] = new com.mysema.query.scala.DatePath[T](t, md);
+[INFO]     def dateTime[T >: Nothing <: java.lang.Comparable[_]](t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.DateTimePath[T] = new com.mysema.query.scala.DateTimePath[T](t, md);
+[INFO]     def time[T >: Nothing <: java.lang.Comparable[_]](t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.TimePath[T] = new com.mysema.query.scala.TimePath[T](t, md);
+[INFO]     def number[T >: Nothing <: java.lang.Number with java.lang.Comparable[T]](t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.NumberPath[T] = new com.mysema.query.scala.NumberPath[T](t, md);
+[INFO]     def boolean(md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.BooleanPath = new BooleanPath(md);
+[INFO]     def string(md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.StringPath = new StringPath(md);
+[INFO]     def enum[T >: Nothing <: java.lang.Enum[T]](t: Class[T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.EnumPath[T] = new com.mysema.query.scala.EnumPath[T](t, md)
+[INFO]   };
+[INFO]   class SimplePath[T >: Nothing <: Any] extends com.mysema.query.types.PathImpl[T] with com.mysema.query.scala.SimpleExpression[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[_ <: T] = _;
+[INFO]     <paramaccessor> private[this] val md: com.mysema.query.types.PathMetadata[_] = _;
+[INFO]     def this(t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.SimplePath[T] = {
+[INFO]       SimplePath.super.this(t, md);
+[INFO]       ()
+[INFO]     };
+[INFO]     def this(t: Class[_ <: T], variable: String): com.mysema.query.scala.SimplePath[T] = {
+[INFO]       SimplePath.this.this(t, com.mysema.query.types.PathMetadataFactory.forVariable(variable));
+[INFO]       ()
+[INFO]     };
+[INFO]     def ~: com.mysema.query.scala.SimplePath[T] = this
+[INFO]   };
+[INFO]   class ArrayPath[T >: Nothing <: Array[_]] extends com.mysema.query.types.PathImpl[T] with com.mysema.query.scala.ArrayExpression[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[T] = _;
+[INFO]     <paramaccessor> private[this] val md: com.mysema.query.types.PathMetadata[_] = _;
+[INFO]     def this(t: Class[T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.ArrayPath[T] = {
+[INFO]       ArrayPath.super.this(t, md);
+[INFO]       ()
+[INFO]     };
+[INFO]     def this(t: Class[T], variable: String): com.mysema.query.scala.ArrayPath[T] = {
+[INFO]       ArrayPath.this.this(t, com.mysema.query.types.PathMetadataFactory.forVariable(variable));
+[INFO]       ()
+[INFO]     };
+[INFO]     def ~: com.mysema.query.scala.ArrayPath[T] = this
+[INFO]   };
+[INFO]   class EntityPathImpl[T >: Nothing <: Any] extends com.mysema.query.types.PathImpl[T] with com.mysema.query.scala.SimpleExpression[T] with com.mysema.query.types.EntityPath[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[_ <: T] = _;
+[INFO]     <paramaccessor> private[this] val md: com.mysema.query.types.PathMetadata[_] = _;
+[INFO]     def this(t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.EntityPathImpl[T] = {
+[INFO]       EntityPathImpl.super.this(t, md);
+[INFO]       ()
+[INFO]     };
+[INFO]     def this(t: Class[_ <: T], variable: String): com.mysema.query.scala.EntityPathImpl[T] = {
+[INFO]       EntityPathImpl.this.this(t, com.mysema.query.types.PathMetadataFactory.forVariable(variable));
+[INFO]       ()
+[INFO]     };
+[INFO]     def ~: com.mysema.query.scala.EntityPathImpl[T] = this
+[INFO]   };
+[INFO]   class CollectionPath[T >: Nothing <: Any] extends com.mysema.query.types.PathImpl[java.util.Collection[T]] with com.mysema.query.scala.CollectionExpression[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[_ <: T] = _;
+[INFO]     <paramaccessor> private[this] val md: com.mysema.query.types.PathMetadata[_] = _;
+[INFO]     def this(t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.CollectionPath[T] = {
+[INFO]       CollectionPath.super.this(classOf[java.util.Collection], md);
+[INFO]       ()
+[INFO]     };
+[INFO]     def this(t: Class[_ <: T], variable: String): com.mysema.query.scala.CollectionPath[T] = {
+[INFO]       CollectionPath.this.this(t, com.mysema.query.types.PathMetadataFactory.forVariable(variable));
+[INFO]       ()
+[INFO]     };
+[INFO]     def ~: com.mysema.query.scala.CollectionPath[T] = this;
+[INFO]     def getParameter(i: Int): java.lang.Class[_ <: T] = CollectionPath.this.t
+[INFO]   };
+[INFO]   class SetPath[T >: Nothing <: Any] extends com.mysema.query.types.PathImpl[java.util.Set[T]] with com.mysema.query.scala.SetExpression[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[_ <: T] = _;
+[INFO]     <paramaccessor> private[this] val md: com.mysema.query.types.PathMetadata[_] = _;
+[INFO]     def this(t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.SetPath[T] = {
+[INFO]       SetPath.super.this(classOf[java.util.Set], md);
+[INFO]       ()
+[INFO]     };
+[INFO]     def this(t: Class[_ <: T], variable: String): com.mysema.query.scala.SetPath[T] = {
+[INFO]       SetPath.this.this(t, com.mysema.query.types.PathMetadataFactory.forVariable(variable));
+[INFO]       ()
+[INFO]     };
+[INFO]     def ~: com.mysema.query.scala.SetPath[T] = this;
+[INFO]     def getParameter(i: Int): java.lang.Class[_ <: T] = SetPath.this.t
+[INFO]   };
+[INFO]   class ListPath[T >: Nothing <: Any] extends com.mysema.query.types.PathImpl[java.util.List[T]] with com.mysema.query.scala.ListExpression[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[_ <: T] = _;
+[INFO]     <paramaccessor> private[this] val md: com.mysema.query.types.PathMetadata[_] = _;
+[INFO]     def this(t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.ListPath[T] = {
+[INFO]       ListPath.super.this(classOf[java.util.List], md);
+[INFO]       ()
+[INFO]     };
+[INFO]     def this(t: Class[_ <: T], variable: String): com.mysema.query.scala.ListPath[T] = {
+[INFO]       ListPath.this.this(t, com.mysema.query.types.PathMetadataFactory.forVariable(variable));
+[INFO]       ()
+[INFO]     };
+[INFO]     def ~: com.mysema.query.scala.ListPath[T] = this;
+[INFO]     def getParameter(i: Int): java.lang.Class[_ <: T] = ListPath.this.t
+[INFO]   };
+[INFO]   class MapPath[K >: Nothing <: Any, V >: Nothing <: Any] extends com.mysema.query.types.PathImpl[java.util.Map[K,V]] with com.mysema.query.scala.MapExpression[K,V] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val k: Class[_ <: K] = _;
+[INFO]     <paramaccessor> private[this] val v: Class[_ <: V] = _;
+[INFO]     <paramaccessor> private[this] val md: com.mysema.query.types.PathMetadata[_] = _;
+[INFO]     def this(k: Class[_ <: K], v: Class[_ <: V], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.MapPath[K,V] = {
+[INFO]       MapPath.super.this(classOf[java.util.Map], md);
+[INFO]       ()
+[INFO]     };
+[INFO]     def this(k: Class[_ <: K], v: Class[_ <: V], variable: String): com.mysema.query.scala.MapPath[K,V] = {
+[INFO]       MapPath.this.this(k, v, com.mysema.query.types.PathMetadataFactory.forVariable(variable));
+[INFO]       ()
+[INFO]     };
+[INFO]     def ~: com.mysema.query.scala.MapPath[K,V] = this;
+[INFO]     def getParameter(i: Int): Class[_] = if (i.==(0))
+[INFO]       MapPath.this.k
+[INFO]     else
+[INFO]       MapPath.this.v
+[INFO]   };
+[INFO]   class ComparablePath[T >: Nothing <: java.lang.Comparable[_]] extends com.mysema.query.types.PathImpl[T] with com.mysema.query.scala.ComparableExpression[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[_ <: T] = _;
+[INFO]     <paramaccessor> private[this] val md: com.mysema.query.types.PathMetadata[_] = _;
+[INFO]     def this(t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.ComparablePath[T] = {
+[INFO]       ComparablePath.super.this(t, md);
+[INFO]       ()
+[INFO]     };
+[INFO]     def this(t: Class[_ <: T], variable: String): com.mysema.query.scala.ComparablePath[T] = {
+[INFO]       ComparablePath.this.this(t, com.mysema.query.types.PathMetadataFactory.forVariable(variable));
+[INFO]       ()
+[INFO]     };
+[INFO]     def ~: com.mysema.query.scala.ComparablePath[T] = this
+[INFO]   };
+[INFO]   class NumberPath[T >: Nothing <: java.lang.Number with java.lang.Comparable[T]] extends com.mysema.query.types.PathImpl[T] with com.mysema.query.scala.NumberExpression[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[_ <: T] = _;
+[INFO]     <paramaccessor> private[this] val md: com.mysema.query.types.PathMetadata[_] = _;
+[INFO]     def this(t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.NumberPath[T] = {
+[INFO]       NumberPath.super.this(t, md);
+[INFO]       ()
+[INFO]     };
+[INFO]     def this(t: Class[_ <: T], variable: String): com.mysema.query.scala.NumberPath[T] = {
+[INFO]       NumberPath.this.this(t, com.mysema.query.types.PathMetadataFactory.forVariable(variable));
+[INFO]       ()
+[INFO]     };
+[INFO]     def ~: com.mysema.query.scala.NumberPath[T] = this
+[INFO]   };
+[INFO]   class BooleanPath extends com.mysema.query.types.PathImpl[java.lang.Boolean] with com.mysema.query.scala.BooleanExpression with ScalaObject {
+[INFO]     <paramaccessor> private[this] val md: com.mysema.query.types.PathMetadata[_] = _;
+[INFO]     def this(md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.BooleanPath = {
+[INFO]       BooleanPath.super.this(classOf[java.lang.Boolean], md);
+[INFO]       ()
+[INFO]     };
+[INFO]     def this(variable: String): com.mysema.query.scala.BooleanPath = {
+[INFO]       BooleanPath.this.this(com.mysema.query.types.PathMetadataFactory.forVariable(variable));
+[INFO]       ()
+[INFO]     };
+[INFO]     def ~: com.mysema.query.scala.BooleanPath = this
+[INFO]   };
+[INFO]   class StringPath extends com.mysema.query.types.PathImpl[String] with com.mysema.query.scala.StringExpression with ScalaObject {
+[INFO]     <paramaccessor> private[this] val md: com.mysema.query.types.PathMetadata[_] = _;
+[INFO]     def this(md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.StringPath = {
+[INFO]       StringPath.super.this(classOf[java.lang.String], md);
+[INFO]       ()
+[INFO]     };
+[INFO]     def this(variable: String): com.mysema.query.scala.StringPath = {
+[INFO]       StringPath.this.this(com.mysema.query.types.PathMetadataFactory.forVariable(variable));
+[INFO]       ()
+[INFO]     };
+[INFO]     def ~: com.mysema.query.scala.StringPath = this
+[INFO]   };
+[INFO]   class DatePath[T >: Nothing <: java.lang.Comparable[_]] extends com.mysema.query.types.PathImpl[T] with com.mysema.query.scala.DateExpression[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[_ <: T] = _;
+[INFO]     <paramaccessor> private[this] val md: com.mysema.query.types.PathMetadata[_] = _;
+[INFO]     def this(t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.DatePath[T] = {
+[INFO]       DatePath.super.this(t, md);
+[INFO]       ()
+[INFO]     };
+[INFO]     def this(t: Class[_ <: T], variable: String): com.mysema.query.scala.DatePath[T] = {
+[INFO]       DatePath.this.this(t, com.mysema.query.types.PathMetadataFactory.forVariable(variable));
+[INFO]       ()
+[INFO]     };
+[INFO]     def ~: com.mysema.query.scala.DatePath[T] = this
+[INFO]   };
+[INFO]   class DateTimePath[T >: Nothing <: java.lang.Comparable[_]] extends com.mysema.query.types.PathImpl[T] with com.mysema.query.scala.DateTimeExpression[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[_ <: T] = _;
+[INFO]     <paramaccessor> private[this] val md: com.mysema.query.types.PathMetadata[_] = _;
+[INFO]     def this(t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.DateTimePath[T] = {
+[INFO]       DateTimePath.super.this(t, md);
+[INFO]       ()
+[INFO]     };
+[INFO]     def this(t: Class[_ <: T], variable: String): com.mysema.query.scala.DateTimePath[T] = {
+[INFO]       DateTimePath.this.this(t, com.mysema.query.types.PathMetadataFactory.forVariable(variable));
+[INFO]       ()
+[INFO]     };
+[INFO]     def ~: com.mysema.query.scala.DateTimePath[T] = this
+[INFO]   };
+[INFO]   class TimePath[T >: Nothing <: java.lang.Comparable[_]] extends com.mysema.query.types.PathImpl[T] with com.mysema.query.scala.TimeExpression[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[_ <: T] = _;
+[INFO]     <paramaccessor> private[this] val md: com.mysema.query.types.PathMetadata[_] = _;
+[INFO]     def this(t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.TimePath[T] = {
+[INFO]       TimePath.super.this(t, md);
+[INFO]       ()
+[INFO]     };
+[INFO]     def this(t: Class[_ <: T], variable: String): com.mysema.query.scala.TimePath[T] = {
+[INFO]       TimePath.this.this(t, com.mysema.query.types.PathMetadataFactory.forVariable(variable));
+[INFO]       ()
+[INFO]     };
+[INFO]     def ~: com.mysema.query.scala.TimePath[T] = this
+[INFO]   };
+[INFO]   class EnumPath[T >: Nothing <: java.lang.Enum[T]] extends com.mysema.query.types.PathImpl[T] with com.mysema.query.scala.EnumExpression[T] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val t: Class[_ <: T] = _;
+[INFO]     <paramaccessor> private[this] val md: com.mysema.query.types.PathMetadata[_] = _;
+[INFO]     def this(t: Class[_ <: T], md: com.mysema.query.types.PathMetadata[_]): com.mysema.query.scala.EnumPath[T] = {
+[INFO]       EnumPath.super.this(t, md);
+[INFO]       ()
+[INFO]     };
+[INFO]     def this(t: Class[_ <: T], variable: String): com.mysema.query.scala.EnumPath[T] = {
+[INFO]       EnumPath.this.this(t, com.mysema.query.types.PathMetadataFactory.forVariable(variable));
+[INFO]       ()
+[INFO]     };
+[INFO]     def ~: com.mysema.query.scala.EnumPath[T] = this
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: Conversions.scala
+[INFO] package com.mysema.query.scala.sql {
+[INFO]   import com.mysema.query.types.expr._;
+[INFO]   import com.mysema.query.sql._;
+[INFO]   final object Conversions extends java.lang.Object with ScalaObject {
+[INFO]     def this(): object com.mysema.query.scala.sql.Conversions = {
+[INFO]       Conversions.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     def not(b: com.mysema.query.types.expr.BooleanExpression): com.mysema.query.types.expr.BooleanExpression = b.not();
+[INFO]     def count(e: com.mysema.query.types.expr.SimpleExpression[_]): com.mysema.query.types.expr.NumberExpression[java.lang.Long] = e.count();
+[INFO]     def min(e: com.mysema.query.types.expr.NumberExpression[_]): com.mysema.query.types.expr.NumberExpression[_] = e.min();
+[INFO]     def max(e: com.mysema.query.types.expr.NumberExpression[_]): com.mysema.query.types.expr.NumberExpression[_] = e.max();
+[INFO]     def sum(e: com.mysema.query.types.expr.NumberExpression[_]): com.mysema.query.types.expr.NumberExpression[_] = e.sum();
+[INFO]     def avg(e: com.mysema.query.types.expr.NumberExpression[_]): com.mysema.query.types.expr.NumberExpression[java.lang.Double] = e.avg()
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: ScalaBeanSerializer.scala
+[INFO] package com.mysema.query.scala.sql {
+[INFO]   import com.mysema.query.codegen._;
+[INFO]   import com.mysema.codegen.CodeWriter;
+[INFO]   import com.mysema.query;
+[INFO]   import java.util._;
+[INFO]   import java.io.IOException;
+[INFO]   import scala.reflect.BeanProperty;
+[INFO]   import scala.collection.JavaConversions._;
+[INFO]   import scala.collection.mutable.Set;
+[INFO]   class ScalaBeanSerializer extends java.lang.Object with com.mysema.query.codegen.Serializer with ScalaObject {
+[INFO]     def this(): com.mysema.query.scala.sql.ScalaBeanSerializer = {
+[INFO]       ScalaBeanSerializer.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] val javaBeanSupport: Boolean = true;
+[INFO]     <stable> <accessor> def javaBeanSupport: Boolean = ScalaBeanSerializer.this.javaBeanSupport;
+[INFO]     private[this] val javadocSuffix: java.lang.String = " is a Querydsl bean type";
+[INFO]     <stable> <accessor> def javadocSuffix: java.lang.String = ScalaBeanSerializer.this.javadocSuffix;
+[INFO]     def serialize(model: com.mysema.query.codegen.EntityType, serializerConfig: com.mysema.query.codegen.SerializerConfig, writer: com.mysema.codegen.CodeWriter): Unit = {
+[INFO]       val simpleName: java.lang.String = model.getSimpleName();
+[INFO]       if (model.getPackageName().isEmpty().unary_!)
+[INFO]         writer.packageDecl(model.getPackageName())
+[INFO]       else
+[INFO]         ();
+[INFO]       val importedClasses: scala.collection.mutable.Set[String] = ScalaBeanSerializer.this.getAnnotationTypes(model);
+[INFO]       if (ScalaBeanSerializer.this.javaBeanSupport)
+[INFO]         importedClasses.add("scala.reflect.BeanProperty")
+[INFO]       else
+[INFO]         ();
+[INFO]       if (model.hasLists())
+[INFO]         importedClasses.add(classOf[java.util.List].getName())
+[INFO]       else
+[INFO]         ();
+[INFO]       if (model.hasMaps())
+[INFO]         importedClasses.add(classOf[java.util.Map].getName())
+[INFO]       else
+[INFO]         ();
+[INFO]       writer.importClasses((importedClasses.toArray[String](reflect.this.ClassManifest.classType[String](classOf[java.lang.String])): _*));
+[INFO]       writer.javadoc(simpleName.+(ScalaBeanSerializer.this.javadocSuffix));
+[INFO]       scala.collection.JavaConversions.asIterable[java.lang.annotation.Annotation](model.getAnnotations()).foreach[com.mysema.codegen.CodeWriter](((x$1: java.lang.annotation.Annotation) => writer.annotation(x$1)));
+[INFO]       writer.beginClass(model);
+[INFO]       scala.collection.JavaConversions.asSet[com.mysema.query.codegen.Property](model.getProperties()).foreach[com.mysema.codegen.CodeWriter](((property: com.mysema.query.codegen.Property) => {
+[INFO]         scala.collection.JavaConversions.asIterable[java.lang.annotation.Annotation](property.getAnnotations()).foreach[com.mysema.codegen.CodeWriter](((x$2: java.lang.annotation.Annotation) => writer.annotation(x$2)));
+[INFO]         if (ScalaBeanSerializer.this.javaBeanSupport)
+[INFO]           writer.line("@BeanProperty")
+[INFO]         else
+[INFO]           ();
+[INFO]         writer.publicField(property.getType(), property.getEscapedName(), "_")
+[INFO]       }));
+[INFO]       {
+[INFO]         writer.end();
+[INFO]         ()
+[INFO]       }
+[INFO]     };
+[INFO]     def getAnnotationTypes(model: com.mysema.query.codegen.EntityType): scala.collection.mutable.Set[String] = {
+[INFO]       val imports: scala.collection.mutable.Set[String] = scala.collection.mutable.Set.apply[String]();
+[INFO]       imports.++(scala.collection.JavaConversions.asIterable[java.lang.annotation.Annotation](model.getAnnotations()).map[java.lang.String, Iterable[java.lang.String]](((x$3: java.lang.annotation.Annotation) => x$3.annotationType().getName()))(collection.this.Iterable.canBuildFrom[java.lang.String]));
+[INFO]       imports.++(scala.collection.JavaConversions.asSet[com.mysema.query.codegen.Property](model.getProperties()).flatMap[java.lang.String, scala.collection.mutable.Set[java.lang.String]](((x$4: com.mysema.query.codegen.Property) => scala.collection.JavaConversions.asIterable[java.lang.annotation.Annotation](x$4.getAnnotations()).map[java.lang.String, Iterable[java.lang.String]](((x$5: java.lang.annotation.Annotation) => x$5.annotationType().getName()))(collection.this.Iterable.canBuildFrom[java.lang.String])))(mutable.this.Set.canBuildFrom[java.lang.String]))
+[INFO]     }
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: ScalaMetaDataSerializer.scala
+[INFO] package com.mysema.query.scala.sql {
+[INFO]   import com.mysema.codegen.CodeWriter;
+[INFO]   import com.mysema.codegen.ScalaWriter;
+[INFO]   import com.mysema.codegen.model._;
+[INFO]   import com.mysema.codegen.model.TypeCategory._;
+[INFO]   import com.mysema.query;
+[INFO]   import com.mysema.query.codegen._;
+[INFO]   import com.mysema.query.sql._;
+[INFO]   import com.mysema.query.sql.support._;
+[INFO]   import java.util._;
+[INFO]   import java.io.IOException;
+[INFO]   import scala.reflect.BeanProperty;
+[INFO]   import scala.collection.JavaConversions._;
+[INFO]   import scala.collection.mutable.Set;
+[INFO]   class ScalaMetaDataSerializer extends java.lang.Object with com.mysema.query.codegen.Serializer with ScalaObject {
+[INFO]     <paramaccessor> private[this] val namePrefix: String = _;
+[INFO]     <stable> <accessor> <paramaccessor> def namePrefix: String = ScalaMetaDataSerializer.this.namePrefix;
+[INFO]     <paramaccessor> private[this] val namingStrategy: com.mysema.query.sql.NamingStrategy = _;
+[INFO]     <stable> <accessor> <paramaccessor> def namingStrategy: com.mysema.query.sql.NamingStrategy = ScalaMetaDataSerializer.this.namingStrategy;
+[INFO]     def this(namePrefix: String, namingStrategy: com.mysema.query.sql.NamingStrategy): com.mysema.query.scala.sql.ScalaMetaDataSerializer = {
+[INFO]       ScalaMetaDataSerializer.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] val typeMappings: com.mysema.query.codegen.TypeMappings = new com.mysema.query.codegen.TypeMappings();
+[INFO]     <stable> <accessor> def typeMappings: com.mysema.query.codegen.TypeMappings = ScalaMetaDataSerializer.this.typeMappings;
+[INFO]     private[this] val classHeaderFormat: java.lang.String = "%1$s(path: String) extends RelationalPathBase[%2$s](classOf[%2$s], path)";
+[INFO]     <stable> <accessor> def classHeaderFormat: java.lang.String = ScalaMetaDataSerializer.this.classHeaderFormat;
+[INFO]     def serialize(model: com.mysema.query.codegen.EntityType, serializerConfig: com.mysema.query.codegen.SerializerConfig, writer: com.mysema.codegen.CodeWriter): Unit = {
+[INFO]       val scalaWriter: com.mysema.codegen.ScalaWriter = writer.asInstanceOf[com.mysema.codegen.ScalaWriter];
+[INFO]       val simpleName: String = model.getSimpleName();
+[INFO]       if (model.getPackageName().isEmpty().unary_!)
+[INFO]         writer.packageDecl(model.getPackageName())
+[INFO]       else
+[INFO]         ();
+[INFO]       writer.importPackages("com.mysema.query.sql", "com.mysema.query.types.path");
+[INFO]       var importedClasses: scala.collection.mutable.Set[String] = ScalaMetaDataSerializer.this.getAnnotationTypes(model);
+[INFO]       importedClasses.add("java.util.Arrays");
+[INFO]       if (model.hasLists())
+[INFO]         importedClasses.add(classOf[java.util.List].getName())
+[INFO]       else
+[INFO]         ();
+[INFO]       if (model.hasMaps())
+[INFO]         importedClasses.add(classOf[java.util.Map].getName())
+[INFO]       else
+[INFO]         ();
+[INFO]       writer.importClasses((importedClasses.toArray[String](reflect.this.ClassManifest.classType[String](classOf[java.lang.String])): _*));
+[INFO]       scala.collection.JavaConversions.asIterable[java.lang.annotation.Annotation](model.getAnnotations()).foreach[com.mysema.codegen.CodeWriter](((x$1: java.lang.annotation.Annotation) => writer.annotation(x$1)));
+[INFO]       val queryType: com.mysema.codegen.model.Type = ScalaMetaDataSerializer.this.typeMappings.getPathType(model, model, true);
+[INFO]       var modelName: java.lang.String = writer.getRawName(model);
+[INFO]       var queryTypeName: java.lang.String = writer.getRawName(queryType);
+[INFO]       var classHeader: java.lang.String = java.this.lang.String.format(ScalaMetaDataSerializer.this.classHeaderFormat, queryTypeName, modelName);
+[INFO]       scalaWriter.beginObject(queryTypeName);
+[INFO]       scalaWriter.line("def as(variable: String) = new ", queryTypeName, "(variable)");
+[INFO]       scalaWriter.end();
+[INFO]       scalaWriter.beginClass(classHeader);
+[INFO]       ScalaMetaDataSerializer.this.serializeProperties(model, writer, model.getProperties());
+[INFO]       val primaryKeys: java.util.Collection[com.mysema.query.sql.support.PrimaryKeyData] = model.getData().get(classOf[com.mysema.query.sql.support.PrimaryKeyData]).asInstanceOf[java.util.Collection[com.mysema.query.sql.support.PrimaryKeyData]];
+[INFO]       if (primaryKeys.!=(null))
+[INFO]         ScalaMetaDataSerializer.this.serializePrimaryKeys(model, writer, primaryKeys)
+[INFO]       else
+[INFO]         ();
+[INFO]       val foreignKeys: java.util.Collection[com.mysema.query.sql.support.ForeignKeyData] = model.getData().get(classOf[com.mysema.query.sql.support.ForeignKeyData]).asInstanceOf[java.util.Collection[com.mysema.query.sql.support.ForeignKeyData]];
+[INFO]       if (foreignKeys.!=(null))
+[INFO]         ScalaMetaDataSerializer.this.serializeForeignKeys(model, writer, foreignKeys, false)
+[INFO]       else
+[INFO]         ();
+[INFO]       val inverseForeignKeys: java.util.Collection[com.mysema.query.sql.support.InverseForeignKeyData] = model.getData().get(classOf[com.mysema.query.sql.support.InverseForeignKeyData]).asInstanceOf[java.util.Collection[com.mysema.query.sql.support.InverseForeignKeyData]];
+[INFO]       if (inverseForeignKeys.!=(null))
+[INFO]         ScalaMetaDataSerializer.this.serializeForeignKeys(model, writer, inverseForeignKeys, true)
+[INFO]       else
+[INFO]         ();
+[INFO]       {
+[INFO]         writer.end();
+[INFO]         ()
+[INFO]       }
+[INFO]     };
+[INFO]     def serializeProperties(model: com.mysema.query.codegen.EntityType, writer: com.mysema.codegen.CodeWriter, properties: java.util.Collection[com.mysema.query.codegen.Property]): Unit = scala.collection.JavaConversions.asIterable[com.mysema.query.codegen.Property](properties).foreach[com.mysema.codegen.CodeWriter](((property: com.mysema.query.codegen.Property) => {
+[INFO]       val methodName: String = property.getType().getCategory() match {
+[INFO]         case value COMPARABLE => "createComparable"
+[INFO]         case value BOOLEAN => "createBoolean"
+[INFO]         case value DATE => "createDate"
+[INFO]         case value DATETIME => "createDateTime"
+[INFO]         case value ENUM => "createEnum"
+[INFO]         case value NUMERIC => "createNumber"
+[INFO]         case value STRING => "createString"
+[INFO]         case value SIMPLE => "createSimple"
+[INFO]         case value TIME => "createTime"
+[INFO]       };
+[INFO]       var ptype: com.mysema.codegen.model.Type = ScalaMetaDataSerializer.this.typeMappings.getPathType(property.getType(), model, false);
+[INFO]       var value: String = null;
+[INFO]       if (property.getType().getCategory().==(value BOOLEAN).||(property.getType().getCategory().==(value STRING)))
+[INFO]         value = methodName.+("("").+(property.getName()).+("")")
+[INFO]       else
+[INFO]         value = methodName.+("("").+(property.getName()).+("", classOf[").+(writer.getRawName(property.getType())).+("])");
+[INFO]       writer.publicFinal(ptype, property.getEscapedName(), value)
+[INFO]     }));
+[INFO]     def serializePrimaryKeys(model: com.mysema.query.codegen.EntityType, writer: com.mysema.codegen.CodeWriter, primaryKeys: java.util.Collection[com.mysema.query.sql.support.PrimaryKeyData]): Unit = scala.collection.JavaConversions.asIterable[com.mysema.query.sql.support.PrimaryKeyData](primaryKeys).foreach[com.mysema.codegen.CodeWriter](((primaryKey: com.mysema.query.sql.support.PrimaryKeyData) => {
+[INFO]       val fieldName: java.lang.String = ScalaMetaDataSerializer.this.namingStrategy.getPropertyNameForPrimaryKey(primaryKey.getName(), model);
+[INFO]       val value: StringBuilder = new scala.package.StringBuilder("createPrimaryKey(");
+[INFO]       value.append(scala.collection.JavaConversions.asBuffer[java.lang.String](primaryKey.getColumns()).map[java.lang.String, scala.collection.mutable.Buffer[java.lang.String]](((column: java.lang.String) => ScalaMetaDataSerializer.this.namingStrategy.getPropertyName(column, ScalaMetaDataSerializer.this.namePrefix, model)))(mutable.this.Buffer.canBuildFrom[java.lang.String]).mkString(", "));
+[INFO]       value.append(")");
+[INFO]       writer.publicFinal(new com.mysema.codegen.model.ClassType(classOf[com.mysema.query.sql.PrimaryKey], model), fieldName, value.toString())
+[INFO]     }));
+[INFO]     def serializeForeignKeys(model: com.mysema.query.codegen.EntityType, writer: com.mysema.codegen.CodeWriter, foreignKeys: java.util.Collection[_ <: com.mysema.query.sql.support.KeyData], inverse: Boolean): Unit = scala.collection.JavaConversions.asIterable[_$5](foreignKeys).foreach[com.mysema.codegen.CodeWriter](((foreignKey: _$5) => {
+[INFO]       var fieldName: String = null;
+[INFO]       if (inverse)
+[INFO]         fieldName = ScalaMetaDataSerializer.this.namingStrategy.getPropertyNameForInverseForeignKey(foreignKey.getName(), model)
+[INFO]       else
+[INFO]         fieldName = ScalaMetaDataSerializer.this.namingStrategy.getPropertyNameForForeignKey(foreignKey.getName(), model);
+[INFO]       var foreignType: String = ScalaMetaDataSerializer.this.namingStrategy.getClassName(ScalaMetaDataSerializer.this.namePrefix, foreignKey.getTable());
+[INFO]       if (model.getPrefix().isEmpty().unary_!)
+[INFO]         foreignType = foreignType.substring(ScalaMetaDataSerializer.this.namePrefix.length())
+[INFO]       else
+[INFO]         ();
+[INFO]       val value: StringBuilder = new scala.package.StringBuilder();
+[INFO]       if (inverse)
+[INFO]         value.append("createInvForeignKey(")
+[INFO]       else
+[INFO]         value.append("createForeignKey(");
+[INFO]       if (foreignKey.getForeignColumns().size().==(1))
+[INFO]         {
+[INFO]           value.append(ScalaMetaDataSerializer.this.namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), ScalaMetaDataSerializer.this.namePrefix, model));
+[INFO]           value.append(", "".+(foreignKey.getParentColumns().get(0)).+("""))
+[INFO]         }
+[INFO]       else
+[INFO]         {
+[INFO]           val local: StringBuilder = new scala.package.StringBuilder();
+[INFO]           val foreign: StringBuilder = new scala.package.StringBuilder();
+[INFO]           var i: Int = 0;
+[INFO]           while$1(){
+[INFO]             if (i.<(foreignKey.getForeignColumns().size()))
+[INFO]               {
+[INFO]                 {
+[INFO]                   if (i.>(0))
+[INFO]                     {
+[INFO]                       local.append(", ");
+[INFO]                       foreign.append(", ")
+[INFO]                     }
+[INFO]                   else
+[INFO]                     ();
+[INFO]                   local.append(ScalaMetaDataSerializer.this.namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), ScalaMetaDataSerializer.this.namePrefix, model));
+[INFO]                   foreign.append(""".+(foreignKey.getParentColumns().get(0)).+("""));
+[INFO]                   i = i.+(1)
+[INFO]                 };
+[INFO]                 while$1()
+[INFO]               }
+[INFO]             else
+[INFO]               ()
+[INFO]           };
+[INFO]           value.append("Arrays.asList(".+(local).+("), Arrays.asList(").+(foreign).+(")"))
+[INFO]         };
+[INFO]       value.append(")");
+[INFO]       val t: com.mysema.codegen.model.ClassType = new com.mysema.codegen.model.ClassType(classOf[com.mysema.query.sql.ForeignKey], new com.mysema.codegen.model.SimpleType(model.getPackageName().+(".").+(foreignType), model.getPackageName(), foreignType));
+[INFO]       writer.publicFinal(t, fieldName, value.toString())
+[INFO]     }));
+[INFO]     def getAnnotationTypes(model: com.mysema.query.codegen.EntityType): scala.collection.mutable.Set[String] = {
+[INFO]       val imports: scala.collection.mutable.Set[Nothing] = scala.collection.mutable.Set.apply[Nothing]();
+[INFO]       imports.++[java.lang.String, scala.collection.mutable.Set[String]](scala.collection.JavaConversions.asIterable[java.lang.annotation.Annotation](model.getAnnotations()).map[java.lang.String, Iterable[java.lang.String]](((x$2: java.lang.annotation.Annotation) => x$2.annotationType().getName()))(collection.this.Iterable.canBuildFrom[java.lang.String]))(mutable.this.Set.canBuildFrom[String])
+[INFO]     }
+[INFO]   }
+[INFO] }
+[INFO] 
+[WARNING] warning: there were deprecation warnings; re-run with -deprecation for details
+[WARNING] warning: there were unchecked warnings; re-run with -unchecked for details
+[WARNING] two warnings found
+[INFO] prepare-compile in 0 s
+[INFO] compile in 19 s
+[INFO] [resources:testResources {execution: default-testResources}]
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] Copying 1 resource
+[INFO] [compiler:testCompile {execution: default-testCompile}]
+[INFO] Nothing to compile - all classes are up to date
+[INFO] [scala:testCompile {execution: default}]
+[INFO] Checking for multiple versions of scala
+[INFO] includes = [**/*.scala,**/*.java,]
+[INFO] excludes = []
+[INFO] /home/tiwe/work/workspace/querydsl-scala/src/test/scala:-1: info: compiling
+[INFO] Compiling 16 source files to /home/tiwe/work/workspace/querydsl-scala/target/test-classes at 1286373041505
+[ERROR] /home/tiwe/work/workspace/querydsl-scala/src/test/scala/com/mysema/query/scala/AliasTest.scala:86: error: type mismatch;
+[INFO]  found   : Boolean
+[INFO]  required: com.mysema.query.types.Predicate
+[INFO]     val predicate: Predicate = person.firstName isEmpty();
+[INFO]                                                 ^
+[ERROR] /home/tiwe/work/workspace/querydsl-scala/src/test/scala/com/mysema/query/scala/AliasTest.scala:104: error: type mismatch;
+[INFO]  found   : Boolean
+[INFO]  required: com.mysema.query.types.Predicate
+[INFO]     val predicate: Predicate = person.scalaInt < 5;  
+[INFO]                                                ^
+[ERROR] /home/tiwe/work/workspace/querydsl-scala/src/test/scala/com/mysema/query/scala/AliasTest.scala:199: error: scala.this.Predef.refArrayOps[String](AliasTest.this.person.array).size of type Int does not take parameters
+[INFO]     val num: NumberExpression[Integer] = person.array size();   
+[INFO]                                                       ^
+[ERROR] /home/tiwe/work/workspace/querydsl-scala/src/test/scala/com/mysema/query/scala/AliasTest.scala:205: error: value and is not a member of Boolean
+[INFO]     val expr: Predicate = (person.firstName startsWith person.lastName) and (person.javaInt lt person.scalaInt) or (person.javaDouble isNull);
+[INFO]                           ^
+[ERROR] /home/tiwe/work/workspace/querydsl-scala/src/test/scala/com/mysema/query/scala/AliasTest.scala:213: error: type mismatch;
+[INFO]  found   : Boolean
+[INFO]  required: com.mysema.query.types.Predicate
+[INFO]     val expr: Predicate = (person.javaInt < 5) and (person.scalaInt > 7);
+[INFO]                                                                     ^
+[ERROR] /home/tiwe/work/workspace/querydsl-scala/src/test/scala/com/mysema/query/scala/AliasTest.scala:219: error: type mismatch;
+[INFO]  found   : Boolean
+[INFO]  required: com.mysema.query.types.Predicate
+[INFO]     val expr: Predicate = (person.javaInt > 5) and (person.scalaInt < 7);
+[INFO]                                                                     ^
+[ERROR] /home/tiwe/work/workspace/querydsl-scala/src/test/scala/com/mysema/query/scala/AliasTest.scala:225: error: type mismatch;
+[INFO]  found   : Boolean
+[INFO]  required: com.mysema.query.types.Predicate
+[INFO]     val expr: Predicate = (person.javaInt < 5) or (person.scalaInt > 7);
+[INFO]                                                                    ^
+[ERROR] /home/tiwe/work/workspace/querydsl-scala/src/test/scala/com/mysema/query/scala/AliasTest.scala:231: error: type mismatch;
+[INFO]  found   : Boolean
+[INFO]  required: com.mysema.query.types.Predicate
+[INFO]     val expr: Predicate = (person.javaInt > 5) or (person.scalaInt < 7);
+[INFO]                                                                    ^
+[ERROR] /home/tiwe/work/workspace/querydsl-scala/src/test/scala/com/mysema/query/scala/JPAQueryTest.scala:39: error: type mismatch;
+[INFO]  found   : Boolean
+[INFO]  required: com.mysema.query.types.Predicate
+[INFO]     query from (person) where (person.firstName isEmpty()) count;
+[INFO]                                                 ^
+[ERROR] /home/tiwe/work/workspace/querydsl-scala/src/test/scala/com/mysema/query/scala/JPAQueryTest.scala:40: error: type mismatch;
+[INFO]  found   : Boolean
+[INFO]  required: com.mysema.query.types.Predicate
+[INFO]     query from (person) where (person.firstName isEmpty(), person.lastName isNotNull()) list (person);
+[INFO]                                                 ^
+[ERROR] /home/tiwe/work/workspace/querydsl-scala/src/test/scala/com/mysema/query/scala/JPAQueryTest.scala:41: error: type mismatch;
+[INFO]  found   : Boolean
+[INFO]  required: com.mysema.query.types.Predicate
+[INFO]     query from (person) where (person.firstName startsWith "X") count;
+[INFO]                                                 ^
+[INFO] [[syntax trees at end of typer]]// Scala source: AliasTest.scala
+[INFO] package com.mysema.query.scala {
+[INFO]   import com.mysema.query.scala.Conversions._;
+[INFO]   import com.mysema.query.sql.SQLSubQuery;
+[INFO]   import com.mysema.query.types._;
+[INFO]   import com.mysema.query.types.path._;
+[INFO]   import org.junit.Test;
+[INFO]   import org.junit.Assert;
+[INFO]   class AliasTest extends java.lang.Object with ScalaObject {
+[INFO]     def this(): com.mysema.query.scala.AliasTest = {
+[INFO]       AliasTest.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] val person: com.mysema.query.scala.Person = com.mysema.query.scala.Conversions.alias[com.mysema.query.scala.Person](classOf[com.mysema.query.scala.Person]);
+[INFO]     <stable> <accessor> def person: com.mysema.query.scala.Person = AliasTest.this.person;
+[INFO]     def assertEquals(expected: String, actual: com.mysema.query.types.Expression[_]): Unit = org.junit.Assert.assertEquals(expected, actual.toString());
+[INFO]     def assertEquals(expected: String, actual: com.mysema.query.types.OrderSpecifier[_]): Unit = org.junit.Assert.assertEquals(expected, actual.toString());
+[INFO]     @org.junit.Test def Path_Equality: Unit = AliasTest.this.assertEquals("person.firstName = person.lastName", com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.firstName).=(AliasTest.this.person.lastName));
+[INFO]     @org.junit.Test def String_Equality: Unit = {
+[INFO]       AliasTest.this.assertEquals("person.firstName = Ben", com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.firstName).=("Ben"));
+[INFO]       AliasTest.this.assertEquals("person.firstName != Ben", com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.firstName).$ne("Ben"));
+[INFO]       AliasTest.this.assertEquals("person.firstName != Ben", com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.firstName).$ne("Ben"))
+[INFO]     };
+[INFO]     @org.junit.Test def String_Equality2: Unit = {
+[INFO]       val predicate: com.mysema.query.types.Predicate = com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.firstName).is("Ben");
+[INFO]       AliasTest.this.assertEquals("person.firstName = Ben", predicate)
+[INFO]     };
+[INFO]     @org.junit.Test def String_Like: Unit = AliasTest.this.assertEquals("person.firstName like Ben", com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.firstName).like("Ben"));
+[INFO]     @org.junit.Test def String_Order: Unit = AliasTest.this.assertEquals("person.firstName ASC", com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.firstName).asc());
+[INFO]     @org.junit.Test def String_Append: Unit = AliasTest.this.assertEquals("person.firstName + x", com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.firstName).append("x"));
+[INFO]     @org.junit.Test def String_Append2: Unit = AliasTest.this.assertEquals("person.firstName +   + person.lastName", com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.firstName).append(" ").append(AliasTest.this.person.lastName));
+[INFO]     @org.junit.Test def String_And: Unit = {
+[INFO]       val andClause: com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.firstName).like("An%").and(com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.firstName).like("Be%"));
+[INFO]       AliasTest.this.assertEquals("person.firstName like An% && person.firstName like Be%", andClause)
+[INFO]     };
+[INFO]     @org.junit.Test def String_Or: Unit = {
+[INFO]       val orClause: com.mysema.query.scala.BooleanExpression = com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.firstName).like("An%").or(com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.firstName).like("Be%"));
+[INFO]       AliasTest.this.assertEquals("person.firstName like An% || person.firstName like Be%", orClause)
+[INFO]     };
+[INFO]     @org.junit.Test def String_Not: Unit = {
+[INFO]       AliasTest.this.assertEquals("!person.firstName like An%", com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.firstName).like("An%").not());
+[INFO]       AliasTest.this.assertEquals("!person.firstName like An%", com.mysema.query.scala.Conversions.not(com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.firstName).like("An%")))
+[INFO]     };
+[INFO]     @org.junit.Test def String_Trim: Unit = AliasTest.this.assertEquals("trim(person.firstName)", com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.firstName.trim()));
+[INFO]     @org.junit.Test def String_Is_Empty: Unit = {
+[INFO]       val predicate: com.mysema.query.types.Predicate = AliasTest.this.person.firstName.isEmpty();
+[INFO]       AliasTest.this.assertEquals("empty(person.firstName)", predicate)
+[INFO]     };
+[INFO]     @org.junit.Test def Number_Comparison: Unit = {
+[INFO]       val predicate: com.mysema.query.types.Predicate = com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.scalaInt).lt(scala.this.Predef.int2Integer(5));
+[INFO]       AliasTest.this.assertEquals("person.scalaInt < 5", predicate);
+[INFO]       AliasTest.this.assertEquals("person.javaInt < 5", com.mysema.query.scala.Conversions.numberPath[Integer](AliasTest.this.person.javaInt).lt(scala.this.Predef.int2Integer(5)));
+[INFO]       AliasTest.this.assertEquals("person.javaInt > 5", com.mysema.query.scala.Conversions.numberPath[Integer](AliasTest.this.person.javaInt).gt(scala.this.Predef.int2Integer(5)));
+[INFO]       AliasTest.this.assertEquals("person.javaInt <= 5", com.mysema.query.scala.Conversions.numberPath[Integer](AliasTest.this.person.javaInt).loe(scala.this.Predef.int2Integer(5)));
+[INFO]       AliasTest.this.assertEquals("person.javaInt >= 5", com.mysema.query.scala.Conversions.numberPath[Integer](AliasTest.this.person.javaInt).goe(scala.this.Predef.int2Integer(5)));
+[INFO]       AliasTest.this.assertEquals("person.javaInt = 5", com.mysema.query.scala.Conversions.numberPath[Integer](AliasTest.this.person.javaInt).=(scala.this.Predef.int2Integer(5)));
+[INFO]       AliasTest.this.assertEquals("person.javaInt != 5", com.mysema.query.scala.Conversions.numberPath[Integer](AliasTest.this.person.javaInt).$ne(scala.this.Predef.int2Integer(5)))
+[INFO]     };
+[INFO]     @org.junit.Test def Number_Comparison2: Unit = {
+[INFO]       val predicate: com.mysema.query.types.Predicate = AliasTest.this.person.scalaInt.<(5);
+[INFO]       AliasTest.this.assertEquals("person.scalaInt < 5", predicate);
+[INFO]       AliasTest.this.assertEquals("person.javaInt < 5", com.mysema.query.scala.Conversions.numberPath[Integer](AliasTest.this.person.javaInt).<(scala.this.Predef.int2Integer(5)));
+[INFO]       AliasTest.this.assertEquals("person.javaInt > 5", com.mysema.query.scala.Conversions.numberPath[Integer](AliasTest.this.person.javaInt).>(scala.this.Predef.int2Integer(5)));
+[INFO]       AliasTest.this.assertEquals("person.javaInt <= 5", com.mysema.query.scala.Conversions.numberPath[Integer](AliasTest.this.person.javaInt).<=(scala.this.Predef.int2Integer(5)));
+[INFO]       AliasTest.this.assertEquals("person.javaInt >= 5", com.mysema.query.scala.Conversions.numberPath[Integer](AliasTest.this.person.javaInt).>=(scala.this.Predef.int2Integer(5)));
+[INFO]       AliasTest.this.assertEquals("person.javaInt = 5", com.mysema.query.scala.Conversions.numberPath[Integer](AliasTest.this.person.javaInt).=(scala.this.Predef.int2Integer(5)));
+[INFO]       AliasTest.this.assertEquals("person.javaInt != 5", com.mysema.query.scala.Conversions.numberPath[Integer](AliasTest.this.person.javaInt).$ne(scala.this.Predef.int2Integer(5)))
+[INFO]     };
+[INFO]     @org.junit.Test def Number_Between: Unit = {
+[INFO]       AliasTest.this.assertEquals("person.scalaInt between 2 and 3", com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.scalaInt).between(scala.this.Predef.int2Integer(2), scala.this.Predef.int2Integer(3)));
+[INFO]       AliasTest.this.assertEquals("person.javaInt between 2 and 3", com.mysema.query.scala.Conversions.numberPath[Integer](AliasTest.this.person.javaInt).between(scala.this.Predef.int2Integer(2), scala.this.Predef.int2Integer(3)))
+[INFO]     };
+[INFO]     @org.junit.Test def Number_Arithmetic: Unit = {
+[INFO]       AliasTest.this.assertEquals("person.scalaInt + 3", com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.scalaInt).add(scala.this.Predef.int2Integer(3)));
+[INFO]       AliasTest.this.assertEquals("person.scalaInt - 3", com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.scalaInt).subtract(scala.this.Predef.int2Integer(3)));
+[INFO]       AliasTest.this.assertEquals("person.scalaInt / 3", com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.scalaInt).divide(scala.this.Predef.int2Integer(3)));
+[INFO]       AliasTest.this.assertEquals("person.scalaInt * 3", com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.scalaInt).multiply(scala.this.Predef.int2Integer(3)));
+[INFO]       AliasTest.this.assertEquals("person.scalaInt * -1", com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.scalaInt).negate());
+[INFO]       AliasTest.this.assertEquals("person.scalaInt % 4", com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.scalaInt).mod(scala.this.Predef.int2Integer(4)));
+[INFO]       AliasTest.this.assertEquals("round(person.scalaInt)", com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.scalaInt).round());
+[INFO]       AliasTest.this.assertEquals("floor(person.scalaInt)", com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.scalaInt).floor());
+[INFO]       AliasTest.this.assertEquals("ceil(person.scalaInt)", com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.scalaInt).ceil());
+[INFO]       AliasTest.this.assertEquals("sqrt(person.scalaInt)", com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.scalaInt).sqrt())
+[INFO]     };
+[INFO]     @org.junit.Test def Number_Casts: Unit = {
+[INFO]       AliasTest.this.assertEquals("cast(person.javaInt,class java.lang.Long)", com.mysema.query.scala.Conversions.numberPath[Integer](AliasTest.this.person.javaInt).$longValue());
+[INFO]       AliasTest.this.assertEquals("cast(person.scalaInt,class java.lang.Long)", com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.scalaInt).$longValue())
+[INFO]     };
+[INFO]     @org.junit.Test def Java_Collections_Size: Unit = {
+[INFO]       AliasTest.this.assertEquals("size(person.javaCollection)", com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.javaCollection.size()));
+[INFO]       AliasTest.this.assertEquals("size(person.javaSet)", com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.javaSet.size()));
+[INFO]       AliasTest.this.assertEquals("size(person.javaList)", com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.javaList.size()));
+[INFO]       AliasTest.this.assertEquals("size(person.javaMap)", com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.javaMap.size()))
+[INFO]     };
+[INFO]     @org.junit.Test def Java_Collections_Is_Empty: Unit = {
+[INFO]       AliasTest.this.assertEquals("empty(person.javaCollection)", com.mysema.query.scala.Conversions.entityPath[Boolean](AliasTest.this.person.javaCollection.isEmpty()));
+[INFO]       AliasTest.this.assertEquals("empty(person.javaSet)", com.mysema.query.scala.Conversions.entityPath[Boolean](AliasTest.this.person.javaSet.isEmpty()));
+[INFO]       AliasTest.this.assertEquals("empty(person.javaList)", com.mysema.query.scala.Conversions.entityPath[Boolean](AliasTest.this.person.javaList.isEmpty()));
+[INFO]       AliasTest.this.assertEquals("empty(person.javaMap)", com.mysema.query.scala.Conversions.entityPath[Boolean](AliasTest.this.person.javaMap.isEmpty()))
+[INFO]     };
+[INFO]     @org.junit.Test def Java_Collections_Get: Unit = {
+[INFO]       AliasTest.this.assertEquals("person.javaList.get(0) is not null", com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.javaList.get(0)).isNotNull());
+[INFO]       AliasTest.this.assertEquals("person.javaMap.get(xxx) is null", com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.javaMap.get("xxx")).isNull())
+[INFO]     };
+[INFO]     @org.junit.Test def Java_Collections_Get_And_Starts_With: Unit = AliasTest.this.assertEquals("startsWith(person.javaMap.get(xxx),X)", com.mysema.query.scala.Conversions.entityPath[Boolean](AliasTest.this.person.javaMap.get("xxx").startsWith("X")));
+[INFO]     @org.junit.Test def Scala_Collections_Size: Unit = {
+[INFO]       AliasTest.this.assertEquals("size(person.scalaList)", com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.scalaList.size));
+[INFO]       AliasTest.this.assertEquals("size(person.scalaMap)", com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.scalaMap.size))
+[INFO]     };
+[INFO]     @org.junit.Test def Scala_Collections_Is_Empty: Unit = {
+[INFO]       AliasTest.this.assertEquals("empty(person.scalaList)", com.mysema.query.scala.Conversions.entityPath[Boolean](AliasTest.this.person.scalaList.isEmpty));
+[INFO]       AliasTest.this.assertEquals("empty(person.scalaMap)", com.mysema.query.scala.Conversions.entityPath[Boolean](AliasTest.this.person.scalaMap.isEmpty))
+[INFO]     };
+[INFO]     @org.junit.Test def Scala_Collections_Get: Unit = {
+[INFO]       AliasTest.this.assertEquals("person.scalaList.get(0) is not null", com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.scalaList.apply(0)).isNotNull());
+[INFO]       AliasTest.this.assertEquals("person.scalaList.get(0) is not null", com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.scalaList.apply(0)).isNotNull());
+[INFO]       AliasTest.this.assertEquals("person.scalaMap.get(xxx) is null", com.mysema.query.scala.Conversions.stringPath(AliasTest.this.person.scalaMap.apply("xxx")).isNull())
+[INFO]     };
+[INFO]     @org.junit.Test def Scala_Collections_Contains: Unit = {
+[INFO]       AliasTest.this.assertEquals("X in person.scalaList", com.mysema.query.scala.Conversions.entityPath[Boolean](AliasTest.this.person.scalaList.contains("X")));
+[INFO]       AliasTest.this.assertEquals("X in person.javaList", com.mysema.query.scala.Conversions.entityPath[Boolean](AliasTest.this.person.javaList.contains("X")))
+[INFO]     };
+[INFO]     @org.junit.Test def Scala_Collections_Get_And_Starts_With: Unit = AliasTest.this.assertEquals("startsWith(person.scalaMap.get(xxx),X)", com.mysema.query.scala.Conversions.entityPath[Boolean](AliasTest.this.person.scalaMap.apply("xxx").startsWith("X")));
+[INFO]     @org.junit.Test def Array_Size: Unit = {
+[INFO]       val num: com.mysema.query.scala.NumberExpression[Integer] = person.array.size();
+[INFO]       AliasTest.this.assertEquals("size(person.array)", num)
+[INFO]     };
+[INFO]     @org.junit.Test def Complex_Starts_With_And_Less_Than_And_Is_Null(): Unit = {
+[INFO]       val expr: com.mysema.query.types.Predicate = person.firstName.startsWith(person.lastName).and(person.javaInt.lt(person.scalaInt)).or(person.javaDouble.isNull);
+[INFO]       AliasTest.this.assertEquals("startsWith(person.firstName,person.lastName) && person.javaInt < person.scalaInt || person.javaDouble is null", expr)
+[INFO]     };
+[INFO]     @org.junit.Test def Lt_and_Gt(): Unit = {
+[INFO]       val expr: com.mysema.query.types.Predicate = person.javaInt.$less(5).and(person.scalaInt.$greater(7));
+[INFO]       AliasTest.this.assertEquals("person.javaInt < 5 and person.scalaInt > 7", expr)
+[INFO]     };
+[INFO]     @org.junit.Test def Gt_and_Lt(): Unit = {
+[INFO]       val expr: com.mysema.query.types.Predicate = person.javaInt.$greater(5).and(person.scalaInt.$less(7));
+[INFO]       AliasTest.this.assertEquals("person.javaInt > 5 and person.scalaInt < 7", expr)
+[INFO]     };
+[INFO]     @org.junit.Test def Lt_or_Gt(): Unit = {
+[INFO]       val expr: com.mysema.query.types.Predicate = person.javaInt.$less(5).or(person.scalaInt.$greater(7));
+[INFO]       AliasTest.this.assertEquals("person.javaInt < 5 or person.scalaInt > 7", expr)
+[INFO]     };
+[INFO]     @org.junit.Test def Gt_or_Lt(): Unit = {
+[INFO]       val expr: com.mysema.query.types.Predicate = person.javaInt.$greater(5).or(person.scalaInt.$less(7));
+[INFO]       AliasTest.this.assertEquals("person.javaInt > 5 or person.scalaInt < 7", expr)
+[INFO]     };
+[INFO]     @org.junit.Test def Starts_with(): Unit = AliasTest.this.assertEquals("startsWith(person.firstName,amin)", com.mysema.query.scala.Conversions.entityPath[Boolean](AliasTest.this.person.firstName.startsWith("amin")));
+[INFO]     @org.junit.Test def Ends_with(): Unit = AliasTest.this.assertEquals("endsWith(person.firstName,amin)", com.mysema.query.scala.Conversions.entityPath[Boolean](AliasTest.this.person.firstName.endsWith("amin")));
+[INFO]     @org.junit.Test def Prefix(): Unit = {
+[INFO]       AliasTest.this.assertEquals("count(person)", com.mysema.query.scala.Conversions.count(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](AliasTest.this.person)));
+[INFO]       AliasTest.this.assertEquals("min(person.javaInt)", com.mysema.query.scala.Conversions.min(com.mysema.query.scala.Conversions.numberPath[Integer](AliasTest.this.person.javaInt)));
+[INFO]       AliasTest.this.assertEquals("min(person.scalaInt)", com.mysema.query.scala.Conversions.min(com.mysema.query.scala.Conversions.intPath(AliasTest.this.person.scalaInt)))
+[INFO]     }
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: ExampleDomain.scala
+[INFO] package com.mysema.query.scala {
+[INFO]   class Person extends java.lang.Object with ScalaObject {
+[INFO]     def this(): com.mysema.query.scala.Person = {
+[INFO]       Person.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] var scalaInt: Int = _;
+[INFO]     private[this] var javaInt: Integer = _;
+[INFO]     private[this] var javaDouble: java.lang.Double = _;
+[INFO]     private[this] var firstName: String = _;
+[INFO]     private[this] var lastName: String = _;
+[INFO]     private[this] var scalaList: List[String] = _;
+[INFO]     private[this] var scalaMap: scala.collection.Map[String,String] = _;
+[INFO]     private[this] var javaCollection: java.util.Collection[String] = _;
+[INFO]     private[this] var javaSet: java.util.Set[String] = _;
+[INFO]     private[this] var javaList: java.util.List[String] = _;
+[INFO]     private[this] var javaMap: java.util.Map[String,String] = _;
+[INFO]     private[this] var listOfPersons: java.util.List[com.mysema.query.scala.Person] = _;
+[INFO]     private[this] var array: Array[String] = _
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: JPAIntegrationTest.scala
+[INFO] package com.mysema.query.scala {
+[INFO]   import com.mysema.query.jpa.impl.JPAQuery;
+[INFO]   import com.mysema.query.scala.Conversions._;
+[INFO]   import javax.persistence._;
+[INFO]   import org.junit.{Test, Before, After};
+[INFO]   import org.junit.Assert._;
+[INFO]   import scala.reflect.BeanProperty;
+[INFO]   import scala.annotation.target._;
+[INFO]   class JPAIntegrationTest extends java.lang.Object with ScalaObject {
+[INFO]     def this(): com.mysema.query.scala.JPAIntegrationTest = {
+[INFO]       JPAIntegrationTest.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] var entityManager: javax.persistence.EntityManager = _;
+[INFO]     @org.junit.Before def setUp(): Unit = {
+[INFO]       var entityManagerFactory: javax.persistence.EntityManagerFactory = javax.persistence.Persistence.createEntityManagerFactory("hsqldb");
+[INFO]       JPAIntegrationTest.this.entityManager_=(entityManagerFactory.createEntityManager());
+[INFO]       val company: com.mysema.query.scala.Company = new Company(scala.this.Predef.int2Integer(1), "Example", null);
+[INFO]       val department1: com.mysema.query.scala.Department = new Department();
+[INFO]       department1.id_=(scala.this.Predef.int2Integer(2));
+[INFO]       department1.name_=("HR");
+[INFO]       department1.company_=(company);
+[INFO]       val department2: com.mysema.query.scala.Department = new Department();
+[INFO]       department2.id_=(scala.this.Predef.int2Integer(3));
+[INFO]       department2.name_=("Sales");
+[INFO]       department2.company_=(company);
+[INFO]       val user1: com.mysema.query.scala.User = new User();
+[INFO]       val user2: com.mysema.query.scala.User = new User();
+[INFO]       user1.id_=(scala.this.Predef.int2Integer(4));
+[INFO]       user2.id_=(scala.this.Predef.int2Integer(5));
+[INFO]       user1.userName_=("Bob");
+[INFO]       user2.userName_=("Ann");
+[INFO]       user1.department_=(department1);
+[INFO]       user2.department_=(department2);
+[INFO]       JPAIntegrationTest.this.entityManager.getTransaction().begin();
+[INFO]       immutable.this.List.apply[ScalaObject](company, department1, department2, user1, user2).foreach[Unit](((x$1: ScalaObject) => JPAIntegrationTest.this.entityManager.persist(x$1)));
+[INFO]       JPAIntegrationTest.this.entityManager.flush()
+[INFO]     };
+[INFO]     @org.junit.After def tearDown(): Unit = if (JPAIntegrationTest.this.entityManager.!=(null))
+[INFO]       {
+[INFO]         JPAIntegrationTest.this.entityManager.getTransaction().rollback();
+[INFO]         JPAIntegrationTest.this.entityManager.close()
+[INFO]       }
+[INFO]     else
+[INFO]       ();
+[INFO]     @org.junit.Test def test(): Unit = {
+[INFO]       val user: com.mysema.query.scala.User = com.mysema.query.scala.Conversions.alias[com.mysema.query.scala.User](classOf[com.mysema.query.scala.User]);
+[INFO]       val department: com.mysema.query.scala.Department = com.mysema.query.scala.Conversions.alias[com.mysema.query.scala.Department](classOf[com.mysema.query.scala.Department]);
+[INFO]       val company: com.mysema.query.scala.Company = com.mysema.query.scala.Conversions.alias[com.mysema.query.scala.Company](classOf[com.mysema.query.scala.Company]);
+[INFO]       org.junit.Assert.assertEquals(2L, JPAIntegrationTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.User](user)).count());
+[INFO]       org.junit.Assert.assertEquals(2L, JPAIntegrationTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Department](department)).count());
+[INFO]       org.junit.Assert.assertEquals(1L, JPAIntegrationTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Company](company)).count());
+[INFO]       JPAIntegrationTest.this.entityManager.flush();
+[INFO]       org.junit.Assert.assertEquals(2L, JPAIntegrationTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.User](user)).list[com.mysema.query.scala.User](com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.User](user)).size().toLong);
+[INFO]       org.junit.Assert.assertEquals(2L, JPAIntegrationTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Department](department)).list[com.mysema.query.scala.Department](com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Department](department)).size().toLong);
+[INFO]       org.junit.Assert.assertEquals(1L, JPAIntegrationTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Company](company)).list[com.mysema.query.scala.Company](com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Company](company)).size().toLong);
+[INFO]       org.junit.Assert.assertEquals("Bob", JPAIntegrationTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.User](user)).where(com.mysema.query.scala.Conversions.stringPath(user.userName).=("Bob")).uniqueResult[String](com.mysema.query.scala.Conversions.stringPath(user.userName)));
+[INFO]       org.junit.Assert.assertEquals("Bob", JPAIntegrationTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.User](user)).where(com.mysema.query.scala.Conversions.stringPath(user.userName).like("Bo%")).uniqueResult[String](com.mysema.query.scala.Conversions.stringPath(user.userName)));
+[INFO]       org.junit.Assert.assertEquals("Ann", JPAIntegrationTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.User](user)).where(com.mysema.query.scala.Conversions.stringPath(user.department.name).=("Sales")).uniqueResult[String](com.mysema.query.scala.Conversions.stringPath(user.userName)))
+[INFO]     };
+[INFO]     def query(): com.mysema.query.jpa.impl.JPAQuery = new com.mysema.query.jpa.impl.JPAQuery(JPAIntegrationTest.this.entityManager)
+[INFO]   };
+[INFO]   @javax.persistence.Entity class User extends java.lang.Object with ScalaObject {
+[INFO]     def this(): com.mysema.query.scala.User = {
+[INFO]       User.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     @scala.reflect.BeanProperty @javax.persistence.Id private[this] var id: Integer = _;
+[INFO]     @scala.reflect.BeanProperty private[this] var userName: String = _;
+[INFO]     @scala.reflect.BeanProperty @javax.persistence.ManyToOne private[this] var department: com.mysema.query.scala.Department = _;
+[INFO]     def getDepartment(): com.mysema.query.scala.Department = User.this.department;
+[INFO]     def getUserName(): String = User.this.userName;
+[INFO]     def getId(): Integer = User.this.id
+[INFO]   };
+[INFO]   @javax.persistence.Entity class Department extends java.lang.Object with ScalaObject {
+[INFO]     def this(): com.mysema.query.scala.Department = {
+[INFO]       Department.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     @scala.reflect.BeanProperty @javax.persistence.Id private[this] var id: Integer = _;
+[INFO]     @scala.reflect.BeanProperty private[this] var name: String = _;
+[INFO]     @scala.reflect.BeanProperty @javax.persistence.ManyToOne private[this] var company: com.mysema.query.scala.Company = _;
+[INFO]     def getCompany(): com.mysema.query.scala.Company = Department.this.company;
+[INFO]     def getName(): String = Department.this.name;
+[INFO]     def getId(): Integer = Department.this.id
+[INFO]   };
+[INFO]   @javax.persistence.Entity class Company extends java.lang.Object with ScalaObject {
+[INFO]     def this(): com.mysema.query.scala.Company = {
+[INFO]       Company.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     @scala.reflect.BeanProperty @javax.persistence.Id private[this] var id: Integer = _;
+[INFO]     @scala.reflect.BeanProperty private[this] var name: String = _;
+[INFO]     @scala.reflect.BeanProperty @javax.persistence.OneToMany(mappedBy = "company") private[this] var departments: java.util.Set[com.mysema.query.scala.Department] = _;
+[INFO]     def this(id: Integer, name: String, departments: java.util.Set[com.mysema.query.scala.Department]): com.mysema.query.scala.Company = {
+[INFO]       Company.this.this();
+[INFO]       this.id_=(id);
+[INFO]       this.name_=(name);
+[INFO]       this.departments_=(departments);
+[INFO]       ()
+[INFO]     };
+[INFO]     def getDepartments(): java.util.Set[com.mysema.query.scala.Department] = Company.this.departments;
+[INFO]     def getName(): String = Company.this.name;
+[INFO]     def getId(): Integer = Company.this.id
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: JPAQueryTest.scala
+[INFO] package com.mysema.query.scala {
+[INFO]   import com.mysema.query.scala.Conversions._;
+[INFO]   import com.mysema.query.jpa.JPQLSubQuery;
+[INFO]   import com.mysema.query.types.path._;
+[INFO]   import org.junit.Test;
+[INFO]   import org.junit.Assert._;
+[INFO]   class JPAQueryTest extends java.lang.Object with ScalaObject {
+[INFO]     def this(): com.mysema.query.scala.JPAQueryTest = {
+[INFO]       JPAQueryTest.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] var person: com.mysema.query.scala.Person = com.mysema.query.scala.Conversions.alias[com.mysema.query.scala.Person](classOf[com.mysema.query.scala.Person]);
+[INFO]     @org.junit.Test def OneLiner(): Unit = {
+[INFO]       JPAQueryTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](JPAQueryTest.this.person)).where(com.mysema.query.scala.Conversions.stringPath(JPAQueryTest.this.person.firstName).like("Rob%")).unique[com.mysema.query.scala.Person](com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](JPAQueryTest.this.person));
+[INFO]       ()
+[INFO]     };
+[INFO]     @org.junit.Test def Joins(): Unit = ();
+[INFO]     @org.junit.Test def Projections(): Unit = {
+[INFO]       JPAQueryTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](JPAQueryTest.this.person)).list[com.mysema.query.scala.Person](com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](JPAQueryTest.this.person));
+[INFO]       JPAQueryTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](JPAQueryTest.this.person)).list[String](com.mysema.query.scala.Conversions.stringPath(JPAQueryTest.this.person.firstName));
+[INFO]       JPAQueryTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](JPAQueryTest.this.person)).list(com.mysema.query.scala.Conversions.stringPath(JPAQueryTest.this.person.firstName), com.mysema.query.scala.Conversions.stringPath(JPAQueryTest.this.person.lastName));
+[INFO]       {
+[INFO]         JPAQueryTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](JPAQueryTest.this.person)).list[String](com.mysema.query.scala.Conversions.stringPath(JPAQueryTest.this.person.firstName));
+[INFO]         ()
+[INFO]       }
+[INFO]     };
+[INFO]     @org.junit.Test def Filters(): Unit = {
+[INFO]       query.from(person).where(person.firstName.isEmpty()).count;
+[INFO]       query.from(person).where(person.firstName.isEmpty(), person.lastName.isNotNull()).list(person);
+[INFO]       query.from(person).where(person.firstName.startsWith("X")).count;
+[INFO]       {
+[INFO]         JPAQueryTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](JPAQueryTest.this.person)).where(com.mysema.query.scala.Conversions.numberPath[Integer](JPAQueryTest.this.person.javaInt).<(scala.this.Predef.int2Integer(5))).count();
+[INFO]         ()
+[INFO]       }
+[INFO]     };
+[INFO]     @org.junit.Test def Order(): Unit = {
+[INFO]       JPAQueryTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](JPAQueryTest.this.person)).orderBy(com.mysema.query.scala.Conversions.stringPath(JPAQueryTest.this.person.firstName).asc()).list[com.mysema.query.scala.Person](com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](JPAQueryTest.this.person));
+[INFO]       ()
+[INFO]     };
+[INFO]     @org.junit.Test def Various(): Unit = {
+[INFO]       JPAQueryTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](JPAQueryTest.this.person)).where(com.mysema.query.scala.Conversions.stringPath(JPAQueryTest.this.person.firstName).like("Rob%")).list[com.mysema.query.scala.Person](com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](JPAQueryTest.this.person));
+[INFO]       JPAQueryTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](JPAQueryTest.this.person)).where(com.mysema.query.scala.Conversions.stringPath(JPAQueryTest.this.person.firstName).like("Rob%")).unique[com.mysema.query.scala.Person](com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](JPAQueryTest.this.person));
+[INFO]       {
+[INFO]         JPAQueryTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](JPAQueryTest.this.person)).where(com.mysema.query.scala.Conversions.stringPath(JPAQueryTest.this.person.firstName).like("Rob%"), com.mysema.query.scala.Conversions.stringPath(JPAQueryTest.this.person.lastName).like("An%")).list[com.mysema.query.scala.Person](com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](JPAQueryTest.this.person));
+[INFO]         ()
+[INFO]       }
+[INFO]     };
+[INFO]     @org.junit.Test def Complex(): Unit = {
+[INFO]       JPAQueryTest.this.query().from(com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](JPAQueryTest.this.person)).where(com.mysema.query.scala.Conversions.stringPath(JPAQueryTest.this.person.firstName).like("An%").and(com.mysema.query.scala.Conversions.stringPath(JPAQueryTest.this.person.lastName).isNotNull())).list[com.mysema.query.scala.Person](com.mysema.query.scala.Conversions.entityPath[com.mysema.query.scala.Person](JPAQueryTest.this.person));
+[INFO]       ()
+[INFO]     };
+[INFO]     def query(): com.mysema.query.jpa.JPQLSubQuery = new com.mysema.query.jpa.JPQLSubQuery()
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: ProjectionTest.scala
+[INFO] package com.mysema.query.scala {
+[INFO]   import com.mysema.query.scala.Conversions._;
+[INFO]   import com.mysema.query.sql.SQLSubQuery;
+[INFO]   import com.mysema.query.types._;
+[INFO]   import com.mysema.query.types.path._;
+[INFO]   import java.util.Arrays._;
+[INFO]   import org.junit.Test;
+[INFO]   import org.junit.Assert._;
+[INFO]   class ProjectionTest extends java.lang.Object with ScalaObject {
+[INFO]     def this(): com.mysema.query.scala.ProjectionTest = {
+[INFO]       ProjectionTest.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] val person: com.mysema.query.scala.Person = com.mysema.query.scala.Conversions.alias[com.mysema.query.scala.Person](classOf[com.mysema.query.scala.Person]);
+[INFO]     @org.junit.Test def QBean(): Unit = ();
+[INFO]     @org.junit.Test def QTuple(): Unit = {
+[INFO]       val tuple: com.mysema.query.types.QTuple = new com.mysema.query.types.QTuple(com.mysema.query.scala.Conversions.stringPath(ProjectionTest.this.person.firstName), com.mysema.query.scala.Conversions.stringPath(ProjectionTest.this.person.lastName));
+[INFO]       org.junit.Assert.assertEquals(java.util.Arrays.asList[com.mysema.query.scala.StringPath](com.mysema.query.scala.Conversions.stringPath(ProjectionTest.this.person.firstName).~, com.mysema.query.scala.Conversions.stringPath(ProjectionTest.this.person.lastName).~), tuple.getArgs())
+[INFO]     }
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: ExampleSchema.scala
+[INFO] package com.mysema.query.scala.sql {
+[INFO]   import com.mysema.query.sql._;
+[INFO]   import com.mysema.query.types.path._;
+[INFO]   import java.util.{Arrays, Collections};
+[INFO]   final object QUser extends java.lang.Object with ScalaObject {
+[INFO]     def this(): object com.mysema.query.scala.sql.QUser = {
+[INFO]       QUser.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     def as(path: String): com.mysema.query.scala.sql.QUser = new QUser(path)
+[INFO]   };
+[INFO]   @com.mysema.query.sql.Table(value = "USER") class QUser extends com.mysema.query.sql.RelationalPathBase[com.mysema.query.scala.sql.QUser] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val path: String = _;
+[INFO]     def this(path: String): com.mysema.query.scala.sql.QUser = {
+[INFO]       QUser.super.this(classOf[com.mysema.query.scala.sql.QUser], path);
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] val id: com.mysema.query.types.path.NumberPath[Integer] = QUser.this.createNumber[Integer]("ID", classOf[java.lang.Integer]);
+[INFO]     private[this] val department: com.mysema.query.types.path.NumberPath[Integer] = QUser.this.createNumber[Integer]("DEPARTMENT", classOf[java.lang.Integer]);
+[INFO]     private[this] val superiorId: com.mysema.query.types.path.NumberPath[Integer] = QUser.this.createNumber[Integer]("SUPERIOR_ID", classOf[java.lang.Integer]);
+[INFO]     private[this] val idKey: com.mysema.query.sql.PrimaryKey[com.mysema.query.scala.sql.QUser] = QUser.this.createPrimaryKey(QUser.this.id);
+[INFO]     private[this] val departmentKey: com.mysema.query.sql.ForeignKey[com.mysema.query.scala.sql.QDepartment] = QUser.this.createForeignKey[com.mysema.query.scala.sql.QDepartment](QUser.this.department, "ID");
+[INFO]     private[this] val superiorIdKey: com.mysema.query.sql.ForeignKey[com.mysema.query.scala.sql.QUser] = QUser.this.createForeignKey[com.mysema.query.scala.sql.QUser](QUser.this.superiorId, "ID")
+[INFO]   };
+[INFO]   final object QDepartment extends java.lang.Object with ScalaObject {
+[INFO]     def this(): object com.mysema.query.scala.sql.QDepartment = {
+[INFO]       QDepartment.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     def as(path: String): com.mysema.query.scala.sql.QDepartment = new QDepartment(path)
+[INFO]   };
+[INFO]   @com.mysema.query.sql.Table(value = "DEPARTMENT") class QDepartment extends com.mysema.query.sql.RelationalPathBase[com.mysema.query.scala.sql.QDepartment] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val path: String = _;
+[INFO]     def this(path: String): com.mysema.query.scala.sql.QDepartment = {
+[INFO]       QDepartment.super.this(classOf[com.mysema.query.scala.sql.QDepartment], path);
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] val id: com.mysema.query.types.path.NumberPath[Integer] = QDepartment.this.createNumber[Integer]("ID", classOf[java.lang.Integer]);
+[INFO]     private[this] val company: com.mysema.query.types.path.NumberPath[Integer] = QDepartment.this.createNumber[Integer]("COMPANY", classOf[java.lang.Integer]);
+[INFO]     private[this] val idKey: com.mysema.query.sql.PrimaryKey[com.mysema.query.scala.sql.QDepartment] = QDepartment.this.createPrimaryKey(QDepartment.this.id);
+[INFO]     private[this] val companyKey: com.mysema.query.sql.ForeignKey[com.mysema.query.scala.sql.QCompany] = QDepartment.this.createForeignKey[com.mysema.query.scala.sql.QCompany](QDepartment.this.company, "ID")
+[INFO]   };
+[INFO]   final object QCompany extends java.lang.Object with ScalaObject {
+[INFO]     def this(): object com.mysema.query.scala.sql.QCompany = {
+[INFO]       QCompany.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     def as(path: String): com.mysema.query.scala.sql.QCompany = new QCompany(path)
+[INFO]   };
+[INFO]   @com.mysema.query.sql.Table(value = "COMPANY") class QCompany extends com.mysema.query.sql.RelationalPathBase[com.mysema.query.scala.sql.QCompany] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val path: String = _;
+[INFO]     def this(path: String): com.mysema.query.scala.sql.QCompany = {
+[INFO]       QCompany.super.this(classOf[com.mysema.query.scala.sql.QCompany], path);
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] val id: com.mysema.query.types.path.NumberPath[Integer] = QCompany.this.createNumber[Integer]("ID", classOf[java.lang.Integer]);
+[INFO]     private[this] val idKey: com.mysema.query.sql.PrimaryKey[com.mysema.query.scala.sql.QCompany] = QCompany.this.createPrimaryKey(QCompany.this.id)
+[INFO]   };
+[INFO]   final object QCategory extends java.lang.Object with ScalaObject {
+[INFO]     def this(): object com.mysema.query.scala.sql.QCategory = {
+[INFO]       QCategory.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     def as(path: String): com.mysema.query.scala.sql.QCategory = new QCategory(path)
+[INFO]   };
+[INFO]   @com.mysema.query.sql.Table(value = "CATEGORY") class QCategory extends com.mysema.query.sql.RelationalPathBase[com.mysema.query.scala.sql.QCategory] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val path: String = _;
+[INFO]     def this(path: String): com.mysema.query.scala.sql.QCategory = {
+[INFO]       QCategory.super.this(classOf[com.mysema.query.scala.sql.QCategory], path);
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] val id: com.mysema.query.types.path.NumberPath[Integer] = QCategory.this.createNumber[Integer]("ID", classOf[java.lang.Integer]);
+[INFO]     private[this] val name: com.mysema.query.types.path.StringPath = QCategory.this.createString("NAME");
+[INFO]     private[this] val idKey: com.mysema.query.sql.PrimaryKey[com.mysema.query.scala.sql.QCategory] = QCategory.this.createPrimaryKey(QCategory.this.id);
+[INFO]     private[this] val _categoryKey: com.mysema.query.sql.ForeignKey[com.mysema.query.scala.sql.QBook] = QCategory.this.createInvForeignKey[com.mysema.query.scala.sql.QBook](QCategory.this.id, "category")
+[INFO]   };
+[INFO]   final object QBook extends java.lang.Object with ScalaObject {
+[INFO]     def this(): object com.mysema.query.scala.sql.QBook = {
+[INFO]       QBook.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     def as(path: String): com.mysema.query.scala.sql.QBook = new QBook(path)
+[INFO]   };
+[INFO]   @com.mysema.query.sql.Table(value = "BOOK") class QBook extends com.mysema.query.sql.RelationalPathBase[com.mysema.query.scala.sql.QBook] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val path: String = _;
+[INFO]     def this(path: String): com.mysema.query.scala.sql.QBook = {
+[INFO]       QBook.super.this(classOf[com.mysema.query.scala.sql.QBook], path);
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] val id: com.mysema.query.types.path.NumberPath[Integer] = QBook.this.createNumber[Integer]("ID", classOf[java.lang.Integer]);
+[INFO]     private[this] val title: com.mysema.query.types.path.StringPath = QBook.this.createString("TITLE");
+[INFO]     private[this] val category: com.mysema.query.types.path.NumberPath[Integer] = QBook.this.createNumber[Integer]("CATEGORY", classOf[java.lang.Integer]);
+[INFO]     private[this] val idKey: com.mysema.query.sql.PrimaryKey[com.mysema.query.scala.sql.QBook] = QBook.this.createPrimaryKey(QBook.this.id);
+[INFO]     private[this] val categoryKey: com.mysema.query.sql.ForeignKey[com.mysema.query.scala.sql.QCategory] = QBook.this.createForeignKey[com.mysema.query.scala.sql.QCategory](QBook.this.category, "ID")
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: InjectionTest.scala
+[INFO] package com.mysema.query.scala.sql {
+[INFO]   import com.mysema.query.sql._;
+[INFO]   import com.mysema.query.types.Predicate;
+[INFO]   import com.mysema.query.types.template.BooleanTemplate;
+[INFO]   import org.junit.Test;
+[INFO]   import org.junit.Assert._;
+[INFO]   class InjectionTest extends java.lang.Object with ScalaObject {
+[INFO]     def this(): com.mysema.query.scala.sql.InjectionTest = {
+[INFO]       InjectionTest.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     implicit def asPredicate(str: String): com.mysema.query.types.Predicate = com.mysema.query.types.template.BooleanTemplate.create(str);
+[INFO]     @org.junit.Test def Injection(): Unit = {
+[INFO]       val c: com.mysema.query.scala.sql.QCategory = QCategory.as("c");
+[INFO]       val sq: com.mysema.query.types.query.ListSubQuery[com.mysema.query.scala.sql.QCategory] = InjectionTest.this.query().from(c).where(InjectionTest.this.asPredicate("c.name like "a%"")).list[com.mysema.query.scala.sql.QCategory](c);
+[INFO]       org.junit.Assert.assertEquals("c.name like "a%"", sq.getMetadata().getWhere().toString())
+[INFO]     };
+[INFO]     def query(): com.mysema.query.sql.SQLSubQuery = new com.mysema.query.sql.SQLSubQuery()
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: JDBCIntegrationTest.scala
+[INFO] package com.mysema.query.scala.sql {
+[INFO]   import com.mysema.query.sql._;
+[INFO]   import com.mysema.query.types.path._;
+[INFO]   import java.io.File;
+[INFO]   import java.sql.Connection;
+[INFO]   import java.sql.DriverManager;
+[INFO]   import java.sql.SQLException;
+[INFO]   import java.sql.Statement;
+[INFO]   import org.junit._;
+[INFO]   import org.junit.Assert._;
+[INFO]   import java.util.Arrays;
+[INFO]   class JDBCIntegrationTest extends java.lang.Object with ScalaObject {
+[INFO]     def this(): com.mysema.query.scala.sql.JDBCIntegrationTest = {
+[INFO]       JDBCIntegrationTest.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] val templates: com.mysema.query.sql.HSQLDBTemplates = new com.mysema.query.sql.HSQLDBTemplates();
+[INFO]     private[this] var connection: java.sql.Connection = _;
+[INFO]     private[this] var statement: java.sql.Statement = _;
+[INFO]     @org.junit.Before def setUp(): Unit = {
+[INFO]       java.this.lang.Class.forName("org.hsqldb.jdbcDriver");
+[INFO]       val url: java.lang.String = "jdbc:hsqldb:mem:testdb";
+[INFO]       JDBCIntegrationTest.this.connection_=(java.sql.DriverManager.getConnection(url, "sa", ""));
+[INFO]       JDBCIntegrationTest.this.statement_=(JDBCIntegrationTest.this.connection.createStatement());
+[INFO]       JDBCIntegrationTest.this.statement.execute("drop table employee if exists");
+[INFO]       JDBCIntegrationTest.this.statement.execute("drop table survey if exists");
+[INFO]       JDBCIntegrationTest.this.statement.execute("drop table date_test if exists");
+[INFO]       JDBCIntegrationTest.this.statement.execute("drop table date_time_test if exists");
+[INFO]       JDBCIntegrationTest.this.statement.execute("create table survey (id int, name varchar(30), CONSTRAINT PK_survey PRIMARY KEY (id, name))");
+[INFO]       JDBCIntegrationTest.this.statement.execute("insert into survey values (1, 'abc')");
+[INFO]       JDBCIntegrationTest.this.statement.execute("insert into survey values (2, 'def')");
+[INFO]       JDBCIntegrationTest.this.statement.execute("create table employee(id INT, firstname VARCHAR(50), lastname VARCHAR(50), superior_id int, CONSTRAINT PK_employee PRIMARY KEY (id), CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");
+[INFO]       JDBCIntegrationTest.this.statement.execute("insert into employee values (1, 'Bob', 'Smith', null)");
+[INFO]       {
+[INFO]         JDBCIntegrationTest.this.statement.execute("insert into employee values (2, 'John', 'Doe', null)");
+[INFO]         ()
+[INFO]       }
+[INFO]     };
+[INFO]     @org.junit.Test def Generation_without_Beantypes(): Unit = {
+[INFO]       val namingStrategy: com.mysema.query.sql.DefaultNamingStrategy = new com.mysema.query.sql.DefaultNamingStrategy();
+[INFO]       val serializer: com.mysema.query.scala.sql.ScalaMetaDataSerializer = new ScalaMetaDataSerializer("Q", namingStrategy);
+[INFO]       val exporter: com.mysema.query.sql.MetaDataExporter = new com.mysema.query.sql.MetaDataExporter("Q", "test", new java.io.File("target/gen1"), namingStrategy, serializer);
+[INFO]       exporter.setCreateScalaSources(true);
+[INFO]       exporter.export(JDBCIntegrationTest.this.connection.getMetaData())
+[INFO]     };
+[INFO]     @org.junit.Test def Generation_with_Beantypes(): Unit = {
+[INFO]       val namingStrategy: com.mysema.query.sql.DefaultNamingStrategy = new com.mysema.query.sql.DefaultNamingStrategy();
+[INFO]       val serializer: com.mysema.query.scala.sql.ScalaMetaDataSerializer = new ScalaMetaDataSerializer("Q", namingStrategy);
+[INFO]       val beanSerializer: com.mysema.query.scala.sql.ScalaBeanSerializer = new ScalaBeanSerializer();
+[INFO]       val exporter: com.mysema.query.sql.MetaDataExporter = new com.mysema.query.sql.MetaDataExporter("Q", "test", new java.io.File("target/gen2"), namingStrategy, serializer, beanSerializer);
+[INFO]       exporter.setCreateScalaSources(true);
+[INFO]       exporter.export(JDBCIntegrationTest.this.connection.getMetaData())
+[INFO]     };
+[INFO]     @org.junit.Test def Querying(): Unit = {
+[INFO]       val survey: com.mysema.query.scala.sql.QSurvey = new QSurvey("survey");
+[INFO]       val employee: com.mysema.query.scala.sql.QEmployee = new QEmployee("employee");
+[INFO]       org.junit.Assert.assertEquals(2L, JDBCIntegrationTest.this.query.from(survey).list[Integer](survey.id).size().toLong);
+[INFO]       org.junit.Assert.assertEquals(2L, JDBCIntegrationTest.this.query.from(employee).list[java.lang.String](employee.firstname).size().toLong);
+[INFO]       org.junit.Assert.assertEquals(2L, JDBCIntegrationTest.this.query.from(survey).count());
+[INFO]       org.junit.Assert.assertEquals(2L, JDBCIntegrationTest.this.query.from(employee).count());
+[INFO]       org.junit.Assert.assertEquals("abc", JDBCIntegrationTest.this.query.from(survey).where(survey.id.eq(scala.this.Predef.int2Integer(1))).uniqueResult[java.lang.String](survey.name));
+[INFO]       org.junit.Assert.assertEquals("def", JDBCIntegrationTest.this.query.from(survey).where(survey.id.eq(scala.this.Predef.int2Integer(2))).uniqueResult[java.lang.String](survey.name));
+[INFO]       org.junit.Assert.assertEquals("Bob", JDBCIntegrationTest.this.query.from(employee).where(employee.lastname.eq("Smith")).uniqueResult[java.lang.String](employee.firstname));
+[INFO]       org.junit.Assert.assertEquals("John", JDBCIntegrationTest.this.query.from(employee).where(employee.lastname.eq("Doe")).uniqueResult[java.lang.String](employee.firstname))
+[INFO]     };
+[INFO]     @org.junit.After def tearDown(): Unit = try {
+[INFO]       JDBCIntegrationTest.this.statement.close()
+[INFO]     } finally JDBCIntegrationTest.this.connection.close();
+[INFO]     def query: com.mysema.query.sql.SQLQueryImpl = new com.mysema.query.sql.SQLQueryImpl(JDBCIntegrationTest.this.connection, JDBCIntegrationTest.this.templates)
+[INFO]   };
+[INFO]   @com.mysema.query.sql.Table(value = "survey") class QSurvey extends com.mysema.query.sql.RelationalPathBase[com.mysema.query.scala.sql.QSurvey] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val path: String = _;
+[INFO]     def this(path: String): com.mysema.query.scala.sql.QSurvey = {
+[INFO]       QSurvey.super.this(classOf[com.mysema.query.scala.sql.QSurvey], path);
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] val id: com.mysema.query.types.path.NumberPath[Integer] = QSurvey.this.createNumber[Integer]("id", classOf[java.lang.Integer]);
+[INFO]     private[this] val name: com.mysema.query.types.path.StringPath = QSurvey.this.createString("name");
+[INFO]     private[this] val sysIdx46: com.mysema.query.sql.PrimaryKey[com.mysema.query.scala.sql.QSurvey] = QSurvey.this.createPrimaryKey(QSurvey.this.id, QSurvey.this.name);
+[INFO]     private[this] val _surveyFk: com.mysema.query.sql.ForeignKey[com.mysema.query.scala.sql.QEmployee] = QSurvey.this.createInvForeignKey[com.mysema.query.scala.sql.QEmployee](java.util.Arrays.asList[com.mysema.query.types.path.NumberPath[Integer]](QSurvey.this.id, QSurvey.this.id), java.util.Arrays.asList[java.lang.String]("survey_id", "survey_id"))
+[INFO]   };
+[INFO]   @com.mysema.query.sql.Table(value = "employee") class QEmployee extends com.mysema.query.sql.RelationalPathBase[com.mysema.query.scala.sql.QEmployee] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val path: String = _;
+[INFO]     def this(path: String): com.mysema.query.scala.sql.QEmployee = {
+[INFO]       QEmployee.super.this(classOf[com.mysema.query.scala.sql.QEmployee], path);
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] val firstname: com.mysema.query.types.path.StringPath = QEmployee.this.createString("firstname");
+[INFO]     private[this] val id: com.mysema.query.types.path.NumberPath[Integer] = QEmployee.this.createNumber[Integer]("id", classOf[java.lang.Integer]);
+[INFO]     private[this] val lastname: com.mysema.query.types.path.StringPath = QEmployee.this.createString("lastname");
+[INFO]     private[this] val superiorId: com.mysema.query.types.path.NumberPath[Integer] = QEmployee.this.createNumber[Integer]("superior_id", classOf[java.lang.Integer]);
+[INFO]     private[this] val sysIdx47: com.mysema.query.sql.PrimaryKey[com.mysema.query.scala.sql.QEmployee] = QEmployee.this.createPrimaryKey(QEmployee.this.id);
+[INFO]     private[this] val superiorFk: com.mysema.query.sql.ForeignKey[com.mysema.query.scala.sql.QEmployee] = QEmployee.this.createForeignKey[com.mysema.query.scala.sql.QEmployee](QEmployee.this.superiorId, "id");
+[INFO]     private[this] val _superiorFk: com.mysema.query.sql.ForeignKey[com.mysema.query.scala.sql.QEmployee] = QEmployee.this.createInvForeignKey[com.mysema.query.scala.sql.QEmployee](QEmployee.this.id, "superior_id")
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: QuerySyntaxTest.scala
+[INFO] package com.mysema.query.scala.sql {
+[INFO]   import com.mysema.query.sql._;
+[INFO]   import org.junit.Test;
+[INFO]   import org.junit.Assert._;
+[INFO]   class QuerySyntaxTest extends java.lang.Object with ScalaObject {
+[INFO]     def this(): com.mysema.query.scala.sql.QuerySyntaxTest = {
+[INFO]       QuerySyntaxTest.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] val b: com.mysema.query.scala.sql.QBook = new QBook("b");
+[INFO]     private[this] val c: com.mysema.query.scala.sql.QCategory = new QCategory("c");
+[INFO]     private[this] val c1: com.mysema.query.scala.sql.QCategory = new QCategory("c1");
+[INFO]     private[this] val company: com.mysema.query.scala.sql.QCompany = new QCompany("company");
+[INFO]     private[this] val department: com.mysema.query.scala.sql.QDepartment = new QDepartment("department");
+[INFO]     private[this] val user: com.mysema.query.scala.sql.QUser = new QUser("user");
+[INFO]     private[this] val user2: com.mysema.query.scala.sql.QUser = new QUser("user2");
+[INFO]     @org.junit.Test def Path_Creation(): Unit = org.junit.Assert.assertEquals(new QCategory("c"), QCategory.as("c"));
+[INFO]     @org.junit.Test def Query_Syntax(): Unit = {
+[INFO]       QuerySyntaxTest.this.query().from(QuerySyntaxTest.this.c).innerJoin(QuerySyntaxTest.this.b).from(QuerySyntaxTest.this.c1).where(QuerySyntaxTest.this.c1.name.like("a%")).orderBy(QuerySyntaxTest.this.c.name.asc()).list[com.mysema.query.scala.sql.QCategory](QuerySyntaxTest.this.c);
+[INFO]       {
+[INFO]         QuerySyntaxTest.this.query().from(QuerySyntaxTest.this.c).innerJoin(QuerySyntaxTest.this.b).list[java.lang.Long](QuerySyntaxTest.this.b.id.count());
+[INFO]         ()
+[INFO]       }
+[INFO]     };
+[INFO]     @org.junit.Test def Key_Usage(): Unit = {
+[INFO]       QuerySyntaxTest.this.query().from(QuerySyntaxTest.this.user).innerJoin[com.mysema.query.scala.sql.QUser](QuerySyntaxTest.this.user.superiorIdKey, QuerySyntaxTest.this.user2);
+[INFO]       ()
+[INFO]     };
+[INFO]     @org.junit.Test def Key_Usage2(): Unit = {
+[INFO]       QuerySyntaxTest.this.query().from(QuerySyntaxTest.this.user).innerJoin[com.mysema.query.scala.sql.QDepartment](QuerySyntaxTest.this.user.departmentKey, QuerySyntaxTest.this.department).innerJoin[com.mysema.query.scala.sql.QCompany](QuerySyntaxTest.this.department.companyKey, QuerySyntaxTest.this.company);
+[INFO]       ()
+[INFO]     };
+[INFO]     def query(): com.mysema.query.sql.SQLSubQuery = new com.mysema.query.sql.SQLSubQuery()
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: ScalaBeanSerializerTest.scala
+[INFO] package com.mysema.query.scala.sql {
+[INFO]   import org.apache.commons.lang.StringUtils;
+[INFO]   import com.mysema.codegen._;
+[INFO]   import com.mysema.codegen.model._;
+[INFO]   import com.mysema.query.codegen._;
+[INFO]   import java.io.StringWriter;
+[INFO]   import org.junit._;
+[INFO]   import org.junit.Assert._;
+[INFO]   import scala.collection.JavaConversions._;
+[INFO]   class ScalaBeanSerializerTest extends java.lang.Object with ScalaObject {
+[INFO]     def this(): com.mysema.query.scala.sql.ScalaBeanSerializerTest = {
+[INFO]       ScalaBeanSerializerTest.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] var entityType: com.mysema.query.codegen.EntityType = null;
+[INFO]     private[this] var writer: java.io.StringWriter = new java.io.StringWriter();
+[INFO]     @org.junit.Before def setUp(): Unit = {
+[INFO]       val typeModel: com.mysema.codegen.model.SimpleType = new com.mysema.codegen.model.SimpleType(value ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false, false);
+[INFO]       ScalaBeanSerializerTest.this.entityType_=(new com.mysema.query.codegen.EntityType("Q", typeModel));
+[INFO]       ScalaBeanSerializerTest.this.entityType.addProperty(new com.mysema.query.codegen.Property(ScalaBeanSerializerTest.this.entityType, "entityField", ScalaBeanSerializerTest.this.entityType, new Array[String](0)));
+[INFO]       ScalaBeanSerializerTest.this.entityType.addProperty(new com.mysema.query.codegen.Property(ScalaBeanSerializerTest.this.entityType, "collection", new com.mysema.codegen.model.SimpleType(com.mysema.codegen.model.Types.COLLECTION, typeModel), new Array[String](0)));
+[INFO]       ScalaBeanSerializerTest.this.entityType.addProperty(new com.mysema.query.codegen.Property(ScalaBeanSerializerTest.this.entityType, "listField", new com.mysema.codegen.model.SimpleType(com.mysema.codegen.model.Types.LIST, typeModel), new Array[String](0)));
+[INFO]       ScalaBeanSerializerTest.this.entityType.addProperty(new com.mysema.query.codegen.Property(ScalaBeanSerializerTest.this.entityType, "setField", new com.mysema.codegen.model.SimpleType(com.mysema.codegen.model.Types.SET, typeModel), new Array[String](0)));
+[INFO]       ScalaBeanSerializerTest.this.entityType.addProperty(new com.mysema.query.codegen.Property(ScalaBeanSerializerTest.this.entityType, "arrayField", new com.mysema.codegen.model.ClassType(value ARRAY, classOf[[Ljava.lang.String;]), new Array[String](0)));
+[INFO]       ScalaBeanSerializerTest.this.entityType.addProperty(new com.mysema.query.codegen.Property(ScalaBeanSerializerTest.this.entityType, "mapField", new com.mysema.codegen.model.SimpleType(com.mysema.codegen.model.Types.MAP, typeModel, typeModel), new Array[String](0)));
+[INFO]       immutable.this.List.apply[java.lang.Class[_ >: java.sql.Time with java.sql.Date with Integer with Boolean]](classOf[scala.Boolean], classOf[java.lang.Comparable], classOf[java.lang.Integer], classOf[java.util.Date], classOf[java.sql.Date], classOf[java.sql.Time]).foreach[Unit](((cl: java.lang.Class[_ >: java.sql.Time with java.sql.Date with Integer with Boolean]) => {
+[INFO]         var classType: com.mysema.codegen.model.ClassType = new com.mysema.codegen.model.ClassType(com.mysema.codegen.model.TypeCategory.get(cl.getName()), cl);
+[INFO]         ScalaBeanSerializerTest.this.entityType.addProperty(new com.mysema.query.codegen.Property(ScalaBeanSerializerTest.this.entityType, org.apache.commons.lang.StringUtils.uncapitalize(cl.getSimpleName()), classType, new Array[String](0)))
+[INFO]       }));
+[INFO]       val firstName: com.mysema.codegen.model.Parameter = new com.mysema.codegen.model.Parameter("firstName", new com.mysema.codegen.model.ClassType(value STRING, classOf[java.lang.String]));
+[INFO]       val lastName: com.mysema.codegen.model.Parameter = new com.mysema.codegen.model.Parameter("lastName", new com.mysema.codegen.model.ClassType(value STRING, classOf[java.lang.String]));
+[INFO]       ScalaBeanSerializerTest.this.entityType.addConstructor(new com.mysema.codegen.model.Constructor(scala.collection.JavaConversions.asList[com.mysema.codegen.model.Parameter](immutable.this.List.apply[com.mysema.codegen.model.Parameter](firstName, lastName))));
+[INFO]       val method: com.mysema.query.codegen.Method = new com.mysema.query.codegen.Method(com.mysema.codegen.model.Types.STRING, "method", "abc", com.mysema.codegen.model.Types.STRING);
+[INFO]       ScalaBeanSerializerTest.this.entityType.addMethod(method)
+[INFO]     };
+[INFO]     @org.junit.Test def Print(): Unit = {
+[INFO]       val serializer: com.mysema.query.scala.sql.ScalaBeanSerializer = new com.mysema.query.scala.sql.ScalaBeanSerializer();
+[INFO]       serializer.serialize(ScalaBeanSerializerTest.this.entityType, com.mysema.query.codegen.SimpleSerializerConfig.DEFAULT, new com.mysema.codegen.ScalaWriter(ScalaBeanSerializerTest.this.writer));
+[INFO]       val str: java.lang.String = ScalaBeanSerializerTest.this.writer.toString().replaceAll("\s+", " ");
+[INFO]       org.junit.Assert.assertTrue(str.contains("package com.mysema.query;"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("import scala.reflect.BeanProperty;"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("import java.util.List;"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("import java.util.Map;"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("/**"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("* DomainClass is a Querydsl bean type"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("*/"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("class DomainClass {"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("@BeanProperty var arrayField: Array[String] = _;"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("@BeanProperty var boolean_: boolean = _;"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("@BeanProperty var collection: java.util.Collection[DomainClass] = _;"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("@BeanProperty var comparable: Comparable = _;"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("@BeanProperty var date: java.util.Date = _;"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("@BeanProperty var entityField: DomainClass = _;"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("@BeanProperty var integer: Integer = _;"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("@BeanProperty var listField: List[DomainClass] = _;"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("@BeanProperty var mapField: Map[DomainClass, DomainClass] = _;"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("@BeanProperty var setField: java.util.Set[DomainClass] = _;"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("@BeanProperty var time: java.sql.Time = _;"));
+[INFO]       org.junit.Assert.assertTrue(str.contains("}"))
+[INFO]     }
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: ScalaMetaDataSerializerTest.scala
+[INFO] package com.mysema.query.scala.sql {
+[INFO]   import org.apache.commons.lang.StringUtils;
+[INFO]   import com.mysema.codegen._;
+[INFO]   import com.mysema.codegen.model._;
+[INFO]   import com.mysema.query.codegen._;
+[INFO]   import com.mysema.query.sql._;
+[INFO]   import java.io.StringWriter;
+[INFO]   import org.junit._;
+[INFO]   import org.junit.Assert._;
+[INFO]   import scala.collection.JavaConversions._;
+[INFO]   class ScalaMetaDataSerializerTest extends java.lang.Object with ScalaObject {
+[INFO]     def this(): com.mysema.query.scala.sql.ScalaMetaDataSerializerTest = {
+[INFO]       ScalaMetaDataSerializerTest.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] var entityType: com.mysema.query.codegen.EntityType = null;
+[INFO]     private[this] val writer: java.io.StringWriter = new java.io.StringWriter();
+[INFO]     @org.junit.Before def setUp(): Unit = {
+[INFO]       val typeModel: com.mysema.codegen.model.SimpleType = new com.mysema.codegen.model.SimpleType(value ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false, false);
+[INFO]       ScalaMetaDataSerializerTest.this.entityType_=(new com.mysema.query.codegen.EntityType("Q", typeModel));
+[INFO]       immutable.this.List.apply[java.lang.Class[_ >: java.sql.Time with java.sql.Date with Integer with java.lang.Boolean <: java.lang.Comparable[_]]](classOf[java.lang.Boolean], classOf[java.lang.Comparable], classOf[java.lang.Integer], classOf[java.util.Date], classOf[java.sql.Date], classOf[java.sql.Time]).foreach[Unit](((cl: java.lang.Class[_ >: java.sql.Time with java.sql.Date with Integer with java.lang.Boolean <: java.lang.Comparable[_]]) => {
+[INFO]         var classType: com.mysema.codegen.model.ClassType = new com.mysema.codegen.model.ClassType(com.mysema.codegen.model.TypeCategory.get(cl.getName()), cl);
+[INFO]         ScalaMetaDataSerializerTest.this.entityType.addProperty(new com.mysema.query.codegen.Property(ScalaMetaDataSerializerTest.this.entityType, org.apache.commons.lang.StringUtils.uncapitalize(cl.getSimpleName()), classType, new Array[String](0)))
+[INFO]       }))
+[INFO]     };
+[INFO]     @org.junit.Test def Print(): Unit = {
+[INFO]       val namingStrategy: com.mysema.query.sql.DefaultNamingStrategy = new com.mysema.query.sql.DefaultNamingStrategy();
+[INFO]       val serializer: com.mysema.query.scala.sql.ScalaMetaDataSerializer = new ScalaMetaDataSerializer("Q", namingStrategy);
+[INFO]       serializer.serialize(ScalaMetaDataSerializerTest.this.entityType, com.mysema.query.codegen.SimpleSerializerConfig.DEFAULT, new com.mysema.codegen.ScalaWriter(ScalaMetaDataSerializerTest.this.writer));
+[INFO]       val str: java.lang.String = ScalaMetaDataSerializerTest.this.writer.toString();
+[INFO]       java.this.lang.System.err.println(str)
+[INFO]     }
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: DumpClassTest.scala
+[INFO] package com.mysema.testutil {
+[INFO]   import com.mysema.query.jpa.impl.JPAQuery;
+[INFO]   import com.mysema.query.scala.Conversions._;
+[INFO]   import com.mysema.query.annotations._;
+[INFO]   import javax.persistence._;
+[INFO]   import org.junit.{Test, Before, After};
+[INFO]   import org.junit.Assert._;
+[INFO]   import scala.collection.JavaConversions._;
+[INFO]   import scala.reflect.BeanProperty;
+[INFO]   class DumpClassTest extends java.lang.Object with ScalaObject {
+[INFO]     def this(): com.mysema.testutil.DumpClassTest = {
+[INFO]       DumpClassTest.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     @org.junit.Test def test(): Unit = immutable.this.List.apply[java.lang.Class[_ >: com.mysema.testutil.Class2 with com.mysema.testutil.Class1 <: ScalaObject]](classOf[com.mysema.testutil.Class1], classOf[com.mysema.testutil.Class2]).foreach[Unit](((cl: java.lang.Class[_ >: com.mysema.testutil.Class2 with com.mysema.testutil.Class1 <: ScalaObject]) => {
+[INFO]       scala.this.Predef.println(cl.getName());
+[INFO]       scala.this.Predef.refArrayOps[java.lang.reflect.Field](cl.getDeclaredFields()).foreach[Unit](((f: java.lang.reflect.Field) => {
+[INFO]         val annotations: String = scala.collection.JavaConversions.asBuffer[java.lang.annotation.Annotation](java.util.Arrays.asList[java.lang.annotation.Annotation]((f.getAnnotations(): _*))).map[java.lang.String, scala.collection.mutable.Buffer[java.lang.String]](((x$1: java.lang.annotation.Annotation) => "@".+(x$1.annotationType().getSimpleName())))(mutable.this.Buffer.canBuildFrom[java.lang.String]).mkString(" ");
+[INFO]         scala.this.Predef.println(" field ".+(annotations).+(" ").+(f.getName()))
+[INFO]       }));
+[INFO]       scala.this.Predef.refArrayOps[java.lang.reflect.Method](cl.getDeclaredMethods()).foreach[Unit](((m: java.lang.reflect.Method) => {
+[INFO]         val annotations: String = scala.collection.JavaConversions.asBuffer[java.lang.annotation.Annotation](java.util.Arrays.asList[java.lang.annotation.Annotation]((m.getReturnType().getAnnotations(): _*))).map[java.lang.String, scala.collection.mutable.Buffer[java.lang.String]](((x$2: java.lang.annotation.Annotation) => "@".+(x$2.annotationType().getSimpleName())))(mutable.this.Buffer.canBuildFrom[java.lang.String]).mkString(" ");
+[INFO]         scala.this.Predef.println(" method ".+(annotations).+(" ").+(m.getName()))
+[INFO]       }));
+[INFO]       scala.this.Predef.println()
+[INFO]     }))
+[INFO]   };
+[INFO]   @com.mysema.query.annotations.QueryEntity class Class1 extends java.lang.Object with ScalaObject {
+[INFO]     @scala.reflect.BeanProperty @javax.persistence.Id <paramaccessor> private[this] var id: Integer = _;
+[INFO]     @scala.reflect.BeanProperty <paramaccessor> private[this] var str: String = _;
+[INFO]     @scala.reflect.BeanProperty @javax.persistence.ManyToOne <paramaccessor> private[this] var manyToOne: com.mysema.testutil.Class1 = _;
+[INFO]     def this(@javax.persistence.Id id: Integer, str: String, @javax.persistence.ManyToOne manyToOne: com.mysema.testutil.Class1): com.mysema.testutil.Class1 = {
+[INFO]       Class1.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     def getManyToOne(): com.mysema.testutil.Class1 = Class1.this.manyToOne;
+[INFO]     def getStr(): String = Class1.this.str;
+[INFO]     def getId(): Integer = Class1.this.id
+[INFO]   };
+[INFO]   @com.mysema.query.annotations.QueryEntity class Class2 extends java.lang.Object with ScalaObject {
+[INFO]     def this(): com.mysema.testutil.Class2 = {
+[INFO]       Class2.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     @scala.reflect.BeanProperty @javax.persistence.Id private[this] var id: Integer = _;
+[INFO]     @scala.reflect.BeanProperty private[this] var str: com.mysema.testutil.Class2 = _;
+[INFO]     @scala.reflect.BeanProperty @javax.persistence.ManyToOne private[this] var manyToOne: com.mysema.testutil.Class2 = _;
+[INFO]     def getManyToOne(): com.mysema.testutil.Class2 = Class2.this.manyToOne;
+[INFO]     def getStr(): com.mysema.testutil.Class2 = Class2.this.str;
+[INFO]     def getId(): Integer = Class2.this.id
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: Employee.scala
+[INFO] package test {
+[INFO]   import javax.validation.constraints.NotNull;
+[INFO]   import com.mysema.query.sql.Column;
+[INFO]   import com.mysema.query.sql.Table;
+[INFO]   import javax.validation.constraints.Size;
+[INFO]   import scala.reflect.BeanProperty;
+[INFO]   @com.mysema.query.sql.Table(value = "EMPLOYEE") class Employee extends java.lang.Object with ScalaObject {
+[INFO]     def this(): test.Employee = {
+[INFO]       Employee.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     @com.mysema.query.sql.Column(value = "FIRSTNAME") @javax.validation.constraints.Size(max = 50) @scala.reflect.BeanProperty private[this] var firstname: String = _;
+[INFO]     @com.mysema.query.sql.Column(value = "ID") @javax.validation.constraints.NotNull @scala.reflect.BeanProperty private[this] var id: Integer = _;
+[INFO]     @com.mysema.query.sql.Column(value = "LASTNAME") @javax.validation.constraints.Size(max = 50) @scala.reflect.BeanProperty private[this] var lastname: String = _;
+[INFO]     @com.mysema.query.sql.Column(value = "SUPERIOR_ID") @scala.reflect.BeanProperty private[this] var superiorId: Integer = _;
+[INFO]     def getSuperiorId(): Integer = Employee.this.superiorId;
+[INFO]     def getLastname(): String = Employee.this.lastname;
+[INFO]     def getId(): Integer = Employee.this.id;
+[INFO]     def getFirstname(): String = Employee.this.firstname
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: QEmployee.scala
+[INFO] package test {
+[INFO]   import com.mysema.query.sql._;
+[INFO]   import com.mysema.query.types.path._;
+[INFO]   import com.mysema.query.sql.Table;
+[INFO]   import java.util.Arrays;
+[INFO]   final object QEmployee extends java.lang.Object with ScalaObject {
+[INFO]     def this(): object test.QEmployee = {
+[INFO]       QEmployee.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     def as(variable: String): test.QEmployee = new QEmployee(variable)
+[INFO]   };
+[INFO]   @com.mysema.query.sql.Table(value = "EMPLOYEE") class QEmployee extends com.mysema.query.sql.RelationalPathBase[test.Employee] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val path: String = _;
+[INFO]     def this(path: String): test.QEmployee = {
+[INFO]       QEmployee.super.this(classOf[test.Employee], path);
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] val firstname: com.mysema.query.types.path.StringPath = QEmployee.this.createString("FIRSTNAME");
+[INFO]     private[this] val id: com.mysema.query.types.path.NumberPath[Integer] = QEmployee.this.createNumber[Integer]("ID", classOf[java.lang.Integer]);
+[INFO]     private[this] val lastname: com.mysema.query.types.path.StringPath = QEmployee.this.createString("LASTNAME");
+[INFO]     private[this] val superiorId: com.mysema.query.types.path.NumberPath[Integer] = QEmployee.this.createNumber[Integer]("SUPERIOR_ID", classOf[java.lang.Integer]);
+[INFO]     private[this] val sysIdx55: com.mysema.query.sql.PrimaryKey[test.Employee] = QEmployee.this.createPrimaryKey(QEmployee.this.id);
+[INFO]     private[this] val superiorFk: com.mysema.query.sql.ForeignKey[test.Employee] = QEmployee.this.createForeignKey[test.Employee](QEmployee.this.superiorId, "ID");
+[INFO]     private[this] val _superiorFk: com.mysema.query.sql.ForeignKey[test.Employee] = QEmployee.this.createInvForeignKey[test.Employee](QEmployee.this.id, "SUPERIOR_ID")
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: QSurvey.scala
+[INFO] package test {
+[INFO]   import com.mysema.query.sql._;
+[INFO]   import com.mysema.query.types.path._;
+[INFO]   import com.mysema.query.sql.Table;
+[INFO]   import java.util.Arrays;
+[INFO]   final object QSurvey extends java.lang.Object with ScalaObject {
+[INFO]     def this(): object test.QSurvey = {
+[INFO]       QSurvey.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     def as(variable: String): test.QSurvey = new QSurvey(variable)
+[INFO]   };
+[INFO]   @com.mysema.query.sql.Table(value = "SURVEY") class QSurvey extends com.mysema.query.sql.RelationalPathBase[test.Survey] with ScalaObject {
+[INFO]     <paramaccessor> private[this] val path: String = _;
+[INFO]     def this(path: String): test.QSurvey = {
+[INFO]       QSurvey.super.this(classOf[test.Survey], path);
+[INFO]       ()
+[INFO]     };
+[INFO]     private[this] val id: com.mysema.query.types.path.NumberPath[Integer] = QSurvey.this.createNumber[Integer]("ID", classOf[java.lang.Integer]);
+[INFO]     private[this] val name: com.mysema.query.types.path.StringPath = QSurvey.this.createString("NAME");
+[INFO]     private[this] val sysIdx54: com.mysema.query.sql.PrimaryKey[test.Survey] = QSurvey.this.createPrimaryKey(QSurvey.this.id, QSurvey.this.name)
+[INFO]   }
+[INFO] }
+[INFO] 
+[INFO] // Scala source: Survey.scala
+[INFO] package test {
+[INFO]   import javax.validation.constraints.NotNull;
+[INFO]   import com.mysema.query.sql.Column;
+[INFO]   import com.mysema.query.sql.Table;
+[INFO]   import javax.validation.constraints.Size;
+[INFO]   import scala.reflect.BeanProperty;
+[INFO]   @com.mysema.query.sql.Table(value = "SURVEY") class Survey extends java.lang.Object with ScalaObject {
+[INFO]     def this(): test.Survey = {
+[INFO]       Survey.super.this();
+[INFO]       ()
+[INFO]     };
+[INFO]     @com.mysema.query.sql.Column(value = "ID") @javax.validation.constraints.NotNull @scala.reflect.BeanProperty private[this] var id: Integer = _;
+[INFO]     @com.mysema.query.sql.Column(value = "NAME") @javax.validation.constraints.NotNull @javax.validation.constraints.Size(max = 30) @scala.reflect.BeanProperty private[this] var name: String = _;
+[INFO]     def getName(): String = Survey.this.name;
+[INFO]     def getId(): Integer = Survey.this.id
+[INFO]   }
+[INFO] }
+[INFO] 
+[ERROR] 11 errors found
+[INFO] ------------------------------------------------------------------------
+[ERROR] BUILD ERROR
+[INFO] ------------------------------------------------------------------------
+[INFO] wrap: org.apache.commons.exec.ExecuteException: Process exited with an error: 1(Exit value: 1)
+
+[INFO] ------------------------------------------------------------------------
+[INFO] For more information, run Maven with the -e switch
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 34 seconds
+[INFO] Finished at: Wed Oct 06 16:50:52 EEST 2010
+[INFO] Final Memory: 28M/173M
+[INFO] ------------------------------------------------------------------------

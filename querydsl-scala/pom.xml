@@ -26,10 +26,10 @@
       <version>${project.parent.version}</version>
     </dependency>
 	<dependency>
-		<groupId>org.scala-lang</groupId>
-		<artifactId>scala-library</artifactId>
-		<version>${scala.version}</version>
-		<scope>provided</scope>
+	  <groupId>org.scala-lang</groupId>
+	  <artifactId>scala-library</artifactId>
+	  <version>${scala.version}</version>
+	  <scope>provided</scope>
 	</dependency>
     
     <!-- provided -->
@@ -117,6 +117,13 @@
       <plugin>
         <groupId>org.scala-tools</groupId>
         <artifactId>maven-scala-plugin</artifactId>
+		<!-- 
+		<configuration>
+		  <args>
+		    <arg>-Xprint:typer</arg>	
+		  </args>		   		
+		</configuration>
+		-->
         <executions>
           <execution>
             <goals>

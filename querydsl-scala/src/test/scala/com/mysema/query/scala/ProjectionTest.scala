@@ -23,7 +23,7 @@ class ProjectionTest {
   @Test
   def QTuple(){
     val tuple = new QTuple(person.firstName, person.lastName);
-    assertEquals(asList(person.firstName.expr, person.lastName.expr), tuple.getArgs);
+    assertEquals(asList(person.firstName.~, person.lastName.~), tuple.getArgs);
   }
     
 }
