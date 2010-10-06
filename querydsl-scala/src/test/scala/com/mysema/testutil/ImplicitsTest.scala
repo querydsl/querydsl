@@ -8,7 +8,9 @@ class ImplicitsTest {
 
     implicit def toStringWrapper(str: String) = new StringWrapper(str);
 
-    implicit def toIntWrapper(num: Integer) = new IntegerWrapper(num);
+    implicit def toIntegerWrapper(num: Integer) = new IntegerWrapper(num);
+    
+    implicit def toIntWrapper(num: Int) = new IntWrapper(num);
     
     @Test
     def stringValue(){
@@ -16,9 +18,17 @@ class ImplicitsTest {
     }
     
     @Test
-    def intValue(){
+    def integerValue(){
         val num: Integer = 1;
-        val res: Predicate = num < 3; 
+        val res1: Predicate = num < 3; 
+        val res2: Predicate = num lt 3;
+    }
+    
+    @Test
+    def intValue(){
+        val num: Int = 1;
+        val res1: Predicate = num < 3;
+        val res2: Predicate = num lt 3;
     }
     
 }
@@ -32,6 +42,15 @@ class StringWrapper(str: String){
 class IntegerWrapper(num: Integer){
     
     def <(other: Integer): Predicate = null;
+    
+    def lt(other: Integer): Predicate = null;
+}
+
+class IntWrapper(num: Int){
+    
+    def <(other: Integer): Predicate = null;
+    
+    def lt(other: Integer): Predicate = null;
 }
 
 trait Predicate
