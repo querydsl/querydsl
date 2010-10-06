@@ -101,8 +101,7 @@ class AliasTest {
   
   @Test
   def Number_Comparison2 {
-    val predicate: Predicate = person.scalaInt < 5;  
-    assertEquals("person.scalaInt < 5", predicate);
+    assertEquals("person.scalaInt < 5", person.scalaInt < 5);
     assertEquals("person.javaInt < 5", person.javaInt < 5);
     assertEquals("person.javaInt > 5", person.javaInt > 5);
     assertEquals("person.javaInt <= 5", person.javaInt <= 5);
@@ -196,7 +195,7 @@ class AliasTest {
 
   @Test
   def Array_Size {
-    val num: NumberExpression[Integer] = person.array size();   
+    val num: NumberExpression[Integer] = person.array size;   
     assertEquals("size(person.array)", num);
   }
 

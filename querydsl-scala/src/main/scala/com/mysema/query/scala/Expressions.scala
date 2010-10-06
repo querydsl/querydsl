@@ -314,7 +314,7 @@ trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpress
 
 }
 
-trait BooleanFunctions {
+abstract trait BooleanFunctions {
     
   def and(right: Predicate): BooleanExpression;
 
