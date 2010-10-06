@@ -89,8 +89,7 @@ class AliasTest {
 
   @Test
   def Number_Comparison {
-    val predicate: Predicate = person.scalaInt lt 5;
-    assertEquals("person.scalaInt < 5", predicate);
+    assertEquals("person.scalaInt < 5", person.scalaInt lt 5);
     assertEquals("person.javaInt < 5", person.javaInt lt 5);
     assertEquals("person.javaInt > 5", person.javaInt gt 5);
     assertEquals("person.javaInt <= 5", person.javaInt loe 5);

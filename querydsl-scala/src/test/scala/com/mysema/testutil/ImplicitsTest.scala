@@ -8,9 +8,17 @@ class ImplicitsTest {
 
     implicit def toStringWrapper(str: String) = new StringWrapper(str);
 
+    implicit def toIntWrapper(num: Integer) = new IntegerWrapper(num);
+    
     @Test
-    def test(){
-        val res1: Predicate = "str" startsWith "other";
+    def stringValue(){
+        val res: Predicate = "str" startsWith "other";
+    }
+    
+    @Test
+    def intValue(){
+        val num: Integer = 1;
+        val res: Predicate = num < 3; 
     }
     
 }
@@ -19,6 +27,11 @@ class StringWrapper(str: String){
     
     def startsWith(other: String): Predicate = null;
     
+}
+
+class IntegerWrapper(num: Integer){
+    
+    def <(other: Integer): Predicate = null;
 }
 
 trait Predicate
