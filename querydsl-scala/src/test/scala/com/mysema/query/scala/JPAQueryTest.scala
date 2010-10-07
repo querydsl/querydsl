@@ -13,7 +13,7 @@ class JPAQueryTest {
 
   @Test
   def OneLiner() {
-    query from (person) where (person.firstName like "Rob%") unique (person);
+    query from (person) where (person.firstName $like "Rob%") unique (person);
   }
 
   @Test
@@ -36,10 +36,10 @@ class JPAQueryTest {
 
   @Test
   def Filters() {
-    query from (person) where (person.firstName isEmpty()) count;
-    query from (person) where (person.firstName isEmpty(), person.lastName isNotNull()) list (person);
-    query from (person) where (person.firstName startsWith "X") count;
-    query from (person) where (person.javaInt < 5) count
+    query from (person) where (person.firstName $isEmpty()) count;
+    query from (person) where (person.firstName $isEmpty(), person.lastName $isNotNull()) list (person);
+    query from (person) where (person.firstName $startsWith "X") count;
+    query from (person) where (person.javaInt $lt 5) count
   }
 
   @Test
@@ -50,16 +50,16 @@ class JPAQueryTest {
   @Test
   def Various() {
     // list
-    query from (person) where (person.firstName like "Rob%") list (person);
+    query from (person) where (person.firstName $like "Rob%") list (person);
     // unique result
-    query from (person) where (person.firstName like "Rob%") unique (person);
+    query from (person) where (person.firstName $like "Rob%") unique (person);
     // long where
-    query from (person) where (person.firstName like "Rob%", person.lastName like "An%") list (person)
+    query from (person) where (person.firstName $like "Rob%", person.lastName $like "An%") list (person)
   }
   
   @Test
   def Complex() {
-      query from person where ((person.firstName like "An%") and (person.lastName isNotNull)) list person;      
+      query from person where ((person.firstName $like "An%") $and (person.lastName $isNotNull)) list person;      
   }
 
   def query() = new JPQLSubQuery()

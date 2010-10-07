@@ -51,9 +51,6 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
     // javadoc        
     //writer.javadoc(simpleName + javadocSuffix);
     
-    // header
-    model.getAnnotations.foreach(writer.annotation(_));
-
     val queryType = typeMappings.getPathType(model, model, true);
     var modelName = writer.getRawName(model);
     var queryTypeName = writer.getRawName(queryType);
@@ -62,6 +59,9 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
     scalaWriter.beginObject(queryTypeName);
     scalaWriter.line("def as(variable: String) = new ", queryTypeName, "(variable)");
     scalaWriter.end();
+    
+    // header
+    model.getAnnotations.foreach(writer.annotation(_));
     
     scalaWriter.beginClass(classHeader);
 

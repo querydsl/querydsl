@@ -70,7 +70,7 @@ class JPAIntegrationTest {
     assertEquals(1, query from company list company size);
 
     assertEquals("Bob", query from user where (user.userName $eq "Bob") uniqueResult user.userName);
-    assertEquals("Bob", query from user where (user.userName like "Bo%") uniqueResult user.userName);
+    assertEquals("Bob", query from user where (user.userName $like "Bo%") uniqueResult user.userName);
     assertEquals("Ann", query from user where (user.department.name $eq "Sales") uniqueResult user.userName);
   }
 
