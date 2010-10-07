@@ -15,7 +15,7 @@ import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.Ops;
 
 /**
- * MapExpressionBase is an abstract base class for EMap implementations
+ * MapExpressionBase is an abstract base class for MapExpression implementations
  *
  * @author tiwe
  *
@@ -36,6 +36,10 @@ public abstract class MapExpressionBase<K,V> extends SimpleExpression<Map<K,V>> 
         super(type);
     }
 
+    public final BooleanExpression contains(K key, V value) {
+        return get(key).eq(value);
+    }
+    
     public final BooleanExpression contains(Expression<K> key, Expression<V> value) {
         return get(key).eq(value);
     }
