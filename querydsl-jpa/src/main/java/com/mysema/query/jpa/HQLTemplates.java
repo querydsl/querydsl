@@ -39,6 +39,9 @@ public class HQLTemplates extends JPQLTemplates{
             add(type, "{0}[{1}]");
         }
         add(PathType.LISTVALUE_CONSTANT, "{0}[{1s}]");
+        
+        add(Ops.CONTAINS_KEY, "{1} in indices({0})");
+        add(Ops.CONTAINS_VALUE, "{1} in elements({0})");
 
         // date time
         add(Ops.DateTimeOps.MILLISECOND, "0"); // NOT supported in HQL

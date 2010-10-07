@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,6 +28,8 @@ import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.DomesticCat;
 import com.mysema.query.jpa.domain.QCat;
+import com.mysema.query.jpa.domain.QShow;
+import com.mysema.query.jpa.domain.Show;
 import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
@@ -146,6 +149,12 @@ public abstract class AbstractStandardTest {
         cat.setBirthdate(birthDate);
         save(cat);
         savedCats.add(cat);
+        
+        Show show = new Show();
+        show.acts = new HashMap<String,String>();
+        show.acts.put("a","A");
+        show.acts.put("b","B");
+        save(show);
     }
 
     @Test
@@ -176,16 +185,19 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    public void Aggregates(){
+    public void Aggregates_UniqueResult(){
         // uniqueResult
         assertEquals(Integer.valueOf(1), catQuery().uniqueResult(cat.id.min()));
         assertEquals(Integer.valueOf(6), catQuery().uniqueResult(cat.id.max()));
+    }
 
+    @Test
+    public void Aggregates_List(){
         // list
         assertEquals(Integer.valueOf(1), catQuery().list(cat.id.min()).get(0));
         assertEquals(Integer.valueOf(6), catQuery().list(cat.id.max()).get(0));
     }
-
+    
     @Test
     public void DistinctResults(){
         System.out.println("-- list results");
@@ -205,49 +217,71 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    public void StringOperations(){
+    public void StartsWith(){
         // startsWith
         assertEquals(1, catQuery().where(cat.name.startsWith("R")).count());
         assertEquals(0, catQuery().where(cat.name.startsWith("X")).count());
         assertEquals(1, catQuery().where(cat.name.startsWithIgnoreCase("r")).count());
+    }
 
+    @Test
+    public void EndsWith(){
         // endsWith
         assertEquals(1, catQuery().where(cat.name.endsWith("h123")).count());
         assertEquals(0, catQuery().where(cat.name.endsWith("X")).count());
         assertEquals(1, catQuery().where(cat.name.endsWithIgnoreCase("H123")).count());
-
+    }
+    
+    @Test
+    public void Contains(){
         // contains
         assertEquals(1, catQuery().where(cat.name.contains("eli")).count());
-
+    }
+    
+    @Test
+    public void Length(){
         // length
         assertEquals(6, catQuery().where(cat.name.length().gt(0)).count());
-
+    }
+    
+    @Test
+    public void IndexOf(){
         // indexOf
         assertEquals(Integer.valueOf(0), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("B")));
-        assertEquals(Integer.valueOf(1), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("o")));
-
+        assertEquals(Integer.valueOf(1), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("o")));        
+    }
+    
+    
+    
+    @Test
+    public void StringOperations(){
         // case-sensitivity
         if (!getTarget().equals(Target.MYSQL)){ // NOTE : locate in MYSQL is case-insensitive
             assertEquals(0, catQuery().where(cat.name.startsWith("r")).count());
             assertEquals(0, catQuery().where(cat.name.endsWith("H123")).count());
             assertEquals(Integer.valueOf(2), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("b")));
         }
-
     }
-
+    
     @Test
-    public void Paging(){
+    public void Limit(){
         // limit
         List<String> names1 = Arrays.asList("Allen123","Bob123");
-        assertEquals(names1, catQuery().orderBy(cat.name.asc()).limit(2).list(cat.name));
-
+        assertEquals(names1, catQuery().orderBy(cat.name.asc()).limit(2).list(cat.name));        
+    }
+    
+    @Test
+    public void Offset(){
         // offset
         List<String> names2 = Arrays.asList("Felix123","Mary123","Ruth123","Some");
-        assertEquals(names2, catQuery().orderBy(cat.name.asc()).offset(2).list(cat.name));
-
+        assertEquals(names2, catQuery().orderBy(cat.name.asc()).offset(2).list(cat.name));    
+    }
+    
+    @Test
+    public void Limit_and_offset(){
         // limit + offset
         List<String> names3 = Arrays.asList("Felix123","Mary123");
-        assertEquals(names3, catQuery().orderBy(cat.name.asc()).limit(2).offset(2).list(cat.name));
+        assertEquals(names3, catQuery().orderBy(cat.name.asc()).limit(2).offset(2).list(cat.name));        
     }
 
     @Test
@@ -315,6 +349,22 @@ public abstract class AbstractStandardTest {
     @Test
     public void Null_as_uniqueResult(){
         assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString())).uniqueResult(cat));
+    }
+    
+    @Test
+    public void Map_ContainsKey(){
+        QShow show = QShow.show;
+        assertEquals(1l, query().from(show).where(show.acts.containsKey("a")).count());
+        assertEquals(1l, query().from(show).where(show.acts.containsKey("b")).count());
+        assertEquals(0l, query().from(show).where(show.acts.containsKey("c")).count());
+    }
+    
+    @Test
+    public void Map_ContainsValue(){
+        QShow show = QShow.show;
+        assertEquals(1l, query().from(show).where(show.acts.containsValue("A")).count());
+        assertEquals(1l, query().from(show).where(show.acts.containsValue("B")).count());
+        assertEquals(0l, query().from(show).where(show.acts.containsValue("C")).count());
     }
 
 }

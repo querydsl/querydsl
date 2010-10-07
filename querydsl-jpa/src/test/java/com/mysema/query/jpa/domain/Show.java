@@ -18,8 +18,8 @@ import org.hibernate.annotations.CollectionOfElements;
 @Entity
 public class Show {
     @CollectionOfElements
-    Map<String, String> acts;
+    public Map<String, String> acts;
 
     @Id
-    int id;
+    public int id;
 }
