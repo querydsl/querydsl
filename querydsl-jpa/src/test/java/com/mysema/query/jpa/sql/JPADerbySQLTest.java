@@ -135,17 +135,18 @@ public class JPADerbySQLTest {
 //        assertEquals(6, rows.size());
 //        print(rows);
     }
-
-    private void print(Iterable<Object[]> rows){
-        for (Object[] row : rows){
-            System.out.println(Arrays.asList(row));
-        }
-    }
     
     @Test
     public void Null_as_uniqueResult(){
         SAnimal cat = new SAnimal("cat");
         assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString())).uniqueResult(cat.name));
     }
+    
+
+    private void print(Iterable<Object[]> rows){
+        for (Object[] row : rows){
+            System.out.println(Arrays.asList(row));
+        }
+    }    
 
 }

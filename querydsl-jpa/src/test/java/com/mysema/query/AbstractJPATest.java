@@ -49,7 +49,6 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
     @Test
     public void QueryExposure(){
         save(new Cat());
-
         List results = query().from(QCat.cat).createQuery(QCat.cat).getResultList();
         assertNotNull(results);
         assertFalse(results.isEmpty());

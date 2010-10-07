@@ -50,16 +50,13 @@ public class FeaturesTest extends AbstractQueryTest {
         // Kitty is reused, so it should be used via one named parameter
         assertToString(
                 "cat.name = :a1 or cust.name.firstName = :a2 or kitten.name = :a1",
-                cat.name.eq("Kitty").or(cust.name.firstName.eq("Hans")).or(
-                        kitten.name.eq("Kitty")));
+                cat.name.eq("Kitty").or(cust.name.firstName.eq("Hans")).or(kitten.name.eq("Kitty")));
     }
 
     @Test
     public void BasicOperations() {
-        assertToString("cat.bodyWeight = kitten.bodyWeight", cat.bodyWeight
-                .eq(kitten.bodyWeight));
-        assertToString("cat.bodyWeight <> kitten.bodyWeight", cat.bodyWeight
-                .ne(kitten.bodyWeight));
+        assertToString("cat.bodyWeight = kitten.bodyWeight", cat.bodyWeight.eq(kitten.bodyWeight));
+        assertToString("cat.bodyWeight <> kitten.bodyWeight", cat.bodyWeight.ne(kitten.bodyWeight));
 
         assertToString(
                 "cat.bodyWeight + kitten.bodyWeight = kitten.bodyWeight",
@@ -68,10 +65,8 @@ public class FeaturesTest extends AbstractQueryTest {
 
     @Test
     public void EqualsAndNotEqualsForAllExpressions() {
-        assertToString("cat.name = cust.name.firstName", cat.name
-                .eq(cust.name.firstName));
-        assertToString("cat.name <> cust.name.firstName", cat.name
-                .ne(cust.name.firstName));
+        assertToString("cat.name = cust.name.firstName", cat.name.eq(cust.name.firstName));
+        assertToString("cat.name <> cust.name.firstName", cat.name.ne(cust.name.firstName));
     }
 
     @Test

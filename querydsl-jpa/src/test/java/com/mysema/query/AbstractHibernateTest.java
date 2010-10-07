@@ -79,7 +79,7 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
     public void ScrollArray() throws IOException{
         CloseableIterator<Object[]> rows = new ScrollableResultsIterator<Object[]>(query()
                 .from(QCat.cat)
-                .createQuery(QCat.cat.name, QCat.cat.birthdate).scroll(),true);
+                .createQuery(QCat.cat.name, QCat.cat.birthdate).scroll(), true);
         assertTrue(rows.hasNext());
         while (rows.hasNext()){
             Object[] row = rows.next();

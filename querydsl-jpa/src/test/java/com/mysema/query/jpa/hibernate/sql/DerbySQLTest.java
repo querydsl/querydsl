@@ -86,7 +86,7 @@ public class DerbySQLTest {
     }
 
     @Test
-    public void entityQueries(){
+    public void EntityQueries(){
         SAnimal cat = new SAnimal("cat");
         SAnimal mate = new SAnimal("mate");
         QCat catEntity = QCat.cat;
@@ -105,7 +105,7 @@ public class DerbySQLTest {
     }
 
     @Test
-    public void entityProjections(){
+    public void EntityProjections(){
         SAnimal cat = new SAnimal("cat");
 
         List<Cat> cats = query().from(cat).orderBy(cat.name.asc())
@@ -115,7 +115,7 @@ public class DerbySQLTest {
     }
 
     @Test
-    public void wildcard(){
+    public void Wildcard(){
         SAnimal cat = new SAnimal("cat");
 
         List<Object[]> rows = query().from(cat).list(cat.all());
