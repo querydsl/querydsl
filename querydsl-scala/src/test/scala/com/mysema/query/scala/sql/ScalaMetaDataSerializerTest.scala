@@ -25,6 +25,7 @@ class ScalaMetaDataSerializerTest {
     // type
     val typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false, false);
     entityType = new EntityType("Q", typeModel);
+    entityType.addAnnotation(new TableImpl("DOMAIN_TYPE"));
 
     // properties
     List(classOf[java.lang.Boolean], classOf[Comparable[_]], classOf[Integer], classOf[java.util.Date], classOf[java.sql.Date], classOf[java.sql.Time])
@@ -42,4 +43,5 @@ class ScalaMetaDataSerializerTest {
     val str = writer.toString();
     System.err.println(str);
   }
+  
 }
