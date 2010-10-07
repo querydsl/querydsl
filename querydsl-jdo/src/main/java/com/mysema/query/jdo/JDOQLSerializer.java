@@ -121,6 +121,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
         // select
+        boolean skippedSelect = false;
         if (forCountRow) {
             if (joins.size() == 1){
                 append(SELECT_COUNT_THIS);
@@ -145,11 +146,15 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             }else{
                 append(SELECT);
             }
-            handle(COMMA, select);
+            if (select.size() >1 || !select.get(0).equals(source)){
+                handle(COMMA, select);    
+            }else{
+                skippedSelect = true;
+            }
         }
 
         // from
-        append(FROM);
+        append(skippedSelect ? FROM.substring(1) : FROM);
         if (source instanceof Operation && subquery){
             handle(source);
         }else{

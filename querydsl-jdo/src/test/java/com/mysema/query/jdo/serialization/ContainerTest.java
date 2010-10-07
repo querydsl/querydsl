@@ -37,7 +37,7 @@ public class ContainerTest extends AbstractTest{
 //                + "WHERE !this.wardrobes.containsValue(wrd) "
 //                + "PARAMETERS org.jpox.samples.models.fitness.Wardrobe wrd");
         assertEquals(
-          "SELECT this FROM com.mysema.query.jdo.models.fitness.Gym " +
+          "SELECT FROM com.mysema.query.jdo.models.fitness.Gym " +
           "WHERE !this.wardrobes.containsValue(a1) " +
           "PARAMETERS com.mysema.query.jdo.models.fitness.Wardrobe a1",
 
@@ -49,7 +49,7 @@ public class ContainerTest extends AbstractTest{
 //                + "PARAMETERS org.jpox.samples.models.fitness.Wardrobe wrd,org.jpox.samples.models.fitness.Wardrobe wrd2");
 
         assertEquals(
-          "SELECT this FROM com.mysema.query.jdo.models.fitness.Gym " +
+          "SELECT FROM com.mysema.query.jdo.models.fitness.Gym " +
           "WHERE !this.wardrobes.containsValue(a1) && !this.wardrobes.containsValue(a2) " +
           "PARAMETERS com.mysema.query.jdo.models.fitness.Wardrobe a1, com.mysema.query.jdo.models.fitness.Wardrobe a2",
 
@@ -62,7 +62,7 @@ public class ContainerTest extends AbstractTest{
 //                + "PARAMETERS org.jpox.samples.models.fitness.Wardrobe wrd,org.jpox.samples.models.fitness.Wardrobe wrd2,org.jpox.samples.models.fitness.Wardrobe wrd1");
 
         assertEquals(
-          "SELECT this FROM com.mysema.query.jdo.models.fitness.Gym " +
+          "SELECT FROM com.mysema.query.jdo.models.fitness.Gym " +
           "WHERE !this.wardrobes.containsValue(a1) && !this.wardrobes.containsValue(a2) && this.wardrobes.containsValue(a3) " +
           "PARAMETERS com.mysema.query.jdo.models.fitness.Wardrobe a1, com.mysema.query.jdo.models.fitness.Wardrobe a2, com.mysema.query.jdo.models.fitness.Wardrobe a3",
 
@@ -83,7 +83,7 @@ public class ContainerTest extends AbstractTest{
 //                + "WHERE !this.wardrobes2.containsKey(wrd) "
 //                + "PARAMETERS org.jpox.samples.models.fitness.Wardrobe wrd");
         assertEquals(
-          "SELECT this FROM com.mysema.query.jdo.models.fitness.Gym " +
+          "SELECT FROM com.mysema.query.jdo.models.fitness.Gym " +
           "WHERE !this.wardrobes2.containsKey(a1) " +
           "PARAMETERS com.mysema.query.jdo.models.fitness.Wardrobe a1",
 
@@ -94,7 +94,7 @@ public class ContainerTest extends AbstractTest{
 //                + "WHERE !this.wardrobes2.containsKey(wrd) && !this.wardrobes2.containsKey(wrd2) "
 //                + "PARAMETERS org.jpox.samples.models.fitness.Wardrobe wrd,org.jpox.samples.models.fitness.Wardrobe wrd2");
         assertEquals(
-          "SELECT this FROM com.mysema.query.jdo.models.fitness.Gym " +
+          "SELECT FROM com.mysema.query.jdo.models.fitness.Gym " +
           "WHERE !this.wardrobes2.containsKey(a1) && !this.wardrobes2.containsKey(a2) " +
           "PARAMETERS com.mysema.query.jdo.models.fitness.Wardrobe a1, com.mysema.query.jdo.models.fitness.Wardrobe a2",
 
@@ -108,7 +108,7 @@ public class ContainerTest extends AbstractTest{
 //                + "WHERE !this.wardrobes2.containsKey(wrd) && !this.wardrobes2.containsKey(wrd2) && this.wardrobes2.containsKey(wrd1) "
 //                + "PARAMETERS org.jpox.samples.models.fitness.Wardrobe wrd,org.jpox.samples.models.fitness.Wardrobe wrd2,org.jpox.samples.models.fitness.Wardrobe wrd1");
         assertEquals(
-          "SELECT this FROM com.mysema.query.jdo.models.fitness.Gym " +
+          "SELECT FROM com.mysema.query.jdo.models.fitness.Gym " +
           "WHERE !this.wardrobes2.containsKey(a1) && !this.wardrobes2.containsKey(a2) && this.wardrobes2.containsKey(a3) " +
           "PARAMETERS com.mysema.query.jdo.models.fitness.Wardrobe a1, com.mysema.query.jdo.models.fitness.Wardrobe a2, com.mysema.query.jdo.models.fitness.Wardrobe a3",
 
@@ -149,7 +149,7 @@ public class ContainerTest extends AbstractTest{
 //                + "WHERE this.wardrobes.get(wrd.model) == wrd "
 //                + "PARAMETERS org.jpox.samples.models.fitness.Wardrobe wrd");
         assertEquals(
-          "SELECT this FROM com.mysema.query.jdo.models.fitness.Gym " +
+          "SELECT FROM com.mysema.query.jdo.models.fitness.Gym " +
           "WHERE this.wardrobes.get(a1) == a2 " +
           "PARAMETERS java.lang.String a1, com.mysema.query.jdo.models.fitness.Wardrobe a2",
 
@@ -165,7 +165,7 @@ public class ContainerTest extends AbstractTest{
 //                + "PARAMETERS org.jpox.samples.models.fitness.Wardrobe wrd");
 //        .setOrdering("this.wardrobes.get(wrd.model).model ascending");
         assertEquals(
-          "SELECT this FROM com.mysema.query.jdo.models.fitness.Gym " +
+          "SELECT FROM com.mysema.query.jdo.models.fitness.Gym " +
           "ORDER BY this.wardrobes.get(a1).model ASC",
 
           serialize(query().from(gym)

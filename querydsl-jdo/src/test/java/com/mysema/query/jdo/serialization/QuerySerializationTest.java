@@ -91,7 +91,7 @@ public class QuerySerializationTest extends AbstractTest{
     @Test
     public void InstanceofQuery(){
         assertEquals(
-            "SELECT this " +
+            "SELECT " +
             "FROM com.mysema.query.jdo.test.domain.Product " +
             "WHERE this instanceof com.mysema.query.jdo.test.domain.Book",
 

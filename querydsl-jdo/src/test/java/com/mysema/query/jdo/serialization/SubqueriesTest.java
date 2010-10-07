@@ -27,7 +27,7 @@ public class SubqueriesTest extends AbstractTest{
     @Test
     public void test1(){
         assertEquals(
-          "SELECT this FROM com.mysema.query.jdo.models.company.Department " +
+          "SELECT FROM com.mysema.query.jdo.models.company.Department " +
           "WHERE this.employees.size() == " +
           "(SELECT max(d.employees.size()) FROM com.mysema.query.jdo.models.company.Department d)",
 
@@ -42,7 +42,7 @@ public class SubqueriesTest extends AbstractTest{
     @Test
     public void test2(){
         assertEquals(
-          "SELECT this FROM com.mysema.query.jdo.models.company.Employee " +
+          "SELECT FROM com.mysema.query.jdo.models.company.Employee " +
           "WHERE this.weeklyhours > " +
           "(SELECT avg(e.weeklyhours) FROM this.department.employees e)",
 
@@ -59,7 +59,7 @@ public class SubqueriesTest extends AbstractTest{
     @Test
     public void test3(){
         assertEquals(
-          "SELECT this FROM com.mysema.query.jdo.models.company.Employee " +
+          "SELECT FROM com.mysema.query.jdo.models.company.Employee " +
           "WHERE this.weeklyhours > " +
           "(SELECT avg(e.weeklyhours) FROM this.department.employees e WHERE e.manager == this.manager)",
 
@@ -73,7 +73,7 @@ public class SubqueriesTest extends AbstractTest{
     @Test
     public void test4(){
         assertEquals(
-          "SELECT this FROM com.mysema.query.jdo.models.company.Employee " +
+          "SELECT FROM com.mysema.query.jdo.models.company.Employee " +
           "WHERE this.weeklyhours > " +
           "(SELECT avg(e.weeklyhours) FROM com.mysema.query.jdo.models.company.Employee e)",
 
@@ -89,7 +89,7 @@ public class SubqueriesTest extends AbstractTest{
     @Test
     public void test5(){
         assertEquals(
-          "SELECT this FROM com.mysema.query.jdo.models.company.Employee " +
+          "SELECT FROM com.mysema.query.jdo.models.company.Employee " +
           "WHERE this.weeklyhours == e.weeklyhours && this.firstName == a1 " +
           "VARIABLES com.mysema.query.jdo.models.company.Employee e " +
           "PARAMETERS java.lang.String a1",
