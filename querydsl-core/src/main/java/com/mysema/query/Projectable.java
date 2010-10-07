@@ -57,7 +57,7 @@ public interface Projectable {
      * iterate over the results for the given projection
      *
      * @param <RT>
-     *            generic type of the Iteratpr
+     *            generic type of the Iterator
      * @param projection
      * @return an Iterator over the projection
      */
