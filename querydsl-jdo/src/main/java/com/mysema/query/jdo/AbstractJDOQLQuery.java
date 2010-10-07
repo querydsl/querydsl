@@ -18,6 +18,9 @@ import javax.annotation.Nullable;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
@@ -41,6 +44,8 @@ import com.mysema.query.types.QTuple;
  */
 public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extends ProjectableQuery<Q>{
 
+    private static final Logger logger = LoggerFactory.getLogger(JDOQLQueryImpl.class);
+    
     private final Closeable closeable = new Closeable(){
         @Override
         public void close() throws IOException {
@@ -111,6 +116,8 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         JDOQLSerializer serializer = new JDOQLSerializer(getTemplates(), source);
         serializer.serialize(queryMixin.getMetadata(), forCount, false);
 
+        logQuery(serializer.toString());
+        
         // create Query
         Query query = persistenceManager.newQuery(serializer.toString());
         orderedConstants = serializer.getConstants();
@@ -134,6 +141,12 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         }
 
         return query;
+    }
+    
+    protected void logQuery(String queryString){
+        if (logger.isDebugEnabled()){
+            logger.debug(queryString.replace('\n', ' '));
+        }
     }
 
     @SuppressWarnings("unchecked")
