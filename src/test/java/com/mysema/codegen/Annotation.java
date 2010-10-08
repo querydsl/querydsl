@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 
 @Target( { TYPE })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface TestAnnotation {
+public @interface Annotation {
     
     boolean prop1() default false;
     

@@ -13,9 +13,9 @@ import java.lang.annotation.ElementType;
 
 import org.junit.Test;
 
-@TestAnnotation(prop2 = false, clazz = AnnotationTest.class)
-@TestAnnotation2("Hello")
-@TestAnnotation3(type = ElementType.ANNOTATION_TYPE)
+@Annotation(prop2 = false, clazz = AnnotationTest.class)
+@Annotation2("Hello")
+@Annotation3(type = ElementType.ANNOTATION_TYPE)
 public class AnnotationTest {
     
     
@@ -24,20 +24,20 @@ public class AnnotationTest {
     
     @Test
     public void ClassAnnotation() throws IOException{
-        writer.annotation(getClass().getAnnotation(TestAnnotation.class));
-        assertEquals("@com.mysema.codegen.TestAnnotation(clazz=com.mysema.codegen.AnnotationTest.class, prop2=false)", w.toString().trim());
+        writer.annotation(getClass().getAnnotation(Annotation.class));
+        assertEquals("@com.mysema.codegen.Annotation(clazz=com.mysema.codegen.AnnotationTest.class, prop2=false)", w.toString().trim());
     }
     
     @Test
     public void ClassAnnotation2() throws IOException{
-        writer.annotation(getClass().getAnnotation(TestAnnotation2.class));
-        assertEquals("@com.mysema.codegen.TestAnnotation2(\"Hello\")", w.toString().trim());
+        writer.annotation(getClass().getAnnotation(Annotation2.class));
+        assertEquals("@com.mysema.codegen.Annotation2(\"Hello\")", w.toString().trim());
     }
         
     @Test
     public void ClassAnnotation3() throws IOException{
-        writer.annotation(getClass().getAnnotation(TestAnnotation3.class));
-        assertEquals("@com.mysema.codegen.TestAnnotation3(type=java.lang.annotation.ElementType.ANNOTATION_TYPE)", w.toString().trim());
+        writer.annotation(getClass().getAnnotation(Annotation3.class));
+        assertEquals("@com.mysema.codegen.Annotation3(type=java.lang.annotation.ElementType.ANNOTATION_TYPE)", w.toString().trim());
     }
         
     @Test
@@ -64,4 +64,10 @@ public class AnnotationTest {
         assertEquals("@javax.validation.constraints.NotNull", w.toString().trim());
     }
 
+    @Test
+    public void Uri_Value() throws IOException{
+        writer.annotation(new Annotation2Impl("http://www.example.com#"));
+        assertEquals("@com.mysema.codegen.Annotation2(\"http://www.example.com#\")", w.toString().trim());
+    }
+    
 }

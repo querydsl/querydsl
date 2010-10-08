@@ -155,7 +155,8 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
              Enum enumValue = (Enum)value;
              append(enumValue.getDeclaringClass().getName()+DOT+enumValue.name());
          }else if (value instanceof String){
-             append(QUOTE + StringEscapeUtils.escapeJava(value.toString()) + QUOTE);
+             String escaped = StringEscapeUtils.escapeJava(value.toString()); 
+             append(QUOTE + escaped.replace("\\/", "/") + QUOTE);
          }else{
              throw new IllegalArgumentException("Unsupported annotation value : " + value);
          }
