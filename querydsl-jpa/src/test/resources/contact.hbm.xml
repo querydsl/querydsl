@@ -1,0 +1,17 @@
+<hibernate-mapping>
+  <class name="com.mysema.example.Contact" table="CONTACT">
+   <id name="id" type="long" column="ID" >
+   <generator class="assigned"/>
+  </id>
+
+  <property name="firstName">
+     <column name="FIRSTNAME" />
+  </property>
+  <property name="lastName">
+    <column name="LASTNAME"/>
+  </property>
+  <property name="email">
+    <column name="EMAIL"/>
+  </property>
+ </class>
+</hibernate-mapping>
