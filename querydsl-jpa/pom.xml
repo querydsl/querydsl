@@ -92,6 +92,11 @@
 	</dependency>	
 
     <!-- test -->
+    <dependency>
+      <groupId>com.mysema.commons</groupId>
+      <artifactId>mysema-commons-fluxml</artifactId>
+      <version>0.2.7</version>
+    </dependency>    
 	<dependency>
 	  <groupId>org.eclipse.persistence</groupId>
 	  <artifactId>eclipselink</artifactId>

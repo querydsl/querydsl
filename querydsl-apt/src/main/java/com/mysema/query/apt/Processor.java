@@ -267,8 +267,7 @@ public class Processor {
         mergeTypes(types, superTypes);
     }
 
-    private void mergeTypes(Map<String, EntityType> types,
-            Deque<Type> superTypes) {
+    private void mergeTypes(Map<String, EntityType> types, Deque<Type> superTypes) {
         // get external supertypes
         while (!superTypes.isEmpty()){
             Type superType = superTypes.pop();

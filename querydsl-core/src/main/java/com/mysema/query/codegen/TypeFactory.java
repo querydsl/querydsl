@@ -33,10 +33,12 @@ public final class TypeFactory {
     private final Map<List<java.lang.reflect.Type>, Type> cache = new HashMap<List<java.lang.reflect.Type>, Type>();
 
     private final Collection<Class<? extends Annotation>> entityAnnotations;
+    
+    private boolean unknownAsEntity;
 
     @SuppressWarnings("unchecked")
     public TypeFactory(Class<?>... entityAnnotations){
-        this.entityAnnotations = (List)Arrays.asList(entityAnnotations);
+        this((List)Arrays.asList(entityAnnotations));
     }
 
     public TypeFactory(List<Class<? extends Annotation>> entityAnnotations){
@@ -70,7 +72,7 @@ public final class TypeFactory {
                 value = create(cl.getComponentType()).asArrayType();
 
             } else if (cl.isEnum()) {
-                value = new ClassType(TypeCategory.SIMPLE, cl);
+                value = new ClassType(TypeCategory.ENUM, cl);
 
             } else if (Map.class.isAssignableFrom(cl)) {
                 Type keyInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
@@ -92,13 +94,12 @@ public final class TypeFactory {
             }else if (Number.class.isAssignableFrom(cl) && Comparable.class.isAssignableFrom(cl)){
                 value = new ClassType(TypeCategory.NUMERIC, cl);
                 
-            }else if (Enum.class.isAssignableFrom(cl)){ 
-                value = new ClassType(TypeCategory.ENUM, cl);
-                
             } else {
                 TypeCategory typeCategory = TypeCategory.get(cl.getName());
                 if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)){
                     typeCategory = TypeCategory.COMPARABLE;
+                }else if (unknownAsEntity && typeCategory == TypeCategory.SIMPLE && !cl.getName().startsWith("java")){
+                    typeCategory = TypeCategory.ENTITY;
                 }
                 value = new ClassType(typeCategory, cl);
             }
@@ -107,5 +108,11 @@ public final class TypeFactory {
         }
 
     }
+
+    public void setUnknownAsEntity(boolean unknownAsEntity) {
+        this.unknownAsEntity = unknownAsEntity;
+    }
+    
+    
 
 }

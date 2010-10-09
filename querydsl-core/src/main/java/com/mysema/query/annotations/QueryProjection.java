@@ -18,7 +18,6 @@ import java.lang.annotation.Target;
 /**
  * Annotation for APT based DTO query type generation. Annotate DTO types with this annotation.
  */
-// TODO : rename to Projection
 public @interface QueryProjection {
 
 }

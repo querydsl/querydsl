@@ -12,11 +12,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
 
 import javax.xml.stream.XMLInputFactory;
@@ -33,15 +37,9 @@ import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.query.QueryException;
-import com.mysema.query.codegen.EmbeddableSerializer;
-import com.mysema.query.codegen.EntitySerializer;
-import com.mysema.query.codegen.EntityType;
-import com.mysema.query.codegen.Property;
-import com.mysema.query.codegen.Serializer;
-import com.mysema.query.codegen.SimpleSerializerConfig;
-import com.mysema.query.codegen.SupertypeSerializer;
-import com.mysema.query.codegen.TypeFactory;
-import com.mysema.query.codegen.TypeMappings;
+import com.mysema.query.annotations.QueryInit;
+import com.mysema.query.annotations.QueryType;
+import com.mysema.query.codegen.*;
 import com.sun.xml.internal.ws.util.StringUtils;
 
 /**
@@ -49,22 +47,31 @@ import com.sun.xml.internal.ws.util.StringUtils;
  *
  */
 public class HibernateDomainExporter {
+    
+    // TODO : support embeddables properly
 
     private static final Logger logger = LoggerFactory.getLogger(HibernateDomainExporter.class);
     
-    private static final List<String> propertyFields = Arrays.asList("property","many-to-one","one-to-one","component","dynamic-component","properties","any","map","set","list","bag","idbag","array","primitive-array");
+    private static final List<String> propertyFields = Arrays.asList(
+            "property","dynamic-component","properties","any","map","set","list","bag","idbag","array","primitive-array");
+
+    private static final List<String> entityFields = Arrays.asList("component","many-to-one","one-to-one");
     
     private final XMLInputFactory inFactory = XMLInputFactory.newInstance();
     
     private final String namePrefix;
     
     private final File targetFolder;
+
+    private final Map<String,EntityType> allTypes = new HashMap<String,EntityType>();
     
-    private final List<EntityType> entityTypes = new ArrayList<EntityType>();
+    private final Map<String,EntityType> entityTypes = new HashMap<String,EntityType>();
     
-    private final List<EntityType> embeddableTypes = new ArrayList<EntityType>();
+    private final Map<String,EntityType> embeddableTypes = new HashMap<String,EntityType>();
     
-    private final List<EntityType> superTypes = new ArrayList<EntityType>();
+    private final Map<String,EntityType> superTypes = new HashMap<String,EntityType>();
+    
+    private final Set<EntityType> serialized = new HashSet<EntityType>();
     
     private final List<File> hibernateXml;
     
@@ -78,12 +85,21 @@ public class HibernateDomainExporter {
 
     private final TypeFactory typeFactory = new TypeFactory();
     
+    private final SerializerConfig serializerConfig;
+    
     public HibernateDomainExporter(String namePrefix, File targetFolder, File... hibernateXml){
-        this.namePrefix = namePrefix;
-        this.targetFolder = targetFolder;
-        this.hibernateXml = Arrays.asList(hibernateXml);
+        this(namePrefix, targetFolder, SimpleSerializerConfig.DEFAULT, hibernateXml);
     }
     
+    public HibernateDomainExporter(String namePrefix, File targetFolder, SerializerConfig serializerConfig, File... hibernateXml){
+        this.namePrefix = namePrefix;
+        this.targetFolder = targetFolder;
+        this.serializerConfig = serializerConfig;
+        this.hibernateXml = Arrays.asList(hibernateXml);
+        typeFactory.setUnknownAsEntity(true);
+    }
+    
+
     public void execute() throws IOException {        
         // collect types
         try {
@@ -98,50 +114,80 @@ public class HibernateDomainExporter {
             throw new QueryException(e);
         }
      
-        // TODO : merge supertype fields into subtypes
+        // merge supertype fields into subtypes
+        Set<EntityType> handled = new HashSet<EntityType>();
+        for (EntityType type : superTypes.values()){
+            addSupertypeFields(type, allTypes, handled);
+        }
+        for (EntityType type : entityTypes.values()){
+            addSupertypeFields(type, allTypes, handled);
+        }
+        for (EntityType type : embeddableTypes.values()){
+            addSupertypeFields(type, allTypes, handled);
+        }
         
         // serialize them
         serialize(superTypes, supertypeSerializer);
         serialize(embeddableTypes, embeddableSerializer);
         serialize(entityTypes, entitySerializer);
     }
-
-    private void serialize(List<EntityType> types, Serializer serializer) throws IOException {
-        for (EntityType entityType : types){
-            Type type = typeMappings.getPathType(entityType, entityType, true);
-            String packageName = entityType.getPackageName();
-            String className = packageName.length() > 0 ? (packageName + "." + type.getSimpleName()) : type.getSimpleName();
-            write(serializer, className.replace('.', '/') + ".java", entityType);
-        }   
+    
+    private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes, Set<EntityType> handled) {
+        if (handled.add(model)){
+            for (Supertype supertype : model.getSuperTypes()){
+                EntityType entityType = superTypes.get(supertype.getType().getFullName());
+                if (entityType != null){
+                    addSupertypeFields(entityType, superTypes, handled);
+                    supertype.setEntityType(entityType);
+                    model.include(supertype);
+                }
+            }
+        }        
     }
+    
 
     private void collectTypes() throws IOException, XMLStreamException, ClassNotFoundException, SecurityException, NoSuchMethodException {
-        for (File xmlFile : hibernateXml){
-            
+        for (File xmlFile : hibernateXml){            
             InputStream in = new FileInputStream(xmlFile);
             XMLStreamReader reader = inFactory.createXMLStreamReader(in);
             try{
+                String packageName = null;
                 Stack<EntityType> types = new Stack<EntityType>();
                 Class<?> cl = null;
                 while (true) {
                     int event = reader.next();
                     if (event == START_ELEMENT) {
                         String name = reader.getLocalName();
-                        if (name.equals("class") || name.endsWith("subclass")){
-                            cl = Class.forName(reader.getAttributeValue(null, "name"));
-                            Type simpleType = new ClassType(TypeCategory.ENTITY, cl);
-                            types.push(new EntityType(namePrefix, simpleType));
+                        if (name.equals("hibernate-mapping")){
+                            packageName = reader.getAttributeValue(null, "package");
+                        
+                        }else if (name.endsWith("class")){
+                            String className = reader.getAttributeValue(null, "name");
+                            cl = Class.forName(packageName == null ? className : packageName + "." + className);
+                            if (name.equals("mapped-superclass")){
+                                types.push(createSuperType(cl));
+                            }else{
+                                types.push(createEntityType(cl));    
+                            }                            
                             
                         }else if (propertyFields.contains(name)){
                             String propertyName = reader.getAttributeValue(null, "name");
                             Type propertyType = getType(cl, propertyName);
-                            Property property = new Property(types.peek(), propertyName, propertyType);
+                            Map<Class<?>,Annotation> annotations = getAnnotations(cl, propertyName);
+                            Property property = createProperty(types.peek(), propertyName, propertyType, annotations);
+                            types.peek().addProperty(property);
+                            
+                        }else if (entityFields.contains(name)){
+                            String propertyName = reader.getAttributeValue(null, "name");                            
+                            Type propertyType = getType(cl, propertyName);
+                            propertyType = createEntityType(Class.forName(propertyType.getFullName()));
+                            Map<Class<?>,Annotation> annotations = getAnnotations(cl, propertyName);
+                            Property property = createProperty(types.peek(), propertyName, propertyType, annotations);
                             types.peek().addProperty(property);
                         } 
                     }else if (event == END_ELEMENT){    
                         String name = reader.getLocalName();
                         if (name.equals("class") || name.endsWith("subclass")){
-                            entityTypes.add(types.peek());
                             types.pop();
                         }
                     } else if (event == END_DOCUMENT) {
@@ -155,9 +201,44 @@ public class HibernateDomainExporter {
         }
     }
 
+    private Property createProperty(EntityType entityType, String propertyName, Type propertyType, Map<Class<?>, Annotation> annotations) {
+        String[] inits = new String[0];
+        if (annotations.containsKey(QueryInit.class)){
+            inits = ((QueryInit)annotations.get(QueryInit.class)).value();
+        }
+        if (annotations.containsKey(QueryType.class)){
+            propertyType = propertyType.as(((QueryType)annotations.get(QueryType.class)).value().getCategory());
+        }
+        Property property = new Property(entityType, propertyName, propertyType, inits);
+        return property;
+    }
+
+    private EntityType createEntityType(Class<?> cl) {
+        return createEntityType(cl, entityTypes);
+    }
+
+    private EntityType createEntityType(Class<?> cl,  Map<String,EntityType> types) {
+        if (types.containsKey(cl.getName())){
+            return types.get(cl.getName());
+        }else{
+            EntityType type = new EntityType(namePrefix, new ClassType(TypeCategory.ENTITY, cl));
+            if (!cl.getSuperclass().equals(Object.class)){
+                type.addSupertype(new Supertype(new ClassType(cl.getSuperclass())));
+            }
+            types.put(cl.getName(), type);
+            allTypes.put(cl.getName(), type);
+            return type;
+        }
+    }
+
+    private EntityType createSuperType(Class<?> cl) {
+        return createEntityType(cl, superTypes);
+    }
+    
+
     private Type getType(Class<?> cl, String propertyName) throws NoSuchMethodException {
         try {
-            Field field = cl.getField(propertyName);
+            Field field = cl.getDeclaredField(propertyName);
             return typeFactory.create(field.getType(), field.getGenericType());
         } catch (NoSuchFieldException e) {
             try{
@@ -170,12 +251,46 @@ public class HibernateDomainExporter {
         }
     }
     
+    private Map<Class<?>,Annotation> getAnnotations(Class<?> cl, String propertyName) throws NoSuchMethodException {
+        try {
+            Field field = cl.getDeclaredField(propertyName);
+            return getAnnotations(field.getAnnotations());
+        } catch (NoSuchFieldException e) {
+            try{
+                Method method = cl.getMethod("get"+StringUtils.capitalize(propertyName));
+                return getAnnotations(method.getAnnotations());    
+            }catch(NoSuchMethodException e1){
+                Method method = cl.getMethod("is"+StringUtils.capitalize(propertyName));
+                return getAnnotations(method.getAnnotations());
+            }
+        }
+    }
+
+    private Map<Class<?>, Annotation> getAnnotations(Annotation[] a) {
+        Map<Class<?>,Annotation> annotations = new HashMap<Class<?>,Annotation>();
+        for (Annotation annotation : a){
+            annotations.put(annotation.annotationType(), annotation);
+        }
+        return annotations;
+    }
+
+    private void serialize(Map<String,EntityType> types, Serializer serializer) throws IOException {
+        for (EntityType entityType : types.values()){
+            if (serialized.add(entityType)){
+                Type type = typeMappings.getPathType(entityType, entityType, true);
+                String packageName = entityType.getPackageName();
+                String className = packageName.length() > 0 ? (packageName + "." + type.getSimpleName()) : type.getSimpleName();
+                write(serializer, className.replace('.', '/') + ".java", entityType);    
+            }            
+        }   
+    }
+    
     private void write(Serializer serializer, String path, EntityType type) throws IOException {
         File targetFile = new File(targetFolder, path);
         Writer w = writerFor(targetFile);
         try{
             CodeWriter writer = new JavaWriter(w);
-            serializer.serialize(type, SimpleSerializerConfig.DEFAULT, writer);
+            serializer.serialize(type, serializerConfig, writer);
         }finally{
             w.close();
         }

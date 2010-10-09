@@ -1,5 +1,5 @@
-<hibernate-mapping package="com.mysema.example">
-  <class name="Contact" table="CONTACT">
+<hibernate-mapping>
+  <class name="com.mysema.example.Contact" table="CONTACT">
    <id name="id" type="long" column="ID" >
    <generator class="assigned"/>
   </id>
