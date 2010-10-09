@@ -50,12 +50,12 @@ public class HibernateDomainExporter {
     
     private static final Logger logger = LoggerFactory.getLogger(HibernateDomainExporter.class);
     
-    private static final List<String> propertyFields = Arrays.asList(
-            "property","dynamic-component","properties","any","map","set","list","bag","idbag","array","primitive-array");
+    private static final Set<String> propertyFields = new HashSet<String>(Arrays.asList(
+            "property","dynamic-component","properties","any","map","set","list","bag","idbag","array","primitive-array"));
 
-    private static final List<String> entityFields = Arrays.asList("many-to-one","one-to-one");
+    private static final Set<String> entityFields = new HashSet<String>(Arrays.asList("many-to-one","one-to-one"));
     
-    private static final List<String> embeddableFields = Arrays.asList("component");
+    private static final Set<String> embeddableFields = new HashSet<String>(Arrays.asList("component"));
     
     private final XMLInputFactory inFactory = XMLInputFactory.newInstance();
     
