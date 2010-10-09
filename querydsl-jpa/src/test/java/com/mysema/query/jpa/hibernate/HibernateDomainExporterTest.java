@@ -12,6 +12,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
@@ -26,8 +27,6 @@ import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.jpa.domain.Domain;
 
 public class HibernateDomainExporterTest {
-
-    // TODO : support embeddables properly
     
     private SerializerConfig serializerConfig = SimpleSerializerConfig.getConfig(Domain.class.getPackage().getAnnotation(Config.class));
     
@@ -97,18 +96,33 @@ public class HibernateDomainExporterTest {
             for (Field field : cl.getDeclaredFields()){
                 if (field.getAnnotation(Transient.class) != null) continue;
                 if (Modifier.isTransient(field.getModifiers())) continue;
-                String propertyElement = "property";
-                if (field.getType().getAnnotation(Entity.class) != null){
-                    propertyElement = "many-to-one";
-                }
+                String propertyElement = getPropertyElement(field.getType());
                 writer.begin(propertyElement);
                 writer.attribute("name", field.getName());
+                if (field.getType().getAnnotation(Embeddable.class) != null){
+                    for (Field cfield : field.getType().getDeclaredFields()){
+                        String cproperty = getPropertyElement(cfield.getType());
+                        writer.begin(cproperty);
+                        writer.attribute("name", cfield.getName());
+                        writer.end(cproperty);
+                    }
+                }
                 writer.end(propertyElement);
             }
             writer.end(classElement);
         }        
         writer.end("hibernate-mapping");
         w.close();
+    }
+    
+    private String getPropertyElement(Class<?> cl){
+        if (cl.getAnnotation(Entity.class) != null){
+            return "many-to-one";
+        }else if (cl.getAnnotation(Embeddable.class) != null){
+            return "component";
+        }else{
+            return "property";
+        }
     }
     
     private static void assertContains(File file, String... strings) throws IOException{

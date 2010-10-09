@@ -48,14 +48,14 @@ import com.sun.xml.internal.ws.util.StringUtils;
  */
 public class HibernateDomainExporter {
     
-    // TODO : support embeddables properly
-
     private static final Logger logger = LoggerFactory.getLogger(HibernateDomainExporter.class);
     
     private static final List<String> propertyFields = Arrays.asList(
             "property","dynamic-component","properties","any","map","set","list","bag","idbag","array","primitive-array");
 
-    private static final List<String> entityFields = Arrays.asList("component","many-to-one","one-to-one");
+    private static final List<String> entityFields = Arrays.asList("many-to-one","one-to-one");
+    
+    private static final List<String> embeddableFields = Arrays.asList("component");
     
     private final XMLInputFactory inFactory = XMLInputFactory.newInstance();
     
@@ -153,7 +153,7 @@ public class HibernateDomainExporter {
             try{
                 String packageName = null;
                 Stack<EntityType> types = new Stack<EntityType>();
-                Class<?> cl = null;
+                Stack<Class<?>> classes = new Stack<Class<?>>();
                 while (true) {
                     int event = reader.next();
                     if (event == START_ELEMENT) {
@@ -163,32 +163,43 @@ public class HibernateDomainExporter {
                         
                         }else if (name.endsWith("class")){
                             String className = reader.getAttributeValue(null, "name");
-                            cl = Class.forName(packageName == null ? className : packageName + "." + className);
+                            classes.push(Class.forName(packageName == null ? className : packageName + "." + className));
                             if (name.equals("mapped-superclass")){
-                                types.push(createSuperType(cl));
+                                types.push(createSuperType(classes.peek()));
                             }else{
-                                types.push(createEntityType(cl));    
+                                types.push(createEntityType(classes.peek()));    
                             }                            
                             
                         }else if (propertyFields.contains(name)){
                             String propertyName = reader.getAttributeValue(null, "name");
-                            Type propertyType = getType(cl, propertyName);
-                            Map<Class<?>,Annotation> annotations = getAnnotations(cl, propertyName);
+                            Type propertyType = getType(classes.peek(), propertyName);
+                            Map<Class<?>,Annotation> annotations = getAnnotations(classes.peek(), propertyName);
                             Property property = createProperty(types.peek(), propertyName, propertyType, annotations);
                             types.peek().addProperty(property);
                             
                         }else if (entityFields.contains(name)){
                             String propertyName = reader.getAttributeValue(null, "name");                            
-                            Type propertyType = getType(cl, propertyName);
-                            propertyType = createEntityType(Class.forName(propertyType.getFullName()));
-                            Map<Class<?>,Annotation> annotations = getAnnotations(cl, propertyName);
+                            Type propertyType = createEntityType(Class.forName(getType(classes.peek(), propertyName).getFullName()));
+                            Map<Class<?>,Annotation> annotations = getAnnotations(classes.peek(), propertyName);
                             Property property = createProperty(types.peek(), propertyName, propertyType, annotations);
                             types.peek().addProperty(property);
-                        } 
+                            
+                        }else if (embeddableFields.contains(name)){
+                            String propertyName = reader.getAttributeValue(null, "name");      
+                            Class<?> clazz = Class.forName(getType(classes.peek(), propertyName).getFullName());
+                            EntityType propertyType = createEmbeddableType(clazz);
+                            Map<Class<?>,Annotation> annotations = getAnnotations(classes.peek(), propertyName);
+                            Property property = createProperty(types.peek(), propertyName, propertyType, annotations);
+                            types.peek().addProperty(property);
+                            types.push(propertyType);
+                            classes.push(clazz);
+                        }
+                        
                     }else if (event == END_ELEMENT){    
                         String name = reader.getLocalName();
-                        if (name.equals("class") || name.endsWith("subclass")){
+                        if (name.endsWith("class")  || embeddableFields.contains(name)){
                             types.pop();
+                            classes.pop();
                         }
                     } else if (event == END_DOCUMENT) {
                         break;
@@ -215,6 +226,10 @@ public class HibernateDomainExporter {
 
     private EntityType createEntityType(Class<?> cl) {
         return createEntityType(cl, entityTypes);
+    }
+    
+    private EntityType createEmbeddableType(Class<?> cl) {
+        return createEntityType(cl, embeddableTypes);
     }
 
     private EntityType createEntityType(Class<?> cl,  Map<String,EntityType> types) {
