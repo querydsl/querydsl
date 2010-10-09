@@ -59,6 +59,14 @@ public class TypeFactoryTest {
     public void EnumType(){
         assertEquals(TypeCategory.ENUM, factory.create(EnumExample.class).getCategory());
     }
-    
+
+    @Test
+    public void UnknownAsEntity(){
+        assertEquals(TypeCategory.SIMPLE, factory.create(TypeFactoryTest.class).getCategory());
+        
+        factory = new TypeFactory();
+        factory.setUnknownAsEntity(true);
+        assertEquals(TypeCategory.ENTITY, factory.create(TypeFactoryTest.class).getCategory());
+    }
 
 }
