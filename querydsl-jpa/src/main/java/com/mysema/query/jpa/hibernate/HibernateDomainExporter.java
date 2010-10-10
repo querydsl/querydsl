@@ -28,6 +28,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +41,6 @@ import com.mysema.query.QueryException;
 import com.mysema.query.annotations.QueryInit;
 import com.mysema.query.annotations.QueryType;
 import com.mysema.query.codegen.*;
-import com.sun.xml.internal.ws.util.StringUtils;
 
 /**
  * @author tiwe
@@ -51,7 +51,7 @@ public class HibernateDomainExporter {
     private static final Logger logger = LoggerFactory.getLogger(HibernateDomainExporter.class);
     
     private static final Set<String> propertyFields = new HashSet<String>(Arrays.asList(
-            "property","dynamic-component","properties","any","map","set","list","bag","idbag","array","primitive-array"));
+            "id","property","dynamic-component","properties","any","map","set","list","bag","idbag","array","primitive-array"));
 
     private static final Set<String> entityFields = new HashSet<String>(Arrays.asList("many-to-one","one-to-one"));
     

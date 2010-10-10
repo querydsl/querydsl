@@ -25,6 +25,7 @@ import com.mysema.query.annotations.Config;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.jpa.domain.Domain;
+import com.mysema.query.jpa.domain2.Domain2;
 
 public class HibernateDomainExporterTest {
     
@@ -36,7 +37,7 @@ public class HibernateDomainExporterTest {
         HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen1"), contact);
         exporter.execute();
         
-        File targetFile = new File("target/gen1/com/mysema/example/QContact.java");
+        File targetFile = new File("target/gen1/com/mysema/query/jpa/domain2/QContact.java");
         assertContains(targetFile, "StringPath firstName", "StringPath lastName");
     }
     
@@ -46,7 +47,7 @@ public class HibernateDomainExporterTest {
         HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen2"), contact);
         exporter.execute();
         
-        File targetFile = new File("target/gen2/com/mysema/example/QContact.java");
+        File targetFile = new File("target/gen2/com/mysema/query/jpa/domain2/QContact.java");
         assertContains(targetFile, "StringPath firstName", "StringPath lastName");
     }
     
@@ -54,7 +55,7 @@ public class HibernateDomainExporterTest {
     public void Execute_Multiple() throws IOException{
         File out = new File("target/out.hbm.xml");
         out.delete();
-        createExampleHbmFile(out);
+        createExampleHbmFile(Domain.classes, out);
         
         HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen3"), serializerConfig, out);
         exporter.execute();
@@ -75,13 +76,36 @@ public class HibernateDomainExporterTest {
         }
         
     }
+    
+    @Test
+    public void Execute_Multiple2() throws IOException{
+        File config = new File("src/test/resources/examples.hbm.xml");
+        HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen4"), serializerConfig, config);
+        exporter.execute();
+        
+        List<String> failures = new ArrayList<String>();
+        for (File file : new File("target/gen4/com/mysema/query/jpa/domain2").listFiles()){
+            String result1 = FileUtils.readFileToString(file, "UTF-8");
+            String result2 = FileUtils.readFileToString(
+                new File("target/generated-test-sources/java/com/mysema/query/jpa/domain2", file.getName()));
+            if (!result1.equals(result2)){
+                System.err.println(file.getName());
+                failures.add(file.getName());
+            }
+        }
+        
+        if (!failures.isEmpty()){
+            fail("Failed with " + failures.size() + " failures");
+        }
+        
+    }
 
-    private void createExampleHbmFile(File out) throws IOException {
+    private void createExampleHbmFile(List<Class<?>> classes, File out) throws IOException {
         // NOTE : the output is not a valid hbm file, but the relevant data for parsing is contained
         Writer w = new FileWriter(out);
         XMLWriter writer = new XMLWriter(w);
         writer.begin("hibernate-mapping");
-        for (Class<?> cl : Domain.classes){
+        for (Class<?> cl : classes){
             if (cl.isEnum()) continue;
             String classElement;
             if (cl.getAnnotation(Entity.class) != null){

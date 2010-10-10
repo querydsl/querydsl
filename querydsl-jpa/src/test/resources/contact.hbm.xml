@@ -1,4 +1,4 @@
-<hibernate-mapping package="com.mysema.example">
+<hibernate-mapping package="com.mysema.query.jpa.domain2">
   <class name="Contact" table="CONTACT">
    <id name="id" type="long" column="ID" >
    <generator class="assigned"/>

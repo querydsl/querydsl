@@ -1,8 +1,18 @@
-package com.mysema.example;
+package com.mysema.query.jpa.domain2;
 
 public class Contact {
     
+    private long id;
+    
     private String firstName, lastName, email;
+    
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getFirstName() {
         return firstName;
