@@ -128,7 +128,6 @@ public class HibernateDomainExporterTest {
     private static void assertContains(File file, String... strings) throws IOException{
         assertTrue(file.getPath() + " doesn't exist", file.exists());
         String result = FileUtils.readFileToString(file, "UTF-8");
-//        System.out.println(result);
         for (String str : strings){
             assertTrue(str + " was not contained", result.contains(str));    
         }
