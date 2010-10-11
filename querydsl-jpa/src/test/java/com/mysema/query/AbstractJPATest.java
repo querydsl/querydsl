@@ -5,12 +5,14 @@
  */
 package com.mysema.query;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 
 import org.junit.Test;
 
@@ -53,5 +55,29 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
         assertNotNull(results);
         assertFalse(results.isEmpty());
     }
-
+    
+    @Test
+    public void Hint(){
+        javax.persistence.Query query = query().from(QCat.cat).setHint("org.hibernate.cacheable", true).createQuery(QCat.cat);
+        assertTrue(query.getHints().containsKey("org.hibernate.cacheable"));
+        assertFalse(query.getResultList().isEmpty());        
+    }
+    
+    @Test
+    public void Hint2(){
+        assertFalse(query().from(QCat.cat).setHint("org.hibernate.cacheable", true).list(QCat.cat).isEmpty());
+    }
+    
+    @Test
+    public void LockMode(){
+        javax.persistence.Query query = query().from(QCat.cat).setLockMode(LockModeType.READ).createQuery(QCat.cat);
+        assertTrue(query.getLockMode().equals(LockModeType.READ));
+        assertFalse(query.getResultList().isEmpty());        
+    }
+    
+    @Test
+    public void LockMode2(){
+        assertFalse(query().from(QCat.cat).setLockMode(LockModeType.READ).list(QCat.cat).isEmpty());
+    }
+    
 }

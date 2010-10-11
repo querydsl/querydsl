@@ -6,10 +6,13 @@
 package com.mysema.query.jpa.impl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
+import javax.persistence.LockModeType;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
@@ -42,7 +45,12 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     private static final Logger logger = LoggerFactory.getLogger(JPAQuery.class);
 
     private final JPASessionHolder sessionHolder;
+    
+    private final Map<String,Object> hints = new HashMap<String,Object>();
 
+    @Nullable
+    private LockModeType lockMode;
+    
     public AbstractJPAQuery(EntityManager em) {
         this(new DefaultSessionHolder(em), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
     }
@@ -110,6 +118,14 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
             if (modifiers.getOffset() != null) {
                 query.setFirstResult(modifiers.getOffset().intValue());
             }
+        }
+        
+        if (lockMode != null){
+            query.setLockMode(lockMode);    
+        }
+        
+        for (Map.Entry<String, Object> entry : hints.entrySet()){
+            query.setHint(entry.getKey(), entry.getValue());
         }
 
         // set transformer, if necessary and possible
@@ -204,4 +220,18 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         }
         
     }
+
+    @SuppressWarnings("unchecked")
+    public Q setLockMode(LockModeType lockMode) {
+        this.lockMode = lockMode;
+        return (Q)this;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Q setHint(String name, Object value){
+        hints.put(name, value);
+        return (Q)this;
+    }
+    
+    
 }

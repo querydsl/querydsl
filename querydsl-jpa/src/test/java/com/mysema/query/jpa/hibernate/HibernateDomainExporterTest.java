@@ -25,7 +25,6 @@ import com.mysema.query.annotations.Config;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.jpa.domain.Domain;
-import com.mysema.query.jpa.domain2.Domain2;
 
 public class HibernateDomainExporterTest {
     
