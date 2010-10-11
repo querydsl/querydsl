@@ -38,7 +38,7 @@ public final class ListSubQuery<A> extends CollectionExpressionBase<List<A>,A> i
     
     @Nullable
     private volatile BooleanExpression exists;
-
+    
     @SuppressWarnings("unchecked")
     public ListSubQuery(Class<A> elementType, QueryMetadata md) {
         super((Class)List.class);
@@ -49,6 +49,11 @@ public final class ListSubQuery<A> extends CollectionExpressionBase<List<A>,A> i
     @Override
     public <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
+    }
+    
+    @Override
+    public SimpleExpression<A> any(){
+        throw new UnsupportedOperationException();
     }
 
     @Override

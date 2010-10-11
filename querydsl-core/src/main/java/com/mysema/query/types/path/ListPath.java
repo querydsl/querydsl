@@ -6,7 +6,6 @@
 package com.mysema.query.types.path;
 
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
@@ -18,9 +17,9 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionException;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.CollectionExpressionBase;
 import com.mysema.query.types.expr.ListExpression;
@@ -46,7 +45,7 @@ public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionExpres
     private final Class<Q> queryType;
 
     @Nullable
-    private transient Constructor<Q> constructor;
+    private transient Q any;    
 
     @SuppressWarnings("unchecked")
     public ListPath(Class<? super E> elementType, Class<Q> queryType, PathMetadata<?> metadata) {
@@ -59,6 +58,24 @@ public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionExpres
     @Override
     public <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
+    }
+    
+    @Override
+    public Q any(){
+        if (any == null){
+            try {
+                any = newInstance(pathMixin.getMetadata());
+            } catch (NoSuchMethodException e) {
+                throw new ExpressionException(e);
+            } catch (InstantiationException e) {
+                throw new ExpressionException(e);
+            } catch (IllegalAccessException e) {
+                throw new ExpressionException(e);
+            } catch (InvocationTargetException e) {
+                throw new ExpressionException(e);
+            }
+        }
+        return any;
     }
 
     protected PathMetadata<Integer> forListAccess(int index){
@@ -105,6 +122,11 @@ public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionExpres
         }
     }
 
+    private Q newInstance(PathMetadata<?> md) throws NoSuchMethodException, InstantiationException, 
+        IllegalAccessException, InvocationTargetException {
+        return newInstance(queryType, Constants.isTyped(queryType), md);
+    }
+
     @Override
     public Q get(int index) {
         if (cache.containsKey(index)){
@@ -138,23 +160,6 @@ public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionExpres
     @Override
     public AnnotatedElement getAnnotatedElement(){
         return pathMixin.getAnnotatedElement();
-    }
-
-    private Q newInstance(PathMetadata<?> pm) throws NoSuchMethodException,
-            InstantiationException, IllegalAccessException,
-            InvocationTargetException {
-        if (constructor == null) {
-            if (Constants.typedClasses.contains(queryType)){
-                constructor = queryType.getConstructor(Class.class, PathMetadata.class);
-            }else{
-                constructor = queryType.getConstructor(PathMetadata.class);
-            }
-        }
-        if (Constants.typedClasses.contains(queryType)){
-            return constructor.newInstance(getElementType(), pm);
-        }else{
-            return constructor.newInstance(pm);
-        }
     }
 
     @Override

@@ -72,8 +72,8 @@ public final class Alias {
         return aliasFactory.<EnumPath<T>> getCurrentAndReset();
     }
 
-    public static <D> CollectionPath<D> $(Collection<D> args) {
-        return aliasFactory.<CollectionPath<D>> getCurrentAndReset();
+    public static <D> CollectionPath<D,?> $(Collection<D> args) {
+        return aliasFactory.<CollectionPath<D,?>> getCurrentAndReset();
     }
 
     public static <D extends Comparable<?>> ComparablePath<D> $(D arg) {
@@ -127,8 +127,8 @@ public final class Alias {
         return aliasFactory.<MapPath<K, V,?>> getCurrentAndReset();
     }
 
-    public static <D> SetPath<D> $(Set<D> args) {
-        return aliasFactory.<SetPath<D>> getCurrentAndReset();
+    public static <D> SetPath<D,?> $(Set<D> args) {
+        return aliasFactory.<SetPath<D,?>> getCurrentAndReset();
     }
 
     public static NumberPath<Short> $(Short arg) {

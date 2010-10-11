@@ -11,7 +11,7 @@ import java.util.Set;
 
 public final class Constants {
     
-    static final Set<Class<?>> typedClasses = new HashSet<Class<?>>(Arrays.<Class<?>>asList(
+    private static final Set<Class<?>> typedClasses = new HashSet<Class<?>>(Arrays.<Class<?>>asList(
             PathBuilder.class,
             ComparablePath.class,
             EnumPath.class,
@@ -23,6 +23,10 @@ public final class Constants {
             SimplePath.class,
             TimePath.class
             ));
+    
+    public static boolean isTyped(Class<?> cl){
+        return typedClasses.contains(cl);
+    }
     
     private Constants(){}
 

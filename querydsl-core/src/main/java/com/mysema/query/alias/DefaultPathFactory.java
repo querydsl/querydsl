@@ -30,9 +30,10 @@ public class DefaultPathFactory implements PathFactory{
         return new BooleanPath(metadata);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <E> Path<Collection<E>> createCollectionPath(Class<E> elementType, PathMetadata<?> metadata) {
-        return new CollectionPath<E>(elementType, elementType.getSimpleName(), metadata);
+        return new CollectionPath<E,EntityPathBase<E>>(elementType, (Class)EntityPathBase.class, metadata);
     }
 
     @Override
@@ -77,9 +78,10 @@ public class DefaultPathFactory implements PathFactory{
         return new NumberPath<T>(type, metadata);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <E> Path<Set<E>> createSetPath(Class<E> elementType, PathMetadata<?> metadata) {
-        return new SetPath<E>(elementType, elementType.getName(), metadata);
+        return new SetPath<E,EntityPathBase<E>>(elementType, (Class)EntityPathBase.class, metadata);
     }
 
     @Override

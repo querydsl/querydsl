@@ -25,7 +25,7 @@ public class QStore extends EntityPathBase<com.mysema.query.jdo.test.domain.Stor
 
     public final MapPath<String,Product,QProduct> productsByName = this.<String,Product,QProduct>createMap("productsByName",String.class,Product.class,QProduct.class);
 
-    public final CollectionPath<Product> products = createCollection("products",Product.class);
+    public final CollectionPath<Product,QProduct> products = createCollection("products",Product.class,QProduct.class);
 
     public QProduct productsByName(String key) {
         return new QProduct(PathMetadataFactory.forMapAccess(productsByName,key));

@@ -6,14 +6,19 @@
 package com.mysema.query.types.path;
 
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
+import javax.annotation.Nullable;
+
 import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.ExpressionException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.CollectionExpressionBase;
+import com.mysema.query.types.expr.SimpleExpression;
 
 /**
  * CollectionPath represents collection paths
@@ -22,27 +27,48 @@ import com.mysema.query.types.expr.CollectionExpressionBase;
  *
  * @param <E> component type
  */
-public class CollectionPath<E> extends CollectionExpressionBase<Collection<E>,E> implements Path<Collection<E>> {
+public class CollectionPath<E, Q extends SimpleExpression<E>> extends CollectionExpressionBase<Collection<E>,E> implements Path<Collection<E>>{    
 
     private static final long serialVersionUID = -4982311799113762600L;
 
     private final Class<E> elementType;
 
-    private final String entityName;
-
     private final Path<Collection<E>> pathMixin;
 
+    @Nullable
+    private transient Q any;
+    
+    private final Class<Q> queryType;
+    
     @SuppressWarnings("unchecked")
-    public CollectionPath(Class<? super E> type, String entityName, PathMetadata<?> metadata) {
+    public CollectionPath(Class<? super E> type, Class<Q> queryType, PathMetadata<?> metadata) {
         super((Class)Collection.class);
         this.elementType = (Class<E>) Assert.notNull(type,"type");
-        this.entityName = Assert.notNull(entityName,"entityName");
+        this.queryType = queryType;
         this.pathMixin = new PathImpl<Collection<E>>((Class)Collection.class, metadata);
     }
 
     @Override
     public <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
+    }
+    
+    @Override
+    public Q any(){
+        if (any == null){
+            try {
+                any = newInstance(queryType, Constants.isTyped(queryType), pathMixin.getMetadata());
+            } catch (NoSuchMethodException e) {
+                throw new ExpressionException(e);
+            } catch (InstantiationException e) {
+                throw new ExpressionException(e);
+            } catch (IllegalAccessException e) {
+                throw new ExpressionException(e);
+            } catch (InvocationTargetException e) {
+                throw new ExpressionException(e);
+            }
+        }
+        return any;
     }
 
     @Override
@@ -52,15 +78,6 @@ public class CollectionPath<E> extends CollectionExpressionBase<Collection<E>,E>
 
     public Class<E> getElementType() {
         return elementType;
-    }
-
-    /**
-     * Get the entity name for this Entity collection path
-     *
-     * @return
-     */
-    public String getEntityName() {
-        return entityName;
     }
 
     @Override
@@ -91,7 +108,5 @@ public class CollectionPath<E> extends CollectionExpressionBase<Collection<E>,E>
             throw new IndexOutOfBoundsException(String.valueOf(index));
         }
     }
-
-    
     
 }

@@ -43,7 +43,7 @@ public class JDOQLMethodsTest extends AbstractJDOTest {
 
     private <A,K,V> List<BooleanExpression> getFilters(
             StringExpression str, StringExpression other, String knownString,
-            CollectionPath<A> list, A element,
+            CollectionPath<A,?> list, A element,
             MapPath<K,V, ?> map, K key, V value,
             NumberExpression<Integer> number){
         return Arrays.<BooleanExpression>asList(

@@ -139,10 +139,11 @@ public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
      * @param type
      * @return
      */
-    protected <A> CollectionPath<A> createCollection(String property, Class<? super A> type) {
-        return add(new CollectionPath<A>(type, type.getSimpleName(), forProperty(property)));
+    @SuppressWarnings("unchecked")
+    protected <A, E extends SimpleExpression<A>> CollectionPath<A, E> createCollection(String property, Class<? super A> type, Class<? super E> queryType) {
+        return add(new CollectionPath<A, E>(type, (Class) queryType, forProperty(property)));
     }
-
+    
     /**
      * Create a new Comparable typed path
      *
@@ -247,8 +248,9 @@ public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
      * @param type
      * @return
      */
-    protected <A> SetPath<A> createSet(String property, Class<? super A> type) {
-        return add(new SetPath<A>(type, type.getSimpleName(), forProperty(property)));
+    @SuppressWarnings("unchecked")
+    protected <A, E extends SimpleExpression<A>> SetPath<A, E> createSet(String property, Class<? super A> type, Class<? super E> queryType) {
+        return add(new SetPath<A, E>(type, (Class) queryType, forProperty(property)));
     }
 
     /**

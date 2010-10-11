@@ -8,7 +8,7 @@ package com.mysema.query.types;
 import javax.annotation.Nullable;
 
 /**
- * PredicateOperation provides a Boolean typed Operation implemenentation 
+ * PredicateOperation provides a Boolean typed Operation implementation 
  * 
  * @author tiwe
  *

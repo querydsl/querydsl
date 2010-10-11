@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 
 
 /**
- * Utilities for constructing common operation instances
+ * ExpressionUtils provides utilities for constructing common operation instances
  * 
  * @author tiwe
  *

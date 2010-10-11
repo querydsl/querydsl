@@ -136,13 +136,13 @@ public class MapPath<K, V, E extends SimpleExpression<V>> extends MapExpressionB
         InstantiationException, IllegalAccessException,
         InvocationTargetException {
         if (constructor == null){
-            if (Constants.typedClasses.contains(queryType)){
+            if (Constants.isTyped(queryType)){
                 constructor = queryType.getConstructor(Class.class, PathMetadata.class);
             }else{
                 constructor = queryType.getConstructor(PathMetadata.class);
             }
         }
-        if (Constants.typedClasses.contains(queryType)){
+        if (Constants.isTyped(queryType)){
             return constructor.newInstance(getValueType(), pm);
         }else{
             return constructor.newInstance(pm);

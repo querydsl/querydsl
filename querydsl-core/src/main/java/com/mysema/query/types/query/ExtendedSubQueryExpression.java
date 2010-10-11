@@ -4,6 +4,8 @@ import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.BooleanExpression;
 
 /**
+ * Extensions to the SubQueryExpression interface
+ * 
  * @author tiwe
  *
  * @param <T>

@@ -22,7 +22,7 @@ import com.mysema.query.types.Ops;
  *
  * <pre>
  * QCustomer c = QCustomer.customer;
- * Expr<Integer> cases = c.annualSpending
+ * Expression&lt;Integer&gt; cases = c.annualSpending
  *     .when(1000l).then(1)
  *     .when(2000l).then(2)
  *     .when(5000l).then(3)

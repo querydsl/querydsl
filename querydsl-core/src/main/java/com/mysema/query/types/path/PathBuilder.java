@@ -118,8 +118,22 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param type
      * @return
      */
-    public <A> CollectionPath<A> getCollection(String property, Class<A> type) {
-        return super.createCollection(property, type);
+    public <A> CollectionPath<A, PathBuilder<A>> getCollection(String property, Class<A> type) {
+        return super.createCollection(property, type, PathBuilder.class);
+    }
+
+    /**
+     * Get a new Collection typed path
+     *
+     * @param <A>
+     * @param <E>
+     * @param property property name
+     * @param type
+     * @param queryType
+     * @return
+     */
+    public <A, E extends SimpleExpression<A>> CollectionPath<A, E> getCollection(String property, Class<A> type, Class<E> queryType) {
+        return super.createCollection(property, type, queryType);
     }
 
     /**
@@ -274,10 +288,24 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param type
      * @return
      */
-    public <A> SetPath<A> getSet(String property, Class<A> type) {
-        return super.createSet(property, type);
+    public <A> SetPath<A, PathBuilder<A>> getSet(String property, Class<A> type) {
+        return super.createSet(property, type, PathBuilder.class);
     }
 
+    /**
+     * Get a new Set typed path
+     *
+     * @param <A>
+     * @param <E>
+     * @param property property name
+     * @param type
+     * @param queryType
+     * @return
+     */
+    public <A, E extends SimpleExpression<A>> SetPath<A, E> getSet(String property, Class<A> type, Class<E> queryType) {
+        return super.createSet(property, type, queryType);
+    }
+    
     /**
      * @param <A>
      * @param path

@@ -627,6 +627,7 @@ public class EntitySerializer implements Serializer{
             // strips of "? extends " etc
             Type propertyType = new SimpleType(property.getType(), property.getType().getParameters());
             Type queryType = typeMappings.getPathType(propertyType, model, false);
+            Type genericQueryType = null;
             String localRawName = writer.getRawName(property.getType());
 
             switch(property.getType().getCategory()){
@@ -664,17 +665,23 @@ public class EntitySerializer implements Serializer{
                 serialize(model, property, new ClassType(ArrayPath.class, property.getType().getComponentType()), writer, "createArray", localRawName + DOT_CLASS);
                 break;
             case COLLECTION:
+                genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false);
                 localRawName = writer.getRawName(property.getParameter(0));
-                serialize(model, property, new ClassType(CollectionPath.class, getRaw(property.getParameter(0))), writer, "createCollection", localRawName + DOT_CLASS);
+                queryType = typeMappings.getPathType(property.getParameter(0), model, true);
+                
+                serialize(model, property, new ClassType(CollectionPath.class, getRaw(property.getParameter(0)), genericQueryType), writer, "createCollection", localRawName + DOT_CLASS, writer.getRawName(queryType) + DOT_CLASS);
                 break;
             case SET:
+                genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false);
                 localRawName = writer.getRawName(property.getParameter(0));
-                serialize(model, property, new ClassType(SetPath.class, getRaw(property.getParameter(0))), writer, "createSet", localRawName + DOT_CLASS);
+                queryType = typeMappings.getPathType(property.getParameter(0), model, true);
+                
+                serialize(model, property, new ClassType(SetPath.class, getRaw(property.getParameter(0)), genericQueryType), writer, "createSet", localRawName + DOT_CLASS, writer.getRawName(queryType) + DOT_CLASS);
                 break;
             case MAP:
                 String genericKey = writer.getGenericName(true, property.getParameter(0));
                 String genericValue = writer.getGenericName(true, property.getParameter(1));
-                Type genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(1)), model, false);
+                genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(1)), model, false);
                 String keyType = writer.getRawName(property.getParameter(0));
                 String valueType = writer.getRawName(property.getParameter(1));
                 queryType = typeMappings.getPathType(property.getParameter(1), model, true);

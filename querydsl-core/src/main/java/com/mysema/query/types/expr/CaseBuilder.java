@@ -21,7 +21,7 @@ import com.mysema.query.types.Ops;
  * e.g.
  *
  * <pre>
- * Expr&lt;String&gt; cases = new CaseBuilder()
+ * Expression&lt;String&gt; cases = new CaseBuilder()
  *     .when(c.annualSpending.gt(10000)).then("Premier")
  *     .when(c.annualSpending.gt(5000)).then("Gold")
  *     .when(c.annualSpending.gt(2000)).then("Silver")

@@ -16,7 +16,7 @@ import com.mysema.query.types.Expression;
  *
  * @param <EA>
  */
-public interface ArrayExpression<E> {
+public interface ArrayExpression<E> extends Expression<E[]>{
 
     /**
      * Get the size of the array
