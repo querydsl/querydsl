@@ -40,7 +40,7 @@ public class JDOConfiguration extends DefaultConfiguration{
             @Nullable Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
             Class<? extends Annotation> skipAnn) throws ClassNotFoundException {
-        super(roundEnv, options, null, entityAnn, superTypeAnn, embeddableAnn, skipAnn);
+        super(roundEnv, options, null, entityAnn, superTypeAnn, embeddableAnn, null, skipAnn);
     }
 
     @Override

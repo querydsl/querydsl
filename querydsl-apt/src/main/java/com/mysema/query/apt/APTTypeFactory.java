@@ -47,7 +47,6 @@ import com.mysema.query.codegen.TypeFactory;
  * @author tiwe
  *
  */
-// TODO : improved entityTypeCache and cache usage
 public final class APTTypeFactory {
 
     @Nullable
@@ -185,7 +184,6 @@ public final class APTTypeFactory {
                 return new EntityType(configuration.getNamePrefix(), type);
             }
         }
-        
         return type;
     }
 

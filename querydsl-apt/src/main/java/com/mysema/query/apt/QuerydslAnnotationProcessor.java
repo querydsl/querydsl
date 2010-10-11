@@ -17,6 +17,7 @@ import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
 import com.mysema.query.annotations.QueryEmbeddable;
+import com.mysema.query.annotations.QueryEmbedded;
 import com.mysema.query.annotations.QueryEntities;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerySupertype;
@@ -33,7 +34,7 @@ import com.mysema.query.annotations.QueryTransient;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class QuerydslAnnotationProcessor extends AbstractProcessor{
 
-    private Class<? extends Annotation> entities, entity, superType, embeddable, skip;
+    private Class<? extends Annotation> entities, entity, superType, embeddable, embedded, skip;
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -42,9 +43,10 @@ public class QuerydslAnnotationProcessor extends AbstractProcessor{
         entity = QueryEntity.class;
         superType = QuerySupertype.class;
         embeddable = QueryEmbeddable.class;
+        embedded = QueryEmbedded.class;
         skip = QueryTransient.class;
 
-        DefaultConfiguration configuration = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), entities, entity, superType, embeddable, skip);
+        DefaultConfiguration configuration = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), entities, entity, superType, embeddable, embedded, skip);
 
         Processor processor = new Processor(processingEnv, roundEnv, configuration);
         processor.process();

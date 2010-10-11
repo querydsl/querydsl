@@ -38,6 +38,9 @@ public interface Configuration {
     Class<? extends Annotation> getEntitiesAnnotation();
     
     @Nullable
+    Class<? extends Annotation> getEmbeddedAnnotation();
+    
+    @Nullable
     Class<? extends Annotation> getEmbeddableAnnotation();
 
     Serializer getEmbeddableSerializer();

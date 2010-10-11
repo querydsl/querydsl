@@ -26,9 +26,11 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
+import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
@@ -140,30 +142,32 @@ public class Processor {
     }
 
     public void process() {
-        // process delegate methods
-        processDelegateMethods();
-
-        // process types
-        processCustomTypes();
-        processExtensions();
-        if (configuration.getSuperTypeAnnotation() != null) {
-            processSupertypes();
-        }
-        if (configuration.getEntitiesAnnotation() != null){
-            processEntitiesFromPackage();
-        }
-        
-        processEntities();
-        if (configuration.getEmbeddableAnnotation() != null){
-            processEmbeddables();
-        }
-        processDTOs();
+        processAnnotations();
 
         // remove entity types from extensionTypes
         for (String key : entityTypes.keySet()){
             extensionTypes.remove(key);
         }
 
+        serializeModels();
+
+        // serialize variable classes
+        for (Element element : roundEnv.getElementsAnnotatedWith(Variables.class)){
+            if (element instanceof PackageElement){
+                Variables vars = element.getAnnotation(Variables.class);
+                PackageElement packageElement = (PackageElement)element;
+                List<EntityType> models = new ArrayList<EntityType>();
+                for (EntityType model : entityTypes.values()){
+                    if (model.getPackageName().equals(packageElement.getQualifiedName().toString())){
+                        models.add(model);
+                    }
+                }
+                serializeVariableList(packageElement.getQualifiedName().toString(), vars, models);
+            }
+        }
+    }
+
+    private void serializeModels() {
         // serialize models
         Messager msg = env.getMessager();
         if (!actualSupertypes.isEmpty()){
@@ -186,21 +190,30 @@ public class Processor {
             msg.printMessage(Kind.NOTE, "Serializing DTO types");
             serialize(configuration.getDTOSerializer(), dtos.values());
         }
+    }
 
-        // serialize variable classes
-        for (Element element : roundEnv.getElementsAnnotatedWith(Variables.class)){
-            if (element instanceof PackageElement){
-                Variables vars = element.getAnnotation(Variables.class);
-                PackageElement packageElement = (PackageElement)element;
-                List<EntityType> models = new ArrayList<EntityType>();
-                for (EntityType model : entityTypes.values()){
-                    if (model.getPackageName().equals(packageElement.getQualifiedName().toString())){
-                        models.add(model);
-                    }
-                }
-                serializeVariableList(packageElement.getQualifiedName().toString(), vars, models);
-            }
+    private void processAnnotations() {
+        // process delegate methods
+        processDelegateMethods();
+
+        // process types
+        processCustomTypes();
+        processExtensions();
+        if (configuration.getSuperTypeAnnotation() != null) {
+            processSupertypes();
         }
+        if (configuration.getEntitiesAnnotation() != null){
+            processEntitiesFromPackage();
+        }
+        
+        processEntities();
+        if (configuration.getEmbeddedAnnotation() != null){
+            processEmbedded();
+        }
+        if (configuration.getEmbeddableAnnotation() != null){
+            processEmbeddables();
+        }        
+        processDTOs();
     }
     
     @SuppressWarnings("unchecked")
@@ -244,7 +257,6 @@ public class Processor {
     private void process(Class<? extends Annotation> annotation, Map<String,EntityType> types){
         Deque<Type> superTypes = new ArrayDeque<Type>();
 
-        // FIXME
         for (Element element : roundEnv.getElementsAnnotatedWith(annotation)) {
             if (configuration.getEmbeddableAnnotation() == null
                     || element.getAnnotation(configuration.getEmbeddableAnnotation()) == null){
@@ -362,13 +374,42 @@ public class Processor {
     }
 
     private void processEmbeddables() {
-        // FIXME
         for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnnotation())) {
-            typeModelFactory.create(element.asType());
+            typeModelFactory.createEntityType(element.asType());
         }
 
         for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnnotation())) {
             EntityType model = elementHandler.handleNormalType((TypeElement) element);
+            embeddables.put(model.getFullName(), model);
+        }
+        allSupertypes.putAll(embeddables);
+
+        // add super type fields
+        Set<EntityType> handled = new HashSet<EntityType>();
+        for (EntityType embeddable : embeddables.values()) {
+            addSupertypeFields(embeddable, allSupertypes, handled);
+        }
+    }
+    
+    private void processEmbedded(){
+        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddedAnnotation())) {
+            if (element.getKind() == ElementKind.FIELD){
+                typeModelFactory.createEntityType(((VariableElement)element).asType());
+            }else if (element.getKind() == ElementKind.METHOD){
+                typeModelFactory.createEntityType(((ExecutableElement)element).getReturnType());
+            }
+        }
+
+        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddedAnnotation())) {
+            TypeElement typeElement;
+            if (element.getKind() == ElementKind.FIELD){
+                typeElement = env.getElementUtils().getTypeElement(element.asType().toString());
+            }else if (element.getKind() == ElementKind.METHOD){
+                typeElement = env.getElementUtils().getTypeElement(((ExecutableElement)element).getReturnType().toString());
+            }else{
+                throw new IllegalArgumentException(element.toString());
+            }
+            EntityType model = elementHandler.handleNormalType(typeElement);
             embeddables.put(model.getFullName(), model);
         }
         allSupertypes.putAll(embeddables);
@@ -496,7 +537,7 @@ public class Processor {
                     String simpleName = model.getUncapSimpleName();
                     String alias = simpleName;
                     if (configuration.getKeywords().contains(simpleName.toUpperCase())){
-                    alias += "1";
+                        alias += "1";
                     }
                     writer.publicStaticFinal(queryType, simpleName, "new " + queryType.getSimpleName() + "(\"" + alias + "\")");
                 }

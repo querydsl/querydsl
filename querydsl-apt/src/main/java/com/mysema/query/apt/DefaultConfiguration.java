@@ -72,7 +72,7 @@ public class DefaultConfiguration implements Configuration {
     protected final Class<? extends Annotation> entityAnn;
 
     @Nullable
-    protected final Class<? extends Annotation> entitiesAnn, superTypeAnn, embeddableAnn, skipAnn;
+    protected final Class<? extends Annotation> entitiesAnn, superTypeAnn, embeddedAnn, embeddableAnn, skipAnn;
 
     private final Map<String,SerializerConfig> typeToConfig = new HashMap<String,SerializerConfig>();
 
@@ -85,12 +85,14 @@ public class DefaultConfiguration implements Configuration {
             Class<? extends Annotation> entityAnn,
             @Nullable Class<? extends Annotation> superTypeAnn,
             @Nullable Class<? extends Annotation> embeddableAnn,
+            @Nullable Class<? extends Annotation> embeddedAnn,
             @Nullable Class<? extends Annotation> skipAnn) {
         this.entitiesAnn = entitiesAnn;
         this.entityAnn = Assert.notNull(entityAnn,"entityAnn");
         this.superTypeAnn = superTypeAnn;
         this.embeddableAnn = embeddableAnn;
-        this.skipAnn = skipAnn;
+        this.embeddedAnn = embeddedAnn;
+                this.skipAnn = skipAnn;
         for (Element element : roundEnv.getElementsAnnotatedWith(Config.class)){
             Config querydslConfig = element.getAnnotation(Config.class);
             SerializerConfig config = SimpleSerializerConfig.getConfig(querydslConfig);
@@ -166,6 +168,12 @@ public class DefaultConfiguration implements Configuration {
     @Override
     public Class<? extends Annotation> getEntityAnnotation() {
         return entityAnn;
+    }
+    
+    @Override
+    @Nullable
+    public Class<? extends Annotation> getEmbeddedAnnotation() {
+        return embeddedAnn;
     }
 
     @Override
@@ -289,7 +297,7 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public Collection<String> getKeywords(){
-    return Collections.emptyList();
+        return Collections.emptyList();
     }
 
 }
