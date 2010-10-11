@@ -16,7 +16,6 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
-import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Transient;
 import com.mysema.query.annotations.QueryEntities;
@@ -27,17 +26,16 @@ import com.mysema.query.apt.Processor;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class MongodbAnnotationProcessor extends AbstractProcessor{
 
-    private Class<? extends Annotation> entities, entity, embeddable, skip;
+    private Class<? extends Annotation> entities, entity, skip;
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
         entities = QueryEntities.class;
         entity = Entity.class;
-        embeddable = Embedded.class;
         skip = Transient.class;
 
-        DefaultConfiguration configuration = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), entities, entity, null, embeddable, skip);
+        DefaultConfiguration configuration = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), entities, entity, null, null, skip);
 
         Processor processor = new Processor(processingEnv, roundEnv, configuration);
         processor.process();
