@@ -15,6 +15,10 @@ import static org.junit.Assert.assertTrue;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -24,10 +28,14 @@ import org.junit.Test;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryTransient;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathImpl;
 import com.mysema.util.AnnotatedElementAdapter;
 
 public class PathTest {
 
+    enum ExampleEnum {A,B}
+    
     public static class Superclass {
 
         @Nullable
@@ -62,11 +70,10 @@ public class PathTest {
         }
 
     }
-
+    
     @Test
-    public void getAnnotatedElement(){
+    public void GetAnnotatedElement(){
         Entity entity = Alias.alias(Entity.class);
-
         AnnotatedElement element = $(entity).getAnnotatedElement();
 
         // type
@@ -74,7 +81,7 @@ public class PathTest {
     }
 
     @Test
-    public void getAnnotatedElement_for_property(){
+    public void GetAnnotatedElement_for_property(){
         Entity entity = Alias.alias(Entity.class);
         AnnotatedElement property1 = $(entity.getProperty1()).getAnnotatedElement();
         AnnotatedElement property2 = $(entity.getProperty2()).getAnnotatedElement();
@@ -111,12 +118,39 @@ public class PathTest {
 
     }
     
+    @SuppressWarnings("unchecked")
     @Test
-    public void equals(){
+    public void Equals(){
         assertEquals(new StringPath("s"),  new StringPath("s"));
         assertEquals(new BooleanPath("b"), new BooleanPath("b"));
         assertEquals(new NumberPath<Integer>(Integer.class,"n"), new NumberPath<Integer>(Integer.class,"n"));
         
+        assertEquals(new ArrayPath(String[].class, "p"), new PathImpl(String.class, "p"));
+        assertEquals(new BooleanPath("p"), new PathImpl(Boolean.class, "p"));
+        assertEquals(new ComparablePath(String.class,"p"), new PathImpl(String.class, "p"));
+        assertEquals(new DatePath(Date.class,"p"), new PathImpl(Date.class, "p"));
+        assertEquals(new DateTimePath(Date.class,"p"), new PathImpl(Date.class, "p"));
+        assertEquals(new EnumPath(ExampleEnum.class,"p"), new PathImpl(ExampleEnum.class, "p"));
+        assertEquals(new NumberPath(Integer.class,"p"), new PathImpl(Integer.class, "p"));
+        assertEquals(new StringPath("p"), new PathImpl(String.class, "p"));
+        assertEquals(new TimePath(Time.class,"p"), new PathImpl(Time.class, "p"));        
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void Various(){
+        List<Path<?>> paths = new ArrayList<Path<?>>();
+        paths.add(new ArrayPath(String[].class, "p"));
+        paths.add(new BooleanPath("p"));
+        paths.add(new ComparablePath(String.class,"p"));
+        paths.add(new DatePath(Date.class,"p"));
+        paths.add(new DateTimePath(Date.class,"p"));
+        paths.add(new EnumPath(ExampleEnum.class,"p"));
+        paths.add(new NumberPath(Integer.class,"p"));
+        paths.add(new StringPath("p"));
+        paths.add(new TimePath(Time.class,"p"));
+        
+        // TODO : assertions
     }
     
 }

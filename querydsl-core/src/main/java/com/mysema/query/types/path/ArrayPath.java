@@ -41,6 +41,10 @@ public class ArrayPath<E> extends SimpleExpression<E[]> implements Path<E[]>, Ar
     @Nullable
     private volatile NumberExpression<Integer> size;
 
+    public ArrayPath(Class<? super E[]> type, String variable) {
+        this(type, PathMetadataFactory.forVariable(variable));
+    }
+    
     @SuppressWarnings("unchecked")
     public ArrayPath(Class<? super E[]> type, PathMetadata<?> metadata) {
         super((Class)type);
