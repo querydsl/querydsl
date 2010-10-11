@@ -5,11 +5,12 @@
  */
 package com.mysema.query.mongodb;
 
+import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -21,6 +22,7 @@ import org.junit.Test;
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
 import com.mysema.query.SearchResults;
+import com.mysema.query.mongodb.domain.City;
 import com.mysema.query.mongodb.domain.QUser;
 import com.mysema.query.mongodb.domain.User;
 import com.mysema.query.types.OrderSpecifier;
@@ -35,15 +37,28 @@ public class MongodbQueryTest {
     private QUser user = new QUser("user");
 
     User u1, u2, u3, u4; 
+    City tampere, helsinki;
 
     @Before
     public void before() {
         ds.delete(ds.createQuery(User.class));
 
+        
+        tampere = new City("Tampere", new BigDecimal(61.30), new BigDecimal(23.50));
+        helsinki= new City("Helsinki", new BigDecimal(60.15), new BigDecimal(20.03));
+        
         u1 = addUser("Jaakko", "Jantunen", 20);
         u2 = addUser("Jaakki", "Jantunen", 30);
         u3 = addUser("Jaana", "Aakkonen", 40);
         u4 = addUser("Jaana", "BeekkoNen", 50);
+        
+        u1.addAddress("Aakatu", "00100", helsinki);
+        u1.addAddress("Vuorikatu", "00100", helsinki);
+        
+        u2.addAddress("Beekatu", "00200", helsinki);
+        u3.addAddress("Ceekatu", "00300", tampere);
+        u4.addAddress("Deekatu", "00400", tampere);
+        
     }
     
     @Test
@@ -59,16 +74,16 @@ public class MongodbQueryTest {
     @Test
     public void Order(){
         List<User> users = query().orderBy(user.age.asc()).list();
-        assertEquals(Arrays.asList(u1, u2, u3, u4), users);
+        assertEquals(asList(u1, u2, u3, u4), users);
         
         users = query().orderBy(user.age.desc()).list();
-        assertEquals(Arrays.asList(u4, u3, u2, u1), users);
+        assertEquals(asList(u4, u3, u2, u1), users);
     }
     
     @Test
     public void Restrict(){
-        assertEquals(Arrays.asList(u1, u2), query().limit(2).orderBy(user.age.asc()).list());
-        assertEquals(Arrays.asList(u2, u3), query().limit(2).offset(1).orderBy(user.age.asc()).list());
+        assertEquals(asList(u1, u2), query().limit(2).orderBy(user.age.asc()).list());
+        assertEquals(asList(u2, u3), query().limit(2).offset(1).orderBy(user.age.asc()).list());
     }
     
     @Test
@@ -226,6 +241,15 @@ public class MongodbQueryTest {
             where(predicate).count();
             where(predicate.not()).count();
         }
+    }
+    
+    @Test
+    public void testEmbeddedObjects() {
+        
+        //User r = where(user.addresses.any().street.eq("hahahah"))
+        
+        
+        
     }
     
     //TODO

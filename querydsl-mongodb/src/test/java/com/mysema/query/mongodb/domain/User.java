@@ -5,10 +5,13 @@
  */
 package com.mysema.query.mongodb.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.bson.types.ObjectId;
 
+import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
 
@@ -22,6 +25,15 @@ public class User {
     private String lastName;
     
     private Date created;
+    
+    @Embedded
+    private List<Address> addresses = new ArrayList<Address>();
+    
+    //@Embedded
+    //private Address mainAddress;
+    
+    //@Reference
+    private List<User> friends = new ArrayList<User>();
     
     private int age;
     
@@ -82,7 +94,33 @@ public class User {
     public void setAge(int age) {
         this.age = age;
     }
+    
+//    public Address getMainAddress() {
+//        return mainAddress;
+//    }
+//
+//    public void setMainAddress(Address mainAddress) {
+//        this.mainAddress = mainAddress;
+//    }
 
+    public User addAddress(String street, String postalCode, City city) {
+        addresses.add(new Address(street, postalCode, city));
+        return this;
+    }
+    
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+    
+    public User addFriend(User friend) {
+        friends.add(friend);
+        return this;
+    }
+
+    public List<User> getFriends() {
+        return friends;
+    }
+    
     @Override
     public int hashCode() {
         final int prime = 31;
