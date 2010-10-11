@@ -4,36 +4,33 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
-
 import org.apache.commons.io.FileUtils;
+import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
 import org.junit.Test;
 
-import com.mysema.commons.fluxml.XMLWriter;
 import com.mysema.query.annotations.Config;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.jpa.domain.Domain;
+import com.mysema.query.jpa.domain2.Domain2;
 
 public class HibernateDomainExporterTest {
     
     private SerializerConfig serializerConfig = SimpleSerializerConfig.getConfig(Domain.class.getPackage().getAnnotation(Config.class));
-    
+        
     @Test
     public void Execute_Single() throws IOException {
+        FileUtils.deleteDirectory(new File("target/gen1"));
         File contact = new File("src/test/resources/contact.hbm.xml");
-        HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen1"), contact);
+        Configuration config = new Configuration();
+        config.addFile(contact);
+        config.buildMappings();
+        HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen1"), config);
         exporter.execute();
         
         File targetFile = new File("target/gen1/com/mysema/query/jpa/domain2/QContact.java");
@@ -42,8 +39,12 @@ public class HibernateDomainExporterTest {
     
     @Test
     public void Execute_Single2() throws IOException {
+        FileUtils.deleteDirectory(new File("target/gen2"));
         File contact = new File("src/test/resources/contact2.hbm.xml");
-        HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen2"), contact);
+        Configuration config = new Configuration();
+        config.addFile(contact);
+        config.buildMappings();
+        HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen2"), config);
         exporter.execute();
         
         File targetFile = new File("target/gen2/com/mysema/query/jpa/domain2/QContact.java");
@@ -52,11 +53,14 @@ public class HibernateDomainExporterTest {
     
     @Test
     public void Execute_Multiple() throws IOException{
-        File out = new File("target/out.hbm.xml");
-        out.delete();
-        createExampleHbmFile(Domain.classes, out);
+        FileUtils.deleteDirectory(new File("target/gen3"));
+        AnnotationConfiguration config = new AnnotationConfiguration();
+        for (Class<?> cl : Domain.classes){
+            config.addAnnotatedClass(cl);
+        }
+        config.buildMappings();
         
-        HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen3"), serializerConfig, out);
+        HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen3"), serializerConfig, config);
         exporter.execute();
         
         List<String> failures = new ArrayList<String>();
@@ -78,7 +82,13 @@ public class HibernateDomainExporterTest {
     
     @Test
     public void Execute_Multiple2() throws IOException{
-        File config = new File("src/test/resources/examples.hbm.xml");
+        FileUtils.deleteDirectory(new File("target/gen4"));
+        AnnotationConfiguration config = new AnnotationConfiguration();
+        for (Class<?> cl : Domain2.classes){
+            config.addAnnotatedClass(cl);
+        }
+        config.buildMappings();
+        
         HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen4"), serializerConfig, config);
         exporter.execute();
         
@@ -99,55 +109,6 @@ public class HibernateDomainExporterTest {
         
     }
 
-    private void createExampleHbmFile(List<Class<?>> classes, File out) throws IOException {
-        // NOTE : the output is not a valid hbm file, but the relevant data for parsing is contained
-        Writer w = new FileWriter(out);
-        XMLWriter writer = new XMLWriter(w);
-        writer.begin("hibernate-mapping");
-        for (Class<?> cl : classes){
-            if (cl.isEnum()) continue;
-            String classElement;
-            if (cl.getAnnotation(Entity.class) != null){
-                classElement = "class";
-            }else if (cl.getAnnotation(MappedSuperclass.class) != null){
-                classElement = "mapped-superclass";
-            }else{
-                continue;
-            }
-            writer.begin(classElement);
-            writer.attribute("name", cl.getName());
-            for (Field field : cl.getDeclaredFields()){
-                if (field.getAnnotation(Transient.class) != null) continue;
-                if (Modifier.isTransient(field.getModifiers())) continue;
-                String propertyElement = getPropertyElement(field.getType());
-                writer.begin(propertyElement);
-                writer.attribute("name", field.getName());
-                if (field.getType().getAnnotation(Embeddable.class) != null){
-                    for (Field cfield : field.getType().getDeclaredFields()){
-                        String cproperty = getPropertyElement(cfield.getType());
-                        writer.begin(cproperty);
-                        writer.attribute("name", cfield.getName());
-                        writer.end(cproperty);
-                    }
-                }
-                writer.end(propertyElement);
-            }
-            writer.end(classElement);
-        }        
-        writer.end("hibernate-mapping");
-        w.close();
-    }
-    
-    private String getPropertyElement(Class<?> cl){
-        if (cl.getAnnotation(Entity.class) != null){
-            return "many-to-one";
-        }else if (cl.getAnnotation(Embeddable.class) != null){
-            return "component";
-        }else{
-            return "property";
-        }
-    }
-    
     private static void assertContains(File file, String... strings) throws IOException{
         assertTrue(file.getPath() + " doesn't exist", file.exists());
         String result = FileUtils.readFileToString(file, "UTF-8");
