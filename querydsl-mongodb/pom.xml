@@ -89,5 +89,45 @@
     </repository>
   </repositories>
   
+  <build>
+  	<plugins>
+      <plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+      	<artifactId>maven-jar-plugin</artifactId>
+		<executions>
+		   <execution>
+		  	 <id>apt</id>
+			 <goals>
+			   <goal>jar</goal>				
+			 </goals>	
+			 <configuration>
+			   <classifier>apt</classifier>
+			   <classesDirectory>src/apt</classesDirectory>									
+			 </configuration>			  
+		   </execution>			
+	    </executions>
+	  </plugin>	  
+	  
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+		<executions>
+		  <execution>
+		  	<id>one-jars</id>
+			<goals>
+			  <goal>single</goal>	
+			</goals>
+			<phase>package</phase>
+		  	<configuration>
+              <descriptors>
+                <descriptor>src/main/assembly.xml</descriptor>
+              </descriptors>
+			  <outputDirectory>${project.build.directory}</outputDirectory>
+            </configuration>
+		  </execution>	
+		</executions>        
+      </plugin>	  	  
+	</plugins>	
+  </build>	
+  
 
 </project>
