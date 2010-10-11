@@ -547,10 +547,28 @@ NumberExpression<Integer> expression = NumberTemplate.create(Integer.class, "myf
   
   <sect2>
   
-    <title>User types</title>
+    <title>Custom types</title>
     
-    <para>TODO</para>
-    
+    <para>Querydsl SQL provides the possibility to declare custom type mappings for ResultSet/Statement interaction. The custom type mappings can be 
+	declared in com.mysema.query.sql.Configuration instances, which are supplied as constructor arguments to the actual queries :</para>
+
+<programlisting language="java"><![CDATA[    
+    @Test
+    public void ForSQLType(){
+        Configuration configuration = new Configuration(new H2Templates());
+        // overrides the mapping for Types.DATE
+        configuration.register(new UtilDateType());
+    }
+	
+    @Test
+    public void ForTableColumn(){
+        Configuration configuration = new Configuration(new H2Templates());
+        // declares a maping for the gender column in the person table
+        configuration.register("person", "gender",  new EnumByNameType<Gender>(Gender.class));
+        assertEquals(Gender.class, configuration.getJavaType(java.sql.Types.VARCHAR, "person", "gender"));
+    }			
+]]></programlisting>     			
+	
   </sect2>
   
   
