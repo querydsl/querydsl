@@ -26,11 +26,11 @@ public class User {
     
     private Date created;
     
-    @Embedded
-    private List<Address> addresses = new ArrayList<Address>();
+//    @Embedded
+//    private List<Address> addresses = new ArrayList<Address>();
     
-    //@Embedded
-    //private Address mainAddress;
+    @Embedded
+    private Address mainAddress;
     
     //@Reference
     private List<User> friends = new ArrayList<User>();
@@ -95,22 +95,26 @@ public class User {
         this.age = age;
     }
     
-//    public Address getMainAddress() {
-//        return mainAddress;
-//    }
-//
-//    public void setMainAddress(Address mainAddress) {
-//        this.mainAddress = mainAddress;
-//    }
+    public Address getMainAddress() {
+        return mainAddress;
+    }
 
-    public User addAddress(String street, String postalCode, City city) {
-        addresses.add(new Address(street, postalCode, city));
-        return this;
+    public void setMainAddress(Address mainAddress) {
+        this.mainAddress = mainAddress;
     }
     
-    public List<Address> getAddresses() {
-        return addresses;
+    public void setMainAddress(String street, String postCode, City city) {
+        this.mainAddress = new Address(street, postCode, city);
     }
+
+//    public User addAddress(String street, String postalCode, City city) {
+//        addresses.add(new Address(street, postalCode, city));
+//        return this;
+//    }
+//    
+//    public List<Address> getAddresses() {
+//        return addresses;
+//    }
     
     public User addFriend(User friend) {
         friends.add(friend);
@@ -145,5 +149,7 @@ public class User {
             return false;
         return true;
     }
+
+   
 
 }

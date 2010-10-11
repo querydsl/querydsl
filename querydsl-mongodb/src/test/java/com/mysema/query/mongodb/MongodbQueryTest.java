@@ -52,12 +52,11 @@ public class MongodbQueryTest {
         u3 = addUser("Jaana", "Aakkonen", 40);
         u4 = addUser("Jaana", "BeekkoNen", 50);
         
-        u1.addAddress("Aakatu", "00100", helsinki);
-        u1.addAddress("Vuorikatu", "00100", helsinki);
+        u1.setMainAddress("Aakatu", "00100", helsinki);
         
-        u2.addAddress("Beekatu", "00200", helsinki);
-        u3.addAddress("Ceekatu", "00300", tampere);
-        u4.addAddress("Deekatu", "00400", tampere);
+        u2.setMainAddress("Beekatu", "00200", helsinki);
+        u3.setMainAddress("Ceekatu", "00300", tampere);
+        u4.setMainAddress("Deekatu", "00400", tampere);
         
     }
     
