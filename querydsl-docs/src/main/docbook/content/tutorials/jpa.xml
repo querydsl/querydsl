@@ -131,6 +131,32 @@
     and <emphasis>build</emphasis> with your target folder.</para>        
     
   </sect2>  
+  
+  <sect2>
+  	
+	<title>Generating the model from hbm.xml files</title>
+	
+	<para>If you are using Hibernate with an XML based configuration, you can use the XML metadata to create your Querydsl model.</para>
+	
+	<para>com.mysema.query.jpa.hibernate.HibernateDomainExporer provides the functionality for this :</para>
+	
+<programlisting language="java"><![CDATA[
+HibernateDomainExporter provides now the functionality you requested :
+File configuration = new File("examples.hbm.xml");
+HibernateDomainExporter exporter = new HibernateDomainExporter(
+  "Q", // name prefix
+  new File("target/gen3"), // target folder
+  configuration); // hbm files (varargs)
+
+exporter.export();
+]]></programlisting>		  
+
+	<para>The HibernateDomainExporter needs to be executed within a classpath where the domain types are visible, since the property types are resolved
+	via reflection.</para>
+	
+	<para>All JPA annotations are ignored, but Querydsl annotations such as @QueryInit and @QueryType are taken into account.</para>
+  	
+  </sect2>	
 
   <sect2>
 
