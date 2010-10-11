@@ -30,7 +30,6 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
@@ -393,24 +392,19 @@ public class Processor {
     
     private void processEmbedded(){
         for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddedAnnotation())) {
-            if (element.getKind() == ElementKind.FIELD){
-                typeModelFactory.createEntityType(((VariableElement)element).asType());
-            }else if (element.getKind() == ElementKind.METHOD){
-                typeModelFactory.createEntityType(((ExecutableElement)element).getReturnType());
+            TypeMirror type = element.asType();
+            if (element.getKind() == ElementKind.METHOD){
+                type = ((ExecutableElement)element).getReturnType();
             }
-        }
-
-        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddedAnnotation())) {
-            TypeElement typeElement;
-            if (element.getKind() == ElementKind.FIELD){
-                typeElement = env.getElementUtils().getTypeElement(element.asType().toString());
-            }else if (element.getKind() == ElementKind.METHOD){
-                typeElement = env.getElementUtils().getTypeElement(((ExecutableElement)element).getReturnType().toString());
-            }else{
-                throw new IllegalArgumentException(element.toString());
+            String typeName = type.toString();
+            if (typeName.startsWith("java.util")){
+                Type t = typeModelFactory.create(type);
+                typeName = t.getParameters().get(0).toString();
             }
+            System.err.println(":"+typeName); // TODO : remove
+            TypeElement typeElement = env.getElementUtils().getTypeElement(typeName);
             EntityType model = elementHandler.handleNormalType(typeElement);
-            embeddables.put(model.getFullName(), model);
+            embeddables.put(model.getFullName(), model);            
         }
         allSupertypes.putAll(embeddables);
 
