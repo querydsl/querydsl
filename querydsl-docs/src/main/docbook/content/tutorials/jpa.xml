@@ -144,9 +144,9 @@
 HibernateDomainExporter provides now the functionality you requested :
 File configuration = new File("examples.hbm.xml");
 HibernateDomainExporter exporter = new HibernateDomainExporter(
-  "Q", // name prefix
+  "Q",                     // name prefix
   new File("target/gen3"), // target folder
-  configuration); // hbm files (varargs)
+  configuration);          // instance of org.hibernate.cfg.Configuration 
 
 exporter.export();
 ]]></programlisting>		  
