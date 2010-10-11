@@ -108,4 +108,15 @@
 		<property name="propValue" />
 		<property name="propValueDetails" />
 	</class>
+	
+	<class name="com.mysema.query.jpa.domain2.Parent">
+		<id name="id" type="java.lang.Long">
+			<generator class="sequence" />
+		</id>
+		<property name="name"/>
+		<component name="child">
+			<property name="childName"/>
+		</component>	
+	</class>	
+	
 </hibernate-mapping>
