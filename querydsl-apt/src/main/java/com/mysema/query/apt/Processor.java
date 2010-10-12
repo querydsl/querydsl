@@ -399,6 +399,7 @@ public class Processor {
                 type = ((ExecutableElement)element).getReturnType();
             }
             String typeName = type.toString();
+            // TODO : make this safer
             if (typeName.startsWith("java.util")){
                 typeName = typeName.substring(typeName.indexOf('<')+1, typeName.lastIndexOf('>'));
                 typeModelFactory.createEntityType(env.getElementUtils().getTypeElement(typeName).asType());
