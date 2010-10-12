@@ -96,6 +96,7 @@
             <artifactId>maven-apt-plugin</artifactId>
             <executions>
               <execution>
+              	<phase>generate-test-sources</phase>
                 <goals>
                   <goal>test-process</goal>
                 </goals>

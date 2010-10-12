@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.code.morphia.Datastore;
@@ -243,9 +244,11 @@ public class MongodbQueryTest {
     }
     
     @Test
+    @Ignore
     public void testEmbeddedObjects() {
         
-        //User r = where(user.addresses.any().street.eq("hahahah"))
+        where(user.addresses.any().street.eq("hahahah")).uniqueResult();
+        // TODO
         
         
         
