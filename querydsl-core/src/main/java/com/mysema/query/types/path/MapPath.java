@@ -45,6 +45,10 @@ public class MapPath<K, V, E extends SimpleExpression<V>> extends MapExpressionB
 
     private final Class<V> valueType;
 
+    public MapPath(Class<? super K> keyType, Class<? super V> valueType, Class<E> queryType, String variable) {
+        this(keyType, valueType, queryType, PathMetadataFactory.forVariable(variable));
+    }
+    
     @SuppressWarnings("unchecked")
     public MapPath(Class<? super K> keyType, Class<? super V> valueType, Class<E> queryType, PathMetadata<?> metadata) {
         super((Class)Map.class);

@@ -30,6 +30,7 @@ import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
+import com.mysema.query.types.ToStringVisitor;
 import com.mysema.util.AnnotatedElementAdapter;
 
 public class PathTest {
@@ -141,16 +142,22 @@ public class PathTest {
     public void Various(){
         List<Path<?>> paths = new ArrayList<Path<?>>();
         paths.add(new ArrayPath(String[].class, "p"));
+        paths.add(new BeanPath(Object.class, "p"));
         paths.add(new BooleanPath("p"));
         paths.add(new ComparablePath(String.class,"p"));
         paths.add(new DatePath(Date.class,"p"));
         paths.add(new DateTimePath(Date.class,"p"));
         paths.add(new EnumPath(ExampleEnum.class,"p"));
         paths.add(new NumberPath(Integer.class,"p"));
+        paths.add(new SimplePath(String.class,"p"));
         paths.add(new StringPath("p"));
         paths.add(new TimePath(Time.class,"p"));
         
         for (Path<?> path : paths){
+            Path other = new PathImpl(path.getType(), "p");
+            assertEquals(path.toString(), path.accept(ToStringVisitor.DEFAULT, null));
+            assertEquals(path.hashCode(), other.hashCode());
+            assertEquals(path, other);
             assertNotNull(path.getMetadata());
             assertNotNull(path.getType());
             assertEquals(path, path.getRoot());            

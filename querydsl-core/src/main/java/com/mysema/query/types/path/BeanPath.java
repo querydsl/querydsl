@@ -75,11 +75,9 @@ public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
             if (!casts.containsKey(clazz)) {
                 T rv;
                 if (inits != null) {
-                    rv = clazz.getConstructor(PathMetadata.class,
-                            PathInits.class).newInstance(this.getMetadata(), inits);
+                    rv = clazz.getConstructor(PathMetadata.class, PathInits.class).newInstance(this.getMetadata(), inits);
                 } else {
-                    rv = (T) clazz.getConstructor(PathMetadata.class)
-                            .newInstance(this.getMetadata());
+                    rv = (T) clazz.getConstructor(PathMetadata.class).newInstance(this.getMetadata());
                 }
                 casts.put(clazz, rv);
                 return rv;
