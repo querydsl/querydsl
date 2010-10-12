@@ -150,7 +150,11 @@ public class PathTest {
         paths.add(new StringPath("p"));
         paths.add(new TimePath(Time.class,"p"));
         
-        // TODO : assertions
+        for (Path<?> path : paths){
+            assertNotNull(path.getMetadata());
+            assertNotNull(path.getType());
+            assertEquals(path, path.getRoot());            
+        }
     }
     
 }

@@ -21,7 +21,6 @@ import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.CollectionExpressionBase;
 import com.mysema.query.types.expr.ListExpression;
 import com.mysema.query.types.expr.SimpleExpression;
 
@@ -32,7 +31,7 @@ import com.mysema.query.types.expr.SimpleExpression;
  *
  * @param <E> component type
  */
-public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionExpressionBase<List<E>,E> implements ListExpression<E>, Path<List<E>>{
+public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionPathBase<List<E>,E> implements ListExpression<E> {
 
     private static final long serialVersionUID = 3302301599074388860L;
 
@@ -64,7 +63,7 @@ public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionExpres
     public Q any(){
         if (any == null){
             try {
-                any = newInstance(pathMixin.getMetadata());
+                any = newInstance(queryType, pathMixin.getMetadata());
             } catch (NoSuchMethodException e) {
                 throw new ExpressionException(e);
             } catch (InstantiationException e) {
@@ -89,7 +88,7 @@ public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionExpres
     private Q create(int index){
         try {
             PathMetadata<Integer> md = forListAccess(index);
-            return newInstance(md);
+            return newInstance(queryType, md);
         } catch (NoSuchMethodException e) {
             throw new ExpressionException(e);
         } catch (InstantiationException e) {
@@ -110,7 +109,7 @@ public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionExpres
     public Q get(Expression<Integer> index) {
         try {
             PathMetadata<Integer> md = forListAccess(index);
-            return newInstance(md);
+            return newInstance(queryType, md);
         } catch (NoSuchMethodException e) {
             throw new ExpressionException(e);
         } catch (InstantiationException e) {
@@ -122,10 +121,6 @@ public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionExpres
         }
     }
 
-    private Q newInstance(PathMetadata<?> md) throws NoSuchMethodException, InstantiationException, 
-        IllegalAccessException, InvocationTargetException {
-        return newInstance(queryType, Constants.isTyped(queryType), md);
-    }
 
     @Override
     public Q get(int index) {

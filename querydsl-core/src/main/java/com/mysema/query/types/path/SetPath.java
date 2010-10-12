@@ -14,10 +14,9 @@ import javax.annotation.Nullable;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.ExpressionException;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathImpl;
+import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.CollectionExpressionBase;
 import com.mysema.query.types.expr.SimpleExpression;
 
 /**
@@ -27,7 +26,7 @@ import com.mysema.query.types.expr.SimpleExpression;
  *
  * @param <E> component type
  */
-public class SetPath<E, Q extends SimpleExpression<E>> extends CollectionExpressionBase<Set<E>,E> implements Path<Set<E>> {
+public class SetPath<E, Q extends SimpleExpression<E>> extends CollectionPathBase<Set<E>,E> {
 
     private static final long serialVersionUID = 4145848445507037373L;
 
@@ -57,7 +56,7 @@ public class SetPath<E, Q extends SimpleExpression<E>> extends CollectionExpress
     public Q any(){
         if (any == null){
             try {
-                any = newInstance(queryType, Constants.isTyped(queryType), pathMixin.getMetadata());
+                any = newInstance(queryType, pathMixin.getMetadata());
             } catch (NoSuchMethodException e) {
                 throw new ExpressionException(e);
             } catch (InstantiationException e) {

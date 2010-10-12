@@ -17,7 +17,6 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.CollectionExpressionBase;
 import com.mysema.query.types.expr.SimpleExpression;
 
 /**
@@ -27,7 +26,7 @@ import com.mysema.query.types.expr.SimpleExpression;
  *
  * @param <E> component type
  */
-public class CollectionPath<E, Q extends SimpleExpression<E>> extends CollectionExpressionBase<Collection<E>,E> implements Path<Collection<E>>{    
+public class CollectionPath<E, Q extends SimpleExpression<E>> extends CollectionPathBase<Collection<E>,E>{    
 
     private static final long serialVersionUID = -4982311799113762600L;
 
@@ -57,7 +56,7 @@ public class CollectionPath<E, Q extends SimpleExpression<E>> extends Collection
     public Q any(){
         if (any == null){
             try {
-                any = newInstance(queryType, Constants.isTyped(queryType), pathMixin.getMetadata());
+                any = newInstance(queryType, pathMixin.getMetadata());
             } catch (NoSuchMethodException e) {
                 throw new ExpressionException(e);
             } catch (InstantiationException e) {

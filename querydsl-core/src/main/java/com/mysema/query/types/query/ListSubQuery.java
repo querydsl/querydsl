@@ -52,11 +52,6 @@ public final class ListSubQuery<A> extends CollectionExpressionBase<List<A>,A> i
     }
     
     @Override
-    public SimpleExpression<A> any(){
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public boolean equals(Object o) {
        return subQueryMixin.equals(o);
     }
