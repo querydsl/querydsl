@@ -144,10 +144,13 @@ public class PathTest {
         paths.add(new ArrayPath(String[].class, "p"));
         paths.add(new BeanPath(Object.class, "p"));
         paths.add(new BooleanPath("p"));
+        paths.add(new CollectionPath(String.class, StringPath.class, "p"));
         paths.add(new ComparablePath(String.class,"p"));
         paths.add(new DatePath(Date.class,"p"));
         paths.add(new DateTimePath(Date.class,"p"));
         paths.add(new EnumPath(ExampleEnum.class,"p"));
+        paths.add(new ListPath(String.class, StringPath.class, "p"));
+        paths.add(new MapPath(String.class, String.class, StringPath.class, "p"));
         paths.add(new NumberPath(Integer.class,"p"));
         paths.add(new SimplePath(String.class,"p"));
         paths.add(new StringPath("p"));

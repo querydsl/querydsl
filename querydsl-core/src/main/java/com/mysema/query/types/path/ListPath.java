@@ -46,6 +46,10 @@ public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionPathBa
     @Nullable
     private transient Q any;    
 
+    public ListPath(Class<? super E> elementType, Class<Q> queryType, String variable) {
+        this(elementType, queryType, PathMetadataFactory.forVariable(variable));
+    }
+    
     @SuppressWarnings("unchecked")
     public ListPath(Class<? super E> elementType, Class<Q> queryType, PathMetadata<?> metadata) {
         super((Class)List.class);

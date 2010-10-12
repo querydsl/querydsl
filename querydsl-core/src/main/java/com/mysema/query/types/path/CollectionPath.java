@@ -16,6 +16,7 @@ import com.mysema.query.types.ExpressionException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.SimpleExpression;
 
@@ -38,6 +39,10 @@ public class CollectionPath<E, Q extends SimpleExpression<E>> extends Collection
     private transient Q any;
     
     private final Class<Q> queryType;
+    
+    public CollectionPath(Class<? super E> type, Class<Q> queryType, String variable) {
+        this(type, queryType, PathMetadataFactory.forVariable(variable));
+    }
     
     @SuppressWarnings("unchecked")
     public CollectionPath(Class<? super E> type, Class<Q> queryType, PathMetadata<?> metadata) {
