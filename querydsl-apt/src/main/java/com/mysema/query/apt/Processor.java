@@ -400,10 +400,9 @@ public class Processor {
             }
             String typeName = type.toString();
             if (typeName.startsWith("java.util")){
-                Type t = typeModelFactory.create(type);
-                typeName = t.getParameters().get(0).toString();
+                typeName = typeName.substring(typeName.indexOf('<')+1, typeName.lastIndexOf('>'));
+                typeModelFactory.createEntityType(env.getElementUtils().getTypeElement(typeName).asType());
             }
-            System.err.println(":"+typeName); // TODO : remove
             TypeElement typeElement = env.getElementUtils().getTypeElement(typeName);
             EntityType model = elementHandler.handleNormalType(typeElement);
             embeddables.put(model.getFullName(), model);            
