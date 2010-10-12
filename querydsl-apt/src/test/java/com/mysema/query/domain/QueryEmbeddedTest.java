@@ -40,8 +40,7 @@ public class QueryEmbeddedTest {
     @Test
     public void test(){
         assertNotNull(QQueryEmbeddedTest_Parent.parent.child.childProperty);
-        // FIXME
-//        assertNotNull(QQueryEmbeddedTest_Parent2.parent2.children.any().childProperty);
+        assertNotNull(QQueryEmbeddedTest_Parent2.parent2.children.any().childProperty);
     }
     
 }

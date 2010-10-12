@@ -89,11 +89,6 @@ public final class ElementHandler{
                 fieldType = fieldType.as(typeCategory);
                 types.put(name, typeCategory);
             }
-            if (configuration.getEmbeddedAnnotation() != null 
-                && field.getAnnotation(configuration.getEmbeddedAnnotation()) != null){
-                fieldType = fieldType.as(TypeCategory.ENTITY);
-                types.put(name, TypeCategory.ENTITY);
-            }
             String[] inits = new String[0];
             if (field.getAnnotation(QueryInit.class) != null){
                 inits = field.getAnnotation(QueryInit.class).value();
@@ -124,9 +119,6 @@ public final class ElementHandler{
                 propertyType = propertyType.as(typeCategory);
             }else if (types.containsKey(propertyName)){
                 propertyType = propertyType.as(types.get(propertyName));
-            }else if (configuration.getEmbeddedAnnotation() != null 
-                && method.getAnnotation(configuration.getEmbeddedAnnotation()) != null){
-                propertyType = propertyType.as(TypeCategory.ENTITY);
             }
             String[] inits = new String[0];
             if (method.getAnnotation(QueryInit.class) != null){

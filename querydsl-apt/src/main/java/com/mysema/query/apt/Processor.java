@@ -67,8 +67,6 @@ import com.mysema.query.codegen.TypeMappings;
  */
 public class Processor {
 
-//    private static final Logger logger = LoggerFactory.getLogger(Processor.class);
-
     private final Map<String, EntityType> actualSupertypes  = new HashMap<String, EntityType>();
 
     private final Map<String, EntityType> allSupertypes = new HashMap<String, EntityType>();
@@ -192,26 +190,30 @@ public class Processor {
     }
 
     private void processAnnotations() {
-        // process delegate methods
         processDelegateMethods();
 
-        // process types
         processCustomTypes();
+        
         processExtensions();
+        
         if (configuration.getSuperTypeAnnotation() != null) {
             processSupertypes();
         }
+        
+        if (configuration.getEmbeddedAnnotation() != null){
+            processEmbedded();
+        }
+        
+        if (configuration.getEmbeddableAnnotation() != null){
+            processEmbeddables();
+        }
+        
         if (configuration.getEntitiesAnnotation() != null){
             processEntitiesFromPackage();
         }
         
         processEntities();
-        if (configuration.getEmbeddedAnnotation() != null){
-            processEmbedded();
-        }
-        if (configuration.getEmbeddableAnnotation() != null){
-            processEmbeddables();
-        }        
+        
         processDTOs();
     }
     
