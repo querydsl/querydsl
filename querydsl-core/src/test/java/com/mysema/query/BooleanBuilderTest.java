@@ -8,8 +8,12 @@ package com.mysema.query;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 
+import com.mysema.query.types.Templates;
+import com.mysema.query.types.ToStringVisitor;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.BooleanPath;
 
@@ -95,5 +99,21 @@ public class BooleanBuilderTest {
         assertEquals("true", builder.toString());
         builder.or(new BooleanPath("condition"));
         assertEquals("true || condition", builder.toString());
+    }
+    
+    @Test
+    public void GetArg(){
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(first);
+        assertEquals(first, builder.getArg(0));
+        assertEquals(Arrays.asList(first), builder.getArgs());
+    }
+    
+    @Test
+    public void Accept(){
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.and(first);
+        builder.or(new BooleanPath("condition"));
+        assertEquals("true || condition", builder.accept(ToStringVisitor.DEFAULT, Templates.DEFAULT));
     }
 }

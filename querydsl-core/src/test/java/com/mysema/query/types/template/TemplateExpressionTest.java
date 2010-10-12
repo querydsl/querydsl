@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.JavaTemplates;
@@ -38,6 +39,7 @@ public class TemplateExpressionTest {
             new ComparableTemplate<String>(String.class, template, args),
             new DateTemplate<java.sql.Date>(java.sql.Date.class, template, args),
             new DateTimeTemplate<Date>(Date.class, template, args),
+            new EnumTemplate<PropertyType>(PropertyType.class, template, args),
             new NumberTemplate<Integer>(Integer.class, template, args),
             new SimpleTemplate<Object>(Object.class, template, args),
             new StringTemplate(template, args),
@@ -68,6 +70,7 @@ public class TemplateExpressionTest {
         ComparableTemplate.create(String.class, template, arg);
         DateTemplate.create(Date.class, template, arg);
         DateTimeTemplate.create(Date.class, template, arg);
+        EnumTemplate.create(PropertyType.class, template, arg);
         NumberTemplate.create(Integer.class, template, arg);
         SimpleTemplate.create(Object.class, template, arg);
         StringTemplate.create(template, arg);
@@ -83,6 +86,7 @@ public class TemplateExpressionTest {
         ComparableTemplate.create(String.class, template, arg);
         DateTemplate.create(Date.class, template, arg);
         DateTimeTemplate.create(Date.class, template, arg);
+        EnumTemplate.create(PropertyType.class, template, arg);
         NumberTemplate.create(Integer.class, template, arg);
         SimpleTemplate.create(Object.class, template, arg);
         StringTemplate.create(template, arg);

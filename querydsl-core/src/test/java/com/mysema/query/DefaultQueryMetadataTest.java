@@ -28,7 +28,9 @@ import java.util.Stack;
 import org.junit.Test;
 
 import com.mysema.query.QueryFlag.Position;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.expr.NumberOperation;
+import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
@@ -66,16 +68,16 @@ public class DefaultQueryMetadataTest {
         QueryMetadata  metadata2 = (QueryMetadata) in.readObject();
         in.close();
         
-        assertEquals(metadata.getFlags(),     metadata2.getFlags());
-        assertEquals(metadata.getGroupBy().get(0),   metadata2.getGroupBy().get(0));
-        assertEquals(metadata.getGroupBy(),   metadata2.getGroupBy());
-        assertEquals(metadata.getHaving(),    metadata2.getHaving());
-        assertEquals(metadata.getJoins(),     metadata2.getJoins());
+        assertEquals(metadata.getFlags(), metadata2.getFlags());
+        assertEquals(metadata.getGroupBy().get(0), metadata2.getGroupBy().get(0));
+        assertEquals(metadata.getGroupBy(), metadata2.getGroupBy());
+        assertEquals(metadata.getHaving(), metadata2.getHaving());
+        assertEquals(metadata.getJoins(), metadata2.getJoins());
         assertEquals(metadata.getModifiers(), metadata2.getModifiers());
-        assertEquals(metadata.getOrderBy(),   metadata2.getOrderBy());
-        assertEquals(metadata.getParams(),    metadata2.getParams());
-        assertEquals(metadata.getProjection(),metadata2.getProjection());
-        assertEquals(metadata.getWhere(),     metadata2.getWhere());
+        assertEquals(metadata.getOrderBy(), metadata2.getOrderBy());
+        assertEquals(metadata.getParams(), metadata2.getParams());
+        assertEquals(metadata.getProjection(), metadata2.getProjection());
+        assertEquals(metadata.getWhere(), metadata2.getWhere());
     }
     
     @Test
@@ -129,6 +131,13 @@ public class DefaultQueryMetadataTest {
         metadata.addJoin(JoinType.DEFAULT, str);
         assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, str)),metadata.getJoins());
     }
+    
+    @Test
+    public void GetJoins2() {
+        metadata.addJoin(new JoinExpression(JoinType.DEFAULT, str));
+        assertEquals(Arrays.asList(new JoinExpression(JoinType.DEFAULT, str)),metadata.getJoins());
+    }
+
 
     @Test
     public void GetModifiers() {
@@ -210,6 +219,20 @@ public class DefaultQueryMetadataTest {
         assertEquals(metadata.getOrderBy(), clone.getOrderBy());
         assertEquals(metadata.getProjection(), clone.getProjection());
         assertEquals(metadata.getWhere(), clone.getWhere());
-
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void SetParam(){
+        metadata.setParam(new Param(String.class, "str"), ConstantImpl.create("X"));
+        assertEquals(1, metadata.getParams().size());
+        assertTrue(metadata.getParams().get(new Param(String.class, "str")).equals(ConstantImpl.create("X")));
+    }
+    
+    @Test
+    public void AddFlag(){
+        QueryFlag flag = new QueryFlag(Position.START, "X");
+        metadata.addFlag(flag);
+        assertTrue(metadata.hasFlag(flag));
     }
 }
