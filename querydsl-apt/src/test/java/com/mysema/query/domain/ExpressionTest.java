@@ -20,7 +20,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.StringExpression;
 
-public class ExprTest {
+public class ExpressionTest {
 
     @SuppressWarnings("unchecked")
     @Test
