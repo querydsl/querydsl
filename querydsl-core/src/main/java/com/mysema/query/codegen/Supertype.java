@@ -20,6 +20,11 @@ public class Supertype {
     public Supertype(Type type) {
         this.type = type;
     }
+    
+    public Supertype(Type type, EntityType entityType) {
+        this.type = type;
+        this.entityType = entityType;
+    }
 
     public EntityType getEntityType() {
         return entityType;
