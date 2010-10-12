@@ -237,6 +237,15 @@
         <module>../querydsl-scala</module>
       </modules>
     </profile>
+    
+    <profile>
+      <id>hibernate-search</id>
+      <modules>
+        <module>../querydsl-core</module>
+        <module>../querydsl-lucene</module>  
+        <module>../querydsl-hibernate-search</module>        
+      </modules>
+    </profile>   
 
     <profile>
       <id>jpa</id>
@@ -260,22 +269,13 @@
       </modules>
     </profile>		
     
-    <profile>
+	<profile>
       <id>lucene</id>
       <modules>
         <module>../querydsl-core</module>
         <module>../querydsl-lucene</module>         
       </modules>
-    </profile>
-    
-    <profile>
-      <id>hibernate-search</id>
-      <modules>
-        <module>../querydsl-core</module>
-        <module>../querydsl-lucene</module>  
-        <module>../querydsl-hibernate-search</module>        
-      </modules>
-    </profile>        
+    </profile>     
 	
     <profile>
       <id>mongodb</id>
