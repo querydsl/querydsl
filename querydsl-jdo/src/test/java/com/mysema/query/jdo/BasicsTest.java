@@ -20,6 +20,7 @@ import com.mysema.query.jdo.test.domain.Book;
 import com.mysema.query.jdo.test.domain.Product;
 import com.mysema.query.jdo.test.domain.QBook;
 import com.mysema.query.jdo.test.domain.QProduct;
+import com.mysema.query.jdo.test.domain.QStore;
 
 public class BasicsTest extends AbstractJDOTest {
 
@@ -31,6 +32,8 @@ public class BasicsTest extends AbstractJDOTest {
 
     private final QProduct product2 = new QProduct("product2");
 
+    private final QStore store = QStore.store;
+    
     @Test
     public void Serialization() throws IOException{
         JDOQLQuery query = query();
@@ -119,6 +122,13 @@ public class BasicsTest extends AbstractJDOTest {
         // TODO size
     }
 
+    @Test
+    @Ignore
+    public void Collection_Any(){
+        // FIXME
+        query(store, store.products.any().name.eq("Sony Discman"));
+    }
+    
     @Test
     public void NumericTests() {
         // numeric

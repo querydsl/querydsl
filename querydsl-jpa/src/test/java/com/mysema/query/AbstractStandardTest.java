@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.commons.lang.Pair;
@@ -185,6 +186,13 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
+    @Ignore
+    public void Any(){
+        //FIXME
+        assertEquals(1, catQuery().where(cat.kittens.any().name.eq("Ruth123")).count());
+    }
+    
+    @Test
     public void Aggregates_UniqueResult(){
         // uniqueResult
         assertEquals(Integer.valueOf(1), catQuery().uniqueResult(cat.id.min()));
@@ -250,8 +258,6 @@ public abstract class AbstractStandardTest {
         assertEquals(Integer.valueOf(0), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("B")));
         assertEquals(Integer.valueOf(1), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("o")));        
     }
-    
-    
     
     @Test
     public void StringOperations(){
