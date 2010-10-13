@@ -17,6 +17,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.JoinExpression;
+import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
@@ -397,8 +398,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 if (je.getCondition() != null) {
                     append(templates.getOn()).handle(je.getCondition());
                 }
-                for (Object flag : je.getFlags()){
-                    append(flag.toString());
+                for (JoinFlag flag : je.getFlags()){
+                    handle(flag.getFlag());
                 }
             }    
         }        
