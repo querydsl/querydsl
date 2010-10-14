@@ -32,7 +32,7 @@ public class JoinExpressionTest {
     }
 
     @Test
-    public void SetFlag() {
+    public void AddFlag() {
         JoinFlag x = new JoinFlag("x");
         JoinFlag y = new JoinFlag("y");
         assertFalse(je.hasFlag(x));
