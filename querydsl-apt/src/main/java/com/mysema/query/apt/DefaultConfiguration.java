@@ -7,7 +7,6 @@ package com.mysema.query.apt;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,18 +51,20 @@ public class DefaultConfiguration implements Configuration {
     private static final String QUERYDSL_ENTITY_ACCESSORS = "querydsl.entityAccessors";
 
     private static final String DEFAULT_OVERWRITE = "defaultOverwrite";
+    
+    private final Collection<String> keywords;
 
     private final TypeMappings typeMappings = new TypeMappings();
 
     private final SerializerConfig defaultSerializerConfig;
 
-    private final Serializer dtoSerializer = new ProjectionSerializer(typeMappings);
+    private final Serializer dtoSerializer;
 
-    private final Serializer embeddableSerializer = new EmbeddableSerializer(typeMappings, getKeywords());
+    private final Serializer embeddableSerializer;
 
-    private final Serializer entitySerializer = new EntitySerializer(typeMappings,getKeywords());
+    private final Serializer entitySerializer;
 
-    private final Serializer supertypeSerializer = new SupertypeSerializer(typeMappings,getKeywords());
+    private final Serializer supertypeSerializer;
 
     private String namePrefix = "Q";
 
@@ -81,18 +82,24 @@ public class DefaultConfiguration implements Configuration {
     public DefaultConfiguration(
             RoundEnvironment roundEnv,
             Map<String, String> options,
+            Collection<String> keywords,
             @Nullable Class<? extends Annotation> entitiesAnn,
             Class<? extends Annotation> entityAnn,
             @Nullable Class<? extends Annotation> superTypeAnn,
             @Nullable Class<? extends Annotation> embeddableAnn,
             @Nullable Class<? extends Annotation> embeddedAnn,
             @Nullable Class<? extends Annotation> skipAnn) {
+        this.keywords = keywords;
+        this.dtoSerializer = new ProjectionSerializer(typeMappings);
+        this.embeddableSerializer = new EmbeddableSerializer(typeMappings, keywords);
+        this.entitySerializer = new EntitySerializer(typeMappings, keywords);
+        this.supertypeSerializer = new SupertypeSerializer(typeMappings, keywords);
         this.entitiesAnn = entitiesAnn;
         this.entityAnn = Assert.notNull(entityAnn,"entityAnn");
         this.superTypeAnn = superTypeAnn;
         this.embeddableAnn = embeddableAnn;
         this.embeddedAnn = embeddedAnn;
-                this.skipAnn = skipAnn;
+        this.skipAnn = skipAnn;
         for (Element element : roundEnv.getElementsAnnotatedWith(Config.class)){
             Config querydslConfig = element.getAnnotation(Config.class);
             SerializerConfig config = SimpleSerializerConfig.getConfig(querydslConfig);
@@ -297,7 +304,7 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public Collection<String> getKeywords(){
-        return Collections.emptyList();
+        return keywords;
     }
 
 }

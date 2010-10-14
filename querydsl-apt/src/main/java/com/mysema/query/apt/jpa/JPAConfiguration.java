@@ -9,6 +9,7 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ import com.mysema.query.apt.VisitorConfig;
  */
 public class JPAConfiguration extends DefaultConfiguration {
 
-    private static final List<String> keywords = Arrays.asList(
+    private static final Collection<String> KEYWORDS = new HashSet<String>(Arrays.asList(
             "ABS","ALL","AND","ANY","AS","ASC","AVG","BETWEEN",
             "BIT_LENGTH[51]","BOTH","BY","CASE","CHAR_LENGTH",
             "CHARACTER_LENGTH","CLASS",
@@ -44,7 +45,7 @@ public class JPAConfiguration extends DefaultConfiguration {
             "ORDER","OUTER","POSITION","SELECT","SET","SIZE","SOME",
             "SQRT","SUBSTRING","SUM","THEN",
             "TRAILING","TRIM","TRUE","TYPE","UNKNOWN","UPDATE","UPPER",
-            "VALUE","WHEN","WHERE");
+            "VALUE","WHEN","WHERE"));
 
     private List<Class<? extends Annotation>> annotations;
 
@@ -53,7 +54,7 @@ public class JPAConfiguration extends DefaultConfiguration {
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
             Class<? extends Annotation> skipAnn) throws ClassNotFoundException {
-        super(roundEnv, options, null, entityAnn, superTypeAnn, embeddableAnn, null, skipAnn);
+        super(roundEnv, options, KEYWORDS, null, entityAnn, superTypeAnn, embeddableAnn, null, skipAnn);
         this.annotations = getAnnotations();
     }
 
@@ -106,11 +107,6 @@ public class JPAConfiguration extends DefaultConfiguration {
             }
         }
         return false;
-    }
-
-    @Override
-    public Collection<String> getKeywords(){
-        return keywords;
     }
 
 }

@@ -6,6 +6,7 @@
 package com.mysema.query.apt;
 
 import java.lang.annotation.Annotation;
+import java.util.Collections;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -46,7 +47,7 @@ public class QuerydslAnnotationProcessor extends AbstractProcessor{
         embedded = QueryEmbedded.class;
         skip = QueryTransient.class;
 
-        DefaultConfiguration configuration = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), entities, entity, superType, embeddable, embedded, skip);
+        DefaultConfiguration configuration = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), Collections.<String>emptySet(), entities, entity, superType, embeddable, embedded, skip);
 
         Processor processor = new Processor(processingEnv, roundEnv, configuration);
         processor.process();

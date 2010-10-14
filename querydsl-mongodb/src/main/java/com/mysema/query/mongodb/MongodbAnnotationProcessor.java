@@ -6,6 +6,7 @@
 package com.mysema.query.mongodb;
 
 import java.lang.annotation.Annotation;
+import java.util.Collections;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -37,7 +38,9 @@ public class MongodbAnnotationProcessor extends AbstractProcessor{
         embedded = Embedded.class;
         skip = Transient.class;
 
-        DefaultConfiguration configuration = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), entities, entity, null, null, embedded, skip);
+        DefaultConfiguration configuration = new DefaultConfiguration(
+                roundEnv, processingEnv.getOptions(), Collections.<String>emptySet(), 
+                entities, entity, null, null, embedded, skip);
 
         Processor processor = new Processor(processingEnv, roundEnv, configuration);
         processor.process();

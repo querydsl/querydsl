@@ -6,6 +6,8 @@
 package com.mysema.query.apt.jdo;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -29,6 +31,21 @@ import com.mysema.query.apt.Processor;
 @SupportedAnnotationTypes("*")
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class JDOAnnotationProcessor extends AbstractProcessor{
+    
+    private static final Set<String> KEYWORDS = new HashSet<String>(Arrays.asList(
+            "AS","ASC",
+            "ASCENDING","AVG",
+            "BY","COUNT",
+            "DESC","DESCENDING",
+            "DISTINCT","EXCLUDE",
+            "FROM","GROUP",
+            "HAVING","INTO",
+            "MAX","MIN",
+            "ORDER","PARAMETERS",
+            "RANGE","SELECT",
+            "SUBCLASSES","SUM",
+            "UNIQUE","VARIABLES",
+            "WHERE"));
 
     private Class<? extends Annotation> entity, embeddable, skip;
 
@@ -41,7 +58,8 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
             embeddable = (Class)Class.forName("javax.jdo.annotations.EmbeddedOnly");
             skip = (Class)Class.forName("javax.jdo.annotations.NotPersistent");
 
-            DefaultConfiguration configuration = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), null, entity, null, embeddable, null, skip);
+            DefaultConfiguration configuration = new DefaultConfiguration(
+                    roundEnv, processingEnv.getOptions(), KEYWORDS, null, entity, null, embeddable, null, skip);
             configuration.setUseGetters(false);
             Processor processor = new Processor(processingEnv, roundEnv, configuration);
             processor.process();
@@ -50,10 +68,6 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
         } catch (ClassNotFoundException e) {
             throw new APTException(e.getMessage(), e);
         }
-    }
-
-    protected DefaultConfiguration createConfiguration(RoundEnvironment roundEnv) throws ClassNotFoundException {
-        return new JDOConfiguration(roundEnv, processingEnv.getOptions(), entity, null, embeddable, skip);
     }
 
 }
