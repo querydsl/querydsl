@@ -24,7 +24,7 @@ public class HibernateDomainExporterTest {
     private SerializerConfig serializerConfig = SimpleSerializerConfig.getConfig(Domain.class.getPackage().getAnnotation(Config.class));
         
     @Test
-    public void Execute_Single() throws IOException {
+    public void Execute_Contact() throws IOException {
         FileUtils.deleteDirectory(new File("target/gen1"));
         File contact = new File("src/test/resources/contact.hbm.xml");
         Configuration config = new Configuration();
@@ -34,11 +34,11 @@ public class HibernateDomainExporterTest {
         exporter.execute();
         
         File targetFile = new File("target/gen1/com/mysema/query/jpa/domain2/QContact.java");
-        assertContains(targetFile, "StringPath firstName", "StringPath lastName");
+        assertContains(targetFile, "NumberPath<Long> id", "StringPath firstName", "StringPath lastName");
     }
     
     @Test
-    public void Execute_Single2() throws IOException {
+    public void Execute_Contact2() throws IOException {
         FileUtils.deleteDirectory(new File("target/gen2"));
         File contact = new File("src/test/resources/contact2.hbm.xml");
         Configuration config = new Configuration();
@@ -48,7 +48,7 @@ public class HibernateDomainExporterTest {
         exporter.execute();
         
         File targetFile = new File("target/gen2/com/mysema/query/jpa/domain2/QContact.java");
-        assertContains(targetFile, "StringPath firstName", "StringPath lastName");
+        assertContains(targetFile, "NumberPath<Long> id", "StringPath firstName", "StringPath lastName");
     }
     
     @Test
@@ -107,6 +107,21 @@ public class HibernateDomainExporterTest {
             fail("Failed with " + failures.size() + " failures");
         }
         
+    }
+    
+
+    @Test
+    public void Execute_Store() throws IOException {
+        FileUtils.deleteDirectory(new File("target/gen5"));
+        File contact = new File("src/test/resources/store.hbm.xml");
+        Configuration config = new Configuration();
+        config.addFile(contact);
+        config.buildMappings();
+        HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen5"), config);
+        exporter.execute();
+        
+        File targetFile = new File("target/gen5/com/mysema/query/jpa/domain3/QStore.java");
+        assertContains(targetFile, "StringPath code");
     }
 
     private static void assertContains(File file, String... strings) throws IOException{

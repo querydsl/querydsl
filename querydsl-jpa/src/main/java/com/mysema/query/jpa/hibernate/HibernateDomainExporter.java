@@ -152,7 +152,10 @@ public class HibernateDomainExporter {
             EntityType entityType = createEntityType(pc.getMappedClass());
             if (pc.getDeclaredIdentifierProperty() != null){
                 handleProperty(entityType, pc.getMappedClass(), pc.getDeclaredIdentifierProperty());    
-            }            
+            }else if (!pc.isInherited() && pc.hasIdentifierProperty()){
+                System.out.println(entityType.toString() + pc.getIdentifierProperty());
+                handleProperty(entityType, pc.getMappedClass(), pc.getIdentifierProperty());
+            }
             Iterator<?> properties = pc.getDeclaredPropertyIterator();
             while (properties.hasNext()){
                 handleProperty(entityType, pc.getMappedClass(), (org.hibernate.mapping.Property) properties.next());
@@ -239,6 +242,7 @@ public class HibernateDomainExporter {
     }
     
     private Map<Class<?>,Annotation> getAnnotations(Class<?> cl, String propertyName) throws NoSuchMethodException {
+        // TODO : merge annotations
         try {
             Field field = cl.getDeclaredField(propertyName);
             return getAnnotations(field.getAnnotations());

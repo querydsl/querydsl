@@ -52,7 +52,5 @@ public class DocumentProp {
     public void setPropValueDetails(String propValueDetails) {
         this.propValueDetails = propValueDetails;
     }
-
-    
     
 }
