@@ -122,6 +122,9 @@ public class HibernateDomainExporterTest {
         
         File targetFile = new File("target/gen5/com/mysema/query/jpa/domain3/QStore.java");
         assertContains(targetFile, "StringPath code");
+        
+        targetFile = new File("target/gen5/com/mysema/query/jpa/domain3/QHardwareStore.java");
+        assertContains(targetFile, "StringPath code = _super.code;");
     }
 
     private static void assertContains(File file, String... strings) throws IOException{
