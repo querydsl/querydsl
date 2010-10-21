@@ -198,6 +198,29 @@
 		  </execution>	
 		</executions>        
       </plugin>	  
+	  
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+		<version>2.6</version>
+		<executions>
+		  <execution>
+		  <id>verification</id>	
+		  <goals>
+		    <goal>test</goal>	
+		  </goals>
+		  <phase>verify</phase>
+		  <configuration>
+	        <systemPropertyVariables>
+              <version>${project.version}</version>
+		  	</systemPropertyVariables>
+            <includes>
+              <include>com/mysema/query/PackageVerification.java</include>
+            </includes>
+          </configuration>
+		  </execution>
+		</executions>        
+      </plugin>
 	     
       <plugin>
         <groupId>com.mysema.maven</groupId>
