@@ -61,7 +61,7 @@ public class CollectionPath<E, Q extends SimpleExpression<E>> extends Collection
     public Q any(){
         if (any == null){
             try {
-                any = newInstance(queryType, pathMixin.getMetadata());
+                any = newInstance(queryType, PathMetadataFactory.forCollectionAny(this));
             } catch (NoSuchMethodException e) {
                 throw new ExpressionException(e);
             } catch (InstantiationException e) {

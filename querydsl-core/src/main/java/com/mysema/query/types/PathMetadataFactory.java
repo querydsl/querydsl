@@ -24,6 +24,10 @@ public final class PathMetadataFactory {
     public static PathMetadata<Integer> forArrayAccess(Path<?> parent, @Nonnegative int index) {
         return new PathMetadata<Integer>(parent, ConstantImpl.create(index), PathType.ARRAYVALUE_CONSTANT);
     }
+    
+    public static PathMetadata<?> forCollectionAny(Path<?> parent){
+        return new PathMetadata<String>(parent, ConstantImpl.create(""), PathType.COLLECTION_ANY);
+    }
 
     public static PathMetadata<Integer> forListAccess(Path<?> parent, Expression<Integer> index) {
         return new PathMetadata<Integer>(parent, index, PathType.LISTVALUE);

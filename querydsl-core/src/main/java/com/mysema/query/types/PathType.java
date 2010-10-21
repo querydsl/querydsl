@@ -19,7 +19,11 @@ public enum PathType implements Operator<Path<?>> {
     /**
      * Indexed array access with constant (array[i])
      */
-    ARRAYVALUE_CONSTANT,
+    ARRAYVALUE_CONSTANT,    
+    /**
+     * Access of any element in a collection
+     */
+    COLLECTION_ANY,
     /**
      * Indexed list access (list.get(index))
      */

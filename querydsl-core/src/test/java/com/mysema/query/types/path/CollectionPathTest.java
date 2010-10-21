@@ -14,7 +14,7 @@ public class CollectionPathTest {
                 String.class, StringPath.class, 
                 PathMetadataFactory.forVariable("stringPath"));
         assertEquals("stringPath", stringPath.toString());
-        assertEquals("stringPath", stringPath.any().toString());
+        assertEquals("any(stringPath)", stringPath.any().toString());
         assertEquals("eqIc(stringPath,X)", stringPath.any().equalsIgnoreCase("X").toString());
     }
 

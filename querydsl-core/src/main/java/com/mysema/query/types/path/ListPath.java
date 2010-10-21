@@ -67,7 +67,7 @@ public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionPathBa
     public Q any(){
         if (any == null){
             try {
-                any = newInstance(queryType, pathMixin.getMetadata());
+                any = newInstance(queryType, PathMetadataFactory.forCollectionAny(this));
             } catch (NoSuchMethodException e) {
                 throw new ExpressionException(e);
             } catch (InstantiationException e) {

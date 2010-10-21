@@ -168,6 +168,7 @@ public class Templates {
             add(type, "{0}.get({1})");
         }
         add(PathType.ARRAYVALUE, "{0}[{1}]");
+        add(PathType.COLLECTION_ANY, "any({0})");
         add(PathType.LISTVALUE_CONSTANT, "{0}.get({1s})"); // serialized constant
         add(PathType.ARRAYVALUE_CONSTANT, "{0}[{1s}]");    // serialized constant
 
