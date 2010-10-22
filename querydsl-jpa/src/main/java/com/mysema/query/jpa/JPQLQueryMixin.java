@@ -7,6 +7,7 @@ package com.mysema.query.jpa;
 
 import java.util.List;
 
+import com.mysema.query.BooleanBuilder;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryMetadata;
@@ -74,7 +75,11 @@ public class JPQLQueryMixin<T> extends QueryMixin<T> {
     }
 
     private Predicate normalize(Predicate predicate) {
-        return (Predicate) predicate.accept(JPQLCollectionAnyVisitor.DEFAULT, new CollectionAnyVisitor.Context());
+        if (predicate instanceof BooleanBuilder && ((BooleanBuilder)predicate).getValue() == null){
+            return predicate;
+        }else{
+            return (Predicate) predicate.accept(JPQLCollectionAnyVisitor.DEFAULT, new CollectionAnyVisitor.Context());    
+        }        
     }
     
 }

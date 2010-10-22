@@ -23,7 +23,6 @@ import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.*;
-import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.util.MathUtils;
 
 /**
@@ -104,30 +103,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         handle(je.getTarget());
     }
 
-    // TODO : generalize this!
-    @SuppressWarnings("unchecked")
-    private <T> Expression<?> regexToLike(Operation<T> operation) {
-        List<Expression<?>> args = new ArrayList<Expression<?>>();
-        for (Expression<?> arg : operation.getArgs()){
-            if (!arg.getType().equals(String.class)){
-                args.add(arg);
-            }else if (arg instanceof Constant){
-                args.add(regexToLike(arg.toString()));
-            }else if (arg instanceof Operation){
-                args.add(regexToLike((Operation)arg));
-            }else{
-                args.add(arg);
-            }
-        }
-        return SimpleOperation.create(
-                operation.getType(),
-                operation.getOperator(),
-                args.<Expression<?>>toArray(new Expression[args.size()]));
-    }
 
-    private Expression<?> regexToLike(String str){
-        return ConstantImpl.create(str.replace(".*", "%").replace(".", "_"));
-    }
 
     public void serialize(QueryMetadata metadata, boolean forCountRow, @Nullable String projection) {
         List<? extends Expression<?>> select = metadata.getProjection();
@@ -339,13 +315,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             append(")");
 
         } else if (operator.equals(Ops.MATCHES)){
-            List<Expression<?>> newArgs = new ArrayList<Expression<?>>(args);
-            if (newArgs.get(1) instanceof Constant){
-                newArgs.set(1, regexToLike(newArgs.get(1).toString()));
-            }else if (newArgs.get(1) instanceof Operation){
-                newArgs.set(1, regexToLike((Operation)newArgs.get(1)));
-            }
-            super.visitOperation(type, operator, newArgs);
+            super.visitOperation(type, Ops.LIKE, 
+                    Arrays.asList(args.get(0), ExpressionUtils.regexToLike((Expression<String>) args.get(1))));
 
         }else if(NUMERIC.contains(operator)){
             super.visitOperation(type, operator, normalizeNumericArgs(args));
