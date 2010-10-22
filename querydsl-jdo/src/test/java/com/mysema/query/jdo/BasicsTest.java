@@ -160,6 +160,16 @@ public class BasicsTest extends AbstractJDOTest {
     }
 
     @Test
+    public void Matches(){
+        assertEquals("matches", 1, query(product,product.name.matches("Sony.*")).size());
+    }
+    
+    @Test
+    public void Like(){
+        assertEquals("matches", 1, query(product,product.name.like("Sony%")).size());
+    }
+    
+    @Test
     public void Ends_With(){
         assertEquals("endsWith", 1, query(product,product.name.endsWith("Discman")).size());
     }

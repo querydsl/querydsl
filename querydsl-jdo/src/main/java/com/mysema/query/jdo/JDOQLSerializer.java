@@ -309,14 +309,15 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             handle(args.get(0)).append(" instanceof ");
             append(((Constant<Class<?>>) args.get(1)).getConstant().getName());
 
-        } else if (operator.equals(Ops.MATCHES)){
-            // switch from regex to like if the regex expression is an operation
-            if (args.get(1) instanceof Operation){
-                operator = Ops.LIKE;
-                args = Arrays.asList(args.get(0), regexToLike((Operation<?>) args.get(1)));
+        } else if (operator.equals(Ops.LIKE)){
+            if (args.get(1) instanceof Constant){
+                String regex = args.get(1).toString().replace("%", ".*").replace("_", ".");
+                super.visitOperation(type, Ops.MATCHES, Arrays.asList(args.get(0), ConstantImpl.create(regex)));
+            }else{
+                // TODO : handle concatenations
+                super.visitOperation(type, operator, args);
             }
-            super.visitOperation(type, operator, args);
-
+            
         } else if (operator.equals(Ops.NUMCAST)) {
             Class<?> clazz = ((Constant<Class<?>>)args.get(1)).getConstant();
             if (Number.class.isAssignableFrom(clazz) && ClassUtils.wrapperToPrimitive(clazz) != null){

@@ -20,5 +20,5 @@ public final class StringEscape {
         }
         return str;
     }
-
+    
 }
