@@ -30,7 +30,7 @@ public class DetachableAdapter implements Detachable{
         this.detachable = detachable;
     }
 
-    public SimpleSubQuery<Long> count() {
+    public NumberSubQuery<Long> count() {
         return detachable.count();
     }
 

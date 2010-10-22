@@ -48,7 +48,7 @@ public interface JDOQLQuery extends JDOQLCommonQuery<JDOQLQuery>, Projectable, C
     JDOQLQuery setMaxFetchDepth(int maxFetchDepth);
     
     /**
-     * 
+     * Close the query and related resources
      */
     @Override
     void close();

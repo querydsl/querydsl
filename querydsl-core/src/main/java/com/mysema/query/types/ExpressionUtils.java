@@ -60,6 +60,10 @@ public final class ExpressionUtils {
         }
     }
     
+    public static <D> Predicate in(Expression<D> left, CollectionExpression<?,? extends D> right) {
+        return new PredicateOperation(Ops.IN, left, right);
+    }
+    
     public static <D> Predicate in(Expression<D> left, Collection<? extends D> right) {
         if (right.size() == 1){
             return eqConst(left, right.iterator().next());

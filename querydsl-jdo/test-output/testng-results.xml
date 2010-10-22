@@ -1,0 +1,10 @@
+<testng-results>
+  <reporter-output>
+  </reporter-output>
+  <suite name="querydsl-jdo" duration-ms="4" started-at="2010-10-22T17:17:21Z" finished-at="2010-10-22T17:17:21Z">
+    <groups>
+    </groups>
+    <test name="com.mysema.query.jdo.BasicsTest" duration-ms="4" started-at="2010-10-22T17:17:21Z" finished-at="2010-10-22T17:17:21Z">
+    </test>
+  </suite>
+</testng-results>

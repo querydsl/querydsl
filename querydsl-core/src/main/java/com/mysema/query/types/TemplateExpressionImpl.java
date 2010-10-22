@@ -30,8 +30,12 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
     }
 
     public static <C> Expression<C> create(Class<C> cl, Template template, Expression<?>... args){
-        return new TemplateExpressionImpl<C>(cl, template, Arrays.<Expression<?>>asList(args));
+        return new TemplateExpressionImpl<C>(cl, template, args);
     }
+
+    public TemplateExpressionImpl(Class<? extends T> type, Template template, Expression<?>... args){
+        this(type, template, Arrays.<Expression<?>>asList(args));
+    }    
     
     public TemplateExpressionImpl(Class<? extends T> type, Template template, List<Expression<?>> args){
         super(type);

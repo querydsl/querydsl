@@ -20,7 +20,6 @@ import com.mysema.query.jdo.test.domain.Book;
 import com.mysema.query.jdo.test.domain.Product;
 import com.mysema.query.jdo.test.domain.QBook;
 import com.mysema.query.jdo.test.domain.QProduct;
-import com.mysema.query.jdo.test.domain.QStore;
 
 public class BasicsTest extends AbstractJDOTest {
 
@@ -31,8 +30,6 @@ public class BasicsTest extends AbstractJDOTest {
     private final QProduct product = QProduct.product;
 
     private final QProduct product2 = new QProduct("product2");
-
-    private final QStore store = QStore.store;
     
     @Test
     public void Serialization() throws IOException{
@@ -79,8 +76,7 @@ public class BasicsTest extends AbstractJDOTest {
 
     @Test
     public void ProjectionTests() {
-        assertEquals("Sony Discman", query().from(product).where(
-                product.name.eq("Sony Discman")).uniqueResult(product.name));
+        assertEquals("Sony Discman", query().from(product).where(product.name.eq("Sony Discman")).uniqueResult(product.name));
     }
 
     @Test
@@ -101,44 +97,23 @@ public class BasicsTest extends AbstractJDOTest {
     }
 
     @Test
-    public void BooleanTests() {
-        // boolean
-        assertEquals("and", 1,
-            query(product, product.name.eq("Sony Discman").and(product.price.loe(300.00))).size());
-        assertEquals("or", 2,
-            query(product, product.name.eq("Sony Discman").or(product.price.loe(300.00))).size());
-        assertEquals("not", 2,
-            query(product, product.name.eq("Sony MP3 player").not()).size());
+    public void And(){
+        assertEquals("and", 1, query(product, product.name.eq("Sony Discman").and(product.price.loe(300.00))).size());
     }
-
+    
     @Test
-    public void CollectionTests() {
-        // collection
-        // TODO contains
-        // TODO get
-        // TODO containsKey
-        // TODO containsValue
-        // TODO isEmpty
-        // TODO size
+    public void Or(){
+        assertEquals("or", 2,  query(product, product.name.eq("Sony Discman").or(product.price.loe(300.00))).size());
     }
-
+    
     @Test
-    @Ignore
-    public void Collection_Any(){
-        // FIXME
-        query(store, store.products.any().name.eq("Sony Discman"));
+    public void Not(){
+        assertEquals("not", 2, query(product, product.name.eq("Sony MP3 player").not()).size());
     }
     
     @Test
     public void NumericTests() {
         // numeric
-        assertEquals("eq", 1, query(product, product.price.eq(200.00)).size());
-        assertEquals("eq", 0, query(product, product.price.eq(100.00)).size());
-        assertEquals("ne", 2, query(product, product.price.ne(100.00)).size());
-        assertEquals("gt", 1, query(product, product.price.gt(100.00)).size());
-        assertEquals("lt", 2, query(product, product.price.lt(300.00)).size());
-        assertEquals("goe", 1, query(product, product.price.goe(100.00)).size());
-        assertEquals("loe", 2, query(product, product.price.loe(300.00)).size());
         // TODO +
         // TODO -
         // TODO *
@@ -147,22 +122,73 @@ public class BasicsTest extends AbstractJDOTest {
         // TODO Math.abs
         // TODO Math.sqrt
     }
-
+    
     @Test
-    public void StringTests() {
-        // string
-        assertEquals("startsWith", 1, query(product,product.name.startsWith("Sony Discman")).size());
-        assertEquals("endsWith", 1, query(product,product.name.endsWith("Discman")).size());
-        // FIXME assertEquals("like", 1, query(product,
-        // product.name.like("Sony %")).size());
-        assertEquals("toLowerCase", 1, query(product,product.name.lower().eq("sony discman")).size());
-        assertEquals("toUpperCase", 1, query(product,product.name.upper().eq("SONY DISCMAN")).size());
-        assertEquals("indexOf", 1, query(product,product.name.indexOf("S").eq(0)).size());
-        // TODO matches
-        assertEquals("substring", 1, query(product,product.name.substring(0, 4).eq("Sony")).size());
-        assertEquals("substring", 1, query(product,product.name.substring(5).eq("Discman")).size());
+    public void Eq(){
+        assertEquals("eq", 1, query(product, product.price.eq(200.00)).size());
+        assertEquals("eq", 0, query(product, product.price.eq(100.00)).size());        
+    }
+    
+    @Test
+    public void Ne(){
+        assertEquals("ne", 2, query(product, product.price.ne(100.00)).size());            
+    }
+    
+    @Test
+    public void Lt(){
+        assertEquals("lt", 2, query(product, product.price.lt(300.00)).size());
+    }
+    
+    @Test
+    public void Gt(){
+        assertEquals("gt", 1, query(product, product.price.gt(100.00)).size());
+    }
+    
+    @Test
+    public void Goe(){
+        assertEquals("goe", 1, query(product, product.price.goe(100.00)).size());
+    }
+    
+    @Test
+    public void Loe(){
+        assertEquals("loe", 2, query(product, product.price.loe(300.00)).size());
     }
 
+    @Test
+    public void Starts_With(){
+        assertEquals("startsWith", 1, query(product,product.name.startsWith("Sony Discman")).size());
+    }
+
+    @Test
+    public void Ends_With(){
+        assertEquals("endsWith", 1, query(product,product.name.endsWith("Discman")).size());
+    }
+    
+    @Test
+    public void To_LowerCase(){
+        assertEquals("toLowerCase", 1, query(product,product.name.lower().eq("sony discman")).size());
+    }
+    
+    @Test
+    public void To_UpperCase(){
+        assertEquals("toUpperCase", 1, query(product,product.name.upper().eq("SONY DISCMAN")).size());
+    }
+    
+    @Test
+    public void Index_Of(){
+        assertEquals("indexOf", 1, query(product,product.name.indexOf("S").eq(0)).size());
+    }
+    
+    @Test
+    public void Substring1(){
+        assertEquals("substring", 1, query(product,product.name.substring(5).eq("Discman")).size());
+    }
+    
+    @Test
+    public void Substring2(){
+        assertEquals("substring", 1, query(product,product.name.substring(0, 4).eq("Sony")).size());
+    }
+    
     @BeforeClass
     public static void doPersist() {
         // Persistence of a Product and a Book.

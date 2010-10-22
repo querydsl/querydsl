@@ -28,7 +28,7 @@ public interface Detachable {
      *
      * @return
      */
-    SimpleSubQuery<Long> count();
+    NumberSubQuery<Long> count();
 
     /**
      * Create an exists(this) expression

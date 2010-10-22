@@ -26,7 +26,7 @@ public class OrderingTest extends AbstractJDOTest {
     private QProduct product = QProduct.product;
 
     @Test
-    public void OrderAsc() {
+    public void Order_Asc() {
         List<String> namesAsc = query().from(product).orderBy(
                 product.name.asc(), product.description.desc()).list(
                 product.name);
@@ -41,7 +41,7 @@ public class OrderingTest extends AbstractJDOTest {
     }
 
     @Test
-    public void OrderDesc() {
+    public void Order_Desc() {
         List<String> namesDesc = query().from(product).orderBy(
                 product.name.desc()).list(product.name);
         assertEquals(30, namesDesc.size());
@@ -66,13 +66,20 @@ public class OrderingTest extends AbstractJDOTest {
     }
 
     @Test
-    public void Paging() {
-        assertEquals(Arrays.asList("A0", "A1"), query().from(product).orderBy(
-                product.name.asc()).limit(2).list(product.name));
-        assertEquals(Arrays.asList("A2", "A3", "A4"), query().from(product)
-                .orderBy(product.name.asc()).offset(2).limit(3).list(product.name));
-        assertEquals(Arrays.asList("C9", "C8"), query().from(product).orderBy(
-                product.name.desc()).limit(2).list(product.name));
+    public void Limit_Order_Asc() {
+        assertEquals(Arrays.asList("A0", "A1"), 
+            query().from(product).orderBy(product.name.asc()).limit(2).list(product.name));
+    }
+    
+    @Test
+    public void Limit_Order_Desc() {
+        assertEquals(Arrays.asList("C9", "C8"), 
+            query().from(product).orderBy(product.name.desc()).limit(2).list(product.name));
+    }
+    
+    public void Limit_and_Offset(){
+        assertEquals(Arrays.asList("A2", "A3", "A4"), 
+            query().from(product).orderBy(product.name.asc()).offset(2).limit(3).list(product.name));    
     }
 
     @Test

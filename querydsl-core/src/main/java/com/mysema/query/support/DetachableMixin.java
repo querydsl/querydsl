@@ -37,8 +37,8 @@ public class DetachableMixin implements Detachable{
     }
 
     @Override
-    public SimpleSubQuery<Long> count() {
-        return new SimpleSubQuery<Long>(Long.class, projection(COUNT_ALL_AGG_EXPR));
+    public NumberSubQuery<Long> count() {
+        return new NumberSubQuery<Long>(Long.class, projection(COUNT_ALL_AGG_EXPR));
     }
 
     @Override

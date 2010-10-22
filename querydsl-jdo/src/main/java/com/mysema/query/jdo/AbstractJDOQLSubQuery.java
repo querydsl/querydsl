@@ -3,7 +3,6 @@ package com.mysema.query.jdo;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
-import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
@@ -23,7 +22,7 @@ public class AbstractJDOQLSubQuery<Q extends AbstractJDOQLSubQuery<Q>> extends D
 
     @SuppressWarnings("unchecked")
     public AbstractJDOQLSubQuery(QueryMetadata metadata) {
-        super(new QueryMixin<Q>(metadata));
+        super(new JDOQLQueryMixin<Q>(metadata));
         this.queryMixin.setSelf((Q)this);
     }
 

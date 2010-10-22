@@ -29,7 +29,6 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.support.ProjectableQuery;
-import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
@@ -78,7 +77,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
             @Nullable PersistenceManager persistenceManager,
             JDOQLTemplates templates,
             QueryMetadata metadata, boolean detach) {
-        super(new QueryMixin<Q>(metadata));
+        super(new JDOQLQueryMixin<Q>(metadata));
         this.queryMixin.setSelf((Q) this);
         this.templates = templates;
         this.persistenceManager = persistenceManager;

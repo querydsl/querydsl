@@ -16,20 +16,21 @@ public class AggregateTest extends AbstractJDOTest{
     private final QProduct product = QProduct.product;
 
     @Test
-    public void test() {
+    public void Unique() {
         double min = 200.00, avg = 400.00, max = 600.00;
-
-        // uniqueResult
         assertEquals(Double.valueOf(min), query().from(product).uniqueResult(product.price.min()));
         assertEquals(Double.valueOf(avg), query().from(product).uniqueResult(product.price.avg()));
         assertEquals(Double.valueOf(max), query().from(product).uniqueResult(product.price.max()));
-
-        // list
-        assertEquals(Double.valueOf(min), query().from(product).list(product.price.min()).get(0));
-        assertEquals(Double.valueOf(avg), query().from(product).list(product.price.avg()).get(0));
-        assertEquals(Double.valueOf(max), query().from(product).list(product.price.max()).get(0));
     }
 
+    @Test
+    public void List(){
+        double min = 200.00, avg = 400.00, max = 600.00;
+        assertEquals(Double.valueOf(min), query().from(product).list(product.price.min()).get(0));
+        assertEquals(Double.valueOf(avg), query().from(product).list(product.price.avg()).get(0));
+        assertEquals(Double.valueOf(max), query().from(product).list(product.price.max()).get(0));        
+    }
+    
     @BeforeClass
     public static void doPersist() {
         // Persistence of a Product and a Book.

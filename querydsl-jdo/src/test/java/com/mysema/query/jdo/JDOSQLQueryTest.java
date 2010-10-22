@@ -32,26 +32,28 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
     @Test
     public void Count(){
         SProduct product = SProduct.product;
-        
-        // total
-        assertEquals(30l, sql().from(product).count());
-        
-        // startsWith
+        assertEquals(30l, sql().from(product).count());        
+    }
+    
+    @Test    
+    public void StartsWith_Count(){
+        SProduct product = SProduct.product;
         assertEquals(10l, sql().from(product).where(product.name.startsWith("A")).count());
         assertEquals(10l, sql().from(product).where(product.name.startsWith("B")).count());
         assertEquals(10l, sql().from(product).where(product.name.startsWith("C")).count());
         
-        // eq
+    }
+    
+    @Test
+    public void Eq_Count(){
+        SProduct product = SProduct.product;
         for (int i = 0; i < 10; i++) {
             assertEquals(1l, sql().from(product).where(product.name.eq("A"+i)).count());
             assertEquals(1l, sql().from(product).where(product.name.eq("B"+i)).count());
             assertEquals(1l, sql().from(product).where(product.name.eq("C"+i)).count());
         }
-        
     }
     
-    
-
     @Test
     public void ScalarQueries(){
         SProduct product = SProduct.product;

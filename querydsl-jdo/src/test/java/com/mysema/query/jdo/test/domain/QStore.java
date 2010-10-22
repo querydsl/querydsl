@@ -7,8 +7,8 @@ package com.mysema.query.jdo.test.domain;
 
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.path.CollectionPath;
 import com.mysema.query.types.path.EntityPathBase;
+import com.mysema.query.types.path.ListPath;
 import com.mysema.query.types.path.MapPath;
 import com.mysema.query.types.path.StringPath;
 
@@ -25,7 +25,7 @@ public class QStore extends EntityPathBase<com.mysema.query.jdo.test.domain.Stor
 
     public final MapPath<String,Product,QProduct> productsByName = this.<String,Product,QProduct>createMap("productsByName",String.class,Product.class,QProduct.class);
 
-    public final CollectionPath<Product,QProduct> products = createCollection("products",Product.class,QProduct.class);
+    public final ListPath<Product,QProduct> products = createList("products",Product.class,QProduct.class);
 
     public QProduct productsByName(String key) {
         return new QProduct(PathMetadataFactory.forMapAccess(productsByName,key));

@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.commons.lang.Pair;
@@ -186,22 +185,14 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    @Ignore
     public void Any_Simple(){
-        // from Cat as cat where 
-        //   exists ( from Cat as cat_kittens_any where cat_kittens_any in cat.kittens 
-        //   and cat_kittens_any = "Ruth123" )
         assertEquals(1, catQuery().where(cat.kittens.any().name.eq("Ruth123")).count());
     }
     
     @Test
-    @Ignore
     public void Any_And(){
-        // from Cat as cat where 
-        //   exists ( from Cat as cat_kittens_any where cat_kittens_any in cat.kittens 
-        //   and cat_kittens_any.name = "Ruth123" 
-        //   and cat_kittens_any.bodyWeight < 10.0)
-        assertEquals(1, catQuery().where(cat.kittens.any().name.eq("Ruth123"), cat.kittens.any().bodyWeight.gt(10.0)).count());
+        assertEquals(1, catQuery().where(cat.kittens.any().name.eq("Ruth123"), cat.kittens.any().bodyWeight.lt(10.0)).count());
+        assertEquals(0, catQuery().where(cat.kittens.any().name.eq("Ruth123"), cat.kittens.any().bodyWeight.gt(10.0)).count());
     }
     
     @Test

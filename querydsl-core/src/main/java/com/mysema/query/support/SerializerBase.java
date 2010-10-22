@@ -140,12 +140,12 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     @Override
     public Void visit(Constant<?> expr, Void context) {
-        if (!constantToLabel.containsKey(expr.getConstant())) {
-            String constLabel = constantPrefix + (constantToLabel.size() + 1);
-            constantToLabel.put(expr.getConstant(), constLabel);
+        if (!getConstantToLabel().containsKey(expr.getConstant())) {
+            String constLabel = constantPrefix + (getConstantToLabel().size() + 1);
+            getConstantToLabel().put(expr.getConstant(), constLabel);
             append(constLabel);
         } else {
-            append(constantToLabel.get(expr.getConstant()));
+            append(getConstantToLabel().get(expr.getConstant()));
         }
         return null;
     }
@@ -158,7 +158,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         }else{
             paramLabel = paramPrefix + param.getName();
         }
-        constantToLabel.put(param, paramLabel);
+        getConstantToLabel().put(param, paramLabel);
         append(paramLabel);
         return null;
     }

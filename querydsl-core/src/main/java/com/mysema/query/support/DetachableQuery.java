@@ -33,7 +33,7 @@ public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q>
     }
 
     @Override
-    public SimpleSubQuery<Long> count(){
+    public NumberSubQuery<Long> count(){
         return detachableMixin.count();
     }
 

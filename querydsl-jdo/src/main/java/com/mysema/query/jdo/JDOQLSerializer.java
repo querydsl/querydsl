@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import java.util.Map.Entry;
 
 import javax.annotation.Nullable;
@@ -61,7 +63,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     private static final String VARIABLES = "\nVARIABLES ";
 
     private static final String WHERE = "\nWHERE ";
-
+    
     private static Comparator<Map.Entry<Object,String>> comparator = new Comparator<Map.Entry<Object,String>>(){
         @Override
         public int compare(Entry<Object, String> o1, Entry<Object, String> o2) {
@@ -73,9 +75,12 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
 
     private List<Object> constants = new ArrayList<Object>();
 
+    private Stack<Map<Object,String>> constantToLabel = new Stack<Map<Object,String>>();
+    
     public JDOQLSerializer(JDOQLTemplates templates, Expression<?> candidate) {
         super(templates);
         this.candidatePath = candidate;
+        this.constantToLabel.push(new HashMap<Object,String>());
     }
 
     public Expression<?> getCandidatePath() {
@@ -84,6 +89,10 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
 
     public List<Object> getConstants() {
         return constants;
+    }
+    
+    public Map<Object,String> getConstantToLabel() {
+        return constantToLabel.peek();
     }
 
     @SuppressWarnings("unchecked")
@@ -120,6 +129,8 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         Predicate having = metadata.getHaving();
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
+        constantToLabel.push(new HashMap<Object,String>());
+        
         // select
         boolean skippedSelect = false;
         if (forCountRow) {
@@ -175,7 +186,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         }
 
         // parameters
-        if (!subquery && !getConstantToLabel().isEmpty()){
+        if (!getConstantToLabel().isEmpty()){
             serializeParameters(metadata.getParams());
         }
 
@@ -210,6 +221,8 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             serializeModifiers(limit, offset);
         }
 
+        constantToLabel.pop();
+        
     }
 
     private void serializeModifiers(@Nullable Long limit, @Nullable Long offset) {

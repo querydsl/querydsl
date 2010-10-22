@@ -22,27 +22,35 @@ public class SubqueriesTest extends AbstractJDOTest {
     private QProduct other = new QProduct("other");
 
     @Test
-    public void test1() {
+    public void Gt_Subquery() {
         for (double price : query().from(product)
                 .where(product.price.gt(sub().from(other).unique(other.price.avg())))
                 .list(product.price)) {
             System.out.println(price);
         }
     }
-
+    
     @Test
-    public void test2() {
+    public void Gt_Subquery_with_Condition() {
         for (double price : query().from(product)
-                .where(product.price.eq(sub().from(other).unique(other.price.avg())))
+                .where(product.price.gt(sub().from(other).where(other.name.eq("XXX")).unique(other.price.avg())))
                 .list(product.price)) {
             System.out.println(price);
         }
     }
 
     @Test
-    @Ignore
-    public void test3() {
-        // FIXME
+    public void Eq_Subquery() {
+        for (double price : query().from(product)
+                .where(product.price.eq(sub().from(other).unique(other.price.avg())))
+                .list(product.price)) {
+            System.out.println(price);
+        }
+    }
+    
+
+    @Test
+    public void In_Subquery() {
         for (double price : query().from(product)
                 .where(product.price.in(
                         sub().from(other).where(other.name.eq("Some name")).list(other.price)))
@@ -51,6 +59,44 @@ public class SubqueriesTest extends AbstractJDOTest {
         }
     }
 
+    @Test
+    public void Count() {
+        for (double price : query().from(product)
+                .where(sub().from(other).where(other.price.gt(product.price)).count().gt(0))
+                .list(product.price)) {
+            System.out.println(price);
+        }
+    }
+    
+    @Test
+    public void Exists() {
+        for (double price : query().from(product)
+                .where(sub().from(other).where(other.price.gt(product.price)).exists())
+                .list(product.price)) {
+            System.out.println(price);
+        }
+    }
+    
+    @Test
+    public void Not_Exists() {
+        for (double price : query().from(product)
+                .where(sub().from(other).where(other.price.gt(product.price)).notExists())
+                .list(product.price)) {
+            System.out.println(price);
+        }
+    }
+    
+    @Test
+    @Ignore
+    public void List_Exists() {
+        // FIXME
+        for (double price : query().from(product)
+                .where(sub().from(other).where(other.price.gt(product.price)).list(other).exists())
+                .list(product.price)) {
+            System.out.println(price);
+        }
+    }
+    
     @BeforeClass
     public static void doPersist() {
         // Persistence of a Product and a Book.

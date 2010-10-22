@@ -154,6 +154,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     @Ignore
     public void ArrayProjection(){
