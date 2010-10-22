@@ -17,6 +17,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 
 import com.mysema.query.jdo.dml.JDOQLDeleteClause;
+import com.mysema.query.jdo.test.domain.Book;
 import com.mysema.query.jdo.test.domain.Product;
 import com.mysema.query.jdo.test.domain.Store;
 import com.mysema.query.types.EntityPath;
@@ -75,10 +76,11 @@ public abstract class AbstractJDOTest {
         try {
             tx.begin();
             pm.newQuery(Store.class).deletePersistentAll();
+            pm.newQuery(Book.class).deletePersistentAll();
             pm.newQuery(Product.class).deletePersistentAll();
             tx.commit();
         } finally {
-            if (tx.isActive()) {
+            if (tx.isActive()){
                 tx.rollback();
             }
             pm.close();

@@ -16,6 +16,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jdo.test.domain.Book;
 import com.mysema.query.jdo.test.domain.Product;
 import com.mysema.query.jdo.test.domain.QBook;
@@ -97,6 +98,11 @@ public class BasicsTest extends AbstractJDOTest {
     }
 
     @Test
+    public void Empty_BooleanBuilder(){
+        assertEquals("empty boolean builder", 2, query(product, new BooleanBuilder()).size());
+    }
+    
+    @Test
     public void And(){
         assertEquals("and", 1, query(product, product.name.eq("Sony Discman").and(product.price.loe(300.00))).size());
     }
@@ -163,7 +169,7 @@ public class BasicsTest extends AbstractJDOTest {
     public void Matches(){
         assertEquals("matches", 1, query(product,product.name.matches("Sony.*")).size());
     }
-    
+        
     @Test
     public void Like(){
         assertEquals("matches", 1, query(product,product.name.like("Sony%")).size());

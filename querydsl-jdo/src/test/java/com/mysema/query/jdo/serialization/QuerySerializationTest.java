@@ -80,8 +80,9 @@ public class QuerySerializationTest extends AbstractTest{
         assertEquals(
             "SELECT this.name " +
             "FROM com.mysema.query.jdo.test.domain.Product " +
-            "WHERE (SELECT other.price FROM com.mysema.query.jdo.test.domain.Product other WHERE other.name == a1).contains(this.price) " +
-            "PARAMETERS java.lang.String a1",
+            "WHERE (SELECT other.price FROM com.mysema.query.jdo.test.domain.Product other " +
+                "WHERE other.name == a1 " +
+                "PARAMETERS java.lang.String a1).contains(this.price)",
 
             serialize(query().from(product)
               .where(product.price.in(query().from(other).where(other.name.eq("Some name")).list(other.price)))

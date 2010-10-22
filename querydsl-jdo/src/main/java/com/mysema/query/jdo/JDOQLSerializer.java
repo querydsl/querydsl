@@ -304,19 +304,13 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     @SuppressWarnings("unchecked")
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator, List<Expression<?>> args) {
-        // TODO : these should be handled as serialization patterns
         if (operator.equals(Ops.INSTANCE_OF)) {
             handle(args.get(0)).append(" instanceof ");
             append(((Constant<Class<?>>) args.get(1)).getConstant().getName());
 
         } else if (operator.equals(Ops.LIKE)){
-            if (args.get(1) instanceof Constant){
-                String regex = args.get(1).toString().replace("%", ".*").replace("_", ".");
-                super.visitOperation(type, Ops.MATCHES, Arrays.asList(args.get(0), ConstantImpl.create(regex)));
-            }else{
-                // TODO : handle concatenations
-                super.visitOperation(type, operator, args);
-            }
+            super.visitOperation(type, Ops.MATCHES, 
+                Arrays.asList(args.get(0), ExpressionUtils.likeToRegex((Expression<String>) args.get(1))));
             
         } else if (operator.equals(Ops.NUMCAST)) {
             Class<?> clazz = ((Constant<Class<?>>)args.get(1)).getConstant();
@@ -329,5 +323,6 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             super.visitOperation(type, operator, args);
         }
     }
+    
 
 }

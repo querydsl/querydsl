@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.mysema.query.types.CollectionExpression;
+import com.mysema.query.types.Constant;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.expr.*;
@@ -205,12 +206,14 @@ public class MatchingFilters {
 
         if (module != Module.LUCENE){
             rv.add(expr.length().eq(other.length()));
-
             rv.add(expr.like(other));
-            rv.add(expr.like(other.substring(0,1).append("%")));
-            rv.add(expr.like(other.substring(0,1).append("%").append(other.substring(2))));
-            rv.add(expr.like(other.substring(1).prepend("%")));
-            rv.add(expr.like(other.substring(1,2).append("%").prepend("%")));
+            
+            if (module != Module.JDOQL || other instanceof Constant<?>){
+                rv.add(expr.like(other.substring(0,1).append("%")));
+                rv.add(expr.like(other.substring(0,1).append("%").append(other.substring(2))));
+                rv.add(expr.like(other.substring(1).prepend("%")));
+                rv.add(expr.like(other.substring(1,2).append("%").prepend("%")));    
+            }            
         }
 
         rv.add(expr.lower().eq(other.lower()));
@@ -221,10 +224,15 @@ public class MatchingFilters {
             && !target.equals(Target.H2)
             && !target.equals(Target.DERBY)
             && !target.equals(Target.SQLSERVER))){
-                rv.add(expr.matches(other.substring(0,1).append(".*")));
-                rv.add(expr.matches(other.substring(0,1).append(".").append(other.substring(2))));
-                rv.add(expr.matches(other.substring(1).prepend(".*")));
-                rv.add(expr.matches(other.substring(1,2).prepend(".*").append(".*")));
+                
+                rv.add(expr.matches(other));
+                
+                if (module != Module.JDOQL || other instanceof Constant<?>){
+                    rv.add(expr.matches(other.substring(0,1).append(".*")));
+                    rv.add(expr.matches(other.substring(0,1).append(".").append(other.substring(2))));
+                    rv.add(expr.matches(other.substring(1).prepend(".*")));
+                    rv.add(expr.matches(other.substring(1,2).prepend(".*").append(".*")));    
+                }                
             }
 
             rv.add(expr.ne(other));

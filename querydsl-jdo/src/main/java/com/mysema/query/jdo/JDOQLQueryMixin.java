@@ -8,6 +8,7 @@ package com.mysema.query.jdo;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.mysema.query.BooleanBuilder;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.CollectionAnyVisitor;
 import com.mysema.query.support.QueryMixin;
@@ -56,15 +57,19 @@ public class JDOQLQueryMixin<T> extends QueryMixin<T> {
     }
 
     private Predicate normalize(Predicate predicate, boolean where) {
-        CollectionAnyVisitor.Context context = new CollectionAnyVisitor.Context();
-        Predicate transformed = (Predicate) predicate.accept(JDOQLCollectionAnyVisitor.DEFAULT, context);
-        for (int i = 0; i < context.anyPaths.size(); i++){
-            Path<?> path = context.anyPaths.get(i);            
-            if (!anyPaths.contains(path)){
-                addCondition(context, i, path, where);
+        if (predicate instanceof BooleanBuilder && ((BooleanBuilder)predicate).getValue() == null){
+            return predicate;
+        }else{
+            CollectionAnyVisitor.Context context = new CollectionAnyVisitor.Context();
+            Predicate transformed = (Predicate) predicate.accept(JDOQLCollectionAnyVisitor.DEFAULT, context);
+            for (int i = 0; i < context.anyPaths.size(); i++){
+                Path<?> path = context.anyPaths.get(i);            
+                if (!anyPaths.contains(path)){
+                    addCondition(context, i, path, where);
+                }
             }
-        }
-        return transformed;
+            return transformed;    
+        }        
     }
 
     @SuppressWarnings("unchecked")

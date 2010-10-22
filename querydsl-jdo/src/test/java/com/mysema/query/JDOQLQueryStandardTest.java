@@ -60,6 +60,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
     }
 
     private static String productName = "ABCD";
+    
     private static String otherName = "ABC0";
 
     @BeforeClass
@@ -96,7 +97,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
 
     }
 
-    private QueryExecution standardTest = new QueryExecution(Module.JDOQL, Target.HSQLDB){
+    private QueryExecution standardTest = new QueryExecution(Module.JDOQL, Target.H2){
         @Override
         protected Pair<Projectable, List<Expression<?>>> createQuery() {
             return Pair.of(

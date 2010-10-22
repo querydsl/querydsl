@@ -16,10 +16,24 @@ import com.mysema.query.jdo.test.domain.Product;
 import com.mysema.query.jdo.test.domain.QProduct;
 
 public class SubqueriesTest extends AbstractJDOTest {
-
+    
     private QProduct product = QProduct.product;
 
     private QProduct other = new QProduct("other");
+    
+    @Test
+    @Ignore
+    public void List_Exists() {
+        // FIXME
+        query().from(product).where(sub().from(other).list(other).exists()).list(product);
+    }
+    
+    @Test
+    @Ignore
+    public void List_Contains(){
+        // FIXME
+        query().from(product).where(sub().from(other).list(other).contains(product)).list(product);
+    }
 
     @Test
     public void Gt_Subquery() {
@@ -86,16 +100,7 @@ public class SubqueriesTest extends AbstractJDOTest {
         }
     }
     
-    @Test
-    @Ignore
-    public void List_Exists() {
-        // FIXME
-        for (double price : query().from(product)
-                .where(sub().from(other).where(other.price.gt(product.price)).list(other).exists())
-                .list(product.price)) {
-            System.out.println(price);
-        }
-    }
+
     
     @BeforeClass
     public static void doPersist() {
