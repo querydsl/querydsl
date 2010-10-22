@@ -203,10 +203,6 @@ public class MatchingFilters {
             rv.add(expr.isNotEmpty());
         }
 
-//        if (!module.equals(Module.HQL) && !module.equals(Module.JDOQL) && !module.equals(Module.SQL)){
-//            rv.add(expr.lastIndexOf(other).eq(0));
-//        }
-
         if (module != Module.LUCENE){
             rv.add(expr.length().eq(other.length()));
 

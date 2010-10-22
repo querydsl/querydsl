@@ -87,6 +87,42 @@ public final class ExpressionUtils {
             || Character.class.equals(type);
     }
     
+    @SuppressWarnings("unchecked")
+    public static Expression<String> likeToRegex(Expression<String> expr){
+        if (expr instanceof Constant<?>){
+            return ConstantImpl.create(expr.toString().replace("%", ".*").replace("_", "."));
+        }else if (expr instanceof Operation<?>){
+            Operation<?> o = (Operation<?>)expr;
+            if (o.getOperator() == Ops.CONCAT){
+                Expression<String> lhs = likeToRegex((Expression<String>) o.getArg(0));
+                Expression<String> rhs = likeToRegex((Expression<String>) o.getArg(1));
+                return new OperationImpl<String>(String.class, Ops.CONCAT, lhs, rhs);
+            }else{
+                return expr;
+            }
+        }else{
+            return expr;    
+        }        
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static Expression<String> regexToLike(Expression<String> expr){
+        if (expr instanceof Constant<?>){
+            return ConstantImpl.create(expr.toString().replace(".*", "%").replace(".", "_"));            
+        }else if (expr instanceof Operation<?>){
+            Operation<?> o = (Operation<?>)expr;
+            if (o.getOperator() == Ops.CONCAT){
+                Expression<String> lhs = regexToLike((Expression<String>) o.getArg(0));
+                Expression<String> rhs = regexToLike((Expression<String>) o.getArg(1));
+                return new OperationImpl<String>(String.class, Ops.CONCAT, lhs, rhs);
+            }else{
+                return expr;
+            }            
+        }else{
+            return expr;    
+        }     
+    }
+    
     public static <D> Predicate neConst(Expression<D> left, D constant) {
         return ne(left, new ConstantImpl<D>(constant));
     }
