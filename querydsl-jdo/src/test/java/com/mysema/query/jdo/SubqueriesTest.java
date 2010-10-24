@@ -26,6 +26,11 @@ public class SubqueriesTest extends AbstractJDOTest {
     }
     
     @Test
+    public void List_NotExists() {
+        query().from(product).where(sub().from(other).list(other).notExists()).list(product);
+    }
+    
+    @Test
     public void List_Contains(){
         query().from(product).where(sub().from(other).list(other).contains(product)).list(product);
     }
