@@ -27,9 +27,15 @@ public class JDOQLCollectionAnyVisitorTest {
     }
     
     @Test
-    public void Simple_Operation(){        
+    public void Simple_BooleanOperation(){        
         Predicate predicate = store.products.any().name.eq("Product123");        
         assertEquals("store_products.name == a1", serialize(predicate));
+    }
+    
+    @Test
+    public void Simple_StringOperation(){        
+        Predicate predicate = store.products.any().name.substring(1).eq("roduct123");        
+        assertEquals("store_products.name.substring(a1) == a2", serialize(predicate));
     }
     
     @Test
