@@ -27,11 +27,19 @@ public class JPQLCollectionAnyVisitorTest {
     }
     
     @Test
-    public void Simple_Operation(){        
+    public void Simple_BooleanOperation(){        
         Predicate predicate = cat.kittens.any().name.eq("Ruth123");        
         assertEquals("exists (select 1\n" +
         	"from Cat cat_kittens\n" +
         	"where cat_kittens in elements(cat.kittens) and cat_kittens.name = :a1)", serialize(predicate));
+    }
+    
+    @Test
+    public void Simple_StringOperation(){        
+        Predicate predicate = cat.kittens.any().name.substring(1).eq("uth123");        
+        assertEquals("exists (select 1\n" +
+        	"from Cat cat_kittens\n" +
+        	"where cat_kittens in elements(cat.kittens) and substring(cat_kittens.name,:a1+1) = :a2)", serialize(predicate));
     }
     
     @Test
