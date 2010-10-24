@@ -44,7 +44,12 @@ public class SubQueryTest extends AbstractQueryTest{
     public void ListProjection(){
         assertToString("(select cat from Cat cat)", sub().from(cat).list(cat));
     }
-
+    
+    @Test
+    public void ListContains(){
+        assertToString("cat1 in (select cat from Cat cat)", sub().from(cat).list(cat).contains(cat1));
+    }
+    
     @Test
     public void Exists(){
         assertToString("exists (select 1 from Cat cat)",                        sub().from(cat).exists());
