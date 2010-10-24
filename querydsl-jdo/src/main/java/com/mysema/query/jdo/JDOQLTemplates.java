@@ -36,7 +36,7 @@ public final class JDOQLTemplates extends JavaTemplates {
 
         // other
         add(Ops.ALIAS, "{0} {1}");
-        add(Ops.EXISTS, "{0} > 0");
+//        add(Ops.EXISTS, "{0} > 0");
     }
 
 }

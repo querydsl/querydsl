@@ -120,7 +120,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
     }
 
     @SuppressWarnings("unchecked")
-    public void serialize(QueryMetadata metadata, boolean forCountRow, boolean subquery) {
+    public void serialize(QueryMetadata metadata, boolean forCountRow, boolean subQuery) {
         List<? extends Expression<?>> select = metadata.getProjection();
         List<JoinExpression> joins = metadata.getJoins();
         Expression<?> source = joins.get(0).getTarget();
@@ -134,7 +134,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         // select
         boolean skippedSelect = false;
         if (forCountRow) {
-            if (joins.size() == 1){
+            if (joins.size() == 1 && !subQuery){
                 append(SELECT_COUNT_THIS);
             }else{
                 append(SELECT_COUNT);
@@ -152,7 +152,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         } else if (!select.isEmpty()) {
             if (metadata.isDistinct()){
                 append(SELECT_DISTINCT);
-            }else if (metadata.isUnique() && !subquery){
+            }else if (metadata.isUnique() && !subQuery){
                 append(SELECT_UNIQUE);
             }else{
                 append(SELECT);
@@ -166,7 +166,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
 
         // from
         append(skippedSelect ? FROM.substring(1) : FROM);
-        if (source instanceof Operation && subquery){
+        if (source instanceof Operation && subQuery){
             handle(source);
         }else{
             append(source.getType().getName());
@@ -311,6 +311,12 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         } else if (operator.equals(Ops.LIKE)){
             super.visitOperation(type, Ops.MATCHES, 
                 Arrays.asList(args.get(0), ExpressionUtils.likeToRegex((Expression<String>) args.get(1))));
+            
+        } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQueryExpression){
+            SubQueryExpression subQuery = (SubQueryExpression) args.get(0);
+            append("(");
+            serialize(subQuery.getMetadata(), true, true);
+            append(") > 0");
             
         } else if (operator.equals(Ops.NUMCAST)) {
             Class<?> clazz = ((Constant<Class<?>>)args.get(1)).getConstant();
