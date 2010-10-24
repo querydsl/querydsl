@@ -32,6 +32,7 @@ public class InnerJoinTest {
         subQuery.innerJoin($(alias.getNames()), path);
         subQuery.join($(alias.getNames()), path);
         subQuery.leftJoin($(alias.getNames()), path);
+        // TODO : assertions
     }
 
     @Test
@@ -44,6 +45,7 @@ public class InnerJoinTest {
         query.innerJoin($(alias.getNames()), path);
         query.join($(alias.getNames()), path);
         query.leftJoin($(alias.getNames()), path);
+        // TODO : assertions
     }
 
 }

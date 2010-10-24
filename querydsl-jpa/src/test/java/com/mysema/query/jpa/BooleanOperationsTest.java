@@ -16,13 +16,10 @@ public class BooleanOperationsTest extends AbstractQueryTest {
     @Test
     public void BooleanOperations() {
         assertToString("cust is null or cat is null", cust.isNull().or(cat.isNull()));
-        assertToString("cust is null and cat is null", cust.isNull()
-                .and(cat.isNull()));
+        assertToString("cust is null and cat is null", cust.isNull().and(cat.isNull()));
         assertToString("not (cust is null)", cust.isNull().not());
-        cat.name.eq(cust.name.firstName).and(
-                cat.bodyWeight.eq(kitten.bodyWeight));
-        cat.name.eq(cust.name.firstName).or(
-                cat.bodyWeight.eq(kitten.bodyWeight));
+        cat.name.eq(cust.name.firstName).and(cat.bodyWeight.eq(kitten.bodyWeight));
+        cat.name.eq(cust.name.firstName).or(cat.bodyWeight.eq(kitten.bodyWeight));
     }
 
     @Test
