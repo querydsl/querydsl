@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 
 import org.bson.BSONObject;
 
+import com.google.code.morphia.annotations.Property;
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
@@ -195,7 +196,12 @@ public class MongodbSerializer implements Visitor<Object, Void> {
     @Override
     public Object visit(Path<?> expr, Void context) {
         PathMetadata<?> metadata = expr.getMetadata();
-        String rv = metadata.getExpression().toString(); 
+        String rv;
+        if (metadata.getPathType() == PathType.PROPERTY && expr.getAnnotatedElement().isAnnotationPresent(Property.class)){
+            rv = expr.getAnnotatedElement().getAnnotation(Property.class).value();
+        }else{
+            rv = metadata.getExpression().toString();
+        }
         if (metadata.getParent() != null){
             if (metadata.getPathType() == PathType.COLLECTION_ANY){
                 return visit(metadata.getParent(), context);

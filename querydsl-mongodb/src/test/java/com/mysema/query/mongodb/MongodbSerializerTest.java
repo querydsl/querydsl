@@ -17,6 +17,7 @@ import org.junit.Test;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.mysema.query.mongodb.domain.QDummyEntity;
 import com.mysema.query.mongodb.domain.QUser;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
@@ -68,6 +69,12 @@ public class MongodbSerializerTest {
         assertEquals("addresses", serializer.visit(user.addresses.any(), null));
         assertEquals("addresses.street", serializer.visit(user.addresses.any().street, null));
         assertEquals("firstName", serializer.visit(user.firstName, null));
+    }
+    
+    @Test
+    public void PropertyAnnotation(){
+        QDummyEntity entity = QDummyEntity.dummyEntity;
+        assertEquals("prop", serializer.visit(entity.property, null));
     }
     
     @Test

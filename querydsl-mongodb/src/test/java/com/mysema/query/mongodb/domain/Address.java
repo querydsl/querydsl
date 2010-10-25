@@ -13,6 +13,7 @@ public final class Address {
     }
     
     public String street;
+    
     public String postCode;
     
     @Embedded

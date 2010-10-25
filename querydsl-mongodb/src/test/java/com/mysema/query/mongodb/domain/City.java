@@ -12,6 +12,9 @@ public final class City {
     }
     
     public String name;
+    
     public Double latitude;
+    
     public Double longitude;
+    
 }
