@@ -9,6 +9,7 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.jdo.test.domain.Product;
@@ -31,7 +32,9 @@ public class SubqueriesTest extends AbstractJDOTest {
     }
     
     @Test
+    @Ignore
     public void List_Contains(){
+        // FIXME
         query().from(product).where(sub().from(other).list(other).contains(product)).list(product);
     }
 
