@@ -6,7 +6,7 @@
 package com.mysema.query._mysql;
 
 import static com.mysema.query.Constants.survey;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.sql.SQLException;
 
@@ -20,6 +20,7 @@ import com.mysema.query.Target;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.dml.SQLInsertClause;
+import com.mysema.query.sql.mysql.MySQLReplaceClause;
 import com.mysema.testutil.Label;
 import com.mysema.testutil.ResourceCheck;
 
@@ -39,15 +40,24 @@ public class InsertMySQLTest extends InsertBaseTest{
     }
     
     @Test
-    public void insert_with_special_options(){
+    public void Insert_with_Special_Options(){
         SQLInsertClause clause = insert(survey)
             .columns(survey.id, survey.name)
             .values(3, "Hello");
         
-        clause.addFlag(Position.START_OVERRIDE, "INSERT IGNORE INTO ");
+        clause.addFlag(Position.START_OVERRIDE, "insert ignore into ");
         
-        assertEquals("INSERT IGNORE INTO SURVEY(ID, NAME) values (?, ?)", clause.toString());
+        assertEquals("insert ignore into SURVEY(ID, NAME) values (?, ?)", clause.toString());
         clause.execute();        
     }
 
+    @Test
+    public void Replace(){
+        SQLInsertClause clause = new MySQLReplaceClause(Connections.getConnection(), templates, survey);
+        clause.columns(survey.id, survey.name)
+            .values(3, "Hello");
+        
+        assertEquals("replace into SURVEY(ID, NAME) values (?, ?)", clause.toString());
+        clause.execute();
+    }
 }

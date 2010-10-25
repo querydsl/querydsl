@@ -35,98 +35,98 @@ public class MySQLQueryTest {
     @Test
     public void UseIndex(){
         query.useIndex("col1_index");        
-        assertEquals("select survey.NAME from SURVEY survey USE_INDEX (col1_index) order by survey.NAME asc", toString(query));
+        assertEquals("select survey.NAME from SURVEY survey use_index (col1_index) order by survey.NAME asc", toString(query));
     }
     
     @Test
     public void UseIndex2(){        
         query.useIndex("col1_index","col2_index");        
-        assertEquals("select survey.NAME from SURVEY survey USE_INDEX (col1_index, col2_index) order by survey.NAME asc", toString(query));
+        assertEquals("select survey.NAME from SURVEY survey use_index (col1_index, col2_index) order by survey.NAME asc", toString(query));
     }
     
     @Test
     public void HighPriority() {
         query.highPriority();
-        assertEquals("select HIGH_PRIORITY survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
+        assertEquals("select high_priority survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
     }
 
     @Test
     public void StraightJoin() {
         query.straightJoin();
-        assertEquals("select STRAIGHT_JOIN survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
+        assertEquals("select straight_join survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
     }
 
     @Test
     public void SmallResult() {
         query.smallResult();
-        assertEquals("select SQL_SMALL_RESULT survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
+        assertEquals("select sql_small_result survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
     }
 
     @Test
     public void BigResult() {
         query.bigResult();
-        assertEquals("select SQL_BIG_RESULT survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
+        assertEquals("select sql_big_result survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
     }
 
     @Test
     public void BufferResult() {
         query.bufferResult();
-        assertEquals("select SQL_BUFFER_RESULT survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
+        assertEquals("select sql_buffer_result survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
     }
 
     @Test
     public void Cache() {
         query.cache();
-        assertEquals("select SQL_CACHE survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
+        assertEquals("select sql_cache survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
     }
 
     @Test
     public void NoCache() {
         query.noCache();
-        assertEquals("select SQL_NO_CACHE survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
+        assertEquals("select sql_no_cache survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
     }
 
     @Test
     public void CalcFoundRows() {
         query.calcFoundRows();
-        assertEquals("select SQL_CALC_FOUND_ROWS survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
+        assertEquals("select sql_calc_found_rows survey.NAME from SURVEY survey order by survey.NAME asc", toString(query));
     }
 
     @Test
     public void WithRollup() {
         query.groupBy(survey.name);
         query.withRollup();
-        assertEquals("select survey.NAME from SURVEY survey group by survey.NAME WITH ROLLUP  order by survey.NAME asc", toString(query));
+        assertEquals("select survey.NAME from SURVEY survey group by survey.NAME with rollup  order by survey.NAME asc", toString(query));
     }
 
     @Test
     public void ForUpdate() {
         query.forUpdate();
-        assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc FOR UPDATE", toString(query));
+        assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc for update", toString(query));
     }
 
     @Test
     public void IntoOutfile() {
         query.intoOutfile(new File("target/out"));
-        assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc INTO OUTFILE 'target" + File.separator + "out'", toString(query));
+        assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc into outfile 'target" + File.separator + "out'", toString(query));
     }
     
     @Test
     public void IntoDumpfile() {
         query.intoDumpfile(new File("target/out"));
-        assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc INTO DUMPFILE 'target" + File.separator + "out'", toString(query));
+        assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc into dumpfile 'target" + File.separator + "out'", toString(query));
     }
 
     @Test
     public void IntoString() {
         query.into("var1");
-        assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc INTO var1", toString(query));
+        assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc into var1", toString(query));
     }
 
     @Test
     public void LockInShareMode() {
         query.lockInShareMode();
-        assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc LOCK IN SHARE MODE", toString(query));
+        assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc lock in share mode", toString(query));
     }
     
     private String toString(MySQLQuery query){
