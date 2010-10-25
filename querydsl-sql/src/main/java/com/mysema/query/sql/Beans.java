@@ -5,7 +5,7 @@ import java.util.Map;
 import com.mysema.query.sql.RelationalPath;
 
 /**
- * Contains a list of beans
+ * Beans contains a list of beans
  * @author luis
  */
 public class Beans {

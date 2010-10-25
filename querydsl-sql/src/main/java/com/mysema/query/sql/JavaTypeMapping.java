@@ -16,6 +16,8 @@ import com.mysema.query.sql.types.*;
 import com.mysema.util.ReflectionUtils;
 
 /**
+ * JavaTypeMapping provides a mapping from Class to Type instances
+ * 
  * @author tiwe
  *
  */
