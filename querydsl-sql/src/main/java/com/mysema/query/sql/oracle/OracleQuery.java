@@ -42,11 +42,19 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> {
     public OracleQuery(Connection conn, SQLTemplates templates) {
         this(conn, templates, new DefaultQueryMetadata());
     }
+    
+    public OracleQuery(Connection conn, Configuration configuration) {
+        super(conn, configuration, new DefaultQueryMetadata());
+    }
+    
+    public OracleQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
+        super(conn, configuration, metadata);
+    }
 
     protected OracleQuery(Connection conn, SQLTemplates templates, QueryMetadata metadata) {
         super(conn, new Configuration(templates), metadata);
     }
-
+    
     public OracleQuery connectByPrior(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY_PRIOR, cond);
     }
