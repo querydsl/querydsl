@@ -34,7 +34,7 @@ public class HibernateDomainExporterTest {
         exporter.execute();
         
         File targetFile = new File("target/gen1/com/mysema/query/jpa/domain2/QContact.java");
-        assertContains(targetFile, "NumberPath<Long> id", "StringPath firstName", "StringPath lastName");
+        assertContains(targetFile, "StringPath email", "StringPath firstName", "NumberPath<Long> id", "StringPath lastName");
     }
     
     @Test
@@ -48,7 +48,7 @@ public class HibernateDomainExporterTest {
         exporter.execute();
         
         File targetFile = new File("target/gen2/com/mysema/query/jpa/domain2/QContact.java");
-        assertContains(targetFile, "NumberPath<Long> id", "StringPath firstName", "StringPath lastName");
+        assertContains(targetFile, "StringPath email", "StringPath firstName", "NumberPath<Long> id", "StringPath lastName");
     }
     
     @Test
@@ -121,10 +121,10 @@ public class HibernateDomainExporterTest {
         exporter.execute();
         
         File targetFile = new File("target/gen5/com/mysema/query/jpa/domain3/QStore.java");
-        assertContains(targetFile, "StringPath code");
+        assertContains(targetFile, "StringPath code", "StringPath address");
         
         targetFile = new File("target/gen5/com/mysema/query/jpa/domain3/QHardwareStore.java");
-        assertContains(targetFile, "StringPath code = _super.code;");
+        assertContains(targetFile, "StringPath code = _super.code;", "StringPath address");
     }
 
     private static void assertContains(File file, String... strings) throws IOException{
