@@ -38,5 +38,5 @@ public class ConfigurationTest {
         configuration.register(new InputStreamType());        
         assertEquals(InputStream.class, configuration.getJavaType(Types.BLOB, "", ""));
     }
-    
+        
 }

@@ -6,6 +6,7 @@
 package com.mysema.query.sql;
 
 import java.math.BigDecimal;
+import java.sql.Blob;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,20 +55,23 @@ public final class JDBCTypeMapping {
         registerDefault(Types.VARCHAR, String.class);
         registerDefault(Types.NVARCHAR, String.class);
 
+        // BLOB
+        registerDefault(Types.BINARY, Blob.class);
+        registerDefault(Types.BLOB, Blob.class);
+        registerDefault(Types.LONGVARBINARY, Blob.class);
+        registerDefault(Types.VARBINARY, Blob.class);
+        
         // OTHER
         registerDefault(Types.ARRAY, Object[].class);
-        registerDefault(Types.BINARY, Object.class);
-        registerDefault(Types.BLOB, Object.class);
         registerDefault(Types.DISTINCT, Object.class);
         registerDefault(Types.DATALINK, Object.class);
         registerDefault(Types.JAVA_OBJECT, Object.class);
-        registerDefault(Types.LONGVARBINARY, Object.class);
         registerDefault(Types.NULL, Object.class);
         registerDefault(Types.OTHER, Object.class);
         registerDefault(Types.REF, Object.class);
         registerDefault(Types.ROWID, Object.class);
         registerDefault(Types.STRUCT, Object.class);
-        registerDefault(Types.VARBINARY, Object.class);
+        
     }
     
     private static void registerDefault(int sqlType, Class<?> javaType){
