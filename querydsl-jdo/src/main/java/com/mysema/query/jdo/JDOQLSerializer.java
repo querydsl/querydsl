@@ -312,20 +312,20 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             super.visitOperation(type, Ops.MATCHES, 
                 Arrays.asList(args.get(0), ExpressionUtils.likeToRegex((Expression<String>) args.get(1))));
             
-        // not exists    
-        } else if (operator.equals(Ops.NOT) && args.get(0) instanceof Operation && ((Operation)args.get(0)).getOperator().equals(Ops.EXISTS)){    
-            SubQueryExpression subQuery = (SubQueryExpression) ((Operation)args.get(0)).getArg(0);
-            append("(");
-            serialize(subQuery.getMetadata(), true, true);
-            append(") == 0");
-            
         // exists    
         } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQueryExpression){
             SubQueryExpression subQuery = (SubQueryExpression) args.get(0);
             append("(");
             serialize(subQuery.getMetadata(), true, true);
             append(") > 0");
-            
+
+        // not exists    
+        } else if (operator.equals(Ops.NOT) && args.get(0) instanceof Operation && ((Operation)args.get(0)).getOperator().equals(Ops.EXISTS)){    
+            SubQueryExpression subQuery = (SubQueryExpression) ((Operation)args.get(0)).getArg(0);
+            append("(");
+            serialize(subQuery.getMetadata(), true, true);
+            append(") == 0");
+                
         } else if (operator.equals(Ops.NUMCAST)) {
             Class<?> clazz = ((Constant<Class<?>>)args.get(1)).getConstant();
             if (Number.class.isAssignableFrom(clazz) && ClassUtils.wrapperToPrimitive(clazz) != null){
