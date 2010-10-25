@@ -14,6 +14,7 @@ import org.bson.types.ObjectId;
 import com.google.code.morphia.annotations.Embedded;
 import com.google.code.morphia.annotations.Entity;
 import com.google.code.morphia.annotations.Id;
+import com.google.code.morphia.annotations.Reference;
 
 @Entity
 public class User {
@@ -32,7 +33,7 @@ public class User {
     @Embedded
     private Address mainAddress;
     
-    //@Reference
+    @Reference
     private List<User> friends = new ArrayList<User>();
     
     private int age;
@@ -107,6 +108,11 @@ public class User {
         this.mainAddress = new Address(street, postCode, city);
     }
 
+    public User addAddress(Address address) {
+        addresses.add(address);
+        return this;
+    }
+    
     public User addAddress(String street, String postalCode, City city) {
         addresses.add(new Address(street, postalCode, city));
         return this;

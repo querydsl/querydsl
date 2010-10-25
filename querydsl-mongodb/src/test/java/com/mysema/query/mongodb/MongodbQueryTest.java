@@ -9,7 +9,6 @@ import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -17,12 +16,12 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
 import com.mysema.query.SearchResults;
+import com.mysema.query.mongodb.domain.Address;
 import com.mysema.query.mongodb.domain.City;
 import com.mysema.query.mongodb.domain.QUser;
 import com.mysema.query.mongodb.domain.User;
@@ -43,23 +42,16 @@ public class MongodbQueryTest {
     @Before
     public void before() {
         ds.delete(ds.createQuery(User.class));
-
         
-        tampere = new City("Tampere", new BigDecimal(61.30), new BigDecimal(23.50));
-        helsinki= new City("Helsinki", new BigDecimal(60.15), new BigDecimal(20.03));
+        tampere = new City("Tampere", 61.30, 23.50);
+        helsinki= new City("Helsinki", 60.15, 20.03);
         
-        u1 = addUser("Jaakko", "Jantunen", 20);
-        u2 = addUser("Jaakki", "Jantunen", 30);
-        u3 = addUser("Jaana", "Aakkonen", 40);
-        u4 = addUser("Jaana", "BeekkoNen", 50);
-        
-        u1.setMainAddress("Aakatu", "00100", helsinki);
-        
-        u2.setMainAddress("Beekatu", "00200", helsinki);
-        u3.setMainAddress("Ceekatu", "00300", tampere);
-        u4.setMainAddress("Deekatu", "00400", tampere);
-        
-        u1.addAddress("Aakatu", "00100", helsinki);
+        u1 = addUser("Jaakko", "Jantunen", 20, new Address("Aakatu", "00100", helsinki), 
+                new Address("Aakatu1", "00100", helsinki),
+                new Address("Aakatu2", "00100", helsinki));
+        u2 = addUser("Jaakki", "Jantunen", 30, new Address("Beekatu", "00200", helsinki));
+        u3 = addUser("Jaana", "Aakkonen", 40, new Address("Ceekatu","00300", tampere));
+        u4 = addUser("Jaana", "BeekkoNen", 50, new Address("Deekatu","00400",tampere));                
     }
     
     @Test
@@ -68,11 +60,21 @@ public class MongodbQueryTest {
     }
     
     @Test
-    @Ignore
+    public void LongPath(){
+        assertEquals(2, query().where(user.mainAddress().city().name.eq("Helsinki")).count());
+        assertEquals(2, query().where(user.mainAddress().city().name.eq("Tampere")).count());
+    }
+    
+    @Test
     public void CollectionPath(){
-        // FIXME
-        assertEquals(1, query().where(user.addresses.any().street.eq("Aakatu")).count());
+        assertEquals(1, query().where(user.addresses.any().street.eq("Aakatu1")).count());
         assertEquals(0, query().where(user.addresses.any().street.eq("akatu")).count());
+    }
+    
+    @Test
+    public void IndexedAccess(){
+        assertEquals(1, query().where(user.addresses.get(0).street.eq("Aakatu1")).count());
+        assertEquals(0, query().where(user.addresses.get(1).street.eq("Aakatu1")).count());
     }
     
     @Test
@@ -251,18 +253,7 @@ public class MongodbQueryTest {
             where(predicate.not()).count();
         }
     }
-    
-    @Test
-    @Ignore
-    public void testEmbeddedObjects() {
         
-        where(user.addresses.any().street.eq("hahahah")).uniqueResult();
-        // TODO
-        
-        
-        
-    }
-    
     //TODO
     // - test dates
     // - test with empty values and nulls
@@ -306,8 +297,12 @@ public class MongodbQueryTest {
         return user;
     }
     
-    private User addUser(String first, String last, int age) {
+    private User addUser(String first, String last, int age, Address mainAddress, Address... addresses) {
         User user = new User(first, last, age, new Date());
+        user.setMainAddress(mainAddress);
+        for (Address address : addresses){
+            user.addAddress(address);
+        }
         ds.save(user);
         return user;
     }
