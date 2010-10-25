@@ -59,11 +59,20 @@ public class MongodbQueryTest {
         u3.setMainAddress("Ceekatu", "00300", tampere);
         u4.setMainAddress("Deekatu", "00400", tampere);
         
+        u1.addAddress("Aakatu", "00100", helsinki);
     }
     
     @Test
     public void UniqueResult(){
         assertEquals("Jantunen", where(user.firstName.eq("Jaakko")).uniqueResult().getLastName());
+    }
+    
+    @Test
+    @Ignore
+    public void CollectionPath(){
+        // FIXME
+        assertEquals(1, query().where(user.addresses.any().street.eq("Aakatu")).count());
+        assertEquals(0, query().where(user.addresses.any().street.eq("akatu")).count());
     }
     
     @Test
@@ -96,7 +105,7 @@ public class MongodbQueryTest {
         assertEquals(4l, results.getTotal());
         assertEquals(2, results.getResults().size());
     }
-    
+        
     @Test
     public void EmptyResults(){
         SearchResults<User> results = query().where(user.firstName.eq("XXX")).listResults();

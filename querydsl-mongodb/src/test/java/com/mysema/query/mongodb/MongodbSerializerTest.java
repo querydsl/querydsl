@@ -17,6 +17,7 @@ import org.junit.Test;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
+import com.mysema.query.mongodb.domain.QUser;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.path.DatePath;
@@ -57,6 +58,22 @@ public class MongodbSerializerTest {
         floatField = entityPath.getNumber("floatField", Float.class);
         date = entityPath.getDate("date", Date.class);
         dateTime = entityPath.getDateTime("dateTime", Timestamp.class);
+    }
+    
+    @Test
+    public void Paths(){
+        QUser user = QUser.user;
+        assertEquals("user", serializer.visit(user, null));
+        assertEquals("addresses", serializer.visit(user.addresses, null));
+        assertEquals("addresses", serializer.visit(user.addresses.any(), null));
+        assertEquals("addresses.street", serializer.visit(user.addresses.any().street, null));
+        assertEquals("firstName", serializer.visit(user.firstName, null));
+    }
+    
+    @Test
+    public void CollectionAny(){
+        QUser user = QUser.user;
+        assertQuery(user.addresses.any().street.eq("Aakatu"), dbo("addresses.street","Aakatu"));
     }
     
     @Test

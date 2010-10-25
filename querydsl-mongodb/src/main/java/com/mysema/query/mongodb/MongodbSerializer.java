@@ -194,7 +194,16 @@ public class MongodbSerializer implements Visitor<Object, Void> {
 
     @Override
     public Object visit(Path<?> expr, Void context) {
-        return expr.getMetadata().getExpression().toString();
+        PathMetadata<?> metadata = expr.getMetadata();
+        String rv = metadata.getExpression().toString(); 
+        if (metadata.getParent() != null){
+            if (metadata.getPathType() == PathType.COLLECTION_ANY){
+                return visit(metadata.getParent(), context);
+            }else if (metadata.getParent().getMetadata().getPathType() != PathType.VARIABLE){
+                return visit(metadata.getParent(), context) + "." + rv;
+            }
+        }
+        return rv;
     }
 
     @Override
