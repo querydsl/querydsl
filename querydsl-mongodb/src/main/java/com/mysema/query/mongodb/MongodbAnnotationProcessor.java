@@ -24,7 +24,7 @@ import com.mysema.query.annotations.QueryEntities;
 import com.mysema.query.apt.DefaultConfiguration;
 import com.mysema.query.apt.Processor;
 
-@SupportedAnnotationTypes("*")
+@SupportedAnnotationTypes({"com.mysema.query.annotations.*","com.google.code.morphia.annotations.*"})
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class MongodbAnnotationProcessor extends AbstractProcessor{
 

@@ -26,7 +26,7 @@ import com.mysema.query.apt.Processor;
  * @author tiwe
  *
  */
-@SupportedAnnotationTypes("*")
+@SupportedAnnotationTypes({"com.mysema.query.annotations.*","javax.persistence.*"})
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class JPAAnnotationProcessor extends AbstractProcessor{
 

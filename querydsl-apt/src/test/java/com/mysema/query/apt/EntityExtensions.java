@@ -1,7 +1,6 @@
 package com.mysema.query.apt;
 
 import com.mysema.query.annotations.QueryDelegate;
-import com.mysema.query.domain.QEntityWithExtensions;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.BooleanPath;
 

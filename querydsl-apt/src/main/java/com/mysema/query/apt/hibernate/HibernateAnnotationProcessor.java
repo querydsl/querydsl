@@ -19,7 +19,7 @@ import com.mysema.query.apt.jpa.JPAAnnotationProcessor;
  * @author tiwe
  *
  */
-@SupportedAnnotationTypes("*")
+@SupportedAnnotationTypes({"com.mysema.query.annotations.*","javax.persistence.*", "org.hibernate.annotations.*"})
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class HibernateAnnotationProcessor extends JPAAnnotationProcessor{
 

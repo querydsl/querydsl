@@ -28,7 +28,7 @@ import com.mysema.query.apt.Processor;
  * @author tiwe
  *
  */
-@SupportedAnnotationTypes("*")
+@SupportedAnnotationTypes({"com.mysema.query.annotations.*","javax.jdo.annotations.*"})
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class JDOAnnotationProcessor extends AbstractProcessor{
     

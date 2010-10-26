@@ -31,7 +31,7 @@ import com.mysema.query.annotations.QueryTransient;
  * @author tiwe
  *
  */
-@SupportedAnnotationTypes("*")
+@SupportedAnnotationTypes({"com.mysema.query.annotations.*"})
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class QuerydslAnnotationProcessor extends AbstractProcessor{
 
