@@ -16,11 +16,11 @@ import java.util.Locale;
 
 import org.junit.Test;
 
+import com.mysema.query.annotations.Config;
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.annotations.Config;
 import com.mysema.query.types.path.ComparablePath;
 import com.mysema.query.types.path.DateTimePath;
 import com.mysema.query.types.path.EnumPath;

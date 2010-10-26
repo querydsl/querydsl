@@ -59,7 +59,7 @@ public abstract class AbstractProcessorTest {
             Assert.fail("Compilation Failed");
         }
     }
-
+    
     protected Collection<String> getAPTOptions() {
         return Collections.emptyList();
     }

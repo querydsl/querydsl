@@ -25,7 +25,6 @@ import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.NoType;
 import javax.lang.model.type.NullType;
-import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
@@ -132,6 +131,9 @@ public final class APTTypeFactory {
 
     @Nullable
     public Type create(TypeMirror type){
+        if (type.getKind().isPrimitive()){
+            type = normalizePrimitiveType(type);
+        }        
         List<String> key = createKey(type,true);
         if (entityTypeCache.containsKey(key)){
             return entityTypeCache.get(key);
@@ -197,6 +199,9 @@ public final class APTTypeFactory {
 
     @Nullable
     public EntityType createEntityType(TypeMirror type){
+        if (type.getKind().isPrimitive()){
+            type = normalizePrimitiveType(type);
+        }        
         List<String> key = createKey(type, true);
         if (entityTypeCache.containsKey(key)){
             return entityTypeCache.get(key);
@@ -348,9 +353,9 @@ public final class APTTypeFactory {
                     }
                 }
             }
-
+            
         }else{
-            throw new IllegalArgumentException("Unsupported type kind " + type.getKind());
+            return Collections.emptySet();
         }
         doubleIndexEntities = doubleIndex;
         return superTypes;
@@ -367,8 +372,8 @@ public final class APTTypeFactory {
         }else if (type instanceof ArrayType){
             ArrayType t = (ArrayType)type;
             return create(t.getComponentType()).asArrayType();
-        }else if (type instanceof PrimitiveType){
-            return handlePrimitiveType((PrimitiveType)type);
+//        }else if (type instanceof PrimitiveType){
+//            return handlePrimitiveType((PrimitiveType)type);
         }else if (type instanceof NoType){
             return defaultValue;
         }else{
@@ -389,20 +394,34 @@ public final class APTTypeFactory {
             throw new IllegalArgumentException("Unsupported element type " + t.asElement());
         }
     }
-
-    private Type handlePrimitiveType(PrimitiveType t) {
+    
+    private TypeMirror normalizePrimitiveType(TypeMirror t){
         switch (t.getKind()) {
-        case BOOLEAN: return Types.BOOLEAN;
-        case BYTE: return Types.BYTE;
-        case CHAR: return Types.CHARACTER;
-        case DOUBLE: return Types.DOUBLE;
-        case FLOAT: return Types.FLOAT;
-        case INT: return Types.INTEGER;
-        case LONG: return Types.LONG;
-        case SHORT: return Types.SHORT;
+        case BOOLEAN: return env.getElementUtils().getTypeElement(Boolean.class.getName()).asType();
+        case BYTE: return env.getElementUtils().getTypeElement(Byte.class.getName()).asType();
+        case CHAR: return env.getElementUtils().getTypeElement(Character.class.getName()).asType();
+        case DOUBLE: return env.getElementUtils().getTypeElement(Double.class.getName()).asType();
+        case FLOAT: return env.getElementUtils().getTypeElement(Float.class.getName()).asType();
+        case INT: return env.getElementUtils().getTypeElement(Integer.class.getName()).asType();
+        case LONG: return env.getElementUtils().getTypeElement(Long.class.getName()).asType();
+        case SHORT: return env.getElementUtils().getTypeElement(Short.class.getName()).asType();
         }
-        throw new IllegalArgumentException("Unsupported type " + t.getKind());
+        throw new IllegalArgumentException("Unsupported type " + t.getKind() + " for " + t);
     }
+
+//    private Type handlePrimitiveType(PrimitiveType t) {
+//        switch (t.getKind()) {
+//        case BOOLEAN: return create(env.getElementUtils().getTypeElement(Boolean.class.getName()).asType());
+//        case BYTE: return create(env.getElementUtils().getTypeElement(Byte.class.getName()).asType());
+//        case CHAR: return create(env.getElementUtils().getTypeElement(Character.class.getName()).asType());
+//        case DOUBLE: return create(env.getElementUtils().getTypeElement(Double.class.getName()).asType());
+//        case FLOAT: return create(env.getElementUtils().getTypeElement(Float.class.getName()).asType());
+//        case INT: return create(env.getElementUtils().getTypeElement(Integer.class.getName()).asType());
+//        case LONG: return create(env.getElementUtils().getTypeElement(Long.class.getName()).asType());
+//        case SHORT: return create(env.getElementUtils().getTypeElement(Short.class.getName()).asType());
+//        }
+//        throw new IllegalArgumentException("Unsupported type " + t.getKind());
+//    }
 
     @Nullable
     private Type handleTypeVariable(TypeVariable t) {

@@ -8,15 +8,7 @@ package com.mysema.query.apt;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.Nullable;
 import javax.annotation.processing.Filer;
@@ -53,6 +45,7 @@ import com.mysema.query.annotations.Variables;
 import com.mysema.query.codegen.Delegate;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Method;
+import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.Supertype;
@@ -67,6 +60,8 @@ import com.mysema.query.codegen.TypeMappings;
  */
 public class Processor {
 
+    private final Map<String,Set<Element>> typeElements = new HashMap<String,Set<Element>>();
+    
     private final Map<String, EntityType> actualSupertypes  = new HashMap<String, EntityType>();
 
     private final Map<String, EntityType> allSupertypes = new HashMap<String, EntityType>();
@@ -108,6 +103,15 @@ public class Processor {
         this.elementHandler = new ElementHandler(configuration, typeModelFactory);
 
     }
+    
+    private void addElement(String entityName, Element element){
+        Set<Element> elements = typeElements.get(entityName);
+        if (elements == null){
+            elements = new HashSet<Element>();
+            typeElements.put(entityName, elements);
+        }
+        elements.add(element);
+    }
 
     private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes, Set<EntityType> handled) {
         if (handled.add(model)){
@@ -124,6 +128,7 @@ public class Processor {
 
     private void handleExtensionType(TypeMirror type, Element element) {
         EntityType entityModel = typeModelFactory.createEntityType(type);
+        addElement(entityModel.getFullName(), element);
         // handle methods
         Set<Method> queryMethods = new HashSet<Method>();
         for (ExecutableElement method : ElementFilter.methodsIn(element.getEnclosedElements())){
@@ -246,6 +251,7 @@ public class Processor {
         for (TypeMirror mirror : mirrors){
             TypeElement element = (TypeElement) env.getTypeUtils().asElement(mirror);
             EntityType model = elementHandler.handleNormalType(element);
+            addElement(model.getFullName(), element);
             types.put(model.getFullName(), model);
             if (model.getSuperType() != null){
                 superTypes.push(model.getSuperType().getType());
@@ -270,6 +276,7 @@ public class Processor {
             if (configuration.getEmbeddableAnnotation() == null
                     || element.getAnnotation(configuration.getEmbeddableAnnotation()) == null){
                 EntityType model = elementHandler.handleNormalType((TypeElement) element);
+                addElement(model.getFullName(), element);
                 types.put(model.getFullName(), model);
                 if (model.getSuperType() != null){
                     superTypes.push(model.getSuperType().getType());
@@ -340,13 +347,13 @@ public class Processor {
                                 TypeMirror type = (TypeMirror)entry.getValue().getValue();
                                 entityType = typeModelFactory.createEntityType(type);
                             }
-
                         }
                     }
                 }
             }
 
             if (entityType != null){
+                addElement(entityType.getFullName(), element);
                 entityType.addDelegate(new Delegate(entityType, delegateType, name, parameters, returnType));
                 types.add(entityType);
             }            
@@ -367,6 +374,7 @@ public class Processor {
                     && parent.getAnnotation(configuration.getEmbeddableAnnotation()) == null
                     && !visitedDTOTypes.contains(parent)){
                 EntityType model = elementHandler.handleProjectionType((TypeElement)parent);
+                addElement(model.getFullName(), element);
                 dtos.put(model.getFullName(), model);
                 visitedDTOTypes.add(parent);
 
@@ -381,6 +389,7 @@ public class Processor {
 
         for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnnotation())) {
             EntityType model = elementHandler.handleNormalType((TypeElement) element);
+            addElement(model.getFullName(), element);
             embeddables.put(model.getFullName(), model);
         }
         allSupertypes.putAll(embeddables);
@@ -406,6 +415,7 @@ public class Processor {
             }
             TypeElement typeElement = env.getElementUtils().getTypeElement(typeName);
             EntityType model = elementHandler.handleNormalType(typeElement);
+            addElement(model.getFullName(), element);
             embeddables.put(model.getFullName(), model);            
         }
         allSupertypes.putAll(embeddables);
@@ -470,9 +480,21 @@ public class Processor {
                 }
 
                 if (generate) {
-                    msg.printMessage(Kind.NOTE, "Generating " + className + " for " + model.getFullName());
+                    Set<Element> elements = typeElements.get(model.getFullName());
+                    if (elements == null){
+                        elements = new HashSet<Element>();
+                    }
+                    for (Property property : model.getProperties()){
+                        if (property.getType().getCategory() == TypeCategory.CUSTOM){
+                            Set<Element> customElements = typeElements.get(property.getType().getFullName());
+                            if (customElements != null){
+                                elements.addAll(customElements);
+                            }
+                        }
+                    }                    
                     
-                    JavaFileObject fileObject = env.getFiler().createSourceFile(className);
+                    msg.printMessage(Kind.NOTE, "Generating " + className + " for " + elements);
+                    JavaFileObject fileObject = env.getFiler().createSourceFile(className, elements.toArray(new Element[elements.size()]));
                     Writer writer = fileObject.openWriter();
                     try {
                         SerializerConfig serializerConfig = configuration.getSerializerConfig(model);

@@ -13,9 +13,9 @@ import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.TypeExtends;
-import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.DateExpression;
@@ -51,12 +51,12 @@ import com.mysema.query.types.template.TimeTemplate;
  */
 public final class TypeMappings {
 
-    private final Map<TypeCategory, ClassType> customTypes = new HashMap<TypeCategory, ClassType>();
-
     private final Map<TypeCategory, ClassType> exprTypes = new HashMap<TypeCategory, ClassType>();
 
     private final Map<TypeCategory, ClassType> pathTypes = new HashMap<TypeCategory, ClassType>();
 
+    private final Map<TypeCategory, ClassType> templateTypes = new HashMap<TypeCategory, ClassType>();
+    
     public TypeMappings(){
         register(TypeCategory.STRING, StringExpression.class, StringPath.class, StringTemplate.class);
         register(TypeCategory.BOOLEAN, BooleanExpression.class, BooleanPath.class, BooleanTemplate.class);
@@ -78,12 +78,12 @@ public final class TypeMappings {
         register(TypeCategory.ENTITY, Expression.class, Path.class, SimpleTemplate.class);
     }
 
-    public Type getCustomType(Type type, EntityType model, boolean raw){
-        return getCustomType(type, model, raw, false, false);
+    public Type getTemplateType(Type type, EntityType model, boolean raw){
+        return getTemplateType(type, model, raw, false, false);
     }
 
-    public Type getCustomType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
-        return getQueryType(customTypes, type, model, raw, rawParameters, extend);
+    public Type getTemplateType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
+        return getQueryType(templateTypes, type, model, raw, rawParameters, extend);
     }
 
     public Type getExprType(Type type, EntityType model, boolean raw){
@@ -142,10 +142,10 @@ public final class TypeMappings {
     public void register(TypeCategory category,
             Class<? extends Expression> expr,
             Class<? extends Path> path,
-            Class<? extends TemplateExpression> custom){
+            Class<? extends TemplateExpression> template){
         exprTypes.put(category, new ClassType(expr));
         pathTypes.put(category, new ClassType(path));
-        customTypes.put(category, new ClassType(custom));
+        templateTypes.put(category, new ClassType(template));
     }
 
 }

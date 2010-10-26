@@ -46,7 +46,7 @@ public class QuerydslAnnotationProcessor extends AbstractProcessor{
         embeddable = QueryEmbeddable.class;
         embedded = QueryEmbedded.class;
         skip = QueryTransient.class;
-
+        
         DefaultConfiguration configuration = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), Collections.<String>emptySet(), entities, entity, superType, embeddable, embedded, skip);
 
         Processor processor = new Processor(processingEnv, roundEnv, configuration);

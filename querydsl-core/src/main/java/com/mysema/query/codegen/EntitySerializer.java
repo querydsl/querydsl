@@ -434,15 +434,15 @@ public class EntitySerializer implements Serializer{
 
     protected void method(EntityType model, Method method, SerializerConfig config, CodeWriter writer) throws IOException {
         Type exprType = typeMappings.getExprType(method.getReturnType(), model, false, true, false);
-        Type custType = typeMappings.getCustomType(method.getReturnType(), model, true);
+        Type templateType = typeMappings.getTemplateType(method.getReturnType(), model, true);
 
-        exprArgsMethod(model, method, writer, exprType, custType);
+        exprArgsMethod(model, method, writer, exprType, templateType);
         if (!method.getParameters().isEmpty()){
-            normalArgsMethod(model, method, writer, exprType, custType);
+            normalArgsMethod(model, method, writer, exprType, templateType);
         }
     }
 
-    private void exprArgsMethod(final EntityType model, Method method, CodeWriter writer, Type exprType, Type custType) throws IOException {
+    private void exprArgsMethod(final EntityType model, Method method, CodeWriter writer, Type exprType, Type templateType) throws IOException {
         writer.beginPublicMethod(exprType, method.getName(), method.getParameters(), new Transformer<Parameter,Parameter>(){
             @Override
             public Parameter transform(Parameter p) {
@@ -452,9 +452,9 @@ public class EntitySerializer implements Serializer{
 
         if (method.getParameters().isEmpty()){
             writer.line("if (", method.getName(), "_ == null) {");
-            writer.beginLine("    " + method.getName() + "_ = " + custType.getSimpleName() + ".create(");
+            writer.beginLine("    " + method.getName() + "_ = " + templateType.getSimpleName() + ".create(");
             String fullName = method.getReturnType().getFullName();
-            if (custType.getSimpleName().equals(SimpleTemplate.class.getSimpleName()) 
+            if (templateType.getSimpleName().equals(SimpleTemplate.class.getSimpleName()) 
             || (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName()))){
                 writer.append(writer.getRawName(method.getReturnType()));
                 writer.append(".class, ");
@@ -465,9 +465,9 @@ public class EntitySerializer implements Serializer{
             writer.line("return ", method.getName(), "_;");
             
         }else{
-            writer.beginLine(RETURN + custType.getSimpleName() + ".create(");
+            writer.beginLine(RETURN + templateType.getSimpleName() + ".create(");
             String fullName = method.getReturnType().getFullName();
-            if (custType.getSimpleName().equals(SimpleTemplate.class.getSimpleName()) 
+            if (templateType.getSimpleName().equals(SimpleTemplate.class.getSimpleName()) 
             || (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName()))){
                 writer.append(writer.getRawName(method.getReturnType()));
                 writer.append(".class, ");

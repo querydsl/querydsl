@@ -6,6 +6,7 @@
 package com.mysema.query.apt;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -212,6 +213,8 @@ public final class ElementHandler{
         Type returnType = typeFactory.create(method.getReturnType());
         if (returnType.getCategory() == TypeCategory.ENTITY){
             returnType = returnType.as(TypeCategory.SIMPLE);
+        }else if (returnType.getCategory() == TypeCategory.CUSTOM){
+            returnType = returnType.as(TypeCategory.get(returnType.getRawName(Collections.<String>emptySet(), Collections.<String>emptySet())));
         }
         Method methodModel = new Method(entityModel, name, queryMethod.value(), transformParams(method.getParameters()), returnType);
         queryMethods.add(methodModel);
