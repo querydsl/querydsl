@@ -3,6 +3,8 @@ package com.mysema.query.apt;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -48,6 +50,7 @@ public abstract class AbstractProcessorTest {
         options.add(processorClass.getName());
         options.add("-sourcepath");
         options.add("src/test/java");
+        options.addAll(getAPTOptions());
         options.addAll(classes);
         int compilationResult = compiler.run(null, null, null, options.toArray(new String[options.size()]));
         if(compilationResult == 0){
@@ -55,6 +58,10 @@ public abstract class AbstractProcessorTest {
         }else{
             Assert.fail("Compilation Failed");
         }
+    }
+
+    protected Collection<String> getAPTOptions() {
+        return Collections.emptyList();
     }
 
 }
