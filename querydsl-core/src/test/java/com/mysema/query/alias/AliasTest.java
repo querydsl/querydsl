@@ -22,8 +22,8 @@ import org.junit.Test;
 public class AliasTest {
 
     public enum Gender{
-    MALE,
-    FEMALE
+        MALE,
+        FEMALE
     }
     
     public interface ScalaAccessors {
@@ -121,6 +121,12 @@ public class AliasTest {
         assertEquals("it", Alias.var().toString());
         assertEquals("varInteger1", Alias.var(1).toString());
         assertEquals("X", Alias.var("X").toString());
-//    assertEquals("", Alias.var(new Object()).toString());
+        assertEquals("varMALE", Alias.var(Gender.MALE).toString());
+        assertEquals("varAliasTest_XXX", Alias.var(new AliasTest()).toString());
+    }
+    
+    @Override
+    public String toString(){
+        return "XXX";
     }
 }

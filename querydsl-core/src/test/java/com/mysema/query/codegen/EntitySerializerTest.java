@@ -12,19 +12,24 @@ import java.io.StringWriter;
 import java.sql.Time;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Test;
 
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.Types;
 import com.mysema.query.annotations.PropertyType;
 
 public class EntitySerializerTest {
 
-    EntitySerializer serializer = new EntitySerializer(new TypeMappings(), Collections.<String>emptySet());
-    StringWriter writer = new StringWriter();
+    private EntitySerializer serializer = new EntitySerializer(new TypeMappings(), Collections.<String>emptySet());
+    
+    private StringWriter writer = new StringWriter();
     
     @Test
     public void No_Package() throws IOException {
@@ -32,6 +37,28 @@ public class EntitySerializerTest {
         EntityType entityType = new EntityType("Q",type);        
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         assertTrue(writer.toString().contains("public class QEntity extends EntityPathBase<Entity> {"));
+    }
+    
+    @Test
+    public void OriginalCategory() throws IOException{
+        Map<TypeCategory, String> categoryToSuperClass = new HashMap<TypeCategory, String>();
+        categoryToSuperClass.put(TypeCategory.COMPARABLE, "ComparablePath<Entity>");
+        categoryToSuperClass.put(TypeCategory.ENUM, "EnumPath<Entity>");
+        categoryToSuperClass.put(TypeCategory.DATE, "DatePath<Entity>");
+        categoryToSuperClass.put(TypeCategory.DATETIME, "DateTimePath<Entity>");
+        categoryToSuperClass.put(TypeCategory.TIME, "TimePath<Entity>");
+        categoryToSuperClass.put(TypeCategory.NUMERIC, "NumberPath<Entity>");
+        categoryToSuperClass.put(TypeCategory.STRING, "StringPath");
+        categoryToSuperClass.put(TypeCategory.BOOLEAN, "BooleanPath");
+        
+        for (Map.Entry<TypeCategory, String> entry : categoryToSuperClass.entrySet()){
+            SimpleType type = new SimpleType(entry.getKey(), "Entity", "", "Entity",false,false);
+            EntityType entityType = new EntityType("Q",type);
+            
+            serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+            assertTrue(entry.toString(), writer.toString().contains("public class QEntity extends "+entry.getValue()+" {"));    
+        }
+        
     }
     
     @Test
@@ -98,7 +125,18 @@ public class EntitySerializerTest {
         EntityType entityType = new EntityType("Q",type, Collections.singleton(new Supertype(superType, superType)));
         
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
-        // TODO : assertions
+        assertTrue(writer.toString().contains("public final QEntity2 _super = new QEntity2(this);"));
     }
 
+    @Test
+    public void Delegates() throws IOException{
+        SimpleType type = new SimpleType(TypeCategory.ENTITY, "Entity", "", "Entity",false,false);
+        EntityType entityType = new EntityType("Q",type);
+        Delegate delegate = new Delegate(type, type, "test", Collections.<Parameter>emptyList(), Types.STRING);
+        entityType.addDelegate(delegate);
+        
+        serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        assertTrue(writer.toString().contains("return Entity.test(this);"));
+    }
+    
 }

@@ -10,6 +10,9 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Test;
 
 public class QueryModifiersTest {
@@ -65,5 +68,13 @@ public class QueryModifiersTest {
     @Test(expected=IllegalArgumentException.class)
     public void illegalOffset(){
         QueryModifiers.offset(-1);
+    }
+    
+    @Test
+    public void SubList(){
+        List<Integer> ints = Arrays.asList(1,2,3,4,5);
+        assertEquals(Arrays.asList(3,4,5), QueryModifiers.offset(2).subList(ints));
+        assertEquals(Arrays.asList(1,2,3), QueryModifiers.limit(3).subList(ints));
+        assertEquals(Arrays.asList(2,3,4), new QueryModifiers(3l, 1l).subList(ints));
     }
 }
