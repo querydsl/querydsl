@@ -46,6 +46,12 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
     }
     
     @Test
+    public void ProcessDelegate() throws IOException{
+        String path = new File("src/test/java/com/mysema/query/domain/DelegateTest.java").getPath();
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"delegate");
+    }
+    
+    @Test
     public void ProcessAll() throws IOException{
         // works only in Eclipse for the moment
         List<String> classes = getFiles(packagePath);

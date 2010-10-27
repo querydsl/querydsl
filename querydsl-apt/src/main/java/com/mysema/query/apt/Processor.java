@@ -60,7 +60,15 @@ import com.mysema.query.codegen.TypeMappings;
  */
 public class Processor {
 
-    private final Map<String,Set<Element>> typeElements = new HashMap<String,Set<Element>>();
+    /**
+     * Cache for annotated elements
+     */
+    static final Map<Class<? extends Annotation>, Set<Element>> elementCache = new HashMap<Class<? extends Annotation>,Set<Element>>();
+    
+    /**
+     * Mapping of entity types to TypeElements which contribute to the generated class
+     */
+    private final Map<String,Set<TypeElement>> typeElements = new HashMap<String,Set<TypeElement>>();
     
     private final Map<String, EntityType> actualSupertypes  = new HashMap<String, EntityType>();
 
@@ -84,6 +92,13 @@ public class Processor {
 
     private final APTTypeFactory typeModelFactory;
 
+    /**
+     * Create a new Processor instance
+     * 
+     * @param env
+     * @param roundEnv
+     * @param configuration
+     */
     public Processor(ProcessingEnvironment env, RoundEnvironment roundEnv, Configuration configuration) {
         this.env = Assert.notNull(env,"env");
         this.roundEnv = Assert.notNull(roundEnv,"roundEnv");
@@ -101,48 +116,8 @@ public class Processor {
         TypeFactory factory = new TypeFactory(anns);
         this.typeModelFactory = new APTTypeFactory(env, configuration, factory, anns);
         this.elementHandler = new ElementHandler(configuration, typeModelFactory);
-
     }
     
-    private void addElement(String entityName, Element element){
-        Set<Element> elements = typeElements.get(entityName);
-        if (elements == null){
-            elements = new HashSet<Element>();
-            typeElements.put(entityName, elements);
-        }
-        elements.add(element);
-    }
-
-    private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes, Set<EntityType> handled) {
-        if (handled.add(model)){
-            for (Supertype supertype : model.getSuperTypes()){
-                EntityType entityType = superTypes.get(supertype.getType().getFullName());
-                if (entityType != null){
-                    addSupertypeFields(entityType, superTypes, handled);
-                    supertype.setEntityType(entityType);
-                    model.include(supertype);
-                }
-            }
-        }        
-    }
-
-    private void handleExtensionType(TypeMirror type, Element element) {
-        EntityType entityModel = typeModelFactory.createEntityType(type);
-        addElement(entityModel.getFullName(), element);
-        // handle methods
-        Set<Method> queryMethods = new HashSet<Method>();
-        for (ExecutableElement method : ElementFilter.methodsIn(element.getEnclosedElements())){
-            if (method.getAnnotation(QueryMethod.class) != null){
-                elementHandler.handleQueryMethod(entityModel, method, queryMethods);
-            }
-        }
-        for (Method method : queryMethods){
-            entityModel.addMethod(method);
-        }
-        extensionTypes.put(entityModel.getFullName(), entityModel);
-
-    }
-
     public void process() {
         processAnnotations();
 
@@ -153,45 +128,7 @@ public class Processor {
 
         serializeModels();
 
-        // serialize variable classes
-        for (Element element : roundEnv.getElementsAnnotatedWith(Variables.class)){
-            if (element instanceof PackageElement){
-                Variables vars = element.getAnnotation(Variables.class);
-                PackageElement packageElement = (PackageElement)element;
-                List<EntityType> models = new ArrayList<EntityType>();
-                for (EntityType model : entityTypes.values()){
-                    if (model.getPackageName().equals(packageElement.getQualifiedName().toString())){
-                        models.add(model);
-                    }
-                }
-                serializeVariableList(packageElement.getQualifiedName().toString(), vars, models);
-            }
-        }
-    }
-
-    private void serializeModels() {
-        // serialize models
-        Messager msg = env.getMessager();
-        if (!actualSupertypes.isEmpty()){
-            msg.printMessage(Kind.NOTE, "Serializing Supertypes");
-            serialize(configuration.getSupertypeSerializer(), actualSupertypes.values());
-        }
-        if (!entityTypes.isEmpty()){
-            msg.printMessage(Kind.NOTE, "Serializing Entity types");
-            serialize(configuration.getEntitySerializer(), entityTypes.values());
-        }
-        if (!extensionTypes.isEmpty()){
-            msg.printMessage(Kind.NOTE, "Serializing Extension types");
-            serialize(configuration.getEmbeddableSerializer(), extensionTypes.values());
-        }
-        if (!embeddables.isEmpty()){
-            msg.printMessage(Kind.NOTE, "Serializing Embeddable types");
-            serialize(configuration.getEmbeddableSerializer(), embeddables.values());
-        }
-        if (!dtos.isEmpty()){
-            msg.printMessage(Kind.NOTE, "Serializing DTO types");
-            serialize(configuration.getDTOSerializer(), dtos.values());
-        }
+        serializeVariableClasses();
     }
 
     private void processAnnotations() {
@@ -220,6 +157,335 @@ public class Processor {
         processEntities();
         
         processDTOs();
+    }
+    
+    private void serializeModels() {
+        if (!actualSupertypes.isEmpty()){
+            env.getMessager().printMessage(Kind.NOTE, "Serializing Supertypes");
+            serialize(configuration.getSupertypeSerializer(), actualSupertypes.values());
+        }
+        
+        if (!entityTypes.isEmpty()){
+            env.getMessager().printMessage(Kind.NOTE, "Serializing Entity types");
+            serialize(configuration.getEntitySerializer(), entityTypes.values());
+        }
+        
+        if (!extensionTypes.isEmpty()){
+            env.getMessager().printMessage(Kind.NOTE, "Serializing Extension types");
+            serialize(configuration.getEmbeddableSerializer(), extensionTypes.values());
+        }
+        
+        if (!embeddables.isEmpty()){
+            env.getMessager().printMessage(Kind.NOTE, "Serializing Embeddable types");
+            serialize(configuration.getEmbeddableSerializer(), embeddables.values());
+        }
+        
+        if (!dtos.isEmpty()){
+            env.getMessager().printMessage(Kind.NOTE, "Serializing DTO types");
+            serialize(configuration.getDTOSerializer(), dtos.values());
+        }
+    }
+    
+    private void serializeVariableClasses() {
+        for (Element element : roundEnv.getElementsAnnotatedWith(Variables.class)){
+            if (element instanceof PackageElement){
+                Variables vars = element.getAnnotation(Variables.class);
+                PackageElement packageElement = (PackageElement)element;
+                List<EntityType> models = new ArrayList<EntityType>();
+                for (EntityType model : entityTypes.values()){
+                    if (model.getPackageName().equals(packageElement.getQualifiedName().toString())){
+                        models.add(model);
+                    }
+                }
+                serializeVariableList(packageElement.getQualifiedName().toString(), vars, models);
+            }
+        }
+    }
+    
+    
+    private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes, Set<EntityType> handled) {
+        if (handled.add(model)){
+            for (Supertype supertype : model.getSuperTypes()){
+                EntityType entityType = superTypes.get(supertype.getType().getFullName());
+                if (entityType != null){
+                    addSupertypeFields(entityType, superTypes, handled);
+                    supertype.setEntityType(entityType);
+                    model.include(supertype);
+                }
+            }
+        }        
+    }
+
+    @SuppressWarnings("unchecked")
+    private Set<Element> getElementsAndCache(Class<? extends Annotation> annotationType){
+        Set<Element> elements = (Set<Element>)roundEnv.getElementsAnnotatedWith(annotationType);
+        if (!elements.isEmpty()){
+            Set<Element> cached = elementCache.get(annotationType);
+            if (cached == null){
+                cached = new HashSet<Element>();
+                elementCache.put(annotationType, cached);
+            }
+            cached.addAll(elements);
+        }
+        return elements;
+    }
+
+    private Set<Element> getElementsFromCache(Class<? extends Annotation> annotationType){
+        Set<Element> cached = elementCache.get(annotationType);
+        if (cached != null){
+            Set<Element> cloned = new HashSet<Element>();
+            for (Element element : cached){
+                // clone type element
+                if (element instanceof TypeElement){
+                    cloned.add(env.getElementUtils().getTypeElement(((TypeElement) element).getQualifiedName().toString()));
+                // cloned other elements via parent
+                }else{
+                    Element parent = element.getEnclosingElement();
+                    if (parent instanceof TypeElement){
+                        parent = env.getElementUtils().getTypeElement(((TypeElement) parent).getQualifiedName().toString());
+                        for (Element child : parent.getEnclosedElements()){
+                            // TODO : better equals check
+                            if (child.getKind() == element.getKind() && child.getSimpleName().equals(element.getSimpleName())){
+                                cloned.add(child);
+                            }
+                        }
+                    }else{
+                        env.getMessager().printMessage(Kind.WARNING, element + " from cache");
+                        cloned.add(element);    
+                    }                    
+                }
+            }
+            return cloned;
+        }else{
+            return Collections.emptySet();
+        }
+    }
+
+    @Nullable
+    private FileObject getSourceFile(String fullName) throws IOException {
+        Elements elementUtils = env.getElementUtils();
+        TypeElement sourceElement = elementUtils.getTypeElement(fullName);        
+        if (sourceElement == null) {
+            return null;
+        } else {
+            if (sourceElement.getNestingKind().isNested()) {
+                sourceElement = (TypeElement) sourceElement.getEnclosingElement();
+            }            
+            PackageElement packageElement = elementUtils.getPackageOf(sourceElement);    
+            try {
+                return env.getFiler().getResource(StandardLocation.SOURCE_PATH, 
+                        packageElement.getQualifiedName(), 
+                        sourceElement.getSimpleName() + ".java");    
+            } catch(Exception e) {
+                return null;
+            }            
+        }
+    }
+
+    private void handleExtensionType(TypeMirror type, TypeElement element, boolean cached) {
+        EntityType entityModel = typeModelFactory.createEntityType(type);
+        registerTypeElement(entityModel.getFullName(), element);
+        // handle methods
+        Set<Method> queryMethods = new HashSet<Method>();
+        for (ExecutableElement method : ElementFilter.methodsIn(element.getEnclosedElements())){
+            if (method.getAnnotation(QueryMethod.class) != null){
+                elementHandler.handleQueryMethod(entityModel, method, queryMethods);
+            }
+        }
+        for (Method method : queryMethods){
+            entityModel.addMethod(method);
+        }
+        if (!cached){
+            extensionTypes.put(entityModel.getFullName(), entityModel);    
+        }        
+    }
+
+    private void mergeTypes(Map<String, EntityType> types, Deque<Type> superTypes) {
+        // get external supertypes
+        while (!superTypes.isEmpty()){
+            Type superType = superTypes.pop();
+            if (!types.containsKey(superType.getFullName())  && !allSupertypes.containsKey(superType.getFullName())){
+                TypeElement typeElement = env.getElementUtils().getTypeElement(superType.getFullName());
+                EntityType entityType = elementHandler.handleNormalType(typeElement);
+                if (entityType.getSuperType() != null){
+                    superTypes.push(entityType.getSuperType().getType());
+                }
+                types.put(superType.getFullName(), entityType);
+            }
+        }
+
+        allSupertypes.putAll(types);
+
+        // add supertype fields
+        Set<EntityType> handled = new HashSet<EntityType>();
+        for (EntityType type : types.values()) {
+            addSupertypeFields(type, allSupertypes, handled);
+        }
+    }
+
+    private void process(Class<? extends Annotation> annotation, Map<String,EntityType> types){
+        Deque<Type> superTypes = new ArrayDeque<Type>();
+
+        for (Element element : roundEnv.getElementsAnnotatedWith(annotation)) {
+            if (configuration.getEmbeddableAnnotation() == null
+                    || element.getAnnotation(configuration.getEmbeddableAnnotation()) == null){
+                typeModelFactory.createEntityType(element.asType());
+            }
+        }
+
+        // get annotated types
+        for (Element element : roundEnv.getElementsAnnotatedWith(annotation)) {
+            if (configuration.getEmbeddableAnnotation() == null
+                    || element.getAnnotation(configuration.getEmbeddableAnnotation()) == null){
+                EntityType model = elementHandler.handleNormalType((TypeElement) element);
+                registerTypeElement(model.getFullName(), (TypeElement)element);
+                types.put(model.getFullName(), model);
+                if (model.getSuperType() != null){
+                    superTypes.push(model.getSuperType().getType());
+                }
+            }
+        }
+
+        mergeTypes(types, superTypes);
+    }
+
+    private void processCustomType(Element element, boolean cached){
+        if (element.getAnnotation(QueryExtensions.class) != null){
+            return;
+        }else if (element.getAnnotation(configuration.getEntityAnnotation()) != null){
+            return;
+        }else if (configuration.getSuperTypeAnnotation() != null && element.getAnnotation(configuration.getSuperTypeAnnotation()) != null){
+            return;
+        }else if (configuration.getEmbeddableAnnotation() != null && element.getAnnotation(configuration.getEmbeddableAnnotation()) != null){
+            return;
+        }
+        handleExtensionType(element.asType(), (TypeElement)element, cached);
+    }
+    
+    private void processCustomTypes() {
+        // 1 : get elements from cache
+        for (Element queryMethod : getElementsFromCache(QueryMethod.class)){
+            processCustomType(queryMethod.getEnclosingElement(), true);
+        }
+        
+        // 2 : get elements from roundEnv
+        for (Element queryMethod : getElementsAndCache(QueryMethod.class)){
+            processCustomType(queryMethod.getEnclosingElement(), false);
+        }
+    }
+        
+    private void processDelegateMethod(Element delegateMethod, boolean cached) {
+        ExecutableElement method = (ExecutableElement)delegateMethod;
+        Element element = delegateMethod.getEnclosingElement();
+        String name = method.getSimpleName().toString();
+        Type delegateType = typeModelFactory.create(element.asType());
+        Type returnType = typeModelFactory.create(method.getReturnType());
+        List<Parameter> parameters = elementHandler.transformParams(method.getParameters());
+        // remove first element
+        parameters = parameters.subList(1, parameters.size());
+
+        EntityType entityType = null;
+        for (AnnotationMirror annotation : delegateMethod.getAnnotationMirrors()){
+            if (annotation.getAnnotationType().asElement().getSimpleName().toString().equals(QueryDelegate.class.getSimpleName())){
+                for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : annotation.getElementValues().entrySet()){
+                    if (entry.getKey().getSimpleName().toString().equals("value")){
+                        if (entry.getValue().getValue() instanceof TypeMirror){
+                            TypeMirror type = (TypeMirror)entry.getValue().getValue();
+                            entityType = typeModelFactory.createEntityType(type);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (entityType != null){
+            registerTypeElement(entityType.getFullName(), (TypeElement)element);
+            entityType.addDelegate(new Delegate(entityType, delegateType, name, parameters, returnType));
+            if (!cached && entityType.getOriginalCategory() != TypeCategory.SIMPLE){
+                extensionTypes.put(entityType.getFullName(), entityType);
+            }
+        }
+    }
+    
+    private void processDelegateMethods(){
+        // 1 : get elements from cache
+        for (Element delegateMethod : getElementsFromCache(QueryDelegate.class)){
+            processDelegateMethod(delegateMethod, true);            
+        }
+        
+        // 2 : get elements from roundEnv
+        for (Element delegateMethod : getElementsAndCache(QueryDelegate.class)){
+            processDelegateMethod(delegateMethod, false);            
+        }                
+    }
+
+    private void processDTOs() {
+        Set<Element> visitedDTOTypes = new HashSet<Element>();
+        for (Element element : roundEnv.getElementsAnnotatedWith(QueryProjection.class)) {
+            Element parent = element.getEnclosingElement();
+            if (parent.getAnnotation(configuration.getEntityAnnotation()) == null
+                    && parent.getAnnotation(configuration.getEmbeddableAnnotation()) == null
+                    && !visitedDTOTypes.contains(parent)){
+                EntityType model = elementHandler.handleProjectionType((TypeElement)parent);
+                registerTypeElement(model.getFullName(), (TypeElement)parent);
+                dtos.put(model.getFullName(), model);
+                visitedDTOTypes.add(parent);
+
+            }
+        }
+    }
+
+    private void processEmbeddables() {
+        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnnotation())) {
+            typeModelFactory.createEntityType(element.asType());
+        }
+
+        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnnotation())) {
+            EntityType model = elementHandler.handleNormalType((TypeElement) element);
+            registerTypeElement(model.getFullName(), (TypeElement)element);
+            embeddables.put(model.getFullName(), model);
+        }
+        allSupertypes.putAll(embeddables);
+
+        // add super type fields
+        Set<EntityType> handled = new HashSet<EntityType>();
+        for (EntityType embeddable : embeddables.values()) {
+            addSupertypeFields(embeddable, allSupertypes, handled);
+        }
+    }
+
+    private void processEmbedded(){
+        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddedAnnotation())) {
+            TypeMirror type = element.asType();
+            if (element.getKind() == ElementKind.METHOD){
+                type = ((ExecutableElement)element).getReturnType();
+            }
+            String typeName = type.toString();
+            if (typeName.startsWith(Collection.class.getName()) 
+             || typeName.startsWith(List.class.getName())
+             || typeName.startsWith(Set.class.getName())){
+                typeName = typeName.substring(typeName.indexOf('<')+1, typeName.lastIndexOf('>'));
+                typeModelFactory.createEntityType(env.getElementUtils().getTypeElement(typeName).asType());
+            }else if (typeName.startsWith(Map.class.getName())){
+                typeName = typeName.substring(typeName.indexOf(',')+1, typeName.lastIndexOf('>')).trim();
+                typeModelFactory.createEntityType(env.getElementUtils().getTypeElement(typeName).asType());
+            }
+            TypeElement typeElement = env.getElementUtils().getTypeElement(typeName);
+            EntityType model = elementHandler.handleNormalType(typeElement);
+            registerTypeElement(model.getFullName(), (TypeElement)typeElement);
+            embeddables.put(model.getFullName(), model);            
+        }
+        allSupertypes.putAll(embeddables);
+
+        // add super type fields
+        Set<EntityType> handled = new HashSet<EntityType>();
+        for (EntityType embeddable : embeddables.values()) {
+            addSupertypeFields(embeddable, allSupertypes, handled);
+        }
+    }
+
+    private void processEntities() {
+        process(configuration.getEntityAnnotation(), entityTypes);
     }
     
     @SuppressWarnings("unchecked")
@@ -251,7 +517,7 @@ public class Processor {
         for (TypeMirror mirror : mirrors){
             TypeElement element = (TypeElement) env.getTypeUtils().asElement(mirror);
             EntityType model = elementHandler.handleNormalType(element);
-            addElement(model.getFullName(), element);
+            registerTypeElement(model.getFullName(), element);
             types.put(model.getFullName(), model);
             if (model.getSuperType() != null){
                 superTypes.push(model.getSuperType().getType());
@@ -261,195 +527,44 @@ public class Processor {
         mergeTypes(types, superTypes);
     }
 
-    private void process(Class<? extends Annotation> annotation, Map<String,EntityType> types){
-        Deque<Type> superTypes = new ArrayDeque<Type>();
-
-        for (Element element : roundEnv.getElementsAnnotatedWith(annotation)) {
-            if (configuration.getEmbeddableAnnotation() == null
-                    || element.getAnnotation(configuration.getEmbeddableAnnotation()) == null){
-                typeModelFactory.createEntityType(element.asType());
-            }
-        }
-
-        // get annotated types
-        for (Element element : roundEnv.getElementsAnnotatedWith(annotation)) {
-            if (configuration.getEmbeddableAnnotation() == null
-                    || element.getAnnotation(configuration.getEmbeddableAnnotation()) == null){
-                EntityType model = elementHandler.handleNormalType((TypeElement) element);
-                addElement(model.getFullName(), element);
-                types.put(model.getFullName(), model);
-                if (model.getSuperType() != null){
-                    superTypes.push(model.getSuperType().getType());
-                }
-            }
-        }
-
-        mergeTypes(types, superTypes);
-    }
-
-    private void mergeTypes(Map<String, EntityType> types, Deque<Type> superTypes) {
-        // get external supertypes
-        while (!superTypes.isEmpty()){
-            Type superType = superTypes.pop();
-            if (!types.containsKey(superType.getFullName())  && !allSupertypes.containsKey(superType.getFullName())){
-                TypeElement typeElement = env.getElementUtils().getTypeElement(superType.getFullName());
-                EntityType entityType = elementHandler.handleNormalType(typeElement);
-                if (entityType.getSuperType() != null){
-                    superTypes.push(entityType.getSuperType().getType());
-                }
-                types.put(superType.getFullName(), entityType);
-            }
-        }
-
-        allSupertypes.putAll(types);
-
-        // add supertype fields
-        Set<EntityType> handled = new HashSet<EntityType>();
-        for (EntityType type : types.values()) {
-            addSupertypeFields(type, allSupertypes, handled);
-        }
-    }
-
-    private void processCustomTypes() {
-        for (Element queryMethod : roundEnv.getElementsAnnotatedWith(QueryMethod.class)){
-            Element element = queryMethod.getEnclosingElement();
-            if (element.getAnnotation(QueryExtensions.class) != null){
-                continue;
-            }else if (element.getAnnotation(configuration.getEntityAnnotation()) != null){
-                continue;
-            }else if (configuration.getSuperTypeAnnotation() != null && element.getAnnotation(configuration.getSuperTypeAnnotation()) != null){
-                continue;
-            }else if (configuration.getEmbeddableAnnotation() != null && element.getAnnotation(configuration.getEmbeddableAnnotation()) != null){
-                continue;
-            }
-            handleExtensionType(element.asType(), element);
-        }
-    }
-
-    private void processDelegateMethods(){
-        Set<EntityType> types = new HashSet<EntityType>();
-        for (Element delegateMethod : roundEnv.getElementsAnnotatedWith(QueryDelegate.class)){
-            ExecutableElement method = (ExecutableElement)delegateMethod;
-            Element element = delegateMethod.getEnclosingElement();
-            String name = method.getSimpleName().toString();
-            Type delegateType = typeModelFactory.create(element.asType());
-            Type returnType = typeModelFactory.create(method.getReturnType());
-            List<Parameter> parameters = elementHandler.transformParams(method.getParameters());
-            // remove first element
-            parameters = parameters.subList(1, parameters.size());
-
-            EntityType entityType = null;
-            for (AnnotationMirror annotation : delegateMethod.getAnnotationMirrors()){
-                if (annotation.getAnnotationType().asElement().getSimpleName().toString().equals(QueryDelegate.class.getSimpleName())){
-                    for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : annotation.getElementValues().entrySet()){
-                        if (entry.getKey().getSimpleName().toString().equals("value")){
-                            if (entry.getValue().getValue() instanceof TypeMirror){
-                                TypeMirror type = (TypeMirror)entry.getValue().getValue();
-                                entityType = typeModelFactory.createEntityType(type);
-                            }
+    private void processExtension(Element element, boolean cached) {
+        for (AnnotationMirror annotation : element.getAnnotationMirrors()){
+            if (annotation.getAnnotationType().asElement().getSimpleName().toString().equals(QueryExtensions.class.getSimpleName())){
+                for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : annotation.getElementValues().entrySet()){
+                    if (entry.getKey().getSimpleName().toString().equals("value")){
+                        if (entry.getValue().getValue() instanceof TypeMirror){
+                            TypeMirror type = (TypeMirror)entry.getValue().getValue();
+                            handleExtensionType(type, (TypeElement)element, cached);
                         }
                     }
                 }
             }
-
-            if (entityType != null){
-                addElement(entityType.getFullName(), element);
-                entityType.addDelegate(new Delegate(entityType, delegateType, name, parameters, returnType));
-                types.add(entityType);
-            }            
         }
-        
-        for (EntityType type : types){
-            if (type.getOriginalCategory() != TypeCategory.SIMPLE){
-                extensionTypes.put(type.getFullName(), type);
-            }            
-        }
-    }
-
-    private void processDTOs() {
-        Set<Element> visitedDTOTypes = new HashSet<Element>();
-        for (Element element : roundEnv.getElementsAnnotatedWith(QueryProjection.class)) {
-            Element parent = element.getEnclosingElement();
-            if (parent.getAnnotation(configuration.getEntityAnnotation()) == null
-                    && parent.getAnnotation(configuration.getEmbeddableAnnotation()) == null
-                    && !visitedDTOTypes.contains(parent)){
-                EntityType model = elementHandler.handleProjectionType((TypeElement)parent);
-                addElement(model.getFullName(), element);
-                dtos.put(model.getFullName(), model);
-                visitedDTOTypes.add(parent);
-
-            }
-        }
-    }
-
-    private void processEmbeddables() {
-        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnnotation())) {
-            typeModelFactory.createEntityType(element.asType());
-        }
-
-        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnnotation())) {
-            EntityType model = elementHandler.handleNormalType((TypeElement) element);
-            addElement(model.getFullName(), element);
-            embeddables.put(model.getFullName(), model);
-        }
-        allSupertypes.putAll(embeddables);
-
-        // add super type fields
-        Set<EntityType> handled = new HashSet<EntityType>();
-        for (EntityType embeddable : embeddables.values()) {
-            addSupertypeFields(embeddable, allSupertypes, handled);
-        }
-    }
-    
-    private void processEmbedded(){
-        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddedAnnotation())) {
-            TypeMirror type = element.asType();
-            if (element.getKind() == ElementKind.METHOD){
-                type = ((ExecutableElement)element).getReturnType();
-            }
-            String typeName = type.toString();
-            // TODO : make this safer
-            if (typeName.startsWith("java.util")){
-                typeName = typeName.substring(typeName.indexOf('<')+1, typeName.lastIndexOf('>'));
-                typeModelFactory.createEntityType(env.getElementUtils().getTypeElement(typeName).asType());
-            }
-            TypeElement typeElement = env.getElementUtils().getTypeElement(typeName);
-            EntityType model = elementHandler.handleNormalType(typeElement);
-            addElement(model.getFullName(), element);
-            embeddables.put(model.getFullName(), model);            
-        }
-        allSupertypes.putAll(embeddables);
-
-        // add super type fields
-        Set<EntityType> handled = new HashSet<EntityType>();
-        for (EntityType embeddable : embeddables.values()) {
-            addSupertypeFields(embeddable, allSupertypes, handled);
-        }
-    }
-
-    private void processEntities() {
-        process(configuration.getEntityAnnotation(), entityTypes);
     }
 
     private void processExtensions() {
-        for (Element element : roundEnv.getElementsAnnotatedWith(QueryExtensions.class)){
-            for (AnnotationMirror annotation : element.getAnnotationMirrors()){
-                if (annotation.getAnnotationType().asElement().getSimpleName().toString().equals(QueryExtensions.class.getSimpleName())){
-                    for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : annotation.getElementValues().entrySet()){
-                        if (entry.getKey().getSimpleName().toString().equals("value")){
-                            if (entry.getValue().getValue() instanceof TypeMirror){
-                                TypeMirror type = (TypeMirror)entry.getValue().getValue();
-                                handleExtensionType(type, element);
-                            }
-                        }
-                    }
-                }
-            }
+        // 1st : get elements from cache        
+        for (Element element : getElementsFromCache(QueryExtensions.class)){            
+            processExtension(element, true);
+        }
+        
+        // 2nd : get elements from roundEnv
+        for (Element element : getElementsAndCache(QueryExtensions.class)){            
+            processExtension(element, false);
         }
     }
 
     private void processSupertypes() {
         process(configuration.getSuperTypeAnnotation(), actualSupertypes);
+    }
+
+    private void registerTypeElement(String entityName, TypeElement element){
+        Set<TypeElement> elements = typeElements.get(entityName);
+        if (elements == null){
+            elements = new HashSet<TypeElement>();
+            typeElements.put(entityName, elements);
+        }
+        elements.add(element);
     }
 
     private void serialize(Serializer serializer, Collection<EntityType> models) {
@@ -461,15 +576,29 @@ public class Processor {
                 String className = packageName.length() > 0 ? (packageName + "." + type.getSimpleName()) : type.getSimpleName();
 
                 Filer filer = env.getFiler();
-
-                FileObject sourceFile = getSourceFile(model.getFullName());
-                FileObject generatedFile = filer.getResource(StandardLocation.SOURCE_OUTPUT, packageName, type.getSimpleName() + ".java");
+                FileObject generatedFile = filer.getResource(StandardLocation.SOURCE_OUTPUT, packageName, type.getSimpleName() + ".java");                
+                boolean generate = false;                
                 
-                boolean generate;
-                // Source file is accessible and exists
-                if (sourceFile != null && sourceFile.getLastModified() > 0) {
-                    // Generate if source has changed since Q-type was last time generated
-                    generate = generatedFile.getLastModified() <= sourceFile.getLastModified();
+                Set<TypeElement> elements = typeElements.get(model.getFullName());                
+                if (elements != null){
+                    boolean foundSources = false;
+                    for (TypeElement element : elements){
+                        FileObject sourceFile = getSourceFile(element.getQualifiedName().toString());
+                        // Source file is accessible and exists
+                        if (sourceFile != null && sourceFile.getLastModified() > 0) {
+                            foundSources = true;
+                            // Generate if source has changed since Q-type was last time generated
+                            generate |= generatedFile.getLastModified() <= sourceFile.getLastModified();
+                        }
+                    }
+                    if (!foundSources){
+                        if (configuration.isDefaultOverwrite()) {
+                            generate = true;
+                        } else {
+                            generate = generatedFile.getLastModified() <= 0;
+                        }   
+                    }
+                    
                 } else {
                     // Play safe and generate as we don't know if source has changed or not
                     if (configuration.isDefaultOverwrite()) {
@@ -480,13 +609,12 @@ public class Processor {
                 }
 
                 if (generate) {
-                    Set<Element> elements = typeElements.get(model.getFullName());
                     if (elements == null){
-                        elements = new HashSet<Element>();
+                        elements = new HashSet<TypeElement>();
                     }
                     for (Property property : model.getProperties()){
                         if (property.getType().getCategory() == TypeCategory.CUSTOM){
-                            Set<Element> customElements = typeElements.get(property.getType().getFullName());
+                            Set<TypeElement> customElements = typeElements.get(property.getType().getFullName());
                             if (customElements != null){
                                 elements.addAll(customElements);
                             }
@@ -511,27 +639,6 @@ public class Processor {
             } catch (IOException e) {
                 msg.printMessage(Kind.ERROR, e.getMessage());
             }
-        }
-    }
-
-    @Nullable
-    private FileObject getSourceFile(String fullName) throws IOException {
-        Elements elementUtils = env.getElementUtils();
-        TypeElement sourceElement = elementUtils.getTypeElement(fullName);        
-        if (sourceElement == null) {
-            return null;
-        } else {
-            if (sourceElement.getNestingKind().isNested()) {
-                sourceElement = (TypeElement) sourceElement.getEnclosingElement();
-            }            
-            PackageElement packageElement = elementUtils.getPackageOf(sourceElement);    
-            try {
-                return env.getFiler().getResource(StandardLocation.SOURCE_PATH, 
-                        packageElement.getQualifiedName(), 
-                        sourceElement.getSimpleName() + ".java");    
-            } catch(Exception e) {
-                return null;
-            }            
         }
     }
 

@@ -52,12 +52,15 @@ public abstract class AbstractProcessorTest {
         options.add("src/test/java");
         options.addAll(getAPTOptions());
         options.addAll(classes);
-        int compilationResult = compiler.run(null, null, null, options.toArray(new String[options.size()]));
+        int compilationResult = compiler.run(null, System.out, System.err, options.toArray(new String[options.size()]));
+
+        Processor.elementCache.clear();
         if(compilationResult == 0){
             System.out.println("Compilation is successful");
         }else{
             Assert.fail("Compilation Failed");
         }
+        
     }
     
     protected Collection<String> getAPTOptions() {
