@@ -63,6 +63,12 @@ public class ColQueryTest extends AbstractQueryTest {
         }
 
     }
+    
+    @Test
+    public void Clone(){
+        ColQueryImpl query = query().where(cat.isNotNull()).clone();
+        assertEquals("cat is not null", query.getMetadata().getWhere().toString());
+    }
 
     @Test
     public void Primitives() {
