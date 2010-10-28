@@ -29,15 +29,13 @@ import com.mysema.codegen.model.Types;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.support.CollectionAnyVisitor;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.PathType;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.Templates;
-import com.mysema.query.types.ToStringVisitor;
 
 /**
  * DefaultEvaluatorFactory extends the EvaluatorFactory class to provide Java source
@@ -170,13 +168,20 @@ public class DefaultEvaluatorFactory {
 
             }else if (join.getType() == JoinType.INNERJOIN){
                 Operation alias = (Operation)join.getTarget();                
-                if (join.getCondition() != null && join.getCondition().toString().equals("any")){
+                boolean colAnyJoin = join.getCondition() != null && join.getCondition().toString().equals("any"); 
+                if (colAnyJoin){
                     String matcher = alias.getArg(1).toString() + "_matched";
                     ser.append("boolean " + matcher + " = false;\n");   
                     anyJoinMatchers.add(matcher);
                 }                
                 ser.append("for ( " + typeName + " " + alias.getArg(1) + " : ");
-                ser.handle(alias.getArg(0));
+                if (colAnyJoin){
+                    CollectionAnyVisitor.Context context = new CollectionAnyVisitor.Context();
+                    Expression<?> replacement = (Expression<?>) alias.getArg(0).accept(CollectionAnyVisitor.DEFAULT, context);
+                    ser.handle(replacement);
+                }else{
+                    ser.handle(alias.getArg(0));    
+                }                
                 if (alias.getArg(0).getType().equals(Map.class)){
                     ser.append(".values()");
                 }

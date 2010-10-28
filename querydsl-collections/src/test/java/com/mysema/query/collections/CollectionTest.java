@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class CollectionTest {
@@ -37,20 +36,34 @@ public class CollectionTest {
     }
     
     @Test
-    public void Any(){
+    public void Join_From_Two_Sources(){
+        QCat cat_kittens = new QCat("cat_kittens");
+        QCat other_kittens = new QCat("other_kittens");
+        assertEquals(30, MiniApi
+                .from(cat, cats).from(other, cats)
+                .innerJoin(cat.kittens, cat_kittens)
+                .innerJoin(other.kittens, other_kittens)
+                .where(cat_kittens.eq(other_kittens)).count());
+    }
+    
+    @Test
+    public void Any_UniqueResult(){
         assertEquals("4", MiniApi.from(cat, cats).where(cat.kittens.any().name.eq("4")).uniqueResult(cat.name));
     }
     
     @Test
-    public void Any2(){
+    public void Any_Count(){
         assertEquals(4, MiniApi.from(cat, cats).where(cat.kittens.any().name.isNotNull()).count());
     }
     
     @Test
-    @Ignore
-    public void Any3(){
-        // TODO : support multiple levels of any usage
+    public void Any_Two_Levels(){
         assertEquals(4, MiniApi.from(cat, cats).where(cat.kittens.any().name.isNotNull(), cat.kittens.any().kittens.any().isNotNull()).count());
+    }
+    
+    @Test
+    public void Any_From_Two_Sources(){
+        assertEquals(16, MiniApi.from(cat, cats).from(other, cats).where(cat.kittens.any().name.eq(other.kittens.any().name)).count());
     }
     
 }

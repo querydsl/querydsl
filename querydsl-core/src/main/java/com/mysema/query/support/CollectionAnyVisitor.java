@@ -15,7 +15,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,CollectionAny
     
     public static final CollectionAnyVisitor DEFAULT = new CollectionAnyVisitor();
     
-    private static final Templates COLLECTION_ANY_TEMPLATE = new Templates(){
+    public static final Templates TEMPLATE = new Templates(){
     {
         add(PathType.PROPERTY, "{0}_{1}");
         add(PathType.COLLECTION_ANY, "{0}");
@@ -116,7 +116,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,CollectionAny
     @Override
     public Expression<?> visit(Path<?> expr, Context context) {
         if (expr.getMetadata().getPathType() == PathType.COLLECTION_ANY){
-            String variable = expr.accept(ToStringVisitor.DEFAULT, COLLECTION_ANY_TEMPLATE).replace('.', '_');
+            String variable = expr.accept(ToStringVisitor.DEFAULT, TEMPLATE).replace('.', '_');
             EntityPath<?> replacement = new EntityPathBase(expr.getType(), variable);
             context.add(expr, replacement);
             return replacement;
