@@ -51,23 +51,14 @@ public class JPQLQueryMixin<T> extends QueryMixin<T> {
     }
 
     public T with(Predicate... conditions){
-        for (Predicate condition : normalize(conditions)){
+        for (Predicate condition : normalize(conditions, false)){
             getMetadata().addJoinCondition(condition);
         }
         return getSelf();
     }
-    
-    @Override
-    public T where(Predicate... o) {
-        return super.where(normalize(o));
-    }
-    
-    @Override
-    public T having(Predicate... o) {
-        return super.having(normalize(o));
-    }
 
-    private Predicate[] normalize(Predicate[] conditions) {
+    @Override
+    protected Predicate[] normalize(Predicate[] conditions, boolean where) {
         for (int i = 0; i < conditions.length; i++){
             conditions[i] = normalize(conditions[i]);
         }

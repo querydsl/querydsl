@@ -38,18 +38,9 @@ public class JDOQLQueryMixin<T> extends QueryMixin<T> {
     public JDOQLQueryMixin(T self, QueryMetadata metadata) {
         super(self, metadata);
     }
-    
-    @Override
-    public T where(Predicate... o) {
-        return super.where(normalize(o, true));
-    }
-    
-    @Override
-    public T having(Predicate... o) {
-        return super.having(normalize(o, false));
-    }
 
-    private Predicate[] normalize(Predicate[] conditions, boolean where) {
+    @Override
+    protected Predicate[] normalize(Predicate[] conditions, boolean where) {
         for (int i = 0; i < conditions.length; i++){
             conditions[i] = normalize(conditions[i], where);
         }
@@ -61,7 +52,7 @@ public class JDOQLQueryMixin<T> extends QueryMixin<T> {
             return predicate;
         }else{
             CollectionAnyVisitor.Context context = new CollectionAnyVisitor.Context();
-            Predicate transformed = (Predicate) predicate.accept(JDOQLCollectionAnyVisitor.DEFAULT, context);
+            Predicate transformed = (Predicate) predicate.accept(CollectionAnyVisitor.DEFAULT, context);
             for (int i = 0; i < context.anyPaths.size(); i++){
                 Path<?> path = context.anyPaths.get(i);            
                 if (!anyPaths.contains(path)){
