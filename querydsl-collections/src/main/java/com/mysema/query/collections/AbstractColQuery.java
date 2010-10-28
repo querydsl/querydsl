@@ -16,7 +16,6 @@ import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.SearchResults;
 import com.mysema.query.support.ProjectableQuery;
-import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Expression;
@@ -48,7 +47,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
 
     @SuppressWarnings("unchecked")
     public AbstractColQuery(QueryMetadata metadata, QueryEngine queryEngine) {
-        super(new QueryMixin<Q>(metadata));
+        super(new ColQueryMixin<Q>(metadata));
         this.queryMixin.setSelf((Q) this);
         this.queryEngine = queryEngine;
     }

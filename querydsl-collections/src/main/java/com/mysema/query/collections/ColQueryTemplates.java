@@ -63,6 +63,7 @@ public final class ColQueryTemplates extends JavaTemplates {
         add(PathType.LISTVALUE_CONSTANT, "{0}.get({1})");
         add(PathType.ARRAYVALUE, "{0}[{1}]");
         add(PathType.ARRAYVALUE_CONSTANT, "{0}[{1}]");
+        add(PathType.COLLECTION_ANY, "{0}_any");
 
         // coalesce
         add(Ops.COALESCE, functions + ".coalesce({0})");

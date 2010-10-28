@@ -34,7 +34,10 @@ import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.ParamNotSetException;
+import com.mysema.query.types.PathType;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.Templates;
+import com.mysema.query.types.ToStringVisitor;
 
 /**
  * DefaultEvaluatorFactory extends the EvaluatorFactory class to provide Java source
@@ -52,7 +55,7 @@ public class DefaultEvaluatorFactory {
 
     public DefaultEvaluatorFactory(ColQueryTemplates templates){
         // TODO : which ClassLoader to pick ?!?
-    this(templates,
+        this(templates,
         (URLClassLoader)DefaultEvaluatorFactory.class.getClassLoader(),
         ToolProvider.getSystemJavaCompiler());
     }
@@ -148,6 +151,8 @@ public class DefaultEvaluatorFactory {
         StringBuilder vars = new StringBuilder();
         ColQuerySerializer ser = new ColQuerySerializer(templates);
         ser.append("java.util.List<Object[]> rv = new java.util.ArrayList<Object[]>();\n");
+        
+        List<String> anyJoinMatchers = new ArrayList<String>();
 
         // creating context
         for (JoinExpression join : joins){
@@ -164,8 +169,12 @@ public class DefaultEvaluatorFactory {
                 sourceClasses.add(Iterable.class);
 
             }else if (join.getType() == JoinType.INNERJOIN){
-                Operation alias = (Operation)join.getTarget();
-                // TODO : handle join condition
+                Operation alias = (Operation)join.getTarget();                
+                if (join.getCondition() != null && join.getCondition().toString().equals("any")){
+                    String matcher = alias.getArg(1).toString() + "_matched";
+                    ser.append("boolean " + matcher + " = false;\n");   
+                    anyJoinMatchers.add(matcher);
+                }                
                 ser.append("for ( " + typeName + " " + alias.getArg(1) + " : ");
                 ser.handle(alias.getArg(0));
                 if (alias.getArg(0).getType().equals(Map.class)){
@@ -174,9 +183,6 @@ public class DefaultEvaluatorFactory {
                 ser.append("){\n");
                 vars.append(alias.getArg(1));
 
-//            }else if (join.getType() == JoinType.LEFTJOIN){
-//                // TODO
-//
             }else{
                 throw new IllegalArgumentException("Illegal join expression " + join);
             }
@@ -184,7 +190,14 @@ public class DefaultEvaluatorFactory {
 
         // filter
         if (filter != null){
-            ser.append("if (").handle(filter).append("){\n");
+            ser.append("if (");
+            for (String matcher : anyJoinMatchers){
+                ser.append("!" + matcher + " && ");
+            }
+            ser.handle(filter).append("){\n");
+            for (String matcher : anyJoinMatchers){
+                ser.append("    "+ matcher + " = true;\n");
+            }
             ser.append("    rv.add(new Object[]{"+vars+"});\n");
             ser.append("}\n");
         }else{

@@ -52,6 +52,11 @@ public class Cat extends Animal {
         this.kittensByName = Collections.singletonMap("Kitty", kitten);
         this.name = name;
     }
+    
+    public Cat(String name, String kittenName){
+        this(name);
+        kittens.get(0).setName(kittenName);
+    }
 
     @QueryProjection
     public Cat(String name, int id) {

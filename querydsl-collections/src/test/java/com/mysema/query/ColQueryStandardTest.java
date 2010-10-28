@@ -92,7 +92,8 @@ public class ColQueryStandardTest {
 
     @Test
     public void TupleProjection(){
-        List<Tuple> tuples = MiniApi.from(cat, data).list(new QTuple(cat.name, cat.birthdate));
+        List<Tuple> tuples = MiniApi.from(cat, data)
+            .list(new QTuple(cat.name, cat.birthdate));
         for (Tuple tuple : tuples){
             assertNotNull(tuple.get(cat.name));
             assertNotNull(tuple.get(cat.birthdate));
@@ -102,7 +103,8 @@ public class ColQueryStandardTest {
     @SuppressWarnings("unchecked")
     @Test
     public void ArrayProjection(){
-        List<String[]> results =  MiniApi.from(cat, data).list(new ArrayConstructorExpression<String>(String[].class, cat.name));
+        List<String[]> results =  MiniApi.from(cat, data)
+            .list(new ArrayConstructorExpression<String>(String[].class, cat.name));
         assertFalse(results.isEmpty());
         for (String[] result : results){
             assertNotNull(result[0]);
@@ -111,7 +113,8 @@ public class ColQueryStandardTest {
 
     @Test
     public void ConstructorProjection(){
-        List<Projection> projections =  MiniApi.from(cat, data).list(ConstructorExpression.create(Projection.class, cat.name, cat));
+        List<Projection> projections =  MiniApi.from(cat, data)
+            .list(ConstructorExpression.create(Projection.class, cat.name, cat));
         assertFalse(projections.isEmpty());
         for (Projection projection : projections){
             assertNotNull(projection);
