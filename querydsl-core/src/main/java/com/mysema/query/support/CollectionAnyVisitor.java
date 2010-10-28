@@ -11,7 +11,16 @@ import com.mysema.query.types.template.BooleanTemplate;
  * @author tiwe
  *
  */
-public abstract class CollectionAnyVisitor implements Visitor<Expression<?>,CollectionAnyVisitor.Context>{
+public class CollectionAnyVisitor implements Visitor<Expression<?>,CollectionAnyVisitor.Context>{
+    
+    public static final CollectionAnyVisitor DEFAULT = new CollectionAnyVisitor();
+    
+    private static final Templates COLLECTION_ANY_TEMPLATE = new Templates(){
+    {
+        add(PathType.PROPERTY, "{0}_{1}");
+        add(PathType.COLLECTION_ANY, "{0}");
+    }};
+    
     
     public static class Context {
         
@@ -99,13 +108,15 @@ public abstract class CollectionAnyVisitor implements Visitor<Expression<?>,Coll
         }        
     }
     
-    protected abstract Predicate exists(Context c, Predicate condition);
+    protected Predicate exists(Context c, Predicate condition){
+        return condition;
+    }
 
     @SuppressWarnings("unchecked")
     @Override
     public Expression<?> visit(Path<?> expr, Context context) {
         if (expr.getMetadata().getPathType() == PathType.COLLECTION_ANY){
-            String variable = expr.getMetadata().getParent().toString().replace('.', '_');
+            String variable = expr.accept(ToStringVisitor.DEFAULT, COLLECTION_ANY_TEMPLATE).replace('.', '_');
             EntityPath<?> replacement = new EntityPathBase(expr.getType(), variable);
             context.add(expr, replacement);
             return replacement;

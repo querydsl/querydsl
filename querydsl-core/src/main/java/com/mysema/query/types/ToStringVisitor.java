@@ -24,7 +24,7 @@ public final class ToStringVisitor implements Visitor<String,Templates>{
             if (element.getStaticText() != null){
                 builder.append(element.getStaticText());
             }else{
-                builder.append(expr.getArg(element.getIndex()));
+                builder.append(expr.getArg(element.getIndex()).accept(this, templates));
             }
         }
         return builder.toString();
@@ -44,7 +44,7 @@ public final class ToStringVisitor implements Visitor<String,Templates>{
             if (!first){
             builder.append(", ");
             }
-            builder.append(arg);
+            builder.append(arg.accept(this, templates));
             first = false;
         }
         builder.append(")");
@@ -60,7 +60,7 @@ public final class ToStringVisitor implements Visitor<String,Templates>{
                 if (element.getStaticText() != null){
                     builder.append(element.getStaticText());
                 }else{
-                    builder.append(o.getArg(element.getIndex()));
+                    builder.append(o.getArg(element.getIndex()).accept(this, templates));
                 }
             }
             return builder.toString();
@@ -81,9 +81,9 @@ public final class ToStringVisitor implements Visitor<String,Templates>{
                     if (element.getStaticText() != null){
                         builder.append(element.getStaticText());
                     }else if (element.getIndex() == 0){
-                        builder.append(parent);
+                        builder.append(parent.accept(this, templates));
                     }else if (element.getIndex() == 1){
-                        builder.append(expr);
+                        builder.append(expr.accept(this, templates));
                     }
                 }
                 return builder.toString();

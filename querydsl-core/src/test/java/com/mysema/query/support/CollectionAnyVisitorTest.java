@@ -26,6 +26,11 @@ public class CollectionAnyVisitorTest {
     }
     
     @Test
+    public void Very_Long_Path(){
+        assertEquals("cat_kittens_kittens.name", serialize(cat.kittens.any().kittens.any().name));
+    }
+    
+    @Test
     public void Simple_BooleanOperation(){        
         Predicate predicate = cat.kittens.any().name.eq("Ruth123");        
         assertEquals("cat_kittens.name = Ruth123", serialize(predicate));

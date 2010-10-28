@@ -146,7 +146,7 @@ public class QueryMixin<T>{
     }
 
     public T having(Predicate... o) {
-        metadata.addHaving(o);
+        metadata.addHaving(normalize(o,false));
         return self;
     }
     
@@ -351,8 +351,12 @@ public class QueryMixin<T>{
     }
     
     public T where(Predicate... o) {
-        metadata.addWhere(o);
+        metadata.addWhere(normalize(o, true));
         return self;
     }
 
+    protected Predicate[] normalize(Predicate[] conditions, boolean where) {
+        return conditions;
+    }
+    
 }
