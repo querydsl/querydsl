@@ -66,4 +66,15 @@ public class CollectionTest {
         assertEquals(16, MiniApi.from(cat, cats).from(other, cats).where(cat.kittens.any().name.eq(other.kittens.any().name)).count());
     }
     
+    @Test
+    public void List_Size(){
+        assertEquals(4, MiniApi.from(cat, cats).where(cat.kittens.size().gt(0)).count());
+        assertEquals(2, MiniApi.from(cat, cats).where(cat.kittens.size().gt(2)).count());
+    }
+    
+    @Test
+    public void List_Is_Empty(){
+        assertEquals(0, MiniApi.from(cat, cats).where(cat.kittens.isEmpty()).count());
+    }
+    
 }

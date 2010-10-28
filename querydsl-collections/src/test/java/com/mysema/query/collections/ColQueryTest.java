@@ -34,12 +34,14 @@ public class ColQueryTest extends AbstractQueryTest {
     }
 
     @Test
-    public void AfterAndBefore() {
+    public void After_And_Before() {
         query().from(cat, Arrays.asList(c1, c2))
-        .where(cat.birthdate.lt(new Date()),
-                cat.birthdate.loe(new Date()), cat.birthdate.gt(new Date()),
+            .where(
+                cat.birthdate.lt(new Date()),
+                cat.birthdate.loe(new Date()), 
+                cat.birthdate.gt(new Date()),
                 cat.birthdate.goe(new Date()))
-        .list(cat);
+            .list(cat);
     }
 
     @Test
