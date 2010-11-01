@@ -45,6 +45,10 @@ public class ArrayPath<E> extends SimpleExpression<E[]> implements Path<E[]>, Ar
         this(type, PathMetadataFactory.forVariable(variable));
     }
     
+    public ArrayPath(Class<? super E[]> type, Path<?> parent, String property) {
+        this(type, PathMetadataFactory.forProperty(parent, property));
+    }
+    
     @SuppressWarnings("unchecked")
     public ArrayPath(Class<? super E[]> type, PathMetadata<?> metadata) {
         super((Class)type);

@@ -6,13 +6,11 @@
 package com.mysema.query.types.path;
 
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
 import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.Assert;
-import com.mysema.query.types.ExpressionException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadata;
@@ -44,6 +42,10 @@ public class SetPath<E, Q extends SimpleExpression<E>> extends CollectionPathBas
         this(type, queryType, PathMetadataFactory.forVariable(variable));
     }
     
+    public SetPath(Class<? super E> type, Class<Q> queryType, Path<?> parent, String property) {
+        this(type, queryType, PathMetadataFactory.forProperty(parent, property));
+    }
+    
     @SuppressWarnings("unchecked")
     public SetPath(Class<? super E> type, Class<Q> queryType, PathMetadata<?> metadata) {
         super((Class)Set.class);
@@ -60,17 +62,7 @@ public class SetPath<E, Q extends SimpleExpression<E>> extends CollectionPathBas
     @Override
     public Q any(){
         if (any == null){
-            try {
-                any = newInstance(queryType, PathMetadataFactory.forCollectionAny(this));
-            } catch (NoSuchMethodException e) {
-                throw new ExpressionException(e);
-            } catch (InstantiationException e) {
-                throw new ExpressionException(e);
-            } catch (IllegalAccessException e) {
-                throw new ExpressionException(e);
-            } catch (InvocationTargetException e) {
-                throw new ExpressionException(e);
-            }
+            any = newInstance(queryType, PathMetadataFactory.forCollectionAny(this));
         }
         return any;
     }

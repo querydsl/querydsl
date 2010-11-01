@@ -46,6 +46,10 @@ public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
     public BeanPath(Class<? extends D> type, String variable) {
         this(type, PathMetadataFactory.forVariable(variable), null);
     }
+    
+    public BeanPath(Class<? extends D> type, Path<?> parent,  String property) {
+        this(type, PathMetadataFactory.forProperty(parent, property), null);
+    }
 
     public BeanPath(Class<? extends D> type, PathMetadata<?> metadata) {
         this(type, metadata, null);

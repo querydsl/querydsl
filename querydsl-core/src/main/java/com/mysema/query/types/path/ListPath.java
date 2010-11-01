@@ -6,7 +6,6 @@
 package com.mysema.query.types.path;
 
 import java.lang.reflect.AnnotatedElement;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,6 @@ import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadata;
@@ -50,6 +48,10 @@ public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionPathBa
         this(elementType, queryType, PathMetadataFactory.forVariable(variable));
     }
     
+    public ListPath(Class<? super E> elementType, Class<Q> queryType, Path<?> parent, String property) {
+        this(elementType, queryType, PathMetadataFactory.forProperty(parent, property));   
+    }
+    
     @SuppressWarnings("unchecked")
     public ListPath(Class<? super E> elementType, Class<Q> queryType, PathMetadata<?> metadata) {
         super((Class)List.class);
@@ -66,17 +68,7 @@ public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionPathBa
     @Override
     public Q any(){
         if (any == null){
-            try {
-                any = newInstance(queryType, PathMetadataFactory.forCollectionAny(this));
-            } catch (NoSuchMethodException e) {
-                throw new ExpressionException(e);
-            } catch (InstantiationException e) {
-                throw new ExpressionException(e);
-            } catch (IllegalAccessException e) {
-                throw new ExpressionException(e);
-            } catch (InvocationTargetException e) {
-                throw new ExpressionException(e);
-            }
+            any = newInstance(queryType, PathMetadataFactory.forCollectionAny(this));
         }
         return any;
     }
@@ -90,18 +82,8 @@ public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionPathBa
     }
 
     private Q create(int index){
-        try {
-            PathMetadata<Integer> md = forListAccess(index);
-            return newInstance(queryType, md);
-        } catch (NoSuchMethodException e) {
-            throw new ExpressionException(e);
-        } catch (InstantiationException e) {
-            throw new ExpressionException(e);
-        } catch (IllegalAccessException e) {
-            throw new ExpressionException(e);
-        } catch (InvocationTargetException e) {
-            throw new ExpressionException(e);
-        }
+        PathMetadata<Integer> md = forListAccess(index);
+        return newInstance(queryType, md);
     }
 
     @Override
@@ -111,18 +93,8 @@ public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionPathBa
 
     @Override
     public Q get(Expression<Integer> index) {
-        try {
-            PathMetadata<Integer> md = forListAccess(index);
-            return newInstance(queryType, md);
-        } catch (NoSuchMethodException e) {
-            throw new ExpressionException(e);
-        } catch (InstantiationException e) {
-            throw new ExpressionException(e);
-        } catch (IllegalAccessException e) {
-            throw new ExpressionException(e);
-        } catch (InvocationTargetException e) {
-            throw new ExpressionException(e);
-        }
+        PathMetadata<Integer> md = forListAccess(index);
+        return newInstance(queryType, md);
     }
 
 

@@ -16,14 +16,14 @@ public class PathInitsTest {
     public void Default(){
         assertFalse(PathInits.DEFAULT.isInitialized(""));
     }
-
+    
     @Test
-    public void test(){
-        PathInits Inits = new PathInits(".2").get("");
-        assertFalse(Inits.isInitialized("1"));
-        assertTrue(Inits.isInitialized("2"));
+    public void IsInitialized(){
+        PathInits inits = new PathInits(".2").get("");
+        assertFalse(inits.isInitialized("1"));
+        assertTrue(inits.isInitialized("2"));
     }
-
+    
     @Test
     public void Wildcard(){
         assertTrue(new PathInits("*").isInitialized(""));
@@ -31,8 +31,8 @@ public class PathInitsTest {
 
     @Test
     public void Wildcard2(){
-        PathInits Inits = new PathInits(".*").get("");
-        assertTrue(Inits.isInitialized("1"));
-        assertTrue(Inits.isInitialized("2"));
+        PathInits inits = new PathInits(".*").get("");
+        assertTrue(inits.isInitialized("1"));
+        assertTrue(inits.isInitialized("2"));
     }
 }

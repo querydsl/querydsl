@@ -42,10 +42,6 @@ public class ComparablePath<D extends Comparable> extends ComparableExpression<D
         this(type, PathMetadataFactory.forVariable(var));
     }
 
-    public ComparablePath(Path<?> parent, String property) {
-        this((Class<? extends D>) Comparable.class, PathMetadataFactory.forProperty(parent, property));
-    }
-
     @Override
     public <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);

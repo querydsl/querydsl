@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.ExpressionException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.expr.CollectionExpressionBase;
@@ -33,21 +34,30 @@ public abstract class CollectionPathBase<C extends Collection<E>, E> extends Col
     public abstract SimpleExpression<E> any();
     
     @SuppressWarnings("unchecked")
-    protected <Q extends SimpleExpression<E>> Q newInstance(Class<Q> queryType, PathMetadata<?> pm) throws NoSuchMethodException,
-        InstantiationException, IllegalAccessException,
-        InvocationTargetException {
-        if (constructor == null) {
-            if (Constants.isTyped(queryType)){
-                constructor = queryType.getConstructor(Class.class, PathMetadata.class);
-            }else{
-                constructor = queryType.getConstructor(PathMetadata.class);
+    protected <Q extends SimpleExpression<E>> Q newInstance(Class<Q> queryType, PathMetadata<?> pm){
+        try{
+            if (constructor == null) {
+                if (Constants.isTyped(queryType)){
+                    constructor = queryType.getConstructor(Class.class, PathMetadata.class);
+                }else{
+                    constructor = queryType.getConstructor(PathMetadata.class);
+                }
             }
+            if (Constants.isTyped(queryType)){
+                return (Q)constructor.newInstance(getElementType(), pm);
+            }else{
+                return (Q)constructor.newInstance(pm);
+            }
+        } catch (NoSuchMethodException e) {
+            throw new ExpressionException(e);
+        } catch (InstantiationException e) {
+            throw new ExpressionException(e);
+        } catch (IllegalAccessException e) {
+            throw new ExpressionException(e);
+        } catch (InvocationTargetException e) {
+            throw new ExpressionException(e);
         }
-        if (Constants.isTyped(queryType)){
-            return (Q)constructor.newInstance(getElementType(), pm);
-        }else{
-            return (Q)constructor.newInstance(pm);
-        }
+        
     }
 
 }

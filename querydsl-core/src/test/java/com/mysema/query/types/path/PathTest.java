@@ -30,6 +30,8 @@ import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
+import com.mysema.query.types.PathMetadataFactory;
+import com.mysema.query.types.Templates;
 import com.mysema.query.types.ToStringVisitor;
 import com.mysema.util.AnnotatedElementAdapter;
 
@@ -139,6 +141,38 @@ public class PathTest {
     
     @SuppressWarnings("unchecked")
     @Test
+    public void Various_Properties(){
+        Path<?> parent = new PathImpl(Object.class, "parent");
+        List<Path<?>> paths = new ArrayList<Path<?>>();
+        paths.add(new ArrayPath(String[].class, parent, "p"));
+        paths.add(new BeanPath(Object.class, parent, "p"));
+        paths.add(new BooleanPath(parent, "p"));
+        paths.add(new CollectionPath(String.class, StringPath.class, parent, "p"));
+        paths.add(new ComparablePath(String.class, parent, "p"));
+        paths.add(new DatePath(Date.class, parent, "p"));
+        paths.add(new DateTimePath(Date.class, parent, "p"));
+        paths.add(new EnumPath(ExampleEnum.class, parent, "p"));
+        paths.add(new ListPath(String.class, StringPath.class, parent, "p"));
+        paths.add(new MapPath(String.class, String.class, StringPath.class, parent, "p"));
+        paths.add(new NumberPath(Integer.class, parent, "p"));
+        paths.add(new SetPath(String.class, StringPath.class, parent, "p"));
+        paths.add(new SimplePath(String.class, parent, "p"));
+        paths.add(new StringPath(parent, "p"));
+        paths.add(new TimePath(Time.class, parent, "p"));
+        
+        for (Path<?> path : paths){
+            Path other = new PathImpl(path.getType(), PathMetadataFactory.forProperty(parent, "p"));
+            assertEquals(path.toString(), path.accept(ToStringVisitor.DEFAULT, Templates.DEFAULT));
+            assertEquals(path.hashCode(), other.hashCode());
+            assertEquals(path, other);
+            assertNotNull(path.getMetadata());
+            assertNotNull(path.getType());
+            assertEquals(parent, path.getRoot());            
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
     public void Various(){
         List<Path<?>> paths = new ArrayList<Path<?>>();
         paths.add(new ArrayPath(String[].class, "p"));
@@ -152,6 +186,7 @@ public class PathTest {
         paths.add(new ListPath(String.class, StringPath.class, "p"));
         paths.add(new MapPath(String.class, String.class, StringPath.class, "p"));
         paths.add(new NumberPath(Integer.class,"p"));
+        paths.add(new SetPath(String.class, StringPath.class, "p"));
         paths.add(new SimplePath(String.class,"p"));
         paths.add(new StringPath("p"));
         paths.add(new TimePath(Time.class,"p"));
