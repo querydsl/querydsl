@@ -122,4 +122,19 @@ query
 ]]></programlisting>
   
   </sect2>
+  
+  <sect2>
+  	
+	<title>Fuzzy searches</title>
+	
+	<para>Fuzzy searches can be expressed via fuzzyLike methods in the com.mysema.query.lucene.LuceneUtils class : </para>
+	
+<programlisting language="java"><![CDATA[ 
+query
+    .where(LuceneUtils.fuzzyLike(doc.title, "Hello"))
+    .offset(3)
+    .list();
+]]></programlisting>	
+	
+  </sect2>	
 </sect1>
