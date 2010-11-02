@@ -38,6 +38,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.StringConstant;
 import com.mysema.query.Target;
 import com.mysema.query.lucene.LuceneSerializer;
+import com.mysema.query.lucene.LuceneUtils;
 import com.mysema.query.lucene.QueryElement;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -188,6 +189,21 @@ public class LuceneSerializerTest {
     @Test
     public void eq() throws Exception {
         testQuery(rating.eq("Good"), "rating:good", 1);
+    }
+    
+    @Test
+    public void fuzzyLike() throws Exception{
+        testQuery(LuceneUtils.fuzzyLike(rating, "Good"), "rating:Good~0.5", 1);
+    }
+    
+    @Test
+    public void fuzzyLike_with_Similarity() throws Exception{
+        testQuery(LuceneUtils.fuzzyLike(rating, "Good", 0.6f), "rating:Good~0.6", 1);
+    }
+    
+    @Test
+    public void fuzzyLike_with_Similarity_and_prefix() throws Exception{
+        testQuery(LuceneUtils.fuzzyLike(rating, "Good", 0.6f, 0), "rating:Good~0.6", 1);
     }
 
     @Test
