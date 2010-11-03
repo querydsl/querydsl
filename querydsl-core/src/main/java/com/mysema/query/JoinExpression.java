@@ -24,7 +24,7 @@ public final class JoinExpression implements Serializable{
 
     private static final long serialVersionUID = -1131755765747174886L;
 
-    private BooleanBuilder condition = new BooleanBuilder();
+    private final BooleanBuilder condition = new BooleanBuilder();
 
     private final Set<JoinFlag> flags = new LinkedHashSet<JoinFlag>();
 
