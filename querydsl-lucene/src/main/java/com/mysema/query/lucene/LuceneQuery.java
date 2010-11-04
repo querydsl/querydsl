@@ -7,6 +7,7 @@ package com.mysema.query.lucene;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.lucene.document.Document;
@@ -92,6 +93,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
         List<OrderSpecifier<?>> orderBys = metadata.getOrderBy();
         Long queryLimit = metadata.getModifiers().getLimit();
         Long queryOffset = metadata.getModifiers().getOffset();
+        Sort sort = null;
         int limit;
         int offset = queryOffset != null ? queryOffset.intValue() : 0;
         try {
@@ -103,20 +105,29 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
             limit = queryLimit.intValue();
         }
         if (!orderBys.isEmpty()) {
-            return listSorted(orderBys, limit, offset);
+            sort = serializer.toSort(orderBys);
         }
 
-        List<Document> documents = null;
         try {
-            ScoreDoc[] scoreDocs = searcher.search(createQuery(), limit + offset).scoreDocs;
-            documents = new ArrayList<Document>(scoreDocs.length - offset);
-            for (int i = offset; i < scoreDocs.length; ++i) {
-                documents.add(searcher.doc(scoreDocs[i].doc));
+            ScoreDoc[] scoreDocs;
+            if (sort != null){
+                scoreDocs = searcher.search(createQuery(), null, limit + offset, sort).scoreDocs;
+            }else{
+                scoreDocs = searcher.search(createQuery(), limit + offset).scoreDocs;
             }
+            if (offset < scoreDocs.length){
+                List<Document> documents = new ArrayList<Document>(scoreDocs.length - offset);
+                for (int i = offset; i < scoreDocs.length; ++i) {
+                    documents.add(searcher.doc(scoreDocs[i].doc));
+                }
+                return documents;
+            }else{
+                return Collections.emptyList(); 
+            }
+            
         } catch (IOException e) {
             throw new QueryException(e);
         }
-        return documents;
     }
 
     @Override
@@ -137,20 +148,6 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
          * list results in list* from n to m.
          */
         return new SearchResults<Document>(documents, queryMixin.getMetadata().getModifiers(), count());
-    }
-
-    private List<Document> listSorted(List<OrderSpecifier<?>> orderBys, int limit, int offset) {
-        try {
-            Sort sort = serializer.toSort(orderBys);
-            ScoreDoc[] scoreDocs = searcher.search(createQuery(), null, limit + offset, sort).scoreDocs;
-            List<Document> documents = new ArrayList<Document>(scoreDocs.length - offset);
-            for (int i = offset; i < scoreDocs.length; ++i) {
-                documents.add(searcher.doc(scoreDocs[i].doc));
-            }
-            return documents;
-        } catch (IOException e) {
-            throw new QueryException(e);
-        }
     }
 
     @Override
