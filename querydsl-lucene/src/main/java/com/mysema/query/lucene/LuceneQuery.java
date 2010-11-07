@@ -6,8 +6,7 @@
 package com.mysema.query.lucene;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.lucene.document.Document;
@@ -31,10 +30,11 @@ import com.mysema.query.types.Predicate;
 
 /**
  * LuceneQuery is a Querydsl query implementation for Lucene queries.
- *
+ * 
  * @author vema
  */
-public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<Document> {
+public class LuceneQuery implements SimpleQuery<LuceneQuery>,
+        SimpleProjectable<Document> {
 
     private final QueryMixin<LuceneQuery> queryMixin;
 
@@ -42,25 +42,26 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
 
     private final LuceneSerializer serializer;
 
-    public LuceneQuery(LuceneSerializer serializer, Searcher searcher) {
+    public LuceneQuery(final LuceneSerializer serializer,
+            final Searcher searcher) {
         queryMixin = new QueryMixin<LuceneQuery>(this);
         this.serializer = serializer;
         this.searcher = searcher;
     }
 
-    public LuceneQuery(Searcher searcher) {
+    public LuceneQuery(final Searcher searcher) {
         this(LuceneSerializer.DEFAULT, searcher);
     }
 
     @Override
     public long count() {
         try {
-            int maxDoc = searcher.maxDoc();
+            final int maxDoc = searcher.maxDoc();
             if (maxDoc == 0) {
                 return 0;
             }
             return searcher.search(createQuery(), maxDoc).totalHits;
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new QueryException(e);
         }
     }
@@ -74,31 +75,26 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
         if (queryMixin.getMetadata().getWhere() == null) {
             throw new QueryException("Where clause was null.");
         }
-        return serializer.toQuery(queryMixin.getMetadata().getWhere(), queryMixin.getMetadata());
+        return serializer.toQuery(queryMixin.getMetadata().getWhere(),
+                queryMixin.getMetadata());
     }
 
     @Override
-    public LuceneQuery limit(long limit) {
+    public LuceneQuery limit(final long limit) {
         return queryMixin.limit(limit);
     }
-    
-    public CloseableIterator<Document> iterate(){
-        // TODO : optimize
-        return new IteratorAdapter<Document>(list().iterator());
-    }
 
-    @Override
-    public List<Document> list() {
-        QueryMetadata metadata = queryMixin.getMetadata();
-        List<OrderSpecifier<?>> orderBys = metadata.getOrderBy();
-        Long queryLimit = metadata.getModifiers().getLimit();
-        Long queryOffset = metadata.getModifiers().getOffset();
+    public CloseableIterator<Document> iterate() {
+        final QueryMetadata metadata = queryMixin.getMetadata();
+        final List<OrderSpecifier<?>> orderBys = metadata.getOrderBy();
+        final Long queryLimit = metadata.getModifiers().getLimit();
+        final Long queryOffset = metadata.getModifiers().getOffset();
         Sort sort = null;
         int limit;
-        int offset = queryOffset != null ? queryOffset.intValue() : 0;
+        final int offset = queryOffset != null ? queryOffset.intValue() : 0;
         try {
             limit = searcher.maxDoc();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new QueryException(e);
         }
         if (queryLimit != null && queryLimit.intValue() < limit) {
@@ -110,24 +106,65 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
 
         try {
             ScoreDoc[] scoreDocs;
-            if (sort != null){
-                scoreDocs = searcher.search(createQuery(), null, limit + offset, sort).scoreDocs;
-            }else{
+            if (sort != null) {
+                scoreDocs = searcher.search(createQuery(), null,
+                        limit + offset, sort).scoreDocs;
+            } else {
                 scoreDocs = searcher.search(createQuery(), limit + offset).scoreDocs;
             }
-            if (offset < scoreDocs.length){
-                List<Document> documents = new ArrayList<Document>(scoreDocs.length - offset);
-                for (int i = offset; i < scoreDocs.length; ++i) {
-                    documents.add(searcher.doc(scoreDocs[i].doc));
-                }
-                return documents;
-            }else{
-                return Collections.emptyList(); 
+            if (offset < scoreDocs.length) {
+                return new IteratorAdapter<Document>(new DocumentIterator(
+                        scoreDocs, offset, searcher));
+            } else {
+                return new IteratorAdapter<Document>(new DocumentIterator());
             }
-            
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new QueryException(e);
         }
+    }
+
+    private static final class DocumentIterator implements Iterator<Document> {
+        private final ScoreDoc[] scoreDocs;
+        private int cursor;
+        private final Searcher searcher;
+
+        public DocumentIterator() {
+            scoreDocs = new ScoreDoc[] {};
+            cursor = 0;
+            searcher = null;
+        }
+
+        public DocumentIterator(final ScoreDoc[] scoreDocs, final int offset,
+                final Searcher searcher) {
+            this.scoreDocs = scoreDocs;
+            cursor = offset;
+            this.searcher = searcher;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return cursor != scoreDocs.length;
+        }
+
+        @Override
+        public Document next() {
+            try {
+                return searcher.doc(scoreDocs[cursor++].doc);
+            } catch (final IOException e) {
+                throw new QueryException(e);
+            }
+        }
+
+        @Override
+        public void remove() {
+            // TODO Auto-generated method stub
+        }
+
+    }
+
+    @Override
+    public List<Document> list() {
+        return ((IteratorAdapter<Document>) iterate()).asList();
     }
 
     @Override
@@ -142,42 +179,43 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
 
     @Override
     public SearchResults<Document> listResults() {
-        List<Document> documents = list();
+        final List<Document> documents = list();
         /*
          * TODO Get rid of count(). It could be implemented by iterating the
          * list results in list* from n to m.
          */
-        return new SearchResults<Document>(documents, queryMixin.getMetadata().getModifiers(), count());
+        return new SearchResults<Document>(documents, queryMixin.getMetadata()
+                .getModifiers(), count());
     }
 
     @Override
-    public LuceneQuery offset(long offset) {
+    public LuceneQuery offset(final long offset) {
         return queryMixin.offset(offset);
     }
 
     @Override
-    public LuceneQuery orderBy(OrderSpecifier<?>... o) {
+    public LuceneQuery orderBy(final OrderSpecifier<?>... o) {
         return queryMixin.orderBy(o);
     }
 
     @Override
-    public LuceneQuery restrict(QueryModifiers modifiers) {
+    public LuceneQuery restrict(final QueryModifiers modifiers) {
         return queryMixin.restrict(modifiers);
     }
 
     @Override
-    public <T> LuceneQuery set(ParamExpression<T> param, T value) {
+    public <T> LuceneQuery set(final ParamExpression<T> param, final T value) {
         return queryMixin.set(param, value);
     }
 
     @Override
     public Document uniqueResult() {
         try {
-            int maxDoc = searcher.maxDoc();
+            final int maxDoc = searcher.maxDoc();
             if (maxDoc == 0) {
                 return null;
             }
-            ScoreDoc[] scoreDocs = searcher.search(createQuery(), maxDoc).scoreDocs;
+            final ScoreDoc[] scoreDocs = searcher.search(createQuery(), maxDoc).scoreDocs;
             if (scoreDocs.length > 1) {
                 throw new QueryException("More than one result found!");
             } else if (scoreDocs.length == 1) {
@@ -185,13 +223,13 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>, SimpleProjectable<
             } else {
                 return null;
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new QueryException(e);
         }
     }
 
     @Override
-    public LuceneQuery where(Predicate... e) {
+    public LuceneQuery where(final Predicate... e) {
         return queryMixin.where(e);
     }
 

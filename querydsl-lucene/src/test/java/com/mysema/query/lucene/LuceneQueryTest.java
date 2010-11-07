@@ -15,6 +15,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -46,9 +47,9 @@ import com.mysema.query.types.path.StringPath;
 
 /**
  * Tests for LuceneQuery
- *
+ * 
  * @author vema
- *
+ * 
  */
 public class LuceneQueryTest {
 
@@ -56,13 +57,15 @@ public class LuceneQueryTest {
 
         private static final long serialVersionUID = -4872833626508344081L;
 
-        public QDocument(String var) {
+        public QDocument(final String var) {
             super(Document.class, PathMetadataFactory.forVariable(var));
         }
 
-        public final NumberPath<Integer> year = createNumber("year", Integer.class);
+        public final NumberPath<Integer> year = createNumber("year",
+                Integer.class);
         public final StringPath title = createString("title");
-        public final NumberPath<Double> gross = createNumber("gross", Double.class);
+        public final NumberPath<Double> gross = createNumber("gross",
+                Double.class);
     }
 
     private LuceneQuery query;
@@ -74,29 +77,31 @@ public class LuceneQueryTest {
     private IndexWriter writer;
     private Searcher searcher;
 
-    private Document createDocument(String docTitle, String docAuthor, String docText, int docYear,
-            double docGross) {
-        Document doc = new Document();
+    private Document createDocument(final String docTitle,
+            final String docAuthor, final String docText, final int docYear,
+            final double docGross) {
+        final Document doc = new Document();
 
         doc.add(new Field("title", docTitle, Store.YES, Index.ANALYZED));
         doc.add(new Field("author", docAuthor, Store.YES, Index.ANALYZED));
         doc.add(new Field("text", docText, Store.YES, Index.ANALYZED));
         doc.add(new NumericField("year", Store.YES, true).setIntValue(docYear));
-        doc.add(new NumericField("gross", Store.YES, true).setDoubleValue(docGross));
+        doc.add(new NumericField("gross", Store.YES, true)
+                .setDoubleValue(docGross));
 
         return doc;
     }
 
     @Before
     public void setUp() throws Exception {
-        QDocument entityPath = new QDocument("doc");
+        final QDocument entityPath = new QDocument("doc");
         title = entityPath.title;
         year = entityPath.year;
         gross = entityPath.gross;
 
         idx = new RAMDirectory();
-        writer = new IndexWriter(idx, new StandardAnalyzer(Version.LUCENE_CURRENT), true,
-                MaxFieldLength.UNLIMITED);
+        writer = new IndexWriter(idx, new StandardAnalyzer(
+                Version.LUCENE_CURRENT), true, MaxFieldLength.UNLIMITED);
 
         writer.addDocument(createDocument("Jurassic Park", "Michael Crichton",
                 "It's a UNIX system! I know this!", 1990, 90.00));
@@ -108,9 +113,11 @@ public class LuceneQueryTest {
                         "John R. R. Tolkien",
                         "One Ring to rule them all, One Ring to find them, One Ring to bring them all and in the darkness bind them",
                         1954, 89.00));
-        writer.addDocument(createDocument("Introduction to Algorithms",
-                "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein",
-                "Bubble sort", 1990, 30.50));
+        writer
+                .addDocument(createDocument(
+                        "Introduction to Algorithms",
+                        "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein",
+                        "Bubble sort", 1990, 30.50));
 
         writer.optimize();
         writer.close();
@@ -137,7 +144,8 @@ public class LuceneQueryTest {
 
     @Test(expected = QueryException.class)
     public void count_Index_Problem() throws IOException {
-        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod("maxDoc").createMock();
+        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod(
+                "maxDoc").createMock();
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
         expect(searcher.maxDoc()).andThrow(new IOException());
         replay(searcher);
@@ -156,7 +164,7 @@ public class LuceneQueryTest {
     public void list_Sorted_By_Year_Ascending() {
         query.where(year.between(1800, 2000));
         query.orderBy(year.asc());
-        List<Document> documents = query.list();
+        final List<Document> documents = query.list();
         assertFalse(documents.isEmpty());
         assertEquals(4, documents.size());
     }
@@ -164,7 +172,7 @@ public class LuceneQueryTest {
     @Test
     public void list_Not_Sorted() {
         query.where(year.between(1800, 2000));
-        List<Document> documents = query.list();
+        final List<Document> documents = query.list();
         assertFalse(documents.isEmpty());
         assertEquals(4, documents.size());
     }
@@ -173,7 +181,7 @@ public class LuceneQueryTest {
     public void list_Not_Sorted_Limit_2() {
         query.where(year.between(1800, 2000));
         query.limit(2);
-        List<Document> documents = query.list();
+        final List<Document> documents = query.list();
         assertFalse(documents.isEmpty());
         assertEquals(2, documents.size());
     }
@@ -183,7 +191,7 @@ public class LuceneQueryTest {
         query.where(year.between(1800, 2000));
         query.limit(1);
         query.orderBy(year.asc());
-        List<Document> documents = query.list();
+        final List<Document> documents = query.list();
         assertFalse(documents.isEmpty());
         assertEquals(1, documents.size());
     }
@@ -192,7 +200,7 @@ public class LuceneQueryTest {
     public void list_Not_Sorted_Offset_2() {
         query.where(year.between(1800, 2000));
         query.offset(2);
-        List<Document> documents = query.list();
+        final List<Document> documents = query.list();
         assertFalse(documents.isEmpty());
         assertEquals(2, documents.size());
     }
@@ -202,7 +210,7 @@ public class LuceneQueryTest {
         query.where(year.between(1800, 2000));
         query.offset(2);
         query.orderBy(year.asc());
-        List<Document> documents = query.list();
+        final List<Document> documents = query.list();
         assertFalse(documents.isEmpty());
         assertEquals(2, documents.size());
         assertEquals("1990", documents.get(0).get("year"));
@@ -214,7 +222,7 @@ public class LuceneQueryTest {
         query.where(year.between(1800, 2000));
         query.restrict(new QueryModifiers(2l, 1l));
         query.orderBy(year.asc());
-        List<Document> documents = query.list();
+        final List<Document> documents = query.list();
         assertFalse(documents.isEmpty());
         assertEquals(2, documents.size());
         assertEquals("1954", documents.get(0).get("year"));
@@ -225,7 +233,7 @@ public class LuceneQueryTest {
     public void list_Sorted_Ascending_By_Year() {
         query.where(year.between(1800, 2000));
         query.orderBy(year.asc());
-        List<Document> documents = query.list();
+        final List<Document> documents = query.list();
         assertFalse(documents.isEmpty());
         assertEquals(4, documents.size());
         assertEquals("1864", documents.get(0).get("year"));
@@ -238,7 +246,7 @@ public class LuceneQueryTest {
     public void list_Sorted_Descending_By_Year() {
         query.where(year.between(1800, 2000));
         query.orderBy(year.desc());
-        List<Document> documents = query.list();
+        final List<Document> documents = query.list();
         assertFalse(documents.isEmpty());
         assertEquals(4, documents.size());
         assertEquals("1990", documents.get(0).get("year"));
@@ -251,7 +259,7 @@ public class LuceneQueryTest {
     public void list_Sorted_Descending_By_Gross() {
         query.where(gross.between(0.0, 1000.00));
         query.orderBy(gross.desc());
-        List<Document> documents = query.list();
+        final List<Document> documents = query.list();
         assertFalse(documents.isEmpty());
         assertEquals(4, documents.size());
         assertEquals("90.0", documents.get(0).get("gross"));
@@ -265,12 +273,13 @@ public class LuceneQueryTest {
         query.where(year.between(1800, 2000));
         query.orderBy(year.desc());
         query.orderBy(title.asc());
-        List<Document> documents = query.list();
+        final List<Document> documents = query.list();
         assertFalse(documents.isEmpty());
         assertEquals(4, documents.size());
         assertEquals("1990", documents.get(0).get("year"));
         assertEquals("1990", documents.get(1).get("year"));
-        assertEquals("Introduction to Algorithms", documents.get(0).get("title"));
+        assertEquals("Introduction to Algorithms", documents.get(0)
+                .get("title"));
         assertEquals("Jurassic Park", documents.get(1).get("title"));
     }
 
@@ -279,19 +288,21 @@ public class LuceneQueryTest {
         query.where(year.between(1800, 2000));
         query.orderBy(year.desc());
         query.orderBy(title.desc());
-        List<Document> documents = query.list();
+        final List<Document> documents = query.list();
         assertFalse(documents.isEmpty());
         assertEquals(4, documents.size());
         assertEquals("1990", documents.get(0).get("year"));
         assertEquals("1990", documents.get(1).get("year"));
         assertEquals("Jurassic Park", documents.get(0).get("title"));
-        assertEquals("Introduction to Algorithms", documents.get(1).get("title"));
+        assertEquals("Introduction to Algorithms", documents.get(1)
+                .get("title"));
     }
 
     @Ignore
     @Test(expected = QueryException.class)
     public void list_Index_Problem_In_Max_Doc() throws IOException {
-        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod("maxDoc").createMock();
+        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod(
+                "maxDoc").createMock();
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
         expect(searcher.maxDoc()).andThrow(new IOException());
         replay(searcher);
@@ -303,7 +314,8 @@ public class LuceneQueryTest {
     @Ignore
     @Test(expected = QueryException.class)
     public void list_Sorted_Index_Problem_In_Max_Doc() throws IOException {
-        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod("maxDoc").createMock();
+        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod(
+                "maxDoc").createMock();
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
         expect(searcher.maxDoc()).andThrow(new IOException());
         replay(searcher);
@@ -312,31 +324,32 @@ public class LuceneQueryTest {
         query.list();
         verify(searcher);
     }
-    
+
     @Test
-    public void offset(){
-        assertTrue(query.where(title.eq("Jurassic Park")).offset(30).list().isEmpty());
+    public void offset() {
+        assertTrue(query.where(title.eq("Jurassic Park")).offset(30).list()
+                .isEmpty());
     }
 
     @Test
     public void uniqueResult() {
         query.where(title.startsWith("Nummi"));
-        Document document = query.uniqueResult();
+        final Document document = query.uniqueResult();
         assertEquals("Nummisuutarit", document.get("title"));
     }
 
     @Test
-    public void uniqueResult_With_Param(){
-        Param<String> param = new Param<String>(String.class,"title");
+    public void uniqueResult_With_Param() {
+        final Param<String> param = new Param<String>(String.class, "title");
         query.set(param, "Nummi");
         query.where(title.startsWith(param));
-        Document document = query.uniqueResult();
+        final Document document = query.uniqueResult();
         assertEquals("Nummisuutarit", document.get("title"));
     }
 
-    @Test(expected=ParamNotSetException.class)
-    public void uniqueResult_Param_Not_Set(){
-        Param<String> param = new Param<String>(String.class,"title");
+    @Test(expected = ParamNotSetException.class)
+    public void uniqueResult_Param_Not_Set() {
+        final Param<String> param = new Param<String>(String.class, "title");
         query.where(title.startsWith(param));
         query.uniqueResult();
     }
@@ -354,8 +367,10 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void uniqueResult_Finds_No_Results_Because_No_Documents_In_Index() throws IOException {
-        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod("maxDoc").createMock();
+    public void uniqueResult_Finds_No_Results_Because_No_Documents_In_Index()
+            throws IOException {
+        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod(
+                "maxDoc").createMock();
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
         expect(searcher.maxDoc()).andReturn(0);
         replay(searcher);
@@ -364,8 +379,10 @@ public class LuceneQueryTest {
     }
 
     @Test(expected = QueryException.class)
-    public void uniqueResult_Sorted_Index_Problem_In_Max_Doc() throws IOException {
-        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod("maxDoc").createMock();
+    public void uniqueResult_Sorted_Index_Problem_In_Max_Doc()
+            throws IOException {
+        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod(
+                "maxDoc").createMock();
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
         expect(searcher.maxDoc()).andThrow(new IOException());
         replay(searcher);
@@ -375,8 +392,10 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void count_Returns_0_Because_No_Documents_In_Index() throws IOException {
-        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod("maxDoc").createMock();
+    public void count_Returns_0_Because_No_Documents_In_Index()
+            throws IOException {
+        searcher = createMockBuilder(IndexSearcher.class).addMockedMethod(
+                "maxDoc").createMock();
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
         expect(searcher.maxDoc()).andReturn(0);
         replay(searcher);
@@ -388,7 +407,7 @@ public class LuceneQueryTest {
     public void listDistinct() {
         query.where(year.between(1900, 2000).or(title.startsWith("Jura")));
         query.orderBy(year.asc());
-        List<Document> documents = query.listDistinct();
+        final List<Document> documents = query.listDistinct();
         assertFalse(documents.isEmpty());
         assertEquals(3, documents.size());
     }
@@ -398,7 +417,7 @@ public class LuceneQueryTest {
         query.where(year.between(1800, 2000));
         query.restrict(new QueryModifiers(2l, 1l));
         query.orderBy(year.asc());
-        SearchResults<Document> results = query.listResults();
+        final SearchResults<Document> results = query.listResults();
         assertFalse(results.isEmpty());
         assertEquals("1954", results.getResults().get(0).get("year"));
         assertEquals("1990", results.getResults().get(1).get("year"));
@@ -409,10 +428,11 @@ public class LuceneQueryTest {
 
     @Test
     public void listDistinctResults() {
-        query.where(year.between(1800, 2000).or(title.eq("The Lord of the Rings")));
+        query.where(year.between(1800, 2000).or(
+                title.eq("The Lord of the Rings")));
         query.restrict(new QueryModifiers(1l, 1l));
         query.orderBy(year.asc());
-        SearchResults<Document> results = query.listDistinctResults();
+        final SearchResults<Document> results = query.listDistinctResults();
         assertFalse(results.isEmpty());
         assertEquals("1954", results.getResults().get(0).get("year"));
         assertEquals(1, results.getLimit());
@@ -422,8 +442,8 @@ public class LuceneQueryTest {
 
     @Test
     public void list_All() {
-        List<Document> results = query.where(title.like("*")).orderBy(title.asc(), year.desc())
-                .list();
+        final List<Document> results = query.where(title.like("*")).orderBy(
+                title.asc(), year.desc()).list();
         assertEquals(4, results.size());
     }
 
@@ -477,7 +497,7 @@ public class LuceneQueryTest {
         query.where(year.between(1800, 2000));
         query.offset(0);
         query.orderBy(year.asc());
-        List<Document> documents = query.list();
+        final List<Document> documents = query.list();
         assertFalse(documents.isEmpty());
         assertEquals(4, documents.size());
     }
@@ -486,8 +506,21 @@ public class LuceneQueryTest {
     public void list_Not_Sorted_Offset_0() {
         query.where(year.between(1800, 2000));
         query.offset(0);
-        List<Document> documents = query.list();
+        final List<Document> documents = query.list();
         assertFalse(documents.isEmpty());
         assertEquals(4, documents.size());
+    }
+
+    @Test
+    public void iterate() {
+        query.where(year.between(1800, 2000));
+        final Iterator<Document> iterator = query.iterate();
+        int count = 0;
+        while (iterator.hasNext()) {
+            iterator.next();
+            ++count;
+        }
+        assertEquals(4, count);
+
     }
 }
