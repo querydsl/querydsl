@@ -42,6 +42,7 @@ public final class DocumentIterator implements CloseableIterator<Document> {
 
     @Override
     public void remove() {
+        throw new UnsupportedOperationException();
     }
 
     @Override
