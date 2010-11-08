@@ -91,7 +91,11 @@ exporter.export(conn.getMetaData());
   	
 	<title>ANT integration</title>
 	
-	<para>TODO</para>
+	<para>
+		The ANT task com.mysema.query.sql.ant.AntMetaDataExporter of the querydsl-sql module provides the same functionality as an ANT task.
+		The configuration parameters of the task are jdbcDriverClass, dbUrl, dbUserName, dbPassword, namePrefix, targetPackage, targetSourceFolder,
+		schemaPattern and tableNamePattern.
+	</para>
 	
   </sect2>	
   
