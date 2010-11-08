@@ -84,6 +84,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
         return queryMixin.limit(limit);
     }
 
+    @Override
     public CloseableIterator<Document> iterate() {
         final QueryMetadata metadata = queryMixin.getMetadata();
         final List<OrderSpecifier<?>> orderBys = metadata.getOrderBy();
