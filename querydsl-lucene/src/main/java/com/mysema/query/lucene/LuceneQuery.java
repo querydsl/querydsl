@@ -6,7 +6,6 @@
 package com.mysema.query.lucene;
 
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.lucene.document.Document;
@@ -16,6 +15,7 @@ import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.Sort;
 
 import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.EmptyCloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
@@ -113,58 +113,18 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
                 scoreDocs = searcher.search(createQuery(), limit + offset).scoreDocs;
             }
             if (offset < scoreDocs.length) {
-                return new IteratorAdapter<Document>(new DocumentIterator(
-                        scoreDocs, offset, searcher));
+                return new DocumentIterator(scoreDocs, offset, searcher);
             } else {
-                return new IteratorAdapter<Document>(new DocumentIterator());
+                return new EmptyCloseableIterator<Document>();
             }
         } catch (final IOException e) {
             throw new QueryException(e);
         }
     }
 
-    private static final class DocumentIterator implements Iterator<Document> {
-        private final ScoreDoc[] scoreDocs;
-        private int cursor;
-        private final Searcher searcher;
-
-        public DocumentIterator() {
-            scoreDocs = new ScoreDoc[] {};
-            cursor = 0;
-            searcher = null;
-        }
-
-        public DocumentIterator(final ScoreDoc[] scoreDocs, final int offset,
-                final Searcher searcher) {
-            this.scoreDocs = scoreDocs;
-            cursor = offset;
-            this.searcher = searcher;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return cursor != scoreDocs.length;
-        }
-
-        @Override
-        public Document next() {
-            try {
-                return searcher.doc(scoreDocs[cursor++].doc);
-            } catch (final IOException e) {
-                throw new QueryException(e);
-            }
-        }
-
-        @Override
-        public void remove() {
-            // TODO Auto-generated method stub
-        }
-
-    }
-
     @Override
     public List<Document> list() {
-        return ((IteratorAdapter<Document>) iterate()).asList();
+        return new IteratorAdapter<Document>(iterate()).asList();
     }
 
     @Override
@@ -184,8 +144,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
          * TODO Get rid of count(). It could be implemented by iterating the
          * list results in list* from n to m.
          */
-        return new SearchResults<Document>(documents, queryMixin.getMetadata()
-                .getModifiers(), count());
+        return new SearchResults<Document>(documents, queryMixin.getMetadata().getModifiers(), count());
     }
 
     @Override
