@@ -56,8 +56,14 @@
   	  
   <dependencySets>
     <dependencySet>
+      <scope>compile</scope>
+      <outputDirectory>lib/all</outputDirectory>
+    </dependencySet>
+	<!--   	
+    <dependencySet>
       <scope>provided</scope>
       <outputDirectory>lib/all</outputDirectory>
     </dependencySet>
+	-->
   </dependencySets>
 </assembly>
