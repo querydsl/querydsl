@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd" [
-        <!ENTITY versionNumber "2.0.3">
+        <!ENTITY versionNumber "2.0.4">
         <!ENTITY copyrightYear "2007-2010">
         <!ENTITY copyrightHolder "Mysema Ltd.">
 ]>
@@ -24,6 +24,10 @@
             <firstname>Vesa</firstname>
             <surname>Marttila</surname>
           </author>
+          <author>
+            <firstname>Lassi</firstname>
+            <surname>Immonen</surname>
+          </author>		  
         </authorgroup>
         <mediaobject>        
             <imageobject role="fo">
