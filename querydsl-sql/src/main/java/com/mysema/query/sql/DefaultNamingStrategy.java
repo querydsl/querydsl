@@ -8,6 +8,7 @@ package com.mysema.query.sql;
 import java.util.Locale;
 
 import com.mysema.query.codegen.EntityType;
+import com.mysema.query.codegen.Property;
 import com.mysema.util.JavaSyntaxUtils;
 
 /**
@@ -48,7 +49,21 @@ public class DefaultNamingStrategy implements NamingStrategy {
 
     @Override
     public String getDefaultVariableName(String namePrefix, EntityType entityType) {
-        return toCamelCase(entityType.getAnnotation(Table.class).value());
+        String defaultVariable = toCamelCase(entityType.getAnnotation(Table.class).value());
+        int suffix = 0;
+        while (true){
+            String candidate = suffix > 0 ? defaultVariable + suffix : defaultVariable;
+            boolean changed = false;
+            for (Property property : entityType.getProperties()){
+                if (candidate.equals(property.getEscapedName())){
+                    changed = true;
+                    suffix++;
+                }
+            }    
+            if (!changed){
+                return candidate;
+            }
+        }        
     }
     
     @Override

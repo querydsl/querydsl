@@ -64,14 +64,22 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
 
 
     private void test(String namePrefix, NamingStrategy namingStrategy, String target, boolean withBeans) throws SQLException{
-        statement.execute("drop table employee if exists");
-
+        // reserved words
+        statement.execute("drop table reserved if exists");
+        statement.execute("create table reserved (id int, while int)");
+        
+        // default instance clash
+        statement.execute("drop table definstance if exists");
+        statement.execute("create table definstance (id int, definstance int, definstance1 int)");
+        
+        // camel case
         statement.execute("drop table \"camelCase\" if exists");
         statement.execute("create table \"camelCase\" (id int)");
         
         statement.execute("drop table \"vwServiceName\" if exists");
         statement.execute("create table \"vwServiceName\" (id int)");
-        
+
+        // simple types
         statement.execute("drop table survey if exists");
         statement.execute("create table survey (id int, name varchar(30))");
 
@@ -80,7 +88,9 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
 
         statement.execute("drop table date_time_test if exists");
         statement.execute("create table date_time_test (dt datetime)");
-        
+
+        // complex type
+        statement.execute("drop table employee if exists");
         statement.execute("create table employee("
                 + "id INT, "
                 + "firstname VARCHAR(50), "
