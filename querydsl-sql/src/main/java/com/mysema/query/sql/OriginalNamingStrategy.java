@@ -7,7 +7,10 @@ package com.mysema.query.sql;
 
 import java.lang.annotation.Annotation;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.mysema.query.codegen.EntityType;
+import com.mysema.util.JavaSyntaxUtils;
 
 /**
  * OriginalNamingStrategy preserves the table and column names in the conversion
@@ -17,6 +20,8 @@ import com.mysema.query.codegen.EntityType;
  */
 public class OriginalNamingStrategy implements NamingStrategy {
 
+    private String reservedSuffix = "_col";
+    
     @Override
     public String getClassName(String namePrefix, String tableName) {
         return namePrefix + tableName;
@@ -34,18 +39,17 @@ public class OriginalNamingStrategy implements NamingStrategy {
 
     @Override
     public String getDefaultVariableName(String namePrefix, EntityType entityType) {
-        // TODO : escape
-        return entityType.getSimpleName();
+        return StringUtils.uncapitalize(entityType.getSimpleName());
     }
 
     @Override
-    public String getPropertyName(String columnName, String namePrefix, EntityType entityType) {
-        return columnName;
+    public String getPropertyName(String columnName, String namePrefix, EntityType entityType) {        
+        return getPropertyName(columnName);
     }
 
     @Override
     public String getPropertyNameForForeignKey(String foreignKeyName, EntityType entityType) {
-        return foreignKeyName;
+        return getPropertyName(foreignKeyName);
     }
 
     @Override
@@ -55,7 +59,15 @@ public class OriginalNamingStrategy implements NamingStrategy {
 
     @Override
     public String getPropertyNameForPrimaryKey(String primaryKeyName, EntityType model) {
-        return primaryKeyName;
+        return getPropertyName(primaryKeyName);
+    }
+    
+    private String getPropertyName(String name){
+        if (JavaSyntaxUtils.isReserved(name)){
+            return name + reservedSuffix;
+        }else{
+            return name;    
+        }
     }
 
     @Override

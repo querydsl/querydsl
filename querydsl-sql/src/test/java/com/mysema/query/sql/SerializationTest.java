@@ -7,7 +7,6 @@ import java.sql.Connection;
 import org.easymock.EasyMock;
 import org.junit.Test;
 
-import com.mysema.query.BooleanBuilder;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
@@ -45,8 +44,7 @@ public class SerializationTest {
         query.from(new QSurvey("s1")).fullJoin(new QSurvey("s2"));
         assertEquals("from SURVEY s1\nfull join SURVEY s2", query.toString());
     }
-    
-    
+        
     @Test
     public void Update(){
         QSurvey survey = new QSurvey("survey");

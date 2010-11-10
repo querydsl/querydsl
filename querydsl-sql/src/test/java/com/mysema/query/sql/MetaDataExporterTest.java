@@ -27,36 +27,51 @@ import com.mysema.query.codegen.BeanSerializer;
  */
 public class MetaDataExporterTest extends AbstractJDBCTest{
 
+    private static final NamingStrategy defaultNaming = new DefaultNamingStrategy();
+    
+    private static final NamingStrategy originalNaming = new OriginalNamingStrategy();
+
     @Test
-    public void Generation() throws Exception {
-        NamingStrategy defaultNaming = new DefaultNamingStrategy();
-        NamingStrategy originalNaming = new OriginalNamingStrategy();
-
-        // TODO : test for name conflicts
-
-        // normal settings
+    public void NormalSettings() throws SQLException{
         test("Q", defaultNaming, "target/1", false);
-        test("Q", defaultNaming, "target/11", true);
-
-        // without prefix
-        test("", defaultNaming, "target/2", false);
-
-        // with long prefix
-        test("QDSL", defaultNaming, "target/3",false);
-
-        // with different namingStrategy
-        test("Q", originalNaming, "target/4",false);
-
-        // without prefix
-        test("", originalNaming, "target/5",false);
-
-        // with long prefix
-        test("QDSL", originalNaming, "target/6",false);
+        test("Q", defaultNaming, "target/11", true);        
     }
+
+    @Test
+    public void WithoutPrefix() throws SQLException{
+        test("", defaultNaming, "target/2", false);        
+    }
+    
+    @Test
+    public void WithLongPrefix() throws SQLException{
+        test("QDSL", defaultNaming, "target/3",false);        
+    }
+    
+    @Test
+    public void WithDifferentNamingStrategy() throws SQLException{
+        test("Q", originalNaming, "target/4",false);
+    }
+    
+    @Test
+    public void WithoutPrefix2() throws SQLException{
+        test("", originalNaming, "target/5",false);
+    }
+    
+    @Test
+    public void WithLongPrefix2() throws SQLException{
+        test("QDSL", originalNaming, "target/6",false); 
+    }
+
 
     private void test(String namePrefix, NamingStrategy namingStrategy, String target, boolean withBeans) throws SQLException{
         statement.execute("drop table employee if exists");
 
+        statement.execute("drop table \"camelCase\" if exists");
+        statement.execute("create table \"camelCase\" (id int)");
+        
+        statement.execute("drop table \"vwServiceName\" if exists");
+        statement.execute("create table \"vwServiceName\" (id int)");
+        
         statement.execute("drop table survey if exists");
         statement.execute("create table survey (id int, name varchar(30))");
 
@@ -90,7 +105,7 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
 
         JavaCompiler compiler = new SimpleCompiler();
         Set<String> classes = exporter.getClasses();
-        int compilationResult = compiler.run(null, null, null, classes.toArray(new String[classes.size()]));
+        int compilationResult = compiler.run(null, System.out, System.err, classes.toArray(new String[classes.size()]));
         if(compilationResult == 0){
             System.out.println("Compilation is successful");
         }else{

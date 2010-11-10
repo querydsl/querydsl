@@ -5,6 +5,8 @@
  */
 package com.mysema.query.codegen;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
@@ -31,4 +33,25 @@ public class EntityTypeTest {
         serializer.serialize(entityModel, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         System.out.println(writer);
     }
+    
+    @Test
+    public void UncapSimpleName_Escaped(){
+        ClassType typeModel = new ClassType(TypeCategory.ENTITY, Object.class);
+        EntityType entityModel = new EntityType("Q", typeModel);
+        assertEquals("object", entityModel.getUncapSimpleName());
+        
+        entityModel.addProperty(new Property(entityModel, "object", typeModel));
+        assertEquals("object1", entityModel.getUncapSimpleName());
+    }
+    
+    @Test
+    public void UncapSimpleName_Escaped2(){
+        ClassType typeModel = new ClassType(TypeCategory.ENTITY, Object.class);
+        EntityType entityModel = new EntityType("Q", typeModel);
+        assertEquals("object", entityModel.getUncapSimpleName());
+        
+        entityModel.addProperty(new Property(entityModel, "OBJECT", "object", typeModel, new String[0], false));
+        assertEquals("object1", entityModel.getUncapSimpleName());
+    }
+    
 }

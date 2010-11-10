@@ -7,6 +7,7 @@ package com.mysema.query.sql;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.codegen.model.Types;
@@ -16,6 +17,14 @@ public class DefaultNamingStrategyTest {
 
     private NamingStrategy namingStrategy = new DefaultNamingStrategy();
 
+    private EntityType entityModel;
+    
+    @Before
+    public void setUp(){
+        entityModel = new EntityType("Q", Types.OBJECT);
+        entityModel.addAnnotation(new TableImpl("OBJECT"));
+    }
+    
     @Test
     public void GetClassName() {
         assertEquals("QUserData", namingStrategy.getClassName("Q", "user_data"));
@@ -27,7 +36,6 @@ public class DefaultNamingStrategyTest {
 
     @Test
     public void GetPropertyName() {
-        EntityType entityModel = new EntityType("Q", Types.OBJECT);
         assertEquals("whileCol", namingStrategy.getPropertyName("while", "Q", entityModel));
         assertEquals("name", namingStrategy.getPropertyName("name", "Q", entityModel));
         assertEquals("userId", namingStrategy.getPropertyName("user_id", "Q", entityModel));
@@ -36,15 +44,18 @@ public class DefaultNamingStrategyTest {
 
     @Test
     public void GetPropertyNameForInverseForeignKey(){
-        EntityType entityModel = new EntityType("Q", Types.OBJECT);
         assertEquals("_superiorFk", namingStrategy.getPropertyNameForInverseForeignKey("fk_superior", entityModel));
     }
     
     @Test
     public void GetPropertyNameForForeignKey(){
-        EntityType entityModel = new EntityType("Q", Types.OBJECT);
         assertEquals("superiorFk", namingStrategy.getPropertyNameForForeignKey("fk_superior", entityModel));
         assertEquals("superiorFk", namingStrategy.getPropertyNameForForeignKey("FK_SUPERIOR", entityModel));        
+    }
+    
+    @Test
+    public void GetDefaultVariableName(){
+        assertEquals("object", namingStrategy.getDefaultVariableName("Q", entityModel));
     }
     
 }
