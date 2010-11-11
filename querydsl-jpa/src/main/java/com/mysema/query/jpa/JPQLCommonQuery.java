@@ -265,7 +265,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
     <P> Q fullJoin(MapExpression<?, P> target, Path<P> alias);
 
     /**
-     * Add conditions to the with clause
+     * Add join conditions to the last added join
      *
      * @param condition
      * @return
