@@ -80,9 +80,6 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
         statement.execute("create table \"vwServiceName\" (id int)");
 
         // simple types
-        statement.execute("drop table survey if exists");
-        statement.execute("create table survey (id int, name varchar(30))");
-
         statement.execute("drop table date_test if exists");
         statement.execute("create table date_test (d date)");
 
@@ -91,6 +88,10 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
 
         // complex type
         statement.execute("drop table employee if exists");
+        
+        statement.execute("drop table survey if exists");
+        statement.execute("create table survey (id int, name varchar(30))");
+        
         statement.execute("create table employee("
                 + "id INT, "
                 + "firstname VARCHAR(50), "
