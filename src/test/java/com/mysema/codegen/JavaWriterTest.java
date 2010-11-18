@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2010 Mysema Ltd.
  * All rights reserved.
- * 
+ *
  */
 package com.mysema.codegen;
 
@@ -31,15 +31,15 @@ public class JavaWriterTest {
         @Override
         public Parameter transform(Parameter input) {
             return input;
-        }	
+        }
     };
-    
+
     private StringWriter w;
-    
+
     private CodeWriter writer;
 
     private Type testType, testType2, testSuperType, testInterface1, testInterface2;
-    
+
     private static void match(String resource, String text) throws IOException{
         // TODO : try to compile ?
         String expected = IOUtils.toString(JavaWriterTest.class.getResourceAsStream(resource),"UTF-8").replace("\r\n", "\n").trim();
@@ -64,26 +64,26 @@ public class JavaWriterTest {
         writer.field(Types.STRING.asArrayType(), "stringArray");
         writer.beginPublicMethod(Types.VOID, "main", new Parameter("args",Types.STRING.asArrayType()));
         writer.line("//");
-        writer.end();        
+        writer.end();
         writer.beginPublicMethod(Types.VOID, "main2", new Parameter("args",new ClassType(TypeCategory.ARRAY,String[].class)));
         writer.line("//");
-        writer.end();        
         writer.end();
-        
+        writer.end();
+
         System.out.println(w);
         assertTrue(w.toString().contains("String[] stringArray;"));
         assertTrue(w.toString().contains("public void main(String[] args) {"));
         assertTrue(w.toString().contains("public void main2(String[] args) {"));
     }
-    
+
     @Test
     public void Primitive_Arrays(){
         ClassType byteArray = new ClassType(byte[].class);
         assertEquals("byte[]", writer.getRawName(byteArray));
     }
-    
+
     @Test
-    public void Basic() throws IOException {        
+    public void Basic() throws IOException {
         writer.packageDecl("com.mysema.codegen");
         writer.imports(IOException.class, StringWriter.class, Test.class);
         writer.beginClass(testType);
@@ -92,44 +92,44 @@ public class JavaWriterTest {
         writer.line("// TODO");
         writer.end();
         writer.end();
-        
+
         match("/testBasic", w.toString());
     }
-    
+
     @Test
     public void Extends() throws IOException{
         writer.beginClass(testType2, testSuperType);
         writer.end();
-        
+
         match("/testExtends", w.toString());
     }
-    
+
     @Test
     public void Implements() throws IOException{
         writer.beginClass(testType2, null, testInterface1,testInterface2);
         writer.end();
-        
+
         match("/testImplements", w.toString());
     }
-    
+
     @Test
     public void Interface() throws IOException{
         writer.packageDecl("com.mysema.codegen");
         writer.imports(IOException.class, StringWriter.class, Test.class);
         writer.beginInterface(testType);
         writer.end();
-        
+
         match("/testInterface", w.toString());
     }
-    
+
     @Test
     public void Interface2() throws IOException{
         writer.beginInterface(testType2, testInterface1);
         writer.end();
-        
+
         match("/testInterface2", w.toString());
     }
-    
+
     @Test
     public void Javadoc() throws IOException{
         writer.packageDecl("com.mysema.codegen");
@@ -137,11 +137,11 @@ public class JavaWriterTest {
         writer.javadoc("JavaWriterTest is a test class");
         writer.beginClass(testType);
         writer.end();
-                
+
         match("/testJavadoc", w.toString());
     }
 
-    
+
     @Test
     public void Annotations() throws IOException{
         writer.packageDecl("com.mysema.codegen");
@@ -152,10 +152,10 @@ public class JavaWriterTest {
         writer.beginPublicMethod(Types.VOID, "test");
         writer.end();
         writer.end();
-                
+
         match("/testAnnotations", w.toString());
     }
-    
+
     @Test
     public void Annotations2() throws IOException{
         writer.packageDecl("com.mysema.codegen");
@@ -180,10 +180,10 @@ public class JavaWriterTest {
         writer.beginPublicMethod(Types.VOID, "test");
         writer.end();
         writer.end();
-                
+
         match("/testAnnotations2", w.toString());
     }
-    
+
     @Test
     public void Fields() throws IOException{
         writer.beginClass(testType);
@@ -199,73 +199,88 @@ public class JavaWriterTest {
         writer.publicStaticFinal(Types.STRING, "publicStaticFinal", "\"val\"");
         writer.publicFinal(Types.STRING, "publicFinalField");
         writer.publicFinal(Types.STRING, "publicFinalField2", "\"val\"");
-        
+
         writer.end();
-        
+
         match("/testFields", w.toString());
     }
-    
+
     @Test
     public void Methods() throws IOException{
         writer.beginClass(testType);
         // private
-        
+
         // protected
-        
+
         // method
-        
+
         // public
         writer.beginPublicMethod(Types.STRING, "publicMethod", Arrays.asList(new Parameter("a", Types.STRING)), transformer);
         writer.line("return null;");
         writer.end();
-        
+
         writer.beginStaticMethod(Types.STRING, "staticMethod", Arrays.asList(new Parameter("a", Types.STRING)), transformer);
         writer.line("return null;");
         writer.end();
-        
+
         writer.end();
-        
+
         match("/testMethods", w.toString());
     }
-    
+
     @Test
     public void Constructors() throws IOException{
 	writer.beginClass(testType);
-	
+
 	writer.beginConstructor(Arrays.asList(new Parameter("a", Types.STRING), new Parameter("b", Types.STRING)), transformer);
 	writer.end();
-	
+
 	writer.beginConstructor(new Parameter("a", Types.STRING));
 	writer.end();
-	
+
 	writer.end();
-        
+
         match("/testConstructors", w.toString());
-	
+
     }
-    
+
+    @Test
+    public void Inner_Classes() throws IOException{
+        writer.beginClass(testType);
+
+        writer.beginClass(testType2);
+        writer.end();
+
+        writer.beginConstructor(new Parameter("a", Types.STRING));
+        writer.end();
+
+        writer.end();
+
+        match("/testInnerClasses", w.toString());
+    }
+
     @Test
     public void Imports() throws IOException{
 	writer.staticimports(Arrays.class);
-	
+
         match("/testImports", w.toString());
     }
-    
+
 
     @Test
     public void Imports2() throws IOException{
         writer.importPackages("java.lang.reflect","java.util");
-        
+
         match("/testImports2", w.toString());
     }
-    
-    
+
+
     @Test
     public void SuppressWarnings() throws IOException{
 	writer.suppressWarnings("unused");
         writer.privateField(Types.STRING, "test");
-        
+
         match("/testSuppressWarnings", w.toString());
     }
-    
+
 }
