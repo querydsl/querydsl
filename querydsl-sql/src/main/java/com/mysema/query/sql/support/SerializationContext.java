@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.sql;
+package com.mysema.query.sql.support;
 
 import com.mysema.query.QueryMetadata;
 

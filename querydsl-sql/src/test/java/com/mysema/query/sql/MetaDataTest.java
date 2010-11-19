@@ -9,6 +9,7 @@ import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.query.codegen.EntityType;
+import com.mysema.query.sql.support.TableImpl;
 
 public class MetaDataTest {
     

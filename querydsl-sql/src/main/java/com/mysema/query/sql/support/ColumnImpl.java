@@ -3,9 +3,11 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.sql;
+package com.mysema.query.sql.support;
 
 import java.lang.annotation.Annotation;
+
+import com.mysema.query.sql.Column;
 
 /**
  * ColumnImpl is an implementation for the Column annotation

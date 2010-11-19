@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import com.mysema.codegen.model.Types;
 import com.mysema.query.codegen.EntityType;
+import com.mysema.query.sql.support.TableImpl;
 
 public class DefaultNamingStrategyTest {
 

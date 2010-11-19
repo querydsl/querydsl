@@ -21,6 +21,7 @@ import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
+import com.mysema.query.sql.support.SerializationContext;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.*;
 
