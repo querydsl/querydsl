@@ -38,7 +38,7 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     private int escapeSuffix = 1;
 
     private final Set<Method> methods = new HashSet<Method>();
-
+ 
     private final Set<Delegate> delegates = new HashSet<Delegate>();
 
     private final String prefix;
