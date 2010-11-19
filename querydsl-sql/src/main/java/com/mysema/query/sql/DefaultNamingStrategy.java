@@ -8,7 +8,7 @@ package com.mysema.query.sql;
 import java.util.Locale;
 
 import com.mysema.query.codegen.EntityType;
-import com.mysema.util.JavaSyntaxUtils;
+import static com.mysema.util.JavaSyntaxUtils.*;
 
 /**
  * DefaultNamingStrategy is the default implementation of the NamingStrategy
@@ -19,15 +19,15 @@ import com.mysema.util.JavaSyntaxUtils;
  */
 public class DefaultNamingStrategy implements NamingStrategy {
 
-    private String reservedSuffix = "Col";
+    private String foreignKeysClassName = "ForeignKeys";
+    
+    private String foreignKeysVariable = "fk";
     
     private String primaryKeysClassName = "PrimaryKeys";
     
-    private String foreignKeysClassName = "ForeignKeys";
-    
     private String primaryKeysVariable = "pk";
     
-    private String foreignKeysVariable = "fk";
+    private String reservedSuffix = "Col";
     
     @Override
     public String getClassName(String namePrefix, String tableName) {
@@ -48,25 +48,34 @@ public class DefaultNamingStrategy implements NamingStrategy {
 
     @Override
     public String getDefaultVariableName(String namePrefix, EntityType entityType) {
-        String defaultVariable = toCamelCase(entityType.getAnnotation(Table.class).value());
-        int suffix = 0;
-        while (true){
-            String candidate = suffix > 0 ? defaultVariable + suffix : defaultVariable;
-            if (entityType.getEscapedPropertyNames().contains(candidate)){
-                suffix++;
-            }else{
-                return candidate;
-            }
-        }        
+        return escape(entityType, toCamelCase(entityType.getAnnotation(Table.class).value()));    
     }
     
     @Override
+    public String getForeignKeysClassName() {
+        return foreignKeysClassName;
+    }
+    
+    @Override
+    public String getForeignKeysVariable(EntityType entityType) {
+        return escape(entityType, foreignKeysVariable);
+    }
+    
+    @Override
+    public String getPrimaryKeysClassName() {
+        return primaryKeysClassName;
+    }
+
+    @Override
+    public String getPrimaryKeysVariable(EntityType entityType) {
+        return escape(entityType, primaryKeysVariable);
+    }
+
+    @Override
     public String getPropertyName(String columnName, String namePrefix, EntityType entityType) {
-        String propertyName = columnName.substring(0, 1).toLowerCase(Locale.ENGLISH) + toCamelCase(columnName.substring(1));
-        if (JavaSyntaxUtils.isReserved(propertyName)){
-            propertyName += reservedSuffix;
-        }
-        return propertyName;
+        return normalizePropertyName(
+            columnName.substring(0, 1).toLowerCase(Locale.ENGLISH) 
+            + toCamelCase(columnName.substring(1)));        
     }
 
     @Override
@@ -75,24 +84,19 @@ public class DefaultNamingStrategy implements NamingStrategy {
             foreignKeyName = foreignKeyName.substring(3) + "_" + foreignKeyName.substring(0,2);
         }
         if (foreignKeyName.length() > 1){
-            String propertyName = foreignKeyName.substring(0,1).toLowerCase(Locale.ENGLISH) 
-                + toCamelCase(foreignKeyName.substring(1));
-            if (JavaSyntaxUtils.isReserved(propertyName)){
-                propertyName += reservedSuffix;
-            }
-            return propertyName;    
+            return normalizePropertyName(
+                foreignKeyName.substring(0,1).toLowerCase(Locale.ENGLISH) 
+                + toCamelCase(foreignKeyName.substring(1)));    
         }else{
             return foreignKeyName.toLowerCase(Locale.ENGLISH);
-        }
-        
+        }        
     }
-    
 
     @Override
     public String getPropertyNameForInverseForeignKey(String foreignKeyName, EntityType entityType) {
         return "_" + getPropertyNameForForeignKey(foreignKeyName, entityType);
     }
-
+    
 
     @Override
     public String getPropertyNameForPrimaryKey(String primaryKeyName, EntityType entityType) {
@@ -100,11 +104,9 @@ public class DefaultNamingStrategy implements NamingStrategy {
             primaryKeyName = primaryKeyName.substring(3) + "_" + primaryKeyName.substring(0,2);
         }
         if (primaryKeyName.length() > 1){
-            String propertyName = primaryKeyName.substring(0,1).toLowerCase(Locale.ENGLISH)  + toCamelCase(primaryKeyName.substring(1));
-            if (JavaSyntaxUtils.isReserved(propertyName)){
-                propertyName += reservedSuffix;
-            }
-            return propertyName;    
+            return normalizePropertyName(
+                primaryKeyName.substring(0,1).toLowerCase(Locale.ENGLISH)  
+                + toCamelCase(primaryKeyName.substring(1)));    
         }else{
             return primaryKeyName.toLowerCase(Locale.ENGLISH);
         }
@@ -121,6 +123,22 @@ public class DefaultNamingStrategy implements NamingStrategy {
         return tableName;
     }
 
+    protected String normalizePropertyName(String name){
+        return isReserved(name) ? name + reservedSuffix : name;   
+    }
+    
+    protected String escape(EntityType entityType, String name){
+        int suffix = 0;
+        while (true){
+            String candidate = suffix > 0 ? name + suffix : name;
+            if (entityType.getEscapedPropertyNames().contains(candidate)){
+                suffix++;
+            }else{
+                return candidate;
+            }
+        }      
+    }
+    
     protected String toCamelCase(String str) {
         boolean toLower = str.toUpperCase().equals(str);
         StringBuilder builder = new StringBuilder(str.length());
@@ -138,47 +156,27 @@ public class DefaultNamingStrategy implements NamingStrategy {
         }
         return builder.toString();
     }
-    
-    public String getReservedSuffix() {
-        return reservedSuffix;
+
+    public void setForeignKeysClassName(String foreignKeysClassName) {
+        this.foreignKeysClassName = foreignKeysClassName;
     }
 
-    public void setReservedSuffix(String reservedSuffix) {
-        this.reservedSuffix = reservedSuffix;
-    }
-
-    public String getPrimaryKeysClassName() {
-        return primaryKeysClassName;
+    public void setForeignKeysVariable(String foreignKeysVariable) {
+        this.foreignKeysVariable = foreignKeysVariable;
     }
 
     public void setPrimaryKeysClassName(String primaryKeysClassName) {
         this.primaryKeysClassName = primaryKeysClassName;
     }
 
-    public String getForeignKeysClassName() {
-        return foreignKeysClassName;
-    }
-
-    public void setForeignKeysClassName(String foreignKeysClassName) {
-        this.foreignKeysClassName = foreignKeysClassName;
-    }
-
-    public String getPrimaryKeysVariable() {
-        return primaryKeysVariable;
-    }
-
     public void setPrimaryKeysVariable(String primaryKeysVariable) {
         this.primaryKeysVariable = primaryKeysVariable;
     }
 
-    public String getForeignKeysVariable() {
-        return foreignKeysVariable;
+    public void setReservedSuffix(String reservedSuffix) {
+        this.reservedSuffix = reservedSuffix;
     }
 
-    public void setForeignKeysVariable(String foreignKeysVariable) {
-        this.foreignKeysVariable = foreignKeysVariable;
-    }
-    
-    
 
+    
 }

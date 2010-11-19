@@ -89,15 +89,14 @@ public class MetaDataSerializer extends EntitySerializer {
     @SuppressWarnings("unchecked")
     @Override
     protected void serializeProperties(EntityType model,  SerializerConfig config, CodeWriter writer) throws IOException {
-        Type primaryKeyType = new SimpleType(namingStrategy.getPrimaryKeysClassName());
-        Type foreignKeysType = new SimpleType(namingStrategy.getForeignKeysClassName());
-
         Collection<PrimaryKeyData> primaryKeys = (Collection<PrimaryKeyData>) model.getData().get(PrimaryKeyData.class);
         Collection<ForeignKeyData> foreignKeys = (Collection<ForeignKeyData>) model.getData().get(ForeignKeyData.class);
         Collection<InverseForeignKeyData> inverseForeignKeys = (Collection<InverseForeignKeyData>)model.getData().get(InverseForeignKeyData.class);
-        boolean hasForeignKeys = foreignKeys != null || inverseForeignKeys != null;
 
         if (innerClassesForKeys){
+            Type primaryKeyType = new SimpleType(namingStrategy.getPrimaryKeysClassName());
+            Type foreignKeysType = new SimpleType(namingStrategy.getForeignKeysClassName());
+            
             // primary keys
             if (primaryKeys != null){
                 writer.beginClass(primaryKeyType);
@@ -106,7 +105,7 @@ public class MetaDataSerializer extends EntitySerializer {
             }
 
             // foreign keys
-            if (hasForeignKeys){
+            if (foreignKeys != null || inverseForeignKeys != null){
                 writer.beginClass(foreignKeysType);
                 if (foreignKeys != null){
                     serializeForeignKeys(model, writer, foreignKeys, false);
@@ -121,10 +120,10 @@ public class MetaDataSerializer extends EntitySerializer {
             super.serializeProperties(model, config, writer);
 
             if (primaryKeys != null){
-                writer.publicFinal(primaryKeyType, namingStrategy.getPrimaryKeysVariable(), "new "+primaryKeyType.getSimpleName()+"()");
+                writer.publicFinal(primaryKeyType, namingStrategy.getPrimaryKeysVariable(model), "new "+primaryKeyType.getSimpleName()+"()");
             }
             if (foreignKeys != null || inverseForeignKeys != null){
-                writer.publicFinal(foreignKeysType, namingStrategy.getForeignKeysVariable(), "new "+foreignKeysType.getSimpleName()+"()");
+                writer.publicFinal(foreignKeysType, namingStrategy.getForeignKeysVariable(model), "new "+foreignKeysType.getSimpleName()+"()");
             }
 
         }else{

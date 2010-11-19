@@ -20,15 +20,15 @@ import com.mysema.util.JavaSyntaxUtils;
  */
 public class OriginalNamingStrategy implements NamingStrategy {
     
-    private String reservedSuffix = "_col";
+    private String foreignKeysClassName = "ForeignKeys";
+    
+    private String foreignKeysVariable = "fk";
     
     private String primaryKeysClassName = "PrimaryKeys";
     
-    private String foreignKeysClassName = "ForeignKeys";
-    
     private String primaryKeysVariable = "pk";
     
-    private String foreignKeysVariable = "fk";
+    private String reservedSuffix = "_col";
     
     @Override
     public String getClassName(String namePrefix, String tableName) {
@@ -51,6 +51,26 @@ public class OriginalNamingStrategy implements NamingStrategy {
     }
 
     @Override
+    public String getForeignKeysClassName() {
+        return foreignKeysClassName;
+    }
+
+    @Override
+    public String getForeignKeysVariable(EntityType entityType) {
+        return foreignKeysVariable;
+    }
+
+    @Override
+    public String getPrimaryKeysClassName() {
+        return primaryKeysClassName;
+    }
+
+    @Override
+    public String getPrimaryKeysVariable(EntityType entityType) {
+        return primaryKeysVariable;
+    }
+
+    @Override
     public String getPropertyName(String columnName, String namePrefix, EntityType entityType) {        
         return getPropertyName(columnName);
     }
@@ -69,13 +89,9 @@ public class OriginalNamingStrategy implements NamingStrategy {
     public String getPropertyNameForPrimaryKey(String primaryKeyName, EntityType model) {
         return getPropertyName(primaryKeyName);
     }
-    
-    private String getPropertyName(String name){
-        if (JavaSyntaxUtils.isReserved(name)){
-            return name + reservedSuffix;
-        }else{
-            return name;    
-        }
+
+    public String getReservedSuffix() {
+        return reservedSuffix;
     }
 
     @Override
@@ -87,45 +103,29 @@ public class OriginalNamingStrategy implements NamingStrategy {
     public String normalizeTableName(String tableName) {
         return tableName;
     }
-
-    public String getReservedSuffix() {
-        return reservedSuffix;
-    }
-
-    public void setReservedSuffix(String reservedSuffix) {
-        this.reservedSuffix = reservedSuffix;
-    }
-
-    public String getPrimaryKeysClassName() {
-        return primaryKeysClassName;
-    }
-
-    public void setPrimaryKeysClassName(String primaryKeysClassName) {
-        this.primaryKeysClassName = primaryKeysClassName;
-    }
-
-    public String getForeignKeysClassName() {
-        return foreignKeysClassName;
+    
+    private String getPropertyName(String name){
+        return JavaSyntaxUtils.isReserved(name) ? name + reservedSuffix : name;
     }
 
     public void setForeignKeysClassName(String foreignKeysClassName) {
         this.foreignKeysClassName = foreignKeysClassName;
     }
 
-    public String getPrimaryKeysVariable() {
-        return primaryKeysVariable;
+    public void setForeignKeysVariable(String foreignKeysVariable) {
+        this.foreignKeysVariable = foreignKeysVariable;
+    }
+
+    public void setPrimaryKeysClassName(String primaryKeysClassName) {
+        this.primaryKeysClassName = primaryKeysClassName;
     }
 
     public void setPrimaryKeysVariable(String primaryKeysVariable) {
         this.primaryKeysVariable = primaryKeysVariable;
     }
 
-    public String getForeignKeysVariable() {
-        return foreignKeysVariable;
-    }
-
-    public void setForeignKeysVariable(String foreignKeysVariable) {
-        this.foreignKeysVariable = foreignKeysVariable;
+    public void setReservedSuffix(String reservedSuffix) {
+        this.reservedSuffix = reservedSuffix;
     }
 
     

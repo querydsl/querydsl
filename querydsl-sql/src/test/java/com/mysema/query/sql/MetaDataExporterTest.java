@@ -123,6 +123,10 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
         // default instance clash
         statement.execute("drop table definstance if exists");
         statement.execute("create table definstance (id int, definstance int, definstance1 int)");
+        
+        // class with pk and fk classes
+        statement.execute("drop table pkfk if exists");
+        statement.execute("create table pkfk (id int primary key, pk int, fk int)");
 
         // camel case
         statement.execute("drop table \"camelCase\" if exists");

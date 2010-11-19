@@ -42,6 +42,34 @@ public interface NamingStrategy {
     String getDefaultVariableName(String namePrefix, EntityType entityType);
 
     /**
+     * Get the class name for the foreign keys inner class
+     * 
+     * @return
+     */
+    String getForeignKeysClassName();
+
+    /**
+     * Get the field name for the foreign keys class instance
+     * 
+     * @return
+     */
+    String getForeignKeysVariable(EntityType entityType);
+
+    /**
+     * Get the class name for the primary keys inner class
+     * 
+     * @return
+     */
+    String getPrimaryKeysClassName();
+
+    /**
+     * Get the field name for the primary keys class instance
+     * 
+     * @return
+     */
+    String getPrimaryKeysVariable(EntityType entityType);
+
+    /**
      * Convert the given column name to a property name
      *
      * @param columnName
@@ -59,32 +87,7 @@ public interface NamingStrategy {
      * @return
      */
     String getPropertyNameForForeignKey(String foreignKeyName, EntityType entityType);
-
-    /**
-     * Convert the given primary key name to a primary key property name
-     *
-     * @param name
-     * @param model
-     * @return
-     */
-    String getPropertyNameForPrimaryKey(String name, EntityType model);
-
-    /**
-     * Convert the given column name and provide the opportunity to add quoted identifiers
-     *
-     * @param columnName
-     * @return
-     */
-    String normalizeColumnName(String columnName);
-
-    /**
-     * Convert the given table name and provide the opportunity to add quoted identifiers
-     *
-     * @param tableName
-     * @return
-     */
-    String normalizeTableName(String tableName);
-
+    
     /**
      * Convert the given foreign key name to a foreign key property name
      * 
@@ -95,23 +98,28 @@ public interface NamingStrategy {
     String getPropertyNameForInverseForeignKey(String name, EntityType model);
     
     /**
+     * Convert the given primary key name to a primary key property name
+     *
+     * @param name
+     * @param model
      * @return
      */
-    String getPrimaryKeysClassName();
+    String getPropertyNameForPrimaryKey(String name, EntityType model);
     
     /**
+     * Convert the given column name and provide the opportunity to add quoted identifiers
+     *
+     * @param columnName
      * @return
      */
-    String getPrimaryKeysVariable();
+    String normalizeColumnName(String columnName);
     
     /**
+     * Convert the given table name and provide the opportunity to add quoted identifiers
+     *
+     * @param tableName
      * @return
      */
-    String getForeignKeysClassName();
-    
-    /**
-     * @return
-     */
-    String getForeignKeysVariable();
+    String normalizeTableName(String tableName);
 
 }
