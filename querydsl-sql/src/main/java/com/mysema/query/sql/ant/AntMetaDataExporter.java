@@ -17,30 +17,34 @@ import com.mysema.query.sql.NamingStrategy;
 
 /**
  * AntMetaDataExporter exports JDBC metadata to Querydsl query types
- * 
+ *
  * @author tiwe
  *
  */
 public class AntMetaDataExporter extends Task {
 
     private String jdbcDriverClass;
-    
+
     private String dbUrl;
-    
+
     private String dbUserName;
-    
+
     private String dbPassword;
 
     private String namePrefix;
-    
+
     private String targetPackage;
-    
+
     private String targetSourceFolder;
 
     private String schemaPattern;
-    
+
     private String tableNamePattern;
-    
+
+    private boolean innerClassesForKeys;
+
+    private boolean exportBeans;
+
     @Override
     public void execute() throws BuildException {
         Connection dbConn = null;
@@ -52,11 +56,17 @@ public class AntMetaDataExporter extends Task {
             dbConn = DriverManager.getConnection(dbUrl, dbUserName, dbPassword);
 
             NamingStrategy namingStrategy = new DefaultNamingStrategy();
-            Serializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);
+            Serializer serializer = new MetaDataSerializer(namePrefix, namingStrategy, innerClassesForKeys);
 
-            MetaDataExporter exporter = new MetaDataExporter(
-                    namePrefix, targetPackage, targetPackagePath,
-                    namingStrategy, serializer, new BeanSerializer());            
+            MetaDataExporter exporter = new MetaDataExporter();
+            exporter.setNamePrefix(namePrefix);
+            exporter.setPackageName(targetPackage);
+            exporter.setTargetFolder(targetPackagePath);
+            exporter.setNamingStrategy(namingStrategy);
+            exporter.setSerializer(serializer);
+            if (exportBeans){
+                exporter.setBeanSerializer(new BeanSerializer());
+            }
             exporter.setSchemaPattern(schemaPattern);
             exporter.setTableNamePattern(tableNamePattern);
 
@@ -138,7 +148,7 @@ public class AntMetaDataExporter extends Task {
     public void setTargetSourceFolder(String targetSourceFolder) {
         this.targetSourceFolder = targetSourceFolder;
     }
-    
+
     public void setSchemaPattern(String schemaPattern) {
         this.schemaPattern = schemaPattern;
     }
@@ -154,6 +164,21 @@ public class AntMetaDataExporter extends Task {
     public String getTableNamePattern() {
         return tableNamePattern;
     }
-    
-    
+
+    public boolean isInnerClassesForKeys() {
+        return innerClassesForKeys;
+    }
+
+    public void setInnerClassesForKeys(boolean innerClassesForKeys) {
+        this.innerClassesForKeys = innerClassesForKeys;
+    }
+
+    public boolean isExportBeans() {
+        return exportBeans;
+    }
+
+    public void setExportBeans(boolean exportBeans) {
+        this.exportBeans = exportBeans;
+    }
+
 }

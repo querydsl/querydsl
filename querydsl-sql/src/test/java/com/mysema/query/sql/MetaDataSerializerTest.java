@@ -33,7 +33,8 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 
 public class MetaDataSerializerTest extends AbstractJDBCTest{
-    
+
+    @Override
     @Before
     public void setUp() throws SQLException, ClassNotFoundException{
         super.setUp();
@@ -58,7 +59,7 @@ public class MetaDataSerializerTest extends AbstractJDBCTest{
                 + "survey_name varchar(30), "
                 + "CONSTRAINT PK_employee PRIMARY KEY (id), "
                 + "CONSTRAINT FK_survey FOREIGN KEY (survey_id, survey_name) REFERENCES survey(id,name), "
-                + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");       
+                + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");
     }
 
     @Test
@@ -67,12 +68,17 @@ public class MetaDataSerializerTest extends AbstractJDBCTest{
         NamingStrategy namingStrategy = new DefaultNamingStrategy();
         // customization of serialization
         MetaDataSerializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);
-        MetaDataExporter exporter = new MetaDataExporter(namePrefix,"test",new File("target/cust1"),namingStrategy,serializer);
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setNamePrefix(namePrefix);
+        exporter.setPackageName("test");
+        exporter.setTargetFolder(new File("target/cust1"));
+        exporter.setNamingStrategy(namingStrategy);
+        exporter.setSerializer(serializer);
         exporter.export(connection.getMetaData());
 
         compile(exporter);
     }
-    
+
     @Test
     public void Custom_serialization() throws Exception {
         String namePrefix = "Q";
@@ -103,7 +109,12 @@ public class MetaDataSerializerTest extends AbstractJDBCTest{
             }
 
         };
-        MetaDataExporter exporter = new MetaDataExporter(namePrefix,"test",new File("target/cust2"),namingStrategy,serializer);
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setNamePrefix(namePrefix);
+        exporter.setPackageName("test");
+        exporter.setTargetFolder(new File("target/cust2"));
+        exporter.setNamingStrategy(namingStrategy);
+        exporter.setSerializer(serializer);
         exporter.export(connection.getMetaData());
 
         compile(exporter);

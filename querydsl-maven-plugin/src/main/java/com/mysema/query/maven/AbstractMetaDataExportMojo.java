@@ -78,16 +78,21 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      * @parameter required=true
      */
     private String targetFolder;
-    
+
     /**
      * @parameter
      */
     private String namingStrategyClass;
-    
+
     /**
      * @parameter default-value=false
      */
     private boolean exportBeans;
+
+    /**
+     * @parameter default-value=false
+     */
+    private boolean innerClassesForKeys;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -110,17 +115,19 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         }else{
             namingStrategy = new DefaultNamingStrategy();
         }
-        Serializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);    
-        Serializer beanSerializer = null;
-        if (exportBeans){
-            beanSerializer = new BeanSerializer();
-        }
-        MetaDataExporter exporter = new MetaDataExporter(
-                namePrefix, packageName,
-                new File(targetFolder),
-                namingStrategy, serializer, beanSerializer);
+        Serializer serializer = new MetaDataSerializer(namePrefix, namingStrategy, innerClassesForKeys);
+        Serializer beanSerializer = exportBeans ? new BeanSerializer() : null;
+
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setNamePrefix(namePrefix);
+        exporter.setPackageName(packageName);
+        exporter.setTargetFolder(new File(targetFolder));
+        exporter.setNamingStrategy(namingStrategy);
+        exporter.setSerializer(serializer);
+        exporter.setBeanSerializer(beanSerializer);
         exporter.setSchemaPattern(schemaPattern);
         exporter.setTableNamePattern(tableNamePattern);
+
         try {
             Class.forName(jdbcDriver);
             Connection conn = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);

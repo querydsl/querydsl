@@ -57,9 +57,9 @@ public class MetaDataExporter {
     private static final int COLUMN_TYPE = 5;
 
     private static final int COLUMN_SIZE = 7;
-    
+
     private static final int COLUMN_NULLABLE = 11;
-    
+
     private static final int TABLE_NAME = 3;
 
     private static Writer writerFor(File file) {
@@ -73,30 +73,36 @@ public class MetaDataExporter {
         }
     }
 
-    private Set<String> classes = new HashSet<String>();
+    private final Set<String> classes = new HashSet<String>();
 
-    private final File targetFolder;
+    private File targetFolder;
 
-    private final String packageName;
+    private String packageName = "com.example";
 
-    private final String namePrefix;
+    private String namePrefix = "Q";
 
-    private final NamingStrategy namingStrategy;
+    private NamingStrategy namingStrategy = new DefaultNamingStrategy();
 
     @Nullable
     private String schemaPattern, tableNamePattern;
 
-    private final Serializer serializer;
-    
+    private Serializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);
+
     @Nullable
-    private final Serializer beanSerializer;
+    private Serializer beanSerializer;
 
     private Configuration configuration = Configuration.DEFAULT;
-    
+
     private final KeyDataFactory keyDataFactory = new KeyDataFactory();
-    
+
     private boolean createScalaSources = false;
-    
+
+    public MetaDataExporter(){}
+
+    /**
+     * @deprecated Use empty constructor and configure via setters
+     */
+    @Deprecated
     public MetaDataExporter(
             String namePrefix,
             String packageName,
@@ -106,6 +112,10 @@ public class MetaDataExporter {
         this(namePrefix, packageName, targetFolder, namingStrategy, serializer, null);
     }
 
+    /**
+     * @deprecated Use empty constructor and configure via setters
+     */
+    @Deprecated
     public MetaDataExporter(
             String namePrefix,
             String packageName,
@@ -163,7 +173,7 @@ public class MetaDataExporter {
     private void handleColumn(EntityType classModel, String tableName, ResultSet columns) throws SQLException {
         String columnName = columns.getString(COLUMN_NAME);
         String propertyName = namingStrategy.getPropertyName(columnName, namePrefix, classModel);
-        Class<?> clazz = configuration.getJavaType(columns.getInt(COLUMN_TYPE), tableName, columnName);        
+        Class<?> clazz = configuration.getJavaType(columns.getInt(COLUMN_TYPE), tableName, columnName);
         TypeCategory fieldType = TypeCategory.get(clazz.getName());
         if (Number.class.isAssignableFrom(clazz)){
             fieldType = TypeCategory.NUMERIC;
@@ -189,20 +199,27 @@ public class MetaDataExporter {
         String className = namingStrategy.getClassName(namePrefix, tableName);
         if (beanSerializer != null){
             className = className.substring(namePrefix.length());
-        }        
+        }
         EntityType classModel = createEntityType(tableName, className);
 
         // collect primary keys
         Map<String,PrimaryKeyData> primaryKeyData = keyDataFactory.getPrimaryKeys(md, schemaPattern, tableName);
-        classModel.getData().put(PrimaryKeyData.class, primaryKeyData.values());
-        
+        if (!primaryKeyData.isEmpty()){
+            classModel.getData().put(PrimaryKeyData.class, primaryKeyData.values());
+        }
+
         // collect foreign keys
         Map<String,ForeignKeyData> foreignKeyData = keyDataFactory.getImportedKeys(md, schemaPattern, tableName);
-        classModel.getData().put(ForeignKeyData.class, foreignKeyData.values());
-        
+        if (!foreignKeyData.isEmpty()){
+            classModel.getData().put(ForeignKeyData.class, foreignKeyData.values());
+        }
+
         // collect inverse foreign keys
         Map<String,InverseForeignKeyData> inverseForeignKeyData = keyDataFactory.getExportedKeys(md, schemaPattern, tableName);
-        classModel.getData().put(InverseForeignKeyData.class, inverseForeignKeyData.values());
+        if (!inverseForeignKeyData.isEmpty()){
+            classModel.getData().put(InverseForeignKeyData.class, inverseForeignKeyData.values());
+        }
+
 
         // collect columns
         ResultSet columns = md.getColumns(null, schemaPattern, tableName, null);
@@ -218,7 +235,7 @@ public class MetaDataExporter {
         serialize(classModel);
     }
 
-    private void serialize(EntityType type) {        
+    private void serialize(EntityType type) {
         try {
             String fileSuffix = createScalaSources ? ".scala" : ".java";
             String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
@@ -229,7 +246,7 @@ public class MetaDataExporter {
             }else{
                 write(serializer, path, type);
             }
-            
+
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
@@ -262,6 +279,29 @@ public class MetaDataExporter {
     public void setCreateScalaSources(boolean createScalaSources) {
         this.createScalaSources = createScalaSources;
     }
-    
-    
+
+    public void setTargetFolder(File targetFolder) {
+        this.targetFolder = targetFolder;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public void setNamePrefix(String namePrefix) {
+        this.namePrefix = namePrefix;
+    }
+
+    public void setNamingStrategy(NamingStrategy namingStrategy) {
+        this.namingStrategy = namingStrategy;
+    }
+
+    public void setSerializer(Serializer serializer) {
+        this.serializer = serializer;
+    }
+
+    public void setBeanSerializer(Serializer beanSerializer) {
+        this.beanSerializer = beanSerializer;
+    }
+
 }

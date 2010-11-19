@@ -173,7 +173,7 @@ class AliasTest {
 
   @Test
   def Array_Size {
-    val num: NumberExpression[Integer] = person.array $size;   
+    val num: escaped.NumberExpression[Integer] = person.array $size;   
     assertEquals("size(person.array)", num);
   }
 
