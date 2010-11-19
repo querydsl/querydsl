@@ -8,7 +8,6 @@ package com.mysema.query.sql;
 import java.util.Locale;
 
 import com.mysema.query.codegen.EntityType;
-import com.mysema.query.codegen.Property;
 import com.mysema.util.JavaSyntaxUtils;
 
 /**
@@ -20,16 +19,16 @@ import com.mysema.util.JavaSyntaxUtils;
  */
 public class DefaultNamingStrategy implements NamingStrategy {
 
-    private final String reservedSuffix;
-
-    public DefaultNamingStrategy() {
-        this("Col");
-    }
-
-    public DefaultNamingStrategy(String reservedSuffix) {
-        this.reservedSuffix = reservedSuffix;
-    }
-
+    private String reservedSuffix = "Col";
+    
+    private String primaryKeysClassName = "PrimaryKeys";
+    
+    private String foreignKeysClassName = "ForeignKeys";
+    
+    private String primaryKeysVariable = "pk";
+    
+    private String foreignKeysVariable = "fk";
+    
     @Override
     public String getClassName(String namePrefix, String tableName) {
         if (tableName.length() > 1){
@@ -53,14 +52,9 @@ public class DefaultNamingStrategy implements NamingStrategy {
         int suffix = 0;
         while (true){
             String candidate = suffix > 0 ? defaultVariable + suffix : defaultVariable;
-            boolean changed = false;
-            for (Property property : entityType.getProperties()){
-                if (candidate.equals(property.getEscapedName())){
-                    changed = true;
-                    suffix++;
-                }
-            }    
-            if (!changed){
+            if (entityType.getEscapedPropertyNames().contains(candidate)){
+                suffix++;
+            }else{
                 return candidate;
             }
         }        
@@ -106,8 +100,7 @@ public class DefaultNamingStrategy implements NamingStrategy {
             primaryKeyName = primaryKeyName.substring(3) + "_" + primaryKeyName.substring(0,2);
         }
         if (primaryKeyName.length() > 1){
-            String propertyName = primaryKeyName.substring(0,1).toLowerCase(Locale.ENGLISH) 
-                + toCamelCase(primaryKeyName.substring(1));
+            String propertyName = primaryKeyName.substring(0,1).toLowerCase(Locale.ENGLISH)  + toCamelCase(primaryKeyName.substring(1));
             if (JavaSyntaxUtils.isReserved(propertyName)){
                 propertyName += reservedSuffix;
             }
@@ -145,5 +138,47 @@ public class DefaultNamingStrategy implements NamingStrategy {
         }
         return builder.toString();
     }
+    
+    public String getReservedSuffix() {
+        return reservedSuffix;
+    }
+
+    public void setReservedSuffix(String reservedSuffix) {
+        this.reservedSuffix = reservedSuffix;
+    }
+
+    public String getPrimaryKeysClassName() {
+        return primaryKeysClassName;
+    }
+
+    public void setPrimaryKeysClassName(String primaryKeysClassName) {
+        this.primaryKeysClassName = primaryKeysClassName;
+    }
+
+    public String getForeignKeysClassName() {
+        return foreignKeysClassName;
+    }
+
+    public void setForeignKeysClassName(String foreignKeysClassName) {
+        this.foreignKeysClassName = foreignKeysClassName;
+    }
+
+    public String getPrimaryKeysVariable() {
+        return primaryKeysVariable;
+    }
+
+    public void setPrimaryKeysVariable(String primaryKeysVariable) {
+        this.primaryKeysVariable = primaryKeysVariable;
+    }
+
+    public String getForeignKeysVariable() {
+        return foreignKeysVariable;
+    }
+
+    public void setForeignKeysVariable(String foreignKeysVariable) {
+        this.foreignKeysVariable = foreignKeysVariable;
+    }
+    
+    
 
 }

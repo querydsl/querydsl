@@ -44,6 +44,10 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     private final String prefix;
 
     private final Set<Property> properties = new TreeSet<Property>();
+    
+    private final Set<String> propertyNames = new HashSet<String>();
+    
+    private final Set<String> escapedPropertyNames = new HashSet<String>();
 
     private final Collection<Supertype> superTypes;
 
@@ -79,6 +83,8 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     }
 
     public void addProperty(Property field) {
+        propertyNames.add(field.getName());
+        escapedPropertyNames.add(field.getEscapedName());
         properties.add(validateField(field));
     }
 
@@ -218,5 +224,14 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         }
         return field;
     }
+
+    public Set<String> getPropertyNames() {
+        return propertyNames;
+    }
+
+    public Set<String> getEscapedPropertyNames() {
+        return escapedPropertyNames;
+    }
+    
     
 }

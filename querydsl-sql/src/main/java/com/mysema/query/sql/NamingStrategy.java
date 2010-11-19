@@ -93,5 +93,25 @@ public interface NamingStrategy {
      * @return
      */
     String getPropertyNameForInverseForeignKey(String name, EntityType model);
+    
+    /**
+     * @return
+     */
+    String getPrimaryKeysClassName();
+    
+    /**
+     * @return
+     */
+    String getPrimaryKeysVariable();
+    
+    /**
+     * @return
+     */
+    String getForeignKeysClassName();
+    
+    /**
+     * @return
+     */
+    String getForeignKeysVariable();
 
 }

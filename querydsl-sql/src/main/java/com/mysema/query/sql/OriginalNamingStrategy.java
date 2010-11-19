@@ -19,8 +19,16 @@ import com.mysema.util.JavaSyntaxUtils;
  *
  */
 public class OriginalNamingStrategy implements NamingStrategy {
-
+    
     private String reservedSuffix = "_col";
+    
+    private String primaryKeysClassName = "PrimaryKeys";
+    
+    private String foreignKeysClassName = "ForeignKeys";
+    
+    private String primaryKeysVariable = "pk";
+    
+    private String foreignKeysVariable = "fk";
     
     @Override
     public String getClassName(String namePrefix, String tableName) {
@@ -80,4 +88,45 @@ public class OriginalNamingStrategy implements NamingStrategy {
         return tableName;
     }
 
+    public String getReservedSuffix() {
+        return reservedSuffix;
+    }
+
+    public void setReservedSuffix(String reservedSuffix) {
+        this.reservedSuffix = reservedSuffix;
+    }
+
+    public String getPrimaryKeysClassName() {
+        return primaryKeysClassName;
+    }
+
+    public void setPrimaryKeysClassName(String primaryKeysClassName) {
+        this.primaryKeysClassName = primaryKeysClassName;
+    }
+
+    public String getForeignKeysClassName() {
+        return foreignKeysClassName;
+    }
+
+    public void setForeignKeysClassName(String foreignKeysClassName) {
+        this.foreignKeysClassName = foreignKeysClassName;
+    }
+
+    public String getPrimaryKeysVariable() {
+        return primaryKeysVariable;
+    }
+
+    public void setPrimaryKeysVariable(String primaryKeysVariable) {
+        this.primaryKeysVariable = primaryKeysVariable;
+    }
+
+    public String getForeignKeysVariable() {
+        return foreignKeysVariable;
+    }
+
+    public void setForeignKeysVariable(String foreignKeysVariable) {
+        this.foreignKeysVariable = foreignKeysVariable;
+    }
+
+    
 }

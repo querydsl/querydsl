@@ -89,8 +89,8 @@ public class MetaDataSerializer extends EntitySerializer {
     @SuppressWarnings("unchecked")
     @Override
     protected void serializeProperties(EntityType model,  SerializerConfig config, CodeWriter writer) throws IOException {
-        Type primaryKeyType = new SimpleType("PrimaryKeys");
-        Type foreignKeysType = new SimpleType("ForeignKeys");
+        Type primaryKeyType = new SimpleType(namingStrategy.getPrimaryKeysClassName());
+        Type foreignKeysType = new SimpleType(namingStrategy.getForeignKeysClassName());
 
         Collection<PrimaryKeyData> primaryKeys = (Collection<PrimaryKeyData>) model.getData().get(PrimaryKeyData.class);
         Collection<ForeignKeyData> foreignKeys = (Collection<ForeignKeyData>) model.getData().get(ForeignKeyData.class);
@@ -121,10 +121,10 @@ public class MetaDataSerializer extends EntitySerializer {
             super.serializeProperties(model, config, writer);
 
             if (primaryKeys != null){
-                writer.publicFinal(primaryKeyType, "pk", "new PrimaryKeys()");
+                writer.publicFinal(primaryKeyType, namingStrategy.getPrimaryKeysVariable(), "new "+primaryKeyType.getSimpleName()+"()");
             }
             if (foreignKeys != null || inverseForeignKeys != null){
-                writer.publicFinal(foreignKeysType, "fk", "new ForeignKeys()");
+                writer.publicFinal(foreignKeysType, namingStrategy.getForeignKeysVariable(), "new "+foreignKeysType.getSimpleName()+"()");
             }
 
         }else{
