@@ -86,7 +86,7 @@ public class MetaDataExporter {
     @Nullable
     private String schemaPattern, tableNamePattern;
 
-    private Serializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);
+    private Serializer serializer;
 
     @Nullable
     private Serializer beanSerializer;
@@ -156,6 +156,10 @@ public class MetaDataExporter {
     }
 
     public void export(DatabaseMetaData md) throws SQLException {
+        if (serializer == null){
+            serializer = new MetaDataSerializer(namePrefix, namingStrategy);
+        }
+        
         ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
         try{
             while (tables.next()) {
@@ -219,7 +223,6 @@ public class MetaDataExporter {
         if (!inverseForeignKeyData.isEmpty()){
             classModel.getData().put(InverseForeignKeyData.class, inverseForeignKeyData.values());
         }
-
 
         // collect columns
         ResultSet columns = md.getColumns(null, schemaPattern, tableName, null);
