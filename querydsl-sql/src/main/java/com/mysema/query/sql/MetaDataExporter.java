@@ -35,14 +35,12 @@ import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SimpleSerializerConfig;
-import com.mysema.query.sql.support.ColumnImpl;
 import com.mysema.query.sql.support.ForeignKeyData;
 import com.mysema.query.sql.support.InverseForeignKeyData;
 import com.mysema.query.sql.support.KeyDataFactory;
 import com.mysema.query.sql.support.NotNullImpl;
 import com.mysema.query.sql.support.PrimaryKeyData;
 import com.mysema.query.sql.support.SizeImpl;
-import com.mysema.query.sql.support.TableImpl;
 
 /**
  * MetadataExporter exports JDBC metadata to Querydsl query types
