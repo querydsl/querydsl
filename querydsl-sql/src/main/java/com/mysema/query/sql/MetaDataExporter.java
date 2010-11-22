@@ -88,6 +88,7 @@ public class MetaDataExporter {
     @Nullable
     private String schemaPattern, tableNamePattern;
 
+    @Nullable
     private Serializer serializer;
 
     @Nullable
@@ -161,7 +162,7 @@ public class MetaDataExporter {
         if (serializer == null){
             serializer = new MetaDataSerializer(namePrefix, namingStrategy);
         }
-        
+
         ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
         try{
             while (tables.next()) {

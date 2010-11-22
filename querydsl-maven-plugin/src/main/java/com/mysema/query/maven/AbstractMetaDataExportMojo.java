@@ -116,7 +116,6 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             namingStrategy = new DefaultNamingStrategy();
         }
         Serializer serializer = new MetaDataSerializer(namePrefix, namingStrategy, innerClassesForKeys);
-        Serializer beanSerializer = exportBeans ? new BeanSerializer() : null;
 
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setNamePrefix(namePrefix);
@@ -124,7 +123,9 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         exporter.setTargetFolder(new File(targetFolder));
         exporter.setNamingStrategy(namingStrategy);
         exporter.setSerializer(serializer);
-        exporter.setBeanSerializer(beanSerializer);
+        if (exportBeans){
+            exporter.setBeanSerializer(new BeanSerializer());
+        }
         exporter.setSchemaPattern(schemaPattern);
         exporter.setTableNamePattern(tableNamePattern);
 
