@@ -160,9 +160,12 @@
 		  </goals>
 		  <phase>verify</phase>
 		  <configuration>
-	        <systemPropertyVariables>
-              <version>${project.version}</version>
-		  	</systemPropertyVariables>
+		  	<systemProperties>
+              <property>
+              	<name>version</name>
+				<value>${project.version}</value>
+              </property>		  		
+			</systemProperties>	
             <includes>
               <include>com/mysema/query/PackageVerification.java</include>
             </includes>
