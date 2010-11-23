@@ -121,8 +121,8 @@ public final class APTTypeFactory {
         }
         return new SimpleType(
                 category,
-                name, 
-                packageName, 
+                name,
+                packageName,
                 simpleName,
                 false,
                 typeElement.getModifiers().contains(Modifier.FINAL),
@@ -133,7 +133,7 @@ public final class APTTypeFactory {
     public Type create(TypeMirror type){
         if (type.getKind().isPrimitive()){
             type = normalizePrimitiveType(type);
-        }        
+        }
         List<String> key = createKey(type,true);
         if (entityTypeCache.containsKey(key)){
             return entityTypeCache.get(key);
@@ -164,12 +164,12 @@ public final class APTTypeFactory {
                 && isImplemented(typeElement, comparableType)
                 && isSubType(typeElement, numberType)){
             typeCategory = TypeCategory.NUMERIC;
-            
+
         }else if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE)
                 && isImplemented(typeElement, comparableType)){
             typeCategory = TypeCategory.COMPARABLE;
         }
-        
+
         if (typeCategory == TypeCategory.SIMPLE){
             for (Class<? extends Annotation> entityAnn : entityAnnotations){
                 if (typeElement.getAnnotation(entityAnn) != null){
@@ -177,9 +177,9 @@ public final class APTTypeFactory {
                 }
             }
         }
-        
+
         Type type = create(typeElement, typeCategory, t.getTypeArguments());
-        
+
         // entity type
         for (Class<? extends Annotation> entityAnn : entityAnnotations){
             if (typeElement.getAnnotation(entityAnn) != null){
@@ -201,7 +201,7 @@ public final class APTTypeFactory {
     public EntityType createEntityType(TypeMirror type){
         if (type.getKind().isPrimitive()){
             type = normalizePrimitiveType(type);
-        }        
+        }
         List<String> key = createKey(type, true);
         if (entityTypeCache.containsKey(key)){
             return entityTypeCache.get(key);
@@ -242,12 +242,12 @@ public final class APTTypeFactory {
     private Type createEnumType(DeclaredType t, TypeElement typeElement) {
         // fallback
         Type enumType = create(typeElement, TypeCategory.ENUM, t.getTypeArguments());
-        
+
         for (Class<? extends Annotation> entityAnn : entityAnnotations){
             if (typeElement.getAnnotation(entityAnn) != null){
                 return new EntityType(configuration.getNamePrefix(), enumType);
             }
-        }        
+        }
         return enumType;
     }
 
@@ -339,7 +339,9 @@ public final class APTTypeFactory {
                 if (e.getSuperclass().getKind() != TypeKind.NONE){
                     TypeMirror supertype = normalize(e.getSuperclass());
                     Type superClass = create(supertype);
-                    if (!superClass.getFullName().startsWith("java")){
+                    if (superClass == null){
+                        superTypes = Collections.emptySet();
+                    }else if (!superClass.getFullName().startsWith("java")){
                         superTypes = Collections.singleton(create(supertype));
                     }
                 }
@@ -353,7 +355,7 @@ public final class APTTypeFactory {
                     }
                 }
             }
-            
+
         }else{
             return Collections.emptySet();
         }
@@ -394,7 +396,7 @@ public final class APTTypeFactory {
             throw new IllegalArgumentException("Unsupported element type " + t.asElement());
         }
     }
-    
+
     private TypeMirror normalizePrimitiveType(TypeMirror t){
         switch (t.getKind()) {
         case BOOLEAN: return env.getElementUtils().getTypeElement(Boolean.class.getName()).asType();

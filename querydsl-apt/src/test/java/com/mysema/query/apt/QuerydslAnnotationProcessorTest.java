@@ -20,13 +20,13 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
         File file = new File(packagePath, "AbstractEntityTest.java");
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(file.getPath()),"qdsl");
     }
-    
+
     @Test
     public void ProcessInheritance3() throws IOException{
         String path = new File("src/test/java/com/mysema/query/inheritance/Inheritance3Test.java").getPath();
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"inheritance3");
     }
-    
+
     @Test
     public void ProcessInheritance8() throws IOException{
         String path = new File("src/test/java/com/mysema/query/inheritance/Inheritance8Test.java").getPath();
@@ -38,19 +38,25 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
         String path = new File("src/test/java/com/mysema/query/inheritance/Inheritance10Test.java").getPath();
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"inheritance10");
     }
-    
+
     @Test
     public void ProcessQueryEmbedded3() throws IOException{
         String path = new File("src/test/java/com/mysema/query/domain/QueryEmbedded3Test.java").getPath();
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"embedded3");
     }
-    
+
     @Test
     public void ProcessDelegate() throws IOException{
         String path = new File("src/test/java/com/mysema/query/domain/DelegateTest.java").getPath();
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"delegate");
     }
-    
+
+    @Test
+    public void ProcessAbstractClasses() throws IOException{
+        String path = new File("src/test/java/com/mysema/query/domain/AbstractClassesTest.java").getPath();
+        process(JPAAnnotationProcessor.class, Collections.singletonList(path),"abstractClasses");
+    }
+
     @Test
     public void ProcessAll() throws IOException{
         // works only in Eclipse for the moment
