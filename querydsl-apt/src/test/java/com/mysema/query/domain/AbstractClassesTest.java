@@ -11,6 +11,8 @@ import javax.persistence.MappedSuperclass;
 
 import org.junit.Test;
 
+import com.mysema.query.types.path.NumberPath;
+
 @SuppressWarnings("serial")
 public class AbstractClassesTest {
 
@@ -48,9 +50,11 @@ public class AbstractClassesTest {
 
     @Entity
     public static class Grant<P extends Party, S extends Party> extends BaseArchetype<P, S> {
+
         public int compareTo(S o) {
             return 0;
         }
+
     }
 
     @Entity
@@ -73,9 +77,8 @@ public class AbstractClassesTest {
 
     @Test
     public void Party(){
-        // FIXME
-//        assertEquals(QAbstractClassesTest_Party.class, QAbstractClassesTest_Party.party.id.getClass());
-//        assertEquals(Party.class, QAbstractClassesTest_Grant.grant.id.getType());
+        assertEquals(NumberPath.class, QAbstractClassesTest_Party.party.id.getClass());
+        assertEquals(Long.class, QAbstractClassesTest_Party.party.id.getType());
     }
 
 }

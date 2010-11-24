@@ -51,7 +51,7 @@ public class DefaultConfiguration implements Configuration {
     private static final String QUERYDSL_ENTITY_ACCESSORS = "querydsl.entityAccessors";
 
     private static final String DEFAULT_OVERWRITE = "defaultOverwrite";
-    
+
     private final Collection<String> keywords;
 
     private final TypeMappings typeMappings = new TypeMappings();
@@ -130,7 +130,7 @@ public class DefaultConfiguration implements Configuration {
         if (options.containsKey(DEFAULT_OVERWRITE)){
             defaultOverwrite = Boolean.valueOf(options.get(DEFAULT_OVERWRITE));
         }
-        
+
         defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors, mapAccessors, createDefaultVariable);
 
     }
@@ -154,7 +154,7 @@ public class DefaultConfiguration implements Configuration {
     public Serializer getDTOSerializer() {
         return dtoSerializer;
     }
-    
+
     @Override
     @Nullable
     public Class<? extends Annotation> getEntitiesAnnotation() {
@@ -176,7 +176,7 @@ public class DefaultConfiguration implements Configuration {
     public Class<? extends Annotation> getEntityAnnotation() {
         return entityAnn;
     }
-    
+
     @Override
     @Nullable
     public Class<? extends Annotation> getEmbeddedAnnotation() {
@@ -194,11 +194,11 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
-    public SerializerConfig getSerializerConfig(EntityType model) {
-        if (typeToConfig.containsKey(model.getFullName())){
-            return typeToConfig.get(model.getFullName());
-        }else if (packageToConfig.containsKey(model.getPackageName())){
-            return packageToConfig.get(model.getPackageName());
+    public SerializerConfig getSerializerConfig(EntityType entityType) {
+        if (typeToConfig.containsKey(entityType.getFullName())){
+            return typeToConfig.get(entityType.getFullName());
+        }else if (packageToConfig.containsKey(entityType.getPackageName())){
+            return packageToConfig.get(entityType.getPackageName());
         }else{
             return defaultSerializerConfig;
         }

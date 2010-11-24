@@ -41,12 +41,12 @@ import com.mysema.query.codegen.Supertype;
 import com.mysema.query.codegen.TypeFactory;
 
 /**
- * APTTypeFactory is a factory for APT inspection based TypeModel creation
+ * ExtendedTypeFactory is a factory for APT inspection based Type creation
  *
  * @author tiwe
  *
  */
-public final class APTTypeFactory {
+public final class ExtendedTypeFactory {
 
     @Nullable
     private static Class<?> safeClassForName(String name){
@@ -57,11 +57,11 @@ public final class APTTypeFactory {
         }
     }
 
-    private final Map<List<String>,Type> cache = new HashMap<List<String>,Type>();
+    private final Map<List<String>,Type> typeCache = new HashMap<List<String>,Type>();
 
     private final Configuration configuration;
 
-    private final Type defaultValue;
+    private final Type defaultType;
 
     private final List<Class<? extends Annotation>> entityAnnotations;
 
@@ -73,11 +73,13 @@ public final class APTTypeFactory {
 
     private boolean doubleIndexEntities = true;
 
-    public APTTypeFactory(ProcessingEnvironment env, Configuration configuration,
+//    private boolean deep = false;
+
+    public ExtendedTypeFactory(ProcessingEnvironment env, Configuration configuration,
             TypeFactory factory, List<Class<? extends Annotation>> annotations){
         this.env = env;
         this.configuration = configuration;
-        this.defaultValue = factory.create(Object.class);
+        this.defaultType = factory.create(Object.class);
         this.entityAnnotations = annotations;
         this.numberType = env.getElementUtils().getTypeElement(Number.class.getName());
         this.comparableType = env.getElementUtils().getTypeElement(Comparable.class.getName());
@@ -111,13 +113,13 @@ public final class APTTypeFactory {
         }
     }
 
-    private Type create(TypeElement typeElement, TypeCategory category, List<? extends TypeMirror> typeArgs) {
+    private Type createType(TypeElement typeElement, TypeCategory category, List<? extends TypeMirror> typeArgs, boolean deep) {
         String name = typeElement.getQualifiedName().toString();
         String simpleName = typeElement.getSimpleName().toString();
         String packageName = env.getElementUtils().getPackageOf(typeElement).getQualifiedName().toString();
         Type[] params = new Type[typeArgs.size()];
         for (int i = 0; i < params.length; i++){
-            params[i] = create(typeArgs.get(i));
+            params[i] = getType(typeArgs.get(i), deep);
         }
         return new SimpleType(
                 category,
@@ -130,32 +132,34 @@ public final class APTTypeFactory {
     }
 
     @Nullable
-    public Type create(TypeMirror type){
-        if (type.getKind().isPrimitive()){
-            type = normalizePrimitiveType(type);
+    public Type getType(TypeMirror typeMirror, boolean deep){
+        if (typeMirror.getKind().isPrimitive()){
+            typeMirror = normalizePrimitiveType(typeMirror);
         }
-        List<String> key = createKey(type,true);
+        List<String> key = createKey(typeMirror,true);
         if (entityTypeCache.containsKey(key)){
             return entityTypeCache.get(key);
-
-        }else if (cache.containsKey(key)){
-            return cache.get(key);
-
+        }else if (typeCache.containsKey(key)){
+            return typeCache.get(key);
         }else{
-            cache.put(key, null);
-            Type typeModel = handle(type);
-            if (typeModel != null && typeModel.getCategory() == TypeCategory.ENTITY){
-                EntityType entityType = createEntityType(type);
-                cache.put(key, entityType);
-                return entityType;
-            }else{
-                cache.put(key, typeModel);
-                return typeModel;
-            }
+            return createType(typeMirror, key, deep);
         }
     }
 
-    private Type createClassType(DeclaredType t, TypeElement typeElement) {
+    private Type createType(TypeMirror typeMirror, List<String> key, boolean deep) {
+        typeCache.put(key, null);
+        Type type = handle(typeMirror, deep);
+        if (type != null && type.getCategory() == TypeCategory.ENTITY){
+            EntityType entityType = getEntityType(typeMirror, deep);
+            typeCache.put(key, entityType);
+            return entityType;
+        }else{
+            typeCache.put(key, type);
+            return type;
+        }
+    }
+
+    private Type createClassType(DeclaredType declaredType, TypeElement typeElement, boolean deep) {
         // other
         String name = typeElement.getQualifiedName().toString();
         TypeCategory typeCategory = TypeCategory.get(name);
@@ -178,7 +182,7 @@ public final class APTTypeFactory {
             }
         }
 
-        Type type = create(typeElement, typeCategory, t.getTypeArguments());
+        Type type = createType(typeElement, typeCategory, declaredType.getTypeArguments(), deep);
 
         // entity type
         for (Class<? extends Annotation> entityAnn : entityAnnotations){
@@ -189,59 +193,74 @@ public final class APTTypeFactory {
         return type;
     }
 
-    private Type createCollectionType(String simpleName,
-            Iterator<? extends TypeMirror> i) {
-        if (!i.hasNext()){
+    private Type createCollectionType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
+        if (!typeMirrors.hasNext()){
             throw new TypeArgumentsException(simpleName);
         }
-        return new SimpleType(Types.COLLECTION, create(i.next()));
+        return new SimpleType(Types.COLLECTION, getType(typeMirrors.next(), deep));
     }
 
     @Nullable
-    public EntityType createEntityType(TypeMirror type){
-        if (type.getKind().isPrimitive()){
-            type = normalizePrimitiveType(type);
+    public EntityType getEntityType(TypeMirror typeMirrors, boolean deep){
+        if (typeMirrors.getKind().isPrimitive()){
+            typeMirrors = normalizePrimitiveType(typeMirrors);
         }
-        List<String> key = createKey(type, true);
+        List<String> key = createKey(typeMirrors, true);
+        // get from cache
         if (entityTypeCache.containsKey(key)){
-            return entityTypeCache.get(key);
-
-        }else{
-            entityTypeCache.put(key, null);
-            Type value = handle(type);
-            if (value != null){
-                EntityType entityModel = null;
-                if (value instanceof EntityType){
-                    entityModel = (EntityType)value;
-                }else{
-                    entityModel = new EntityType(configuration.getNamePrefix(), value);
+            EntityType entityType = entityTypeCache.get(key);
+            if (deep && entityType.getSuperTypes().isEmpty()){
+                for (Type superType : getSupertypes(typeMirrors, entityType, deep)){
+                    entityType.addSupertype(new Supertype(superType));
                 }
-                entityTypeCache.put(key, entityModel);
-
-                if (key.size() > 1 && key.get(0).equals(entityModel.getFullName()) && doubleIndexEntities){
-                    List<String> newKey = new ArrayList<String>();
-                    newKey.add(entityModel.getFullName());
-                    for (int i = 0; i < entityModel.getParameters().size(); i++){
-                        newKey.add("?");
-                    }
-                    if (!entityTypeCache.containsKey(newKey)){
-                        entityTypeCache.put(newKey, entityModel);
-                    }
-                }
-
-                for (Type superType : getSupertypes(type, value)){
-                    entityModel.addSupertype(new Supertype(superType));
-                }
-                return entityModel;
-            }else{
-                return null;
             }
+            return entityType;
+
+        // create
+        }else{
+            return createEntityType(typeMirrors, key, deep);
+
         }
     }
 
-    private Type createEnumType(DeclaredType t, TypeElement typeElement) {
+    private EntityType createEntityType(TypeMirror typeMirror, List<String> key, boolean deep) {
+        entityTypeCache.put(key, null);
+        Type value = handle(typeMirror, deep);
+        if (value != null){
+            EntityType entityType = null;
+            if (value instanceof EntityType){
+                entityType = (EntityType)value;
+            }else{
+                entityType = new EntityType(configuration.getNamePrefix(), value);
+            }
+            entityTypeCache.put(key, entityType);
+
+            if (key.size() > 1 && key.get(0).equals(entityType.getFullName()) && doubleIndexEntities){
+                List<String> newKey = new ArrayList<String>();
+                newKey.add(entityType.getFullName());
+                for (int i = 0; i < entityType.getParameters().size(); i++){
+                    newKey.add("?");
+                }
+                if (!entityTypeCache.containsKey(newKey)){
+                    entityTypeCache.put(newKey, entityType);
+                }
+            }
+
+            if (deep){
+                for (Type superType : getSupertypes(typeMirror, value, deep)){
+                    entityType.addSupertype(new Supertype(superType));
+                }
+            }
+
+            return entityType;
+        }else{
+            return null;
+        }
+    }
+
+    private Type createEnumType(DeclaredType declaredType, TypeElement typeElement, boolean deep) {
         // fallback
-        Type enumType = create(typeElement, TypeCategory.ENUM, t.getTypeArguments());
+        Type enumType = createType(typeElement, TypeCategory.ENUM, declaredType.getTypeArguments(), deep);
 
         for (Class<? extends Annotation> entityAnn : entityAnnotations){
             if (typeElement.getAnnotation(entityAnn) != null){
@@ -251,105 +270,100 @@ public final class APTTypeFactory {
         return enumType;
     }
 
-    private Type createInterfaceType(DeclaredType t, TypeElement typeElement) {
+    private Type createInterfaceType(DeclaredType declaredType, TypeElement typeElement, boolean deep) {
         // entity type
         for (Class<? extends Annotation> entityAnn : entityAnnotations){
             if (typeElement.getAnnotation(entityAnn) != null){
-                return create(typeElement, TypeCategory.ENTITY, t.getTypeArguments());
+                return createType(typeElement, TypeCategory.ENTITY, declaredType.getTypeArguments(), deep);
             }
         }
 
         String name = typeElement.getQualifiedName().toString();
         String simpleName = typeElement.getSimpleName().toString();
-        Iterator<? extends TypeMirror> i = t.getTypeArguments().iterator();
+        Iterator<? extends TypeMirror> i = declaredType.getTypeArguments().iterator();
         Class<?> cl = safeClassForName(name);
 
         if (cl == null) { // class not available
-            return create(typeElement, TypeCategory.get(name), t.getTypeArguments());
+            return createType(typeElement, TypeCategory.get(name), declaredType.getTypeArguments(), deep);
 
         }else if (Map.class.isAssignableFrom(cl)){
-            return createMapType(simpleName, i);
+            return createMapType(simpleName, i,deep);
 
         } else if (List.class.isAssignableFrom(cl)) {
-            return createListType(simpleName, i);
+            return createListType(simpleName, i, deep);
 
         } else if (Set.class.isAssignableFrom(cl)) {
-            return createSetType(simpleName, i);
+            return createSetType(simpleName, i, deep);
 
         } else if (Collection.class.isAssignableFrom(cl)) {
-            return createCollectionType(simpleName, i);
+            return createCollectionType(simpleName, i, deep);
 
         }else{
-            return create(typeElement, TypeCategory.get(name), t.getTypeArguments());
+            return createType(typeElement, TypeCategory.get(name), declaredType.getTypeArguments(), deep);
         }
     }
 
-    private List<String> createKey(TypeMirror type, boolean deep){
+    private List<String> createKey(TypeMirror typeMirror, boolean deep){
         List<String> key = new ArrayList<String>();
-        String name = type.toString();
+        String name = typeMirror.toString();
         if (name.contains("<")){
             name = name.substring(0, name.indexOf('<'));
         }
         key.add(name);
 
-        if (type.getKind() == TypeKind.TYPEVAR){
-            appendToKey(key, (TypeVariable) type);
-        }else if (type.getKind() == TypeKind.WILDCARD){
-            appendToKey(key, (WildcardType)type);
-        }else if (type.getKind() == TypeKind.DECLARED){
-            appendToKey(key, (DeclaredType)type, deep);
+        if (typeMirror.getKind() == TypeKind.TYPEVAR){
+            appendToKey(key, (TypeVariable) typeMirror);
+        }else if (typeMirror.getKind() == TypeKind.WILDCARD){
+            appendToKey(key, (WildcardType)typeMirror);
+        }else if (typeMirror.getKind() == TypeKind.DECLARED){
+            appendToKey(key, (DeclaredType)typeMirror, deep);
         }
         return key;
     }
 
-    private Type createListType(String simpleName,
-            Iterator<? extends TypeMirror> i) {
-        if (!i.hasNext()){
+    private Type createListType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
+        if (!typeMirrors.hasNext()){
             throw new TypeArgumentsException(simpleName);
         }
-        return new SimpleType(Types.LIST, create(i.next()));
+        return new SimpleType(Types.LIST, getType(typeMirrors.next(), deep));
     }
 
-    private Type createMapType(String simpleName,
-            Iterator<? extends TypeMirror> i) {
-        if (!i.hasNext()){
+    private Type createMapType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
+        if (!typeMirrors.hasNext()){
             throw new TypeArgumentsException(simpleName);
         }
-        return new SimpleType(Types.MAP, create(i.next()), create(i.next()));
+        return new SimpleType(Types.MAP, getType(typeMirrors.next(), deep), getType(typeMirrors.next(), deep));
     }
 
-    private Type createSetType(String simpleName,
-            Iterator<? extends TypeMirror> i) {
-        if (!i.hasNext()){
+    private Type createSetType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
+        if (!typeMirrors.hasNext()){
             throw new TypeArgumentsException(simpleName);
         }
-        return new SimpleType(Types.SET, create(i.next()));
+        return new SimpleType(Types.SET, getType(typeMirrors.next(), deep));
     }
 
-    private Set<Type> getSupertypes(TypeMirror type, Type value) {
+    private Set<Type> getSupertypes(TypeMirror typeMirror, Type type, boolean deep) {
         boolean doubleIndex = doubleIndexEntities;
         doubleIndexEntities = false;
         Set<Type> superTypes = Collections.emptySet();
-        type = normalize(type);
-        if (type.getKind() == TypeKind.DECLARED){
-            DeclaredType declaredType = (DeclaredType)type;
+        typeMirror = normalize(typeMirror);
+        if (typeMirror.getKind() == TypeKind.DECLARED){
+            DeclaredType declaredType = (DeclaredType)typeMirror;
             TypeElement e = (TypeElement)declaredType.asElement();
             // class
             if (e.getKind() == ElementKind.CLASS){
                 if (e.getSuperclass().getKind() != TypeKind.NONE){
                     TypeMirror supertype = normalize(e.getSuperclass());
-                    Type superClass = create(supertype);
-                    if (superClass == null){
-                        superTypes = Collections.emptySet();
-                    }else if (!superClass.getFullName().startsWith("java")){
-                        superTypes = Collections.singleton(create(supertype));
+                    Type superClass = getType(supertype, deep);
+                    if (!superClass.getFullName().startsWith("java")){
+                        superTypes = Collections.singleton(getType(supertype, deep));
                     }
                 }
             // interface
             }else{
                 superTypes = new HashSet<Type>(e.getInterfaces().size());
                 for (TypeMirror mirror : e.getInterfaces()){
-                    Type iface = create(mirror);
+                    Type iface = getType(mirror, deep);
                     if (!iface.getFullName().startsWith("java")){
                         superTypes.add(iface);
                     }
@@ -364,41 +378,41 @@ public final class APTTypeFactory {
     }
 
     @Nullable
-    private Type handle(TypeMirror type) {
-        if (type instanceof DeclaredType){
-            return handleDeclaredType((DeclaredType)type);
-        }else if (type instanceof TypeVariable){
-            return handleTypeVariable((TypeVariable)type);
-        }else if (type instanceof WildcardType){
-            return handleWildcard((WildcardType)type);
-        }else if (type instanceof ArrayType){
-            ArrayType t = (ArrayType)type;
-            return create(t.getComponentType()).asArrayType();
+    private Type handle(TypeMirror typeMirror, boolean deep) {
+        if (typeMirror instanceof DeclaredType){
+            return handleDeclaredType((DeclaredType)typeMirror, deep);
+        }else if (typeMirror instanceof TypeVariable){
+            return handleTypeVariable((TypeVariable)typeMirror, deep);
+        }else if (typeMirror instanceof WildcardType){
+            return handleWildcard((WildcardType)typeMirror, deep);
+        }else if (typeMirror instanceof ArrayType){
+            ArrayType t = (ArrayType)typeMirror;
+            return getType(t.getComponentType(), deep).asArrayType();
 //        }else if (type instanceof PrimitiveType){
 //            return handlePrimitiveType((PrimitiveType)type);
-        }else if (type instanceof NoType){
-            return defaultValue;
+        }else if (typeMirror instanceof NoType){
+            return defaultType;
         }else{
             return null;
         }
     }
 
-    private Type handleDeclaredType(DeclaredType t) {
-        if (t.asElement() instanceof TypeElement){
-            TypeElement typeElement = (TypeElement)t.asElement();
+    private Type handleDeclaredType(DeclaredType declaredType, boolean deep) {
+        if (declaredType.asElement() instanceof TypeElement){
+            TypeElement typeElement = (TypeElement)declaredType.asElement();
             switch(typeElement.getKind()){
-            case ENUM:      return createEnumType(t, typeElement);
-            case CLASS:     return createClassType(t, typeElement);
-            case INTERFACE: return createInterfaceType(t, typeElement);
+            case ENUM:      return createEnumType(declaredType, typeElement, deep);
+            case CLASS:     return createClassType(declaredType, typeElement, deep);
+            case INTERFACE: return createInterfaceType(declaredType, typeElement, deep);
             default: throw new IllegalArgumentException("Illegal type " + typeElement);
             }
         }else{
-            throw new IllegalArgumentException("Unsupported element type " + t.asElement());
+            throw new IllegalArgumentException("Unsupported element type " + declaredType.asElement());
         }
     }
 
-    private TypeMirror normalizePrimitiveType(TypeMirror t){
-        switch (t.getKind()) {
+    private TypeMirror normalizePrimitiveType(TypeMirror typeMirror){
+        switch (typeMirror.getKind()) {
         case BOOLEAN: return env.getElementUtils().getTypeElement(Boolean.class.getName()).asType();
         case BYTE: return env.getElementUtils().getTypeElement(Byte.class.getName()).asType();
         case CHAR: return env.getElementUtils().getTypeElement(Character.class.getName()).asType();
@@ -408,7 +422,7 @@ public final class APTTypeFactory {
         case LONG: return env.getElementUtils().getTypeElement(Long.class.getName()).asType();
         case SHORT: return env.getElementUtils().getTypeElement(Short.class.getName()).asType();
         }
-        throw new IllegalArgumentException("Unsupported type " + t.getKind() + " for " + t);
+        throw new IllegalArgumentException("Unsupported type " + typeMirror.getKind() + " for " + typeMirror);
     }
 
 //    private Type handlePrimitiveType(PrimitiveType t) {
@@ -426,23 +440,23 @@ public final class APTTypeFactory {
 //    }
 
     @Nullable
-    private Type handleTypeVariable(TypeVariable t) {
-        String varName = t.toString();
-        if (t.getUpperBound() != null){
-            return new TypeExtends(varName, handle(t.getUpperBound()));
-        }else if (t.getLowerBound() != null && !(t.getLowerBound() instanceof NullType)){
-            return new TypeSuper(varName, handle(t.getLowerBound()));
+    private Type handleTypeVariable(TypeVariable typeVariable, boolean deep) {
+        String varName = typeVariable.toString();
+        if (typeVariable.getUpperBound() != null){
+            return new TypeExtends(varName, handle(typeVariable.getUpperBound(), deep));
+        }else if (typeVariable.getLowerBound() != null && !(typeVariable.getLowerBound() instanceof NullType)){
+            return new TypeSuper(varName, handle(typeVariable.getLowerBound(), deep));
         }else{
             return null;
         }
     }
 
     @Nullable
-    private Type handleWildcard(WildcardType t) {
-        if (t.getExtendsBound() != null){
-            return new TypeExtends(handle(t.getExtendsBound()));
-        }else if (t.getSuperBound() != null){
-            return new TypeSuper(handle(t.getSuperBound()));
+    private Type handleWildcard(WildcardType wildardType, boolean deep) {
+        if (wildardType.getExtendsBound() != null){
+            return new TypeExtends(handle(wildardType.getExtendsBound(), deep));
+        }else if (wildardType.getSuperBound() != null){
+            return new TypeSuper(handle(wildardType.getSuperBound(), deep));
         }else{
             return null;
         }

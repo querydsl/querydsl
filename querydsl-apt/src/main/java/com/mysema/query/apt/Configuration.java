@@ -36,10 +36,10 @@ public interface Configuration {
 
     @Nullable
     Class<? extends Annotation> getEntitiesAnnotation();
-    
+
     @Nullable
     Class<? extends Annotation> getEmbeddedAnnotation();
-    
+
     @Nullable
     Class<? extends Annotation> getEmbeddableAnnotation();
 
@@ -51,7 +51,7 @@ public interface Configuration {
 
     String getNamePrefix();
 
-    SerializerConfig getSerializerConfig(EntityType model);
+    SerializerConfig getSerializerConfig(EntityType entityType);
 
     @Nullable
     Class<? extends Annotation> getSkipAnnotation();
