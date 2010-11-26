@@ -62,7 +62,9 @@ import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.NumberSubQuery;
 import com.mysema.query.types.query.SimpleSubQuery;
-import com.mysema.testutil.*;
+import com.mysema.testutil.ExcludeIn;
+import com.mysema.testutil.IncludeIn;
+import com.mysema.testutil.Label;
 
 public abstract class SelectBaseTest extends AbstractBaseTest{
 
@@ -73,7 +75,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     }
 
-    private QueryExecution standardTest = new QueryExecution(Module.SQL, getClass().getAnnotation(Label.class).value()){
+    private final QueryExecution standardTest = new QueryExecution(Module.SQL, getClass().getAnnotation(Label.class).value()){
         @Override
         protected Pair<Projectable, List<Expression<?>>> createQuery() {
             return Pair.of(
@@ -248,7 +250,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         NumberPath<Long> rowCount = new NumberPath<Long>(Long.class, "rowCount");
         query().from(employee).uniqueResult(Wildcard.count().as(rowCount));
     }
-    
+
     @Test
     public void Custom_Projection(){
         List<Projection> tuples = query().from(employee).list(
@@ -286,7 +288,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             System.out.println(name);
         }
     }
-    
+
     @Test
     public void Inner_Join() throws SQLException {
         query().from(employee).innerJoin(employee2)
@@ -300,14 +302,14 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             .on(employee.superiorIdKey.on(employee2))
             .list(employee.id, employee2.id);
     }
-    
+
     @Test
     public void Right_Join() throws SQLException {
         query().from(employee).rightJoin(employee2)
             .on(employee.superiorIdKey.on(employee2))
             .list(employee.id, employee2.id);
     }
-    
+
     @Test
     @IncludeIn({POSTGRES})
     public void Full_Join() throws SQLException {
@@ -327,13 +329,23 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
+    public void Exists(){
+        assertTrue(query().from(employee).where(employee.firstname.eq("Barbara")).exists());
+    }
+
+    @Test
+    public void NotExists(){
+        assertTrue(query().from(employee).where(employee.firstname.eq("Barb")).notExists());
+    }
+
+    @Test
     public void Limit() throws SQLException {
         // limit
         query().from(employee)
         .orderBy(employee.firstname.asc())
         .limit(4).list(employee.id);
     }
-    
+
     @Test
     public void Limit_And_Offset() throws SQLException {
         // limit and offset
@@ -341,9 +353,9 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         .orderBy(employee.firstname.asc())
         .limit(4).offset(3).list(employee.id);
     }
-    
+
     @Test
-    public void Limitt_and_Order(){
+    public void Limit_and_Order(){
         // limit
         List<String> names1 = Arrays.asList("Barbara","Daisy","Helen","Jennifer");
         assertEquals(names1, query().from(employee)
@@ -417,13 +429,13 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     public void Path_Alias(){
         expectedQuery = "select e.LASTNAME, sum(e.SALARY) as salarySum from EMPLOYEE2 e group by e.LASTNAME having salarySum > ?";
 
-        NumberExpression<BigDecimal> salarySum = employee.salary.sum().as("salarySum");        
+        NumberExpression<BigDecimal> salarySum = employee.salary.sum().as("salarySum");
         query().from(employee)
         .groupBy(employee.lastname)
         .having(salarySum.gt(10000))
         .list(employee.lastname, salarySum);
     }
-    
+
     @Test
     public void Projection() throws IOException{
         CloseableIterator<Object[]> results = query().from(survey).iterate(survey.all());
@@ -572,7 +584,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             query().from(employee).where(where).list(employee.firstname);
         }
     }
-    
+
     @Test
     public void SubQuery_InnerJoin(){
         ListSubQuery<Integer> sq = sq().from(employee2).list(employee2.id);
@@ -580,7 +592,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         query().from(employee).innerJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
 
     }
-    
+
     @Test
     public void SubQuery_LeftJoin(){
         ListSubQuery<Integer> sq = sq().from(employee2).list(employee2.id);
@@ -588,7 +600,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         query().from(employee).leftJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
 
     }
-    
+
     @Test
     public void SubQuery_RightJoin(){
         ListSubQuery<Integer> sq = sq().from(employee2).list(employee2.id);
@@ -596,7 +608,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         query().from(employee).rightJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
 
     }
-    
+
     @Test
     public void SubQuerySerialization(){
         SQLSubQuery query = sq();
@@ -606,13 +618,13 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         query.from(survey2);
         assertEquals("from SURVEY s, SURVEY s2", query.toString());
     }
-    
+
     @Test
     public void SubQuerySerialization2(){
         NumberPath<BigDecimal> sal = new NumberPath<BigDecimal>(BigDecimal.class, "sal");
         PathBuilder<Object[]> sq = new PathBuilder<Object[]>(Object[].class, "sq");
         SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
-        
+
         serializer.handle(
                 sq()
                 .from(employee)
@@ -655,7 +667,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             assertEquals(2, row.length);
             assertEquals(Integer.class, row[0].getClass());
             assertEquals(String.class, row[1].getClass());
-        }        
+        }
     }
 
     @Test
@@ -668,7 +680,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             assertEquals(IdName.class, row[2].getClass());
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void Union() throws SQLException {
@@ -706,13 +718,13 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         // iterator
         CloseableIterator<Object[]> iterator = query().union(sq1,sq2).iterate();
         try{
-            assertTrue(iterator.hasNext());   
+            assertTrue(iterator.hasNext());
             assertTrue(iterator.next() != null);
             assertTrue(iterator.next() != null);
             assertFalse(iterator.hasNext());
         }finally{
             iterator.close();
-        }        
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -730,13 +742,13 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         // iterator
         CloseableIterator<Integer> iterator = query().union(sq1,sq2).iterate();
         try{
-            assertTrue(iterator.hasNext());   
+            assertTrue(iterator.hasNext());
             assertTrue(iterator.next() != null);
             assertTrue(iterator.next() != null);
             assertFalse(iterator.hasNext());
         }finally{
             iterator.close();
-        }        
+        }
     }
 
     @Test

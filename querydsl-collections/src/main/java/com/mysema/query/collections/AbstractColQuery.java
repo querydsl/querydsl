@@ -63,14 +63,23 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private <D> Expression<D> createAlias(CollectionExpression<?,D> target, Path<D> alias){
-        return OperationImpl.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
+    @Override
+    public boolean exists(){
+        try {
+            return queryEngine.exists(getMetadata(), iterables);
+        } catch (Exception e) {
+            throw new QueryException(e.getMessage(), e);
+        }finally{
+            reset();
+        }
     }
 
-    @SuppressWarnings("unchecked")
+    private <D> Expression<D> createAlias(CollectionExpression<?,D> target, Path<D> alias){
+        return OperationImpl.create(alias.getType(), Ops.ALIAS, target, alias);
+    }
+
     private <D> Expression<D> createAlias(MapExpression<?,D> target, Path<D> alias){
-        return OperationImpl.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
+        return OperationImpl.create(alias.getType(), Ops.ALIAS, target, alias);
     }
 
     @SuppressWarnings("unchecked")

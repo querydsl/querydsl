@@ -43,6 +43,16 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
+    public boolean exists() {
+        return projectable.exists();
+    }
+
+    @Override
+    public boolean notExists() {
+        return projectable.notExists();
+    }
+
+    @Override
     public CloseableIterator<Object[]> iterate(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return projectable.iterate(first, second, rest);
     }
@@ -117,6 +127,7 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
         return projectable.map(key, value);
     }
 
+    @Override
     public String toString() {
         return projectable.toString();
     }

@@ -8,6 +8,7 @@ package com.mysema.query;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -39,8 +40,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
 
     public static class Projection {
 
-    public Projection(String str) {
-        }
+        public Projection(String str) {}
 
     }
 
@@ -60,7 +60,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
     }
 
     private static String productName = "ABCD";
-    
+
     private static String otherName = "ABC0";
 
     @BeforeClass
@@ -97,7 +97,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
 
     }
 
-    private QueryExecution standardTest = new QueryExecution(Module.JDOQL, Target.H2){
+    private final QueryExecution standardTest = new QueryExecution(Module.JDOQL, Target.H2){
         @Override
         protected Pair<Projectable, List<Expression<?>>> createQuery() {
             return Pair.of(
@@ -112,13 +112,13 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
         }
     };
 
-    private QProduct product = QProduct.product;
+    private final QProduct product = QProduct.product;
 
-    private QProduct otherProduct = new QProduct("otherProduct");
+    private final QProduct otherProduct = new QProduct("otherProduct");
 
-    private QStore store = QStore.store;
+    private final QStore store = QStore.store;
 
-    private QStore otherStore = new QStore("otherStore");
+    private final QStore otherStore = new QStore("otherStore");
 
     @Test
     public void StandardTest(){
@@ -193,5 +193,15 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
     public void Params_not_set(){
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("ABC0",query().from(product).where(product.name.eq(name)).uniqueResult(product.name));
+    }
+
+    @Test
+    public void Exists(){
+        assertTrue(query().from(product).where(product.name.eq("ABC0")).exists());
+    }
+
+    @Test
+    public void NotExists(){
+        assertTrue(query().from(product).where(product.name.eq("XXX")).notExists());
     }
 }

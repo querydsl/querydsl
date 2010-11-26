@@ -16,10 +16,11 @@ import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.TemplateExpressionImpl;
 
 /**
  * Abstract super class for SQLQuery implementation for JPA and Hibernate
- * 
+ *
  * @author tiwe
  *
  * @param <T>
@@ -27,6 +28,8 @@ import com.mysema.query.types.SubQueryExpression;
 public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends ProjectableQuery<T>{
 
     private static final Expression<Integer> COUNT_ALL_AGG_EXPR = OperationImpl.create(Integer.class, Ops.AggOps.COUNT_ALL_AGG);
+
+    private static final Expression<Integer> ONE = TemplateExpressionImpl.create(Integer.class, "1");
 
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(QueryMetadata metadata) {
@@ -37,6 +40,11 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     @Override
     public long count() {
         return uniqueResult(COUNT_ALL_AGG_EXPR);
+    }
+
+    @Override
+    public boolean exists(){
+        return limit(1).uniqueResult(ONE) != null;
     }
 
     public T from(Expression<?>... args) {

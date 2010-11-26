@@ -11,9 +11,11 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.TemplateExpressionImpl;
 
 /**
  * JPQLQueryBase is a base Query class for JPQL queries
@@ -22,6 +24,8 @@ import com.mysema.query.types.Predicate;
  * @version $Id$
  */
 public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends ProjectableQuery<Q> {
+
+    private static final Expression<Integer> ONE = TemplateExpressionImpl.create(Integer.class, "1");
 
     private Map<Object,String> constants;
 
@@ -57,6 +61,11 @@ public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends Projecta
 
     protected void reset() {
         queryMixin.getMetadata().reset();
+    }
+
+    @Override
+    public boolean exists(){
+        return limit(1).uniqueResult(ONE) != null;
     }
 
     public Q fetch(){

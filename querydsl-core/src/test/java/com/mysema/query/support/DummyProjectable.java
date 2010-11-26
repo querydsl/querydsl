@@ -36,4 +36,14 @@ public class DummyProjectable extends ProjectableQuery<DummyProjectable>{
         return SearchResults.emptyResults();
     }
 
+    @Override
+    public boolean exists() {
+        return false;
+    }
+
+    @Override
+    public boolean notExists() {
+        return true;
+    }
+
 }

@@ -9,6 +9,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,15 +54,15 @@ public abstract class AbstractStandardTest {
         }
 
     }
-    
+
     public static class QProjection extends ConstructorExpression<Projection>{
-        
+
         private static final long serialVersionUID = -5866362075090550839L;
 
         public QProjection(StringExpression str, QCat cat){
             super(Projection.class, new Class[]{String.class, Cat.class}, new Expression[]{str, cat});
         }
-        
+
     }
 
     private static final QCat cat = QCat.cat;
@@ -76,7 +77,8 @@ public abstract class AbstractStandardTest {
 
     private final java.sql.Date date;
 
-    private Projections projections = new Projections(Module.HQL, getTarget()){
+    private final Projections projections = new Projections(Module.HQL, getTarget()){
+        @Override
         public <A> Collection<Expression<?>> list(ListPath<A,?> expr, ListExpression<A> other, A knownElement){
             // NOTE : expr.get(0) is only supported in the where clause
             return Collections.<Expression<?>>singleton(expr.size());
@@ -85,7 +87,7 @@ public abstract class AbstractStandardTest {
 
     private final List<Cat> savedCats = new ArrayList<Cat>();
 
-    private QueryExecution standardTest = new QueryExecution(
+    private final QueryExecution standardTest = new QueryExecution(
             projections, new Filters(projections, Module.HQL, getTarget()), new MatchingFilters(Module.HQL, getTarget())){
 
         @Override
@@ -149,7 +151,7 @@ public abstract class AbstractStandardTest {
         cat.setBirthdate(birthDate);
         save(cat);
         savedCats.add(cat);
-        
+
         Show show = new Show();
         show.acts = new HashMap<String,String>();
         show.acts.put("a","A");
@@ -188,13 +190,23 @@ public abstract class AbstractStandardTest {
     public void Any_Simple(){
         assertEquals(1, catQuery().where(cat.kittens.any().name.eq("Ruth123")).count());
     }
-    
+
+    @Test
+    public void Exists(){
+        assertTrue(catQuery().where(cat.kittens.any().name.eq("Ruth123")).exists());
+    }
+
+    @Test
+    public void NotExists(){
+        assertTrue(catQuery().where(cat.kittens.any().name.eq("XXX")).notExists());
+    }
+
     @Test
     public void Any_And(){
         assertEquals(1, catQuery().where(cat.kittens.any().name.eq("Ruth123"), cat.kittens.any().bodyWeight.lt(10.0)).count());
         assertEquals(0, catQuery().where(cat.kittens.any().name.eq("Ruth123"), cat.kittens.any().bodyWeight.gt(10.0)).count());
     }
-    
+
     @Test
     public void Aggregates_UniqueResult(){
         // uniqueResult
@@ -208,7 +220,7 @@ public abstract class AbstractStandardTest {
         assertEquals(Integer.valueOf(1), catQuery().list(cat.id.min()).get(0));
         assertEquals(Integer.valueOf(6), catQuery().list(cat.id.max()).get(0));
     }
-    
+
     @Test
     public void DistinctResults(){
         System.out.println("-- list results");
@@ -242,26 +254,26 @@ public abstract class AbstractStandardTest {
         assertEquals(0, catQuery().where(cat.name.endsWith("X")).count());
         assertEquals(1, catQuery().where(cat.name.endsWithIgnoreCase("H123")).count());
     }
-    
+
     @Test
     public void Contains(){
         // contains
         assertEquals(1, catQuery().where(cat.name.contains("eli")).count());
     }
-    
+
     @Test
     public void Length(){
         // length
         assertEquals(6, catQuery().where(cat.name.length().gt(0)).count());
     }
-    
+
     @Test
     public void IndexOf(){
         // indexOf
         assertEquals(Integer.valueOf(0), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("B")));
-        assertEquals(Integer.valueOf(1), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("o")));        
+        assertEquals(Integer.valueOf(1), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("o")));
     }
-    
+
     @Test
     public void StringOperations(){
         // case-sensitivity
@@ -271,26 +283,26 @@ public abstract class AbstractStandardTest {
             assertEquals(Integer.valueOf(2), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("b")));
         }
     }
-    
+
     @Test
     public void Limit(){
         // limit
         List<String> names1 = Arrays.asList("Allen123","Bob123");
-        assertEquals(names1, catQuery().orderBy(cat.name.asc()).limit(2).list(cat.name));        
+        assertEquals(names1, catQuery().orderBy(cat.name.asc()).limit(2).list(cat.name));
     }
-    
+
     @Test
     public void Offset(){
         // offset
         List<String> names2 = Arrays.asList("Felix123","Mary123","Ruth123","Some");
-        assertEquals(names2, catQuery().orderBy(cat.name.asc()).offset(2).list(cat.name));    
+        assertEquals(names2, catQuery().orderBy(cat.name.asc()).offset(2).list(cat.name));
     }
-    
+
     @Test
     public void Limit_and_offset(){
         // limit + offset
         List<String> names3 = Arrays.asList("Felix123","Mary123");
-        assertEquals(names3, catQuery().orderBy(cat.name.asc()).limit(2).offset(2).list(cat.name));        
+        assertEquals(names3, catQuery().orderBy(cat.name.asc()).limit(2).offset(2).list(cat.name));
     }
 
     @Test
@@ -327,7 +339,7 @@ public abstract class AbstractStandardTest {
             assertNotNull(projection);
         }
     }
-    
+
     @Test
     public void ConstructorProjection2(){
         List<Projection> projections = query().from(cat).list(new QProjection(cat.name, cat));
@@ -354,12 +366,12 @@ public abstract class AbstractStandardTest {
         Param<String> name = new Param<String>(String.class,"name");
         assertEquals("Bob123",query().from(cat).where(cat.name.eq(name)).uniqueResult(cat.name));
     }
-    
+
     @Test
     public void Null_as_uniqueResult(){
         assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString())).uniqueResult(cat));
     }
-    
+
     @Test
     public void Map_ContainsKey(){
         QShow show = QShow.show;
@@ -367,7 +379,7 @@ public abstract class AbstractStandardTest {
         assertEquals(1l, query().from(show).where(show.acts.containsKey("b")).count());
         assertEquals(0l, query().from(show).where(show.acts.containsKey("c")).count());
     }
-    
+
     @Test
     public void Map_ContainsValue(){
         QShow show = QShow.show;

@@ -20,6 +20,7 @@ import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
@@ -52,6 +53,21 @@ public class DefaultQueryEngine implements QueryEngine {
     }
 
     @Override
+    public boolean exists(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables) {
+        QueryModifiers modifiers = metadata.getModifiers();
+        metadata.setLimit(1l);
+        try{
+            if (metadata.getJoins().size() == 1){
+                return !evaluateSingleSource(metadata, iterables, true).isEmpty();
+            }else{
+                return !evaluateMultipleSources(metadata, iterables, true).isEmpty();
+            }
+        }finally{
+            metadata.setModifiers(modifiers);
+        }
+    }
+
+    @Override
     public <T> List<T> list(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables, Expression<T> projection){
         if (metadata.getJoins().size() == 1){
             return evaluateSingleSource(metadata, iterables, false);
@@ -70,7 +86,7 @@ public class DefaultQueryEngine implements QueryEngine {
                 }
             }
             return rv;
-        }else{            
+        }else{
             for (T o : list){
                 if (!rv.contains(o)){
                     rv.add(o);
@@ -183,7 +199,6 @@ public class DefaultQueryEngine implements QueryEngine {
         }
         Expression<?> expr = new ArrayConstructorExpression<Object>(Object[].class, orderByExpr);
         Evaluator orderEvaluator = evaluatorFactory.create(metadata, sources, expr);
-
         Collections.sort(list, new MultiComparator(orderEvaluator, directions));
     }
 
@@ -193,5 +208,7 @@ public class DefaultQueryEngine implements QueryEngine {
         list = IteratorUtils.toList(IteratorUtils.transformedIterator(list.iterator(), transformer));
         return list;
     }
+
+
 
 }

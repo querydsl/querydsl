@@ -169,15 +169,16 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery> implements 
         return buildQueryString(false);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expression<RT> expr) {
         Query query = createQuery(expr);
         reset();
         try{
-            return (RT) query.getSingleResult();    
+            return (RT) query.getSingleResult();
         }catch(NoResultException e){
             logger.debug(e.getMessage(),e);
-            return null;            
+            return null;
         }
     }
 

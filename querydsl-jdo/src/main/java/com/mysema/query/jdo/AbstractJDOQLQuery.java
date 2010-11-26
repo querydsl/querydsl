@@ -44,14 +44,14 @@ import com.mysema.query.types.QTuple;
 public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extends ProjectableQuery<Q>{
 
     private static final Logger logger = LoggerFactory.getLogger(JDOQLQueryImpl.class);
-    
+
     private final Closeable closeable = new Closeable(){
         @Override
         public void close() throws IOException {
-            AbstractJDOQLQuery.this.close();            
-        }        
+            AbstractJDOQLQuery.this.close();
+        }
     };
-    
+
     private final boolean detach;
 
     private List<Object> orderedConstants = new ArrayList<Object>();
@@ -59,12 +59,12 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     @Nullable
     private final PersistenceManager persistenceManager;
 
-    private List<Query> queries = new ArrayList<Query>(2);
+    private final List<Query> queries = new ArrayList<Query>(2);
 
     private final JDOQLTemplates templates;
-    
-    private Set<String> fetchGroups = new HashSet<String>();
-    
+
+    private final Set<String> fetchGroups = new HashSet<String>();
+
     @Nullable
     private Integer maxFetchDepth;
 
@@ -96,6 +96,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         }
     }
 
+    @Override
     public long count() {
         Query query = createQuery(true);
         query.setUnique(true);
@@ -108,15 +109,26 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         }
     }
 
+    @Override
+    public boolean exists(){
+        boolean rv = limit(1).uniqueResult(getSource()) != null;
+        close();
+        return rv;
+    }
+
+    private Expression<?> getSource(){
+        return queryMixin.getMetadata().getJoins().get(0).getTarget();
+    }
+
     private Query createQuery(boolean forCount) {
-        Expression<?> source = queryMixin.getMetadata().getJoins().get(0).getTarget();
+        Expression<?> source = getSource();
 
         // serialize
         JDOQLSerializer serializer = new JDOQLSerializer(getTemplates(), source);
         serializer.serialize(queryMixin.getMetadata(), forCount, false);
 
         logQuery(serializer.toString());
-        
+
         // create Query
         Query query = persistenceManager.newQuery(serializer.toString());
         orderedConstants = serializer.getConstants();
@@ -130,7 +142,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
             } else if (FactoryExpression.class.isAssignableFrom(exprType)){
                 query.setResultClass(projection.get(0).getType());
             }
-            
+
             if (!fetchGroups.isEmpty()){
                 query.getFetchPlan().setGroups(fetchGroups);
             }
@@ -141,7 +153,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
 
         return query;
     }
-    
+
     protected void logQuery(String queryString){
         if (logger.isDebugEnabled()){
             logger.debug(queryString.replace('\n', ' '));
@@ -194,6 +206,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         return new IteratorAdapter<RT>(list(projection).iterator(), closeable);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<Object[]> list(Expression<?>[] args) {
         queryMixin.addToProjection(args);
@@ -202,6 +215,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         return (rv instanceof List) ? ((List<Object[]>)rv) : Collections.singletonList((Object[])rv);
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expression<RT> expr) {
         queryMixin.addToProjection(expr);
@@ -237,12 +251,11 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         maxFetchDepth = depth;
         return (Q)this;
     }
-    
 
     @Override
     public String toString(){
         if (!queryMixin.getMetadata().getJoins().isEmpty()){
-            Expression<?> source = queryMixin.getMetadata().getJoins().get(0).getTarget();
+            Expression<?> source = getSource();
             JDOQLSerializer serializer = new JDOQLSerializer(getTemplates(), source);
             serializer.serialize(queryMixin.getMetadata(), false, false);
             return serializer.toString().trim();
@@ -251,6 +264,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         }
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expression<RT> expr) {
         queryMixin.addToProjection(expr);

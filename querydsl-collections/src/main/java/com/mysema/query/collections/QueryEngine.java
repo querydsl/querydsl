@@ -42,4 +42,11 @@ public interface QueryEngine {
      */
     <T> List<T> list(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables, Expression<T> projection);
 
+    /**
+     * @param metadata
+     * @param iterables
+     * @return
+     */
+    boolean exists(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables);
+
 }

@@ -35,15 +35,7 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.QBean;
-import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.*;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.template.SimpleTemplate;
 import com.mysema.util.ResultSetAdapter;
@@ -68,7 +60,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                 return (List<RT>) IteratorAdapter.asList(iterateMultiple());
             }
         }
-        
+
         @SuppressWarnings("unchecked")
         @Override
         public CloseableIterator<RT> iterate() {
@@ -84,7 +76,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
             AbstractSQLQuery.this.orderBy(o);
             return this;
         }
-        
+
         @Override
         public String toString(){
             return AbstractSQLQuery.this.toString();
@@ -94,6 +86,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
 
+    private static final Expression<Integer> ONE = TemplateExpressionImpl.create(Integer.class, "1");
+
     @Nullable
     private final Connection conn;
 
@@ -102,7 +96,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     @Nullable
     private List<Path<?>> constantPaths;
-    
+
     @Nullable
     private SubQueryExpression<?>[] union;
 
@@ -119,7 +113,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         this.conn = conn;
         this.configuration = configuration;
     }
-    
+
     @SuppressWarnings("unchecked")
     protected Q addJoinFlag(String flag){
         List<JoinExpression> joins = queryMixin.getMetadata().getJoins();
@@ -131,15 +125,15 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         Expression<?> flag = SimpleTemplate.create(expr.getType(), prefix + "{0}", expr);
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
-    
+
     protected Q addFlag(Position position, String flag){
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
-    
+
     protected Q addFlag(Position position, Expression<?> flag){
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
-    
+
     protected String buildQueryString(boolean forCountRow) {
         SQLSerializer serializer = createSerializer();
         if (union != null) {
@@ -161,6 +155,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
             logger.error(error, e);
             throw new QueryException(e.getMessage(), e);
         }
+    }
+
+    @Override
+    public boolean exists(){
+        return limit(1).uniqueResult(ONE) != null;
     }
 
     protected SQLSerializer createSerializer() {
@@ -236,11 +235,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     private <T> T get(ResultSet rs, Expression<?> expr, int i, Class<T> type) throws SQLException {
         return configuration.get(rs, expr instanceof Path ? (Path)expr : null, i, type);
     }
-    
+
     private int set(PreparedStatement stmt, Path<?> path, int i, Object value) throws SQLException{
         return configuration.set(stmt, path, i, value);
     }
-    
+
     public QueryMetadata getMetadata() {
         return queryMixin.getMetadata();
     }
@@ -311,8 +310,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
             }
         }else{
             queryMixin.addToProjection(expr);
-            return iterateSingle(expr);    
-        }    
+            return iterateSingle(expr);
+        }
     }
 
     private CloseableIterator<Object[]> iterateMultiple() {
@@ -398,7 +397,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                             }
                             return (RT) rv;
                         } else{
-                            return (RT) get(rs, expr, 1, expr.getType());
+                            return get(rs, expr, 1, expr.getType());
                         }
                     } catch (IllegalAccessException e) {
                         close();
@@ -469,14 +468,14 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         queryMixin.getMetadata().reset();
         constants = null;
     }
-    
+
     protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths, Map<ParamExpression<?>, ?> params){
         if (objects.size() != constantPaths.size()){
             throw new IllegalArgumentException("Expected " + objects.size() + " paths, but got " + constantPaths.size());
         }
         int counter = 1;
         for (int i = 0; i < objects.size(); i++){
-            Object o = objects.get(i);        
+            Object o = objects.get(i);
             try {
                 if (ParamExpression.class.isInstance(o)){
                     if (!params.containsKey(o)){
@@ -516,7 +515,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         }finally{
             iterator.close();
         }
-        
+
     }
 
     private long unsafeCount() throws SQLException {
@@ -546,5 +545,5 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
             }
         }
     }
-    
+
 }

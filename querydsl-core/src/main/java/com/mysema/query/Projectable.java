@@ -36,6 +36,16 @@ public interface Projectable {
     long countDistinct();
 
     /**
+     * @return true, if rows matching the given criteria exist, otherwise false
+     */
+    boolean exists();
+
+    /**
+     * @return true, if no rows matching the given criteria exist, otherwise false
+     */
+    boolean notExists();
+
+    /**
      * iterate over the results for the given projection
      *
      * @param first
