@@ -146,6 +146,7 @@ public final class ExtendedTypeFactory {
         }
     }
 
+    @Nullable
     private Type createType(TypeMirror typeMirror, List<String> key, boolean deep) {
         typeCache.put(key, null);
         Type type = handle(typeMirror, deep);
@@ -223,6 +224,7 @@ public final class ExtendedTypeFactory {
         }
     }
 
+    @Nullable
     private EntityType createEntityType(TypeMirror typeMirror, List<String> key, boolean deep) {
         entityTypeCache.put(key, null);
         Type value = handle(typeMirror, deep);
@@ -388,8 +390,6 @@ public final class ExtendedTypeFactory {
         }else if (typeMirror instanceof ArrayType){
             ArrayType t = (ArrayType)typeMirror;
             return getType(t.getComponentType(), deep).asArrayType();
-//        }else if (type instanceof PrimitiveType){
-//            return handlePrimitiveType((PrimitiveType)type);
         }else if (typeMirror instanceof NoType){
             return defaultType;
         }else{
@@ -424,20 +424,6 @@ public final class ExtendedTypeFactory {
         }
         throw new IllegalArgumentException("Unsupported type " + typeMirror.getKind() + " for " + typeMirror);
     }
-
-//    private Type handlePrimitiveType(PrimitiveType t) {
-//        switch (t.getKind()) {
-//        case BOOLEAN: return create(env.getElementUtils().getTypeElement(Boolean.class.getName()).asType());
-//        case BYTE: return create(env.getElementUtils().getTypeElement(Byte.class.getName()).asType());
-//        case CHAR: return create(env.getElementUtils().getTypeElement(Character.class.getName()).asType());
-//        case DOUBLE: return create(env.getElementUtils().getTypeElement(Double.class.getName()).asType());
-//        case FLOAT: return create(env.getElementUtils().getTypeElement(Float.class.getName()).asType());
-//        case INT: return create(env.getElementUtils().getTypeElement(Integer.class.getName()).asType());
-//        case LONG: return create(env.getElementUtils().getTypeElement(Long.class.getName()).asType());
-//        case SHORT: return create(env.getElementUtils().getTypeElement(Short.class.getName()).asType());
-//        }
-//        throw new IllegalArgumentException("Unsupported type " + t.getKind());
-//    }
 
     @Nullable
     private Type handleTypeVariable(TypeVariable typeVariable, boolean deep) {
