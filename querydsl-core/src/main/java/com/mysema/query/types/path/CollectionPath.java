@@ -24,8 +24,9 @@ import com.mysema.query.types.expr.SimpleExpression;
  * @author tiwe
  *
  * @param <E> component type
+ * @param <Q> component query type
  */
-public class CollectionPath<E, Q extends SimpleExpression<E>> extends CollectionPathBase<Collection<E>,E>{    
+public class CollectionPath<E, Q extends SimpleExpression<E>> extends CollectionPathBase<Collection<E>, E, Q>{    
 
     private static final long serialVersionUID = -4982311799113762600L;
 

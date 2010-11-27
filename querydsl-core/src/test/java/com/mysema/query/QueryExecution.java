@@ -287,7 +287,7 @@ public abstract class QueryExecution {
         runProjectionQueries(projections.dateTime(expr, other, knownValue));
     }
 
-    public final <A> void runListTests(ListPath<A,?> expr, ListExpression<A> other, A knownElement, A missingElement){
+    public final <A, Q extends SimpleExpression<A>> void runListTests(ListPath<A,Q> expr, ListExpression<A,Q> other, A knownElement, A missingElement){
         runFilterQueries(matchers.list(expr, other, knownElement, missingElement), true);
         runFilterQueries(filters.list(expr, other, knownElement), false);
         runProjectionQueries(projections.list(expr, other, knownElement));

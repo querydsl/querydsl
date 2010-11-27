@@ -141,7 +141,7 @@ public class Filters {
         return rv;
     }
 
-    public <A> Collection<BooleanExpression> list(ListPath<A,?> expr, ListExpression<A> other, A knownElement){
+    public <A, Q extends SimpleExpression<A>> Collection<BooleanExpression> list(ListPath<A, Q> expr, ListExpression<A, Q> other, A knownElement){
         List<BooleanExpression> rv = new ArrayList<BooleanExpression>();
         rv.addAll(collection(expr, other, knownElement));
         rv.add(expr.get(0).eq(knownElement));

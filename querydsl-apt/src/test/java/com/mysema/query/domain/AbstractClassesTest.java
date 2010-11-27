@@ -18,7 +18,6 @@ public class AbstractClassesTest {
 
     public interface Archetype<PK extends Serializable, DO extends Serializable> extends Serializable, Comparable<DO>  {
 
-        PK getId();
     }
 
 
@@ -27,21 +26,11 @@ public class AbstractClassesTest {
 
         @Id
         @GeneratedValue
-        private PK id;
-        private String name;
-        private String description;
-
+        PK id;
+        String name;
+        String description;
 
         public BaseArchetype() {}
-
-
-        public PK getId() {
-            return id;
-        }
-
-        public void setId(PK id) {
-            this.id = id;
-        }
 
         public int compareTo(BaseArchetype o) {
             return 0;

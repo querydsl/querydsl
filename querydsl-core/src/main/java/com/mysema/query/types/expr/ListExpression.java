@@ -20,7 +20,7 @@ import com.mysema.query.types.Expression;
  * @param <E> component type
  * @see java.util.List
  */
-public interface ListExpression<E> extends CollectionExpression<List<E>,E> {
+public interface ListExpression<E, Q extends SimpleExpression<? extends E>> extends CollectionExpression<List<E>,E> {
 
     /**
      * Indexed access
@@ -29,7 +29,7 @@ public interface ListExpression<E> extends CollectionExpression<List<E>,E> {
      * @return this.get(index)
      * @see java.util.List#get(int)
      */
-    SimpleExpression<E> get(Expression<Integer> index);
+    Q get(Expression<Integer> index);
 
     /**
      * Indexed access
@@ -38,5 +38,5 @@ public interface ListExpression<E> extends CollectionExpression<List<E>,E> {
      * @return this.get(index)
      * @see java.util.List#get(int)
      */
-    SimpleExpression<E> get(@Nonnegative int index);
+    Q get(@Nonnegative int index);
 }

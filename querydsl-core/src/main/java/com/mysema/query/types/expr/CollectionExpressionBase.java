@@ -21,7 +21,7 @@ import com.mysema.query.types.Ops;
  *
  * @param <D>
  */
-public abstract class CollectionExpressionBase<C extends Collection<E>, E> extends SimpleExpression<C> implements CollectionExpression<C,E> {
+public abstract class CollectionExpressionBase<C extends Collection<E>, E> extends SimpleExpression<C> implements CollectionExpression<C, E> {
 
     private static final long serialVersionUID = 691230660037162054L;
 

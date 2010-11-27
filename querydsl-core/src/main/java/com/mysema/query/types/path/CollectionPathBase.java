@@ -17,10 +17,11 @@ import com.mysema.query.types.expr.SimpleExpression;
  * 
  * @author tiwe
  *
- * @param <C>
- * @param <E>
+ * @param <E> component type
+ * @param <Q> component query type
  */
-public abstract class CollectionPathBase<C extends Collection<E>, E> extends CollectionExpressionBase<C,E> implements Path<C>{
+public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends SimpleExpression<E>> 
+    extends CollectionExpressionBase<C, E> implements Path<C>{
 
     private static final long serialVersionUID = -9004995667633601298L;
 
@@ -31,10 +32,10 @@ public abstract class CollectionPathBase<C extends Collection<E>, E> extends Col
     @Nullable
     private transient volatile Constructor<?> constructor;
     
-    public abstract SimpleExpression<E> any();
+    public abstract Q any();
     
     @SuppressWarnings("unchecked")
-    protected <Q extends SimpleExpression<E>> Q newInstance(Class<Q> queryType, PathMetadata<?> pm){
+    protected Q newInstance(Class<Q> queryType, PathMetadata<?> pm){
         try{
             if (constructor == null) {
                 if (Constants.isTyped(queryType)){

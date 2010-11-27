@@ -39,6 +39,7 @@ import com.mysema.query.types.QTuple;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ListExpression;
 import com.mysema.query.types.expr.Param;
+import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.path.ListPath;
 
@@ -79,7 +80,7 @@ public abstract class AbstractStandardTest {
 
     private final Projections projections = new Projections(Module.HQL, getTarget()){
         @Override
-        public <A> Collection<Expression<?>> list(ListPath<A,?> expr, ListExpression<A> other, A knownElement){
+        public <A,Q extends SimpleExpression<A>> Collection<Expression<?>> list(ListPath<A,Q> expr, ListExpression<A,Q> other, A knownElement){
             // NOTE : expr.get(0) is only supported in the where clause
             return Collections.<Expression<?>>singleton(expr.size());
         }

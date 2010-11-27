@@ -119,7 +119,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @return
      */
     public <A> CollectionPath<A, PathBuilder<A>> getCollection(String property, Class<A> type) {
-        return super.createCollection(property, type, PathBuilder.class);
+        return super.<A, PathBuilder<A>>createCollection(property, type, PathBuilder.class);
     }
 
     /**
@@ -133,7 +133,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @return
      */
     public <A, E extends SimpleExpression<A>> CollectionPath<A, E> getCollection(String property, Class<A> type, Class<E> queryType) {
-        return super.createCollection(property, type, queryType);
+        return super.<A, E>createCollection(property, type, queryType);
     }
 
     /**
@@ -211,7 +211,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @return
      */
     public <A> ListPath<A, PathBuilder<A>> getList(String property, Class<A> type) {
-        return super.createList(property, type, PathBuilder.class);
+        return super.<A, PathBuilder<A>>createList(property, type, PathBuilder.class);
     }
 
     /**
@@ -225,7 +225,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @return
      */
     public <A, E extends SimpleExpression<A>> ListPath<A, E> getList(String property, Class<A> type, Class<E> queryType) {
-        return super.createList(property, type, queryType);
+        return super.<A, E>createList(property, type, queryType);
     }
 
     /**
@@ -289,7 +289,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @return
      */
     public <A> SetPath<A, PathBuilder<A>> getSet(String property, Class<A> type) {
-        return super.createSet(property, type, PathBuilder.class);
+        return super.<A, PathBuilder<A>>createSet(property, type, PathBuilder.class);
     }
 
     /**
@@ -303,7 +303,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @return
      */
     public <A, E extends SimpleExpression<A>> SetPath<A, E> getSet(String property, Class<A> type, Class<E> queryType) {
-        return super.createSet(property, type, queryType);
+        return super.<A, E>createSet(property, type, queryType);
     }
     
     /**

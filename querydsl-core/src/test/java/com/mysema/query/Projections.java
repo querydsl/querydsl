@@ -82,7 +82,7 @@ public class Projections {
         return rv;
     }
 
-    public <A> Collection<Expression<?>> list(ListPath<A,?> expr, ListExpression<A> other, A knownElement){
+    public <A,Q extends SimpleExpression<A>> Collection<Expression<?>> list(ListPath<A,Q> expr, ListExpression<A,Q> other, A knownElement){
         HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
         rv.add(expr.get(0));
         if (!module.equals(Module.RDFBEAN)){

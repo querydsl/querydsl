@@ -194,13 +194,53 @@ public final class ExtendedTypeFactory {
         return type;
     }
 
-    private Type createCollectionType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
+    private Type createMapType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
         if (!typeMirrors.hasNext()){
             throw new TypeArgumentsException(simpleName);
         }
-        return new SimpleType(Types.COLLECTION, getType(typeMirrors.next(), deep));
+        Type keyType = getType(typeMirrors.next(), deep);
+        Type valueType = getType(typeMirrors.next(), deep);
+        if (valueType.getParameters().isEmpty()){
+            TypeElement element = env.getElementUtils().getTypeElement(valueType.getFullName());
+            if (element != null){
+                Type type = getType(element.asType(), deep);
+                if (!type.getParameters().isEmpty()){
+                    valueType = new SimpleType(valueType, new Type[type.getParameters().size()]);
+                }
+            }
+        }
+        return new SimpleType(Types.MAP, keyType, valueType);
+    }
+    
+    private Type createCollectionType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
+        return createCollectionType(Types.COLLECTION, simpleName, typeMirrors, deep);
     }
 
+    private Type createListType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
+        return createCollectionType(Types.LIST, simpleName, typeMirrors, deep);
+    }
+
+    private Type createSetType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
+        return createCollectionType(Types.SET, simpleName, typeMirrors, deep);
+    }
+    
+    private Type createCollectionType(Type baseType, String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
+        if (!typeMirrors.hasNext()){
+            throw new TypeArgumentsException(simpleName);
+        }
+        Type componentType = getType(typeMirrors.next(), deep);
+        if (componentType.getParameters().isEmpty()){
+            TypeElement element = env.getElementUtils().getTypeElement(componentType.getFullName());
+            if (element != null){
+                Type type = getType(element.asType(), deep);
+                if (!type.getParameters().isEmpty()){
+                    componentType = new SimpleType(componentType, new Type[type.getParameters().size()]);
+                }
+            }
+        }
+        return new SimpleType(baseType, componentType);
+    }
+    
     @Nullable
     public EntityType getEntityType(TypeMirror typeMirrors, boolean deep){
         if (typeMirrors.getKind().isPrimitive()){
@@ -323,26 +363,6 @@ public final class ExtendedTypeFactory {
         return key;
     }
 
-    private Type createListType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
-        if (!typeMirrors.hasNext()){
-            throw new TypeArgumentsException(simpleName);
-        }
-        return new SimpleType(Types.LIST, getType(typeMirrors.next(), deep));
-    }
-
-    private Type createMapType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
-        if (!typeMirrors.hasNext()){
-            throw new TypeArgumentsException(simpleName);
-        }
-        return new SimpleType(Types.MAP, getType(typeMirrors.next(), deep), getType(typeMirrors.next(), deep));
-    }
-
-    private Type createSetType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
-        if (!typeMirrors.hasNext()){
-            throw new TypeArgumentsException(simpleName);
-        }
-        return new SimpleType(Types.SET, getType(typeMirrors.next(), deep));
-    }
 
     private Set<Type> getSupertypes(TypeMirror typeMirror, Type type, boolean deep) {
         boolean doubleIndex = doubleIndexEntities;

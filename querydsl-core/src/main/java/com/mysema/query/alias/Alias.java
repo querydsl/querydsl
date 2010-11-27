@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.PathMetadataFactory;
+import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.path.*;
 
 /**
@@ -115,8 +116,8 @@ public final class Alias {
         return aliasFactory.<DateTimePath<java.util.Date>> getCurrentAndReset();
     }
 
-    public static <D> ListPath<D,?> $(List<D> args) {
-        return aliasFactory.<ListPath<D,?>> getCurrentAndReset();
+    public static <D, Q extends SimpleExpression<D>> ListPath<D,Q> $(List<D> args) {
+        return aliasFactory.<ListPath<D,Q>> getCurrentAndReset();
     }
 
     public static NumberPath<Long> $(Long arg) {

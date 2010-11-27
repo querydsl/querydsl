@@ -118,7 +118,7 @@ public class MatchingFilters {
         return rv;
     }
 
-    public <A> Collection<BooleanExpression> list(ListPath<A,?> expr, ListExpression<A> other, A knownElement, A missingElement){
+    public <A,Q extends SimpleExpression<A>> Collection<BooleanExpression> list(ListPath<A,Q> expr, ListExpression<A,Q> other, A knownElement, A missingElement){
         return collection(expr, other, knownElement, missingElement);
     }
 

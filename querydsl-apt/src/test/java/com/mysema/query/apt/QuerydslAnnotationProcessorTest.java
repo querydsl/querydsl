@@ -58,6 +58,12 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
     }
 
     @Test
+    public void ProcessGenericSignature() throws IOException{
+        String path = new File("src/test/java/com/mysema/query/domain/GenericSignatureTest.java").getPath();
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"genericSignature");
+    }
+    
+    @Test
     public void ProcessAll() throws IOException{
         // works only in Eclipse for the moment
         List<String> classes = getFiles(packagePath);
