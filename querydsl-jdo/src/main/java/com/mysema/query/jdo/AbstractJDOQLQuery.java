@@ -266,6 +266,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
 
     @Override
     @SuppressWarnings("unchecked")
+    @Nullable
     public <RT> RT uniqueResult(Expression<RT> expr) {
         queryMixin.addToProjection(expr);
         Query query = createQuery(false);
