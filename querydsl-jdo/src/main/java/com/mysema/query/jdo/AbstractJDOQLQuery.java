@@ -169,6 +169,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         }
     }
 
+    @Nullable
     private Object execute(Query query) {
         Object rv;
         if (!orderedConstants.isEmpty()) {
