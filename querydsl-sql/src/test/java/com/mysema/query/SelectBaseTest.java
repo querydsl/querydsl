@@ -555,7 +555,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         .list(employee.id);
         assertFalse(list.isEmpty());
     }
-
+    
     @Test
     public void StandardTest(){
         standardTest.runBooleanTests(employee.firstname.isNull(), employee2.lastname.isNotNull());
@@ -585,6 +585,20 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         }
     }
 
+    @Test
+    public void SubQuery_with_Alias(){
+        List<Integer> ids1 = query().from(employee).list(employee.id);
+        List<Integer> ids2 = query().from(sq().from(employee).list(employee.id), employee).list(employee.id);
+        assertEquals(ids1, ids2);
+    }
+    
+    @Test
+    public void SubQuery_with_Alias2(){
+        List<Integer> ids1 = query().from(employee).list(employee.id);
+        List<Integer> ids2 = query().from(sq().from(employee).list(employee.id).as(employee)).list(employee.id);
+        assertEquals(ids1, ids2);
+    }
+    
     @Test
     public void SubQuery_InnerJoin(){
         ListSubQuery<Integer> sq = sq().from(employee2).list(employee2.id);

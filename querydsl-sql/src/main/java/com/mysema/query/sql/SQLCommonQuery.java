@@ -25,6 +25,15 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return
      */
     Q from(Expression<?>... o);
+    
+    /**
+     * Adds a sub query source
+     * 
+     * @param subQuery
+     * @param alias
+     * @return
+     */
+    Q from(SubQueryExpression<?> subQuery, Path<?> alias);
 
     /**
      * Adds a full join to the given target

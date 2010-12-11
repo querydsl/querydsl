@@ -39,7 +39,7 @@ public final class ExpressionUtils {
         }
         return rv;
     }
-    
+        
     public static <D> Expression<D> as(Expression<D> source, Path<D> alias) {
         return new OperationImpl<D>(alias.getType(), Ops.ALIAS, source, alias);
     }

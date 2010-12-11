@@ -169,6 +169,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     public Q from(Expression<?>... args) {
         return queryMixin.from(args);
     }
+    
+    @SuppressWarnings("unchecked")
+    public Q from(SubQueryExpression<?> subQuery, Path<?> alias){
+        return queryMixin.from(ExpressionUtils.as((Expression)subQuery, alias));
+    }
 
     public Q fullJoin(RelationalPath<?> target) {
         return queryMixin.fullJoin(target);

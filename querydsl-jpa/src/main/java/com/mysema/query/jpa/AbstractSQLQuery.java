@@ -11,6 +11,7 @@ import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
@@ -49,6 +50,11 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
 
     public T from(Expression<?>... args) {
         return queryMixin.from(args);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public T from(SubQueryExpression<?> subQuery, Path<?> alias){
+        return queryMixin.from(ExpressionUtils.as((Expression)subQuery, alias));
     }
 
     public <E> T fullJoin(ForeignKey<E> key, RelationalPath<E> entity) {

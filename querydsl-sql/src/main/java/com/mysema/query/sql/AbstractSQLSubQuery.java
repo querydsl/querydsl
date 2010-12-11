@@ -12,6 +12,7 @@ import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
@@ -52,6 +53,11 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.from(args);
     }
 
+    @SuppressWarnings("unchecked")
+    public Q from(SubQueryExpression<?> subQuery, Path<?> alias){
+        return queryMixin.from(ExpressionUtils.as((Expression)subQuery, alias));
+    }
+    
     public <E> Q fullJoin(ForeignKey<E> key, RelationalPath<E> entity) {
         return queryMixin.fullJoin(entity).on(key.on(entity));
     }
