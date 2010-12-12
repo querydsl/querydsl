@@ -73,11 +73,6 @@ public class AbstractClasses2Test {
     }
     
     @Test
-    public void test(){
-        
-    }
-    
-    @Test
     public void Grant(){
         assertEquals(QAbstractClasses2Test_Party.class, QAbstractClasses2Test_Grant.grant.id.getClass());
         assertEquals(Party.class, QAbstractClasses2Test_Grant.grant.id.getType());

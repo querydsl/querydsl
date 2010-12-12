@@ -30,7 +30,7 @@ public class ComparableTest {
     }
     
     @Test
-    public void test(){
+    public void CustomComparable_is_Properly_Handled(){
         assertNotNull(QComparableTest_CustomComparable.customComparable.asc());
     }
 

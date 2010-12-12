@@ -45,15 +45,15 @@ public class AliasTest extends AbstractQueryTest {
     public void AliasVariations1() {
         // 1st
         QCat cat = new QCat("cat");
-        for (String name : from(cat, cats).where(cat.kittens.size().gt(0))
-                .list(cat.name)) {
+        for (String name : from(cat, cats).where(cat.kittens.size().gt(0)).list(cat.name)) {
+            assertNotNull(name);
             System.out.println(name);
         }
 
         // 2nd
         Cat c = alias(Cat.class, "cat");
-        for (String name : from(c, cats).where($(c.getKittens()).size().gt(0))
-                .list($(c.getName()))) {
+        for (String name : from(c, cats).where($(c.getKittens()).size().gt(0)).list($(c.getName()))) {
+            assertNotNull(name);
             System.out.println(name);
         }
 
@@ -69,15 +69,15 @@ public class AliasTest extends AbstractQueryTest {
     public void AliasVariations2() {
         // 1st
         QCat cat = new QCat("cat");
-        for (String name : from(cat, cats).where(cat.name.matches("fri.*")).list(
-                cat.name)) {
+        for (String name : from(cat, cats).where(cat.name.matches("fri.*")).list(cat.name)) {
+            assertNotNull(name);
             System.out.println(name);
         }
 
         // 2nd
         Cat c = alias(Cat.class, "cat");
-        for (String name : from(c, cats).where($(c.getName()).matches("fri.*"))
-                .list($(c.getName()))) {
+        for (String name : from(c, cats).where($(c.getName()).matches("fri.*")).list($(c.getName()))) {
+            assertNotNull(name);
             System.out.println(name);
         }
     }
@@ -89,8 +89,7 @@ public class AliasTest extends AbstractQueryTest {
         Cat c = alias(Cat.class, "cat");
 
         // 1
-        from(c, cats).where($(c.getBirthdate()).gt(new Date())).list($(c))
-                .iterator();
+        from(c, cats).where($(c.getBirthdate()).gt(new Date())).list($(c)).iterator();
 
         // 2
         try {
@@ -147,8 +146,7 @@ public class AliasTest extends AbstractQueryTest {
     @Test
     public void Various1() {
         StringPath str = new StringPath("str");
-        for (String s : from(str, "a", "ab", "cd", "de").where(
-                str.startsWith("a")).list(str)) {
+        for (String s : from(str, "a", "ab", "cd", "de").where(str.startsWith("a")).list(str)) {
             assertTrue(s.equals("a") || s.equals("ab"));
             System.out.println(s);
         }
@@ -156,8 +154,7 @@ public class AliasTest extends AbstractQueryTest {
 
     @Test
     public void Various2() {
-        for (Object o : from(var(), 1, 2, "abc", 5, 3).where(var().ne("abc")).list(
-                var())) {
+        for (Object o : from(var(), 1, 2, "abc", 5, 3).where(var().ne("abc")).list(var())) {
             int i = (Integer) o;
             assertTrue(i > 0 && i < 6);
             System.out.println(o);

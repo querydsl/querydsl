@@ -6,6 +6,7 @@
 package com.mysema.query.domain;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Collection;
 import java.util.List;
@@ -59,10 +60,9 @@ public class ExtendsAndSuperTest {
     public void test(){
         QExtendsAndSuperTest_ExtendsAndSuper var = QExtendsAndSuperTest_ExtendsAndSuper.extendsAndSuper;
         ExtendsAndSuper<Object> entity = new ExtendsAndSuper<Object>();
-        var.eq(entity);
-
-        var.extendsMap.containsKey("");
-        var.extendsMap2.containsValue("");
+        assertNotNull(var.eq(entity));
+        assertNotNull(var.extendsMap.containsKey(""));
+        assertNotNull(var.extendsMap2.containsValue(""));
     }
 
 }

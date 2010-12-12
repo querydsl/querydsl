@@ -103,8 +103,7 @@ public class ColQueryTest extends AbstractQueryTest {
         query().from(cat, cats).where(cat.name.matches("Kitt.*")).list(cat.name);
         assertTrue(last.res.size() == 1);
 
-        query().from(cat, cats).list(
-                cat.bodyWeight.add(cat.weight));
+        query().from(cat, cats).list(cat.bodyWeight.add(cat.weight));
     }
 
     @Test

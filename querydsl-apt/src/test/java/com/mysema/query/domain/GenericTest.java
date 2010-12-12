@@ -22,11 +22,11 @@ public class GenericTest {
     }
 
     @QueryEntity
+    @SuppressWarnings("unchecked")
     public class GenericType2<T extends ItemType> {
         T itemType;
 
-        // simple
-        @SuppressWarnings("unchecked")
+        // simple        
         GenericSimpleType prop1;
         GenericSimpleType<?> prop2;
         GenericSimpleType<? extends GenericSimpleType<?>> prop3;
@@ -49,6 +49,7 @@ public class GenericTest {
 
     }
 
+    @SuppressWarnings("unchecked")
     public class GenericComparableType<T> implements Comparable<GenericComparableType<T>>{
         @Override
         public int compareTo(GenericComparableType<T> o) {
@@ -61,6 +62,7 @@ public class GenericTest {
         }
     }
 
+    @SuppressWarnings({ "unchecked", "serial" })
     public class GenericNumberType<T> extends Number implements Comparable<GenericNumberType<T>>{
         @Override
         public double doubleValue() {
@@ -95,10 +97,10 @@ public class GenericTest {
     }
 
     @QueryEntity
+    @SuppressWarnings("unchecked")
     public class ItemType {
         Amount<SimpleType> prop;
-        SimpleType2<Amount<SimpleType>> prop2;
-        @SuppressWarnings("unchecked")
+        SimpleType2<Amount<SimpleType>> prop2;        
         SimpleType2<Amount> prop3;
         SimpleType2<?> prop4;
     }

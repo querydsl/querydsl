@@ -5,6 +5,8 @@
  */
 package com.mysema.query.domain;
 
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
@@ -32,8 +34,16 @@ public class ConstructorTest {
     }
 
     @Test
-    public void test(){
-        // TODO
+    public void Classes_are_available(){
+        assertNotNull(QConstructorTest_CategorySuperclass.class);
+        assertNotNull(QConstructorTest_Category.class);
+        assertNotNull(QConstructorTest_ClassWithConstructor.class);
+    }
+    
+    @Test
+    public void Category_Super_Reference_is_Correct(){
+        assertEquals(QConstructorTest_CategorySuperclass.class, QConstructorTest_Category.category._super.getClass());
+        assertEquals(CategorySuperclass.class, QConstructorTest_Category.category._super.getType());
     }
 
 }

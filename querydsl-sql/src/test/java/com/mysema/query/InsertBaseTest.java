@@ -46,24 +46,26 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
 //        create table survey (id int,name varchar(30))
 
         // with columns
-        insert(survey)
+        assertEquals(1, insert(survey)
             .columns(survey.id, survey.name)
-            .values(3, "Hello").execute();
+            .values(3, "Hello").execute());
 
         // without columns
-        insert(survey)
-            .values(4, "Hello").execute();
-
+        assertEquals(1, insert(survey)
+            .values(4, "Hello").execute());
+        
         // with subquery
-        insert(survey)
+        int count = (int)query().from(survey).count();
+        assertEquals(count, insert(survey)
             .columns(survey.id, survey.name)
             .select(sq().from(survey2).list(survey2.id.add(20), survey2.name))
-            .execute();
+            .execute());
 
         // with subquery, without columns
-        insert(survey)
+        count = (int)query().from(survey).count();
+        assertEquals(count, insert(survey)
             .select(sq().from(survey2).list(survey2.id.add(10), survey2.name))
-            .execute();
+            .execute());
     }
     
     @Test
@@ -117,28 +119,28 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     @Test
     public void Insert_Null(){
         // with columns
-        insert(survey)
+        assertEquals(1, insert(survey)
             .columns(survey.id, survey.name)
-            .values(3, null).execute();
+            .values(3, null).execute());
 
         // without columns
-        insert(survey)
-            .values(4, null).execute();
+        assertEquals(1, insert(survey)
+            .values(4, null).execute());
 
         // with set
-        insert(survey)
+        assertEquals(1, insert(survey)
             .set(survey.id, 5)
             .set(survey.name, (String)null)
-            .execute();
+            .execute());
     }
 
     @Test
     public void Insert_Alternative_Syntax(){
         // with columns
-        insert(survey)
+        assertEquals(1, insert(survey)
             .set(survey.id, 3)
             .set(survey.name, "Hello")
-            .execute();
+            .execute());
     }
 
     @Test
@@ -155,6 +157,7 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
           .innerJoin(emp2)
            .on(emp1.superiorId.eq(emp2.superiorId), emp1.firstname.eq(emp2.firstname))
           .list(survey.id, emp2.firstname));
+        
         insert.execute();
     }
     

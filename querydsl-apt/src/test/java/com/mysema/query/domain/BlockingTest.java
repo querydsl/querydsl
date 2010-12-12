@@ -41,7 +41,7 @@ public class BlockingTest extends AbstractTest{
     }
 
     @Test
-    public void test(){
+    public void Entity_Fields_are_available(){
         assertTrue(QBlockingTest_Entity.entity.field1 != null);
         assertTrue(QBlockingTest_Entity.entity.field2 != null);
 
@@ -50,7 +50,7 @@ public class BlockingTest extends AbstractTest{
     }
 
     @Test
-    public void test2(){
+    public void Entity2_Fields_are_available(){
         assertTrue(QBlockingTest_Entity2.entity2.field2 != null);
 
         cl = QBlockingTest_Entity2.class;

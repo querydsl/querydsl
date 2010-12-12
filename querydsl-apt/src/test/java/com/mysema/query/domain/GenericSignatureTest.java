@@ -14,9 +14,10 @@ import com.mysema.query.annotations.QueryEntity;
 public class GenericSignatureTest {
     
     @QueryEntity
+    @SuppressWarnings("unchecked")
     public static class Entity<T extends Entity<T>> {
         
-        // collection
+        // collection        
         Collection<Entity> rawCollection;       
         
         Collection<Entity<T>> genericCollection;        

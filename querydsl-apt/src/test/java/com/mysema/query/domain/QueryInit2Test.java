@@ -44,7 +44,7 @@ public class QueryInit2Test {
     }
 
     @Test
-    public void test_long_path(){
+    public void Long_Path(){
         assertNotNull(QQueryInit2Test_Categorization.categorization.event.account.owner);
         assertNotNull(QQueryInit2Test_Categorization.categorization.event.as(QQueryInit2Test_Activation.class).account.owner);
     }
