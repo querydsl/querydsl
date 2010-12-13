@@ -5,7 +5,8 @@
  */
 package com.mysema.query.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
@@ -43,7 +44,7 @@ public class ConstructorTest {
     @Test
     public void Category_Super_Reference_is_Correct(){
         assertEquals(QConstructorTest_CategorySuperclass.class, QConstructorTest_Category.category._super.getClass());
-        assertEquals(CategorySuperclass.class, QConstructorTest_Category.category._super.getType());
+        assertEquals(Category.class, QConstructorTest_Category.category._super.getType());
     }
 
 }
