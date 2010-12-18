@@ -68,6 +68,11 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     public CloseableIterator<T> iterate(){
         return projectable.iterate(projection);
     }
+    
+    @Override
+    public CloseableIterator<T> iterateDistinct(){
+        return projectable.iterateDistinct(projection);
+    }
 
     @Override
     public List<T> list() {

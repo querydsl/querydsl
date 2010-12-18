@@ -25,6 +25,13 @@ public interface SimpleProjectable<T> {
      * @return
      */
     CloseableIterator<T> iterate();
+    
+    /**
+     * Get the projection as a typed closeable Iterator with distinct elements
+     * 
+     * @return
+     */
+    CloseableIterator<T> iterateDistinct();
 
     /**
      * Get the projection as a typed List

@@ -124,6 +124,11 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
     }
 
     @Override
+    public CloseableIterator<Document> iterateDistinct() {
+        return iterate();
+    }
+    
+    @Override
     public List<Document> list() {
         return new IteratorAdapter<Document>(iterate()).asList();
     }

@@ -94,6 +94,11 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
     public CloseableIterator<T> iterate(){
         return new IteratorAdapter<T>(createQuery(false).iterate());
     }
+    
+    public CloseableIterator<T> iterateDistinct(){
+        return iterate();
+    }
+
 
     @Override
     public SearchQuery<T> limit(long limit) {

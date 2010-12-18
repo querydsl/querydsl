@@ -90,6 +90,7 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
         return queryMixin.set(param, value);
     }
 
+    @Override
     public CloseableIterator<K> iterate() {
         final DBCursor cursor = createCursor();
         return new CloseableIterator<K>() {
@@ -112,6 +113,11 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
             public void close() {
             }
         };
+    }
+
+    @Override
+    public CloseableIterator<K> iterateDistinct() {
+        return iterate();
     }
 
     @Override
