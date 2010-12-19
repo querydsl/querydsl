@@ -472,6 +472,9 @@ public class Processor {
     }
 
     private void processEmbedded(){
+        List<String> types = new ArrayList<String>();
+        
+        // only creation
         for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddedAnnotation())) {
             TypeMirror type = element.asType();
             if (element.getKind() == ElementKind.METHOD){
@@ -482,11 +485,17 @@ public class Processor {
              || typeName.startsWith(List.class.getName())
              || typeName.startsWith(Set.class.getName())){
                 typeName = typeName.substring(typeName.indexOf('<')+1, typeName.lastIndexOf('>'));
-                typeFactory.getEntityType(env.getElementUtils().getTypeElement(typeName).asType(), true);
+                type = env.getElementUtils().getTypeElement(typeName).asType();
             }else if (typeName.startsWith(Map.class.getName())){
                 typeName = typeName.substring(typeName.indexOf(',')+1, typeName.lastIndexOf('>')).trim();
-                typeFactory.getEntityType(env.getElementUtils().getTypeElement(typeName).asType(), true);
-            }
+                type = env.getElementUtils().getTypeElement(typeName).asType();    
+            }   
+            typeFactory.getEntityType(type, false);
+            types.add(typeName);
+        }
+        
+        // deep
+        for (String typeName : types) {
             TypeElement typeElement = env.getElementUtils().getTypeElement(typeName);
             EntityType model = elementHandler.handleNormalType(typeElement);
             registerTypeElement(model.getFullName(), typeElement);
