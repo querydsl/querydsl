@@ -44,6 +44,12 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
         String path = new File("src/test/java/com/mysema/query/domain/QueryEmbedded3Test.java").getPath();
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"embedded3");
     }
+    
+    @Test
+    public void ProcessQueryEmbedded4() throws IOException{
+        String path = new File("src/test/java/com/mysema/query/domain/QueryEmbedded4Test.java").getPath();
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"embedded3");
+    }
 
     @Test
     public void ProcessDelegate() throws IOException{
