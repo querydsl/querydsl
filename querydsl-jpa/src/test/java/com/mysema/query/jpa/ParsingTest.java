@@ -329,6 +329,11 @@ public class ParsingTest extends AbstractQueryTest{
 
         query().from(cat).leftJoin(cat.mate).select(cat).parse();
     }
+    
+    @Test
+    public void joins2() throws RecognitionException, TokenStreamException{
+        query().from(cat).join(cat.mate, mate).with(mate.name.eq("Bob")).parse();
+    }
 
     @Test
     public void multipleFromClasses() throws Exception {
