@@ -51,8 +51,7 @@ public abstract class AbstractStandardTest {
 
     public static class Projection {
 
-        public Projection(String str, Cat cat) {
-        }
+        public Projection(String str, Cat cat) {}
 
     }
 
@@ -148,12 +147,12 @@ public abstract class AbstractStandardTest {
             prev = cat;
         }
 
-        Cat cat = new Cat("Some",6, 6.0);
+        Cat cat = new Cat("Some", 6, 6.0);
         cat.setBirthdate(birthDate);
         save(cat);
         savedCats.add(cat);
 
-        Show show = new Show();
+        Show show = new Show(1);
         show.acts = new HashMap<String,String>();
         show.acts.put("a","A");
         show.acts.put("b","B");
@@ -241,6 +240,12 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
+    public void In(){
+        catQuery().where(cat.id.in(Arrays.asList(1,2,3))).count();
+        catQuery().where(cat.name.in(Arrays.asList("A","B","C"))).count();
+    }
+    
+    @Test
     public void StartsWith(){
         // startsWith
         assertEquals(1, catQuery().where(cat.name.startsWith("R")).count());
@@ -257,9 +262,14 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    public void Contains(){
+    public void Contains1(){
         // contains
         assertEquals(1, catQuery().where(cat.name.contains("eli")).count());
+    }
+    
+    @Test
+    public void Contains2(){
+        catQuery().where(cat.kittens.contains(savedCats.get(0))).count();
     }
 
     @Test
@@ -372,7 +382,7 @@ public abstract class AbstractStandardTest {
     public void Null_as_uniqueResult(){
         assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString())).uniqueResult(cat));
     }
-
+    
     @Test
     public void Map_ContainsKey(){
         QShow show = QShow.show;

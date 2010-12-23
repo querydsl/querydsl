@@ -56,17 +56,24 @@ public class HQLTemplates extends JPQLTemplates{
         //CHECKSTYLE:ON
     }
 
+    @Override
     public boolean wrapElements(Operator<?> operator){
         return wrapElements.contains(operator);
     }
 
+    @Override
     public boolean wrapConstant(Constant<?> expr) {
         Class<?> type = expr.getType();
         return type.isArray() || Collection.class.isAssignableFrom(type);
     }
 
+    @Override
     public boolean isTypeAsString() {
         return true;
     }
 
+    @Override
+    public String getExistsProjection(){
+        return "1";
+    }
 }

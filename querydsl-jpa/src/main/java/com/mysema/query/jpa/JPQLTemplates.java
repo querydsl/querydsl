@@ -112,4 +112,8 @@ public class JPQLTemplates extends Templates {
         // TODO : get rid of this when Hibernate supports type(alias)
         return false;
     }
+    
+    public String getExistsProjection(){
+        return null;
+    }
 }

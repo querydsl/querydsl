@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Document2 {
@@ -19,14 +21,17 @@ public class Document2 {
     
     private double createdBy;
     
+    @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
     
     private double modifiedBy;
     
+    @Temporal(TemporalType.TIMESTAMP)
     private Date modificationDate;
     
     private double deletedBy;
     
+    @Temporal(TemporalType.TIMESTAMP)
     private Date deletedDate;
     
     private double documentVersion;

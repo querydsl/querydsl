@@ -30,6 +30,7 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
 
     private EntityManager entityManager;
 
+    @Override
     protected JPAQuery query(){
         return new JPAQuery(entityManager, getTemplates());
     }
@@ -59,6 +60,7 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
     @Test
     public void Hint(){
         javax.persistence.Query query = query().from(QCat.cat).setHint("org.hibernate.cacheable", true).createQuery(QCat.cat);
+        assertNotNull(query);
         assertTrue(query.getHints().containsKey("org.hibernate.cacheable"));
         assertFalse(query.getResultList().isEmpty());        
     }

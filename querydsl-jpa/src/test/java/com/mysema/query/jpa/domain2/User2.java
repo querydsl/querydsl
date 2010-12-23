@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class User2 {
@@ -15,14 +17,17 @@ public class User2 {
     
     private String userName, userPassword, userFirstName, userEmail, userLastName;
     
+    @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
     
     private double createdBy;
     
+    @Temporal(TemporalType.TIMESTAMP)
     private Date modificationDate;
     
     private double modifiedBy;
     
+    @Temporal(TemporalType.TIMESTAMP)
     private Date deleteDate;
     
     private double deletedBy;

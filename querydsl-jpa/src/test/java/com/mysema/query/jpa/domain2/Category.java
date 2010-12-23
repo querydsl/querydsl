@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Category {
@@ -21,12 +23,15 @@ public class Category {
     
     private double modifiedBy;
     
+    @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
     
+    @Temporal(TemporalType.TIMESTAMP)
     private Date modificationDate;
     
     private double deletedBy;
     
+    @Temporal(TemporalType.TIMESTAMP)
     private Date deleteDate;
     
     @OneToMany

@@ -22,6 +22,7 @@ import com.mysema.testutil.JPATestRunner;
 @JPAConfig("hsqldb-eclipselink")
 public abstract class HSQLDBJPAEclipseLinkStandardTest extends AbstractJPATest{
 
+    @Override
     protected JPQLTemplates getTemplates(){
         return EclipseLinkTemplates.DEFAULT;
     }
