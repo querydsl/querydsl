@@ -20,11 +20,15 @@ import com.mysema.query.types.Ops;
 public class MySQLTemplates extends SQLTemplates {
 
     public MySQLTemplates(){
-        this(false);
+        this('\\', false);
     }
 
     public MySQLTemplates(boolean quote){
-        super("`", quote);
+        this('\\',quote);
+    }
+    
+    public MySQLTemplates(char escape, boolean quote){
+        super("`", escape, quote);
         addClass2TypeMappings("bool", Boolean.class);
         addClass2TypeMappings("int", Integer.class);
         

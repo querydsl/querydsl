@@ -13,9 +13,14 @@ import org.apache.commons.collections15.Transformer;
  */
 public final class Converters {
     
-    private Converters(){}
+    private final String escape1, escape2;
     
-    public static final Transformer<Expression<String>,Expression<String>> toLowerCase = new Transformer<Expression<String>,Expression<String>>(){
+    public Converters(char escape){
+        escape1 = escape + "%";
+        escape2 = escape + "_";
+    }
+    
+    public final Transformer<Expression<String>,Expression<String>> toLowerCase = new Transformer<Expression<String>,Expression<String>>(){
         @Override
         public Expression<String> transform(Expression<String> arg) {
             if (arg instanceof Constant<?>){
@@ -26,7 +31,7 @@ public final class Converters {
         }
     };
 
-    public static final Transformer<Expression<String>,Expression<String>> toUpperCase = new Transformer<Expression<String>,Expression<String>>(){
+    public final Transformer<Expression<String>,Expression<String>> toUpperCase = new Transformer<Expression<String>,Expression<String>>(){
         @Override
         public Expression<String> transform(Expression<String> arg) {
             if (arg instanceof Constant<?>){
@@ -37,7 +42,7 @@ public final class Converters {
         }
     };
 
-    public static final Transformer<Expression<String>,Expression<String>> toStartsWithViaLike = new Transformer<Expression<String>,Expression<String>>(){
+    public final Transformer<Expression<String>,Expression<String>> toStartsWithViaLike = new Transformer<Expression<String>,Expression<String>>(){
         @Override
         public Expression<String> transform(Expression<String> arg) {
             if (arg instanceof Constant<?>){
@@ -48,7 +53,7 @@ public final class Converters {
         }
     };
 
-    public static final Transformer<Expression<String>,Expression<String>> toStartsWithViaLikeLower = new Transformer<Expression<String>,Expression<String>>(){
+    public final Transformer<Expression<String>,Expression<String>> toStartsWithViaLikeLower = new Transformer<Expression<String>,Expression<String>>(){
         @Override
         public Expression<String> transform(Expression<String> arg) {
             if (arg instanceof Constant<?>){
@@ -60,7 +65,7 @@ public final class Converters {
         }
     };
 
-    public static final Transformer<Expression<String>,Expression<String>> toEndsWithViaLike = new Transformer<Expression<String>,Expression<String>>(){
+    public final Transformer<Expression<String>,Expression<String>> toEndsWithViaLike = new Transformer<Expression<String>,Expression<String>>(){
         @Override
         public Expression<String> transform(Expression<String> arg) {
             if (arg instanceof Constant<?>){
@@ -71,7 +76,7 @@ public final class Converters {
         }
     };
 
-    public static final Transformer<Expression<String>,Expression<String>> toEndsWithViaLikeLower = new Transformer<Expression<String>,Expression<String>>(){
+    public final Transformer<Expression<String>,Expression<String>> toEndsWithViaLikeLower = new Transformer<Expression<String>,Expression<String>>(){
         @Override
         public Expression<String> transform(Expression<String> arg) {
             if (arg instanceof Constant<?>){
@@ -83,7 +88,7 @@ public final class Converters {
         }
     };
 
-    public static final Transformer<Expression<String>,Expression<String>> toContainsViaLike = new Transformer<Expression<String>,Expression<String>>(){
+    public final Transformer<Expression<String>,Expression<String>> toContainsViaLike = new Transformer<Expression<String>,Expression<String>>(){
         @Override
         public Expression<String> transform(Expression<String> arg) {
             if (arg instanceof Constant<?>){
@@ -95,7 +100,7 @@ public final class Converters {
         }
     };
 
-    public static final Transformer<Expression<String>,Expression<String>> toContainsViaLikeLower = new Transformer<Expression<String>,Expression<String>>(){
+    public final Transformer<Expression<String>,Expression<String>> toContainsViaLikeLower = new Transformer<Expression<String>,Expression<String>>(){
         @Override
         public Expression<String> transform(Expression<String> arg) {
             if (arg instanceof Constant<?>){
@@ -108,10 +113,10 @@ public final class Converters {
         }
     };
     
-    public static String escapeForLike(Constant<String> expr){
+    public String escapeForLike(Constant<String> expr){
         String str = expr.getConstant();
         if (str.contains("%") || str.contains("_")){
-            str = str.replace("%", "\\%").replace("_", "\\_");
+            str = str.replace("%", escape1).replace("_", escape2);
         }
         return str;
     }

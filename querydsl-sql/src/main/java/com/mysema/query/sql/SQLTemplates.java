@@ -35,7 +35,7 @@ public class SQLTemplates extends Templates {
     
     public static final Operator<Object> UNION = new OperatorImpl<Object>("UNION");
 
-    public static final SQLTemplates DEFAULT = new SQLTemplates("\"",false);
+    public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
     
     private static final Pattern IDENTIFIER_CHARS = Pattern.compile("[a-zA-Z0-9_\\-]+");
     
@@ -121,7 +121,7 @@ public class SQLTemplates extends Templates {
     
     private String createUniqueIndex = "create unique index ";
     
-    protected SQLTemplates(String quoteStr, boolean useQuotes) {
+    protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
         this.quoteStr = Assert.notNull(quoteStr, "quoteStr");
         this.useQuotes = useQuotes;
 
@@ -154,13 +154,13 @@ public class SQLTemplates extends Templates {
         add(Ops.SUBSTR_2ARGS, "substr({0},{1}+1,{2})");
         
         // like with escape
-        add(Ops.LIKE, "{0} like {1} escape '\\'");
-        add(Ops.ENDS_WITH, "{0} like {%1} escape '\\'");
-        add(Ops.ENDS_WITH_IC, "{0l} like {%%1} escape '\\'");
-        add(Ops.STARTS_WITH, "{0} like {1%} escape '\\'");
-        add(Ops.STARTS_WITH_IC, "{0l} like {1%%} escape '\\'");
-        add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '\\'");
-        add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '\\'");
+        add(Ops.LIKE, "{0} like {1} escape '"+escape+"'");
+        add(Ops.ENDS_WITH, "{0} like {%1} escape '"+escape+"'");
+        add(Ops.ENDS_WITH_IC, "{0l} like {%%1} escape '"+escape+"'");
+        add(Ops.STARTS_WITH, "{0} like {1%} escape '"+escape+"'");
+        add(Ops.STARTS_WITH_IC, "{0l} like {1%%} escape '"+escape+"'");
+        add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '"+escape+"'");
+        add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '"+escape+"'");
 
         add(CAST, "cast({0} as {1s})");
         add(UNION, "{0}\nunion\n{1}");

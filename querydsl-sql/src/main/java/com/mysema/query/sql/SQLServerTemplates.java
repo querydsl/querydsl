@@ -36,11 +36,15 @@ public class SQLServerTemplates extends SQLTemplates{
     private String outerQueryEnd = "\n)\nselect * \nfrom inner_query\nwhere ";
 
     public SQLServerTemplates(){
-        this(false);
+        this('\\',false);
+    }
+    
+    public SQLServerTemplates(boolean quote){
+        this('\\',quote);
     }
 
-    public SQLServerTemplates(boolean quote){
-        super("\"", quote);
+    public SQLServerTemplates(char escape, boolean quote){
+        super("\"", escape, quote);
         addClass2TypeMappings("decimal", Double.class);
         setDummyTable("");
 

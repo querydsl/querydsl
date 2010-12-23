@@ -25,11 +25,15 @@ public class DerbyTemplates extends SQLTemplates {
     private String offsetTemplate = "\noffset {0s} rows";
 
     public DerbyTemplates(){
-        this(false);
+        this('\\',false);
     }
 
     public DerbyTemplates(boolean quote){
-        super("\"", quote);
+        this('\\',quote);
+    }
+    
+    public DerbyTemplates(char escape, boolean quote){
+        super("\"", escape, quote);
         addClass2TypeMappings("smallint", Byte.class);
         setAutoIncrement(" generated always as identity");
         

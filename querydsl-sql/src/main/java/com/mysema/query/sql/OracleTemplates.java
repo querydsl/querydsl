@@ -22,24 +22,28 @@ import com.mysema.query.types.Ops;
  */
 public class OracleTemplates extends SQLTemplates {
 
-    private final String outerQueryEnd = "\n ) a) where ";
+    private String outerQueryEnd = "\n ) a) where ";
 
-    private final String outerQueryStart = "select * from (\n select a.*, rownum rn from (\n  ";
+    private String outerQueryStart = "select * from (\n select a.*, rownum rn from (\n  ";
 
-    private final String limitQueryEnd = "\n) where rownum <= {0}";
+    private String limitQueryEnd = "\n) where rownum <= {0}";
 
-    private final String limitQueryStart = "select * from (\n  ";
+    private String limitQueryStart = "select * from (\n  ";
 
-    private final String limitOffsetTemplate = "rn > {0s} and rn <= {1s}";
+    private String limitOffsetTemplate = "rn > {0s} and rn <= {1s}";
 
-    private final String offsetTemplate = "rn > {0}";
+    private String offsetTemplate = "rn > {0}";
 
     public OracleTemplates(){
-        this(false);
+        this('\\', false);
+    }
+    
+    public OracleTemplates(boolean quote){
+        this('\\',quote);
     }
 
-    public OracleTemplates(boolean quote){
-        super("\"", quote);
+    public OracleTemplates(char escape, boolean quote){
+        super("\"", escape, quote);
         // type mappings
         addClass2TypeMappings("number(3,0)", Byte.class);
         addClass2TypeMappings("number(1,0)", Boolean.class);

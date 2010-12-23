@@ -16,11 +16,15 @@ import com.mysema.query.types.Ops;
 public class H2Templates extends SQLTemplates{
 
     public H2Templates(){
-        this(false);
+        this('\\', false);
+    }
+    
+    public H2Templates(boolean quote){
+        this('\\',quote);
     }
 
-    public H2Templates(boolean quote){
-        super("\"", quote);
+    public H2Templates(char escape, boolean quote){
+        super("\"", escape, quote);
         setNativeMerge(true);
         add(Ops.MathOps.ROUND, "round({0},0)");
         add(Ops.TRIM, "trim(both from {0})");

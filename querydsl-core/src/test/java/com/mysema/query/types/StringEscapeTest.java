@@ -13,7 +13,8 @@ public class StringEscapeTest {
 
     @Test
     public void EscapeForLike() {
-        assertEquals("a\\%b\\_c", Converters.escapeForLike(new ConstantImpl<String>("a%b_c")).toString());
+        Converters converters = new Converters('\\');
+        assertEquals("a\\%b\\_c", converters.escapeForLike(new ConstantImpl<String>("a%b_c")).toString());
     }
 
 }

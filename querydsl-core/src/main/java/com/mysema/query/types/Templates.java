@@ -21,15 +21,20 @@ import net.jcip.annotations.Immutable;
 @Immutable
 public class Templates {
 
-    private static final TemplateFactory templateFactory = new TemplateFactory();
-
     public static final Templates DEFAULT = new Templates();
 
     private final Map<Operator<?>, Template> templates = new HashMap<Operator<?>, Template>();
 
     private final Map<Operator<?>, Integer> precedence = new HashMap<Operator<?>, Integer>();
 
+    private final TemplateFactory templateFactory;
+    
     protected Templates() {
+        this('\\');
+    }
+    
+    protected Templates(char escape) {
+        templateFactory = new TemplateFactory(escape);
         //CHECKSTYLE:OFF
 
         add(Ops.LIST, "{0}, {1}");

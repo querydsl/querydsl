@@ -30,10 +30,16 @@ public class TemplateFactory {
 
     private static final Pattern elementPattern = Pattern.compile("\\{%?%?\\d+[slu%]?%?\\}");
 
-    public static final TemplateFactory DEFAULT = new TemplateFactory();
+    public static final TemplateFactory DEFAULT = new TemplateFactory('\\');
 
     private final Map<String,Template> cache = new HashMap<String,Template>();
 
+    private final Converters converters;
+    
+    public TemplateFactory(char escape){
+        converters = new Converters(escape);
+    }
+    
     public Template create(String template){
         if (cache.containsKey(template)){
             return cache.get(template);
@@ -50,10 +56,10 @@ public class TemplateFactory {
                 Transformer<? extends Expression<?>, ? extends Expression<?>> transformer = null;
                 if (str.charAt(0) == '%'){
                     if (str.charAt(1) == '%'){
-                        transformer = Converters.toEndsWithViaLikeLower;
+                        transformer = converters.toEndsWithViaLikeLower;
                         str = str.substring(2);
                     }else{
-                        transformer = Converters.toEndsWithViaLike;
+                        transformer = converters.toEndsWithViaLike;
                         str = str.substring(1);
                     }
 
@@ -61,28 +67,28 @@ public class TemplateFactory {
                 int strip = 0;
                 switch (str.charAt(str.length()-1)){
                 case 'l' :
-                    transformer = Converters.toLowerCase;
+                    transformer = converters.toLowerCase;
                     strip = 1;
                     break;
                 case 'u' :
-                    transformer = Converters.toUpperCase;
+                    transformer = converters.toUpperCase;
                     strip = 1;
                     break;
                 case '%' :
                     if (transformer == null){
                         if (str.charAt(str.length()-2) == '%'){
-                            transformer = Converters.toStartsWithViaLikeLower;
+                            transformer = converters.toStartsWithViaLikeLower;
                             strip = 2;
                         }else{
-                            transformer = Converters.toStartsWithViaLike;
+                            transformer = converters.toStartsWithViaLike;
                             strip = 1;
                         }
                     }else{
                         if (str.charAt(str.length()-2) == '%'){
-                            transformer = Converters.toContainsViaLikeLower;
+                            transformer = converters.toContainsViaLikeLower;
                             strip = 2;
                         }else{
-                            transformer = Converters.toContainsViaLike;
+                            transformer = converters.toContainsViaLike;
                             strip = 1;
                         }
                     }

@@ -17,7 +17,7 @@ public class TemplatesTest {
         new MySQLTemplates();
         new OracleTemplates();
         new PostgresTemplates();
-        new SQLTemplates("\"",false);
+        new SQLTemplates("\"",'\\',false);
         new SQLServerTemplates();
     }
 

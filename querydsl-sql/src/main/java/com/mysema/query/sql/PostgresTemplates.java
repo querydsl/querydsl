@@ -18,11 +18,15 @@ import com.mysema.query.types.Ops;
 public class PostgresTemplates extends SQLTemplates{
 
     public PostgresTemplates(){
-        this(false);
+        this('\\',false);
+    }
+    
+    public PostgresTemplates(boolean quote){
+        this('\\',quote);
     }
 
-    public PostgresTemplates(boolean quote){
-        super("\"", quote);
+    public PostgresTemplates(char escape, boolean quote){
+        super("\"", escape, quote);
         // type mappings
         addClass2TypeMappings("numeric(3,0)", Byte.class);
         addClass2TypeMappings("double precision", Double.class);
