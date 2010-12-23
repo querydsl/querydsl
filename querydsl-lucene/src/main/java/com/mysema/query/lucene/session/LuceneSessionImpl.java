@@ -91,13 +91,13 @@ public class LuceneSessionImpl implements LuceneSession {
     @Override
     public LuceneQuery createQuery() {
         try {
-            final IndexSearcher searcher = getSearcher();
-            searcher.getIndexReader().incRef();
-            return new LuceneQuery(serializer, searcher){
+            final IndexSearcher is = getSearcher();
+            is.getIndexReader().incRef();
+            return new LuceneQuery(serializer, is){
                 @Override
                 public void close(){
                     try {
-                        searcher.getIndexReader().decRef();
+                        is.getIndexReader().decRef();
                     } catch (IOException e) {
                         throw new QueryException(e);
                     }
@@ -108,25 +108,6 @@ public class LuceneSessionImpl implements LuceneSession {
         }
     }
 
-//    @Override
-//    public <T> T query(QueryCallback<T> callback) {
-//        try {
-//            IndexSearcher is = getSearcher();
-//            try {
-//                // Incrementing the reference count
-//                is.getIndexReader().incRef();
-//                return callback.query(new LuceneQuery(serializer, is));
-//            } finally {
-//                // Releasing the reference count
-//                // This can be the last to actually close the reader
-//                is.getIndexReader().decRef();
-//            }
-//        } catch (IOException e) {
-//            throw new QueryException(e);
-//        }
-//
-//    }
-
     @Override
     public void update(WriteCallback callback) {
         try {
@@ -136,10 +117,18 @@ public class LuceneSessionImpl implements LuceneSession {
         }
     }
 
+    @Override
+    public void updateNew(WriteCallback callback) {
+        try {
+            update(callback, true);
+        } catch (IOException e) {
+            throw new QueryException(e);
+        }
+    }
+    
     private void update(WriteCallback callback, boolean create) throws IOException {
         IndexWriter writer = new IndexWriter(directory, new StandardAnalyzer(
                 Version.LUCENE_CURRENT), create, MaxFieldLength.LIMITED);
-
         try {
             callback.write(writer);
         } finally {
@@ -156,17 +145,6 @@ public class LuceneSessionImpl implements LuceneSession {
                 }
             }
         }
-
-    }
-
-    @Override
-    public void updateNew(WriteCallback callback) {
-        try {
-            update(callback, true);
-        } catch (IOException e) {
-            throw new QueryException(e);
-        }
-
     }
 
 }
