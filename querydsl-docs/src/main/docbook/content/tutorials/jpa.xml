@@ -240,6 +240,16 @@ JPQLQuery query = new HibernateQuery (session);
 JPQLQuery query = new JPAQuery (entityManager); 
 ]]></programlisting>
 
+	<para>
+	The default configuration of JPAQuery is best suited for use with Hibernate. Whe using EclipseLink as the JPA provider, the 
+	JPAQuery should be constructed like this :
+	</para>
+	
+<programlisting language="java"><![CDATA[
+// where entityManager is a JPA EntityManager   
+JPQLQuery query = new JPAQuery (entityManager, EclipseLinkTemplates.DEFAULT); 
+]]></programlisting>	
+
     <para>
       To retrieve the customer with the first name Bob you would construct a
       query like this :
