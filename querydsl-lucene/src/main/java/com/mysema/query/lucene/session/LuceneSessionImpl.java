@@ -19,7 +19,7 @@ import com.mysema.query.lucene.LuceneQuery;
 import com.mysema.query.lucene.LuceneSerializer;
 
 /**
- * Lucene session implementation for single dto per index.
+ * Lucene session implementation
  * 
  * @author laimw
  * 
