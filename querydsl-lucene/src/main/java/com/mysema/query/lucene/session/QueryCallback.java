@@ -8,5 +8,7 @@ import com.mysema.query.lucene.LuceneQuery;
  * 
  */
 public interface QueryCallback<T> {
+    
     T query(LuceneQuery query);
+    
 }
