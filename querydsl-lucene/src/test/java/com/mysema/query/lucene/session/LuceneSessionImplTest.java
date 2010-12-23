@@ -17,7 +17,6 @@ import org.apache.lucene.store.RAMDirectory;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.query.lucene.LuceneQuery;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.NumberPath;
@@ -46,9 +45,9 @@ public class LuceneSessionImplTest {
 
     private StringPath title;
 
-    private NumberPath<Integer> year;
-
-    private NumberPath<Double> gross;
+//    private NumberPath<Integer> year;
+//
+//    private NumberPath<Double> gross;
 
     @Before
     public void before() throws IOException {
@@ -56,8 +55,8 @@ public class LuceneSessionImplTest {
         session = new LuceneSessionImpl(directory);
         final QDocument entityPath = new QDocument("doc");
         title = entityPath.title;
-        year = entityPath.year;
-        gross = entityPath.gross;
+//        year = entityPath.year;
+//        gross = entityPath.gross;
     }
 
     @Test
@@ -89,25 +88,29 @@ public class LuceneSessionImplTest {
             }
         });
 
-        List<Document> results = session.query(new QueryCallback<List<Document>>() {
-            public List<Document> query(LuceneQuery query) {
-
-                return query.where(title.eq("Jurassic Park")).list();
-
-            }
-        });
+//        List<Document> results = session.query(new QueryCallback<List<Document>>() {
+//            public List<Document> query(LuceneQuery query) {
+//
+//                return query.where(title.eq("Jurassic Park")).list();
+//
+//            }
+//        });
+        
+        List<Document> results = session.createQuery().where(title.eq("Jurassic Park")).list();
 
         assertEquals(1, results.size());
         assertEquals("Jurassic Park", results.get(0).getField("title").stringValue());
 
-        Long count = session.query(new QueryCallback<Long>() {
-            public Long query(LuceneQuery query) {
-                //return query.where(title.ne("AA")).count(); 
-                
-                return  query.where(title.startsWith("Nummi")).count();
-
-            }
-        });
+//        Long count = session.query(new QueryCallback<Long>() {
+//            public Long query(LuceneQuery query) {
+//                //return query.where(title.ne("AA")).count(); 
+//                
+//                return  query.where(title.startsWith("Nummi")).count();
+//
+//            }
+//        });
+        
+        Long count = session.createQuery().where(title.startsWith("Nummi")).count();
 
         assertEquals(1, (long) count);
     }

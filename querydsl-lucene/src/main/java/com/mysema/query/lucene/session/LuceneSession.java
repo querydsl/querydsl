@@ -1,5 +1,7 @@
 package com.mysema.query.lucene.session;
 
+import com.mysema.query.lucene.LuceneQuery;
+
 
 
 /**
@@ -9,19 +11,13 @@ package com.mysema.query.lucene.session;
  */
 public interface LuceneSession {
 
-//    /**
-//     * @return
-//     */
-//    LuceneQuery createQuery();
-    
     /**
-     * Lucene query callback for querying
+     * Creates a new LuceneQuery
      * 
-     * @param callback
      * @return
      */
-    <T> T query(QueryCallback<T> callback);
-
+    LuceneQuery createQuery();
+    
     /**
      * Creates a new index, adds updates to it and publishes the new index to
      * all readers after the callback finishes.

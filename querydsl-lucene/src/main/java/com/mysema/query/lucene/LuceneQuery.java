@@ -52,9 +52,12 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
     public LuceneQuery(final Searcher searcher) {
         this(LuceneSerializer.DEFAULT, searcher);
     }
+    
+    public void close(){
+        // template method
+    }
 
-    @Override
-    public long count() {
+    private long innerCount(){
         try {
             final int maxDoc = searcher.maxDoc();
             if (maxDoc == 0) {
@@ -63,12 +66,27 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
             return searcher.search(createQuery(), maxDoc).totalHits;
         } catch (final IOException e) {
             throw new QueryException(e);
+        }   
+    }
+    
+    @Override
+    public long count() {
+        try{
+            return innerCount();    
+        }finally{
+            close();
         }
+        
     }
 
     @Override
     public long countDistinct() {
-        return count();
+        try{
+            return innerCount();    
+        }finally{
+            close();
+        }
+        
     }
 
     private Query createQuery() {
@@ -128,9 +146,17 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
         return iterate();
     }
     
+    private List<Document> innerList(){
+        return new IteratorAdapter<Document>(iterate()).asList();    
+    }
+    
     @Override
     public List<Document> list() {
-        return new IteratorAdapter<Document>(iterate()).asList();
+        try{
+            return innerList();
+        }finally{
+            close();
+        }        
     }
 
     @Override
@@ -145,12 +171,17 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
 
     @Override
     public SearchResults<Document> listResults() {
-        final List<Document> documents = list();
-        /*
-         * TODO Get rid of count(). It could be implemented by iterating the
-         * list results in list* from n to m.
-         */
-        return new SearchResults<Document>(documents, queryMixin.getMetadata().getModifiers(), count());
+        try{
+            List<Document> documents = innerList();
+            /*
+             * TODO Get rid of count(). It could be implemented by iterating the
+             * list results in list* from n to m.
+             */
+            return new SearchResults<Document>(documents, queryMixin.getMetadata().getModifiers(), innerCount());    
+        }finally{
+            close();
+        }
+        
     }
 
     @Override
@@ -176,7 +207,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
     @Override
     public Document uniqueResult() {
         try {
-            final int maxDoc = searcher.maxDoc();
+            int maxDoc = searcher.maxDoc();
             if (maxDoc == 0) {
                 return null;
             }
@@ -188,8 +219,10 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
             } else {
                 return null;
             }
-        } catch (final IOException e) {
+        } catch (IOException e) {
             throw new QueryException(e);
+        } finally {
+            close();
         }
     }
 

@@ -88,41 +88,44 @@ public class LuceneSessionImpl implements LuceneSession {
         return searcher.get();
     }
     
-
-
-//    @Override
-//    public LuceneQuery createQuery() {
-//        try {
-//            IndexSearcher searcher = getSearcher();
-//            searcher.getIndexReader().incRef();
-//            return new LuceneQuery(serializer, searcher);
-//        } catch (IOException e) {
-//            throw new QueryException(e);
-//        }
-//    }
-
     @Override
-    public <T> T query(QueryCallback<T> callback) {
+    public LuceneQuery createQuery() {
         try {
-            IndexSearcher is = getSearcher();
-            T results = null;
-            try {
-                // Incrementing the reference count
-                is.getIndexReader().incRef();
-                results = callback.query(new LuceneQuery(serializer, is));
-
-            } finally {
-                // Releasing the reference count
-                // This can be the last to actually close the reader
-                is.getIndexReader().decRef();
-            }
-
-            return results;
+            final IndexSearcher searcher = getSearcher();
+            searcher.getIndexReader().incRef();
+            return new LuceneQuery(serializer, searcher){
+                @Override
+                public void close(){
+                    try {
+                        searcher.getIndexReader().decRef();
+                    } catch (IOException e) {
+                        throw new QueryException(e);
+                    }
+                }
+            };
         } catch (IOException e) {
             throw new QueryException(e);
         }
-
     }
+
+//    @Override
+//    public <T> T query(QueryCallback<T> callback) {
+//        try {
+//            IndexSearcher is = getSearcher();
+//            try {
+//                // Incrementing the reference count
+//                is.getIndexReader().incRef();
+//                return callback.query(new LuceneQuery(serializer, is));
+//            } finally {
+//                // Releasing the reference count
+//                // This can be the last to actually close the reader
+//                is.getIndexReader().decRef();
+//            }
+//        } catch (IOException e) {
+//            throw new QueryException(e);
+//        }
+//
+//    }
 
     @Override
     public void update(WriteCallback callback) {
