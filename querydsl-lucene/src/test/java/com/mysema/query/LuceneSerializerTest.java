@@ -78,7 +78,7 @@ public class LuceneSerializerTest {
     private IndexWriter writer;
     private Searcher searcher;
 
-    private QueryMetadata metadata = new DefaultQueryMetadata();
+    private final QueryMetadata metadata = new DefaultQueryMetadata();
 
     private Document createDocument() {
         Document doc = new Document();
@@ -190,17 +190,17 @@ public class LuceneSerializerTest {
     public void eq() throws Exception {
         testQuery(rating.eq("Good"), "rating:good", 1);
     }
-    
+
     @Test
     public void fuzzyLike() throws Exception{
         testQuery(LuceneUtils.fuzzyLike(rating, "Good"), "rating:Good~0.5", 1);
     }
-    
+
     @Test
     public void fuzzyLike_with_Similarity() throws Exception{
         testQuery(LuceneUtils.fuzzyLike(rating, "Good", 0.6f), "rating:Good~0.6", 1);
     }
-    
+
     @Test
     public void fuzzyLike_with_Similarity_and_prefix() throws Exception{
         testQuery(LuceneUtils.fuzzyLike(rating, "Good", 0.6f, 0), "rating:Good~0.6", 1);
@@ -302,6 +302,11 @@ public class LuceneSerializerTest {
     @Test
     public void ne_or_eq() throws Exception {
         testQuery(title.ne("Jurassic Park").or(rating.eq("Lousy")), "-title:\"jurassic park\" rating:lousy", 0);
+    }
+
+    @Test
+    public void ne_and_eq() throws Exception {
+        testQuery(title.ne("House").and(rating.eq("Good")), "-title:house +rating:good", 1);
     }
 
     @Test
