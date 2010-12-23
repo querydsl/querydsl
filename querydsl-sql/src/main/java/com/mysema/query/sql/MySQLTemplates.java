@@ -39,6 +39,7 @@ public class MySQLTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.YEAR_MONTH, "extract(year_month from {0})");
 
         // like without escape
+        add(Ops.LIKE, "{0} like {1}");
         add(Ops.ENDS_WITH, "{0} like {%1}");
         add(Ops.ENDS_WITH_IC, "{0l} like {%%1}");
         add(Ops.STARTS_WITH, "{0} like {1%}");

@@ -154,6 +154,7 @@ public class SQLTemplates extends Templates {
         add(Ops.SUBSTR_2ARGS, "substr({0},{1}+1,{2})");
         
         // like with escape
+        add(Ops.LIKE, "{0} like {1} escape '\\'");
         add(Ops.ENDS_WITH, "{0} like {%1} escape '\\'");
         add(Ops.ENDS_WITH_IC, "{0l} like {%%1} escape '\\'");
         add(Ops.STARTS_WITH, "{0} like {1%} escape '\\'");
