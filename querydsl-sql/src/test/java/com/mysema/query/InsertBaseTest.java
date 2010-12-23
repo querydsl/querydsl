@@ -86,6 +86,21 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     }
     
     @Test
+    public void Like_with_Escape(){
+        SQLInsertClause insert = insert(survey);
+        insert.set(survey.id, 5).set(survey.name, "aaa").addBatch();
+        insert.set(survey.id, 6).set(survey.name, "a_").addBatch();    
+        insert.set(survey.id, 7).set(survey.name, "a%").addBatch();
+        assertEquals(3, insert.execute());
+        
+        assertEquals(3l, query().from(survey).where(survey.name.like("a%")).count());
+        assertEquals(2l, query().from(survey).where(survey.name.like("a_")).count());
+        
+        assertEquals(1l, query().from(survey).where(survey.name.startsWith("a_")).count());
+        assertEquals(1l, query().from(survey).where(survey.name.startsWith("a%")).count());
+    }
+    
+    @Test
     public void InsertBatch_with_Subquery(){
         SQLInsertClause insert = insert(survey)
             .columns(survey.id, survey.name)

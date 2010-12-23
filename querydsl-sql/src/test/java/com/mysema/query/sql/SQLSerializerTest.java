@@ -21,7 +21,7 @@ public class SQLSerializerTest {
         SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
         QSurvey s1 = new QSurvey("s1");
         serializer.handle(s1.name.startsWith("X"));
-        assertEquals("s1.NAME like ?", serializer.toString());
+        assertEquals("s1.NAME like ? escape '\\'", serializer.toString());
         assertEquals(Arrays.asList("X%"), serializer.getConstants());
     }
     

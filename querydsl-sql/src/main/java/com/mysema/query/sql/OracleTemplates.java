@@ -58,10 +58,6 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.MATCHES, "regexp_like({0},{1})");
         add(Ops.StringOps.SPACE, "lpad('',{0},' ')");
         
-        add(Ops.STARTS_WITH, "{0} like {1%} escape '\\'");
-        add(Ops.ENDS_WITH, "{0} like {%1} escape '\\'");
-        add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '\\'");
-
         // Number
         add(Ops.MathOps.CEIL, "ceil({0})");
         add(Ops.MathOps.RANDOM, "dbms_random.value");

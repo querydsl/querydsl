@@ -5,8 +5,6 @@
  */
 package com.mysema.query.types;
 
-import static com.mysema.util.StringEscape.escapeForLike;
-
 import org.apache.commons.collections15.Transformer;
 
 /**
@@ -109,5 +107,13 @@ public final class Converters {
             }
         }
     };
+    
+    public static String escapeForLike(Constant<String> expr){
+        String str = expr.getConstant();
+        if (str.contains("%") || str.contains("_")){
+            str = str.replace("%", "\\%").replace("_", "\\_");
+        }
+        return str;
+    }
 
 }

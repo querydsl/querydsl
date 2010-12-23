@@ -9,14 +9,11 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.types.ConstantImpl;
-import com.mysema.util.StringEscape;
-
 public class StringEscapeTest {
 
     @Test
     public void EscapeForLike() {
-        assertEquals("a\\%b\\_c", StringEscape.escapeForLike(new ConstantImpl<String>("a%b_c")).toString());
+        assertEquals("a\\%b\\_c", Converters.escapeForLike(new ConstantImpl<String>("a%b_c")).toString());
     }
 
 }
