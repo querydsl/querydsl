@@ -22,17 +22,17 @@ import com.mysema.query.types.Ops;
  */
 public class OracleTemplates extends SQLTemplates {
 
-    private String outerQueryEnd = "\n ) a) where ";
+    private final String outerQueryEnd = "\n ) a) where ";
 
-    private String outerQueryStart = "select * from (\n select a.*, rownum rn from (\n  ";
+    private final String outerQueryStart = "select * from (\n select a.*, rownum rn from (\n  ";
 
-    private String limitQueryEnd = "\n) where rownum <= {0}";
+    private final String limitQueryEnd = "\n) where rownum <= {0}";
 
-    private String limitQueryStart = "select * from (\n  ";
+    private final String limitQueryStart = "select * from (\n  ";
 
-    private String limitOffsetTemplate = "rn > {0s} and rn <= {1s}";
+    private final String limitOffsetTemplate = "rn > {0s} and rn <= {1s}";
 
-    private String offsetTemplate = "rn > {0}";
+    private final String offsetTemplate = "rn > {0}";
 
     public OracleTemplates(){
         this(false);
@@ -57,6 +57,10 @@ public class OracleTemplates extends SQLTemplates {
         add(Ops.INDEX_OF_2ARGS, "instrb({0},{1},{2}+1)-1");
         add(Ops.MATCHES, "regexp_like({0},{1})");
         add(Ops.StringOps.SPACE, "lpad('',{0},' ')");
+        
+        add(Ops.STARTS_WITH, "{0} like {1%} escape '\\'");
+        add(Ops.ENDS_WITH, "{0} like {%1} escape '\\'");
+        add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '\\'");
 
         // Number
         add(Ops.MathOps.CEIL, "ceil({0})");

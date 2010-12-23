@@ -28,6 +28,7 @@ public class CustomTypesTest extends AbstractJDBCTest{
     
     private Configuration configuration;
     
+    @Override
     @Before
     public void setUp() throws ClassNotFoundException, SQLException{
         super.setUp();
@@ -57,7 +58,12 @@ public class CustomTypesTest extends AbstractJDBCTest{
         String namePrefix = "Q";
         NamingStrategy namingStrategy = new DefaultNamingStrategy();
         MetaDataSerializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);
-        MetaDataExporter exporter = new MetaDataExporter(namePrefix, "test", new File("target/customExport"), namingStrategy, serializer);
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setNamePrefix(namePrefix);
+        exporter.setPackageName("test");
+        exporter.setTargetFolder(new File("target/customExport"));
+        exporter.setNamingStrategy(namingStrategy);
+        exporter.setSerializer(serializer);
         exporter.setConfiguration(configuration);
         
         // export
