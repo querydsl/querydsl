@@ -371,10 +371,10 @@ public class LuceneSerializerTest {
 
     @Test
     public void between_Numeric() throws Exception{
-    testQuery(longField.between(0l,2l), "longField:[0 TO 2]", 1);
-    testQuery(shortField.between((short)0,(short)2), "shortField:[0 TO 2]", 1);
-    testQuery(byteField.between((byte)0,(byte)2), "byteField:[0 TO 2]", 1);
-    testQuery(floatField.between((float)0.0,(float)2.0), "floatField:[0.0 TO 2.0]", 1);
+        testQuery(longField.between(0l,2l), "longField:[0 TO 2]", 1);
+        testQuery(shortField.between((short)0,(short)2), "shortField:[0 TO 2]", 1);
+        testQuery(byteField.between((byte)0,(byte)2), "byteField:[0 TO 2]", 1);
+        testQuery(floatField.between((float)0.0,(float)2.0), "floatField:[0.0 TO 2.0]", 1);
     }
 
     @Test
@@ -562,7 +562,7 @@ public class LuceneSerializerTest {
 
     @Test
     public void booleanBuilder() throws Exception{
-    testQuery(new BooleanBuilder(gross.goe(900.10)), "gross:[900.1 TO *]", 0);
+        testQuery(new BooleanBuilder(gross.goe(900.10)), "gross:[900.1 TO *]", 0);
     }
 
     @Test
