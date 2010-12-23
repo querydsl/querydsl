@@ -10,6 +10,9 @@ import org.apache.lucene.index.IndexWriter;
  */
 public interface WriteCallback {
 
+    /**
+     * @param writer
+     */
     void write(IndexWriter writer);
     
 }

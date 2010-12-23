@@ -2,8 +2,6 @@ package com.mysema.query.lucene.session;
 
 import com.mysema.query.lucene.LuceneQuery;
 
-
-
 /**
  * General interface on using Lucene.
  * 
@@ -17,7 +15,7 @@ public interface LuceneSession {
      * @return
      */
     LuceneQuery createQuery();
-    
+
     /**
      * Creates a new index, adds updates to it and publishes the new index to
      * all readers after the callback finishes.
@@ -27,8 +25,8 @@ public interface LuceneSession {
     void updateNew(WriteCallback callback);
 
     /**
-     * Updates the current index and publishes it to all readers after the callback
-     * finishes.
+     * Updates the current index and publishes it to all readers after the
+     * callback finishes.
      * 
      * @param callback
      */
