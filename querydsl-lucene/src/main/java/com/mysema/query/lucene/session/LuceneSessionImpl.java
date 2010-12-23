@@ -87,6 +87,19 @@ public class LuceneSessionImpl implements LuceneSession {
 
         return searcher.get();
     }
+    
+
+
+//    @Override
+//    public LuceneQuery createQuery() {
+//        try {
+//            IndexSearcher searcher = getSearcher();
+//            searcher.getIndexReader().incRef();
+//            return new LuceneQuery(serializer, searcher);
+//        } catch (IOException e) {
+//            throw new QueryException(e);
+//        }
+//    }
 
     @Override
     public <T> T query(QueryCallback<T> callback) {
