@@ -122,6 +122,7 @@ public class SQLTemplates extends Templates {
     private String createUniqueIndex = "create unique index ";
     
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
+        super(escape);
         this.quoteStr = Assert.notNull(quoteStr, "quoteStr");
         this.useQuotes = useQuotes;
 

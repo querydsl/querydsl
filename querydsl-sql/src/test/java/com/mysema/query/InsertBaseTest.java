@@ -93,6 +93,8 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
         insert.set(survey.id, 7).set(survey.name, "a%").addBatch();
         assertEquals(3, insert.execute());
         
+        assertEquals(1l, query().from(survey).where(survey.name.like("a\\%")).count());
+        assertEquals(1l, query().from(survey).where(survey.name.like("a\\_")).count());
         assertEquals(3l, query().from(survey).where(survey.name.like("a%")).count());
         assertEquals(2l, query().from(survey).where(survey.name.like("a_")).count());
         

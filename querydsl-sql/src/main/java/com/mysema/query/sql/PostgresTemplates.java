@@ -38,13 +38,15 @@ public class PostgresTemplates extends SQLTemplates{
         add(Ops.INDEX_OF_2ARGS, "strpos({0},{1})-1"); //FIXME
 
         // like without escape
-        add(Ops.LIKE, "{0} like {1}");
-        add(Ops.ENDS_WITH, "{0} like {%1}");
-        add(Ops.ENDS_WITH_IC, "{0l} like {%%1}");
-        add(Ops.STARTS_WITH, "{0} like {1%}");
-        add(Ops.STARTS_WITH_IC, "{0l} like {1%%}");
-        add(Ops.STRING_CONTAINS, "{0} like {%1%}");
-        add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%}");
+        if (escape == '\\'){
+            add(Ops.LIKE, "{0} like {1}");
+            add(Ops.ENDS_WITH, "{0} like {%1}");
+            add(Ops.ENDS_WITH_IC, "{0l} like {%%1}");
+            add(Ops.STARTS_WITH, "{0} like {1%}");
+            add(Ops.STARTS_WITH_IC, "{0l} like {1%%}");
+            add(Ops.STRING_CONTAINS, "{0} like {%1%}");
+            add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%}");    
+        }        
         
         // Number
         add(Ops.MathOps.RANDOM, "random()");
