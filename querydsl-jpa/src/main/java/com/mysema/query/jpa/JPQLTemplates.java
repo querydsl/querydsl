@@ -5,6 +5,8 @@
  */
 package com.mysema.query.jpa;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
@@ -113,6 +115,7 @@ public class JPQLTemplates extends Templates {
         return false;
     }
     
+    @Nullable
     public String getExistsProjection(){
         return null;
     }
