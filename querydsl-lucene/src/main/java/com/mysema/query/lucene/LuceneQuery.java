@@ -53,10 +53,6 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
         this(LuceneSerializer.DEFAULT, searcher);
     }
     
-    public void close(){
-        // template method
-    }
-
     private long innerCount(){
         try {
             final int maxDoc = searcher.maxDoc();
@@ -71,22 +67,12 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
     
     @Override
     public long count() {
-        try{
-            return innerCount();    
-        }finally{
-            close();
-        }
-        
+        return innerCount();    
     }
 
     @Override
     public long countDistinct() {
-        try{
-            return innerCount();    
-        }finally{
-            close();
-        }
-        
+        return innerCount();    
     }
 
     private Query createQuery() {
@@ -152,11 +138,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
     
     @Override
     public List<Document> list() {
-        try{
-            return innerList();
-        }finally{
-            close();
-        }        
+        return innerList();     
     }
 
     @Override
@@ -171,17 +153,12 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
 
     @Override
     public SearchResults<Document> listResults() {
-        try{
-            List<Document> documents = innerList();
-            /*
-             * TODO Get rid of count(). It could be implemented by iterating the
-             * list results in list* from n to m.
-             */
-            return new SearchResults<Document>(documents, queryMixin.getMetadata().getModifiers(), innerCount());    
-        }finally{
-            close();
-        }
-        
+        List<Document> documents = innerList();
+        /*
+         * TODO Get rid of count(). It could be implemented by iterating the
+         * list results in list* from n to m.
+         */
+        return new SearchResults<Document>(documents, queryMixin.getMetadata().getModifiers(), innerCount());
     }
 
     @Override
@@ -221,8 +198,6 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
             }
         } catch (IOException e) {
             throw new QueryException(e);
-        } finally {
-            close();
         }
     }
 
