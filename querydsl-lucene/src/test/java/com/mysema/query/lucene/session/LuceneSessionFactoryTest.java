@@ -11,7 +11,6 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.NumericField;
-import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
@@ -43,15 +42,14 @@ public class LuceneSessionFactoryTest {
 
         LuceneSession session = sessionFactory.openSession(false);
 
-        IndexWriter writer = session.createOverwriteWriter();
-
-        writer.addDocument(createDocument(
+        session.beginAppend()
+           .addDocument(createDocument(
                 "Jurassic Park",
                 "Michael Crichton",
                 "It's a UNIX system! I know this!",
                 1990,
-                90.00));
-        writer.addDocument(createDocument(
+                90.00))
+           .addDocument(createDocument(
                 "Nummisuutarit",
                 "Aleksis Kivi",
                 "ESKO. Ja iloitset ja riemuitset?",
@@ -60,7 +58,7 @@ public class LuceneSessionFactoryTest {
         
         session.flush();
         
-        //Testing the write
+        //Testing the write got there
         IndexSearcher searcher = new IndexSearcher(directory);
         Document doc1 = searcher.doc(0);
         Document doc2 = searcher.doc(1);
@@ -70,14 +68,15 @@ public class LuceneSessionFactoryTest {
         
         assertEquals("Jurassic Park", doc1.getField("title").stringValue());
         assertEquals("Nummisuutarit", doc2.getField("title").stringValue());
-        
+    
+        //Testing the queries work through session
         LuceneQuery query = session.createQuery();
         List<Document> results = query.where(title.eq("Jurassic Park")).list();
 
         assertEquals(1, results.size());
         assertEquals("Jurassic Park", results.get(0).getField("title").stringValue());
 
-        //TODO Kysely ei toimi, jos ei ota uutta LuceneQuery objektia
+        //TODO This is still needed
         query = session.createQuery();
         long count = query.where(title.startsWith("Nummi")).count();
         assertEquals(1, count);

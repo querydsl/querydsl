@@ -1,6 +1,7 @@
 package com.mysema.query.lucene.session;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -53,10 +54,30 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
         return new LuceneSessionImpl(this, readOnly);
     }
 
-    public IndexWriter getWriter(boolean createNew) {
+    public LuceneWriterImpl getWriter(boolean createNew) {
         try {
-            return new IndexWriter(directory, new StandardAnalyzer(Version.LUCENE_30), createNew,
-                                   MaxFieldLength.LIMITED);
+
+            IndexWriter writer = null;
+
+            if (createNew == false) {
+                try {
+                    writer =
+                        new IndexWriter(directory, new StandardAnalyzer(Version.LUCENE_30), false,
+                                        MaxFieldLength.LIMITED);
+
+                } catch (FileNotFoundException e) {
+                    // Convience to create a new index if it's not already
+                    // existing
+                    createNew = true;
+                }
+            }
+            if (createNew == true) {
+                writer =
+                    new IndexWriter(directory, new StandardAnalyzer(Version.LUCENE_30), true,
+                                    MaxFieldLength.LIMITED);
+            }
+
+            return new LuceneWriterImpl(writer);
 
         } catch (IOException e) {
             throw new QueryException(e);
@@ -64,20 +85,17 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
     }
 
     public void flush(LuceneSessionImpl session) {
-        IndexWriter writer = session.getIndexWriter();
-        if(writer == null) {
+        LuceneWriterImpl writer = session.getWriter();
+        if (writer == null) {
             return;
         }
-        
-        try {
-            writer.commit();
-        } catch (IOException e) {
-            throw new QueryException(e);
-        }
-        //Close the reader, so it will need to lease it again
+
+        writer.commit();
+
+        // Close the reader, so the next query will get fresh reader
         closeReader(session);
     }
-    
+
     public IndexSearcher leaseSearcher() {
         try {
             if (searcher.get() == null) {
@@ -143,11 +161,11 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
     }
 
     private void closeReader(LuceneSessionImpl session) {
-        
-        if (session.getIndexSearcher() == null ) {
+
+        if (session.getIndexSearcher() == null) {
             return;
         }
-        
+
         try {
             // Decrementing the reader, if this is last reference,
             // reader will be closed
@@ -162,9 +180,13 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
     private void closeWriter(LuceneSessionImpl session) {
         // Always close writer
         try {
-            IndexWriter writer = session.getIndexWriter();
+            LuceneWriterImpl writer = session.getWriter();
             if (writer != null) {
-                writer.close();
+
+                // TODO What would be best way to control this?
+                writer.getIndexWriter().optimize();
+
+                writer.getIndexWriter().close();
             }
         } catch (IOException e) {
             logger.error("Writer close failed", e);
@@ -179,6 +201,5 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
             throw new QueryException(e);
         }
     }
-
 
 }

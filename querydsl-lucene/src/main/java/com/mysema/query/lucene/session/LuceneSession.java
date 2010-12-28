@@ -1,16 +1,15 @@
 package com.mysema.query.lucene.session;
 
-import org.apache.lucene.index.IndexWriter;
-
 import com.mysema.query.lucene.LuceneQuery;
+import com.mysema.query.lucene.LuceneWriter;
 
 public interface LuceneSession {
 
     LuceneQuery createQuery();
     
-    IndexWriter createAppendWriter();
+    LuceneWriter beginAppend();
     
-    IndexWriter createOverwriteWriter();
+    LuceneWriter beginOverwrite();
     
     void flush();
 

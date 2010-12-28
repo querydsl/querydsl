@@ -1,11 +1,11 @@
 package com.mysema.query.lucene.session;
 
-import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.search.IndexSearcher;
 
 import com.mysema.query.QueryException;
 import com.mysema.query.lucene.LuceneQuery;
 import com.mysema.query.lucene.LuceneSerializer;
+import com.mysema.query.lucene.LuceneWriter;
 
 public class LuceneSessionImpl implements LuceneSession {
 
@@ -17,7 +17,7 @@ public class LuceneSessionImpl implements LuceneSession {
 
     private IndexSearcher searcher;
     
-    private IndexWriter writer;
+    private LuceneWriterImpl writer;
 
     private final LuceneSerializer serializer = new LuceneSerializer(true, true);
 
@@ -41,18 +41,18 @@ public class LuceneSessionImpl implements LuceneSession {
     }
     
     @Override
-    public IndexWriter createAppendWriter() {
+    public LuceneWriter beginAppend() {
         checkClosed();
         return createWriter(false);
     }
 
     @Override
-    public IndexWriter createOverwriteWriter() {
+    public LuceneWriter beginOverwrite() {
         checkClosed();
         return createWriter(true);
     }
 
-    private IndexWriter createWriter(boolean createNew) {
+    private LuceneWriter createWriter(boolean createNew) {
         if (readOnly) {
             throw new QueryException("Read only session, cannot create writer");
         }
@@ -85,7 +85,7 @@ public class LuceneSessionImpl implements LuceneSession {
         searcher = null;
     }
     
-    public IndexWriter getIndexWriter() {
+    public LuceneWriterImpl getWriter() {
         return writer;
     }
 
