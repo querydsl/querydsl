@@ -9,17 +9,17 @@ import com.mysema.query.lucene.LuceneSerializer;
 
 public class LuceneSessionImpl implements LuceneSession {
 
-    private boolean readOnly;
+    private final boolean readOnly;
     
     private boolean closed = false;
 
-    private LuceneSessionFactoryImpl sessionFactory;
+    private final LuceneSessionFactoryImpl sessionFactory;
 
     private IndexSearcher searcher;
     
     private IndexWriter writer;
 
-    private LuceneSerializer serializer = new LuceneSerializer(true, true);
+    private final LuceneSerializer serializer = new LuceneSerializer(true, true);
 
     public LuceneSessionImpl(LuceneSessionFactoryImpl sessionFactory,
                              boolean readOnly) {

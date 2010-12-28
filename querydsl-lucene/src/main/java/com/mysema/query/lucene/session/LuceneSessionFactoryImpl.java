@@ -18,9 +18,9 @@ import com.mysema.query.QueryException;
 
 public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
 
-    private final Logger logger = LoggerFactory.getLogger(LuceneSessionFactoryImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(LuceneSessionFactoryImpl.class);
 
-    private Directory directory;
+    private final Directory directory;
 
     private final AtomicReference<IndexSearcher> searcher = new AtomicReference<IndexSearcher>();
 
