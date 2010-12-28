@@ -1,4 +1,4 @@
-package com.mysema.query.lucene;
+package com.mysema.query.lucene.session;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.Term;

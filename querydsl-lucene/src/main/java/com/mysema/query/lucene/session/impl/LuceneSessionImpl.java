@@ -1,28 +1,28 @@
-package com.mysema.query.lucene.session;
-
-import org.apache.lucene.search.IndexSearcher;
+package com.mysema.query.lucene.session.impl;
 
 import com.mysema.query.QueryException;
 import com.mysema.query.lucene.LuceneQuery;
 import com.mysema.query.lucene.LuceneSerializer;
-import com.mysema.query.lucene.LuceneWriter;
+import com.mysema.query.lucene.session.LuceneSession;
+import com.mysema.query.lucene.session.LuceneWriter;
+import com.mysema.query.lucene.session.SessionClosedException;
+import com.mysema.query.lucene.session.SessionReadOnlyException;
 
 public class LuceneSessionImpl implements LuceneSession {
 
     private final boolean readOnly;
-    
+
     private boolean closed = false;
 
     private final LuceneSessionFactoryImpl sessionFactory;
 
-    private IndexSearcher searcher;
-    
+    private LuceneSearcher searcher;
+
     private LuceneWriterImpl writer;
 
     private final LuceneSerializer serializer = new LuceneSerializer(true, true);
 
-    public LuceneSessionImpl(LuceneSessionFactoryImpl sessionFactory,
-                             boolean readOnly) {
+    public LuceneSessionImpl(LuceneSessionFactoryImpl sessionFactory, boolean readOnly) {
         this.sessionFactory = sessionFactory;
         this.readOnly = readOnly;
     }
@@ -30,16 +30,16 @@ public class LuceneSessionImpl implements LuceneSession {
     @Override
     public LuceneQuery createQuery() {
         checkClosed();
-        return new LuceneQuery(serializer, getSearcher());
+        return new LuceneQuery(serializer, getSearcher().getIndexSearcer());
     }
 
-    private IndexSearcher getSearcher() {
-        if(searcher == null) {
+    private LuceneSearcher getSearcher() {
+        if (searcher == null) {
             searcher = sessionFactory.leaseSearcher();
         }
         return searcher;
     }
-    
+
     @Override
     public LuceneWriter beginAppend() {
         checkClosed();
@@ -54,48 +54,62 @@ public class LuceneSessionImpl implements LuceneSession {
 
     private LuceneWriter createWriter(boolean createNew) {
         if (readOnly) {
-            throw new QueryException("Read only session, cannot create writer");
+            throw new SessionReadOnlyException("Read only session, cannot create writer");
         }
-        
+
         if (writer == null) {
             writer = sessionFactory.getWriter(createNew);
         }
-        
+
         return writer;
     }
 
     @Override
     public void close() {
         checkClosed();
-        sessionFactory.closeSession(this);
+
+        QueryException searcherException = null;
+
+        if (searcher != null) {
+            try {
+                searcher.close();
+            } catch (QueryException e) {
+                searcherException = e;
+            }
+        }
+
+        if (writer != null) {
+            writer.close();
+        }
+
+        if (searcherException != null) {
+            throw searcherException;
+        }
+
         closed = true;
     }
-    
+
     @Override
     public void flush() {
         checkClosed();
-        sessionFactory.flush(this);
-    }
-    
-    public IndexSearcher getIndexSearcher() {
-        return searcher;
-    }
-    
-    public void removeIndexSearcher() {
+
+        if (writer == null) {
+            return;
+        }
+
+        writer.commit();
+
+        if (searcher != null) {
+            searcher.close();
+        }
         searcher = null;
-    }
-    
-    public LuceneWriterImpl getWriter() {
-        return writer;
+
     }
 
-    
     private void checkClosed() {
         if (closed) {
-            throw new QueryException("Session is closed");
+            throw new SessionClosedException("Session is closed");
         }
     }
-
-   
 
 }

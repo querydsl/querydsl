@@ -3,6 +3,7 @@ package com.mysema.query.lucene.session;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.nio.ReadOnlyBufferException;
 import java.util.List;
 
 import org.apache.lucene.document.Document;
@@ -15,7 +16,9 @@ import org.apache.lucene.store.RAMDirectory;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mysema.query.QueryException;
 import com.mysema.query.lucene.LuceneQuery;
+import com.mysema.query.lucene.session.impl.LuceneSessionFactoryImpl;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 
@@ -53,7 +56,6 @@ public class LuceneSessionFactoryTest {
         assertEquals(1, results.size());
         assertEquals("Jurassic Park", results.get(0).getField("title").stringValue());
 
-        //TODO This is still needed
         query = session.createQuery();
         long count = query.where(title.startsWith("Nummi")).count();
         assertEquals(1, count);
@@ -87,7 +89,64 @@ public class LuceneSessionFactoryTest {
         LuceneQuery query1 = session.createQuery();
         assertEquals(4, query1.where(year.gt(1800)).count());
         
-       
+        //The old query still sees the same 3
+        assertEquals(3, query.count());
+             
+    }
+    
+    @Test(expected=NoSessionBoundException.class)
+    public void testCurrentSession() {
+        sessionFactory.getCurrentSession();
+    }
+    
+   
+    @Test(expected=SessionReadOnlyException.class)
+    public void testReadonly() {
+        LuceneSession session = sessionFactory.openSession(true);
+        session.beginOverwrite();
+    }
+
+    @Test(expected=SessionClosedException.class)
+    public void testSessionClosedCreate() {
+        LuceneSession session = sessionFactory.openSession(false);
+        session.close();
+        session.createQuery();
+    }
+    
+    @Test(expected=SessionClosedException.class)
+    public void testSessionClosedAppend() {
+        LuceneSession session = sessionFactory.openSession(false);
+        session.close();
+        session.beginAppend();
+    }
+    
+    @Test(expected=SessionClosedException.class)
+    public void testSessionClosedFlush() {
+        LuceneSession session = sessionFactory.openSession(false);
+        session.close();
+        session.flush();
+    }
+    
+    @Test(expected=SessionClosedException.class)
+    public void testSessionClosedClosed() {
+        LuceneSession session = sessionFactory.openSession(false);
+        session.close();
+        session.close();
+    }
+    
+    @Test(expected=SessionClosedException.class)
+    public void testSessionClosedOverwrite() {
+        LuceneSession session = sessionFactory.openSession(false);
+        session.close();
+        session.beginOverwrite();
+    }
+    
+    @Test
+    public void testResourcesAreReleased() {
+        
+        
+        
+        
         
     }
     
@@ -97,14 +156,8 @@ public class LuceneSessionFactoryTest {
         session.close(); 
     }
 
-    @Test
-    public void testReadonly() {
-        
-        
-        
-        
-    }
-
+    
+    
     private void createDocuments(LuceneSession session) {
         
         session.beginAppend()

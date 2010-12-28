@@ -1,6 +1,8 @@
-package com.mysema.query.lucene.session;
+package com.mysema.query.lucene.session.impl;
 
-import com.mysema.query.QueryException;
+import com.mysema.query.lucene.session.LuceneSession;
+import com.mysema.query.lucene.session.NoSessionBoundException;
+
 
 /**
  * Holds the thread local session
@@ -56,7 +58,7 @@ public final class LuceneSessionHolder {
 
     private static LuceneSessionRef getSessionRef() {
         if (!hasCurrentSession()) {
-            throw new QueryException("There is no session bound to local thread");
+            throw new NoSessionBoundException("There is no session bound to local thread");
         }
         return currentSessionRef.get();
     }

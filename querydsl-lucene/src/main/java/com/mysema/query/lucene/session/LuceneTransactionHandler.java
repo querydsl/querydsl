@@ -6,6 +6,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.query.lucene.session.impl.LuceneSessionFactoryImpl;
+import com.mysema.query.lucene.session.impl.LuceneSessionHolder;
+
 @Aspect
 public class LuceneTransactionHandler {
 
