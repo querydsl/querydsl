@@ -102,7 +102,7 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
         LuceneSearcher s = new LuceneSearcher(new IndexSearcher(directory));
         if (!searcher.compareAndSet(expected, s)) {
             // Some thread already created a new one so just close this
-            s.close();
+            s.release();
         } else {
             // Incrementing the reference count first time
             // We want to keep using the same reader until the index is changed

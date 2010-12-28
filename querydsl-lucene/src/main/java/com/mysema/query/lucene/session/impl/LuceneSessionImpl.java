@@ -72,7 +72,7 @@ public class LuceneSessionImpl implements LuceneSession {
 
         if (searcher != null) {
             try {
-                searcher.close();
+                searcher.release();
             } catch (QueryException e) {
                 searcherException = e;
             }
@@ -100,7 +100,7 @@ public class LuceneSessionImpl implements LuceneSession {
         writer.commit();
 
         if (searcher != null) {
-            searcher.close();
+            searcher.release();
         }
         searcher = null;
 

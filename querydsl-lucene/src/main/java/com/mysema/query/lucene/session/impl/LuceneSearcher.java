@@ -20,10 +20,6 @@ public class LuceneSearcher {
         this.searcher = searcher;
     }
 
-    public void close() {
-        release();
-    }
-
     public boolean isCurrent() {
         try {
             return searcher.getIndexReader().isCurrent();
