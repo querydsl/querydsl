@@ -34,7 +34,13 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
-    </dependency>    
+    </dependency>
+    
+    <dependency>
+        <groupId>org.aspectj</groupId>
+        <artifactId>aspectjweaver</artifactId>
+        <version>1.6.9</version>
+      </dependency>
     
     <!-- test -->
     <dependency>
