@@ -1,7 +1,6 @@
 package com.mysema.query.lucene.session;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,13 +10,13 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.NumericField;
-import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.lucene.LuceneQuery;
+import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 
 public class LuceneSessionFactoryTest {
@@ -27,6 +26,9 @@ public class LuceneSessionFactoryTest {
     private Directory directory;
 
     private StringPath title;
+    
+    private NumberPath<Integer> year;
+    
 
     @Before
     public void before() throws IOException {
@@ -35,40 +37,15 @@ public class LuceneSessionFactoryTest {
 
         final QDocument entityPath = new QDocument("doc");
         title = entityPath.title;
+        year = entityPath.year;
     }
 
     @Test
-    public void testCreate() throws IOException {
+    public void testBasicQuery() {
 
-        LuceneSession session = sessionFactory.openSession(false);
-
-        session.beginAppend()
-           .addDocument(createDocument(
-                "Jurassic Park",
-                "Michael Crichton",
-                "It's a UNIX system! I know this!",
-                1990,
-                90.00))
-           .addDocument(createDocument(
-                "Nummisuutarit",
-                "Aleksis Kivi",
-                "ESKO. Ja iloitset ja riemuitset?",
-                1864,
-                10.00));
-        
-        session.flush();
-        
-        //Testing the write got there
-        IndexSearcher searcher = new IndexSearcher(directory);
-        Document doc1 = searcher.doc(0);
-        Document doc2 = searcher.doc(1);
-        
-        assertNotNull(doc1);
-        assertNotNull(doc2);
-        
-        assertEquals("Jurassic Park", doc1.getField("title").stringValue());
-        assertEquals("Nummisuutarit", doc2.getField("title").stringValue());
-    
+        addData();
+                  
+        LuceneSession session = sessionFactory.openSession(true);
         //Testing the queries work through session
         LuceneQuery query = session.createQuery();
         List<Document> results = query.where(title.eq("Jurassic Park")).list();
@@ -85,6 +62,71 @@ public class LuceneSessionFactoryTest {
         // query.where(title.ne("AA")).count();
 
         session.close();
+    }
+    
+    @Test
+    public void testFlush() {
+        LuceneSession session = sessionFactory.openSession(false);
+        createDocuments(session);
+        session.flush();
+        
+        //Now we will see the three documents
+        LuceneQuery query = session.createQuery();
+        assertEquals(3, query.where(year.gt(1800)).count());
+        
+        //Adding new document
+        session.beginAppend().addDocument(createDocument("title","author", "", 2010, 1));
+        
+        //New query will not see the addition
+        query = session.createQuery();
+        assertEquals(3, query.where(year.gt(1800)).count());
+        
+        session.flush();
+        
+        //This will see the addition
+        LuceneQuery query1 = session.createQuery();
+        assertEquals(4, query1.where(year.gt(1800)).count());
+        
+       
+        
+    }
+    
+    private void addData() {
+        LuceneSession session = sessionFactory.openSession(false);
+        createDocuments(session);
+        session.close(); 
+    }
+
+    @Test
+    public void testReadonly() {
+        
+        
+        
+        
+    }
+
+    private void createDocuments(LuceneSession session) {
+        
+        session.beginAppend()
+           .addDocument(createDocument(
+                "Jurassic Park",
+                "Michael Crichton",
+                "It's a UNIX system! I know this!",
+                1990,
+                90.00))
+           .addDocument(createDocument(
+                "Nummisuutarit",
+                "Aleksis Kivi",
+                "ESKO. Ja iloitset ja riemuitset?",
+                1864,
+                10.00))
+            .addDocument(createDocument(
+                "Hobitti",
+                "J.R.R Tolkien",
+                "Miten voin palvella teitä, hyvät kääpiöt?",
+                1937,
+                20.00));
+       
     }
 
     private Document createDocument(
