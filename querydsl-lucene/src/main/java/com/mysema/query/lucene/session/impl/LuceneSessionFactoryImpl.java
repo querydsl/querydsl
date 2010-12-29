@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.lucene.index.CorruptIndexException;
-import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
 import org.slf4j.Logger;
@@ -23,21 +21,8 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
     private final Directory directory;
 
     private final AtomicReference<LuceneSearcher> searcher = new AtomicReference<LuceneSearcher>();
-
-    private LuceneInternalsFactory intFactory = new LuceneInternalsFactory() {
-        public LuceneSearcher createSearcher() throws CorruptIndexException, IOException {
-            return new LuceneSearcher(new IndexSearcher(directory));
-        }
-
-        public LuceneWriterImpl createWriter(boolean createNew) {
-            return new LuceneWriterImpl(directory, createNew);
-        }
-    };
-
-    public static interface LuceneInternalsFactory {
-        LuceneSearcher createSearcher() throws CorruptIndexException, IOException;
-        LuceneWriterImpl createWriter(boolean createNew);
-    }
+    
+    private final ReleaseListener releaseListener;
 
     public LuceneSessionFactoryImpl(String indexPath) throws IOException {
         File folder = new File(indexPath);
@@ -51,11 +36,17 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
             logger.error("Could not create lucene directory to " + folder.getAbsolutePath());
             throw e;
         }
-
+        releaseListener = null;
     }
 
     public LuceneSessionFactoryImpl(Directory directory) {
         this.directory = directory;
+        releaseListener = null;
+    }
+
+    public LuceneSessionFactoryImpl(Directory directory, ReleaseListener releaseListener) {
+        this.directory = directory;
+        this.releaseListener = releaseListener;
     }
 
     @Override
@@ -83,7 +74,7 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
     }
 
     public LuceneWriterImpl getWriter(boolean createNew) {
-        return intFactory.createWriter(createNew);
+        return new LuceneWriterImpl(directory, createNew, releaseListener);
     }
 
     public LuceneSearcher leaseSearcher() {
@@ -122,7 +113,7 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
     }
 
     private LuceneSearcher createNewSearcher(LuceneSearcher expected) throws IOException {
-        LuceneSearcher s = intFactory.createSearcher();
+        LuceneSearcher s = new LuceneSearcher(directory, releaseListener);
         if (!searcher.compareAndSet(expected, s)) {
             // Some thread already created a new one so just close this
             s.release();

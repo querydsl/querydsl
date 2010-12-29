@@ -22,7 +22,9 @@ public class LuceneWriterImpl implements LuceneWriter {
 
     private IndexWriter writer;
 
-    public LuceneWriterImpl(Directory directory, boolean createNew) {
+    private final ReleaseListener releaseListener;
+
+    public LuceneWriterImpl(Directory directory, boolean createNew, ReleaseListener releaseListener) {
         try {
             if (createNew == false) {
                 try {
@@ -45,6 +47,7 @@ public class LuceneWriterImpl implements LuceneWriter {
         } catch (IOException e) {
             throw new QueryException(e);
         }
+        this.releaseListener = releaseListener;
     }
 
     @Override
@@ -76,6 +79,9 @@ public class LuceneWriterImpl implements LuceneWriter {
     }
 
     public void close() {
+        if (releaseListener != null) {
+            releaseListener.close(this);
+        }
         Directory directory = writer.getDirectory();
         try {
             // TODO What would be best way to control this?
