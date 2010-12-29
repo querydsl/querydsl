@@ -22,14 +22,6 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
 
     private final AtomicReference<LuceneSearcher> searcher = new AtomicReference<LuceneSearcher>();
 
-    // private LuceneInternalsFactory factory = new LuceneInternalsFactory() {
-    // IndexSearcher
-    // }
-    //
-    // public static interface LuceneInternalsFactory {
-    //
-    // }
-
     public LuceneSessionFactoryImpl(String indexPath) throws IOException {
         File folder = new File(indexPath);
         if (!folder.exists() && !folder.mkdirs()) {

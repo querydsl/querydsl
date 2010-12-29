@@ -14,7 +14,7 @@ import com.mysema.query.QueryException;
  */
 public class LuceneSearcher {
 
-    private IndexSearcher searcher;
+    private final IndexSearcher searcher;
 
     public LuceneSearcher(IndexSearcher searcher) {
         this.searcher = searcher;
