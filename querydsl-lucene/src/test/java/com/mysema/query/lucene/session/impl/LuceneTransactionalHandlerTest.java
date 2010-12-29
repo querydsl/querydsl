@@ -40,29 +40,29 @@ public class LuceneTransactionalHandlerTest {
     }
 
     @Test
-    public void testEmpty() {
+    public void Empty() {
         txTest.empty();
         assertEquals(1, txTest.count());
     }
 
     @Test(expected = SessionNotBoundException.class)
-    public void testNoAnnotation() {
+    public void NoAnnotation() {
         txTest.noAnnotation();
     }
 
     @Test
-    public void testAnnotation() {
+    public void Annotation() {
         txTest.annotation();
         assertEquals(1, txTest.count());
     }
     
     @Test(expected = SessionReadOnlyException.class)
-    public void testReadOnly() {
+    public void ReadOnly() {
         txTest.readOnly();
     }
     
     @Test
-    public void testWriting() {
+    public void Writing() {
         txTest.writing();
         
         LuceneQuery q = sessionFactory.openSession(true).createQuery();
@@ -70,7 +70,7 @@ public class LuceneTransactionalHandlerTest {
     }
     
     @Test
-    public void testMultifactories() {
+    public void Multifactories() {
         
         LuceneSessionFactory sf1 = new LuceneSessionFactoryImpl(new RAMDirectory());
         LuceneSessionFactory sf2 = new LuceneSessionFactoryImpl(new RAMDirectory());

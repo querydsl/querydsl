@@ -47,7 +47,7 @@ public class LuceneSessionFactoryTest {
     }
 
     @Test
-    public void testBasicQuery() {
+    public void BasicQuery() {
 
         addData(sessionFactory);
 
@@ -70,7 +70,7 @@ public class LuceneSessionFactoryTest {
     }
 
     @Test
-    public void testFlush() {
+    public void Flush() {
         LuceneSession session = sessionFactory.openSession(false);
         createDocuments(session);
         session.flush();
@@ -99,46 +99,46 @@ public class LuceneSessionFactoryTest {
     }
 
     @Test(expected=SessionNotBoundException.class)
-    public void testCurrentSession() {
+    public void CurrentSession() {
         sessionFactory.getCurrentSession();
     }
 
     @Test(expected = SessionReadOnlyException.class)
-    public void testReadonly() {
+    public void Readonly() {
         LuceneSession session = sessionFactory.openSession(true);
         session.beginOverwrite();
     }
 
     @Test(expected = SessionClosedException.class)
-    public void testSessionClosedCreate() {
+    public void SessionClosedCreate() {
         LuceneSession session = sessionFactory.openSession(false);
         session.close();
         session.createQuery();
     }
 
     @Test(expected = SessionClosedException.class)
-    public void testSessionClosedAppend() {
+    public void SessionClosedAppend() {
         LuceneSession session = sessionFactory.openSession(false);
         session.close();
         session.beginAppend();
     }
 
     @Test(expected = SessionClosedException.class)
-    public void testSessionClosedFlush() {
+    public void SessionClosedFlush() {
         LuceneSession session = sessionFactory.openSession(false);
         session.close();
         session.flush();
     }
 
     @Test(expected = SessionClosedException.class)
-    public void testSessionClosedClosed() {
+    public void SessionClosedClosed() {
         LuceneSession session = sessionFactory.openSession(false);
         session.close();
         session.close();
     }
 
     @Test(expected = SessionClosedException.class)
-    public void testSessionClosedOverwrite() {
+    public void SessionClosedOverwrite() {
         LuceneSession session = sessionFactory.openSession(false);
         session.close();
         session.beginOverwrite();
@@ -180,7 +180,7 @@ public class LuceneSessionFactoryTest {
     }
 
     @Test
-    public void testResourcesAreReleased() throws IOException {
+    public void ResourcesAreReleased() throws IOException {
 
         ReleaseCounter counter = new ReleaseCounter();
         
