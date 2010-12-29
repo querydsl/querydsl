@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mysema.query.lucene.session.LuceneTransaction;
+import com.mysema.query.lucene.session.LuceneTransactional;
 
 @Aspect
 public class LuceneTransactionHandler {
@@ -14,7 +14,7 @@ public class LuceneTransactionHandler {
     private static final Logger logger = LoggerFactory.getLogger(LuceneTransactionHandler.class);
 
     @Around("@annotation(annotation)")
-    public Object transactionalMethod(ProceedingJoinPoint joinPoint, LuceneTransaction annotation)
+    public Object transactionalMethod(ProceedingJoinPoint joinPoint, LuceneTransactional annotation)
             throws Throwable {
 
         if(logger.isDebugEnabled()) {

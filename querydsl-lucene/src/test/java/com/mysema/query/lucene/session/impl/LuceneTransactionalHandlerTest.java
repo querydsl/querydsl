@@ -11,8 +11,8 @@ import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
 import com.mysema.query.lucene.LuceneQuery;
 import com.mysema.query.lucene.session.LuceneSession;
 import com.mysema.query.lucene.session.LuceneSessionFactory;
-import com.mysema.query.lucene.session.LuceneTransaction;
-import com.mysema.query.lucene.session.NoSessionBoundException;
+import com.mysema.query.lucene.session.LuceneTransactional;
+import com.mysema.query.lucene.session.SessionNotBoundException;
 import com.mysema.query.lucene.session.QDocument;
 import com.mysema.query.lucene.session.SessionReadOnlyException;
 
@@ -45,7 +45,7 @@ public class LuceneTransactionalHandlerTest {
         assertEquals(1, txTest.count());
     }
 
-    @Test(expected = NoSessionBoundException.class)
+    @Test(expected = SessionNotBoundException.class)
     public void testNoAnnotation() {
         txTest.noAnnotation();
     }
@@ -121,7 +121,7 @@ public class LuceneTransactionalHandlerTest {
         }
 
         @Override
-        @LuceneTransaction
+        @LuceneTransactional
         public void empty() {
             count++;
         }
@@ -137,28 +137,28 @@ public class LuceneTransactionalHandlerTest {
         }
 
         @Override
-        @LuceneTransaction
+        @LuceneTransactional
         public void annotation() {
             count++;
             factories[0].getCurrentSession();
         }
 
         @Override
-        @LuceneTransaction(readOnly=true)
+        @LuceneTransactional(readOnly=true)
         public void readOnly() {
            LuceneSession session =  factories[0].getCurrentSession();
            session.beginAppend().addDocument(getDocument());
         }
 
         @Override
-        @LuceneTransaction
+        @LuceneTransactional
         public void writing() {
             LuceneSession session =  factories[0].getCurrentSession();
             createDocuments(session);
         }
 
         @Override
-        @LuceneTransaction
+        @LuceneTransactional
         public void multiFactories() {
            LuceneSession s1 = factories[0].getCurrentSession();
            LuceneSession s2 = factories[1].getCurrentSession();

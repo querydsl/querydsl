@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.mysema.query.QueryException;
 import com.mysema.query.lucene.session.LuceneSession;
 import com.mysema.query.lucene.session.LuceneSessionFactory;
-import com.mysema.query.lucene.session.NoSessionBoundException;
+import com.mysema.query.lucene.session.SessionNotBoundException;
 
 public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
 
@@ -61,7 +61,7 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
     @Override
     public LuceneSession getCurrentSession() {
         if (!LuceneSessionHolder.isTransactionalScope()) {
-            throw new NoSessionBoundException("There is transactional scope");
+            throw new SessionNotBoundException("There is transactional scope");
         }
 
         if (!LuceneSessionHolder.hasCurrentSession(this)) {

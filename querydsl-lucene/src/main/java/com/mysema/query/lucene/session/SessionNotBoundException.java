@@ -2,19 +2,19 @@ package com.mysema.query.lucene.session;
 
 import com.mysema.query.QueryException;
 
-public class NoSessionBoundException extends QueryException {
+public class SessionNotBoundException extends QueryException {
 
     private static final long serialVersionUID = 4569418223905066659L;
 
-    public NoSessionBoundException(String msg) {
+    public SessionNotBoundException(String msg) {
         super(msg);
     }
 
-    public NoSessionBoundException(String msg, Throwable t) {
+    public SessionNotBoundException(String msg, Throwable t) {
         super(msg, t);
     }
 
-    public NoSessionBoundException(Throwable t) {
+    public SessionNotBoundException(Throwable t) {
         super(t);
     }
 
