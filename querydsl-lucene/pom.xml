@@ -49,7 +49,14 @@
       <version>${project.parent.version}</version>
       <scope>test</scope>
       <type>test-jar</type>
-    </dependency>    
+    </dependency>
+    
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-aop</artifactId>
+        <version>3.0.3.RELEASE</version>
+        <scope>test</scope>
+      </dependency>    
   </dependencies>
 
 </project>

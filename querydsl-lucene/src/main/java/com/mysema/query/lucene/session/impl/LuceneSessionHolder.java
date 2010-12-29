@@ -1,66 +1,101 @@
 package com.mysema.query.lucene.session.impl;
 
-import com.mysema.query.lucene.session.LuceneSession;
-import com.mysema.query.lucene.session.NoSessionBoundException;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.mysema.commons.lang.Assert;
+import com.mysema.query.QueryException;
+import com.mysema.query.lucene.session.LuceneSession;
+import com.mysema.query.lucene.session.LuceneSessionFactory;
 
 /**
- * Holds the thread local session
+ * Holds the thread local sessions. This can handle several session factories
+ * per thread.
  * 
- * @author laimw
+ * @author laim
  */
 public final class LuceneSessionHolder {
 
-    private static final ThreadLocal<LuceneSessionRef> currentSessionRef =
-        new ThreadLocal<LuceneSessionRef>();
+    private static final Logger logger = LoggerFactory.getLogger(LuceneSessionHolder.class);
 
-    private static class LuceneSessionRef {
-        private LuceneSession session;
+    private static final ThreadLocal<Map<LuceneSessionFactory, LuceneSession>> sessions =
+        new ThreadLocal<Map<LuceneSessionFactory, LuceneSession>>();
 
+    private static final ThreadLocal<TransactionalScope> scope =
+        new ThreadLocal<TransactionalScope>();
+
+    private static class TransactionalScope {
         private int referenceCount = 0;
 
-        LuceneSessionRef(LuceneSession session) {
-            this.session = session;
+        private final boolean readOnly;
+
+        public TransactionalScope(boolean readOnly) {
+            this.readOnly = readOnly;
         }
     }
 
     private LuceneSessionHolder() {
     }
 
-    public static boolean hasCurrentSession() {
-        return currentSessionRef.get() != null;
+    public static boolean isTransactionalScope() {
+        return scope.get() != null;
     }
 
-    public static LuceneSession getCurrentSession() {
-        return getSessionRef().session;
+    public static boolean hasCurrentSession(LuceneSessionFactory sessionFactory) {
+        return getSessions().get(sessionFactory) != null;
     }
 
-    public static void setCurrentSession(LuceneSession session) {
-        LuceneSessionRef ref = new LuceneSessionRef(session);
-        currentSessionRef.set(ref);
+    public static LuceneSession getCurrentSession(LuceneSessionFactory sessionFactory) {
+        return getSessions().get(sessionFactory);
+    }
+
+    public static void setCurrentSession(LuceneSessionFactory sessionFactory, LuceneSession session) {
+        if (getSessions().containsKey(sessionFactory)) {
+            throw new IllegalStateException(
+                                            "Session factory has already bound a session to thread : "
+                                                    + sessionFactory);
+        }
+        getSessions().put(sessionFactory, session);
+    }
+
+    private static Map<LuceneSessionFactory, LuceneSession> getSessions() {
+        if (sessions.get() == null) {
+            sessions.set(new HashMap<LuceneSessionFactory, LuceneSession>());
+        }
+        return sessions.get();
     }
 
     public static void release() {
-        LuceneSessionRef ref = getSessionRef();
-        ref.referenceCount--;
-        if (ref.referenceCount == 0) {
+        scope.get().referenceCount--;
+        if (scope.get().referenceCount == 0) {
             try {
-                ref.session.close();
+                for (LuceneSession session : getSessions().values()) {
+                    try {
+                        session.close();
+                    } catch (QueryException e) {
+                        logger.error("Failed to close session", e);
+                    }
+                }
             } finally {
-                currentSessionRef.remove();
+                sessions.remove();
+                scope.remove();
             }
         }
     }
 
-    public static void lease() {
-        getSessionRef().referenceCount++;
+    public static void lease(boolean readOnly) {
+        if (scope.get() == null) {
+            scope.set(new TransactionalScope(readOnly));
+        }
+        scope.get().referenceCount++;
     }
 
-    private static LuceneSessionRef getSessionRef() {
-        if (!hasCurrentSession()) {
-            throw new NoSessionBoundException("There is no session bound to local thread");
-        }
-        return currentSessionRef.get();
+    public static boolean getReadOnly() {
+        Assert.notNull(scope.get(), "No transactional scope");
+        return scope.get().readOnly;
     }
 
 }
