@@ -115,7 +115,7 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
         }
     }
 
-    private LuceneSearcher createNewSearcher(LuceneSearcher expected) throws IOException {
+    private LuceneSearcher createNewSearcher(@Nullable LuceneSearcher expected) throws IOException {
         LuceneSearcher s = new LuceneSearcher(directory, releaseListener);
         if (!searcher.compareAndSet(expected, s)) {
             // Some thread already created a new one so just close this
