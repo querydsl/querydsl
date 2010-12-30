@@ -1,5 +1,7 @@
 package com.mysema.query.lucene.session.impl;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.QueryException;
 import com.mysema.query.lucene.LuceneQuery;
 import com.mysema.query.lucene.LuceneSerializer;
@@ -16,8 +18,10 @@ public class LuceneSessionImpl implements LuceneSession {
 
     private final LuceneSessionFactoryImpl sessionFactory;
 
+    @Nullable
     private LuceneSearcher searcher;
 
+    @Nullable
     private LuceneWriterImpl writer;
 
     private final LuceneSerializer serializer = new LuceneSerializer(true, true);
