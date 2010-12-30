@@ -106,7 +106,7 @@ public class LuceneSessionFactoryTest {
     @Test(expected = SessionReadOnlyException.class)
     public void Readonly() {
         LuceneSession session = sessionFactory.openSession(true);
-        session.beginOverwrite();
+        session.beginReset();
     }
 
     @Test(expected = SessionClosedException.class)
@@ -141,7 +141,7 @@ public class LuceneSessionFactoryTest {
     public void SessionClosedOverwrite() {
         LuceneSession session = sessionFactory.openSession(false);
         session.close();
-        session.beginOverwrite();
+        session.beginReset();
     }
 
     private class ReleaseCounter implements ReleaseListener {
@@ -177,6 +177,27 @@ public class LuceneSessionFactoryTest {
             }
             closes.put(writer, closes.get(writer) + 1);
         }
+    }
+    
+    @Test
+    public void Reset() {
+        addData(sessionFactory);
+
+        LuceneSession session = sessionFactory.openSession(true);
+        assertEquals(4, session.createQuery().count());
+        session.close();
+        
+        session = sessionFactory.openSession(false);
+        
+        assertEquals(4, session.createQuery().count());
+        session.beginReset().addDocument(getDocument());
+        session.flush();
+        assertEquals(1, session.createQuery().count());
+        session.close();
+        
+        session = sessionFactory.openSession(true);
+        assertEquals(1, session.createQuery().count());
+        session.close();
     }
 
     @Test

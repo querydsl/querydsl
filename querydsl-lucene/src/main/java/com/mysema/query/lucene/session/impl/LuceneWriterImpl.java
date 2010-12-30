@@ -3,6 +3,8 @@ package com.mysema.query.lucene.session.impl;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import javax.annotation.Nullable;
+
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriter;
@@ -22,6 +24,7 @@ public class LuceneWriterImpl implements LuceneWriter {
 
     private IndexWriter writer;
 
+    @Nullable
     private final ReleaseListener releaseListener;
 
     public LuceneWriterImpl(Directory directory, boolean createNew, ReleaseListener releaseListener) {

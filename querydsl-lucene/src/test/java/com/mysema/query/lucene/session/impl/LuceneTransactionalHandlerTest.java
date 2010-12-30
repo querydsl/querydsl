@@ -22,48 +22,46 @@ public class LuceneTransactionalHandlerTest {
     
     private LuceneTransactionHandler handler = new LuceneTransactionHandler();
 
-    private TxTest txTest;
+    private TestDao testDao;
     
     private QDocument doc = new QDocument("test");
-    
-    //private StringPath title = doc.title;
 
     @Before
     public void before() {
 
         sessionFactory = new LuceneSessionFactoryImpl(new RAMDirectory());
 
-        AspectJProxyFactory factory = new AspectJProxyFactory(new TxTestImpl(sessionFactory));
+        AspectJProxyFactory factory = new AspectJProxyFactory(new TestDaoImpl(sessionFactory));
         factory.addAspect(handler);
 
-        txTest = factory.getProxy();
+        testDao = factory.getProxy();
     }
 
     @Test
     public void Empty() {
-        txTest.empty();
-        assertEquals(1, txTest.count());
+        testDao.empty();
+        assertEquals(1, testDao.count());
     }
 
     @Test(expected = SessionNotBoundException.class)
     public void NoAnnotation() {
-        txTest.noAnnotation();
+        testDao.noAnnotation();
     }
 
     @Test
     public void Annotation() {
-        txTest.annotation();
-        assertEquals(1, txTest.count());
+        testDao.annotation();
+        assertEquals(1, testDao.count());
     }
     
     @Test(expected = SessionReadOnlyException.class)
     public void ReadOnly() {
-        txTest.readOnly();
+        testDao.readOnly();
     }
     
     @Test
     public void Writing() {
-        txTest.writing();
+        testDao.writing();
         
         LuceneQuery q = sessionFactory.openSession(true).createQuery();
         assertEquals(4, q.where(doc.title.like("*")).count());
@@ -76,11 +74,11 @@ public class LuceneTransactionalHandlerTest {
         LuceneSessionFactory sf2 = new LuceneSessionFactoryImpl(new RAMDirectory());
         LuceneSessionFactory sf3 = new LuceneSessionFactoryImpl(new RAMDirectory());
         
-        AspectJProxyFactory factory = new AspectJProxyFactory(new TxTestImpl(sf1,sf2,sf3));
+        AspectJProxyFactory factory = new AspectJProxyFactory(new TestDaoImpl(sf1,sf2,sf3));
         factory.addAspect(handler);
-        txTest = factory.getProxy();
+        testDao = factory.getProxy();
         
-        txTest.multiFactories();
+        testDao.multiFactories();
         
         LuceneQuery q = sf1.openSession(true).createQuery();
         assertEquals(1, q.where(doc.title.eq("sf1")).count());
@@ -92,9 +90,24 @@ public class LuceneTransactionalHandlerTest {
         assertEquals(1, q.where(doc.title.eq("sf3")).count());
     }
     
+    @Test
+    public void NestedSession() {
+        AspectJProxyFactory factory = new AspectJProxyFactory(new NestedDaoImpl(sessionFactory));
+        factory.addAspect(handler);
+        NestedDao nestedDao = factory.getProxy();
+        
+        testDao.setNested(nestedDao);
+        
+        testDao.nested();
+        
+        LuceneSession session = sessionFactory.openSession(true);
+        assertEquals(1, session.createQuery().where(doc.title.eq("nested")).count());
+        session.close();
+        
+    }
     
 
-    private static interface TxTest {
+    private static interface TestDao {
         void empty();
 
         int count();
@@ -108,15 +121,21 @@ public class LuceneTransactionalHandlerTest {
         void writing();
         
         void multiFactories();
+        
+        void nested();
+        
+        void setNested(NestedDao nested);
     }
-
-    private static class TxTestImpl implements TxTest {
+    
+    private static class TestDaoImpl implements TestDao {
 
         private int count = 0;
 
         private LuceneSessionFactory[] factories;
         
-        TxTestImpl(LuceneSessionFactory ... factories) {
+        private NestedDao nested;
+        
+        TestDaoImpl(LuceneSessionFactory ... factories) {
             this.factories = factories;
         }
 
@@ -164,9 +183,51 @@ public class LuceneTransactionalHandlerTest {
            LuceneSession s2 = factories[1].getCurrentSession();
            LuceneSession s3 = factories[2].getCurrentSession();
            
-           s1.beginOverwrite().addDocument(createDocument("sf1","","",0,0));
-           s2.beginOverwrite().addDocument(createDocument("sf2","","",0,0));
-           s3.beginOverwrite().addDocument(createDocument("sf3","","",0,0));
+           s1.beginReset().addDocument(createDocument("sf1","","",0,0));
+           s2.beginReset().addDocument(createDocument("sf2","","",0,0));
+           s3.beginReset().addDocument(createDocument("sf3","","",0,0));
+        }
+
+        @Override
+        public void setNested(NestedDao nested) {
+            this.nested = nested;
+        }
+        
+        @Override
+        @LuceneTransactional
+        public void nested() {
+            LuceneSession session = factories[0].getCurrentSession();
+            session.beginReset().addDocument(createDocument("nested","","",0,0));
+            nested.nested();
+        }
+    }
+    
+    private static interface NestedDao {
+        void nested();
+    }
+    
+    private class NestedDaoImpl implements NestedDao {
+
+        private LuceneSessionFactory sessionFactory;
+        
+        public NestedDaoImpl(LuceneSessionFactory sessionFactory) {
+            this.sessionFactory = sessionFactory;
+        }
+        
+        @Override
+        @LuceneTransactional
+        public void nested() {
+            LuceneSession session = sessionFactory.getCurrentSession(); 
+            LuceneQuery query = session.createQuery();
+            
+            assertEquals(0, query.where(doc.title.eq("nested")).count());
+
+            // This verifies that the we are using the same session opened in
+            // the caller scope
+            session.flush();
+
+            query = session.createQuery();
+            assertEquals(1, query.where(doc.title.eq("nested")).count());
         }
     }
 }

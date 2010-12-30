@@ -47,7 +47,7 @@ public class LuceneSessionImpl implements LuceneSession {
     }
 
     @Override
-    public LuceneWriter beginOverwrite() {
+    public LuceneWriter beginReset() {
         checkClosed();
         return createWriter(true);
     }

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicReference;
 
+import javax.annotation.Nullable;
+
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
 import org.slf4j.Logger;
@@ -22,6 +24,7 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
 
     private final AtomicReference<LuceneSearcher> searcher = new AtomicReference<LuceneSearcher>();
     
+    @Nullable
     private final ReleaseListener releaseListener;
 
     public LuceneSessionFactoryImpl(String indexPath) throws IOException {
@@ -52,7 +55,7 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
     @Override
     public LuceneSession getCurrentSession() {
         if (!LuceneSessionHolder.isTransactionalScope()) {
-            throw new SessionNotBoundException("There is transactional scope");
+            throw new SessionNotBoundException("There is no transactional scope");
         }
 
         if (!LuceneSessionHolder.hasCurrentSession(this)) {

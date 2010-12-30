@@ -2,6 +2,8 @@ package com.mysema.query.lucene.session.impl;
 
 import java.io.IOException;
 
+import javax.annotation.Nullable;
+
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.Directory;
 
@@ -16,6 +18,8 @@ import com.mysema.query.QueryException;
 public class LuceneSearcher {
 
     private final IndexSearcher searcher;
+    
+    @Nullable
     private final ReleaseListener releaseListener;
 
     public LuceneSearcher(Directory directory, ReleaseListener releaseListener) {
