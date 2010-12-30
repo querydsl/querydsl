@@ -47,9 +47,9 @@ import com.mysema.query.types.path.StringPath;
 
 /**
  * Tests for LuceneQuery
- * 
+ *
  * @author vema
- * 
+ *
  */
 public class LuceneQueryTest {
 
@@ -131,9 +131,8 @@ public class LuceneQueryTest {
         searcher.close();
     }
 
-    @Test(expected = QueryException.class)
     public void count_Empty_Where_Clause() {
-        query.count();
+        assertEquals(4, query.count());
     }
 
     @Test
@@ -521,6 +520,10 @@ public class LuceneQueryTest {
             ++count;
         }
         assertEquals(4, count);
+    }
 
+    @Test
+    public void All_By_Excluding_Where() {
+        assertEquals(4, query.list().size());
     }
 }

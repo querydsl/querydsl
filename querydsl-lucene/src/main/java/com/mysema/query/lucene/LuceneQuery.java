@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.lucene.document.Document;
+import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Searcher;
@@ -30,7 +31,7 @@ import com.mysema.query.types.Predicate;
 
 /**
  * LuceneQuery is a Querydsl query implementation for Lucene queries.
- * 
+ *
  * @author vema
  */
 public class LuceneQuery implements SimpleQuery<LuceneQuery>,
@@ -52,7 +53,7 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
     public LuceneQuery(final Searcher searcher) {
         this(LuceneSerializer.DEFAULT, searcher);
     }
-    
+
     private long innerCount(){
         try {
             final int maxDoc = searcher.maxDoc();
@@ -62,22 +63,22 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
             return searcher.search(createQuery(), maxDoc).totalHits;
         } catch (final IOException e) {
             throw new QueryException(e);
-        }   
+        }
     }
-    
+
     @Override
     public long count() {
-        return innerCount();    
+        return innerCount();
     }
 
     @Override
     public long countDistinct() {
-        return innerCount();    
+        return innerCount();
     }
 
     private Query createQuery() {
         if (queryMixin.getMetadata().getWhere() == null) {
-            throw new QueryException("Where clause was null.");
+            return new MatchAllDocsQuery();
         }
         return serializer.toQuery(queryMixin.getMetadata().getWhere(),
                 queryMixin.getMetadata());
@@ -131,14 +132,14 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
     public CloseableIterator<Document> iterateDistinct() {
         return iterate();
     }
-    
+
     private List<Document> innerList(){
-        return new IteratorAdapter<Document>(iterate()).asList();    
+        return new IteratorAdapter<Document>(iterate()).asList();
     }
-    
+
     @Override
     public List<Document> list() {
-        return innerList();     
+        return innerList();
     }
 
     @Override

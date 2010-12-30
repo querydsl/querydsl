@@ -218,10 +218,10 @@ public class LuceneSerializerTest {
 
     @Test
     public void eq_Numeric() throws Exception{
-    testQuery(longField.eq(1l), "longField:" + LONG_PREFIX_CODED, 1);
-    testQuery(shortField.eq((short)1), "shortField:" + SHORT_PREFIX_CODED, 1);
-    testQuery(byteField.eq((byte)1), "byteField:" + BYTE_PREFIX_CODED, 1);
-    testQuery(floatField.eq((float)1.0), "floatField:" + FLOAT_PREFIX_CODED, 1);
+        testQuery(longField.eq(1l), "longField:" + LONG_PREFIX_CODED, 1);
+        testQuery(shortField.eq((short)1), "shortField:" + SHORT_PREFIX_CODED, 1);
+        testQuery(byteField.eq((byte)1), "byteField:" + BYTE_PREFIX_CODED, 1);
+        testQuery(floatField.eq((float)1.0), "floatField:" + FLOAT_PREFIX_CODED, 1);
     }
 
     @Test
