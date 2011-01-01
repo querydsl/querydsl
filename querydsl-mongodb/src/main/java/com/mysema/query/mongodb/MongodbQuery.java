@@ -61,6 +61,11 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>,
     }
 
     @Override
+    public MongodbQuery<K> distinct(){
+        return queryMixin.distinct();
+    }
+    
+    @Override
     public MongodbQuery<K> where(Predicate... e) {
         return queryMixin.where(e);
     }

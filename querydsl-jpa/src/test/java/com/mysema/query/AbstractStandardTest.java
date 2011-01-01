@@ -240,6 +240,21 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
+    public void DistinctResults2(){
+        SearchResults<Date> res = catQuery().limit(2).listResults(cat.birthdate);
+        assertEquals(2, res.getResults().size());
+        assertEquals(6l, res.getTotal());
+        System.out.println();
+
+        res = catQuery().limit(2).distinct().listResults(cat.birthdate);
+        assertEquals(1, res.getResults().size());
+        assertEquals(1l, res.getTotal());
+        System.out.println();
+
+        assertEquals(1, catQuery().distinct().list(cat.birthdate).size());
+    }
+    
+    @Test
     public void In(){
         catQuery().where(cat.id.in(Arrays.asList(1,2,3))).count();
         catQuery().where(cat.name.in(Arrays.asList("A","B","C"))).count();

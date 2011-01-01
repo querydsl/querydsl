@@ -70,5 +70,12 @@ public interface SimpleQuery<Q extends SimpleQuery<Q>> {
      * @return
      */
     <T> Q set(ParamExpression<T> param, T value);
+    
+    /**
+     * Set the Query to return distinct results
+     * 
+     * @return
+     */
+    Q distinct();
 
 }

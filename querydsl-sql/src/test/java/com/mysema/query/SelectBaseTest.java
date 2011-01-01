@@ -263,6 +263,21 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             assertNotNull(tuple.getExpr(employee.lastname));
         }
     }
+    
+    @Test
+    public void Distinct_List(){
+        List<Integer> lengths1 = query().from(employee).listDistinct(employee.firstname.length());
+        List<Integer> lengths2 = query().from(employee).distinct().list(employee.firstname.length());
+        assertEquals(lengths1, lengths2);
+    }
+    
+    @Test
+    public void Distinct_Count(){
+        long count1 = query().from(employee).countDistinct();
+        long count2 = query().from(employee).distinct().count();
+        assertEquals(count1, count2);
+    }
+
 
     @Test
     public void getResultSet() throws IOException, SQLException{
@@ -500,6 +515,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             System.out.println(row[0] + ", " + row[1]);
         }
     }
+    
 
     @Test
     @Ignore

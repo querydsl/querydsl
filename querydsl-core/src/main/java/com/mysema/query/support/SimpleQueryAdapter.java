@@ -57,6 +57,12 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     public long countDistinct() {
         return projectable.countDistinct();
     }
+    
+    @Override
+    public SimpleQueryAdapter<T> distinct(){
+        query.distinct();
+        return this;
+    }
 
     @Override
     public SimpleQueryAdapter<T> limit(long limit) {

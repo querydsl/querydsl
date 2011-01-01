@@ -25,6 +25,10 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
         this.queryMixin = queryMixin;
     }
 
+    public Q distinct(){
+        return queryMixin.distinct();
+    }
+    
     public Q groupBy(Expression<?>... o) {
         return queryMixin.groupBy(o);
     }

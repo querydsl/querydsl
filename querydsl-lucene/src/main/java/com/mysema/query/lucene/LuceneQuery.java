@@ -85,6 +85,11 @@ public class LuceneQuery implements SimpleQuery<LuceneQuery>,
     }
 
     @Override
+    public LuceneQuery distinct(){
+        return queryMixin.distinct();
+    }
+    
+    @Override
     public LuceneQuery limit(final long limit) {
         return queryMixin.limit(limit);
     }

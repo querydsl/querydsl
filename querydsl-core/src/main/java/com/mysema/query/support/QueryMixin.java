@@ -81,6 +81,11 @@ public class QueryMixin<T>{
         assertRoot(alias);
         return ExpressionUtils.as(path, alias);
     }
+    
+    public T distinct(){
+        metadata.setDistinct(true);
+        return self;
+    }
 
     public T from(Expression<?>... args) {
         for (Expression<?> arg : args){

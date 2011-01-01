@@ -80,5 +80,12 @@ public interface Query<Q extends Query<Q>> extends FilteredClause<Q>{
      * @return
      */
     <T> Q set(ParamExpression<T> param, T value);
+    
+    /**
+     * Set the Query to return distinct results
+     * 
+     * @return
+     */
+    Q distinct();
 
 }

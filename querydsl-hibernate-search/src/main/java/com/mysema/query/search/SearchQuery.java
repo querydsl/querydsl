@@ -90,6 +90,14 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
         return fullTextQuery;
     }
     
+
+    @Override
+    public SearchQuery<T> distinct() {
+        // do nothing
+        return this;
+    }
+
+    
     @SuppressWarnings("unchecked")
     public CloseableIterator<T> iterate(){
         return new IteratorAdapter<T>(createQuery(false).iterate());
