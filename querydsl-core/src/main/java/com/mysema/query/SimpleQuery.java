@@ -9,7 +9,6 @@ import javax.annotation.Nonnegative;
 
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.Predicate;
 
 /**
  * SimpleQuery defines a simple querying interface than {@link Query}
@@ -19,15 +18,7 @@ import com.mysema.query.types.Predicate;
  * @param <Q>
  * @see Query
  */
-public interface SimpleQuery<Q extends SimpleQuery<Q>> {
-
-    /**
-     * Defines the filter constraints
-     *
-     * @param e
-     * @return
-     */
-    Q where(Predicate... e);
+public interface SimpleQuery<Q extends SimpleQuery<Q>> extends FilteredClause<Q>{
 
     /**
      * Defines the limit / max results for the query results
