@@ -114,10 +114,14 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         this.configuration = configuration;
     }
 
-    @SuppressWarnings("unchecked")
     protected Q addJoinFlag(String flag){
+        return addJoinFlag(flag, JoinFlag.Position.BEFORE_TARGET);
+    }
+    
+    @SuppressWarnings("unchecked")
+    protected Q addJoinFlag(String flag, JoinFlag.Position position){
         List<JoinExpression> joins = queryMixin.getMetadata().getJoins();
-        joins.get(joins.size()-1).addFlag(new JoinFlag(flag));
+        joins.get(joins.size()-1).addFlag(new JoinFlag(flag, position));
         return (Q)this;
     }
 

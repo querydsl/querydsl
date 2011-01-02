@@ -21,16 +21,57 @@ import com.mysema.query.types.TemplateExpressionImpl;
 @Immutable
 public class JoinFlag implements Serializable{
     
+    public enum Position {
+        
+        /**
+         * before the join
+         */
+        START,  
+        
+        /**
+         * as a replacement for the join symbol
+         */
+        OVERRIDE,
+        
+        /**
+         * before the join target
+         */
+        BEFORE_TARGET, 
+
+        /**
+         * before the join condition
+         */
+        BEFORE_CONDITION,
+        
+        /**
+         * after the join 
+         */
+        END
+        
+    }
+    
     private static final long serialVersionUID = -688265393547206465L;
     
     private final Expression<?> flag;
     
+    private final Position position;
+    
     public JoinFlag(String flag) {
-        this.flag = TemplateExpressionImpl.create(Object.class, flag);
+        this(TemplateExpressionImpl.create(Object.class, flag), Position.BEFORE_TARGET);
     }
     
+    public JoinFlag(String flag, Position position) {
+        this(TemplateExpressionImpl.create(Object.class, flag), position);
+    }
+    
+    
     public JoinFlag(Expression<?> flag) {
+        this(flag, Position.BEFORE_TARGET);
+    }
+    
+    public JoinFlag(Expression<?> flag, Position position) {
         this.flag = flag;
+        this.position = position;
     }
     
     @Override
@@ -58,5 +99,8 @@ public class JoinFlag implements Serializable{
         return flag;
     }
 
+    public Position getPosition() {
+        return position;
+    }
     
 }

@@ -11,6 +11,7 @@ import java.sql.Connection;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.sql.AbstractSQLQuery;
@@ -96,7 +97,7 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery>{
     }
     
     public MySQLQuery useIndex(String... indexes){
-        return addJoinFlag(" use_index (" + StringUtils.join(indexes, ", ") + ")");
+        return addJoinFlag(" use_index (" + StringUtils.join(indexes, ", ") + ")", JoinFlag.Position.END);
     }
     
     public MySQLQuery withRollup(){

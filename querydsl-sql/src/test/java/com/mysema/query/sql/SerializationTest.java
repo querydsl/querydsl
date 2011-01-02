@@ -7,6 +7,7 @@ import java.sql.Connection;
 import org.easymock.EasyMock;
 import org.junit.Test;
 
+import com.mysema.query.JoinFlag;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
@@ -75,4 +76,5 @@ public class SerializationTest {
                      "where SURVEY.ID = e.ID)", delete.toString());
     }
 
+    
 }

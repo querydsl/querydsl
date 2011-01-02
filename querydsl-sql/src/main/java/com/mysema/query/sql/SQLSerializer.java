@@ -392,16 +392,20 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             append(templates.getFrom());
             for (int i = 0; i < joins.size(); i++) {
                 JoinExpression je = joins.get(i);
-                if (i > 0) {
+                serialize(JoinFlag.Position.START, je.getFlags());
+                if (!serialize(JoinFlag.Position.OVERRIDE, je.getFlags()) && i > 0){
                     append(templates.getJoinSymbol(je.getType()));
                 }
+                
+                serialize(JoinFlag.Position.BEFORE_TARGET, je.getFlags());
                 handleJoinTarget(je);
+                
+                serialize(JoinFlag.Position.BEFORE_CONDITION, je.getFlags());
                 if (je.getCondition() != null) {
                     append(templates.getOn()).handle(je.getCondition());
                 }
-                for (JoinFlag flag : je.getFlags()){
-                    handle(flag.getFlag());
-                }
+                
+                serialize(JoinFlag.Position.END, je.getFlags());
             }    
         }        
     }

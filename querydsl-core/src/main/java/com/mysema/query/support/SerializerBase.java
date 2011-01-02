@@ -14,7 +14,6 @@ import java.util.Set;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
-import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.types.*;
 
 /**
@@ -111,9 +110,20 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         }
     }
 
-    protected boolean serialize(Position position, Set<QueryFlag> flags) {
+    protected boolean serialize(QueryFlag.Position position, Set<QueryFlag> flags) {
         boolean handled = false;
         for (QueryFlag flag : flags){
+            if (flag.getPosition() == position){
+                handle(flag.getFlag());
+                handled = true;
+            }
+        }
+        return handled;
+    }
+    
+    protected boolean serialize(JoinFlag.Position position, Set<JoinFlag> flags){
+        boolean handled = false;
+        for (JoinFlag flag : flags){
             if (flag.getPosition() == position){
                 handle(flag.getFlag());
                 handled = true;
