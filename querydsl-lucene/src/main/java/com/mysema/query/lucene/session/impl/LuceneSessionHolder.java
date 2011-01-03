@@ -64,6 +64,7 @@ public final class LuceneSessionHolder {
     private static Map<LuceneSessionFactory, LuceneSession> getSessions() {
         if (sessions.get() == null) {
             sessions.set(new HashMap<LuceneSessionFactory, LuceneSession>());
+            
         }
         return sessions.get();
     }
@@ -74,8 +75,10 @@ public final class LuceneSessionHolder {
             try {
                 for (LuceneSession session : getSessions().values()) {
                     try {
+                        //System.out.println("session holder close");
                         session.close();
                     } catch (QueryException e) {
+                        //System.out.println("failed to close session " + e.getCause().getMessage());
                         logger.error("Failed to close session", e);
                     }
                 }

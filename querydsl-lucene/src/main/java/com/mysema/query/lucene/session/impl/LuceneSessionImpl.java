@@ -22,7 +22,7 @@ public class LuceneSessionImpl implements LuceneSession {
     private LuceneSearcher searcher;
 
     @Nullable
-    private LuceneWriterImpl writer;
+    private FileLockingWriter writer;
 
     private final LuceneSerializer serializer = new LuceneSerializer(true, true);
 
@@ -83,7 +83,15 @@ public class LuceneSessionImpl implements LuceneSession {
         }
 
         if (writer != null) {
-            writer.close();
+            if (writer.isLeased()) {
+                try {
+                    writer.commit();
+                } finally {
+                    writer.release();
+                }
+            } else {
+                writer.close();
+            }
         }
 
         if (searcherException != null) {

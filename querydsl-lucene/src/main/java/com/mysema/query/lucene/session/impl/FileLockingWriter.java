@@ -11,23 +11,29 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriter.MaxFieldLength;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.util.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mysema.query.QueryException;
 import com.mysema.query.lucene.session.LuceneWriter;
+import com.mysema.query.lucene.session.WriteLockObtainFailedException;
 
-public class LuceneWriterImpl implements LuceneWriter {
+public class FileLockingWriter implements LuceneWriter {
 
-    private static final Logger logger = LoggerFactory.getLogger(LuceneWriterImpl.class);
+    protected static final Logger logger = LoggerFactory.getLogger(LuceneWriter.class);
 
-    private IndexWriter writer;
+    protected IndexWriter writer;
 
     @Nullable
-    private final ReleaseListener releaseListener;
+    protected final ReleaseListener releaseListener;
+    
+    private volatile boolean leased = false;
 
-    public LuceneWriterImpl(Directory directory, boolean createNew, ReleaseListener releaseListener) {
+    public FileLockingWriter(Directory directory, boolean createNew, long defaultLockTimeout,
+                             ReleaseListener releaseListener) {
+        IndexWriter.setDefaultWriteLockTimeout(defaultLockTimeout);
         try {
             if (createNew == false) {
                 try {
@@ -47,10 +53,16 @@ public class LuceneWriterImpl implements LuceneWriter {
                                     MaxFieldLength.LIMITED);
             }
 
+        } catch (LockObtainFailedException e) {
+            logger.error("Got timeout " + System.currentTimeMillis());
+            throw new WriteLockObtainFailedException(e);
         } catch (IOException e) {
             throw new QueryException(e);
         }
         this.releaseListener = releaseListener;
+        if(logger.isDebugEnabled()) {
+            logger.debug("Created writer " + writer);
+        }
     }
 
     @Override
@@ -90,6 +102,9 @@ public class LuceneWriterImpl implements LuceneWriter {
             // TODO What would be best way to control this?
             writer.optimize();
             writer.close();
+            if(logger.isDebugEnabled()) {
+                logger.debug("Closed writer " + writer);
+            }
         } catch (IOException e) {
             logger.error("Writer close failed", e);
             try {
@@ -107,5 +122,19 @@ public class LuceneWriterImpl implements LuceneWriter {
     public IndexWriter getIndexWriter() {
         return writer;
     }
+    
+    public void lease() {
+        leased = true;
+    }
+    
+    public void release() {
+        leased = false;
+    }
+    
+    public boolean isLeased() {
+        return leased;
+    }
+
+
 
 }

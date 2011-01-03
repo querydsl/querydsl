@@ -1,5 +1,7 @@
 package com.mysema.query.lucene.session.impl;
 
+import com.mysema.query.lucene.session.LuceneWriter;
+
 /**
  * Helps to make sure the resources are released as they should be.
  * 
@@ -11,6 +13,6 @@ public interface ReleaseListener {
     
     void release(LuceneSearcher searcher);
     
-    void close(LuceneWriterImpl writer);
+    void close(LuceneWriter writer);
     
 }

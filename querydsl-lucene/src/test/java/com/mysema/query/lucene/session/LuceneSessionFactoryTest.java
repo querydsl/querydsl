@@ -21,7 +21,6 @@ import org.junit.Test;
 import com.mysema.query.lucene.LuceneQuery;
 import com.mysema.query.lucene.session.impl.LuceneSearcher;
 import com.mysema.query.lucene.session.impl.LuceneSessionFactoryImpl;
-import com.mysema.query.lucene.session.impl.LuceneWriterImpl;
 import com.mysema.query.lucene.session.impl.ReleaseListener;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
@@ -98,7 +97,7 @@ public class LuceneSessionFactoryTest {
         session.close();
     }
 
-    @Test(expected=SessionNotBoundException.class)
+    @Test(expected = SessionNotBoundException.class)
     public void CurrentSession() {
         sessionFactory.getCurrentSession();
     }
@@ -146,10 +145,14 @@ public class LuceneSessionFactoryTest {
 
     private class ReleaseCounter implements ReleaseListener {
         List<LuceneSearcher> searchers = new ArrayList<LuceneSearcher>();
-        List<LuceneWriterImpl> writers = new ArrayList<LuceneWriterImpl>();
+
+        List<LuceneWriter> writers = new ArrayList<LuceneWriter>();
+
         Map<LuceneSearcher, Integer> leases = new HashMap<LuceneSearcher, Integer>();
+
         Map<LuceneSearcher, Integer> releases = new HashMap<LuceneSearcher, Integer>();
-        Map<LuceneWriterImpl, Integer> closes = new HashMap<LuceneWriterImpl, Integer>();
+
+        Map<LuceneWriter, Integer> closes = new HashMap<LuceneWriter, Integer>();
 
         public void lease(LuceneSearcher searcher) {
             if (!searchers.contains(searcher)) {
@@ -168,7 +171,7 @@ public class LuceneSessionFactoryTest {
             releases.put(searcher, releases.get(searcher) + 1);
         }
 
-        public void close(LuceneWriterImpl writer) {
+        public void close(LuceneWriter writer) {
             if (!writers.contains(writer)) {
                 writers.add(writer);
             }
@@ -178,7 +181,7 @@ public class LuceneSessionFactoryTest {
             closes.put(writer, closes.get(writer) + 1);
         }
     }
-    
+
     @Test
     public void Reset() {
         addData(sessionFactory);
@@ -186,15 +189,15 @@ public class LuceneSessionFactoryTest {
         LuceneSession session = sessionFactory.openSession(true);
         assertEquals(4, session.createQuery().count());
         session.close();
-        
+
         session = sessionFactory.openSession(false);
-        
+
         assertEquals(4, session.createQuery().count());
         session.beginReset().addDocument(getDocument());
         session.flush();
         assertEquals(1, session.createQuery().count());
         session.close();
-        
+
         session = sessionFactory.openSession(true);
         assertEquals(1, session.createQuery().count());
         session.close();
@@ -204,50 +207,50 @@ public class LuceneSessionFactoryTest {
     public void ResourcesAreReleased() throws IOException {
 
         ReleaseCounter counter = new ReleaseCounter();
-        
+
         sessionFactory = new LuceneSessionFactoryImpl(directory, counter);
-        
+
         LuceneSession session = sessionFactory.openSession(false);
 
         session.beginAppend().addDocument(getDocument());
         session.flush();
-        
+
         LuceneQuery query = session.createQuery();
         assertEquals(1, query.where(year.gt(1800)).count());
 
         session.beginAppend().addDocument(getDocument());
         session.flush();
-        
+
         query = session.createQuery();
         assertEquals(2, query.where(year.gt(1800)).count());
-        
+
         session.close();
-        
-        //Second session
+
+        // Second session
         session = sessionFactory.openSession(true);
         query = session.createQuery();
         assertEquals(2, query.where(year.gt(1800)).count());
         session.close();
-        
+
         assertEquals(3, counter.leases.size());
         assertEquals(3, counter.releases.size());
         assertEquals(3, counter.searchers.size());
         assertEquals(1, counter.closes.size());
         assertEquals(1, counter.writers.size());
-        
-        //First and second searchers should be released totally
-        assertEquals(2, (int)counter.leases.get(counter.searchers.get(0)));
-        assertEquals(2, (int)counter.releases.get(counter.searchers.get(0)));
 
-        assertEquals(2, (int)counter.leases.get(counter.searchers.get(1)));
-        assertEquals(2, (int)counter.releases.get(counter.searchers.get(1)));
+        // First and second searchers should be released totally
+        assertEquals(2, (int) counter.leases.get(counter.searchers.get(0)));
+        assertEquals(2, (int) counter.releases.get(counter.searchers.get(0)));
 
-        //Third searcher leaves it as current
-        assertEquals(2, (int)counter.leases.get(counter.searchers.get(2)));
-        assertEquals(1, (int)counter.releases.get(counter.searchers.get(2)));
-        
-        //The writer should be closed
-        assertEquals(1, (int)counter.closes.get(counter.writers.get(0)));
+        assertEquals(2, (int) counter.leases.get(counter.searchers.get(1)));
+        assertEquals(2, (int) counter.releases.get(counter.searchers.get(1)));
+
+        // Third searcher leaves it as current
+        assertEquals(2, (int) counter.leases.get(counter.searchers.get(2)));
+        assertEquals(1, (int) counter.releases.get(counter.searchers.get(2)));
+
+        // The writer should be closed
+        assertEquals(1, (int) counter.closes.get(counter.writers.get(0)));
     }
 
 }

@@ -17,14 +17,17 @@ public class LuceneTransactionHandler {
     public Object transactionalMethod(ProceedingJoinPoint joinPoint, LuceneTransactional annotation)
             throws Throwable {
 
-        if(logger.isDebugEnabled()) {
-            logger.debug("Starting LuceneTransactional method");
+        if (logger.isTraceEnabled()) {
+            logger.trace("LuceneSessionHolder.lease");
         }
-        
+
         LuceneSessionHolder.lease(annotation.readOnly());
         try {
             return joinPoint.proceed();
         } finally {
+            if (logger.isTraceEnabled()) {
+                logger.trace("LuceneSessionHolder.release");
+            }
             LuceneSessionHolder.release();
         }
 
