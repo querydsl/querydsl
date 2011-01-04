@@ -29,8 +29,6 @@ public class FileLockingWriter implements LuceneWriter {
     @Nullable
     protected final ReleaseListener releaseListener;
     
-    private volatile boolean leased = false;
-
     public FileLockingWriter(Directory directory, boolean createNew, long defaultLockTimeout,
                              ReleaseListener releaseListener) {
         IndexWriter.setDefaultWriteLockTimeout(defaultLockTimeout);
@@ -123,19 +121,5 @@ public class FileLockingWriter implements LuceneWriter {
     public IndexWriter getIndexWriter() {
         return writer;
     }
-    
-    public void lease() {
-        leased = true;
-    }
-    
-    public void release() {
-        leased = false;
-    }
-    
-    public boolean isLeased() {
-        return leased;
-    }
-
-
-
+   
 }
