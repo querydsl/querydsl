@@ -2,8 +2,6 @@ package com.mysema.query.lucene.session.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.annotation.Nullable;
@@ -26,8 +24,6 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
 
     @Nullable
     private volatile LuceneSearcher searcher;
-
-    ExecutorService searchUpdater = Executors.newSingleThreadExecutor();
 
     private final AtomicBoolean creatingNew = new AtomicBoolean(false);
 
