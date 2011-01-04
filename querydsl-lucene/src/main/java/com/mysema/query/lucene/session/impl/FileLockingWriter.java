@@ -34,8 +34,9 @@ public class FileLockingWriter implements LuceneWriter {
     public FileLockingWriter(Directory directory, boolean createNew, long defaultLockTimeout,
                              ReleaseListener releaseListener) {
         IndexWriter.setDefaultWriteLockTimeout(defaultLockTimeout);
+        boolean create = createNew;
         try {
-            if (createNew == false) {
+            if (!create) {
                 try {
                     writer =
                         new IndexWriter(directory, new StandardAnalyzer(Version.LUCENE_30), false,
@@ -44,17 +45,17 @@ public class FileLockingWriter implements LuceneWriter {
                 } catch (FileNotFoundException e) {
                     // Convience to create a new index if it's not already
                     // existing
-                    createNew = true;
+                    create = true;
                 }
             }
-            if (createNew == true) {
+            if (create) {
                 writer =
                     new IndexWriter(directory, new StandardAnalyzer(Version.LUCENE_30), true,
                                     MaxFieldLength.LIMITED);
             }
 
         } catch (LockObtainFailedException e) {
-            logger.error("Got timeout " + System.currentTimeMillis());
+            logger.error("Got lock timeout ");
             throw new WriteLockObtainFailedException(e);
         } catch (IOException e) {
             throw new QueryException(e);

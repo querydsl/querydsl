@@ -32,7 +32,7 @@ public final class LuceneSessionHolder {
 
         private final boolean readOnly;
 
-        public TransactionalScope(boolean readOnly) {
+        private TransactionalScope(boolean readOnly) {
             this.readOnly = readOnly;
         }
     }
