@@ -83,15 +83,7 @@ public class LuceneSessionImpl implements LuceneSession {
         }
 
         if (writer != null) {
-            if (writer.isLeased()) {
-                try {
-                    writer.commit();
-                } finally {
-                    writer.release();
-                }
-            } else {
-                writer.close();
-            }
+            writer.close();
         }
 
         if (searcherException != null) {
