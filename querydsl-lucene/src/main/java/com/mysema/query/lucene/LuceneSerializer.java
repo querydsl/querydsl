@@ -305,7 +305,7 @@ public class LuceneSerializer {
         }
     }
 
-    private Query stringRange(String field, @Nullable Expression<?> min, @Nullable Expression<?> max, 
+    private Query stringRange(String field, @Nullable Expression<?> min, @Nullable Expression<?> max,
             boolean minInc, boolean maxInc, QueryMetadata metadata) {
         if (min == null) {
             return new TermRangeQuery(field, null, normalize(createTerms(max, metadata)[0]), minInc, maxInc);
@@ -376,7 +376,11 @@ public class LuceneSerializer {
         } else if (expr instanceof TermElement) {
             return new String[] { str };
         } else if (splitTerms) {
-            return StringUtils.split(str);
+            if (str.equals("")) {
+                return new String[] { str };
+            } else {
+                return StringUtils.split(str);
+            }
         } else {
             return new String[] { str };
         }

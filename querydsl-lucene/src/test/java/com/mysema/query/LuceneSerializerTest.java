@@ -14,6 +14,7 @@ import java.util.Arrays;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.NumericField;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.index.IndexWriter;
@@ -59,6 +60,7 @@ public class LuceneSerializerTest {
     private StringPath author;
     private StringPath text;
     private StringPath rating;
+    private StringPath publisher;
     private NumberPath<Integer> year;
     private NumberPath<Double> gross;
 
@@ -87,6 +89,7 @@ public class LuceneSerializerTest {
         doc.add(new Field("author", new StringReader("Michael Crichton")));
         doc.add(new Field("text", new StringReader("It's a UNIX system! I know this!")));
         doc.add(new Field("rating", new StringReader("Good")));
+        doc.add(new Field("publisher", "", Store.YES, Index.ANALYZED));
         doc.add(new NumericField("year", Store.YES, true).setIntValue(1990));
         doc.add(new NumericField("gross", Store.YES, true).setDoubleValue(900.00));
 
@@ -106,6 +109,7 @@ public class LuceneSerializerTest {
         title = entityPath.getString("title");
         author = entityPath.getString("author");
         text = entityPath.getString("text");
+        publisher = entityPath.getString("publisher");
         year = entityPath.getNumber("year", Integer.class);
         rating = entityPath.getString("rating");
         gross = entityPath.getNumber("gross", Double.class);
@@ -257,6 +261,12 @@ public class LuceneSerializerTest {
     @Test
     public void eq_Phrase() throws Exception {
         testQuery(title.eq("Jurassic Park"), "title:\"jurassic park\"", 1);
+    }
+
+    @Test
+    @Ignore("Not easily done in Lucene!")
+    public void Publisher_Equals_Empty_String() throws Exception {
+        testQuery(publisher.eq(""), "publisher:", 1);
     }
 
     @Test
@@ -558,6 +568,41 @@ public class LuceneSerializerTest {
     @Test
     public void goe_Numeric_Double_Not_Found() throws Exception {
         testQuery(gross.goe(900.10), "gross:[900.1 TO *]", 0);
+    }
+
+    @Test
+    public void Equals_Empty_String() throws Exception {
+        testQuery(title.eq(""), "title:", 0);
+    }
+
+    @Test
+    public void Not_Equals_Empty_String() throws Exception {
+        testQuery(title.ne(""), "-title:", 0);
+    }
+
+    @Test
+    public void Contains_Empty_String() throws Exception {
+        testQuery(title.contains(""), "title:**", 1);
+    }
+
+    @Test
+    public void Like_Empty_String() throws Exception {
+        testQuery(title.like(""), "title:", 0);
+    }
+
+    @Test
+    public void Starts_With_Empty_String() throws Exception {
+        testQuery(title.startsWith(""), "title:*", 1);
+    }
+
+    @Test
+    public void Ends_With_Empty_String() throws Exception {
+        testQuery(title.endsWith(""), "title:*", 1);
+    }
+
+    @Test
+    public void Between_Empty_Strings() throws Exception {
+        testQuery(title.between("", ""), "title:[ TO ]", 0);
     }
 
     @Test
