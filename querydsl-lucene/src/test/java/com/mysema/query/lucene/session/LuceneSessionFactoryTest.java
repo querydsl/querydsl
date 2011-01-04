@@ -6,18 +6,21 @@ import static com.mysema.query.lucene.session.QueryTestHelper.createDocuments;
 import static com.mysema.query.lucene.session.QueryTestHelper.getDocument;
 import static org.junit.Assert.assertEquals;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mysema.query.QueryException;
 import com.mysema.query.lucene.LuceneQuery;
 import com.mysema.query.lucene.session.impl.LuceneSearcher;
 import com.mysema.query.lucene.session.impl.LuceneSessionFactoryImpl;
@@ -251,6 +254,26 @@ public class LuceneSessionFactoryTest {
 
         // The writer should be closed
         assertEquals(1, (int) counter.closes.get(counter.writers.get(0)));
+    }
+    
+    @Test
+    public void StringPathCreationWorks() throws IOException {
+        sessionFactory = new LuceneSessionFactoryImpl("target/stringpathtest");
+        LuceneSession session = sessionFactory.openSession(false);
+        session.beginReset().addDocument(getDocument());
+        session.flush();
+        assertEquals(1, session.createQuery().where(year.gt(1800)).count());
+        session.close();
+    }
+    
+    @Test(expected=QueryException.class)
+    public void GetsQueryException() throws IOException {
+        String path = "target/exceptiontest";
+        sessionFactory = new LuceneSessionFactoryImpl(path);
+        LuceneSession session = sessionFactory.openSession(false);
+        session.beginAppend().addDocument(getDocument());
+        FileUtils.deleteDirectory(new File(path));
+        session.close();
     }
 
 }
