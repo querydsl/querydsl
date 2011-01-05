@@ -10,7 +10,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Searcher;
 
 /**
- * LuceneQuery is a typed query implementation for Lucene queries.
+ * TypedQuery is a typed query implementation for Lucene queries.
  * 
  * @author vema
  */

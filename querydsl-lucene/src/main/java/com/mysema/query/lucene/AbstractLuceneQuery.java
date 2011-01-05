@@ -25,7 +25,7 @@ import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Predicate;
 
-public class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> implements SimpleQuery<Q>,
+public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> implements SimpleQuery<Q>,
 SimpleProjectable<T> {
 
     private final QueryMixin<Q> queryMixin;
@@ -37,15 +37,15 @@ SimpleProjectable<T> {
     private final Transformer<Document, T> transformer;
 
     @SuppressWarnings("unchecked")
-    public AbstractLuceneQuery(final LuceneSerializer serializer, final Searcher searcher,
-                               final Transformer<Document, T> transformer) {
+    public AbstractLuceneQuery(LuceneSerializer serializer, Searcher searcher,
+                               Transformer<Document, T> transformer) {
         queryMixin = new QueryMixin<Q>((Q) this);
         this.serializer = serializer;
         this.searcher = searcher;
         this.transformer = transformer;
     }
 
-    public AbstractLuceneQuery(final Searcher searcher, final Transformer<Document, T> transformer) {
+    public AbstractLuceneQuery(Searcher searcher, Transformer<Document, T> transformer) {
         this(LuceneSerializer.DEFAULT, searcher, transformer);
     }
 
@@ -85,7 +85,7 @@ SimpleProjectable<T> {
     }
     
     @Override
-    public Q limit(final long limit) {
+    public Q limit(long limit) {
         return queryMixin.limit(limit);
     }
 
@@ -163,22 +163,22 @@ SimpleProjectable<T> {
     }
 
     @Override
-    public Q offset(final long offset) {
+    public Q offset(long offset) {
         return queryMixin.offset(offset);
     }
 
     @Override
-    public Q orderBy(final OrderSpecifier<?>... o) {
+    public Q orderBy(OrderSpecifier<?>... o) {
         return queryMixin.orderBy(o);
     }
 
     @Override
-    public Q restrict(final QueryModifiers modifiers) {
+    public Q restrict(QueryModifiers modifiers) {
         return queryMixin.restrict(modifiers);
     }
 
     @Override
-    public <P> Q set(final ParamExpression<P> param, final P value) {
+    public <P> Q set(ParamExpression<P> param, P value) {
         return queryMixin.set(param, value);
     }
 
