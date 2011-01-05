@@ -1,4 +1,4 @@
-package com.mysema.query.lucene.session;
+package com.mysema.query.lucene.session.impl;
 
 import static org.junit.Assert.assertEquals;
 
@@ -21,6 +21,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
 
+import com.mysema.query.lucene.session.LuceneSession;
+import com.mysema.query.lucene.session.LuceneSessionFactory;
+import com.mysema.query.lucene.session.LuceneTransactional;
+import com.mysema.query.lucene.session.LuceneWriter;
+import com.mysema.query.lucene.session.QDocument;
+import com.mysema.query.lucene.session.QueryTestHelper;
 import com.mysema.query.lucene.session.impl.LuceneSessionFactoryImpl;
 import com.mysema.query.lucene.session.impl.LuceneTransactionHandler;
 

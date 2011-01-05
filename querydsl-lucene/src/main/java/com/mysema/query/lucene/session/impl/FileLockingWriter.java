@@ -3,8 +3,6 @@ package com.mysema.query.lucene.session.impl;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.annotation.Nullable;
-
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriter;
@@ -20,17 +18,13 @@ import com.mysema.query.QueryException;
 import com.mysema.query.lucene.session.LuceneWriter;
 import com.mysema.query.lucene.session.WriteLockObtainFailedException;
 
-public class FileLockingWriter implements LuceneWriter {
+public class FileLockingWriter implements LuceneWriter, Leasable {
 
     protected static final Logger logger = LoggerFactory.getLogger(LuceneWriter.class);
 
     protected IndexWriter writer;
 
-    @Nullable
-    protected final ReleaseListener releaseListener;
-    
-    public FileLockingWriter(Directory directory, boolean createNew, long defaultLockTimeout,
-                             ReleaseListener releaseListener) {
+    public FileLockingWriter(Directory directory, boolean createNew, long defaultLockTimeout) {
         IndexWriter.setDefaultWriteLockTimeout(defaultLockTimeout);
         boolean create = createNew;
         try {
@@ -58,8 +52,7 @@ public class FileLockingWriter implements LuceneWriter {
         } catch (IOException e) {
             throw new QueryException(e);
         }
-        this.releaseListener = releaseListener;
-        if(logger.isDebugEnabled()) {
+        if (logger.isDebugEnabled()) {
             logger.debug("Created writer " + writer);
         }
     }
@@ -92,16 +85,13 @@ public class FileLockingWriter implements LuceneWriter {
         }
     }
 
-    public void close() {
-        if (releaseListener != null) {
-            releaseListener.close(this);
-        }
+    private void close() {
         Directory directory = writer.getDirectory();
         try {
             // TODO What would be best way to control this?
             writer.optimize();
             writer.close();
-            if(logger.isDebugEnabled()) {
+            if (logger.isDebugEnabled()) {
                 logger.debug("Closed writer " + writer);
             }
         } catch (IOException e) {
@@ -121,5 +111,15 @@ public class FileLockingWriter implements LuceneWriter {
     public IndexWriter getIndexWriter() {
         return writer;
     }
-   
+
+    @Override
+    public void lease() {
+        // This is no-op for writer as we always create new
+    }
+
+    @Override
+    public void release() {
+        close();
+    }
+
 }

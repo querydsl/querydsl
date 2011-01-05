@@ -2,8 +2,6 @@ package com.mysema.query.lucene.session.impl;
 
 import java.io.IOException;
 
-import javax.annotation.Nullable;
-
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.Directory;
 
@@ -15,17 +13,13 @@ import com.mysema.query.QueryException;
  * @author laim
  * 
  */
-public class LuceneSearcher {
+public class LuceneSearcher implements Leasable {
 
     private final IndexSearcher searcher;
-    
-    @Nullable
-    private final ReleaseListener releaseListener;
 
-    public LuceneSearcher(Directory directory, ReleaseListener releaseListener) {
+    public LuceneSearcher(Directory directory) {
         try {
             this.searcher = new IndexSearcher(directory);
-            this.releaseListener = releaseListener;
         } catch (IOException e) {
             throw new QueryException(e);
         }
@@ -39,10 +33,8 @@ public class LuceneSearcher {
         }
     }
 
+    @Override
     public void release() {
-        if (releaseListener != null) {
-            releaseListener.release(this);
-        }
         try {
             searcher.getIndexReader().decRef();
         } catch (IOException e) {
@@ -50,10 +42,8 @@ public class LuceneSearcher {
         }
     }
 
+    @Override
     public void lease() {
-        if (releaseListener != null) {
-            releaseListener.lease(this);
-        }
         searcher.getIndexReader().incRef();
     }
 

@@ -1,10 +1,11 @@
-package com.mysema.query.lucene.session;
+package com.mysema.query.lucene.session.impl;
 
 import static com.mysema.query.lucene.session.QueryTestHelper.addData;
 import static com.mysema.query.lucene.session.QueryTestHelper.createDocument;
 import static com.mysema.query.lucene.session.QueryTestHelper.createDocuments;
 import static com.mysema.query.lucene.session.QueryTestHelper.getDocument;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,9 +23,12 @@ import org.junit.Test;
 
 import com.mysema.query.QueryException;
 import com.mysema.query.lucene.LuceneQuery;
-import com.mysema.query.lucene.session.impl.LuceneSearcher;
-import com.mysema.query.lucene.session.impl.LuceneSessionFactoryImpl;
-import com.mysema.query.lucene.session.impl.ReleaseListener;
+import com.mysema.query.lucene.session.LuceneSession;
+import com.mysema.query.lucene.session.LuceneSessionFactory;
+import com.mysema.query.lucene.session.QDocument;
+import com.mysema.query.lucene.session.SessionClosedException;
+import com.mysema.query.lucene.session.SessionNotBoundException;
+import com.mysema.query.lucene.session.SessionReadOnlyException;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 
@@ -146,45 +150,6 @@ public class LuceneSessionFactoryTest {
         session.beginReset();
     }
 
-    private class ReleaseCounter implements ReleaseListener {
-        List<LuceneSearcher> searchers = new ArrayList<LuceneSearcher>();
-
-        List<LuceneWriter> writers = new ArrayList<LuceneWriter>();
-
-        Map<LuceneSearcher, Integer> leases = new HashMap<LuceneSearcher, Integer>();
-
-        Map<LuceneSearcher, Integer> releases = new HashMap<LuceneSearcher, Integer>();
-
-        Map<LuceneWriter, Integer> closes = new HashMap<LuceneWriter, Integer>();
-
-        public void lease(LuceneSearcher searcher) {
-            if (!searchers.contains(searcher)) {
-                searchers.add(searcher);
-            }
-            if (!leases.containsKey(searcher)) {
-                leases.put(searcher, 0);
-            }
-            leases.put(searcher, leases.get(searcher) + 1);
-        }
-
-        public void release(LuceneSearcher searcher) {
-            if (!releases.containsKey(searcher)) {
-                releases.put(searcher, 0);
-            }
-            releases.put(searcher, releases.get(searcher) + 1);
-        }
-
-        public void close(LuceneWriter writer) {
-            if (!writers.contains(writer)) {
-                writers.add(writer);
-            }
-            if (!closes.containsKey(writer)) {
-                closes.put(writer, 0);
-            }
-            closes.put(writer, closes.get(writer) + 1);
-        }
-    }
-
     @Test
     public void Reset() {
         addData(sessionFactory);
@@ -206,54 +171,104 @@ public class LuceneSessionFactoryTest {
         session.close();
     }
 
+    private class CountingSessionFactory extends LuceneSessionFactoryImpl {
+        
+        List<Leasable> leasables = new ArrayList<Leasable>();
+
+        Map<Leasable, Integer> leases = new HashMap<Leasable, Integer>();
+
+        Map<Leasable, Integer> releases = new HashMap<Leasable, Integer>();
+
+        public CountingSessionFactory(Directory directory) {
+            super(directory);
+        }
+
+        @Override
+        public void lease(Leasable leasable) {
+            if (!leasables.contains(leasable)) {
+                leasables.add(leasable);
+            }
+            if (!leases.containsKey(leasable)) {
+                leases.put(leasable, 0);
+            }
+            leases.put(leasable, leases.get(leasable) + 1);
+            super.lease(leasable);
+        }
+
+        @Override
+        public void release(Leasable leasable) {
+            if (!leasables.contains(leasable)) {
+                leasables.add(leasable);
+            }
+            if (!releases.containsKey(leasable)) {
+                releases.put(leasable, 0);
+            }
+            releases.put(leasable, releases.get(leasable) + 1);
+            super.release(leasable);
+        }
+        
+    }
+    
     @Test
     public void ResourcesAreReleased() throws IOException {
 
-        ReleaseCounter counter = new ReleaseCounter();
-
-        sessionFactory = new LuceneSessionFactoryImpl(directory, counter);
+        CountingSessionFactory sessionFactory = new CountingSessionFactory(directory);
 
         LuceneSession session = sessionFactory.openSession(false);
 
+        //Lease one writer
         session.beginAppend().addDocument(getDocument());
         session.flush();
 
+        //Lease searcher 1
         LuceneQuery query = session.createQuery();
         assertEquals(1, query.where(year.gt(1800)).count());
 
         session.beginAppend().addDocument(getDocument());
+        //Release searcher 1
         session.flush();
 
+        //Lease searcher 2
         query = session.createQuery();
         assertEquals(2, query.where(year.gt(1800)).count());
 
+        //Release searcher 2 and writer
         session.close();
 
         // Second session
         session = sessionFactory.openSession(true);
+        //Lease searcher 3
         query = session.createQuery();
         assertEquals(2, query.where(year.gt(1800)).count());
+        //Release searcher 3
         session.close();
 
-        assertEquals(3, counter.leases.size());
-        assertEquals(3, counter.releases.size());
-        assertEquals(3, counter.searchers.size());
-        assertEquals(1, counter.closes.size());
-        assertEquals(1, counter.writers.size());
+        assertEquals(4, sessionFactory.leasables.size());
+        assertEquals(4, sessionFactory.leases.size());
+        assertEquals(4, sessionFactory.releases.size());
+
+        //First one should be writer
+        assertTrue(sessionFactory.leasables.get(0) instanceof FileLockingWriter);
+        assertTrue(sessionFactory.leasables.get(1) instanceof LuceneSearcher);
+        assertTrue(sessionFactory.leasables.get(2) instanceof LuceneSearcher);
+        assertTrue(sessionFactory.leasables.get(3) instanceof LuceneSearcher);
+        
+        //The writer should be closed
+        assertEquals(1, (int) sessionFactory.leases.get(sessionFactory.leasables.get(0)));
+        assertEquals(1, (int) sessionFactory.releases.get(sessionFactory.leasables.get(0)));
 
         // First and second searchers should be released totally
-        assertEquals(2, (int) counter.leases.get(counter.searchers.get(0)));
-        assertEquals(2, (int) counter.releases.get(counter.searchers.get(0)));
+        assertEquals(2, (int) sessionFactory.leases.get(sessionFactory.leasables.get(1)));
+        assertEquals(2, (int) sessionFactory.releases.get(sessionFactory.leasables.get(1)));
 
-        assertEquals(2, (int) counter.leases.get(counter.searchers.get(1)));
-        assertEquals(2, (int) counter.releases.get(counter.searchers.get(1)));
+        assertEquals(2, (int) sessionFactory.leases.get(sessionFactory.leasables.get(2)));
+        assertEquals(2, (int) sessionFactory.releases.get(sessionFactory.leasables.get(2)));
 
         // Third searcher leaves it as current
-        assertEquals(2, (int) counter.leases.get(counter.searchers.get(2)));
-        assertEquals(1, (int) counter.releases.get(counter.searchers.get(2)));
+        assertEquals(2, (int) sessionFactory.leases.get(sessionFactory.leasables.get(3)));
+        assertEquals(1, (int) sessionFactory.releases.get(sessionFactory.leasables.get(3)));
 
-        // The writer should be closed
-        assertEquals(1, (int) counter.closes.get(counter.writers.get(0)));
+
     }
     
     @Test
@@ -275,5 +290,5 @@ public class LuceneSessionFactoryTest {
         FileUtils.deleteDirectory(new File(path));
         session.close();
     }
-
+    
 }

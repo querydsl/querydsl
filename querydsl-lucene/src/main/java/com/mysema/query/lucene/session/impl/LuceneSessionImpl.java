@@ -47,22 +47,22 @@ public class LuceneSessionImpl implements LuceneSession {
     @Override
     public LuceneWriter beginAppend() {
         checkClosed();
-        return createWriter(false);
+        return getWriter(false);
     }
 
     @Override
     public LuceneWriter beginReset() {
         checkClosed();
-        return createWriter(true);
+        return getWriter(true);
     }
 
-    private LuceneWriter createWriter(boolean createNew) {
+    private LuceneWriter getWriter(boolean createNew) {
         if (readOnly) {
             throw new SessionReadOnlyException("Read only session, cannot create writer");
         }
 
         if (writer == null) {
-            writer = sessionFactory.getWriter(createNew);
+            writer = sessionFactory.leaseWriter(createNew);
         }
 
         return writer;
@@ -76,14 +76,14 @@ public class LuceneSessionImpl implements LuceneSession {
 
         if (searcher != null) {
             try {
-                searcher.release();
+                sessionFactory.release(searcher);
             } catch (QueryException e) {
                 searcherException = e;
             }
         }
 
         if (writer != null) {
-            writer.close();
+            sessionFactory.release(writer);
         }
 
         if (searcherException != null) {
@@ -104,7 +104,7 @@ public class LuceneSessionImpl implements LuceneSession {
         writer.commit();
 
         if (searcher != null) {
-            searcher.release();
+            sessionFactory.release(searcher);
         }
         searcher = null;
 

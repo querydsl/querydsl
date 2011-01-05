@@ -27,9 +27,6 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
 
     private final AtomicBoolean creatingNew = new AtomicBoolean(false);
 
-    @Nullable
-    private final ReleaseListener releaseListener;
-
     private long defaultLockTimeout = 2000;
 
     public LuceneSessionFactoryImpl(String indexPath) throws IOException {
@@ -44,17 +41,10 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
             logger.error("Could not create lucene directory to " + folder.getAbsolutePath());
             throw e;
         }
-        releaseListener = null;
     }
 
     public LuceneSessionFactoryImpl(Directory directory) {
         this.directory = directory;
-        releaseListener = null;
-    }
-
-    public LuceneSessionFactoryImpl(Directory directory, ReleaseListener releaseListener) {
-        this.directory = directory;
-        this.releaseListener = releaseListener;
     }
 
     @Override
@@ -81,8 +71,10 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
         return new LuceneSessionImpl(this, readOnly);
     }
 
-    public FileLockingWriter getWriter(boolean createNew) {
-        return new FileLockingWriter(directory, createNew, defaultLockTimeout, releaseListener);
+    public FileLockingWriter leaseWriter(boolean createNew) {
+        FileLockingWriter writer = new FileLockingWriter(directory, createNew, defaultLockTimeout);
+        lease(writer);
+        return writer;
     }
 
     public LuceneSearcher leaseSearcher() {
@@ -101,7 +93,7 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
                 if (!searcher.isCurrent()) {
                     try {
                         // This release pairs with createNewSearcher lease
-                        searcher.release();
+                        release(searcher);
                     } catch (QueryException e) {
                         logger.error("Could not release searcher", e);
                     }
@@ -113,7 +105,7 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
 
             // Incrementing reference as we lease this out
             // This pairs with LuceneSessions close
-            searcher.lease();
+            lease(searcher);
             return searcher;
 
         } catch (IOException e) {
@@ -122,13 +114,31 @@ public class LuceneSessionFactoryImpl implements LuceneSessionFactory {
     }
 
     private LuceneSearcher createNewSearcher() throws IOException {
-        LuceneSearcher s = new LuceneSearcher(directory, releaseListener);
+        LuceneSearcher s = new LuceneSearcher(directory);
         if (logger.isDebugEnabled()) {
             logger.debug("Created searcher " + s);
         }
         // Increment the first time
-        s.lease();
+        lease(s);
         return s;
+    }
+
+    /**
+     * Callback to make single entry to all leases
+     * 
+     * @param leasable
+     */
+    public void lease(Leasable leasable) {
+        leasable.lease();
+    }
+
+    /**
+     * Callback to make single entry to all releases
+     * 
+     * @param leasable
+     */
+    public void release(Leasable leasable) {
+        leasable.release();
     }
 
     public void setDefaultLockTimeout(long defaultLockTimeout) {
