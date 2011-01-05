@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import com.mysema.query.QueryException;
 import com.mysema.query.lucene.LuceneQuery;
 import com.mysema.query.lucene.LuceneSerializer;
+import com.mysema.query.lucene.TypedQuery;
 import com.mysema.query.lucene.session.LuceneSession;
 import com.mysema.query.lucene.session.LuceneWriter;
 import com.mysema.query.lucene.session.SessionClosedException;
@@ -37,11 +38,11 @@ public class LuceneSessionImpl implements LuceneSession {
         return new LuceneQuery(serializer, getSearcher().getIndexSearcer());
     }
 
-    private LuceneSearcher getSearcher() {
-        if (searcher == null) {
-            searcher = sessionFactory.leaseSearcher();
-        }
-        return searcher;
+    @Override
+    public <T> TypedQuery<T> createQuery(Class<T> clazz) {
+        checkClosed();
+        return new TypedQuery<T>(serializer, getSearcher().getIndexSearcer(),
+                                 sessionFactory.getDocumentToObjectTransformer(clazz));
     }
 
     @Override
@@ -54,18 +55,6 @@ public class LuceneSessionImpl implements LuceneSession {
     public LuceneWriter beginReset() {
         checkClosed();
         return getWriter(true);
-    }
-
-    private LuceneWriter getWriter(boolean createNew) {
-        if (readOnly) {
-            throw new SessionReadOnlyException("Read only session, cannot create writer");
-        }
-
-        if (writer == null) {
-            writer = sessionFactory.leaseWriter(createNew);
-        }
-
-        return writer;
     }
 
     @Override
@@ -108,6 +97,25 @@ public class LuceneSessionImpl implements LuceneSession {
         }
         searcher = null;
 
+    }
+
+    private LuceneSearcher getSearcher() {
+        if (searcher == null) {
+            searcher = sessionFactory.leaseSearcher();
+        }
+        return searcher;
+    }
+
+    private LuceneWriter getWriter(boolean createNew) {
+        if (readOnly) {
+            throw new SessionReadOnlyException("Read only session, cannot create writer");
+        }
+
+        if (writer == null) {
+            writer = sessionFactory.leaseWriter(createNew);
+        }
+
+        return writer;
     }
 
     private void checkClosed() {

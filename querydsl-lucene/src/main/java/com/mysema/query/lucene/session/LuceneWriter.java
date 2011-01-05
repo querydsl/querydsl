@@ -12,6 +12,8 @@ public interface LuceneWriter {
 
     LuceneWriter addDocument(Document doc);
     
+    LuceneWriter addObject(Object object);
+    
     LuceneWriter deleteDocuments(Term term);
     
 }

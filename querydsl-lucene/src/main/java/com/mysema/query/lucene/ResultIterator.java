@@ -5,6 +5,7 @@ package com.mysema.query.lucene;
 
 import java.io.IOException;
 
+import org.apache.commons.collections15.Transformer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Searcher;
@@ -12,18 +13,21 @@ import org.apache.lucene.search.Searcher;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.QueryException;
 
-public final class DocumentIterator implements CloseableIterator<Document> {
+public final class ResultIterator<T> implements CloseableIterator<T> {
     
     private final ScoreDoc[] scoreDocs;
     
     private int cursor;
     
     private final Searcher searcher;
+    
+    private final Transformer<Document,T> transformer;
 
-    public DocumentIterator(ScoreDoc[] scoreDocs, int offset, Searcher searcher) {
+    public ResultIterator(ScoreDoc[] scoreDocs, int offset, Searcher searcher, Transformer<Document, T> transformer) {
         this.scoreDocs = scoreDocs;
         cursor = offset;
         this.searcher = searcher;
+        this.transformer = transformer;
     }
 
     @Override
@@ -32,9 +36,9 @@ public final class DocumentIterator implements CloseableIterator<Document> {
     }
 
     @Override
-    public Document next() {
+    public T next() {
         try {
-            return searcher.doc(scoreDocs[cursor++].doc);
+            return transformer.transform(searcher.doc(scoreDocs[cursor++].doc));
         } catch (IOException e) {
             throw new QueryException(e);
         }

@@ -24,7 +24,10 @@ public class FileLockingWriter implements LuceneWriter, Leasable {
 
     protected IndexWriter writer;
 
-    public FileLockingWriter(Directory directory, boolean createNew, long defaultLockTimeout) {
+    protected final LuceneSessionFactoryImpl sessionFactory;
+
+    public FileLockingWriter(Directory directory, boolean createNew, long defaultLockTimeout,
+                             LuceneSessionFactoryImpl sessionFactory) {
         IndexWriter.setDefaultWriteLockTimeout(defaultLockTimeout);
         boolean create = createNew;
         try {
@@ -55,6 +58,7 @@ public class FileLockingWriter implements LuceneWriter, Leasable {
         if (logger.isDebugEnabled()) {
             logger.debug("Created writer " + writer);
         }
+        this.sessionFactory = sessionFactory;
     }
 
     @Override
@@ -65,6 +69,11 @@ public class FileLockingWriter implements LuceneWriter, Leasable {
         } catch (IOException e) {
             throw new QueryException(e);
         }
+    }
+
+    @Override
+    public LuceneWriter addObject(Object object) {
+        return addDocument(sessionFactory.transformToDocument(object));
     }
 
     @Override

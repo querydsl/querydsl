@@ -5,211 +5,32 @@
  */
 package com.mysema.query.lucene;
 
-import java.io.IOException;
-import java.util.List;
-
+import org.apache.commons.collections15.Transformer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.search.MatchAllDocsQuery;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Searcher;
-import org.apache.lucene.search.Sort;
-
-import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.EmptyCloseableIterator;
-import com.mysema.commons.lang.IteratorAdapter;
-import com.mysema.query.QueryException;
-import com.mysema.query.QueryMetadata;
-import com.mysema.query.QueryModifiers;
-import com.mysema.query.SearchResults;
-import com.mysema.query.SimpleProjectable;
-import com.mysema.query.SimpleQuery;
-import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.Predicate;
 
 /**
  * LuceneQuery is a Querydsl query implementation for Lucene queries.
  *
  * @author vema
  */
-public class LuceneQuery implements SimpleQuery<LuceneQuery>,
-        SimpleProjectable<Document> {
-
-    private final QueryMixin<LuceneQuery> queryMixin;
-
-    private final Searcher searcher;
-
-    private final LuceneSerializer serializer;
-
-    public LuceneQuery(final LuceneSerializer serializer,
-            final Searcher searcher) {
-        queryMixin = new QueryMixin<LuceneQuery>(this);
-        this.serializer = serializer;
-        this.searcher = searcher;
-    }
-
-    public LuceneQuery(final Searcher searcher) {
-        this(LuceneSerializer.DEFAULT, searcher);
-    }
-
-    private long innerCount(){
-        try {
-            final int maxDoc = searcher.maxDoc();
-            if (maxDoc == 0) {
-                return 0;
-            }
-            return searcher.search(createQuery(), maxDoc).totalHits;
-        } catch (final IOException e) {
-            throw new QueryException(e);
-        }
-    }
-
-    @Override
-    public long count() {
-        return innerCount();
-    }
-
-    @Override
-    public long countDistinct() {
-        return innerCount();
-    }
-
-    private Query createQuery() {
-        if (queryMixin.getMetadata().getWhere() == null) {
-            return new MatchAllDocsQuery();
-        }
-        return serializer.toQuery(queryMixin.getMetadata().getWhere(),
-                queryMixin.getMetadata());
-    }
-
-    @Override
-    public LuceneQuery distinct(){
-        return queryMixin.distinct();
-    }
+public class LuceneQuery extends AbstractLuceneQuery<Document, LuceneQuery>{
     
-    @Override
-    public LuceneQuery limit(final long limit) {
-        return queryMixin.limit(limit);
-    }
+    private static final Transformer<Document,Document> TRANSFORMER = new Transformer<Document,Document>() {
 
-    @Override
-    public CloseableIterator<Document> iterate() {
-        final QueryMetadata metadata = queryMixin.getMetadata();
-        final List<OrderSpecifier<?>> orderBys = metadata.getOrderBy();
-        final Long queryLimit = metadata.getModifiers().getLimit();
-        final Long queryOffset = metadata.getModifiers().getOffset();
-        Sort sort = null;
-        int limit;
-        final int offset = queryOffset != null ? queryOffset.intValue() : 0;
-        try {
-            limit = searcher.maxDoc();
-        } catch (final IOException e) {
-            throw new QueryException(e);
+        @Override
+        public Document transform(Document input) {
+            return input;
         }
-        if (queryLimit != null && queryLimit.intValue() < limit) {
-            limit = queryLimit.intValue();
-        }
-        if (!orderBys.isEmpty()) {
-            sort = serializer.toSort(orderBys);
-        }
-
-        try {
-            ScoreDoc[] scoreDocs;
-            if (sort != null) {
-                scoreDocs = searcher.search(createQuery(), null,
-                        limit + offset, sort).scoreDocs;
-            } else {
-                scoreDocs = searcher.search(createQuery(), limit + offset).scoreDocs;
-            }
-            if (offset < scoreDocs.length) {
-                return new DocumentIterator(scoreDocs, offset, searcher);
-            } else {
-                return new EmptyCloseableIterator<Document>();
-            }
-        } catch (final IOException e) {
-            throw new QueryException(e);
-        }
+        
+    };
+  
+    public LuceneQuery(Searcher searcher) {
+        super(searcher, TRANSFORMER);
     }
 
-    @Override
-    public CloseableIterator<Document> iterateDistinct() {
-        return iterate();
-    }
-
-    private List<Document> innerList(){
-        return new IteratorAdapter<Document>(iterate()).asList();
-    }
-
-    @Override
-    public List<Document> list() {
-        return innerList();
-    }
-
-    @Override
-    public List<Document> listDistinct() {
-        return list();
-    }
-
-    @Override
-    public SearchResults<Document> listDistinctResults() {
-        return listResults();
-    }
-
-    @Override
-    public SearchResults<Document> listResults() {
-        List<Document> documents = innerList();
-        /*
-         * TODO Get rid of count(). It could be implemented by iterating the
-         * list results in list* from n to m.
-         */
-        return new SearchResults<Document>(documents, queryMixin.getMetadata().getModifiers(), innerCount());
-    }
-
-    @Override
-    public LuceneQuery offset(final long offset) {
-        return queryMixin.offset(offset);
-    }
-
-    @Override
-    public LuceneQuery orderBy(final OrderSpecifier<?>... o) {
-        return queryMixin.orderBy(o);
-    }
-
-    @Override
-    public LuceneQuery restrict(final QueryModifiers modifiers) {
-        return queryMixin.restrict(modifiers);
-    }
-
-    @Override
-    public <T> LuceneQuery set(final ParamExpression<T> param, final T value) {
-        return queryMixin.set(param, value);
-    }
-
-    @Override
-    public Document uniqueResult() {
-        try {
-            int maxDoc = searcher.maxDoc();
-            if (maxDoc == 0) {
-                return null;
-            }
-            final ScoreDoc[] scoreDocs = searcher.search(createQuery(), maxDoc).scoreDocs;
-            if (scoreDocs.length > 1) {
-                throw new QueryException("More than one result found!");
-            } else if (scoreDocs.length == 1) {
-                return searcher.doc(scoreDocs[0].doc);
-            } else {
-                return null;
-            }
-        } catch (IOException e) {
-            throw new QueryException(e);
-        }
-    }
-
-    @Override
-    public LuceneQuery where(final Predicate... e) {
-        return queryMixin.where(e);
+    public LuceneQuery(LuceneSerializer luceneSerializer, Searcher searcher) {
+        super(luceneSerializer, searcher, TRANSFORMER);
     }
 
 }
