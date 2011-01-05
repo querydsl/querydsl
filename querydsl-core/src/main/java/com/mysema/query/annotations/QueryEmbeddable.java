@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Target(TYPE)
 @Retention(RUNTIME)
 /**
- * Annotation for APT based Domain query type generation. Annotate Embeddable types with this annotation.
+ * Annotation for APT based Domain query type generation. Annotate embeddable types with this annotation.
  */
 public @interface QueryEmbeddable {
 
