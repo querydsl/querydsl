@@ -41,7 +41,7 @@ public class BooleanBuilderTest {
         BooleanBuilder builder = new BooleanBuilder();
         builder.andAnyOf(first, second, first);
         builder.orAllOf(first, second, first);
-        System.out.println(builder);
+        assertEquals("true || false || true || true && false && true", builder.toString());
     }
 
     @Test
