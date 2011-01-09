@@ -3,6 +3,9 @@ package com.mysema.query.lucene.session;
 import com.mysema.query.lucene.LuceneQuery;
 import com.mysema.query.lucene.TypedQuery;
 
+/**
+ * 
+ */
 public interface LuceneSession {
 
     /**
