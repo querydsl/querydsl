@@ -186,18 +186,28 @@ entityPath.get("userName", String.class);
 entityPath.getString("userName").lower();
 </programlisting>
 
-    <para>List property : </para>
+    <para>List property with component type : </para>
 
 <programlisting language="java">
-entityPath.getList("list", String.class, PString.class).get(0).lower();
 entityPath.getList("list", String.class).get(0);
 </programlisting>
 
-    <para>Map property : </para>
+	<para>Using a component expression type :</para>
 
 <programlisting language="java">
-entityPath.getMap("map", String.class, String.class, PString.class).get("key").lower();
+entityPath.getList("list", String.class, StringPath.class).get(0).lower();
+</programlisting>
+
+    <para>Map property with key and value type : </para>
+
+<programlisting language="java">
 entityPath.getMap("map", String.class, String.class).get("key");
+</programlisting>
+
+	<para>Using a component expression type :</para>
+
+<programlisting language="java">
+entityPath.getMap("map", String.class, String.class, StringPath.class).get("key").lower();
 </programlisting>
       
   </sect2>    
