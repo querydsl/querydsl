@@ -136,6 +136,10 @@ public final class ElementHandler{
     }
 
     public EntityType handleNormalType(TypeElement e) {
+        //FIXME remove this
+        if (e == null) {
+            System.err.println("e null!");
+        }
         EntityType entityType = typeFactory.getEntityType(e.asType(), true);
         List<? extends Element> elements = e.getEnclosedElements();
         VisitorConfig config = configuration.getConfig(e, elements);
