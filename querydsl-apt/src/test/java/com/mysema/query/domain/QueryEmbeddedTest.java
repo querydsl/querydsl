@@ -42,16 +42,17 @@ public class QueryEmbeddedTest {
     }
     
     @Test
-    public void test(){
+    public void Parent_Child_ChildProperty(){
         assertNotNull(QQueryEmbeddedTest_Parent.parent.child.childProperty);
     }
     
     @Test
-    public void Any(){
+    public void Parent_Children_Any_ChildrenProperty(){
         assertNotNull(QQueryEmbeddedTest_Parent2.parent2.children.any().childProperty);
     }
     
-    public void Map(){
+    @Test
+    public void Parent_Children2_MapAccess(){
         assertNotNull(QQueryEmbeddedTest_Parent2.parent2.children2.containsKey("XXX"));
         assertNotNull(QQueryEmbeddedTest_Parent2.parent2.children2.get("XXX").childProperty);
     }
