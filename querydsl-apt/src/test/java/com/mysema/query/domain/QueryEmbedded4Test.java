@@ -63,8 +63,7 @@ public class QueryEmbedded4Test {
     
     @Test
     public void User_Complex_a() {
-        //FIXME Tämä testiluokka ei käänny vaan tulee virhe
-        assertNotNull(QQueryEmbedded4Test_User.complex.a);
+        assertNotNull(QQueryEmbedded4Test_User.user.complex.a);
     }
     
 }

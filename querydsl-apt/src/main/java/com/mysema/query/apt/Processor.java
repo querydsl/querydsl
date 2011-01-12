@@ -496,12 +496,11 @@ public class Processor {
         
         // deep
         for (String typeName : types) {
-            TypeElement typeElement = env.getElementUtils().getTypeElement(typeName);
-            //FIXME remove this
-            if(typeElement == null) {
-                //typeElement is null for com.mysema.query.domain.QueryEmbedded4Test.Complex<java.lang.String>
-                System.err.println("typeElement is null for " + typeName);
+            // remove generic signature of type for TypeElement lookup
+            if (typeName.contains("<")){
+                typeName = typeName.substring(0, typeName.indexOf("<"));
             }
+            TypeElement typeElement = env.getElementUtils().getTypeElement(typeName);
             EntityType model = elementHandler.handleNormalType(typeElement);
             registerTypeElement(model.getFullName(), typeElement);
             embeddables.put(model.getFullName(), model);
