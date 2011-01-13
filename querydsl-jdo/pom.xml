@@ -15,17 +15,24 @@
   <packaging>jar</packaging>
 
   <properties>   
-    <jdo.version>3.0</jdo.version>
     <dn.version>2.1.2</dn.version>
 	<dn.plugin.version>2.0.1</dn.plugin.version>
   </properties>
 
   <dependencies>
+  
     <dependency>
       <groupId>javax.jdo</groupId>
       <artifactId>jdo-api</artifactId>
-      <version>${jdo.version}</version>
+      <version>3.0</version>
     </dependency>
+	<!-- 
+    <dependency>
+      <groupId>javax.jdo</groupId>
+      <artifactId>jdo2-api</artifactId>
+      <version>2.3-eb</version>
+   </dependency>
+     -->        
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
