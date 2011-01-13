@@ -35,17 +35,15 @@ import com.mysema.query.annotations.QueryTransient;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class QuerydslAnnotationProcessor extends AbstractProcessor{
 
-    private Class<? extends Annotation> entities, entity, superType, embeddable, embedded, skip;
-
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
-        entities = QueryEntities.class;
-        entity = QueryEntity.class;
-        superType = QuerySupertype.class;
-        embeddable = QueryEmbeddable.class;
-        embedded = QueryEmbedded.class;
-        skip = QueryTransient.class;
+        Class<? extends Annotation> entities = QueryEntities.class;
+        Class<? extends Annotation> entity = QueryEntity.class;
+        Class<? extends Annotation> superType = QuerySupertype.class;
+        Class<? extends Annotation> embeddable = QueryEmbeddable.class;
+        Class<? extends Annotation> embedded = QueryEmbedded.class;
+        Class<? extends Annotation> skip = QueryTransient.class;
         
         DefaultConfiguration configuration = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), Collections.<String>emptySet(), entities, entity, superType, embeddable, embedded, skip);
 

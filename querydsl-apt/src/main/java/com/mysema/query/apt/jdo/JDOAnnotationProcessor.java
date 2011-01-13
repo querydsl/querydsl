@@ -33,30 +33,21 @@ import com.mysema.query.apt.Processor;
 public class JDOAnnotationProcessor extends AbstractProcessor{
     
     private static final Set<String> KEYWORDS = new HashSet<String>(Arrays.asList(
-            "AS","ASC",
-            "ASCENDING","AVG",
-            "BY","COUNT",
-            "DESC","DESCENDING",
-            "DISTINCT","EXCLUDE",
-            "FROM","GROUP",
-            "HAVING","INTO",
-            "MAX","MIN",
-            "ORDER","PARAMETERS",
-            "RANGE","SELECT",
-            "SUBCLASSES","SUM",
-            "UNIQUE","VARIABLES",
-            "WHERE"));
-
-    private Class<? extends Annotation> entity, embeddable, skip;
+            "AS","ASC", "ASCENDING","AVG",
+            "BY","COUNT", "DESC","DESCENDING",
+            "DISTINCT","EXCLUDE", "FROM","GROUP",
+            "HAVING","INTO","MAX","MIN",
+            "ORDER","PARAMETERS","RANGE","SELECT",
+            "SUBCLASSES","SUM","UNIQUE","VARIABLES","WHERE"));
 
     @SuppressWarnings("unchecked")
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         try {
             processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
-            entity = (Class)Class.forName("javax.jdo.annotations.PersistenceCapable");
-            embeddable = (Class)Class.forName("javax.jdo.annotations.EmbeddedOnly");
-            skip = (Class)Class.forName("javax.jdo.annotations.NotPersistent");
+            Class<? extends Annotation> entity = (Class)Class.forName("javax.jdo.annotations.PersistenceCapable");
+            Class<? extends Annotation> embeddable = (Class)Class.forName("javax.jdo.annotations.EmbeddedOnly");
+            Class<? extends Annotation> skip = (Class)Class.forName("javax.jdo.annotations.NotPersistent");
 
             DefaultConfiguration configuration = new DefaultConfiguration(
                     roundEnv, processingEnv.getOptions(), KEYWORDS, null, entity, null, embeddable, null, skip);
