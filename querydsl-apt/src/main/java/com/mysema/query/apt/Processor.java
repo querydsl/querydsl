@@ -8,7 +8,16 @@ package com.mysema.query.apt;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 import javax.annotation.processing.Filer;
@@ -22,6 +31,7 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
@@ -484,19 +494,26 @@ public class Processor {
             if (typeName.startsWith(Collection.class.getName())
              || typeName.startsWith(List.class.getName())
              || typeName.startsWith(Set.class.getName())){
-                typeName = typeName.substring(typeName.indexOf('<')+1, typeName.lastIndexOf('>'));
-                type = env.getElementUtils().getTypeElement(typeName).asType();
+                type = ((DeclaredType)type).getTypeArguments().get(0);
+                if (type.toString().contains("<")){
+                    typeName = type.toString();
+                    type = env.getElementUtils().getTypeElement(typeName.substring(0, typeName.indexOf('<'))).asType();
+                }
+                
             }else if (typeName.startsWith(Map.class.getName())){
-                typeName = typeName.substring(typeName.indexOf(',')+1, typeName.lastIndexOf('>')).trim();
-                type = env.getElementUtils().getTypeElement(typeName).asType();    
+                type = ((DeclaredType)type).getTypeArguments().get(1);
+                if (type.toString().contains("<")){
+                    typeName = type.toString();
+                    type = env.getElementUtils().getTypeElement(typeName.substring(0, typeName.indexOf('<'))).asType();
+                }
             }   
             typeFactory.getEntityType(type, false);
-            types.add(typeName);
+            types.add(type.toString());
         }
         
         // deep
         for (String typeName : types) {
-            // remove generic signature of type for TypeElement lookup
+            // remove generic signature of type for TypeElement lookup            
             if (typeName.contains("<")){
                 typeName = typeName.substring(0, typeName.indexOf("<"));
             }
