@@ -91,7 +91,7 @@ public class Projections {
         return rv;
     }
 
-    public <K,V> Collection<Expression<?>> map(MapExpressionBase<K,V> expr, MapExpression<K,V> other, K knownKey, V knownValue) {
+    public <K,V> Collection<Expression<?>> map(MapExpressionBase<K,V,?> expr, MapExpression<K,V> other, K knownKey, V knownValue) {
         HashSet<Expression<?>> rv = new HashSet<Expression<?>>();
         rv.add(expr.get(knownKey));
         if (!module.equals(Module.RDFBEAN)){

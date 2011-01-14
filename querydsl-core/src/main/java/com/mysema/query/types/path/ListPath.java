@@ -30,7 +30,7 @@ import com.mysema.query.types.expr.SimpleExpression;
  * @param <E> component type
  * @param <Q> component query type
  */
-public class ListPath<E, Q extends SimpleExpression<E>> extends CollectionPathBase<List<E>, E, Q> implements ListExpression<E, Q> {
+public class ListPath<E, Q extends SimpleExpression<? super E>> extends CollectionPathBase<List<E>, E, Q> implements ListExpression<E, Q> {
 
     private static final long serialVersionUID = 3302301599074388860L;
 

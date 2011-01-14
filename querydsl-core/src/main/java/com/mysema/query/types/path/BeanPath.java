@@ -142,8 +142,8 @@ public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    protected <A, E extends SimpleExpression<A>> CollectionPath<A, E> createCollection(String property, Class<? super A> type, Class<? super E> queryType) {
-        return add(new CollectionPath<A, E>(type, (Class) queryType, forProperty(property)));
+    protected <A, Q extends SimpleExpression<? super A>> CollectionPath<A, Q> createCollection(String property, Class<? super A> type, Class<? super Q> queryType) {
+        return add(new CollectionPath<A, Q>(type, (Class) queryType, forProperty(property)));
     }
     
     /**
@@ -208,7 +208,7 @@ public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    protected <A, E extends SimpleExpression<A>> ListPath<A, E> createList(String property, Class<? super A> type, Class<? super E> queryType) {
+    protected <A, E extends SimpleExpression<? super A>> ListPath<A, E> createList(String property, Class<? super A> type, Class<? super E> queryType) {
         return add(new ListPath<A, E>(type, (Class) queryType, forProperty(property)));
     }
 
@@ -225,7 +225,7 @@ public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    protected <K, V, E extends SimpleExpression<V>> MapPath<K, V, E> createMap(String property, Class<? super K> key, Class<? super V> value, Class<? super E> queryType) {
+    protected <K, V, E extends SimpleExpression<? super V>> MapPath<K, V, E> createMap(String property, Class<? super K> key, Class<? super V> value, Class<? super E> queryType) {
         return add(new MapPath<K, V, E>(key, value, (Class) queryType, forProperty(property)));
     }
 
@@ -251,7 +251,7 @@ public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    protected <A, E extends SimpleExpression<A>> SetPath<A, E> createSet(String property, Class<? super A> type, Class<? super E> queryType) {
+    protected <A, E extends SimpleExpression<? super A>> SetPath<A, E> createSet(String property, Class<? super A> type, Class<? super E> queryType) {
         return add(new SetPath<A, E>(type, (Class) queryType, forProperty(property)));
     }
 

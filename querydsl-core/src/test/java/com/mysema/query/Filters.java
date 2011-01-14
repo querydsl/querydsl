@@ -148,7 +148,7 @@ public class Filters {
         return rv;
     }
 
-    public <K,V> Collection<BooleanExpression> map(MapExpressionBase<K,V> expr, MapExpression<K,V> other, K knownKey, V knownValue) {
+    public <K,V> Collection<BooleanExpression> map(MapExpressionBase<K,V,?> expr, MapExpression<K,V> other, K knownKey, V knownValue) {
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.add(expr.containsKey(knownKey));
         rv.add(expr.containsValue(knownValue));

@@ -22,7 +22,7 @@ import com.mysema.query.types.Ops;
  * @param <K>
  * @param <V>
  */
-public abstract class MapExpressionBase<K,V> extends SimpleExpression<Map<K,V>> implements MapExpression<K,V> {
+public abstract class MapExpressionBase<K, V, Q extends SimpleExpression<? super V>> extends SimpleExpression<Map<K,V>> implements MapExpression<K,V> {
 
     private static final long serialVersionUID = 2856001983312366841L;
 
@@ -40,8 +40,9 @@ public abstract class MapExpressionBase<K,V> extends SimpleExpression<Map<K,V>> 
         return get(key).eq(value);
     }
     
+    @SuppressWarnings("unchecked")
     public final BooleanExpression contains(Expression<K> key, Expression<V> value) {
-        return get(key).eq(value);
+        return get(key).eq((Expression)value);
     }
 
     public final BooleanExpression containsKey(Expression<K> key) {
@@ -60,9 +61,9 @@ public abstract class MapExpressionBase<K,V> extends SimpleExpression<Map<K,V>> 
         return BooleanOperation.create(Ops.CONTAINS_VALUE, this, new ConstantImpl<V>(value));
     }
     
-    public abstract SimpleExpression<V> get(Expression<K> key);
+    public abstract Q get(Expression<K> key);
 
-    public abstract SimpleExpression<V> get(K key);
+    public abstract Q get(K key);
 
     public final BooleanExpression isEmpty() {
         if (empty == null){

@@ -26,7 +26,7 @@ import com.mysema.query.types.expr.SimpleExpression;
  * @param <E> component type
  * @param <Q> component query type
  */
-public class SetPath<E, Q extends SimpleExpression<E>> extends CollectionPathBase<Set<E>,E, Q> {
+public class SetPath<E, Q extends SimpleExpression<? super E>> extends CollectionPathBase<Set<E>, E, Q> {
 
     private static final long serialVersionUID = 4145848445507037373L;
 

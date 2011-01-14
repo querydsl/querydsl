@@ -122,7 +122,7 @@ public class MatchingFilters {
         return collection(expr, other, knownElement, missingElement);
     }
 
-    public <K,V> Collection<BooleanExpression> map(MapExpressionBase<K,V> expr, MapExpression<K,V> other,  K knownKey, V knownValue, K missingKey, V missingValue) {
+    public <K,V> Collection<BooleanExpression> map(MapExpressionBase<K,V,?> expr, MapExpression<K,V> other,  K knownKey, V knownValue, K missingKey, V missingValue) {
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.add(expr.containsKey(knownKey));
         rv.add(expr.containsKey(missingKey).not());

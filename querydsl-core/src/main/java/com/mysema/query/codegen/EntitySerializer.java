@@ -634,52 +634,82 @@ public class EntitySerializer implements Serializer{
             case STRING:
                 serialize(model, property, queryType, writer, "createString");
                 break;
+                
             case BOOLEAN:
                 serialize(model, property, queryType, writer, "createBoolean");
                 break;
+                
             case SIMPLE:
                 serialize(model, property, queryType, writer, "createSimple", localRawName + DOT_CLASS);
                 break;
+                
             case COMPARABLE:
                 serialize(model, property, queryType, writer, "createComparable", localRawName + DOT_CLASS);
                 break;
+                
             case ENUM:
                 serialize(model, property, queryType, writer, "createEnum", localRawName + DOT_CLASS);
                 break;
+                
             case DATE:
                 serialize(model, property, queryType, writer, "createDate", localRawName + DOT_CLASS);
                 break;
+                
             case DATETIME:
                 serialize(model, property, queryType, writer, "createDateTime", localRawName + DOT_CLASS);
                 break;
+                
             case TIME:
                 serialize(model, property, queryType, writer, "createTime", localRawName + DOT_CLASS);
                 break;
+                
             case NUMERIC:
                 serialize(model, property, queryType, writer, "createNumber", localRawName + DOT_CLASS);
                 break;
+                
             case CUSTOM:                
                 customField(model, property, config, writer);
                 break;
+                
             case ARRAY:
                 serialize(model, property, new ClassType(ArrayPath.class, property.getType().getComponentType()), writer, "createArray", localRawName + DOT_CLASS);
                 break;
+                
             case COLLECTION:
                 genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false);
+                String genericKey = writer.getGenericName(true, property.getParameter(0));
                 localRawName = writer.getRawName(property.getParameter(0));
                 queryType = typeMappings.getPathType(property.getParameter(0), model, true);
                 
-                serialize(model, property, new ClassType(CollectionPath.class, getRaw(property.getParameter(0)), genericQueryType), writer, "createCollection", localRawName + DOT_CLASS, writer.getRawName(queryType) + DOT_CLASS);
+                serialize(model, property, new ClassType(CollectionPath.class, getRaw(property.getParameter(0)), genericQueryType), 
+                        writer, "this.<"+genericKey + COMMA + writer.getGenericName(true, genericQueryType) + ">createCollection",
+                        localRawName + DOT_CLASS, writer.getRawName(queryType) + DOT_CLASS);
                 break;
+                
             case SET:
                 genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false);
+                genericKey = writer.getGenericName(true, property.getParameter(0));
                 localRawName = writer.getRawName(property.getParameter(0));
                 queryType = typeMappings.getPathType(property.getParameter(0), model, true);
                 
-                serialize(model, property, new ClassType(SetPath.class, getRaw(property.getParameter(0)), genericQueryType), writer, "createSet", localRawName + DOT_CLASS, writer.getRawName(queryType) + DOT_CLASS);
+                serialize(model, property, new ClassType(SetPath.class, getRaw(property.getParameter(0)), genericQueryType), 
+                        writer, "this.<"+genericKey + COMMA + writer.getGenericName(true, genericQueryType) + ">createSet",
+                        localRawName + DOT_CLASS, writer.getRawName(queryType) + DOT_CLASS);
                 break;
+                
+            case LIST:
+                genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false);
+                genericKey = writer.getGenericName(true, property.getParameter(0));
+                localRawName = writer.getRawName(property.getParameter(0));
+                queryType = typeMappings.getPathType(property.getParameter(0), model, true);
+
+                serialize(model, property, new ClassType(ListPath.class, getRaw(property.getParameter(0)), genericQueryType), 
+                        writer, "this.<"+genericKey + COMMA + writer.getGenericName(true, genericQueryType) + ">createList", 
+                        localRawName + DOT_CLASS, writer.getRawName(queryType) + DOT_CLASS);
+                break;    
+                
             case MAP:
-                String genericKey = writer.getGenericName(true, property.getParameter(0));
+                genericKey = writer.getGenericName(true, property.getParameter(0));
                 String genericValue = writer.getGenericName(true, property.getParameter(1));
                 genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(1)), model, false);
                 String keyType = writer.getRawName(property.getParameter(0));
@@ -690,13 +720,7 @@ public class EntitySerializer implements Serializer{
                         writer, "this.<" + genericKey + COMMA + genericValue + COMMA + writer.getGenericName(true, genericQueryType) + ">createMap",
                         keyType+DOT_CLASS, valueType+DOT_CLASS, writer.getRawName(queryType)+DOT_CLASS);
                 break;
-            case LIST:
-                genericQueryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false);
-                localRawName = writer.getRawName(property.getParameter(0));
-                queryType = typeMappings.getPathType(property.getParameter(0), model, true);
-
-                serialize(model, property, new ClassType(ListPath.class, getRaw(property.getParameter(0)), genericQueryType), writer, "createList", localRawName + DOT_CLASS, writer.getRawName(queryType) + DOT_CLASS);
-                break;                
+            
             case ENTITY:
                 entityField(model, property, config, writer);
                 break;

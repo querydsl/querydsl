@@ -30,7 +30,7 @@ import com.mysema.query.types.expr.SimpleExpression;
  * @param <K> key type
  * @param <V> value type
  */
-public class MapPath<K, V, E extends SimpleExpression<V>> extends MapExpressionBase<K, V> implements Path<Map<K, V>> {
+public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExpressionBase<K, V, E> implements Path<Map<K, V>> {
 
     private static final long serialVersionUID = -9113333728412016832L;
 

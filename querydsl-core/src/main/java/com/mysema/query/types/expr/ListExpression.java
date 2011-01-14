@@ -20,7 +20,7 @@ import com.mysema.query.types.Expression;
  * @param <E> component type
  * @see java.util.List
  */
-public interface ListExpression<E, Q extends SimpleExpression<? extends E>> extends CollectionExpression<List<E>,E> {
+public interface ListExpression<E, Q extends SimpleExpression<? super E>> extends CollectionExpression<List<E>, E> {
 
     /**
      * Indexed access

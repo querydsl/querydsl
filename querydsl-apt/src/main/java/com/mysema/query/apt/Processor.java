@@ -482,7 +482,7 @@ public class Processor {
     }
 
     private void processEmbedded(){
-        List<String> types = new ArrayList<String>();
+        List<TypeMirror> typeMirrors = new ArrayList<TypeMirror>();
         
         // only creation
         for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddedAnnotation())) {
@@ -495,25 +495,23 @@ public class Processor {
              || typeName.startsWith(List.class.getName())
              || typeName.startsWith(Set.class.getName())){
                 type = ((DeclaredType)type).getTypeArguments().get(0);
-                if (type.toString().contains("<")){
-                    typeName = type.toString();
-                    type = env.getElementUtils().getTypeElement(typeName.substring(0, typeName.indexOf('<'))).asType();
-                }
                 
             }else if (typeName.startsWith(Map.class.getName())){
                 type = ((DeclaredType)type).getTypeArguments().get(1);
-                if (type.toString().contains("<")){
-                    typeName = type.toString();
-                    type = env.getElementUtils().getTypeElement(typeName.substring(0, typeName.indexOf('<'))).asType();
-                }
             }   
             typeFactory.getEntityType(type, false);
-            types.add(type.toString());
+            typeMirrors.add(type);
+        }
+        
+        // supertype handling
+        for (TypeMirror typeMirror : typeMirrors){
+            typeFactory.getEntityType(typeMirror, true);
         }
         
         // deep
-        for (String typeName : types) {
-            // remove generic signature of type for TypeElement lookup            
+        for (TypeMirror type : typeMirrors) {
+            // remove generic signature of type for TypeElement lookup
+            String typeName = type.toString();
             if (typeName.contains("<")){
                 typeName = typeName.substring(0, typeName.indexOf("<"));
             }

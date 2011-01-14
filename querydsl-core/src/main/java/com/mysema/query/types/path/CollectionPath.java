@@ -26,7 +26,7 @@ import com.mysema.query.types.expr.SimpleExpression;
  * @param <E> component type
  * @param <Q> component query type
  */
-public class CollectionPath<E, Q extends SimpleExpression<E>> extends CollectionPathBase<Collection<E>, E, Q>{    
+public class CollectionPath<E, Q extends SimpleExpression<? super E>> extends CollectionPathBase<Collection<E>, E, Q>{    
 
     private static final long serialVersionUID = -4982311799113762600L;
 
@@ -56,7 +56,7 @@ public class CollectionPath<E, Q extends SimpleExpression<E>> extends Collection
     }
 
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public <R, C> R accept(Visitor<R, C> v, C context) {
         return v.visit(this, context);
     }
     

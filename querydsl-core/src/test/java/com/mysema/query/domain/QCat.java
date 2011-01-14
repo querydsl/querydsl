@@ -36,9 +36,9 @@ public class QCat extends EntityPathBase<Cat> {
     //inherited
     public final NumberPath<Integer> id = _super.id;
 
-    public final ListPath<Cat, QCat> kittens = createList("kittens", Cat.class, QCat.class);
+    public final ListPath<Cat, QCat> kittens = this.<Cat,QCat>createList("kittens", Cat.class, QCat.class);
 
-    public final SetPath<Cat, QCat> kittensSet = createSet("kittensSet", Cat.class, QCat.class);
+    public final SetPath<Cat, QCat> kittensSet = this.<Cat,QCat>createSet("kittensSet", Cat.class, QCat.class);
 
     public final QCat mate;
 

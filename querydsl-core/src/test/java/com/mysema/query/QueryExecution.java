@@ -293,7 +293,7 @@ public abstract class QueryExecution {
         runProjectionQueries(projections.list(expr, other, knownElement));
     }
 
-    public final <K,V> void runMapTests(MapExpressionBase<K,V> expr, MapExpression<K,V> other, K knownKey, V knownValue, K missingKey, V missingValue) {
+    public final <K,V> void runMapTests(MapExpressionBase<K,V,?> expr, MapExpression<K,V> other, K knownKey, V knownValue, K missingKey, V missingValue) {
         runFilterQueries(matchers.map(expr, other, knownKey, knownValue, missingKey, missingValue), true);
         runFilterQueries(filters.map(expr, other, knownKey, knownValue), false);
         runProjectionQueries(projections.map(expr, other, knownKey, knownValue));
