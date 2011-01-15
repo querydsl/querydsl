@@ -24,6 +24,12 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
 
     private static final long serialVersionUID = 3797956062512074164L;
 
+    /**
+     * Return the intersection of the given Boolean expressions
+     * 
+     * @param exprs
+     * @return
+     */
     @Nullable
     public static BooleanExpression allOf(BooleanExpression... exprs){
         BooleanExpression rv = null;
@@ -33,6 +39,12 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
         return rv;
     }
 
+    /**
+     * Return the union of the given Boolean expressions
+     * 
+     * @param exprs
+     * @return
+     */
     @Nullable
     public static BooleanExpression anyOf(BooleanExpression... exprs){
         BooleanExpression rv = null;
