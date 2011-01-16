@@ -18,6 +18,12 @@ import javax.annotation.Nullable;
  */
 public final class ExpressionUtils {
     
+    /**
+     * Create the intersection of the given arguments
+     * 
+     * @param exprs
+     * @return
+     */
     @Nullable
     public static Predicate allOf(Predicate... exprs){
         Predicate rv = null;
@@ -27,10 +33,23 @@ public final class ExpressionUtils {
         return rv;
     }
 
+    /**
+     * Create the intersection of the given arguments
+     * 
+     * @param left
+     * @param right
+     * @return
+     */
     public static Predicate and(Predicate left, Predicate right){
         return new PredicateOperation(Ops.AND, left, right);
     }
     
+    /**
+     * Create the union of the given arguments
+     * 
+     * @param exprs
+     * @return
+     */
     @Nullable
     public static Predicate anyOf(Predicate... exprs){
         Predicate rv = null;
@@ -40,18 +59,50 @@ public final class ExpressionUtils {
         return rv;
     }
         
+    /**
+     * Create an alias expression (source as alias) with the given source and alias
+     * 
+     * @param <D>
+     * @param source
+     * @param alias
+     * @return
+     */
     public static <D> Expression<D> as(Expression<D> source, Path<D> alias) {
         return new OperationImpl<D>(alias.getType(), Ops.ALIAS, source, alias);
     }
     
+    /**
+     * Create an alias expression (source as alias) with the given source and alias
+     * 
+     * @param <D>
+     * @param source
+     * @param alias
+     * @return
+     */
     public static <D> Expression<D> as(Expression<D> source, String alias) {
         return as(source, new PathImpl<D>(source.getType(), alias));
     }
 
+    /**
+     * Create an left equals constant expression
+     * 
+     * @param <D>
+     * @param left
+     * @param constant
+     * @return
+     */
     public static <D> Predicate eqConst(Expression<D> left, D constant) {
         return eq(left, new ConstantImpl<D>(constant));
     }
     
+    /**
+     * Create an left equals right expression
+     * 
+     * @param <D>
+     * @param left
+     * @param right
+     * @return
+     */
     public static <D> Predicate eq(Expression<D> left, Expression<? extends D> right) {
         if (isPrimitive(left.getType())) {
             return new PredicateOperation(Ops.EQ_PRIMITIVE, left, right);
@@ -60,10 +111,26 @@ public final class ExpressionUtils {
         }
     }
     
+    /**
+     * Create an left in right expression
+     * 
+     * @param <D>
+     * @param left
+     * @param right
+     * @return
+     */
     public static <D> Predicate in(Expression<D> left, CollectionExpression<?,? extends D> right) {
         return new PredicateOperation(Ops.IN, left, right);
     }
     
+    /**
+     * Create an left in right expression
+     * 
+     * @param <D>
+     * @param left
+     * @param right
+     * @return
+     */
     public static <D> Predicate in(Expression<D> left, Collection<? extends D> right) {
         if (right.size() == 1){
             return eqConst(left, right.iterator().next());
@@ -72,10 +139,22 @@ public final class ExpressionUtils {
         }
     }
     
+    /**
+     * Create a left is null expression
+     * 
+     * @param left
+     * @return
+     */
     public static Predicate isNull(Expression<?> left) {
         return new PredicateOperation(Ops.IS_NULL, left);
     }
     
+    /**
+     * Create a left is not null expression
+     * 
+     * @param left
+     * @return
+     */
     public static Predicate isNotNull(Expression<?> left) {
         return new PredicateOperation(Ops.IS_NOT_NULL, left);
     }
@@ -87,6 +166,12 @@ public final class ExpressionUtils {
             || Character.class.equals(type);
     }
     
+    /**
+     * Convert the given like pattern to a regex pattern
+     * 
+     * @param expr
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public static Expression<String> likeToRegex(Expression<String> expr){
         if (expr instanceof Constant<?>){
@@ -123,10 +208,26 @@ public final class ExpressionUtils {
         }     
     }
     
+    /**
+     * Create a left not equals constant expression
+     * 
+     * @param <D>
+     * @param left
+     * @param constant
+     * @return
+     */
     public static <D> Predicate neConst(Expression<D> left, D constant) {
         return ne(left, new ConstantImpl<D>(constant));
     }
     
+    /**
+     * Create a left not equals right expression
+     * 
+     * @param <D>
+     * @param left
+     * @param right
+     * @return
+     */
     public static <D> Predicate ne(Expression<D> left, Expression<? super D> right) {
         if (isPrimitive(left.getType())) {
             return new PredicateOperation(Ops.NE_PRIMITIVE, left, right);
@@ -135,6 +236,13 @@ public final class ExpressionUtils {
         }
     }
     
+    /**
+     * Create a left or right expression
+     * 
+     * @param left
+     * @param right
+     * @return
+     */
     public static Predicate or(Predicate left, Predicate right){
         return new PredicateOperation(Ops.OR, left, right);
     }

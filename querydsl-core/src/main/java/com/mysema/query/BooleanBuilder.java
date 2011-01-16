@@ -47,6 +47,12 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
         }
     }
     
+    /**
+     * Create the insertion of this and the given predicate
+     * 
+     * @param right
+     * @return
+     */
     public BooleanBuilder and(@Nullable Predicate right) {
         if (right != null){
             if (predicate == null){
@@ -72,6 +78,12 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
         return this;
     }
 
+    /**
+     * Create the insertion of this and the negation of the given predicate
+     * 
+     * @param right
+     * @return
+     */
     public BooleanBuilder andNot(Predicate right) {
         return and(right.not());
     }
@@ -138,6 +150,12 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
         return this;
     }
 
+    /**
+     * Create the union of this and the given predicate
+     * 
+     * @param right
+     * @return
+     */
     public BooleanBuilder or(@Nullable Predicate right) {
         if (right != null){
             if (predicate == null){
@@ -163,6 +181,12 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
         return this;
     }
 
+    /**
+     * Create the union of this and the negation of the given predicate
+     * 
+     * @param right
+     * @return
+     */
     public BooleanBuilder orNot(Predicate right){
         return or(right.not());
     }
