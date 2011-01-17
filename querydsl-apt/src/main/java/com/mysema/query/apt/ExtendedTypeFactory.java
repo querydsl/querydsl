@@ -73,8 +73,6 @@ public final class ExtendedTypeFactory {
 
     private boolean doubleIndexEntities = true;
 
-//    private boolean deep = false;
-
     public ExtendedTypeFactory(ProcessingEnvironment env, Configuration configuration,
             TypeFactory factory, List<Class<? extends Annotation>> annotations){
         this.env = env;
@@ -199,6 +197,9 @@ public final class ExtendedTypeFactory {
             throw new TypeArgumentsException(simpleName);
         }
         Type keyType = getType(typeMirrors.next(), deep);
+        if (keyType == null){
+            keyType = defaultType;
+        }
         Type valueType = getType(typeMirrors.next(), deep);
         if (valueType.getParameters().isEmpty()){
             TypeElement element = env.getElementUtils().getTypeElement(valueType.getFullName());
@@ -329,7 +330,7 @@ public final class ExtendedTypeFactory {
             return createType(typeElement, TypeCategory.get(name), declaredType.getTypeArguments(), deep);
 
         }else if (Map.class.isAssignableFrom(cl)){
-            return createMapType(simpleName, i,deep);
+            return createMapType(simpleName, i, deep);
 
         } else if (List.class.isAssignableFrom(cl)) {
             return createListType(simpleName, i, deep);

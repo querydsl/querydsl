@@ -31,8 +31,7 @@ public class QueryEmbeddable3Test {
         
         Map<String, Complex<?>> rawMap2;
         
-//        @QueryEmbedded
-//        Map<?, Complex<String>> rawMap3;
+        Map<?, Complex<String>> rawMap3;
                 
     }
     
@@ -80,7 +79,7 @@ public class QueryEmbeddable3Test {
     
     @Test
     public void User_rawMap2(){
-        assertEquals(QQueryEmbeddable3Test_Complex.class, QQueryEmbeddable3Test_User.user.rawMap1.get("XXX").getClass());
+        assertEquals(QQueryEmbeddable3Test_Complex.class, QQueryEmbeddable3Test_User.user.rawMap2.get("XXX").getClass());
     }
     
 }

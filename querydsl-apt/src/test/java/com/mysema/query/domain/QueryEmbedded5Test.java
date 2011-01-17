@@ -38,8 +38,8 @@ public class QueryEmbedded5Test {
         @QueryEmbedded
         Map<String, Complex<?>> rawMap2;
         
-//        @QueryEmbedded
-//        Map<?, Complex<String>> rawMap3;
+        @QueryEmbedded
+        Map<?, Complex<String>> rawMap3;
                 
     }
     
@@ -87,7 +87,11 @@ public class QueryEmbedded5Test {
     
     @Test
     public void User_rawMap2(){
-        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.user.rawMap1.get("XXX").getClass());
+        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.user.rawMap2.get("XXX").getClass());
     }
     
+    @Test
+    public void User_rawMap3(){
+        assertEquals(QQueryEmbedded5Test_Complex.class, QQueryEmbedded5Test_User.user.rawMap3.get("XXX").getClass());
+    }
 }
