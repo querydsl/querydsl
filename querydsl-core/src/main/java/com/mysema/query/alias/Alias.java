@@ -22,7 +22,22 @@ import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.SimpleExpression;
-import com.mysema.query.types.path.*;
+import com.mysema.query.types.path.ArrayPath;
+import com.mysema.query.types.path.BooleanPath;
+import com.mysema.query.types.path.CollectionPath;
+import com.mysema.query.types.path.ComparablePath;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.EntityPathBase;
+import com.mysema.query.types.path.EnumPath;
+import com.mysema.query.types.path.ListPath;
+import com.mysema.query.types.path.MapPath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.PathBuilder;
+import com.mysema.query.types.path.SetPath;
+import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.path.TimePath;
 
 /**
  * Alias provides alias factory methods
@@ -73,8 +88,8 @@ public final class Alias {
         return aliasFactory.<EnumPath<T>> getCurrentAndReset();
     }
 
-    public static <D> CollectionPath<D,?> $(Collection<D> args) {
-        return aliasFactory.<CollectionPath<D,?>> getCurrentAndReset();
+    public static <D, Q extends SimpleExpression<D>> CollectionPath<D, Q> $(Collection<D> args) {
+        return aliasFactory.<CollectionPath<D,Q>> getCurrentAndReset();
     }
 
     public static <D extends Comparable<?>> ComparablePath<D> $(D arg) {
@@ -124,12 +139,12 @@ public final class Alias {
         return aliasFactory.<NumberPath<Long>> getCurrentAndReset();
     }
 
-    public static <K, V> MapPath<K, V,?> $(Map<K, V> args) {
-        return aliasFactory.<MapPath<K, V,?>> getCurrentAndReset();
+    public static <K, V, Q extends SimpleExpression<V>> MapPath<K, V, Q> $(Map<K, V> args) {
+        return aliasFactory.<MapPath<K, V, Q>> getCurrentAndReset();
     }
 
-    public static <D> SetPath<D,?> $(Set<D> args) {
-        return aliasFactory.<SetPath<D,?>> getCurrentAndReset();
+    public static <D, Q extends SimpleExpression<D>> SetPath<D, Q> $(Set<D> args) {
+        return aliasFactory.<SetPath<D, Q>> getCurrentAndReset();
     }
 
     public static NumberPath<Short> $(Short arg) {
