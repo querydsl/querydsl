@@ -8,8 +8,9 @@ package com.mysema.query.alias;
 import static com.mysema.query.alias.Alias.$;
 import static org.junit.Assert.assertEquals;
 
-
 import org.junit.Test;
+
+import com.mysema.query.types.EntityPath;
 
 public class AliasTest {
 
@@ -45,6 +46,9 @@ public class AliasTest {
         assertEquals("domainType.list.get(0) = domainType", $(domainType.getList().get(0)).eq(domainType).toString());
         assertEquals("domainType.list.get(0) = domainType", $(domainType.getList()).get(0).eq(domainType).toString());
         assertEquals("domainType.map.get(key) = domainType", $(domainType.getMap()).get("key").eq(domainType).toString());
+        
+        EntityPath<DomainType> domainTypePath = $(domainType);
+        assertEquals("domainType in domainType.collection", $(domainType.getCollection()).contains(domainTypePath).toString());
     }
     
     @Test
