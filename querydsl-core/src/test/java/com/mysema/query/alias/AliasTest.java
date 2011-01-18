@@ -13,6 +13,12 @@ import org.junit.Test;
 public class AliasTest {
 
     @Test
+    public void Alias(){
+        DomainType domainType = Alias.alias(DomainType.class);
+        Alias.alias(DomainType.class, $(domainType.getCollection()).any());
+    }
+    
+    @Test
     public void BasicUsage(){
         DomainType domainType = Alias.alias(DomainType.class);
         assertEquals("lower(domainType.firstName)", $(domainType.getFirstName()).lower().toString());
