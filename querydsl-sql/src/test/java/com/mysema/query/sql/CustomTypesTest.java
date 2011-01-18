@@ -17,7 +17,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.AbstractJDBCTest;
-import com.mysema.query.alias.AliasTest.Gender;
+import com.mysema.query.alias.Gender;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.types.EnumByNameType;

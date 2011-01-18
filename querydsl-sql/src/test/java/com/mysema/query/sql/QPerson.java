@@ -21,7 +21,7 @@ public class QPerson extends RelationalPathBase<QPerson> {
 
     public final StringPath firstname = createString("FIRSTNAME");
 
-    public final EnumPath<com.mysema.query.alias.AliasTest.Gender> gender = createEnum("GENDER", com.mysema.query.alias.AliasTest.Gender.class);
+    public final EnumPath<com.mysema.query.alias.Gender> gender = createEnum("GENDER", com.mysema.query.alias.Gender.class);
 
     public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 

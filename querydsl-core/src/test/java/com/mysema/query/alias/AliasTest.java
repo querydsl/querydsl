@@ -8,70 +8,10 @@ package com.mysema.query.alias;
 import static com.mysema.query.alias.Alias.$;
 import static org.junit.Assert.assertEquals;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import org.junit.Test;
 
 public class AliasTest {
-
-    public enum Gender{
-        MALE,
-        FEMALE
-    }
-    
-    public interface ScalaAccessors {
-        
-        String firstName();
-
-        String lastName();
-    }
-
-    public interface DomainType{
-
-        String getFirstName();
-
-        String getLastName();
-
-        int getAge();
-
-        List<DomainType> getList();
-
-        Map<String,DomainType> getMap();
-
-        BigDecimal getBigDecimal();
-
-        BigInteger getBigInteger();
-
-        Byte getByte();
-
-        Collection<DomainType> getCollection();
-
-        Double getDouble();
-
-        Float getFloat();
-
-        java.sql.Date getDate();
-
-        java.util.Date getDate2();
-
-        Set<DomainType> getSet();
-
-        Short getShort();
-
-        Time getTime();
-
-        Timestamp getTimestamp();
-
-        Gender getGender();
-
-    }
 
     @Test
     public void BasicUsage(){
@@ -94,6 +34,26 @@ public class AliasTest {
         assertEquals("domainType.time", $(domainType.getTime()).toString());
         assertEquals("domainType.timestamp", $(domainType.getTimestamp()).toString());
         assertEquals("domainType.gender", $(domainType.getGender()).toString());
+    }
+    
+    @Test
+    public void CollectionUsage(){
+        DomainType domainType = Alias.alias(DomainType.class);
+        assertEquals("any(domainType.collection) = domainType", $(domainType.getCollection()).any().eq(domainType).toString());
+        assertEquals("any(domainType.set) = domainType", $(domainType.getSet()).any().eq(domainType).toString());
+        assertEquals("any(domainType.list) = domainType", $(domainType.getList()).any().eq(domainType).toString());
+        assertEquals("domainType.list.get(0) = domainType", $(domainType.getList().get(0)).eq(domainType).toString());
+        assertEquals("domainType.list.get(0) = domainType", $(domainType.getList()).get(0).eq(domainType).toString());
+        assertEquals("domainType.map.get(key) = domainType", $(domainType.getMap()).get("key").eq(domainType).toString());
+    }
+    
+    @Test
+    public void CollectionUsage_Types(){
+        DomainType domainType = Alias.alias(DomainType.class);
+        assertEquals(DomainType.class, $(domainType.getCollection()).any().getType());
+        assertEquals(DomainType.class, $(domainType.getSet()).any().getType());
+        assertEquals(DomainType.class, $(domainType.getList()).any().getType());
+        assertEquals(DomainType.class, $(domainType.getMap()).get("key").getType());
     }
     
     @Test

@@ -12,7 +12,7 @@ import java.sql.Types;
 
 import org.junit.Test;
 
-import com.mysema.query.alias.AliasTest.Gender;
+import com.mysema.query.alias.Gender;
 import com.mysema.query.sql.types.EnumByNameType;
 import com.mysema.query.sql.types.InputStreamType;
 import com.mysema.query.sql.types.StringType;
