@@ -19,6 +19,8 @@ import com.mysema.query.Tuple;
  */
 public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<Tuple>{
 
+    private static final long serialVersionUID = -2640616030595420465L;
+    
     private final List<Expression<?>> args;
     
     public QTuple(Expression<?>... args) {
@@ -33,8 +35,6 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
             this.args.addAll(Arrays.asList(exprs));
         }
     }
-
-    private static final long serialVersionUID = -2640616030595420465L;
 
     @SuppressWarnings("unchecked")
     @Override

@@ -37,7 +37,9 @@ import org.junit.Test;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.sql.Beans;
+import com.mysema.query.sql.Column;
 import com.mysema.query.sql.QBeans;
+import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLSubQuery;
@@ -46,11 +48,13 @@ import com.mysema.query.sql.Wildcard;
 import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QIdName;
+import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.QBean;
 import com.mysema.query.types.QTuple;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -860,4 +864,32 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             assertNotNull(tuple.get(survey.name));
         }
     }
+    
+    @Test
+    public void QBeanUsage(){
+        QSurvey survey = QSurvey.survey;
+        PathBuilder<Object[]> sq = new PathBuilder<Object[]>(Object[].class, "sq");
+        List<Survey> surveys = 
+            query().from(
+                sq().from(survey).list(survey.all()).as("sq"))
+            .list(new QBean<Survey>(Survey.class, Collections.singletonMap("name", sq.get(survey.name))));        
+        assertFalse(surveys.isEmpty());
+
+    }
+    
+    public static class Survey {
+        
+        @Column("NAME")
+        private String name;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+        
+    }
+
 }

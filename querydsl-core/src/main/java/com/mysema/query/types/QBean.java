@@ -24,7 +24,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
  
     private static final long serialVersionUID = -8210214512730989778L;
 
-    private final Map<String,Expression<?>> bindings;
+    private final Map<String, ? extends Expression<?>> bindings;
     
     private final List<Expression<?>> args;
     
@@ -34,11 +34,11 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
     }
     
     @SuppressWarnings("unchecked")
-    public QBean(Path<T> type, Map<String,Expression<?>> bindings) {
+    public QBean(Path<T> type, Map<String, ? extends Expression<?>> bindings) {
         this((Class)type.getType(), bindings);
     }
         
-    public QBean(Class<T> type, Map<String,Expression<?>> bindings) {
+    public QBean(Class<T> type, Map<String, ? extends Expression<?>> bindings) {
         super(type);
         this.args = new ArrayList<Expression<?>>(bindings.values());        
         this.bindings = bindings;
@@ -72,7 +72,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
         try {
             T rv = getType().newInstance();
             BeanMap beanMap = new BeanMap(rv);
-            for (Map.Entry<String,Expression<?>> entry : bindings.entrySet()){
+            for (Map.Entry<String, ? extends Expression<?>> entry : bindings.entrySet()){
                 Object value = args[this.args.indexOf(entry.getValue())];
                 if (value != null){
                     beanMap.put(entry.getKey(), value);    
