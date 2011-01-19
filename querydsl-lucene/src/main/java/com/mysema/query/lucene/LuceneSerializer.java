@@ -129,7 +129,7 @@ public class LuceneSerializer {
         return new BooleanClause(query, occur);
     }
 
-    private Query like(Operation<?> operation, QueryMetadata metadata) {
+    protected Query like(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
         String[] terms = createTerms(operation.getArg(1), metadata);
@@ -177,7 +177,7 @@ public class LuceneSerializer {
         }
     }
 
-    private Query eq(String field, String[] terms, QueryMetadata metadata) {
+    protected Query eq(String field, String[] terms, QueryMetadata metadata) {
         if (terms.length > 1) {
             PhraseQuery pq = new PhraseQuery();
             for (String s : terms) {
@@ -189,7 +189,7 @@ public class LuceneSerializer {
     }
 
     @SuppressWarnings("unchecked")
-    private Query in(Operation<?> operation, QueryMetadata metadata) {
+    protected Query in(Operation<?> operation, QueryMetadata metadata) {
         String field = toField(operation.getArg(0));
         Collection values = (Collection) ((Constant) operation.getArg(1)).getConstant();
         BooleanQuery bq = new BooleanQuery();
@@ -205,7 +205,7 @@ public class LuceneSerializer {
         return bq;
     }
 
-    private Query startsWith(QueryMetadata metadata, Operation<?> operation) {
+    protected Query startsWith(QueryMetadata metadata, Operation<?> operation) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
         String[] terms = createEscapedTerms(operation.getArg(1), metadata);
@@ -220,7 +220,7 @@ public class LuceneSerializer {
         return new PrefixQuery(new Term(field, normalize(terms[0])));
     }
 
-    private Query stringContains(Operation<?> operation, QueryMetadata metadata) {
+    protected Query stringContains(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
         String[] terms = createEscapedTerms(operation.getArg(1), metadata);
@@ -234,7 +234,7 @@ public class LuceneSerializer {
         return new WildcardQuery(new Term(field, "*" + normalize(terms[0]) + "*"));
     }
 
-    private Query endsWith(Operation<?> operation, QueryMetadata metadata) {
+    protected Query endsWith(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
         String[] terms = createEscapedTerms(operation.getArg(1), metadata);
@@ -249,34 +249,34 @@ public class LuceneSerializer {
         return new WildcardQuery(new Term(field, "*" + normalize(terms[0])));
     }
 
-    private Query between(Operation<?> operation, QueryMetadata metadata) {
+    protected Query between(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         // TODO Phrase not properly supported
         return range(toField(operation.getArg(0)), operation.getArg(1), operation.getArg(2), true, true, metadata);
     }
 
-    private Query lt(Operation<?> operation, QueryMetadata metadata) {
+    protected Query lt(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         return range(toField(operation.getArg(0)), null, operation.getArg(1), false, false, metadata);
     }
 
-    private Query gt(Operation<?> operation, QueryMetadata metadata) {
+    protected Query gt(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         return range(toField(operation.getArg(0)), operation.getArg(1), null, false, false, metadata);
     }
 
-    private Query le(Operation<?> operation, QueryMetadata metadata) {
+    protected Query le(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         return range(toField(operation.getArg(0)), null, operation.getArg(1), true, true, metadata);
     }
 
-    private Query ge(Operation<?> operation, QueryMetadata metadata) {
+    protected Query ge(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         return range(toField(operation.getArg(0)), operation.getArg(1), null, true, true, metadata);
     }
 
     @SuppressWarnings("unchecked")
-    private Query range(String field, @Nullable Expression<?> min, @Nullable Expression<?> max, boolean minInc, boolean maxInc, QueryMetadata metadata) {
+    protected Query range(String field, @Nullable Expression<?> min, @Nullable Expression<?> max, boolean minInc, boolean maxInc, QueryMetadata metadata) {
         if (min != null && Number.class.isAssignableFrom(min.getType()) || max != null
                 && Number.class.isAssignableFrom(max.getType())) {
             Class<? extends Number> numType = (Class) (min != null ? min.getType() : max.getType());
@@ -287,7 +287,7 @@ public class LuceneSerializer {
         return stringRange(field, min, max, minInc, maxInc, metadata);
     }
 
-    private <N extends Number> NumericRangeQuery<?> numericRange(Class<N> clazz, String field,
+    protected <N extends Number> NumericRangeQuery<?> numericRange(Class<N> clazz, String field,
             @Nullable N min, @Nullable N max, boolean minInc, boolean maxInc) {
         if (clazz.equals(Integer.class)) {
             return NumericRangeQuery.newIntRange(field, (Integer) min, (Integer) max, minInc, maxInc);
@@ -305,7 +305,7 @@ public class LuceneSerializer {
         }
     }
 
-    private Query stringRange(String field, @Nullable Expression<?> min, @Nullable Expression<?> max,
+    protected Query stringRange(String field, @Nullable Expression<?> min, @Nullable Expression<?> max,
             boolean minInc, boolean maxInc, QueryMetadata metadata) {
         if (min == null) {
             return new TermRangeQuery(field, null, normalize(createTerms(max, metadata)[0]), minInc, maxInc);
@@ -317,7 +317,7 @@ public class LuceneSerializer {
     }
 
     @SuppressWarnings("unchecked")
-    private String toField(Expression<?> expr) {
+    protected String toField(Expression<?> expr) {
         if (expr instanceof Path) {
             return toField((Path<?>) expr);
         } else if (expr instanceof Operation) {
@@ -370,7 +370,7 @@ public class LuceneSerializer {
         }
     }
 
-    private String[] split(Expression<?> expr, String str) {
+    protected String[] split(Expression<?> expr, String str) {
         if (expr instanceof PhraseElement) {
             return StringUtils.split(str);
         } else if (expr instanceof TermElement) {
