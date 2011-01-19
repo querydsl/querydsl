@@ -144,7 +144,7 @@ public class LuceneSerializer {
     }
 
     @SuppressWarnings("unchecked")
-    private Query eq(Operation<?> operation, QueryMetadata metadata) {
+    protected Query eq(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
         if (Number.class.isAssignableFrom(operation.getArg(1).getType())) {
@@ -199,7 +199,7 @@ public class LuceneSerializer {
         return bq;
     }
 
-    private Query ne(Operation<?> operation, QueryMetadata metadata) {
+    protected Query ne(Operation<?> operation, QueryMetadata metadata) {
         BooleanQuery bq = new BooleanQuery();
         bq.add(new BooleanClause(eq(operation, metadata), Occur.MUST_NOT));
         return bq;
@@ -329,7 +329,7 @@ public class LuceneSerializer {
         throw new IllegalArgumentException("Unable to transform " + expr + " to field");
     }
 
-    public String toField(Path<?> path) {
+    protected String toField(Path<?> path) {
         return path.getMetadata().getExpression().toString();
     }
 
