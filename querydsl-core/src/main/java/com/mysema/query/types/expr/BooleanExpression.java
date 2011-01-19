@@ -23,6 +23,9 @@ import com.mysema.query.types.Predicate;
 public abstract class BooleanExpression extends ComparableExpression<Boolean> implements Predicate{
 
     private static final long serialVersionUID = 3797956062512074164L;
+    
+    @Nullable
+    private volatile BooleanExpression eqTrue, eqFalse;
 
     /**
      * Return the intersection of the given Boolean expressions
@@ -112,5 +115,38 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
             return this;
         }
 
+    }
+    
+    /**
+     * Get a this == true expression
+     * 
+     * @return
+     */
+    public BooleanExpression isTrue(){
+        return eq(true);
+    }
+    
+    /**
+     * Get a this == false expression
+     * 
+     * @return
+     */
+    public BooleanExpression isFalse(){
+        return eq(false);
+    }
+    
+    @Override
+    public BooleanExpression eq(Boolean right) {
+        if (right.booleanValue()){
+            if (eqTrue == null){
+                eqTrue = super.eq(true);
+            }
+            return eqTrue;
+        }else{
+            if (eqFalse == null){
+                eqFalse = super.eq(false);
+            }
+            return eqFalse;
+        }        
     }
 }
