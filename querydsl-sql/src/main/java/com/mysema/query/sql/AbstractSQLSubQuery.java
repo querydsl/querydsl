@@ -36,15 +36,37 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         this.queryMixin.setSelf((Q)this);
     }
 
+    /**
+     * Add the given prefix and expression as a general query flag
+     * 
+     * @param position position of the flag
+     * @param prefix prefix for the flag
+     * @param expr expression of the flag
+     * @return
+     */
     protected Q addFlag(Position position, String prefix, Expression<?> expr){
         Expression<?> flag = TemplateExpressionImpl.create(expr.getType(), prefix + "{0}", expr);
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
     
+    /**
+     * Add the given String literal as a query flag
+     * 
+     * @param position
+     * @param flag
+     * @return
+     */
     protected Q addFlag(Position position, String flag){
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
     
+    /**
+     * Add the given Expression as a query flag
+     * 
+     * @param position
+     * @param flag
+     * @return
+     */
     protected Q addFlag(Position position, Expression<?> flag){
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }

@@ -71,11 +71,23 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
         this.entity = Assert.notNull(entity,"entity");
     }
     
+    /**
+     * Add the given String literal at the given position as a query flag
+     * 
+     * @param position
+     * @param flag
+     * @return
+     */
     public SQLUpdateClause addFlag(Position position, String flag){
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
     }
     
+    /**
+     * Add the current state of bindings as a batch item
+     * 
+     * @return
+     */
     public SQLUpdateClause addBatch() {
         batchUpdates.add(updates);
         batchMetadata.add(metadata);
@@ -198,6 +210,14 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
         return serializer.toString();
     }
 
+    /**
+     * Populate the UPDATE clause with the properties of the given bean.
+     * The properties need to match the fields of the clause's entity instance.
+     * Primary key columns are skipped in the population.
+     * 
+     * @param bean
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public SQLUpdateClause populate(Object bean) {
         try {

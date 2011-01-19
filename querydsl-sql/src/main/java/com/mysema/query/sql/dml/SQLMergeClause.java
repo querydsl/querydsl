@@ -78,12 +78,24 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
         this.entity = Assert.notNull(entity,"entity");
     }
     
+    /**
+     * Add the given String literal at the given position as a query flag
+     * 
+     * @param position
+     * @param flag
+     * @return
+     */
     public SQLMergeClause addFlag(Position position, String flag){
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
     }
     
 
+    /**
+     * Add the current state of bindings as a batch item
+     * 
+     * @return
+     */
     public SQLMergeClause addBatch() {
         if (!configuration.getTemplates().isNativeMerge()){
             throw new IllegalStateException("batch only supported for databases that support native merge");
@@ -208,6 +220,12 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
         }
     }
 
+    /**
+     * Set the keys to be used in the MERGE clause
+     * 
+     * @param paths
+     * @return
+     */
     public SQLMergeClause keys(Path<?>... paths){
         for (Path<?> path : paths){
             keys.add(path);

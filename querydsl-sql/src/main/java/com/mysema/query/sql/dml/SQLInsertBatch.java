@@ -15,6 +15,8 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 
 /**
+ * SQLInsertBatch defines the state of an SQL INSERT batch item
+ * 
  * @author tiwe
  *
  */

@@ -114,10 +114,23 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         this.configuration = configuration;
     }
 
+    /**
+     * Add the given String literal as a join flag to the last added join with the position BEFORE_TARGET
+     * 
+     * @param flag
+     * @return
+     */
     protected Q addJoinFlag(String flag){
         return addJoinFlag(flag, JoinFlag.Position.BEFORE_TARGET);
     }
     
+    /**
+     * Add the given String literal as a join flag to the last added join  
+     * 
+     * @param flag
+     * @param position
+     * @return
+     */
     @SuppressWarnings("unchecked")
     protected Q addJoinFlag(String flag, JoinFlag.Position position){
         List<JoinExpression> joins = queryMixin.getMetadata().getJoins();
@@ -125,15 +138,37 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return (Q)this;
     }
 
+    /**
+     * Add the given prefix and expression as a general query flag
+     * 
+     * @param position position of the flag
+     * @param prefix prefix for the flag
+     * @param expr expression of the flag
+     * @return
+     */
     protected Q addFlag(Position position, String prefix, Expression<?> expr){
         Expression<?> flag = SimpleTemplate.create(expr.getType(), prefix + "{0}", expr);
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
 
+    /**
+     * Add the given String literal as query flag
+     * 
+     * @param position
+     * @param flag
+     * @return
+     */
     protected Q addFlag(Position position, String flag){
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
 
+    /**
+     * Add the given Expression as a query flag
+     * 
+     * @param position
+     * @param flag
+     * @return
+     */
     protected Q addFlag(Position position, Expression<?> flag){
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }

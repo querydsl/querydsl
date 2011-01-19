@@ -6,13 +6,14 @@ import com.mysema.query.sql.RelationalPath;
 
 /**
  * Beans contains a list of beans
+ * 
  * @author luis
  */
 public class Beans {
 
-    private final Map<RelationalPath<?>, ?> beans;
+    private final Map<? extends RelationalPath<?>, ?> beans;
 
-    public Beans(Map<RelationalPath<?>, ?> beans) {
+    public Beans(Map<? extends RelationalPath<?>, ?> beans) {
         this.beans = beans;
     }
 

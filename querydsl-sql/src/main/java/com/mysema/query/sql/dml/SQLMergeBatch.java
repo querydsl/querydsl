@@ -11,6 +11,12 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 
+/**
+ * SQLMergeBatch defines the state of an SQL MERGE batch item
+ * 
+ * @author tiwe
+ *
+ */
 @Immutable
 public class SQLMergeBatch {
     

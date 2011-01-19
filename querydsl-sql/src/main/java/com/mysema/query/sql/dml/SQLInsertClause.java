@@ -78,11 +78,23 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         this.entity = Assert.notNull(entity,"entity");
     }
     
+    /**
+     * Add the given String literal at the given position as a query flag
+     * 
+     * @param position
+     * @param flag
+     * @return
+     */
     public SQLInsertClause addFlag(Position position, String flag){
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
     }
     
+    /**
+     * Add the current state of bindings as a batch item
+     * 
+     * @return
+     */
     public SQLInsertClause addBatch() {
         batches.add(new SQLInsertBatch(columns, values, subQuery));
         columns.clear();
@@ -113,6 +125,13 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         return this;
     }
 
+    /**
+     * Execute the clause and return the generated key with the type of the given path
+     * 
+     * @param <T>
+     * @param path
+     * @return
+     */
     @Nullable
     public <T> T executeWithKey(Path<T> path){
         ResultSet rs = executeWithKeys();
@@ -129,6 +148,13 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         }
     }
 
+    /**
+     * Execute the clause and return the generated keys with the type of the given path
+     * 
+     * @param <T>
+     * @param path
+     * @return
+     */
     public <T> List<T> executeWithKeys(Path<T> path){
         ResultSet rs = executeWithKeys();
         try{
@@ -182,6 +208,11 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         return stmt;
     }
     
+    /**
+     * Execute the clause and return the generated keys as a ResultSet
+     * 
+     * @return
+     */
     public ResultSet executeWithKeys(){        
         try {
             final PreparedStatement stmt = createStatement(true);
@@ -283,6 +314,13 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         return serializer.toString();
     }
 
+    /**
+     * Populate the INSERT clause with the properties of the given bean.
+     * The properties need to match the fields of the clause's entity instance.
+     * 
+     * @param bean
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public SQLInsertClause populate(Object bean) {
         try {

@@ -59,11 +59,23 @@ public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<S
         this.entity = Assert.notNull(entity,"entity");
     }
     
+    /**
+     * Add the given String literal at the given position as a query flag 
+     * 
+     * @param position
+     * @param flag
+     * @return
+     */
     public SQLDeleteClause addFlag(Position position, String flag){
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
     }
     
+    /**
+     * Add current state of bindings as a batch item 
+     * 
+     * @return
+     */
     public SQLDeleteClause addBatch() {
         batches.add(metadata);
         metadata = new DefaultQueryMetadata();
