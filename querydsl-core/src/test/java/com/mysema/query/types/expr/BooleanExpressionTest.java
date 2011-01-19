@@ -26,4 +26,14 @@ public class BooleanExpressionTest {
     public void Not(){
         assertEquals(a, a.not().not());
     }
+    
+    @Test
+    public void IsTrue(){
+        assertEquals(a.eq(true), a.isTrue());
+    }
+    
+    @Test
+    public void IsFalse(){
+        assertEquals(a.eq(false), a.isFalse());
+    }
 }
