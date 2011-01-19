@@ -100,38 +100,6 @@ public class MetaDataExporter {
 
     public MetaDataExporter(){}
 
-    /**
-     * @deprecated Use empty constructor and configure via setters
-     */
-    @Deprecated
-    public MetaDataExporter(
-            String namePrefix,
-            String packageName,
-            File targetFolder,
-            NamingStrategy namingStrategy,
-            Serializer serializer){
-        this(namePrefix, packageName, targetFolder, namingStrategy, serializer, null);
-    }
-
-    /**
-     * @deprecated Use empty constructor and configure via setters
-     */
-    @Deprecated
-    public MetaDataExporter(
-            String namePrefix,
-            String packageName,
-            File targetFolder,
-            NamingStrategy namingStrategy,
-            Serializer serializer,
-            @Nullable Serializer beanSerializer){
-        this.namePrefix = Assert.notNull(namePrefix,"namePrefix");
-        this.packageName = Assert.notNull(packageName,"packageName");
-        this.targetFolder = Assert.notNull(targetFolder,"targetFolder");
-        this.namingStrategy = Assert.notNull(namingStrategy,"namingStrategy");
-        this.serializer = Assert.notNull(serializer, "serializer");
-        this.beanSerializer = beanSerializer;
-    }
-
     protected EntityType createEntityType(String tableName, String className) {
         Type classTypeModel = new SimpleType(
                 TypeCategory.ENTITY,
@@ -268,42 +236,76 @@ public class MetaDataExporter {
         }
     }
 
+    /**
+     * @param schemaPattern a schema name pattern; must match the schema name
+     *        as it is stored in the database; "" retrieves those without a schema;
+     *        <code>null</code> means that the schema name should not be used to narrow
+     *        the search (default: null)
+     */
     public void setSchemaPattern(String schemaPattern) {
         this.schemaPattern = schemaPattern;
     }
-
+    
+    /**
+    * @param tableNamePattern a table name pattern; must match the
+    *        table name as it is stored in the database (default: null)
+    */
     public void setTableNamePattern(String tableNamePattern) {
         this.tableNamePattern = tableNamePattern;
     }
 
+    /**
+     * @param configuration override configuration for custom type mappings etc
+     */
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
 
+    /**
+     * @param createScalaSources whether to create Scala sources (default: false)
+     */
     public void setCreateScalaSources(boolean createScalaSources) {
         this.createScalaSources = createScalaSources;
     }
 
+    /**
+     * @param targetFolder target source folder to create the sources into (e.g. target/generated-sources/java)
+     */
     public void setTargetFolder(File targetFolder) {
         this.targetFolder = targetFolder;
     }
 
+    /**
+     * @param packageName package name for sources
+     */
     public void setPackageName(String packageName) {
         this.packageName = packageName;
     }
 
+    /**
+     * @param namePrefix name prefix for Q-types (default: Q)
+     */
     public void setNamePrefix(String namePrefix) {
         this.namePrefix = namePrefix;
     }
 
+    /**
+     * @param namingStrategy namingstrategy to override (default: new DefaultNamingStrategy())
+     */
     public void setNamingStrategy(NamingStrategy namingStrategy) {
         this.namingStrategy = namingStrategy;
     }
 
+    /**
+     * @param serializer serializer to override (default: new MetaDataSerializer(namePrefix, namingStrategy))
+     */
     public void setSerializer(Serializer serializer) {
         this.serializer = serializer;
     }
 
+    /**
+     * @param beanSerializer serializer for JavaBeans (default: null)
+     */
     public void setBeanSerializer(Serializer beanSerializer) {
         this.beanSerializer = beanSerializer;
     }
