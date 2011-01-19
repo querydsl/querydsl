@@ -62,13 +62,13 @@ exporter.export(conn.getMetaData());
     <targetFolder>${project.basedir}/target/generated-sources/java</targetFolder>
 	<!--
       optional elements :      
-      * jdbcUser
-      * jdbcPassword
-	  * namePrefix
-      * schemaPattern
-      * tableNamePattern    
-	  * exportBeans
-	  * innerClassesForKeys
+      * jdbcUser = connection user
+      * jdbcPassword = connection password
+	  * namePrefix = name prefix for Q-types (default: Q)
+      * schemaPattern = to restrict code generation to certain schemas (default: null)
+      * tableNamePattern = to restrict code generation to certain tables (default: null)
+	  * exportBeans = set to true to generate beans as well (default: false)
+	  * innerClassesForKeys = set to true to 
     -->     
   </configuration>
   <dependencies>
