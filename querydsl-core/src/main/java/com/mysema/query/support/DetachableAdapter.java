@@ -5,6 +5,8 @@
  */
 package com.mysema.query.support;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -14,7 +16,16 @@ import com.mysema.query.types.expr.DateTimeExpression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.expr.TimeExpression;
-import com.mysema.query.types.query.*;
+import com.mysema.query.types.query.BooleanSubQuery;
+import com.mysema.query.types.query.ComparableSubQuery;
+import com.mysema.query.types.query.DateSubQuery;
+import com.mysema.query.types.query.DateTimeSubQuery;
+import com.mysema.query.types.query.Detachable;
+import com.mysema.query.types.query.ListSubQuery;
+import com.mysema.query.types.query.NumberSubQuery;
+import com.mysema.query.types.query.SimpleSubQuery;
+import com.mysema.query.types.query.StringSubQuery;
+import com.mysema.query.types.query.TimeSubQuery;
 
 /**
  * DetachableAdapter is an apadater implementation for the Detachable interface
@@ -24,12 +35,15 @@ import com.mysema.query.types.query.*;
  */
 public class DetachableAdapter implements Detachable{
 
-    private final Detachable detachable;
+    @Nullable
+    private Detachable detachable;
 
+    public DetachableAdapter(){}
+    
     public DetachableAdapter(Detachable detachable){
         this.detachable = detachable;
     }
-
+    
     public NumberSubQuery<Long> count() {
         return detachable.count();
     }
@@ -96,6 +110,10 @@ public class DetachableAdapter implements Detachable{
 
     public <RT> SimpleSubQuery<RT> unique(Expression<RT> projection) {
         return detachable.unique(projection);
+    }
+    
+    protected void setDetachable(Detachable detachable){
+        this.detachable = detachable;
     }
 
 }
