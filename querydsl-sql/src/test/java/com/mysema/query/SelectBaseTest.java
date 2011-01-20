@@ -877,7 +877,14 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
     
     @Test
-    public void In(){
+    public void Operation_in_Constant_list(){
+        query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a'))).count();
+        query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a','b'))).count();
+        query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a','b','c'))).count();
+    }
+    
+    @Test
+    public void Path_in_Constant_list(){
         query().from(survey).where(survey.name.in(Arrays.asList("a"))).count();
         query().from(survey).where(survey.name.in(Arrays.asList("a","b"))).count();
         query().from(survey).where(survey.name.in(Arrays.asList("a","b","c"))).count();

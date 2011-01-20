@@ -502,12 +502,18 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator, List<Expression<?>> args) {
         if (args.size() == 2 
-         && args.get(0) instanceof Path<?> 
+//         && args.get(0) instanceof Path<?> 
          && args.get(1) instanceof Constant<?>
          && operator != Ops.STRING_CAST 
          && operator != Ops.NUMCAST
          && operator != SQLTemplates.CAST){
-            constantPaths.add((Path<?>)args.get(0));
+            // TODO : provide a better solution for this
+            if (args.get(0) instanceof Path<?>){
+                constantPaths.add((Path<?>)args.get(0));    
+            }else if (args.get(0) instanceof Operation<?> && ((Operation<?>)args.get(0)).getArg(0) instanceof Path<?>){
+                constantPaths.add((Path<?>) ((Operation<?>)args.get(0)).getArg(0));
+            }
+            
         }        
         if (operator.equals(Ops.STRING_CAST)) {
             String typeName = templates.getTypeForClass(String.class);
