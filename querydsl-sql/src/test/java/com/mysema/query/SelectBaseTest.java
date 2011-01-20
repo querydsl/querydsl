@@ -39,7 +39,6 @@ import com.mysema.commons.lang.Pair;
 import com.mysema.query.sql.Beans;
 import com.mysema.query.sql.Column;
 import com.mysema.query.sql.QBeans;
-import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLSubQuery;
@@ -875,6 +874,13 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             .list(new QBean<Survey>(Survey.class, Collections.singletonMap("name", sq.get(survey.name))));        
         assertFalse(surveys.isEmpty());
 
+    }
+    
+    @Test
+    public void In(){
+        query().from(survey).where(survey.name.in(Arrays.asList("a"))).count();
+        query().from(survey).where(survey.name.in(Arrays.asList("a","b"))).count();
+        query().from(survey).where(survey.name.in(Arrays.asList("a","b","c"))).count();
     }
     
     public static class Survey {
