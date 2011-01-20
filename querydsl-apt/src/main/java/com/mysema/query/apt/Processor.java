@@ -489,7 +489,7 @@ public class Processor {
             TypeMirror type = element.asType();
             if (element.getKind() == ElementKind.METHOD){
                 type = ((ExecutableElement)element).getReturnType();
-            }
+            }            
             String typeName = type.toString();
             if (typeName.startsWith(Collection.class.getName())
              || typeName.startsWith(List.class.getName())
@@ -516,6 +516,11 @@ public class Processor {
                 typeName = typeName.substring(0, typeName.indexOf("<"));
             }
             TypeElement typeElement = env.getElementUtils().getTypeElement(typeName);
+            if (typeElement.getAnnotation(configuration.getEntityAnnotation()) != null){
+                // skip Entity types here
+                continue;
+            }
+            
             EntityType model = elementHandler.handleNormalType(typeElement);
             registerTypeElement(model.getFullName(), typeElement);
             embeddables.put(model.getFullName(), model);
