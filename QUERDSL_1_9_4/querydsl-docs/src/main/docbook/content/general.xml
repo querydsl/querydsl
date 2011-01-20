@@ -1,0 +1,11 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<chapter id="general" xmlns:xi="http://www.w3.org/2001/XInclude">
+    <title>General usage</title>
+    
+	<xi:include href="general/expressions.xml" />
+	<xi:include href="general/configuration.xml" />
+	<xi:include href="general/best-practices.xml" />
+    <xi:include href="general/alias.xml" />
+                       
+</chapter>    

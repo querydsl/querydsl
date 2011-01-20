@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.mysema.querydsl</groupId>
+    <artifactId>querydsl-root</artifactId>
+    <version>1.9.4</version>
+  </parent>
+
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-hql</artifactId>
+  <name>Querydsl - HQL/JPAQL support</name>
+  <description>HQL/JPAQL support for querydsl</description>
+  <packaging>jar</packaging>
+  
+  <properties>
+    <hibernate.version>3.5.1-Final</hibernate.version>
+    <hibernate.validator.version>4.0.2.GA</hibernate.validator.version>
+  </properties>
+  
+  <dependencies>   
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-annotations</artifactId>
+      <version>${hibernate.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>cglib</groupId>
+          <artifactId>cglib</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>asm</groupId>
+          <artifactId>asm</artifactId>
+        </exclusion>
+      </exclusions>      
+      <scope>provided</scope>      
+    </dependency>   
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>${hibernate.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>${hibernate.validator.version}</version>
+      <scope>provided</scope>
+    </dependency>    
+
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-core</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-apt</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>
+    
+    <!-- optional -->
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-sql</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>    
+	
+    <!-- test -->
+	<dependency>
+	  <groupId>org.eclipse.persistence</groupId>
+	  <artifactId>eclipselink</artifactId>
+	  <version>2.2.0-SNAPSHOT</version>
+	  <scope>test</scope>
+    </dependency>
+		
+    <dependency>
+      <groupId>hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>${hsqldb.version}</version>
+      <scope>test</scope>
+      <!-- license : TODO -->
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.2.133</version>
+      <scope>test</scope>
+    </dependency>
+	
+    <dependency>
+      <groupId>org.apache.derby</groupId>
+      <artifactId>derby</artifactId>
+      <version>${derby.version}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.6</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.sourceforge.jtds</groupId>
+      <artifactId>jtds</artifactId>
+      <version>1.2.4</version>
+      <scope>test</scope>
+    </dependency>    
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-core</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>
+  </dependencies>
+  
+  <repositories>
+    <repository>
+      <id>jboss</id>
+      <url>http://repository.jboss.com/maven2</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+	
+    <repository>
+      <id>EclipseLink Repo</id>
+      <url>http://ftp.us.xemacs.org/pub/mirrors/eclipse/rt/eclipselink/maven.repo</url>
+    </repository>    	
+  </repositories>  
+
+  <build>
+    <plugins> 
+      <plugin>
+      	<groupId>org.apache.maven.plugins</groupId>
+      	<artifactId>maven-jar-plugin</artifactId>
+		<executions>
+		   <execution>
+		  	 <id>apt</id>
+			 <goals>
+			   <goal>jar</goal>				
+			 </goals>	
+			 <configuration>
+			   <classifier>apt</classifier>
+			   <classesDirectory>src/apt</classesDirectory>									
+			 </configuration>			  
+		   </execution>			
+	    </executions>
+	  </plugin>	  	
+	     
+      <plugin>
+        <groupId>com.mysema.maven</groupId>
+        <artifactId>maven-apt-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-process</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>target/generated-test-sources/java</outputDirectory>
+              <processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>com.mysema.querydsl</groupId>
+        <artifactId>querydsl-maven-plugin</artifactId>
+        <version>${project.version}</version>
+        <!-- 
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-export</goal>
+            </goals>
+          </execution>
+        </executions>
+         -->
+        <configuration>
+          <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
+          <jdbcUrl>jdbc:derby:target/derbydb;create=true</jdbcUrl>
+          <packageName>com.mysema.query.hql.domain.sql</packageName>
+          <targetFolder>src/test/java</targetFolder>
+          <namePrefix>S</namePrefix>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.derby</groupId>
+            <artifactId>derby</artifactId>
+            <version>${derby.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>    
+    </plugins>
+  </build>
+
+</project>

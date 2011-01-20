@@ -1,0 +1,33 @@
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
+ *
+ */
+package com.mysema.query.collections;
+
+import org.apache.commons.collections15.Transformer;
+
+import com.mysema.codegen.Evaluator;
+
+/**
+ * Transformer implementation which uses and Evaluator for transformation
+ * 
+ * @author tiwe
+ */
+public class EvaluatorTransformer<S, T> implements Transformer<S, T> {
+
+    private final Evaluator<T> ev;
+
+    public EvaluatorTransformer(Evaluator<T> ev) {
+        this.ev = ev;
+    }
+
+    @Override
+    public T transform(S input) {
+        if (input.getClass().isArray()){
+            return ev.evaluate((Object[]) input);
+        }else{
+            return ev.evaluate(new Object[]{input});
+        }
+    }
+}

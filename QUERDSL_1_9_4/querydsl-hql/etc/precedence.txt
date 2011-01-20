@@ -1,0 +1,40 @@
+BINARY, COLLATE
+!, 
+NOT
+- (unary minus), 
+~ (unary bit inversion)
+^
+*, 
+/, 
+DIV, 
+%, 
+MOD
+-, 
++
+<<, 
+>>
+&
+|
+=, 
+<=>, 
+>=, 
+>, 
+<=, 
+<, 
+<>, 
+!=, 
+IS, 
+LIKE, 
+REGEXP, 
+IN
+BETWEEN, 
+CASE, 
+WHEN, 
+THEN, 
+ELSE
+&&, 
+AND
+||, 
+OR, 
+XOR
+:=

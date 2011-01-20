@@ -1,0 +1,134 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<chapter id="troubleshooting" revision="1">
+  <title>Troubleshooting</title>
+  
+  <sect1>
+    <title>Insufficient type arguments</title>
+    
+    <para>
+    Querydsl needs properly encoded List Set, Collection and Map properties in all code generation scenarios.
+    </para>    
+    
+    <para>When using improperly encoded fields or getters you might the following stacktrace :</para>
+    
+<programlisting><![CDATA[    
+java.lang.RuntimeException: Caught exception for field com.mysema.query.jdoql.testdomain.Store#products
+  at com.mysema.query.apt.Processor$2.visitType(Processor.java:117)
+  at com.mysema.query.apt.Processor$2.visitType(Processor.java:80)
+  at com.sun.tools.javac.code.Symbol$ClassSymbol.accept(Symbol.java:827)
+  at com.mysema.query.apt.Processor.getClassModel(Processor.java:154)
+  at com.mysema.query.apt.Processor.process(Processor.java:191)
+  ...
+Caused by: java.lang.IllegalArgumentException: Insufficient type arguments for List
+  at com.mysema.query.apt.APTTypeModel.visitDeclared(APTTypeModel.java:112)
+  at com.mysema.query.apt.APTTypeModel.visitDeclared(APTTypeModel.java:40)
+  at com.sun.tools.javac.code.Type$ClassType.accept(Type.java:696)
+  at com.mysema.query.apt.APTTypeModel.<init>(APTTypeModel.java:55)
+  at com.mysema.query.apt.APTTypeModel.get(APTTypeModel.java:48)
+  at com.mysema.query.apt.Processor$2.visitType(Processor.java:114)
+  ... 35 more
+]]></programlisting>
+    
+    <para>
+    Examples of problematic field declarations and their corrections :
+    </para>
+    
+    <programlisting language="java"><![CDATA[
+    private Collection names; // WRONG
+    
+    private Collection<String> names; // RIGHT
+    
+    private Map employeesByName; // WRONG
+    
+    private Map<String,Employee> employeesByName; // RIGHT
+]]></programlisting>    
+    
+    
+  </sect1> 
+
+  <sect1>
+    <title>JDK5 usage</title>
+
+    <para>
+When compiling your project with JDK 5, you might get the following compilation failure:
+  </para>
+
+<programlisting><![CDATA[
+[INFO] ------------------------------------------------------------------------
+[ERROR] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Compilation failure
+...
+class file has wrong version 50.0, should be 49.0
+]]></programlisting>
+
+  <para>
+The class file version 50.0 is used by Java 6.0, and 49.0 is used by Java 5.0.
+</para>
+
+  <para>
+Querydsl is tested against JDK 6.0 only, as we use APT extensively, which is available only since JDK 6.0.
+</para>
+
+<para>
+If you want to use it with JDK 5.0 you might want to try to compile Querydsl yourself.
+</para>
+
+<para>
+To use Querydsl with JDK 5.0 you also need to exclude querydsl-hql-apt and include querydsl-apt-jdk5 like this :
+</para>
+
+<programlisting language="xml"><![CDATA[
+<dependency>
+ <groupId>com.mysema.querydsl</groupId>
+ <artifactId>querydsl-hql</artifactId>
+ <version>0.4.4</version>
+  <exclusions>
+    <exclusion>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-hql-apt</artifactId>
+    </exclusion>
+  </exclusions>
+</dependency>
+
+<dependency>
+ <groupId>com.mysema.querydsl</groupId>
+ <artifactId>querydsl-apt-jdk5</artifactId>
+ <version>0.4.4</version>
+ <scope>provided</scope>
+</dependency>
+]]></programlisting>
+
+</sect1>
+
+<!-- 
+<sect1>
+    <title>Custom literal types</title>
+
+ <para>To use custom literal types annotate the types or the type usage with the 
+ com.mysema.query.annotations.Literal annotation.</para>
+ 
+ <programlisting language="java"><![CDATA[
+ @Literal
+ public class DateTime {
+     //...
+ }
+ ]]></programlisting>
+
+or if the Literal type can't be annotated
+
+ <programlisting language="java"><![CDATA[
+ public class MyEntity {
+     @Literal
+     private DateTime created;
+ }
+ ]]></programlisting>
+
+
+</sect1>
+
+ -->
+
+</chapter>
+

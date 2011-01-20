@@ -1,0 +1,69 @@
+<sect1>
+    
+    <title>Best practices</title>
+    
+    <sect2>
+  
+    <title>Use default variable of the Query types</title>
+    
+    <para>Use the default variables of the query types as much as possible. The default variables
+    are available as static final fields in the query types. The name is always the decapitalized version
+    of the simple type name. For the type Account this would be account :</para>
+    
+<programlisting language="java"><![CDATA[     
+public class QAccount extends PEntity<Account>{
+      
+    public static final QAccount account = new QAccount("account");
+    
+}
+]]></programlisting>      
+
+  <para>
+  Querydsl query types are safe to re-use, and by using Querydsl default variables you save initialization time
+  and memory.
+  </para>
+    
+  </sect2>
+ 
+  <sect2>
+  
+    <title>Interface based usage</title>
+  
+    <para>Whenever possible, use interface based query references : e.g. JDOQLQuery for JDO and HQLQuery for HQL</para>
+  
+  </sect2>
+  
+  <sect2>
+  
+    <title>Custom query extensions</title>
+  
+    <para>TODO</para>
+  
+  </sect2>
+ 
+  <sect2 id="dao_integration">
+  
+  <title>DAO integration</title>
+  
+  <para>A practice which we have found to be very easy to use is to provide factory methods for 
+  Query instances in DAO implementations in the following form.</para>
+  
+  <para>For HQL usage :</para>
+  
+<programlisting language="java"><![CDATA[ 
+protected HQLQuery from(PEntity<?>... o) {
+    return new HqlQueryImpl(session).from(o);
+} 
+]]></programlisting>  
+  
+  <para>For JDO usage : </para>
+  
+<programlisting language="java"><![CDATA[
+protected JDOQLQuery from(PEntity<?>... o) {
+    return new JDOQLQueryImpl(persistenceManager).from(o);
+}        
+]]></programlisting>         
+  
+  </sect2>        
+  
+  </sect1>             

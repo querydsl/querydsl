@@ -1,0 +1,529 @@
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+
+<sect1 id="sql_integration" revision="1">
+  
+  <title>Querying SQL/JDBC sources</title>
+  
+  <para>This chapter describes the query type generation and querying functionality of the SQL module.</para>
+  
+  <sect2>
+  
+    <title>Creating the Querydsl query types</title>
+  
+  <para>To get started export your schema into Querydsl query types like this :</para>
+  
+<programlisting language="java"><![CDATA[  
+java.sql.Connection conn; // connection of database containing the schema to use
+// obtain Connection etc.
+
+NamingStrategy namingStrategy = new DefaultNamingStrategy();
+MetaDataSerializer serializer = new MetaDataSerializer("Q",namingStrategy);            
+MetaDataExporter exporter = new MetaDataExporter(
+    "Q",                       // namePrefix 
+    "com.myproject.mydomain",  // target package  
+    new File("src/main/java"), // target source folder
+    namingStrategy,            // naming strategy
+    serializer);               // serializer
+exporter.export(conn.getMetaData());  
+]]></programlisting>
+
+  <para>This declares that the database schema is to be mirrored into the com.myproject.domain package in the src/main/java folder.</para>
+  
+  <para>
+  The generated types have the table name transformed to mixed case as the class name and a similar mixed case transformation
+  applied to the columns which are available as property paths in the query type.
+  </para>
+ 
+  <para>
+  In addition to this primary key and foreign key constraints are provided as fields which can be used for compact join declarations ... TODO 
+  </para>
+  
+ </sect2>
+ 
+ <sect2>
+ 
+  <title>Maven integration</title> 
+    
+  <para>This functionality is also available as a Maven plugin. The presented example can be declared like this in the POM :</para>
+  
+<programlisting language="xml"><![CDATA[   
+<plugin>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-maven-plugin</artifactId>
+  <version>${querydsl.version}</version>
+  <executions>
+    <execution>
+      <goals>
+        <goal>export</goal>
+      </goals>
+    </execution>            
+  </executions>
+  <configuration>
+    <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
+    <jdbcUrl>jdbc:derby:target/demoDB;create=true</jdbcUrl>
+    <!--
+      optional elements :
+      * namePrefix
+      * jdbcUser
+      * jdbcPassword
+      * schemaPattern
+      * tableNamePattern    
+    -->    
+    <packageName>com.myproject.domain</packageName>
+    <targetFolder>${project.basedir}/target/generated-sources/java</targetFolder> 
+  </configuration>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.derby</groupId>
+      <artifactId>derby</artifactId>
+      <version>${derby.version}</version>
+    </dependency>
+  </dependencies>
+</plugin>  
+]]></programlisting>  
+
+  <para>Use the goal <emphasis>test-export</emphasis> to add the targetFolder as a test compile source root
+  instead of a compile source root.</para>
+  
+  </sect2>
+  
+  <sect2>
+  
+    <title>Querying</title>
+  
+    <para>Querying with Querydsl SQL is as simple as this :</para>
+    
+<programlisting language="java"><![CDATA[ 
+QCustomer customer = new QCustomer("c");
+
+SQLTemplates dialect = new HSQLDBTemplates(); // SQL-dialect
+SQLQuery query = new SQLQueryImpl(connection, dialect); 
+List<String> lastNames = query.from(customer)
+    .where(customer.firstName.eq("Bob"))
+    .list(customer.lastName);
+]]></programlisting>  
+
+    <para>which is transformed into the following sql query, assuming that the related table name is 
+    <emphasis>customer</emphasis> and the columns <emphasis>first_name</emphasis> and 
+    <emphasis>last_name</emphasis> :</para>
+    
+<programlisting><![CDATA[     
+SELECT c.last_name 
+FROM customer c 
+WHERE c.first_name = 'Bob'
+]]></programlisting>  
+
+    <para>Internally Querydsl SQL uses PreparedStatements, though.</para>
+
+    <para>Querydsl uses SQL dialects to customize the SQL serialization needed for different relational databases. The
+    available dialects are :</para>
+    
+    <itemizedlist>
+      <listitem>
+        <para>DerbyTemplates</para>
+        <itemizedlist>
+          <listitem><para>tested with version 10.5.3</para></listitem>
+        </itemizedlist>        
+      </listitem>
+      <listitem>
+        <para>HSQLDBTemplates</para>
+        <itemizedlist>
+          <listitem><para>tested with version 1.8.0.7</para></listitem>
+        </itemizedlist>        
+      </listitem>
+	<listitem>
+        <para>H2Templates</para>
+        <itemizedlist>
+          <listitem><para>tested with H2 1.2.133</para></listitem>
+        </itemizedlist>
+      </listitem>      
+      <listitem>
+        <para>MySQLTemplates</para>
+        <itemizedlist>
+          <listitem><para>tested with MySQL CE 5.1</para></listitem>
+        </itemizedlist>
+      </listitem>
+      <listitem>
+        <para>OracleTemplates</para>
+        <itemizedlist>
+          <listitem><para>tested with Oracle 10g XE</para></listitem>
+        </itemizedlist>
+      </listitem>
+      <listitem>
+        <para>PostgresTemplates</para>
+        <itemizedlist>
+          <listitem><para>tested with Postgres 8.4</para></listitem>
+        </itemizedlist>
+      </listitem>
+      <listitem>
+        <para>SQLServerTemplates</para>
+        <itemizedlist>
+          <listitem><para>tested with SQL Server 2008</para></listitem>
+        </itemizedlist>
+      </listitem>
+    </itemizedlist>
+    
+  </sect2>
+  
+  <sect2>
+
+  <title>General usage</title>
+  
+  <para>Use the the cascading methods of the SQLQuery interface like this</para>
+  
+  <para><emphasis>from :</emphasis> Define the query sources here.</para>
+  
+  <para><emphasis>innerJoin, join, leftJoin, fullJoin, on</emphasis> : Define join elements using these constructs. 
+  For the join methods the first argument is the join source and the second the target (alias).</para>
+  
+  <para><emphasis>where :</emphasis> Define the query filters, either in varargs form separated via commas or 
+  cascaded via the and-operator.</para>
+  
+  <para><emphasis>groupBy :</emphasis> Define the group by arguments in varargs form.</para>
+  
+  <para><emphasis>having :</emphasis> Define the having filter of the "group by" grouping as an varags array of 
+  EBoolean expressions.</para>
+  
+  <para><emphasis>orderBy :</emphasis> Define the ordering of the result as an varargs array of order expressions. 
+  Use asc() and desc() on numeric, string and other comparable expression to access the OrderSpecifier instances. </para>
+  
+  <para><emphasis>limit, offset, restrict :</emphasis> Define the paging of the result. Limit for max results, 
+  offset for skipping rows and restrict for defining both in one call.</para>
+  
+  </sect2>  
+  
+  <sect2>
+  
+  <title>Ordering</title>
+  
+  <para>The syntax for declaring ordering is </para>
+  
+<programlisting language="java"><![CDATA[ 
+query.from(customer)
+    .orderBy(customer.lastName.asc(), customer.firstName.asc())
+    .list(customer.firstName, customer.lastName);
+]]></programlisting>
+
+  <para>which is equivalent to the following native SQL</para>  
+
+<programlisting>  
+SELECT c.first_name, c.last_name
+FROM customer c 
+ORDER BY c.last_name ASC, c.first_name ASC
+</programlisting>
+  
+  </sect2>  
+
+  <sect2>
+  
+  <title>Grouping</title>
+  
+  <para>Grouping can be done in the following form</para>
+  
+<programlisting language="java"><![CDATA[ 
+query.from(customer)
+    .groupBy(customer.lastName)
+    .list(customer.lastName);
+]]></programlisting>
+
+  <para>which is equivalent to the following native SQL</para>  
+
+<programlisting>  
+SELECT c.last_name 
+FROM customer c 
+GROUP BY c.last_name
+</programlisting>
+      
+  </sect2>    
+  
+  <sect2>
+  
+    <title>Union queries</title>
+    
+    <para>TODO</para>
+  
+  </sect2>
+  
+  <sect2>
+  
+    <title>Query extension support</title>
+    
+    <para>Custom query extensions to support engine specific syntax can be created by subclassing AbstractSQLQuery and adding flagging methods like 
+    in the given MySQLQuery example : </para>
+    
+<programlisting language="java"><![CDATA[          
+public class MySQLQuery extends AbstractSQLQuery<MySQLQuery>{
+    
+    public MySQLQuery(Connection conn) {
+        this(conn, new MySQLTemplates(), new DefaultQueryMetadata());
+    }
+    
+    public MySQLQuery(Connection conn, SQLTemplates templates) {
+        this(conn, templates, new DefaultQueryMetadata());
+    }
+    
+    protected MySQLQuery(Connection conn, SQLTemplates templates, QueryMetadata metadata) {
+        super(conn, new Configuration(templates), metadata);
+    }
+    
+    public MySQLQuery bigResult(){
+        return addFlag(Position.AFTER_SELECT, "SQL_BIG_RESULT ");
+    }
+    
+    public MySQLQuery bufferResult(){
+        return addFlag(Position.AFTER_SELECT, "SQL_BUFFER_RESULT ");
+    }
+ 
+ 
+    // ...   
+}        
+]]></programlisting>   
+
+  <para>The flags are custom SQL snippets that can be inserted at specific points in the serialization. 
+  The supported positions are the enums of the com.mysema.query.QueryFlag.Position enum class.</para>
+    
+  </sect2>
+  
+  <sect2>
+  
+    <title>Using DDL commands</title>
+    
+    <para>CREATE TABLE commands can be used in fluent form via the CreateTableClause. Here are some examples : </para>
+    
+<programlisting language="java"><![CDATA[      
+new CreateTableClause(conn, templates, "language")
+	.column("id", Integer.class).notNull()
+	.column("text", String.class).size(256).notNull()
+	.primaryKey("PK_LANGUAGE","id")
+	.execute();
+
+new CreateTableClause(conn, templates, "symbol")
+	.column("id", Long.class).notNull()
+	.column("lexical", String.class).size(1024).notNull()
+	.column("datatype", Long.class)
+	.column("lang", Integer.class)
+	.column("intval",Long.class)
+	.column("floatval",Double.class)
+	.column("datetimeval",Timestamp.class)
+	.primaryKey("PK_SYMBOL","id")
+	.foreignKey("FK_LANG","lang").references("language","id")
+	.execute();
+
+new CreateTableClause(conn, templates, "statement")
+	.column("model", Long.class)
+	.column("subject", Long.class).notNull()
+	.column("predicate", Long.class).notNull()
+	.column("object", Long.class).notNull()
+	.foreignKey("FK_MODEL","model").references("symbol","id")
+	.foreignKey("FK_SUBJECT","subject").references("symbol","id")
+	.foreignKey("FK_PREDICATE","predicate").references("symbol","id")
+	.foreignKey("FK_OBJECT","object").references("symbol","id")
+	.execute();    
+]]></programlisting>        
+  
+  <para>The constructor of CreateTableClause takes the connection, the templates and the table name. The rest is declared via
+  column, primaryKey and foreignKey invocations. 
+  </para>
+  
+  <para>Here are the corresponding CREATE TABLE clauses as they are executed.</para>
+  
+<programlisting language="sql"><![CDATA[      
+ CREATE TABLE language (
+  id INTEGER NOT NULL,
+  text VARCHAR(256) NOT NULL,
+  CONSTRAINT PK_LANGUAGE PRIMARY KEY(id)
+)
+
+ CREATE TABLE symbol (
+  id BIGINT NOT NULL,
+  lexical VARCHAR(1024) NOT NULL,
+  datatype BIGINT,
+  lang INTEGER,
+  intval BIGINT,
+  floatval DOUBLE,
+  datetimeval TIMESTAMP,
+  CONSTRAINT PK_SYMBOL PRIMARY KEY(id),
+  CONSTRAINT FK_LANG FOREIGN KEY(lang) REFERENCES language(id)
+)
+
+ CREATE TABLE statement (
+  model BIGINT,
+  subject BIGINT NOT NULL,
+  predicate BIGINT NOT NULL,
+  object BIGINT NOT NULL,
+  CONSTRAINT FK_MODEL FOREIGN KEY(model) REFERENCES symbol(id),
+  CONSTRAINT FK_SUBJECT FOREIGN KEY(subject) REFERENCES symbol(id),
+  CONSTRAINT FK_PREDICATE FOREIGN KEY(predicate) REFERENCES symbol(id),
+  CONSTRAINT FK_OBJECT FOREIGN KEY(object) REFERENCES symbol(id)
+)  
+]]></programlisting>   
+  
+  </sect2>
+  
+  <sect2>
+  
+    <title>Using Data manipulation commands</title>
+    
+    <para>All the DMLClause implementation in the Querydsl SQL module take three parameters, the Connection, the SQLTemplates instance
+    used in the queries and the main entity the DMLClause is bound to.
+    </para>
+    
+    <para>Insert examples :</para>
+    
+<programlisting language="java"><![CDATA[    
+// with columns
+new SQLInsertClause(conn, dialect, survey)
+    .columns(survey.id, survey.name)
+    .values(3, "Hello").execute();
+
+// without columns
+new SQLInsertClause(conn, dialect, survey)
+    .values(4, "Hello").execute();
+
+// with subquery
+new SQLInsertClause(conn, dialect, survey)
+    .columns(survey.id, survey.name)
+    .select(new SQLSubQuery().from(survey2).list(survey2.id.add(1), survey2.name))
+    .execute();
+
+// with subquery, without columns
+new SQLInsertClause(conn, dialect, survey)
+    .select(new SQLSubQuery().from(survey2).list(survey2.id.add(10), survey2.name))
+    .execute();
+]]></programlisting>
+
+
+   <para>Update examples :</para> 
+  
+<programlisting language="java"><![CDATA[  
+// update with where
+new SQLUpdateClause(conn, dialect, survey)
+    .where(survey.name.eq("XXX"))
+    .set(survey.name, "S")
+    .execute();
+  
+// update without where
+new SQLUpdateClause(conn, dialect, survey)
+    .set(survey.name, "S")
+    .execute()  
+]]></programlisting>
+
+  <para>Delete examples :</para>
+
+<programlisting language="java"><![CDATA[    
+// delete with where
+new SQLDelecteClause(conn, dialect, survey)
+    .where(survey.name.eq("XXX"))
+    .execute();
+  
+// delete without where
+new SQLDelecteClause(conn, dialect, survey)
+    .execute()  
+]]></programlisting>  
+
+  </sect2>
+  
+  <sect2>
+  
+    <title>Batch support in DML clauses</title>
+    
+    <para>Querydsl SQL supports usage of JDBC batch updates through the DML APIs. If you have consecutive DML calls with a similar structure, 
+    you can bundle the the calls via addBatch() usage into one DMLClause. See the examples how it works for UPDATE, DELETE and INSERT.</para>
+	
+<programlisting language="java"><![CDATA[   	
+
+    @Test
+    public void updateExample() throws SQLException{
+        insert(survey).values(2, "A").execute();
+        insert(survey).values(3, "B").execute();
+
+        SQLUpdateClause update = update(survey);
+        update.set(survey.name, "AA").where(survey.name.eq("A")).addBatch();
+        update.set(survey.name, "BB").where(survey.name.eq("B")).addBatch();
+        assertEquals(2, update.execute());
+    }
+
+    @Test
+    public void deleteExample() throws SQLException{
+        insert(survey).values(2, "A").execute();
+        insert(survey).values(3, "B").execute();
+
+        SQLDeleteClause delete = delete(survey);
+        delete.where(survey.name.eq("A")).addBatch();
+        delete.where(survey.name.eq("B")).addBatch();
+        assertEquals(2, delete.execute());
+    }
+
+    @Test
+    public void insertExample(){
+        SQLInsertClause insert = insert(survey);
+        insert.set(survey.id, 5).set(survey.name, "5").addBatch();
+        insert.set(survey.id, 6).set(survey.name, "6").addBatch();
+        assertEquals(2, insert.execute());
+    }
+]]></programlisting>  		
+	
+    
+  </sect2>    
+  
+  <sect2>
+  	
+	<title>Bean class generation</title>
+	
+	<para>To create JavaBean DTO types for the tables of your schema use the MetaDataExporter like this :</para>
+	
+<programlisting language="java"><![CDATA[  
+java.sql.Connection conn; // connection of database containing the schema to use
+// obtain Connection etc.
+
+NamingStrategy namingStrategy = new DefaultNamingStrategy();
+MetaDataSerializer serializer = new MetaDataSerializer("Q",namingStrategy);            
+MetaDataExporter exporter = new MetaDataExporter(
+    "Q",                       // namePrefix 
+    "com.myproject.mydomain",  // target package  
+    new File("src/main/java"), // target source folder
+    namingStrategy,            // naming strategy
+    serializer,	               // serializer for Q-types								
+    new BeanSerializer());     // serializer for Bean types          
+exporter.export(conn.getMetaData());  
+]]></programlisting>	
+  	
+	<para>Now you can use the bean types as arguments to the populate method in DML clauses and you can project directly
+		to bean types in queries. Here is a simple example in JUnit form :</para>  	
+  	
+<programlisting language="java"><![CDATA[    	
+    @Test
+    public void Insert_Update_Query_and_Delete(){
+        QEmployee e = new QEmployee("e");
+           
+        // Insert
+        Employee employee = new Employee();
+        employee.setFirstname("John");
+        Integer id = insert(e).populate(employee).executeWithKey(e.id);
+        employee.setId(id);
+
+        // Update
+        employee.setLastname("Smith");
+        assertEquals(1l, update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
+
+        // Query
+        Employee smith = query().from(e).where(e.lastname.eq("Smith")).uniqueResult(e);
+        assertEquals("John", smith.getFirstname());
+        
+        // Delete 
+        assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
+    }
+]]></programlisting>  	
+  	
+  </sect2>
+  
+  <sect2>
+  
+    <title>User types</title>
+    
+    <para>TODO</para>
+    
+  </sect2>
+  
+  
+</sect1>    

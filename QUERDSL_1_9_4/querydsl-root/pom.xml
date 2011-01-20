@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-root</artifactId>
+  <version>1.9.4</version>
+  <name>Querydsl</name>
+  <description>parent project for querydsl modules</description>
+  <url>http://source.mysema.com/display/querydsl</url>
+  <parent>
+    <groupId>com.mysema.home</groupId>
+    <artifactId>mysema-source</artifactId>
+    <version>0.2.0</version>
+  </parent>
+  <packaging>pom</packaging>
+
+  <inceptionYear>2007</inceptionYear>
+  
+  <properties>    
+    <failIfNoTests>false</failIfNoTests>
+    <svn.path>scm:svn:https://source.mysema.com/svn/mysema</svn.path>
+    <path.suffix>projects/querydsl/trunk/${project.artifactId}</path.suffix>
+	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    
+    <!-- deps -->
+    <derby.version>10.5.3.0_1</derby.version>
+    <hsqldb.version>1.8.0.7</hsqldb.version>    
+  </properties>
+   
+  <modules>
+    <module>../querydsl-core</module>
+    <module>../querydsl-apt</module> 
+    <module>../querydsl-collections</module>           
+    <module>../querydsl-sql</module>    
+    <module>../querydsl-maven-plugin</module>
+    <module>../querydsl-hql</module>    
+    <module>../querydsl-jdoql</module>
+    <module>../querydsl-lucene</module>
+    <module>../querydsl-hibernate-search</module>        
+  </modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.6.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+      <version>1.6.1</version>
+	  <scope>provided</scope>
+    </dependency>    
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.8.1</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>javax.servlet</groupId>
+          <artifactId>servlet-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.easymock</groupId>
+      <artifactId>easymock</artifactId>
+      <version>3.0</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <organization>
+    <name>Mysema Ltd</name>
+    <url>http://www.mysema.com</url>
+  </organization>
+
+  <developers>
+    <developer>
+      <id>tiwe</id>
+      <name>Timo Westkämper</name>
+      <email>timo.westkamper@mysema.com</email>
+      <organization>Mysema Ltd</organization>
+      <roles>
+        <role>Project Manager</role>
+        <role>Architect</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>sasa</id>
+      <name>Samppa Saarela</name>
+      <email>samppa.saarela@mysema.com</email>
+      <organization>Mysema Ltd</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <id>vema</id>
+      <name>Vesa Marttila</name>
+      <email>vesa.marttila@mysema.com</email>
+      <organization>Mysema Ltd</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <licenses>
+    <license>
+      <name>GNU Lesser General Public License, Version 2.1</name>
+      <url>LICENSE.txt</url>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>${svn.path}/${path.suffix}</connection>
+    <developerConnection>${svn.path}/${path.suffix}</developerConnection>
+  </scm>
+  
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <version>2.2-beta-5</version>
+        </plugin>
+        <plugin>
+          <groupId>com.mysema.maven</groupId>
+          <artifactId>maven-apt-plugin</artifactId>
+          <version>0.3.1</version>
+        </plugin>
+      </plugins>      
+    </pluginManagement>
+    <plugins>
+      <plugin>       
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.2-beta-5</version>
+        <configuration>
+          <descriptors>
+            <descriptor>../querydsl-root/src/main/assembly.xml</descriptor>
+          </descriptors>
+          <outputDirectory>../querydsl-root/target/dist</outputDirectory>
+        </configuration>
+      </plugin>     
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.5</version>
+        <configuration>
+          <outputDirectory>${project.build.directory}/dist/apidocs</outputDirectory>
+          <reportOutputDirectory>${project.build.directory}/dist/apidocs</reportOutputDirectory>
+          <groups>
+            <group>
+              <title>Core</title>
+              <packages>com.mysema.query:com.mysema.query.alias:com.mysema.query.annotations:com.mysema.query.codegen:com.mysema.query.dml:com.mysema.query.functions:com.mysema.query.serialization:com.mysema.query.support:com.mysema.query.types*</packages>
+            </group>
+            <group>
+              <title>APT</title>
+              <packages>com.mysema.query.apt*</packages>
+            </group>
+            <group>
+              <title>Collections</title>
+              <packages>com.mysema.query.collections*</packages>
+            </group>
+            <group>
+              <title>HQL/JPAQL</title>
+              <packages>com.mysema.query.hql*</packages>
+            </group>
+            <group>
+              <title>JDOQL</title>
+              <packages>com.mysema.query.jdoql*</packages>
+            </group>
+            <group>
+              <title>SQL</title>
+              <packages>com.mysema.query.sql*</packages>
+            </group>
+            <group>
+              <title>Lucene</title>
+              <packages>com.mysema.query.lucene</packages>
+            </group>
+            <group>
+              <title>Hibernate Search</title>
+              <packages>com.mysema.query.search</packages>
+            </group>
+          </groups>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.mysema.maven</groupId>
+        <artifactId>maven-version-plugin</artifactId>
+        <version>0.1.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>2.3</version>
+        <configuration>
+          <targetJdk>1.6</targetJdk>   
+          <includeTests>true</includeTests>     
+        </configuration>
+      </plugin>            
+    
+    </plugins>
+  </build>
+  
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <configuration>
+          <links>
+            <link>http://java.sun.com/javase/6/docs/api/</link>
+            <link>http://www.hibernate.org/hib_docs/v3/api/</link>
+          </links>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>junit-report-maven-plugin</artifactId>
+        <version>devel</version>
+        <configuration>
+          <testFailureIgnore>true</testFailureIgnore>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <configuration>
+          <aggregate>true</aggregate>
+        </configuration>
+      </plugin>
+    </plugins>
+  </reporting>
+
+</project>
