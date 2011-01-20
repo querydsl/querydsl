@@ -33,6 +33,7 @@ import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.PathType;
 /**
  * Serializes Querydsl queries to Lucene queries.
  *
@@ -330,7 +331,14 @@ public class LuceneSerializer {
     }
 
     protected String toField(Path<?> path) {
-        return path.getMetadata().getExpression().toString();
+        String rv = path.getMetadata().getExpression().toString(); 
+        if (path.getMetadata().getParent() != null){
+            Path<?> parent = path.getMetadata().getParent();
+            if (parent.getMetadata().getPathType() != PathType.VARIABLE){
+                rv = toField(parent) + "." + rv;
+            }
+        }
+        return rv; 
     }
 
     private void verifyArguments(Operation<?> operation) {

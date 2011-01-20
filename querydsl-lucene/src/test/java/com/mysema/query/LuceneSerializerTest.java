@@ -14,8 +14,8 @@ import java.util.Arrays;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.NumericField;
+import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriter.MaxFieldLength;
@@ -31,21 +31,15 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.mysema.query.BooleanBuilder;
-import com.mysema.query.DefaultQueryMetadata;
-import com.mysema.query.MatchingFilters;
-import com.mysema.query.Module;
-import com.mysema.query.QueryMetadata;
-import com.mysema.query.StringConstant;
-import com.mysema.query.Target;
 import com.mysema.query.lucene.LuceneSerializer;
 import com.mysema.query.lucene.LuceneUtils;
 import com.mysema.query.lucene.QueryElement;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.PathBuilder;
+import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.path.StringPath;
 
 /**
  * Tests for LuceneSerializer
@@ -193,6 +187,12 @@ public class LuceneSerializerTest {
     @Test
     public void eq() throws Exception {
         testQuery(rating.eq("Good"), "rating:good", 1);
+    }
+    
+    @Test
+    public void eq_with_deep_path() throws Exception{
+        StringPath deepPath = entityPath.get("property1", Object.class).getString("property2");
+        testQuery(deepPath.eq("Good"), "property1.property2:good", 0);
     }
 
     @Test
