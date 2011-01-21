@@ -7,8 +7,7 @@
     Querydsl defines a general statically typed syntax for querying on top of
     persisted domain model data. JDO and JPA are the primary integration
     technologies for Querydsl. This guide describes how to use Querydsl
-    in combination with JDO. Support for JDO is in beta phase and still
-    to be considered experimental.
+    in combination with JDO. 
     </para>
 
   <sect2>
@@ -207,7 +206,7 @@ customer.firstName;
     </para>
 
     <programlisting language="java"><![CDATA[
-PersistenceManager pm;
+PersistenceManager pm = ...;
 JDOQLQuery query = new JDOQLQueryImpl (pm);
 ]]></programlisting>
 
@@ -272,7 +271,7 @@ query.form(customer)
   <para><emphasis>groupBy :</emphasis> Define the group by arguments in varargs form.</para>
   
   <para><emphasis>having :</emphasis> Define the having filter of the "group by" grouping as an varargs array of 
-  EBoolean expressions.</para>
+  Predicate expressions.</para>
   
   <para><emphasis>orderBy :</emphasis> Define the ordering of the result as an varargs array of order expressions. 
   Use asc() and desc() on numeric, string and other comparable expression to access the OrderSpecifier instances. </para>
@@ -316,11 +315,11 @@ query.from(customer)
   <para>Delete clauses in Querydsl JDOQL follow a simple delete-where-execute form. Here are some examples :</para>
     
 <programlisting language="java"><![CDATA[   
-QCat cat = QCat.cat;
-// delete all cats
-new JDOQLDeleteClause(pm, cat).execute();
-// delete all cats with kittens
-new JDOQLDeleteClause(pm, cat).where(cat.kittens.isNotEmpty()).execute();  
+QCustomer customer = QCustomer.customer;
+// delete all customers
+new JDOQLDeleteClause(pm, customer).execute();
+// delete all customers with a level less than 3
+new JDOQLDeleteClause(pm, customer).where(customer.level.lt(3)).execute();  
 ]]></programlisting>  
   
   <para>The second parameter of the JDOQLDeleteClause constructor is the entity to be deleted.

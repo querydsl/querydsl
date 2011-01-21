@@ -22,7 +22,7 @@
 
     <para>
       HQL for Hibernate was the first target language for Querydsl, but nowadays it supports
-      Collections, JDO, JDBC, Lucene, Hibernate Search and RDFBean as backends.   
+      Collections, JDO, JDBC, Lucene, Hibernate Search, MongoDB and RDFBean as backends.   
       </para>
 
   </sect1>

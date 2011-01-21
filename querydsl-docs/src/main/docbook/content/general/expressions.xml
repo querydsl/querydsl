@@ -14,7 +14,7 @@
       
       <para>
       Instead of a direct Java cast, the supertype reference is accessible via the _super field. A _super-field is available
-      in all query types with a single supertype :
+      in all generated query types with a single supertype :
       </para>
       
       <programlisting language="java"><![CDATA[
@@ -41,6 +41,7 @@ QBankAccount bankAccount = account.as(QBankAccount.class);
     
     </sect2>    
     
+<!--     
   <sect2>
   
     <title>Parameters</title>
@@ -48,7 +49,8 @@ QBankAccount bankAccount = account.as(QBankAccount.class);
     <para>TODO</para>
   
   </sect2>    
-    
+-->
+
     <sect2>
       <title>Constructor projections</title>
       
@@ -78,7 +80,7 @@ JPQLQuery query = new HibernateQuery(session);
 List<CustomerDTO> dtos = qry.from(customer).list(new QCustomerDTO(customer.id, customer.name));     
 ]]></programlisting>     
 
-      <para>While the example is Hibernate specific, this feature is present in all modules.</para>
+      <para>While the example is Hibernate specific, this feature is available in all modules.</para>
       
       <para>If the type with the QueryProjection annotation is not an annotated entity type, you can
       use the constructor projection like in the example, but if the annotated type would be an entity type, then
@@ -100,7 +102,7 @@ class Customer {
 <programlisting language="java"><![CDATA[
 QCustomer customer = QCustomer.customer;
 JPQLQuery query = new HibernateQuery(session);
-List<Customer> dtos = qry.from(customer).list(new QCustomer.create(customer.id, customer.name));   
+List<Customer> dtos = qry.from(customer).list(QCustomer.create(customer.id, customer.name));   
 ]]></programlisting>   
     
     <para>Alternatively, if code generation is not an option, you can create a constructor projection like this :</para>
@@ -117,7 +119,7 @@ List<Customer> dtos = qry.from(customer)
     
     <para>
     To construct complex boolean expressions, use the BooleanBuilder class. 
-    It extends EBoolean and can be used in cascaded form : 
+    It implements Predicate and can be used in cascaded form : 
     </para>
     
     <programlisting language="java"><![CDATA[

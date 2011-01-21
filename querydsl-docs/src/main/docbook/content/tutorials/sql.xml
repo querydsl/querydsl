@@ -13,14 +13,10 @@
   <para>To get started export your schema into Querydsl query types like this :</para>
   
 <programlisting language="java"><![CDATA[  
-java.sql.Connection conn; // connection of database containing the schema to use
-// obtain Connection etc.
-
-NamingStrategy namingStrategy = new DefaultNamingStrategy();
-MetaDataSerializer serializer = new MetaDataSerializer("Q",namingStrategy);            
+java.sql.Connection conn = ...;
 MetaDataExporter exporter = new MetaDataExporter();
 exporter.setPackageName("com.myproject.mydomain");
-exporter.setTargetFolder(new File("src/main/java"))	;
+exporter.setTargetFolder(new File("src/main/java"));
 exporter.export(conn.getMetaData());  
 ]]></programlisting>
 
@@ -32,7 +28,7 @@ exporter.export(conn.getMetaData());
   </para>
  
   <para>
-  In addition to this primary key and foreign key constraints are provided as fields which can be used for compact join declarations ... TODO 
+  In addition to this primary key and foreign key constraints are provided as fields which can be used for compact join declarations. 
   </para>
   
  </sect2>
@@ -64,11 +60,11 @@ exporter.export(conn.getMetaData());
       optional elements :      
       * jdbcUser = connection user
       * jdbcPassword = connection password
-	  * namePrefix = name prefix for Q-types (default: Q)
+      * namePrefix = name prefix for Q-types (default: Q)
       * schemaPattern = to restrict code generation to certain schemas (default: null)
       * tableNamePattern = to restrict code generation to certain tables (default: null)
-	  * exportBeans = set to true to generate beans as well (default: false)
-	  * innerClassesForKeys = set to true to 
+      * exportBeans = set to true to generate beans as well (default: false)
+      * innerClassesForKeys = set to true to 
     -->     
   </configuration>
   <dependencies>
@@ -123,8 +119,6 @@ SELECT c.last_name
 FROM customer c 
 WHERE c.first_name = 'Bob'
 ]]></programlisting>  
-
-    <para>Internally Querydsl SQL uses PreparedStatements, though.</para>
 
     <para>Querydsl uses SQL dialects to customize the SQL serialization needed for different relational databases. The
     available dialects are :</para>
@@ -193,7 +187,7 @@ WHERE c.first_name = 'Bob'
   <para><emphasis>groupBy :</emphasis> Define the group by arguments in varargs form.</para>
   
   <para><emphasis>having :</emphasis> Define the having filter of the "group by" grouping as an varags array of 
-  EBoolean expressions.</para>
+  Predicate expressions.</para>
   
   <para><emphasis>orderBy :</emphasis> Define the ordering of the result as an varargs array of order expressions. 
   Use asc() and desc() on numeric, string and other comparable expression to access the OrderSpecifier instances. </para>
@@ -247,11 +241,37 @@ GROUP BY c.last_name
       
   </sect2>    
   
+<!--   
   <sect2>
   
     <title>Union queries</title>
     
     <para>TODO</para>
+  
+  </sect2>
+ -->
+   
+  <sect2>
+  
+  	<title>Using Subqueries</title>
+  
+  	<para>  
+		To create a subquery you create a SQLSubQuery instance, define the query parameters via from, where etc and use unique or list to create a subquery, which is just a type-safe Querydsl expression for the query. unique is used for a unique (single) result and list for a list result.
+	</para>
+
+<programlisting language="java"><![CDATA[ 
+query.from(customer).where(
+  customer.status.eq(new SQLSubQuery().from(customer2).unique(customer2.status.max()))
+  .list(customer.all())  
+]]></programlisting>
+
+	<para>Another example</para>
+
+<programlisting language="java"><![CDATA[ 
+query.from(customer).where(  
+  customer.status.in(new SQLSubQuery().from(status).where(status.level.lt(3)).list(status.id))  
+  .list(customer.all())    
+]]></programlisting>   
   
   </sect2>
   
@@ -484,18 +504,11 @@ new SQLDelecteClause(conn, dialect, survey)
 	<para>To create JavaBean DTO types for the tables of your schema use the MetaDataExporter like this :</para>
 	
 <programlisting language="java"><![CDATA[  
-java.sql.Connection conn; // connection of database containing the schema to use
-// obtain Connection etc.
-
-NamingStrategy namingStrategy = new DefaultNamingStrategy();
-MetaDataSerializer serializer = new MetaDataSerializer("Q",namingStrategy);            
-MetaDataExporter exporter = new MetaDataExporter(
-    "Q",                       // namePrefix 
-    "com.myproject.mydomain",  // target package  
-    new File("src/main/java"), // target source folder
-    namingStrategy,            // naming strategy
-    serializer,	               // serializer for Q-types								
-    new BeanSerializer());     // serializer for Bean types          
+java.sql.Connection conn = ...;
+MetaDataExporter exporter = new MetaDataExporter();
+exporter.setPackageName("com.myproject.mydomain");
+exporter.setTargetFolder(new File("src/main/java"))	;
+exporter.setBeanSerializer(new BeanSerializer());   
 exporter.export(conn.getMetaData());  
 ]]></programlisting>	
   	

@@ -4,13 +4,13 @@
   <title>Preface</title>
 
   <para>
-    Querydsl (spell: query diesel) is a framework which enables the construction of statically
+    Querydsl is a framework which enables the construction of statically
     typed SQL-like queries. Instead of writing queries as inline strings or externalizing them
-    into XML files they can be constructed via a fluentDSL/API like Querydsl.
+    into XML files they can be constructed via a fluent API like Querydsl.
   </para>
 
   <para>
-    The benefits of using a fluent API in comparison to simple strings are
+    The benefits of using a fluent API in comparison to simple strings are for example
   </para>
 
   <orderedlist>

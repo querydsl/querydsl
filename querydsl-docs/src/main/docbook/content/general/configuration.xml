@@ -58,15 +58,15 @@ class Customer{
       
       <para>
       The serialization options are 
-      <emphasis>entityAccessors</emphasis> to generate accessor methods for entity paths instead of public final fields (default : false)), 
+      <emphasis>entityAccessors</emphasis> to generate accessor methods for entity paths instead of public final fields (default : false), 
       <emphasis>listAccessors</emphasis> to generate listProperty(int index) style methods (default : false), 
       <emphasis>mapAccessors</emphasis> to generate mapProperty(Key key) style accessor methods (default : false) and
 	  <emphasis>createDefaultVariable</emphasis> to generate the default variable (default : true).
       </para>
 	  
-	  <para>Examples</para>
+	  <para>Below are some examples.</para>
 	  
-	  <para>Customization of Entity type serialization</para>
+	  <para>Customization of Entity type serialization :</para>
 	  
 	  <programlisting language="java"><![CDATA[
 @QuerydslConfig(entityAccessors=true)
@@ -76,7 +76,7 @@ public class User {
 }  	  
 ]]></programlisting>
 
-    <para>Customization of package content</para>
+    <para>Customization of package content :</para>
 	
      <programlisting language="java"><![CDATA[
 @QuerydslConfig(listAccessors=true)
@@ -169,7 +169,7 @@ public class MyEntity{
     annotation.
     </para>
   
-    <para>Example 1</para>
+    <para>Example 1 :</para>
     
 <programlisting language="java"><![CDATA[    
 public class Point{
@@ -195,7 +195,7 @@ public interface PointOperations {
     <para>The serialization patterns of query methods have the host object itself always as the first argument and the method parameters
     as further arguments.</para>
     
-    <para>Example 2</para>
+    <para>Example 2 :</para>
     
 <programlisting language="java"><![CDATA[
 public class Point{
@@ -246,7 +246,7 @@ public class Point{
 	<para>And the generated methods in the QUser query type :</para>
 
 <programlisting language="java"><![CDATA[   
-    public BooleanPath isManagedBy(Qser other) {
+    public BooleanPath isManagedBy(QUser other) {
         return com.mysema.query.domain.DelegateTest.isManagedBy(this, other);
     }
 	
@@ -258,12 +258,12 @@ public class Point{
 public class QueryExtensions {
 
     @QueryDelegate(Date.class)
-    public static BooleanPath inPeriod(DatePath<Date> date, Pair<Date,Date> period){
+    public static BooleanExpression inPeriod(DatePath<Date> date, Pair<Date,Date> period){
         return date.goe(period.getFirst()).and(date.loe(period.getSecond()));
     }
 
     @QueryDelegate(Timestamp.class)
-    public static BooleanPath inDatePeriod(DateTimePath<Timestamp> timestamp, Pair<Date,Date> period){
+    public static BooleanExpression inDatePeriod(DateTimePath<Timestamp> timestamp, Pair<Date,Date> period){
         Timestamp first = new Timestamp(DateUtils.truncate(period.getFirst(), Calendar.DAY_OF_MONTH).getTime());
         Calendar second = Calendar.getInstance();
         second.setTime(DateUtils.truncate(period.getSecond(), Calendar.DAY_OF_MONTH));
@@ -277,7 +277,7 @@ public class QueryExtensions {
    <para>When delegate methods are declared for builtin types then subclasses with the proper delegate method usages are created : </para>
    
 <programlisting language="java"><![CDATA[      
-public class QDate extends PDate<java.sql.Date> {
+public class QDate extends DatePath<java.sql.Date> {
 
     public QDate(BeanPath<? extends java.sql.Date> entity) {
         super(entity.getType(), entity.getMetadata());
@@ -287,13 +287,13 @@ public class QDate extends PDate<java.sql.Date> {
         super(java.sql.Date.class, metadata);
     }
 
-    public BooleanPath inPeriod(com.mysema.commons.lang.Pair<java.sql.Date, java.sql.Date> period) {
+    public BooleanExpression inPeriod(com.mysema.commons.lang.Pair<java.sql.Date, java.sql.Date> period) {
         return QueryExtensions.inPeriod(this, period);
     }
 
 }
 
-public class QTimestamp extends PDateTime<java.sql.Timestamp> {
+public class QTimestamp extends DateTimePath<java.sql.Timestamp> {
 
     public QTimestamp(BeanPath<? extends java.sql.Timestamp> entity) {
         super(entity.getType(), entity.getMetadata());
@@ -303,7 +303,7 @@ public class QTimestamp extends PDateTime<java.sql.Timestamp> {
         super(java.sql.Timestamp.class, metadata);
     }
 
-    public BooleanPath inDatePeriod(com.mysema.commons.lang.Pair<java.sql.Date, java.sql.Date> period) {
+    public BooleanExpression inDatePeriod(com.mysema.commons.lang.Pair<java.sql.Date, java.sql.Date> period) {
         return QueryExtensions.inDatePeriod(this, period);
     }
 

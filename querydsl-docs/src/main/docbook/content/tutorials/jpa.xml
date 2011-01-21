@@ -223,9 +223,10 @@ QCustomer customer = new QCustomer("myCustomer");
 
     <title>Querying</title>
 
+	<p>The Querydsl JPA module supports both the JPA and the Hibernate API.</p>
+
     <para>
-      For the JPA-module HibernateQuery is the main Query implementation. It is
-      instantiated like this :
+      To use the Hibernate API you use HibernateQuery instances for your queries like this :
     </para>
 
     <programlisting language="java"><![CDATA[
@@ -233,12 +234,14 @@ QCustomer customer = new QCustomer("myCustomer");
 JPQLQuery query = new HibernateQuery (session); 
 ]]></programlisting>
 
-   <para>To use the JPA API instead of the Hibernate API, you can instantiate a JPAQuery like this :</para>
+   <para>If you are using the JPA API instead, you can instantiate a JPAQuery like this :</para>
 
     <programlisting language="java"><![CDATA[
 // where entityManager is a JPA EntityManager   
 JPQLQuery query = new JPAQuery (entityManager); 
 ]]></programlisting>
+
+	<para>Both HibernateQuery and JPAQuery implement the JPQLQuery interface.</para>
 
 	<para>
 	The default configuration of JPAQuery is best suited for use with Hibernate. Whe using EclipseLink as the JPA provider, the 
@@ -270,7 +273,7 @@ Customer bob = query.from(customer)
   </para>
   
   <para>
-    To create a query with multiple sources you just use the JPQLQuery interface like this :
+    To create a query with multiple sources you use the query like this :
   </para>
 
     <programlisting language="java"><![CDATA[
@@ -360,7 +363,7 @@ from Cat as cat
   <para><emphasis>groupBy :</emphasis> Define the group by arguments in varargs form.</para>
   
   <para><emphasis>having :</emphasis> Define the having filter of the "group by" grouping as an varags array of 
-  EBoolean expressions.</para>
+  Predicate expressions.</para>
   
   <para><emphasis>orderBy :</emphasis> Define the ordering of the result as an varargs array of order expressions. 
   Use asc() and desc() on numeric, string and other comparable expression to access the OrderSpecifier instances. </para>
@@ -419,11 +422,11 @@ select customer.lastName
   <para>Delete clauses in Querydsl JPA follow a simple delete-where-execute form. Here are some examples :</para>
     
 <programlisting language="java"><![CDATA[   
-QCat cat = QCat.cat;
-// delete all cats
-new HibernateDeleteClause(session, cat).execute();
-// delete all cats with kittens
-new HibernateDeleteClause(session, cat).where(cat.kittens.isNotEmpty()).execute();  
+QCustomer customer = QCustomer.customer;
+// delete all customers
+new HibernateDeleteClause(session, customer).execute();
+// delete all customers with a level less than 3
+new HibernateDeleteClause(session, customer).where(customer.level.lt(3)).execute();  
 ]]></programlisting>  
   
   <para>The second parameter of the HibernateDeleteClause constructor is the entity to be deleted.
@@ -437,10 +440,10 @@ new HibernateDeleteClause(session, cat).where(cat.kittens.isNotEmpty()).execute(
   <para>Update clauses in Querydsl JPA follow a simple update-set/where-execute form. Here are some examples :</para>
   
 <programlisting language="java"><![CDATA[   
-QCat cat = QCat.cat;
-// rename cats named Bob to Bobby
-new HibernateUpdateClause(session, cat).where(cat.name.eq("Bob"))
-    .set(cat.name, "Bobby")
+QCustomer customer = QCustomer.customer;
+// rename customers named Bob to Bobby
+new HibernateUpdateClause(session, customer).where(customer.name.eq("Bob"))
+    .set(customer.name, "Bobby")
     .execute();  
 ]]></programlisting>  
   
