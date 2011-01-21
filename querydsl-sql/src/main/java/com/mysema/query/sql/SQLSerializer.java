@@ -443,14 +443,17 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 }
                 append("?");
                 constants.add(o);
-                // TODO : update constantPaths if necessary
+                if (first && (constantPaths.size() < constants.size())){
+                    constantPaths.add(null);
+                }
                 first = false;
             }
             append(")");
             
             int size = ((Collection)expr.getConstant()).size() - 1;
+            Path<?> lastPath = constantPaths.get(constantPaths.size()-1);
             for (int i = 0; i < size; i++){
-                constantPaths.add(constantPaths.get(constantPaths.size()-1));
+                constantPaths.add(lastPath);
             }
         }else{
             append("?");
@@ -502,18 +505,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator, List<Expression<?>> args) {
         if (args.size() == 2 
-//         && args.get(0) instanceof Path<?> 
+         && args.get(0) instanceof Path<?> 
          && args.get(1) instanceof Constant<?>
          && operator != Ops.STRING_CAST 
          && operator != Ops.NUMCAST
          && operator != SQLTemplates.CAST){
-            // TODO : provide a better solution for this
-            if (args.get(0) instanceof Path<?>){
-                constantPaths.add((Path<?>)args.get(0));    
-            }else if (args.get(0) instanceof Operation<?> && ((Operation<?>)args.get(0)).getArg(0) instanceof Path<?>){
-                constantPaths.add((Path<?>) ((Operation<?>)args.get(0)).getArg(0));
-            }
-            
+            constantPaths.add((Path<?>)args.get(0));
         }        
         if (operator.equals(Ops.STRING_CAST)) {
             String typeName = templates.getTypeForClass(String.class);
