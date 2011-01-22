@@ -539,6 +539,31 @@ exporter.export(conn.getMetaData());
     }
 ]]></programlisting>  	
   	
+  	<para>The factory methods used in the previous example are here :</para>
+
+<programlisting language="java"><![CDATA[      	
+    protected SQLUpdateClause update(RelationalPath<?> e){
+        return new SQLUpdateClause(Connections.getConnection(), templates, e);
+    }
+
+    protected SQLInsertClause insert(RelationalPath<?> e){
+        return new SQLInsertClause(Connections.getConnection(), templates, e);
+    }
+
+    protected SQLDeleteClause delete(RelationalPath<?> e){
+        return new SQLDeleteClause(Connections.getConnection(), templates, e);
+    }
+
+    protected SQLMergeClause merge(RelationalPath<?> e){
+        return new SQLMergeClause(Connections.getConnection(), templates, e);
+    }
+
+    protected SQLQuery query() {
+        return new SQLQueryImpl(Connections.getConnection(), templates);  	
+  	}
+  	
+]]></programlisting>  	  	
+  	
   </sect2>
   
 <sect2>
