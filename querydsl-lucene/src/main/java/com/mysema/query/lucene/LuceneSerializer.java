@@ -61,6 +61,7 @@ public class LuceneSerializer {
 
     private final boolean splitTerms;
 
+    //TODO nämä pitää olla polkukohtaisia
     public LuceneSerializer(boolean lowerCase, boolean splitTerms) {
         this.lowerCase = lowerCase;
         this.splitTerms = splitTerms;
@@ -148,6 +149,10 @@ public class LuceneSerializer {
     protected Query eq(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
+        
+        //TODO Implement this
+        //boolean tokenized = isTokenized(operation.getArg(0));
+        
         if (Number.class.isAssignableFrom(operation.getArg(1).getType())) {
             return new TermQuery(new Term(field, convertNumber(((Constant<Number>) operation
                     .getArg(1)).getConstant())));
