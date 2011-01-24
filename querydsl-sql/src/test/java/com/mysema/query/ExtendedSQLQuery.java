@@ -1,0 +1,90 @@
+package com.mysema.query;
+
+import java.lang.reflect.Field;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.query.sql.AbstractSQLQuery;
+import com.mysema.query.sql.Configuration;
+import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.Operation;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.QBean;
+
+/**
+ * @author tiwe
+ *
+ */
+public class ExtendedSQLQuery extends AbstractSQLQuery<ExtendedSQLQuery>{
+
+    public ExtendedSQLQuery(SQLTemplates templates) {
+        super(null, new Configuration(templates), new DefaultQueryMetadata());
+    }
+
+    public ExtendedSQLQuery(Connection conn, SQLTemplates templates) {
+        super(conn, new Configuration(templates), new DefaultQueryMetadata());
+    }
+    
+    public ExtendedSQLQuery(Connection conn, Configuration configuration) {
+        super(conn, configuration, new DefaultQueryMetadata());
+    }
+
+    public ExtendedSQLQuery(Connection conn, Configuration configuration, QueryMetadata metadata) {
+        super(conn, configuration, metadata);
+    }
+    
+    public <T> CloseableIterator<T> iterate(Class<T> type, Expression<?>... exprs){
+        return iterate(createProjection(type, exprs));
+    }
+    
+    public <T> T uniqueResult(Class<T> type, Expression<?>... exprs){
+        return uniqueResult(createProjection(type, exprs));
+    }
+    
+    public <T> List<T> list(Class<T> type, Expression<?>... exprs){
+        return list(createProjection(type, exprs));
+    }
+    
+    public <T> SearchResults<T> listResults(Class<T> type, Expression<?>... exprs){
+        return listResults(createProjection(type, exprs));
+    }
+    
+    private <T> FactoryExpression<T> createProjection(Class<T> type, Expression<?>... exprs){
+        Map<String, Expression<?>> bindings = new HashMap<String, Expression<?>>(exprs.length);
+        for (Expression<?> expr : exprs){
+            if (expr instanceof Path<?>){
+                Path<?> path = (Path<?>)expr;
+                if (path.getMetadata().getParent() instanceof RelationalPath<?>){
+                    RelationalPath<?> parent = (RelationalPath<?>)path.getMetadata().getParent();
+                    for (Field field : parent.getClass().getFields()){
+                        try {
+                            if (field.get(parent) == path){
+                                bindings.put(field.getName(), expr);
+                                break;
+                            }
+                        } catch (IllegalAccessException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                }else{
+                    bindings.put(path.getMetadata().getExpression().toString(), expr);    
+                }                
+                
+            }else if (expr instanceof Operation<?>){
+                Operation<?> operation = (Operation<?>)expr;
+                Path<?> alias = (Path<?>)operation.getArg(1);
+                bindings.put(alias.getMetadata().getExpression().toString(), expr);
+                
+            }else{
+                throw new IllegalArgumentException("Unsupported expression " + expr);
+            }
+        }
+        return new QBean<T>(type, bindings);
+    }
+}
