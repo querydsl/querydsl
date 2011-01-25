@@ -185,13 +185,13 @@ public class LuceneSerializerTest {
 
     @Test
     public void eq() throws Exception {
-        testQuery(rating.eq("Good"), "rating:good", 1);
+        testQuery(rating.eq("good"), "rating:good", 1);
     }
 
     @Test
     public void eq_with_deep_path() throws Exception{
         StringPath deepPath = entityPath.get("property1", Object.class).getString("property2");
-        testQuery(deepPath.eq("Good"), "property1.property2:good", 0);
+        testQuery(deepPath.eq("good"), "property1.property2:good", 0);
     }
 
     @Test
@@ -228,13 +228,13 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void eq_Should_Not_Find_Results_But_Lucene_Semantics_Differs_From_Querydsls() throws Exception {
-        testQuery(title.eq("Jurassic"), "title:jurassic", 1);
+    public void Equals_Finds_Nothing_When_Case_Does_Not_Match() throws Exception {
+        testQuery(title.eq("Jurassic"), "title:Jurassic", 0);
     }
 
     @Test
-    public void eq_or_eq() throws Exception {
-        testQuery(title.eq("House").or(year.eq(1990)), "title:house year:" + YEAR_PREFIX_CODED, 1);
+    public void Title_Equals_Ignore_Case_Or_Year_Equals() throws Exception {
+        testQuery(title.equalsIgnoreCase("House").or(year.eq(1990)), "title:house year:" + YEAR_PREFIX_CODED, 1);
     }
 
     @Test
@@ -248,13 +248,13 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void eq_and_eq_or_eq() throws Exception {
-        testQuery(title.eq("Jurassic Park").and(rating.eq("Bad")).or(author.eq("Michael Crichton")), "(+title:\"jurassic park\" +rating:bad) author:\"michael crichton\"", 1);
+    public void Equals_Ignore_Case_And_Or() throws Exception {
+        testQuery(title.equalsIgnoreCase("Jurassic Park").and(rating.equalsIgnoreCase("Bad")).or(author.equalsIgnoreCase("Michael Crichton")), "(+title:\"jurassic park\" +rating:bad) author:\"michael crichton\"", 1);
     }
 
     @Test
     public void eq_or_eq_and_eq_Does_Not_Find_Results() throws Exception {
-        testQuery(title.eq("Jeeves").or(rating.eq("Superb")).and(author.eq("Michael Crichton")), "+(title:jeeves rating:superb) +author:\"michael crichton\"", 0);
+        testQuery(title.eq("jeeves").or(rating.eq("superb")).and(author.eq("michael crichton")), "+(title:jeeves rating:superb) +author:\"michael crichton\"", 0);
     }
 
     @Test
@@ -284,8 +284,8 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void eq_not_or_eq() throws Exception {
-        testQuery(title.eq("House").not().or(rating.eq("Good")), "-title:house rating:good", 1);
+    public void Title_Equals_Ignore_Case_Negation_Or_Rating_Equals_Ignore_Case() throws Exception {
+        testQuery(title.equalsIgnoreCase("House").not().or(rating.equalsIgnoreCase("Good")), "-title:house rating:good", 1);
     }
 
     @Test
@@ -295,12 +295,12 @@ public class LuceneSerializerTest {
 
     @Test
     public void eq_and_eq_not_Does_Not_Find_Results_Because_Second_Expression_Finds_Nothing() throws Exception {
-        testQuery(rating.eq("Superb").and(title.eq("House").not()), "+rating:superb -title:house", 0);
+        testQuery(rating.eq("superb").and(title.eq("house").not()), "+rating:superb -title:house", 0);
     }
 
     @Test
     public void ne_Does_Not_Find_Results() throws Exception {
-        testQuery(title.ne("House"), "-title:house", 0);
+        testQuery(title.ne("house"), "-title:house", 0);
     }
 
     @Test
@@ -310,12 +310,12 @@ public class LuceneSerializerTest {
 
     @Test
     public void ne_or_eq() throws Exception {
-        testQuery(title.ne("Jurassic Park").or(rating.eq("Lousy")), "-title:\"jurassic park\" rating:lousy", 0);
+        testQuery(title.ne("jurassic park").or(rating.eq("lousy")), "-title:\"jurassic park\" rating:lousy", 0);
     }
 
     @Test
     public void ne_and_eq() throws Exception {
-        testQuery(title.ne("House").and(rating.eq("Good")), "-title:house +rating:good", 1);
+        testQuery(title.ne("house").and(rating.eq("good")), "-title:house +rating:good", 1);
     }
 
     @Test
@@ -325,12 +325,12 @@ public class LuceneSerializerTest {
 
     @Test
     public void startsWith_Phrase() throws Exception {
-        testQuery(title.startsWith("Jurassic Par"), "+title:jurassic* +title:*par*", 1);
+        testQuery(title.startsWith("jurassic par"), "+title:jurassic* +title:*par*", 1);
     }
 
     @Test
-    public void startsWith_Phrase_Does_Not_Find_Results() throws Exception {
-        testQuery(title.startsWith("urassic Par"), "+title:urassic* +title:*par*", 0);
+    public void Starts_With_Ignore_Case_Phrase_Does_Not_Find_Results() throws Exception {
+        testQuery(title.startsWithIgnoreCase("urassic Par"), "+title:urassic* +title:*par*", 0);
     }
 
     @Test
@@ -339,13 +339,13 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void endsWith_Phrase() throws Exception {
-        testQuery(title.endsWith("sic Park"), "+title:*sic* +title:*park", 1);
+    public void Ends_With_Ignore_Case_Phrase() throws Exception {
+        testQuery(title.endsWithIgnoreCase("sic Park"), "+title:*sic* +title:*park", 1);
     }
 
     @Test
-    public void endsWith_Phrase_Does_Not_Find_Results() throws Exception {
-        testQuery(title.endsWith("sic Par"), "+title:*sic* +title:*par", 0);
+    public void Ends_With_Ignore_Case_Phrase_Does_Not_Find_Results() throws Exception {
+        testQuery(title.endsWithIgnoreCase("sic Par"), "+title:*sic* +title:*par", 0);
     }
 
     @Test
@@ -354,8 +354,8 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void contains_Phrase() throws Exception {
-        testQuery(title.contains("rassi Pa"), "+title:*rassi* +title:*pa*", 1);
+    public void Contains_Ignore_Case_Phrase() throws Exception {
+        testQuery(title.containsIgnoreCase("rassi Pa"), "+title:*rassi* +title:*pa*", 1);
     }
 
     @Test
@@ -414,9 +414,9 @@ public class LuceneSerializerTest {
 
     @Test
     public void in() throws Exception {
-        testQuery(title.in(Arrays.asList("Jurassic","Park")), "title:jurassic title:park", 1);
-        testQuery(title.in("Jurassic","Park"), "title:jurassic title:park", 1);
-        testQuery(title.eq("Jurassic").or(title.eq("Park")), "title:jurassic title:park", 1);
+        testQuery(title.in(Arrays.asList("jurassic", "park")), "title:jurassic title:park", 1);
+        testQuery(title.in("jurassic","park"), "title:jurassic title:park", 1);
+        testQuery(title.eq("jurassic").or(title.eq("park")), "title:jurassic title:park", 1);
     }
 
     @Test
@@ -630,12 +630,12 @@ public class LuceneSerializerTest {
     @Test
     public void various() throws Exception{
         MatchingFilters filters = new MatchingFilters(Module.LUCENE, Target.LUCENE);
-        for (BooleanExpression filter : filters.string(title, StringConstant.create("Jurassic"))){
+        for (BooleanExpression filter : filters.string(title, StringConstant.create("jurassic park"))){
             System.out.println(filter);
             testQuery(filter, 1);
         }
 
-        for (BooleanExpression filter : filters.string(author, StringConstant.create("Michael Crichton"))){
+        for (BooleanExpression filter : filters.string(author, StringConstant.create("michael crichton"))){
             System.out.println(filter);
             testQuery(filter, 1);
         }

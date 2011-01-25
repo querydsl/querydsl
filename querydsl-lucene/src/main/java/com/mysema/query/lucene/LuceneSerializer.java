@@ -87,20 +87,28 @@ public class LuceneSerializer {
             return bq;
         } else if (op == Ops.LIKE) {
             return like(operation, metadata);
-        } else if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE || op == Ops.EQ_IGNORE_CASE) {
-            return eq(operation, metadata);
+        } else if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE) {
+            return eq(operation, metadata, false);
+        } else if (op == Ops.EQ_IGNORE_CASE) {
+            return eq(operation, metadata, true);
         } else if (op == Ops.NE_OBJECT || op == Ops.NE_PRIMITIVE) {
-            return ne(operation, metadata);
-        } else if (op == Ops.STARTS_WITH || op == Ops.STARTS_WITH_IC) {
-            return startsWith(metadata, operation);
-        } else if (op == Ops.ENDS_WITH || op == Ops.ENDS_WITH_IC) {
-            return endsWith(operation, metadata);
-        } else if (op == Ops.STRING_CONTAINS || op == Ops.STRING_CONTAINS_IC) {
-            return stringContains(operation, metadata);
+            return ne(operation, metadata, false);
+        } else if (op == Ops.STARTS_WITH) {
+            return startsWith(metadata, operation, false);
+        } else if (op == Ops.STARTS_WITH_IC) {
+            return startsWith(metadata, operation, true);
+        } else if (op == Ops.ENDS_WITH) {
+            return endsWith(operation, metadata, false);
+        } else if (op == Ops.ENDS_WITH_IC) {
+            return endsWith(operation, metadata, true);
+        } else if (op == Ops.STRING_CONTAINS) {
+            return stringContains(operation, metadata, false);
+        } else if (op == Ops.STRING_CONTAINS_IC) {
+            return stringContains(operation, metadata, true);
         } else if (op == Ops.BETWEEN) {
             return between(operation, metadata);
         } else if (op == Ops.IN) {
-            return in(operation, metadata);
+            return in(operation, metadata, false);
         } else if (op == Ops.LT || op == Ops.BEFORE) {
             return lt(operation, metadata);
         } else if (op == Ops.GT || op == Ops.AFTER) {
@@ -143,7 +151,7 @@ public class LuceneSerializer {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
         boolean tokenized = isTokenized(operation.getArg(0));
-        
+
         String[] terms = createTerms(operation.getArg(1), tokenized, metadata);
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
@@ -156,16 +164,16 @@ public class LuceneSerializer {
     }
 
     @SuppressWarnings("unchecked")
-    protected Query eq(Operation<?> operation, QueryMetadata metadata) {
+    protected Query eq(Operation<?> operation, QueryMetadata metadata, boolean ignoreCase) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
         boolean tokenized = isTokenized(operation.getArg(0));
-        
+
         if (Number.class.isAssignableFrom(operation.getArg(1).getType())) {
             return new TermQuery(new Term(field, convertNumber(((Constant<Number>) operation
                     .getArg(1)).getConstant())));
         }
-        return eq(field, createTerms(operation.getArg(1), tokenized, metadata), metadata);
+        return eq(field, createTerms(operation.getArg(1), tokenized, metadata), ignoreCase);
     }
 
 
@@ -192,7 +200,7 @@ public class LuceneSerializer {
         }
     }
 
-    protected Query eq(String field, String[] terms, QueryMetadata metadata) {
+    protected Query eq(String field, String[] terms, boolean ignoreCase) {
         if (terms.length > 1) {
             PhraseQuery pq = new PhraseQuery();
             for (String s : terms) {
@@ -200,11 +208,11 @@ public class LuceneSerializer {
             }
             return pq;
         }
-        return new TermQuery(new Term(field, normalize(terms[0])));
+        return new TermQuery(new Term(field, (ignoreCase ? normalize(terms[0]) : terms[0])));
     }
 
     @SuppressWarnings("unchecked")
-    protected Query in(Operation<?> operation, QueryMetadata metadata) {
+    protected Query in(Operation<?> operation, QueryMetadata metadata, boolean ignoreCase) {
         String field = toField(operation.getArg(0));
         boolean tokenized = isTokenized(operation.getArg(0));
         Collection values = (Collection) ((Constant) operation.getArg(1)).getConstant();
@@ -212,18 +220,18 @@ public class LuceneSerializer {
         for (Object value : values) {
             // FIXME : use proper splitting
             String str = convert(value);
-            bq.add(eq(field, tokenized ? StringUtils.split(str) : new String[] {str }, metadata), Occur.SHOULD);
+            bq.add(eq(field, tokenized ? StringUtils.split(str) : new String[] { str }, ignoreCase), Occur.SHOULD);
         }
         return bq;
     }
 
-    protected Query ne(Operation<?> operation, QueryMetadata metadata) {
+    protected Query ne(Operation<?> operation, QueryMetadata metadata, boolean ignoreCase) {
         BooleanQuery bq = new BooleanQuery();
-        bq.add(new BooleanClause(eq(operation, metadata), Occur.MUST_NOT));
+        bq.add(new BooleanClause(eq(operation, metadata, ignoreCase), Occur.MUST_NOT));
         return bq;
     }
 
-    protected Query startsWith(QueryMetadata metadata, Operation<?> operation) {
+    protected Query startsWith(QueryMetadata metadata, Operation<?> operation, boolean ignoreCase) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
         boolean tokenized = isTokenized(operation.getArg(0));
@@ -232,14 +240,14 @@ public class LuceneSerializer {
             BooleanQuery bq = new BooleanQuery();
             for (int i = 0; i < terms.length; ++i) {
                 String s = i == 0 ? terms[i] + "*" : "*" + terms[i] + "*";
-                bq.add(new WildcardQuery(new Term(field, normalize(s))), Occur.MUST);
+                bq.add(new WildcardQuery(new Term(field, (ignoreCase ? normalize(s) : s))), Occur.MUST);
             }
             return bq;
         }
         return new PrefixQuery(new Term(field, normalize(terms[0])));
     }
 
-    protected Query stringContains(Operation<?> operation, QueryMetadata metadata) {
+    protected Query stringContains(Operation<?> operation, QueryMetadata metadata, boolean ignoreCase) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
         boolean tokenized = isTokenized(operation.getArg(0));
@@ -247,14 +255,14 @@ public class LuceneSerializer {
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
             for (String s : terms) {
-                bq.add(new WildcardQuery(new Term(field, "*" + normalize(s) + "*")), Occur.MUST);
+                bq.add(new WildcardQuery(new Term(field, "*" + (ignoreCase ? normalize(s) : s) + "*")), Occur.MUST);
             }
             return bq;
         }
         return new WildcardQuery(new Term(field, "*" + normalize(terms[0]) + "*"));
     }
 
-    protected Query endsWith(Operation<?> operation, QueryMetadata metadata) {
+    protected Query endsWith(Operation<?> operation, QueryMetadata metadata, boolean ignoreCase) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
         boolean tokenized = isTokenized(operation.getArg(0));
@@ -263,7 +271,7 @@ public class LuceneSerializer {
             BooleanQuery bq = new BooleanQuery();
             for (int i = 0; i < terms.length; ++i) {
                 String s = i == terms.length - 1 ? "*" + terms[i] : "*" + terms[i] + "*";
-                bq.add(new WildcardQuery(new Term(field, normalize(s))), Occur.MUST);
+                bq.add(new WildcardQuery(new Term(field, (ignoreCase ? normalize(s) : s))), Occur.MUST);
             }
             return bq;
         }
@@ -351,7 +359,7 @@ public class LuceneSerializer {
 
     /**
      * template method, override to customize
-     * 
+     *
      * @param path
      * @return
      */
@@ -365,8 +373,8 @@ public class LuceneSerializer {
         }
         return rv;
     }
-    
-    protected boolean isTokenized(Expression<?> expr) {
+
+    private boolean isTokenized(Expression<?> expr) {
         if (expr instanceof Path<?>) {
             return isTokenized((Path<?>) expr);
         } else if (expr instanceof Operation<?>) {
@@ -374,13 +382,13 @@ public class LuceneSerializer {
             if (operation.getOperator() == Ops.LOWER || operation.getOperator() == Ops.UPPER) {
                 return isTokenized(operation.getArg(0));
             }
-        } 
-        return splitTerms;        
+        }
+        return splitTerms;
     }
 
     /**
-     * template method, override to customize
-     * 
+     * Template method, override to customize.
+     *
      * @param arg
      * @return
      */
@@ -412,10 +420,10 @@ public class LuceneSerializer {
             return split(expr, tokenized, convert(expr));
         }
     }
-    
+
     /**
-     * template method, override to customize
-     * 
+     * Template method, override to customize.
+     *
      * @param object
      * @return
      */
@@ -451,7 +459,12 @@ public class LuceneSerializer {
         }
     }
 
-    private String normalize(String s) {
+    /**
+     * Template method, override to customize.
+     * @param s
+     * @return
+     */
+    protected String normalize(String s) {
         return lowerCase ? s.toLowerCase(Locale.ENGLISH) : s;
     }
 
