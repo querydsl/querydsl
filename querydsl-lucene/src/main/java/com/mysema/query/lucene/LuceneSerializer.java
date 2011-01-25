@@ -210,7 +210,9 @@ public class LuceneSerializer {
         Collection values = (Collection) ((Constant) operation.getArg(1)).getConstant();
         BooleanQuery bq = new BooleanQuery();
         for (Object value : values) {
-            bq.add(eq(field, tokenized ? StringUtils.split(value.toString()) : new String[] { value.toString() }, metadata), Occur.SHOULD);
+            // FIXME : use proper splitting
+            String str = convert(value);
+            bq.add(eq(field, tokenized ? StringUtils.split(str) : new String[] {str }, metadata), Occur.SHOULD);
         }
         return bq;
     }
@@ -405,10 +407,20 @@ public class LuceneSerializer {
             if (value == null){
                 throw new ParamNotSetException((ParamExpression<?>) expr);
             }
-            return split(expr, tokenized, value.toString());
+            return split(expr, tokenized, convert(value));
         }else{
-            return split(expr, tokenized, expr.toString());
+            return split(expr, tokenized, convert(expr));
         }
+    }
+    
+    /**
+     * template method, override to customize
+     * 
+     * @param object
+     * @return
+     */
+    protected String convert(Object object){
+        return object.toString();
     }
 
     private String[] createEscapedTerms(Expression<?> expr, boolean tokenized, QueryMetadata metadata) {
@@ -417,9 +429,9 @@ public class LuceneSerializer {
             if (value == null){
                 throw new ParamNotSetException((ParamExpression<?>) expr);
             }
-            return split(expr, tokenized, QueryParser.escape(value.toString()));
+            return split(expr, tokenized, QueryParser.escape(convert(value)));
         }else{
-            return split(expr, tokenized, QueryParser.escape(expr.toString()));
+            return split(expr, tokenized, QueryParser.escape(convert(expr)));
         }
     }
 
