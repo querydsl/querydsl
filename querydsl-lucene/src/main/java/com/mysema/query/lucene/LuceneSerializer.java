@@ -168,9 +168,6 @@ public class LuceneSerializer {
         return eq(field, createTerms(operation.getArg(1), tokenized, metadata), metadata);
     }
 
-    protected boolean isTokenized(Expression<?> arg) {
-        return splitTerms;
-    }
 
     private String convertNumber(Number number) {
         if (Integer.class.isInstance(number)) {
@@ -338,11 +335,10 @@ public class LuceneSerializer {
         }
     }
 
-    @SuppressWarnings("unchecked")
     protected String toField(Expression<?> expr) {
-        if (expr instanceof Path) {
+        if (expr instanceof Path<?>) {
             return toField((Path<?>) expr);
-        } else if (expr instanceof Operation) {
+        } else if (expr instanceof Operation<?>) {
             Operation<?> operation = (Operation<?>) expr;
             if (operation.getOperator() == Ops.LOWER || operation.getOperator() == Ops.UPPER) {
                 return toField(operation.getArg(0));
@@ -351,6 +347,12 @@ public class LuceneSerializer {
         throw new IllegalArgumentException("Unable to transform " + expr + " to field");
     }
 
+    /**
+     * template method, override to customize
+     * 
+     * @param path
+     * @return
+     */
     protected String toField(Path<?> path) {
         String rv = path.getMetadata().getExpression().toString();
         if (path.getMetadata().getParent() != null){
@@ -360,6 +362,28 @@ public class LuceneSerializer {
             }
         }
         return rv;
+    }
+    
+    protected boolean isTokenized(Expression<?> expr) {
+        if (expr instanceof Path<?>) {
+            return isTokenized((Path<?>) expr);
+        } else if (expr instanceof Operation<?>) {
+            Operation<?> operation = (Operation<?>) expr;
+            if (operation.getOperator() == Ops.LOWER || operation.getOperator() == Ops.UPPER) {
+                return isTokenized(operation.getArg(0));
+            }
+        } 
+        return splitTerms;        
+    }
+
+    /**
+     * template method, override to customize
+     * 
+     * @param arg
+     * @return
+     */
+    protected boolean isTokenized(Path<?> arg) {
+        return splitTerms;
     }
 
     private void verifyArguments(Operation<?> operation) {
