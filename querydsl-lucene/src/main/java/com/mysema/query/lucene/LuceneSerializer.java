@@ -16,6 +16,8 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import net.jcip.annotations.ThreadSafe;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.QueryParser;
@@ -41,7 +43,6 @@ import com.mysema.query.types.PathType;
  *
  */
 public class LuceneSerializer {
-
     private static final Map<Class<?>, Integer> sortFields = new HashMap<Class<?>, Integer>();
 
     static {
@@ -149,10 +150,10 @@ public class LuceneSerializer {
     protected Query eq(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
-        
+
         //TODO Implement this
         //boolean tokenized = isTokenized(operation.getArg(0));
-        
+
         if (Number.class.isAssignableFrom(operation.getArg(1).getType())) {
             return new TermQuery(new Term(field, convertNumber(((Constant<Number>) operation
                     .getArg(1)).getConstant())));
@@ -200,7 +201,7 @@ public class LuceneSerializer {
         Collection values = (Collection) ((Constant) operation.getArg(1)).getConstant();
         BooleanQuery bq = new BooleanQuery();
         for (Object value : values) {
-            bq.add(eq(field, StringUtils.split(value.toString()), metadata), Occur.SHOULD);
+            bq.add(eq(field, splitTerms ? StringUtils.split(value.toString()) : new String[] { value.toString() }, metadata), Occur.SHOULD);
         }
         return bq;
     }
@@ -336,14 +337,14 @@ public class LuceneSerializer {
     }
 
     protected String toField(Path<?> path) {
-        String rv = path.getMetadata().getExpression().toString(); 
+        String rv = path.getMetadata().getExpression().toString();
         if (path.getMetadata().getParent() != null){
             Path<?> parent = path.getMetadata().getParent();
             if (parent.getMetadata().getPathType() != PathType.VARIABLE){
                 rv = toField(parent) + "." + rv;
             }
         }
-        return rv; 
+        return rv;
     }
 
     private void verifyArguments(Operation<?> operation) {

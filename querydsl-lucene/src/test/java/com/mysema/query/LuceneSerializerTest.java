@@ -97,7 +97,6 @@ public class LuceneSerializerTest {
 
     @Before
     public void setUp() throws Exception {
-        // TODO Tests for non lower case
         serializer = new LuceneSerializer(true,true);
         entityPath = new PathBuilder<Object>(Object.class, "obj");
         title = entityPath.getString("title");
@@ -188,7 +187,7 @@ public class LuceneSerializerTest {
     public void eq() throws Exception {
         testQuery(rating.eq("Good"), "rating:good", 1);
     }
-    
+
     @Test
     public void eq_with_deep_path() throws Exception{
         StringPath deepPath = entityPath.get("property1", Object.class).getString("property2");

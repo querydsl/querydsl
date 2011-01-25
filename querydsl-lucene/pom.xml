@@ -52,6 +52,41 @@
       <version>1.3.2</version>
       <scope>test</scope>
     </dependency>
+    
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>1.6</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+     <artifactId>querydsl-apt</artifactId>
+     <version>${version}</version>
+    </dependency>
   </dependencies>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>com.mysema.maven</groupId>
+        <artifactId>maven-apt-plugin</artifactId>
+        <version>1.0.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-process</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>target/generated-test-sources/java</outputDirectory>
+              <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+              <showWarnings>false</showWarnings>
+              <logOnlyOnError>true</logOnlyOnError>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
