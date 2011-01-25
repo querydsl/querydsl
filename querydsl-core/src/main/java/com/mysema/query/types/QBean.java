@@ -5,8 +5,10 @@
  */
 package com.mysema.query.types;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,40 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
  
     private static final long serialVersionUID = -8210214512730989778L;
 
+    private static final Map<Path<?>, String> pathToProperty = Collections.synchronizedMap(new HashMap<Path<?>, String>());
+    
+    private static Class<?> RelationalPathClass = null;
+    
+    static {
+        try {
+            RelationalPathClass = Class.forName("com.mysema.query.sql.RelationalPath");
+        } catch (ClassNotFoundException e) {
+            // do nothing
+        }
+    }
+    
+    private static final String resolvePropertyViaFields(Path<?> path){
+        String property = pathToProperty.get(path);
+        if (property == null){
+            Path<?> parent = (Path<?>)path.getMetadata().getParent();
+            for (Field field : parent.getClass().getFields()){
+                try {
+                    if (field.get(parent) == path){
+                        property = field.getName();
+                        break;
+                    }
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            if (property == null){
+                property = path.getMetadata().getExpression().toString();
+            } 
+            pathToProperty.put(path, property);           
+        }        
+        return property;
+    }
+    
     private final Map<String, ? extends Expression<?>> bindings;
     
     private final List<Expression<?>> args;
@@ -55,11 +91,24 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
         for (Expression<?> expr : args){
             if (expr instanceof Path<?>){
                 Path<?> path = (Path<?>)expr;
-                rv.put(path.getMetadata().getExpression().toString(), expr);
+                String property;
+                if (path.getMetadata().getParent() != null 
+                   && RelationalPathClass != null
+                   && RelationalPathClass.isAssignableFrom(path.getMetadata().getParent().getClass())){
+                    property = resolvePropertyViaFields(path);                      
+                }else{
+                    property = path.getMetadata().getExpression().toString();
+                }
+                rv.put(property, expr);
             }else if (expr instanceof Operation<?>){
                 Operation<?> operation = (Operation<?>)expr;
-                Path<?> alias = (Path<?>)operation.getArg(1);
-                rv.put(alias.getMetadata().getExpression().toString(), expr);
+                if (operation.getOperator() == Ops.ALIAS && operation.getArg(1) instanceof Path<?>){
+                    Path<?> alias = (Path<?>)operation.getArg(1);
+                    rv.put(alias.getMetadata().getExpression().toString(), expr);    
+                }else{
+                    throw new IllegalArgumentException("Unsupported expression " + expr);
+                }
+                
             }else{
                 throw new IllegalArgumentException("Unsupported expression " + expr);
             }
