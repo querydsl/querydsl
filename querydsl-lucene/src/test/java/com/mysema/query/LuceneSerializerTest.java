@@ -387,8 +387,8 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void between_Phrase() throws Exception {
-        testQuery(title.between("Jurassic Park", "Kundun"), "title:[jurassic TO kundun]", 1);
+    public void between_Phrase_does_not_work() throws Exception {
+        testQuery(title.between("Jurassic Park", "Kundun"), "title:[jurassic park TO kundun]", 0);
     }
 
     @Test

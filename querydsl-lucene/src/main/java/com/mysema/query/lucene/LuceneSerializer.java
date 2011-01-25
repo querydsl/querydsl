@@ -16,12 +16,20 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import net.jcip.annotations.ThreadSafe;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.search.*;
+import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.NumericRangeQuery;
+import org.apache.lucene.search.PhraseQuery;
+import org.apache.lucene.search.PrefixQuery;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
+import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.TermRangeQuery;
+import org.apache.lucene.search.WildcardQuery;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.util.NumericUtils;
 
@@ -62,7 +70,6 @@ public class LuceneSerializer {
 
     private final boolean splitTerms;
 
-    //TODO nämä pitää olla polkukohtaisia
     public LuceneSerializer(boolean lowerCase, boolean splitTerms) {
         this.lowerCase = lowerCase;
         this.splitTerms = splitTerms;
@@ -135,7 +142,9 @@ public class LuceneSerializer {
     protected Query like(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
-        String[] terms = createTerms(operation.getArg(1), metadata);
+        boolean tokenized = isTokenized(operation.getArg(0));
+        
+        String[] terms = createTerms(operation.getArg(1), tokenized, metadata);
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
             for (String s : terms) {
@@ -150,15 +159,17 @@ public class LuceneSerializer {
     protected Query eq(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
-
-        //TODO Implement this
-        //boolean tokenized = isTokenized(operation.getArg(0));
-
+        boolean tokenized = isTokenized(operation.getArg(0));
+        
         if (Number.class.isAssignableFrom(operation.getArg(1).getType())) {
             return new TermQuery(new Term(field, convertNumber(((Constant<Number>) operation
                     .getArg(1)).getConstant())));
         }
-        return eq(field, createTerms(operation.getArg(1), metadata), metadata);
+        return eq(field, createTerms(operation.getArg(1), tokenized, metadata), metadata);
+    }
+
+    protected boolean isTokenized(Expression<?> arg) {
+        return splitTerms;
     }
 
     private String convertNumber(Number number) {
@@ -198,10 +209,11 @@ public class LuceneSerializer {
     @SuppressWarnings("unchecked")
     protected Query in(Operation<?> operation, QueryMetadata metadata) {
         String field = toField(operation.getArg(0));
+        boolean tokenized = isTokenized(operation.getArg(0));
         Collection values = (Collection) ((Constant) operation.getArg(1)).getConstant();
         BooleanQuery bq = new BooleanQuery();
         for (Object value : values) {
-            bq.add(eq(field, splitTerms ? StringUtils.split(value.toString()) : new String[] { value.toString() }, metadata), Occur.SHOULD);
+            bq.add(eq(field, tokenized ? StringUtils.split(value.toString()) : new String[] { value.toString() }, metadata), Occur.SHOULD);
         }
         return bq;
     }
@@ -215,7 +227,8 @@ public class LuceneSerializer {
     protected Query startsWith(QueryMetadata metadata, Operation<?> operation) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
-        String[] terms = createEscapedTerms(operation.getArg(1), metadata);
+        boolean tokenized = isTokenized(operation.getArg(0));
+        String[] terms = createEscapedTerms(operation.getArg(1), tokenized, metadata);
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
             for (int i = 0; i < terms.length; ++i) {
@@ -230,7 +243,8 @@ public class LuceneSerializer {
     protected Query stringContains(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
-        String[] terms = createEscapedTerms(operation.getArg(1), metadata);
+        boolean tokenized = isTokenized(operation.getArg(0));
+        String[] terms = createEscapedTerms(operation.getArg(1), tokenized, metadata);
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
             for (String s : terms) {
@@ -244,7 +258,8 @@ public class LuceneSerializer {
     protected Query endsWith(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
         String field = toField(operation.getArg(0));
-        String[] terms = createEscapedTerms(operation.getArg(1), metadata);
+        boolean tokenized = isTokenized(operation.getArg(0));
+        String[] terms = createEscapedTerms(operation.getArg(1), tokenized, metadata);
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
             for (int i = 0; i < terms.length; ++i) {
@@ -315,11 +330,11 @@ public class LuceneSerializer {
     protected Query stringRange(String field, @Nullable Expression<?> min, @Nullable Expression<?> max,
             boolean minInc, boolean maxInc, QueryMetadata metadata) {
         if (min == null) {
-            return new TermRangeQuery(field, null, normalize(createTerms(max, metadata)[0]), minInc, maxInc);
+            return new TermRangeQuery(field, null, normalize(createTerms(max, false, metadata)[0]), minInc, maxInc);
         } else if (max == null) {
-            return new TermRangeQuery(field, normalize(createTerms(min, metadata)[0]), null, minInc, maxInc);
+            return new TermRangeQuery(field, normalize(createTerms(min, false, metadata)[0]), null, minInc, maxInc);
         } else {
-            return new TermRangeQuery(field, normalize(createTerms(min, metadata)[0]), normalize(createTerms(max, metadata)[0]), minInc, maxInc);
+            return new TermRangeQuery(field, normalize(createTerms(min, false, metadata)[0]), normalize(createTerms(max, false, metadata)[0]), minInc, maxInc);
         }
     }
 
@@ -360,36 +375,36 @@ public class LuceneSerializer {
         }
     }
 
-    private String[] createTerms(Expression<?> expr, QueryMetadata metadata) {
+    private String[] createTerms(Expression<?> expr, boolean tokenized, QueryMetadata metadata) {
         if (expr instanceof ParamExpression<?>){
             Object value = metadata.getParams().get(expr);
             if (value == null){
                 throw new ParamNotSetException((ParamExpression<?>) expr);
             }
-            return split(expr, value.toString());
+            return split(expr, tokenized, value.toString());
         }else{
-            return split(expr, expr.toString());
+            return split(expr, tokenized, expr.toString());
         }
     }
 
-    private String[] createEscapedTerms(Expression<?> expr, QueryMetadata metadata) {
+    private String[] createEscapedTerms(Expression<?> expr, boolean tokenized, QueryMetadata metadata) {
         if (expr instanceof ParamExpression<?>){
             Object value = metadata.getParams().get(expr);
             if (value == null){
                 throw new ParamNotSetException((ParamExpression<?>) expr);
             }
-            return split(expr, QueryParser.escape(value.toString()));
+            return split(expr, tokenized, QueryParser.escape(value.toString()));
         }else{
-            return split(expr, QueryParser.escape(expr.toString()));
+            return split(expr, tokenized, QueryParser.escape(expr.toString()));
         }
     }
 
-    protected String[] split(Expression<?> expr, String str) {
+    protected String[] split(Expression<?> expr, boolean tokenized, String str) {
         if (expr instanceof PhraseElement) {
             return StringUtils.split(str);
         } else if (expr instanceof TermElement) {
             return new String[] { str };
-        } else if (splitTerms) {
+        } else if (tokenized) {
             if (str.equals("")) {
                 return new String[] { str };
             } else {
