@@ -637,7 +637,7 @@ public class LuceneSerializerTest {
 
     @Test
     public void various() throws Exception{
-        MatchingFilters filters = new MatchingFilters(Module.LUCENE, Target.LUCENE);
+        MatchingFiltersFactory filters = new MatchingFiltersFactory(Module.LUCENE, Target.LUCENE);
         for (BooleanExpression filter : filters.string(title, StringConstant.create("jurassic park"))){
             if (unsupportedOperation(filter)) {
                 continue;
