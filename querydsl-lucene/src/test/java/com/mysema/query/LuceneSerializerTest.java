@@ -35,6 +35,9 @@ import com.mysema.query.lucene.LuceneSerializer;
 import com.mysema.query.lucene.LuceneUtils;
 import com.mysema.query.lucene.QueryElement;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Operation;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
@@ -232,7 +235,7 @@ public class LuceneSerializerTest {
         testQuery(title.eq("Jurassic"), "title:jurassic", 1);
     }
 
-    @Test
+    @Test(expected=UnsupportedOperationException.class)
     public void Title_Equals_Ignore_Case_Or_Year_Equals() throws Exception {
         testQuery(title.equalsIgnoreCase("House").or(year.eq(1990)), "title:house year:" + YEAR_PREFIX_CODED, 1);
     }
@@ -247,7 +250,7 @@ public class LuceneSerializerTest {
         testQuery(title.eq("Jurassic Park").and(year.eq(1990)).and(author.eq("Michael Crichton")), "+(+title:\"jurassic park\" +year:" + YEAR_PREFIX_CODED + ") +author:\"michael crichton\"", 1);
     }
 
-    @Test
+    @Test(expected=UnsupportedOperationException.class)
     public void Equals_Ignore_Case_And_Or() throws Exception {
         testQuery(title.equalsIgnoreCase("Jurassic Park").and(rating.equalsIgnoreCase("Bad")).or(author.equalsIgnoreCase("Michael Crichton")), "(+title:\"jurassic park\" +rating:bad) author:\"michael crichton\"", 1);
     }
@@ -283,7 +286,7 @@ public class LuceneSerializerTest {
         testQuery(title.like("*H*e*").not(), "-title:*h*e*", 0);
     }
 
-    @Test
+    @Test(expected=UnsupportedOperationException.class)
     public void Title_Equals_Ignore_Case_Negation_Or_Rating_Equals_Ignore_Case() throws Exception {
         testQuery(title.equalsIgnoreCase("House").not().or(rating.equalsIgnoreCase("Good")), "-title:house rating:good", 1);
     }
@@ -328,7 +331,7 @@ public class LuceneSerializerTest {
         testQuery(title.startsWith("jurassic par"), "+title:jurassic* +title:*par*", 1);
     }
 
-    @Test
+    @Test(expected=UnsupportedOperationException.class)
     public void Starts_With_Ignore_Case_Phrase_Does_Not_Find_Results() throws Exception {
         testQuery(title.startsWithIgnoreCase("urassic Par"), "+title:urassic* +title:*par*", 0);
     }
@@ -338,12 +341,12 @@ public class LuceneSerializerTest {
         testQuery(title.endsWith("ark"), "title:*ark", 1);
     }
 
-    @Test
+    @Test(expected=UnsupportedOperationException.class)
     public void Ends_With_Ignore_Case_Phrase() throws Exception {
         testQuery(title.endsWithIgnoreCase("sic Park"), "+title:*sic* +title:*park", 1);
     }
 
-    @Test
+    @Test(expected=UnsupportedOperationException.class)
     public void Ends_With_Ignore_Case_Phrase_Does_Not_Find_Results() throws Exception {
         testQuery(title.endsWithIgnoreCase("sic Par"), "+title:*sic* +title:*par", 0);
     }
@@ -353,7 +356,7 @@ public class LuceneSerializerTest {
         testQuery(title.contains("rassi"), "title:*rassi*", 1);
     }
 
-    @Test
+    @Test(expected=UnsupportedOperationException.class)
     public void Contains_Ignore_Case_Phrase() throws Exception {
         testQuery(title.containsIgnoreCase("rassi Pa"), "+title:*rassi* +title:*pa*", 1);
     }
@@ -616,20 +619,40 @@ public class LuceneSerializerTest {
         fail("Not yet implemented!");
     }
 
+    private boolean unsupportedOperation(BooleanExpression filter) {
+        if (filter instanceof Operation<?>) {
+            Operator<?> op = ((Operation<?>) filter).getOperator();
+            if (op == Ops.STARTS_WITH_IC || op == Ops.EQ_IGNORE_CASE || op == Ops.STARTS_WITH_IC
+                || op == Ops.ENDS_WITH_IC || op == Ops.STRING_CONTAINS_IC) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     @Test
     public void various() throws Exception{
         MatchingFilters filters = new MatchingFilters(Module.LUCENE, Target.LUCENE);
         for (BooleanExpression filter : filters.string(title, StringConstant.create("jurassic park"))){
+            if (unsupportedOperation(filter)) {
+                continue;
+            }
             System.out.println(filter);
             testQuery(filter, 1);
         }
 
         for (BooleanExpression filter : filters.string(author, StringConstant.create("michael crichton"))){
+            if (unsupportedOperation(filter)) {
+                continue;
+            }
             System.out.println(filter);
             testQuery(filter, 1);
         }
 
         for (BooleanExpression filter : filters.string(title, StringConstant.create("1990"))){
+            if (unsupportedOperation(filter)) {
+                continue;
+            }
             System.out.println(filter);
             testQuery(filter, 0);
         }
