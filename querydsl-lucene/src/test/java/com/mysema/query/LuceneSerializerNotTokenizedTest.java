@@ -2,8 +2,6 @@ package com.mysema.query;
 import static com.mysema.query.QPerson.person;
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
-
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -19,7 +17,6 @@ import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 import org.joda.time.LocalDate;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.lucene.LuceneSerializer;
@@ -135,9 +132,44 @@ public class LuceneSerializerNotTokenizedTest {
     public void Equals_By_Birth_Date() throws Exception {
         testQuery(person.birthDate.eq(clooney.getBirthDate()), "birthDate:1961-04-06", 1);
     }
-    
+
     @Test
     public void Between_Phrase() throws Exception {
         testQuery(person.name.between("Brad Pitt","George Clooney"), "name:[Brad Pitt TO George Clooney]", 2);
+    }
+
+    @Test
+    public void Not_Equals_Finds_Two() throws Exception {
+        testQuery(person.name.ne("Michael Douglas"), "-name:Michael Douglas +*:*", 2);
+    }
+
+    @Test
+    public void Not_Equals_Finds_One() throws Exception {
+        testQuery(person.name.ne("Brad Pitt"), "-name:Brad Pitt +*:*", 1);
+    }
+
+    @Test
+    public void And_With_Two_Not_Equals_Finds_Nothing() throws Exception {
+        testQuery(person.name.ne("Brad Pitt").and(person.name.ne("George Clooney")), "+(-name:Brad Pitt +*:*) +(-name:George Clooney +*:*)", 0);
+    }
+
+    @Test
+    public void Or_With_Two_Not_Equals_Finds_Two() throws Exception {
+        testQuery(person.name.ne("Brad Pitt").or(person.name.ne("George Clooney")), "(-name:Brad Pitt +*:*) (-name:George Clooney +*:*)", 2);
+    }
+
+    @Test
+    public void Negation_Of_Equals_Finds_Two() throws Exception {
+        testQuery(person.name.eq("Michael Douglas").not(), "-name:Michael Douglas +*:*", 2);
+    }
+
+    @Test
+    public void Negation_Of_Equals_Finds_One() throws Exception {
+        testQuery(person.name.eq("Brad Pitt").not(), "-name:Brad Pitt +*:*", 1);
+    }
+
+    @Test
+    public void Negation_Of_And_By_Name_And_Birth_Date_Finds_Nothing() throws Exception {
+        testQuery(person.name.eq("Brad Pitt").and(person.birthDate.eq(pitt.getBirthDate())).not(), "-(+name:Brad Pitt +birthDate:1963-12-18) +*:*", 1);
     }
 }

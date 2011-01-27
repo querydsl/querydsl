@@ -283,7 +283,7 @@ public class LuceneSerializerTest {
 
     @Test
     public void like_not_Does_Not_Find_Results() throws Exception {
-        testQuery(title.like("*H*e*").not(), "-title:*h*e*", 0);
+        testQuery(title.like("*H*e*").not(), "-title:*h*e* +*:*", 1);
     }
 
     @Test(expected=UnsupportedOperationException.class)
@@ -293,32 +293,37 @@ public class LuceneSerializerTest {
 
     @Test
     public void eq_not_Does_Not_Find_Results() throws Exception {
-        testQuery(title.eq("Jurassic Park").not(), "-title:\"jurassic park\"", 0);
+        testQuery(title.eq("Jurassic Park").not(), "-title:\"jurassic park\" +*:*", 0);
+    }
+
+    @Test
+    public void Title_Equals_Not_House() throws Exception {
+        testQuery(title.eq("house").not(), "-title:house +*:*", 1);
     }
 
     @Test
     public void eq_and_eq_not_Does_Not_Find_Results_Because_Second_Expression_Finds_Nothing() throws Exception {
-        testQuery(rating.eq("superb").and(title.eq("house").not()), "+rating:superb -title:house", 0);
+        testQuery(rating.eq("superb").and(title.eq("house").not()), "+rating:superb +(-title:house +*:*)", 0);
     }
 
     @Test
-    public void ne_Does_Not_Find_Results() throws Exception {
-        testQuery(title.ne("house"), "-title:house", 0);
+    public void Not_Equals_Finds_One() throws Exception {
+        testQuery(title.ne("house"), "-title:house +*:*", 1);
     }
 
     @Test
-    public void ne() throws Exception {
-        testQuery(title.ne("Jurassic Park"), "-title:\"jurassic park\"", 0);
+    public void Not_Equals_Finds_None() throws Exception {
+        testQuery(title.ne("Jurassic Park"), "-title:\"jurassic park\" +*:*", 0);
     }
 
     @Test
-    public void ne_or_eq() throws Exception {
-        testQuery(title.ne("jurassic park").or(rating.eq("lousy")), "-title:\"jurassic park\" rating:lousy", 0);
+    public void Nothing_Found_With_Not_Equals_Or_Equals() throws Exception {
+        testQuery(title.ne("jurassic park").or(rating.eq("lousy")), "(-title:\"jurassic park\" +*:*) rating:lousy", 0);
     }
 
     @Test
     public void ne_and_eq() throws Exception {
-        testQuery(title.ne("house").and(rating.eq("good")), "-title:house +rating:good", 1);
+        testQuery(title.ne("house").and(rating.eq("good")), "+(-title:house +*:*) +rating:good", 1);
     }
 
     @Test
@@ -568,7 +573,7 @@ public class LuceneSerializerTest {
 
     @Test
     public void Not_Equals_Empty_String() throws Exception {
-        testQuery(title.ne(""), "-title:", 0);
+        testQuery(title.ne(""), "-title: +*:*", 1);
     }
 
     @Test
@@ -629,7 +634,7 @@ public class LuceneSerializerTest {
         }
         return false;
     }
-    
+
     @Test
     public void various() throws Exception{
         MatchingFilters filters = new MatchingFilters(Module.LUCENE, Target.LUCENE);

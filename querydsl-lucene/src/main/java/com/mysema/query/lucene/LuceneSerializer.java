@@ -20,7 +20,9 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause;
+import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.PrefixQuery;
@@ -30,7 +32,6 @@ import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.search.WildcardQuery;
-import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.util.NumericUtils;
 
 import com.mysema.query.QueryMetadata;
@@ -84,6 +85,7 @@ public class LuceneSerializer {
         } else if (op == Ops.NOT) {
             BooleanQuery bq = new BooleanQuery();
             bq.add(new BooleanClause(toQuery(operation.getArg(0), metadata), Occur.MUST_NOT));
+            bq.add(new BooleanClause(new MatchAllDocsQuery(), Occur.MUST));
             return bq;
         } else if (op == Ops.LIKE) {
             return like(operation, metadata);
@@ -175,12 +177,12 @@ public class LuceneSerializer {
         verifyArguments(operation);
         Path<?> path = getPath(operation.getArg(0));
         String field = toField(path);
-        
+
         if (Number.class.isAssignableFrom(operation.getArg(1).getType())) {
             return new TermQuery(new Term(field, convertNumber(((Constant<Number>) operation
                     .getArg(1)).getConstant())));
         }
-        
+
         return eq(field, convert(path, operation.getArg(1), metadata), ignoreCase);
     }
 
@@ -236,6 +238,7 @@ public class LuceneSerializer {
     protected Query ne(Operation<?> operation, QueryMetadata metadata, boolean ignoreCase) {
         BooleanQuery bq = new BooleanQuery();
         bq.add(new BooleanClause(eq(operation, metadata, ignoreCase), Occur.MUST_NOT));
+        bq.add(new BooleanClause(new MatchAllDocsQuery(), Occur.MUST));
         return bq;
     }
 
@@ -255,7 +258,7 @@ public class LuceneSerializer {
         return new PrefixQuery(new Term(field, terms[0]));
     }
 
-   
+
 
     protected Query stringContains(Operation<?> operation, QueryMetadata metadata, boolean ignoreCase) {
         verifyArguments(operation);
@@ -407,7 +410,7 @@ public class LuceneSerializer {
                     minInc, maxInc);
         }
     }
-    
+
     private Path<?> getPath(Expression<?> leftHandSide){
         if (leftHandSide instanceof Path<?>) {
             return (Path<?>)leftHandSide;
@@ -449,10 +452,10 @@ public class LuceneSerializer {
             }
         }
     }
-    
+
     /**
      * template method
-     * 
+     *
      * @param leftHandSide
      * @param rightHandSide
      * @return
@@ -468,17 +471,17 @@ public class LuceneSerializer {
                 throw new ParamNotSetException((ParamExpression<?>) rightHandSide);
             }
             return convert(leftHandSide, value);
-            
-        } else if (rightHandSide instanceof Constant<?>){            
+
+        } else if (rightHandSide instanceof Constant<?>){
             return convert(leftHandSide, ((Constant<?>)rightHandSide).getConstant());
         } else {
             throw new IllegalArgumentException(rightHandSide.toString());
         }
     }
-    
+
     /**
      * template method
-     * 
+     *
      * @param leftHandSide
      * @param rightHandSide
      * @return
@@ -488,7 +491,7 @@ public class LuceneSerializer {
         if (lowerCase){
             str = str.toLowerCase();
         }
-        if (splitTerms) {            
+        if (splitTerms) {
             if (str.equals("")) {
                 return new String[] { str };
             } else {
@@ -498,7 +501,7 @@ public class LuceneSerializer {
             return new String[] { str };
         }
     }
-    
+
     private String[] convertEscaped(Path<?> leftHandSide, Expression<?> rightHandSide, QueryMetadata metadata) {
         String[] str = convert(leftHandSide, rightHandSide, metadata);
         for (int i = 0; i < str.length; i++){
@@ -506,7 +509,7 @@ public class LuceneSerializer {
         }
         return str;
     }
-    
+
     public Query toQuery(Expression<?> expr, QueryMetadata metadata) {
         if (expr instanceof Operation<?>) {
             return toQuery((Operation<?>) expr, metadata);
