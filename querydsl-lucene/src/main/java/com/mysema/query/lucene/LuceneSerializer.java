@@ -92,28 +92,24 @@ public class LuceneSerializer {
         } else if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE) {
             return eq(operation, metadata, false);
         } else if (op == Ops.EQ_IGNORE_CASE) {
-            throw new UnsupportedOperationException("Ignore case queries are "
-                                                    + "not supported with Lucene");
+            throw new IgnoreCaseUnsupportedException();
             // return eq(operation, metadata, true);
         } else if (op == Ops.NE_OBJECT || op == Ops.NE_PRIMITIVE) {
             return ne(operation, metadata, false);
         } else if (op == Ops.STARTS_WITH) {
             return startsWith(metadata, operation, false);
         } else if (op == Ops.STARTS_WITH_IC) {
-            throw new UnsupportedOperationException("Ignore case queries are "
-                                                    + "not supported with Lucene");
+            throw new IgnoreCaseUnsupportedException();
             // return startsWith(metadata, operation, true);
         } else if (op == Ops.ENDS_WITH) {
             return endsWith(operation, metadata, false);
         } else if (op == Ops.ENDS_WITH_IC) {
-            throw new UnsupportedOperationException("Ignore case queries are "
-                                                    + "not supported with Lucene");
+            throw new IgnoreCaseUnsupportedException();
             // return endsWith(operation, metadata, true);
         } else if (op == Ops.STRING_CONTAINS) {
             return stringContains(operation, metadata, false);
         } else if (op == Ops.STRING_CONTAINS_IC) {
-            throw new UnsupportedOperationException("Ignore case queries are "
-                                                    + "not supported with Lucene");
+            throw new IgnoreCaseUnsupportedException();
             // return stringContains(operation, metadata, true);
         } else if (op == Ops.BETWEEN) {
             return between(operation, metadata);
@@ -227,7 +223,6 @@ public class LuceneSerializer {
         Collection<?> values = (Collection<?>) ((Constant<?>) operation.getArg(1)).getConstant();
         BooleanQuery bq = new BooleanQuery();
         for (Object value : values) {
-            // FIXME : use proper splitting
             String[] str = convert(path, value);
             bq.add(eq(field, str, ignoreCase), Occur.SHOULD);
         }
