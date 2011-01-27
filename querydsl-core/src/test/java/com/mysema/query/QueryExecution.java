@@ -31,11 +31,11 @@ public abstract class QueryExecution {
 
     private final List<String> failures = new ArrayList<String>();
 
-    private final MatchingFilters matchers;
+    private final MatchingFiltersFactory matchers;
 
-    private final Projections projections;
+    private final ProjectionsFactory projections;
 
-    private final Filters filters;
+    private final FilterFactory filters;
 
     private boolean runFilters = true;
 
@@ -46,12 +46,12 @@ public abstract class QueryExecution {
     private int total;
 
     public QueryExecution(Module module, Target target){
-        projections = new Projections(module, target);
-        filters = new Filters(projections, module, target);
-        matchers = new MatchingFilters(module, target);
+        projections = new ProjectionsFactory(module, target);
+        filters = new FilterFactory(projections, module, target);
+        matchers = new MatchingFiltersFactory(module, target);
     }
 
-    public QueryExecution(Projections p, Filters f, MatchingFilters m){
+    public QueryExecution(ProjectionsFactory p, FilterFactory f, MatchingFiltersFactory m){
         projections = p;
         filters = f;
         matchers = m;

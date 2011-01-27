@@ -20,13 +20,13 @@ import com.mysema.query.types.path.ListPath;
  * @author tiwe
  *
  */
-public class Projections {
+public class ProjectionsFactory {
 
     private final Module module;
 
     private final Target target;
 
-    public Projections(Module module, Target target) {
+    public ProjectionsFactory(Module module, Target target) {
         this.module = module;
         this.target = target;
     }

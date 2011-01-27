@@ -19,13 +19,13 @@ import com.mysema.query.types.path.ListPath;
  * @author tiwe
  *
  */
-public class MatchingFilters {
+public class MatchingFiltersFactory {
 
     private final Module module;
 
     private final Target target;
 
-    public MatchingFilters(Module module, Target target) {
+    public MatchingFiltersFactory(Module module, Target target) {
         this.module = module;
         this.target = target;
     }

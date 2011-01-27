@@ -52,11 +52,11 @@ public class CoverageTest {
         String[] getArray();
     }
 
-    private MatchingFilters matchers = new MatchingFilters(Module.COLLECTIONS, Target.MEM);
+    private MatchingFiltersFactory matchers = new MatchingFiltersFactory(Module.COLLECTIONS, Target.MEM);
 
-    private Projections projections = new Projections(Module.COLLECTIONS, Target.MEM);
+    private ProjectionsFactory projections = new ProjectionsFactory(Module.COLLECTIONS, Target.MEM);
 
-    private Filters filters = new Filters(projections, Module.COLLECTIONS, Target.MEM);
+    private FilterFactory filters = new FilterFactory(projections, Module.COLLECTIONS, Target.MEM);
 
     @SuppressWarnings("unchecked")
     @Test

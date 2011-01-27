@@ -21,15 +21,15 @@ import com.mysema.query.types.path.ListPath;
  * @author tiwe
  *
  */
-public class Filters {
+public class FilterFactory {
 
-    private final Projections projections;
+    private final ProjectionsFactory projections;
 
     private final Module module;
 
     private final Target target;
 
-    public Filters(Projections projections, Module module, Target target) {
+    public FilterFactory(ProjectionsFactory projections, Module module, Target target) {
         this.projections = projections;
         this.module = module;
         this.target = target;
