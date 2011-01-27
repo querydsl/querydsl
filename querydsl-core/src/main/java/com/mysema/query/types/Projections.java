@@ -11,9 +11,9 @@ public final class Projections {
     /**
      * Create a typed array projection for the given type and expressions
      * 
-     * @param <T>
-     * @param type
-     * @param exprs
+     * @param <T> 
+     * @param type type of the projection
+     * @param exprs arguments for the projection
      * @return
      */
     public static <T> ArrayConstructorExpression<T> array(Class<T[]> type, Expression<T>... exprs){
@@ -24,8 +24,8 @@ public final class Projections {
      * Create a Bean populating projection for the given type and expressions
      * 
      * @param <T>
-     * @param type
-     * @param exprs
+     * @param type type of the projection
+     * @param exprs arguments for the projection
      * @return
      */
     public static <T> QBean<T> bean(Class<T> type, Expression<?>... exprs){
@@ -36,8 +36,8 @@ public final class Projections {
      * Create a Bean populating projection for the given type and expressions
      * 
      * @param <T>
-     * @param type
-     * @param exprs
+     * @param type type of the projection
+     * @param exprs arguments for the projection
      * @return
      */
     public static <T> QBean<T> bean(Path<T> type, Expression<?>... exprs){
@@ -48,8 +48,8 @@ public final class Projections {
      * Create a constructor invocation projection for the given type and expressions
      * 
      * @param <T>
-     * @param type
-     * @param exprs
+     * @param type type of the projection
+     * @param exprs arguments for the projection
      * @return
      */
     public static <T> ConstructorExpression<T> constructor(Class<T> type, Expression<?>... exprs){
@@ -60,8 +60,8 @@ public final class Projections {
      * Create a field access based Bean populating projection for the given type and expressions
      * 
      * @param <T>
-     * @param type
-     * @param exprs
+     * @param type type of the projection
+     * @param exprs arguments for the projection
      * @return
      */
     public static <T> QBean<T> fields(Class<T> type, Expression<?>... exprs){
@@ -72,8 +72,8 @@ public final class Projections {
      * Create a field access based Bean populating projection for the given type and expressions
      * 
      * @param <T>
-     * @param type
-     * @param exprs
+     * @param type type of the projection
+     * @param exprs arguments for the projection
      * @return
      */
     public static <T> QBean<T> fields(Path<T> type, Expression<?>... exprs){
