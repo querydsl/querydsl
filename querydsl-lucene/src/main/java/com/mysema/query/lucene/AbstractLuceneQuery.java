@@ -207,5 +207,8 @@ SimpleProjectable<T> {
         return queryMixin.where(e);
     }
 
-    
+    @Override
+    public String toString() {
+        return createQuery().toString();
+    }
 }
