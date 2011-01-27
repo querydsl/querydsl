@@ -224,8 +224,7 @@ public class LuceneSerializer {
     protected Query in(Operation<?> operation, QueryMetadata metadata, boolean ignoreCase) {
         Path<?> path = getPath(operation.getArg(0));
         String field = toField(path);
-        @SuppressWarnings({ "rawtypes" })
-        Collection values = (Collection) ((Constant) operation.getArg(1)).getConstant();
+        Collection<?> values = (Collection<?>) ((Constant<?>) operation.getArg(1)).getConstant();
         BooleanQuery bq = new BooleanQuery();
         for (Object value : values) {
             // FIXME : use proper splitting
@@ -357,7 +356,7 @@ public class LuceneSerializer {
                 metadata);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({"unchecked"})
     protected Query range(Path<?> leftHandSide, String field, @Nullable Expression<?> min, @Nullable Expression<?> max, boolean minInc, boolean maxInc, QueryMetadata metadata) {
         if (min != null && Number.class.isAssignableFrom(min.getType()) || max != null
                 && Number.class.isAssignableFrom(max.getType())) {

@@ -12,7 +12,8 @@ import org.apache.lucene.search.Searcher;
 /**
  * TypedQuery is a typed query implementation for Lucene queries.
  * 
- * @author vema
+ * @author laim
+ * @author tiwe
  */
 public class TypedQuery<T> extends AbstractLuceneQuery<T, TypedQuery<T>> {
 
