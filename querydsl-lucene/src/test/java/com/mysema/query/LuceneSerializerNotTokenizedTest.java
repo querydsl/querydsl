@@ -19,6 +19,7 @@ import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 import org.joda.time.LocalDate;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.lucene.LuceneSerializer;
@@ -133,5 +134,10 @@ public class LuceneSerializerNotTokenizedTest {
     @Test
     public void Equals_By_Birth_Date() throws Exception {
         testQuery(person.birthDate.eq(clooney.getBirthDate()), "birthDate:1961-04-06", 1);
+    }
+    
+    @Test
+    public void Between_Phrase() throws Exception {
+        testQuery(person.name.between("Brad Pitt","George Clooney"), "name:[Brad Pitt TO George Clooney]", 2);
     }
 }

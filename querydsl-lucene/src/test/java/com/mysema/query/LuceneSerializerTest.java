@@ -387,19 +387,6 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    @Ignore
-    public void between_Phrase() throws Exception {
-        // FIXME
-        testQuery(title.between("Jurassic Park", "Kundun"), "title:[jurassic park TO kundun]", 0);
-    }
-
-    @Test
-    @Ignore
-    public void between_Phrase_Not_Split() throws Exception {
-        testQuery(title.between("Jurassic Park", "Kundun"), "title:[\"jurassic park\" TO kundun]", 1);
-    }
-
-    @Test
     public void between_Is_Inclusive_From_Start() throws Exception {
         testQuery(title.between("Jurassic", "Kundun"), "title:[jurassic TO kundun]", 1);
     }
