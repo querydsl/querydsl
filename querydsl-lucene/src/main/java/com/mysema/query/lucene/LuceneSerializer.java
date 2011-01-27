@@ -149,31 +149,31 @@ public class LuceneSerializer {
 
     protected Query like(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
-        String field = toField(operation.getArg(0));
-        boolean tokenized = isTokenized(operation.getArg(0));
-
-        String[] terms = createTerms(operation.getArg(1), tokenized, metadata);
+        Path<?> path = getPath(operation.getArg(0));
+        String field = toField(path);
+        String[] terms = convert(path, operation.getArg(1));
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
             for (String s : terms) {
-                bq.add(new WildcardQuery(new Term(field, "*" + normalize(operation.getArg(0), s) + "*")), Occur.MUST);
+                bq.add(new WildcardQuery(new Term(field, "*" + s + "*")), Occur.MUST);
             }
             return bq;
         }
-        return new WildcardQuery(new Term(field, normalize(operation.getArg(0), terms[0])));
+        return new WildcardQuery(new Term(field, terms[0]));
     }
 
     @SuppressWarnings("unchecked")
     protected Query eq(Operation<?> operation, QueryMetadata metadata, boolean ignoreCase) {
         verifyArguments(operation);
-        String field = toField(operation.getArg(0));
-        boolean tokenized = isTokenized(operation.getArg(0));
-
+        Path<?> path = getPath(operation.getArg(0));
+        String field = toField(path);
+        
         if (Number.class.isAssignableFrom(operation.getArg(1).getType())) {
             return new TermQuery(new Term(field, convertNumber(((Constant<Number>) operation
                     .getArg(1)).getConstant())));
         }
-        return eq(operation.getArg(0), field, createTerms(operation.getArg(1), tokenized, metadata), ignoreCase);
+        
+        return eq(field, convert(path, operation.getArg(1), metadata), ignoreCase);
     }
 
 
@@ -200,32 +200,27 @@ public class LuceneSerializer {
         }
     }
 
-    protected Query eq(Expression<?> expr, String field, String[] terms, boolean ignoreCase) {
+    protected Query eq(String field, String[] terms, boolean ignoreCase) {
         if (terms.length > 1) {
             PhraseQuery pq = new PhraseQuery();
             for (String s : terms) {
-                pq.add(new Term(field, normalize(expr, s)));
+                pq.add(new Term(field, s));
             }
             return pq;
         }
-        return new TermQuery(new Term(field, (ignoreCase ? normalize(expr, terms[0]) : terms[0])));
+        return new TermQuery(new Term(field, terms[0]));
     }
 
     protected Query in(Operation<?> operation, QueryMetadata metadata, boolean ignoreCase) {
-        String field = toField(operation.getArg(0));
-        boolean tokenized = isTokenized(operation.getArg(0));
+        Path<?> path = getPath(operation.getArg(0));
+        String field = toField(path);
         @SuppressWarnings({ "rawtypes" })
         Collection values = (Collection) ((Constant) operation.getArg(1)).getConstant();
         BooleanQuery bq = new BooleanQuery();
         for (Object value : values) {
             // FIXME : use proper splitting
-            String str = convert(operation.getArg(0), value);
-            bq.add(
-                eq(operation.getArg(0), 
-                   field, 
-                   tokenized ? StringUtils.split(str) : new String[] { str }, 
-                   ignoreCase),
-                Occur.SHOULD);
+            String[] str = convert(path, value);
+            bq.add(eq(field, str, ignoreCase), Occur.SHOULD);
         }
         return bq;
     }
@@ -238,59 +233,60 @@ public class LuceneSerializer {
 
     protected Query startsWith(QueryMetadata metadata, Operation<?> operation, boolean ignoreCase) {
         verifyArguments(operation);
-        String field = toField(operation.getArg(0));
-        boolean tokenized = isTokenized(operation.getArg(0));
-        String[] terms = createEscapedTerms(operation.getArg(1), tokenized, metadata);
+        Path<?> path = getPath(operation.getArg(0));
+        String field = toField(path);
+        String[] terms = convertEscaped(path, operation.getArg(1), metadata);
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
             for (int i = 0; i < terms.length; ++i) {
                 String s = i == 0 ? terms[i] + "*" : "*" + terms[i] + "*";
-                bq.add(new WildcardQuery(new Term(field, (ignoreCase ? normalize(operation.getArg(0), s) : s))), Occur.MUST);
+                bq.add(new WildcardQuery(new Term(field, s)), Occur.MUST);
             }
             return bq;
         }
-        return new PrefixQuery(new Term(field, normalize(operation.getArg(0), terms[0])));
+        return new PrefixQuery(new Term(field, terms[0]));
     }
 
    
 
     protected Query stringContains(Operation<?> operation, QueryMetadata metadata, boolean ignoreCase) {
         verifyArguments(operation);
-        String field = toField(operation.getArg(0));
-        boolean tokenized = isTokenized(operation.getArg(0));
-        String[] terms = createEscapedTerms(operation.getArg(1), tokenized, metadata);
+        Path<?> path = getPath(operation.getArg(0));
+        String field = toField(path);
+        String[] terms = convertEscaped(path, operation.getArg(1), metadata);
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
             for (String s : terms) {
-                bq.add(new WildcardQuery(new Term(field, "*" + (ignoreCase ? normalize(operation.getArg(0), s) : s) + "*")), Occur.MUST);
+                bq.add(new WildcardQuery(new Term(field, "*" + s + "*")), Occur.MUST);
             }
             return bq;
         }
-        return new WildcardQuery(new Term(field, "*" + normalize(operation.getArg(0), terms[0]) + "*"));
+        return new WildcardQuery(new Term(field, "*" + terms[0] + "*"));
     }
 
     protected Query endsWith(Operation<?> operation, QueryMetadata metadata, boolean ignoreCase) {
         verifyArguments(operation);
-        String field = toField(operation.getArg(0));
-        boolean tokenized = isTokenized(operation.getArg(0));
-        String[] terms = createEscapedTerms(operation.getArg(1), tokenized, metadata);
+        Path<?> path = getPath(operation.getArg(0));
+        String field = toField(path);
+        String[] terms = convertEscaped(path, operation.getArg(1), metadata);
         if (terms.length > 1) {
             BooleanQuery bq = new BooleanQuery();
             for (int i = 0; i < terms.length; ++i) {
                 String s = i == terms.length - 1 ? "*" + terms[i] : "*" + terms[i] + "*";
-                bq.add(new WildcardQuery(new Term(field, (ignoreCase ? normalize(operation.getArg(0), s) : s))), Occur.MUST);
+                bq.add(new WildcardQuery(new Term(field, s)), Occur.MUST);
             }
             return bq;
         }
-        return new WildcardQuery(new Term(field, "*" + normalize(operation.getArg(0), terms[0])));
+        return new WildcardQuery(new Term(field, "*" + terms[0]));
     }
 
     protected Query between(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
+        Path<?> path = getPath(operation.getArg(0));
         // TODO Phrase not properly supported
         return range(
-                operation.getArg(0),
-                toField(operation.getArg(0)),
+                path,
+                toField(path),
                 operation.getArg(1),
                 operation.getArg(2),
                 true,
@@ -300,9 +296,10 @@ public class LuceneSerializer {
 
     protected Query lt(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
+        Path<?> path = getPath(operation.getArg(0));
         return range(
-                operation.getArg(0),
-                toField(operation.getArg(0)),
+                path,
+                toField(path),
                 null,
                 operation.getArg(1),
                 false,
@@ -312,9 +309,10 @@ public class LuceneSerializer {
 
     protected Query gt(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
+        Path<?> path = getPath(operation.getArg(0));
         return range(
-                operation.getArg(0),
-                toField(operation.getArg(0)),
+                path,
+                toField(path),
                 operation.getArg(1),
                 null,
                 false,
@@ -324,9 +322,10 @@ public class LuceneSerializer {
 
     protected Query le(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
+        Path<?> path = getPath(operation.getArg(0));
         return range(
-                operation.getArg(0),
-                toField(operation.getArg(0)),
+                path,
+                toField(path),
                 null,
                 operation.getArg(1),
                 true,
@@ -336,9 +335,10 @@ public class LuceneSerializer {
 
     protected Query ge(Operation<?> operation, QueryMetadata metadata) {
         verifyArguments(operation);
+        Path<?> path = getPath(operation.getArg(0));
         return range(
-                operation.getArg(0),
-                toField(operation.getArg(0)),
+                path,
+                toField(path),
                 operation.getArg(1),
                 null,
                 true,
@@ -347,7 +347,7 @@ public class LuceneSerializer {
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
-    protected Query range(Expression<?> expr, String field, @Nullable Expression<?> min, @Nullable Expression<?> max, boolean minInc, boolean maxInc, QueryMetadata metadata) {
+    protected Query range(Path<?> leftHandSide, String field, @Nullable Expression<?> min, @Nullable Expression<?> max, boolean minInc, boolean maxInc, QueryMetadata metadata) {
         if (min != null && Number.class.isAssignableFrom(min.getType()) || max != null
                 && Number.class.isAssignableFrom(max.getType())) {
             Class<? extends Number> numType = (Class) (min != null ? min.getType() : max.getType());
@@ -355,7 +355,7 @@ public class LuceneSerializer {
                     : ((Constant) min).getConstant()), (Number) (max == null ? null
                     : ((Constant) max).getConstant()), minInc, maxInc);
         }
-        return stringRange(expr, field, min, max, minInc, maxInc, metadata);
+        return stringRange(leftHandSide, field, min, max, minInc, maxInc, metadata);
     }
 
     protected <N extends Number> NumericRangeQuery<?> numericRange(Class<N> clazz, String field,
@@ -377,7 +377,7 @@ public class LuceneSerializer {
     }
 
     protected Query stringRange(
-            Expression<?> expr,
+            Path<?> leftHandSide,
             String field,
             @Nullable Expression<?> min,
             @Nullable Expression<?> max,
@@ -387,30 +387,29 @@ public class LuceneSerializer {
 
         if (min == null) {
             return new TermRangeQuery(
-                    field, null, normalize(expr,
-                    createTerms(max, false, metadata)[0]), minInc, maxInc);
+                    field, null, convert(leftHandSide, max, metadata)[0], minInc, maxInc);
         } else if (max == null) {
             return new TermRangeQuery(
-                    field, normalize(expr, createTerms(min, false, metadata)[0]),
+                    field, convert(leftHandSide, min, metadata)[0],
                     null, minInc, maxInc);
         } else {
             return new TermRangeQuery(
-                    field, normalize(expr, createTerms(min, false, metadata)[0]),
-                    normalize(expr, createTerms(max, false, metadata)[0]),
+                    field, convert(leftHandSide, min, metadata)[0],
+                    convert(leftHandSide, max, metadata)[0],
                     minInc, maxInc);
         }
     }
-
-    protected String toField(Expression<?> expr) {
-        if (expr instanceof Path<?>) {
-            return toField((Path<?>) expr);
-        } else if (expr instanceof Operation<?>) {
-            Operation<?> operation = (Operation<?>) expr;
+    
+    private Path<?> getPath(Expression<?> leftHandSide){
+        if (leftHandSide instanceof Path<?>) {
+            return (Path<?>)leftHandSide;
+        } else if (leftHandSide instanceof Operation<?>) {
+            Operation<?> operation = (Operation<?>) leftHandSide;
             if (operation.getOperator() == Ops.LOWER || operation.getOperator() == Ops.UPPER) {
-                return toField(operation.getArg(0));
+                return (Path<?>)operation.getArg(0);
             }
         }
-        throw new IllegalArgumentException("Unable to transform " + expr + " to field");
+        throw new IllegalArgumentException("Unable to transform " + leftHandSide + " to path");
     }
 
     /**
@@ -430,28 +429,6 @@ public class LuceneSerializer {
         return rv;
     }
 
-    private boolean isTokenized(Expression<?> expr) {
-        if (expr instanceof Path<?>) {
-            return isTokenized((Path<?>) expr);
-        } else if (expr instanceof Operation<?>) {
-            Operation<?> operation = (Operation<?>) expr;
-            if (operation.getOperator() == Ops.LOWER || operation.getOperator() == Ops.UPPER) {
-                return isTokenized(operation.getArg(0));
-            }
-        }
-        return splitTerms;
-    }
-
-    /**
-     * Template method, override to customize.
-     *
-     * @param arg
-     * @return
-     */
-    protected boolean isTokenized(Path<?> arg) {
-        return splitTerms;
-    }
-
     private void verifyArguments(Operation<?> operation) {
         List<Expression<?>> arguments = operation.getArgs();
         for (int i = 1; i < arguments.size(); ++i) {
@@ -464,62 +441,46 @@ public class LuceneSerializer {
             }
         }
     }
-
-    private String[] createTerms(Expression<?> expr, boolean tokenized, QueryMetadata metadata) {
-        if (expr instanceof ParamExpression<?>){
-            Object value = metadata.getParams().get(expr);
-            if (value == null){
-                throw new ParamNotSetException((ParamExpression<?>) expr);
-            }
-            return split(expr, tokenized, convert(expr, value));
-        }else{
-            return split(expr, tokenized, convert(expr, expr));
-        }
-    }
-
+    
     /**
-     * Template method, override to customize.
-     *
-     * @param object
-     * @param value 
+     * template method
+     * 
+     * @param leftHandSide
+     * @param rightHandSide
      * @return
      */
-    protected String convert(Path<?> path, Object value){
-        return value.toString();
-    }
-    
-    
-    private String convert(Expression<?> expr, Object value) {
-        if (expr instanceof Path<?>) {
-            return convert((Path<?>) expr, value);
-        } else if (expr instanceof Operation<?>) {
-            Operation<?> operation = (Operation<?>) expr;
-            if (operation.getOperator() == Ops.LOWER || operation.getOperator() == Ops.UPPER) {
-                return convert(operation.getArg(0), value);
-            }
-        }
-        //TODO Or should this throw error or something?
-        return value.toString();
-    }
-    
-    private String[] createEscapedTerms(Expression<?> expr, boolean tokenized, QueryMetadata metadata) {
-        if (expr instanceof ParamExpression<?>){
-            Object value = metadata.getParams().get(expr);
+    protected String[] convert(Path<?> leftHandSide, Expression<?> rightHandSide, QueryMetadata metadata) {
+        if (rightHandSide instanceof PhraseElement) {
+            return StringUtils.split(rightHandSide.toString());
+        } else if (rightHandSide instanceof TermElement) {
+            return new String[] { rightHandSide.toString() };
+        } else if (rightHandSide instanceof ParamExpression<?>){
+            Object value = metadata.getParams().get(rightHandSide);
             if (value == null){
-                throw new ParamNotSetException((ParamExpression<?>) expr);
+                throw new ParamNotSetException((ParamExpression<?>) rightHandSide);
             }
-            return split(expr, tokenized, QueryParser.escape(convert(expr, value)));
-        }else{
-            return split(expr, tokenized, QueryParser.escape(convert(expr, expr)));
+            return convert(leftHandSide, value);
+            
+        } else if (rightHandSide instanceof Constant<?>){            
+            return convert(leftHandSide, ((Constant<?>)rightHandSide).getConstant());
+        } else {
+            throw new IllegalArgumentException(rightHandSide.toString());
         }
     }
-
-    protected String[] split(Expression<?> expr, boolean tokenized, String str) {
-        if (expr instanceof PhraseElement) {
-            return StringUtils.split(str);
-        } else if (expr instanceof TermElement) {
-            return new String[] { str };
-        } else if (tokenized) {
+    
+    /**
+     * template method
+     * 
+     * @param leftHandSide
+     * @param rightHandSide
+     * @return
+     */
+    protected String[] convert(Path<?> leftHandSide, Object rightHandSide) {
+        String str = rightHandSide.toString();
+        if (lowerCase){
+            str = str.toLowerCase();
+        }
+        if (splitTerms) {            
             if (str.equals("")) {
                 return new String[] { str };
             } else {
@@ -529,29 +490,13 @@ public class LuceneSerializer {
             return new String[] { str };
         }
     }
-
-
-    private String normalize(Expression<?> expr, String s) {
-        if (expr instanceof Path<?>) {
-            return normalize((Path<?>) expr, s);
-        } else if (expr instanceof Operation<?>) {
-            Operation<?> operation = (Operation<?>) expr;
-            if (operation.getOperator() == Ops.LOWER || operation.getOperator() == Ops.UPPER) {
-                return normalize(operation.getArg(0), s);
-            }
-        }
-        //TODO Or should this throw error or something?
-        return s;
-    }
     
-    /**
-     * Template method, override to customize.
-     *
-     * @param  
-     * @return
-     */
-    protected String normalize(Path<?> path, String s) {
-        return lowerCase ? s.toLowerCase(Locale.ENGLISH) : s;
+    private String[] convertEscaped(Path<?> leftHandSide, Expression<?> rightHandSide, QueryMetadata metadata) {
+        String[] str = convert(leftHandSide, rightHandSide, metadata);
+        for (int i = 0; i < str.length; i++){
+            str[i] = QueryParser.escape(str[i]);
+        }
+        return str;
     }
     
     public Query toQuery(Expression<?> expr, QueryMetadata metadata) {
@@ -572,10 +517,11 @@ public class LuceneSerializer {
             }
             Class<?> type = order.getTarget().getType();
             boolean reverse = !order.isAscending();
+            Path<?> path = getPath(order.getTarget());
             if (Number.class.isAssignableFrom(type)) {
-                sorts.add(new SortField(toField(order.getTarget()), sortFields.get(type), reverse));
+                sorts.add(new SortField(toField(path), sortFields.get(type), reverse));
             } else {
-                sorts.add(new SortField(toField(order.getTarget()), Locale.ENGLISH, reverse));
+                sorts.add(new SortField(toField(path), Locale.ENGLISH, reverse));
             }
         }
         Sort sort = new Sort();
