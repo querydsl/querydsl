@@ -62,28 +62,76 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
     
     private final Map<String, ? extends Expression<?>> bindings;
     
+    private final Map<String, Field> fields = new HashMap<String, Field>();
+    
     private final List<Expression<?>> args;
+    
+    private final boolean fieldAccess;
     
     @SuppressWarnings("unchecked")
     public QBean(Path<T> type, Expression<?>... args) {
-        this((Class)type.getType(), args);        
+        this((Class)type.getType(), false, args);        
     }
     
     @SuppressWarnings("unchecked")
     public QBean(Path<T> type, Map<String, ? extends Expression<?>> bindings) {
-        this((Class)type.getType(), bindings);
+        this((Class)type.getType(), false, bindings);
     }
-        
+
+    @SuppressWarnings("unchecked")
+    public QBean(Path<T> type, boolean fieldAccess, Expression<?>... args) {
+        this((Class)type.getType(), fieldAccess, args);        
+    }
+    
+    @SuppressWarnings("unchecked")
+    public QBean(Path<T> type, boolean fieldAccess, Map<String, ? extends Expression<?>> bindings) {
+        this((Class)type.getType(), fieldAccess, bindings);
+    }
+    
     public QBean(Class<T> type, Map<String, ? extends Expression<?>> bindings) {
-        super(type);
-        this.args = new ArrayList<Expression<?>>(bindings.values());        
-        this.bindings = bindings;
+        this(type, false, bindings);
     }
     
     public QBean(Class<T> type, Expression<?>... args) {
+        this(type, false, args);        
+    }
+
+    public QBean(Class<T> type, boolean fieldAccess, Map<String, ? extends Expression<?>> bindings) {
+        super(type);
+        this.args = new ArrayList<Expression<?>>(bindings.values());        
+        this.bindings = bindings;
+        this.fieldAccess = fieldAccess;
+        if (fieldAccess){
+            initFields();
+        }
+    }
+    
+    public QBean(Class<T> type, boolean fieldAccess, Expression<?>... args) {
         super(type);
         this.args = Arrays.asList(args);
-        bindings = createBindings(args);        
+        this.bindings = createBindings(args);        
+        this.fieldAccess = fieldAccess;
+        if (fieldAccess){
+            initFields();
+        }
+    }
+    
+    private void initFields() {
+        for (String property : bindings.keySet()){
+            Class<?> beanType = type;
+            while (!beanType.equals(Object.class)){
+                try {
+                    Field field = type.getDeclaredField(property);
+                    field.setAccessible(true);
+                    fields.put(property, field);
+                    beanType = Object.class;
+                } catch (SecurityException e) {
+                    // do nothing
+                } catch (NoSuchFieldException e) {
+                    beanType = beanType.getSuperclass();
+                }    
+            }            
+        }
     }
 
     private Map<String,Expression<?>> createBindings(Expression<?>... args) {
@@ -120,13 +168,22 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
     public T newInstance(Object... args){
         try {
             T rv = getType().newInstance();
-            BeanMap beanMap = new BeanMap(rv);
-            for (Map.Entry<String, ? extends Expression<?>> entry : bindings.entrySet()){
-                Object value = args[this.args.indexOf(entry.getValue())];
-                if (value != null){
-                    beanMap.put(entry.getKey(), value);    
-                }                
-            }
+            if (fieldAccess){
+                for (Map.Entry<String, ? extends Expression<?>> entry : bindings.entrySet()){
+                    Object value = args[this.args.indexOf(entry.getValue())];
+                    if (value != null){
+                        fields.get(entry.getKey()).set(rv, value);
+                    }
+                }
+            }else{
+                BeanMap beanMap = new BeanMap(rv);
+                for (Map.Entry<String, ? extends Expression<?>> entry : bindings.entrySet()){
+                    Object value = args[this.args.indexOf(entry.getValue())];
+                    if (value != null){
+                        beanMap.put(entry.getKey(), value);    
+                    }                
+                }
+            }            
             return rv;
         } catch (InstantiationException e) {
             throw new ExpressionException(e.getMessage(),e);

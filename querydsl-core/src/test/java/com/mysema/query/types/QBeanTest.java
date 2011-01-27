@@ -93,10 +93,28 @@ public class QBeanTest {
         assertEquals(30, bean.getAge());
         assertEquals(true, bean.isMarried());        
     }
+    
+    @Test
+    public void with_Class_and_Exprs_using_fields(){                
+        QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, true, name, age, married);
+        Entity bean = beanProjection.newInstance("Fritz", 30, true);
+        assertEquals("Fritz", bean.getName());
+        assertEquals(30, bean.getAge());
+        assertEquals(true, bean.isMarried());        
+    }
 
     @Test
     public void with_Path_and_Exprs(){                
         QBean<Entity> beanProjection = new QBean<Entity>(entity, name, age, married);
+        Entity bean = beanProjection.newInstance("Fritz", 30, true);
+        assertEquals("Fritz", bean.getName());
+        assertEquals(30, bean.getAge());
+        assertEquals(true, bean.isMarried());        
+    }
+    
+    @Test
+    public void with_Path_and_Exprs_using_fields(){                
+        QBean<Entity> beanProjection = new QBean<Entity>(entity, true, name, age, married);
         Entity bean = beanProjection.newInstance("Fritz", 30, true);
         assertEquals("Fritz", bean.getName());
         assertEquals(30, bean.getAge());
@@ -117,9 +135,33 @@ public class QBeanTest {
     }
     
     @Test
+    public void with_Class_and_Map_using_fields(){
+        Map<String,Expression<?>> bindings = new LinkedHashMap<String,Expression<?>>();
+        bindings.put("name", name);
+        bindings.put("age", age);
+        bindings.put("married", married);
+        QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, true, bindings);
+        Entity bean = beanProjection.newInstance("Fritz", 30, true);
+        assertEquals("Fritz", bean.getName());
+        assertEquals(30, bean.getAge());
+        assertEquals(true, bean.isMarried());        
+    }
+    
+    @Test
     public void with_Class_and_Alias(){
         StringPath name2 = new StringPath("name2");
         QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, name.as(name2), age, married);
+        Entity bean = beanProjection.newInstance("Fritz", 30, true);
+        assertNull(bean.getName());
+        assertEquals("Fritz", bean.getName2());
+        assertEquals(30, bean.getAge());
+        assertEquals(true, bean.isMarried());
+    }
+    
+    @Test
+    public void with_Class_and_Alias_using_fields(){
+        StringPath name2 = new StringPath("name2");
+        QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, true, name.as(name2), age, married);
         Entity bean = beanProjection.newInstance("Fritz", 30, true);
         assertNull(bean.getName());
         assertEquals("Fritz", bean.getName2());
