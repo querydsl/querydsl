@@ -77,7 +77,7 @@ public abstract class AbstractStandardTest {
 
     private final java.sql.Date date;
 
-    private final Projections projections = new Projections(Module.HQL, getTarget()){
+    private final ProjectionsFactory projections = new ProjectionsFactory(Module.HQL, getTarget()){
         @Override
         public <A,Q extends SimpleExpression<A>> Collection<Expression<?>> list(ListPath<A,Q> expr, ListExpression<A,Q> other, A knownElement){
             // NOTE : expr.get(0) is only supported in the where clause
@@ -88,7 +88,7 @@ public abstract class AbstractStandardTest {
     private final List<Cat> savedCats = new ArrayList<Cat>();
 
     private final QueryExecution standardTest = new QueryExecution(
-            projections, new Filters(projections, Module.HQL, getTarget()), new MatchingFilters(Module.HQL, getTarget())){
+            projections, new FilterFactory(projections, Module.HQL, getTarget()), new MatchingFiltersFactory(Module.HQL, getTarget())){
 
         @Override
         protected Pair<Projectable, List<Expression<?>>> createQuery() {
@@ -284,7 +284,7 @@ public abstract class AbstractStandardTest {
     
     @Test
     public void Contains2(){
-        catQuery().where(cat.kittens.contains(savedCats.get(0))).count();
+        assertEquals(1l, catQuery().where(cat.kittens.contains(savedCats.get(0))).count());
     }
 
     @Test
