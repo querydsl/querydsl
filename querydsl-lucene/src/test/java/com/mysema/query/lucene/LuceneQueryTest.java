@@ -526,4 +526,16 @@ public class LuceneQueryTest {
     public void All_By_Excluding_Where() {
         assertEquals(4, query.list().size());
     }
+
+    @Test
+    public void Empty_Index_Should_Return_Empty_List() throws Exception {
+        idx = new RAMDirectory();
+        writer = new IndexWriter(idx, new StandardAnalyzer(
+                Version.LUCENE_CURRENT), true, MaxFieldLength.UNLIMITED);
+        writer.optimize();
+        writer.close();
+        searcher = new IndexSearcher(idx);
+        query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
+        assertTrue(query.list().isEmpty());
+    }
 }

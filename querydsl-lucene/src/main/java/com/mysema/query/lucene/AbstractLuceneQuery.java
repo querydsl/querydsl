@@ -33,7 +33,7 @@ SimpleProjectable<T> {
     private final Searcher searcher;
 
     private final LuceneSerializer serializer;
-    
+
     private final Transformer<Document, T> transformer;
 
     @SuppressWarnings("unchecked")
@@ -83,7 +83,7 @@ SimpleProjectable<T> {
     public Q distinct(){
         return queryMixin.distinct();
     }
-    
+
     @Override
     public Q limit(long limit) {
         return queryMixin.limit(limit);
@@ -99,7 +99,10 @@ SimpleProjectable<T> {
         int limit;
         final int offset = queryOffset != null ? queryOffset.intValue() : 0;
         try {
-            limit = searcher.maxDoc();
+            limit = maxDoc();
+            if (limit == 0) {
+                return new EmptyCloseableIterator<T>();
+            }
         } catch (final IOException e) {
             throw new QueryException(e);
         }
@@ -185,7 +188,7 @@ SimpleProjectable<T> {
     @Override
     public T uniqueResult() {
         try {
-            int maxDoc = searcher.maxDoc();
+            int maxDoc = maxDoc();
             if (maxDoc == 0) {
                 return null;
             }
@@ -210,5 +213,9 @@ SimpleProjectable<T> {
     @Override
     public String toString() {
         return createQuery().toString();
+    }
+
+    private int maxDoc() throws IOException {
+        return searcher.maxDoc();
     }
 }
