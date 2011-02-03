@@ -1,0 +1,9 @@
+# Configure an appender that logs to console
+log4j.rootLogger=info, A1
+log4j.threshold=debug
+log4j.appender.A1=org.apache.log4j.ConsoleAppender
+log4j.appender.A1.layout=org.apache.log4j.PatternLayout
+log4j.appender.A1.layout.ConversionPattern=%d [%t] %-5p %c{1} - %m%n
+
+# Configuration of logging levels for different packages
+log4j.logger.com.mysema.query.lucene=DEBUG
