@@ -44,6 +44,7 @@ import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.Wildcard;
+import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QIdName;
@@ -142,11 +143,11 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         List<Beans> rows = query().from(employee, employee2).list(new QBeans(employee, employee2));
         assertFalse(rows.isEmpty());
         for (Beans row : rows){
-            assertNotNull(row.get(employee));
-            assertNotNull(row.get(employee2));
+            assertEquals(Employee.class, row.get(employee).getClass());
+            assertEquals(Employee.class, row.get(employee2).getClass());            
         }
     }
-
+    
     @Test
     @ExcludeIn({DERBY,MYSQL})
     public void Casts() throws SQLException {
