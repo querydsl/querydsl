@@ -204,6 +204,8 @@ public class MetaDataExporter {
 
         // serialize model
         serialize(classModel);
+        
+        logger.info("Exported " + tableName + " successfully");
     }
 
     private void serialize(EntityType type) {
