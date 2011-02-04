@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import com.google.code.morphia.annotations.Entity;
 import com.mysema.codegen.CodeWriter;
-import com.mysema.query.mongodb.MongodbAnnotationProcessor;
+import com.mysema.query.mongodb.morphia.MorphiaAnnotationProcessor;
 import com.mysema.query.types.Expression;
 
 public class PackageVerification {
@@ -31,9 +31,9 @@ public class PackageVerification {
         oneJarClassLoader.loadClass(Expression.class.getName()); // querydsl-core
         oneJarClassLoader.loadClass(CodeWriter.class.getName()); // codegen
         oneJarClassLoader.loadClass(Entity.class.getName()); // morphia        
-        oneJarClassLoader.loadClass(MongodbAnnotationProcessor.class.getName()); // querydsl-apt
+        oneJarClassLoader.loadClass(MorphiaAnnotationProcessor.class.getName()); // querydsl-apt
         String resourceKey = "META-INF/services/javax.annotation.processing.Processor";
-        assertEquals(MongodbAnnotationProcessor.class.getName(), IOUtils.toString(oneJarClassLoader.findResource(resourceKey).openStream()));
+        assertEquals(MorphiaAnnotationProcessor.class.getName(), IOUtils.toString(oneJarClassLoader.findResource(resourceKey).openStream()));
     }
     
 }

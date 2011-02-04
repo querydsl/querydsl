@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.mongodb;
+package com.mysema.query.mongodb.morphia;
 
 import java.lang.annotation.Annotation;
 import java.util.Collections;
@@ -26,7 +26,7 @@ import com.mysema.query.apt.Processor;
 
 @SupportedAnnotationTypes({"com.mysema.query.annotations.*","com.google.code.morphia.annotations.*"})
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
-public class MongodbAnnotationProcessor extends AbstractProcessor{
+public class MorphiaAnnotationProcessor extends AbstractProcessor{
 
     private Class<? extends Annotation> entities, entity, embedded, skip;
 
