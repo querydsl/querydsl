@@ -7,7 +7,7 @@
   <version>2.1.0-SNAPSHOT</version>
   <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
-  <url>http://source.mysema.com/display/querydsl</url>
+  <url>http://www.querydsl.com</url>
   <parent>
     <groupId>com.mysema.home</groupId>
     <artifactId>mysema-source</artifactId>
