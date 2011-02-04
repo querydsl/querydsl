@@ -17,7 +17,10 @@ import com.mysema.query.mongodb.MongodbQuery;
 import com.mysema.query.types.EntityPath;
 
 /**
+ * MorphiaQuery extends MongodbQuery with Morphia specific transformations
+ *
  * @author laimw
+ * @author tiwe
  *
  */
 public class MorphiaQuery<K> extends MongodbQuery<K> {

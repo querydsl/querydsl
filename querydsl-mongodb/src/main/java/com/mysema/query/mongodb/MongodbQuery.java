@@ -26,7 +26,7 @@ import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Predicate;
 
 /**
- * Mongodb query
+ * MongodbQuery provides a general Querydsl query implementation with a pluugable DBObject to Bean transformation
  *
  * @author laimw
  *

@@ -24,6 +24,12 @@ import com.mysema.query.annotations.QueryEntities;
 import com.mysema.query.apt.DefaultConfiguration;
 import com.mysema.query.apt.Processor;
 
+/**
+ * Annotation processor to create Querydsl query types for Morphia annoated classes
+ *
+ * @author tiwe
+ *
+ */
 @SupportedAnnotationTypes({"com.mysema.query.annotations.*","com.google.code.morphia.annotations.*"})
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class MorphiaAnnotationProcessor extends AbstractProcessor{
@@ -39,7 +45,7 @@ public class MorphiaAnnotationProcessor extends AbstractProcessor{
         skip = Transient.class;
 
         DefaultConfiguration configuration = new DefaultConfiguration(
-                roundEnv, processingEnv.getOptions(), Collections.<String>emptySet(), 
+                roundEnv, processingEnv.getOptions(), Collections.<String>emptySet(),
                 entities, entity, null, null, embedded, skip);
 
         Processor processor = new Processor(processingEnv, roundEnv, configuration);
