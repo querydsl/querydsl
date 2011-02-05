@@ -20,14 +20,7 @@ import javax.annotation.Nullable;
 public interface FactoryExpression<D> extends Expression<D>{
     
     /**
-     * Get the type of this path
-     *
-     * @return
-     */
-    Class<? extends D> getType();
-
-    /**
-     * Get the constructor invocation arguments
+     * Get the invocation arguments
      *
      * @return
      */
