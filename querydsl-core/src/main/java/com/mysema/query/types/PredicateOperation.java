@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types;
 
+import java.util.List;
+
 import javax.annotation.Nullable;
 
 /**
@@ -24,6 +26,10 @@ public class PredicateOperation extends OperationImpl<Boolean> implements Predic
         super(Boolean.class, operator, args);
     }
 
+    public PredicateOperation(Operator<Boolean> operator, List<Expression<?>> args){
+        super(Boolean.class, operator, args);
+    }
+    
     @Override
     public Predicate not() {
         if (not == null){
