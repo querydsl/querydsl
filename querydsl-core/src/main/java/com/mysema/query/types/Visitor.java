@@ -25,12 +25,6 @@ public interface Visitor<R,C>{
      * @param expr
      */
     @Nullable
-    R visit(TemplateExpression<?> expr, @Nullable C context);
-
-    /**
-     * @param expr
-     */
-    @Nullable
     R visit(FactoryExpression<?> expr, @Nullable C context);
 
     /**
@@ -38,6 +32,12 @@ public interface Visitor<R,C>{
      */
     @Nullable
     R visit(Operation<?> expr, @Nullable C context);
+
+    /**
+     * @param expr
+     */
+    @Nullable
+    R visit(ParamExpression<?> expr, @Nullable C context);
 
     /**
      * @param expr
@@ -55,6 +55,6 @@ public interface Visitor<R,C>{
      * @param expr
      */
     @Nullable
-    R visit(ParamExpression<?> expr, @Nullable C context);
+    R visit(TemplateExpression<?> expr, @Nullable C context);
 
 }

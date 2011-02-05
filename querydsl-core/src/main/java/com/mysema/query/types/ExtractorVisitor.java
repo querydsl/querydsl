@@ -24,17 +24,17 @@ public final class ExtractorVisitor implements Visitor<Expression<?>,Void>{
     }
 
     @Override
-    public Expression<?> visit(TemplateExpression<?> expr, Void context) {
-        return expr;
-    }
-
-    @Override
     public Expression<?> visit(FactoryExpression<?> expr, Void context) {
         return expr;
     }
 
     @Override
     public Expression<?> visit(Operation<?> expr, Void context) {
+        return expr;
+    }
+
+    @Override
+    public Expression<?> visit(ParamExpression<?> expr, Void context) {
         return expr;
     }
 
@@ -49,7 +49,7 @@ public final class ExtractorVisitor implements Visitor<Expression<?>,Void>{
     }
 
     @Override
-    public Expression<?> visit(ParamExpression<?> expr, Void context) {
+    public Expression<?> visit(TemplateExpression<?> expr, Void context) {
         return expr;
     }
     
