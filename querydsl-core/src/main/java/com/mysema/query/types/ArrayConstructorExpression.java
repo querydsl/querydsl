@@ -25,6 +25,8 @@ public class ArrayConstructorExpression<D> extends ExpressionBase<D[]> implement
     private final Class<D> elementType;
     
     private final List<Expression<?>> args;
+    
+    private final List<Expression<?>> expandedArgs;
 
     @SuppressWarnings("unchecked")
     public ArrayConstructorExpression(Expression<?>... args) {
@@ -36,6 +38,7 @@ public class ArrayConstructorExpression<D> extends ExpressionBase<D[]> implement
         super(type);
         this.elementType = (Class<D>) Assert.notNull(type.getComponentType(),"componentType");
         this.args = Arrays.<Expression<?>>asList(args);
+        this.expandedArgs = FactoryExpressionUtils.expand(this.args);
     }
 
     public final Class<D> getElementType() {
@@ -49,7 +52,8 @@ public class ArrayConstructorExpression<D> extends ExpressionBase<D[]> implement
 
     @SuppressWarnings("unchecked")
     @Override
-    public D[] newInstance(Object... args){
+    public D[] newInstance(Object... a){
+        Object[] args = FactoryExpressionUtils.compress(this.args, a);
         if (args.getClass().getComponentType().equals(elementType)){
             return (D[])args;
         }else{
@@ -62,7 +66,7 @@ public class ArrayConstructorExpression<D> extends ExpressionBase<D[]> implement
 
     @Override
     public List<Expression<?>> getArgs() {
-        return args;
+        return expandedArgs;
     }
 
     @Override

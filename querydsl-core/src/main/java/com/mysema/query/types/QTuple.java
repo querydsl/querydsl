@@ -23,9 +23,12 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
     
     private final List<Expression<?>> args;
     
+    private final List<Expression<?>> expandedArgs;
+    
     public QTuple(Expression<?>... args) {
         super(Tuple.class);
         this.args = Arrays.asList(args);
+        this.expandedArgs = FactoryExpressionUtils.expand(this.args);
     }
     
     public QTuple(Expression<?>[]... args) {
@@ -34,11 +37,13 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
         for (Expression<?>[] exprs: args){
             this.args.addAll(Arrays.asList(exprs));
         }
+        this.expandedArgs = FactoryExpressionUtils.expand(this.args);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public Tuple newInstance(final Object... args) {
+    public Tuple newInstance(Object... a) {
+        final Object[] args = FactoryExpressionUtils.compress(this.args, a); 
         return new Tuple() {
 
             @Override
@@ -48,7 +53,7 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
 
             @Override
             public <T> T get(Expression<T> expr) {
-                int index = getArgs().indexOf(expr);
+                int index = QTuple.this.args.indexOf(expr);
                 return index != -1 ? (T) args[index] : null;
             }
 
@@ -85,7 +90,7 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
 
     @Override
     public List<Expression<?>> getArgs() {
-        return args;
+        return expandedArgs;
     }
 
 }

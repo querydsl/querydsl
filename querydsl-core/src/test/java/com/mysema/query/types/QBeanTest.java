@@ -71,7 +71,7 @@ public class QBeanTest {
     
     private PathBuilder<Entity> entity;
     
-    private StringPath name;
+    private StringPath name, name2;
     
     private NumberPath<Integer> age;
     
@@ -81,6 +81,7 @@ public class QBeanTest {
     public void setUp(){
         entity = new PathBuilderFactory().create(Entity.class);
         name = entity.getString("name");
+        name2 = entity.getString("name2");
         age = entity.getNumber("age", Integer.class);
         married = entity.getBoolean("married");
     }
@@ -126,5 +127,24 @@ public class QBeanTest {
         assertEquals(30, bean.getAge());
         assertEquals(true, bean.isMarried());
     }
+    
+    @Test
+    public void with_Nested_FactoryExpression(){
+        Map<String,Expression<?>> bindings = new LinkedHashMap<String,Expression<?>>();
+        bindings.put("age", age);
+        bindings.put("name", new Concatenation(name, name2));        
+        QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, bindings);
+        Entity bean = beanProjection.newInstance(30, "Fri","tz");
+        assertEquals("Fritz", bean.getName());
+             
+    }
+    
+    @Test
+    public void with_Nested_FactoryExpression2(){
+        QBean<Entity> beanProjection = new QBean<Entity>(Entity.class,  
+                age, ExpressionUtils.as(new Concatenation(name, name2), "name"));
+        Entity bean = beanProjection.newInstance(30, "Fri","tz");
+        assertEquals("Fritz", bean.getName());
+    }         
     
 }

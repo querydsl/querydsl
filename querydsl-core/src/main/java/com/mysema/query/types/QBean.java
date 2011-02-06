@@ -7,9 +7,9 @@ package com.mysema.query.types;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -60,11 +60,44 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
         return property;
     }
     
+    private static Map<String,Expression<?>> createBindings(Expression<?>... args) {
+        Map<String,Expression<?>> rv = new LinkedHashMap<String,Expression<?>>(args.length);
+        for (Expression<?> expr : args){
+            if (expr instanceof Path<?>){
+                Path<?> path = (Path<?>)expr;
+                String property;
+                if (path.getMetadata().getParent() != null 
+                   && RelationalPathClass != null
+                   && RelationalPathClass.isAssignableFrom(path.getMetadata().getParent().getClass())){
+                    property = resolvePropertyViaFields(path);                      
+                }else{
+                    property = path.getMetadata().getExpression().toString();
+                }
+                rv.put(property, expr);
+            }else if (expr instanceof Operation<?>){
+                Operation<?> operation = (Operation<?>)expr;
+                if (operation.getOperator() == Ops.ALIAS && operation.getArg(1) instanceof Path<?>){
+                    Path<?> path = (Path<?>)operation.getArg(1);
+                    rv.put(path.getMetadata().getExpression().toString(), operation.getArg(0));    
+                }else{
+                    throw new IllegalArgumentException("Unsupported expression " + expr);
+                }
+                
+            }else{
+                throw new IllegalArgumentException("Unsupported expression " + expr);
+            }
+        }
+        return rv;
+    }
+    
+    
     private final Map<String, ? extends Expression<?>> bindings;
     
     private final Map<String, Field> fields = new HashMap<String, Field>();
     
     private final List<Expression<?>> args;
+    
+    private final List<Expression<?>> expandedArgs;
     
     private final boolean fieldAccess;
     
@@ -96,26 +129,21 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
         this(type, false, args);        
     }
 
+    public QBean(Class<T> type, boolean fieldAccess, Expression<?>... args) {
+        this(type, fieldAccess, createBindings(args));
+    }
+    
     public QBean(Class<T> type, boolean fieldAccess, Map<String, ? extends Expression<?>> bindings) {
         super(type);
-        this.args = new ArrayList<Expression<?>>(bindings.values());        
         this.bindings = bindings;
+        this.args = new ArrayList<Expression<?>>(bindings.values());
+        this.expandedArgs = FactoryExpressionUtils.expand(args);        
         this.fieldAccess = fieldAccess;
         if (fieldAccess){
             initFields();
         }
     }
-    
-    public QBean(Class<T> type, boolean fieldAccess, Expression<?>... args) {
-        super(type);
-        this.args = Arrays.asList(args);
-        this.bindings = createBindings(args);        
-        this.fieldAccess = fieldAccess;
-        if (fieldAccess){
-            initFields();
-        }
-    }
-    
+        
     private void initFields() {
         for (String property : bindings.keySet()){
             Class<?> beanType = type;
@@ -134,39 +162,11 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
         }
     }
 
-    private Map<String,Expression<?>> createBindings(Expression<?>... args) {
-        HashMap<String,Expression<?>> rv = new HashMap<String,Expression<?>>(args.length);
-        for (Expression<?> expr : args){
-            if (expr instanceof Path<?>){
-                Path<?> path = (Path<?>)expr;
-                String property;
-                if (path.getMetadata().getParent() != null 
-                   && RelationalPathClass != null
-                   && RelationalPathClass.isAssignableFrom(path.getMetadata().getParent().getClass())){
-                    property = resolvePropertyViaFields(path);                      
-                }else{
-                    property = path.getMetadata().getExpression().toString();
-                }
-                rv.put(property, expr);
-            }else if (expr instanceof Operation<?>){
-                Operation<?> operation = (Operation<?>)expr;
-                if (operation.getOperator() == Ops.ALIAS && operation.getArg(1) instanceof Path<?>){
-                    Path<?> alias = (Path<?>)operation.getArg(1);
-                    rv.put(alias.getMetadata().getExpression().toString(), expr);    
-                }else{
-                    throw new IllegalArgumentException("Unsupported expression " + expr);
-                }
-                
-            }else{
-                throw new IllegalArgumentException("Unsupported expression " + expr);
-            }
-        }
-        return rv;
-    }
-    
+   
     @Override
-    public T newInstance(Object... args){
+    public T newInstance(Object... a){
         try {
+            Object[] args = FactoryExpressionUtils.compress(this.args, a);
             T rv = getType().newInstance();
             if (fieldAccess){
                 for (Map.Entry<String, ? extends Expression<?>> entry : bindings.entrySet()){
@@ -216,7 +216,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
 
     @Override
     public List<Expression<?>> getArgs() {
-        return args;
+        return expandedArgs;
     }
-
+    
 }

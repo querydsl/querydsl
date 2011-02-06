@@ -16,9 +16,9 @@ import org.junit.Test;
 
 import com.mysema.query.types.path.BooleanPath;
 import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.path.PathBuilderFactory;
+import com.mysema.query.types.path.StringPath;
 
 
 public class QBeanFieldAccessTest {
@@ -36,7 +36,7 @@ public class QBeanFieldAccessTest {
     
     private PathBuilder<Entity> entity;
     
-    private StringPath name;
+    private StringPath name, name2;
     
     private NumberPath<Integer> age;
     
@@ -46,6 +46,7 @@ public class QBeanFieldAccessTest {
     public void setUp(){
         entity = new PathBuilderFactory().create(Entity.class);
         name = entity.getString("name");
+        name2 = entity.getString("name2");
         age = entity.getNumber("age", Integer.class);
         married = entity.getBoolean("married");
     }
@@ -90,5 +91,16 @@ public class QBeanFieldAccessTest {
         assertEquals("Fritz", bean.name2);
         assertEquals(30, bean.age);
         assertEquals(true, bean.married);
+    }
+    
+    @Test
+    public void with_Nested_FactoryExpression(){
+        Map<String,Expression<?>> bindings = new LinkedHashMap<String,Expression<?>>();
+        bindings.put("age", age);
+        bindings.put("name", new Concatenation(name, name2));        
+        QBean<Entity> beanProjection = new QBean<Entity>(Entity.class, true, bindings);
+        Entity bean = beanProjection.newInstance(30, "Fri","tz");
+        assertEquals("Fritz", bean.name);
+             
     }
 }
