@@ -8,14 +8,13 @@ package com.mysema.query.support;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.Ops;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.Wildcard;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.DateTimeExpression;
 import com.mysema.query.types.expr.NumberExpression;
-import com.mysema.query.types.expr.NumberOperation;
 import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.expr.TimeExpression;
 import com.mysema.query.types.query.*;
@@ -28,8 +27,6 @@ import com.mysema.query.types.query.*;
  */
 public class DetachableMixin implements Detachable{
 
-    private static final NumberExpression<Long> COUNT_ALL_AGG_EXPR = NumberOperation.create(Long.class, Ops.AggOps.COUNT_ALL_AGG);
-
     private final QueryMixin<?> queryMixin;
 
     public DetachableMixin(QueryMixin<?> queryMixin){
@@ -38,7 +35,7 @@ public class DetachableMixin implements Detachable{
 
     @Override
     public NumberSubQuery<Long> count() {
-        return new NumberSubQuery<Long>(Long.class, projection(COUNT_ALL_AGG_EXPR));
+        return new NumberSubQuery<Long>(Long.class, projection(Wildcard.all));
     }
 
     @Override

@@ -12,9 +12,12 @@ import com.mysema.query.types.template.SimpleTemplate;
 /**
  * Wildcard provides shortcuts for the wildcard (*) and wildcard count (count(*)) expressions
  * 
+ * @deprecated use com.mysema.query.types.Wildcard instead
+ * 
  * @author sasa
  *
  */
+@Deprecated
 public final class Wildcard {
 
     private static final long serialVersionUID = -675749944676437551L;
