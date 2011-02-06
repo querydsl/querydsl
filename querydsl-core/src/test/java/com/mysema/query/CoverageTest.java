@@ -135,7 +135,8 @@ public class CoverageTest {
             Ops.LIST,
             Ops.COALESCE,
             Ops.ORDINAL, // TODO: add support
-
+            Ops.MATCHES_IC,
+            
             // aggregation
             Ops.AggOps.AVG_AGG,
             Ops.AggOps.MAX_AGG,

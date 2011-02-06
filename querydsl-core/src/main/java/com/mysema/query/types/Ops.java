@@ -96,6 +96,7 @@ public interface Ops {
     Operator<String> TRIM = new OperatorImpl<String>("TRIM",String.class);
     Operator<String> UPPER = new OperatorImpl<String>("UPPER",String.class);
     Operator<Boolean> MATCHES = new OperatorImpl<Boolean>("MATCHES",STRING_X_2);
+    Operator<Boolean> MATCHES_IC = new OperatorImpl<Boolean>("MATCHES_IC",STRING_X_2);
     Operator<Number> STRING_LENGTH = new OperatorImpl<Number>("STRING_LENGTH",String.class);
     Operator<Boolean> STRING_IS_EMPTY = new OperatorImpl<Boolean>("STRING_IS_EMPTY",String.class);
     Operator<Boolean> STARTS_WITH = new OperatorImpl<Boolean>("STARTS_WITH",STRING_X_2);

@@ -103,6 +103,7 @@ public class Templates {
         add(Ops.TRIM, "trim({0})");
         add(Ops.UPPER, "upper({0})");
         add(Ops.MATCHES, "matches({0},{1})");
+        add(Ops.MATCHES_IC, "matchesIgnoreCase({0},{1})");
         add(Ops.STARTS_WITH, "startsWith({0},{1})");
         add(Ops.STARTS_WITH_IC, "startsWithIgnoreCase({0},{1})");
         add(Ops.ENDS_WITH, "endsWith({0},{1})");

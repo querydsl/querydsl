@@ -329,7 +329,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             serialize(subQuery.getMetadata(), false, templates.getExistsProjection());
             append(")");
 
-        } else if (operator.equals(Ops.MATCHES)){
+        } else if (operator.equals(Ops.MATCHES) || operator.equals(Ops.MATCHES_IC)){
             super.visitOperation(type, Ops.LIKE, 
                     Arrays.asList(args.get(0), ExpressionUtils.regexToLike((Expression<String>) args.get(1))));
 
