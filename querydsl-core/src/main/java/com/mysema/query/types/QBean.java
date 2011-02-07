@@ -166,11 +166,11 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
     @Override
     public T newInstance(Object... a){
         try {
-            Object[] args = FactoryExpressionUtils.compress(this.args, a);
+            Object[] compressedArgs = FactoryExpressionUtils.compress(this.args, a);
             T rv = getType().newInstance();
             if (fieldAccess){
                 for (Map.Entry<String, ? extends Expression<?>> entry : bindings.entrySet()){
-                    Object value = args[this.args.indexOf(entry.getValue())];
+                    Object value = compressedArgs[this.args.indexOf(entry.getValue())];
                     if (value != null){
                         fields.get(entry.getKey()).set(rv, value);
                     }
@@ -178,7 +178,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
             }else{
                 BeanMap beanMap = new BeanMap(rv);
                 for (Map.Entry<String, ? extends Expression<?>> entry : bindings.entrySet()){
-                    Object value = args[this.args.indexOf(entry.getValue())];
+                    Object value = compressedArgs[this.args.indexOf(entry.getValue())];
                     if (value != null){
                         beanMap.put(entry.getKey(), value);    
                     }                

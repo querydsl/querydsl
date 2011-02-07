@@ -43,23 +43,23 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
     @SuppressWarnings("unchecked")
     @Override
     public Tuple newInstance(Object... a) {
-        final Object[] args = FactoryExpressionUtils.compress(this.args, a); 
+        final Object[] compressedArgs = FactoryExpressionUtils.compress(this.args, a); 
         return new Tuple() {
 
             @Override
             public <T> T get(int index, Class<T> type) {
-                return (T) args[index];
+                return (T) compressedArgs[index];
             }
 
             @Override
             public <T> T get(Expression<T> expr) {
                 int index = QTuple.this.args.indexOf(expr);
-                return index != -1 ? (T) args[index] : null;
+                return index != -1 ? (T) compressedArgs[index] : null;
             }
 
             @Override
             public Object[] toArray() {
-                return args;
+                return compressedArgs;
             }
 
         };

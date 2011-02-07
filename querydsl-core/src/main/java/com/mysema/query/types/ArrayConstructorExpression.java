@@ -53,12 +53,12 @@ public class ArrayConstructorExpression<D> extends ExpressionBase<D[]> implement
     @SuppressWarnings("unchecked")
     @Override
     public D[] newInstance(Object... a){
-        Object[] args = FactoryExpressionUtils.compress(this.args, a);
-        if (args.getClass().getComponentType().equals(elementType)){
-            return (D[])args;
+        Object[] compressedArgs = FactoryExpressionUtils.compress(this.args, a);
+        if (compressedArgs.getClass().getComponentType().equals(elementType)){
+            return (D[])compressedArgs;
         }else{
-            D[] rv = (D[]) Array.newInstance(elementType, args.length);
-            System.arraycopy(args, 0, rv, 0, args.length);
+            D[] rv = (D[]) Array.newInstance(elementType, compressedArgs.length);
+            System.arraycopy(compressedArgs, 0, rv, 0, compressedArgs.length);
             return rv;
         }
     }
