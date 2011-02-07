@@ -72,7 +72,7 @@ public class JavaTypeMapping {
             }
         }
         if (resolvedType == null) {
-            throw new IllegalArgumentException("Got not type for " + clazz.getName());
+            throw new IllegalArgumentException("Got not user type for " + clazz.getName());
         } else {
             return (Type<T>) resolvedType;
         }
@@ -82,14 +82,14 @@ public class JavaTypeMapping {
     private Type<?> findType(Class<?> clazz) {
         //Look for a registered type in the class hierarchy
         Class<?> cl = clazz;
-        while (!cl.equals(Object.class)){
+        do{
             if (typeByClass.containsKey(cl)){
                 return typeByClass.get(cl);
             }else if (defaultTypes.containsKey(cl)){
                 return defaultTypes.get(cl);
             }    
             cl = cl.getSuperclass(); 
-        }
+        }while(!cl.equals(Object.class));
         
         //Look for a registered type in any implemented interfaces
         Set<Class<?>> interfaces = ReflectionUtils.getImplementedInterfaces(clazz);

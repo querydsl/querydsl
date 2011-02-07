@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import com.mysema.query.sql.types.BlobType;
 import com.mysema.query.sql.types.InputStreamType;
+import com.mysema.query.sql.types.ObjectType;
 
 public class JavaTypeMappingTest {
 
@@ -25,6 +26,11 @@ public class JavaTypeMappingTest {
     @Test
     public void GetType_With_Interfaces(){
         assertEquals(BlobType.class, typeMapping.getType(DummyBlob.class).getClass());
+    }
+    
+    @Test
+    public void GetType_for_Object(){
+        assertEquals(ObjectType.class, typeMapping.getType(Object.class).getClass());
     }
 
 }

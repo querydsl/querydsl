@@ -16,7 +16,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
-import com.mysema.query.types.Wildcard;
+import com.mysema.query.types.expr.Wildcard;
 
 /**
  * Base class for JDO based SQLQuery implementations
