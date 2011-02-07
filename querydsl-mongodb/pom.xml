@@ -104,7 +104,7 @@
             </goals>
             <configuration>
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
-              <processor>com.mysema.query.mongodb.MongodbAnnotationProcessor</processor>
+              <processor>com.mysema.query.mongodb.morphia.MorphiaAnnotationProcessor</processor>
               <options>
                 <defaultOverwrite>true</defaultOverwrite>
               </options>

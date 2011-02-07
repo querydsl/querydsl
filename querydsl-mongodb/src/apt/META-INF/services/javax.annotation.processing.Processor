@@ -1,1 +1,1 @@
-com.mysema.query.mongodb.MongodbAnnotationProcessor
+com.mysema.query.mongodb.morphia.MorphiaAnnotationProcessor

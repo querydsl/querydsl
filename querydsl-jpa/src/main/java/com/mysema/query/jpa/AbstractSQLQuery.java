@@ -37,7 +37,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
 
     @Override
     public long count() {
-        return uniqueResult(Wildcard.count);
+        return uniqueResult(Wildcard.countAsInt);
     }
 
     @Override
@@ -48,7 +48,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     public T from(Expression<?>... args) {
         return queryMixin.from(args);
     }
-    
+
     @SuppressWarnings("unchecked")
     public T from(SubQueryExpression<?> subQuery, Path<?> alias){
         return queryMixin.from(ExpressionUtils.as((Expression)subQuery, alias));

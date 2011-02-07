@@ -13,7 +13,9 @@ package com.mysema.query.types;
 public final class Wildcard {
 
     public static final Expression<Object[]> all = TemplateExpressionImpl.create(Object[].class, "*");
-    
+
     public static final Expression<Long> count = OperationImpl.create(Long.class, Ops.AggOps.COUNT_ALL_AGG);
+
+    public static final Expression<Integer> countAsInt = OperationImpl.create(Integer.class, Ops.AggOps.COUNT_ALL_AGG);
 
 }
