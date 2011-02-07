@@ -3,26 +3,26 @@
  */
 package com.mysema.query.types;
 
-public class Projection{
+public class ProjectionExample{
 
     public Long id;
     
     public String text;
     
-    public Projection(){
+    public ProjectionExample(){
 
     }
 
-    public Projection(Long id){
+    public ProjectionExample(Long id){
         this.id = id;
     }
 
-    public Projection(long id, String text){
+    public ProjectionExample(long id, String text){
         this.id = id;
         this.text = text;
     }
 
-    public Projection(CharSequence text){
+    public ProjectionExample(CharSequence text){
         this.text = text.toString();
     }
 }
