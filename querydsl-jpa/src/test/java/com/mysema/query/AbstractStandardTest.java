@@ -32,6 +32,7 @@ import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain.QShow;
 import com.mysema.query.jpa.domain.Show;
 import com.mysema.query.types.ArrayConstructorExpression;
+import com.mysema.query.types.Concatenation;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ParamNotSetException;
@@ -337,6 +338,18 @@ public abstract class AbstractStandardTest {
         assertEquals(0l, query().from(cat).where(cat.instanceOf(DomesticCat.class)).count());
     }
 
+    @Test
+    public void NestedProjection(){
+        Concatenation concat = new Concatenation(cat.name, cat.name);
+        List<Tuple> tuples = query().from(cat).list(new QTuple(cat.name, concat));
+        assertFalse(tuples.isEmpty());
+        for (Tuple tuple : tuples){
+            assertEquals(
+                tuple.get(concat), 
+                tuple.get(cat.name)+tuple.get(cat.name));
+        }
+    }
+    
     @Test
     public void TupleProjection(){
         List<Tuple> tuples = query().from(cat).list(new QTuple(cat.name, cat));

@@ -14,7 +14,7 @@ import org.junit.Test;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.types.EntityPath;
 
-
+@SuppressWarnings("unchecked")
 public class DetachableQueryTest {
     
     private QueryMixin query;

@@ -54,8 +54,12 @@ public class BooleanBuilderTest {
     }
 
     @Test
-    public void Null_Support(){
+    public void And_null_Supported(){
         assertEquals(first, first.and(null));
+    }
+    
+    @Test
+    public void Or_null_Supported(){
         assertEquals(first, first.or(null));
     }
 
@@ -81,9 +85,17 @@ public class BooleanBuilderTest {
     }
 
     @Test
-    public void Equals(){
+    public void BooleanBuilder_Equals_BooleanBuilder(){
         assertEquals(new BooleanBuilder(first), new BooleanBuilder(first));
+    }
+    
+    @Test
+    public void Constant_Equals_BooleanBuilder(){
         assertFalse(first.equals(new BooleanBuilder(first)));
+    }
+    
+    @Test
+    public void BooleanBuilder_Equals_Constant(){
         assertFalse(new BooleanBuilder(first).equals(first));
     }
 
@@ -94,8 +106,7 @@ public class BooleanBuilderTest {
 
     @Test
     public void ToString(){
-        BooleanBuilder builder = new BooleanBuilder();
-        builder.and(first);
+        BooleanBuilder builder = new BooleanBuilder().and(first);
         assertEquals("true", builder.toString());
         builder.or(new BooleanPath("condition"));
         assertEquals("true || condition", builder.toString());
@@ -103,9 +114,13 @@ public class BooleanBuilderTest {
     
     @Test
     public void GetArg(){
-        BooleanBuilder builder = new BooleanBuilder();
-        builder.and(first);
+        BooleanBuilder builder = new BooleanBuilder().and(first);
         assertEquals(first, builder.getArg(0));
+    }
+    
+    @Test
+    public void GetArgs(){
+        BooleanBuilder builder = new BooleanBuilder().and(first);
         assertEquals(Arrays.asList(first), builder.getArgs());
     }
     

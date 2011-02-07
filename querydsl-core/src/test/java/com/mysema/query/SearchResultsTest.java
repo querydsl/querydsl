@@ -22,32 +22,32 @@ public class SearchResultsTest {
     private SearchResults<Integer> results = new SearchResults<Integer>(list,10l,0l,20);
 
     @Test
-    public void getResults(){
+    public void GetResults(){
         assertEquals(list, results.getResults());
     }
 
     @Test
-    public void getTotal(){
+    public void GetTotal(){
         assertEquals(20l , results.getTotal());
     }
 
     @Test
-    public void isEmpty(){
+    public void IsEmpty(){
         assertFalse(results.isEmpty());
     }
 
     @Test
-    public void getLimit(){
+    public void GetLimit(){
         assertEquals(10l, results.getLimit());
     }
 
     @Test
-    public void getOffset(){
+    public void GetOffset(){
         assertEquals(0l, results.getOffset());
     }
 
     @Test
-    public void emptyResults(){
+    public void EmptyResults(){
         SearchResults<Object> empty = SearchResults.emptyResults();
         assertTrue(empty.isEmpty());
         assertEquals(Long.MAX_VALUE, empty.getLimit());

@@ -19,6 +19,7 @@ import com.mysema.query.types.expr.BooleanExpression;
 
 public class QueryMixinTest {
 
+    @SuppressWarnings("unchecked")
     private QueryMixin<?> mixin = new QueryMixin();
 
     private QCommonPersistence entity = new QCommonPersistence(PathMetadataFactory.forVariable("entity"));

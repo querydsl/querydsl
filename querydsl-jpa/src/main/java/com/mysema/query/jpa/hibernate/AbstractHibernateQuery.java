@@ -26,10 +26,9 @@ import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.jpa.JPQLQueryBase;
 import com.mysema.query.jpa.HQLTemplates;
+import com.mysema.query.jpa.JPQLQueryBase;
 import com.mysema.query.jpa.JPQLTemplates;
-import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Path;
@@ -157,7 +156,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         List<? extends Expression<?>> projection = getMetadata().getProjection();
         if (projection.size() == 1){
             Expression<?> expr = projection.get(0);
-            if (expr instanceof FactoryExpression<?>  && !(expr instanceof ConstructorExpression<?>)){
+            if (expr instanceof FactoryExpression<?>){
                 query.setResultTransformer(new FactoryExpressionTransformer((FactoryExpression<?>) projection.get(0)));
             }
         }

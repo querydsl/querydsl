@@ -132,7 +132,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         List<? extends Expression<?>> projection = getMetadata().getProjection();
         if (projection.size() == 1){
             Expression<?> expr = projection.get(0);
-            if (expr instanceof FactoryExpression<?>  && !(expr instanceof ConstructorExpression<?>)){
+            if (expr instanceof FactoryExpression<?>){
                 if (query.getClass().getName().startsWith("org.hibernate")){
                     try {
                         Class<?> cl = Class.forName("com.mysema.query.jpa.impl.JPAQueryTransformerTask");

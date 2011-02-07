@@ -16,6 +16,7 @@ import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.query.Detachable;
 
 
+@SuppressWarnings("unchecked")
 public class DetachableAdapterTest {
     
     private QueryMixin queryMixin;

@@ -50,6 +50,7 @@ import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QIdName;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.ArrayConstructorExpression;
+import com.mysema.query.types.Concatenation;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ParamNotSetException;
@@ -691,6 +692,18 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         for (Tuple tuple : tuples){
             assertNotNull(tuple.get(employee.firstname));
             assertNotNull(tuple.get(employee.lastname));
+        }
+    }
+    
+    @Test
+    public void Nested_Tuple_Projection(){
+        Concatenation concat = new Concatenation(employee.firstname, employee.lastname);
+        List<Tuple> tuples = query().from(employee).list(new QTuple(employee.firstname, employee.lastname, concat));
+        assertFalse(tuples.isEmpty());
+        for (Tuple tuple : tuples){
+            String firstName = tuple.get(employee.firstname);
+            String lastName = tuple.get(employee.lastname);
+            assertEquals(firstName + lastName, tuple.get(concat));
         }
     }
 

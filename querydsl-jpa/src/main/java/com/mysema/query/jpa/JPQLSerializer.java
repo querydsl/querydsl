@@ -279,14 +279,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     @Override
     public Void visit(FactoryExpression<?> expr, Void context) {
-        if (expr instanceof ConstructorExpression<?>){
-            append("new " + expr.getType().getName() + "(");
-            handle(", ", expr.getArgs());
-            append(")");
-        }else{
-            // serialize arguments only
-            super.visit(expr, context);
-        }
+        super.visit(expr, context);
         return null;
     }
 

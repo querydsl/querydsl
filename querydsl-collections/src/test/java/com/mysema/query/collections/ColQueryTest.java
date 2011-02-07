@@ -27,7 +27,7 @@ import com.mysema.query.types.path.StringPath;
 public class ColQueryTest extends AbstractQueryTest {
 
     @Test
-    public void instanceOf() {
+    public void InstanceOf() {
         assertEquals(
                 Arrays.asList(c1, c2),
                 query().from(cat, Arrays.asList(c1, c2)).where(cat.instanceOf(Cat.class)).list(cat));

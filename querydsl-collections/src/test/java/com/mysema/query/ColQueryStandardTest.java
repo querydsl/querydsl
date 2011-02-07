@@ -21,6 +21,7 @@ import com.mysema.query.collections.Cat;
 import com.mysema.query.collections.MiniApi;
 import com.mysema.query.collections.QCat;
 import com.mysema.query.types.ArrayConstructorExpression;
+import com.mysema.query.types.Concatenation;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ParamNotSetException;
@@ -99,6 +100,18 @@ public class ColQueryStandardTest {
             assertNotNull(tuple.get(cat.birthdate));
         }
     }
+    
+    @Test
+    public void Nested_TupleProjection(){
+        Concatenation concat = new Concatenation(cat.name, cat.name);
+        List<Tuple> tuples = MiniApi.from(cat, data)
+            .list(new QTuple(concat, cat.name, cat.birthdate));
+        for (Tuple tuple : tuples){
+            assertNotNull(tuple.get(cat.name));
+            assertNotNull(tuple.get(cat.birthdate));
+            assertEquals(tuple.get(cat.name) + tuple.get(cat.name), tuple.get(concat));
+        }
+    }
 
     @SuppressWarnings("unchecked")
     @Test
@@ -120,7 +133,7 @@ public class ColQueryStandardTest {
             assertNotNull(projection);
         }
     }
-
+    
     @Test
     public void Params(){
         Param<String> name = new Param<String>(String.class,"name");

@@ -16,6 +16,7 @@ import com.mysema.query.types.path.StringPath;
 public class SimpleQueryAdapterTest {
     
     @Test
+    @SuppressWarnings("unchecked")
     public void test(){
         DummyQuery query = new DummyQuery();
         DummyProjectable projectable = new DummyProjectable();
