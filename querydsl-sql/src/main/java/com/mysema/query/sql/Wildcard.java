@@ -11,9 +11,9 @@ import com.mysema.query.types.template.SimpleTemplate;
 
 /**
  * Wildcard provides shortcuts for the wildcard (*) and wildcard count (count(*)) expressions
- * 
- * @deprecated use com.mysema.query.types.Wildcard instead
- * 
+ *
+ * @deprecated use com.mysema.query.types.expr.Wildcard instead
+ *
  * @author sasa
  *
  */
@@ -25,7 +25,7 @@ public final class Wildcard {
     public static final SimpleExpression<Object[]> all = SimpleTemplate.create(Object[].class, "*");
 
     private Wildcard() {}
-    
+
     public static NumberExpression<Long> count() {
         return all.count();
     }
