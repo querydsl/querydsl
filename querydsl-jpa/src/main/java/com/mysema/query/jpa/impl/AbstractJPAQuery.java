@@ -29,7 +29,6 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPQLQueryBase;
 import com.mysema.query.jpa.JPQLTemplates;
-import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 
@@ -45,12 +44,12 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     private static final Logger logger = LoggerFactory.getLogger(JPAQuery.class);
 
     private final JPASessionHolder sessionHolder;
-    
+
     private final Map<String,Object> hints = new HashMap<String,Object>();
 
     @Nullable
     private LockModeType lockMode;
-    
+
     public AbstractJPAQuery(EntityManager em) {
         this(new DefaultSessionHolder(em), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
     }
@@ -119,11 +118,11 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
                 query.setFirstResult(modifiers.getOffset().intValue());
             }
         }
-        
+
         if (lockMode != null){
-            query.setLockMode(lockMode);    
+            query.setLockMode(lockMode);
         }
-        
+
         for (Map.Entry<String, Object> entry : hints.entrySet()){
             query.setHint(entry.getKey(), entry.getValue());
         }
@@ -150,7 +149,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
                     } catch (NoSuchMethodException e) {
                         throw new QueryException(e.getMessage(), e);
                     }
-                    
+
                 }
             }
         }
@@ -166,6 +165,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         return new IteratorAdapter<RT>(list(projection).iterator());
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public List<Object[]> list(Expression<?>[] args) {
         Query query = createQuery(args);
@@ -173,6 +173,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         return query.getResultList();
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expression<RT> expr) {
         Query query = createQuery(expr);
@@ -205,6 +206,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         }
     }
 
+    @Override
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expression<RT> expr) {
         getQueryMixin().addToProjection(expr);
@@ -213,12 +215,12 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         Query query = createQuery(queryString, null);
         reset();
         try{
-            return (RT) query.getSingleResult();    
+            return (RT) query.getSingleResult();
         }catch(NoResultException e){
             logger.debug(e.getMessage(),e);
-            return null;            
+            return null;
         }
-        
+
     }
 
     @SuppressWarnings("unchecked")
@@ -226,12 +228,12 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         this.lockMode = lockMode;
         return (Q)this;
     }
-    
+
     @SuppressWarnings("unchecked")
     public Q setHint(String name, Object value){
         hints.put(name, value);
         return (Q)this;
     }
-    
-    
+
+
 }

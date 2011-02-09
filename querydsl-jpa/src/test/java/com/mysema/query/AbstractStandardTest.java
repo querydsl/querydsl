@@ -254,13 +254,13 @@ public abstract class AbstractStandardTest {
 
         assertEquals(1, catQuery().distinct().list(cat.birthdate).size());
     }
-    
+
     @Test
     public void In(){
         catQuery().where(cat.id.in(Arrays.asList(1,2,3))).count();
         catQuery().where(cat.name.in(Arrays.asList("A","B","C"))).count();
     }
-    
+
     @Test
     public void StartsWith(){
         // startsWith
@@ -282,7 +282,7 @@ public abstract class AbstractStandardTest {
         // contains
         assertEquals(1, catQuery().where(cat.name.contains("eli")).count());
     }
-    
+
     @Test
     public void Contains2(){
         assertEquals(1l, catQuery().where(cat.kittens.contains(savedCats.get(0))).count());
@@ -319,6 +319,12 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
+    public void Limit2(){
+        // limit
+        assertEquals(Collections.singletonList("Allen123"), catQuery().orderBy(cat.name.asc()).limit(1).list(cat.name));
+    }
+
+    @Test
     public void Offset(){
         // offset
         List<String> names2 = Arrays.asList("Felix123","Mary123","Ruth123","Some");
@@ -345,11 +351,11 @@ public abstract class AbstractStandardTest {
         assertFalse(tuples.isEmpty());
         for (Tuple tuple : tuples){
             assertEquals(
-                tuple.get(concat), 
+                tuple.get(concat),
                 tuple.get(cat.name)+tuple.get(cat.name));
         }
     }
-    
+
     @Test
     public void TupleProjection(){
         List<Tuple> tuples = query().from(cat).list(new QTuple(cat.name, cat));
@@ -410,7 +416,7 @@ public abstract class AbstractStandardTest {
     public void Null_as_uniqueResult(){
         assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString())).uniqueResult(cat));
     }
-    
+
     @Test
     public void Map_ContainsKey(){
         QShow show = QShow.show;
