@@ -70,12 +70,21 @@ public class LuceneSerializer {
     private final boolean lowerCase;
 
     private final boolean splitTerms;
+    
+    private final Locale sortLocale;
 
     public LuceneSerializer(boolean lowerCase, boolean splitTerms) {
         this.lowerCase = lowerCase;
         this.splitTerms = splitTerms;
+        sortLocale = Locale.getDefault();
     }
 
+    public LuceneSerializer(boolean lowerCase, boolean splitTerms, Locale sortLocale) {
+        this.lowerCase = lowerCase;
+        this.splitTerms = splitTerms;
+        this.sortLocale = sortLocale;
+    }
+    
     private Query toQuery(Operation<?> operation, QueryMetadata metadata) {
         Operator<?> op = operation.getOperator();
         if (op == Ops.OR) {
@@ -526,7 +535,7 @@ public class LuceneSerializer {
             if (Number.class.isAssignableFrom(type)) {
                 sorts.add(new SortField(toField(path), sortFields.get(type), reverse));
             } else {
-                sorts.add(new SortField(toField(path), Locale.ENGLISH, reverse));
+                sorts.add(new SortField(toField(path), sortLocale, reverse));
             }
         }
         Sort sort = new Sort();

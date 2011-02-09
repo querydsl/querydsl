@@ -17,6 +17,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -24,10 +25,12 @@ import org.apache.lucene.document.Field;
 import org.apache.lucene.document.NumericField;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriter.MaxFieldLength;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Searcher;
+import org.apache.lucene.store.LockObtainFailedException;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 import org.junit.After;
@@ -72,6 +75,8 @@ public class LuceneQueryTest {
     private StringPath title;
     private NumberPath<Integer> year;
     private NumberPath<Double> gross;
+    
+    private StringPath sort = new StringPath("sort");
 
     private RAMDirectory idx;
     private IndexWriter writer;
@@ -100,8 +105,7 @@ public class LuceneQueryTest {
         gross = entityPath.gross;
 
         idx = new RAMDirectory();
-        writer = new IndexWriter(idx, new StandardAnalyzer(
-                Version.LUCENE_CURRENT), true, MaxFieldLength.UNLIMITED);
+        writer = createWriter(idx);
 
         writer.addDocument(createDocument("Jurassic Park", "Michael Crichton",
                 "It's a UNIX system! I know this!", 1990, 90.00));
@@ -124,6 +128,11 @@ public class LuceneQueryTest {
 
         searcher = new IndexSearcher(idx);
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
+    }
+
+    private IndexWriter createWriter(RAMDirectory idx2) throws Exception {
+        return new IndexWriter(idx, new StandardAnalyzer(Version.LUCENE_30), true,
+                               MaxFieldLength.UNLIMITED);
     }
 
     @After
@@ -174,6 +183,38 @@ public class LuceneQueryTest {
         final List<Document> documents = query.list();
         assertFalse(documents.isEmpty());
         assertEquals(4, documents.size());
+    }
+    
+    @Test
+    public void sorted_By_Different_Locales() throws Exception {
+        Document d1 = new Document();
+        Document d2 = new Document();
+        Document d3 = new Document();
+        d1.add(new Field("sort", "a\u00c4",Store.YES, Index.NOT_ANALYZED));
+        d2.add(new Field("sort", "ab",Store.YES, Index.NOT_ANALYZED));
+        d3.add(new Field("sort", "aa",Store.YES, Index.NOT_ANALYZED));
+        writer = createWriter(idx);
+        writer.addDocument(d1);
+        writer.addDocument(d2);
+        writer.addDocument(d3);
+        writer.close();
+        
+        searcher = new IndexSearcher(idx);
+        query = new LuceneQuery(new LuceneSerializer(true, true, Locale.ENGLISH), searcher);
+        assertEquals(3, query.list().size());
+        List<Document> results = query.where(sort.startsWith("a")).orderBy(sort.asc()).list();
+        assertEquals(3, results.size());
+        assertEquals("aa", results.get(0).getFieldable("sort").stringValue());
+        assertEquals("a\u00c4", results.get(1).getFieldable("sort").stringValue());
+        assertEquals("ab", results.get(2).getFieldable("sort").stringValue());
+        
+        query = new LuceneQuery(new LuceneSerializer(true, true, new Locale("fi", "FI")), searcher);
+        results = query.where(sort.startsWith("a")).orderBy(sort.asc()).list();
+        assertEquals("aa", results.get(0).getFieldable("sort").stringValue());
+        assertEquals("ab", results.get(1).getFieldable("sort").stringValue());
+        assertEquals("a\u00c4", results.get(2).getFieldable("sort").stringValue());
+        
+        
     }
 
     @Test
