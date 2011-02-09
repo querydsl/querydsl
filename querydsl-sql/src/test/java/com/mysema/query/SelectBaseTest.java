@@ -59,6 +59,7 @@ import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.NumberSubQuery;
 import com.mysema.query.types.query.SimpleSubQuery;
+import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
 import com.mysema.testutil.Label;
@@ -490,6 +491,12 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         names.close();
     }
 
+    @Test
+    public void TemplateExpression(){
+        NumberExpression<Integer> one = NumberTemplate.create(Integer.class, "1");
+        query().from(survey).list(one.as("col1"));
+    }
+    
     @Test
     public void Query_with_Constant() throws Exception {
         for (Object[] row : query().from(survey)
