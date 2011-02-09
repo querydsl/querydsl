@@ -74,9 +74,7 @@ public class LuceneSerializer {
     private final Locale sortLocale;
 
     public LuceneSerializer(boolean lowerCase, boolean splitTerms) {
-        this.lowerCase = lowerCase;
-        this.splitTerms = splitTerms;
-        sortLocale = Locale.getDefault();
+        this(lowerCase, splitTerms, Locale.getDefault());
     }
 
     public LuceneSerializer(boolean lowerCase, boolean splitTerms, Locale sortLocale) {
