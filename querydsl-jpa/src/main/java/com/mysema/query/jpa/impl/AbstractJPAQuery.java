@@ -212,7 +212,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         getQueryMixin().addToProjection(expr);
         String queryString = toQueryString();
         logQuery(queryString);
-        Query query = createQuery(queryString, null);
+        Query query = createQuery(queryString, getMetadata().getModifiers());
         reset();
         try{
             return (RT) query.getSingleResult();

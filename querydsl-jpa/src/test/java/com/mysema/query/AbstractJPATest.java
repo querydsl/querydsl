@@ -82,4 +82,9 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
         assertFalse(query().from(QCat.cat).setLockMode(LockModeType.READ).list(QCat.cat).isEmpty());
     }
     
+    @Test
+    public void Limit1_UniqueResult(){
+        assertNotNull(query().from(QCat.cat).limit(1).uniqueResult(QCat.cat));
+    }
+    
 }
