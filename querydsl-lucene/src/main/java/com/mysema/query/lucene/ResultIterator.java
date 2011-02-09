@@ -13,6 +13,11 @@ import org.apache.lucene.search.Searcher;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.QueryException;
 
+/**
+ * @author tiwe
+ *
+ * @param <T>
+ */
 public final class ResultIterator<T> implements CloseableIterator<T> {
     
     private final ScoreDoc[] scoreDocs;

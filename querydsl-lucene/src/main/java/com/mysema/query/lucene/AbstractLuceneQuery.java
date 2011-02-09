@@ -25,6 +25,12 @@ import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Predicate;
 
+/**
+ * @author tiwe
+ *
+ * @param <T>
+ * @param <Q>
+ */
 public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> implements SimpleQuery<Q>,
 SimpleProjectable<T> {
 
