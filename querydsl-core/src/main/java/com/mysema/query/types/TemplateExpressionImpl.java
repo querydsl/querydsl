@@ -15,7 +15,7 @@ import com.mysema.commons.lang.Assert;
  *
  * @author tiwe
  *
- * @param <T>
+ * @param <T> expression type
  */
 public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements TemplateExpression<T> {
 
