@@ -35,61 +35,83 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private MavenProject project;
 
     /**
+     * JDBC driver class name
      * @parameter required=true
      */
     private String jdbcDriver;
 
     /**
+     * JDBC connection url
      * @parameter required=true
      */
     private String jdbcUrl;
 
     /**
+     * JDBC connection username
      * @parameter
      */
     private String jdbcUser;
 
     /**
+     * JDBC connection password
      * @parameter
      */
     private String jdbcPassword;
 
     /**
+     * name prefix for Q-types (default: Q)
      * @parameter default-value="Q"
      */
     private String namePrefix;
 
     /**
+     * package name for sources
      * @parameter required=true
      */
     private String packageName;
 
     /**
+     * schemaPattern a schema name pattern; must match the schema name
+     *        as it is stored in the database; "" retrieves those without a schema;
+     *        <code>null</code> means that the schema name should not be used to narrow
+     *        the search (default: null)
+     *
      * @parameter
      */
     private String schemaPattern;
 
     /**
+     * tableNamePattern a table name pattern; must match the
+    *        table name as it is stored in the database (default: null)
+     *
      * @parameter
      */
     private String tableNamePattern;
 
     /**
+     * target source folder to create the sources into (e.g. target/generated-sources/java)
+     *
      * @parameter required=true
      */
     private String targetFolder;
 
     /**
+     * namingstrategy class to override (default: DefaultNamingStrategy.class)
+     *
      * @parameter
      */
     private String namingStrategyClass;
 
     /**
+     * serialize beans as well
+     *
      * @parameter default-value=false
      */
     private boolean exportBeans;
 
     /**
+     * wrap key properties into inner classes (default: false)
+     *
      * @parameter default-value=false
      */
     private boolean innerClassesForKeys;

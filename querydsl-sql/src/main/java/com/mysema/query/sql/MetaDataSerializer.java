@@ -45,7 +45,15 @@ public class MetaDataSerializer extends EntitySerializer {
 
     private final boolean innerClassesForKeys;
 
-    public MetaDataSerializer(String namePrefix, NamingStrategy namingStrategy, boolean innerClassesForKeys) {
+    /**
+     * Create a new MetaDataSerializer instance
+     *
+     * @param namePrefix name prefix to be used (default: Q)
+     * @param namingStrategy naming strategy for table to class and column to property conversion
+     * @param innerClassesForKeys wrap key properties into inner classes (default: false)
+     */
+    public MetaDataSerializer(String namePrefix, NamingStrategy namingStrategy,
+            boolean innerClassesForKeys) {
         super(new TypeMappings(),Collections.<String>emptyList());
         this.namePrefix = namePrefix;
         this.namingStrategy = namingStrategy;
@@ -85,18 +93,20 @@ public class MetaDataSerializer extends EntitySerializer {
         writer.imports(Table.class.getPackage(), List.class.getPackage());
     }
 
-
     @SuppressWarnings("unchecked")
     @Override
     protected void serializeProperties(EntityType model,  SerializerConfig config, CodeWriter writer) throws IOException {
-        Collection<PrimaryKeyData> primaryKeys = (Collection<PrimaryKeyData>) model.getData().get(PrimaryKeyData.class);
-        Collection<ForeignKeyData> foreignKeys = (Collection<ForeignKeyData>) model.getData().get(ForeignKeyData.class);
-        Collection<InverseForeignKeyData> inverseForeignKeys = (Collection<InverseForeignKeyData>)model.getData().get(InverseForeignKeyData.class);
+        Collection<PrimaryKeyData> primaryKeys =
+            (Collection<PrimaryKeyData>) model.getData().get(PrimaryKeyData.class);
+        Collection<ForeignKeyData> foreignKeys =
+            (Collection<ForeignKeyData>) model.getData().get(ForeignKeyData.class);
+        Collection<InverseForeignKeyData> inverseForeignKeys =
+            (Collection<InverseForeignKeyData>)model.getData().get(InverseForeignKeyData.class);
 
         if (innerClassesForKeys){
             Type primaryKeyType = new SimpleType(namingStrategy.getPrimaryKeysClassName());
             Type foreignKeysType = new SimpleType(namingStrategy.getForeignKeysClassName());
-            
+
             // primary keys
             if (primaryKeys != null){
                 writer.beginClass(primaryKeyType);
@@ -120,10 +130,16 @@ public class MetaDataSerializer extends EntitySerializer {
             super.serializeProperties(model, config, writer);
 
             if (primaryKeys != null){
-                writer.publicFinal(primaryKeyType, namingStrategy.getPrimaryKeysVariable(model), "new "+primaryKeyType.getSimpleName()+"()");
+                writer.publicFinal(
+                        primaryKeyType,
+                        namingStrategy.getPrimaryKeysVariable(model),
+                        "new "+primaryKeyType.getSimpleName()+"()");
             }
             if (foreignKeys != null || inverseForeignKeys != null){
-                writer.publicFinal(foreignKeysType, namingStrategy.getForeignKeysVariable(model), "new "+foreignKeysType.getSimpleName()+"()");
+                writer.publicFinal(
+                        foreignKeysType,
+                        namingStrategy.getForeignKeysVariable(model),
+                        "new "+foreignKeysType.getSimpleName()+"()");
             }
 
         }else{

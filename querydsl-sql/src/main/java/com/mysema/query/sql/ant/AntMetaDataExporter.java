@@ -23,26 +23,63 @@ import com.mysema.query.sql.NamingStrategy;
  */
 public class AntMetaDataExporter extends Task {
 
+    /**
+     * JDBC driver class name
+     */
     private String jdbcDriverClass;
 
+    /**
+     * JDBC connection url
+     */
     private String dbUrl;
 
+    /**
+     * JDBC connection username
+     */
     private String dbUserName;
 
+    /**
+     * JDBC connection password
+     */
     private String dbPassword;
 
+    /**
+     * name prefix for generated query types (default: Q)
+     */
     private String namePrefix;
 
+    /**
+     * target package to generate classes to
+     */
     private String targetPackage;
 
+    /**
+     * target source folder
+     */
     private String targetSourceFolder;
 
+    /**
+     * schemaPattern a schema name pattern; must match the schema name
+     *        as it is stored in the database; "" retrieves those without a schema;
+     *        <code>null</code> means that the schema name should not be used to narrow
+     *        the search (default: null)
+     */
     private String schemaPattern;
 
+    /**
+     * tableNamePattern a table name pattern; must match the
+     *        table name as it is stored in the database (default: null)
+     */
     private String tableNamePattern;
 
+    /**
+     * wrap key properties into inner classes (default: false)
+     */
     private boolean innerClassesForKeys;
 
+    /**
+     * serialize beans as well
+     */
     private boolean exportBeans;
 
     @Override
