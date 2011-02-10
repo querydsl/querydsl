@@ -15,7 +15,7 @@ import com.mysema.query.types.path.BeanPath;
  * 
  * @author tiwe
  *
- * @param <T>
+ * @param <T> entity type
  */
 public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath<T> {
     
