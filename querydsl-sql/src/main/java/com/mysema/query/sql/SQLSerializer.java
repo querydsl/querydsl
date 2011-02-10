@@ -29,7 +29,6 @@ import com.mysema.query.types.*;
  * SqlSerializer serializes Querydsl queries into SQL
  *
  * @author tiwe
- * @version $Id$
  */
 public class SQLSerializer extends SerializerBase<SQLSerializer> {
     

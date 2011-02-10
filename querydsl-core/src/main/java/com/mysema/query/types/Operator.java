@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author tiwe
  *
- * @param <RT>
+ * @param <RT> return type of operator
  */
 public interface Operator<RT> extends Serializable{
     

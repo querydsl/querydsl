@@ -18,7 +18,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * PathMetadata provides metadata for {@link Path} expressions.
  *
  * @author tiwe
- * @version $Id$
  */
 @Immutable
 public final class PathMetadata<T> implements Serializable{

@@ -21,7 +21,7 @@ import com.mysema.query.types.query.*;
  * 
  * @author tiwe
  *
- * @param <Q>
+ * @param <Q> concrete subtype
  */
 public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q> implements Detachable {
 

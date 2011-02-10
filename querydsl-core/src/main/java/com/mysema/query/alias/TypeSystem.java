@@ -1,5 +1,9 @@
 package com.mysema.query.alias;
 
+/**
+ * @author tiwe
+ *
+ */
 public interface TypeSystem {
     
     boolean isCollectionType(Class<?> cl);

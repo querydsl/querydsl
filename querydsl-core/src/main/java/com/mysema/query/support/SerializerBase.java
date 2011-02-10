@@ -20,7 +20,6 @@ import com.mysema.query.types.*;
  * SerializerBase is a stub for Serializer implementations
  *
  * @author tiwe
- * @version $Id$
  */
 public abstract class SerializerBase<S extends SerializerBase<S>> implements Visitor<Void,Void> {
 

@@ -18,7 +18,6 @@ import com.mysema.query.types.Ops;
  * tested with Oracle 10g XE
  *
  * @author tiwe
- * @version $Id$
  */
 public class OracleTemplates extends SQLTemplates {
 

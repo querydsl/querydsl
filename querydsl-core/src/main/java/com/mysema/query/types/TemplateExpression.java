@@ -12,7 +12,6 @@ import java.util.List;
  * serialization templates
  *
  * @author tiwe
- * @version $Id$
  */
 public interface TemplateExpression<T> extends Expression<T>{
 

@@ -21,7 +21,6 @@ import com.mysema.query.types.TemplateExpressionImpl;
  * JPQLQueryBase is a base Query class for JPQL queries
  *
  * @author tiwe
- * @version $Id$
  */
 public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends ProjectableQuery<Q> {
 

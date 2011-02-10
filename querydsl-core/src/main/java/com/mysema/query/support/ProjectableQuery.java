@@ -22,7 +22,6 @@ import com.mysema.query.types.Expression;
  * implementations of the methods of the Projectable interface
  *
  * @author tiwe
- * @version $Id$
  */
 public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
         extends QueryBase<Q> implements Projectable {

@@ -10,7 +10,7 @@ package com.mysema.query.dml;
  * 
  * @author tiwe
  *
- * @param <C>
+ * @param <C> concrete subtype
  */
 public interface DMLClause<C extends DMLClause<C>> {
 

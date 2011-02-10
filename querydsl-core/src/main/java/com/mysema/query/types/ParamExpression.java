@@ -10,7 +10,7 @@ package com.mysema.query.types;
  * 
  * @author tiwe
  *
- * @param <T>
+ * @param <T> type of expression
  */
 public interface ParamExpression<T> extends Expression<T>{
     

@@ -12,7 +12,7 @@ import com.mysema.query.types.Predicate;
  *
  * @author tiwe
  *
- * @param <C>
+ * @param <C> concrete subtype
  */
 public interface FilteredClause<C extends FilteredClause<C>> {
 

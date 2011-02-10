@@ -15,7 +15,7 @@ import com.mysema.query.types.Path;
  *
  * @author tiwe
  *
- * @param <C>
+ * @param <C> concrete subtype
  */
 public interface UpdateClause<C extends UpdateClause<C>> extends StoreClause<C>, FilteredClause<C>{
 

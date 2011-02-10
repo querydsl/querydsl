@@ -37,7 +37,6 @@ import com.mysema.query.types.Path;
  * @see ColQuery
  *
  * @author tiwe
- * @version $Id$
  */
 public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends ProjectableQuery<Q> {
 

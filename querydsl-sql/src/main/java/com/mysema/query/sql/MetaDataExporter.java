@@ -45,7 +45,6 @@ import com.mysema.query.sql.support.SizeImpl;
  * MetadataExporter exports JDBC metadata to Querydsl query types
  *
  * @author tiwe
- * @version $Id$
  */
 public class MetaDataExporter {
 
@@ -123,6 +122,12 @@ public class MetaDataExporter {
                 false);
     }
 
+    /**
+     * Export the tables based on the given database metadata
+     * 
+     * @param md
+     * @throws SQLException
+     */
     public void export(DatabaseMetaData md) throws SQLException {
         if (serializer == null){
             serializer = new MetaDataSerializer(namePrefix, namingStrategy);
@@ -138,7 +143,7 @@ public class MetaDataExporter {
         }
     }
 
-    public Set<String> getClasses() {
+    Set<String> getClasses() {
         return classes;
     }
 
@@ -238,6 +243,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set the schema pattern filter to be used
+     * 
      * @param schemaPattern a schema name pattern; must match the schema name
      *        as it is stored in the database; "" retrieves those without a schema;
      *        <code>null</code> means that the schema name should not be used to narrow
@@ -248,6 +255,8 @@ public class MetaDataExporter {
     }
     
     /**
+     * Set the table name pattern filter to be used
+     * 
     * @param tableNamePattern a table name pattern; must match the
     *        table name as it is stored in the database (default: null)
     */
@@ -256,6 +265,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Override the configuration
+     * 
      * @param configuration override configuration for custom type mappings etc
      */
     public void setConfiguration(Configuration configuration) {
@@ -263,6 +274,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set true to create Scala sources instead of Java sources
+     * 
      * @param createScalaSources whether to create Scala sources (default: false)
      */
     public void setCreateScalaSources(boolean createScalaSources) {
@@ -270,6 +283,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set the target folder
+     * 
      * @param targetFolder target source folder to create the sources into (e.g. target/generated-sources/java)
      */
     public void setTargetFolder(File targetFolder) {
@@ -277,6 +292,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set the package name
+     * 
      * @param packageName package name for sources
      */
     public void setPackageName(String packageName) {
@@ -284,6 +301,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Override the name prefix for the classes (default: Q)
+     * 
      * @param namePrefix name prefix for Q-types (default: Q)
      */
     public void setNamePrefix(String namePrefix) {
@@ -291,6 +310,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Override the NamingStrategy (default: new DefaultNamingStrategy())
+     * 
      * @param namingStrategy namingstrategy to override (default: new DefaultNamingStrategy())
      */
     public void setNamingStrategy(NamingStrategy namingStrategy) {
@@ -298,6 +319,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Override the serializer to be used (default: new MetaDataSerializer(namePrefix, namingStrategy))
+     * 
      * @param serializer serializer to override (default: new MetaDataSerializer(namePrefix, namingStrategy))
      */
     public void setSerializer(Serializer serializer) {
@@ -305,6 +328,8 @@ public class MetaDataExporter {
     }
 
     /**
+     * Set the Bean serializer to create bean types as well
+     * 
      * @param beanSerializer serializer for JavaBeans (default: null)
      */
     public void setBeanSerializer(Serializer beanSerializer) {

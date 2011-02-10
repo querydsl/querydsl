@@ -26,7 +26,7 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
  * 
  * @author tiwe
  *
- * @param <T>
+ * @param <T> type of entity
  */
 public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>, SimpleProjectable<T>{
 

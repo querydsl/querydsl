@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
  * Visitor defines a Visitor signature for {@link Expression} instances.
  *
  * @author tiwe
- * @version $Id$
  */
 public interface Visitor<R,C>{
 

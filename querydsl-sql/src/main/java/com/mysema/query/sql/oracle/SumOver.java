@@ -21,7 +21,6 @@ import com.mysema.query.types.template.NumberTemplate;
  * by constructs
  *
  * @author tiwe
- * @version $Id$
  */
 public class SumOver<A extends Number & Comparable<? super A>> extends NumberExpression<A> {
 

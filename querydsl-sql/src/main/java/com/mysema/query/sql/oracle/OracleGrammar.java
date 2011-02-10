@@ -17,7 +17,6 @@ import com.mysema.query.types.path.NumberPath;
  * Convenience functions and constants for Oracle DB usage
  *
  * @author tiwe
- * @version $Id$
  */
 public final class OracleGrammar {
 

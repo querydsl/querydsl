@@ -23,7 +23,7 @@ import com.mysema.query.types.expr.Wildcard;
  *
  * @author tiwe
  *
- * @param <T>
+ * @param <T> concrete subtype
  */
 public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends ProjectableQuery<T>{
 

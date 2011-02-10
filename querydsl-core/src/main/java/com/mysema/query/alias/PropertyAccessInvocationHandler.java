@@ -36,7 +36,6 @@ import com.mysema.util.ReflectionUtils;
  * CGLIB alias proxies
  *
  * @author tiwe
- * @version $Id$
  */
 class PropertyAccessInvocationHandler implements MethodInterceptor {
 

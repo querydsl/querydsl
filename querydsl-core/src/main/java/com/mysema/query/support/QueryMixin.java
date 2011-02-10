@@ -18,7 +18,7 @@ import com.mysema.query.types.*;
  *
  * @author tiwe
  *
- * @param <T>
+ * @param <T> type of wrapped query
  */
 public class QueryMixin<T>{
 

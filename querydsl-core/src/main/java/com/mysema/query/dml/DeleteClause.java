@@ -13,7 +13,7 @@ import com.mysema.query.FilteredClause;
  *
  * @author tiwe
  *
- * @param <C>
+ * @param <C> concrete subtype
  */
 public interface DeleteClause<C extends DeleteClause<C>> extends DMLClause<C>, FilteredClause<C>{
 

@@ -14,7 +14,6 @@ import com.mysema.query.QueryMetadata;
  * SQLQueryImpl is a JDBC based implementation of the Querydsl SQLQuery interface
  *
  * @author tiwe
- * @version $Id$
  */
 public class SQLQueryImpl extends AbstractSQLQuery<SQLQueryImpl> implements SQLQuery{
 

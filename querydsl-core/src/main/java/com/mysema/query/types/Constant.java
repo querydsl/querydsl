@@ -10,7 +10,7 @@ package com.mysema.query.types;
  *
  * @author tiwe
  *
- * @param <D>
+ * @param <D> constant type
  */
 public interface Constant<D> extends Expression<D>{
 

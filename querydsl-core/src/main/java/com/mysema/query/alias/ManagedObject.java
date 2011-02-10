@@ -10,7 +10,6 @@ import com.mysema.query.types.EntityPath;
 /**
  * MagagedObject is a tagging interface for CGLIB alias proxies
  *
- * @version $Id$
  */
 public interface ManagedObject {
 

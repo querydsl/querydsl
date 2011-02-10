@@ -12,7 +12,7 @@ import java.util.Collection;
  *
  * @author tiwe
  *
- * @param <E>
+ * @param <E> element type
  * @see java.util.Collection
  */
 public interface CollectionExpression<C extends Collection<E>, E> extends ParametrizedExpression<C>{

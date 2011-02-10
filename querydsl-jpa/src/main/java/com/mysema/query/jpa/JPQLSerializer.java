@@ -29,7 +29,6 @@ import com.mysema.util.MathUtils;
  * JPQLSerializer serializes Querydsl expressions into JPQL syntax.
  *
  * @author tiwe
- * @version $Id$
  */
 public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 

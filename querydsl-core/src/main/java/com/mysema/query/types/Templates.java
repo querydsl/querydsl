@@ -16,7 +16,6 @@ import net.jcip.annotations.Immutable;
  * Templates provides operator patterns for query expression serialization
  *
  * @author tiwe
- * @version $Id$
  */
 @Immutable
 public class Templates {

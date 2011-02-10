@@ -18,7 +18,6 @@ import com.mysema.query.types.Expression;
  * ProjectableAdapter is an adapter implementation for the Projectable interface
  *
  * @author tiwe
- * @version $Id$
  */
 public class ProjectableAdapter<P extends Projectable> implements Projectable {
 

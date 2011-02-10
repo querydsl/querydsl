@@ -27,7 +27,6 @@ import com.mysema.commons.lang.Assert;
  * EntityType represents a model of a query domain type with properties
  *
  * @author tiwe
- * @version $Id$
  */
 public final class EntityType extends TypeAdapter implements Comparable<EntityType> {
 

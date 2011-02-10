@@ -14,7 +14,6 @@ import com.mysema.codegen.Evaluator;
  * MultiComparator compares 
  *
  * @author tiwe
- * @version $Id$
  */
 
 public class MultiComparator<T> implements Comparator<T>, Serializable {

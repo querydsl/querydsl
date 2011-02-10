@@ -43,7 +43,6 @@ import com.mysema.query.types.path.TimePath;
  * Alias provides alias factory methods
  *
  * @author tiwe
- * @version $Id$
  */
 @SuppressWarnings("PMD")
 public final class Alias {

@@ -26,10 +26,12 @@ import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Predicate;
 
 /**
+ * AbstractLuceneQuery is an abstract super class for Lucene query implementations
+ * 
  * @author tiwe
  *
- * @param <T>
- * @param <Q>
+ * @param <T> projection type 
+ * @param <Q> concrete subtype of query
  */
 public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> implements SimpleQuery<Q>,
 SimpleProjectable<T> {

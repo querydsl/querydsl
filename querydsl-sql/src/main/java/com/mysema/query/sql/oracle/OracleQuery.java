@@ -21,7 +21,6 @@ import com.mysema.query.types.Predicate;
  * OracleQuery provides Oracle specific extensions to the base SQL query type
  *
  * @author tiwe
- * @version $Id$
  */
 public class OracleQuery extends AbstractSQLQuery<OracleQuery> {    
 

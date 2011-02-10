@@ -15,7 +15,7 @@ import com.mysema.query.types.Path;
  * 
  * @author tiwe
  *
- * @param <C>
+ * @param <C> concrete subtype
  */
 public interface StoreClause<C extends StoreClause<C>> extends DMLClause<C>{
     

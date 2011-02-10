@@ -15,7 +15,6 @@ import com.mysema.query.types.Path;
  * MiniApi provides static convenience methods for query construction
  *
  * @author tiwe
- * @version $Id$
  */
 public final class MiniApi {
 

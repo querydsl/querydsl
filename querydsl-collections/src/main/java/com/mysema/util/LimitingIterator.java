@@ -14,7 +14,6 @@ import com.mysema.query.QueryModifiers;
  * LimitingIterator is and Iterator adapter which takes limit and offset into account
  *
  * @author tiwe
- * @version $Id$
  */
 public class LimitingIterator<E> implements Iterator<E> {
 

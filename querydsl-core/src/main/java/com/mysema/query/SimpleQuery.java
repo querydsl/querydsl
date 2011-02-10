@@ -15,7 +15,7 @@ import com.mysema.query.types.ParamExpression;
  *
  * @author tiwe
  *
- * @param <Q>
+ * @param <Q> concrete subtype
  * @see Query
  */
 public interface SimpleQuery<Q extends SimpleQuery<Q>> extends FilteredClause<Q>{

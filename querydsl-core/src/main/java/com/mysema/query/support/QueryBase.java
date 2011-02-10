@@ -15,7 +15,6 @@ import com.mysema.query.types.Predicate;
  * QueryBase provides a stub for Query implementations
  *
  * @author tiwe
- * @version $Id$
  */
 public abstract class QueryBase<Q extends QueryBase<Q>> {
 

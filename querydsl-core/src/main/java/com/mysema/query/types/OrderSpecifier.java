@@ -16,7 +16,6 @@ import com.mysema.commons.lang.Assert;
  *
  * @param <A> - Java type of the target expression
  * @author tiwe
- * @version $Id$
  */
 @SuppressWarnings({"unchecked"})
 @Immutable

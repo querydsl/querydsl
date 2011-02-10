@@ -10,7 +10,7 @@ package com.mysema.query.types;
  * 
  * @author tiwe
  *
- * @param <T>
+ * @param <T> entity type
  */
 public interface EntityPath<T> extends Path<T> {
 

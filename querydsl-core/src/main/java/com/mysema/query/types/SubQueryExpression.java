@@ -14,9 +14,8 @@ import com.mysema.query.types.query.Detachable;
  * is done via an {@link Detachable} instance.
  *
  * @author tiwe
- * @version $Id$
  *
- * @param <T>
+ * @param <T> return type of subquery
  */
 public interface SubQueryExpression<T> extends Expression<T>{
 

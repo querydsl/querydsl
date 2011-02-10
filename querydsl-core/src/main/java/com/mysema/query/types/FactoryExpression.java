@@ -15,7 +15,7 @@ import javax.annotation.Nullable;
  * 
  * @author tiwe
  *
- * @param <D>
+ * @param <D> type of projection
  */
 public interface FactoryExpression<D> extends Expression<D>{
     

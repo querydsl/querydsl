@@ -27,7 +27,6 @@ import com.mysema.query.types.Templates;
  * and acts as database specific Dialect for Querydsl SQL
  *
  * @author tiwe
- * @version $Id$
  */
 public class SQLTemplates extends Templates {
     

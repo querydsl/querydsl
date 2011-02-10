@@ -191,7 +191,7 @@
             </group>
 			<group>
 			  <title>Mongodb</title>
-			  <packages>com.mysema.query.mongodb</packages>		
+			  <packages>com.mysema.query.mongodb*</packages>		
 			</group>			
           </groups>
         </configuration>

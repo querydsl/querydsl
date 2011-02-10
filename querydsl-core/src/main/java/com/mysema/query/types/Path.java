@@ -11,7 +11,6 @@ import java.lang.reflect.AnnotatedElement;
  * Path represents a path expression
  *
  * @author tiwe
- * @version $Id$
  */
 public interface Path<C> extends Expression<C> {
 

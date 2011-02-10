@@ -17,7 +17,6 @@ import com.mysema.query.types.*;
  * ColQuerySerializer is a Serializer implementation for the Java language
  *
  * @author tiwe
- * @version $Id$
  */
 public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer> {
 

@@ -19,7 +19,7 @@ import com.mysema.query.types.Predicate;
  *
  * @author tiwe
  *
- * @param <Q>
+ * @param <Q> concrete subtype
  */
 public class AbstractJPQLSubQuery<Q extends AbstractJPQLSubQuery<Q>> extends DetachableQuery<Q>{
 

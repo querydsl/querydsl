@@ -15,7 +15,7 @@ import java.util.List;
  * 
  * @author tiwe
  *
- * @param <RT>
+ * @param <RT> return type of operation
  */
 public class OperationImpl<RT> extends ExpressionBase<RT> implements Operation<RT>{
     

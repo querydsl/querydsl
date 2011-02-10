@@ -14,7 +14,9 @@ import javax.annotation.Nullable;
  * is a reference to the type the expression is bound to.
  *
  * @author tiwe
- * @version $Id$
+ * 
+ * @param <D> expression type
+ * 
  */
 public interface Expression<D> extends Serializable{
     

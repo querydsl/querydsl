@@ -9,7 +9,6 @@ package com.mysema.query.types;
  * ToStringVisitor is used for toString() serialization in {@link Expression} implementations.
  *
  * @author tiwe
- * @version $Id$
  */
 public final class ToStringVisitor implements Visitor<String,Templates>{
     

@@ -14,7 +14,6 @@ import com.mysema.query.types.PathType;
  * templates.
  *
  * @author tiwe
- * @version $Id$
  */
 public final class ColQueryTemplates extends JavaTemplates {
 

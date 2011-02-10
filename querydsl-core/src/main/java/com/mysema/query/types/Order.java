@@ -9,7 +9,6 @@ package com.mysema.query.types;
  * Order defines ascending and descending order
  *
  * @author tiwe
- * @version $Id$
  */
 public enum Order {
     /**

@@ -21,7 +21,6 @@ import javax.annotation.Nullable;
  * </pre>
  *
  * @author tiwe
- * @version $Id$
  */
 public class MultiIterator<T> implements Iterator<T[]> {
 

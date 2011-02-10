@@ -20,7 +20,6 @@ import com.mysema.util.JavaSyntaxUtils;
  * Property represents a property in a query domain type.
  *
  * @author tiwe
- * @version $Id$
  */
 @Immutable
 public final class Property implements Comparable<Property> {

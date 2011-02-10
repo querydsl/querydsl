@@ -13,7 +13,7 @@ import com.mysema.query.types.SubQueryExpression;
  *
  * @author tiwe
  *
- * @param <C>
+ * @param <C> concrete subtype
  */
 public interface InsertClause<C extends InsertClause<C>> extends StoreClause<C>{
 

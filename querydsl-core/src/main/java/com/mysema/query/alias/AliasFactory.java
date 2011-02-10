@@ -25,7 +25,6 @@ import com.mysema.query.types.PathMetadataFactory;
  * AliasFactory is a factory class for alias creation
  *
  * @author tiwe
- * @version $Id$
  */
 public class AliasFactory {
 

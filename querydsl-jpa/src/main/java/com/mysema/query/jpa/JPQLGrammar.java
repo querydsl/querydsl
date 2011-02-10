@@ -19,7 +19,6 @@ import com.mysema.query.types.expr.SimpleOperation;
  * elements.
  *
  * @author tiwe
- * @version $Id$
  */
 @SuppressWarnings("unchecked")
 public final class JPQLGrammar {

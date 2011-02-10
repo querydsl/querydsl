@@ -5,6 +5,10 @@
  */
 package com.mysema.query.sql.support;
 
+/**
+ * @author tiwe
+ *
+ */
 public class IndexData {
 
     private final String name;

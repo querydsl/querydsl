@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
  * 
  * @author tiwe
  *
- * @param <T>
+ * @param <T> expression type
  */
 public abstract class ExpressionBase<T> implements Expression<T>{
 

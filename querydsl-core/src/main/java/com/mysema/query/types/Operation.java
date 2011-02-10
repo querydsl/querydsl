@@ -11,7 +11,6 @@ import java.util.List;
  * Operation represents an operation with operator and arguments
  *
  * @author tiwe
- * @version $Id$
  */
 public interface Operation<RT> extends Expression<RT>{
 

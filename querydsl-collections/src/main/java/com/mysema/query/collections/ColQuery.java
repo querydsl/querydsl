@@ -15,7 +15,6 @@ import com.mysema.query.types.Path;
  * Query interface for Collection queries
  *
  * @author tiwe
- * @version $Id$
  */
 public interface ColQuery extends SimpleQuery<ColQuery>, Projectable {
 

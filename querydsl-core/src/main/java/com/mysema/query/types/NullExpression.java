@@ -12,7 +12,7 @@ import java.util.Collections;
  * 
  * @author tiwe
  *
- * @param <T>
+ * @param <T> type of expression
  */
 public class NullExpression<T> extends TemplateExpressionImpl<T>{
     
