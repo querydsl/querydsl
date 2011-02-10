@@ -20,7 +20,7 @@ import org.apache.commons.collections15.BeanMap;
  * 
  * @author tiwe
  *
- * @param <T>
+ * @param <T> bean type
  */
 public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
  
