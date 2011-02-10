@@ -14,7 +14,7 @@ import com.mysema.query.types.SubQueryExpression;
  * 
  * @author tiwe
  *
- * @param <Q>
+ * @param <Q> concrete type
  */
 public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
     

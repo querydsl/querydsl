@@ -15,7 +15,7 @@ import com.mysema.query.types.OrderSpecifier;
  *
  * @author tiwe
  *
- * @param <RT>
+ * @param <RT> return type of projection
  */
 public interface Union<RT>{
     
