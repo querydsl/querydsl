@@ -240,8 +240,8 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         }
     }
 
-    protected void appendAsString(Expression<?> object) {
-        append(object.toString());
+    protected void appendAsString(Expression<?> expr) {
+        append(expr.toString());
     }
 
 }
