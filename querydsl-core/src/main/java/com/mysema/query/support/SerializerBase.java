@@ -100,7 +100,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
             if (element.getStaticText() != null){
                 append(element.getStaticText());
             }else if (element.isAsString()){
-                appendAsString(args.get(element.getIndex()).toString());
+                appendAsString(args.get(element.getIndex()));
             }else if (element.hasConverter()){
                 handle(element.convert(args.get(element.getIndex())));
             }else{
@@ -214,7 +214,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
             if (element.getStaticText() != null){
                 append(element.getStaticText());                
             }else if (element.isAsString()){
-                appendAsString(args.get(element.getIndex()).toString());                
+                appendAsString(args.get(element.getIndex()));                
             }else{
                 int i = element.getIndex();
                 boolean wrap = false;
@@ -240,7 +240,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         }
     }
 
-    protected void appendAsString(Object object) {
+    protected void appendAsString(Expression<?> object) {
         append(object.toString());
     }
 
