@@ -19,9 +19,10 @@ import com.mysema.query.types.Ops;
  *
  * @author tiwe
  *
- * @param <D>
+ * @param <T> expression type
+ * @param <E> collection element type
  */
-public abstract class CollectionExpressionBase<C extends Collection<E>, E> extends SimpleExpression<C> implements CollectionExpression<C, E> {
+public abstract class CollectionExpressionBase<T extends Collection<E>, E> extends SimpleExpression<T> implements CollectionExpression<T, E> {
 
     private static final long serialVersionUID = 691230660037162054L;
 
@@ -30,11 +31,11 @@ public abstract class CollectionExpressionBase<C extends Collection<E>, E> exten
 
     @Nullable
     private volatile NumberExpression<Integer> size;
-    
-    public CollectionExpressionBase(Class<? extends C> type) {
+
+    public CollectionExpressionBase(Class<? extends T> type) {
         super(type);
     }
-    
+
     public final BooleanExpression contains(E child) {
         return contains(new ConstantImpl<E>(child));
     }
@@ -44,7 +45,7 @@ public abstract class CollectionExpressionBase<C extends Collection<E>, E> exten
     }
 
     public abstract Class<E> getElementType();
-    
+
     public final BooleanExpression isEmpty() {
         if (empty == null){
             empty = BooleanOperation.create(Ops.COL_IS_EMPTY, this);
@@ -64,5 +65,5 @@ public abstract class CollectionExpressionBase<C extends Collection<E>, E> exten
     }
 
 
-    
+
 }

@@ -15,7 +15,6 @@ import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionBase;
-import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
@@ -25,9 +24,9 @@ import com.mysema.query.types.PathImpl;
  *
  * @author tiwe
  *
- * @param <D>
+ * @param <T> expression type
  */
-public abstract class SimpleExpression<D> extends ExpressionBase<D> {
+public abstract class SimpleExpression<T> extends ExpressionBase<T> {
 
     private static final long serialVersionUID = -4405387187738167105L;
 
@@ -39,17 +38,17 @@ public abstract class SimpleExpression<D> extends ExpressionBase<D> {
 
     @Nullable
     private volatile BooleanExpression isnull, isnotnull;
-    
+
     protected final boolean primitive;
-    
-    public SimpleExpression(Class<? extends D> type) {
+
+    public SimpleExpression(Class<? extends T> type) {
         super(type);
         this.primitive = type.isPrimitive()
             || Number.class.isAssignableFrom(type)
             || Boolean.class.equals(type)
             || Character.class.equals(type);
     }
-    
+
     /**
      * Create a <code>this is not null</code> expression
      *
@@ -81,8 +80,8 @@ public abstract class SimpleExpression<D> extends ExpressionBase<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public SimpleExpression<D> as(Path<D> alias) {
-        return SimpleOperation.create(getType(),(Operator)Ops.ALIAS, this, alias);
+    public SimpleExpression<T> as(Path<T> alias) {
+        return SimpleOperation.create((Class<T>)getType(),Ops.ALIAS, this, alias);
     }
 
     /**
@@ -91,8 +90,8 @@ public abstract class SimpleExpression<D> extends ExpressionBase<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public SimpleExpression<D> as(String alias) {
-        return SimpleOperation.create(getType(),(Operator)Ops.ALIAS, this, new PathImpl<D>(getType(), alias));
+    public SimpleExpression<T> as(String alias) {
+        return SimpleOperation.create((Class<T>)getType(),Ops.ALIAS, this, new PathImpl<T>(getType(), alias));
     }
 
     /**
@@ -126,8 +125,8 @@ public abstract class SimpleExpression<D> extends ExpressionBase<D> {
      * @param right rhs of the comparison
      * @return
      */
-    public BooleanExpression eq(D right) {
-        return eq(new ConstantImpl<D>(right));
+    public BooleanExpression eq(T right) {
+        return eq(new ConstantImpl<T>(right));
     }
 
     /**
@@ -136,7 +135,7 @@ public abstract class SimpleExpression<D> extends ExpressionBase<D> {
      * @param right rhs of the comparison
      * @return
      */
-    public BooleanExpression eq(Expression<? super D> right) {
+    public BooleanExpression eq(Expression<? super T> right) {
         if (primitive) {
             return BooleanOperation.create(Ops.EQ_PRIMITIVE, this, right);
         } else {
@@ -158,37 +157,37 @@ public abstract class SimpleExpression<D> extends ExpressionBase<D> {
      * @param right rhs of the comparison
      * @return
      */
-    public BooleanExpression in(Collection<? extends D> right) {
+    public BooleanExpression in(Collection<? extends T> right) {
         if (right.size() == 1){
             return eq(right.iterator().next());
         }else{
-            return BooleanOperation.create(Ops.IN, this, new ConstantImpl<Collection<? extends D>>(right));
+            return BooleanOperation.create(Ops.IN, this, new ConstantImpl<Collection<? extends T>>(right));
         }
     }
-    
+
     /**
      * Get a <code>this in right</code> expression
      *
      * @param right rhs of the comparison
      * @return
      */
-    public BooleanExpression in(D... right) {
+    public BooleanExpression in(T... right) {
         if (right.length == 1){
             return eq(right[0]);
         }else{
-            return BooleanOperation.create(Ops.IN, this, new ConstantImpl<List<D>>(Arrays.asList(right)));
+            return BooleanOperation.create(Ops.IN, this, new ConstantImpl<List<T>>(Arrays.asList(right)));
         }
     }
 
-    
+
     /**
      * Get a <code>this in right</code> expression
      *
      * @param right rhs of the comparison
      * @return
      */
-    public BooleanExpression in(CollectionExpression<?,? extends D> right) {
-        return BooleanOperation.create(Ops.IN, this, (Expression<?>)right);
+    public BooleanExpression in(CollectionExpression<?,? extends T> right) {
+        return BooleanOperation.create(Ops.IN, this, right);
     }
 
     /**
@@ -197,8 +196,8 @@ public abstract class SimpleExpression<D> extends ExpressionBase<D> {
      * @param right rhs of the comparison
      * @return
      */
-    public BooleanExpression ne(D right) {
-        return ne(new ConstantImpl<D>(right));
+    public BooleanExpression ne(T right) {
+        return ne(new ConstantImpl<T>(right));
     }
 
     /**
@@ -207,7 +206,7 @@ public abstract class SimpleExpression<D> extends ExpressionBase<D> {
      * @param right rhs of the comparison
      * @return
      */
-    public BooleanExpression ne(Expression<? super D> right) {
+    public BooleanExpression ne(Expression<? super T> right) {
         if (primitive) {
             return BooleanOperation.create(Ops.NE_PRIMITIVE, this, right);
         } else {
@@ -221,7 +220,7 @@ public abstract class SimpleExpression<D> extends ExpressionBase<D> {
      * @param right rhs of the comparison
      * @return
      */
-    public final BooleanExpression notIn(Collection<? extends D> right) {
+    public final BooleanExpression notIn(Collection<? extends T> right) {
         if (right.size() == 1){
             return ne(right.iterator().next());
         }else{
@@ -235,7 +234,7 @@ public abstract class SimpleExpression<D> extends ExpressionBase<D> {
      * @param right rhs of the comparison
      * @return
      */
-    public BooleanExpression notIn(D... right) {
+    public BooleanExpression notIn(T... right) {
         if (right.length == 1){
             return ne(right[0]);
         }else{
@@ -251,7 +250,7 @@ public abstract class SimpleExpression<D> extends ExpressionBase<D> {
      * @param right rhs of the comparison
      * @return
      */
-    public final BooleanExpression notIn(CollectionExpression<?,? extends D> right) {
+    public final BooleanExpression notIn(CollectionExpression<?,? extends T> right) {
         return in(right).not();
     }
 
@@ -262,8 +261,8 @@ public abstract class SimpleExpression<D> extends ExpressionBase<D> {
      * @param other
      * @return
      */
-    public CaseForEqBuilder<D> when(D other){
-        return new CaseForEqBuilder<D>(this, new ConstantImpl<D>(other));
+    public CaseForEqBuilder<T> when(T other){
+        return new CaseForEqBuilder<T>(this, new ConstantImpl<T>(other));
     }
 
     /**
@@ -272,8 +271,8 @@ public abstract class SimpleExpression<D> extends ExpressionBase<D> {
      * @param other
      * @return
      */
-    public CaseForEqBuilder<D> when(Expression<? extends D> other){
-        return new CaseForEqBuilder<D>(this, other);
+    public CaseForEqBuilder<T> when(Expression<? extends T> other){
+        return new CaseForEqBuilder<T>(this, other);
     }
-    
+
 }

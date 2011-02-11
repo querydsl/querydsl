@@ -12,14 +12,14 @@ import com.mysema.query.types.Expression;
  *
  * @author tiwe
  *
- * @param <D>
+ * @param <T> expression type
  */
 @SuppressWarnings({"unchecked"})
-public abstract class TemporalExpression<D extends Comparable> extends ComparableExpression<D> {
+public abstract class TemporalExpression<T extends Comparable> extends ComparableExpression<T> {
 
     private static final long serialVersionUID = 1137918766051524298L;
 
-    public TemporalExpression(Class<? extends D> type) {
+    public TemporalExpression(Class<? extends T> type) {
         super(type);
     }
 
@@ -29,7 +29,7 @@ public abstract class TemporalExpression<D extends Comparable> extends Comparabl
      * @param right
      * @return
      */
-    public BooleanExpression after(D right) {
+    public BooleanExpression after(T right) {
         return gt(right);
     }
 
@@ -39,7 +39,7 @@ public abstract class TemporalExpression<D extends Comparable> extends Comparabl
      * @param right
      * @return
      */
-    public BooleanExpression after(Expression<D> right) {
+    public BooleanExpression after(Expression<T> right) {
         return gt(right);
     }
 
@@ -49,7 +49,7 @@ public abstract class TemporalExpression<D extends Comparable> extends Comparabl
      * @param right
      * @return
      */
-    public BooleanExpression before(D right) {
+    public BooleanExpression before(T right) {
         return lt(right);
     }
 
@@ -59,7 +59,7 @@ public abstract class TemporalExpression<D extends Comparable> extends Comparabl
      * @param right
      * @return
      */
-    public BooleanExpression before(Expression<D> right) {
+    public BooleanExpression before(Expression<T> right) {
         return lt(right);
     }
 

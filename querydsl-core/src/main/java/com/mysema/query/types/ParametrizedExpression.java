@@ -3,10 +3,10 @@ package com.mysema.query.types;
 /**
  * @author tiwe
  *
- * @param <T> type of expression
+ * @param <T> expression type
  */
 public interface ParametrizedExpression<T> extends Expression<T> {
-    
+
     /**
      * @param index
      * @return

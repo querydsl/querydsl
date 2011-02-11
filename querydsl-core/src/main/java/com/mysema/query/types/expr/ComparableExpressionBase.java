@@ -17,21 +17,21 @@ import com.mysema.query.types.OrderSpecifier;
  *
  * @author tiwe
  *
- * @param <D> Java type
+ * @param <T> Java type
  * @see java.lang.Comparable
  */
 @SuppressWarnings({"unchecked"})
-public abstract class ComparableExpressionBase<D extends Comparable> extends SimpleExpression<D> {
+public abstract class ComparableExpressionBase<T extends Comparable> extends SimpleExpression<T> {
 
     private static final long serialVersionUID = 1460921109546656911L;
 
     @Nullable
-    private volatile OrderSpecifier<D> asc, desc;
+    private volatile OrderSpecifier<T> asc, desc;
 
     @Nullable
     private volatile StringExpression stringCast;
 
-    public ComparableExpressionBase(Class<? extends D> type) {
+    public ComparableExpressionBase(Class<? extends T> type) {
         super(type);
     }
 
@@ -40,9 +40,9 @@ public abstract class ComparableExpressionBase<D extends Comparable> extends Sim
      *
      * @return
      */
-    public final OrderSpecifier<D> asc() {
+    public final OrderSpecifier<T> asc() {
         if (asc == null){
-            asc = new OrderSpecifier<D>(Order.ASC, this);
+            asc = new OrderSpecifier<T>(Order.ASC, this);
         }
         return asc;
     }
@@ -63,9 +63,9 @@ public abstract class ComparableExpressionBase<D extends Comparable> extends Sim
      *
      * @return
      */
-    public final OrderSpecifier<D> desc() {
+    public final OrderSpecifier<T> desc() {
         if (desc == null){
-            desc = new OrderSpecifier<D>(Order.DESC, this);
+            desc = new OrderSpecifier<T>(Order.DESC, this);
         }
         return desc;
     }

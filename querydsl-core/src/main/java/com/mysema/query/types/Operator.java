@@ -13,17 +13,17 @@ import java.util.List;
  *
  * @author tiwe
  *
- * @param <RT> return type of operator
+ * @param <T> related expression type
  */
-public interface Operator<RT> extends Serializable{
-    
+public interface Operator<T> extends Serializable{
+
     /**
      * Get the unique id for this Operator
-     * 
+     *
      * @return
      */
     String getId();
-    
+
     /**
      * Get the types related to this operator symbols
      *

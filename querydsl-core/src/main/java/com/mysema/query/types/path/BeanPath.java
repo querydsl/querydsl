@@ -29,10 +29,9 @@ import com.mysema.query.types.expr.SimpleExpression;
  *
  * @author tiwe
  *
- * @param <D>
- *            Java type
+ * @param <T> expression type
  */
-public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
+public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
 
     private static final long serialVersionUID = -1845524024957822731L;
 
@@ -41,23 +40,23 @@ public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
     @Nullable
     private final PathInits inits;
 
-    private final Path<D> pathMixin;
+    private final Path<T> pathMixin;
 
-    public BeanPath(Class<? extends D> type, String variable) {
+    public BeanPath(Class<? extends T> type, String variable) {
         this(type, PathMetadataFactory.forVariable(variable), null);
     }
-    
-    public BeanPath(Class<? extends D> type, Path<?> parent,  String property) {
+
+    public BeanPath(Class<? extends T> type, Path<?> parent,  String property) {
         this(type, PathMetadataFactory.forProperty(parent, property), null);
     }
 
-    public BeanPath(Class<? extends D> type, PathMetadata<?> metadata) {
+    public BeanPath(Class<? extends T> type, PathMetadata<?> metadata) {
         this(type, metadata, null);
     }
 
-    public BeanPath(Class<? extends D> type, PathMetadata<?> metadata, @Nullable PathInits inits) {
+    public BeanPath(Class<? extends T> type, PathMetadata<?> metadata, @Nullable PathInits inits) {
         super(type);
-        this.pathMixin = new PathImpl<D>(type, metadata);
+        this.pathMixin = new PathImpl<T>(type, metadata);
         this.inits = inits;
     }
 
@@ -74,19 +73,19 @@ public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <T extends BeanPath<? extends D>> T as(Class<T> clazz) {
+    public <U extends BeanPath<? extends T>> U as(Class<U> clazz) {
         try {
             if (!casts.containsKey(clazz)) {
-                T rv;
+                U rv;
                 if (inits != null) {
                     rv = clazz.getConstructor(PathMetadata.class, PathInits.class).newInstance(this.getMetadata(), inits);
                 } else {
-                    rv = (T) clazz.getConstructor(PathMetadata.class).newInstance(this.getMetadata());
+                    rv = clazz.getConstructor(PathMetadata.class).newInstance(this.getMetadata());
                 }
                 casts.put(clazz, rv);
                 return rv;
             } else {
-                return (T) casts.get(clazz);
+                return (U) casts.get(clazz);
             }
 
         } catch (InstantiationException e) {
@@ -102,7 +101,7 @@ public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
 
     /**
      * Template method for tracking child path creation
-     * 
+     *
      * @param <P>
      * @param path
      * @return
@@ -110,7 +109,7 @@ public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
     protected <P extends Path<?>> P add(P path){
         return path;
     }
-    
+
     /**
      * Create a new array path
      *
@@ -145,7 +144,7 @@ public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
     protected <A, Q extends SimpleExpression<? super A>> CollectionPath<A, Q> createCollection(String property, Class<? super A> type, Class<? super Q> queryType) {
         return add(new CollectionPath<A, Q>(type, (Class) queryType, forProperty(property)));
     }
-    
+
     /**
      * Create a new Comparable typed path
      *
@@ -158,7 +157,7 @@ public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
     protected <A extends Comparable> ComparablePath<A> createComparable(String property, Class<? super A> type) {
         return add(new ComparablePath<A>((Class) type, forProperty(property)));
     }
-    
+
     /**
      * @param <A>
      * @param property
@@ -167,7 +166,7 @@ public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
      */
     @SuppressWarnings("unchecked")
     protected <A extends Enum<A>> EnumPath<A> createEnum(String property, Class<A> type) {
-        return add(new EnumPath<A>((Class) type, forProperty(property)));
+        return add(new EnumPath<A>(type, forProperty(property)));
     }
 
 
@@ -322,7 +321,7 @@ public class BeanPath<D> extends SimpleExpression<D> implements Path<D> {
      * @param type
      * @return
      */
-    public <B extends D> BooleanExpression instanceOf(Class<B> type) {
+    public <B extends T> BooleanExpression instanceOf(Class<B> type) {
         return BooleanOperation.create(Ops.INSTANCE_OF, this, new ConstantImpl<Class<B>>(type));
     }
 

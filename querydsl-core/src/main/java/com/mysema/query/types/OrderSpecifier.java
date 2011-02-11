@@ -14,20 +14,20 @@ import com.mysema.commons.lang.Assert;
 /**
  * OrderSpecifier represents an order-by-element in a Query instance
  *
- * @param <A> - Java type of the target expression
+ * @param <T> related expression type
  * @author tiwe
  */
 @SuppressWarnings({"unchecked"})
 @Immutable
-public class OrderSpecifier<A extends Comparable> implements Serializable {
+public class OrderSpecifier<T extends Comparable> implements Serializable {
 
     private static final long serialVersionUID = 3427652988262514678L;
 
     private final Order order;
 
-    private final Expression<A> target;
+    private final Expression<T> target;
 
-    public OrderSpecifier(Order order, Expression<A> target) {
+    public OrderSpecifier(Order order, Expression<T> target) {
         this.order = Assert.notNull(order,"order");
         this.target = Assert.notNull(target,"target");
     }
@@ -55,7 +55,7 @@ public class OrderSpecifier<A extends Comparable> implements Serializable {
      *
      * @return
      */
-    public Expression<A> getTarget() {
+    public Expression<T> getTarget() {
         return target;
     }
 
@@ -63,7 +63,7 @@ public class OrderSpecifier<A extends Comparable> implements Serializable {
     public String toString() {
         return target + " " + order;
     }
-    
+
     @Override
     public boolean equals(Object o){
         if (o == this){
@@ -75,7 +75,7 @@ public class OrderSpecifier<A extends Comparable> implements Serializable {
             return false;
         }
     }
-    
+
     @Override
     public int hashCode(){
         return target.hashCode();

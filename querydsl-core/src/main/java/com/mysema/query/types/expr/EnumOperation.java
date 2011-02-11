@@ -19,9 +19,9 @@ import com.mysema.query.types.Visitor;
  *
  * @author tiwe
  *
- * @param <D>
+ * @param <T> expression type
  */
-public class EnumOperation<D extends Enum<D>> extends EnumExpression<D> implements Operation<D> {
+public class EnumOperation<T extends Enum<T>> extends EnumExpression<T> implements Operation<T> {
 
     private static final long serialVersionUID = -3593040852095778453L;
 
@@ -38,15 +38,15 @@ public class EnumOperation<D extends Enum<D>> extends EnumExpression<D> implemen
         return new EnumOperation<D>(type, op, args);
     }
 
-    private final Operation<D> opMixin;
+    private final Operation<T> opMixin;
 
-    EnumOperation(Class<? extends D> type, Operator<? super D> op, Expression<?>... args) {
+    EnumOperation(Class<? extends T> type, Operator<? super T> op, Expression<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    EnumOperation(Class<? extends D> type, Operator<? super D> op, List<Expression<?>> args) {
+    EnumOperation(Class<? extends T> type, Operator<? super T> op, List<Expression<?>> args) {
         super(type);
-        this.opMixin = new OperationImpl<D>(type, op, args);
+        this.opMixin = new OperationImpl<T>(type, op, args);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class EnumOperation<D extends Enum<D>> extends EnumExpression<D> implemen
     }
 
     @Override
-    public Operator<? super D> getOperator() {
+    public Operator<? super T> getOperator() {
         return opMixin.getOperator();
     }
 

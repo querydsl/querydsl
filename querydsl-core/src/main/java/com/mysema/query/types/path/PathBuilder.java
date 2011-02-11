@@ -18,9 +18,9 @@ import com.mysema.query.types.expr.SimpleExpression;
  *
  * @author tiwe
  *
- * @param <D>
+ * @param <T> expression type
  */
-public final class PathBuilder<D> extends EntityPathBase<D> {
+public final class PathBuilder<T> extends EntityPathBase<T> {
 
     private static final long serialVersionUID = -1666357914232685088L;
 
@@ -32,7 +32,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param type
      * @param pathMetadata
      */
-    public PathBuilder(Class<? extends D> type, PathMetadata<?> pathMetadata) {
+    public PathBuilder(Class<? extends T> type, PathMetadata<?> pathMetadata) {
         super(type, pathMetadata);
     }
 
@@ -42,7 +42,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
      * @param type
      * @param variable
      */
-    public PathBuilder(Class<? extends D> type, String variable) {
+    public PathBuilder(Class<? extends T> type, String variable) {
         super(type, PathMetadataFactory.forVariable(variable));
     }
 
@@ -305,7 +305,7 @@ public final class PathBuilder<D> extends EntityPathBase<D> {
     public <A, E extends SimpleExpression<A>> SetPath<A, E> getSet(String property, Class<A> type, Class<E> queryType) {
         return super.<A, E>createSet(property, type, queryType);
     }
-    
+
     /**
      * @param <A>
      * @param path

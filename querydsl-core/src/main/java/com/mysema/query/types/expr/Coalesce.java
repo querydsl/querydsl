@@ -20,7 +20,7 @@ import com.mysema.query.types.Visitor;
  *
  * @author tiwe
  *
- * @param <T>
+ * @param <T> expression type
  */
 @SuppressWarnings("unchecked")
 public class Coalesce<T extends Comparable> extends ComparableExpression<T>{
@@ -39,7 +39,7 @@ public class Coalesce<T extends Comparable> extends ComparableExpression<T>{
 
     public Coalesce(Expression... exprs){
         // NOTE : type parameters for the varargs, would result in compiler warnings
-        this((Class<T>)(exprs.length > 0 ? exprs[0].getType() : Object.class), exprs);
+        this((exprs.length > 0 ? exprs[0].getType() : Object.class), exprs);
     }
 
     @Override

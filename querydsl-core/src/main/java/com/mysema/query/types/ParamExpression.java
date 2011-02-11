@@ -7,16 +7,16 @@ package com.mysema.query.types;
 
 /**
  * ParamExpression defines named and unnamed parameters in queries
- * 
+ *
  * @author tiwe
  *
- * @param <T> type of expression
+ * @param <T> expression type
  */
 public interface ParamExpression<T> extends Expression<T>{
-    
+
     /**
      * Get the name of the parameter
-     * 
+     *
      * @return
      */
     String getName();

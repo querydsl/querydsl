@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author tiwe
  */
-public interface Operation<RT> extends Expression<RT>{
+public interface Operation<T> extends Expression<T>{
 
     /**
      * Get the argument with the given index
@@ -34,6 +34,6 @@ public interface Operation<RT> extends Expression<RT>{
      *
      * @return
      */
-    Operator<? super RT> getOperator();
+    Operator<? super T> getOperator();
 
 }

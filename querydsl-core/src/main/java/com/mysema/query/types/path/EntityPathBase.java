@@ -12,24 +12,24 @@ import com.mysema.query.types.PathMetadata;
 
 /**
  * EntityPathBase provides a base class for EntityPath implementations
- * 
+ *
  * @author tiwe
  *
- * @param <D>
+ * @param <T> entity type
  */
-public class EntityPathBase<D> extends BeanPath<D> implements EntityPath<D>{
-    
+public class EntityPathBase<T> extends BeanPath<T> implements EntityPath<T>{
+
     private static final long serialVersionUID = -8610055828414880996L;
-    
-    public EntityPathBase(Class<? extends D> type, String variable) {
+
+    public EntityPathBase(Class<? extends T> type, String variable) {
         super(type, variable);
     }
 
-    public EntityPathBase(Class<? extends D> type, PathMetadata<?> metadata) {
+    public EntityPathBase(Class<? extends T> type, PathMetadata<?> metadata) {
         super(type, metadata);
     }
 
-    public EntityPathBase(Class<? extends D> type, PathMetadata<?> metadata, @Nullable PathInits inits) {
+    public EntityPathBase(Class<? extends T> type, PathMetadata<?> metadata, @Nullable PathInits inits) {
         super(type, metadata, inits);
     }
 

@@ -15,10 +15,10 @@ import javax.annotation.Nullable;
  *
  * @author tiwe
  * 
- * @param <D> expression type
+ * @param <T> expression type
  * 
  */
-public interface Expression<D> extends Serializable{
+public interface Expression<T> extends Serializable{
     
     /**
      * Accept the visitor with the given context
@@ -36,6 +36,6 @@ public interface Expression<D> extends Serializable{
      * 
      * @return
      */
-    Class<? extends D> getType();
+    Class<? extends T> getType();
 
 }

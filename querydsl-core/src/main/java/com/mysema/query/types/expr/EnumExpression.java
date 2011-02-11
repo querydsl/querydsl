@@ -5,17 +5,16 @@
  */
 package com.mysema.query.types.expr;
 
-import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 
 /**
  * EnumExpression represents Enum typed expressions
- * 
+ *
  * @author tiwe
  *
- * @param <T>
+ * @param <T> expression type
  */
 public abstract class EnumExpression<T extends Enum<T>> extends ComparableExpression<T> {
 
@@ -24,17 +23,15 @@ public abstract class EnumExpression<T extends Enum<T>> extends ComparableExpres
     public EnumExpression(Class<? extends T> type) {
         super(type);
     }
-    
-    @SuppressWarnings("unchecked")
+
     @Override
     public EnumExpression<T> as(Path<T> alias) {
-        return EnumOperation.create(getType(),(Operator)Ops.ALIAS, this, alias);
+        return EnumOperation.create(getType(),Ops.ALIAS, this, alias);
     }
-    
-    @SuppressWarnings("unchecked")
+
     @Override
     public EnumExpression<T> as(String alias) {
-        return EnumOperation.create(getType(),(Operator)Ops.ALIAS, this, new PathImpl<T>(getType(), alias));
+        return EnumOperation.create(getType(),Ops.ALIAS, this, new PathImpl<T>(getType(), alias));
     }
 
     /**

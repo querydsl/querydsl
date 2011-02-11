@@ -19,24 +19,24 @@ import com.mysema.query.types.expr.NumberExpression;
  *
  * @author tiwe
  *
- * @param <D> Java type
+ * @param <T> Java type
  */
-public class NumberPath<D extends Number & Comparable<?>> extends NumberExpression<D> implements Path<D> {
+public class NumberPath<T extends Number & Comparable<?>> extends NumberExpression<T> implements Path<T> {
 
     private static final long serialVersionUID = 338191992784020563L;
 
-    private final Path<D> pathMixin;
+    private final Path<T> pathMixin;
 
-    public NumberPath(Class<? extends D> type, Path<?> parent, String property) {
+    public NumberPath(Class<? extends T> type, Path<?> parent, String property) {
         this(type, PathMetadataFactory.forProperty(parent, property));
     }
 
-    public NumberPath(Class<? extends D> type, PathMetadata<?> metadata) {
+    public NumberPath(Class<? extends T> type, PathMetadata<?> metadata) {
         super(type);
-        this.pathMixin = new PathImpl<D>(type, metadata);
+        this.pathMixin = new PathImpl<T>(type, metadata);
     }
 
-    public NumberPath(Class<? extends D> type, String var) {
+    public NumberPath(Class<? extends T> type, String var) {
         this(type, PathMetadataFactory.forVariable(var));
     }
 

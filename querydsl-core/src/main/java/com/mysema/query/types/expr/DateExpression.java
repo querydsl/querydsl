@@ -9,7 +9,6 @@ import java.util.Date;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
@@ -18,13 +17,13 @@ import com.mysema.query.types.PathImpl;
  * DateExpression represents Date expressions
  * The date representation is compatible with the Gregorian calendar.
  *
- * @param <D>
+ * @param <T> expression type
  *
  * @author tiwe
  * @see <a href="http://en.wikipedia.org/wiki/Gregorian_calendar">Gregorian calendar</a>
  */
 @SuppressWarnings({"unchecked"})
-public abstract class DateExpression<D extends Comparable> extends TemporalExpression<D> {
+public abstract class DateExpression<T extends Comparable> extends TemporalExpression<T> {
 
     private static final DateExpression<Date> CURRENT_DATE = currentDate(Date.class);
 
@@ -57,20 +56,20 @@ public abstract class DateExpression<D extends Comparable> extends TemporalExpre
     @Nullable
     private volatile NumberExpression<Integer> week, month, year, yearMonth;
 
-    public DateExpression(Class<? extends D> type) {
+    public DateExpression(Class<? extends T> type) {
         super(type);
     }
 
     @Override
-    public DateExpression<D> as(Path<D> alias) {
-        return DateOperation.create(getType(),(Operator)Ops.ALIAS, this, alias);
+    public DateExpression<T> as(Path<T> alias) {
+        return DateOperation.create((Class<T>)getType(), Ops.ALIAS, this, alias);
     }
 
     @Override
-    public DateExpression as(String alias) {
-        return DateOperation.create(getType(), (Operator)Ops.ALIAS, this, new PathImpl<D>(getType(), alias));
+    public DateExpression<T> as(String alias) {
+        return DateOperation.create((Class<T>)getType(), Ops.ALIAS, this, new PathImpl<T>(getType(), alias));
     }
-    
+
     /**
      * Get a day of month expression (range 1-31)
      *
@@ -114,7 +113,7 @@ public abstract class DateExpression<D extends Comparable> extends TemporalExpre
      *
      * @return max(this)
      */
-    public DateExpression<D> max(){
+    public DateExpression<T> max(){
         if (max == null){
             max = DateOperation.create(getType(), Ops.AggOps.MAX_AGG, this);
         }
@@ -126,7 +125,7 @@ public abstract class DateExpression<D extends Comparable> extends TemporalExpre
      *
      * @return min(this)
      */
-    public DateExpression<D> min(){
+    public DateExpression<T> min(){
         if (min == null){
             min = DateOperation.create(getType(), Ops.AggOps.MIN_AGG, this);
         }

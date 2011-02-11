@@ -8,20 +8,20 @@ package com.mysema.query.types.template;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
-import com.mysema.query.types.TemplateFactory;
+import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
+import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.DateExpression;
 
 /**
  * DateTemplate defines custom date expressions
- * 
+ *
  * @author tiwe
  *
- * @param <T>
+ * @param <T> expression type
  */
 public class DateTemplate<T extends Comparable<?>> extends DateExpression<T> implements TemplateExpression<T> {
 

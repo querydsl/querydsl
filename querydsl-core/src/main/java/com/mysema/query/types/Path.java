@@ -12,7 +12,7 @@ import java.lang.reflect.AnnotatedElement;
  *
  * @author tiwe
  */
-public interface Path<C> extends Expression<C> {
+public interface Path<T> extends Expression<T> {
 
     /**
      * Get the metadata for this path

@@ -20,20 +20,21 @@ import com.mysema.query.types.expr.ComparableExpression;
  *
  * @author tiwe
  *
- * @param <A>
+ * @param <T> expression type
+ *
  */
-public final class ComparableSubQuery<A extends Comparable<?>> extends ComparableExpression<A> implements ExtendedSubQueryExpression<A>{
+public final class ComparableSubQuery<T extends Comparable<?>> extends ComparableExpression<T> implements ExtendedSubQueryExpression<T>{
 
     private static final long serialVersionUID = -64156984110154969L;
 
-    private final SubQueryExpressionImpl<A> subQueryMixin;
-    
+    private final SubQueryExpressionImpl<T> subQueryMixin;
+
     @Nullable
     private volatile BooleanExpression exists;
 
-    public ComparableSubQuery(Class<A> type, QueryMetadata md) {
+    public ComparableSubQuery(Class<T> type, QueryMetadata md) {
         super(type);
-        subQueryMixin = new SubQueryExpressionImpl<A>(type, md);
+        subQueryMixin = new SubQueryExpressionImpl<T>(type, md);
     }
 
     @Override

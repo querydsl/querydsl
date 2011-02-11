@@ -5,13 +5,13 @@ import com.mysema.query.types.expr.BooleanExpression;
 
 /**
  * Extensions to the SubQueryExpression interface
- * 
+ *
  * @author tiwe
  *
- * @param <T>
+ * @param <T> expression type
  */
 public interface ExtendedSubQueryExpression<T> extends SubQueryExpression<T> {
-    
+
     /**
      * Get an exists(this) expression for the subquery
      *

@@ -20,20 +20,20 @@ import com.mysema.query.types.expr.SimpleExpression;
  *
  * @author tiwe
  *
- * @param <A>
+ * @param <T> expression type
  */
-public final class SimpleSubQuery<A> extends SimpleExpression<A> implements ExtendedSubQueryExpression<A>{
+public final class SimpleSubQuery<T> extends SimpleExpression<T> implements ExtendedSubQueryExpression<T>{
 
     private static final long serialVersionUID = -64156984110154969L;
 
-    private final SubQueryExpressionImpl<A> subQueryMixin;
-    
+    private final SubQueryExpressionImpl<T> subQueryMixin;
+
     @Nullable
     private volatile BooleanExpression exists;
 
-    public SimpleSubQuery(Class<A> type, QueryMetadata md) {
+    public SimpleSubQuery(Class<T> type, QueryMetadata md) {
         super(type);
-        subQueryMixin = new SubQueryExpressionImpl<A>(type, md);
+        subQueryMixin = new SubQueryExpressionImpl<T>(type, md);
     }
 
     @Override

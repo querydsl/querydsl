@@ -15,9 +15,9 @@ import javax.annotation.Nullable;
  * 
  * @author tiwe
  *
- * @param <D> type of projection
+ * @param <T> type of projection
  */
-public interface FactoryExpression<D> extends Expression<D>{
+public interface FactoryExpression<T> extends Expression<T>{
     
     /**
      * Get the invocation arguments
@@ -33,6 +33,6 @@ public interface FactoryExpression<D> extends Expression<D>{
      * @return
      */
     @Nullable
-    D newInstance(Object... args);
+    T newInstance(Object... args);
 
 }

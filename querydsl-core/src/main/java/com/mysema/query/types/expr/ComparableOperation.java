@@ -19,10 +19,10 @@ import com.mysema.query.types.Visitor;
  *
  * @author tiwe
  *
- * @param <D>
+ * @param <T> expression type
  */
-public class ComparableOperation<D extends Comparable<?>> extends
-        ComparableExpression<D> implements Operation<D> {
+public class ComparableOperation<T extends Comparable<?>> extends
+        ComparableExpression<T> implements Operation<T> {
 
     private static final long serialVersionUID = 1129243977606098865L;
 
@@ -39,15 +39,15 @@ public class ComparableOperation<D extends Comparable<?>> extends
         return new ComparableOperation<D>(type, op, args);
     }
 
-    private final Operation<D> opMixin;
+    private final Operation<T> opMixin;
 
-    ComparableOperation(Class<D> type, Operator<? super D> op, Expression<?>... args) {
+    ComparableOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    ComparableOperation(Class<D> type, Operator<? super D> op, List<Expression<?>> args) {
+    ComparableOperation(Class<T> type, Operator<? super T> op, List<Expression<?>> args) {
         super(type);
-        this.opMixin = new OperationImpl<D>(type, op, args);
+        this.opMixin = new OperationImpl<T>(type, op, args);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ComparableOperation<D extends Comparable<?>> extends
     }
 
     @Override
-    public Operator<? super D> getOperator() {
+    public Operator<? super T> getOperator() {
         return opMixin.getOperator();
     }
 

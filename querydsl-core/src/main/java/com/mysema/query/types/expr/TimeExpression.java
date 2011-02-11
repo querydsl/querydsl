@@ -9,7 +9,6 @@ import java.util.Date;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
@@ -19,10 +18,10 @@ import com.mysema.query.types.PathImpl;
  *
  * @author tiwe
  *
- * @param <D>
+ * @param <T> expression type
  */
 @SuppressWarnings({"unchecked"})
-public abstract class TimeExpression<D extends Comparable> extends TemporalExpression<D> {
+public abstract class TimeExpression<T extends Comparable> extends TemporalExpression<T> {
 
     private static final long serialVersionUID = 7360552308332457990L;
 
@@ -31,18 +30,18 @@ public abstract class TimeExpression<D extends Comparable> extends TemporalExpre
     @Nullable
     private volatile NumberExpression<Integer> hours, minutes, seconds, milliseconds;
 
-    public TimeExpression(Class<? extends D> type) {
+    public TimeExpression(Class<? extends T> type) {
         super(type);
     }
 
     @Override
-    public TimeExpression<D> as(Path<D> alias) {
-        return TimeOperation.create(getType(),(Operator)Ops.ALIAS, this, alias);
+    public TimeExpression<T> as(Path<T> alias) {
+        return TimeOperation.create((Class<T>)getType(),Ops.ALIAS, this, alias);
     }
-    
+
     @Override
-    public TimeExpression<D> as(String alias) {
-        return TimeOperation.create(getType(), (Operator)Ops.ALIAS, this, new PathImpl<D>(getType(), alias));
+    public TimeExpression<T> as(String alias) {
+        return TimeOperation.create((Class<T>)getType(), Ops.ALIAS, this, new PathImpl<T>(getType(), alias));
     }
 
     /**

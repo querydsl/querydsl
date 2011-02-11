@@ -10,15 +10,15 @@ package com.mysema.query.types;
  *
  * @author tiwe
  *
- * @param <D> constant type
+ * @param <T> constant type
  */
-public interface Constant<D> extends Expression<D>{
+public interface Constant<T> extends Expression<T>{
 
     /**
      * Get the constant
      *
      * @return
      */
-    D getConstant();
+    T getConstant();
 
 }

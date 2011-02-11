@@ -19,9 +19,9 @@ import com.mysema.query.types.Visitor;
  *
  * @author tiwe
  *
- * @param <D>
+ * @param <T> expression type
  */
-public class SimpleOperation<D> extends SimpleExpression<D> implements Operation<D> {
+public class SimpleOperation<T> extends SimpleExpression<T> implements Operation<T> {
 
     private static final long serialVersionUID = -285668548371034230L;
 
@@ -38,15 +38,15 @@ public class SimpleOperation<D> extends SimpleExpression<D> implements Operation
         return new SimpleOperation<D>(type, op, args);
     }
 
-    private final Operation< D> opMixin;
+    private final Operation< T> opMixin;
 
-    SimpleOperation(Class<D> type, Operator<? super D> op, Expression<?>... args) {
+    SimpleOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    SimpleOperation(Class<D> type, Operator<? super D> op, List<Expression<?>> args) {
+    SimpleOperation(Class<T> type, Operator<? super T> op, List<Expression<?>> args) {
         super(type);
-        this.opMixin = new OperationImpl<D>(type, op, args);
+        this.opMixin = new OperationImpl<T>(type, op, args);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class SimpleOperation<D> extends SimpleExpression<D> implements Operation
     }
 
     @Override
-    public Operator<? super D> getOperator() {
+    public Operator<? super T> getOperator() {
         return opMixin.getOperator();
     }
 

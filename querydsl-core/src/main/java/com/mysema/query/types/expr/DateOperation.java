@@ -19,10 +19,10 @@ import com.mysema.query.types.Visitor;
  *
  * @author tiwe
  *
- * @param <D>
+ * @param <T> expression type
  */
-public class DateOperation<D extends Comparable<?>> extends
-    DateExpression<D> implements Operation<D> {
+public class DateOperation<T extends Comparable<?>> extends
+    DateExpression<T> implements Operation<T> {
 
     private static final long serialVersionUID = -7859020164194396995L;
 
@@ -39,15 +39,15 @@ public class DateOperation<D extends Comparable<?>> extends
         return new DateOperation<D>(type, op, args);
     }
 
-    private final Operation<D> opMixin;
+    private final Operation<T> opMixin;
 
-    DateOperation(Class<D> type, Operator<? super D> op, Expression<?>... args) {
+    DateOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    DateOperation(Class<D> type, Operator<? super D> op, List<Expression<?>> args) {
+    DateOperation(Class<T> type, Operator<? super T> op, List<Expression<?>> args) {
         super(type);
-        this.opMixin = new OperationImpl<D>(type, op, args);
+        this.opMixin = new OperationImpl<T>(type, op, args);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class DateOperation<D extends Comparable<?>> extends
     }
 
     @Override
-    public Operator<? super D> getOperator() {
+    public Operator<? super T> getOperator() {
         return opMixin.getOperator();
     }
 

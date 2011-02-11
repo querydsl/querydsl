@@ -14,9 +14,9 @@ import com.mysema.query.types.Expression;
  *
  * @author tiwe
  *
- * @param <EA>
+ * @param <T> array element type
  */
-public interface ArrayExpression<E> extends Expression<E[]>{
+public interface ArrayExpression<T> extends Expression<T[]>{
 
     /**
      * Get the size of the array
@@ -31,7 +31,7 @@ public interface ArrayExpression<E> extends Expression<E[]>{
      * @param index
      * @return
      */
-    SimpleExpression<E> get(Expression<Integer> index);
+    SimpleExpression<T> get(Expression<Integer> index);
 
     /**
      * Get the element at the given index
@@ -39,6 +39,6 @@ public interface ArrayExpression<E> extends Expression<E[]>{
      * @param index
      * @return
      */
-    SimpleExpression<E> get(@Nonnegative int index);
+    SimpleExpression<T> get(@Nonnegative int index);
 
 }

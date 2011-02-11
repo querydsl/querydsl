@@ -19,8 +19,8 @@ import com.mysema.query.types.Ops;
  *
  * @author tiwe
  *
- * @param <K>
- * @param <V>
+ * @param <K> key type
+ * @param <V> value type
  */
 public abstract class MapExpressionBase<K, V, Q extends SimpleExpression<? super V>> extends SimpleExpression<Map<K,V>> implements MapExpression<K,V> {
 
@@ -39,7 +39,7 @@ public abstract class MapExpressionBase<K, V, Q extends SimpleExpression<? super
     public final BooleanExpression contains(K key, V value) {
         return get(key).eq(value);
     }
-    
+
     @SuppressWarnings("unchecked")
     public final BooleanExpression contains(Expression<K> key, Expression<V> value) {
         return get(key).eq((Expression)value);
@@ -60,7 +60,7 @@ public abstract class MapExpressionBase<K, V, Q extends SimpleExpression<? super
     public final BooleanExpression containsValue(V value) {
         return BooleanOperation.create(Ops.CONTAINS_VALUE, this, new ConstantImpl<V>(value));
     }
-    
+
     public abstract Q get(Expression<K> key);
 
     public abstract Q get(K key);

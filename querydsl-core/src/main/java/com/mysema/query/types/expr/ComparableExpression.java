@@ -17,25 +17,25 @@ import com.mysema.query.types.PathImpl;
  *
  * @author tiwe
  *
- * @param <D>
+ * @param <T> expression type
  */
 @SuppressWarnings({"unchecked"})
-public abstract class ComparableExpression<D extends Comparable> extends ComparableExpressionBase<D> {
+public abstract class ComparableExpression<T extends Comparable> extends ComparableExpressionBase<T> {
 
     private static final long serialVersionUID = 5761359576767404270L;
 
-    public ComparableExpression(Class<? extends D> type) {
+    public ComparableExpression(Class<? extends T> type) {
         super(type);
     }
     
     @Override
-    public ComparableExpression<D> as(Path<D> alias) {
+    public ComparableExpression<T> as(Path<T> alias) {
         return ComparableOperation.create(getType(),(Operator)Ops.ALIAS, this, alias);
     }
     
     @Override
-    public ComparableExpression<D> as(String alias) {
-        return ComparableOperation.create(getType(),(Operator)Ops.ALIAS, this, new PathImpl<D>(getType(), alias));
+    public ComparableExpression<T> as(String alias) {
+        return ComparableOperation.create(getType(),(Operator)Ops.ALIAS, this, new PathImpl<T>(getType(), alias));
     }
 
     /**
@@ -45,8 +45,8 @@ public abstract class ComparableExpression<D extends Comparable> extends Compara
      * @param to
      * @return
      */
-    public final BooleanExpression between(D from, D to) {
-        return BooleanOperation.create(Ops.BETWEEN, this, new ConstantImpl<D>(from), new ConstantImpl<D>(to));
+    public final BooleanExpression between(T from, T to) {
+        return BooleanOperation.create(Ops.BETWEEN, this, new ConstantImpl<T>(from), new ConstantImpl<T>(to));
     }
 
     /**
@@ -56,7 +56,7 @@ public abstract class ComparableExpression<D extends Comparable> extends Compara
      * @param to
      * @return
      */
-    public final BooleanExpression between(Expression<D> from, Expression<D> to) {
+    public final BooleanExpression between(Expression<T> from, Expression<T> to) {
         return BooleanOperation.create(Ops.BETWEEN, this, from, to);
     }
 
@@ -67,7 +67,7 @@ public abstract class ComparableExpression<D extends Comparable> extends Compara
      * @param to
      * @return
      */
-    public final BooleanExpression notBetween(D from, D to) {
+    public final BooleanExpression notBetween(T from, T to) {
         return between(from, to).not();
     }
 
@@ -78,7 +78,7 @@ public abstract class ComparableExpression<D extends Comparable> extends Compara
      * @param to
      * @return
      */
-    public final BooleanExpression notBetween(Expression<D> from, Expression<D> to) {
+    public final BooleanExpression notBetween(Expression<T> from, Expression<T> to) {
         return between(from, to).not();
     }
 
@@ -89,7 +89,7 @@ public abstract class ComparableExpression<D extends Comparable> extends Compara
      * @return
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public BooleanExpression gt(D right) {
+    public BooleanExpression gt(T right) {
         return gt(new ConstantImpl(right));
     }
 
@@ -100,7 +100,7 @@ public abstract class ComparableExpression<D extends Comparable> extends Compara
      * @return
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public BooleanExpression gt(Expression<D> right) {
+    public BooleanExpression gt(Expression<T> right) {
         return BooleanOperation.create(Ops.AFTER, this, right);
     }
 
@@ -111,7 +111,7 @@ public abstract class ComparableExpression<D extends Comparable> extends Compara
      * @return
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public BooleanExpression goe(D right) {
+    public BooleanExpression goe(T right) {
         return goe(new ConstantImpl(right));
     }
 
@@ -122,7 +122,7 @@ public abstract class ComparableExpression<D extends Comparable> extends Compara
      * @return
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public BooleanExpression goe(Expression<D> right) {
+    public BooleanExpression goe(Expression<T> right) {
         return BooleanOperation.create(Ops.AOE, this, right);
     }
 
@@ -133,7 +133,7 @@ public abstract class ComparableExpression<D extends Comparable> extends Compara
      * @return
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public final BooleanExpression lt(D right) {
+    public final BooleanExpression lt(T right) {
         return lt(new ConstantImpl(right));
     }
 
@@ -144,7 +144,7 @@ public abstract class ComparableExpression<D extends Comparable> extends Compara
      * @return
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public final BooleanExpression lt(Expression<D> right) {
+    public final BooleanExpression lt(Expression<T> right) {
         return BooleanOperation.create(Ops.BEFORE, this, right);
     }
 
@@ -155,7 +155,7 @@ public abstract class ComparableExpression<D extends Comparable> extends Compara
      * @return
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public final BooleanExpression loe(D right) {
+    public final BooleanExpression loe(T right) {
         return BooleanOperation.create(Ops.BOE, this, new ConstantImpl(right));
     }
 
@@ -166,7 +166,7 @@ public abstract class ComparableExpression<D extends Comparable> extends Compara
      * @return
      * @see java.lang.Comparable#compareTo(Object)
      */
-    public final BooleanExpression loe(Expression<D> right) {
+    public final BooleanExpression loe(Expression<T> right) {
         return BooleanOperation.create(Ops.BOE, this, right);
     }
 

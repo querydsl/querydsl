@@ -14,7 +14,7 @@ import com.mysema.query.types.Visitor;
  *
  * @author tiwe
  *
- * @param <T>
+ * @param <T> expression type
  */
 public class Param<T> extends SimpleExpression<T> implements ParamExpression<T>{
 

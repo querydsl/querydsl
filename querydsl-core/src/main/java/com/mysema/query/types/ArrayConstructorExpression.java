@@ -16,13 +16,13 @@ import com.mysema.commons.lang.Assert;
  *
  * @author tiwe
  *
- * @param <D> component type
+ * @param <T> component type
  */
-public class ArrayConstructorExpression<D> extends ExpressionBase<D[]> implements FactoryExpression<D[]> {
+public class ArrayConstructorExpression<T> extends ExpressionBase<T[]> implements FactoryExpression<T[]> {
 
     private static final long serialVersionUID = 8667880104290226505L;
 
-    private final Class<D> elementType;
+    private final Class<T> elementType;
     
     private final List<Expression<?>> args;
     
@@ -34,14 +34,14 @@ public class ArrayConstructorExpression<D> extends ExpressionBase<D[]> implement
     }
 
     @SuppressWarnings("unchecked")
-    public ArrayConstructorExpression(Class<D[]> type, Expression<D>... args) {
+    public ArrayConstructorExpression(Class<T[]> type, Expression<T>... args) {
         super(type);
-        this.elementType = (Class<D>) Assert.notNull(type.getComponentType(),"componentType");
+        this.elementType = (Class<T>) Assert.notNull(type.getComponentType(),"componentType");
         this.args = Arrays.<Expression<?>>asList(args);
         this.expandedArgs = FactoryExpressionUtils.expand(this.args);
     }
 
-    public final Class<D> getElementType() {
+    public final Class<T> getElementType() {
         return elementType;
     }
 
@@ -52,12 +52,12 @@ public class ArrayConstructorExpression<D> extends ExpressionBase<D[]> implement
 
     @SuppressWarnings("unchecked")
     @Override
-    public D[] newInstance(Object... a){
+    public T[] newInstance(Object... a){
         Object[] compressedArgs = FactoryExpressionUtils.compress(this.args, a);
         if (compressedArgs.getClass().getComponentType().equals(elementType)){
-            return (D[])compressedArgs;
+            return (T[])compressedArgs;
         }else{
-            D[] rv = (D[]) Array.newInstance(elementType, compressedArgs.length);
+            T[] rv = (T[]) Array.newInstance(elementType, compressedArgs.length);
             System.arraycopy(compressedArgs, 0, rv, 0, compressedArgs.length);
             return rv;
         }

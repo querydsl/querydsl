@@ -19,9 +19,9 @@ import org.apache.commons.lang.ClassUtils;
  *
  * @author tiwe
  *
- * @param <D> Java type
+ * @param <T> expression type
  */
-public class ConstructorExpression<D> extends ExpressionBase<D> implements FactoryExpression<D> {
+public class ConstructorExpression<T> extends ExpressionBase<T> implements FactoryExpression<T> {
 
     private static final long serialVersionUID = -602747921848073175L;
 
@@ -53,19 +53,19 @@ public class ConstructorExpression<D> extends ExpressionBase<D> implements Facto
     }
 
     private final List<Expression<?>> args;
-    
+
     private final List<Expression<?>> expandedArgs;
 
     private final Class<?>[] parameterTypes;
-    
+
     @Nullable
     private transient Constructor<?> constructor;
 
-    public ConstructorExpression(Class<D> type, Class<?>[] paramTypes, Expression<?>... args) {
+    public ConstructorExpression(Class<T> type, Class<?>[] paramTypes, Expression<?>... args) {
         this(type, paramTypes, Arrays.asList(args));
     }
-    
-    public ConstructorExpression(Class<D> type, Class<?>[] paramTypes, List<Expression<?>> args) {
+
+    public ConstructorExpression(Class<T> type, Class<?>[] paramTypes, List<Expression<?>> args) {
         super(type);
         this.parameterTypes = paramTypes.clone();
         this.args = args;
@@ -101,12 +101,12 @@ public class ConstructorExpression<D> extends ExpressionBase<D> implements Facto
     }
 
     @SuppressWarnings("unchecked")
-    public D newInstance(Object... args){
+    public T newInstance(Object... args){
         try {
             if (constructor == null){
                 constructor = getType().getConstructor(parameterTypes);
-            }            
-            return (D) constructor.newInstance(FactoryExpressionUtils.compress(this.args, args));
+            }
+            return (T) constructor.newInstance(FactoryExpressionUtils.compress(this.args, args));
         } catch (SecurityException e) {
            throw new ExpressionException(e.getMessage(), e);
         } catch (NoSuchMethodException e) {

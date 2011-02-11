@@ -11,17 +11,17 @@ import java.util.List;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateExpression;
-import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.TemplateExpressionImpl;
+import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.TimeExpression;
 
 /**
  * TimeTemplate defines custom time expressions
- * 
+ *
  * @author tiwe
  *
- * @param <T>
+ * @param <T> expression type
  */
 public class TimeTemplate<T extends Comparable<?>> extends TimeExpression<T> implements TemplateExpression<T> {
 
@@ -46,7 +46,7 @@ public class TimeTemplate<T extends Comparable<?>> extends TimeExpression<T> imp
     public <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
-    
+
     @Override
     public Expression<?> getArg(int index) {
         return templateMixin.getArg(index);

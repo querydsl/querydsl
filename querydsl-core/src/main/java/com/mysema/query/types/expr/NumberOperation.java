@@ -19,10 +19,10 @@ import com.mysema.query.types.Visitor;
  *
  * @author tiwe
  *
- * @param <D>
+ * @param <T> expression type
  */
-public class NumberOperation<D extends Number & Comparable<?>>
-        extends NumberExpression<D> implements Operation<D> {
+public class NumberOperation<T extends Number & Comparable<?>>
+        extends NumberExpression<T> implements Operation<T> {
 
     private static final long serialVersionUID = -3593040852095778453L;
 
@@ -39,15 +39,15 @@ public class NumberOperation<D extends Number & Comparable<?>>
         return new NumberOperation<D>(type, op, args);
     }
 
-    private final Operation<D> opMixin;
+    private final Operation<T> opMixin;
 
-    NumberOperation(Class<? extends D> type, Operator<? super D> op, Expression<?>... args) {
+    NumberOperation(Class<? extends T> type, Operator<? super T> op, Expression<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    NumberOperation(Class<? extends D> type, Operator<? super D> op, List<Expression<?>> args) {
+    NumberOperation(Class<? extends T> type, Operator<? super T> op, List<Expression<?>> args) {
         super(type);
-        this.opMixin = new OperationImpl<D>(type, op, args);
+        this.opMixin = new OperationImpl<T>(type, op, args);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class NumberOperation<D extends Number & Comparable<?>>
     }
 
     @Override
-    public Operator<? super D> getOperator() {
+    public Operator<? super T> getOperator() {
         return opMixin.getOperator();
     }
 
