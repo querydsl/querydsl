@@ -37,7 +37,18 @@ public class SQLQueryImpl extends AbstractSQLQuery<SQLQueryImpl> implements SQLQ
     public SQLQueryImpl(Connection conn, SQLTemplates templates) {
         super(conn, new Configuration(templates), new DefaultQueryMetadata());
     }
-    
+
+    /**
+     * Create a new SQLQueryImpl instance
+     *
+     * @param conn Connection to use
+     * @param templates SQLTemplates to use
+     * @param metadata
+     */
+    public SQLQueryImpl(Connection conn, SQLTemplates templates, QueryMetadata metadata) {
+        super(conn, new Configuration(templates), metadata);
+    }
+
     /**
      * Create a new SQLQueryImpl instance
      *
