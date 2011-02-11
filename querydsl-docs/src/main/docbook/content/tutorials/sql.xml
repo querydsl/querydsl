@@ -60,11 +60,11 @@ exporter.export(conn.getMetaData());
       optional elements :      
       * jdbcUser = connection user
       * jdbcPassword = connection password
-      * namePrefix = name prefix for Q-types (default: Q)
-      * schemaPattern = to restrict code generation to certain schemas (default: null)
-      * tableNamePattern = to restrict code generation to certain tables (default: null)
-      * exportBeans = set to true to generate beans as well (default: false)
-      * innerClassesForKeys = set to true to 
+      * namePrefix = name prefix for generated query classes (default: Q)
+      * schemaPattern = ant style pattern to restrict code generation to certain schemas (default: null)
+      * tableNamePattern = ant style pattern to restrict code generation to certain tables (default: null)
+      * exportBeans = set to true to generate beans as well, see section 2.14.13 (default: false)
+      * innerClassesForKeys = set to true to generate inner classes for keys (default: false)
     -->     
   </configuration>
   <dependencies>
