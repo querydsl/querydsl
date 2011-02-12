@@ -190,6 +190,8 @@ public interface Projectable {
 
     /**
      * return a unique result for the given projection or null if not result is found
+     * 
+     * <p>for multiple results only the first one is returned</p>
      *
      * @param first
      * @param second
@@ -201,6 +203,8 @@ public interface Projectable {
 
     /**
      * return a unique result for the given projection or null if not result is found
+     * 
+     * <p>for multiple results only the first one is returned</p>
      *
      * @param args
      * @return
@@ -210,6 +214,8 @@ public interface Projectable {
 
     /**
      * return a unique result for the given projection or null if not result is found
+     * 
+     * <p>for multiple results only the first one is returned</p>
      *
      * @param <RT>
      *            return type
