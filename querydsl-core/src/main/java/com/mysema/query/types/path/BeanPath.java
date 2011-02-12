@@ -164,7 +164,6 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * @param type
      * @return
      */
-    @SuppressWarnings("unchecked")
     protected <A extends Enum<A>> EnumPath<A> createEnum(String property, Class<A> type) {
         return add(new EnumPath<A>(type, forProperty(property)));
     }
