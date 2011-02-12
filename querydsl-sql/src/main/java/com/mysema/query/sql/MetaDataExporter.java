@@ -78,6 +78,8 @@ public class MetaDataExporter {
     private String packageName = "com.example";
 
     private String namePrefix = "Q";
+    
+    private String nameSuffix = "";
 
     private NamingStrategy namingStrategy = new DefaultNamingStrategy();
 
@@ -106,7 +108,10 @@ public class MetaDataExporter {
                 className,
                 false,
                 false);
-        EntityType classModel = new EntityType(beanSerializer == null ? "" : namePrefix, classTypeModel);
+        EntityType classModel = new EntityType(
+                beanSerializer == null ? "" : namePrefix, 
+                beanSerializer == null ? "" : nameSuffix, 
+                classTypeModel);
         classModel.addAnnotation(new TableImpl(namingStrategy.normalizeTableName(tableName)));
         return classModel;
     }
@@ -130,7 +135,7 @@ public class MetaDataExporter {
      */
     public void export(DatabaseMetaData md) throws SQLException {
         if (serializer == null){
-            serializer = new MetaDataSerializer(namePrefix, namingStrategy);
+            serializer = new MetaDataSerializer(namePrefix, nameSuffix, namingStrategy);
         }
 
         ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
@@ -149,7 +154,7 @@ public class MetaDataExporter {
 
     private void handleColumn(EntityType classModel, String tableName, ResultSet columns) throws SQLException {
         String columnName = columns.getString(COLUMN_NAME);
-        String propertyName = namingStrategy.getPropertyName(columnName, namePrefix, classModel);
+        String propertyName = namingStrategy.getPropertyName(columnName, namePrefix, nameSuffix, classModel);
         Class<?> clazz = configuration.getJavaType(columns.getInt(COLUMN_TYPE), tableName, columnName);
         TypeCategory fieldType = TypeCategory.get(clazz.getName());
         if (Number.class.isAssignableFrom(clazz)){
@@ -173,9 +178,9 @@ public class MetaDataExporter {
 
     private void handleTable(DatabaseMetaData md, ResultSet tables) throws SQLException {
         String tableName = tables.getString(TABLE_NAME);
-        String className = namingStrategy.getClassName(namePrefix, tableName);
+        String className = namingStrategy.getClassName(namePrefix, nameSuffix, tableName);
         if (beanSerializer != null){
-            className = className.substring(namePrefix.length());
+            className = className.substring(namePrefix.length(), className.length()-nameSuffix.length());
         }
         EntityType classModel = createEntityType(tableName, className);
 
@@ -219,7 +224,7 @@ public class MetaDataExporter {
             String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
             if (beanSerializer != null){
                 write(beanSerializer, path, type);
-                String otherPath = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + fileSuffix;
+                String otherPath = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + nameSuffix + fileSuffix;
                 write(serializer, otherPath, type);
             }else{
                 write(serializer, path, type);
@@ -307,6 +312,15 @@ public class MetaDataExporter {
      */
     public void setNamePrefix(String namePrefix) {
         this.namePrefix = namePrefix;
+    }
+    
+    /**
+     * Override the name suffix for the classes (default: "")
+     * 
+     * @param nameSuffix name suffix for Q-types (default: "")
+     */
+    public void setNameSuffix(String nameSuffix) {
+        this.nameSuffix = nameSuffix;
     }
 
     /**

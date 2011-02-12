@@ -44,9 +44,14 @@ public class AntMetaDataExporter extends Task {
     private String dbPassword;
 
     /**
-     * name prefix for generated query types (default: Q)
+     * name prefix for generated query types (default: "Q")
      */
     private String namePrefix;
+    
+    /**
+     * name suffix for generated query types (default: "")
+     */
+    private String nameSuffix;
 
     /**
      * target package to generate classes to
@@ -97,6 +102,7 @@ public class AntMetaDataExporter extends Task {
 
             MetaDataExporter exporter = new MetaDataExporter();
             exporter.setNamePrefix(namePrefix);
+            exporter.setNameSuffix(nameSuffix);
             exporter.setPackageName(targetPackage);
             exporter.setTargetFolder(targetPackagePath);
             exporter.setNamingStrategy(namingStrategy);
@@ -217,5 +223,15 @@ public class AntMetaDataExporter extends Task {
     public void setExportBeans(boolean exportBeans) {
         this.exportBeans = exportBeans;
     }
+
+    public String getNameSuffix() {
+        return nameSuffix;
+    }
+
+    public void setNameSuffix(String nameSuffix) {
+        this.nameSuffix = nameSuffix;
+    }
+    
+    
 
 }

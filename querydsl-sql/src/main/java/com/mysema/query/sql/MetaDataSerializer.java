@@ -40,6 +40,8 @@ import com.mysema.query.types.Path;
 public class MetaDataSerializer extends EntitySerializer {
 
     private final String namePrefix;
+    
+    private final String nameSuffix;
 
     private final NamingStrategy namingStrategy;
 
@@ -52,16 +54,25 @@ public class MetaDataSerializer extends EntitySerializer {
      * @param namingStrategy naming strategy for table to class and column to property conversion
      * @param innerClassesForKeys wrap key properties into inner classes (default: false)
      */
-    public MetaDataSerializer(String namePrefix, NamingStrategy namingStrategy,
+    public MetaDataSerializer(String namePrefix, String nameSuffix, NamingStrategy namingStrategy,
             boolean innerClassesForKeys) {
         super(new TypeMappings(),Collections.<String>emptyList());
         this.namePrefix = namePrefix;
+        this.nameSuffix = nameSuffix;
         this.namingStrategy = namingStrategy;
         this.innerClassesForKeys = innerClassesForKeys;
     }
+    
+    public MetaDataSerializer(String namePrefix, NamingStrategy namingStrategy, boolean innerClassesForKeys) {
+        this(namePrefix, "", namingStrategy, innerClassesForKeys);
+    }
 
+    public MetaDataSerializer(String namePrefix, String nameSuffix, NamingStrategy namingStrategy) {
+        this(namePrefix, nameSuffix, namingStrategy, false);
+    }
+    
     public MetaDataSerializer(String namePrefix, NamingStrategy namingStrategy) {
-        this(namePrefix, namingStrategy, false);
+        this(namePrefix, "", namingStrategy,  false);
     }
 
     @Override
@@ -81,8 +92,8 @@ public class MetaDataSerializer extends EntitySerializer {
 
     @Override
     protected void introDefaultInstance(CodeWriter writer, EntityType entityType) throws IOException {
-        String variableName = namingStrategy.getDefaultVariableName(namePrefix, entityType);
-        String alias = namingStrategy.getDefaultAlias(namePrefix, entityType);
+        String variableName = namingStrategy.getDefaultVariableName(namePrefix, nameSuffix, entityType);
+        String alias = namingStrategy.getDefaultAlias(namePrefix, nameSuffix, entityType);
         Type queryType = typeMappings.getPathType(entityType, entityType, true);
         writer.publicStaticFinal(queryType, variableName, NEW + queryType.getSimpleName() + "(\"" + alias + "\")");
     }
@@ -175,7 +186,7 @@ public class MetaDataSerializer extends EntitySerializer {
                 if (!first){
                     value.append(", ");
                 }
-                value.append(namingStrategy.getPropertyName(column, namePrefix, model));
+                value.append(namingStrategy.getPropertyName(column, namePrefix, nameSuffix, model));
                 first = false;
             }
             value.append(")");
@@ -194,9 +205,12 @@ public class MetaDataSerializer extends EntitySerializer {
             }else{
                 fieldName = namingStrategy.getPropertyNameForForeignKey(foreignKey.getName(), model);
             }
-            String foreignType = namingStrategy.getClassName(namePrefix, foreignKey.getTable());
+            String foreignType = namingStrategy.getClassName(namePrefix, nameSuffix, foreignKey.getTable());
             if (!model.getPrefix().isEmpty()){
                 foreignType = foreignType.substring(namePrefix.length());
+            }
+            if (!model.getSuffix().isEmpty()){
+                foreignType = foreignType.substring(0, foreignType.length() - model.getSuffix().length());
             }
             StringBuilder value = new StringBuilder();
             if (inverse){
@@ -205,7 +219,7 @@ public class MetaDataSerializer extends EntitySerializer {
                 value.append("createForeignKey(");
             }
             if (foreignKey.getForeignColumns().size() == 1){
-                value.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), namePrefix, model));
+                value.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), namePrefix, nameSuffix, model));
                 value.append(", \"" + foreignKey.getParentColumns().get(0) + "\"");
             }else{
                 StringBuilder local = new StringBuilder();
@@ -215,7 +229,7 @@ public class MetaDataSerializer extends EntitySerializer {
                         local.append(", ");
                         foreign.append(", ");
                     }
-                    local.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), namePrefix, model));
+                    local.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), namePrefix, nameSuffix, model));
                     foreign.append("\"" +foreignKey.getParentColumns().get(0) + "\"");
                 }
                 value.append("Arrays.asList("+local+"), Arrays.asList("+foreign+")");

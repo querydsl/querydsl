@@ -31,22 +31,22 @@ public class OriginalNamingStrategy implements NamingStrategy {
     private String reservedSuffix = "_col";
     
     @Override
-    public String getClassName(String namePrefix, String tableName) {
-        return namePrefix + tableName;
+    public String getClassName(String namePrefix, String nameSuffix, String tableName) {
+        return namePrefix + tableName + nameSuffix;
     }
 
     @Override
-    public String getDefaultAlias(String namePrefix, EntityType entityType) {
+    public String getDefaultAlias(String namePrefix, String nameSuffix, EntityType entityType) {
         for (Annotation ann : entityType.getAnnotations()) {
             if (ann.annotationType().equals(Table.class)) {
                 return ((Table) ann).value();
             }
         }
-        return getDefaultVariableName(namePrefix, entityType);
+        return getDefaultVariableName(namePrefix, nameSuffix, entityType);
     }
 
     @Override
-    public String getDefaultVariableName(String namePrefix, EntityType entityType) {
+    public String getDefaultVariableName(String namePrefix, String nameSuffix, EntityType entityType) {
         return StringUtils.uncapitalize(entityType.getSimpleName());
     }
 
@@ -71,7 +71,7 @@ public class OriginalNamingStrategy implements NamingStrategy {
     }
 
     @Override
-    public String getPropertyName(String columnName, String namePrefix, EntityType entityType) {        
+    public String getPropertyName(String columnName, String namePrefix, String nameSuffix, EntityType entityType) {        
         return getPropertyName(columnName);
     }
 

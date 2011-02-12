@@ -41,6 +41,8 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     private final Set<Delegate> delegates = new HashSet<Delegate>();
 
     private final String prefix;
+    
+    private final String suffix;
 
     private final Set<Property> properties = new TreeSet<Property>();
     
@@ -55,12 +57,21 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
     private String uncapSimpleName;
     
     public EntityType(String prefix, Type type) {
-        this(prefix, type, new HashSet<Supertype>());
+        this(prefix, "", type, new HashSet<Supertype>());
     }
 
+    public EntityType(String prefix, String suffix, Type type) {
+        this(prefix, suffix, type, new HashSet<Supertype>());
+    }
+    
     public EntityType(String prefix, Type type, Set<Supertype> superTypes) {
+        this(prefix, "", type, superTypes);
+    }
+    
+    public EntityType(String prefix, String suffix, Type type, Set<Supertype> superTypes) {
         super(type);
         this.prefix = Assert.notNull(prefix,"prefix");
+        this.suffix = Assert.notNull(suffix,"suffix");
         this.uncapSimpleName = StringUtils.uncapitalize(type.getSimpleName());
         this.superTypes = superTypes;
     }
@@ -164,6 +175,10 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
         return properties;
     }
 
+    public String getSuffix(){
+        return suffix;
+    }
+    
     @Nullable
     public Supertype getSuperType(){
         return superTypes.size() == 1 ? superTypes.iterator().next() : null;

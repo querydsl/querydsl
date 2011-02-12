@@ -22,7 +22,7 @@ public interface NamingStrategy {
      * @param tableName
      * @return
      */
-    String getClassName(String namePrefix, String tableName);
+    String getClassName(String namePrefix, String nameSuffix, String tableName);
 
     /**
      * Get the default alias for the given EntityType
@@ -31,7 +31,7 @@ public interface NamingStrategy {
      * @param entityType
      * @return
      */
-    String getDefaultAlias(String namePrefix, EntityType entityType);
+    String getDefaultAlias(String namePrefix, String nameSuffix, EntityType entityType);
 
     /**
      * Get the default variable name for the given EntityType
@@ -39,7 +39,7 @@ public interface NamingStrategy {
      * @param entityType
      * @return
      */
-    String getDefaultVariableName(String namePrefix, EntityType entityType);
+    String getDefaultVariableName(String namePrefix, String nameSuffix, EntityType entityType);
 
     /**
      * Get the class name for the foreign keys inner class
@@ -77,7 +77,7 @@ public interface NamingStrategy {
      * @param entityType
      * @return
      */
-    String getPropertyName(String columnName, String namePrefix, EntityType entityType);
+    String getPropertyName(String columnName, String namePrefix, String nameSuffix, EntityType entityType);
 
     /**
      * Convert the given foreign key name to a foreign key property name

@@ -59,10 +59,16 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private String jdbcPassword;
 
     /**
-     * name prefix for Q-types (default: Q)
+     * name prefix for query-types (default: "Q")
      * @parameter default-value="Q"
      */
     private String namePrefix;
+    
+    /**
+     * name prefix for query-types (default: "")
+     * @parameter default-value=""
+     */
+    private String nameSuffix;
 
     /**
      * package name for sources
@@ -141,6 +147,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
 
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setNamePrefix(namePrefix);
+        exporter.setNameSuffix(nameSuffix);
         exporter.setPackageName(packageName);
         exporter.setTargetFolder(new File(targetFolder));
         exporter.setNamingStrategy(namingStrategy);

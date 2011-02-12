@@ -20,7 +20,7 @@ public class MetaDataTest {
         String packageName = "com.myproject.domain";
         String tableName = "vwServiceName";
         String namePrefix = "Q";
-        String className = namingStrategy.getClassName(namePrefix, tableName);
+        String className = namingStrategy.getClassName(namePrefix, "", tableName);
         
         Type classTypeModel = new SimpleType(TypeCategory.ENTITY,
                 packageName + "." + className, packageName, className, false, false);

@@ -33,64 +33,97 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
 
     @Test
     public void NormalSettings() throws SQLException{
-        test("Q", defaultNaming, "target/1", false, false);
-        test("Q", defaultNaming, "target/11", true, false);
+        test("Q", "", defaultNaming, "target/1", false, false);
+    }
+    
+    @Test
+    public void NormalSettings_with_Beans() throws SQLException{
+        test("Q", "", defaultNaming, "target/11", true, false);
+    }
+    
+    @Test
+    public void NormalSettings_with_Suffix() throws SQLException{
+        test("Q", "Type", defaultNaming, "target/1_suffix", false, false);
+    }
+    
+    @Test
+    public void NormalSettings_with_Suffix_with_Beans() throws SQLException{
+        test("", "Type", defaultNaming, "target/11_suffix", true, false);
     }
 
     @Test
     public void NormalSettings_with_InnerClasses() throws SQLException{
-        test("Q", defaultNaming, "target/1_with_InnerClasses", false, true);
-        test("Q", defaultNaming, "target/11_with_InnerClasses", true, true);
+        test("Q", "", defaultNaming, "target/1_with_InnerClasses", false, true);
+    }
+    
+    @Test
+    public void NormalSettings_with_InnerClasses_with_Beans() throws SQLException{
+        test("Q", "", defaultNaming, "target/11_with_InnerClasses", true, true);
+    }
+    
+    @Test
+    public void NormalSettings_with_InnerClasses_and_Suffix() throws SQLException{
+        test("Q", "Type", defaultNaming, "target/1_with_InnerClasses_and_Suffix", false, true);
+    }
+    
+    @Test
+    public void NormalSettings_with_InnerClasses_and_Suffix_with_Beans() throws SQLException{
+        test("", "Type", defaultNaming, "target/11_with_InnerClasses_and_Suffix", true, true);
     }
 
     @Test
     public void WithoutPrefix() throws SQLException{
-        test("", defaultNaming, "target/2", false, false);
+        test("", "", defaultNaming, "target/2", false, false);
     }
 
     @Test
     public void WithoutPrefix_with_InnerClasses() throws SQLException{
-        test("", defaultNaming, "target/2_with_InnerClasses", false, true);
+        test("", "", defaultNaming, "target/2_with_InnerClasses", false, true);
     }
 
     @Test
     public void WithLongPrefix() throws SQLException{
-        test("QDSL", defaultNaming, "target/3",false, false);
+        test("QDSL", "", defaultNaming,"target/3", false, false);
     }
 
     @Test
     public void WithLongPrefix_with_InnerClasses() throws SQLException{
-        test("QDSL", defaultNaming, "target/3_with_InnerClasses",false, true);
+        test("QDSL", "", defaultNaming,"target/3_with_InnerClasses", false, true);
     }
 
     @Test
     public void WithDifferentNamingStrategy() throws SQLException{
-        test("Q", originalNaming, "target/4",false, false);
+        test("Q", "", originalNaming,"target/4", false, false);
+    }
+    
+    @Test
+    public void WithDifferentNamingStrategy_and_Suffix() throws SQLException{
+        test("Q", "Type", originalNaming,"target/4_suffix", false, false);
     }
 
     @Test
     public void WithDifferentNamingStrategy_with_InnerClasses() throws SQLException{
-        test("Q", originalNaming, "target/4_with_InnerClasses",false, true);
+        test("Q", "", originalNaming,"target/4_with_InnerClasses", false, true);
     }
 
     @Test
     public void WithoutPrefix2() throws SQLException{
-        test("", originalNaming, "target/5", false, false);
+        test("", "", originalNaming, "target/5", false, false);
     }
 
     @Test
     public void WithoutPrefix2_with_InnerClasses() throws SQLException{
-        test("", originalNaming, "target/5_with_InnerClasses", false, true);
+        test("", "", originalNaming, "target/5_with_InnerClasses", false, true);
     }
 
     @Test
     public void WithLongPrefix2() throws SQLException{
-        test("QDSL", originalNaming, "target/6", false, false);
+        test("QDSL", "", originalNaming, "target/6", false, false);
     }
 
     @Test
     public void WithLongPrefix2_with_InnerClasses() throws SQLException{
-        test("QDSL", originalNaming, "target/6_with_InnerClasses", false, true);
+        test("QDSL", "", originalNaming, "target/6_with_InnerClasses", false, true);
     }
 
 
@@ -112,8 +145,18 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
         exporter.setTargetFolder(new File("target/8"));
         exporter.export(connection.getMetaData());
     }
+    
+    @Test
+    public void Minimal_Configuration_with_Suffix() throws SQLException{
+        MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setPackageName("test");
+        exporter.setNamePrefix("");
+        exporter.setNameSuffix("Type");
+        exporter.setTargetFolder(new File("target/9"));
+        exporter.export(connection.getMetaData());
+    }
 
-    private void test(String namePrefix, NamingStrategy namingStrategy, String target, boolean withBeans, boolean withInnerClasses) throws SQLException{
+    private void test(String namePrefix, String nameSuffix, NamingStrategy namingStrategy, String target, boolean withBeans, boolean withInnerClasses) throws SQLException{
         statement.execute("drop table employee if exists");
 
         // reserved words
@@ -161,9 +204,10 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
                 + "CONSTRAINT PK_employee PRIMARY KEY (id), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");
 
-        MetaDataSerializer serializer = new MetaDataSerializer(namePrefix, namingStrategy, withInnerClasses);
+        MetaDataSerializer serializer = new MetaDataSerializer(namePrefix, nameSuffix, namingStrategy, withInnerClasses);
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setNamePrefix(namePrefix);
+        exporter.setNameSuffix(nameSuffix);
         exporter.setPackageName("test");
         exporter.setTargetFolder(new File(target));
         exporter.setNamingStrategy(namingStrategy);

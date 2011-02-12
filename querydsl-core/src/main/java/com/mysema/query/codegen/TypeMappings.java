@@ -119,10 +119,10 @@ public final class TypeMappings {
             String packageName = type.getPackageName();
             String simpleName;
             if (type.getPackageName().isEmpty()){
-                simpleName = model.getPrefix()+type.getFullName().replace('.', '_');
+                simpleName = model.getPrefix()+type.getFullName().replace('.', '_')+model.getSuffix();
                 return new SimpleType(category, simpleName, "", simpleName, false, false);
             }else{                
-                simpleName = model.getPrefix()+type.getFullName().substring(packageName.length()+1).replace('.', '_');
+                simpleName = model.getPrefix()+type.getFullName().substring(packageName.length()+1).replace('.', '_')+model.getSuffix();
                 return new SimpleType(category, packageName+"."+simpleName, packageName, simpleName, false, false);
             }
 
