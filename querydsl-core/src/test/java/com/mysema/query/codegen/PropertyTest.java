@@ -18,7 +18,7 @@ public class PropertyTest {
     @Test
     public void test(){
         Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false,false);
-        EntityType type = new EntityType("Q", typeModel);
+        EntityType type = new EntityType("Q","",  typeModel);
         Property p1 = new Property(type, "property", type, new String[0]);
         Property p2 = new Property(type, "property", type, new String[0]);
         assertEquals(p1, p1);

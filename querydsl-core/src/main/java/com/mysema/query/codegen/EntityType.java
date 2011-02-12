@@ -56,16 +56,8 @@ public final class EntityType extends TypeAdapter implements Comparable<EntityTy
 
     private String uncapSimpleName;
     
-    public EntityType(String prefix, Type type) {
-        this(prefix, "", type, new HashSet<Supertype>());
-    }
-
     public EntityType(String prefix, String suffix, Type type) {
         this(prefix, suffix, type, new HashSet<Supertype>());
-    }
-    
-    public EntityType(String prefix, Type type, Set<Supertype> superTypes) {
-        this(prefix, "", type, superTypes);
     }
     
     public EntityType(String prefix, String suffix, Type type, Set<Supertype> superTypes) {

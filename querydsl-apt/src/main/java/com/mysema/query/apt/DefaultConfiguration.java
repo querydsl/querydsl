@@ -67,6 +67,8 @@ public class DefaultConfiguration implements Configuration {
     private final Serializer supertypeSerializer;
 
     private String namePrefix = "Q";
+    
+    private String nameSuffix = "";
 
     private final Map<String,SerializerConfig> packageToConfig = new HashMap<String,SerializerConfig>();
 
@@ -306,5 +308,15 @@ public class DefaultConfiguration implements Configuration {
     public Collection<String> getKeywords(){
         return keywords;
     }
+
+    public String getNameSuffix() {
+        return nameSuffix;
+    }
+
+    public void setNameSuffix(String nameSuffix) {
+        this.nameSuffix = nameSuffix;
+    }
+    
+    
 
 }

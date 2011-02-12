@@ -35,7 +35,7 @@ public class BeanSerializerTest {
     @Before
     public void setUp(){
         typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false,false);
-        type = new EntityType("Q", typeModel);                    
+        type = new EntityType("Q", "", typeModel);                    
     }
     
     @Test

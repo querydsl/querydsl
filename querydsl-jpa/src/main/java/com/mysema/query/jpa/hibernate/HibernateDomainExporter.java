@@ -45,6 +45,8 @@ public class HibernateDomainExporter {
     
     private final String namePrefix;
     
+    private final String nameSuffix;
+    
     private final File targetFolder;
 
     private final Map<String,EntityType> allTypes = new HashMap<String,EntityType>();
@@ -72,11 +74,20 @@ public class HibernateDomainExporter {
     private final SerializerConfig serializerConfig;
     
     public HibernateDomainExporter(String namePrefix, File targetFolder, Configuration configuration){
-        this(namePrefix, targetFolder, SimpleSerializerConfig.DEFAULT, configuration);
+        this(namePrefix, "", targetFolder, SimpleSerializerConfig.DEFAULT, configuration);
+    }
+    
+    public HibernateDomainExporter(String namePrefix, String nameSuffix, File targetFolder, Configuration configuration){
+        this(namePrefix, nameSuffix, targetFolder, SimpleSerializerConfig.DEFAULT, configuration);
     }
     
     public HibernateDomainExporter(String namePrefix, File targetFolder, SerializerConfig serializerConfig, Configuration configuration){
+        this(namePrefix, "", targetFolder, serializerConfig, configuration);
+    }
+        
+    public HibernateDomainExporter(String namePrefix, String nameSuffix, File targetFolder, SerializerConfig serializerConfig, Configuration configuration){
         this.namePrefix = namePrefix;
+        this.nameSuffix = nameSuffix;
         this.targetFolder = targetFolder;
         this.serializerConfig = serializerConfig;
         this.configuration = configuration;
@@ -205,7 +216,7 @@ public class HibernateDomainExporter {
         if (types.containsKey(cl.getName())){
             return types.get(cl.getName());
         }else{
-            EntityType type = new EntityType(namePrefix, new ClassType(TypeCategory.ENTITY, cl));
+            EntityType type = new EntityType(namePrefix, nameSuffix, new ClassType(TypeCategory.ENTITY, cl));
             if (!cl.getSuperclass().equals(Object.class)){
                 type.addSupertype(new Supertype(new ClassType(cl.getSuperclass())));
             }

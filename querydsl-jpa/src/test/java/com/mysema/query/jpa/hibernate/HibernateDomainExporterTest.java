@@ -38,6 +38,20 @@ public class HibernateDomainExporterTest {
     }
     
     @Test
+    public void Execute_Contact_with_Suffix() throws IOException {
+        FileUtils.deleteDirectory(new File("target/gen1"));
+        File contact = new File("src/test/resources/contact.hbm.xml");
+        Configuration config = new Configuration();
+        config.addFile(contact);
+        config.buildMappings();
+        HibernateDomainExporter exporter = new HibernateDomainExporter("", "Type", new File("target/gen1"), config);
+        exporter.execute();
+        
+        File targetFile = new File("target/gen1/com/mysema/query/jpa/domain2/ContactType.java");
+        assertContains(targetFile, "StringPath email", "StringPath firstName", "NumberPath<Long> id", "StringPath lastName");
+    }
+    
+    @Test
     public void Execute_Contact2() throws IOException {
         FileUtils.deleteDirectory(new File("target/gen2"));
         File contact = new File("src/test/resources/contact2.hbm.xml");

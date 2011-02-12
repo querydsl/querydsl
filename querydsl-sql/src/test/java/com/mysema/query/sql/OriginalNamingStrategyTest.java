@@ -11,7 +11,7 @@ public class OriginalNamingStrategyTest {
 
     private NamingStrategy namingStrategy = new OriginalNamingStrategy();
     
-    private EntityType entityModel = new EntityType("Q", Types.OBJECT);
+    private EntityType entityModel = new EntityType("Q", "", Types.OBJECT);
     
     @Test
     public void GetClassName() {

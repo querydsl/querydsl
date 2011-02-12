@@ -50,6 +50,8 @@ public interface Configuration {
     Serializer getEntitySerializer();
 
     String getNamePrefix();
+    
+    String getNameSuffix();
 
     SerializerConfig getSerializerConfig(EntityType entityType);
 

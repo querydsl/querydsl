@@ -80,6 +80,10 @@ public class MetaDataExporter {
     private String namePrefix = "Q";
     
     private String nameSuffix = "";
+    
+    private String beanPrefix = "";
+    
+    private String beanSuffix = "";
 
     private NamingStrategy namingStrategy = new DefaultNamingStrategy();
 
@@ -181,6 +185,7 @@ public class MetaDataExporter {
         String className = namingStrategy.getClassName(namePrefix, nameSuffix, tableName);
         if (beanSerializer != null){
             className = className.substring(namePrefix.length(), className.length()-nameSuffix.length());
+//            className = beanPrefix + className + beanSuffix;
         }
         EntityType classModel = createEntityType(tableName, className);
 
@@ -223,7 +228,7 @@ public class MetaDataExporter {
             String fileSuffix = createScalaSources ? ".scala" : ".java";
             String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
             if (beanSerializer != null){
-                write(beanSerializer, path, type);
+                write(beanSerializer, path, type);                
                 String otherPath = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + nameSuffix + fileSuffix;
                 write(serializer, otherPath, type);
             }else{
@@ -308,7 +313,7 @@ public class MetaDataExporter {
     /**
      * Override the name prefix for the classes (default: Q)
      * 
-     * @param namePrefix name prefix for Q-types (default: Q)
+     * @param namePrefix name prefix for query-types (default: Q)
      */
     public void setNamePrefix(String namePrefix) {
         this.namePrefix = namePrefix;
@@ -317,10 +322,28 @@ public class MetaDataExporter {
     /**
      * Override the name suffix for the classes (default: "")
      * 
-     * @param nameSuffix name suffix for Q-types (default: "")
+     * @param nameSuffix name suffix for query-types (default: "")
      */
     public void setNameSuffix(String nameSuffix) {
         this.nameSuffix = nameSuffix;
+    }
+    
+    /**
+     * Override the bean prefix for the classes (default: "")
+     * 
+     * @param beanPrefix bean prefix for bean-types (default: "")
+     */
+    public void setBeanPrefix(String beanPrefix) {
+        this.beanPrefix = beanPrefix;
+    }
+
+    /**
+     * Override the bean suffix for the classes (default: "")
+     * 
+     * @param beanSuffix bean suffix for bean-types (default: "")
+     */
+    public void setBeanSuffix(String beanSuffix) {
+        this.beanSuffix = beanSuffix;
     }
 
     /**

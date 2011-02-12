@@ -186,7 +186,7 @@ public final class ExtendedTypeFactory {
         // entity type
         for (Class<? extends Annotation> entityAnn : entityAnnotations){
             if (typeElement.getAnnotation(entityAnn) != null){
-                return new EntityType(configuration.getNamePrefix(), type);
+                return new EntityType(configuration.getNamePrefix(), configuration.getNameSuffix(), type);
             }
         }
         return type;
@@ -274,7 +274,7 @@ public final class ExtendedTypeFactory {
             if (value instanceof EntityType){
                 entityType = (EntityType)value;
             }else{
-                entityType = new EntityType(configuration.getNamePrefix(), value);
+                entityType = new EntityType(configuration.getNamePrefix(), configuration.getNameSuffix(), value);
             }
             entityTypeCache.put(key, entityType);
 
@@ -307,7 +307,7 @@ public final class ExtendedTypeFactory {
 
         for (Class<? extends Annotation> entityAnn : entityAnnotations){
             if (typeElement.getAnnotation(entityAnn) != null){
-                return new EntityType(configuration.getNamePrefix(), enumType);
+                return new EntityType(configuration.getNamePrefix(), configuration.getNameSuffix(), enumType);
             }
         }
         return enumType;

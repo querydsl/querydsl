@@ -50,7 +50,7 @@ public class SerializerTest {
 
         // type
         Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false, false);
-        type = new EntityType("Q", typeModel);
+        type = new EntityType("Q", "", typeModel);
 
         // property
         type.addProperty(new Property(type, "entityField", type, new String[0]));

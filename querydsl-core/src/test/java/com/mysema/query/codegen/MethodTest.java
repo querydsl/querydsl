@@ -31,7 +31,7 @@ public class MethodTest {
     public void CreateCopy(){
         Method method = new Method(typeFactory.create(String.class), "method", "abc", typeFactory.create(String.class));
         Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false,false);
-        EntityType type = new EntityType("Q", typeModel);
+        EntityType type = new EntityType("Q", "", typeModel);
         assertNotNull(method.createCopy(type));
     }
 

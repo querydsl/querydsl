@@ -201,7 +201,7 @@ public final class ElementHandler{
 
     public EntityType handleProjectionType(TypeElement e) {
         Type c = typeFactory.getType(e.asType(), true);
-        EntityType entityType = new EntityType(configuration.getNamePrefix(), c.as(TypeCategory.ENTITY));
+        EntityType entityType = new EntityType(configuration.getNamePrefix(), configuration.getNameSuffix(), c.as(TypeCategory.ENTITY));
         List<? extends Element> elements = e.getEnclosedElements();
         handleConstructors(entityType, elements);
         return entityType;
