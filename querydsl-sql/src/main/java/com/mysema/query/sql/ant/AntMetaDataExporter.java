@@ -52,11 +52,26 @@ public class AntMetaDataExporter extends Task {
      * name suffix for generated query types (default: "")
      */
     private String nameSuffix;
+    
+    /**
+     * name prefix for generated bean types (default: "Q")
+     */
+    private String beanPrefix;
+    
+    /**
+     * name suffix for generated bean types (default: "")
+     */
+    private String beanSuffix;
 
     /**
      * target package to generate classes to
      */
     private String targetPackage;
+    
+    /**
+     * target package to generated bean classes to (default: targetPackage)
+     */
+    private String beanTargetPackage;
 
     /**
      * target source folder
@@ -98,15 +113,24 @@ public class AntMetaDataExporter extends Task {
             dbConn = DriverManager.getConnection(dbUrl, dbUserName, dbPassword);
 
             NamingStrategy namingStrategy = new DefaultNamingStrategy();
-            Serializer serializer = new MetaDataSerializer(namePrefix, namingStrategy, innerClassesForKeys);
-
             MetaDataExporter exporter = new MetaDataExporter();
-            exporter.setNamePrefix(namePrefix);
-            exporter.setNameSuffix(nameSuffix);
+            if (namePrefix != null){
+                exporter.setNamePrefix(namePrefix);    
+            }
+            if (nameSuffix != null){
+                exporter.setNameSuffix(nameSuffix);    
+            }
+            if (beanPrefix != null){
+                exporter.setBeanPrefix(beanPrefix);    
+            }
+            if (beanSuffix != null){
+                exporter.setBeanSuffix(beanSuffix);    
+            }            
             exporter.setPackageName(targetPackage);
+            exporter.setBeanPackageName(beanTargetPackage);
             exporter.setTargetFolder(targetPackagePath);
             exporter.setNamingStrategy(namingStrategy);
-            exporter.setSerializer(serializer);
+            exporter.setInnerClassesForKeys(innerClassesForKeys);
             if (exportBeans){
                 exporter.setBeanSerializer(new BeanSerializer());
             }
@@ -230,6 +254,22 @@ public class AntMetaDataExporter extends Task {
 
     public void setNameSuffix(String nameSuffix) {
         this.nameSuffix = nameSuffix;
+    }
+
+    public String getBeanPrefix() {
+        return beanPrefix;
+    }
+
+    public void setBeanPrefix(String beanPrefix) {
+        this.beanPrefix = beanPrefix;
+    }
+
+    public String getBeanSuffix() {
+        return beanSuffix;
+    }
+
+    public void setBeanSuffix(String beanSuffix) {
+        this.beanSuffix = beanSuffix;
     }
     
     

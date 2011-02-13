@@ -28,7 +28,7 @@ import com.mysema.commons.lang.Assert;
  *
  * @author tiwe
  */
-public final class EntityType extends TypeAdapter implements Comparable<EntityType> {
+public class EntityType extends TypeAdapter implements Comparable<EntityType> {
 
     private final Map<Class<?>,Annotation> annotations = new HashMap<Class<?>,Annotation>();
 

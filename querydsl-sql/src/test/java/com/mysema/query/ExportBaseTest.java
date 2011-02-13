@@ -27,7 +27,7 @@ public abstract class ExportBaseTest {
         File folder = new File("target", getClass().getSimpleName());
         folder.mkdirs();
         NamingStrategy namingStrategy = new DefaultNamingStrategy();
-        Serializer serializer = new MetaDataSerializer("Q",namingStrategy);
+        Serializer serializer = new MetaDataSerializer("Q", "", "", "", null, namingStrategy, false);
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setPackageName("test");
         exporter.setTargetFolder(folder);

@@ -14,6 +14,7 @@ import java.io.Writer;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -76,6 +77,8 @@ public class MetaDataExporter {
     private File targetFolder;
 
     private String packageName = "com.example";
+    
+    private String beanPackageName;
 
     private String namePrefix = "Q";
     
@@ -84,6 +87,8 @@ public class MetaDataExporter {
     private String beanPrefix = "";
     
     private String beanSuffix = "";
+    
+    private boolean innerClassesForKeys;
 
     private NamingStrategy namingStrategy = new DefaultNamingStrategy();
 
@@ -102,20 +107,39 @@ public class MetaDataExporter {
 
     private boolean createScalaSources = false;
 
+    private Map<EntityType, Type> entityToWrapped = new HashMap<EntityType, Type>();
+    
     public MetaDataExporter(){}
 
-    protected EntityType createEntityType(String tableName, String className) {
+    protected EntityType createEntityType(String tableName, final String className) {
         Type classTypeModel = new SimpleType(
                 TypeCategory.ENTITY,
-                packageName + "." + className,
-                packageName,
-                className,
+                beanPackageName + "." + beanPrefix + className + beanSuffix,
+                beanPackageName,
+                beanPrefix + className + beanSuffix,
                 false,
                 false);
-        EntityType classModel = new EntityType(
-                beanSerializer == null ? "" : namePrefix, 
-                beanSerializer == null ? "" : nameSuffix, 
-                classTypeModel);
+        
+        EntityType classModel;
+        if (beanSerializer == null){
+            classModel = new EntityType("", "", classTypeModel);
+        }else{
+            classModel = new EntityType(namePrefix, nameSuffix, classTypeModel){
+                @Override
+                public String getFullName(){
+                    return packageName + "." + className;
+                }
+                @Override
+                public String getPackageName(){
+                    return packageName;
+                }
+                @Override
+                public String getSimpleName(){
+                    return className;
+                }
+            };
+        }
+        entityToWrapped.put(classModel, classTypeModel);
         classModel.addAnnotation(new TableImpl(namingStrategy.normalizeTableName(tableName)));
         return classModel;
     }
@@ -137,11 +161,16 @@ public class MetaDataExporter {
      * @param md
      * @throws SQLException
      */
-    public void export(DatabaseMetaData md) throws SQLException {
+    public void export(DatabaseMetaData md) throws SQLException {        
         if (serializer == null){
-            serializer = new MetaDataSerializer(namePrefix, nameSuffix, namingStrategy);
+            serializer = new MetaDataSerializer(
+                    namePrefix, nameSuffix, beanPrefix, beanSuffix, 
+                    beanPackageName, namingStrategy, innerClassesForKeys);
         }
-
+        if (beanPackageName == null){
+            beanPackageName = packageName;
+        }
+        
         ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
         try{
             while (tables.next()) {
@@ -185,7 +214,6 @@ public class MetaDataExporter {
         String className = namingStrategy.getClassName(namePrefix, nameSuffix, tableName);
         if (beanSerializer != null){
             className = className.substring(namePrefix.length(), className.length()-nameSuffix.length());
-//            className = beanPrefix + className + beanSuffix;
         }
         EntityType classModel = createEntityType(tableName, className);
 
@@ -226,12 +254,19 @@ public class MetaDataExporter {
     private void serialize(EntityType type) {
         try {
             String fileSuffix = createScalaSources ? ".scala" : ".java";
-            String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
+            
             if (beanSerializer != null){
-                write(beanSerializer, path, type);                
+                String path = beanPackageName.replace('.', '/') + "/" + entityToWrapped.get(type).getSimpleName() + fileSuffix;
+                EntityType entityForBean = new EntityType("", "", entityToWrapped.get(type));
+                for (Property property : type.getProperties()){
+                    entityForBean.addProperty(property);
+                }
+                write(beanSerializer, path, entityForBean);      
+                
                 String otherPath = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + nameSuffix + fileSuffix;
                 write(serializer, otherPath, type);
             }else{
+                String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
                 write(serializer, path, type);
             }
 
@@ -309,6 +344,15 @@ public class MetaDataExporter {
     public void setPackageName(String packageName) {
         this.packageName = packageName;
     }
+    
+    /**
+     * Override the bean package name (default: packageName)
+     * 
+     * @param beanPackageName
+     */
+    public void setBeanPackageName(String beanPackageName) {
+        this.beanPackageName = beanPackageName;
+    }
 
     /**
      * Override the name prefix for the classes (default: Q)
@@ -373,4 +417,12 @@ public class MetaDataExporter {
         this.beanSerializer = beanSerializer;
     }
 
+    /**
+     * @param innerClassesForKeys
+     */
+    public void setInnerClassesForKeys(boolean innerClassesForKeys) {
+        this.innerClassesForKeys = innerClassesForKeys;
+    }
+
+    
 }

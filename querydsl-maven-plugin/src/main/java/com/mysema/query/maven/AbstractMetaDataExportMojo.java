@@ -16,10 +16,8 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
 import com.mysema.query.codegen.BeanSerializer;
-import com.mysema.query.codegen.Serializer;
 import com.mysema.query.sql.DefaultNamingStrategy;
 import com.mysema.query.sql.MetaDataExporter;
-import com.mysema.query.sql.MetaDataSerializer;
 import com.mysema.query.sql.NamingStrategy;
 
 /**
@@ -69,12 +67,30 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      * @parameter default-value=""
      */
     private String nameSuffix;
+    
+    /**
+     * name prefix for bean types (default: "")
+     * @parameter default-value=""
+     */
+    private String beanPrefix;
+    
+    /**
+     * name prefix for bean types (default: "")
+     * @parameter default-value=""
+     */
+    private String beanSuffix;
 
     /**
      * package name for sources
      * @parameter required=true
      */
     private String packageName;
+    
+    /**
+     * package name for bean sources (default: packageName)
+     * @parameter 
+     */
+    private String beanPackageName;
 
     /**
      * schemaPattern a schema name pattern; must match the schema name
@@ -143,15 +159,16 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         }else{
             namingStrategy = new DefaultNamingStrategy();
         }
-        Serializer serializer = new MetaDataSerializer(namePrefix, namingStrategy, innerClassesForKeys);
-
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setNamePrefix(namePrefix);
         exporter.setNameSuffix(nameSuffix);
+        exporter.setBeanPrefix(beanPrefix);
+        exporter.setBeanSuffix(beanSuffix);        
         exporter.setPackageName(packageName);
+        exporter.setBeanPackageName(beanPackageName);
+        exporter.setInnerClassesForKeys(innerClassesForKeys);
         exporter.setTargetFolder(new File(targetFolder));
         exporter.setNamingStrategy(namingStrategy);
-        exporter.setSerializer(serializer);
         if (exportBeans){
             exporter.setBeanSerializer(new BeanSerializer());
         }
