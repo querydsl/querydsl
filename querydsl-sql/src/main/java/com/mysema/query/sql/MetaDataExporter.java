@@ -77,17 +77,18 @@ public class MetaDataExporter {
     private File targetFolder;
 
     private String packageName = "com.example";
-    
+
+    @Nullable
     private String beanPackageName;
 
     private String namePrefix = "Q";
-    
+
     private String nameSuffix = "";
-    
+
     private String beanPrefix = "";
-    
+
     private String beanSuffix = "";
-    
+
     private boolean innerClassesForKeys;
 
     private NamingStrategy namingStrategy = new DefaultNamingStrategy();
@@ -107,8 +108,8 @@ public class MetaDataExporter {
 
     private boolean createScalaSources = false;
 
-    private Map<EntityType, Type> entityToWrapped = new HashMap<EntityType, Type>();
-    
+    private final Map<EntityType, Type> entityToWrapped = new HashMap<EntityType, Type>();
+
     public MetaDataExporter(){}
 
     protected EntityType createEntityType(String tableName, final String className) {
@@ -119,7 +120,7 @@ public class MetaDataExporter {
                 beanPrefix + className + beanSuffix,
                 false,
                 false);
-        
+
         EntityType classModel;
         if (beanSerializer == null){
             classModel = new EntityType("", "", classTypeModel);
@@ -157,20 +158,20 @@ public class MetaDataExporter {
 
     /**
      * Export the tables based on the given database metadata
-     * 
+     *
      * @param md
      * @throws SQLException
      */
-    public void export(DatabaseMetaData md) throws SQLException {        
+    public void export(DatabaseMetaData md) throws SQLException {
         if (serializer == null){
             serializer = new MetaDataSerializer(
-                    namePrefix, nameSuffix, beanPrefix, beanSuffix, 
+                    namePrefix, nameSuffix, beanPrefix, beanSuffix,
                     beanPackageName, namingStrategy, innerClassesForKeys);
         }
         if (beanPackageName == null){
             beanPackageName = packageName;
         }
-        
+
         ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
         try{
             while (tables.next()) {
@@ -247,22 +248,22 @@ public class MetaDataExporter {
 
         // serialize model
         serialize(classModel);
-        
+
         logger.info("Exported " + tableName + " successfully");
     }
 
     private void serialize(EntityType type) {
         try {
             String fileSuffix = createScalaSources ? ".scala" : ".java";
-            
+
             if (beanSerializer != null){
                 String path = beanPackageName.replace('.', '/') + "/" + entityToWrapped.get(type).getSimpleName() + fileSuffix;
                 EntityType entityForBean = new EntityType("", "", entityToWrapped.get(type));
                 for (Property property : type.getProperties()){
                     entityForBean.addProperty(property);
                 }
-                write(beanSerializer, path, entityForBean);      
-                
+                write(beanSerializer, path, entityForBean);
+
                 String otherPath = packageName.replace('.', '/') + "/" + namePrefix + type.getSimpleName() + nameSuffix + fileSuffix;
                 write(serializer, otherPath, type);
             }else{
@@ -289,7 +290,7 @@ public class MetaDataExporter {
 
     /**
      * Set the schema pattern filter to be used
-     * 
+     *
      * @param schemaPattern a schema name pattern; must match the schema name
      *        as it is stored in the database; "" retrieves those without a schema;
      *        <code>null</code> means that the schema name should not be used to narrow
@@ -298,10 +299,10 @@ public class MetaDataExporter {
     public void setSchemaPattern(String schemaPattern) {
         this.schemaPattern = schemaPattern;
     }
-    
+
     /**
      * Set the table name pattern filter to be used
-     * 
+     *
     * @param tableNamePattern a table name pattern; must match the
     *        table name as it is stored in the database (default: null)
     */
@@ -311,7 +312,7 @@ public class MetaDataExporter {
 
     /**
      * Override the configuration
-     * 
+     *
      * @param configuration override configuration for custom type mappings etc
      */
     public void setConfiguration(Configuration configuration) {
@@ -320,7 +321,7 @@ public class MetaDataExporter {
 
     /**
      * Set true to create Scala sources instead of Java sources
-     * 
+     *
      * @param createScalaSources whether to create Scala sources (default: false)
      */
     public void setCreateScalaSources(boolean createScalaSources) {
@@ -329,7 +330,7 @@ public class MetaDataExporter {
 
     /**
      * Set the target folder
-     * 
+     *
      * @param targetFolder target source folder to create the sources into (e.g. target/generated-sources/java)
      */
     public void setTargetFolder(File targetFolder) {
@@ -338,16 +339,16 @@ public class MetaDataExporter {
 
     /**
      * Set the package name
-     * 
+     *
      * @param packageName package name for sources
      */
     public void setPackageName(String packageName) {
         this.packageName = packageName;
     }
-    
+
     /**
      * Override the bean package name (default: packageName)
-     * 
+     *
      * @param beanPackageName
      */
     public void setBeanPackageName(String beanPackageName) {
@@ -356,25 +357,25 @@ public class MetaDataExporter {
 
     /**
      * Override the name prefix for the classes (default: Q)
-     * 
+     *
      * @param namePrefix name prefix for query-types (default: Q)
      */
     public void setNamePrefix(String namePrefix) {
         this.namePrefix = namePrefix;
     }
-    
+
     /**
      * Override the name suffix for the classes (default: "")
-     * 
+     *
      * @param nameSuffix name suffix for query-types (default: "")
      */
     public void setNameSuffix(String nameSuffix) {
         this.nameSuffix = nameSuffix;
     }
-    
+
     /**
      * Override the bean prefix for the classes (default: "")
-     * 
+     *
      * @param beanPrefix bean prefix for bean-types (default: "")
      */
     public void setBeanPrefix(String beanPrefix) {
@@ -383,7 +384,7 @@ public class MetaDataExporter {
 
     /**
      * Override the bean suffix for the classes (default: "")
-     * 
+     *
      * @param beanSuffix bean suffix for bean-types (default: "")
      */
     public void setBeanSuffix(String beanSuffix) {
@@ -392,7 +393,7 @@ public class MetaDataExporter {
 
     /**
      * Override the NamingStrategy (default: new DefaultNamingStrategy())
-     * 
+     *
      * @param namingStrategy namingstrategy to override (default: new DefaultNamingStrategy())
      */
     public void setNamingStrategy(NamingStrategy namingStrategy) {
@@ -401,7 +402,7 @@ public class MetaDataExporter {
 
     /**
      * Override the serializer to be used (default: new MetaDataSerializer(namePrefix, namingStrategy))
-     * 
+     *
      * @param serializer serializer to override (default: new MetaDataSerializer(namePrefix, namingStrategy))
      */
     public void setSerializer(Serializer serializer) {
@@ -410,7 +411,7 @@ public class MetaDataExporter {
 
     /**
      * Set the Bean serializer to create bean types as well
-     * 
+     *
      * @param beanSerializer serializer for JavaBeans (default: null)
      */
     public void setBeanSerializer(Serializer beanSerializer) {
@@ -424,5 +425,5 @@ public class MetaDataExporter {
         this.innerClassesForKeys = innerClassesForKeys;
     }
 
-    
+
 }

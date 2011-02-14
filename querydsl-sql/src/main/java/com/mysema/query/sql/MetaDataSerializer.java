@@ -14,6 +14,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
@@ -40,15 +42,15 @@ import com.mysema.query.types.Path;
 public class MetaDataSerializer extends EntitySerializer {
 
     private final String namePrefix;
-    
+
     private final String nameSuffix;
 
     private final String beanPrefix;
-    
+
     private final String beanSuffix;
-    
+
     private final String beanPackageName;
-    
+
     private final NamingStrategy namingStrategy;
 
     private final boolean innerClassesForKeys;
@@ -65,9 +67,9 @@ public class MetaDataSerializer extends EntitySerializer {
      * @param innerClassesForKeys wrap key properties into inner classes (default: false)
      */
     public MetaDataSerializer(
-            String namePrefix, String nameSuffix, 
+            String namePrefix, String nameSuffix,
             String beanPrefix, String beanSuffix,
-            String beanPackageName,
+            @Nullable String beanPackageName,
             NamingStrategy namingStrategy,
             boolean innerClassesForKeys) {
         super(new TypeMappings(),Collections.<String>emptyList());
@@ -79,7 +81,7 @@ public class MetaDataSerializer extends EntitySerializer {
         this.namingStrategy = namingStrategy;
         this.innerClassesForKeys = innerClassesForKeys;
     }
-    
+
     MetaDataSerializer(String namePrefix, NamingStrategy namingStrategy, boolean innerClassesForKeys) {
         this(namePrefix, "", "", "", null, namingStrategy, innerClassesForKeys);
     }
@@ -87,7 +89,7 @@ public class MetaDataSerializer extends EntitySerializer {
     MetaDataSerializer(String namePrefix, String nameSuffix, NamingStrategy namingStrategy) {
         this(namePrefix, nameSuffix, "", "", null, namingStrategy, false);
     }
-    
+
     MetaDataSerializer(String namePrefix, NamingStrategy namingStrategy) {
         this(namePrefix, "", "", "", null, namingStrategy,  false);
     }
@@ -222,7 +224,7 @@ public class MetaDataSerializer extends EntitySerializer {
             }else{
                 fieldName = namingStrategy.getPropertyNameForForeignKey(foreignKey.getName(), model);
             }
-            
+
             String foreignType = namingStrategy.getClassName(namePrefix, nameSuffix, foreignKey.getTable());
             // strip prefix and suffix off
             foreignType = foreignType.substring(model.getPrefix().length(), foreignType.length()-model.getSuffix().length());
@@ -231,7 +233,7 @@ public class MetaDataSerializer extends EntitySerializer {
             if (beanPackageName != null){
                 foreignType = beanPackageName + "." + foreignType;
             }
-            
+
             StringBuilder value = new StringBuilder();
             if (inverse){
                 value.append("createInvForeignKey(");
