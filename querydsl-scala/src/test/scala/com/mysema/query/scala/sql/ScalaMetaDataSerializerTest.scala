@@ -24,7 +24,7 @@ class ScalaMetaDataSerializerTest {
   def setUp() {
     // type
     val typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false, false);
-    entityType = new EntityType("Q", typeModel);
+    entityType = new EntityType("Q", "", typeModel);
     entityType.addAnnotation(new TableImpl("DOMAIN_TYPE"));
 
     // properties
@@ -38,7 +38,7 @@ class ScalaMetaDataSerializerTest {
   @Test
   def Print() {
     val namingStrategy = new DefaultNamingStrategy();
-    val serializer = new ScalaMetaDataSerializer("Q", namingStrategy);
+    val serializer = new ScalaMetaDataSerializer("Q", "", namingStrategy);
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer));
     val str = writer.toString();
     assertTrue("companion object isn't before class", str.indexOf("object") < str.indexOf("class"));

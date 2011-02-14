@@ -22,7 +22,7 @@ class ScalaBeanSerializerTest {
   def setUp() {
     // type
     val typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false, false);
-    entityType = new EntityType("Q", typeModel);
+    entityType = new EntityType("Q", "", typeModel);
 
     // property
     entityType.addProperty(new Property(entityType, "entityField", entityType, new Array[String](0)));

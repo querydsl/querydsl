@@ -17,14 +17,16 @@ import scala.reflect.BeanProperty
 import scala.collection.JavaConversions._
 import scala.collection.mutable.Set
 
-class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: NamingStrategy) extends Serializer {
-
+class ScalaMetaDataSerializer(val namePrefix: String, val nameSuffix: String, val namingStrategy: NamingStrategy) extends Serializer {
+    
   val typeMappings = new TypeMappings();
 
   val classHeaderFormat = "%1$s(path: String) extends RelationalPathBase[%2$s](classOf[%2$s], path)";
 
   //val javadocSuffix = " is a Querydsl query type";
 
+  def this(namePrefix: String, namingStrategy: NamingStrategy) = this(namePrefix, "", namingStrategy);  
+  
   def serialize(model: EntityType, serializerConfig: SerializerConfig, writer: CodeWriter) {
     val scalaWriter = writer.asInstanceOf[ScalaWriter];
     val simpleName: String = model.getSimpleName;
@@ -121,7 +123,7 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
       val fieldName = namingStrategy.getPropertyNameForPrimaryKey(primaryKey.getName(), model);
       val value = new StringBuilder("createPrimaryKey(");
       value.append(primaryKey.getColumns().map({ column =>
-        namingStrategy.getPropertyName(column, namePrefix, model)
+        namingStrategy.getPropertyName(column, namePrefix, nameSuffix, model)
       }).mkString(", "));
       value.append(")");
       writer.publicFinal(new ClassType(classOf[PrimaryKey[_]], model), fieldName, value.toString);
@@ -136,9 +138,9 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
       } else {
         fieldName = namingStrategy.getPropertyNameForForeignKey(foreignKey.getName, model);
       }
-      var foreignType: String = namingStrategy.getClassName(namePrefix, foreignKey.getTable);
+      var foreignType: String = namingStrategy.getClassName(namePrefix, nameSuffix, foreignKey.getTable);
       if (!model.getPrefix.isEmpty) {
-        foreignType = foreignType.substring(namePrefix.length);
+        foreignType = foreignType.substring(namePrefix.length, foreignType.length - nameSuffix.length);
       }
       val value = new StringBuilder();
       if (inverse) {
@@ -147,7 +149,7 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
         value.append("createForeignKey(");
       }
       if (foreignKey.getForeignColumns.size == 1) {
-        value.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns.get(0), namePrefix, model));
+        value.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns.get(0), namePrefix, nameSuffix, model));
         value.append(", \"" + foreignKey.getParentColumns().get(0) + "\"");
       } else {
         val local = new StringBuilder();
@@ -158,7 +160,7 @@ class ScalaMetaDataSerializer(val namePrefix: String, val namingStrategy: Naming
             local.append(", ");
             foreign.append(", ");
           }
-          local.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), namePrefix, model));
+          local.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), namePrefix, nameSuffix, model));
           foreign.append("\"" + foreignKey.getParentColumns.get(0) + "\"");
           i += 1;
         }
