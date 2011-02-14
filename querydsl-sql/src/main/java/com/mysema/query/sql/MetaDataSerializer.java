@@ -49,6 +49,7 @@ public class MetaDataSerializer extends EntitySerializer {
 
     private final String beanSuffix;
 
+    @Nullable
     private final String beanPackageName;
 
     private final NamingStrategy namingStrategy;
