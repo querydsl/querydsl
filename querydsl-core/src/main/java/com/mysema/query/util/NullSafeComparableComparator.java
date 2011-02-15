@@ -1,4 +1,4 @@
-package com.mysema.util;
+package com.mysema.query.util;
 
 import java.io.Serializable;
 import java.util.Comparator;

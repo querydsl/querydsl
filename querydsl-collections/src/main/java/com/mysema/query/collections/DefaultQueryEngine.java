@@ -26,7 +26,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.util.MultiComparator;
+import com.mysema.query.util.MultiComparator;
 
 /**
  * Default implementation of the QueryEngine interface

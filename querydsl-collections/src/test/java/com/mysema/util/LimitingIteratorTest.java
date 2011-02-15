@@ -16,6 +16,7 @@ import org.apache.commons.collections15.IteratorUtils;
 import org.junit.Test;
 
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.util.LimitingIterator;
 
 public class LimitingIteratorTest {
 
