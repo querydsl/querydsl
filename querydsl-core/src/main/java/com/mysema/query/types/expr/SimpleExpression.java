@@ -89,9 +89,8 @@ public abstract class SimpleExpression<T> extends ExpressionBase<T> {
      *
      * @return
      */
-    @SuppressWarnings("unchecked")
     public SimpleExpression<T> as(String alias) {
-        return SimpleOperation.create((Class<T>)getType(),Ops.ALIAS, this, new PathImpl<T>(getType(), alias));
+        return as(new PathImpl<T>(getType(), alias));
     }
 
     /**

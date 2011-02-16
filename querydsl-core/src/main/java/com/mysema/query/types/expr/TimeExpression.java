@@ -41,7 +41,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
 
     @Override
     public TimeExpression<T> as(String alias) {
-        return TimeOperation.create((Class<T>)getType(), Ops.ALIAS, this, new PathImpl<T>(getType(), alias));
+        return as(new PathImpl<T>(getType(), alias));
     }
 
     /**

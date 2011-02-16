@@ -31,7 +31,7 @@ public abstract class EnumExpression<T extends Enum<T>> extends ComparableExpres
 
     @Override
     public EnumExpression<T> as(String alias) {
-        return EnumOperation.create(getType(),Ops.ALIAS, this, new PathImpl<T>(getType(), alias));
+        return as(new PathImpl<T>(getType(), alias));
     }
 
     /**

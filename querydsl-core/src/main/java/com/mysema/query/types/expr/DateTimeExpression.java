@@ -92,7 +92,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
 
     @Override
     public DateTimeExpression<T> as(String alias) {
-        return DateTimeOperation.create((Class<T>)getType(), Ops.ALIAS, this, new PathImpl<T>(getType(), alias));
+        return as(new PathImpl<T>(getType(), alias));
     }
 
     /**

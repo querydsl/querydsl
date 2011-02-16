@@ -46,7 +46,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
 
     @Override
     public StringExpression as(String alias) {
-        return StringOperation.create(Ops.ALIAS, this, new PathImpl<String>(getType(), alias));
+        return as(new PathImpl<String>(String.class, alias));
     }
 
     /**
