@@ -7,7 +7,7 @@ package com.mysema.query.types.expr;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Operator;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
@@ -23,13 +23,13 @@ import com.mysema.query.types.Predicate;
 public abstract class BooleanExpression extends ComparableExpression<Boolean> implements Predicate{
 
     private static final long serialVersionUID = 3797956062512074164L;
-    
+
     @Nullable
     private volatile BooleanExpression eqTrue, eqFalse;
 
     /**
      * Return the intersection of the given Boolean expressions
-     * 
+     *
      * @param exprs
      * @return
      */
@@ -44,7 +44,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
 
     /**
      * Return the union of the given Boolean expressions
-     * 
+     *
      * @param exprs
      * @return
      */
@@ -64,16 +64,14 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
         super(Boolean.class);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public BooleanExpression as(Path<Boolean> alias) {
-        return BooleanOperation.create((Operator)Ops.ALIAS, this, alias);
+        return BooleanOperation.create(Ops.ALIAS, this, alias);
     }
-    
-    @SuppressWarnings("unchecked")
+
     @Override
     public BooleanExpression as(String alias) {
-        return BooleanOperation.create((Operator)Ops.ALIAS, this, new PathImpl(getType(), alias));
+        return as(new PathImpl<Boolean>(Boolean.class, alias));
     }
 
     /**
@@ -88,6 +86,16 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
         }else{
             return this;
         }
+    }
+
+    /**
+     * Get an intersection of this and the union of the given predicates
+     *
+     * @param predicates
+     * @return
+     */
+    public BooleanExpression andAnyOf(Predicate... predicates){
+        return and(ExpressionUtils.anyOf(predicates));
     }
 
     /**
@@ -114,27 +122,36 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
         }else{
             return this;
         }
-
     }
-    
+
+    /**
+     * Get a union of this and the intersection of the given predicates
+     *
+     * @param predicates
+     * @return
+     */
+    public BooleanExpression orAllOf(Predicate... predicates){
+        return or(ExpressionUtils.allOf(predicates));
+    }
+
     /**
      * Get a this == true expression
-     * 
+     *
      * @return
      */
     public BooleanExpression isTrue(){
         return eq(true);
     }
-    
+
     /**
      * Get a this == false expression
-     * 
+     *
      * @return
      */
     public BooleanExpression isFalse(){
         return eq(false);
     }
-    
+
     @Override
     public BooleanExpression eq(Boolean right) {
         if (right.booleanValue()){
@@ -147,6 +164,6 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
                 eqFalse = super.eq(false);
             }
             return eqFalse;
-        }        
+        }
     }
 }
