@@ -18,7 +18,7 @@ import com.mysema.testutil.JPATestRunner;
  */
 @RunWith(JPATestRunner.class)
 @JPAConfig("derby")
-public abstract class DerbyJPAStandardTest extends AbstractJPATest{
+public class DerbyJPAStandardTest extends AbstractJPATest{
 
     @Override
     protected Target getTarget() {
