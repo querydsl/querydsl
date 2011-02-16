@@ -22,6 +22,7 @@ import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeAdapter;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.commons.lang.Assert;
+import com.mysema.util.JavaSyntaxUtils;
 
 /**
  * EntityType represents a model of a query domain type with properties
@@ -65,6 +66,9 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         this.prefix = Assert.notNull(prefix,"prefix");
         this.suffix = Assert.notNull(suffix,"suffix");
         this.uncapSimpleName = StringUtils.uncapitalize(type.getSimpleName());
+        if (JavaSyntaxUtils.isReserved(uncapSimpleName)){
+            this.uncapSimpleName = uncapSimpleName + "_";    
+        }
         this.superTypes = superTypes;
     }
 
