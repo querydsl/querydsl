@@ -9,7 +9,6 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
@@ -31,22 +30,23 @@ public abstract class StringExpression extends ComparableExpression<String> {
     private volatile StringExpression lower, trim, upper;
 
     @Nullable
+    private volatile StringExpression min, max;
+
+    @Nullable
     private volatile BooleanExpression isempty;
 
     public StringExpression() {
         super(String.class);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public StringExpression as(Path<String> alias) {
-        return StringOperation.create((Operator)Ops.ALIAS, this, alias);
+        return StringOperation.create(Ops.ALIAS, this, alias);
     }
-    
-    @SuppressWarnings("unchecked")
+
     @Override
     public StringExpression as(String alias) {
-        return StringOperation.create((Operator)Ops.ALIAS, this, new PathImpl<String>(getType(), alias));
+        return StringOperation.create(Ops.ALIAS, this, new PathImpl<String>(getType(), alias));
     }
 
     /**
@@ -132,7 +132,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     public BooleanExpression contains(String str) {
         return contains(ConstantImpl.create(str));
     }
-    
+
     /**
      * @param str
      * @return
@@ -140,7 +140,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     public BooleanExpression containsIgnoreCase(Expression<String> str) {
         return BooleanOperation.create(Ops.STRING_CONTAINS_IC, this, str);
     }
-   
+
     /**
      * @param str
      * @return
@@ -148,7 +148,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     public BooleanExpression containsIgnoreCase(String str) {
         return containsIgnoreCase(ConstantImpl.create(str));
     }
-    
+
     /**
      * Returns true if this ends with str
      *
@@ -159,7 +159,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     public BooleanExpression endsWith(Expression<String> str) {
         return BooleanOperation.create(Ops.ENDS_WITH, this, str);
     }
-    
+
     /**
      * @param str
      * @return
@@ -178,7 +178,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     public BooleanExpression endsWith(String str) {
         return endsWith(ConstantImpl.create(str));
     }
-    
+
     /**
      * @param str
      * @return
@@ -348,6 +348,30 @@ public abstract class StringExpression extends ComparableExpression<String> {
     }
 
     /**
+     * Get the maximum value of this expression (aggregation)
+     *
+     * @return max(this)
+     */
+    public StringExpression max(){
+        if (max == null){
+            max = StringOperation.create(Ops.AggOps.MAX_AGG, this);
+        }
+        return max;
+    }
+
+    /**
+     * Get the minimum value of this expression (aggregation)
+     *
+     * @return min(this)
+     */
+    public StringExpression min(){
+        if (min == null){
+            min = StringOperation.create(Ops.AggOps.MIN_AGG, this);
+        }
+        return min;
+    }
+
+    /**
      * Prepend the given String and return the result
      *
      * @param str
@@ -388,7 +412,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     public BooleanExpression startsWith(Expression<String> str) {
         return BooleanOperation.create(Ops.STARTS_WITH, this, str);
     }
-    
+
     /**
      * @param str
      * @return
@@ -407,7 +431,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     public BooleanExpression startsWith(String str) {
         return startsWith(ConstantImpl.create(str));
     }
-    
+
     /**
      * @param str
      * @return
@@ -419,6 +443,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     /* (non-Javadoc)
      * @see com.mysema.query.types.expr.EComparable#stringValue()
      */
+    @Override
     public StringExpression stringValue() {
         return this;
     }
