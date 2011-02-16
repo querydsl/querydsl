@@ -35,6 +35,10 @@ public class NumberTemplate<T extends Number & Comparable<?>> extends NumberExpr
         return new NumberTemplate<T>(type, template, Arrays.<Expression<?>>asList(args));
     }
 
+    public static NumberExpression<Integer> one = create(Integer.class, "1");
+
+    public static NumberExpression<Integer> zero = create(Integer.class, "0");
+
     private final TemplateExpression<T> templateMixin;
 
     public NumberTemplate(Class<T> type, Template template, List<Expression<?>> args) {
