@@ -23,38 +23,38 @@ import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.path.*;
 
 public class SimpleExpressionTest {
-    
+
     enum ExampleEnum {A,B}
-    
+
     @Test
     public void As_usage(){
         SimpleExpression<String> str = new StringPath("str");
         assertEquals("str as alias", str.as("alias").toString());
         assertEquals("str as alias", str.as(new StringPath("alias")).toString());
     }
-    
+
     @Test
     public void Subclasses_Override_As() throws SecurityException, NoSuchMethodException{
         List<Class<?>> classes = Arrays.<Class<?>>asList(
-                BooleanExpression.class, 
-                ComparableExpression.class, 
-                DateExpression.class, 
-                DateTimeExpression.class, 
+                BooleanExpression.class,
+                ComparableExpression.class,
+                DateExpression.class,
+                DateTimeExpression.class,
                 EnumExpression.class,
-                NumberExpression.class, 
+                NumberExpression.class,
                 SimpleExpression.class,
-                StringExpression.class, 
+                StringExpression.class,
                 TimeExpression.class);
-        
+
         for (Class<?> cl : classes){
             Method asPath = cl.getDeclaredMethod("as", Path.class);
             assertEquals(cl, asPath.getReturnType());
-            
+
             Method asString = cl.getDeclaredMethod("as", String.class);
             assertEquals(cl, asString.getReturnType());
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void Various(){
@@ -74,12 +74,17 @@ public class SimpleExpressionTest {
         paths.add(new SimplePath(String.class,"p"));
         paths.add(new StringPath("p"));
         paths.add(new TimePath(Time.class,"p"));
-        
+
         for (SimpleExpression<?> expr : paths){
             Path o = new PathImpl(expr.getType(), "o");
-            assertEquals(OperationImpl.create(expr.getType(), Ops.ALIAS, expr, o), expr.as("o"));            
+            assertEquals(OperationImpl.create(expr.getType(), Ops.ALIAS, expr, o), expr.as("o"));
             Path p = new PathImpl(expr.getType(), "p");
             assertEquals(OperationImpl.create(expr.getType(), Ops.ALIAS, expr, p), expr.as(p));
         }
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void Eq_Null(){
+        new SimplePath<Object>(Object.class, "path").eq((Object)null);
     }
 }

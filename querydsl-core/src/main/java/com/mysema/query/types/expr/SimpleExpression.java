@@ -125,7 +125,11 @@ public abstract class SimpleExpression<T> extends ExpressionBase<T> {
      * @return
      */
     public BooleanExpression eq(T right) {
-        return eq(new ConstantImpl<T>(right));
+        if (right == null){
+            throw new IllegalArgumentException("eq(null) is not allowed. Use isNull() instead");
+        }else{
+            return eq(new ConstantImpl<T>(right));
+        }
     }
 
     /**
