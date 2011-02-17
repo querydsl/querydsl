@@ -807,7 +807,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     public void Unique_Constructor_Projection(){
         // unique constructor projection
-        IdName idAndName = query().from(survey).uniqueResult(new QIdName(survey.id, survey.name));
+        IdName idAndName = query().from(survey).limit(1).uniqueResult(new QIdName(survey.id, survey.name));
         assertNotNull(idAndName);
         assertNotNull(idAndName.getId());
         assertNotNull(idAndName.getName());
@@ -817,7 +817,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     public void Unique_Single(){
         // unique single
-        String s = query().from(survey).uniqueResult(survey.name);
+        String s = query().from(survey).limit(1).uniqueResult(survey.name);
         assertNotNull(s);
 
     }
@@ -825,12 +825,17 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     public void Unique_Wildcard(){
         // unique wildcard
-        Object[] row = query().from(survey).uniqueResult(survey.all());
+        Object[] row = query().from(survey).limit(1).uniqueResult(survey.all());
         assertNotNull(row);
         assertEquals(2, row.length);
         assertNotNull(row[0]);
         assertNotNull(row[1]);
 
+    }
+    
+    @Test(expected=NonUniqueResultException.class)
+    public void UniqueResultContract(){
+        query().from(employee).uniqueResult(employee.all());
     }
 
     @Test
@@ -872,7 +877,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @SkipForQuoted
     public void Wildcard_All() {
         expectedQuery = "select * from EMPLOYEE2 e";
-        query().from(employee).uniqueResult(Wildcard.all);
+        query().from(employee).list(Wildcard.all);
     }
 
     @Test

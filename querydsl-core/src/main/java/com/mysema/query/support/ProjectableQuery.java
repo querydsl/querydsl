@@ -13,6 +13,7 @@ import java.util.Map;
 import org.apache.commons.collections15.IteratorUtils;
 
 import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.Projectable;
 import com.mysema.query.SearchResults;
 import com.mysema.query.types.Expression;
@@ -128,15 +129,29 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
 
     public Object[] uniqueResult(Expression<?>[] args) {
         queryMixin.setUnique(true);
-        Iterator<Object[]> it = iterate(args);
-        return it.hasNext() ? it.next() : null;
+        return getUniqueResult(iterate(args));
     }
 
     @Override
     public <RT> RT uniqueResult(Expression<RT> expr) {
         queryMixin.setUnique(true);
-        limit(1l);
-        Iterator<RT> it = iterate(expr);
-        return it.hasNext() ? it.next() : null;
+        if (queryMixin.getMetadata().getModifiers().getLimit() == null){
+            limit(2l);    
+        }        
+        return getUniqueResult(iterate(expr));
     }
+    
+    protected <T> T getUniqueResult(Iterator<T> it) {
+        if (it.hasNext()){
+            T rv = it.next();
+            if (it.hasNext()){
+                throw new NonUniqueResultException();
+            }
+            return rv;
+        }else{
+            return null;
+        }
+    }
+    
+    
 }

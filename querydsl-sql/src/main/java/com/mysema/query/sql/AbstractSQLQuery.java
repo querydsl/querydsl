@@ -27,6 +27,7 @@ import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
+import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
@@ -548,10 +549,18 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     @Override
     public <RT> RT uniqueResult(Expression<RT> expr) {
+        if (getMetadata().getModifiers().getLimit() == null 
+           && !expr.toString().contains("count(")){
+            limit(2);    
+        }        
         CloseableIterator<RT> iterator = iterate(expr);
         try{
             if (iterator.hasNext()){
-                return iterator.next();
+                RT rv = iterator.next();
+                if (iterator.hasNext()){
+                    throw new NonUniqueResultException();
+                }
+                return rv;
             }else{
                 return null;
             }

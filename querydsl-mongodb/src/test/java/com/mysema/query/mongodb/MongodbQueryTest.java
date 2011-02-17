@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
+import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.SearchResults;
 import com.mysema.query.mongodb.domain.Address;
 import com.mysema.query.mongodb.domain.City;
@@ -58,6 +59,11 @@ public class MongodbQueryTest {
     @Test
     public void UniqueResult(){
         assertEquals("Jantunen", where(user.firstName.eq("Jaakko")).uniqueResult().getLastName());
+    }
+    
+    @Test(expected=NonUniqueResultException.class)
+    public void UniqueResultContract(){
+        where(user.firstName.isNotNull()).uniqueResult();
     }
 
     @Test

@@ -196,6 +196,7 @@ public interface Projectable {
      * @param first
      * @param second
      * @param rest
+     * @throws NonUniqueResultException if there is more than one matching result
      * @return
      */
     @Nullable
@@ -203,10 +204,9 @@ public interface Projectable {
 
     /**
      * return a unique result for the given projection or null if not result is found
-     * 
-     * <p>for multiple results only the first one is returned</p>
      *
      * @param args
+     * @throws NonUniqueResultException if there is more than one matching result
      * @return
      */
     @Nullable
@@ -214,12 +214,11 @@ public interface Projectable {
 
     /**
      * return a unique result for the given projection or null if not result is found
-     * 
-     * <p>for multiple results only the first one is returned</p>
      *
      * @param <RT>
      *            return type
      * @param projection
+     * @throws NonUniqueResultException if there is more than one matching result
      * @return the result or null for an empty result
      */
     @Nullable

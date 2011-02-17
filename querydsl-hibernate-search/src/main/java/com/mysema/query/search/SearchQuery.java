@@ -15,6 +15,7 @@ import org.hibernate.search.Search;
 import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
+import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -159,7 +160,11 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
     @SuppressWarnings("unchecked")
     @Override
     public T uniqueResult() {
-        return (T) createQuery(false).uniqueResult();
+        try{
+            return (T) createQuery(false).uniqueResult();    
+        }catch (org.hibernate.NonUniqueResultException e){
+            throw new NonUniqueResultException();
+        }        
     }
 
     @Override

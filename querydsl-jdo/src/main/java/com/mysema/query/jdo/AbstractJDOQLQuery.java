@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
@@ -270,9 +271,24 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     @Nullable
     public <RT> RT uniqueResult(Expression<RT> expr) {
         queryMixin.addToProjection(expr);
-        Query query = createQuery(false);
-        query.setUnique(true);
+        if (getMetadata().getModifiers().getLimit() == null){
+            limit(2);
+        }
+        Query query = createQuery(false);        
         reset();
-        return (RT) execute(query);
+        Object rv = execute(query);
+        if (rv instanceof List){
+            List<RT> list = (List)rv;
+            if (!list.isEmpty()){
+                if (list.size() > 1){
+                    throw new NonUniqueResultException();
+                }
+                return list.get(0);
+            }else{
+                return null;
+            }
+        }else{
+            return (RT)rv;
+        }        
     }
 }

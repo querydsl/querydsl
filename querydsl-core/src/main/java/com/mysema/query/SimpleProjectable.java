@@ -49,7 +49,8 @@ public interface SimpleProjectable<T> {
 
     /**
      * Get the projection as a unique result
-     *
+     * 
+     * @throws NonUniqueResultException if there is more than one matching result
      * @return
      */
     @Nullable

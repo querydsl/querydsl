@@ -17,6 +17,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.jdo.test.domain.Book;
 import com.mysema.query.jdo.test.domain.Product;
 import com.mysema.query.jdo.test.domain.QBook;
@@ -66,6 +67,11 @@ public class BasicsTest extends AbstractJDOTest {
     @Test
     public void CountTests() {
         assertEquals("count", 2, query().from(product).count());
+    }
+    
+    @Test(expected=NonUniqueResultException.class)
+    public void Unique_Result_Throws_Exception_On_Multiple_Results(){
+        query().from(product).uniqueResult(product);
     }
 
     @Test

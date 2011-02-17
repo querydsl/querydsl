@@ -13,7 +13,6 @@ import java.util.Map;
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
-import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.slf4j.Logger;
@@ -22,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
@@ -216,11 +216,12 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         reset();
         try{
             return (RT) query.getSingleResult();
-        }catch(NoResultException e){
+        }catch(javax.persistence.NoResultException e){
             logger.debug(e.getMessage(),e);
             return null;
+        }catch(javax.persistence.NonUniqueResultException e){
+            throw new NonUniqueResultException();
         }
-
     }
 
     @SuppressWarnings("unchecked")

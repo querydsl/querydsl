@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -176,9 +177,11 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery> implements 
         reset();
         try{
             return (RT) query.getSingleResult();
-        }catch(NoResultException e){
+        }catch(javax.persistence.NoResultException e){
             logger.debug(e.getMessage(),e);
             return null;
+        }catch(javax.persistence.NonUniqueResultException e){
+            throw new NonUniqueResultException();
         }
     }
 

@@ -14,6 +14,7 @@ import org.apache.lucene.search.Sort;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.EmptyCloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
+import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
@@ -202,7 +203,7 @@ SimpleProjectable<T> {
             }
             final ScoreDoc[] scoreDocs = searcher.search(createQuery(), maxDoc).scoreDocs;
             if (scoreDocs.length > 1) {
-                throw new QueryException("More than one result found!");
+                throw new NonUniqueResultException();
             } else if (scoreDocs.length == 1) {
                 return transformer.transform(searcher.doc(scoreDocs[0].doc));
             } else {

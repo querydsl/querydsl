@@ -15,6 +15,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.junit.Test;
 
+import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.SearchResults;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -57,6 +58,11 @@ public class SearchQueryTest extends AbstractQueryTest{
         assertEquals(u, list.get(0));
     }
 
+    @Test(expected=NonUniqueResultException.class)
+    public void Unique_Result_Throws_Exception_On_Multiple_Results(){
+        query().where(user.middleName.eq("X")).uniqueResult();
+    }
+    
     @Test
     public void Ordering(){
         BooleanExpression filter = user.middleName.eq("X");

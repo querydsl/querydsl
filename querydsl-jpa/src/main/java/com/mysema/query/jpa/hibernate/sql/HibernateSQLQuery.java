@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -201,8 +202,12 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expression<RT> expr) {
         Query query = createQuery(expr);
-        reset();
-        return (RT) query.uniqueResult();
+        reset();        
+        try{
+            return (RT) query.uniqueResult();    
+        }catch (org.hibernate.NonUniqueResultException e){
+            throw new NonUniqueResultException();
+        }  
     }
 
     /**

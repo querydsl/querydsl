@@ -15,6 +15,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -148,7 +149,15 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProj
     @Override
     public K uniqueResult() {
         DBCursor c = createCursor().limit(1);
-        return c.hasNext() ? transformer.transform(c.next()) : null;
+        if (c.hasNext()){
+            K rv = transformer.transform(c.next());
+            if (c.hasNext()){
+                throw new NonUniqueResultException();
+            }
+            return rv;
+        }else{
+            return null;
+        }
     }
 
     @Override

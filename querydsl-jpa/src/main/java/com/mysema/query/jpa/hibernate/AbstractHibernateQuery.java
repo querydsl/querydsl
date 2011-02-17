@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
@@ -351,8 +352,12 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         String queryString = toQueryString();
         logQuery(queryString);
         Query query = createQuery(queryString, modifiers);
-        reset();
-        return (RT) query.uniqueResult();
+        reset();        
+        try{
+            return (RT) query.uniqueResult();    
+        }catch (org.hibernate.NonUniqueResultException e){
+            throw new NonUniqueResultException();
+        }  
     }
 
 }
