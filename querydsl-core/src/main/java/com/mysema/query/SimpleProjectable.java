@@ -48,7 +48,7 @@ public interface SimpleProjectable<T> {
     List<T> listDistinct();
 
     /**
-     * Get the projection as a unique result
+     * Get the projection as a unique result or null if no result is found
      * 
      * @throws NonUniqueResultException if there is more than one matching result
      * @return

@@ -189,7 +189,7 @@ public interface Projectable {
     <K,V> Map<K,V> map(Expression<K> key, Expression<V> value);
 
     /**
-     * return a unique result for the given projection or null if not result is found
+     * return a unique result for the given projection or null if no result is found
      * 
      * <p>for multiple results only the first one is returned</p>
      *
@@ -203,7 +203,7 @@ public interface Projectable {
     Object[] uniqueResult(Expression<?> first, Expression<?> second, Expression<?>... rest);
 
     /**
-     * return a unique result for the given projection or null if not result is found
+     * return a unique result for the given projection or null if no result is found
      *
      * @param args
      * @throws NonUniqueResultException if there is more than one matching result
@@ -213,7 +213,7 @@ public interface Projectable {
     Object[] uniqueResult(Expression<?>[] args);
 
     /**
-     * return a unique result for the given projection or null if not result is found
+     * return a unique result for the given projection or null if no result is found
      *
      * @param <RT>
      *            return type
