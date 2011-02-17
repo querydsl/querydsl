@@ -54,7 +54,7 @@ public class DeepPopulationTest {
         QBean<Entity2> entity2Bean = new QBean<Entity2>(Entity2.class, name, id);
         QBean<Entity1> entity1Bean = new QBean<Entity1>(Entity1.class, Collections.singletonMap("entity2", entity2Bean));
 
-        Entity1 entity1 = entity1Bean.newInstance("nameX","idX");
+        Entity1 entity1 = FactoryExpressionUtils.wrap(entity1Bean).newInstance("nameX","idX");
         assertEquals("nameX", entity1.getEntity2().getName());
         assertEquals("idX", entity1.getEntity2().getId());
     }
@@ -66,7 +66,7 @@ public class DeepPopulationTest {
         QBean<Entity2> entity2Bean = new QBean<Entity2>(Entity2.class, name, id);
         QTuple tupleExpr = new QTuple(entity2Bean);
 
-        Tuple tuple = tupleExpr.newInstance("nameX","idX");
+        Tuple tuple = FactoryExpressionUtils.wrap(tupleExpr).newInstance("nameX","idX");
         assertEquals("nameX", tuple.get(entity2Bean).getName());
         assertEquals("idX", tuple.get(entity2Bean).getId());
     }

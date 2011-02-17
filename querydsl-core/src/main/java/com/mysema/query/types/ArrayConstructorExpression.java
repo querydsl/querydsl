@@ -23,10 +23,8 @@ public class ArrayConstructorExpression<T> extends ExpressionBase<T[]> implement
     private static final long serialVersionUID = 8667880104290226505L;
 
     private final Class<T> elementType;
-    
+
     private final List<Expression<?>> args;
-    
-    private final List<Expression<?>> expandedArgs;
 
     @SuppressWarnings("unchecked")
     public ArrayConstructorExpression(Expression<?>... args) {
@@ -38,7 +36,6 @@ public class ArrayConstructorExpression<T> extends ExpressionBase<T[]> implement
         super(type);
         this.elementType = (Class<T>) Assert.notNull(type.getComponentType(),"componentType");
         this.args = Arrays.<Expression<?>>asList(args);
-        this.expandedArgs = FactoryExpressionUtils.expand(this.args);
     }
 
     public final Class<T> getElementType() {
@@ -53,12 +50,11 @@ public class ArrayConstructorExpression<T> extends ExpressionBase<T[]> implement
     @SuppressWarnings("unchecked")
     @Override
     public T[] newInstance(Object... a){
-        Object[] compressedArgs = FactoryExpressionUtils.compress(this.args, a);
-        if (compressedArgs.getClass().getComponentType().equals(elementType)){
-            return (T[])compressedArgs;
+        if (a.getClass().getComponentType().equals(elementType)){
+            return (T[])a;
         }else{
-            T[] rv = (T[]) Array.newInstance(elementType, compressedArgs.length);
-            System.arraycopy(compressedArgs, 0, rv, 0, compressedArgs.length);
+            T[] rv = (T[]) Array.newInstance(elementType, a.length);
+            System.arraycopy(a, 0, rv, 0, a.length);
             return rv;
         }
     }
@@ -66,7 +62,7 @@ public class ArrayConstructorExpression<T> extends ExpressionBase<T[]> implement
 
     @Override
     public List<Expression<?>> getArgs() {
-        return expandedArgs;
+        return args;
     }
 
     @Override
@@ -80,10 +76,10 @@ public class ArrayConstructorExpression<T> extends ExpressionBase<T[]> implement
             return false;
         }
     }
-    
+
     @Override
     public int hashCode(){
         return getType().hashCode();
     }
-    
+
 }

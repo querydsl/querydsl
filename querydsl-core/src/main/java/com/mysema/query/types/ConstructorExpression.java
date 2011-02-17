@@ -54,8 +54,6 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
 
     private final List<Expression<?>> args;
 
-    private final List<Expression<?>> expandedArgs;
-
     private final Class<?>[] parameterTypes;
 
     @Nullable
@@ -69,7 +67,6 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
         super(type);
         this.parameterTypes = paramTypes.clone();
         this.args = args;
-        this.expandedArgs = FactoryExpressionUtils.expand(args);
     }
 
     @Override
@@ -97,7 +94,7 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
     }
 
     public final List<Expression<?>> getArgs() {
-        return expandedArgs;
+        return args;
     }
 
     @SuppressWarnings("unchecked")
@@ -106,7 +103,7 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
             if (constructor == null){
                 constructor = getType().getConstructor(parameterTypes);
             }
-            return (T) constructor.newInstance(FactoryExpressionUtils.compress(this.args, args));
+            return (T) constructor.newInstance(args);
         } catch (SecurityException e) {
            throw new ExpressionException(e.getMessage(), e);
         } catch (NoSuchMethodException e) {

@@ -37,6 +37,7 @@ import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.*;
 import com.mysema.query.types.query.ListSubQuery;
+import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.query.types.template.SimpleTemplate;
 import com.mysema.util.ResultSetAdapter;
 
@@ -85,8 +86,6 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
 
-    private static final Expression<Integer> ONE = TemplateExpressionImpl.create(Integer.class, "1");
-
     @Nullable
     private final Connection conn;
 
@@ -115,17 +114,17 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     /**
      * Add the given String literal as a join flag to the last added join with the position BEFORE_TARGET
-     * 
+     *
      * @param flag
      * @return
      */
     protected Q addJoinFlag(String flag){
         return addJoinFlag(flag, JoinFlag.Position.BEFORE_TARGET);
     }
-    
+
     /**
-     * Add the given String literal as a join flag to the last added join  
-     * 
+     * Add the given String literal as a join flag to the last added join
+     *
      * @param flag
      * @param position
      * @return
@@ -139,7 +138,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     /**
      * Add the given prefix and expression as a general query flag
-     * 
+     *
      * @param position position of the flag
      * @param prefix prefix for the flag
      * @param expr expression of the flag
@@ -152,7 +151,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     /**
      * Add the given String literal as query flag
-     * 
+     *
      * @param position
      * @param flag
      * @return
@@ -163,7 +162,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     /**
      * Add the given Expression as a query flag
-     * 
+     *
      * @param position
      * @param flag
      * @return
@@ -197,7 +196,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     @Override
     public boolean exists(){
-        return limit(1).uniqueResult(ONE) != null;
+        return limit(1).uniqueResult(NumberTemplate.one) != null;
     }
 
     protected SQLSerializer createSerializer() {
@@ -207,7 +206,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     public Q from(Expression<?>... args) {
         return queryMixin.from(args);
     }
-    
+
     @SuppressWarnings("unchecked")
     public Q from(SubQueryExpression<?> subQuery, Path<?> alias){
         return queryMixin.from(ExpressionUtils.as((Expression)subQuery, alias));
@@ -352,6 +351,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                 throw new QueryException(e);
             }
         }else{
+            expr = queryMixin.convert(expr);
             queryMixin.addToProjection(expr);
             return iterateSingle(expr);
         }

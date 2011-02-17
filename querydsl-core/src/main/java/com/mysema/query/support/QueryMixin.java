@@ -12,6 +12,7 @@ import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.*;
+import com.mysema.query.types.FactoryExpressionUtils.FactoryExpressionAdapter;
 
 /**
  * Mixin style Query implementation
@@ -47,9 +48,9 @@ public class QueryMixin<T>{
         metadata.addFlag(queryFlag);
         return self;
     }
-    
+
     public T addToProjection(Expression<?>... o) {
-        metadata.addProjection(o);
+        metadata.addProjection(convert(o));
         return self;
     }
 
@@ -60,28 +61,42 @@ public class QueryMixin<T>{
         return p;
     }
 
+    public <RT> Expression<RT> convert(Expression<RT> expr){
+        if (expr instanceof FactoryExpression<?> && !(expr instanceof FactoryExpressionAdapter<?>)){
+            return FactoryExpressionUtils.wrap((FactoryExpression<RT>)expr);
+        }else{
+            return expr;
+        }
+    }
+
+    public Expression<?>[] convert(Expression<?>[] exprs){
+        for (int i = 0; i < exprs.length; i++){
+            exprs[i] = convert(exprs[i]);
+        }
+        return exprs;
+    }
+
+
     protected <D> Expression<D> createAlias(Expression<D> path, Path<D> alias){
         assertRoot(alias);
         return ExpressionUtils.as(path, alias);
     }
 
-    @SuppressWarnings("unchecked")
     protected <D> Expression<D> createAlias(CollectionExpression<?,D> target, Path<D> alias){
         assertRoot(alias);
-        return OperationImpl.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
+        return OperationImpl.create(alias.getType(), Ops.ALIAS, target, alias);
     }
 
-    @SuppressWarnings("unchecked")
     protected <D> Expression<D> createAlias(MapExpression<?,D> target, Path<D> alias){
         assertRoot(alias);
-        return OperationImpl.create((Class<D>)alias.getType(), Ops.ALIAS, target, alias);
+        return OperationImpl.create(alias.getType(), Ops.ALIAS, target, alias);
     }
 
     protected <D> Expression<D> createAlias(SubQueryExpression<D> path, Path<D> alias){
         assertRoot(alias);
         return ExpressionUtils.as(path, alias);
     }
-    
+
     public T distinct(){
         metadata.setDistinct(true);
         return self;
@@ -93,7 +108,7 @@ public class QueryMixin<T>{
         }
         return self;
     }
-    
+
     public T from(EntityPath<?>... args) {
         for (EntityPath<?> arg : args){
             metadata.addJoin(JoinType.DEFAULT, arg);
@@ -110,7 +125,7 @@ public class QueryMixin<T>{
         metadata.addJoin(JoinType.FULLJOIN, createAlias(target, alias));
         return self;
     }
-    
+
     public <P> T fullJoin(CollectionExpression<?,P> target) {
         metadata.addJoin(JoinType.FULLJOIN, target);
         return self;
@@ -130,7 +145,7 @@ public class QueryMixin<T>{
         metadata.addJoin(JoinType.FULLJOIN, createAlias(target, alias));
         return self;
     }
-    
+
     @SuppressWarnings("unchecked")
     public <P> T fullJoin(SubQueryExpression<P> target, Path alias) {
         metadata.addJoin(JoinType.FULLJOIN, createAlias(target, alias));
@@ -154,7 +169,7 @@ public class QueryMixin<T>{
         metadata.addHaving(normalize(o,false));
         return self;
     }
-    
+
     public <P> T innerJoin(EntityPath<P> target) {
         metadata.addJoin(JoinType.INNERJOIN, target);
         return self;
@@ -198,7 +213,7 @@ public class QueryMixin<T>{
     public boolean isUnique() {
         return metadata.isUnique();
     }
-    
+
     public <P> T join(EntityPath<P> target) {
         metadata.addJoin(JoinType.JOIN, target);
         return self;
@@ -218,13 +233,13 @@ public class QueryMixin<T>{
         metadata.addJoin(JoinType.JOIN, createAlias(target, alias));
         return getSelf();
     }
-    
+
     public <P> T join(MapExpression<?,P> target) {
         metadata.addJoin(JoinType.JOIN, target);
         return getSelf();
     }
 
-    public <P> T join(MapExpression<?,P> target, Path<P> alias) {       
+    public <P> T join(MapExpression<?,P> target, Path<P> alias) {
         metadata.addJoin(JoinType.JOIN, createAlias(target, alias));
         return getSelf();
     }
@@ -234,7 +249,7 @@ public class QueryMixin<T>{
         metadata.addJoin(JoinType.JOIN, createAlias(target, alias));
         return self;
     }
-    
+
     public <P> T leftJoin(EntityPath<P> target) {
         metadata.addJoin(JoinType.LEFTJOIN, target);
         return self;
@@ -338,23 +353,24 @@ public class QueryMixin<T>{
         metadata.setParam(param, value);
         return self;
     }
-    
+
     public void setDistinct(boolean distinct) {
         metadata.setDistinct(distinct);
     }
-    
+
     public void setSelf(T self){
         this.self = self;
     }
-    
+
     public void setUnique(boolean unique) {
         metadata.setUnique(unique);
     }
 
+    @Override
     public String toString() {
         return metadata.toString();
     }
-    
+
     public T where(Predicate... o) {
         metadata.addWhere(normalize(o, true));
         return self;
@@ -363,5 +379,5 @@ public class QueryMixin<T>{
     protected Predicate[] normalize(Predicate[] conditions, boolean where) {
         return conditions;
     }
-    
+
 }
