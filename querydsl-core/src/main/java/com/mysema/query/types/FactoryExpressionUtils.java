@@ -57,12 +57,24 @@ public final class FactoryExpressionUtils {
         List<Expression<?>> rv = new ArrayList<Expression<?>>(exprs.size());
         for (Expression<?> expr : exprs){
             if (expr instanceof FactoryExpression<?>){
-                rv.addAll(((FactoryExpression<?>)expr).getArgs());
+                rv.addAll(expand(((FactoryExpression<?>)expr).getArgs()));
             }else{
                 rv.add(expr);
             }
         }
         return rv;
+    }
+
+    private static int countArguments(FactoryExpression<?> expr){
+        int counter = 0;
+        for (Expression<?> arg : expr.getArgs()){
+            if (arg instanceof FactoryExpression<?>){
+                counter += countArguments((FactoryExpression<?>)arg);
+            }else{
+                counter++;
+            }
+        }
+        return counter;
     }
 
     private static Object[] compress(List<Expression<?>> exprs, Object[] args){
@@ -72,8 +84,10 @@ public final class FactoryExpressionUtils {
             for (int i = 0; i < exprs.size(); i++){
                 if (exprs.get(i) instanceof FactoryExpression<?>){
                     FactoryExpression<?> fe = (FactoryExpression<?>)exprs.get(i);
-                    rv[i] = fe.newInstance(ArrayUtils.subarray(args, offset, offset + fe.getArgs().size()));
-                    offset += fe.getArgs().size();
+                    int fullArgsLength = countArguments(fe);
+                    Object[] compressed = compress(fe.getArgs(), ArrayUtils.subarray(args, offset, offset + fullArgsLength));
+                    rv[i] = fe.newInstance(compressed);
+                    offset += fullArgsLength;
                 }else{
                     rv[i] = args[offset];
                     offset++;
