@@ -14,26 +14,27 @@ import javax.annotation.Nullable;
  * is a reference to the type the expression is bound to.
  *
  * @author tiwe
- * 
+ *
  * @param <T> expression type
- * 
+ *
  */
 public interface Expression<T> extends Serializable{
-    
+
     /**
      * Accept the visitor with the given context
-     * 
+     *
      * @param <R>
      * @param <C>
      * @param v
      * @param context
      * @return
      */
+    @Nullable
     <R,C> R accept(Visitor<R,C> v, @Nullable C context);
-    
+
     /**
      * Get the java type for this expression
-     * 
+     *
      * @return
      */
     Class<? extends T> getType();
