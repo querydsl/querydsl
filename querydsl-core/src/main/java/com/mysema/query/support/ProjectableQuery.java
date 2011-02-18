@@ -10,6 +10,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.collections15.IteratorUtils;
 
 import com.mysema.commons.lang.CloseableIterator;
@@ -127,6 +129,7 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
         return uniqueResult(merge(first, second, rest));
     }
 
+    @Override
     public Object[] uniqueResult(Expression<?>[] args) {
         queryMixin.setUnique(true);
         return getUniqueResult(iterate(args));
@@ -136,11 +139,12 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     public <RT> RT uniqueResult(Expression<RT> expr) {
         queryMixin.setUnique(true);
         if (queryMixin.getMetadata().getModifiers().getLimit() == null){
-            limit(2l);    
-        }        
+            limit(2l);
+        }
         return getUniqueResult(iterate(expr));
     }
-    
+
+    @Nullable
     protected <T> T getUniqueResult(Iterator<T> it) {
         if (it.hasNext()){
             T rv = it.next();
@@ -152,6 +156,6 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
             return null;
         }
     }
-    
-    
+
+
 }
