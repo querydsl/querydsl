@@ -60,7 +60,7 @@ public class MongodbQueryTest {
     public void UniqueResult(){
         assertEquals("Jantunen", where(user.firstName.eq("Jaakko")).uniqueResult().getLastName());
     }
-    
+
     @Test(expected=NonUniqueResultException.class)
     public void UniqueResultContract(){
         where(user.firstName.isNotNull()).uniqueResult();
@@ -225,7 +225,7 @@ public class MongodbQueryTest {
     public void UniqueResultAndLimitAndOffset() {
         MongodbQuery<User> q = query().where(user.firstName.startsWith("Ja")).orderBy(user.age.asc());
         assertEquals(4, q.list().size());
-        assertEquals(u1, q.uniqueResult());
+        assertEquals(u1, q.list().get(0));
     }
 
     @Test
