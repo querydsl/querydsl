@@ -23,10 +23,10 @@ public interface Expression<T> extends Serializable{
     /**
      * Accept the visitor with the given context
      *
-     * @param <R>
-     * @param <C>
-     * @param v
-     * @param context
+     * @param <R> return type
+     * @param <C> context type
+     * @param v visitor
+     * @param context context of visit
      * @return
      */
     @Nullable
