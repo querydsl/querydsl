@@ -316,6 +316,9 @@ public class Processor {
             Type superType = superTypes.pop();
             if (!types.containsKey(superType.getFullName())  && !allSupertypes.containsKey(superType.getFullName())){
                 TypeElement typeElement = env.getElementUtils().getTypeElement(superType.getFullName());
+                if (typeElement == null){
+                    throw new IllegalStateException("Found no type for " + superType.getFullName());
+                }
                 EntityType entityType = elementHandler.handleNormalType(typeElement);
                 if (entityType.getSuperType() != null){
                     superTypes.push(entityType.getSuperType().getType());
