@@ -254,6 +254,13 @@ query.form(customer)
     .where(customer.firstName.eq("Bob").and(customer.lastName.eq("Wilson")));
 ]]></programlisting>
 
+	<para>If you want to combine the filters via "or" then use the following pattern</para>
+	
+<programlisting language="java"><![CDATA[
+query.form(customer)
+    .where(customer.firstName.eq("Bob").or(customer.lastName.eq("Wilson")));
+]]></programlisting>	
+
   </sect2>
   
   <sect2>

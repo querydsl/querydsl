@@ -303,6 +303,13 @@ from Customer as customer
     where customer.firstName = "Bob" and customer.lastName = "Wilson"
 </programlisting>
 
+	<para>If you want to combine the filters via "or" then use the following pattern</para>
+	
+<programlisting language="java"><![CDATA[
+query.form(customer)
+    .where(customer.firstName.eq("Bob").or(customer.lastName.eq("Wilson")));
+]]></programlisting>	
+
   </sect2>
   
   <sect2>
