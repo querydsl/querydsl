@@ -223,7 +223,7 @@ QCustomer customer = new QCustomer("myCustomer");
 
     <title>Querying</title>
 
-	<p>The Querydsl JPA module supports both the JPA and the Hibernate API.</p>
+	<para>The Querydsl JPA module supports both the JPA and the Hibernate API.</para>
 
     <para>
       To use the Hibernate API you use HibernateQuery instances for your queries like this :
