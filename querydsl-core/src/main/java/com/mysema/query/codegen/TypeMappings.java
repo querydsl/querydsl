@@ -45,7 +45,7 @@ import com.mysema.query.types.template.TimeTemplate;
 
 /**
  * TypeMappings defines mappings from Java types to {@link Expression}, {@link Path} and {@link TemplateExpression} types
- * 
+ *
  * @author tiwe
  *
  */
@@ -56,7 +56,7 @@ public final class TypeMappings {
     private final Map<TypeCategory, ClassType> pathTypes = new HashMap<TypeCategory, ClassType>();
 
     private final Map<TypeCategory, ClassType> templateTypes = new HashMap<TypeCategory, ClassType>();
-    
+
     public TypeMappings(){
         register(TypeCategory.STRING, StringExpression.class, StringPath.class, StringTemplate.class);
         register(TypeCategory.BOOLEAN, BooleanExpression.class, BooleanPath.class, BooleanTemplate.class);
@@ -111,7 +111,7 @@ public final class TypeMappings {
         TypeCategory category = type.getCategory();
         if (raw && category != TypeCategory.ENTITY && category != TypeCategory.CUSTOM){
             return exprType;
-            
+
         }else if (category == TypeCategory.STRING || category == TypeCategory.BOOLEAN){
             return exprType;
 
@@ -119,14 +119,14 @@ public final class TypeMappings {
             String packageName = type.getPackageName();
             String simpleName;
             if (type.getPackageName().isEmpty()){
-                simpleName = model.getPrefix()+type.getFullName().replace('.', '_')+model.getSuffix();
+                simpleName = model.getPrefix() + normalizeName(type.getFullName()) + model.getSuffix();
                 return new SimpleType(category, simpleName, "", simpleName, false, false);
-            }else{                
-                simpleName = model.getPrefix()+type.getFullName().substring(packageName.length()+1).replace('.', '_')+model.getSuffix();
+            }else{
+                simpleName = model.getPrefix() + normalizeName(type.getFullName().substring(packageName.length()+1)) + model.getSuffix();
                 return new SimpleType(category, packageName+"."+simpleName, packageName, simpleName, false, false);
             }
 
-        }else{    
+        }else{
             if (rawParameters){
                 type = new SimpleType(type);
             }
@@ -134,10 +134,14 @@ public final class TypeMappings {
                 type = new TypeExtends(type);
             }
             return new SimpleType(exprType, type);
-            
+
         }
     }
-    
+
+    private String normalizeName(String name){
+        return name.replace('.', '_').replace('$', '_');
+    }
+
     @SuppressWarnings("unchecked")
     public void register(TypeCategory category,
             Class<? extends Expression> expr,
