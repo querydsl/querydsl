@@ -12,6 +12,10 @@ import com.mysema.query.types.Expression;
 
 public class DummyProjectable extends ProjectableQuery<DummyProjectable>{
 
+    public DummyProjectable(QueryMixin<DummyProjectable> queryMixin) {
+        super(queryMixin);
+    }
+    
     public DummyProjectable() {
         super(new QueryMixin<DummyProjectable>());
     }

@@ -132,6 +132,9 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     @Override
     public Object[] uniqueResult(Expression<?>[] args) {
         queryMixin.setUnique(true);
+        if (queryMixin.getMetadata().getModifiers().getLimit() == null){
+            limit(2l);
+        }
         return getUniqueResult(iterate(args));
     }
 
