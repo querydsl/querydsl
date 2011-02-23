@@ -186,10 +186,14 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         else if (op == Ops.GOE || op == Ops.AOE) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$gte", asDBValue(expr, 1)));
 
-        }else if (op == Ops.IS_NULL){
+        }
+        
+        else if (op == Ops.IS_NULL){
             return asDBObject(asDBKey(expr, 0), asDBObject("$exists", false));
 
-        }else if (op == Ops.IS_NOT_NULL){
+        }
+        
+        else if (op == Ops.IS_NOT_NULL){
             return asDBObject(asDBKey(expr, 0), asDBObject("$exists", true));
 
         }
