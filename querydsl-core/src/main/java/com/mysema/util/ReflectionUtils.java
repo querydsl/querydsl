@@ -48,8 +48,10 @@ public final class ReflectionUtils {
         while (beanClass != null && !beanClass.equals(Object.class)){
             try {
                 return beanClass.getDeclaredField(propertyName);
-            } catch (SecurityException e) { // skip
-            } catch (NoSuchFieldException e) { // skip
+            } catch (SecurityException e) {
+                // skip
+            } catch (NoSuchFieldException e) {
+                // skip
             }
             beanClass = beanClass.getSuperclass();
         }
@@ -90,7 +92,7 @@ public final class ReflectionUtils {
         }
         return null;
     }
-    
+
     public static Set<Class<?>> getImplementedInterfaces(Class<?> cl){
         Set<Class<?>> interfaces = new HashSet<Class<?>>();
         Deque<Class<?>> classes = new ArrayDeque<Class<?>>();
@@ -99,11 +101,11 @@ public final class ReflectionUtils {
             Class<?> c = classes.pop();
             interfaces.addAll(Arrays.asList(c.getInterfaces()));
             if (c.getSuperclass() != null){
-                classes.add(c.getSuperclass());    
-            }            
+                classes.add(c.getSuperclass());
+            }
             classes.addAll(Arrays.asList(c.getInterfaces()));
         }
         return interfaces;
     }
-    
+
 }
