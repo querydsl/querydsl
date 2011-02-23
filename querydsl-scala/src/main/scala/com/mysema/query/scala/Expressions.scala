@@ -34,13 +34,13 @@ trait SimpleExpression[T] extends Expression[T]{
 
   def as(alias: String): SimpleExpression[T] = as(new PathImpl[T](getType, alias));    
   
-  def eq(right: T): BooleanExpression = eq(constant(right)); // XXX "is"
+  def eq(right: T): BooleanExpression = eq(constant(right));
   
-  def eq(right: Expression[T]) = boolean(EQ_OBJECT, this, right); // XXX "is"
+  def eq(right: Expression[T]) = boolean(EQ_OBJECT, this, right);
   
-  def ne(right: T): BooleanExpression = ne(constant(right)); // XXX "<>" / "isnt" / "isNot"
+  def ne(right: T): BooleanExpression = ne(constant(right));
 
-  def ne(right: Expression[T]) = boolean(NE_OBJECT, this, right); // XXX "isNot"    
+  def ne(right: Expression[T]) = boolean(NE_OBJECT, this, right);    
 
   def count() = number[java.lang.Long](classOf[java.lang.Long], AggOps.COUNT_AGG, this);
 
@@ -84,16 +84,24 @@ trait CollectionExpressionBase[T <: Collection[C], C] extends SimpleExpression[T
   
 }
 
+// TODO : improve signature
 trait CollectionExpression[T] extends CollectionExpressionBase[java.util.Collection[T], T] {}
 
+// TODO : improve signature
 trait SetExpression[T] extends CollectionExpressionBase[java.util.Set[T], T] {}
 
+// TODO : improve signature
 trait ListExpression[T] extends CollectionExpressionBase[java.util.List[T], T] {
 
+  // TODO : list accessors
+    
 }
 
+// TODO : improve signature
 trait MapExpression[K, V] extends SimpleExpression[java.util.Map[K, V]] with com.mysema.query.types.MapExpression[K,V] {
 
+  // TODO : map accessors
+    
   def size() = number[Integer](classOf[Integer], MAP_SIZE, this);
 
   def isEmpty() = boolean(MAP_IS_EMPTY, this);
@@ -270,7 +278,7 @@ trait StringExpression extends ComparableExpression[String] {
 
   def like(right: Expression[String]) = boolean(Ops.LIKE, this, right);
 
-  def append(right: Expression[String]) = string(Ops.CONCAT, this, right); // XXX "||"
+  def append(right: Expression[String]) = string(Ops.CONCAT, this, right); 
 
   def append(right: String): StringExpression = append(constant(right));
 
@@ -288,55 +296,55 @@ trait StringExpression extends ComparableExpression[String] {
 
   def upper() = toUpperCase();
 
-  def matches(right: Expression[String]) = boolean(Ops.MATCHES, this, right); // XXX "matchesExpr"
+  def matches(right: Expression[String]) = boolean(Ops.MATCHES, this, right); 
 
-  def matches(right: String): BooleanExpression = matches(constant(right)); // XXX "matchesExpr"
+  def matches(right: String): BooleanExpression = matches(constant(right)); 
 
-  def indexOf(right: Expression[String]) = number[Integer](classOf[Integer], Ops.INDEX_OF, this, right); // XXX "index" / "idxOf" :( (?)
+  def indexOf(right: Expression[String]) = number[Integer](classOf[Integer], Ops.INDEX_OF, this, right); 
 
-  def indexOf(right: String): NumberExpression[Integer] = indexOf(constant(right)); // XXX "index" (?)
+  def indexOf(right: String): NumberExpression[Integer] = indexOf(constant(right)); 
 
-  def indexOf(left: String, right: Int): NumberExpression[Integer] = indexOf(constant(left), right); // XXX "index" (?)
+  def indexOf(left: String, right: Int): NumberExpression[Integer] = indexOf(constant(left), right);
 
-  def indexOf(left: Expression[String], right: Int) = number[Integer](classOf[Integer], Ops.INDEX_OF_2ARGS, this, left, constant(right)); // XXX "index" (?)
+  def indexOf(left: Expression[String], right: Int) = number[Integer](classOf[Integer], Ops.INDEX_OF_2ARGS, this, left, constant(right)); 
 
-  def charAt(right: Expression[Integer]) = simple(classOf[Character], Ops.CHAR_AT, this, right); // XXX "char"
+  def charAt(right: Expression[Integer]) = simple(classOf[Character], Ops.CHAR_AT, this, right); 
 
-  def charAt(right: Integer): SimpleExpression[Character] = charAt(constant(right)); // XXX "char"
+  def charAt(right: Integer): SimpleExpression[Character] = charAt(constant(right)); 
 
-  def contains(right: Expression[String]) = boolean(Ops.STRING_CONTAINS, this, right); // XXX "has" / "haz" ;)
+  def contains(right: Expression[String]) = boolean(Ops.STRING_CONTAINS, this, right);
 
-  def contains(right: String): BooleanExpression = contains(constant(right)); // XXX "has"
+  def contains(right: String): BooleanExpression = contains(constant(right));
 
-  def endsWith(right: Expression[String]) = boolean(Ops.ENDS_WITH, this, right); // XXX "ends" / "endsIn"
+  def endsWith(right: Expression[String]) = boolean(Ops.ENDS_WITH, this, right); 
 
-  def endsWith(right: String): BooleanExpression = endsWith(constant(right)); // XXX "ends" / "endsIn"
+  def endsWith(right: String): BooleanExpression = endsWith(constant(right)); 
 
-  def equalsIgnoreCase(right: Expression[String]) = boolean(Ops.EQ_IGNORE_CASE, this, right); // XXX "isIgnoreCase" / "eqIgnoreCase"
+  def equalsIgnoreCase(right: Expression[String]) = boolean(Ops.EQ_IGNORE_CASE, this, right); 
 
-  def equalsIgnoreCase(right: String): BooleanExpression = equalsIgnoreCase(constant(right)); // XXX "isIgnoreCase" / "eqIgnoreCase"
+  def equalsIgnoreCase(right: String): BooleanExpression = equalsIgnoreCase(constant(right)); 
 
-  def isEmpty() = boolean(Ops.STRING_IS_EMPTY, this); // XXX "empty"
+  def isEmpty() = boolean(Ops.STRING_IS_EMPTY, this); 
 
-  def length() = number[Integer](classOf[Integer], Ops.STRING_LENGTH, this); // XXX "size" (RichString problem?) / "len"
+  def length() = number[Integer](classOf[Integer], Ops.STRING_LENGTH, this); 
 
-  def startsWith(right: Expression[String]) = boolean(Ops.STARTS_WITH, this, right); // XXX "beginsWith"
+  def startsWith(right: Expression[String]) = boolean(Ops.STARTS_WITH, this, right); 
 
-  def startsWith(right: String): BooleanExpression = startsWith(constant(right)); // XXX "beginsWith"
+  def startsWith(right: String): BooleanExpression = startsWith(constant(right)); 
 
-  def substring(right: Int) = string(Ops.SUBSTR_1ARG, this, constant(right)); // XXX "substr" / "subString" / "sub"
+  def substring(right: Int) = string(Ops.SUBSTR_1ARG, this, constant(right)); 
 
-  def substring(right: Int, arg1: Int) = string(Ops.SUBSTR_2ARGS, this, constant(right), constant(arg1)); // XXX "substr" / "subString" / "sub"
+  def substring(right: Int, arg1: Int) = string(Ops.SUBSTR_2ARGS, this, constant(right), constant(arg1)); 
 
-  def toLowerCase() = string(Ops.LOWER, this); // XXX "lower"
+  def toLowerCase() = string(Ops.LOWER, this); 
 
-  def toUpperCase() = string(Ops.UPPER, this); // XXX "upper"
+  def toUpperCase() = string(Ops.UPPER, this); 
 
-  def trim() = string(Ops.TRIM, this); // XXX ???
+  def trim() = string(Ops.TRIM, this); 
 
-  def containsIgnoreCase(right: Expression[String]) = boolean(Ops.STRING_CONTAINS_IC, this, right); // XXX "hasIgnoreCase"
+  def containsIgnoreCase(right: Expression[String]) = boolean(Ops.STRING_CONTAINS_IC, this, right); 
 
-  def containsIgnoreCase(right: String): BooleanExpression = containsIgnoreCase(constant(right)); // ...
+  def containsIgnoreCase(right: String): BooleanExpression = containsIgnoreCase(constant(right)); 
 
   def endsWithIgnoreCase(right: Expression[String]) = boolean(Ops.ENDS_WITH_IC, this, right);
 
