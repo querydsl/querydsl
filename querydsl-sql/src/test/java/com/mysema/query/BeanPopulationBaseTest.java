@@ -13,11 +13,11 @@ import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.QEmployee;
 
 public abstract class BeanPopulationBaseTest extends AbstractBaseTest{
-    
-    private QEmployee e = new QEmployee("e");
-    
+
+    private final QEmployee e = new QEmployee("e");
+
     @Test
-    public void Insert_Update_Query_and_Delete(){       
+    public void Insert_Update_Query_and_Delete(){
         // Insert
         Employee employee = new Employee();
         employee.setFirstname("John");
@@ -31,11 +31,11 @@ public abstract class BeanPopulationBaseTest extends AbstractBaseTest{
         // Query
         Employee smith = query().from(e).where(e.lastname.eq("Smith")).limit(1).uniqueResult(e);
         assertEquals("John", smith.getFirstname());
-        
+
         // Delete (no changes needed)
         assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
     }
-    
+
     @Test
     public void CustomProjection(){
         // Insert
@@ -54,28 +54,28 @@ public abstract class BeanPopulationBaseTest extends AbstractBaseTest{
             .uniqueResult(Employee.class, e.lastname, e.firstname);
         assertEquals("John", smith.getFirstname());
         assertEquals("Smith", smith.getLastname());
-        
+
         // Query with alias
         smith = extQuery().from(e).where(e.lastname.eq("Smith"))
             .limit(1)
             .uniqueResult(Employee.class, e.lastname.as("lastname"), e.firstname.as("firstname"));
         assertEquals("John", smith.getFirstname());
         assertEquals("Smith", smith.getLastname());
-        
-        // Query into custom type        
+
+        // Query into custom type
         OtherEmployee other = extQuery().from(e).where(e.lastname.eq("Smith"))
             .limit(1)
             .uniqueResult(OtherEmployee.class, e.lastname, e.firstname);
         assertEquals("John", other.getFirstname());
         assertEquals("Smith", other.getLastname());
-        
+
         // Delete (no changes needed)
         assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
     }
-    
+
 
     protected ExtendedSQLQuery extQuery() {
         return new ExtendedSQLQuery(Connections.getConnection(), templates);
     }
-            
+
 }
