@@ -40,27 +40,25 @@ import com.mysema.query.codegen.*;
  *
  */
 public class HibernateDomainExporter {
-    
+
     private static final Logger logger = LoggerFactory.getLogger(HibernateDomainExporter.class);
-    
-    private final String namePrefix;
-    
-    private final String nameSuffix;
-    
+
+    private final String namePrefix, nameSuffix;
+
     private final File targetFolder;
 
     private final Map<String,EntityType> allTypes = new HashMap<String,EntityType>();
-    
+
     private final Map<String,EntityType> entityTypes = new HashMap<String,EntityType>();
-    
+
     private final Map<String,EntityType> embeddableTypes = new HashMap<String,EntityType>();
-    
+
     private final Map<String,EntityType> superTypes = new HashMap<String,EntityType>();
-    
+
     private final Set<EntityType> serialized = new HashSet<EntityType>();
-    
+
     private final Configuration configuration;
-    
+
     private final TypeMappings typeMappings = new TypeMappings();
 
     private final Serializer embeddableSerializer = new EmbeddableSerializer(typeMappings, Constants.keywords);
@@ -70,21 +68,25 @@ public class HibernateDomainExporter {
     private final Serializer supertypeSerializer = new SupertypeSerializer(typeMappings, Constants.keywords);
 
     private final TypeFactory typeFactory = new TypeFactory();
-    
+
     private final SerializerConfig serializerConfig;
-    
+
+    public HibernateDomainExporter(File targetFolder, Configuration configuration){
+        this("Q", "", targetFolder, SimpleSerializerConfig.DEFAULT, configuration);
+    }
+
     public HibernateDomainExporter(String namePrefix, File targetFolder, Configuration configuration){
         this(namePrefix, "", targetFolder, SimpleSerializerConfig.DEFAULT, configuration);
     }
-    
+
     public HibernateDomainExporter(String namePrefix, String nameSuffix, File targetFolder, Configuration configuration){
         this(namePrefix, nameSuffix, targetFolder, SimpleSerializerConfig.DEFAULT, configuration);
     }
-    
+
     public HibernateDomainExporter(String namePrefix, File targetFolder, SerializerConfig serializerConfig, Configuration configuration){
         this(namePrefix, "", targetFolder, serializerConfig, configuration);
     }
-        
+
     public HibernateDomainExporter(String namePrefix, String nameSuffix, File targetFolder, SerializerConfig serializerConfig, Configuration configuration){
         this.namePrefix = namePrefix;
         this.nameSuffix = nameSuffix;
@@ -93,9 +95,9 @@ public class HibernateDomainExporter {
         this.configuration = configuration;
         typeFactory.setUnknownAsEntity(true);
     }
-    
 
-    public void execute() throws IOException {        
+
+    public void execute() throws IOException {
         // collect types
         try {
             collectTypes();
@@ -108,7 +110,7 @@ public class HibernateDomainExporter {
         } catch (NoSuchMethodException e) {
             throw new QueryException(e);
         }
-     
+
         // merge supertype fields into subtypes
         Set<EntityType> handled = new HashSet<EntityType>();
         for (EntityType type : superTypes.values()){
@@ -120,13 +122,13 @@ public class HibernateDomainExporter {
         for (EntityType type : embeddableTypes.values()){
             addSupertypeFields(type, allTypes, handled);
         }
-        
+
         // serialize them
         serialize(superTypes, supertypeSerializer);
         serialize(embeddableTypes, embeddableSerializer);
         serialize(entityTypes, entitySerializer);
     }
-    
+
     private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes, Set<EntityType> handled) {
         if (handled.add(model)){
             for (Supertype supertype : model.getSuperTypes()){
@@ -137,9 +139,9 @@ public class HibernateDomainExporter {
                     model.include(supertype);
                 }
             }
-        }        
+        }
     }
-    
+
 
     private void collectTypes() throws IOException, XMLStreamException, ClassNotFoundException, SecurityException, NoSuchMethodException {
         // super classes
@@ -148,21 +150,21 @@ public class HibernateDomainExporter {
             MappedSuperclass msc = (MappedSuperclass)superClassMappings.next();
             EntityType entityType = createSuperType(msc.getMappedClass());
             if (msc.getDeclaredIdentifierProperty() != null){
-                handleProperty(entityType, msc.getMappedClass(), msc.getDeclaredIdentifierProperty());    
-            }            
+                handleProperty(entityType, msc.getMappedClass(), msc.getDeclaredIdentifierProperty());
+            }
             Iterator<?> properties = msc.getDeclaredPropertyIterator();
             while (properties.hasNext()){
                 handleProperty(entityType, msc.getMappedClass(), (org.hibernate.mapping.Property) properties.next());
             }
         }
-        
+
         // entity classes
         Iterator<?> classMappings = configuration.getClassMappings();
         while (classMappings.hasNext()){
             PersistentClass pc = (PersistentClass)classMappings.next();
             EntityType entityType = createEntityType(pc.getMappedClass());
             if (pc.getDeclaredIdentifierProperty() != null){
-                handleProperty(entityType, pc.getMappedClass(), pc.getDeclaredIdentifierProperty());    
+                handleProperty(entityType, pc.getMappedClass(), pc.getDeclaredIdentifierProperty());
             }else if (!pc.isInherited() && pc.hasIdentifierProperty()){
                 System.out.println(entityType.toString() + pc.getIdentifierProperty());
                 handleProperty(entityType, pc.getMappedClass(), pc.getIdentifierProperty());
@@ -171,7 +173,7 @@ public class HibernateDomainExporter {
             while (properties.hasNext()){
                 handleProperty(entityType, pc.getMappedClass(), (org.hibernate.mapping.Property) properties.next());
             }
-        }        
+        }
     }
 
     private void handleProperty(EntityType entityType, Class<?> cl, org.hibernate.mapping.Property p) throws NoSuchMethodException, ClassNotFoundException {
@@ -182,11 +184,11 @@ public class HibernateDomainExporter {
             Iterator<?> properties = ((Component)p.getValue()).getPropertyIterator();
             while (properties.hasNext()){
                 handleProperty(embeddedType, embeddedClass, (org.hibernate.mapping.Property)properties.next());
-            }            
+            }
             propertyType = embeddedType;
         }else if (propertyType.getCategory() == TypeCategory.ENTITY){
             propertyType = createEntityType(Class.forName(propertyType.getFullName()));
-        }        
+        }
         Map<Class<?>,Annotation> annotations = getAnnotations(cl, p.getName());
         Property property = createProperty(entityType, p.getName(), propertyType, annotations);
         entityType.addProperty(property);
@@ -207,7 +209,7 @@ public class HibernateDomainExporter {
     private EntityType createEntityType(Class<?> cl) {
         return createEntityType(cl, entityTypes);
     }
-    
+
     private EntityType createEmbeddableType(Class<?> cl) {
         return createEntityType(cl, embeddableTypes);
     }
@@ -229,7 +231,7 @@ public class HibernateDomainExporter {
     private EntityType createSuperType(Class<?> cl) {
         return createEntityType(cl, superTypes);
     }
-    
+
 
     private Type getType(Class<?> cl, String propertyName) throws NoSuchMethodException {
         try {
@@ -240,18 +242,18 @@ public class HibernateDomainExporter {
             String bgetter = "is"+StringUtils.capitalize(propertyName);
             for (Method method : cl.getDeclaredMethods()){
                 if ((method.getName().equals(getter) || method.getName().equals(bgetter)) && method.getParameterTypes().length == 0){
-                    return typeFactory.create(method.getReturnType(), method.getGenericReturnType());        
+                    return typeFactory.create(method.getReturnType(), method.getGenericReturnType());
                 }
             }
             if (cl.getSuperclass().equals(Object.class)){
-                throw new IllegalArgumentException("No property found for " + cl.getName() + "." + propertyName);    
+                throw new IllegalArgumentException("No property found for " + cl.getName() + "." + propertyName);
             }else{
                 return getType(cl.getSuperclass(), propertyName);
             }
-             
+
         }
     }
-    
+
     private Map<Class<?>,Annotation> getAnnotations(Class<?> cl, String propertyName) throws NoSuchMethodException {
         // TODO : merge annotations
         try {
@@ -262,11 +264,11 @@ public class HibernateDomainExporter {
             String bgetter = "is"+StringUtils.capitalize(propertyName);
             for (Method method : cl.getDeclaredMethods()){
                 if ((method.getName().equals(getter) || method.getName().equals(bgetter)) && method.getParameterTypes().length == 0){
-                    return getAnnotations(method.getAnnotations());        
+                    return getAnnotations(method.getAnnotations());
                 }
             }
             if (cl.getSuperclass().equals(Object.class)){
-                throw new IllegalArgumentException("No property found for " + cl.getName() + "." + propertyName);    
+                throw new IllegalArgumentException("No property found for " + cl.getName() + "." + propertyName);
             }else{
                 return getAnnotations(cl.getSuperclass(), propertyName);
             }
@@ -287,11 +289,11 @@ public class HibernateDomainExporter {
                 Type type = typeMappings.getPathType(entityType, entityType, true);
                 String packageName = entityType.getPackageName();
                 String className = packageName.length() > 0 ? (packageName + "." + type.getSimpleName()) : type.getSimpleName();
-                write(serializer, className.replace('.', '/') + ".java", entityType);    
-            }            
-        }   
+                write(serializer, className.replace('.', '/') + ".java", entityType);
+            }
+        }
     }
-    
+
     private void write(Serializer serializer, String path, EntityType type) throws IOException {
         File targetFile = new File(targetFolder, path);
         Writer w = writerFor(targetFile);
@@ -302,7 +304,7 @@ public class HibernateDomainExporter {
             w.close();
         }
     }
-    
+
     private Writer writerFor(File file) {
         if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
             logger.error("Folder " + file.getParent() + " could not be created");
@@ -313,5 +315,5 @@ public class HibernateDomainExporter {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
-    
+
 }
