@@ -52,7 +52,7 @@ public class LuceneSerializerNotTokenizedTest {
     public void Before() throws Exception {
         serializer = new LuceneSerializer(false, false);
         idx = new RAMDirectory();
-        writer = new IndexWriter(idx, new StandardAnalyzer(Version.LUCENE_CURRENT), true, MaxFieldLength.UNLIMITED);
+        writer = new IndexWriter(idx, new StandardAnalyzer(Version.LUCENE_30), true, MaxFieldLength.UNLIMITED);
 
         writer.addDocument(createDocument(clooney));
         writer.addDocument(createDocument(pitt));

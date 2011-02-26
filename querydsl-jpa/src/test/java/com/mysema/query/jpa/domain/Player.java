@@ -7,10 +7,9 @@ package com.mysema.query.jpa.domain;
 
 import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
-import org.hibernate.annotations.CollectionOfElements;
 
 /**
  * The Class Player.
@@ -20,6 +19,6 @@ public class Player {
     @Id
     long id;
 
-    @CollectionOfElements
+    @ElementCollection
     List<Integer> scores;
 }

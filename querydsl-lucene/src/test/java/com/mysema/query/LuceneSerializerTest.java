@@ -41,7 +41,6 @@ import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
-import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.path.StringPath;
 
 /**
@@ -116,7 +115,7 @@ public class LuceneSerializerTest {
         floatField = entityPath.getNumber("floatField", Float.class);
 
         idx = new RAMDirectory();
-        writer = new IndexWriter(idx, new StandardAnalyzer(Version.LUCENE_CURRENT), true, MaxFieldLength.UNLIMITED);
+        writer = new IndexWriter(idx, new StandardAnalyzer(Version.LUCENE_30), true, MaxFieldLength.UNLIMITED);
 
         writer.addDocument(createDocument());
 

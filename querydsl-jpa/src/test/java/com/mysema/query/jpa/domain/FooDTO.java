@@ -7,11 +7,10 @@ package com.mysema.query.jpa.domain;
 
 import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.CollectionOfElements;
 
 import com.mysema.query.annotations.QueryProjection;
 
@@ -21,7 +20,7 @@ public class FooDTO {
     @Id
     int id;
 
-    @CollectionOfElements
+    @ElementCollection
     List<String> names;
 
     @Temporal(TemporalType.DATE)

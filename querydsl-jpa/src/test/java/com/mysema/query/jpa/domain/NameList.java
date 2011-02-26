@@ -7,10 +7,9 @@ package com.mysema.query.jpa.domain;
 
 import java.util.Collection;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
-import org.hibernate.annotations.CollectionOfElements;
 
 /**
  * The Class NameList.
@@ -19,6 +18,6 @@ import org.hibernate.annotations.CollectionOfElements;
 public class NameList {
     @Id
     long id;
-    @CollectionOfElements
+    @ElementCollection
     Collection<String> names;
 }

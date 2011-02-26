@@ -7,12 +7,12 @@ package com.mysema.query.jpa.domain;
 
 import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.IndexColumn;
 
 /**
@@ -25,7 +25,7 @@ public class Foo {
     @Id
     int id;
 
-    @CollectionOfElements
+    @ElementCollection
     @IndexColumn(name = "_index")
     List<String> names;
 

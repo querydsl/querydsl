@@ -7,13 +7,13 @@ package com.mysema.query.jpa.domain;
 
 import java.util.List;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.annotations.IndexColumn;
 
 /**
@@ -25,7 +25,7 @@ public class Order {
     @ManyToOne
     Customer customer;
 
-    @CollectionOfElements
+    @ElementCollection
     @IndexColumn(name = "_index")
     List<Integer> deliveredItemIndices;
 

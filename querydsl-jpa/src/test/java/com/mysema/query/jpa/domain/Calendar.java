@@ -8,10 +8,9 @@ package com.mysema.query.jpa.domain;
 import java.io.Serializable;
 import java.util.Map;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
-import org.hibernate.annotations.CollectionOfElements;
 
 /**
  * The Class Calendar.
@@ -19,7 +18,7 @@ import org.hibernate.annotations.CollectionOfElements;
 @SuppressWarnings("serial")
 @Entity
 public class Calendar implements Serializable{
-    @CollectionOfElements
+    @ElementCollection
     Map<String, java.util.Date> holidays;
 
     @Id

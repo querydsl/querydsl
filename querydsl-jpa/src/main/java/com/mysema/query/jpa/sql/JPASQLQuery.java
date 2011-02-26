@@ -10,7 +10,6 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import org.slf4j.Logger;
