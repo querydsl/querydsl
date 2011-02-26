@@ -43,7 +43,6 @@ import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.sql.Wildcard;
 import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QEmployee;
@@ -54,6 +53,7 @@ import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.Coalesce;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.Param;
+import com.mysema.query.types.expr.Wildcard;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.query.ListSubQuery;
@@ -246,7 +246,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     public void Count_All() {
         expectedQuery = "select count(*) as rowCount from EMPLOYEE2 e";
         NumberPath<Long> rowCount = new NumberPath<Long>(Long.class, "rowCount");
-        query().from(employee).uniqueResult(Wildcard.count().as(rowCount));
+        query().from(employee).uniqueResult(Wildcard.count.as(rowCount));
     }
 
     @Test

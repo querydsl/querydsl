@@ -9,10 +9,8 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
 import com.mysema.query.codegen.BeanSerializer;
-import com.mysema.query.codegen.Serializer;
 import com.mysema.query.sql.DefaultNamingStrategy;
 import com.mysema.query.sql.MetaDataExporter;
-import com.mysema.query.sql.MetaDataSerializer;
 import com.mysema.query.sql.NamingStrategy;
 
 /**
