@@ -71,6 +71,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     private boolean skipParent;
 
+    private boolean dmlWithSchema;
+    
     private RelationalPath<?> entity;
 
     private final SQLTemplates templates;
@@ -133,6 +135,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (je.getTarget() instanceof RelationalPath && templates.isSupportsAlias()) {
             RelationalPath<?> pe = (RelationalPath<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
+                if (templates.isPrintSchema()){
+                    appendAsSchemaName(pe);
+                    append(".");
+                }     
                 appendAsTableName(pe);
                 append(templates.getTableAlias());
             }
@@ -258,7 +264,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())){
             append(templates.getDeleteFrom());    
         }        
+        dmlWithSchema = true;
         handle(entity);
+        dmlWithSchema = false;
+        
         if (metadata.getWhere() != null) {
             append(templates.getWhere()).handle(metadata.getWhere());
         }        
@@ -275,7 +284,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())){
             append(templates.getMergeInto());    
         }        
+        dmlWithSchema = true;
         handle(entity);
+        dmlWithSchema = false;
         append(" ");
         // columns
         if (!columns.isEmpty()){
@@ -319,7 +330,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())){
             append(templates.getInsertInto());    
         }        
+        dmlWithSchema = true;
         handle(entity);
+        dmlWithSchema = false;
         // columns
         if (!columns.isEmpty()){
             append("(");
@@ -359,7 +372,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!serialize(Position.START_OVERRIDE, metadata.getFlags())){
             append(templates.getUpdate());    
         }        
+        dmlWithSchema = true;
         handle(entity);
+        dmlWithSchema = false;
         append("\n");
         append(templates.getSet());
         boolean first = true;
@@ -483,7 +498,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     public Void visit(Path<?> path, Void context) {
         if (dml){
             if (path.equals(entity) && path instanceof RelationalPath<?>){
-                if (templates.isPrintSchema()){
+                if (dmlWithSchema && templates.isPrintSchema()){
                     appendAsSchemaName((RelationalPath<?>)path);
                     append(".");
                 }                

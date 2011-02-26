@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
+import com.mysema.query.sql.Schema;
 import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
@@ -18,6 +19,7 @@ import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.TimePath;
 
+@Schema("PUBLIC")
 @Table("EMPLOYEE2")
 public class QEmployee extends RelationalPathBase<Employee> {
 

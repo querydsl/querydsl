@@ -7,13 +7,14 @@ package com.mysema.query.sql.domain;
 
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
+import com.mysema.query.sql.Schema;
 import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 
-
+@Schema("PUBLIC")
 @Table("SURVEY")
 public class QSurvey extends RelationalPathBase<QSurvey>{
 

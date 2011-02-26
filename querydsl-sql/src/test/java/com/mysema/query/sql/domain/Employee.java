@@ -10,8 +10,10 @@ import java.sql.Date;
 import java.sql.Time;
 
 import com.mysema.query.sql.Column;
+import com.mysema.query.sql.Schema;
 import com.mysema.query.sql.Table;
 
+@Schema("PUBLIC")
 @Table("EMPLOYEE2")
 public class Employee {
 
