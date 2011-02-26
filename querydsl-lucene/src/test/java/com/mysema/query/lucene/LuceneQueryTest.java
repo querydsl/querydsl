@@ -570,7 +570,7 @@ public class LuceneQueryTest {
     public void Empty_Index_Should_Return_Empty_List() throws Exception {
         idx = new RAMDirectory();
         writer = new IndexWriter(idx, new StandardAnalyzer(
-                Version.LUCENE_CURRENT), true, MaxFieldLength.UNLIMITED);
+                Version.LUCENE_30), true, MaxFieldLength.UNLIMITED);
         writer.optimize();
         writer.close();
         searcher = new IndexSearcher(idx);
