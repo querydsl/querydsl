@@ -1,5 +1,7 @@
 package com.mysema.query.scala;
 
+import com.mysema.query.types._;
+
 class Person {
   var scalaInt: Int = _;
 
@@ -27,3 +29,9 @@ class Person {
   
   var array: Array[String] = _;
 }
+
+//class QPerson(md: PathMetadata[_]) extends EntityPathImpl[Person](classOf[Person], md) {
+//    
+//    def this(variable: String) = this(PathMetadataFactory.forVariable(variable));
+//    
+//}
