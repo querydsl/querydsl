@@ -20,6 +20,13 @@ import com.mysema.query.types.Path;
  *
  */
 public interface RelationalPath<T> extends EntityPath<T>{
+   
+    /**
+     * Get the schema name
+     * 
+     * @return
+     */
+    String getSchemaName();
     
     /**
      * Get the table name

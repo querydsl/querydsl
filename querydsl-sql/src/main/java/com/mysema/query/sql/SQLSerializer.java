@@ -74,7 +74,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     private RelationalPath<?> entity;
 
     private final SQLTemplates templates;
-
+    
     public SQLSerializer(SQLTemplates templates) {
         this(templates, false, false);
     }
@@ -92,6 +92,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     private void appendAsColumnName(Path<?> path){
         String column = path.getMetadata().getExpression().toString();
         append(templates.quoteIdentifier(column));
+    }
+    
+    private void appendAsSchemaName(RelationalPath<?> path){
+        String schema = path.getSchemaName();
+        append(templates.quoteIdentifier(schema));
     }
 
     private void appendAsTableName(RelationalPath<?> path){
@@ -478,6 +483,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     public Void visit(Path<?> path, Void context) {
         if (dml){
             if (path.equals(entity) && path instanceof RelationalPath<?>){
+                if (templates.isPrintSchema()){
+                    appendAsSchemaName((RelationalPath<?>)path);
+                    append(".");
+                }                
                 appendAsTableName((RelationalPath<?>)path);
                 return null;
             }else if (entity.equals(path.getMetadata().getParent()) && skipParent){
@@ -533,4 +542,5 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
     }
 
+    
 }

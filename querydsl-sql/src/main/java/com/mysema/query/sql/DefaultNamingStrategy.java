@@ -124,6 +124,11 @@ public class DefaultNamingStrategy implements NamingStrategy {
         return tableName;
     }
 
+    @Override
+    public String normalizeSchemaName(String schemaName){
+        return schemaName;
+    }
+    
     protected String normalizePropertyName(String name){
         return isReserved(name) ? name + reservedSuffix : name;   
     }

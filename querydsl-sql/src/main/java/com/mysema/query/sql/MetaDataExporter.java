@@ -59,6 +59,8 @@ public class MetaDataExporter {
 
     private static final int COLUMN_NULLABLE = 11;
 
+    private static final int SCHEMA_NAME = 2;
+    
     private static final int TABLE_NAME = 3;
 
     private static Writer writerFor(File file) {
@@ -112,7 +114,7 @@ public class MetaDataExporter {
 
     public MetaDataExporter(){}
 
-    protected EntityType createEntityType(String tableName, final String className) {
+    protected EntityType createEntityType(@Nullable String schemaName, String tableName, final String className) {
         Type classTypeModel = new SimpleType(
                 TypeCategory.ENTITY,
                 beanPackageName + "." + beanPrefix + className + beanSuffix,
@@ -141,6 +143,10 @@ public class MetaDataExporter {
             };
         }
         entityToWrapped.put(classModel, classTypeModel);
+        if (schemaName != null){
+            classModel.addAnnotation(new SchemaImpl(schemaName));
+        }
+        
         classModel.addAnnotation(new TableImpl(namingStrategy.normalizeTableName(tableName)));
         return classModel;
     }
@@ -211,12 +217,13 @@ public class MetaDataExporter {
     }
 
     private void handleTable(DatabaseMetaData md, ResultSet tables) throws SQLException {
+        String schemaName = tables.getString(SCHEMA_NAME);
         String tableName = tables.getString(TABLE_NAME);
         String className = namingStrategy.getClassName(namePrefix, nameSuffix, tableName);
         if (beanSerializer != null){
             className = className.substring(namePrefix.length(), className.length()-nameSuffix.length());
         }
-        EntityType classModel = createEntityType(tableName, className);
+        EntityType classModel = createEntityType(schemaName, tableName, className);
 
         // collect primary keys
         Map<String,PrimaryKeyData> primaryKeyData = keyDataFactory.getPrimaryKeys(md, schemaPattern, tableName);

@@ -121,5 +121,14 @@ public interface NamingStrategy {
      * @return
      */
     String normalizeTableName(String tableName);
+    
+
+    /**
+     * Convert the given schema name and provide the opportunity to add quoted identifiers
+     *
+     * @param schemaName
+     * @return
+     */
+    String normalizeSchemaName(String schemaName);
 
 }

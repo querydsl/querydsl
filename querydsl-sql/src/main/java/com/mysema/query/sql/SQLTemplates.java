@@ -43,6 +43,8 @@ public class SQLTemplates extends Templates {
     private String quoteStr;
     
     private boolean useQuotes;
+    
+    private boolean printSchema;
 
     private String createTable = "create table ";
     
@@ -553,4 +555,12 @@ public class SQLTemplates extends Templates {
         this.createTable = createTable;
     }
 
+    public boolean isPrintSchema() {
+        return printSchema;
+    }
+
+    public void setPrintSchema(boolean printSchema) {
+        this.printSchema = printSchema;
+    }
+    
 }

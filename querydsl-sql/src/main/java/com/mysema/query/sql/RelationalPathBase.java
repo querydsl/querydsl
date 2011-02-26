@@ -105,6 +105,11 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     }
 
     @Override
+    public String getSchemaName(){
+        return getType().getAnnotation(Schema.class).value();
+    }
+    
+    @Override
     public String getTableName() {
         return getType().getAnnotation(Table.class).value();
     }
