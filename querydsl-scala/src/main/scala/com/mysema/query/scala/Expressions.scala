@@ -48,7 +48,7 @@ trait SimpleExpression[T] extends Expression[T]{
 
   def in(right: T*): BooleanExpression = in(asList(right: _*));
 
-  def in(right: CollectionExpression[T]) = boolean(IN, this, right);
+  def in(right: CollectionExpression[T,_]) = boolean(IN, this, right);
 
   def countDistinct() = number[java.lang.Long](classOf[java.lang.Long], AggOps.COUNT_DISTINCT_AGG, this);
 
@@ -60,7 +60,7 @@ trait SimpleExpression[T] extends Expression[T]{
 
   def notIn(right: T*) = in(right: _*).not;
 
-  def notIn(right: CollectionExpression[T]) = in(right).not;
+  def notIn(right: CollectionExpression[T,_]) = in(right).not;
 
 }
 
@@ -70,7 +70,7 @@ trait ArrayExpression[T <: Array[_]] extends SimpleExpression[T] {
 
 }
 
-trait CollectionExpressionBase[T <: Collection[C], C] extends SimpleExpression[T] with com.mysema.query.types.CollectionExpression[T,C] {
+trait CollectionExpressionBase[T <: Collection[C], C, Q <: Expression[_ >: C]] extends SimpleExpression[T] with com.mysema.query.types.CollectionExpression[T,C] {
 
   def size() = number[Integer](classOf[Integer], COL_SIZE, this);
 
@@ -81,26 +81,24 @@ trait CollectionExpressionBase[T <: Collection[C], C] extends SimpleExpression[T
   def contains(child: C): BooleanExpression = contains(constant(child));
 
   def contains(child: Expression[C]) = boolean(IN, child, this);
+
+  def any(): Q;
   
 }
 
-// TODO : improve signature
-trait CollectionExpression[T] extends CollectionExpressionBase[java.util.Collection[T], T] {}
+trait CollectionExpression[T, Q <: Expression[_ >: T]] extends CollectionExpressionBase[java.util.Collection[T], T, Q] {}
 
-// TODO : improve signature
-trait SetExpression[T] extends CollectionExpressionBase[java.util.Set[T], T] {}
+trait SetExpression[T, Q <: Expression[_ >: T]] extends CollectionExpressionBase[java.util.Set[T], T, Q] {}
 
-// TODO : improve signature
-trait ListExpression[T] extends CollectionExpressionBase[java.util.List[T], T] {
+trait ListExpression[T, Q <: Expression[_ >: T]] extends CollectionExpressionBase[java.util.List[T], T, Q] {
 
-  // TODO : list accessors
+  def get(i: Int): Q;
+  
+  def get(i: Expression[Integer]): Q;
     
 }
 
-// TODO : improve signature
-trait MapExpression[K, V] extends SimpleExpression[java.util.Map[K, V]] with com.mysema.query.types.MapExpression[K,V] {
-
-  // TODO : map accessors
+trait MapExpression[K, V, Q <: Expression[_ >: V]] extends SimpleExpression[java.util.Map[K, V]] with com.mysema.query.types.MapExpression[K,V] {
     
   def size() = number[Integer](classOf[Integer], MAP_SIZE, this);
 
@@ -116,6 +114,11 @@ trait MapExpression[K, V] extends SimpleExpression[java.util.Map[K, V]] with com
 
   def containsValue(v: Expression[V]) = boolean(CONTAINS_KEY, this, v);
 
+  def get(key: K): Q;
+  
+  def get(key: Expression[K]): Q;
+  
+  
 }
 
 trait ComparableExpressionBase[T <: Comparable[_]] extends SimpleExpression[T] {

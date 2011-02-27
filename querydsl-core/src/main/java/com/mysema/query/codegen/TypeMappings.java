@@ -8,6 +8,8 @@ package com.mysema.query.codegen;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
@@ -24,15 +26,7 @@ import com.mysema.query.types.expr.EnumExpression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.expr.TimeExpression;
-import com.mysema.query.types.path.BooleanPath;
-import com.mysema.query.types.path.ComparablePath;
-import com.mysema.query.types.path.DatePath;
-import com.mysema.query.types.path.DateTimePath;
-import com.mysema.query.types.path.EnumPath;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.SimplePath;
-import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.path.TimePath;
+import com.mysema.query.types.path.*;
 import com.mysema.query.types.template.BooleanTemplate;
 import com.mysema.query.types.template.ComparableTemplate;
 import com.mysema.query.types.template.DateTemplate;
@@ -66,13 +60,14 @@ public final class TypeMappings {
         register(TypeCategory.DATETIME, DateTimeExpression.class, DateTimePath.class, DateTimeTemplate.class);
         register(TypeCategory.TIME, TimeExpression.class, TimePath.class, TimeTemplate.class);
         register(TypeCategory.NUMERIC, NumberExpression.class, NumberPath.class, NumberTemplate.class);
-
-        register(TypeCategory.ARRAY, Expression.class, SimplePath.class, SimpleTemplate.class);
+        register(TypeCategory.SIMPLE, Expression.class, SimplePath.class, SimpleTemplate.class);
+        
+        register(TypeCategory.ARRAY, Expression.class, ArrayPath.class, SimpleTemplate.class);
         register(TypeCategory.COLLECTION, Expression.class, SimplePath.class, SimpleTemplate.class);
         register(TypeCategory.SET, Expression.class, SimplePath.class, SimpleTemplate.class);
         register(TypeCategory.LIST, Expression.class, SimplePath.class, SimpleTemplate.class);
         register(TypeCategory.MAP, Expression.class, SimplePath.class, SimpleTemplate.class);
-        register(TypeCategory.SIMPLE, Expression.class, SimplePath.class, SimpleTemplate.class);
+        
 
         register(TypeCategory.CUSTOM, Expression.class, Path.class, SimpleTemplate.class);
         register(TypeCategory.ENTITY, Expression.class, Path.class, SimpleTemplate.class);
@@ -144,12 +139,18 @@ public final class TypeMappings {
 
     @SuppressWarnings("unchecked")
     public void register(TypeCategory category,
-            Class<? extends Expression> expr,
-            Class<? extends Path> path,
-            Class<? extends TemplateExpression> template){
-        exprTypes.put(category, new ClassType(expr));
-        pathTypes.put(category, new ClassType(path));
-        templateTypes.put(category, new ClassType(template));
+            @Nullable Class<? extends Expression> expr,
+            @Nullable Class<? extends Path> path,
+            @Nullable Class<? extends TemplateExpression> template){
+        if (expr != null){
+            exprTypes.put(category, new ClassType(expr));    
+        }
+        if (path != null){
+            pathTypes.put(category, new ClassType(path));    
+        }
+        if (template != null){
+            templateTypes.put(category, new ClassType(template));            
+        }
     }
 
 }

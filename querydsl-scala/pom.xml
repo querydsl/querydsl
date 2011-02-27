@@ -15,7 +15,7 @@
   <packaging>jar</packaging>
   
   <properties>
-    <scala.version>2.8.0</scala.version>
+    <scala.version>2.8.1</scala.version>
     <hibernate.version>3.5.1-Final</hibernate.version>
     <hibernate.validator.version>4.0.2.GA</hibernate.validator.version>
   </properties>

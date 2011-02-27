@@ -733,9 +733,6 @@ public class EntitySerializer implements Serializer{
         }else{
             return new SimpleType(type, type.getParameters());
         }
-
     }
-
-
-
+    
 }
