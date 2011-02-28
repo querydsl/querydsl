@@ -6,8 +6,4 @@ not expansion for
  contains
  containsKey
  containsValue
- like
- matches
- startsWith
- endsWith
- contains
+ 

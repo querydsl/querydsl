@@ -417,7 +417,36 @@ trait StringExpression extends ComparableExpression[String] {
   override def as(right: Path[String]) = string(ALIAS.asInstanceOf[Operator[String]], this, right);
 
   override def as(alias: String): StringExpression = as(new PathImpl[String](getType, alias));
+  
+  def not() = new StringNegations(this)
 
+}
+
+// NOTE : experimental
+class StringNegations (val str: StringExpression) {
+    
+  def like(right: String): BooleanExpression = str.like(right).not;
+    
+  def like(right: Expression[String]) = str.like(right).not;
+    
+  def matches(right: String) = str.matches(right).not;
+    
+  def matches(right: Expression[String]) = str.matches(right).not;    
+        
+  def contains(right: String) = str.contains(right).not;
+    
+  def contains(right: Expression[String]) = str.contains(right).not;        
+        
+  def startsWith(right: String) = str.startsWith(right).not;
+    
+  def startsWith(right: Expression[String]) = str.startsWith(right).not;    
+    
+  def endsWith(right: String) = str.endsWith(right).not;
+    
+  def endsWith(right: Expression[String]) = str.endsWith(right).not;    
+    
+  def empty = str.isNotEmpty;
+    
 }
 
 trait TemporalExpression[T <: Comparable[_]] extends ComparableExpression[T] {

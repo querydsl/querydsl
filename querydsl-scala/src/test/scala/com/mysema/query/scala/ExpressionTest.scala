@@ -295,6 +295,15 @@ class ExpressionTest {
     assertEquals("endsWith(person.firstName,amin)",  person.firstName endsWith "amin");
   }
   
+  @Test
+  def String_Negations {
+    assertEquals("!person.firstName like XXX", person.firstName not() like "XXX"); // FIXME
+    assertEquals("!matches(person.firstName,XXX)", person.firstName not() matches "XXX"); // FIXME
+    assertEquals("!startsWith(person.firstName,XXX)", person.firstName not() startsWith"XXX"); // FIXME   
+    assertEquals("!endsWith(person.firstName,XXX)", person.firstName not() endsWith "XXX"); // FIXME
+    assertEquals("!empty(person.firstName)", person.firstName not() empty); // FIXME
+  }
+  
 //  @Test
 //  def Prefix(){
 //    assertEquals("count(person)", count(person));
