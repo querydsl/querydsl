@@ -22,7 +22,6 @@ class ScalaEntitySerializer(val namePrefix: String, val nameSuffix: String) exte
     
   val typeMappings = ScalaTypeMappings.typeMappings;
 
-//  val classHeaderFormat = "%1$s(path: String) extends EntityPathImpl[%2$s](classOf[%2$s], path)";
   val classHeaderFormat = "%1$s(cl: Class[_ <: %2$s], md: PathMetadata[_]) extends EntityPathImpl[%2$s](cl, md)";
   
   def serialize(model: EntityType, serializerConfig: SerializerConfig, writer: CodeWriter) {
@@ -48,18 +47,9 @@ class ScalaEntitySerializer(val namePrefix: String, val nameSuffix: String) exte
 
     writer.importClasses(importedClasses.toArray: _*);
     
-    val queryType = typeMappings.getPathType(model, model, true);
-    var modelName = writer.getRawName(model);
-    var queryTypeName = writer.getRawName(queryType);
-    var classHeader = String.format(classHeaderFormat, queryTypeName, modelName);
-        
-    scalaWriter.beginObject(queryTypeName);
-    scalaWriter.line("def as(variable: String) = new ", queryTypeName, "(variable)");
-    scalaWriter.end();
+    writeHeader(model, scalaWriter);
     
-    // header
-    model.getAnnotations.foreach(writer.annotation(_));    
-    scalaWriter.beginClass(classHeader);
+    var modelName = writer.getRawName(model);
     
     // entity property fields    
     model.getProperties filter (_.getType.getCategory == ENTITY) foreach { property =>
@@ -68,16 +58,41 @@ class ScalaEntitySerializer(val namePrefix: String, val nameSuffix: String) exte
       scalaWriter.line("private var _", property.getEscapedName, ": ", typeName, " = _;\n");
     }
     
+    writeAdditionalFields(model, scalaWriter);
+    
     // additional constructors
-    scalaWriter.line("def this(variable: String) = this(classOf[",modelName,"], forVariable(variable));");
-    scalaWriter.line("");
-    scalaWriter.line("def this(parent: Path[_], variable: String) = this(classOf[",modelName,"], forProperty(parent, variable));");
-    scalaWriter.line("");
+    scalaWriter.line("def this(variable: String) = this(classOf[",modelName,"], forVariable(variable));\n");
+    scalaWriter.line("def this(parent: Path[_], variable: String) = this(classOf[",modelName,"], forProperty(parent, variable));\n");
 
     // properties
     serializeProperties(model, writer, model.getProperties  );
 
+    writeAdditionalProperties(model, scalaWriter);
+    
     writer.end();
+  }
+  
+  def writeAdditionalFields(model: EntityType, writer: ScalaWriter) {
+      // override to customize
+  }
+  
+  def writeAdditionalProperties(model: EntityType, writer: ScalaWriter) {
+      // override to customize
+  }
+  
+  def writeHeader(model: EntityType, writer: ScalaWriter) {
+    val queryType = typeMappings.getPathType(model, model, true);
+    var modelName = writer.getRawName(model);
+    var queryTypeName = writer.getRawName(queryType);
+    var classHeader = String.format(classHeaderFormat, queryTypeName, modelName);
+        
+    writer.beginObject(queryTypeName);
+    writer.line("def as(variable: String) = new ", queryTypeName, "(variable)");
+    writer.end();
+    
+    // header
+    model.getAnnotations.foreach(writer.annotation(_));    
+    writer.beginClass(classHeader);
   }
 
   def serializeProperties(model: EntityType, writer: CodeWriter, properties: Collection[Property]) {

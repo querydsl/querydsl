@@ -28,12 +28,21 @@ class RelationalPathImpl[T](t: Class[_ <: T], md: PathMetadata[_])
   
   override def add[P <: Path[_]](p: P): P = { columns.add(p); p; }
   
-  // FIXME
-  //def all: Array[Path[_]] = columns.toArray(new Array[Path[_]](columns.size));
+  def all: Array[Path[_]] = columns.toArray[Path[_]](new Array[Path[_]](columns.size));
   
-  // createPrimaryKey
+  def createPrimaryKey(cols: Array[Path[_]]): PrimaryKey[T] = {
+    primaryKey = new PrimaryKey[T](this, cols:_*); primaryKey
+  }
   
-  // createForeignKey
+  def createForeignKey[F](local: Path[_], foreign: String) = {
+    val foreignKey = new ForeignKey[F](this, local, foreign);
+    foreignKeys.add(foreignKey); foreignKey
+  }
+  
+  def createInvForeignKey[F](local: Path[_], foreign: String) = {
+    val foreignKey = new ForeignKey[F](this, local, foreign);
+    inverseForeignKeys.add(foreignKey); foreignKey
+  }
   
   def getPrimaryKey = primaryKey;
   
