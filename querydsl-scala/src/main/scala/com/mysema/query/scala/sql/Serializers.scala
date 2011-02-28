@@ -22,7 +22,8 @@ import scala.collection.mutable.Set
 class ScalaMetaDataSerializer(namePrefix: String, nameSuffix: String, val namingStrategy: NamingStrategy) 
     extends ScalaEntitySerializer(namePrefix, nameSuffix) {
     
-  override val classHeaderFormat = "%1$s(path: String) extends RelationalPathImpl[%2$s](classOf[%2$s], path)";
+//  override val classHeaderFormat = "%1$s(path: String) extends RelationalPathImpl[%2$s](classOf[%2$s], path)";
+  override val classHeaderFormat = "%1$s(cl: Class[_ <: %2$s], md: PathMetadata[_]) extends RelationalPathImpl[%2$s](cl, md)";
 
   def this(namePrefix: String, namingStrategy: NamingStrategy) = this(namePrefix, "", namingStrategy);  
   

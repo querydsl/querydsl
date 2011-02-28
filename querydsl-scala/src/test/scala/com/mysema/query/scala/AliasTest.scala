@@ -178,7 +178,7 @@ class AliasTest {
   }
 
   @Test
-  def Complex_Starts_With_And_Less_Than_And_Is_Null() {
+  def Complex_Starts_With_And_Less_Than_And_Is_Null {
     val expr: Predicate = (person.firstName $startsWith person.lastName) $and (person.javaInt $lt person.scalaInt) $or (person.javaDouble $isNull);
     assertEquals("startsWith(person.firstName,person.lastName) " +
          "&& person.javaInt < person.scalaInt " +
@@ -186,41 +186,41 @@ class AliasTest {
   }
   
   @Test
-  def Lt_and_Gt() {
+  def Lt_and_Gt {
     val expr: Predicate = (person.javaInt $lt 5) $and (person.scalaInt $gt 7);
     assertEquals("person.javaInt < 5 && person.scalaInt > 7", expr);
   }
   
   @Test
-  def Gt_and_Lt() {
+  def Gt_and_Lt {
     val expr: Predicate = (person.javaInt $gt 5) $and (person.scalaInt $lt 7);
     assertEquals("person.javaInt > 5 && person.scalaInt < 7", expr);
   }
   
   @Test
-  def Lt_or_Gt() {
+  def Lt_or_Gt {
     val expr: Predicate = (person.javaInt $lt 5) $or (person.scalaInt $gt 7);
     assertEquals("person.javaInt < 5 || person.scalaInt > 7", expr);
   }
   
   @Test
-  def Gt_or_Lt() {
+  def Gt_or_Lt {
     val expr: Predicate = (person.javaInt $gt 5) $or (person.scalaInt $lt 7);
     assertEquals("person.javaInt > 5 || person.scalaInt < 7", expr);
   }
   
   @Test
-  def Starts_with() {
+  def Starts_with {
     assertEquals("startsWith(person.firstName,amin)",  person.firstName $startsWith "amin");
   }
   
   @Test
-  def Ends_with() {
+  def Ends_with {
     assertEquals("endsWith(person.firstName,amin)",  person.firstName $endsWith "amin");
   }
   
   @Test
-  def Prefix(){
+  def Prefix {
     assertEquals("count(person)", count(person));
     assertEquals("min(person.javaInt)", min(person.javaInt));
     assertEquals("min(person.scalaInt)", min(person.scalaInt));

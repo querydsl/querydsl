@@ -38,10 +38,18 @@ trait SimpleExpression[T] extends Expression[T]{
   
   def eq(right: Expression[T]) = boolean(EQ_OBJECT, this, right);
   
+  def ===(right: T) = eq(right);
+  
+  def ===(right: Expression[T]) = eq(right);
+  
   def ne(right: T): BooleanExpression = ne(constant(right));
 
   def ne(right: Expression[T]) = boolean(NE_OBJECT, this, right);    
 
+  def !==(right: T) = ne(right);
+  
+  def !==(right: Expression[T]) = ne(right);  
+  
   def count() = number[java.lang.Long](classOf[java.lang.Long], AggOps.COUNT_AGG, this);
 
   def in(right: Collection[T]) = boolean(IN, this, constant(right));
@@ -135,6 +143,10 @@ trait ComparableExpression[T <: Comparable[_]] extends ComparableExpressionBase[
 
   def lt(right: Expression[T]): BooleanExpression = boolean(BEFORE, this, right);
 
+  def <(right: T) = lt(right);
+  
+  def <(right: Expression[T]) = lt(right);
+  
   def between(left: T, right: T): BooleanExpression = between(constant(left), constant(right));
 
   def between(left: Expression[T], right: Expression[T]) = boolean(BETWEEN, this, left, right); ;
@@ -147,13 +159,25 @@ trait ComparableExpression[T <: Comparable[_]] extends ComparableExpressionBase[
 
   def gt(right: Expression[T]) = boolean(AFTER, this, right);
   
+  def >(right: T) = gt(right);
+  
+  def >(right: Expression[T]) = gt(right);
+  
   def goe(right: T): BooleanExpression = goe(constant(right));
 
   def goe(right: Expression[T]) = boolean(AOE, this, right);
   
+  def >=(right: T) = goe(right);
+  
+  def >=(right: Expression[T]) = goe(right);
+  
   def loe(right: T): BooleanExpression = loe(constant(right));
 
   def loe(right: Expression[T]) = boolean(BOE, this, right);
+  
+  def <=(right: T) = loe(right);
+  
+  def <=(right: Expression[T]) = loe(right);
 
   override def as(right: Path[T]) = comparable(getType, ALIAS.asInstanceOf[Operator[T]], this, right);
 
@@ -175,9 +199,17 @@ trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpress
 
   def goe(right: NumberExpr) = boolean(Ops.GOE, this, right);
 
+  def >=(right: Number) = goe(right);
+  
+  def >=(right: NumberExpr) = goe(right);
+  
   def gt(right: Number): BooleanExpression = gt(constant(right));
 
   def gt(right: NumberExpr) = boolean(Ops.GT, this, right);
+  
+  def >(right: Number) = gt(right);
+  
+  def >(right: NumberExpr) = gt(right);
 
   def between(left: Number, right: Number) = boolean(Ops.BETWEEN, this, constant(left), constant(right));
 
@@ -190,10 +222,18 @@ trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpress
   def loe(right: Number): BooleanExpression = loe(constant(right));
 
   def loe(right: NumberExpr) = boolean(Ops.LOE, this, right);
+
+  def <=(right: Number) = loe(right);
+  
+  def <=(right: NumberExpr) = loe(right);
   
   def lt(right: Number): BooleanExpression = lt(constant(right));
 
   def lt(right: NumberExpr) = boolean(Ops.LT, this, right);
+  
+  def <(right: Number) = lt(right);
+  
+  def <(right: NumberExpr) = lt(right);  
 
   def in(right: NumberArray) = boolean(IN, this, constant(asList(right: _*)));
 
@@ -265,8 +305,12 @@ trait BooleanExpression extends ComparableExpression[java.lang.Boolean] with Pre
     
   def and(right: Predicate) = boolean(Ops.AND, this, right);
 
+  def &&(right: Predicate) = and(right);
+  
   def or(right: Predicate) = boolean(Ops.OR, this, right);
 
+  def ||(right: Predicate) = or(right);
+  
   def not() = boolean(Ops.NOT, this);
   
   override def as(right: Path[java.lang.Boolean]) = boolean(ALIAS.asInstanceOf[Operator[java.lang.Boolean]], this, right);
@@ -284,6 +328,10 @@ trait StringExpression extends ComparableExpression[String] {
   def append(right: Expression[String]) = string(Ops.CONCAT, this, right); 
 
   def append(right: String): StringExpression = append(constant(right));
+  
+  def +(right: Expression[String]) = append(right);
+  
+  def +(right: String) = append(right);
 
   def concat(right: Expression[String]) = append(right);
 

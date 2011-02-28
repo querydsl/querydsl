@@ -18,8 +18,18 @@ class ExpressionTest {
   }
   
   @Test
+  def Long_Path_With_Operators {
+    assertEquals("person.other.firstName = Ben", person.other.firstName === "Ben");
+  }
+  
+  @Test
   def Path_Equality {
     assertEquals("person.firstName = person.lastName", person.firstName eq person.lastName);
+  }
+  
+  @Test
+  def Path_Equality_With_Operators {
+    assertEquals("person.firstName = person.lastName", person.firstName === person.lastName);
   }
 
   @Test
@@ -27,6 +37,13 @@ class ExpressionTest {
     assertEquals("person.firstName = Ben", person.firstName eq "Ben");
     assertEquals("person.firstName != Ben", person.firstName ne "Ben");
     assertEquals("person.firstName != Ben", person.firstName ne "Ben");
+  }
+  
+  @Test
+  def String_Equality_With_Operators {
+    assertEquals("person.firstName = Ben", person.firstName === "Ben");
+    assertEquals("person.firstName != Ben", person.firstName !== "Ben");
+    assertEquals("person.firstName != Ben", person.firstName !== "Ben");
   }
     
   @Test
@@ -45,8 +62,18 @@ class ExpressionTest {
   }
   
   @Test
+  def String_Append_With_Operators {
+    assertEquals("person.firstName + x", person.firstName + "x");
+  }
+  
+  @Test
   def String_Append2 {
     assertEquals("person.firstName +   + person.lastName", person.firstName append " " append person.lastName);
+  }
+  
+  @Test
+  def String_Append2_With_Operators {
+    assertEquals("person.firstName +   + person.lastName", person.firstName + " " + person.lastName);
   }
 
   @Test
@@ -87,6 +114,18 @@ class ExpressionTest {
     assertEquals("person.javaInt >= 5", person.javaInt goe 5);
     assertEquals("person.javaInt = 5", person.javaInt eq 5.asInstanceOf[Integer]); // FIXME
     assertEquals("person.javaInt != 5", person.javaInt ne 5.asInstanceOf[Integer]); // FIXME
+  }
+  
+  @Test
+  def Number_Comparison_With_Operators {
+    assertEquals("person.scalaInt < 5", person.scalaInt < 5);
+    assertEquals("person.scalaInt = 5", person.scalaInt === 5); 
+    assertEquals("person.javaInt < 5", person.javaInt < 5);
+    assertEquals("person.javaInt > 5", person.javaInt > 5);
+    assertEquals("person.javaInt <= 5", person.javaInt <= 5);
+    assertEquals("person.javaInt >= 5", person.javaInt >= 5);
+    assertEquals("person.javaInt = 5", person.javaInt === 5);
+    assertEquals("person.javaInt != 5", person.javaInt !== 5);
   }
     
   @Test
@@ -178,7 +217,7 @@ class ExpressionTest {
   }
 
   @Test
-  def Complex_Starts_With_And_Less_Than_And_Is_Null() {
+  def Complex_Starts_With_And_Less_Than_And_Is_Null {
     val expr: Predicate = (person.firstName startsWith person.lastName) and (person.javaInt lt person.scalaInt) or (person.javaDouble isNull);
     assertEquals("startsWith(person.firstName,person.lastName) " +
          "&& person.javaInt < person.scalaInt " +
@@ -186,36 +225,63 @@ class ExpressionTest {
   }
   
   @Test
-  def Lt_and_Gt() {
+  def Complex_Starts_With_And_Less_Than_And_Is_Null_With_Operators {
+    val expr: Predicate = (person.firstName startsWith person.lastName) and (person.javaInt lt person.scalaInt) or (person.javaDouble isNull);
+    assertEquals("startsWith(person.firstName,person.lastName) && person.javaInt < person.scalaInt || person.javaDouble is null", 
+                  person.firstName.startsWith(person.lastName) && person.javaInt < person.scalaInt || person.javaDouble.isNull);
+  }
+  
+  @Test
+  def Lt_and_Gt {
     val expr: Predicate = (person.javaInt lt 5) and (person.scalaInt gt 7);
     assertEquals("person.javaInt < 5 && person.scalaInt > 7", expr);
   }
   
   @Test
-  def Gt_and_Lt() {
+  def Lt_and_Gt_With_Operators {
+    assertEquals("person.javaInt < 5 && person.scalaInt > 7", person.javaInt < 5 && person.scalaInt > 7);
+  }
+  
+  @Test
+  def Gt_and_Lt {
     val expr: Predicate = (person.javaInt gt 5) and (person.scalaInt lt 7);
     assertEquals("person.javaInt > 5 && person.scalaInt < 7", expr);
   }
   
   @Test
-  def Lt_or_Gt() {
+  def Gt_and_Lt_With_Operators {
+    assertEquals("person.javaInt > 5 && person.scalaInt < 7", person.javaInt > 5 && person.scalaInt < 7);
+  }
+  
+  @Test
+  def Lt_or_Gt {
     val expr: Predicate = (person.javaInt lt 5) or (person.scalaInt gt 7);
     assertEquals("person.javaInt < 5 || person.scalaInt > 7", expr);
   }
   
   @Test
-  def Gt_or_Lt() {
+  def Lt_or_Gt_With_Operators {
+    assertEquals("person.javaInt < 5 || person.scalaInt > 7", person.javaInt < 5 || person.scalaInt > 7);
+  }  
+  
+  @Test
+  def Gt_or_Lt {
     val expr: Predicate = (person.javaInt gt 5) or (person.scalaInt lt 7);
     assertEquals("person.javaInt > 5 || person.scalaInt < 7", expr);
   }
+
+  @Test
+  def Gt_or_Lt_With_Operators {
+    assertEquals("person.javaInt > 5 || person.scalaInt < 7", person.javaInt > 5 || person.scalaInt < 7);
+  }
   
   @Test
-  def Starts_with() {
+  def Starts_with {
     assertEquals("startsWith(person.firstName,amin)",  person.firstName startsWith "amin");
   }
   
   @Test
-  def Ends_with() {
+  def Ends_with {
     assertEquals("endsWith(person.firstName,amin)",  person.firstName endsWith "amin");
   }
   
