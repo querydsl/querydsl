@@ -117,6 +117,11 @@ class ExpressionTest {
   }
   
   @Test
+  def Number_Negation {
+    assertEquals("person.scalaInt * -1", -person.scalaInt);  
+  }
+  
+  @Test
   def Number_Comparison_With_Operators {
     assertEquals("person.scalaInt < 5", person.scalaInt < 5);
     assertEquals("person.scalaInt = 5", person.scalaInt === 5); 
@@ -297,18 +302,20 @@ class ExpressionTest {
   
   @Test
   def String_Negations {
-    assertEquals("!person.firstName like XXX", person.firstName not() like "XXX"); // FIXME
-    assertEquals("!matches(person.firstName,XXX)", person.firstName not() matches "XXX"); // FIXME
-    assertEquals("!startsWith(person.firstName,XXX)", person.firstName not() startsWith"XXX"); // FIXME   
-    assertEquals("!endsWith(person.firstName,XXX)", person.firstName not() endsWith "XXX"); // FIXME
-    assertEquals("!empty(person.firstName)", person.firstName not() empty); // FIXME
+//    assertEquals("!person.firstName like XXX", person.firstName not like "XXX"); // FIXME
+//    assertEquals("!matches(person.firstName,XXX)", person.firstName not matches("XXX")); // FIXME
+//    assertEquals("!startsWith(person.firstName,XXX)", person.firstName not startsWith("XXX")); // FIXME   
+//    assertEquals("!endsWith(person.firstName,XXX)", person.firstName not endsWith("XXX")); // FIXME
+//    assertEquals("!empty(person.firstName)", person.firstName not empty); // FIXME
   }
   
-//  @Test
-//  def Prefix(){
-//    assertEquals("count(person)", count(person));
-//    assertEquals("min(person.javaInt)", min(person.javaInt));
-//    assertEquals("min(person.scalaInt)", min(person.scalaInt));
-//  }
+  @Test
+  def String_Negations2 {
+    assertEquals("!person.firstName like XXX", !(person.firstName like "XXX")); 
+    assertEquals("!matches(person.firstName,XXX)", !(person.firstName matches "XXX")); 
+    assertEquals("!startsWith(person.firstName,XXX)", !(person.firstName startsWith "XXX"));   
+    assertEquals("!endsWith(person.firstName,XXX)", !(person.firstName endsWith "XXX")); 
+    assertEquals("!empty(person.firstName)", !(person.firstName isEmpty)); 
+  }
 
 }

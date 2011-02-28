@@ -293,6 +293,8 @@ trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpress
   def floor() = number[T](getType, MathOps.FLOOR, this);
 
   def round() = number[T](getType, MathOps.ROUND, this);
+  
+  def unary_-() = negate
 
   private def castToNum[A <: Number with Comparable[A]](t: Class[A]): NumberExpression[A] = {
     if (t.equals(getType)) {
@@ -319,6 +321,8 @@ trait BooleanExpression extends ComparableExpression[java.lang.Boolean] with Pre
   def ||(right: Predicate) = or(right);
   
   def not() = boolean(Ops.NOT, this);
+  
+  def unary_! = not();
   
   override def as(right: Path[java.lang.Boolean]) = boolean(ALIAS.asInstanceOf[Operator[java.lang.Boolean]], this, right);
 
@@ -418,35 +422,8 @@ trait StringExpression extends ComparableExpression[String] {
 
   override def as(alias: String): StringExpression = as(new PathImpl[String](getType, alias));
   
-  def not() = new StringNegations(this)
+//  def not[F](func: (StringExpression) => F): F = func(this);
 
-}
-
-// NOTE : experimental
-class StringNegations (val str: StringExpression) {
-    
-  def like(right: String): BooleanExpression = str.like(right).not;
-    
-  def like(right: Expression[String]) = str.like(right).not;
-    
-  def matches(right: String) = str.matches(right).not;
-    
-  def matches(right: Expression[String]) = str.matches(right).not;    
-        
-  def contains(right: String) = str.contains(right).not;
-    
-  def contains(right: Expression[String]) = str.contains(right).not;        
-        
-  def startsWith(right: String) = str.startsWith(right).not;
-    
-  def startsWith(right: Expression[String]) = str.startsWith(right).not;    
-    
-  def endsWith(right: String) = str.endsWith(right).not;
-    
-  def endsWith(right: Expression[String]) = str.endsWith(right).not;    
-    
-  def empty = str.isNotEmpty;
-    
 }
 
 trait TemporalExpression[T <: Comparable[_]] extends ComparableExpression[T] {
