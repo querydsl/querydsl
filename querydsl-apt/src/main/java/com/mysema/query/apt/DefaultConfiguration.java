@@ -67,17 +67,17 @@ public class DefaultConfiguration implements Configuration {
     private final Serializer supertypeSerializer;
 
     private String namePrefix = "Q";
-    
+
     private String nameSuffix = "";
 
-    private final Map<String,SerializerConfig> packageToConfig = new HashMap<String,SerializerConfig>();
+    private final Map<String, SerializerConfig> packageToConfig = new HashMap<String, SerializerConfig>();
 
     protected final Class<? extends Annotation> entityAnn;
 
     @Nullable
     protected final Class<? extends Annotation> entitiesAnn, superTypeAnn, embeddedAnn, embeddableAnn, skipAnn;
 
-    private final Map<String,SerializerConfig> typeToConfig = new HashMap<String,SerializerConfig>();
+    private final Map<String, SerializerConfig> typeToConfig = new HashMap<String, SerializerConfig>();
 
     private boolean useFields = true, useGetters = true, defaultOverwrite = false;
 
@@ -316,7 +316,7 @@ public class DefaultConfiguration implements Configuration {
     public void setNameSuffix(String nameSuffix) {
         this.nameSuffix = nameSuffix;
     }
-    
-    
+
+
 
 }
