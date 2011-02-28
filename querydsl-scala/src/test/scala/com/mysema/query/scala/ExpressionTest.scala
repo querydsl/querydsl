@@ -4,6 +4,8 @@ import com.mysema.query.types._;
 
 import org.junit.{ Test, Before, After, Assert };
 
+import Matchers._
+
 class ExpressionTest {
 
   val person = Person as "person";
@@ -153,6 +155,12 @@ class ExpressionTest {
   def Number_Between {
     assertEquals("person.scalaInt between 2 and 3", person.scalaInt between (2, 3));
     assertEquals("person.javaInt between 2 and 3", person.javaInt between (2, 3));
+  }
+  
+  @Test
+  def Number_Not_Between {
+    assertEquals("!person.scalaInt between 2 and 3", person.scalaInt not between (2, 3));
+    assertEquals("!person.javaInt between 2 and 3", person.javaInt not between (2, 3));
   }
 
   @Test
@@ -318,11 +326,11 @@ class ExpressionTest {
   
   @Test
   def String_Negations {
-//    assertEquals("!person.firstName like XXX", person.firstName not like "XXX"); // FIXME
-//    assertEquals("!matches(person.firstName,XXX)", person.firstName not matches("XXX")); // FIXME
-//    assertEquals("!startsWith(person.firstName,XXX)", person.firstName not startsWith("XXX")); // FIXME   
-//    assertEquals("!endsWith(person.firstName,XXX)", person.firstName not endsWith("XXX")); // FIXME
-//    assertEquals("!empty(person.firstName)", person.firstName not empty); // FIXME
+    assertEquals("!person.firstName like XXX", person.firstName not like("XXX")); 
+    assertEquals("!matches(person.firstName,XXX)", person.firstName not matches("XXX"));
+    assertEquals("!startsWith(person.firstName,XXX)", person.firstName not startsWith("XXX"));   
+    assertEquals("!endsWith(person.firstName,XXX)", person.firstName not endsWith("XXX")); 
+    assertEquals("!empty(person.firstName)", person.firstName not empty); 
   }
   
   @Test

@@ -70,6 +70,8 @@ trait SimpleExpression[T] extends Expression[T]{
 
   def notIn(right: CollectionExpression[T,_]) = in(right).not;
 
+  def not[M <: SimpleExpression[T]](f: (M) => BooleanExpression): BooleanExpression = f(this.asInstanceOf[M]).not();
+  
 }
 
 trait ArrayExpression[T <: Array[_]] extends SimpleExpression[T] {
@@ -422,8 +424,6 @@ trait StringExpression extends ComparableExpression[String] {
 
   override def as(alias: String): StringExpression = as(new PathImpl[String](getType, alias));
   
-//  def not[F](func: (StringExpression) => F): F = func(this);
-
 }
 
 trait TemporalExpression[T <: Comparable[_]] extends ComparableExpression[T] {
