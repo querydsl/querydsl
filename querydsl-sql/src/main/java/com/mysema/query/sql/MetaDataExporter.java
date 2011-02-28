@@ -31,6 +31,7 @@ import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
+import com.mysema.query.codegen.CustomEntityType;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.Serializer;
@@ -127,20 +128,7 @@ public class MetaDataExporter {
         if (beanSerializer == null){
             classModel = new EntityType("", "", classTypeModel);
         }else{
-            classModel = new EntityType(namePrefix, nameSuffix, classTypeModel){
-                @Override
-                public String getFullName(){
-                    return packageName + "." + className;
-                }
-                @Override
-                public String getPackageName(){
-                    return packageName;
-                }
-                @Override
-                public String getSimpleName(){
-                    return className;
-                }
-            };
+            classModel = new CustomEntityType(namePrefix, nameSuffix, packageName, className, classTypeModel);
         }
         entityToWrapped.put(classModel, classTypeModel);
         if (schemaName != null){

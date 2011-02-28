@@ -15,8 +15,11 @@ public class ArrayTest {
 
     @QueryEntity
     public class ArrayTestEntity{
+        
         ArrayTestEntity[] entityArray;
+        
         int[] primitiveArray;
+        
         String[] stringArray;
     }
 
