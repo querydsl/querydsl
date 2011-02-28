@@ -81,6 +81,12 @@ class ExpressionTest {
     val andClause = (person.firstName like "An%") and (person.firstName like "Be%");
     assertEquals("person.firstName like An% && person.firstName like Be%", andClause);
   }
+  
+  @Test
+  def String_And_With_Operators {
+    val andClause = (person.firstName like "An%") && (person.firstName like "Be%");
+    assertEquals("person.firstName like An% && person.firstName like Be%", andClause);
+  }
 
   @Test
   def String_Or {
@@ -89,11 +95,21 @@ class ExpressionTest {
   }
 
   @Test
+  def String_Or_With_Operators {
+    val orClause = (person.firstName like "An%") or (person.firstName like "Be%");
+    assertEquals("person.firstName like An% || person.firstName like Be%", orClause);
+  }
+  
+  @Test
   def String_Not {
     assertEquals("!person.firstName like An%", (person.firstName like "An%") not);
-    //assertEquals("!person.firstName like An%", not(person.firstName like "An%"));
   }
 
+  @Test
+  def String_Not_With_Operators {
+    assertEquals("!person.firstName like An%", !(person.firstName like "An%"));
+  }
+    
   @Test
   def String_Trim {
     assertEquals("trim(person.firstName)", person.firstName trim);
@@ -319,3 +335,5 @@ class ExpressionTest {
   }
 
 }
+
+
