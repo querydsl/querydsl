@@ -103,6 +103,10 @@ trait ListExpression[T, Q <: Expression[_ >: T]] extends CollectionExpressionBas
   def get(i: Int): Q;
   
   def get(i: Expression[Integer]): Q;
+  
+  def apply(i: Int) = get(i);
+  
+  def apply(i: Expression[Integer]) = get(i);
     
 }
 
@@ -126,6 +130,9 @@ trait MapExpression[K, V, Q <: Expression[_ >: V]] extends SimpleExpression[java
   
   def get(key: Expression[K]): Q;
   
+  def apply(key: K) = get(key);
+  
+  def apply(key: Expression[K]) = get(key);  
   
 }
 

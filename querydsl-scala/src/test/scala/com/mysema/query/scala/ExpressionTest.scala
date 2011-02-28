@@ -175,11 +175,21 @@ class ExpressionTest {
     assertEquals("person.javaList.get(0) is not null", person.javaList.get(0) isNotNull);
     assertEquals("person.javaMap.get(xxx) is null", person.javaMap.get("xxx") isNull);
   }
+  
+  @Test
+  def Java_Collection_Get_With_Apply {
+    assertEquals("person.javaList.get(0) is not null", person.javaList(0) isNotNull);
+  }
 
   @Test
   def Java_Collections_Get_And_Starts_With {
     assertEquals("startsWith(person.javaMap.get(xxx),X)", person.javaMap.get("xxx") startsWith "X");
   }
+  
+  @Test
+  def Java_Collections_Get_With_Apply {
+    assertEquals("startsWith(person.javaMap.get(xxx),X)", person.javaMap("xxx") startsWith "X");
+  }  
 
   @Test
   def Scala_Collections_Size {
