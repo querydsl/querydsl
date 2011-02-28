@@ -28,6 +28,7 @@ object Matchers {
   
   def contains(str: String) = (expr: StringExpression) => expr.contains(str);
   
+  // NOTE : clashes with MapExpression.isEmpty and CollectionExpression.isEmpty
   def empty = (expr: StringExpression) => expr.isEmpty;
       
 }
