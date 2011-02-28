@@ -36,15 +36,14 @@ class ScalaMetaDataSerializerTest {
   }
 
   @Test
-  def Print() {
+  def Print {
     val namingStrategy = new DefaultNamingStrategy();
     val serializer = new ScalaMetaDataSerializer("Q", "", namingStrategy);
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer));
     val str = writer.toString();
     assertTrue("companion object isn't before class", str.indexOf("object") < str.indexOf("class"));
     assertTrue("companion object isn't before annotations", str.indexOf("object") < str.indexOf("@Table"));
-    System.err.println(str);
-    
+    System.err.println(str);    
   }
   
 }

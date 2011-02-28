@@ -51,13 +51,6 @@ class ScalaEntitySerializer(val namePrefix: String, val nameSuffix: String) exte
     
     var modelName = writer.getRawName(model);
     
-    // entity property fields    
-    model.getProperties filter (_.getType.getCategory == ENTITY) foreach { property =>
-      var queryType = typeMappings.getPathType(property.getType, model, false);
-      var typeName = writer.getRawName(queryType);
-      scalaWriter.line("private var _", property.getEscapedName, ": ", typeName, " = _;\n");
-    }
-    
     writeAdditionalFields(model, scalaWriter);
     
     // additional constructors
@@ -101,7 +94,7 @@ class ScalaEntitySerializer(val namePrefix: String, val nameSuffix: String) exte
       var queryType = typeMappings.getPathType(property.getType, model, false);
       var typeName = writer.getRawName(queryType);
       var name = property.getEscapedName;
-      val value = String.format("def %1$s: %2$s = { if (_%1$s == null){_%1$s = new %2$s(this, \"%1$s\"); }; _%1$s; }", name, typeName)
+      val value = String.format("lazy val %1$s = new %2$s(this, \"%1$s\");", name, typeName)
       writer.line(value, "\n");
     }  
     
@@ -159,7 +152,7 @@ class ScalaEntitySerializer(val namePrefix: String, val nameSuffix: String) exte
       }
       
 //      writer.publicFinal(ptype, property.getEscapedName, value);
-      writer.line("val ", property.getEscapedName, " = ", value, ";\n");
+      writer.line("lazy val ", property.getEscapedName, " = ", value, ";\n");
     }
   }
 

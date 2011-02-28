@@ -49,7 +49,7 @@ class ScalaBeanSerializerTest {
   }
 
   @Test
-  def Print() {
+  def Print {
     val serializer = new com.mysema.query.scala.sql.ScalaBeanSerializer();
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer));
     val str = writer.toString().replaceAll("\\s+", " ");

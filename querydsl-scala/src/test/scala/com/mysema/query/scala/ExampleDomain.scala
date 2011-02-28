@@ -45,39 +45,38 @@ object QPerson {
 }
 
 class QPerson(cl: Class[_ <: Person], md: PathMetadata[_]) extends EntityPathImpl[Person](cl, md) {
-    private var _other: QPerson = _;
 
     def this(variable: String) = this(classOf[Person], forVariable(variable));
     
     def this(parent: Path[_], variable: String) = this(classOf[Person], forProperty(parent, variable));
     
-    def other: QPerson = { if (_other == null){_other = new QPerson(this, "other"); }; _other; }
+    lazy val other = new QPerson(this, "other");
 
-    val firstName = createString("firstName");
+    lazy val firstName = createString("firstName");
 
-    val scalaMap = createMap("scalaMap", classOf[String], classOf[String], classOf[StringPath]);
+    lazy val scalaMap = createMap("scalaMap", classOf[String], classOf[String], classOf[StringPath]);
 
-    val scalaInt = createNumber("scalaInt", classOf[Integer]);
+    lazy val scalaInt = createNumber("scalaInt", classOf[Integer]);
 
-    val javaCollection = createCollection("javaCollection", classOf[String], classOf[StringPath]);
+    lazy val javaCollection = createCollection("javaCollection", classOf[String], classOf[StringPath]);
 
-    val javaInt = createNumber("javaInt", classOf[Integer]);
+    lazy val javaInt = createNumber("javaInt", classOf[Integer]);
 
-    val scalaList = createList("scalaList", classOf[String], classOf[StringPath]);
+    lazy val scalaList = createList("scalaList", classOf[String], classOf[StringPath]);
 
-    val javaMap = createMap("javaMap", classOf[String], classOf[String], classOf[StringPath]);
+    lazy val javaMap = createMap("javaMap", classOf[String], classOf[String], classOf[StringPath]);
 
-    val javaList = createList("javaList", classOf[String], classOf[StringPath]);
+    lazy val javaList = createList("javaList", classOf[String], classOf[StringPath]);
 
-    val javaDouble = createNumber("javaDouble", classOf[java.lang.Double]);
+    lazy val javaDouble = createNumber("javaDouble", classOf[java.lang.Double]);
 
-    val javaSet = createSet("javaSet", classOf[String], classOf[StringPath]);
+    lazy val javaSet = createSet("javaSet", classOf[String], classOf[StringPath]);
 
-    val lastName = createString("lastName");
+    lazy val lastName = createString("lastName");
 
-    val array = createArray("array", classOf[Array[String]]);
+    lazy val array = createArray("array", classOf[Array[String]]);
 
-    val listOfPersons = createList("listOfPersons", classOf[Person], classOf[QPerson]);
+    lazy val listOfPersons = createList("listOfPersons", classOf[Person], classOf[QPerson]);
 
 }
 
