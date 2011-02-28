@@ -26,16 +26,16 @@ class RelationalPathImpl[T](t: Class[_ <: T], md: PathMetadata[_])
   
   def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
   
-  def add[P <: Path[_]](p: P): P = { columns.add(p); p; }
+  override def add[P <: Path[_]](p: P): P = { columns.add(p); p; }
   
   // FIXME
-//  def all: Array[Path[_]] = columns.toArray(new Array[Path[_]](columns.size));
+  //def all: Array[Path[_]] = columns.toArray(new Array[Path[_]](columns.size));
   
   // createPrimaryKey
   
   // createForeignKey
   
-  def getPrimaryKey(): PrimaryKey[T] = primaryKey;
+  def getPrimaryKey = primaryKey;
   
   def getSchemaName = getType.getAnnotation(classOf[Schema]).value;
   

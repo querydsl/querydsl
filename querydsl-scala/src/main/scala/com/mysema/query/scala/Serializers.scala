@@ -58,8 +58,7 @@ class ScalaEntitySerializer(val namePrefix: String, val nameSuffix: String) exte
     scalaWriter.end();
     
     // header
-    model.getAnnotations.foreach(writer.annotation(_));
-    
+    model.getAnnotations.foreach(writer.annotation(_));    
     scalaWriter.beginClass(classHeader);
     
     // entity property fields    
@@ -74,25 +73,24 @@ class ScalaEntitySerializer(val namePrefix: String, val nameSuffix: String) exte
     scalaWriter.line("");
     scalaWriter.line("def this(parent: Path[_], variable: String) = this(classOf[",modelName,"], forProperty(parent, variable));");
     scalaWriter.line("");
-    
-    // entity properties
-    model.getProperties filter (_.getType.getCategory == ENTITY) foreach { property =>
-      var queryType = typeMappings.getPathType(property.getType, model, false);
-      var typeName = writer.getRawName(queryType);
-      var name = property.getEscapedName;
-      val value = String.format("def %1$s: %2$s = { if (_%1$s == null){_%1$s = new %2$s(this, \"%1$s\"); }; _%1$s; }", name, typeName)
-      scalaWriter.line(value, "\n");
-    }
-    
-    // other properties
+
+    // properties
     serializeProperties(model, writer, model.getProperties  );
 
     writer.end();
   }
 
   def serializeProperties(model: EntityType, writer: CodeWriter, properties: Collection[Property]) {
-      
+    // entity properties
+    properties filter (_.getType.getCategory == ENTITY) foreach { property =>
+      var queryType = typeMappings.getPathType(property.getType, model, false);
+      var typeName = writer.getRawName(queryType);
+      var name = property.getEscapedName;
+      val value = String.format("def %1$s: %2$s = { if (_%1$s == null){_%1$s = new %2$s(this, \"%1$s\"); }; _%1$s; }", name, typeName)
+      writer.line(value, "\n");
+    }  
     
+    // other properties
     properties filter (_.getType.getCategory != ENTITY) foreach { property =>
       val methodName: String = property.getType.getCategory match {
         case ARRAY => "createArray";

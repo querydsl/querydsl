@@ -18,13 +18,13 @@ object Paths {
 
   def entity[T](t: Class[_ <: T], md: PathMetadata[_]) = new EntityPathImpl[T](t, md);
 
-  def collection[T, Q <: Expression[_ >: T]](t: Class[_ <: T], q: Class[Q], md: PathMetadata[_]) = new CollectionPath[T,Q](t, q, md);
+  def collection[T, Q <: Expression[_ >: T]](t: Class[T], q: Class[Q], md: PathMetadata[_]) = new CollectionPath[T,Q](t, q, md);
 
-  def set[T, Q <: Expression[_ >: T]](t: Class[_ <: T], q: Class[Q], md: PathMetadata[_]) = new SetPath[T,Q](t, q, md);
+  def set[T, Q <: Expression[_ >: T]](t: Class[T], q: Class[Q], md: PathMetadata[_]) = new SetPath[T,Q](t, q, md);
 
-  def list[T, Q <: Expression[_ >: T]](t: Class[_ <: T], q: Class[Q], md: PathMetadata[_]) = new ListPath[T,Q](t, q, md);
+  def list[T, Q <: Expression[_ >: T]](t: Class[T], q: Class[Q], md: PathMetadata[_]) = new ListPath[T,Q](t, q, md);
 
-  def map[K, V, Q <: Expression[_ >: V]](k: Class[_ <: K], v: Class[_ <: V], q: Class[Q], md: PathMetadata[_]) = new MapPath[K, V, Q](k, v, q, md);
+  def map[K, V, Q <: Expression[_ >: V]](k: Class[K], v: Class[V], q: Class[Q], md: PathMetadata[_]) = new MapPath[K, V, Q](k, v, q, md);
 
   def comparable[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_]) = new ComparablePath[T](t, md);
 
@@ -34,7 +34,7 @@ object Paths {
 
   def time[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_]) = new TimePath[T](t, md);
 
-  def number[T <: Number with Comparable[T]](t: Class[_ <: T], md: PathMetadata[_]) = new NumberPath[T](t, md);
+  def number[T <: Number with Comparable[T]](t: Class[T], md: PathMetadata[_]) = new NumberPath[T](t, md);
 
   def boolean(md: PathMetadata[_]) = new BooleanPath(md);
 
@@ -81,13 +81,13 @@ class BeanPath[T](t: Class[_ <: T], md: PathMetadata[_])
 
   def createEntity[T](property: String, t: Class[T]) = add(entity(t, forProperty(property)));
 
-  def createCollection[T, Q <: Expression[_ >: T]](property: String, t: Class[_ <: T], q: Class[Q]) = add(collection(t, q, forProperty(property)));
+  def createCollection[T, Q <: Expression[_ >: T]](property: String, t: Class[T], q: Class[Q]) = add(collection(t, q, forProperty(property)));
 
-  def createSet[T, Q <: Expression[_ >: T]](property: String, t: Class[_ <: T], q: Class[Q]) = add(set(t, q, forProperty(property)));
+  def createSet[T, Q <: Expression[_ >: T]](property: String, t: Class[T], q: Class[Q]) = add(set(t, q, forProperty(property)));
 
-  def createList[T, Q <: Expression[_ >: T]](property: String, t: Class[_ <: T], q: Class[Q]) = add(list(t, q, forProperty(property)));
+  def createList[T, Q <: Expression[_ >: T]](property: String, t: Class[T], q: Class[Q]) = add(list(t, q, forProperty(property)));
 
-  def createMap[K, V, Q <: Expression[_ >: V]](property: String, k: Class[_ <: K], v: Class[_ <: V], q: Class[Q]) = add(map(k, v, q, forProperty(property)));
+  def createMap[K, V, Q <: Expression[_ >: V]](property: String, k: Class[K], v: Class[V], q: Class[Q]) = add(map(k, v, q, forProperty(property)));
 
   def createComparable[T <: Comparable[_]](property: String, t: Class[T]) = add(comparable(t, forProperty(property)));
 
@@ -116,12 +116,12 @@ class EntityPathImpl[T](t: Class[_ <: T], md: PathMetadata[_])
   
 }
 
-class CollectionPath[T, Q <: Expression[_ >: T]](t: Class[_ <: T], q: Class[Q], md: PathMetadata[_])
+class CollectionPath[T, Q <: Expression[_ >: T]](t: Class[T], q: Class[Q], md: PathMetadata[_])
   extends PathImpl[java.util.Collection[T]](classOf[java.util.Collection[T]], md) with CollectionExpression[T,Q] {
 
   private var _any: Q = _;
     
-  def this(t: Class[_ <: T],  q: Class[Q], variable: String) = this(t, q, forVariable(variable));
+  def this(t: Class[T],  q: Class[Q], variable: String) = this(t, q, forVariable(variable));
 
   def getParameter(i: Int) = t;
 
@@ -129,12 +129,12 @@ class CollectionPath[T, Q <: Expression[_ >: T]](t: Class[_ <: T], q: Class[Q], 
   
 }
 
-class SetPath[T, Q <: Expression[_ >: T]](t: Class[_ <: T],  q: Class[Q], md: PathMetadata[_])
+class SetPath[T, Q <: Expression[_ >: T]](t: Class[T],  q: Class[Q], md: PathMetadata[_])
   extends PathImpl[java.util.Set[T]](classOf[java.util.Set[T]], md) with SetExpression[T,Q] {
 
   private var _any: Q = _;
     
-  def this(t: Class[_ <: T], q: Class[Q], variable: String) = this(t, q, forVariable(variable));
+  def this(t: Class[T], q: Class[Q], variable: String) = this(t, q, forVariable(variable));
 
   def getParameter(i: Int) = t;
 
@@ -142,12 +142,12 @@ class SetPath[T, Q <: Expression[_ >: T]](t: Class[_ <: T],  q: Class[Q], md: Pa
   
 }
 
-class ListPath[T, Q <: Expression[_ >: T]](t: Class[_ <: T],  q: Class[Q], md: PathMetadata[_])
+class ListPath[T, Q <: Expression[_ >: T]](t: Class[T],  q: Class[Q], md: PathMetadata[_])
   extends PathImpl[java.util.List[T]](classOf[java.util.List[T]], md) with ListExpression[T,Q] {
 
   private var _any: Q = _;
     
-  def this(t: Class[_ <: T], q: Class[Q], variable: String) = this(t, q, forVariable(variable));
+  def this(t: Class[T], q: Class[Q], variable: String) = this(t, q, forVariable(variable));
 
   def getParameter(i: Int) = t;
 
@@ -159,10 +159,10 @@ class ListPath[T, Q <: Expression[_ >: T]](t: Class[_ <: T],  q: Class[Q], md: P
   
 }
 
-class MapPath[K, V, Q <: Expression[_ >: V]](k: Class[_ <: K], v: Class[_ <: V], q: Class[Q], md: PathMetadata[_])
+class MapPath[K, V, Q <: Expression[_ >: V]](k: Class[K], v: Class[V], q: Class[Q], md: PathMetadata[_])
   extends PathImpl[java.util.Map[K, V]](classOf[java.util.Map[K, V]], md) with MapExpression[K, V, Q] {
 
-  def this(k: Class[_ <: K], v: Class[_ <: V], q: Class[Q], variable: String) = this(k, v, q, forVariable(variable));
+  def this(k: Class[K], v: Class[V], q: Class[Q], variable: String) = this(k, v, q, forVariable(variable));
 
   def getParameter(i: Int): Class[_] = { if (i == 0) k else v }
 
@@ -179,10 +179,10 @@ class ComparablePath[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_])
 
 }
 
-class NumberPath[T <: Number with Comparable[T]](t: Class[_ <: T], md: PathMetadata[_])
+class NumberPath[T <: Number with Comparable[T]](t: Class[T], md: PathMetadata[_])
   extends PathImpl[T](t, md) with NumberExpression[T] {
 
-  def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
+  def this(t: Class[T], variable: String) = this(t, forVariable(variable));
 
 }
 
