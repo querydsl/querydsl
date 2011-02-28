@@ -1,31 +1,40 @@
 package test;
 
-import com.mysema.query.sql._;
-import com.mysema.query.types.path._;
+import com.mysema.query.types._;
+import com.mysema.query.scala._;
 
+import com.mysema.query.types.PathMetadataFactory._;
 import com.mysema.query.sql.Table;
+import com.mysema.query.sql.Schema;
 
-import java.util.Arrays;
+import com.mysema.query.scala.sql.RelationalPathImpl;
+
+import com.mysema.query.sql._;
 
 object QEmployee {
-    def as(variable: String) = new QEmployee(variable);
+    def as(variable: String) = new QEmployee(variable)
 }
 
 @Table("EMPLOYEE")
-class QEmployee(path: String) extends RelationalPathBase[Employee](classOf[Employee], path) {
-  val firstname: StringPath = createString("FIRSTNAME");
+@Schema("PUBLIC")
+class QEmployee(cl: Class[_ <: Employee], md: PathMetadata[_]) extends RelationalPathImpl[Employee](cl, md) {
+    def this(variable: String) = this(classOf[Employee], forVariable(variable));
 
-  val id: NumberPath[Integer] = createNumber("ID", classOf[Integer]);
+    def this(parent: Path[_], variable: String) = this(classOf[Employee], forProperty(parent, variable));
 
-  val lastname: StringPath = createString("LASTNAME");
+    val firstname = createString("FIRSTNAME");
 
-  val superiorId: NumberPath[Integer] = createNumber("SUPERIOR_ID", classOf[Integer]);
+    val id = createNumber("ID", classOf[Integer]);
 
-  val sysIdx55: PrimaryKey[Employee] = createPrimaryKey(id);
+    val lastname = createString("LASTNAME");
 
-  val superiorFk: ForeignKey[Employee] = createForeignKey(superiorId, "ID");
+    val superiorId = createNumber("SUPERIOR_ID", classOf[Integer]);
 
-  val _superiorFk: ForeignKey[Employee] = createInvForeignKey(id, "SUPERIOR_ID");
+    val sysIdx55: PrimaryKey[Employee] = createPrimaryKey(id);
+
+    val superiorFk: ForeignKey[Employee] = createForeignKey(superiorId, "ID");
+
+    val _superiorFk: ForeignKey[Employee] = createInvForeignKey(id, "SUPERIOR_ID");
 
 }
 

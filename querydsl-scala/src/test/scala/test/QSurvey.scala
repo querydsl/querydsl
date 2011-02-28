@@ -1,24 +1,32 @@
 package test;
 
-import com.mysema.query.sql._;
-import com.mysema.query.types.path._;
+import com.mysema.query.types._;
+import com.mysema.query.scala._;
 
+import com.mysema.query.types.PathMetadataFactory._;
 import com.mysema.query.sql.Table;
+import com.mysema.query.sql.Schema;
 
-import java.util.Arrays;
+import com.mysema.query.scala.sql.RelationalPathImpl;
 
+import com.mysema.query.sql._;
 
 object QSurvey {
-    def as(variable: String) = new QSurvey(variable);
+    def as(variable: String) = new QSurvey(variable)
 }
 
 @Table("SURVEY")
-class QSurvey(path: String) extends RelationalPathBase[Survey](classOf[Survey], path) {
-  val id: NumberPath[Integer] = createNumber("ID", classOf[Integer]);
+@Schema("PUBLIC")
+class QSurvey(cl: Class[_ <: Survey], md: PathMetadata[_]) extends RelationalPathImpl[Survey](cl, md) {
+    def this(variable: String) = this(classOf[Survey], forVariable(variable));
 
-  val name: StringPath = createString("NAME");
+    def this(parent: Path[_], variable: String) = this(classOf[Survey], forProperty(parent, variable));
 
-  val sysIdx54: PrimaryKey[Survey] = createPrimaryKey(id, name);
+    val id = createNumber("ID", classOf[Integer]);
+
+    val name = createString("NAME");
+
+    val sysIdx54: PrimaryKey[Survey] = createPrimaryKey(id, name);
 
 }
 

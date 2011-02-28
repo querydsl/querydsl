@@ -152,7 +152,7 @@ class ScalaEntitySerializer(val namePrefix: String, val nameSuffix: String) exte
       }
       
 //      writer.publicFinal(ptype, property.getEscapedName, value);
-      writer.line("lazy val ", property.getEscapedName, " = ", value, ";\n");
+      writer.line("val ", property.getEscapedName, " = ", value, ";\n");
     }
   }
 

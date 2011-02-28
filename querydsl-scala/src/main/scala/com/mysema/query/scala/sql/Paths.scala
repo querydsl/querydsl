@@ -30,7 +30,7 @@ class RelationalPathImpl[T](t: Class[_ <: T], md: PathMetadata[_])
   
   def all: Array[Path[_]] = columns.toArray[Path[_]](new Array[Path[_]](columns.size));
   
-  def createPrimaryKey(cols: Array[Path[_]]): PrimaryKey[T] = {
+  def createPrimaryKey(cols: Path[_]*): PrimaryKey[T] = {
     primaryKey = new PrimaryKey[T](this, cols:_*); primaryKey
   }
   

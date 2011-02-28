@@ -29,6 +29,7 @@ class ScalaMetaDataSerializer(namePrefix: String, nameSuffix: String, val naming
   
   override def writeHeader(model: EntityType, writer: ScalaWriter) {
     writer.imports(classOf[RelationalPathImpl[_]]);
+    writer.imports(classOf[PrimaryKey[_]].getPackage);
     super.writeHeader(model, writer);            
   }
     
