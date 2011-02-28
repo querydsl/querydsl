@@ -77,7 +77,7 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
     private final Stack<Type> types = new Stack<Type>();
 
     public JavaWriter(Appendable appendable){
-        super(appendable);
+        super(appendable, 4);
         this.packages.add("java.lang");
     }
 
