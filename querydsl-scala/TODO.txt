@@ -1,0 +1,13 @@
+not expansion for
+
+ in
+ between
+ empty
+ contains
+ containsKey
+ containsValue
+ like
+ matches
+ startsWith
+ endsWith
+ contains
