@@ -132,6 +132,14 @@ class ExpressionTest {
   @Test
   def String_Is_Empty {
     assertEquals("empty(person.firstName)", person.firstName isEmpty);
+    assertEquals("empty(person.firstName)", person.firstName is empty);
+  }
+  
+  @Test
+  def String_Is_Not_Empty {
+    assertEquals("!empty(person.firstName)", person.firstName isNotEmpty);
+    assertEquals("!empty(person.firstName)", person.firstName not empty);
+//    assertEquals("!empty(person.firstName)", person.firstName is not(empty) );
   }
 
   @Test
