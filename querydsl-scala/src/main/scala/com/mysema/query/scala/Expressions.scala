@@ -70,9 +70,9 @@ trait SimpleExpression[T] extends Expression[T]{
 
   def notIn(right: CollectionExpression[T,_]) = in(right).not;
 
-  def is[M <: SimpleExpression[T]](f: M => BooleanExpression): BooleanExpression = if (f == null) isNull() else f(this.asInstanceOf[M]);
+  def is[M <: SimpleExpression[T]](f: M => BooleanExpression): BooleanExpression = if (f == null) isNull else f(this.asInstanceOf[M]);
   
-  def not[M <: SimpleExpression[T]](f: M => BooleanExpression): BooleanExpression = f(this.asInstanceOf[M]).not();
+  def not[M <: SimpleExpression[T]](f: M => BooleanExpression): BooleanExpression = f(this.asInstanceOf[M]).not;
   
 }
 
@@ -88,7 +88,7 @@ trait CollectionExpressionBase[T <: Collection[C], C, Q <: Expression[_ >: C]] e
 
   def isEmpty() = boolean(COL_IS_EMPTY, this);
 
-  def isNotEmpty() = isEmpty().not;
+  def isNotEmpty() = isEmpty.not;
 
   def contains(child: C): BooleanExpression = contains(constant(child));
 
@@ -120,7 +120,7 @@ trait MapExpression[K, V, Q <: Expression[_ >: V]] extends SimpleExpression[java
 
   def isEmpty() = boolean(MAP_IS_EMPTY, this);
 
-  def isNotEmpty() = isEmpty().not;
+  def isNotEmpty() = isEmpty.not;
 
   def containsKey(k: K) = boolean(CONTAINS_KEY, this, constant(k));
 
@@ -205,6 +205,10 @@ trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpress
   def add(right: NumberExpr) = number[T](getType, ADD, this, right);
 
   def add(right: Number): NumberExpression[T] = add(constant(right));
+  
+  def +(right: NumberExpr) = add(right);
+
+  def +(right: Number) = add(right);
 
   def goe(right: Number): BooleanExpression = goe(constant(right));
 
@@ -259,6 +263,10 @@ trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpress
   def subtract(right: NumberExpr) = number[T](getType, Ops.SUB, this, right);
 
   def subtract(right: Number): NumberExpression[T] = subtract(constant(right));
+  
+  def -(right: NumberExpr) = subtract(right);
+
+  def -(right: Number) = subtract(right);  
 
   def notIn(right: NumberArray) = boolean(IN, this, constant(asList(right: _*))).not;
 
@@ -266,15 +274,27 @@ trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpress
 
   def divide(right: Number): NumberExpression[T] = divide(constant(right));
 
+  def /(right: NumberExpr) = divide(right);
+
+  def /(right: Number) = divide(right);     
+  
   def multiply(right: NumberExpr) = number[T](getType, Ops.MULT, this, right);
 
   def multiply(right: Number): NumberExpression[T] = multiply(constant(right));
+  
+  def *(right: NumberExpr) = multiply(right);
+
+  def *(right: Number) = multiply(right);    
 
   def negate() = multiply(-1);
 
   def mod(right: NumberExpr) = number[T](getType, Ops.MOD, this, right);
 
   def mod(right: Number): NumberExpression[T] = mod(constant(right));
+  
+  def %(right: NumberExpr) = mod(right);
+
+  def %(right: Number) = mod(right);  
 
   def sqrt() = number[java.lang.Double](classOf[java.lang.Double], MathOps.SQRT, this);
 

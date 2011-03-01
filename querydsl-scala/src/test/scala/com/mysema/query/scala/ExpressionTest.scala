@@ -198,6 +198,16 @@ class ExpressionTest {
   }
 
   @Test
+  def Number_Arithmetic_With_Operators {
+    assertEquals("person.scalaInt + 3", person.scalaInt + 3);
+    assertEquals("person.scalaInt - 3", person.scalaInt - 3);
+    assertEquals("person.scalaInt / 3", person.scalaInt / 3);
+    assertEquals("person.scalaInt * 3", person.scalaInt * 3);
+    assertEquals("person.scalaInt * -1", -person.scalaInt);
+    assertEquals("person.scalaInt % 4", person.scalaInt % 4);
+  }  
+  
+  @Test
   def Number_Casts {
     assertEquals("cast(person.javaInt,class java.lang.Long)", person.javaInt longValue);
     assertEquals("cast(person.scalaInt,class java.lang.Long)", person.scalaInt longValue);

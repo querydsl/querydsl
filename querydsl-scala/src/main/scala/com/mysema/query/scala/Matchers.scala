@@ -6,19 +6,11 @@ object Matchers {
     
   def in[T](values: T*) = (expr: SimpleExpression[T]) => expr.in(values:_*);  
   
-  def not(v: Void) = (expr: SimpleExpression[_]) => expr.isNotNull();
-    
-  // map
-  
-  // list
-  
-  // comparable
+  def not(v: Void) = (expr: SimpleExpression[_]) => expr.isNotNull;
     
   def between[T <: Comparable[T]](left: T, right: T) = (expr: ComparableExpression[T]) => expr.between(left, right);
   
   def between(left: Number, right: Number) = (expr: NumberExpression[_]) => expr.between(left, right);
-    
-  // string  
     
   def like(str: String) = (expr: StringExpression) => expr.like(str);
   
@@ -28,6 +20,7 @@ object Matchers {
   
   def endsWith(str: String) = (expr: StringExpression) => expr.endsWith(str);
   
+  // NOTE : clashes with CollectionExpression.contains
   def contains(str: String) = (expr: StringExpression) => expr.contains(str);
   
   // NOTE : clashes with MapExpression.isEmpty and CollectionExpression.isEmpty
