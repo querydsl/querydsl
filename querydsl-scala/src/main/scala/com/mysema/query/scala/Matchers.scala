@@ -4,7 +4,9 @@ import com.mysema.query.types._
 
 object Matchers {
     
-//  def in[T](values: T*) = (expr: SimpleExpression[T]) => expr.in(values);  
+  def in[T](values: T*) = (expr: SimpleExpression[T]) => expr.in(values:_*);  
+  
+  def not(v: Void) = (expr: SimpleExpression[_]) => expr.isNotNull();
     
   // map
   

@@ -15,6 +15,18 @@ class ExpressionTest {
   }  
     
   @Test
+  def Is_Not_Null {
+    assertEquals("person.other is not null", person.other isNotNull);
+    assertEquals("person.other is not null", person.other is not(null) );   
+  }
+  
+  @Test
+  def Is_Null {
+    assertEquals("person.other is null", person.other isNull);  
+    assertEquals("person.other is null", person.other is null );  
+  }
+  
+  @Test
   def Long_Path {
     assertEquals("person.other.firstName = Ben", person.other.firstName eq "Ben");
   }
@@ -98,7 +110,7 @@ class ExpressionTest {
 
   @Test
   def String_Or_With_Operators {
-    val orClause = (person.firstName like "An%") or (person.firstName like "Be%");
+    val orClause = (person.firstName like "An%") || (person.firstName like "Be%");
     assertEquals("person.firstName like An% || person.firstName like Be%", orClause);
   }
   

@@ -70,7 +70,9 @@ trait SimpleExpression[T] extends Expression[T]{
 
   def notIn(right: CollectionExpression[T,_]) = in(right).not;
 
-  def not[M <: SimpleExpression[T]](f: (M) => BooleanExpression): BooleanExpression = f(this.asInstanceOf[M]).not();
+  def is[M <: SimpleExpression[T]](f: M => BooleanExpression): BooleanExpression = if (f == null) isNull() else f(this.asInstanceOf[M]);
+  
+  def not[M <: SimpleExpression[T]](f: M => BooleanExpression): BooleanExpression = f(this.asInstanceOf[M]).not();
   
 }
 
