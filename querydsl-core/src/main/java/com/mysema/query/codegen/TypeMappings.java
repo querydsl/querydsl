@@ -43,6 +43,7 @@ import com.mysema.query.types.template.TimeTemplate;
  * @author tiwe
  *
  */
+// TODO : refactor this
 public final class TypeMappings {
 
     private final Map<TypeCategory, ClassType> exprTypes = new HashMap<TypeCategory, ClassType>();
