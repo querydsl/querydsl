@@ -7,6 +7,7 @@ package com.mysema.query.apt;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.codegen.SupertypeSerializer;
 import com.mysema.query.codegen.TypeMappings;
+import com.mysema.query.types.Expression;
 
 /**
  * DefaultConfiguration is a simple implementation of the Configuration interface
@@ -79,8 +81,10 @@ public class DefaultConfiguration implements Configuration {
 
     private final Map<String, SerializerConfig> typeToConfig = new HashMap<String, SerializerConfig>();
 
+    private final Map<Class<?>, Class<? extends Expression<?>>> customTypes = new HashMap<Class<?>, Class<? extends Expression<?>>>();
+    
     private boolean useFields = true, useGetters = true, defaultOverwrite = false;
-
+    
     public DefaultConfiguration(
             RoundEnvironment roundEnv,
             Map<String, String> options,
@@ -316,7 +320,14 @@ public class DefaultConfiguration implements Configuration {
     public void setNameSuffix(String nameSuffix) {
         this.nameSuffix = nameSuffix;
     }
+    
+    public <T> void addCustomType(Class<T> type, Class<? extends Expression<T>> queryType){
+        customTypes.put(type, queryType);
+    }
 
-
+    @Override
+    public Map<Class<?>, Class<? extends Expression<?>>> getCustomTypes() {
+        return Collections.unmodifiableMap(customTypes);
+    }
 
 }

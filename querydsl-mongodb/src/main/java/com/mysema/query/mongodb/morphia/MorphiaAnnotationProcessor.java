@@ -23,6 +23,7 @@ import com.google.code.morphia.annotations.Transient;
 import com.mysema.query.annotations.QueryEntities;
 import com.mysema.query.apt.DefaultConfiguration;
 import com.mysema.query.apt.Processor;
+import com.mysema.query.mongodb.DoubleArray;
 
 /**
  * Annotation processor to create Querydsl query types for Morphia annoated classes
@@ -47,6 +48,7 @@ public class MorphiaAnnotationProcessor extends AbstractProcessor{
         DefaultConfiguration configuration = new DefaultConfiguration(
                 roundEnv, processingEnv.getOptions(), Collections.<String>emptySet(),
                 entities, entity, null, null, embedded, skip);
+        configuration.addCustomType(Double[].class, DoubleArray.class);
 
         Processor processor = new Processor(processingEnv, roundEnv, configuration);
         processor.process();

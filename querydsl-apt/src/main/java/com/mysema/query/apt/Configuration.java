@@ -8,6 +8,7 @@ package com.mysema.query.apt;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 import javax.lang.model.element.Element;
@@ -19,6 +20,7 @@ import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.TypeMappings;
+import com.mysema.query.types.Expression;
 
 /**
  * Configuration defines the configuration options for APT based Querydsl code generation
@@ -28,6 +30,8 @@ import com.mysema.query.codegen.TypeMappings;
  */
 public interface Configuration {
 
+    Map<Class<?>, Class<? extends Expression<?>>> getCustomTypes();
+    
     TypeMappings getTypeMappings();
 
     VisitorConfig getConfig(TypeElement e, List<? extends Element> elements);
