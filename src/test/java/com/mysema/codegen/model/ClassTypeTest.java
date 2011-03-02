@@ -30,12 +30,19 @@ public class ClassTypeTest {
     }
     
     @Test
+    public void ArrayType_Equals_SimpleType(){
+        Type type = new ClassType(TypeCategory.ARRAY,String[].class);
+        Type type2 = new SimpleType("java.lang.String[]", "java.lang", "String[]");
+        assertEquals(type, type2);
+    }
+    
+    @Test
     public void As(){
         assertEquals(TypeCategory.COMPARABLE, stringType.as(TypeCategory.COMPARABLE).getCategory());
     }
 
     @Test
-    public void getParameters(){
+    public void GetParameters(){
         ClassType mapType = new ClassType(TypeCategory.MAP, Map.class, stringType, stringType);
         assertEquals(2, mapType.getParameters().size());
         assertEquals(stringType, mapType.getParameters().get(0));

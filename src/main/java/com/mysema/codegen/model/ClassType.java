@@ -29,6 +29,8 @@ public class ClassType implements Type {
     
     private final Class<?> javaClass;
     
+    private final String className;
+    
     private final List<Type> parameters;
     
     @Nullable
@@ -50,6 +52,7 @@ public class ClassType implements Type {
         this.javaClass = javaClass;
         this.primitiveClass = primitiveClass;
         this.parameters = parameters;
+        this.className = ClassUtils.getFullName(javaClass);
     }
     
     public ClassType(TypeCategory category, Class<?> javaClass, List<Type> parameters) {
@@ -85,7 +88,7 @@ public class ClassType implements Type {
             return true;
         }else if (o instanceof Type){
             Type t = (Type)o;
-            return t.getFullName().equals(javaClass.getName()) && t.getParameters().equals(parameters);
+            return t.getFullName().equals(className) && t.getParameters().equals(parameters);
         }else{
             return false;
         }
@@ -106,7 +109,7 @@ public class ClassType implements Type {
     
     @Override
     public String getFullName() {
-        return ClassUtils.getFullName(javaClass);   
+        return className;   
     }
 
     @Override
@@ -170,7 +173,7 @@ public class ClassType implements Type {
 
     @Override
     public int hashCode(){
-        return javaClass.getName().hashCode();
+        return className.hashCode();
     }
     
     @Override
