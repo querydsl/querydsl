@@ -26,7 +26,16 @@ import com.mysema.query.types.expr.EnumExpression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.expr.TimeExpression;
-import com.mysema.query.types.path.*;
+import com.mysema.query.types.path.ArrayPath;
+import com.mysema.query.types.path.BooleanPath;
+import com.mysema.query.types.path.ComparablePath;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.EnumPath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.path.TimePath;
 import com.mysema.query.types.template.BooleanTemplate;
 import com.mysema.query.types.template.ComparableTemplate;
 import com.mysema.query.types.template.DateTemplate;
@@ -43,9 +52,11 @@ import com.mysema.query.types.template.TimeTemplate;
  * @author tiwe
  *
  */
-// TODO : refactor this
+// TODO : all custom and entity types should be registered here
 public final class TypeMappings {
 
+    private final Map<Type, Type> queryTypes = new HashMap<Type, Type>();
+    
     private final Map<TypeCategory, ClassType> exprTypes = new HashMap<TypeCategory, ClassType>();
 
     private final Map<TypeCategory, ClassType> pathTypes = new HashMap<TypeCategory, ClassType>();
@@ -87,7 +98,7 @@ public final class TypeMappings {
     }
 
     public Type getExprType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
-        return getQueryType(exprTypes, type, model, raw, rawParameters, extend);
+        return getQueryType(exprTypes, type, model, raw, rawParameters, extend);            
     }
 
     public Type getPathType(Type type, EntityType model, boolean raw){
@@ -95,7 +106,11 @@ public final class TypeMappings {
     }
 
     public Type getPathType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
-        return getQueryType(pathTypes, type, model, raw, rawParameters, extend);
+        if (queryTypes.containsKey(type)){
+            return queryTypes.get(type);    
+        }else{
+            return getQueryType(pathTypes, type, model, raw, rawParameters, extend);   
+        }
     }
 
     private Type getQueryType(Map<TypeCategory, ClassType> types, Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
@@ -154,4 +169,11 @@ public final class TypeMappings {
         }
     }
 
+    public void register(Type type, Type queryType){
+        queryTypes.put(type, queryType);
+    }
+    
+    public boolean isRegistered(Type type){
+        return queryTypes.containsKey(type);
+    }
 }

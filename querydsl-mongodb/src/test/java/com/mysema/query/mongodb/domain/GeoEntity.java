@@ -10,25 +10,7 @@ public class GeoEntity {
 
     private @Id ObjectId id;
     
-    private double[] location1;
-    
-//    private Double[] location2;
-
-    public double[] getLocation1() {
-        return location1;
-    }
-
-    public void setLocation1(double[] location1) {
-        this.location1 = location1;
-    }
-
-//    public Double[] getLocation2() {
-//        return location2;
-//    }
-//
-//    public void setLocation2(Double[] location2) {
-//        this.location2 = location2;
-//    }
+    private Double[] location;
 
     public ObjectId getId() {
         return id;
@@ -36,6 +18,14 @@ public class GeoEntity {
 
     public void setId(ObjectId id) {
         this.id = id;
+    }
+
+    public Double[] getLocation() {
+        return location;
+    }
+
+    public void setLocation(Double[] location) {
+        this.location = location;
     }
     
     

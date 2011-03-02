@@ -171,6 +171,8 @@ public class MongodbSerializer implements Visitor<Object, Void> {
             return asDBObject(asDBKey(expr, 0), asDBObject("$in", values.toArray()));
         }
 
+        
+        
         else if (op == Ops.LT || op == Ops.BEFORE) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$lt", asDBValue(expr, 1)));
         }
@@ -196,6 +198,10 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         else if (op == Ops.IS_NOT_NULL){
             return asDBObject(asDBKey(expr, 0), asDBObject("$exists", true));
 
+        }
+        
+        else if (op == MongodbOps.NEAR) {
+            return asDBObject(asDBKey(expr, 0), asDBObject("$near", asDBValue(expr, 1)));
         }
 
         throw new UnsupportedOperationException("Illegal operation " + expr);

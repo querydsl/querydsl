@@ -30,19 +30,15 @@ import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.WildcardType;
 
-import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.TypeExtends;
 import com.mysema.codegen.model.TypeSuper;
 import com.mysema.codegen.model.Types;
-import com.mysema.codegen.support.ClassUtils;
-import com.mysema.query.codegen.CustomEntityType;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Supertype;
 import com.mysema.query.codegen.TypeFactory;
-import com.mysema.query.types.Expression;
 
 /**
  * ExtendedTypeFactory is a factory for APT inspection based Type creation
@@ -85,25 +81,6 @@ public final class ExtendedTypeFactory {
         this.entityAnnotations = annotations;
         this.numberType = env.getElementUtils().getTypeElement(Number.class.getName());
         this.comparableType = env.getElementUtils().getTypeElement(Comparable.class.getName());
-        
-        for (Map.Entry<Class<?>, Class<? extends Expression<?>>> entry : configuration.getCustomTypes().entrySet()){
-            Type type = new ClassType(entry.getKey());
-            Type entityType = new CustomEntityType(
-                    configuration.getNamePrefix(), 
-                    configuration.getNameSuffix(),
-                    entry.getValue().getPackage().getName(),
-                    entry.getValue().getSimpleName(), type);
-            
-            TypeMirror typeMirror;            
-            if (entry.getKey().isArray()){
-                TypeMirror componentType = env.getElementUtils().getTypeElement(ClassUtils.getFullName(entry.getKey().getComponentType())).asType();
-                typeMirror = env.getTypeUtils().getArrayType(componentType);
-            }else{
-                typeMirror = env.getElementUtils().getTypeElement(ClassUtils.getFullName(entry.getKey())).asType();
-            }
-            List<String> key = createKey(typeMirror,true);
-            typeCache.put(key, entityType);
-        }
     }
 
     private void appendToKey(List<String> key, DeclaredType t, boolean deep) {
@@ -203,7 +180,7 @@ public final class ExtendedTypeFactory {
                 }
             }
         }
-
+        
         Type type = createType(typeElement, typeCategory, declaredType.getTypeArguments(), deep);
 
         // entity type

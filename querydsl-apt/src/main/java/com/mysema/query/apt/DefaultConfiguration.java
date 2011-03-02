@@ -7,7 +7,6 @@ package com.mysema.query.apt;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +20,7 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 
+import com.mysema.codegen.model.ClassType;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.Config;
 import com.mysema.query.annotations.QueryProjection;
@@ -81,8 +81,6 @@ public class DefaultConfiguration implements Configuration {
 
     private final Map<String, SerializerConfig> typeToConfig = new HashMap<String, SerializerConfig>();
 
-    private final Map<Class<?>, Class<? extends Expression<?>>> customTypes = new HashMap<Class<?>, Class<? extends Expression<?>>>();
-    
     private boolean useFields = true, useGetters = true, defaultOverwrite = false;
     
     public DefaultConfiguration(
@@ -322,12 +320,7 @@ public class DefaultConfiguration implements Configuration {
     }
     
     public <T> void addCustomType(Class<T> type, Class<? extends Expression<T>> queryType){
-        customTypes.put(type, queryType);
-    }
-
-    @Override
-    public Map<Class<?>, Class<? extends Expression<?>>> getCustomTypes() {
-        return Collections.unmodifiableMap(customTypes);
+        typeMappings.register(new ClassType(type), new ClassType(queryType));
     }
 
 }

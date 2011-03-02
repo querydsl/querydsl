@@ -623,12 +623,18 @@ public class EntitySerializer implements Serializer{
 
     protected void serializeProperties(EntityType model,  SerializerConfig config, CodeWriter writer) throws IOException {
         for (Property property : model.getProperties()){
+            // FIXME : the custom types should have the custom type category
+            if (typeMappings.isRegistered(property.getType())){
+                customField(model, property, config, writer);
+                continue;
+            }
+            
             // strips of "? extends " etc
             Type propertyType = new SimpleType(property.getType(), property.getType().getParameters());
             Type queryType = typeMappings.getPathType(propertyType, model, false);
             Type genericQueryType = null;
             String localRawName = writer.getRawName(property.getType());
-
+            
             switch(property.getType().getCategory()){
             case STRING:
                 serialize(model, property, queryType, writer, "createString");
