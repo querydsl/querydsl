@@ -19,14 +19,12 @@ import scala.reflect.BeanProperty
 import scala.collection.JavaConversions._
 import scala.collection.mutable.Set
 
-class ScalaMetaDataSerializer(namePrefix: String, nameSuffix: String, val namingStrategy: NamingStrategy) 
-    extends ScalaEntitySerializer(namePrefix, nameSuffix) {
+class ScalaMetaDataSerializer(val namingStrategy: NamingStrategy) 
+    extends ScalaEntitySerializer {
     
 //  override val classHeaderFormat = "%1$s(path: String) extends RelationalPathImpl[%2$s](classOf[%2$s], path)";
   override val classHeaderFormat = "%1$s(cl: Class[_ <: %2$s], md: PathMetadata[_]) extends RelationalPathImpl[%2$s](cl, md)";
 
-  def this(namePrefix: String, namingStrategy: NamingStrategy) = this(namePrefix, "", namingStrategy);  
-  
   override def writeHeader(model: EntityType, writer: ScalaWriter) {
     writer.imports(classOf[RelationalPathImpl[_]]);
     writer.imports(classOf[PrimaryKey[_]].getPackage);
@@ -61,7 +59,7 @@ class ScalaMetaDataSerializer(namePrefix: String, nameSuffix: String, val naming
       val fieldName = namingStrategy.getPropertyNameForPrimaryKey(primaryKey.getName(), model);
       val value = new StringBuilder("createPrimaryKey(");
       value.append(primaryKey.getColumns().map({ column =>
-        namingStrategy.getPropertyName(column, namePrefix, nameSuffix, model)
+        namingStrategy.getPropertyName(column, model)
       }).mkString(", "));
       value.append(")");
       writer.publicFinal(new ClassType(classOf[PrimaryKey[_]], model), fieldName, value.toString);
@@ -76,10 +74,6 @@ class ScalaMetaDataSerializer(namePrefix: String, nameSuffix: String, val naming
       } else {
         fieldName = namingStrategy.getPropertyNameForForeignKey(foreignKey.getName, model);
       }
-      var foreignType: String = namingStrategy.getClassName(namePrefix, nameSuffix, foreignKey.getTable);
-      if (!model.getPrefix.isEmpty) {
-        foreignType = foreignType.substring(namePrefix.length, foreignType.length - nameSuffix.length);
-      }
       val value = new StringBuilder();
       if (inverse) {
         value.append("createInvForeignKey(");
@@ -87,7 +81,7 @@ class ScalaMetaDataSerializer(namePrefix: String, nameSuffix: String, val naming
         value.append("createForeignKey(");
       }
       if (foreignKey.getForeignColumns.size == 1) {
-        value.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns.get(0), namePrefix, nameSuffix, model));
+        value.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns.get(0), model));
         value.append(", \"" + foreignKey.getParentColumns().get(0) + "\"");
       } else {
         val local = new StringBuilder();
@@ -98,16 +92,14 @@ class ScalaMetaDataSerializer(namePrefix: String, nameSuffix: String, val naming
             local.append(", ");
             foreign.append(", ");
           }
-          local.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), namePrefix, nameSuffix, model));
+          local.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), model));
           foreign.append("\"" + foreignKey.getParentColumns.get(0) + "\"");
           i += 1;
         }
         value.append("Arrays.asList(" + local + "), Arrays.asList(" + foreign + ")");
       }
       value.append(")");
-      val t = new ClassType(
-        classOf[ForeignKey[_]],
-        new SimpleType(model.getPackageName + "." + foreignType, model.getPackageName, foreignType));
+      val t = new ClassType(classOf[ForeignKey[_]], foreignKey.getType);
       writer.publicFinal(t, fieldName, value.toString());
     }
   }

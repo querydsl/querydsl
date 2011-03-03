@@ -18,7 +18,7 @@ import scala.reflect.BeanProperty
 import scala.collection.JavaConversions._
 import scala.collection.mutable.Set
 
-class ScalaEntitySerializer(val namePrefix: String, val nameSuffix: String) extends Serializer {
+class ScalaEntitySerializer extends Serializer {
     
   val typeMappings = ScalaTypeMappings.typeMappings;
 
@@ -162,7 +162,7 @@ class ScalaEntitySerializer(val namePrefix: String, val nameSuffix: String) exte
   }
   
   private def getRaw(t : Type): Type = {
-    if (t.isInstanceOf[EntityType] && t.getPackageName.startsWith("ext.java")){
+    if (t.isInstanceOf[EntityType] && t.getPackageName.startsWith("java")){
       t;
     }else{
       new SimpleType(t, t.getParameters);
