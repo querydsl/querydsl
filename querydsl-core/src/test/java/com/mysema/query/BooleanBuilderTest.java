@@ -17,17 +17,16 @@ import com.mysema.query.types.ToStringVisitor;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.BooleanPath;
 
-/**
- * CascadingBooleanTest provides.
- *
- * @author tiwe
- * @version $Id$
- */
 public class BooleanBuilderTest {
 
-    private BooleanExpression first = BooleanConstant.TRUE;
+    private final BooleanExpression first = BooleanConstant.TRUE;
 
-    private BooleanExpression second = BooleanConstant.FALSE;
+    private final BooleanExpression second = BooleanConstant.FALSE;
+
+    @Test(expected=QueryException.class)
+    public void WrappedBooleanBuilder(){
+        new BooleanBuilder(new BooleanBuilder());
+    }
 
     @Test
     public void Basic(){
@@ -57,7 +56,7 @@ public class BooleanBuilderTest {
     public void And_null_Supported(){
         assertEquals(first, first.and(null));
     }
-    
+
     @Test
     public void Or_null_Supported(){
         assertEquals(first, first.or(null));
@@ -88,12 +87,12 @@ public class BooleanBuilderTest {
     public void BooleanBuilder_Equals_BooleanBuilder(){
         assertEquals(new BooleanBuilder(first), new BooleanBuilder(first));
     }
-    
+
     @Test
     public void Constant_Equals_BooleanBuilder(){
         assertFalse(first.equals(new BooleanBuilder(first)));
     }
-    
+
     @Test
     public void BooleanBuilder_Equals_Constant(){
         assertFalse(new BooleanBuilder(first).equals(first));
@@ -111,19 +110,19 @@ public class BooleanBuilderTest {
         builder.or(new BooleanPath("condition"));
         assertEquals("true || condition", builder.toString());
     }
-    
+
     @Test
     public void GetArg(){
         BooleanBuilder builder = new BooleanBuilder().and(first);
         assertEquals(first, builder.getArg(0));
     }
-    
+
     @Test
     public void GetArgs(){
         BooleanBuilder builder = new BooleanBuilder().and(first);
         assertEquals(Arrays.asList(first), builder.getArgs());
     }
-    
+
     @Test
     public void Accept(){
         BooleanBuilder builder = new BooleanBuilder();

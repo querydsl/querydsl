@@ -14,6 +14,7 @@ import org.apache.commons.lang.ObjectUtils;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.ExtractorVisitor;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
@@ -35,7 +36,7 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
     public BooleanBuilder() {  }
 
     public BooleanBuilder(Predicate initial){
-        predicate = initial;
+        predicate = (Predicate) initial.accept(ExtractorVisitor.DEFAULT, null);
     }
 
     @Override
@@ -46,10 +47,10 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
             throw new QueryException("BooleanBuilder has no value");
         }
     }
-    
+
     /**
      * Create the insertion of this and the given predicate
-     * 
+     *
      * @param right
      * @return
      */
@@ -80,7 +81,7 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
 
     /**
      * Create the insertion of this and the negation of the given predicate
-     * 
+     *
      * @param right
      * @return
      */
@@ -152,7 +153,7 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
 
     /**
      * Create the union of this and the given predicate
-     * 
+     *
      * @param right
      * @return
      */
@@ -183,7 +184,7 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
 
     /**
      * Create the union of this and the negation of the given predicate
-     * 
+     *
      * @param right
      * @return
      */
@@ -195,10 +196,10 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
     public Class<? extends Boolean> getType() {
         return Boolean.class;
     }
-    
+
     @Override
     public String toString(){
         return predicate != null ? predicate.toString() : super.toString();
     }
-    
+
 }
