@@ -14,8 +14,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
@@ -41,17 +39,6 @@ import com.mysema.query.types.Path;
  */
 public class MetaDataSerializer extends EntitySerializer {
 
-    private final String namePrefix;
-
-    private final String nameSuffix;
-
-    private final String beanPrefix;
-
-    private final String beanSuffix;
-
-    @Nullable
-    private final String beanPackageName;
-
     private final NamingStrategy namingStrategy;
 
     private final boolean innerClassesForKeys;
@@ -59,40 +46,16 @@ public class MetaDataSerializer extends EntitySerializer {
     /**
      * Create a new MetaDataSerializer instance
      *
-     * @param namePrefix name prefix to be used (default: Q)
-     * @param nameSuffix name suffix to be used (default: "")
-     * @param beanPrefix bean prefix to be used (default: "")
-     * @param beanSuffix bean suffix to be used (default: "")
-     * @param beanPackage bean package name or null if same as query type package name
      * @param namingStrategy naming strategy for table to class and column to property conversion
      * @param innerClassesForKeys wrap key properties into inner classes (default: false)
      */
     public MetaDataSerializer(
-            String namePrefix, String nameSuffix,
-            String beanPrefix, String beanSuffix,
-            @Nullable String beanPackageName,
+            TypeMappings typeMappings,
             NamingStrategy namingStrategy,
             boolean innerClassesForKeys) {
-        super(new TypeMappings(),Collections.<String>emptyList());
-        this.namePrefix = namePrefix;
-        this.nameSuffix = nameSuffix;
-        this.beanPrefix = beanPrefix;
-        this.beanSuffix = beanSuffix;
-        this.beanPackageName = beanPackageName;
+        super(typeMappings,Collections.<String>emptyList());
         this.namingStrategy = namingStrategy;
         this.innerClassesForKeys = innerClassesForKeys;
-    }
-
-    MetaDataSerializer(String namePrefix, NamingStrategy namingStrategy, boolean innerClassesForKeys) {
-        this(namePrefix, "", "", "", null, namingStrategy, innerClassesForKeys);
-    }
-
-    MetaDataSerializer(String namePrefix, String nameSuffix, NamingStrategy namingStrategy) {
-        this(namePrefix, nameSuffix, "", "", null, namingStrategy, false);
-    }
-
-    MetaDataSerializer(String namePrefix, NamingStrategy namingStrategy) {
-        this(namePrefix, "", "", "", null, namingStrategy,  false);
     }
 
     @Override
@@ -112,8 +75,8 @@ public class MetaDataSerializer extends EntitySerializer {
 
     @Override
     protected void introDefaultInstance(CodeWriter writer, EntityType entityType) throws IOException {
-        String variableName = namingStrategy.getDefaultVariableName(namePrefix, nameSuffix, entityType);
-        String alias = namingStrategy.getDefaultAlias(namePrefix, nameSuffix, entityType);
+        String variableName = namingStrategy.getDefaultVariableName(entityType);
+        String alias = namingStrategy.getDefaultAlias(entityType);
         Type queryType = typeMappings.getPathType(entityType, entityType, true);
         writer.publicStaticFinal(queryType, variableName, NEW + queryType.getSimpleName() + "(\"" + alias + "\")");
     }
@@ -206,7 +169,7 @@ public class MetaDataSerializer extends EntitySerializer {
                 if (!first){
                     value.append(", ");
                 }
-                value.append(namingStrategy.getPropertyName(column, namePrefix, nameSuffix, model));
+                value.append(namingStrategy.getPropertyName(column, model));
                 first = false;
             }
             value.append(")");
@@ -226,15 +189,7 @@ public class MetaDataSerializer extends EntitySerializer {
                 fieldName = namingStrategy.getPropertyNameForForeignKey(foreignKey.getName(), model);
             }
 
-            String foreignType = namingStrategy.getClassName(namePrefix, nameSuffix, foreignKey.getTable());
-            // strip prefix and suffix off
-            foreignType = foreignType.substring(model.getPrefix().length(), foreignType.length()-model.getSuffix().length());
-            // add bean prefix and suffix
-            foreignType = beanPrefix + foreignType + beanSuffix;
-            if (beanPackageName != null){
-                foreignType = beanPackageName + "." + foreignType;
-            }
-
+//            String foreignType = namingStrategy.getClassName(foreignKey.getTable());
             StringBuilder value = new StringBuilder();
             if (inverse){
                 value.append("createInvForeignKey(");
@@ -242,7 +197,7 @@ public class MetaDataSerializer extends EntitySerializer {
                 value.append("createForeignKey(");
             }
             if (foreignKey.getForeignColumns().size() == 1){
-                value.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), namePrefix, nameSuffix, model));
+                value.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), model));
                 value.append(", \"" + foreignKey.getParentColumns().get(0) + "\"");
             }else{
                 StringBuilder local = new StringBuilder();
@@ -252,14 +207,13 @@ public class MetaDataSerializer extends EntitySerializer {
                         local.append(", ");
                         foreign.append(", ");
                     }
-                    local.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), namePrefix, nameSuffix, model));
+                    local.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), model));
                     foreign.append("\"" +foreignKey.getParentColumns().get(0) + "\"");
                 }
                 value.append("Arrays.asList("+local+"), Arrays.asList("+foreign+")");
             }
             value.append(")");
-            Type type = new ClassType(ForeignKey.class,
-                    new SimpleType(model.getPackageName()+"."+foreignType, model.getPackageName(), foreignType));
+            Type type = new ClassType(ForeignKey.class, foreignKey.getType());
             writer.publicFinal(type, fieldName, value.toString());
         }
     }

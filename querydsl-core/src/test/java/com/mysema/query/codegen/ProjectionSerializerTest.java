@@ -23,7 +23,7 @@ public class ProjectionSerializerTest {
     @Test
     public void Constructors() throws IOException{
         Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false,false);
-        EntityType type = new EntityType("Q","",  typeModel);
+        EntityType type = new EntityType(typeModel);
 
         // constructor
         Parameter firstName = new Parameter("firstName", Types.STRING);

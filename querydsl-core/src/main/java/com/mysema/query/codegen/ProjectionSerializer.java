@@ -43,8 +43,8 @@ public final class ProjectionSerializer implements Serializer{
         Type queryType = typeMappings.getPathType(model, model, false);
 
         // package
-        if (!model.getPackageName().isEmpty()){
-            writer.packageDecl(model.getPackageName());
+        if (!queryType.getPackageName().isEmpty()){
+            writer.packageDecl(queryType.getPackageName());
         }
 
         // imports

@@ -6,10 +6,7 @@
 package com.mysema.query.sql;
 
 import java.io.File;
-import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 import javax.tools.JavaCompiler;
@@ -19,18 +16,8 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.SimpleCompiler;
-import com.mysema.codegen.model.ClassType;
-import com.mysema.codegen.model.SimpleType;
-import com.mysema.codegen.model.Type;
-import com.mysema.codegen.model.Types;
 import com.mysema.query.AbstractJDBCTest;
-import com.mysema.query.codegen.EntityType;
-import com.mysema.query.codegen.Property;
-import com.mysema.query.codegen.SerializerConfig;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.Path;
 
 public class MetaDataSerializerTest extends AbstractJDBCTest{
 
@@ -67,54 +54,11 @@ public class MetaDataSerializerTest extends AbstractJDBCTest{
         String namePrefix = "Q";
         NamingStrategy namingStrategy = new DefaultNamingStrategy();
         // customization of serialization
-        MetaDataSerializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setNamePrefix(namePrefix);
         exporter.setPackageName("test");
         exporter.setTargetFolder(new File("target/cust1"));
         exporter.setNamingStrategy(namingStrategy);
-        exporter.setSerializer(serializer);
-        exporter.export(connection.getMetaData());
-
-        compile(exporter);
-    }
-
-    @Test
-    public void Custom_serialization() throws Exception {
-        String namePrefix = "Q";
-        NamingStrategy namingStrategy = new DefaultNamingStrategy();
-        // customization of serialization
-        MetaDataSerializer serializer = new MetaDataSerializer(namePrefix, namingStrategy){
-
-            @Override
-            protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
-                super.introImports(writer, config, model);
-                // adds additional imports
-                writer.imports(List.class, Arrays.class);
-            }
-
-            @Override
-            protected void serializeProperties(EntityType model,  SerializerConfig config, CodeWriter writer) throws IOException {
-                super.serializeProperties(model, config, writer);
-                StringBuilder paths = new StringBuilder();
-                for (Property property : model.getProperties()){
-                    if (paths.length() > 0){
-                        paths.append(", ");
-                    }
-                    paths.append(property.getEscapedName());
-                }
-                // adds accessors for all fields
-                writer.publicFinal(new SimpleType(Types.LIST, new ClassType(Expression.class, (Type)null)), "exprs", "Arrays.<Expression<?>>asList(" + paths.toString() + ")");
-                writer.publicFinal(new SimpleType(Types.LIST, new ClassType(Path.class, (Type)null)), "paths", "Arrays.<Path<?>>asList(" + paths.toString() + ")");
-            }
-
-        };
-        MetaDataExporter exporter = new MetaDataExporter();
-        exporter.setNamePrefix(namePrefix);
-        exporter.setPackageName("test");
-        exporter.setTargetFolder(new File("target/cust2"));
-        exporter.setNamingStrategy(namingStrategy);
-        exporter.setSerializer(serializer);
         exporter.export(connection.getMetaData());
 
         compile(exporter);

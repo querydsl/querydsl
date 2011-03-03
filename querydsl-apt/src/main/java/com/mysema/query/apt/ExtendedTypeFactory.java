@@ -37,8 +37,10 @@ import com.mysema.codegen.model.TypeExtends;
 import com.mysema.codegen.model.TypeSuper;
 import com.mysema.codegen.model.Types;
 import com.mysema.query.codegen.EntityType;
+import com.mysema.query.codegen.QueryTypeFactory;
 import com.mysema.query.codegen.Supertype;
 import com.mysema.query.codegen.TypeFactory;
+import com.mysema.query.codegen.TypeMappings;
 
 /**
  * ExtendedTypeFactory is a factory for APT inspection based Type creation
@@ -59,8 +61,6 @@ public final class ExtendedTypeFactory {
 
     private final Map<List<String>,Type> typeCache = new HashMap<List<String>,Type>();
 
-    private final Configuration configuration;
-
     private final Type defaultType;
 
     private final List<Class<? extends Annotation>> entityAnnotations;
@@ -73,14 +73,24 @@ public final class ExtendedTypeFactory {
 
     private boolean doubleIndexEntities = true;
 
-    public ExtendedTypeFactory(ProcessingEnvironment env, Configuration configuration,
-            TypeFactory factory, List<Class<? extends Annotation>> annotations){
+    private final TypeMappings typeMappings;
+    
+    private final QueryTypeFactory queryTypeFactory;
+    
+    public ExtendedTypeFactory(
+            ProcessingEnvironment env, 
+            Configuration configuration,
+            TypeFactory factory, 
+            List<Class<? extends Annotation>> annotations,
+            TypeMappings typeMappings,
+            QueryTypeFactory queryTypeFactory){
         this.env = env;
-        this.configuration = configuration;
         this.defaultType = factory.create(Object.class);
         this.entityAnnotations = annotations;
         this.numberType = env.getElementUtils().getTypeElement(Number.class.getName());
         this.comparableType = env.getElementUtils().getTypeElement(Comparable.class.getName());
+        this.typeMappings = typeMappings;
+        this.queryTypeFactory = queryTypeFactory;
     }
 
     private void appendToKey(List<String> key, DeclaredType t, boolean deep) {
@@ -186,7 +196,9 @@ public final class ExtendedTypeFactory {
         // entity type
         for (Class<? extends Annotation> entityAnn : entityAnnotations){
             if (typeElement.getAnnotation(entityAnn) != null){
-                return new EntityType(configuration.getNamePrefix(), configuration.getNameSuffix(), type);
+                EntityType entityType = new EntityType(type);
+                typeMappings.register(entityType, queryTypeFactory.create(entityType));
+                return entityType;
             }
         }
         return type;
@@ -274,7 +286,8 @@ public final class ExtendedTypeFactory {
             if (value instanceof EntityType){
                 entityType = (EntityType)value;
             }else{
-                entityType = new EntityType(configuration.getNamePrefix(), configuration.getNameSuffix(), value);
+                entityType = new EntityType(value);
+                typeMappings.register(entityType, queryTypeFactory.create(entityType));
             }
             entityTypeCache.put(key, entityType);
 
@@ -307,7 +320,9 @@ public final class ExtendedTypeFactory {
 
         for (Class<? extends Annotation> entityAnn : entityAnnotations){
             if (typeElement.getAnnotation(entityAnn) != null){
-                return new EntityType(configuration.getNamePrefix(), configuration.getNameSuffix(), enumType);
+                EntityType entityType = new EntityType(enumType);
+                typeMappings.register(entityType, queryTypeFactory.create(entityType));
+                return entityType;
             }
         }
         return enumType;

@@ -30,25 +30,23 @@ public class DefaultNamingStrategy implements NamingStrategy {
     private String reservedSuffix = "Col";
     
     @Override
-    public String getClassName(String namePrefix, String nameSuffix,String tableName) {
+    public String getClassName(String tableName) {
         if (tableName.length() > 1){
-            return namePrefix
-                + tableName.substring(0, 1).toUpperCase(Locale.ENGLISH)
-                + toCamelCase(tableName.substring(1))
-                + nameSuffix;    
+            return tableName.substring(0, 1).toUpperCase(Locale.ENGLISH)
+                + toCamelCase(tableName.substring(1));    
         }else{
-            return namePrefix + tableName.toUpperCase(Locale.ENGLISH) + nameSuffix;
+            return tableName.toUpperCase(Locale.ENGLISH);
         }
         
     }
 
     @Override
-    public String getDefaultAlias(String namePrefix, String nameSuffix, EntityType entityType) {
+    public String getDefaultAlias(EntityType entityType) {
         return entityType.getAnnotation(Table.class).value();
     }
 
     @Override
-    public String getDefaultVariableName(String namePrefix, String nameSuffix, EntityType entityType) {
+    public String getDefaultVariableName(EntityType entityType) {
         return escape(entityType, toCamelCase(entityType.getAnnotation(Table.class).value()));    
     }
     
@@ -73,7 +71,7 @@ public class DefaultNamingStrategy implements NamingStrategy {
     }
 
     @Override
-    public String getPropertyName(String columnName, String namePrefix, String nameSuffix, EntityType entityType) {
+    public String getPropertyName(String columnName, EntityType entityType) {
         return normalizePropertyName(
             columnName.substring(0, 1).toLowerCase(Locale.ENGLISH) 
             + toCamelCase(columnName.substring(1)));        

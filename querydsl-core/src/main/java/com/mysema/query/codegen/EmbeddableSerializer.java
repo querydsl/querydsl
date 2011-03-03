@@ -96,13 +96,9 @@ public final class EmbeddableSerializer extends EntitySerializer{
         packages.add(PathMetadata.class.getPackage());
         packages.add(SimplePath.class.getPackage());
         if ((model.hasLists() && config.useListAccessors())
-                || !model.getMethods().isEmpty()
                 || !model.getDelegates().isEmpty()
                 || (model.hasMaps() && config.useMapAccessors())){
             packages.add(ComparableExpression.class.getPackage());
-        }
-        if (!model.getMethods().isEmpty()){
-            packages.add(SimpleTemplate.class.getPackage());
         }
         writer.imports(packages.toArray(new Package[packages.size()]));
     }

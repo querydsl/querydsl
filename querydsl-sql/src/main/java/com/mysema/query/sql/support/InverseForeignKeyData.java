@@ -8,6 +8,9 @@ package com.mysema.query.sql.support;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
+import com.mysema.codegen.model.Type;
 import com.mysema.commons.lang.Assert;
 
 /**
@@ -20,13 +23,17 @@ public class InverseForeignKeyData implements KeyData{
 
     private final String table;
     
+    @Nullable
+    private final Type type;
+    
     private final List<String> foreignColumns = new ArrayList<String>();
     
     private final List<String> parentColumns = new ArrayList<String>();
 
-    public InverseForeignKeyData(String name, String parentTable) {
+    public InverseForeignKeyData(String name, String parentTable, @Nullable Type type) {
         this.name = Assert.hasLength(name,"name");
         this.table = Assert.hasLength(parentTable,"parentTable");
+        this.type = type;
     }
 
     public void add(String foreignColumn, String parentColumn){
@@ -41,7 +48,7 @@ public class InverseForeignKeyData implements KeyData{
     public String getTable() {
         return table;
     }
-
+    
     public List<String> getForeignColumns() {
         return foreignColumns;
     }
@@ -50,4 +57,8 @@ public class InverseForeignKeyData implements KeyData{
         return parentColumns;
     }
 
+    @Nullable
+    public Type getType() {
+        return type;
+    }
 }

@@ -46,11 +46,9 @@ public class SerializerTest {
     @SuppressWarnings("unchecked")
     @Before
     public void setUp(){
-        TypeFactory typeFactory = new TypeFactory();
-
         // type
         Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false, false);
-        type = new EntityType("Q", "", typeModel);
+        type = new EntityType(typeModel);
 
         // property
         type.addProperty(new Property(type, "entityField", type, new String[0]));
@@ -71,10 +69,6 @@ public class SerializerTest {
         Parameter firstName = new Parameter("firstName", new ClassType(TypeCategory.STRING, String.class));
         Parameter lastName = new Parameter("lastName", new ClassType(TypeCategory.STRING, String.class));
         type.addConstructor(new Constructor(Arrays.asList(firstName, lastName)));
-
-        // method
-        Method method = new Method(typeFactory.create(String.class), "method", "abc", typeFactory.create(String.class));
-        type.addMethod(method);
     }
 
     @Test

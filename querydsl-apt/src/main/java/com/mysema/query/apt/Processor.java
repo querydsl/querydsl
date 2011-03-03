@@ -33,7 +33,6 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
-import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
 import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
@@ -48,14 +47,13 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryEntities;
-import com.mysema.query.annotations.QueryExtensions;
-import com.mysema.query.annotations.QueryMethod;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.Variables;
 import com.mysema.query.codegen.Delegate;
 import com.mysema.query.codegen.EntityType;
-import com.mysema.query.codegen.Method;
 import com.mysema.query.codegen.Property;
+import com.mysema.query.codegen.QueryTypeFactory;
+import com.mysema.query.codegen.QueryTypeFactoryImpl;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.Supertype;
@@ -124,8 +122,10 @@ public class Processor {
         }
 
         TypeFactory factory = new TypeFactory(anns);
-        this.typeFactory = new ExtendedTypeFactory(env, configuration, factory, anns);
-        this.elementHandler = new ElementHandler(configuration, typeFactory);
+        TypeMappings typeMappings = configuration.getTypeMappings();
+        QueryTypeFactory queryTypeFactory = new QueryTypeFactoryImpl(configuration.getNamePrefix(), configuration.getNameSuffix());
+        this.typeFactory = new ExtendedTypeFactory(env, configuration, factory, anns, typeMappings, queryTypeFactory);
+        this.elementHandler = new ElementHandler(configuration, typeFactory, typeMappings, queryTypeFactory);
     }
 
     public void process() {
@@ -143,10 +143,6 @@ public class Processor {
 
     private void processAnnotations() {
         processDelegateMethods();
-
-        processCustomTypes();
-
-        processExtensions();
 
         if (configuration.getSuperTypeAnnotation() != null) {
             processSupertypes();
@@ -296,15 +292,15 @@ public class Processor {
         EntityType entityModel = typeFactory.getEntityType(type, true);
         registerTypeElement(entityModel.getFullName(), element);
         // handle methods
-        Set<Method> queryMethods = new HashSet<Method>();
-        for (ExecutableElement method : ElementFilter.methodsIn(element.getEnclosedElements())){
-            if (method.getAnnotation(QueryMethod.class) != null){
-                elementHandler.handleQueryMethod(entityModel, method, queryMethods);
-            }
-        }
-        for (Method method : queryMethods){
-            entityModel.addMethod(method);
-        }
+//        Set<Method> queryMethods = new HashSet<Method>();
+//        for (ExecutableElement method : ElementFilter.methodsIn(element.getEnclosedElements())){
+//            if (method.getAnnotation(QueryMethod.class) != null){
+//                elementHandler.handleQueryMethod(entityModel, method, queryMethods);
+//            }
+//        }
+//        for (Method method : queryMethods){
+//            entityModel.addMethod(method);
+//        }
         if (!cached){
             extensionTypes.put(entityModel.getFullName(), entityModel);
         }
@@ -371,9 +367,7 @@ public class Processor {
     }
 
     private void processCustomType(Element element, boolean cached){
-        if (element.getAnnotation(QueryExtensions.class) != null){
-            return;
-        }else if (element.getAnnotation(configuration.getEntityAnnotation()) != null){
+        if (element.getAnnotation(configuration.getEntityAnnotation()) != null){
             return;
         }else if (configuration.getSuperTypeAnnotation() != null && element.getAnnotation(configuration.getSuperTypeAnnotation()) != null){
             return;
@@ -383,17 +377,6 @@ public class Processor {
         handleExtensionType(element.asType(), (TypeElement)element, cached);
     }
 
-    private void processCustomTypes() {
-        // 1 : get elements from cache
-        for (Element queryMethod : getElementsFromCache(QueryMethod.class)){
-            processCustomType(queryMethod.getEnclosingElement(), true);
-        }
-
-        // 2 : get elements from roundEnv
-        for (Element queryMethod : getElementsAndCache(QueryMethod.class)){
-            processCustomType(queryMethod.getEnclosingElement(), false);
-        }
-    }
 
     private void processDelegateMethod(Element delegateMethod, boolean cached) {
         ExecutableElement method = (ExecutableElement)delegateMethod;
@@ -582,33 +565,6 @@ public class Processor {
         mergeTypes(types, superTypes);
     }
 
-    private void processExtension(Element element, boolean cached) {
-        for (AnnotationMirror annotation : element.getAnnotationMirrors()){
-            if (annotation.getAnnotationType().asElement().getSimpleName().toString().equals(QueryExtensions.class.getSimpleName())){
-                for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : annotation.getElementValues().entrySet()){
-                    if (entry.getKey().getSimpleName().toString().equals("value")){
-                        if (entry.getValue().getValue() instanceof TypeMirror){
-                            TypeMirror type = (TypeMirror)entry.getValue().getValue();
-                            handleExtensionType(type, (TypeElement)element, cached);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private void processExtensions() {
-        // 1st : get elements from cache
-        for (Element element : getElementsFromCache(QueryExtensions.class)){
-            processExtension(element, true);
-        }
-
-        // 2nd : get elements from roundEnv
-        for (Element element : getElementsAndCache(QueryExtensions.class)){
-            processExtension(element, false);
-        }
-    }
-
     private void processSupertypes() {
         process(configuration.getSuperTypeAnnotation(), actualSupertypes);
     }
@@ -626,9 +582,9 @@ public class Processor {
         Messager msg = env.getMessager();
         for (EntityType model : models) {
             try {
-                String packageName = model.getPackageName();
                 Type type = configuration.getTypeMappings().getPathType(model, model, true);
-                String className = packageName.length() > 0 ? (packageName + "." + type.getSimpleName()) : type.getSimpleName();
+                String packageName = type.getPackageName();
+                String className = !packageName.isEmpty() ? (packageName + "." + type.getSimpleName()) : type.getSimpleName();
 
                 Filer filer = env.getFiler();
                 FileObject generatedFile = filer.getResource(StandardLocation.SOURCE_OUTPUT, packageName, type.getSimpleName() + ".java");

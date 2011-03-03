@@ -57,13 +57,11 @@ public class CustomTypesTest extends AbstractJDBCTest{
         // create exporter
         String namePrefix = "Q";
         NamingStrategy namingStrategy = new DefaultNamingStrategy();
-        MetaDataSerializer serializer = new MetaDataSerializer(namePrefix, namingStrategy);
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setNamePrefix(namePrefix);
         exporter.setPackageName("test");
         exporter.setTargetFolder(new File("target/customExport"));
         exporter.setNamingStrategy(namingStrategy);
-        exporter.setSerializer(serializer);
         exporter.setConfiguration(configuration);
         
         // export

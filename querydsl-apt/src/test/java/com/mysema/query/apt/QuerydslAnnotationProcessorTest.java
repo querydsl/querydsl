@@ -34,12 +34,6 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
     }
 
     @Test
-    public void ProcessInheritance10() throws IOException{
-        String path = new File("src/test/java/com/mysema/query/inheritance/Inheritance10Test.java").getPath();
-        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"inheritance10");
-    }
-
-    @Test
     public void ProcessQueryEmbedded3() throws IOException{
         String path = new File("src/test/java/com/mysema/query/domain/QueryEmbedded3Test.java").getPath();
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"embedded3");

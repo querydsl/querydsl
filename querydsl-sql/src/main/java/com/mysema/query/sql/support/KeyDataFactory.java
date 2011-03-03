@@ -11,6 +11,10 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
+import com.mysema.query.sql.NamingStrategy;
+
 /**
  * @author tiwe
  *
@@ -31,6 +35,17 @@ public class KeyDataFactory {
 
     private static final int PK_NAME = 6;
     
+    private final NamingStrategy namingStrategy;
+    
+    private final String packageName, prefix, suffix;
+    
+    public KeyDataFactory(NamingStrategy namingStrategy, String packageName, String prefix, String suffix) {
+        this.namingStrategy = namingStrategy;
+        this.packageName = packageName;
+        this.prefix = prefix;
+        this.suffix = suffix;
+    }
+    
     public Map<String, InverseForeignKeyData> getExportedKeys(DatabaseMetaData md, 
             String schemaPattern, String tableName) throws SQLException{
         ResultSet foreignKeys = md.getExportedKeys(null, schemaPattern, tableName);
@@ -42,8 +57,8 @@ public class KeyDataFactory {
                 String foreignTableName = foreignKeys.getString(FK_FOREIGN_TABLE_NAME);
                 String foreignColumn = foreignKeys.getString(FK_FOREIGN_COLUMN_NAME);
                 InverseForeignKeyData data = inverseForeignKeyData.get(name);
-                if (data == null){
-                    data = new InverseForeignKeyData(name, foreignTableName);
+                if (data == null){                    
+                    data = new InverseForeignKeyData(name, foreignTableName, createType(foreignTableName));
                     inverseForeignKeyData.put(name, data);
                 }
                 data.add(parentColumnName, foreignColumn);
@@ -66,7 +81,7 @@ public class KeyDataFactory {
                 String foreignColumn = foreignKeys.getString(FK_FOREIGN_COLUMN_NAME);
                 ForeignKeyData data = foreignKeyData.get(name);
                 if (data == null){
-                    data = new ForeignKeyData(name, parentTableName);
+                    data = new ForeignKeyData(name, parentTableName, createType(parentTableName));
                     foreignKeyData.put(name, data);
                 }
                 data.add(foreignColumn, parentColumnName);
@@ -97,6 +112,11 @@ public class KeyDataFactory {
         }finally{
             primaryKeys.close();
         }
+    }
+    
+    private Type createType(String table) {
+        String simpleName = prefix + namingStrategy.getClassName(table) + suffix;
+        return new SimpleType(packageName + "." + simpleName, packageName, simpleName);
     }
 
 }

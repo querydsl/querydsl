@@ -339,13 +339,8 @@ public class EntitySerializer implements Serializer{
         List<Package> packages = new ArrayList<Package>();
         packages.add(PathMetadata.class.getPackage());
         packages.add(SimplePath.class.getPackage());
-        if (!model.getConstructors().isEmpty()
-                || !model.getMethods().isEmpty()
-                || !model.getDelegates().isEmpty()){
+        if (!model.getConstructors().isEmpty() || !model.getDelegates().isEmpty()){
             packages.add(ComparableExpression.class.getPackage());
-        }
-        if (!model.getMethods().isEmpty()){
-            packages.add(SimpleTemplate.class.getPackage());
         }
 
         writer.imports(packages.toArray(new Package[packages.size()]));
@@ -389,8 +384,9 @@ public class EntitySerializer implements Serializer{
     }
 
     protected void introPackage(CodeWriter writer, EntityType model) throws IOException {
-        if (!model.getPackageName().isEmpty()){
-            writer.packageDecl(model.getPackageName());
+        Type queryType = typeMappings.getPathType(model, model, false);
+        if (!queryType.getPackageName().isEmpty()){
+            writer.packageDecl(queryType.getPackageName());
         }
     }
 
@@ -424,86 +420,6 @@ public class EntitySerializer implements Serializer{
 
         writer.beginPublicMethod(queryType, escapedName, new Parameter("key", new ClassType(Expression.class, field.getParameter(0))));
         writer.line(RETURN + escapedName + ".get(key);").end();
-    }
-
-    protected void methodField(EntityType model, Method method, SerializerConfig config, CodeWriter writer) throws IOException {
-        Type exprType = typeMappings.getExprType(method.getReturnType(), model, false, true, false);
-        writer.privateField(exprType, method.getName()+"_");
-    }
-
-    protected void method(EntityType model, Method method, SerializerConfig config, CodeWriter writer) throws IOException {
-        Type exprType = typeMappings.getExprType(method.getReturnType(), model, false, true, false);
-        Type templateType = typeMappings.getTemplateType(method.getReturnType(), model, true);
-
-        exprArgsMethod(model, method, writer, exprType, templateType);
-        if (!method.getParameters().isEmpty()){
-            normalArgsMethod(model, method, writer, exprType, templateType);
-        }
-    }
-
-    private void exprArgsMethod(final EntityType model, Method method, CodeWriter writer, Type exprType, Type templateType) throws IOException {
-        writer.beginPublicMethod(exprType, method.getName(), method.getParameters(), new Transformer<Parameter,Parameter>(){
-            @Override
-            public Parameter transform(Parameter p) {
-                return new Parameter(p.getName(), typeMappings.getExprType(p.getType(), model, false, false, true));
-            }
-        });
-
-        if (method.getParameters().isEmpty()){
-            writer.line("if (", method.getName(), "_ == null) {");
-            writer.beginLine("    " + method.getName() + "_ = " + templateType.getSimpleName() + ".create(");
-            String fullName = method.getReturnType().getFullName();
-            if (templateType.getSimpleName().equals(SimpleTemplate.class.getSimpleName())
-            || (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName()))){
-                writer.append(writer.getRawName(method.getReturnType()));
-                writer.append(".class, ");
-            }
-            writer.append(QUOTE + StringEscapeUtils.escapeJava(method.getTemplate()) + QUOTE);
-            writer.append(", this);\n");
-            writer.line("}");
-            writer.line("return ", method.getName(), "_;");
-
-        }else{
-            writer.beginLine(RETURN + templateType.getSimpleName() + ".create(");
-            String fullName = method.getReturnType().getFullName();
-            if (templateType.getSimpleName().equals(SimpleTemplate.class.getSimpleName())
-            || (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName()))){
-                writer.append(writer.getRawName(method.getReturnType()));
-                writer.append(".class, ");
-            }
-            writer.append(QUOTE + StringEscapeUtils.escapeJava(method.getTemplate()) + QUOTE);
-            writer.append(", this");
-            for (Parameter p : method.getParameters()){
-                writer.append(COMMA + p.getName());
-            }
-            writer.append(");\n");
-        }
-
-        writer.end();
-    }
-
-    private void normalArgsMethod(final EntityType model, Method method, CodeWriter writer, Type exprType, Type custType) throws IOException {
-        Parameter[] params = method.getParameters().toArray(new Parameter[method.getParameters().size()]);
-        writer.beginPublicMethod(exprType, method.getName(),params);
-
-        // body start
-        writer.beginLine(RETURN + custType + ".create(");
-        String fullName = method.getReturnType().getFullName();
-        if (!fullName.equals(String.class.getName()) && !fullName.equals(Boolean.class.getName())){
-            writer.append(writer.getRawName(method.getReturnType()));
-            writer.append(".class, ");
-        }
-        writer.append(QUOTE + StringEscapeUtils.escapeJava(method.getTemplate()) + QUOTE);
-        writer.append(", this");
-        for (Parameter p : method.getParameters()){
-            // TODO : replace with class reference
-            String paramType = writer.getGenericName(true, p.getType());
-            writer.append(COMMA + "new ConstantImpl<"+paramType+">(" + p.getName() + ")");
-        }
-        writer.append(");\n");
-
-        // body end
-        writer.end();
     }
 
     private void delegate(final EntityType model, Delegate delegate, SerializerConfig config, CodeWriter writer) throws IOException {
@@ -543,24 +459,12 @@ public class EntitySerializer implements Serializer{
         // properties
         serializeProperties(model, config, writer);
 
-        // method fields
-        for (Method method : model.getMethods()){
-            if (method.getParameters().isEmpty()){
-                methodField(model, method, config, writer);
-            }
-        }
-
         // constructors
         constructors(model, config, writer);
 
         // delegates
         for (Delegate delegate : model.getDelegates()){
             delegate(model, delegate, config, writer);
-        }
-
-        // methods
-        for (Method method : model.getMethods()){
-            method(model, method, config, writer);
         }
 
         // property accessors
@@ -624,7 +528,9 @@ public class EntitySerializer implements Serializer{
     protected void serializeProperties(EntityType model,  SerializerConfig config, CodeWriter writer) throws IOException {
         for (Property property : model.getProperties()){
             // FIXME : the custom types should have the custom type category
-            if (typeMappings.isRegistered(property.getType())){
+            if (typeMappings.isRegistered(property.getType())
+                    && property.getType().getCategory() != TypeCategory.CUSTOM
+                    && property.getType().getCategory() != TypeCategory.ENTITY){
                 customField(model, property, config, writer);
                 continue;
             }

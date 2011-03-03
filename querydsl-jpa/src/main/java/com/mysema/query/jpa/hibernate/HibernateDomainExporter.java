@@ -43,8 +43,6 @@ public class HibernateDomainExporter {
 
     private static final Logger logger = LoggerFactory.getLogger(HibernateDomainExporter.class);
 
-    private final String namePrefix, nameSuffix;
-
     private final File targetFolder;
 
     private final Map<String,EntityType> allTypes = new HashMap<String,EntityType>();
@@ -59,6 +57,8 @@ public class HibernateDomainExporter {
 
     private final Configuration configuration;
 
+    private final QueryTypeFactory queryTypeFactory;
+    
     private final TypeMappings typeMappings = new TypeMappings();
 
     private final Serializer embeddableSerializer = new EmbeddableSerializer(typeMappings, Constants.keywords);
@@ -88,14 +88,12 @@ public class HibernateDomainExporter {
     }
 
     public HibernateDomainExporter(String namePrefix, String nameSuffix, File targetFolder, SerializerConfig serializerConfig, Configuration configuration){
-        this.namePrefix = namePrefix;
-        this.nameSuffix = nameSuffix;
         this.targetFolder = targetFolder;
         this.serializerConfig = serializerConfig;
         this.configuration = configuration;
-        typeFactory.setUnknownAsEntity(true);
+        this.queryTypeFactory = new QueryTypeFactoryImpl(namePrefix, nameSuffix);
+        typeFactory.setUnknownAsEntity(true);        
     }
-
 
     public void execute() throws IOException {
         // collect types
@@ -218,7 +216,8 @@ public class HibernateDomainExporter {
         if (types.containsKey(cl.getName())){
             return types.get(cl.getName());
         }else{
-            EntityType type = new EntityType(namePrefix, nameSuffix, new ClassType(TypeCategory.ENTITY, cl));
+            EntityType type = new EntityType(new ClassType(TypeCategory.ENTITY, cl));
+            typeMappings.register(type, queryTypeFactory.create(type));
             if (!cl.getSuperclass().equals(Object.class)){
                 type.addSupertype(new Supertype(new ClassType(cl.getSuperclass())));
             }

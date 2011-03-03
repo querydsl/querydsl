@@ -16,22 +16,18 @@ import com.mysema.query.codegen.EntityType;
 public interface NamingStrategy {
 
     /**
-     * Convert the given tableName to a simple class name with the given name prefix
-     *
-     * @param namePrefix
-     * @param tableName
+     * Convert the given tableName to a simple class name
      * @return
      */
-    String getClassName(String namePrefix, String nameSuffix, String tableName);
+    String getClassName(String tableName);
 
     /**
      * Get the default alias for the given EntityType
      *
-     * @param namePrefix
      * @param entityType
      * @return
      */
-    String getDefaultAlias(String namePrefix, String nameSuffix, EntityType entityType);
+    String getDefaultAlias(EntityType entityType);
 
     /**
      * Get the default variable name for the given EntityType
@@ -39,7 +35,7 @@ public interface NamingStrategy {
      * @param entityType
      * @return
      */
-    String getDefaultVariableName(String namePrefix, String nameSuffix, EntityType entityType);
+    String getDefaultVariableName(EntityType entityType);
 
     /**
      * Get the class name for the foreign keys inner class
@@ -73,11 +69,10 @@ public interface NamingStrategy {
      * Convert the given column name to a property name
      *
      * @param columnName
-     * @param namePrefix NOTE : is used in some custom NamingStrategy implementations
      * @param entityType
      * @return
      */
-    String getPropertyName(String columnName, String namePrefix, String nameSuffix, EntityType entityType);
+    String getPropertyName(String columnName, EntityType entityType);
 
     /**
      * Convert the given foreign key name to a foreign key property name

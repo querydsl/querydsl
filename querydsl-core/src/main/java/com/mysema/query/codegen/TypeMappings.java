@@ -52,16 +52,15 @@ import com.mysema.query.types.template.TimeTemplate;
  * @author tiwe
  *
  */
-// TODO : all custom and entity types should be registered here
 public final class TypeMappings {
 
-    private final Map<Type, Type> queryTypes = new HashMap<Type, Type>();
+    private final Map<String, Type> queryTypes = new HashMap<String, Type>();
     
-    private final Map<TypeCategory, ClassType> exprTypes = new HashMap<TypeCategory, ClassType>();
+    private final Map<TypeCategory, Type> exprTypes = new HashMap<TypeCategory, Type>();
 
-    private final Map<TypeCategory, ClassType> pathTypes = new HashMap<TypeCategory, ClassType>();
+    private final Map<TypeCategory, Type> pathTypes = new HashMap<TypeCategory, Type>();
 
-    private final Map<TypeCategory, ClassType> templateTypes = new HashMap<TypeCategory, ClassType>();
+    private final Map<TypeCategory, Type> templateTypes = new HashMap<TypeCategory, Type>();
 
     public TypeMappings(){
         register(TypeCategory.STRING, StringExpression.class, StringPath.class, StringTemplate.class);
@@ -80,7 +79,6 @@ public final class TypeMappings {
         register(TypeCategory.LIST, Expression.class, SimplePath.class, SimpleTemplate.class);
         register(TypeCategory.MAP, Expression.class, SimplePath.class, SimpleTemplate.class);
         
-
         register(TypeCategory.CUSTOM, Expression.class, Path.class, SimpleTemplate.class);
         register(TypeCategory.ENTITY, Expression.class, Path.class, SimpleTemplate.class);
     }
@@ -98,7 +96,11 @@ public final class TypeMappings {
     }
 
     public Type getExprType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
-        return getQueryType(exprTypes, type, model, raw, rawParameters, extend);            
+        if (queryTypes.containsKey(type.getFullName())){
+            return queryTypes.get(type.getFullName());    
+        }else{
+            return getQueryType(exprTypes, type, model, raw, rawParameters, extend);   
+        }
     }
 
     public Type getPathType(Type type, EntityType model, boolean raw){
@@ -106,14 +108,14 @@ public final class TypeMappings {
     }
 
     public Type getPathType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
-        if (queryTypes.containsKey(type)){
-            return queryTypes.get(type);    
+        if (queryTypes.containsKey(type.getFullName())){
+            return queryTypes.get(type.getFullName());    
         }else{
             return getQueryType(pathTypes, type, model, raw, rawParameters, extend);   
         }
     }
 
-    private Type getQueryType(Map<TypeCategory, ClassType> types, Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
+    private Type getQueryType(Map<TypeCategory, Type> types, Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
         Type exprType = types.get(type.getCategory());
         return getQueryType(type, model, exprType, raw, rawParameters, extend);
     }
@@ -126,17 +128,6 @@ public final class TypeMappings {
         }else if (category == TypeCategory.STRING || category == TypeCategory.BOOLEAN){
             return exprType;
 
-        }else if (category == TypeCategory.ENTITY || category == TypeCategory.CUSTOM){
-            String packageName = type.getPackageName();
-            String simpleName;
-            if (type.getPackageName().isEmpty()){
-                simpleName = model.getPrefix() + normalizeName(type.getFullName()) + model.getSuffix();
-                return new SimpleType(category, simpleName, "", simpleName, false, false);
-            }else{
-                simpleName = model.getPrefix() + normalizeName(type.getFullName().substring(packageName.length()+1)) + model.getSuffix();
-                return new SimpleType(category, packageName+"."+simpleName, packageName, simpleName, false, false);
-            }
-
         }else{
             if (rawParameters){
                 type = new SimpleType(type);
@@ -147,10 +138,6 @@ public final class TypeMappings {
             return new SimpleType(exprType, type);
 
         }
-    }
-
-    private String normalizeName(String name){
-        return name.replace('.', '_').replace('$', '_');
     }
 
     @SuppressWarnings("unchecked")
@@ -170,7 +157,7 @@ public final class TypeMappings {
     }
 
     public void register(Type type, Type queryType){
-        queryTypes.put(type, queryType);
+        queryTypes.put(type.getFullName(), queryType);
     }
     
     public boolean isRegistered(Type type){

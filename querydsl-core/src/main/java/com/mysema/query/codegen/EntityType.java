@@ -21,7 +21,6 @@ import com.mysema.codegen.model.Constructor;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeAdapter;
 import com.mysema.codegen.model.TypeCategory;
-import com.mysema.commons.lang.Assert;
 import com.mysema.util.JavaSyntaxUtils;
 
 /**
@@ -36,14 +35,8 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     private final Set<Constructor> constructors = new HashSet<Constructor>();
 
     private int escapeSuffix = 1;
-
-    private final Set<Method> methods = new HashSet<Method>();
  
     private final Set<Delegate> delegates = new HashSet<Delegate>();
-
-    private final String prefix;
-    
-    private final String suffix;
 
     private final Set<Property> properties = new TreeSet<Property>();
     
@@ -57,14 +50,12 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
 
     private String uncapSimpleName;
     
-    public EntityType(String prefix, String suffix, Type type) {
-        this(prefix, suffix, type, new HashSet<Supertype>());
+    public EntityType(Type type) {
+        this(type, new HashSet<Supertype>());
     }
     
-    public EntityType(String prefix, String suffix, Type type, Set<Supertype> superTypes) {
+    public EntityType(Type type, Set<Supertype> superTypes) {
         super(type);
-        this.prefix = Assert.notNull(prefix,"prefix");
-        this.suffix = Assert.notNull(suffix,"suffix");
         this.uncapSimpleName = StringUtils.uncapitalize(type.getSimpleName());
         if (JavaSyntaxUtils.isReserved(uncapSimpleName)){
             this.uncapSimpleName = uncapSimpleName + "_";    
@@ -82,10 +73,6 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
 
     public void addDelegate(Delegate delegate){
         delegates.add(delegate);
-    }
-
-    public void addMethod(Method method){
-        methods.add(method);
     }
 
     public void addProperty(Property field) {
@@ -143,36 +130,12 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         return delegates;
     }
 
-    @Override
-    public String getFullName(){
-        String name = super.getFullName();
-        return name.startsWith("java.") ? "ext." + name : name;
-    }
-
-    public Set<Method> getMethods(){
-        return methods;
-    }
-
     public TypeCategory getOriginalCategory(){
         return super.getCategory();
     }
 
-    @Override
-    public String getPackageName(){
-        String pkg = super.getPackageName();
-        return pkg.startsWith("java.") ? "ext." + pkg : pkg;
-    }
-
-    public String getPrefix(){
-        return prefix;
-    }
-
     public Set<Property> getProperties() {
         return properties;
-    }
-
-    public String getSuffix(){
-        return suffix;
     }
     
     @Nullable
@@ -216,9 +179,6 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
 
     public void include(Supertype supertype) {
         EntityType entityType = supertype.getEntityType();
-        for (Method method : entityType.getMethods()){
-            addMethod(method.createCopy(this));
-        }
         for (Delegate delegate : entityType.getDelegates()){
             addDelegate(delegate);
         }

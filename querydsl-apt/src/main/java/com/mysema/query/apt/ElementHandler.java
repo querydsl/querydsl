@@ -6,7 +6,6 @@
 package com.mysema.query.apt;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -29,11 +28,11 @@ import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryInit;
-import com.mysema.query.annotations.QueryMethod;
 import com.mysema.query.annotations.QueryType;
 import com.mysema.query.codegen.EntityType;
-import com.mysema.query.codegen.Method;
 import com.mysema.query.codegen.Property;
+import com.mysema.query.codegen.QueryTypeFactory;
+import com.mysema.query.codegen.TypeMappings;
 
 /**
  * ElementHandler is a an APT visitor for entity types
@@ -44,13 +43,23 @@ import com.mysema.query.codegen.Property;
 @Immutable
 public final class ElementHandler{
 
+    private final TypeMappings typeMappings;
+    
+    private final QueryTypeFactory queryTypeFactory;
+    
     private final Configuration configuration;
 
     private final ExtendedTypeFactory typeFactory;
 
-    public ElementHandler(Configuration configuration, ExtendedTypeFactory typeFactory){
+    public ElementHandler(
+            Configuration configuration, 
+            ExtendedTypeFactory typeFactory, 
+            TypeMappings typeMappings, 
+            QueryTypeFactory queryTypeFactory){
         this.configuration = configuration;
         this.typeFactory = typeFactory;
+        this.typeMappings = typeMappings;
+        this.queryTypeFactory = queryTypeFactory;
     }
 
     private Type getType(VariableElement element){
@@ -139,11 +148,9 @@ public final class ElementHandler{
         EntityType entityType = typeFactory.getEntityType(e.asType(), true);
         List<? extends Element> elements = e.getEnclosedElements();
         VisitorConfig config = configuration.getConfig(e, elements);
-
         Set<String> blockedProperties = new HashSet<String>();
         Map<String,Property> properties = new HashMap<String,Property>();
         Map<String,TypeCategory> types = new HashMap<String,TypeCategory>();
-        Set<Method> queryMethods = new HashSet<Method>();
 
         // constructors
         if (config.visitConstructors()){
@@ -164,10 +171,7 @@ public final class ElementHandler{
 
         // methods
         for (ExecutableElement method : ElementFilter.methodsIn(elements)){
-            if (method.getAnnotation(QueryMethod.class) != null){
-                handleQueryMethod(entityType, method, queryMethods);
-
-            }else if (config.visitMethodProperties()){
+            if (config.visitMethodProperties()){
                 String name = method.getSimpleName().toString();
                 if (name.startsWith("get") && method.getParameters().isEmpty()){
                     name = StringUtils.uncapitalize(name.substring(3));
@@ -186,10 +190,6 @@ public final class ElementHandler{
 
         }
 
-        for (Method entry : queryMethods){
-            entityType.addMethod(entry);
-        }
-
         for (Map.Entry<String,Property> entry : properties.entrySet()){
             if (!blockedProperties.contains(entry.getKey())){
                 entityType.addProperty(entry.getValue());
@@ -201,23 +201,11 @@ public final class ElementHandler{
 
     public EntityType handleProjectionType(TypeElement e) {
         Type c = typeFactory.getType(e.asType(), true);
-        EntityType entityType = new EntityType(configuration.getNamePrefix(), configuration.getNameSuffix(), c.as(TypeCategory.ENTITY));
+        EntityType entityType = new EntityType(c.as(TypeCategory.ENTITY));
+        typeMappings.register(entityType, queryTypeFactory.create(entityType));        
         List<? extends Element> elements = e.getEnclosedElements();
         handleConstructors(entityType, elements);
         return entityType;
-    }
-
-    public void handleQueryMethod(EntityType entityType, ExecutableElement executable, Set<Method> queryMethods) {
-        String name = executable.getSimpleName().toString();
-        QueryMethod queryMethod = executable.getAnnotation(QueryMethod.class);
-        Type returnType = typeFactory.getType(executable.getReturnType(), true);
-        if (returnType.getCategory() == TypeCategory.ENTITY){
-            returnType = returnType.as(TypeCategory.SIMPLE);
-        }else if (returnType.getCategory() == TypeCategory.CUSTOM){
-            returnType = returnType.as(TypeCategory.get(returnType.getRawName(Collections.<String>emptySet(), Collections.<String>emptySet())));
-        }
-        Method method = new Method(entityType, name, queryMethod.value(), transformParams(executable.getParameters()), returnType);
-        queryMethods.add(method);
     }
 
     public List<Parameter> transformParams(List<? extends VariableElement> params){

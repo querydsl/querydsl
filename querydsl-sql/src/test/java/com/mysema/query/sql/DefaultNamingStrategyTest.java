@@ -21,34 +21,25 @@ public class DefaultNamingStrategyTest {
     
     @Before
     public void setUp(){
-        entityModel = new EntityType("Q", "",Types.OBJECT);
+        entityModel = new EntityType(Types.OBJECT);
         entityModel.addAnnotation(new TableImpl("OBJECT"));
     }
     
     @Test
     public void GetClassName() {
-        assertEquals("QUserData", namingStrategy.getClassName("Q", "", "user_data"));
-        assertEquals("QU", namingStrategy.getClassName("Q", "", "u"));
-        assertEquals("QUs",namingStrategy.getClassName("Q", "", "us"));
-        assertEquals("QU", namingStrategy.getClassName("Q", "", "u_"));
-        assertEquals("QUs",namingStrategy.getClassName("Q", "", "us_"));
-    }
-    
-    @Test
-    public void GetClassName_with_Suffix() {
-        assertEquals("UserDataType", namingStrategy.getClassName("", "Type", "user_data"));
-        assertEquals("UType", namingStrategy.getClassName("", "Type", "u"));
-        assertEquals("UsType",namingStrategy.getClassName("", "Type", "us"));
-        assertEquals("UType", namingStrategy.getClassName("", "Type", "u_"));
-        assertEquals("UsType",namingStrategy.getClassName("", "Type", "us_"));
+        assertEquals("UserData", namingStrategy.getClassName("user_data"));
+        assertEquals("U", namingStrategy.getClassName("u"));
+        assertEquals("Us",namingStrategy.getClassName("us"));
+        assertEquals("U", namingStrategy.getClassName("u_"));
+        assertEquals("Us",namingStrategy.getClassName("us_"));
     }
 
     @Test
     public void GetPropertyName() {
-        assertEquals("whileCol", namingStrategy.getPropertyName("while", "Q", "", entityModel));
-        assertEquals("name", namingStrategy.getPropertyName("name", "Q", "", entityModel));
-        assertEquals("userId", namingStrategy.getPropertyName("user_id", "Q", "", entityModel));
-        assertEquals("accountEventId", namingStrategy.getPropertyName("accountEvent_id", "Q", "", entityModel));
+        assertEquals("whileCol", namingStrategy.getPropertyName("while", entityModel));
+        assertEquals("name", namingStrategy.getPropertyName("name", entityModel));
+        assertEquals("userId", namingStrategy.getPropertyName("user_id", entityModel));
+        assertEquals("accountEventId", namingStrategy.getPropertyName("accountEvent_id", entityModel));
     }
 
     @Test
@@ -64,7 +55,7 @@ public class DefaultNamingStrategyTest {
     
     @Test
     public void GetDefaultVariableName(){
-        assertEquals("object", namingStrategy.getDefaultVariableName("Q", "", entityModel));
+        assertEquals("object", namingStrategy.getDefaultVariableName(entityModel));
     }
     
 }

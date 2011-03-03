@@ -12,10 +12,8 @@ import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.mysema.query.codegen.Serializer;
 import com.mysema.query.sql.DefaultNamingStrategy;
 import com.mysema.query.sql.MetaDataExporter;
-import com.mysema.query.sql.MetaDataSerializer;
 import com.mysema.query.sql.NamingStrategy;
 import com.mysema.testutil.FilteringTestRunner;
 
@@ -27,12 +25,12 @@ public abstract class ExportBaseTest {
         File folder = new File("target", getClass().getSimpleName());
         folder.mkdirs();
         NamingStrategy namingStrategy = new DefaultNamingStrategy();
-        Serializer serializer = new MetaDataSerializer("Q", "", "", "", null, namingStrategy, false);
+//        Serializer serializer = new MetaDataSerializer("Q", "", "", "", null, namingStrategy, false);
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setPackageName("test");
         exporter.setTargetFolder(folder);
         exporter.setNamingStrategy(namingStrategy);
-        exporter.setSerializer(serializer);
+//        exporter.setSerializer(serializer);
         exporter.export(Connections.getConnection().getMetaData());
     }
     

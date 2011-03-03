@@ -16,7 +16,6 @@ import com.mysema.codegen.CodeWriter;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.path.SimplePath;
-import com.mysema.query.types.template.SimpleTemplate;
 
 /**
  * SupertypeSerializer is a Serializer implementation for supertypes
@@ -54,13 +53,9 @@ public final class SupertypeSerializer extends EntitySerializer{
         packages.add(PathMetadata.class.getPackage());
         packages.add(SimplePath.class.getPackage());
         if ((model.hasLists() && config.useListAccessors())
-                || !model.getMethods().isEmpty()
                 || !model.getDelegates().isEmpty()
                 || (model.hasMaps() && config.useMapAccessors())){
             packages.add(ComparableExpression.class.getPackage());
-        }
-        if (!model.getMethods().isEmpty()){
-            packages.add(SimpleTemplate.class.getPackage());
         }
         writer.imports(packages.toArray(new Package[packages.size()]));
     }

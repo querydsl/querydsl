@@ -15,6 +15,7 @@ import java.util.Map;
 import org.junit.Test;
 
 import com.mysema.query.AbstractJDBCTest;
+import com.mysema.query.sql.DefaultNamingStrategy;
 
 
 public class KeyDataFactoryTest extends AbstractJDBCTest{
@@ -38,7 +39,7 @@ public class KeyDataFactoryTest extends AbstractJDBCTest{
                 + "CONSTRAINT FK_survey FOREIGN KEY (survey_id, survey_name) REFERENCES survey(id,name), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");
         
-        KeyDataFactory keyDataFactory = new KeyDataFactory();
+        KeyDataFactory keyDataFactory = new KeyDataFactory(new DefaultNamingStrategy(), "Q","","test");
         
         DatabaseMetaData md = connection.getMetaData();
         
