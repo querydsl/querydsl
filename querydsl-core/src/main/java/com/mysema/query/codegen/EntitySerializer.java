@@ -18,7 +18,6 @@ import java.util.Set;
 import net.jcip.annotations.Immutable;
 
 import org.apache.commons.collections15.Transformer;
-import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.mysema.codegen.CodeWriter;
@@ -38,7 +37,6 @@ import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.path.*;
-import com.mysema.query.types.template.SimpleTemplate;
 
 /**
  * EntitySerializer is a Serializer implementation for entity types
@@ -534,13 +532,13 @@ public class EntitySerializer implements Serializer{
                 customField(model, property, config, writer);
                 continue;
             }
-            
+
             // strips of "? extends " etc
             Type propertyType = new SimpleType(property.getType(), property.getType().getParameters());
             Type queryType = typeMappings.getPathType(propertyType, model, false);
             Type genericQueryType = null;
             String localRawName = writer.getRawName(property.getType());
-            
+
             switch(property.getType().getCategory()){
             case STRING:
                 serialize(model, property, queryType, writer, "createString");
@@ -646,5 +644,5 @@ public class EntitySerializer implements Serializer{
             return new SimpleType(type, type.getParameters());
         }
     }
-    
+
 }

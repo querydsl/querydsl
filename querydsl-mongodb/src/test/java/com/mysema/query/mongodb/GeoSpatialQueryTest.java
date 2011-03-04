@@ -1,10 +1,15 @@
 package com.mysema.query.mongodb;
 
+import static org.junit.Assert.assertEquals;
+
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
+import com.mongodb.BasicDBObject;
 import com.mysema.query.mongodb.domain.City;
 import com.mysema.query.mongodb.domain.GeoEntity;
 import com.mysema.query.mongodb.domain.QGeoEntity;
@@ -24,18 +29,23 @@ public class GeoSpatialQueryTest {
     @Before
     public void before() {
         ds.delete(ds.createQuery(GeoEntity.class));
-        GeoEntity entity = new GeoEntity();
-        entity.setLocation(new Double[]{50.0, 50.0});
-        ds.save(geoEntity);
+        ds.getCollection(GeoEntity.class).ensureIndex(new BasicDBObject("location","2d"));;
     }
-    
+
     @Test
     public void Near(){
-        query().where(geoEntity.location.near(50.0, 55.0)).list();
+        ds.save(new GeoEntity(10.0, 50.0));
+        ds.save(new GeoEntity(20.0, 50.0));
+        ds.save(new GeoEntity(30.0, 50.0));
+
+        List<GeoEntity> entities = query().where(geoEntity.location.near(50.0, 50.0)).list();
+        assertEquals(30.0, entities.get(0).getLocation()[0].doubleValue(), 0.1);
+        assertEquals(20.0, entities.get(1).getLocation()[0].doubleValue(), 0.1);
+        assertEquals(10.0, entities.get(2).getLocation()[0].doubleValue(), 0.1);
     }
-    
+
     private MongodbQuery<GeoEntity> query() {
         return new MorphiaQuery<GeoEntity>(morphia, ds, geoEntity);
     }
-    
+
 }

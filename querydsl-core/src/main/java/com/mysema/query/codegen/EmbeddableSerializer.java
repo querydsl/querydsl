@@ -22,7 +22,6 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.path.*;
-import com.mysema.query.types.template.SimpleTemplate;
 
 /**
  * EmbeddableSerializer is a Serializer implementation for embeddable types
@@ -35,7 +34,7 @@ public final class EmbeddableSerializer extends EntitySerializer{
     public EmbeddableSerializer(TypeMappings typeMappings, Collection<String> keywords) {
         super(typeMappings, keywords);
     }
-    
+
     @Override
     @SuppressWarnings(UNCHECKED)
     protected void introClassHeader(CodeWriter writer, EntityType model) throws IOException {
@@ -62,13 +61,13 @@ public final class EmbeddableSerializer extends EntitySerializer{
         for (Annotation annotation : model.getAnnotations()){
             writer.annotation(annotation);
         }
-        
+
         if (category == TypeCategory.BOOLEAN || category == TypeCategory.STRING){
             writer.beginClass(queryType, new ClassType(pathType));
         }else{
-            writer.beginClass(queryType, new ClassType(category,pathType, model));    
+            writer.beginClass(queryType, new ClassType(category,pathType, model));
         }
-        
+
         // TODO : generate proper serialVersionUID here
         writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()));
     }

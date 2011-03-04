@@ -9,8 +9,14 @@ import com.google.code.morphia.annotations.Id;
 public class GeoEntity {
 
     private @Id ObjectId id;
-    
+
     private Double[] location;
+
+    public GeoEntity(double l1, double l2) {
+        location = new Double[]{l1, l2};
+    }
+
+    public GeoEntity() {}
 
     public ObjectId getId() {
         return id;
@@ -27,6 +33,6 @@ public class GeoEntity {
     public void setLocation(Double[] location) {
         this.location = location;
     }
-    
-    
+
+
 }

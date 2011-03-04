@@ -9,7 +9,7 @@ import com.mysema.query.types.path.ArrayPath;
 
 /**
  * Point is an adapter type for Double[] arrays to use geo spatial querying features of Mongodb
- * 
+ *
  * @author tiwe
  *
  */
@@ -31,17 +31,13 @@ public class Point extends ArrayPath<Double>{
 
     /**
      * Finds the closest points relative to the given location and orders the results with decreasing promimity
-     * 
+     *
      * @param latVal latitude
      * @param longVal longitude
      * @return
      */
     public BooleanExpression near(double latVal, double longVal){
-        return BooleanOperation.create(
-                MongodbOps.NEAR, 
-                this, 
-                new ConstantImpl<Double>(latVal), 
-                new ConstantImpl<Double>(longVal));
+        return BooleanOperation.create(MongodbOps.NEAR, this, new ConstantImpl<Double[]>(new Double[]{latVal, longVal}));
     }
 
 }

@@ -8,16 +8,7 @@ package com.mysema.query.apt;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.Nullable;
 import javax.annotation.processing.Filer;
@@ -49,16 +40,7 @@ import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryEntities;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.Variables;
-import com.mysema.query.codegen.Delegate;
-import com.mysema.query.codegen.EntityType;
-import com.mysema.query.codegen.Property;
-import com.mysema.query.codegen.QueryTypeFactory;
-import com.mysema.query.codegen.QueryTypeFactoryImpl;
-import com.mysema.query.codegen.Serializer;
-import com.mysema.query.codegen.SerializerConfig;
-import com.mysema.query.codegen.Supertype;
-import com.mysema.query.codegen.TypeFactory;
-import com.mysema.query.codegen.TypeMappings;
+import com.mysema.query.codegen.*;
 
 /**
  * Processor handles the actual work in the Querydsl APT module
@@ -288,24 +270,6 @@ public class Processor {
         }
     }
 
-    private void handleExtensionType(TypeMirror type, TypeElement element, boolean cached) {
-        EntityType entityModel = typeFactory.getEntityType(type, true);
-        registerTypeElement(entityModel.getFullName(), element);
-        // handle methods
-//        Set<Method> queryMethods = new HashSet<Method>();
-//        for (ExecutableElement method : ElementFilter.methodsIn(element.getEnclosedElements())){
-//            if (method.getAnnotation(QueryMethod.class) != null){
-//                elementHandler.handleQueryMethod(entityModel, method, queryMethods);
-//            }
-//        }
-//        for (Method method : queryMethods){
-//            entityModel.addMethod(method);
-//        }
-        if (!cached){
-            extensionTypes.put(entityModel.getFullName(), entityModel);
-        }
-    }
-
     private void mergeTypes(Map<String, EntityType> types, Deque<Type> superTypes) {
         // get external supertypes
         while (!superTypes.isEmpty()){
@@ -365,18 +329,6 @@ public class Processor {
 
         mergeTypes(types, superTypes);
     }
-
-    private void processCustomType(Element element, boolean cached){
-        if (element.getAnnotation(configuration.getEntityAnnotation()) != null){
-            return;
-        }else if (configuration.getSuperTypeAnnotation() != null && element.getAnnotation(configuration.getSuperTypeAnnotation()) != null){
-            return;
-        }else if (configuration.getEmbeddableAnnotation() != null && element.getAnnotation(configuration.getEmbeddableAnnotation()) != null){
-            return;
-        }
-        handleExtensionType(element.asType(), (TypeElement)element, cached);
-    }
-
 
     private void processDelegateMethod(Element delegateMethod, boolean cached) {
         ExecutableElement method = (ExecutableElement)delegateMethod;
@@ -469,31 +421,31 @@ public class Processor {
 
     private void processEmbedded(){
         List<TypeMirror> typeMirrors = new ArrayList<TypeMirror>();
-        
+
         // only creation
         for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddedAnnotation())) {
             TypeMirror type = element.asType();
             if (element.getKind() == ElementKind.METHOD){
                 type = ((ExecutableElement)element).getReturnType();
-            }            
+            }
             String typeName = type.toString();
             if (typeName.startsWith(Collection.class.getName())
              || typeName.startsWith(List.class.getName())
              || typeName.startsWith(Set.class.getName())){
                 type = ((DeclaredType)type).getTypeArguments().get(0);
-                
+
             }else if (typeName.startsWith(Map.class.getName())){
                 type = ((DeclaredType)type).getTypeArguments().get(1);
-            }   
+            }
             typeFactory.getEntityType(type, false);
             typeMirrors.add(type);
         }
-        
+
         // supertype handling
         for (TypeMirror typeMirror : typeMirrors){
             typeFactory.getEntityType(typeMirror, true);
         }
-        
+
         // deep
         for (TypeMirror type : typeMirrors) {
             // remove generic signature of type for TypeElement lookup
@@ -506,7 +458,7 @@ public class Processor {
                 // skip Entity types here
                 continue;
             }
-            
+
             EntityType model = elementHandler.handleNormalType(typeElement);
             registerTypeElement(model.getFullName(), typeElement);
             embeddables.put(model.getFullName(), model);
