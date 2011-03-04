@@ -22,7 +22,7 @@ class ScalaBeanSerializerTest {
   def setUp() {
     // type
     val typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false, false);
-    entityType = new EntityType("Q", "", typeModel);
+    entityType = new EntityType(typeModel);
 
     // property
     entityType.addProperty(new Property(entityType, "entityField", entityType, new Array[String](0)));
@@ -42,10 +42,6 @@ class ScalaBeanSerializerTest {
     val firstName = new Parameter("firstName", new ClassType(TypeCategory.STRING, classOf[String]));
     val lastName = new Parameter("lastName", new ClassType(TypeCategory.STRING, classOf[String]));
     entityType.addConstructor(new Constructor(List(firstName, lastName)));
-
-    // method
-    val method = new Method(Types.STRING, "method", "abc", Types.STRING);
-    entityType.addMethod(method);
   }
 
   @Test

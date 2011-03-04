@@ -56,7 +56,7 @@ class JDBCIntegrationTest {
   @Test
   def Generation_without_Beantypes() {
     val namingStrategy = new DefaultNamingStrategy();
-    val serializer = new ScalaMetaDataSerializer("Q", "", namingStrategy);
+    val serializer = new ScalaMetaDataSerializer(namingStrategy);
     //val exporter = new MetaDataExporter("Q", "test", new File("target/gen1"), namingStrategy, serializer);
     val exporter = new MetaDataExporter();
     exporter.setNamePrefix("Q");
@@ -70,7 +70,7 @@ class JDBCIntegrationTest {
   @Test
   def Generation_with_Beantypes() {
     val namingStrategy = new DefaultNamingStrategy();
-    val serializer = new ScalaMetaDataSerializer("Q", "", namingStrategy);
+    val serializer = new ScalaMetaDataSerializer(namingStrategy);
     val beanSerializer = new ScalaBeanSerializer();
     //val exporter = new MetaDataExporter("Q", "test", new File("target/gen2"), namingStrategy, serializer, beanSerializer);
     val exporter = new MetaDataExporter();

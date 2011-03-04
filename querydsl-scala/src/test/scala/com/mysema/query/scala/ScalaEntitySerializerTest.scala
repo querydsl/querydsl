@@ -24,7 +24,7 @@ class ScalaEntitySerializerTest {
   @Before
   def setUp() {
     val typeModel = new ClassType(TypeCategory.ENTITY, classOf[Person]);
-    entityType = new EntityType("Q", "", typeModel);
+    entityType = new EntityType(typeModel);
     entityType.addProperty(new Property(entityType, "scalaInt", Types.INTEGER));
     entityType.addProperty(new Property(entityType, "javaInt", Types.INTEGER));
     entityType.addProperty(new Property(entityType, "javaDouble", Types.DOUBLE));
@@ -44,7 +44,7 @@ class ScalaEntitySerializerTest {
 
   @Test
   def Print() {
-    val serializer = new ScalaEntitySerializer("Q", "");
+    val serializer = new ScalaEntitySerializer();
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer));
     val str = writer.toString();
     assertTrue(str.contains("class QPerson(cl: Class[_ <: Person], md: PathMetadata[_]) extends EntityPathImpl[Person](cl, md) {"));
