@@ -1,0 +1,27 @@
+package com.mysema.query.domain;
+
+import org.junit.Test;
+
+import com.mysema.query.annotations.QueryDelegate;
+import com.mysema.query.types.ConstantImpl;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.template.NumberTemplate;
+
+public class Delegate2Test {
+
+    public class Point{
+
+    }
+
+    @QueryDelegate(Point.class)
+    public static NumberExpression<Integer> geoDistance(Path<Point> point, Point other){
+        return NumberTemplate.create(Integer.class, "geo_distance({0},{1})", point, new ConstantImpl<Point>(other));
+    }
+
+    @Test
+    public void test(){
+
+    }
+
+}
