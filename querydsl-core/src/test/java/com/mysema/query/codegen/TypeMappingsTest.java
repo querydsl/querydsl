@@ -19,7 +19,7 @@ public class TypeMappingsTest {
         TypeMappings typeMappings = new TypeMappings();
         EntityType model = new EntityType(new ClassType(TypeMappingsTest.class));
         EntityType type = new EntityType(new ClassType(Entity.class));
-        typeMappings.register(type, new QueryTypeFactoryImpl("Q","").create(type));
+        typeMappings.register(type, new QueryTypeFactoryImpl("Q","","").create(type));
 
         Type pathType = typeMappings.getPathType(type, model, false);
         assertEquals("QTypeMappingsTest_Entity", pathType.getSimpleName());

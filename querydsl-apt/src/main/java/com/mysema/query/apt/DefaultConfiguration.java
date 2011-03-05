@@ -30,6 +30,7 @@ import com.mysema.query.codegen.EmbeddableSerializer;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.ProjectionSerializer;
+import com.mysema.query.codegen.QueryTypeFactory;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.SimpleSerializerConfig;
@@ -47,6 +48,8 @@ public class DefaultConfiguration implements Configuration {
 
     private static final String QUERYDSL_CREATE_DEFAULT_VARIABLE = "querydsl.createDefaultVariable";
 
+    private static final String QUERYDSL_PACKAGE_SUFFIX = "querydsl.packageSuffix";
+    
     private static final String QUERYDSL_MAP_ACCESSORS = "querydsl.mapAccessors";
 
     private static final String QUERYDSL_LIST_ACCESSORS = "querydsl.listAccessors";
@@ -114,6 +117,9 @@ public class DefaultConfiguration implements Configuration {
         }
         if (options.containsKey(QUERYDSL_CREATE_DEFAULT_VARIABLE)){
             createDefaultVariable = Boolean.valueOf(options.get(QUERYDSL_CREATE_DEFAULT_VARIABLE));
+        }
+        if (options.containsKey(QUERYDSL_PACKAGE_SUFFIX)){
+            module.bind(CodegenModule.PACKAGE_SUFFIX, options.get(QUERYDSL_PACKAGE_SUFFIX));
         }
         if (options.containsKey(DEFAULT_OVERWRITE)){
             defaultOverwrite = Boolean.valueOf(options.get(DEFAULT_OVERWRITE));
@@ -306,6 +312,11 @@ public class DefaultConfiguration implements Configuration {
     
     public <T> void addCustomType(Class<T> type, Class<? extends Expression<T>> queryType){
         module.get(TypeMappings.class).register(new ClassType(type), new ClassType(queryType));
+    }
+
+    @Override
+    public QueryTypeFactory getQueryTypeFactory() {
+        return module.get(QueryTypeFactory.class);
     }
 
 }

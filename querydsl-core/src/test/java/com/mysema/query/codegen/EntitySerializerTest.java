@@ -27,7 +27,7 @@ import com.mysema.query.annotations.PropertyType;
 
 public class EntitySerializerTest {
 
-    private final QueryTypeFactory queryTypeFactory = new QueryTypeFactoryImpl("Q", "");
+    private final QueryTypeFactory queryTypeFactory = new QueryTypeFactoryImpl("Q", "", "");
 
     private final TypeMappings typeMappings = new TypeMappings();
 

@@ -16,6 +16,7 @@ import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 
 import com.mysema.query.codegen.EntityType;
+import com.mysema.query.codegen.QueryTypeFactory;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.TypeMappings;
@@ -80,5 +81,7 @@ public interface Configuration {
     Collection<String> getKeywords();
 
     boolean isDefaultOverwrite();
+
+    QueryTypeFactory getQueryTypeFactory();
 
 }

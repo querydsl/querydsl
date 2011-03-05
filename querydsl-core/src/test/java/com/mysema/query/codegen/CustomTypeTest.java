@@ -15,7 +15,7 @@ import com.mysema.codegen.model.TypeCategory;
 
 public class CustomTypeTest {
 
-    private final QueryTypeFactory queryTypeFactory = new QueryTypeFactoryImpl("Q", "");
+    private final QueryTypeFactory queryTypeFactory = new QueryTypeFactoryImpl("Q", "", "");
 
     private final TypeMappings typeMappings = new TypeMappings();
 

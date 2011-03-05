@@ -14,6 +14,8 @@ public class CodegenModule  extends AbstractModule{
     
     public static final String KEYWORDS = "keywords";
     
+    public static final String PACKAGE_SUFFIX = "packageSuffix";
+    
     @Override
     protected void configure() {
         bind(TypeMappings.class);
@@ -25,6 +27,7 @@ public class CodegenModule  extends AbstractModule{
         
         bind(PREFIX, "Q");
         bind(SUFFIX, "");
+        bind(PACKAGE_SUFFIX, "");
     }
 
 }

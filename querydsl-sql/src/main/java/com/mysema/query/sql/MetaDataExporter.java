@@ -31,6 +31,7 @@ import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
+import com.mysema.query.codegen.CodegenModule;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.QueryTypeFactory;
@@ -75,7 +76,7 @@ public class MetaDataExporter {
         }
     }
     
-    private final CodegenModule module = new CodegenModule();
+    private final SQLCodegenModule module = new SQLCodegenModule();
 
     private final Set<String> classes = new HashSet<String>();
 
@@ -108,21 +109,19 @@ public class MetaDataExporter {
     
     private KeyDataFactory keyDataFactory;
     
-    private String namePrefix = "Q", nameSuffix = "", beanPrefix = "", beanSuffix = "";
-    
     public MetaDataExporter(){}
 
     protected EntityType createEntityType(@Nullable String schemaName, String tableName, final String className) {
         EntityType classModel;
         
         if (beanSerializer == null){
-            String simpleName = namePrefix + className + nameSuffix;
+            String simpleName = module.getPrefix() + className + module.getSuffix();
             Type classTypeModel = new SimpleType(TypeCategory.ENTITY, packageName + "." + simpleName, packageName, simpleName, false, false);
             classModel = new EntityType(classTypeModel);
             typeMappings.register(classModel, classModel);
             
         }else{
-            String simpleName = beanPrefix + className + beanSuffix;
+            String simpleName = module.getBeanPrefix() + className + module.getBeanSuffix();
             Type classTypeModel = new SimpleType(TypeCategory.ENTITY, beanPackageName + "." + simpleName, beanPackageName, simpleName, false, false);
             classModel = new EntityType(classTypeModel);
             Type mappedType = queryTypeFactory.create(classModel);
@@ -167,9 +166,9 @@ public class MetaDataExporter {
         }
 
         if (beanSerializer == null){
-            keyDataFactory = new KeyDataFactory(namingStrategy, packageName, namePrefix, nameSuffix);
+            keyDataFactory = new KeyDataFactory(namingStrategy, packageName, module.getPrefix(), module.getSuffix());
         }else{
-            keyDataFactory = new KeyDataFactory(namingStrategy, beanPackageName, beanPrefix, beanSuffix);
+            keyDataFactory = new KeyDataFactory(namingStrategy, beanPackageName, module.getBeanPrefix(), module.getBeanSuffix());
         }
         
         ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
@@ -355,8 +354,7 @@ public class MetaDataExporter {
      * @param namePrefix name prefix for query-types (default: Q)
      */
     public void setNamePrefix(String namePrefix) {
-        module.bind("prefix", namePrefix);
-        this.namePrefix = namePrefix;
+        module.bind(CodegenModule.PREFIX, namePrefix);
     }
 
     /**
@@ -365,8 +363,7 @@ public class MetaDataExporter {
      * @param nameSuffix name suffix for query-types (default: "")
      */
     public void setNameSuffix(String nameSuffix) {
-        module.bind("suffix", nameSuffix);
-        this.nameSuffix = nameSuffix;
+        module.bind(CodegenModule.SUFFIX, nameSuffix);
     }
 
     /**
@@ -375,8 +372,7 @@ public class MetaDataExporter {
      * @param beanPrefix bean prefix for bean-types (default: "")
      */
     public void setBeanPrefix(String beanPrefix) {
-        module.bind("beanPrefix", beanPrefix);
-        this.beanPrefix = beanPrefix;
+        module.bind(SQLCodegenModule.BEAN_PREFIX, beanPrefix);
     }
 
     /**
@@ -385,8 +381,7 @@ public class MetaDataExporter {
      * @param beanSuffix bean suffix for bean-types (default: "")
      */
     public void setBeanSuffix(String beanSuffix) {
-        module.bind("beanSuffix", beanSuffix);
-        this.beanSuffix = beanSuffix;
+        module.bind(SQLCodegenModule.BEAN_SUFFIX, beanSuffix);
     }
 
     /**
@@ -411,7 +406,7 @@ public class MetaDataExporter {
      * @param innerClassesForKeys
      */
     public void setInnerClassesForKeys(boolean innerClassesForKeys) {
-        module.bind("innerClassesForKeys", innerClassesForKeys);
+        module.bind(SQLCodegenModule.INNER_CLASSES_FOR_KEYS, innerClassesForKeys);
     }
 
     /**

@@ -22,7 +22,7 @@ import com.mysema.query.annotations.PropertyType;
 
 public class EmbeddableSerializerTest {
 
-    private final QueryTypeFactory queryTypeFactory = new QueryTypeFactoryImpl("Q", "");
+    private final QueryTypeFactory queryTypeFactory = new QueryTypeFactoryImpl("Q", "", "");
 
     private final TypeMappings typeMappings = new TypeMappings();
 

@@ -8,12 +8,16 @@ import com.mysema.codegen.model.Type;
 
 public class QueryTypeFactoryImpl implements QueryTypeFactory {
     
-    private final String prefix, suffix;
+    private final String prefix, suffix, packageSuffix;
     
     @Inject
-    public QueryTypeFactoryImpl(@Named("prefix") String prefix, @Named("suffix") String suffix) {
+    public QueryTypeFactoryImpl(
+            @Named("prefix") String prefix, 
+            @Named("suffix") String suffix, 
+            @Named("packageSuffix") String packageSuffix) {
         this.prefix = prefix;
         this.suffix = suffix;
+        this.packageSuffix = packageSuffix;
     }
     
     @Override
@@ -27,9 +31,9 @@ public class QueryTypeFactoryImpl implements QueryTypeFactory {
     
     private Type createWithPackage(Type type){
         String packageName = type.getPackageName();
-        String packagePrefix = packageName.startsWith("java") ? "ext." : "";
-        String simpleName = prefix + normalizeName(type.getFullName().substring(packageName.length()+1)) + suffix;
-        return new SimpleType(type.getCategory(), packagePrefix+packageName+"."+simpleName, packagePrefix+packageName, simpleName, false, false);
+        String simpleName = prefix + normalizeName(type.getFullName().substring(packageName.length()+1)) + suffix;        
+        packageName = (packageName.startsWith("java") ? "ext." : "") + packageName + packageSuffix; 
+        return new SimpleType(type.getCategory(), packageName+"."+simpleName, packageName, simpleName, false, false);
     }
     
     private Type createWithoutPackage(Type type){
