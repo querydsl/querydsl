@@ -109,7 +109,7 @@ List<Customer> dtos = qry.from(customer).list(QCustomer.create(customer.id, cust
     
 <programlisting language="java"><![CDATA[
 List<Customer> dtos = qry.from(customer)
-    .list(EConstructor.create(Customer.class, customer.id, customer.name));   
+    .list(ConstructorExpression.create(Customer.class, customer.id, customer.name));   
 ]]></programlisting>       
     
     </sect2>

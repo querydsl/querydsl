@@ -159,65 +159,9 @@ public class MyEntity{
       property from the Querydsl query type.</para>
     
     </sect2>      
-
-    <sect2>
-    <title>Custom methods in query types</title>
-  
-    <para>
-    Querydsl provides the possibility to annotate methods for mirroring in query types. Methods can either be annotated 
-    directly in the context of the class where they belong or in query extension interfaces, if the target class is only available for
-    annotation.
-    </para>
-  
-    <para>Example 1 :</para>
-    
-<programlisting language="java"><![CDATA[    
-public class Point{
-  // ...   
-}
-
-@QueryExtensions(Point.class)
-public interface PointOperations {
-
-   @QueryMethod("geo_distance({0}, {1})")
-   int geoDistance(Point otherPoint);
-
-}    
-]]></programlisting>
-
-    <para>The first example describes indirect annotation via QueryExtensions usage. Let's assume that Point is a class of
-    an external library which has to be used as such without the possibility of customization in source form.</para>
-    
-    <para>To make a geoDistance(Point) method available in the Querydsl query type for Point, a query extension interface is used.
-    Via the QueryExtensions annotation the interface is bound to the Point class and via the QueryMethod annotation the geoDistance method
-    is declared to be mirrored into the Point query type with a serialization pattern of "geo_distance({0}, {1})".</para>
-    
-    <para>The serialization patterns of query methods have the host object itself always as the first argument and the method parameters
-    as further arguments.</para>
-    
-    <para>Example 2 :</para>
-    
-<programlisting language="java"><![CDATA[
-public class Point{
-
-    @QueryMethod("geo_distance({0}, {1})")
-    int geoDistance(Point otherPoint){
-       // dummy implementation
-        return 0;
-    }
-   
-}
-]]></programlisting>    
-
-  <para>The second example features the same use case as in the first example, but this time the Point class is annotated directly.
-  This approach is feasible, if the related domain type is available for annotation and APT post processing.</para>
-  
-    </sect2>    
 	
 	<sect2>
 		<title>Delegate methods</title>
-		
-	<para>Instead of custom methods with serialization templates, static delegates can be used.</para>
 	
 	<para>To declare a static method as a delegate method add the QueryDelegate annotation with the corresponding domain type as a value and provide a method 
 	signature that takes the corresponding Querydsl query type as the first argument.</para>  
