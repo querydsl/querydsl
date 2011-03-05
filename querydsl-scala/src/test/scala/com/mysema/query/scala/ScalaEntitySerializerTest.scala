@@ -45,7 +45,7 @@ class ScalaEntitySerializerTest {
   @Test
   def Print() {
     val typeMappings = ScalaTypeMappings.create
-    typeMappings.register(entityType, new QueryTypeFactoryImpl("Q","").create(entityType));
+    typeMappings.register(entityType, new QueryTypeFactoryImpl("Q","","").create(entityType));
     val serializer = new ScalaEntitySerializer(typeMappings);
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer));
     val str = writer.toString();
