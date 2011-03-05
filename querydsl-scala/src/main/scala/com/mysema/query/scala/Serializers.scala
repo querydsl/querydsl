@@ -18,9 +18,9 @@ import scala.reflect.BeanProperty
 import scala.collection.JavaConversions._
 import scala.collection.mutable.Set
 
-class ScalaEntitySerializer extends Serializer {
+class ScalaEntitySerializer(val typeMappings: TypeMappings) extends Serializer {
     
-  val typeMappings = ScalaTypeMappings.typeMappings;
+//  val typeMappings = ScalaTypeMappings.typeMappings;
 
   val classHeaderFormat = "%1$s(cl: Class[_ <: %2$s], md: PathMetadata[_]) extends EntityPathImpl[%2$s](cl, md)";
   

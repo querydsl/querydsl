@@ -357,7 +357,7 @@ public class Processor {
         if (entityType != null){
             registerTypeElement(entityType.getFullName(), (TypeElement)element);
             entityType.addDelegate(new Delegate(entityType, delegateType, name, parameters, returnType));
-            if (!cached && entityType.getOriginalCategory() != TypeCategory.SIMPLE){
+            if (!cached){
                 extensionTypes.put(entityType.getFullName(), entityType);
             }
         }

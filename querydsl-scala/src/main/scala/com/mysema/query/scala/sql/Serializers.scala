@@ -1,28 +1,19 @@
 package com.mysema.query.scala.sql
-
-import com.mysema.codegen.CodeWriter
-import com.mysema.codegen.ScalaWriter
-import com.mysema.codegen.model._
-import com.mysema.codegen.model.TypeCategory._
-
 import com.mysema.query
+import com.mysema.codegen.{ScalaWriter, CodeWriter}
+import com.mysema.codegen.model._
 import com.mysema.query.codegen._
+import com.mysema.query.scala.ScalaEntitySerializer
 import com.mysema.query.sql._
 import com.mysema.query.sql.support._
-
-import com.mysema.query.scala.ScalaEntitySerializer
-
 import java.util._
-import java.io.IOException
-
-import scala.reflect.BeanProperty
 import scala.collection.JavaConversions._
-import scala.collection.mutable.Set
 
-class ScalaMetaDataSerializer(val namingStrategy: NamingStrategy) 
-    extends ScalaEntitySerializer {
+import javax.inject.Inject
+
+class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingStrategy: NamingStrategy) 
+    extends ScalaEntitySerializer(typeMappings) {
     
-//  override val classHeaderFormat = "%1$s(path: String) extends RelationalPathImpl[%2$s](classOf[%2$s], path)";
   override val classHeaderFormat = "%1$s(cl: Class[_ <: %2$s], md: PathMetadata[_]) extends RelationalPathImpl[%2$s](cl, md)";
 
   override def writeHeader(model: EntityType, writer: ScalaWriter) {

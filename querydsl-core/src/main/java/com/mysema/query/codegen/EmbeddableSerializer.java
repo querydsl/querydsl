@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Type;
@@ -21,7 +24,16 @@ import com.mysema.codegen.model.Types;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.expr.ComparableExpression;
-import com.mysema.query.types.path.*;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.BooleanPath;
+import com.mysema.query.types.path.ComparablePath;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.EnumPath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.path.TimePath;
 
 /**
  * EmbeddableSerializer is a Serializer implementation for embeddable types
@@ -31,7 +43,8 @@ import com.mysema.query.types.path.*;
  */
 public final class EmbeddableSerializer extends EntitySerializer{
 
-    public EmbeddableSerializer(TypeMappings typeMappings, Collection<String> keywords) {
+    @Inject
+    public EmbeddableSerializer(TypeMappings typeMappings, @Named("keywords") Collection<String> keywords) {
         super(typeMappings, keywords);
     }
 

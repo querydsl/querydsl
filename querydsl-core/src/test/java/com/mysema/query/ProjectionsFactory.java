@@ -112,8 +112,12 @@ public class ProjectionsFactory {
         HashSet<NumberExpression<?>> rv = new HashSet<NumberExpression<?>>();
         rv.add(expr.abs());
         rv.add(expr.add(other));
-        rv.add(expr.divide(other));
-
+        rv.add(expr.divide(other));     
+        
+        if (target != Target.HSQLDB){
+            rv.add(expr.negate());    
+        }        
+        
         rv.add(expr.multiply(other));
         rv.add(expr.sqrt());
         rv.add(expr.subtract(other));

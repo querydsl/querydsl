@@ -7,6 +7,8 @@ package com.mysema.query.codegen;
 
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 import net.jcip.annotations.Immutable;
 
 import org.apache.commons.collections15.Transformer;
@@ -34,6 +36,7 @@ public final class ProjectionSerializer implements Serializer{
 
     private final TypeMappings typeMappings;
 
+    @Inject
     public ProjectionSerializer(TypeMappings typeMappings){
         this.typeMappings = Assert.notNull(typeMappings,"typeMappings");
     }

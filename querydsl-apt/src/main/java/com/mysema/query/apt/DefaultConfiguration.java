@@ -25,6 +25,7 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.Config;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QueryType;
+import com.mysema.query.codegen.CodegenModule;
 import com.mysema.query.codegen.EmbeddableSerializer;
 import com.mysema.query.codegen.EntitySerializer;
 import com.mysema.query.codegen.EntityType;
@@ -54,23 +55,9 @@ public class DefaultConfiguration implements Configuration {
 
     private static final String DEFAULT_OVERWRITE = "defaultOverwrite";
 
-    private final Collection<String> keywords;
-
-    private final TypeMappings typeMappings = new TypeMappings();
-
+    private final CodegenModule module = new CodegenModule();
+    
     private final SerializerConfig defaultSerializerConfig;
-
-    private final Serializer dtoSerializer;
-
-    private final Serializer embeddableSerializer;
-
-    private final Serializer entitySerializer;
-
-    private final Serializer supertypeSerializer;
-
-    private String namePrefix = "Q";
-
-    private String nameSuffix = "";
 
     private final Map<String, SerializerConfig> packageToConfig = new HashMap<String, SerializerConfig>();
 
@@ -93,11 +80,8 @@ public class DefaultConfiguration implements Configuration {
             @Nullable Class<? extends Annotation> embeddableAnn,
             @Nullable Class<? extends Annotation> embeddedAnn,
             @Nullable Class<? extends Annotation> skipAnn) {
-        this.keywords = keywords;
-        this.dtoSerializer = new ProjectionSerializer(typeMappings);
-        this.embeddableSerializer = new EmbeddableSerializer(typeMappings, keywords);
-        this.entitySerializer = new EntitySerializer(typeMappings, keywords);
-        this.supertypeSerializer = new SupertypeSerializer(typeMappings, keywords);
+        module.bind(RoundEnvironment.class, roundEnv);
+        module.bind(CodegenModule.KEYWORDS, keywords);
         this.entitiesAnn = entitiesAnn;
         this.entityAnn = Assert.notNull(entityAnn,"entityAnn");
         this.superTypeAnn = superTypeAnn;
@@ -156,7 +140,7 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public Serializer getDTOSerializer() {
-        return dtoSerializer;
+        return module.get(ProjectionSerializer.class);
     }
 
     @Override
@@ -173,7 +157,7 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public Serializer getEmbeddableSerializer() {
-        return embeddableSerializer;
+        return module.get(EmbeddableSerializer.class);
     }
 
     @Override
@@ -189,12 +173,12 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public Serializer getEntitySerializer() {
-        return entitySerializer;
+        return module.get(EntitySerializer.class);
     }
 
     @Override
     public String getNamePrefix() {
-        return namePrefix;
+        return module.get(String.class, "prefix");
     }
 
     @Override
@@ -222,7 +206,7 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public Serializer getSupertypeSerializer() {
-        return supertypeSerializer;
+        return module.get(SupertypeSerializer.class);
     }
 
     @Override
@@ -290,7 +274,7 @@ public class DefaultConfiguration implements Configuration {
     }
 
     public void setNamePrefix(String namePrefix) {
-        this.namePrefix = namePrefix;
+        module.bind(CodegenModule.PREFIX, namePrefix);
     }
 
     public void setUseFields(boolean b){
@@ -303,24 +287,25 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public TypeMappings getTypeMappings() {
-        return typeMappings;
+        return module.get(TypeMappings.class);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Collection<String> getKeywords(){
-        return keywords;
+        return module.get(Collection.class, CodegenModule.KEYWORDS);
     }
 
     public String getNameSuffix() {
-        return nameSuffix;
+        return module.get(String.class, CodegenModule.SUFFIX);
     }
 
     public void setNameSuffix(String nameSuffix) {
-        this.nameSuffix = nameSuffix;
+        module.bind(CodegenModule.SUFFIX, nameSuffix);
     }
     
     public <T> void addCustomType(Class<T> type, Class<? extends Expression<T>> queryType){
-        typeMappings.register(new ClassType(type), new ClassType(queryType));
+        module.get(TypeMappings.class).register(new ClassType(type), new ClassType(queryType));
     }
 
 }

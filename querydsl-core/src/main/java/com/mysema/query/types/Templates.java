@@ -71,6 +71,7 @@ public class Templates {
         add(Ops.BOE, "{0} <= {1}", 23);
 
         // numeric
+        add(Ops.NEGATE, "-{0}", 6);
         add(Ops.ADD, "{0} + {1}", 13);
         add(Ops.DIV, "{0} / {1}", 8);
         add(Ops.MOD, "{0} % {1}", 10);

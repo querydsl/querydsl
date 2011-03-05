@@ -80,6 +80,7 @@ public final class Ops {
     public static final Operator<Boolean> BOE = new OperatorImpl<Boolean>("BOE",COMPARABLE_X_2);
 
     // Number
+    public static final Operator<Number> NEGATE = new OperatorImpl<Number>("NEGATE",Number.class);
     public static final Operator<Number> ADD = new OperatorImpl<Number>("ADD",NUMBER_X_2);
     public static final Operator<Number> DIV = new OperatorImpl<Number>("DIV",NUMBER_X_2);
     public static final Operator<Number> MULT = new OperatorImpl<Number>("MULT",NUMBER_X_2);

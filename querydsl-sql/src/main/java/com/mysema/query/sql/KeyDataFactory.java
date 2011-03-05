@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.sql.support;
+package com.mysema.query.sql;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -13,7 +13,9 @@ import java.util.Map;
 
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
-import com.mysema.query.sql.NamingStrategy;
+import com.mysema.query.sql.support.ForeignKeyData;
+import com.mysema.query.sql.support.InverseForeignKeyData;
+import com.mysema.query.sql.support.PrimaryKeyData;
 
 /**
  * @author tiwe

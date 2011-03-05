@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import net.jcip.annotations.Immutable;
 
 import com.mysema.codegen.CodeWriter;
@@ -26,7 +29,8 @@ import com.mysema.query.types.path.SimplePath;
 @Immutable
 public final class SupertypeSerializer extends EntitySerializer{
 
-    public SupertypeSerializer(TypeMappings typeMappings, Collection<String> keywords) {
+    @Inject
+    public SupertypeSerializer(TypeMappings typeMappings, @Named("keywords") Collection<String> keywords) {
         super(typeMappings, keywords);
     }
 

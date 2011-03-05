@@ -6,10 +6,9 @@ import com.mysema.query.types.Expression
 import com.mysema.query.types.Path
 
 object ScalaTypeMappings {
-    
-  val typeMappings = new TypeMappings();
   
-  {
+  def create: TypeMappings = {
+    val typeMappings = new TypeMappings();
     typeMappings.register(TypeCategory.STRING, classOf[StringExpression], classOf[StringPath], classOf[StringTemplate]);
     typeMappings.register(TypeCategory.BOOLEAN, classOf[BooleanExpression], classOf[BooleanPath], classOf[BooleanTemplate]);
     typeMappings.register(TypeCategory.COMPARABLE, classOf[ComparableExpression[_]], classOf[ComparablePath[_]], classOf[ComparableTemplate[_]]);
@@ -27,6 +26,7 @@ object ScalaTypeMappings {
     typeMappings.register(TypeCategory.MAP, classOf[Expression[_]], classOf[SimplePath[_]], classOf[SimpleTemplate[_]]);    
     typeMappings.register(TypeCategory.CUSTOM, classOf[Expression[_]], classOf[Path[_]], classOf[SimpleTemplate[_]]);
     typeMappings.register(TypeCategory.ENTITY, classOf[Expression[_]], classOf[Path[_]], classOf[SimpleTemplate[_]]);
+    typeMappings;
   }
   
 }

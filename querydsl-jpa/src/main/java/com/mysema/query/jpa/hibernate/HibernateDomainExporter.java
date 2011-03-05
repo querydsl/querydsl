@@ -33,7 +33,19 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.query.QueryException;
 import com.mysema.query.annotations.QueryInit;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.codegen.*;
+import com.mysema.query.codegen.CodegenModule;
+import com.mysema.query.codegen.EmbeddableSerializer;
+import com.mysema.query.codegen.EntitySerializer;
+import com.mysema.query.codegen.EntityType;
+import com.mysema.query.codegen.Property;
+import com.mysema.query.codegen.QueryTypeFactory;
+import com.mysema.query.codegen.Serializer;
+import com.mysema.query.codegen.SerializerConfig;
+import com.mysema.query.codegen.SimpleSerializerConfig;
+import com.mysema.query.codegen.Supertype;
+import com.mysema.query.codegen.SupertypeSerializer;
+import com.mysema.query.codegen.TypeFactory;
+import com.mysema.query.codegen.TypeMappings;
 
 /**
  * @author tiwe
@@ -44,7 +56,7 @@ public class HibernateDomainExporter {
     private static final Logger logger = LoggerFactory.getLogger(HibernateDomainExporter.class);
 
     private final File targetFolder;
-
+    
     private final Map<String,EntityType> allTypes = new HashMap<String,EntityType>();
 
     private final Map<String,EntityType> entityTypes = new HashMap<String,EntityType>();
@@ -55,19 +67,19 @@ public class HibernateDomainExporter {
 
     private final Set<EntityType> serialized = new HashSet<EntityType>();
 
+    private final TypeFactory typeFactory = new TypeFactory();
+    
     private final Configuration configuration;
 
     private final QueryTypeFactory queryTypeFactory;
     
-    private final TypeMappings typeMappings = new TypeMappings();
+    private final TypeMappings typeMappings;
 
-    private final Serializer embeddableSerializer = new EmbeddableSerializer(typeMappings, Constants.keywords);
+    private final Serializer embeddableSerializer;
 
-    private final Serializer entitySerializer = new EntitySerializer(typeMappings, Constants.keywords);
+    private final Serializer entitySerializer;
 
-    private final Serializer supertypeSerializer = new SupertypeSerializer(typeMappings, Constants.keywords);
-
-    private final TypeFactory typeFactory = new TypeFactory();
+    private final Serializer supertypeSerializer;
 
     private final SerializerConfig serializerConfig;
 
@@ -91,7 +103,15 @@ public class HibernateDomainExporter {
         this.targetFolder = targetFolder;
         this.serializerConfig = serializerConfig;
         this.configuration = configuration;
-        this.queryTypeFactory = new QueryTypeFactoryImpl(namePrefix, nameSuffix);
+        CodegenModule module = new CodegenModule();
+        module.bind(CodegenModule.PREFIX, namePrefix);
+        module.bind(CodegenModule.SUFFIX, nameSuffix);
+        module.bind(CodegenModule.KEYWORDS, Constants.keywords);
+        this.queryTypeFactory = module.get(QueryTypeFactory.class);
+        this.typeMappings = module.get(TypeMappings.class);
+        this.embeddableSerializer = module.get(EmbeddableSerializer.class);
+        this.entitySerializer = module.get(EntitySerializer.class);
+        this.supertypeSerializer = module.get(SupertypeSerializer.class);
         typeFactory.setUnknownAsEntity(true);        
     }
 

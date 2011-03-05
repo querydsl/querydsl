@@ -14,6 +14,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
@@ -49,10 +52,11 @@ public class MetaDataSerializer extends EntitySerializer {
      * @param namingStrategy naming strategy for table to class and column to property conversion
      * @param innerClassesForKeys wrap key properties into inner classes (default: false)
      */
+    @Inject
     public MetaDataSerializer(
             TypeMappings typeMappings,
             NamingStrategy namingStrategy,
-            boolean innerClassesForKeys) {
+            @Named("innerClassesForKeys") boolean innerClassesForKeys) {
         super(typeMappings,Collections.<String>emptyList());
         this.namingStrategy = namingStrategy;
         this.innerClassesForKeys = innerClassesForKeys;
@@ -189,7 +193,6 @@ public class MetaDataSerializer extends EntitySerializer {
                 fieldName = namingStrategy.getPropertyNameForForeignKey(foreignKey.getName(), model);
             }
 
-//            String foreignType = namingStrategy.getClassName(foreignKey.getTable());
             StringBuilder value = new StringBuilder();
             if (inverse){
                 value.append("createInvForeignKey(");

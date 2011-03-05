@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import com.mysema.query.AbstractJDBCTest;
 import com.mysema.query.sql.DefaultNamingStrategy;
+import com.mysema.query.sql.KeyDataFactory;
 
 
 public class KeyDataFactoryTest extends AbstractJDBCTest{

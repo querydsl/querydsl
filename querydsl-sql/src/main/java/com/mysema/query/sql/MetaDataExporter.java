@@ -34,13 +34,11 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.QueryTypeFactory;
-import com.mysema.query.codegen.QueryTypeFactoryImpl;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SimpleSerializerConfig;
 import com.mysema.query.codegen.TypeMappings;
 import com.mysema.query.sql.support.ForeignKeyData;
 import com.mysema.query.sql.support.InverseForeignKeyData;
-import com.mysema.query.sql.support.KeyDataFactory;
 import com.mysema.query.sql.support.NotNullImpl;
 import com.mysema.query.sql.support.PrimaryKeyData;
 import com.mysema.query.sql.support.SizeImpl;
@@ -76,6 +74,8 @@ public class MetaDataExporter {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
+    
+    private final CodegenModule module = new CodegenModule();
 
     private final Set<String> classes = new HashSet<String>();
 
@@ -86,38 +86,29 @@ public class MetaDataExporter {
     @Nullable
     private String beanPackageName;
 
-    private String namePrefix = "Q";
-
-    private String nameSuffix = "";
-
-    private String beanPrefix = "";
-
-    private String beanSuffix = "";
-
-    private boolean innerClassesForKeys;
-
-    private NamingStrategy namingStrategy = new DefaultNamingStrategy();
-
     @Nullable
     private String schemaPattern, tableNamePattern;
 
     @Nullable
-    private Serializer serializer;
-
-    @Nullable
     private Serializer beanSerializer;
-
-    private Configuration configuration = Configuration.DEFAULT;
-
-    private KeyDataFactory keyDataFactory;
 
     private boolean createScalaSources = false;
 
     private final Map<EntityType, Type> entityToWrapped = new HashMap<EntityType, Type>();
-
+    
+    private Serializer serializer;
+    
+    private TypeMappings typeMappings;
+    
     private QueryTypeFactory queryTypeFactory;
     
-    private final TypeMappings typeMappings = new TypeMappings();
+    private NamingStrategy namingStrategy;
+    
+    private Configuration configuration;
+    
+    private KeyDataFactory keyDataFactory;
+    
+    private String namePrefix = "Q", nameSuffix = "", beanPrefix = "", beanSuffix = "";
     
     public MetaDataExporter(){}
 
@@ -165,10 +156,12 @@ public class MetaDataExporter {
      * @throws SQLException
      */
     public void export(DatabaseMetaData md) throws SQLException {
-        queryTypeFactory = new QueryTypeFactoryImpl(namePrefix, nameSuffix);
-                
-        serializer = new MetaDataSerializer(typeMappings, namingStrategy, innerClassesForKeys);
-               
+        typeMappings = module.get(TypeMappings.class);
+        queryTypeFactory = module.get(QueryTypeFactory.class);
+        serializer = module.get(Serializer.class);
+        namingStrategy = module.get(NamingStrategy.class);
+        configuration = module.get(Configuration.class);       
+        
         if (beanPackageName == null){
             beanPackageName = packageName;
         }
@@ -317,7 +310,7 @@ public class MetaDataExporter {
      * @param configuration override configuration for custom type mappings etc
      */
     public void setConfiguration(Configuration configuration) {
-        this.configuration = configuration;
+        module.bind(Configuration.class, configuration);
     }
 
     /**
@@ -362,6 +355,7 @@ public class MetaDataExporter {
      * @param namePrefix name prefix for query-types (default: Q)
      */
     public void setNamePrefix(String namePrefix) {
+        module.bind("prefix", namePrefix);
         this.namePrefix = namePrefix;
     }
 
@@ -371,6 +365,7 @@ public class MetaDataExporter {
      * @param nameSuffix name suffix for query-types (default: "")
      */
     public void setNameSuffix(String nameSuffix) {
+        module.bind("suffix", nameSuffix);
         this.nameSuffix = nameSuffix;
     }
 
@@ -380,6 +375,7 @@ public class MetaDataExporter {
      * @param beanPrefix bean prefix for bean-types (default: "")
      */
     public void setBeanPrefix(String beanPrefix) {
+        module.bind("beanPrefix", beanPrefix);
         this.beanPrefix = beanPrefix;
     }
 
@@ -389,6 +385,7 @@ public class MetaDataExporter {
      * @param beanSuffix bean suffix for bean-types (default: "")
      */
     public void setBeanSuffix(String beanSuffix) {
+        module.bind("beanSuffix", beanSuffix);
         this.beanSuffix = beanSuffix;
     }
 
@@ -398,7 +395,7 @@ public class MetaDataExporter {
      * @param namingStrategy namingstrategy to override (default: new DefaultNamingStrategy())
      */
     public void setNamingStrategy(NamingStrategy namingStrategy) {
-        this.namingStrategy = namingStrategy;
+        module.bind(NamingStrategy.class, namingStrategy);
     }
 
     /**
@@ -414,8 +411,20 @@ public class MetaDataExporter {
      * @param innerClassesForKeys
      */
     public void setInnerClassesForKeys(boolean innerClassesForKeys) {
-        this.innerClassesForKeys = innerClassesForKeys;
+        module.bind("innerClassesForKeys", innerClassesForKeys);
     }
 
-
+    /**
+     * @param serializerClass
+     */
+    public void setSerializerClass(Class<? extends Serializer> serializerClass){
+        module.bind(Serializer.class, serializerClass);
+    }
+    
+    /**
+     * @param typeMappings
+     */
+    public void setTypeMappings(TypeMappings typeMappings){
+        module.bind(TypeMappings.class, typeMappings);
+    }
 }

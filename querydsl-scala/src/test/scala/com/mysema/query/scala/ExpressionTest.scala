@@ -156,7 +156,7 @@ class ExpressionTest {
   
   @Test
   def Number_Negation {
-    assertEquals("person.scalaInt * -1", -person.scalaInt);  
+    assertEquals("-person.scalaInt", -person.scalaInt);  
   }
   
   @Test
@@ -189,7 +189,7 @@ class ExpressionTest {
     assertEquals("person.scalaInt - 3", person.scalaInt subtract 3);
     assertEquals("person.scalaInt / 3", person.scalaInt divide 3);
     assertEquals("person.scalaInt * 3", person.scalaInt multiply 3);
-    assertEquals("person.scalaInt * -1", person.scalaInt negate);
+    assertEquals("-person.scalaInt", person.scalaInt negate);
     assertEquals("person.scalaInt % 4", person.scalaInt mod 4);
     assertEquals("round(person.scalaInt)", person.scalaInt round);
     assertEquals("floor(person.scalaInt)", person.scalaInt floor);
@@ -203,7 +203,7 @@ class ExpressionTest {
     assertEquals("person.scalaInt - 3", person.scalaInt - 3);
     assertEquals("person.scalaInt / 3", person.scalaInt / 3);
     assertEquals("person.scalaInt * 3", person.scalaInt * 3);
-    assertEquals("person.scalaInt * -1", -person.scalaInt);
+    assertEquals("-person.scalaInt", -person.scalaInt);
     assertEquals("person.scalaInt % 4", person.scalaInt % 4);
   }  
   

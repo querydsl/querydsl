@@ -286,7 +286,7 @@ trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpress
 
   def *(right: Number) = multiply(right);    
 
-  def negate() = multiply(-1);
+  def negate() = number[T](getType, Ops.NEGATE, this);
 
   def mod(right: NumberExpr) = number[T](getType, Ops.MOD, this, right);
 

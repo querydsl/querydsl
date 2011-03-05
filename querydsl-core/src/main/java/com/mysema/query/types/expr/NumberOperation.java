@@ -12,6 +12,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.Visitor;
 
 /**
@@ -55,6 +56,16 @@ public class NumberOperation<T extends Number & Comparable<?>>
         return v.visit(this, context);
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public NumberExpression<T> negate(){
+        if (opMixin.getOperator() == Ops.NEGATE){
+            return (NumberExpression<T>) opMixin.getArg(0);
+        }else{
+            return super.negate();
+        }
+    }
+    
     @Override
     public Expression<?> getArg(int index) {
         return opMixin.getArg(index);

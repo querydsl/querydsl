@@ -475,7 +475,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      */
     public NumberExpression<T> negate(){
         if (negation == null){
-            negation = multiply(-1);
+            negation = NumberOperation.create(getType(), Ops.NEGATE, this);
         }
         return negation;
     }

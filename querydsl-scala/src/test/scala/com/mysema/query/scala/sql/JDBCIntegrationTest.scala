@@ -14,6 +14,8 @@ import org.junit.Assert._
 
 import java.util.Arrays;
 
+import com.mysema.query.scala.ScalaTypeMappings
+
 class JDBCIntegrationTest {
 
   val templates = new HSQLDBTemplates();
@@ -56,30 +58,28 @@ class JDBCIntegrationTest {
   @Test
   def Generation_without_Beantypes() {
     val namingStrategy = new DefaultNamingStrategy();
-    val serializer = new ScalaMetaDataSerializer(namingStrategy);
-    //val exporter = new MetaDataExporter("Q", "test", new File("target/gen1"), namingStrategy, serializer);
     val exporter = new MetaDataExporter();
     exporter.setNamePrefix("Q");
     exporter.setPackageName("test");
     exporter.setTargetFolder(new File("target/gen1"));
-    exporter.setSerializer(serializer);
+    exporter.setSerializerClass(classOf[ScalaMetaDataSerializer]);
     exporter.setCreateScalaSources(true);
+    exporter.setTypeMappings(ScalaTypeMappings.create);
     exporter.export(connection.getMetaData());
   }
 
   @Test
   def Generation_with_Beantypes() {
     val namingStrategy = new DefaultNamingStrategy();
-    val serializer = new ScalaMetaDataSerializer(namingStrategy);
     val beanSerializer = new ScalaBeanSerializer();
-    //val exporter = new MetaDataExporter("Q", "test", new File("target/gen2"), namingStrategy, serializer, beanSerializer);
     val exporter = new MetaDataExporter();
     exporter.setNamePrefix("Q");
     exporter.setPackageName("test");
     exporter.setTargetFolder(new File("target/gen2"));
-    exporter.setSerializer(serializer);
+    exporter.setSerializerClass(classOf[ScalaMetaDataSerializer]);
     exporter.setBeanSerializer(beanSerializer)
     exporter.setCreateScalaSources(true);
+    exporter.setTypeMappings(ScalaTypeMappings.create);
     exporter.export(connection.getMetaData());
   }
 

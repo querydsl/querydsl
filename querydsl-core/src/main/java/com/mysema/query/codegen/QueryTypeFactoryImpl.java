@@ -1,5 +1,8 @@
 package com.mysema.query.codegen;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 
@@ -7,7 +10,8 @@ public class QueryTypeFactoryImpl implements QueryTypeFactory {
     
     private final String prefix, suffix;
     
-    public QueryTypeFactoryImpl(String prefix, String suffix) {
+    @Inject
+    public QueryTypeFactoryImpl(@Named("prefix") String prefix, @Named("suffix") String suffix) {
         this.prefix = prefix;
         this.suffix = suffix;
     }

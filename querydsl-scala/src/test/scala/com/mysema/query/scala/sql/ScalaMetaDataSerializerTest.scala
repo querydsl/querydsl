@@ -14,6 +14,8 @@ import org.junit.Assert._
 
 import scala.collection.JavaConversions._
 
+import com.mysema.query.scala._
+
 class ScalaMetaDataSerializerTest {
 
   var entityType: EntityType = null;
@@ -37,8 +39,9 @@ class ScalaMetaDataSerializerTest {
 
   @Test
   def Print {
+    val typeMappings = ScalaTypeMappings.create;
     val namingStrategy = new DefaultNamingStrategy();
-    val serializer = new ScalaMetaDataSerializer(namingStrategy);
+    val serializer = new ScalaMetaDataSerializer(typeMappings, namingStrategy);
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer));
     val str = writer.toString();
     assertTrue("companion object isn't before class", str.indexOf("object") < str.indexOf("class"));
