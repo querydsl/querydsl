@@ -48,6 +48,10 @@ public class HibernateUpdateClause implements
     public HibernateUpdateClause(StatelessSession session, EntityPath<?> entity) {
         this(new StatelessSessionHolder(session), entity, HQLTemplates.DEFAULT);
     }
+    
+    public HibernateUpdateClause(Session session, EntityPath<?> entity, JPQLTemplates templates){
+        this(new DefaultSessionHolder(session), entity, templates);
+    }
 
     public HibernateUpdateClause(SessionHolder session, EntityPath<?> entity, JPQLTemplates templates) {
         this.session = session;

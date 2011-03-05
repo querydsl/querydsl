@@ -43,6 +43,10 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
         this(new StatelessSessionHolder(session), entity, HQLTemplates.DEFAULT);
     }
 
+    public HibernateDeleteClause(Session session, EntityPath<?> entity, JPQLTemplates templates){
+        this(new DefaultSessionHolder(session), entity, templates);
+    }
+    
     public HibernateDeleteClause(SessionHolder session, EntityPath<?> entity, JPQLTemplates templates){
         this.session = session;
         this.templates = templates;
