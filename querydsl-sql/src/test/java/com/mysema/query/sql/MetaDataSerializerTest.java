@@ -30,10 +30,17 @@ public class MetaDataSerializerTest extends AbstractJDBCTest{
         statement.execute("drop table date_test if exists");
         statement.execute("drop table date_time_test if exists");
 
+        // survey
         statement.execute("create table survey (id int, name varchar(30), "
                 + "CONSTRAINT PK_survey PRIMARY KEY (id, name))");
+        
+        // date_test
         statement.execute("create table date_test (d date)");
+        
+        // date_time
         statement.execute("create table date_time_test (dt datetime)");
+        
+        // employee
         statement.execute("create table employee("
                 + "id INT, "
                 + "firstname VARCHAR(50), "
