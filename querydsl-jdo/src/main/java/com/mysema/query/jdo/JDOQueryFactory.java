@@ -6,6 +6,12 @@ import javax.jdo.PersistenceManager;
 import com.mysema.query.jdo.dml.JDOQLDeleteClause;
 import com.mysema.query.types.EntityPath;
 
+/**
+ * Factory class for query and DML clause creation
+ * 
+ * @author tiwe
+ *
+ */
 public class JDOQueryFactory {
     
     private final Provider<PersistenceManager> persistenceManager;

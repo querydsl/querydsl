@@ -6,10 +6,13 @@ import javax.inject.Provider;
 
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
+import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.Expression;
 
 /**
+ * Factory class for query and DML clause creation
+ * 
  * @author tiwe
  *
  */
@@ -31,10 +34,6 @@ public class SQLQueryFactory {
     public SQLDeleteClause delete(RelationalPath<?> path) {
         return new SQLDeleteClause(connection.get(), configuration, path);
     }
-
-    public SQLQuery query(){
-        return new SQLQueryImpl(connection.get(), configuration);    
-    }
     
     public SQLQuery from(Expression<?> from) {
         return query().from(from);
@@ -44,8 +43,15 @@ public class SQLQueryFactory {
         return new SQLInsertClause(connection.get(), configuration, path);
     }
 
+    public SQLMergeClause merge(RelationalPath<?> path) {
+        return new SQLMergeClause(connection.get(), configuration, path);
+    }
+    
     public SQLUpdateClause update(RelationalPath<?> path) {
         return new SQLUpdateClause(connection.get(), configuration, path);
     }
-    
+
+    public SQLQuery query(){
+        return new SQLQueryImpl(connection.get(), configuration);    
+    }
 }

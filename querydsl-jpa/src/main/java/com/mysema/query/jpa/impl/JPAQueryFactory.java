@@ -8,6 +8,8 @@ import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.types.EntityPath;
 
 /**
+ * Factory class for query and DML clause creation
+ * 
  * @author tiwe
  *
  */
