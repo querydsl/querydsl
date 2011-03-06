@@ -25,6 +25,7 @@ public class CodegenModule  extends AbstractModule{
         bind(ProjectionSerializer.class);
         bind(SupertypeSerializer.class);
         
+        // configuration for QueryTypeFactory        
         bind(PREFIX, "Q");
         bind(SUFFIX, "");
         bind(PACKAGE_SUFFIX, "");
