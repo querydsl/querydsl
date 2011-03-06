@@ -364,6 +364,14 @@ public class EntitySerializer implements Serializer{
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
         writer.staticimports(PathMetadataFactory.class);
 
+        // import package of query type
+        Type queryType = typeMappings.getPathType(model, model, true);
+        if (!queryType.getPackageName().isEmpty()
+            && !queryType.getPackageName().equals(model.getPackageName()) 
+            && !queryType.getSimpleName().equals(model.getSimpleName())){
+            writer.importPackages(queryType.getPackageName());
+        }
+        
         introDelegatePackages(writer, model);
 
         List<Package> packages = new ArrayList<Package>();
