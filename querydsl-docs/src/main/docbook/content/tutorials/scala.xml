@@ -24,7 +24,7 @@
   	<para>Here is an overview of the main alternatives :</para>
   	
 <programlisting><![CDATA[
-Standard				Enhanced
+Standard                Enhanced
 
 expr isNotNull          expr is not(null)
 expr isNull             expr is null
@@ -192,7 +192,7 @@ var person = alias(classOf[Person])
 
 	<para>Querydsl expressions are constructed via method calls starting with the "$" sign.</para>
 
-	<para>>With the Querydsl Java API a simple like expression would be constructed like this :</para>
+	<para>With the Querydsl Java API a simple like expression would be constructed like this :</para>
 
 <programlisting language="java"><![CDATA[  
 person.firstName.like("Rob%")
