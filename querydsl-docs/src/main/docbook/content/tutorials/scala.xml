@@ -24,7 +24,7 @@
   	<para>Here is an overview of the main alternatives :</para>
   	
 <programlisting><![CDATA[
-Standard                Enhanced
+//Standard              Enhanced
 
 expr isNotNull          expr is not(null)
 expr isNull             expr is null
@@ -43,6 +43,7 @@ expr not                !expr
 expr lt 5               expr < 5
 expr loe 5              expr <= 5
 expr gt 5               expr > 5
+expr goe 5              expr >= 5
 expr notBetween(2,6)    expr not between (2,6)
 expr negate             -expr
  
@@ -52,6 +53,8 @@ expr subtract 3      	expr - 3
 expr divide 3           expr / 3
 expr multiply 3         expr * 3
 expr mod 5              expr % 5
+
+// collection
 list.get(0)             list(0)
 map.get("X")            map("X")
 ]]></programlisting>    
