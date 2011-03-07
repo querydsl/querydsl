@@ -9,17 +9,17 @@ import org.junit.Assert._
 
 class InjectionTest {
   
-  implicit def asPredicate(str: String): Predicate = BooleanTemplate.create(str);
+  implicit def asPredicate(str: String): Predicate = BooleanTemplate.create(str)
   
   @Test
   def Injection() {
-    val c = QCategory as "c";
-    val sq = query from c where "c.name like \"a%\"" list c;
+    val c = QCategory as "c"
+    val sq = query from c where "c.name like \"a%\"" list c
     
-    assertEquals("c.name like \"a%\"", sq.getMetadata.getWhere.toString);
+    assertEquals("c.name like \"a%\"", sq.getMetadata.getWhere.toString)
   }
   
-  def query() = new SQLSubQuery();
+  def query() = new SQLSubQuery()
   
   
 

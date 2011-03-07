@@ -13,41 +13,41 @@ import scala.reflect.BeanProperty
 class RelationalPathImpl[T](t: Class[_ <: T], md: PathMetadata[_])
   extends BeanPath[T](t, md) with RelationalPath[T] {
     
-  private var primaryKey: PrimaryKey[T] = _;
+  private var primaryKey: PrimaryKey[T] = _
   
   @BeanProperty
-  val columns: java.util.List[Path[_]] = new ArrayList[Path[_]];
+  val columns: java.util.List[Path[_]] = new ArrayList[Path[_]]
 
   @BeanProperty
-  val foreignKeys: java.util.List[ForeignKey[_]] = new ArrayList[ForeignKey[_]];
+  val foreignKeys: java.util.List[ForeignKey[_]] = new ArrayList[ForeignKey[_]]
   
   @BeanProperty
-  val inverseForeignKeys: java.util.List[ForeignKey[_]] = new ArrayList[ForeignKey[_]];
+  val inverseForeignKeys: java.util.List[ForeignKey[_]] = new ArrayList[ForeignKey[_]]
   
-  def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable));
+  def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable))
   
-  override def add[P <: Path[_]](p: P): P = { columns.add(p); p; }
+  override def add[P <: Path[_]](p: P): P = { columns.add(p) p }
   
-  def all: Array[Path[_]] = columns.toArray[Path[_]](new Array[Path[_]](columns.size));
+  def all: Array[Path[_]] = columns.toArray[Path[_]](new Array[Path[_]](columns.size))
   
   def createPrimaryKey(cols: Path[_]*): PrimaryKey[T] = {
-    primaryKey = new PrimaryKey[T](this, cols:_*); primaryKey
+    primaryKey = new PrimaryKey[T](this, cols:_*) primaryKey
   }
   
   def createForeignKey[F](local: Path[_], foreign: String) = {
-    val foreignKey = new ForeignKey[F](this, local, foreign);
-    foreignKeys.add(foreignKey); foreignKey
+    val foreignKey = new ForeignKey[F](this, local, foreign)
+    foreignKeys.add(foreignKey) foreignKey
   }
   
   def createInvForeignKey[F](local: Path[_], foreign: String) = {
-    val foreignKey = new ForeignKey[F](this, local, foreign);
-    inverseForeignKeys.add(foreignKey); foreignKey
+    val foreignKey = new ForeignKey[F](this, local, foreign)
+    inverseForeignKeys.add(foreignKey) foreignKey
   }
   
-  def getPrimaryKey = primaryKey;
+  def getPrimaryKey = primaryKey
   
-  def getSchemaName = getType.getAnnotation(classOf[Schema]).value;
+  def getSchemaName = getType.getAnnotation(classOf[Schema]).value
   
-  def getTableName = getType.getAnnotation(classOf[Table]).value;
+  def getTableName = getType.getAnnotation(classOf[Table]).value
   
 }
