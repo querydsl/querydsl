@@ -7,9 +7,9 @@ import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.query.codegen.QueryTypeFactory;
 
-public class SQLQueryTypeFactory implements QueryTypeFactory{
+public final class SQLQueryTypeFactory implements QueryTypeFactory{
     
-    private int stripStart, stripEnd;
+    private final int stripStart, stripEnd;
     
     private final String prefix, suffix, packageName;
     
@@ -29,7 +29,8 @@ public class SQLQueryTypeFactory implements QueryTypeFactory{
     
     @Override
     public Type create(Type type){
-        String simpleName = prefix + type.getSimpleName().substring(stripStart, type.getSimpleName().length()-stripEnd) + suffix;
+        String simpleName = type.getSimpleName();
+        simpleName = prefix + simpleName.substring(stripStart, simpleName.length()-stripEnd) + suffix;
         return new SimpleType(packageName + "." + simpleName, packageName, simpleName);
     }
     
