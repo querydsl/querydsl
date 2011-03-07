@@ -4,12 +4,206 @@
   
   <title>Querying in Scala</title>
   
-  <para>TODO</para>
+  <para>Generic support for Querydsl usage in Scala is available via querydsl-scala module. To add it to your Maven build, use the following snippet :</para>
   
-  <!-- 
-  	* DSL expressions for Scala
-  	* Querying with SQL
-  	* Querying with other backends
-   -->
+    <programlisting language="xml"><![CDATA[
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-scala</artifactId>
+  <version>${querydsl.version}</version>
+</dependency>
+]]></programlisting>  
+
+  <sect2>
+  	
+  	<title>DSL expressions for Scala</title>
+  	
+  	<para>Querydsl for Scala provides an alternative DSL for expression construction. The Scala DSL utilizes language features such as operator overloading,
+  	function pointers and implicit imports for enhanced readability and conciseness.</para>
+  	
+  	<para>Here is an overview of the main alternatives :</para>
+  	
+<programlisting><![CDATA[
+Standard				Enhanced
+
+expr isNotNull          expr is not(null)
+expr isNull             expr is null
+expr eq "Ben"           expr === "Ben"
+expr ne "Ben"           expr !== "Ben"
+expr append "X"         expr + "X"
+expr isEmpty            expr is empty
+expr isNotEmpoty        expr not empty
+
+// boolean
+left and right          left && right
+left or right           left || right
+expr not                !expr
+
+// comparison
+expr lt 5               expr < 5
+expr loe 5              expr <= 5
+expr gt 5               expr > 5
+expr notBetween(2,6)    expr not between (2,6)
+expr negate             -expr
+ 
+// numeric
+expr add 3              expr + 3
+expr subtract 3      	expr - 3
+expr divide 3           expr / 3
+expr multiply 3         expr * 3
+expr mod 5              expr % 5
+list.get(0)             list(0)
+map.get("X")            map("X")
+]]></programlisting>    
+  	
+  </sect2>
+  
+  <sect2>
+  
+  	<title>Querying with SQL</title>
+  
+  	<para>
+  		Like with Querydsl SQL for Java you need to generate Query types to be able to construct your queries. 
+  		The following two unit test methods show how this is done :</para>
+  
+    <programlisting language="java"><![CDATA[  
+  @Test
+  def Generation_without_Beantypes() {
+    val namingStrategy = new DefaultNamingStrategy();
+    val exporter = new MetaDataExporter();
+    exporter.setNamePrefix("Q");
+    exporter.setPackageName("test");
+    exporter.setTargetFolder(new File("target/gen1"));
+    exporter.setSerializerClass(classOf[ScalaMetaDataSerializer]);
+    exporter.setCreateScalaSources(true);
+    exporter.setTypeMappings(ScalaTypeMappings.create);
+    exporter.export(connection.getMetaData);
+  }
+
+  @Test
+  def Generation_with_Beantypes() {
+    val namingStrategy = new DefaultNamingStrategy();
+    val beanSerializer = new ScalaBeanSerializer();
+    val exporter = new MetaDataExporter();
+    exporter.setNamePrefix("Q");
+    exporter.setPackageName("test");
+    exporter.setTargetFolder(new File("target/gen2"));
+    exporter.setSerializerClass(classOf[ScalaMetaDataSerializer]);
+    exporter.setBeanSerializer(beanSerializer)
+    exporter.setCreateScalaSources(true);
+    exporter.setTypeMappings(ScalaTypeMappings.create);
+    exporter.export(connection.getMetaData);
+  }  
+]]></programlisting>    
+  
+  </sect2>
+  
+  <sect2>
+  	<title>Querying with other backends</title>
+  	
+  	<para>When querying with other backends the Expression model has to be created manually or alternatively the alias functionality can be used.</para>
+  	
+	<para>Here is a minimal example with JPA/Hibernate :</para>
+
+<programlisting language="java"><![CDATA[  
+@Entity
+class User {
+  @BeanProperty
+  @Id
+  var id: Integer = _;
+  @BeanProperty
+  var userName: String = _;
+  @BeanProperty
+  @ManyToOne
+  var department: Department = _;
+}
+
+@Entity
+class Department {
+  @BeanProperty
+  @Id
+  var id: Integer = _;
+  @BeanProperty
+  var name: String = _;
+}
+]]></programlisting>    
+   
+	<para>And here are some query examples</para>   	
+ 
+ <programlisting language="java"><![CDATA[
+import com.mysema.query.scala.Conversions._
+import com.mysema.query.jpa.impl.JPAQuery
+
+import com.mysema.query.types.path._
+import org.junit.Test
+
+class JPAQueryTest {
+
+  val person = alias(classOf[Person])
+
+  @Test
+  def Various() {
+    // list
+    query from person where (person.firstName $like "Rob%") 
+      .list person
+
+    // unique result
+    query from person where (person.firstName $like "Rob%") 
+      .unique person
+
+    // long where
+    query from person 
+      .where (person.firstName $like "Rob%", person.lastName $like "An%") 
+      .list person
+
+    // order
+    query from person orderBy (person.firstName asc) list person
+
+    // not null 
+    query from person 
+      .where (person.firstName $isEmpty, person.lastName $isNotNull) 
+      .list person
+  }
+
+  def query() = new JPAQuery(entityManager)
+
+}
+]]></programlisting>    
+
+	<para>The main import for Querydsl Scala integration is the following</para>
+
+<programlisting language="java"><![CDATA[
+import com.mysema.query.scala.Conversions._
+]]></programlisting>      
+
+	<para>The factory method for query creation is</para>
+
+<programlisting language="java"><![CDATA[
+def query() = new JPAQuery(entityManager)
+]]></programlisting>    
+
+	<para>In addition to queries you need variables which can be created like this</para>
+
+<programlisting language="java"><![CDATA[
+var person = alias(classOf[Person])
+]]></programlisting>    
+
+	<para>The person variable is a proxy instance of the the Person class which can be used in queries. Now you can construct your queries, populate them via from-where-...-orderBy calls and get the projection out via list/uniqueResult/listResults calls.</para>
+
+	<para>Querydsl expressions are constructed via method calls starting with the "$" sign.</para>
+
+	<para>>With the Querydsl Java API a simple like expression would be constructed like this :</para>
+
+<programlisting language="java"><![CDATA[  
+person.firstName.like("Rob%")
+]]></programlisting>    
+
+	<para>Using the Scala API it is</para>
+
+<programlisting language="java"><![CDATA[
+person.firstName $like "Rob%"   
+]]></programlisting>    
+  	
+  </sect2>
   
 </sect1>  

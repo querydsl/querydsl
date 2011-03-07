@@ -65,7 +65,7 @@ class JDBCIntegrationTest {
     exporter.setSerializerClass(classOf[ScalaMetaDataSerializer]);
     exporter.setCreateScalaSources(true);
     exporter.setTypeMappings(ScalaTypeMappings.create);
-    exporter.export(connection.getMetaData());
+    exporter.export(connection.getMetaData);
   }
 
   @Test
@@ -80,7 +80,7 @@ class JDBCIntegrationTest {
     exporter.setBeanSerializer(beanSerializer)
     exporter.setCreateScalaSources(true);
     exporter.setTypeMappings(ScalaTypeMappings.create);
-    exporter.export(connection.getMetaData());
+    exporter.export(connection.getMetaData);
   }
 
   @Test
