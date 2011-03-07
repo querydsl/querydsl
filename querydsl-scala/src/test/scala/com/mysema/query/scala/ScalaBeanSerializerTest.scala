@@ -1,4 +1,4 @@
-package com.mysema.query.scala.sql
+package com.mysema.query.scala
 
 import org.apache.commons.lang.StringUtils
 import com.mysema.codegen._;
@@ -46,7 +46,7 @@ class ScalaBeanSerializerTest {
 
   @Test
   def Print {
-    val serializer = new com.mysema.query.scala.sql.ScalaBeanSerializer()
+    val serializer = new ScalaBeanSerializer()
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
     val str = writer.toString().replaceAll("\\s+", " ")
     assertTrue(str.contains("package com.mysema.query"))

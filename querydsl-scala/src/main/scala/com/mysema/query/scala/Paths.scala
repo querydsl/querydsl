@@ -119,39 +119,33 @@ class EntityPathImpl[T](t: Class[_ <: T], md: PathMetadata[_])
 class CollectionPath[T, Q <: Expression[_ >: T]](t: Class[T], q: Class[Q], md: PathMetadata[_])
   extends PathImpl[java.util.Collection[T]](classOf[java.util.Collection[T]], md) with CollectionExpression[T,Q] {
 
-  private var _any: Q = _
-    
   def this(t: Class[T],  q: Class[Q], variable: String) = this(t, q, forVariable(variable))
 
   def getParameter(i: Int) = t
 
-  def any(): Q = { if (_any == null){ _any = Paths.any(this, t, q) } _any }
+  lazy val any: Q = Paths.any(this, t, q);
   
 }
 
 class SetPath[T, Q <: Expression[_ >: T]](t: Class[T],  q: Class[Q], md: PathMetadata[_])
   extends PathImpl[java.util.Set[T]](classOf[java.util.Set[T]], md) with SetExpression[T,Q] {
-
-  private var _any: Q = _
     
   def this(t: Class[T], q: Class[Q], variable: String) = this(t, q, forVariable(variable))
 
   def getParameter(i: Int) = t
 
-  def any(): Q = { if (_any == null){ _any = Paths.any(this, t, q) } _any }
+  lazy val any: Q = Paths.any(this, t, q);
   
 }
 
 class ListPath[T, Q <: Expression[_ >: T]](t: Class[T],  q: Class[Q], md: PathMetadata[_])
   extends PathImpl[java.util.List[T]](classOf[java.util.List[T]], md) with ListExpression[T,Q] {
 
-  private var _any: Q = _
-    
   def this(t: Class[T], q: Class[Q], variable: String) = this(t, q, forVariable(variable))
 
   def getParameter(i: Int) = t
 
-  def any(): Q = { if (_any == null){ _any = Paths.any(this, t, q) } _any }
+  lazy val any: Q = Paths.any(this, t, q);
   
   def get(i: Int): Q = Paths.create(t, q, forListAccess(this, i))
   

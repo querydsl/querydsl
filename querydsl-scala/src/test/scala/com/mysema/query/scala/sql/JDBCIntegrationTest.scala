@@ -14,6 +14,7 @@ import org.junit.Assert._
 
 import java.util.Arrays;
 
+import com.mysema.query.scala.ScalaBeanSerializer
 import com.mysema.query.scala.ScalaTypeMappings
 
 class JDBCIntegrationTest {

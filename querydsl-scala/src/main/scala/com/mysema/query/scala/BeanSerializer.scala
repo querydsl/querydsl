@@ -1,4 +1,4 @@
-package com.mysema.query.scala.sql
+package com.mysema.query.scala
 
 import com.mysema.query.codegen._
 import com.mysema.codegen.CodeWriter
