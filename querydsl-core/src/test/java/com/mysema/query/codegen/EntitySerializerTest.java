@@ -89,7 +89,7 @@ public class EntitySerializerTest {
 
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
 //        System.out.println(writer);
-        assertTrue(writer.toString().contains("public class QLocale extends EntityPathBase<java.util.Locale> {"));
+        assertTrue(writer.toString().contains("public class QLocale extends EntityPathBase<Locale> {"));
     }
 
     @Test

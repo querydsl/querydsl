@@ -366,10 +366,10 @@ public class EntitySerializer implements Serializer{
 
         // import package of query type
         Type queryType = typeMappings.getPathType(model, model, true);
-        if (!queryType.getPackageName().isEmpty()
+        if (!model.getPackageName().isEmpty()
             && !queryType.getPackageName().equals(model.getPackageName()) 
             && !queryType.getSimpleName().equals(model.getSimpleName())){
-            writer.importPackages(queryType.getPackageName());
+            writer.importClasses(model.getFullName());
         }
         
         introDelegatePackages(writer, model);
