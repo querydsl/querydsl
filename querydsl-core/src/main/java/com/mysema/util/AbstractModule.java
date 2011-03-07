@@ -118,6 +118,9 @@ public abstract class AbstractModule {
             }
             try {
                 return (T) constructor.newInstance(args);
+                
+                // TODO : populate fields as well?!?
+                
             } catch (InstantiationException e) {
                 throw new RuntimeException(e);
             } catch (IllegalAccessException e) {
