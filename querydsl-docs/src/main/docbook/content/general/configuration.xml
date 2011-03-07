@@ -87,10 +87,13 @@ import com.mysema.query.annotations.QuerydslConfig;
 
     <para>
     If you want to customize the serializer configuration globally, you can do this via the APT options 
-	<emphasis>querydsl.entityAccessors</emphasis>, 
-	<emphasis>querydsl.listAccessors</emphasis>, 
-	<emphasis>querydsl.mapAccessors</emphasis> and
-	<emphasis>querydsl.createDefaultVariable</emphasis>.
+	<emphasis>querydsl.entityAccessors</emphasis> to enable reference field accessors, 
+	<emphasis>querydsl.listAccessors</emphasis> to enable accessors for direct indexed list access, 
+	<emphasis>querydsl.mapAccessors</emphasis> to enable accessors for direct key based map access,
+	<emphasis>querydsl.prefix</emphasis> to override the prefix for query types(default: Q),
+	<emphasis>querydsl.suffix</emphasis> to set a suffix for query types,
+	<emphasis>querydsl.packagePrefix</emphasis> to set a suffix for query type packages,
+	<emphasis>querydsl.createDefaultVariable</emphasis> to set whether default variables are created.
 	</para>
     
 	<para>Using the Maven APT plugin this works for example like this : </para>

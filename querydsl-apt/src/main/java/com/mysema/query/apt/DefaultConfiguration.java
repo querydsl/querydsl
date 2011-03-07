@@ -48,6 +48,10 @@ public class DefaultConfiguration implements Configuration {
 
     private static final String QUERYDSL_CREATE_DEFAULT_VARIABLE = "querydsl.createDefaultVariable";
 
+    private static final String QUERYDSL_PREFIX = "querydsl.prefix";
+    
+    private static final String QUERYDSL_SUFFIX = "querydsl.suffix";
+    
     private static final String QUERYDSL_PACKAGE_SUFFIX = "querydsl.packageSuffix";
     
     private static final String QUERYDSL_MAP_ACCESSORS = "querydsl.mapAccessors";
@@ -120,6 +124,12 @@ public class DefaultConfiguration implements Configuration {
         }
         if (options.containsKey(QUERYDSL_PACKAGE_SUFFIX)){
             module.bind(CodegenModule.PACKAGE_SUFFIX, options.get(QUERYDSL_PACKAGE_SUFFIX));
+        }
+        if (options.containsKey(QUERYDSL_PREFIX)){
+            module.bind(CodegenModule.PREFIX, options.get(QUERYDSL_PREFIX));
+        }
+        if (options.containsKey(QUERYDSL_SUFFIX)){
+            module.bind(CodegenModule.SUFFIX, options.get(QUERYDSL_SUFFIX));
         }
         if (options.containsKey(DEFAULT_OVERWRITE)){
             defaultOverwrite = Boolean.valueOf(options.get(DEFAULT_OVERWRITE));

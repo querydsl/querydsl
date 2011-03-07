@@ -10,7 +10,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class PackageSuffixTest extends AbstractProcessorTest{
+public class NameSuffixTest extends AbstractProcessorTest{
     
     private static final String packagePath = "src/test/java/com/mysema/query/domain/";
 
@@ -20,14 +20,14 @@ public class PackageSuffixTest extends AbstractProcessorTest{
         List<String> classes = getFiles(packagePath);
 
         // default Processor
-        process(QuerydslAnnotationProcessor.class, classes,"packageSuffix");
+        process(QuerydslAnnotationProcessor.class, classes,"suffix");
         
-        assertTrue(new File("target/packageSuffix/com/mysema/query/domain/query/QAnimalTest_Animal.java").exists());
+        assertTrue(new File("target/suffix/com/mysema/query/domain/QAnimalTest_AnimalType.java").exists());
     }
     
     @Override
     protected Collection<String> getAPTOptions() {
-        return Arrays.asList("-Aquerydsl.packageSuffix=.query");
+        return Arrays.asList("-Aquerydsl.suffix=Type");
     }
     
 }

@@ -166,4 +166,18 @@ query
   
   </sect2>
 		  
+  <sect2>
+  
+    <title>Geospatial queries</title>
+  
+    <para>Support for geospatial queries is available for Double typed arrays (Double[]) via the near-method :</para>
+    
+<programlisting language="java"><![CDATA[ 
+query
+    .where(geoEntity.location.near(50.0, 50.0))
+    .list();
+]]></programlisting>    
+  
+  </sect2>		  
+		  
 </sect1>
