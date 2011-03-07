@@ -5,6 +5,8 @@
  */
 package com.mysema.query.sql;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
@@ -38,53 +40,81 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
     @Test
     public void NormalSettings() throws SQLException{
         test("Q", "", "", "", defaultNaming, "target/1", false, false);
+        
+        assertTrue(new File("target/1/test/QEmployee.java").exists());
     }
     
     @Test
     public void NormalSettings_with_Beans() throws SQLException{
         test("Q", "", "", "", defaultNaming, "target/11", true, false);
+        
+        assertTrue(new File("target/11/test/QEmployee.java").exists());
+        assertTrue(new File("target/11/test/Employee.java").exists());
     }
     
     @Test
     public void NormalSettings_with_Beans_and_extra_Package() throws SQLException{
         beanPackageName = "test2";
         test("Q", "", "", "", defaultNaming, "target/11_extraPackage", true, false);
+        
+        assertTrue(new File("target/11_extraPackage/test/QEmployee.java").exists());
+        assertTrue(new File("target/11_extraPackage/test2/Employee.java").exists());
     }
     
     @Test
     public void NormalSettings_with_Beans_with_Bean_prefix() throws SQLException{
         test("Q", "", "Bean", "", defaultNaming, "target/11a", true, false);
+        
+        assertTrue(new File("target/11a/test/QEmployee.java").exists());
+        assertTrue(new File("target/11a/test/BeanEmployee.java").exists());
     }
     
     @Test
     public void NormalSettings_with_Beans_with_Bean_suffix() throws SQLException{
         test("Q", "", "", "Bean", defaultNaming, "target/11b", true, false);
+        
+        assertTrue(new File("target/11b/test/QEmployee.java").exists());
+        assertTrue(new File("target/11b/test/EmployeeBean.java").exists());
     }
     
     @Test
     public void NormalSettings_with_Suffix() throws SQLException{
         test("Q", "Type", "", "", defaultNaming, "target/1_suffix", false, false);
+        
+        assertTrue(new File("target/1_suffix/test/QEmployeeType.java").exists());
     }
     
     @Test
     public void NormalSettings_with_Suffix_with_Beans() throws SQLException{
         test("", "Type", "", "", defaultNaming, "target/11_suffix", true, false);
+        
+        assertTrue(new File("target/11_suffix/test/Employee.java").exists());
+        assertTrue(new File("target/11_suffix/test/EmployeeType.java").exists());
     }
     
     @Test
     public void NormalSettings_with_Suffix_with_Beans_and_extra_package() throws SQLException{
         beanPackageName = "test2";
         test("", "Type", "", "", defaultNaming, "target/11_suffix_extra", true, false);
+        
+        assertTrue(new File("target/11_suffix_extra/test/EmployeeType.java").exists());
+        assertTrue(new File("target/11_suffix_extra/test2/Employee.java").exists());
     }
         
     @Test
     public void NormalSettings_with_Suffix_with_Beans_with_prefix() throws SQLException{
         test("", "Type", "Bean", "", defaultNaming, "target/11_suffixa", true, false);
+        
+        assertTrue(new File("target/11_suffixa/test/EmployeeType.java").exists());
+        assertTrue(new File("target/11_suffixa/test/BeanEmployee.java").exists());
     }
 
     @Test
     public void NormalSettings_with_Suffix_with_Beans_with_suffix() throws SQLException{
         test("", "Type", "", "Bean", defaultNaming, "target/11_suffixb", true, false);
+        
+        assertTrue(new File("target/11_suffixb/test/EmployeeType.java").exists());
+        assertTrue(new File("target/11_suffixb/test/EmployeeBean.java").exists());
     }
 
     @Test
@@ -130,6 +160,8 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
     @Test
     public void WithoutPrefix() throws SQLException{
         test("", "", "", "", defaultNaming, "target/2", false, false);
+        
+        assertTrue(new File("target/2/test/Employee.java").exists());
     }
 
     @Test
@@ -140,6 +172,8 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
     @Test
     public void WithLongPrefix() throws SQLException{
         test("QDSL", "", "","", defaultNaming, "target/3", false, false);
+        
+        assertTrue(new File("target/3/test/QDSLEmployee.java").exists());
     }
 
     @Test

@@ -82,8 +82,6 @@ public class MetaDataExporter {
 
     private File targetFolder;
 
-    private String packageName = "com.example";
-
     @Nullable
     private String beanPackageName;
 
@@ -116,7 +114,7 @@ public class MetaDataExporter {
         
         if (beanSerializer == null){
             String simpleName = module.getPrefix() + className + module.getSuffix();
-            Type classTypeModel = new SimpleType(TypeCategory.ENTITY, packageName + "." + simpleName, packageName, simpleName, false, false);
+            Type classTypeModel = new SimpleType(TypeCategory.ENTITY, module.getPackageName() + "." + simpleName,  module.getPackageName(), simpleName, false, false);
             classModel = new EntityType(classTypeModel);
             typeMappings.register(classModel, classModel);
             
@@ -162,11 +160,11 @@ public class MetaDataExporter {
         configuration = module.get(Configuration.class);       
         
         if (beanPackageName == null){
-            beanPackageName = packageName;
+            beanPackageName =  module.getPackageName();
         }
 
         if (beanSerializer == null){
-            keyDataFactory = new KeyDataFactory(namingStrategy, packageName, module.getPrefix(), module.getSuffix());
+            keyDataFactory = new KeyDataFactory(namingStrategy,  module.getPackageName(), module.getPrefix(), module.getSuffix());
         }else{
             keyDataFactory = new KeyDataFactory(namingStrategy, beanPackageName, module.getBeanPrefix(), module.getBeanSuffix());
         }
@@ -260,7 +258,7 @@ public class MetaDataExporter {
                 String otherPath = entityToWrapped.get(type).getFullName().replace('.', '/') + fileSuffix;
                 write(serializer, otherPath, type);
             }else{
-                String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
+                String path =  module.getPackageName().replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
                 write(serializer, path, type);
             }
 
@@ -336,7 +334,7 @@ public class MetaDataExporter {
      * @param packageName package name for sources
      */
     public void setPackageName(String packageName) {
-        this.packageName = packageName;
+        module.bind(SQLCodegenModule.PACKAGE_NAME, packageName);
     }
 
     /**
