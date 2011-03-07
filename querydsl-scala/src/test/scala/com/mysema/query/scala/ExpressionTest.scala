@@ -13,6 +13,11 @@ class ExpressionTest {
   def assertEquals(expected: String, actual: Any) {
     Assert.assertEquals(expected, actual.toString)
   }  
+  
+  @Test
+  def Double_Negation(){
+    assertEquals("person.javaInt", person.javaInt.negate.negate);  
+  }
     
   @Test
   def Is_Not_Null {

@@ -8,6 +8,8 @@ package com.mysema.query.scala;
 import com.mysema.query.types._;
 
 /**
+ * Factory for Operations
+ * 
  * @author tiwe
  *
  */
@@ -23,7 +25,10 @@ object Operations {
 
   def time[T <: Comparable[_]](t: Class[_ <: T], op: Operator[_ >: T], args: Expression[_]*): TimeExpression[T] = new OperationImpl[T](t, op, args: _*) with TimeExpression[T]
 
-  def number[T <: Number with Comparable[T]](t: Class[_ <: T], op: Operator[_ >: T], args: Expression[_]*): NumberExpression[T] = new OperationImpl[T](t, op, args: _*) with NumberExpression[T]
+  def number[T <: Number with Comparable[T]](t: Class[_ <: T], op: Operator[_ >: T], args: Expression[_]*): NumberExpression[T] = 
+      new OperationImpl[T](t, op, args: _*) with NumberExpression[T] {
+        override def negate = if (getOperator == Ops.NEGATE) getArg(0).asInstanceOf[NumberExpression[T]] else super.negate;      
+      }
 
   def boolean(op: Operator[_ >: java.lang.Boolean], args: Expression[_]*): BooleanExpression = new OperationImpl[java.lang.Boolean](classOf[java.lang.Boolean], op, args: _*) with BooleanExpression
 

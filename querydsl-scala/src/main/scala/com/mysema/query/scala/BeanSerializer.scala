@@ -12,6 +12,8 @@ import scala.collection.JavaConversions._
 import scala.collection.mutable.Set
 
 /**
+ * BeanSerializer for Scala
+ * 
  * @author tiwe
  *
  */

@@ -5,6 +5,12 @@ import com.mysema.codegen.model.TypeCategory
 import com.mysema.query.types.Expression
 import com.mysema.query.types.Path
 
+/**
+ * Factory for TypeMappings creation
+ * 
+ * @author tiwe
+ *
+ */
 object ScalaTypeMappings {
   
   def create: TypeMappings = {

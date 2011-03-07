@@ -11,6 +11,12 @@ import scala.collection.JavaConversions._
 
 import javax.inject.Inject
 
+/**
+ * MetaDataSerializer implementation for Scala
+ * 
+ * @author tiwe
+ *
+ */
 class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingStrategy: NamingStrategy) 
     extends ScalaEntitySerializer(typeMappings) {
     

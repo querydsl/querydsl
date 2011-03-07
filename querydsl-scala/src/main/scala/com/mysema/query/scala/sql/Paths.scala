@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import scala.reflect.BeanProperty
 
 /**
+ * Implementation of RelationsPathImpl for Scala
+ * 
  * @author tiwe
  *
  */

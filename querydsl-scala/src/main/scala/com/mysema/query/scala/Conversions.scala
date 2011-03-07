@@ -12,6 +12,8 @@ import com.mysema.query.types._
 import org.apache.commons.lang.StringUtils;
 
 /**
+ * Implicit conversions for Scala
+ * 
  * @author tiwe
  *
  */

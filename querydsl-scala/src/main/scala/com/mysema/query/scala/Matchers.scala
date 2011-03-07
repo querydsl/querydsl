@@ -2,6 +2,12 @@ package com.mysema.query.scala
 
 import com.mysema.query.types._
 
+/**
+ * Various factory methods for Expression DSL
+ * 
+ * @author tiwe
+ *
+ */
 object Matchers {
     
   def in[T](values: T*) = (expr: SimpleExpression[T]) => expr.in(values:_*)  
