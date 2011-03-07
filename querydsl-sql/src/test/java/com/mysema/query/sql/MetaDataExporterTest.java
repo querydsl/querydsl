@@ -179,41 +179,57 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
     @Test
     public void WithLongPrefix_with_InnerClasses() throws SQLException{
         test("QDSL", "", "","", defaultNaming, "target/3_with_InnerClasses", false, true);
+        
+        assertTrue(new File("target/3/test/QDSLEmployee.java").exists());
     }
 
     @Test
     public void WithDifferentNamingStrategy() throws SQLException{
         test("Q", "", "","", originalNaming, "target/4", false, false);
+        
+        assertTrue(new File("target/3/test/QEmployee.java").exists());
     }
     
     @Test
     public void WithDifferentNamingStrategy_and_Suffix() throws SQLException{
         test("Q", "Type", "","", originalNaming, "target/4_suffix", false, false);
+        
+        assertTrue(new File("target/3/test/QEmployeeType.java").exists());
     }
 
     @Test
     public void WithDifferentNamingStrategy_with_InnerClasses() throws SQLException{
         test("Q", "", "","", originalNaming, "target/4_with_InnerClasses", false, true);
+        
+        assertTrue(new File("target/4_with_InnerClasses/test/QEmployee.java").exists());
     }
 
     @Test
     public void WithoutPrefix2() throws SQLException{
         test("", "", "", "", originalNaming, "target/5", false, false);
+        
+        assertTrue(new File("target/5/test/Employee.java").exists());
     }
 
     @Test
     public void WithoutPrefix2_with_InnerClasses() throws SQLException{
         test("", "", "", "", originalNaming, "target/5_with_InnerClasses", false, true);
+        
+        assertTrue(new File("target/5_with_InnerClasses/test/Employee.java").exists());
     }
 
     @Test
     public void WithLongPrefix2() throws SQLException{
         test("QDSL", "", "", "", originalNaming, "target/6", false, false);
+        
+        assertTrue(new File("target/6/test/QDSLEmployee.java").exists());
     }
 
     @Test
     public void WithLongPrefix2_with_InnerClasses() throws SQLException{
         test("QDSL", "", "", "", originalNaming, "target/6_with_InnerClasses", false, true);
+        
+        assertTrue(new File("target/6_with_InnerClasses/test/Employee.java").exists());
     }
 
 
