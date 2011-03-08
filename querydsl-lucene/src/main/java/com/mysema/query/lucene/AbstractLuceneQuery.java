@@ -28,10 +28,10 @@ import com.mysema.query.types.Predicate;
 
 /**
  * AbstractLuceneQuery is an abstract super class for Lucene query implementations
- * 
+ *
  * @author tiwe
  *
- * @param <T> projection type 
+ * @param <T> projection type
  * @param <Q> concrete subtype of query
  */
 public abstract class AbstractLuceneQuery<T,Q extends AbstractLuceneQuery<T,Q>> implements SimpleQuery<Q>,
@@ -124,11 +124,15 @@ SimpleProjectable<T> {
 
         try {
             ScoreDoc[] scoreDocs;
+            int sumOfLimitAndOffset = limit + offset;
+            if (sumOfLimitAndOffset < 1) {
+                throw new QueryException("The given limit (" + limit + ") and offset (" + offset + ") cause an integer overflow.");
+            }
             if (sort != null) {
                 scoreDocs = searcher.search(createQuery(), null,
-                        limit + offset, sort).scoreDocs;
+                        sumOfLimitAndOffset, sort).scoreDocs;
             } else {
-                scoreDocs = searcher.search(createQuery(), limit + offset).scoreDocs;
+                scoreDocs = searcher.search(createQuery(), sumOfLimitAndOffset).scoreDocs;
             }
             if (offset < scoreDocs.length) {
                 return new ResultIterator<T>(scoreDocs, offset, searcher, transformer);

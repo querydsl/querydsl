@@ -73,8 +73,8 @@ public class LuceneQueryTest {
     private StringPath title;
     private NumberPath<Integer> year;
     private NumberPath<Double> gross;
-    
-    private StringPath sort = new StringPath("sort");
+
+    private final StringPath sort = new StringPath("sort");
 
     private RAMDirectory idx;
     private IndexWriter writer;
@@ -182,7 +182,7 @@ public class LuceneQueryTest {
         assertFalse(documents.isEmpty());
         assertEquals(4, documents.size());
     }
-    
+
     @Test
     public void sorted_By_Different_Locales() throws Exception {
         Document d1 = new Document();
@@ -196,7 +196,7 @@ public class LuceneQueryTest {
         writer.addDocument(d2);
         writer.addDocument(d3);
         writer.close();
-        
+
         searcher = new IndexSearcher(idx);
         query = new LuceneQuery(new LuceneSerializer(true, true, Locale.ENGLISH), searcher);
         assertEquals(3, query.list().size());
@@ -205,14 +205,14 @@ public class LuceneQueryTest {
         assertEquals("aa", results.get(0).getFieldable("sort").stringValue());
         assertEquals("a\u00c4", results.get(1).getFieldable("sort").stringValue());
         assertEquals("ab", results.get(2).getFieldable("sort").stringValue());
-        
+
         query = new LuceneQuery(new LuceneSerializer(true, true, new Locale("fi", "FI")), searcher);
         results = query.where(sort.startsWith("a")).orderBy(sort.asc()).list();
         assertEquals("aa", results.get(0).getFieldable("sort").stringValue());
         assertEquals("ab", results.get(1).getFieldable("sort").stringValue());
         assertEquals("a\u00c4", results.get(2).getFieldable("sort").stringValue());
-        
-        
+
+
     }
 
     @Test
@@ -576,5 +576,10 @@ public class LuceneQueryTest {
         searcher = new IndexSearcher(idx);
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
         assertTrue(query.list().isEmpty());
+    }
+
+    @Test(expected = QueryException.class)
+    public void List_Results_Throws_An_Illegal_Argument_Exception_When_Sum_Of_Limit_And_Offset_Is_Negative() {
+        query.limit(1).offset(Integer.MAX_VALUE).listResults();
     }
 }
