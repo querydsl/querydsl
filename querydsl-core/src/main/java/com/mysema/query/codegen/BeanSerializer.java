@@ -25,13 +25,24 @@ import com.mysema.util.BeanUtils;
  */
 public class BeanSerializer implements Serializer{
 
+    private final boolean propertyAnnotations;
+    
     private final String javadocSuffix;
 
     public BeanSerializer() {
-        this(" is a Querydsl bean type");
+        this(true, " is a Querydsl bean type");
     }
 
     public BeanSerializer(String javadocSuffix) {
+        this(true, javadocSuffix);
+    }
+    
+    public BeanSerializer(boolean propertyAnnotations) {
+        this(propertyAnnotations, " is a Querydsl bean type");
+    }
+
+    public BeanSerializer(boolean propertyAnnotations, String javadocSuffix) {
+        this.propertyAnnotations = propertyAnnotations;
         this.javadocSuffix = javadocSuffix;
     }
 
@@ -65,9 +76,11 @@ public class BeanSerializer implements Serializer{
 
         // fields
         for (Property property : model.getProperties()){
-            for (Annotation annotation : property.getAnnotations()){
-                writer.annotation(annotation);
-            }
+            if (propertyAnnotations){
+                for (Annotation annotation : property.getAnnotations()){
+                    writer.annotation(annotation);
+                }    
+            }            
             writer.privateField(property.getType(), property.getEscapedName());
         }
 
@@ -93,11 +106,13 @@ public class BeanSerializer implements Serializer{
         for (Annotation annotation : model.getAnnotations()){
             imports.add(annotation.annotationType().getName());
         }
-        for (Property property : model.getProperties()){
-            for (Annotation annotation : property.getAnnotations()){
-                imports.add(annotation.annotationType().getName());
-            }
-        }
+        if (propertyAnnotations){
+            for (Property property : model.getProperties()){
+                for (Annotation annotation : property.getAnnotations()){
+                    imports.add(annotation.annotationType().getName());
+                }
+            }    
+        }        
         return imports;
     }
 

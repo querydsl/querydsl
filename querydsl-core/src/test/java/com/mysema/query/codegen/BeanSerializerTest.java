@@ -5,6 +5,7 @@
  */
 package com.mysema.query.codegen;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -63,6 +64,21 @@ public class BeanSerializerTest {
         assertTrue(str.contains("import com.mysema.query.annotations.QueryEntity;"));
         assertTrue(str.contains("@QueryEntity"));
     }
+    
+    @Test
+    public void Annotated_Property_Not_Serialized() throws IOException{
+        Property property = new Property(type, "entityField", type);
+        property.addAnnotation(new QueryEntityImpl());
+        type.addProperty(property);
+        
+        BeanSerializer serializer = new BeanSerializer(false);
+        serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        String str = writer.toString();
+        
+        assertFalse(str.contains("import com.mysema.query.annotations.QueryEntity;"));
+        assertFalse(str.contains("@QueryEntity"));
+    }
+    
     
     @Test
     public void Capitalization() throws IOException{
