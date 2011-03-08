@@ -15,6 +15,7 @@ import java.util.Set;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Types;
+import com.mysema.util.BeanUtils;
 
 /**
  * BeanSerializer is a Serializer implementation which serializes EntityType instances into JavaBean classes

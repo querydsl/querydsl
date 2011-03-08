@@ -33,6 +33,7 @@ import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.QueryTypeFactory;
 import com.mysema.query.codegen.TypeMappings;
+import com.mysema.util.BeanUtils;
 
 /**
  * ElementHandler is a an APT visitor for entity types
@@ -174,9 +175,9 @@ public final class ElementHandler{
             if (config.visitMethodProperties()){
                 String name = method.getSimpleName().toString();
                 if (name.startsWith("get") && method.getParameters().isEmpty()){
-                    name = StringUtils.uncapitalize(name.substring(3));
+                    name = BeanUtils.uncapitalize(name.substring(3));
                 }else if (name.startsWith("is") && method.getParameters().isEmpty()){
-                    name = StringUtils.uncapitalize(name.substring(2));
+                    name = BeanUtils.uncapitalize(name.substring(2));
                 }else{
                     continue;
                 }

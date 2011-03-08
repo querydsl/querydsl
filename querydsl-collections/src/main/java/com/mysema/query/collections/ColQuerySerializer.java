@@ -8,10 +8,18 @@ package com.mysema.query.collections;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.mysema.query.support.SerializerBase;
-import com.mysema.query.types.*;
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.ConstantImpl;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathType;
+import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.Template;
+import com.mysema.util.BeanUtils;
 
 /**
  * ColQuerySerializer is a Serializer implementation for the Java language
@@ -36,7 +44,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
             }
             handle((Expression<?>) path.getMetadata().getParent());
             append(".").append(prefix);
-            append(StringUtils.capitalize(path.getMetadata().getExpression().toString()) + "()");
+            append(BeanUtils.capitalize(path.getMetadata().getExpression().toString()) + "()");
 
         }else{
             List<Expression<?>> args = new ArrayList<Expression<?>>(2);

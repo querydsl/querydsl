@@ -22,13 +22,12 @@ import javax.annotation.Nullable;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ParametrizedExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
+import com.mysema.util.BeanUtils;
 import com.mysema.util.ReflectionUtils;
 
 /**
@@ -248,7 +247,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
     private String propertyNameForGetter(Method method) {
         String name = method.getName();
         name = name.startsWith("is") ? name.substring(2) : name.substring(3);
-        return StringUtils.uncapitalize(name);
+        return BeanUtils.uncapitalize(name);
     }
 
 }

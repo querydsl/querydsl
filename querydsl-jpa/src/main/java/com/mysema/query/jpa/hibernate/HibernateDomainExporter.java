@@ -17,7 +17,6 @@ import java.util.Set;
 
 import javax.xml.stream.XMLStreamException;
 
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.MappedSuperclass;
@@ -46,6 +45,7 @@ import com.mysema.query.codegen.Supertype;
 import com.mysema.query.codegen.SupertypeSerializer;
 import com.mysema.query.codegen.TypeFactory;
 import com.mysema.query.codegen.TypeMappings;
+import com.mysema.util.BeanUtils;
 
 /**
  * @author tiwe
@@ -257,8 +257,8 @@ public class HibernateDomainExporter {
             Field field = cl.getDeclaredField(propertyName);
             return typeFactory.create(field.getType(), field.getGenericType());
         } catch (NoSuchFieldException e) {
-            String getter = "get"+StringUtils.capitalize(propertyName);
-            String bgetter = "is"+StringUtils.capitalize(propertyName);
+            String getter = "get"+BeanUtils.capitalize(propertyName);
+            String bgetter = "is"+BeanUtils.capitalize(propertyName);
             for (Method method : cl.getDeclaredMethods()){
                 if ((method.getName().equals(getter) || method.getName().equals(bgetter)) && method.getParameterTypes().length == 0){
                     return typeFactory.create(method.getReturnType(), method.getGenericReturnType());
@@ -279,8 +279,8 @@ public class HibernateDomainExporter {
             Field field = cl.getDeclaredField(propertyName);
             return getAnnotations(field.getAnnotations());
         } catch (NoSuchFieldException e) {
-            String getter = "get"+StringUtils.capitalize(propertyName);
-            String bgetter = "is"+StringUtils.capitalize(propertyName);
+            String getter = "get"+BeanUtils.capitalize(propertyName);
+            String bgetter = "is"+BeanUtils.capitalize(propertyName);
             for (Method method : cl.getDeclaredMethods()){
                 if ((method.getName().equals(getter) || method.getName().equals(bgetter)) && method.getParameterTypes().length == 0){
                     return getAnnotations(method.getAnnotations());

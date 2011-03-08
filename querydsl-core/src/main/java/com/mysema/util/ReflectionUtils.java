@@ -19,7 +19,6 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 
 /**
  * @author tiwe
@@ -60,7 +59,7 @@ public final class ReflectionUtils {
 
     @Nullable
     private static Method getGetterOrNull(Class<?> beanClass, String name, Class<?> type){
-        String methodName = (type.equals(Boolean.class) ? "is" : "get") + StringUtils.capitalize(name);
+        String methodName = (type.equals(Boolean.class) ? "is" : "get") + BeanUtils.capitalize(name);
         while(beanClass != null && !beanClass.equals(Object.class)){
             try {
                 return beanClass.getDeclaredMethod(methodName);

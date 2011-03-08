@@ -65,6 +65,17 @@ public class BeanSerializerTest {
     }
     
     @Test
+    public void Capitalization() throws IOException{
+        // property
+        type.addProperty(new Property(type, "cId", type));
+        
+        BeanSerializer serializer = new BeanSerializer();
+        serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        assertTrue(writer.toString().contains("public DomainClass getcId() {"));
+        
+    }
+    
+    @Test
     public void Properties() throws IOException{
         // property
         type.addProperty(new Property(type, "entityField", type));

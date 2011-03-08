@@ -1,8 +1,10 @@
-package com.mysema.query.codegen;
+package com.mysema.util;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import com.mysema.util.BeanUtils;
 
 public class BeanUtilsTest {
 

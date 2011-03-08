@@ -1,4 +1,4 @@
-package com.mysema.query.codegen;
+package com.mysema.util;
 
 import java.beans.Introspector;
 
@@ -10,11 +10,11 @@ import org.apache.commons.lang.StringUtils;
  */
 public final class BeanUtils {
 
-    public static String capitalize(String property){
-        if (property.length() > 1 && Character.isUpperCase(property.charAt(1))){
-            return property;
+    public static String capitalize(String name){
+        if (name.length() > 1 && Character.isUpperCase(name.charAt(1))){
+            return name;
         }else{
-            return StringUtils.capitalize(property);
+            return StringUtils.capitalize(name);
         }
     }
 
