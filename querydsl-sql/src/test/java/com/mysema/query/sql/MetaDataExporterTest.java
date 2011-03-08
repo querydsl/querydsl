@@ -291,6 +291,10 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
         statement.execute("drop table reserved if exists");
         statement.execute("create table reserved (id int, while int)");
 
+        // underscore
+        statement.execute("drop table underscore if exists");
+        statement.execute("create table underscore (e_id int, c_id int)");
+
         // default instance clash
         statement.execute("drop table definstance if exists");
         statement.execute("create table definstance (id int, definstance int, definstance1 int)");
