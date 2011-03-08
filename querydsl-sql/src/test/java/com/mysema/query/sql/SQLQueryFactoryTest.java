@@ -43,6 +43,11 @@ public class SQLQueryFactoryTest {
     }
     
     @Test
+    public void Insert(){
+        assertNotNull(queryFactory.insert(QSurvey.survey));
+    }
+    
+    @Test
     public void Update(){
         assertNotNull(queryFactory.update(QSurvey.survey));
     }

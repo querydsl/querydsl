@@ -46,5 +46,14 @@ public class SQLServerTemplatesTest extends AbstractSQLTemplatesTest{
                 "union " +
                 "(select 3)", union.toString());
     }
-    
+ 
+    @Test
+    public void Modifiers(){
+        query.getMetadata().addProjection(survey1.id);
+        query.from(survey1).limit(5).offset(3);
+        assertEquals("with inner_query as  (   " +
+        		"select survey1.ID, row_number() over () as row_number from SURVEY survey1 ) " +
+        		"select *  from inner_query where row_number > ? and row_number <= ?", query.toString());
+    }
+
 }

@@ -6,6 +6,7 @@
 package com.mysema.query.sql;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -361,19 +362,23 @@ public class SQLTemplates extends Templates {
     }
 
     public SQLTemplates newLineToSingleSpace() {
-        for (Field field : SQLTemplates.class.getDeclaredFields()) {
-            try {
-                if (field.getType().equals(String.class)) {
-                    Object val = field.get(this);
-                    if (val != null){
-                        field.set(this, val.toString().replace('\n',' '));
-                    }
+        for (Class<?> cl : Arrays.<Class<?>>asList(getClass(), SQLTemplates.class)) {
+            for (Field field : cl.getDeclaredFields()) {
+                try {
+                    if (field.getType().equals(String.class)) {
+                        field.setAccessible(true);
+                        Object val = field.get(this);
+                        if (val != null){
+                            field.set(this, val.toString().replace('\n',' '));
+                        }
 
+                    }
+                } catch (IllegalAccessException e) {
+                    throw new QueryException(e.getMessage(), e);
                 }
-            } catch (IllegalAccessException e) {
-                throw new QueryException(e.getMessage(), e);
-            }
+            }    
         }
+        
         return this;
     }
     

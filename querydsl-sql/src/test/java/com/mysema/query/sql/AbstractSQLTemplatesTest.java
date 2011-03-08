@@ -15,9 +15,9 @@ import com.mysema.query.types.path.SimplePath;
 
 public abstract class AbstractSQLTemplatesTest {
     
-    private static final QSurvey survey1 = new QSurvey("survey1");
+    protected static final QSurvey survey1 = new QSurvey("survey1");
     
-    private static final QSurvey survey2 = new QSurvey("survey2");
+    protected static final QSurvey survey2 = new QSurvey("survey2");
     
     protected SQLQueryImpl query = new SQLQueryImpl(createTemplates().newLineToSingleSpace());
     

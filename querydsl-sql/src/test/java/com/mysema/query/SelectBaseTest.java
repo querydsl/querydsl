@@ -734,26 +734,43 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         }
     }
 
-    @SuppressWarnings("unchecked")
+    
     @Test
+    @SuppressWarnings("unchecked")
     public void Union() throws SQLException {
         // union
         SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id.max());
         SubQueryExpression<Integer> sq2 = sq().from(employee).unique(employee.id.min());
         List<Integer> list = query().union(sq1, sq2).list();
         assertFalse(list.isEmpty());
-
-        // variation 1
-        list = query().union(
+    }
+    
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Union2() throws SQLException {
+        List<Integer> list = query().union(
                 sq().from(employee).unique(employee.id.max()),
                 sq().from(employee).unique(employee.id.min())).list();
         assertFalse(list.isEmpty());
 
-        // union #2
+    }
+    
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Union3() throws SQLException {
         SimpleSubQuery<Object[]> sq3 = sq().from(employee).unique(new Expression[]{employee.id.max()});
         SimpleSubQuery<Object[]> sq4 = sq().from(employee).unique(new Expression[]{employee.id.min()});
         List<Object[]> list2 = query().union(sq3, sq4).list();
         assertFalse(list2.isEmpty());
+    }
+    
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Union_With_Order() throws SQLException {
+        SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id);
+        SubQueryExpression<Integer> sq2 = sq().from(employee).unique(employee.id);
+        List<Integer> list = query().union(sq1, sq2).orderBy(employee.id.asc()).list();
+        assertFalse(list.isEmpty());
     }
 
     @SuppressWarnings("unchecked")
@@ -779,7 +796,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             iterator.close();
         }
     }
-
+        
     @SuppressWarnings("unchecked")
     @Test
     public void Union_Single_Column_Projections() throws IOException{

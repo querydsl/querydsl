@@ -42,5 +42,15 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
                 "(select 3 from dual)", union.toString());
     }
 
+    @Test
+    public void Modifiers(){
+        query.getMetadata().addProjection(survey1.id);
+        query.from(survey1).limit(5).offset(3);
+        assertEquals("select * from (  " +
+        		"select a.*, rownum rn from (   " +
+        		"select survey1.ID from SURVEY survey1  ) " +
+        		"a) " +
+        		"where rn > 3 and rn <= 8", query.toString());
+    }
 
 }

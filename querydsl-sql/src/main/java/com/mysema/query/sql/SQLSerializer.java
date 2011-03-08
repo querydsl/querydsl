@@ -438,6 +438,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         if (!orderBy.isEmpty()) {
             append(templates.getOrderBy());
             boolean first = true;
+            skipParent = true;
             for (OrderSpecifier<?> os : orderBy) {
                 if (!first){
                     append(COMMA);
@@ -446,6 +447,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 append(os.getOrder() == Order.ASC ? templates.getAsc() : templates.getDesc());
                 first = false;
             }
+            skipParent = false;
         }
 
     }
@@ -509,7 +511,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 return null;
             }
         }
-        if (path.getMetadata().getParent() != null){
+        if (path.getMetadata().getParent() != null && !skipParent){
             visit(path.getMetadata().getParent(), context);
             append(".");
         }

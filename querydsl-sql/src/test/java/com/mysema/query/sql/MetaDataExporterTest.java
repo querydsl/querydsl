@@ -9,7 +9,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Set;
 
 import javax.tools.JavaCompiler;
@@ -17,20 +20,87 @@ import javax.tools.JavaCompiler;
 import junit.framework.Assert;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.mysema.codegen.SimpleCompiler;
-import com.mysema.query.AbstractJDBCTest;
 import com.mysema.query.codegen.BeanSerializer;
 
-/**
- * MetaDataExporterTest provides
- *
- * @author tiwe
- * @version $Id$
- */
-public class MetaDataExporterTest extends AbstractJDBCTest{
+public class MetaDataExporterTest {
 
+    private static Connection connection;
+
+    private Statement statement;
+
+    @BeforeClass
+    public static void setUpClass() throws ClassNotFoundException, SQLException{
+        Class.forName("org.h2.Driver");
+        String url = "jdbc:h2:mem:testdb" + System.currentTimeMillis();
+        connection = DriverManager.getConnection(url, "sa", "");    
+        
+        Statement stmt = connection.createStatement();
+        
+        try{
+            // reserved words
+            stmt.execute("create table reserved (id int, while int)");
+
+            // underscore
+            stmt.execute("create table underscore (e_id int, c_id int)");
+
+            // default instance clash
+            stmt.execute("create table definstance (id int, definstance int, definstance1 int)");
+
+            // class with pk and fk classes
+            stmt.execute("create table pkfk (id int primary key, pk int, fk int)");
+
+            // camel case
+            stmt.execute("create table \"camelCase\" (id int)");
+            stmt.execute("create table \"vwServiceName\" (id int)");
+
+            // simple types
+            stmt.execute("create table date_test (d date)");
+            stmt.execute("create table date_time_test (dt datetime)");
+
+            // complex type
+            stmt.execute("create table survey (id int, name varchar(30))");
+
+            stmt.execute("create table employee("
+                    + "id INT, "
+                    + "firstname VARCHAR(50), "
+                    + "lastname VARCHAR(50), "
+                    + "salary DECIMAL(10, 2), "
+                    + "datefield DATE, "
+                    + "timefield TIME, "
+                    + "superior_id int, "
+                    + "survey_id int, "
+                    + "survey_name varchar(30), "
+                    + "CONSTRAINT PK_employee PRIMARY KEY (id), "
+                    + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");
+        }finally{
+            stmt.close();
+        }
+        
+        
+    }
+    
+    @AfterClass
+    public static void tearDownClass() throws SQLException{
+        connection.close();
+    }
+    
+    @Before
+    public void setUp() throws ClassNotFoundException, SQLException {        
+        statement = connection.createStatement();
+    }
+
+    @After
+    public void tearDown() throws SQLException{
+        statement.close();
+    }
+    
     private static final NamingStrategy defaultNaming = new DefaultNamingStrategy();
 
     private static final NamingStrategy originalNaming = new OriginalNamingStrategy();
@@ -236,6 +306,7 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
     @Test
     public void Explicit_Configuration() throws SQLException{
         MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC");
         exporter.setNamePrefix("Q");
         exporter.setPackageName("test");
         exporter.setTargetFolder(new File("target/7"));
@@ -247,6 +318,7 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
     @Test
     public void Minimal_Configuration() throws SQLException{
         MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC");
         exporter.setPackageName("test");
         exporter.setTargetFolder(new File("target/8"));
         exporter.export(connection.getMetaData());
@@ -255,6 +327,7 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
     @Test
     public void Minimal_Configuration_with_Suffix() throws SQLException{
         MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC");
         exporter.setPackageName("test");
         exporter.setNamePrefix("");
         exporter.setNameSuffix("Type");
@@ -265,6 +338,7 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
     @Test
     public void Minimal_Configuration_with_Bean_prefix() throws SQLException{
         MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC");
         exporter.setPackageName("test");
         exporter.setNamePrefix("");
         exporter.setBeanPrefix("Bean");
@@ -276,6 +350,7 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
     @Test
     public void Minimal_Configuration_with_Bean_suffix() throws SQLException{
         MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC");
         exporter.setPackageName("test");
         exporter.setNamePrefix("");
         exporter.setBeanSuffix("Bean");
@@ -285,58 +360,6 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
     }
 
     private void test(String namePrefix, String nameSuffix, String beanPrefix, String beanSuffix, NamingStrategy namingStrategy, String target, boolean withBeans, boolean withInnerClasses) throws SQLException{
-        statement.execute("drop table employee if exists");
-
-        // reserved words
-        statement.execute("drop table reserved if exists");
-        statement.execute("create table reserved (id int, while int)");
-
-        // underscore
-        statement.execute("drop table underscore if exists");
-        statement.execute("create table underscore (e_id int, c_id int)");
-
-        // default instance clash
-        statement.execute("drop table definstance if exists");
-        statement.execute("create table definstance (id int, definstance int, definstance1 int)");
-
-        // class with pk and fk classes
-        statement.execute("drop table pkfk if exists");
-        statement.execute("create table pkfk (id int primary key, pk int, fk int)");
-
-        // camel case
-        statement.execute("drop table \"camelCase\" if exists");
-        statement.execute("create table \"camelCase\" (id int)");
-
-        statement.execute("drop table \"vwServiceName\" if exists");
-        statement.execute("create table \"vwServiceName\" (id int)");
-
-        // simple types
-        statement.execute("drop table date_test if exists");
-        statement.execute("create table date_test (d date)");
-
-        statement.execute("drop table date_time_test if exists");
-        statement.execute("create table date_time_test (dt datetime)");
-
-        // complex type
-//        statement.execute("drop table employee if exists");
-
-        statement.execute("drop table survey if exists");
-        statement.execute("create table survey (id int, name varchar(30))");
-
-        statement.execute("create table employee("
-                + "id INT, "
-                + "firstname VARCHAR(50), "
-                + "lastname VARCHAR(50), "
-                + "salary DECIMAL(10, 2), "
-                + "datefield DATE, "
-                + "timefield TIME, "
-                + "superior_id int, "
-                + "survey_id int, "
-                + "survey_name varchar(30), "
-                + "CONSTRAINT PK_employee PRIMARY KEY (id), "
-                + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");
-
-
         File targetDir = new File(target);
         try {
             if (targetDir.exists()){
@@ -347,6 +370,7 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
         }
 
         MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern("PUBLIC");
         exporter.setNamePrefix(namePrefix);
         exporter.setNameSuffix(nameSuffix);
         exporter.setBeanPrefix(beanPrefix);
