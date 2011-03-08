@@ -5,7 +5,7 @@
  */
 package com.mysema.query.sql;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,81 +30,81 @@ import com.mysema.query.codegen.BeanSerializer;
  * @version $Id$
  */
 public class MetaDataExporterTest extends AbstractJDBCTest{
-    
+
     private static final NamingStrategy defaultNaming = new DefaultNamingStrategy();
 
     private static final NamingStrategy originalNaming = new OriginalNamingStrategy();
 
     private String beanPackageName = null;
-    
+
     @Test
     public void NormalSettings() throws SQLException{
         test("Q", "", "", "", defaultNaming, "target/1", false, false);
-        
+
         assertTrue(new File("target/1/test/QEmployee.java").exists());
     }
-    
+
     @Test
     public void NormalSettings_with_Beans() throws SQLException{
         test("Q", "", "", "", defaultNaming, "target/11", true, false);
-        
+
         assertTrue(new File("target/11/test/QEmployee.java").exists());
         assertTrue(new File("target/11/test/Employee.java").exists());
     }
-    
+
     @Test
     public void NormalSettings_with_Beans_and_extra_Package() throws SQLException{
         beanPackageName = "test2";
         test("Q", "", "", "", defaultNaming, "target/11_extraPackage", true, false);
-        
+
         assertTrue(new File("target/11_extraPackage/test/QEmployee.java").exists());
         assertTrue(new File("target/11_extraPackage/test2/Employee.java").exists());
     }
-    
+
     @Test
     public void NormalSettings_with_Beans_with_Bean_prefix() throws SQLException{
         test("Q", "", "Bean", "", defaultNaming, "target/11a", true, false);
-        
+
         assertTrue(new File("target/11a/test/QEmployee.java").exists());
         assertTrue(new File("target/11a/test/BeanEmployee.java").exists());
     }
-    
+
     @Test
     public void NormalSettings_with_Beans_with_Bean_suffix() throws SQLException{
         test("Q", "", "", "Bean", defaultNaming, "target/11b", true, false);
-        
+
         assertTrue(new File("target/11b/test/QEmployee.java").exists());
         assertTrue(new File("target/11b/test/EmployeeBean.java").exists());
     }
-    
+
     @Test
     public void NormalSettings_with_Suffix() throws SQLException{
         test("Q", "Type", "", "", defaultNaming, "target/1_suffix", false, false);
-        
+
         assertTrue(new File("target/1_suffix/test/QEmployeeType.java").exists());
     }
-    
+
     @Test
     public void NormalSettings_with_Suffix_with_Beans() throws SQLException{
         test("", "Type", "", "", defaultNaming, "target/11_suffix", true, false);
-        
+
         assertTrue(new File("target/11_suffix/test/Employee.java").exists());
         assertTrue(new File("target/11_suffix/test/EmployeeType.java").exists());
     }
-    
+
     @Test
     public void NormalSettings_with_Suffix_with_Beans_and_extra_package() throws SQLException{
         beanPackageName = "test2";
         test("", "Type", "", "", defaultNaming, "target/11_suffix_extra", true, false);
-        
+
         assertTrue(new File("target/11_suffix_extra/test/EmployeeType.java").exists());
         assertTrue(new File("target/11_suffix_extra/test2/Employee.java").exists());
     }
-        
+
     @Test
     public void NormalSettings_with_Suffix_with_Beans_with_prefix() throws SQLException{
         test("", "Type", "Bean", "", defaultNaming, "target/11_suffixa", true, false);
-        
+
         assertTrue(new File("target/11_suffixa/test/EmployeeType.java").exists());
         assertTrue(new File("target/11_suffixa/test/BeanEmployee.java").exists());
     }
@@ -112,7 +112,7 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
     @Test
     public void NormalSettings_with_Suffix_with_Beans_with_suffix() throws SQLException{
         test("", "Type", "", "Bean", defaultNaming, "target/11_suffixb", true, false);
-        
+
         assertTrue(new File("target/11_suffixb/test/EmployeeType.java").exists());
         assertTrue(new File("target/11_suffixb/test/EmployeeBean.java").exists());
     }
@@ -121,37 +121,37 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
     public void NormalSettings_with_InnerClasses() throws SQLException{
         test("Q", "", "", "", defaultNaming, "target/1_with_InnerClasses", false, true);
     }
-    
+
     @Test
     public void NormalSettings_with_InnerClasses_with_Beans() throws SQLException{
         test("Q", "", "", "", defaultNaming, "target/11_with_InnerClasses", true, true);
     }
-    
+
     @Test
     public void NormalSettings_with_InnerClasses_with_Beans_with_prefix() throws SQLException{
         test("Q", "", "Bean", "", defaultNaming, "target/11_with_InnerClassesa", true, true);
     }
-    
+
     @Test
     public void NormalSettings_with_InnerClasses_with_Beans_with_suffix() throws SQLException{
         test("Q", "", "", "Bean", defaultNaming, "target/11_with_InnerClassesb", true, true);
     }
-    
+
     @Test
     public void NormalSettings_with_InnerClasses_and_Suffix() throws SQLException{
         test("Q", "Type", "", "", defaultNaming, "target/1_with_InnerClasses_and_Suffix", false, true);
     }
-    
+
     @Test
     public void NormalSettings_with_InnerClasses_and_Suffix_with_Beans() throws SQLException{
         test("", "Type", "", "", defaultNaming, "target/11_with_InnerClasses_and_Suffix", true, true);
     }
-    
+
     @Test
     public void NormalSettings_with_InnerClasses_and_Suffix_with_Beans_with_prefix() throws SQLException{
         test("", "Type", "Bean", "", defaultNaming, "target/11_with_InnerClasses_and_Suffixa", true, true);
     }
-    
+
     @Test
     public void NormalSettings_with_InnerClasses_and_Suffix_with_Beans_with_suffix() throws SQLException{
         test("", "Type", "", "Bean", defaultNaming, "target/11_with_InnerClasses_and_Suffixb", true, true);
@@ -160,7 +160,7 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
     @Test
     public void WithoutPrefix() throws SQLException{
         test("", "", "", "", defaultNaming, "target/2", false, false);
-        
+
         assertTrue(new File("target/2/test/Employee.java").exists());
     }
 
@@ -172,64 +172,64 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
     @Test
     public void WithLongPrefix() throws SQLException{
         test("QDSL", "", "","", defaultNaming, "target/3", false, false);
-        
+
         assertTrue(new File("target/3/test/QDSLEmployee.java").exists());
     }
 
     @Test
     public void WithLongPrefix_with_InnerClasses() throws SQLException{
         test("QDSL", "", "","", defaultNaming, "target/3_with_InnerClasses", false, true);
-        
+
         assertTrue(new File("target/3/test/QDSLEmployee.java").exists());
     }
 
     @Test
     public void WithDifferentNamingStrategy() throws SQLException{
         test("Q", "", "","", originalNaming, "target/4", false, false);
-        
-        assertTrue(new File("target/3/test/QEmployee.java").exists());
+
+        assertTrue(new File("target/4/test/QEMPLOYEE.java").exists());
     }
-    
+
     @Test
     public void WithDifferentNamingStrategy_and_Suffix() throws SQLException{
         test("Q", "Type", "","", originalNaming, "target/4_suffix", false, false);
-        
-        assertTrue(new File("target/3/test/QEmployeeType.java").exists());
+
+        assertTrue(new File("target/4_suffix/test/QEMPLOYEEType.java").exists());
     }
 
     @Test
     public void WithDifferentNamingStrategy_with_InnerClasses() throws SQLException{
         test("Q", "", "","", originalNaming, "target/4_with_InnerClasses", false, true);
-        
-        assertTrue(new File("target/4_with_InnerClasses/test/QEmployee.java").exists());
+
+        assertTrue(new File("target/4_with_InnerClasses/test/QEMPLOYEE.java").exists());
     }
 
     @Test
     public void WithoutPrefix2() throws SQLException{
         test("", "", "", "", originalNaming, "target/5", false, false);
-        
-        assertTrue(new File("target/5/test/Employee.java").exists());
+
+        assertTrue(new File("target/5/test/EMPLOYEE.java").exists());
     }
 
     @Test
     public void WithoutPrefix2_with_InnerClasses() throws SQLException{
         test("", "", "", "", originalNaming, "target/5_with_InnerClasses", false, true);
-        
-        assertTrue(new File("target/5_with_InnerClasses/test/Employee.java").exists());
+
+        assertTrue(new File("target/5_with_InnerClasses/test/EMPLOYEE.java").exists());
     }
 
     @Test
     public void WithLongPrefix2() throws SQLException{
         test("QDSL", "", "", "", originalNaming, "target/6", false, false);
-        
-        assertTrue(new File("target/6/test/QDSLEmployee.java").exists());
+
+        assertTrue(new File("target/6/test/QDSLEMPLOYEE.java").exists());
     }
 
     @Test
     public void WithLongPrefix2_with_InnerClasses() throws SQLException{
         test("QDSL", "", "", "", originalNaming, "target/6_with_InnerClasses", false, true);
-        
-        assertTrue(new File("target/6_with_InnerClasses/test/Employee.java").exists());
+
+        assertTrue(new File("target/6_with_InnerClasses/test/QDSLEMPLOYEE.java").exists());
     }
 
 
@@ -251,7 +251,7 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
         exporter.setTargetFolder(new File("target/8"));
         exporter.export(connection.getMetaData());
     }
-    
+
     @Test
     public void Minimal_Configuration_with_Suffix() throws SQLException{
         MetaDataExporter exporter = new MetaDataExporter();
@@ -283,7 +283,7 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
         exporter.setTargetFolder(new File("target/b"));
         exporter.export(connection.getMetaData());
     }
-    
+
     private void test(String namePrefix, String nameSuffix, String beanPrefix, String beanSuffix, NamingStrategy namingStrategy, String target, boolean withBeans, boolean withInnerClasses) throws SQLException{
         statement.execute("drop table employee if exists");
 
@@ -294,7 +294,7 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
         // default instance clash
         statement.execute("drop table definstance if exists");
         statement.execute("create table definstance (id int, definstance int, definstance1 int)");
-        
+
         // class with pk and fk classes
         statement.execute("drop table pkfk if exists");
         statement.execute("create table pkfk (id int primary key, pk int, fk int)");
@@ -332,16 +332,16 @@ public class MetaDataExporterTest extends AbstractJDBCTest{
                 + "CONSTRAINT PK_employee PRIMARY KEY (id), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");
 
-        
+
         File targetDir = new File(target);
         try {
             if (targetDir.exists()){
-                FileUtils.cleanDirectory(targetDir);    
-            }            
+                FileUtils.cleanDirectory(targetDir);
+            }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        
+
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setNamePrefix(namePrefix);
         exporter.setNameSuffix(nameSuffix);
