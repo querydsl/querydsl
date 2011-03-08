@@ -2,6 +2,8 @@ package com.mysema.query;
 import static com.mysema.query.QPerson.person;
 import static org.junit.Assert.assertEquals;
 
+import java.util.Arrays;
+
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -21,6 +23,7 @@ import org.junit.Test;
 
 import com.mysema.query.lucene.LuceneSerializer;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.path.StringPath;
 
 public class LuceneSerializerNotTokenizedTest {
     private RAMDirectory idx;
@@ -56,6 +59,13 @@ public class LuceneSerializerNotTokenizedTest {
 
         writer.addDocument(createDocument(clooney));
         writer.addDocument(createDocument(pitt));
+
+        Document document = new Document();
+        for (String movie : Arrays.asList("Interview with the Vampire",
+                                          "Up in the Air")) {
+            document.add(new Field("movie", movie, Store.YES, Index.NOT_ANALYZED));
+        }
+        writer.addDocument(document);
 
         writer.optimize();
         writer.close();
@@ -125,7 +135,8 @@ public class LuceneSerializerNotTokenizedTest {
 
     @Test
     public void Or_By_Name_Should_Match_2() throws Exception {
-        testQuery(person.name.eq("Brad Pitt").or(person.name.eq("George Clooney")), "name:Brad Pitt name:George Clooney", 2);
+        testQuery(    person.name.eq("Brad Pitt")
+                  .or(person.name.eq("George Clooney")), "name:Brad Pitt name:George Clooney", 2);
     }
 
     @Test
@@ -139,37 +150,41 @@ public class LuceneSerializerNotTokenizedTest {
     }
 
     @Test
-    public void Not_Equals_Finds_Two() throws Exception {
-        testQuery(person.name.ne("Michael Douglas"), "-name:Michael Douglas +*:*", 2);
+    public void Not_Equals_Finds_The_Actors_And_Movies() throws Exception {
+        testQuery(person.name.ne("Michael Douglas"), "-name:Michael Douglas +*:*", 3);
     }
 
     @Test
-    public void Not_Equals_Finds_One() throws Exception {
-        testQuery(person.name.ne("Brad Pitt"), "-name:Brad Pitt +*:*", 1);
+    public void Not_Equals_Finds_Only_Clooney_And_Movies() throws Exception {
+        testQuery(person.name.ne("Brad Pitt"), "-name:Brad Pitt +*:*", 2);
     }
 
     @Test
-    public void And_With_Two_Not_Equals_Finds_Nothing() throws Exception {
-        testQuery(person.name.ne("Brad Pitt").and(person.name.ne("George Clooney")), "+(-name:Brad Pitt +*:*) +(-name:George Clooney +*:*)", 0);
+    public void And_With_Two_Not_Equals_Doesnt_Find_The_Actors() throws Exception {
+        testQuery(     person.name.ne("Brad Pitt")
+                  .and(person.name.ne("George Clooney")), "+(-name:Brad Pitt +*:*) +(-name:George Clooney +*:*)", 1);
     }
 
     @Test
-    public void Or_With_Two_Not_Equals_Finds_Two() throws Exception {
-        testQuery(person.name.ne("Brad Pitt").or(person.name.ne("George Clooney")), "(-name:Brad Pitt +*:*) (-name:George Clooney +*:*)", 2);
+    public void Or_With_Two_Not_Equals_Finds_Movies_And_Actors() throws Exception {
+        testQuery(    person.name.ne("Brad Pitt")
+                  .or(person.name.ne("George Clooney")), "(-name:Brad Pitt +*:*) (-name:George Clooney +*:*)", 3);
     }
 
     @Test
-    public void Negation_Of_Equals_Finds_Two() throws Exception {
-        testQuery(person.name.eq("Michael Douglas").not(), "-name:Michael Douglas +*:*", 2);
+    public void Negation_Of_Equals_Finds_Movies_And_Actors() throws Exception {
+        testQuery(person.name.eq("Michael Douglas").not(), "-name:Michael Douglas +*:*", 3);
     }
 
     @Test
-    public void Negation_Of_Equals_Finds_One() throws Exception {
-        testQuery(person.name.eq("Brad Pitt").not(), "-name:Brad Pitt +*:*", 1);
+    public void Negation_Of_Equals_Finds_Pitt_And_Movies() throws Exception {
+        testQuery(person.name.eq("Brad Pitt").not(), "-name:Brad Pitt +*:*", 2);
     }
 
     @Test
-    public void Negation_Of_And_By_Name_And_Birth_Date_Finds_Nothing() throws Exception {
-        testQuery(person.name.eq("Brad Pitt").and(person.birthDate.eq(pitt.getBirthDate())).not(), "-(+name:Brad Pitt +birthDate:1963-12-18) +*:*", 1);
+    public void Multiple_Field_Search_From_Movies() throws Exception {
+        StringPath movie = new StringPath("movie");
+        testQuery(movie.in("Interview with the Vampire"), "movie:Interview with the Vampire", 1);
+        testQuery(movie.eq("Up in the Air"), "movie:Up in the Air", 1);
     }
 }
