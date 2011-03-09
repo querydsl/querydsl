@@ -23,6 +23,7 @@ public class ClassUtilsTest {
 
     @Test
     public void GetName() {
+        assertEquals("int", ClassUtils.getName(int.class));
         assertEquals("Object", ClassUtils.getName(Object.class));
         assertEquals("Object[]", ClassUtils.getName(Object[].class));
         assertEquals("int", ClassUtils.getName(int.class));
@@ -31,7 +32,7 @@ public class ClassUtilsTest {
         assertEquals("java.util.Locale", ClassUtils.getName(Locale.class));
         assertEquals("java.util.Locale[]", ClassUtils.getName(Locale[].class));
     }
-    
+
     @Test
     public void Normalize(){
         assertEquals(List.class, ClassUtils.normalize(ArrayList.class));

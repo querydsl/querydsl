@@ -7,6 +7,11 @@ import org.junit.Test;
 public class TypeExtendsTest {
 
     @Test
+    public void GetVarName(){
+        assertEquals("var", new TypeExtends("var", Types.COLLECTION).getVarName());
+    }
+
+    @Test
     public void GetGenericName() {
         assertEquals("? extends java.util.Collection<java.lang.Object>", new TypeExtends(Types.COLLECTION).getGenericName(false));
     }
