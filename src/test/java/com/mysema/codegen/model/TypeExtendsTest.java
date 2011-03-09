@@ -11,4 +11,9 @@ public class TypeExtendsTest {
         assertEquals("? extends java.util.Collection<java.lang.Object>", new TypeExtends(Types.COLLECTION).getGenericName(false));
     }
 
+    @Test
+    public void GetGenericName_As_ArgType(){
+        assertEquals("java.util.Collection<java.lang.Object>", new TypeExtends(Types.COLLECTION).getGenericName(true));
+    }
+
 }

@@ -11,4 +11,9 @@ public class TypeSuperTest {
         assertEquals("? super java.lang.String", new TypeSuper(Types.STRING).getGenericName(false));
     }
 
+    @Test
+    public void GetGenericName_As_ArgType() {
+        assertEquals("java.lang.Object", new TypeSuper(Types.STRING).getGenericName(true));
+    }
+
 }

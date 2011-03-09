@@ -157,7 +157,12 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
             append(value.toString());
         }else if (value instanceof Enum){
             Enum enumValue = (Enum)value;
-            append(enumValue.getDeclaringClass().getName()+DOT+enumValue.name());
+            if (classes.contains(enumValue.getClass().getName())
+             || packages.contains(enumValue.getClass().getPackage().getName())){
+                append(enumValue.name());
+            }else{
+                append(enumValue.getDeclaringClass().getName()+DOT+enumValue.name());
+            }
         }else if (value instanceof String){
             append(QUOTE + StringEscapeUtils.escapeJava(value.toString()) + QUOTE);
         }else{

@@ -11,6 +11,8 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Target;
 import java.util.Arrays;
 
 import org.apache.commons.collections15.Transformer;
@@ -182,6 +184,24 @@ public class JavaWriterTest {
         writer.end();
 
         match("/testAnnotations2", w.toString());
+    }
+
+    @Test
+    public void Annotation_With_ArrayMethod() throws IOException{
+        Target annotation = new Target(){
+            @Override
+            public ElementType[] value() {
+                return new ElementType[]{ElementType.FIELD, ElementType.METHOD};
+            }
+            @Override
+            public Class<? extends Annotation> annotationType() {
+                return Target.class;
+            }
+        };
+
+        writer.imports(Target.class.getPackage());
+        writer.annotation(annotation);
+        assertTrue(w.toString().contains("@Target({FIELD, METHOD})"));
     }
 
     @Test

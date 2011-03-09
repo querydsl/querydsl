@@ -155,7 +155,12 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
              append(value.toString());
          }else if (value instanceof Enum){
              Enum enumValue = (Enum)value;
-             append(enumValue.getDeclaringClass().getName()+DOT+enumValue.name());
+             if (classes.contains(enumValue.getClass().getName())
+              || packages.contains(enumValue.getClass().getPackage().getName())){
+                 append(enumValue.name());
+             }else{
+                 append(enumValue.getDeclaringClass().getName()+DOT+enumValue.name());
+             }
          }else if (value instanceof String){
              String escaped = StringEscapeUtils.escapeJava(value.toString());
              append(QUOTE + escaped.replace("\\/", "/") + QUOTE);
