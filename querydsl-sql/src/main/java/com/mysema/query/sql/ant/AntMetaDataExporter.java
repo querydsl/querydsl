@@ -45,17 +45,17 @@ public class AntMetaDataExporter extends Task {
      * name prefix for generated query types (default: "Q")
      */
     private String namePrefix;
-    
+
     /**
      * name suffix for generated query types (default: "")
      */
     private String nameSuffix;
-    
+
     /**
      * name prefix for generated bean types (default: "Q")
      */
     private String beanPrefix;
-    
+
     /**
      * name suffix for generated bean types (default: "")
      */
@@ -65,7 +65,7 @@ public class AntMetaDataExporter extends Task {
      * target package to generate classes to
      */
     private String targetPackage;
-    
+
     /**
      * target package to generated bean classes to (default: targetPackage)
      */
@@ -100,6 +100,11 @@ public class AntMetaDataExporter extends Task {
      */
     private boolean exportBeans;
 
+    /**
+     * export validation annotations (@NotNull, @Size etc)
+     */
+    private final boolean validationAnnotations = true;
+
     @Override
     public void execute() throws BuildException {
         Connection dbConn = null;
@@ -113,27 +118,28 @@ public class AntMetaDataExporter extends Task {
             NamingStrategy namingStrategy = new DefaultNamingStrategy();
             MetaDataExporter exporter = new MetaDataExporter();
             if (namePrefix != null){
-                exporter.setNamePrefix(namePrefix);    
+                exporter.setNamePrefix(namePrefix);
             }
             if (nameSuffix != null){
-                exporter.setNameSuffix(nameSuffix);    
+                exporter.setNameSuffix(nameSuffix);
             }
             if (beanPrefix != null){
-                exporter.setBeanPrefix(beanPrefix);    
+                exporter.setBeanPrefix(beanPrefix);
             }
             if (beanSuffix != null){
-                exporter.setBeanSuffix(beanSuffix);    
-            }            
+                exporter.setBeanSuffix(beanSuffix);
+            }
             exporter.setPackageName(targetPackage);
             exporter.setBeanPackageName(beanTargetPackage);
             exporter.setTargetFolder(targetPackagePath);
             exporter.setNamingStrategy(namingStrategy);
             exporter.setInnerClassesForKeys(innerClassesForKeys);
+            exporter.setSchemaPattern(schemaPattern);
+            exporter.setTableNamePattern(tableNamePattern);
+            exporter.setValidationAnnotations(validationAnnotations);
             if (exportBeans){
                 exporter.setBeanSerializer(new BeanSerializer());
             }
-            exporter.setSchemaPattern(schemaPattern);
-            exporter.setTableNamePattern(tableNamePattern);
 
             exporter.export(dbConn.getMetaData());
 
@@ -269,7 +275,7 @@ public class AntMetaDataExporter extends Task {
     public void setBeanSuffix(String beanSuffix) {
         this.beanSuffix = beanSuffix;
     }
-    
-    
+
+
 
 }

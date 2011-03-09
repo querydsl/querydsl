@@ -65,6 +65,7 @@ exporter.export(conn.getMetaData());
       * tableNamePattern = ant style pattern to restrict code generation to certain tables (default: null)
       * exportBeans = set to true to generate beans as well, see section 2.14.13 (default: false)
       * innerClassesForKeys = set to true to generate inner classes for keys (default: false)
+      * validationAnnotations = set to false to disable serialization of validation annotations (default: true)
     -->     
   </configuration>
   <dependencies>
@@ -89,7 +90,7 @@ exporter.export(conn.getMetaData());
 	<para>
 		The ANT task com.mysema.query.sql.ant.AntMetaDataExporter of the querydsl-sql module provides the same functionality as an ANT task.
 		The configuration parameters of the task are jdbcDriverClass, dbUrl, dbUserName, dbPassword, namePrefix, targetPackage, targetSourceFolder,
-		schemaPattern, tableNamePattern, exportBeans and innerClassesForKeys.
+		schemaPattern, tableNamePattern, exportBeans, innerClassesForKeys and validationAnnotations.
 	</para>
 	
   </sect2>	

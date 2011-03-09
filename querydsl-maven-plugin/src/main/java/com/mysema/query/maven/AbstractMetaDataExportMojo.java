@@ -61,19 +61,19 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      * @parameter default-value="Q"
      */
     private String namePrefix;
-    
+
     /**
      * name prefix for query-types (default: "")
      * @parameter default-value=""
      */
     private String nameSuffix;
-    
+
     /**
      * name prefix for bean types (default: "")
      * @parameter default-value=""
      */
     private String beanPrefix;
-    
+
     /**
      * name prefix for bean types (default: "")
      * @parameter default-value=""
@@ -85,10 +85,10 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      * @parameter required=true
      */
     private String packageName;
-    
+
     /**
      * package name for bean sources (default: packageName)
-     * @parameter 
+     * @parameter
      */
     private String beanPackageName;
 
@@ -138,6 +138,13 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      */
     private boolean innerClassesForKeys;
 
+    /**
+     * export validation annotations (default: true)
+     *
+     * @parameter default-value=true
+     */
+    private boolean validationAnnotations;
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (isForTest()){
@@ -163,17 +170,18 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         exporter.setNamePrefix(namePrefix);
         exporter.setNameSuffix(nameSuffix);
         exporter.setBeanPrefix(beanPrefix);
-        exporter.setBeanSuffix(beanSuffix);        
+        exporter.setBeanSuffix(beanSuffix);
         exporter.setPackageName(packageName);
         exporter.setBeanPackageName(beanPackageName);
         exporter.setInnerClassesForKeys(innerClassesForKeys);
         exporter.setTargetFolder(new File(targetFolder));
         exporter.setNamingStrategy(namingStrategy);
+        exporter.setSchemaPattern(schemaPattern);
+        exporter.setTableNamePattern(tableNamePattern);
+        exporter.setValidationAnnotations(validationAnnotations);
         if (exportBeans){
             exporter.setBeanSerializer(new BeanSerializer());
         }
-        exporter.setSchemaPattern(schemaPattern);
-        exporter.setTableNamePattern(tableNamePattern);
 
         try {
             Class.forName(jdbcDriver);

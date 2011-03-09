@@ -62,7 +62,7 @@ public class MetaDataExporter {
     private static final int COLUMN_NULLABLE = 11;
 
     private static final int SCHEMA_NAME = 2;
-    
+
     private static final int TABLE_NAME = 3;
 
     private static Writer writerFor(File file) {
@@ -75,7 +75,7 @@ public class MetaDataExporter {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
-    
+
     private final SQLCodegenModule module = new SQLCodegenModule();
 
     private final Set<String> classes = new HashSet<String>();
@@ -94,30 +94,32 @@ public class MetaDataExporter {
     private boolean createScalaSources = false;
 
     private final Map<EntityType, Type> entityToWrapped = new HashMap<EntityType, Type>();
-    
+
     private Serializer serializer;
-    
+
     private TypeMappings typeMappings;
-    
+
     private QueryTypeFactory queryTypeFactory;
-    
+
     private NamingStrategy namingStrategy;
-    
+
     private Configuration configuration;
-    
+
     private KeyDataFactory keyDataFactory;
-    
+
+    private boolean validationAnnotations = true;
+
     public MetaDataExporter(){}
 
     protected EntityType createEntityType(@Nullable String schemaName, String tableName, final String className) {
         EntityType classModel;
-        
+
         if (beanSerializer == null){
             String simpleName = module.getPrefix() + className + module.getSuffix();
             Type classTypeModel = new SimpleType(TypeCategory.ENTITY, module.getPackageName() + "." + simpleName,  module.getPackageName(), simpleName, false, false);
             classModel = new EntityType(classTypeModel);
             typeMappings.register(classModel, classModel);
-            
+
         }else{
             String simpleName = module.getBeanPrefix() + className + module.getBeanSuffix();
             Type classTypeModel = new SimpleType(TypeCategory.ENTITY, beanPackageName + "." + simpleName, beanPackageName, simpleName, false, false);
@@ -126,11 +128,11 @@ public class MetaDataExporter {
             entityToWrapped.put(classModel, mappedType);
             typeMappings.register(classModel, mappedType);
         }
-        
+
         if (schemaName != null){
             classModel.addAnnotation(new SchemaImpl(schemaName));
         }
-        
+
         classModel.addAnnotation(new TableImpl(namingStrategy.normalizeTableName(tableName)));
         return classModel;
     }
@@ -157,8 +159,8 @@ public class MetaDataExporter {
         queryTypeFactory = module.get(QueryTypeFactory.class);
         serializer = module.get(Serializer.class);
         namingStrategy = module.get(NamingStrategy.class);
-        configuration = module.get(Configuration.class);       
-        
+        configuration = module.get(Configuration.class);
+
         if (beanPackageName == null){
             beanPackageName =  module.getPackageName();
         }
@@ -168,7 +170,7 @@ public class MetaDataExporter {
         }else{
             keyDataFactory = new KeyDataFactory(namingStrategy, beanPackageName, module.getBeanPrefix(), module.getBeanSuffix());
         }
-        
+
         ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
         try{
             while (tables.next()) {
@@ -196,13 +198,15 @@ public class MetaDataExporter {
         Type typeModel = new ClassType(fieldType, clazz);
         Property property = createProperty(classModel, columnName, propertyName, typeModel);
         property.addAnnotation(new ColumnImpl(namingStrategy.normalizeColumnName(columnName)));
-        int nullable = columns.getInt(COLUMN_NULLABLE);
-        if (nullable == DatabaseMetaData.columnNoNulls){
-            property.addAnnotation(new NotNullImpl());
-        }
-        int size = columns.getInt(COLUMN_SIZE);
-        if (size > 0 && clazz.equals(String.class)){
-            property.addAnnotation(new SizeImpl(0, size));
+        if (validationAnnotations){
+            int nullable = columns.getInt(COLUMN_NULLABLE);
+            if (nullable == DatabaseMetaData.columnNoNulls){
+                property.addAnnotation(new NotNullImpl());
+            }
+            int size = columns.getInt(COLUMN_SIZE);
+            if (size > 0 && clazz.equals(String.class)){
+                property.addAnnotation(new SizeImpl(0, size));
+            }
         }
         classModel.addProperty(property);
     }
@@ -413,11 +417,18 @@ public class MetaDataExporter {
     public void setSerializerClass(Class<? extends Serializer> serializerClass){
         module.bind(Serializer.class, serializerClass);
     }
-    
+
     /**
      * @param typeMappings
      */
     public void setTypeMappings(TypeMappings typeMappings){
         module.bind(TypeMappings.class, typeMappings);
+    }
+
+    /**
+     * @param validationAnnotations
+     */
+    public void setValidationAnnotations(boolean validationAnnotations){
+        this.validationAnnotations = validationAnnotations;
     }
 }
