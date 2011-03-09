@@ -27,6 +27,8 @@ import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriter.MaxFieldLength;
+import org.apache.lucene.search.DuplicateFilter;
+import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Searcher;
 import org.apache.lucene.store.RAMDirectory;
@@ -160,7 +162,7 @@ public class LuceneQueryTest {
         verify(searcher);
     }
 
-    @Test
+    @Test(expected=UnsupportedOperationException.class)
     public void countDistinct() {
         query.where(year.between(1900, 3000));
         assertEquals(3, query.countDistinct());
@@ -278,6 +280,25 @@ public class LuceneQueryTest {
         assertEquals("1954", documents.get(1).get("year"));
         assertEquals("1990", documents.get(2).get("year"));
         assertEquals("1990", documents.get(3).get("year"));
+    }
+
+    @Test
+    public void list_Distinct_Property(){
+        assertEquals(4, query.list().size());
+        assertEquals(3, query.distinct(year).list().size());
+    }
+
+    @Test
+    public void list_With_Filter(){
+        Filter filter = new DuplicateFilter("year");
+        assertEquals(4, query.list().size());
+        assertEquals(3, query.filter(filter).list().size());
+    }
+
+    @Test
+    public void count_Distinct_Property(){
+        assertEquals(4l, query.count());
+        assertEquals(3l, query.distinct(year).count());
     }
 
     @Test
@@ -441,7 +462,7 @@ public class LuceneQueryTest {
         verify(searcher);
     }
 
-    @Test
+    @Test(expected=UnsupportedOperationException.class)
     public void listDistinct() {
         query.where(year.between(1900, 2000).or(title.startsWith("Jura")));
         query.orderBy(year.asc());
@@ -464,7 +485,7 @@ public class LuceneQueryTest {
         assertEquals(4, results.getTotal());
     }
 
-    @Test
+    @Test(expected=UnsupportedOperationException.class)
     public void listDistinctResults() {
         query.where(year.between(1800, 2000).or(
                 title.eq("The Lord of the Rings")));

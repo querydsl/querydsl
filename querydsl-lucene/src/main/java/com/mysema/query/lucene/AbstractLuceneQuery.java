@@ -3,8 +3,12 @@ package com.mysema.query.lucene;
 import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.collections15.Transformer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.search.DuplicateFilter;
+import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -24,6 +28,7 @@ import com.mysema.query.SimpleQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 
 /**
@@ -45,6 +50,9 @@ SimpleProjectable<T> {
 
     private final Transformer<Document, T> transformer;
 
+    @Nullable
+    private Filter filter;
+
     @SuppressWarnings("unchecked")
     public AbstractLuceneQuery(LuceneSerializer serializer, Searcher searcher,
                                Transformer<Document, T> transformer) {
@@ -64,7 +72,7 @@ SimpleProjectable<T> {
             if (maxDoc == 0) {
                 return 0;
             }
-            return searcher.search(createQuery(), maxDoc).totalHits;
+            return searcher.search(createQuery(), filter, maxDoc).totalHits;
         } catch (final IOException e) {
             throw new QueryException(e);
         }
@@ -77,20 +85,41 @@ SimpleProjectable<T> {
 
     @Override
     public long countDistinct() {
-        return innerCount();
+        throw new UnsupportedOperationException("use distinct(path) instead");
     }
 
     private Query createQuery() {
         if (queryMixin.getMetadata().getWhere() == null) {
             return new MatchAllDocsQuery();
         }
-        return serializer.toQuery(queryMixin.getMetadata().getWhere(),
-                queryMixin.getMetadata());
+        return serializer.toQuery(queryMixin.getMetadata().getWhere(), queryMixin.getMetadata());
     }
 
     @Override
     public Q distinct(){
-        return queryMixin.distinct();
+        throw new UnsupportedOperationException("use distinct(path) instead");
+    }
+
+    /**
+     * Add a DuplicateFilter for the field of the given property path
+     *
+     * @param property
+     * @return
+     */
+    public Q distinct(Path<?> property){
+        return filter(new DuplicateFilter(serializer.toField(property)));
+    }
+
+    /**
+     * Apply the given Lucene filter to the search results
+     *
+     * @param filter
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public Q filter(Filter filter){
+        this.filter = filter;
+        return (Q)this;
     }
 
     @Override
@@ -129,10 +158,9 @@ SimpleProjectable<T> {
                 throw new QueryException("The given limit (" + limit + ") and offset (" + offset + ") cause an integer overflow.");
             }
             if (sort != null) {
-                scoreDocs = searcher.search(createQuery(), null,
-                        sumOfLimitAndOffset, sort).scoreDocs;
+                scoreDocs = searcher.search(createQuery(), filter, sumOfLimitAndOffset, sort).scoreDocs;
             } else {
-                scoreDocs = searcher.search(createQuery(), sumOfLimitAndOffset).scoreDocs;
+                scoreDocs = searcher.search(createQuery(), filter, sumOfLimitAndOffset).scoreDocs;
             }
             if (offset < scoreDocs.length) {
                 return new ResultIterator<T>(scoreDocs, offset, searcher, transformer);
@@ -146,7 +174,7 @@ SimpleProjectable<T> {
 
     @Override
     public CloseableIterator<T> iterateDistinct() {
-        return iterate();
+        throw new UnsupportedOperationException("use distinct(path) instead");
     }
 
     private List<T> innerList(){
@@ -160,12 +188,12 @@ SimpleProjectable<T> {
 
     @Override
     public List<T> listDistinct() {
-        return list();
+        throw new UnsupportedOperationException("use distinct(path) instead");
     }
 
     @Override
     public SearchResults<T> listDistinctResults() {
-        return listResults();
+        throw new UnsupportedOperationException("use distinct(path) instead");
     }
 
     @Override
@@ -205,7 +233,7 @@ SimpleProjectable<T> {
             if (maxDoc == 0) {
                 return null;
             }
-            final ScoreDoc[] scoreDocs = searcher.search(createQuery(), maxDoc).scoreDocs;
+            final ScoreDoc[] scoreDocs = searcher.search(createQuery(), filter, maxDoc).scoreDocs;
             if (scoreDocs.length > 1) {
                 throw new NonUniqueResultException();
             } else if (scoreDocs.length == 1) {

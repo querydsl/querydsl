@@ -21,7 +21,13 @@
 		<artifactId>lucene-core</artifactId>
 		<version>3.0.3</version>
         <scope>provided</scope>
-	</dependency>    
+	</dependency>
+    <dependency>
+		<groupId>org.apache.lucene</groupId>
+		<artifactId>lucene-queries</artifactId>
+		<version>3.0.3</version>
+        <scope>provided</scope>
+	</dependency>    	    
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
