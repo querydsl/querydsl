@@ -17,16 +17,14 @@
   
   <dependencies>   
     <dependency>
-		<groupId>org.apache.lucene</groupId>
-		<artifactId>lucene-core</artifactId>
-		<version>3.0.3</version>
-        <scope>provided</scope>
+	  <groupId>org.apache.lucene</groupId>
+	  <artifactId>lucene-core</artifactId>
+	  <version>3.0.3</version>
 	</dependency>
     <dependency>
-		<groupId>org.apache.lucene</groupId>
-		<artifactId>lucene-queries</artifactId>
-		<version>3.0.3</version>
-        <scope>provided</scope>
+	  <groupId>org.apache.lucene</groupId>
+	  <artifactId>lucene-queries</artifactId>
+      <version>3.0.3</version>
 	</dependency>    	    
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
