@@ -26,27 +26,27 @@ import com.mysema.codegen.support.ClassUtils;
 public class ClassType implements Type {
 
     private final TypeCategory category;
-    
+
     private final Class<?> javaClass;
-    
+
     private final String className;
-    
+
     private final List<Type> parameters;
-    
+
     @Nullable
     private final Class<?> primitiveClass;
-    
+
     @Nullable
     private Type arrayType, componentType;
 
     public ClassType(Class<?> javaClass, Type... parameters) {
         this(TypeCategory.SIMPLE, javaClass, null, Arrays.asList(parameters));
     }
-    
+
     public ClassType(TypeCategory category, Class<?> javaClass, Class<?> primitiveClass) {
         this(category, javaClass, primitiveClass, Collections.<Type>emptyList());
-    }    
-    
+    }
+
     public ClassType(TypeCategory category, Class<?> javaClass, @Nullable Class<?> primitiveClass, List<Type> parameters) {
         this.category = category;
         this.javaClass = javaClass;
@@ -54,15 +54,15 @@ public class ClassType implements Type {
         this.parameters = parameters;
         this.className = ClassUtils.getFullName(javaClass);
     }
-    
+
     public ClassType(TypeCategory category, Class<?> javaClass, List<Type> parameters) {
         this(category, javaClass, null, parameters);
     }
-        
+
     public ClassType(TypeCategory category, Class<?> clazz, Type... parameters) {
         this(category, clazz, null, Arrays.asList(parameters));
     }
-        
+
     @Override
     public Type as(TypeCategory c) {
         if (category == c){
@@ -77,7 +77,7 @@ public class ClassType implements Type {
         if (arrayType == null){
             String fullName = javaClass.getName()+"[]";
             String simpleName = javaClass.getSimpleName()+"[]";
-            arrayType = new SimpleType(TypeCategory.ARRAY, fullName, getPackageName(), simpleName, false, false);    
+            arrayType = new SimpleType(TypeCategory.ARRAY, fullName, getPackageName(), simpleName, false, false);
         }
         return arrayType;
     }
@@ -97,7 +97,7 @@ public class ClassType implements Type {
     public TypeCategory getCategory() {
         return category;
     }
-    
+
     @Override
     public Type getComponentType() {
         Class<?> clazz = javaClass.getComponentType();
@@ -106,10 +106,10 @@ public class ClassType implements Type {
         }
         return componentType;
     }
-    
+
     @Override
     public String getFullName() {
-        return className;   
+        return className;
     }
 
     @Override
@@ -126,15 +126,15 @@ public class ClassType implements Type {
             builder.append(ClassUtils.getName(javaClass, packages, classes));
             builder.append("<");
             boolean first = true;
-            for (Type parameter : parameters){                
+            for (Type parameter : parameters){
                 if (!first){
                     builder.append(", ");
                 }
                 if (parameter == null || parameter.getFullName().equals(getFullName())){
                     builder.append("?");
                 }else{
-                    builder.append(parameter.getGenericName(false, packages, classes));    
-                }                
+                    builder.append(parameter.getGenericName(false, packages, classes));
+                }
                 first = false;
             }
             builder.append(">");
@@ -175,7 +175,7 @@ public class ClassType implements Type {
     public int hashCode(){
         return className.hashCode();
     }
-    
+
     @Override
     public boolean isFinal() {
         return Modifier.isFinal(javaClass.getModifiers());
@@ -183,13 +183,13 @@ public class ClassType implements Type {
 
     @Override
     public boolean isPrimitive() {
-//        return javaClass.isPrimitive();
-        return primitiveClass != null;
+        return javaClass.isPrimitive() || primitiveClass != null;
     }
 
+    @Override
     public String toString(){
         return getGenericName(true);
     }
 
-    
+
 }

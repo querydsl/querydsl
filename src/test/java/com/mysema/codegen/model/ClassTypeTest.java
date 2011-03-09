@@ -7,6 +7,7 @@ package com.mysema.codegen.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collections;
 import java.util.Map;
@@ -16,7 +17,7 @@ import org.junit.Test;
 
 public class ClassTypeTest {
 
-    private ClassType stringType = new ClassType(TypeCategory.STRING, String.class);
+    private final ClassType stringType = new ClassType(TypeCategory.STRING, String.class);
 
 //    @Test
 //    public void asArrayType(){
@@ -28,14 +29,14 @@ public class ClassTypeTest {
         Type type = new ClassType(TypeCategory.ARRAY,String[].class);
         assertEquals("java.lang", type.getPackageName());
     }
-    
+
     @Test
     public void ArrayType_Equals_SimpleType(){
         Type type = new ClassType(TypeCategory.ARRAY,String[].class);
         Type type2 = new SimpleType("java.lang.String[]", "java.lang", "String[]");
         assertEquals(type, type2);
     }
-    
+
     @Test
     public void As(){
         assertEquals(TypeCategory.COMPARABLE, stringType.as(TypeCategory.COMPARABLE).getCategory());
@@ -58,12 +59,32 @@ public class ClassTypeTest {
         assertEquals("byte[]", byteArray.getSimpleName());
         assertEquals("byte[]", byteArray.getFullName());
     }
-    
+
     @Test
     public void Array(){
         ClassType byteArray = new ClassType(Byte[].class);
         assertEquals("Byte[]", byteArray.getRawName(Collections.singleton("java.lang"), Collections.<String>emptySet()));
         assertEquals("Byte[]", byteArray.getSimpleName());
         assertEquals("java.lang.Byte[]", byteArray.getFullName());
+    }
+
+    @Test
+    public void IsPrimitive(){
+        assertTrue(Types.CHAR.isPrimitive());
+        assertTrue(Types.DOUBLE_P.isPrimitive());
+        assertTrue(Types.FLOAT_P.isPrimitive());
+        assertTrue(Types.INT.isPrimitive());
+        assertTrue(Types.LONG_P.isPrimitive());
+        assertTrue(Types.SHORT_P.isPrimitive());
+    }
+
+    @Test
+    public void GetPrimitiveName(){
+        assertEquals("char",   Types.CHARACTER.getPrimitiveName());
+        assertEquals("double", Types.DOUBLE.getPrimitiveName());
+        assertEquals("float",  Types.FLOAT.getPrimitiveName());
+        assertEquals("int",    Types.INTEGER.getPrimitiveName());
+        assertEquals("long",   Types.LONG.getPrimitiveName());
+        assertEquals("short",  Types.SHORT.getPrimitiveName());
     }
 }

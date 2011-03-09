@@ -28,4 +28,9 @@ public class SimpleTypeTest {
         assertEquals("java.lang.String", type.getComponentType().getFullName());
     }
 
+    @Test
+    public void getRawName(){
+        assertEquals("String", new SimpleType(Types.STRING).getRawName(Collections.<String>emptySet(), Collections.singleton(Types.STRING.getFullName())));
+    }
+
 }

@@ -9,6 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -21,9 +22,12 @@ import org.junit.Test;
 
 public class ClassUtilsTest {
 
+
+
     @Test
     public void GetName() {
         assertEquals("int", ClassUtils.getName(int.class));
+        assertEquals("int", ClassUtils.getName(int.class, Collections.<String>emptySet(), Collections.<String>emptySet()));
         assertEquals("Object", ClassUtils.getName(Object.class));
         assertEquals("Object[]", ClassUtils.getName(Object[].class));
         assertEquals("int", ClassUtils.getName(int.class));
