@@ -132,9 +132,33 @@ query
 <programlisting language="java"><![CDATA[ 
 query
     .where(LuceneUtils.fuzzyLike(doc.title, "Hello"))
-    .offset(3)
     .list();
 ]]></programlisting>	
 	
   </sect2>	
+  
+  <sect2>
+  
+    <title>Applying Lucene filters to queries</title>
+    
+    <para>It is possible to apply a single Lucene filter to the query like this :</para>
+  
+<programlisting language="java"><![CDATA[ 
+query
+    .where(doc.title.like("*"))
+    .filter(filter)
+    .list();
+]]></programlisting>	  
+
+	<para>A shortcut for distinct filtering is provided via the distinct(Path) method :</para>
+	
+<programlisting language="java"><![CDATA[ 
+query
+    .where(doc.title.like("*"))
+    .distinct(doc.title)
+    .list();
+]]></programlisting>	  	
+  
+  </sect2>
+  
 </sect1>
