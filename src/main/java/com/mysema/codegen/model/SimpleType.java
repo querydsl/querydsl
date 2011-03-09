@@ -12,26 +12,23 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import net.jcip.annotations.Immutable;
-
 
 /**
  * @author tiwe
  */
-@Immutable
 public class SimpleType implements Type {
 
     private final TypeCategory category;
-    
+
     private final String fullName, packageName, simpleName, localName;
-    
+
     private final List<Type> parameters;
-    
+
     private final boolean primitiveClass, finalClass;
-    
+
     @Nullable
     private Type arrayType, componentType;
-    
+
     public SimpleType(String fullName, String packageName, String simpleName, Type... parameters) {
         this(TypeCategory.SIMPLE, fullName, packageName, simpleName, false, false, Arrays.asList(parameters));
     }
@@ -39,33 +36,33 @@ public class SimpleType implements Type {
     public SimpleType(String simpleName){
         this(TypeCategory.SIMPLE, simpleName, "", simpleName, false, false);
     }
-    
+
     public SimpleType(Type type, List<Type> parameters) {
-        this(type.getCategory(), type.getFullName(), type.getPackageName(), type.getSimpleName(), 
+        this(type.getCategory(), type.getFullName(), type.getPackageName(), type.getSimpleName(),
             type.isPrimitive(), type.isFinal(), parameters);
     }
-    
+
     public SimpleType(Type type, Type... parameters) {
-        this(type.getCategory(), type.getFullName(), type.getPackageName(), type.getSimpleName(), 
+        this(type.getCategory(), type.getFullName(), type.getPackageName(), type.getSimpleName(),
             type.isPrimitive(), type.isFinal(), Arrays.asList(parameters));
     }
-    
-    public SimpleType(TypeCategory category, String fullName, String packageName, String simpleName, 
+
+    public SimpleType(TypeCategory category, String fullName, String packageName, String simpleName,
             boolean primitiveClass, boolean finalClass, List<Type> parameters) {
         this.category = category;
         this.fullName = fullName;
         this.packageName = packageName;
         this.simpleName = simpleName;
         if (packageName.length() > 0){
-            this.localName = fullName.substring(packageName.length()+1);    
+            this.localName = fullName.substring(packageName.length()+1);
         }else{
             this.localName = fullName;
-        }        
+        }
         this.primitiveClass = primitiveClass;
         this.finalClass = finalClass;
         this.parameters = parameters;
     }
-    
+
     public SimpleType(TypeCategory typeCategory, String fullName, String packageName, String simpleName, boolean p, boolean f, Type... parameters) {
         this(typeCategory, fullName, packageName, simpleName, p, f, Arrays
                 .asList(parameters));
@@ -74,18 +71,18 @@ public class SimpleType implements Type {
     @Override
     public Type as(TypeCategory c) {
         if (category != c){
-            return new SimpleType(c, fullName, packageName, simpleName, primitiveClass, finalClass, parameters); 
+            return new SimpleType(c, fullName, packageName, simpleName, primitiveClass, finalClass, parameters);
         }else{
             return this;
         }
     }
-    
+
     @Override
     public Type asArrayType() {
         if (arrayType == null){
             String newFullName = getFullName()+"[]";
             String newSimpleName = getSimpleName()+"[]";
-            arrayType = new SimpleType(TypeCategory.ARRAY, newFullName, getPackageName(), newSimpleName, false, false);    
+            arrayType = new SimpleType(TypeCategory.ARRAY, newFullName, getPackageName(), newSimpleName, false, false);
         }
         return arrayType;
     }
@@ -105,21 +102,21 @@ public class SimpleType implements Type {
     public TypeCategory getCategory() {
         return category;
     }
-    
+
     @Override
     public Type getComponentType() {
         if (fullName.endsWith("[]")){
             if (componentType == null){
                 String newFullName = fullName.substring(0, fullName.length()-2);
                 String newSimpleName = simpleName.substring(0, simpleName.length()-2);
-                componentType = new SimpleType(TypeCategory.SIMPLE, newFullName, getPackageName(), newSimpleName, false, false);    
+                componentType = new SimpleType(TypeCategory.SIMPLE, newFullName, getPackageName(), newSimpleName, false, false);
             }
             return componentType;
         }else{
             return null;
-        }        
+        }
     }
-    
+
     @Override
     public String getFullName() {
         return fullName;
@@ -139,15 +136,15 @@ public class SimpleType implements Type {
             builder.append(getRawName(packages, classes));
             builder.append("<");
             boolean first = true;
-            for (Type parameter : parameters){                
+            for (Type parameter : parameters){
                 if (!first){
                     builder.append(", ");
                 }
                 if (parameter == null || parameter.getFullName().equals(fullName)){
                     builder.append("?");
                 }else{
-                    builder.append(parameter.getGenericName(false, packages, classes));    
-                }                
+                    builder.append(parameter.getGenericName(false, packages, classes));
+                }
                 first = false;
             }
             builder.append(">");
@@ -183,25 +180,26 @@ public class SimpleType implements Type {
     public String getSimpleName() {
         return simpleName;
     }
-    
+
     @Override
     public int hashCode(){
         return fullName.hashCode();
     }
-    
+
     @Override
     public boolean isFinal() {
         return finalClass;
     }
-    
+
     @Override
     public boolean isPrimitive() {
         return primitiveClass;
     }
 
+    @Override
     public String toString(){
         return getGenericName(true);
     }
 
-    
+
 }
