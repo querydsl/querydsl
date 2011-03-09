@@ -73,7 +73,6 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
 
     private final Set<String> packages = new HashSet<String>();
 
-//    private Type type;
     private final Stack<Type> types = new Stack<Type>();
 
     public JavaWriter(Appendable appendable){
