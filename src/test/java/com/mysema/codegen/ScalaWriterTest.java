@@ -49,6 +49,25 @@ public class ScalaWriterTest {
     }
 
     @Test
+    public void Object() throws IOException{
+        writer.beginObject("Test");
+        writer.end();
+        assertTrue(w.toString().contains("object Test {"));
+    }
+
+    @Test
+    public void Class_With_Interfaces() throws IOException{
+        writer.beginClass(testType, testType2, testInterface1);
+        assertTrue(w.toString().contains("class JavaWriterTest extends Test with TestInterface1 {"));
+    }
+
+    @Test
+    public void Interface_With_Superinterfaces() throws IOException{
+        writer.beginInterface(testType, testType2, testInterface1);
+        assertTrue(w.toString().contains("trait JavaWriterTest extends Test with TestInterface1 {"));
+    }
+
+    @Test
     public void CustomHeader() throws IOException{
 //        class QDepartment(path: String) extends RelationalPathBase[QDepartment](classOf[QDepartment], path){
 //            val id = createNumber("ID", classOf[Integer]);
