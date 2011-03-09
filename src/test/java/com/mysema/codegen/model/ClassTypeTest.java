@@ -53,6 +53,11 @@ public class ClassTypeTest {
     }
 
     @Test
+    public void GetComponentType(){
+        assertEquals("java.lang.String", new ClassType(String[].class).getComponentType().getFullName());
+    }
+
+    @Test
     public void Primitive_Arrays(){
         ClassType byteArray = new ClassType(byte[].class);
         assertEquals("byte[]", byteArray.getRawName(Collections.singleton("java.lang"), Collections.<String>emptySet()));

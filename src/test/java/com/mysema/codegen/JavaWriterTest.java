@@ -133,6 +133,14 @@ public class JavaWriterTest {
     }
 
     @Test
+    public void Interface3() throws IOException{
+        writer.beginInterface(testType, testType2, testInterface1, testInterface2);
+        writer.end();
+
+        assertTrue(w.toString().contains("public interface JavaWriterTest extends Test, TestInterface1, TestInterface2 {"));
+    }
+
+    @Test
     public void Javadoc() throws IOException{
         writer.packageDecl("com.mysema.codegen");
         writer.imports(IOException.class, StringWriter.class, Test.class);
@@ -292,6 +300,13 @@ public class JavaWriterTest {
         writer.importPackages("java.lang.reflect","java.util");
 
         match("/testImports2", w.toString());
+    }
+
+    @Test
+    public void Imports3() throws IOException{
+        writer.importClasses("java.util.Locale");
+
+        assertTrue(w.toString().contains("import java.util.Locale;"));
     }
 
 
