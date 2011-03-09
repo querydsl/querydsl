@@ -32,7 +32,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
 
     private static final String EXTENDS = " extends ";
 
-    private static final String IMPLEMENTS = " implements ";
+    private static final String WITH = " with ";
 
     private static final String IMPORT = "import ";
 
@@ -204,12 +204,24 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
             append(EXTENDS + getGenericName(false, superClass));
         }
         if (interfaces.length > 0){
-            append(IMPLEMENTS);
-            for (int i = 0; i < interfaces.length; i++){
-                if (i > 0){
-                    append(COMMA);
+            if (superClass == null){
+                append(EXTENDS);
+                append(getGenericName(false, interfaces[0]));
+                append(WITH);
+                for (int i = 1; i < interfaces.length; i++){
+                    if (i > 1){
+                        append(COMMA);
+                    }
+                    append(getGenericName(false, interfaces[i]));
                 }
-                append(getGenericName(false, interfaces[i]));
+            }else{
+                append(WITH);
+                for (int i = 0; i < interfaces.length; i++){
+                    if (i > 0){
+                        append(COMMA);
+                    }
+                    append(getGenericName(false, interfaces[i]));
+                }
             }
         }
         append(" {").nl().nl();
@@ -237,12 +249,17 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
         beginLine(TRAIT + getGenericName(false, type));
         if (interfaces.length > 0){
             append(EXTENDS);
-            for (int i = 0; i < interfaces.length; i++){
-                if (i > 0){
-                    append(COMMA);
+            append(getGenericName(false, interfaces[0]));
+            if (interfaces.length > 1){
+                append(WITH);
+                for (int i = 1; i < interfaces.length; i++){
+                    if (i > 1){
+                        append(COMMA);
+                    }
+                    append(getGenericName(false, interfaces[i]));
                 }
-                append(getGenericName(false, interfaces[i]));
             }
+
         }
         append(" {").nl().nl();
         goIn();
