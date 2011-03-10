@@ -127,7 +127,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
 
     /**
      * Execute the clause and return the generated key with the type of the given path
-     * If no rows where created, null is returned, otherwise the key of the first row is returned.
+     * If no rows were created, null is returned, otherwise the key of the first row is returned.
      *
      * @param <T>
      * @param path
@@ -151,7 +151,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
 
     /**
      * Execute the clause and return the generated keys with the type of the given path.
-     * If now rows where created and empty list is returned.
+     * If now rows were created and empty list is returned.
      *
      * @param <T>
      * @param path
