@@ -31,6 +31,7 @@ import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.codegen.CodegenModule;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
@@ -291,7 +292,7 @@ public class MetaDataExporter {
      *        <code>null</code> means that the schema name should not be used to narrow
      *        the search (default: null)
      */
-    public void setSchemaPattern(String schemaPattern) {
+    public void setSchemaPattern(@Nullable String schemaPattern) {
         this.schemaPattern = schemaPattern;
     }
 
@@ -301,7 +302,7 @@ public class MetaDataExporter {
     * @param tableNamePattern a table name pattern; must match the
     *        table name as it is stored in the database (default: null)
     */
-    public void setTableNamePattern(String tableNamePattern) {
+    public void setTableNamePattern(@Nullable String tableNamePattern) {
         this.tableNamePattern = tableNamePattern;
     }
 
@@ -311,6 +312,7 @@ public class MetaDataExporter {
      * @param configuration override configuration for custom type mappings etc
      */
     public void setConfiguration(Configuration configuration) {
+        Assert.notNull(configuration, "configuration");
         module.bind(Configuration.class, configuration);
     }
 
@@ -329,6 +331,7 @@ public class MetaDataExporter {
      * @param targetFolder target source folder to create the sources into (e.g. target/generated-sources/java)
      */
     public void setTargetFolder(File targetFolder) {
+        Assert.notNull(targetFolder, "targetFolder");
         this.targetFolder = targetFolder;
     }
 
@@ -338,6 +341,7 @@ public class MetaDataExporter {
      * @param packageName package name for sources
      */
     public void setPackageName(String packageName) {
+        Assert.notNull(packageName, "packageName");
         module.bind(SQLCodegenModule.PACKAGE_NAME, packageName);
     }
 
@@ -346,7 +350,7 @@ public class MetaDataExporter {
      *
      * @param beanPackageName
      */
-    public void setBeanPackageName(String beanPackageName) {
+    public void setBeanPackageName(@Nullable String beanPackageName) {
         this.beanPackageName = beanPackageName;
     }
 
@@ -356,6 +360,7 @@ public class MetaDataExporter {
      * @param namePrefix name prefix for query-types (default: Q)
      */
     public void setNamePrefix(String namePrefix) {
+        Assert.notNull(namePrefix, "namePrefix");
         module.bind(CodegenModule.PREFIX, namePrefix);
     }
 
@@ -365,6 +370,7 @@ public class MetaDataExporter {
      * @param nameSuffix name suffix for query-types (default: "")
      */
     public void setNameSuffix(String nameSuffix) {
+        Assert.notNull(nameSuffix, "nameSuffix");
         module.bind(CodegenModule.SUFFIX, nameSuffix);
     }
 
@@ -374,6 +380,7 @@ public class MetaDataExporter {
      * @param beanPrefix bean prefix for bean-types (default: "")
      */
     public void setBeanPrefix(String beanPrefix) {
+        Assert.notNull(beanPrefix, "beanPrefix");
         module.bind(SQLCodegenModule.BEAN_PREFIX, beanPrefix);
     }
 
@@ -383,6 +390,7 @@ public class MetaDataExporter {
      * @param beanSuffix bean suffix for bean-types (default: "")
      */
     public void setBeanSuffix(String beanSuffix) {
+        Assert.notNull(beanSuffix, "beanSuffix");
         module.bind(SQLCodegenModule.BEAN_SUFFIX, beanSuffix);
     }
 
@@ -392,6 +400,7 @@ public class MetaDataExporter {
      * @param namingStrategy namingstrategy to override (default: new DefaultNamingStrategy())
      */
     public void setNamingStrategy(NamingStrategy namingStrategy) {
+        Assert.notNull(namingStrategy, "namingStrategy");
         module.bind(NamingStrategy.class, namingStrategy);
     }
 
@@ -400,7 +409,7 @@ public class MetaDataExporter {
      *
      * @param beanSerializer serializer for JavaBeans (default: null)
      */
-    public void setBeanSerializer(Serializer beanSerializer) {
+    public void setBeanSerializer(@Nullable Serializer beanSerializer) {
         this.beanSerializer = beanSerializer;
     }
 
@@ -415,6 +424,7 @@ public class MetaDataExporter {
      * @param serializerClass
      */
     public void setSerializerClass(Class<? extends Serializer> serializerClass){
+        Assert.notNull(serializerClass, "serializerClass");
         module.bind(Serializer.class, serializerClass);
     }
 
@@ -422,6 +432,7 @@ public class MetaDataExporter {
      * @param typeMappings
      */
     public void setTypeMappings(TypeMappings typeMappings){
+        Assert.notNull(typeMappings, "typeMappings");
         module.bind(TypeMappings.class, typeMappings);
     }
 
@@ -431,4 +442,5 @@ public class MetaDataExporter {
     public void setValidationAnnotations(boolean validationAnnotations){
         this.validationAnnotations = validationAnnotations;
     }
+
 }
