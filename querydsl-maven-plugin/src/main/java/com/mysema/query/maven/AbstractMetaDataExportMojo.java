@@ -167,10 +167,18 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             namingStrategy = new DefaultNamingStrategy();
         }
         MetaDataExporter exporter = new MetaDataExporter();
-        exporter.setNamePrefix(namePrefix);
-        exporter.setNameSuffix(nameSuffix);
-        exporter.setBeanPrefix(beanPrefix);
-        exporter.setBeanSuffix(beanSuffix);
+        if (namePrefix != null){
+            exporter.setNamePrefix(namePrefix);
+        }
+        if (nameSuffix != null){
+            exporter.setNameSuffix(nameSuffix);
+        }
+        if (beanPrefix != null){
+            exporter.setBeanPrefix(beanPrefix);
+        }
+        if (beanSuffix != null){
+            exporter.setBeanSuffix(beanSuffix);
+        }
         exporter.setPackageName(packageName);
         exporter.setBeanPackageName(beanPackageName);
         exporter.setInnerClassesForKeys(innerClassesForKeys);
