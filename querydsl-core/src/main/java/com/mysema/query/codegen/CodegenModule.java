@@ -1,5 +1,7 @@
 package com.mysema.query.codegen;
 
+import java.util.Collections;
+
 import com.mysema.util.AbstractModule;
 
 /**
@@ -9,13 +11,13 @@ import com.mysema.util.AbstractModule;
 public class CodegenModule  extends AbstractModule{
 
     public static final String PREFIX = "prefix";
-    
+
     public static final String SUFFIX = "suffix";
-    
+
     public static final String KEYWORDS = "keywords";
-    
+
     public static final String PACKAGE_SUFFIX = "packageSuffix";
-    
+
     @Override
     protected void configure() {
         bind(TypeMappings.class);
@@ -24,11 +26,12 @@ public class CodegenModule  extends AbstractModule{
         bind(EmbeddableSerializer.class);
         bind(ProjectionSerializer.class);
         bind(SupertypeSerializer.class);
-        
-        // configuration for QueryTypeFactory        
+
+        // configuration for QueryTypeFactory
         bind(PREFIX, "Q");
         bind(SUFFIX, "");
         bind(PACKAGE_SUFFIX, "");
+        bind(KEYWORDS, Collections.<String>emptySet());
     }
 
 }
