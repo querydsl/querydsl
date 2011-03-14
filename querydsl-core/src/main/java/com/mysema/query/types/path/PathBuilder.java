@@ -203,6 +203,28 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
     }
 
     /**
+     * Get a new Enum path
+     *
+     * @param <A>
+     * @param property property name
+     * @param type
+     * @return
+     */
+    public <A extends Enum<A>> EnumPath<A> getEnum(String property, Class<A> type) {
+        return super.createEnum(property, type);
+    }
+
+    /**
+     * @param <A>
+     * @param path
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public <A extends Enum<A>> EnumPath<A> get(EnumPath<A> path){
+        return getEnum(toString(path), (Class<A>)path.getType());
+    }
+
+    /**
      * Get a new List typed path
      *
      * @param <A>

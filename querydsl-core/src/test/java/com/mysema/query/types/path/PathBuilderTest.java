@@ -6,6 +6,7 @@
 package com.mysema.query.types.path;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.sql.Time;
 import java.util.Date;
@@ -18,9 +19,15 @@ import com.mysema.query.BooleanBuilder;
 
 public class PathBuilderTest {
 
+    enum Gender {
+        MALE, FEMALE
+    }
+
     public static class User {
 
         private String firstName, lastName, username;
+
+        private Gender gender;
 
         public String getFirstName() {
             return firstName;
@@ -46,6 +53,22 @@ public class PathBuilderTest {
             this.username = username;
         }
 
+        public Gender getGender() {
+            return gender;
+        }
+
+        public void setGender(Gender gender) {
+            this.gender = gender;
+        }
+
+    }
+
+    @Test
+    public void getEnum(){
+        PathBuilder<User> entityPath = new PathBuilder<User>(User.class, "entity");
+        EnumPath<Gender> enumPath = entityPath.getEnum("gender", Gender.class);
+        assertNotNull(enumPath.ordinal());
+        assertEquals(enumPath, entityPath.get(enumPath));
     }
 
     @Test
