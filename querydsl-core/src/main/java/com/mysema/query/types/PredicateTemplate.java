@@ -22,6 +22,10 @@ public class PredicateTemplate extends TemplateExpressionImpl<Boolean> implement
     @Nullable
     private Predicate not;
     
+    public PredicateTemplate(String template, Expression<?>... args){
+        super(Boolean.class, TemplateFactory.DEFAULT.create(template), args);
+    }
+    
     public PredicateTemplate(Template template, Expression<?>... args){
         super(Boolean.class, template, args);
     }
