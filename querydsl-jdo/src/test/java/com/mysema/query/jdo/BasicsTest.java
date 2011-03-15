@@ -22,6 +22,7 @@ import com.mysema.query.jdo.test.domain.Book;
 import com.mysema.query.jdo.test.domain.Product;
 import com.mysema.query.jdo.test.domain.QBook;
 import com.mysema.query.jdo.test.domain.QProduct;
+import com.mysema.query.types.Expression;
 
 public class BasicsTest extends AbstractJDOTest {
 
@@ -73,6 +74,12 @@ public class BasicsTest extends AbstractJDOTest {
     public void Single_Result(){
         query().from(product).singleResult(product);
     }
+    
+    @Test
+    public void Single_Result_With_Array(){
+        query().from(product).singleResult(new Expression<?>[]{product});
+    }
+
 
     @Test(expected=NonUniqueResultException.class)
     public void Unique_Result_Throws_Exception_On_Multiple_Results(){

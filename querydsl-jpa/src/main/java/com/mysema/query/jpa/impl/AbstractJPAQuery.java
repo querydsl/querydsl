@@ -210,12 +210,21 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expression<RT> expr) {
         getQueryMixin().addToProjection(expr);
+        return (RT)uniqueResult();
+    }
+
+    public Object[] uniqueResult(Expression<?>[] args) {
+        getQueryMixin().addToProjection(args);
+        return (Object[])uniqueResult();
+    }
+    
+    private Object uniqueResult() {
         String queryString = toQueryString();
         logQuery(queryString);
         Query query = createQuery(queryString, getMetadata().getModifiers());
         reset();
         try{
-            return (RT) query.getSingleResult();
+            return query.getSingleResult();
         }catch(javax.persistence.NoResultException e){
             logger.debug(e.getMessage(),e);
             return null;

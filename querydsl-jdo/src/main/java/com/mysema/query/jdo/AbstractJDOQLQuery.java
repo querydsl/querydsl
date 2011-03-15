@@ -271,6 +271,24 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     @Nullable
     public <RT> RT uniqueResult(Expression<RT> expr) {
         queryMixin.addToProjection(expr);
+        return (RT)uniqueResult();
+    }
+    
+    @Override
+    @Nullable
+    public Object[] uniqueResult(Expression<?>[] args) {
+        queryMixin.addToProjection(args);
+        Object obj = uniqueResult();
+        if (obj != null){
+            return obj.getClass().isArray() ? (Object[])obj : new Object[]{obj};    
+        }else{
+            return null;
+        }                
+    }
+
+    @SuppressWarnings("unchecked")
+    @Nullable
+    private Object uniqueResult() {
         if (getMetadata().getModifiers().getLimit() == null){
             limit(2);
         }
@@ -278,7 +296,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         reset();
         Object rv = execute(query);
         if (rv instanceof List){
-            List<RT> list = (List)rv;
+            List<?> list = (List)rv;
             if (!list.isEmpty()){
                 if (list.size() > 1){
                     throw new NonUniqueResultException();
@@ -288,7 +306,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
                 return null;
             }
         }else{
-            return (RT)rv;
+            return rv;
         }
     }
 

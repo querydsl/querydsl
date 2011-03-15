@@ -173,9 +173,18 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery> implements 
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expression<RT> expr) {
         Query query = createQuery(expr);
+        return (RT)uniqueResult(query);
+    }
+    
+    public Object[] uniqueResult(Expression<?>[] args) {
+        Query query = createQuery(args);
+        return (Object[])uniqueResult(query);
+    }
+
+    private Object uniqueResult(Query query) {
         reset();
         try{
-            return (RT) query.getSingleResult();
+            return query.getSingleResult();
         }catch(javax.persistence.NoResultException e){
             logger.debug(e.getMessage(),e);
             return null;

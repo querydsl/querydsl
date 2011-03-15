@@ -199,15 +199,26 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
         return buildQueryString(false);
     }
 
+    @Override
+    public Object[] uniqueResult(Expression<?>[] args) {
+        Query query = createQuery(args);
+        return (Object[])uniqueResult(query);    
+    }
+
     @SuppressWarnings("unchecked")
+    @Override
     public <RT> RT uniqueResult(Expression<RT> expr) {
         Query query = createQuery(expr);
+        return (RT)uniqueResult(query);  
+    }
+
+    private Object uniqueResult(Query query) {
         reset();        
         try{
-            return (RT) query.uniqueResult();    
+            return query.uniqueResult();    
         }catch (org.hibernate.NonUniqueResultException e){
             throw new NonUniqueResultException();
-        }  
+        }
     }
 
     /**

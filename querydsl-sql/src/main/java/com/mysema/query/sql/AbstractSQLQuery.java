@@ -27,7 +27,6 @@ import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
-import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
@@ -36,7 +35,16 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.*;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.ParamExpression;
+import com.mysema.query.types.ParamNotSetException;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.Predicate;
+import com.mysema.query.types.QBean;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.query.types.template.SimpleTemplate;
@@ -554,20 +562,16 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
             limit(2);    
         }        
         CloseableIterator<RT> iterator = iterate(expr);
-        try{
-            if (iterator.hasNext()){
-                RT rv = iterator.next();
-                if (iterator.hasNext()){
-                    throw new NonUniqueResultException();
-                }
-                return rv;
-            }else{
-                return null;
-            }
-        }finally{
-            iterator.close();
-        }
-
+        return uniqueResult(iterator);
+    }
+    
+    @Override
+    public Object[] uniqueResult(Expression<?>[] expr){
+        if (getMetadata().getModifiers().getLimit() == null){
+            limit(2);    
+        }        
+        CloseableIterator<Object[]> iterator = iterate(expr);
+        return uniqueResult(iterator);
     }
 
     private long unsafeCount() throws SQLException {

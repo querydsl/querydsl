@@ -57,7 +57,7 @@ public class SearchQueryTest extends AbstractQueryTest{
         assertEquals(1, list.size());
         assertEquals(u, list.get(0));
     }
-
+    
     @Test(expected=NonUniqueResultException.class)
     public void Unique_Result_Throws_Exception_On_Multiple_Results(){
         query().where(user.middleName.eq("X")).uniqueResult();

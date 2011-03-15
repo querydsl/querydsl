@@ -65,12 +65,11 @@ public class MongodbQueryTest {
     public void UniqueResultContract(){
         where(user.firstName.isNotNull()).uniqueResult();
     }
-
+    
     @Test
     public void SingleResult(){
         where(user.firstName.isNotNull()).singleResult();
     }
-
 
     @Test
     public void LongPath(){

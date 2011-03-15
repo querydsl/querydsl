@@ -38,10 +38,7 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
         return count();
     }
 
-    @Override
-    public final boolean notExists(){
-        return !exists();
-    }
+
 
     @Override
     public final CloseableIterator<Object[]> iterate(Expression<?> first, Expression<?> second, Expression<?>... rest) {
@@ -124,6 +121,11 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Override
+    public final boolean notExists(){
+        return !exists();
+    }
+
+    @Override
     public final Object[] singleResult(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return singleResult(merge(first, second, rest));
     }
@@ -142,27 +144,9 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     public final Object[] uniqueResult(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return uniqueResult(merge(first, second, rest));
     }
-
-    @Override
-    public Object[] uniqueResult(Expression<?>[] args) {
-        queryMixin.setUnique(true);
-        if (queryMixin.getMetadata().getModifiers().getLimit() == null){
-            limit(2l);
-        }
-        return getUniqueResult(iterate(args));
-    }
-
-    @Override
-    public <RT> RT uniqueResult(Expression<RT> expr) {
-        queryMixin.setUnique(true);
-        if (queryMixin.getMetadata().getModifiers().getLimit() == null){
-            limit(2l);
-        }
-        return getUniqueResult(iterate(expr));
-    }
-
+    
     @Nullable
-    protected <T> T getUniqueResult(CloseableIterator<T> it) {
+    protected <T> T uniqueResult(CloseableIterator<T> it) {
         try{
             if (it.hasNext()){
                 T rv = it.next();

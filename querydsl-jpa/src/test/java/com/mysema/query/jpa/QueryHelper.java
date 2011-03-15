@@ -70,4 +70,14 @@ class QueryHelper extends JPQLQueryBase<QueryHelper> {
         getQueryMixin().addToProjection(exprs);
         return this;
     }
+
+    @Override
+    public Object[] uniqueResult(Expression<?>[] args) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public <RT> RT uniqueResult(Expression<RT> projection) {
+        throw new UnsupportedOperationException();
+    }
 }

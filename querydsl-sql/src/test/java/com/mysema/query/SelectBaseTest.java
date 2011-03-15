@@ -563,6 +563,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     }
     
+    @SuppressWarnings("unchecked")
     @Test
     public void Single_Column_via_Object_type(){
         for (Object s : query().from(survey).list(new PathImpl(Object.class, survey.name.getMetadata()))){
@@ -837,6 +838,16 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         String s = query().from(survey).limit(1).uniqueResult(survey.name);
         assertNotNull(s);
 
+    }
+    
+    @Test
+    public void Single(){
+        assertNotNull(query().from(survey).singleResult(survey.name));
+    }
+    
+    @Test
+    public void Single_Array(){
+        assertNotNull(query().from(survey).singleResult(new Expression<?>[]{survey.name}));
     }
 
     @Test

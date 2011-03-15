@@ -11,6 +11,7 @@ import javax.jdo.Transaction;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.SearchResults;
 import com.mysema.query.jdo.sql.JDOSQLQuery;
 import com.mysema.query.jdo.test.domain.Product;
@@ -24,20 +25,30 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
     
     private final SQLTemplates sqlTemplates = new HSQLDBTemplates();
     
+    private final SProduct product = SProduct.product;
+    
     private JDOSQLQuery sql(){
         return new JDOSQLQuery(pm, sqlTemplates);
     }
     
 
     @Test
-    public void Count(){
-        SProduct product = SProduct.product;
+    public void Count(){        
         assertEquals(30l, sql().from(product).count());        
+    }
+    
+    @Test(expected=NonUniqueResultException.class)
+    public void UniqueResult(){
+        sql().from(product).uniqueResult(product.name);
+    }
+    
+    @Test
+    public void SingleResult(){
+        sql().from(product).singleResult(product.name);
     }
     
     @Test    
     public void StartsWith_Count(){
-        SProduct product = SProduct.product;
         assertEquals(10l, sql().from(product).where(product.name.startsWith("A")).count());
         assertEquals(10l, sql().from(product).where(product.name.startsWith("B")).count());
         assertEquals(10l, sql().from(product).where(product.name.startsWith("C")).count());
@@ -46,7 +57,6 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
     
     @Test
     public void Eq_Count(){
-        SProduct product = SProduct.product;
         for (int i = 0; i < 10; i++) {
             assertEquals(1l, sql().from(product).where(product.name.eq("A"+i)).count());
             assertEquals(1l, sql().from(product).where(product.name.eq("B"+i)).count());
@@ -56,7 +66,6 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
     
     @Test
     public void ScalarQueries(){
-        SProduct product = SProduct.product;
         BooleanExpression filter = product.name.startsWith("A");
         
         // count
@@ -93,8 +102,6 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
 
     @Test
     public void EntityProjections(){
-        SProduct product = SProduct.product;
-
         List<Product> products = sql()
             .from(product)
             .list(ConstructorExpression.create(Product.class, product.name, product.description, product.price, product.amount));

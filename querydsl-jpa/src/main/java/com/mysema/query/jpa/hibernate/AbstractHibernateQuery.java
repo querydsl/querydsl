@@ -348,13 +348,22 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     @SuppressWarnings("unchecked")
     public <RT> RT uniqueResult(Expression<RT> expr) {
         getQueryMixin().addToProjection(expr);
+        return (RT)uniqueResult();
+    }
+    
+    public Object[] uniqueResult(Expression<?>[] args) {
+        getQueryMixin().addToProjection(args);
+        return (Object[]) uniqueResult();
+    }
+    
+    private Object uniqueResult(){
         QueryModifiers modifiers = getMetadata().getModifiers();
         String queryString = toQueryString();
         logQuery(queryString);
         Query query = createQuery(queryString, modifiers);
         reset();        
         try{
-            return (RT) query.uniqueResult();    
+            return query.uniqueResult();    
         }catch (org.hibernate.NonUniqueResultException e){
             throw new NonUniqueResultException();
         }  

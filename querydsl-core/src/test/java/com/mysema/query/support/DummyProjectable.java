@@ -45,4 +45,20 @@ public class DummyProjectable extends ProjectableQuery<DummyProjectable>{
         return false;
     }
 
+    @Override
+    public Object[] uniqueResult(Expression<?>[] args) {
+        if (queryMixin.getMetadata().getModifiers().getLimit() == null){
+            limit(2);
+        }
+        return null;
+    }
+
+    @Override
+    public <RT> RT uniqueResult(Expression<RT> projection) {
+        if (queryMixin.getMetadata().getModifiers().getLimit() == null){
+            limit(2);
+        }
+        return null;
+    }
+
 }

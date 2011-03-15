@@ -11,6 +11,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -38,6 +39,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
@@ -389,7 +391,17 @@ public class LuceneQueryTest {
         assertTrue(query.where(title.eq("Jurassic Park")).offset(30).list()
                 .isEmpty());
     }
+    
+    @Test
+    public void singleResult() {
+        assertNotNull(query.where(title.ne("")).singleResult());
+    }
 
+    @Test(expected=NonUniqueResultException.class)
+    public void uniqueResult_Contract() {
+        query.where(title.ne("")).uniqueResult();
+    }    
+    
     @Test
     public void uniqueResult() {
         query.where(title.startsWith("Nummi"));
