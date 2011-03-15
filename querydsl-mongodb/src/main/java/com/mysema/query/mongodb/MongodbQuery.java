@@ -147,6 +147,16 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProj
     }
 
     @Override
+    public K singleResult() {
+        DBCursor c = createCursor().limit(1);
+        if (c.hasNext()){
+            return transformer.transform(c.next());
+        }else{
+            return null;
+        }
+    }
+
+    @Override
     public K uniqueResult() {
         Long limit = queryMixin.getMetadata().getModifiers().getLimit();
         if (limit == null){

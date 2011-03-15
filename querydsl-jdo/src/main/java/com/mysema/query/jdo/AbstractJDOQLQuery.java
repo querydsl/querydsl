@@ -274,7 +274,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         if (getMetadata().getModifiers().getLimit() == null){
             limit(2);
         }
-        Query query = createQuery(false);        
+        Query query = createQuery(false);
         reset();
         Object rv = execute(query);
         if (rv instanceof List){
@@ -289,6 +289,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
             }
         }else{
             return (RT)rv;
-        }        
+        }
     }
+
 }

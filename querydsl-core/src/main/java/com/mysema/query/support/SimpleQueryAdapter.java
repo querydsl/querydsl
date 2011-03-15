@@ -23,7 +23,7 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 /**
  * SimpleQueryAdapter is an apdater implementation for the SimpleQuery and SimpleProjectabl interfaces
- * 
+ *
  * @author tiwe
  *
  * @param <T> type of entity
@@ -57,7 +57,7 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     public long countDistinct() {
         return projectable.countDistinct();
     }
-    
+
     @Override
     public SimpleQueryAdapter<T> distinct(){
         query.distinct();
@@ -69,12 +69,12 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
         query.limit(limit);
         return this;
     }
-    
+
     @Override
     public CloseableIterator<T> iterate(){
         return projectable.iterate(projection);
     }
-    
+
     @Override
     public CloseableIterator<T> iterateDistinct(){
         return projectable.iterateDistinct(projection);
@@ -127,6 +127,11 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     @Override
     public String toString(){
         return query.toString();
+    }
+
+    @Override
+    public T singleResult() {
+        return projectable.singleResult(projection);
     }
 
     @Override

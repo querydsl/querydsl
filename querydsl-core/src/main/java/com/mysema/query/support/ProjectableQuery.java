@@ -5,7 +5,6 @@
  */
 package com.mysema.query.support;
 
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,13 +33,13 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Override
-    public long countDistinct() {
+    public final long countDistinct() {
         queryMixin.setDistinct(true);
         return count();
     }
 
     @Override
-    public boolean notExists(){
+    public final boolean notExists(){
         return !exists();
     }
 
@@ -125,6 +124,21 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Override
+    public final Object[] singleResult(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+        return singleResult(merge(first, second, rest));
+    }
+
+    @Override
+    public final Object[] singleResult(Expression<?>[] args) {
+        return limit(1).uniqueResult(args);
+    }
+
+    @Override
+    public final <RT> RT singleResult(Expression<RT> expr) {
+        return limit(1).uniqueResult(expr);
+    }
+
+    @Override
     public final Object[] uniqueResult(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return uniqueResult(merge(first, second, rest));
     }
@@ -148,15 +162,19 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Nullable
-    protected <T> T getUniqueResult(Iterator<T> it) {
-        if (it.hasNext()){
-            T rv = it.next();
+    protected <T> T getUniqueResult(CloseableIterator<T> it) {
+        try{
             if (it.hasNext()){
-                throw new NonUniqueResultException();
+                T rv = it.next();
+                if (it.hasNext()){
+                    throw new NonUniqueResultException();
+                }
+                return rv;
+            }else{
+                return null;
             }
-            return rv;
-        }else{
-            return null;
+        }finally{
+            it.close();
         }
     }
 

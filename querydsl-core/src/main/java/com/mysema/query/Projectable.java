@@ -189,9 +189,44 @@ public interface Projectable {
     <K,V> Map<K,V> map(Expression<K> key, Expression<V> value);
 
     /**
-     * return a unique result for the given projection or null if no result is found
-     * 
+     * return a single result for the given projection or null if no result is found
+     *
      * <p>for multiple results only the first one is returned</p>
+     *
+     * @param first
+     * @param second
+     * @param rest
+     * @return
+     */
+    @Nullable
+    Object[] singleResult(Expression<?> first, Expression<?> second, Expression<?>... rest);
+
+    /**
+     * return a single result for the given projection or null if no result is found
+     *
+     * <p>for multiple results only the first one is returned</p>
+     *
+     * @param args
+     * @return
+     */
+    @Nullable
+    Object[] singleResult(Expression<?>[] args);
+
+    /**
+     * return a single result for the given projection or null if no result is found
+     *
+     * <p>for multiple results only the first one is returned</p>
+     *
+     * @param <RT>
+     *            return type
+     * @param projection
+     * @return the result or null for an empty result
+     */
+    @Nullable
+    <RT> RT singleResult(Expression<RT> projection);
+
+    /**
+     * return a unique result for the given projection or null if no result is found
      *
      * @param first
      * @param second

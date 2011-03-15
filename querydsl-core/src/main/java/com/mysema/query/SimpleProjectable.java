@@ -18,17 +18,17 @@ import com.mysema.commons.lang.CloseableIterator;
  * @see Projectable
  */
 public interface SimpleProjectable<T> {
-    
+
     /**
      * Get the projection as a typed closeable Iterator
-     * 
+     *
      * @return
      */
     CloseableIterator<T> iterate();
-    
+
     /**
      * Get the projection as a typed closeable Iterator with distinct elements
-     * 
+     *
      * @return
      */
     CloseableIterator<T> iterateDistinct();
@@ -48,8 +48,18 @@ public interface SimpleProjectable<T> {
     List<T> listDistinct();
 
     /**
+     * Get the projection as a single result or null if no result is found
+     *
+     * <p>for multiple results only the first one is returned</p>
+     *
+     * @return
+     */
+    @Nullable
+    T singleResult();
+
+    /**
      * Get the projection as a unique result or null if no result is found
-     * 
+     *
      * @throws NonUniqueResultException if there is more than one matching result
      * @return
      */

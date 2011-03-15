@@ -32,7 +32,7 @@ public class BasicsTest extends AbstractJDOTest {
     private final QProduct product = QProduct.product;
 
     private final QProduct product2 = new QProduct("product2");
-    
+
     @Test
     public void Serialization() throws IOException{
         JDOQLQuery query = query();
@@ -68,7 +68,12 @@ public class BasicsTest extends AbstractJDOTest {
     public void CountTests() {
         assertEquals("count", 2, query().from(product).count());
     }
-    
+
+    @Test
+    public void Single_Result(){
+        query().from(product).singleResult(product);
+    }
+
     @Test(expected=NonUniqueResultException.class)
     public void Unique_Result_Throws_Exception_On_Multiple_Results(){
         query().from(product).uniqueResult(product);
@@ -107,22 +112,22 @@ public class BasicsTest extends AbstractJDOTest {
     public void Empty_BooleanBuilder(){
         assertEquals("empty boolean builder", 2, query(product, new BooleanBuilder()).size());
     }
-    
+
     @Test
     public void And(){
         assertEquals("and", 1, query(product, product.name.eq("Sony Discman").and(product.price.loe(300.00))).size());
     }
-    
+
     @Test
     public void Or(){
         assertEquals("or", 2,  query(product, product.name.eq("Sony Discman").or(product.price.loe(300.00))).size());
     }
-    
+
     @Test
     public void Not(){
         assertEquals("not", 2, query(product, product.name.eq("Sony MP3 player").not()).size());
     }
-    
+
     @Test
     public void NumericTests() {
         // numeric
@@ -134,33 +139,33 @@ public class BasicsTest extends AbstractJDOTest {
         // TODO Math.abs
         // TODO Math.sqrt
     }
-    
+
     @Test
     public void Eq(){
         assertEquals("eq", 1, query(product, product.price.eq(200.00)).size());
-        assertEquals("eq", 0, query(product, product.price.eq(100.00)).size());        
+        assertEquals("eq", 0, query(product, product.price.eq(100.00)).size());
     }
-    
+
     @Test
     public void Ne(){
-        assertEquals("ne", 2, query(product, product.price.ne(100.00)).size());            
+        assertEquals("ne", 2, query(product, product.price.ne(100.00)).size());
     }
-    
+
     @Test
     public void Lt(){
         assertEquals("lt", 2, query(product, product.price.lt(300.00)).size());
     }
-    
+
     @Test
     public void Gt(){
         assertEquals("gt", 1, query(product, product.price.gt(100.00)).size());
     }
-    
+
     @Test
     public void Goe(){
         assertEquals("goe", 1, query(product, product.price.goe(100.00)).size());
     }
-    
+
     @Test
     public void Loe(){
         assertEquals("loe", 2, query(product, product.price.loe(300.00)).size());
@@ -175,42 +180,42 @@ public class BasicsTest extends AbstractJDOTest {
     public void Matches(){
         assertEquals("matches", 1, query(product,product.name.matches("Sony.*")).size());
     }
-        
+
     @Test
     public void Like(){
         assertEquals("matches", 1, query(product,product.name.like("Sony%")).size());
     }
-    
+
     @Test
     public void Ends_With(){
         assertEquals("endsWith", 1, query(product,product.name.endsWith("Discman")).size());
     }
-    
+
     @Test
     public void To_LowerCase(){
         assertEquals("toLowerCase", 1, query(product,product.name.lower().eq("sony discman")).size());
     }
-    
+
     @Test
     public void To_UpperCase(){
         assertEquals("toUpperCase", 1, query(product,product.name.upper().eq("SONY DISCMAN")).size());
     }
-    
+
     @Test
     public void Index_Of(){
         assertEquals("indexOf", 1, query(product,product.name.indexOf("S").eq(0)).size());
     }
-    
+
     @Test
     public void Substring1(){
         assertEquals("substring", 1, query(product,product.name.substring(5).eq("Discman")).size());
     }
-    
+
     @Test
     public void Substring2(){
         assertEquals("substring", 1, query(product,product.name.substring(0, 4).eq("Sony")).size());
     }
-    
+
     @BeforeClass
     public static void doPersist() {
         // Persistence of a Product and a Book.

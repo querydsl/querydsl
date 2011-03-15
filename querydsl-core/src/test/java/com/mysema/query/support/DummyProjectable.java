@@ -15,7 +15,7 @@ public class DummyProjectable extends ProjectableQuery<DummyProjectable>{
     public DummyProjectable(QueryMixin<DummyProjectable> queryMixin) {
         super(queryMixin);
     }
-    
+
     public DummyProjectable() {
         super(new QueryMixin<DummyProjectable>());
     }
@@ -43,11 +43,6 @@ public class DummyProjectable extends ProjectableQuery<DummyProjectable>{
     @Override
     public boolean exists() {
         return false;
-    }
-
-    @Override
-    public boolean notExists() {
-        return true;
     }
 
 }

@@ -132,6 +132,21 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
+    public Object[] singleResult(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+        return projectable.singleResult(first, second, rest);
+    }
+
+    @Override
+    public Object[] singleResult(Expression<?>[] args) {
+        return projectable.singleResult(args);
+    }
+
+    @Override
+    public <RT> RT singleResult(Expression<RT> expr) {
+        return projectable.singleResult(expr);
+    }
+
+    @Override
     public Object[] uniqueResult(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return projectable.uniqueResult(first, second, rest);
     }

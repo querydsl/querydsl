@@ -22,7 +22,7 @@ import com.mysema.query.types.expr.BooleanExpression;
 
 public class SearchQueryTest extends AbstractQueryTest{
 
-    private QUser user = new QUser("user");
+    private final QUser user = new QUser("user");
 
     @Override
     public void setUp(){
@@ -62,7 +62,12 @@ public class SearchQueryTest extends AbstractQueryTest{
     public void Unique_Result_Throws_Exception_On_Multiple_Results(){
         query().where(user.middleName.eq("X")).uniqueResult();
     }
-    
+
+    @Test
+    public void SingleResult(){
+        assertNotNull(query().where(user.middleName.eq("X")).singleResult());
+    }
+
     @Test
     public void Ordering(){
         BooleanExpression filter = user.middleName.eq("X");

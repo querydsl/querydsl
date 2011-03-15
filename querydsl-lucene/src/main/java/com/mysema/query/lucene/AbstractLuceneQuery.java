@@ -227,6 +227,24 @@ SimpleProjectable<T> {
     }
 
     @Override
+    public T singleResult() {
+        try {
+            int maxDoc = maxDoc();
+            if (maxDoc == 0) {
+                return null;
+            }
+            final ScoreDoc[] scoreDocs = searcher.search(createQuery(), filter, maxDoc).scoreDocs;
+            if (scoreDocs.length > 0) {
+                return transformer.transform(searcher.doc(scoreDocs[0].doc));
+            } else {
+                return null;
+            }
+        } catch (IOException e) {
+            throw new QueryException(e);
+        }
+    }
+
+    @Override
     public T uniqueResult() {
         try {
             int maxDoc = maxDoc();

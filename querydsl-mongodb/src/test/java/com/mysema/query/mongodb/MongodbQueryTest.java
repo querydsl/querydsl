@@ -67,6 +67,12 @@ public class MongodbQueryTest {
     }
 
     @Test
+    public void SingleResult(){
+        where(user.firstName.isNotNull()).singleResult();
+    }
+
+
+    @Test
     public void LongPath(){
         assertEquals(2, query().where(user.mainAddress().city().name.eq("Helsinki")).count());
         assertEquals(2, query().where(user.mainAddress().city().name.eq("Tampere")).count());

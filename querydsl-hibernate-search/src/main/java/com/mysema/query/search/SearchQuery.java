@@ -90,7 +90,7 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
         }
         return fullTextQuery;
     }
-    
+
 
     @Override
     public SearchQuery<T> distinct() {
@@ -98,12 +98,12 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
         return this;
     }
 
-    
+
     @SuppressWarnings("unchecked")
     public CloseableIterator<T> iterate(){
         return new IteratorAdapter<T>(createQuery(false).iterate());
     }
-    
+
     public CloseableIterator<T> iterateDistinct(){
         return iterate();
     }
@@ -157,14 +157,19 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
         return queryMixin.set(param, value);
     }
 
+    @Override
+    public T singleResult() {
+        return limit(1).uniqueResult();
+    }
+
     @SuppressWarnings("unchecked")
     @Override
     public T uniqueResult() {
         try{
-            return (T) createQuery(false).uniqueResult();    
+            return (T) createQuery(false).uniqueResult();
         }catch (org.hibernate.NonUniqueResultException e){
             throw new NonUniqueResultException();
-        }        
+        }
     }
 
     @Override
