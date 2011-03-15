@@ -213,11 +213,13 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         return (RT)uniqueResult();
     }
 
+    @Override
     public Object[] uniqueResult(Expression<?>[] args) {
         getQueryMixin().addToProjection(args);
         return (Object[])uniqueResult();
     }
     
+    @Nullable
     private Object uniqueResult() {
         String queryString = toQueryString();
         logQuery(queryString);

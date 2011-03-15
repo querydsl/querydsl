@@ -221,9 +221,15 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     @Nullable
     public Object[] uniqueResult(Expression<?>[] args) {
         queryMixin.addToProjection(args);
-        return (Object[])uniqueResult();
+        Object obj = uniqueResult();
+        if (obj != null){
+            return obj.getClass().isArray() ? (Object[])obj : new Object[]{obj};    
+        }else{
+            return null;
+        }     
     }
 
+    @Nullable
     @SuppressWarnings("unchecked")
     private Object uniqueResult() {
         if (getMetadata().getModifiers().getLimit() == null){

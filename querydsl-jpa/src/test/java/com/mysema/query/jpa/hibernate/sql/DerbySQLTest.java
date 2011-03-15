@@ -23,6 +23,7 @@ import com.mysema.query.jpa.domain.sql.SAnimal;
 import com.mysema.query.sql.DerbyTemplates;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.ConstructorExpression;
+import com.mysema.query.types.Expression;
 import com.mysema.testutil.HibernateConfig;
 import com.mysema.testutil.HibernateTestRunner;
 
@@ -54,7 +55,7 @@ public class DerbySQLTest {
     }
 
     @Test
-    public void scalarQueries(){
+    public void ScalarQueries(){
         SAnimal cat = new SAnimal("cat");
 
         // count
@@ -82,6 +83,16 @@ public class DerbySQLTest {
         SearchResults<String> results = query().from(cat).limit(3).orderBy(cat.name.asc()).listResults(cat.name);
         assertEquals(Arrays.asList("Beck","Bobby","Harold"), results.getResults());
         assertEquals(6l, results.getTotal());
+        
+        // unique Result
+        query().from(cat).limit(1).uniqueResult(cat.id);
+        
+        query().from(cat).limit(1).uniqueResult(new Expression[]{cat.id});
+        
+        // single Result
+        query().from(cat).singleResult(cat.id);
+        
+        query().from(cat).singleResult(new Expression[]{cat.id});
 
     }
 

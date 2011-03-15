@@ -176,11 +176,18 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery> implements 
         return (RT)uniqueResult(query);
     }
     
+    @Override
     public Object[] uniqueResult(Expression<?>[] args) {
         Query query = createQuery(args);
-        return (Object[])uniqueResult(query);
+        Object obj = uniqueResult(query);
+        if (obj != null){
+            return obj.getClass().isArray() ? (Object[])obj : new Object[]{obj};    
+        }else{
+            return null;
+        }        
     }
 
+    @Nullable
     private Object uniqueResult(Query query) {
         reset();
         try{

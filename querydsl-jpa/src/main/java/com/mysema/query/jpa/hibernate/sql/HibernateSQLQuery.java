@@ -202,7 +202,12 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
     @Override
     public Object[] uniqueResult(Expression<?>[] args) {
         Query query = createQuery(args);
-        return (Object[])uniqueResult(query);    
+        Object obj = uniqueResult(query);
+        if (obj != null){
+            return obj.getClass().isArray() ? (Object[])obj : new Object[]{obj};    
+        }else{
+            return null;
+        }        
     }
 
     @SuppressWarnings("unchecked")

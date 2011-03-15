@@ -19,6 +19,7 @@ import com.mysema.query.jdo.test.domain.sql.SProduct;
 import com.mysema.query.sql.HSQLDBTemplates;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.ConstructorExpression;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.BooleanExpression;
 
 public class JDOSQLQueryTest extends AbstractJDOTest{
@@ -45,6 +46,11 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
     @Test
     public void SingleResult(){
         sql().from(product).singleResult(product.name);
+    }
+    
+    @Test
+    public void SingleResult_With_Array(){
+        sql().from(product).singleResult(new Expression[]{product.name});
     }
     
     @Test    

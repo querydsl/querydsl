@@ -5,7 +5,10 @@
  */
 package com.mysema.query.collections;
 
+import static com.mysema.query.alias.Alias.$;
+import static com.mysema.query.alias.Alias.alias;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,6 +52,18 @@ public class InnerJoinTest extends AbstractQueryTest{
         assertEquals("Kate", rv.get(1).getName());
 
     }
+        
+    @Test
+    public void Alias(){
+        Cat cc = alias(Cat.class, "cat1");
+        Cat ck = alias(Cat.class, "cat2");
+        List<Cat> rv =  MiniApi.from($(cc), cats)
+                        .innerJoin($(cc.getKittens()), $(ck))
+                        .where($(cc.getName()).eq($(ck.getName())))
+                        .list($(cc));
+        assertFalse(rv.isEmpty());
+    }
+
 
     @Test
     public void Map(){

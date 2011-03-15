@@ -27,6 +27,7 @@ import com.mysema.query.jpa.domain.sql.SAnimal;
 import com.mysema.query.sql.DerbyTemplates;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.ConstructorExpression;
+import com.mysema.query.types.Expression;
 import com.mysema.testutil.JPAConfig;
 import com.mysema.testutil.JPATestRunner;
 
@@ -86,6 +87,16 @@ public class JPADerbySQLTest {
         SearchResults<String> results = query().from(cat).limit(3).orderBy(cat.name.asc()).listResults(cat.name);
         assertEquals(Arrays.asList("Beck","Bobby","Harold"), results.getResults());
         assertEquals(6l, results.getTotal());
+        
+        // unique Result
+        query().from(cat).limit(1).uniqueResult(cat.id);
+        
+        query().from(cat).limit(1).uniqueResult(new Expression[]{cat.id});
+        
+        // single Result
+        query().from(cat).singleResult(cat.id);
+        
+        query().from(cat).singleResult(new Expression[]{cat.id});
 
     }
 
