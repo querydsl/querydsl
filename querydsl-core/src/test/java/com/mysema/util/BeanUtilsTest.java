@@ -12,6 +12,7 @@ public class BeanUtilsTest {
         assertEquals("Prop", BeanUtils.capitalize("prop"));
         assertEquals("URL",  BeanUtils.capitalize("URL"));
         assertEquals("cId",  BeanUtils.capitalize("cId"));
+        assertEquals("sEPOrder",  BeanUtils.capitalize("sEPOrder"));
     }
 
     @Test
@@ -20,6 +21,8 @@ public class BeanUtilsTest {
         assertEquals("prop", BeanUtils.uncapitalize("Prop"));
         assertEquals("URL",  BeanUtils.uncapitalize("URL"));
         assertEquals("cId",  BeanUtils.uncapitalize("cId"));
+        assertEquals("sEPOrder",  BeanUtils.capitalize("sEPOrder"));
     }
+
 
 }

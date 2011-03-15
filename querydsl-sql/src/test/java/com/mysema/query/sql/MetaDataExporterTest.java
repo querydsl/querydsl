@@ -39,16 +39,19 @@ public class MetaDataExporterTest {
     public static void setUpClass() throws ClassNotFoundException, SQLException{
         Class.forName("org.h2.Driver");
         String url = "jdbc:h2:mem:testdb" + System.currentTimeMillis();
-        connection = DriverManager.getConnection(url, "sa", "");    
-        
+        connection = DriverManager.getConnection(url, "sa", "");
+
         Statement stmt = connection.createStatement();
-        
+
         try{
             // reserved words
             stmt.execute("create table reserved (id int, while int)");
 
             // underscore
             stmt.execute("create table underscore (e_id int, c_id int)");
+
+            // bean generation
+            stmt.execute("create table beangen1 (\"SEP_Order\" int)");
 
             // default instance clash
             stmt.execute("create table definstance (id int, definstance int, definstance1 int)");
@@ -82,17 +85,17 @@ public class MetaDataExporterTest {
         }finally{
             stmt.close();
         }
-        
-        
+
+
     }
-    
+
     @AfterClass
     public static void tearDownClass() throws SQLException{
         connection.close();
     }
-    
+
     @Before
-    public void setUp() throws ClassNotFoundException, SQLException {        
+    public void setUp() throws ClassNotFoundException, SQLException {
         statement = connection.createStatement();
     }
 
@@ -100,7 +103,7 @@ public class MetaDataExporterTest {
     public void tearDown() throws SQLException{
         statement.close();
     }
-    
+
     private static final NamingStrategy defaultNaming = new DefaultNamingStrategy();
 
     private static final NamingStrategy originalNaming = new OriginalNamingStrategy();
