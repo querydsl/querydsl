@@ -25,8 +25,8 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.jpa.AbstractSQLQuery;
 import com.mysema.query.jpa.HibernateSQLSerializer;
-import com.mysema.query.jpa.hibernate.FactoryExpressionTransformer;
 import com.mysema.query.jpa.hibernate.DefaultSessionHolder;
+import com.mysema.query.jpa.hibernate.FactoryExpressionTransformer;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.query.jpa.hibernate.HibernateUtil;
 import com.mysema.query.jpa.hibernate.SessionHolder;
@@ -204,23 +204,24 @@ public final class HibernateSQLQuery extends AbstractSQLQuery<HibernateSQLQuery>
         Query query = createQuery(args);
         Object obj = uniqueResult(query);
         if (obj != null){
-            return obj.getClass().isArray() ? (Object[])obj : new Object[]{obj};    
+            return obj.getClass().isArray() ? (Object[])obj : new Object[]{obj};
         }else{
             return null;
-        }        
+        }
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <RT> RT uniqueResult(Expression<RT> expr) {
         Query query = createQuery(expr);
-        return (RT)uniqueResult(query);  
+        return (RT)uniqueResult(query);
     }
 
+    @Nullable
     private Object uniqueResult(Query query) {
-        reset();        
+        reset();
         try{
-            return query.uniqueResult();    
+            return query.uniqueResult();
         }catch (org.hibernate.NonUniqueResultException e){
             throw new NonUniqueResultException();
         }
