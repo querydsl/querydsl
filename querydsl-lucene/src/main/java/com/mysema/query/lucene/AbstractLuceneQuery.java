@@ -263,7 +263,7 @@ SimpleProjectable<T> {
     }
 
     @Override
-    public Q where(final Predicate... e) {
+    public Q where(Predicate... e) {
         return queryMixin.where(e);
     }
 
