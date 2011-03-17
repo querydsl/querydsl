@@ -377,6 +377,24 @@ class ExpressionTest {
     assertEquals("!empty(person.firstName)", !(person.firstName isEmpty)) 
   }
 
+  @Test
+  def BooleanExpression_All_Of {
+    val b1 = new BooleanPath("b1")
+    val b2 = new BooleanPath("b2")
+    val b3 = new BooleanPath("b3")
+    assertEquals("b1 && b2 && b3", BooleanExpression.allOf(b1, b2, b3))       
+    assertEquals("b1", BooleanExpression.allOf(b1))
+  }
+
+  @Test
+  def BooleanExpression_Any_Of {
+    val b1 = new BooleanPath("b1")
+    val b2 = new BooleanPath("b2")
+    val b3 = new BooleanPath("b3")
+    assertEquals("b1 || b2 || b3", BooleanExpression.anyOf(b1, b2, b3))
+    assertEquals("b1", BooleanExpression.anyOf(b1))
+  }
+  
 }
 
 

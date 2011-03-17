@@ -337,11 +337,15 @@ trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpress
 trait BooleanExpression extends ComparableExpression[java.lang.Boolean] with Predicate {
     
   def and(right: Predicate) = boolean(Ops.AND, this, right)
+      
+  def andAnyOf(expr: BooleanExpression*) = and(BooleanExpression.anyOf(expr:_*))
 
   def &&(right: Predicate) = and(right)
   
   def or(right: Predicate) = boolean(Ops.OR, this, right)
 
+  def orAllOf(expr: BooleanExpression*) = or(BooleanExpression.allOf(expr:_*))
+  
   def ||(right: Predicate) = or(right)
   
   def not() = boolean(Ops.NOT, this)
@@ -352,6 +356,14 @@ trait BooleanExpression extends ComparableExpression[java.lang.Boolean] with Pre
 
   override def as(alias: String): BooleanExpression = as(new PathImpl[java.lang.Boolean](getType, alias))
 
+}
+
+object BooleanExpression {
+    
+  def allOf(expr: BooleanExpression*) = expr.tail.foldLeft(expr.head) { _ and _ };
+      
+  def anyOf(expr: BooleanExpression*) = expr.tail.foldLeft(expr.head) { _ or _ }; 
+    
 }
 
 trait StringExpression extends ComparableExpression[String] {
