@@ -164,9 +164,8 @@ SimpleProjectable<T> {
             }
             if (offset < scoreDocs.length) {
                 return new ResultIterator<T>(scoreDocs, offset, searcher, transformer);
-            } else {
-                return new EmptyCloseableIterator<T>();
             }
+            return new EmptyCloseableIterator<T>();
         } catch (final IOException e) {
             throw new QueryException(e);
         }
@@ -236,9 +235,8 @@ SimpleProjectable<T> {
             final ScoreDoc[] scoreDocs = searcher.search(createQuery(), filter, maxDoc).scoreDocs;
             if (scoreDocs.length > 0) {
                 return transformer.transform(searcher.doc(scoreDocs[0].doc));
-            } else {
-                return null;
             }
+            return null;
         } catch (IOException e) {
             throw new QueryException(e);
         }
@@ -252,10 +250,18 @@ SimpleProjectable<T> {
                 return null;
             }
             final ScoreDoc[] scoreDocs = searcher.search(createQuery(), filter, maxDoc).scoreDocs;
-            if (scoreDocs.length > 1) {
-                throw new NonUniqueResultException();
-            } else if (scoreDocs.length == 1) {
-                return transformer.transform(searcher.doc(scoreDocs[0].doc));
+            int index = 0;
+            QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
+            Long offset = modifiers.getOffset();
+            if (offset != null) {
+                index = offset.intValue();
+            }
+            Long limit = modifiers.getLimit();
+            if (limit == null ? scoreDocs.length - index > 1 :
+                                limit > 1 && scoreDocs.length > 1) {
+                throw new NonUniqueResultException("Unique result requested, but " + scoreDocs.length + " found.");
+            } else if (scoreDocs.length > index) {
+                return transformer.transform(searcher.doc(scoreDocs[index].doc));
             } else {
                 return null;
             }
