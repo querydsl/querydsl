@@ -397,6 +397,37 @@ public class LuceneQueryTest {
         assertNotNull(query.where(title.ne("")).singleResult());
     }
 
+    @Test
+    public void Single_Result_Takes_Limit() {
+        assertEquals("Jurassic Park", query
+                                        .where(title.ne(""))
+                                        .limit(1)
+                                        .singleResult().get("title"));
+    }
+
+    @Test
+    public void Single_Result_Considers_Limit_And_Actual_Result_Size() {
+        query.where(title.startsWith("Nummi"));
+        final Document document = query.limit(3).singleResult();
+        assertEquals("Nummisuutarit", document.get("title"));
+    }
+
+    @Test
+    public void Single_Result_Returns_Null_If_Nothing_Is_In_Range() {
+        query.where(title.startsWith("Nummi"));
+        assertNull(query.offset(10).singleResult());
+    }
+
+    @Test
+    public void Single_Result_Considers_Offset() {
+        assertEquals("Introduction to Algorithms", query.where(title.ne("")).offset(3).singleResult().get("title"));
+    }
+
+    @Test
+    public void Single_Result_Considers_Limit_And_Offset() {
+        assertEquals("The Lord of the Rings", query.where(title.ne("")).limit(1).offset(2).singleResult().get("title"));
+    }
+
     @Test(expected=NonUniqueResultException.class)
     public void uniqueResult_Contract() {
         query.where(title.ne("")).uniqueResult();

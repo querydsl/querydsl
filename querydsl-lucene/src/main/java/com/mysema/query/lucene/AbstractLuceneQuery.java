@@ -225,25 +225,7 @@ SimpleProjectable<T> {
         return queryMixin.set(param, value);
     }
 
-    @Override
-    public T singleResult() {
-        try {
-            int maxDoc = maxDoc();
-            if (maxDoc == 0) {
-                return null;
-            }
-            final ScoreDoc[] scoreDocs = searcher.search(createQuery(), filter, maxDoc).scoreDocs;
-            if (scoreDocs.length > 0) {
-                return transformer.transform(searcher.doc(scoreDocs[0].doc));
-            }
-            return null;
-        } catch (IOException e) {
-            throw new QueryException(e);
-        }
-    }
-
-    @Override
-    public T uniqueResult() {
+    private T oneResult(boolean unique) {
         try {
             int maxDoc = maxDoc();
             if (maxDoc == 0) {
@@ -257,8 +239,8 @@ SimpleProjectable<T> {
                 index = offset.intValue();
             }
             Long limit = modifiers.getLimit();
-            if (limit == null ? scoreDocs.length - index > 1 :
-                                limit > 1 && scoreDocs.length > 1) {
+            if (unique && (limit == null ? scoreDocs.length - index > 1 :
+                                           limit > 1 && scoreDocs.length > 1)) {
                 throw new NonUniqueResultException("Unique result requested, but " + scoreDocs.length + " found.");
             } else if (scoreDocs.length > index) {
                 return transformer.transform(searcher.doc(scoreDocs[index].doc));
@@ -268,6 +250,16 @@ SimpleProjectable<T> {
         } catch (IOException e) {
             throw new QueryException(e);
         }
+    }
+
+    @Override
+    public T singleResult() {
+        return oneResult(false);
+    }
+
+    @Override
+    public T uniqueResult() {
+        return oneResult(true);
     }
 
     @Override
