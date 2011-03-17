@@ -360,9 +360,9 @@ trait BooleanExpression extends ComparableExpression[java.lang.Boolean] with Pre
 
 object BooleanExpression {
     
-  def allOf(expr: BooleanExpression*) = expr.tail.foldLeft(expr.head) { _ && _ }
+  def allOf(expr: BooleanExpression*) = expr reduceLeft { _ && _ }
       
-  def anyOf(expr: BooleanExpression*) = expr.tail.foldLeft(expr.head) { _ || _ }
+  def anyOf(expr: BooleanExpression*) = expr reduceLeft { _ || _ }
     
 }
 
