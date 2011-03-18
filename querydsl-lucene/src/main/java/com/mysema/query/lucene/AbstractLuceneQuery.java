@@ -225,6 +225,7 @@ SimpleProjectable<T> {
         return queryMixin.set(param, value);
     }
 
+    @Nullable
     private T oneResult(boolean unique) {
         try {
             int maxDoc = maxDoc();
