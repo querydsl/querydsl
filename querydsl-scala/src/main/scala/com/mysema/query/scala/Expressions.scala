@@ -50,7 +50,7 @@ trait SimpleExpression[T] extends Expression[T]{
   
   def !==(right: Expression[T]) = ne(right)  
   
-  def count() = number[java.lang.Long](classOf[java.lang.Long], AggOps.COUNT_AGG, this)
+  lazy val count = number[java.lang.Long](classOf[java.lang.Long], AggOps.COUNT_AGG, this)
 
   def in(right: Collection[T]) = boolean(IN, this, constant(right))
 
@@ -60,9 +60,9 @@ trait SimpleExpression[T] extends Expression[T]{
 
   def countDistinct() = number[java.lang.Long](classOf[java.lang.Long], AggOps.COUNT_DISTINCT_AGG, this)
 
-  def isNotNull() = boolean(IS_NOT_NULL, this)
+  lazy val isNotNull = boolean(IS_NOT_NULL, this)
 
-  def isNull() = boolean(IS_NULL, this)
+  lazy val isNull = boolean(IS_NULL, this)
 
   def notIn(right: Collection[T]) = in(right).not
 
@@ -78,17 +78,17 @@ trait SimpleExpression[T] extends Expression[T]{
 
 trait ArrayExpression[T <: Array[_]] extends SimpleExpression[T] {
 
-  def size() = number[Integer](classOf[Integer], Ops.ARRAY_SIZE, this)
+  lazy val size = number[Integer](classOf[Integer], Ops.ARRAY_SIZE, this)
 
 }
 
 trait CollectionExpressionBase[T <: Collection[C], C, Q <: Expression[_ >: C]] extends SimpleExpression[T] with com.mysema.query.types.CollectionExpression[T,C] {
 
-  def size() = number[Integer](classOf[Integer], COL_SIZE, this)
+  lazy val size = number[Integer](classOf[Integer], COL_SIZE, this)
 
-  def isEmpty() = boolean(COL_IS_EMPTY, this)
+  lazy val isEmpty = boolean(COL_IS_EMPTY, this)
 
-  def isNotEmpty() = isEmpty.not
+  lazy val isNotEmpty = isEmpty.not
 
   def contains(child: C): BooleanExpression = contains(constant(child))
 
@@ -116,11 +116,11 @@ trait ListExpression[T, Q <: Expression[_ >: T]] extends CollectionExpressionBas
 
 trait MapExpression[K, V, Q <: Expression[_ >: V]] extends SimpleExpression[java.util.Map[K, V]] with com.mysema.query.types.MapExpression[K,V] {
     
-  def size() = number[Integer](classOf[Integer], MAP_SIZE, this)
+  lazy val size = number[Integer](classOf[Integer], MAP_SIZE, this)
 
-  def isEmpty() = boolean(MAP_IS_EMPTY, this)
+  lazy val isEmpty = boolean(MAP_IS_EMPTY, this)
 
-  def isNotEmpty() = isEmpty.not
+  lazy val isNotEmpty = isEmpty.not
 
   def containsKey(k: K) = boolean(CONTAINS_KEY, this, constant(k))
 
@@ -142,9 +142,9 @@ trait MapExpression[K, V, Q <: Expression[_ >: V]] extends SimpleExpression[java
 
 trait ComparableExpressionBase[T <: Comparable[_]] extends SimpleExpression[T] {
 
-  def asc() = new OrderSpecifier[T](Order.ASC, this)
+  lazy val asc = new OrderSpecifier[T](Order.ASC, this)
 
-  def desc() = new OrderSpecifier[T](Order.DESC, this)
+  lazy val desc = new OrderSpecifier[T](Order.DESC, this)
 
 }
 
@@ -252,13 +252,13 @@ trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpress
 
   def in(right: NumberArray) = boolean(IN, this, constant(asList(right: _*)))
 
-  def min() = number[T](getType, AggOps.MIN_AGG, this)
+  lazy val min = number[T](getType, AggOps.MIN_AGG, this)
 
-  def max() = number[T](getType, AggOps.MAX_AGG, this)
+  lazy val max = number[T](getType, AggOps.MAX_AGG, this)
 
-  def sum() = number[T](getType, AggOps.SUM_AGG, this)
+  lazy val sum = number[T](getType, AggOps.SUM_AGG, this)
 
-  def avg() = number[T](getType, AggOps.AVG_AGG, this)
+  lazy val avg = number[T](getType, AggOps.AVG_AGG, this)
 
   def subtract(right: NumberExpr) = number[T](getType, Ops.SUB, this, right)
 
@@ -296,27 +296,27 @@ trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpress
 
   def %(right: Number) = mod(right)  
 
-  def sqrt() = number[java.lang.Double](classOf[java.lang.Double], MathOps.SQRT, this)
+  lazy val sqrt = number[java.lang.Double](classOf[java.lang.Double], MathOps.SQRT, this)
 
-  def abs() = number[T](getType, MathOps.ABS, this)
+  lazy val abs = number[T](getType, MathOps.ABS, this)
 
-  def byteValue() = castToNum(classOf[java.lang.Byte])
+  lazy val byteValue = castToNum(classOf[java.lang.Byte])
 
-  def doubleValue() = castToNum(classOf[java.lang.Double])
+  lazy val doubleValue = castToNum(classOf[java.lang.Double])
 
-  def floatValue() = castToNum(classOf[java.lang.Float])
+  lazy val floatValue = castToNum(classOf[java.lang.Float])
 
-  def intValue() = castToNum(classOf[java.lang.Integer])
+  lazy val intValue = castToNum(classOf[java.lang.Integer])
 
-  def longValue() = castToNum(classOf[java.lang.Long])
+  lazy val longValue = castToNum(classOf[java.lang.Long])
 
-  def shortValue() = castToNum(classOf[java.lang.Short])
+  lazy val shortValue = castToNum(classOf[java.lang.Short])
 
-  def ceil() = number[T](getType, MathOps.CEIL, this)
+  lazy val ceil = number[T](getType, MathOps.CEIL, this)
 
-  def floor() = number[T](getType, MathOps.FLOOR, this)
+  lazy val floor = number[T](getType, MathOps.FLOOR, this)
 
-  def round() = number[T](getType, MathOps.ROUND, this)
+  lazy val round = number[T](getType, MathOps.ROUND, this)
   
   def unary_-() = negate
 
@@ -390,9 +390,9 @@ trait StringExpression extends ComparableExpression[String] {
 
   def stringValue() = this
 
-  def lower() = toLowerCase()
+  def lower = toLowerCase
 
-  def upper() = toUpperCase()
+  def upper = toUpperCase
 
   def matches(right: Expression[String]) = boolean(Ops.MATCHES, this, right) 
 
@@ -422,9 +422,9 @@ trait StringExpression extends ComparableExpression[String] {
 
   def equalsIgnoreCase(right: String): BooleanExpression = equalsIgnoreCase(constant(right)) 
 
-  def isEmpty() = boolean(Ops.STRING_IS_EMPTY, this) 
+  lazy val isEmpty = boolean(Ops.STRING_IS_EMPTY, this) 
 
-  def length() = number[Integer](classOf[Integer], Ops.STRING_LENGTH, this) 
+  lazy val length = number[Integer](classOf[Integer], Ops.STRING_LENGTH, this) 
 
   def startsWith(right: Expression[String]) = boolean(Ops.STARTS_WITH, this, right) 
 
@@ -434,9 +434,9 @@ trait StringExpression extends ComparableExpression[String] {
 
   def substring(right: Int, arg1: Int) = string(Ops.SUBSTR_2ARGS, this, constant(right), constant(arg1)) 
 
-  def toLowerCase() = string(Ops.LOWER, this) 
+  lazy val toLowerCase = string(Ops.LOWER, this) 
 
-  def toUpperCase() = string(Ops.UPPER, this) 
+  lazy val toUpperCase = string(Ops.UPPER, this) 
 
   def trim() = string(Ops.TRIM, this) 
 
@@ -448,7 +448,7 @@ trait StringExpression extends ComparableExpression[String] {
 
   def endsWithIgnoreCase(right: String): BooleanExpression = endsWithIgnoreCase(constant(right))
 
-  def isNotEmpty() = isEmpty().not
+  lazy val isNotEmpty = isEmpty.not
 
   def startsWithIgnoreCase(right: Expression[String]) = boolean(Ops.STARTS_WITH_IC, this, right)
 
@@ -474,13 +474,13 @@ trait TemporalExpression[T <: Comparable[_]] extends ComparableExpression[T] {
 
 trait TimeExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
-  def hour() = number(classOf[Integer], DateTimeOps.HOUR, this)
+  lazy val hour = number(classOf[Integer], DateTimeOps.HOUR, this)
 
-  def minute() = number(classOf[Integer], DateTimeOps.MINUTE, this)
+  lazy val minute = number(classOf[Integer], DateTimeOps.MINUTE, this)
 
-  def second() = number(classOf[Integer], DateTimeOps.SECOND, this)
+  lazy val second = number(classOf[Integer], DateTimeOps.SECOND, this)
 
-  def milliSecond() = number(classOf[Integer], DateTimeOps.MILLISECOND, this)
+  lazy val milliSecond = number(classOf[Integer], DateTimeOps.MILLISECOND, this)
 
   override def as(right: Path[T]) = time(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
 
@@ -490,31 +490,31 @@ trait TimeExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
 trait DateTimeExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
-  def min() = dateTime(getType, AggOps.MIN_AGG, this)
+  lazy val min = dateTime(getType, AggOps.MIN_AGG, this)
 
-  def max() = dateTime(getType, AggOps.MAX_AGG, this)
+  lazy val max = dateTime(getType, AggOps.MAX_AGG, this)
 
-  def dayOfMonth() = number(classOf[Integer], DateTimeOps.DAY_OF_MONTH, this)
+  lazy val dayOfMonth = number(classOf[Integer], DateTimeOps.DAY_OF_MONTH, this)
 
-  def dayOfWeek() = number(classOf[Integer], DateTimeOps.DAY_OF_WEEK, this)
+  lazy val dayOfWeek = number(classOf[Integer], DateTimeOps.DAY_OF_WEEK, this)
 
-  def dayOfYear() = number(classOf[Integer], DateTimeOps.DAY_OF_YEAR, this)
+  lazy val dayOfYear = number(classOf[Integer], DateTimeOps.DAY_OF_YEAR, this)
 
-  def week() = number(classOf[Integer], DateTimeOps.WEEK, this)
+  lazy val week = number(classOf[Integer], DateTimeOps.WEEK, this)
 
-  def month() = number(classOf[Integer], DateTimeOps.MONTH, this)
+  lazy val month = number(classOf[Integer], DateTimeOps.MONTH, this)
 
-  def year() = number(classOf[Integer], DateTimeOps.YEAR, this)
+  lazy val year = number(classOf[Integer], DateTimeOps.YEAR, this)
 
-  def yearMonth() = number(classOf[Integer], DateTimeOps.YEAR_MONTH, this)
+  lazy val yearMonth = number(classOf[Integer], DateTimeOps.YEAR_MONTH, this)
 
-  def hour() = number(classOf[Integer], DateTimeOps.HOUR, this)
+  lazy val hour = number(classOf[Integer], DateTimeOps.HOUR, this)
 
-  def minute() = number(classOf[Integer], DateTimeOps.MINUTE, this)
+  lazy val minute = number(classOf[Integer], DateTimeOps.MINUTE, this)
 
-  def second() = number(classOf[Integer], DateTimeOps.SECOND, this)
+  lazy val second = number(classOf[Integer], DateTimeOps.SECOND, this)
 
-  def milliSecond() = number(classOf[Integer], DateTimeOps.DAY_OF_YEAR, this)
+  lazy val milliSecond = number(classOf[Integer], DateTimeOps.DAY_OF_YEAR, this)
 
   override def as(right: Path[T]) = dateTime(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
 
@@ -524,23 +524,23 @@ trait DateTimeExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
 trait DateExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
-  def min() = date(getType, AggOps.MIN_AGG, this)
+  lazy val min = date(getType, AggOps.MIN_AGG, this)
 
-  def max() = date(getType, AggOps.MAX_AGG, this)
+  lazy val max = date(getType, AggOps.MAX_AGG, this)
 
-  def dayOfMonth() = number(classOf[Integer], DateTimeOps.DAY_OF_MONTH, this)
+  lazy val dayOfMonth = number(classOf[Integer], DateTimeOps.DAY_OF_MONTH, this)
 
-  def dayOfWeek() = number(classOf[Integer], DateTimeOps.DAY_OF_WEEK, this)
+  lazy val dayOfWeek = number(classOf[Integer], DateTimeOps.DAY_OF_WEEK, this)
 
-  def dayOfYear() = number(classOf[Integer], DateTimeOps.DAY_OF_YEAR, this)
+  lazy val dayOfYear = number(classOf[Integer], DateTimeOps.DAY_OF_YEAR, this)
 
-  def week() = number(classOf[Integer], DateTimeOps.WEEK, this)
+  lazy val week = number(classOf[Integer], DateTimeOps.WEEK, this)
 
-  def month() = number(classOf[Integer], DateTimeOps.MONTH, this)
+  lazy val month = number(classOf[Integer], DateTimeOps.MONTH, this)
 
-  def year() = number(classOf[Integer], DateTimeOps.YEAR, this)
+  lazy val year = number(classOf[Integer], DateTimeOps.YEAR, this)
 
-  def yearMonth() = number(classOf[Integer], DateTimeOps.YEAR_MONTH, this)
+  lazy val yearMonth = number(classOf[Integer], DateTimeOps.YEAR_MONTH, this)
 
   override def as(right: Path[T]) = date(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
 
@@ -550,7 +550,7 @@ trait DateExpression[T <: Comparable[_]] extends TemporalExpression[T] {
 
 trait EnumExpression[T <: Enum[T]] extends ComparableExpression[T] {
 
-  def ordinal() = number(classOf[Integer], Ops.ORDINAL, this)
+  lazy val ordinal = number(classOf[Integer], Ops.ORDINAL, this)
 
   override def as(right: Path[T]) = enum(getType.asInstanceOf[Class[T]], ALIAS.asInstanceOf[Operator[T]], this, right)
 
