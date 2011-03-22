@@ -35,10 +35,10 @@ public class QueryMetadaSerializationTest {
     @Test
     public void Serialization() throws IOException, ClassNotFoundException{
         StringPath expr = new StringPath("str");
+        metadata.addJoin(JoinType.DEFAULT, expr);
         metadata.addFlag(new QueryFlag(Position.AFTER_FILTERS, ""));
         metadata.addGroupBy(expr);
-        metadata.addHaving(expr.isEmpty());
-        metadata.addJoin(JoinType.DEFAULT, expr);
+        metadata.addHaving(expr.isEmpty());        
         metadata.getJoins().get(0).addFlag(new JoinFlag(""));
         metadata.addJoinCondition(expr.isEmpty());
         metadata.addOrderBy(expr.asc());
@@ -72,7 +72,7 @@ public class QueryMetadaSerializationTest {
     @Test
     public void FullySerizable(){
         Set<Class<?>> checked = new HashSet<Class<?>>();
-        checked.addAll(Arrays.<Class<?>>asList(List.class, Set.class, Map.class, Object.class, String.class, Class.class));
+        checked.addAll(Arrays.<Class<?>>asList(Collection.class, List.class, Set.class, Map.class, Object.class, String.class, Class.class));
         Stack<Class<?>> classes = new Stack<Class<?>>();
         classes.addAll(Arrays.<Class<?>>asList(NumberPath.class, NumberOperation.class, NumberTemplate.class, BeanPath.class, DefaultQueryMetadata.class));
         while (!classes.isEmpty()){            

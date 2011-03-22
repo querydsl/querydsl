@@ -12,11 +12,11 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Templates;
+import com.mysema.query.types.ToStringVisitor;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.NumberExpression;
-import com.mysema.query.types.expr.SimpleExpression;
-import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.template.NumberTemplate;
 
 /**
@@ -25,7 +25,7 @@ import com.mysema.query.types.template.NumberTemplate;
  * @author tiwe
  *
  */
-public class RowNumber extends SimpleExpression<Long>{
+public class RowNumber implements Expression<Long>{
 
     private static final long serialVersionUID = 3499501725767772281L;
 
@@ -34,11 +34,7 @@ public class RowNumber extends SimpleExpression<Long>{
     private final List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
 
     @Nullable
-    private NumberPath<Long> target;
-
-    public RowNumber() {
-        super(Long.class);
-    }
+    private Expression<Long> target;
 
     @Override
     public <R,C> R accept(Visitor<R,C> v, C context) {
@@ -62,8 +58,7 @@ public class RowNumber extends SimpleExpression<Long>{
             args.add(target);
         }
 
-        NumberExpression<Long> expr = NumberTemplate.create(Long.class, builder.toString(),
-                args.toArray(new Expression[args.size()]));
+        NumberExpression<Long> expr = NumberTemplate.create(Long.class, builder.toString(), args.toArray(new Expression[args.size()]));
         return expr.accept(v, context);
     }
 
@@ -117,9 +112,14 @@ public class RowNumber extends SimpleExpression<Long>{
         return this;
     }
 
-    public RowNumber as(NumberPath<Long> target){
+    public RowNumber as(Expression<Long> target){
         this.target = target;
         return this;
+    }
+    
+    @Override
+    public Class<? extends Long> getType() {
+        return Long.class;
     }
 
     @Override
@@ -138,5 +138,11 @@ public class RowNumber extends SimpleExpression<Long>{
             return false;
         }
     }
+    
+    @Override
+    public String toString(){
+        return accept(ToStringVisitor.DEFAULT, Templates.DEFAULT);
+    }
+
 
 }

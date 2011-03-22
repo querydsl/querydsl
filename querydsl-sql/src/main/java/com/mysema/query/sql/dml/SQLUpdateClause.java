@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
@@ -69,6 +70,7 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
         super(configuration);
         this.connection = Assert.notNull(connection,"connection");
         this.entity = Assert.notNull(entity,"entity");
+        metadata.addJoin(JoinType.DEFAULT, entity);
     }
     
     /**
@@ -93,6 +95,7 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
         batchMetadata.add(metadata);
         updates = new ArrayList<Pair<Path<?>,Expression<?>>>();
         metadata = new DefaultQueryMetadata();
+        metadata.addJoin(JoinType.DEFAULT, entity);
         return this;
     }
 

@@ -24,14 +24,21 @@ public class DefaultQueryMetadataTest {
 
     private StringPath str = new StringPath("str");
 
+    @Test(expected=IllegalArgumentException.class)
+    public void Validation(){
+        metadata.addGroupBy(str);
+    }
+    
     @Test
     public void GetGroupBy() {
+        metadata.addJoin(JoinType.DEFAULT, str);
         metadata.addGroupBy(str);
         assertEquals(Arrays.asList(str), metadata.getGroupBy());
     }
 
     @Test
     public void GetHaving() {
+        metadata.addJoin(JoinType.DEFAULT, str);
         metadata.addHaving(str.isNotNull());
         assertEquals(str.isNotNull(), metadata.getHaving());
     }
@@ -78,6 +85,7 @@ public class DefaultQueryMetadataTest {
     @SuppressWarnings("unchecked")
     @Test
     public void GetOrderBy() {
+        metadata.addJoin(JoinType.DEFAULT, str);
         metadata.addOrderBy(str.asc());
         metadata.addOrderBy(str.desc());
         assertEquals(Arrays.asList(str.asc(),str.desc()), metadata.getOrderBy());
@@ -85,12 +93,14 @@ public class DefaultQueryMetadataTest {
 
     @Test
     public void GetProjection() {
+        metadata.addJoin(JoinType.DEFAULT, str);
         metadata.addProjection(str, str.append("abc"));
         assertEquals(Arrays.asList(str, str.append("abc")), metadata.getProjection());
     }
 
     @Test
     public void GetWhere() {
+        metadata.addJoin(JoinType.DEFAULT, str);
         metadata.addWhere(str.eq("b"), str.isNotEmpty());
         assertEquals(str.eq("b").and(str.isNotEmpty()), metadata.getWhere());
     }
@@ -111,6 +121,7 @@ public class DefaultQueryMetadataTest {
 
     @Test
     public void Clone(){
+        metadata.addJoin(JoinType.DEFAULT, str);
         metadata.addGroupBy(str);
         metadata.addHaving(str.isNotNull());
         metadata.addJoin(JoinType.DEFAULT, str);

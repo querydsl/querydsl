@@ -22,6 +22,7 @@ import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.ValidatingVisitor;
 
 /**
  * DefaultQueryMetadata is the default implementation of the {@link QueryMetadata} interface
@@ -57,9 +58,22 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     private BooleanBuilder where = new BooleanBuilder();
 
     private Set<QueryFlag> flags = new LinkedHashSet<QueryFlag>();
+    
+    private final ValidatingVisitor validatingVisitor = new ValidatingVisitor(exprInJoins);
 
+    private final boolean validate;
+    
+    public DefaultQueryMetadata(boolean validate) {
+        this.validate = validate;
+    }    
+    
+    public DefaultQueryMetadata() {
+        this(true);
+    }
+    
     @Override
     public void addGroupBy(Expression<?>... o) {
+        validate(o);
         groupBy.addAll(Arrays.<Expression<?>> asList(o));
     }
 
@@ -67,6 +81,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     public void addHaving(Predicate... o) {
         for (Predicate e : o){
             if (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue()){
+                validate(e);
                 having.and(e);
             }
         }
@@ -74,13 +89,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void addJoin(JoinType joinType, Expression<?> expr) {
-        if (!exprInJoins.contains(expr)) {
-            if (expr instanceof Path<?> && joinType == JoinType.DEFAULT){
-                ensureRoot((Path<?>) expr);
-            }
-            joins.add(new JoinExpression(joinType, expr));
-            exprInJoins.add(expr);
-        }
+        addJoin(new JoinExpression(joinType, expr));
     }
     
     @Override
@@ -90,25 +99,31 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             if (expr instanceof Path<?> && join.getType() == JoinType.DEFAULT){
                 ensureRoot((Path<?>) expr);
             }
-            joins.add(join);
             exprInJoins.add(expr);
+            validate(expr);
+            joins.add(join);
         }
     }
 
     @Override
     public void addJoinCondition(Predicate o) {
         if (!joins.isEmpty()) {
+            validate(o);
             joins.get(joins.size() - 1).addCondition(o);
         }
     }
 
     @Override
     public void addOrderBy(OrderSpecifier<?>... o) {
+        for (OrderSpecifier<?> os : o){
+            validate(os.getTarget());
+        }
         orderBy.addAll(Arrays.asList(o));
     }
 
     @Override
     public void addProjection(Expression<?>... o) {
+        validate(o);
         projection.addAll(Arrays.asList(o));
     }
 
@@ -116,6 +131,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     public void addWhere(Predicate... o) {
         for (Predicate e : o){
             if (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue()){
+                validate(e);
                 where.and(e);
             }
         }
@@ -270,4 +286,11 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         return flags.contains(flag);
     }
 
+    private void validate(Expression<?>... expr){
+        if (validate){
+            for (Expression<?> e : expr){
+                e.accept(validatingVisitor, null);
+            }
+        }
+    }
 }

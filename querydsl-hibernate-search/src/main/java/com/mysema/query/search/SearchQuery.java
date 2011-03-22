@@ -50,6 +50,7 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
         this.session = Assert.notNull(session,"session");
         this.path = Assert.notNull(path,"path");
         this.serializer = SearchSerializer.DEFAULT;
+        queryMixin.from(path);
     }
 
     public SearchQuery(Session session, EntityPath<T> path) {

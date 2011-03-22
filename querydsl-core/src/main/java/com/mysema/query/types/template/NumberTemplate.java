@@ -36,6 +36,10 @@ public class NumberTemplate<T extends Number & Comparable<?>> extends NumberExpr
     }
 
     public static NumberExpression<Integer> one = create(Integer.class, "1");
+    
+    public static NumberExpression<Integer> two = create(Integer.class, "2");
+    
+    public static NumberExpression<Integer> three = create(Integer.class, "3");
 
     public static NumberExpression<Integer> zero = create(Integer.class, "0");
 

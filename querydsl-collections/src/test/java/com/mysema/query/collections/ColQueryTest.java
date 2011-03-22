@@ -10,6 +10,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 
 import org.junit.Test;
@@ -66,7 +67,7 @@ public class ColQueryTest extends AbstractQueryTest {
     
     @Test
     public void Clone(){
-        ColQueryImpl query = query().where(cat.isNotNull()).clone();
+        ColQueryImpl query = query().from(cat, Collections.<Cat>emptyList()).where(cat.isNotNull()).clone();
         assertEquals("cat is not null", query.getMetadata().getWhere().toString());
     }
 

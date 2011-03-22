@@ -54,29 +54,33 @@ public class ParsingTest extends AbstractQueryTest{
 
     @Test
     public void ComplexConstructor() throws Exception {
-        query().select(new QFooDTO(bar.count())).from(bar).parse();
+        query().from(bar).select(new QFooDTO(bar.count())).parse();
     }
 
     @Test
     public void DocoExamples910() throws Exception {
-        query().select(cat.color, sum(cat.weight), cat.count()).from(cat)
-                .groupBy(cat.color).parse();
+        query().from(cat)
+               .groupBy(cat.color)
+               .select(cat.color, sum(cat.weight), cat.count()).parse();
     }
 
     @Test
     public void DocoExamples910_2() throws Exception {
-        query().select(cat.color, sum(cat.weight), cat.count()).from(cat)
-                .groupBy(cat.color).having(
-                        cat.color.in(Color.TABBY, Color.BLACK)).parse();
+        query().from(cat)
+               .groupBy(cat.color)
+               .having(cat.color.in(Color.TABBY, Color.BLACK))
+               .select(cat.color, sum(cat.weight), cat.count()).parse();
     }
 
     @Test
     @Ignore
     public void DocoExamples910_3() throws Exception {
-        query().select(cat).from(cat).join(cat.kittens, kitten).groupBy(cat)
-                .having(kitten.weight.avg().gt(100.0)).orderBy(
-                        kitten.count().asc(), sum(kitten.weight).desc())
-                .parse();
+        query().from(cat).join(cat.kittens, kitten)
+               .groupBy(cat)
+               .having(kitten.weight.avg().gt(100.0))
+               .orderBy(kitten.count().asc(), sum(kitten.weight).desc())
+               .select(cat)
+               .parse();
     }
 
     @Test
@@ -104,7 +108,7 @@ public class ParsingTest extends AbstractQueryTest{
 
     @Test
     public void DocoExamples912() throws Exception {
-        query().select(ord.id, sum(price.amount), item.count()).from(ord)
+        query().from(ord, cust)
                 .join(ord.lineItems, item).join(item.product, product)
                 .from(catalog).join(catalog.prices, price).where(
                         ord.paid.not().and(ord.customer.eq(cust)).and(
@@ -114,19 +118,21 @@ public class ParsingTest extends AbstractQueryTest{
                                         sub().from(catalog).where(
                                                 catalog.effectiveDate.lt(DateExpression.currentDate()))
                                              .list(catalog.effectiveDate)))))
-                .groupBy(ord).having(sum(price.amount).gt(0l)).orderBy(
-                        sum(price.amount).desc());
+                .groupBy(ord).having(sum(price.amount).gt(0l))
+                .orderBy(sum(price.amount).desc())
+                .select(ord.id, sum(price.amount), item.count());
 
         Customer c1 = new Customer();
         Catalog c2 = new Catalog();
 
-        query().select(ord.id, sum(price.amount), item.count()).from(ord)
-                .join(ord.lineItems, item).join(item.product, product)
-                .from(catalog).join(catalog.prices, price).where(
+        query().from(ord)
+               .join(ord.lineItems, item).join(item.product, product)
+               .from(catalog).join(catalog.prices, price).where(
                         ord.paid.not().and(ord.customer.eq(c1)).and(
                                 price.product.eq(product)).and(catalog.eq(c2)))
-                .groupBy(ord).having(sum(price.amount).gt(0l)).orderBy(
-                        sum(price.amount).desc());
+                .groupBy(ord).having(sum(price.amount).gt(0l))
+                .orderBy(sum(price.amount).desc())
+                .select(ord.id, sum(price.amount), item.count());
 
     }
 
@@ -172,28 +178,30 @@ public class ParsingTest extends AbstractQueryTest{
 
     @Test
     public void DocoExamples94() throws Exception {
-        query().select(cat.mate).from(cat).innerJoin(cat.mate, mate).parse();
+        query().from(cat).innerJoin(cat.mate, mate).select(cat.mate).parse();
 
-        query().select(cat.mate).from(cat).parse();
+        query().from(cat).select(cat.mate).parse();
 
-        query().select(cat.kittens).from(cat).parse();
+        query().from(cat).select(cat.kittens).parse();
 
-        query().select(cust.name.firstName).from(cust).parse();
+        query().from(cust).select(cust.name.firstName).parse();
 
-        query().select(mother, offspr, mate).from(mother)
+        query().from(mother)
             .innerJoin(mother.mate, mate)
-            .leftJoin(mother.kittens, offspr).parse();
+            .leftJoin(mother.kittens, offspr)
+            .select(mother, offspr, mate).parse();
 
-        query().select(new QFamily(mother, mate, kitten)).from(mother)
+        query().from(mother)
             .innerJoin(mother.mate, mate)
-            .leftJoin(mother.kittens, kitten).parse();
+            .leftJoin(mother.kittens, kitten)
+            .select(new QFamily(mother, mate, kitten)).parse();
     }
 
     @Test
     public void DocoExamples95() throws Exception {
-        query().select(cat.weight.avg(), cat.weight.sum(),
-                cat.weight.max(), cat.count()).from(cat)
-                .parse();
+        query().from(cat)
+               .select(cat.weight.avg(), cat.weight.sum(), cat.weight.max(), cat.count())
+               .parse();
     }
 
     @Test
@@ -205,13 +213,13 @@ public class ParsingTest extends AbstractQueryTest{
 
     @Test
     public void DocoExamples97() throws Exception {
-        query().select(foo).from(foo, bar).where(foo.startDate.eq(bar.date)).parse();
+        query().from(foo, bar).where(foo.startDate.eq(bar.date)).select(foo).parse();
 
         query().from(cat).where(cat.mate.name.isNotNull()).parse();
 
         query().from(cat, rival).where(cat.mate.eq(rival.mate)).parse();
 
-        query().select(cat, mate).from(cat, mate).where(cat.mate.eq(mate)).parse();
+        query().from(cat, mate).where(cat.mate.eq(mate)).select(cat, mate).parse();
 
         query().from(cat).where(cat.id.eq(123)).parse();
 
@@ -391,14 +399,14 @@ public class ParsingTest extends AbstractQueryTest{
     public void OrderBy() throws Exception {
         query().from(qat).orderBy(qat.toes.avg().asc()).parse();
 
-        query().from(qat).orderBy(an.bodyWeight.sqrt().divide(2.0).asc()).parse();
+        query().from(an).orderBy(an.bodyWeight.sqrt().divide(2.0).asc()).parse();
     }
 
     @Test
     public void Select() throws Exception {
 //        query().select(Ops.AggOps.COUNT_ALL_AGG_EXPR).from(qat).parse();
 
-        query().select(qat.weight.avg()).from(qat).parse();
+        query().from(qat).select(qat.weight.avg()).parse();
     }
 
     @Test

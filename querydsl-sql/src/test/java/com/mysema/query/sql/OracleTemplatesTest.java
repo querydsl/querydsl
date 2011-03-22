@@ -44,8 +44,8 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
 
     @Test
     public void Modifiers(){
-        query.getMetadata().addProjection(survey1.id);
         query.from(survey1).limit(5).offset(3);
+        query.getMetadata().addProjection(survey1.id);
         assertEquals("select * from (  " +
         		"select a.*, rownum rn from (   " +
         		"select survey1.ID from SURVEY survey1  ) " +

@@ -8,10 +8,10 @@ package com.mysema.query.sql;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.sql.mssql.RowNumber;
+import com.mysema.query.sql.mssql.SQLServerGrammar;
 import com.mysema.query.sql.support.SerializationContext;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.path.NumberPath;
 
 /**
  * SQLServerTemplates is an SQL dialect for Microsoft SQL Server
@@ -22,8 +22,6 @@ import com.mysema.query.types.path.NumberPath;
  *
  */
 public class SQLServerTemplates extends SQLTemplates{
-
-    private static final NumberPath<Long> rowNumber = new NumberPath<Long>(Long.class, "row_number");
 
     private String limitOffsetTemplate = "row_number > {0} and row_number <= {1}";
 
@@ -85,7 +83,7 @@ public class SQLServerTemplates extends SQLTemplates{
             for (OrderSpecifier<?> os : metadata.getOrderBy()){
                 rn.orderBy(os);
             }
-            metadata.addProjection(rn.as(rowNumber));
+            metadata.addProjection(rn.as(SQLServerGrammar.rowNumber));
             metadata.clearOrderBy();
             context.serialize(metadata, forCountRow);
             context.append(outerQueryEnd);

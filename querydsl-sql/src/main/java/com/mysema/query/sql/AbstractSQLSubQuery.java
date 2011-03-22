@@ -27,7 +27,7 @@ import com.mysema.query.types.TemplateExpressionImpl;
 public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends DetachableQuery<Q> {
 
     public AbstractSQLSubQuery() {
-        this(new DefaultQueryMetadata());
+        this(new DefaultQueryMetadata(false));
     }
 
     @SuppressWarnings("unchecked")

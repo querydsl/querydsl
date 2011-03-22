@@ -17,7 +17,7 @@ import com.mysema.query.types.Expression;
 public class AbstractJDOQLSubQuery<Q extends AbstractJDOQLSubQuery<Q>> extends DetachableQuery<Q>{
 
     public AbstractJDOQLSubQuery() {
-        this(new DefaultQueryMetadata());
+        this(new DefaultQueryMetadata(false));
     }
 
     @SuppressWarnings("unchecked")

@@ -9,8 +9,8 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.query.types.TemplateExpressionImpl;
 import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.template.NumberTemplate;
 
 /**
  * SQLSubQuery is a subquery implementation for SQL queries
@@ -20,8 +20,6 @@ import com.mysema.query.types.expr.BooleanExpression;
  */
 public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> implements SQLCommonQuery<SQLSubQuery>{
 
-    private static final Expression<Integer> one = TemplateExpressionImpl.create(Integer.class, "1");
-    
     public SQLSubQuery() {
         super();
     }
@@ -40,7 +38,7 @@ public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> implements SQL
     
     @Override
     public BooleanExpression exists(){
-        return unique(one).exists();
+        return unique(NumberTemplate.one).exists();
     }
 
     @Override

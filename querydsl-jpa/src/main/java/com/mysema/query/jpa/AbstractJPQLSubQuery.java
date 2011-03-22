@@ -26,7 +26,7 @@ public class AbstractJPQLSubQuery<Q extends AbstractJPQLSubQuery<Q>> extends Det
     private final JPQLQueryMixin<Q> queryMixin;
 
     public AbstractJPQLSubQuery() {
-        this(new DefaultQueryMetadata());
+        this(new DefaultQueryMetadata(false));
     }
 
     @SuppressWarnings("unchecked")

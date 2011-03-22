@@ -18,6 +18,7 @@ import org.apache.lucene.search.Sort;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.EmptyCloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
+import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryMetadata;
@@ -56,7 +57,7 @@ SimpleProjectable<T> {
     @SuppressWarnings("unchecked")
     public AbstractLuceneQuery(LuceneSerializer serializer, Searcher searcher,
                                Transformer<Document, T> transformer) {
-        queryMixin = new QueryMixin<Q>((Q) this);
+        queryMixin = new QueryMixin<Q>((Q) this, new DefaultQueryMetadata(false));
         this.serializer = serializer;
         this.searcher = searcher;
         this.transformer = transformer;
