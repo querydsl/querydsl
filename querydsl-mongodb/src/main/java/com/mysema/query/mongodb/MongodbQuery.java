@@ -15,6 +15,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
@@ -44,7 +45,7 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProj
     private final Transformer<DBObject, K> transformer;
 
     public MongodbQuery(DBCollection collection, Transformer<DBObject, K> transformer, MongodbSerializer serializer) {
-        this.queryMixin = new QueryMixin<MongodbQuery<K>>(this);
+        this.queryMixin = new QueryMixin<MongodbQuery<K>>(this, new DefaultQueryMetadata(false));
         this.transformer = transformer;
         this.collection = collection;
         this.serializer = serializer;
