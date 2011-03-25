@@ -223,7 +223,7 @@ public abstract class SimpleExpression<T> extends ExpressionBase<T> {
      * @param right rhs of the comparison
      * @return
      */
-    public final BooleanExpression notIn(Collection<? extends T> right) {
+    public BooleanExpression notIn(Collection<? extends T> right) {
         if (right.size() == 1){
             return ne(right.iterator().next());
         }else{
