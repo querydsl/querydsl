@@ -45,4 +45,5 @@ public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> implements SQL
     public BooleanExpression notExists(){
         return exists().not();
     }
+
 }

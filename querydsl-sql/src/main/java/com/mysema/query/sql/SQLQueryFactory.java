@@ -1,9 +1,5 @@
 package com.mysema.query.sql;
 
-import java.sql.Connection;
-
-import javax.inject.Provider;
-
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLMergeClause;
@@ -11,47 +7,35 @@ import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.Expression;
 
 /**
- * Factory class for query and DML clause creation
+ * Factory interface for query and clause creation
  * 
  * @author tiwe
  *
+ * @param <Q> query type
+ * @param <D> delete clause type
+ * @param <U> update clause type
+ * @param <I> insert clause type
+ * @param <M> merge clause type
  */
-public class SQLQueryFactory {
+public interface SQLQueryFactory<Q extends AbstractSQLQuery<?>,
+    SQ extends AbstractSQLSubQuery<?>,
+    D extends SQLDeleteClause, 
+    U extends SQLUpdateClause, 
+    I extends SQLInsertClause,
+    M extends SQLMergeClause> {
+        
+    D delete(RelationalPath<?> path);
     
-    private final Configuration configuration;
-    
-    private final Provider<Connection> connection;
-    
-    public SQLQueryFactory(SQLTemplates templates, Provider<Connection> connection) {
-        this(new Configuration(templates), connection);
-    }
-    
-    public SQLQueryFactory(Configuration configuration, Provider<Connection> connection) {
-        this.configuration = configuration;
-        this.connection = connection;
-    }
-    
-    public SQLDeleteClause delete(RelationalPath<?> path) {
-        return new SQLDeleteClause(connection.get(), configuration, path);
-    }
-    
-    public SQLQuery from(Expression<?> from) {
-        return query().from(from);
-    }
+    Q from(Expression<?> from);
 
-    public SQLInsertClause insert(RelationalPath<?> path) {
-        return new SQLInsertClause(connection.get(), configuration, path);
-    }
+    I insert(RelationalPath<?> path);
 
-    public SQLMergeClause merge(RelationalPath<?> path) {
-        return new SQLMergeClause(connection.get(), configuration, path);
-    }
+    M merge(RelationalPath<?> path);
     
-    public SQLUpdateClause update(RelationalPath<?> path) {
-        return new SQLUpdateClause(connection.get(), configuration, path);
-    }
+    U update(RelationalPath<?> path);
 
-    public SQLQuery query(){
-        return new SQLQueryImpl(connection.get(), configuration);    
-    }
+    Q query();
+
+    SQ subQuery();
+    
 }

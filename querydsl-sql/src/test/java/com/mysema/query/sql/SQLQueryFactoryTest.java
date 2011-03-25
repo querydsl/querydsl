@@ -14,7 +14,7 @@ import com.mysema.query.sql.domain.QSurvey;
 
 public class SQLQueryFactoryTest {
     
-    private SQLQueryFactory queryFactory;
+    private SQLQueryFactoryImpl queryFactory;
     
     @Before
     public void setUp(){
@@ -24,7 +24,7 @@ public class SQLQueryFactoryTest {
                 return EasyMock.createNiceMock(Connection.class);
             }            
         };
-        queryFactory = new SQLQueryFactory(SQLTemplates.DEFAULT, provider);
+        queryFactory = new SQLQueryFactoryImpl(SQLTemplates.DEFAULT, provider);
     }
     
     @Test

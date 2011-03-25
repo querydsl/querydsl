@@ -54,4 +54,6 @@ public interface SQLQuery extends SQLCommonQuery<SQLQuery>, Projectable {
      * @return
      */
     ResultSet getResults(Expression<?>... args);
+    
+    
 }

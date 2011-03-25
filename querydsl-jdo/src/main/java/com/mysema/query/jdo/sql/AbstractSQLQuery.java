@@ -5,7 +5,13 @@
  */
 package com.mysema.query.jdo.sql;
 
+import java.util.List;
+
+import com.mysema.query.JoinExpression;
+import com.mysema.query.JoinFlag;
+import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.support.ProjectableQuery;
@@ -17,6 +23,7 @@ import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.Wildcard;
 import com.mysema.query.types.template.NumberTemplate;
+import com.mysema.query.types.template.SimpleTemplate;
 
 /**
  * Base class for JDO based SQLQuery implementations
@@ -118,6 +125,30 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
 
     public T rightJoin(SubQueryExpression<?> o, Path<?> alias) {
         return queryMixin.rightJoin(o, alias);
+    }
+
+    public T addJoinFlag(String flag){
+        return addJoinFlag(flag, JoinFlag.Position.BEFORE_TARGET);
+    }
+
+    @SuppressWarnings("unchecked")
+    public T addJoinFlag(String flag, JoinFlag.Position position){
+        List<JoinExpression> joins = queryMixin.getMetadata().getJoins();
+        joins.get(joins.size()-1).addFlag(new JoinFlag(flag, position));
+        return (T)this;
+    }
+
+    public T addFlag(Position position, String prefix, Expression<?> expr){
+        Expression<?> flag = SimpleTemplate.create(expr.getType(), prefix + "{0}", expr);
+        return queryMixin.addFlag(new QueryFlag(position, flag));
+    }
+
+    public T addFlag(Position position, String flag){
+        return queryMixin.addFlag(new QueryFlag(position, flag));
+    }
+
+    public T addFlag(Position position, Expression<?> flag){
+        return queryMixin.addFlag(new QueryFlag(position, flag));
     }
 
 }

@@ -1,12 +1,11 @@
-package com.mysema.query.sql.mysql;
+package com.mysema.query.sql.oracle;
 
 import java.sql.Connection;
 
 import javax.inject.Provider;
 
-import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.sql.Configuration;
-import com.mysema.query.sql.MySQLTemplates;
+import com.mysema.query.sql.OracleTemplates;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLQueryFactory;
 import com.mysema.query.sql.SQLQueryFactoryImpl;
@@ -19,24 +18,24 @@ import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.Expression;
 
 /**
- * MySQL specific implementation of SQLQueryFactory
+ * Oracle specific implementation of SQLQueryFactory
  *
  * @author tiwe
  *
  */
-public class MySQLQueryFactory implements SQLQueryFactory<MySQLQuery, SQLSubQuery, SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause>{
+public class OracleQueryFactory implements SQLQueryFactory<OracleQuery, SQLSubQuery, SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause>{
 
     private final SQLQueryFactoryImpl queryFactory;
     
-    public MySQLQueryFactory(Configuration configuration, Provider<Connection> connection) {
+    public OracleQueryFactory(Configuration configuration, Provider<Connection> connection) {
         queryFactory = new SQLQueryFactoryImpl(configuration, connection);
     }
 
-    public MySQLQueryFactory(Provider<Connection> connection) {
-        this(new Configuration(new MySQLTemplates()), connection);
+    public OracleQueryFactory(Provider<Connection> connection) {
+        this(new Configuration(new OracleTemplates()), connection);
     }
 
-    public MySQLQueryFactory(SQLTemplates templates, Provider<Connection> connection) {
+    public OracleQueryFactory(SQLTemplates templates, Provider<Connection> connection) {
         this(new Configuration(templates), connection);
     }
 
@@ -44,7 +43,7 @@ public class MySQLQueryFactory implements SQLQueryFactory<MySQLQuery, SQLSubQuer
         return queryFactory.delete(path);
     }
 
-    public MySQLQuery from(Expression<?> from) {
+    public OracleQuery from(Expression<?> from) {
         return query().from(from);
     }
 
@@ -52,24 +51,13 @@ public class MySQLQueryFactory implements SQLQueryFactory<MySQLQuery, SQLSubQuer
         return queryFactory.insert(path);
     }
 
-    public SQLInsertClause insertIgnore(RelationalPath<?> entity) {
-        SQLInsertClause insert = insert(entity);
-        insert.addFlag(Position.START_OVERRIDE, "insert ignore into ");
-        return insert;
-    }
 
     public SQLMergeClause merge(RelationalPath<?> path) {
         return queryFactory.merge(path);
     }
 
-    public MySQLQuery query() {
-        return new MySQLQuery(queryFactory.getConnection(), queryFactory.getConfiguration());
-    }
-
-    public SQLInsertClause replace(RelationalPath<?> entity) {
-        SQLInsertClause insert = insert(entity);
-        insert.addFlag(Position.START_OVERRIDE, "replace into ");
-        return insert;
+    public OracleQuery query() {
+        return new OracleQuery(queryFactory.getConnection(), queryFactory.getConfiguration());
     }
 
     public SQLSubQuery subQuery() {

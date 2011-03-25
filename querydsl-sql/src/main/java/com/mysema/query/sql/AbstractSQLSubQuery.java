@@ -5,7 +5,11 @@
  */
 package com.mysema.query.sql;
 
+import java.util.List;
+
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.JoinExpression;
+import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
@@ -44,7 +48,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
      * @param expr expression of the flag
      * @return
      */
-    protected Q addFlag(Position position, String prefix, Expression<?> expr){
+    public Q addFlag(Position position, String prefix, Expression<?> expr){
         Expression<?> flag = TemplateExpressionImpl.create(expr.getType(), prefix + "{0}", expr);
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
@@ -56,7 +60,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
      * @param flag
      * @return
      */
-    protected Q addFlag(Position position, String flag){
+    public Q addFlag(Position position, String flag){
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
     
@@ -67,8 +71,32 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
      * @param flag
      * @return
      */
-    protected Q addFlag(Position position, Expression<?> flag){
+    public Q addFlag(Position position, Expression<?> flag){
         return queryMixin.addFlag(new QueryFlag(position, flag));
+    }
+    
+    /**
+     * Add the given String literal as a join flag to the last added join with the position BEFORE_TARGET
+     *
+     * @param flag
+     * @return
+     */
+    public Q addJoinFlag(String flag){
+        return addJoinFlag(flag, JoinFlag.Position.BEFORE_TARGET);
+    }
+
+    /**
+     * Add the given String literal as a join flag to the last added join
+     *
+     * @param flag
+     * @param position
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public Q addJoinFlag(String flag, JoinFlag.Position position){
+        List<JoinExpression> joins = queryMixin.getMetadata().getJoins();
+        joins.get(joins.size()-1).addFlag(new JoinFlag(flag, position));
+        return (Q)this;
     }
     
     public Q from(Expression<?>... args){
