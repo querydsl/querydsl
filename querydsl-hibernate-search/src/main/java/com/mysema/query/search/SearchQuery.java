@@ -120,7 +120,6 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
         return iterate();
     }
 
-
     @Override
     public SearchQuery<T> limit(long limit) {
         return queryMixin.limit(limit);
