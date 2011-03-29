@@ -144,7 +144,7 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void queryElement() throws Exception{
+    public void QueryElement() throws Exception{
         Query query1 = serializer.toQuery(author.like("Michael"), metadata);
         Query query2 = serializer.toQuery(text.like("Text"), metadata);
 
@@ -156,73 +156,73 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void like() throws Exception {
+    public void Like() throws Exception {
         testQuery(author.like("*ichael*"), "author:*ichael*", 1);
     }
 
     @Test
-    public void like_Custom_Wildcard_Single_Character() throws Exception {
+    public void Like_Custom_Wildcard_Single_Character() throws Exception {
         testQuery(author.like("Mi?hael"), "author:mi?hael", 1);
     }
 
     @Test
-    public void like_Custom_Wildcard_Multiple_Character() throws Exception {
+    public void Like_Custom_Wildcard_Multiple_Character() throws Exception {
         testQuery(text.like("*U*X*"), "text:*u*x*", 1);
     }
 
     @Test
-    public void like_Phrase() throws Exception {
+    public void Like_Phrase() throws Exception {
         testQuery(title.like("*rassic Par*"), "+title:**rassic* +title:*par**", 1);
     }
 
     @Test
-    public void like_or_like() throws Exception {
+    public void Like_or_like() throws Exception {
         testQuery(title.like("House").or(author.like("*ichae*")), "title:house author:*ichae*", 1);
     }
 
     @Test
-    public void like_and_like() throws Exception {
+    public void Like_and_like() throws Exception {
         testQuery(title.like("*assic*").and(rating.like("G?od")), "+title:*assic* +rating:g?od", 1);
     }
 
     @Test
-    public void eq() throws Exception {
+    public void Eq() throws Exception {
         testQuery(rating.eq("good"), "rating:good", 1);
     }
 
     @Test
-    public void eq_with_deep_path() throws Exception{
+    public void Eq_with_deep_path() throws Exception{
         StringPath deepPath = entityPath.get("property1", Object.class).getString("property2");
         testQuery(deepPath.eq("good"), "property1.property2:good", 0);
     }
 
     @Test
-    public void fuzzyLike() throws Exception{
+    public void FuzzyLike() throws Exception{
         testQuery(LuceneUtils.fuzzyLike(rating, "Good"), "rating:Good~0.5", 1);
     }
 
     @Test
-    public void fuzzyLike_with_Similarity() throws Exception{
+    public void FuzzyLike_with_Similarity() throws Exception{
         testQuery(LuceneUtils.fuzzyLike(rating, "Good", 0.6f), "rating:Good~0.6", 1);
     }
 
     @Test
-    public void fuzzyLike_with_Similarity_and_prefix() throws Exception{
+    public void FuzzyLike_with_Similarity_and_prefix() throws Exception{
         testQuery(LuceneUtils.fuzzyLike(rating, "Good", 0.6f, 0), "rating:Good~0.6", 1);
     }
 
     @Test
-    public void eq_Numeric_Integer() throws Exception {
+    public void Eq_Numeric_Integer() throws Exception {
         testQuery(year.eq(1990), "year:" + YEAR_PREFIX_CODED, 1);
     }
 
     @Test
-    public void eq_Numeric_Double() throws Exception {
+    public void Eq_Numeric_Double() throws Exception {
         testQuery(gross.eq(900.00), "gross:" + GROSS_PREFIX_CODED, 1);
     }
 
     @Test
-    public void eq_Numeric() throws Exception{
+    public void Eq_Numeric() throws Exception{
         testQuery(longField.eq(1l), "longField:" + LONG_PREFIX_CODED, 1);
         testQuery(shortField.eq((short)1), "shortField:" + SHORT_PREFIX_CODED, 1);
         testQuery(byteField.eq((byte)1), "byteField:" + BYTE_PREFIX_CODED, 1);
@@ -240,12 +240,12 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void eq_and_eq() throws Exception {
+    public void Eq_and_eq() throws Exception {
         testQuery(title.eq("Jurassic Park").and(year.eq(1990)), "+title:\"jurassic park\" +year:" + YEAR_PREFIX_CODED, 1);
     }
 
     @Test
-    public void eq_and_eq_and_eq() throws Exception {
+    public void Eq_and_Eq_and_eq() throws Exception {
         testQuery(title.eq("Jurassic Park").and(year.eq(1990)).and(author.eq("Michael Crichton")), "+(+title:\"jurassic park\" +year:" + YEAR_PREFIX_CODED + ") +author:\"michael crichton\"", 1);
     }
 
@@ -255,12 +255,12 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void eq_or_eq_and_eq_Does_Not_Find_Results() throws Exception {
+    public void Eq_or_Eq_and_Eq_Does_Not_Find_Results() throws Exception {
         testQuery(title.eq("jeeves").or(rating.eq("superb")).and(author.eq("michael crichton")), "+(title:jeeves rating:superb) +author:\"michael crichton\"", 0);
     }
 
     @Test
-    public void eq_Phrase() throws Exception {
+    public void Eq_Phrase() throws Exception {
         testQuery(title.eq("Jurassic Park"), "title:\"jurassic park\"", 1);
     }
 
@@ -271,17 +271,17 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void eq_Phrase_Should_Not_Find_Results_But_Lucene_Semantics_Differs_From_Querydsls() throws Exception {
+    public void Eq_Phrase_Should_Not_Find_Results_But_LuceNe_Semantics_Differs_From_Querydsls() throws Exception {
         testQuery(text.eq("UNIX System"), "text:\"unix system\"", 1);
     }
 
     @Test
-    public void eq_Phrase_Does_Not_Find_Results_Because_Word_In_Middle() throws Exception {
+    public void Eq_Phrase_Does_Not_Find_Results_Because_Word_In_Middle() throws Exception {
         testQuery(title.eq("Jurassic Amusement Park"), "title:\"jurassic amusement park\"", 0);
     }
 
     @Test
-    public void like_not_Does_Not_Find_Results() throws Exception {
+    public void Like_not_Does_Not_Find_Results() throws Exception {
         testQuery(title.like("*H*e*").not(), "-title:*h*e* +*:*", 1);
     }
 
@@ -291,7 +291,7 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void eq_not_Does_Not_Find_Results() throws Exception {
+    public void Eq_not_Does_Not_Find_Results() throws Exception {
         testQuery(title.eq("Jurassic Park").not(), "-title:\"jurassic park\" +*:*", 0);
     }
 
@@ -301,7 +301,7 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void eq_and_eq_not_Does_Not_Find_Results_Because_Second_Expression_Finds_Nothing() throws Exception {
+    public void Eq_and_Eq_not_Does_Not_Find_Results_Because_Second_Expression_Finds_Nothing() throws Exception {
         testQuery(rating.eq("superb").and(title.eq("house").not()), "+rating:superb +(-title:house +*:*)", 0);
     }
 
@@ -321,17 +321,17 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void ne_and_eq() throws Exception {
+    public void Ne_and_eq() throws Exception {
         testQuery(title.ne("house").and(rating.eq("good")), "+(-title:house +*:*) +rating:good", 1);
     }
 
     @Test
-    public void startsWith() throws Exception {
+    public void StartsWith() throws Exception {
         testQuery(title.startsWith("Jurassi"), "title:jurassi*", 1);
     }
 
     @Test
-    public void startsWith_Phrase() throws Exception {
+    public void StartsWith_Phrase() throws Exception {
         testQuery(title.startsWith("jurassic par"), "+title:jurassic* +title:*par*", 1);
     }
 
@@ -341,7 +341,7 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void endsWith() throws Exception {
+    public void EndsWith() throws Exception {
         testQuery(title.endsWith("ark"), "title:*ark", 1);
     }
 
@@ -356,7 +356,7 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void contains() throws Exception {
+    public void Contains() throws Exception {
         testQuery(title.contains("rassi"), "title:*rassi*", 1);
     }
 
@@ -366,27 +366,27 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void contains_User_Inputted_Wildcards_Dont_Work() throws Exception {
+    public void Contains_User_Inputted_Wildcards_Dont_Work() throws Exception {
         testQuery(title.contains("r*i"), "title:*r\\*i*", 0);
     }
 
     @Test
-    public void between() throws Exception {
+    public void Between() throws Exception {
         testQuery(title.between("Indiana", "Kundun"), "title:[indiana TO kundun]", 1);
     }
 
     @Test
-    public void between_Numeric_Integer() throws Exception {
+    public void Between_Numeric_Integer() throws Exception {
         testQuery(year.between(1980, 2000), "year:[1980 TO 2000]", 1);
     }
 
     @Test
-    public void between_Numeric_Double() throws Exception {
+    public void Between_Numeric_Double() throws Exception {
         testQuery(gross.between(10.00, 19030.00), "gross:[10.0 TO 19030.0]", 1);
     }
 
     @Test
-    public void between_Numeric() throws Exception{
+    public void Between_Numeric() throws Exception{
         testQuery(longField.between(0l,2l), "longField:[0 TO 2]", 1);
         testQuery(shortField.between((short)0,(short)2), "shortField:[0 TO 2]", 1);
         testQuery(byteField.between((byte)0,(byte)2), "byteField:[0 TO 2]", 1);
@@ -394,174 +394,174 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void between_Is_Inclusive_From_Start() throws Exception {
+    public void Between_Is_Inclusive_From_Start() throws Exception {
         testQuery(title.between("Jurassic", "Kundun"), "title:[jurassic TO kundun]", 1);
     }
 
     @Test
-    public void between_Is_Inclusive_To_End() throws Exception {
+    public void Between_Is_Inclusive_To_End() throws Exception {
         testQuery(title.between("Indiana", "Jurassic"), "title:[indiana TO jurassic]", 1);
     }
 
     @Test
-    public void between_Does_Not_Find_Results() throws Exception {
+    public void Between_Does_Not_Find_Results() throws Exception {
         testQuery(title.between("Indiana", "Jurassib"), "title:[indiana TO jurassib]", 0);
     }
 
     @Test
-    public void in() throws Exception {
+    public void In() throws Exception {
         testQuery(title.in(Arrays.asList("jurassic", "park")), "title:jurassic title:park", 1);
         testQuery(title.in("jurassic","park"), "title:jurassic title:park", 1);
         testQuery(title.eq("jurassic").or(title.eq("park")), "title:jurassic title:park", 1);
     }
 
     @Test
-    public void lt() throws Exception {
+    public void Lt() throws Exception {
         testQuery(rating.lt("Superb"), "rating:{* TO superb}", 1);
     }
 
     @Test
-    public void lt_Numeric_Integer() throws Exception {
+    public void Lt_Numeric_Integer() throws Exception {
         testQuery(year.lt(1991), "year:{* TO 1991}", 1);
     }
 
     @Test
-    public void lt_Numeric_Double() throws Exception {
+    public void Lt_Numeric_Double() throws Exception {
         testQuery(gross.lt(10000.0), "gross:{* TO 10000.0}", 1);
     }
 
     @Test
-    public void lt_Not_In_Range_Because_Equal() throws Exception {
+    public void Lt_Not_In_Range_Because_Equal() throws Exception {
         testQuery(rating.lt("Good"), "rating:{* TO good}", 0);
     }
 
     @Test
-    public void lt_Numeric_Integer_Not_In_Range_Because_Equal() throws Exception {
+    public void Lt_Numeric_Integer_Not_In_Range_Because_Equal() throws Exception {
         testQuery(year.lt(1990), "year:{* TO 1990}", 0);
     }
 
     @Test
-    public void lt_Numeric_Double_Not_In_Range_Because_Equal() throws Exception {
+    public void Lt_Numeric_Double_Not_In_Range_Because_Equal() throws Exception {
         testQuery(gross.lt(900.0), "gross:{* TO 900.0}", 0);
     }
 
     @Test
-    public void loe() throws Exception {
+    public void Loe() throws Exception {
         testQuery(rating.loe("Superb"), "rating:[* TO superb]", 1);
     }
 
     @Test
-    public void loe_Numeric_Integer() throws Exception {
+    public void Loe_Numeric_Integer() throws Exception {
         testQuery(year.loe(1991), "year:[* TO 1991]", 1);
     }
 
     @Test
-    public void loe_Numeric_Double() throws Exception {
+    public void Loe_Numeric_Double() throws Exception {
         testQuery(gross.loe(903.0), "gross:[* TO 903.0]", 1);
     }
 
     @Test
-    public void loe_Equal() throws Exception {
+    public void Loe_Equal() throws Exception {
         testQuery(rating.loe("Good"), "rating:[* TO good]", 1);
     }
 
     @Test
-    public void loe_Numeric_Integer_Equal() throws Exception {
+    public void Loe_Numeric_Integer_Equal() throws Exception {
         testQuery(year.loe(1990), "year:[* TO 1990]", 1);
     }
 
     @Test
-    public void loe_Numeric_Double_Equal() throws Exception {
+    public void Loe_Numeric_Double_Equal() throws Exception {
         testQuery(gross.loe(900.0), "gross:[* TO 900.0]", 1);
     }
 
     @Test
-    public void loe_Not_Found() throws Exception {
+    public void Loe_Not_Found() throws Exception {
         testQuery(rating.loe("Bad"), "rating:[* TO bad]", 0);
     }
 
     @Test
-    public void loe_Numeric_Integer_Not_Found() throws Exception {
+    public void Loe_Numeric_Integer_Not_Found() throws Exception {
         testQuery(year.loe(1989), "year:[* TO 1989]", 0);
     }
 
     @Test
-    public void loe_Numeric_Double_Not_Found() throws Exception {
+    public void Loe_Numeric_Double_Not_Found() throws Exception {
         testQuery(gross.loe(899.9), "gross:[* TO 899.9]", 0);
     }
 
     @Test
-    public void gt() throws Exception {
+    public void Gt() throws Exception {
         testQuery(rating.gt("Bad"), "rating:{bad TO *}", 1);
     }
 
     @Test
-    public void gt_Numeric_Integer() throws Exception {
+    public void Gt_Numeric_Integer() throws Exception {
         testQuery(year.gt(1989), "year:{1989 TO *}", 1);
     }
 
     @Test
-    public void gt_Numeric_Double() throws Exception {
+    public void Gt_Numeric_Double() throws Exception {
         testQuery(gross.gt(100.00), "gross:{100.0 TO *}", 1);
     }
 
     @Test
-    public void gt_Not_In_Range_Because_Equal() throws Exception {
+    public void Gt_Not_In_Range_Because_Equal() throws Exception {
         testQuery(rating.gt("Good"), "rating:{good TO *}", 0);
     }
 
     @Test
-    public void gt_Numeric_Integer_Not_In_Range_Because_Equal() throws Exception {
+    public void Gt_Numeric_Integer_Not_In_Range_Because_Equal() throws Exception {
         testQuery(year.gt(1990), "year:{1990 TO *}", 0);
     }
 
     @Test
-    public void gt_Numeric_Double_Not_In_Range_Because_Equal() throws Exception {
+    public void Gt_Numeric_Double_Not_In_Range_Because_Equal() throws Exception {
         testQuery(gross.gt(900.00), "gross:{900.0 TO *}", 0);
     }
 
     @Test
-    public void ge() throws Exception {
+    public void Goe() throws Exception {
         testQuery(rating.goe("Bad"), "rating:[bad TO *]", 1);
     }
 
     @Test
-    public void goe_Numeric_Integer() throws Exception {
+    public void Goe_Numeric_Integer() throws Exception {
         testQuery(year.goe(1989), "year:[1989 TO *]", 1);
     }
 
     @Test
-    public void goe_Numeric_Double() throws Exception {
+    public void Goe_Numeric_Double() throws Exception {
         testQuery(gross.goe(320.50), "gross:[320.5 TO *]", 1);
     }
 
     @Test
-    public void goe_Equal() throws Exception {
+    public void Goe_Equal() throws Exception {
         testQuery(rating.goe("Good"), "rating:[good TO *]", 1);
     }
 
     @Test
-    public void goe_Numeric_Integer_Equal() throws Exception {
+    public void Goe_Numeric_Integer_Equal() throws Exception {
         testQuery(year.goe(1990), "year:[1990 TO *]", 1);
     }
 
     @Test
-    public void goe_Numeric_Double_Equal() throws Exception {
+    public void Goe_Numeric_Double_Equal() throws Exception {
         testQuery(gross.goe(900.00), "gross:[900.0 TO *]", 1);
     }
 
     @Test
-    public void goe_Not_Found() throws Exception {
+    public void Goe_Not_Found() throws Exception {
         testQuery(rating.goe("Hood"), "rating:[hood TO *]", 0);
     }
 
     @Test
-    public void goe_Numeric_Integer_Not_Found() throws Exception {
+    public void Goe_Numeric_Integer_Not_Found() throws Exception {
         testQuery(year.goe(1991), "year:[1991 TO *]", 0);
     }
 
     @Test
-    public void goe_Numeric_Double_Not_Found() throws Exception {
+    public void Goe_Numeric_Double_Not_Found() throws Exception {
         testQuery(gross.goe(900.10), "gross:[900.1 TO *]", 0);
     }
 
@@ -601,25 +601,25 @@ public class LuceneSerializerTest {
     }
 
     @Test
-    public void booleanBuilder() throws Exception{
+    public void BooleanBuilder() throws Exception{
         testQuery(new BooleanBuilder(gross.goe(900.10)), "gross:[900.1 TO *]", 0);
     }
 
     @Test
     @Ignore
-    public void fuzzy() throws Exception {
+    public void Fuzzy() throws Exception {
         fail("Not yet implemented!");
     }
 
     @Test
     @Ignore
-    public void proximity() throws Exception {
+    public void Proximity() throws Exception {
         fail("Not yet implemented!");
     }
 
     @Test
     @Ignore
-    public void boost() throws Exception {
+    public void Boost() throws Exception {
         fail("Not yet implemented!");
     }
 

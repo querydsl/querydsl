@@ -55,20 +55,25 @@ public class SearchQueryTest extends AbstractQueryTest {
     }
 
     @Test
-    public void BasicTests() {
+    public void Count(){
         BooleanExpression filter = user.emailAddress.eq("bob@example.com");
-
-        // count
         assertEquals(1, query().where(filter).count());
+    }
 
-        // uniqueResult
+    @Test
+    public void UniqueResult(){
+        BooleanExpression filter = user.emailAddress.eq("bob@example.com");
         User u = query().where(filter).uniqueResult();
         assertNotNull(u);
         assertEquals("bob@example.com", u.getEmailAddress());
+    }
 
-        // list
+    @Test
+    public void List(){
+        BooleanExpression filter = user.emailAddress.eq("bob@example.com");
         List<User> list = query().where(filter).list();
         assertEquals(1, list.size());
+        User u = query().where(filter).uniqueResult();
         assertEquals(u, list.get(0));
     }
 

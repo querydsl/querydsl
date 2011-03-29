@@ -143,30 +143,30 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void count_Empty_Where_Clause() {
+    public void Count_Empty_Where_Clause() {
         assertEquals(4, query.count());
     }
 
     @Test
-    public void exists(){
+    public void Exists(){
         assertTrue(query.where(title.eq("Jurassic Park")).exists());
         assertFalse(query.where(title.eq("Jurassic Park X")).exists());
     }
 
     @Test
-    public void notExists(){
+    public void NotExists(){
         assertFalse(query.where(title.eq("Jurassic Park")).notExists());
         assertTrue(query.where(title.eq("Jurassic Park X")).notExists());
     }
 
     @Test
-    public void count() {
+    public void Count() {
         query.where(title.eq("Jurassic Park"));
         assertEquals(1, query.count());
     }
 
     @Test(expected = QueryException.class)
-    public void count_Index_Problem() throws IOException {
+    public void Count_Index_Problem() throws IOException {
         searcher = createMockBuilder(IndexSearcher.class).addMockedMethod(
                 "maxDoc").createMock();
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
@@ -178,13 +178,13 @@ public class LuceneQueryTest {
     }
 
     @Test(expected=UnsupportedOperationException.class)
-    public void countDistinct() {
+    public void CountDistinct() {
         query.where(year.between(1900, 3000));
         assertEquals(3, query.countDistinct());
     }
 
     @Test
-    public void list_Sorted_By_Year_Ascending() {
+    public void List_Sorted_By_Year_Ascending() {
         query.where(year.between(1800, 2000));
         query.orderBy(year.asc());
         final List<Document> documents = query.list();
@@ -193,7 +193,7 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void list_Not_Sorted() {
+    public void List_Not_Sorted() {
         query.where(year.between(1800, 2000));
         final List<Document> documents = query.list();
         assertFalse(documents.isEmpty());
@@ -201,7 +201,7 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void sorted_By_Different_Locales() throws Exception {
+    public void Sorted_By_Different_Locales() throws Exception {
         Document d1 = new Document();
         Document d2 = new Document();
         Document d3 = new Document();
@@ -233,7 +233,7 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void list_Not_Sorted_Limit_2() {
+    public void List_Not_Sorted_Limit_2() {
         query.where(year.between(1800, 2000));
         query.limit(2);
         final List<Document> documents = query.list();
@@ -242,7 +242,7 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void list_Sorted_By_Year_Limit_1() {
+    public void List_Sorted_By_Year_Limit_1() {
         query.where(year.between(1800, 2000));
         query.limit(1);
         query.orderBy(year.asc());
@@ -252,7 +252,7 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void list_Not_Sorted_Offset_2() {
+    public void List_Not_Sorted_Offset_2() {
         query.where(year.between(1800, 2000));
         query.offset(2);
         final List<Document> documents = query.list();
@@ -261,7 +261,7 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void list_Sorted_Ascending_By_Year_Offset_2() {
+    public void List_Sorted_Ascending_By_Year_Offset_2() {
         query.where(year.between(1800, 2000));
         query.offset(2);
         query.orderBy(year.asc());
@@ -273,7 +273,7 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void list_Sorted_Ascending_By_Year_Restrict_Limit_2_Offset_1() {
+    public void List_Sorted_Ascending_By_Year_Restrict_Limit_2_Offset_1() {
         query.where(year.between(1800, 2000));
         query.restrict(new QueryModifiers(2l, 1l));
         query.orderBy(year.asc());
@@ -285,7 +285,7 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void list_Sorted_Ascending_By_Year() {
+    public void List_Sorted_Ascending_By_Year() {
         query.where(year.between(1800, 2000));
         query.orderBy(year.asc());
         final List<Document> documents = query.list();
@@ -298,26 +298,26 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void list_Distinct_Property(){
+    public void List_Distinct_Property(){
         assertEquals(4, query.list().size());
         assertEquals(3, query.distinct(year).list().size());
     }
 
     @Test
-    public void list_With_Filter(){
+    public void List_With_Filter(){
         Filter filter = new DuplicateFilter("year");
         assertEquals(4, query.list().size());
         assertEquals(3, query.filter(filter).list().size());
     }
 
     @Test
-    public void count_Distinct_Property(){
+    public void Count_Distinct_Property(){
         assertEquals(4l, query.count());
         assertEquals(3l, query.distinct(year).count());
     }
 
     @Test
-    public void list_Sorted_Descending_By_Year() {
+    public void List_Sorted_Descending_By_Year() {
         query.where(year.between(1800, 2000));
         query.orderBy(year.desc());
         final List<Document> documents = query.list();
@@ -330,7 +330,7 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void list_Sorted_Descending_By_Gross() {
+    public void List_Sorted_Descending_By_Gross() {
         query.where(gross.between(0.0, 1000.00));
         query.orderBy(gross.desc());
         final List<Document> documents = query.list();
@@ -343,7 +343,7 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void list_Sorted_Descending_By_Year_And_Ascending_By_Title() {
+    public void List_Sorted_Descending_By_Year_And_Ascending_By_Title() {
         query.where(year.between(1800, 2000));
         query.orderBy(year.desc());
         query.orderBy(title.asc());
@@ -358,7 +358,7 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void list_Sorted_Descending_By_Year_And_Descending_By_Title() {
+    public void List_Sorted_Descending_By_Year_And_Descending_By_Title() {
         query.where(year.between(1800, 2000));
         query.orderBy(year.desc());
         query.orderBy(title.desc());
@@ -374,7 +374,7 @@ public class LuceneQueryTest {
 
     @Ignore
     @Test(expected = QueryException.class)
-    public void list_Index_Problem_In_Max_Doc() throws IOException {
+    public void List_Index_Problem_In_Max_Doc() throws IOException {
         searcher = createMockBuilder(IndexSearcher.class).addMockedMethod(
                 "maxDoc").createMock();
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
@@ -387,7 +387,7 @@ public class LuceneQueryTest {
 
     @Ignore
     @Test(expected = QueryException.class)
-    public void list_Sorted_Index_Problem_In_Max_Doc() throws IOException {
+    public void List_Sorted_Index_Problem_In_Max_Doc() throws IOException {
         searcher = createMockBuilder(IndexSearcher.class).addMockedMethod(
                 "maxDoc").createMock();
         query = new LuceneQuery(new LuceneSerializer(true, true), searcher);
@@ -400,13 +400,13 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void offset() {
+    public void Offset() {
         assertTrue(query.where(title.eq("Jurassic Park")).offset(30).list()
                 .isEmpty());
     }
 
     @Test
-    public void singleResult() {
+    public void SingleResult() {
         assertNotNull(query.where(title.ne("")).singleResult());
     }
 
@@ -442,7 +442,7 @@ public class LuceneQueryTest {
     }
 
     @Test(expected=NonUniqueResultException.class)
-    public void uniqueResult_Contract() {
+    public void UniqueResult_Contract() {
         query.where(title.ne("")).uniqueResult();
     }
 
@@ -478,14 +478,14 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void uniqueResult() {
+    public void UniqueResult() {
         query.where(title.startsWith("Nummi"));
         final Document document = query.uniqueResult();
         assertEquals("Nummisuutarit", document.get("title"));
     }
 
     @Test
-    public void uniqueResult_With_Param() {
+    public void UniqueResult_With_Param() {
         final Param<String> param = new Param<String>(String.class, "title");
         query.set(param, "Nummi");
         query.where(title.startsWith(param));
@@ -494,26 +494,26 @@ public class LuceneQueryTest {
     }
 
     @Test(expected = ParamNotSetException.class)
-    public void uniqueResult_Param_Not_Set() {
+    public void UniqueResult_Param_Not_Set() {
         final Param<String> param = new Param<String>(String.class, "title");
         query.where(title.startsWith(param));
         query.uniqueResult();
     }
 
     @Test(expected = QueryException.class)
-    public void uniqueResult_Finds_More_Than_One_Result() {
+    public void UniqueResult_Finds_More_Than_One_Result() {
         query.where(year.eq(1990));
         query.uniqueResult();
     }
 
     @Test
-    public void uniqueResult_Finds_No_Results() {
+    public void UniqueResult_Finds_No_Results() {
         query.where(year.eq(2200));
         assertNull(query.uniqueResult());
     }
 
     @Test
-    public void uniqueResult_Finds_No_Results_Because_No_Documents_In_Index()
+    public void UniqueResult_Finds_No_Results_Because_No_Documents_In_Index()
             throws IOException {
         searcher = createMockBuilder(IndexSearcher.class).addMockedMethod(
                 "maxDoc").createMock();
@@ -525,7 +525,7 @@ public class LuceneQueryTest {
     }
 
     @Test(expected = QueryException.class)
-    public void uniqueResult_Sorted_Index_Problem_In_Max_Doc()
+    public void UniqueResult_Sorted_Index_Problem_In_Max_Doc()
             throws IOException {
         searcher = createMockBuilder(IndexSearcher.class).addMockedMethod(
                 "maxDoc").createMock();
@@ -538,7 +538,7 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void count_Returns_0_Because_No_Documents_In_Index()
+    public void Count_Returns_0_Because_No_Documents_In_Index()
             throws IOException {
         searcher = createMockBuilder(IndexSearcher.class).addMockedMethod(
                 "maxDoc").createMock();
@@ -550,7 +550,7 @@ public class LuceneQueryTest {
     }
 
     @Test(expected=UnsupportedOperationException.class)
-    public void listDistinct() {
+    public void ListDistinct() {
         query.where(year.between(1900, 2000).or(title.startsWith("Jura")));
         query.orderBy(year.asc());
         final List<Document> documents = query.listDistinct();
@@ -559,7 +559,7 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void listResults() {
+    public void ListResults() {
         query.where(year.between(1800, 2000));
         query.restrict(new QueryModifiers(2l, 1l));
         query.orderBy(year.asc());
@@ -573,7 +573,7 @@ public class LuceneQueryTest {
     }
 
     @Test(expected=UnsupportedOperationException.class)
-    public void listDistinctResults() {
+    public void ListDistinctResults() {
         query.where(year.between(1800, 2000).or(
                 title.eq("The Lord of the Rings")));
         query.restrict(new QueryModifiers(1l, 1l));
@@ -587,14 +587,14 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void list_All() {
+    public void List_All() {
         final List<Document> results = query.where(title.like("*")).orderBy(
                 title.asc(), year.desc()).list();
         assertEquals(4, results.size());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void list_Sorted_Ascending_Limit_Negative() {
+    public void List_Sorted_Ascending_Limit_Negative() {
         query.where(year.between(1800, 2000));
         query.limit(-1);
         query.orderBy(year.asc());
@@ -602,14 +602,14 @@ public class LuceneQueryTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void list_Not_Sorted_Limit_Negative() {
+    public void List_Not_Sorted_Limit_Negative() {
         query.where(year.between(1800, 2000));
         query.limit(-1);
         query.list();
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void list_Sorted_Ascending_Limit_0() {
+    public void List_Sorted_Ascending_Limit_0() {
         query.where(year.between(1800, 2000));
         query.limit(0);
         query.orderBy(year.asc());
@@ -617,14 +617,14 @@ public class LuceneQueryTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void list_Not_Sorted_Limit_0() {
+    public void List_Not_Sorted_Limit_0() {
         query.where(year.between(1800, 2000));
         query.limit(0);
         query.list();
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void list_Sorted_Ascending_Offset_Negative() {
+    public void List_Sorted_Ascending_Offset_Negative() {
         query.where(year.between(1800, 2000));
         query.offset(-1);
         query.orderBy(year.asc());
@@ -632,14 +632,14 @@ public class LuceneQueryTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void list_Not_Sorted_Offset_Negative() {
+    public void List_Not_Sorted_Offset_Negative() {
         query.where(year.between(1800, 2000));
         query.offset(-1);
         query.list();
     }
 
     @Test
-    public void list_Sorted_Ascending_Offset_0() {
+    public void List_Sorted_Ascending_Offset_0() {
         query.where(year.between(1800, 2000));
         query.offset(0);
         query.orderBy(year.asc());
@@ -649,7 +649,7 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void list_Not_Sorted_Offset_0() {
+    public void List_Not_Sorted_Offset_0() {
         query.where(year.between(1800, 2000));
         query.offset(0);
         final List<Document> documents = query.list();
@@ -658,7 +658,7 @@ public class LuceneQueryTest {
     }
 
     @Test
-    public void iterate() {
+    public void Iterate() {
         query.where(year.between(1800, 2000));
         final Iterator<Document> iterator = query.iterate();
         int count = 0;

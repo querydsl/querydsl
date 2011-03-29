@@ -21,10 +21,15 @@ public class PhraseElementTest {
     }
 
     @Test
-    public void testEqualsAndHashCode(){
+    public void Equals(){
         PhraseElement el1 = new PhraseElement("x"), el2 = new PhraseElement("x"), el3 = new PhraseElement("y");
         assertEquals(el1, el2);
         assertFalse(el1.equals(el3));
+    }
+
+    @Test
+    public void HashCode(){
+        PhraseElement el1 = new PhraseElement("x"), el2 = new PhraseElement("x");
         assertEquals(el1.hashCode(), el2.hashCode());
     }
 
