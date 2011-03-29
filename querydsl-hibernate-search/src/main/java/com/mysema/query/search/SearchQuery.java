@@ -57,6 +57,17 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
         this(Search.getFullTextSession(session), path);
     }
 
+
+    @Override
+    public boolean exists() {
+        return createQuery(true).getResultSize() > 0;
+    }
+
+    @Override
+    public boolean notExists() {
+        return createQuery(true).getResultSize() == 0;
+    }
+
     @Override
     public long count() {
         return createQuery(true).getResultSize();
@@ -177,5 +188,6 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
     public SearchQuery<T> where(Predicate... e) {
         return queryMixin.where(e);
     }
+
 
 }

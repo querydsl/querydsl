@@ -52,6 +52,16 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProj
     }
 
     @Override
+    public boolean exists() {
+        return collection.findOne(createQuery()) != null;
+    }
+
+    @Override
+    public boolean notExists() {
+        return collection.findOne(createQuery()) == null;
+    }
+
+    @Override
     public MongodbQuery<K> distinct(){
         return queryMixin.distinct();
     }

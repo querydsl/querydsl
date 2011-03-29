@@ -67,6 +67,16 @@ SimpleProjectable<T> {
         this(LuceneSerializer.DEFAULT, searcher, transformer);
     }
 
+    @Override
+    public boolean exists() {
+        return innerCount() > 0;
+    }
+
+    @Override
+    public boolean notExists() {
+        return innerCount() == 0;
+    }
+
     private long innerCount(){
         try {
             final int maxDoc = searcher.maxDoc();

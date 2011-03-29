@@ -142,8 +142,21 @@ public class LuceneQueryTest {
         searcher.close();
     }
 
+    @Test
     public void count_Empty_Where_Clause() {
         assertEquals(4, query.count());
+    }
+
+    @Test
+    public void exists(){
+        assertTrue(query.where(title.eq("Jurassic Park")).exists());
+        assertFalse(query.where(title.eq("Jurassic Park X")).exists());
+    }
+
+    @Test
+    public void notExists(){
+        assertFalse(query.where(title.eq("Jurassic Park")).notExists());
+        assertTrue(query.where(title.eq("Jurassic Park X")).notExists());
     }
 
     @Test

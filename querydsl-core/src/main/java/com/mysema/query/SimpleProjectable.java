@@ -20,6 +20,16 @@ import com.mysema.commons.lang.CloseableIterator;
 public interface SimpleProjectable<T> {
 
     /**
+     * @return true, if rows matching the given criteria exist, otherwise false
+     */
+    boolean exists();
+
+    /**
+     * @return true, if no rows matching the given criteria exist, otherwise false
+     */
+    boolean notExists();
+
+    /**
      * Get the projection as a typed closeable Iterator
      *
      * @return

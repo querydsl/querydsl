@@ -49,6 +49,16 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     }
 
     @Override
+    public boolean exists(){
+        return projectable.exists();
+    }
+
+    @Override
+    public boolean notExists(){
+        return projectable.notExists();
+    }
+
+    @Override
     public long count() {
         return projectable.count();
     }

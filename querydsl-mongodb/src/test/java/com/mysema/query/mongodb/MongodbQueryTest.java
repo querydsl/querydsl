@@ -8,6 +8,8 @@ package com.mysema.query.mongodb;
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,6 +59,18 @@ public class MongodbQueryTest {
     }
 
     @Test
+    public void Exists(){
+        assertTrue(where(user.firstName.eq("Jaakko")).exists());
+        assertFalse(where(user.firstName.eq("JaakkoX")).exists());
+    }
+
+    @Test
+    public void NotExists(){
+        assertFalse(where(user.firstName.eq("Jaakko")).notExists());
+        assertTrue(where(user.firstName.eq("JaakkoX")).notExists());
+    }
+
+    @Test
     public void UniqueResult(){
         assertEquals("Jantunen", where(user.firstName.eq("Jaakko")).uniqueResult().getLastName());
     }
@@ -65,7 +79,7 @@ public class MongodbQueryTest {
     public void UniqueResultContract(){
         where(user.firstName.isNotNull()).uniqueResult();
     }
-    
+
     @Test
     public void SingleResult(){
         where(user.firstName.isNotNull()).singleResult();
