@@ -122,8 +122,8 @@ public class DefaultEvaluatorFactory {
         Map<Object,String> constantToLabel = ser.getConstantToLabel();
         Map<String, Object> constants = getConstants(metadata, constantToLabel);
 
-        Type sourceType = new ClassType(TypeCategory.SIMPLE,source.getType());
-        ClassType sourceListType = new ClassType(TypeCategory.SIMPLE,Iterable.class, sourceType);
+        Type sourceType = new ClassType(TypeCategory.SIMPLE, source.getType());
+        ClassType sourceListType = new ClassType(TypeCategory.SIMPLE, Iterable.class, sourceType);
 
         return factory.createEvaluator(
                 ser.toString(),
@@ -149,7 +149,7 @@ public class DefaultEvaluatorFactory {
         StringBuilder vars = new StringBuilder();
         ColQuerySerializer ser = new ColQuerySerializer(templates);
         ser.append("java.util.List<Object[]> rv = new java.util.ArrayList<Object[]>();\n");
-        
+
         List<String> anyJoinMatchers = new ArrayList<String>();
 
         // creating context
@@ -167,21 +167,21 @@ public class DefaultEvaluatorFactory {
                 sourceClasses.add(Iterable.class);
 
             }else if (join.getType() == JoinType.INNERJOIN){
-                Operation alias = (Operation)join.getTarget();                
-                boolean colAnyJoin = join.getCondition() != null && join.getCondition().toString().equals("any"); 
+                Operation alias = (Operation)join.getTarget();
+                boolean colAnyJoin = join.getCondition() != null && join.getCondition().toString().equals("any");
                 if (colAnyJoin){
                     String matcher = alias.getArg(1).toString() + "_matched";
-                    ser.append("boolean " + matcher + " = false;\n");   
+                    ser.append("boolean " + matcher + " = false;\n");
                     anyJoinMatchers.add(matcher);
-                }                
+                }
                 ser.append("for ( " + typeName + " " + alias.getArg(1) + " : ");
                 if (colAnyJoin){
                     CollectionAnyVisitor.Context context = new CollectionAnyVisitor.Context();
                     Expression<?> replacement = (Expression<?>) alias.getArg(0).accept(CollectionAnyVisitor.DEFAULT, context);
                     ser.handle(replacement);
                 }else{
-                    ser.handle(alias.getArg(0));    
-                }                
+                    ser.handle(alias.getArg(0));
+                }
                 if (alias.getArg(0).getType().equals(Map.class)){
                     ser.append(".values()");
                 }
