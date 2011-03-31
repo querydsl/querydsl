@@ -26,7 +26,7 @@ public final class ClassUtils {
         if (cl.isArray()){
             return getFullName(cl.getComponentType()) + "[]";
         }else{
-            return cl.getName();
+            return cl.getName().replace('$', '.');
         }
     }
 
