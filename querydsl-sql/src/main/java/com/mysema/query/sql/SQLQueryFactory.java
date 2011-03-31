@@ -8,7 +8,7 @@ import com.mysema.query.types.Expression;
 
 /**
  * Factory interface for query and clause creation
- * 
+ *
  * @author tiwe
  *
  * @param <Q> query type
@@ -19,23 +19,25 @@ import com.mysema.query.types.Expression;
  */
 public interface SQLQueryFactory<Q extends AbstractSQLQuery<?>,
     SQ extends AbstractSQLSubQuery<?>,
-    D extends SQLDeleteClause, 
-    U extends SQLUpdateClause, 
+    D extends SQLDeleteClause,
+    U extends SQLUpdateClause,
     I extends SQLInsertClause,
     M extends SQLMergeClause> {
-        
+
     D delete(RelationalPath<?> path);
-    
+
     Q from(Expression<?> from);
 
     I insert(RelationalPath<?> path);
 
     M merge(RelationalPath<?> path);
-    
+
     U update(RelationalPath<?> path);
 
     Q query();
 
     SQ subQuery();
-    
+
+    SQ subQuery(Expression<?> from);
+
 }

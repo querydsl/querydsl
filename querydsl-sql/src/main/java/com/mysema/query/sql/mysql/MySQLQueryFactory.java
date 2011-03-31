@@ -27,7 +27,7 @@ import com.mysema.query.types.Expression;
 public class MySQLQueryFactory implements SQLQueryFactory<MySQLQuery, SQLSubQuery, SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause>{
 
     private final SQLQueryFactoryImpl queryFactory;
-    
+
     public MySQLQueryFactory(Configuration configuration, Provider<Connection> connection) {
         queryFactory = new SQLQueryFactoryImpl(configuration, connection);
     }
@@ -74,6 +74,10 @@ public class MySQLQueryFactory implements SQLQueryFactory<MySQLQuery, SQLSubQuer
 
     public SQLSubQuery subQuery() {
         return queryFactory.subQuery();
+    }
+
+    public SQLSubQuery subQuery(Expression<?> from){
+        return subQuery().from(from);
     }
 
     public SQLUpdateClause update(RelationalPath<?> path) {

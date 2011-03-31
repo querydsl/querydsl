@@ -26,7 +26,7 @@ import com.mysema.query.types.Expression;
 public class OracleQueryFactory implements SQLQueryFactory<OracleQuery, SQLSubQuery, SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause>{
 
     private final SQLQueryFactoryImpl queryFactory;
-    
+
     public OracleQueryFactory(Configuration configuration, Provider<Connection> connection) {
         queryFactory = new SQLQueryFactoryImpl(configuration, connection);
     }
@@ -62,6 +62,10 @@ public class OracleQueryFactory implements SQLQueryFactory<OracleQuery, SQLSubQu
 
     public SQLSubQuery subQuery() {
         return queryFactory.subQuery();
+    }
+
+    public SQLSubQuery subQuery(Expression<?> from){
+        return subQuery().from(from);
     }
 
     public SQLUpdateClause update(RelationalPath<?> path) {
