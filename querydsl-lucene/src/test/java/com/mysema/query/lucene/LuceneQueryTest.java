@@ -405,6 +405,21 @@ public class LuceneQueryTest {
                 .isEmpty());
     }
 
+
+    @Test
+    public void Load_List(){
+        Document document = query.where(title.ne("")).load(title).list().get(0);
+        assertNotNull(document.get("title"));
+        assertNull(document.get("year"));
+    }
+
+    @Test
+    public void Load_SingleResult(){
+        Document document = query.where(title.ne("")).load(title).singleResult();
+        assertNotNull(document.get("title"));
+        assertNull(document.get("year"));
+    }
+
     @Test
     public void SingleResult() {
         assertNotNull(query.where(title.ne("")).singleResult());

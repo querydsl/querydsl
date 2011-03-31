@@ -1,12 +1,15 @@
 package com.mysema.query.lucene;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
 import org.apache.commons.collections15.Transformer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.FieldSelector;
+import org.apache.lucene.document.MapFieldSelector;
 import org.apache.lucene.search.DuplicateFilter;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.MatchAllDocsQuery;
@@ -50,6 +53,9 @@ SimpleProjectable<T> {
     private final LuceneSerializer serializer;
 
     private final Transformer<Document, T> transformer;
+
+    @Nullable
+    private FieldSelector fieldSelector;
 
     @Nullable
     private Filter filter;
@@ -174,7 +180,7 @@ SimpleProjectable<T> {
                 scoreDocs = searcher.search(createQuery(), filter, sumOfLimitAndOffset).scoreDocs;
             }
             if (offset < scoreDocs.length) {
-                return new ResultIterator<T>(scoreDocs, offset, searcher, transformer);
+                return new ResultIterator<T>(scoreDocs, offset, searcher, fieldSelector, transformer);
             }
             return new EmptyCloseableIterator<T>();
         } catch (final IOException e) {
@@ -194,6 +200,34 @@ SimpleProjectable<T> {
     @Override
     public List<T> list() {
         return innerList();
+    }
+
+    /**
+     * Set the given FieldSelector to the query
+     *
+     * @param fieldSelector
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public Q load(FieldSelector fieldSelector){
+        this.fieldSelector = fieldSelector;
+        return (Q)this;
+    }
+
+    /**
+     * Load only the fields of the given paths
+     *
+     * @param paths
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public Q load(Path<?>... paths){
+        List<String> fields = new ArrayList<String>(paths.length);
+        for (Path<?> path : paths){
+            fields.add(serializer.toField(path));
+        }
+        this.fieldSelector = new MapFieldSelector(fields);
+        return (Q)this;
     }
 
     @Override
@@ -255,7 +289,13 @@ SimpleProjectable<T> {
                                            limit > 1 && scoreDocs.length > 1)) {
                 throw new NonUniqueResultException("Unique result requested, but " + scoreDocs.length + " found.");
             } else if (scoreDocs.length > index) {
-                return transformer.transform(searcher.doc(scoreDocs[index].doc));
+                Document document;
+                if (fieldSelector != null){
+                    document = searcher.doc(scoreDocs[index].doc, fieldSelector);
+                }else{
+                    document = searcher.doc(scoreDocs[index].doc);
+                }
+                return transformer.transform(document);
             } else {
                 return null;
             }
