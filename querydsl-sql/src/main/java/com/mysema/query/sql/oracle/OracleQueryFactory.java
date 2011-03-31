@@ -51,7 +51,6 @@ public class OracleQueryFactory implements SQLQueryFactory<OracleQuery, SQLSubQu
         return queryFactory.insert(path);
     }
 
-
     public SQLMergeClause merge(RelationalPath<?> path) {
         return queryFactory.merge(path);
     }
