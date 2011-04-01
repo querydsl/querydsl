@@ -23,6 +23,7 @@ import java.util.Locale;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.MapFieldSelector;
 import org.apache.lucene.document.NumericField;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
@@ -414,8 +415,22 @@ public class LuceneQueryTest {
     }
 
     @Test
+    public void Load_List_FieldSelector(){
+        Document document = query.where(title.ne("")).load(new MapFieldSelector("title")).list().get(0);
+        assertNotNull(document.get("title"));
+        assertNull(document.get("year"));
+    }
+
+    @Test
     public void Load_SingleResult(){
         Document document = query.where(title.ne("")).load(title).singleResult();
+        assertNotNull(document.get("title"));
+        assertNull(document.get("year"));
+    }
+
+    @Test
+    public void Load_SingleResult_FieldSelector(){
+        Document document = query.where(title.ne("")).load(new MapFieldSelector("title")).singleResult();
         assertNotNull(document.get("title"));
         assertNull(document.get("year"));
     }
