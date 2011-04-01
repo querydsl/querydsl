@@ -66,10 +66,8 @@ public class MySQLQueryFactory implements SQLQueryFactory<MySQLQuery, SQLSubQuer
         return new MySQLQuery(queryFactory.getConnection(), queryFactory.getConfiguration());
     }
 
-    public SQLInsertClause replace(RelationalPath<?> entity) {
-        SQLInsertClause insert = insert(entity);
-        insert.addFlag(Position.START_OVERRIDE, "replace into ");
-        return insert;
+    public MySQLReplaceClause replace(RelationalPath<?> entity) {
+        return new MySQLReplaceClause(queryFactory.getConnection(), queryFactory.getConfiguration(), entity);
     }
 
     public SQLSubQuery subQuery() {
