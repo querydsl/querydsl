@@ -1,4 +1,4 @@
-package com.mysema.query.sql;
+package com.mysema.query.sql.oracle;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -10,11 +10,12 @@ import org.easymock.EasyMock;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.domain.QSurvey;
 
-public class SQLQueryFactoryTest {
+public class OracleQueryFactoryTest {
 
-    private SQLQueryFactoryImpl queryFactory;
+    private OracleQueryFactory queryFactory;
 
     @Before
     public void setUp(){
@@ -24,7 +25,7 @@ public class SQLQueryFactoryTest {
                 return EasyMock.createNiceMock(Connection.class);
             }
         };
-        queryFactory = new SQLQueryFactoryImpl(SQLTemplates.DEFAULT, provider);
+        queryFactory = new OracleQueryFactory(SQLTemplates.DEFAULT, provider);
     }
 
     @Test
