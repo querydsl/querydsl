@@ -32,6 +32,11 @@ public class JDOQueryFactoryTest {
     }
 
     @Test
+    public void SubQuery(){
+        assertNotNull(queryFactory.subQuery());
+    }
+
+    @Test
     public void From(){
         assertNotNull(queryFactory.from(QProduct.product));
     }
