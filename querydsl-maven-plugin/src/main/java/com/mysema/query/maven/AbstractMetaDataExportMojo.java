@@ -16,9 +16,12 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
 import com.mysema.query.codegen.BeanSerializer;
+import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.DefaultNamingStrategy;
 import com.mysema.query.sql.MetaDataExporter;
 import com.mysema.query.sql.NamingStrategy;
+import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.types.Type;
 
 /**
  * MetaDataExportMojo is a goal for MetaDataExporter usage
@@ -145,6 +148,11 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      */
     private boolean validationAnnotations;
 
+    /**
+     * @parameter
+     */
+    private String[] customTypes;
+
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (isForTest()){
@@ -187,8 +195,27 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         exporter.setSchemaPattern(schemaPattern);
         exporter.setTableNamePattern(tableNamePattern);
         exporter.setValidationAnnotations(validationAnnotations);
-        if (exportBeans){
+        if (exportBeans) {
             exporter.setBeanSerializer(new BeanSerializer());
+        }
+
+        try {
+            if (customTypes != null) {
+                Configuration configuration = new Configuration(SQLTemplates.DEFAULT);
+                for (String cl : customTypes) {
+                    configuration.register((Type<?>)Class.forName(cl).newInstance());
+                }
+                exporter.setConfiguration(configuration);
+            }
+        } catch (IllegalAccessException e) {
+            getLog().error(e);
+            throw new MojoExecutionException(e.getMessage(), e);
+        } catch (InstantiationException e) {
+            getLog().error(e);
+            throw new MojoExecutionException(e.getMessage(), e);
+        } catch (ClassNotFoundException e) {
+            getLog().error(e);
+            throw new MojoExecutionException(e.getMessage(), e);
         }
 
         try {

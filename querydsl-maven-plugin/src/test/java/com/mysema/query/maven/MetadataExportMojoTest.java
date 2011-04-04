@@ -12,6 +12,8 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.junit.Test;
 
+import com.mysema.query.sql.types.BytesType;
+
 public class MetadataExportMojoTest {
 
     private final String url = "jdbc:h2:mem:testdb" + System.currentTimeMillis();
@@ -33,6 +35,25 @@ public class MetadataExportMojoTest {
         assertEquals(Collections.singletonList("target/export"), project.getCompileSourceRoots());
         assertTrue(new File("target/export").exists());
 
+    }
+
+    @Test
+    public void Execute_With_CustomTypes() throws SecurityException, NoSuchFieldException, IllegalAccessException, MojoExecutionException, MojoFailureException {
+        MavenProject project = new MavenProject();
+        MetadataExportMojo mojo = new MetadataExportMojo();
+        set(mojo, "project", project);
+        set(mojo, "jdbcDriver", "org.h2.Driver");
+        set(mojo, "jdbcUrl", url);
+        set(mojo, "jdbcUser", "sa");
+        set(mojo, "namePrefix", "Q"); // default value
+        set(mojo, "packageName", "com.example");
+        set(mojo, "targetFolder", "target/export2");
+        set(mojo, "customTypes", new String[]{BytesType.class.getName()});
+
+        mojo.execute();
+
+        assertEquals(Collections.singletonList("target/export2"), project.getCompileSourceRoots());
+        assertTrue(new File("target/export2").exists());
     }
 
     private void set(Object obj, String fieldName, Object value) throws SecurityException, NoSuchFieldException, IllegalAccessException{

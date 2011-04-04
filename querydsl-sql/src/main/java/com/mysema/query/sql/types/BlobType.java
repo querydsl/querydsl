@@ -17,6 +17,16 @@ import java.sql.Types;
  */
 public class BlobType implements Type<Blob>{
 
+    private final int blobType;
+
+    public BlobType() {
+        this(Types.BLOB);
+    }
+
+    public BlobType(int blobType) {
+        this.blobType = blobType;
+    }
+
     @Override
     public Blob getValue(ResultSet rs, int startIndex) throws SQLException {
         return rs.getBlob(startIndex);
@@ -34,7 +44,7 @@ public class BlobType implements Type<Blob>{
 
     @Override
     public int[] getSQLTypes() {
-        return new int[]{Types.BLOB};
+        return new int[]{blobType};
     }
 
 }

@@ -16,6 +16,16 @@ import java.sql.Types;
  */
 public class BytesType implements Type<byte[]>{
 
+    private final int blobType;
+
+    public BytesType() {
+        this(Types.BLOB);
+    }
+
+    public BytesType(int blobType) {
+        this.blobType = blobType;
+    }
+
     @Override
     public byte[] getValue(ResultSet rs, int startIndex) throws SQLException {
         return rs.getBytes(startIndex);
@@ -33,7 +43,7 @@ public class BytesType implements Type<byte[]>{
 
     @Override
     public int[] getSQLTypes() {
-        return new int[]{Types.BLOB};
+        return new int[]{blobType};
     }
-    
+
 }
