@@ -8,16 +8,7 @@ package com.mysema.query.apt;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.Nullable;
 import javax.annotation.processing.Filer;
@@ -56,7 +47,6 @@ import com.mysema.query.codegen.QueryTypeFactory;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.Supertype;
-import com.mysema.query.codegen.TypeFactory;
 import com.mysema.query.codegen.TypeMappings;
 
 /**
@@ -120,10 +110,9 @@ public class Processor {
             anns.add(configuration.getEmbeddableAnnotation());
         }
 
-        TypeFactory factory = new TypeFactory(anns);
         TypeMappings typeMappings = configuration.getTypeMappings();
         QueryTypeFactory queryTypeFactory = configuration.getQueryTypeFactory();
-        this.typeFactory = new ExtendedTypeFactory(env, configuration, factory, anns, typeMappings, queryTypeFactory);
+        this.typeFactory = new ExtendedTypeFactory(env, configuration, anns, typeMappings, queryTypeFactory);
         this.elementHandler = new ElementHandler(configuration, typeFactory, typeMappings, queryTypeFactory);
     }
 

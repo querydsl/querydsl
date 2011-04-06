@@ -20,8 +20,6 @@ import javax.lang.model.util.ElementFilter;
 
 import net.jcip.annotations.Immutable;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.mysema.codegen.model.Constructor;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
@@ -45,17 +43,17 @@ import com.mysema.util.BeanUtils;
 public final class ElementHandler{
 
     private final TypeMappings typeMappings;
-    
+
     private final QueryTypeFactory queryTypeFactory;
-    
+
     private final Configuration configuration;
 
     private final ExtendedTypeFactory typeFactory;
 
     public ElementHandler(
-            Configuration configuration, 
-            ExtendedTypeFactory typeFactory, 
-            TypeMappings typeMappings, 
+            Configuration configuration,
+            ExtendedTypeFactory typeFactory,
+            TypeMappings typeMappings,
             QueryTypeFactory queryTypeFactory){
         this.configuration = configuration;
         this.typeFactory = typeFactory;
@@ -203,7 +201,7 @@ public final class ElementHandler{
     public EntityType handleProjectionType(TypeElement e) {
         Type c = typeFactory.getType(e.asType(), true);
         EntityType entityType = new EntityType(c.as(TypeCategory.ENTITY));
-        typeMappings.register(entityType, queryTypeFactory.create(entityType));        
+        typeMappings.register(entityType, queryTypeFactory.create(entityType));
         List<? extends Element> elements = e.getEnclosedElements();
         handleConstructors(entityType, elements);
         return entityType;

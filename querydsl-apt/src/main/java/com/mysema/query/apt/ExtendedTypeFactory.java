@@ -39,7 +39,6 @@ import com.mysema.codegen.model.Types;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.QueryTypeFactory;
 import com.mysema.query.codegen.Supertype;
-import com.mysema.query.codegen.TypeFactory;
 import com.mysema.query.codegen.TypeMappings;
 
 /**
@@ -74,18 +73,17 @@ public final class ExtendedTypeFactory {
     private boolean doubleIndexEntities = true;
 
     private final TypeMappings typeMappings;
-    
+
     private final QueryTypeFactory queryTypeFactory;
-    
+
     public ExtendedTypeFactory(
-            ProcessingEnvironment env, 
+            ProcessingEnvironment env,
             Configuration configuration,
-            TypeFactory factory, 
             List<Class<? extends Annotation>> annotations,
             TypeMappings typeMappings,
             QueryTypeFactory queryTypeFactory){
         this.env = env;
-        this.defaultType = factory.create(Object.class);
+        this.defaultType = Types.OBJECT;
         this.entityAnnotations = annotations;
         this.numberType = env.getElementUtils().getTypeElement(Number.class.getName());
         this.comparableType = env.getElementUtils().getTypeElement(Comparable.class.getName());
@@ -190,7 +188,7 @@ public final class ExtendedTypeFactory {
                 }
             }
         }
-        
+
         Type type = createType(typeElement, typeCategory, declaredType.getTypeArguments(), deep);
 
         // entity type
@@ -224,7 +222,7 @@ public final class ExtendedTypeFactory {
         }
         return new SimpleType(Types.MAP, keyType, valueType);
     }
-    
+
     private Type createCollectionType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
         return createCollectionType(Types.COLLECTION, simpleName, typeMirrors, deep);
     }
@@ -236,7 +234,7 @@ public final class ExtendedTypeFactory {
     private Type createSetType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
         return createCollectionType(Types.SET, simpleName, typeMirrors, deep);
     }
-    
+
     private Type createCollectionType(Type baseType, String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
         if (!typeMirrors.hasNext()){
             throw new TypeArgumentsException(simpleName);
@@ -253,7 +251,7 @@ public final class ExtendedTypeFactory {
         }
         return new SimpleType(baseType, componentType);
     }
-    
+
     @Nullable
     public EntityType getEntityType(TypeMirror typeMirrors, boolean deep){
         if (typeMirrors.getKind().isPrimitive()){
