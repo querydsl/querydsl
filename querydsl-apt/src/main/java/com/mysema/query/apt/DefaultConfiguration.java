@@ -8,9 +8,12 @@ package com.mysema.query.apt;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
@@ -20,22 +23,14 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.mysema.codegen.model.ClassType;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.Config;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.codegen.CodegenModule;
-import com.mysema.query.codegen.EmbeddableSerializer;
-import com.mysema.query.codegen.EntitySerializer;
-import com.mysema.query.codegen.EntityType;
-import com.mysema.query.codegen.ProjectionSerializer;
-import com.mysema.query.codegen.QueryTypeFactory;
-import com.mysema.query.codegen.Serializer;
-import com.mysema.query.codegen.SerializerConfig;
-import com.mysema.query.codegen.SimpleSerializerConfig;
-import com.mysema.query.codegen.SupertypeSerializer;
-import com.mysema.query.codegen.TypeMappings;
+import com.mysema.query.codegen.*;
 import com.mysema.query.types.Expression;
 
 /**
@@ -49,26 +44,38 @@ public class DefaultConfiguration implements Configuration {
     private static final String QUERYDSL_CREATE_DEFAULT_VARIABLE = "querydsl.createDefaultVariable";
 
     private static final String QUERYDSL_PREFIX = "querydsl.prefix";
-    
+
     private static final String QUERYDSL_SUFFIX = "querydsl.suffix";
-    
+
     private static final String QUERYDSL_PACKAGE_SUFFIX = "querydsl.packageSuffix";
-    
+
     private static final String QUERYDSL_MAP_ACCESSORS = "querydsl.mapAccessors";
 
     private static final String QUERYDSL_LIST_ACCESSORS = "querydsl.listAccessors";
 
     private static final String QUERYDSL_ENTITY_ACCESSORS = "querydsl.entityAccessors";
 
+    private static final String QUERYDSL_EXCLUDED_PACKAGES = "querydsl.excludedPackages";
+
+    private static final String QUERYDSL_EXCLUDED_CLASSES = "querydsl.excludedClasses";
+
+    private static final String DEFAULT_SEPARATOR = ",";
+
     private static final String DEFAULT_OVERWRITE = "defaultOverwrite";
 
     private final CodegenModule module = new CodegenModule();
-    
+
     private final SerializerConfig defaultSerializerConfig;
 
     private final Map<String, SerializerConfig> packageToConfig = new HashMap<String, SerializerConfig>();
 
     protected final Class<? extends Annotation> entityAnn;
+
+	@Nonnull
+	private final Set<String> excludedPackages;
+
+	@Nonnull
+	private final Set<String> excludedClasses;
 
     @Nullable
     protected final Class<? extends Annotation> entitiesAnn, superTypeAnn, embeddedAnn, embeddableAnn, skipAnn;
@@ -76,7 +83,7 @@ public class DefaultConfiguration implements Configuration {
     private final Map<String, SerializerConfig> typeToConfig = new HashMap<String, SerializerConfig>();
 
     private boolean useFields = true, useGetters = true, defaultOverwrite = false;
-    
+
     public DefaultConfiguration(
             RoundEnvironment roundEnv,
             Map<String, String> options,
@@ -87,6 +94,8 @@ public class DefaultConfiguration implements Configuration {
             @Nullable Class<? extends Annotation> embeddableAnn,
             @Nullable Class<? extends Annotation> embeddedAnn,
             @Nullable Class<? extends Annotation> skipAnn) {
+		this.excludedClasses = new HashSet<String>();
+		this.excludedPackages = new HashSet<String>();
         module.bind(RoundEnvironment.class, roundEnv);
         module.bind(CodegenModule.KEYWORDS, keywords);
         this.entitiesAnn = entitiesAnn;
@@ -133,6 +142,22 @@ public class DefaultConfiguration implements Configuration {
         }
         if (options.containsKey(DEFAULT_OVERWRITE)){
             defaultOverwrite = Boolean.valueOf(options.get(DEFAULT_OVERWRITE));
+        }
+        if (options.containsKey(QUERYDSL_EXCLUDED_PACKAGES)) {
+            String packageString = options.get(QUERYDSL_EXCLUDED_PACKAGES);
+            if (StringUtils.isNotBlank(packageString)) {
+                for (String packageName : packageString.split(DEFAULT_SEPARATOR)) {
+                    excludedPackages.add(packageName);
+                }
+            }
+        }
+        if (options.containsKey(QUERYDSL_EXCLUDED_CLASSES)) {
+            String classString = options.get(QUERYDSL_EXCLUDED_CLASSES);
+            if (StringUtils.isNotBlank(classString)) {
+                for (String className : classString.split(DEFAULT_SEPARATOR)) {
+                    excludedClasses.add(className);
+                }
+            }
         }
 
         defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors, mapAccessors, createDefaultVariable);
@@ -312,14 +337,15 @@ public class DefaultConfiguration implements Configuration {
         return module.get(Collection.class, CodegenModule.KEYWORDS);
     }
 
-    public String getNameSuffix() {
+    @Override
+	public String getNameSuffix() {
         return module.get(String.class, CodegenModule.SUFFIX);
     }
 
     public void setNameSuffix(String nameSuffix) {
         module.bind(CodegenModule.SUFFIX, nameSuffix);
     }
-    
+
     public <T> void addCustomType(Class<T> type, Class<? extends Expression<T>> queryType){
         module.get(TypeMappings.class).register(new ClassType(type), new ClassType(queryType));
     }
@@ -328,5 +354,20 @@ public class DefaultConfiguration implements Configuration {
     public QueryTypeFactory getQueryTypeFactory() {
         return module.get(QueryTypeFactory.class);
     }
+
+	@Override
+	public boolean isExcludedPackage(@Nonnull String packageName) {
+		for (String excludedPackage : excludedPackages) {
+			if (packageName.startsWith(excludedPackage)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean isExcludedClass(@Nonnull String className) {
+		return excludedClasses.contains(className);
+	}
 
 }

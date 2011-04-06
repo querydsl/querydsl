@@ -83,5 +83,9 @@ public interface Configuration {
     boolean isDefaultOverwrite();
 
     QueryTypeFactory getQueryTypeFactory();
+    
+    boolean isExcludedPackage(String packageName);
+    
+    boolean isExcludedClass(String className);
 
 }

@@ -540,9 +540,13 @@ public class Processor {
         Messager msg = env.getMessager();
         for (EntityType model : models) {
             try {
+
                 Type type = configuration.getTypeMappings().getPathType(model, model, true);
                 String packageName = type.getPackageName();
                 String className = !packageName.isEmpty() ? (packageName + "." + type.getSimpleName()) : type.getSimpleName();
+                if (configuration.isExcludedPackage(model.getPackageName()) || configuration.isExcludedClass(model.getFullName())) {
+                    continue;
+                }
 
                 Filer filer = env.getFiler();
                 FileObject generatedFile = filer.getResource(StandardLocation.SOURCE_OUTPUT, packageName, type.getSimpleName() + ".java");
