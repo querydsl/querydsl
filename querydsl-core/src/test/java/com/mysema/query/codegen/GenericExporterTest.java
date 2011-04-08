@@ -24,6 +24,7 @@ public class GenericExporterTest {
         assertTrue(new File("target/gen1/com/mysema/query/codegen/QExampleEmbedded.java").exists());
         assertTrue(new File("target/gen1/com/mysema/query/codegen/QExampleEntity.java").exists());
         assertTrue(new File("target/gen1/com/mysema/query/codegen/QExampleSupertype.java").exists());
+        assertTrue(new File("target/gen1/com/mysema/query/codegen/sub/QExampleEntity2.java").exists());
     }
 
     @Test
@@ -35,6 +36,7 @@ public class GenericExporterTest {
         assertTrue(new File("target/gen2/com/mysema/query/codegen/QExampleEmbedded.java").exists());
         assertTrue(new File("target/gen2/com/mysema/query/codegen/QExampleEntity.java").exists());
         assertTrue(new File("target/gen2/com/mysema/query/codegen/QExampleSupertype.java").exists());
+        assertTrue(new File("target/gen2/com/mysema/query/codegen/sub/QExampleEntity2.java").exists());
     }
 
 }
