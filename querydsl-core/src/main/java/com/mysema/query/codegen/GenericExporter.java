@@ -44,7 +44,7 @@ import com.mysema.query.annotations.QueryType;
  */
 public class GenericExporter {
 
-    private static final Pattern jarUrlSeparator = Pattern.compile("!");
+    private static final Pattern JAR_URL_SEPARATOR = Pattern.compile("!");
 
     private Class<? extends Annotation> entityAnnotation = QueryEntity.class;
 
@@ -231,7 +231,7 @@ public class GenericExporter {
         while (urls.hasMoreElements()){
             URL url = urls.nextElement();
             if (url.getProtocol().equals("jar")){
-                String[] fileAndPath = jarUrlSeparator.split(url.getFile().substring(5));
+                String[] fileAndPath = JAR_URL_SEPARATOR.split(url.getFile().substring(5));
                 JarFile jarFile = new JarFile(fileAndPath[0]);
                 Enumeration<JarEntry> entries = jarFile.entries();
                 while (entries.hasMoreElements()){
