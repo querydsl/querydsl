@@ -1,7 +1,11 @@
 package com.mysema.query.codegen;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -16,12 +20,21 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
 
+import com.mysema.codegen.CodeWriter;
+import com.mysema.codegen.JavaWriter;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
 import com.mysema.query.QueryException;
 import com.mysema.query.annotations.QueryEmbeddable;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QuerySupertype;
 
+/**
+ * @author tiwe
+ *
+ */
 public class GenericExporter {
 
     private static final Pattern jarUrlSeparator = Pattern.compile("!");
@@ -44,33 +57,128 @@ public class GenericExporter {
 
     private final Map<Class<?>, EntityType> projectionTypes = new HashMap<Class<?>, EntityType>();
 
-//    private final CodegenModule codegenModule = new CodegenModule();
+    private final CodegenModule codegenModule = new CodegenModule();
+
+    private final SerializerConfig serializerConfig = SimpleSerializerConfig.DEFAULT;
+
+    private File targetFolder;
+
+    private TypeMappings typeMappings;
+
+    private QueryTypeFactory queryTypeFactory;
 
     public void export(Package... packages){
         scanPackages(packages);
 
         // process supertypes
-
-        // process embedded
+        for (Class<?> cl : superTypes.keySet()){
+            superTypes.put(cl, createEntityType(cl, superTypes));
+        }
 
         // process embeddables
+        for (Class<?> cl : embeddableTypes.keySet()){
+            embeddableTypes.put(cl, createEntityType(cl, embeddableTypes));
+        }
 
         // process entities
+        for (Class<?> cl : entityTypes.keySet()){
+            entityTypes.put(cl, createEntityType(cl, entityTypes));
+        }
 
-        // process dtos
+        // process projection types
+        for (Class<?> cl : projectionTypes.keySet()){
+            projectionTypes.put(cl, createProjectionType(cl, projectionTypes));
+        }
 
-        // serialize types
+        Serializer supertypeSerializer = codegenModule.get(SupertypeSerializer.class);
+        Serializer entitySerializer = codegenModule.get(EntitySerializer.class);
+        Serializer embeddableSerializer = codegenModule.get(EmbeddableSerializer.class);
+        Serializer projectionSerializer = codegenModule.get(ProjectionSerializer.class);
+        typeMappings = codegenModule.get(TypeMappings.class);
+        queryTypeFactory = codegenModule.get(QueryTypeFactory.class);
 
-        // serialize super types
+        try{
+            // serialize super types
+            serialize(supertypeSerializer, superTypes);
 
-        // serialze entity types
+            // serialze entity types
+            serialize(entitySerializer, entityTypes);
 
-        // serialize extension types
+            // serialize embeddables
+            serialize(embeddableSerializer, embeddableTypes);
 
-        // serialize embeddables
+            // serialize projection types
+            serialize(projectionSerializer, projectionTypes);
 
-        // serialize dtos
+        } catch (IOException e) {
+            throw new QueryException(e);
+        }
 
+    }
+
+    private void serialize(Serializer serializer, Map<Class<?>, EntityType> types) throws IOException {
+        for (EntityType entityType : types.values()){
+            Type type = typeMappings.getPathType(entityType, entityType, true);
+            String packageName = type.getPackageName();
+            String className = packageName.length() > 0 ? (packageName + "." + type.getSimpleName()) : type.getSimpleName();
+            write(serializer, className.replace('.', '/') + ".java", entityType);
+        }
+    }
+
+    private void write(Serializer serializer, String path, EntityType type) throws IOException {
+        File targetFile = new File(targetFolder, path);
+        Writer w = writerFor(targetFile);
+        try{
+            CodeWriter writer = new JavaWriter(w);
+            serializer.serialize(type, serializerConfig, writer);
+        }finally{
+            w.close();
+        }
+    }
+
+    private Writer writerFor(File file) {
+        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
+            System.err.println("Folder " + file.getParent() + " could not be created");
+        }
+        try {
+            return new OutputStreamWriter(new FileOutputStream(file));
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
+    private EntityType createProjectionType(Class<?> cl, Map<Class<?>, EntityType> types) {
+        if (types.containsKey(cl.getName())){
+            return types.get(cl.getName());
+        }else{
+            EntityType type = new EntityType(new ClassType(TypeCategory.ENTITY, cl));
+            typeMappings.register(type, queryTypeFactory.create(type));
+            if (!cl.getSuperclass().equals(Object.class)){
+                type.addSupertype(new Supertype(new ClassType(cl.getSuperclass())));
+            }
+
+            // TODO : handle constructors
+
+//            allTypes.put(cl.getName(), type);
+            return type;
+        }
+    }
+
+    private EntityType createEntityType(Class<?> cl, Map<Class<?>, EntityType> types) {
+        if (types.containsKey(cl.getName())){
+            return types.get(cl.getName());
+        }else{
+            EntityType type = new EntityType(new ClassType(TypeCategory.ENTITY, cl));
+            typeMappings.register(type, queryTypeFactory.create(type));
+            if (!cl.getSuperclass().equals(Object.class)){
+                type.addSupertype(new Supertype(new ClassType(cl.getSuperclass())));
+            }
+
+            // TODO : handle fields
+
+//            allTypes.put(cl.getName(), type);
+            return type;
+        }
     }
 
     public void scanPackages(Package... packages){
@@ -164,6 +272,10 @@ public class GenericExporter {
     public void setProjectionAnnotation(
             Class<? extends Annotation> projectionAnnotation) {
         this.projectionAnnotation = projectionAnnotation;
+    }
+
+    public void setTargetFolder(File targetFolder) {
+        this.targetFolder = targetFolder;
     }
 
 }
