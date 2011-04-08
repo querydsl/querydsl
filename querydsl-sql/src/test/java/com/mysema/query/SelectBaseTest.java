@@ -748,11 +748,32 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     @SuppressWarnings("unchecked")
     public void Union() throws SQLException {
-        // union
         SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id.max());
         SubQueryExpression<Integer> sq2 = sq().from(employee).unique(employee.id.min());
         List<Integer> list = query().union(sq1, sq2).list();
         assertFalse(list.isEmpty());
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void Union_Multiple_Columns() throws SQLException {
+        SubQueryExpression<Object[]> sq1 = sq().from(employee).unique(employee.firstname, employee.lastname);
+        SubQueryExpression<Object[]> sq2 = sq().from(employee).unique(employee.lastname, employee.firstname);
+        List<Object[]> list = query().union(sq1, sq2).list();
+        assertFalse(list.isEmpty());
+        for (Object[] row : list){
+            assertNotNull(row[0]);
+            assertNotNull(row[1]);
+        }
+    }
+    
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Union_Empty_Result() throws SQLException {
+        SubQueryExpression<Integer> sq1 = sq().from(employee).where(employee.firstname.eq("XXX")).unique(employee.id);
+        SubQueryExpression<Integer> sq2 = sq().from(employee).where(employee.firstname.eq("YYY")).unique(employee.id);
+        List<Integer> list = query().union(sq1, sq2).list();
+        assertTrue(list.isEmpty());
     }
     
     @Test

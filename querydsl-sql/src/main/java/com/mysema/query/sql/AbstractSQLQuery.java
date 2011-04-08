@@ -64,9 +64,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         @SuppressWarnings("unchecked")
         public List<RT> list() {
             if (union[0].getMetadata().getProjection().size() == 1) {
-                return (List<RT>) IteratorAdapter.asList(iterateSingle(null));
+                return (List<RT>) IteratorAdapter.asList(iterateSingle(union[0].getMetadata(), null));
             } else {
-                return (List<RT>) IteratorAdapter.asList(iterateMultiple());
+                return (List<RT>) IteratorAdapter.asList(iterateMultiple(union[0].getMetadata()));
             }
         }
 
@@ -74,9 +74,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         @Override
         public CloseableIterator<RT> iterate() {
             if (union[0].getMetadata().getProjection().size() == 1) {
-                return (CloseableIterator<RT>) iterateSingle(null);
+                return (CloseableIterator<RT>) iterateSingle(union[0].getMetadata(), null);
             } else {
-                return (CloseableIterator<RT>) iterateMultiple();
+                return (CloseableIterator<RT>) iterateMultiple(union[0].getMetadata());
             }
         }
 
@@ -338,7 +338,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     @Override
     public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
         queryMixin.addToProjection(args);
-        return iterateMultiple();
+        return iterateMultiple(queryMixin.getMetadata());
     }
 
     @SuppressWarnings("unchecked")
@@ -362,17 +362,17 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         }else{
             expr = queryMixin.convert(expr);
             queryMixin.addToProjection(expr);
-            return iterateSingle(expr);
+            return iterateSingle(queryMixin.getMetadata(), expr);
         }
     }
 
-    private CloseableIterator<Object[]> iterateMultiple() {
+    private CloseableIterator<Object[]> iterateMultiple(QueryMetadata metadata) {
         String queryString = buildQueryString(false);
         logger.debug("query : {}", queryString);
         try {
             PreparedStatement stmt = conn.prepareStatement(queryString);
-            final List<? extends Expression<?>> projection = getMetadata().getProjection();
-            setParameters(stmt, constants, constantPaths, getMetadata().getParams());
+            final List<? extends Expression<?>> projection = metadata.getProjection();
+            setParameters(stmt, constants, constantPaths, metadata.getParams());
             ResultSet rs = stmt.executeQuery();
 
             return new SQLResultIterator<Object[]>(stmt, rs) {
@@ -425,12 +425,12 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     }
 
     @SuppressWarnings("unchecked")
-    private <RT> CloseableIterator<RT> iterateSingle(@Nullable final Expression<RT> expr) {
+    private <RT> CloseableIterator<RT> iterateSingle(QueryMetadata metadata, @Nullable final Expression<RT> expr) {
         String queryString = buildQueryString(false);
         logger.debug("query : {}", queryString);
         try {
             PreparedStatement stmt = conn.prepareStatement(queryString);
-            setParameters(stmt, constants, constantPaths, getMetadata().getParams());
+            setParameters(stmt, constants, constantPaths, metadata.getParams());
             ResultSet rs = stmt.executeQuery();
 
             return new SQLResultIterator<RT>(stmt, rs) {
