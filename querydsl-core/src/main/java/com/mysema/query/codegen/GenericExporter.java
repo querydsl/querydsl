@@ -247,8 +247,9 @@ public class GenericExporter {
                 Deque<File> files = new ArrayDeque<File>();
                 String packagePath;
                 try {
-                    packagePath = url.toURI().getPath();
-                    files.add(new File(packagePath));
+                    File packageAsFile = new File(url.toURI());
+                    packagePath = packageAsFile.getPath();
+                    files.add(packageAsFile);
                 } catch (URISyntaxException e) {
                     throw new IOException(e);
                 }
@@ -256,7 +257,7 @@ public class GenericExporter {
                     File file = files.pop();
                     for (File child : file.listFiles()){
                         if (child.getName().endsWith(".class")){
-                            String fileName = child.getName();
+                            String fileName = child.getPath().substring(packagePath.length()+1).replace(File.separatorChar, '.');
                             String className = pkg.getName() + "." + fileName.substring(0, fileName.length()-6);
                             classes.add(Class.forName(className));
                         }else if (child.isDirectory()){
