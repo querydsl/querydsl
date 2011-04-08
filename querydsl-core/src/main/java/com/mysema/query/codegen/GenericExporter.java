@@ -256,7 +256,7 @@ public class GenericExporter {
                     File file = files.pop();
                     for (File child : file.listFiles()){
                         if (child.getName().endsWith(".class")){
-                            String fileName = child.getPath().substring(packagePath.length()+1).replace('/', '.');
+                            String fileName = child.getName();
                             String className = pkg.getName() + "." + fileName.substring(0, fileName.length()-6);
                             classes.add(Class.forName(className));
                         }else if (child.isDirectory()){
