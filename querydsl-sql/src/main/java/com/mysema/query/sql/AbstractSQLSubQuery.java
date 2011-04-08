@@ -165,11 +165,11 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     }
 
     public Q rightJoin(RelationalPath<?> target) {
-        return queryMixin.leftJoin(target);
+        return queryMixin.rightJoin(target);
     }
 
     public Q rightJoin(SubQueryExpression<?> target, Path<?> alias) {
-        return queryMixin.leftJoin(target, alias);
+        return queryMixin.rightJoin(target, alias);
     }
 
     @Override
