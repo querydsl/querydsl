@@ -23,6 +23,8 @@ public class DefaultQueryMetadataTest {
     private QueryMetadata metadata = new DefaultQueryMetadata();
 
     private StringPath str = new StringPath("str");
+    
+    private StringPath str2 = new StringPath("str2");
 
     @Test(expected=IllegalArgumentException.class)
     public void Validation(){
@@ -124,7 +126,7 @@ public class DefaultQueryMetadataTest {
         metadata.addJoin(JoinType.DEFAULT, str);
         metadata.addGroupBy(str);
         metadata.addHaving(str.isNotNull());
-        metadata.addJoin(JoinType.DEFAULT, str);
+        metadata.addJoin(JoinType.DEFAULT, str2);
         QueryModifiers modifiers = new QueryModifiers(1l,2l);
         metadata.setModifiers(modifiers);
         metadata.addOrderBy(str.asc());

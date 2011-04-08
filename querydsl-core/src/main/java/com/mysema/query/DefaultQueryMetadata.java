@@ -102,6 +102,8 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             exprInJoins.add(expr);
             validate(expr);
             joins.add(join);
+        } else {
+            throw new IllegalStateException(expr + " is already used");
         }
     }
 

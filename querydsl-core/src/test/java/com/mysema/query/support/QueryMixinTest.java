@@ -46,51 +46,93 @@ public class QueryMixinTest {
     }
     
     @Test
-    public void ApplyJoins(){
+    public void InnerJoin(){
         DummyEntity e = Alias.alias(DummyEntity.class);
         DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");
+        DummyEntity e3 = Alias.alias(DummyEntity.class, "e3");
+        DummyEntity e4 = Alias.alias(DummyEntity.class, "e4");
         
         // inner join
         mixin.innerJoin($(e));
         mixin.innerJoin($(e.getOther()),$(e2));
-        mixin.innerJoin($(e.getList()),$(e2));
+        mixin.innerJoin($(e.getList()),$(e3));
         mixin.innerJoin($(e.getList()));
-        mixin.innerJoin($(e.getMap()),$(e2));
+        mixin.innerJoin($(e.getMap()),$(e4));
         mixin.innerJoin($(e.getMap()));
+
+        assertEquals(6, mixin.getMetadata().getJoins().size());
+    }
+    
+    @Test
+    public void Join(){
+        DummyEntity e = Alias.alias(DummyEntity.class);
+        DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");
+        DummyEntity e3 = Alias.alias(DummyEntity.class, "e3");
+        DummyEntity e4 = Alias.alias(DummyEntity.class, "e4");
         
-        // join
-        mixin.join($(e));
-        mixin.join($(e.getOther()),$(e2));
-        mixin.join($(e.getList()),$(e2));
-        mixin.join($(e.getList()));
-        mixin.join($(e.getMap()),$(e2));
-        mixin.join($(e.getMap()));
+        // inner join
+        mixin.innerJoin($(e));
+        mixin.innerJoin($(e.getOther()),$(e2));
+        mixin.innerJoin($(e.getList()),$(e3));
+        mixin.innerJoin($(e.getList()));
+        mixin.innerJoin($(e.getMap()),$(e4));
+        mixin.innerJoin($(e.getMap()));
+
+        assertEquals(6, mixin.getMetadata().getJoins().size());
+    }
+    
+    @Test
+    public void LeftJoin(){
+        DummyEntity e = Alias.alias(DummyEntity.class);
+        DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");
+        DummyEntity e3 = Alias.alias(DummyEntity.class, "e3");
+        DummyEntity e4 = Alias.alias(DummyEntity.class, "e4");
         
         // left join
         mixin.leftJoin($(e));
         mixin.leftJoin($(e.getOther()),$(e2));
-        mixin.leftJoin($(e.getList()),$(e2));
+        mixin.leftJoin($(e.getList()),$(e3));
         mixin.leftJoin($(e.getList()));
-        mixin.leftJoin($(e.getMap()),$(e2));
+        mixin.leftJoin($(e.getMap()),$(e4));
         mixin.leftJoin($(e.getMap()));
-        
+
+        assertEquals(6, mixin.getMetadata().getJoins().size());
+    }
+    
+    @Test
+    public void RightJoin(){
+        DummyEntity e = Alias.alias(DummyEntity.class);
+        DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");
+        DummyEntity e3 = Alias.alias(DummyEntity.class, "e3");
+        DummyEntity e4 = Alias.alias(DummyEntity.class, "e4");
+
         // right join
         mixin.rightJoin($(e));
         mixin.rightJoin($(e.getOther()),$(e2));
-        mixin.rightJoin($(e.getList()),$(e2));
+        mixin.rightJoin($(e.getList()),$(e3));
         mixin.rightJoin($(e.getList()));
-        mixin.rightJoin($(e.getMap()),$(e2));
+        mixin.rightJoin($(e.getMap()),$(e4));
         mixin.rightJoin($(e.getMap()));
+
+
+        assertEquals(6, mixin.getMetadata().getJoins().size());
+    }
+    
+    @Test
+    public void FullJoin(){
+        DummyEntity e = Alias.alias(DummyEntity.class);
+        DummyEntity e2 = Alias.alias(DummyEntity.class, "e2");
+        DummyEntity e3 = Alias.alias(DummyEntity.class, "e3");
+        DummyEntity e4 = Alias.alias(DummyEntity.class, "e4");
         
         // full join
         mixin.fullJoin($(e));
         mixin.fullJoin($(e.getOther()),$(e2));
-        mixin.fullJoin($(e.getList()),$(e2));
+        mixin.fullJoin($(e.getList()),$(e3));
         mixin.fullJoin($(e.getList()));
-        mixin.fullJoin($(e.getMap()),$(e2));
+        mixin.fullJoin($(e.getMap()),$(e4));
         mixin.fullJoin($(e.getMap()));
-        
+
         assertEquals(6, mixin.getMetadata().getJoins().size());
     }
-
 }
