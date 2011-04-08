@@ -200,6 +200,37 @@ WHERE c.first_name = 'Bob'
   
   <sect2>
   
+  <title>Joins</title>
+  
+  <para>Joins are constructed using the following syntax :</para>
+  
+<programlisting language="java"><![CDATA[ 
+query.from(customer)
+    .innerJoin(customer.company, company)
+    .list(customer.firstName, customer.lastName, company.name);
+]]></programlisting>
+
+  <para>and for a left join :</para>
+
+<programlisting language="java"><![CDATA[ 
+query.from(customer)
+    .leftJoin(customer.company, company)
+    .list(customer.firstName, customer.lastName, company.name);
+]]></programlisting>
+ 
+ <para>Alternatively the join condition can also be written out  :</para>
+
+<programlisting language="java"><![CDATA[ 
+query.from(customer)
+    .leftJoin(company).on(customer.company.eq(company.id))
+    .list(customer.firstName, customer.lastName, company.name);
+]]></programlisting> 
+  
+  </sect2>
+  
+  
+  <sect2>
+  
   <title>Ordering</title>
   
   <para>The syntax for declaring ordering is </para>
