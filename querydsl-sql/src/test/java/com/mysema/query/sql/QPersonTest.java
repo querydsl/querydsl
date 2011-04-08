@@ -38,8 +38,6 @@ public class QPersonTest {
             this.securedid = securedid;
         }
 
-
-
     }
 
     @Test
