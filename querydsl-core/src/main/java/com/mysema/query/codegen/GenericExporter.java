@@ -11,6 +11,7 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -25,6 +26,7 @@ import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.support.ClassUtils;
 import com.mysema.query.QueryException;
+import com.mysema.query.annotations.Config;
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryEmbeddable;
 import com.mysema.query.annotations.QueryEmbedded;
@@ -64,14 +66,12 @@ public class GenericExporter {
     private final CodegenModule codegenModule = new CodegenModule();
 
     private final SerializerConfig serializerConfig = SimpleSerializerConfig.DEFAULT;
-
-    private final TypeFactory typeFactory = new TypeFactory();
     
     @Nullable
     private File targetFolder;
     
     @Nullable
-    private TypeFactory propertyTypeFactory;
+    private TypeFactory typeFactory;
 
     @Nullable
     private TypeMappings typeMappings;
@@ -87,7 +87,7 @@ public class GenericExporter {
 
         typeMappings = codegenModule.get(TypeMappings.class);
         queryTypeFactory = codegenModule.get(QueryTypeFactory.class);
-        propertyTypeFactory = new TypeFactory(entityAnnotation, supertypeAnnotation, embeddableAnnotation);
+        typeFactory = new TypeFactory(entityAnnotation, supertypeAnnotation, embeddableAnnotation);
 
         // process supertypes
         for (Class<?> cl : superTypes.keySet()){
@@ -102,6 +102,13 @@ public class GenericExporter {
         // process entities
         for (Class<?> cl : entityTypes.keySet()){
             createEntityType(cl, entityTypes);
+        }
+        
+        // add properties
+        for (Map<Class<?>, EntityType> entries : Arrays.asList(superTypes, embeddableTypes, entityTypes)){
+            for (Map.Entry<Class<?>, EntityType> entry : entries.entrySet()){
+                addProperties(entry.getKey(), entry.getValue());
+            }
         }
 
         // merge supertype fields into subtypes
@@ -160,71 +167,87 @@ public class GenericExporter {
 
     private EntityType createEntityType(Class<?> cl, Map<Class<?>, EntityType> types) {
 //        System.err.println(cl.getName());
-        if (types.containsKey(cl.getName())){
-            return types.get(cl.getName());
+        if (types.get(cl) != null){
+            return types.get(cl);
         }else{
-            EntityType type = new EntityType(typeFactory.create(cl));
+            EntityType type = allTypes.get(ClassUtils.getFullName(cl));
+            if (type == null){
+                type = (EntityType)typeFactory.create(cl);
+            }
             types.put(cl, type);
             allTypes.put(ClassUtils.getFullName(cl), type);
             
             typeMappings.register(type, queryTypeFactory.create(type));
             if (cl.getSuperclass() != null && !cl.getSuperclass().equals(Object.class)){
                 type.addSupertype(new Supertype(new ClassType(cl.getSuperclass())));
+            }            
+            if (cl.isInterface()){
+                for (Class<?> iface : cl.getInterfaces()){
+                    type.addSupertype(new Supertype(new ClassType(iface)));                    
+                }
             }
 
-            if (cl.isInterface()){
-                for (Method method : cl.getMethods()){
-                    if (method.getParameterTypes().length == 0  && (method.getName().startsWith("get") || method.getName().startsWith("is"))){
-                        String propertyName;
-                        if (method.getName().startsWith("get")){
-                            propertyName = BeanUtils.uncapitalize(method.getName().substring(3));
-                        }else{
-                            propertyName = BeanUtils.uncapitalize(method.getName().substring(2));
-                        }
-                        Type propertyType = getPropertyType(cl, method, method.getReturnType(), method.getGenericReturnType());                    
-                        Property property = createProperty(type, propertyName, propertyType, method);
-                        if (property != null) {
-                            type.addProperty(property);    
-                        }
-                    }
-                }
-                
-            }else{
-                for (Field field : cl.getDeclaredFields()){
-                    if (!Modifier.isStatic(field.getModifiers())){
-                        AnnotatedElement annotated = ReflectionUtils.getAnnotatedElement(cl, field.getName(), field.getType());
-                        Type propertyType = getPropertyType(cl, annotated, field.getType(), field.getGenericType());                    
-                        Property property = createProperty(type, field.getName(), propertyType, field);
-                        if (property != null) {
-                            type.addProperty(property);    
-                        }                    
-                    }
-                }                    
-            }            
-            
             return type;
         }
     }
 
+    private void addProperties(Class<?> cl, EntityType type) {
+        Set<String> handled = new HashSet<String>();
+        // fields
+        for (Field field : cl.getDeclaredFields()){
+            if (!Modifier.isStatic(field.getModifiers())){
+                AnnotatedElement annotated = ReflectionUtils.getAnnotatedElement(cl, field.getName(), field.getType());
+                Type propertyType = getPropertyType(cl, annotated, field.getType(), field.getGenericType());                    
+                Property property = createProperty(type, field.getName(), propertyType, field);                    
+                if (property != null) {
+                    type.addProperty(property);    
+                }
+                handled.add(field.getName());
+            }
+        }  
+        
+        // getters
+        for (Method method : cl.getDeclaredMethods()){
+            if (method.getParameterTypes().length == 0  
+                && (method.getName().startsWith("get") || method.getName().startsWith("is"))){
+                String propertyName;
+                if (method.getName().startsWith("get")){
+                    propertyName = BeanUtils.uncapitalize(method.getName().substring(3));
+                }else{
+                    propertyName = BeanUtils.uncapitalize(method.getName().substring(2));
+                }
+                if (handled.contains(propertyName)){
+                    continue;
+                }
+                Type propertyType = getPropertyType(cl, method, method.getReturnType(), method.getGenericReturnType());                    
+                Property property = createProperty(type, propertyName, propertyType, method);
+                if (property != null) {
+                    type.addProperty(property);    
+                }
+            }
+        }
+    }
+
     private Type getPropertyType(Class<?> cl, AnnotatedElement annotated, Class<?> type, java.lang.reflect.Type genericType) {
-        if (annotated.isAnnotationPresent(embeddedAnnotation)) {
+        Type propertyType = allTypes.get(ClassUtils.getFullName(type));
+        if (propertyType == null && annotated.isAnnotationPresent(embeddedAnnotation)) {
             Class<?> embeddableType = type;
             if (Collection.class.isAssignableFrom(type)){
                 embeddableType = ReflectionUtils.getTypeParameter(genericType, 0);
             } else if (Map.class.isAssignableFrom(type)){
                 embeddableType = ReflectionUtils.getTypeParameter(genericType, 1);
             }
-            propertyTypeFactory.addEmbeddableType(embeddableType);
-            if (!embeddableTypes.containsKey(cl)){
-                embeddableTypes.put(embeddableType, new EntityType(propertyTypeFactory.create(embeddableType)));
-                createEntityType(embeddableType, embeddableTypes);    
-            }                        
-            
-        }
-        Type propertyType = allTypes.get(ClassUtils.getFullName(type));
+            typeFactory.addEmbeddableType(embeddableType);
+            if (!embeddableTypes.containsKey(embeddableType)){
+                EntityType entityType = createEntityType(embeddableType, embeddableTypes);
+                addProperties(embeddableType, entityType);
+            }                                    
+        }        
         if (propertyType == null){
-//                        System.err.println(cl.getName() + "." + field.getName());
-            propertyType = propertyTypeFactory.create(type, genericType);
+            propertyType = typeFactory.create(type, genericType);
+            if (propertyType instanceof EntityType && !allTypes.containsKey(ClassUtils.getFullName(type))){
+                allTypes.put(ClassUtils.getFullName(type), (EntityType)propertyType);
+            }
         }
         return propertyType;
     }
@@ -271,15 +294,19 @@ public class GenericExporter {
     }
 
     private void serialize(Serializer serializer, Map<Class<?>, EntityType> types) throws IOException {
-        for (EntityType entityType : types.values()){
-            Type type = typeMappings.getPathType(entityType, entityType, true);
+        for (Map.Entry<Class<?>, EntityType> entityType : types.entrySet()){
+            Type type = typeMappings.getPathType(entityType.getValue(), entityType.getValue(), true);
             String packageName = type.getPackageName();
             String className = packageName.length() > 0 ? (packageName + "." + type.getSimpleName()) : type.getSimpleName();
-            write(serializer, className.replace('.', '/') + ".java", entityType);
+            SerializerConfig config = serializerConfig;
+            if (entityType.getKey().isAnnotationPresent(Config.class)){
+                config = SimpleSerializerConfig.getConfig(entityType.getKey().getAnnotation(Config.class));
+            }
+            write(serializer, className.replace('.', '/') + ".java", config, entityType.getValue());
         }
     }
 
-    private void write(Serializer serializer, String path, EntityType type) throws IOException {
+    private void write(Serializer serializer, String path, SerializerConfig serializerConfig, EntityType type) throws IOException {
         File targetFile = new File(targetFolder, path);
         Writer w = writerFor(targetFile);
         try{

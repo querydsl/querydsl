@@ -6,6 +6,8 @@
 package com.mysema.query.codegen;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -38,7 +40,7 @@ public final class TypeFactory {
     private final Set<Class<?>> embeddableTypes = new HashSet<Class<?>>();
     
     private boolean unknownAsEntity;
-
+    
     @SuppressWarnings("unchecked")
     public TypeFactory(Class<?>... entityAnnotations){
         this((List)Arrays.asList(entityAnnotations));
@@ -71,48 +73,78 @@ public final class TypeFactory {
             if (embeddableTypes.contains(cl)) {
                 entity = true;
             }            
-            if (entity){
-                value = new ClassType(TypeCategory.ENTITY, cl);
-
-            }else if (cl.isArray()) {
+            
+            Type[] parameters = getParameters(cl, genericType);
+            
+            if (cl.isArray()) {
                 value = create(cl.getComponentType()).asArrayType();
-
             } else if (cl.isEnum()) {
                 value = new ClassType(TypeCategory.ENUM, cl);
-
             } else if (Map.class.isAssignableFrom(cl)) {
-                Type keyInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
-                Type valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 1));
-                value = new SimpleType(Types.MAP, keyInfo, valueInfo);
-
+                value = new SimpleType(Types.MAP, parameters[0], parameters[1]);
             } else if (List.class.isAssignableFrom(cl)) {
-                Type valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
-                value = new SimpleType(Types.LIST,valueInfo);
-
+                value = new SimpleType(Types.LIST, parameters[0]);
             } else if (Set.class.isAssignableFrom(cl)) {
-                Type valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
-                value = new SimpleType(Types.SET, valueInfo);
-
+                value = new SimpleType(Types.SET, parameters[0]);
             } else if (Collection.class.isAssignableFrom(cl)) {
-                Type valueInfo = create(ReflectionUtils.getTypeParameter(genericType, 0));
-                value = new SimpleType(Types.COLLECTION, valueInfo);
-
+                value = new SimpleType(Types.COLLECTION, parameters[0]);
             }else if (Number.class.isAssignableFrom(cl) && Comparable.class.isAssignableFrom(cl)){
-                value = new ClassType(TypeCategory.NUMERIC, cl);
-                
+                value = new ClassType(TypeCategory.NUMERIC, cl, parameters);                
             } else {
                 TypeCategory typeCategory = TypeCategory.get(cl.getName());
                 if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)){
                     typeCategory = TypeCategory.COMPARABLE;
+                }else if (entity){    
+                    typeCategory = TypeCategory.ENTITY;
                 }else if (unknownAsEntity && typeCategory == TypeCategory.SIMPLE && !cl.getName().startsWith("java")){
                     typeCategory = TypeCategory.ENTITY;
                 }
-                value = new ClassType(typeCategory, cl);
+                value = new ClassType(typeCategory, cl, parameters);
             }
+            
+            if (entity){
+                value = new EntityType(value);
+            }
+            
             cache.put(key, value);
             return value;
         }
 
+    }
+
+    private Type[] getParameters(Class<?> cl, java.lang.reflect.Type genericType) {
+        int parameterCount = ReflectionUtils.getTypeParameterCount(genericType);
+        if (parameterCount > 0){
+            Type[] types = new Type[parameterCount];
+            for (int i = 0; i < types.length; i++){
+                types[i] = create(
+                        ReflectionUtils.getTypeParameter(genericType, i),
+                        ((ParameterizedType)genericType).getActualTypeArguments()[i]);
+            }
+            return types;
+        } else if (Collection.class.isAssignableFrom(cl)) {    
+            return new Type[]{ Types.OBJECT }; // TODO : cache
+        } else if (Map.class.isAssignableFrom(cl)) {
+            return new Type[]{ Types.OBJECT, Types.OBJECT }; // TODO : cache
+        } else if (cl.getTypeParameters().length > 0) {    
+            Type[] types = new Type[cl.getTypeParameters().length];
+            for (int i = 0; i < types.length; i++) {
+                TypeVariable<?> typeVariable = cl.getTypeParameters()[i];
+                if (!typeVariable.getGenericDeclaration().equals(cl)){
+                    if (typeVariable.getBounds().length == 0 && typeVariable.getBounds()[0].equals(Object.class)){
+                        types[i] = null;
+                    }else{
+                        types[i] = create((Class<?>)typeVariable.getGenericDeclaration(), typeVariable);    
+                    }                    
+                }else{
+                    types[i] = new ClassType(cl);
+                }                 
+            }            
+            return types;            
+        } else {
+            return new Type[0]; // TODO : cache
+        }
+        
     }
 
     public void setUnknownAsEntity(boolean unknownAsEntity) {
@@ -122,5 +154,5 @@ public final class TypeFactory {
     public void addEmbeddableType(Class<?> cl) {
         embeddableTypes.add(cl);
     }
-
+    
 }
