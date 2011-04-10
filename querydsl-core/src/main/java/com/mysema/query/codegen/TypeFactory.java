@@ -9,6 +9,7 @@ import java.lang.annotation.Annotation;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -33,6 +34,8 @@ public final class TypeFactory {
     private final Map<List<java.lang.reflect.Type>, Type> cache = new HashMap<List<java.lang.reflect.Type>, Type>();
 
     private final Collection<Class<? extends Annotation>> entityAnnotations;
+    
+    private final Set<Class<?>> embeddableTypes = new HashSet<Class<?>>();
     
     private boolean unknownAsEntity;
 
@@ -65,6 +68,9 @@ public final class TypeFactory {
                     break;
                 }
             }
+            if (embeddableTypes.contains(cl)) {
+                entity = true;
+            }            
             if (entity){
                 value = new ClassType(TypeCategory.ENTITY, cl);
 
@@ -113,6 +119,8 @@ public final class TypeFactory {
         this.unknownAsEntity = unknownAsEntity;
     }
     
-    
+    public void addEmbeddableType(Class<?> cl) {
+        embeddableTypes.add(cl);
+    }
 
 }

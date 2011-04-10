@@ -10,13 +10,13 @@ import com.mysema.query.annotations.QueryEntity;
 public class QueryEmbeddable2Test {
 
     @QueryEntity
-    public class User {
+    public static class User {
     
         Complex<String> complex;
     }
     
     @QueryEmbeddable
-    public class Complex<T extends Comparable<T>> implements Comparable<Complex<T>> {
+    public static class Complex<T extends Comparable<T>> implements Comparable<Complex<T>> {
 
         T a;
         

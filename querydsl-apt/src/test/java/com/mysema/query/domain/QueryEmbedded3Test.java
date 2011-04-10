@@ -12,7 +12,7 @@ import com.mysema.query.annotations.QueryEntity;
 public class QueryEmbedded3Test {
 
     @QueryEntity
-    public class Parent {
+    public static class Parent {
     
         String parentProperty;
 
@@ -24,7 +24,7 @@ public class QueryEmbedded3Test {
         
     }
         
-    public class Child {
+    public static class Child {
      
         String childProperty;
         

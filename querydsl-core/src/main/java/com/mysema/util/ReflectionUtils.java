@@ -59,7 +59,7 @@ public final class ReflectionUtils {
 
     @Nullable
     private static Method getGetterOrNull(Class<?> beanClass, String name, Class<?> type){
-        String methodName = (type.equals(Boolean.class) ? "is" : "get") + BeanUtils.capitalize(name);
+        String methodName = ((type.equals(Boolean.class) || type.equals(boolean.class)) ? "is" : "get") + BeanUtils.capitalize(name);
         while(beanClass != null && !beanClass.equals(Object.class)){
             try {
                 return beanClass.getDeclaredMethod(methodName);
@@ -71,16 +71,20 @@ public final class ReflectionUtils {
         return null;
 
     }
-
+    
     @SuppressWarnings("unchecked")
-    @Nullable
     public static Class<?> getTypeParameter(java.lang.reflect.Type type, int index) {
         if (type instanceof ParameterizedType) {
             ParameterizedType ptype = (ParameterizedType) type;
             java.lang.reflect.Type[] targs = ptype.getActualTypeArguments();
             if (targs[index] instanceof WildcardType) {
                 WildcardType wildcardType = (WildcardType) targs[index];
-                return (Class<?>) wildcardType.getUpperBounds()[0];
+                if (wildcardType.getUpperBounds()[0] instanceof Class){
+                    return (Class<?>) wildcardType.getUpperBounds()[0];    
+                }else{
+                    return (Class<?>) ((TypeVariable) wildcardType.getUpperBounds()[0]).getGenericDeclaration();
+                }
+                
             } else if (targs[index] instanceof TypeVariable) {
                 return (Class<?>) ((TypeVariable) targs[index]).getGenericDeclaration();
             } else if (targs[index] instanceof ParameterizedType) {
@@ -89,7 +93,7 @@ public final class ReflectionUtils {
                 return (Class<?>) targs[index];
             }
         }
-        return null;
+        return Object.class;
     }
 
     public static Set<Class<?>> getImplementedInterfaces(Class<?> cl){

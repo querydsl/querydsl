@@ -252,23 +252,15 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public boolean isBlockedField(VariableElement field) {
-        if (field.getAnnotation(QueryType.class) != null){
-            return false;
-        }else{
-            return field.getAnnotation(skipAnn) != null
+        return field.getAnnotation(skipAnn) != null
             || field.getModifiers().contains(Modifier.TRANSIENT)
             || field.getModifiers().contains(Modifier.STATIC);
-        }
     }
 
     @Override
     public boolean isBlockedGetter(ExecutableElement getter){
-        if (getter.getAnnotation(QueryType.class) != null){
-            return false;
-        }else{
-            return getter.getAnnotation(skipAnn) != null
-                || getter.getModifiers().contains(Modifier.STATIC);
-        }
+        return getter.getAnnotation(skipAnn) != null
+            || getter.getModifiers().contains(Modifier.STATIC);
     }
 
     @Override

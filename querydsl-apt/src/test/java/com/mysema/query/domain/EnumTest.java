@@ -22,7 +22,7 @@ public class EnumTest {
     }
     
     @QueryEntity
-    public class Bean {
+    public static class Bean {
         Gender gender;
     }
     

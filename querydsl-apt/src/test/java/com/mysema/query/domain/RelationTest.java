@@ -36,7 +36,7 @@ public class RelationTest extends AbstractTest{
     }
 
     @QueryEntity
-    public class GenericRelations{
+    public static class GenericRelations{
         Collection<Collection<Reference>> col1;
         Collection<List<Reference>> col2;
         Collection<Collection<? extends Reference>> col3;
@@ -55,7 +55,7 @@ public class RelationTest extends AbstractTest{
 
     @QueryEntity
     @Config(listAccessors=true, mapAccessors=true)
-    public class RelationType {
+    public static class RelationType {
 
         MyEnum enumProperty;
         List<MyEnum> enumList;

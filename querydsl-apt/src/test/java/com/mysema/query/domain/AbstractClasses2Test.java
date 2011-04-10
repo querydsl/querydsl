@@ -24,7 +24,7 @@ public class AbstractClasses2Test {
     }
 
     @MappedSuperclass
-    public abstract class BaseArchetype<PK extends Serializable, DO extends Serializable> implements Archetype<PK, DO> {
+    public static abstract class BaseArchetype<PK extends Serializable, DO extends Serializable> implements Archetype<PK, DO> {
 
         @Id
         @GeneratedValue
@@ -41,14 +41,14 @@ public class AbstractClasses2Test {
     }
     
     @Entity
-    public class Grant<P extends Party, S extends Party> extends BaseArchetype<P, S> {
+    public static class Grant<P extends Party, S extends Party> extends BaseArchetype<P, S> {
         public int compareTo(S o) {
             return 0;
         }
     }
     
     @Entity
-    public class Party extends BaseArchetype<Long, Party> {
+    public static class Party extends BaseArchetype<Long, Party> {
         @OneToMany()
         Set<PartyRole> roles = new HashSet<PartyRole>();
 
@@ -61,7 +61,7 @@ public class AbstractClasses2Test {
     }
     
     @Entity
-    public class PartyRole<P extends Party> extends BaseArchetype<Long, PartyRole<P>> {
+    public static class PartyRole<P extends Party> extends BaseArchetype<Long, PartyRole<P>> {
         @ManyToOne()
         P party;
 

@@ -14,12 +14,12 @@ import com.mysema.query.types.template.NumberTemplate;
 public class Delegate2Test {
 
     @QueryEntity
-    public class Entity {
+    public static class Entity {
         
         Point point;
     }
     
-    public class Point{
+    public static class Point{
 
     }
 

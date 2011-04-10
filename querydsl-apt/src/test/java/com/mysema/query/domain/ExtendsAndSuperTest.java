@@ -20,7 +20,7 @@ import com.mysema.query.annotations.QueryEntity;
 public class ExtendsAndSuperTest {
 
     @QueryEntity
-    public class ExtendsAndSuper<A>{
+    public static class ExtendsAndSuper<A>{
         // col
         Collection<? extends A> extendsCol;
         Collection<? extends CharSequence> extendsCol2;

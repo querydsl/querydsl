@@ -15,7 +15,7 @@ import com.mysema.query.annotations.QueryEntity;
 public class QueryEmbeddable3Test {
 
     @QueryEntity
-    public class User {
+    public static class User {
         
         List<Complex<?>> rawList;
     
@@ -36,7 +36,7 @@ public class QueryEmbeddable3Test {
     }
     
     @QueryEmbeddable
-    public class Complex<T extends Comparable<T>> implements Comparable<Complex<T>> {
+    public static class Complex<T extends Comparable<T>> implements Comparable<Complex<T>> {
 
         T a;
         

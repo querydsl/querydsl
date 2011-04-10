@@ -13,7 +13,7 @@ import com.mysema.query.types.path.EntityPathBase;
 public class QueryEmbedded6Test {
 
     @QueryEntity
-    public class User {
+    public static class User {
         
         @QueryEmbedded
         List<User> list;
@@ -27,8 +27,7 @@ public class QueryEmbedded6Test {
     
     @Test
     public void User_list_any(){
-        assertEquals(QQueryEmbedded6Test_User.class, QQueryEmbedded6Test_User.user.list.any().getClass());
-        
+        assertEquals(QQueryEmbedded6Test_User.class, QQueryEmbedded6Test_User.user.list.any().getClass());        
     }
     
 }

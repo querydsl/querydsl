@@ -25,6 +25,12 @@ public class TypeFactoryTest {
     private TypeFactory factory = new TypeFactory();
 
     @Test
+    public void ClassName(){
+        Type type = factory.create(EnumExample.class);
+        assertEquals("com.mysema.query.codegen.TypeFactoryTest.EnumExample", type.getFullName());
+    }
+    
+    @Test
     public void Blob(){
         Type blob = factory.create(Blob.class);
         assertEquals("Blob", blob.getSimpleName());

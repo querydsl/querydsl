@@ -14,7 +14,7 @@ import com.mysema.query.annotations.QueryEntity;
 public class ArrayTest {
 
     @QueryEntity
-    public class ArrayTestEntity{
+    public static class ArrayTestEntity{
         
         ArrayTestEntity[] entityArray;
         

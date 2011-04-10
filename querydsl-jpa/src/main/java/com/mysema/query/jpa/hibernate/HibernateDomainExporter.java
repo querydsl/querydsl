@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -30,9 +31,22 @@ import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.query.QueryException;
+import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryInit;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.codegen.*;
+import com.mysema.query.codegen.CodegenModule;
+import com.mysema.query.codegen.EmbeddableSerializer;
+import com.mysema.query.codegen.EntitySerializer;
+import com.mysema.query.codegen.EntityType;
+import com.mysema.query.codegen.Property;
+import com.mysema.query.codegen.QueryTypeFactory;
+import com.mysema.query.codegen.Serializer;
+import com.mysema.query.codegen.SerializerConfig;
+import com.mysema.query.codegen.SimpleSerializerConfig;
+import com.mysema.query.codegen.Supertype;
+import com.mysema.query.codegen.SupertypeSerializer;
+import com.mysema.query.codegen.TypeFactory;
+import com.mysema.query.codegen.TypeMappings;
 import com.mysema.util.BeanUtils;
 
 /**
@@ -195,18 +209,22 @@ public class HibernateDomainExporter {
         }else if (propertyType.getCategory() == TypeCategory.ENTITY){
             propertyType = createEntityType(Class.forName(propertyType.getFullName()));
         }
-        Map<Class<?>,Annotation> annotations = getAnnotations(cl, p.getName());
-        Property property = createProperty(entityType, p.getName(), propertyType, annotations);
+        AnnotatedElement annotated = getAnnotatedElement(cl, p.getName());
+        Property property = createProperty(entityType, p.getName(), propertyType, annotated);
         entityType.addProperty(property);
     }
 
-    private Property createProperty(EntityType entityType, String propertyName, Type propertyType, Map<Class<?>, Annotation> annotations) {
+    private Property createProperty(EntityType entityType, String propertyName, Type propertyType, AnnotatedElement annotated) {
         String[] inits = new String[0];
-        if (annotations.containsKey(QueryInit.class)){
-            inits = ((QueryInit)annotations.get(QueryInit.class)).value();
+        if (annotated.isAnnotationPresent(QueryInit.class)){
+            inits = annotated.getAnnotation(QueryInit.class).value();
         }
-        if (annotations.containsKey(QueryType.class)){
-            propertyType = propertyType.as(((QueryType)annotations.get(QueryType.class)).value().getCategory());
+        if (annotated.isAnnotationPresent(QueryType.class)){
+            QueryType queryType = annotated.getAnnotation(QueryType.class);
+            if (queryType.value().equals(PropertyType.NONE)) {
+                return null;
+            }
+            propertyType = propertyType.as(queryType.value().getCategory());
         }
         Property property = new Property(entityType, propertyName, propertyType, inits);
         return property;
@@ -261,23 +279,21 @@ public class HibernateDomainExporter {
         }
     }
 
-    private Map<Class<?>,Annotation> getAnnotations(Class<?> cl, String propertyName) throws NoSuchMethodException {
-        // TODO : merge annotations
+    private AnnotatedElement getAnnotatedElement(Class<?> cl, String propertyName) throws NoSuchMethodException {
         try {
-            Field field = cl.getDeclaredField(propertyName);
-            return getAnnotations(field.getAnnotations());
+            return cl.getDeclaredField(propertyName);
         } catch (NoSuchFieldException e) {
             String getter = "get"+BeanUtils.capitalize(propertyName);
             String bgetter = "is"+BeanUtils.capitalize(propertyName);
             for (Method method : cl.getDeclaredMethods()){
                 if ((method.getName().equals(getter) || method.getName().equals(bgetter)) && method.getParameterTypes().length == 0){
-                    return getAnnotations(method.getAnnotations());
+                    return method;
                 }
             }
             if (cl.getSuperclass().equals(Object.class)){
                 throw new IllegalArgumentException("No property found for " + cl.getName() + "." + propertyName);
             }else{
-                return getAnnotations(cl.getSuperclass(), propertyName);
+                return getAnnotatedElement(cl.getSuperclass(), propertyName);
             }
         }
     }

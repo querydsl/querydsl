@@ -11,7 +11,7 @@ import com.mysema.query.annotations.QueryInit;
 public class QueryEmbedded4Test {
 
     @QueryEntity
-    public class User {
+    public static class User {
     
         @QueryEmbedded
         @QueryInit("city.name")
@@ -21,7 +21,7 @@ public class QueryEmbedded4Test {
         Complex<String> complex;
     }
     
-    public class Address {
+    public static class Address {
         
         @QueryEmbedded
         City city;
@@ -29,13 +29,13 @@ public class QueryEmbedded4Test {
         String name;
     }
     
-    public class City {
+    public static class City {
      
         String name;
         
     }
     
-    public class Complex<T extends Comparable<T>> implements Comparable<Complex<T>> {
+    public static class Complex<T extends Comparable<T>> implements Comparable<Complex<T>> {
 
         T a;
         

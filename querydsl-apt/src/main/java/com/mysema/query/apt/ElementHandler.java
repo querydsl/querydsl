@@ -160,10 +160,11 @@ public final class ElementHandler{
         if (config.visitFieldProperties()){
             for (VariableElement field : ElementFilter.fieldsIn(elements)){
                 String name = field.getSimpleName().toString();
-                if (configuration.isValidField(field)){
-                    handleFieldProperty(entityType, field, properties, blockedProperties, types);
-                }else if (configuration.isBlockedField(field)){
+
+                if (configuration.isBlockedField(field)){
                     blockedProperties.add(name);
+                } else if (configuration.isValidField(field)){
+                    handleFieldProperty(entityType, field, properties, blockedProperties, types);
                 }
             }
         }
@@ -180,10 +181,10 @@ public final class ElementHandler{
                     continue;
                 }
 
-                if (configuration.isValidGetter(method)){
-                    handleMethodProperty(entityType, name, method, properties, blockedProperties, types);
-                }else if (configuration.isBlockedGetter(method)){
+                if (configuration.isBlockedGetter(method)){
                     blockedProperties.add(name);
+                } else if (configuration.isValidGetter(method)){
+                     handleMethodProperty(entityType, name, method, properties, blockedProperties, types);
                 }
             }
 

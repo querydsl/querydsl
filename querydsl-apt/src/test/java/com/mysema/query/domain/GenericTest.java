@@ -17,13 +17,13 @@ import com.mysema.query.domain.rel.SimpleType2;
 public class GenericTest {
 
     @QueryEntity
-    public class GenericType<T extends ItemType> {
+    public static class GenericType<T extends ItemType> {
         T itemType;
     }
 
     @QueryEntity
     @SuppressWarnings("unchecked")
-    public class GenericType2<T extends ItemType> {
+    public static class GenericType2<T extends ItemType> {
         T itemType;
 
         // simple        
@@ -45,12 +45,12 @@ public class GenericTest {
         GenericNumberType<Date> num3;
     }
 
-    public class GenericSimpleType<T extends GenericSimpleType<T>>{
+    public static class GenericSimpleType<T extends GenericSimpleType<T>>{
 
     }
 
     @SuppressWarnings("unchecked")
-    public class GenericComparableType<T> implements Comparable<GenericComparableType<T>>{
+    public static class GenericComparableType<T> implements Comparable<GenericComparableType<T>>{
         @Override
         public int compareTo(GenericComparableType<T> o) {
             return 0;
@@ -63,7 +63,7 @@ public class GenericTest {
     }
 
     @SuppressWarnings({ "unchecked", "serial" })
-    public class GenericNumberType<T> extends Number implements Comparable<GenericNumberType<T>>{
+    public static class GenericNumberType<T> extends Number implements Comparable<GenericNumberType<T>>{
         @Override
         public double doubleValue() {
             return 0;
@@ -98,14 +98,14 @@ public class GenericTest {
 
     @QueryEntity
     @SuppressWarnings("unchecked")
-    public class ItemType {
+    public static class ItemType {
         Amount<SimpleType> prop;
         SimpleType2<Amount<SimpleType>> prop2;        
         SimpleType2<Amount> prop3;
         SimpleType2<?> prop4;
     }
 
-    public class Amount<T>{
+    public static class Amount<T>{
 
     }
 
