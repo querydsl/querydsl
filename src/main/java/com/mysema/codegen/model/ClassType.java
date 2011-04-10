@@ -72,7 +72,7 @@ public class ClassType implements Type {
     @Override
     public Type asArrayType() {
         if (arrayType == null){
-            String fullName = javaClass.getName()+"[]";
+            String fullName = ClassUtils.getFullName(javaClass)+"[]";
             String simpleName = javaClass.getSimpleName()+"[]";
             arrayType = new SimpleType(TypeCategory.ARRAY, fullName, getPackageName(), simpleName, false, false);
         }

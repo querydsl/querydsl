@@ -17,6 +17,10 @@ import org.junit.Test;
 
 public class ClassTypeTest {
 
+    public class Inner {
+        
+    }
+    
     private final ClassType stringType = new ClassType(TypeCategory.STRING, String.class);
 
 //    @Test
@@ -24,6 +28,12 @@ public class ClassTypeTest {
 //        assertEquals(stringType, stringType.asArrayType().getParameter(0));
 //    }
 
+    @Test
+    public void InnerClass_Name(){
+        assertEquals("com.mysema.codegen.model.ClassTypeTest.Inner", new ClassType(Inner.class).getFullName());
+        assertEquals("com.mysema.codegen.model.ClassTypeTest.Inner[]", new ClassType(Inner.class).asArrayType().getFullName());
+    }
+    
     @Test
     public void ArrayType(){
         Type type = new ClassType(TypeCategory.ARRAY,String[].class);
