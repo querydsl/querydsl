@@ -58,7 +58,7 @@ public final class ReflectionUtils {
     }
 
     @Nullable
-    private static Method getGetterOrNull(Class<?> beanClass, String name, Class<?> type){
+    public static Method getGetterOrNull(Class<?> beanClass, String name, Class<?> type){
         String methodName = ((type.equals(Boolean.class) || type.equals(boolean.class)) ? "is" : "get") + BeanUtils.capitalize(name);
         while(beanClass != null && !beanClass.equals(Object.class)){
             try {
@@ -71,7 +71,7 @@ public final class ReflectionUtils {
         return null;
 
     }
-    
+
     public static int getTypeParameterCount(java.lang.reflect.Type type){
         if (type instanceof ParameterizedType) {
             return ((ParameterizedType) type).getActualTypeArguments().length;
@@ -79,7 +79,7 @@ public final class ReflectionUtils {
             return 0;
         }
     }
-    
+
     @Nullable
     @SuppressWarnings("unchecked")
     public static Class<?> getTypeParameter(java.lang.reflect.Type type, int index) {
@@ -89,13 +89,14 @@ public final class ReflectionUtils {
             if (targs[index] instanceof WildcardType) {
                 WildcardType wildcardType = (WildcardType) targs[index];
                 if (wildcardType.getUpperBounds()[0] instanceof Class){
-                    return (Class<?>) wildcardType.getUpperBounds()[0];    
+                    return (Class<?>) wildcardType.getUpperBounds()[0];
                 }else if (wildcardType.getUpperBounds()[0] instanceof ParameterizedType){
                     return (Class<?>) ((ParameterizedType) wildcardType.getUpperBounds()[0]).getRawType();
                 }else{
-                    return (Class<?>) ((TypeVariable) wildcardType.getUpperBounds()[0]).getGenericDeclaration();
+//                    return (Class<?>) ((TypeVariable) wildcardType.getUpperBounds()[0]).getGenericDeclaration();
+                    return Object.class;
                 }
-                
+
             } else if (targs[index] instanceof TypeVariable) {
                 return (Class<?>) ((TypeVariable) targs[index]).getGenericDeclaration();
             } else if (targs[index] instanceof ParameterizedType) {

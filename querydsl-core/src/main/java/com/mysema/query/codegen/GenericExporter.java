@@ -157,11 +157,23 @@ public class GenericExporter {
         if (handled.add(model)){
             for (Supertype supertype : model.getSuperTypes()){
                 EntityType entityType = superTypes.get(supertype.getType().getFullName());
-                if (entityType != null){
-                    addSupertypeFields(entityType, superTypes, handled);
-                    supertype.setEntityType(entityType);
-                    model.include(supertype);
+                if (entityType == null){
+                    if (supertype.getType().getPackageName().startsWith("java.")){
+                        // skip internal supertypes
+                        continue;
+                    }
+                    try {
+                        Class<?> cl = Class.forName(supertype.getType().getFullName());
+                        typeFactory.addEmbeddableType(cl);
+                        entityType = createEntityType(cl, new HashMap<Class<?>, EntityType>());
+                        addProperties(cl, entityType);
+                    } catch (ClassNotFoundException e) {
+                        throw new QueryException(e);
+                    }
                 }
+                addSupertypeFields(entityType, superTypes, handled);
+                supertype.setEntityType(entityType);
+                model.include(supertype);
             }
         }
     }
@@ -198,7 +210,13 @@ public class GenericExporter {
         for (Field field : cl.getDeclaredFields()){
             if (!Modifier.isStatic(field.getModifiers())){
                 AnnotatedElement annotated = ReflectionUtils.getAnnotatedElement(cl, field.getName(), field.getType());
-                Type propertyType = getPropertyType(cl, annotated, field.getType(), field.getGenericType());
+                Method method = ReflectionUtils.getGetterOrNull(cl, field.getName(), field.getType());
+                Type propertyType = null;
+                if (method != null){
+                    propertyType = getPropertyType(cl, annotated, method.getReturnType(), method.getGenericReturnType());
+                }else{
+                    propertyType = getPropertyType(cl, annotated, field.getType(), field.getGenericType());
+                }
                 Property property = createProperty(type, field.getName(), propertyType, field);
                 if (property != null) {
                     type.addProperty(property);

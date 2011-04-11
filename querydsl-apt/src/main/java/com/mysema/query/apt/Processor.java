@@ -289,7 +289,8 @@ public class Processor {
                 if (entityType.getSuperType() != null){
                     superTypes.push(entityType.getSuperType().getType());
                 }
-                types.put(superType.getFullName(), entityType);
+//                types.put(superType.getFullName(), entityType);
+                allSupertypes.put(superType.getFullName(), entityType);
             }
         }
 

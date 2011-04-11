@@ -71,11 +71,11 @@ public class DefaultConfiguration implements Configuration {
 
     protected final Class<? extends Annotation> entityAnn;
 
-	@Nonnull
-	private final Set<String> excludedPackages;
+    @Nonnull
+    private final Set<String> excludedPackages;
 
-	@Nonnull
-	private final Set<String> excludedClasses;
+    @Nonnull
+    private final Set<String> excludedClasses;
 
     @Nullable
     protected final Class<? extends Annotation> entitiesAnn, superTypeAnn, embeddedAnn, embeddableAnn, skipAnn;
@@ -330,7 +330,7 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
-	public String getNameSuffix() {
+    public String getNameSuffix() {
         return module.get(String.class, CodegenModule.SUFFIX);
     }
 
@@ -347,19 +347,19 @@ public class DefaultConfiguration implements Configuration {
         return module.get(QueryTypeFactory.class);
     }
 
-	@Override
-	public boolean isExcludedPackage(@Nonnull String packageName) {
-		for (String excludedPackage : excludedPackages) {
-			if (packageName.startsWith(excludedPackage)) {
-				return true;
-			}
-		}
-		return false;
-	}
+    @Override
+    public boolean isExcludedPackage(@Nonnull String packageName) {
+        for (String excludedPackage : excludedPackages) {
+            if (packageName.startsWith(excludedPackage)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
-	@Override
-	public boolean isExcludedClass(@Nonnull String className) {
-		return excludedClasses.contains(className);
-	}
+    @Override
+    public boolean isExcludedClass(@Nonnull String className) {
+        return excludedClasses.contains(className);
+    }
 
 }
