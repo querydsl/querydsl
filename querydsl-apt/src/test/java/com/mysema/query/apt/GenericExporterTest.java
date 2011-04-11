@@ -17,7 +17,7 @@ import com.mysema.query.domain.EntityTest;
 
 @Ignore
 public class GenericExporterTest {
-    
+
     private GenericExporter exporter;
 
     @Before
@@ -27,11 +27,13 @@ public class GenericExporterTest {
 
     @Test
     public void Export() throws IOException {
-        FileUtils.cleanDirectory(new File("target/gen1"));
-        
+        if (new File("target/gen1").exists()){
+            FileUtils.cleanDirectory(new File("target/gen1"));
+        }
+
         exporter.setTargetFolder(new File("target/gen1"));
-        exporter.export(EntityTest.class.getPackage());        
-        
+        exporter.export(EntityTest.class.getPackage());
+
         int total = 0;
         Set<String> failures = new TreeSet<String>();
         for (File file : new File("target/gen1/com/mysema/query/domain").listFiles()){
@@ -46,7 +48,7 @@ public class GenericExporterTest {
                 failures.add(file.getName());
             }
         }
-        
+
         if (!failures.isEmpty()){
             for (String failure : failures){
                 System.err.println(failure);

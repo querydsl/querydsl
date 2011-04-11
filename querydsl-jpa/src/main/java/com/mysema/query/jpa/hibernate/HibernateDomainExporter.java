@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -16,6 +15,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
 import javax.xml.stream.XMLStreamException;
 
 import org.hibernate.cfg.Configuration;
@@ -34,19 +34,7 @@ import com.mysema.query.QueryException;
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryInit;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.codegen.CodegenModule;
-import com.mysema.query.codegen.EmbeddableSerializer;
-import com.mysema.query.codegen.EntitySerializer;
-import com.mysema.query.codegen.EntityType;
-import com.mysema.query.codegen.Property;
-import com.mysema.query.codegen.QueryTypeFactory;
-import com.mysema.query.codegen.Serializer;
-import com.mysema.query.codegen.SerializerConfig;
-import com.mysema.query.codegen.SimpleSerializerConfig;
-import com.mysema.query.codegen.Supertype;
-import com.mysema.query.codegen.SupertypeSerializer;
-import com.mysema.query.codegen.TypeFactory;
-import com.mysema.query.codegen.TypeMappings;
+import com.mysema.query.codegen.*;
 import com.mysema.util.BeanUtils;
 
 /**
@@ -214,6 +202,7 @@ public class HibernateDomainExporter {
         entityType.addProperty(property);
     }
 
+    @Nullable
     private Property createProperty(EntityType entityType, String propertyName, Type propertyType, AnnotatedElement annotated) {
         String[] inits = new String[0];
         if (annotated.isAnnotationPresent(QueryInit.class)){
@@ -296,14 +285,6 @@ public class HibernateDomainExporter {
                 return getAnnotatedElement(cl.getSuperclass(), propertyName);
             }
         }
-    }
-
-    private Map<Class<?>, Annotation> getAnnotations(Annotation[] a) {
-        Map<Class<?>,Annotation> annotations = new HashMap<Class<?>,Annotation>();
-        for (Annotation annotation : a){
-            annotations.put(annotation.annotationType(), annotation);
-        }
-        return annotations;
     }
 
     private void serialize(Map<String,EntityType> types, Serializer serializer) throws IOException {
