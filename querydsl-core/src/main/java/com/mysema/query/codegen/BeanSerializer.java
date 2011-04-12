@@ -74,6 +74,8 @@ public class BeanSerializer implements Serializer{
         }
         writer.beginClass(model);
 
+        bodyStart(model, writer);
+        
         // fields
         for (Property property : model.getProperties()){
             if (propertyAnnotations){
@@ -98,7 +100,17 @@ public class BeanSerializer implements Serializer{
             writer.end();
         }
 
+        bodyEnd(model, writer);
+        
         writer.end();
+    }
+
+    protected void bodyStart(EntityType model, CodeWriter writer) throws IOException {
+        // template method        
+    }
+
+    protected void bodyEnd(EntityType model, CodeWriter writer) throws IOException {
+        // template method        
     }
 
     private Set<String> getAnnotationTypes(EntityType model) {
