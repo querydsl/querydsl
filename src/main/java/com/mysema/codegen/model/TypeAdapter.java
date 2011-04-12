@@ -19,7 +19,7 @@ import net.jcip.annotations.Immutable;
 @Immutable
 public class TypeAdapter implements Type{
 
-    private final Type type;
+    protected final Type type;
 
     public TypeAdapter(Type type){
         this.type = type;

@@ -31,7 +31,7 @@ public class TypeExtends extends TypeAdapter{
         super(type);
         varName = null;
     }
-    
+
     @Override
     public String getGenericName(boolean asArgType){
         return getGenericName(asArgType, Collections.<String>emptySet(),Collections.<String>emptySet());
@@ -40,7 +40,11 @@ public class TypeExtends extends TypeAdapter{
     @Override
     public String getGenericName(boolean asArgType, Set<String> packages, Set<String> classes){
         if (!asArgType){
-            return "? extends " + super.getGenericName(true, packages, classes);
+            if (type.equals(Types.OBJECT)){
+                return "?";
+            }else{
+                return "? extends " + super.getGenericName(true, packages, classes);
+            }
         }else{
             return super.getGenericName(asArgType, packages, classes);
         }
