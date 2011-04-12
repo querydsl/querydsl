@@ -463,7 +463,8 @@ public final class ExtendedTypeFactory {
     private Type handleTypeVariable(TypeVariable typeVariable, boolean deep) {
         String varName = typeVariable.toString();
         if (typeVariable.getUpperBound() != null){
-            return new TypeExtends(varName, handle(typeVariable.getUpperBound(), deep));
+            Type type = handle(typeVariable.getUpperBound(), deep);
+            return new TypeExtends(varName, type);
         }else if (typeVariable.getLowerBound() != null && !(typeVariable.getLowerBound() instanceof NullType)){
             return new TypeSuper(varName, handle(typeVariable.getLowerBound(), deep));
         }else{
@@ -474,7 +475,8 @@ public final class ExtendedTypeFactory {
     @Nullable
     private Type handleWildcard(WildcardType wildardType, boolean deep) {
         if (wildardType.getExtendsBound() != null){
-            return new TypeExtends(handle(wildardType.getExtendsBound(), deep));
+            Type type = handle(wildardType.getExtendsBound(), deep);
+            return new TypeExtends(type);
         }else if (wildardType.getSuperBound() != null){
             return new TypeSuper(handle(wildardType.getSuperBound(), deep));
         }else{

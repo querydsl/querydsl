@@ -10,11 +10,13 @@ import java.util.TreeSet;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.codegen.GenericExporter;
 import com.mysema.query.domain.EntityTest;
 
+@Ignore
 public class GenericExporterTest {
 
     private GenericExporter exporter;

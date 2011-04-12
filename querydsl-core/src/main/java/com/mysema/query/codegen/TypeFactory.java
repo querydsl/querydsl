@@ -125,19 +125,7 @@ public final class TypeFactory {
     private Type[] getParameters(Class<?> cl, java.lang.reflect.Type genericType, boolean collectionOrMap) {
         int parameterCount = ReflectionUtils.getTypeParameterCount(genericType);
         if (parameterCount > 0){
-            Type[] types = new Type[parameterCount];
-            for (int i = 0; i < types.length; i++){
-                java.lang.reflect.Type parameter = ((ParameterizedType)genericType).getActualTypeArguments()[i];
-                if (parameter instanceof WildcardType && !collectionOrMap){
-                    types[i] = null;
-                }else{
-                    types[i] = create(ReflectionUtils.getTypeParameter(genericType, i), parameter);
-                    if (parameter instanceof WildcardType && !types[i].equals(Types.OBJECT)){
-                        types[i] = new TypeExtends(types[i]);
-                    }
-                }
-            }
-            return types;
+            return getGenericParameters(genericType, collectionOrMap, parameterCount);
 
         } else if (Collection.class.isAssignableFrom(cl)) {
             return new Type[]{ Types.OBJECT }; // TODO : cache
@@ -146,21 +134,41 @@ public final class TypeFactory {
             return new Type[]{ Types.OBJECT, Types.OBJECT }; // TODO : cache
 
         } else if (cl.getTypeParameters().length > 0) {
-            Type[] types = new Type[cl.getTypeParameters().length];
-            for (int i = 0; i < types.length; i++) {
-                TypeVariable<?> typeVariable = cl.getTypeParameters()[i];
-                if (!typeVariable.getGenericDeclaration().equals(cl)){
-                    types[i] = create((Class<?>)typeVariable.getGenericDeclaration(), typeVariable);
-                }else{
-                    types[i] = new ClassType(cl);
-                }
-            }
-            return types;
+            return getTypeParameters(cl);
 
         } else {
             return new Type[0]; // TODO : cache
         }
 
+    }
+
+    private Type[] getGenericParameters(java.lang.reflect.Type genericType, boolean collectionOrMap, int parameterCount) {
+        Type[] types = new Type[parameterCount];
+        for (int i = 0; i < types.length; i++){
+            java.lang.reflect.Type parameter = ((ParameterizedType)genericType).getActualTypeArguments()[i];
+            if (parameter instanceof WildcardType && !collectionOrMap){
+                types[i] = null;
+            }else{
+                types[i] = create(ReflectionUtils.getTypeParameter(genericType, i), parameter);
+                if (parameter instanceof WildcardType){
+                    types[i] = new TypeExtends(types[i]);
+                }
+            }
+        }
+        return types;
+    }
+
+    private Type[] getTypeParameters(Class<?> cl) {
+        Type[] types = new Type[cl.getTypeParameters().length];
+        for (int i = 0; i < types.length; i++) {
+            TypeVariable<?> typeVariable = cl.getTypeParameters()[i];
+            if (!typeVariable.getGenericDeclaration().equals(cl)){
+                types[i] = create((Class<?>)typeVariable.getGenericDeclaration(), typeVariable);
+            }else{
+                types[i] = new ClassType(cl);
+            }
+        }
+        return types;
     }
 
     public void setUnknownAsEntity(boolean unknownAsEntity) {

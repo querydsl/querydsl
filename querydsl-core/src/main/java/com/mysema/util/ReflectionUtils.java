@@ -93,7 +93,6 @@ public final class ReflectionUtils {
                 }else if (wildcardType.getUpperBounds()[0] instanceof ParameterizedType){
                     return (Class<?>) ((ParameterizedType) wildcardType.getUpperBounds()[0]).getRawType();
                 }else{
-//                    return (Class<?>) ((TypeVariable) wildcardType.getUpperBounds()[0]).getGenericDeclaration();
                     return Object.class;
                 }
 
