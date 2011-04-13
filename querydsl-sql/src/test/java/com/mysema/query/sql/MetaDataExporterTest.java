@@ -28,12 +28,15 @@ import org.junit.Test;
 
 import com.mysema.codegen.SimpleCompiler;
 import com.mysema.query.codegen.BeanSerializer;
+import com.mysema.query.codegen.Serializer;
 
 public class MetaDataExporterTest {
 
     private static Connection connection;
 
     private Statement statement;
+    
+    private Serializer beanSerializer = new BeanSerializer();
 
     @BeforeClass
     public static void setUpClass() throws ClassNotFoundException, SQLException{
@@ -82,6 +85,10 @@ public class MetaDataExporterTest {
                     + "survey_name varchar(30), "
                     + "CONSTRAINT PK_employee PRIMARY KEY (id), "
                     + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");
+            
+            // multi key
+            stmt.execute("create table multikey(id INT, id2 VARCHAR, id3 INT, CONSTRAINT pk_multikey PRIMARY KEY (id, id2, id3) )");
+            
         }finally{
             stmt.close();
         }
@@ -123,6 +130,15 @@ public class MetaDataExporterTest {
 
         assertTrue(new File("target/11/test/QEmployee.java").exists());
         assertTrue(new File("target/11/test/Employee.java").exists());
+    }
+    
+    @Test
+    public void NormalSettings_with_Beans_using_ExtendedBeanSerializer() throws SQLException{
+        beanSerializer = new ExtendedBeanSerializer();
+        test("Q", "", "", "", defaultNaming, "target/11_ext", true, false);
+
+        assertTrue(new File("target/11_ext/test/QEmployee.java").exists());
+        assertTrue(new File("target/11_ext/test/Employee.java").exists());
     }
 
     @Test
@@ -384,7 +400,7 @@ public class MetaDataExporterTest {
         exporter.setTargetFolder(targetDir);
         exporter.setNamingStrategy(namingStrategy);
         if (withBeans){
-            exporter.setBeanSerializer(new BeanSerializer());
+            exporter.setBeanSerializer(beanSerializer);
         }
         exporter.export(connection.getMetaData());
 

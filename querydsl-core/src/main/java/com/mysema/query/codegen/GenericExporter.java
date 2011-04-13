@@ -257,7 +257,7 @@ public class GenericExporter {
                 embeddableType = ReflectionUtils.getTypeParameter(genericType, 1);
             }
             typeFactory.addEmbeddableType(embeddableType);
-            if (!embeddableTypes.containsKey(embeddableType)){
+            if (!embeddableTypes.containsKey(embeddableType) && !entityTypes.containsKey(embeddableType)){
                 EntityType entityType = createEntityType(embeddableType, embeddableTypes);
                 addProperties(embeddableType, entityType);
             }

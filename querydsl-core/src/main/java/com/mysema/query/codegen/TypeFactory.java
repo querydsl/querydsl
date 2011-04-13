@@ -76,8 +76,7 @@ public final class TypeFactory {
                 entity = true;
             }
 
-            Type[] parameters = getParameters(cl, genericType,
-                    (Collection.class.isAssignableFrom(cl) || Map.class.isAssignableFrom(cl)));
+            Type[] parameters = getParameters(cl, genericType);
 
             if (cl.isArray()) {
                 value = create(cl.getComponentType()).asArrayType();
@@ -122,9 +121,10 @@ public final class TypeFactory {
 
     }
 
-    private Type[] getParameters(Class<?> cl, java.lang.reflect.Type genericType, boolean collectionOrMap) {
+    private Type[] getParameters(Class<?> cl, java.lang.reflect.Type genericType) {
         int parameterCount = ReflectionUtils.getTypeParameterCount(genericType);
         if (parameterCount > 0){
+            boolean collectionOrMap = Collection.class.isAssignableFrom(cl) || Map.class.isAssignableFrom(cl);
             return getGenericParameters(genericType, collectionOrMap, parameterCount);
 
         } else if (Collection.class.isAssignableFrom(cl)) {
