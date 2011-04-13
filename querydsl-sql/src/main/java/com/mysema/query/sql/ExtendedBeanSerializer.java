@@ -80,10 +80,10 @@ public class ExtendedBeanSerializer extends BeanSerializer {
         writer.line("if (", anyColumnIsNull + ") {");        
         writer.line("    return super.hashCode();");
         writer.line("}");
-        writer.line("final int primary = 31;");
+        writer.line("final int prime = 31;");
         writer.line("int result = 1;");
         for (String property : properties){
-            writer.line("result = primary * result + ", property, ".hashCode();");
+            writer.line("result = prime * result + ", property, ".hashCode();");
         }
         writer.line("return result;");
         writer.end();
