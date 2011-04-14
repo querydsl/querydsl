@@ -74,9 +74,6 @@ public class Multikey {
 
     @Override
     public String toString() {
-        if (id == null || id2 == null || id3 == null) {
-            return super.toString();
-        }
         return "Multikey#" + id+ ";" + id2+ ";" + id3;
     }
 

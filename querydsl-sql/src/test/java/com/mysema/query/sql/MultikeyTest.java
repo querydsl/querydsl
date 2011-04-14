@@ -44,6 +44,8 @@ public class MultikeyTest {
     
     @Test
     public void ToString(){
+        assertEquals("Multikey#null;null;null", multiKey1.toString());
+        
         multiKey1.setId(1);
         multiKey1.setId2("2");
         multiKey1.setId3(3);

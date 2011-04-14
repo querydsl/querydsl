@@ -91,9 +91,9 @@ public class ExtendedBeanSerializer extends BeanSerializer {
         // toString
         writer.annotation(Override.class);
         writer.beginPublicMethod(Types.STRING, "toString");
-        writer.line("if (", anyColumnIsNull + ") {");      
-        writer.line("    return super.toString();");
-        writer.line("}");
+//        writer.line("if (", anyColumnIsNull + ") {");      
+//        writer.line("    return super.toString();");
+//        writer.line("}");
         writer.line("return ", toString + ";");
         writer.end();
         
