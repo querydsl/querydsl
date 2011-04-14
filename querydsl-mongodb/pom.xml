@@ -96,6 +96,7 @@
 	  <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>maven-apt-plugin</artifactId>
+        <version>1.0.1</version>
         <executions>
           <execution>
           	<phase>generate-test-sources</phase>
