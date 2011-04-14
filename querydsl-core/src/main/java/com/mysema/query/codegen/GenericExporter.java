@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
+import com.mysema.codegen.ScalaWriter;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.support.ClassUtils;
@@ -55,6 +56,8 @@ public class GenericExporter {
 
     private Class<? extends Annotation> skipAnnotation = QueryTransient.class;
 
+    private boolean createScalaSources = false;
+    
     private final Map<String, EntityType> allTypes = new HashMap<String, EntityType>();
 
     private final Map<Class<?>, EntityType> entityTypes = new HashMap<Class<?>, EntityType>();
@@ -322,7 +325,8 @@ public class GenericExporter {
             if (entityType.getKey().isAnnotationPresent(Config.class)){
                 config = SimpleSerializerConfig.getConfig(entityType.getKey().getAnnotation(Config.class));
             }
-            write(serializer, className.replace('.', '/') + ".java", config, entityType.getValue());
+            String fileSuffix = createScalaSources ? ".scala" : ".java";
+            write(serializer, className.replace('.', '/') + fileSuffix, config, entityType.getValue());
         }
     }
 
@@ -330,7 +334,7 @@ public class GenericExporter {
         File targetFile = new File(targetFolder, path);
         Writer w = writerFor(targetFile);
         try{
-            CodeWriter writer = new JavaWriter(w);
+            CodeWriter writer = createScalaSources ? new ScalaWriter(w) : new JavaWriter(w);
             serializer.serialize(type, serializerConfig, writer);
         }finally{
             w.close();
@@ -377,6 +381,10 @@ public class GenericExporter {
     public void setSerializerClass(Class<? extends Serializer> serializerClass) {
         codegenModule.bind(serializerClass);
         this.serializerClass = serializerClass;
+    }
+
+    public void setCreateScalaSources(boolean createScalaSources) {
+        this.createScalaSources = createScalaSources;
     }
 
 }

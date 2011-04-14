@@ -18,13 +18,15 @@ import scala.reflect.BeanProperty
 import scala.collection.JavaConversions._
 import scala.collection.mutable.Set
 
+import javax.inject.Inject;
+
 /**
  * EntitySerializer for Scala
  * 
  * @author tiwe
  *
  */
-class ScalaEntitySerializer(val typeMappings: TypeMappings) extends Serializer {
+class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Serializer {
     
 //  val typeMappings = ScalaTypeMappings.typeMappings
 
