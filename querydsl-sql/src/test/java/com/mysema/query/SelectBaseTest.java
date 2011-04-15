@@ -48,16 +48,7 @@ import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QIdName;
 import com.mysema.query.sql.domain.QSurvey;
-import com.mysema.query.types.ArrayConstructorExpression;
-import com.mysema.query.types.Concatenation;
-import com.mysema.query.types.ConstructorExpression;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.PathImpl;
-import com.mysema.query.types.QBean;
-import com.mysema.query.types.QTuple;
-import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.*;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.Coalesce;
 import com.mysema.query.types.expr.NumberExpression;
@@ -309,6 +300,11 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
                 .where(survey.id.eq(survey2.id)).list(survey.name)) {
             System.out.println(name);
         }
+    }
+    
+    @Test
+    public void In(){
+        query().from(employee).where(employee.id.in(Arrays.asList(1,2))).list(employee);
     }
 
     @Test
