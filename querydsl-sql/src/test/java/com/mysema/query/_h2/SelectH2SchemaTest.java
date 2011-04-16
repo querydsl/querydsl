@@ -26,8 +26,9 @@ public class SelectH2SchemaTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        templates = new H2Templates().newLineToSingleSpace();
-        templates.setPrintSchema(true);
+        templates = new H2Templates(){{
+            setPrintSchema(true);
+        }};
     }
 
 }

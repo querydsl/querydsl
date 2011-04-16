@@ -361,7 +361,12 @@ public class SQLTemplates extends Templates {
         return createTable;
     }
 
+    public boolean isPrintSchema() {
+        return printSchema;
+    }
+
     public SQLTemplates newLineToSingleSpace() {
+        // TODO : return a new instance
         for (Class<?> cl : Arrays.<Class<?>>asList(getClass(), SQLTemplates.class)) {
             for (Field field : cl.getDeclaredFields()) {
                 try {
@@ -480,7 +485,7 @@ public class SQLTemplates extends Templates {
         this.join = join;
     }
 
-    public void setKey(String key) {
+    protected void setKey(String key) {
         this.key = key;
     }
 
@@ -560,11 +565,7 @@ public class SQLTemplates extends Templates {
         this.createTable = createTable;
     }
 
-    public boolean isPrintSchema() {
-        return printSchema;
-    }
-
-    public void setPrintSchema(boolean printSchema) {
+    protected void setPrintSchema(boolean printSchema) {
         this.printSchema = printSchema;
     }
     

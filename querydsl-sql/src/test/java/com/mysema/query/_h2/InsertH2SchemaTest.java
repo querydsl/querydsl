@@ -26,8 +26,9 @@ public class InsertH2SchemaTest extends InsertBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        templates = new H2Templates().newLineToSingleSpace();
-        templates.setPrintSchema(true);
+        templates = new H2Templates(){{
+            setPrintSchema(true);
+        }}.newLineToSingleSpace();
         super.setUp();
     }
 
