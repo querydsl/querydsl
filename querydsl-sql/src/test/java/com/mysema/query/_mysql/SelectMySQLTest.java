@@ -40,7 +40,7 @@ public class SelectMySQLTest extends SelectBaseTest {
         expectedQuery = "select e.FIRSTNAME as `First Name` from EMPLOYEE2 e";
         query().from(employee).list(employee.firstname.as("First Name"));
     }
-
+    
     @Test
     public void Extensions(){
         mysqlQuery().from(survey).bigResult().list(survey.id);
