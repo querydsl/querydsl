@@ -28,7 +28,9 @@ public class SelectOracleQuotedTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        templates = new OracleTemplates(true).newLineToSingleSpace();
+        templates = new OracleTemplates(true){{
+            newLineToSingleSpace();
+        }};
     }
 
 }

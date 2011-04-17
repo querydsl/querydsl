@@ -28,7 +28,9 @@ public class MergeMSSQLTest extends MergeBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        templates = new SQLServerTemplates().newLineToSingleSpace();
+        templates = new SQLServerTemplates(){{
+            newLineToSingleSpace();
+        }};
         super.setUp();
     }
 }

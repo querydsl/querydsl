@@ -26,7 +26,9 @@ public class MergeDerbyTest extends MergeBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        templates = new DerbyTemplates().newLineToSingleSpace();
+        templates = new DerbyTemplates(){{
+            newLineToSingleSpace();
+        }};
         super.setUp();
     }
 }

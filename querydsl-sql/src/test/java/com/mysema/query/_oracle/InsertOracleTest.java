@@ -28,7 +28,9 @@ public class InsertOracleTest extends InsertBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        templates = new OracleTemplates().newLineToSingleSpace();
+        templates = new OracleTemplates(){{
+            newLineToSingleSpace();
+        }};
         super.setUp();
     }
 

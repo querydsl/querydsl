@@ -28,7 +28,8 @@ public class InsertH2SchemaTest extends InsertBaseTest{
     public void setUp() throws SQLException {
         templates = new H2Templates(){{
             setPrintSchema(true);
-        }}.newLineToSingleSpace();
+            newLineToSingleSpace();
+        }};
         super.setUp();
     }
 

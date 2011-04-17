@@ -28,7 +28,9 @@ public class SelectMSSQLQuotedTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        templates = new SQLServerTemplates(true).newLineToSingleSpace();
+        templates = new SQLServerTemplates(true){{
+            newLineToSingleSpace();
+        }};
     }
 
 }

@@ -7,6 +7,7 @@ package com.mysema.query.sql;
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.sql.AbstractSQLQuery.UnionBuilder;
@@ -22,9 +23,16 @@ public abstract class AbstractSQLTemplatesTest {
     
     protected static final QSurvey survey2 = new QSurvey("survey2");
     
-    protected SQLQueryImpl query = new SQLQueryImpl(createTemplates().newLineToSingleSpace());
+    protected SQLQueryImpl query;
     
     protected abstract SQLTemplates createTemplates();
+
+    @Before
+    public void setUp(){
+        SQLTemplates templates = createTemplates();
+        templates.newLineToSingleSpace();
+        query = new SQLQueryImpl(templates);
+    }
     
     @Test
     public void NoFrom(){

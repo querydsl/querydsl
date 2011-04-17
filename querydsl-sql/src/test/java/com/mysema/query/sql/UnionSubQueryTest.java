@@ -14,7 +14,9 @@ import com.mysema.query.types.path.SimplePath;
 
 public class UnionSubQueryTest {
     
-    private SQLTemplates templates = new H2Templates().newLineToSingleSpace();
+    private SQLTemplates templates = new H2Templates(){{
+        newLineToSingleSpace();
+    }};
     
     private SQLSerializer serializer = new SQLSerializer(templates);    
     

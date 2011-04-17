@@ -27,7 +27,9 @@ public class CreateTableH2Test extends CreateTableBaseTest{
     @Before
     public void setUp() throws SQLException {
         super.setUp();
-        templates = new H2Templates().newLineToSingleSpace();
+        templates = new H2Templates(){{
+            newLineToSingleSpace();
+        }};
     }
 
 }

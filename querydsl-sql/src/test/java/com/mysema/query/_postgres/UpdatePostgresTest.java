@@ -28,7 +28,9 @@ public class UpdatePostgresTest extends UpdateBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        templates = new PostgresTemplates(true).newLineToSingleSpace();
+        templates = new PostgresTemplates(true){{
+            newLineToSingleSpace();
+        }};
         super.setUp();
     }
 

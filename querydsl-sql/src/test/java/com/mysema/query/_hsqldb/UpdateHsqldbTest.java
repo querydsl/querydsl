@@ -26,7 +26,9 @@ public class UpdateHsqldbTest extends UpdateBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        templates = new HSQLDBTemplates().newLineToSingleSpace();
+        templates = new HSQLDBTemplates(){{
+            newLineToSingleSpace();
+        }};
         super.setUp();
     }
 

@@ -365,8 +365,7 @@ public class SQLTemplates extends Templates {
         return printSchema;
     }
 
-    public SQLTemplates newLineToSingleSpace() {
-        // TODO : return a new instance
+    protected void newLineToSingleSpace() {
         for (Class<?> cl : Arrays.<Class<?>>asList(getClass(), SQLTemplates.class)) {
             for (Field field : cl.getDeclaredFields()) {
                 try {
@@ -383,8 +382,6 @@ public class SQLTemplates extends Templates {
                 }
             }    
         }
-        
-        return this;
     }
     
     public String quoteIdentifier(String identifier){

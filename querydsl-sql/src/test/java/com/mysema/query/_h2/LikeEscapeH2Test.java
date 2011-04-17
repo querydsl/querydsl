@@ -26,7 +26,9 @@ public class LikeEscapeH2Test extends LikeEscapeBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        templates = new H2Templates('!', false).newLineToSingleSpace();
+        templates = new H2Templates('!', false){{
+            newLineToSingleSpace();
+        }};
         super.setUp();
     }
 

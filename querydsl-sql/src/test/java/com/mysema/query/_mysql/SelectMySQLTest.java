@@ -31,7 +31,9 @@ public class SelectMySQLTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        templates = new MySQLTemplates().newLineToSingleSpace();
+        templates = new MySQLTemplates(){{
+            newLineToSingleSpace();
+        }};
     }
 
     @Test

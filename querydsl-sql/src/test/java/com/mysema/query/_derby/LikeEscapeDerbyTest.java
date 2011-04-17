@@ -26,7 +26,9 @@ public class LikeEscapeDerbyTest extends LikeEscapeBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        templates = new DerbyTemplates('!', false).newLineToSingleSpace();
+        templates = new DerbyTemplates('!', false){{
+            newLineToSingleSpace();
+        }};
         super.setUp();
     }
 

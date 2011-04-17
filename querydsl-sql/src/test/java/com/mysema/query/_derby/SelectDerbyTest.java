@@ -29,7 +29,9 @@ public class SelectDerbyTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        templates = new DerbyTemplates().newLineToSingleSpace();
+        templates = new DerbyTemplates(){{
+            newLineToSingleSpace();
+        }};
     }
 
     @Test

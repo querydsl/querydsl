@@ -27,7 +27,9 @@ public class CreateTableHsqldbTest extends CreateTableBaseTest{
     @Before
     public void setUp() throws SQLException {
         super.setUp();
-        templates = new HSQLDBTemplates().newLineToSingleSpace();
+        templates = new HSQLDBTemplates(){{
+            newLineToSingleSpace();
+        }};
     }
 
 }

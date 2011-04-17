@@ -21,7 +21,9 @@ public class OracleQueryTest {
     
     @Before
     public void setUp(){
-        query = new OracleQuery(null, new OracleTemplates().newLineToSingleSpace());
+        query = new OracleQuery(null, new OracleTemplates(){{
+            newLineToSingleSpace();
+        }});
         query.from(survey);
         query.orderBy(survey.name.asc());
     }    

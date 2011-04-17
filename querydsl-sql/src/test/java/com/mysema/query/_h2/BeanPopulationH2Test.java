@@ -26,7 +26,9 @@ public class BeanPopulationH2Test extends BeanPopulationBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        templates = new H2Templates().newLineToSingleSpace();
+        templates = new H2Templates(){{
+            newLineToSingleSpace();
+        }};
     }
     
 }

@@ -29,7 +29,9 @@ public class CreateTableMySQLTest extends CreateTableBaseTest{
     @Before
     public void setUp() throws SQLException {
         super.setUp();
-        templates = new MySQLTemplates(true).newLineToSingleSpace();
+        templates = new MySQLTemplates(true){{
+            newLineToSingleSpace();
+        }};
     }
 
 }

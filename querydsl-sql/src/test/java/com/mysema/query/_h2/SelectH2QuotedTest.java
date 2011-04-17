@@ -26,7 +26,9 @@ public class SelectH2QuotedTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        templates = new H2Templates(true).newLineToSingleSpace();
+        templates = new H2Templates(true){{
+            newLineToSingleSpace();
+        }};
     }
 
 

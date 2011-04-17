@@ -28,7 +28,9 @@ public class UpdateMSSQLTest extends UpdateBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        templates = new SQLServerTemplates().newLineToSingleSpace();
+        templates = new SQLServerTemplates(){{
+            newLineToSingleSpace();
+        }};
         super.setUp();
     }
 

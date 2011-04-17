@@ -38,7 +38,9 @@ public class SelectOracleTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        templates = new OracleTemplates().newLineToSingleSpace();
+        templates = new OracleTemplates(){{
+            newLineToSingleSpace();
+        }};
     }
 
     @Test

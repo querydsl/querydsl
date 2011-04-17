@@ -23,7 +23,9 @@ public class MySQLQueryTest {
     
     @Before
     public void setUp(){
-        query = new MySQLQuery(null, new MySQLTemplates().newLineToSingleSpace());
+        query = new MySQLQuery(null, new MySQLTemplates(){{
+            newLineToSingleSpace();
+        }});
         query.from(survey);
         query.orderBy(survey.name.asc());
         query.getMetadata().addProjection(survey.name);

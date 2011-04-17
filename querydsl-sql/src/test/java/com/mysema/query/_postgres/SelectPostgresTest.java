@@ -28,7 +28,9 @@ public class SelectPostgresTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        templates = new PostgresTemplates(true).newLineToSingleSpace();
+        templates = new PostgresTemplates(true){{
+            newLineToSingleSpace();
+        }};
     }
 
 }

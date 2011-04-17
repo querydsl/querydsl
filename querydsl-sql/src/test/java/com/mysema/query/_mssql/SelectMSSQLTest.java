@@ -40,7 +40,9 @@ public class SelectMSSQLTest extends SelectBaseTest {
 
     @Before
     public void setUpForTest() {
-        templates = new SQLServerTemplates().newLineToSingleSpace();
+        templates = new SQLServerTemplates(){{
+            newLineToSingleSpace();
+        }};
     }
 
     @Test

@@ -32,7 +32,9 @@ public class MergeH2Test extends MergeBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        templates = new H2Templates().newLineToSingleSpace();
+        templates = new H2Templates(){{
+            newLineToSingleSpace();
+        }};
         super.setUp();
     }
     

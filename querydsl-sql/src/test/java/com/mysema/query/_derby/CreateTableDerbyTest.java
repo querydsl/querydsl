@@ -27,7 +27,9 @@ public class CreateTableDerbyTest extends CreateTableBaseTest{
     @Before
     public void setUp() throws SQLException {
         super.setUp();
-        templates = new DerbyTemplates().newLineToSingleSpace();
+        templates = new DerbyTemplates(){{
+            newLineToSingleSpace();
+        }};
     }
 
 }

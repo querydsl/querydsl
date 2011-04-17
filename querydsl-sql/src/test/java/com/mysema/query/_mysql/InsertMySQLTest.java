@@ -35,7 +35,9 @@ public class InsertMySQLTest extends InsertBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        templates = new MySQLTemplates().newLineToSingleSpace();
+        templates = new MySQLTemplates(){{
+            newLineToSingleSpace();
+        }};
         super.setUp();
     }
     

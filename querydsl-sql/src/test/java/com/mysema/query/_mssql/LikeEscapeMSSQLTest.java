@@ -28,7 +28,9 @@ public class LikeEscapeMSSQLTest extends LikeEscapeBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        templates = new SQLServerTemplates('!', false).newLineToSingleSpace();
+        templates = new SQLServerTemplates('!', false){{
+            newLineToSingleSpace();
+        }};
         super.setUp();
     }
 

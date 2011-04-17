@@ -28,7 +28,9 @@ public class LikeEscapeMySQLTest extends LikeEscapeBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        templates = new MySQLTemplates('!', false).newLineToSingleSpace();
+        templates = new MySQLTemplates('!', false){{
+            newLineToSingleSpace();
+        }};
         super.setUp();
     }
 

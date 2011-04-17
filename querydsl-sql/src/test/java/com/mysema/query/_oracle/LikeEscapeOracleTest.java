@@ -28,7 +28,9 @@ public class LikeEscapeOracleTest extends LikeEscapeBaseTest{
 
     @Before
     public void setUp() throws SQLException {
-        templates = new OracleTemplates('!', false).newLineToSingleSpace();
+        templates = new OracleTemplates('!', false){{
+            newLineToSingleSpace();
+        }};
         super.setUp();
     }
 
