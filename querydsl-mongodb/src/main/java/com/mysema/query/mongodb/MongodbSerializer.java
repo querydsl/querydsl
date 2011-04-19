@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import org.bson.BSONObject;
+import org.bson.types.ObjectId;
 
 import com.mongodb.BasicDBList;
 import com.mongodb.BasicDBObject;
@@ -226,7 +227,11 @@ public class MongodbSerializer implements Visitor<Object, Void> {
     }
 
     protected String getKeyForPath(Path<?> expr, PathMetadata<?> metadata) {
-        return metadata.getExpression().toString();
+        if (expr.getType().equals(ObjectId.class)){
+            return "_id";
+        }else{
+            return metadata.getExpression().toString();    
+        }        
     }
 
     @Override

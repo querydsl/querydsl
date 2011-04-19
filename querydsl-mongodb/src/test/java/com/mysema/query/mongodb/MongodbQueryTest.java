@@ -66,6 +66,11 @@ public class MongodbQueryTest {
     }
 
     @Test
+    public void Find_By_Id(){
+        assertNotNull(where(user.id.eq(u1.getId())).singleResult() != null);
+    }
+    
+    @Test
     public void NotExists(){
         assertFalse(where(user.firstName.eq("Jaakko")).notExists());
         assertTrue(where(user.firstName.eq("JaakkoX")).notExists());
