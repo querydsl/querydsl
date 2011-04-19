@@ -310,8 +310,6 @@ public class GenericExporter {
                 }
             } catch (IOException e) {
                 throw new QueryException(e);
-            } catch (ClassNotFoundException e) {
-                throw new QueryException(e);
             }
         }
     }
