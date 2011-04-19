@@ -62,6 +62,7 @@ public class MongodbQueryTest {
     public void Exists(){
         assertTrue(where(user.firstName.eq("Jaakko")).exists());
         assertFalse(where(user.firstName.eq("JaakkoX")).exists());
+        assertTrue(where(user.id.eq(u1.getId())).exists());
     }
 
     @Test
