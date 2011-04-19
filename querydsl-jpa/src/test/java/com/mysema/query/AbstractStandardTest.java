@@ -26,6 +26,7 @@ import org.junit.Test;
 
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.jpa.JPQLQuery;
+import com.mysema.query.jpa.JPQLSubQuery;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.DomesticCat;
 import com.mysema.query.jpa.domain.QCat;
@@ -125,6 +126,10 @@ public abstract class AbstractStandardTest {
     protected abstract Target getTarget();
 
     protected abstract JPQLQuery query();
+    
+    protected JPQLSubQuery subQuery(){
+        return new JPQLSubQuery();
+    }
 
     protected abstract void save(Object entity);
 
@@ -431,6 +436,13 @@ public abstract class AbstractStandardTest {
         assertEquals(1l, query().from(show).where(show.acts.containsValue("A")).count());
         assertEquals(1l, query().from(show).where(show.acts.containsValue("B")).count());
         assertEquals(0l, query().from(show).where(show.acts.containsValue("C")).count());
+    }
+    
+    @Test
+    public void SubQuery(){
+        QShow show = QShow.show;
+        QShow show2 = new QShow("show2");
+        query().from(show).where(subQuery().from(show2).where(show2.id.ne(show.id)).count().gt(0)).count();
     }
 
 }

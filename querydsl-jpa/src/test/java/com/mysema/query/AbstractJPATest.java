@@ -35,7 +35,7 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
     protected JPAQuery query(){
         return new JPAQuery(entityManager, getTemplates());
     }
-
+    
     protected JPQLTemplates getTemplates(){
         return HQLTemplates.DEFAULT;
     }
