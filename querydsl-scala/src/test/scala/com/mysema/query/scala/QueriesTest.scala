@@ -30,6 +30,11 @@ class QueriesTest {
     query from(user) unique(user) getOrElse(new User());  
   }
   
+  @Test 
+  def Single {
+    query from(user) single(user) getOrElse(new User());  
+  }
+  
   def query() = new JPAQuery(entityManager)
   
 }
