@@ -49,5 +49,5 @@ public class SubQueryExpressionImpl<T> extends ExpressionBase<T> implements SubQ
     public <R, C> R accept(Visitor<R, C> v, C context) {
         return v.visit(this, context);
     }
-
+    
 }

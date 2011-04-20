@@ -6,6 +6,7 @@
 package com.mysema.query.types;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -83,6 +84,14 @@ public final class ExpressionUtils {
         return as(source, new PathImpl<D>(source.getType(), alias));
     }
 
+    /**
+     * @param source
+     * @return
+     */
+    public static Expression<Long> count(Expression<?> source){
+        return OperationImpl.create(Long.class, Ops.AggOps.COUNT_AGG, source);
+    }
+    
     /**
      * Create an left equals constant expression
      * 
@@ -188,6 +197,24 @@ public final class ExpressionUtils {
         }else{
             return expr;    
         }        
+    }
+    
+    /**
+     * @param expressions
+     * @return
+     */
+    public static Expression<?> merge(List<? extends Expression<?>> expressions) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < expressions.size(); i++){
+            if (i > 0){
+                builder.append(", ");
+            }
+            builder.append("{"+i+"}");
+        }
+        return TemplateExpressionImpl.create(
+                Object.class, 
+                builder.toString(), 
+                expressions.toArray(new Expression[expressions.size()]));
     }
     
     @SuppressWarnings("unchecked")

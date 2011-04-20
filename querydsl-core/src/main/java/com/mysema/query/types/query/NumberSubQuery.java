@@ -53,7 +53,7 @@ public final class NumberSubQuery<T extends Number & Comparable<?>> extends Numb
         }
         return exists;
     }
-
+    
     @Override
     public QueryMetadata getMetadata() {
         return subQueryMixin.getMetadata();

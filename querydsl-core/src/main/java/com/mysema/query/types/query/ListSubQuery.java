@@ -11,12 +11,16 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.OperationImpl;
+import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.SubQueryExpressionImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.CollectionExpressionBase;
+import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.expr.SimpleOperation;
 
@@ -37,6 +41,12 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
 
     @Nullable
     private volatile BooleanExpression exists;
+    
+    @Nullable
+    private volatile NumberExpression<Long> count;
+
+    @Nullable
+    private volatile NumberExpression<Long> countDistinct;
 
     @SuppressWarnings("unchecked")
     public ListSubQuery(Class<T> elementType, QueryMetadata md) {
@@ -55,6 +65,35 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
        return subQueryMixin.equals(o);
     }
 
+    @Override
+    public NumberExpression<Long> count(){
+        if (count == null) {
+            count = count(Ops.AggOps.COUNT_AGG);    
+        }
+        return count;
+    }
+
+    @Override
+    public NumberExpression<Long> countDistinct(){
+        if (countDistinct == null) {
+            countDistinct = count(Ops.AggOps.COUNT_DISTINCT_AGG);    
+        }
+        return countDistinct;
+    }
+    
+    private NumberExpression<Long> count(Operator<Number> operator) {
+        QueryMetadata md = subQueryMixin.getMetadata().clone();
+        Expression<?> e = null;
+        if (md.getProjection().size() == 1){
+            e = md.getProjection().get(0);
+        }else{
+            e = ExpressionUtils.merge(md.getProjection());
+        }
+        md.clearProjection();
+        md.addProjection(OperationImpl.create(Long.class, operator, e));
+        return new NumberSubQuery<Long>(Long.class, md);
+    }
+    
     @Override
     public BooleanExpression exists() {
         if (exists == null){
