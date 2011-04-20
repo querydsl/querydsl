@@ -47,7 +47,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
 
     @Override
     public boolean exists(){
-        return limit(1).uniqueResult(NumberTemplate.one) != null;
+        return limit(1).uniqueResult(NumberTemplate.ONE) != null;
     }
 
     public T from(Expression<?>... args) {

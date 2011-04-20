@@ -11,6 +11,10 @@ import java.util.Map;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
 
 /**
  * The Class Calendar.
@@ -19,6 +23,7 @@ import javax.persistence.Id;
 @Entity
 public class Calendar implements Serializable{
     @ElementCollection
+    @Temporal(TemporalType.DATE)
     Map<String, java.util.Date> holidays;
 
     @Id

@@ -12,7 +12,7 @@ import com.mysema.commons.lang.Assert;
 
 /**
  * Default implementation of the TemplateExpression interface
- *
+ * 
  * @author tiwe
  *
  * @param <T> expression type
@@ -25,10 +25,28 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
 
     private final Template template;
 
+    /**
+     * Create a new TemplateExpression with the given template in String form and template arguments
+     * 
+     * @param <C>
+     * @param cl
+     * @param template
+     * @param args
+     * @return
+     */
     public static <C> Expression<C> create(Class<C> cl, String template, Expression<?>... args){
         return create(cl, TemplateFactory.DEFAULT.create(template), args);
     }
 
+    /**
+     * Create a new TemplateExpression with the given template and template arguments
+     * 
+     * @param <C>
+     * @param cl
+     * @param template
+     * @param args
+     * @return
+     */
     public static <C> Expression<C> create(Class<C> cl, Template template, Expression<?>... args){
         return new TemplateExpressionImpl<C>(cl, template, args);
     }

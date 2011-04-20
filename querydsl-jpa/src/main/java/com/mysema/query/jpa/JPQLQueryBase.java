@@ -61,7 +61,7 @@ public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends Projecta
 
     @Override
     public boolean exists(){
-        return limit(1).uniqueResult(NumberTemplate.one) != null;
+        return limit(1).uniqueResult(NumberTemplate.ONE) != null;
     }
 
     public Q fetch(){

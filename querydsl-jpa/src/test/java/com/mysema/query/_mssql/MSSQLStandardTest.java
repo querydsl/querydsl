@@ -5,6 +5,7 @@
  */
 package com.mysema.query._mssql;
 
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 
 import com.mysema.query.AbstractHibernateTest;
@@ -16,9 +17,10 @@ import com.mysema.testutil.HibernateTestRunner;
  * @author tiwe
  *
  */
+@Ignore
 @RunWith(HibernateTestRunner.class)
 @HibernateConfig("mssql.properties")
-public abstract class MSSQLStandardTest extends AbstractHibernateTest{
+public class MSSQLStandardTest extends AbstractHibernateTest{
 
     @Override
     protected Target getTarget() {
