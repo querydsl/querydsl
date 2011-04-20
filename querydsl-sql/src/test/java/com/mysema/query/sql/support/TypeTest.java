@@ -22,27 +22,14 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.LocalTime;
 import org.junit.Test;
 
 import com.mysema.commons.lang.Pair;
-import com.mysema.query.sql.types.BigDecimalType;
-import com.mysema.query.sql.types.BooleanType;
-import com.mysema.query.sql.types.ByteType;
-import com.mysema.query.sql.types.BytesType;
-import com.mysema.query.sql.types.CharacterType;
-import com.mysema.query.sql.types.DateType;
-import com.mysema.query.sql.types.DoubleType;
-import com.mysema.query.sql.types.FloatType;
-import com.mysema.query.sql.types.IntegerType;
-import com.mysema.query.sql.types.LongType;
-import com.mysema.query.sql.types.ObjectType;
-import com.mysema.query.sql.types.ShortType;
-import com.mysema.query.sql.types.StringType;
-import com.mysema.query.sql.types.TimeType;
-import com.mysema.query.sql.types.TimestampType;
-import com.mysema.query.sql.types.Type;
-import com.mysema.query.sql.types.URLType;
-import com.mysema.query.sql.types.UtilDateType;
+import com.mysema.query.sql.types.*;
 
 public class TypeTest implements InvocationHandler{
     
@@ -58,9 +45,9 @@ public class TypeTest implements InvocationHandler{
         }
     }
     
-    private ResultSet resultSet = (ResultSet) Proxy.newProxyInstance(getClass().getClassLoader(), new Class[]{ResultSet.class}, this);
+    private final ResultSet resultSet = (ResultSet) Proxy.newProxyInstance(getClass().getClassLoader(), new Class[]{ResultSet.class}, this);
     
-    private PreparedStatement statement = (PreparedStatement) Proxy.newProxyInstance(getClass().getClassLoader(), new Class[]{PreparedStatement.class}, this);
+    private final PreparedStatement statement = (PreparedStatement) Proxy.newProxyInstance(getClass().getClassLoader(), new Class[]{PreparedStatement.class}, this);
     
     @SuppressWarnings("unchecked")
     @Test
@@ -83,6 +70,11 @@ public class TypeTest implements InvocationHandler{
         valueAndType.add(Pair.of(new Time(0),         new TimeType()));
         valueAndType.add(Pair.of(new URL("http://www.mysema.com"), new URLType()));
         valueAndType.add(Pair.of(new java.util.Date(),new UtilDateType()));
+        
+        valueAndType.add(Pair.of(new DateTime(),      new DateTimeType()));
+        valueAndType.add(Pair.of(new LocalDateTime(), new LocalDateTimeType()));
+        valueAndType.add(Pair.of(new LocalDate(),     new LocalDateType()));
+        valueAndType.add(Pair.of(new LocalTime(),     new LocalTimeType()));
         
         for (Pair pair : valueAndType){
             value = null;

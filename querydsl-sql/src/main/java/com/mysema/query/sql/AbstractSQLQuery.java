@@ -205,7 +205,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     @Override
     public boolean exists(){
-        return limit(1).uniqueResult(NumberTemplate.one) != null;
+        return limit(1).uniqueResult(NumberTemplate.ONE) != null;
     }
 
     protected SQLSerializer createSerializer() {

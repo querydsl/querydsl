@@ -42,7 +42,7 @@ public final class JDBCTypeMapping {
         // DATE and TIME
         registerDefault(Types.DATE, java.sql.Date.class);
         registerDefault(Types.TIME, java.sql.Time.class);
-        registerDefault(Types.TIMESTAMP, java.util.Date.class);
+        registerDefault(Types.TIMESTAMP, java.sql.Timestamp.class); 
 
         // TEXT
         registerDefault(Types.CHAR, String.class);

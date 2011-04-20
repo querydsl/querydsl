@@ -38,7 +38,7 @@ public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> implements SQL
     
     @Override
     public BooleanExpression exists(){
-        return unique(NumberTemplate.one).exists();
+        return unique(NumberTemplate.ONE).exists();
     }
 
     @Override

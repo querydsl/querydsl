@@ -36,16 +36,16 @@ public abstract class AbstractSQLTemplatesTest {
     
     @Test
     public void NoFrom(){
-        query.getMetadata().addProjection(NumberTemplate.one);
+        query.getMetadata().addProjection(NumberTemplate.ONE);
         assertEquals("select 1 from dual", query.toString());
     }
     
     @SuppressWarnings("unchecked")
     @Test
     public void Union(){        
-        NumberExpression<Integer> one = NumberTemplate.one;
-        NumberExpression<Integer> two = NumberTemplate.two;
-        NumberExpression<Integer> three = NumberTemplate.three;
+        NumberExpression<Integer> one = NumberTemplate.ONE;
+        NumberExpression<Integer> two = NumberTemplate.TWO;
+        NumberExpression<Integer> three = NumberTemplate.THREE;
         Path<Integer> col1 = new SimplePath<Integer>(Integer.class,"col1");
         UnionBuilder union = query.union(
             sq().unique(one.as(col1)),

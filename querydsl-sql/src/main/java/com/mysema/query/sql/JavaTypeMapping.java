@@ -45,6 +45,11 @@ public class JavaTypeMapping {
         registerDefault(new TimeType());
         registerDefault(new URLType());
         registerDefault(new UtilDateType());
+        
+        registerDefault(new DateTimeType());
+        registerDefault(new LocalDateTimeType());
+        registerDefault(new LocalDateType());
+        registerDefault(new LocalTimeType());
     }
 
     private static void registerDefault(Type<?> type) {
