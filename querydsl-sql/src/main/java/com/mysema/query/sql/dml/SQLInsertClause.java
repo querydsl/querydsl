@@ -30,6 +30,7 @@ import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.dml.InsertClause;
+import com.mysema.query.sql.AbstractSQLSubQuery;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLSerializer;
@@ -60,6 +61,9 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
 
     @Nullable
     private SubQueryExpression<?> subQuery;
+    
+    @Nullable
+    private AbstractSQLSubQuery<?> subQueryBuilder;
 
     private final List<SQLInsertBatch> batches = new ArrayList<SQLInsertBatch>();
 
@@ -72,7 +76,17 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
     public SQLInsertClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         this(connection, new Configuration(templates), entity);
     }
+    
+    public SQLInsertClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity, AbstractSQLSubQuery<?> subQuery) {
+        this(connection, new Configuration(templates), entity);
+        this.subQueryBuilder = subQuery;
+    }
 
+    public SQLInsertClause(Connection connection, Configuration configuration, RelationalPath<?> entity, AbstractSQLSubQuery<?> subQuery) {
+        this(connection, configuration, entity);
+        this.subQueryBuilder = subQuery;
+    }
+    
     public SQLInsertClause(Connection connection, Configuration configuration, RelationalPath<?> entity) {
         super(configuration);
         this.connection = Assert.notNull(connection,"connection");
@@ -98,6 +112,10 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
      * @return
      */
     public SQLInsertClause addBatch() {
+        if (subQueryBuilder != null) {
+            subQuery = subQueryBuilder.list(values.toArray(new Expression[values.size()])); 
+            values.clear();
+        }        
         batches.add(new SQLInsertBatch(columns, values, subQuery));
         columns.clear();
         values.clear();
@@ -176,6 +194,10 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
 
     private PreparedStatement createStatement(boolean withKeys) throws SQLException{
         SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
+        if (subQueryBuilder != null) {
+            subQuery = subQueryBuilder.list(values.toArray(new Expression[values.size()])); 
+            values.clear();
+        } 
         PreparedStatement stmt = null;
         if (batches.isEmpty()){
             serializer.serializeForInsert(metadata, entity, columns, values, subQuery);

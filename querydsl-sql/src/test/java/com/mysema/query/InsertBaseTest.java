@@ -42,32 +42,46 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    public void Insert(){
-//        create table survey (id int,name varchar(30))
-
-        // with columns
+    public void Insert_With_Columns() {
         assertEquals(1, insert(survey)
-            .columns(survey.id, survey.name)
-            .values(3, "Hello").execute());
-
-        // without columns
+                .columns(survey.id, survey.name)
+                .values(3, "Hello").execute());
+    }
+    
+    @Test
+    public void Insert_Without_Columns() {
         assertEquals(1, insert(survey)
-            .values(4, "Hello").execute());
-        
-        // with subquery
+                .values(4, "Hello").execute());
+            
+    }
+    
+    @Test
+    public void Insert_With_SubQuery() {
         int count = (int)query().from(survey).count();
         assertEquals(count, insert(survey)
             .columns(survey.id, survey.name)
             .select(sq().from(survey2).list(survey2.id.add(20), survey2.name))
             .execute());
-
-        // with subquery, without columns
-        count = (int)query().from(survey).count();
+    }
+    
+    @Test
+    public void Insert_With_SubQuery_Via_Constructor() {
+        int count = (int)query().from(survey).count();
+        SQLInsertClause insert = insert(survey, sq().from(survey2));
+        insert.set(survey.id, survey2.id.add(20));
+        insert.set(survey.name, survey2.name);
+        assertEquals(count, insert.execute());
+    }    
+    
+    @Test
+    public void Insert_With_SubQuery_Without_Columns() {
+        int count = (int)query().from(survey).count();
         assertEquals(count, insert(survey)
             .select(sq().from(survey2).list(survey2.id.add(10), survey2.name))
             .execute());
+        
     }
-    
+        
     @Test
     public void Insert_Batch(){
         SQLInsertClause insert = insert(survey)
@@ -132,25 +146,28 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     public void Insert_With_Keys_Projected() throws SQLException{
         assertNotNull(insert(survey).set(survey.name, "Hello you").executeWithKey(survey.id));
     }
-    
+
     @Test
-    public void Insert_Null(){
-        // with columns
+    public void Insert_Null_With_Columns() {
         assertEquals(1, insert(survey)
-            .columns(survey.id, survey.name)
-            .values(3, null).execute());
-
-        // without columns
-        assertEquals(1, insert(survey)
-            .values(4, null).execute());
-
-        // with set
-        assertEquals(1, insert(survey)
-            .set(survey.id, 5)
-            .set(survey.name, (String)null)
-            .execute());
+                .columns(survey.id, survey.name)
+                .values(3, null).execute());    
     }
 
+    @Test
+    public void Insert_Null_Without_Columns() {
+        assertEquals(1, insert(survey)
+                .values(4, null).execute());        
+    }
+    
+    @Test
+    public void Insert_With_Set() {
+        assertEquals(1, insert(survey)
+                .set(survey.id, 5)
+                .set(survey.name, (String)null)
+                .execute());   
+    }
+    
     @Test
     public void Insert_Alternative_Syntax(){
         // with columns

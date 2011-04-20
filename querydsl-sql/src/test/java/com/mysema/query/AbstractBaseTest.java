@@ -16,6 +16,7 @@ import org.junit.Rule;
 import org.junit.rules.MethodRule;
 import org.junit.runner.RunWith;
 
+import com.mysema.query.sql.AbstractSQLSubQuery;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLQueryImpl;
@@ -56,6 +57,10 @@ public abstract class AbstractBaseTest {
         return new SQLInsertClause(Connections.getConnection(), templates, e);
     }
 
+    protected SQLInsertClause insert(RelationalPath<?> e, AbstractSQLSubQuery<?> sq) {
+        return new SQLInsertClause(Connections.getConnection(), templates, e, sq);
+    }
+    
     protected SQLDeleteClause delete(RelationalPath<?> e){
         return new SQLDeleteClause(Connections.getConnection(), templates, e);
     }
