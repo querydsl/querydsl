@@ -35,13 +35,16 @@ public class NumberTemplate<T extends Number & Comparable<?>> extends NumberExpr
         return new NumberTemplate<T>(type, template, Arrays.<Expression<?>>asList(args));
     }
 
-    public static NumberExpression<Integer> ONE = create(Integer.class, "1");
+    public static final NumberExpression<Integer> ONE = create(Integer.class, "1");
     
-    public static NumberExpression<Integer> TWO = create(Integer.class, "2");
+    public static final NumberExpression<Integer> TWO = create(Integer.class, "2");
     
-    public static NumberExpression<Integer> THREE = create(Integer.class, "3");
+    public static final NumberExpression<Integer> THREE = create(Integer.class, "3");
 
-    public static NumberExpression<Integer> ZERO = create(Integer.class, "0");
+    public static final NumberExpression<Integer> ZERO = create(Integer.class, "0");
+    
+    @Deprecated
+    public static final NumberExpression<Integer> one = ONE, two = TWO, three = THREE, zero = ZERO;
 
     private final TemplateExpression<T> templateMixin;
 
