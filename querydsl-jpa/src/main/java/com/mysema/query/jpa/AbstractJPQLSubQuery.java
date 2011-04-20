@@ -6,6 +6,8 @@
 package com.mysema.query.jpa;
 
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.JoinExpression;
+import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
 import com.mysema.query.types.CollectionExpression;
@@ -13,6 +15,8 @@ import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
+import com.mysema.query.types.query.NumberSubQuery;
+import com.mysema.query.types.template.NumberTemplate;
 
 /**
  * Abstract superclass for SubQuery implementations
@@ -34,6 +38,19 @@ public class AbstractJPQLSubQuery<Q extends AbstractJPQLSubQuery<Q>> extends Det
         super(new JPQLQueryMixin<Q>(metadata));
         super.queryMixin.setSelf((Q)this);
         this.queryMixin = (JPQLQueryMixin<Q>) super.queryMixin;
+    }
+    
+    @Override
+    public NumberSubQuery<Long> count(){
+        StringBuilder count = new StringBuilder();
+        for (JoinExpression join : queryMixin.getMetadata().getJoins()){
+            if (join.getType() == JoinType.DEFAULT){
+                count.append(count.length() == 0 ? "count(" : ", ");
+                count.append(join.getTarget().toString());
+            }
+        }
+        count.append(")");        
+        return unique(NumberTemplate.create(Long.class, count.toString()));
     }
 
     public Q from(EntityPath<?>... o) {

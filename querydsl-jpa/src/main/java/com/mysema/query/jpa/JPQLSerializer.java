@@ -37,8 +37,6 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             Ops.LT, Ops.LOE, Ops.GT, Ops.GOE, Ops.BETWEEN,
             Ops.BEFORE, Ops.AFTER, Ops.BOE, Ops.AOE));
 
-    private static final String SELECT_COUNT_DISTINCT = "select count(distinct ";
-
     private static final String COMMA = ", ";
 
     private static final String DELETE = "delete ";
@@ -55,6 +53,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     private static final String SELECT_COUNT = "select count(";
 
+    private static final String SELECT_COUNT_DISTINCT = "select count(distinct ";
+    
     private static final String SELECT_DISTINCT = "select distinct ";
 
     private static final String SET = "\nset ";

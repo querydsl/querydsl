@@ -208,25 +208,35 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    public void Any_And(){
+    public void Any_And_Lt(){
         assertEquals(1, catQuery().where(cat.kittens.any().name.eq("Ruth123"), cat.kittens.any().bodyWeight.lt(10.0)).count());
+    }
+    
+    @Test
+    public void Any_And_Gt(){
         assertEquals(0, catQuery().where(cat.kittens.any().name.eq("Ruth123"), cat.kittens.any().bodyWeight.gt(10.0)).count());
     }
 
     @Test
-    public void Aggregates_UniqueResult(){
-        // uniqueResult
+    public void Aggregates_UniqueResult_Min(){
         assertEquals(Integer.valueOf(1), catQuery().uniqueResult(cat.id.min()));
-        assertEquals(Integer.valueOf(6), catQuery().uniqueResult(cat.id.max()));
     }
 
     @Test
-    public void Aggregates_List(){
-        // list
+    public void Aggregates_UniqueResult_Max(){
+        assertEquals(Integer.valueOf(6), catQuery().uniqueResult(cat.id.max()));
+    }
+    
+    @Test
+    public void Aggregates_List_Min(){
         assertEquals(Integer.valueOf(1), catQuery().list(cat.id.min()).get(0));
-        assertEquals(Integer.valueOf(6), catQuery().list(cat.id.max()).get(0));
     }
 
+    @Test
+    public void Aggregates_List_Max(){
+        assertEquals(Integer.valueOf(6), catQuery().list(cat.id.max()).get(0));
+    }
+    
     @Test
     public void DistinctResults(){
         System.out.println("-- list results");
@@ -246,21 +256,6 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    public void DistinctResults2(){
-        SearchResults<Date> res = catQuery().limit(2).listResults(cat.birthdate);
-        assertEquals(2, res.getResults().size());
-        assertEquals(6l, res.getTotal());
-        System.out.println();
-
-        res = catQuery().limit(2).distinct().listResults(cat.birthdate);
-        assertEquals(1, res.getResults().size());
-        assertEquals(1l, res.getTotal());
-        System.out.println();
-
-        assertEquals(1, catQuery().distinct().list(cat.birthdate).size());
-    }
-
-    @Test
     public void In(){
         catQuery().where(cat.id.in(Arrays.asList(1,2,3))).count();
         catQuery().where(cat.name.in(Arrays.asList("A","B","C"))).count();
@@ -268,7 +263,6 @@ public abstract class AbstractStandardTest {
 
     @Test
     public void StartsWith(){
-        // startsWith
         assertEquals(1, catQuery().where(cat.name.startsWith("R")).count());
         assertEquals(0, catQuery().where(cat.name.startsWith("X")).count());
         assertEquals(1, catQuery().where(cat.name.startsWithIgnoreCase("r")).count());
@@ -276,7 +270,6 @@ public abstract class AbstractStandardTest {
 
     @Test
     public void EndsWith(){
-        // endsWith
         assertEquals(1, catQuery().where(cat.name.endsWith("h123")).count());
         assertEquals(0, catQuery().where(cat.name.endsWith("X")).count());
         assertEquals(1, catQuery().where(cat.name.endsWithIgnoreCase("H123")).count());
@@ -284,7 +277,6 @@ public abstract class AbstractStandardTest {
 
     @Test
     public void Contains1(){
-        // contains
         assertEquals(1, catQuery().where(cat.name.contains("eli")).count());
     }
 
@@ -295,20 +287,17 @@ public abstract class AbstractStandardTest {
 
     @Test
     public void Length(){
-        // length
         assertEquals(6, catQuery().where(cat.name.length().gt(0)).count());
     }
 
     @Test
     public void IndexOf(){
-        // indexOf
         assertEquals(Integer.valueOf(0), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("B")));
         assertEquals(Integer.valueOf(1), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("o")));
     }
 
     @Test
     public void StringOperations(){
-        // case-sensitivity
         if (!getTarget().equals(Target.MYSQL)){ // NOTE : locate in MYSQL is case-insensitive
             assertEquals(0, catQuery().where(cat.name.startsWith("r")).count());
             assertEquals(0, catQuery().where(cat.name.endsWith("H123")).count());
@@ -318,27 +307,23 @@ public abstract class AbstractStandardTest {
 
     @Test
     public void Limit(){
-        // limit
         List<String> names1 = Arrays.asList("Allen123","Bob123");
         assertEquals(names1, catQuery().orderBy(cat.name.asc()).limit(2).list(cat.name));
     }
 
     @Test
     public void Limit2(){
-        // limit
         assertEquals(Collections.singletonList("Allen123"), catQuery().orderBy(cat.name.asc()).limit(1).list(cat.name));
     }
 
     @Test
     public void Offset(){
-        // offset
         List<String> names2 = Arrays.asList("Felix123","Mary123","Ruth123","Some");
         assertEquals(names2, catQuery().orderBy(cat.name.asc()).offset(2).list(cat.name));
     }
 
     @Test
     public void Limit_and_offset(){
-        // limit + offset
         List<String> names3 = Arrays.asList("Felix123","Mary123");
         assertEquals(names3, catQuery().orderBy(cat.name.asc()).limit(2).offset(2).list(cat.name));
     }

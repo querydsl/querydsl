@@ -35,6 +35,8 @@ import com.mysema.testutil.JPATestRunner;
 @JPAConfig("derby")
 public class JPADerbySQLTest {
 
+    private SAnimal cat = new SAnimal("cat");
+    
     private static final SQLTemplates derbyTemplates = new DerbyTemplates();
 
     private EntityManager entityManager;
@@ -59,47 +61,67 @@ public class JPADerbySQLTest {
     }
 
     @Test
-    public void ScalarQueries(){
-        SAnimal cat = new SAnimal("cat");
-
-        // count
+    public void Count(){
         assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).count());
-
-        // countDistinct
+    }
+    
+    @Test
+    public void CountDistinct(){
         assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).countDistinct());
-
-        // list
+    }
+    
+    @Test
+    public void List(){
         assertEquals(6, query().from(cat).where(cat.dtype.eq("C")).list(cat.id).size());
-
-        // list with limit
+    }
+    
+    @Test
+    public void List_With_Limit(){
         assertEquals(3, query().from(cat).limit(3).list(cat.id).size());
-
-        // list with offset
-        assertEquals(3, query().from(cat).offset(3).list(cat.id).size());
-
-        // list with limit and offset
-        assertEquals(3, query().from(cat).offset(3).limit(3).list(cat.id).size());
-
-        // list multiple
-        print(query().from(cat).where(cat.dtype.eq("C")).list(cat.id, cat.name, cat.bodyweight));
-
-        // listResults
-        SearchResults<String> results = query().from(cat).limit(3).orderBy(cat.name.asc()).listResults(cat.name);
-        assertEquals(Arrays.asList("Beck","Bobby","Harold"), results.getResults());
-        assertEquals(6l, results.getTotal());
-        
-        // unique Result
-        query().from(cat).limit(1).uniqueResult(cat.id);
-        
-        query().from(cat).limit(1).uniqueResult(new Expression[]{cat.id});
-        
-        // single Result
-        query().from(cat).singleResult(cat.id);
-        
-        query().from(cat).singleResult(new Expression[]{cat.id});
-
+    }
+    
+    @Test
+    public void List_With_Offset(){
+        assertEquals(3, query().from(cat).offset(3).list(cat.id).size());    
     }
 
+    @Test    
+    public void List_Limit_And_Offset(){
+        assertEquals(3, query().from(cat).offset(3).limit(3).list(cat.id).size());    
+    }
+    
+    @Test
+    public void List_Multiple(){
+        print(query().from(cat).where(cat.dtype.eq("C")).list(cat.id, cat.name, cat.bodyweight));    
+    }
+    
+    @Test
+    public void List_Results(){
+        SearchResults<String> results = query().from(cat).limit(3).orderBy(cat.name.asc()).listResults(cat.name);
+        assertEquals(Arrays.asList("Beck","Bobby","Harold"), results.getResults());
+        assertEquals(6l, results.getTotal());        
+    }
+    
+    @Test
+    public void Unique_Result(){
+        query().from(cat).limit(1).uniqueResult(cat.id);       
+    }
+    
+    @Test
+    public void Unique_Result_Multiple(){
+        query().from(cat).limit(1).uniqueResult(new Expression[]{cat.id});    
+    }
+
+    @Test
+    public void Single_Result(){
+        query().from(cat).singleResult(cat.id);    
+    }
+    
+    @Test
+    public void Single_Result_Multiple(){
+        query().from(cat).singleResult(new Expression[]{cat.id});    
+    }
+        
     @Test
     public void EntityQueries(){
         SAnimal cat = new SAnimal("cat");

@@ -17,12 +17,32 @@ public class CastTest extends AbstractQueryTest {
     private static NumberExpression<Integer> expr = new NumberPath<Integer>(Integer.class,"int");
 
     @Test
-    public void NumericCast() {
+    public void Byte() {
         assertEquals(Byte.class, expr.byteValue().getType());
+    }
+    
+    @Test
+    public void Double() {
         assertEquals(Double.class, expr.doubleValue().getType());
+    }
+    
+    @Test
+    public void Float() {
         assertEquals(Float.class, expr.floatValue().getType());
+    }
+    
+    @Test
+    public void Integer() {
         assertEquals(Integer.class, expr.intValue().getType());
+    }
+    
+    @Test
+    public void Long() {
         assertEquals(Long.class, expr.longValue().getType());
+    }
+    
+    @Test
+    public void Short() {
         assertEquals(Short.class, expr.shortValue().getType());
     }
 
