@@ -6,6 +6,7 @@
 package com.mysema.query.jpa;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.mysema.query.sql.SQLSerializer;
@@ -30,16 +31,33 @@ public final class HibernateSQLSerializer extends SQLSerializer{
 
     @Override
     public Void visit(Constant<?> expr, Void context) {
-        if (!getConstantToLabel().containsKey(expr.getConstant())) {
-            String constLabel = getConstantPrefix() + (getConstantToLabel().size() + 1);
-            getConstantToLabel().put(expr.getConstant(), constLabel);
-            append(":"+constLabel);
-        } else {
-            append(":"+getConstantToLabel().get(expr.getConstant()));
+        if (expr.getConstant() instanceof Collection<?>) {
+            append("(");
+            boolean first = true;
+            for (Object element : ((Collection<?>)expr.getConstant())) {
+                if (!first){
+                    append(", ");
+                }
+                visitConstant(element);
+                first = false;
+            }            
+            append(")");
+        }else {
+            visitConstant(expr.getConstant());    
         }
         return null;
     }
 
+    private void visitConstant(Object constant){
+        if (!getConstantToLabel().containsKey(constant)) {
+            String constLabel = getConstantPrefix() + (getConstantToLabel().size() + 1);
+            getConstantToLabel().put(constant, constLabel);
+            append(":"+constLabel);
+        } else {
+            append(":"+getConstantToLabel().get(constant));
+        }
+    }
+    
     @Override
     public Void visit(Path<?> path, Void context) {
         if (path.getMetadata().getParent() == null && !path.getType().equals(path.getClass())){

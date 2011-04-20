@@ -55,6 +55,11 @@ public class DerbySQLTest {
         session.save(new Cat("Tim",6));
         session.flush();
     }
+    
+    @Test
+    public void In(){
+        assertEquals(6l, query().from(cat).where(cat.dtype.in("C", "CX")).count());
+    }
 
     @Test
     public void Count(){
