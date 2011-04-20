@@ -62,6 +62,11 @@ public class DerbySQLTest {
     }
     
     @Test
+    public void Count_Via_Unique(){
+        assertEquals(Integer.valueOf(6), query().from(cat).where(cat.dtype.eq("C")).uniqueResult(cat.id.count()));
+    }
+    
+    @Test
     public void CountDistinct(){
         assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).countDistinct());
     }
