@@ -1,9 +1,4 @@
-/*
- * Copyright (c) 2010 Mysema Ltd.
- * All rights reserved.
- *
- */
-package com.mysema.query._hsqldb;
+package com.mysema.query._h2;
 
 import org.junit.Ignore;
 import org.junit.runner.RunWith;
@@ -15,15 +10,11 @@ import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.testutil.JPAConfig;
 import com.mysema.testutil.JPATestRunner;
 
-/**
- * @author tiwe
- *
- */
 @Ignore
 @RunWith(JPATestRunner.class)
-@JPAConfig("hsqldb-eclipselink")
-public class HSQLDBJPAEclipseLinkStandardTest extends AbstractJPATest{
-
+@JPAConfig("h2-openjpa")
+public class H2JPAOpenJPATest extends AbstractJPATest {
+    
     @Override
     protected JPQLTemplates getTemplates(){
         return EclipseLinkTemplates.DEFAULT;
@@ -31,7 +22,7 @@ public class HSQLDBJPAEclipseLinkStandardTest extends AbstractJPATest{
 
     @Override
     protected Target getTarget() {
-        return Target.HSQLDB;
+        return Target.H2;
     }
 
 }

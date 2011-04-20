@@ -29,10 +29,24 @@
         <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
         <property name="javax.persistence.jdbc.url" value="jdbc:derby:target/derbydb2;create=true"/>
   	    <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
-		<property name="eclipselink.ddl-generation.output-mode" value="database" />
-		
+		<property name="eclipselink.ddl-generation.output-mode" value="database" />		
       </properties>
     </persistence-unit>
+    
+  <persistence-unit name="derby-openjpa" transaction-type="RESOURCE_LOCAL">
+    <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:derby:target/derbydb2;create=true"/>
+	  <property name="openjpa.RuntimeUnenhancedClasses" value="supported"/>      
+      <!-- 
+  	  <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+	  <property name="eclipselink.ddl-generation.output-mode" value="database" />
+	   -->		
+    </properties>
+  </persistence-unit>
+    
  
   <persistence-unit name="hsqldb">
    <properties>
@@ -72,6 +86,21 @@
 		
       </properties>
     </persistence-unit>
+    
+	<persistence-unit name="h2-openjpa" transaction-type="RESOURCE_LOCAL">
+      <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+      <exclude-unlisted-classes>false</exclude-unlisted-classes>
+      <properties>
+        <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+        <property name="javax.persistence.jdbc.url" value="jdbc:h2:target/h2"/>
+		<property name="javax.persistence.jdbc.user" value="sa"/>
+		<property name="openjpa.RuntimeUnenhancedClasses" value="supported"/>
+		<!-- 
+  	    <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+		<property name="eclipselink.ddl-generation.output-mode" value="database" />
+		 -->
+      </properties>
+    </persistence-unit>    
 
   <persistence-unit name="mysql">
    <properties>

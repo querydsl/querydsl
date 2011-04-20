@@ -45,9 +45,7 @@ import com.mysema.query.QueryException;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.Param;
-import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 
@@ -58,21 +56,6 @@ import com.mysema.query.types.path.StringPath;
  *
  */
 public class LuceneQueryTest {
-
-    public class QDocument extends EntityPathBase<Document> {
-
-        private static final long serialVersionUID = -4872833626508344081L;
-
-        public QDocument(final String var) {
-            super(Document.class, PathMetadataFactory.forVariable(var));
-        }
-
-        public final NumberPath<Integer> year = createNumber("year",
-                Integer.class);
-        public final StringPath title = createString("title");
-        public final NumberPath<Double> gross = createNumber("gross",
-                Double.class);
-    }
 
     private LuceneQuery query;
     private StringPath title;

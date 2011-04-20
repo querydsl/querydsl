@@ -5,6 +5,7 @@
  */
 package com.mysema.query._h2;
 
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 
 import com.mysema.query.AbstractJPATest;
@@ -18,6 +19,7 @@ import com.mysema.testutil.JPATestRunner;
  * @author tiwe
  *
  */
+@Ignore
 @RunWith(JPATestRunner.class)
 @JPAConfig("h2-eclipselink")
 public class H2JPAEclipseLinkTest extends AbstractJPATest{
