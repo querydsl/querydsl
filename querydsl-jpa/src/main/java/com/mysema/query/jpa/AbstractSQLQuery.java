@@ -42,7 +42,8 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
 
     @Override
     public long count() {
-        return uniqueResult(Wildcard.countAsInt);
+        Number number = uniqueResult(Wildcard.countAsInt);
+        return number.longValue();
     }
 
     @Override

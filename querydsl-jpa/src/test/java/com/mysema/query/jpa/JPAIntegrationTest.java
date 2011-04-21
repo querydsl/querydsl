@@ -30,8 +30,10 @@ public class JPAIntegrationTest extends ParsingTest {
 
     private EntityManager entityManager;
 
+    @Override
     protected QueryHelper query() {
         return new QueryHelper() {
+            @Override
             public void parse() throws RecognitionException, TokenStreamException {
                 try {
                     System.out.println("query : " + toString().replace('\n', ' '));
@@ -57,12 +59,20 @@ public class JPAIntegrationTest extends ParsingTest {
     public void GroupBy() throws Exception {
         // NOTE : commented out, because HQLSDB doesn't support these queries
     }
+    
+    @Override
+    @Test
+    public void GroupBy_2() throws Exception {
+        // NOTE : commented out, because HQLSDB doesn't support these queries
+    }
 
+    @Override
     @Test
     public void OrderBy() throws Exception {
         // NOTE : commented out, because HQLSDB doesn't support these queries
     }
 
+    @Override
     @Test
     public void DocoExamples910() throws Exception {
         // NOTE : commented out, because HQLSDB doesn't support these queries

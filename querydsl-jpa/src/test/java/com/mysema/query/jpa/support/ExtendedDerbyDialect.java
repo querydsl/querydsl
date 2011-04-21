@@ -8,11 +8,12 @@ package com.mysema.query.jpa.support;
 import java.util.Arrays;
 import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.hibernate.dialect.DerbyDialect;
 import org.hibernate.dialect.function.CastFunction;
 import org.hibernate.dialect.function.VarArgsSQLFunction;
 import org.hibernate.engine.SessionFactoryImplementor;
+import org.hibernate.type.StandardBasicTypes;
+import org.hibernate.type.Type;
 
 /**
  * @author tiwe
@@ -21,18 +22,19 @@ import org.hibernate.engine.SessionFactoryImplementor;
 public class ExtendedDerbyDialect extends DerbyDialect{
 
     private static final CastFunction castFunction = new CastFunction(){
+        @Override
         @SuppressWarnings("unchecked")
-        public String render(List args, SessionFactoryImplementor factory) {
+        public String render(Type columnType, List args, SessionFactoryImplementor factory) {
             if (args.get(1).equals("string")){
-                return super.render(Arrays.<Object>asList("char("+args.get(0)+")",args.get(1)), factory);
+                return super.render(columnType, Arrays.<Object>asList("char("+args.get(0)+")",args.get(1)), factory);
             }else{
-                return super.render(args, factory);
+                return super.render(columnType, args, factory);
             }
         }
     };
 
     public ExtendedDerbyDialect(){
-        registerFunction( "concat", new VarArgsSQLFunction( Hibernate.STRING, "cast ((","||",") as varchar(128))" ) );
+        registerFunction( "concat", new VarArgsSQLFunction( StandardBasicTypes.STRING, "cast ((","||",") as varchar(128))" ) );
         registerFunction( "cast", castFunction );
     }
 

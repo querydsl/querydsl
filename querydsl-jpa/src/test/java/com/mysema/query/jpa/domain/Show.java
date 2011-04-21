@@ -10,17 +10,20 @@ import java.util.Map;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * The Class Show.
  */
 @Entity
+@Table(name="show_")
 public class Show {
-    @ElementCollection
-    public Map<String, String> acts;
 
     @Id
-    public int id;
+    long id;
+    
+    @ElementCollection
+    public Map<String, String> acts;
     
     public Show() {}
         

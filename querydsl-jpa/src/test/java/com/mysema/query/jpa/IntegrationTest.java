@@ -42,8 +42,10 @@ public class IntegrationTest extends ParsingTest {
 
     private Session session;
 
+    @Override
     protected QueryHelper query() {
         return new QueryHelper() {
+            @Override
             public void parse() throws RecognitionException, TokenStreamException {
                 try {
                     System.out.println("query : " + toString().replace('\n', ' '));
@@ -65,12 +67,20 @@ public class IntegrationTest extends ParsingTest {
     public void GroupBy() throws Exception {
         // NOTE : commented out, because HQLSDB doesn't support these queries
     }
+    
+    @Override
+    @Test
+    public void GroupBy_2() throws Exception {
+        // NOTE : commented out, because HQLSDB doesn't support these queries
+    }
 
+    @Override
     @Test
     public void OrderBy() throws Exception {
         // NOTE : commented out, because HQLSDB doesn't support these queries
     }
 
+    @Override
     @Test
     public void DocoExamples910() throws Exception {
         // NOTE : commented out, because HQLSDB doesn't support these queries

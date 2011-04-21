@@ -474,4 +474,10 @@ public abstract class AbstractStandardTest {
         query().from(show).where(subQuery().from(show2).where(show2.id.ne(show.id)).count().gt(0)).count();
     }
 
+    @Test
+    public void Count(){
+        QShow show = QShow.show;
+        assertTrue(query().from(show).count() > 0);
+    }
+    
 }

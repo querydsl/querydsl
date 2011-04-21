@@ -5,9 +5,9 @@
  */
 package com.mysema.query.jpa.support;
 
-import org.hibernate.Hibernate;
 import org.hibernate.dialect.HSQLDialect;
 import org.hibernate.dialect.function.SQLFunctionTemplate;
+import org.hibernate.type.StandardBasicTypes;
 
 /**
  * @author tiwe
@@ -16,6 +16,6 @@ import org.hibernate.dialect.function.SQLFunctionTemplate;
 public class ExtendedHSQLDialect extends HSQLDialect{
 
     public ExtendedHSQLDialect() {
-        registerFunction( "trim", new SQLFunctionTemplate( Hibernate.STRING, "trim(both from ?1)" ) );
+        registerFunction( "trim", new SQLFunctionTemplate( StandardBasicTypes.STRING, "trim(both from ?1)" ) );
     }
 }
