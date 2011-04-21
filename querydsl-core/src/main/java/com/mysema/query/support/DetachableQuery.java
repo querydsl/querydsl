@@ -58,13 +58,13 @@ public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q>
     }
 
     @Override
-    public BooleanExpression notExists(){
-        return detachableMixin.notExists();
+    public ListSubQuery<Object[]> list(Object... args) {
+        return detachableMixin.list(args);
     }
 
     @Override
-    public BooleanSubQuery unique(Predicate projection) {
-        return detachableMixin.unique(projection);
+    public BooleanExpression notExists(){
+        return detachableMixin.notExists();
     }
 
     @Override
@@ -83,7 +83,27 @@ public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q>
     }
 
     @Override
+    public SimpleSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+        return detachableMixin.unique(first, second, rest);
+    }
+
+    @Override
+    public SimpleSubQuery<Object[]> unique(Expression<?>[] args) {
+        return detachableMixin.unique(args);
+    }
+
+    @Override
+    public <RT> SimpleSubQuery<RT> unique(Expression<RT> projection) {
+        return detachableMixin.unique(projection);
+    }
+
+    @Override
     public <RT extends Number & Comparable<?>> NumberSubQuery<RT> unique(NumberExpression<RT> projection) {
+        return detachableMixin.unique(projection);
+    }
+
+    @Override
+    public BooleanSubQuery unique(Predicate projection) {
         return detachableMixin.unique(projection);
     }
 
@@ -98,18 +118,8 @@ public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q>
     }
 
     @Override
-    public SimpleSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, Expression<?>... rest) {
-        return detachableMixin.unique(first, second, rest);
-    }
-
-    @Override
-    public SimpleSubQuery<Object[]> unique(Expression<?>[] args) {
+    public SimpleSubQuery<Object[]> unique(Object... args) {
         return detachableMixin.unique(args);
-    }
-
-    @Override
-    public <RT> SimpleSubQuery<RT> unique(Expression<RT> projection) {
-        return detachableMixin.unique(projection);
     }
 
 }

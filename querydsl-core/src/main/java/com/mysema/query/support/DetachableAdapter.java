@@ -16,16 +16,7 @@ import com.mysema.query.types.expr.DateTimeExpression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.expr.TimeExpression;
-import com.mysema.query.types.query.BooleanSubQuery;
-import com.mysema.query.types.query.ComparableSubQuery;
-import com.mysema.query.types.query.DateSubQuery;
-import com.mysema.query.types.query.DateTimeSubQuery;
-import com.mysema.query.types.query.Detachable;
-import com.mysema.query.types.query.ListSubQuery;
-import com.mysema.query.types.query.NumberSubQuery;
-import com.mysema.query.types.query.SimpleSubQuery;
-import com.mysema.query.types.query.StringSubQuery;
-import com.mysema.query.types.query.TimeSubQuery;
+import com.mysema.query.types.query.*;
 
 /**
  * DetachableAdapter is an apadater implementation for the Detachable interface
@@ -68,12 +59,17 @@ public class DetachableAdapter implements Detachable{
         return detachable.list(projection);
     }
 
+    @Override
+    public ListSubQuery<Object[]> list(Object... args) {
+        return detachable.list(args);
+    }
+
     public BooleanExpression notExists() {
         return detachable.notExists();
     }
 
-    public BooleanSubQuery unique(Predicate projection) {
-        return detachable.unique(projection);
+    protected void setDetachable(Detachable detachable){
+        this.detachable = detachable;
     }
 
     public <RT extends Comparable<?>> ComparableSubQuery<RT> unique(ComparableExpression<RT> projection) {
@@ -88,18 +84,6 @@ public class DetachableAdapter implements Detachable{
         return detachable.unique(projection);
     }
 
-    public <RT extends Number & Comparable<?>> NumberSubQuery<RT> unique(NumberExpression<RT> projection) {
-        return detachable.unique(projection);
-    }
-
-    public StringSubQuery unique(StringExpression projection) {
-        return detachable.unique(projection);
-    }
-
-    public <RT extends Comparable<?>> TimeSubQuery<RT> unique(TimeExpression<RT> projection) {
-        return detachable.unique(projection);
-    }
-
     public SimpleSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return detachable.unique(first, second, rest);
     }
@@ -111,9 +95,26 @@ public class DetachableAdapter implements Detachable{
     public <RT> SimpleSubQuery<RT> unique(Expression<RT> projection) {
         return detachable.unique(projection);
     }
+
+    public <RT extends Number & Comparable<?>> NumberSubQuery<RT> unique(NumberExpression<RT> projection) {
+        return detachable.unique(projection);
+    }
+
+    public BooleanSubQuery unique(Predicate projection) {
+        return detachable.unique(projection);
+    }
     
-    protected void setDetachable(Detachable detachable){
-        this.detachable = detachable;
+    public StringSubQuery unique(StringExpression projection) {
+        return detachable.unique(projection);
+    }
+
+    public <RT extends Comparable<?>> TimeSubQuery<RT> unique(TimeExpression<RT> projection) {
+        return detachable.unique(projection);
+    }
+
+    @Override
+    public SimpleSubQuery<Object[]> unique(Object... args) {
+        return detachable.unique(args);
     }
 
 }

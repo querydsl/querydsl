@@ -7,6 +7,7 @@ package com.mysema.query.support;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -63,13 +64,44 @@ public class DetachableMixin implements Detachable{
     }
 
     @Override
+    public ListSubQuery<Object[]> list(Object... args) {
+        return list(convert(args));
+    }
+    
+    @Override
+    public SimpleSubQuery<Object[]> unique(Object... args) {
+        return unique(convert(args));
+    }
+
+    private Expression<?>[] convert(Object... args) {
+        Expression<?>[] exprs = new Expression[args.length];
+        for (int i = 0; i < exprs.length; i++){
+            exprs[i] = args[i] instanceof Expression<?> ? (Expression<?>)args[i] : new ConstantImpl<Object>(args[i]);
+        }
+        return exprs;
+    }
+
+    @Override
     public BooleanExpression notExists(){
         return exists().not();
     }
 
-    @Override
-    public BooleanSubQuery unique(Predicate projection) {
-        return new BooleanSubQuery(uniqueProjection(projection));
+    private QueryMetadata projection(Expression<?>... projection){
+        QueryMetadata metadata = queryMixin.getMetadata().clone();
+        for (Expression<?> expr : projection){
+            metadata.addProjection(expr);    
+        }
+        return metadata;        
+    }
+
+    private QueryMetadata projection(Expression<?> first, Expression<?> second, Expression<?>[] rest) {
+        QueryMetadata metadata = queryMixin.getMetadata().clone();
+        metadata.addProjection(first);    
+        metadata.addProjection(second);    
+        for (Expression<?> expr : rest){
+            metadata.addProjection(expr);    
+        }
+        return metadata;   
     }
 
     @SuppressWarnings("unchecked")
@@ -90,64 +122,51 @@ public class DetachableMixin implements Detachable{
         return new DateTimeSubQuery<RT>((Class)projection.getType(), uniqueProjection(projection));
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public <RT extends Number & Comparable<?>> NumberSubQuery<RT> unique(NumberExpression<RT> projection) {
-        return new NumberSubQuery<RT>((Class)projection.getType(), uniqueProjection(projection));
-    }
-
-    @Override
-    public StringSubQuery unique(StringExpression projection) {
-        return new StringSubQuery(uniqueProjection(projection));
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <RT extends Comparable<?>> TimeSubQuery<RT> unique(TimeExpression<RT> projection) {
-        return new TimeSubQuery<RT>((Class)projection.getType(), uniqueProjection(projection));
-    }
-
     @Override
     public SimpleSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return new SimpleSubQuery<Object[]>(Object[].class, uniqueProjection(first, second, rest));
     }
-
 
     @Override
     public SimpleSubQuery<Object[]> unique(Expression<?>[] args) {
         return new SimpleSubQuery<Object[]>(Object[].class, uniqueProjection(args));
     }
 
+
     @SuppressWarnings("unchecked")
     @Override
     public <RT> SimpleSubQuery<RT> unique(Expression<RT> projection) {
         return new SimpleSubQuery<RT>((Class)projection.getType(), uniqueProjection(projection));
     }
-    
-    private QueryMetadata projection(Expression<?>... projection){
-        QueryMetadata metadata = queryMixin.getMetadata().clone();
-        for (Expression<?> expr : projection){
-            metadata.addProjection(expr);    
-        }
-        return metadata;        
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public <RT extends Number & Comparable<?>> NumberSubQuery<RT> unique(NumberExpression<RT> projection) {
+        return new NumberSubQuery<RT>((Class)projection.getType(), uniqueProjection(projection));
     }
     
-    private QueryMetadata projection(Expression<?> first, Expression<?> second, Expression<?>[] rest) {
-        QueryMetadata metadata = queryMixin.getMetadata().clone();
-        metadata.addProjection(first);    
-        metadata.addProjection(second);    
-        for (Expression<?> expr : rest){
-            metadata.addProjection(expr);    
-        }
-        return metadata;   
+    @Override
+    public BooleanSubQuery unique(Predicate projection) {
+        return new BooleanSubQuery(uniqueProjection(projection));
     }
     
+    @Override
+    public StringSubQuery unique(StringExpression projection) {
+        return new StringSubQuery(uniqueProjection(projection));
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public <RT extends Comparable<?>> TimeSubQuery<RT> unique(TimeExpression<RT> projection) {
+        return new TimeSubQuery<RT>((Class)projection.getType(), uniqueProjection(projection));
+    }
+    
+
     private QueryMetadata uniqueProjection(Expression<?>... projection){
         QueryMetadata metadata = projection(projection);
         metadata.setUnique(true);
         return metadata;
     }
-    
 
     private QueryMetadata uniqueProjection(Expression<?> first, Expression<?> second, Expression<?>[] rest) {
         QueryMetadata metadata = projection(first, second, rest);

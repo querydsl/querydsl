@@ -55,6 +55,15 @@ public interface Detachable {
      * @return
      */
     ListSubQuery<Object[]> list(Expression<?>[] args);
+    
+    /**
+     * Create a projection expression for the given projection
+     * Non expression arguments are converted into constant expressions
+     * 
+     * @param args
+     * @return
+     */
+    ListSubQuery<Object[]> list(Object... args);
 
     /**
      * Create a projection expression for the given projection
@@ -65,6 +74,7 @@ public interface Detachable {
      * @return a List over the projection
      */
     <RT> ListSubQuery<RT> list(Expression<RT> projection);
+    
 
     /**
      * Create an not exists(this) expression
@@ -90,6 +100,15 @@ public interface Detachable {
      * @return
      */
     SimpleSubQuery<Object[]> unique(Expression<?>[] args);
+    
+    /**
+     * Create a projection expression for the given projection
+     * Non expression arguments are converted into constant expressions
+     * 
+     * @param args
+     * @return
+     */
+    SimpleSubQuery<Object[]> unique(Object... args);
 
     /**
      * Create a subquery expression for the given projection
