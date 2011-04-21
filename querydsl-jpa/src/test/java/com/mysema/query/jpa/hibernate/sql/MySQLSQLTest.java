@@ -2,6 +2,7 @@ package com.mysema.query.jpa.hibernate.sql;
 
 import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -11,6 +12,7 @@ import com.mysema.query.types.path.NumberPath;
 import com.mysema.testutil.HibernateConfig;
 import com.mysema.testutil.HibernateTestRunner;
 
+@Ignore
 @RunWith(HibernateTestRunner.class)
 @HibernateConfig("mysql.properties")
 public class MySQLSQLTest extends AbstractSQLTest {
