@@ -71,15 +71,31 @@ public class SubQueryTest extends AbstractQueryTest{
     @Test
     public void Exists(){
         assertToString("exists (select 1 from Cat cat)",                        sub().from(cat).exists());
+    }
+    
+    @Test
+    public void Exists_Where(){
         assertToString("exists (select 1 from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).exists());
+    }
+    
+    @Test
+    public void Exists_Via_Unique(){
         assertToString("exists (select 1 from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).unique(cat).exists());
     }
     
     @Test
     public void NotExists(){
-        assertToString("not exists (select 1 from Cat cat)",                        sub().from(cat).notExists());
-        assertToString("not exists (select 1 from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).notExists());
-        assertToString("not exists (select 1 from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).unique(cat).notExists());
+        assertToString("not exists (select 1 from Cat cat)",                        sub().from(cat).notExists());            
+    }
+    
+    @Test
+    public void NotExists_Where(){
+        assertToString("not exists (select 1 from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).notExists());    
+    }
+    
+    @Test
+    public void NotExists_Via_Unique(){
+        assertToString("not exists (select 1 from Cat cat where cat.weight < :a1)", sub().from(cat).where(cat.weight.lt(1)).unique(cat).notExists());   
     }
 
     @Test

@@ -264,14 +264,30 @@ public abstract class AbstractStandardTest {
     @Test
     public void StartsWith(){
         assertEquals(1, catQuery().where(cat.name.startsWith("R")).count());
+    }
+    
+    @Test
+    public void StartsWith2(){
         assertEquals(0, catQuery().where(cat.name.startsWith("X")).count());
+    }
+    
+    @Test
+    public void StartsWith_IgnoreCase(){
         assertEquals(1, catQuery().where(cat.name.startsWithIgnoreCase("r")).count());
     }
 
     @Test
     public void EndsWith(){
         assertEquals(1, catQuery().where(cat.name.endsWith("h123")).count());
+    }
+    
+    @Test
+    public void EndsWith2(){
         assertEquals(0, catQuery().where(cat.name.endsWith("X")).count());
+    }
+    
+    @Test
+    public void EndsWith_IgnoreCase(){
         assertEquals(1, catQuery().where(cat.name.endsWithIgnoreCase("H123")).count());
     }
 
@@ -293,6 +309,10 @@ public abstract class AbstractStandardTest {
     @Test
     public void IndexOf(){
         assertEquals(Integer.valueOf(0), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("B")));
+    }
+    
+    @Test
+    public void IndexOf2(){
         assertEquals(Integer.valueOf(1), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("o")));
     }
 
@@ -329,8 +349,12 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    public void InstanceOf(){
+    public void InstanceOf_Cat(){
         assertEquals(6l, query().from(cat).where(cat.instanceOf(Cat.class)).count());
+    }
+    
+    @Test
+    public void InstanceOf_DomensticCat(){
         assertEquals(0l, query().from(cat).where(cat.instanceOf(DomesticCat.class)).count());
     }
 
@@ -411,15 +435,35 @@ public abstract class AbstractStandardTest {
     public void Map_ContainsKey(){
         QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsKey("a")).count());
-        assertEquals(1l, query().from(show).where(show.acts.containsKey("b")).count());
-        assertEquals(0l, query().from(show).where(show.acts.containsKey("c")).count());
     }
 
+    @Test
+    public void Map_ContainsKey2(){
+        QShow show = QShow.show;
+        assertEquals(1l, query().from(show).where(show.acts.containsKey("b")).count());
+    }
+    
+    @Test
+    public void Map_ContainsKey3(){
+        QShow show = QShow.show;
+        assertEquals(0l, query().from(show).where(show.acts.containsKey("c")).count());
+    }
+    
     @Test
     public void Map_ContainsValue(){
         QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsValue("A")).count());
+    }
+    
+    @Test
+    public void Map_ContainsValue2(){
+        QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsValue("B")).count());
+    }
+    
+    @Test
+    public void Map_ContainsValue3(){
+        QShow show = QShow.show;
         assertEquals(0l, query().from(show).where(show.acts.containsValue("C")).count());
     }
     

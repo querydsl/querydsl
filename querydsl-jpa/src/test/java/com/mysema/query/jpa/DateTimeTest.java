@@ -14,13 +14,27 @@ import com.mysema.query.types.expr.TimeExpression;
 public class DateTimeTest extends AbstractQueryTest {
 
     @Test
-    public void DateOperations() {
-        // current_date(), current_time(), current_timestamp()
+    public void CurrentDate() {
         assertToString("current_date()", DateExpression.currentDate());
+    }
+    
+    @Test
+    public void CurrentDate2(){
         assertToString("current_date()", DateTimeExpression.currentDate());
-        assertToString("current_time()", TimeExpression.currentTime());
+    }
+    
+    @Test
+    public void CurrentTime(){
+        assertToString("current_time()", TimeExpression.currentTime());   
+    }
+    
+    @Test
+    public void CurrentTimestamp(){
         assertToString("current_timestamp()", DateTimeExpression.currentTimestamp());
-        // second(...), minute(...), hour(...), day(...), month(...), year(...),
+    }
+    
+    @Test
+    public void DateOperations2() {
         catalog.effectiveDate.second();
         catalog.effectiveDate.minute();
         catalog.effectiveDate.hour();

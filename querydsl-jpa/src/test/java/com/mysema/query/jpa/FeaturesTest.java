@@ -33,7 +33,10 @@ public class FeaturesTest extends AbstractQueryTest {
         QInheritedProperties i = new QInheritedProperties("i");
         assertNotNull(i.superclassProperty);
         assertNotNull(i.classProperty);
-
+    }
+    
+    @Test
+    public void DomainConstruction2() {
         QAccount a = new QAccount("a");
         assertNotNull(a.embeddedData.someData);
     }
@@ -41,7 +44,15 @@ public class FeaturesTest extends AbstractQueryTest {
     @Test
     public void BasicStructure() {
         assertNull(cat.getMetadata().getParent());
-        assertEquals(cat, cat.alive.getMetadata().getParent());
+    }
+    
+    @Test
+    public void BasicStructure2() {
+        assertEquals(cat, cat.alive.getMetadata().getParent());        
+    }
+    
+    @Test
+    public void BasicStructure3() {
         assertEquals("cat", cat.getMetadata().getExpression().toString());
     }
 
@@ -56,16 +67,27 @@ public class FeaturesTest extends AbstractQueryTest {
     @Test
     public void BasicOperations() {
         assertToString("cat.bodyWeight = kitten.bodyWeight", cat.bodyWeight.eq(kitten.bodyWeight));
+    }
+    
+    @Test
+    public void BasicOperations2() {
         assertToString("cat.bodyWeight <> kitten.bodyWeight", cat.bodyWeight.ne(kitten.bodyWeight));
-
+    }
+    
+    @Test
+    public void BasicOperations3() {
         assertToString(
                 "cat.bodyWeight + kitten.bodyWeight = kitten.bodyWeight",
-                cat.bodyWeight.add(kitten.bodyWeight).eq(kitten.bodyWeight));
+                cat.bodyWeight.add(kitten.bodyWeight).eq(kitten.bodyWeight));   
     }
 
     @Test
     public void EqualsAndNotEqualsForAllExpressions() {
-        assertToString("cat.name = cust.name.firstName", cat.name.eq(cust.name.firstName));
+        assertToString("cat.name = cust.name.firstName", cat.name.eq(cust.name.firstName));        
+    }
+    
+    @Test
+    public void EqualsAndNotEqualsForAllExpressions2() {
         assertToString("cat.name <> cust.name.firstName", cat.name.ne(cust.name.firstName));
     }
 

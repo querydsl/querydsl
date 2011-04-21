@@ -43,8 +43,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
-    public void BeforeAndAfter() throws RecognitionException,
-            TokenStreamException {
+    public void BeforeAndAfter() throws RecognitionException, TokenStreamException {
 
         ComparableExpression<java.util.Date> ed = catalog.effectiveDate;
         query().from(catalog).where(ed.gt(DateExpression.currentDate()), ed.goe(DateExpression.currentDate()),
@@ -88,24 +87,36 @@ public class ParsingTest extends AbstractQueryTest{
         query().from(fatcat).where(
                 fatcat.weight.gt(sub().from(cat).unique(cat.weight.avg())))
                 .parse();
+    }
 
+    @Test
+    public void DocoExamples911_2() throws Exception {
         query().from(cat).where(
                 cat.name.eq(some(sub().from(name).list(name.nickName))))
                 .parse();
-
+    }
+    
+    @Test
+    public void DocoExamples911_3() throws Exception {
         query().from(cat).where(
                 sub().from(mate).where(mate.mate.eq(cat)).list(mate).notExists())
                 .parse();
-
+    }
+    
+    @Test
+    public void DocoExamples911_4() throws Exception {
         query().from(cat).where(
                 sub().from(mate).where(mate.mate.eq(cat)).exists())
                 .parse();
-
+    }
+    
+    @Test
+    public void DocoExamples911_5() throws Exception {
         query().from(cat).where(
                 cat.name.notIn(sub().from(name).list(name.nickName)))
                 .parse();
     }
-
+    
     @Test
     public void DocoExamples912() throws Exception {
         query().from(ord, cust)
@@ -139,25 +150,35 @@ public class ParsingTest extends AbstractQueryTest{
     @Test
     public void DocoExamples92() throws Exception {
         query().from(cat).parse();
-
+    }
+    
+    @Test
+    public void DocoExamples92_2() throws Exception {
         query().from(cat).parse();
-
-        query().from(cat).parse();
-
-        query().from(form, param).parse();
-
+    }
+    
+    @Test
+    public void DocoExamples92_3() throws Exception {
         query().from(form, param).parse();
     }
-
+    
     @Test
     public void DocoExamples93() throws Exception {
-
         query().from(cat).innerJoin(cat.mate, mate).leftJoin(cat.kittens, kitten).parse();
-
-        query().from(cat).leftJoin(cat.mate.kittens, kitten).parse();
-
-        query().from(cat).join(cat.mate, mate).leftJoin(cat.kittens, kitten).parse();
-
+    }
+    
+    @Test
+    public void DocoExamples93_2() throws Exception {
+        query().from(cat).leftJoin(cat.mate.kittens, kitten).parse();                
+    }
+    
+    @Test
+    public void DocoExamples93_3() throws Exception {
+        query().from(cat).join(cat.mate, mate).leftJoin(cat.kittens, kitten).parse();        
+    }
+    
+    @Test
+    public void DocoExamples93_4() throws Exception {
         query().from(cat).innerJoin(cat.mate, mate).leftJoin(cat.kittens, kitten).parse();
     }
 
@@ -168,33 +189,68 @@ public class ParsingTest extends AbstractQueryTest{
         Cat m = alias(Cat.class, "mate");
 
         query().from($(c)).innerJoin($(c.getMate()),$(m)).leftJoin($(c.getKittens()),$(k)).parse();
-
+    }
+    
+    @Test
+    public void DocoExamples93_viaAlias2() throws Exception {
+        Cat c = alias(Cat.class, "cat");
+        Cat k = alias(Cat.class, "kittens");
+        
         query().from($(c)).leftJoin($(c.getMate().getKittens()),$(k)).parse();
-
-        query().from($(c)).innerJoin($(c.getMate()),$(m)).leftJoin($(c.getKittens()),$(k)).parse();
-
+    }
+    
+    @Test
+    public void DocoExamples93_viaAlias3() throws Exception {
+        Cat c = alias(Cat.class, "cat");
+        Cat k = alias(Cat.class, "kittens");
+        Cat m = alias(Cat.class, "mate");
+     
         query().from($(c)).innerJoin($(c.getMate()),$(m)).leftJoin($(c.getKittens()),$(k)).parse();
     }
+    
+    @Test
+    public void DocoExamples93_viaAlias4() throws Exception {
+        Cat c = alias(Cat.class, "cat");
+        Cat k = alias(Cat.class, "kittens");
+        Cat m = alias(Cat.class, "mate");
+        
+        query().from($(c)).innerJoin($(c.getMate()),$(m)).leftJoin($(c.getKittens()),$(k)).parse();        
+    }    
 
     @Test
     public void DocoExamples94() throws Exception {
         query().from(cat).innerJoin(cat.mate, mate).select(cat.mate).parse();
-
+    }
+    
+    @Test
+    public void DocoExamples94_2() throws Exception {
         query().from(cat).select(cat.mate).parse();
-
+    }
+    
+    @Test
+    public void DocoExamples94_3() throws Exception {
         query().from(cat).select(cat.kittens).parse();
-
+    }
+    
+    @Test
+    public void DocoExamples94_4() throws Exception {
         query().from(cust).select(cust.name.firstName).parse();
-
+    }
+    
+    @Test
+    public void DocoExamples94_5() throws Exception {
         query().from(mother)
-            .innerJoin(mother.mate, mate)
-            .leftJoin(mother.kittens, offspr)
-            .select(mother, offspr, mate).parse();
-
+        .innerJoin(mother.mate, mate)
+        .leftJoin(mother.kittens, offspr)
+        .select(mother, offspr, mate).parse();
+    }
+    
+    @Test
+    public void DocoExamples94_6() throws Exception {
         query().from(mother)
-            .innerJoin(mother.mate, mate)
-            .leftJoin(mother.kittens, kitten)
-            .select(new QFamily(mother, mate, kitten)).parse();
+        .innerJoin(mother.mate, mate)
+        .leftJoin(mother.kittens, kitten)
+        .select(new QFamily(mother, mate, kitten)).parse();
     }
 
     @Test
@@ -207,32 +263,63 @@ public class ParsingTest extends AbstractQueryTest{
     @Test
     public void DocoExamples96() throws Exception {
         query().from(cat).parse();
-
+    }
+    
+    @Test
+    public void DocoExamples96_2() throws Exception {
         query().from(m, n).where(n.name.eq(m.name)).parse();
     }
 
     @Test
     public void DocoExamples97() throws Exception {
         query().from(foo, bar).where(foo.startDate.eq(bar.date)).select(foo).parse();
-
+    }
+    
+    @Test
+    public void DocoExamples97_2() throws Exception {
         query().from(cat).where(cat.mate.name.isNotNull()).parse();
-
+    }
+    
+    @Test
+    public void DocoExamples97_3() throws Exception {
         query().from(cat, rival).where(cat.mate.eq(rival.mate)).parse();
-
+    }
+    
+    @Test
+    public void DocoExamples97_4() throws Exception {
         query().from(cat, mate).where(cat.mate.eq(mate)).select(cat, mate).parse();
-
+    }
+    
+    @Test
+    public void DocoExamples97_5() throws Exception {
         query().from(cat).where(cat.id.eq(123)).parse();
-
+    }
+    
+    @Test
+    public void DocoExamples97_6() throws Exception {
         query().from(cat).where(cat.mate.id.eq(69)).parse();
-
+    }
+    
+    @Test
+    public void DocoExamples97_7() throws Exception {
         query().from(person).where(
                 person.pid.country.eq("AU").and(
                         person.pid.medicareNumber.eq(123456))).parse();
-
+    }
+    
+    @Test
+    public void DocoExamples97_8() throws Exception {
         query().from(account).where(account.owner.pid.medicareNumber.eq(123456)).parse();
-
+    }
+    
+    @Test
+    public void DocoExamples97_9() throws Exception {
         query().from(cat).where(cat.instanceOf(DomesticCat.class)).parse();
 
+    }
+    
+    @Test
+    public void DocoExamples97_10() throws Exception {
         query().from(log, payment).where(
                 log.item.instanceOf(Payment.class),
                 log.item.id.eq(payment.id)).parse();
@@ -332,9 +419,15 @@ public class ParsingTest extends AbstractQueryTest{
     @Test
     public void joins() throws RecognitionException, TokenStreamException{
         query().from(cat).join(cat.mate).select(cat).parse();
-
+    }
+    
+    @Test
+    public void InnerJoin() throws RecognitionException, TokenStreamException{
         query().from(cat).innerJoin(cat.mate).select(cat).parse();
+    }
 
+    @Test
+    public void LeftJoin()  throws RecognitionException, TokenStreamException{
         query().from(cat).leftJoin(cat.mate).select(cat).parse();
     }
     
@@ -366,39 +459,73 @@ public class ParsingTest extends AbstractQueryTest{
                 bw.intValue(), bw.longValue(), bw.shortValue(),
                 bw.stringValue()).parse();
 
-        query().from(cat).select(bw.castToNum(Byte.class)).parse();
+     
+    }
+    
+    @Test
+    public void Casts_2() throws Exception {
+        NumberExpression<Double> bw = cat.bodyWeight;
+        query().from(cat).select(bw.castToNum(Byte.class)).parse();   
     }
 
     @Test
     public void GroupBy() throws Exception {
         query().from(qat).groupBy(qat.breed).parse();
-
-        query().from(qat).groupBy(qat.breed, qat.eyecolor).parse();
+    }
+    
+    @Test
+    public void GroupBy_2() throws Exception {
+        query().from(qat).groupBy(qat.breed, qat.eyecolor).parse();   
     }
 
     @Test
     public void Not() throws Exception {
         query().from(cat).where(cat.kittens.size().lt(1).not()).parse();
-
-        query().from(cat).where(cat.kittens.size().gt(1).not()).parse();
-
+    }
+    
+    @Test
+    public void Not_2() throws Exception {
+        query().from(cat).where(cat.kittens.size().gt(1).not()).parse();   
+    }
+    
+    @Test
+    public void Not_3() throws Exception {
         query().from(cat).where(cat.kittens.size().goe(1).not()).parse();
-
+    }
+    
+    @Test
+    public void Not_4() throws Exception {
         query().from(cat).where(cat.kittens.size().loe(1).not()).parse();
-
+    }
+    
+    @Test
+    public void Not_5() throws Exception {
         query().from(cat).where(cat.name.between("A", "B").not()).parse();
-
+    }
+    
+    @Test
+    public void Not_6() throws Exception {
         query().from(cat).where(cat.name.notBetween("A", "B").not()).parse();
-
+    }
+    
+    @Test
+    public void Not_7() throws Exception {
         query().from(cat).where(cat.kittens.size().loe(1).not().not()).parse();
-
+    }
+    
+    @Test
+    public void Not_8() throws Exception {
         query().from(cat).where(cat.kittens.size().loe(1).not().not().not()).parse();
     }
 
+        
     @Test
     public void OrderBy() throws Exception {
         query().from(qat).orderBy(qat.toes.avg().asc()).parse();
-
+    }
+   
+    @Test
+    public void OrderBy_2() throws Exception {
         query().from(an).orderBy(an.bodyWeight.sqrt().divide(2.0).asc()).parse();
     }
 
@@ -413,12 +540,6 @@ public class ParsingTest extends AbstractQueryTest{
     public void Sum() throws RecognitionException, TokenStreamException {
         query().from(cat).select(sum(cat.kittens.size())).parse();
 
-        query().from(cat).where(sum(cat.kittens.size()).gt(0)).select(cat).parse();
-
-        query().from(cat).where(cat.kittens.isEmpty()).select(cat).parse();
-
-        query().from(cat).where(cat.kittens.isNotEmpty()).select(cat).parse();
-
 //        query().from(cat)
 //         .groupBy(cat.name)
 //         .having(sum(cat.bodyWeight).gt(0))
@@ -426,16 +547,42 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
+    public void Sum_2() throws RecognitionException, TokenStreamException {
+        query().from(cat).where(sum(cat.kittens.size()).gt(0)).select(cat).parse();
+    }
+    
+    @Test
+    public void Sum_3() throws RecognitionException, TokenStreamException {
+        query().from(cat).where(cat.kittens.isEmpty()).select(cat).parse();
+    }
+    
+    @Test
+    public void Sum_4() throws RecognitionException, TokenStreamException {
+        query().from(cat).where(cat.kittens.isNotEmpty()).select(cat).parse();
+    }
+    
+    @Test
     public void Where() throws Exception {
-
         query().from(qat).where(qat.name.in("crater", "bean", "fluffy")).parse();
-
+    }
+    
+    @Test
+    public void Where_2() throws Exception {
         query().from(qat).where(qat.name.notIn("crater", "bean", "fluffy")).parse();
-
+    }
+    
+    @Test
+    public void Where_3() throws Exception {
         query().from(an).where(an.bodyWeight.sqrt().gt(10.0)).parse();
-
+    }
+    
+    @Test
+    public void Where_4() throws Exception {
         query().from(an).where(an.bodyWeight.sqrt().divide(2d).gt(10.0)).parse();
-
+    }
+    
+    @Test
+    public void Where_5() throws Exception {
         query().from(an).where(
                 an.bodyWeight.gt(10).and(
                         an.bodyWeight.lt(100).or(an.bodyWeight.isNull())))

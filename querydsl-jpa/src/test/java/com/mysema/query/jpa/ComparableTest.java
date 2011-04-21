@@ -10,15 +10,36 @@ import org.junit.Test;
 public class ComparableTest extends AbstractQueryTest{
 
     @Test
-    public void BinaryComparisonOperations() {
-        // binary comparison operators =, >=, <=, <>, !=, like
+    public void Eq() {
         assertToString("cat.bodyWeight = kitten.bodyWeight",  cat.bodyWeight.eq(kitten.bodyWeight));
-        assertToString("cat.bodyWeight >= kitten.bodyWeight", cat.bodyWeight.goe(kitten.bodyWeight));
-        assertToString("cat.bodyWeight > kitten.bodyWeight",  cat.bodyWeight.gt(kitten.bodyWeight));
-        assertToString("cat.bodyWeight <= kitten.bodyWeight", cat.bodyWeight.loe(kitten.bodyWeight));
-        assertToString("cat.bodyWeight < kitten.bodyWeight",  cat.bodyWeight.lt(kitten.bodyWeight));
-        assertToString("cat.bodyWeight <> kitten.bodyWeight", cat.bodyWeight.ne(kitten.bodyWeight));
-//        toString("cat.name like :a1", cat.name.like("Kitty"));
     }
+    
+    @Test
+    public void Goe() {
+        assertToString("cat.bodyWeight >= kitten.bodyWeight", cat.bodyWeight.goe(kitten.bodyWeight));
+    }
+    
+    @Test
+    public void Gt() {
+        assertToString("cat.bodyWeight > kitten.bodyWeight",  cat.bodyWeight.gt(kitten.bodyWeight));
+    }
+    
+    @Test
+    public void Loe() {
+        assertToString("cat.bodyWeight <= kitten.bodyWeight", cat.bodyWeight.loe(kitten.bodyWeight));
+    }
+    
+    @Test
+    public void Lt() {
+        assertToString("cat.bodyWeight < kitten.bodyWeight",  cat.bodyWeight.lt(kitten.bodyWeight));
+    }
+    
+    @Test
+    public void Ne() {
+        assertToString("cat.bodyWeight <> kitten.bodyWeight", cat.bodyWeight.ne(kitten.bodyWeight));
+    }
+
+
+
 
 }

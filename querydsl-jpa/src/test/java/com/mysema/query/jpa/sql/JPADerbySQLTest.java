@@ -35,7 +35,7 @@ import com.mysema.testutil.JPATestRunner;
 @JPAConfig("derby")
 public class JPADerbySQLTest {
 
-    private SAnimal cat = new SAnimal("cat");
+    private final SAnimal cat = new SAnimal("cat");
     
     private static final SQLTemplates derbyTemplates = new DerbyTemplates();
 
@@ -58,6 +58,11 @@ public class JPADerbySQLTest {
         entityManager.persist(new Cat("Harold",5));
         entityManager.persist(new Cat("Tim",6));
         entityManager.flush();
+    }
+    
+    @Test
+    public void In(){
+        assertEquals(6l, query().from(cat).where(cat.dtype.in("C", "CX")).count());
     }
 
     @Test

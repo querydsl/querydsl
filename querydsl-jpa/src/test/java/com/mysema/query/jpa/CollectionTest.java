@@ -12,14 +12,22 @@ import com.mysema.query.jpa.domain.Cat;
 public class CollectionTest extends AbstractQueryTest{
 
     @Test
-    public void Constant_InElements(){
+    public void Constant_InElements_Set(){
         assertToString(":a1 in elements(cat.kittensSet)", cat.kittensSet.contains(new Cat()));
+    }
+    
+    @Test
+    public void Constant_InElements_List(){
         assertToString(":a1 in elements(cat.kittens)", cat.kittens.contains(new Cat()));
     }
 
     @Test
-    public void Path_InElements(){
+    public void Path_InElements_List(){
         assertToString("cat in elements(cat1.kittens)", cat.in(cat1.kittens));
+    }
+    
+    @Test
+    public void Path_InElements_Set(){
         assertToString("cat in elements(cat1.kittensSet)", cat.in(cat1.kittensSet));
     }
 

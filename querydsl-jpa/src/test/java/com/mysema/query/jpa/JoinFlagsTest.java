@@ -15,7 +15,10 @@ public class JoinFlagsTest extends AbstractQueryTest{
     public void FetchAll(){
         QueryHelper query1 = query().from(cat).fetchAll().where(cat.name.isNotNull());
         assertEquals("from Cat cat fetch all properties\nwhere cat.name is not null", query1.toString());
-
+    }
+    
+    @Test
+    public void FetchAll2(){
         QueryHelper query2 = query().from(cat).fetchAll().from(cat1).fetchAll();
         assertEquals("from Cat cat fetch all properties, Cat cat1 fetch all properties", query2.toString());
     }
