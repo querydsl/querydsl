@@ -5,9 +5,9 @@ import scala.collection.mutable.ListBuffer
 import org.junit.{ Test, Before, After, Ignore };
 import org.junit.Assert._;
 
-@Ignore
 class PlanetTest {
-    
+
+  @Ignore   
   @Test
   def Enum_valueOf {
     assertEquals(Planet.MERCURY, Enum.valueOf(classOf[Planet], "MERCURY"))
@@ -19,7 +19,7 @@ class PlanetTest {
   def Enum_ordinal {
     assertEquals(0, Planet.MERCURY.ordinal)  
     assertEquals(1, Planet.VENUS.ordinal)  
-    assertEquals(2, Planet.PLUTO.ordinal)
+    assertEquals(8, Planet.PLUTO.ordinal)
   }
   
   @Test
@@ -41,7 +41,7 @@ object Planet extends Enums[Planet]{
   val URANUS = create(8.686e+25, 2.5559e7)
   val NEPTUNE = create(1.024e+26, 2.4746e7)
   val PLUTO = create(1.27e+22,  1.137e6)
-  val values = getValues
+  def values() = getValues
 }
 
 class Planet(n: String, o: Int, val mass: Double, val radius: Double) extends Enum[Planet](n, o) { 
@@ -50,19 +50,20 @@ class Planet(n: String, o: Int, val mass: Double, val radius: Double) extends En
   def surfaceWeight(otherMass: Double) = otherMass * surfaceGravity      
 }
 
-class Enums[T <: Enum[T]](implicit val t: Manifest[T]) {
-   private var i = 0
-   private val enumType: Class[T] = t.erasure.asInstanceOf[Class[T]]
-   private val enumConstructor = enumType.getConstructors()(0)
-   private val enumNames = enumType.getDeclaredFields filter {_.getType eq enumType} map {_.getName}
-   private val enums = new ListBuffer[T]()
-   
-   def create(a: Any*): T = {
-     val enum = enumConstructor.newInstance((enumNames(i) :: i :: a :: Nil) toArray).asInstanceOf[T]
-     i = i+1
-     enums += enum     
-     enum 
-   }
+class Enums[T <: Enum[T]](implicit val m: scala.reflect.Manifest[T]) {
+  private var i = 0
+  private val enumType: Class[T] = m.erasure.asInstanceOf[Class[T]]
+  private val enumConstructor = enumType.getDeclaredConstructors filter {_.getParameterTypes.length > 0 } head
+  private val enumNames = getClass.getDeclaredFields filter {_.getType eq enumType} map {_.getName}
+  private val enums = new ListBuffer[T]()
+  
+  def create(a: Any*): T = { 
+    val params = (enumNames(i) :: i :: a.toList) toArray  
+    val enum = enumConstructor.newInstance(params.asInstanceOf[Array[Object]]:_*).asInstanceOf[T]
+    i = i+1
+    enums += enum     
+    enum 
+  }
 
-   def getValues(): Array[T] = enums.toArray
+  def getValues(): Array[T] = enums.toArray
 }
