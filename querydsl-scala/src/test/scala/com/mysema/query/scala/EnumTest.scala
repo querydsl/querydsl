@@ -6,9 +6,9 @@ import org.junit.{ Test, Before, After, Ignore };
 import org.junit.Assert._;
 
 class PlanetTest {
-
-  @Ignore   
+    
   @Test
+  @Ignore
   def Enum_valueOf {
     assertEquals(Planet.MERCURY, Enum.valueOf(classOf[Planet], "MERCURY"))
     assertEquals(Planet.VENUS, Enum.valueOf(classOf[Planet], "VENUS"))
