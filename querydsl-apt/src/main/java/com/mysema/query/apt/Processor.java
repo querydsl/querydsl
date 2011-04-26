@@ -132,6 +132,19 @@ public class Processor {
     private void processAnnotations() {
         processDelegateMethods();
 
+        if (configuration.isUnknownAsEmbedded()){
+            List<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
+            if (configuration.getSuperTypeAnnotation() != null) {
+                annotations.add(configuration.getSuperTypeAnnotation());
+            }
+            if (configuration.getEmbeddedAnnotation() != null){
+                annotations.add(configuration.getEmbeddedAnnotation());
+            }
+            annotations.add(configuration.getEntityAnnotation());
+            
+            processFromProperties(annotations);
+        }
+        
         if (configuration.getSuperTypeAnnotation() != null) {
             processSupertypes();
         }
@@ -151,6 +164,11 @@ public class Processor {
         processEntities();
 
         processDTOs();
+    }
+
+    private void processFromProperties(List<Class<? extends Annotation>> annotations) {
+        // TODO Auto-generated method stub
+        
     }
 
     private void serializeTypes() {

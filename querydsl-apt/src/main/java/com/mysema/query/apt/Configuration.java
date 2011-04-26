@@ -29,6 +29,8 @@ import com.mysema.query.codegen.TypeMappings;
  */
 public interface Configuration {
     
+    boolean isUnknownAsEmbedded();
+    
     TypeMappings getTypeMappings();
 
     VisitorConfig getConfig(TypeElement e, List<? extends Element> elements);

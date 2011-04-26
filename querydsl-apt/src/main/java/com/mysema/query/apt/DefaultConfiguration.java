@@ -63,6 +63,8 @@ public class DefaultConfiguration implements Configuration {
 
     private static final String DEFAULT_OVERWRITE = "defaultOverwrite";
 
+    private boolean unknownAsEmbedded;
+    
     private final CodegenModule module = new CodegenModule();
 
     private final SerializerConfig defaultSerializerConfig;
@@ -362,4 +364,12 @@ public class DefaultConfiguration implements Configuration {
         return excludedClasses.contains(className);
     }
 
+    public boolean isUnknownAsEmbedded() {
+        return unknownAsEmbedded;
+    }
+
+    public void setUnknownAsEmbedded(boolean unknownAsEmbedded) {
+        this.unknownAsEmbedded = unknownAsEmbedded;
+    }
+    
 }
