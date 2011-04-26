@@ -71,11 +71,11 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         }
     };
 
-    private Expression<?> candidatePath;
+    private final Expression<?> candidatePath;
 
-    private List<Object> constants = new ArrayList<Object>();
+    private final List<Object> constants = new ArrayList<Object>();
 
-    private Stack<Map<Object,String>> constantToLabel = new Stack<Map<Object,String>>();
+    private final Stack<Map<Object,String>> constantToLabel = new Stack<Map<Object,String>>();
     
     public JDOQLSerializer(JDOQLTemplates templates, Expression<?> candidate) {
         super(templates);
@@ -91,6 +91,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         return constants;
     }
     
+    @Override
     public Map<Object,String> getConstantToLabel() {
         return constantToLabel.peek();
     }
@@ -157,7 +158,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             }else{
                 append(SELECT);
             }
-            if (select.size() >1 || !select.get(0).equals(source)){
+            if (select.size() >1 || !select.get(0).equals(source) || metadata.isDistinct()){
                 handle(COMMA, select);    
             }else{
                 skippedSelect = true;
