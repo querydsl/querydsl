@@ -170,8 +170,8 @@ public final class ElementHandler{
         }
 
         // methods
-        for (ExecutableElement method : ElementFilter.methodsIn(elements)){
-            if (config.visitMethodProperties()){
+        if (config.visitMethodProperties()){
+            for (ExecutableElement method : ElementFilter.methodsIn(elements)){            
                 String name = method.getSimpleName().toString();
                 if (name.startsWith("get") && method.getParameters().isEmpty()){
                     name = BeanUtils.uncapitalize(name.substring(3));
@@ -187,7 +187,6 @@ public final class ElementHandler{
                      handleMethodProperty(entityType, name, method, properties, blockedProperties, types);
                 }
             }
-
         }
 
         for (Map.Entry<String,Property> entry : properties.entrySet()){

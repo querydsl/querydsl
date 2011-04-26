@@ -8,7 +8,16 @@ package com.mysema.query.apt;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 import javax.annotation.processing.Filer;
@@ -22,8 +31,10 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
 import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
@@ -48,6 +59,7 @@ import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.Supertype;
 import com.mysema.query.codegen.TypeMappings;
+import com.mysema.util.BeanUtils;
 
 /**
  * Processor handles the actual work in the Querydsl APT module
@@ -167,8 +179,47 @@ public class Processor {
     }
 
     private void processFromProperties(List<Class<? extends Annotation>> annotations) {
-        // TODO Auto-generated method stub
+        Set<Element> elements = new HashSet<Element>();
+        for (Class<? extends Annotation> annotation : annotations){
+            elements.addAll(roundEnv.getElementsAnnotatedWith(annotation));    
+        }
         
+        List<TypeMirror> types = new ArrayList<TypeMirror>();
+        
+        // classes
+        for (Element element : elements){
+            if (element instanceof TypeElement){
+                TypeElement type = (TypeElement)element;
+                List<? extends Element> children = type.getEnclosedElements();
+                VisitorConfig config = configuration.getConfig(type, children);
+                
+                // fields
+                if (config.visitFieldProperties()){
+                    for (VariableElement field : ElementFilter.fieldsIn(elements)){
+                        handleType(field.asType(), types);
+                    }
+                }
+                
+                // getters
+                if (config.visitMethodProperties()){
+                    for (ExecutableElement method : ElementFilter.methodsIn(elements)){        
+                        String name = method.getSimpleName().toString();
+                        if (name.startsWith("get") && method.getParameters().isEmpty()){
+                            name = BeanUtils.uncapitalize(name.substring(3));
+                        }else if (name.startsWith("is") && method.getParameters().isEmpty()){
+                            name = BeanUtils.uncapitalize(name.substring(2));
+                        }else{
+                            continue;
+                        }                        
+                        handleType(method.getReturnType(), types);
+                   }
+                }                
+            }
+        }
+    }
+
+    private void handleType(TypeMirror type, List<TypeMirror> types) {
+        // TODO
     }
 
     private void serializeTypes() {
