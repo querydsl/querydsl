@@ -38,7 +38,7 @@
 	  <scope>provided</scope>
 	  <includes>
 	  	<include>com.mysema.querydsl:querydsl-apt</include>
-	  	<include>org.hibernate:hibernate-annotations</include>					
+	  	<include>org.hibernate:hibernate-core</include>					
 	  </includes>
     </dependencySet>	
   </dependencySets>
