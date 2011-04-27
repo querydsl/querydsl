@@ -355,7 +355,9 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
                 String property = entry.getKey().toString();
                 if (!property.equals("class")){
                     Path path = (Path<?>) entity.getClass().getField(property).get(entity);
-                    set(path, entry.getValue());
+                    if (entry.getValue() != null) {
+                        set(path, entry.getValue());    
+                    }                    
                 }
             }
             return this;
