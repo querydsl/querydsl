@@ -89,6 +89,7 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
         
     writer.beginObject(queryTypeName)
     writer.line("def as(variable: String) = new ", queryTypeName, "(variable)")
+    writer.line("val ", model.getUncapSimpleName, " = new ", queryTypeName, "(\"",  model.getUncapSimpleName, "\")")
     writer.end()
     
     // header
