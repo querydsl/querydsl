@@ -8,16 +8,7 @@ package com.mysema.query.apt;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.Nullable;
 import javax.annotation.processing.Filer;
@@ -145,6 +136,8 @@ public class Processor {
         processDelegateMethods();
 
         if (configuration.isUnknownAsEmbedded()){
+            env.getMessager().printMessage(Kind.NOTE, "Collecting custom types");
+            
             List<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
             if (configuration.getSuperTypeAnnotation() != null) {
                 annotations.add(configuration.getSuperTypeAnnotation());
@@ -184,7 +177,8 @@ public class Processor {
             elements.addAll(roundEnv.getElementsAnnotatedWith(annotation));    
         }
         
-        List<TypeMirror> types = new ArrayList<TypeMirror>();
+        TypeExtractor typeExtractor = new TypeExtractor(true, true);
+        Set<TypeElement> types = new HashSet<TypeElement>();
         
         // classes
         for (Element element : elements){
@@ -195,14 +189,17 @@ public class Processor {
                 
                 // fields
                 if (config.visitFieldProperties()){
-                    for (VariableElement field : ElementFilter.fieldsIn(elements)){
-                        handleType(field.asType(), types);
+                    for (VariableElement field : ElementFilter.fieldsIn(children)){
+                        TypeElement typeElement = typeExtractor.handle(field.asType());
+                        if (typeElement != null) {
+                            types.add(typeElement);
+                        }
                     }
                 }
                 
                 // getters
                 if (config.visitMethodProperties()){
-                    for (ExecutableElement method : ElementFilter.methodsIn(elements)){        
+                    for (ExecutableElement method : ElementFilter.methodsIn(children)){        
                         String name = method.getSimpleName().toString();
                         if (name.startsWith("get") && method.getParameters().isEmpty()){
                             name = BeanUtils.uncapitalize(name.substring(3));
@@ -211,16 +208,59 @@ public class Processor {
                         }else{
                             continue;
                         }                        
-                        handleType(method.getReturnType(), types);
+                        TypeElement typeElement = typeExtractor.handle(method.getReturnType());
+                        if (typeElement != null) {
+                            types.add(typeElement);
+                        }
                    }
                 }                
             }
         }
+        
+        List<TypeMirror> typeMirrors = new ArrayList<TypeMirror>();
+        
+        for (TypeElement type : types) {
+            // skip internal types
+            if (type.getQualifiedName().toString().startsWith("java.")){
+                continue;
+            }
+            
+            // skip annotated
+            boolean annotated = false;
+            for (Class<? extends Annotation> annotation : annotations){
+                annotated |= type.getAnnotation(annotation) != null;
+            }
+            if (annotated){
+                continue;
+            }
+            
+            typeFactory.getEntityType(type.asType(), false);
+            typeMirrors.add(type.asType());
+        }
+        
+        for (TypeMirror typeMirror : typeMirrors){
+            typeFactory.getEntityType(typeMirror, true);
+        }
+
+        for (TypeElement element : types){
+            if (typeMirrors.contains(element.asType())){
+                EntityType model = elementHandler.handleNormalType(element);
+                registerTypeElement(model.getFullName(), element);
+                embeddables.put(model.getFullName(), model);    
+            }            
+        }
+        
+        if (configuration.getEmbeddableAnnotation() == null) {
+            allSupertypes.putAll(embeddables);
+
+            // add super type fields
+            Set<EntityType> handled = new HashSet<EntityType>();
+            for (EntityType embeddable : embeddables.values()) {
+                addSupertypeFields(embeddable, allSupertypes, handled);
+            }    
+        }        
     }
 
-    private void handleType(TypeMirror type, List<TypeMirror> types) {
-        // TODO
-    }
 
     private void serializeTypes() {
         if (!actualSupertypes.isEmpty()){
@@ -494,6 +534,7 @@ public class Processor {
             addSupertypeFields(embeddable, allSupertypes, handled);
         }
     }
+
 
     private void processEmbedded(){
         List<TypeMirror> typeMirrors = new ArrayList<TypeMirror>();

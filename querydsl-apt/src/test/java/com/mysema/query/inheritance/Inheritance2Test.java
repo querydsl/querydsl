@@ -13,6 +13,7 @@ public class Inheritance2Test {
 
     @QueryEntity
     public abstract class Base<T extends Base<T>>{
+        @SuppressWarnings("unchecked")
         Base2 base;
         Base2<?,?> base2;
     }

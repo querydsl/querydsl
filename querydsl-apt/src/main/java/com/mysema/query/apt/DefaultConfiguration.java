@@ -58,6 +58,8 @@ public class DefaultConfiguration implements Configuration {
     private static final String QUERYDSL_EXCLUDED_PACKAGES = "querydsl.excludedPackages";
 
     private static final String QUERYDSL_EXCLUDED_CLASSES = "querydsl.excludedClasses";
+    
+    private static final String QUERYDSL_UNKNOWN_AS_EMBEDDABLE = "querydsl.unknownAsEmbeddable";
 
     private static final String DEFAULT_SEPARATOR = ",";
 
@@ -145,6 +147,10 @@ public class DefaultConfiguration implements Configuration {
         if (options.containsKey(DEFAULT_OVERWRITE)){
             defaultOverwrite = Boolean.valueOf(options.get(DEFAULT_OVERWRITE));
         }
+        if (options.containsKey(QUERYDSL_UNKNOWN_AS_EMBEDDABLE)) {
+            unknownAsEmbedded = Boolean.valueOf(options.get(QUERYDSL_UNKNOWN_AS_EMBEDDABLE));
+        }
+        
         if (options.containsKey(QUERYDSL_EXCLUDED_PACKAGES)) {
             String packageString = options.get(QUERYDSL_EXCLUDED_PACKAGES);
             if (StringUtils.isNotBlank(packageString)) {
@@ -153,6 +159,7 @@ public class DefaultConfiguration implements Configuration {
                 }
             }
         }
+        
         if (options.containsKey(QUERYDSL_EXCLUDED_CLASSES)) {
             String classString = options.get(QUERYDSL_EXCLUDED_CLASSES);
             if (StringUtils.isNotBlank(classString)) {
