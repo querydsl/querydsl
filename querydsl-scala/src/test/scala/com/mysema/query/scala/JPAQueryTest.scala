@@ -28,10 +28,8 @@ class JPAQueryTest {
   @Test
   def Projections {
     query from (person) list (person)
-    query from (person) list (person.firstName)
-    query from (person) list (person.firstName, person.lastName)
-
-    query from person list person.firstName
+    query from (person) list (person.firstName ~)
+    query from (person) list (person.firstName ~ , person.lastName ~) // because list(Object... args) is available for subqueries
   }
 
   @Test
