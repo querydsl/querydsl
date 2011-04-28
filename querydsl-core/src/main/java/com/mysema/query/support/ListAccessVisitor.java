@@ -16,7 +16,8 @@ public class ListAccessVisitor implements Visitor<Expression<?>,Context>{
     public static final Templates TEMPLATE = new Templates(){
     {
         add(PathType.PROPERTY, "{0}_{1}");
-        add(PathType.LISTVALUE_CONSTANT, "{0}_{1}");
+        add(PathType.LISTVALUE, "{0}_{1}");
+        add(PathType.LISTVALUE_CONSTANT, "{0}_{1}");        
     }};
     
     
@@ -85,7 +86,8 @@ public class ListAccessVisitor implements Visitor<Expression<?>,Context>{
     @SuppressWarnings("unchecked")
     @Override
     public Expression<?> visit(Path<?> expr, Context context) {
-        if (expr.getMetadata().getPathType() == PathType.LISTVALUE_CONSTANT){
+        PathType pathType = expr.getMetadata().getPathType();
+        if (pathType == PathType.LISTVALUE_CONSTANT || pathType == PathType.LISTVALUE){
             String variable = expr.accept(ToStringVisitor.DEFAULT, TEMPLATE).replace('.', '_');
             EntityPath<?> replacement = new EntityPathBase(expr.getType(), variable);
             context.add(expr, replacement);
