@@ -12,21 +12,21 @@ import com.mysema.query.scala.sql.RelationalPathImpl;
 import com.mysema.query.sql._;
 
 object QSurvey {
-    def as(variable: String) = new QSurvey(variable)
+  def as(variable: String) = new QSurvey(variable)
 }
 
 @Table("SURVEY")
 @Schema("PUBLIC")
 class QSurvey(cl: Class[_ <: Survey], md: PathMetadata[_]) extends RelationalPathImpl[Survey](cl, md) {
-    def this(variable: String) = this(classOf[Survey], forVariable(variable));
+  def this(variable: String) = this(classOf[Survey], forVariable(variable));
 
-    def this(parent: Path[_], variable: String) = this(classOf[Survey], forProperty(parent, variable));
+  def this(parent: Path[_], variable: String) = this(classOf[Survey], forProperty(parent, variable));
 
-    val id = createNumber("ID", classOf[Integer]);
+  val id = createNumber("ID", classOf[Integer]);
 
-    val name = createString("NAME");
+  val name = createString("NAME");
 
-    val sysIdx54: PrimaryKey[Survey] = createPrimaryKey(id, name);
+  val sysIdx54: PrimaryKey[Survey] = createPrimaryKey(id, name);
 
 }
 
