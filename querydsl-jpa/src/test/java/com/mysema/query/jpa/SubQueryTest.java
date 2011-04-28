@@ -10,6 +10,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.mysema.query.domain.QCat;
+import com.mysema.query.jpa.domain.QEmployee;
+import com.mysema.query.jpa.domain.QUser;
 
 public class SubQueryTest extends AbstractQueryTest{
 
@@ -32,12 +34,19 @@ public class SubQueryTest extends AbstractQueryTest{
         query.from(fatcat);
         assertEquals("from Cat cat, Cat fatcat", query.toString());
     }
-
+        
     @Test
     public void InnerJoin(){
         assertEquals("from Cat cat\n  inner join cat.mate", sub().from(cat).innerJoin(cat.mate).toString());
     }
     
+    @Test
+    public void InnerJoin2(){
+        QEmployee employee = QEmployee.employee;
+        QUser user = QUser.user;
+        assertEquals("from Employee employee\n  inner join employee.user as user", sub().from(employee).innerJoin(employee.user, user).toString());
+    }
+        
     @Test
     public void LeftJoin(){
         assertEquals("from Cat cat\n  left join cat.mate", sub().from(cat).leftJoin(cat.mate).toString());
