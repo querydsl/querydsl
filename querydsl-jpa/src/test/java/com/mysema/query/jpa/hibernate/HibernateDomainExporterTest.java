@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Configuration;
 import org.junit.Test;
 
@@ -21,7 +20,7 @@ import com.mysema.query.jpa.domain2.Domain2;
 
 public class HibernateDomainExporterTest {
     
-    private SerializerConfig serializerConfig = SimpleSerializerConfig.getConfig(Domain.class.getPackage().getAnnotation(Config.class));
+    private final SerializerConfig serializerConfig = SimpleSerializerConfig.getConfig(Domain.class.getPackage().getAnnotation(Config.class));
         
     @Test
     public void Execute_Contact() throws IOException {
@@ -68,7 +67,7 @@ public class HibernateDomainExporterTest {
     @Test
     public void Execute_Multiple() throws IOException{
         FileUtils.deleteDirectory(new File("target/gen3"));
-        AnnotationConfiguration config = new AnnotationConfiguration();
+        Configuration config = new Configuration();
         for (Class<?> cl : Domain.classes){
             config.addAnnotatedClass(cl);
         }
@@ -97,7 +96,7 @@ public class HibernateDomainExporterTest {
     @Test
     public void Execute_Multiple2() throws IOException{
         FileUtils.deleteDirectory(new File("target/gen4"));
-        AnnotationConfiguration config = new AnnotationConfiguration();
+        Configuration config = new Configuration();
         for (Class<?> cl : Domain2.classes){
             config.addAnnotatedClass(cl);
         }

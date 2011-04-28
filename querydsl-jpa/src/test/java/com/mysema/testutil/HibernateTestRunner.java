@@ -11,7 +11,7 @@ import java.util.Properties;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
+import org.hibernate.cfg.Configuration;
 import org.junit.rules.MethodRule;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
@@ -64,7 +64,7 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
     @Override
     public void run(final RunNotifier notifier) {
         try {
-            AnnotationConfiguration cfg = new AnnotationConfiguration();
+            Configuration cfg = new Configuration();
             for (Class<?> cl : Domain.classes){
                 cfg.addAnnotatedClass(cl);
             }

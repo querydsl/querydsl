@@ -20,6 +20,8 @@ public class MySQLSQLTest extends AbstractSQLTest {
     @Table("Animal")
     public class SAnimal extends RelationalPathBase<SAnimal> {
 
+        private static final long serialVersionUID = 1L;
+        
         public final NumberPath<Integer> id = createNumber("id", Integer.class);
         
         public SAnimal(String variable) {
