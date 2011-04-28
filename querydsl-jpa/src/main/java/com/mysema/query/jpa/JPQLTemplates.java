@@ -116,6 +116,10 @@ public class JPQLTemplates extends Templates {
         return false;
     }
     
+    public boolean supportsIndexedElements(){
+        return false;
+    }
+    
     @Nullable
     public String getExistsProjection(){
         return null;

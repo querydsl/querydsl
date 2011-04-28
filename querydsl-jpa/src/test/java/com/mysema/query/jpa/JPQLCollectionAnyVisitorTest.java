@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.mysema.query.jpa.domain.QCat;
-import com.mysema.query.support.CollectionAnyVisitor;
+import com.mysema.query.support.Context;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Predicate;
@@ -63,7 +63,7 @@ public class JPQLCollectionAnyVisitorTest {
     }
     
     private String serialize(Expression<?> expression){
-        Expression<?> transformed = expression.accept(JPQLCollectionAnyVisitor.DEFAULT, new CollectionAnyVisitor.Context());
+        Expression<?> transformed = expression.accept(JPQLCollectionAnyVisitor.DEFAULT, new Context());
         JPQLSerializer serializer = new JPQLSerializer(new HQLTemplates());
         serializer.handle(transformed);
         return serializer.toString();

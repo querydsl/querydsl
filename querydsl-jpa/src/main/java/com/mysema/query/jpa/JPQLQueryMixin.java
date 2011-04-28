@@ -11,7 +11,7 @@ import com.mysema.query.BooleanBuilder;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.support.CollectionAnyVisitor;
+import com.mysema.query.support.Context;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Predicate;
 
@@ -69,7 +69,7 @@ public class JPQLQueryMixin<T> extends QueryMixin<T> {
         if (predicate instanceof BooleanBuilder && ((BooleanBuilder)predicate).getValue() == null){
             return predicate;
         }else{
-            return (Predicate) predicate.accept(JPQLCollectionAnyVisitor.DEFAULT, new CollectionAnyVisitor.Context());    
+            return (Predicate) predicate.accept(JPQLCollectionAnyVisitor.DEFAULT, new Context());    
         }        
     }
     

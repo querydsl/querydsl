@@ -1,6 +1,7 @@
 package com.mysema.query.jpa;
 
 import com.mysema.query.support.CollectionAnyVisitor;
+import com.mysema.query.support.Context;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.PredicateOperation;

@@ -8,6 +8,7 @@ package com.mysema.query.collections;
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.CollectionAnyVisitor;
+import com.mysema.query.support.Context;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Path;
@@ -46,7 +47,7 @@ public class ColQueryMixin<T> extends QueryMixin<T> {
         if (predicate instanceof BooleanBuilder && ((BooleanBuilder)predicate).getValue() == null){
             return predicate;
         }else{
-            CollectionAnyVisitor.Context context = new CollectionAnyVisitor.Context();
+            Context context = new Context();
             Predicate transformed = (Predicate) predicate.accept(CollectionAnyVisitor.DEFAULT, context);
             for (int i = 0; i < context.anyPaths.size(); i++){
                 innerJoin(

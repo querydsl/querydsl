@@ -11,53 +11,53 @@ import com.mysema.query.types.Predicate;
 import com.mysema.query.types.TemplateExpressionImpl;
 
 
-public class CollectionAnyVisitorTest {
+public class ListAccessVisitorTest {
 
-    private QCat cat = QCat.cat;
+    private final QCat cat = QCat.cat;
     
     @Test
     public void Path(){
-        assertEquals("cat_kittens", serialize(cat.kittens.any()));
+        assertEquals("cat_kittens_0", serialize(cat.kittens.get(0)));
     }
     
     @Test
     public void Longer_Path(){
-        assertEquals("cat_kittens.name", serialize(cat.kittens.any().name));
+        assertEquals("cat_kittens_0.name", serialize(cat.kittens.get(0).name));
     }
     
     @Test
     public void Very_Long_Path(){
-        assertEquals("cat_kittens_kittens.name", serialize(cat.kittens.any().kittens.any().name));
+        assertEquals("cat_kittens_0_kittens_1.name", serialize(cat.kittens.get(0).kittens.get(1).name));
     }
     
     @Test
     public void Simple_BooleanOperation(){        
-        Predicate predicate = cat.kittens.any().name.eq("Ruth123");        
-        assertEquals("cat_kittens.name = Ruth123", serialize(predicate));
+        Predicate predicate = cat.kittens.get(0).name.eq("Ruth123");        
+        assertEquals("cat_kittens_0.name = Ruth123", serialize(predicate));
     }
     
     @Test
     public void Simple_StringOperation(){        
-        Predicate predicate = cat.kittens.any().name.substring(1).eq("uth123");        
-        assertEquals("substring(cat_kittens.name,1) = uth123", serialize(predicate));
+        Predicate predicate = cat.kittens.get(0).name.substring(1).eq("uth123");        
+        assertEquals("substring(cat_kittens_0.name,1) = uth123", serialize(predicate));
     }
     
     @Test
     public void And_Operation(){
         // TODO : the subqueries should be merged
-        Predicate predicate = cat.kittens.any().name.eq("Ruth123").and(cat.kittens.any().bodyWeight.gt(10.0));
-        assertEquals("cat_kittens.name = Ruth123 && cat_kittens.bodyWeight > 10.0", serialize(predicate));
+        Predicate predicate = cat.kittens.get(0).name.eq("Ruth123").and(cat.kittens.get(1).bodyWeight.gt(10.0));
+        assertEquals("cat_kittens_0.name = Ruth123 && cat_kittens_1.bodyWeight > 10.0", serialize(predicate));
     }
     
     @Test
     public void Template(){
         Expression<Boolean> templateExpr = TemplateExpressionImpl.create(Boolean.class, "{0} = {1}", 
-                cat.kittens.any().name, ConstantImpl.create("Ruth123"));
-        assertEquals("cat_kittens.name = Ruth123", serialize(templateExpr));
+                cat.kittens.get(0).name, ConstantImpl.create("Ruth123"));
+        assertEquals("cat_kittens_0.name = Ruth123", serialize(templateExpr));
     }
     
     private String serialize(Expression<?> expression){
-        CollectionAnyVisitor visitor = new CollectionAnyVisitor(){
+        ListAccessVisitor visitor = new ListAccessVisitor(){
             @Override
             protected Predicate exists(Context c, Predicate condition) {
                 return condition;

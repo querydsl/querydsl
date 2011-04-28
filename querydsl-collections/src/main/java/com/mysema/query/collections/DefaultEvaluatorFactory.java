@@ -30,6 +30,7 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.CollectionAnyVisitor;
+import com.mysema.query.support.Context;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operation;
@@ -176,7 +177,7 @@ public class DefaultEvaluatorFactory {
                 }
                 ser.append("for ( " + typeName + " " + alias.getArg(1) + " : ");
                 if (colAnyJoin){
-                    CollectionAnyVisitor.Context context = new CollectionAnyVisitor.Context();
+                    Context context = new Context();
                     Expression<?> replacement = (Expression<?>) alias.getArg(0).accept(CollectionAnyVisitor.DEFAULT, context);
                     ser.handle(replacement);
                 }else{

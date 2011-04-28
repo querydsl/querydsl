@@ -76,4 +76,10 @@ public class HQLTemplates extends JPQLTemplates{
     public String getExistsProjection(){
         return "1";
     }
+    
+    @Override
+    public boolean supportsIndexedElements(){
+        return true;
+    }
+    
 }

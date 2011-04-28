@@ -9,14 +9,14 @@ import com.mysema.query.types.template.BooleanTemplate;
  * @author tiwe
  *
  */
-public class CollectionAnyVisitor implements Visitor<Expression<?>,Context>{
+public class ListAccessVisitor implements Visitor<Expression<?>,Context>{
     
-    public static final CollectionAnyVisitor DEFAULT = new CollectionAnyVisitor();
+    public static final ListAccessVisitor DEFAULT = new ListAccessVisitor();
     
     public static final Templates TEMPLATE = new Templates(){
     {
         add(PathType.PROPERTY, "{0}_{1}");
-        add(PathType.COLLECTION_ANY, "{0}");
+        add(PathType.LISTVALUE_CONSTANT, "{0}_{1}");
     }};
     
     
@@ -85,7 +85,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context>{
     @SuppressWarnings("unchecked")
     @Override
     public Expression<?> visit(Path<?> expr, Context context) {
-        if (expr.getMetadata().getPathType() == PathType.COLLECTION_ANY){
+        if (expr.getMetadata().getPathType() == PathType.LISTVALUE_CONSTANT){
             String variable = expr.accept(ToStringVisitor.DEFAULT, TEMPLATE).replace('.', '_');
             EntityPath<?> replacement = new EntityPathBase(expr.getType(), variable);
             context.add(expr, replacement);
