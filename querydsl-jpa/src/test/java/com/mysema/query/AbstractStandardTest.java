@@ -30,7 +30,9 @@ import com.mysema.query.jpa.JPQLSubQuery;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.DomesticCat;
 import com.mysema.query.jpa.domain.QCat;
+import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.jpa.domain.QShow;
+import com.mysema.query.jpa.domain.QUser;
 import com.mysema.query.jpa.domain.Show;
 import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Concatenation;
@@ -478,6 +480,14 @@ public abstract class AbstractStandardTest {
     public void Count(){
         QShow show = QShow.show;
         assertTrue(query().from(show).count() > 0);
+    }
+    
+    @Test
+    public void One_To_One(){
+        JPQLQuery query = query();
+        query.from(QEmployee.employee);
+        query.innerJoin(QEmployee.employee.user, QUser.user);
+        query.list(QEmployee.employee);
     }
     
 }
