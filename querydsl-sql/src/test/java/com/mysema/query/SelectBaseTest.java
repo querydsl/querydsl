@@ -803,17 +803,22 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @SuppressWarnings("unchecked")
     @Test
-    public void Union_Multi_Column_Projection() throws IOException{
+    public void Union_Multi_Column_Projection_List() throws IOException{
         SubQueryExpression<Object[]> sq1 = sq().from(employee).unique(employee.id.max(), employee.id.max().subtract(1));
         SubQueryExpression<Object[]> sq2 = sq().from(employee).unique(employee.id.min(), employee.id.min().subtract(1));
 
-        // list
         List<Object[]> list = query().union(sq1, sq2).list();
         assertEquals(2, list.size());
         assertTrue(list.get(0) != null);
         assertTrue(list.get(1) != null);
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void Union_Multi_Column_Projection_Iterate() throws IOException{
+        SubQueryExpression<Object[]> sq1 = sq().from(employee).unique(employee.id.max(), employee.id.max().subtract(1));
+        SubQueryExpression<Object[]> sq2 = sq().from(employee).unique(employee.id.min(), employee.id.min().subtract(1));
 
-        // iterator
         CloseableIterator<Object[]> iterator = query().union(sq1,sq2).iterate();
         try{
             assertTrue(iterator.hasNext());
@@ -827,17 +832,22 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         
     @SuppressWarnings("unchecked")
     @Test
-    public void Union_Single_Column_Projections() throws IOException{
+    public void Union_Single_Column_Projections_List() throws IOException{
         SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id.max());
         SubQueryExpression<Integer> sq2 = sq().from(employee).unique(employee.id.min());
 
-        // list
         List<Integer> list = query().union(sq1, sq2).list();
         assertEquals(2, list.size());
         assertTrue(list.get(0) != null);
         assertTrue(list.get(1) != null);
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void Union_Single_Column_Projections_Iterate() throws IOException{
+        SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id.max());
+        SubQueryExpression<Integer> sq2 = sq().from(employee).unique(employee.id.min());
 
-        // iterator
         CloseableIterator<Integer> iterator = query().union(sq1,sq2).iterate();
         try{
             assertTrue(iterator.hasNext());
@@ -849,6 +859,14 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         }
     }
 
+    @SuppressWarnings("unchecked")
+    @Test
+    public void Union_FactoryExpression() {
+        ListSubQuery<Employee> sq1 = sq().from(employee).list(Projections.constructor(Employee.class, employee.id));
+        ListSubQuery<Employee> sq2 = sq().from(employee).list(Projections.constructor(Employee.class, employee.id));        
+        query().union(sq1, sq2).list();
+    }
+    
     @Test
     public void Unique_Constructor_Projection(){
         // unique constructor projection

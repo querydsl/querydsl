@@ -38,6 +38,12 @@ public class Employee {
     @Column("SUPERIOR_ID")
     private Integer superiorId;
 
+    public Employee() {}
+    
+    public Employee(int id) {
+        this.id = id;
+    }
+    
     public int getId() {
         return id;
     }
