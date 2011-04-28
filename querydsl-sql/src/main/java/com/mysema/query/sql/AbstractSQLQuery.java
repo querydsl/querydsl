@@ -35,16 +35,7 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.ParamExpression;
-import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.Path;
-import com.mysema.query.types.Predicate;
-import com.mysema.query.types.QBean;
-import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.*;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.query.types.template.SimpleTemplate;
@@ -63,8 +54,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         @Override
         @SuppressWarnings("unchecked")
         public List<RT> list() {
-            if (union[0].getMetadata().getProjection().size() == 1) {
-                return (List<RT>) IteratorAdapter.asList(iterateSingle(union[0].getMetadata(), null));
+            List<? extends Expression> projection = union[0].getMetadata().getProjection(); 
+            if (projection.size() == 1) {
+                return IteratorAdapter.asList(iterateSingle(union[0].getMetadata(), projection.get(0)));
             } else {
                 return (List<RT>) IteratorAdapter.asList(iterateMultiple(union[0].getMetadata()));
             }
@@ -73,8 +65,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         @SuppressWarnings("unchecked")
         @Override
         public CloseableIterator<RT> iterate() {
-            if (union[0].getMetadata().getProjection().size() == 1) {
-                return (CloseableIterator<RT>) iterateSingle(union[0].getMetadata(), null);
+            List<? extends Expression> projection = union[0].getMetadata().getProjection(); 
+            if (projection.size() == 1) {
+                return iterateSingle(union[0].getMetadata(), projection.get(0));
             } else {
                 return (CloseableIterator<RT>) iterateMultiple(union[0].getMetadata());
             }

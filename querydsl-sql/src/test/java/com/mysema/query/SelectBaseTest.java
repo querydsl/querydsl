@@ -864,12 +864,14 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     public void Union_FactoryExpression() {
         ListSubQuery<Employee> sq1 = sq().from(employee).list(Projections.constructor(Employee.class, employee.id));
         ListSubQuery<Employee> sq2 = sq().from(employee).list(Projections.constructor(Employee.class, employee.id));        
-        query().union(sq1, sq2).list();
+        List<Employee> employees = query().union(sq1, sq2).list();
+        for (Employee employee : employees){
+            assertNotNull(employee);
+        }
     }
     
     @Test
     public void Unique_Constructor_Projection(){
-        // unique constructor projection
         IdName idAndName = query().from(survey).limit(1).uniqueResult(new QIdName(survey.id, survey.name));
         assertNotNull(idAndName);
         assertNotNull(idAndName.getId());
@@ -879,7 +881,6 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     public void Unique_Single(){
-        // unique single
         String s = query().from(survey).limit(1).uniqueResult(survey.name);
         assertNotNull(s);
 
