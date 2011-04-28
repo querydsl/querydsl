@@ -115,11 +115,7 @@ public class JPQLTemplates extends Templates {
         // TODO : get rid of this when Hibernate supports type(alias)
         return false;
     }
-    
-    public boolean supportsIndexedElements(){
-        return false;
-    }
-    
+        
     @Nullable
     public String getExistsProjection(){
         return null;

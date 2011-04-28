@@ -134,4 +134,12 @@ public class SubQueryTest extends AbstractQueryTest{
         assertToString("(select count(cat, other) from Cat cat, Cat other)",      sub().from(cat, other).list(cat, other).count());
     }
 
+    @Test
+    public void Indexed_Access(){
+        assertToString("(select count(cat) from Cat cat   " +
+        		"left join cat.kittens as cat_kittens_0 " +
+        		"where index(cat_kittens_0) = :a1 and cat_kittens_0.name = :a2)", 
+        		                                                          sub().from(cat).where(cat.kittens.get(0).name.eq("Kate")).count());
+    }
+    
 }

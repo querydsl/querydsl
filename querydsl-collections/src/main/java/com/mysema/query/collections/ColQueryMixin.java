@@ -49,9 +49,9 @@ public class ColQueryMixin<T> extends QueryMixin<T> {
         }else{
             Context context = new Context();
             Predicate transformed = (Predicate) predicate.accept(CollectionAnyVisitor.DEFAULT, context);
-            for (int i = 0; i < context.anyPaths.size(); i++){
+            for (int i = 0; i < context.paths.size(); i++){
                 innerJoin(
-                    (CollectionExpression)context.anyPaths.get(i).getMetadata().getParent(), 
+                    (CollectionExpression)context.paths.get(i).getMetadata().getParent(), 
                     (Path)context.replacements.get(i));
                 on(BooleanTemplate.create("any"));
             }

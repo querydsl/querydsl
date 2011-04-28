@@ -77,9 +77,4 @@ public class HQLTemplates extends JPQLTemplates{
         return "1";
     }
     
-    @Override
-    public boolean supportsIndexedElements(){
-        return true;
-    }
-    
 }

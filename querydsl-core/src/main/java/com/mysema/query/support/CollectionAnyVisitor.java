@@ -43,7 +43,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context>{
         if (context.replace){            
             if (expr.getType().equals(Boolean.class)){
                 Predicate predicate = BooleanTemplate.create(expr.getTemplate(), args);
-                return !context.anyPaths.isEmpty() ? exists(context, predicate) : predicate;           
+                return !context.paths.isEmpty() ? exists(context, predicate) : predicate;           
             }else{
                 return new TemplateExpressionImpl(expr.getType(), expr.getTemplate(), args);    
             }    
@@ -69,7 +69,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context>{
         if (context.replace){            
             if (expr.getType().equals(Boolean.class)){
                 Predicate predicate = new PredicateOperation((Operator)expr.getOperator(), args);
-                return !context.anyPaths.isEmpty() ? exists(context, predicate) : predicate;           
+                return !context.paths.isEmpty() ? exists(context, predicate) : predicate;           
             }else{
                 return new OperationImpl(expr.getType(), expr.getOperator(), args);    
             }    

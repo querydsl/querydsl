@@ -13,25 +13,25 @@ public class Context {
     
     public boolean replace;
     
-    public final List<Path<?>> anyPaths = new ArrayList<Path<?>>(); 
+    public final List<Path<?>> paths = new ArrayList<Path<?>>(); 
         
     public final List<EntityPath<?>> replacements = new ArrayList<EntityPath<?>>();    
             
     public void add(Path<?> anyPath, EntityPath<?> replacement){
         replace = true;
-        anyPaths.add(anyPath);
+        paths.add(anyPath);
         replacements.add(replacement);
     }
     
     public void add(Context c){
         replace |= c.replace;
-        anyPaths.addAll(c.anyPaths);
+        paths.addAll(c.paths);
         replacements.addAll(c.replacements);
 
     }
 
     public void clear() {
-        anyPaths.clear();
+        paths.clear();
         replacements.clear();            
     }
     

@@ -54,8 +54,8 @@ public class JDOQLQueryMixin<T> extends QueryMixin<T> {
         }else{
             Context context = new Context();
             Predicate transformed = (Predicate) predicate.accept(CollectionAnyVisitor.DEFAULT, context);
-            for (int i = 0; i < context.anyPaths.size(); i++){
-                Path<?> path = context.anyPaths.get(i);            
+            for (int i = 0; i < context.paths.size(); i++){
+                Path<?> path = context.paths.get(i);            
                 if (!anyPaths.contains(path)){
                     addCondition(context, i, path, where);
                 }

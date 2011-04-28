@@ -17,9 +17,9 @@ public final class JPQLCollectionAnyVisitor extends CollectionAnyVisitor{
     @Override
     protected Predicate exists(Context c, Predicate condition){
         JPQLSubQuery query = new JPQLSubQuery();
-        for (int i = 0; i < c.anyPaths.size(); i++){
+        for (int i = 0; i < c.paths.size(); i++){
             query.from(c.replacements.get(i));
-            query.where(new PredicateOperation(Ops.IN, c.replacements.get(i), c.anyPaths.get(i).getMetadata().getParent()));    
+            query.where(new PredicateOperation(Ops.IN, c.replacements.get(i), c.paths.get(i).getMetadata().getParent()));    
         }        
         c.clear();
         query.where(condition);
