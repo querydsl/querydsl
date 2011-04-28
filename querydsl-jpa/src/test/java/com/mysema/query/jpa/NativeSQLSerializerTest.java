@@ -11,12 +11,12 @@ import com.mysema.query.jpa.domain.sql.SAnimal;
 import com.mysema.query.sql.MySQLTemplates;
 
 
-public class HibernateSQLSerializerTest {
+public class NativeSQLSerializerTest {
     
     @Test
     @Ignore
     public void In() {
-        HibernateSQLSerializer serializer = new HibernateSQLSerializer(new MySQLTemplates());
+        NativeSQLSerializer serializer = new NativeSQLSerializer(new MySQLTemplates());
         DefaultQueryMetadata md = new DefaultQueryMetadata();
         SAnimal cat = SAnimal.animal;
         md.addJoin(JoinType.DEFAULT, cat);

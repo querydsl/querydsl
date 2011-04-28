@@ -23,7 +23,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.jpa.AbstractSQLQuery;
-import com.mysema.query.jpa.HibernateSQLSerializer;
+import com.mysema.query.jpa.NativeSQLSerializer;
 import com.mysema.query.jpa.impl.DefaultSessionHolder;
 import com.mysema.query.jpa.impl.JPASessionHolder;
 import com.mysema.query.jpa.impl.JPAUtil;
@@ -67,7 +67,7 @@ public final class JPASQLQuery extends AbstractSQLQuery<JPASQLQuery> implements 
         if (queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("No joins given");
         }
-        HibernateSQLSerializer serializer = new HibernateSQLSerializer(sqlTemplates);
+        NativeSQLSerializer serializer = new NativeSQLSerializer(sqlTemplates);
         serializer.serialize(queryMixin.getMetadata(), forCountRow);
         constants = serializer.getConstantToLabel();
 //        entityPaths = serializer.getEntityPaths();

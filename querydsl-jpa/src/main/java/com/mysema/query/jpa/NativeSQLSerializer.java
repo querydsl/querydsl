@@ -15,17 +15,17 @@ import com.mysema.query.types.Constant;
 import com.mysema.query.types.Path;
 
 /**
- * HibernateSQLSerializer extends the SQLSerializer to extract referenced entity paths and change some
+ * NativeSQLSerializer extends the SQLSerializer to extract referenced entity paths and change some
  * serialization formats 
  * 
  * @author tiwe
  *
  */
-public final class HibernateSQLSerializer extends SQLSerializer{
+public final class NativeSQLSerializer extends SQLSerializer{
 
     private final List<Path<?>> entityPaths = new ArrayList<Path<?>>();
 
-    public HibernateSQLSerializer(SQLTemplates templates) {
+    public NativeSQLSerializer(SQLTemplates templates) {
         super(templates);
     }
 
