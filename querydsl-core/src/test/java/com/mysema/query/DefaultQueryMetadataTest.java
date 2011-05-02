@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.types.ConstantImpl;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.path.StringPath;
 
@@ -27,9 +28,25 @@ public class DefaultQueryMetadataTest {
     private final StringPath str2 = new StringPath("str2");
 
     @Test
-    public void AddWhere(){
+    public void AddWhere_With_Null(){
+        metadata.addWhere((Predicate)null);
+    }
+    
+    @Test
+    public void AddWhere_With_BooleanBuilder(){
         metadata.addWhere(new BooleanBuilder());
     }
+    
+    @Test
+    public void AddHaving_With_Null(){
+        metadata.addWhere((Predicate)null);
+    }
+    
+    @Test
+    public void AddHaving_With_BooleanBuilder(){
+        metadata.addWhere(new BooleanBuilder());
+    }
+    
     
     @Test(expected=IllegalArgumentException.class)
     public void Validation(){

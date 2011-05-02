@@ -80,7 +80,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public void addHaving(Predicate... o) {
         for (Predicate e : o){
-            if (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue()){
+            if (e != null && (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue())){
                 validate(e);
                 having.and(e);
             }
@@ -132,7 +132,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     @Override
     public void addWhere(Predicate... o) {
         for (Predicate e : o){
-            if (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue()){
+            if (e != null && (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue())){
                 validate(e);
                 where.and(e);
             }
