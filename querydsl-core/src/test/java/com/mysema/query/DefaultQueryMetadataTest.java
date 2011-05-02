@@ -20,12 +20,17 @@ import com.mysema.query.types.path.StringPath;
 
 public class DefaultQueryMetadataTest {
 
-    private QueryMetadata metadata = new DefaultQueryMetadata();
+    private final QueryMetadata metadata = new DefaultQueryMetadata();
 
-    private StringPath str = new StringPath("str");
+    private final StringPath str = new StringPath("str");
     
-    private StringPath str2 = new StringPath("str2");
+    private final StringPath str2 = new StringPath("str2");
 
+    @Test
+    public void AddWhere(){
+        metadata.addWhere(new BooleanBuilder());
+    }
+    
     @Test(expected=IllegalArgumentException.class)
     public void Validation(){
         metadata.addGroupBy(str);
