@@ -83,9 +83,9 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
   
   def writeHeader(model: EntityType, writer: ScalaWriter) {
     val queryType = typeMappings.getPathType(model, model, true)
-    var modelName = writer.getRawName(model)
-    var queryTypeName = writer.getRawName(queryType)
-    var classHeader = String.format(classHeaderFormat, queryTypeName, modelName)
+    val modelName = writer.getRawName(model)
+    val queryTypeName = writer.getRawName(queryType)
+    val classHeader = String.format(classHeaderFormat, queryTypeName, modelName)
         
     writer.beginObject(queryTypeName)
     writer.line("def as(variable: String) = new ", queryTypeName, "(variable)")
@@ -98,18 +98,17 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
     writer.beginClass(classHeader)
   }
 
-  def serializeProperties(model: EntityType, writer: CodeWriter, properties: Collection[Property]) {
-    // entity properties
-    properties filter (_.getType.getCategory == ENTITY) foreach { property =>
-      var queryType = typeMappings.getPathType(property.getType, model, false)
-      var typeName = writer.getRawName(queryType)
-      var name = property.getEscapedName
-      val value = String.format("lazy val %1$s = new %2$s(this, \"%1$s\")", name, typeName)
-      writer.line(value, "\n")
-    }  
-    
-    // other properties
-    properties filter (_.getType.getCategory != ENTITY) foreach { property =>
+  private def serializeEntityProperties(model: EntityType, writer: CodeWriter, properties: Collection[Property]) = {
+    for (property <- properties if property.getType.getCategory == ENTITY) yield {
+      val queryType = typeMappings.getPathType(property.getType, model, false)
+      val typeName = writer.getRawName(queryType)
+      val name = property.getEscapedName
+      String.format("lazy val %1$s = new %2$s(this, \"%1$s\")", name, typeName)
+    }
+  }
+  
+  private def serializeOtherProperties(model: EntityType, writer: CodeWriter, properties: Collection[Property]) = {
+    for (property <- properties if property.getType.getCategory != ENTITY) yield { 
       val methodName: String = property.getType.getCategory match {
         case ARRAY => "createArray"
         case BOOLEAN => "createBoolean"  
@@ -127,55 +126,43 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
         case TIME => "createTime"     
       }
       
-      var ptype: Type = null            
-      var value: String = null
-      val cat = property.getType.getCategory
-      if (cat == BOOLEAN || cat == STRING) {
-        value = methodName + "(\"" + property.getName + "\")"
-        ptype = typeMappings.getPathType(property.getType, model, false)
-        
-      } else if (cat == LIST || cat == SET || cat == COLLECTION) {
-        val componentType = writer.getGenericName(true, property.getParameter(0))
-        val queryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false)
-        value = methodName + "(\"" + property.getName + "\", classOf[" + componentType + "], classOf[" + writer.getGenericName(true, queryType) + "])"
-        if (cat == LIST){
-            ptype = new ClassType(classOf[ListPath[_,_]], property.getParameter(0), queryType)
-        }else if (cat == SET){
-            ptype = new ClassType(classOf[SetPath[_,_]], property.getParameter(0), queryType)
-        }else{
-            ptype = new ClassType(classOf[CollectionPath[_,_]], property.getParameter(0), queryType)
+      val value = property.getType.getCategory match {
+        case BOOLEAN | STRING => methodName + "(\"" + property.getName + "\")"
+        case LIST | SET | COLLECTION => {
+          val componentType = writer.getGenericName(true, property.getParameter(0))
+          val queryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false)
+          methodName + "(\"" + property.getName + "\", classOf[" + componentType + "], classOf[" + writer.getGenericName(true, queryType) + "])"
         }
-          
-      } else if (cat == MAP) {
-        val keyType = writer.getGenericName(true, property.getParameter(0))
-        val valueType = writer.getGenericName(true, property.getParameter(1))
-        val queryType = typeMappings.getPathType(getRaw(property.getParameter(1)), model, false)
-        value = methodName + "(\"" + property.getName + "\", classOf[" + keyType + "], classOf[" + valueType + "], classOf[" + writer.getGenericName(true, queryType) + "])"      
-        ptype = new ClassType(classOf[MapPath[_,_,_]], property.getParameter(0), property.getParameter(1), queryType)
-        
-      } else {
-        value = methodName + "(\"" + property.getName + "\", classOf[" + writer.getRawName(property.getType) + "])"
-        ptype = typeMappings.getPathType(property.getType, model, false)
-        if (cat == ARRAY){
-            ptype = new ClassType(classOf[ArrayPath[_]], property.getType)
+        case MAP => {
+            val keyType = writer.getGenericName(true, property.getParameter(0))
+            val valueType = writer.getGenericName(true, property.getParameter(1))
+            val queryType = typeMappings.getPathType(getRaw(property.getParameter(1)), model, false)
+            methodName + "(\"" + property.getName + "\", classOf[" + keyType + "], classOf[" + valueType + "], classOf[" + writer.getGenericName(true, queryType) + "])"      
         }
+        case _ => methodName + "(\"" + property.getName + "\", classOf[" + writer.getRawName(property.getType) + "])"
       }
-      
-//      writer.publicFinal(ptype, property.getEscapedName, value)
-      writer.line("val ", property.getEscapedName, " = ", value, "\n")
+      (property.getEscapedName, value)
+    }
+  }
+  
+  def serializeProperties(model: EntityType, writer: CodeWriter, properties: Collection[Property]) {
+    // entity properties
+    serializeEntityProperties(model, writer, properties) foreach (writer.line(_, "\n"))
+    
+    // other properties
+    serializeOtherProperties(model, writer, properties) foreach { case (propertyName, value) =>
+      writer.line("val ", propertyName, " = ", value, "\n")
     }
   }
 
   def getAnnotationTypes(model: EntityType): Set[String] = {
-    val imports = Set()
-    imports ++ (model.getAnnotations.map(_.annotationType.getName));
+    Set() ++ (model.getAnnotations.map(_.annotationType.getName))
   }
   
   private def getRaw(t : Type): Type = {
-    if (t.isInstanceOf[EntityType] && t.getPackageName.startsWith("java")){
-      t
-    }else{
-      new SimpleType(t, t.getParameters)
+    t match {
+      case entityType: EntityType if entityType.getPackageName.startsWith("java") => t
+      case _ => new SimpleType(t, t.getParameters)
     }
   }
 
