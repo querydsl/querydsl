@@ -166,7 +166,7 @@
   <repositories>
     <repository>
       <id>jboss</id>
-      <url>http://repository.jboss.com/maven2</url>
+      <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
       <releases>
         <enabled>true</enabled>
       </releases>
@@ -178,6 +178,12 @@
     <repository>
       <id>EclipseLink Repo</id>
       <url>http://mirrors.ibiblio.org/pub/mirrors/eclipse/rt/eclipselink/maven.repo</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
     </repository>    	
   </repositories>  
 

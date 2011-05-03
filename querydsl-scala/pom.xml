@@ -98,12 +98,25 @@
   <repositories>
     <repository>
       <id>jboss</id>
-      <url>http://repository.jboss.com/maven2</url>
+      <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>      
     </repository>
+    
     <repository>
       <id>scala-tools.org</id>
       <name>Scala-tools Maven2 Repository</name>
       <url>http://scala-tools.org/repo-releases</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>      
     </repository>
   </repositories>
 
