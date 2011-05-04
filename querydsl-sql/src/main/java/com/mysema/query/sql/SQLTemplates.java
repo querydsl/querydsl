@@ -41,9 +41,9 @@ public class SQLTemplates extends Templates {
     
     private final Map<Class<?>, String> class2type = new HashMap<Class<?>, String>();
 
-    private String quoteStr;
+    private final String quoteStr;
     
-    private boolean useQuotes;
+    private final boolean useQuotes;
     
     private boolean printSchema;
 
@@ -89,7 +89,7 @@ public class SQLTemplates extends Templates {
     
     private String rightJoin = "\nright join ";;
 
-    private String limitTemplate = "\nlimit {0}";
+    private final String limitTemplate = "\nlimit {0}";
 
     private String mergeInto = "merge into ";
 
@@ -118,6 +118,8 @@ public class SQLTemplates extends Templates {
     private String values = "\nvalues ";
     
     private String where = "\nwhere ";
+    
+    private String with = "with ";
     
     private String createIndex = "create index ";
     
@@ -364,6 +366,10 @@ public class SQLTemplates extends Templates {
     public boolean isPrintSchema() {
         return printSchema;
     }
+    
+    public String getWith() {
+        return with;
+    }
 
     protected void newLineToSingleSpace() {
         for (Class<?> cl : Arrays.<Class<?>>asList(getClass(), SQLTemplates.class)) {
@@ -548,6 +554,10 @@ public class SQLTemplates extends Templates {
 
     protected void setWhere(String where) {
         this.where = where;
+    }
+    
+    protected void setWith(String with) {
+        this.with = with;
     }
     
     protected void setCreateIndex(String createIndex) {
