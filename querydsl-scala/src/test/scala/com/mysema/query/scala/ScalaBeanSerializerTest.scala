@@ -48,7 +48,11 @@ class ScalaBeanSerializerTest {
   def Print {
     val serializer = new ScalaBeanSerializer()
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
+    
+    println(writer.toString)
+    
     val str = writer.toString().replaceAll("\\s+", " ")
+    
     assertTrue(str.contains("package com.mysema.query"))
     assertTrue(str.contains("import scala.reflect.BeanProperty"))
     assertTrue(str.contains("import java.util.List"))
@@ -58,9 +62,8 @@ class ScalaBeanSerializerTest {
     assertTrue(str.contains("*/"))
     assertTrue(str.contains("class DomainClass {"))
     assertTrue(str.contains("@BeanProperty var arrayField: Array[String] = _"))
-    assertTrue(str.contains("@BeanProperty var boolean_: Boolean = _"))
+    assertTrue(str.contains("@BeanProperty var boolean$: java.lang.Boolean = _"))
     assertTrue(str.contains("@BeanProperty var collection: java.util.Collection[DomainClass] = _"))
-    assertTrue(str.contains("@BeanProperty var comparable: Comparable = _"))
     assertTrue(str.contains("@BeanProperty var date: java.util.Date = _"))
     assertTrue(str.contains("@BeanProperty var entityField: DomainClass = _"))
     assertTrue(str.contains("@BeanProperty var integer: Integer = _"))
