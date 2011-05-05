@@ -45,7 +45,7 @@ public final class Property implements Comparable<Property> {
     }
 
     public Property(EntityType declaringType, String name, Type type, String[] inits, boolean inherited) {
-        this(declaringType, name, JavaSyntaxUtils.isReserved(name) ? (name + "_") : name, type, inits, inherited);
+        this(declaringType, name, JavaSyntaxUtils.isReserved(name) ? (name + "$") : name, type, inits, inherited);
     }
 
     public Property(EntityType declaringType, String name, String escapedName, Type type, String[] inits, boolean inherited) {
@@ -132,6 +132,7 @@ public final class Property implements Comparable<Property> {
         return inherited;
     }
 
+    @Override
     public String toString() {
         return declaringType.getFullName() + "." + name;
     }

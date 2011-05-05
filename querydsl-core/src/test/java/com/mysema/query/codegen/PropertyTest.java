@@ -16,7 +16,7 @@ import com.mysema.codegen.model.TypeCategory;
 public class PropertyTest {
 
     @Test
-    public void test(){
+    public void Equals_And_HashCode(){
         Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false,false);
         EntityType type = new EntityType(typeModel);
         Property p1 = new Property(type, "property", type, new String[0]);
@@ -26,4 +26,12 @@ public class PropertyTest {
         assertEquals(p1.hashCode(), p2.hashCode());
     }
 
+    @Test
+    public void EscapedName(){
+        Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false,false);
+        EntityType type = new EntityType(typeModel);
+        Property property = new Property(type, "boolean", type, new String[0]);
+        assertEquals("boolean$", property.getEscapedName());
+    }
+    
 }
