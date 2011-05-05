@@ -418,15 +418,34 @@ public class Processor {
         
         // only creation
         List<TypeMirror> typeMirrors = new ArrayList<TypeMirror>();
+        List<TypeMirror> superTypeMirrors = new ArrayList<TypeMirror>();
+        
         for (Element element : roundEnv.getElementsAnnotatedWith(annotation)) {
             if (configuration.getEmbeddableAnnotation() == null
                     || element.getAnnotation(configuration.getEmbeddableAnnotation()) == null){
                 typeFactory.getEntityType(element.asType(), false);
                 typeMirrors.add(element.asType());
                 elements.add(element);
+                
+                // add annotationless supertype
+                TypeMirror superTypeMirror = ((TypeElement)element).getSuperclass();
+                if (superTypeMirror != null){
+                    Element superTypeElement = env.getTypeUtils().asElement(superTypeMirror);
+                    if (superTypeElement != null 
+                            && !superTypeElement.toString().startsWith("java.lang.")  
+                            && superTypeElement.getAnnotationMirrors().isEmpty()) {
+                        typeFactory.getEntityType(superTypeMirror, false);
+                        superTypeMirrors.add(superTypeMirror);
+                        elements.add(superTypeElement);
+                    }
+                }
             }
         }
 
+        for (TypeMirror typeMirror : superTypeMirrors){
+            typeFactory.getEntityType(typeMirror, true);
+        }
+        
         // super type handling
         for (TypeMirror typeMirror : typeMirrors){
             typeFactory.getEntityType(typeMirror, true);
@@ -508,6 +527,7 @@ public class Processor {
 
     private void processEmbeddables() {
         List<TypeMirror> typeMirrors = new ArrayList<TypeMirror>();
+        List<TypeMirror> superTypeMirrors = new ArrayList<TypeMirror>();
         List<Element> elements = new ArrayList<Element>();
         
         // only creation
@@ -515,6 +535,23 @@ public class Processor {
             typeFactory.getEntityType(element.asType(), false);
             typeMirrors.add(element.asType());
             elements.add(element);
+            
+            // add annotationless supertype
+            TypeMirror superTypeMirror = ((TypeElement)element).getSuperclass();
+            if (superTypeMirror != null){
+                Element superTypeElement = env.getTypeUtils().asElement(superTypeMirror);
+                if (superTypeElement != null 
+                        && !superTypeElement.toString().startsWith("java.lang.") 
+                        && superTypeElement.getAnnotationMirrors().isEmpty()) {
+                    typeFactory.getEntityType(superTypeMirror, false);
+                    superTypeMirrors.add(superTypeMirror);
+                    elements.add(superTypeElement);
+                }
+            }
+        }
+        
+        for (TypeMirror typeMirror : superTypeMirrors){
+            typeFactory.getEntityType(typeMirror, true);
         }
 
         // supertype handling
