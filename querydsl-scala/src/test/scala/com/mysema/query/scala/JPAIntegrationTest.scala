@@ -80,38 +80,37 @@ class JPAIntegrationTest {
 
 @Entity
 class User {
-  @BeanProperty
   @Id
-  var id: Integer = _
-  @BeanProperty
-  var userName: String = _
-  @BeanProperty
+  @BeanProperty var id: Integer = _
+  
+  @BeanProperty var userName: String = _
+  
   @ManyToOne
-  var department: Department = _
+  @BeanProperty var department: Department = _
 }
 
 @Entity
 class Department {
-  @BeanProperty
+  
   @Id
-  var id: Integer = _
-  @BeanProperty
-  var name: String = _
-  @BeanProperty
+  @BeanProperty var id: Integer = _
+  
+  @BeanProperty var name: String = _
+  
   @ManyToOne
-  var company: Company = _
+  @BeanProperty var company: Company = _
 }
 
 @Entity
 class Company {
-  @BeanProperty
+  
   @Id
-  var id: Integer = _
-  @BeanProperty
-  var name: String = _
-  @BeanProperty
+  @BeanProperty var id: Integer = _
+  
+  @BeanProperty var name: String = _
+  
   @OneToMany(mappedBy = "company")
-  var departments: java.util.Set[Department] = _
+  @BeanProperty var departments: java.util.Set[Department] = _
 
   def this(id: Integer,
            name: String,
