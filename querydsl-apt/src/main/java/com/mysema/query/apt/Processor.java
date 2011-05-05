@@ -414,7 +414,8 @@ public class Processor {
 
     private void process(Class<? extends Annotation> annotation, Map<String,EntityType> types){
         Deque<Type> superTypes = new ArrayDeque<Type>();
-
+        List<Element> elements = new ArrayList<Element>();
+        
         // only creation
         List<TypeMirror> typeMirrors = new ArrayList<TypeMirror>();
         for (Element element : roundEnv.getElementsAnnotatedWith(annotation)) {
@@ -422,6 +423,7 @@ public class Processor {
                     || element.getAnnotation(configuration.getEmbeddableAnnotation()) == null){
                 typeFactory.getEntityType(element.asType(), false);
                 typeMirrors.add(element.asType());
+                elements.add(element);
             }
         }
 
@@ -431,15 +433,12 @@ public class Processor {
         }
 
         // get annotated types
-        for (Element element : roundEnv.getElementsAnnotatedWith(annotation)) {
-            if (configuration.getEmbeddableAnnotation() == null
-                    || element.getAnnotation(configuration.getEmbeddableAnnotation()) == null){
-                EntityType model = elementHandler.handleNormalType((TypeElement) element);
-                registerTypeElement(model.getFullName(), (TypeElement)element);
-                types.put(model.getFullName(), model);
-                if (model.getSuperType() != null){
-                    superTypes.push(model.getSuperType().getType());
-                }
+        for (Element element : elements) {
+            EntityType model = elementHandler.handleNormalType((TypeElement) element);
+            registerTypeElement(model.getFullName(), (TypeElement)element);
+            types.put(model.getFullName(), model);
+            if (model.getSuperType() != null){
+                superTypes.push(model.getSuperType().getType());
             }
         }
 
@@ -509,11 +508,13 @@ public class Processor {
 
     private void processEmbeddables() {
         List<TypeMirror> typeMirrors = new ArrayList<TypeMirror>();
-
+        List<Element> elements = new ArrayList<Element>();
+        
         // only creation
         for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnnotation())) {
             typeFactory.getEntityType(element.asType(), false);
             typeMirrors.add(element.asType());
+            elements.add(element);
         }
 
         // supertype handling
@@ -521,7 +522,7 @@ public class Processor {
             typeFactory.getEntityType(typeMirror, true);
         }
 
-        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnnotation())) {
+        for (Element element : elements) {
             EntityType model = elementHandler.handleNormalType((TypeElement) element);
             registerTypeElement(model.getFullName(), (TypeElement)element);
             embeddables.put(model.getFullName(), model);
@@ -655,6 +656,7 @@ public class Processor {
                 Type type = configuration.getTypeMappings().getPathType(model, model, true);
                 String packageName = type.getPackageName();
                 String className = !packageName.isEmpty() ? (packageName + "." + type.getSimpleName()) : type.getSimpleName();
+                
                 if (configuration.isExcludedPackage(model.getPackageName()) || configuration.isExcludedClass(model.getFullName())) {
                     continue;
                 }

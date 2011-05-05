@@ -1,6 +1,6 @@
 package com.mysema.query.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
@@ -8,8 +8,8 @@ public class ReservedNamesInTypesTest {
     
     @Test
     public void Correctly_Escaped(){
-        assertNotNull(QPublic.public_);
-        assertNotNull(QPrivate.private_);
+        assertNotNull(QPublic.public$);
+        assertNotNull(QPrivate.private$);
     }
 
 }
