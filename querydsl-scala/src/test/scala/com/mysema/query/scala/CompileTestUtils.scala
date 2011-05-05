@@ -13,8 +13,8 @@ trait CompileTestUtils {
 
     val env = new Settings
 
-    val currentLibraries = (this.getClass.getClassLoader).asInstanceOf[java.net.URLClassLoader].getURLs().toList.mkString(pathSeparator)
-    val cp = currentLibraries :: jarPathOfClass("scala.tools.nsc.Interpreter") :: jarPathOfClass("scala.ScalaObject") :: Nil
+    val currentLibraries = (this.getClass.getClassLoader).asInstanceOf[java.net.URLClassLoader].getURLs().toList
+    val cp = jarPathOfClass("scala.tools.nsc.Interpreter") :: jarPathOfClass("scala.ScalaObject") :: currentLibraries
 
     env.classpath.value = cp.mkString(pathSeparator)
 

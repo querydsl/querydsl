@@ -3,15 +3,19 @@ import com.mysema.query.annotations._
 import com.mysema.query.codegen.GenericExporter
 import org.junit.Test
 
-class GenericExporterTest {
+class GenericExporterTest extends CompileTestUtils {
     
   @Test
   def Export() {
-    val exporter = new GenericExporter();
-    exporter.setTargetFolder(new java.io.File("target/gen1"));
-    exporter.setSerializerClass(classOf[ScalaEntitySerializer]);
+    val exporter = new GenericExporter()
+    exporter.setTargetFolder(new java.io.File("target/gen1"))
+    exporter.setSerializerClass(classOf[ScalaEntitySerializer])
     exporter.setCreateScalaSources(true)
-    exporter.export(getClass.getPackage);
+    exporter.export(getClass.getPackage)
+    
+    val targetFolder = new java.io.File("target/gen1/com/mysema/query/scala/") 
+    val sources = targetFolder listFiles() filter(_.getName().endsWith(".scala")) map(io.Source.fromFile(_).mkString) mkString("\n")
+    assertCompileSuccess(sources)
   }
 
 }
@@ -26,7 +30,8 @@ class Superclass {
 @QueryEntity
 class EntityClass extends Superclass {
     
-  var comparable: Comparable[_] = _   
+    // FIXME
+//  var comparable: Comparable[_] = _   
     
   var code: String = _  
 
