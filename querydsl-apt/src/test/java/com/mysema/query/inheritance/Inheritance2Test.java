@@ -5,10 +5,11 @@
  */
 package com.mysema.query.inheritance;
 
-import org.junit.Test;
+import org.junit.Ignore;
 
 import com.mysema.query.annotations.QueryEntity;
 
+@Ignore
 public class Inheritance2Test {
 
     @QueryEntity
@@ -42,8 +43,4 @@ public class Inheritance2Test {
 
     }
 
-    @Test
-    public void test(){
-        // TODO
-    }
 }

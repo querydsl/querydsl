@@ -7,13 +7,14 @@ package com.mysema.query.domain;
 
 import java.util.Date;
 
-import org.junit.Test;
+import org.junit.Ignore;
 
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.domain.rel.SimpleType;
 import com.mysema.query.domain.rel.SimpleType2;
 
+@Ignore
 public class GenericTest {
 
     @QueryEntity
@@ -109,8 +110,4 @@ public class GenericTest {
 
     }
 
-    @Test
-    public void test(){
-        // TODO
-    }
 }

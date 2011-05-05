@@ -7,13 +7,14 @@ package com.mysema.query.domain;
 
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.Ignore;
 
 import com.mysema.query.annotations.QueryEmbeddable;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerySupertype;
 import com.mysema.query.domain.AnimalTest.Cat;
 
+@Ignore
 public class EmbeddableTest {
 
     @QueryEntity
@@ -69,8 +70,4 @@ public class EmbeddableTest {
 
     }
 
-    @Test
-    public void test(){
-        // TODO
-    }
 }
