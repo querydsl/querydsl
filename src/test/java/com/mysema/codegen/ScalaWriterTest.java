@@ -332,5 +332,19 @@ public class ScalaWriterTest {
         System.out.println(w);
 
     }
+    
+    @Test
+    public void Primitive() throws IOException {
+        writer.beginClass(testType);
+        
+        writer.beginConstructor(new Parameter("a", Types.INT));
+        writer.end();
+        
+        writer.end();
+        
+        System.out.println(w);
+        
+        assertTrue(w.toString().contains("public JavaWriterTest(a: Int) {"));
+    }
 
 }

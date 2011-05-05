@@ -349,6 +349,9 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
         String fullName = type.getFullName();
         String packageName = type.getPackageName();
         String rv = fullName;
+        if (type.isPrimitive() && packageName.isEmpty()){
+            rv = Character.toUpperCase(rv.charAt(0)) + rv.substring(1);
+        }        
         if (packages.contains(packageName) || classes.contains(fullName)){
             if (packageName.length() > 0){
                 rv = fullName.substring(packageName.length()+1);
