@@ -32,7 +32,7 @@ class ScalaBeanSerializerTest {
     entityType.addProperty(new Property(entityType, "arrayField", new ClassType(TypeCategory.ARRAY, classOf[Array[String]]), new Array[String](0)))
     entityType.addProperty(new Property(entityType, "mapField", new SimpleType(Types.MAP, typeModel, typeModel), new Array[String](0)))
 
-    List(classOf[Boolean], classOf[Comparable[_]], classOf[Integer], classOf[java.util.Date], classOf[java.sql.Date], classOf[java.sql.Time])
+    List(classOf[java.lang.Boolean], classOf[Comparable[_]], classOf[Integer], classOf[java.util.Date], classOf[java.sql.Date], classOf[java.sql.Time])
       .foreach(cl => {
         var classType = new ClassType(TypeCategory.get(cl.getName), cl)
         entityType.addProperty(new Property(entityType, StringUtils.uncapitalize(cl.getSimpleName), classType, new Array[String](0)))
@@ -58,7 +58,7 @@ class ScalaBeanSerializerTest {
     assertTrue(str.contains("*/"))
     assertTrue(str.contains("class DomainClass {"))
     assertTrue(str.contains("@BeanProperty var arrayField: Array[String] = _"))
-    assertTrue(str.contains("@BeanProperty var boolean_: boolean = _"))
+    assertTrue(str.contains("@BeanProperty var boolean_: Boolean = _"))
     assertTrue(str.contains("@BeanProperty var collection: java.util.Collection[DomainClass] = _"))
     assertTrue(str.contains("@BeanProperty var comparable: Comparable = _"))
     assertTrue(str.contains("@BeanProperty var date: java.util.Date = _"))
