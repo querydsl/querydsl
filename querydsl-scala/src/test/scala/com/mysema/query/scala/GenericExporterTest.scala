@@ -26,6 +26,8 @@ class Superclass {
 @QueryEntity
 class EntityClass extends Superclass {
     
+  var comparable: Comparable[_] = _   
+    
   var code: String = _  
 
   var stringList: java.util.List[String] = _
