@@ -87,6 +87,12 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
         getMetadata().addJoin(JoinType.DEFAULT, entity);
         return (Q)this;
     }
+    
+    @SuppressWarnings("unchecked")
+    public <A> Q bind(Path<A> entity, Iterable<? extends A> col) {
+        iterables.put(entity, col);
+        return (Q)this;
+    }
 
     public abstract QueryMetadata getMetadata();
 

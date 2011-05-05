@@ -26,6 +26,16 @@ public interface ColQuery extends SimpleQuery<ColQuery>, Projectable {
     ColQuery clone();
 
     /**
+     * Bind the given collection to an already existing query source
+     *
+     * @param <A>
+     * @param entity Path for the source
+     * @param col content of the source
+     * @return
+     */
+    <A> ColQuery bind(Path<A> entity, Iterable<? extends A> col);
+    
+    /**
      * Add a query source
      *
      * @param <A>
