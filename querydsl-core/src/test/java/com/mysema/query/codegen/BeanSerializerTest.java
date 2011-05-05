@@ -31,7 +31,7 @@ public class BeanSerializerTest {
     
     private EntityType type;
 
-    private Writer writer = new StringWriter();
+    private final Writer writer = new StringWriter();
 
     @Before
     public void setUp(){
@@ -112,7 +112,7 @@ public class BeanSerializerTest {
         System.err.println(str);
         for (String prop : Arrays.asList(
                 "String[] arrayField;",
-                "Boolean boolean_;",
+                "Boolean boolean$;",
                 "java.util.Collection<DomainClass> collection;",
                 "Comparable comparable;",
                 "java.util.Date date;",
