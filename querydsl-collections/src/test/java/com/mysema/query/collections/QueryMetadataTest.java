@@ -2,6 +2,8 @@ package com.mysema.query.collections;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Arrays;
+
 import org.junit.Test;
 
 import com.mysema.query.DefaultQueryMetadata;
@@ -18,7 +20,7 @@ public class QueryMetadataTest extends AbstractQueryTest {
         
         ColQuery query = new ColQueryImpl(metadata);
         query.bind(cat, cats);
-        assertEquals(c3, query.list(cat));
+        assertEquals(Arrays.asList(c3), query.list(cat));
     }
 
 }
