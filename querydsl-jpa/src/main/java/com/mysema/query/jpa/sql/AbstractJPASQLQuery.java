@@ -22,7 +22,6 @@ import com.mysema.query.jpa.NativeSQLSerializer;
 import com.mysema.query.jpa.impl.DefaultSessionHolder;
 import com.mysema.query.jpa.impl.JPASessionHolder;
 import com.mysema.query.jpa.impl.JPAUtil;
-import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
@@ -33,7 +32,7 @@ import com.mysema.query.types.Expression;
  * @param <Q>
  */
 //TODO : add support for constructor projections
-public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> extends AbstractSQLQuery<Q> implements SQLCommonQuery<Q>{
+public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> extends AbstractSQLQuery<Q> {
     
     private static final Logger logger = LoggerFactory.getLogger(AbstractJPASQLQuery.class);
 

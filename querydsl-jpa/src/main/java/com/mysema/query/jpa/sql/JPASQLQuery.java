@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.jpa.impl.DefaultSessionHolder;
 import com.mysema.query.jpa.impl.JPASessionHolder;
+import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLTemplates;
 
 /**
@@ -19,7 +20,7 @@ import com.mysema.query.sql.SQLTemplates;
  * @author tiwe
  *
  */
-public final class JPASQLQuery extends AbstractJPASQLQuery<JPASQLQuery> {
+public final class JPASQLQuery extends AbstractJPASQLQuery<JPASQLQuery> implements SQLCommonQuery<JPASQLQuery> {
 
     public JPASQLQuery(EntityManager entityManager, SQLTemplates sqlTemplates) {
         super(entityManager, sqlTemplates);

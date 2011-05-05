@@ -11,6 +11,7 @@ import org.hibernate.StatelessSession;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.jpa.hibernate.DefaultSessionHolder;
 import com.mysema.query.jpa.hibernate.SessionHolder;
+import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLTemplates;
 
 /**
@@ -20,7 +21,7 @@ import com.mysema.query.sql.SQLTemplates;
  * @author tiwe
  *
  */
-public final class HibernateSQLQuery extends AbstractHibernateSQLQuery<HibernateSQLQuery> {
+public final class HibernateSQLQuery extends AbstractHibernateSQLQuery<HibernateSQLQuery> implements SQLCommonQuery<HibernateSQLQuery> {
 
     public HibernateSQLQuery(Session session, SQLTemplates sqlTemplates) {
         super(session, sqlTemplates);

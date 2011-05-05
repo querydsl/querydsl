@@ -25,7 +25,6 @@ import com.mysema.query.jpa.hibernate.FactoryExpressionTransformer;
 import com.mysema.query.jpa.hibernate.HibernateUtil;
 import com.mysema.query.jpa.hibernate.SessionHolder;
 import com.mysema.query.jpa.hibernate.StatelessSessionHolder;
-import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
@@ -36,7 +35,7 @@ import com.mysema.query.types.Path;
  *
  * @param <Q>
  */
-public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQuery<Q>> extends AbstractSQLQuery<Q> implements SQLCommonQuery<Q>{
+public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQuery<Q>> extends AbstractSQLQuery<Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractHibernateSQLQuery.class);
 
