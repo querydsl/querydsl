@@ -49,7 +49,7 @@ public class EntityTypeTest {
     }
     
     @Test
-    public void UncapSimpleName() {
+    public void UncapSimpleName_Escaped3() {
         ClassType typeModel = new ClassType(TypeCategory.ENTITY, Void.class);
         EntityType entityModel = new EntityType(typeModel);
         assertEquals("void$", entityModel.getUncapSimpleName());
