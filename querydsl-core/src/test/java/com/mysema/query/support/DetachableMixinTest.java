@@ -18,6 +18,7 @@ import com.mysema.query.alias.Alias;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.NullExpression;
 import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.query.ListSubQuery;
@@ -64,6 +65,15 @@ public class DetachableMixinTest {
         List<? extends Expression<?>> exprs = subQuery.getMetadata().getProjection();
         assertEquals(new PathImpl(Object.class, "x"), exprs.get(0));
         assertEquals(new ConstantImpl("XXX"), exprs.get(1));
+    }
+    
+    @Test
+    public void Null_As_Template(){
+        query.from(new PathImpl(Object.class, "x"));
+        SubQueryExpression<?> subQuery = detachable.unique(new PathImpl(Object.class, "x"), null);
+        List<? extends Expression<?>> exprs = subQuery.getMetadata().getProjection();
+        assertEquals(new PathImpl(Object.class, "x"), exprs.get(0));
+        assertEquals(NullExpression.DEFAULT, exprs.get(1));
     }
 
 }

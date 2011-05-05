@@ -5,10 +5,13 @@
  */
 package com.mysema.query.support;
 
+import javax.annotation.Nullable;
+
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.NullExpression;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ComparableExpression;
@@ -76,7 +79,13 @@ public class DetachableMixin implements Detachable{
     private Expression<?>[] convert(Object... args) {
         Expression<?>[] exprs = new Expression[args.length];
         for (int i = 0; i < exprs.length; i++){
-            exprs[i] = args[i] instanceof Expression<?> ? (Expression<?>)args[i] : new ConstantImpl<Object>(args[i]);
+            if (args[i] instanceof Expression<?>) {
+                exprs[i] = (Expression<?>)args[i];
+            } else if (args[i] != null) {
+                exprs[i] = new ConstantImpl<Object>(args[i]);
+            } else {
+                exprs[i] = NullExpression.DEFAULT;
+            }
         }
         return exprs;
     }
@@ -89,19 +98,23 @@ public class DetachableMixin implements Detachable{
     private QueryMetadata projection(Expression<?>... projection){
         QueryMetadata metadata = queryMixin.getMetadata().clone();
         for (Expression<?> expr : projection){
-            metadata.addProjection(expr);    
+            metadata.addProjection(nullAsTemplate(expr));             
         }
         return metadata;        
     }
 
     private QueryMetadata projection(Expression<?> first, Expression<?> second, Expression<?>[] rest) {
         QueryMetadata metadata = queryMixin.getMetadata().clone();
-        metadata.addProjection(first);    
-        metadata.addProjection(second);    
+        metadata.addProjection(nullAsTemplate(first));    
+        metadata.addProjection(nullAsTemplate(second));    
         for (Expression<?> expr : rest){
-            metadata.addProjection(expr);    
+            metadata.addProjection(nullAsTemplate(expr));    
         }
         return metadata;   
+    }
+    
+    private Expression<?> nullAsTemplate(@Nullable Expression<?> expr){
+        return expr != null ? expr : NullExpression.DEFAULT;
     }
 
     @SuppressWarnings("unchecked")
@@ -159,8 +172,7 @@ public class DetachableMixin implements Detachable{
     @Override
     public <RT extends Comparable<?>> TimeSubQuery<RT> unique(TimeExpression<RT> projection) {
         return new TimeSubQuery<RT>((Class)projection.getType(), uniqueProjection(projection));
-    }
-    
+    }    
 
     private QueryMetadata uniqueProjection(Expression<?>... projection){
         QueryMetadata metadata = projection(projection);
