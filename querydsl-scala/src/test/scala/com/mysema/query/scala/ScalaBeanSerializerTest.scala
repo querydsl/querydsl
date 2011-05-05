@@ -12,7 +12,7 @@ import org.junit.Assert._
 
 import scala.collection.JavaConversions._
 
-class ScalaBeanSerializerTest {
+class ScalaBeanSerializerTest extends CompileTestUtils {
 
   var entityType: EntityType = null
 
@@ -32,11 +32,13 @@ class ScalaBeanSerializerTest {
     entityType.addProperty(new Property(entityType, "arrayField", new ClassType(TypeCategory.ARRAY, classOf[Array[String]]), new Array[String](0)))
     entityType.addProperty(new Property(entityType, "mapField", new SimpleType(Types.MAP, typeModel, typeModel), new Array[String](0)))
 
-    List(classOf[java.lang.Boolean], classOf[Integer], classOf[java.util.Date], classOf[java.sql.Date], classOf[java.sql.Time])
-      .foreach(cl => {
-        var classType = new ClassType(TypeCategory.get(cl.getName), cl)
-        entityType.addProperty(new Property(entityType, StringUtils.uncapitalize(cl.getSimpleName), classType, new Array[String](0)))
-      })
+    List(classOf[java.lang.Boolean], classOf[Integer], classOf[java.util.Date], classOf[java.sql.Date], classOf[java.sql.Time]) map { cl ⇒
+      new Property(
+        entityType,
+        StringUtils.uncapitalize(cl.getSimpleName),
+        new ClassType(TypeCategory.get(cl.getName), cl),
+        new Array[String](0))
+    } foreach { entityType.addProperty(_) }
 
     // constructor
     val firstName = new Parameter("firstName", new ClassType(TypeCategory.STRING, classOf[String]))
@@ -52,7 +54,7 @@ class ScalaBeanSerializerTest {
     println(writer.toString)
     
     val str = writer.toString().replaceAll("\\s+", " ")
-    
+    println(str)
     assertTrue(str.contains("package com.mysema.query"))
     assertTrue(str.contains("import scala.reflect.BeanProperty"))
     assertTrue(str.contains("import java.util.List"))
@@ -72,5 +74,13 @@ class ScalaBeanSerializerTest {
     assertTrue(str.contains("@BeanProperty var setField: java.util.Set[DomainClass] = _"))
     assertTrue(str.contains("@BeanProperty var time: java.sql.Time = _"))
     assertTrue(str.contains("}"))
+  }
+
+  @Test
+  def Compile {
+    val serializer = new ScalaBeanSerializer()
+    serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
+    val str = writer.toString()
+    assertCompileSuccess(str)
   }
 }
