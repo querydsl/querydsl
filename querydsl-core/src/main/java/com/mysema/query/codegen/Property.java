@@ -7,6 +7,7 @@ package com.mysema.query.codegen;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public final class Property implements Comparable<Property> {
     private final String[] inits;
 
     private final String name, escapedName;
-    
+
     private final Map<Class<?>,Annotation> annotations = new HashMap<Class<?>,Annotation>();
 
     private final Type type;
@@ -39,7 +40,7 @@ public final class Property implements Comparable<Property> {
     public Property(EntityType declaringType, String name, Type type) {
         this(declaringType, name, type, new String[0], false);
     }
-    
+
     public Property(EntityType declaringType, String name, Type type, String[] inits) {
         this(declaringType, name, type, inits, false);
     }
@@ -60,7 +61,8 @@ public final class Property implements Comparable<Property> {
     public void addAnnotation(Annotation annotation){
         annotations.put(annotation.annotationType(), annotation);
     }
-    
+
+    @Override
     public int compareTo(Property o) {
         return name.compareToIgnoreCase(o.getName());
     }
@@ -73,14 +75,14 @@ public final class Property implements Comparable<Property> {
             return new Property(targetModel, name, type, inits, targetModel.getSuperType() != null);
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     public <T extends Annotation> T getAnnotation(Class<T> type){
         return (T) annotations.get(type);
     }
-    
+
     public Collection<Annotation> getAnnotations() {
-        return annotations.values();
+        return Collections.unmodifiableCollection(annotations.values());
     }
 
     @Override
