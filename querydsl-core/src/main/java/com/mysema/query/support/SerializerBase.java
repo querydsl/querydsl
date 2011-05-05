@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
@@ -47,6 +49,13 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     public SerializerBase(Templates templates, boolean dry) {
         this.templates = Assert.notNull(templates,"templates");
         this.dry = dry;
+    }
+    
+    public S prepend(String... str) {
+        if (!dry){
+            builder.insert(0, StringUtils.join(str));                
+        }        
+        return self;
     }
 
     public S append(String... str) {
@@ -143,6 +152,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         this.anonParamPrefix = prefix;
     }
 
+    @Override
     public String toString() {
         return builder.toString();
     }
@@ -196,7 +206,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         Template template = templates.getTemplate(pathType);
         List<Expression<?>> args = new ArrayList<Expression<?>>();
         if (path.getMetadata().getParent() != null){
-            args.add((Expression<?>) path.getMetadata().getParent());
+            args.add(path.getMetadata().getParent());
         }
         args.add(path.getMetadata().getExpression());
         handleTemplate(template, args);
