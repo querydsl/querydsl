@@ -48,4 +48,11 @@ public class EntityTypeTest {
         assertEquals("object1", entityModel.getUncapSimpleName());
     }
     
+    @Test
+    public void UncapSimpleName() {
+        ClassType typeModel = new ClassType(TypeCategory.ENTITY, Void.class);
+        EntityType entityModel = new EntityType(typeModel);
+        assertEquals("void$", entityModel.getUncapSimpleName());
+    }
+    
 }

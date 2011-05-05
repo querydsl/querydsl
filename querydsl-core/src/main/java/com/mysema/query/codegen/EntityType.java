@@ -58,7 +58,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         super(type);
         this.uncapSimpleName = StringUtils.uncapitalize(type.getSimpleName());
         if (JavaSyntaxUtils.isReserved(uncapSimpleName)){
-            this.uncapSimpleName = uncapSimpleName + "_";    
+            this.uncapSimpleName = uncapSimpleName + "$";    
         }
         this.superTypes = superTypes;
     }
@@ -110,6 +110,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         return annotations.values();
     }
 
+    @Override
     public TypeCategory getCategory() {       
         if (getType().getCategory() == TypeCategory.ENTITY || !properties.isEmpty()){
             return TypeCategory.ENTITY;    
