@@ -14,7 +14,7 @@ class GenericExporterTest extends CompileTestUtils {
     exporter.export(getClass.getPackage)
     
     val targetFolder = new java.io.File("target/gen1/com/mysema/query/scala/") 
-    val sources = targetFolder listFiles() filter(_.getName().endsWith(".scala")) map(io.Source.fromFile(_).mkString) mkString("\n")
+    val sources = targetFolder listFiles() filter( _.getName.endsWith(".scala") ) map( io.Source.fromFile(_).mkString ) mkString("\n")
     assertCompileSuccess(sources)
   }
 
