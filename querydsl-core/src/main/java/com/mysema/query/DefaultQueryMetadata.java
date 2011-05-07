@@ -93,18 +93,20 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
     
     @Override
-    public void addJoin(JoinExpression join){
-        Expression<?> expr = join.getTarget();
-        if (!exprInJoins.contains(expr)) {
-            if (expr instanceof Path<?> && join.getType() == JoinType.DEFAULT){
-                ensureRoot((Path<?>) expr);
-            }
-            exprInJoins.add(expr);
-            validate(expr);
-            joins.add(join);
-        } else {
-            throw new IllegalStateException(expr + " is already used");
-        }
+    public void addJoin(JoinExpression... j){
+        for (JoinExpression join : j) {
+            Expression<?> expr = join.getTarget();
+            if (!exprInJoins.contains(expr)) {
+                if (expr instanceof Path<?> && join.getType() == JoinType.DEFAULT){
+                    ensureRoot((Path<?>) expr);
+                }
+                exprInJoins.add(expr);
+                validate(expr);
+                joins.add(join);
+            } else {
+                throw new IllegalStateException(expr + " is already used");
+            }    
+        }        
     }
 
     @Override

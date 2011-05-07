@@ -51,7 +51,7 @@ public interface QueryMetadata extends Serializable {
      * Add the given query join
      *
      */
-    void addJoin(JoinExpression join);
+    void addJoin(JoinExpression... join);
 
     /**
      * Add the given join condition to the last given join
