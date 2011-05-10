@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.Types;
+import com.mysema.codegen.support.ScalaSyntaxUtils;
 
 /**
  * @author tiwe
@@ -113,7 +114,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
                     }else{
                         append("(");
                     }
-                    append(method.getName()+"=");
+                    append(escape(method.getName())+"=");
                     annotationConstant(value);
                 } catch (IllegalArgumentException e) {
                     throw new CodegenException(e);
@@ -269,9 +270,9 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
 
     private ScalaWriter beginMethod(String modifiers, Type returnType, String methodName, Parameter... args) throws IOException{
         if (returnType.equals(Types.VOID)){
-            beginLine(modifiers + methodName).params(args).append(" {").nl();
+            beginLine(modifiers + escape(methodName)).params(args).append(" {").nl();
         }else{
-            beginLine(modifiers + methodName).params(args).append(": " + getGenericName(true, returnType)).append(" {").nl();
+            beginLine(modifiers + escape(methodName)).params(args).append(": " + getGenericName(true, returnType)).append(" {").nl();
         }
 
         return goIn();
@@ -304,17 +305,17 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     }
 
     public ScalaWriter field(Type type, String name) throws IOException {
-        line(VAR + name + ": " + getGenericName(true, type) + SEMICOLON);
+        line(VAR + escape(name) + ": " + getGenericName(true, type) + SEMICOLON);
         return compact ? this : nl();
     }
 
     private ScalaWriter field(String modifier, Type type, String name) throws IOException{
-        line(modifier + name + ": " + getGenericName(true, type) + SEMICOLON);
+        line(modifier + escape(name) + ": " + getGenericName(true, type) + SEMICOLON);
         return compact ? this : nl();
     }
 
     private ScalaWriter field(String modifier, Type type, String name, String value) throws IOException{
-        line(modifier + name + ": " + getGenericName(true, type) + ASSIGN + value + SEMICOLON);
+        line(modifier + escape(name) + ": " + getGenericName(true, type) + ASSIGN + value + SEMICOLON);
         return compact ? this : nl();
     }
 
@@ -451,7 +452,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
 
 
     private ScalaWriter param(Parameter parameter) throws IOException{
-        append(parameter.getName());
+        append(escape(parameter.getName()));
         append(": ");
         append(getGenericName(true, parameter.getType()));
         return this;
@@ -539,4 +540,11 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
         return rv;
     }
 
+    private String escape(String token) {
+        if (ScalaSyntaxUtils.isReserved(token)) {
+            return "`" + token + "`"; 
+        } else {
+            return token;
+        }
+    }
 }

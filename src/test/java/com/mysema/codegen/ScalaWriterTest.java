@@ -347,4 +347,25 @@ public class ScalaWriterTest {
         assertTrue(w.toString().contains("public JavaWriterTest(a: Int) {"));
     }
 
+    @Test
+    public void ReservedWords() throws IOException {
+        writer.beginClass(testType);
+        
+        writer.beginConstructor(new Parameter("type", Types.INT));
+        writer.end();
+        
+        writer.publicField(testType, "class");
+        
+        writer.beginPublicMethod(testType, "var");
+        writer.end();
+        
+        writer.end();
+        
+        System.out.println(w);
+        
+        assertTrue(w.toString().contains("`type`: Int"));
+        assertTrue(w.toString().contains("`class`: JavaWriterTest"));
+        assertTrue(w.toString().contains("`var`(): JavaWriterTest"));
+    }
+    
 }
