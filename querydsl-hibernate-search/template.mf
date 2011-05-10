@@ -1,0 +1,4 @@
+Bundle-SymbolicName: com.mysema.querydsl.hibernate-search
+Bundle-Name: Querydsl Hibernate Search
+Bundle-Vendor: Mysema
+Bundle-ManifestVersion: 2

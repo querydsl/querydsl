@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mysema.querydsl</groupId>
   <artifactId>querydsl-root</artifactId>
-  <version>2.2.0-beta4-SNAPSHOT</version>
+  <version>2.2.0.beta4-SNAPSHOT</version>
   <name>Querydsl</name>
   <description>parent project for Querydsl modules</description>
   <url>http://www.querydsl.com</url>
@@ -210,7 +210,34 @@
           <includeTests>true</includeTests>     
         </configuration>
       </plugin>            
-    
+      <plugin>
+        <groupId>com.springsource.bundlor</groupId>
+        <artifactId>com.springsource.bundlor.maven</artifactId>
+        <version>1.0.0.RELEASE</version>
+        <executions>
+          <execution>
+            <id>bundlor</id>
+            <goals>
+              <goal>bundlor</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>jar</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+            <configuration>
+              <useDefaultManifestFile>true</useDefaultManifestFile>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   <profiles>
@@ -326,5 +353,13 @@
       </plugin>
     </plugins>
   </reporting>
+  
+  <pluginRepositories>
+    <pluginRepository>
+        <!-- Required for Bundlor plugin -->
+        <id>com.springsource.repository.bundles.release</id>
+        <url>http://repository.springsource.com/maven/bundles/release</url>
+    </pluginRepository>
+  </pluginRepositories>
 
 </project>

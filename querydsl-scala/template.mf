@@ -1,0 +1,4 @@
+Bundle-SymbolicName: com.mysema.querydsl.scala
+Bundle-Name: Querydsl Scala
+Bundle-Vendor: Mysema
+Bundle-ManifestVersion: 2

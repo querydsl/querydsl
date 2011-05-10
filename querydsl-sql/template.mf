@@ -1,0 +1,4 @@
+Bundle-SymbolicName: com.mysema.querydsl.sql
+Bundle-Name: Querydsl SQL
+Bundle-Vendor: Mysema
+Bundle-ManifestVersion: 2

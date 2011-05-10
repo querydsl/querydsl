@@ -1,0 +1,4 @@
+Bundle-SymbolicName: com.mysema.querydsl.jpa
+Bundle-Name: Querydsl JPA
+Bundle-Vendor: Mysema
+Bundle-ManifestVersion: 2

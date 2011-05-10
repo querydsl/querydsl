@@ -1,0 +1,4 @@
+Bundle-SymbolicName: com.mysema.querydsl.apt
+Bundle-Name: Querydsl APT
+Bundle-Vendor: Mysema
+Bundle-ManifestVersion: 2
