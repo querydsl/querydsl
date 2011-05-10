@@ -22,6 +22,8 @@ import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathImpl;
 import com.mysema.testutil.ExcludeIn;
 
 public abstract class InsertBaseTest extends AbstractBaseTest{
@@ -145,6 +147,14 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     @ExcludeIn({Target.HSQLDB, Target.DERBY, Target.POSTGRES})
     public void Insert_With_Keys_Projected() throws SQLException{
         assertNotNull(insert(survey).set(survey.name, "Hello you").executeWithKey(survey.id));
+    }
+    
+    @Test
+    @ExcludeIn({Target.HSQLDB, Target.DERBY, Target.POSTGRES})
+    public void Insert_With_Keys_Projected2() throws SQLException{
+        Path<Object> idPath = new PathImpl<Object>(Object.class, "id");
+        Object id = insert(survey).set(survey.name, "Hello you").executeWithKey(idPath);
+        assertNotNull(id);
     }
 
     @Test
