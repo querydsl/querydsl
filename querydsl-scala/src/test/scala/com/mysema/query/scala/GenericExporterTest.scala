@@ -33,6 +33,19 @@ class Superclass {
 }
 
 @QueryEntity
+class EscapedWords {
+  
+  var `object`: String = _  
+    
+  var `type`: String = _
+      
+  var `var`: String = _
+    
+  var `val`: String = _
+    
+}
+
+@QueryEntity
 class EntityClass extends Superclass {
 
   // FIXME

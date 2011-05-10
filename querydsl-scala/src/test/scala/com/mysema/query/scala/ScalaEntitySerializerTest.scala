@@ -14,9 +14,6 @@ import com.mysema.query.sql._
 
 import java.io.StringWriter
 
-import scala.tools.nsc._
-import scala.tools.nsc.InterpreterResults._
-
 class ScalaEntitySerializerTest extends CompileTestUtils {
 
   var entityType: EntityType = null

@@ -4,6 +4,7 @@ import com.mysema.codegen.CodeWriter
 import com.mysema.codegen.ScalaWriter
 import com.mysema.codegen.model._
 import com.mysema.codegen.model.TypeCategory._
+import com.mysema.codegen.support.ScalaSyntaxUtils
 
 import com.mysema.query
 import com.mysema.query.codegen._
@@ -102,7 +103,7 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
     for (property <- properties if property.getType.getCategory == ENTITY) yield {
       val queryType = typeMappings.getPathType(property.getType, model, false)
       val typeName = writer.getRawName(queryType)
-      val name = property.getEscapedName
+      val name = escape(property.getEscapedName)
       String.format("lazy val %1$s = new %2$s(this, \"%1$s\")", name, typeName)
     }
   }
@@ -151,8 +152,14 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
     
     // other properties
     serializeOtherProperties(model, writer, properties) foreach { case (propertyName, value) =>
-      writer.line("val ", propertyName, " = ", value, "\n")
+      writer.line("val ", escape(propertyName), " = ", value, "\n")
     }
+  }
+  
+  def escape(token: String): String = {
+      if (token == "type") "type$" // type is already available as a property in Expression
+      else if (ScalaSyntaxUtils.isReserved(token)) "`" + token + "`" 
+      else token 
   }
 
   def getAnnotationTypes(model: EntityType): Set[String] = {
