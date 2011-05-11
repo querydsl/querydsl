@@ -12,6 +12,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.ClassUtils;
+
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
@@ -323,8 +325,13 @@ public class SQLTemplates extends Templates {
         return tableAlias;
     }
 
-    public String getTypeForClass(Class<?> cl){
-        return class2type.get(cl);
+    public final String getTypeForClass(Class<?> cl){
+        Class<?> key = cl.isPrimitive() ? ClassUtils.primitiveToWrapper(cl) : cl;
+        if (class2type.containsKey(key)) {
+            return class2type.get(key);
+        } else {
+            throw new IllegalArgumentException("Got not type for " + key.getName());
+        }
     }
 
     public String getUnion() {
