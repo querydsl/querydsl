@@ -433,7 +433,9 @@ new CreateTableClause(conn, templates, "statement")
     
     <para>Insert examples :</para>
     
-<programlisting language="java"><![CDATA[    
+<programlisting language="java"><![CDATA[
+QSurvey survey = QSurvey.survey;
+  
 // with columns
 new SQLInsertClause(conn, dialect, survey)
     .columns(survey.id, survey.name)
@@ -458,7 +460,9 @@ new SQLInsertClause(conn, dialect, survey)
 
    <para>Update examples :</para> 
   
-<programlisting language="java"><![CDATA[  
+<programlisting language="java"><![CDATA[
+QSurvey survey = QSurvey.survey;
+
 // update with where
 new SQLUpdateClause(conn, dialect, survey)
     .where(survey.name.eq("XXX"))
@@ -473,7 +477,9 @@ new SQLUpdateClause(conn, dialect, survey)
 
   <para>Delete examples :</para>
 
-<programlisting language="java"><![CDATA[    
+<programlisting language="java"><![CDATA[
+QSurvey survey = QSurvey.survey;
+
 // delete with where
 new SQLDelecteClause(conn, dialect, survey)
     .where(survey.name.eq("XXX"))
@@ -494,6 +500,7 @@ new SQLDelecteClause(conn, dialect, survey)
     you can bundle the the calls via addBatch() usage into one DMLClause. See the examples how it works for UPDATE, DELETE and INSERT.</para>
 	
 <programlisting language="java"><![CDATA[   	
+    private static final QSurvey survey = QSurvey.survey;
 
     @Test
     public void updateExample() throws SQLException{
