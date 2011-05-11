@@ -1,4 +1,13 @@
-Bundle-SymbolicName: com.mysema.querydsl.maven.plugin
-Bundle-Name: Querydsl Maven
+Bundle-SymbolicName: com.mysema.querydsl.lucene
+Bundle-Name: Querydsl Lucene
 Bundle-Vendor: Mysema
 Bundle-ManifestVersion: 2
+Import-Template:
+  com.mysema.commons.lang.*;version="${mysema.lang.version}",
+  com.mysema.query.*;version="${project.version}",
+  edu.umd.cs.findbugs.annotations.*;version="${findbugs.version}",
+  javax.annotation.*;version="0",
+  org.apache.commons.collections15.*;version="${commons.collections.version}",
+  org.apache.commons.lang.*;version="${commons.lang.version}",
+  org.apache.lucene.*;version="[3.0.0,3.1.0)",
+  org.slf4j.*;version="${slf4j.version}"

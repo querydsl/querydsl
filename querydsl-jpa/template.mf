@@ -2,3 +2,15 @@ Bundle-SymbolicName: com.mysema.querydsl.jpa
 Bundle-Name: Querydsl JPA
 Bundle-Vendor: Mysema
 Bundle-ManifestVersion: 2
+Import-Template:
+  com.mysema.codegen.*;version="${codegen.version}",
+  com.mysema.commons.lang.*;version="${mysema.lang.version}",
+  com.mysema.query.*;version="${project.version}",
+  com.mysema.util.*;version="${project.version}",
+  edu.umd.cs.findbugs.annotations.*;version="${findbugs.version}",
+  javax.annotation.*;version="0",
+  javax.inject.*;version="1",
+  javax.persistence.*;version="[2.0.0,2.1.0)",
+  javax.xml.stream.*;version="0",
+  org.hibernate.*;version="${hibernate.version}",
+  org.slf4j.*;version="${slf4j.version}"

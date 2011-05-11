@@ -2,3 +2,10 @@ Bundle-SymbolicName: com.mysema.querydsl.scala
 Bundle-Name: Querydsl Scala
 Bundle-Vendor: Mysema
 Bundle-ManifestVersion: 2
+Import-Template:
+  com.mysema.codegen.*;version="${codegen.version}",
+  com.mysema.query.*;version="${project.version}",   
+  javax.inject.*;version="1",
+  org.apache.commons.lang.*;version="${commons.lang.version}",
+  scala.*;version="[2.8,2.9)"
+  

@@ -15,17 +15,22 @@
   <description>Mongodb support for Querydsl</description>
   <packaging>jar</packaging>
   
+  <properties>
+    <mongodb.version>2.1</mongodb.version>
+    <morphia.version>0.99</morphia.version>
+  </properties>
+  
   <dependencies>   
     <dependency>   
         <groupId>org.mongodb</groupId>
         <artifactId>mongo-java-driver</artifactId>
-        <version>2.1</version>
+        <version>${mongodb.version}</version>
     </dependency>
     
     <dependency>
         <groupId>com.google.code.morphia</groupId>
         <artifactId>morphia</artifactId>
-        <version>0.99</version>
+        <version>${morphia.version}</version>
     </dependency>
     <!-- Optional Jars (for certain features) but required by maven for bulding. -->
     <dependency>

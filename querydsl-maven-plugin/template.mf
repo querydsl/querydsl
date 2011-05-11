@@ -1,4 +1,8 @@
-Bundle-SymbolicName: com.mysema.querydsl.core
-Bundle-Name: Querydsl Core
+Bundle-SymbolicName: com.mysema.querydsl.maven.plugin
+Bundle-Name: Querydsl Maven Plugin
 Bundle-Vendor: Mysema
 Bundle-ManifestVersion: 2
+Import-Template:
+  com.mysema.query.*;version="${project.version}",   
+  org.apache.maven.*;version="[2.0.0,3.0.0)"
+  

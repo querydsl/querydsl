@@ -15,6 +15,10 @@
   <description>SQL support for Querydsl</description>
   <packaging>jar</packaging>
 
+  <properties>
+    <ant.version>1.8.1</ant.version>
+  </properties>
+
   <dependencies>
 
     <dependency>
@@ -52,7 +56,7 @@
 	<dependency>
 	    <groupId>org.apache.ant</groupId>
 	    <artifactId>ant</artifactId>
-	    <version>1.8.1</version>
+	    <version>${ant.version}</version>
 		<scope>provided</scope>
 	</dependency>	
 
