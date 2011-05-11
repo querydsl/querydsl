@@ -326,11 +326,11 @@ public class SQLTemplates extends Templates {
     }
 
     public final String getTypeForClass(Class<?> cl){
-        Class<?> key = cl.isPrimitive() ? ClassUtils.primitiveToWrapper(cl) : cl;
-        if (class2type.containsKey(key)) {
-            return class2type.get(key);
+        Class<?> clazz = cl.isPrimitive() ? ClassUtils.primitiveToWrapper(cl) : cl;
+        if (class2type.containsKey(clazz)) {
+            return class2type.get(clazz);
         } else {
-            throw new IllegalArgumentException("Got not type for " + key.getName());
+            throw new IllegalArgumentException("Got not type for " + clazz.getName());
         }
     }
 
