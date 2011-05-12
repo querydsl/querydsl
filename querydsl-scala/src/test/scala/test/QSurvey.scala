@@ -4,9 +4,6 @@ import com.mysema.query.types._;
 import com.mysema.query.scala._;
 
 import com.mysema.query.types.PathMetadataFactory._;
-import com.mysema.query.sql.Table;
-import com.mysema.query.sql.Schema;
-
 import com.mysema.query.scala.sql.RelationalPathImpl;
 
 import com.mysema.query.sql._;
@@ -17,8 +14,6 @@ object QSurvey {
   val survey = as("survey")
 }
 
-@Table("SURVEY")
-@Schema("PUBLIC")
 class QSurvey(cl: Class[_ <: Survey], md: PathMetadata[_]) extends RelationalPathImpl[Survey](cl, md) {
   def this(variable: String) = this(classOf[Survey], forVariable(variable))
 

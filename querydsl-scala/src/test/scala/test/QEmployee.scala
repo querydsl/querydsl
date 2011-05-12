@@ -17,8 +17,6 @@ object QEmployee {
   val employee = as("employee")
 }
 
-@Table("EMPLOYEE")
-@Schema("PUBLIC")
 class QEmployee(cl: Class[_ <: Employee], md: PathMetadata[_]) extends RelationalPathImpl[Employee](cl, md) {
   def this(variable: String) = this(classOf[Employee], forVariable(variable))
 

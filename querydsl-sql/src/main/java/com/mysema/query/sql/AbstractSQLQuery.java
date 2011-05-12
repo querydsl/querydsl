@@ -339,14 +339,20 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     public <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
         if (expr instanceof RelationalPath<?>){
             try{
+                if (expr.getType().equals(expr.getClass())) {
+                    throw new IllegalArgumentException("RelationalPath based projection can only be used with generated Bean types");
+                }                
                 Map<String,Expression<?>> bindings = new HashMap<String,Expression<?>>();
-                for (Field field : expr.getClass().getFields()){
+                for (Field field : expr.getClass().getDeclaredFields()){
                     if (Expression.class.isAssignableFrom(field.getType()) && !Modifier.isStatic(field.getModifiers())){
                         field.setAccessible(true);
                         Expression<?> column = (Expression<?>) field.get(expr);
                         bindings.put(field.getName(), column);
                     }
                 }
+                if (bindings.isEmpty()) {
+                    throw new IllegalArgumentException("No bindings could be derived from " + expr);
+                }                
                 QBean<RT> bean = new QBean(expr.getType(), bindings);
                 return iterate(bean);
             }catch(IllegalAccessException e){

@@ -119,33 +119,3 @@ class JDBCIntegrationTest {
   def query = new SQLQueryImpl(connection, templates)
 
 }
-
-//@Table("survey")
-//class QSurvey(path: String) extends RelationalPathBase[QSurvey](classOf[QSurvey], path) {
-//  val id: NumberPath[Integer] = createNumber("id", classOf[Integer])
-//
-//  val name: StringPath = createString("name")
-//
-//  val sysIdx46: PrimaryKey[QSurvey] = createPrimaryKey(id, name)
-//
-//  val _surveyFk: ForeignKey[QEmployee] = createInvForeignKey(Arrays.asList(id, id), Arrays.asList("survey_id", "survey_id"))
-//
-//}
-
-//@Table("employee")
-//class QEmployee(path: String) extends RelationalPathBase[QEmployee](classOf[QEmployee], path) {
-//  val firstname: StringPath = createString("firstname")
-//
-//  val id: NumberPath[Integer] = createNumber("id", classOf[Integer])
-//
-//  val lastname: StringPath = createString("lastname")
-//
-//  val superiorId: NumberPath[Integer] = createNumber("superior_id", classOf[Integer])
-//
-//  val sysIdx47: PrimaryKey[QEmployee] = createPrimaryKey(id)
-//
-//  val superiorFk: ForeignKey[QEmployee] = createForeignKey(superiorId, "id")
-//
-//  val _superiorFk: ForeignKey[QEmployee] = createInvForeignKey(id, "superior_id")
-//
-//}
