@@ -8,6 +8,8 @@ import com.mysema.query.sql.Column;
 /**
  * Employee is a Querydsl bean type
  */
+@com.mysema.query.sql.Table("EMPLOYEE")
+@com.mysema.query.sql.Schema("PUBLIC")
 class Employee {
 
   @Column("FIRSTNAME")

@@ -1,18 +1,19 @@
 package com.mysema.query.scala.sql
 
-import com.mysema.query.sql._;
-import com.mysema.query.types.path._;
+import test._
+import com.mysema.query.sql._
+import com.mysema.query.types.path._
 import java.io.File
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.Connection
+import java.sql.DriverManager
+import java.sql.SQLException
+import java.sql.Statement
 
 import org.junit._
 import org.junit.Assert._
 
-import java.util.Arrays;
+import java.util.Arrays
 
 import com.mysema.query.scala.ScalaBeanSerializer
 import com.mysema.query.scala.ScalaTypeMappings
@@ -89,6 +90,8 @@ class JDBCIntegrationTest {
     val survey = new QSurvey("survey")
     val employee = new QEmployee("employee")
 
+    assertEquals(2, query from (survey) list (survey) size ())
+    
     // list
     assertEquals(2, query from (survey) list (survey.id) size ())
     assertEquals(2, query from (employee) list (employee.firstname) size ())
@@ -117,32 +120,32 @@ class JDBCIntegrationTest {
 
 }
 
-@Table("survey")
-class QSurvey(path: String) extends RelationalPathBase[QSurvey](classOf[QSurvey], path) {
-  val id: NumberPath[Integer] = createNumber("id", classOf[Integer])
+//@Table("survey")
+//class QSurvey(path: String) extends RelationalPathBase[QSurvey](classOf[QSurvey], path) {
+//  val id: NumberPath[Integer] = createNumber("id", classOf[Integer])
+//
+//  val name: StringPath = createString("name")
+//
+//  val sysIdx46: PrimaryKey[QSurvey] = createPrimaryKey(id, name)
+//
+//  val _surveyFk: ForeignKey[QEmployee] = createInvForeignKey(Arrays.asList(id, id), Arrays.asList("survey_id", "survey_id"))
+//
+//}
 
-  val name: StringPath = createString("name")
-
-  val sysIdx46: PrimaryKey[QSurvey] = createPrimaryKey(id, name)
-
-  val _surveyFk: ForeignKey[QEmployee] = createInvForeignKey(Arrays.asList(id, id), Arrays.asList("survey_id", "survey_id"))
-
-}
-
-@Table("employee")
-class QEmployee(path: String) extends RelationalPathBase[QEmployee](classOf[QEmployee], path) {
-  val firstname: StringPath = createString("firstname")
-
-  val id: NumberPath[Integer] = createNumber("id", classOf[Integer])
-
-  val lastname: StringPath = createString("lastname")
-
-  val superiorId: NumberPath[Integer] = createNumber("superior_id", classOf[Integer])
-
-  val sysIdx47: PrimaryKey[QEmployee] = createPrimaryKey(id)
-
-  val superiorFk: ForeignKey[QEmployee] = createForeignKey(superiorId, "id")
-
-  val _superiorFk: ForeignKey[QEmployee] = createInvForeignKey(id, "superior_id")
-
-}
+//@Table("employee")
+//class QEmployee(path: String) extends RelationalPathBase[QEmployee](classOf[QEmployee], path) {
+//  val firstname: StringPath = createString("firstname")
+//
+//  val id: NumberPath[Integer] = createNumber("id", classOf[Integer])
+//
+//  val lastname: StringPath = createString("lastname")
+//
+//  val superiorId: NumberPath[Integer] = createNumber("superior_id", classOf[Integer])
+//
+//  val sysIdx47: PrimaryKey[QEmployee] = createPrimaryKey(id)
+//
+//  val superiorFk: ForeignKey[QEmployee] = createForeignKey(superiorId, "id")
+//
+//  val _superiorFk: ForeignKey[QEmployee] = createInvForeignKey(id, "superior_id")
+//
+//}

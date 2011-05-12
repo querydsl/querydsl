@@ -8,6 +8,8 @@ import com.mysema.query.sql.Column;
 /**
  * Survey is a Querydsl bean type
  */
+@com.mysema.query.sql.Schema("PUBLIC")
+@com.mysema.query.sql.Table("SURVEY")
 class Survey {
 
   @Column("ID")
