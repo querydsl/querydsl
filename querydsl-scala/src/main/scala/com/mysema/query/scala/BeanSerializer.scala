@@ -49,7 +49,7 @@ class ScalaBeanSerializer extends Serializer {
     writer.javadoc(simpleName + javadocSuffix)
 
     // header
-    model.getAnnotations.foreach(writer.annotation(_))
+    model.getAnnotations foreach (writer.annotation(_))
 
     writer.beginClass(model)
 
