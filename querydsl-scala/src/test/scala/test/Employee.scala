@@ -10,24 +10,20 @@ import com.mysema.query.sql.Column;
  */
 class Employee {
 
-    @Column("FIRSTNAME")
-    @Size(max=50)
-    @BeanProperty
-    var firstname: String = _;
+  @Column("FIRSTNAME")
+  @Size(max=50)
+  @BeanProperty var firstname: String = _;
 
-    @Column("ID")
-    @NotNull
-    @BeanProperty
-    var id: Integer = _;
+  @Column("ID")
+  @NotNull
+  @BeanProperty var id: Integer = _;
 
-    @Column("LASTNAME")
-    @Size(max=50)
-    @BeanProperty
-    var lastname: String = _;
+  @Column("LASTNAME")
+  @Size(max=50)
+  @BeanProperty var lastname: String = _;
 
-    @Column("SUPERIOR_ID")
-    @BeanProperty
-    var superiorId: Integer = _;
+  @Column("SUPERIOR_ID")
+  @BeanProperty var superiorId: Integer = _;
 
 }
 
