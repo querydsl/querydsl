@@ -89,12 +89,15 @@
 	
 	<title>Querying</title>
 
-	<para>Querying with Queryds Mongodb is as simple as this :
+	<para>Querying with Querydsl Mongodb with Morphia is as simple as this :
 	</para>
 
 	<programlisting language="java"><![CDATA[
+Morphia morphia;
+Datastore datastore;
+// ...	
 QUser user = new QUser("user");
-MongodbQuery<User> query = new MongodbQuery<User>(morphia, datastore, user);
+MorphiaQuery<User> query = new MorphiaQuery<User>(morphia, datastore, user);
 List<User> list = query
 	.where(user.firstName.eq("Bob"))
 	.list();
