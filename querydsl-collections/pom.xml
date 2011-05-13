@@ -51,6 +51,10 @@
   <build>
     <plugins>      
       <plugin>
+        <groupId>com.springsource.bundlor</groupId>
+        <artifactId>com.springsource.bundlor.maven</artifactId>
+      </plugin>    
+      <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>maven-apt-plugin</artifactId>
         <executions>

@@ -133,6 +133,11 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>com.springsource.bundlor</groupId>
+        <artifactId>com.springsource.bundlor.maven</artifactId>
+      </plugin>   
+    
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <executions>

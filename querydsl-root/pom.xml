@@ -143,8 +143,25 @@
           <artifactId>maven-apt-plugin</artifactId>
           <version>0.3.1</version>
         </plugin>
+        <plugin>
+	      <groupId>com.springsource.bundlor</groupId>
+	      <artifactId>com.springsource.bundlor.maven</artifactId>
+	      <version>1.0.0.RELEASE</version>
+	      <executions>
+	        <execution>
+	          <id>bundlor</id>
+	          <goals>
+	            <goal>bundlor</goal>
+	          </goals>
+	        </execution>
+	      </executions>
+	      <configuration>
+	        <failOnWarnings>true</failOnWarnings> 
+	      </configuration>
+      	</plugin>
       </plugins>      
     </pluginManagement>
+    
     <plugins>
       <plugin>       
         <artifactId>maven-assembly-plugin</artifactId>
@@ -216,7 +233,8 @@
           <targetJdk>1.6</targetJdk>   
           <includeTests>true</includeTests>     
         </configuration>
-      </plugin>            
+      </plugin>      
+<!-- 
       <plugin>
         <groupId>com.springsource.bundlor</groupId>
         <artifactId>com.springsource.bundlor.maven</artifactId>
@@ -233,6 +251,7 @@
           <failOnWarnings>true</failOnWarnings> 
         </configuration>
       </plugin>
+ -->      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
