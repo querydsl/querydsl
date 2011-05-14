@@ -162,8 +162,8 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         }
             
         else if (op == Ops.BETWEEN) {
-            BasicDBObject value = new BasicDBObject("$gt", asDBValue(expr, 1));
-            value.append("$lt", asDBValue(expr, 2));
+            BasicDBObject value = new BasicDBObject("$gte", asDBValue(expr, 1));
+            value.append("$lte", asDBValue(expr, 2));
             return asDBObject(asDBKey(expr, 0), value);
         }
 

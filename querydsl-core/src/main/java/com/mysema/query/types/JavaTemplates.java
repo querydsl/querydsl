@@ -40,7 +40,7 @@ public class JavaTemplates extends Templates {
         add(Ops.CONTAINS_VALUE, "{0}.containsValue({1})");
 
         // Comparable
-        add(Ops.BETWEEN, "{1} < {0} && {0} < {2}");
+        add(Ops.BETWEEN, "{1} <= {0} && {0} <= {2}");
 
         // String
         add(Ops.CHAR_AT, "{0}.charAt({1})");

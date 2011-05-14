@@ -19,7 +19,7 @@ import javax.annotation.Nullable;
 public final class ColQueryFunctions {
 
     public static <A extends Comparable<? super A>> boolean between(A a, A b, A c) {
-        return a.compareTo(b) > 0 && a.compareTo(c) < 0;
+        return a.compareTo(b) >= 0 && a.compareTo(c) <= 0;
     }
 
     @Nullable

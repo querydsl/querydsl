@@ -292,8 +292,18 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @param to
      * @return
      */
-    public final <A extends Number & Comparable<?>> BooleanExpression between(A from, A to) {
-        return BooleanOperation.create(Ops.BETWEEN, this, new ConstantImpl<A>(from), new ConstantImpl<A>(to));
+    public final <A extends Number & Comparable<?>> BooleanExpression between(@Nullable A from, @Nullable A to) {
+        if (from == null) {
+            if (to != null) {
+                return BooleanOperation.create(Ops.LOE, this, new ConstantImpl<A>(to));
+            } else {
+                throw new IllegalArgumentException("Either from or to needs to be non-null");
+            }
+        } else if (to == null) {
+            return BooleanOperation.create(Ops.GOE, this, new ConstantImpl<A>(from));
+        } else {
+            return BooleanOperation.create(Ops.BETWEEN, this, new ConstantImpl<A>(from), new ConstantImpl<A>(to));    
+        }      
     }
 
     /**
@@ -304,8 +314,18 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @param to
      * @return
      */
-    public final <A extends Number & Comparable<?>> BooleanExpression between(Expression<A> from, Expression<A> to) {
-        return BooleanOperation.create(Ops.BETWEEN, this, from, to);
+    public final <A extends Number & Comparable<?>> BooleanExpression between(@Nullable Expression<A> from, @Nullable Expression<A> to) {
+        if (from == null) {
+            if (to != null) {
+                return BooleanOperation.create(Ops.LOE, this, to);
+            } else {
+                throw new IllegalArgumentException("Either from or to needs to be non-null");
+            }
+        } else if (to == null) {
+            return BooleanOperation.create(Ops.GOE, this, from);
+        } else {
+            return BooleanOperation.create(Ops.BETWEEN, this, from, to);    
+        }
     }
 
     /**

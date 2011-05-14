@@ -5,6 +5,8 @@
  */
 package com.mysema.query.types.expr;
 
+import javax.annotation.Nullable;
+
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
@@ -39,25 +41,46 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     }
 
     /**
-     * Get a <code>from &lt; this &lt; to</code> expression
+     * Get a <code>from &lt;= this &lt;= to</code> expression
      *
      * @param from
      * @param to
      * @return
      */
-    public final BooleanExpression between(T from, T to) {
-        return BooleanOperation.create(Ops.BETWEEN, this, new ConstantImpl<T>(from), new ConstantImpl<T>(to));
+    public final BooleanExpression between(@Nullable T from, @Nullable T to) {
+        if (from == null) {
+            if (to != null) {
+                return BooleanOperation.create(Ops.BOE, this, new ConstantImpl<T>(to));
+            } else {
+                throw new IllegalArgumentException("Either from or to needs to be non-null");
+            }
+        } else if (to == null) {
+            return BooleanOperation.create(Ops.AOE, this, new ConstantImpl<T>(from));
+        } else {
+            return BooleanOperation.create(Ops.BETWEEN, this, new ConstantImpl<T>(from), new ConstantImpl<T>(to));    
+        }        
     }
 
     /**
-     * Get a <code>first &lt; this &lt; second</code> expression
+     * Get a <code>first &lt;= this &lt;= second</code> expression
      *
      * @param from
      * @param to
      * @return
      */
-    public final BooleanExpression between(Expression<T> from, Expression<T> to) {
-        return BooleanOperation.create(Ops.BETWEEN, this, from, to);
+    public final BooleanExpression between(@Nullable Expression<T> from, @Nullable Expression<T> to) {
+        if (from == null) {
+            if (to != null) {
+                return BooleanOperation.create(Ops.BOE, this, to);
+            } else {
+                throw new IllegalArgumentException("Either from or to needs to be non-null");
+            }
+        } else if (to == null) {
+            return BooleanOperation.create(Ops.AOE, this, from);
+        } else {
+            return BooleanOperation.create(Ops.BETWEEN, this, from, to);    
+        }
+        
     }
 
     /**
@@ -90,7 +113,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public BooleanExpression gt(T right) {
-        return gt(new ConstantImpl(right));
+        return gt(new ConstantImpl<T>(right));
     }
 
     /**
@@ -112,7 +135,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public BooleanExpression goe(T right) {
-        return goe(new ConstantImpl(right));
+        return goe(new ConstantImpl<T>(right));
     }
 
     /**
@@ -134,7 +157,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final BooleanExpression lt(T right) {
-        return lt(new ConstantImpl(right));
+        return lt(new ConstantImpl<T>(right));
     }
 
     /**
@@ -156,7 +179,7 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      * @see java.lang.Comparable#compareTo(Object)
      */
     public final BooleanExpression loe(T right) {
-        return BooleanOperation.create(Ops.BOE, this, new ConstantImpl(right));
+        return BooleanOperation.create(Ops.BOE, this, new ConstantImpl<T>(right));
     }
 
     /**
