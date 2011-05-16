@@ -9,6 +9,10 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.JoinType;
+import com.mysema.query.QueryMetadata;
+import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.types.path.NumberPath;
 
 public class JPQLSerializerTest {
@@ -25,4 +29,13 @@ public class JPQLSerializerTest {
         }
     }
 
+    @Test
+    public void Delete_Clause_Uses_DELETE_FROM() {
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        QueryMetadata md = new DefaultQueryMetadata();
+        md.addJoin(JoinType.DEFAULT, QEmployee.employee);
+        md.addWhere(QEmployee.employee.lastName.isNull());
+        serializer.serializeForDelete(md);
+        assertEquals("delete from Employee employee\nwhere employee.lastName is null", serializer.toString());
+    }
 }

@@ -39,7 +39,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     private static final String COMMA = ", ";
 
-    private static final String DELETE = "delete ";
+    private static final String DELETE = "delete from ";
 
     private static final String FROM = "from ";
 
