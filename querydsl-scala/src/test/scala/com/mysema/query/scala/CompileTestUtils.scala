@@ -2,12 +2,20 @@ package com.mysema.query.scala
 
 import scala.tools.nsc._
 import scala.tools.nsc.InterpreterResults._
+import scala.io.Source.fromFile
+import java.io.File
 
 trait CompileTestUtils {
   private def jarPathOfClass(className: String) = {
     Class.forName(className).getProtectionDomain.getCodeSource.getLocation
   }
 
+  def assertCompileSuccess(files: Traversable[File]): Unit = {
+    assertCompileSuccess(files
+                           map (fromFile(_).mkString)
+                           mkString ("\n"))
+  }
+  
   def assertCompileSuccess(source: String): Unit = {
     import java.io.File.pathSeparator
 
@@ -25,7 +33,7 @@ trait CompileTestUtils {
 
     val interpreter = new Interpreter(env, interpreterWriter)
     try {
-      val result = interpreter.interpret(source.replace("package", "import"))
+      val result = interpreter.interpret(source.replaceAll("package", "import"))
       if (result != Success) {
         throw new AssertionError("Compile failed, interpreter output:\n" + out.toString("utf-8"))
       }

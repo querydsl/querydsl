@@ -15,12 +15,14 @@ import org.junit.Assert._
 
 import java.util.Arrays
 
+import com.mysema.query.scala.CompileTestUtils
+
 import com.mysema.query.scala.ScalaBeanSerializer
 import com.mysema.query.scala.ScalaTypeMappings
 
 import com.mysema.query.sql.dml._
 
-class JDBCIntegrationTest {
+class JDBCIntegrationTest extends CompileTestUtils {
     
   val survey = new QSurvey("survey")
   val employee = new QEmployee("employee")
@@ -33,8 +35,6 @@ class JDBCIntegrationTest {
 
   @Before
   def setUp() {
-//    Class.forName("org.hsqldb.jdbcDriver")
-//    val url = "jdbc:hsqldb:mem:testdb"
     Class.forName("org.h2.Driver")
     val url = "jdbc:h2:target/h2"
     
@@ -45,20 +45,20 @@ class JDBCIntegrationTest {
     statement.execute("drop table date_test if exists")
     statement.execute("drop table date_time_test if exists")
 
-    statement.execute("create table survey ("
-      + "id int identity, "
-      + "name varchar(30))")
+    statement.execute("""create table survey (
+      id int identity,
+      name varchar(30))""")
 
     statement.execute("insert into survey (name) values ('abc')")
     statement.execute("insert into survey (name) values ('def')")
 
-    statement.execute("create table employee("
-      + "id INT identity, "
-      + "firstname VARCHAR(50), "
-      + "lastname VARCHAR(50), "
-      + "superior_id int, "
-      + "CONSTRAINT PK_employee PRIMARY KEY (id), "
-      + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))")
+    statement.execute("""create table employee(
+      id INT identity,
+      firstname VARCHAR(50),
+      lastname VARCHAR(50),
+      superior_id int,
+      CONSTRAINT PK_employee PRIMARY KEY (id),
+      CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))""")
 
     statement.execute("insert into employee (firstname, lastname) values ('Bob', 'Smith')")
     statement.execute("insert into employee (firstname, lastname) values ('John', 'Doe')")
@@ -72,13 +72,22 @@ class JDBCIntegrationTest {
     val exporter = new MetaDataExporter()
     exporter.setNamePrefix("Q")
     exporter.setPackageName("test")
-    exporter.setTargetFolder(new File("target/gen1"))
+    val directory = new File("target/gen1")
+    exporter.setTargetFolder(directory)
     exporter.setSerializerClass(classOf[ScalaMetaDataSerializer])
     exporter.setCreateScalaSources(true)
     exporter.setTypeMappings(ScalaTypeMappings.create)
     exporter.export(connection.getMetaData)
-    
-    // TODO : compile sources
+
+    assertCompileSuccess(recursiveFileList(directory))
+  }
+  
+  private def recursiveFileList(file: File): Array[File] = {
+    if (file.isDirectory) {
+      file.listFiles.flatMap(recursiveFileList(_))
+    } else {
+      Array(file)
+    }
   }
 
   @Test
@@ -99,8 +108,12 @@ class JDBCIntegrationTest {
   }
 
   @Test
-  def List {
+  def Populate_Bean {
     assertEquals(2, query from (survey) list (survey) size ())
+  }
+  
+  @Test
+  def List {
     assertEquals(2, query from (survey) list (survey.id) size ())
     assertEquals(2, query from (employee) list (employee.firstname) size ())
   }
@@ -112,7 +125,7 @@ class JDBCIntegrationTest {
   }
   
   @Test
-  def UniqueResult {
+  def Unique_Result {
     assertEquals("abc", query from survey where (survey.id eq 1) uniqueResult survey.name)
     assertEquals("def", query from survey where (survey.id eq 2) uniqueResult survey.name)
     assertEquals("Bob", query from employee where (employee.lastname eq "Smith") uniqueResult employee.firstname)
