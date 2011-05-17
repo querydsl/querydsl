@@ -6,6 +6,7 @@
 package com.mysema.query.sql.dml;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,11 +16,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.collections15.BeanMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -351,18 +350,31 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
     @SuppressWarnings("unchecked")
     public SQLInsertClause populate(Object bean) {
         try {
-            BeanMap map = new BeanMap(bean);
-            for (Map.Entry entry : map.entrySet()){
-                String property = entry.getKey().toString();
-                if (!property.equals("class")){
-                    Field field = entity.getClass().getDeclaredField(property);
+            Class<?> beanClass = bean.getClass();
+            for (Field beanField : beanClass.getDeclaredFields()) {
+                if (!Modifier.isStatic(beanField.getModifiers())) {
+                    Field field = entity.getClass().getDeclaredField(beanField.getName());
                     field.setAccessible(true);
                     Path path = (Path<?>) field.get(entity);
-                    if (entry.getValue() != null) {
-                        set(path, entry.getValue());    
-                    }                    
+                    beanField.setAccessible(true);
+                    Object propertyValue = beanField.get(bean);
+                    if (propertyValue != null) {
+                        set(path, propertyValue);
+                    }     
                 }
             }
+//            BeanMap map = new BeanMap(bean);
+//            for (Map.Entry entry : map.entrySet()){
+//                String property = entry.getKey().toString();
+//                if (!property.equals("class")){
+//                    Field field = entity.getClass().getDeclaredField(property);
+//                    field.setAccessible(true);
+//                    Path path = (Path<?>) field.get(entity);
+//                    if (entry.getValue() != null) {
+//                        set(path, entry.getValue());    
+//                    }                    
+//                }
+//            }
             return this;
         } catch (SecurityException e) {
             throw new QueryException(e);

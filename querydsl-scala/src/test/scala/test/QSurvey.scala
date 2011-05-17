@@ -23,7 +23,7 @@ class QSurvey(cl: Class[_ <: Survey], md: PathMetadata[_]) extends RelationalPat
 
   val name = createString("NAME")
 
-  val sysIdx54: PrimaryKey[Survey] = createPrimaryKey(id, name);
+  val sysIdx54: PrimaryKey[Survey] = createPrimaryKey(id);
 
 }
 

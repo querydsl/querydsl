@@ -124,8 +124,9 @@ class JDBCIntegrationTest {
       val s = new Survey()
       s.name = "XXX"
           
-      val count = insert(survey) populate(s) execute()
-      assertTrue(count > 0)
+      val id = insert(survey) populate(s) executeWithKey(survey.id)
+      val sNew = query from survey where (survey.id === id) uniqueResult (survey)
+      assertEquals(s.name, sNew.name)
   }
   
   @Test
@@ -139,6 +140,9 @@ class JDBCIntegrationTest {
       
       val count = update(survey) populate(s) execute()
       assertTrue(count > 0)
+      
+      val sNew = query from survey where (survey.id === id) uniqueResult (survey)
+      assertEquals(s.name, sNew.name)
   }
   
   @Test

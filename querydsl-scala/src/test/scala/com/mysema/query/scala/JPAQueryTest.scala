@@ -46,14 +46,19 @@ class JPAQueryTest {
   }
 
   @Test
-  def Various {
-    // list
+  def List {
     query from (person) where (person.firstName $like "Rob%") list (person)
-    // unique result
-    query from (person) where (person.firstName $like "Rob%") unique (person)
-    // long where
-    query from (person) where (person.firstName $like "Rob%", person.lastName $like "An%") list (person)
   }
+  
+  @Test
+  def Unique_Result {
+    query from (person) where (person.firstName $like "Rob%") unique (person)
+  }
+  
+  @Test
+  def Long_Where {
+    query from (person) where (person.firstName $like "Rob%", person.lastName $like "An%") list (person)
+  }  
   
   @Test
   def Complex {
