@@ -5,6 +5,7 @@
  */
 package com.mysema.query.sql.dml;
 
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -231,7 +232,9 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
             for (Map.Entry entry : map.entrySet()){
                 String property = entry.getKey().toString();
                 if (!property.equals("class")){
-                    Path path = (Path<?>) entity.getClass().getField(property).get(entity);
+                    Field field = entity.getClass().getDeclaredField(property);
+                    field.setAccessible(true);
+                    Path path = (Path<?>) field.get(entity);
                     if (!primaryKeyColumns.contains(path)){
                         set(path, entry.getValue());    
                     }    

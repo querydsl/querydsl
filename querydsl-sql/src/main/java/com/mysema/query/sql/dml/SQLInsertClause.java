@@ -5,6 +5,7 @@
  */
 package com.mysema.query.sql.dml;
 
+import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -354,7 +355,9 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
             for (Map.Entry entry : map.entrySet()){
                 String property = entry.getKey().toString();
                 if (!property.equals("class")){
-                    Path path = (Path<?>) entity.getClass().getField(property).get(entity);
+                    Field field = entity.getClass().getDeclaredField(property);
+                    field.setAccessible(true);
+                    Path path = (Path<?>) field.get(entity);
                     if (entry.getValue() != null) {
                         set(path, entry.getValue());    
                     }                    
