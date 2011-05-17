@@ -71,23 +71,16 @@ class JDBCIntegrationTest extends CompileTestUtils {
     val namingStrategy = new DefaultNamingStrategy()
     val exporter = new MetaDataExporter()
     exporter.setNamePrefix("Q")
-    exporter.setPackageName("test")
+    exporter.setPackageName("com.mysema")
     val directory = new File("target/gen1")
     exporter.setTargetFolder(directory)
     exporter.setSerializerClass(classOf[ScalaMetaDataSerializer])
     exporter.setCreateScalaSources(true)
     exporter.setTypeMappings(ScalaTypeMappings.create)
+    exporter.setSchemaPattern("PUBLIC")
     exporter.export(connection.getMetaData)
 
     assertCompileSuccess(recursiveFileList(directory))
-  }
-  
-  private def recursiveFileList(file: File): Array[File] = {
-    if (file.isDirectory) {
-      file.listFiles.flatMap(recursiveFileList(_))
-    } else {
-      Array(file)
-    }
   }
 
   @Test
@@ -96,15 +89,25 @@ class JDBCIntegrationTest extends CompileTestUtils {
     val beanSerializer = new ScalaBeanSerializer()
     val exporter = new MetaDataExporter()
     exporter.setNamePrefix("Q")
-    exporter.setPackageName("test")
-    exporter.setTargetFolder(new File("target/gen2"))
+    exporter.setPackageName("com.mysema")
+    val directory = new File("target/gen2")
+    exporter.setTargetFolder(directory)
     exporter.setSerializerClass(classOf[ScalaMetaDataSerializer])
     exporter.setBeanSerializer(beanSerializer)
     exporter.setCreateScalaSources(true)
     exporter.setTypeMappings(ScalaTypeMappings.create)
+    exporter.setSchemaPattern("PUBLIC")
     exporter.export(connection.getMetaData)
     
-    // TODO : compile sources
+    assertCompileSuccess(recursiveFileList(directory))
+  }
+    
+  private def recursiveFileList(file: File): Array[File] = {
+    if (file.isDirectory) {
+      file.listFiles.flatMap(recursiveFileList(_))
+    } else {
+      Array(file)
+    }
   }
 
   @Test
