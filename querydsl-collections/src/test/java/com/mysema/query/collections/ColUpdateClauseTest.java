@@ -26,5 +26,5 @@ public class ColUpdateClauseTest {
 
         assertEquals("Bobby", cats.get(1).getName());
     }
-
+    
 }

@@ -27,7 +27,7 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
 
     private final Path<T> expr;
 
-    private final Map<Path<?>,Object> paths = new HashMap<Path<?>,Object>();
+    private final Map<Path<?>, Object> paths = new HashMap<Path<?>, Object>();
 
     private final ColQuery query;
 
