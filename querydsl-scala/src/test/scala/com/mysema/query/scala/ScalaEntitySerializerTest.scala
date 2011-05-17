@@ -42,7 +42,7 @@ class ScalaEntitySerializerTest extends CompileTestUtils {
   }
 
   @Test
-  def Print() {
+  def Print {
     val typeMappings = ScalaTypeMappings.create
     typeMappings.register(entityType, new QueryTypeFactoryImpl("Q", "", "").create(entityType))
     val serializer = new ScalaEntitySerializer(typeMappings)

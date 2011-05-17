@@ -33,9 +33,11 @@ class JDBCIntegrationTest {
 
   @Before
   def setUp() {
-    Class.forName("org.hsqldb.jdbcDriver")
-    val url = "jdbc:hsqldb:mem:testdb"
-        
+//    Class.forName("org.hsqldb.jdbcDriver")
+//    val url = "jdbc:hsqldb:mem:testdb"
+    Class.forName("org.h2.Driver")
+    val url = "jdbc:h2:target/h2"
+    
     connection = DriverManager.getConnection(url, "sa", "")
     statement = connection.createStatement()
     statement.execute("drop table employee if exists")
@@ -65,7 +67,7 @@ class JDBCIntegrationTest {
   }
 
   @Test
-  def Generation_without_Beantypes() {
+  def Generation_without_Beantypes {
     val namingStrategy = new DefaultNamingStrategy()
     val exporter = new MetaDataExporter()
     exporter.setNamePrefix("Q")
@@ -80,7 +82,7 @@ class JDBCIntegrationTest {
   }
 
   @Test
-  def Generation_with_Beantypes() {
+  def Generation_with_Beantypes {
     val namingStrategy = new DefaultNamingStrategy()
     val beanSerializer = new ScalaBeanSerializer()
     val exporter = new MetaDataExporter()
@@ -97,28 +99,28 @@ class JDBCIntegrationTest {
   }
 
   @Test
-  def List() {
+  def List {
     assertEquals(2, query from (survey) list (survey) size ())
     assertEquals(2, query from (survey) list (survey.id) size ())
     assertEquals(2, query from (employee) list (employee.firstname) size ())
   }
   
   @Test
-  def Count() {
+  def Count {
     assertEquals(2, query from (survey) count)
     assertEquals(2, query from (employee) count)
   }
   
   @Test
-  def UniqueResult() {
-    assertEquals("abc", query from survey where (survey.id eq 0) uniqueResult survey.name)
-    assertEquals("def", query from survey where (survey.id eq 1) uniqueResult survey.name)
+  def UniqueResult {
+    assertEquals("abc", query from survey where (survey.id eq 1) uniqueResult survey.name)
+    assertEquals("def", query from survey where (survey.id eq 2) uniqueResult survey.name)
     assertEquals("Bob", query from employee where (employee.lastname eq "Smith") uniqueResult employee.firstname)
     assertEquals("John", query from employee where (employee.lastname eq "Doe") uniqueResult employee.firstname)
   }  
   
   @Test
-  def Insert() {
+  def Insert {
       val s = new Survey()
       s.name = "XXX"
           
@@ -127,8 +129,7 @@ class JDBCIntegrationTest {
   }
   
   @Test
-  @Ignore // executeWithKey is not supported with HSQLDB
-  def Update() {
+  def Update {
       val s = new Survey()
       s.name = "XXX"
           
@@ -141,8 +142,7 @@ class JDBCIntegrationTest {
   }
   
   @Test
-  @Ignore // executeWithKey is not supported with HSQLDB
-  def Delete() {
+  def Delete {
       val s = new Survey()
       s.name = "XXX"
           

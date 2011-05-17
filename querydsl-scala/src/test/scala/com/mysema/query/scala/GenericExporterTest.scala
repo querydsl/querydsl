@@ -8,7 +8,7 @@ import io.Source.fromFile
 class GenericExporterTest extends CompileTestUtils {
 
   @Test
-  def Export() {
+  def Export {
     val exporter = new GenericExporter()
     exporter.setTargetFolder(new java.io.File("target/gen1"))
     exporter.setSerializerClass(classOf[ScalaEntitySerializer])

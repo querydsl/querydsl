@@ -12,7 +12,7 @@ class InjectionTest {
   implicit def asPredicate(str: String): Predicate = BooleanTemplate.create(str)
   
   @Test
-  def Injection() {
+  def Injection {
     val c = QCategory as "c"
     val sq = query from c where "c.name like \"a%\"" list c
     

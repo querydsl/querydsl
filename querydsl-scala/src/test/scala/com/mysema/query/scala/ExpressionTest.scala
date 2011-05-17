@@ -15,7 +15,7 @@ class ExpressionTest {
   }  
   
   @Test
-  def Double_Negation(){
+  def Double_Negation {
     assertEquals("person.javaInt", person.javaInt.negate.negate);  
   }
     

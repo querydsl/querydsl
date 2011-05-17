@@ -106,6 +106,13 @@
     </dependency>
     
     <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.2.133</version>
+      <scope>test</scope>
+    </dependency>
+    
+    <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
   	  <scope>provided</scope>      

@@ -54,7 +54,7 @@ class JPAIntegrationTest {
   }
 
   @Test
-  def test() {
+  def test {
     val user = alias(classOf[User])
     val department = alias(classOf[Department])
     val company = alias(classOf[Company])

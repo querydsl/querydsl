@@ -16,12 +16,12 @@ class ProjectionTest {
   val person = alias(classOf[Person])
 
   @Test
-  def QBean(){
+  def QBean {
     //val bean = new QBean(classOf[Person], person.firstName, person.lastName)        
   }
     
   @Test
-  def QTuple(){
+  def QTuple {
     val tuple = new QTuple(person.firstName, person.lastName)
     assertEquals(asList(person.firstName.~, person.lastName.~), tuple.getArgs)
   }
