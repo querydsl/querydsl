@@ -20,24 +20,10 @@ import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.SimpleExpression;
-import com.mysema.query.types.path.ArrayPath;
-import com.mysema.query.types.path.BooleanPath;
-import com.mysema.query.types.path.CollectionPath;
-import com.mysema.query.types.path.ComparablePath;
-import com.mysema.query.types.path.DatePath;
-import com.mysema.query.types.path.DateTimePath;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.EnumPath;
-import com.mysema.query.types.path.ListPath;
-import com.mysema.query.types.path.MapPath;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.PathBuilder;
-import com.mysema.query.types.path.SetPath;
-import com.mysema.query.types.path.SimplePath;
-import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.path.TimePath;
+import com.mysema.query.types.path.*;
 
 /**
  * Alias provides alias factory methods
@@ -92,22 +78,8 @@ public final class Alias {
     }
 
     public static <D extends Comparable<?>> ComparablePath<D> $(D arg) {
-        return aliasFactory.<ComparablePath<D>> getCurrentAndReset();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Nullable
-    public static <D> EntityPathBase<D> $(D arg) {
-        EntityPathBase<D> rv = aliasFactory.<EntityPathBase<D>> getCurrentAndReset();
-        if (rv != null) {
-            return rv;
-        }else if (arg instanceof EntityPath<?>){    
-            return (EntityPathBase)arg;
-        } else if (arg instanceof ManagedObject) {
-            return (EntityPathBase<D>) ((ManagedObject) arg).__mappedPath();
-        } else {
-            return null;
-        }
+//        return aliasFactory.<ComparablePath<D>> getCurrentAndReset();
+        return Alias.<D, ComparablePath<D>>getPath(arg);
     }
 
     public static NumberPath<Double> $(Double arg) {
@@ -161,6 +133,35 @@ public final class Alias {
     public static DateTimePath<Timestamp> $(Timestamp arg) {
         return aliasFactory.<DateTimePath<Timestamp>> getCurrentAndReset();
     }
+    
+    @SuppressWarnings("unchecked")
+    @Nullable
+    public static <D> EntityPathBase<D> $(D arg) {
+        EntityPathBase<D> rv = aliasFactory.<EntityPathBase<D>> getCurrentAndReset();
+        if (rv != null) {
+            return rv;
+        }else if (arg instanceof EntityPath<?>){    
+            return (EntityPathBase)arg;
+        } else if (arg instanceof ManagedObject) {
+            return (EntityPathBase<D>) ((ManagedObject) arg).__mappedPath();
+        } else {
+            return null;
+        }
+    }
+    
+    private static <D, P extends Path<D>> P getPath(D arg) {
+        P rv = aliasFactory.<P>getCurrentAndReset();
+        if (rv != null) {
+            return rv;
+        }else if (arg instanceof Path<?>){    
+            return (P)arg;
+        } else if (arg instanceof ManagedObject) {
+            return (P) ((ManagedObject) arg).__mappedPath();
+        } else {
+            return null;
+        }
+    }
+    
     //CHECKSTYLE:ON
 
     public static <A> A alias(Class<A> cl) {
