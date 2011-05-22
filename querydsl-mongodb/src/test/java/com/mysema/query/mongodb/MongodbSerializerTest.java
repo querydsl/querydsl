@@ -139,7 +139,7 @@ public class MongodbSerializerTest {
 
         assertQuery(
                 year.between(1, 10),
-                dbo("year", dbo("$goe", 1).append("$loe", 10))
+                dbo("year", dbo("$gte", 1).append("$lte", 10))
         );
     }
 
