@@ -12,7 +12,22 @@ import java.util.Set;
 
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.*;
+import com.mysema.query.types.path.ArrayPath;
+import com.mysema.query.types.path.BooleanPath;
+import com.mysema.query.types.path.CollectionPath;
+import com.mysema.query.types.path.ComparableEntityPath;
+import com.mysema.query.types.path.ComparablePath;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.EntityPathBase;
+import com.mysema.query.types.path.EnumPath;
+import com.mysema.query.types.path.ListPath;
+import com.mysema.query.types.path.MapPath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.SetPath;
+import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.path.TimePath;
 
 /**
  * @author tiwe
@@ -30,7 +45,7 @@ public class DefaultPathFactory implements PathFactory{
         return new BooleanPath(metadata);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public <E> Path<Collection<E>> createCollectionPath(Class<E> elementType, PathMetadata<?> metadata) {
         return new CollectionPath<E,EntityPathBase<E>>(elementType, (Class)EntityPathBase.class, metadata);
@@ -51,9 +66,14 @@ public class DefaultPathFactory implements PathFactory{
         return new DateTimePath<T>(type, metadata);
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public <T> Path<T> createEntityPath(Class<T> type, PathMetadata<?> metadata) {
-        return new EntityPathBase<T>(type, metadata);
+        if (Comparable.class.isAssignableFrom(type)) {
+            return new ComparableEntityPath(type, metadata);
+        } else {
+            return new EntityPathBase<T>(type, metadata);    
+        }        
     }
 
     @Override
@@ -61,13 +81,13 @@ public class DefaultPathFactory implements PathFactory{
         return new EnumPath<T>(type, metadata);
     }
     
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public <E> Path<List<E>> createListPath(Class<E> elementType, PathMetadata<?> metadata) {
         return new ListPath<E,EntityPathBase<E>>(elementType, (Class)EntityPathBase.class, metadata);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public <K, V> Path<Map<K, V>> createMapPath(Class<K> keyType, Class<V> valueType, PathMetadata<?> metadata) {
         return new MapPath<K,V,EntityPathBase<V>>(keyType, valueType, (Class)EntityPathBase.class, metadata);
@@ -78,7 +98,7 @@ public class DefaultPathFactory implements PathFactory{
         return new NumberPath<T>(type, metadata);
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public <E> Path<Set<E>> createSetPath(Class<E> elementType, PathMetadata<?> metadata) {
         return new SetPath<E,EntityPathBase<E>>(elementType, (Class)EntityPathBase.class, metadata);

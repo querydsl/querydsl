@@ -8,7 +8,6 @@ package com.mysema.query.alias;
 import static com.mysema.query.alias.Alias.$;
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.types.Path;
@@ -22,11 +21,18 @@ public class AliasTest {
     }
     
     @Test
-    @Ignore // FIXME
     public void ComparableEntity() {
        ComparableEntity entity = Alias.alias(ComparableEntity.class);
        Path<ComparableEntity> path = $(entity);
        assertEquals(ComparableEntity.class, path.getType());
+    }
+        
+    @Test
+    public void ComparableEntity_Property() {
+       ComparableEntity entity = Alias.alias(ComparableEntity.class);
+       Path<String> propertyPath = $(entity.getProperty());
+       assertEquals(String.class, propertyPath.getType());
+       assertEquals("property", propertyPath.getMetadata().getExpression().toString());
     }
     
     @Test
