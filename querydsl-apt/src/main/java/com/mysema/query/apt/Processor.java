@@ -532,6 +532,7 @@ public class Processor {
         
         // only creation
         for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnnotation())) {
+            // TODO: Why is this needed if there's no assignment? Just for cache?
             typeFactory.getEntityType(element.asType(), false);
             typeMirrors.add(element.asType());
             elements.add(element);
