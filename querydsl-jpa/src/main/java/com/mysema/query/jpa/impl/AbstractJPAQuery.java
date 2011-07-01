@@ -49,7 +49,9 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
 
     @Nullable
     private LockModeType lockMode;
-
+    
+    private Class<?> hibernateQueryClass;
+    
     public AbstractJPAQuery(EntityManager em) {
         this(new DefaultSessionHolder(em), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
     }
@@ -57,6 +59,11 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     public AbstractJPAQuery(JPASessionHolder sessionHolder, JPQLTemplates patterns, QueryMetadata metadata) {
         super(metadata, patterns);
         this.sessionHolder = sessionHolder;
+        try {
+            this.hibernateQueryClass = Class.forName("org.hibernate.ejb.HibernateQuery");
+        } catch (ClassNotFoundException e) {
+            // do nothing
+        }
     }
 
     public long count() {
@@ -132,7 +139,8 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         if (projection.size() == 1){
             Expression<?> expr = projection.get(0);
             if (expr instanceof FactoryExpression<?>){
-                if (query.getClass().getName().startsWith("org.hibernate")){
+//                if (query.getClass().getName().startsWith("org.hibernate")){
+                if (hibernateQueryClass != null && hibernateQueryClass.isInstance(query)) {
                     try {
                         Class<?> cl = Class.forName("com.mysema.query.jpa.impl.JPAQueryTransformerTask");
                         cl.getConstructor(Query.class, FactoryExpression.class).newInstance(query, expr);
