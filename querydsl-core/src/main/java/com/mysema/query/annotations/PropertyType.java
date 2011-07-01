@@ -18,32 +18,49 @@ import com.mysema.codegen.model.TypeCategory;
 public enum PropertyType {
     /**
      * 
-     */
-    COMPARABLE(TypeCategory.COMPARABLE),    
+     */    
+    COMPARABLE(TypeCategory.COMPARABLE),
+    
     /**
      * 
-     */
+     */    
     ENUM(TypeCategory.ENUM),
+    
     /**
      * 
-     */
+     */    
     DATE(TypeCategory.DATE),
+    
     /**
      * 
-     */
+     */    
     DATETIME(TypeCategory.DATETIME),
+    
     /**
      * 
-     */
+     */    
     NONE(null),
+    
     /**
      * 
      */
+    NUMERIC(TypeCategory.NUMERIC),
+    
+    /**
+     * 
+     */    
     SIMPLE(TypeCategory.SIMPLE),
+    
+    /**
+     * 
+     */
+    STRING(TypeCategory.STRING),
+    
     /**
      * 
      */
     TIME(TypeCategory.TIME),
+    
     /**
      *
      */
