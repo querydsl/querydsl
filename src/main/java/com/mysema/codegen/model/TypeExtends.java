@@ -12,6 +12,8 @@ import javax.annotation.Nullable;
 
 import net.jcip.annotations.Immutable;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * @author tiwe
  *
@@ -43,7 +45,8 @@ public class TypeExtends extends TypeAdapter{
             if (type.equals(Types.OBJECT)){
                 return "?";
             }else{
-                return "? extends " + super.getGenericName(true, packages, classes);
+                String genericName = super.getGenericName(true, packages, classes);
+                return StringUtils.isEmpty(genericName) ? "?" : "? extends " + genericName;
             }
         }else{
             return super.getGenericName(asArgType, packages, classes);
