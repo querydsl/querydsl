@@ -42,6 +42,8 @@ public final class SearchResults<T> {
 
     /**
      * Get the results in List form
+     * 
+     * An empty list is returned for no results.
      *
      * @return
      */

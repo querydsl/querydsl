@@ -103,6 +103,8 @@ public interface Projectable {
 
     /**
      * list the results for the given projection
+     * 
+     * An empty list is returned for no results.
      *
      * @param first
      * @param second
@@ -114,6 +116,8 @@ public interface Projectable {
 
     /**
      * list the results for the given projection
+     * 
+     * An empty list is returned for no results.
      *
      * @param args
      * @return
@@ -122,6 +126,8 @@ public interface Projectable {
 
     /**
      * list the results for the given projection
+     * 
+     * An empty list is returned for no results.
      *
      * @param <RT>
      *            generic type of the List
@@ -132,6 +138,8 @@ public interface Projectable {
 
     /**
      * list the distinct results for the given projection
+     * 
+     * An empty list is returned for no results.
      *
      * @param first
      * @param second
@@ -143,6 +151,8 @@ public interface Projectable {
 
     /**
      * list the distinct results for the given projection
+     * 
+     * An empty list is returned for no results.
      *
      * @param args
      * @return
@@ -151,6 +161,8 @@ public interface Projectable {
 
     /**
      * list the distinct results for the given projection
+     * 
+     * An empty list is returned for no results.
      *
      * @param <RT>
      *            generic type of the List
@@ -179,6 +191,8 @@ public interface Projectable {
 
     /**
      * return the given projection as a Map instance using key and value for Map population
+     *
+     * An empty map is returned for no results.
      *
      * @param <K>
      * @param <V>
