@@ -71,7 +71,9 @@ public class JPQLQueryMixin<T> extends QueryMixin<T> {
     @Override
     protected Predicate[] normalize(Predicate[] conditions, boolean where) {
         for (int i = 0; i < conditions.length; i++){
-            conditions[i] = normalize(conditions[i], where);
+            if (conditions[i] != null) {
+                conditions[i] = normalize(conditions[i], where);    
+            }   
         }
         return conditions;
     }
