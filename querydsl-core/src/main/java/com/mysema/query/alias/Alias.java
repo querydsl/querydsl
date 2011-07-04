@@ -149,6 +149,8 @@ public final class Alias {
         }
     }
     
+    @SuppressWarnings("unchecked")
+    @Nullable
     private static <D, P extends Path<D>> P getPath(D arg) {
         P rv = aliasFactory.<P>getCurrentAndReset();
         if (rv != null) {
