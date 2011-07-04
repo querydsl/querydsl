@@ -116,14 +116,6 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
         return this;
     }
 
-    protected void close(PreparedStatement stmt) {
-        try {
-            stmt.close();
-        } catch (SQLException e) {
-            throw new QueryException(e);
-        }
-    }
-
     public long execute() {                
         if (configuration.getTemplates().isNativeMerge()){
             return executeNativeMerge();

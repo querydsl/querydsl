@@ -6,10 +6,12 @@
 package com.mysema.query.sql.dml;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import com.mysema.query.QueryException;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
@@ -55,6 +57,22 @@ public class AbstractSQLClause {
             } catch (SQLException e) {
                 throw new IllegalArgumentException(e);
             }
+        }
+    }
+    
+    protected void close(PreparedStatement stmt) {
+        try {
+            stmt.close();
+        } catch (SQLException e) {
+            throw new QueryException(e);
+        }
+    }
+
+    protected void close(ResultSet rs){
+        try {
+            rs.close();
+        } catch (SQLException e) {
+            throw new QueryException(e);
         }
     }
 

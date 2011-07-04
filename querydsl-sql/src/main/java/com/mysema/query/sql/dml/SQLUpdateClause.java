@@ -99,14 +99,6 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
         return this;
     }
 
-    protected void close(PreparedStatement stmt) {
-        try {
-            stmt.close();
-        } catch (SQLException e) {
-            throw new QueryException(e);
-        }
-    }
-
     private PreparedStatement createStatement() throws SQLException{
         PreparedStatement stmt;
         if (batchUpdates.isEmpty()){

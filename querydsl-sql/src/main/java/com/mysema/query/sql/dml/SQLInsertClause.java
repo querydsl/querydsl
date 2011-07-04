@@ -123,22 +123,6 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         return this;
     }
 
-    protected void close(PreparedStatement stmt) {
-        try {
-            stmt.close();
-        } catch (SQLException e) {
-            throw new QueryException(e);
-        }
-    }
-
-    protected void close(ResultSet rs){
-        try {
-            rs.close();
-        } catch (SQLException e) {
-            throw new QueryException(e);
-        }
-    }
-
     @Override
     public SQLInsertClause columns(Path<?>... columns) {
         this.columns.addAll(Arrays.asList(columns));

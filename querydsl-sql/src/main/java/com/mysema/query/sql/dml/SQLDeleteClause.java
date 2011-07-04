@@ -84,14 +84,6 @@ public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<S
         metadata.addJoin(JoinType.DEFAULT, entity);
         return this;
     }
-
-    protected void close(PreparedStatement stmt) {
-        try {
-            stmt.close();
-        } catch (SQLException e) {
-            throw new QueryException(e);
-        }
-    }
     
     private PreparedStatement createStatement() throws SQLException{
         PreparedStatement stmt;
