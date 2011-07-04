@@ -97,29 +97,13 @@
               <goal>test-process</goal>
             </goals>
             <configuration>
-              <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+              <processors>
+                <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+                <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+                <processor>com.mysema.query.apt.jdo.JDOAnnotationProcessor</processor>
+              </processors>              
             </configuration>
-          </execution>		        
-          <execution>
-            <id>jpa</id>
-            <phase>generate-test-sources</phase>
-            <goals>
-              <goal>test-process</goal>
-            </goals>
-            <configuration>
-              <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
-            </configuration>
-          </execution>
-          <execution>
-            <id>jdo</id>
-            <phase>generate-test-sources</phase>
-            <goals>
-              <goal>test-process</goal>
-            </goals>
-            <configuration>
-              <processor>com.mysema.query.apt.jdo.JDOAnnotationProcessor</processor>
-            </configuration>
-          </execution>          
+          </execution>		                     
         </executions>
       </plugin>
       <plugin>

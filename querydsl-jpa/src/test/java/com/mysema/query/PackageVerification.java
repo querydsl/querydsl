@@ -1,6 +1,5 @@
 package com.mysema.query;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -10,12 +9,9 @@ import java.net.URLClassLoader;
 
 import javax.persistence.Entity;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import com.mysema.codegen.CodeWriter;
-import com.mysema.query.apt.hibernate.HibernateAnnotationProcessor;
-import com.mysema.query.apt.jpa.JPAAnnotationProcessor;
 import com.mysema.query.types.Expression;
 
 public class PackageVerification {
@@ -34,16 +30,16 @@ public class PackageVerification {
         oneJarClassLoader.loadClass(Expression.class.getName()); // querydsl-core
         oneJarClassLoader.loadClass(CodeWriter.class.getName()); // codegen
         oneJarClassLoader.loadClass(Entity.class.getName()); // jpa        
-        Class<?> processor;
-        if (hibernateDeps){
-            oneJarClassLoader.loadClass(org.hibernate.annotations.Type.class.getName()); // hibernate
-            processor = HibernateAnnotationProcessor.class;
-        }else{
-            processor = JPAAnnotationProcessor.class;
-        }
-        oneJarClassLoader.loadClass(processor.getName()); // querydsl-apt
-        String resourceKey = "META-INF/services/javax.annotation.processing.Processor";
-        assertEquals(processor.getName(), IOUtils.toString(oneJarClassLoader.findResource(resourceKey).openStream()));
+//        Class<?> processor;
+//        if (hibernateDeps){
+//            oneJarClassLoader.loadClass(org.hibernate.annotations.Type.class.getName()); // hibernate
+//            processor = HibernateAnnotationProcessor.class;
+//        }else{
+//            processor = JPAAnnotationProcessor.class;
+//        }
+//        oneJarClassLoader.loadClass(processor.getName()); // querydsl-apt
+//        String resourceKey = "META-INF/services/javax.annotation.processing.Processor";
+//        assertEquals(processor.getName(), IOUtils.toString(oneJarClassLoader.findResource(resourceKey).openStream()));
     }
     
 }
