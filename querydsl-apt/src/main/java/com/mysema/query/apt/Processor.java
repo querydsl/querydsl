@@ -440,7 +440,7 @@ public class Processor {
                     Element superTypeElement = env.getTypeUtils().asElement(superTypeMirror);
                     if (superTypeElement != null 
                             && !superTypeElement.toString().startsWith("java.lang.")  
-                            && superTypeElement.getAnnotationMirrors().isEmpty()) {
+                            && !hasKnownAnnotation(superTypeElement)) {
                         typeFactory.getEntityType(superTypeMirror, false);
                         superTypeMirrors.add(superTypeMirror);
                         elements.add(superTypeElement);
@@ -469,6 +469,22 @@ public class Processor {
         }
 
         mergeTypes(types, superTypes);
+    }
+    
+    private boolean hasKnownAnnotation(Element element) {
+        if (configuration.getEmbeddableAnnotation() != null && element.getAnnotation(configuration.getEmbeddableAnnotation()) != null) {
+            return true;
+        }
+                
+        if (configuration.getSupertypeSerializer() != null && element.getAnnotation(configuration.getSuperTypeAnnotation()) != null) {
+            return true;
+        }
+        
+        if (element.getAnnotation(configuration.getEntityAnnotation()) != null) {
+            return true;
+        }
+        
+        return false;
     }
 
     private void processDelegateMethod(Element delegateMethod, boolean cached) {
@@ -550,7 +566,7 @@ public class Processor {
                 Element superTypeElement = env.getTypeUtils().asElement(superTypeMirror);
                 if (superTypeElement != null 
                         && !superTypeElement.toString().startsWith("java.lang.") 
-                        && superTypeElement.getAnnotationMirrors().isEmpty()) {
+                        && !hasKnownAnnotation(superTypeElement)) {
                     typeFactory.getEntityType(superTypeMirror, false);
                     superTypeMirrors.add(superTypeMirror);
                     elements.add(superTypeElement);

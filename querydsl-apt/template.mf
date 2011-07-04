@@ -14,4 +14,6 @@ Import-Template:
   net.sf.cglib.proxy.*;version="${cglib.version}",
   org.apache.commons.collections15.*;version="${commons.collections.version}",
   org.apache.commons.lang.*;version="${commons.lang.version}"
-  
+Excluded-Imports:
+  edu.umd.cs.findbugs.annotations.*,
+  net.jcip.annotations.*  

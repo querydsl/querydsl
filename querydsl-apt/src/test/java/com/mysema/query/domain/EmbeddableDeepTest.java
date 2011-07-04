@@ -27,6 +27,8 @@ public class EmbeddableDeepTest {
 
     }
 
+    // JPA
+
     @Entity
     public class A extends AEntity {
 
@@ -49,5 +51,30 @@ public class EmbeddableDeepTest {
         SomeType someType;
 
     }
+
+    // plain
+
+//    @QueryEntity
+//    public class AA extends AValueObject {
+//
+//        @QueryEmbedded
+//        BB b;
+//
+//    }
+//
+//    @QueryEmbeddable
+//    public class BB extends AValueObject {
+//
+//        @QueryEmbedded
+//        CC c;
+//
+//    }
+//
+//    @QueryEmbeddable
+//    public class CC extends AValueObject {
+//
+//        SomeType someType;
+//
+//    }
 
 }
