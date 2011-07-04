@@ -55,11 +55,13 @@ public final class JDBCTypeMapping {
         registerDefault(Types.VARCHAR, String.class);
         registerDefault(Types.NVARCHAR, String.class);
 
+        // byte[]
+        registerDefault(Types.BINARY, byte[].class);
+        registerDefault(Types.LONGVARBINARY, byte[].class);
+        registerDefault(Types.VARBINARY, byte[].class);
+        
         // BLOB
-        registerDefault(Types.BINARY, Blob.class);
         registerDefault(Types.BLOB, Blob.class);
-        registerDefault(Types.LONGVARBINARY, Blob.class);
-        registerDefault(Types.VARBINARY, Blob.class);
         
         // OTHER
         registerDefault(Types.ARRAY, Object[].class);

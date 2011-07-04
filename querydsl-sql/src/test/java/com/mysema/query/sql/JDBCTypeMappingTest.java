@@ -33,10 +33,14 @@ public class JDBCTypeMappingTest {
     @Test
     public void BlobTypes(){
         JDBCTypeMapping typeMapping = new JDBCTypeMapping();
-        assertEquals(Blob.class, typeMapping.get(Types.BLOB));
-        assertEquals(Blob.class, typeMapping.get(Types.BINARY));
-        assertEquals(Blob.class, typeMapping.get(Types.VARBINARY));
-        assertEquals(Blob.class, typeMapping.get(Types.LONGVARBINARY));
+        assertEquals(Blob.class, typeMapping.get(Types.BLOB));        
     }
 
+    @Test
+    public void BytesTypes() {
+        JDBCTypeMapping typeMapping = new JDBCTypeMapping();       
+        assertEquals(byte[].class, typeMapping.get(Types.BINARY));
+        assertEquals(byte[].class, typeMapping.get(Types.VARBINARY));
+        assertEquals(byte[].class, typeMapping.get(Types.LONGVARBINARY));
+    }
 }
