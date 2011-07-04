@@ -123,8 +123,15 @@ public class Processor {
         processAnnotations();
 
         // remove entity types from extensionTypes
-        for (String key : entityTypes.keySet()){
+        for (String key : entityTypes.keySet()) {
             extensionTypes.remove(key);
+        }
+        
+        // remove super types from others
+        for (String key : actualSupertypes.keySet()) {
+            entityTypes.remove(key);
+            extensionTypes.remove(key);
+            embeddables.remove(key);
         }
 
         serializeTypes();
