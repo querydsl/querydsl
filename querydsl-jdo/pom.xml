@@ -39,12 +39,6 @@
       <artifactId>querydsl-core</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
-    <dependency>
-      <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-apt</artifactId>
-      <version>${project.parent.version}</version>
-	  <scope>provided</scope>
-    </dependency>        
     
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
@@ -238,6 +232,7 @@
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>maven-apt-plugin</artifactId>
+        <version>1.0.2</version>
         <executions>
           <execution>
             <goals>
@@ -248,7 +243,14 @@
               <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor> 
             </configuration>
           </execution>
-        </executions>    
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>com.mysema.querydsl</groupId>
+            <artifactId>querydsl-apt</artifactId>
+            <version>${project.parent.version}</version>
+          </dependency>                
+        </dependencies>    
       </plugin>   
 	  
       <plugin>
