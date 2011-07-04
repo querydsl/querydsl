@@ -42,7 +42,11 @@ public class MongodbSerializer implements Visitor<Object, Void> {
 
     @Override
     public Object visit(Constant<?> expr, Void context) {
-        return expr.getConstant();
+        if (Enum.class.isAssignableFrom(expr.getType())) {
+            return ((Enum<?>)expr.getConstant()).name(); 
+        } else {
+            return expr.getConstant();            
+        }
     }
 
     @Override

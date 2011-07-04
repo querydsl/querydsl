@@ -28,6 +28,7 @@ import com.mysema.query.mongodb.domain.Address;
 import com.mysema.query.mongodb.domain.City;
 import com.mysema.query.mongodb.domain.QUser;
 import com.mysema.query.mongodb.domain.User;
+import com.mysema.query.mongodb.domain.User.Gender;
 import com.mysema.query.mongodb.morphia.MorphiaQuery;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Predicate;
@@ -285,6 +286,16 @@ public class MongodbQueryTest {
             where(predicate.not()).count();
         }
     }
+    
+    @Test
+    public void Enum_Eq() {
+        assertQuery(user.gender.eq(Gender.MALE), u3, u4, u2, u1);
+    }
+    
+    @Test
+    public void Enum_Ne() {
+        assertQuery(user.gender.ne(Gender.MALE));
+    }
 
     //TODO
     // - test dates
@@ -331,6 +342,7 @@ public class MongodbQueryTest {
 
     private User addUser(String first, String last, int age, Address mainAddress, Address... addresses) {
         User user = new User(first, last, age, new Date());
+        user.setGender(Gender.MALE);
         user.setMainAddress(mainAddress);
         for (Address address : addresses){
             user.addAddress(address);

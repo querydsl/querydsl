@@ -19,6 +19,8 @@ import com.google.code.morphia.annotations.Reference;
 @Entity
 public class User {
     
+    public enum Gender { MALE, FEMALE }
+    
     private @Id ObjectId id;
     
     private String firstName;
@@ -27,14 +29,16 @@ public class User {
     
     private Date created;
     
+    private Gender gender;
+    
     @Embedded
-    private List<Address> addresses = new ArrayList<Address>();
+    private final List<Address> addresses = new ArrayList<Address>();
     
     @Embedded
     private Address mainAddress;
     
     @Reference
-    private List<User> friends = new ArrayList<User>();
+    private final List<User> friends = new ArrayList<User>();
     
     private int age;
     
@@ -131,6 +135,14 @@ public class User {
         return friends;
     }
     
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
