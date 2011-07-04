@@ -13,3 +13,6 @@ Import-Template:
   javax.xml.stream.*;version="0",
   org.hibernate.*;version="${hibernate.version}",
   org.slf4j.*;version="${slf4j.version}"
+Excluded-Imports:
+  edu.umd.cs.findbugs.annotations.*,
+  net.jcip.annotations.*    

@@ -11,4 +11,6 @@ Import-Template:
   javax.tools.*;version="1",
   org.apache.commons.collections15.*;version="${commons.collections.version}",
   org.apache.commons.lang.*;version="${commons.lang.version}"
-  
+Excluded-Imports:
+  edu.umd.cs.findbugs.annotations.*,
+  net.jcip.annotations.*    

@@ -10,3 +10,6 @@ Import-Template:
   javax.jdo.*;version="[2.0.0,3.0.0)",
   org.apache.commons.lang.*;version="${commons.lang.version}",
   org.slf4j.*;version="${slf4j.version}"
+Excluded-Imports:
+  edu.umd.cs.findbugs.annotations.*,
+  net.jcip.annotations.*    

@@ -8,3 +8,6 @@ Import-Template:
   org.apache.lucene.*;version="[3.0.0,3.1.0)",
   org.hibernate.*;version="[3.0.0,4.0.0)",
   org.slf4j.*;version="${slf4j.version}"
+Excluded-Imports:
+  edu.umd.cs.findbugs.annotations.*,
+  net.jcip.annotations.*    

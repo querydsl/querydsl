@@ -5,19 +5,7 @@
  */
 package com.mysema.query.codegen;
 
-import static com.mysema.codegen.Symbols.ASSIGN;
-import static com.mysema.codegen.Symbols.COMMA;
-import static com.mysema.codegen.Symbols.DOT;
-import static com.mysema.codegen.Symbols.DOT_CLASS;
-import static com.mysema.codegen.Symbols.EMPTY;
-import static com.mysema.codegen.Symbols.NEW;
-import static com.mysema.codegen.Symbols.QUOTE;
-import static com.mysema.codegen.Symbols.RETURN;
-import static com.mysema.codegen.Symbols.SEMICOLON;
-import static com.mysema.codegen.Symbols.STAR;
-import static com.mysema.codegen.Symbols.SUPER;
-import static com.mysema.codegen.Symbols.THIS;
-import static com.mysema.codegen.Symbols.UNCHECKED;
+import static com.mysema.codegen.Symbols.*;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -51,23 +39,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.ComparableExpression;
-import com.mysema.query.types.path.ArrayPath;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.BooleanPath;
-import com.mysema.query.types.path.CollectionPath;
-import com.mysema.query.types.path.ComparablePath;
-import com.mysema.query.types.path.DatePath;
-import com.mysema.query.types.path.DateTimePath;
-import com.mysema.query.types.path.EntityPathBase;
-import com.mysema.query.types.path.EnumPath;
-import com.mysema.query.types.path.ListPath;
-import com.mysema.query.types.path.MapPath;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.PathInits;
-import com.mysema.query.types.path.SetPath;
-import com.mysema.query.types.path.SimplePath;
-import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.path.TimePath;
+import com.mysema.query.types.path.*;
 
 /**
  * EntitySerializer is a Serializer implementation for entity types
@@ -216,6 +188,9 @@ public class EntitySerializer implements Serializer{
 
     protected void initEntityFields(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
         Supertype superType = model.getSuperType();
+        if (superType != null && superType.getEntityType() == null) {
+            throw new IllegalStateException("No entity type for " + superType.getType().getFullName());
+        }        
         if (superType != null && superType.getEntityType().hasEntityFields()){
             Type superQueryType = typeMappings.getPathType(superType.getEntityType(), model, false);
             writer.line("this._super = new " + writer.getRawName(superQueryType) + "(type, metadata, inits);");
