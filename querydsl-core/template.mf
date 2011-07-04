@@ -5,10 +5,8 @@ Bundle-ManifestVersion: 2
 Import-Template:
   com.mysema.codegen.*;version="${codegen.version}",
   com.mysema.commons.lang.*;version="${mysema.lang.version}",
-  edu.umd.cs.findbugs.annotations.*;version="${findbugs.version}",
   javax.annotation.*;version="0",
-  javax.inject.*;version="1",
-  net.jcip.annotations.*;version="${findbugs.version}",  
+  javax.inject.*;version="1", 
   net.sf.cglib.proxy.*;version="${cglib.version}",
   org.apache.commons.collections15.*;version="${commons.collections.version}",
   org.apache.commons.lang.*;version="${commons.lang.version}"

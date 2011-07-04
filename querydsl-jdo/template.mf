@@ -5,7 +5,6 @@ Bundle-ManifestVersion: 2
 Import-Template:
   com.mysema.commons.lang.*;version="${mysema.lang.version}",
   com.mysema.query.*;version="${project.version}",
-  edu.umd.cs.findbugs.annotations.*;version="${findbugs.version}",
   javax.annotation.*;version="0",
   javax.inject.*;version="1",
   javax.jdo.*;version="[2.0.0,3.0.0)",

@@ -7,10 +7,8 @@ Import-Template:
   com.mysema.commons.lang.*;version="${mysema.lang.version}",
   com.mysema.query.*;version="${project.version}",   
   com.mysema.util.*;version="${project.version}",
-  edu.umd.cs.findbugs.annotations.*;version="${findbugs.version}",
   javax.annotation.*;version="${findbugs.version}",
   javax.tools.*;version="1",
-  net.jcip.annotations.*;version="${findbugs.version}",
   org.apache.commons.collections15.*;version="${commons.collections.version}",
   org.apache.commons.lang.*;version="${commons.lang.version}"
   

@@ -5,7 +5,6 @@ Bundle-ManifestVersion: 2
 Import-Template:
   com.mysema.commons.lang.*;version="${mysema.lang.version}",
   com.mysema.query.*;version="${project.version}",
-  edu.umd.cs.findbugs.annotations.*;version="${findbugs.version}",
   org.apache.lucene.*;version="[3.0.0,3.1.0)",
   org.hibernate.*;version="[3.0.0,4.0.0)",
   org.slf4j.*;version="${slf4j.version}"

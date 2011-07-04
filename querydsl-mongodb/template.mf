@@ -7,7 +7,6 @@ Import-Template:
   com.mongodb.*;version="${mongodb.version}",
   com.mysema.commons.lang.*;version="${mysema.lang.version}",
   com.mysema.query.*;version="${project.version}",
-  edu.umd.cs.findbugs.annotations.*;version="${findbugs.version}",
   javax.annotation.*;version="${findbugs.version}",
   javax.tools.*;version="0",
   org.apache.commons.collections15.*;version="${commons.collections.version}",
