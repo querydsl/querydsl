@@ -30,7 +30,7 @@ import com.mysema.query.apt.Processor;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class JPAAnnotationProcessor extends AbstractProcessor{
 
-    protected Class<? extends Annotation> entity, superType, embeddable, skip;
+    protected Class<? extends Annotation> entity, superType, embeddable, embedded, skip;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -40,6 +40,7 @@ public class JPAAnnotationProcessor extends AbstractProcessor{
             entity = (Class)Class.forName("javax.persistence.Entity");
             superType = (Class)Class.forName("javax.persistence.MappedSuperclass");
             embeddable = (Class)Class.forName("javax.persistence.Embeddable");
+            embedded = (Class)Class.forName("javax.persistence.Embedded");
             skip = (Class)Class.forName("javax.persistence.Transient");
 
             DefaultConfiguration configuration = createConfiguration(roundEnv);
@@ -53,7 +54,7 @@ public class JPAAnnotationProcessor extends AbstractProcessor{
     }
 
     protected DefaultConfiguration createConfiguration(RoundEnvironment roundEnv) throws ClassNotFoundException {
-        return new JPAConfiguration(roundEnv, processingEnv.getOptions(), entity, superType, embeddable, skip);
+        return new JPAConfiguration(roundEnv, processingEnv.getOptions(), entity, superType, embeddable, embedded, skip);
     }
 
 }

@@ -47,14 +47,15 @@ public class JPAConfiguration extends DefaultConfiguration {
             "TRAILING","TRIM","TRUE","TYPE","UNKNOWN","UPDATE","UPPER",
             "VALUE","WHEN","WHERE"));
 
-    private List<Class<? extends Annotation>> annotations;
+    private final List<Class<? extends Annotation>> annotations;
 
     public JPAConfiguration(RoundEnvironment roundEnv,Map<String,String> options,
             Class<? extends Annotation> entityAnn,
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
+            Class<? extends Annotation> embeddedAnn,
             Class<? extends Annotation> skipAnn) throws ClassNotFoundException {
-        super(roundEnv, options, KEYWORDS, null, entityAnn, superTypeAnn, embeddableAnn, null, skipAnn);
+        super(roundEnv, options, KEYWORDS, null, entityAnn, superTypeAnn, embeddableAnn, embeddedAnn, skipAnn);
         this.annotations = getAnnotations();
     }
 

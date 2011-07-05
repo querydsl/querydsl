@@ -47,10 +47,11 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
             processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
             Class<? extends Annotation> entity = (Class)Class.forName("javax.jdo.annotations.PersistenceCapable");
             Class<? extends Annotation> embeddable = (Class)Class.forName("javax.jdo.annotations.EmbeddedOnly");
+            Class<? extends Annotation> embedded = (Class)Class.forName("javax.jdo.annotations.Embedded");
             Class<? extends Annotation> skip = (Class)Class.forName("javax.jdo.annotations.NotPersistent");
 
             DefaultConfiguration configuration = new DefaultConfiguration(
-                    roundEnv, processingEnv.getOptions(), KEYWORDS, null, entity, null, embeddable, null, skip);
+                    roundEnv, processingEnv.getOptions(), KEYWORDS, null, entity, null, embeddable, embedded, skip);
             configuration.setUseGetters(false);
             Processor processor = new Processor(processingEnv, roundEnv, configuration);
             processor.process();

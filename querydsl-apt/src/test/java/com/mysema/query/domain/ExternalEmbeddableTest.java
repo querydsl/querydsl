@@ -1,17 +1,17 @@
 package com.mysema.query.domain;
 
-import org.junit.Ignore;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
 
-import com.mysema.query.annotations.QueryEmbedded;
-import com.mysema.query.annotations.QueryEntity;
+import org.junit.Ignore;
 
 @Ignore
 public class ExternalEmbeddableTest {
 
-    @QueryEntity
+    @Entity
     public class EntityWithExternalEmbeddable {
         
-        @QueryEmbedded
+        @Embedded
         EmbeddableWithoutQType embeddable;
         
     }
