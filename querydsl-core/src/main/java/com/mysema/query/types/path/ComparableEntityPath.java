@@ -9,6 +9,7 @@ import com.mysema.query.types.PathMetadata;
  *
  * @param <T>
  */
+@SuppressWarnings("unchecked")
 public class ComparableEntityPath<T extends Comparable> extends ComparablePath<T> implements EntityPath<T> {
 
     private static final long serialVersionUID = -7115848171352092315L;
