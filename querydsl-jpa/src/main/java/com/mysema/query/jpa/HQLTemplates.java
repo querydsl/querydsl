@@ -77,4 +77,10 @@ public class HQLTemplates extends JPQLTemplates{
         return "1";
     }
     
+    @Override
+    public boolean isEnumInPathSupported() {
+        // related : http://opensource.atlassian.com/projects/hibernate/browse/HHH-5159
+        return false;
+    }
+    
 }

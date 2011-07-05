@@ -17,6 +17,8 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
@@ -276,6 +278,16 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
         if (operator.equals(Ops.IN)){
             if (args.get(1) instanceof Path){
+                if (!templates.isEnumInPathSupported() && args.get(0) instanceof Constant && Enum.class.isAssignableFrom(args.get(0).getType())) {
+                    Enumerated enumerated = ((Path)args.get(1)).getAnnotatedElement().getAnnotation(Enumerated.class);
+                    Enum constant = (Enum)((Constant)args.get(0)).getConstant();
+                    if (enumerated == null || enumerated.value() == EnumType.ORDINAL) {
+                        args = Arrays.asList(new ConstantImpl<Integer>(constant.ordinal()), args.get(1));
+                    } else {
+                        args = Arrays.asList(new ConstantImpl<String>(constant.name()), args.get(1));
+                    }
+                }                
+                
                 super.visitOperation(type, JPQLTemplates.MEMBER_OF, args);
             }else{
                 super.visitOperation(type, operator, args);

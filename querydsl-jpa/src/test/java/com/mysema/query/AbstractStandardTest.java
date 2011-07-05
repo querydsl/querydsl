@@ -29,6 +29,8 @@ import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.JPQLSubQuery;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.DomesticCat;
+import com.mysema.query.jpa.domain.Employee;
+import com.mysema.query.jpa.domain.JobFunction;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.jpa.domain.QShow;
@@ -165,6 +167,10 @@ public abstract class AbstractStandardTest {
         show.acts.put("a","A");
         show.acts.put("b","B");
         save(show);
+        
+        Employee employee = new Employee();
+        employee.jobFunctions.add(JobFunction.CODER);
+        save(employee);
     }
 
     @Test
@@ -488,6 +494,13 @@ public abstract class AbstractStandardTest {
         query.from(QEmployee.employee);
         query.innerJoin(QEmployee.employee.user, QUser.user);
         query.list(QEmployee.employee);
+    }
+ 
+    @Test
+    public void Enum_In() {
+        JPQLQuery query = query();
+        query.from(QEmployee.employee).where(QEmployee.employee.jobFunctions.contains(JobFunction.CODER));
+        assertEquals(1l, query.count());
     }
     
 }

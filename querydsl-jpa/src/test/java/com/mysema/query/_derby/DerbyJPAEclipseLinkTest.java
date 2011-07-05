@@ -5,6 +5,7 @@
  */
 package com.mysema.query._derby;
 
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 
 import com.mysema.query.AbstractJPATest;
@@ -18,9 +19,10 @@ import com.mysema.testutil.JPATestRunner;
  * @author tiwe
  *
  */
+@Ignore
 @RunWith(JPATestRunner.class)
 @JPAConfig("derby-eclipselink")
-public abstract class DerbyJPAEclipseLinkTest extends AbstractJPATest{
+public class DerbyJPAEclipseLinkTest extends AbstractJPATest{
 
     @Override
     protected JPQLTemplates getTemplates(){

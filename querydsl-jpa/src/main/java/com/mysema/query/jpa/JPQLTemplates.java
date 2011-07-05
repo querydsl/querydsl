@@ -115,6 +115,10 @@ public class JPQLTemplates extends Templates {
         // TODO : get rid of this when Hibernate supports type(alias)
         return false;
     }
+    
+    public boolean isEnumInPathSupported() {
+        return true;
+    }
         
     @Nullable
     public String getExistsProjection(){
