@@ -103,7 +103,7 @@
                 <processor>com.mysema.query.apt.jdo.JDOAnnotationProcessor</processor>
               </processors>              
             </configuration>
-          </execution>		                     
+          </execution>		                    
         </executions>
       </plugin>
       <plugin>
