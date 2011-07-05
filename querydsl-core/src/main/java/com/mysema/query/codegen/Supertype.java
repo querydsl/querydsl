@@ -5,6 +5,8 @@
  */
 package com.mysema.query.codegen;
 
+import javax.annotation.Nullable;
+
 import com.mysema.codegen.model.Type;
 
 /**
@@ -13,6 +15,7 @@ import com.mysema.codegen.model.Type;
  */
 public class Supertype {
 
+    @Nullable
     private EntityType entityType;
 
     private final Type type;
@@ -26,6 +29,7 @@ public class Supertype {
         this.entityType = entityType;
     }
 
+    @Nullable
     public EntityType getEntityType() {
         return entityType;
     }
