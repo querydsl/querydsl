@@ -63,7 +63,8 @@ public class Processor {
     /**
      * Cache for annotated elements
      */
-    static final Map<Class<? extends Annotation>, Set<Element>> elementCache = new HashMap<Class<? extends Annotation>,Set<Element>>();
+    static final Map<Class<? extends Annotation>, Set<Element>> elementCache = Collections.synchronizedMap(
+            new HashMap<Class<? extends Annotation>,Set<Element>>());
 
     /**
      * Mapping of entity types to TypeElements which contribute to the generated class
