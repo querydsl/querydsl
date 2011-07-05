@@ -35,6 +35,8 @@ import com.mysema.query.mongodb.Point;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class MorphiaAnnotationProcessor extends AbstractProcessor{
 
+    private static final Boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = Boolean.FALSE;
+    
     private Class<? extends Annotation> entities, entity, embedded, skip;
 
     @Override
@@ -52,7 +54,7 @@ public class MorphiaAnnotationProcessor extends AbstractProcessor{
 
         Processor processor = new Processor(processingEnv, roundEnv, configuration);
         processor.process();
-        return true;
+        return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
     }
 
 }

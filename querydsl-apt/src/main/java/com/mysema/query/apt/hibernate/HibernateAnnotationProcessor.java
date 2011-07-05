@@ -22,7 +22,7 @@ import com.mysema.query.apt.jpa.JPAAnnotationProcessor;
 @SupportedAnnotationTypes({"com.mysema.query.annotations.*","javax.persistence.*", "org.hibernate.annotations.*"})
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class HibernateAnnotationProcessor extends JPAAnnotationProcessor{
-
+    
     @Override
     protected DefaultConfiguration createConfiguration(RoundEnvironment roundEnv) throws ClassNotFoundException {
         return new HibernateConfiguration(roundEnv, processingEnv.getOptions(), entity, superType, embeddable, embedded, skip);

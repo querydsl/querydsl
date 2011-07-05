@@ -34,6 +34,8 @@ import com.mysema.query.annotations.QueryTransient;
 @SupportedAnnotationTypes({"com.mysema.query.annotations.*"})
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class QuerydslAnnotationProcessor extends AbstractProcessor{
+    
+    private static final Boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = Boolean.FALSE;
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -50,7 +52,7 @@ public class QuerydslAnnotationProcessor extends AbstractProcessor{
 
         Processor processor = new Processor(processingEnv, roundEnv, configuration);
         processor.process();
-        return true;
+        return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
     }
 
 }

@@ -32,6 +32,8 @@ import com.mysema.query.apt.Processor;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class JDOAnnotationProcessor extends AbstractProcessor{
     
+    private static final Boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = Boolean.FALSE;
+    
     private static final Set<String> KEYWORDS = new HashSet<String>(Arrays.asList(
             "AS","ASC", "ASCENDING","AVG",
             "BY","COUNT", "DESC","DESCENDING",
@@ -55,7 +57,7 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
             configuration.setUseGetters(false);
             Processor processor = new Processor(processingEnv, roundEnv, configuration);
             processor.process();
-            return true;
+            return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
 
         } catch (ClassNotFoundException e) {
             throw new APTException(e.getMessage(), e);

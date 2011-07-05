@@ -30,6 +30,8 @@ import com.mysema.query.apt.Processor;
 @SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class JPAAnnotationProcessor extends AbstractProcessor{
 
+    private static final Boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = Boolean.FALSE;
+    
     protected Class<? extends Annotation> entity, superType, embeddable, embedded, skip;
 
     @SuppressWarnings("unchecked")
@@ -46,7 +48,7 @@ public class JPAAnnotationProcessor extends AbstractProcessor{
             DefaultConfiguration configuration = createConfiguration(roundEnv);
             Processor processor = new Processor(processingEnv, roundEnv, configuration);
             processor.process();
-            return true;
+            return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
 
         } catch (ClassNotFoundException e) {
             throw new APTException(e.getMessage(), e);
