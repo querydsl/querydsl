@@ -10,8 +10,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.QueryMetadata;
-
 
 /**
  * ExpressionUtils provides utilities for constructing common operation instances
@@ -20,81 +18,7 @@ import com.mysema.query.QueryMetadata;
  *
  */
 public final class ExpressionUtils {
-    
-    /**
-     * Create a new Constant expression
-     * 
-     * @param <T>
-     * @param value
-     * @return
-     */
-    public static <T> Expression<T> constant(T value) {
-        return new ConstantImpl<T>(value);    
-    }
-    
-    /**
-     * Create a new TemplateExpression
-     * 
-     * @param <T>
-     * @param cl
-     * @param template
-     * @param args
-     * @return
-     */
-    public static <T> Expression<T> template(Class<T> cl, String template, Expression<?>... args) {
-        return TemplateExpressionImpl.create(cl, template, args);
-    }
-    
-    /**
-     * Create a new SubQuery expression
-     * 
-     * @param <T>
-     * @param type
-     * @param metadata
-     * @return
-     */
-    public static <T> Expression<T> subQuery(Class<? extends T> type, QueryMetadata metadata) {
-        return new SubQueryExpressionImpl<T>(type, metadata);
-    }
-    
-    /**
-     * Create a new Operation expression
-     * 
-     * @param <T>
-     * @param type
-     * @param operator
-     * @param args
-     * @return
-     */
-    public static <T> Expression<T> operation(Class<? extends T> type, Operator<? super T> operator, Expression<?>... args) {
-        return OperationImpl.create(type, operator, args);
-    }
-    
-    /**
-     * Create a new variable Path expression
-     * 
-     * @param <T>
-     * @param type
-     * @param variable
-     * @return
-     */
-    public static <T> Expression<T> path(Class<? extends T> type, String variable) {
-        return new PathImpl<T>(type, PathMetadataFactory.forVariable(variable));
-    }
-    
-    /**
-     * Create a new property Path expression
-     * 
-     * @param <T>
-     * @param type
-     * @param parent
-     * @param property
-     * @return
-     */
-    public static <T> Expression<T> path(Class<? extends T> type, Path<?> parent, String property) {
-        return new PathImpl<T>(type, PathMetadataFactory.forProperty(parent, property));
-    }
-    
+        
     /**
      * Create the intersection of the given arguments
      * 
