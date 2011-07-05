@@ -721,11 +721,11 @@ public class Processor {
                 if (configuration.isExcludedPackage(model.getPackageName()) || configuration.isExcludedClass(model.getFullName())) {
                     continue;
                 }
-
+                
                 Filer filer = env.getFiler();
                 FileObject generatedFile = filer.getResource(StandardLocation.SOURCE_OUTPUT, packageName, type.getSimpleName() + ".java");
                 boolean generate = false;
-
+                
                 Set<TypeElement> elements = typeElements.get(model.getFullName());
                 if (elements != null){
                     boolean foundSources = false;
@@ -782,7 +782,7 @@ public class Processor {
                 }else{
                     msg.printMessage(Kind.NOTE, className + " is up-to-date ");
                 }
-
+                
             } catch (IOException e) {
                 msg.printMessage(Kind.ERROR, e.getMessage());
             }
@@ -817,7 +817,7 @@ public class Processor {
             }finally{
                 w.close();
             }
-        } catch (IOException e) {
+        } catch (IOException e) {            
             env.getMessager().printMessage(Kind.ERROR, e.getMessage());
         }
 
