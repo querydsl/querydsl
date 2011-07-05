@@ -106,6 +106,11 @@ public class JPADerbySQLTest {
     }
     
     @Test
+    public void List_With_Count() {
+        print(query().from(cat).where(cat.dtype.eq("C")).groupBy(cat.name).list(cat.name, cat.id.count()));
+    }
+    
+    @Test
     public void List_Results(){
         SearchResults<String> results = query().from(cat).limit(3).orderBy(cat.name.asc()).listResults(cat.name);
         assertEquals(Arrays.asList("Beck","Bobby","Harold"), results.getResults());
@@ -185,7 +190,6 @@ public class JPADerbySQLTest {
         assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString())).uniqueResult(cat.name));
     }
     
-
     private void print(Iterable<Object[]> rows){
         for (Object[] row : rows){
             System.out.println(Arrays.asList(row));
