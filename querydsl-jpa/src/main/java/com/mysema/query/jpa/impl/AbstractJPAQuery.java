@@ -139,10 +139,9 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         if (projection.size() == 1){
             Expression<?> expr = projection.get(0);
             if (expr instanceof FactoryExpression<?>){
-//                if (query.getClass().getName().startsWith("org.hibernate")){
                 if (hibernateQueryClass != null && hibernateQueryClass.isInstance(query)) {
                     try {
-                        Class<?> cl = Class.forName("com.mysema.query.jpa.impl.JPAQueryTransformerTask");
+                        Class<?> cl = Class.forName("com.mysema.query.jpa.impl.HibernateQueryTransformation");
                         cl.getConstructor(Query.class, FactoryExpression.class).newInstance(query, expr);
                     } catch (ClassNotFoundException e) {
                         throw new QueryException(e.getMessage(), e);
