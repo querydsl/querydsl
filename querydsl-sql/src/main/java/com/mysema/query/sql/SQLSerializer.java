@@ -309,7 +309,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }else{
             for (int i = 0; i < columns.size(); i++){
                 if (values.get(i) instanceof Constant<?>){
-                    constantPaths.add((Path<?>)columns.get(i));
+                    constantPaths.add(columns.get(i));
                 }
             }
             
@@ -349,7 +349,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }else{
             for (int i = 0; i < columns.size(); i++){
                 if (values.get(i) instanceof Constant<?>){
-                    constantPaths.add((Path<?>)columns.get(i));
+                    constantPaths.add(columns.get(i));
                 }
             }
             
@@ -430,9 +430,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     @SuppressWarnings("unchecked")
-    public void serializeUnion(SubQueryExpression[] sqs, List<OrderSpecifier<?>> orderBy) {
+    public void serializeUnion(SubQueryExpression[] sqs, List<OrderSpecifier<?>> orderBy, boolean unionAll) {
         // union
-        handle(templates.getUnion(), (List)Arrays.asList(sqs));
+        handle(unionAll ? templates.getUnionAll() : templates.getUnion(), Arrays.asList(sqs));
 
         // order by
         if (!orderBy.isEmpty()) {
@@ -497,6 +497,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         return null;
     }
 
+    @Override
     public Void visit(Path<?> path, Void context) {
         if (dml){
             if (path.equals(entity) && path instanceof RelationalPath<?>){

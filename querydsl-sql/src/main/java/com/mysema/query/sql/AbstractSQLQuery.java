@@ -101,6 +101,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     private SubQueryExpression<?>[] union;
 
     private final Configuration configuration;
+    
+    private boolean unionAll;
 
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration) {
         this(conn, configuration, new DefaultQueryMetadata());
@@ -176,7 +178,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     protected String buildQueryString(boolean forCountRow) {
         SQLSerializer serializer = createSerializer();
         if (union != null) {
-            serializer.serializeUnion(union, queryMixin.getMetadata().getOrderBy());
+            serializer.serializeUnion(union, queryMixin.getMetadata().getOrderBy(), unionAll);
         } else {
             serializer.serialize(queryMixin.getMetadata(), forCountRow);
         }
@@ -551,6 +553,16 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     }
 
     public <RT> UnionBuilder<RT> union(SubQueryExpression<RT>... sq) {
+        return innerUnion(sq);
+    }
+    
+    public <RT> UnionBuilder<RT> unionAll(ListSubQuery<RT>... sq) {
+        unionAll = true;
+        return innerUnion(sq);
+    }
+
+    public <RT> UnionBuilder<RT> unionAll(SubQueryExpression<RT>... sq) {
+        unionAll = true;
         return innerUnion(sq);
     }
 

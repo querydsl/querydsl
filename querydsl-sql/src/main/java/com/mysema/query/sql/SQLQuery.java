@@ -38,6 +38,25 @@ public interface SQLQuery extends SQLCommonQuery<SQLQuery>, Projectable {
      * @return
      */
     <RT> Union<RT> union(SubQueryExpression<RT>... sq);
+    
+
+    /**
+     * Creates an union expression for the given subqueries
+     *
+     * @param <RT>
+     * @param sq
+     * @return
+     */
+    <RT> Union<RT> unionAll(ListSubQuery<RT>... sq);
+
+    /**
+     * Creates an union expression for the given subqueries
+     *
+     * @param <RT>
+     * @param sq
+     * @return
+     */
+    <RT> Union<RT> unionAll(SubQueryExpression<RT>... sq);
 
     /**
      * Clone the state of the Query for the given Connection

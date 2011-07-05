@@ -750,6 +750,15 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         assertFalse(list.isEmpty());
     }
     
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Union_All() {
+        SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id.max());
+        SubQueryExpression<Integer> sq2 = sq().from(employee).unique(employee.id.min());
+        List<Integer> list = query().unionAll(sq1, sq2).list();
+        assertFalse(list.isEmpty());
+    }
+    
     @SuppressWarnings("unchecked")
     @Test
     public void Union_Multiple_Columns() throws SQLException {

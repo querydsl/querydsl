@@ -114,6 +114,8 @@ public class SQLTemplates extends Templates {
     private String tableAlias = " ";
 
     private String union = "\nunion\n";
+    
+    private String unionAll = "\nunion all\n";
 
     private String update = "update ";
 
@@ -338,6 +340,10 @@ public class SQLTemplates extends Templates {
         return union;
     }
 
+    public String getUnionAll() {
+        return unionAll;
+    }
+    
     public String getUpdate() {
         return update;
     }
@@ -551,6 +557,10 @@ public class SQLTemplates extends Templates {
         this.union = union;
     }
 
+    protected void setUnionAll(String unionAll) {
+        this.unionAll = unionAll;
+    }
+    
     protected void setUpdate(String update) {
         this.update = update;
     }
