@@ -216,6 +216,11 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
+    public void Any_Usage(){
+        assertEquals(1, catQuery().where(cat.kittens.any().name.eq("Ruth123")).count());
+    }
+    
+    @Test
     public void Any_And_Lt(){
         assertEquals(1, catQuery().where(cat.kittens.any().name.eq("Ruth123"), cat.kittens.any().bodyWeight.lt(10.0)).count());
     }

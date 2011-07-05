@@ -73,14 +73,14 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
 
     @Test
     public void LockMode(){
-        javax.persistence.Query query = query().from(QCat.cat).setLockMode(LockModeType.READ).createQuery(QCat.cat);
-        assertTrue(query.getLockMode().equals(LockModeType.READ));
+        javax.persistence.Query query = query().from(QCat.cat).setLockMode(LockModeType.PESSIMISTIC_READ).createQuery(QCat.cat);
+        assertTrue(query.getLockMode().equals(LockModeType.PESSIMISTIC_READ));
         assertFalse(query.getResultList().isEmpty());
     }
 
     @Test
     public void LockMode2(){
-        assertFalse(query().from(QCat.cat).setLockMode(LockModeType.READ).list(QCat.cat).isEmpty());
+        assertFalse(query().from(QCat.cat).setLockMode(LockModeType.PESSIMISTIC_READ).list(QCat.cat).isEmpty());
     }
 
     @Test

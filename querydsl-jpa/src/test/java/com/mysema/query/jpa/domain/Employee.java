@@ -8,15 +8,7 @@ package com.mysema.query.jpa.domain;
 import java.util.Collection;
 import java.util.HashSet;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 /**
  * The Class Employee.
@@ -32,6 +24,7 @@ public class Employee {
     public String firstName, lastName;
 
     @Id
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     public int id;
     
     @Enumerated(EnumType.STRING)

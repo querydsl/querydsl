@@ -6,6 +6,7 @@
 package com.mysema.query.jpa.impl;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +52,8 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     private LockModeType lockMode;
     
     private Class<?> hibernateQueryClass;
+    
+    private boolean factoryExpressionUsed = false;
     
     public AbstractJPAQuery(EntityManager em) {
         this(new DefaultSessionHolder(em), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
@@ -156,12 +159,56 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
                     } catch (NoSuchMethodException e) {
                         throw new QueryException(e.getMessage(), e);
                     }
-
+                } else {
+                    factoryExpressionUsed = true;
                 }
             }
         }
 
         return query;
+    }
+    
+    /**
+     * Transforms results using FactoryExpression if ResultTransformer can't be used
+     * 
+     * @param query
+     * @return
+     */
+    private List<?> getResultList(Query query) {
+        // TODO : use lazy list here?
+        if (factoryExpressionUsed) {
+            List<?> results = query.getResultList();
+            List<Object> rv = new ArrayList<Object>(results.size());
+            FactoryExpression<?> expr = (FactoryExpression<?>)getMetadata().getProjection().get(0);
+            for (Object o : results) {
+                if (o != null && !o.getClass().isArray()){
+                    o = new Object[]{o};
+                }
+                rv.add(expr.newInstance((Object[])o));                
+            }
+            return rv;
+        } else {
+            return query.getResultList();
+        }
+    }
+    
+    /**
+     * Transforms results using FactoryExpression if ResultTransformer can't be used
+     * 
+     * @param query
+     * @return
+     */
+    private Object getSingleResult(Query query) {
+        if (factoryExpressionUsed) {
+            Object result = query.getSingleResult();
+            FactoryExpression<?> expr = (FactoryExpression<?>)getMetadata().getProjection().get(0);
+            if (result != null && !result.getClass().isArray()) {
+                result = new Object[]{result};
+            }
+            return expr.newInstance((Object[])result);
+        } else {
+            return query.getSingleResult();
+        }
     }
 
     public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
@@ -176,16 +223,22 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     @SuppressWarnings("unchecked")
     public List<Object[]> list(Expression<?>[] args) {
         Query query = createQuery(args);
-        reset();
-        return query.getResultList();
+        try {
+            return (List<Object[]>)getResultList(query);    
+        } finally {
+            reset();
+        }        
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <RT> List<RT> list(Expression<RT> expr) {
         Query query = createQuery(expr);
-        reset();
-        return query.getResultList();
+        try {
+            return (List<RT>) getResultList(query);    
+        } finally {
+            reset();    
+        }
     }
 
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
@@ -198,7 +251,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
             logQuery(queryString);
             query = createQuery(queryString, modifiers);
             @SuppressWarnings("unchecked")
-            List<RT> list = query.getResultList();
+            List<RT> list = (List<RT>) getResultList(query);
             reset();
             return new SearchResults<RT>(list, modifiers, total);
         } else {
@@ -206,7 +259,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
             return SearchResults.emptyResults();
         }
     }
-
+    
     protected void logQuery(String queryString){
         if (logger.isDebugEnabled()){
             logger.debug(queryString.replace('\n', ' '));
@@ -230,15 +283,16 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     private Object uniqueResult() {
         String queryString = toQueryString();
         logQuery(queryString);
-        Query query = createQuery(queryString, getMetadata().getModifiers());
-        reset();
+        Query query = createQuery(queryString, getMetadata().getModifiers());        
         try{
-            return query.getSingleResult();
-        }catch(javax.persistence.NoResultException e){
+            return getSingleResult(query);
+        } catch(javax.persistence.NoResultException e){
             logger.debug(e.getMessage(),e);
             return null;
-        }catch(javax.persistence.NonUniqueResultException e){
+        } catch(javax.persistence.NonUniqueResultException e){
             throw new NonUniqueResultException();
+        } finally {
+            reset();    
         }
     }
 
