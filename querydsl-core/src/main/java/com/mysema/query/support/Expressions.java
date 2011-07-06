@@ -9,12 +9,20 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.CaseBuilder;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.path.BooleanPath;
+import com.mysema.query.types.path.ComparablePath;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.path.TimePath;
 import com.mysema.query.types.query.SimpleSubQuery;
 import com.mysema.query.types.template.BooleanTemplate;
 import com.mysema.query.types.template.ComparableTemplate;
@@ -79,6 +87,74 @@ public final class Expressions {
     public static <T> SimplePath<T> path(Class<T> type, Path<?> parent, String property) {
         return new SimplePath<T>(type, PathMetadataFactory.forProperty(parent, property));
     }    
+    
+    @SuppressWarnings("unchecked")
+    public static <T extends Comparable> ComparablePath<T> comparablePath(Class<T> type, String variable) {
+        return new ComparablePath<T>(type, PathMetadataFactory.forVariable(variable));
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Comparable> ComparablePath<T> comparablePath(Class<T> type, Path<?> parent, String property) {
+        return new ComparablePath<T>(type, PathMetadataFactory.forProperty(parent, property));
+    }  
+    
+    @SuppressWarnings("unchecked")
+    public static <T extends Comparable> DatePath<T> datePath(Class<T> type, String variable) {
+        return new DatePath<T>(type, PathMetadataFactory.forVariable(variable));
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Comparable> DatePath<T> datePath(Class<T> type, Path<?> parent, String property) {
+        return new DatePath<T>(type, PathMetadataFactory.forProperty(parent, property));
+    }  
+    
+    @SuppressWarnings("unchecked")
+    public static <T extends Comparable> DateTimePath<T> dateTimePath(Class<T> type, String variable) {
+        return new DateTimePath<T>(type, PathMetadataFactory.forVariable(variable));
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Comparable> DateTimePath<T> dateTimePath(Class<T> type, Path<?> parent, String property) {
+        return new DateTimePath<T>(type, PathMetadataFactory.forProperty(parent, property));
+    }  
+    
+    @SuppressWarnings("unchecked")
+    public static <T extends Comparable> TimePath<T> timePath(Class<T> type, String variable) {
+        return new TimePath<T>(type, PathMetadataFactory.forVariable(variable));
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Comparable> TimePath<T> timePath(Class<T> type, Path<?> parent, String property) {
+        return new TimePath<T>(type, PathMetadataFactory.forProperty(parent, property));
+    }  
+    
+    public static <T extends Number & Comparable<?>> NumberPath<T> numberPath(Class<T> type, String variable) {
+        return new NumberPath<T>(type, PathMetadataFactory.forVariable(variable));
+    }
+
+    public static <T extends Number & Comparable<?>> NumberPath<T> numberPath(Class<T> type, Path<?> parent, String property) {
+        return new NumberPath<T>(type, PathMetadataFactory.forProperty(parent, property));
+    }   
+    
+    public static StringPath stringPath(String variable) {
+        return new StringPath(PathMetadataFactory.forVariable(variable));
+    }
+
+    public static StringPath stringPath(Path<?> parent, String property) {
+        return new StringPath(PathMetadataFactory.forProperty(parent, property));
+    }    
+    
+    public static BooleanPath booleanPath(String variable) {
+        return new BooleanPath(PathMetadataFactory.forVariable(variable));
+    }
+
+    public static BooleanPath booleanPath(Path<?> parent, String property) {
+        return new BooleanPath(PathMetadataFactory.forProperty(parent, property));
+    }    
+    
+    public static CaseBuilder cases() {
+        return new CaseBuilder();
+    }
         
     private Expressions(){}
 
