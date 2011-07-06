@@ -1,5 +1,6 @@
 package com.mysema.query;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -9,9 +10,11 @@ import java.net.URLClassLoader;
 
 import javax.jdo.annotations.PersistenceCapable;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 import com.mysema.codegen.CodeWriter;
+import com.mysema.query.apt.jdo.JDOAnnotationProcessor;
 import com.mysema.query.types.Expression;
 
 public class PackageVerification {
@@ -29,9 +32,9 @@ public class PackageVerification {
         oneJarClassLoader.loadClass(Expression.class.getName()); // querydsl-core
         oneJarClassLoader.loadClass(CodeWriter.class.getName()); // codegen
         oneJarClassLoader.loadClass(PersistenceCapable.class.getName()); // jdo        
-//        oneJarClassLoader.loadClass(JDOAnnotationProcessor.class.getName()); // querydsl-apt
-//        String resourceKey = "META-INF/services/javax.annotation.processing.Processor";
-//        assertEquals(JDOAnnotationProcessor.class.getName(), IOUtils.toString(oneJarClassLoader.findResource(resourceKey).openStream()));
+        oneJarClassLoader.loadClass(JDOAnnotationProcessor.class.getName()); // querydsl-apt
+        String resourceKey = "META-INF/services/javax.annotation.processing.Processor";
+        assertEquals(JDOAnnotationProcessor.class.getName(), IOUtils.toString(oneJarClassLoader.findResource(resourceKey).openStream()));
     }
     
 }
