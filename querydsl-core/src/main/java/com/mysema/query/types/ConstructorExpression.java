@@ -32,24 +32,32 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
             return clazz;
         }
     }
-
-    public static <D> ConstructorExpression<D> create(Class<D> type, Expression<?>... args){
+    
+    private static Class<?>[] getRealParameters(Class<?> type, Class<?>[] givenTypes) {
         for (Constructor<?> c : type.getConstructors()){
             Class<?>[] paramTypes = c.getParameterTypes();
-            if (paramTypes.length == args.length){
+            if (paramTypes.length == givenTypes.length){
                 boolean found = true;
                 for (int i = 0; i < paramTypes.length; i++){
-                    if (!normalize(paramTypes[i]).isAssignableFrom(args[i].getType())){
+                    if (!normalize(paramTypes[i]).isAssignableFrom(normalize(givenTypes[i]))){
                         found = false;
                         break;
                     }
                 }
                 if (found){
-                    return new ConstructorExpression<D>(type, paramTypes, args);
+                    return paramTypes;
                 }
             }
         }
         throw new ExpressionException("Got no matching constructor");
+    }
+
+    public static <D> ConstructorExpression<D> create(Class<D> type, Expression<?>... args){
+        Class<?>[] paramTypes = new Class[args.length];
+        for (int i = 0; i < paramTypes.length; i++) {
+            paramTypes[i] = args[i].getType();
+        }
+        return new ConstructorExpression<D>(type, paramTypes, args);
     }
 
     private final List<Expression<?>> args;
@@ -65,7 +73,7 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
 
     public ConstructorExpression(Class<T> type, Class<?>[] paramTypes, List<Expression<?>> args) {
         super(type);
-        this.parameterTypes = paramTypes.clone();
+        this.parameterTypes = getRealParameters(type, paramTypes).clone();
         this.args = args;
     }
 

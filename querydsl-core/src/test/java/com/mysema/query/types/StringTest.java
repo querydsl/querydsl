@@ -63,25 +63,29 @@ public class StringTest {
         // Operation toString
         assertEquals("lower(alias.name)", $(alias.getName()).lower().toString());
 
-        // EConstructor
+        // ConstructorExpression
         ConstructorExpression<SomeType> someType = new ConstructorExpression<SomeType>(SomeType.class, new Class[]{SomeType.class}, $(alias));
         assertEquals("new SomeType(alias)", someType.toString());
 
-        // EArrayConstructor
+        // ArrayConstructorExpression
         ArrayConstructorExpression<SomeType> someTypeArray = new ArrayConstructorExpression<SomeType>(SomeType[].class,$(alias));
         assertEquals("new SomeType[](alias)", someTypeArray.toString());
     }
 
 
-    public interface SomeType{
+    public static class SomeType{
 
-        String getName();
+        public SomeType(){}
+        
+        public SomeType(SomeType st){}
+        
+        public String getName(){return ""; };
 
-        SomeType getRef();
+        public SomeType getRef(){ return null; };
 
-        List<SomeType> getRefs();
+        public List<SomeType> getRefs() { return null; };
 
-        int getAmount();
+        public int getAmount() { return 0; };
     }
 
 }

@@ -16,7 +16,10 @@ import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.types.ConstantImpl;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
 
 public class QueryProjectionTest {
 
@@ -54,10 +57,13 @@ public class QueryProjectionTest {
 
     @Test
     public void Entity_Case(){
-        QQueryProjectionTest_EntityWithProjection.create(ConstantImpl.create(0l)).newInstance(0l);
-//        QQueryProjectionTest_EntityWithProjection.create(ConstantImpl.create("")).newInstance("");
-//        QQueryProjectionTest_EntityWithProjection.create(ConstantImpl.create(0l), ConstantImpl.create("")).newInstance(0l,"");
-//        QQueryProjectionTest_EntityWithProjection.create(ConstantImpl.create(""), ConstantImpl.create("")).newInstance("","");
+        NumberExpression<Long> longExpr = new NumberPath<Long>(Long.class, "x");
+        StringExpression stringExpr = new StringPath("x");
+        
+        QQueryProjectionTest_EntityWithProjection.create(longExpr).newInstance(0l);
+        QQueryProjectionTest_EntityWithProjection.create(stringExpr).newInstance("");
+        QQueryProjectionTest_EntityWithProjection.create(longExpr, stringExpr).newInstance(0l,"");
+        QQueryProjectionTest_EntityWithProjection.create(stringExpr,stringExpr).newInstance("","");
     }
 
     public static class DTOWithProjection {
@@ -104,10 +110,13 @@ public class QueryProjectionTest {
 
     @Test
     public void Dto_Case() throws SecurityException, NoSuchMethodException{
-        new QQueryProjectionTest_DTOWithProjection(ConstantImpl.create(0l)).newInstance(0l);
-//        new QQueryProjectionTest_DTOWithProjection(StringConstant.create("")).newInstance("");
-//        new QQueryProjectionTest_DTOWithProjection(ConstantImpl.create(0l), StringConstant.create("")).newInstance(0l,"");
-//        new QQueryProjectionTest_DTOWithProjection(StringConstant.create(""), StringConstant.create("")).newInstance("","");
+        NumberExpression<Long> longExpr = new NumberPath<Long>(Long.class, "x");
+        StringExpression stringExpr = new StringPath("x");
+        
+        new QQueryProjectionTest_DTOWithProjection(longExpr).newInstance(0l);
+        new QQueryProjectionTest_DTOWithProjection(stringExpr).newInstance("");
+        new QQueryProjectionTest_DTOWithProjection(longExpr, stringExpr).newInstance(0l,"");
+        new QQueryProjectionTest_DTOWithProjection(stringExpr, stringExpr).newInstance("","");
 
     }
 }
