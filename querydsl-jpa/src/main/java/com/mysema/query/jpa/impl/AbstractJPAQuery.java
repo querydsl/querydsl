@@ -181,10 +181,14 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
             List<Object> rv = new ArrayList<Object>(results.size());
             FactoryExpression<?> expr = (FactoryExpression<?>)getMetadata().getProjection().get(0);
             for (Object o : results) {
-                if (o != null && !o.getClass().isArray()){
-                    o = new Object[]{o};
-                }
-                rv.add(expr.newInstance((Object[])o));                
+                if (o != null) {
+                    if (!o.getClass().isArray()){
+                        o = new Object[]{o};
+                    }   
+                    rv.add(expr.newInstance((Object[])o));
+                } else {
+                    rv.add(null);
+                }                
             }
             return rv;
         } else {
@@ -202,10 +206,14 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         if (factoryExpressionUsed) {
             Object result = query.getSingleResult();
             FactoryExpression<?> expr = (FactoryExpression<?>)getMetadata().getProjection().get(0);
-            if (result != null && !result.getClass().isArray()) {
-                result = new Object[]{result};
-            }
-            return expr.newInstance((Object[])result);
+            if (result != null) {
+                if (!result.getClass().isArray()) {
+                    result = new Object[]{result};
+                }
+                return expr.newInstance((Object[])result);    
+            } else {
+                return null;
+            }            
         } else {
             return query.getSingleResult();
         }
