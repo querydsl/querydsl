@@ -5,15 +5,23 @@
  */
 package com.mysema.query;
 
-import com.mysema.query.types.ConstructorExpression;
-import com.mysema.query.types.Expression;
+import java.util.Arrays;
+import java.util.List;
 
-public class QProjection extends ConstructorExpression<Projection>{
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionBase;
+import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.Visitor;
+
+public class QProjection extends ExpressionBase<Projection> implements FactoryExpression<Projection>{
 
     private static final long serialVersionUID = -7330905848558102164L;
 
+    private final List<Expression<?>> args;
+    
     public QProjection(Expression<?>... args) {
-        super(Projection.class, new Class[0], args);
+        super(Projection.class);
+        this.args = Arrays.asList(args);
     }
 
     @SuppressWarnings("unchecked")
@@ -50,6 +58,16 @@ public class QProjection extends ConstructorExpression<Projection>{
             }
 
         };
+    }
+
+    @Override
+    public List<Expression<?>> getArgs() {
+        return args;
+    }
+
+    @Override
+    public <R, C> R accept(Visitor<R, C> v, C context) {
+        return v.visit(this, context);
     }
 
 }

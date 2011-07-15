@@ -39,7 +39,7 @@ public class SelectMySQLTest extends SelectBaseTest {
     @Test
     @Override
     public void Alias_Quotes() {
-        expectedQuery = "select e.FIRSTNAME as `First Name` from EMPLOYEE2 e";
+        expectedQuery = "select e.FIRSTNAME as `First Name` from EMPLOYEE e";
         query().from(employee).list(employee.firstname.as("First Name"));
     }
     

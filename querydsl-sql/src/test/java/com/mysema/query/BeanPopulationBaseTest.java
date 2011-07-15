@@ -6,6 +6,7 @@
 package com.mysema.query;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
@@ -22,14 +23,15 @@ public abstract class BeanPopulationBaseTest extends AbstractBaseTest{
         Employee employee = new Employee();
         employee.setFirstname("John");
         Integer id = insert(e).populate(employee).executeWithKey(e.id);
+        assertNotNull(id);
         employee.setId(id);
 
         // Update
-        employee.setLastname("Smith");
+        employee.setLastname("S");
         assertEquals(1l, update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
 
         // Query
-        Employee smith = query().from(e).where(e.lastname.eq("Smith")).limit(1).uniqueResult(e);
+        Employee smith = query().from(e).where(e.lastname.eq("S")).limit(1).uniqueResult(e);
         assertEquals("John", smith.getFirstname());
 
         // Delete (no changes needed)
@@ -45,29 +47,29 @@ public abstract class BeanPopulationBaseTest extends AbstractBaseTest{
         employee.setId(id);
 
         // Update
-        employee.setLastname("Smith");
+        employee.setLastname("S");
         assertEquals(1l, update(e).populate(employee).where(e.id.eq(employee.getId())).execute());
 
         // Query
-        Employee smith = extQuery().from(e).where(e.lastname.eq("Smith"))
+        Employee smith = extQuery().from(e).where(e.lastname.eq("S"))
             .limit(1)
             .uniqueResult(Employee.class, e.lastname, e.firstname);
         assertEquals("John", smith.getFirstname());
-        assertEquals("Smith", smith.getLastname());
+        assertEquals("S", smith.getLastname());
 
         // Query with alias
-        smith = extQuery().from(e).where(e.lastname.eq("Smith"))
+        smith = extQuery().from(e).where(e.lastname.eq("S"))
             .limit(1)
             .uniqueResult(Employee.class, e.lastname.as("lastname"), e.firstname.as("firstname"));
         assertEquals("John", smith.getFirstname());
-        assertEquals("Smith", smith.getLastname());
+        assertEquals("S", smith.getLastname());
 
         // Query into custom type
-        OtherEmployee other = extQuery().from(e).where(e.lastname.eq("Smith"))
+        OtherEmployee other = extQuery().from(e).where(e.lastname.eq("S"))
             .limit(1)
             .uniqueResult(OtherEmployee.class, e.lastname, e.firstname);
         assertEquals("John", other.getFirstname());
-        assertEquals("Smith", other.getLastname());
+        assertEquals("S", other.getLastname());
 
         // Delete (no changes needed)
         assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());

@@ -11,7 +11,7 @@ import com.mysema.query.types.QBean;
 
 public class QBeanTest {
     
-    private QEmployee e = new QEmployee("e");
+    private final QEmployee e = new QEmployee("e");
     
     @Test
     public void Direct_to_Managed_type(){
@@ -32,7 +32,7 @@ public class QBeanTest {
     public void Alias_to_Managed_type(){
         FactoryExpression<Employee> expr = new QBean<Employee>(Employee.class, e.superiorId.as("id"));        
         Employee e = expr.newInstance(3);
-        assertEquals(3, e.getId());
+        assertEquals(3, e.getId().intValue());
     }
     
     @Test

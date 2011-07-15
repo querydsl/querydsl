@@ -46,22 +46,22 @@ public class SelectOracleTest extends SelectBaseTest {
     @Test
     public void limitAndOffsetInOracle() throws SQLException {
         // limit
-        expectedQuery = "select * from (   select e.ID from EMPLOYEE2 e ) where rownum <= ?";
+        expectedQuery = "select * from (   select e.ID from EMPLOYEE e ) where rownum <= ?";
         query().from(employee).limit(4).list(employee.id);
 
         // offset
-        expectedQuery = "select * from (  select a.*, rownum rn from (   select e.ID from EMPLOYEE2 e  ) a) where rn > ?";
+        expectedQuery = "select * from (  select a.*, rownum rn from (   select e.ID from EMPLOYEE e  ) a) where rn > ?";
         query().from(employee).offset(3).list(employee.id);
 
         // limit offset
-        expectedQuery =  "select * from (  select a.*, rownum rn from (   select e.ID from EMPLOYEE2 e  ) a) where rn > 3 and rn <= 7";
+        expectedQuery =  "select * from (  select a.*, rownum rn from (   select e.ID from EMPLOYEE e  ) a) where rn > 3 and rn <= 7";
         query().from(employee).limit(4).offset(3).list(employee.id);
     }
 
     @Test
     public void connectByPrior() throws SQLException{
         expectedQuery =  "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
-                        "from EMPLOYEE2 e " +
+                        "from EMPLOYEE e " +
                         "connect by prior e.ID = e.SUPERIOR_ID";
         qo().from(employee)
             .connectByPrior(employee.id.eq(employee.superiorId))
@@ -72,7 +72,7 @@ public class SelectOracleTest extends SelectBaseTest {
     public void connectByPrior2() throws SQLException{
         expectedQuery =
                 "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
-                "from EMPLOYEE2 e " +
+                "from EMPLOYEE e " +
                 "start with e.ID = ? " +
                 "connect by prior e.ID = e.SUPERIOR_ID";
         qo().from(employee)
@@ -85,7 +85,7 @@ public class SelectOracleTest extends SelectBaseTest {
     public void connectByPrior3() throws SQLException{
         expectedQuery =
                 "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
-                "from EMPLOYEE2 e " +
+                "from EMPLOYEE e " +
                 "start with e.ID = ? " +
                 "connect by prior e.ID = e.SUPERIOR_ID " +
                 "order siblings by e.LASTNAME";
@@ -100,7 +100,7 @@ public class SelectOracleTest extends SelectBaseTest {
     public void connectByPrior4() throws SQLException{
         expectedQuery =
                 "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
-                "from EMPLOYEE2 e " +
+                "from EMPLOYEE e " +
                 "connect by nocycle prior e.ID = e.SUPERIOR_ID";
         qo().from(employee)
             .connectByNocyclePrior(employee.id.eq(employee.superiorId))
@@ -132,7 +132,7 @@ public class SelectOracleTest extends SelectBaseTest {
         expectedQuery = "select e.LASTNAME, e.SALARY, " +
             "sum(e.SALARY) over (partition by e.SUPERIOR_ID order by e.LASTNAME, e.SALARY), " +
             "sum(e.SALARY) over (order by e.SUPERIOR_ID, e.SALARY), " +
-            "sum(e.SALARY) over () from EMPLOYEE2 e order by e.SALARY asc, e.SUPERIOR_ID asc";
+            "sum(e.SALARY) over () from EMPLOYEE e order by e.SALARY asc, e.SUPERIOR_ID asc";
 
         qo().from(employee)
             .orderBy(employee.salary.asc(), employee.superiorId.asc())

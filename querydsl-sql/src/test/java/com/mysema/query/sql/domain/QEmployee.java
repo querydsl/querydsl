@@ -20,12 +20,12 @@ import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.TimePath;
 
 @Schema("PUBLIC")
-@Table("EMPLOYEE2")
+@Table("EMPLOYEE")
 public class QEmployee extends RelationalPathBase<Employee> {
 
     private static final long serialVersionUID = 1394463749655231079L;
     
-    public static final QEmployee employee = new QEmployee("EMPLOYEE2");
+    public static final QEmployee employee = new QEmployee("EMPLOYEE");
 
     public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 

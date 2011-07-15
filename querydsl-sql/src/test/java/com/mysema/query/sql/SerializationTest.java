@@ -15,7 +15,7 @@ import com.mysema.query.sql.domain.QSurvey;
 
 public class SerializationTest {
     
-    private Connection connection = EasyMock.createMock(Connection.class);
+    private final Connection connection = EasyMock.createMock(Connection.class);
 
     @Test
     public void InnerJoin(){        
@@ -71,7 +71,7 @@ public class SerializationTest {
         delete.where(survey1.name.eq("XXX"), new SQLSubQuery().from(employee).where(survey1.id.eq(employee.id)).exists());
         assertEquals("delete from SURVEY\n" +
                      "where SURVEY.NAME = ? and exists (select 1\n" +
-                     "from EMPLOYEE2 e\n" +
+                     "from EMPLOYEE e\n" +
                      "where SURVEY.ID = e.ID)", delete.toString());
     }
 

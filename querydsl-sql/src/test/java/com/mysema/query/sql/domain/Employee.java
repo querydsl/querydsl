@@ -14,11 +14,11 @@ import com.mysema.query.sql.Schema;
 import com.mysema.query.sql.Table;
 
 @Schema("PUBLIC")
-@Table("EMPLOYEE2")
+@Table("EMPLOYEE")
 public class Employee {
 
     @Column("ID")
-    private int id;
+    private Integer id;
     
     @Column("FIRSTNAME")
     private String firstname;
@@ -44,11 +44,11 @@ public class Employee {
         this.id = id;
     }
     
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

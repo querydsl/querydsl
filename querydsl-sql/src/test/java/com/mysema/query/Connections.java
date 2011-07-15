@@ -44,7 +44,7 @@ public final class Connections {
 
     private static final String CREATE_TABLE_TIMETEST = "create table TIME_TEST(TIME_TEST time)";
 
-    private static final String INSERT_INTO_EMPLOYEE = "insert into EMPLOYEE2 " +
+    private static final String INSERT_INTO_EMPLOYEE = "insert into EMPLOYEE " +
         "(ID, FIRSTNAME, LASTNAME, SALARY, DATEFIELD, TIMEFIELD, SUPERIOR_ID) " +
         "values (?,?,?,?,?,?,?)";
 
@@ -154,7 +154,7 @@ public final class Connections {
         }
 
         // employee
-        dropTable(templates, "EMPLOYEE2");
+        dropTable(templates, "EMPLOYEE");
         
         createEmployeeTable(templates);
         
@@ -170,7 +170,7 @@ public final class Connections {
     }
 
     private static void createEmployeeTable(SQLTemplates templates) {
-        createTable(templates, "EMPLOYEE2")
+        createTable(templates, "EMPLOYEE")
         .column("ID", Integer.class)
         .column("FIRSTNAME", String.class).size(50)
         .column("LASTNAME", String.class).size(50)
@@ -179,7 +179,7 @@ public final class Connections {
         .column("TIMEFIELD",Time.class)
         .column("SUPERIOR_ID",Integer.class)
         .primaryKey("PK_EMPLOYEE", "ID")
-        .foreignKey("FK_SUPERIOR","SUPERIOR_ID").references("EMPLOYEE2","ID")
+        .foreignKey("FK_SUPERIOR","SUPERIOR_ID").references("EMPLOYEE","ID")
         .execute();
     }
 
@@ -214,7 +214,7 @@ public final class Connections {
         }
 
         // employee
-        dropTable(templates, "EMPLOYEE2");
+        dropTable(templates, "EMPLOYEE");
         createEmployeeTable(templates);
         addEmployees(INSERT_INTO_EMPLOYEE);
 
@@ -241,7 +241,8 @@ public final class Connections {
         stmt.execute("drop table SURVEY if exists");
         stmt.execute(CREATE_TABLE_SURVEY);
         stmt.execute("insert into SURVEY values (1, 'Hello World');");
-
+        stmt.execute("alter table SURVEY alter column id int auto_increment");
+        
         // test
         stmt.execute("drop table TEST if exists");
         stmt.execute(CREATE_TABLE_TEST);
@@ -257,9 +258,11 @@ public final class Connections {
         }
 
         // employee
-        stmt.execute("drop table EMPLOYEE2 if exists");
+        stmt.execute("drop table EMPLOYEE if exists");
         createEmployeeTable(templates);
+        stmt.execute("alter table EMPLOYEE alter column id int auto_increment");
         addEmployees(INSERT_INTO_EMPLOYEE);
+        
 
         // date_test and time_test
         stmt.execute("drop table TIME_TEST if exists");
@@ -284,7 +287,7 @@ public final class Connections {
         stmt.execute("drop table SURVEY if exists");
         stmt.execute(CREATE_TABLE_SURVEY);
         stmt.execute("insert into SURVEY values (1, 'Hello World');");
-
+        
         // test
         stmt.execute("drop table TEST if exists");
         stmt.execute(CREATE_TABLE_TEST);
@@ -300,7 +303,7 @@ public final class Connections {
         }
 
         // employee
-        stmt.execute("drop table EMPLOYEE2 if exists");
+        stmt.execute("drop table EMPLOYEE if exists");
         createEmployeeTable(templates);
         addEmployees(INSERT_INTO_EMPLOYEE);
 
@@ -343,7 +346,7 @@ public final class Connections {
         }
 
         // employee
-        stmt.execute("drop table if exists EMPLOYEE2");
+        stmt.execute("drop table if exists EMPLOYEE");
         createEmployeeTable(templates);
         addEmployees(INSERT_INTO_EMPLOYEE);
 
@@ -383,7 +386,7 @@ public final class Connections {
         pstmt.executeBatch();
 
         // employee
-        dropTable(templates, "EMPLOYEE2");
+        dropTable(templates, "EMPLOYEE");
         createEmployeeTable(templates);
         addEmployees(INSERT_INTO_EMPLOYEE);
 
@@ -427,9 +430,9 @@ public final class Connections {
 
         // employee
         // stmt.execute("drop table employee if exists");
-        dropTable(templates, "EMPLOYEE2");
+        dropTable(templates, "EMPLOYEE");
         createEmployeeTable(templates);
-        addEmployees("insert into \"EMPLOYEE2\" " +
+        addEmployees("insert into \"EMPLOYEE\" " +
             "(\"ID\", \"FIRSTNAME\", \"LASTNAME\", \"SALARY\", \"DATEFIELD\", \"TIMEFIELD\", \"SUPERIOR_ID\") " +
             "values (?,?,?,?,?,?,?)");
 

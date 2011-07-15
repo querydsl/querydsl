@@ -109,7 +109,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     @SkipForQuoted
     public void Alias_Quotes() {
-        expectedQuery = "select e.FIRSTNAME as \"First Name\" from EMPLOYEE2 e";
+        expectedQuery = "select e.FIRSTNAME as \"First Name\" from EMPLOYEE e";
         query().from(employee).list(employee.firstname.as("First Name"));
     }
 
@@ -133,12 +133,12 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     public void Beans(){
-        QEmployee employee2 = new QEmployee("employee2");
-        List<Beans> rows = query().from(employee, employee2).list(new QBeans(employee, employee2));
+        QEmployee EMPLOYEE = new QEmployee("EMPLOYEE");
+        List<Beans> rows = query().from(employee, EMPLOYEE).list(new QBeans(employee, EMPLOYEE));
         assertFalse(rows.isEmpty());
         for (Beans row : rows){
             assertEquals(Employee.class, row.get(employee).getClass());
-            assertEquals(Employee.class, row.get(employee2).getClass());            
+            assertEquals(Employee.class, row.get(EMPLOYEE).getClass());            
         }
     }
     
@@ -244,7 +244,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     @SkipForQuoted
     public void Count_All() {
-        expectedQuery = "select count(*) as rowCount from EMPLOYEE2 e";
+        expectedQuery = "select count(*) as rowCount from EMPLOYEE e";
         NumberPath<Long> rowCount = new NumberPath<Long>(Long.class, "rowCount");
         query().from(employee).uniqueResult(Wildcard.count.as(rowCount));
     }
@@ -397,11 +397,11 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @SkipForQuoted
     public void Limit_and_Offset2() throws SQLException {
         // limit
-        expectedQuery = "select e.ID from EMPLOYEE2 e limit ?";
+        expectedQuery = "select e.ID from EMPLOYEE e limit ?";
         query().from(employee).limit(4).list(employee.id);
 
         // limit offset
-        expectedQuery = "select e.ID from EMPLOYEE2 e limit ? offset ?";
+        expectedQuery = "select e.ID from EMPLOYEE e limit ? offset ?";
         query().from(employee).limit(4).offset(3).list(employee.id);
 
     }
@@ -445,7 +445,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @ExcludeIn({DERBY,HSQLDB})
     @SkipForQuoted
     public void Path_Alias(){
-        expectedQuery = "select e.LASTNAME, sum(e.SALARY) as salarySum from EMPLOYEE2 e group by e.LASTNAME having salarySum > ?";
+        expectedQuery = "select e.LASTNAME, sum(e.SALARY) as salarySum from EMPLOYEE e group by e.LASTNAME having salarySum > ?";
 
         NumberExpression<BigDecimal> salarySum = employee.salary.sum().as("salarySum");
         query().from(employee)
@@ -580,9 +580,9 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @SkipForQuoted
     public void SubQueries() throws SQLException {
         // subquery in where block
-        expectedQuery = "select e.ID from EMPLOYEE2 e "
+        expectedQuery = "select e.ID from EMPLOYEE e "
             + "where e.ID = (select max(e.ID) "
-            + "from EMPLOYEE2 e)";
+            + "from EMPLOYEE e)";
         List<Integer> list = query().from(employee)
         .where(employee.id.eq(sq().from(employee).unique(employee.id.max())))
         .list(employee.id);
@@ -653,7 +653,6 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         ListSubQuery<Integer> sq = sq().from(employee2).list(employee2.id);
         QEmployee sqEmp = new QEmployee("sq");
         query().from(employee).rightJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
-
     }
 
     @Test
@@ -677,7 +676,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
                 .from(employee)
                 .list(employee.salary.add(employee.salary).add(employee.salary).as(sal))
                 .as(sq));
-        assertEquals("(select (e.SALARY + e.SALARY + e.SALARY) as sal\nfrom EMPLOYEE2 e) as sq", serializer.toString());
+        assertEquals("(select (e.SALARY + e.SALARY + e.SALARY) as sal\nfrom EMPLOYEE e) as sq", serializer.toString());
     }
 
     @Test
@@ -704,6 +703,21 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         for (Tuple tuple : tuples){
             assertNotNull(tuple.get(employee.firstname));
             assertNotNull(tuple.get(employee.lastname));
+        }
+    }
+    
+    @Test
+    public void MappingProjection() {
+        List<Pair<String, String>> pairs = query().from(employee).list(new MappingProjection<Pair<String,String>>(Pair.class, employee.firstname, employee.lastname) {
+            @Override
+            protected Pair<String, String> map(Tuple row) {
+                return Pair.of(row.get(employee.firstname), row.get(employee.lastname));
+            }            
+        });
+        
+        for (Pair<String, String> pair : pairs) {
+            assertNotNull(pair.getFirst());
+            assertNotNull(pair.getSecond());
         }
     }
     
@@ -959,7 +973,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     @SkipForQuoted
     public void Wildcard_All() {
-        expectedQuery = "select * from EMPLOYEE2 e";
+        expectedQuery = "select * from EMPLOYEE e";
         query().from(employee).list(Wildcard.all);
     }
 

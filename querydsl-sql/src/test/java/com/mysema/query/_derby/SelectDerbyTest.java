@@ -36,15 +36,15 @@ public class SelectDerbyTest extends SelectBaseTest {
 
     @Test
     public void limitAndOffsetInDerby() throws SQLException {
-        expectedQuery = "select e.ID from EMPLOYEE2 e offset 3 rows fetch next 4 rows only";
+        expectedQuery = "select e.ID from EMPLOYEE e offset 3 rows fetch next 4 rows only";
         query().from(employee).limit(4).offset(3).list(employee.id);
 
         // limit
-        expectedQuery = "select e.ID from EMPLOYEE2 e fetch first 4 rows only";
+        expectedQuery = "select e.ID from EMPLOYEE e fetch first 4 rows only";
         query().from(employee).limit(4).list(employee.id);
 
         // offset
-        expectedQuery = "select e.ID from EMPLOYEE2 e offset 3 rows";
+        expectedQuery = "select e.ID from EMPLOYEE e offset 3 rows";
         query().from(employee).offset(3).list(employee.id);
 
     }
