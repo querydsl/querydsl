@@ -102,14 +102,6 @@ class JDBCIntegrationTest extends CompileTestUtils {
     assertCompileSuccess(recursiveFileList(directory))
   }
     
-  private def recursiveFileList(file: File): Array[File] = {
-    if (file.isDirectory) {
-      file.listFiles.flatMap(recursiveFileList(_))
-    } else {
-      Array(file)
-    }
-  }
-
   @Test
   def Populate_Bean {
     assertEquals(2, query from (survey) list (survey) size ())

@@ -56,7 +56,7 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
       val fieldName = namingStrategy.getPropertyNameForPrimaryKey(primaryKey.getName(), model)
       val value = new StringBuilder("createPrimaryKey(")
       value.append(primaryKey.getColumns().map({ column =>
-        namingStrategy.getPropertyName(column, model)
+        escape(namingStrategy.getPropertyName(column, model))
       }).mkString(", "))
       value.append(")")
       writer.publicFinal(new ClassType(classOf[PrimaryKey[_]], model), fieldName, value.toString)
@@ -89,7 +89,7 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
             local.append(", ")
             foreign.append(", ")
           }
-          local.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), model))
+          local.append(escape(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), model)))
           foreign.append("\"" + foreignKey.getParentColumns.get(0) + "\"")
           i += 1
         }

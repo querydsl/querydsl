@@ -42,4 +42,12 @@ trait CompileTestUtils {
       interpreter.close
     }
   }
+  
+  def recursiveFileList(file: File): Array[File] = {
+    if (file.isDirectory) {
+      file.listFiles.flatMap(recursiveFileList(_))
+    } else {
+      Array(file)
+    }
+  }  
 }
