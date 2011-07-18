@@ -630,7 +630,7 @@ public class Processor {
             // remove generic signature of type for TypeElement lookup
             String typeName = type.toString();
             if (typeName.contains("<")){
-                typeName = typeName.substring(0, typeName.indexOf("<"));
+                typeName = typeName.substring(0, typeName.indexOf('<'));
             }
             TypeElement typeElement = env.getElementUtils().getTypeElement(typeName);
             if (typeElement.getAnnotation(configuration.getEntityAnnotation()) != null){

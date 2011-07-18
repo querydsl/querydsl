@@ -136,7 +136,7 @@ public final class Ops {
      * Aggreation operators
      */
     @SuppressWarnings("unchecked")
-    public static class AggOps{
+    public static final class AggOps{
         public static final Operator<Comparable> MAX_AGG = new OperatorImpl<Comparable>("MAX_AGG",Comparable.class);
         public static final Operator<Comparable> MIN_AGG = new OperatorImpl<Comparable>("MIN_AGG",Comparable.class);
         public static final Operator<Number> AVG_AGG = new OperatorImpl<Number>("AVG_AGG",Number.class);
@@ -144,13 +144,14 @@ public final class Ops {
         public static final Operator<Number> COUNT_AGG = new OperatorImpl<Number>("COUNT_AGG",Object.class);
         public static final Operator<Number> COUNT_DISTINCT_AGG = new OperatorImpl<Number>("COUNT_DISTINCT_AGG",Object.class);
         public static final Operator<Number> COUNT_ALL_AGG = new OperatorImpl<Number>("COUNT_ALL_AGG");
+        private AggOps(){}
     }
 
     /**
      * Date and time operators
      */
     @SuppressWarnings("unchecked")
-    public static class DateTimeOps {
+    public static final class DateTimeOps {
         public static final Operator<Comparable> CURRENT_DATE = new OperatorImpl<Comparable>("CURRENT_DATE");
         public static final Operator<Comparable> CURRENT_TIME = new OperatorImpl<Comparable>("CURRENT_TIME");
         public static final Operator<Comparable> CURRENT_TIMESTAMP = new OperatorImpl<Comparable>("CURRENT_TIMESTAMP");
@@ -166,13 +167,14 @@ public final class Ops {
         public static final Operator<Integer> DAY_OF_WEEK = new OperatorImpl<Integer>("DAY_OF_WEEK",java.util.Date.class);
         public static final Operator<Integer> DAY_OF_MONTH = new OperatorImpl<Integer>("DAY_OF_MONTH",java.util.Date.class);
         public static final Operator<Integer> DAY_OF_YEAR = new OperatorImpl<Integer>("DAY_OF_YEAR",java.util.Date.class);
+        private DateTimeOps(){}
     }
 
     /**
      * Math operators
      *
      */
-    public static class MathOps {
+    public static final class MathOps {
         public static final Operator<Number> ABS = new OperatorImpl<Number>("ABS",Number.class);
         public static final Operator<Number> ACOS = new OperatorImpl<Number>("ACOS",Number.class);
         public static final Operator<Number> ASIN = new OperatorImpl<Number>("ASIN",Number.class);
@@ -191,25 +193,27 @@ public final class Ops {
         public static final Operator<Number> LOG = new OperatorImpl<Number>("LOG",Number.class);
         public static final Operator<Number> FLOOR = new OperatorImpl<Number>("FLOOR",Number.class);
         public static final Operator<Number> EXP = new OperatorImpl<Number>("EXP",Number.class);
+        private MathOps(){}
     }
 
     /**
      * String operators
      */
-    public static class StringOps {
+    public static final class StringOps {
         public static final Operator<String> LTRIM = new OperatorImpl<String>("LTRIM",String.class);
         public static final Operator<String> RTRIM = new OperatorImpl<String>("RTRIM",String.class);
         public static final Operator<String> SPACE = new OperatorImpl<String>("SPACE",Integer.class);
         public static final Operator<String[]> SPLIT = new OperatorImpl<String[]>("SPLIT",STRING_X_2);
         public static final Operator<Number> LAST_INDEX_2ARGS = new OperatorImpl<Number>("LAST_INDEX2");
         public static final Operator<Number> LAST_INDEX = new OperatorImpl<Number>("LAST_INDEX",STRING_X_2);
+        private StringOps(){}
     }
 
     /**
      * Quantification operators
      */
     @SuppressWarnings("unchecked")
-    public static class QuantOps {
+    public static final class QuantOps {
         public static final Operator<Comparable> AVG_IN_COL = new OperatorImpl<Comparable>("AVG_IN_COL",Collection.class);
         public static final Operator<Comparable> MAX_IN_COL = new OperatorImpl<Comparable>("MAX_IN_COL",Collection.class);
         public static final Operator<Comparable> MIN_IN_COL = new OperatorImpl<Comparable>("MIN_IN_COL",Collection.class);
@@ -220,6 +224,7 @@ public final class Ops {
         // not exists = true if subselect doesn't match
         public static final Operator<Object> ANY = new OperatorImpl<Object>("ANY",Object.class);
         public static final Operator<Object> ALL = new OperatorImpl<Object>("ALL",Object.class);
+        private QuantOps(){}
     }
     
     private Ops(){}

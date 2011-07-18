@@ -22,4 +22,6 @@ public final class Wildcard {
 
     public static final NumberExpression<Integer> countAsInt = NumberOperation.create(Integer.class, Ops.AggOps.COUNT_ALL_AGG);
 
+    private Wildcard(){}
+    
 }
