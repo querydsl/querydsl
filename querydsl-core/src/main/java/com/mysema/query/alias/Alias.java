@@ -141,7 +141,7 @@ public final class Alias {
         if (rv != null) {
             return rv;
         }else if (arg instanceof EntityPath<?>){    
-            return (EntityPathBase<D>)arg;
+            return (EntityPathBase<D>)arg; //NOSONAR
         } else if (arg instanceof ManagedObject) {
             return (EntityPathBase<D>) ((ManagedObject) arg).__mappedPath();
         } else {

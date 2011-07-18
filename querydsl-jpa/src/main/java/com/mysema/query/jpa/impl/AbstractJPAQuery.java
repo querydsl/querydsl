@@ -202,6 +202,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
      * @param query
      * @return
      */
+    @Nullable
     private Object getSingleResult(Query query) {
         if (factoryExpressionUsed) {
             Object result = query.getSingleResult();
