@@ -27,7 +27,7 @@ import com.mysema.query.annotations.PropertyType;
 
 public class EntitySerializerTest {
 
-    private final QueryTypeFactory queryTypeFactory = new QueryTypeFactoryImpl("Q", "", "");
+    private QueryTypeFactory queryTypeFactory = new QueryTypeFactoryImpl("Q", "", "");
 
     private final TypeMappings typeMappings = new TypeMappings();
 
@@ -47,6 +47,19 @@ public class EntitySerializerTest {
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         assertTrue(writer.toString().contains("QEntitySerializerTest_Entity is a Querydsl query type for Entity"));
     }
+    
+    @Test
+    public void Different_Package() throws IOException {
+        queryTypeFactory = new QueryTypeFactoryImpl("Q", "", ".gen");
+        
+        EntityType entityType = new EntityType(new ClassType(Entity.class));
+        typeMappings.register(entityType, queryTypeFactory.create(entityType));
+        
+        serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));        
+//        System.err.println(writer.toString());
+        assertTrue(writer.toString().contains("public class QEntitySerializerTest_Entity extends EntityPathBase<com.mysema.query.codegen.EntitySerializerTest.Entity>"));
+    }
+    
 
     @Test
     public void No_Package() throws IOException {
