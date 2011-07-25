@@ -52,6 +52,12 @@
       <artifactId>hibernate-search</artifactId>
       <version>3.1.1.GA</version>
       <scope>provided</scope>
+      <exclusions>
+       <exclusion> 
+         <groupId>hsqldb</groupId>
+         <artifactId>hsqldb</artifactId>
+       </exclusion>
+      </exclusions>
     </dependency>  
     <dependency>
       <groupId>javassist</groupId>
