@@ -476,7 +476,7 @@ public class Processor {
             return true;
         }
                 
-        if (configuration.getSupertypeSerializer() != null && element.getAnnotation(configuration.getSuperTypeAnnotation()) != null) {
+        if (configuration.getSuperTypeAnnotation() != null && element.getAnnotation(configuration.getSuperTypeAnnotation()) != null) {
             return true;
         }
         
