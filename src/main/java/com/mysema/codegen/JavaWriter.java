@@ -185,7 +185,7 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter>{
     @Override
     public JavaWriter beginClass(Type type, Type superClass, Type... interfaces) throws IOException{
         packages.add(type.getPackageName());
-        beginLine(PUBLIC_CLASS + type.getSimpleName());
+        beginLine(PUBLIC_CLASS + type.getGenericName(false, packages, classes));
         if (superClass != null){
             append(EXTENDS + superClass.getGenericName(false, packages, classes));
         }

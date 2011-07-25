@@ -200,7 +200,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     @Override
     public ScalaWriter beginClass(Type type, Type superClass, Type... interfaces) throws IOException {
         packages.add(type.getPackageName());
-        beginLine(PUBLIC_CLASS, type.getSimpleName());
+        beginLine(PUBLIC_CLASS, getGenericName(false, type));
         if (superClass != null){
             append(EXTENDS + getGenericName(false, superClass));
         }
