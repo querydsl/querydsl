@@ -48,7 +48,7 @@ public final class TypeResolver {
             }
         }
 
-        if (index > -1){
+        if (index > -1 && subtype.getSuperType() != null){
             // get binding of var via model supertype
             Supertype type = subtype.getSuperType();
             while (!type.getType().equals(declaringType)){
