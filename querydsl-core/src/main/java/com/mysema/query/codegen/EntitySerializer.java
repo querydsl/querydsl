@@ -553,7 +553,7 @@ public class EntitySerializer implements Serializer{
             Type queryType = typeMappings.getPathType(propertyType, model, false);
             Type genericQueryType = null;
             String localRawName = writer.getRawName(property.getType());
-
+            
             switch(property.getType().getCategory()){
             case STRING:
                 serialize(model, property, queryType, writer, "createString");

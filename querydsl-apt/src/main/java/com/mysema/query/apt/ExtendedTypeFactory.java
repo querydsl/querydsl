@@ -170,18 +170,17 @@ public final class ExtendedTypeFactory {
         // other
         String name = typeElement.getQualifiedName().toString();
         TypeCategory typeCategory = TypeCategory.get(name);
-
+        
         if (typeCategory != TypeCategory.NUMERIC
                 && isImplemented(typeElement, comparableType)
                 && isSubType(typeElement, numberType)){
             typeCategory = TypeCategory.NUMERIC;
-
-        }else if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE)
+            
+        } else if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE)
                 && isImplemented(typeElement, comparableType)){
             typeCategory = TypeCategory.COMPARABLE;
-        }
-
-        if (typeCategory == TypeCategory.SIMPLE){
+            
+        } if (typeCategory == TypeCategory.SIMPLE){
             for (Class<? extends Annotation> entityAnn : entityAnnotations){
                 if (typeElement.getAnnotation(entityAnn) != null){
                     typeCategory = TypeCategory.ENTITY;
@@ -189,6 +188,22 @@ public final class ExtendedTypeFactory {
             }
         }
 
+        // for intersection types etc
+        if (name.equals("")) {
+            TypeMirror type = env.getElementUtils().getTypeElement(Object.class.getName()).asType();
+            if (typeCategory == TypeCategory.COMPARABLE) {
+                type = env.getElementUtils().getTypeElement(Comparable.class.getName()).asType();
+            }
+            // find most specific type of superTypes which is a subtype of type
+            List<? extends TypeMirror> superTypes = env.getTypeUtils().directSupertypes(declaredType);
+            for (TypeMirror superType : superTypes) {
+                if (env.getTypeUtils().isSubtype(superType, type)) {
+                    type = superType;
+                }
+            }
+            typeElement = (TypeElement)env.getTypeUtils().asElement(type);
+        }
+        
         Type type = createType(typeElement, typeCategory, declaredType.getTypeArguments(), deep);
 
         // entity type
