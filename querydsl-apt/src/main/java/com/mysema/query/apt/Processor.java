@@ -24,6 +24,7 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.NoType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
@@ -405,7 +406,6 @@ public class Processor {
                 if (entityType.getSuperType() != null){
                     superTypes.push(entityType.getSuperType().getType());
                 }
-//                types.put(superType.getFullName(), entityType);
                 allSupertypes.put(superType.getFullName(), entityType);
             }
         }
@@ -434,18 +434,7 @@ public class Processor {
                 typeMirrors.add(element.asType());
                 elements.add(element);
                 
-                // add annotationless supertype
-                TypeMirror superTypeMirror = ((TypeElement)element).getSuperclass();
-                if (superTypeMirror != null){
-                    Element superTypeElement = env.getTypeUtils().asElement(superTypeMirror);
-                    if (superTypeElement != null 
-                            && !superTypeElement.toString().startsWith("java.lang.")  
-                            && !hasKnownAnnotation(superTypeElement)) {
-                        typeFactory.getEntityType(superTypeMirror, false);
-                        superTypeMirrors.add(superTypeMirror);
-                        elements.add(superTypeElement);
-                    }
-                }
+                addAnnotationlessSupertypes(superTypeMirrors, elements, element);
             }
         }
 
@@ -560,18 +549,7 @@ public class Processor {
             typeMirrors.add(element.asType());
             elements.add(element);
             
-            // add annotationless supertype
-            TypeMirror superTypeMirror = ((TypeElement)element).getSuperclass();
-            if (superTypeMirror != null){
-                Element superTypeElement = env.getTypeUtils().asElement(superTypeMirror);
-                if (superTypeElement != null 
-                        && !superTypeElement.toString().startsWith("java.lang.") 
-                        && !hasKnownAnnotation(superTypeElement)) {
-                    typeFactory.getEntityType(superTypeMirror, false);
-                    superTypeMirrors.add(superTypeMirror);
-                    elements.add(superTypeElement);
-                }
-            }
+            addAnnotationlessSupertypes(superTypeMirrors, elements, element);
         }
         
         for (TypeMirror typeMirror : superTypeMirrors){
@@ -594,6 +572,28 @@ public class Processor {
         Set<EntityType> handled = new HashSet<EntityType>();
         for (EntityType embeddable : embeddables.values()) {
             addSupertypeFields(embeddable, allSupertypes, handled);
+        }
+    }
+
+    private void addAnnotationlessSupertypes(List<TypeMirror> superTypeMirrors,
+            List<Element> elements, Element element) {
+        // add annotationless supertype
+        TypeMirror superTypeMirror = ((TypeElement)element).getSuperclass();
+        while (superTypeMirror != null){
+            Element superTypeElement = env.getTypeUtils().asElement(superTypeMirror);
+            if (superTypeElement != null 
+                    && !superTypeElement.toString().startsWith("java.lang.") 
+                    && !hasKnownAnnotation(superTypeElement)) {
+                typeFactory.getEntityType(superTypeMirror, false);
+                superTypeMirrors.add(superTypeMirror);
+                elements.add(superTypeElement);
+                superTypeMirror = ((TypeElement)superTypeElement).getSuperclass();
+                if (superTypeMirror instanceof NoType) {
+                    superTypeMirror = null;
+                }
+            } else {
+                superTypeMirror = null;
+            }
         }
     }
 
