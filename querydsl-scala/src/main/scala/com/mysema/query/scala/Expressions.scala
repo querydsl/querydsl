@@ -556,5 +556,7 @@ trait EnumExpression[T <: Enum[T]] extends ComparableExpression[T] {
 
   override def as(alias: String): EnumExpression[T] = as(new PathImpl[T](getType, alias))
 
+  def mapToId[T <: { def id: java.lang.Long }](events: List[T]) = events groupBy (_.id.longValue) toList
+  
 }
 
