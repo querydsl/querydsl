@@ -406,7 +406,9 @@ public final class ExtendedTypeFactory {
                 if (e.getSuperclass().getKind() != TypeKind.NONE){
                     TypeMirror supertype = normalize(e.getSuperclass());
                     Type superClass = getType(supertype, deep);
-                    if (!superClass.getFullName().startsWith("java")){
+                    if (superClass == null) {
+                        System.err.println("Got no type for " + supertype);
+                    } else  if (!superClass.getFullName().startsWith("java")){
                         superTypes = Collections.singleton(getType(supertype, deep));
                     }
                 }

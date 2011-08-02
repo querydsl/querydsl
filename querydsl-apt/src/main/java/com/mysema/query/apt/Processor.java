@@ -712,6 +712,7 @@ public class Processor {
     private void serialize(Serializer serializer, Collection<EntityType> models) {
         Messager msg = env.getMessager();
         for (EntityType model : models) {
+            
             try {
 
                 Type type = configuration.getTypeMappings().getPathType(model, model, true);

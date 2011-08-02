@@ -50,9 +50,12 @@ public final class TypeResolver {
 
         if (index > -1){
             // get binding of var via model supertype
-            Supertype type = subtype.getSuperType();
-            while (!type.getType().equals(declaringType)){
-                type = type.getEntityType().getSuperType();
+            Supertype type = subtype.getSuperType();            
+            while (!type.getEntityType().equals(declaringType)){
+//                if (type.getEntityType().getSuperType() == null) {
+//                    throw new IllegalStateException("Got no supertype for " + type.getType() + ", declaring type " + declaringType);
+//                }
+                type = type.getEntityType().getSuperType();                
             }
             return type.getType().getParameters().get(index);
         }else{

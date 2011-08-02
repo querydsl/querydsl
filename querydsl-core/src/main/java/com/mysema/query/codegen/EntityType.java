@@ -204,5 +204,4 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         return escapedPropertyNames;
     }
     
-    
 }
