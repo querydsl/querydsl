@@ -5,6 +5,8 @@
  */
 package com.mysema.query.apt;
 
+import static com.mysema.query.apt.APTOptions.*;
+
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.HashMap;
@@ -41,29 +43,7 @@ import com.mysema.query.types.Expression;
  */
 public class DefaultConfiguration implements Configuration {
 
-    private static final String QUERYDSL_CREATE_DEFAULT_VARIABLE = "querydsl.createDefaultVariable";
-
-    private static final String QUERYDSL_PREFIX = "querydsl.prefix";
-
-    private static final String QUERYDSL_SUFFIX = "querydsl.suffix";
-
-    private static final String QUERYDSL_PACKAGE_SUFFIX = "querydsl.packageSuffix";
-
-    private static final String QUERYDSL_MAP_ACCESSORS = "querydsl.mapAccessors";
-
-    private static final String QUERYDSL_LIST_ACCESSORS = "querydsl.listAccessors";
-
-    private static final String QUERYDSL_ENTITY_ACCESSORS = "querydsl.entityAccessors";
-
-    private static final String QUERYDSL_EXCLUDED_PACKAGES = "querydsl.excludedPackages";
-
-    private static final String QUERYDSL_EXCLUDED_CLASSES = "querydsl.excludedClasses";
-    
-    private static final String QUERYDSL_UNKNOWN_AS_EMBEDDABLE = "querydsl.unknownAsEmbeddable";
-
     private static final String DEFAULT_SEPARATOR = ",";
-
-    private static final String DEFAULT_OVERWRITE = "defaultOverwrite";
 
     private boolean unknownAsEmbedded;
     
