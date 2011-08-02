@@ -41,6 +41,7 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryEntities;
+import com.mysema.query.annotations.QueryExclude;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.Variables;
 import com.mysema.query.codegen.Delegate;
@@ -141,8 +142,10 @@ public class Processor {
     }
 
     private void processAnnotations() {
+        processExclusions();        
+        
         processDelegateMethods();
-
+        
         if (configuration.isUnknownAsEmbedded()){
             env.getMessager().printMessage(Kind.NOTE, "Collecting custom types");
             
@@ -177,6 +180,16 @@ public class Processor {
         processEntities();
 
         processDTOs();
+    }
+
+    private void processExclusions() {
+        for (Element element : roundEnv.getElementsAnnotatedWith(QueryExclude.class)) {
+            if (element instanceof PackageElement) {
+                configuration.addExcludedPackage(((PackageElement)element).getQualifiedName().toString());
+            } else {
+                configuration.addExcludedClass(((TypeElement)element).getQualifiedName().toString());
+            }
+        }
     }
 
     private void processFromProperties(List<Class<? extends Annotation>> annotations) {

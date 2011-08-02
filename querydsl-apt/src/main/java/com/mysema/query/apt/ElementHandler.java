@@ -50,11 +50,8 @@ public final class ElementHandler{
 
     private final ExtendedTypeFactory typeFactory;
 
-    public ElementHandler(
-            Configuration configuration,
-            ExtendedTypeFactory typeFactory,
-            TypeMappings typeMappings,
-            QueryTypeFactory queryTypeFactory){
+    public ElementHandler(Configuration configuration, ExtendedTypeFactory typeFactory,
+            TypeMappings typeMappings, QueryTypeFactory queryTypeFactory){
         this.configuration = configuration;
         this.typeFactory = typeFactory;
         this.typeMappings = typeMappings;

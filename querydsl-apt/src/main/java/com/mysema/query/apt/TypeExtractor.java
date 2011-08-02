@@ -85,9 +85,7 @@ public class TypeExtractor {
             return null;
         } else {
             return typeElement;
-        }
-        
+        }        
     }
-
     
 }

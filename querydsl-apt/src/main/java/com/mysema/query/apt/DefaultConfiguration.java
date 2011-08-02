@@ -174,6 +174,16 @@ public class DefaultConfiguration implements Configuration {
     }
 
     @Override
+    public void addExcludedClass(String className) {
+        excludedClasses.add(className);
+    }
+
+    @Override
+    public void addExcludedPackage(String packageName) {
+        excludedPackages.add(packageName);
+    }
+    
+    @Override
     public VisitorConfig getConfig(TypeElement e, List<? extends Element> elements){
         if (useFields){
             if (useGetters){
@@ -386,5 +396,6 @@ public class DefaultConfiguration implements Configuration {
     public void setUnknownAsEmbedded(boolean unknownAsEmbedded) {
         this.unknownAsEmbedded = unknownAsEmbedded;
     }
+
     
 }
