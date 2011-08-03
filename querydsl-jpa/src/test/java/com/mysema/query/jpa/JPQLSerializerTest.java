@@ -12,10 +12,23 @@ import org.junit.Test;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.jpa.domain.Location;
 import com.mysema.query.jpa.domain.QEmployee;
+import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.NumberPath;
 
 public class JPQLSerializerTest {
+        
+    @Test
+    public void FromWithCustomEntityName() {
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        EntityPath<Location> entityPath = new EntityPathBase<Location>(Location.class, "entity");
+        QueryMetadata md = new DefaultQueryMetadata();
+        md.addJoin(JoinType.DEFAULT, entityPath);
+        serializer.serialize(md, false, null);
+        assertEquals("from Location2 entity", serializer.toString());
+    }
 
     @Test
     public void NormalizeNumericArgs() {
@@ -39,3 +52,4 @@ public class JPQLSerializerTest {
         assertEquals("delete from Employee employee\nwhere employee.lastName is null", serializer.toString());
     }
 }
+ 

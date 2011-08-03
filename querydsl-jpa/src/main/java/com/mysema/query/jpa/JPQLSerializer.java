@@ -17,6 +17,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
@@ -91,11 +92,14 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         if (je.getTarget() instanceof EntityPath<?>) {
             EntityPath<?> pe = (EntityPath<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
-                if (pe.getType().getPackage() != null){
+                Entity entityAnnotation = pe.getAnnotatedElement().getAnnotation(Entity.class);
+                if (entityAnnotation != null && entityAnnotation.name().length() > 0){
+                    append(entityAnnotation.name());
+                } else if (pe.getType().getPackage() != null) {
                     String pn = pe.getType().getPackage().getName();
                     String typeName = pe.getType().getName().substring(pn.length() + 1);
                     append(typeName);
-                }else{
+                } else {
                     append(pe.getType().getName());
                 }
                 append(" ");

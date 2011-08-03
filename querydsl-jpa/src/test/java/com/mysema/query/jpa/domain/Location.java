@@ -11,7 +11,7 @@ import javax.persistence.Id;
 /**
  * The Class Location.
  */
-@Entity
+@Entity(name="Location2")
 public class Location {
     @Id
     long id;
