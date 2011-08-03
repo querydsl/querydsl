@@ -7,8 +7,6 @@ package com.mysema.query.apt.hibernate;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
-import javax.lang.model.SourceVersion;
 
 import com.mysema.query.apt.DefaultConfiguration;
 import com.mysema.query.apt.jpa.JPAAnnotationProcessor;
@@ -20,7 +18,6 @@ import com.mysema.query.apt.jpa.JPAAnnotationProcessor;
  *
  */
 @SupportedAnnotationTypes({"com.mysema.query.annotations.*","javax.persistence.*", "org.hibernate.annotations.*"})
-@SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class HibernateAnnotationProcessor extends JPAAnnotationProcessor{
     
     @Override

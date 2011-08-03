@@ -13,8 +13,6 @@ import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedSourceVersion;
-import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
@@ -29,7 +27,6 @@ import com.mysema.query.apt.Processor;
  *
  */
 @SupportedAnnotationTypes({"com.mysema.query.annotations.*","javax.jdo.annotations.*"})
-@SupportedSourceVersion(SourceVersion.RELEASE_6)
 public class JDOAnnotationProcessor extends AbstractProcessor{
     
     private static final Boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = Boolean.FALSE;
