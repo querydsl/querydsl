@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>2.2.0.beta4-SNAPSHOT</version>
+    <version>2.2.0.BUILD-SNAPSHOT</version>
     <relativePath>../querydsl-root/pom.xml</relativePath>
   </parent>
 
@@ -61,5 +61,28 @@
       </plugin>
     </plugins>
   </build>
+  
+  <pluginRepositories>
+    <pluginRepository>
+      <id>jboss</id>
+      <url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+    <pluginRepository>
+      <id>jboss-thirdparty</id>
+      <url>https://repository.jboss.org/nexus/content/repositories/thirdparty-releases/</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
 
 </project>
