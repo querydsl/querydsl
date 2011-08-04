@@ -9,10 +9,8 @@ import static com.mysema.codegen.Symbols.*;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -57,13 +55,6 @@ public class EntitySerializer implements Serializer{
 
     private static final Parameter PATH_INITS = new Parameter("inits", new ClassType(PathInits.class));
     
-    private static final ThreadLocal<SimpleDateFormat> ISO_8601_SIMPLE_DATE_FORMAT = new ThreadLocal<SimpleDateFormat>() {
-        @Override
-        public SimpleDateFormat get() {
-            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
-        }
-    };
-
     protected final TypeMappings typeMappings;
 
     protected final Collection<String> keywords;
@@ -278,8 +269,7 @@ public class EntitySerializer implements Serializer{
         
 //        writer.suppressWarnings("all");
         
-        writer.line("@Generated(value = \"", getClass().getName(), "\", ",
-                "date = \"", ISO_8601_SIMPLE_DATE_FORMAT.get().format(new Date()), "\")");
+        writer.line("@Generated(\"", getClass().getName(), "\")");
 
         if (category == TypeCategory.BOOLEAN || category == TypeCategory.STRING){
             writer.beginClass(queryType, new ClassType(pathType));

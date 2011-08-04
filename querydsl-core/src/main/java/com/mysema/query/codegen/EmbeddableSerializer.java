@@ -24,16 +24,7 @@ import com.mysema.codegen.model.Types;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.expr.ComparableExpression;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.BooleanPath;
-import com.mysema.query.types.path.ComparablePath;
-import com.mysema.query.types.path.DatePath;
-import com.mysema.query.types.path.DateTimePath;
-import com.mysema.query.types.path.EnumPath;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.SimplePath;
-import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.path.TimePath;
+import com.mysema.query.types.path.*;
 
 /**
  * EmbeddableSerializer is a Serializer implementation for embeddable types
@@ -41,8 +32,8 @@ import com.mysema.query.types.path.TimePath;
  * @author tiwe
  *
  */
-public final class EmbeddableSerializer extends EntitySerializer{
-
+public final class EmbeddableSerializer extends EntitySerializer {
+    
     @Inject
     public EmbeddableSerializer(TypeMappings typeMappings, @Named("keywords") Collection<String> keywords) {
         super(typeMappings, keywords);
@@ -74,6 +65,8 @@ public final class EmbeddableSerializer extends EntitySerializer{
         for (Annotation annotation : model.getAnnotations()){
             writer.annotation(annotation);
         }
+        
+        writer.line("@Generated(\"", getClass().getName(), "\")");
 
         if (category == TypeCategory.BOOLEAN || category == TypeCategory.STRING){
             writer.beginClass(queryType, new ClassType(pathType));
