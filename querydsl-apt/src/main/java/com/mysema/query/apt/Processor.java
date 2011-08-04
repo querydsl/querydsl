@@ -5,6 +5,7 @@
  */
 package com.mysema.query.apt;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
@@ -737,38 +738,42 @@ public class Processor {
                 }
                 
                 Filer filer = env.getFiler();
-                FileObject generatedFile = filer.getResource(StandardLocation.SOURCE_OUTPUT, packageName, type.getSimpleName() + ".java");
-                boolean generate = false;
-                
                 Set<TypeElement> elements = typeElements.get(model.getFullName());
-                if (elements != null){
-                    boolean foundSources = false;
-                    for (TypeElement element : elements){
-                        FileObject sourceFile = getSourceFile(element.getQualifiedName().toString());
-                        // Source file is accessible and exists
-                        if (sourceFile != null && sourceFile.getLastModified() > 0) {
-                            foundSources = true;
-                            // Generate if source has changed since Q-type was last time generated
-                            generate |= generatedFile.getLastModified() <= sourceFile.getLastModified();
+                
+                boolean generate = false;
+                try {
+                    FileObject generatedFile = filer.getResource(StandardLocation.SOURCE_OUTPUT, packageName, type.getSimpleName() + ".java");                    
+                    if (elements != null){
+                        boolean foundSources = false;
+                        for (TypeElement element : elements){
+                            FileObject sourceFile = getSourceFile(element.getQualifiedName().toString());
+                            // Source file is accessible and exists
+                            if (sourceFile != null && sourceFile.getLastModified() > 0) {
+                                foundSources = true;
+                                // Generate if source has changed since Q-type was last time generated
+                                generate |= generatedFile.getLastModified() <= sourceFile.getLastModified();
+                            }
                         }
-                    }
-                    if (!foundSources){
+                        if (!foundSources){
+                            if (configuration.isDefaultOverwrite()) {
+                                generate = true;
+                            } else {
+                                generate = generatedFile.getLastModified() <= 0;
+                            }
+                        }
+
+                    } else {
+                        // Play safe and generate as we don't know if source has changed or not
                         if (configuration.isDefaultOverwrite()) {
                             generate = true;
                         } else {
                             generate = generatedFile.getLastModified() <= 0;
                         }
                     }
-
-                } else {
-                    // Play safe and generate as we don't know if source has changed or not
-                    if (configuration.isDefaultOverwrite()) {
-                        generate = true;
-                    } else {
-                        generate = generatedFile.getLastModified() <= 0;
-                    }
+                } catch( FileNotFoundException e) {
+                    generate = true;
                 }
-
+                
                 if (generate) {
                     if (elements == null){
                         elements = new HashSet<TypeElement>();
@@ -798,6 +803,7 @@ public class Processor {
                 }
                 
             } catch (IOException e) {
+                e.printStackTrace();
                 msg.printMessage(Kind.ERROR, e.getMessage());
             }
         }
