@@ -215,8 +215,7 @@ public class HibernateDomainExporter {
             }
             propertyType = propertyType.as(queryType.value().getCategory());
         }
-        Property property = new Property(entityType, propertyName, propertyType, inits);
-        return property;
+        return new Property(entityType, propertyName, propertyType, inits);
     }
 
     private EntityType createEntityType(Class<?> cl) {

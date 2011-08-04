@@ -295,8 +295,7 @@ public class GenericExporter {
             }
             propertyType = propertyType.as(queryType.value().getCategory());
         }
-        Property property = new Property(entityType, propertyName, propertyType, inits);
-        return property;
+        return new Property(entityType, propertyName, propertyType, inits);
     }
 
 
