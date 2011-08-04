@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
@@ -52,6 +53,11 @@ public class MorphiaAnnotationProcessor extends AbstractProcessor{
         Processor processor = new Processor(processingEnv, roundEnv, configuration);
         processor.process();
         return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
+    }
+    
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+        return SourceVersion.latest();
     }
 
 }

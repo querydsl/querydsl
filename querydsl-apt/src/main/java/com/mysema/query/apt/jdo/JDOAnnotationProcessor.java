@@ -13,6 +13,7 @@ import java.util.Set;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
@@ -59,6 +60,11 @@ public class JDOAnnotationProcessor extends AbstractProcessor{
         } catch (ClassNotFoundException e) {
             throw new APTException(e.getMessage(), e);
         }
+    }
+    
+    @Override
+    public SourceVersion getSupportedSourceVersion() {
+        return SourceVersion.latest();
     }
 
 }
