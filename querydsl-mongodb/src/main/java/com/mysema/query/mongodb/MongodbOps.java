@@ -1,5 +1,6 @@
 package com.mysema.query.mongodb;
 
+import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
 
 public final class MongodbOps {
