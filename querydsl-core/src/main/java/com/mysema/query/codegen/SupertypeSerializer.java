@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Generated;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -62,6 +63,8 @@ public final class SupertypeSerializer extends EntitySerializer{
             packages.add(ComparableExpression.class.getPackage());
         }
         writer.imports(packages.toArray(new Package[packages.size()]));
+        
+        writer.imports(Generated.class);
     }
 
 }

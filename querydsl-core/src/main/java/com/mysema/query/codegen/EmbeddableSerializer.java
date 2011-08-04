@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Generated;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -95,6 +96,19 @@ public final class EmbeddableSerializer extends EntitySerializer {
 
     @Override
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
+        
+        Type queryType = typeMappings.getPathType(model, model, true);
+        if (!model.getPackageName().isEmpty()
+            && !queryType.getPackageName().equals(model.getPackageName()) 
+            && !queryType.getSimpleName().equals(model.getSimpleName())){
+            String fullName = model.getFullName();
+            String packageName = model.getPackageName();
+            if (fullName.substring(packageName.length()+1).contains(".")) {
+                fullName = fullName.substring(0, fullName.lastIndexOf('.'));
+            }
+            writer.importClasses(fullName);
+        }
+        
         introDelegatePackages(writer, model);
 
         List<Package> packages = new ArrayList<Package>();
@@ -106,6 +120,8 @@ public final class EmbeddableSerializer extends EntitySerializer {
             packages.add(ComparableExpression.class.getPackage());
         }
         writer.imports(packages.toArray(new Package[packages.size()]));
+        
+        writer.imports(Generated.class);
     }
 
 }

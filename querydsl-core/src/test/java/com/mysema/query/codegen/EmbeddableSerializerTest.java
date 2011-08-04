@@ -96,7 +96,7 @@ public class EmbeddableSerializerTest {
         typeMappings.register(entityType, queryTypeFactory.create(entityType));
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         System.out.println(writer);
-        assertTrue(writer.toString().contains("public class QLocale extends BeanPath<java.util.Locale> {"));
+        assertTrue(writer.toString().contains("public class QLocale extends BeanPath<Locale> {"));
     }
 
     @Test

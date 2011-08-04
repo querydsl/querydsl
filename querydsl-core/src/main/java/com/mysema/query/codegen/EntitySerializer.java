@@ -224,7 +224,7 @@ public class EntitySerializer implements Serializer{
     protected void intro(EntityType model, SerializerConfig config, CodeWriter writer) throws IOException {
         introPackage(writer, model);
         introImports(writer, config, model);
-        writer.imports(Generated.class);
+        
         writer.nl();
 
         introJavadoc(writer, model);
@@ -350,7 +350,12 @@ public class EntitySerializer implements Serializer{
         if (!model.getPackageName().isEmpty()
             && !queryType.getPackageName().equals(model.getPackageName()) 
             && !queryType.getSimpleName().equals(model.getSimpleName())){
-            writer.importClasses(model.getFullName());
+            String fullName = model.getFullName();
+            String packageName = model.getPackageName();
+            if (fullName.substring(packageName.length()+1).contains(".")) {
+                fullName = fullName.substring(0, fullName.lastIndexOf('.'));
+            }
+            writer.importClasses(fullName);
         }
         
         introDelegatePackages(writer, model);
@@ -363,6 +368,8 @@ public class EntitySerializer implements Serializer{
         }
 
         writer.imports(packages.toArray(new Package[packages.size()]));
+        
+        writer.imports(Generated.class);
     }
 
     protected void introDelegatePackages(CodeWriter writer, EntityType model) throws IOException {
