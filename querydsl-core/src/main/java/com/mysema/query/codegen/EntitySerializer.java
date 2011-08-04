@@ -9,12 +9,15 @@ import static com.mysema.codegen.Symbols.*;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Generated;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -53,6 +56,13 @@ public class EntitySerializer implements Serializer{
     private static final Parameter PATH_METADATA = new Parameter("metadata", new ClassType(PathMetadata.class, (Type)null));
 
     private static final Parameter PATH_INITS = new Parameter("inits", new ClassType(PathInits.class));
+    
+    private static final ThreadLocal<SimpleDateFormat> ISO_8601_SIMPLE_DATE_FORMAT = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        public SimpleDateFormat get() {
+            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        }
+    };
 
     protected final TypeMappings typeMappings;
 
@@ -223,6 +233,7 @@ public class EntitySerializer implements Serializer{
     protected void intro(EntityType model, SerializerConfig config, CodeWriter writer) throws IOException {
         introPackage(writer, model);
         introImports(writer, config, model);
+        writer.imports(Generated.class);
         writer.nl();
 
         introJavadoc(writer, model);
@@ -264,6 +275,11 @@ public class EntitySerializer implements Serializer{
         for (Annotation annotation : model.getAnnotations()){
             writer.annotation(annotation);
         }
+        
+//        writer.suppressWarnings("all");
+        
+        writer.line("@Generated(value = \"", getClass().getName(), "\", ",
+                "date = \"", ISO_8601_SIMPLE_DATE_FORMAT.get().format(new Date()), "\")");
 
         if (category == TypeCategory.BOOLEAN || category == TypeCategory.STRING){
             writer.beginClass(queryType, new ClassType(pathType));
