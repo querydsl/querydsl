@@ -45,7 +45,8 @@ public final class ClassUtils {
             return getName(cl.getComponentType(), packages, classes) + "[]";
         } else if (cl.getPackage() == null
                 || packages.contains(cl.getPackage().getName())
-                || classes.contains(cl.getName())) {
+                || classes.contains(cl.getName())
+                || classes.contains(cl.getName().substring(0, cl.getName().lastIndexOf('.')))) {
             if (cl.getPackage() != null){
                 String localName = cl.getName().substring(cl.getPackage().getName().length()+1);
                 return localName.replace('$', '.');

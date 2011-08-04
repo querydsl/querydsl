@@ -20,7 +20,7 @@ public class SimpleType implements Type {
 
     private final TypeCategory category;
 
-    private final String fullName, packageName, simpleName, localName;
+    private final String fullName, outerClassName, packageName, simpleName, localName;
 
     private final List<Type> parameters;
 
@@ -57,6 +57,11 @@ public class SimpleType implements Type {
             this.localName = fullName.substring(packageName.length()+1);
         }else{
             this.localName = fullName;
+        }
+        if (fullName.substring(packageName.length()+1).contains(".")) {
+            this.outerClassName = fullName.substring(0, fullName.lastIndexOf('.'));
+        } else {
+            this.outerClassName = fullName;
         }
         this.primitiveClass = primitiveClass;
         this.finalClass = finalClass;
@@ -169,7 +174,7 @@ public class SimpleType implements Type {
 
     @Override
     public String getRawName(Set<String> packages, Set<String> classes) {
-        if (packages.contains(packageName) || classes.contains(fullName)){
+        if (packages.contains(packageName) || classes.contains(fullName) || classes.contains(outerClassName)){
             return localName;
         }else{
             return fullName;
