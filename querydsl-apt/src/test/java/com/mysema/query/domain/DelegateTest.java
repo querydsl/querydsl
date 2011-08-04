@@ -10,6 +10,7 @@ import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QuerySupertype;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.path.StringPath;
 
 public class DelegateTest {
 
@@ -54,10 +55,10 @@ public class DelegateTest {
         return ConstantImpl.create(true);
     }
 
-//    @QueryDelegate(DelegateTest.User.class)
-//    public static PString getName(QDelegateTest_User user){
-//        return user.name;
-//    }
+    @QueryDelegate(DelegateTest.User.class)
+    public static StringPath getName(QDelegateTest_User user){
+        return user.name;
+    }
 
     @Test
     public void User(){

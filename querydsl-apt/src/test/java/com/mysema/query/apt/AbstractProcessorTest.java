@@ -18,7 +18,7 @@ import com.mysema.codegen.SimpleCompiler;
 
 public abstract class AbstractProcessorTest {
 
-    protected List<String> getFiles(String path) {
+    protected static List<String> getFiles(String path) {
         List<String> classes = new ArrayList<String>();
         for (File file : new File(path).listFiles()){
             if (file.getName().endsWith(".java")){
@@ -52,6 +52,8 @@ public abstract class AbstractProcessorTest {
         options.add("src/test/java");
         options.addAll(getAPTOptions());
         options.addAll(classes);
+        
+        System.out.println();
         int compilationResult = compiler.run(null, System.out, System.err, options.toArray(new String[options.size()]));
 
         Processor.elementCache.clear();

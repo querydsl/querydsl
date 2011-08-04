@@ -13,11 +13,13 @@ import com.mysema.query.apt.jpa.JPAAnnotationProcessor;
 
 public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
 
-    private static final String packagePath = "src/test/java/com/mysema/query/domain/";
+    private static final String PACKAGE_PATH = "src/test/java/com/mysema/query/domain/";
+    
+    private static final List<String> CLASSES = getFiles(PACKAGE_PATH);
 
     @Test
     public void Process() throws IOException{
-        File file = new File(packagePath, "AbstractEntityTest.java");
+        File file = new File(PACKAGE_PATH, "AbstractEntityTest.java");
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(file.getPath()),"qdsl");
     }
 
@@ -64,20 +66,23 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
     }
     
     @Test
-    public void ProcessAll() throws IOException{
-        // works only in Eclipse for the moment
-        List<String> classes = getFiles(packagePath);
-
-        // default Processor
-        process(QuerydslAnnotationProcessor.class, classes,"querydsl");
-
-        // JPA
-        process(JPAAnnotationProcessor.class, classes,"jpa");
-
-        // Hibernate
-        process(HibernateAnnotationProcessor.class, classes,"hibernate");
-
-        // JDO
-        process(JDOAnnotationProcessor.class, classes,"jdo");
+    public void QuerydslAnnotationProcessor() throws IOException {
+        process(QuerydslAnnotationProcessor.class, CLASSES, "querydsl");
     }
+    
+    @Test
+    public void JPAAnnotationProcessor() throws IOException {
+        process(JPAAnnotationProcessor.class, CLASSES, "jpa");
+    }
+    
+    @Test
+    public void HibernateAnnotationProcessor() throws IOException {
+        process(HibernateAnnotationProcessor.class, CLASSES, "hibernate");
+    }
+    
+    @Test
+    public void JDOAnnotationProcessor() throws IOException {
+        process(JDOAnnotationProcessor.class, CLASSES, "jdo");
+    }
+    
 }
