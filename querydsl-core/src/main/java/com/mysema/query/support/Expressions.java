@@ -14,6 +14,7 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.CaseBuilder;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.NumberExpression;
@@ -79,6 +80,10 @@ public final class Expressions {
     
     public static <T> SimpleExpression<T> subQuery(Class<T> type, QueryMetadata metadata) {
         return new SimpleSubQuery<T>(type, metadata);
+    }
+    
+    public static BooleanExpression predicate(Operator<Boolean> operation, Expression<?>... args) {
+	return BooleanOperation.create(operation, args);
     }
 
     public static <T> SimpleExpression<T> operation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
