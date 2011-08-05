@@ -6,13 +6,17 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.path.BooleanPath;
+import com.mysema.query.types.path.StringPath;
 
 public class ExpressionsTest {
 
-    private final BooleanExpression a = new BooleanPath("a"), b = new BooleanPath("b");
+    private static final StringPath str = new StringPath("str");
+    
+    private static final BooleanExpression a = new BooleanPath("a"), b = new BooleanPath("b");
     
     @Test
     public void AllOf() {
@@ -139,6 +143,11 @@ public class ExpressionsTest {
         assertEquals("variable.property", Expressions.stringPath(Expressions.path(Object.class, "variable"), "property").toString());
     }
 
+    @Test
+    public void StringOperation() {
+        assertEquals("substring(str,2)", Expressions.stringOperation(Ops.SUBSTR_1ARG, str, ConstantImpl.create(2)).toString());
+    }
+    
     @Test
     public void BooleanPathString() {
         assertEquals("variable", Expressions.booleanPath("variable").toString());
