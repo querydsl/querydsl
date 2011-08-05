@@ -65,6 +65,11 @@ public class ExpressionsTest {
     }
 
     @Test
+    public void Predicate() {
+        assertEquals("a && b", Expressions.predicate(Ops.AND, a, b).toString());
+    }
+    
+    @Test
     public void PathClassOfTString() {
         assertEquals("variable", Expressions.path(String.class, "variable").toString());
     }
