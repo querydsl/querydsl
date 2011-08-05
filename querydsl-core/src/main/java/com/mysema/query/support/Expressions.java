@@ -17,10 +17,18 @@ import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.BooleanOperation;
 import com.mysema.query.types.expr.CaseBuilder;
 import com.mysema.query.types.expr.ComparableExpression;
+import com.mysema.query.types.expr.ComparableOperation;
+import com.mysema.query.types.expr.DateExpression;
+import com.mysema.query.types.expr.DateOperation;
+import com.mysema.query.types.expr.DateTimeExpression;
+import com.mysema.query.types.expr.DateTimeOperation;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.expr.StringOperation;
+import com.mysema.query.types.expr.TimeExpression;
+import com.mysema.query.types.expr.TimeOperation;
 import com.mysema.query.types.path.BooleanPath;
 import com.mysema.query.types.path.ComparablePath;
 import com.mysema.query.types.path.DatePath;
@@ -89,6 +97,34 @@ public final class Expressions {
     public static <T> SimpleExpression<T> operation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
         return SimpleOperation.create(type, operator, args);
     }
+    
+    public static BooleanExpression booleanOperation(Operator<Boolean> operation, Expression<?>... args) {
+        return predicate(operation, args);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Comparable> ComparableExpression<T> comparableOperation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
+        return ComparableOperation.create(type, operator, args);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Comparable> DateExpression<T> dateOperation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
+        return DateOperation.create(type, operator, args);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Comparable> DateTimeExpression<T> dateTimeOperation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
+        return DateTimeOperation.create(type, operator, args);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Comparable> TimeExpression<T> timeOperation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
+        return TimeOperation.create(type, operator, args);
+    }    
+    
+    public static StringExpression stringOperation(Operator<? super String> operator, Expression<?>... args) {
+        return StringOperation.create(operator, args);
+    }    
 
     public static <T> SimplePath<T> path(Class<T> type, String variable) {
         return new SimplePath<T>(type, PathMetadataFactory.forVariable(variable));
