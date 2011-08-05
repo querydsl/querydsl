@@ -52,6 +52,8 @@ object Conversions {
   implicit def datePath(d: java.sql.Date): escaped.DatePath[java.sql.Date] = aliasFactory.getCurrentAndReset()
 
   implicit def dateTimePath(d: java.util.Date): escaped.DateTimePath[java.util.Date] = aliasFactory.getCurrentAndReset()
+  
+  implicit def enumPath[E <: Enum[E]](e: E): escaped.EnumPath[E] = aliasFactory.getCurrentAndReset()
 
   implicit def timePath(t: java.sql.Time): escaped.TimePath[java.sql.Time] = aliasFactory.getCurrentAndReset()
 
