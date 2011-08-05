@@ -72,6 +72,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     private final JPQLTemplates templates;
 
+    private boolean inProjection = false;
+    
     static{
         joinTypes.put(JoinType.DEFAULT, COMMA);
         joinTypes.put(JoinType.FULLJOIN, "\n  full join ");
@@ -119,6 +121,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         List<OrderSpecifier<?>> orderBy = metadata.getOrderBy();
 
         // select
+        boolean inProjectionOrig = inProjection;
+        inProjection = true;
         if (projection != null){
             append(SELECT).append(projection).append("\n");
 
@@ -144,6 +148,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             handle(COMMA, select).append("\n");
 
         }
+        inProjection = inProjectionOrig;
 
         // from
         append(FROM);
@@ -270,7 +275,13 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     @Override
     public Void visit(FactoryExpression<?> expr, Void context) {
-        super.visit(expr, context);
+        if (!inProjection) {
+            append("(");
+            super.visit(expr, context);
+            append(")");
+        } else {
+            super.visit(expr, context);    
+        }
         return null;
     }
 
