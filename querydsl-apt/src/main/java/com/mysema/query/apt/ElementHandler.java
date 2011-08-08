@@ -40,6 +40,7 @@ import com.mysema.util.BeanUtils;
  *
  */
 @Immutable
+// TODO : rename
 public final class ElementHandler{
 
     private final TypeMappings typeMappings;
@@ -57,90 +58,9 @@ public final class ElementHandler{
         this.typeMappings = typeMappings;
         this.queryTypeFactory = queryTypeFactory;
     }
+    
 
-    private Type getType(VariableElement element){
-        Type rv = typeFactory.getType(element.asType(), true);
-        if (element.getAnnotation(QueryType.class) != null){
-            QueryType qt = element.getAnnotation(QueryType.class);
-            if (qt.value() != PropertyType.NONE){
-                TypeCategory typeCategory = qt.value().getCategory();
-                rv = rv.as(typeCategory);
-            }
-        }
-        return rv;
-    }
-
-    public void handleConstructors(EntityType entityType, List<? extends Element> elements) {
-        for (ExecutableElement constructor : ElementFilter.constructorsIn(elements)){
-            if (configuration.isValidConstructor(constructor)){
-                List<Parameter> parameters = transformParams(constructor.getParameters());
-                entityType.addConstructor(new Constructor(parameters));
-            }
-        }
-    }
-
-    public void handleFieldProperty(EntityType entityType, VariableElement field,
-            Map<String, Property> properties,
-            Set<String> blockedProperties,
-            Map<String, TypeCategory> types) {
-        String name = field.getSimpleName().toString();
-        try{
-            Type fieldType = typeFactory.getType(field.asType(), true);
-            if (field.getAnnotation(QueryType.class) != null){
-                TypeCategory typeCategory = field.getAnnotation(QueryType.class).value().getCategory();
-                if (typeCategory == null){
-                    blockedProperties.add(name);
-                    return;
-                }
-                fieldType = fieldType.as(typeCategory);
-                types.put(name, typeCategory);
-            }
-            String[] inits = new String[0];
-            if (field.getAnnotation(QueryInit.class) != null){
-                inits = field.getAnnotation(QueryInit.class).value();
-            }
-            properties.put(name, new Property(entityType, name, fieldType, inits));
-        }catch(IllegalArgumentException ex){
-            StringBuilder builder = new StringBuilder();
-            builder.append("Caught exception for field ");
-            builder.append(entityType.getFullName()).append("#").append(field.getSimpleName());
-            throw new APTException(builder.toString(), ex);
-        }
-    }
-
-    public void handleMethodProperty(EntityType entityType, String propertyName,
-            ExecutableElement method,
-            Map<String, Property> properties, Set<String> blockedProperties,
-            Map<String, TypeCategory> types) {
-        try{
-            Type propertyType = typeFactory.getType(method.getReturnType(), true);
-            if (method.getAnnotation(QueryType.class) != null){
-                TypeCategory typeCategory = method.getAnnotation(QueryType.class).value().getCategory();
-                if (typeCategory == null){
-                    blockedProperties.add(propertyName);
-                    return;
-                }else if (blockedProperties.contains(propertyName)){
-                    return;
-                }
-                propertyType = propertyType.as(typeCategory);
-            }else if (types.containsKey(propertyName)){
-                propertyType = propertyType.as(types.get(propertyName));
-            }
-            String[] inits = new String[0];
-            if (method.getAnnotation(QueryInit.class) != null){
-                inits = method.getAnnotation(QueryInit.class).value();
-            }
-            properties.put(propertyName, new Property(entityType, propertyName, propertyType, inits));
-
-        }catch(IllegalArgumentException ex){
-            StringBuilder builder = new StringBuilder();
-            builder.append("Caught exception for method ");
-            builder.append(entityType.getFullName()).append("#").append(method.getSimpleName());
-            throw new APTException(builder.toString(), ex);
-        }
-    }
-
-    public EntityType handleNormalType(TypeElement e) {
+    public EntityType handleEntityType(TypeElement e) {
         EntityType entityType = typeFactory.getEntityType(e.asType(), true);
         List<? extends Element> elements = e.getEnclosedElements();
         VisitorConfig config = configuration.getConfig(e, elements);
@@ -203,6 +123,89 @@ public final class ElementHandler{
         handleConstructors(entityType, elements);
         return entityType;
     }
+
+    private Type getType(VariableElement element){
+        Type rv = typeFactory.getType(element.asType(), true);
+        if (element.getAnnotation(QueryType.class) != null){
+            QueryType qt = element.getAnnotation(QueryType.class);
+            if (qt.value() != PropertyType.NONE){
+                TypeCategory typeCategory = qt.value().getCategory();
+                rv = rv.as(typeCategory);
+            }
+        }
+        return rv;
+    }
+
+    private void handleConstructors(EntityType entityType, List<? extends Element> elements) {
+        for (ExecutableElement constructor : ElementFilter.constructorsIn(elements)){
+            if (configuration.isValidConstructor(constructor)){
+                List<Parameter> parameters = transformParams(constructor.getParameters());
+                entityType.addConstructor(new Constructor(parameters));
+            }
+        }
+    }
+
+    private void handleFieldProperty(EntityType entityType, VariableElement field,
+            Map<String, Property> properties,
+            Set<String> blockedProperties,
+            Map<String, TypeCategory> types) {
+        String name = field.getSimpleName().toString();
+        try{
+            Type fieldType = typeFactory.getType(field.asType(), true);
+            if (field.getAnnotation(QueryType.class) != null){
+                TypeCategory typeCategory = field.getAnnotation(QueryType.class).value().getCategory();
+                if (typeCategory == null){
+                    blockedProperties.add(name);
+                    return;
+                }
+                fieldType = fieldType.as(typeCategory);
+                types.put(name, typeCategory);
+            }
+            String[] inits = new String[0];
+            if (field.getAnnotation(QueryInit.class) != null){
+                inits = field.getAnnotation(QueryInit.class).value();
+            }
+            properties.put(name, new Property(entityType, name, fieldType, inits));
+        }catch(IllegalArgumentException ex){
+            StringBuilder builder = new StringBuilder();
+            builder.append("Caught exception for field ");
+            builder.append(entityType.getFullName()).append("#").append(field.getSimpleName());
+            throw new APTException(builder.toString(), ex);
+        }
+    }
+
+    private void handleMethodProperty(EntityType entityType, String propertyName,
+            ExecutableElement method,
+            Map<String, Property> properties, Set<String> blockedProperties,
+            Map<String, TypeCategory> types) {
+        try{
+            Type propertyType = typeFactory.getType(method.getReturnType(), true);
+            if (method.getAnnotation(QueryType.class) != null){
+                TypeCategory typeCategory = method.getAnnotation(QueryType.class).value().getCategory();
+                if (typeCategory == null){
+                    blockedProperties.add(propertyName);
+                    return;
+                }else if (blockedProperties.contains(propertyName)){
+                    return;
+                }
+                propertyType = propertyType.as(typeCategory);
+            }else if (types.containsKey(propertyName)){
+                propertyType = propertyType.as(types.get(propertyName));
+            }
+            String[] inits = new String[0];
+            if (method.getAnnotation(QueryInit.class) != null){
+                inits = method.getAnnotation(QueryInit.class).value();
+            }
+            properties.put(propertyName, new Property(entityType, propertyName, propertyType, inits));
+
+        }catch(IllegalArgumentException ex){
+            StringBuilder builder = new StringBuilder();
+            builder.append("Caught exception for method ");
+            builder.append(entityType.getFullName()).append("#").append(method.getSimpleName());
+            throw new APTException(builder.toString(), ex);
+        }
+    }
+
 
     public List<Parameter> transformParams(List<? extends VariableElement> params){
         List<Parameter> parameters = new ArrayList<Parameter>(params.size());

@@ -266,7 +266,7 @@ public class Processor {
 
         for (TypeElement element : types){
             if (typeMirrors.contains(element.asType())){
-                EntityType model = elementHandler.handleNormalType(element);
+                EntityType model = elementHandler.handleEntityType(element);
                 registerTypeElement(model.getFullName(), element);
                 embeddables.put(model.getFullName(), model);    
             }            
@@ -416,7 +416,7 @@ public class Processor {
                 if (typeElement == null){
                     throw new IllegalStateException("Found no type for " + superType.getFullName());
                 }
-                EntityType entityType = elementHandler.handleNormalType(typeElement);
+                EntityType entityType = elementHandler.handleEntityType(typeElement);
                 if (entityType.getSuperType() != null){
                     superTypes.push(entityType.getSuperType().getType());
                 }
@@ -463,7 +463,7 @@ public class Processor {
 
         // get annotated types
         for (Element element : elements) {
-            EntityType model = elementHandler.handleNormalType((TypeElement) element);
+            EntityType model = elementHandler.handleEntityType((TypeElement) element);
             registerTypeElement(model.getFullName(), (TypeElement)element);
             types.put(model.getFullName(), model);
             if (model.getSuperType() != null){
@@ -576,7 +576,7 @@ public class Processor {
         }
 
         for (Element element : elements) {
-            EntityType model = elementHandler.handleNormalType((TypeElement) element);
+            EntityType model = elementHandler.handleEntityType((TypeElement) element);
             registerTypeElement(model.getFullName(), (TypeElement)element);
             embeddables.put(model.getFullName(), model);
         }
@@ -652,7 +652,7 @@ public class Processor {
                 continue;
             }
 
-            EntityType model = elementHandler.handleNormalType(typeElement);
+            EntityType model = elementHandler.handleEntityType(typeElement);
             registerTypeElement(model.getFullName(), typeElement);
             embeddables.put(model.getFullName(), model);
         }
@@ -699,7 +699,7 @@ public class Processor {
         for (TypeMirror mirror : typeMirrors){
             typeFactory.getEntityType(mirror, true);
             TypeElement element = (TypeElement) env.getTypeUtils().asElement(mirror);
-            EntityType model = elementHandler.handleNormalType(element);
+            EntityType model = elementHandler.handleEntityType(element);
             registerTypeElement(model.getFullName(), element);
             types.put(model.getFullName(), model);
             if (model.getSuperType() != null){

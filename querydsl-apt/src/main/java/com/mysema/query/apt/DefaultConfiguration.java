@@ -103,6 +103,7 @@ public class DefaultConfiguration implements Configuration {
         boolean listAccessors = false;
         boolean mapAccessors = false;
         boolean createDefaultVariable = true;
+        
         if (options.containsKey(QUERYDSL_ENTITY_ACCESSORS)){
             entityAccessors = Boolean.valueOf(options.get(QUERYDSL_ENTITY_ACCESSORS));
         }
@@ -255,8 +256,8 @@ public class DefaultConfiguration implements Configuration {
             return false;
         }else{
             return field.getAnnotation(skipAnn) != null
-            || field.getModifiers().contains(Modifier.TRANSIENT)
-            || field.getModifiers().contains(Modifier.STATIC);
+                || field.getModifiers().contains(Modifier.TRANSIENT)
+                || field.getModifiers().contains(Modifier.STATIC);
         }
     }
 
