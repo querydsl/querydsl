@@ -66,6 +66,12 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
     }
     
     @Test
+    public void ProcessAbstractProperties2Test() throws IOException {
+        String path = new File("src/test/java/com/mysema/query/domain/AbstractProperties2Test.java").getPath();
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"abstractProperties");
+    }
+    
+    @Test
     public void QuerydslAnnotationProcessor() throws IOException {
         process(QuerydslAnnotationProcessor.class, CLASSES, "querydsl");
     }
