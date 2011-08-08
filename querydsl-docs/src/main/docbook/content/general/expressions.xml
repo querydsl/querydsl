@@ -2,6 +2,33 @@
     
     <title>Expressions</title>
     
+    <sect2>
+    
+    	<title>Custom expressions</title>
+    	
+    	<para>The com.mysema.query.support.Expressions class is a static factory class for Querydsl expression construction.</para>
+    	
+    	<para>The following expression </para>
+    	
+ <programlisting language="java"><![CDATA[
+QPerson person = QPerson.person; 	    
+person.firstName.startsWith("P");
+]]></programlisting>      
+
+		<para>could be constructed like this if Q-types wouldn't be available </para>
+
+<programlisting language="java"><![CDATA[
+Path<Person> person = Expressions.path(Person.class, "person");
+Path<String> personFirstName = Expressions.path(String.class, person, "firstName");
+Constant<String> constant = Expressions.constant("P");
+Expressions.predicate(Ops.STARTS_WITH, personFirstName, constant);
+]]></programlisting>
+
+	<para>Path instances represent variables and properties, Constants are constants, Operations are operations and TemplateExpression instances
+	can be used to express expressions as String templates.</para>    	
+    
+    </sect2>
+    
 	<sect2>
     
       <title>Inheritance in Querydsl types</title>
