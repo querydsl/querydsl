@@ -363,7 +363,8 @@ public class EntitySerializer implements Serializer{
         List<Package> packages = new ArrayList<Package>();
         packages.add(PathMetadata.class.getPackage());
         packages.add(SimplePath.class.getPackage());
-        if (!model.getConstructors().isEmpty() || !model.getDelegates().isEmpty()){
+        
+        if (isImportExprPackage(model)) {
             packages.add(ComparableExpression.class.getPackage());
         }
 
@@ -371,7 +372,27 @@ public class EntitySerializer implements Serializer{
         
         writer.imports(Generated.class);
     }
-
+    
+    protected boolean isImportExprPackage(EntityType model) {
+        if (!model.getConstructors().isEmpty() || !model.getDelegates().isEmpty()){
+            boolean importExprPackage = false;
+            for (Constructor c : model.getConstructors()) {
+                for (Parameter cp : c.getParameters()) {
+                    importExprPackage |= cp.getType().getPackageName().equals(ComparableExpression.class.getPackage().getName());
+                }
+            }
+            for (Delegate d : model.getDelegates()) {
+                for (Parameter dp : d.getParameters()) {
+                    importExprPackage |= dp.getType().getPackageName().equals(ComparableExpression.class.getPackage().getName());
+                }
+            }
+            return importExprPackage;
+            
+        } else {
+            return false;
+        }        
+    }
+    
     protected void introDelegatePackages(CodeWriter writer, EntityType model) throws IOException {
         Set<String> packages = new HashSet<String>();
         for (Delegate delegate : model.getDelegates()){
