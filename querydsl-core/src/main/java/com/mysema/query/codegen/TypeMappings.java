@@ -139,7 +139,7 @@ public final class TypeMappings {
 
         }
     }
-
+    
     @SuppressWarnings("unchecked")
     public void register(TypeCategory category,
             @Nullable Class<? extends Expression> expr,
