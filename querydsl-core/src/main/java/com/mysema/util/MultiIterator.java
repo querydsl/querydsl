@@ -22,14 +22,14 @@ import javax.annotation.Nullable;
  *
  * @author tiwe
  */
-public class MultiIterator<T> implements Iterator<T[]> {
+public class MultiIterator<T> implements Iterator<Object[]> {
 
     @Nullable
     private Boolean hasNext;
 
     private int index = 0;
 
-    private final List<Iterable<T>> iterables;
+    private final List<? extends Iterable<T>> iterables;
 
     private final List<Iterator<T>> iterators;
 
@@ -37,7 +37,7 @@ public class MultiIterator<T> implements Iterator<T[]> {
 
     private final Object[] values;
 
-    public MultiIterator(List<Iterable<T>> iterables){
+    public MultiIterator(List<? extends Iterable<T>> iterables){
         this.iterables = iterables;
         this.iterators = new ArrayList<Iterator<T>>(iterables.size());
         for (int i = 0; i < iterables.size(); i++){
