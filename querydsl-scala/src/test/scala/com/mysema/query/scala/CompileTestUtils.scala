@@ -6,6 +6,7 @@ import scala.io.Source.fromFile
 import java.io.File
 
 trait CompileTestUtils {
+    
   private def jarPathOfClass(className: String) = {
     Class.forName(className).getProtectionDomain.getCodeSource.getLocation
   }

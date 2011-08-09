@@ -62,6 +62,7 @@ class MetaDataExporterTest extends CompileTestUtils {
         val exporter = new MetaDataExporter();
         exporter.setNamePrefix("Q");
         exporter.setPackageName("com.mysema");
+        exporter.setSchemaPattern("PUBLIC");
         exporter.setTargetFolder(directory);
         exporter.setSerializerClass(classOf[ScalaMetaDataSerializer]);
         exporter.setCreateScalaSources(true);
@@ -79,6 +80,7 @@ class MetaDataExporterTest extends CompileTestUtils {
         val exporter = new MetaDataExporter();
         exporter.setNamePrefix("Q");
         exporter.setPackageName("com.mysema");
+        exporter.setSchemaPattern("PUBLIC");
         exporter.setTargetFolder(directory);
         exporter.setSerializerClass(classOf[ScalaMetaDataSerializer]);
         exporter.setBeanSerializer(beanSerializer)
