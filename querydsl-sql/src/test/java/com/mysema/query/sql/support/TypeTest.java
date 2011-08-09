@@ -14,6 +14,8 @@ import java.lang.reflect.Proxy;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.sql.Blob;
+import java.sql.Clob;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,6 +24,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easymock.EasyMock;
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -29,9 +32,38 @@ import org.joda.time.LocalTime;
 import org.junit.Test;
 
 import com.mysema.commons.lang.Pair;
-import com.mysema.query.sql.types.*;
+import com.mysema.query.sql.types.BigDecimalType;
+import com.mysema.query.sql.types.BlobType;
+import com.mysema.query.sql.types.BooleanType;
+import com.mysema.query.sql.types.ByteType;
+import com.mysema.query.sql.types.BytesType;
+import com.mysema.query.sql.types.CharacterType;
+import com.mysema.query.sql.types.ClobType;
+import com.mysema.query.sql.types.DateTimeType;
+import com.mysema.query.sql.types.DateType;
+import com.mysema.query.sql.types.DoubleType;
+import com.mysema.query.sql.types.EnumByNameType;
+import com.mysema.query.sql.types.EnumByOrdinalType;
+import com.mysema.query.sql.types.FloatType;
+import com.mysema.query.sql.types.IntegerType;
+import com.mysema.query.sql.types.LocalDateTimeType;
+import com.mysema.query.sql.types.LocalDateType;
+import com.mysema.query.sql.types.LocalTimeType;
+import com.mysema.query.sql.types.LongType;
+import com.mysema.query.sql.types.ObjectType;
+import com.mysema.query.sql.types.ShortType;
+import com.mysema.query.sql.types.StringType;
+import com.mysema.query.sql.types.TimeType;
+import com.mysema.query.sql.types.TimestampType;
+import com.mysema.query.sql.types.Type;
+import com.mysema.query.sql.types.URLType;
+import com.mysema.query.sql.types.UtilDateType;
 
 public class TypeTest implements InvocationHandler{
+    
+    public enum Gender {
+        MALE, FEMALE
+    }
     
     private Object value;    
 
@@ -75,6 +107,12 @@ public class TypeTest implements InvocationHandler{
         valueAndType.add(Pair.of(new LocalDateTime(), new LocalDateTimeType()));
         valueAndType.add(Pair.of(new LocalDate(),     new LocalDateType()));
         valueAndType.add(Pair.of(new LocalTime(),     new LocalTimeType()));
+        
+        valueAndType.add(Pair.of(Gender.MALE,         new EnumByNameType(Gender.class)));
+        valueAndType.add(Pair.of(Gender.MALE,         new EnumByOrdinalType(Gender.class)));
+        
+        valueAndType.add(Pair.of(EasyMock.createNiceMock(Blob.class), new BlobType()));
+        valueAndType.add(Pair.of(EasyMock.createNiceMock(Clob.class), new ClobType()));
         
         for (Pair pair : valueAndType){
             value = null;
