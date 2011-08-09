@@ -2,6 +2,7 @@ package com.mysema.query.support;
 
 import static org.junit.Assert.assertEquals;
 
+import java.sql.Time;
 import java.util.Date;
 
 import org.junit.Test;
@@ -157,7 +158,32 @@ public class ExpressionsTest {
     public void BooleanPathPathOfQString() {
         assertEquals("variable.property", Expressions.booleanPath(Expressions.path(Object.class, "variable"), "property").toString());
     }
-
+    
+    @Test
+    public void BooleanOperation() {
+        assertEquals("a && b", Expressions.booleanOperation(Ops.AND, a, b).toString());
+    }
+    
+    @Test
+    public void ComparableOperation() {
+        assertEquals("a && b", Expressions.comparableOperation(Boolean.class, Ops.AND, a, b).toString());
+    }
+    
+    @Test
+    public void DateOperation() {
+        assertEquals("current_date()", Expressions.dateOperation(Date.class, Ops.DateTimeOps.CURRENT_DATE).toString());
+    }
+    
+    @Test
+    public void DateTimeOperation() {
+        assertEquals("current_timestamp()", Expressions.dateTimeOperation(Date.class, Ops.DateTimeOps.CURRENT_TIMESTAMP).toString());
+    }
+    
+    @Test
+    public void TimeOperation() {
+        assertEquals("current_time()", Expressions.timeOperation(Time.class, Ops.DateTimeOps.CURRENT_TIME).toString());
+    }
+    
     @Test
     public void Cases() {
         // TODO

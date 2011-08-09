@@ -22,7 +22,7 @@ public class ListSubQueryTest {
     @Test
     public void Count(){
         DefaultQueryMetadata md = new DefaultQueryMetadata();
-        md.addJoin(JoinType.DEFAULT, new PathImpl(Object.class, "path"));
+        md.addJoin(JoinType.DEFAULT, new PathImpl<Object>(Object.class, "path"));
         ListSubQuery<Date> subQuery = new ListSubQuery<Date>(Date.class, md);
         assertNotNull(subQuery.count().toString());
     }
@@ -30,7 +30,7 @@ public class ListSubQueryTest {
     @Test
     public void Count_Distinct(){
         DefaultQueryMetadata md = new DefaultQueryMetadata();
-        md.addJoin(JoinType.DEFAULT, new PathImpl(Object.class, "path"));
+        md.addJoin(JoinType.DEFAULT, new PathImpl<Object>(Object.class, "path"));
         ListSubQuery<Date> subQuery = new ListSubQuery<Date>(Date.class, md);
         assertNotNull(subQuery.count().toString());
     }

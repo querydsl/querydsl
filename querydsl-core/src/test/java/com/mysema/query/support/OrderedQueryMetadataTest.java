@@ -14,7 +14,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadataFactory;
 
-@SuppressWarnings({"unchecked", "rawtypes"})
+@SuppressWarnings("all")
 public class OrderedQueryMetadataTest {
     
     private Path x = new PathImpl(Object.class, PathMetadataFactory.forVariable("x"));

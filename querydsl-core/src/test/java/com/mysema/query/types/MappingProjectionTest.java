@@ -13,6 +13,7 @@ public class MappingProjectionTest {
     StringPath str1 = new StringPath("str1");
     StringPath str2 = new StringPath("str2");
     
+    @SuppressWarnings("serial")
     @Test
     public void test(){                
         MappingProjection<Pair<String,String>> mapping = new MappingProjection<Pair<String,String>>(Pair.class, str1, str2){

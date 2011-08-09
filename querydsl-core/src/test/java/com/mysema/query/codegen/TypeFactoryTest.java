@@ -29,9 +29,9 @@ public class TypeFactoryTest {
 
     Expression<Object> field2;
 
-    Expression field3;
+    Expression<?> field3;
 
-    List<? extends Expression> field4;
+    List<? extends Expression<?>> field4;
 
     enum EnumExample { FIRST, SECOND}
 

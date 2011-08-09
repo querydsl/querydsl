@@ -45,7 +45,7 @@ public class DefaultPathFactory implements PathFactory{
         return new BooleanPath(metadata);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings("all")
     @Override
     public <E> Path<Collection<E>> createCollectionPath(Class<E> elementType, PathMetadata<?> metadata) {
         return new CollectionPath<E,EntityPathBase<E>>(elementType, (Class)EntityPathBase.class, metadata);
@@ -66,7 +66,7 @@ public class DefaultPathFactory implements PathFactory{
         return new DateTimePath<T>(type, metadata);
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings("all")
     @Override
     public <T> Path<T> createEntityPath(Class<T> type, PathMetadata<?> metadata) {
         if (Comparable.class.isAssignableFrom(type)) {
@@ -81,13 +81,13 @@ public class DefaultPathFactory implements PathFactory{
         return new EnumPath<T>(type, metadata);
     }
     
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings("all")
     @Override
     public <E> Path<List<E>> createListPath(Class<E> elementType, PathMetadata<?> metadata) {
         return new ListPath<E,EntityPathBase<E>>(elementType, (Class)EntityPathBase.class, metadata);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings("all")
     @Override
     public <K, V> Path<Map<K, V>> createMapPath(Class<K> keyType, Class<V> valueType, PathMetadata<?> metadata) {
         return new MapPath<K,V,EntityPathBase<V>>(keyType, valueType, (Class)EntityPathBase.class, metadata);
@@ -98,7 +98,7 @@ public class DefaultPathFactory implements PathFactory{
         return new NumberPath<T>(type, metadata);
     }
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings("all")
     @Override
     public <E> Path<Set<E>> createSetPath(Class<E> elementType, PathMetadata<?> metadata) {
         return new SetPath<E,EntityPathBase<E>>(elementType, (Class)EntityPathBase.class, metadata);
