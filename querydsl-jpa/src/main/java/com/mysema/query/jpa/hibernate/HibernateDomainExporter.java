@@ -174,7 +174,7 @@ public class HibernateDomainExporter {
             if (pc.getDeclaredIdentifierProperty() != null){
                 handleProperty(entityType, pc.getMappedClass(), pc.getDeclaredIdentifierProperty());
             }else if (!pc.isInherited() && pc.hasIdentifierProperty()){
-                System.out.println(entityType.toString() + pc.getIdentifierProperty());
+                logger.info(entityType.toString() + pc.getIdentifierProperty());
                 handleProperty(entityType, pc.getMappedClass(), pc.getIdentifierProperty());
             }
             Iterator<?> properties = pc.getDeclaredPropertyIterator();

@@ -103,7 +103,7 @@ public class AntMetaDataExporter extends Task {
     /**
      * export validation annotations (@NotNull, @Size etc)
      */
-    private final boolean validationAnnotations = true;
+    private boolean validationAnnotations = true;
 
     @Override
     public void execute() throws BuildException {
@@ -274,6 +274,22 @@ public class AntMetaDataExporter extends Task {
 
     public void setBeanSuffix(String beanSuffix) {
         this.beanSuffix = beanSuffix;
+    }
+
+    public String getBeanTargetPackage() {
+        return beanTargetPackage;
+    }
+
+    public void setBeanTargetPackage(String beanTargetPackage) {
+        this.beanTargetPackage = beanTargetPackage;
+    }
+
+    public boolean isValidationAnnotations() {
+        return validationAnnotations;
+    }
+
+    public void setValidationAnnotations(boolean validationAnnotations) {
+        this.validationAnnotations = validationAnnotations;
     }
 
 
