@@ -129,19 +129,19 @@ public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends Projecta
     }
 
     public <P> Q join(CollectionExpression<?,P> target) {
-        return queryMixin.innerJoin(target);
+        return queryMixin.join(target);
     }
 
     public <P> Q join(CollectionExpression<?,P> target, Path<P> alias) {
-        return queryMixin.innerJoin(target, alias);
+        return queryMixin.join(target, alias);
     }
 
     public <P> Q join(EntityPath<P> target) {
-        return queryMixin.innerJoin(target);
+        return queryMixin.join(target);
     }
 
     public <P> Q join(EntityPath<P> target, EntityPath<P> alias) {
-        return queryMixin.innerJoin(target, alias);
+        return queryMixin.join(target, alias);
     }
 
     public <P> Q join(MapExpression<?,P> target) {

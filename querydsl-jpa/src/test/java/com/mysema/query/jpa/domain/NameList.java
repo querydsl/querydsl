@@ -18,6 +18,7 @@ import javax.persistence.Id;
 public class NameList {
     @Id
     long id;
+    
     @ElementCollection
     Collection<String> names;
 }

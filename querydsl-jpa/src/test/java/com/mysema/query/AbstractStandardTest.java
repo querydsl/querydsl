@@ -36,11 +36,14 @@ import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.jpa.domain.QShow;
 import com.mysema.query.jpa.domain.QUser;
 import com.mysema.query.jpa.domain.Show;
+import com.mysema.query.jpa.domain4.QBookMark;
+import com.mysema.query.jpa.domain4.QBookVersion;
 import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Concatenation;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ParamNotSetException;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.QTuple;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ListExpression;
@@ -230,6 +233,33 @@ public abstract class AbstractStandardTest {
         assertEquals(0, catQuery().where(cat.kittens.any().name.eq("Ruth123"), cat.kittens.any().bodyWeight.gt(10.0)).count());
     }
 
+    @Test
+    public void AnyUsage() {
+        QBookVersion bookVersion = QBookVersion.bookVersion;
+        QBookMark bookMark = new QBookMark(PathMetadataFactory.forVariable("bm"));
+//        query().from(bookVersion)
+//          .where(
+//              bookVersion.definition.bookMarks.size().eq(1),
+//              bookVersion.definition.bookMarks.any().page.eq(2356L).or(bookVersion.definition.bookMarks.any().page.eq(2357L)))
+//          .list(bookVersion);
+        
+       // SELECT x FROM BookVersion x 
+       // JOIN x.definition.bookMarks bm 
+       // WHERE size(x.definition.bookMarks) = :sz AND (bm.page = 2357 OR bm.page = 2356)
+        
+//        select bookVersion
+//        from BookVersion bookVersion
+//        join bookVersion.definition.bookMarks as bm
+//        where size(bookVersion.definition.bookMarks) = :a1 and (bm.page = :a2 or bm.page = :a3)
+        
+          query().from(bookVersion)
+              .join(bookVersion.definition.bookMarks, bookMark)
+              .where(
+                  bookVersion.definition.bookMarks.size().eq(1),
+                  bookMark.page.eq(2357L).or(bookMark.page.eq(2356L)))
+              .list(bookVersion);
+    }
+    
     @Test
     public void Aggregates_UniqueResult_Min(){
         assertEquals(Integer.valueOf(1), catQuery().uniqueResult(cat.id.min()));

@@ -8,6 +8,11 @@ package com.mysema.query.jpa.domain;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mysema.query.jpa.domain4.BookID;
+import com.mysema.query.jpa.domain4.BookMark;
+import com.mysema.query.jpa.domain4.BookVersion;
+import com.mysema.query.jpa.domain4.Library;
+
 public final class Domain {
 
     private Domain(){}
@@ -54,6 +59,11 @@ public final class Domain {
             StatusChange.class,
             Store.class,
             Superclass.class,
-            User.class
+            User.class,
+            
+            BookID.class,
+            BookMark.class,
+            BookVersion.class,
+            Library.class
     );
 }
