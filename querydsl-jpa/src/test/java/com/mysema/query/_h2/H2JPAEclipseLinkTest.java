@@ -84,6 +84,11 @@ public class H2JPAEclipseLinkTest extends AbstractJPATest{
     }
     
     @Override
+    public void JoinEmbeddable() {
+        // not supported
+    }
+    
+    @Override
     public void test(){
         // FIXME
     }

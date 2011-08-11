@@ -234,7 +234,7 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    public void AnyUsage() {
+    public void JoinEmbeddable() {
         QBookVersion bookVersion = QBookVersion.bookVersion;
         QBookMark bookMark = new QBookMark(PathMetadataFactory.forVariable("bm"));
 //        query().from(bookVersion)

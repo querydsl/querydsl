@@ -53,8 +53,8 @@
     </dependency>    
     <dependency>
       <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-annotations</artifactId>
-      <version>3.4.0.GA</version>
+      <artifactId>hibernate-core</artifactId>
+      <version>3.6.1.Final</version>
       <scope>test</scope>
     </dependency>  
     <dependency>
