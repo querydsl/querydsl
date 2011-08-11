@@ -24,6 +24,7 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.path.*;
 
@@ -79,15 +80,15 @@ public final class EmbeddableSerializer extends EntitySerializer {
         writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()));
     }
 
-    @Override
-    protected void constructorsForVariables(CodeWriter writer, EntityType model) {
-        // no root constructors
-    }
+//    @Override
+//    protected void constructorsForVariables(CodeWriter writer, EntityType model) {
+//        // no root constructors
+//    }
 
-    @Override
-    protected void introDefaultInstance(CodeWriter writer, EntityType model) {
-        // no default instance
-    }
+//    @Override
+//    protected void introDefaultInstance(CodeWriter writer, EntityType model) {
+//        // no default instance
+//    }
 
     @Override
     protected void introFactoryMethods(CodeWriter writer, EntityType model) throws IOException {
@@ -96,6 +97,7 @@ public final class EmbeddableSerializer extends EntitySerializer {
 
     @Override
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
+        writer.staticimports(PathMetadataFactory.class);
         
         Type queryType = typeMappings.getPathType(model, model, true);
         if (!model.getPackageName().isEmpty()
