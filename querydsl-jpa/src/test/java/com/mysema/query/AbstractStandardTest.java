@@ -236,28 +236,14 @@ public abstract class AbstractStandardTest {
     @Test
     public void JoinEmbeddable() {
         QBookVersion bookVersion = QBookVersion.bookVersion;
-        QBookMark bookMark = new QBookMark(PathMetadataFactory.forVariable("bm"));
-//        query().from(bookVersion)
-//          .where(
-//              bookVersion.definition.bookMarks.size().eq(1),
-//              bookVersion.definition.bookMarks.any().page.eq(2356L).or(bookVersion.definition.bookMarks.any().page.eq(2357L)))
-//          .list(bookVersion);
+        QBookMark bookMark = QBookMark.bookMark;
         
-       // SELECT x FROM BookVersion x 
-       // JOIN x.definition.bookMarks bm 
-       // WHERE size(x.definition.bookMarks) = :sz AND (bm.page = 2357 OR bm.page = 2356)
-        
-//        select bookVersion
-//        from BookVersion bookVersion
-//        join bookVersion.definition.bookMarks as bm
-//        where size(bookVersion.definition.bookMarks) = :a1 and (bm.page = :a2 or bm.page = :a3)
-        
-          query().from(bookVersion)
-              .join(bookVersion.definition.bookMarks, bookMark)
-              .where(
-                  bookVersion.definition.bookMarks.size().eq(1),
-                  bookMark.page.eq(2357L).or(bookMark.page.eq(2356L)))
-              .list(bookVersion);
+        query().from(bookVersion)
+            .join(bookVersion.definition.bookMarks, bookMark)
+            .where(
+                bookVersion.definition.bookMarks.size().eq(1),
+                bookMark.page.eq(2357L).or(bookMark.page.eq(2356L)))
+            .list(bookVersion);
     }
     
     @Test
