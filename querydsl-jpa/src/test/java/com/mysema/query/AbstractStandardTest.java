@@ -43,7 +43,6 @@ import com.mysema.query.types.Concatenation;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ParamNotSetException;
-import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.QTuple;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ListExpression;
