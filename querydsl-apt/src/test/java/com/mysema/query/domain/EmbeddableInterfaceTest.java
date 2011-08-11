@@ -1,14 +1,15 @@
 package com.mysema.query.domain;
 
+import static org.junit.Assert.*;
+
 import java.util.Collection;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 
-import org.junit.Ignore;
+import org.junit.Test;
 
-@Ignore
 public class EmbeddableInterfaceTest {
 
     @Entity
@@ -19,6 +20,7 @@ public class EmbeddableInterfaceTest {
         
     }
         
+    @Embeddable
     public interface EmbeddableInterface {
         
     }
@@ -26,6 +28,13 @@ public class EmbeddableInterfaceTest {
     @Embeddable
     public class EmbeddableClass implements EmbeddableInterface {
         
+    }
+    
+    @Test
+    public void test() {
+        assertEquals(
+            QEmbeddableInterfaceTest_EmbeddableInterface.class, 
+            QEmbeddableInterfaceTest_EntityClass.entityClass.children.any().getClass());
     }
     
 }
