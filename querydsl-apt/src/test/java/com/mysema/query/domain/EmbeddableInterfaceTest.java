@@ -22,19 +22,31 @@ public class EmbeddableInterfaceTest {
         
     @Embeddable
     public interface EmbeddableInterface {
-        
+     
+        String getName();
     }
     
     @Embeddable
     public class EmbeddableClass implements EmbeddableInterface {
+
+        @Override
+        public String getName() {
+            return null;
+        }
         
     }
     
     @Test
-    public void test() {
+    public void Type() {
         assertEquals(
             QEmbeddableInterfaceTest_EmbeddableInterface.class, 
             QEmbeddableInterfaceTest_EntityClass.entityClass.children.any().getClass());
+    }
+    
+    @Test
+    public void Properties() {
+        assertNotNull(QEmbeddableInterfaceTest_EmbeddableInterface.embeddableInterface.name);
+        assertNotNull(QEmbeddableInterfaceTest_EmbeddableClass.embeddableClass.name);
     }
     
 }
