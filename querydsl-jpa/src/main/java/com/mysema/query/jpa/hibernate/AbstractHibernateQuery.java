@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import org.hibernate.FlushMode;
 import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.ScrollMode;
@@ -45,13 +46,18 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
 
     private static final Logger logger = LoggerFactory.getLogger(HibernateQuery.class);
 
+    @Nullable
     private Boolean cacheable, readOnly;
 
+    @Nullable
     private String cacheRegion;
 
     private int fetchSize = 0;
 
     private final Map<Path<?>,LockMode> lockModes = new HashMap<Path<?>,LockMode>();
+    
+    @Nullable
+    private FlushMode flushMode;
 
     private final SessionHolder session;
 
@@ -142,6 +148,9 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         }
         for (Map.Entry<Path<?>, LockMode> entry : lockModes.entrySet()){
             query.setLockMode(entry.getKey().toString(), entry.getValue());
+        }
+        if (flushMode != null) {
+            query.setFlushMode(flushMode);
         }
 
         if (modifiers != null && modifiers.isRestricting()) {
@@ -320,6 +329,15 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     @SuppressWarnings("unchecked")
     public Q setLockMode(Path<?> path, LockMode lockMode){
         lockModes.put(path, lockMode);
+        return (Q)this;
+    }
+    
+    /**
+     * Override the current session flush mode, just for this query.
+     */
+    @SuppressWarnings("unchecked")
+    public Q setFlushMode(FlushMode flushMode) {
+        this.flushMode = flushMode;
         return (Q)this;
     }
 
