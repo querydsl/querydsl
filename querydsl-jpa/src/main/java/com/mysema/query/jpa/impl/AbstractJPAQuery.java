@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
 
@@ -50,6 +51,9 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
 
     @Nullable
     private LockModeType lockMode;
+    
+    @Nullable
+    private FlushModeType flushMode;
     
     private Class<?> hibernateQueryClass;
     
@@ -128,11 +132,13 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
                 query.setFirstResult(modifiers.getOffset().intValue());
             }
         }
-
         if (lockMode != null){
             query.setLockMode(lockMode);
         }
-
+        if (flushMode != null) {
+            query.setFlushMode(flushMode);
+        }
+        
         for (Map.Entry<String, Object> entry : hints.entrySet()){
             query.setHint(entry.getKey(), entry.getValue());
         }
@@ -308,6 +314,12 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     @SuppressWarnings("unchecked")
     public Q setLockMode(LockModeType lockMode) {
         this.lockMode = lockMode;
+        return (Q)this;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Q setFlushMode(FlushModeType flushMode) {
+        this.flushMode = flushMode;
         return (Q)this;
     }
 
