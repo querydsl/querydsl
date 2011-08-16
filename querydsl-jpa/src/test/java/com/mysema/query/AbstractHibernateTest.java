@@ -64,6 +64,11 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
     public void LockMode(){
         query().from(QCat.cat).setLockMode(QCat.cat, LockMode.PESSIMISTIC_WRITE).list(QCat.cat);
     }
+    
+    @Test
+    public void FlushMode() {
+        query().from(QCat.cat).setFlushMode(org.hibernate.FlushMode.AUTO).list(QCat.cat);
+    }
 
     @Test
     public void Scroll() throws IOException{

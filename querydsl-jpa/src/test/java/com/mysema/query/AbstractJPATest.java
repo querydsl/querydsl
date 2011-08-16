@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 
 import org.junit.Test;
@@ -83,6 +84,11 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
         assertFalse(query().from(QCat.cat).setLockMode(LockModeType.PESSIMISTIC_READ).list(QCat.cat).isEmpty());
     }
 
+    @Test
+    public void FlushMode() {
+        assertFalse(query().from(QCat.cat).setFlushMode(FlushModeType.AUTO).list(QCat.cat).isEmpty());
+    }
+    
     @Test
     public void Limit1_UniqueResult(){
         assertNotNull(query().from(QCat.cat).limit(1).uniqueResult(QCat.cat));
