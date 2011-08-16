@@ -217,6 +217,9 @@ public interface Projectable {
 
     /**
      * return a single result for the given projection or null if no result is found
+     * 
+     * <p>There is some ambiguity for missing results and null valued results, for disambiguation 
+     * and your own projection methods.</p> 
      *
      * <p>for multiple results only the first one is returned</p>
      *
@@ -228,6 +231,9 @@ public interface Projectable {
 
     /**
      * return a single result for the given projection or null if no result is found
+     *
+     * <p>There is some ambiguity for missing results and null valued results, for disambiguation 
+     * and your own projection methods.</p>
      *
      * <p>for multiple results only the first one is returned</p>
      *
@@ -241,6 +247,9 @@ public interface Projectable {
 
     /**
      * return a unique result for the given projection or null if no result is found
+     * 
+     * <p>There is some ambiguity for missing results and null valued results, for disambiguation 
+     * and your own projection methods.</p> 
      *
      * @param first
      * @param second
@@ -254,6 +263,9 @@ public interface Projectable {
     /**
      * return a unique result for the given projection or null if no result is found
      *
+     * <p>There is some ambiguity for missing results and null valued results, for disambiguation 
+     * and your own projection methods.</p>
+     *
      * @param args
      * @throws NonUniqueResultException if there is more than one matching result
      * @return
@@ -263,6 +275,9 @@ public interface Projectable {
 
     /**
      * return a unique result for the given projection or null if no result is found
+     * 
+     * <p>There is some ambiguity for missing results and null valued results, for disambiguation 
+     * and your own projection methods.</p>
      *
      * @param <RT>
      *            return type
