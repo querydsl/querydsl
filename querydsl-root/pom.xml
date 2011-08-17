@@ -257,17 +257,9 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>jar</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-            <configuration>
-              <useDefaultManifestFile>true</useDefaultManifestFile>
-            </configuration>
-          </execution>
-        </executions>
+        <configuration>
+          <useDefaultManifestFile>true</useDefaultManifestFile>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
