@@ -179,4 +179,55 @@ public class DefaultQueryMetadataTest {
         metadata.addFlag(flag);
         assertTrue(metadata.hasFlag(flag));
     }
+    
+    @Test
+    public void Equals() {
+        metadata.addJoin(JoinType.DEFAULT, str);
+        metadata.addGroupBy(str);
+        metadata.addHaving(str.isNotNull());
+        metadata.addJoin(JoinType.DEFAULT, str2);
+        QueryModifiers modifiers = new QueryModifiers(1l,2l);
+        metadata.setModifiers(modifiers);
+        metadata.addOrderBy(str.asc());
+        metadata.addProjection(str, str.append("abc"));
+        metadata.addWhere(str.eq("b"), str.isNotEmpty());
+        
+        QueryMetadata metadata2 = new DefaultQueryMetadata();
+        assertFalse(metadata.equals(metadata2));        
+        metadata2.addJoin(JoinType.DEFAULT, str);
+        assertFalse(metadata.equals(metadata2));        
+        metadata2.addGroupBy(str);
+        assertFalse(metadata.equals(metadata2));
+        metadata2.addHaving(str.isNotNull());
+        assertFalse(metadata.equals(metadata2));
+        metadata2.addJoin(JoinType.DEFAULT, str2);
+        assertFalse(metadata.equals(metadata2));
+        metadata2.setModifiers(modifiers);
+        assertFalse(metadata.equals(metadata2));
+        metadata2.addOrderBy(str.asc());
+        assertFalse(metadata.equals(metadata2));
+        metadata2.addProjection(str, str.append("abc"));
+        assertFalse(metadata.equals(metadata2));
+        metadata2.addWhere(str.eq("b"), str.isNotEmpty());
+        assertTrue(metadata.equals(metadata2));
+    }
+    
+    @Test
+    public void HashCode() {
+        metadata.addJoin(JoinType.DEFAULT, str);
+        metadata.addGroupBy(str);
+        metadata.addHaving(str.isNotNull());
+        metadata.addJoin(JoinType.DEFAULT, str2);
+        QueryModifiers modifiers = new QueryModifiers(1l,2l);
+        metadata.setModifiers(modifiers);
+        metadata.addOrderBy(str.asc());
+        metadata.addProjection(str, str.append("abc"));
+        metadata.addWhere(str.eq("b"), str.isNotEmpty());
+        metadata.hashCode();        
+    }
+    
+    @Test
+    public void HashCode_Empty_Metadata() {
+        metadata.hashCode();
+    }
 }
