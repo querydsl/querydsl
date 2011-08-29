@@ -352,6 +352,15 @@
       </modules>
     </profile>		
   
+    <profile>
+      <id>collections</id>
+      <modules>
+        <module>../querydsl-core</module>
+        <module>../querydsl-apt</module>
+        <module>../querydsl-collections</module>
+      </modules>
+    </profile>
+  
   </profiles>
   
   <reporting>
