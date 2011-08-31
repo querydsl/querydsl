@@ -229,4 +229,9 @@ public interface QueryMetadata extends Serializable {
      * @return
      */
     Set<QueryFlag> getFlags();
+    
+    /**
+     * @param v
+     */
+    void setValidate(boolean v);
 }

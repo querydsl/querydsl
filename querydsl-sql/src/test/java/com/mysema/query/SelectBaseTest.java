@@ -705,8 +705,9 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             assertNotNull(tuple.get(employee.lastname));
         }
     }
-    
+        
     @Test
+    @SuppressWarnings("serial")
     public void MappingProjection() {
         List<Pair<String, String>> pairs = query().from(employee).list(new MappingProjection<Pair<String,String>>(Pair.class, employee.firstname, employee.lastname) {
             @Override
@@ -815,7 +816,6 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
     
     @Test
-    @Ignore // FIXME
     @SuppressWarnings("unchecked")
     public void Union_With_Order() throws SQLException {
         SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id);

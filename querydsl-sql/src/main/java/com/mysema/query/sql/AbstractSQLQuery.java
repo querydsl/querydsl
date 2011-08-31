@@ -319,6 +319,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     }
 
     private <RT> UnionBuilder<RT> innerUnion(SubQueryExpression<?>... sq) {
+        queryMixin.getMetadata().setValidate(false);
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("Don't mix union and from");
         }

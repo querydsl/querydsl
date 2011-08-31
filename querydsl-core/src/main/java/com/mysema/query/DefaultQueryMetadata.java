@@ -63,7 +63,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     
     private final ValidatingVisitor validatingVisitor = new ValidatingVisitor(exprInJoins);
 
-    private final boolean validate;
+    private boolean validate;
     
     public DefaultQueryMetadata(boolean validate) {
         this.validate = validate;
@@ -300,6 +300,10 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         }
     }
     
+    public void setValidate(boolean v) {
+        this.validate = v;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (o instanceof QueryMetadata) {
@@ -337,7 +341,6 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         result = prime * result + where.hashCode();
         return result;
     }
-    
     
     
 }
