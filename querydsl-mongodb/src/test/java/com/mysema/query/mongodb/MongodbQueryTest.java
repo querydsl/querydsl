@@ -12,11 +12,13 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,10 +28,13 @@ import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.SearchResults;
 import com.mysema.query.mongodb.domain.Address;
 import com.mysema.query.mongodb.domain.City;
+import com.mysema.query.mongodb.domain.Item;
+import com.mysema.query.mongodb.domain.QItem;
 import com.mysema.query.mongodb.domain.QUser;
 import com.mysema.query.mongodb.domain.User;
 import com.mysema.query.mongodb.domain.User.Gender;
 import com.mysema.query.mongodb.morphia.MorphiaQuery;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.path.StringPath;
@@ -37,9 +42,10 @@ import com.mysema.query.types.path.StringPath;
 public class MongodbQueryTest {
 
     private final String dbname = "testdb";
-    private final Morphia morphia = new Morphia().map(User.class);
+    private final Morphia morphia = new Morphia().map(User.class).map(Item.class);
     private final Datastore ds = morphia.createDatastore(dbname);
-    private final QUser user = new QUser("user");
+    private final QUser user = QUser.user;
+    private final QItem item = QItem.item;
 
     User u1, u2, u3, u4;
     City tampere, helsinki;
@@ -296,6 +302,27 @@ public class MongodbQueryTest {
     public void Enum_Ne() {
         assertQuery(user.gender.ne(Gender.MALE));
     }
+    
+    @Test
+    public void In_ObjectIds() {
+        Item i = new Item();
+        i.setCtds(Arrays.asList(ObjectId.get(), ObjectId.get(), ObjectId.get()));
+        ds.save(i);
+        
+        assertTrue(where(item, item.ctds.contains(i.getCtds().get(0))).count() > 0);
+        assertTrue(where(item, item.ctds.contains(ObjectId.get())).count() == 0);
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void In_ObjectIds2() {
+        Item i = new Item();
+        i.setCtds(Arrays.asList(ObjectId.get(), ObjectId.get(), ObjectId.get()));
+        ds.save(i);
+        
+        assertTrue(where(item, item.ctds.in(i.getCtds())).count() > 0);
+        assertTrue(where(item, item.ctds.in(Arrays.asList(ObjectId.get(), ObjectId.get()))).count() == 0);
+    }
 
     //TODO
     // - test dates
@@ -310,6 +337,10 @@ public class MongodbQueryTest {
         assertQuery(where(e).orderBy(orderBy), expected);
     }
 
+    private <T> MongodbQuery<T> where(EntityPath<T> entity, Predicate... e) {
+        return new MorphiaQuery<T>(morphia, ds, entity).where(e);
+    }
+    
     private MongodbQuery<User> where(Predicate ... e) {
         return query().where(e);
     }

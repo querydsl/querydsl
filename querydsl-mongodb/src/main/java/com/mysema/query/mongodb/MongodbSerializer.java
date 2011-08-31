@@ -172,11 +172,21 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         }
 
         else if (op == Ops.IN) {
-            Collection<?> values = (Collection<?>) ((Constant<?>) expr.getArg(1)).getConstant();
-            return asDBObject(asDBKey(expr, 0), asDBObject("$in", values.toArray()));
+            int constIndex = 0;
+            int exprIndex = 1;            
+            if (expr.getArg(1) instanceof Constant<?>) {
+                constIndex = 1;
+                exprIndex = 0;
+            }   
+            if (Collection.class.isAssignableFrom(expr.getArg(constIndex).getType())) {
+                Collection<?> values = (Collection<?>) ((Constant<?>) expr.getArg(constIndex)).getConstant();
+                return asDBObject(asDBKey(expr, exprIndex), asDBObject("$in", values.toArray()));    
+            } else {
+                return asDBObject(asDBKey(expr, exprIndex), asDBValue(expr, constIndex));
+            }
+            
         }
-
-        
+       
         
         else if (op == Ops.LT || op == Ops.BEFORE) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$lt", asDBValue(expr, 1)));
@@ -192,17 +202,14 @@ public class MongodbSerializer implements Visitor<Object, Void> {
 
         else if (op == Ops.GOE || op == Ops.AOE) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$gte", asDBValue(expr, 1)));
-
         }
         
         else if (op == Ops.IS_NULL){
             return asDBObject(asDBKey(expr, 0), asDBObject("$exists", false));
-
         }
         
         else if (op == Ops.IS_NOT_NULL){
             return asDBObject(asDBKey(expr, 0), asDBObject("$exists", true));
-
         }
         
         else if (op == MongodbOps.NEAR) {
