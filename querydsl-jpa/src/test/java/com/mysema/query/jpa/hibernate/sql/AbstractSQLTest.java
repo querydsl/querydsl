@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.junit.Before;
 import org.junit.Test;
@@ -136,7 +137,25 @@ public abstract class AbstractSQLTest {
             .list(catEntity);
         assertTrue(cats.isEmpty());
     }
+    
+    @Test
+    public void EntityQueries_CreateQuery() {
+        SAnimal cat = new SAnimal("cat");
+        QCat catEntity = QCat.cat;
+        
+        Query query = query().from(cat).createQuery(catEntity);
+        assertEquals(6, query.list().size());
+    }
 
+    @Test
+    public void EntityQueries_CreateQuery2() {
+        SAnimal cat = new SAnimal("CAT");
+        QCat catEntity = QCat.cat;
+        
+        Query query = query().from(cat).createQuery(catEntity);
+        assertEquals(6, query.list().size());
+    }
+    
     @Test
     public void EntityProjections(){
         SAnimal cat = new SAnimal("cat");

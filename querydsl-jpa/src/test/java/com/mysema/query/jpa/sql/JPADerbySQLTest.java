@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -156,6 +157,24 @@ public class JPADerbySQLTest {
             .where(cat.dtype.eq("C"), mate.dtype.eq("C"))
             .list(catEntity);
         assertTrue(cats.isEmpty());
+    }
+    
+    @Test
+    public void EntityQueries_CreateQuery() {
+        SAnimal cat = new SAnimal("cat");
+        QCat catEntity = QCat.cat;
+        
+        Query query = query().from(cat).createQuery(catEntity);
+        assertEquals(6, query.getResultList().size());
+    }
+    
+    @Test
+    public void EntityQueries_CreateQuery2() {
+        SAnimal cat = new SAnimal("CAT");
+        QCat catEntity = QCat.cat;
+        
+        Query query = query().from(cat).createQuery(catEntity);
+        assertEquals(6, query.getResultList().size());
     }
 
     @Test

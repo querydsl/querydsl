@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Wed Aug 10 16:05:39 EEST 2011:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.1.2 - (1095077): instance a816c00e-0131-b3cc-5aa8-000002fc9e58 
+Thu Sep 01 17:55:58 EEST 2011:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.1.2 - (1095077): instance a816c00e-0132-257d-41db-0000030c13f0 
 on database directory /home/tiwe/work/querydsl/querydsl-jpa/target/derbydb  with class loader sun.misc.Launcher$AppClassLoader@1a16869 
 Loaded from file:/home/tiwe/.m2/repository/org/apache/derby/derby/10.8.1.2/derby-10.8.1.2.jar
 java.vendor=Sun Microsystems Inc.
