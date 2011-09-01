@@ -4,6 +4,6 @@ Querydsl is a framework which enables the construction of type-safe SQL-like que
 
 Instead of writing queries as inline strings or externalizing them into XML files they are constructed via a fluent API.
 
-For more information visit the project homepage 
+Issue tracking is hosted on Launchpad https://bugs.launchpad.net/querydsl.
 
-http://www.querydsl.com
+For more information visit the project homepage at http://www.querydsl.com/.
