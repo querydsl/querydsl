@@ -3,6 +3,7 @@ package com.mysema.query.jdo;
 import javax.inject.Provider;
 import javax.jdo.PersistenceManager;
 
+import com.mysema.query.QueryFactory;
 import com.mysema.query.jdo.dml.JDOQLDeleteClause;
 import com.mysema.query.types.EntityPath;
 
@@ -12,7 +13,7 @@ import com.mysema.query.types.EntityPath;
  * @author tiwe
  *
  */
-public class JDOQueryFactory {
+public class JDOQueryFactory implements QueryFactory<JDOQLQuery, JDOQLSubQuery>{
 
     private final Provider<PersistenceManager> persistenceManager;
 

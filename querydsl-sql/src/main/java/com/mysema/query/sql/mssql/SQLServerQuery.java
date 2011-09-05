@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.Query;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.AbstractSQLQuery;
@@ -14,7 +15,7 @@ import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLServerTemplates;
 import com.mysema.query.sql.SQLTemplates;
 
-public class SQLServerQuery extends AbstractSQLQuery<SQLServerQuery> {
+public class SQLServerQuery extends AbstractSQLQuery<SQLServerQuery> implements Query<SQLServerQuery>{
     
     public SQLServerQuery(Connection conn) {
         this(conn, new SQLServerTemplates(), new DefaultQueryMetadata());

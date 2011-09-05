@@ -1,5 +1,7 @@
 package com.mysema.query.sql;
 
+import com.mysema.query.Query;
+import com.mysema.query.QueryFactory;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLMergeClause;
@@ -17,12 +19,12 @@ import com.mysema.query.types.Expression;
  * @param <I> insert clause type
  * @param <M> merge clause type
  */
-public interface SQLQueryFactory<Q extends AbstractSQLQuery<?>,
+public interface SQLQueryFactory<Q extends AbstractSQLQuery<?> & Query<?>,
     SQ extends AbstractSQLSubQuery<?>,
     D extends SQLDeleteClause,
     U extends SQLUpdateClause,
     I extends SQLInsertClause,
-    M extends SQLMergeClause> {
+    M extends SQLMergeClause> extends QueryFactory<Q,SQ> {
 
     D delete(RelationalPath<?> path);
 

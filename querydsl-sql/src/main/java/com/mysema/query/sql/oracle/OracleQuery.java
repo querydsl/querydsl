@@ -8,6 +8,7 @@ package com.mysema.query.sql.oracle;
 import java.sql.Connection;
 
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.Query;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.sql.AbstractSQLQuery;
@@ -22,7 +23,7 @@ import com.mysema.query.types.Predicate;
  *
  * @author tiwe
  */
-public class OracleQuery extends AbstractSQLQuery<OracleQuery> {    
+public class OracleQuery extends AbstractSQLQuery<OracleQuery> implements Query<OracleQuery>{    
 
     private static final String CONNECT_BY = "\nconnect by ";
 

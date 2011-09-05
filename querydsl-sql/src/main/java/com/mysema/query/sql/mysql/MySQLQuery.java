@@ -12,11 +12,13 @@ import org.apache.commons.lang.StringUtils;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinFlag;
+import com.mysema.query.Query;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.sql.AbstractSQLQuery;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.MySQLTemplates;
+import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLTemplates;
 
 /**
@@ -26,7 +28,7 @@ import com.mysema.query.sql.SQLTemplates;
  * @see SQLQuery
  *
  */
-public class MySQLQuery extends AbstractSQLQuery<MySQLQuery>{
+public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> implements Query<MySQLQuery>{
     
     public MySQLQuery(Connection conn) {
         this(conn, new Configuration(new MySQLTemplates()), new DefaultQueryMetadata());

@@ -4,6 +4,7 @@ import javax.inject.Provider;
 
 import org.hibernate.Session;
 
+import com.mysema.query.QueryFactory;
 import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.types.EntityPath;
@@ -14,7 +15,7 @@ import com.mysema.query.types.EntityPath;
  * @author tiwe
  *
  */
-public class HibernateQueryFactory {
+public class HibernateQueryFactory implements QueryFactory<HibernateQuery, HibernateSubQuery> {
 
     private final JPQLTemplates templates;
 
