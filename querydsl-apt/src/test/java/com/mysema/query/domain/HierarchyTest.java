@@ -1,17 +1,17 @@
 package com.mysema.query.domain;
 
+import static org.junit.Assert.*;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-import org.junit.Ignore;
+import org.junit.Test;
 
-@Ignore
+import com.mysema.query.annotations.PropertyType;
+import com.mysema.query.annotations.QueryType;
+
+
 public class HierarchyTest {
-
-    // public static void main(String[] args) {
-    // QB2 qb2 = QA2.a2.b();
-    // }
-    // }
 
     @Entity
     class A {
@@ -40,6 +40,7 @@ public class HierarchyTest {
         }
 
         @Override
+        @QueryType(PropertyType.ENTITY)
         B2 getB() {
             return (B2) super.getB();
         }
@@ -53,4 +54,9 @@ public class HierarchyTest {
     class B2 extends B {
     }
 
+    @Test
+    public void test() {
+        QHierarchyTest_B2 qb2 = QHierarchyTest_A2.a2.b;
+        assertNotNull(qb2);
+    }
 }

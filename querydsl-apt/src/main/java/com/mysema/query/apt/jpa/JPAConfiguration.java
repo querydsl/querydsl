@@ -63,18 +63,20 @@ public class JPAConfiguration extends DefaultConfiguration {
     protected List<Class<? extends Annotation>> getAnnotations() throws ClassNotFoundException{
         List<Class<? extends Annotation>> rv = new ArrayList<Class<? extends Annotation>>();
         rv.add(QueryType.class);
-        for (String simpleName : Arrays.asList(
-                "Column",
-                "Embedded",
-                "EmbeddedId",
-                "GeneratedValue",
-                "Id",
-                "Version",
-                "JoinColumn",
-                "ManyToOne",
-                "OneToMany",
-                "PrimaryKeyJoinColumn")){
-            rv.add((Class<? extends Annotation>) Class.forName("javax.persistence."+simpleName));
+        for (String fullName : Arrays.asList(
+                "javax.persistence.Column",
+                "javax.persistence.Embedded",
+                "javax.persistence.EmbeddedId",
+                "javax.persistence.GeneratedValue",
+                "javax.persistence.Id",
+                "javax.persistence.Version",
+                "javax.persistence.JoinColumn",
+                "javax.persistence.ManyToOne",
+                "javax.persistence.OneToMany",
+                "javax.persistence.PrimaryKeyJoinColumn",
+                "com.mysema.query.annotations.QueryType",
+                "com.mysema.query.annotations.QueryTransient")){
+            rv.add((Class<? extends Annotation>) Class.forName(fullName));
         }
         return rv;
     }
