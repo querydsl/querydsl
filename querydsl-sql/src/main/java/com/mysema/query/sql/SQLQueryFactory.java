@@ -14,12 +14,13 @@ import com.mysema.query.types.Expression;
  * @author tiwe
  *
  * @param <Q> query type
+ * @param <SQ> subquery type
  * @param <D> delete clause type
  * @param <U> update clause type
  * @param <I> insert clause type
  * @param <M> merge clause type
  */
-public interface SQLQueryFactory<Q extends AbstractSQLQuery<?> & Query<?>,
+public interface SQLQueryFactory<Q extends Query<?>, // extends AbstractSQLQuery<?>
     SQ extends AbstractSQLSubQuery<?>,
     D extends SQLDeleteClause,
     U extends SQLUpdateClause,

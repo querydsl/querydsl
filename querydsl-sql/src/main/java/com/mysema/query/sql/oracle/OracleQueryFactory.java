@@ -23,7 +23,7 @@ import com.mysema.query.types.Expression;
  * @author tiwe
  *
  */
-public class OracleQueryFactory implements SQLQueryFactory<OracleQuery, SQLSubQuery, SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause>{
+public class OracleQueryFactory implements SQLQueryFactory<OracleQuery, SQLSubQuery, SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause> {
 
     private final SQLQueryFactoryImpl queryFactory;
 
