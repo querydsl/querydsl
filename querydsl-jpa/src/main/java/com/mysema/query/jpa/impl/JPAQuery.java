@@ -64,7 +64,7 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements JPQLQu
      * @param templates
      * @param metadata
      */
-    protected JPAQuery(JPASessionHolder session, JPQLTemplates templates, QueryMetadata metadata) {
+    public JPAQuery(JPASessionHolder session, JPQLTemplates templates, QueryMetadata metadata) {
         super(session, templates, metadata);
     }
 

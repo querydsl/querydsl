@@ -31,7 +31,7 @@ public final class HibernateSQLQuery extends AbstractHibernateSQLQuery<Hibernate
         super(session, sqlTemplates);
     }
     
-    protected HibernateSQLQuery(SessionHolder session, SQLTemplates sqlTemplates, QueryMetadata metadata) {
+    public HibernateSQLQuery(SessionHolder session, SQLTemplates sqlTemplates, QueryMetadata metadata) {
         super(session, sqlTemplates, metadata);
     }
     

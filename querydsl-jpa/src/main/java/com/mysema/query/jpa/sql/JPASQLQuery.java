@@ -26,7 +26,7 @@ public final class JPASQLQuery extends AbstractJPASQLQuery<JPASQLQuery> implemen
         super(entityManager, sqlTemplates);
     }
 
-    protected JPASQLQuery(JPASessionHolder session, SQLTemplates sqlTemplates, QueryMetadata metadata) {
+    public JPASQLQuery(JPASessionHolder session, SQLTemplates sqlTemplates, QueryMetadata metadata) {
         super(session, sqlTemplates, metadata);
     }
     

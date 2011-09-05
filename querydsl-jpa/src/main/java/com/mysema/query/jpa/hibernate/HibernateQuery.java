@@ -20,7 +20,7 @@ import com.mysema.query.jpa.JPQLTemplates;
  * @author tiwe
  *
  */
-public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery> implements JPQLQuery{
+public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery> implements JPQLQuery {
 
     /**
      * Creates a detached query
@@ -84,7 +84,7 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
      * @param templates
      * @param metadata
      */
-    protected HibernateQuery(SessionHolder session, JPQLTemplates templates, QueryMetadata metadata) {
+    public HibernateQuery(SessionHolder session, JPQLTemplates templates, QueryMetadata metadata) {
         super(session, templates, metadata);
     }
 
