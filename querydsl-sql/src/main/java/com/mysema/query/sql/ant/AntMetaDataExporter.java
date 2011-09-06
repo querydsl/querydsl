@@ -104,6 +104,11 @@ public class AntMetaDataExporter extends Task {
      * export validation annotations (@NotNull, @Size etc)
      */
     private boolean validationAnnotations = true;
+    
+    /**
+     * charset encoding of the sources to be generated
+     */
+    private String sourceEncoding;
 
     @Override
     public void execute() throws BuildException {
@@ -139,6 +144,9 @@ public class AntMetaDataExporter extends Task {
             exporter.setValidationAnnotations(validationAnnotations);
             if (exportBeans){
                 exporter.setBeanSerializer(new BeanSerializer());
+            }
+            if (sourceEncoding != null) {
+                exporter.setSourceEncoding(sourceEncoding);
             }
 
             exporter.export(dbConn.getMetaData());
@@ -290,6 +298,14 @@ public class AntMetaDataExporter extends Task {
 
     public void setValidationAnnotations(boolean validationAnnotations) {
         this.validationAnnotations = validationAnnotations;
+    }
+       
+    public String getSourceEncoding() {
+        return sourceEncoding;
+    }
+
+    public void setSourceEncoding(String sourceEncoding) {
+        this.sourceEncoding = sourceEncoding;
     }
 
 

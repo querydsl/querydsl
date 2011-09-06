@@ -198,7 +198,11 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         if (exportBeans) {
             exporter.setBeanSerializer(new BeanSerializer());
         }
-
+        String sourceEncoding = (String)project.getProperties().get("project.build.sourceEncoding");
+        if (sourceEncoding != null) {
+            exporter.setSourceEncoding(sourceEncoding);
+        }
+        
         try {
             if (customTypes != null) {
                 Configuration configuration = new Configuration(SQLTemplates.DEFAULT);

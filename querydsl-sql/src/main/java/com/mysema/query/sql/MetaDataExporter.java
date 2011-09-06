@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -66,17 +67,6 @@ public class MetaDataExporter {
 
     private static final int TABLE_NAME = 3;
 
-    private static Writer writerFor(File file) {
-        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
-            logger.error("Folder " + file.getParent() + " could not be created");
-        }
-        try {
-            return new OutputStreamWriter(new FileOutputStream(file));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
-    }
-
     private final SQLCodegenModule module = new SQLCodegenModule();
 
     private final Set<String> classes = new HashSet<String>();
@@ -109,6 +99,8 @@ public class MetaDataExporter {
     private KeyDataFactory keyDataFactory;
 
     private boolean validationAnnotations = true;
+    
+    private String sourceEncoding = "UTF-8";
 
     public MetaDataExporter(){}
 
@@ -283,6 +275,19 @@ public class MetaDataExporter {
             w.close();
         }
     }
+    
+    private Writer writerFor(File file) {
+        if (!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
+            logger.error("Folder " + file.getParent() + " could not be created");
+        }
+        try {
+            return new OutputStreamWriter(new FileOutputStream(file), sourceEncoding);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 
     /**
      * Set the schema pattern filter to be used
@@ -443,4 +448,11 @@ public class MetaDataExporter {
         this.validationAnnotations = validationAnnotations;
     }
 
+    /**
+     * @param sourceEncoding
+     */
+    public void setSourceEncoding(String sourceEncoding) {
+        this.sourceEncoding = sourceEncoding;
+    }
+       
 }
