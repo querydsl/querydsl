@@ -89,8 +89,6 @@ public final class ExtendedTypeFactory {
         this.comparableType = env.getElementUtils().getTypeElement(Comparable.class.getName());
         this.typeMappings = typeMappings;
         this.queryTypeFactory = queryTypeFactory;
-        
-//        typeCache.put(Arrays.asList(Comparable.class.getName(), "?"), new ClassType(Comparable.class, (Type)null));
     }
 
     private void appendToKey(List<String> key, DeclaredType t, boolean deep) {

@@ -1,5 +1,6 @@
 package com.mysema.query.sql.mysql;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
 
 import java.sql.Connection;
@@ -11,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.domain.QSurvey;
 
 public class MySQLQueryFactoryTest {
@@ -60,9 +62,16 @@ public class MySQLQueryFactoryTest {
 
     @Test
     public void InsertIgnore(){
-        assertNotNull(queryFactory.insertIgnore(QSurvey.survey));
+        SQLInsertClause clause = queryFactory.insertIgnore(QSurvey.survey);
+        assertEquals("insert ignore into SURVEY\nvalues ()", clause.toString());
     }
 
+    @Test
+    public void InsertOnDuplicateKeyUpdate() {
+        SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.survey, "c = c+1");
+        assertEquals("insert into SURVEY\nvalues () on duplicate key update c = c+1", clause.toString());
+    }
+    
     @Test
     public void Replace(){
         assertNotNull(queryFactory.replace(QSurvey.survey));

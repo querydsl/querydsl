@@ -57,13 +57,13 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     public EntityType(Type type, Set<Supertype> superTypes) {
         super(type);
         this.uncapSimpleName = StringUtils.uncapitalize(type.getSimpleName());
-        if (JavaSyntaxUtils.isReserved(uncapSimpleName)){
+        if (JavaSyntaxUtils.isReserved(uncapSimpleName)) {
             this.uncapSimpleName = uncapSimpleName + "$";    
         }
         this.superTypes = superTypes;
     }
 
-    public void addAnnotation(Annotation annotation){
+    public void addAnnotation(Annotation annotation) {
         annotations.put(annotation.annotationType(), annotation);
     }
 
@@ -71,7 +71,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         constructors.add(co);
     }
 
-    public void addDelegate(Delegate delegate){
+    public void addDelegate(Delegate delegate) {
         delegates.add(delegate);
     }
 
@@ -81,7 +81,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         properties.add(validateField(field));
     }
 
-    public void addSupertype(Supertype entityType){
+    public void addSupertype(Supertype entityType) {
         superTypes.add(entityType);
     }
 
@@ -91,18 +91,18 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     }
     
     @Override
-    public boolean equals(Object o){
-        if (o == this){
+    public boolean equals(Object o) {
+        if (o == this) {
             return true;
-        }else if (o instanceof Type){
+        } else if (o instanceof Type) {
             return getFullName().equals(((Type)o).getFullName());    
-        }else{
+        } else {
             return false;
         }        
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends Annotation> T getAnnotation(Class<T> type){
+    public <T extends Annotation> T getAnnotation(Class<T> type) {
         return (T) annotations.get(type);
     }
 
@@ -112,9 +112,9 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
 
     @Override
     public TypeCategory getCategory() {       
-        if (getType().getCategory() == TypeCategory.ENTITY || !properties.isEmpty()){
+        if (getType().getCategory() == TypeCategory.ENTITY || !properties.isEmpty()) {
             return TypeCategory.ENTITY;    
-        }else{
+        } else {
             return TypeCategory.CUSTOM;
         }        
     }
@@ -127,11 +127,11 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         return data;
     }
 
-    public Set<Delegate> getDelegates(){
+    public Set<Delegate> getDelegates() {
         return delegates;
     }
 
-    public TypeCategory getOriginalCategory(){
+    public TypeCategory getOriginalCategory() {
         return super.getCategory();
     }
 
@@ -140,7 +140,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     }
     
     @Nullable
-    public Supertype getSuperType(){
+    public Supertype getSuperType() {
         return superTypes.size() == 1 ? superTypes.iterator().next() : null;
     }
 
@@ -153,7 +153,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return getFullName().hashCode();
     }
     
@@ -169,9 +169,9 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         return hasPropertyWithType(TypeCategory.MAP);
     }
     
-    private boolean hasPropertyWithType(TypeCategory category){
-        for (Property property : properties){
-            if (property.getType().getCategory() == category){
+    private boolean hasPropertyWithType(TypeCategory category) {
+        for (Property property : properties) {
+            if (property.getType().getCategory() == category) {
                 return true;
             }
         }
@@ -180,10 +180,10 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
 
     public void include(Supertype supertype) {
         EntityType entityType = supertype.getEntityType();
-        for (Delegate delegate : entityType.getDelegates()){
+        for (Delegate delegate : entityType.getDelegates()) {
             addDelegate(delegate);
         }
-        for (Property property : entityType.getProperties()){
+        for (Property property : entityType.getProperties()) {
             addProperty(property.createCopy(this));
         }
     }

@@ -58,6 +58,12 @@ public class MySQLQueryFactory implements SQLQueryFactory<MySQLQuery, SQLSubQuer
         return insert;
     }
 
+    public SQLInsertClause insertOnDuplicateKeyUpdate(RelationalPath<?> entity, String clause) {
+        SQLInsertClause insert = insert(entity);
+        insert.addFlag(Position.END, " on duplicate key update " + clause);
+        return insert;
+    }
+    
     public SQLMergeClause merge(RelationalPath<?> path) {
         return queryFactory.merge(path);
     }

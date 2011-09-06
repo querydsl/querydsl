@@ -101,7 +101,7 @@ public final class ElementHandler{
                 if (configuration.isBlockedGetter(method)){
                     blockedProperties.add(name);
                 } else if (configuration.isValidGetter(method)){
-                     handleMethodProperty(entityType, name, method, properties, blockedProperties, types);
+                    handleMethodProperty(entityType, name, method, properties, blockedProperties, types);
                 }
             }
         }
