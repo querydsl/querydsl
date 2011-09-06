@@ -104,28 +104,28 @@ public class DefaultConfiguration implements Configuration {
         boolean mapAccessors = false;
         boolean createDefaultVariable = true;
         
-        if (options.containsKey(QUERYDSL_ENTITY_ACCESSORS)){
+        if (options.containsKey(QUERYDSL_ENTITY_ACCESSORS)) {
             entityAccessors = Boolean.valueOf(options.get(QUERYDSL_ENTITY_ACCESSORS));
         }
-        if (options.containsKey(QUERYDSL_LIST_ACCESSORS)){
+        if (options.containsKey(QUERYDSL_LIST_ACCESSORS)) {
             listAccessors = Boolean.valueOf(options.get(QUERYDSL_LIST_ACCESSORS));
         }
-        if (options.containsKey(QUERYDSL_MAP_ACCESSORS)){
+        if (options.containsKey(QUERYDSL_MAP_ACCESSORS)) {
             mapAccessors = Boolean.valueOf(options.get(QUERYDSL_MAP_ACCESSORS));
         }
-        if (options.containsKey(QUERYDSL_CREATE_DEFAULT_VARIABLE)){
+        if (options.containsKey(QUERYDSL_CREATE_DEFAULT_VARIABLE)) {
             createDefaultVariable = Boolean.valueOf(options.get(QUERYDSL_CREATE_DEFAULT_VARIABLE));
         }
-        if (options.containsKey(QUERYDSL_PACKAGE_SUFFIX)){
+        if (options.containsKey(QUERYDSL_PACKAGE_SUFFIX)) {
             module.bind(CodegenModule.PACKAGE_SUFFIX, options.get(QUERYDSL_PACKAGE_SUFFIX));
         }
-        if (options.containsKey(QUERYDSL_PREFIX)){
+        if (options.containsKey(QUERYDSL_PREFIX)) {
             module.bind(CodegenModule.PREFIX, options.get(QUERYDSL_PREFIX));
         }
-        if (options.containsKey(QUERYDSL_SUFFIX)){
+        if (options.containsKey(QUERYDSL_SUFFIX)) {
             module.bind(CodegenModule.SUFFIX, options.get(QUERYDSL_SUFFIX));
         }
-        if (options.containsKey(DEFAULT_OVERWRITE)){
+        if (options.containsKey(DEFAULT_OVERWRITE)) {
             defaultOverwrite = Boolean.valueOf(options.get(DEFAULT_OVERWRITE));
         }
         if (options.containsKey(QUERYDSL_UNKNOWN_AS_EMBEDDABLE)) {
@@ -166,15 +166,15 @@ public class DefaultConfiguration implements Configuration {
     
     @Override
     public VisitorConfig getConfig(TypeElement e, List<? extends Element> elements){
-        if (useFields){
-            if (useGetters){
+        if (useFields) {
+            if (useGetters) {
                 return VisitorConfig.ALL;
-            }else{
+            } else {
                 return VisitorConfig.FIELDS_ONLY;
             }
-        }else if (useGetters){
+        } else if (useGetters) {
             return VisitorConfig.METHODS_ONLY;
-        }else{
+        } else {
             return VisitorConfig.NONE;
         }
     }
@@ -224,11 +224,11 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public SerializerConfig getSerializerConfig(EntityType entityType) {
-        if (typeToConfig.containsKey(entityType.getFullName())){
+        if (typeToConfig.containsKey(entityType.getFullName())) {
             return typeToConfig.get(entityType.getFullName());
-        }else if (packageToConfig.containsKey(entityType.getPackageName())){
+        } else if (packageToConfig.containsKey(entityType.getPackageName())) {
             return packageToConfig.get(entityType.getPackageName());
-        }else{
+        } else {
             return defaultSerializerConfig;
         }
     }
@@ -252,9 +252,9 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public boolean isBlockedField(VariableElement field) {
-        if (field.getAnnotation(QueryType.class) != null){
+        if (field.getAnnotation(QueryType.class) != null) {
             return false;
-        }else{
+        } else {
             return field.getAnnotation(skipAnn) != null
                 || field.getModifiers().contains(Modifier.TRANSIENT)
                 || field.getModifiers().contains(Modifier.STATIC);
@@ -263,9 +263,9 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public boolean isBlockedGetter(ExecutableElement getter){
-        if (getter.getAnnotation(QueryType.class) != null){
+        if (getter.getAnnotation(QueryType.class) != null) {
             return false;
-        }else{
+        } else {
             return getter.getAnnotation(skipAnn) != null
                 || getter.getModifiers().contains(Modifier.STATIC);
         }
@@ -295,9 +295,9 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public boolean isValidField(VariableElement field) {
-        if (field.getAnnotation(QueryType.class) != null){
+        if (field.getAnnotation(QueryType.class) != null) {
             return true;
-        }else{
+        } else {
             return field.getAnnotation(skipAnn) == null
                 && !field.getModifiers().contains(Modifier.TRANSIENT)
                 && !field.getModifiers().contains(Modifier.STATIC);
@@ -306,9 +306,9 @@ public class DefaultConfiguration implements Configuration {
 
     @Override
     public boolean isValidGetter(ExecutableElement getter){
-        if (getter.getAnnotation(QueryType.class) != null){
+        if (getter.getAnnotation(QueryType.class) != null) {
             return true;
-        }else{
+        } else {
             return getter.getAnnotation(skipAnn) == null
                 && !getter.getModifiers().contains(Modifier.STATIC);
         }

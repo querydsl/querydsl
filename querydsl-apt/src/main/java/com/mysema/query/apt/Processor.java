@@ -72,7 +72,7 @@ public class Processor {
     /**
      * Mapping of entity types to TypeElements which contribute to the generated class
      */
-    private final Map<String,Set<TypeElement>> typeElements = new HashMap<String,Set<TypeElement>>();
+    private final Map<String, Set<TypeElement>> typeElements = new HashMap<String,Set<TypeElement>>();
 
     private final Map<String, EntityType> actualSupertypes  = new HashMap<String, EntityType>();
 
@@ -80,17 +80,17 @@ public class Processor {
 
     private final Configuration configuration;
 
-    private final Map<String, EntityType> dtos = new HashMap<String, EntityType>();
+    private final Map<String, EntityType> projectionTypes = new HashMap<String, EntityType>();
 
     private final ElementHandler elementHandler;
 
-    private final Map<String,EntityType> embeddables = new HashMap<String,EntityType>();
+    private final Map<String, EntityType> embeddables = new HashMap<String,EntityType>();
 
     private final Map<String, EntityType> entityTypes = new HashMap<String, EntityType>();
 
     private final ProcessingEnvironment env;
 
-    private final Map<String,EntityType> extensionTypes = new HashMap<String,EntityType>();
+    private final Map<String, EntityType> extensionTypes = new HashMap<String,EntityType>();
 
     private final RoundEnvironment roundEnv;
 
@@ -180,7 +180,8 @@ public class Processor {
 
         processEntities();
 
-        processDTOs();
+        processProjectionTypes();
+                
     }
 
     private void processExclusions() {
@@ -234,7 +235,7 @@ public class Processor {
                         if (typeElement != null) {
                             types.add(typeElement);
                         }
-                   }
+                    }
                 }                
             }
         }
@@ -305,9 +306,9 @@ public class Processor {
             serialize(configuration.getEmbeddableSerializer(), embeddables.values());
         }
 
-        if (!dtos.isEmpty()) {
-            env.getMessager().printMessage(Kind.NOTE, "Serializing DTO types");
-            serialize(configuration.getDTOSerializer(), dtos.values());
+        if (!projectionTypes.isEmpty()) {
+            env.getMessager().printMessage(Kind.NOTE, "Serializing Projection types");
+            serialize(configuration.getDTOSerializer(), projectionTypes.values());
         }
     }
 
@@ -535,7 +536,7 @@ public class Processor {
         }
     }
 
-    private void processDTOs() {
+    private void processProjectionTypes() {
         Set<Element> visitedDTOTypes = new HashSet<Element>();
         for (Element element : roundEnv.getElementsAnnotatedWith(QueryProjection.class)) {
             Element parent = element.getEnclosingElement();
@@ -544,7 +545,7 @@ public class Processor {
                     && !visitedDTOTypes.contains(parent)) {
                 EntityType model = elementHandler.handleProjectionType((TypeElement)parent);
                 registerTypeElement(model.getFullName(), (TypeElement)parent);
-                dtos.put(model.getFullName(), model);
+                projectionTypes.put(model.getFullName(), model);
                 visitedDTOTypes.add(parent);
             }
         }

@@ -20,33 +20,33 @@ public class TypeExtractor {
     
     @Nullable
     public TypeElement handle(TypeMirror typeMirror) {
-        if (typeMirror instanceof DeclaredType){
+        if (typeMirror instanceof DeclaredType) {
             return handleDeclaredType((DeclaredType)typeMirror);
-        }else if (typeMirror instanceof TypeVariable){
+        } else if (typeMirror instanceof TypeVariable) {
             return handleTypeVariable((TypeVariable)typeMirror);
-        }else if (typeMirror instanceof WildcardType){
+        } else if (typeMirror instanceof WildcardType) {
             return handleWildcard((WildcardType)typeMirror);
-        }else if (typeMirror instanceof ArrayType){
+        } else if (typeMirror instanceof ArrayType) {
             ArrayType t = (ArrayType)typeMirror;
             return handle(t.getComponentType());
-        }else if (typeMirror instanceof NoType){
+        } else if (typeMirror instanceof NoType) {
             return null;
-        }else{
+        } else {
             return null;
         }
     }
     
     @Nullable
     private TypeElement handleDeclaredType(DeclaredType typeMirror) {
-        if (typeMirror.asElement() instanceof TypeElement){
+        if (typeMirror.asElement() instanceof TypeElement) {
             TypeElement typeElement = (TypeElement)typeMirror.asElement();
-            switch(typeElement.getKind()){
+            switch (typeElement.getKind()) {
                 case ENUM:      return handleEnumType(typeMirror, typeElement);
                 case CLASS:     return handleClassType(typeMirror, typeElement);
                 case INTERFACE: return handleInterfaceType(typeMirror, typeElement);
                 default: throw new IllegalArgumentException("Illegal type " + typeElement);
             }
-        }else{
+        } else {
             return null;
         }
     }
@@ -60,7 +60,7 @@ public class TypeExtractor {
     private TypeElement handleTypeVariable(TypeVariable typeMirror) {
         if (typeMirror.getUpperBound() != null) {
             return handle(typeMirror.getUpperBound());
-        }else{
+        } else {
             return handle(typeMirror.getLowerBound());
         }
     }
@@ -72,9 +72,9 @@ public class TypeExtractor {
 
     @Nullable
     private TypeElement handleClassType(DeclaredType typeMirror, TypeElement typeElement) {
-        if (skipPrimitive && typeMirror.getKind().isPrimitive()){
+        if (skipPrimitive && typeMirror.getKind().isPrimitive()) {
             return null;
-        }else{
+        } else {
             return typeElement;            
         }
     }
