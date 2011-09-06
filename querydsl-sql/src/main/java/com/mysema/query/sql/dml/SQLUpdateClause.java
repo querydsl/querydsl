@@ -86,6 +86,18 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
     }
     
     /**
+     * Add the given Expression at the given position as a query flag
+     *
+     * @param position
+     * @param flag
+     * @return
+     */
+    public SQLUpdateClause addFlag(Position position, Expression<?> flag){
+        metadata.addFlag(new QueryFlag(position, flag));
+        return this;
+    }
+    
+    /**
      * Add the current state of bindings as a batch item
      * 
      * @return

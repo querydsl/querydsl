@@ -27,6 +27,7 @@ import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.Param;
 
@@ -69,6 +70,18 @@ public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<S
      * @return
      */
     public SQLDeleteClause addFlag(Position position, String flag){
+        metadata.addFlag(new QueryFlag(position, flag));
+        return this;
+    }
+    
+    /**
+     * Add the given Expression at the given position as a query flag
+     *
+     * @param position
+     * @param flag
+     * @return
+     */
+    public SQLDeleteClause addFlag(Position position, Expression<?> flag){
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
     }

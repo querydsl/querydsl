@@ -107,6 +107,19 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
     }
 
     /**
+     * Add the given Expression at the given position as a query flag
+     *
+     * @param position
+     * @param flag
+     * @return
+     */
+    public SQLInsertClause addFlag(Position position, Expression<?> flag){
+        metadata.addFlag(new QueryFlag(position, flag));
+        return this;
+    }
+
+    
+    /**
      * Add the current state of bindings as a batch item
      *
      * @return

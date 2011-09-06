@@ -92,6 +92,17 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
         return this;
     }
     
+    /**
+     * Add the given Expression at the given position as a query flag
+     *
+     * @param position
+     * @param flag
+     * @return
+     */
+    public SQLMergeClause addFlag(Position position, Expression<?> flag){
+        metadata.addFlag(new QueryFlag(position, flag));
+        return this;
+    }
 
     /**
      * Add the current state of bindings as a batch item

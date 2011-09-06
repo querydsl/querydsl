@@ -73,6 +73,12 @@ public class MySQLQueryFactoryTest {
     }
     
     @Test
+    public void InsertOnDuplicateKeyUpdate2() {
+        SQLInsertClause clause = queryFactory.insertOnDuplicateKeyUpdate(QSurvey.survey, QSurvey.survey.id.eq(2));
+        assertEquals("insert into SURVEY\nvalues () on duplicate key update SURVEY.ID = ?", clause.toString());
+    }    
+    
+    @Test
     public void Replace(){
         assertNotNull(queryFactory.replace(QSurvey.survey));
     }

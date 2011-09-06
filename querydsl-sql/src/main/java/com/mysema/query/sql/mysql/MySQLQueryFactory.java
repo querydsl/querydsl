@@ -17,6 +17,7 @@ import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.TemplateExpressionImpl;
 
 /**
  * MySQL specific implementation of SQLQueryFactory
@@ -63,6 +64,13 @@ public class MySQLQueryFactory implements SQLQueryFactory<MySQLQuery, SQLSubQuer
         insert.addFlag(Position.END, " on duplicate key update " + clause);
         return insert;
     }
+    
+    public SQLInsertClause insertOnDuplicateKeyUpdate(RelationalPath<?> entity, Expression<?> clause) {
+        SQLInsertClause insert = insert(entity);
+        insert.addFlag(Position.END, TemplateExpressionImpl.create(String.class, " on duplicate key update {0}", clause));
+        return insert;
+    }
+    
     
     public SQLMergeClause merge(RelationalPath<?> path) {
         return queryFactory.merge(path);
