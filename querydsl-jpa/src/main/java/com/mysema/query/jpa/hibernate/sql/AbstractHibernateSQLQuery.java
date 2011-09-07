@@ -39,9 +39,9 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractHibernateSQLQuery.class);
 
-    private Boolean cacheable, readOnly;
+    protected Boolean cacheable, readOnly;
 
-    private String cacheRegion;
+    protected String cacheRegion;
 
     @Nullable
     private Map<Object,String> constants;
@@ -49,13 +49,13 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     @Nullable
     private List<Path<?>> entityPaths;
 
-    private int fetchSize = 0;
+    protected int fetchSize = 0;
 
     private final SessionHolder session;
 
     protected final SQLTemplates sqlTemplates;
 
-    private int timeout = 0;
+    protected int timeout = 0;
 
     public AbstractHibernateSQLQuery(Session session, SQLTemplates sqlTemplates) {
         this(new DefaultSessionHolder(session), sqlTemplates, new DefaultQueryMetadata());

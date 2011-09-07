@@ -64,10 +64,10 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
 
     private final JDOQLTemplates templates;
 
-    private final Set<String> fetchGroups = new HashSet<String>();
+    protected final Set<String> fetchGroups = new HashSet<String>();
 
     @Nullable
-    private Integer maxFetchDepth;
+    protected Integer maxFetchDepth;
 
     public AbstractJDOQLQuery(@Nullable PersistenceManager persistenceManager) {
         this(persistenceManager, JDOQLTemplates.DEFAULT, new DefaultQueryMetadata(), false);

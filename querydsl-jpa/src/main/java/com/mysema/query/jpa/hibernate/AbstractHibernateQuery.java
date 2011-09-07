@@ -47,21 +47,21 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     private static final Logger logger = LoggerFactory.getLogger(HibernateQuery.class);
 
     @Nullable
-    private Boolean cacheable, readOnly;
+    protected Boolean cacheable, readOnly;
 
     @Nullable
-    private String cacheRegion;
+    protected String cacheRegion;
 
-    private int fetchSize = 0;
+    protected int fetchSize = 0;
 
-    private final Map<Path<?>,LockMode> lockModes = new HashMap<Path<?>,LockMode>();
+    protected final Map<Path<?>,LockMode> lockModes = new HashMap<Path<?>,LockMode>();
     
     @Nullable
-    private FlushMode flushMode;
+    protected FlushMode flushMode;
 
     private final SessionHolder session;
 
-    private int timeout = 0;
+    protected int timeout = 0;
 
     public AbstractHibernateQuery(Session session) {
         this(new DefaultSessionHolder(session), HQLTemplates.DEFAULT, new DefaultQueryMetadata());

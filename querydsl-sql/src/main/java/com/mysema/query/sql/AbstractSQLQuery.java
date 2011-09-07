@@ -98,11 +98,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     private List<Path<?>> constantPaths;
 
     @Nullable
-    private SubQueryExpression<?>[] union;
+    protected SubQueryExpression<?>[] union;
 
     private final Configuration configuration;
     
-    private boolean unionAll;
+    protected boolean unionAll;
 
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration) {
         this(conn, configuration, new DefaultQueryMetadata());

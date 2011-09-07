@@ -47,17 +47,17 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
 
     private final JPASessionHolder sessionHolder;
 
-    private final Map<String,Object> hints = new HashMap<String,Object>();
+    protected final Map<String,Object> hints = new HashMap<String,Object>();
 
     @Nullable
-    private LockModeType lockMode;
+    protected LockModeType lockMode;
     
     @Nullable
-    private FlushModeType flushMode;
+    protected FlushModeType flushMode;
     
     private Class<?> hibernateQueryClass;
     
-    private boolean factoryExpressionUsed = false;
+    protected boolean factoryExpressionUsed = false;
     
     public AbstractJPAQuery(EntityManager em) {
         this(new DefaultSessionHolder(em), HQLTemplates.DEFAULT, new DefaultQueryMetadata());

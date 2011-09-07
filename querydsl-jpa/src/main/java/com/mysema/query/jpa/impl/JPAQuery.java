@@ -75,7 +75,12 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements JPQLQu
      * @return
      */
     public JPAQuery clone(EntityManager entityManager){
-        return new JPAQuery(new DefaultSessionHolder(entityManager), getTemplates(), getMetadata().clone());
+        JPAQuery q = new JPAQuery(new DefaultSessionHolder(entityManager), getTemplates(), getMetadata().clone());
+        q.factoryExpressionUsed = factoryExpressionUsed;
+        q.flushMode = flushMode;
+        q.hints.putAll(hints);
+        q.lockMode = lockMode;
+        return q;
     }
 
 }

@@ -1,10 +1,13 @@
 package com.mysema.query.jpa.sql;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
+import javax.persistence.FlushModeType;
+import javax.persistence.LockModeType;
 import javax.persistence.Query;
 
 import org.slf4j.Logger;
@@ -39,11 +42,17 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
     @Nullable
     private Map<Object,String> constants;
 
-//    private List<Path<?>> entityPaths;
-
     private final JPASessionHolder session;
 
     protected final SQLTemplates sqlTemplates;
+    
+    protected final Map<String,Object> hints = new HashMap<String,Object>();
+
+    @Nullable
+    protected LockModeType lockMode;
+    
+    @Nullable
+    protected FlushModeType flushMode;
 
     public AbstractJPASQLQuery(EntityManager entityManager, SQLTemplates sqlTemplates) {
         this(new DefaultSessionHolder(entityManager), sqlTemplates, new DefaultQueryMetadata());
@@ -87,6 +96,18 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
         }else{
             query = session.createSQLQuery(queryString);
         }
+        
+        if (lockMode != null){
+            query.setLockMode(lockMode);
+        }
+        if (flushMode != null) {
+            query.setFlushMode(flushMode);
+        }
+        
+        for (Map.Entry<String, Object> entry : hints.entrySet()){
+            query.setHint(entry.getKey(), entry.getValue());
+        }
+        
         // set constants
         JPAUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
         return query;
@@ -189,4 +210,22 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public Q setLockMode(LockModeType lockMode) {
+        this.lockMode = lockMode;
+        return (Q)this;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Q setFlushMode(FlushModeType flushMode) {
+        this.flushMode = flushMode;
+        return (Q)this;
+    }
+
+    @SuppressWarnings("unchecked")
+    public Q setHint(String name, Object value){
+        hints.put(name, value);
+        return (Q)this;
+    }
+    
 }
