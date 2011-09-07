@@ -36,7 +36,7 @@ import com.mysema.util.ReflectionUtils;
  *
  * @author tiwe
  */
-class PropertyAccessInvocationHandler implements MethodInterceptor {
+public class PropertyAccessInvocationHandler implements MethodInterceptor {
 
     private static final int RETURN_VALUE = 42;
 
@@ -49,10 +49,10 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
     private final Map<Object, Object> propToObj = new HashMap<Object, Object>();
 
     private final PathFactory pathFactory;
-    
+
     private final TypeSystem typeSystem;
-    
-    public PropertyAccessInvocationHandler(Expression<?> host, AliasFactory aliasFactory, 
+
+    public PropertyAccessInvocationHandler(Expression<?> host, AliasFactory aliasFactory,
             PathFactory pathFactory, TypeSystem typeSystem) {
         this.hostExpression = host;
         this.aliasFactory = aliasFactory;
@@ -75,11 +75,11 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             if (propToObj.containsKey(ptyName)) {
                 rv = propToObj.get(ptyName);
             } else {
-                PathMetadata<String> pm = PathMetadataFactory.forProperty((Path<?>) hostExpression, ptyName);
+                PathMetadata<String> pm = createPropertyPath((Path<?>) hostExpression, ptyName);
                 rv = newInstance(ptyClass, genericType, proxy, ptyName, pm);
             }
             aliasFactory.setCurrent(propToExpr.get(ptyName));
-            
+
         } else if (methodType == MethodType.SCALA_GETTER) {
             String ptyName = method.getName();
             Class<?> ptyClass = method.getReturnType();
@@ -88,7 +88,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             if (propToObj.containsKey(ptyName)) {
                 rv = propToObj.get(ptyName);
             } else {
-                PathMetadata<String> pm = PathMetadataFactory.forProperty((Path<?>) hostExpression, ptyName);
+                PathMetadata<String> pm = createPropertyPath((Path<?>) hostExpression, ptyName);
                 rv = newInstance(ptyClass, genericType, proxy, ptyName, pm);
             }
             aliasFactory.setCurrent(propToExpr.get(ptyName));
@@ -99,7 +99,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {
-                PathMetadata<Integer> pm = PathMetadataFactory.forListAccess((Path<?>)hostExpression, (Integer) args[0]);
+                PathMetadata<Integer> pm = createListAccessPath((Path<?>) hostExpression, (Integer) args[0]);
                 Class<?> elementType = ((ParametrizedExpression<?>) hostExpression).getParameter(0);
                 rv = newInstance(elementType, elementType, proxy, propKey, pm);
             }
@@ -110,7 +110,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             if (propToObj.containsKey(propKey)) {
                 rv = propToObj.get(propKey);
             } else {
-                PathMetadata<?> pm = PathMetadataFactory.forMapAccess((Path<?>)hostExpression, args[0]);
+                PathMetadata<?> pm = createMapAccessPath((Path<?>)hostExpression, args[0]);
                 Class<?> valueType = ((ParametrizedExpression<?>) hostExpression).getParameter(1);
                 rv = newInstance(valueType, valueType, proxy, propKey, pm);
             }
@@ -127,7 +127,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else {
             throw new IllegalArgumentException(
-                    "Invocation of " + method.getName() + 
+                    "Invocation of " + method.getName() +
                     " with types " + Arrays.asList(method.getParameterTypes()) + " not supported");
         }
         return rv;
@@ -135,7 +135,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
     @SuppressWarnings({ "unchecked"})
     @Nullable
-    private <T> T newInstance(Class<T> type, Type genericType, Object parent, Object propKey, PathMetadata<?> metadata) {
+    protected <T> T newInstance(Class<T> type, Type genericType, Object parent, Object propKey, PathMetadata<?> metadata) {
         Expression<?> path;
         Object rv;
 
@@ -201,7 +201,7 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
             Class<Object> valueType = (Class)ReflectionUtils.getTypeParameter(genericType, 1);
             path = pathFactory.createMapPath(keyType, valueType, metadata);
             rv = aliasFactory.createAliasForProperty(type, parent, path);
-            
+
         } else if (typeSystem.isListType(type)) {
             Class<Object> elementType = (Class)ReflectionUtils.getTypeParameter(genericType, 0);
             path = pathFactory.createListPath(elementType, metadata);
@@ -227,9 +227,9 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
 
         } else {
             if (Number.class.isAssignableFrom(type)){
-                path = pathFactory.createNumberPath((Class)type, metadata);                
+                path = pathFactory.createNumberPath((Class)type, metadata);
             }else if (Comparable.class.isAssignableFrom(type)){
-                path = pathFactory.createComparablePath((Class)type, metadata);                               
+                path = pathFactory.createComparablePath((Class)type, metadata);
             }else{
                 path = pathFactory.createEntityPath(type, metadata);
             }
@@ -244,10 +244,22 @@ class PropertyAccessInvocationHandler implements MethodInterceptor {
         return (T) rv;
     }
 
-    private String propertyNameForGetter(Method method) {
+    protected String propertyNameForGetter(Method method) {
         String name = method.getName();
         name = name.startsWith("is") ? name.substring(2) : name.substring(3);
         return BeanUtils.uncapitalize(name);
+    }
+
+    protected PathMetadata<String> createPropertyPath(Path<?> path, String propertyName) {
+        return PathMetadataFactory.forProperty(path, propertyName);
+    }
+
+    protected PathMetadata<Integer> createListAccessPath(Path<?> path, Integer index) {
+        return PathMetadataFactory.forListAccess(path, index);
+    }
+
+    protected PathMetadata<?> createMapAccessPath(Path<?> path, Object key) {
+        return PathMetadataFactory.forMapAccess(path, key);
     }
 
 }

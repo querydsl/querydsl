@@ -110,7 +110,7 @@ public class AliasFactory {
      * @return
      */
     @SuppressWarnings("unchecked")
-    private <A> A createProxy(Class<A> cl, Expression<?> path) {
+    protected <A> A createProxy(Class<A> cl, Expression<?> path) {
         Enhancer enhancer = new Enhancer();
         enhancer.setClassLoader(AliasFactory.class.getClassLoader());
         if (cl.isInterface()) {
