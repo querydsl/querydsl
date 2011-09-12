@@ -248,9 +248,14 @@ JPQLQuery query = new JPAQuery (entityManager);
 	JPAQuery should be constructed like this :
 	</para>
 	
-<programlisting language="java"><![CDATA[
-// where entityManager is a JPA EntityManager   
+<programlisting language="java"><![CDATA[   
 JPQLQuery query = new JPAQuery (entityManager, EclipseLinkTemplates.DEFAULT); 
+]]></programlisting>	
+
+    <para>If you want to use the standard JPA 2 serialization then create the query like this :</para>
+    
+<programlisting language="java"><![CDATA[   
+JPQLQuery query = new JPAQuery (entityManager, JPQLTemplates.DEFAULT); 
 ]]></programlisting>	
 
     <para>
