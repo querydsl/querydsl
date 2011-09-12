@@ -9,7 +9,6 @@ import java.util.List;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.Projectable;
-import com.mysema.query.Query;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.SimpleProjectable;
@@ -28,22 +27,21 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
  *
  * @param <T> type of entity
  */
-@Deprecated
-public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>, SimpleProjectable<T>{
+public class SimpleProjectableAdapter<T> implements SimpleQuery<SimpleProjectableAdapter<T>>, SimpleProjectable<T>{
 
     private final Projectable projectable;
 
     private final Expression<T> projection;
 
-    private final Query<?> query;
+    private final SimpleQuery<?> query;
 
     @SuppressWarnings("BC_UNCONFIRMED_CAST")
-    public <Q extends Query<?> & Projectable> SimpleQueryAdapter(Q query, Expression<T> projection){
+    public <Q extends SimpleQuery<?> & Projectable> SimpleProjectableAdapter(Q query, Expression<T> projection){
         // NOTE : this is a correct cast which is not handled properly by FindBugs
         this(query, query, projection);
     }
 
-    public SimpleQueryAdapter(Query<?> query, Projectable projectable, Expression<T> projection){
+    public SimpleProjectableAdapter(SimpleQuery<?> query, Projectable projectable, Expression<T> projection){
         this.query = query;
         this.projectable = projectable;
         this.projection = projection;
@@ -70,13 +68,13 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     }
 
     @Override
-    public SimpleQueryAdapter<T> distinct(){
+    public SimpleProjectableAdapter<T> distinct(){
         query.distinct();
         return this;
     }
 
     @Override
-    public SimpleQueryAdapter<T> limit(long limit) {
+    public SimpleProjectableAdapter<T> limit(long limit) {
         query.limit(limit);
         return this;
     }
@@ -112,25 +110,25 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     }
 
     @Override
-    public SimpleQueryAdapter<T> offset(long offset) {
+    public SimpleProjectableAdapter<T> offset(long offset) {
         query.offset(offset);
         return this;
     }
 
     @Override
-    public SimpleQueryAdapter<T> orderBy(OrderSpecifier<?>... o) {
+    public SimpleProjectableAdapter<T> orderBy(OrderSpecifier<?>... o) {
         query.orderBy(o);
         return this;
     }
 
     @Override
-    public SimpleQueryAdapter<T> restrict(QueryModifiers modifiers) {
+    public SimpleProjectableAdapter<T> restrict(QueryModifiers modifiers) {
         query.restrict(modifiers);
         return this;
     }
 
     @Override
-    public <P> SimpleQueryAdapter<T> set(ParamExpression<P> param, P value) {
+    public <P> SimpleProjectableAdapter<T> set(ParamExpression<P> param, P value) {
         query.set(param, value);
         return this;
     }
@@ -151,7 +149,7 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     }
 
     @Override
-    public SimpleQueryAdapter<T> where(Predicate... e) {
+    public SimpleProjectableAdapter<T> where(Predicate... e) {
         query.where(e);
         return this;
     }
