@@ -74,6 +74,8 @@ public class Processor {
      */
     private final Map<String, Set<TypeElement>> typeElements = new HashMap<String,Set<TypeElement>>();
 
+    private final Set<Class<? extends Annotation>> entityAnnotations = new HashSet<Class<? extends Annotation>>();
+    
     private final Map<String, EntityType> actualSupertypes  = new HashMap<String, EntityType>();
 
     private final Map<String, EntityType> allSupertypes = new HashMap<String, EntityType>();
@@ -108,18 +110,17 @@ public class Processor {
         this.roundEnv = Assert.notNull(roundEnv,"roundEnv");
         this.configuration = Assert.notNull(configuration,"configuration");
 
-        List<Class<? extends Annotation>> anns = new ArrayList<Class<? extends Annotation>>();
-        anns.add(configuration.getEntityAnnotation());
+        entityAnnotations.add(configuration.getEntityAnnotation());
         if (configuration.getSuperTypeAnnotation() != null){
-            anns.add(configuration.getSuperTypeAnnotation());
+            entityAnnotations.add(configuration.getSuperTypeAnnotation());
         }
         if (configuration.getEmbeddableAnnotation() != null){
-            anns.add(configuration.getEmbeddableAnnotation());
+            entityAnnotations.add(configuration.getEmbeddableAnnotation());
         }
 
         TypeMappings typeMappings = configuration.getTypeMappings();
         QueryTypeFactory queryTypeFactory = configuration.getQueryTypeFactory();
-        this.typeFactory = new ExtendedTypeFactory(env, configuration, anns, typeMappings, queryTypeFactory);
+        this.typeFactory = new ExtendedTypeFactory(env, configuration, entityAnnotations, typeMappings, queryTypeFactory);
         this.elementHandler = new ElementHandler(configuration, typeFactory, typeMappings, queryTypeFactory);
     }
 
@@ -149,17 +150,7 @@ public class Processor {
         
         if (configuration.isUnknownAsEmbedded()) {
             env.getMessager().printMessage(Kind.NOTE, "Collecting custom types");
-            
-            List<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
-            if (configuration.getSuperTypeAnnotation() != null) {
-                annotations.add(configuration.getSuperTypeAnnotation());
-            }
-            if (configuration.getEmbeddedAnnotation() != null) {
-                annotations.add(configuration.getEmbeddedAnnotation());
-            }
-            annotations.add(configuration.getEntityAnnotation());
-            
-            processFromProperties(annotations);
+            processFromProperties();
         }
         
         if (configuration.getSuperTypeAnnotation() != null) {
@@ -194,9 +185,9 @@ public class Processor {
         }
     }
 
-    private void processFromProperties(List<Class<? extends Annotation>> annotations) {
+    private void processFromProperties() {
         Set<Element> elements = new HashSet<Element>();
-        for (Class<? extends Annotation> annotation : annotations) {
+        for (Class<? extends Annotation> annotation : entityAnnotations) {
             elements.addAll(roundEnv.getElementsAnnotatedWith(annotation));    
         }
         
@@ -250,7 +241,7 @@ public class Processor {
             
             // skip annotated
             boolean annotated = false;
-            for (Class<? extends Annotation> annotation : annotations) {
+            for (Class<? extends Annotation> annotation : entityAnnotations) {
                 annotated |= type.getAnnotation(annotation) != null;
             }
             if (annotated) {

@@ -62,7 +62,7 @@ public final class ExtendedTypeFactory {
 
     private final Type defaultType;
 
-    private final List<Class<? extends Annotation>> entityAnnotations;
+    private final Set<Class<? extends Annotation>> entityAnnotations;
 
     private final Map<List<String>, EntityType> entityTypeCache = new HashMap<List<String>, EntityType>();
 
@@ -79,7 +79,7 @@ public final class ExtendedTypeFactory {
     public ExtendedTypeFactory(
             ProcessingEnvironment env,
             Configuration configuration,
-            List<Class<? extends Annotation>> annotations,
+            Set<Class<? extends Annotation>> annotations,
             TypeMappings typeMappings,
             QueryTypeFactory queryTypeFactory){
         this.env = env;
@@ -156,7 +156,7 @@ public final class ExtendedTypeFactory {
     private Type createType(TypeMirror typeMirror, List<String> key, boolean deep) {
         typeCache.put(key, null);
         Type type = handle(typeMirror, deep);
-        if (type != null && type.getCategory() == TypeCategory.ENTITY) {
+        if (type != null && (type.getCategory() == TypeCategory.ENTITY || type.getCategory() == TypeCategory.CUSTOM)) {
             EntityType entityType = getEntityType(typeMirror, deep);
             typeCache.put(key, entityType);
             return entityType;
