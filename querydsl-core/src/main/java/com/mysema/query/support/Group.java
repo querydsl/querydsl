@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 
 /**
@@ -62,6 +63,16 @@ public interface Group {
     <T> List<T> getList(Expression<T> expr);
     
     /**
+     * Returns the i'th row of this group.
+     * 
+     * @param i 0 &lt;= i &lt; size()
+     * @throws IndexOutOfBoundsException if i &lt; 0 or size() <= i
+     * @return i'th row as a tuple of this group
+     */
+    Tuple getRow(int i);
+    
+    /**
+     *
      * @return
      */
     int size();
