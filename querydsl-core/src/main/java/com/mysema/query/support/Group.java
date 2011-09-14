@@ -61,6 +61,9 @@ public interface Group {
     @Nullable
     <T> List<T> getList(Expression<T> expr);
     
+    /**
+     * @return
+     */
     int size();
     
 }

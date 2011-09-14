@@ -34,9 +34,7 @@ public class GroupBy implements ResultTransformer<Collection<Group>> {
     public GroupBy(Expression<?> groupBy, Expression<?>... args) {
         expressions = new Expression<?>[args.length + 1];
         expressions[0] = groupBy;
-        for (int i=0; i < args.length; i++) {
-            expressions[i+1] = args[i];
-        }
+        System.arraycopy(args, 0, expressions, 1, args.length);        
     }
 
     @Override
@@ -49,9 +47,9 @@ public class GroupBy implements ResultTransformer<Collection<Group>> {
                 Object[] row = iter.next();
                 Object groupBy = row[0];
                 // groups.values() should return Collection<GTuple> instead of Collection<? extends GTuple>
-                GTupleImpl group = (GTupleImpl) groups.get(groupBy);
+                GroupImpl group = (GroupImpl) groups.get(groupBy);
                 if (group == null) {
-                    group = new GTupleImpl();
+                    group = new GroupImpl();
                     groups.put(groupBy, group);
                 }
                 group.add(row);
@@ -72,7 +70,7 @@ public class GroupBy implements ResultTransformer<Collection<Group>> {
     }
     
     @SuppressWarnings("unchecked")
-    private class GTupleImpl implements Group {
+    private class GroupImpl implements Group {
         
         private final List<Object[]> values = new ArrayList<Object[]>();
 

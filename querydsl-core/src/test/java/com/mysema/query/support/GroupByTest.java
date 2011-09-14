@@ -20,11 +20,11 @@ import com.mysema.query.types.path.StringPath;
 
 public class GroupByTest {
 
-    private final NumberExpression<Integer> postId = new NumberPath(Integer.class, null, "postId");
+    private final NumberExpression<Integer> postId = new NumberPath<Integer>(Integer.class, "postId");
 
-    private final StringExpression postName = new StringPath(null, "postName");
+    private final StringExpression postName = new StringPath("postName");
 
-    private final NumberExpression<Integer> commentId = new NumberPath(Integer.class, null, "commentId");
+    private final NumberExpression<Integer> commentId = new NumberPath<Integer>(Integer.class, "commentId");
 
     /**
      * <ol>
@@ -98,7 +98,7 @@ public class GroupByTest {
         return row;
     }
     
-    private static <T> CloseableIterator<T> iterator(Object[]... rows) {
-        return new IteratorAdapter(Arrays.asList(rows).iterator());
+    private static <T> CloseableIterator<T> iterator(T... rows) {
+        return new IteratorAdapter<T>(Arrays.asList(rows).iterator());
     }
 }
