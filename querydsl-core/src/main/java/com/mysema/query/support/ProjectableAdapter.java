@@ -20,7 +20,7 @@ import com.mysema.query.types.Expression;
  * @author tiwe
  */
 public class ProjectableAdapter<P extends Projectable> implements Projectable {
-
+  
     private final P projectable;
 
     public ProjectableAdapter(P projectable) {

@@ -38,8 +38,6 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
         return count();
     }
 
-
-
     @Override
     public final CloseableIterator<Object[]> iterate(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return iterate(merge(first, second, rest));
