@@ -32,6 +32,8 @@ public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends S
     @Nullable
     private transient volatile Constructor<?> constructor;
     
+    private volatile boolean usePathInits = false;
+    
     public abstract Q any();
     
     @SuppressWarnings("unchecked")
@@ -39,15 +41,34 @@ public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends S
         try{
             if (constructor == null) {
                 if (Constants.isTyped(queryType)){
-                    constructor = queryType.getConstructor(Class.class, PathMetadata.class);
+                    try {
+                        constructor = queryType.getConstructor(Class.class, PathMetadata.class, PathInits.class);    
+                        usePathInits = true;
+                    } catch (NoSuchMethodException e) {
+                        constructor = queryType.getConstructor(Class.class, PathMetadata.class);
+                    }                    
                 }else{
-                    constructor = queryType.getConstructor(PathMetadata.class);
+                    try {
+                        constructor = queryType.getConstructor(PathMetadata.class, PathInits.class);
+                        usePathInits = true;
+                    } catch (NoSuchMethodException e) {
+                        constructor = queryType.getConstructor(PathMetadata.class);
+                    }    
                 }
             }
             if (Constants.isTyped(queryType)){
-                return (Q)constructor.newInstance(getElementType(), pm);
+                if (usePathInits) {
+                    return (Q)constructor.newInstance(getElementType(), pm, PathInits.DIRECT);
+                } else {
+                    return (Q)constructor.newInstance(getElementType(), pm);    
+                }
+                
             }else{
-                return (Q)constructor.newInstance(pm);
+                if (usePathInits) {
+                    return (Q)constructor.newInstance(pm, PathInits.DIRECT);    
+                } else {
+                    return (Q)constructor.newInstance(pm);
+                }                
             }
         } catch (NoSuchMethodException e) {
             throw new ExpressionException(e);
