@@ -13,6 +13,7 @@ import java.util.List;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.Projectable;
 import com.mysema.query.ResultTransformer;
+import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 
 /**
@@ -115,9 +116,39 @@ public class GroupBy implements ResultTransformer<Collection<Group>> {
         }
         
         @Override
+        public Tuple getRow(int i) {
+            return new TupleImpl(values.get(i));
+        }
+        
+        @Override
         public int size() {
             return values.size();
         }
     }
+    
+    @SuppressWarnings("unchecked")
+    private class TupleImpl implements Tuple {
+        
+        final Object[] row;
+        
+        public TupleImpl(Object[] row) {
+            this.row = row;
+        }
+        @Override
+        public <T> T get(int index, Class<T> type) {
+            return (T) row[index];
+        }
 
+        @Override
+        public <T> T get(Expression<T> expr) {
+            int index = indexOf(expr);
+            return index != -1 ? (T) row[index] : null;
+        }
+
+        @Override
+        public Object[] toArray() {
+            return row;
+        }
+    }
+    
 }

@@ -11,7 +11,9 @@ import java.util.List;
 import org.junit.Test;
 
 import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.EmptyCloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
+import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.StringExpression;
@@ -20,12 +22,23 @@ import com.mysema.query.types.path.StringPath;
 
 public class GroupByTest {
 
-    private final NumberExpression<Integer> postId = new NumberPath(Integer.class, null, "postId");
+    private final NumberExpression<Integer> postId = new NumberPath<Integer>(Integer.class, null, "postId");
 
     private final StringExpression postName = new StringPath(null, "postName");
 
-    private final NumberExpression<Integer> commentId = new NumberPath(Integer.class, null, "commentId");
+    private final NumberExpression<Integer> commentId = new NumberPath<Integer>(Integer.class, null, "commentId");
 
+    @Test
+    public void Expression_Order() {
+        new GroupBy(postId, postName, commentId).transform(new AbstractProjectable(){
+            public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
+                assertEquals(postId, args[0]);
+                assertEquals(postName, args[1]);
+                assertEquals(commentId, args[2]);
+                return new EmptyCloseableIterator<Object[]>();
+            }
+        });
+    }
     /**
      * <ol>
      * <li>Order of groups by first row of a group
@@ -34,13 +47,9 @@ public class GroupByTest {
      * </ol>
      */
     @Test
-    public void Group_By() {
+    public void Multiple_Groups() {
         Collection<Group> results = new GroupBy(postId, postName, commentId).transform(new AbstractProjectable(){
             public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
-                assertEquals(postId, args[0]);
-                assertEquals(postName, args[1]);
-                assertEquals(commentId, args[2]);
-
                 return iterator(
                         row(1, "post 1", 1),
                         row(2, "post 2", 4),
@@ -90,6 +99,40 @@ public class GroupByTest {
         assertEquals(toInt(8), comments.get(1));
     }
     
+    @Test
+    public void Get_Row() {
+        Collection<Group> results = new GroupBy(postId, postName, commentId).transform(new AbstractProjectable(){
+            public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
+                return iterator(
+                        row(1, "post 1", 1),
+                        row(null, "null post", 2)
+                );
+            }
+        });
+        assertEquals(2, results.size());
+        Iterator<Group> iter = results.iterator();
+        
+        Group group = iter.next();
+        Tuple row = group.getRow(0);
+        assertEquals(toInt(1), row.get(postId));
+        assertEquals("post 1", row.get(postName));
+        assertEquals(toInt(1), row.get(commentId));
+        
+        group = iter.next();
+        row = group.getRow(0);
+        assertEquals(null, row.get(postId));
+    }
+    
+    @Test(expected=IndexOutOfBoundsException.class)
+    public void Row_Out_of_Bounds() {
+        Collection<Group> results = new GroupBy(postId, postName, commentId).transform(new AbstractProjectable(){
+            public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
+                return iterator(row(1, "post 1", 1));
+            }
+        });
+        results.iterator().next().getRow(1);
+    }
+    
     private Integer toInt(int i) {
         return Integer.valueOf(i);
     }
@@ -98,7 +141,7 @@ public class GroupByTest {
         return row;
     }
     
-    private static <T> CloseableIterator<T> iterator(Object[]... rows) {
-        return new IteratorAdapter(Arrays.asList(rows).iterator());
+    private static CloseableIterator<Object[]> iterator(Object[]... rows) {
+        return new IteratorAdapter<Object[]>(Arrays.asList(rows).iterator());
     }
 }
