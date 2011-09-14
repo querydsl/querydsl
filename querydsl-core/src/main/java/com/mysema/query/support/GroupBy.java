@@ -114,6 +114,7 @@ public class GroupBy implements ResultTransformer<Collection<Group>> {
             }
         }
         
+        @Override
         public int size() {
             return values.size();
         }
