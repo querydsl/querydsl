@@ -88,7 +88,11 @@ public final class ClassPathUtils {
     
     private static Class<?> safeClassForName(String className){
         try {
-            return Class.forName(className);
+            if (className.startsWith("com.sun")) {
+                return null;
+            } else {
+                return Class.forName(className);
+            }
         } catch (ClassNotFoundException e) {
             return null;
         } catch (NoClassDefFoundError e) {
