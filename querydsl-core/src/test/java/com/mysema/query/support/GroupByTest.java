@@ -27,11 +27,11 @@ import com.mysema.query.types.path.StringPath;
 
 public class GroupByTest {
 
-    private final NumberExpression<Integer> postId = new NumberPath<Integer>(Integer.class, null, "postId");
+    private final NumberExpression<Integer> postId = new NumberPath<Integer>(Integer.class, "postId");
 
-    private final StringExpression postName = new StringPath(null, "postName");
+    private final StringExpression postName = new StringPath("postName");
 
-    private final NumberExpression<Integer> commentId = new NumberPath<Integer>(Integer.class, null, "commentId");
+    private final NumberExpression<Integer> commentId = new NumberPath<Integer>(Integer.class, "commentId");
 
     static class PostWithComments {
         public Integer id;
@@ -191,7 +191,9 @@ public class GroupByTest {
         return row;
     }
     
-    private static CloseableIterator<Object[]> iterator(Object[]... rows) {
-        return new IteratorAdapter<Object[]>(Arrays.asList(rows).iterator());
+
+    @SuppressWarnings("unchecked")
+    private static <T> CloseableIterator<T> iterator(Object[]... rows) {
+        return new IteratorAdapter(Arrays.asList(rows).iterator());
     }
 }

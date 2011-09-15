@@ -71,6 +71,10 @@ public interface Group {
      */
     Tuple getRow(int i);
     
+    /**
+     *
+     * @return
+     */
     int size();
     
 }
