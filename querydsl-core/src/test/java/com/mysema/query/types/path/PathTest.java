@@ -38,7 +38,7 @@ import com.mysema.util.AnnotatedElementAdapter;
 public class PathTest {
 
     enum ExampleEnum {A,B}
-    
+
     public static class Superclass {
 
         @Nullable
@@ -73,7 +73,7 @@ public class PathTest {
         }
 
     }
-    
+
     @Test
     public void GetAnnotatedElement(){
         Entity entity = Alias.alias(Entity.class);
@@ -120,14 +120,14 @@ public class PathTest {
         assertNotNull(property4.getAnnotation(Nullable.class));
 
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void Equals(){
         assertEquals(new StringPath("s"),  new StringPath("s"));
         assertEquals(new BooleanPath("b"), new BooleanPath("b"));
         assertEquals(new NumberPath<Integer>(Integer.class,"n"), new NumberPath<Integer>(Integer.class,"n"));
-        
+
         assertEquals(new ArrayPath(String[].class, "p"), new PathImpl(String.class, "p"));
         assertEquals(new BooleanPath("p"), new PathImpl(Boolean.class, "p"));
         assertEquals(new ComparablePath(String.class,"p"), new PathImpl(String.class, "p"));
@@ -136,9 +136,9 @@ public class PathTest {
         assertEquals(new EnumPath(ExampleEnum.class,"p"), new PathImpl(ExampleEnum.class, "p"));
         assertEquals(new NumberPath(Integer.class,"p"), new PathImpl(Integer.class, "p"));
         assertEquals(new StringPath("p"), new PathImpl(String.class, "p"));
-        assertEquals(new TimePath(Time.class,"p"), new PathImpl(Time.class, "p"));        
+        assertEquals(new TimePath(Time.class,"p"), new PathImpl(Time.class, "p"));
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void Various_Properties(){
@@ -159,7 +159,7 @@ public class PathTest {
         paths.add(new SimplePath(String.class, parent, "p"));
         paths.add(new StringPath(parent, "p"));
         paths.add(new TimePath(Time.class, parent, "p"));
-        
+
         for (Path<?> path : paths){
             Path other = new PathImpl(path.getType(), PathMetadataFactory.forProperty(parent, "p"));
             assertEquals(path.toString(), path.accept(ToStringVisitor.DEFAULT, Templates.DEFAULT));
@@ -167,10 +167,10 @@ public class PathTest {
             assertEquals(path, other);
             assertNotNull(path.getMetadata());
             assertNotNull(path.getType());
-            assertEquals(parent, path.getRoot());            
+            assertEquals(parent, path.getRoot());
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     @Test
     public void Various(){
@@ -190,7 +190,7 @@ public class PathTest {
         paths.add(new SimplePath(String.class,"p"));
         paths.add(new StringPath("p"));
         paths.add(new TimePath(Time.class,"p"));
-        
+
         for (Path<?> path : paths){
             Path other = new PathImpl(path.getType(), "p");
             assertEquals(path.toString(), path.accept(ToStringVisitor.DEFAULT, null));
@@ -198,8 +198,15 @@ public class PathTest {
             assertEquals(path, other);
             assertNotNull(path.getMetadata());
             assertNotNull(path.getType());
-            assertEquals(path, path.getRoot());            
+            assertEquals(path, path.getRoot());
         }
     }
-    
+
+    @Test
+    public void Parent_Path() {
+        Path<Object> person = new PathImpl<Object>(Object.class, "person");
+        Path<String> name = new PathImpl<String>(String.class, person, "name");
+        assertEquals("person.name", name.toString());
+    }
+
 }
