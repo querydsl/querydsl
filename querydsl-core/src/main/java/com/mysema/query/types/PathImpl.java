@@ -13,7 +13,7 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.util.ReflectionUtils;
 
 /**
- * PathImpl defines a default implementation of the Path interface 
+ * PathImpl defines a default implementation of the Path interface
  *
  * @author tiwe
  *
@@ -33,14 +33,18 @@ public class PathImpl<T> extends ExpressionBase<T> implements Path<T> {
     public PathImpl(Class<? extends T> type, String variable){
         this(type, PathMetadataFactory.forVariable(variable));
     }
-    
+
     public PathImpl(Class<? extends T> type, PathMetadata<?> metadata){
         super(type);
         this.metadata = Assert.notNull(metadata,"metadata");
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
     }
 
-    @SuppressWarnings("unchecked")
+    public PathImpl(Class<? extends T> type, Path<?> parent, String property) {
+        this(type, PathMetadataFactory.forProperty(parent, property));
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (o == this){
             return true;
