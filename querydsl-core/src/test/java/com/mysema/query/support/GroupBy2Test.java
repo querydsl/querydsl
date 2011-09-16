@@ -12,9 +12,12 @@ import org.junit.Test;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
+import com.mysema.commons.lang.Pair;
 import com.mysema.query.Projectable;
+import com.mysema.query.support.GroupBy2.AbstractGroupColumnDefinition;
 import com.mysema.query.support.GroupBy2.Group2;
-import com.mysema.query.support.GroupBy2.Pair;
+import com.mysema.query.support.GroupBy2.GroupColumn;
+import com.mysema.query.support.GroupBy2.GroupColumnDefinition;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.StringExpression;
@@ -85,6 +88,33 @@ public class GroupBy2Test {
         assertEquals("post 1",          group.getOne(postName));
         assertEquals(toSet(1, 2, 3),    group.getSet(commentId));
         assertEquals(Arrays.asList("comment 1", "comment 2", "comment 3"), group.getList(commentText));
+    }
+    
+    @Test
+    public void Custom_GroupColumnDefinition() {
+        GroupColumnDefinition<Integer, String> constant = new AbstractGroupColumnDefinition<Integer, String>(commentId) {
+
+            @Override
+            public GroupColumn<String> createGroupColumn() {
+                return new GroupColumn<String>() {
+
+                    @Override
+                    public void add(Object o) {
+                    }
+
+                    @Override
+                    public String get() {
+                        return "constant";
+                    }
+                };
+            }
+        };
+        
+        Map<Integer, Group2> results = 
+            GroupBy2.groupBy(postId).withOne(postName).withGroup(constant).transform(BASIC_RESULTS);
+        
+        Group2 group = results.get(1);
+        assertEquals("constant", group.getGroup(constant));
     }
     
     @Test

@@ -7,6 +7,7 @@ package com.mysema.query.support;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.Pair;
 import com.mysema.query.Projectable;
 import com.mysema.query.ResultTransformer;
 import com.mysema.query.support.GroupBy2.Group2;
@@ -34,26 +36,6 @@ import com.mysema.query.types.Visitor;
  */
 @SuppressWarnings("unchecked")
 public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
-
-    public static class Pair<K, V> {
-        
-        public final K key;
-        
-        public final V value;
-        
-        public Pair(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
-        
-        public K getKey() {
-            return key;
-        }
-        
-        public V getValue() {
-            return value;
-        }
-    }
     
     public static class QPair<K, V> extends ExpressionBase<Pair<K, V>> implements FactoryExpression<Pair<K, V>> {
 
@@ -125,6 +107,8 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
         
         Object[] toArray();
         
+        <T, R> R getGroup(GroupColumnDefinition<T, R> coldef);
+        
         <T> T getOne(Expression<T> expr);
         
         <T> Set<T> getSet(Expression<T> expr);
@@ -164,7 +148,7 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
                 @Override
                 public void add(Object o) {
                     Pair<K, V> pair = (Pair<K, V>) o;
-                    set.put(pair.key, pair.value);
+                    set.put(pair.getFirst(), pair.getSecond());
                 }
 
                 @Override
@@ -296,7 +280,7 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
     public <K, V> GroupBy2<S> withMap(Expression<K> key, Expression<V> value) {
         return withGroup(new GMap<K, V>(key, value));
     }
-
+    
     private class GroupImpl implements Group2 {
         
         private final Map<Expression<?>, GroupColumn<?>> groupColumns;
@@ -307,6 +291,18 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
                 GroupColumnDefinition<?, ?> coldef = columns.get(i);
                 groupColumns.put(coldef.getExpression(), coldef.createGroupColumn());
             }
+        }
+
+        @Override
+        public <T, R> R getGroup(GroupColumnDefinition<T, R> definition) {
+            Iterator<GroupColumn<?>> iter = groupColumns.values().iterator();
+            for (GroupColumnDefinition<?, ?> def : columns) {
+                GroupColumn<?> groupColumn = iter.next();
+                if (def.equals(definition)) {
+                    return (R) groupColumn.get();
+                }
+            }
+            return null;
         }
         
         @Override
@@ -345,14 +341,13 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
             return arr.toArray();
         }
 
-
     }
 
     @Override
     public Map<S, Group2> transform(Projectable projectable) {
         final Map<S, Group2> groups = new LinkedHashMap<S, Group2>();
         
-        CloseableIterator<Object[]> iter = projectable.iterate(unwrapExpressions());
+        CloseableIterator<Object[]> iter = projectable.iterate(getExpressions());
         try {
             while (iter.hasNext()) {
                 Object[] row = iter.next();
@@ -370,7 +365,7 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
         return groups;
     }
     
-    private Expression<?>[] unwrapExpressions() {
+    private Expression<?>[] getExpressions() {
         Expression<?>[] unwrapped = new Expression<?>[columns.size()];
         for (int i=0; i < columns.size(); i++) {
             unwrapped[i] = columns.get(i).getExpression();
