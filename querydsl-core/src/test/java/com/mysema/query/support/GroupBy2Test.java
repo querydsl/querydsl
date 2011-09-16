@@ -1,24 +1,19 @@
 package com.mysema.query.support;
 
 
-import static com.mysema.query.support.GroupBy2.list;
-import static com.mysema.query.support.GroupBy2.set;
 import static junit.framework.Assert.assertEquals;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Test;
 
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.EmptyCloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.Projectable;
-import com.mysema.query.Tuple;
+import com.mysema.query.support.GroupBy2.Group2;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.StringExpression;
@@ -33,6 +28,8 @@ public class GroupBy2Test {
 
     private final NumberExpression<Integer> commentId = new NumberPath<Integer>(Integer.class, "commentId");
 
+    private final StringExpression commentText = new StringPath("commentText");
+
     static class PostWithComments {
         public Integer id;
         public String name;
@@ -44,95 +41,38 @@ public class GroupBy2Test {
         }
     }
     
-    @Test
-    public void Expression_Order_And_Type() {
-        new GroupBy2(postId, postName, set(commentId)).transform(new AbstractProjectable(){
-            public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
-                assertEquals(postId, args[0]);
-                assertEquals(postName, args[1]);
-                assertEquals(commentId, args[2]);
-                return new EmptyCloseableIterator<Object[]>();
-            }
-        });
-    }
-    
-    /**
-     * <ol>
-     * <li>Order of groups by first row of a group
-     * <li>Rows belonging to a group may appear in any order
-     * <li>Group of null is handled correctly
-     * </ol>
-     */
-    @Test
-    public void Multiple_Groups() {
-        Collection<Tuple> results = new GroupBy2(postId, postName, list(commentId)).transform(
-            projectable(
-                row(1, "post 1", 1),
-                row(2, "post 2", 4),
-                row(1, "post 1", 2),
-                row(2, "post 2", 5),
-                row(3, "post 3", 6),
-                row(null, "null post", 7),
-                row(null, "null post", 8),
-                row(1, "post 1", 3)
-            )
+    private static final Projectable BASIC_RESULTS = projectable(
+            row(1, "post 1", 1, "comment 1"),
+            row(2, "post 2", 4, "comment 4"),
+            row(1, "post 1", 2, "comment 2"),
+            row(2, "post 2", 5, "comment 5"),
+            row(3, "post 3", 6, "comment 6"),
+            row(null, "null post", 7, "comment 7"),
+            row(null, "null post", 8, "comment 8"),
+            row(1, "post 1", 3, "comment 3")
         );
-        assertEquals(4, results.size());
-        Iterator<Tuple> iter = results.iterator();
-        
-        Tuple g = iter.next();
-        assertEquals(toInt(1), g.get(postId));
-        assertEquals("post 1", g.get(postName));
-        List<Integer> comments = g.get(list(commentId));
-        assertEquals(toInt(1), comments.get(0));
-        assertEquals(toInt(2), comments.get(1));
-        assertEquals(toInt(3), comments.get(2));
-        
-        g = iter.next();
-        assertEquals(toInt(2), g.get(postId));
-        assertEquals("post 2", g.get(postName));
-        comments = g.get(list(commentId));
-        assertEquals(toInt(4), comments.get(0));
-        assertEquals(toInt(5), comments.get(1));
-        
-        g = iter.next();
-        assertEquals(toInt(3), g.get(postId));
-        assertEquals("post 3", g.get(postName));
-        comments = g.get(list(commentId));
-        assertEquals(toInt(6), comments.get(0));
-        
-        // Group by null value
-        g = iter.next();
-        assertEquals(null, g.get(postId));
-        assertEquals("null post", g.get(postName));
-        comments = g.get(list(commentId));
-        assertEquals(toInt(7), comments.get(0));
-        assertEquals(toInt(8), comments.get(1));
-    }
     
-    private static <T> Set<T> toSet(T... o) {
-        return new HashSet<T>(Arrays.asList(o));
+    @Test 
+    public void Group_Order() {
+        Map<Integer, Group2> results = 
+            GroupBy2.groupBy(postId).first(postName).set(commentId).transform(BASIC_RESULTS);
+                
+        assertEquals(4, results.size());
     }
     
     @Test
-    public void Group_As_Set() {
-        Collection<Tuple> results = new GroupBy2(postId, postName, set(commentId)).transform(projectable(
-            row(1, "post 1", 1),
-            row(null, "null post", 2)
-        ));
-        assertEquals(2, results.size());
-        Iterator<Tuple> iter = results.iterator();
-        
-        Tuple group = iter.next();
-        assertEquals(toInt(1), group.get(postId));
-        assertEquals("post 1", group.get(postName));
-        assertEquals(toSet(1), group.get(set(commentId)));
-        
-        group = iter.next();
-        assertEquals(null, group.get(postId));
+    public void First_Set_And_List() {
+        Map<Integer, Group2> results = 
+            GroupBy2.groupBy(postId).first(postName).set(commentId).list(commentText).transform(BASIC_RESULTS);
+
+        Group2 group = results.get(1);
+        assertEquals(toInt(1),          group.first(postId));
+        assertEquals("post 1",          group.first(postName));
+        assertEquals(toSet(1, 2, 3),    group.set(commentId));
+        assertEquals(Arrays.asList("comment 1", "comment 2", "comment 3"),    group.list(commentText));
     }
 
-    private Projectable projectable(final Object[]... rows) {
+    private static Projectable projectable(final Object[]... rows) {
         return new AbstractProjectable(){
             public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
                 return iterator(rows);
@@ -142,6 +82,10 @@ public class GroupBy2Test {
     
     private Integer toInt(int i) {
         return Integer.valueOf(i);
+    }
+    
+    private <T >Set<T> toSet(T... s) {
+        return new HashSet<T>(Arrays.asList(s));
     }
     
     private static Object[] row(Object... row) {
