@@ -6,6 +6,7 @@
 package com.mysema.query.support;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -17,6 +18,9 @@ import com.mysema.query.Projectable;
 import com.mysema.query.ResultTransformer;
 import com.mysema.query.support.GroupBy2.Group2;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionBase;
+import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.Visitor;
 
 /**
  * Groups results by the first expression.
@@ -30,6 +34,76 @@ import com.mysema.query.types.Expression;
  */
 @SuppressWarnings("unchecked")
 public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
+
+    public static class Pair<K, V> {
+        
+        public final K key;
+        
+        public final V value;
+        
+        public Pair(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+        
+        public K getKey() {
+            return key;
+        }
+        
+        public V getValue() {
+            return value;
+        }
+    }
+    
+    public static class QPair<K, V> extends ExpressionBase<Pair<K, V>> implements FactoryExpression<Pair<K, V>> {
+
+        private static final long serialVersionUID = -1943990903548916056L;
+
+        private final Expression<K> key;
+        
+        private final Expression<V> value;
+        
+        @SuppressWarnings("rawtypes")
+        public QPair(Expression<K> key, Expression<V> value) {
+            super((Class) Pair.class);
+            this.key = key;
+            this.value = value;
+        }
+        
+        @Override
+        public <R, C> R accept(Visitor<R, C> v, C context) {
+            return v.visit(this, context);
+        }
+
+        @Override
+        public List<Expression<?>> getArgs() {
+            return Arrays.asList(key, value);
+        }
+
+        @Override
+        public Pair<K, V> newInstance(Object... args) {
+            return new Pair<K, V>((K) args[0], (V) args[1]);
+        }
+        
+        @Override
+        public int hashCode() {
+            int hashCode = key.hashCode();
+            return 31*hashCode + value.hashCode();
+        }
+        
+        @Override
+        public boolean equals(Object o) {
+            if (o == this) {
+                return true;
+            } else if (o instanceof QPair) {
+                @SuppressWarnings("rawtypes")
+                QPair other = (QPair) o;
+                return this.key.equals(other.key) && this.value.equals(other.value);
+            } else {
+                return false;
+            }
+        }
+    }
     
     public static interface GroupColumnDefinition<T, R> {
         
@@ -48,10 +122,17 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
     }
     
     public static interface Group2 {
+        
         Object[] toArray();
+        
         <T> T first(Expression<T> expr);
+        
         <T> Set<T> set(Expression<T> expr);
+        
         <T> List<T> list(Expression<T> expr);
+        
+        <K, V> Map<K, V> map(Expression<K> key, Expression<V> value);
+        
     }
     
     public static abstract class AbstractGroupColumnDefinition<T, R> implements GroupColumnDefinition<T, R> {
@@ -65,6 +146,33 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
         @Override
         public Expression<T> getExpression() {
             return expr;
+        }
+    }
+    
+    public static class GMap<K, V> extends AbstractGroupColumnDefinition<Pair<K, V>, Map<K, V>>{
+        
+        public GMap(Expression<K> key, Expression<V> value) {
+            super(new QPair<K, V>(key, value));
+        }
+
+        @Override
+        public GroupColumn<Map<K, V>> createGroupColumn() {
+            return new GroupColumn<Map<K, V>>() {
+
+                private final Map<K, V> set = new LinkedHashMap<K, V>();
+                
+                @Override
+                public void add(Object o) {
+                    Pair<K, V> pair = (Pair<K, V>) o;
+                    set.put(pair.key, pair.value);
+                }
+
+                @Override
+                public Map<K, V> get() {
+                    return set;
+                }
+                
+            };
         }
     }
     
@@ -188,7 +296,10 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
         return this;
     }
 
-    
+    public <K, V> GroupBy2<S> map(Expression<K> key, Expression<V> value) {
+        columns.add(new GMap<K, V>(key, value));
+        return this;
+    }
 
     private class GroupImpl implements Group2 {
         
@@ -215,6 +326,10 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
         @Override
         public <T> List<T> list(Expression<T> expr) {
             return (List<T>) groupColumns.get(expr).get();
+        }
+        
+        public <K, V> Map<K, V> map(Expression<K> key, Expression<V> value) {
+            return (Map<K, V>) groupColumns.get(new QPair<K, V>(key, value)).get();
         }
         
         public void add(Object[] row) {

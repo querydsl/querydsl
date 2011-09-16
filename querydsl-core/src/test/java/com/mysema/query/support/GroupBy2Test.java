@@ -14,6 +14,7 @@ import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.Projectable;
 import com.mysema.query.support.GroupBy2.Group2;
+import com.mysema.query.support.GroupBy2.Pair;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.StringExpression;
@@ -51,6 +52,20 @@ public class GroupBy2Test {
             row(null, "null post", 8, "comment 8"),
             row(1, "post 1", 3, "comment 3")
         );
+
+    private static <K, V> Pair<K, V> pair(K key, V value) {
+        return new Pair<K, V>(key, value);
+    }
+    
+    private static final Projectable MAP_RESULTS = projectable(
+            row(1, "post 1", pair(1, "comment 1")),
+            row(1, "post 1", pair(2, "comment 2")),
+            row(2, "post 2", pair(5, "comment 5")),
+            row(3, "post 3", pair(6, "comment 6")),
+            row(null, "null post", pair(7, "comment 7")),
+            row(null, "null post", pair(8, "comment 8")),
+            row(1, "post 1", pair(3, "comment 3"))
+    );
     
     @Test 
     public void Group_Order() {
@@ -69,7 +84,19 @@ public class GroupBy2Test {
         assertEquals(toInt(1),          group.first(postId));
         assertEquals("post 1",          group.first(postName));
         assertEquals(toSet(1, 2, 3),    group.set(commentId));
-        assertEquals(Arrays.asList("comment 1", "comment 2", "comment 3"),    group.list(commentText));
+        assertEquals(Arrays.asList("comment 1", "comment 2", "comment 3"), group.list(commentText));
+    }
+    
+    @Test
+    public void Map() {
+        Map<Integer, Group2> results = 
+            GroupBy2.groupBy(postId).first(postName).map(commentId, commentText).transform(MAP_RESULTS);
+
+        Group2 group = results.get(1);
+        
+        Map<Integer, String> comments = group.map(commentId, commentText);
+        assertEquals(3, comments.size());
+        assertEquals("comment 2", comments.get(2));
     }
 
     private static Projectable projectable(final Object[]... rows) {
