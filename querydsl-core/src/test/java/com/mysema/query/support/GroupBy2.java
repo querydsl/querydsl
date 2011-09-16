@@ -125,13 +125,13 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
         
         Object[] toArray();
         
-        <T> T first(Expression<T> expr);
+        <T> T getOne(Expression<T> expr);
         
-        <T> Set<T> set(Expression<T> expr);
+        <T> Set<T> getSet(Expression<T> expr);
         
-        <T> List<T> list(Expression<T> expr);
+        <T> List<T> getList(Expression<T> expr);
         
-        <K, V> Map<K, V> map(Expression<K> key, Expression<V> value);
+        <K, V> Map<K, V> getMap(Expression<K> key, Expression<V> value);
         
     }
     
@@ -229,9 +229,9 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
     }
     
     
-    public static class GFirst<T> extends AbstractGroupColumnDefinition<T, T>{
+    public static class GOne<T> extends AbstractGroupColumnDefinition<T, T>{
 
-        public GFirst(Expression<T> expr) {
+        public GOne(Expression<T> expr) {
             super(expr);
         }
 
@@ -265,7 +265,7 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
     }
     
     public GroupBy2(Expression<S> groupBy) {
-        columns.add(new GFirst<S>(groupBy));
+        columns.add(new GOne<S>(groupBy));
     }
     
     public <T> GroupBy2(Expression<S> groupBy, GroupColumnDefinition<?, ?> group, GroupColumnDefinition<?, ?>... groups) {
@@ -276,29 +276,25 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
         }
     }
     
-    public GroupBy2<S> group(GroupColumnDefinition<?, ?> g) {
+    public GroupBy2<S> withGroup(GroupColumnDefinition<?, ?> g) {
         columns.add(g);
         return this;
     }
     
-    public <T> GroupBy2<S> set(Expression<T> expr) {
-        columns.add(new GSet<T>(expr));
-        return this;
+    public <T> GroupBy2<S> withSet(Expression<T> expr) {
+        return withGroup(new GSet<T>(expr));
     }
     
-    public <T> GroupBy2<S> list(Expression<T> expr) {
-        columns.add(new GList<T>(expr));
-        return this;
+    public <T> GroupBy2<S> withList(Expression<T> expr) {
+        return withGroup(new GList<T>(expr));
     }
     
-    public <T> GroupBy2<S> first(Expression<T> expr) {
-        columns.add(new GFirst<T>(expr));
-        return this;
+    public <T> GroupBy2<S> withOne(Expression<T> expr) {
+        return withGroup(new GOne<T>(expr));
     }
 
-    public <K, V> GroupBy2<S> map(Expression<K> key, Expression<V> value) {
-        columns.add(new GMap<K, V>(key, value));
-        return this;
+    public <K, V> GroupBy2<S> withMap(Expression<K> key, Expression<V> value) {
+        return withGroup(new GMap<K, V>(key, value));
     }
 
     private class GroupImpl implements Group2 {
@@ -314,21 +310,21 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
         }
         
         @Override
-        public <T> T first(Expression<T> expr) {
+        public <T> T getOne(Expression<T> expr) {
             return (T) groupColumns.get(expr).get();
         }
 
         @Override
-        public <T> Set<T> set(Expression<T> expr) {
+        public <T> Set<T> getSet(Expression<T> expr) {
             return (Set<T>) groupColumns.get(expr).get();
         }
 
         @Override
-        public <T> List<T> list(Expression<T> expr) {
+        public <T> List<T> getList(Expression<T> expr) {
             return (List<T>) groupColumns.get(expr).get();
         }
         
-        public <K, V> Map<K, V> map(Expression<K> key, Expression<V> value) {
+        public <K, V> Map<K, V> getMap(Expression<K> key, Expression<V> value) {
             return (Map<K, V>) groupColumns.get(new QPair<K, V>(key, value)).get();
         }
         

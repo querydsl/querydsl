@@ -149,7 +149,7 @@ public class RelationTest extends AbstractTest{
     public void List_Usage(){
         String expected = "relationType.list.get(0).set";
         assertEquals(expected, QRelationTest_RelationType.relationType.list.get(0).set.toString());
-        assertEquals(expected, QRelationTest_RelationType.relationType.list(0).set.toString());
+        assertEquals(expected, QRelationTest_RelationType.relationType.getList(0).set.toString());
 
         assertEquals(List.class, QRelationTest_RelationType.relationType.list.getType());
         assertEquals(Set.class,  QRelationTest_RelationType.relationType.set.getType());

@@ -70,7 +70,7 @@ public class GroupBy2Test {
     @Test 
     public void Group_Order() {
         Map<Integer, Group2> results = 
-            GroupBy2.groupBy(postId).first(postName).set(commentId).transform(BASIC_RESULTS);
+            GroupBy2.groupBy(postId).withOne(postName).withSet(commentId).transform(BASIC_RESULTS);
                 
         assertEquals(4, results.size());
     }
@@ -78,23 +78,23 @@ public class GroupBy2Test {
     @Test
     public void First_Set_And_List() {
         Map<Integer, Group2> results = 
-            GroupBy2.groupBy(postId).first(postName).set(commentId).list(commentText).transform(BASIC_RESULTS);
+            GroupBy2.groupBy(postId).withOne(postName).withSet(commentId).withList(commentText).transform(BASIC_RESULTS);
 
         Group2 group = results.get(1);
-        assertEquals(toInt(1),          group.first(postId));
-        assertEquals("post 1",          group.first(postName));
-        assertEquals(toSet(1, 2, 3),    group.set(commentId));
-        assertEquals(Arrays.asList("comment 1", "comment 2", "comment 3"), group.list(commentText));
+        assertEquals(toInt(1),          group.getOne(postId));
+        assertEquals("post 1",          group.getOne(postName));
+        assertEquals(toSet(1, 2, 3),    group.getSet(commentId));
+        assertEquals(Arrays.asList("comment 1", "comment 2", "comment 3"), group.getList(commentText));
     }
     
     @Test
     public void Map() {
         Map<Integer, Group2> results = 
-            GroupBy2.groupBy(postId).first(postName).map(commentId, commentText).transform(MAP_RESULTS);
+            GroupBy2.groupBy(postId).withOne(postName).withMap(commentId, commentText).transform(MAP_RESULTS);
 
         Group2 group = results.get(1);
         
-        Map<Integer, String> comments = group.map(commentId, commentText);
+        Map<Integer, String> comments = group.getMap(commentId, commentText);
         assertEquals(3, comments.size());
         assertEquals("comment 2", comments.get(2));
     }
