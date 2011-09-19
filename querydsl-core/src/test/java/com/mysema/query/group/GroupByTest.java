@@ -1,4 +1,4 @@
-package com.mysema.query.support;
+package com.mysema.query.group;
 
 
 import static junit.framework.Assert.*;
@@ -14,17 +14,15 @@ import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.Projectable;
-import com.mysema.query.support.GroupBy2.AbstractGroupColumnDefinition;
-import com.mysema.query.support.GroupBy2.Group2;
-import com.mysema.query.support.GroupBy2.GroupColumn;
-import com.mysema.query.support.GroupBy2.GroupColumnDefinition;
+import com.mysema.query.group.GroupBy;
+import com.mysema.query.support.AbstractProjectable;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 
-public class GroupBy2Test {
+public class GroupByTest {
 
     private final NumberExpression<Integer> postId = new NumberPath<Integer>(Integer.class, "postId");
 
@@ -90,18 +88,18 @@ public class GroupBy2Test {
     
     @Test 
     public void Group_Order() {
-        Map<Integer, Group2> results = 
-            GroupBy2.groupBy(postId).withOne(postName).withSet(commentId).transform(BASIC_RESULTS);
+        Map<Integer, Group> results = 
+            GroupBy.groupBy(postId).withOne(postName).withSet(commentId).transform(BASIC_RESULTS);
                 
         assertEquals(4, results.size());
     }
     
     @Test
     public void First_Set_And_List() {
-        Map<Integer, Group2> results = 
-            GroupBy2.groupBy(postId).withOne(postName).withSet(commentId).withList(commentText).transform(BASIC_RESULTS);
+        Map<Integer, Group> results = 
+            GroupBy.groupBy(postId).withOne(postName).withSet(commentId).withList(commentText).transform(BASIC_RESULTS);
 
-        Group2 group = results.get(1);
+        Group group = results.get(1);
         assertEquals(toInt(1),          group.getOne(postId));
         assertEquals("post 1",          group.getOne(postName));
         assertEquals(toSet(1, 2, 3),    group.getSet(commentId));
@@ -110,10 +108,10 @@ public class GroupBy2Test {
     
     @Test
     public void Group_By_Null() {
-        Map<Integer, Group2> results = 
-            GroupBy2.groupBy(postId).withOne(postName).withSet(commentId).withList(commentText).transform(BASIC_RESULTS);
+        Map<Integer, Group> results = 
+            GroupBy.groupBy(postId).withOne(postName).withSet(commentId).withList(commentText).transform(BASIC_RESULTS);
 
-        Group2 group = results.get(null);
+        Group group = results.get(null);
         assertNull(group.getOne(postId));
         assertEquals("null post",          group.getOne(postName));
         assertEquals(toSet(7, 8),    group.getSet(commentId));
@@ -122,19 +120,19 @@ public class GroupBy2Test {
     
     @Test
     public void With_Constant_Column() {
-        Map<Integer, Group2> results = 
-            GroupBy2.groupBy(postId).withOne(postName).withGroup(constant).transform(BASIC_RESULTS);
+        Map<Integer, Group> results = 
+            GroupBy.groupBy(postId).withOne(postName).withGroup(constant).transform(BASIC_RESULTS);
         
-        Group2 group = results.get(1);
+        Group group = results.get(1);
         assertEquals("constant", group.getGroup(constant));
     }
     
     @Test
     public void Map() {
-        Map<Integer, Group2> results = 
-            GroupBy2.groupBy(postId).withOne(postName).withMap(commentId, commentText).transform(MAP_RESULTS);
+        Map<Integer, Group> results = 
+            GroupBy.groupBy(postId).withOne(postName).withMap(commentId, commentText).transform(MAP_RESULTS);
 
-        Group2 group = results.get(1);
+        Group group = results.get(1);
         
         Map<Integer, String> comments = group.getMap(commentId, commentText);
         assertEquals(3, comments.size());
@@ -143,10 +141,10 @@ public class GroupBy2Test {
 
     @Test
     public void Array_Access() {
-        Map<Integer, Group2> results = 
-            GroupBy2.groupBy(postId).withOne(postName).withSet(commentId).withList(commentText).transform(BASIC_RESULTS);
+        Map<Integer, Group> results = 
+            GroupBy.groupBy(postId).withOne(postName).withSet(commentId).withList(commentText).transform(BASIC_RESULTS);
 
-        Group2 group = results.get(1);
+        Group group = results.get(1);
         Object[] array = group.toArray();
         assertEquals(toInt(1),          array[0]);
         assertEquals("post 1",          array[1]);
