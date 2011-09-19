@@ -26,4 +26,9 @@ public abstract class AbstractGroupColumnDefinition<T, R> implements GroupColumn
     public Expression<T> getExpression() {
         return expr;
     }
+    
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" + expr + ")";
+    }
 }

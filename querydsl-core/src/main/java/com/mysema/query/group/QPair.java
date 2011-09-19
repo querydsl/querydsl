@@ -49,6 +49,10 @@ public final class QPair<K, V> extends ExpressionBase<Pair<K, V>> implements Fac
     public boolean equals(Expression<?> keyExpr, Expression<?> valueExpr) {
         return key.equals(keyExpr) && value.equals(valueExpr);
     }
+    
+    public boolean equals(Expression<?> keyExpr, Class<?> valueType) {
+        return key.equals(keyExpr) && valueType.isAssignableFrom(value.getType());
+    }
 
     @Override
     @SuppressWarnings("unchecked")

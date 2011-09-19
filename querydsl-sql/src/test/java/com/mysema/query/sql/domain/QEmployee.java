@@ -44,6 +44,8 @@ public class QEmployee extends RelationalPathBase<Employee> {
     public final PrimaryKey<Employee> idKey = createPrimaryKey(id);
 
     public final ForeignKey<Employee> superiorIdKey = createForeignKey(superiorId, "ID");
+
+    public final ForeignKey<Employee> _superiorIdKey = createInvForeignKey(id, "SUPERIOR_ID");
     
     public QEmployee(String path) {
         super(Employee.class, PathMetadataFactory.forVariable(path));

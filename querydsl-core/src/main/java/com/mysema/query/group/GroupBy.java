@@ -11,6 +11,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import com.mysema.commons.lang.CloseableIterator;
@@ -145,12 +146,20 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
 
     private final List<QPair<?, ?>> pairs = new ArrayList<QPair<?,?>>(); 
 
-    public static <T> GroupBy<T> groupBy(Expression<T> expr) {
+    public static <T> GroupBy<T> create(Expression<T> expr) {
         return new GroupBy<T>(expr);
     }
     
     public GroupBy(Expression<S> groupBy) {
         withGroup(new GOne<S>(groupBy));
+    }
+    
+    public GroupBy(Expression<S> groupBy, Expression<?> first, Expression<?>... rest) {
+        this(groupBy);
+        withOne(first);
+        for (Expression<?> expr : rest) {
+            withOne(expr);
+        }
     }
     
     public <T> GroupBy(Expression<S> groupBy, GroupColumnDefinition<?, ?> group, GroupColumnDefinition<?, ?>... groups) {
@@ -234,22 +243,30 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
                     return (R) groupColumn.get();
                 }
             }
-            return null;
+            throw new NoSuchElementException(definition.toString());
         }
         
         @Override
         public <T> T getOne(Expression<T> expr) {
-            return (T) groupColumns.get(expr).get();
+            return get(expr);
         }
 
         @Override
         public <T> Set<T> getSet(Expression<T> expr) {
-            return (Set<T>) groupColumns.get(expr).get();
+            return get(expr);
         }
 
         @Override
         public <T> List<T> getList(Expression<T> expr) {
-            return (List<T>) groupColumns.get(expr).get();
+            return get(expr);
+        }
+        
+        private <T, R> R get(Expression<T> expr) {
+            GroupColumn<R> col = (GroupColumn<R>) groupColumns.get(expr);
+            if (col != null) {
+                return col.get();
+            }
+            throw new NoSuchElementException(expr.toString());
         }
         
         public <K, V> Map<K, V> getMap(Expression<K> key, Expression<V> value) {
@@ -258,7 +275,17 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
                     return (Map<K, V>) groupColumns.get(pair).get();
                 }
             }
-            return null;
+            throw new NoSuchElementException("GMap(" + key + ", " + value + ")");
+        }
+
+        @Override
+        public <K, V> Map<K, V> getMap(Expression<K> key, Class<V> valueType) {
+            for (QPair<?, ?> pair : pairs) {
+                if (pair.equals(key, valueType)) {
+                    return (Map<K, V>) groupColumns.get(pair).get();
+                }
+            }
+            throw new NoSuchElementException("GMap(" + key + ", " + valueType + ")");
         }
         
         void add(Object[] row) {

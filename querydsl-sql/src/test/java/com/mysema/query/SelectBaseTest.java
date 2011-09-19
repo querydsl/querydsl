@@ -30,12 +30,15 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.Pair;
+import com.mysema.query.group.Group;
+import com.mysema.query.group.GroupBy;
 import com.mysema.query.sql.Beans;
 import com.mysema.query.sql.Column;
 import com.mysema.query.sql.QBeans;
@@ -48,7 +51,18 @@ import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QIdName;
 import com.mysema.query.sql.domain.QSurvey;
-import com.mysema.query.types.*;
+import com.mysema.query.types.ArrayConstructorExpression;
+import com.mysema.query.types.Concatenation;
+import com.mysema.query.types.ConstructorExpression;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.MappingProjection;
+import com.mysema.query.types.ParamNotSetException;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathImpl;
+import com.mysema.query.types.Projections;
+import com.mysema.query.types.QBean;
+import com.mysema.query.types.QTuple;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.Coalesce;
 import com.mysema.query.types.expr.NumberExpression;
@@ -1010,6 +1024,37 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         query().from(survey).where(survey.name.in(Arrays.asList("a"))).count();
         query().from(survey).where(survey.name.in(Arrays.asList("a","b"))).count();
         query().from(survey).where(survey.name.in(Arrays.asList("a","b","c"))).count();
+    }
+    
+    @Test
+    public void GroupBy_Superior() {
+        SQLQuery qry = query()
+            .from(employee)
+            .innerJoin(employee._superiorIdKey, employee2);
+        
+        Map<Integer, Group> results = new GroupBy<Integer>(employee.id, employee.firstname, employee.lastname)
+            .withMap(employee2.id, new QTuple(employee2.id, employee2.firstname, employee2.lastname))
+            .transform(qry);
+        
+        assertEquals(2, results.size());
+        
+        // Mike Smith
+        Group group = results.get(1);
+        assertEquals("Mike", group.getOne(employee.firstname));
+        assertEquals("Smith", group.getOne(employee.lastname));
+
+        Map<Integer, Tuple> emps = group.getMap(employee2.id, Tuple.class);
+        assertEquals(4, emps.size());
+        assertEquals("Steve", emps.get(12).get(employee2.firstname));
+
+        // Mary Smith
+        group = results.get(2);
+        assertEquals("Mary", group.getOne(employee.firstname));
+        assertEquals("Smith", group.getOne(employee.lastname));
+        
+        emps = group.getMap(employee2.id, Tuple.class);
+        assertEquals(4, emps.size());
+        assertEquals("Mason", emps.get(21).get(employee2.lastname));
     }
     
     public static class Survey {
