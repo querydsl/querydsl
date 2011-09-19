@@ -129,6 +129,19 @@ public class GroupBy2Test {
         assertEquals("comment 2", comments.get(2));
     }
 
+    @Test
+    public void Array_Access() {
+        Map<Integer, Group2> results = 
+            GroupBy2.groupBy(postId).withOne(postName).withSet(commentId).withList(commentText).transform(BASIC_RESULTS);
+
+        Group2 group = results.get(1);
+        Object[] array = group.toArray();
+        assertEquals(toInt(1),          array[0]);
+        assertEquals("post 1",          array[1]);
+        assertEquals(toSet(1, 2, 3),    array[2]);
+        assertEquals(Arrays.asList("comment 1", "comment 2", "comment 3"), array[3]);
+    }
+    
     private static Projectable projectable(final Object[]... rows) {
         return new AbstractProjectable(){
             public CloseableIterator<Object[]> iterate(Expression<?>[] args) {

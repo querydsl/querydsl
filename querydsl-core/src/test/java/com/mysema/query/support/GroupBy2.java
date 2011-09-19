@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -140,8 +139,11 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
     
     public static class GMap<K, V> extends AbstractGroupColumnDefinition<Pair<K, V>, Map<K, V>>{
         
+        public GMap(QPair<K, V> qpair) {
+            super(qpair);
+        }
         public GMap(Expression<K> key, Expression<V> value) {
-            super(new QPair<K, V>(key, value));
+            this(new QPair<K, V>(key, value));
         }
 
         @Override
@@ -247,26 +249,28 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
         }
     }
     
-    private final List<GroupColumnDefinition<?, ?>> columns = new ArrayList<GroupBy2.GroupColumnDefinition<?,?>>();
-    
+    private final List<GroupColumnDefinition<?, ?>> columnDefinitions = new ArrayList<GroupBy2.GroupColumnDefinition<?,?>>();
+
+    private final List<QPair<?, ?>> pairs = new ArrayList<GroupBy2.QPair<?,?>>(); 
+
     public static <T> GroupBy2<T> groupBy(Expression<T> expr) {
         return new GroupBy2<T>(expr);
     }
     
     public GroupBy2(Expression<S> groupBy) {
-        columns.add(new GOne<S>(groupBy));
+        withGroup(new GOne<S>(groupBy));
     }
     
     public <T> GroupBy2(Expression<S> groupBy, GroupColumnDefinition<?, ?> group, GroupColumnDefinition<?, ?>... groups) {
         this(groupBy);
-        columns.add(group);
+        withGroup(group);
         for (GroupColumnDefinition<?, ?> g : groups) {
-            columns.add(g);
+            withGroup(g);
         }
     }
     
     public GroupBy2<S> withGroup(GroupColumnDefinition<?, ?> g) {
-        columns.add(g);
+        columnDefinitions.add(g);
         return this;
     }
     
@@ -283,31 +287,57 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
     }
 
     public <K, V> GroupBy2<S> withMap(Expression<K> key, Expression<V> value) {
-        return withGroup(new GMap<K, V>(key, value));
+        QPair<K, V> qpair = new QPair<K, V>(key, value);
+        pairs.add(qpair);
+        return withGroup(new GMap<K, V>(qpair));
+    }
+
+    @Override
+    public Map<S, Group2> transform(Projectable projectable) {
+        final Map<S, Group2> groups = new LinkedHashMap<S, Group2>();
+
+        CloseableIterator<Object[]> iter = projectable.iterate(getExpressions());
+        try {
+            while (iter.hasNext()) {
+                Object[] row = iter.next();
+                S groupId = (S) row[0];
+                GroupImpl group = (GroupImpl) groups.get(groupId);
+                if (group == null) {
+                    group = new GroupImpl();
+                    groups.put(groupId, group);
+                }
+                group.add(row);
+            }
+        } finally {
+            iter.close();
+        }
+        return groups;
+    }
+    
+    private Expression<?>[] getExpressions() {
+        Expression<?>[] unwrapped = new Expression<?>[columnDefinitions.size()];
+        for (int i=0; i < columnDefinitions.size(); i++) {
+            unwrapped[i] = columnDefinitions.get(i).getExpression();
+        }
+        return unwrapped;
     }
     
     private class GroupImpl implements Group2 {
         
-        private final Map<Expression<?>, GroupColumn<?>> groupColumns = new LinkedHashMap<Expression<?>, GroupColumn<?>>();
-        
-        private final List<QPair<?, ?>> pairs = new LinkedList<GroupBy2.QPair<?,?>>(); 
+        private final Map<Expression<?>, GroupColumn<?>> groupColumns = new LinkedHashMap<Expression<?>, GroupBy2.GroupColumn<?>>();
         
         public GroupImpl() {
-            for (int i=0; i < columns.size(); i++) {
-                GroupColumnDefinition<?, ?> coldef = columns.get(i);
+            for (int i=0; i < columnDefinitions.size(); i++) {
+                GroupColumnDefinition<?, ?> coldef = columnDefinitions.get(i);
                 Expression<?> expr = coldef.getExpression();
                 groupColumns.put(expr, coldef.createGroupColumn());
-                // Optimized map access
-                if (expr instanceof QPair) {
-                    pairs.add((QPair<?, ?>) expr);
-                }
             }
         }
 
         @Override
         public <T, R> R getGroup(GroupColumnDefinition<T, R> definition) {
             Iterator<GroupColumn<?>> iter = groupColumns.values().iterator();
-            for (GroupColumnDefinition<?, ?> def : columns) {
+            for (GroupColumnDefinition<?, ?> def : columnDefinitions) {
                 GroupColumn<?> groupColumn = iter.next();
                 if (def.equals(definition)) {
                     return (R) groupColumn.get();
@@ -357,36 +387,6 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
             return arr.toArray();
         }
 
-    }
-
-    @Override
-    public Map<S, Group2> transform(Projectable projectable) {
-        final Map<S, Group2> groups = new LinkedHashMap<S, Group2>();
-        
-        CloseableIterator<Object[]> iter = projectable.iterate(getExpressions());
-        try {
-            while (iter.hasNext()) {
-                Object[] row = iter.next();
-                S groupId = (S) row[0];
-                GroupImpl group = (GroupImpl) groups.get(groupId);
-                if (group == null) {
-                    group = new GroupImpl();
-                    groups.put(groupId, group);
-                }
-                group.add(row);
-            }
-        } finally {
-            iter.close();
-        }
-        return groups;
-    }
-    
-    private Expression<?>[] getExpressions() {
-        Expression<?>[] unwrapped = new Expression<?>[columns.size()];
-        for (int i=0; i < columns.size(); i++) {
-            unwrapped[i] = columns.get(i).getExpression();
-        }
-        return unwrapped;
     }
     
 }
