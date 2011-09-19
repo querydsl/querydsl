@@ -1,7 +1,7 @@
 package com.mysema.query.support;
 
 
-import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -106,6 +106,18 @@ public class GroupBy2Test {
         assertEquals("post 1",          group.getOne(postName));
         assertEquals(toSet(1, 2, 3),    group.getSet(commentId));
         assertEquals(Arrays.asList("comment 1", "comment 2", "comment 3"), group.getList(commentText));
+    }
+    
+    @Test
+    public void Group_By_Null() {
+        Map<Integer, Group2> results = 
+            GroupBy2.groupBy(postId).withOne(postName).withSet(commentId).withList(commentText).transform(BASIC_RESULTS);
+
+        Group2 group = results.get(null);
+        assertNull(group.getOne(postId));
+        assertEquals("null post",          group.getOne(postName));
+        assertEquals(toSet(7, 8),    group.getSet(commentId));
+        assertEquals(Arrays.asList("comment 7", "comment 8"), group.getList(commentText));
     }
     
     @Test
