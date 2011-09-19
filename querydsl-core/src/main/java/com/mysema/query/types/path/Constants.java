@@ -12,6 +12,7 @@ import java.util.Set;
 final class Constants {
     
     private static final Set<Class<?>> typedClasses = new HashSet<Class<?>>(Arrays.<Class<?>>asList(
+            ArrayPath.class,
             PathBuilder.class,
             ComparablePath.class,
             EnumPath.class,
