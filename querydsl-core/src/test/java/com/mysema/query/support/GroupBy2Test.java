@@ -34,6 +34,24 @@ public class GroupBy2Test {
 
     private final StringExpression commentText = new StringPath("commentText");
 
+    private final GroupColumnDefinition<Integer, String> constant = new AbstractGroupColumnDefinition<Integer, String>(commentId) {
+
+        @Override
+        public GroupColumn<String> createGroupColumn() {
+            return new GroupColumn<String>() {
+
+                @Override
+                public void add(Object o) {
+                }
+
+                @Override
+                public String get() {
+                    return "constant";
+                }
+            };
+        }
+    };
+
     static class PostWithComments {
         public Integer id;
         public String name;
@@ -91,25 +109,7 @@ public class GroupBy2Test {
     }
     
     @Test
-    public void Custom_GroupColumnDefinition() {
-        GroupColumnDefinition<Integer, String> constant = new AbstractGroupColumnDefinition<Integer, String>(commentId) {
-
-            @Override
-            public GroupColumn<String> createGroupColumn() {
-                return new GroupColumn<String>() {
-
-                    @Override
-                    public void add(Object o) {
-                    }
-
-                    @Override
-                    public String get() {
-                        return "constant";
-                    }
-                };
-            }
-        };
-        
+    public void With_Constant_Column() {
         Map<Integer, Group2> results = 
             GroupBy2.groupBy(postId).withOne(postName).withGroup(constant).transform(BASIC_RESULTS);
         

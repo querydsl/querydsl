@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -60,6 +61,10 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
         @Override
         public List<Expression<?>> getArgs() {
             return Arrays.asList(key, value);
+        }
+        
+        public boolean equals(Expression<?> keyExpr, Expression<?> valueExpr) {
+            return key.equals(keyExpr) && value.equals(valueExpr);
         }
 
         @Override
@@ -283,13 +288,19 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
     
     private class GroupImpl implements Group2 {
         
-        private final Map<Expression<?>, GroupColumn<?>> groupColumns;
+        private final Map<Expression<?>, GroupColumn<?>> groupColumns = new LinkedHashMap<Expression<?>, GroupColumn<?>>();
+        
+        private final List<QPair<?, ?>> pairs = new LinkedList<GroupBy2.QPair<?,?>>(); 
         
         public GroupImpl() {
-            groupColumns = new LinkedHashMap<Expression<?>, GroupColumn<?>>();
             for (int i=0; i < columns.size(); i++) {
                 GroupColumnDefinition<?, ?> coldef = columns.get(i);
-                groupColumns.put(coldef.getExpression(), coldef.createGroupColumn());
+                Expression<?> expr = coldef.getExpression();
+                groupColumns.put(expr, coldef.createGroupColumn());
+                // Optimized map access
+                if (expr instanceof QPair) {
+                    pairs.add((QPair<?, ?>) expr);
+                }
             }
         }
 
@@ -321,10 +332,15 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
         }
         
         public <K, V> Map<K, V> getMap(Expression<K> key, Expression<V> value) {
-            return (Map<K, V>) groupColumns.get(new QPair<K, V>(key, value)).get();
+            for (QPair<?, ?> pair : pairs) {
+                if (pair.equals(key, value)) {
+                    return (Map<K, V>) groupColumns.get(pair).get();
+                }
+            }
+            return null;
         }
         
-        public void add(Object[] row) {
+        void add(Object[] row) {
             int i=0;
             for (GroupColumn<?> groupColumn : groupColumns.values()) {
                 groupColumn.add(row[i]);
