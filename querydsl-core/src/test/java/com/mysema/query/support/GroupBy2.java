@@ -329,8 +329,7 @@ public class GroupBy2<S> implements ResultTransformer<Map<S, Group2>> {
         public GroupImpl() {
             for (int i=0; i < columnDefinitions.size(); i++) {
                 GroupColumnDefinition<?, ?> coldef = columnDefinitions.get(i);
-                Expression<?> expr = coldef.getExpression();
-                groupColumns.put(expr, coldef.createGroupColumn());
+                groupColumns.put(coldef.getExpression(), coldef.createGroupColumn());
             }
         }
 
