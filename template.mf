@@ -1,0 +1,12 @@
+Bundle-SymbolicName: com.mysema.codegen
+Bundle-Name: Codegen
+Bundle-Vendor: Mysema
+Bundle-ManifestVersion: 2
+Import-Template:  
+  javax.annotation.*;version="0",
+  org.apache.commons.collections15.*;version="${commons.collections.version}",
+  org.apache.commons.lang.*;version="${commons.lang.version}",
+  javax.tools.*;version="1"
+Excluded-Imports:
+  edu.umd.cs.findbugs.annotations.*,
+  net.jcip.annotations.*    
