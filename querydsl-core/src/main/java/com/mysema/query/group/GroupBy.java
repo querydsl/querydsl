@@ -248,17 +248,17 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
         
         @Override
         public <T> T getOne(Expression<T> expr) {
-            return get(expr);
+            return this.<T, T>get(expr);
         }
 
         @Override
         public <T> Set<T> getSet(Expression<T> expr) {
-            return get(expr);
+            return this.<T, Set<T>>get(expr);
         }
 
         @Override
         public <T> List<T> getList(Expression<T> expr) {
-            return get(expr);
+            return this.<T, List<T>>get(expr);
         }
         
         private <T, R> R get(Expression<T> expr) {
