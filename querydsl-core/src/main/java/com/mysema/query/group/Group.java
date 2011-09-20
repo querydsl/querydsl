@@ -11,6 +11,10 @@ import java.util.Set;
 
 import com.mysema.query.types.Expression;
 
+/**
+ * @author sasa
+ *
+ */
 public interface Group {
     
     Object[] toArray();
