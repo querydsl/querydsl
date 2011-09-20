@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Mysema Ltd.
+ * Copyright (c) 2011 Mysema Ltd.
  * All rights reserved.
  *
  */
@@ -11,6 +11,10 @@ import java.util.Set;
 
 import com.mysema.query.types.Expression;
 
+/**
+ * @author sasa
+ *
+ */
 public interface Group {
     
     Object[] toArray();

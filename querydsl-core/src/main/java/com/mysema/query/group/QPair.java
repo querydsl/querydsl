@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Mysema Ltd.
+ * Copyright (c) 2011 Mysema Ltd.
  * All rights reserved.
  *
  */
@@ -70,9 +70,8 @@ public final class QPair<K, V> extends ExpressionBase<Pair<K, V>> implements Fac
     public boolean equals(Object o) {
         if (o == this) {
             return true;
-        } else if (o instanceof QPair) {
-            @SuppressWarnings("rawtypes")
-            QPair other = (QPair) o;
+        } else if (o instanceof QPair<?,?>) {
+            QPair<?,?> other = (QPair<?,?>) o;
             return this.key.equals(other.key) && this.value.equals(other.value);
         } else {
             return false;
