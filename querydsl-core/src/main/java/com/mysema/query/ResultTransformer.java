@@ -5,6 +5,7 @@
  */
 package com.mysema.query;
 
+
 /**
  * Executes query on a Projectable and transforms results into T. This can be used for example
  * to group projected columns or to filter out duplicate results.

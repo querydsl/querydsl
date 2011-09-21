@@ -29,6 +29,4 @@ public interface Group {
     
     <K, V> Map<K, V> getMap(Expression<K> key, Expression<V> value);
     
-    <K, V> Map<K, V> getMap(Expression<K> key, Class<V> valueType);
-    
 }

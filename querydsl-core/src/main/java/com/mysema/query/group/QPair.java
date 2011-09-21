@@ -29,6 +29,10 @@ public final class QPair<K, V> extends ExpressionBase<Pair<K, V>> implements Fac
     
     private final Expression<V> value;
     
+    public static <K, V> QPair<K, V> create(Expression<K> key, Expression<V> value) {
+        return new QPair<K, V>(key, value);
+    }
+    
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public QPair(Expression<K> key, Expression<V> value) {
         super((Class) Pair.class);
@@ -62,8 +66,7 @@ public final class QPair<K, V> extends ExpressionBase<Pair<K, V>> implements Fac
     
     @Override
     public int hashCode() {
-        int hashCode = key.hashCode();
-        return 31*hashCode + value.hashCode();
+        return 31*key.hashCode() + value.hashCode();
     }
     
     @Override

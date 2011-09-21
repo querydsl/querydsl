@@ -1032,8 +1032,11 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             .from(employee)
             .innerJoin(employee._superiorIdKey, employee2);
         
-        Map<Integer, Group> results = new GroupBy<Integer>(employee.id, employee.firstname, employee.lastname)
-            .withMap(employee2.id, new QTuple(employee2.id, employee2.firstname, employee2.lastname))
+        QTuple subordinates = new QTuple(employee2.id, employee2.firstname, employee2.lastname);
+
+        // {id:1, firstname:"Mike", lastname:"Smith", subordinates: [{id:, firstname:, lastname:}, {id:, firstname:, lastname:}...]
+        Map<Integer, Group> results = GroupBy.create(employee.id, employee.firstname, employee.lastname)
+            .withMap(employee2.id, subordinates)
             .transform(qry);
         
         assertEquals(2, results.size());
@@ -1043,7 +1046,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         assertEquals("Mike", group.getOne(employee.firstname));
         assertEquals("Smith", group.getOne(employee.lastname));
 
-        Map<Integer, Tuple> emps = group.getMap(employee2.id, Tuple.class);
+        Map<Integer, Tuple> emps = group.getMap(employee2.id, subordinates);
         assertEquals(4, emps.size());
         assertEquals("Steve", emps.get(12).get(employee2.firstname));
 
@@ -1052,7 +1055,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         assertEquals("Mary", group.getOne(employee.firstname));
         assertEquals("Smith", group.getOne(employee.lastname));
         
-        emps = group.getMap(employee2.id, Tuple.class);
+        emps = group.getMap(employee2.id, subordinates);
         assertEquals(4, emps.size());
         assertEquals("Mason", emps.get(21).get(employee2.lastname));
     }
