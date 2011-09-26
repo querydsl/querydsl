@@ -23,6 +23,35 @@ public class BooleanBuilderTest {
 
     private final BooleanExpression second = BooleanConstant.FALSE;
 
+    @Test
+    public void AndAnyOf() {
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.andAnyOf(first, null);
+        assertEquals(first, builder.getValue());
+    }
+    
+    @Test
+    public void AndAnyOf2() {
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.andAnyOf(null, first);
+        assertEquals(first, builder.getValue());
+    }
+    
+    
+    @Test
+    public void OrAllOf() {
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.orAllOf(first, null);
+        assertEquals(first, builder.getValue());
+    }
+    
+    @Test
+    public void OrAllOf2() {
+        BooleanBuilder builder = new BooleanBuilder();
+        builder.orAllOf(null, first);
+        assertEquals(first, builder.getValue());
+    }
+    
     @Test(expected=QueryException.class)
     public void WrappedBooleanBuilder(){
         new BooleanBuilder(new BooleanBuilder());

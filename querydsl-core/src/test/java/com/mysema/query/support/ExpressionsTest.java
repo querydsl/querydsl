@@ -23,10 +23,24 @@ public class ExpressionsTest {
     public void AllOf() {
         assertEquals("a && b", Expressions.allOf(a, b).toString());
     }
+    
+    @Test
+    public void AllOf_With_Nulls() {
+        assertEquals("a && b", Expressions.allOf(a, b, null).toString());        
+        assertEquals("a", Expressions.allOf(a, null).toString());
+        assertEquals("a", Expressions.allOf(null, a).toString());
+    }
 
     @Test
     public void AnyOf() {
         assertEquals("a || b", Expressions.anyOf(a, b).toString());
+    }
+    
+    @Test
+    public void AnyOf_With_Nulls() {
+        assertEquals("a || b", Expressions.anyOf(a, b, null).toString());       
+        assertEquals("a", Expressions.anyOf(a, null).toString());
+        assertEquals("a", Expressions.anyOf(null, a).toString());
     }
 
     @Test

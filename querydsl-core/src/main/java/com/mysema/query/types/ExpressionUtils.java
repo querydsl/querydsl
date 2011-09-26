@@ -29,7 +29,9 @@ public final class ExpressionUtils {
     public static Predicate allOf(Predicate... exprs){
         Predicate rv = null;
         for (Predicate b : exprs){
-            rv = rv == null ? b : ExpressionUtils.and(rv,b);
+            if (b != null) {
+                rv = rv == null ? b : ExpressionUtils.and(rv,b);    
+            }            
         }
         return rv;
     }
@@ -55,7 +57,9 @@ public final class ExpressionUtils {
     public static Predicate anyOf(Predicate... exprs){
         Predicate rv = null;
         for (Predicate b : exprs){
-            rv = rv == null ? b : ExpressionUtils.or(rv,b);
+            if (b != null) {
+                rv = rv == null ? b : ExpressionUtils.or(rv,b);    
+            }            
         }
         return rv;
     }
