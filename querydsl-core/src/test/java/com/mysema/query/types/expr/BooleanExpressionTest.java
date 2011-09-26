@@ -21,6 +21,20 @@ public class BooleanExpressionTest {
     public void AllOf(){
         assertEquals(a.and(b).and(c), BooleanExpression.allOf(a, b, c));
     }
+    
+    @Test
+    public void AllOf_With_Nulls() {
+        assertEquals("a && b", BooleanExpression.allOf(a, b, null).toString());        
+        assertEquals("a", BooleanExpression.allOf(a, null).toString());
+        assertEquals("a", BooleanExpression.allOf(null, a).toString());
+    }
+    
+    @Test
+    public void AnyOf_With_Nulls() {
+        assertEquals("a || b", BooleanExpression.anyOf(a, b, null).toString());       
+        assertEquals("a", BooleanExpression.anyOf(a, null).toString());
+        assertEquals("a", BooleanExpression.anyOf(null, a).toString());
+    }
 
     @Test
     public void AndAnyOf(){
