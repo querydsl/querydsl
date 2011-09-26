@@ -250,6 +250,11 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             serialize(Position.AFTER_ORDER, flags);
         }
         
+
+        if (!forCountRow && metadata.getModifiers().isRestricting()){
+            templates.serializeModifiers(metadata, context);
+        }
+        
         // end
         serialize(Position.END, flags);
         

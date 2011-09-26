@@ -7,6 +7,7 @@ package com.mysema.query.sql.support;
 
 import com.mysema.query.QueryMetadata;
 
+
 /**
  * @author tiwe
  *

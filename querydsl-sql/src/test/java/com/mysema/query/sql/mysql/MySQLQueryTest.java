@@ -30,9 +30,6 @@ public class MySQLQueryTest {
         query.orderBy(survey.name.asc());
         query.getMetadata().addProjection(survey.name);
     }
-
-//  SELECT * FROM table1 USE INDEX (col1_index,col2_index)
-//  WHERE col1=1 AND col2=2 AND col3=3;
     
     @Test
     public void UseIndex(){
@@ -107,6 +104,13 @@ public class MySQLQueryTest {
         assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc for update", toString(query));
     }
 
+    @Test
+    public void ForUpdate_With_Limit() {
+        query.forUpdate();
+        query.limit(2);
+        assertEquals("select survey.NAME from SURVEY survey order by survey.NAME asc limit ? for update", toString(query));
+    }
+    
     @Test
     public void IntoOutfile() {
         query.intoOutfile(new File("target/out"));

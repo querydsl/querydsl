@@ -100,4 +100,11 @@ public class SQLServerTemplates extends SQLTemplates{
             context.serialize(metadata, forCountRow);
         }
     }
+    
+    @Override
+    protected void serializeModifiers(QueryMetadata metadata, SerializationContext context) {
+        // do nothing
+    }
+
+    
 }
