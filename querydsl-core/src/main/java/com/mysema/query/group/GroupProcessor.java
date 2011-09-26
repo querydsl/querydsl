@@ -21,6 +21,12 @@ import org.apache.commons.collections15.Transformer;
  */
 public interface GroupProcessor<K, O> extends Transformer<Map<K, Group>, O> {
 
+    /**
+     * Analyze the given row. 
+     * 
+     * @param row
+     * @return true if row is accepted, false if rejected
+     */
     boolean accept(Object[] row);
 
 }

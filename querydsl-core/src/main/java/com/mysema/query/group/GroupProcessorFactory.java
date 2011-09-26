@@ -18,6 +18,6 @@ import java.util.List;
  */
 public interface GroupProcessorFactory<K, O> {
 
-    public GroupProcessor<K, O> createProcessor(List<GroupColumnDefinition<?, ?>> columnDefinitions);
+    public GroupProcessor<K, O> createProcessor(List<GroupDefinition<?, ?>> columnDefinitions);
     
 }

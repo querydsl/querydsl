@@ -7,6 +7,7 @@ package com.mysema.query.group;
 
 import java.util.List;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.query.Projectable;
 import com.mysema.query.ResultTransformer;
 
@@ -36,7 +37,7 @@ public class ProcessorGroupBy<K, O> implements ResultTransformer<O> {
         this(groupBy, new GroupProcessorFactory<K, O>() {
 
             @Override
-            public GroupProcessor<K, O> createProcessor(List<GroupColumnDefinition<?, ?>> columnDefinitions) {
+            public GroupProcessor<K, O> createProcessor(List<GroupDefinition<?, ?>> columnDefinitions) {
                 return processor;
             }
             
@@ -44,6 +45,9 @@ public class ProcessorGroupBy<K, O> implements ResultTransformer<O> {
     }
     
     public ProcessorGroupBy(GroupBy<K> groupBy, GroupProcessorFactory<K, O> processorFactory) {
+        Assert.notNull(groupBy, "groupBy");
+        Assert.notNull(processorFactory, "processorFactory");
+
         this.groupBy = groupBy;
         this.processorFactory = processorFactory;
     }

@@ -14,6 +14,8 @@ import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.collection.TransformedCollection;
 import org.apache.commons.collections15.set.TransformedSet;
 
+import com.mysema.commons.lang.Assert;
+
 /**
  * A read-only view of underlying map with values transformed by a given Transformer.
  * 
@@ -34,6 +36,9 @@ public class ValueTransformerMap<K, V, T> extends AbstractMap<K, T> {
     }
     
     public ValueTransformerMap(Map<K, V> map, Transformer<? super V, ? extends T> transformer) {
+        Assert.notNull(map, "map");
+        Assert.notNull(transformer, "transformer");
+
         this.map = map;
         this.transformer = transformer;
     }

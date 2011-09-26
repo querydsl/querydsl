@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.apache.commons.collections15.Transformer;
@@ -40,11 +41,11 @@ public class GroupByTest {
 
     private static final StringExpression commentText = new StringPath("commentText");
 
-    private static final GroupColumnDefinition<Integer, String> constant = new AbstractGroupColumnDefinition<Integer, String>(commentId) {
+    private static final GroupDefinition<Integer, String> constant = new AbstractGroupDefinition<Integer, String>(commentId) {
 
         @Override
-        public GroupColumn<String> createGroupColumn() {
-            return new GroupColumn<String>() {
+        public GroupCollector<String> createGroupCollector() {
+            return new GroupCollector<String>() {
 
                 @Override
                 public void add(Object o) {
@@ -211,6 +212,26 @@ public class GroupByTest {
         
         Group group = results.get(1);
         assertEquals("constant", group.getGroup(constant));
+    }
+    
+    @Test(expected=NoSuchElementException.class)
+    public void NoSuchElementException() {
+        Map<Integer, Group> results = 
+            GroupBy.create(postId).withOne(postName).withSet(commentId).withList(commentText)
+            .transform(BASIC_RESULTS);
+
+        Group group = results.get(1);
+        group.getSet(qComment);
+    }
+    
+    @Test(expected=ClassCastException.class)
+    public void ClassCastException() {
+        Map<Integer, Group> results = 
+            GroupBy.create(postId).withOne(postName).withSet(commentId).withList(commentText)
+            .transform(BASIC_RESULTS);
+
+        Group group = results.get(1);
+        group.getList(commentId);
     }
     
     @Test

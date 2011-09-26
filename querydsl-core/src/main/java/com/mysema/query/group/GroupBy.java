@@ -32,19 +32,24 @@ import com.mysema.query.types.Expression;
  * <li>Group of null is handled correctly
  * </ol>
  * 
+ * Results can be analyzed, filtered and transformed using GroupProcessor for stateless processors
+ * and GroupProcessorFactory for stateful processors. 
+ * 
+ * There exists 
+ * 
  * @author sasa
  */
 public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
     
-    private static class GList<T> extends AbstractGroupColumnDefinition<T, List<T>>{
+    private static class GList<T> extends AbstractGroupDefinition<T, List<T>>{
         
         public GList(Expression<T> expr) {
             super(expr);
         }
 
         @Override
-        public GroupColumn<List<T>> createGroupColumn() {
-            return new GroupColumn<List<T>>() {
+        public GroupCollector<List<T>> createGroupCollector() {
+            return new GroupCollector<List<T>>() {
 
                 private final List<T> list = new ArrayList<T>();
                 
@@ -63,15 +68,15 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
         }
     }
     
-    private static class GMap<K, V> extends AbstractGroupColumnDefinition<Pair<K, V>, Map<K, V>>{
+    private static class GMap<K, V> extends AbstractGroupDefinition<Pair<K, V>, Map<K, V>>{
         
         public GMap(QPair<K, V> qpair) {
             super(qpair);
         }
 
         @Override
-        public GroupColumn<Map<K, V>> createGroupColumn() {
-            return new GroupColumn<Map<K, V>>() {
+        public GroupCollector<Map<K, V>> createGroupCollector() {
+            return new GroupCollector<Map<K, V>>() {
 
                 private final Map<K, V> set = new LinkedHashMap<K, V>();
                 
@@ -91,15 +96,15 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
         }
     }
     
-    private static class GOne<T> extends AbstractGroupColumnDefinition<T, T>{
+    private static class GOne<T> extends AbstractGroupDefinition<T, T>{
 
         public GOne(Expression<T> expr) {
             super(expr);
         }
 
         @Override
-        public GroupColumn<T> createGroupColumn() {
-            return new GroupColumn<T>() {
+        public GroupCollector<T> createGroupCollector() {
+            return new GroupCollector<T>() {
                 private boolean first = true;
                 
                 private T val;
@@ -123,26 +128,26 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
     
     private class GroupImpl implements Group {
         
-        private final Map<Expression<?>, GroupColumn<?>> groupColumns = new LinkedHashMap<Expression<?>, GroupColumn<?>>();
+        private final Map<Expression<?>, GroupCollector<?>> groupCollectors = new LinkedHashMap<Expression<?>, GroupCollector<?>>();
         
         public GroupImpl() {
             for (int i=0; i < columnDefinitions.size(); i++) {
-                GroupColumnDefinition<?, ?> coldef = columnDefinitions.get(i);
-                groupColumns.put(coldef.getExpression(), coldef.createGroupColumn());
+                GroupDefinition<?, ?> coldef = columnDefinitions.get(i);
+                groupCollectors.put(coldef.getExpression(), coldef.createGroupCollector());
             }
         }
 
         void add(Object[] row) {
             int i=0;
-            for (GroupColumn<?> groupColumn : groupColumns.values()) {
-                groupColumn.add(row[i]);
+            for (GroupCollector<?> groupCollector : groupCollectors.values()) {
+                groupCollector.add(row[i]);
                 i++;
             }
         }
         
         @SuppressWarnings("unchecked")
         private <T, R> R get(Expression<T> expr) {
-            GroupColumn<R> col = (GroupColumn<R>) groupColumns.get(expr);
+            GroupCollector<R> col = (GroupCollector<R>) groupCollectors.get(expr);
             if (col != null) {
                 return col.get();
             }
@@ -151,12 +156,12 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
 
         @Override
         @SuppressWarnings("unchecked")
-        public <T, R> R getGroup(GroupColumnDefinition<T, R> definition) {
-            Iterator<GroupColumn<?>> iter = groupColumns.values().iterator();
-            for (GroupColumnDefinition<?, ?> def : columnDefinitions) {
-                GroupColumn<?> groupColumn = iter.next();
+        public <T, R> R getGroup(GroupDefinition<T, R> definition) {
+            Iterator<GroupCollector<?>> iter = groupCollectors.values().iterator();
+            for (GroupDefinition<?, ?> def : columnDefinitions) {
+                GroupCollector<?> groupCollector = iter.next();
                 if (def.equals(definition)) {
-                    return (R) groupColumn.get();
+                    return (R) groupCollector.get();
                 }
             }
             throw new NoSuchElementException(definition.toString());
@@ -171,7 +176,7 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
         public <K, V> Map<K, V> getMap(Expression<K> key, Expression<V> value) {
             for (QPair<?, ?> pair : maps) {
                 if (pair.equals(key, value)) {
-                    return (Map<K, V>) groupColumns.get(pair).get();
+                    return (Map<K, V>) groupCollectors.get(pair).get();
                 }
             }
             throw new NoSuchElementException("GMap(" + key + ", " + value + ")");
@@ -189,8 +194,8 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
 
         @Override
         public Object[] toArray() {
-            List<Object> arr = new ArrayList<Object>(groupColumns.size());
-            for (GroupColumn<?> col : groupColumns.values()) {
+            List<Object> arr = new ArrayList<Object>(groupCollectors.size());
+            for (GroupCollector<?> col : groupCollectors.values()) {
                 arr.add(col.get());
             }
             return arr.toArray();
@@ -198,7 +203,7 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
 
     }
 
-    private static class GSet<T> extends AbstractGroupColumnDefinition<T, Set<T>>{
+    private static class GSet<T> extends AbstractGroupDefinition<T, Set<T>>{
         
         public GSet(Expression<T> expr) {
             super(expr);
@@ -206,8 +211,8 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
 
         @Override
         @SuppressWarnings("unchecked")
-        public GroupColumn<Set<T>> createGroupColumn() {
-            return new GroupColumn<Set<T>>() {
+        public GroupCollector<Set<T>> createGroupCollector() {
+            return new GroupCollector<Set<T>>() {
 
                 private final Set<T> set = new LinkedHashSet<T>();
                 
@@ -233,7 +238,7 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
         return new GroupBy<T>(expr, first, rest);
     }
     
-    protected final List<GroupColumnDefinition<?, ?>> columnDefinitions;
+    protected final List<GroupDefinition<?, ?>> columnDefinitions;
 
     private final GroupProcessor<S, Map<S, Group>> defaultProcessor = new GroupProcessor<S, Map<S, Group>>() {
 
@@ -248,13 +253,25 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
         }
     };
     
-    private final List<QPair<?, ?>> maps;
+    protected final List<QPair<?, ?>> maps;
     
+    /**
+     * Group ResultSet rows by the value of given expression.
+     * 
+     * @param groupBy
+     */
     public GroupBy(Expression<S> groupBy) {
-        this(new ArrayList<GroupColumnDefinition<?,?>>(), new ArrayList<QPair<?,?>>());
+        this(new ArrayList<GroupDefinition<?,?>>(), new ArrayList<QPair<?,?>>());
         withGroup(new GOne<S>(groupBy));
     }
     
+    /**
+     * Group ResultSet rows by the value of given expression.
+     * 
+     * @param groupBy
+     * @param first One-valued expression
+     * @param rest More one-valued expressions
+     */
     public GroupBy(Expression<S> groupBy, Expression<?> first, Expression<?>... rest) {
         this(groupBy);
         withOne(first);
@@ -263,20 +280,33 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
         }
     }
     
-    public <T> GroupBy(Expression<S> groupBy, GroupColumnDefinition<?, ?> group, GroupColumnDefinition<?, ?>... groups) {
+    /**
+     * Group ResultSet rows by the value of given expression.
+     * 
+     * @param groupBy
+     * @param group
+     * @param groups
+     */
+    public GroupBy(Expression<S> groupBy, GroupDefinition<?, ?> group, GroupDefinition<?, ?>... groups) {
         this(groupBy);
         withGroup(group);
-        for (GroupColumnDefinition<?, ?> g : groups) {
+        for (GroupDefinition<?, ?> g : groups) {
             withGroup(g);
         }
     }
     
-    protected GroupBy(List<GroupColumnDefinition<?, ?>> columnDefinitions, List<QPair<?, ?>> maps) {
+    /**
+     * A constructor that allows cloning in sub classes.
+     * 
+     * @param columnDefinitions
+     * @param maps
+     */
+    protected GroupBy(List<GroupDefinition<?, ?>> columnDefinitions, List<QPair<?, ?>> maps) {
         this.columnDefinitions = columnDefinitions;
         this.maps = maps;
     }
     
-    public List<GroupColumnDefinition<?, ?>> getColumnDefinitions() {
+    public List<GroupDefinition<?, ?>> getColumnDefinitions() {
         return Collections.unmodifiableList(columnDefinitions);
     }
     
@@ -323,37 +353,96 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
         return process(projectable, defaultProcessor);
     }
     
-    public GroupBy<S> withGroup(GroupColumnDefinition<?, ?> g) {
-        columnDefinitions.add(g);
+    /**
+     * A way to project custom group types.
+     * 
+     * @param groupDefinition Custom group definition
+     * @return
+     */
+    public GroupBy<S> withGroup(GroupDefinition<?, ?> groupDefinition) {
+        Assert.notNull(groupDefinition, "groupDefinition");
+        
+        columnDefinitions.add(groupDefinition);
         return this;
     }
 
+    /**
+     * Values of given expression in all rows belonging to this group as List. 
+     * 
+     * @param <T>
+     * @param expr
+     * @return
+     */
     public <T> GroupBy<S> withList(Expression<T> expr) {
         return withGroup(new GList<T>(expr));
     }
     
+    /**
+     * Map of given expressions in all rows belonging to this group as Map. 
+     * 
+     * @param <K>
+     * @param <V>
+     * @param key
+     * @param value
+     * @return
+     */
     public <K, V> GroupBy<S> withMap(Expression<K> key, Expression<V> value) {
         QPair<K, V> qpair = new QPair<K, V>(key, value);
         maps.add(qpair);
         return withGroup(new GMap<K, V>(qpair));
     }
 
+    /**
+     * Value of given expression in the first row belonging to this group.
+     * 
+     * @param <T>
+     * @param expr
+     * @return
+     */
     public <T> GroupBy<S> withOne(Expression<T> expr) {
         return withGroup(new GOne<T>(expr));
     }
     
+    /**
+     * Process results with a stateful processor created by given processorFactory.
+     * 
+     * @param <O>
+     * @param processorFactory 
+     * @return
+     */
     public <O> ProcessorGroupBy<S, O> withProcessor(GroupProcessorFactory<S, O> processorFactory) {
         return ProcessorGroupBy.create(this, processorFactory);
     }
     
+    /**
+     * Process results with the given stateless processor.
+     * 
+     * @param <O>
+     * @param processor
+     * @return
+     */
     public <O> ProcessorGroupBy<S, O> withProcessor(GroupProcessor<S, O> processor) {
         return ProcessorGroupBy.create(this, processor);
     }
     
+    /**
+     * Values of given expression in all rows belonging to this group as Set. 
+     * 
+     * @param <T>
+     * @param expr
+     * @return
+     */
     public <T> GroupBy<S> withSet(Expression<T> expr) {
         return withGroup(new GSet<T>(expr));
     }
     
+    /**
+     * Transforms results using given transformer.
+     * 
+     * @param <W>
+     * @param transformer Stateless Map transformer
+     * @return
+     */
     public <W> ProcessorGroupBy<S, W> withTransformer(final Transformer<Map<S, Group>, W> transformer) {
         return withProcessor(new GroupProcessor<S, W>() {
 
@@ -370,6 +459,13 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
         });
     }
 
+    /**
+     * Transforms Map values with given transformer.
+     * 
+     * @param <W>
+     * @param transformer Stateless Group transformer
+     * @return
+     */
     public <W> ProcessorGroupBy<S, Map<S, W>> withValueTransformer(final Transformer<? super Group, ? extends W> transformer) {
         return withTransformer(new Transformer<Map<S, Group>, Map<S, W>>() {
 

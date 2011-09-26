@@ -8,6 +8,7 @@ package com.mysema.query.group;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionBase;
@@ -36,6 +37,10 @@ public final class QPair<K, V> extends ExpressionBase<Pair<K, V>> implements Fac
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public QPair(Expression<K> key, Expression<V> value) {
         super((Class) Pair.class);
+
+        Assert.notNull(key, "key");
+        Assert.notNull(value, "value");
+        
         this.key = key;
         this.value = value;
     }
