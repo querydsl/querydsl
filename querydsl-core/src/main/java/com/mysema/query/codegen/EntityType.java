@@ -44,7 +44,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     
     private final Set<String> escapedPropertyNames = new HashSet<String>();
 
-    private final Collection<Supertype> superTypes;
+    private final Set<Supertype> superTypes;
 
     private final Map<Object,Object> data = new HashMap<Object,Object>();
 
@@ -144,7 +144,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         return superTypes.size() == 1 ? superTypes.iterator().next() : null;
     }
 
-    public Collection<Supertype> getSuperTypes() {
+    public Set<Supertype> getSuperTypes() {
         return superTypes;
     }
 
@@ -204,4 +204,7 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         return escapedPropertyNames;
     }
     
+    public Type getInnerType() {
+        return type;
+    }
 }
