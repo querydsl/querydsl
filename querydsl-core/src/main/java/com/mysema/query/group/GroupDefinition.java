@@ -9,7 +9,7 @@ import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 
 /**
- * Defines the way results of a given expression are grouped. GroupDefinition is also used
+ * Defines the way results of a given expression are grouped. GroupDefinitions are also used
  * to access values of a given GroupDefinition within a Group. This resembles 
  * closely the way Expressions are used to access values of a {@link Tuple}. 
  * GroupDefinitions are stateless wrappers for Expressions that know how to 
