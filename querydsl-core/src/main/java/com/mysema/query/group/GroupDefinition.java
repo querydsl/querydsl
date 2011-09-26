@@ -5,10 +5,15 @@
  */
 package com.mysema.query.group;
 
+import com.mysema.query.Tuple;
 import com.mysema.query.types.Expression;
 
 /**
- * Defines the way results of a given expression are grouped.  
+ * Defines the way results of a given expression are grouped. GroupDefinition is also used
+ * to access values of a given GroupDefinition within a Group. This resembles 
+ * closely the way Expressions are used to access values of a {@link Tuple}. 
+ * GroupDefinitions are stateless wrappers for Expressions that know how to 
+ * collect row values into a group.
  * 
  * @author sasa
  *
@@ -23,7 +28,7 @@ public interface GroupDefinition<T, R> {
     Expression<T> getExpression();
     
     /**
-     * @return a new GroupCollector to collect values belonging to this group.
+     * @return a new stateful GroupCollector to collect values belonging to this group.
      */
     GroupCollector<R> createGroupCollector();
     
