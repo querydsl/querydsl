@@ -6,6 +6,7 @@
 package com.mysema.query.group;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -16,6 +17,7 @@ import java.util.Set;
 
 import org.apache.commons.collections15.Transformer;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.Projectable;
@@ -32,7 +34,6 @@ import com.mysema.query.types.Expression;
  * 
  * @author sasa
  */
-@SuppressWarnings("unchecked")
 public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
     
     private static class GList<T> extends AbstractGroupColumnDefinition<T, List<T>>{
@@ -48,6 +49,7 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
                 private final List<T> list = new ArrayList<T>();
                 
                 @Override
+                @SuppressWarnings("unchecked")
                 public void add(Object o) {
                     list.add((T) o);
                 }
@@ -75,6 +77,7 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
                 
                 @Override
                 public void add(Object o) {
+                    @SuppressWarnings("unchecked")
                     Pair<K, V> pair = (Pair<K, V>) o;
                     set.put(pair.getFirst(), pair.getSecond());
                 }
@@ -102,6 +105,7 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
                 private T val;
                 
                 @Override
+                @SuppressWarnings("unchecked")
                 public void add(Object o) {
                     if (first) {
                         val = (T) o;
@@ -115,40 +119,6 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
                 }
             };
         }
-    }
-    
-    private static class GSet<T> extends AbstractGroupColumnDefinition<T, Set<T>>{
-        
-        public GSet(Expression<T> expr) {
-            super(expr);
-        }
-
-        @Override
-        public GroupColumn<Set<T>> createGroupColumn() {
-            return new GroupColumn<Set<T>>() {
-
-                private final Set<T> set = new LinkedHashSet<T>();
-                
-                @Override
-                public void add(Object o) {
-                    set.add((T) o);
-                }
-
-                @Override
-                public Set<T> get() {
-                    return set;
-                }
-                
-            };
-        }
-    }
-
-    public static <T> GroupBy<T> create(Expression<T> expr) {
-        return new GroupBy<T>(expr);
-    } 
-
-    public static <T> GroupBy<T> create(Expression<T> expr, Expression<?> first, Expression<?>... rest) {
-        return new GroupBy<T>(expr, first, rest);
     }
     
     private class GroupImpl implements Group {
@@ -170,6 +140,7 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
             }
         }
         
+        @SuppressWarnings("unchecked")
         private <T, R> R get(Expression<T> expr) {
             GroupColumn<R> col = (GroupColumn<R>) groupColumns.get(expr);
             if (col != null) {
@@ -179,6 +150,7 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
         public <T, R> R getGroup(GroupColumnDefinition<T, R> definition) {
             Iterator<GroupColumn<?>> iter = groupColumns.values().iterator();
             for (GroupColumnDefinition<?, ?> def : columnDefinitions) {
@@ -195,6 +167,7 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
             return this.<T, List<T>>get(expr);
         }
 
+        @SuppressWarnings("unchecked")
         public <K, V> Map<K, V> getMap(Expression<K> key, Expression<V> value) {
             for (QPair<?, ?> pair : maps) {
                 if (pair.equals(key, value)) {
@@ -225,11 +198,60 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
 
     }
 
-    private final List<GroupColumnDefinition<?, ?>> columnDefinitions = new ArrayList<GroupColumnDefinition<?,?>>();
+    private static class GSet<T> extends AbstractGroupColumnDefinition<T, Set<T>>{
+        
+        public GSet(Expression<T> expr) {
+            super(expr);
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public GroupColumn<Set<T>> createGroupColumn() {
+            return new GroupColumn<Set<T>>() {
+
+                private final Set<T> set = new LinkedHashSet<T>();
+                
+                @Override
+                public void add(Object o) {
+                    set.add((T) o);
+                }
+
+                @Override
+                public Set<T> get() {
+                    return set;
+                }
+                
+            };
+        }
+    } 
+
+    public static <T> GroupBy<T> create(Expression<T> expr) {
+        return new GroupBy<T>(expr);
+    }
     
-    private final List<QPair<?, ?>> maps = new ArrayList<QPair<?,?>>();
+    public static <T> GroupBy<T> create(Expression<T> expr, Expression<?> first, Expression<?>... rest) {
+        return new GroupBy<T>(expr, first, rest);
+    }
+    
+    protected final List<GroupColumnDefinition<?, ?>> columnDefinitions;
+
+    private final GroupProcessor<S, Map<S, Group>> defaultProcessor = new GroupProcessor<S, Map<S, Group>>() {
+
+        @Override
+        public boolean accept(Object[] row) {
+            return true;
+        }
+
+        @Override
+        public Map<S, Group> transform(Map<S, Group> groups) {
+            return groups;
+        }
+    };
+    
+    private final List<QPair<?, ?>> maps;
     
     public GroupBy(Expression<S> groupBy) {
+        this(new ArrayList<GroupColumnDefinition<?,?>>(), new ArrayList<QPair<?,?>>());
         withGroup(new GOne<S>(groupBy));
     }
     
@@ -249,6 +271,15 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
         }
     }
     
+    protected GroupBy(List<GroupColumnDefinition<?, ?>> columnDefinitions, List<QPair<?, ?>> maps) {
+        this.columnDefinitions = columnDefinitions;
+        this.maps = maps;
+    }
+    
+    public List<GroupColumnDefinition<?, ?>> getColumnDefinitions() {
+        return Collections.unmodifiableList(columnDefinitions);
+    }
+    
     private Expression<?>[] getExpressions() {
         Expression<?>[] unwrapped = new Expression<?>[columnDefinitions.size()];
         for (int i=0; i < columnDefinitions.size(); i++) {
@@ -257,26 +288,39 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
         return unwrapped;
     }
     
-    @Override
-    public Map<S, Group> transform(Projectable projectable) {
-        final Map<S, Group> groups = new LinkedHashMap<S, Group>();
+    public <O> O process(Projectable projectable, GroupProcessor<S, O> processor) {
+        Assert.notNull(projectable, "projectable");
+        Assert.notNull(processor, "processor");
 
+        final Map<S, Group> groups = new LinkedHashMap<S, Group>();
+        
         CloseableIterator<Object[]> iter = projectable.iterate(getExpressions());
         try {
             while (iter.hasNext()) {
                 Object[] row = iter.next();
-                S groupId = (S) row[0];
-                GroupImpl group = (GroupImpl) groups.get(groupId);
-                if (group == null) {
-                    group = new GroupImpl();
-                    groups.put(groupId, group);
+                if (processor.accept(row)) {
+                    @SuppressWarnings("unchecked")
+                    S groupId = (S) row[0];
+
+                    @SuppressWarnings("unchecked")
+                    GroupImpl group = (GroupImpl) groups.get(groupId);
+                    
+                    if (group == null) {
+                        group = new GroupImpl();
+                        groups.put(groupId, group);
+                    }
+                    group.add(row);
                 }
-                group.add(row);
             }
         } finally {
             iter.close();
         }
-        return groups;
+        return processor.transform(groups);
+    }
+    
+    @Override
+    public Map<S, Group> transform(Projectable projectable) {
+        return process(projectable, defaultProcessor);
     }
     
     public GroupBy<S> withGroup(GroupColumnDefinition<?, ?> g) {
@@ -298,12 +342,43 @@ public class GroupBy<S> implements ResultTransformer<Map<S, Group>> {
         return withGroup(new GOne<T>(expr));
     }
     
+    public <O> ProcessorGroupBy<S, O> withProcessor(GroupProcessorFactory<S, O> processorFactory) {
+        return ProcessorGroupBy.create(this, processorFactory);
+    }
+    
+    public <O> ProcessorGroupBy<S, O> withProcessor(GroupProcessor<S, O> processor) {
+        return ProcessorGroupBy.create(this, processor);
+    }
+    
     public <T> GroupBy<S> withSet(Expression<T> expr) {
         return withGroup(new GSet<T>(expr));
     }
     
-    public <W> TransformerGroupBy<S, W> withTransformer(Transformer<? super Group, ? extends W> transformer) {
-        return TransformerGroupBy.create(this, transformer);
+    public <W> ProcessorGroupBy<S, W> withTransformer(final Transformer<Map<S, Group>, W> transformer) {
+        return withProcessor(new GroupProcessor<S, W>() {
+
+            @Override
+            public W transform(Map<S, Group> input) {
+                return transformer.transform(input);
+            }
+
+            @Override
+            public boolean accept(Object[] row) {
+                return true;
+            }
+            
+        });
+    }
+
+    public <W> ProcessorGroupBy<S, Map<S, W>> withValueTransformer(final Transformer<? super Group, ? extends W> transformer) {
+        return withTransformer(new Transformer<Map<S, Group>, Map<S, W>>() {
+
+            @Override
+            public Map<S, W> transform(Map<S, Group> input) {
+                return ValueTransformerMap.create(input, transformer);
+            }
+            
+        });
     }
     
 }

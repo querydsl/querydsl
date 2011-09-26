@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2011 Mysema Ltd.
+ * All rights reserved.
+ *
+ */
 package com.mysema.query.group;
 
 import java.util.AbstractMap;
@@ -9,17 +14,26 @@ import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.collection.TransformedCollection;
 import org.apache.commons.collections15.set.TransformedSet;
 
-public class TransformerMap<K, V, T> extends AbstractMap<K, T> {
+/**
+ * A read-only view of underlying map with values transformed by a given Transformer.
+ * 
+ * @author sasa
+ *
+ * @param <K> Key type of this map
+ * @param <V> Original value type; input type for the Transformer
+ * @param <T> Target value type; output type of the Transformer
+ */
+public class ValueTransformerMap<K, V, T> extends AbstractMap<K, T> {
 
     private final Map<K, V> map;
 
     private final Transformer<? super V, ? extends T> transformer;
     
     public static <K, V, T> Map<K, T> create(Map<K, V> map, Transformer<? super V, ? extends T> transformer) {
-        return new TransformerMap<K, V, T>(map, transformer);
+        return new ValueTransformerMap<K, V, T>(map, transformer);
     }
     
-    public TransformerMap(Map<K, V> map, Transformer<? super V, ? extends T> transformer) {
+    public ValueTransformerMap(Map<K, V> map, Transformer<? super V, ? extends T> transformer) {
         this.map = map;
         this.transformer = transformer;
     }

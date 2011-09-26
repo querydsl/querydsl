@@ -1034,10 +1034,19 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         
         QTuple subordinates = new QTuple(employee2.id, employee2.firstname, employee2.lastname);
 
-        // {id:1, firstname:"Mike", lastname:"Smith", subordinates: [{id:, firstname:, lastname:}, {id:, firstname:, lastname:}...]
-        Map<Integer, Group> results = GroupBy.create(employee.id, employee.firstname, employee.lastname)
-            .withMap(employee2.id, subordinates)
-            .transform(qry);
+        // This defines a map of groups like
+        // {
+        //    id:1,
+        //    firstname:"Mike", 
+        //    lastname:"Smith", 
+        //    subordinates: [{id:, firstname:, lastname:}, {id:, firstname:, lastname:}...]
+        // }
+        // NOTE: Superiors group definition can be reused. GroupBy is stateless. 
+
+        GroupBy<Integer> superiors = GroupBy.create(employee.id, employee.firstname, employee.lastname)
+            .withMap(employee2.id, subordinates);
+        
+        Map<Integer, Group> results = superiors.transform(qry);
         
         assertEquals(2, results.size());
         
