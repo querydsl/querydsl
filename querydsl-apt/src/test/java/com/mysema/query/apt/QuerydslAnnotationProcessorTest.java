@@ -72,6 +72,12 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
     }
     
     @Test
+    public void EntityInheritanceTest() throws IOException {
+        String path = new File("src/test/java/com/mysema/query/domain/EntityInheritanceTest.java").getPath();
+        process(JPAAnnotationProcessor.class, Collections.singletonList(path),"entityInheritance");
+    }
+    
+    @Test
     public void QuerydslAnnotationProcessor() throws IOException {
         process(QuerydslAnnotationProcessor.class, CLASSES, "querydsl");
     }
