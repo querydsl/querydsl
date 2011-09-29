@@ -56,4 +56,15 @@ public class QTupleTest {
         assertEquals("1234", FactoryExpressionUtils.wrap(expr).newInstance("1", "2", "12", "34").get(concat));
     }
 
+    @Test
+    public void Tuple_Equals() {
+        QTuple expr = new QTuple(str1, str2);
+        assertEquals(expr.newInstance("str1", "str2"), expr.newInstance("str1", "str2"));
+    }
+    
+    @Test
+    public void Tuple_hashCode() {
+        QTuple expr = new QTuple(str1, str2);
+        assertEquals(expr.newInstance("str1", "str2").hashCode(), expr.newInstance("str1", "str2").hashCode());
+    }
 }

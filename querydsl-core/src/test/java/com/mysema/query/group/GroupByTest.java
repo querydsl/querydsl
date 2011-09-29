@@ -237,7 +237,7 @@ public class GroupByTest {
     @Test
     public void Map() {
         Map<Integer, Group> results = 
-            GroupBy.create(postId).withOne(postName).withMap(commentId, commentText)
+            GroupBy.create(postId, postName).withMap(commentId, commentText)
             .transform(MAP_RESULTS);
 
         Group group = results.get(1);
@@ -250,7 +250,7 @@ public class GroupByTest {
     @Test
     public void Array_Access() {
         Map<Integer, Group> results = 
-            GroupBy.create(postId).withOne(postName).withSet(commentId).withList(commentText)
+            GroupBy.create(postId, postName).withSet(commentId).withList(commentText)
             .transform(BASIC_RESULTS);
 
         Group group = results.get(1);
@@ -311,7 +311,9 @@ public class GroupByTest {
     }
     
     /**
-     * Proof-of-concept for lazy batch load in order to avoid N+1 queries.
+     * A technical proof-of-concept of lazy batch loading to show how it can be done
+     * by using GroupProcessor. This needs to be made much more fluent with DSL-support
+     * to actually be usable...
      */
     @Test
     public void Lazy_Batch_Loader_POC() {
@@ -321,10 +323,10 @@ public class GroupByTest {
         final Map<Integer, Post> results = 
             GroupBy.create(postId, postName)
             
-            // NOTE: As this should be ProcessorFactory as it's stateful
+            // NOTE: This should be ProcessorFactory as it's stateful
             .withProcessor(new GroupProcessor<Integer, Map<Integer, Post>>() {
 
-                // postId -> comment
+                // postId -> comments
                 private Map<Integer, Set<Comment>> comments;
                 
                 private final Set<Integer> postIds = new HashSet<Integer>();
@@ -389,6 +391,7 @@ public class GroupByTest {
                             return new Post(
                                     pid, 
                                     group.getOne(postName),
+                                    
                                     // Lazy collection wrapper
                                     new AbstractSet<Comment>() {
                                         

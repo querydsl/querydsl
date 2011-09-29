@@ -57,6 +57,22 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
                 return a;
             }
 
+            @Override
+            public boolean equals(Object obj) {
+                if (obj == this) {
+                    return true;
+                } else if (obj instanceof Tuple) {
+                    return Arrays.equals(a, ((Tuple) obj).toArray());
+                } else {
+                    return false;
+                }
+            }
+
+            @Override
+            public int hashCode() {
+                return Arrays.hashCode(a);
+            }
+
         };
     }
 

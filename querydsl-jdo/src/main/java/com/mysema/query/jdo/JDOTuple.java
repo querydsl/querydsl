@@ -1,6 +1,7 @@
 package com.mysema.query.jdo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,23 @@ public class JDOTuple implements Tuple{
     @Override
     public Object[] toArray() {
         return indexed.toArray();
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        } else if (obj instanceof Tuple) {
+            return Arrays.equals(toArray(), ((Tuple) obj).toArray());
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(toArray());
     }
 
 }
