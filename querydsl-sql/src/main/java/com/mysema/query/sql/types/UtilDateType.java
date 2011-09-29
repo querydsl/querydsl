@@ -34,7 +34,7 @@ public class UtilDateType implements Type<Date>{
 
     @Override
     public int[] getSQLTypes() {
-        return new int[]{Types.DATE};
+        return new int[]{Types.TIMESTAMP};
     }
 
 }
