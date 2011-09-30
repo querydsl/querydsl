@@ -224,14 +224,16 @@ public final class ExtendedTypeFactory {
 
     private Type createMapType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
         if (!typeMirrors.hasNext()){
-            throw new TypeArgumentsException(simpleName);
+            return new SimpleType(Types.MAP, defaultType, defaultType);
         }
         Type keyType = getType(typeMirrors.next(), deep);
         if (keyType == null){
             keyType = defaultType;
         }
         Type valueType = getType(typeMirrors.next(), deep);
-        if (valueType.getParameters().isEmpty()) {
+        if (valueType == null) {
+            valueType = defaultType;
+        } else if (valueType.getParameters().isEmpty()) {
             TypeElement element = env.getElementUtils().getTypeElement(valueType.getFullName());
             if (element != null){
                 Type type = getType(element.asType(), deep);
@@ -257,10 +259,12 @@ public final class ExtendedTypeFactory {
 
     private Type createCollectionType(Type baseType, String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
         if (!typeMirrors.hasNext()){
-            throw new TypeArgumentsException(simpleName);
+            return new SimpleType(baseType, defaultType);
         }
         Type componentType = getType(typeMirrors.next(), deep);
-        if (componentType.getParameters().isEmpty()){
+        if (componentType == null) {
+            componentType = defaultType;
+        } else if (componentType.getParameters().isEmpty()){
             TypeElement element = env.getElementUtils().getTypeElement(componentType.getFullName());
             if (element != null){
                 Type type = getType(element.asType(), deep);

@@ -17,12 +17,13 @@ import org.junit.Test;
 
 import com.mysema.query.types.path.NumberPath;
 
+@SuppressWarnings("serial")
 public class AbstractClasses2Test {
     
     public interface Archetype<PK extends Serializable, DO extends Serializable> extends Serializable, Comparable<DO>  {
 
     }
-
+    
     @MappedSuperclass
     public static abstract class BaseArchetype<PK extends Serializable, DO extends Serializable> implements Archetype<PK, DO> {
 
