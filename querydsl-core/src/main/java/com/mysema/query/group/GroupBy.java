@@ -175,7 +175,7 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
     private final Expression<?>[] expressions;
     
     @Nullable
-    private FactoryExpression<?> projection;
+    private FactoryExpression<?> transformation;
     
     GroupBy(Expression<K> key, Expression<?>... expressions) {
         this(key, false, expressions);
@@ -183,8 +183,8 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
     
     GroupBy(Expression<K> key, boolean asGroup, Expression<?>... expressions) {
         if (!asGroup && expressions[0] instanceof FactoryExpression) {
-            projection = FactoryExpressionUtils.wrap((FactoryExpression<?>)expressions[0]);
-            expressions = projection.getArgs().toArray(new Expression[0]);
+            transformation = FactoryExpressionUtils.wrap((FactoryExpression<?>)expressions[0]);
+            expressions = transformation.getArgs().toArray(new Expression[transformation.getArgs().size()]);
         }
         
         List<Expression<?>> projection = new ArrayList<Expression<?>>(expressions.length);        
@@ -242,7 +242,7 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
     }
 
     protected Map<K, V> transform(Map<K, Group> groups) {
-        if (projection != null) {
+        if (transformation != null) {
             Map<K, V> results = new LinkedHashMap<K, V>(groups.size());
             for (Map.Entry<K, Group> entry : groups.entrySet()) {
                 results.put(entry.getKey(), transform(entry.getValue()));
@@ -258,7 +258,7 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         for (int i = 1; i < columnDefinitions.size(); i++) {
             args.add(group.getGroup(columnDefinitions.get(i)));
         }
-        return (V)projection.newInstance(args.toArray());
+        return (V)transformation.newInstance(args.toArray());
     }
 
 }
