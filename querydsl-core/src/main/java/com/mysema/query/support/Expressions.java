@@ -122,9 +122,8 @@ public final class Expressions {
     public static <T extends Comparable> TimeExpression<T> timeOperation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
         return TimeOperation.create(type, operator, args);
     }    
-    
-    @SuppressWarnings("unchecked")
-    public static <T extends Number & Comparable> NumberExpression<T> numberOperation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
+        
+    public static <T extends Number & Comparable<?>> NumberExpression<T> numberOperation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
         return NumberOperation.create(type, operator, args);
     }
     
