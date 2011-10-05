@@ -11,6 +11,7 @@ import java.util.Map;
 import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.Projectable;
+import com.mysema.query.ResultTransformer;
 import com.mysema.query.SearchResults;
 import com.mysema.query.types.Expression;
 
@@ -147,6 +148,11 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
+    public <T> T transform(ResultTransformer<T> transformer) {
+        return projectable.transform(transformer);
+    }
+    
+    @Override
     public Object[] uniqueResult(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return projectable.uniqueResult(first, second, rest);
     }
@@ -160,5 +166,6 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     public <RT> RT uniqueResult(Expression<RT> expr) {
         return projectable.uniqueResult(expr);
     }
+
 
 }

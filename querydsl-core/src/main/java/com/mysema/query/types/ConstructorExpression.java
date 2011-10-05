@@ -14,6 +14,9 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.ClassUtils;
 
+import com.mysema.query.types.expr.SimpleExpression;
+import com.mysema.query.types.expr.SimpleOperation;
+
 /**
  * ConstructorExpression represents a constructor invocation
  *
@@ -77,6 +80,25 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
         this.args = args;
     }
 
+    /**
+     * Create an alias for the expression
+     *
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public SimpleExpression<T> as(Path<T> alias) {
+        return SimpleOperation.create((Class<T>)getType(),Ops.ALIAS, this, alias);
+    }
+
+    /**
+     * Create an alias for the expression
+     *
+     * @return
+     */
+    public SimpleExpression<T> as(String alias) {
+        return as(new PathImpl<T>(getType(), alias));
+    }
+    
     @Override
     public <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);

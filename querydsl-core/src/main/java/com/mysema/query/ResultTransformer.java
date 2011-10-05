@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Mysema Ltd.
+ * Copyright (c) 2011 Mysema Ltd.
  * All rights reserved.
  *
  */
@@ -17,6 +17,6 @@ package com.mysema.query;
  */
 public interface ResultTransformer<T> {
 
-    public T transform(Projectable projectable);
+    T transform(Projectable projectable);
     
 }

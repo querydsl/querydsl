@@ -16,6 +16,7 @@ import org.apache.commons.collections15.IteratorUtils;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.Projectable;
+import com.mysema.query.ResultTransformer;
 import com.mysema.query.SearchResults;
 import com.mysema.query.types.Expression;
 
@@ -138,6 +139,12 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
         return limit(1).uniqueResult(expr);
     }
 
+    @Override
+    public <T> T transform(ResultTransformer<T> transformer) {
+        return transformer.transform(this);
+    }
+    
+    
     @Override
     public final Object[] uniqueResult(Expression<?> first, Expression<?> second, Expression<?>... rest) {
         return uniqueResult(merge(first, second, rest));

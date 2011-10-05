@@ -244,6 +244,15 @@ public interface Projectable {
      */
     @Nullable
     <RT> RT singleResult(Expression<RT> projection);
+    
+    /**
+     * Apply the given transformer to this Projectable instance and return the results
+     * 
+     * @param <T>
+     * @param transformer
+     * @return
+     */
+    <T> T transform(ResultTransformer<T> transformer);
 
     /**
      * return a unique result for the given projection or null if no result is found

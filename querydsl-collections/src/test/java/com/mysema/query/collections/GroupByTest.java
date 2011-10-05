@@ -1,0 +1,244 @@
+package com.mysema.query.collections;
+
+
+import static com.mysema.query.group.GroupBy.groupBy;
+import static com.mysema.query.group.GroupBy.list;
+import static com.mysema.query.group.GroupBy.map;
+import static com.mysema.query.group.GroupBy.set;
+import static junit.framework.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.junit.Ignore;
+import org.junit.Test;
+
+import com.mysema.query.group.Group;
+import com.mysema.query.types.Projections;
+
+public class GroupByTest {
+    
+    private static final List<User> users = Arrays.asList(new User("Bob"), new User("Jane"), new User("Jack"));
+    
+    private static final List<Post> posts = Arrays.asList(
+            new Post(1, "Post 1", users.get(0)), 
+            new Post(2, "Post 2", users.get(0)),
+            new Post(3, "Post 3", users.get(1)));
+    
+    private static final List<Comment> comments = Arrays.asList( 
+            new Comment(1, "Comment 1", users.get(0), posts.get(0)),
+            new Comment(2, "Comment 2", users.get(1), posts.get(1)),
+            new Comment(3, "Comment 3", users.get(2), posts.get(1)),
+            new Comment(4, "Comment 4", users.get(0), posts.get(2)),
+            new Comment(5, "Comment 5", users.get(1), posts.get(2)),
+            new Comment(6, "Comment 6", users.get(2), posts.get(2)));
+    
+    private static final QUser user = QUser.user;
+    
+    private static final QComment comment = QComment.comment;
+    
+    private static final QPost post = QPost.post;
+        
+    @Test 
+    public void Group_Order() {       
+//        Map<Integer, Group> results = BASIC_RESULTS
+//            .transform(groupBy(postId, postName, set(commentId)));
+        
+        Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
+            .where(comment.post.id.eq(post.id))
+            .transform(groupBy(post.id, post.name, set(comment.id)));
+        
+        assertEquals(3, results.size());
+    }
+    
+    @Test
+    public void First_Set_And_List() {       
+//        Map<Integer, Group> results = BASIC_RESULTS.transform(
+//            groupBy(postId, postName, set(commentId), list(commentText)));
+        
+        Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
+            .where(comment.post.id.eq(post.id))
+            .transform(groupBy(post.id, post.name, set(comment.id), list(comment.text)));
+        
+        Group group = results.get(1);
+        assertEquals(toInt(1), group.getOne(post.id));
+        assertEquals("Post 1", group.getOne(post.name));
+        assertEquals(toSet(1), group.getSet(comment.id));
+        assertEquals(Arrays.asList("Comment 1"), group.getList(comment.text));
+    }
+    
+    @Test
+    @Ignore
+    public void Group_By_Null() {        
+//        Map<Integer, Group> results = BASIC_RESULTS.transform(
+//            groupBy(postId, postName, set(commentId), list(commentText)));
+        
+        Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
+            .where(comment.post.id.eq(post.id))
+            .transform(groupBy(post.id, post.name, set(comment.id), list(comment.text)));
+        
+        Group group = results.get(null);
+        assertNull(group.getOne(post.id));
+        assertEquals("null post", group.getOne(post.name));
+        assertEquals(toSet(7, 8), group.getSet(comment.id));
+        assertEquals(Arrays.asList("comment 7", "comment 8"), group.getList(comment.text));
+          
+    }
+        
+//    @Test(expected=NoSuchElementException.class)
+//    public void NoSuchElementException() {       
+//        Map<Integer, Group> results = BASIC_RESULTS.transform(
+//            groupBy(postId, postName, set(commentId), list(commentText)));
+//        
+//        Group group = results.get(1);
+//        group.getSet(qComment);
+//    }
+    
+    @Test(expected=ClassCastException.class)
+    public void ClassCastException() {        
+//        Map<Integer, Group> results = BASIC_RESULTS.transform(
+//            groupBy(postId, postName, set(commentId), list(commentText)));
+        Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
+            .where(comment.post.id.eq(post.id))
+            .transform(groupBy(post.id, post.name, set(comment.id), list(comment.text)));
+        
+        Group group = results.get(1);
+        group.getList(comment.id);
+    }
+    
+    @Test
+    @Ignore
+    public void Map() {
+        // FIXME
+//        Map<Integer, Group> results = MAP_RESULTS.transform(
+//            groupBy(postId, postName, map(commentId, commentText)));        
+        Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
+            .where(comment.post.id.eq(post.id))
+            .transform(groupBy(post.id, post.name, map(comment.id, comment.text)));
+        
+        Group group = results.get(1);
+        
+        Map<Integer, String> comments = group.getMap(comment.id, comment.text);
+        assertEquals(3, comments.size());
+        assertEquals("comment 2", comments.get(2));
+    }
+
+    @Test
+    public void Array_Access() {        
+//        Map<Integer, Group> results = BASIC_RESULTS.transform(
+//            groupBy(postId, postName, set(commentId), list(commentText)));
+        Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
+            .where(comment.post.id.eq(post.id))
+            .transform(groupBy(post.id, post.name, set(comment.id), list(comment.text)));
+        
+        Group group = results.get(1);
+        Object[] array = group.toArray();
+        assertEquals(toInt(1), array[0]);
+        assertEquals("Post 1", array[1]);
+        assertEquals(toSet(1), array[2]);
+        assertEquals(Arrays.asList("Comment 1"), array[3]);
+    }
+    
+    @Test
+    public void Transform_Results() {        
+//        Map<Integer, Post> results = POST_W_COMMENTS.transform(
+//                groupBy(postId, Projections.constructor(Post.class, postId, postName, set(qComment))));
+        Map<Integer, Post> results = MiniApi.from(post, posts).from(comment, comments)
+            .where(comment.post.id.eq(post.id))
+            .transform(groupBy(post.id, QPost.create(post.id, post.name, post.user)));
+        
+        Post post = results.get(1);
+        assertNotNull(post);
+        assertEquals(1, post.getId());
+        assertEquals("Post 1", post.getName());
+//        assertEquals(toSet(comment(1), comment(2), comment(3)), post.getComments());
+    }
+    
+    @Test
+    public void Transform_As_Bean() {
+//        Map<Integer, Post> results = POST_W_COMMENTS.transform(
+//                groupBy(postId, Projections.bean(Post.class, postId, postName, set(qComment).as("comments"))));
+        Map<Integer, Post> results = MiniApi.from(post, posts).from(comment, comments)
+            .where(comment.post.id.eq(post.id))
+            .transform(groupBy(post.id, Projections.bean(Post.class, post.id, post.name)));
+        
+        Post post = results.get(1);
+        assertNotNull(post);
+        assertEquals(1, post.getId());
+        assertEquals("Post 1", post.getName());
+//        assertEquals(toSet(comment(1), comment(2), comment(3)), post.getComments());
+    }
+        
+    
+    @Test
+    public void OneToOneToMany_Projection() {
+//        Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
+//            groupBy(userName, Projections.constructor(User.class, userName, 
+//                Projections.constructor(Post.class, postId, postName, set(qComment)))));
+        Map<String, User> results = MiniApi.from(user, users).from(post, posts)
+            .where(user.name.eq(post.user.name))
+            .transform(groupBy(user.name, QUser.create(user.name, QPost.create(post.id, post.name, user))));
+                    
+        
+        assertEquals(2, results.size());
+        
+        User user = results.get("Jane");
+        Post post = user.getLatestPost();
+        assertEquals(3, post.getId());
+        assertEquals("Post 3", post.getName());
+//        assertEquals(toSet(comment(4), comment(5)), post.getComments());
+    }
+    
+    @Test
+    public void OneToOneToMany_Projection_As_Bean() {
+//        Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
+//            groupBy(userName, Projections.bean(User.class, userName, 
+//                Projections.bean(Post.class, postId, postName, set(qComment).as("comments")).as("latestPost"))));
+        Map<String, User> results = MiniApi.from(user, users).from(post, posts)
+            .where(user.name.eq(post.user.name))
+            .transform(groupBy(user.name,  Projections.bean(User.class, user.name, 
+                    Projections.bean(Post.class, post.id, post.name, user).as("latestPost"))));
+        
+        assertEquals(2, results.size());
+        
+        User user = results.get("Jane");
+        Post post = user.getLatestPost();
+        assertEquals(3, post.getId());
+        assertEquals("Post 3", post.getName());
+//        assertEquals(toSet(comment(4), comment(5)), post.getComments());
+    }
+    
+    @Test
+    public void OneToOneToMany_Projection_As_Bean_And_Constructor() {
+//        Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
+//            groupBy(userName, Projections.bean(User.class, userName, 
+//                Projections.constructor(Post.class, postId, postName, set(qComment)).as("latestPost"))));
+        Map<String, User> results = MiniApi.from(user, users).from(post, posts)
+            .where(user.name.eq(post.user.name))
+            .transform(groupBy(user.name,  Projections.bean(User.class, user.name, 
+                QPost.create(post.id, post.name, user).as("latestPost"))));
+        
+        assertEquals(2, results.size());
+        
+        User user = results.get("Jane");
+        Post post = user.getLatestPost();
+        assertEquals(3, post.getId());
+        assertEquals("Post 3", post.getName());
+//        assertEquals(toSet(comment(4), comment(5)), post.getComments());
+    }
+    
+    private Integer toInt(int i) {
+        return Integer.valueOf(i);
+    }
+    
+    private <T >Set<T> toSet(T... s) {
+        return new HashSet<T>(Arrays.asList(s));
+    }
+    
+    
+}

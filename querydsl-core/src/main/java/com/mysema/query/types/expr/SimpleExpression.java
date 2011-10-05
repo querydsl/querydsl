@@ -73,7 +73,6 @@ public abstract class SimpleExpression<T> extends ExpressionBase<T> {
         return isnull;
     }
 
-
     /**
      * Create an alias for the expression
      *

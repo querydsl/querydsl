@@ -15,6 +15,9 @@ import java.util.Map;
 
 import org.apache.commons.collections15.BeanMap;
 
+import com.mysema.query.types.expr.SimpleExpression;
+import com.mysema.query.types.expr.SimpleOperation;
+
 /**
  * QBean is a JavaBean populating projection type
  *
@@ -188,6 +191,25 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
         }
     }
 
+    /**
+     * Create an alias for the expression
+     *
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public SimpleExpression<T> as(Path<T> alias) {
+        return SimpleOperation.create((Class<T>)getType(),Ops.ALIAS, this, alias);
+    }
+
+    /**
+     * Create an alias for the expression
+     *
+     * @return
+     */
+    public SimpleExpression<T> as(String alias) {
+        return as(new PathImpl<T>(getType(), alias));
+    }
+    
     @Override
     public <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);

@@ -22,7 +22,7 @@ import com.mysema.query.types.Visitor;
  * @param <K> Map key type
  * @param <V> Map value type
  */
-public final class QPair<K, V> extends ExpressionBase<Pair<K, V>> implements FactoryExpression<Pair<K, V>> {
+ final class QPair<K, V> extends ExpressionBase<Pair<K, V>> implements FactoryExpression<Pair<K, V>> {
 
     private static final long serialVersionUID = -1943990903548916056L;
 

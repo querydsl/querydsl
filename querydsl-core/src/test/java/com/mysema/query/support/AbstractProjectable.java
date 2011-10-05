@@ -12,6 +12,7 @@ import java.util.Map;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.EmptyCloseableIterator;
 import com.mysema.query.Projectable;
+import com.mysema.query.ResultTransformer;
 import com.mysema.query.SearchResults;
 import com.mysema.query.types.Expression;
 
@@ -130,6 +131,11 @@ public class AbstractProjectable implements Projectable {
     @Override
     public <RT> RT singleResult(Expression<RT> projection) {
         return null;
+    }    
+
+    @Override
+    public <T> T transform(ResultTransformer<T> transformer) {
+        return transformer.transform(this);
     }
 
     @Override
@@ -147,5 +153,6 @@ public class AbstractProjectable implements Projectable {
     public <RT> RT uniqueResult(Expression<RT> projection) {
         return null;
     }
+
 
 }
