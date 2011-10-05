@@ -104,27 +104,27 @@ public final class Expressions {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Comparable> ComparableExpression<T> comparableOperation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
+    public static <T extends Comparable<?>> ComparableExpression<T> comparableOperation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
         return ComparableOperation.create(type, operator, args);
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Comparable> DateExpression<T> dateOperation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
+    public static <T extends Comparable<?>> DateExpression<T> dateOperation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
         return DateOperation.create(type, operator, args);
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Comparable> DateTimeExpression<T> dateTimeOperation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
+    public static <T extends Comparable<?>> DateTimeExpression<T> dateTimeOperation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
         return DateTimeOperation.create(type, operator, args);
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Comparable> TimeExpression<T> timeOperation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
+    public static <T extends Comparable<?>> TimeExpression<T> timeOperation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
         return TimeOperation.create(type, operator, args);
     }    
     
     @SuppressWarnings("unchecked")
-    public static <T extends Number & Comparable> NumberExpression<T> numberOperation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
+    public static <T extends Number & Comparable<?>> NumberExpression<T> numberOperation(Class<T> type, Operator<? super T> operator, Expression<?>... args) {
         return NumberOperation.create(type, operator, args);
     }
     
@@ -141,42 +141,42 @@ public final class Expressions {
     }    
     
     @SuppressWarnings("unchecked")
-    public static <T extends Comparable> ComparablePath<T> comparablePath(Class<T> type, String variable) {
+    public static <T extends Comparable<?>> ComparablePath<T> comparablePath(Class<T> type, String variable) {
         return new ComparablePath<T>(type, PathMetadataFactory.forVariable(variable));
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Comparable> ComparablePath<T> comparablePath(Class<T> type, Path<?> parent, String property) {
+    public static <T extends Comparable<?>> ComparablePath<T> comparablePath(Class<T> type, Path<?> parent, String property) {
         return new ComparablePath<T>(type, PathMetadataFactory.forProperty(parent, property));
     }  
     
     @SuppressWarnings("unchecked")
-    public static <T extends Comparable> DatePath<T> datePath(Class<T> type, String variable) {
+    public static <T extends Comparable<?>> DatePath<T> datePath(Class<T> type, String variable) {
         return new DatePath<T>(type, PathMetadataFactory.forVariable(variable));
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Comparable> DatePath<T> datePath(Class<T> type, Path<?> parent, String property) {
+    public static <T extends Comparable<?>> DatePath<T> datePath(Class<T> type, Path<?> parent, String property) {
         return new DatePath<T>(type, PathMetadataFactory.forProperty(parent, property));
     }  
     
     @SuppressWarnings("unchecked")
-    public static <T extends Comparable> DateTimePath<T> dateTimePath(Class<T> type, String variable) {
+    public static <T extends Comparable<?>> DateTimePath<T> dateTimePath(Class<T> type, String variable) {
         return new DateTimePath<T>(type, PathMetadataFactory.forVariable(variable));
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Comparable> DateTimePath<T> dateTimePath(Class<T> type, Path<?> parent, String property) {
+    public static <T extends Comparable<?>> DateTimePath<T> dateTimePath(Class<T> type, Path<?> parent, String property) {
         return new DateTimePath<T>(type, PathMetadataFactory.forProperty(parent, property));
     }  
     
     @SuppressWarnings("unchecked")
-    public static <T extends Comparable> TimePath<T> timePath(Class<T> type, String variable) {
+    public static <T extends Comparable<?>> TimePath<T> timePath(Class<T> type, String variable) {
         return new TimePath<T>(type, PathMetadataFactory.forVariable(variable));
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Comparable> TimePath<T> timePath(Class<T> type, Path<?> parent, String property) {
+    public static <T extends Comparable<?>> TimePath<T> timePath(Class<T> type, Path<?> parent, String property) {
         return new TimePath<T>(type, PathMetadataFactory.forProperty(parent, property));
     }  
     

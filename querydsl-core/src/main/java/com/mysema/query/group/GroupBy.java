@@ -8,8 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Nullable;
-
+import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.Projectable;
@@ -26,49 +25,67 @@ import com.mysema.query.types.expr.SimpleOperation;
 /**
  * Groups results by the first expression.
  * 
- * @authro sasa
+ * @author sasa
  * @author tiwe
  *
  */
 @SuppressWarnings("unchecked")
-public abstract class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
+public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
     
     private static final Operator<Object> WRAPPED = new OperatorImpl<Object>("WRAPPED", Object.class);
     
     public static <K> ResultTransformer<Map<K, Group>> groupBy(Expression<K> key, Expression<?>... expressions) {
-        return new GroupBy<K, Group>(key, true, expressions){
-            @Override
-            protected Group transform(Group group) {
-                return group;
-            }            
-        };
+        return new GroupBy<K, Group>(key, expressions);
     }
     
     public static <K,V> ResultTransformer<Map<K, V>> groupBy(Expression<K> key, FactoryExpression<V> expression) {
-        return new GroupBy<K, V>(key, false, expression){
+        Assert.notNull(expression, "expression");
+        
+        final FactoryExpression<?> transformation = FactoryExpressionUtils.wrap(expression);
+
+        List<Expression<?>> args = transformation.getArgs();
+        
+        return new GroupBy<K, V>(key, args.toArray(new Expression<?>[args.size()])) {
+
             @Override
+            protected Map<K, V> transform(Map<K, Group> groups) {
+                // NOTE: Using new groups.size() as initialCapacity leads to unnecessary rehashing 
+                // if size is close to some power of 2
+                Map<K, V> results = new LinkedHashMap<K, V>((int) Math.ceil(groups.size()/0.75), 0.75f);
+                for (Map.Entry<K, Group> entry : groups.entrySet()) {
+                    results.put(entry.getKey(), transform(entry.getValue()));
+                }            
+                return results;
+            }
+            
             protected V transform(Group group) {
+                // XXX Isn't group.toArray() suitable here?
                 List<Object> args = new ArrayList<Object>(columnDefinitions.size() - 1);
                 for (int i = 1; i < columnDefinitions.size(); i++) {
                     args.add(group.getGroup(columnDefinitions.get(i)));
                 }
                 return (V)transformation.newInstance(args.toArray());
-            }            
+            }
+            
         };
-    }    
+    }
     
+    @SuppressWarnings("rawtypes")
     public static <E> SimpleExpression<List<E>> list(Expression<E> expression) {
         return SimpleOperation.<List<E>>create((Class)List.class, WRAPPED, expression);
     }
     
+    @SuppressWarnings("rawtypes")
     public static <E> SimpleExpression<Set<E>> set(Expression<E> expression) {
         return SimpleOperation.<Set<E>>create((Class)Set.class, WRAPPED, expression);
     }
     
+    @SuppressWarnings("rawtypes")
     public static <E> SimpleExpression<Collection<E>> collection(Expression<E> expression) {
         return SimpleOperation.<Collection<E>>create((Class)Collection.class, WRAPPED, expression);
     }
     
+    @SuppressWarnings("rawtypes")
     public static <K, V> SimpleExpression<Map<K, V>> map(Expression<K> key, Expression<V> value) {
         return SimpleOperation.<Map<K,V>>create((Class)Map.class, WRAPPED, key, value);
     }
@@ -188,28 +205,16 @@ public abstract class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         
     protected final Expression<?>[] expressions;
     
-    @Nullable
-    protected FactoryExpression<?> transformation;
-    
-    private final boolean asGroup;
-    
-    public GroupBy(Expression<K> key, Expression<?>... expressions) {
-        this(key, false, expressions);
-    }
-    
-    public GroupBy(Expression<K> key, boolean asGroup, Expression<?>... expressions) {
-        this.asGroup = asGroup;
-        if (!asGroup && expressions[0] instanceof FactoryExpression) {
-            transformation = FactoryExpressionUtils.wrap((FactoryExpression<?>)expressions[0]);
-            expressions = transformation.getArgs().toArray(new Expression[transformation.getArgs().size()]);
-        }
+    @SuppressWarnings("rawtypes")
+    protected GroupBy(Expression<K> key, Expression<?>... expressions) {
         
         List<Expression<?>> projection = new ArrayList<Expression<?>>(expressions.length);        
-        columnDefinitions.add(new GOne(key));
+        columnDefinitions.add(new GOne<K>(key));
         projection.add(key);
         
         for (Expression<?> expr : expressions) {
             if (expr instanceof Operation<?> && ((Operation<?>)expr).getOperator() == WRAPPED) {
+                // TODO: Refactor this if-else to allow custom GroupDefinitions
                 Operation<?> operation = (Operation<?>)expr;
                 if (expr.getType().equals(List.class)) {
                     columnDefinitions.add(new GList(operation.getArg(0)));
@@ -222,7 +227,7 @@ public abstract class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
                     maps.add(qPair);
                     columnDefinitions.add(new GMap(qPair));
                     projection.add(qPair);
-                }                                
+                } 
             } else {
                 columnDefinitions.add(new GOne(expr));
                 projection.add(expr);
@@ -259,17 +264,7 @@ public abstract class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
     }
 
     protected Map<K, V> transform(Map<K, Group> groups) {
-        if (!asGroup) {
-            Map<K, V> results = new LinkedHashMap<K, V>(groups.size());
-            for (Map.Entry<K, Group> entry : groups.entrySet()) {
-                results.put(entry.getKey(), transform(entry.getValue()));
-            }            
-            return results;
-        } else {            
-            return (Map<K,V>)groups;
-        }
+        return (Map<K,V>)groups;
     }
-    
-    protected abstract V transform(Group group);
-    
+
 }

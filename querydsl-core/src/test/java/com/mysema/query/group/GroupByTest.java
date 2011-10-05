@@ -220,26 +220,6 @@ public class GroupByTest {
     }
     
     @Test
-    public void OneToOneToMany_Projection2() {
-        Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS2.transform(
-            new GroupBy<String,User>(userName, postId, postName, set(qComment)){
-                @Override
-                protected User transform(Group g) {
-                    return new User(g.getOne(userName), 
-                        new Post(g.getOne(postId), g.getOne(postName), g.getSet(qComment)));
-                }                
-            });
-        
-        assertEquals(2, results.size());
-        
-        User user = results.get("Jane");
-        Post post = user.getLatestPost();
-        assertEquals(toInt(2), post.getId());
-        assertEquals("post 2", post.getName());
-        assertEquals(toSet(comment(4), comment(5)), post.getComments());
-    }
-    
-    @Test
     public void OneToOneToMany_Projection_As_Bean() {
         Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
             groupBy(userName, Projections.bean(User.class, userName, 

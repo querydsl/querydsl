@@ -174,26 +174,6 @@ public class GroupByTest {
         assertEquals(3, post.getComments().size());
     }
     
-    @Test
-    public void OneToOneToMany_Projection2() {
-        Map<String, User> results = MiniApi.from(user, users).from(post, posts).from(comment, comments)
-            .where(user.name.eq(post.user.name), post.id.eq(comment.post.id))
-            .transform(new GroupBy<String, User>(user.name, post.id, post.name, set(qComment)){
-                protected User transform(Group g) {
-                    return new User(g.getOne(user.name), 
-                        new Post(g.getOne(post.id), g.getOne(post.name), g.getSet(qComment)));
-                }                
-            });                    
-        
-        assertEquals(2, results.size());
-        
-        User user = results.get("Jane");
-        Post post = user.getLatestPost();
-        assertEquals(3, post.getId());
-        assertEquals("Post 3", post.getName());
-        assertEquals(3, post.getComments().size());
-    }
-    
     
     @Test
     public void OneToOneToMany_Projection_As_Bean() {
