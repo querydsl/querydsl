@@ -30,6 +30,7 @@ import com.mysema.query.types.expr.SimpleOperation;
  * @author tiwe
  *
  */
+@SuppressWarnings("unchecked")
 public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
     
     private static final Operator<Object> WRAPPED = new OperatorImpl<Object>("WRAPPED", Object.class);
@@ -40,24 +41,20 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
     
     public static <K,V> ResultTransformer<Map<K, V>> groupBy(Expression<K> key, FactoryExpression<V> expression) {
         return new GroupBy<K, V>(key, false, expression);
-    }
+    }    
     
-    @SuppressWarnings("unchecked")
     public static <E> SimpleExpression<List<E>> list(Expression<E> expression) {
         return SimpleOperation.<List<E>>create((Class)List.class, WRAPPED, expression);
     }
     
-    @SuppressWarnings("unchecked")
     public static <E> SimpleExpression<Set<E>> set(Expression<E> expression) {
         return SimpleOperation.<Set<E>>create((Class)Set.class, WRAPPED, expression);
     }
     
-    @SuppressWarnings("unchecked")
     public static <E> SimpleExpression<Collection<E>> collection(Expression<E> expression) {
         return SimpleOperation.<Collection<E>>create((Class)Collection.class, WRAPPED, expression);
     }
     
-    @SuppressWarnings("unchecked")
     public static <K, V> SimpleExpression<Map<K, V>> map(Expression<K> key, Expression<V> value) {
         return SimpleOperation.<Map<K,V>>create((Class)Map.class, WRAPPED, key, value);
     }
@@ -75,7 +72,6 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
                 private final List<T> list = new ArrayList<T>();
                 
                 @Override
-                @SuppressWarnings("unchecked")
                 public void add(Object o) {
                     list.add((T) o);
                 }
@@ -92,7 +88,7 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
     @SuppressWarnings("hiding")
     class GMap<K, V> extends AbstractGroupDefinition<Pair<K, V>, Map<K, V>>{
         
-        public GMap(QPair<K, V> qpair) {
+        public GMap(QPair<K,V> qpair) {
             super(qpair);
         }
 
@@ -104,7 +100,6 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
                 
                 @Override
                 public void add(Object o) {
-                    @SuppressWarnings("unchecked")
                     Pair<K, V> pair = (Pair<K, V>) o;
                     set.put(pair.getFirst(), pair.getSecond());
                 }
@@ -125,7 +120,6 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         }
 
         @Override
-        @SuppressWarnings("unchecked")
         public GroupCollector<Set<T>> createGroupCollector() {
             return new GroupCollector<Set<T>>() {
 
@@ -159,7 +153,6 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
                 private T val;
                 
                 @Override
-                @SuppressWarnings("unchecked")
                 public void add(Object o) {
                     if (first) {
                         val = (T) o;
@@ -175,18 +168,21 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         }
     }
     
-    final List<GroupDefinition<?, ?>> columnDefinitions = new ArrayList<GroupDefinition<?, ?>>();
+    private final List<GroupDefinition<?, ?>> columnDefinitions = new ArrayList<GroupDefinition<?, ?>>();
     
-    final List<QPair<?, ?>> maps = new ArrayList<QPair<?, ?>>();
+    private final List<QPair<?,?>> maps = new ArrayList<QPair<?,?>>();
         
     private final Expression<?>[] expressions;
     
     @Nullable
     private FactoryExpression<?> projection;
     
-    @SuppressWarnings("unchecked")
+    GroupBy(Expression<K> key, Expression<?>... expressions) {
+        this(key, false, expressions);
+    }
+    
     GroupBy(Expression<K> key, boolean asGroup, Expression<?>... expressions) {
-        if (!asGroup) {
+        if (!asGroup && expressions[0] instanceof FactoryExpression) {
             projection = FactoryExpressionUtils.wrap((FactoryExpression<?>)expressions[0]);
             expressions = projection.getArgs().toArray(new Expression[0]);
         }
@@ -199,15 +195,17 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
             if (expr instanceof Operation<?> && ((Operation<?>)expr).getOperator() == WRAPPED) {
                 Operation<?> operation = (Operation<?>)expr;
                 if (expr.getType().equals(List.class)) {
-                    columnDefinitions.add(new GList(operation.getArgs().get(0)));
+                    columnDefinitions.add(new GList(operation.getArg(0)));
+                    projection.addAll(operation.getArgs());
                 } else if (expr.getType().equals(Set.class)) {
-                    columnDefinitions.add(new GSet(operation.getArgs().get(0)));
+                    columnDefinitions.add(new GSet(operation.getArg(0)));
+                    projection.addAll(operation.getArgs());
                 } else if (expr.getType().equals(Map.class)) {
-                    QPair qPair = new QPair(operation.getArgs().get(0), operation.getArgs().get(1));
+                    QPair qPair = new QPair(operation.getArg(0), operation.getArg(1));
                     maps.add(qPair);
                     columnDefinitions.add(new GMap(qPair));
-                }                
-                projection.addAll(operation.getArgs());
+                    projection.add(qPair);
+                }                                
             } else {
                 columnDefinitions.add(new GOne(expr));
                 projection.add(expr);
@@ -217,7 +215,6 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         this.expressions = projection.toArray(new Expression[projection.size()]);
     }       
     
-    @SuppressWarnings("unchecked")
     @Override
     public Map<K, V> transform(Projectable projectable) {
         Map<K, Group> groups = new LinkedHashMap<K, Group>();
@@ -244,21 +241,24 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         
     }
 
-    @SuppressWarnings("unchecked")
     protected Map<K, V> transform(Map<K, Group> groups) {
         if (projection != null) {
             Map<K, V> results = new LinkedHashMap<K, V>(groups.size());
             for (Map.Entry<K, Group> entry : groups.entrySet()) {
-                List<Object> args = new ArrayList<Object>(columnDefinitions.size() - 1);
-                for (int i = 1; i < columnDefinitions.size(); i++) {
-                    args.add(entry.getValue().getGroup(columnDefinitions.get(i)));
-                }
-                results.put(entry.getKey(), (V)projection.newInstance(args.toArray()));
+                results.put(entry.getKey(), transform(entry.getValue()));
             }            
             return results;
         } else {            
             return (Map<K,V>)groups;
         }
+    }
+    
+    protected V transform(Group group) {
+        List<Object> args = new ArrayList<Object>(columnDefinitions.size() - 1);
+        for (int i = 1; i < columnDefinitions.size(); i++) {
+            args.add(group.getGroup(columnDefinitions.get(i)));
+        }
+        return (V)projection.newInstance(args.toArray());
     }
 
 }
