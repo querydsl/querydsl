@@ -47,8 +47,7 @@ public class GroupByTest {
     @Test 
     public void Group_Order() {       
 //        Map<Integer, Group> results = BASIC_RESULTS
-//            .transform(groupBy(postId, postName, set(commentId)));
-        
+//            .transform(groupBy(postId, postName, set(commentId)));        
         Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id, post.name, set(comment.id)));
@@ -59,8 +58,7 @@ public class GroupByTest {
     @Test
     public void First_Set_And_List() {       
 //        Map<Integer, Group> results = BASIC_RESULTS.transform(
-//            groupBy(postId, postName, set(commentId), list(commentText)));
-        
+//            groupBy(postId, postName, set(commentId), list(commentText)));        
         Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id, post.name, set(comment.id), list(comment.text)));
@@ -76,8 +74,7 @@ public class GroupByTest {
     @Ignore
     public void Group_By_Null() {        
 //        Map<Integer, Group> results = BASIC_RESULTS.transform(
-//            groupBy(postId, postName, set(commentId), list(commentText)));
-        
+//            groupBy(postId, postName, set(commentId), list(commentText)));        
         Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id, post.name, set(comment.id), list(comment.text)));
@@ -182,8 +179,7 @@ public class GroupByTest {
 //                Projections.constructor(Post.class, postId, postName, set(qComment)))));
         Map<String, User> results = MiniApi.from(user, users).from(post, posts)
             .where(user.name.eq(post.user.name))
-            .transform(groupBy(user.name, QUser.create(user.name, QPost.create(post.id, post.name, user))));
-                    
+            .transform(groupBy(user.name, QUser.create(user.name, QPost.create(post.id, post.name, user))));                    
         
         assertEquals(2, results.size());
         

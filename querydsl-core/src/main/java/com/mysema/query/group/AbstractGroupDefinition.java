@@ -20,8 +20,7 @@ public abstract class AbstractGroupDefinition<T, R> implements GroupDefinition<T
     private final Expression<T> expr;
     
     public AbstractGroupDefinition(Expression<T> expr) {
-        Assert.notNull(expr, "expr");
-        
+        Assert.notNull(expr, "expr");        
         this.expr = expr;
     }
     
