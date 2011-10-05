@@ -179,7 +179,7 @@ public class GroupByTest {
 //                Projections.constructor(Post.class, postId, postName, set(qComment)))));
         Map<String, User> results = MiniApi.from(user, users).from(post, posts)
             .where(user.name.eq(post.user.name))
-            .transform(groupBy(user.name, QUser.create(user.name, QPost.create(post.id, post.name, user))));                    
+            .transform(groupBy(user.name, Projections.constructor(User.class, user.name, QPost.create(post.id, post.name, user))));                    
         
         assertEquals(2, results.size());
         
