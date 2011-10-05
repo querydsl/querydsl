@@ -95,6 +95,14 @@ public class GroupByTest {
             row("John", "John", 1, "post 1", comment(3))
     );
     
+    private static final Projectable USERS_W_LATEST_POST_AND_COMMENTS2 = projectable(
+            row("John", 1, "post 1", comment(1)),
+            row("Jane", 2, "post 2", comment(4)),
+            row("John", 1, "post 1", comment(2)),
+            row("Jane", 2, "post 2", comment(5)),
+            row("John", 1, "post 1", comment(3))
+    );
+    
 
     @Test 
     public void Group_Order() {       
@@ -201,6 +209,26 @@ public class GroupByTest {
         Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
             groupBy(userName, Projections.constructor(User.class, userName, 
                 Projections.constructor(Post.class, postId, postName, set(qComment)))));
+        
+        assertEquals(2, results.size());
+        
+        User user = results.get("Jane");
+        Post post = user.getLatestPost();
+        assertEquals(toInt(2), post.getId());
+        assertEquals("post 2", post.getName());
+        assertEquals(toSet(comment(4), comment(5)), post.getComments());
+    }
+    
+    @Test
+    public void OneToOneToMany_Projection2() {
+        Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS2.transform(
+            new GroupBy<String,User>(userName, postId, postName, set(qComment)){
+                @Override
+                protected User transform(Group g) {
+                    return new User(g.getOne(userName), 
+                        new Post(g.getOne(postId), g.getOne(postName), g.getSet(qComment)));
+                }                
+            });
         
         assertEquals(2, results.size());
         

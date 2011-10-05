@@ -31,16 +31,30 @@ import com.mysema.query.types.expr.SimpleOperation;
  *
  */
 @SuppressWarnings("unchecked")
-public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
+public abstract class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
     
     private static final Operator<Object> WRAPPED = new OperatorImpl<Object>("WRAPPED", Object.class);
     
     public static <K> ResultTransformer<Map<K, Group>> groupBy(Expression<K> key, Expression<?>... expressions) {
-        return new GroupBy<K, Group>(key, true, expressions);
+        return new GroupBy<K, Group>(key, true, expressions){
+            @Override
+            protected Group transform(Group group) {
+                return group;
+            }            
+        };
     }
     
     public static <K,V> ResultTransformer<Map<K, V>> groupBy(Expression<K> key, FactoryExpression<V> expression) {
-        return new GroupBy<K, V>(key, false, expression);
+        return new GroupBy<K, V>(key, false, expression){
+            @Override
+            protected V transform(Group group) {
+                List<Object> args = new ArrayList<Object>(columnDefinitions.size() - 1);
+                for (int i = 1; i < columnDefinitions.size(); i++) {
+                    args.add(group.getGroup(columnDefinitions.get(i)));
+                }
+                return (V)transformation.newInstance(args.toArray());
+            }            
+        };
     }    
     
     public static <E> SimpleExpression<List<E>> list(Expression<E> expression) {
@@ -168,20 +182,23 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         }
     }
     
-    private final List<GroupDefinition<?, ?>> columnDefinitions = new ArrayList<GroupDefinition<?, ?>>();
+    protected final List<GroupDefinition<?, ?>> columnDefinitions = new ArrayList<GroupDefinition<?, ?>>();
     
-    private final List<QPair<?,?>> maps = new ArrayList<QPair<?,?>>();
+    protected final List<QPair<?,?>> maps = new ArrayList<QPair<?,?>>();
         
-    private final Expression<?>[] expressions;
+    protected final Expression<?>[] expressions;
     
     @Nullable
-    private FactoryExpression<?> transformation;
+    protected FactoryExpression<?> transformation;
     
-    GroupBy(Expression<K> key, Expression<?>... expressions) {
+    private final boolean asGroup;
+    
+    public GroupBy(Expression<K> key, Expression<?>... expressions) {
         this(key, false, expressions);
     }
     
-    GroupBy(Expression<K> key, boolean asGroup, Expression<?>... expressions) {
+    public GroupBy(Expression<K> key, boolean asGroup, Expression<?>... expressions) {
+        this.asGroup = asGroup;
         if (!asGroup && expressions[0] instanceof FactoryExpression) {
             transformation = FactoryExpressionUtils.wrap((FactoryExpression<?>)expressions[0]);
             expressions = transformation.getArgs().toArray(new Expression[transformation.getArgs().size()]);
@@ -242,7 +259,7 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
     }
 
     protected Map<K, V> transform(Map<K, Group> groups) {
-        if (transformation != null) {
+        if (!asGroup) {
             Map<K, V> results = new LinkedHashMap<K, V>(groups.size());
             for (Map.Entry<K, Group> entry : groups.entrySet()) {
                 results.put(entry.getKey(), transform(entry.getValue()));
@@ -253,12 +270,6 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         }
     }
     
-    protected V transform(Group group) {
-        List<Object> args = new ArrayList<Object>(columnDefinitions.size() - 1);
-        for (int i = 1; i < columnDefinitions.size(); i++) {
-            args.add(group.getGroup(columnDefinitions.get(i)));
-        }
-        return (V)transformation.newInstance(args.toArray());
-    }
-
+    protected abstract V transform(Group group);
+    
 }
