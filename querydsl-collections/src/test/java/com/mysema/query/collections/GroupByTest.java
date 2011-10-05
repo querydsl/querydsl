@@ -210,7 +210,7 @@ public class GroupByTest {
         Post post = user.getLatestPost();
         assertEquals(3, post.getId());
         assertEquals("Post 3", post.getName());
-//        assertEquals(toSet(comment(4), comment(5)), post.getComments());
+        assertEquals(3, post.getComments().size());
     }
     
     @Test
@@ -229,7 +229,7 @@ public class GroupByTest {
         Post post = user.getLatestPost();
         assertEquals(3, post.getId());
         assertEquals("Post 3", post.getName());
-//        assertEquals(toSet(comment(4), comment(5)), post.getComments());
+        assertEquals(3, post.getComments().size());
     }
     
     private Integer toInt(int i) {
