@@ -3,6 +3,8 @@
  */
 package com.mysema.query.collections;
 
+import java.util.Set;
+
 import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.annotations.QueryProjection;
 
@@ -15,6 +17,8 @@ public class Post {
     
     private User user;
     
+    private Set<Comment> comments;
+    
     public Post() {}
     
     @QueryProjection
@@ -22,6 +26,13 @@ public class Post {
         this.id = id;
         this.name = name;
         this.user = user;
+    }
+    
+    @QueryProjection
+    public Post(int id, String name, Set<Comment> comments) {
+        this.id = id;
+        this.name = name;
+        this.comments = comments;
     }
 
     public int getId() {
@@ -47,6 +58,15 @@ public class Post {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+    
     
     
 }

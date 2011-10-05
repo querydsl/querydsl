@@ -19,6 +19,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.group.Group;
+import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Projections;
 
 public class GroupByTest {
@@ -43,6 +44,8 @@ public class GroupByTest {
     private static final QComment comment = QComment.comment;
     
     private static final QPost post = QPost.post;
+    
+    private static final ConstructorExpression<Comment> qComment = QComment.create(comment.id, comment.text);
         
     @Test 
     public void Group_Order() {       
@@ -147,13 +150,13 @@ public class GroupByTest {
 //                groupBy(postId, Projections.constructor(Post.class, postId, postName, set(qComment))));
         Map<Integer, Post> results = MiniApi.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
-            .transform(groupBy(post.id, QPost.create(post.id, post.name, post.user)));
+            .transform(groupBy(post.id, QPost.create(post.id, post.name, set(qComment))));
         
         Post post = results.get(1);
         assertNotNull(post);
         assertEquals(1, post.getId());
         assertEquals("Post 1", post.getName());
-//        assertEquals(toSet(comment(1), comment(2), comment(3)), post.getComments());
+        assertEquals(1, post.getComments().size());
     }
     
     @Test
@@ -162,13 +165,13 @@ public class GroupByTest {
 //                groupBy(postId, Projections.bean(Post.class, postId, postName, set(qComment).as("comments"))));
         Map<Integer, Post> results = MiniApi.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
-            .transform(groupBy(post.id, Projections.bean(Post.class, post.id, post.name)));
+            .transform(groupBy(post.id, Projections.bean(Post.class, post.id, post.name, set(qComment).as("comments"))));
         
         Post post = results.get(1);
         assertNotNull(post);
         assertEquals(1, post.getId());
         assertEquals("Post 1", post.getName());
-//        assertEquals(toSet(comment(1), comment(2), comment(3)), post.getComments());
+        assertEquals(1, post.getComments().size());
     }
         
     
@@ -177,9 +180,10 @@ public class GroupByTest {
 //        Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
 //            groupBy(userName, Projections.constructor(User.class, userName, 
 //                Projections.constructor(Post.class, postId, postName, set(qComment)))));
-        Map<String, User> results = MiniApi.from(user, users).from(post, posts)
-            .where(user.name.eq(post.user.name))
-            .transform(groupBy(user.name, Projections.constructor(User.class, user.name, QPost.create(post.id, post.name, user))));                    
+        Map<String, User> results = MiniApi.from(user, users).from(post, posts).from(comment, comments)
+            .where(user.name.eq(post.user.name), post.id.eq(comment.post.id))
+            .transform(groupBy(user.name, Projections.constructor(User.class, user.name, 
+                    QPost.create(post.id, post.name, set(qComment)))));                    
         
         assertEquals(2, results.size());
         
@@ -187,7 +191,7 @@ public class GroupByTest {
         Post post = user.getLatestPost();
         assertEquals(3, post.getId());
         assertEquals("Post 3", post.getName());
-//        assertEquals(toSet(comment(4), comment(5)), post.getComments());
+        assertEquals(3, post.getComments().size());
     }
     
     @Test
@@ -195,10 +199,10 @@ public class GroupByTest {
 //        Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
 //            groupBy(userName, Projections.bean(User.class, userName, 
 //                Projections.bean(Post.class, postId, postName, set(qComment).as("comments")).as("latestPost"))));
-        Map<String, User> results = MiniApi.from(user, users).from(post, posts)
-            .where(user.name.eq(post.user.name))
+        Map<String, User> results = MiniApi.from(user, users).from(post, posts).from(comment, comments)
+            .where(user.name.eq(post.user.name), post.id.eq(comment.post.id))
             .transform(groupBy(user.name,  Projections.bean(User.class, user.name, 
-                    Projections.bean(Post.class, post.id, post.name, user).as("latestPost"))));
+                    Projections.bean(Post.class, post.id, post.name, set(qComment).as("comments")).as("latestPost"))));
         
         assertEquals(2, results.size());
         
@@ -214,10 +218,10 @@ public class GroupByTest {
 //        Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
 //            groupBy(userName, Projections.bean(User.class, userName, 
 //                Projections.constructor(Post.class, postId, postName, set(qComment)).as("latestPost"))));
-        Map<String, User> results = MiniApi.from(user, users).from(post, posts)
-            .where(user.name.eq(post.user.name))
+        Map<String, User> results = MiniApi.from(user, users).from(post, posts).from(comment, comments)
+            .where(user.name.eq(post.user.name), post.id.eq(comment.post.id))
             .transform(groupBy(user.name,  Projections.bean(User.class, user.name, 
-                QPost.create(post.id, post.name, user).as("latestPost"))));
+                QPost.create(post.id, post.name, set(qComment)).as("latestPost"))));
         
         assertEquals(2, results.size());
         

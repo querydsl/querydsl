@@ -20,6 +20,12 @@ public class Comment {
     public Comment() {}
     
     @QueryProjection
+    public Comment(int id, String text) {
+        this.id = id;
+        this.text = text;
+    }
+    
+    @QueryProjection
     public Comment(int id, String text, User user, Post post) {
         this.id = id;
         this.text = text;
