@@ -1,7 +1,6 @@
 package com.mysema.query.group;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -14,10 +13,7 @@ import com.mysema.query.Projectable;
 import com.mysema.query.ResultTransformer;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operation;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.expr.SimpleExpression;
-import com.mysema.query.types.expr.SimpleOperation;
 
 /**
  * Groups results by the first expression.
@@ -29,33 +25,27 @@ import com.mysema.query.types.expr.SimpleOperation;
 @SuppressWarnings("unchecked")
 public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
     
-    private static final Operator<Object> WRAPPED = new OperatorImpl<Object>("WRAPPED", Object.class);
-    
     public static <K> GroupByBuilder<K> groupBy(Expression<K> key) {
         return new GroupByBuilder<K>(key);
     }
     
     @SuppressWarnings("rawtypes")
     public static <E> SimpleExpression<List<E>> list(Expression<E> expression) {
-        return SimpleOperation.<List<E>>create((Class)List.class, WRAPPED, expression);
+        return new GroupExpression<List<E>>((Class)List.class, new GList<E>(expression), expression);
     }
     
     @SuppressWarnings("rawtypes")
     public static <E> SimpleExpression<Set<E>> set(Expression<E> expression) {
-        return SimpleOperation.<Set<E>>create((Class)Set.class, WRAPPED, expression);
-    }
-    
-    @SuppressWarnings("rawtypes")
-    public static <E> SimpleExpression<Collection<E>> collection(Expression<E> expression) {
-        return SimpleOperation.<Collection<E>>create((Class)Collection.class, WRAPPED, expression);
+        return new GroupExpression<Set<E>>((Class)Set.class, new GSet<E>(expression), expression);
     }
     
     @SuppressWarnings("rawtypes")
     public static <K, V> SimpleExpression<Map<K, V>> map(Expression<K> key, Expression<V> value) {
-        return SimpleOperation.<Map<K,V>>create((Class)Map.class, WRAPPED, key, value);
+        QPair<K,V> qPair = new QPair<K,V>(key, value);
+        return new GroupExpression<Map<K,V>>((Class)Map.class, new GMap<K,V>(qPair), qPair);
     }
     
-    class GList<T> extends AbstractGroupDefinition<T, List<T>>{
+    static class GList<T> extends AbstractGroupDefinition<T, List<T>>{
         
         public GList(Expression<T> expr) {
             super(expr);
@@ -82,7 +72,7 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
     }
     
     @SuppressWarnings("hiding")
-    class GMap<K, V> extends AbstractGroupDefinition<Pair<K, V>, Map<K, V>>{
+    static class GMap<K, V> extends AbstractGroupDefinition<Pair<K, V>, Map<K, V>>{
         
         public GMap(QPair<K,V> qpair) {
             super(qpair);
@@ -109,7 +99,7 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         }
     }
     
-    class GSet<T> extends AbstractGroupDefinition<T, Set<T>>{
+    static class GSet<T> extends AbstractGroupDefinition<T, Set<T>>{
         
         public GSet(Expression<T> expr) {
             super(expr);
@@ -135,7 +125,7 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         }
     }
     
-    class GOne<T> extends AbstractGroupDefinition<T, T>{
+    static class GOne<T> extends AbstractGroupDefinition<T, T>{
 
         public GOne(Expression<T> expr) {
             super(expr);
@@ -178,21 +168,13 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         projection.add(key);
         
         for (Expression<?> expr : expressions) {
-            if (expr instanceof Operation<?> && ((Operation<?>)expr).getOperator() == WRAPPED) {
-                // TODO: Refactor this if-else to allow custom GroupDefinitions
-                Operation<?> operation = (Operation<?>)expr;
-                if (expr.getType().equals(List.class)) {
-                    columnDefinitions.add(new GList(operation.getArg(0)));
-                    projection.addAll(operation.getArgs());
-                } else if (expr.getType().equals(Set.class)) {
-                    columnDefinitions.add(new GSet(operation.getArg(0)));
-                    projection.addAll(operation.getArgs());
-                } else if (expr.getType().equals(Map.class)) {
-                    QPair qPair = new QPair(operation.getArg(0), operation.getArg(1));
-                    maps.add(qPair);
-                    columnDefinitions.add(new GMap(qPair));
-                    projection.add(qPair);
-                } 
+            if (expr instanceof GroupExpression<?>) {
+                GroupExpression<?> groupExpr = (GroupExpression<?>)expr;
+                columnDefinitions.add(groupExpr.getDefinition());
+                projection.add(groupExpr.getDefinition().getExpression());
+                if (groupExpr.getDefinition() instanceof GMap) {
+                    maps.add((QPair<?, ?>) groupExpr.getDefinition().getExpression());
+                }                
             } else {
                 columnDefinitions.add(new GOne(expr));
                 projection.add(expr);
