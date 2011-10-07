@@ -197,8 +197,8 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
      * @return
      */
     @SuppressWarnings("unchecked")
-    public SimpleExpression<T> as(Path<T> alias) {
-        return SimpleOperation.create((Class<T>)getType(),Ops.ALIAS, this, alias);
+    public Expression<T> as(Path<T> alias) {
+        return OperationImpl.create((Class<T>)getType(),Ops.ALIAS, this, alias);
     }
 
     /**
@@ -206,7 +206,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
      *
      * @return
      */
-    public SimpleExpression<T> as(String alias) {
+    public Expression<T> as(String alias) {
         return as(new PathImpl<T>(getType(), alias));
     }
     

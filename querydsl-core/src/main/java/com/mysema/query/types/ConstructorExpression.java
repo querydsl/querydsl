@@ -86,8 +86,8 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
      * @return
      */
     @SuppressWarnings("unchecked")
-    public SimpleExpression<T> as(Path<T> alias) {
-        return SimpleOperation.create((Class<T>)getType(),Ops.ALIAS, this, alias);
+    public Expression<T> as(Path<T> alias) {
+        return OperationImpl.create((Class<T>)getType(),Ops.ALIAS, this, alias);
     }
 
     /**
@@ -95,7 +95,7 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
      *
      * @return
      */
-    public SimpleExpression<T> as(String alias) {
+    public Expression<T> as(String alias) {
         return as(new PathImpl<T>(getType(), alias));
     }
     
