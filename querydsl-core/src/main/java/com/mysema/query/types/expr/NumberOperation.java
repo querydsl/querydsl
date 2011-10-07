@@ -42,11 +42,11 @@ public class NumberOperation<T extends Number & Comparable<?>>
 
     private final Operation<T> opMixin;
 
-    NumberOperation(Class<? extends T> type, Operator<? super T> op, Expression<?>... args) {
+    protected NumberOperation(Class<? extends T> type, Operator<? super T> op, Expression<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    NumberOperation(Class<? extends T> type, Operator<? super T> op, List<Expression<?>> args) {
+    protected NumberOperation(Class<? extends T> type, Operator<? super T> op, List<Expression<?>> args) {
         super(type);
         this.opMixin = new OperationImpl<T>(type, op, args);
     }

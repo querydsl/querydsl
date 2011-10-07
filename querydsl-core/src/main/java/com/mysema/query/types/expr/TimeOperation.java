@@ -40,11 +40,11 @@ public class TimeOperation<T extends Comparable<?>> extends TimeExpression<T> im
 
     private final Operation<T> opMixin;
 
-    TimeOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
+    protected TimeOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    TimeOperation(Class<T> type, Operator<? super T> op, List<Expression<?>> args) {
+    protected TimeOperation(Class<T> type, Operator<? super T> op, List<Expression<?>> args) {
         super(type);
         this.opMixin = new OperationImpl<T>(type, op, args);
     }

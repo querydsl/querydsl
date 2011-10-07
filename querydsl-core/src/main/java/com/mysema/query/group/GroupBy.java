@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2011 Mysema Ltd.
+ * All rights reserved.
+ *
+ */
 package com.mysema.query.group;
 
 import java.util.ArrayList;
@@ -12,7 +17,6 @@ import com.mysema.commons.lang.Pair;
 import com.mysema.query.Projectable;
 import com.mysema.query.ResultTransformer;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.Operation;
 import com.mysema.query.types.expr.SimpleExpression;
 
 /**

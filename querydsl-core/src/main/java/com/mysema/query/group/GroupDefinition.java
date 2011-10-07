@@ -18,7 +18,7 @@ import com.mysema.query.types.Expression;
  * @author sasa
  *
  * @param <T> Expression type
- * @param <R> Target type (e.g. T, Set&lt;T> or List&lt;T>) 
+ * @param <R> Target type (e.g. T, Set&lt;T&gt; or List&lt;T&gt;) 
  */
 public interface GroupDefinition<T, R> {
     
@@ -28,7 +28,7 @@ public interface GroupDefinition<T, R> {
     Expression<T> getExpression();
     
     /**
-     * @return a new stateful GroupCollector to collect values belonging to this group.
+     * @return a new GroupCollector to collect values belonging to this group.
      */
     GroupCollector<R> createGroupCollector();
     

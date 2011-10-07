@@ -6,7 +6,7 @@
 package com.mysema.query.group;
 
 /**
- * A statefull collector of column values for a group.
+ * A stateful collector of column values for a group.
  * 
  * @author sasa
  * @param <R> Target type (e.g. List, Set)

@@ -40,11 +40,11 @@ public class DateTimeOperation<T extends Comparable<?>> extends DateTimeExpressi
 
     private final Operation<T> opMixin;
 
-    DateTimeOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
+    protected DateTimeOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    DateTimeOperation(Class<T> type, Operator<? super T> op, List<Expression<?>> args) {
+    protected DateTimeOperation(Class<T> type, Operator<? super T> op, List<Expression<?>> args) {
         super(type);
         this.opMixin = new OperationImpl<T>(type, op, args);
     }
