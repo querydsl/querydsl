@@ -1026,8 +1026,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         query().from(survey).where(survey.name.in(Arrays.asList("a","b","c"))).count();
     }
     
-    @Test
-    @Ignore
+    @Test    
     public void GroupBy_Superior() {
         SQLQuery qry = query()
             .from(employee)
