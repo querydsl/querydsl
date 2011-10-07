@@ -1034,12 +1034,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         
         QTuple subordinates = new QTuple(employee2.id, employee2.firstname, employee2.lastname);
 
-
-//        GroupBy<Integer> superiors = GroupBy.create(employee.id, employee.firstname, employee.lastname)
-//            .withMap(employee2.id, subordinates);
-        
         Map<Integer, Group> results = qry.transform(
-            GroupBy.groupBy(employee.id, employee.firstname, employee.lastname, GroupBy.map(employee2.id, subordinates)));
+            GroupBy.groupBy(employee.id).as(employee.firstname, employee.lastname, GroupBy.map(employee2.id, subordinates)));
         
         assertEquals(2, results.size());
         

@@ -8,14 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.Projectable;
 import com.mysema.query.ResultTransformer;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.FactoryExpressionUtils;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
@@ -34,40 +31,8 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
     
     private static final Operator<Object> WRAPPED = new OperatorImpl<Object>("WRAPPED", Object.class);
     
-    public static <K> ResultTransformer<Map<K, Group>> groupBy(Expression<K> key, Expression<?>... expressions) {
-        return new GroupBy<K, Group>(key, expressions);
-    }
-    
-    public static <K,V> ResultTransformer<Map<K, V>> groupBy(Expression<K> key, FactoryExpression<V> expression) {
-        Assert.notNull(expression, "expression");
-        
-        final FactoryExpression<?> transformation = FactoryExpressionUtils.wrap(expression);
-
-        List<Expression<?>> args = transformation.getArgs();
-        
-        return new GroupBy<K, V>(key, args.toArray(new Expression<?>[args.size()])) {
-
-            @Override
-            protected Map<K, V> transform(Map<K, Group> groups) {
-                // NOTE: Using new groups.size() as initialCapacity leads to unnecessary rehashing 
-                // if size is close to some power of 2
-                Map<K, V> results = new LinkedHashMap<K, V>((int) Math.ceil(groups.size()/0.75), 0.75f);
-                for (Map.Entry<K, Group> entry : groups.entrySet()) {
-                    results.put(entry.getKey(), transform(entry.getValue()));
-                }            
-                return results;
-            }
-            
-            protected V transform(Group group) {
-                // XXX Isn't group.toArray() suitable here?
-                List<Object> args = new ArrayList<Object>(columnDefinitions.size() - 1);
-                for (int i = 1; i < columnDefinitions.size(); i++) {
-                    args.add(group.getGroup(columnDefinitions.get(i)));
-                }
-                return (V)transformation.newInstance(args.toArray());
-            }
-            
-        };
+    public static <K> GroupByBuilder<K> groupBy(Expression<K> key) {
+        return new GroupByBuilder<K>(key);
     }
     
     @SuppressWarnings("rawtypes")
@@ -206,7 +171,7 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
     protected final Expression<?>[] expressions;
     
     @SuppressWarnings("rawtypes")
-    protected GroupBy(Expression<K> key, Expression<?>... expressions) {
+    GroupBy(Expression<K> key, Expression<?>... expressions) {
         
         List<Expression<?>> projection = new ArrayList<Expression<?>>(expressions.length);        
         columnDefinitions.add(new GOne<K>(key));

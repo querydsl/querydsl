@@ -107,14 +107,14 @@ public class GroupByTest {
     @Test 
     public void Group_Order() {       
         Map<Integer, Group> results = BASIC_RESULTS
-            .transform(groupBy(postId, postName, set(commentId)));
+            .transform(groupBy(postId).as(postName, set(commentId)));
         assertEquals(4, results.size());
     }
     
     @Test
     public void First_Set_And_List() {       
         Map<Integer, Group> results = BASIC_RESULTS.transform(
-            groupBy(postId, postName, set(commentId), list(commentText)));
+            groupBy(postId).as(postName, set(commentId), list(commentText)));
         
         Group group = results.get(1);
         assertEquals(toInt(1), group.getOne(postId));
@@ -126,7 +126,7 @@ public class GroupByTest {
     @Test
     public void Group_By_Null() {        
         Map<Integer, Group> results = BASIC_RESULTS.transform(
-            groupBy(postId, postName, set(commentId), list(commentText)));
+            groupBy(postId).as(postName, set(commentId), list(commentText)));
         
         Group group = results.get(null);
         assertNull(group.getOne(postId));
@@ -139,7 +139,7 @@ public class GroupByTest {
     @Test(expected=NoSuchElementException.class)
     public void NoSuchElementException() {       
         Map<Integer, Group> results = BASIC_RESULTS.transform(
-            groupBy(postId, postName, set(commentId), list(commentText)));
+            groupBy(postId).as(postName, set(commentId), list(commentText)));
         
         Group group = results.get(1);
         group.getSet(qComment);
@@ -148,7 +148,7 @@ public class GroupByTest {
     @Test(expected=ClassCastException.class)
     public void ClassCastException() {        
         Map<Integer, Group> results = BASIC_RESULTS.transform(
-            groupBy(postId, postName, set(commentId), list(commentText)));
+            groupBy(postId).as(postName, set(commentId), list(commentText)));
         
         Group group = results.get(1);
         group.getList(commentId);
@@ -157,7 +157,7 @@ public class GroupByTest {
     @Test
     public void Map() {        
         Map<Integer, Group> results = MAP_RESULTS.transform(
-            groupBy(postId, postName, map(commentId, commentText)));
+            groupBy(postId).as(postName, map(commentId, commentText)));
         
         Group group = results.get(1);
         
@@ -169,7 +169,7 @@ public class GroupByTest {
     @Test
     public void Array_Access() {        
         Map<Integer, Group> results = BASIC_RESULTS.transform(
-            groupBy(postId, postName, set(commentId), list(commentText)));
+            groupBy(postId).as(postName, set(commentId), list(commentText)));
         
         Group group = results.get(1);
         Object[] array = group.toArray();
@@ -182,7 +182,7 @@ public class GroupByTest {
     @Test
     public void Transform_Results() {        
         Map<Integer, Post> results = POST_W_COMMENTS.transform(
-                groupBy(postId, Projections.constructor(Post.class, postId, postName, set(qComment))));
+                groupBy(postId).as(Projections.constructor(Post.class, postId, postName, set(qComment))));
         
         Post post = results.get(1);
         assertNotNull(post);
@@ -194,7 +194,7 @@ public class GroupByTest {
     @Test
     public void Transform_As_Bean() {
         Map<Integer, Post> results = POST_W_COMMENTS.transform(
-                groupBy(postId, Projections.bean(Post.class, postId, postName, set(qComment).as("comments"))));
+                groupBy(postId).as(Projections.bean(Post.class, postId, postName, set(qComment).as("comments"))));
         
         Post post = results.get(1);
         assertNotNull(post);
@@ -207,7 +207,7 @@ public class GroupByTest {
     @Test
     public void OneToOneToMany_Projection() {
         Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
-            groupBy(userName, Projections.constructor(User.class, userName, 
+            groupBy(userName).as(Projections.constructor(User.class, userName, 
                 Projections.constructor(Post.class, postId, postName, set(qComment)))));
         
         assertEquals(2, results.size());
@@ -222,7 +222,7 @@ public class GroupByTest {
     @Test
     public void OneToOneToMany_Projection_As_Bean() {
         Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
-            groupBy(userName, Projections.bean(User.class, userName, 
+            groupBy(userName).as(Projections.bean(User.class, userName, 
                 Projections.bean(Post.class, postId, postName, set(qComment).as("comments")).as("latestPost"))));
         
         assertEquals(2, results.size());
@@ -237,7 +237,7 @@ public class GroupByTest {
     @Test
     public void OneToOneToMany_Projection_As_Bean_And_Constructor() {
         Map<String, User> results = USERS_W_LATEST_POST_AND_COMMENTS.transform(
-            groupBy(userName, Projections.bean(User.class, userName, 
+            groupBy(userName).as(Projections.bean(User.class, userName, 
                 Projections.constructor(Post.class, postId, postName, set(qComment)).as("latestPost"))));
         
         assertEquals(2, results.size());
