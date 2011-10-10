@@ -39,4 +39,9 @@ public class GroupExpression<T> extends SimpleOperation<T> {
         }        
     }
     
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+    
 }
