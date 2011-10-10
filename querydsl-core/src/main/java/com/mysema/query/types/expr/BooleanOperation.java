@@ -31,11 +31,11 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
 
     private final Operation<Boolean> opMixin;
 
-    BooleanOperation(Operator<? super Boolean> op, Expression<?>... args) {
+    protected BooleanOperation(Operator<? super Boolean> op, Expression<?>... args) {
         this(op, Arrays.asList(args));
     }
 
-    BooleanOperation(Operator<? super Boolean> op, List<Expression<?>> args) {
+    protected BooleanOperation(Operator<? super Boolean> op, List<Expression<?>> args) {
         opMixin = new OperationImpl<Boolean>(Boolean.class, op, args);
     }
 

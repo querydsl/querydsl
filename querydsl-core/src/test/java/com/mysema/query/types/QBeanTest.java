@@ -65,8 +65,10 @@ public class QBeanTest {
             this.name2 = name2;
         }
 
-
-
+    }
+    
+    public static class SubEntity extends Entity{
+        
     }
 
     private PathBuilder<Entity> entity;
@@ -147,6 +149,15 @@ public class QBeanTest {
         FactoryExpression<Entity> wrappedProjection = FactoryExpressionUtils.wrap(beanProjection);
         Entity bean = wrappedProjection.newInstance(30, "Fri","tz");
         assertEquals("Fritz", bean.getName());
+    }
+    
+    @Test
+    public void Supertype_Population() {
+        QBean<SubEntity> beanProjection = new QBean<SubEntity>(SubEntity.class, true, name, age, married);
+        SubEntity bean = beanProjection.newInstance("Fritz", 30, true);
+        assertEquals("Fritz", bean.getName());
+        assertEquals(30, bean.getAge());
+        assertEquals(true, bean.isMarried());
     }
 
 }

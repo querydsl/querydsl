@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mysema.commons.lang.Assert;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
@@ -372,7 +373,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         String queryString = buildQueryString(false);
         logger.debug("query : {}", queryString);
         try {
-            PreparedStatement stmt = conn.prepareStatement(queryString);
+            PreparedStatement stmt = Assert.notNull(conn, "connection").prepareStatement(queryString);
             final List<? extends Expression<?>> projection = metadata.getProjection();
             setParameters(stmt, constants, constantPaths, metadata.getParams());
             ResultSet rs = stmt.executeQuery();
@@ -431,7 +432,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         String queryString = buildQueryString(false);
         logger.debug("query : {}", queryString);
         try {
-            PreparedStatement stmt = conn.prepareStatement(queryString);
+            PreparedStatement stmt = Assert.notNull(conn, "connection").prepareStatement(queryString);
             setParameters(stmt, constants, constantPaths, metadata.getParams());
             ResultSet rs = stmt.executeQuery();
 
@@ -592,7 +593,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         PreparedStatement stmt = null;
         ResultSet rs = null;
         try {
-            stmt = conn.prepareStatement(queryString);
+            stmt = Assert.notNull(conn, "connection").prepareStatement(queryString);
             setParameters(stmt, constants, constantPaths, getMetadata().getParams());
             rs = stmt.executeQuery();
             rs.next();

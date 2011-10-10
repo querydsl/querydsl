@@ -40,11 +40,11 @@ public class EnumOperation<T extends Enum<T>> extends EnumExpression<T> implemen
 
     private final Operation<T> opMixin;
 
-    EnumOperation(Class<? extends T> type, Operator<? super T> op, Expression<?>... args) {
+    protected EnumOperation(Class<? extends T> type, Operator<? super T> op, Expression<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    EnumOperation(Class<? extends T> type, Operator<? super T> op, List<Expression<?>> args) {
+    protected EnumOperation(Class<? extends T> type, Operator<? super T> op, List<Expression<?>> args) {
         super(type);
         this.opMixin = new OperationImpl<T>(type, op, args);
     }

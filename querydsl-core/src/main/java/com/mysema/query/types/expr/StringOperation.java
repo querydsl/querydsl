@@ -30,11 +30,11 @@ public class StringOperation extends StringExpression implements Operation<Strin
 
     private final Operation<String> opMixin;
 
-    StringOperation(Operator<? super String> op, Expression<?>... args) {
+    protected StringOperation(Operator<? super String> op, Expression<?>... args) {
         this(op, Arrays.asList(args));
     }
 
-    StringOperation(Operator<? super String> op, List<Expression<?>> args) {
+    protected StringOperation(Operator<? super String> op, List<Expression<?>> args) {
         this.opMixin = new OperationImpl<String>(String.class, op, args);
     }
 

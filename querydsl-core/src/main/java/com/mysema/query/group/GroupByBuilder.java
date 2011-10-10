@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2011 Mysema Ltd.
+ * All rights reserved.
+ *
+ */
 package com.mysema.query.group;
 
 import java.util.ArrayList;
@@ -12,6 +17,9 @@ import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
 
 /**
+ * GroupByBuilder is a fluent builder for GroupBy instances. This class is not to be used directly, 
+ * but via GroupBy.
+ * 
  * @author tiwe
  *
  * @param <K>

@@ -40,11 +40,11 @@ public class SimpleOperation<T> extends SimpleExpression<T> implements Operation
 
     private final Operation< T> opMixin;
 
-    SimpleOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
+    protected SimpleOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
-    SimpleOperation(Class<T> type, Operator<? super T> op, List<Expression<?>> args) {
+    protected SimpleOperation(Class<T> type, Operator<? super T> op, List<Expression<?>> args) {
         super(type);
         this.opMixin = new OperationImpl<T>(type, op, args);
     }
