@@ -58,10 +58,10 @@ public class ValidatingVisitor implements Visitor<Void, Void>, Serializable{
         Collection<Expression<?>> k = known;
         known = new HashSet<Expression<?>>(known);
         QueryMetadata md = expr.getMetadata();
-        visit(md.getGroupBy());        
         visitJoins(md.getJoins());
         visitOrder(md.getOrderBy());
         visit(md.getProjection());
+        visit(md.getGroupBy());
         if (md.getHaving() != null){
             md.getHaving().accept(this, null);
         }

@@ -38,6 +38,7 @@ import com.mysema.query.jpa.domain.QUser;
 import com.mysema.query.jpa.domain.Show;
 import com.mysema.query.jpa.domain4.QBookMark;
 import com.mysema.query.jpa.domain4.QBookVersion;
+import com.mysema.query.jpa.hibernate.HibernateSubQuery;
 import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Concatenation;
 import com.mysema.query.types.ConstructorExpression;
@@ -500,6 +501,16 @@ public abstract class AbstractStandardTest {
         QShow show = QShow.show;
         QShow show2 = new QShow("show2");
         query().from(show).where(subQuery().from(show2).where(show2.id.ne(show.id)).count().gt(0)).count();
+    }
+    
+    @Test
+    public void SubQuery2() {                
+        QCat cat = QCat.cat;
+        QCat other = new QCat("other");
+        List<Cat> cats = query().from(cat)
+            .where(cat.name.in(new HibernateSubQuery().from(other).groupBy(other.name).list(other.name)))
+            .list(cat);
+        assertNotNull(cats);        
     }
 
     @Test
