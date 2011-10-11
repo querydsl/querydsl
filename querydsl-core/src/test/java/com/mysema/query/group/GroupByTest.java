@@ -2,6 +2,8 @@ package com.mysema.query.group;
 
 
 import static com.mysema.query.group.GroupBy.groupBy;
+import static com.mysema.query.group.GroupBy.min;
+import static com.mysema.query.group.GroupBy.max;
 import static com.mysema.query.group.GroupBy.list;
 import static com.mysema.query.group.GroupBy.map;
 import static com.mysema.query.group.GroupBy.set;
@@ -102,7 +104,6 @@ public class GroupByTest {
             row("Jane", 2, "post 2", comment(5)),
             row("John", 1, "post 1", comment(3))
     );
-    
 
     @Test 
     public void Group_Order() {       

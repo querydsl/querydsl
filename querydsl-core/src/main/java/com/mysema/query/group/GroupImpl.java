@@ -23,11 +23,11 @@ import com.mysema.query.types.Expression;
  */
 class GroupImpl implements Group {
     
-    private final Map<Expression<?>, GroupCollector<?>> groupCollectorMap = new LinkedHashMap<Expression<?>, GroupCollector<?>>();
+    private final Map<Expression<?>, GroupCollector<?,?>> groupCollectorMap = new LinkedHashMap<Expression<?>, GroupCollector<?,?>>();
     
     private final List<GroupDefinition<?, ?>> columnDefinitions;
     
-    private final List<GroupCollector<?>> groupCollectors = new ArrayList<GroupCollector<?>>();
+    private final List<GroupCollector<?,?>> groupCollectors = new ArrayList<GroupCollector<?,?>>();
     
     private final List<QPair<?, ?>> maps;
     
@@ -36,7 +36,7 @@ class GroupImpl implements Group {
         this.maps = maps;
         for (int i=0; i < columnDefinitions.size(); i++) {
             GroupDefinition<?, ?> coldef = columnDefinitions.get(i);
-            GroupCollector<?> collector = groupCollectorMap.get(coldef.getExpression());
+            GroupCollector<?,?> collector = groupCollectorMap.get(coldef.getExpression());
             if (collector == null) {
                 collector = coldef.createGroupCollector();                
                 groupCollectorMap.put(coldef.getExpression(), collector);    
@@ -47,7 +47,7 @@ class GroupImpl implements Group {
 
     void add(Object[] row) {
         int i=0;
-        for (GroupCollector<?> groupCollector : groupCollectors) {
+        for (GroupCollector groupCollector : groupCollectors) {
             groupCollector.add(row[i]);
             i++;
         }
@@ -55,7 +55,7 @@ class GroupImpl implements Group {
     
     @SuppressWarnings("unchecked")
     private <T, R> R get(Expression<T> expr) {
-        GroupCollector<R> col = (GroupCollector<R>) groupCollectorMap.get(expr);
+        GroupCollector<T,R> col = (GroupCollector<T,R>) groupCollectorMap.get(expr);
         if (col != null) {
             return col.get();
         }
@@ -101,7 +101,7 @@ class GroupImpl implements Group {
     @Override
     public Object[] toArray() {
         List<Object> arr = new ArrayList<Object>(groupCollectors.size());
-        for (GroupCollector<?> col : groupCollectors) {
+        for (GroupCollector<?,?> col : groupCollectors) {
             arr.add(col.get());
         }
         return arr.toArray();

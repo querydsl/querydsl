@@ -11,14 +11,14 @@ package com.mysema.query.group;
  * @author sasa
  * @param <R> Target type (e.g. List, Set)
  */
-public interface GroupCollector<R> {
+public interface GroupCollector<T,R> {
     
     /**
      * Add given value to this group
      * 
      * @param o
      */
-    void add(Object o);
+    void add(T o);
 
     /**
      * @return Value of this group.

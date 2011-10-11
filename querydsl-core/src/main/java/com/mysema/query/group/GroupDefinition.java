@@ -30,6 +30,6 @@ public interface GroupDefinition<T, R> {
     /**
      * @return a new GroupCollector to collect values belonging to this group.
      */
-    GroupCollector<R> createGroupCollector();
+    GroupCollector<T, R> createGroupCollector();
     
 }

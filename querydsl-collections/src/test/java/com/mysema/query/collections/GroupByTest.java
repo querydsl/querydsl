@@ -4,6 +4,8 @@ package com.mysema.query.collections;
 import static com.mysema.query.group.GroupBy.groupBy;
 import static com.mysema.query.group.GroupBy.list;
 import static com.mysema.query.group.GroupBy.map;
+import static com.mysema.query.group.GroupBy.max;
+import static com.mysema.query.group.GroupBy.min;
 import static com.mysema.query.group.GroupBy.set;
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -19,7 +21,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.group.Group;
-import com.mysema.query.group.GroupBy;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Projections;
 
@@ -48,6 +49,28 @@ public class GroupByTest {
     
     private static final ConstructorExpression<Comment> qComment = QComment.create(comment.id, comment.text);
         
+    @Test
+    public void Group_Min() {
+        Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
+            .where(comment.post.id.eq(post.id))
+            .transform(groupBy(post.id).as(min(comment.text)));
+        
+        assertEquals("Comment 1", results.get(1).getOne(comment.text));
+        assertEquals("Comment 2", results.get(2).getOne(comment.text));
+        assertEquals("Comment 4", results.get(3).getOne(comment.text));
+    }
+    
+    @Test
+    public void Group_Max() {
+        Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
+            .where(comment.post.id.eq(post.id))
+            .transform(groupBy(post.id).as(max(comment.text)));
+        
+        assertEquals("Comment 1", results.get(1).getOne(comment.text));
+        assertEquals("Comment 3", results.get(2).getOne(comment.text));
+        assertEquals("Comment 6", results.get(3).getOne(comment.text));
+    }
+    
     @Test 
     public void Group_Order() {       
         Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)

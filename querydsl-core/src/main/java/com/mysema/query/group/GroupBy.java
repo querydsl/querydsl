@@ -26,28 +26,88 @@ import com.mysema.query.types.expr.SimpleExpression;
  * @author tiwe
  *
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
     
     public static <K> GroupByBuilder<K> groupBy(Expression<K> key) {
         return new GroupByBuilder<K>(key);
     }
+   
+    public static <E extends Comparable<E>> SimpleExpression<E> min(Expression<E> expression) {
+        return new GroupExpression<E>(expression.getType(), new GMin<E>(expression), expression);
+    }    
     
-    @SuppressWarnings("rawtypes")
+    public static <E extends Comparable<E>> SimpleExpression<E> max(Expression<E> expression) {
+        return new GroupExpression<E>(expression.getType(), new GMax<E>(expression), expression);
+    }
+           
     public static <E> SimpleExpression<List<E>> list(Expression<E> expression) {
         return new GroupExpression<List<E>>((Class)List.class, new GList<E>(expression), expression);
     }
     
-    @SuppressWarnings("rawtypes")
     public static <E> SimpleExpression<Set<E>> set(Expression<E> expression) {
         return new GroupExpression<Set<E>>((Class)Set.class, new GSet<E>(expression), expression);
     }
     
-    @SuppressWarnings("rawtypes")
     public static <K, V> SimpleExpression<Map<K, V>> map(Expression<K> key, Expression<V> value) {
         QPair<K,V> qPair = new QPair<K,V>(key, value);
         return new GroupExpression<Map<K,V>>((Class)Map.class, new GMap<K,V>(qPair), qPair);
     }
+    
+    static class GMax<T extends Comparable<T>> extends AbstractGroupDefinition<T, T> {
+
+        public GMax(Expression<T> expr) {
+            super(expr);
+        }
+
+        @Override
+        public GroupCollector<T,T> createGroupCollector() {
+            return new GroupCollector<T,T>() {
+                private T max;
+                
+                @Override
+                public void add(T o) {
+                    if (max != null) {
+                        max = o.compareTo(max) > 0 ? o : max;
+                    } else {
+                        max = o;
+                    }
+                }
+                @Override
+                public T get() {
+                    return max;
+                }                
+            };
+        }        
+    }
+    
+    static class GMin<T extends Comparable<T>> extends AbstractGroupDefinition<T, T> {
+
+        public GMin(Expression<T> expr) {
+            super(expr);
+        }
+
+        @Override
+        public GroupCollector<T,T> createGroupCollector() {
+            return new GroupCollector<T,T>() {
+                private T min;
+                
+                @Override
+                public void add(T o) {
+                    if (min != null) {
+                        min = o.compareTo(min) < 0 ? o : min;
+                    } else {
+                        min = (T)o;
+                    }
+                }
+                @Override
+                public T get() {
+                    return min;
+                }                
+            };
+        }        
+    }
+    
     
     static class GList<T> extends AbstractGroupDefinition<T, List<T>>{
         
@@ -56,14 +116,14 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         }
 
         @Override
-        public GroupCollector<List<T>> createGroupCollector() {
-            return new GroupCollector<List<T>>() {
+        public GroupCollector<T, List<T>> createGroupCollector() {
+            return new GroupCollector<T, List<T>>() {
 
                 private final List<T> list = new ArrayList<T>();
                 
                 @Override
-                public void add(Object o) {
-                    list.add((T) o);
+                public void add(T o) {
+                    list.add(o);
                 }
 
                 @Override
@@ -75,7 +135,6 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         }
     }
     
-    @SuppressWarnings("hiding")
     static class GMap<K, V> extends AbstractGroupDefinition<Pair<K, V>, Map<K, V>>{
         
         public GMap(QPair<K,V> qpair) {
@@ -83,14 +142,13 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         }
 
         @Override
-        public GroupCollector<Map<K, V>> createGroupCollector() {
-            return new GroupCollector<Map<K, V>>() {
+        public GroupCollector<Pair<K,V>, Map<K, V>> createGroupCollector() {
+            return new GroupCollector<Pair<K,V>, Map<K, V>>() {
 
                 private final Map<K, V> set = new LinkedHashMap<K, V>();
                 
                 @Override
-                public void add(Object o) {
-                    Pair<K, V> pair = (Pair<K, V>) o;
+                public void add(Pair<K,V> pair) {
                     set.put(pair.getFirst(), pair.getSecond());
                 }
 
@@ -110,14 +168,14 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         }
 
         @Override
-        public GroupCollector<Set<T>> createGroupCollector() {
-            return new GroupCollector<Set<T>>() {
+        public GroupCollector<T,Set<T>> createGroupCollector() {
+            return new GroupCollector<T,Set<T>>() {
 
                 private final Set<T> set = new LinkedHashSet<T>();
                 
                 @Override
-                public void add(Object o) {
-                    set.add((T) o);
+                public void add(T o) {
+                    set.add(o);
                 }
 
                 @Override
@@ -136,16 +194,16 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         }
 
         @Override
-        public GroupCollector<T> createGroupCollector() {
-            return new GroupCollector<T>() {
+        public GroupCollector<T,T> createGroupCollector() {
+            return new GroupCollector<T,T>() {
                 private boolean first = true;
                 
                 private T val;
                 
                 @Override
-                public void add(Object o) {
+                public void add(T o) {
                     if (first) {
-                        val = (T) o;
+                        val = o;
                         first = false;
                     }
                 }
@@ -164,7 +222,6 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         
     protected final Expression<?>[] expressions;
     
-    @SuppressWarnings("rawtypes")
     GroupBy(Expression<K> key, Expression<?>... expressions) {
         
         List<Expression<?>> projection = new ArrayList<Expression<?>>(expressions.length);        
