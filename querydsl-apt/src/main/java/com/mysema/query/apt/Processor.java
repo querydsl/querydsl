@@ -638,7 +638,9 @@ public class Processor {
                 typeName = typeName.substring(0, typeName.indexOf('<'));
             }
             TypeElement typeElement = env.getElementUtils().getTypeElement(typeName);
-            if (typeElement.getAnnotation(configuration.getEntityAnnotation()) != null){
+            if (typeElement == null) {
+                continue;
+            } else if (typeElement.getAnnotation(configuration.getEntityAnnotation()) != null){
                 // skip Entity types here
                 continue;
             }
