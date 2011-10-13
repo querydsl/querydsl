@@ -66,12 +66,12 @@ public class OrderSpecifier<T extends Comparable> implements Serializable {
 
     @Override
     public boolean equals(Object o){
-        if (o == this){
+        if (o == this) {
             return true;
-        }else if (o instanceof OrderSpecifier){
+        } else if (o instanceof OrderSpecifier) {
             OrderSpecifier<?> os = (OrderSpecifier)o;
             return os.order.equals(order) && os.target.equals(target);
-        }else{
+        } else {
             return false;
         }
     }

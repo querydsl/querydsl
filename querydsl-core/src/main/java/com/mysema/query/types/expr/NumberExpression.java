@@ -242,7 +242,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @see java.lang.Math#floor(double)
      */
     public NumberExpression<T> floor() {
-        if (floor == null){
+        if (floor == null) {
             floor = NumberOperation.create(getType(), MathOps.FLOOR, this);
         }
         return floor;
@@ -433,7 +433,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      */
     @SuppressWarnings("unchecked")
     public NumberExpression<T> max(){
-        if (max == null){
+        if (max == null) {
             max = NumberOperation.create(getType(), (Operator)Ops.AggOps.MAX_AGG, this);
         }
         return max;
@@ -446,7 +446,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      */
     @SuppressWarnings("unchecked")
     public NumberExpression<T> min(){
-        if (min == null){
+        if (min == null) {
             min = NumberOperation.create(getType(), (Operator)Ops.AggOps.MIN_AGG, this);
         }
         return min;
@@ -494,7 +494,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @return this * -1
      */
     public NumberExpression<T> negate(){
-        if (negation == null){
+        if (negation == null) {
             negation = NumberOperation.create(getType(), Ops.NEGATE, this);
         }
         return negation;
@@ -508,7 +508,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @see java.lang.Math#round(float)
      */
     public NumberExpression<Integer> round() {
-        if (round == null){
+        if (round == null) {
             round = NumberOperation.create(Integer.class, MathOps.ROUND, this);
         }
         return round;
@@ -580,7 +580,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
 
     private List<T> convert(Number... numbers){
         List<T> list = new ArrayList<T>(numbers.length);
-        for (int i = 0; i < numbers.length; i++){
+        for (int i = 0; i < numbers.length; i++) {
             list.add(MathUtils.cast(numbers[i], getType()));
         }
         return list;

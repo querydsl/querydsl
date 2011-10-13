@@ -62,7 +62,7 @@ public class SetPath<E, Q extends SimpleExpression<? super E>> extends Collectio
     
     @Override
     public Q any(){
-        if (any == null){
+        if (any == null) {
             any = newInstance(queryType, PathMetadataFactory.forCollectionAny(this));
         }
         return any;
@@ -99,9 +99,9 @@ public class SetPath<E, Q extends SimpleExpression<? super E>> extends Collectio
     
     @Override
     public Class<?> getParameter(int index) {
-        if (index == 0){
+        if (index == 0) {
             return elementType;
-        }else{
+        } else {
             throw new IndexOutOfBoundsException(String.valueOf(index));
         }
     }

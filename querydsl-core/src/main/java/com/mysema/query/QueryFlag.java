@@ -121,12 +121,12 @@ public class QueryFlag implements Serializable{
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this){
+        if (obj == this) {
             return true;
-        }else if (obj instanceof QueryFlag){
+        } else if (obj instanceof QueryFlag) {
             QueryFlag other = (QueryFlag)obj;
             return other.position.equals(position) && other.flag.equals(flag);
-        }else{
+        } else {
             return false;
         }
     }

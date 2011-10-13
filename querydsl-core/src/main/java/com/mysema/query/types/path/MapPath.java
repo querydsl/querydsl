@@ -143,27 +143,27 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
     private E newInstance(PathMetadata<?> pm) throws NoSuchMethodException,
         InstantiationException, IllegalAccessException,
         InvocationTargetException {
-        if (constructor == null){
-            if (Constants.isTyped(queryType)){
+        if (constructor == null) {
+            if (Constants.isTyped(queryType)) {
                 constructor = queryType.getConstructor(Class.class, PathMetadata.class);
-            }else{
+            } else {
                 constructor = queryType.getConstructor(PathMetadata.class);
             }
         }
-        if (Constants.isTyped(queryType)){
+        if (Constants.isTyped(queryType)) {
             return constructor.newInstance(getValueType(), pm);
-        }else{
+        } else {
             return constructor.newInstance(pm);
         }
     }
     
     @Override
     public Class<?> getParameter(int index) {
-        if (index == 0){
+        if (index == 0) {
             return keyType;
-        }else if (index == 1){    
+        } else if (index == 1) {    
             return valueType;
-        }else{
+        } else {
             throw new IndexOutOfBoundsException(String.valueOf(index));
         }
     }

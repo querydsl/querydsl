@@ -61,9 +61,9 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
 
     @Override
     public BooleanExpression not() {
-        if (opMixin.getOperator() == Ops.NOT && opMixin.getArg(0) instanceof BooleanExpression){
+        if (opMixin.getOperator() == Ops.NOT && opMixin.getArg(0) instanceof BooleanExpression) {
             return (BooleanExpression) opMixin.getArg(0);
-        }else{
+        } else {
             return super.not();
         }
     }

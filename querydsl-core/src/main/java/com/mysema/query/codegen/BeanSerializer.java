@@ -51,16 +51,16 @@ public class BeanSerializer implements Serializer{
         String simpleName = model.getSimpleName();
 
         // package
-        if (!model.getPackageName().isEmpty()){
+        if (!model.getPackageName().isEmpty()) {
             writer.packageDecl(model.getPackageName());
         }
 
         // imports
         Set<String> importedClasses = getAnnotationTypes(model);
-        if (model.hasLists()){
+        if (model.hasLists()) {
             importedClasses.add(List.class.getName());
         }
-        if (model.hasMaps()){
+        if (model.hasMaps()) {
             importedClasses.add(Map.class.getName());
         }
         writer.importClasses(importedClasses.toArray(new String[importedClasses.size()]));
@@ -77,9 +77,9 @@ public class BeanSerializer implements Serializer{
         bodyStart(model, writer);
         
         // fields
-        for (Property property : model.getProperties()){
-            if (propertyAnnotations){
-                for (Annotation annotation : property.getAnnotations()){
+        for (Property property : model.getProperties()) {
+            if (propertyAnnotations) {
+                for (Annotation annotation : property.getAnnotations()) {
                     writer.annotation(annotation);
                 }    
             }            
@@ -87,7 +87,7 @@ public class BeanSerializer implements Serializer{
         }
 
         // accessors
-        for (Property property : model.getProperties()){
+        for (Property property : model.getProperties()) {
             String propertyName = property.getEscapedName();
             // getter
             writer.beginPublicMethod(property.getType(), "get"+BeanUtils.capitalize(propertyName));
@@ -115,12 +115,12 @@ public class BeanSerializer implements Serializer{
 
     private Set<String> getAnnotationTypes(EntityType model) {
         Set<String> imports = new HashSet<String>();
-        for (Annotation annotation : model.getAnnotations()){
+        for (Annotation annotation : model.getAnnotations()) {
             imports.add(annotation.annotationType().getName());
         }
-        if (propertyAnnotations){
-            for (Property property : model.getProperties()){
-                for (Annotation annotation : property.getAnnotations()){
+        if (propertyAnnotations) {
+            for (Property property : model.getProperties()) {
+                for (Annotation annotation : property.getAnnotations()) {
                     imports.add(annotation.annotationType().getName());
                 }
             }    

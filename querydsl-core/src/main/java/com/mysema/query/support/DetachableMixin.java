@@ -44,7 +44,7 @@ public class DetachableMixin implements Detachable{
 
     @Override
     public BooleanExpression exists(){
-        if (queryMixin.getMetadata().getJoins().isEmpty()){
+        if (queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("No sources given");
         }
         return unique(queryMixin.getMetadata().getJoins().get(0).getTarget()).exists();
@@ -97,7 +97,7 @@ public class DetachableMixin implements Detachable{
 
     private QueryMetadata projection(Expression<?>... projection){
         QueryMetadata metadata = queryMixin.getMetadata().clone();
-        for (Expression<?> expr : projection){
+        for (Expression<?> expr : projection) {
             metadata.addProjection(nullAsTemplate(expr));             
         }
         return metadata;        
@@ -107,7 +107,7 @@ public class DetachableMixin implements Detachable{
         QueryMetadata metadata = queryMixin.getMetadata().clone();
         metadata.addProjection(nullAsTemplate(first));    
         metadata.addProjection(nullAsTemplate(second));    
-        for (Expression<?> expr : rest){
+        for (Expression<?> expr : rest) {
             metadata.addProjection(nullAsTemplate(expr));    
         }
         return metadata;   

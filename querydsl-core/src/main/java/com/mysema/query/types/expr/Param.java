@@ -45,14 +45,14 @@ public class Param<T> extends SimpleExpression<T> implements ParamExpression<T>{
 
     @Override
     public boolean equals(Object o) {
-        if (o == this){
+        if (o == this) {
             return true;
-        }else if (o instanceof Param<?>){
+        } else if (o instanceof Param<?>) {
             Param<?> other = (Param<?>)o;
             return other.getType().equals(getType())
                 && other.getName().equals(name)
                 && other.anon == anon;
-        }else{
+        } else {
             return false;
         }
     }
@@ -71,9 +71,9 @@ public class Param<T> extends SimpleExpression<T> implements ParamExpression<T>{
     }
 
     public String getNotSetMessage() {
-        if (!anon){
+        if (!anon) {
             return "The parameter " + name + " needs to be set";
-        }else{
+        } else {
             return "A parameter of type " + getType().getName() + " was not set";
         }
     }

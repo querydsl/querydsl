@@ -30,21 +30,21 @@ public final class ReflectionUtils {
 
     private ReflectionUtils(){}
 
-    public static AnnotatedElement getAnnotatedElement(Class<?> beanClass, String propertyName, Class<?> propertyClass){
+    public static AnnotatedElement getAnnotatedElement(Class<?> beanClass, String propertyName, Class<?> propertyClass) {
         Field field = getFieldOrNull(beanClass, propertyName);
         Method method = getGetterOrNull(beanClass, propertyName, propertyClass);
-        if (field == null || field.getAnnotations().length == 0){
+        if (field == null || field.getAnnotations().length == 0) {
             return (method != null && method.getAnnotations().length > 0) ? method : EMPTY;
-        }else if (method == null || method.getAnnotations().length == 0){
+        } else if (method == null || method.getAnnotations().length == 0) {
             return field;
-        }else{
+        } else {
             return new AnnotatedElementAdapter(field, method);
         }
     }
 
     @Nullable
-    private static Field getFieldOrNull(Class<?> beanClass, String propertyName){
-        while (beanClass != null && !beanClass.equals(Object.class)){
+    private static Field getFieldOrNull(Class<?> beanClass, String propertyName) {
+        while (beanClass != null && !beanClass.equals(Object.class)) {
             try {
                 return beanClass.getDeclaredField(propertyName);
             } catch (SecurityException e) {
@@ -111,10 +111,10 @@ public final class ReflectionUtils {
         Set<Class<?>> interfaces = new HashSet<Class<?>>();
         Deque<Class<?>> classes = new ArrayDeque<Class<?>>();
         classes.add(cl);
-        while (!classes.isEmpty()){
+        while (!classes.isEmpty()) {
             Class<?> c = classes.pop();
             interfaces.addAll(Arrays.asList(c.getInterfaces()));
-            if (c.getSuperclass() != null){
+            if (c.getSuperclass() != null) {
                 classes.add(c.getSuperclass());
             }
             classes.addAll(Arrays.asList(c.getInterfaces()));

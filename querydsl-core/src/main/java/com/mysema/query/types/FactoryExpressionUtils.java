@@ -45,8 +45,8 @@ public final class FactoryExpressionUtils {
     }
 
     public static <T> FactoryExpression<T> wrap(FactoryExpression<T> expr){
-        for (Expression<?> arg : expr.getArgs()){
-            if (arg instanceof FactoryExpression<?>){
+        for (Expression<?> arg : expr.getArgs()) {
+            if (arg instanceof FactoryExpression<?>) {
                 return new FactoryExpressionAdapter<T>(expr);
             }
         }
@@ -55,10 +55,10 @@ public final class FactoryExpressionUtils {
 
     private static List<Expression<?>> expand(List<Expression<?>> exprs){
         List<Expression<?>> rv = new ArrayList<Expression<?>>(exprs.size());
-        for (Expression<?> expr : exprs){
-            if (expr instanceof FactoryExpression<?>){
+        for (Expression<?> expr : exprs) {
+            if (expr instanceof FactoryExpression<?>) {
                 rv.addAll(expand(((FactoryExpression<?>)expr).getArgs()));
-            }else{
+            } else {
                 rv.add(expr);
             }
         }
@@ -67,10 +67,10 @@ public final class FactoryExpressionUtils {
 
     private static int countArguments(FactoryExpression<?> expr){
         int counter = 0;
-        for (Expression<?> arg : expr.getArgs()){
-            if (arg instanceof FactoryExpression<?>){
+        for (Expression<?> arg : expr.getArgs()) {
+            if (arg instanceof FactoryExpression<?>) {
                 counter += countArguments((FactoryExpression<?>)arg);
-            }else{
+            } else {
                 counter++;
             }
         }
@@ -81,20 +81,20 @@ public final class FactoryExpressionUtils {
         if (exprs.size() != args.length){
             Object[] rv = new Object[exprs.size()];
             int offset = 0;
-            for (int i = 0; i < exprs.size(); i++){
-                if (exprs.get(i) instanceof FactoryExpression<?>){
+            for (int i = 0; i < exprs.size(); i++) {
+                if (exprs.get(i) instanceof FactoryExpression<?>) {
                     FactoryExpression<?> fe = (FactoryExpression<?>)exprs.get(i);
                     int fullArgsLength = countArguments(fe);
                     Object[] compressed = compress(fe.getArgs(), ArrayUtils.subarray(args, offset, offset + fullArgsLength));
                     rv[i] = fe.newInstance(compressed);
                     offset += fullArgsLength;
-                }else{
+                } else {
                     rv[i] = args[offset];
                     offset++;
                 }
             }
             return rv;
-        }else{
+        } else {
             return args;
         }
     }

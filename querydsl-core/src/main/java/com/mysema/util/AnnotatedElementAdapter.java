@@ -18,9 +18,9 @@ public class AnnotatedElementAdapter implements AnnotatedElement{
 
     private final Map<Class<?>,Annotation> annotations = new HashMap<Class<?>,Annotation>();
 
-    public AnnotatedElementAdapter(AnnotatedElement... elements){
-        for (AnnotatedElement element : elements){
-            for (Annotation annotation : element.getAnnotations()){
+    public AnnotatedElementAdapter(AnnotatedElement... elements) {
+        for (AnnotatedElement element : elements) {
+            for (Annotation annotation : element.getAnnotations()) {
                 annotations.put(annotation.annotationType(), annotation);
             }
         }

@@ -20,13 +20,13 @@ public class Context {
         
     public final List<EntityPath<?>> replacements = new ArrayList<EntityPath<?>>();    
             
-    public void add(Path<?> anyPath, EntityPath<?> replacement){
+    public void add(Path<?> anyPath, EntityPath<?> replacement) {
         replace = true;
         paths.add(anyPath);
         replacements.add(replacement);
     }
     
-    public void add(Context c){
+    public void add(Context c) {
         replace |= c.replace;
         paths.addAll(c.paths);
         replacements.addAll(c.replacements);

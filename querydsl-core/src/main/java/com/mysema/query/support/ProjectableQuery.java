@@ -105,7 +105,7 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     public final <K, V> Map<K, V> map(Expression<K> key, Expression<V> value) {
         List<Object[]> list = list(key, value);
         Map<K, V> results = new LinkedHashMap<K, V>(list.size());
-        for (Object[] row : list){
+        for (Object[] row : list) {
             results.put((K)row[0], (V)row[1]);
         }
         return results;

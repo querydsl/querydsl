@@ -32,7 +32,7 @@ public class PredicateOperation extends OperationImpl<Boolean> implements Predic
     
     @Override
     public Predicate not() {
-        if (not == null){
+        if (not == null) {
             not = new PredicateOperation(Ops.NOT, this);
         }
         return not;

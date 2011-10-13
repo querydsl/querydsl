@@ -48,7 +48,7 @@ public final class SimpleSubQuery<T> extends SimpleExpression<T> implements Exte
 
     @Override
     public BooleanExpression exists() {
-        if (exists == null){
+        if (exists == null) {
             exists = BooleanOperation.create(Ops.EXISTS, this);
         }
         return exists;

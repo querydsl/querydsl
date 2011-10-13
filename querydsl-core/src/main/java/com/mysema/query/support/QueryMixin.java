@@ -62,15 +62,15 @@ public class QueryMixin<T>{
     }
 
     public <RT> Expression<RT> convert(Expression<RT> expr){
-        if (expr instanceof FactoryExpression<?> && !(expr instanceof FactoryExpressionAdapter<?>)){
+        if (expr instanceof FactoryExpression<?> && !(expr instanceof FactoryExpressionAdapter<?>)) {
             return FactoryExpressionUtils.wrap((FactoryExpression<RT>)expr);
-        }else{
+        } else {
             return expr;
         }
     }
 
     public Expression<?>[] convert(Expression<?>[] exprs){
-        for (int i = 0; i < exprs.length; i++){
+        for (int i = 0; i < exprs.length; i++) {
             exprs[i] = convert(exprs[i]);
         }
         return exprs;
@@ -103,14 +103,14 @@ public class QueryMixin<T>{
     }
 
     public T from(Expression<?>... args) {
-        for (Expression<?> arg : args){
+        for (Expression<?> arg : args) {
             metadata.addJoin(JoinType.DEFAULT, arg);
         }
         return self;
     }
 
     public T from(EntityPath<?>... args) {
-        for (EntityPath<?> arg : args){
+        for (EntityPath<?> arg : args) {
             metadata.addJoin(JoinType.DEFAULT, arg);
         }
         return self;
@@ -297,7 +297,7 @@ public class QueryMixin<T>{
     }
 
     public T on(Predicate... conditions){
-        for (Predicate condition : conditions){
+        for (Predicate condition : conditions) {
             metadata.addJoinCondition(condition);
         }
         return self;

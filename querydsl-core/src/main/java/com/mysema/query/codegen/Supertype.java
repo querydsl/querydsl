@@ -49,11 +49,11 @@ public class Supertype {
 
     @Override
     public boolean equals(Object o){
-        if (o == this){
+        if (o == this) {
             return true;
-        }else if (o instanceof Supertype){
+        } else if (o instanceof Supertype) {
             return ((Supertype)o).type.equals(type);
-        }else{
+        } else {
             return false;
         }
     }

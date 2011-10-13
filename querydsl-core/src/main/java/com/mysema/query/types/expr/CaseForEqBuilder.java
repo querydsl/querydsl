@@ -135,14 +135,14 @@ public final class CaseForEqBuilder<D> {
         }
 
         @SuppressWarnings("unchecked")
-        public Q otherwise(Expression<T> otherwise){
+        public Q otherwise(Expression<T> otherwise) {
             caseElements.add(0, new CaseElement<D>(null, otherwise));
             Expression<T> last = null;
-            for (CaseElement<D> element : caseElements){
-                if (last == null){
+            for (CaseElement<D> element : caseElements) {
+                if (last == null) {
                     last = SimpleOperation.create((Class<T>)type, Ops.CASE_EQ_ELSE,
                             element.getTarget());
-                }else{
+                } else {
                     last = SimpleOperation.create((Class<T>)type, Ops.CASE_EQ_WHEN,
                             base,
                             element.getEq(),

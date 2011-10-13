@@ -37,18 +37,18 @@ public class OrderedQueryMetadata extends DefaultQueryMetadata{
     }
     
     @Override
-    public void addJoin(JoinExpression... j){
-        for (JoinExpression join : j){
-            if (joins.contains(join)){
+    public void addJoin(JoinExpression... j) {
+        for (JoinExpression join : j) {
+            if (joins.contains(join)) {
                 continue;
             }        
-            if (join.getType() == JoinType.DEFAULT){
+            if (join.getType() == JoinType.DEFAULT) {
                 int index = joins.size();
-                while (index > 0 && joins.get(index-1).getType() != JoinType.DEFAULT){
+                while (index > 0 && joins.get(index-1).getType() != JoinType.DEFAULT) {
                     index--;
                 }            
                 joins.add(index, join);
-            }else{
+            } else {
                 joins.add(join);
             }
             last = join;    
@@ -62,7 +62,7 @@ public class OrderedQueryMetadata extends DefaultQueryMetadata{
 
     @Override
     public void addJoinCondition(Predicate o) {
-        if (last != null){
+        if (last != null) {
             last.addCondition(o);
         }
     }
@@ -70,7 +70,7 @@ public class OrderedQueryMetadata extends DefaultQueryMetadata{
     @Override
     public QueryMetadata clone(){
         QueryMetadata md = super.clone();
-        for (JoinExpression join : joins){
+        for (JoinExpression join : joins) {
             md.addJoin(join);
         }
         return md;

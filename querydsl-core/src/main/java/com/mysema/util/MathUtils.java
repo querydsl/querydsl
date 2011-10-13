@@ -27,33 +27,33 @@ public final class MathUtils {
     @SuppressWarnings("unchecked")
     public static <D extends Number & Comparable<?>> D cast(Number num, Class<D> type){
         Number rv;
-        if (type.equals(Byte.class)){
+        if (type.equals(Byte.class)) {
             rv = num.byteValue();
-        }else if (type.equals(Double.class)){
+        } else if (type.equals(Double.class)) {
             rv = num.doubleValue();
-        }else if (type.equals(Float.class)){
+        } else if (type.equals(Float.class)) {
             rv = num.floatValue();
-        }else if (type.equals(Integer.class)){
+        } else if (type.equals(Integer.class)) {
             rv = num.intValue();
-        }else if (type.equals(Long.class)){
+        } else if (type.equals(Long.class)) {
             rv = num.longValue();
-        }else if (type.equals(Short.class)){
+        } else if (type.equals(Short.class)) {
             rv = num.shortValue();
-        }else if (type.equals(BigDecimal.class)){
-            if (num instanceof BigDecimal){
+        } else if (type.equals(BigDecimal.class)) {
+            if (num instanceof BigDecimal) {
                 rv = num;
-            }else{
+            } else{
                 rv = new BigDecimal(num.toString());
             }
-        }else if (type.equals(BigInteger.class)){
-            if (num instanceof BigInteger){
+        } else if (type.equals(BigInteger.class)){
+            if (num instanceof BigInteger) {
                 rv = num;
-            }else if (num instanceof BigDecimal){
+            } else if (num instanceof BigDecimal) {
                 rv = ((BigDecimal)num).toBigInteger();
-            }else{
+            } else {
                 rv = new BigInteger(num.toString());
             }
-        }else{
+        } else {
             throw new IllegalArgumentException(String.format("Illegal type : %s", type.getSimpleName()));
         }
         return (D) rv;

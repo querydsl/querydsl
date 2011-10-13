@@ -36,7 +36,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
     @Nullable
     public static BooleanExpression allOf(BooleanExpression... exprs){
         BooleanExpression rv = null;
-        for (BooleanExpression b : exprs){
+        for (BooleanExpression b : exprs) {
             rv = rv == null ? b : rv.and(b);
         }
         return rv;
@@ -51,7 +51,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
     @Nullable
     public static BooleanExpression anyOf(BooleanExpression... exprs){
         BooleanExpression rv = null;
-        for (BooleanExpression b : exprs){
+        for (BooleanExpression b : exprs) {
             rv = rv == null ? b : rv.or(b);
         }
         return rv;
@@ -81,9 +81,9 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
      * @return this && right
      */
     public BooleanExpression and(@Nullable Predicate right) {
-        if (right != null){
+        if (right != null) {
             return BooleanOperation.create(Ops.AND, this, right);
-        }else{
+        } else {
             return this;
         }
     }
@@ -104,7 +104,7 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
      * @return !this
      */
     public BooleanExpression not() {
-        if (not == null){
+        if (not == null) {
             not = BooleanOperation.create(Ops.NOT, this);
         }
         return not;
@@ -117,9 +117,9 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
      * @return this || right
      */
     public BooleanExpression or(@Nullable Predicate right) {
-        if (right != null){
+        if (right != null) {
             return BooleanOperation.create(Ops.OR, this, right);
-        }else{
+        } else {
             return this;
         }
     }
@@ -154,13 +154,13 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
 
     @Override
     public BooleanExpression eq(Boolean right) {
-        if (right.booleanValue()){
-            if (eqTrue == null){
+        if (right.booleanValue()) {
+            if (eqTrue == null) {
                 eqTrue = super.eq(true);
             }
             return eqTrue;
-        }else{
-            if (eqFalse == null){
+        } else {
+            if (eqFalse == null) {
                 eqFalse = super.eq(false);
             }
             return eqFalse;

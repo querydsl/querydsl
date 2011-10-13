@@ -79,19 +79,19 @@ public class Coalesce<T extends Comparable> extends ComparableExpression<T>{
 
     @Override
     public boolean equals(Object o) {
-        if (o == this){
+        if (o == this) {
             return true;
-        }else if (o instanceof Coalesce<?>){
+        } else if (o instanceof Coalesce<?>) {
             Coalesce<?> c = (Coalesce<?>)o;
             return c.exprs.equals(exprs);
-        }else{
+        } else {
             return false;
         }
     }
 
     private Expression<?> getExpressionList(){
         Expression<?> arg = exprs.get(0);
-        for (int i = 1; i < exprs.size(); i++){
+        for (int i = 1; i < exprs.size(); i++) {
             arg = SimpleOperation.create(List.class, Ops.LIST, arg, exprs.get(i));
         }
         return arg;

@@ -26,15 +26,15 @@ public final class ClassPathUtils {
         String packagePath = pkg.getName().replace('.', '/');
         Enumeration<URL> urls = classLoader.getResources(packagePath);
         Set<Class<?>> classes = new HashSet<Class<?>>();
-        while (urls.hasMoreElements()){
+        while (urls.hasMoreElements()) {
             URL url = urls.nextElement();
-            if (url.getProtocol().equals("jar")){
+            if (url.getProtocol().equals("jar")) {
                 scanJar(classes, url, packagePath);
 
-            }else if (url.getProtocol().equals("file")){
+            } else if (url.getProtocol().equals("file")) {
                 scanDirectory(pkg, classes, url, pkg.getName());
 
-            }else{
+            } else {
                 throw new IllegalArgumentException("Illegal url : " + url);
             }
         }
@@ -51,10 +51,10 @@ public final class ClassPathUtils {
         } catch (URISyntaxException e) {
             throw new IOException(e);
         }
-        while (!files.isEmpty()){
+        while (!files.isEmpty()) {
             File file = files.pop();
-            for (File child : file.listFiles()){
-                if (child.getName().endsWith(".class")){
+            for (File child : file.listFiles()) {
+                if (child.getName().endsWith(".class")) {
                     String fileName = child.getPath().substring(packagePath.length()+1).replace(File.separatorChar, '.');
                     String className = pkg.getName() + "." + fileName.substring(0, fileName.length()-6);
                     if (className.startsWith(packageName)) {
@@ -63,7 +63,7 @@ public final class ClassPathUtils {
                             classes.add(cl);
                         }    
                     }                    
-                }else if (child.isDirectory()){
+                } else if (child.isDirectory()) {
                     files.add(child);
                 }
             }
@@ -74,9 +74,9 @@ public final class ClassPathUtils {
         String[] fileAndPath = JAR_URL_SEPARATOR.split(url.getFile().substring(5));
         JarFile jarFile = new JarFile(fileAndPath[0]);
         Enumeration<JarEntry> entries = jarFile.entries();
-        while (entries.hasMoreElements()){
+        while (entries.hasMoreElements()) {
             JarEntry entry = entries.nextElement();            
-            if (entry.getName().endsWith(".class") && entry.getName().startsWith(packagePath) && entry.getName().startsWith(fileAndPath[1].substring(1))){
+            if (entry.getName().endsWith(".class") && entry.getName().startsWith(packagePath) && entry.getName().startsWith(fileAndPath[1].substring(1))) {
                 String className = entry.getName().substring(0, entry.getName().length()-6).replace('/', '.');
                 Class<?> cl = safeClassForName(className);
                 if (cl != null) {

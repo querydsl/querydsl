@@ -26,9 +26,9 @@ public final class ToStringVisitor implements Visitor<String,Templates>{
         StringBuilder builder = new StringBuilder();
         builder.append("new ").append(e.getType().getSimpleName()).append("(");
         boolean first = true;
-        for (Expression<?> arg : e.getArgs()){
-            if (!first){
-            builder.append(", ");
+        for (Expression<?> arg : e.getArgs()) {
+            if (!first) {
+                builder.append(", ");
             }
             builder.append(arg.accept(this, templates));
             first = false;
@@ -42,10 +42,10 @@ public final class ToStringVisitor implements Visitor<String,Templates>{
         Template template = templates.getTemplate(o.getOperator());
         if (template != null) {
             StringBuilder builder = new StringBuilder();
-            for (Template.Element element : template.getElements()){
-                if (element.getStaticText() != null){
+            for (Template.Element element : template.getElements()) {
+                if (element.getStaticText() != null) {
                     builder.append(element.getStaticText());
-                }else{
+                } else {
                     builder.append(o.getArg(element.getIndex()).accept(this, templates));
                 }
             }
@@ -68,12 +68,12 @@ public final class ToStringVisitor implements Visitor<String,Templates>{
             Template pattern = templates.getTemplate(p.getMetadata().getPathType());
             if (pattern != null) {
                 StringBuilder builder = new StringBuilder();
-                for (Template.Element element : pattern.getElements()){
-                    if (element.getStaticText() != null){
+                for (Template.Element element : pattern.getElements()) {
+                    if (element.getStaticText() != null) {
                         builder.append(element.getStaticText());
-                    }else if (element.getIndex() == 0){
+                    } else if (element.getIndex() == 0) {
                         builder.append(parent.accept(this, templates));
-                    }else if (element.getIndex() == 1){
+                    } else if (element.getIndex() == 1) {
                         builder.append(expr.accept(this, templates));
                     }
                 }
@@ -94,10 +94,10 @@ public final class ToStringVisitor implements Visitor<String,Templates>{
     @Override
     public String visit(TemplateExpression<?> expr, Templates templates) {
         StringBuilder builder = new StringBuilder();
-        for (Template.Element element : expr.getTemplate().getElements()){
-            if (element.getStaticText() != null){
+        for (Template.Element element : expr.getTemplate().getElements()) {
+            if (element.getStaticText() != null) {
                 builder.append(element.getStaticText());
-            }else{
+            } else {
                 builder.append(expr.getArg(element.getIndex()).accept(this, templates));
             }
         }

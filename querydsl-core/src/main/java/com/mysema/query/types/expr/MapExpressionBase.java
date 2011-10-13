@@ -66,7 +66,7 @@ public abstract class MapExpressionBase<K, V, Q extends SimpleExpression<? super
     public abstract Q get(K key);
 
     public final BooleanExpression isEmpty() {
-        if (empty == null){
+        if (empty == null) {
             empty = BooleanOperation.create(Ops.MAP_IS_EMPTY, this);
         }
         return empty;

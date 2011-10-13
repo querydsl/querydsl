@@ -40,14 +40,14 @@ public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends S
     protected Q newInstance(Class<Q> queryType, PathMetadata<?> pm){
         try{
             if (constructor == null) {
-                if (Constants.isTyped(queryType)){
+                if (Constants.isTyped(queryType)) {
                     try {
                         constructor = queryType.getConstructor(Class.class, PathMetadata.class, PathInits.class);    
                         usePathInits = true;
                     } catch (NoSuchMethodException e) {
                         constructor = queryType.getConstructor(Class.class, PathMetadata.class);
                     }                    
-                }else{
+                } else {
                     try {
                         constructor = queryType.getConstructor(PathMetadata.class, PathInits.class);
                         usePathInits = true;
@@ -56,14 +56,14 @@ public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends S
                     }    
                 }
             }
-            if (Constants.isTyped(queryType)){
+            if (Constants.isTyped(queryType)) {
                 if (usePathInits) {
                     return (Q)constructor.newInstance(getElementType(), pm, PathInits.DIRECT);
                 } else {
                     return (Q)constructor.newInstance(getElementType(), pm);    
                 }
                 
-            }else{
+            } else {
                 if (usePathInits) {
                     return (Q)constructor.newInstance(pm, PathInits.DIRECT);    
                 } else {

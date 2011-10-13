@@ -48,7 +48,7 @@ public final class NumberSubQuery<T extends Number & Comparable<?>> extends Numb
 
     @Override
     public BooleanExpression exists() {
-        if (exists == null){
+        if (exists == null) {
             exists = BooleanOperation.create(Ops.EXISTS, this);
         }
         return exists;

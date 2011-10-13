@@ -21,9 +21,9 @@ public final class PathBuilderFactory {
     private final Map<Class<?>, PathBuilder<?>> paths = new HashMap<Class<?>, PathBuilder<?>>();
 
     @SuppressWarnings("unchecked")
-    public <T> PathBuilder<T> create(Class<T> clazz){
+    public <T> PathBuilder<T> create(Class<T> clazz) {
         PathBuilder<T> rv = (PathBuilder<T>) paths.get(clazz);
-        if (rv == null){
+        if (rv == null) {
             rv = new PathBuilder<T>(clazz, StringUtils.uncapitalize(clazz.getSimpleName()));
             paths.put(clazz, rv);
         }

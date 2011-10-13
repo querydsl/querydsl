@@ -263,7 +263,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @see java.lang.String#isEmpty()
      */
     public BooleanExpression isEmpty(){
-        if (isempty == null){
+        if (isempty == null) {
             isempty = BooleanOperation.create(Ops.STRING_IS_EMPTY, this);
         }
         return isempty;
@@ -353,7 +353,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return max(this)
      */
     public StringExpression max(){
-        if (max == null){
+        if (max == null) {
             max = StringOperation.create(Ops.AggOps.MAX_AGG, this);
         }
         return max;
@@ -365,7 +365,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @return min(this)
      */
     public StringExpression min(){
-        if (min == null){
+        if (min == null) {
             min = StringOperation.create(Ops.AggOps.MIN_AGG, this);
         }
         return min;

@@ -113,11 +113,11 @@ public final class Template implements Serializable{
     }
     
     public boolean equals(Object o){
-        if (o == this){
+        if (o == this) {
             return true;
-        }else if (o instanceof Template){
+        } else if (o instanceof Template) {
             return ((Template)o).template.equals(template);
-        }else{
+        } else {
             return false;
         }
     }

@@ -27,9 +27,9 @@ public class QueryTypeFactoryImpl implements QueryTypeFactory {
     
     @Override
     public Type create(Type type){
-        if (type.getPackageName().isEmpty()){
+        if (type.getPackageName().isEmpty()) {
             return createWithoutPackage(type);
-        }else{
+        } else {
             return createWithPackage(type);
         }
     }

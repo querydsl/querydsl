@@ -14,9 +14,6 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.ClassUtils;
 
-import com.mysema.query.types.expr.SimpleExpression;
-import com.mysema.query.types.expr.SimpleOperation;
-
 /**
  * ConstructorExpression represents a constructor invocation
  *
@@ -39,15 +36,15 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
     private static Class<?>[] getRealParameters(Class<?> type, Class<?>[] givenTypes) {
         for (Constructor<?> c : type.getConstructors()){
             Class<?>[] paramTypes = c.getParameterTypes();
-            if (paramTypes.length == givenTypes.length){
+            if (paramTypes.length == givenTypes.length) {
                 boolean found = true;
-                for (int i = 0; i < paramTypes.length; i++){
-                    if (!normalize(paramTypes[i]).isAssignableFrom(normalize(givenTypes[i]))){
+                for (int i = 0; i < paramTypes.length; i++) {
+                    if (!normalize(paramTypes[i]).isAssignableFrom(normalize(givenTypes[i]))) {
                         found = false;
                         break;
                     }
                 }
-                if (found){
+                if (found) {
                     return paramTypes;
                 }
             }
@@ -55,7 +52,7 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
         throw new ExpressionException("Got no matching constructor");
     }
 
-    public static <D> ConstructorExpression<D> create(Class<D> type, Expression<?>... args){
+    public static <D> ConstructorExpression<D> create(Class<D> type, Expression<?>... args) {
         Class<?>[] paramTypes = new Class[args.length];
         for (int i = 0; i < paramTypes.length; i++) {
             paramTypes[i] = args[i].getType();
@@ -108,18 +105,18 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
     public boolean equals(Object obj) {
         if (obj == this){
             return true;
-        }else if (obj instanceof ConstructorExpression<?>){
+        } else if (obj instanceof ConstructorExpression<?>) {
             ConstructorExpression<?> c = (ConstructorExpression<?>)obj;
             return Arrays.equals(parameterTypes, c.parameterTypes)
                 && args.equals(c.args)
                 && getType().equals(c.getType());
-        }else{
+        } else {
             return false;
         }
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return getType().hashCode();
     }
 
@@ -128,9 +125,9 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
     }
 
     @SuppressWarnings("unchecked")
-    public T newInstance(Object... args){
+    public T newInstance(Object... args) {
         try {
-            if (constructor == null){
+            if (constructor == null) {
                 constructor = getType().getConstructor(parameterTypes);
             }
             return (T) constructor.newInstance(args);

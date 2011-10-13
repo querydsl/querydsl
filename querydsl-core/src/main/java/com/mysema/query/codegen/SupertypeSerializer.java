@@ -59,7 +59,7 @@ public final class SupertypeSerializer extends EntitySerializer{
         packages.add(SimplePath.class.getPackage());
         if ((model.hasLists() && config.useListAccessors())
                 || !model.getDelegates().isEmpty()
-                || (model.hasMaps() && config.useMapAccessors())){
+                || (model.hasMaps() && config.useMapAccessors())) {
             packages.add(ComparableExpression.class.getPackage());
         }
         writer.imports(packages.toArray(new Package[packages.size()]));

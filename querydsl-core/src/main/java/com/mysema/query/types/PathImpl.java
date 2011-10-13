@@ -30,11 +30,11 @@ public class PathImpl<T> extends ExpressionBase<T> implements Path<T> {
     @Nullable
     private AnnotatedElement annotatedElement;
 
-    public PathImpl(Class<? extends T> type, String variable){
+    public PathImpl(Class<? extends T> type, String variable) {
         this(type, PathMetadataFactory.forVariable(variable));
     }
 
-    public PathImpl(Class<? extends T> type, PathMetadata<?> metadata){
+    public PathImpl(Class<? extends T> type, PathMetadata<?> metadata) {
         super(type);
         this.metadata = Assert.notNull(metadata,"metadata");
         this.root = metadata.getRoot() != null ? metadata.getRoot() : this;
@@ -46,11 +46,11 @@ public class PathImpl<T> extends ExpressionBase<T> implements Path<T> {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this){
+        if (o == this) {
             return true;
-        }else if (o instanceof Path){
+        } else if (o instanceof Path<?>) {
             return ((Path<?>) o).getMetadata().equals(metadata);
-        }else{
+        } else {
             return false;
         }
     }
@@ -72,13 +72,13 @@ public class PathImpl<T> extends ExpressionBase<T> implements Path<T> {
 
     @Override
     public AnnotatedElement getAnnotatedElement() {
-        if (annotatedElement == null){
-            if (metadata.getPathType() == PathType.PROPERTY){
+        if (annotatedElement == null) {
+            if (metadata.getPathType() == PathType.PROPERTY) {
                 Class<?> beanClass = metadata.getParent().getType();
                 String propertyName = metadata.getExpression().toString();
                 annotatedElement = ReflectionUtils.getAnnotatedElement(beanClass, propertyName, type);
 
-            }else{
+            } else {
                 annotatedElement = type;
             }
         }

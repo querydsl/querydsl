@@ -69,9 +69,9 @@ public final class Property implements Comparable<Property> {
 
     public Property createCopy(EntityType targetModel) {
         Type newType = TypeResolver.resolve(type, declaringType, targetModel);
-        if (newType != type){
+        if (newType != type) {
             return new Property(targetModel, name, newType, inits, false);
-        }else{
+        } else {
             return new Property(targetModel, name, type, inits, targetModel.getSuperType() != null);
         }
     }
@@ -96,12 +96,12 @@ public final class Property implements Comparable<Property> {
 
     @Override
     public boolean equals(Object o){
-        if (o == this){
+        if (o == this) {
             return true;
-        }else if (o instanceof Property){
+        } else if (o instanceof Property) {
             Property p = (Property)o;
             return p.name.equals(name) && p.type.equals(type);
-        }else{
+        } else {
             return false;
         }
     }

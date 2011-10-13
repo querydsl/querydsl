@@ -35,7 +35,7 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
 
     public BooleanBuilder() {  }
 
-    public BooleanBuilder(Predicate initial){
+    public BooleanBuilder(Predicate initial) {
         predicate = (Predicate) initial.accept(ExtractorVisitor.DEFAULT, null);
     }
 
@@ -55,10 +55,10 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
      * @return
      */
     public BooleanBuilder and(@Nullable Predicate right) {
-        if (right != null){
-            if (predicate == null){
+        if (right != null) {
+            if (predicate == null) {
                 predicate = right;
-            }else{
+            } else {
                 predicate = ExpressionUtils.and(predicate, right);
             }
         }
@@ -73,7 +73,7 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
      * @return
      */
     public BooleanBuilder andAnyOf(Predicate... args) {
-        if (args.length > 0){
+        if (args.length > 0) {
             and(ExpressionUtils.anyOf(args));
         }
         return this;
@@ -96,20 +96,20 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
 
     @Override
     public boolean equals(Object o) {
-        if (o == this){
+        if (o == this) {
             return true;
-        }else if (o instanceof BooleanBuilder){
+        } else if (o instanceof BooleanBuilder) {
             return ObjectUtils.equals(((BooleanBuilder)o).getValue(), predicate);
-        }else{
+        } else {
             return false;
         }
     }
 
     @Override
     public Expression<?> getArg(int index) {
-        if (index == 0){
+        if (index == 0) {
             return predicate;
-        }else{
+        } else {
             throw new IndexOutOfBoundsException();
         }
     }
@@ -145,7 +145,7 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
 
     @Override
     public BooleanBuilder not(){
-        if (predicate != null){
+        if (predicate != null) {
             predicate = predicate.not();
         }
         return this;
@@ -158,10 +158,10 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
      * @return
      */
     public BooleanBuilder or(@Nullable Predicate right) {
-        if (right != null){
-            if (predicate == null){
+        if (right != null) {
+            if (predicate == null) {
                 predicate = right;
-            }else{
+            } else {
                 predicate = ExpressionUtils.or(predicate, right);
             }
         }
@@ -176,7 +176,7 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
      * @return
      */
     public BooleanBuilder orAllOf(Predicate... args) {
-        if (args.length > 0){
+        if (args.length > 0) {
             or(ExpressionUtils.allOf(args));
         }
         return this;

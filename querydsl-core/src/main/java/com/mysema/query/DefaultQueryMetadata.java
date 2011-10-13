@@ -81,8 +81,8 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void addHaving(Predicate... o) {
-        for (Predicate e : o){
-            if (e != null && (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue())){
+        for (Predicate e : o) {
+            if (e != null && (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue())) {
                 validate(e);
                 having.and(e);
             }
@@ -99,7 +99,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         for (JoinExpression join : j) {
             Expression<?> expr = join.getTarget();
             if (!exprInJoins.contains(expr)) {
-                if (expr instanceof Path<?> && join.getType() == JoinType.DEFAULT){
+                if (expr instanceof Path<?> && join.getType() == JoinType.DEFAULT) {
                     ensureRoot((Path<?>) expr);
                 }
                 exprInJoins.add(expr);
@@ -121,7 +121,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void addOrderBy(OrderSpecifier<?>... o) {
-        for (OrderSpecifier<?> os : o){
+        for (OrderSpecifier<?> os : o) {
             validate(os.getTarget());
         }
         orderBy.addAll(Arrays.asList(o));
@@ -135,8 +135,8 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void addWhere(Predicate... o) {
-        for (Predicate e : o){
-            if (e != null && (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue())){
+        for (Predicate e : o) {
+            if (e != null && (!BooleanBuilder.class.isInstance(e) || ((BooleanBuilder)e).hasValue())) {
                 validate(e);
                 where.and(e);
             }
@@ -177,7 +177,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     private void ensureRoot(Path<?> path){
-        if (path.getMetadata().getParent() != null){
+        if (path.getMetadata().getParent() != null) {
             throw new IllegalArgumentException("Only root paths are allowed for joins : " + path);
         }
     }
@@ -246,9 +246,9 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void setLimit(Long limit) {
-        if (modifiers == null || modifiers.getOffset() == null){
+        if (modifiers == null || modifiers.getOffset() == null) {
             modifiers = QueryModifiers.limit(limit);
-        }else{
+        } else {
             modifiers = new QueryModifiers(limit, modifiers.getOffset());
         }
     }
@@ -260,9 +260,9 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void setOffset(Long offset) {
-        if (modifiers == null || modifiers.getLimit() == null){
+        if (modifiers == null || modifiers.getLimit() == null) {
             modifiers = QueryModifiers.offset(offset);
-        }else{
+        } else {
             modifiers = new QueryModifiers(modifiers.getLimit(), offset);
         }
     }
@@ -293,8 +293,8 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     private void validate(Expression<?>... expr){
-        if (validate){
-            for (Expression<?> e : expr){
+        if (validate) {
+            for (Expression<?> e : expr) {
                 e.accept(validatingVisitor, null);
             }
         }

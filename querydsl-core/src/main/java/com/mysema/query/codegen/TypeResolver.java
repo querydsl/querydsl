@@ -26,12 +26,12 @@ public final class TypeResolver {
         }
         
         // handle generic types
-        if (resolved instanceof TypeExtends){
+        if (resolved instanceof TypeExtends) {
             resolved = resolveTypeExtends((TypeExtends)resolved, declaringType, context);
         }
 
         // handle generic type parameters
-        if(!resolved.getParameters().isEmpty()){
+        if(!resolved.getParameters().isEmpty()) {
             resolved = resolveWithParameters(resolved, declaringType, context);
         }
         
@@ -83,16 +83,16 @@ public final class TypeResolver {
     private static Type resolveWithParameters(Type type, Type declaringType, EntityType context) {
         Type[] params = new Type[type.getParameters().size()];
         boolean transformed = false;
-        for (int i = 0; i < type.getParameters().size(); i++){
+        for (int i = 0; i < type.getParameters().size(); i++) {
             Type param = type.getParameters().get(i);
-            if (param != null){
+            if (param != null) {
                 params[i] = resolve(param, declaringType, context);
-                if (params[i] != param){
+                if (params[i] != param) {
                     transformed = true;
                 }
             }
         }
-        if (transformed){
+        if (transformed) {
             return new SimpleType(
                     type.getCategory(),
                     type.getFullName(), 
@@ -101,7 +101,7 @@ public final class TypeResolver {
                     type.isFinal(),
                     type.isPrimitive(),
                     params);
-        }else{
+        } else {
             return type;
         }
     }

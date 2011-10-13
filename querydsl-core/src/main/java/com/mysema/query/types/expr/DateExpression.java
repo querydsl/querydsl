@@ -76,7 +76,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      * @return
      */
     public NumberExpression<Integer> dayOfMonth(){
-        if (dayOfMonth == null){
+        if (dayOfMonth == null) {
             dayOfMonth = NumberOperation.create(Integer.class, Ops.DateTimeOps.DAY_OF_MONTH, this);
         }
         return dayOfMonth;
@@ -89,7 +89,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      * @return
      */
     public NumberExpression<Integer> dayOfWeek() {
-        if (dayOfWeek == null){
+        if (dayOfWeek == null) { 
             dayOfWeek = NumberOperation.create(Integer.class, Ops.DateTimeOps.DAY_OF_WEEK, this);
         }
         return dayOfWeek;
@@ -102,7 +102,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      * @return
      */
     public NumberExpression<Integer> dayOfYear() {
-        if (dayOfYear == null){
+        if (dayOfYear == null) {
             dayOfYear = NumberOperation.create(Integer.class, Ops.DateTimeOps.DAY_OF_YEAR, this);
         }
         return dayOfYear;
@@ -114,7 +114,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      * @return max(this)
      */
     public DateExpression<T> max(){
-        if (max == null){
+        if (max == null) {
             max = DateOperation.create(getType(), Ops.AggOps.MAX_AGG, this);
         }
         return max;
@@ -126,7 +126,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      * @return min(this)
      */
     public DateExpression<T> min(){
-        if (min == null){
+        if (min == null) {
             min = DateOperation.create(getType(), Ops.AggOps.MIN_AGG, this);
         }
         return min;
@@ -138,7 +138,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      * @return
      */
     public NumberExpression<Integer> month(){
-        if (month == null){
+        if (month == null) {
             month = NumberOperation.create(Integer.class, Ops.DateTimeOps.MONTH, this);
         }
         return month;
@@ -150,7 +150,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      * @return
      */
     public NumberExpression<Integer> week() {
-        if (week == null){
+        if (week == null) {
             week = NumberOperation.create(Integer.class, Ops.DateTimeOps.WEEK,  this);
         }
         return week;
@@ -162,7 +162,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      * @return
      */
     public NumberExpression<Integer> year(){
-        if (year == null){
+        if (year == null) {
             year = NumberOperation.create(Integer.class, Ops.DateTimeOps.YEAR, this);
         }
         return year;
@@ -174,7 +174,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
      * @return
      */
     public NumberExpression<Integer> yearMonth(){
-        if (yearMonth == null){
+        if (yearMonth == null) {
             yearMonth = NumberOperation.create(Integer.class, Ops.DateTimeOps.YEAR_MONTH, this);
         }
         return yearMonth;

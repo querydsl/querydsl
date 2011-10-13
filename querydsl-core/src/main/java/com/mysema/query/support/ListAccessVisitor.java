@@ -18,7 +18,7 @@ public class ListAccessVisitor implements Visitor<Expression<?>,Context>{
     
     public static final ListAccessVisitor DEFAULT = new ListAccessVisitor();
     
-    public static final Templates TEMPLATE = new Templates(){
+    public static final Templates TEMPLATE = new Templates() {
     {
         add(PathType.PROPERTY, "{0}_{1}");
         add(PathType.LISTVALUE, "{0}_{1}");
@@ -46,14 +46,14 @@ public class ListAccessVisitor implements Visitor<Expression<?>,Context>{
             args[i] = expr.getArg(i).accept(this, c);
             context.add(c);
         }
-        if (context.replace){            
-            if (expr.getType().equals(Boolean.class)){
+        if (context.replace) {             
+            if (expr.getType().equals(Boolean.class)) {
                 Predicate predicate = BooleanTemplate.create(expr.getTemplate(), args);
                 return !context.paths.isEmpty() ? exists(context, predicate) : predicate;           
-            }else{
+            } else {
                 return new TemplateExpressionImpl(expr.getType(), expr.getTemplate(), args);    
             }    
-        }else{
+        } else {
             return expr;
         }         
     }
@@ -67,19 +67,19 @@ public class ListAccessVisitor implements Visitor<Expression<?>,Context>{
     @Override
     public Expression<?> visit(Operation<?> expr, Context context) {
         Expression<?>[] args = new Expression<?>[expr.getArgs().size()];        
-        for (int i = 0; i < args.length; i++){
+        for (int i = 0; i < args.length; i++) {
             Context c = new Context();
             args[i] = expr.getArg(i).accept(this, c);
             context.add(c);
         }
-        if (context.replace){            
-            if (expr.getType().equals(Boolean.class)){
+        if (context.replace) {            
+            if (expr.getType().equals(Boolean.class)) {
                 Predicate predicate = new PredicateOperation((Operator)expr.getOperator(), args);
                 return !context.paths.isEmpty() ? exists(context, predicate) : predicate;           
-            }else{
+            } else {
                 return new OperationImpl(expr.getType(), expr.getOperator(), args);    
             }    
-        }else{
+        } else {
             return expr;
         }        
     }

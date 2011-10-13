@@ -20,7 +20,7 @@ public final class SimpleSerializerConfig implements SerializerConfig{
 
     public static final SerializerConfig DEFAULT = new SimpleSerializerConfig(false, false, false, true);
 
-    public static SerializerConfig getConfig(Config annotation){
+    public static SerializerConfig getConfig(Config annotation) {
         return new SimpleSerializerConfig(
                 annotation.entityAccessors(),
                 annotation.listAccessors(),
@@ -34,7 +34,7 @@ public final class SimpleSerializerConfig implements SerializerConfig{
             boolean entityAccessors,
             boolean listAccessors,
             boolean mapAccessors,
-            boolean createDefaultVariable){
+            boolean createDefaultVariable) {
         this.entityAccessors = entityAccessors;
         this.listAccessors = listAccessors;
         this.mapAccessors = mapAccessors;

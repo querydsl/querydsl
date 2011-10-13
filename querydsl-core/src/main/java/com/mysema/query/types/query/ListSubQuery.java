@@ -84,9 +84,9 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
     private NumberExpression<Long> count(Operator<Number> operator) {
         QueryMetadata md = subQueryMixin.getMetadata().clone();
         Expression<?> e = null;
-        if (md.getProjection().size() == 1){
+        if (md.getProjection().size() == 1) {
             e = md.getProjection().get(0);
-        }else{
+        } else {
             e = ExpressionUtils.merge(md.getProjection());
         }
         md.clearProjection();
@@ -128,9 +128,9 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
 
     @Override
     public Class<?> getParameter(int index) {
-        if (index == 0){
+        if (index == 0) {
             return elementType;
-        }else{
+        } else {
             throw new IndexOutOfBoundsException(String.valueOf(index));
         }
     }

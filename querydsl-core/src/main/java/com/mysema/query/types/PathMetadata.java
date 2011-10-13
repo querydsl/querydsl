@@ -43,15 +43,15 @@ public final class PathMetadata<T> implements Serializable{
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this){
+        if (obj == this) {
             return true;
-        }else if (obj instanceof PathMetadata<?>){
+        } else if (obj instanceof PathMetadata<?>) { 
             PathMetadata<?> p = (PathMetadata<?>) obj;
             return new EqualsBuilder()
                 .append(expression, p.expression)
                 .append(parent, p.parent)
                 .append(pathType, p.pathType).isEquals();
-        }else{
+        } else {
             return false;
         }
 

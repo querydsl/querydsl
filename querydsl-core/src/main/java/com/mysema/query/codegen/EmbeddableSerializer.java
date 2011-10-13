@@ -48,7 +48,7 @@ public final class EmbeddableSerializer extends EntitySerializer {
 
         TypeCategory category = model.getOriginalCategory();
         Class<? extends Path> pathType;
-        if (model.getProperties().isEmpty()){
+        if (model.getProperties().isEmpty()) {
             switch(category){
                 case COMPARABLE : pathType = ComparablePath.class; break;
                 case ENUM: pathType = EnumPath.class; break;
@@ -60,7 +60,7 @@ public final class EmbeddableSerializer extends EntitySerializer {
                 case BOOLEAN: pathType = BooleanPath.class; break;
                 default : pathType = BeanPath.class;
             }
-        }else{
+        } else {
             pathType = BeanPath.class;
         }
 
@@ -70,9 +70,9 @@ public final class EmbeddableSerializer extends EntitySerializer {
         
         writer.line("@Generated(\"", getClass().getName(), "\")");
 
-        if (category == TypeCategory.BOOLEAN || category == TypeCategory.STRING){
+        if (category == TypeCategory.BOOLEAN || category == TypeCategory.STRING) {
             writer.beginClass(queryType, new ClassType(pathType));
-        }else{
+        } else {
             writer.beginClass(queryType, new ClassType(category,pathType, model));
         }
 
@@ -102,7 +102,7 @@ public final class EmbeddableSerializer extends EntitySerializer {
         Type queryType = typeMappings.getPathType(model, model, true);
         if (!model.getPackageName().isEmpty()
             && !queryType.getPackageName().equals(model.getPackageName()) 
-            && !queryType.getSimpleName().equals(model.getSimpleName())){
+            && !queryType.getSimpleName().equals(model.getSimpleName())) {
             String fullName = model.getFullName();
             String packageName = model.getPackageName();
             if (fullName.substring(packageName.length()+1).contains(".")) {

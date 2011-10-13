@@ -19,7 +19,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context>{
     
     public static final CollectionAnyVisitor DEFAULT = new CollectionAnyVisitor();
     
-    public static final Templates TEMPLATE = new Templates(){
+    public static final Templates TEMPLATE = new Templates() {
     {
         add(PathType.PROPERTY, "{0}_{1}");
         add(PathType.COLLECTION_ANY, "{0}");
@@ -41,19 +41,19 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context>{
     @Override
     public Expression<?> visit(TemplateExpression<?> expr, Context context) {
         Expression<?>[] args = new Expression<?>[expr.getArgs().size()];        
-        for (int i = 0; i < args.length; i++){
+        for (int i = 0; i < args.length; i++) {
             Context c = new Context();
             args[i] = expr.getArg(i).accept(this, c);
             context.add(c);
         }
-        if (context.replace){            
-            if (expr.getType().equals(Boolean.class)){
+        if (context.replace) {            
+            if (expr.getType().equals(Boolean.class)) {
                 Predicate predicate = BooleanTemplate.create(expr.getTemplate(), args);
                 return !context.paths.isEmpty() ? exists(context, predicate) : predicate;           
-            }else{
+            } else {
                 return new TemplateExpressionImpl(expr.getType(), expr.getTemplate(), args);    
             }    
-        }else{
+        } else {
             return expr;
         }         
     }
@@ -67,24 +67,24 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context>{
     @Override
     public Expression<?> visit(Operation<?> expr, Context context) {
         Expression<?>[] args = new Expression<?>[expr.getArgs().size()];        
-        for (int i = 0; i < args.length; i++){
+        for (int i = 0; i < args.length; i++) {
             Context c = new Context();
             args[i] = expr.getArg(i).accept(this, c);
             context.add(c);
         }
-        if (context.replace){            
+        if (context.replace) {            
             if (expr.getType().equals(Boolean.class)){
                 Predicate predicate = new PredicateOperation((Operator)expr.getOperator(), args);
                 return !context.paths.isEmpty() ? exists(context, predicate) : predicate;           
-            }else{
+            } else {
                 return new OperationImpl(expr.getType(), expr.getOperator(), args);    
             }    
-        }else{
+        } else {
             return expr;
         }        
     }
     
-    protected Predicate exists(Context c, Predicate condition){
+    protected Predicate exists(Context c, Predicate condition) {
         return condition;
     }
 
@@ -97,10 +97,10 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context>{
             context.add(expr, replacement);
             return replacement;
             
-        }else if (expr.getMetadata().getParent() != null){
+        } else if (expr.getMetadata().getParent() != null) {
             Context c = new Context();
             Path<?> parent = (Path<?>) expr.getMetadata().getParent().accept(this, c);
-            if (c.replace){
+            if (c.replace) {
                 context.add(c);
                 return replaceParent(expr, parent);
             }

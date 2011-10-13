@@ -68,7 +68,7 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
     
     @Override
     public Q any(){
-        if (any == null){
+        if (any == null) {
             any = newInstance(queryType, PathMetadataFactory.forCollectionAny(this));
         }
         return any;
@@ -101,9 +101,9 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
 
     @Override
     public Q get(int index) {
-        if (cache.containsKey(index)){
+        if (cache.containsKey(index)) {
             return cache.get(index);
-        }else{
+        } else {
             Q rv = create(index);
             cache.put(index, rv);
             return rv;
@@ -136,9 +136,9 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
 
     @Override
     public Class<?> getParameter(int index) {
-        if (index == 0){
+        if (index == 0) {
             return elementType;
-        }else{
+        } else {
             throw new IndexOutOfBoundsException(String.valueOf(index));
         }
     }

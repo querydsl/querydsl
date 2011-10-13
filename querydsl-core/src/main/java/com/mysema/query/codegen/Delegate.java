@@ -42,12 +42,12 @@ public class Delegate {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this){
+        if (o == this) {
             return true;
-        }else if (o instanceof Delegate){
+        } else if (o instanceof Delegate) {
             Delegate m = (Delegate)o;
             return m.name.equals(name) && m.parameters.equals(parameters);
-        }else{
+        } else {
             return false;
         }
     }

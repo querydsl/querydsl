@@ -54,11 +54,11 @@ public class TemplateFactory {
                 String str = template.substring(m.start() + 1, m.end() - 1).toLowerCase(Locale.ENGLISH);
                 boolean asString = false;
                 Transformer<? extends Expression<?>, ? extends Expression<?>> transformer = null;
-                if (str.charAt(0) == '%'){
-                    if (str.charAt(1) == '%'){
+                if (str.charAt(0) == '%') {
+                    if (str.charAt(1) == '%') {
                         transformer = converters.toEndsWithViaLikeLower;
                         str = str.substring(2);
-                    }else{
+                    } else {
                         transformer = converters.toEndsWithViaLike;
                         str = str.substring(1);
                     }
@@ -98,15 +98,15 @@ public class TemplateFactory {
                     strip = 1;
                     break;
                 }
-                if (strip > 0){
+                if (strip > 0) {
                     str = str.substring(0, str.length()-strip);
                 }
                 int index = Integer.parseInt(str);
-                if (asString){
+                if (asString) {
                     elements.add(new Element(index, true));
-                }else if (transformer != null){
+                } else if (transformer != null) {
                     elements.add(new Element(index, transformer));
-                }else{
+                } else {
                     elements.add(new Element(index, false));
                 }
                 end = m.end();

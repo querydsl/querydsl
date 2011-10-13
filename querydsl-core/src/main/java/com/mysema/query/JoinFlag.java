@@ -81,11 +81,11 @@ public class JoinFlag implements Serializable{
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this){
+        if (obj == this) {
             return true;
-        }else if (obj instanceof JoinFlag){
+        } else if (obj instanceof JoinFlag) {
             return ((JoinFlag)obj).flag.equals(flag);
-        }else{
+        } else {
             return false;
         }
     }

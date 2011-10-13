@@ -48,7 +48,7 @@ public final class TimeSubQuery<T extends Comparable<?>> extends TimeExpression<
 
     @Override
     public BooleanExpression exists() {
-        if (exists == null){
+        if (exists == null) {
             exists = BooleanOperation.create(Ops.EXISTS, this);
         }
         return exists;

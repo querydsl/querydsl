@@ -87,10 +87,10 @@ public final class CaseBuilder {
             cases.add(0, new CaseElement<A>(null, expr));
             Expression<A> last = null;
             for (CaseElement<A> element : cases){
-                if (last == null){
+                if (last == null) {
                     last = SimpleOperation.create(type, Ops.CASE_ELSE,
                             element.getTarget());
-                }else{
+                } else {
                     last = SimpleOperation.create(type, Ops.CASE_WHEN,
                             element.getCondition(),
                             element.getTarget(),

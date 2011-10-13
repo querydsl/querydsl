@@ -44,15 +44,15 @@ public final class TypeFactory {
     private boolean unknownAsEntity;
 
     @SuppressWarnings("unchecked")
-    public TypeFactory(Class<?>... entityAnnotations){
+    public TypeFactory(Class<?>... entityAnnotations) {
         this((List)Arrays.asList(entityAnnotations));
     }
 
-    public TypeFactory(List<Class<? extends Annotation>> entityAnnotations){
+    public TypeFactory(List<Class<? extends Annotation>> entityAnnotations) {
         this.entityAnnotations = entityAnnotations;
     }
 
-    public Type create(Class<?> cl){
+    public Type create(Class<?> cl) {
         return create(cl, cl);
     }
 
@@ -60,7 +60,7 @@ public final class TypeFactory {
         List<java.lang.reflect.Type> key = Arrays.<java.lang.reflect.Type> asList(cl, genericType);
         if (cache.containsKey(key)) {
             return cache.get(key);
-        }else{
+        } else {
             if (cl.isPrimitive()) {
                 cl = ClassUtils.primitiveToWrapper(cl);
             }
@@ -101,17 +101,17 @@ public final class TypeFactory {
 
             } else {
                 TypeCategory typeCategory = TypeCategory.get(cl.getName());
-                if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)){
+                if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)) {
                     typeCategory = TypeCategory.COMPARABLE;
-                }else if (entity){
+                } else if (entity) {
                     typeCategory = TypeCategory.ENTITY;
-                }else if (unknownAsEntity && typeCategory == TypeCategory.SIMPLE && !cl.getName().startsWith("java")){
+                } else if (unknownAsEntity && typeCategory == TypeCategory.SIMPLE && !cl.getName().startsWith("java")) {
                     typeCategory = TypeCategory.ENTITY;
                 }
                 value = new ClassType(typeCategory, cl, parameters);
             }
 
-            if (entity){
+            if (entity) {
                 value = new EntityType(value);
             }
 
@@ -123,7 +123,7 @@ public final class TypeFactory {
 
     private Type[] getParameters(Class<?> cl, java.lang.reflect.Type genericType) {
         int parameterCount = ReflectionUtils.getTypeParameterCount(genericType);
-        if (parameterCount > 0){
+        if (parameterCount > 0) {
             boolean collectionOrMap = Collection.class.isAssignableFrom(cl) || Map.class.isAssignableFrom(cl);
             return getGenericParameters(genericType, collectionOrMap, parameterCount);
 
@@ -144,13 +144,13 @@ public final class TypeFactory {
 
     private Type[] getGenericParameters(java.lang.reflect.Type genericType, boolean collectionOrMap, int parameterCount) {
         Type[] types = new Type[parameterCount];
-        for (int i = 0; i < types.length; i++){
+        for (int i = 0; i < types.length; i++) {
             java.lang.reflect.Type parameter = ((ParameterizedType)genericType).getActualTypeArguments()[i];
-            if (parameter instanceof WildcardType && !collectionOrMap){
+            if (parameter instanceof WildcardType && !collectionOrMap) {
                 types[i] = null;
-            }else{
+            } else {
                 types[i] = create(ReflectionUtils.getTypeParameter(genericType, i), parameter);
-                if (parameter instanceof WildcardType){
+                if (parameter instanceof WildcardType) {
                     types[i] = new TypeExtends(types[i]);
                 }
             }
@@ -162,9 +162,9 @@ public final class TypeFactory {
         Type[] types = new Type[cl.getTypeParameters().length];
         for (int i = 0; i < types.length; i++) {
             TypeVariable<?> typeVariable = cl.getTypeParameters()[i];
-            if (!typeVariable.getGenericDeclaration().equals(cl)){
+            if (!typeVariable.getGenericDeclaration().equals(cl)) {
                 types[i] = create((Class<?>)typeVariable.getGenericDeclaration(), typeVariable);
-            }else{
+            } else {
                 types[i] = new ClassType(cl);
             }
         }

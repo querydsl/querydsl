@@ -63,24 +63,24 @@ public final class TypeMappings {
     private final Map<TypeCategory, Type> templateTypes = new HashMap<TypeCategory, Type>();
 
     public TypeMappings(){
-        register(TypeCategory.STRING, StringExpression.class, StringPath.class, StringTemplate.class);
-        register(TypeCategory.BOOLEAN, BooleanExpression.class, BooleanPath.class, BooleanTemplate.class);
+        register(TypeCategory.STRING,     StringExpression.class,     StringPath.class,     StringTemplate.class);
+        register(TypeCategory.BOOLEAN,    BooleanExpression.class,    BooleanPath.class,    BooleanTemplate.class);
         register(TypeCategory.COMPARABLE, ComparableExpression.class, ComparablePath.class, ComparableTemplate.class);
-        register(TypeCategory.ENUM, EnumExpression.class, EnumPath.class, EnumTemplate.class);
-        register(TypeCategory.DATE, DateExpression.class, DatePath.class, DateTemplate.class);
-        register(TypeCategory.DATETIME, DateTimeExpression.class, DateTimePath.class, DateTimeTemplate.class);
-        register(TypeCategory.TIME, TimeExpression.class, TimePath.class, TimeTemplate.class);
-        register(TypeCategory.NUMERIC, NumberExpression.class, NumberPath.class, NumberTemplate.class);
-        register(TypeCategory.SIMPLE, Expression.class, SimplePath.class, SimpleTemplate.class);
+        register(TypeCategory.ENUM,       EnumExpression.class,       EnumPath.class,       EnumTemplate.class);
+        register(TypeCategory.DATE,       DateExpression.class,       DatePath.class,       DateTemplate.class);
+        register(TypeCategory.DATETIME,   DateTimeExpression.class,   DateTimePath.class,   DateTimeTemplate.class);
+        register(TypeCategory.TIME,       TimeExpression.class,       TimePath.class,       TimeTemplate.class);
+        register(TypeCategory.NUMERIC,    NumberExpression.class,     NumberPath.class,     NumberTemplate.class);
+        register(TypeCategory.SIMPLE,     Expression.class,           SimplePath.class,     SimpleTemplate.class);
 
-        register(TypeCategory.ARRAY, Expression.class, ArrayPath.class, SimpleTemplate.class);
-        register(TypeCategory.COLLECTION, Expression.class, SimplePath.class, SimpleTemplate.class);
-        register(TypeCategory.SET, Expression.class, SimplePath.class, SimpleTemplate.class);
-        register(TypeCategory.LIST, Expression.class, SimplePath.class, SimpleTemplate.class);
-        register(TypeCategory.MAP, Expression.class, SimplePath.class, SimpleTemplate.class);
+        register(TypeCategory.ARRAY,      Expression.class,           ArrayPath.class,      SimpleTemplate.class);
+        register(TypeCategory.COLLECTION, Expression.class,           SimplePath.class,     SimpleTemplate.class);
+        register(TypeCategory.SET,        Expression.class,           SimplePath.class,     SimpleTemplate.class);
+        register(TypeCategory.LIST,       Expression.class,           SimplePath.class,     SimpleTemplate.class);
+        register(TypeCategory.MAP,        Expression.class,           SimplePath.class,     SimpleTemplate.class);
 
-        register(TypeCategory.CUSTOM, Expression.class, Path.class, SimpleTemplate.class);
-        register(TypeCategory.ENTITY, Expression.class, Path.class, SimpleTemplate.class);
+        register(TypeCategory.CUSTOM,     Expression.class,           Path.class,           SimpleTemplate.class);
+        register(TypeCategory.ENTITY,     Expression.class,           Path.class,           SimpleTemplate.class);
     }
 
     public Type getTemplateType(Type type, EntityType model, boolean raw){
@@ -96,9 +96,9 @@ public final class TypeMappings {
     }
 
     public Type getExprType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
-        if (queryTypes.containsKey(type.getFullName())){
+        if (queryTypes.containsKey(type.getFullName())) {
             return queryTypes.get(type.getFullName());
-        }else{
+        } else {
             return getQueryType(exprTypes, type, model, raw, rawParameters, extend);
         }
     }
@@ -108,9 +108,9 @@ public final class TypeMappings {
     }
 
     public Type getPathType(Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
-        if (queryTypes.containsKey(type.getFullName())){
+        if (queryTypes.containsKey(type.getFullName())) {
             return queryTypes.get(type.getFullName());
-        }else{
+        } else {
             return getQueryType(pathTypes, type, model, raw, rawParameters, extend);
         }
     }
@@ -126,17 +126,17 @@ public final class TypeMappings {
 
     public Type getQueryType(Type type, EntityType model, Type exprType, boolean raw, boolean rawParameters, boolean extend){
         TypeCategory category = type.getCategory();
-        if (raw && category != TypeCategory.ENTITY && category != TypeCategory.CUSTOM){
+        if (raw && category != TypeCategory.ENTITY && category != TypeCategory.CUSTOM) {
             return exprType;
 
-        }else if (category == TypeCategory.STRING || category == TypeCategory.BOOLEAN){
+        } else if (category == TypeCategory.STRING || category == TypeCategory.BOOLEAN) {
             return exprType;
 
-        }else{
-            if (rawParameters){
+        } else {
+            if (rawParameters) {
                 type = new SimpleType(type);
             }
-            if (!type.isFinal() && extend){
+            if (!type.isFinal() && extend) {
                 type = new TypeExtends(type);
             }
             return new SimpleType(exprType, type);
@@ -149,13 +149,13 @@ public final class TypeMappings {
             @Nullable Class<? extends Expression> expr,
             @Nullable Class<? extends Path> path,
             @Nullable Class<? extends TemplateExpression> template){
-        if (expr != null){
+        if (expr != null) {
             exprTypes.put(category, new ClassType(expr));
         }
-        if (path != null){
+        if (path != null) {
             pathTypes.put(category, new ClassType(path));
         }
-        if (template != null){
+        if (template != null) {
             templateTypes.put(category, new ClassType(template));
         }
     }

@@ -33,4 +33,5 @@ public abstract class AbstractGroupDefinition<T, R> implements GroupDefinition<T
     public String toString() {
         return getClass().getSimpleName() + "(" + expr + ")";
     }
+    
 }

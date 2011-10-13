@@ -39,18 +39,18 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
 
     private static final Constant<Boolean> TRUE = new ConstantImpl<Boolean>(Boolean.TRUE);
 
-    static{
+    static {
         List<String> strs = new ArrayList<String>(Arrays.asList("", ".", ".*", "%"));
-        for (int i = 0; i < CACHE_SIZE; i++){
+        for (int i = 0; i < CACHE_SIZE; i++) {
             strs.add(String.valueOf(i));
         }
 
         STRINGS = new HashMap<String,Constant<String>>(strs.size());
-        for (String str : strs){
+        for (String str : strs) {
             STRINGS.put(str, new ConstantImpl<String>(str));
         }
         
-        for (int i = 0; i < CACHE_SIZE; i++){
+        for (int i = 0; i < CACHE_SIZE; i++) {
             INTEGERS[i] = new ConstantImpl<Integer>(Integer.class, Integer.valueOf(i));
             SHORTS[i] = new ConstantImpl<Short>(Short.class, Short.valueOf((short)i));
             BYTES[i] = new ConstantImpl<Byte>(Byte.class, Byte.valueOf((byte)i));
@@ -58,59 +58,59 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
         }
     }
 
-    public static Constant<Boolean> create(boolean b){
+    public static Constant<Boolean> create(boolean b) {
         return b ? TRUE : FALSE;
     }
     
-    public static Constant<Byte> create(byte i){
-        if (i >= 0 && i < CACHE_SIZE){
+    public static Constant<Byte> create(byte i) {
+        if (i >= 0 && i < CACHE_SIZE) {
             return BYTES[i];
-        }else{
+        } else {
             return new ConstantImpl<Byte>(Byte.class, Byte.valueOf(i));
         }
     }
 
-    public static Constant<Integer> create(int i){
-        if (i >= 0 && i < CACHE_SIZE){
+    public static Constant<Integer> create(int i) {
+        if (i >= 0 && i < CACHE_SIZE) {
             return INTEGERS[i];
-        }else{
+        } else {
             return new ConstantImpl<Integer>(Integer.class, Integer.valueOf(i));
         }
     }
 
-    public static Constant<Long> create(long i){
-        if (i >= 0 && i < CACHE_SIZE){
+    public static Constant<Long> create(long i) {
+        if (i >= 0 && i < CACHE_SIZE) {
             return LONGS[(int)i];
-        }else{
+        } else {
             return new ConstantImpl<Long>(Long.class, Long.valueOf(i));
         }
     }
 
-    public static Constant<Short> create(short i){
-        if (i >= 0 && i < CACHE_SIZE){
+    public static Constant<Short> create(short i) {
+        if (i >= 0 && i < CACHE_SIZE) {
             return SHORTS[i];
-        }else{
+        } else {
             return new ConstantImpl<Short>(Short.class, Short.valueOf(i));
         }
     }
     
-    public static Constant<String> create(String str){
+    public static Constant<String> create(String str) {
         return create(str, false);
     }
 
     public static Constant<String> create(String str, boolean populateCache) {
-        if (STRINGS.containsKey(str)){
+        if (STRINGS.containsKey(str)) {
             return STRINGS.get(str);
-        }else{
+        } else {
             Constant<String> rv = new ConstantImpl<String>(Assert.notNull(str,"str"));
-            if (populateCache){
+            if (populateCache) {
                 STRINGS.put(str, rv);
             }
             return rv;
         }
     }
     
-    public static <T> Constant<Class<T>> create(Class<T> constant){
+    public static <T> Constant<Class<T>> create(Class<T> constant) {
         return new ConstantImpl<Class<T>>(constant);
     }
     
@@ -120,11 +120,11 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
 
     private final T constant;
     
-    public ConstantImpl(T constant){
+    public ConstantImpl(T constant) {
         this((Class)constant.getClass(), constant);
     }
     
-    public ConstantImpl(Class<T> type, T constant){
+    public ConstantImpl(Class<T> type, T constant) {
         super(type);
         this.constant = constant;
     }
@@ -135,12 +135,12 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
     }
 
     @Override
-    public boolean equals(Object o){
-        if (o == this){
+    public boolean equals(Object o) {
+        if (o == this) {
             return true;
-        }else if (o instanceof Constant<?>){
+        } else if (o instanceof Constant<?>) {
             return ((Constant<?>)o).getConstant().equals(constant);
-        }else{
+        } else {
             return false;
         }
     }
@@ -150,7 +150,7 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
         return constant;
     }
     
-    public int hashCode(){
+    public int hashCode() {
         return constant.hashCode();
     }
 

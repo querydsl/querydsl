@@ -98,7 +98,7 @@ public abstract class SimpleExpression<T> extends ExpressionBase<T> {
      * @return count(this)
      */
     public NumberExpression<Long> count(){
-        if (count == null){
+        if (count == null) {
             count = NumberOperation.create(Long.class, Ops.AggOps.COUNT_AGG, this);
         }
         return count;
@@ -111,7 +111,7 @@ public abstract class SimpleExpression<T> extends ExpressionBase<T> {
      * @return count(distinct this)
      */
     public NumberExpression<Long> countDistinct(){
-        if (countDistinct == null){
+        if (countDistinct == null) {
           countDistinct = NumberOperation.create(Long.class, Ops.AggOps.COUNT_DISTINCT_AGG, this);
         }
         return countDistinct;
@@ -124,9 +124,9 @@ public abstract class SimpleExpression<T> extends ExpressionBase<T> {
      * @return
      */
     public BooleanExpression eq(T right) {
-        if (right == null){
+        if (right == null) {
             throw new IllegalArgumentException("eq(null) is not allowed. Use isNull() instead");
-        }else{
+        } else {
             return eq(new ConstantImpl<T>(right));
         }
     }
@@ -160,9 +160,9 @@ public abstract class SimpleExpression<T> extends ExpressionBase<T> {
      * @return
      */
     public BooleanExpression in(Collection<? extends T> right) {
-        if (right.size() == 1){
+        if (right.size() == 1) {
             return eq(right.iterator().next());
-        }else{
+        } else {
             return BooleanOperation.create(Ops.IN, this, new ConstantImpl<Collection<? extends T>>(right));
         }
     }
@@ -174,9 +174,9 @@ public abstract class SimpleExpression<T> extends ExpressionBase<T> {
      * @return
      */
     public BooleanExpression in(T... right) {
-        if (right.length == 1){
+        if (right.length == 1) {
             return eq(right[0]);
-        }else{
+        } else {
             return BooleanOperation.create(Ops.IN, this, new ConstantImpl<List<T>>(Arrays.asList(right)));
         }
     }
@@ -237,9 +237,9 @@ public abstract class SimpleExpression<T> extends ExpressionBase<T> {
      * @return
      */
     public BooleanExpression notIn(T... right) {
-        if (right.length == 1){
+        if (right.length == 1) {
             return ne(right[0]);
-        }else{
+        } else {
             return in(right).not();
         }
     }

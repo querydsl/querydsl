@@ -41,7 +41,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      * @return
      */
     public final OrderSpecifier<T> asc() {
-        if (asc == null){
+        if (asc == null) {
             asc = new OrderSpecifier<T>(Order.ASC, this);
         }
         return asc;
@@ -64,7 +64,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      * @return
      */
     public final OrderSpecifier<T> desc() {
-        if (desc == null){
+        if (desc == null) {
             desc = new OrderSpecifier<T>(Order.DESC, this);
         }
         return desc;
@@ -77,7 +77,7 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
      * @return
      */
     public StringExpression stringValue() {
-        if (stringCast == null){
+        if (stringCast == null) {
             stringCast = StringOperation.create(Ops.STRING_CAST, this);
         }
         return stringCast;

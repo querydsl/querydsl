@@ -62,10 +62,10 @@ public class ValidatingVisitor implements Visitor<Void, Void>, Serializable{
         visitOrder(md.getOrderBy());
         visit(md.getProjection());
         visit(md.getGroupBy());
-        if (md.getHaving() != null){
+        if (md.getHaving() != null) {
             md.getHaving().accept(this, null);
         }
-        if (md.getWhere() != null){
+        if (md.getWhere() != null) {
             md.getWhere().accept(this, null);
         }
         known = k;
@@ -81,23 +81,23 @@ public class ValidatingVisitor implements Visitor<Void, Void>, Serializable{
     
 
     private void visitJoins(Iterable<JoinExpression> joins) {
-        for (JoinExpression j : joins){
+        for (JoinExpression j : joins) {
             known.add(j.getTarget());
             j.getTarget().accept(this, null);
-            if (j.getCondition() != null){
+            if (j.getCondition() != null) {
                 j.getCondition().accept(this, null);
             }
         }
     }
 
     private void visitOrder(Iterable<OrderSpecifier<?>> order) {
-        for (OrderSpecifier<?> o : order){
+        for (OrderSpecifier<?> o : order) { 
             o.getTarget().accept(this, null);
         }        
     }
     
     private void visit(Iterable<? extends Expression<?>> exprs){
-        for (Expression<?> e : exprs){
+        for (Expression<?> e : exprs) {
             e.accept(this, null);
         }
     }

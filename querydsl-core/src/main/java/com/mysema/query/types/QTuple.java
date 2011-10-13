@@ -83,12 +83,12 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this){
+        if (obj == this) {
             return true;
-        }else if (obj instanceof QTuple){
+        } else if (obj instanceof QTuple) {
             QTuple c = (QTuple)obj;
             return args.equals(c.args) && getType().equals(c.getType());
-        }else{
+        } else {
             return false;
         }
     }

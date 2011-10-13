@@ -52,7 +52,7 @@ public class ArrayConstructorExpression<T> extends ExpressionBase<T[]> implement
     public T[] newInstance(Object... a){
         if (a.getClass().getComponentType().equals(elementType)){
             return (T[])a;
-        }else{
+        } else {
             T[] rv = (T[]) Array.newInstance(elementType, a.length);
             System.arraycopy(a, 0, rv, 0, a.length);
             return rv;
@@ -69,10 +69,10 @@ public class ArrayConstructorExpression<T> extends ExpressionBase<T[]> implement
     public boolean equals(Object obj) {
         if (obj == this){
             return true;
-        }else if (obj instanceof ArrayConstructorExpression<?>){
+        } else if (obj instanceof ArrayConstructorExpression<?>) {
             ArrayConstructorExpression<?> c = (ArrayConstructorExpression<?>)obj;
             return args.equals(c.args) && getType().equals(c.getType());
-        }else{
+        } else {
             return false;
         }
     }

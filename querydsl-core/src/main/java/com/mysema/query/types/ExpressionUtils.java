@@ -28,7 +28,7 @@ public final class ExpressionUtils {
     @Nullable
     public static Predicate allOf(Predicate... exprs){
         Predicate rv = null;
-        for (Predicate b : exprs){
+        for (Predicate b : exprs) {
             if (b != null) {
                 rv = rv == null ? b : ExpressionUtils.and(rv,b);    
             }            
@@ -56,7 +56,7 @@ public final class ExpressionUtils {
     @Nullable
     public static Predicate anyOf(Predicate... exprs){
         Predicate rv = null;
-        for (Predicate b : exprs){
+        for (Predicate b : exprs) {
             if (b != null) {
                 rv = rv == null ? b : ExpressionUtils.or(rv,b);    
             }            
@@ -145,9 +145,9 @@ public final class ExpressionUtils {
      * @return
      */
     public static <D> Predicate in(Expression<D> left, Collection<? extends D> right) {
-        if (right.size() == 1){
+        if (right.size() == 1) {
             return eqConst(left, right.iterator().next());
-        }else{
+        } else {
             return new PredicateOperation(Ops.IN, left, new ConstantImpl<Collection<?>>(right));
         }
     }
@@ -187,18 +187,18 @@ public final class ExpressionUtils {
      */
     @SuppressWarnings("unchecked")
     public static Expression<String> likeToRegex(Expression<String> expr){
-        if (expr instanceof Constant<?>){
+        if (expr instanceof Constant<?>) {
             return ConstantImpl.create(expr.toString().replace("%", ".*").replace("_", "."));
-        }else if (expr instanceof Operation<?>){
+        } else if (expr instanceof Operation<?>) {
             Operation<?> o = (Operation<?>)expr;
-            if (o.getOperator() == Ops.CONCAT){
+            if (o.getOperator() == Ops.CONCAT) {
                 Expression<String> lhs = likeToRegex((Expression<String>) o.getArg(0));
                 Expression<String> rhs = likeToRegex((Expression<String>) o.getArg(1));
                 return new OperationImpl<String>(String.class, Ops.CONCAT, lhs, rhs);
-            }else{
+            } else {
                 return expr;
             }
-        }else{
+        } else {
             return expr;    
         }        
     }
@@ -209,8 +209,8 @@ public final class ExpressionUtils {
      */
     public static Expression<?> merge(List<? extends Expression<?>> expressions) {
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < expressions.size(); i++){
-            if (i > 0){
+        for (int i = 0; i < expressions.size(); i++) {
+            if (i > 0) {
                 builder.append(", ");
             }
             builder.append("{"+i+"}");
@@ -223,18 +223,18 @@ public final class ExpressionUtils {
     
     @SuppressWarnings("unchecked")
     public static Expression<String> regexToLike(Expression<String> expr){
-        if (expr instanceof Constant<?>){
+        if (expr instanceof Constant<?>) {
             return ConstantImpl.create(expr.toString().replace(".*", "%").replace(".", "_"));            
-        }else if (expr instanceof Operation<?>){
+        } else if (expr instanceof Operation<?>) {
             Operation<?> o = (Operation<?>)expr;
-            if (o.getOperator() == Ops.CONCAT){
+            if (o.getOperator() == Ops.CONCAT) {
                 Expression<String> lhs = regexToLike((Expression<String>) o.getArg(0));
                 Expression<String> rhs = regexToLike((Expression<String>) o.getArg(1));
                 return new OperationImpl<String>(String.class, Ops.CONCAT, lhs, rhs);
-            }else{
+            } else {
                 return expr;
             }            
-        }else{
+        } else {
             return expr;    
         }     
     }

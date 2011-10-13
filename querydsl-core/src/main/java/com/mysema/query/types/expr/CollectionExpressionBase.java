@@ -47,7 +47,7 @@ public abstract class CollectionExpressionBase<T extends Collection<E>, E> exten
     public abstract Class<E> getElementType();
 
     public final BooleanExpression isEmpty() {
-        if (empty == null){
+        if (empty == null) {
             empty = BooleanOperation.create(Ops.COL_IS_EMPTY, this);
         }
         return empty;

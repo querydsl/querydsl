@@ -33,7 +33,7 @@ public abstract class AbstractModule {
     }
 
     public final <T> AbstractModule bind(Class<T> clazz){
-        if (clazz.isInterface()){
+        if (clazz.isInterface()) {
             throw new IllegalArgumentException("Interfaces can't be instantiated");
         }
         bind(clazz, clazz);
@@ -64,28 +64,28 @@ public abstract class AbstractModule {
 
     @SuppressWarnings("unchecked")
     public final <T> T get(Class<T> iface){
-        if (instances.containsKey(iface)){
+        if (instances.containsKey(iface)) {
             return (T)instances.get(iface);
-        }else if (bindings.containsKey(iface)){
+        } else if (bindings.containsKey(iface)) {
             Class<?> implementation = bindings.get(iface);
             T instance = (T)createInstance(implementation);
             instances.put(iface, instance);
             return instance;
-        }else{
+        } else {
             throw new IllegalArgumentException(iface.getName() + " is not registered");
         }
     }
 
     @SuppressWarnings("unchecked")
     public final <T> T get(Class<T> iface, String name){
-        if (namedInstances.containsKey(name)){
+        if (namedInstances.containsKey(name)) {
             return (T)namedInstances.get(name);
-        }else if (namedBindings.containsKey(name)){
+        } else if (namedBindings.containsKey(name)) {
             Class<?> implementation = namedBindings.get(name);
             T instance = (T)createInstance(implementation);
             namedInstances.put(name, instance);
             return instance;
-        }else{
+        } else {
             throw new IllegalArgumentException(iface.getName() + " " + name + " is not registered");
         }
     }
@@ -93,15 +93,15 @@ public abstract class AbstractModule {
     @SuppressWarnings("unchecked")
     private <T> T createInstance(Class<? extends T> implementation) {
         Constructor<?> constructor = null;
-        for (Constructor<?> c : implementation.getConstructors()){
-            if (c.getAnnotation(Inject.class) != null){
+        for (Constructor<?> c : implementation.getConstructors()) {
+            if (c.getAnnotation(Inject.class) != null) {
                 constructor = c;
                 break;
             }
         }
 
         // fallback to default constructor
-        if (constructor == null){
+        if (constructor == null) {
             try {
                 constructor = implementation.getConstructor();
             } catch (SecurityException e) {
@@ -111,13 +111,13 @@ public abstract class AbstractModule {
             }
         }
 
-        if (constructor != null){
+        if (constructor != null) {
             Object[] args = new Object[constructor.getParameterTypes().length];
-            for (int i = 0; i < constructor.getParameterTypes().length; i++){
+            for (int i = 0; i < constructor.getParameterTypes().length; i++) {
                 Named named = getNamedAnnotation(constructor.getParameterAnnotations()[i]);
-                if (named != null){
+                if (named != null) {
                     args[i] = get(constructor.getParameterTypes()[i], named.value());
-                }else{
+                } else {
                     args[i] = get(constructor.getParameterTypes()[i]);
                 }
             }
@@ -134,15 +134,15 @@ public abstract class AbstractModule {
                 throw new RuntimeException(e);
             }
 
-        }else{
+        } else {
             throw new IllegalArgumentException("Got no annotated constructor for " + implementation.getName());
         }
 
     }
 
     private Named getNamedAnnotation(Annotation[] annotations) {
-        for (Annotation annotation : annotations){
-            if (annotation.annotationType().equals(Named.class)){
+        for (Annotation annotation : annotations) {
+            if (annotation.annotationType().equals(Named.class)) {
                 return (Named)annotation;
             }
         }

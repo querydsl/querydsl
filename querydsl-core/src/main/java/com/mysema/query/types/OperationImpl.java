@@ -56,14 +56,14 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T>{
 
     @Override
     public boolean equals(Object o){
-        if (o == this){
+        if (o == this) {
             return true;
-        }else if (o instanceof Operation<?>){
+        } else if (o instanceof Operation<?>) {
             Operation<?> op = (Operation<?>)o;
             return op.getOperator().equals(operator)
                 && op.getArgs().equals(args)
                 && op.getType().equals(type);
-        }else{
+        } else {
             return false;
         }
     }

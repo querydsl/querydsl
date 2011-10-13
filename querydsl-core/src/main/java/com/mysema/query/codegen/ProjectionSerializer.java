@@ -46,7 +46,7 @@ public final class ProjectionSerializer implements Serializer{
         Type queryType = typeMappings.getPathType(model, model, false);
 
         // package
-        if (!queryType.getPackageName().isEmpty()){
+        if (!queryType.getPackageName().isEmpty()) {
             writer.packageDecl(queryType.getPackageName());
         }
 
@@ -74,9 +74,9 @@ public final class ProjectionSerializer implements Serializer{
 
         String localName = writer.getRawName(model);
         
-        for (Constructor c : model.getConstructors()){
+        for (Constructor c : model.getConstructors()) {
             // begin
-            writer.beginConstructor(c.getParameters(), new Transformer<Parameter,Parameter>(){
+            writer.beginConstructor(c.getParameters(), new Transformer<Parameter,Parameter>() {
                 @Override
                 public Parameter transform(Parameter p) {
                     return new Parameter(p.getName(), typeMappings.getExprType(p.getType(), model, false, false, true));
@@ -88,13 +88,13 @@ public final class ProjectionSerializer implements Serializer{
             writer.append(", new Class[]{");
             boolean first = true;
             
-            for (Parameter p : c.getParameters()){
-                if (!first){
+            for (Parameter p : c.getParameters()) {
+                if (!first) {
                     writer.append(", ");
                 }
-                if (p.getType().getPrimitiveName() != null){
+                if (p.getType().getPrimitiveName() != null) {
                     writer.append(p.getType().getPrimitiveName()+".class");
-                }else{
+                } else {
                     writer.append(writer.getRawName(p.getType()));
                     writer.append(".class");
                 }
@@ -102,7 +102,7 @@ public final class ProjectionSerializer implements Serializer{
             }
             writer.append("}");
 
-            for (Parameter p : c.getParameters()){
+            for (Parameter p : c.getParameters()) {
                 writer.append(", " + p.getName());
             }
 

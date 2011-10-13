@@ -80,7 +80,7 @@ public enum MethodType{
 
     @Nullable
     public static MethodType get(Method method) {
-        for (MethodType methodType : values()){
+        for (MethodType methodType : values()) {
             if (methodType.pattern.matcher(method.getName()).matches()
                 && (methodType.returnType == Object.class || methodType.returnType.isAssignableFrom(method.getReturnType()))
                 && (methodType.ownerType == Object.class || methodType.ownerType.isAssignableFrom(method.getDeclaringClass()))

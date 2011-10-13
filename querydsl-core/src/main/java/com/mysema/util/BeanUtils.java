@@ -15,15 +15,15 @@ import org.apache.commons.lang.StringUtils;
  */
 public final class BeanUtils {
 
-    public static String capitalize(String name){
-        if (name.length() > 1 && Character.isUpperCase(name.charAt(1))){
+    public static String capitalize(String name) {
+        if (name.length() > 1 && Character.isUpperCase(name.charAt(1))) {
             return name;
-        }else{
+        } else {
             return StringUtils.capitalize(name);
         }
     }
 
-    public static String uncapitalize(String name){
+    public static String uncapitalize(String name) {
         return Introspector.decapitalize(name);
     }
 

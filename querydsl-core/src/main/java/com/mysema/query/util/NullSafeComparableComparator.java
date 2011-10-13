@@ -19,11 +19,11 @@ public class NullSafeComparableComparator<T extends Comparable<T>> implements Co
 
     @Override
     public int compare(T obj1, T obj2) {
-        if (obj1 == null){
+        if (obj1 == null) {
             return obj2 == null ? 0 : -1;
-        }else if (obj2 == null){
+        } else if (obj2 == null) {
             return 1;
-        }else{
+        } else {
             return obj1.compareTo(obj2);
         }           
     }

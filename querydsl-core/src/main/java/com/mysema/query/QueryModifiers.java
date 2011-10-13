@@ -84,34 +84,34 @@ public final class QueryModifiers implements Serializable{
      * @return
      */
     public <T> List<T> subList(List<T> list) {
-        if (!list.isEmpty()){
+        if (!list.isEmpty()) {
             int from = offset != null ? offset.intValue() : 0;
             int to = limit != null ? (from + limit.intValue()) : list.size();
             return list.subList(from, Math.min(to,list.size()));
-        }else{
+        } else {
             return list;
         }
     }
 
     @Override
     public boolean equals(Object o){
-        if (o == this){
+        if (o == this) {
             return true;
-        }else if (o instanceof QueryModifiers){
+        } else if (o instanceof QueryModifiers) {
             QueryModifiers qm = (QueryModifiers)o;
             return ObjectUtils.equals(qm.getLimit(), limit) && ObjectUtils.equals(qm.getOffset(), offset);
-        }else{
+        } else {
             return false;
         }
     }
 
     @Override
     public int hashCode(){
-        if (limit != null){
+        if (limit != null) {
             return limit.hashCode();
-        }else if (offset != null){
+        } else if (offset != null) {
             return offset.hashCode();
-        }else{
+        } else {
             return 0;
         }
     }

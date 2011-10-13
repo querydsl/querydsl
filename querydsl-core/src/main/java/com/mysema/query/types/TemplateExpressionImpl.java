@@ -79,13 +79,13 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
     @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {
-       if (o == this){
+       if (o == this) {
            return true;
-       }else if (o instanceof TemplateExpression){
+       } else if (o instanceof TemplateExpression) {
            TemplateExpression c = (TemplateExpression)o;
            return c.getTemplate().equals(template)
                && c.getType().equals(type);
-       }else{
+       } else {
            return false;
        }
     }

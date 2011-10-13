@@ -59,7 +59,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     public S append(String... str) {
-        if (!dry){
+        if (!dry) {
             for (String s : str) {
                 builder.append(s);
             }    
@@ -94,9 +94,9 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
             if (!first) {
                 append(sep);
             }
-            if (expr instanceof Expression<?>){
+            if (expr instanceof Expression<?>) {
                 handle((Expression<?>)expr);
-            }else{
+            } else {
                 throw new IllegalArgumentException("Unsupported type " + expr.getClass().getName());
             }
             first = false;
@@ -105,14 +105,14 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     private void handleTemplate(Template template, List<Expression<?>> args){
-        for (Template.Element element : template.getElements()){
-            if (element.getStaticText() != null){
+        for (Template.Element element : template.getElements()) {
+            if (element.getStaticText() != null) {
                 append(element.getStaticText());
-            }else if (element.isAsString()){
+            } else if (element.isAsString()) {
                 appendAsString(args.get(element.getIndex()));
-            }else if (element.hasConverter()){
+            } else if (element.hasConverter()) {
                 handle(element.convert(args.get(element.getIndex())));
-            }else{
+            } else {
                 handle(args.get(element.getIndex()));
             }
         }
@@ -120,8 +120,8 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     protected boolean serialize(QueryFlag.Position position, Set<QueryFlag> flags) {
         boolean handled = false;
-        for (QueryFlag flag : flags){
-            if (flag.getPosition() == position){
+        for (QueryFlag flag : flags) {
+            if (flag.getPosition() == position) {
                 handle(flag.getFlag());
                 handled = true;
             }
@@ -131,8 +131,8 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     
     protected boolean serialize(JoinFlag.Position position, Set<JoinFlag> flags){
         boolean handled = false;
-        for (JoinFlag flag : flags){
-            if (flag.getPosition() == position){
+        for (JoinFlag flag : flags) {
+            if (flag.getPosition() == position) {
                 handle(flag.getFlag());
                 handled = true;
             }
@@ -170,11 +170,11 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     @Override
-    public Void visit(ParamExpression<?> param, Void context){
+    public Void visit(ParamExpression<?> param, Void context) {
         String paramLabel;
-        if (param.isAnon()){
+        if (param.isAnon()) {
             paramLabel = anonParamPrefix + param.getName();
-        }else{
+        } else {
             paramLabel = paramPrefix + param.getName();
         }
         getConstantToLabel().put(param, paramLabel);
@@ -205,7 +205,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         PathType pathType = path.getMetadata().getPathType();
         Template template = templates.getTemplate(pathType);
         List<Expression<?>> args = new ArrayList<Expression<?>>();
-        if (path.getMetadata().getParent() != null){
+        if (path.getMetadata().getParent() != null) {
             args.add(path.getMetadata().getParent());
         }
         args.add(path.getMetadata().getExpression());
@@ -220,30 +220,30 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
             throw new IllegalArgumentException("Got no pattern for " + operator);
         }
         int precedence = templates.getPrecedence(operator);
-        for (Template.Element element : template.getElements()){
-            if (element.getStaticText() != null){
+        for (Template.Element element : template.getElements()) {
+            if (element.getStaticText() != null) {
                 append(element.getStaticText());                
-            }else if (element.isAsString()){
+            } else if (element.isAsString()) {
                 appendAsString(args.get(element.getIndex()));                
-            }else{
+            } else {
                 int i = element.getIndex();
                 boolean wrap = false;
                 Expression arg = args.get(i);
-                if (arg instanceof Operation && ((Operation)arg).getOperator() == Ops.DELEGATE){
+                if (arg instanceof Operation && ((Operation)arg).getOperator() == Ops.DELEGATE) {
                     arg = ((Operation)arg).getArg(0);
                 }
-                if (arg instanceof Operation){
+                if (arg instanceof Operation) {
                     wrap = precedence < templates.getPrecedence(((Operation<?>) arg).getOperator());
                 }
-                if (wrap){
+                if (wrap) {
                     append("(");
                 }
-                if (element.hasConverter()){
+                if (element.hasConverter()) {
                     handle(element.convert(arg));
-                }else{
+                } else {
                     handle(arg);
                 }
-                if (wrap){
+                if (wrap) {
                     append(")");
                 }
             }

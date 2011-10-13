@@ -47,11 +47,11 @@ public class OperatorImpl<T> implements Operator<T> {
     
     @Override
     public boolean equals(Object o){
-        if (o == this){
+        if (o == this) {
             return true;
-        }else if (o instanceof Operator<?>){
+        } else if (o instanceof Operator<?>) {
             return ((Operator<?>)o).getId().equals(id);
-        }else{
+        } else {
             return false;
         }
     }

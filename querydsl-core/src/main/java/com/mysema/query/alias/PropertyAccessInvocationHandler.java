@@ -226,16 +226,16 @@ public class PropertyAccessInvocationHandler implements MethodInterceptor {
             rv = Array.newInstance(type.getComponentType(), 5);
 
         } else {
-            if (Number.class.isAssignableFrom(type)){
+            if (Number.class.isAssignableFrom(type)) {
                 path = pathFactory.createNumberPath((Class)type, metadata);
-            }else if (Comparable.class.isAssignableFrom(type)){
+            } else if (Comparable.class.isAssignableFrom(type)) {
                 path = pathFactory.createComparablePath((Class)type, metadata);
-            }else{
+            } else {
                 path = pathFactory.createEntityPath(type, metadata);
             }
-            if (!Modifier.isFinal(type.getModifiers())){
+            if (!Modifier.isFinal(type.getModifiers())) {
                 rv = aliasFactory.createAliasForProperty(type, parent, path);
-            }else{
+            } else {
                 rv = null;
             }
         }
