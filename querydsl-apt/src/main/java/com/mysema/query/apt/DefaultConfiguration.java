@@ -88,13 +88,13 @@ public class DefaultConfiguration implements Configuration {
         this.embeddableAnn = embeddableAnn;
         this.embeddedAnn = embeddedAnn;
         this.skipAnn = skipAnn;
-        for (Element element : roundEnv.getElementsAnnotatedWith(Config.class)){
+        for (Element element : roundEnv.getElementsAnnotatedWith(Config.class)) {
             Config querydslConfig = element.getAnnotation(Config.class);
             SerializerConfig config = SimpleSerializerConfig.getConfig(querydslConfig);
-            if (element instanceof PackageElement){
+            if (element instanceof PackageElement) {
                 PackageElement packageElement = (PackageElement)element;
                 packageToConfig.put(packageElement.getQualifiedName().toString(), config);
-            }else if (element instanceof TypeElement){
+            } else if (element instanceof TypeElement) {
                 TypeElement typeElement = (TypeElement)element;
                 typeToConfig.put(typeElement.getQualifiedName().toString(), config);
             }

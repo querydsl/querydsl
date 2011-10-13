@@ -137,7 +137,7 @@ public final class ElementHandler{
     }
 
     private void handleConstructors(EntityType entityType, List<? extends Element> elements) {
-        for (ExecutableElement constructor : ElementFilter.constructorsIn(elements)){
+        for (ExecutableElement constructor : ElementFilter.constructorsIn(elements)) {
             if (configuration.isValidConstructor(constructor)) {
                 List<Parameter> parameters = transformParams(constructor.getParameters());
                 entityType.addConstructor(new Constructor(parameters));
@@ -162,7 +162,7 @@ public final class ElementHandler{
                 types.put(name, typeCategory);
             }
             String[] inits = new String[0];
-            if (field.getAnnotation(QueryInit.class) != null){
+            if (field.getAnnotation(QueryInit.class) != null) {
                 inits = field.getAnnotation(QueryInit.class).value();
             }
             properties.put(name, new Property(entityType, name, fieldType, inits));
@@ -193,7 +193,7 @@ public final class ElementHandler{
                 propertyType = propertyType.as(types.get(propertyName));
             }
             String[] inits = new String[0];
-            if (method.getAnnotation(QueryInit.class) != null){
+            if (method.getAnnotation(QueryInit.class) != null) {
                 inits = method.getAnnotation(QueryInit.class).value();
             }
             properties.put(propertyName, new Property(entityType, propertyName, propertyType, inits));

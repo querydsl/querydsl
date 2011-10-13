@@ -111,10 +111,10 @@ public class Processor {
         this.configuration = Assert.notNull(configuration,"configuration");
 
         entityAnnotations.add(configuration.getEntityAnnotation());
-        if (configuration.getSuperTypeAnnotation() != null){
+        if (configuration.getSuperTypeAnnotation() != null) {
             entityAnnotations.add(configuration.getSuperTypeAnnotation());
         }
-        if (configuration.getEmbeddableAnnotation() != null){
+        if (configuration.getEmbeddableAnnotation() != null) {
             entityAnnotations.add(configuration.getEmbeddableAnnotation());
         }
 
@@ -321,7 +321,7 @@ public class Processor {
 
 
     private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes, Set<EntityType> handled) {
-        if (handled.add(model)){
+        if (handled.add(model)) {
             for (Supertype supertype : model.getSuperTypes()) {
                 EntityType entityType = superTypes.get(supertype.getType().getFullName());
                 if (entityType != null) {
@@ -358,7 +358,7 @@ public class Processor {
                 // cloned other elements via parent
                 } else {
                     Element parent = element.getEnclosingElement();
-                    if (parent instanceof TypeElement){
+                    if (parent instanceof TypeElement) {
                         parent = env.getElementUtils().getTypeElement(((TypeElement) parent).getQualifiedName().toString());
                         for (Element child : parent.getEnclosedElements()) {
                             // TODO : better equals check
@@ -615,10 +615,10 @@ public class Processor {
             String typeName = type.toString();
             if (typeName.startsWith(Collection.class.getName())
              || typeName.startsWith(List.class.getName())
-             || typeName.startsWith(Set.class.getName())){
+             || typeName.startsWith(Set.class.getName())) {
                 type = ((DeclaredType)type).getTypeArguments().get(0);
 
-            }else if (typeName.startsWith(Map.class.getName())){
+            } else if (typeName.startsWith(Map.class.getName())){
                 type = ((DeclaredType)type).getTypeArguments().get(1);
             }
             typeFactory.getEntityType(type, false);
@@ -626,7 +626,7 @@ public class Processor {
         }
 
         // supertype handling
-        for (TypeMirror typeMirror : typeMirrors){
+        for (TypeMirror typeMirror : typeMirrors) {
             typeFactory.getEntityType(typeMirror, true);
         }
 
@@ -634,7 +634,7 @@ public class Processor {
         for (TypeMirror type : typeMirrors) {
             // remove generic signature of type for TypeElement lookup
             String typeName = type.toString();
-            if (typeName.contains("<")){
+            if (typeName.contains("<")) {
                 typeName = typeName.substring(0, typeName.indexOf('<'));
             }
             TypeElement typeElement = env.getElementUtils().getTypeElement(typeName);

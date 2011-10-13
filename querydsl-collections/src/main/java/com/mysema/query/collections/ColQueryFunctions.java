@@ -24,8 +24,8 @@ public final class ColQueryFunctions {
 
     @Nullable
     public static <T> T coalesce(T... args){
-        for (T arg : args){
-            if (arg != null){
+        for (T arg : args) { 
+            if (arg != null) {
                 return arg;
             }
         }

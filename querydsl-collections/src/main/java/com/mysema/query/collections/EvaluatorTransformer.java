@@ -24,9 +24,9 @@ public class EvaluatorTransformer<S, T> implements Transformer<S, T> {
 
     @Override
     public T transform(S input) {
-        if (input.getClass().isArray()){
+        if (input.getClass().isArray()) {
             return ev.evaluate((Object[]) input);
-        }else{
+        } else {
             return ev.evaluate(new Object[]{input});
         }
     }

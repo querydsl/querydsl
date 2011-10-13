@@ -43,9 +43,9 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
     @Override
     public long execute() {
         int rv = 0;
-        for (T match : query.list(expr)){
+        for (T match : query.list(expr)) {
             BeanMap beanMap = new BeanMap(match);
-            for (Map.Entry<Path<?>,Object> entry : paths.entrySet()){
+            for (Map.Entry<Path<?>,Object> entry : paths.entrySet()) {
                 // TODO : support deep updates as well
                 String propertyName = entry.getKey().getMetadata().getExpression().toString();
                 beanMap.put(propertyName, entry.getValue());
@@ -76,7 +76,7 @@ public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
 
     @Override
     public ColUpdateClause<T> set(List<? extends Path<?>> p, List<?> v) {
-        for (int i = 0; i < p.size(); i++){
+        for (int i = 0; i < p.size(); i++) {
             paths.put(p.get(i), v.get(i));
         }
         return this;

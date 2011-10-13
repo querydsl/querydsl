@@ -45,9 +45,9 @@ public class DefaultQueryEngine implements QueryEngine {
 
     @Override
     public long count(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables){
-        if (metadata.getJoins().size() == 1){
+        if (metadata.getJoins().size() == 1) {
             return evaluateSingleSource(metadata, iterables, true).size();
-        }else{
+        } else {
             return evaluateMultipleSources(metadata, iterables, true).size();
         }
     }
@@ -56,39 +56,39 @@ public class DefaultQueryEngine implements QueryEngine {
     public boolean exists(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables) {
         QueryModifiers modifiers = metadata.getModifiers();
         metadata.setLimit(1l);
-        try{
-            if (metadata.getJoins().size() == 1){
+        try {
+            if (metadata.getJoins().size() == 1) {
                 return !evaluateSingleSource(metadata, iterables, true).isEmpty();
-            }else{
+            } else {
                 return !evaluateMultipleSources(metadata, iterables, true).isEmpty();
             }
-        }finally{
+        } finally {
             metadata.setModifiers(modifiers);
         }
     }
 
     @Override
     public <T> List<T> list(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables, Expression<T> projection){
-        if (metadata.getJoins().size() == 1){
+        if (metadata.getJoins().size() == 1) {
             return evaluateSingleSource(metadata, iterables, false);
-        }else{
+        } else {
             return evaluateMultipleSources(metadata, iterables, false);
         }
     }
 
     private <T> List<T> distinct(List<T> list) {
         List<T> rv = new ArrayList<T>(list.size());
-        if (!list.isEmpty() && list.get(0).getClass().isArray()){
+        if (!list.isEmpty() && list.get(0).getClass().isArray()) {
             Set set = new HashSet(list.size());
-            for (T o : list){
-                if (set.add(Arrays.asList((Object[])o))){
+            for (T o : list) {
+                if (set.add(Arrays.asList((Object[])o))) {
                     rv.add(o);
                 }
             }
             return rv;
-        }else{
-            for (T o : list){
-                if (!rv.contains(o)){
+        } else {
+            for (T o : list) {
+                if (!rv.contains(o)) {
                     rv.add(o);
                 }
             }
@@ -100,32 +100,32 @@ public class DefaultQueryEngine implements QueryEngine {
         // from where
         Evaluator<List<Object[]>> ev = evaluatorFactory.createEvaluator(metadata, metadata.getJoins(), metadata.getWhere());
         List<Iterable<?>> iterableList = new ArrayList<Iterable<?>>(metadata.getJoins().size());
-        for (JoinExpression join : metadata.getJoins()){
-            if (join.getType() == JoinType.DEFAULT){
+        for (JoinExpression join : metadata.getJoins()) {
+            if (join.getType() == JoinType.DEFAULT) {
                 iterableList.add(iterables.get(join.getTarget()));
             }
         }
         List<?> list = ev.evaluate(iterableList.toArray());
 
-        if (!count && !list.isEmpty()){
+        if (!count && !list.isEmpty()) {
             List<Expression<?>> sources = new ArrayList<Expression<?>>();
-            for (JoinExpression join : metadata.getJoins()){
+            for (JoinExpression join : metadata.getJoins()) {
                 if (join.getType() == JoinType.DEFAULT){
                     sources.add(join.getTarget());
-                }else{
+                } else {
                     Operation target = (Operation) join.getTarget();
-                   sources.add(target.getArg(1));
+                    sources.add(target.getArg(1));
                 }
             }
             // ordered
-            if (!metadata.getOrderBy().isEmpty()){
+            if (!metadata.getOrderBy().isEmpty()) {
                 order(metadata, sources, list);
             }
             // limit + offset
-            if (metadata.getModifiers().isRestricting()){
+            if (metadata.getModifiers().isRestricting()) {
                 list = metadata.getModifiers().subList(list);
             }
-            if (list.isEmpty()){
+            if (list.isEmpty()) {
                 return list;
             }
             // projection
@@ -133,7 +133,7 @@ public class DefaultQueryEngine implements QueryEngine {
         }
 
         // distinct
-        if (metadata.isDistinct()){
+        if (metadata.isDistinct()) {
             list = distinct(list);
         }
 
@@ -145,36 +145,36 @@ public class DefaultQueryEngine implements QueryEngine {
         List<Expression<?>> sources = Collections.<Expression<?>>singletonList(source);
         Iterable<?> iterable = iterables.values().iterator().next();
         List<?> list;
-        if (iterable instanceof List){
+        if (iterable instanceof List) {
             list = (List)iterable;
-        }else{
+        } else {
             list = IteratorAdapter.asList(iterable.iterator());
         }
 
         // from & where
-        if (metadata.getWhere() != null){
+        if (metadata.getWhere() != null) {
             Evaluator<List<?>> evaluator = (Evaluator)evaluatorFactory.createEvaluator(metadata, source, metadata.getWhere());
             list = evaluator.evaluate(list);
         }
 
-        if (!count && !list.isEmpty()){
+        if (!count && !list.isEmpty()) {
             // ordered
             if (!metadata.getOrderBy().isEmpty()){
                 // clone list
-                if (list == iterable){
+                if (list == iterable) {
                     list = new ArrayList(list);
                 }
                 order(metadata, sources, list);
             }
             // limit + offset
-            if (metadata.getModifiers().isRestricting()){
+            if (metadata.getModifiers().isRestricting()) {
                 list = metadata.getModifiers().subList(list);
             }
-            if (list.isEmpty()){
+            if (list.isEmpty()) {
                 return list;
             }
             // projection
-            if (metadata.getProjection().size() > 1 || !metadata.getProjection().get(0).equals(source)){
+            if (metadata.getProjection().size() > 1 || !metadata.getProjection().get(0).equals(source)) {
                 list = project(metadata, sources, list);
             }
         }

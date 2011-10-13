@@ -57,7 +57,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
             return queryEngine.count(getMetadata(), iterables);
         } catch (Exception e) {
             throw new QueryException(e.getMessage(), e);
-        }finally{
+        } finally {
             reset();
         }
     }
@@ -68,7 +68,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
             return queryEngine.exists(getMetadata(), iterables);
         } catch (Exception e) {
             throw new QueryException(e.getMessage(), e);
-        }finally{
+        } finally {
             reset();
         }
     }
@@ -123,7 +123,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
             projection = queryMixin.convert(projection);
             queryMixin.addToProjection(projection);
             return new IteratorAdapter<RT>(queryEngine.list(getMetadata(), iterables, projection).iterator());
-        }finally{
+        } finally {
             reset();
         }
     }
@@ -139,7 +139,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
             projection = queryMixin.convert(projection);
             queryMixin.addToProjection(projection);
             return queryEngine.list(getMetadata(), iterables, projection);
-        }finally{
+        } finally {
             reset();
         }
     }
@@ -149,11 +149,11 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
         projection = queryMixin.convert(projection);
         queryMixin.addToProjection(projection);
         long count = queryEngine.count(getMetadata(), iterables);
-        if (count > 0l){
+        if (count > 0l) {
             List<RT> list = queryEngine.list(getMetadata(), iterables, projection);
             reset();
             return new SearchResults<RT>(list, getMetadata().getModifiers(), count);
-        }else{
+        } else {
             reset();
             return SearchResults.<RT>emptyResults();
         }
@@ -163,7 +163,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
     @Override
     public Object[] uniqueResult(Expression<?>[] args) {
         queryMixin.setUnique(true);
-        if (queryMixin.getMetadata().getModifiers().getLimit() == null){
+        if (queryMixin.getMetadata().getModifiers().getLimit() == null) {
             limit(2l);
         }
         return uniqueResult(iterate(args));
@@ -172,7 +172,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
     @Override
     public <RT> RT uniqueResult(Expression<RT> expr) {
         queryMixin.setUnique(true);
-        if (queryMixin.getMetadata().getModifiers().getLimit() == null){
+        if (queryMixin.getMetadata().getModifiers().getLimit() == null) {
             limit(2l);
         }
         return uniqueResult(iterate(expr));

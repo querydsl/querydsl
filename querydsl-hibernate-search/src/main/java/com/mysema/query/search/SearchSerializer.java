@@ -26,9 +26,9 @@ public class SearchSerializer extends LuceneSerializer{
 
     @Override
     public String toField(Path<?> path) {
-        if (path.getAnnotatedElement() != null){
+        if (path.getAnnotatedElement() != null) {
             Field fieldAnn = path.getAnnotatedElement().getAnnotation(Field.class);
-            if (fieldAnn != null && fieldAnn.name().length() > 0){
+            if (fieldAnn != null && fieldAnn.name().length() > 0) {
                 return fieldAnn.name();
             }
         }

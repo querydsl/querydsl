@@ -42,7 +42,7 @@ public class HibernateConfiguration extends JPAConfiguration{
                 "Type",
                 "Cascade",
                 "LazyCollection",
-                "OnDelete")){
+                "OnDelete")) {
             annotations.add((Class<? extends Annotation>) Class.forName("org.hibernate.annotations."+simpleName));
         }
         return annotations;

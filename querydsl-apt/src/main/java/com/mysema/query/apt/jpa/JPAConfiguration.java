@@ -84,28 +84,28 @@ public class JPAConfiguration extends DefaultConfiguration {
     @Override
     public VisitorConfig getConfig(TypeElement e, List<? extends Element> elements){
         boolean fields = false, methods = false;
-        for (Element element : elements){
-            if (hasRelevantAnnotation(element)){
-                if (element.getKind().equals(ElementKind.FIELD)){
+        for (Element element : elements) {
+            if (hasRelevantAnnotation(element)) {
+                if (element.getKind().equals(ElementKind.FIELD)) {
                     fields = true;
-                }else if (element.getKind().equals(ElementKind.METHOD)){
+                } else if (element.getKind().equals(ElementKind.METHOD)) {
                     methods = true;
                 }
             }
         }
-        if (fields && !methods){
+        if (fields && !methods) {
             return VisitorConfig.FIELDS_ONLY;
-        }else if (methods && !fields){
+        } else if (methods && !fields) {
             return VisitorConfig.METHODS_ONLY;
-        }else{
+        } else {
             return VisitorConfig.ALL;
         }
 
     }
 
     private boolean hasRelevantAnnotation(Element element){
-        for (Class<? extends Annotation> annotation : annotations){
-            if (element.getAnnotation(annotation) != null){
+        for (Class<? extends Annotation> annotation : annotations) {
+            if (element.getAnnotation(annotation) != null) {
                 return true;
             }
         }

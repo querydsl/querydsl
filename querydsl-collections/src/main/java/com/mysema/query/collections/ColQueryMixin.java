@@ -36,7 +36,7 @@ public class ColQueryMixin<T> extends QueryMixin<T> {
 
     @Override
     protected Predicate[] normalize(Predicate[] conditions, boolean where) {
-        for (int i = 0; i < conditions.length; i++){
+        for (int i = 0; i < conditions.length; i++) {
             if (conditions[i] != null) {
                 conditions[i] = normalize(conditions[i], where);    
             }            
@@ -46,12 +46,12 @@ public class ColQueryMixin<T> extends QueryMixin<T> {
 
     @SuppressWarnings("unchecked")
     private Predicate normalize(Predicate predicate, boolean where) {
-        if (predicate instanceof BooleanBuilder && ((BooleanBuilder)predicate).getValue() == null){
+        if (predicate instanceof BooleanBuilder && ((BooleanBuilder)predicate).getValue() == null) {
             return predicate;
-        }else{
+        } else {
             Context context = new Context();
             Predicate transformed = (Predicate) predicate.accept(CollectionAnyVisitor.DEFAULT, context);
-            for (int i = 0; i < context.paths.size(); i++){
+            for (int i = 0; i < context.paths.size(); i++) {
                 innerJoin(
                     (CollectionExpression)context.paths.get(i).getMetadata().getParent(), 
                     (Path)context.replacements.get(i));

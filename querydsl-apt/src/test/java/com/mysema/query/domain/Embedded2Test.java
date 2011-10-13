@@ -3,6 +3,7 @@ package com.mysema.query.domain;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -61,7 +62,9 @@ public class Embedded2Test {
         boolean sameIdentityAs(T other);
 
     }
-        
+     
+    // TODO : compilation should work without this annotation
+    @Embeddable
     public class BrandCode extends EntityCode {
 
     }

@@ -26,12 +26,12 @@ public class SubQueryExpressionImpl<T> extends ExpressionBase<T> implements SubQ
 
     @SuppressWarnings("unchecked")
     public boolean equals(Object o){
-        if (o == this){
+        if (o == this) {
             return true;
-        }else if (o instanceof SubQueryExpression){
+        } else if (o instanceof SubQueryExpression) {
             SubQueryExpression<T> s = (SubQueryExpression<T>)o;
             return s.getMetadata().equals(metadata);
-        }else{
+        } else {
             return false;
         }
     }

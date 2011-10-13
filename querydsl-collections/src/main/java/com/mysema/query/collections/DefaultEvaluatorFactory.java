@@ -87,14 +87,14 @@ public class DefaultEvaluatorFactory {
         }
 
         // normalize types
-        for (int i = 0; i < types.length; i++){
+        for (int i = 0; i < types.length; i++) {
             if (ClassUtils.wrapperToPrimitive(types[i]) != null){
                 types[i] = ClassUtils.wrapperToPrimitive(types[i]);
             }
         }
 
         String javaSource = serializer.toString();
-        if (projection instanceof FactoryExpression<?>){
+        if (projection instanceof FactoryExpression<?>) {
             javaSource = "("+com.mysema.codegen.support.ClassUtils.getName(projection.getType())+")(" + javaSource+")";
         }
 
@@ -154,20 +154,20 @@ public class DefaultEvaluatorFactory {
         List<String> anyJoinMatchers = new ArrayList<String>();
 
         // creating context
-        for (JoinExpression join : joins){
+        for (JoinExpression join : joins) {
             Expression<?> target = join.getTarget();
             String typeName = com.mysema.codegen.support.ClassUtils.getName(target.getType());
-            if (vars.length() > 0){
+            if (vars.length() > 0) {
                 vars.append(",");
             }
-            if (join.getType() == JoinType.DEFAULT){
+            if (join.getType() == JoinType.DEFAULT) {
                 ser.append("for (" + typeName + " "+ target + " : " + target + "_){\n");
                 vars.append(target);
                 sourceNames.add(target+"_");
                 sourceTypes.add(new SimpleType(Types.ITERABLE, new ClassType(TypeCategory.SIMPLE,target.getType())));
                 sourceClasses.add(Iterable.class);
 
-            }else if (join.getType() == JoinType.INNERJOIN){
+            } else if (join.getType() == JoinType.INNERJOIN) {
                 Operation alias = (Operation)join.getTarget();
                 boolean colAnyJoin = join.getCondition() != null && join.getCondition().toString().equals("any");
                 if (colAnyJoin){
@@ -176,42 +176,42 @@ public class DefaultEvaluatorFactory {
                     anyJoinMatchers.add(matcher);
                 }
                 ser.append("for ( " + typeName + " " + alias.getArg(1) + " : ");
-                if (colAnyJoin){
+                if (colAnyJoin) {
                     Context context = new Context();
                     Expression<?> replacement = (Expression<?>) alias.getArg(0).accept(CollectionAnyVisitor.DEFAULT, context);
                     ser.handle(replacement);
-                }else{
+                } else {
                     ser.handle(alias.getArg(0));
                 }
-                if (alias.getArg(0).getType().equals(Map.class)){
+                if (alias.getArg(0).getType().equals(Map.class)) {
                     ser.append(".values()");
                 }
                 ser.append("){\n");
                 vars.append(alias.getArg(1));
 
-            }else{
+            } else {
                 throw new IllegalArgumentException("Illegal join expression " + join);
             }
         }
 
         // filter
-        if (filter != null){
+        if (filter != null) {
             ser.append("if (");
-            for (String matcher : anyJoinMatchers){
+            for (String matcher : anyJoinMatchers) {
                 ser.append("!" + matcher + " && ");
             }
             ser.handle(filter).append("){\n");
-            for (String matcher : anyJoinMatchers){
+            for (String matcher : anyJoinMatchers) {
                 ser.append("    "+ matcher + " = true;\n");
             }
             ser.append("    rv.add(new Object[]{"+vars+"});\n");
             ser.append("}\n");
-        }else{
+        } else {
             ser.append("rv.add(new Object[]{"+vars+"});\n");
         }
 
         // closing context
-        for (int i = 0; i < joins.size(); i++){
+        for (int i = 0; i < joins.size(); i++) {
             ser.append("}\n");
         }
         ser.append("return rv;");
@@ -231,14 +231,14 @@ public class DefaultEvaluatorFactory {
 
     private Map<String, Object> getConstants(QueryMetadata metadata, Map<Object, String> constantToLabel) {
         Map<String,Object> constants = new HashMap<String,Object>();
-        for (Map.Entry<Object,String> entry : constantToLabel.entrySet()){
-            if (entry.getKey() instanceof ParamExpression<?>){
+        for (Map.Entry<Object,String> entry : constantToLabel.entrySet()) {
+            if (entry.getKey() instanceof ParamExpression<?>) {
                 Object value = metadata.getParams().get(entry.getKey());
-                if (value == null){
+                if (value == null) {
                     throw new ParamNotSetException((ParamExpression<?>) entry.getKey());
                 }
                 constants.put(entry.getValue(), value);
-            }else{
+            } else {
                 constants.put(entry.getValue(), entry.getKey());
             }
         }

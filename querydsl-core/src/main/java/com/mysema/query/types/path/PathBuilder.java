@@ -73,7 +73,7 @@ public final class PathBuilder<T> extends EntityPathBase<T> {
     @SuppressWarnings("unchecked")
     public <A> PathBuilder<A> get(String property, Class<A> type) {
         PathBuilder<A> path = (PathBuilder<A>) properties.get(property);
-        if (path == null || !type.isAssignableFrom(path.getType())){
+        if (path == null || !type.isAssignableFrom(path.getType())) {
             path = new PathBuilder<A>(type, forProperty(property));
             properties.put(property, path);
         }

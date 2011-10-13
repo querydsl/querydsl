@@ -36,7 +36,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
     public Void visit(Path<?> path, Void context) {
         PathType pathType = path.getMetadata().getPathType();
 
-        if (pathType == PathType.PROPERTY){
+        if (pathType == PathType.PROPERTY) {
             // TODO : move this to PathMetadata ?!?
             String prefix = "get";
             if (path.getType() != null && path.getType().equals(Boolean.class)) {
@@ -46,19 +46,19 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
             append(".").append(prefix);
             append(BeanUtils.capitalize(path.getMetadata().getExpression().toString()) + "()");
 
-        }else{
+        } else {
             List<Expression<?>> args = new ArrayList<Expression<?>>(2);
-            if (path.getMetadata().getParent() != null){
+            if (path.getMetadata().getParent() != null) {
                 args.add((Expression<?>)path.getMetadata().getParent());
             }
             args.add(path.getMetadata().getExpression());
             Template template = getTemplate(pathType);
-            for (Template.Element element : template.getElements()){
-                if (element.getStaticText() != null){
+            for (Template.Element element : template.getElements()) {
+                if (element.getStaticText() != null) {
                     append(element.getStaticText());
-                }else if (element.isAsString()){
+                } else if (element.isAsString()) {
                     append(args.get(element.getIndex()).toString());
-                }else{
+                } else {
                     handle(args.get(element.getIndex()));
                 }
             }

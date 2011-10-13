@@ -86,17 +86,17 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
         FullTextQuery fullTextQuery = session.createFullTextQuery(query, path.getType());
 
         // order
-        if (!metadata.getOrderBy().isEmpty() && !forCount){
+        if (!metadata.getOrderBy().isEmpty() && !forCount) {
             fullTextQuery.setSort(serializer.toSort(metadata.getOrderBy()));
         }
 
         // paging
         QueryModifiers modifiers = metadata.getModifiers();
-        if (modifiers != null && modifiers.isRestricting() && !forCount){
-            if (modifiers.getLimit() != null){
+        if (modifiers != null && modifiers.isRestricting() && !forCount) {
+            if (modifiers.getLimit() != null) {
                 fullTextQuery.setMaxResults(modifiers.getLimit().intValue());
             }
-            if (modifiers.getOffset() != null){
+            if (modifiers.getOffset() != null) {
                 fullTextQuery.setFirstResult(modifiers.getOffset().intValue());
             }
         }
@@ -176,9 +176,9 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
     @SuppressWarnings("unchecked")
     @Override
     public T uniqueResult() {
-        try{
+        try {
             return (T) createQuery(false).uniqueResult();
-        }catch (org.hibernate.NonUniqueResultException e){
+        } catch (org.hibernate.NonUniqueResultException e) {
             throw new NonUniqueResultException();
         }
     }
