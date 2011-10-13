@@ -5,12 +5,15 @@
  */
 package com.mysema.query;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
@@ -48,6 +51,16 @@ public abstract class AbstractJPATest extends AbstractStandardTest{
     @Override
     protected void save(Object entity) {
         entityManager.persist(entity);
+    }
+    
+    @Test
+    public void Finder() {
+        Map<String,Object> conditions = new HashMap<String,Object>();
+        conditions.put("name", "Bob123");
+        
+        List<Cat> cats = CustomFinder.findCustom(entityManager, Cat.class, conditions, "name");
+        assertEquals(1, cats.size());
+        assertEquals("Bob123", cats.get(0).getName());
     }
 
     @SuppressWarnings("unchecked")

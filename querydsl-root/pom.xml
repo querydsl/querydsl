@@ -270,6 +270,20 @@
       </plugin>
     </plugins>
   </build>
+  
+  <repositories>
+    <repository>
+      <id>source</id>
+      <url>http://source.mysema.com/maven2/releases</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>  
+  
   <profiles>
     <profile>
       <id>all</id>

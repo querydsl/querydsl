@@ -71,7 +71,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         return Pattern.quote(expr.getArg(index).accept(this, null).toString());
     }
 
-    private BasicDBObject asDBObject(String key, Object value) {
+    protected DBObject asDBObject(String key, Object value) {
         return new BasicDBObject(key, value);
     }
 
