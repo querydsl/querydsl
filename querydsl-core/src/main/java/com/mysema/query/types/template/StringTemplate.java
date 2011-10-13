@@ -26,17 +26,17 @@ public class StringTemplate extends StringExpression implements TemplateExpressi
 
     private static final long serialVersionUID = 3181686132439356614L;
 
-    public static StringExpression create(String template, Expression<?>... args){
+    public static StringExpression create(String template, Expression<?>... args) {
         return new StringTemplate(TemplateFactory.DEFAULT.create(template), Arrays.<Expression<?>>asList(args));
     }
 
-    public static StringExpression create(Template template, Expression<?>... args){
+    public static StringExpression create(Template template, Expression<?>... args) {
         return new StringTemplate(template, Arrays.<Expression<?>>asList(args));
     }
 
     private final TemplateExpression<String> templateMixin;
 
-    public StringTemplate(Template template, List<Expression<?>> args){
+    public StringTemplate(Template template, List<Expression<?>> args) {
         templateMixin = new TemplateExpressionImpl<String>(String.class, template, args);
     }
 
@@ -61,12 +61,12 @@ public class StringTemplate extends StringExpression implements TemplateExpressi
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         return templateMixin.equals(o);
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return getType().hashCode();
     }
 

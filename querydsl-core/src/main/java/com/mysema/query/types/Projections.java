@@ -16,7 +16,7 @@ public final class Projections {
      * @param exprs arguments for the projection
      * @return
      */
-    public static <T> ArrayConstructorExpression<T> array(Class<T[]> type, Expression<T>... exprs){
+    public static <T> ArrayConstructorExpression<T> array(Class<T[]> type, Expression<T>... exprs) {
         return new ArrayConstructorExpression<T>(type, exprs);
     }
     
@@ -28,7 +28,7 @@ public final class Projections {
      * @param exprs arguments for the projection
      * @return
      */
-    public static <T> QBean<T> bean(Class<T> type, Expression<?>... exprs){
+    public static <T> QBean<T> bean(Class<T> type, Expression<?>... exprs) {
         return new QBean<T>(type, exprs);
     }
     
@@ -40,7 +40,7 @@ public final class Projections {
      * @param exprs arguments for the projection
      * @return
      */
-    public static <T> QBean<T> bean(Path<T> type, Expression<?>... exprs){
+    public static <T> QBean<T> bean(Path<T> type, Expression<?>... exprs) {
         return new QBean<T>(type, exprs);
     }
     
@@ -52,7 +52,7 @@ public final class Projections {
      * @param exprs arguments for the projection
      * @return
      */
-    public static <T> ConstructorExpression<T> constructor(Class<T> type, Expression<?>... exprs){
+    public static <T> ConstructorExpression<T> constructor(Class<T> type, Expression<?>... exprs) {
         return ConstructorExpression.create(type, exprs);
     }
     
@@ -64,7 +64,7 @@ public final class Projections {
      * @param exprs arguments for the projection
      * @return
      */
-    public static <T> QBean<T> fields(Class<T> type, Expression<?>... exprs){
+    public static <T> QBean<T> fields(Class<T> type, Expression<?>... exprs) {
         return new QBean<T>(type, true, exprs);
     }
     
@@ -76,9 +76,9 @@ public final class Projections {
      * @param exprs arguments for the projection
      * @return
      */
-    public static <T> QBean<T> fields(Path<T> type, Expression<?>... exprs){
+    public static <T> QBean<T> fields(Path<T> type, Expression<?>... exprs) {
         return new QBean<T>(type, true, exprs);
     }
     
-    private Projections(){}
+    private Projections() {}
 }

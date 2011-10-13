@@ -69,7 +69,7 @@ public class CreateTableClause {
         return this;
     }
 
-    private ColumnData lastColumn(){
+    private ColumnData lastColumn() {
         return columns.get(columns.size()-1);
     }
     
@@ -99,7 +99,7 @@ public class CreateTableClause {
      * 
      * @return
      */
-    public CreateTableClause autoIncrement(){
+    public CreateTableClause autoIncrement() {
         lastColumn().setAutoIncrement(true);
         return this;
     }
@@ -114,7 +114,7 @@ public class CreateTableClause {
     public CreateTableClause primaryKey(String name, String... columns) {
         Assert.notNull(name,"name");
         Assert.notEmpty(columns,"columns");
-        for (int i = 0; i < columns.length; i++){
+        for (int i = 0; i < columns.length; i++) {
             columns[i] = templates.quoteIdentifier(columns[i]);
         }        
         primaryKey = new PrimaryKeyData(templates.quoteIdentifier(name), columns);
@@ -128,7 +128,7 @@ public class CreateTableClause {
      * @param columns
      * @return
      */
-    public CreateTableClause index(String name, String... columns){
+    public CreateTableClause index(String name, String... columns) {
         Assert.notNull(name,"name");
         Assert.notEmpty(columns,"columns");
         indexes.add(new IndexData(name, columns));
@@ -140,7 +140,7 @@ public class CreateTableClause {
      * 
      * @return
      */
-    public CreateTableClause unique(){
+    public CreateTableClause unique() {
         indexes.get(indexes.size()-1).setUnique(true);
         return this;
     }
@@ -167,23 +167,23 @@ public class CreateTableClause {
         builder.append(templates.getCreateTable() + table + " (\n");
         List<String> lines = new ArrayList<String>(columns.size() + foreignKeys.size() + 1);
         // columns 
-        for (ColumnData column : columns){
+        for (ColumnData column : columns) {
             StringBuilder line = new StringBuilder();
             line.append(column.getName() + " " + column.getType().toUpperCase());
-            if (column.getSize() != null){
+            if (column.getSize() != null) {
                 line.append("(" + column.getSize() + ")");
             }
-            if (!column.isNullAllowed()){
+            if (!column.isNullAllowed()) {
                 line.append(templates.getNotNull().toUpperCase());
             }            
-            if (column.isAutoIncrement()){
+            if (column.isAutoIncrement()) {
                 line.append(templates.getAutoIncrement().toUpperCase());
             }
             lines.add(line.toString());
         }
         
         // primary key
-        if (primaryKey != null){
+        if (primaryKey != null) {
             StringBuilder line = new StringBuilder();
             line.append("CONSTRAINT " + primaryKey.getName()+ " ");
             line.append("PRIMARY KEY(" + StringUtils.join(primaryKey.getColumns(), ", ") +")");
@@ -191,7 +191,7 @@ public class CreateTableClause {
         }
         
         // foreign keys
-        for (ForeignKeyData foreignKey : foreignKeys){
+        for (ForeignKeyData foreignKey : foreignKeys) {
             StringBuilder line = new StringBuilder();
             line.append("CONSTRAINT " + foreignKey.getName()+ " ");
             line.append("FOREIGN KEY(" + StringUtils.join(foreignKey.getForeignColumns(), ", ")+ ") ");
@@ -208,10 +208,10 @@ public class CreateTableClause {
             stmt.execute(builder.toString());
             
             // indexes
-            for (IndexData index : indexes){
+            for (IndexData index : indexes) {
                 String indexColumns = StringUtils.join(index.getColumns(),", ");
                 String prefix = templates.getCreateIndex();
-                if (index.isUnique()){
+                if (index.isUnique()) {
                     prefix = templates.getCreateUniqueIndex();
                 }
                 String sql = prefix + index.getName() + templates.getOn() + table + "(" + indexColumns+ ")";
@@ -221,7 +221,7 @@ public class CreateTableClause {
         } catch (SQLException e) {
             throw new QueryException(e.getMessage(), e);
         }finally{
-            if (stmt != null){
+            if (stmt != null) {
                 try {
                     stmt.close();
                 } catch (SQLException e) {

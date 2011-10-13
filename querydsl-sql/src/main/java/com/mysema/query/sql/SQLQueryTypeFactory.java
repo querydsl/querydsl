@@ -28,7 +28,7 @@ public final class SQLQueryTypeFactory implements QueryTypeFactory{
     }
 
     @Override
-    public Type create(Type type){
+    public Type create(Type type) {
         String simpleName = type.getSimpleName();
         simpleName = prefix + simpleName.substring(stripStart, simpleName.length()-stripEnd) + suffix;
         return new SimpleType(packageName + "." + simpleName, packageName, simpleName);

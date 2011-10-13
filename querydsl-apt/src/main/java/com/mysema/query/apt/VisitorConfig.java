@@ -34,7 +34,7 @@ public enum VisitorConfig {
 
     private final boolean visitFieldProperties, visitMethodProperties;
 
-    VisitorConfig(boolean fields, boolean methods){
+    VisitorConfig(boolean fields, boolean methods) {
         this.visitFieldProperties = fields;
         this.visitMethodProperties = methods;
     }
@@ -44,11 +44,11 @@ public enum VisitorConfig {
         return true;
     }
 
-    public boolean visitFieldProperties(){
+    public boolean visitFieldProperties() {
         return visitFieldProperties;
     }
 
-    public boolean visitMethodProperties(){
+    public boolean visitMethodProperties() {
         return visitMethodProperties;
     }
 

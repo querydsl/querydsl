@@ -15,7 +15,7 @@ import java.lang.annotation.Annotation;
  *
  */
 @SuppressWarnings("all")
-public class ColumnImpl implements Column{
+public class ColumnImpl implements Column {
 
     private final String column;
 

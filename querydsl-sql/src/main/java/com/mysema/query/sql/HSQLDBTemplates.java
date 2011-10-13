@@ -15,15 +15,15 @@ import com.mysema.query.types.Ops;
  */
 public class HSQLDBTemplates extends SQLTemplates {
 
-    public HSQLDBTemplates(){
+    public HSQLDBTemplates() {
         this('\\', false);
     }
     
-    public HSQLDBTemplates(boolean quote){
+    public HSQLDBTemplates(boolean quote) {
         this('\\',quote);
     }
 
-    public HSQLDBTemplates(char escape, boolean quote){
+    public HSQLDBTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
         setAutoIncrement(" identity");
         add(Ops.MathOps.ROUND, "round({0},0)");

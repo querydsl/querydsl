@@ -28,40 +28,40 @@ public class PathInits implements Serializable{
 
     private final Map<String,PathInits> propertyToInits = new HashMap<String,PathInits>();
 
-    public PathInits(String... inits){
-        for (String init : inits){
+    public PathInits(String... inits) {
+        for (String init : inits) {
             addInit(init);
         }
     }
 
-    private void addInit(String initStr){
-        if (initStr.equals("*")){
+    private void addInit(String initStr) {
+        if (initStr.equals("*")) {
             initAllProps = true;
-        }else{
+        } else {
             String key;
             String[] inits;
-            if (initStr.contains(".")){
+            if (initStr.contains(".")) {
                 key = initStr.substring(0, initStr.indexOf('.'));
                 inits = new String[]{initStr.substring(key.length()+1)};
-            }else{
+            } else {
                 key = initStr;
                 inits = new String[0];
             }
             PathInits init = propertyToInits.get(key);
-            if (init == null){
+            if (init == null) {
                 propertyToInits.put(key, new PathInits(inits));
-            }else if (inits.length > 0){
+            }else if (inits.length > 0) {
                 init.addInit(inits[0]);
             }
         }
     }
 
-    public PathInits get(String property){
-        if (propertyToInits.containsKey(property)){
+    public PathInits get(String property) {
+        if (propertyToInits.containsKey(property)) {
             return propertyToInits.get(property);
-        }else if (initAllProps){
+        } else if (initAllProps) {
             return DEFAULT;
-        }else{
+        } else {
             throw new IllegalArgumentException(property + " is not initialized");
         }
     }

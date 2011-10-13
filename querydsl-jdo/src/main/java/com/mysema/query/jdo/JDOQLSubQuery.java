@@ -30,20 +30,20 @@ public class JDOQLSubQuery extends AbstractJDOQLSubQuery<JDOQLSubQuery> implemen
     }
     
     @Override
-    public BooleanExpression exists(){
+    public BooleanExpression exists() {
         return count().gt(0l);
     }
     
     @Override
-    public BooleanExpression notExists(){
+    public BooleanExpression notExists() {
         return count().eq(0l);
     }
     
     @SuppressWarnings("unchecked")
     @Override
-    public NumberSubQuery<Long> count(){
+    public NumberSubQuery<Long> count() {
         Expression<?> target = queryMixin.getMetadata().getJoins().get(0).getTarget();
-        if (target instanceof Operation && ((Operation)target).getOperator() == Ops.ALIAS){
+        if (target instanceof Operation && ((Operation)target).getOperator() == Ops.ALIAS) {
             target = ((Operation)target).getArg(1);
         }
         return unique(NumberOperation.create(Long.class, Ops.AggOps.COUNT_AGG, target));  

@@ -76,7 +76,7 @@ public class SQLQueryImpl extends AbstractSQLQuery<SQLQueryImpl> implements SQLQ
      * @param conn
      * @return
      */
-    public SQLQueryImpl clone(Connection conn){
+    public SQLQueryImpl clone(Connection conn) {
         SQLQueryImpl q = new SQLQueryImpl(conn, getConfiguration(), getMetadata().clone());
         q.union = union;
         q.unionAll = unionAll;

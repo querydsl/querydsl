@@ -88,7 +88,7 @@ public class MySQLQueryFactory implements SQLQueryFactory<MySQLQuery, SQLSubQuer
         return queryFactory.subQuery();
     }
 
-    public SQLSubQuery subQuery(Expression<?> from){
+    public SQLSubQuery subQuery(Expression<?> from) {
         return subQuery().from(from);
     }
 

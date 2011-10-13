@@ -41,10 +41,10 @@ public class AbstractJPQLSubQuery<Q extends AbstractJPQLSubQuery<Q>> extends Det
     }
     
     @Override
-    public NumberSubQuery<Long> count(){
+    public NumberSubQuery<Long> count() {
         StringBuilder count = new StringBuilder();
-        for (JoinExpression join : queryMixin.getMetadata().getJoins()){
-            if (join.getType() == JoinType.DEFAULT){
+        for (JoinExpression join : queryMixin.getMetadata().getJoins()) {
+            if (join.getType() == JoinType.DEFAULT) {
                 count.append(count.length() == 0 ? "count(" : ", ");
                 count.append(join.getTarget().toString());
             }
@@ -153,16 +153,16 @@ public class AbstractJPQLSubQuery<Q extends AbstractJPQLSubQuery<Q>> extends Det
         return queryMixin.leftJoin(target, alias);
     }
 
-    public Q with(Predicate... conditions){
+    public Q with(Predicate... conditions) {
         return queryMixin.with(conditions);
     }
     
-    public String toString(){
-        if (!queryMixin.getMetadata().getJoins().isEmpty()){
+    public String toString() {
+        if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             JPQLSerializer serializer = new JPQLSerializer(JPQLTemplates.DEFAULT);
             serializer.serialize(queryMixin.getMetadata(), false, null);
             return serializer.toString().trim();
-        }else{
+        } else {
             return super.toString();
         }
     }

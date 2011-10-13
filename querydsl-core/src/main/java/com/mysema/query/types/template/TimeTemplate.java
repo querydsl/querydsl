@@ -27,11 +27,11 @@ public class TimeTemplate<T extends Comparable<?>> extends TimeExpression<T> imp
 
     private static final long serialVersionUID = -7684306954555037051L;
 
-    public static <T extends Comparable<?>> TimeTemplate<T> create(Class<T> type, String template, Expression<?>... args){
+    public static <T extends Comparable<?>> TimeTemplate<T> create(Class<T> type, String template, Expression<?>... args) {
         return new TimeTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expression<?>>asList(args));
     }
 
-    public static <T extends Comparable<?>> TimeTemplate<T> create(Class<T> type, Template template, Expression<?>... args){
+    public static <T extends Comparable<?>> TimeTemplate<T> create(Class<T> type, Template template, Expression<?>... args) {
         return new TimeTemplate<T>(type, template, Arrays.<Expression<?>>asList(args));
     }
 
@@ -63,12 +63,12 @@ public class TimeTemplate<T extends Comparable<?>> extends TimeExpression<T> imp
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         return templateMixin.equals(o);
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return getType().hashCode();
     }
 

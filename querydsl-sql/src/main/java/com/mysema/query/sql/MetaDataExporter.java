@@ -102,18 +102,18 @@ public class MetaDataExporter {
     
     private String sourceEncoding = "UTF-8";
 
-    public MetaDataExporter(){}
+    public MetaDataExporter() {}
 
     protected EntityType createEntityType(@Nullable String schemaName, String tableName, final String className) {
         EntityType classModel;
 
-        if (beanSerializer == null){
+        if (beanSerializer == null) {
             String simpleName = module.getPrefix() + className + module.getSuffix();
             Type classTypeModel = new SimpleType(TypeCategory.ENTITY, module.getPackageName() + "." + simpleName,  module.getPackageName(), simpleName, false, false);
             classModel = new EntityType(classTypeModel);
             typeMappings.register(classModel, classModel);
 
-        }else{
+        } else {
             String simpleName = module.getBeanPrefix() + className + module.getBeanSuffix();
             Type classTypeModel = new SimpleType(TypeCategory.ENTITY, beanPackageName + "." + simpleName, beanPackageName, simpleName, false, false);
             classModel = new EntityType(classTypeModel);
@@ -122,7 +122,7 @@ public class MetaDataExporter {
             typeMappings.register(classModel, mappedType);
         }
 
-        if (schemaName != null){
+        if (schemaName != null) {
             classModel.addAnnotation(new SchemaImpl(schemaName));
         }
 
@@ -154,13 +154,13 @@ public class MetaDataExporter {
         namingStrategy = module.get(NamingStrategy.class);
         configuration = module.get(Configuration.class);
 
-        if (beanPackageName == null){
+        if (beanPackageName == null) {
             beanPackageName =  module.getPackageName();
         }
 
-        if (beanSerializer == null){
+        if (beanSerializer == null) {
             keyDataFactory = new KeyDataFactory(namingStrategy,  module.getPackageName(), module.getPrefix(), module.getSuffix());
-        }else{
+        } else {
             keyDataFactory = new KeyDataFactory(namingStrategy, beanPackageName, module.getBeanPrefix(), module.getBeanSuffix());
         }
 
@@ -183,21 +183,21 @@ public class MetaDataExporter {
         String propertyName = namingStrategy.getPropertyName(columnName, classModel);
         Class<?> clazz = configuration.getJavaType(columns.getInt(COLUMN_TYPE), tableName, columnName);
         TypeCategory fieldType = TypeCategory.get(clazz.getName());
-        if (Number.class.isAssignableFrom(clazz)){
+        if (Number.class.isAssignableFrom(clazz)) {
             fieldType = TypeCategory.NUMERIC;
-        }else if (Enum.class.isAssignableFrom(clazz)){
+        }else if (Enum.class.isAssignableFrom(clazz)) {
             fieldType = TypeCategory.ENUM;
         }
         Type typeModel = new ClassType(fieldType, clazz);
         Property property = createProperty(classModel, columnName, propertyName, typeModel);
         property.addAnnotation(new ColumnImpl(namingStrategy.normalizeColumnName(columnName)));
-        if (validationAnnotations){
+        if (validationAnnotations) {
             int nullable = columns.getInt(COLUMN_NULLABLE);
-            if (nullable == DatabaseMetaData.columnNoNulls){
+            if (nullable == DatabaseMetaData.columnNoNulls) {
                 property.addAnnotation(new NotNullImpl());
             }
             int size = columns.getInt(COLUMN_SIZE);
-            if (size > 0 && clazz.equals(String.class)){
+            if (size > 0 && clazz.equals(String.class)) {
                 property.addAnnotation(new SizeImpl(0, size));
             }
         }
@@ -212,19 +212,19 @@ public class MetaDataExporter {
 
         // collect primary keys
         Map<String,PrimaryKeyData> primaryKeyData = keyDataFactory.getPrimaryKeys(md, schemaPattern, tableName);
-        if (!primaryKeyData.isEmpty()){
+        if (!primaryKeyData.isEmpty()) {
             classModel.getData().put(PrimaryKeyData.class, primaryKeyData.values());
         }
 
         // collect foreign keys
         Map<String,ForeignKeyData> foreignKeyData = keyDataFactory.getImportedKeys(md, schemaPattern, tableName);
-        if (!foreignKeyData.isEmpty()){
+        if (!foreignKeyData.isEmpty()) {
             classModel.getData().put(ForeignKeyData.class, foreignKeyData.values());
         }
 
         // collect inverse foreign keys
         Map<String,InverseForeignKeyData> inverseForeignKeyData = keyDataFactory.getExportedKeys(md, schemaPattern, tableName);
-        if (!inverseForeignKeyData.isEmpty()){
+        if (!inverseForeignKeyData.isEmpty()) {
             classModel.getData().put(InverseForeignKeyData.class, inverseForeignKeyData.values());
         }
 
@@ -248,13 +248,13 @@ public class MetaDataExporter {
         try {
             String fileSuffix = createScalaSources ? ".scala" : ".java";
 
-            if (beanSerializer != null){
+            if (beanSerializer != null) {
                 String path = beanPackageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
                 write(beanSerializer, path, type);
 
                 String otherPath = entityToWrapped.get(type).getFullName().replace('.', '/') + fileSuffix;
                 write(serializer, otherPath, type);
-            }else{
+            } else {
                 String path =  module.getPackageName().replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
                 write(serializer, path, type);
             }
@@ -428,7 +428,7 @@ public class MetaDataExporter {
     /**
      * @param serializerClass
      */
-    public void setSerializerClass(Class<? extends Serializer> serializerClass){
+    public void setSerializerClass(Class<? extends Serializer> serializerClass) {
         Assert.notNull(serializerClass, "serializerClass");
         module.bind(Serializer.class, serializerClass);
     }
@@ -436,7 +436,7 @@ public class MetaDataExporter {
     /**
      * @param typeMappings
      */
-    public void setTypeMappings(TypeMappings typeMappings){
+    public void setTypeMappings(TypeMappings typeMappings) {
         Assert.notNull(typeMappings, "typeMappings");
         module.bind(TypeMappings.class, typeMappings);
     }
@@ -444,7 +444,7 @@ public class MetaDataExporter {
     /**
      * @param validationAnnotations
      */
-    public void setValidationAnnotations(boolean validationAnnotations){
+    public void setValidationAnnotations(boolean validationAnnotations) {
         this.validationAnnotations = validationAnnotations;
     }
 

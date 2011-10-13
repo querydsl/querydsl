@@ -105,11 +105,11 @@ public class OriginalNamingStrategy implements NamingStrategy {
     }
     
     @Override
-    public String normalizeSchemaName(String schemaName){
+    public String normalizeSchemaName(String schemaName) {
         return schemaName;
     }
         
-    private String getPropertyName(String name){
+    private String getPropertyName(String name) {
         return JavaSyntaxUtils.isReserved(name) ? name + reservedSuffix : name;
     }
 

@@ -33,12 +33,12 @@ public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q>
     }
 
     @Override
-    public NumberSubQuery<Long> count(){
+    public NumberSubQuery<Long> count() {
         return detachableMixin.count();
     }
 
     @Override
-    public BooleanExpression exists(){
+    public BooleanExpression exists() {
         return detachableMixin.exists();
     }
 
@@ -63,7 +63,7 @@ public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q>
     }
 
     @Override
-    public BooleanExpression notExists(){
+    public BooleanExpression notExists() {
         return detachableMixin.notExists();
     }
 

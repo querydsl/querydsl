@@ -15,7 +15,7 @@ public class UnsupportedTypeException extends APTException {
 
     private static final long serialVersionUID = 1082936662325717262L;
 
-    public UnsupportedTypeException(TypeMirror mirror){
+    public UnsupportedTypeException(TypeMirror mirror) {
         super("Unsupported type " + mirror);
     }
 }

@@ -24,7 +24,7 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
         this.queryMixin = queryMixin;
     }
 
-    public Q distinct(){
+    public Q distinct() {
         return queryMixin.distinct();
     }
     
@@ -60,7 +60,7 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
         return queryMixin.restrict(modifiers);
     }
 
-    public <P> Q set(ParamExpression<P> param, P value){
+    public <P> Q set(ParamExpression<P> param, P value) {
         return queryMixin.set(param, value);
     }
 

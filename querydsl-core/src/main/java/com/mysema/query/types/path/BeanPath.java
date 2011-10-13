@@ -106,7 +106,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      * @param path
      * @return
      */
-    protected <P extends Path<?>> P add(P path){
+    protected <P extends Path<?>> P add(P path) {
         return path;
     }
 
@@ -325,7 +325,7 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
     }
 
     @Override
-    public AnnotatedElement getAnnotatedElement(){
+    public AnnotatedElement getAnnotatedElement() {
         return pathMixin.getAnnotatedElement();
     }
 

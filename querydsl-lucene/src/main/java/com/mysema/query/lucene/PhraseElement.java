@@ -30,9 +30,9 @@ public class PhraseElement extends StringExpression{
     public boolean equals(Object o) {
         if (o == this){
             return true;
-        }else if (o instanceof PhraseElement){
+        } else if (o instanceof PhraseElement){
             return ((PhraseElement)o).string.equals(string);
-        }else{
+        } else {
             return false;
         }
     }

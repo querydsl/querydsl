@@ -63,7 +63,7 @@ public class SQLServerQueryFactory implements SQLQueryFactory<SQLServerQuery, SQ
         return queryFactory.subQuery();
     }
 
-    public SQLSubQuery subQuery(Expression<?> from){
+    public SQLSubQuery subQuery(Expression<?> from) {
         return subQuery().from(from);
     }
 

@@ -30,11 +30,11 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
 //
 //    private final JDOQLTemplates templates;
 
-//    public JDOQLUpdateClause(PersistenceManager persistenceManager, PEntity<?> entity){
+//    public JDOQLUpdateClause(PersistenceManager persistenceManager, PEntity<?> entity) {
 //        this(persistenceManager, entity, JDOQLTemplates.DEFAULT);
 //    }
 //
-//    public JDOQLUpdateClause(PersistenceManager persistenceManager, PEntity<?> entity, JDOQLTemplates templates){
+//    public JDOQLUpdateClause(PersistenceManager persistenceManager, PEntity<?> entity, JDOQLTemplates templates) {
 //        this.persistenceManager = persistenceManager;
 //        this.templates = templates;
 //        metadata.addFrom(entity);
@@ -49,10 +49,10 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
     @SuppressWarnings("unchecked")
     @Override
     public JDOQLUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
-        for (int i = 0; i < paths.size(); i++){
-            if (values.get(i) != null){
+        for (int i = 0; i < paths.size(); i++) {
+            if (values.get(i) != null) {
                 metadata.addProjection(ExpressionUtils.eqConst(((Expression)paths.get(i)), values.get(i)));
-            }else{
+            } else {
                 metadata.addProjection(ExpressionUtils.eq(((Expression)paths.get(i)), new NullExpression(paths.get(i).getType())));
             }
         }
@@ -61,9 +61,9 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
 
     @Override
     public <T> JDOQLUpdateClause set(Path<T> path, T value) {
-        if (value != null){
+        if (value != null) {
             metadata.addProjection(ExpressionUtils.eqConst(path, value));
-        }else{
+        } else {
             metadata.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
         }
         return this;
@@ -77,7 +77,7 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
     }
     
     @Override
-    public <T> JDOQLUpdateClause setNull(Path<T> path){
+    public <T> JDOQLUpdateClause setNull(Path<T> path) {
         metadata.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
         return this;
     }

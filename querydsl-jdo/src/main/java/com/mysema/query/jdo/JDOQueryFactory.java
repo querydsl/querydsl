@@ -29,11 +29,11 @@ public class JDOQueryFactory implements QueryFactory<JDOQLQuery, JDOQLSubQuery>{
         return query().from(from);
     }
 
-    public JDOQLQuery query(){
+    public JDOQLQuery query() {
         return new JDOQLQueryImpl(persistenceManager.get());
     }
 
-    public JDOQLSubQuery subQuery(){
+    public JDOQLSubQuery subQuery() {
         return new JDOQLSubQuery();
     }
 

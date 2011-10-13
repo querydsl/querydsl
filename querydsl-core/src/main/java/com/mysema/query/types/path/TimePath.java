@@ -67,7 +67,7 @@ public class TimePath<T extends Comparable> extends TimeExpression<T> implements
     }
 
     @Override
-    public AnnotatedElement getAnnotatedElement(){
+    public AnnotatedElement getAnnotatedElement() {
         return pathMixin.getAnnotatedElement();
     }
 }

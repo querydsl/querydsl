@@ -49,7 +49,7 @@ public class HibernateUpdateClause implements
         this(new StatelessSessionHolder(session), entity, HQLTemplates.DEFAULT);
     }
     
-    public HibernateUpdateClause(Session session, EntityPath<?> entity, JPQLTemplates templates){
+    public HibernateUpdateClause(Session session, EntityPath<?> entity, JPQLTemplates templates) {
         this(new DefaultSessionHolder(session), entity, templates);
     }
 
@@ -72,9 +72,9 @@ public class HibernateUpdateClause implements
 
     @Override
     public <T> HibernateUpdateClause set(Path<T> path, T value) {
-        if (value != null){
+        if (value != null) {
             metadata.addProjection(ExpressionUtils.eqConst(path, value));
-        }else{
+        } else {
             metadata.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
         }
         return this;
@@ -87,7 +87,7 @@ public class HibernateUpdateClause implements
     }
     
     @Override
-    public <T> HibernateUpdateClause setNull(Path<T> path){
+    public <T> HibernateUpdateClause setNull(Path<T> path) {
         metadata.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
         return this;
     }
@@ -95,10 +95,10 @@ public class HibernateUpdateClause implements
     @SuppressWarnings("unchecked")
     @Override
     public HibernateUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
-        for (int i = 0; i < paths.size(); i++){
-            if (values.get(i) != null){
+        for (int i = 0; i < paths.size(); i++) {
+            if (values.get(i) != null) {
                 metadata.addProjection(ExpressionUtils.eqConst((Expression)paths.get(i), values.get(i)));
-            }else{
+            } else {
                 metadata.addProjection(ExpressionUtils.eq(((Expression)paths.get(i)), new NullExpression(paths.get(i).getType())));
             }
 
@@ -113,7 +113,7 @@ public class HibernateUpdateClause implements
     }
     
     @Override
-    public String toString(){
+    public String toString() {
         JPQLSerializer serializer = new JPQLSerializer(templates);
         serializer.serializeForUpdate(metadata);
         return serializer.toString();

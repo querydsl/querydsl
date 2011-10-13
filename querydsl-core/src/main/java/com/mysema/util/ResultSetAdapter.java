@@ -21,7 +21,7 @@ public class ResultSetAdapter implements ResultSet{
 
     private final ResultSet rs;
 
-    public ResultSetAdapter(ResultSet rs){
+    public ResultSetAdapter(ResultSet rs) {
         this.rs = rs;
     }
 

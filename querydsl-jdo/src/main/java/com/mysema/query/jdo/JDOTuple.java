@@ -23,7 +23,7 @@ public class JDOTuple implements Tuple{
 
     private final Map<String,Object> mapped = new LinkedHashMap<String,Object>();
 
-    public void put(Object name, Object value){
+    public void put(Object name, Object value) {
         indexed.add(value);
         mapped.put(name.toString(), value);
     }
@@ -35,9 +35,9 @@ public class JDOTuple implements Tuple{
 
     @Override
     public <T> T get(Expression<T> expr) {
-        if (expr instanceof Path){
+        if (expr instanceof Path) {
             return (T) mapped.get(((Path)expr).getMetadata().getExpression().toString());
-        }else{
+        } else {
             return (T) mapped.get(expr.toString());
         }
     }

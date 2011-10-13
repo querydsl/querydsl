@@ -38,24 +38,24 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     private final Query<?> query;
 
     @SuppressWarnings("BC_UNCONFIRMED_CAST")
-    public <Q extends Query<?> & Projectable> SimpleQueryAdapter(Q query, Expression<T> projection){
+    public <Q extends Query<?> & Projectable> SimpleQueryAdapter(Q query, Expression<T> projection) {
         // NOTE : this is a correct cast which is not handled properly by FindBugs
         this(query, query, projection);
     }
 
-    public SimpleQueryAdapter(Query<?> query, Projectable projectable, Expression<T> projection){
+    public SimpleQueryAdapter(Query<?> query, Projectable projectable, Expression<T> projection) {
         this.query = query;
         this.projectable = projectable;
         this.projection = projection;
     }
 
     @Override
-    public boolean exists(){
+    public boolean exists() {
         return projectable.exists();
     }
 
     @Override
-    public boolean notExists(){
+    public boolean notExists() {
         return projectable.notExists();
     }
 
@@ -70,7 +70,7 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     }
 
     @Override
-    public SimpleQueryAdapter<T> distinct(){
+    public SimpleQueryAdapter<T> distinct() {
         query.distinct();
         return this;
     }
@@ -82,12 +82,12 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     }
 
     @Override
-    public CloseableIterator<T> iterate(){
+    public CloseableIterator<T> iterate() {
         return projectable.iterate(projection);
     }
 
     @Override
-    public CloseableIterator<T> iterateDistinct(){
+    public CloseableIterator<T> iterateDistinct() {
         return projectable.iterateDistinct(projection);
     }
 
@@ -136,7 +136,7 @@ public class SimpleQueryAdapter<T> implements SimpleQuery<SimpleQueryAdapter<T>>
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return query.toString();
     }
 

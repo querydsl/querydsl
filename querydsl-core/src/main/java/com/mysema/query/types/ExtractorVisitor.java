@@ -16,7 +16,7 @@ public final class ExtractorVisitor implements Visitor<Expression<?>,Void>{
     
     public static final ExtractorVisitor DEFAULT = new ExtractorVisitor();
     
-    private ExtractorVisitor(){}
+    private ExtractorVisitor() {}
     
     @Override
     public Expression<?> visit(Constant<?> expr, Void context) {

@@ -19,15 +19,15 @@ import com.mysema.query.types.Ops;
  */
 public class MySQLTemplates extends SQLTemplates {
 
-    public MySQLTemplates(){
+    public MySQLTemplates() {
         this('\\', false);
     }
 
-    public MySQLTemplates(boolean quote){
+    public MySQLTemplates(boolean quote) {
         this('\\',quote);
     }
     
-    public MySQLTemplates(char escape, boolean quote){
+    public MySQLTemplates(char escape, boolean quote) {
         super("`", escape, quote);
         addClass2TypeMappings("bool", Boolean.class);
         addClass2TypeMappings("int", Integer.class);
@@ -43,7 +43,7 @@ public class MySQLTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.YEAR_MONTH, "extract(year_month from {0})");
 
         // like without escape
-        if (escape == '\\'){
+        if (escape == '\\') {
             add(Ops.LIKE, "{0} like {1}");
             add(Ops.ENDS_WITH, "{0} like {%1}");
             add(Ops.ENDS_WITH_IC, "{0l} like {%%1}");

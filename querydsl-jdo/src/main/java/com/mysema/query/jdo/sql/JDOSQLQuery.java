@@ -46,7 +46,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     
     private static final Logger logger = LoggerFactory.getLogger(JDOSQLQuery.class);
     
-    private final Closeable closeable = new Closeable(){
+    private final Closeable closeable = new Closeable() {
         @Override
         public void close() throws IOException {
             JDOSQLQuery.this.close();            
@@ -79,7 +79,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     }
 
     public void close() {
-        for (Query query : queries){
+        for (Query query : queries) {
             query.closeAll();
         }
     }
@@ -89,9 +89,9 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         query.setUnique(true);
         reset();
         Long rv = (Long) execute(query);
-        if (rv != null){
+        if (rv != null) {
             return rv.longValue();
-        }else{
+        } else {
             throw new QueryException("Query returned null");
         }
     }
@@ -101,22 +101,22 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         serializer.serialize(queryMixin.getMetadata(), forCount);
 
         // create Query
-        if (logger.isDebugEnabled()){
+        if (logger.isDebugEnabled()) {
             logger.debug(serializer.toString());
         }
         Query query = persistenceManager.newQuery("javax.jdo.query.SQL",serializer.toString());
         orderedConstants = serializer.getConstants();
         queries.add(query);
 
-        if (!forCount){
+        if (!forCount) {
             List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
             Class<?> exprType = projection.get(0).getClass();
-            if (exprType.equals(QTuple.class)){
+            if (exprType.equals(QTuple.class)) {
                 query.setResultClass(JDOTuple.class);
-            } else if (ConstructorExpression.class.isAssignableFrom(exprType)){
+            } else if (ConstructorExpression.class.isAssignableFrom(exprType)) {
                 query.setResultClass(projection.get(0).getType());
             }
-        }else{
+        } else {
             query.setResultClass(Long.class);
         }
 
@@ -124,10 +124,10 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T detach(T results){
-        if (results instanceof Collection){
+    private <T> T detach(T results) {
+        if (results instanceof Collection) {
             return (T) persistenceManager.detachCopyAll(results);
-        }else{
+        } else {
             return persistenceManager.detachCopy(results);
         }
     }
@@ -139,13 +139,13 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         } else {
             rv = query.execute();
         }
-        if (isDetach()){
+        if (isDetach()) {
             rv = detach(rv);
         }
         return rv;
     }
 
-    public QueryMetadata getMetadata(){
+    public QueryMetadata getMetadata() {
         return queryMixin.getMetadata();
     }
 
@@ -194,17 +194,17 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         }
     }
 
-    private void reset(){
+    private void reset() {
         queryMixin.getMetadata().reset();
     }
 
     @Override
-    public String toString(){
-        if (!queryMixin.getMetadata().getJoins().isEmpty()){
+    public String toString() {
+        if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             SQLSerializer serializer = new SQLSerializer(templates);
             serializer.serialize(queryMixin.getMetadata(), false);
             return serializer.toString().trim();
-        }else{
+        } else {
             return super.toString();
         }
     }
@@ -222,9 +222,9 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     public Object[] uniqueResult(Expression<?>[] args) {
         queryMixin.addToProjection(args);
         Object obj = uniqueResult();
-        if (obj != null){
+        if (obj != null) {
             return obj.getClass().isArray() ? (Object[])obj : new Object[]{obj};    
-        }else{
+        } else {
             return null;
         }     
     }
@@ -232,23 +232,23 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     @Nullable
     @SuppressWarnings("unchecked")
     private Object uniqueResult() {
-        if (getMetadata().getModifiers().getLimit() == null){
+        if (getMetadata().getModifiers().getLimit() == null) {
             limit(2);
         }
         Query query = createQuery(false);
         reset();
         Object rv = execute(query);
-        if (rv instanceof List){
+        if (rv instanceof List) {
             List<?> list = (List)rv;
-            if (!list.isEmpty()){
-                if (list.size() > 1){
+            if (!list.isEmpty()) {
+                if (list.size() > 1) {
                     throw new NonUniqueResultException();
                 }
                 return list.get(0);
-            }else{
+            } else {
                 return null;
             }
-        }else{
+        } else {
             return rv;
         }
     }

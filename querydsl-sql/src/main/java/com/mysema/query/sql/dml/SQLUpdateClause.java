@@ -80,7 +80,7 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
      * @param flag
      * @return
      */
-    public SQLUpdateClause addFlag(Position position, String flag){
+    public SQLUpdateClause addFlag(Position position, String flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
     }
@@ -92,7 +92,7 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
      * @param flag
      * @return
      */
-    public SQLUpdateClause addFlag(Position position, Expression<?> flag){
+    public SQLUpdateClause addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
     }
@@ -113,14 +113,14 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
 
     private PreparedStatement createStatement() throws SQLException{
         PreparedStatement stmt;
-        if (batchUpdates.isEmpty()){
+        if (batchUpdates.isEmpty()) {
             SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
             serializer.serializeForUpdate(metadata, entity, updates);
             queryString = serializer.toString();
             logger.debug(queryString);
             stmt = connection.prepareStatement(queryString);
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
-        }else{
+        } else {
             SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
             serializer.serializeForUpdate(batchMetadata.get(0), entity, batchUpdates.get(0));
             queryString = serializer.toString();
@@ -132,7 +132,7 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
             stmt.addBatch();
             
             // add other batches
-            for (int i = 1; i < batchUpdates.size(); i++){
+            for (int i = 1; i < batchUpdates.size(); i++) {
                 serializer = new SQLSerializer(configuration.getTemplates(), true, true);
                 serializer.serializeForUpdate(batchMetadata.get(i), entity, batchUpdates.get(i));
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
@@ -147,11 +147,11 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
         PreparedStatement stmt = null;
         try {
             stmt = createStatement();
-            if (batchUpdates.isEmpty()){
+            if (batchUpdates.isEmpty()) {
                 return stmt.executeUpdate();    
-            }else{
+            } else {
                 long rv = 0;
-                for (int i : stmt.executeBatch()){
+                for (int i : stmt.executeBatch()) {
                     rv += i;
                 }
                 return rv;
@@ -167,11 +167,11 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
 
     @Override
     public <T> SQLUpdateClause set(Path<T> path, T value) {
-        if (value instanceof Expression<?>){
+        if (value instanceof Expression<?>) {
             updates.add(Pair.<Path<?>,Expression<?>>of(path, (Expression<?>)value));
-        }else if (value != null){
+        }else if (value != null) {
             updates.add(Pair.<Path<?>,Expression<?>>of(path, new ConstantImpl<Object>(value)));
-        }else{
+        } else {
             updates.add(Pair.<Path<?>,Expression<?>>of(path, new NullExpression<T>(path.getType())));
         }
         return this;
@@ -192,12 +192,12 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
     @java.lang.SuppressWarnings("unchecked")
     @Override
     public SQLUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
-        for (int i = 0; i < paths.size(); i++){
+        for (int i = 0; i < paths.size(); i++) {
             if (values.get(i) instanceof Expression) {
                 updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), (Expression<?>)values.get(i)));
-            }else if (values.get(i) != null){
+            }else if (values.get(i) != null) {
                 updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), new ConstantImpl<Object>(values.get(i))));
-            }else{
+            } else {
                 updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), new NullExpression(paths.get(i).getType())));
             }
         }
@@ -211,7 +211,7 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
         serializer.serializeForUpdate(metadata, entity, updates);
         return serializer.toString();
@@ -245,13 +245,13 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
                 }
             }        
 //            BeanMap map = new BeanMap(bean);
-//            for (Map.Entry entry : map.entrySet()){
+//            for (Map.Entry entry : map.entrySet()) {
 //                String property = entry.getKey().toString();
-//                if (!property.equals("class")){
+//                if (!property.equals("class")) {
 //                    Field field = entity.getClass().getDeclaredField(property);
 //                    field.setAccessible(true);
 //                    Path path = (Path<?>) field.get(entity);
-//                    if (!primaryKeyColumns.contains(path)){
+//                    if (!primaryKeyColumns.contains(path)) {
 //                        set(path, entry.getValue());    
 //                    }    
 //                }                                

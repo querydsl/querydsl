@@ -25,7 +25,7 @@ public final class PathMetadataFactory {
         return new PathMetadata<Integer>(parent, ConstantImpl.create(index), PathType.ARRAYVALUE_CONSTANT);
     }
     
-    public static PathMetadata<?> forCollectionAny(Path<?> parent){
+    public static PathMetadata<?> forCollectionAny(Path<?> parent) {
         return new PathMetadata<String>(parent, ConstantImpl.create(""), PathType.COLLECTION_ANY);
     }
 
@@ -53,6 +53,6 @@ public final class PathMetadataFactory {
         return new PathMetadata<String>(null, ConstantImpl.create(Assert.hasLength(variable,"variable"), true), PathType.VARIABLE);
     }
 
-    private PathMetadataFactory(){}
+    private PathMetadataFactory() {}
 
 }

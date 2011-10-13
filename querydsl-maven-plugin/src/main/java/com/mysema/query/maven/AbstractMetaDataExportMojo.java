@@ -155,13 +155,13 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        if (isForTest()){
+        if (isForTest()) {
             project.addTestCompileSourceRoot(targetFolder);
-        }else{
+        } else {
             project.addCompileSourceRoot(targetFolder);
         }
         NamingStrategy namingStrategy;
-        if (namingStrategyClass != null){
+        if (namingStrategyClass != null) {
             try {
                 namingStrategy = (NamingStrategy) Class.forName(namingStrategyClass).newInstance();
             } catch (InstantiationException e) {
@@ -171,20 +171,20 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             } catch (ClassNotFoundException e) {
                 throw new MojoExecutionException(e.getMessage(),e);
             }
-        }else{
+        } else {
             namingStrategy = new DefaultNamingStrategy();
         }
         MetaDataExporter exporter = new MetaDataExporter();
-        if (namePrefix != null){
+        if (namePrefix != null) {
             exporter.setNamePrefix(namePrefix);
         }
-        if (nameSuffix != null){
+        if (nameSuffix != null) {
             exporter.setNameSuffix(nameSuffix);
         }
-        if (beanPrefix != null){
+        if (beanPrefix != null) {
             exporter.setBeanPrefix(beanPrefix);
         }
-        if (beanSuffix != null){
+        if (beanSuffix != null) {
             exporter.setBeanSuffix(beanSuffix);
         }
         exporter.setPackageName(packageName);
@@ -227,8 +227,8 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             Connection conn = DriverManager.getConnection(jdbcUrl, jdbcUser, jdbcPassword);
             try{
                 exporter.export(conn.getMetaData());
-            }finally{
-                if (conn != null){
+            } finally {
+                if (conn != null) {
                     conn.close();
                 }
             }
@@ -241,7 +241,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         }
     }
 
-    protected boolean isForTest(){
+    protected boolean isForTest() {
         return false;
     }
 

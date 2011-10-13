@@ -67,7 +67,7 @@ public class DateTimePath<T extends Comparable> extends DateTimeExpression<T> im
     }
 
     @Override
-    public AnnotatedElement getAnnotatedElement(){
+    public AnnotatedElement getAnnotatedElement() {
         return pathMixin.getAnnotatedElement();
     }
 }

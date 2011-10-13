@@ -40,14 +40,14 @@ public class AliasFactory {
     private final Map<Pair<Class<?>,Expression<?>>, ManagedObject> proxyCache =
         LazyMap.decorate(
             new HashMap<Pair<Class<?>,Expression<?>>,ManagedObject>(),
-            new Transformer<Pair<Class<?>,Expression<?>>,ManagedObject>(){
+            new Transformer<Pair<Class<?>,Expression<?>>,ManagedObject>() {
                 @Override
                 public ManagedObject transform(Pair<Class<?>, Expression<?>> input) {
                     return (ManagedObject) createProxy(input.getFirst(), input.getSecond());
                 }
             });
     
-    public AliasFactory(final PathFactory pathFactory, TypeSystem typeSystem){
+    public AliasFactory(final PathFactory pathFactory, TypeSystem typeSystem) {
         this.pathFactory = pathFactory; 
         this.typeSystem = typeSystem;
         this.pathCache = LazyMap.decorate(new HashMap<Pair<Class<?>,String>,EntityPath<?>>(), 

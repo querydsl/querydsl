@@ -49,7 +49,7 @@ public final class Alias {
         return aliasFactory.<D>getCurrentAndReset();
     }
 
-    public static <D> ArrayPath<D> $(D[] arg){
+    public static <D> ArrayPath<D> $(D[] arg) {
     return aliasFactory.<ArrayPath<D>> getCurrentAndReset();
     }
 
@@ -69,7 +69,7 @@ public final class Alias {
         return aliasFactory.<NumberPath<Byte>> getCurrentAndReset();
     }
     
-    public static <T extends Enum<T>> EnumPath<T> $(T arg){
+    public static <T extends Enum<T>> EnumPath<T> $(T arg) {
         return aliasFactory.<EnumPath<T>> getCurrentAndReset();
     }
 
@@ -140,7 +140,7 @@ public final class Alias {
         EntityPathBase<D> rv = aliasFactory.<EntityPathBase<D>> getCurrentAndReset();
         if (rv != null) {
             return rv;
-        }else if (arg instanceof EntityPath<?>){    
+        }else if (arg instanceof EntityPath<?>) {    
             return (EntityPathBase<D>)arg; //NOSONAR
         } else if (arg instanceof ManagedObject) {
             return (EntityPathBase<D>) ((ManagedObject) arg).__mappedPath();
@@ -155,7 +155,7 @@ public final class Alias {
         P rv = aliasFactory.<P>getCurrentAndReset();
         if (rv != null) {
             return rv;
-        }else if (arg instanceof Path<?>){    
+        }else if (arg instanceof Path<?>) {    
             return (P)arg;
         } else if (arg instanceof ManagedObject) {
             return (P) ((ManagedObject) arg).__mappedPath();
@@ -202,7 +202,7 @@ public final class Alias {
     }
 
     @SuppressWarnings("unchecked")
-    public static <D> SimplePath<D> var(){
+    public static <D> SimplePath<D> var() {
         return (SimplePath<D>) it;
     }
 
@@ -226,6 +226,6 @@ public final class Alias {
         return new StringPath(arg.replace(' ', '_'));
     }
 
-    private Alias(){}
+    private Alias() {}
 
 }

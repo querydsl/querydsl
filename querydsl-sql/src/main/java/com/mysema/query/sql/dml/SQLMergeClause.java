@@ -87,7 +87,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
      * @param flag
      * @return
      */
-    public SQLMergeClause addFlag(Position position, String flag){
+    public SQLMergeClause addFlag(Position position, String flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
     }
@@ -99,7 +99,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
      * @param flag
      * @return
      */
-    public SQLMergeClause addFlag(Position position, Expression<?> flag){
+    public SQLMergeClause addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
     }
@@ -110,7 +110,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
      * @return
      */
     public SQLMergeClause addBatch() {
-        if (!configuration.getTemplates().isNativeMerge()){
+        if (!configuration.getTemplates().isNativeMerge()) {
             throw new IllegalStateException("batch only supported for databases that support native merge");
         }
         
@@ -128,9 +128,9 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
     }
 
     public long execute() {                
-        if (configuration.getTemplates().isNativeMerge()){
+        if (configuration.getTemplates().isNativeMerge()) {
             return executeNativeMerge();
-        }else{
+        } else {
             return executeCompositeMerge();
         }        
     }
@@ -139,22 +139,22 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
     private long executeCompositeMerge() {        
         // select 
         SQLQuery query = new SQLQueryImpl(connection, configuration.getTemplates()).from(entity);
-        for (int i=0; i < columns.size(); i++){
-            if (values.get(i) instanceof NullExpression){
+        for (int i=0; i < columns.size(); i++) {
+            if (values.get(i) instanceof NullExpression) {
                 query.where(ExpressionUtils.isNull(columns.get(i)));
-            }else{
+            } else {
                 query.where(ExpressionUtils.eq(columns.get(i),(Expression)values.get(i)));    
             }            
         }
         List<?> ids = query.list(keys.get(0));
         
-        if (!ids.isEmpty()){
+        if (!ids.isEmpty()) {
             // update
             SQLUpdateClause update = new SQLUpdateClause(connection, configuration.getTemplates(), entity);
             populate(update);
             update.where(ExpressionUtils.in((Expression)keys.get(0),ids));
             return update.execute();
-        }else{
+        } else {
             // insert
             SQLInsertClause insert = new SQLInsertClause(connection, configuration.getTemplates(), entity);
             populate(insert);
@@ -165,7 +165,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
 
     @SuppressWarnings("unchecked")
     private void populate(StoreClause<?> clause) {
-        for (int i = 0; i < columns.size(); i++){
+        for (int i = 0; i < columns.size(); i++) {
             clause.set((Path)columns.get(i), (Object)values.get(i));
         }
     }
@@ -173,13 +173,13 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
     private PreparedStatement createStatement() throws SQLException{
         SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
         PreparedStatement stmt = null;
-        if (batches.isEmpty()){
+        if (batches.isEmpty()) {
             serializer.serializeForMerge(metadata, entity, keys, columns, values, subQuery);
             queryString = serializer.toString();
             logger.debug(queryString);
             stmt = connection.prepareStatement(queryString);
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
-        }else{
+        } else {
             serializer.serializeForMerge(metadata, entity, 
                     batches.get(0).getKeys(), batches.get(0).getColumns(), 
                     batches.get(0).getValues(), batches.get(0).getSubQuery());
@@ -192,7 +192,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
             stmt.addBatch();
             
             // add other batches
-            for (int i = 1; i < batches.size(); i++){
+            for (int i = 1; i < batches.size(); i++) {
                 SQLMergeBatch batch = batches.get(i);
                 serializer = new SQLSerializer(configuration.getTemplates(), true, true);
                 serializer.serializeForMerge(metadata, entity, batch.getKeys(), batch.getColumns(), batch.getValues(), batch.getSubQuery());
@@ -207,11 +207,11 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
         PreparedStatement stmt = null;
         try {
             stmt = createStatement();
-            if (batches.isEmpty()){
+            if (batches.isEmpty()) {
                 return stmt.executeUpdate();    
-            }else{
+            } else {
                 long rv = 0;
-                for (int i : stmt.executeBatch()){
+                for (int i : stmt.executeBatch()) {
                     rv += i;
                 }
                 return rv;
@@ -231,8 +231,8 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
      * @param paths
      * @return
      */
-    public SQLMergeClause keys(Path<?>... paths){
-        for (Path<?> path : paths){
+    public SQLMergeClause keys(Path<?>... paths) {
+        for (Path<?> path : paths) {
             keys.add(path);
         }
         return this;
@@ -245,9 +245,9 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
 
     public <T> SQLMergeClause set(Path<T> path, @Nullable T value) {
         columns.add(path);
-        if (value != null){
+        if (value != null) {
             values.add(new ConstantImpl<T>(value));
-        }else{
+        } else {
             values.add(new NullExpression<T>(path.getType()));
         }
         return this;
@@ -261,14 +261,14 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
     }
 
     @Override
-    public <T> SQLMergeClause setNull(Path<T> path){
+    public <T> SQLMergeClause setNull(Path<T> path) {
         columns.add(path);
         values.add(new NullExpression<T>(path.getType()));
         return this;
     }
     
     @Override
-    public String toString(){
+    public String toString() {
         SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
         serializer.serializeForMerge(metadata, entity, keys, columns, values, subQuery);
         return serializer.toString();
@@ -278,9 +278,9 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
         for (Object value : v) {
             if (value instanceof Expression<?>) {
                 values.add((Expression<?>) value);
-            } else if (value != null){
+            } else if (value != null) {
                 values.add(new ConstantImpl<Object>(value));
-            }else{
+            } else {
                 values.add(NullExpression.DEFAULT);
             }
         }

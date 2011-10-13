@@ -64,7 +64,7 @@ public class StringPath extends StringExpression implements Path<String> {
     }
     
     @Override
-    public AnnotatedElement getAnnotatedElement(){
+    public AnnotatedElement getAnnotatedElement() {
         return pathMixin.getAnnotatedElement();
     }
 }

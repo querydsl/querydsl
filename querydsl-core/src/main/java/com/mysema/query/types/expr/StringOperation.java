@@ -24,7 +24,7 @@ public class StringOperation extends StringExpression implements Operation<Strin
 
     private static final long serialVersionUID = 6846556373847139549L;
 
-    public static StringExpression create(Operator<? super String> op, Expression<?>... args){
+    public static StringExpression create(Operator<? super String> op, Expression<?>... args) {
         return new StringOperation(op, args);
     }
 
@@ -59,12 +59,12 @@ public class StringOperation extends StringExpression implements Operation<Strin
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         return opMixin.equals(o);
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return getType().hashCode();
     }
 

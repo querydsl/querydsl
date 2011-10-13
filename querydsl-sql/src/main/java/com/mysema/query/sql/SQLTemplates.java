@@ -264,7 +264,7 @@ public class SQLTemplates extends Templates {
         return join;
     }
 
-    public String getJoinSymbol(JoinType joinType){
+    public String getJoinSymbol(JoinType joinType) {
         switch (joinType) {
             case JOIN:      return join;
             case INNERJOIN: return innerJoin;
@@ -327,7 +327,7 @@ public class SQLTemplates extends Templates {
         return tableAlias;
     }
 
-    public final String getTypeForClass(Class<?> cl){
+    public final String getTypeForClass(Class<?> cl) {
         Class<?> clazz = cl.isPrimitive() ? ClassUtils.primitiveToWrapper(cl) : cl;
         if (class2type.containsKey(clazz)) {
             return class2type.get(clazz);
@@ -391,7 +391,7 @@ public class SQLTemplates extends Templates {
                     if (field.getType().equals(String.class)) {
                         field.setAccessible(true);
                         Object val = field.get(this);
-                        if (val != null){
+                        if (val != null) {
                             field.set(this, val.toString().replace('\n',' '));
                         }
 
@@ -403,10 +403,10 @@ public class SQLTemplates extends Templates {
         }
     }
     
-    public String quoteIdentifier(String identifier){
-        if (useQuotes || requiresQuotes(identifier)){
+    public String quoteIdentifier(String identifier) {
+        if (useQuotes || requiresQuotes(identifier)) {
             return quoteStr + identifier + quoteStr;
-        }else{
+        } else {
             return identifier;
         }
     }
@@ -418,7 +418,7 @@ public class SQLTemplates extends Templates {
     public void serialize(QueryMetadata metadata, boolean forCountRow, SerializationContext context) {
         context.serialize(metadata, forCountRow);
 //
-//        if (!forCountRow && metadata.getModifiers().isRestricting()){
+//        if (!forCountRow && metadata.getModifiers().isRestricting()) {
 //            serializeModifiers(metadata, context);
 //        }
     }

@@ -76,21 +76,21 @@ public final class JDBCTypeMapping {
         
     }
     
-    private static void registerDefault(int sqlType, Class<?> javaType){
+    private static void registerDefault(int sqlType, Class<?> javaType) {
         defaultTypes.put(sqlType, javaType);
     }
     
     private final Map<Integer, Class<?>> types = new HashMap<Integer, Class<?>>();
     
-    public void register(int sqlType, Class<?> javaType){
+    public void register(int sqlType, Class<?> javaType) {
         types.put(sqlType, javaType);
     }
 
     @Nullable
     public Class<?> get(int sqlType) {
-        if (types.containsKey(sqlType)){
+        if (types.containsKey(sqlType)) {
             return types.get(sqlType);
-        }else{
+        } else {
             return defaultTypes.get(sqlType);
         }        
     }

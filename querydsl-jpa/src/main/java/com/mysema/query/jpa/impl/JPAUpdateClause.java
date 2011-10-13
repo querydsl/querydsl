@@ -39,11 +39,11 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
 
     private final JPQLTemplates templates;
 
-    public JPAUpdateClause(EntityManager session, EntityPath<?> entity){
+    public JPAUpdateClause(EntityManager session, EntityPath<?> entity) {
         this(session, entity, HQLTemplates.DEFAULT);
     }
 
-    public JPAUpdateClause(EntityManager em, EntityPath<?> entity, JPQLTemplates templates){
+    public JPAUpdateClause(EntityManager em, EntityPath<?> entity, JPQLTemplates templates) {
         this.entityManager = em;
         this.templates = templates;
         metadata.addJoin(JoinType.DEFAULT, entity);
@@ -62,9 +62,9 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
 
     @Override
     public <T> JPAUpdateClause set(Path<T> path, T value) {
-        if (value != null){
+        if (value != null) {
             metadata.addProjection(ExpressionUtils.eqConst(path, value));
-        }else{
+        } else {
             metadata.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
         }
         return this;
@@ -77,7 +77,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
     }
     
     @Override
-    public <T> JPAUpdateClause setNull(Path<T> path){
+    public <T> JPAUpdateClause setNull(Path<T> path) {
         metadata.addProjection(ExpressionUtils.eq(path, new NullExpression<T>(path.getType())));
         return this;
     }
@@ -85,10 +85,10 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
     @SuppressWarnings("unchecked")
     @Override
     public JPAUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
-        for (int i = 0; i < paths.size(); i++){
-            if (values.get(i) != null){
+        for (int i = 0; i < paths.size(); i++) {
+            if (values.get(i) != null) {
                 metadata.addProjection(ExpressionUtils.eqConst((Expression)paths.get(i), values.get(i)));
-            }else{
+            } else {
                 metadata.addProjection(ExpressionUtils.eq((Expression)paths.get(i), new NullExpression(paths.get(i).getType())));
             }
         }
@@ -102,7 +102,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
     }
     
     @Override
-    public String toString(){
+    public String toString() {
         JPQLSerializer serializer = new JPQLSerializer(templates);
         serializer.serializeForUpdate(metadata);
         return serializer.toString();

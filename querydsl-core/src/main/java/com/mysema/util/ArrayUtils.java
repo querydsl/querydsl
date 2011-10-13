@@ -21,6 +21,6 @@ public final class ArrayUtils {
         return target;
     }
 
-    private ArrayUtils(){}
+    private ArrayUtils() {}
 
 }

@@ -44,7 +44,7 @@ public class ForeignKey <E>{
         this.foreignColumns = foreignColumns;
     }
 
-    public RelationalPath<?> getEntity(){
+    public RelationalPath<?> getEntity() {
         return entity;
     }
 
@@ -57,9 +57,9 @@ public class ForeignKey <E>{
     }
 
     @SuppressWarnings("unchecked")
-    public Predicate on(RelationalPath<E> entity){
+    public Predicate on(RelationalPath<E> entity) {
         BooleanBuilder builder = new BooleanBuilder();
-        for (int i = 0; i < localColumns.size(); i++){
+        for (int i = 0; i < localColumns.size(); i++) {
             Expression<Object> local = (Expression<Object>)localColumns.get(i);
             Expression<?> foreign = new SimplePath(local.getType(), entity, foreignColumns.get(i));
             builder.and(ExpressionUtils.eq(local,foreign));

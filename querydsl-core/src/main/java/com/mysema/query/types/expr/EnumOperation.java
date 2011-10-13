@@ -34,7 +34,7 @@ public class EnumOperation<T extends Enum<T>> extends EnumExpression<T> implemen
      * @param args
      * @return
      */
-    public static <D extends Enum<D>> EnumExpression<D> create(Class<? extends D> type, Operator<? super D> op, Expression<?>... args){
+    public static <D extends Enum<D>> EnumExpression<D> create(Class<? extends D> type, Operator<? super D> op, Expression<?>... args) {
         return new EnumOperation<D>(type, op, args);
     }
 
@@ -70,12 +70,12 @@ public class EnumOperation<T extends Enum<T>> extends EnumExpression<T> implemen
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         return opMixin.equals(o);
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return getType().hashCode();
     }
 

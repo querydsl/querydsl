@@ -28,11 +28,11 @@ public class TermElement extends StringExpression{
 
     @Override
     public boolean equals(Object o) {
-        if (o == this){
+        if (o == this) {
             return true;
-        }else if (o instanceof TermElement){
+        } else if (o instanceof TermElement) {
             return ((TermElement)o).string.equals(string);
-        }else{
+        } else {
             return false;
         }
     }

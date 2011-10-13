@@ -27,7 +27,7 @@ public final class HibernateSQLQuery extends AbstractHibernateSQLQuery<Hibernate
         super(session, sqlTemplates);
     }
 
-    public HibernateSQLQuery(StatelessSession session, SQLTemplates sqlTemplates){
+    public HibernateSQLQuery(StatelessSession session, SQLTemplates sqlTemplates) {
         super(session, sqlTemplates);
     }
     
@@ -35,7 +35,7 @@ public final class HibernateSQLQuery extends AbstractHibernateSQLQuery<Hibernate
         super(session, sqlTemplates, metadata);
     }
     
-    public HibernateSQLQuery clone(Session session){
+    public HibernateSQLQuery clone(Session session) {
         HibernateSQLQuery q = new HibernateSQLQuery(new DefaultSessionHolder(session), sqlTemplates, getMetadata().clone());
         q.cacheable = cacheable;
         q.cacheRegion = cacheRegion;

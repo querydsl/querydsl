@@ -41,11 +41,11 @@ public class JPAQueryFactory implements QueryFactory<JPAQuery, JPASubQuery>  {
         return new JPAUpdateClause(entityManager.get(), path, templates);
     }
 
-    public JPAQuery query(){
+    public JPAQuery query() {
         return new JPAQuery(entityManager.get(), templates);
     }
 
-    public JPASubQuery subQuery(){
+    public JPASubQuery subQuery() {
         return new JPASubQuery();
     }
 

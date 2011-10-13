@@ -17,13 +17,13 @@ import com.mysema.query.types.template.NumberTemplate;
  */
 public final class SQLServerGrammar {
 
-    private SQLServerGrammar(){}
+    private SQLServerGrammar() {}
 
     public static final NumberExpression<Long> rowNumber = NumberTemplate.create(Long.class, "row_number");
 
     public static final NumberPath<Long> rn = new NumberPath<Long>(Long.class, "rn");
 
-    public static RowNumber rowNumber(){
+    public static RowNumber rowNumber() {
         return new RowNumber();
     }
 

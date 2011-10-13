@@ -81,7 +81,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         }
 
         @Override
-        public String toString(){
+        public String toString() {
             return AbstractSQLQuery.this.toString();
         }
 
@@ -123,7 +123,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
      * @param flag
      * @return
      */
-    public Q addJoinFlag(String flag){
+    public Q addJoinFlag(String flag) {
         return addJoinFlag(flag, JoinFlag.Position.BEFORE_TARGET);
     }
 
@@ -135,7 +135,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Q addJoinFlag(String flag, JoinFlag.Position position){
+    public Q addJoinFlag(String flag, JoinFlag.Position position) {
         List<JoinExpression> joins = queryMixin.getMetadata().getJoins();
         joins.get(joins.size()-1).addFlag(new JoinFlag(flag, position));
         return (Q)this;
@@ -149,7 +149,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
      * @param expr expression of the flag
      * @return
      */
-    public Q addFlag(Position position, String prefix, Expression<?> expr){
+    public Q addFlag(Position position, String prefix, Expression<?> expr) {
         Expression<?> flag = SimpleTemplate.create(expr.getType(), prefix + "{0}", expr);
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
@@ -161,7 +161,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
      * @param flag
      * @return
      */
-    public Q addFlag(Position position, String flag){
+    public Q addFlag(Position position, String flag) {
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
 
@@ -172,7 +172,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
      * @param flag
      * @return
      */
-    public Q addFlag(Position position, Expression<?> flag){
+    public Q addFlag(Position position, Expression<?> flag) {
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
 
@@ -200,7 +200,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     }
 
     @Override
-    public boolean exists(){
+    public boolean exists() {
         return limit(1).uniqueResult(NumberTemplate.ONE) != null;
     }
 
@@ -213,7 +213,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     }
 
     @SuppressWarnings("unchecked")
-    public Q from(SubQueryExpression<?> subQuery, Path<?> alias){
+    public Q from(SubQueryExpression<?> subQuery, Path<?> alias) {
         return queryMixin.from(ExpressionUtils.as((Expression)subQuery, alias));
     }
 
@@ -341,14 +341,14 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     @SuppressWarnings("unchecked")
     @Override
     public <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
-        if (expr instanceof RelationalPath<?>){
+        if (expr instanceof RelationalPath<?>) {
             try{
                 if (expr.getType().equals(expr.getClass())) {
                     throw new IllegalArgumentException("RelationalPath based projection can only be used with generated Bean types");
                 }                
                 Map<String,Expression<?>> bindings = new HashMap<String,Expression<?>>();
-                for (Field field : expr.getClass().getDeclaredFields()){
-                    if (Expression.class.isAssignableFrom(field.getType()) && !Modifier.isStatic(field.getModifiers())){
+                for (Field field : expr.getClass().getDeclaredFields()) {
+                    if (Expression.class.isAssignableFrom(field.getType()) && !Modifier.isStatic(field.getModifiers())) {
                         field.setAccessible(true);
                         Expression<?> column = (Expression<?>) field.get(expr);
                         bindings.put(field.getName(), column);
@@ -359,10 +359,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                 }                
                 QBean<RT> bean = new QBean(expr.getType(), bindings);
                 return iterate(bean);
-            }catch(IllegalAccessException e){
+            }catch(IllegalAccessException e) {
                 throw new QueryException(e);
             }
-        }else{
+        } else {
             expr = queryMixin.convert(expr);
             queryMixin.addToProjection(expr);
             return iterateSingle(queryMixin.getMetadata(), expr);
@@ -386,17 +386,17 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                     try {
                         List<Object> objects = new ArrayList<Object>(projection.size());
                         int index = 0;
-                        for (int i = 0; i < projection.size(); i++){
+                        for (int i = 0; i < projection.size(); i++) {
                             Expression<?> expr = projection.get(i);
-                            if (expr instanceof FactoryExpression){
+                            if (expr instanceof FactoryExpression) {
                                 objects.add(newInstance((FactoryExpression)expr, rs, index));
                                 index += ((FactoryExpression)expr).getArgs().size();
-                            }else if (expr.getType().isArray()){
-                                for (int j = index; j < rs.getMetaData().getColumnCount(); j++){
+                            }else if (expr.getType().isArray()) {
+                                for (int j = index; j < rs.getMetaData().getColumnCount(); j++) {
                                     objects.add(get(rs, expr, index++ + 1, Object.class));
                                 }
                                 i = objects.size();
-                            }else{
+                            } else {
                                 objects.add(get(rs, expr, index++ + 1, expr.getType()));
                             }
                         }
@@ -441,13 +441,13 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                 @Override
                 public RT produceNext(ResultSet rs) {
                     try {
-                        if (expr == null){
+                        if (expr == null) {
                             return (RT) rs.getObject(1);
                         }else if (expr instanceof FactoryExpression) {
                             return newInstance((FactoryExpression<RT>) expr, rs, 0);
-                        }else if (expr.getType().isArray()){
+                        }else if (expr.getType().isArray()) {
                             Object[] rv = new Object[rs.getMetaData().getColumnCount()];
-                            for (int i = 0; i < rv.length; i++){
+                            for (int i = 0; i < rv.length; i++) {
                                 rv[i] = rs.getObject(i+1);
                             }
                             return (RT) rv;
@@ -524,16 +524,16 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         constants = null;
     }
 
-    protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths, Map<ParamExpression<?>, ?> params){
-        if (objects.size() != constantPaths.size()){
+    protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths, Map<ParamExpression<?>, ?> params) {
+        if (objects.size() != constantPaths.size()) {
             throw new IllegalArgumentException("Expected " + objects.size() + " paths, but got " + constantPaths.size());
         }
         int counter = 1;
-        for (int i = 0; i < objects.size(); i++){
+        for (int i = 0; i < objects.size(); i++) {
             Object o = objects.get(i);
             try {
-                if (ParamExpression.class.isInstance(o)){
-                    if (!params.containsKey(o)){
+                if (ParamExpression.class.isInstance(o)) {
+                    if (!params.containsKey(o)) {
                         throw new ParamNotSetException((ParamExpression<?>) o);
                     }
                     o = params.get(o);
@@ -571,7 +571,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     @Override
     public <RT> RT uniqueResult(Expression<RT> expr) {
         if (getMetadata().getModifiers().getLimit() == null 
-           && !expr.toString().contains("count(")){
+           && !expr.toString().contains("count(")) {
             limit(2);    
         }        
         CloseableIterator<RT> iterator = iterate(expr);
@@ -579,8 +579,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     }
     
     @Override
-    public Object[] uniqueResult(Expression<?>[] expr){
-        if (getMetadata().getModifiers().getLimit() == null){
+    public Object[] uniqueResult(Expression<?>[] expr) {
+        if (getMetadata().getModifiers().getLimit() == null) {
             limit(2);    
         }        
         CloseableIterator<Object[]> iterator = iterate(expr);

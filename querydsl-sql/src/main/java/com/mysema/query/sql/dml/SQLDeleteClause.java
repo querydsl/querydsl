@@ -69,7 +69,7 @@ public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<S
      * @param flag
      * @return
      */
-    public SQLDeleteClause addFlag(Position position, String flag){
+    public SQLDeleteClause addFlag(Position position, String flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
     }
@@ -81,7 +81,7 @@ public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<S
      * @param flag
      * @return
      */
-    public SQLDeleteClause addFlag(Position position, Expression<?> flag){
+    public SQLDeleteClause addFlag(Position position, Expression<?> flag) {
         metadata.addFlag(new QueryFlag(position, flag));
         return this;
     }
@@ -100,14 +100,14 @@ public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<S
     
     private PreparedStatement createStatement() throws SQLException{
         PreparedStatement stmt;
-        if (batches.isEmpty()){
+        if (batches.isEmpty()) {
             SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
             serializer.serializeForDelete(metadata, entity);
             queryString = serializer.toString();
             logger.debug(queryString);
             stmt = connection.prepareStatement(queryString);
             setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
-        }else{
+        } else {
             SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
             serializer.serializeForDelete(batches.get(0), entity);
             queryString = serializer.toString();
@@ -119,7 +119,7 @@ public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<S
             stmt.addBatch();
             
             // add other batches
-            for (int i = 1; i < batches.size(); i++){
+            for (int i = 1; i < batches.size(); i++) {
                 serializer = new SQLSerializer(configuration.getTemplates(), true, true);
                 serializer.serializeForDelete(batches.get(i), entity);
                 setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
@@ -134,11 +134,11 @@ public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<S
         PreparedStatement stmt = null;
         try {
             stmt = createStatement();
-            if (batches.isEmpty()){
+            if (batches.isEmpty()) {
                 return stmt.executeUpdate();    
-            }else{
+            } else {
                 long rv = 0;
-                for (int i : stmt.executeBatch()){
+                for (int i : stmt.executeBatch()) {
                     rv += i;
                 }
                 return rv;
@@ -159,7 +159,7 @@ public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<S
     }
     
     @Override
-    public String toString(){
+    public String toString() {
         SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
         serializer.serializeForDelete(metadata, entity);
         return serializer.toString();

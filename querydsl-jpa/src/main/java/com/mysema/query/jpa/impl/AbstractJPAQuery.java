@@ -87,7 +87,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
      * @param expr
      * @return
      */
-    public Query createQuery(Expression<?> expr){
+    public Query createQuery(Expression<?> expr) {
         getQueryMixin().addToProjection(expr);
         String queryString = toString();
         logQuery(queryString);
@@ -100,7 +100,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
      * @param expr
      * @return
      */
-    public Query createQuery(Expression<?> expr1, Expression<?> expr2, Expression<?>... rest){
+    public Query createQuery(Expression<?> expr1, Expression<?> expr2, Expression<?>... rest) {
         getQueryMixin().addToProjection(expr1, expr2);
         getQueryMixin().addToProjection(rest);
         String queryString = toString();
@@ -114,7 +114,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
      * @param args
      * @return
      */
-    public Query createQuery(Expression<?>[] args){
+    public Query createQuery(Expression<?>[] args) {
         getQueryMixin().addToProjection(args);
         String queryString = toString();
         logQuery(queryString);
@@ -132,22 +132,22 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
                 query.setFirstResult(modifiers.getOffset().intValue());
             }
         }
-        if (lockMode != null){
+        if (lockMode != null) {
             query.setLockMode(lockMode);
         }
         if (flushMode != null) {
             query.setFlushMode(flushMode);
         }
         
-        for (Map.Entry<String, Object> entry : hints.entrySet()){
+        for (Map.Entry<String, Object> entry : hints.entrySet()) {
             query.setHint(entry.getKey(), entry.getValue());
         }
 
         // set transformer, if necessary and possible
         List<? extends Expression<?>> projection = getMetadata().getProjection();
-        if (projection.size() == 1){
+        if (projection.size() == 1) {
             Expression<?> expr = projection.get(0);
-            if (expr instanceof FactoryExpression<?>){
+            if (expr instanceof FactoryExpression<?>) {
                 if (hibernateQueryClass != null && hibernateQueryClass.isInstance(query)) {
                     try {
                         Class<?> cl = Class.forName("com.mysema.query.jpa.impl.HibernateQueryTransformation");
@@ -188,7 +188,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
             FactoryExpression<?> expr = (FactoryExpression<?>)getMetadata().getProjection().get(0);
             for (Object o : results) {
                 if (o != null) {
-                    if (!o.getClass().isArray()){
+                    if (!o.getClass().isArray()) {
                         o = new Object[]{o};
                     }   
                     rv.add(expr.newInstance((Object[])o));
@@ -275,8 +275,8 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         }
     }
     
-    protected void logQuery(String queryString){
-        if (logger.isDebugEnabled()){
+    protected void logQuery(String queryString) {
+        if (logger.isDebugEnabled()) {
             logger.debug(queryString.replace('\n', ' '));
         }
     }
@@ -301,10 +301,10 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         Query query = createQuery(queryString, getMetadata().getModifiers());        
         try{
             return getSingleResult(query);
-        } catch(javax.persistence.NoResultException e){
+        } catch(javax.persistence.NoResultException e) {
             logger.debug(e.getMessage(),e);
             return null;
-        } catch(javax.persistence.NonUniqueResultException e){
+        } catch(javax.persistence.NonUniqueResultException e) {
             throw new NonUniqueResultException();
         } finally {
             reset();    
@@ -324,7 +324,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     }
 
     @SuppressWarnings("unchecked")
-    public Q setHint(String name, Object value){
+    public Q setHint(String name, Object value) {
         hints.put(name, value);
         return (Q)this;
     }

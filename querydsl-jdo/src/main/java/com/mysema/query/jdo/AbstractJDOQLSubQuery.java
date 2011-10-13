@@ -30,18 +30,18 @@ public class AbstractJDOQLSubQuery<Q extends AbstractJDOQLSubQuery<Q>> extends D
         return queryMixin.from(args);
     }
 
-    public <P> Q from(CollectionExpression<?,P> target, EntityPath<P> alias){
+    public <P> Q from(CollectionExpression<?,P> target, EntityPath<P> alias) {
         return queryMixin.join(target, alias);
     }
 
     @Override
-    public String toString(){
-        if (!queryMixin.getMetadata().getJoins().isEmpty()){
+    public String toString() {
+        if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             Expression<?> source = queryMixin.getMetadata().getJoins().get(0).getTarget();
             JDOQLSerializer serializer = new JDOQLSerializer(JDOQLTemplates.DEFAULT, source);
             serializer.serialize(queryMixin.getMetadata(), false, false);
             return serializer.toString().trim();
-        }else{
+        } else {
             return super.toString();
         }
     }

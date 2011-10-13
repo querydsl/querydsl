@@ -80,9 +80,9 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         Query query = createQuery(queryString, modifiers);
         reset();
         Long rv = (Long)query.uniqueResult();
-        if (rv != null){
+        if (rv != null) {
             return rv.longValue();
-        }else{
+        } else {
             throw new QueryException("Query returned null");
         }
     }
@@ -93,7 +93,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * @param expr
      * @return
      */
-    public Query createQuery(Expression<?> expr){
+    public Query createQuery(Expression<?> expr) {
         getQueryMixin().addToProjection(expr);
         String queryString = toQueryString();
         return createQuery(queryString, getMetadata().getModifiers());
@@ -107,7 +107,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * @param rest
      * @return
      */
-    public Query createQuery(Expression<?> expr1, Expression<?> expr2, Expression<?>... rest){
+    public Query createQuery(Expression<?> expr1, Expression<?> expr2, Expression<?>... rest) {
         getQueryMixin().addToProjection(expr1, expr2);
         getQueryMixin().addToProjection(rest);
         String queryString = toQueryString();
@@ -121,7 +121,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * @param args
      * @return
      */
-    public Query createQuery(Expression<?>[] args){
+    public Query createQuery(Expression<?>[] args) {
         getQueryMixin().addToProjection(args);
         String queryString = toQueryString();
         logQuery(queryString);
@@ -131,22 +131,22 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
         Query query = session.createQuery(queryString);
         HibernateUtil.setConstants(query, getConstants(), getMetadata().getParams());
-        if (fetchSize > 0){
+        if (fetchSize > 0) {
             query.setFetchSize(fetchSize);
         }
-        if (timeout > 0){
+        if (timeout > 0) {
             query.setTimeout(timeout);
         }
-        if (cacheable != null){
+        if (cacheable != null) {
             query.setCacheable(cacheable);
         }
-        if (cacheRegion != null){
+        if (cacheRegion != null) {
             query.setCacheRegion(cacheRegion);
         }
-        if (readOnly != null){
+        if (readOnly != null) {
             query.setReadOnly(readOnly);
         }
-        for (Map.Entry<Path<?>, LockMode> entry : lockModes.entrySet()){
+        for (Map.Entry<Path<?>, LockMode> entry : lockModes.entrySet()) {
             query.setLockMode(entry.getKey().toString(), entry.getValue());
         }
         if (flushMode != null) {
@@ -164,9 +164,9 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
 
         // set transformer, if necessary
         List<? extends Expression<?>> projection = getMetadata().getProjection();
-        if (projection.size() == 1){
+        if (projection.size() == 1) {
             Expression<?> expr = projection.get(0);
-            if (expr instanceof FactoryExpression<?>){
+            if (expr instanceof FactoryExpression<?>) {
                 query.setResultTransformer(new FactoryExpressionTransformer((FactoryExpression<?>) projection.get(0)));
             }
         }
@@ -239,8 +239,8 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         }
     }
 
-    protected void logQuery(String queryString){
-        if (logger.isDebugEnabled()){
+    protected void logQuery(String queryString) {
+        if (logger.isDebugEnabled()) {
             logger.debug(queryString.replace('\n', ' '));
         }
     }
@@ -297,7 +297,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * @param cacheable Should the query results be cacheable?
      */
     @SuppressWarnings("unchecked")
-    public Q setCacheable(boolean cacheable){
+    public Q setCacheable(boolean cacheable) {
         this.cacheable = cacheable;
         return (Q)this;
     }
@@ -308,7 +308,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * for the default query cache
      */
     @SuppressWarnings("unchecked")
-    public Q setCacheRegion(String cacheRegion){
+    public Q setCacheRegion(String cacheRegion) {
         this.cacheRegion = cacheRegion;
         return (Q)this;
     }
@@ -327,7 +327,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * Set the lock mode for the given path.
      */
     @SuppressWarnings("unchecked")
-    public Q setLockMode(Path<?> path, LockMode lockMode){
+    public Q setLockMode(Path<?> path, LockMode lockMode) {
         lockModes.put(path, lockMode);
         return (Q)this;
     }
@@ -348,7 +348,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      *
      */
     @SuppressWarnings("unchecked")
-    public Q setReadOnly(boolean readOnly){
+    public Q setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
         return (Q)this;
     }
@@ -358,7 +358,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
      * @param timeout the timeout in seconds
      */
     @SuppressWarnings("unchecked")
-    public Q setTimeout(int timeout){
+    public Q setTimeout(int timeout) {
         this.timeout = timeout;
         return (Q)this;
     }
@@ -374,7 +374,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         return (Object[]) uniqueResult();
     }
     
-    private Object uniqueResult(){
+    private Object uniqueResult() {
         QueryModifiers modifiers = getMetadata().getModifiers();
         String queryString = toQueryString();
         logQuery(queryString);
@@ -382,7 +382,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         reset();        
         try{
             return query.uniqueResult();    
-        }catch (org.hibernate.NonUniqueResultException e){
+        } catch (org.hibernate.NonUniqueResultException e) {
             throw new NonUniqueResultException();
         }  
     }

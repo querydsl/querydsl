@@ -29,9 +29,9 @@ public class DetachableAdapter implements Detachable{
     @Nullable
     private Detachable detachable;
 
-    public DetachableAdapter(){}
+    public DetachableAdapter() {}
     
-    public DetachableAdapter(Detachable detachable){
+    public DetachableAdapter(Detachable detachable) {
         this.detachable = detachable;
     }
     
@@ -43,7 +43,7 @@ public class DetachableAdapter implements Detachable{
         return detachable.exists();
     }
 
-    public Detachable getDetachable(){
+    public Detachable getDetachable() {
         return detachable;
     }
 
@@ -68,7 +68,7 @@ public class DetachableAdapter implements Detachable{
         return detachable.notExists();
     }
 
-    protected void setDetachable(Detachable detachable){
+    protected void setDetachable(Detachable detachable) {
         this.detachable = detachable;
     }
 

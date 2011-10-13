@@ -54,12 +54,12 @@ import com.mysema.query.types.template.StringTemplate;
 public final class Expressions {
 
     @Nullable
-    public static BooleanExpression allOf(BooleanExpression... exprs){
+    public static BooleanExpression allOf(BooleanExpression... exprs) {
         return BooleanExpression.allOf(exprs);
     }
 
     @Nullable
-    public static BooleanExpression anyOf(BooleanExpression... exprs){
+    public static BooleanExpression anyOf(BooleanExpression... exprs) {
         return BooleanExpression.anyOf(exprs);
     }
         
@@ -195,6 +195,6 @@ public final class Expressions {
         return new CaseBuilder();
     }
         
-    private Expressions(){}
+    private Expressions() {}
 
 }

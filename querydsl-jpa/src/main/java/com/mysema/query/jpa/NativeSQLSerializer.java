@@ -35,20 +35,20 @@ public final class NativeSQLSerializer extends SQLSerializer{
             append("(");
             boolean first = true;
             for (Object element : ((Collection<?>)expr.getConstant())) {
-                if (!first){
+                if (!first) {
                     append(", ");
                 }
                 visitConstant(element);
                 first = false;
             }            
             append(")");
-        }else {
+        } else {
             visitConstant(expr.getConstant());    
         }
         return null;
     }
 
-    private void visitConstant(Object constant){
+    private void visitConstant(Object constant) {
         if (!getConstantToLabel().containsKey(constant)) {
             String constLabel = getConstantPrefix() + (getConstantToLabel().size() + 1);
             getConstantToLabel().put(constant, constLabel);
@@ -60,11 +60,11 @@ public final class NativeSQLSerializer extends SQLSerializer{
     
     @Override
     public Void visit(Path<?> path, Void context) {
-        if (path.getMetadata().getParent() == null && !path.getType().equals(path.getClass())){
+        if (path.getMetadata().getParent() == null && !path.getType().equals(path.getClass())) {
             super.visit(path, context);
             append(".*");
             entityPaths.add(path);
-        }else{
+        } else {
             super.visit(path, context);
         }
         return null;

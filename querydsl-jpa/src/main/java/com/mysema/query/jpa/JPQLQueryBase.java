@@ -29,11 +29,11 @@ public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends Projecta
 
     private final JPQLTemplates templates;
 
-    protected JPQLTemplates getTemplates(){
+    protected JPQLTemplates getTemplates() {
         return templates;
     }
 
-    protected JPQLQueryMixin<Q> getQueryMixin(){
+    protected JPQLQueryMixin<Q> getQueryMixin() {
         return queryMixin;
     }
 
@@ -60,15 +60,15 @@ public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends Projecta
     }
 
     @Override
-    public boolean exists(){
+    public boolean exists() {
         return limit(1).uniqueResult(NumberTemplate.ONE) != null;
     }
 
-    public Q fetch(){
+    public Q fetch() {
         return queryMixin.fetch();
     }
 
-    public Q fetchAll(){
+    public Q fetchAll() {
         return queryMixin.fetchAll();
     }
 
@@ -176,7 +176,7 @@ public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends Projecta
         return queryMixin.leftJoin(target, alias);
     }
 
-    public Q with(Predicate... conditions){
+    public Q with(Predicate... conditions) {
         return queryMixin.with(conditions);
     }
 
@@ -188,7 +188,7 @@ public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends Projecta
         return buildQueryString(true);
     }
 
-    protected String toQueryString(){
+    protected String toQueryString() {
         return buildQueryString(false);
     }
 
@@ -197,7 +197,7 @@ public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends Projecta
         return buildQueryString(false).trim();
     }
 
-    public QueryMetadata getMetadata(){
+    public QueryMetadata getMetadata() {
         return queryMixin.getMetadata();
     }
 

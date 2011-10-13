@@ -39,13 +39,13 @@ public class ScrollableResultsIterator<T> implements CloseableIterator<T> {
     }
 
     @Override
-    public void close(){
+    public void close() {
         results.close();
     }
 
     @Override
     public boolean hasNext() {
-        if (hasNext == null){
+        if (hasNext == null) {
             hasNext = results.next();
         }
         return hasNext;
@@ -54,14 +54,14 @@ public class ScrollableResultsIterator<T> implements CloseableIterator<T> {
     @Override
     @SuppressWarnings("unchecked")
     public T next() {
-        if (hasNext()){
+        if (hasNext()) {
             hasNext = null;
             if (asArray) {
                 return (T) results.get();
             } else {
                 return (T) results.get(0);
             }
-        }else{
+        } else {
             throw new NoSuchElementException();
         }
     }

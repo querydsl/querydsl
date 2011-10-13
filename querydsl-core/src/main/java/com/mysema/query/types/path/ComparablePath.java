@@ -68,7 +68,7 @@ public class ComparablePath<T extends Comparable> extends ComparableExpression<T
     }
 
     @Override
-    public AnnotatedElement getAnnotatedElement(){
+    public AnnotatedElement getAnnotatedElement() {
         return pathMixin.getAnnotatedElement();
     }
 }

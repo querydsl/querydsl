@@ -28,21 +28,21 @@ public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> implements SQL
         super(metadata);
     }
 
-    public Expression<?> union(SubQueryExpression<?>... sq){
+    public Expression<?> union(SubQueryExpression<?>... sq) {
         Expression<?> rv = sq[0];
-        for (int i = 1; i < sq.length; i++){
+        for (int i = 1; i < sq.length; i++) {
             rv = OperationImpl.create(rv.getType(), SQLTemplates.UNION, rv, sq[i]);
         }
         return rv;
     }
     
     @Override
-    public BooleanExpression exists(){
+    public BooleanExpression exists() {
         return unique(NumberTemplate.ONE).exists();
     }
 
     @Override
-    public BooleanExpression notExists(){
+    public BooleanExpression notExists() {
         return exists().not();
     }
 

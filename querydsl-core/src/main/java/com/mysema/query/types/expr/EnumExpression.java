@@ -37,7 +37,7 @@ public abstract class EnumExpression<T extends Enum<T>> extends ComparableExpres
     /**
      * @return
      */
-    public NumberExpression<Integer> ordinal(){
+    public NumberExpression<Integer> ordinal() {
         return NumberOperation.create(Integer.class, Ops.ORDINAL, this);
     }
 

@@ -48,9 +48,9 @@ public class Configuration {
      */
     public Class<?> getJavaType(int sqlType, String tableName, String columnName) {
         Type<?> type = javaTypeMapping.getType(tableName, columnName);
-        if (type != null){
+        if (type != null) {
             return type.getReturnedClass();
-        }else{
+        } else {
             return jdbcTypeMapping.get(sqlType);
         }
     }
@@ -87,12 +87,12 @@ public class Configuration {
     }
 
     @SuppressWarnings("unchecked")
-    private <T> Type<T> getType(@Nullable Path<?> path, Class<T> clazz){
-        if (path != null && path.getMetadata().getParent() instanceof RelationalPath){
+    private <T> Type<T> getType(@Nullable Path<?> path, Class<T> clazz) {
+        if (path != null && path.getMetadata().getParent() instanceof RelationalPath) {
             String table = ((RelationalPath)path.getMetadata().getParent()).getTableName();
             String column = path.getMetadata().getExpression().toString();
             Type<T> type = (Type)javaTypeMapping.getType(table, column);
-            if (type != null){
+            if (type != null) {
                 return type;
             }                        
         }

@@ -66,7 +66,7 @@ public class SimplePath<T> extends SimpleExpression<T> implements Path<T> {
     }
 
     @Override
-    public AnnotatedElement getAnnotatedElement(){
+    public AnnotatedElement getAnnotatedElement() {
         return pathMixin.getAnnotatedElement();
     }
 }

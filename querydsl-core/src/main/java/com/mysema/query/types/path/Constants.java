@@ -25,10 +25,10 @@ final class Constants {
             TimePath.class
             ));
     
-    public static boolean isTyped(Class<?> cl){
+    public static boolean isTyped(Class<?> cl) {
         return typedClasses.contains(cl);
     }
     
-    private Constants(){}
+    private Constants() {}
 
 }

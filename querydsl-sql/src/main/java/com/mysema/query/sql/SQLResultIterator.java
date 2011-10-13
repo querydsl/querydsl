@@ -31,31 +31,31 @@ public abstract class SQLResultIterator<T> implements CloseableIterator<T> {
 
     private final Statement stmt;
 
-    public SQLResultIterator(Statement stmt, ResultSet rs){
+    public SQLResultIterator(Statement stmt, ResultSet rs) {
         this.stmt = stmt;
         this.rs = rs;
     }
 
     @Override
-    public void close(){
+    public void close() {
         try{
             try {
-                if (rs != null){
+                if (rs != null) {
                     rs.close();
                 }
             } finally {
-                if (stmt != null){
+                if (stmt != null) {
                     stmt.close();
                 }
             }
-        }catch(SQLException e){
+        }catch(SQLException e) {
             throw new QueryException(e);
         }
     }
 
     @Override
     public boolean hasNext() {
-        if (next == null){
+        if (next == null) {
             try {
                 next = rs.next();
             } catch (SQLException e) {
@@ -68,10 +68,10 @@ public abstract class SQLResultIterator<T> implements CloseableIterator<T> {
 
     @Override
     public T next() {
-        if (hasNext()){
+        if (hasNext()) {
             next = null;
             return produceNext(rs);
-        }else{
+        } else {
             throw new NoSuchElementException();
         }
     }

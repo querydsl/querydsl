@@ -30,12 +30,12 @@ public class ExtendedBeanSerializer extends BeanSerializer {
     protected void bodyEnd(EntityType model, CodeWriter writer) throws IOException {
         Collection<PrimaryKeyData> primaryKeys = (Collection<PrimaryKeyData>) model.getData().get(PrimaryKeyData.class);
         
-        if (primaryKeys == null || primaryKeys.isEmpty()){
+        if (primaryKeys == null || primaryKeys.isEmpty()) {
             return;
         }
         
         Map<String, Property> columnToProperty = new HashMap<String, Property>();
-        for (Property property : model.getProperties()){
+        for (Property property : model.getProperties()) {
             columnToProperty.put(property.getAnnotation(Column.class).value(), property);
         }
         
@@ -43,15 +43,15 @@ public class ExtendedBeanSerializer extends BeanSerializer {
         StringBuilder columnEquals = new StringBuilder();
         StringBuilder toString = new StringBuilder();
         List<String> properties = new ArrayList<String>();
-        for (PrimaryKeyData pk : primaryKeys){
-            for (String column : pk.getColumns()){
+        for (PrimaryKeyData pk : primaryKeys) {
+            for (String column : pk.getColumns()) {
                 Property property = columnToProperty.get(column);
                 String propName = property.getEscapedName();
-                if (anyColumnIsNull.length() > 0){
+                if (anyColumnIsNull.length() > 0) {
                     anyColumnIsNull.append(" || ");
                     columnEquals.append(" && ");
                     toString.append("+ \";\" + ");
-                }else{
+                } else {
                     toString.append("\"" + model.getSimpleName() + "#\" + ");
                 }
                 anyColumnIsNull.append(propName + " == null");
@@ -82,7 +82,7 @@ public class ExtendedBeanSerializer extends BeanSerializer {
         writer.line("}");
         writer.line("final int prime = 31;");
         writer.line("int result = 1;");
-        for (String property : properties){
+        for (String property : properties) {
             writer.line("result = prime * result + ", property, ".hashCode();");
         }
         writer.line("return result;");

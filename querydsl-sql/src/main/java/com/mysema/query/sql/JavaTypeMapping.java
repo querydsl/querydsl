@@ -74,12 +74,12 @@ public class JavaTypeMapping {
     private final Map<Pair<String,String>, Type<?>> typeByColumn = new HashMap<Pair<String,String>,Type<?>>();
     
     @Nullable
-    public Type<?> getType(String table, String column){
+    public Type<?> getType(String table, String column) {
         return typeByColumn.get(Pair.of(table.toLowerCase(), column.toLowerCase())); 
     }
     
     @SuppressWarnings("unchecked")
-    public <T> Type<T> getType(Class<T> clazz){
+    public <T> Type<T> getType(Class<T> clazz) {
         Type<?> resolvedType = resolvedTypesByClass.get(clazz);
         if (resolvedType == null) {
             resolvedType = findType(clazz);
@@ -99,9 +99,9 @@ public class JavaTypeMapping {
         //Look for a registered type in the class hierarchy
         Class<?> cl = clazz;
         do{
-            if (typeByClass.containsKey(cl)){
+            if (typeByClass.containsKey(cl)) {
                 return typeByClass.get(cl);
-            }else if (defaultTypes.containsKey(cl)){
+            }else if (defaultTypes.containsKey(cl)) {
                 return defaultTypes.get(cl);
             }    
             cl = cl.getSuperclass(); 
@@ -110,9 +110,9 @@ public class JavaTypeMapping {
         //Look for a registered type in any implemented interfaces
         Set<Class<?>> interfaces = ReflectionUtils.getImplementedInterfaces(clazz);
         for (Class<?> itf : interfaces) {
-            if (typeByClass.containsKey(itf)){
+            if (typeByClass.containsKey(itf)) {
                 return typeByClass.get(itf);
-            }else if (defaultTypes.containsKey(itf)){
+            }else if (defaultTypes.containsKey(itf)) {
                 return defaultTypes.get(itf);
             }
         }

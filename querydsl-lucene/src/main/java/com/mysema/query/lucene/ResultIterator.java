@@ -51,9 +51,9 @@ public final class ResultIterator<T> implements CloseableIterator<T> {
     public T next() {
         try {
             Document document;
-            if (fieldSelector != null){
+            if (fieldSelector != null) {
                 document = searcher.doc(scoreDocs[cursor++].doc, fieldSelector);
-            }else{
+            } else {
                 document = searcher.doc(scoreDocs[cursor++].doc);
             }
             return transformer.transform(document);

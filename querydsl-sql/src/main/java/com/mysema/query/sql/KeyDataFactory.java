@@ -53,13 +53,13 @@ public class KeyDataFactory {
         ResultSet foreignKeys = md.getExportedKeys(null, schemaPattern, tableName);
         Map<String,InverseForeignKeyData> inverseForeignKeyData = new HashMap<String,InverseForeignKeyData>();
         try{
-            while (foreignKeys.next()){
+            while (foreignKeys.next()) {
                 String name = foreignKeys.getString(FK_NAME);
                 String parentColumnName = foreignKeys.getString(FK_PARENT_COLUMN_NAME);
                 String foreignTableName = foreignKeys.getString(FK_FOREIGN_TABLE_NAME);
                 String foreignColumn = foreignKeys.getString(FK_FOREIGN_COLUMN_NAME);
                 InverseForeignKeyData data = inverseForeignKeyData.get(name);
-                if (data == null){                    
+                if (data == null) {                    
                     data = new InverseForeignKeyData(name, foreignTableName, createType(foreignTableName));
                     inverseForeignKeyData.put(name, data);
                 }
@@ -76,13 +76,13 @@ public class KeyDataFactory {
         ResultSet foreignKeys = md.getImportedKeys(null, schemaPattern, tableName);
         Map<String,ForeignKeyData> foreignKeyData = new HashMap<String,ForeignKeyData>();
         try{
-            while (foreignKeys.next()){
+            while (foreignKeys.next()) {
                 String name = foreignKeys.getString(FK_NAME);
                 String parentTableName = foreignKeys.getString(FK_PARENT_TABLE_NAME);
                 String parentColumnName = foreignKeys.getString(FK_PARENT_COLUMN_NAME);
                 String foreignColumn = foreignKeys.getString(FK_FOREIGN_COLUMN_NAME);
                 ForeignKeyData data = foreignKeyData.get(name);
-                if (data == null){
+                if (data == null) {
                     data = new ForeignKeyData(name, parentTableName, createType(parentTableName));
                     foreignKeyData.put(name, data);
                 }
@@ -99,12 +99,12 @@ public class KeyDataFactory {
         ResultSet primaryKeys = md.getPrimaryKeys(null, schemaPattern, tableName);
         Map<String,PrimaryKeyData> primaryKeyData = new HashMap<String,PrimaryKeyData>();
         try{
-            while (primaryKeys.next()){
+            while (primaryKeys.next()) {
                 String name = primaryKeys.getString(PK_NAME);
                 String columnName = primaryKeys.getString(PK_COLUMN_NAME);
 
                 PrimaryKeyData data = primaryKeyData.get(name);
-                if (data == null){
+                if (data == null) {
                     data = new PrimaryKeyData(name);
                     primaryKeyData.put(name, data);
                 }

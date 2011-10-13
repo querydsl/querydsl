@@ -19,7 +19,7 @@ public class SchemaImpl implements Schema{
 
     private final String table;
 
-    public SchemaImpl(String table){
+    public SchemaImpl(String table) {
         this.table = table;
     }
 

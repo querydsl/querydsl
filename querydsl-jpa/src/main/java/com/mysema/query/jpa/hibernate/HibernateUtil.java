@@ -47,15 +47,15 @@ public final class HibernateUtil {
         TYPES.put(BigDecimal.class, new BigDecimalType());
     }
 
-    private HibernateUtil(){}
+    private HibernateUtil() {}
 
     public static void setConstants(Query query, Map<Object,String> constants, Map<ParamExpression<?>, Object> params) {
-        for (Map.Entry<Object, String> entry : constants.entrySet()){
+        for (Map.Entry<Object, String> entry : constants.entrySet()) {
             String key = entry.getValue();
             Object val = entry.getKey();
-            if (Param.class.isInstance(val)){
+            if (Param.class.isInstance(val)) {
                 val = params.get(val);
-                if (val == null){
+                if (val == null) {
                     throw new ParamNotSetException((Param<?>) entry.getKey());
                 }
             }
@@ -68,7 +68,7 @@ public final class HibernateUtil {
             query.setParameterList(key, (Collection<?>) val);
         } else if (val.getClass().isArray()) {
             query.setParameterList(key, (Object[]) val);
-        }else if (TYPES.containsKey(val.getClass())){
+        }else if (TYPES.containsKey(val.getClass())) {
             query.setParameter(key, val, TYPES.get(val.getClass()));
         } else {
             query.setParameter(key, val);

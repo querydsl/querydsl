@@ -35,7 +35,7 @@ public class ComparableOperation<T extends Comparable<?>> extends
      * @param args
      * @return
      */
-    public static <D extends Comparable<?>> ComparableExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?>... args){
+    public static <D extends Comparable<?>> ComparableExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?>... args) {
         return new ComparableOperation<D>(type, op, args);
     }
 
@@ -71,12 +71,12 @@ public class ComparableOperation<T extends Comparable<?>> extends
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         return opMixin.equals(o);
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return getType().hashCode();
     }
 

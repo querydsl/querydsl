@@ -123,7 +123,7 @@ SimpleProjectable<T> {
      * @param property
      * @return
      */
-    public Q distinct(Path<?> property){
+    public Q distinct(Path<?> property) {
         return filter(new DuplicateFilter(serializer.toField(property)));
     }
 
@@ -134,7 +134,7 @@ SimpleProjectable<T> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Q filter(Filter filter){
+    public Q filter(Filter filter) {
         this.filter = filter;
         return (Q)this;
     }
@@ -292,7 +292,7 @@ SimpleProjectable<T> {
                 Document document;
                 if (fieldSelector != null){
                     document = searcher.doc(scoreDocs[index].doc, fieldSelector);
-                }else{
+                } else {
                     document = searcher.doc(scoreDocs[index].doc);
                 }
                 return transformer.transform(document);

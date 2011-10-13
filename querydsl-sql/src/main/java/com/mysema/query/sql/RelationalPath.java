@@ -19,7 +19,7 @@ import com.mysema.query.types.Path;
  * @author tiwe
  *
  */
-public interface RelationalPath<T> extends EntityPath<T>{
+public interface RelationalPath<T> extends EntityPath<T> {
    
     /**
      * Get the schema name

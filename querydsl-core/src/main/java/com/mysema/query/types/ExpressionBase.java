@@ -23,7 +23,7 @@ public abstract class ExpressionBase<T> implements Expression<T>{
     @Nullable
     private volatile String toString;
 
-    public ExpressionBase(Class<? extends T> type){
+    public ExpressionBase(Class<? extends T> type) {
         this.type = type;
     }
     

@@ -39,16 +39,16 @@ public class AbstractSQLClause {
      * @param constantPaths list of paths related to the constants
      * @param params map of param to value for param resolving
      */
-    protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths, Map<Param<?>, ?> params){
-        if (objects.size() != constantPaths.size()){
+    protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths, Map<Param<?>, ?> params) {
+        if (objects.size() != constantPaths.size()) {
             throw new IllegalArgumentException("Expected " + objects.size() + " paths, but got " + constantPaths.size());
         }
         int counter = 1;
-        for (int i = 0; i < objects.size(); i++){
+        for (int i = 0; i < objects.size(); i++) {
             Object o = objects.get(i);
             try {
-                if (Param.class.isInstance(o)){
-                    if (!params.containsKey(o)){
+                if (Param.class.isInstance(o)) {
+                    if (!params.containsKey(o)) {
                         throw new ParamNotSetException((Param<?>) o);
                     }
                     o = params.get(o);
@@ -68,7 +68,7 @@ public class AbstractSQLClause {
         }
     }
 
-    protected void close(ResultSet rs){
+    protected void close(ResultSet rs) {
         try {
             rs.close();
         } catch (SQLException e) {

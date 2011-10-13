@@ -23,7 +23,7 @@ import com.mysema.query.types.expr.SimpleOperation;
 @SuppressWarnings("unchecked")
 public final class JPQLGrammar {
 
-    private JPQLGrammar(){}
+    private JPQLGrammar() {}
     
     public static <D> Expression<D> all(CollectionExpression<?,D> col) {
         return SimpleOperation.create((Class)col.getParameter(0), Ops.QuantOps.ALL, (Expression<?>)col);
@@ -57,9 +57,9 @@ public final class JPQLGrammar {
      */
     public static <D extends Number & Comparable<? super D>> NumberExpression<?> sum(Expression<D> left) {
         Class<?> type = left.getType();
-        if (type.equals(Byte.class) || type.equals(Integer.class) || type.equals(Short.class)){
+        if (type.equals(Byte.class) || type.equals(Integer.class) || type.equals(Short.class)) {
             type = Long.class;
-        }else if (type.equals(Float.class)){
+        } else if (type.equals(Float.class)) {
             type = Double.class;
         }
         return NumberOperation.create((Class<D>) type, Ops.AggOps.SUM_AGG, left);

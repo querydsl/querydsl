@@ -41,37 +41,37 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
         super(type, metadata);
     }
 
-    protected PrimaryKey<T> createPrimaryKey(Path<?>... columns){
+    protected PrimaryKey<T> createPrimaryKey(Path<?>... columns) {
         primaryKey = new PrimaryKey<T>(this, columns);
         return primaryKey;
     }
     
-    protected <F> ForeignKey<F> createForeignKey(Path<?> local, String foreign){
+    protected <F> ForeignKey<F> createForeignKey(Path<?> local, String foreign) {
         ForeignKey<F> foreignKey = new ForeignKey<F>(this, local, foreign);
         foreignKeys.add(foreignKey);
         return foreignKey;
     }
     
-    protected <F> ForeignKey<F> createForeignKey(List<? extends Path<?>> local, List<String> foreign){
+    protected <F> ForeignKey<F> createForeignKey(List<? extends Path<?>> local, List<String> foreign) {
         ForeignKey<F> foreignKey = new ForeignKey<F>(this, local, foreign);
         foreignKeys.add(foreignKey);
         return foreignKey;
     }
     
-    protected <F> ForeignKey<F> createInvForeignKey(Path<?> local, String foreign){
+    protected <F> ForeignKey<F> createInvForeignKey(Path<?> local, String foreign) {
         ForeignKey<F> foreignKey = new ForeignKey<F>(this, local, foreign);
         inverseForeignKeys.add(foreignKey);
         return foreignKey;
     }
     
-    protected <F> ForeignKey<F> createInvForeignKey(List<? extends Path<?>> local, List<String> foreign){
+    protected <F> ForeignKey<F> createInvForeignKey(List<? extends Path<?>> local, List<String> foreign) {
         ForeignKey<F> foreignKey = new ForeignKey<F>(this, local, foreign);
         inverseForeignKeys.add(foreignKey);
         return foreignKey;
     }
     
     public Path<?>[] all() {
-        if (all == null || all.length != columns.size()){
+        if (all == null || all.length != columns.size()) {
             all = new Path[columns.size()];
             columns.toArray(all);
         }
@@ -79,7 +79,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     }
     
     @Override
-    protected <P extends Path<?>> P add(P path){
+    protected <P extends Path<?>> P add(P path) {
         columns.add(path);
         return path;
     }
@@ -105,7 +105,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     }
 
     @Override
-    public String getSchemaName(){
+    public String getSchemaName() {
         return getType().getAnnotation(Schema.class).value();
     }
     

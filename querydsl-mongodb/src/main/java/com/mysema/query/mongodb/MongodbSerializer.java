@@ -102,7 +102,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
             Operator<?> subOp = ((Operation<?>) expr.getArg(0)).getOperator();
             if (subOp != Ops.EQ_OBJECT && subOp != Ops.EQ_PRIMITIVE && subOp != Ops.STRING_IS_EMPTY){
                 return asDBObject(key, asDBObject("$not", arg.get(key)));
-            }else{
+            } else {
                 return asDBObject(key, asDBObject("$ne", arg.get(key)));
             }
         }
@@ -240,7 +240,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
     protected String getKeyForPath(Path<?> expr, PathMetadata<?> metadata) {
         if (expr.getType().equals(ObjectId.class)){
             return "_id";
-        }else{
+        } else {
             return metadata.getExpression().toString();    
         }        
     }

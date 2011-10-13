@@ -27,11 +27,11 @@ public class DateTimeTemplate<T extends Comparable<?>> extends DateTimeExpressio
 
     private static final long serialVersionUID = -2289699666347576749L;
 
-    public static <T extends Comparable<?>> DateTimeExpression<T> create(Class<T> type, String template, Expression<?>... args){
+    public static <T extends Comparable<?>> DateTimeExpression<T> create(Class<T> type, String template, Expression<?>... args) {
         return new DateTimeTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expression<?>>asList(args));
     }
 
-    public static <T extends Comparable<?>> DateTimeExpression<T> create(Class<T> type, Template template, Expression<?>... args){
+    public static <T extends Comparable<?>> DateTimeExpression<T> create(Class<T> type, Template template, Expression<?>... args) {
         return new DateTimeTemplate<T>(type, template, Arrays.<Expression<?>>asList(args));
     }
 
@@ -63,12 +63,12 @@ public class DateTimeTemplate<T extends Comparable<?>> extends DateTimeExpressio
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         return templateMixin.equals(o);
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return getType().hashCode();
     }
 

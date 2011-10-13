@@ -36,24 +36,24 @@ public class SimpleProjectableAdapter<T> implements SimpleQuery<SimpleProjectabl
     private final SimpleQuery<?> query;
 
     @SuppressWarnings("BC_UNCONFIRMED_CAST")
-    public <Q extends SimpleQuery<?> & Projectable> SimpleProjectableAdapter(Q query, Expression<T> projection){
+    public <Q extends SimpleQuery<?> & Projectable> SimpleProjectableAdapter(Q query, Expression<T> projection) {
         // NOTE : this is a correct cast which is not handled properly by FindBugs
         this(query, query, projection);
     }
 
-    public SimpleProjectableAdapter(SimpleQuery<?> query, Projectable projectable, Expression<T> projection){
+    public SimpleProjectableAdapter(SimpleQuery<?> query, Projectable projectable, Expression<T> projection) {
         this.query = query;
         this.projectable = projectable;
         this.projection = projection;
     }
 
     @Override
-    public boolean exists(){
+    public boolean exists() {
         return projectable.exists();
     }
 
     @Override
-    public boolean notExists(){
+    public boolean notExists() {
         return projectable.notExists();
     }
 
@@ -68,7 +68,7 @@ public class SimpleProjectableAdapter<T> implements SimpleQuery<SimpleProjectabl
     }
 
     @Override
-    public SimpleProjectableAdapter<T> distinct(){
+    public SimpleProjectableAdapter<T> distinct() {
         query.distinct();
         return this;
     }
@@ -80,12 +80,12 @@ public class SimpleProjectableAdapter<T> implements SimpleQuery<SimpleProjectabl
     }
 
     @Override
-    public CloseableIterator<T> iterate(){
+    public CloseableIterator<T> iterate() {
         return projectable.iterate(projection);
     }
 
     @Override
-    public CloseableIterator<T> iterateDistinct(){
+    public CloseableIterator<T> iterateDistinct() {
         return projectable.iterateDistinct(projection);
     }
 
@@ -134,7 +134,7 @@ public class SimpleProjectableAdapter<T> implements SimpleQuery<SimpleProjectabl
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return query.toString();
     }
 

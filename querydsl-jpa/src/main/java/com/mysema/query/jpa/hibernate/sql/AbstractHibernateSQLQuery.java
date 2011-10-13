@@ -61,7 +61,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         this(new DefaultSessionHolder(session), sqlTemplates, new DefaultQueryMetadata());
     }
 
-    public AbstractHibernateSQLQuery(StatelessSession session, SQLTemplates sqlTemplates){
+    public AbstractHibernateSQLQuery(StatelessSession session, SQLTemplates sqlTemplates) {
         this(new StatelessSessionHolder(session), sqlTemplates, new DefaultQueryMetadata());
     }
 
@@ -82,7 +82,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         return serializer.toString();
     }
 
-    public Query createQuery(Expression<?>... args){
+    public Query createQuery(Expression<?>... args) {
         queryMixin.getMetadata().setValidate(false);
         queryMixin.addToProjection(args);
         return createQuery(toQueryString());
@@ -95,27 +95,27 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         // set constants
         HibernateUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
         // set entity paths
-        for (Path<?> path : entityPaths){
+        for (Path<?> path : entityPaths) {
             query.addEntity(path.toString(), path.getType());
         }
         // set result transformer, if projection is an EConstructor instance
         List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
-        if (projection.size() == 1 && projection.get(0) instanceof FactoryExpression){
+        if (projection.size() == 1 && projection.get(0) instanceof FactoryExpression) {
             query.setResultTransformer(new FactoryExpressionTransformer((FactoryExpression<?>) projection.get(0)));
         }
-        if (fetchSize > 0){
+        if (fetchSize > 0) {
             query.setFetchSize(fetchSize);
         }
-        if (timeout > 0){
+        if (timeout > 0) {
             query.setTimeout(timeout);
         }
-        if (cacheable != null){
+        if (cacheable != null) {
             query.setCacheable(cacheable);
         }
-        if (cacheRegion != null){
+        if (cacheRegion != null) {
             query.setCacheRegion(cacheRegion);
         }
-        if (readOnly != null){
+        if (readOnly != null) {
             query.setReadOnly(readOnly);
         }
         return query;
@@ -167,8 +167,8 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         }
     }
 
-    protected void logQuery(String queryString){
-        if (logger.isDebugEnabled()){
+    protected void logQuery(String queryString) {
+        if (logger.isDebugEnabled()) {
             logger.debug(queryString.replace('\n', ' '));
         }
     }
@@ -183,7 +183,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         return buildQueryString(true);
     }
 
-    protected String toQueryString(){
+    protected String toQueryString() {
         return buildQueryString(false);
     }
 
@@ -191,9 +191,9 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     public Object[] uniqueResult(Expression<?>[] args) {
         Query query = createQuery(args);
         Object obj = uniqueResult(query);
-        if (obj != null){
+        if (obj != null) {
             return obj.getClass().isArray() ? (Object[])obj : new Object[]{obj};
-        }else{
+        } else {
             return null;
         }
     }
@@ -210,7 +210,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         reset();
         try{
             return query.uniqueResult();
-        }catch (org.hibernate.NonUniqueResultException e){
+        }catch (org.hibernate.NonUniqueResultException e) {
             throw new NonUniqueResultException();
         }
     }
@@ -220,7 +220,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
      * @param cacheable Should the query results be cacheable?
      */
     @SuppressWarnings("unchecked")
-    public Q setCacheable(boolean cacheable){
+    public Q setCacheable(boolean cacheable) {
         this.cacheable = cacheable;
         return (Q)this;
     }
@@ -231,7 +231,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
      * for the default query cache
      */
     @SuppressWarnings("unchecked")
-    public Q setCacheRegion(String cacheRegion){
+    public Q setCacheRegion(String cacheRegion) {
         this.cacheRegion = cacheRegion;
         return (Q)this;
     }
@@ -253,7 +253,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
      *
      */
     @SuppressWarnings("unchecked")
-    public Q setReadOnly(boolean readOnly){
+    public Q setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
         return (Q)this;
     }
@@ -263,7 +263,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
      * @param timeout the timeout in seconds
      */
     @SuppressWarnings("unchecked")
-    public Q setTimeout(int timeout){
+    public Q setTimeout(int timeout) {
         this.timeout = timeout;
         return (Q)this;
     }

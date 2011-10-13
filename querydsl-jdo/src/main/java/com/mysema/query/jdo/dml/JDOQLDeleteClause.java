@@ -37,11 +37,11 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
 
     private final EntityPath<?> entity;
 
-    public JDOQLDeleteClause(PersistenceManager pm, EntityPath<?> entity){
+    public JDOQLDeleteClause(PersistenceManager pm, EntityPath<?> entity) {
         this(pm, entity, JDOQLTemplates.DEFAULT);
     }
 
-    public JDOQLDeleteClause(PersistenceManager persistenceManager, EntityPath<?> entity, JDOQLTemplates templates){
+    public JDOQLDeleteClause(PersistenceManager persistenceManager, EntityPath<?> entity, JDOQLTemplates templates) {
         this.entity = entity;
         this.persistenceManager = persistenceManager;
         this.templates = templates;
@@ -51,7 +51,7 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
     @Override
     public long execute() {
         Query query = persistenceManager.newQuery(entity.getType());
-        if (metadata.getWhere() != null){
+        if (metadata.getWhere() != null) {
             JDOQLSerializer serializer = new JDOQLSerializer(templates, entity);
             serializer.handle(metadata.getWhere());
             query.setFilter(serializer.toString());
@@ -61,8 +61,8 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
                 if (!constToLabel.isEmpty()) {
                     List<Object> constants = new ArrayList<Object>(constToLabel.size());
                     StringBuilder builder = new StringBuilder();
-                    for (Map.Entry<Object, String> entry : constToLabel.entrySet()){
-                        if (builder.length() > 0){
+                    for (Map.Entry<Object, String> entry : constToLabel.entrySet()) {
+                        if (builder.length() > 0) {
                             builder.append(", ");
                         }
                         builder.append(entry.getKey().getClass().getName()).append(" ");
@@ -77,7 +77,7 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
             }finally{
                 query.closeAll();
             }
-        }else{
+        } else {
             try{
                 return query.deletePersistentAll();
             }finally{
@@ -93,7 +93,7 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
     }
     
     @Override
-    public String toString(){
+    public String toString() {
         JDOQLSerializer serializer = new JDOQLSerializer(templates, entity);
         serializer.handle(metadata.getWhere());
         return serializer.toString();

@@ -75,7 +75,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
         return serializer.toString();
     }
 
-    public Query createQuery(Expression<?>... args){
+    public Query createQuery(Expression<?>... args) {
         queryMixin.getMetadata().setValidate(false);
         queryMixin.addToProjection(args);
         return createQuery(toQueryString());
@@ -86,25 +86,25 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
         logQuery(queryString);
         List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
         Query query;
-        if (projection.get(0) instanceof EntityPath){
-            if (projection.size() == 1){
+        if (projection.get(0) instanceof EntityPath) {
+            if (projection.size() == 1) {
                 query = session.createSQLQuery(queryString, projection.get(0).getType());
-            }else{
+            } else {
                 throw new IllegalArgumentException("Only single element entity projections are supported");
             }
 
-        }else{
+        } else {
             query = session.createSQLQuery(queryString);
         }
         
-        if (lockMode != null){
+        if (lockMode != null) {
             query.setLockMode(lockMode);
         }
         if (flushMode != null) {
             query.setFlushMode(flushMode);
         }
         
-        for (Map.Entry<String, Object> entry : hints.entrySet()){
+        for (Map.Entry<String, Object> entry : hints.entrySet()) {
             query.setHint(entry.getKey(), entry.getValue());
         }
         
@@ -159,8 +159,8 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
         }
     }
 
-    protected void logQuery(String queryString){
-        if (logger.isDebugEnabled()){
+    protected void logQuery(String queryString) {
+        if (logger.isDebugEnabled()) {
             logger.debug(queryString.replace('\n', ' '));
         }
     }
@@ -175,7 +175,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
         return buildQueryString(true);
     }
 
-    protected String toQueryString(){
+    protected String toQueryString() {
         return buildQueryString(false);
     }
 
@@ -190,9 +190,9 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
     public Object[] uniqueResult(Expression<?>[] args) {
         Query query = createQuery(args);
         Object obj = uniqueResult(query);
-        if (obj != null){
+        if (obj != null) {
             return obj.getClass().isArray() ? (Object[])obj : new Object[]{obj};    
-        }else{
+        } else {
             return null;
         }        
     }
@@ -202,10 +202,10 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
         reset();
         try{
             return query.getSingleResult();
-        }catch(javax.persistence.NoResultException e){
+        }catch(javax.persistence.NoResultException e) {
             logger.debug(e.getMessage(),e);
             return null;
-        }catch(javax.persistence.NonUniqueResultException e){
+        }catch(javax.persistence.NonUniqueResultException e) {
             throw new NonUniqueResultException();
         }
     }
@@ -223,7 +223,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
     }
 
     @SuppressWarnings("unchecked")
-    public Q setHint(String name, Object value){
+    public Q setHint(String name, Object value) {
         hints.put(name, value);
         return (Q)this;
     }

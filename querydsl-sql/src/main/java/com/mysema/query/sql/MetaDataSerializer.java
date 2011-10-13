@@ -70,7 +70,7 @@ public class MetaDataSerializer extends EntitySerializer {
         TypeCategory category = model.getOriginalCategory();
         Class<? extends Path> pathType = RelationalPathBase.class;
 
-        for (Annotation annotation : model.getAnnotations()){
+        for (Annotation annotation : model.getAnnotations()) {
             writer.annotation(annotation);
         }
         writer.beginClass(queryType, new ClassType(category, pathType, model));
@@ -101,25 +101,25 @@ public class MetaDataSerializer extends EntitySerializer {
         Collection<InverseForeignKeyData> inverseForeignKeys =
             (Collection<InverseForeignKeyData>)model.getData().get(InverseForeignKeyData.class);
 
-        if (innerClassesForKeys){
+        if (innerClassesForKeys) {
             Type primaryKeyType = new SimpleType(namingStrategy.getPrimaryKeysClassName());
             Type foreignKeysType = new SimpleType(namingStrategy.getForeignKeysClassName());
 
             // primary keys
-            if (primaryKeys != null){
+            if (primaryKeys != null) {
                 writer.beginClass(primaryKeyType);
                 serializePrimaryKeys(model, writer, primaryKeys);
                 writer.end();
             }
 
             // foreign keys
-            if (foreignKeys != null || inverseForeignKeys != null){
+            if (foreignKeys != null || inverseForeignKeys != null) {
                 writer.beginClass(foreignKeysType);
-                if (foreignKeys != null){
+                if (foreignKeys != null) {
                     serializeForeignKeys(model, writer, foreignKeys, false);
                 }
                 // inverse foreign keys
-                if (inverseForeignKeys != null){
+                if (inverseForeignKeys != null) {
                     serializeForeignKeys(model, writer, inverseForeignKeys, true);
                 }
                 writer.end();
@@ -127,35 +127,35 @@ public class MetaDataSerializer extends EntitySerializer {
 
             super.serializeProperties(model, config, writer);
 
-            if (primaryKeys != null){
+            if (primaryKeys != null) {
                 writer.publicFinal(
                         primaryKeyType,
                         namingStrategy.getPrimaryKeysVariable(model),
                         "new "+primaryKeyType.getSimpleName()+"()");
             }
-            if (foreignKeys != null || inverseForeignKeys != null){
+            if (foreignKeys != null || inverseForeignKeys != null) {
                 writer.publicFinal(
                         foreignKeysType,
                         namingStrategy.getForeignKeysVariable(model),
                         "new "+foreignKeysType.getSimpleName()+"()");
             }
 
-        }else{
+        } else {
 
             super.serializeProperties(model, config, writer);
 
             // primary keys
-            if (primaryKeys != null){
+            if (primaryKeys != null) {
                 serializePrimaryKeys(model, writer, primaryKeys);
             }
 
             // foreign keys
-            if (foreignKeys != null){
+            if (foreignKeys != null) {
                 serializeForeignKeys(model, writer, foreignKeys, false);
             }
 
             // inverse foreign keys
-            if (inverseForeignKeys != null){
+            if (inverseForeignKeys != null) {
                 serializeForeignKeys(model, writer, inverseForeignKeys, true);
             }
 
@@ -165,12 +165,12 @@ public class MetaDataSerializer extends EntitySerializer {
 
     protected void serializePrimaryKeys(EntityType model, CodeWriter writer,
             Collection<PrimaryKeyData> primaryKeys) throws IOException {
-        for (PrimaryKeyData primaryKey : primaryKeys){
+        for (PrimaryKeyData primaryKey : primaryKeys) {
             String fieldName = namingStrategy.getPropertyNameForPrimaryKey(primaryKey.getName(), model);
             StringBuilder value = new StringBuilder("createPrimaryKey(");
             boolean first = true;
-            for (String column : primaryKey.getColumns()){
-                if (!first){
+            for (String column : primaryKey.getColumns()) {
+                if (!first) {
                     value.append(", ");
                 }
                 value.append(namingStrategy.getPropertyName(column, model));
@@ -185,28 +185,28 @@ public class MetaDataSerializer extends EntitySerializer {
 
     protected void serializeForeignKeys(EntityType model, CodeWriter writer,
             Collection<? extends KeyData> foreignKeys, boolean inverse) throws IOException {
-        for (KeyData foreignKey : foreignKeys){
+        for (KeyData foreignKey : foreignKeys) {
             String fieldName;
-            if (inverse){
+            if (inverse) {
                 fieldName = namingStrategy.getPropertyNameForInverseForeignKey(foreignKey.getName(), model);
-            }else{
+            } else {
                 fieldName = namingStrategy.getPropertyNameForForeignKey(foreignKey.getName(), model);
             }
 
             StringBuilder value = new StringBuilder();
-            if (inverse){
+            if (inverse) {
                 value.append("createInvForeignKey(");
-            }else{
+            } else {
                 value.append("createForeignKey(");
             }
-            if (foreignKey.getForeignColumns().size() == 1){
+            if (foreignKey.getForeignColumns().size() == 1) {
                 value.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), model));
                 value.append(", \"" + foreignKey.getParentColumns().get(0) + "\"");
-            }else{
+            } else {
                 StringBuilder local = new StringBuilder();
                 StringBuilder foreign = new StringBuilder();
-                for (int i = 0; i < foreignKey.getForeignColumns().size(); i++){
-                    if (i > 0){
+                for (int i = 0; i < foreignKey.getForeignColumns().size(); i++) {
+                    if (i > 0) {
                         local.append(", ");
                         foreign.append(", ");
                     }

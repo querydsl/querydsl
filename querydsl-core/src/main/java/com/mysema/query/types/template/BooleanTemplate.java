@@ -26,11 +26,11 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
 
     private static final long serialVersionUID = 5749369427497731719L;
 
-    public static BooleanExpression create(String template, Expression<?>... args){
+    public static BooleanExpression create(String template, Expression<?>... args) {
         return new BooleanTemplate(TemplateFactory.DEFAULT.create(template), Arrays.<Expression<?>>asList(args));
     }
 
-    public static BooleanExpression create(Template template, Expression<?>... args){
+    public static BooleanExpression create(Template template, Expression<?>... args) {
         return new BooleanTemplate(template, Arrays.<Expression<?>>asList(args));
     }
     
@@ -40,7 +40,7 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
 
     private final TemplateExpression<Boolean> templateMixin;
 
-    public BooleanTemplate(Template template, List<Expression<?>> args){
+    public BooleanTemplate(Template template, List<Expression<?>> args) {
         templateMixin = new TemplateExpressionImpl<Boolean>(Boolean.class, template, args);
     }
 
@@ -65,12 +65,12 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         return templateMixin.equals(o);
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return getType().hashCode();
     }
 

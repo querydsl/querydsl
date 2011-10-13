@@ -77,7 +77,7 @@ public final class JDOQLQueryImpl extends AbstractJDOQLQuery<JDOQLQueryImpl> imp
      * @param persistenceManager
      * @return
      */
-    public JDOQLQueryImpl clone(PersistenceManager persistenceManager){
+    public JDOQLQueryImpl clone(PersistenceManager persistenceManager) {
         JDOQLQueryImpl query = new JDOQLQueryImpl(persistenceManager, getTemplates(), getMetadata().clone(), isDetach());
         query.fetchGroups.addAll(fetchGroups);
         query.maxFetchDepth = maxFetchDepth;

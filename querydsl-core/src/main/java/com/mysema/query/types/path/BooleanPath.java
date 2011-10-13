@@ -65,7 +65,7 @@ public class BooleanPath extends BooleanExpression implements Path<Boolean> {
     }
 
     @Override
-    public AnnotatedElement getAnnotatedElement(){
+    public AnnotatedElement getAnnotatedElement() {
         return pathMixin.getAnnotatedElement();
     }
 

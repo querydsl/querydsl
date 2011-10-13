@@ -31,10 +31,10 @@ public class DefaultNamingStrategy implements NamingStrategy {
     
     @Override
     public String getClassName(String tableName) {
-        if (tableName.length() > 1){
+        if (tableName.length() > 1) {
             return tableName.substring(0, 1).toUpperCase(Locale.ENGLISH)
                 + toCamelCase(tableName.substring(1));    
-        }else{
+        } else {
             return tableName.toUpperCase(Locale.ENGLISH);
         }
         
@@ -79,14 +79,14 @@ public class DefaultNamingStrategy implements NamingStrategy {
 
     @Override
     public String getPropertyNameForForeignKey(String foreignKeyName, EntityType entityType) {
-        if (foreignKeyName.toLowerCase().startsWith("fk_")){
+        if (foreignKeyName.toLowerCase().startsWith("fk_")) {
             foreignKeyName = foreignKeyName.substring(3) + "_" + foreignKeyName.substring(0,2);
         }
-        if (foreignKeyName.length() > 1){
+        if (foreignKeyName.length() > 1) {
             return normalizePropertyName(
                 foreignKeyName.substring(0,1).toLowerCase(Locale.ENGLISH) 
                 + toCamelCase(foreignKeyName.substring(1)));    
-        }else{
+        } else {
             return foreignKeyName.toLowerCase(Locale.ENGLISH);
         }        
     }
@@ -99,14 +99,14 @@ public class DefaultNamingStrategy implements NamingStrategy {
 
     @Override
     public String getPropertyNameForPrimaryKey(String primaryKeyName, EntityType entityType) {
-        if (primaryKeyName.toLowerCase().startsWith("pk_")){
+        if (primaryKeyName.toLowerCase().startsWith("pk_")) {
             primaryKeyName = primaryKeyName.substring(3) + "_" + primaryKeyName.substring(0,2);
         }
-        if (primaryKeyName.length() > 1){
+        if (primaryKeyName.length() > 1) {
             return normalizePropertyName(
                 primaryKeyName.substring(0,1).toLowerCase(Locale.ENGLISH)  
                 + toCamelCase(primaryKeyName.substring(1)));    
-        }else{
+        } else {
             return primaryKeyName.toLowerCase(Locale.ENGLISH);
         }
         
@@ -123,21 +123,21 @@ public class DefaultNamingStrategy implements NamingStrategy {
     }
 
     @Override
-    public String normalizeSchemaName(String schemaName){
+    public String normalizeSchemaName(String schemaName) {
         return schemaName;
     }
     
-    protected String normalizePropertyName(String name){
+    protected String normalizePropertyName(String name) {
         return isReserved(name) ? name + reservedSuffix : name;   
     }
     
-    protected String escape(EntityType entityType, String name){
+    protected String escape(EntityType entityType, String name) {
         int suffix = 0;
-        while (true){
+        while (true) {
             String candidate = suffix > 0 ? name + suffix : name;
-            if (entityType.getEscapedPropertyNames().contains(candidate)){
+            if (entityType.getEscapedPropertyNames().contains(candidate)) {
                 suffix++;
-            }else{
+            } else {
                 return candidate;
             }
         }      
@@ -149,10 +149,10 @@ public class DefaultNamingStrategy implements NamingStrategy {
         for (int i = 0; i < str.length(); i++) {
             if (str.charAt(i) == '_') {
                 i += 1;
-                if (i < str.length()){
+                if (i < str.length()) {
                     builder.append(Character.toUpperCase(str.charAt(i)));    
                 }                               
-            } else if (toLower){
+            } else if (toLower) {
                 builder.append(Character.toLowerCase(str.charAt(i)));
             } else{
                 builder.append(str.charAt(i));

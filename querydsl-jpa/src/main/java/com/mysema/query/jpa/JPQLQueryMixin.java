@@ -81,7 +81,7 @@ public class JPQLQueryMixin<T> extends QueryMixin<T> {
     private Predicate normalize(Predicate predicate, boolean where) {
         if (predicate instanceof BooleanBuilder && ((BooleanBuilder)predicate).getValue() == null){
             return predicate;
-        }else{
+        } else {
             // transform any usage
             predicate = (Predicate) predicate.accept(JPQLCollectionAnyVisitor.DEFAULT, new Context());
             
@@ -107,7 +107,7 @@ public class JPQLQueryMixin<T> extends QueryMixin<T> {
         Predicate condition = ExpressionUtils.eq(index, path.getMetadata().getExpression()); 
         if (where){
             super.where(condition);
-        }else{
+        } else {
             super.having(condition);
         }
     }

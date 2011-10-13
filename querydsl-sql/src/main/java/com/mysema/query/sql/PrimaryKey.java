@@ -18,7 +18,7 @@ import com.mysema.query.types.Path;
  * @author tiwe
  */
 @Immutable
-public class PrimaryKey <E>{
+public class PrimaryKey <E> {
 
     private final RelationalPath<?> entity;
 
@@ -33,7 +33,7 @@ public class PrimaryKey <E>{
         this.localColumns = localColumns;
     }
 
-    public RelationalPath<?> getEntity(){
+    public RelationalPath<?> getEntity() {
         return entity;
     }
 

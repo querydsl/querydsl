@@ -162,7 +162,7 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProj
         DBCursor c = createCursor().limit(1);
         if (c.hasNext()){
             return transformer.transform(c.next());
-        }else{
+        } else {
             return null;
         }
     }
@@ -180,7 +180,7 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProj
                 throw new NonUniqueResultException();
             }
             return rv;
-        }else{
+        } else {
             return null;
         }
     }
@@ -190,7 +190,7 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProj
         long total = count();
         if (total > 0l){
             return new SearchResults<K>(list(), queryMixin.getMetadata().getModifiers(), total);
-        }else{
+        } else {
             return SearchResults.emptyResults();
         }
     }
@@ -214,7 +214,7 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProj
         QueryMetadata metadata = queryMixin.getMetadata();
         if (metadata.getWhere() != null){
             return (DBObject) serializer.handle(metadata.getWhere());
-        }else{
+        } else {
             return new BasicDBObject();
         }
 

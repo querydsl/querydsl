@@ -48,7 +48,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
      * @param expr expression of the flag
      * @return
      */
-    public Q addFlag(Position position, String prefix, Expression<?> expr){
+    public Q addFlag(Position position, String prefix, Expression<?> expr) {
         Expression<?> flag = TemplateExpressionImpl.create(expr.getType(), prefix + "{0}", expr);
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
@@ -60,7 +60,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
      * @param flag
      * @return
      */
-    public Q addFlag(Position position, String flag){
+    public Q addFlag(Position position, String flag) {
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
     
@@ -71,7 +71,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
      * @param flag
      * @return
      */
-    public Q addFlag(Position position, Expression<?> flag){
+    public Q addFlag(Position position, Expression<?> flag) {
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
     
@@ -81,7 +81,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
      * @param flag
      * @return
      */
-    public Q addJoinFlag(String flag){
+    public Q addJoinFlag(String flag) {
         return addJoinFlag(flag, JoinFlag.Position.BEFORE_TARGET);
     }
 
@@ -93,18 +93,18 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Q addJoinFlag(String flag, JoinFlag.Position position){
+    public Q addJoinFlag(String flag, JoinFlag.Position position) {
         List<JoinExpression> joins = queryMixin.getMetadata().getJoins();
         joins.get(joins.size()-1).addFlag(new JoinFlag(flag, position));
         return (Q)this;
     }
     
-    public Q from(Expression<?>... args){
+    public Q from(Expression<?>... args) {
         return queryMixin.from(args);
     }
 
     @SuppressWarnings("unchecked")
-    public Q from(SubQueryExpression<?> subQuery, Path<?> alias){
+    public Q from(SubQueryExpression<?> subQuery, Path<?> alias) {
         return queryMixin.from(ExpressionUtils.as((Expression)subQuery, alias));
     }
     
@@ -156,7 +156,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.leftJoin(target, alias);
     }
 
-    public Q on(Predicate... conditions){
+    public Q on(Predicate... conditions) {
         return queryMixin.on(conditions);
     }
 
@@ -173,12 +173,12 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     }
 
     @Override
-    public String toString(){
-        if (!queryMixin.getMetadata().getJoins().isEmpty()){
+    public String toString() {
+        if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
             serializer.serialize(queryMixin.getMetadata(), false);
             return serializer.toString().trim();
-        }else{
+        } else {
             return super.toString();
         }
     }

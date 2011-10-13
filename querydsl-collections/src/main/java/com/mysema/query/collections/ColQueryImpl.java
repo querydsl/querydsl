@@ -57,7 +57,7 @@ public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQ
      * Clone the state of this query to a new ColQueryImpl instance
      */
     @Override
-    public ColQueryImpl clone(){
+    public ColQueryImpl clone() {
         return new ColQueryImpl(queryMixin.getMetadata(), getQueryEngine());
     }
 

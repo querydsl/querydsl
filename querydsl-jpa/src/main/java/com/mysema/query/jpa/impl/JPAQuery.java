@@ -25,7 +25,7 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements JPQLQu
      * Creates a new detached query
      * The query can be attached via the clone method
      */
-    public JPAQuery(){
+    public JPAQuery() {
         super(new NoSessionHolder(), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
     }
 
@@ -74,7 +74,7 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements JPQLQu
      * @param entityManager
      * @return
      */
-    public JPAQuery clone(EntityManager entityManager){
+    public JPAQuery clone(EntityManager entityManager) {
         JPAQuery q = new JPAQuery(new DefaultSessionHolder(entityManager), getTemplates(), getMetadata().clone());
         q.factoryExpressionUsed = factoryExpressionUsed;
         q.flushMode = flushMode;

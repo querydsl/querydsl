@@ -46,18 +46,18 @@ public class SumOver<A extends Number & Comparable<? super A>> extends NumberExp
         StringBuilder builder = new StringBuilder();
         builder.append("sum({0}) over (");
         args.add(target);
-        if (partitionBy != null){
+        if (partitionBy != null) {
             builder.append("partition by {1}");
             args.add(partitionBy);
         }
-        if (!orderBy.isEmpty()){
-            if (partitionBy != null){
+        if (!orderBy.isEmpty()) {
+            if (partitionBy != null) {
                 builder.append(" ");
             }
             builder.append("order by ");
             boolean first = true;
-            for (Expression<?> expr : orderBy){
-                if (!first){
+            for (Expression<?> expr : orderBy) {
+                if (!first) {
                     builder.append(", ");
                 }
                 builder.append("{" + args.size()+"}");
@@ -76,20 +76,20 @@ public class SumOver<A extends Number & Comparable<? super A>> extends NumberExp
     @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object o) {
-        if (o == this){
+        if (o == this) {
             return true;
-        }else if (o instanceof SumOver){
+        } else if (o instanceof SumOver) {
             SumOver so = (SumOver)o;
             return so.target.equals(target)
                 && so.partitionBy.equals(partitionBy)
                 && so.orderBy.equals(orderBy);
-        }else{
+        } else {
             return false;
         }
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return target.hashCode();
     }
 

@@ -33,15 +33,15 @@ public class OracleTemplates extends SQLTemplates {
 
     private String offsetTemplate = "rn > {0}";
 
-    public OracleTemplates(){
+    public OracleTemplates() {
         this('\\', false);
     }
     
-    public OracleTemplates(boolean quote){
+    public OracleTemplates(boolean quote) {
         this('\\',quote);
     }
 
-    public OracleTemplates(char escape, boolean quote){
+    public OracleTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
         // type mappings
         addClass2TypeMappings("number(3,0)", Byte.class);
@@ -83,26 +83,26 @@ public class OracleTemplates extends SQLTemplates {
 
     @Override
     public void serialize(QueryMetadata metadata, boolean forCountRow, SerializationContext context) {
-        if (!forCountRow && metadata.getModifiers().isRestricting()){
+        if (!forCountRow && metadata.getModifiers().isRestricting()) {
             QueryModifiers mod = metadata.getModifiers();
 
-            if (mod.getOffset() == null){
+            if (mod.getOffset() == null) {
                 context.append(limitQueryStart);
                 context.serialize(metadata, forCountRow);
                 context.handle(limitQueryEnd, mod.getLimit());
-            }else{
+            } else {
                 context.append(outerQueryStart);
                 context.serialize(metadata, forCountRow);
                 context.append(outerQueryEnd);
 
-                if (mod.getLimit() == null){
+                if (mod.getLimit() == null) {
                     context.handle(offsetTemplate, mod.getOffset());
-                }else{
+                } else {
                     context.handle(limitOffsetTemplate, mod.getOffset(), mod.getLimit() + mod.getOffset());
                 }
             }
 
-        }else{
+        } else {
             context.serialize(metadata, forCountRow);
         }
     }

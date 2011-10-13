@@ -19,7 +19,7 @@ public class TableImpl implements Table{
 
     private final String table;
 
-    public TableImpl(String table){
+    public TableImpl(String table) {
         this.table = table;
     }
 

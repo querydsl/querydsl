@@ -63,7 +63,7 @@ public class OracleQueryFactory implements SQLQueryFactory<OracleQuery, SQLSubQu
         return queryFactory.subQuery();
     }
 
-    public SQLSubQuery subQuery(Expression<?> from){
+    public SQLSubQuery subQuery(Expression<?> from) {
         return subQuery().from(from);
     }
 

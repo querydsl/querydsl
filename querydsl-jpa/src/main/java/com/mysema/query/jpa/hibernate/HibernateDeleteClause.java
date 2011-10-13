@@ -35,19 +35,19 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
 
     private final JPQLTemplates templates;
 
-    public HibernateDeleteClause(Session session, EntityPath<?> entity){
+    public HibernateDeleteClause(Session session, EntityPath<?> entity) {
         this(new DefaultSessionHolder(session), entity, HQLTemplates.DEFAULT);
     }
 
-    public HibernateDeleteClause(StatelessSession session, EntityPath<?> entity){
+    public HibernateDeleteClause(StatelessSession session, EntityPath<?> entity) {
         this(new StatelessSessionHolder(session), entity, HQLTemplates.DEFAULT);
     }
 
-    public HibernateDeleteClause(Session session, EntityPath<?> entity, JPQLTemplates templates){
+    public HibernateDeleteClause(Session session, EntityPath<?> entity, JPQLTemplates templates) {
         this(new DefaultSessionHolder(session), entity, templates);
     }
     
-    public HibernateDeleteClause(SessionHolder session, EntityPath<?> entity, JPQLTemplates templates){
+    public HibernateDeleteClause(SessionHolder session, EntityPath<?> entity, JPQLTemplates templates) {
         this.session = session;
         this.templates = templates;
         md.addJoin(JoinType.DEFAULT, entity);
@@ -71,7 +71,7 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
     }
     
     @Override
-    public String toString(){
+    public String toString() {
         JPQLSerializer serializer = new JPQLSerializer(templates);
         serializer.serializeForDelete(md);
         return serializer.toString();

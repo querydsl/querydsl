@@ -11,7 +11,7 @@ import java.util.Set;
 
 public final class JavaSyntaxUtils {
 
-    private JavaSyntaxUtils(){}
+    private JavaSyntaxUtils() {}
 
     private static final Set<String> reserved = new HashSet<String>(Arrays.asList(
     "abstract",
@@ -68,7 +68,7 @@ public final class JavaSyntaxUtils {
     "volatile",
     "while"));
 
-    public static boolean isReserved(String str){
+    public static boolean isReserved(String str) {
         return reserved.contains(str);
     }
 

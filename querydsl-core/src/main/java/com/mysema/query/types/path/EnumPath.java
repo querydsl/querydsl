@@ -66,7 +66,7 @@ public class EnumPath<T extends Enum<T>> extends EnumExpression<T> implements Pa
     }
 
     @Override
-    public AnnotatedElement getAnnotatedElement(){
+    public AnnotatedElement getAnnotatedElement() {
         return pathMixin.getAnnotatedElement();
     }
 }

@@ -24,15 +24,15 @@ public class DerbyTemplates extends SQLTemplates {
 
     private String offsetTemplate = "\noffset {0s} rows";
 
-    public DerbyTemplates(){
+    public DerbyTemplates() {
         this('\\',false);
     }
 
-    public DerbyTemplates(boolean quote){
+    public DerbyTemplates(boolean quote) {
         this('\\',quote);
     }
     
-    public DerbyTemplates(char escape, boolean quote){
+    public DerbyTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
         addClass2TypeMappings("smallint", Byte.class);
         setAutoIncrement(" generated always as identity");
@@ -50,11 +50,11 @@ public class DerbyTemplates extends SQLTemplates {
 
     protected void serializeModifiers(QueryMetadata metadata, SerializationContext context) {
         QueryModifiers mod = metadata.getModifiers();
-        if (mod.getLimit() == null){
+        if (mod.getLimit() == null) {
             context.handle(offsetTemplate, mod.getOffset());
-        }else if (mod.getOffset() == null){
+        }else if (mod.getOffset() == null) {
             context.handle(limitTemplate, mod.getLimit());
-        }else{
+        } else {
             context.handle(limitOffsetTemplate, mod.getLimit(), mod.getOffset());
         }
     }

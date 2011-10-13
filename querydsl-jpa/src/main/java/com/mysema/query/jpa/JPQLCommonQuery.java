@@ -15,8 +15,7 @@ import com.mysema.query.types.Predicate;
  * @param <Q>
  */
 public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q> {
-    
-
+   
     /**
      * Set the sources of this query
      *

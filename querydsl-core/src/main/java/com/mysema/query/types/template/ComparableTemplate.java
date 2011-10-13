@@ -27,11 +27,11 @@ public class ComparableTemplate<T extends Comparable<?>> extends ComparableExpre
 
     private static final long serialVersionUID = -6292853402028813007L;
 
-    public static <T extends Comparable<?>> ComparableExpression<T> create(Class<T> type, String template, Expression<?>... args){
+    public static <T extends Comparable<?>> ComparableExpression<T> create(Class<T> type, String template, Expression<?>... args) {
         return new ComparableTemplate<T>(type, TemplateFactory.DEFAULT.create(template), Arrays.<Expression<?>>asList(args));
     }
 
-    public static <T extends Comparable<?>> ComparableExpression<T> create(Class<T> type, Template template, Expression<?>... args){
+    public static <T extends Comparable<?>> ComparableExpression<T> create(Class<T> type, Template template, Expression<?>... args) {
         return new ComparableTemplate<T>(type, template, Arrays.<Expression<?>>asList(args));
     }
 
@@ -63,12 +63,12 @@ public class ComparableTemplate<T extends Comparable<?>> extends ComparableExpre
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         return templateMixin.equals(o);
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return getType().hashCode();
     }
 

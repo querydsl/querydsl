@@ -40,12 +40,12 @@ public class RowNumber implements Expression<Long>{
     public <R,C> R accept(Visitor<R,C> v, C context) {
         List<Expression<?>> args = new ArrayList<Expression<?>>(partitionBy.size() + orderBy.size());
         StringBuilder builder = new StringBuilder("row_number() over (");
-        if (!partitionBy.isEmpty()){
+        if (!partitionBy.isEmpty()) {
             builder.append("partition by ");
             appendPartition(args, builder);
         }
-        if (!orderBy.isEmpty()){
-            if (!partitionBy.isEmpty()){
+        if (!orderBy.isEmpty()) {
+            if (!partitionBy.isEmpty()) {
                 builder.append(" ");
             }
             builder.append("order by ");
@@ -53,7 +53,7 @@ public class RowNumber implements Expression<Long>{
         }
         builder.append(")");
 
-        if (target != null){
+        if (target != null) {
             builder.append(" as {" + args.size() + "}");
             args.add(target);
         }
@@ -65,8 +65,8 @@ public class RowNumber implements Expression<Long>{
     // TODO : externalize
     private void appendPartition(List<Expression<?>> args, StringBuilder builder) {
         boolean first = true;
-        for (Expression<?> expr : partitionBy){
-            if (!first){
+        for (Expression<?> expr : partitionBy) {
+            if (!first) {
                 builder.append(", ");
             }
             builder.append("{"+args.size()+"}");
@@ -78,12 +78,12 @@ public class RowNumber implements Expression<Long>{
     // TODO : externalize
     private void appendOrder(List<Expression<?>> args, StringBuilder builder) {
         boolean first = true;
-        for (OrderSpecifier<?> expr : orderBy){
-            if (!first){
+        for (OrderSpecifier<?> expr : orderBy) {
+            if (!first) {
                 builder.append(", ");
             }
             builder.append("{" + args.size()+"}");
-            if (!expr.isAscending()){
+            if (!expr.isAscending()) {
                 builder.append(" desc");
             }
             args.add(expr.getTarget());
@@ -91,28 +91,28 @@ public class RowNumber implements Expression<Long>{
         }
     }
 
-    public RowNumber orderBy(OrderSpecifier<?>... order){
-        for (OrderSpecifier<?> o : order){
+    public RowNumber orderBy(OrderSpecifier<?>... order) {
+        for (OrderSpecifier<?> o : order) {
             orderBy.add(o);
         }
         return this;
     }
 
-    public RowNumber orderBy(ComparableExpression<?>... order){
-        for (ComparableExpression<?> o : order){
+    public RowNumber orderBy(ComparableExpression<?>... order) {
+        for (ComparableExpression<?> o : order) {
             orderBy.add(o.asc());
         }
         return this;
     }
 
-    public RowNumber partitionBy(Expression<?>... exprs){
-        for (Expression<?> expr : exprs){
+    public RowNumber partitionBy(Expression<?>... exprs) {
+        for (Expression<?> expr : exprs) {
             partitionBy.add(expr);
         }
         return this;
     }
 
-    public RowNumber as(Expression<Long> target){
+    public RowNumber as(Expression<Long> target) {
         this.target = target;
         return this;
     }
@@ -123,24 +123,24 @@ public class RowNumber implements Expression<Long>{
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return orderBy.hashCode();
     }
 
     @Override
     public boolean equals(Object o) {
-        if (o == this){
+        if (o == this) {
             return true;
-        }else if (o instanceof RowNumber){
+        }else if (o instanceof RowNumber) {
             RowNumber rn = (RowNumber)o;
             return partitionBy.equals(rn.partitionBy) && orderBy.equals(rn.orderBy);
-        }else{
+        } else {
             return false;
         }
     }
     
     @Override
-    public String toString(){
+    public String toString() {
         return accept(ToStringVisitor.DEFAULT, Templates.DEFAULT);
     }
 

@@ -32,15 +32,15 @@ public class DropTableClause {
     }
     
     @SuppressWarnings("SQL_NONCONSTANT_STRING_PASSED_TO_EXECUTE")
-    public void execute(){
+    public void execute() {
         Statement stmt = null;
         try{
             stmt = connection.createStatement();
             stmt.execute("DROP TABLE " + table);
         } catch (SQLException e) {
             // do not rethrow
-        }finally{
-            if (stmt != null){
+        } finally {
+            if (stmt != null) {
                 try {
                     stmt.close();
                 } catch (SQLException e) {

@@ -28,23 +28,23 @@ public class SQLCodegenModule extends CodegenModule{
         bind(PACKAGE_NAME, "com.example");
     }
     
-    public String getPrefix(){
+    public String getPrefix() {
         return get(String.class, PREFIX);
     }
     
-    public String getSuffix(){
+    public String getSuffix() {
         return get(String.class, SUFFIX);
     }
     
-    public String getBeanPrefix(){
+    public String getBeanPrefix() {
         return get(String.class, BEAN_PREFIX);
     }
     
-    public String getBeanSuffix(){
+    public String getBeanSuffix() {
         return get(String.class, BEAN_SUFFIX);
     }
     
-    public String getPackageName(){
+    public String getPackageName() {
         return get(String.class, PACKAGE_NAME);
     }
 

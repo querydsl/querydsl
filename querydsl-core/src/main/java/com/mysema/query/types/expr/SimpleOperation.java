@@ -34,7 +34,7 @@ public class SimpleOperation<T> extends SimpleExpression<T> implements Operation
      * @param args
      * @return
      */
-    public static <D> SimpleExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?>... args){
+    public static <D> SimpleExpression<D> create(Class<D> type, Operator<? super D> op, Expression<?>... args) {
         return new SimpleOperation<D>(type, op, args);
     }
 
@@ -70,12 +70,12 @@ public class SimpleOperation<T> extends SimpleExpression<T> implements Operation
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         return opMixin.equals(o);
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return getType().hashCode();
     }
 

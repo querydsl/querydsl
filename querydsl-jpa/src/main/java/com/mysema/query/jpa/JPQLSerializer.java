@@ -95,7 +95,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             EntityPath<?> pe = (EntityPath<?>) je.getTarget();
             if (pe.getMetadata().getParent() == null) {
                 Entity entityAnnotation = pe.getAnnotatedElement().getAnnotation(Entity.class);
-                if (entityAnnotation != null && entityAnnotation.name().length() > 0){
+                if (entityAnnotation != null && entityAnnotation.name().length() > 0) {
                     append(entityAnnotation.name());
                 } else if (pe.getType().getPackage() != null) {
                     String pn = pe.getType().getPackage().getName();
@@ -123,18 +123,18 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         // select
         boolean inProjectionOrig = inProjection;
         inProjection = true;
-        if (projection != null){
+        if (projection != null) {
             append(SELECT).append(projection).append("\n");
 
         }else if (forCountRow) {
-            if (!metadata.isDistinct()){
+            if (!metadata.isDistinct()) {
                 append(SELECT_COUNT);
-            }else{
+            } else {
                 append(SELECT_COUNT_DISTINCT);
             }
-            if(!select.isEmpty()){
+            if(!select.isEmpty()) {
                 handle(COMMA, select);
-            }else{
+            } else {
                 handle(joins.get(0).getTarget());
             }
             append(")\n");
@@ -174,7 +174,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             append(ORDER_BY);
             boolean first = true;
             for (OrderSpecifier<?> os : orderBy) {
-                if (!first){
+                if (!first) {
                     append(COMMA);
                 }
                 handle(os.getTarget());
@@ -208,11 +208,11 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             if (i > 0) {
                 append(joinTypes.get(je.getType()));
             }
-            if (je.hasFlag(JPQLQueryMixin.FETCH) && !forCountRow){
+            if (je.hasFlag(JPQLQueryMixin.FETCH) && !forCountRow) {
                 handle(JPQLQueryMixin.FETCH);
             }
             handleJoinTarget(je);
-            if (je.hasFlag(JPQLQueryMixin.FETCH_ALL_PROPERTIES) && !forCountRow){
+            if (je.hasFlag(JPQLQueryMixin.FETCH_ALL_PROPERTIES) && !forCountRow) {
                 handle(JPQLQueryMixin.FETCH_ALL_PROPERTIES);
             }
 
@@ -243,7 +243,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     }
 
     @Override
-    public Void visit(ParamExpression<?> param, Void context){
+    public Void visit(ParamExpression<?> param, Void context) {
         append(":");
         super.visit(param, context);
         return null;
@@ -258,7 +258,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     }
 
     @Override
-    public Void visit(Path<?> expr, Void context){
+    public Void visit(Path<?> expr, Void context) {
         // only wrap a PathCollection, if it the pathType is PROPERTY
         boolean wrap = wrapElements
         && (Collection.class.isAssignableFrom(expr.getType()) || Map.class.isAssignableFrom(expr.getType()))
@@ -291,8 +291,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         boolean old = wrapElements;
         wrapElements = templates.wrapElements(operator);
 
-        if (operator.equals(Ops.IN)){
-            if (args.get(1) instanceof Path){
+        if (operator.equals(Ops.IN)) {
+            if (args.get(1) instanceof Path) {
                 if (!templates.isEnumInPathSupported() && args.get(0) instanceof Constant && Enum.class.isAssignableFrom(args.get(0).getType())) {
                     Enumerated enumerated = ((Path)args.get(1)).getAnnotatedElement().getAnnotation(Enumerated.class);
                     Enum constant = (Enum)((Constant)args.get(0)).getConstant();
@@ -304,22 +304,22 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 }                
                 
                 super.visitOperation(type, JPQLTemplates.MEMBER_OF, args);
-            }else{
+            } else {
                 super.visitOperation(type, operator, args);
             }
 
         } else if (operator.equals(Ops.INSTANCE_OF)) {
-            if (templates.isTypeAsString()){
+            if (templates.isTypeAsString()) {
                 List<Expression<?>> newArgs = new ArrayList<Expression<?>>(args);
                 Class<?> cl = ((Class<?>) ((Constant<?>) newArgs.get(1)).getConstant());
                 // use discriminator value instead of fqnm
-                if (cl.getAnnotation(DiscriminatorValue.class) != null){
+                if (cl.getAnnotation(DiscriminatorValue.class) != null) {
                     newArgs.set(1, ConstantImpl.create(cl.getAnnotation(DiscriminatorValue.class).value()));
-                }else{
+                } else {
                     newArgs.set(1, ConstantImpl.create(cl.getName()));
                 }
                 super.visitOperation(type, operator, newArgs);
-            }else{
+            } else {
                 super.visitOperation(type, operator, args);
             }
 
@@ -328,17 +328,17 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             String typeName = targetType.getSimpleName().toLowerCase(Locale.ENGLISH);
             visitOperation(targetType, JPQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), ConstantImpl.create(typeName)));
 
-        } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQueryExpression){
+        } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQueryExpression) {
             SubQueryExpression subQuery = (SubQueryExpression) args.get(0);
             append("exists (");
             serialize(subQuery.getMetadata(), false, templates.getExistsProjection());
             append(")");
 
-        } else if (operator.equals(Ops.MATCHES) || operator.equals(Ops.MATCHES_IC)){
+        } else if (operator.equals(Ops.MATCHES) || operator.equals(Ops.MATCHES_IC)) {
             super.visitOperation(type, Ops.LIKE,
                     Arrays.asList(args.get(0), ExpressionUtils.regexToLike((Expression<String>) args.get(1))));
 
-        }else if(NUMERIC.contains(operator)){
+        }else if(NUMERIC.contains(operator)) {
             super.visitOperation(type, operator, normalizeNumericArgs(args));
 
         } else {
@@ -352,28 +352,28 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     private List<Expression<?>> normalizeNumericArgs(List<Expression<?>> args) {
         boolean hasConstants = false;
         Class<? extends Number> numType = null;
-        for (Expression<?> arg : args){
-            if (Number.class.isAssignableFrom(arg.getType())){
-                if (arg instanceof Constant){
+        for (Expression<?> arg : args) {
+            if (Number.class.isAssignableFrom(arg.getType())) {
+                if (arg instanceof Constant) {
                     hasConstants = true;
-                }else{
+                } else {
                     numType = (Class<? extends Number>) arg.getType();
                 }
             }
         }
-        if (hasConstants && numType != null){
+        if (hasConstants && numType != null) {
             List<Expression<?>> newArgs = new ArrayList<Expression<?>>(args.size());
-            for (Expression<?> arg : args){
+            for (Expression<?> arg : args) {
                 if (arg instanceof Constant && Number.class.isAssignableFrom(arg.getType())
-                        && !arg.getType().equals(numType)){
+                        && !arg.getType().equals(numType)) {
                     Number number = (Number) ((Constant)arg).getConstant();
                     newArgs.add(new ConstantImpl(MathUtils.cast(number, (Class)numType)));
-                }else{
+                } else {
                     newArgs.add(arg);
                 }
             }
             return newArgs;
-        }else{
+        } else {
             return args;
         }
     }

@@ -34,11 +34,11 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause>{
 
     private final JPQLTemplates templates;
 
-    public JPADeleteClause(EntityManager em, EntityPath<?> entity){
+    public JPADeleteClause(EntityManager em, EntityPath<?> entity) {
         this(em, entity, HQLTemplates.DEFAULT);
     }
 
-    public JPADeleteClause(EntityManager entityManager, EntityPath<?> entity, JPQLTemplates templates){
+    public JPADeleteClause(EntityManager entityManager, EntityPath<?> entity, JPQLTemplates templates) {
         this.entityManager = entityManager;
         this.templates = templates;
         metadata.addJoin(JoinType.DEFAULT, entity);
@@ -62,7 +62,7 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause>{
     }
     
     @Override
-    public String toString(){
+    public String toString() {
         JPQLSerializer serializer = new JPQLSerializer(templates);
         serializer.serializeForDelete(metadata);
         return serializer.toString();

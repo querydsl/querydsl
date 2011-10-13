@@ -36,7 +36,7 @@ public class InverseForeignKeyData implements KeyData{
         this.type = type;
     }
 
-    public void add(String foreignColumn, String parentColumn){
+    public void add(String foreignColumn, String parentColumn) {
         foreignColumns.add(foreignColumn);
         parentColumns.add(parentColumn);
     }

@@ -30,7 +30,7 @@ public final class JPASQLQuery extends AbstractJPASQLQuery<JPASQLQuery> implemen
         super(session, sqlTemplates, metadata);
     }
     
-    public JPASQLQuery clone(EntityManager entityManager){
+    public JPASQLQuery clone(EntityManager entityManager) {
         JPASQLQuery q = new JPASQLQuery(new DefaultSessionHolder(entityManager), sqlTemplates, getMetadata().clone());
         q.flushMode = flushMode;
         q.hints.putAll(hints);

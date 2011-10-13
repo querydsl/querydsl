@@ -46,63 +46,63 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> implements Query<My
         super(conn, configuration, metadata);
     }
     
-    public MySQLQuery bigResult(){
+    public MySQLQuery bigResult() {
         return addFlag(Position.AFTER_SELECT, "sql_big_result ");
     }
     
-    public MySQLQuery bufferResult(){
+    public MySQLQuery bufferResult() {
         return addFlag(Position.AFTER_SELECT, "sql_buffer_result ");
     }
     
-    public MySQLQuery cache(){
+    public MySQLQuery cache() {
         return addFlag(Position.AFTER_SELECT, "sql_cache ");
     }
     
-    public MySQLQuery calcFoundRows(){
+    public MySQLQuery calcFoundRows() {
         return addFlag(Position.AFTER_SELECT, "sql_calc_found_rows ");
     }
     
-    public MySQLQuery forUpdate(){
+    public MySQLQuery forUpdate() {
         return addFlag(Position.END, "\nfor update ");
     }
     
-    public MySQLQuery highPriority(){
+    public MySQLQuery highPriority() {
         return addFlag(Position.AFTER_SELECT, "high_priority ");
     }
     
-    public MySQLQuery into(String var){
+    public MySQLQuery into(String var) {
         return addFlag(Position.END, "\ninto " + var);
     }
 
-    public MySQLQuery intoDumpfile(File file){
+    public MySQLQuery intoDumpfile(File file) {
         return addFlag(Position.END, "\ninto dumpfile '" + file.getPath() + "'" );
     }
     
-    public MySQLQuery intoOutfile(File file){
+    public MySQLQuery intoOutfile(File file) {
         return addFlag(Position.END, "\ninto outfile '" + file.getPath() + "'" );
     }
     
-    public MySQLQuery lockInShareMode(){
+    public MySQLQuery lockInShareMode() {
         return addFlag(Position.END, "\nlock in share mode ");
     }
     
-    public MySQLQuery noCache(){
+    public MySQLQuery noCache() {
         return addFlag(Position.AFTER_SELECT, "sql_no_cache ");
     }
     
-    public MySQLQuery smallResult(){
+    public MySQLQuery smallResult() {
         return addFlag(Position.AFTER_SELECT, "sql_small_result ");
     }
     
-    public MySQLQuery straightJoin(){
+    public MySQLQuery straightJoin() {
         return addFlag(Position.AFTER_SELECT, "straight_join ");
     }
     
-    public MySQLQuery useIndex(String... indexes){
+    public MySQLQuery useIndex(String... indexes) {
         return addJoinFlag(" use_index (" + StringUtils.join(indexes, ", ") + ")", JoinFlag.Position.END);
     }
     
-    public MySQLQuery withRollup(){
+    public MySQLQuery withRollup() {
         return addFlag(Position.AFTER_GROUP_BY, "\nwith rollup ");
     }
     

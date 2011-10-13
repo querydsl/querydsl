@@ -33,15 +33,15 @@ public class SQLServerTemplates extends SQLTemplates{
 
     private String outerQueryEnd = "\n)\nselect * \nfrom inner_query\nwhere ";
 
-    public SQLServerTemplates(){
+    public SQLServerTemplates() {
         this('\\',false);
     }
     
-    public SQLServerTemplates(boolean quote){
+    public SQLServerTemplates(boolean quote) {
         this('\\',quote);
     }
 
-    public SQLServerTemplates(char escape, boolean quote){
+    public SQLServerTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
         addClass2TypeMappings("decimal", Double.class);
         setDummyTable("");
@@ -74,13 +74,13 @@ public class SQLServerTemplates extends SQLTemplates{
 
     @Override
     public void serialize(QueryMetadata metadata, boolean forCountRow, SerializationContext context) {
-        if (!forCountRow && metadata.getModifiers().isRestricting()){
+        if (!forCountRow && metadata.getModifiers().isRestricting()) {
             // TODO : provide simpler template for limit ?!?
 
             context.append(outerQueryStart);
             metadata = metadata.clone();
             RowNumber rn = new RowNumber();
-            for (OrderSpecifier<?> os : metadata.getOrderBy()){
+            for (OrderSpecifier<?> os : metadata.getOrderBy()) {
                 rn.orderBy(os);
             }
             metadata.addProjection(rn.as(SQLServerGrammar.rowNumber));
@@ -88,15 +88,15 @@ public class SQLServerTemplates extends SQLTemplates{
             context.serialize(metadata, forCountRow);
             context.append(outerQueryEnd);
             QueryModifiers mod = metadata.getModifiers();
-            if (mod.getLimit() == null){
+            if (mod.getLimit() == null) {
                 context.handle(offsetTemplate, mod.getOffset());
-            }else if (mod.getOffset() == null){
+            } else if (mod.getOffset() == null) {
                 context.handle(limitTemplate, mod.getLimit());
-            }else{
+            } else {
                 context.handle(limitOffsetTemplate, mod.getOffset(), mod.getLimit() + mod.getOffset());
             }
 
-        }else{
+        } else {
             context.serialize(metadata, forCountRow);
         }
     }

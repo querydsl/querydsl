@@ -47,7 +47,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     }
 
     @Override
-    public boolean exists(){
+    public boolean exists() {
         return limit(1).uniqueResult(NumberTemplate.ONE) != null;
     }
 
@@ -56,7 +56,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     }
 
     @SuppressWarnings("unchecked")
-    public T from(SubQueryExpression<?> subQuery, Path<?> alias){
+    public T from(SubQueryExpression<?> subQuery, Path<?> alias) {
         return queryMixin.from(ExpressionUtils.as((Expression)subQuery, alias));
     }
 
@@ -72,7 +72,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
         return queryMixin.fullJoin(o, alias);
     }
 
-    public QueryMetadata getMetadata(){
+    public QueryMetadata getMetadata() {
         return queryMixin.getMetadata();
     }
 
@@ -128,27 +128,27 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
         return queryMixin.rightJoin(o, alias);
     }
     
-    public T addJoinFlag(String flag){
+    public T addJoinFlag(String flag) {
         return addJoinFlag(flag, JoinFlag.Position.BEFORE_TARGET);
     }
 
     @SuppressWarnings("unchecked")
-    public T addJoinFlag(String flag, JoinFlag.Position position){
+    public T addJoinFlag(String flag, JoinFlag.Position position) {
         List<JoinExpression> joins = queryMixin.getMetadata().getJoins();
         joins.get(joins.size()-1).addFlag(new JoinFlag(flag, position));
         return (T)this;
     }
 
-    public T addFlag(Position position, String prefix, Expression<?> expr){
+    public T addFlag(Position position, String prefix, Expression<?> expr) {
         Expression<?> flag = SimpleTemplate.create(expr.getType(), prefix + "{0}", expr);
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
 
-    public T addFlag(Position position, String flag){
+    public T addFlag(Position position, String flag) {
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
 
-    public T addFlag(Position position, Expression<?> flag){
+    public T addFlag(Position position, Expression<?> flag) {
         return queryMixin.addFlag(new QueryFlag(position, flag));
     }
 

@@ -46,7 +46,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
 
     private static final Logger logger = LoggerFactory.getLogger(JDOQLQueryImpl.class);
 
-    private final Closeable closeable = new Closeable(){
+    private final Closeable closeable = new Closeable() {
         @Override
         public void close() throws IOException {
             AbstractJDOQLQuery.this.close();
@@ -92,7 +92,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     }
 
     public void close() {
-        for (Query query : queries){
+        for (Query query : queries) {
             query.closeAll();
         }
     }
@@ -103,21 +103,21 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         query.setUnique(true);
         reset();
         Long rv = (Long) execute(query);
-        if (rv != null){
+        if (rv != null) {
             return rv.longValue();
-        }else{
+        } else {
             throw new QueryException("Query returned null");
         }
     }
 
     @Override
-    public boolean exists(){
+    public boolean exists() {
         boolean rv = limit(1).uniqueResult(getSource()) != null;
         close();
         return rv;
     }
 
-    private Expression<?> getSource(){
+    private Expression<?> getSource() {
         return queryMixin.getMetadata().getJoins().get(0).getTarget();
     }
 
@@ -135,19 +135,19 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         orderedConstants = serializer.getConstants();
         queries.add(query);
 
-        if (!forCount){
+        if (!forCount) {
             List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
             Class<?> exprType = projection.get(0).getClass();
-            if (exprType.equals(QTuple.class)){
+            if (exprType.equals(QTuple.class)) {
                 query.setResultClass(JDOTuple.class);
-            } else if (FactoryExpression.class.isAssignableFrom(exprType)){
+            } else if (FactoryExpression.class.isAssignableFrom(exprType)) {
                 query.setResultClass(projection.get(0).getType());
             }
 
-            if (!fetchGroups.isEmpty()){
+            if (!fetchGroups.isEmpty()) {
                 query.getFetchPlan().setGroups(fetchGroups);
             }
-            if (maxFetchDepth != null){
+            if (maxFetchDepth != null) {
                 query.getFetchPlan().setMaxFetchDepth(maxFetchDepth);
             }
         }
@@ -155,17 +155,17 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         return query;
     }
 
-    protected void logQuery(String queryString){
-        if (logger.isDebugEnabled()){
+    protected void logQuery(String queryString) {
+        if (logger.isDebugEnabled()) {
             logger.debug(queryString.replace('\n', ' '));
         }
     }
 
     @SuppressWarnings("unchecked")
-    private <T> T detach(T results){
-        if (results instanceof Collection){
+    private <T> T detach(T results) {
+        if (results instanceof Collection) {
             return (T) persistenceManager.detachCopyAll(results);
-        }else{
+        } else {
             return persistenceManager.detachCopy(results);
         }
     }
@@ -178,7 +178,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         } else {
             rv = query.execute();
         }
-        if (isDetach()){
+        if (isDetach()) {
             rv = detach(rv);
         }
         return rv;
@@ -188,7 +188,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         return queryMixin.from(args);
     }
 
-    public QueryMetadata getMetadata(){
+    public QueryMetadata getMetadata() {
         return queryMixin.getMetadata();
     }
 
@@ -244,7 +244,7 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
         }
     }
 
-    private void reset(){
+    private void reset() {
         queryMixin.getMetadata().reset();
     }
 
@@ -255,13 +255,13 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     }
 
     @Override
-    public String toString(){
-        if (!queryMixin.getMetadata().getJoins().isEmpty()){
+    public String toString() {
+        if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             Expression<?> source = getSource();
             JDOQLSerializer serializer = new JDOQLSerializer(getTemplates(), source);
             serializer.serialize(queryMixin.getMetadata(), false, false);
             return serializer.toString().trim();
-        }else{
+        } else {
             return super.toString();
         }
     }
@@ -279,9 +279,9 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     public Object[] uniqueResult(Expression<?>[] args) {
         queryMixin.addToProjection(args);
         Object obj = uniqueResult();
-        if (obj != null){
+        if (obj != null) {
             return obj.getClass().isArray() ? (Object[])obj : new Object[]{obj};    
-        }else{
+        } else {
             return null;
         }                
     }
@@ -289,23 +289,23 @@ public abstract class AbstractJDOQLQuery<Q extends AbstractJDOQLQuery<Q>> extend
     @SuppressWarnings("unchecked")
     @Nullable
     private Object uniqueResult() {
-        if (getMetadata().getModifiers().getLimit() == null){
+        if (getMetadata().getModifiers().getLimit() == null) {
             limit(2);
         }
         Query query = createQuery(false);
         reset();
         Object rv = execute(query);
-        if (rv instanceof List){
+        if (rv instanceof List) {
             List<?> list = (List)rv;
-            if (!list.isEmpty()){
-                if (list.size() > 1){
+            if (!list.isEmpty()) {
+                if (list.size() > 1) {
                     throw new NonUniqueResultException();
                 }
                 return list.get(0);
-            }else{
+            } else {
                 return null;
             }
-        }else{
+        } else {
             return rv;
         }
     }

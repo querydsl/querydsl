@@ -66,7 +66,7 @@ public class NumberPath<T extends Number & Comparable<?>> extends NumberExpressi
     }
 
     @Override
-    public AnnotatedElement getAnnotatedElement(){
+    public AnnotatedElement getAnnotatedElement() {
         return pathMixin.getAnnotatedElement();
     }
 }

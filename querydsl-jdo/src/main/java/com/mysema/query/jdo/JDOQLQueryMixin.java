@@ -42,7 +42,7 @@ public class JDOQLQueryMixin<T> extends QueryMixin<T> {
 
     @Override
     protected Predicate[] normalize(Predicate[] conditions, boolean where) {
-        for (int i = 0; i < conditions.length; i++){
+        for (int i = 0; i < conditions.length; i++) {
             if (conditions[i] != null) {
                 conditions[i] = normalize(conditions[i], where);    
             }   
@@ -51,14 +51,14 @@ public class JDOQLQueryMixin<T> extends QueryMixin<T> {
     }
 
     private Predicate normalize(Predicate predicate, boolean where) {
-        if (predicate instanceof BooleanBuilder && ((BooleanBuilder)predicate).getValue() == null){
+        if (predicate instanceof BooleanBuilder && ((BooleanBuilder)predicate).getValue() == null) {
             return predicate;
-        }else{
+        } else {
             Context context = new Context();
             Predicate transformed = (Predicate) predicate.accept(CollectionAnyVisitor.DEFAULT, context);
-            for (int i = 0; i < context.paths.size(); i++){
+            for (int i = 0; i < context.paths.size(); i++) {
                 Path<?> path = context.paths.get(i);            
-                if (!anyPaths.contains(path)){
+                if (!anyPaths.contains(path)) {
                     addCondition(context, i, path, where);
                 }
             }
@@ -72,9 +72,9 @@ public class JDOQLQueryMixin<T> extends QueryMixin<T> {
         EntityPath<?> alias = context.replacements.get(i);                 
         from(alias);
         Predicate condition = ExpressionUtils.in(alias, (CollectionExpression)path.getMetadata().getParent());
-        if (where){
+        if (where) {
             super.where(condition);
-        }else{
+        } else {
             super.having(condition);
         }
     }

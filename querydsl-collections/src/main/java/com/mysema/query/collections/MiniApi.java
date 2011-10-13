@@ -18,7 +18,7 @@ import com.mysema.query.types.Path;
  */
 public final class MiniApi {
 
-    public static <A> ColDeleteClause<A> delete(Path<A> path, Collection<A> col){
+    public static <A> ColDeleteClause<A> delete(Path<A> path, Collection<A> col) {
         return new ColDeleteClause<A>(path, col);
     }
 
@@ -34,10 +34,10 @@ public final class MiniApi {
         return new ColQueryImpl().from(path, col);
     }
 
-    public static <A> ColUpdateClause<A> update(Path<A> path, Iterable<A> col){
+    public static <A> ColUpdateClause<A> update(Path<A> path, Iterable<A> col) {
         return new ColUpdateClause<A>(path, col);
     }
 
-    private MiniApi(){}
+    private MiniApi() {}
 
 }

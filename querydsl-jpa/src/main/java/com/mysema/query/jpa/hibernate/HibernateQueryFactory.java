@@ -42,11 +42,11 @@ public class HibernateQueryFactory implements QueryFactory<HibernateQuery, Hiber
         return new HibernateUpdateClause(session.get(), path, templates);
     }
 
-    public HibernateQuery query(){
+    public HibernateQuery query() {
         return new HibernateQuery(session.get(), templates);
     }
 
-    public HibernateSubQuery subQuery(){
+    public HibernateSubQuery subQuery() {
         return new HibernateSubQuery();
     }
 }

@@ -51,15 +51,15 @@ public class SQLQueryFactoryImpl implements SQLQueryFactory<SQLQueryImpl, SQLSub
         return new SQLUpdateClause(connection.get(), configuration, path);
     }
 
-    public SQLQueryImpl query(){
+    public SQLQueryImpl query() {
         return new SQLQueryImpl(connection.get(), configuration);
     }
 
-    public SQLSubQuery subQuery(){
+    public SQLSubQuery subQuery() {
         return new SQLSubQuery();
     }
 
-    public SQLSubQuery subQuery(Expression<?> from){
+    public SQLSubQuery subQuery(Expression<?> from) {
         return subQuery().from(from);
     }
 
