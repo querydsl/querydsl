@@ -51,7 +51,7 @@
             </goals>
             <configuration>
               <outputDirectory>target/generated-sources/java</outputDirectory>
-              <processor>com.mysema.query.mongodb.MongodbAnnotationProcessor</processor>
+              <processor>com.mysema.query.mongodb.morphia.MorphiaAnnotationProcessor</processor>
             </configuration>
           </execution>
         </executions>
@@ -63,7 +63,7 @@
 ]]></programlisting>
 
     <para>
-      The MongodbAnnotationProcessor finds domain types annotated with the
+      The MorphiaAnnotationProcessor finds domain types annotated with the
       com.google.code.morphia.annotations.Entity annotation and generates
       Querydsl query types for them.
     </para>
