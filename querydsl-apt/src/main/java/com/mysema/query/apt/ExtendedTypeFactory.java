@@ -210,14 +210,20 @@ public final class ExtendedTypeFactory {
         } else {
             type = createType(typeElement, typeCategory, declaredType.getTypeArguments(), deep);
         }        
+        
+        TypeMirror superType = typeElement.getSuperclass();
+        TypeElement superTypeElement = null;
+        if (superType instanceof DeclaredType) {
+            superTypeElement = (TypeElement) ((DeclaredType)superType).asElement();
+        }
 
         // entity type
         for (Class<? extends Annotation> entityAnn : entityAnnotations) {
-            if (typeElement.getAnnotation(entityAnn) != null ){
+            if (typeElement.getAnnotation(entityAnn) != null || (superTypeElement != null && superTypeElement.getAnnotation(entityAnn) != null)){
                 EntityType entityType = new EntityType(type);
                 typeMappings.register(entityType, queryTypeFactory.create(entityType));
                 return entityType;
-            }
+            } 
         }
         return type;
     }

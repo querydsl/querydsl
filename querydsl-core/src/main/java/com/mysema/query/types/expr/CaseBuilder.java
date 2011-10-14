@@ -150,6 +150,21 @@ public final class CaseBuilder {
         public <A> Cases<A,Expression<A>> then(A constant) {
             return then(new ConstantImpl<A>(constant));
         }
+        
+        public Cases<Boolean,BooleanExpression> then(BooleanExpression expr) {
+            return thenBoolean(expr);
+        }
+
+        private Cases<Boolean, BooleanExpression> thenBoolean(Expression<Boolean> expr) {
+            return new Cases<Boolean,BooleanExpression>(Boolean.class){
+                @SuppressWarnings("unchecked")
+                @Override
+                protected BooleanExpression createResult(Class<Boolean> type, Expression<Boolean> last) {
+                    return BooleanOperation.create((Operator)Ops.CASE, last);
+                }
+
+            }.addCase(when, expr);
+        }
 
         public Cases<String,StringExpression> then(StringExpression expr){
             return thenString(expr);
@@ -198,6 +213,10 @@ public final class CaseBuilder {
 
         public <A extends Number & Comparable<?>> Cases<A, NumberExpression<A>> then(A num){
             return thenNumber(new ConstantImpl<A>(num));
+        }
+        
+        public Cases<Boolean, BooleanExpression> then(boolean b) {
+            return thenBoolean(ConstantImpl.create(b));
         }
     }
 

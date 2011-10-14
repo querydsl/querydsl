@@ -11,6 +11,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.CaseBuilder;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.StringExpression;
@@ -27,7 +28,7 @@ public class CaseBuilderTest {
     @Test
     public void BooleanTyped(){
         Customer c = alias(Customer.class, "customer");
-        Expression<Boolean> cases = new CaseBuilder()
+        BooleanExpression cases = new CaseBuilder()
             .when($(c.getAnnualSpending()).gt(10000)).then(true)
             .otherwise(false);
 
