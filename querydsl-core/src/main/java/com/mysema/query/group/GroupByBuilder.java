@@ -59,9 +59,9 @@ public class GroupByBuilder<K> {
             @SuppressWarnings("unchecked")
             protected V transform(Group group) {
                 // XXX Isn't group.toArray() suitable here?
-                List<Object> args = new ArrayList<Object>(columnDefinitions.size() - 1);
-                for (int i = 1; i < columnDefinitions.size(); i++) {
-                    args.add(group.getGroup(columnDefinitions.get(i)));
+                List<Object> args = new ArrayList<Object>(groupExpressions.size() - 1);
+                for (int i = 1; i < groupExpressions.size(); i++) {
+                    args.add(group.getGroup(groupExpressions.get(i)));
                 }
                 return (V)transformation.newInstance(args.toArray());
             }

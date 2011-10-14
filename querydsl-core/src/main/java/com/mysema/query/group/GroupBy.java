@@ -32,27 +32,27 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
     }
     
     public static <E extends Comparable<E>> SimpleExpression<E> min(Expression<E> expression) {
-        return new GroupExpression<E>(expression.getType(), new GMin<E>(expression), expression);
+        return new GMin<E>(expression);
     }    
     
     public static <E extends Comparable<E>> SimpleExpression<E> max(Expression<E> expression) {
-        return new GroupExpression<E>(expression.getType(), new GMax<E>(expression), expression);
+        return new GMax<E>(expression);
     }
            
     public static <E> SimpleExpression<List<E>> list(Expression<E> expression) {
-        return new GroupExpression<List<E>>((Class)List.class, new GList<E>(expression), expression);
+        return new GList<E>(expression);
     }
     
     public static <E> SimpleExpression<Set<E>> set(Expression<E> expression) {
-        return new GroupExpression<Set<E>>((Class)Set.class, new GSet<E>(expression), expression);
+        return new GSet<E>(expression);
     }
     
     public static <K, V> SimpleExpression<Map<K, V>> map(Expression<K> key, Expression<V> value) {
         QPair<K,V> qPair = new QPair<K,V>(key, value);
-        return new GroupExpression<Map<K,V>>((Class)Map.class, new GMap<K,V>(qPair), qPair);
+        return new GMap<K,V>(qPair);
     }
     
-    protected final List<GroupDefinition<?, ?>> columnDefinitions = new ArrayList<GroupDefinition<?, ?>>();
+    protected final List<GroupExpression<?, ?>> groupExpressions = new ArrayList<GroupExpression<?, ?>>();
     
     protected final List<QPair<?,?>> maps = new ArrayList<QPair<?,?>>();
         
@@ -61,19 +61,19 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
     GroupBy(Expression<K> key, Expression<?>... expressions) {
         
         List<Expression<?>> projection = new ArrayList<Expression<?>>(expressions.length);        
-        columnDefinitions.add(new GOne<K>(key));
+        groupExpressions.add(new GOne<K>(key));
         projection.add(key);
         
         for (Expression<?> expr : expressions) {
-            if (expr instanceof GroupExpression<?>) {
-                GroupExpression<?> groupExpr = (GroupExpression<?>)expr;
-                columnDefinitions.add(groupExpr.getDefinition());
-                projection.add(groupExpr.getDefinition().getExpression());
-                if (groupExpr.getDefinition() instanceof GMap) {
-                    maps.add((QPair<?, ?>) groupExpr.getDefinition().getExpression());
+            if (expr instanceof GroupExpression<?,?>) {
+                GroupExpression<?,?> groupExpr = (GroupExpression<?,?>)expr;
+                groupExpressions.add(groupExpr);
+                projection.add(groupExpr.getExpression());
+                if (groupExpr instanceof GMap) {
+                    maps.add((QPair<?, ?>) groupExpr.getExpression());
                 }                
             } else {
-                columnDefinitions.add(new GOne(expr));
+                groupExpressions.add(new GOne(expr));
                 projection.add(expr);
             }
         }
@@ -93,7 +93,7 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
                 K groupId = (K) row[0];                
                 GroupImpl group = (GroupImpl)groups.get(groupId);                
                 if (group == null) {
-                    group = new GroupImpl(columnDefinitions, maps);
+                    group = new GroupImpl(groupExpressions, maps);
                     groups.put(groupId, group);
                 }
                 group.add(row);

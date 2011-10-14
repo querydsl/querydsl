@@ -7,10 +7,13 @@ package com.mysema.query.group;
 
 import com.mysema.query.types.Expression;
 
-class GMin<T extends Comparable<T>> extends AbstractGroupDefinition<T, T> {
+class GMin<T extends Comparable<T>> extends AbstractGroupExpression<T, T> {
 
+    private static final long serialVersionUID = 8312168556148122576L;
+
+    @SuppressWarnings("unchecked")
     public GMin(Expression<T> expr) {
-        super(expr);
+        super((Class) expr.getType(), expr);
     }
 
     @Override

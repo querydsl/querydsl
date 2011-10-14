@@ -7,10 +7,13 @@ package com.mysema.query.group;
 
 import com.mysema.query.types.Expression;
 
-class GMax<T extends Comparable<T>> extends AbstractGroupDefinition<T, T> {
+class GMax<T extends Comparable<T>> extends AbstractGroupExpression<T, T> {
 
+    private static final long serialVersionUID = 3815394663181131511L;
+
+    @SuppressWarnings("unchecked")
     public GMax(Expression<T> expr) {
-        super(expr);
+        super((Class)expr.getType(), expr);
     }
 
     @Override

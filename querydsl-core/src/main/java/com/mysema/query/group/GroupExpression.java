@@ -1,47 +1,29 @@
 package com.mysema.query.group;
 
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.Operator;
-import com.mysema.query.types.OperatorImpl;
-import com.mysema.query.types.expr.SimpleOperation;
 
 /**
- * GroupExpression combines a GroupDefinition and related Expressions
+ * Defines the way results of a given expression are grouped. GroupExpressions are also used
+ * to access values of a given GroupExpression within a Group.  
+ * GroupExpressions are stateless wrappers for Expressions that know how to 
+ * collect row values into a group.
  * 
+ * @author sasa
  * @author tiwe
  *
  * @param <T>
  */
-public class GroupExpression<T> extends SimpleOperation<T> {
+public interface GroupExpression<T,R> extends Expression<R> {
 
-    private static final long serialVersionUID = -339842770639127388L;
-
-    private static final Operator<Object> GROUP_EXPRESSION = new OperatorImpl<Object>("GROUP_EXPRESSION", Object.class);
+    /**
+     * @return Expression wrapped by this group definition
+     */
+    Expression<T> getExpression();
     
-    private final GroupDefinition<?,T> definition;
+    /**
+     * @return a new GroupCollector to collect values belonging to this group.
+     */
+    GroupCollector<T, R> createGroupCollector();
     
-    @SuppressWarnings("unchecked")
-    public GroupExpression(Class<? extends T> type, GroupDefinition<?,T> definition, Expression<?>... args) {
-        super((Class)type, GROUP_EXPRESSION, args);
-        this.definition = definition; 
-    }
-
-    public GroupDefinition<?, T> getDefinition() {
-        return definition;
-    }
-    
-    @Override
-    public boolean equals(Object o) {
-        if (o instanceof GroupExpression<?>) {
-            return super.equals(o) && ((GroupExpression<?>)o).getDefinition().equals(definition);    
-        } else {
-            return false;
-        }        
-    }
-    
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
     
 }

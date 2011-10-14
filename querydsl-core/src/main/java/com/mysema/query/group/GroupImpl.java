@@ -25,17 +25,17 @@ class GroupImpl implements Group {
     
     private final Map<Expression<?>, GroupCollector<?,?>> groupCollectorMap = new LinkedHashMap<Expression<?>, GroupCollector<?,?>>();
     
-    private final List<GroupDefinition<?, ?>> columnDefinitions;
+    private final List<GroupExpression<?, ?>> groupExpressions;
     
     private final List<GroupCollector<?,?>> groupCollectors = new ArrayList<GroupCollector<?,?>>();
     
     private final List<QPair<?, ?>> maps;
     
-    public GroupImpl(List<GroupDefinition<?, ?>> columnDefinitions,  List<QPair<?, ?>> maps) {
-        this.columnDefinitions = columnDefinitions;
+    public GroupImpl(List<GroupExpression<?, ?>> columnDefinitions,  List<QPair<?, ?>> maps) {
+        this.groupExpressions = columnDefinitions;
         this.maps = maps;
         for (int i=0; i < columnDefinitions.size(); i++) {
-            GroupDefinition<?, ?> coldef = columnDefinitions.get(i);
+            GroupExpression<?, ?> coldef = columnDefinitions.get(i);
             GroupCollector<?,?> collector = groupCollectorMap.get(coldef.getExpression());
             if (collector == null) {
                 collector = coldef.createGroupCollector();                
@@ -45,6 +45,7 @@ class GroupImpl implements Group {
         }
     }
 
+    @SuppressWarnings("unchecked")
     void add(Object[] row) {
         int i=0;
         for (GroupCollector groupCollector : groupCollectors) {
@@ -64,8 +65,8 @@ class GroupImpl implements Group {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T, R> R getGroup(GroupDefinition<T, R> definition) {
-        for (GroupDefinition<?, ?> def : columnDefinitions) {            
+    public <T, R> R getGroup(GroupExpression<T, R> definition) {
+        for (GroupExpression<?, ?> def : groupExpressions) {            
             if (def.equals(definition)) {
                 return (R) groupCollectorMap.get(def.getExpression()).get();
             }

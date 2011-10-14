@@ -10,10 +10,12 @@ import java.util.Map;
 
 import com.mysema.commons.lang.Pair;
 
-class GMap<K, V> extends AbstractGroupDefinition<Pair<K, V>, Map<K, V>>{
+class GMap<K, V> extends AbstractGroupExpression<Pair<K, V>, Map<K, V>>{
     
+    private static final long serialVersionUID = 7106389414200843920L;
+
     public GMap(QPair<K,V> qpair) {
-        super(qpair);
+        super(Map.class, qpair);
     }
 
     @Override

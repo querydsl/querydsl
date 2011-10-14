@@ -35,7 +35,7 @@ public interface Group {
      * @throws ClassCastException if group is of different type  
      * @return Value of given group definition in this group
      */
-    <T, R> R getGroup(GroupDefinition<T, R> coldef);
+    <T, R> R getGroup(GroupExpression<T, R> coldef);
     
     /**
      * Returns the value of the given single valued expression. This is the 

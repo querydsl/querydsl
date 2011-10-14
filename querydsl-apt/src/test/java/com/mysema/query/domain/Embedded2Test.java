@@ -63,8 +63,6 @@ public class Embedded2Test {
 
     }
      
-    // TODO : compilation should work without this annotation
-    @Embeddable
     public class BrandCode extends EntityCode {
 
     }
