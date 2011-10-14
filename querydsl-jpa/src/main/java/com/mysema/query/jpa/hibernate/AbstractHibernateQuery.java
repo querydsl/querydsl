@@ -50,7 +50,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     protected Boolean cacheable, readOnly;
 
     @Nullable
-    protected String cacheRegion;
+    protected String cacheRegion, comment;
 
     protected int fetchSize = 0;
 
@@ -142,6 +142,9 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         }
         if (cacheRegion != null) {
             query.setCacheRegion(cacheRegion);
+        }
+        if (comment != null) {
+            query.setComment(comment);
         }
         if (readOnly != null) {
             query.setReadOnly(readOnly);
@@ -310,6 +313,17 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     @SuppressWarnings("unchecked")
     public Q setCacheRegion(String cacheRegion) {
         this.cacheRegion = cacheRegion;
+        return (Q)this;
+    }
+    
+    /**
+     * Add a comment to the generated SQL.      
+     * @param comment
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public Q setComment(String comment) {
+        this.comment = comment;
         return (Q)this;
     }
 

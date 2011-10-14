@@ -59,6 +59,11 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
         assertNotNull(results);
         assertFalse(results.isEmpty());
     }
+    
+    @Test
+    public void WithComment() {
+        query().from(QCat.cat).setComment("my comment").list(QCat.cat);
+    }
 
     @Test
     public void LockMode(){
