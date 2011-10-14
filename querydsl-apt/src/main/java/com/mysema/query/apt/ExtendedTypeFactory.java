@@ -137,6 +137,10 @@ public final class ExtendedTypeFactory {
                 params);
     }
 
+    public Collection<EntityType> getEntityTypes() {
+        return entityTypeCache.values();
+    }
+    
     @Nullable
     public Type getType(TypeMirror typeMirror, boolean deep){
         if (typeMirror.getKind().isPrimitive()) {

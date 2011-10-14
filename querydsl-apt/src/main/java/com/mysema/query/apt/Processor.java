@@ -172,7 +172,7 @@ public class Processor {
         processEntities();
 
         processProjectionTypes();
-                
+        
     }
 
     private void processExclusions() {
@@ -301,6 +301,7 @@ public class Processor {
             env.getMessager().printMessage(Kind.NOTE, "Serializing Projection types");
             serialize(configuration.getDTOSerializer(), projectionTypes.values());
         }
+
     }
 
     private void serializeVariableClasses() {

@@ -63,6 +63,7 @@ public class Embedded2Test {
 
     }
      
+    @Embeddable
     public class BrandCode extends EntityCode {
 
     }
