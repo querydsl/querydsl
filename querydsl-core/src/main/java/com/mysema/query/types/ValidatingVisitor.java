@@ -45,7 +45,8 @@ public class ValidatingVisitor implements Visitor<Void, Void>, Serializable{
     @Override
     public Void visit(Path<?> expr, Void context) {
         if (!known.contains(expr.getRoot())){
-            throw new IllegalArgumentException("Undeclared path " + expr.getRoot());
+            throw new IllegalArgumentException("Undeclared path '" + expr.getRoot() + "'. " +
+            	"Add this path as a source to the query to be able to reference it.");
         }
         if (expr.getMetadata().getParent() != null){
             expr.getMetadata().getParent().accept(this, null);
