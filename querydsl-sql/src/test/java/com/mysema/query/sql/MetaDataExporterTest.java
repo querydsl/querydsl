@@ -5,6 +5,7 @@
  */
 package com.mysema.query.sql;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -38,6 +39,8 @@ public class MetaDataExporterTest {
     
     private Serializer beanSerializer = new BeanSerializer();
 
+    private boolean clean = true;
+    
     @BeforeClass
     public static void setUpClass() throws ClassNotFoundException, SQLException{
         Class.forName("org.h2.Driver");
@@ -121,7 +124,20 @@ public class MetaDataExporterTest {
     public void NormalSettings() throws SQLException{
         test("Q", "", "", "", defaultNaming, "target/1", false, false);
 
-        assertTrue(new File("target/1/test/QEmployee.java").exists());
+        assertTrue(new File("target/1/test/QEmployee.java").exists());        
+    }
+    
+    @Test
+    public void NormalSettings_Repetition() throws SQLException {
+        test("Q", "", "", "", defaultNaming, "target/1", false, false);
+
+        File file = new File("target/1/test/QEmployee.java");
+        long lastModified = file.lastModified();
+        assertTrue(file.exists());
+        
+        clean = false;        
+        test("Q", "", "", "", defaultNaming, "target/1", false, false);
+        assertEquals(lastModified, file.lastModified()); 
     }
 
     @Test
@@ -380,13 +396,15 @@ public class MetaDataExporterTest {
 
     private void test(String namePrefix, String nameSuffix, String beanPrefix, String beanSuffix, NamingStrategy namingStrategy, String target, boolean withBeans, boolean withInnerClasses) throws SQLException{
         File targetDir = new File(target);
-        try {
-            if (targetDir.exists()){
-                FileUtils.cleanDirectory(targetDir);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        if (clean) {
+            try {
+                if (targetDir.exists()){
+                    FileUtils.cleanDirectory(targetDir);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }    
+        }        
 
         MetaDataExporter exporter = new MetaDataExporter();
         exporter.setSchemaPattern("PUBLIC");
