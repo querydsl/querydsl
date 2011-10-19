@@ -80,10 +80,10 @@ public class EntitySerializer implements Serializer{
         // 2
         if (!hasEntityFields) {
             if (model.isFinal()) {
-                Type type = new ClassType(BeanPath.class, model);
+                Type type = new ClassType(Path.class, model);
                 writer.beginConstructor(new Parameter("entity", type));
             } else {
-                Type type = new ClassType(BeanPath.class, new TypeExtends(model));
+                Type type = new ClassType(Path.class, new TypeExtends(model));
                 writer.beginConstructor(new Parameter("entity", type));
             }
             if (stringOrBoolean) {
