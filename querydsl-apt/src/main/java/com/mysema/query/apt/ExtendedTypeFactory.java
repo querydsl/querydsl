@@ -36,6 +36,7 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.TypeExtends;
 import com.mysema.codegen.model.TypeSuper;
 import com.mysema.codegen.model.Types;
+import com.mysema.query.annotations.QueryExclude;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.QueryTypeFactory;
 import com.mysema.query.codegen.Supertype;
@@ -424,12 +425,18 @@ public final class ExtendedTypeFactory {
             if (e.getKind() == ElementKind.CLASS) {
                 if (e.getSuperclass().getKind() != TypeKind.NONE) {
                     TypeMirror supertype = normalize(e.getSuperclass());
-                    Type superClass = getType(supertype, deep);
-                    if (superClass == null) {
-                        System.err.println("Got no type for " + supertype);
-                    } else  if (!superClass.getFullName().startsWith("java")) {
-                        superTypes = Collections.singleton(getType(supertype, deep));
+                    if (supertype instanceof DeclaredType 
+                            && ((DeclaredType)supertype).asElement().getAnnotation(QueryExclude.class) != null) {
+                        return Collections.emptySet();
+                    } else {
+                        Type superClass = getType(supertype, deep);                   
+                        if (superClass == null) {
+                            System.err.println("Got no type for " + supertype);
+                        } else  if (!superClass.getFullName().startsWith("java")) {
+                            superTypes = Collections.singleton(getType(supertype, deep));
+                        }    
                     }
+                    
                 }
             // interface
             } else {
