@@ -84,7 +84,7 @@ public class TypeTest implements InvocationHandler{
     @SuppressWarnings("unchecked")
     @Test
     public void test() throws MalformedURLException, SQLException{
-        List<Pair> valueAndType = new ArrayList<Pair>();
+        List<Pair<?,?>> valueAndType = new ArrayList<Pair<?,?>>();
         valueAndType.add(Pair.of(new BigDecimal("1"), new BigDecimalType()));
         valueAndType.add(Pair.of(new Boolean(true),   new BooleanType()));
         valueAndType.add(Pair.of(new Byte((byte)1),   new ByteType()));
@@ -108,8 +108,8 @@ public class TypeTest implements InvocationHandler{
         valueAndType.add(Pair.of(new LocalDate(),     new LocalDateType()));
         valueAndType.add(Pair.of(new LocalTime(),     new LocalTimeType()));
         
-        valueAndType.add(Pair.of(Gender.MALE,         new EnumByNameType(Gender.class)));
-        valueAndType.add(Pair.of(Gender.MALE,         new EnumByOrdinalType(Gender.class)));
+        valueAndType.add(Pair.of(Gender.MALE,         new EnumByNameType<Gender>(Gender.class)));
+        valueAndType.add(Pair.of(Gender.MALE,         new EnumByOrdinalType<Gender>(Gender.class)));
         
         valueAndType.add(Pair.of(EasyMock.createNiceMock(Blob.class), new BlobType()));
         valueAndType.add(Pair.of(EasyMock.createNiceMock(Clob.class), new ClobType()));

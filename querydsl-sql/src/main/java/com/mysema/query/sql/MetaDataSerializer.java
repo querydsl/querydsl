@@ -6,7 +6,6 @@
 package com.mysema.query.sql;
 
 import static com.mysema.codegen.Symbols.NEW;
-import static com.mysema.codegen.Symbols.UNCHECKED;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -31,7 +30,6 @@ import com.mysema.query.sql.support.ForeignKeyData;
 import com.mysema.query.sql.support.InverseForeignKeyData;
 import com.mysema.query.sql.support.KeyData;
 import com.mysema.query.sql.support.PrimaryKeyData;
-import com.mysema.query.types.Path;
 
 /**
  * MetaDataSerializer defines the Query type serialization logic for MetaDataExporter.
@@ -63,17 +61,14 @@ public class MetaDataSerializer extends EntitySerializer {
     }
 
     @Override
-    @SuppressWarnings(UNCHECKED)
     protected void introClassHeader(CodeWriter writer, EntityType model) throws IOException {
         Type queryType = typeMappings.getPathType(model, model, true);
 
-        TypeCategory category = model.getOriginalCategory();
-        Class<? extends Path> pathType = RelationalPathBase.class;
-
+        TypeCategory category = model.getOriginalCategory();        
         for (Annotation annotation : model.getAnnotations()) {
             writer.annotation(annotation);
         }
-        writer.beginClass(queryType, new ClassType(category, pathType, model));
+        writer.beginClass(queryType, new ClassType(category, RelationalPathBase.class, model));
         writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()));
     }
 

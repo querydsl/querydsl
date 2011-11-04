@@ -23,7 +23,7 @@ public class SimpleEntity {
 
 }
 
-class CustomComparable implements Comparable<CustomComparable>{
+class CustomComparable implements Comparable<CustomComparable> {
 
     @Override
     public int compareTo(CustomComparable o) {
@@ -32,7 +32,7 @@ class CustomComparable implements Comparable<CustomComparable>{
     
 }
 
-class CustomNumber extends Number implements Comparable<CustomNumber>{
+class CustomNumber extends Number implements Comparable<CustomNumber> {
 
     private static final long serialVersionUID = 8683978836725543780L;
 

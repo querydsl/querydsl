@@ -23,7 +23,7 @@ import com.mysema.query.types.Predicate;
  *
  * @param <T>
  */
-public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>>{
+public class ColUpdateClause<T> implements UpdateClause<ColUpdateClause<T>> {
 
     private final Path<T> expr;
 

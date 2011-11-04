@@ -15,6 +15,6 @@ import com.mysema.query.FilteredClause;
  *
  * @param <C> concrete subtype
  */
-public interface DeleteClause<C extends DeleteClause<C>> extends DMLClause<C>, FilteredClause<C>{
+public interface DeleteClause<C extends DeleteClause<C>> extends DMLClause<C>, FilteredClause<C> {
 
 }

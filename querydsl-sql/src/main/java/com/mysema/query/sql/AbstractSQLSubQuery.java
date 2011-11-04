@@ -11,10 +11,9 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
-import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.DetachableQuery;
-import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Path;
@@ -30,13 +29,16 @@ import com.mysema.query.types.TemplateExpressionImpl;
  */
 public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends DetachableQuery<Q> {
 
+    protected final SQLQueryMixin<Q> queryMixin;
+    
     public AbstractSQLSubQuery() {
         this(new DefaultQueryMetadata(false));
     }
 
     @SuppressWarnings("unchecked")
     public AbstractSQLSubQuery(QueryMetadata metadata) {
-        super(new QueryMixin<Q>(metadata));
+        super(new SQLQueryMixin<Q>(metadata));
+        this.queryMixin = (SQLQueryMixin<Q>)super.queryMixin;
         this.queryMixin.setSelf((Q)this);
     }
 
@@ -107,50 +109,66 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     public Q from(SubQueryExpression<?> subQuery, Path<?> alias) {
         return queryMixin.from(ExpressionUtils.as((Expression)subQuery, alias));
     }
-    
-    public <E> Q fullJoin(ForeignKey<E> key, RelationalPath<E> entity) {
-        return queryMixin.fullJoin(entity).on(key.on(entity));
-    }
 
     public Q fullJoin(RelationalPath<?> target) {
         return queryMixin.fullJoin(target);
+    }
+    
+    public <E> Q fullJoin(RelationalFunctionCall<E> target, Path<E> alias) {
+        return queryMixin.fullJoin(target, alias);
+    }
+    
+    public <E> Q fullJoin(ForeignKey<E> key, RelationalPath<E> entity) {
+        return queryMixin.fullJoin(entity).on(key.on(entity));
     }
 
     public Q fullJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.fullJoin(target, alias);
     }
 
-    public <E> Q innerJoin(ForeignKey<E> key, RelationalPath<E> entity) {
-        return queryMixin.innerJoin(entity).on(key.on(entity));
-    }
-
     public Q innerJoin(RelationalPath<?> target) {
         return queryMixin.innerJoin(target);
     }
-
-    public Q innerJoin(SubQueryExpression<?> target, Path<?> alias) {
+    
+    public <E> Q innerJoin(RelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.innerJoin(target, alias);
     }
 
-    public <E> Q join(ForeignKey<E> key, RelationalPath<E>  entity) {
-        return queryMixin.join(entity).on(key.on(entity));
+    public <E> Q innerJoin(ForeignKey<E> key, RelationalPath<E> entity) {
+        return queryMixin.innerJoin(entity).on(key.on(entity));
+    }
+    
+    public Q innerJoin(SubQueryExpression<?> target, Path<?> alias) {
+        return queryMixin.innerJoin(target, alias);
     }
 
     public Q join(RelationalPath<?> target) {
         return queryMixin.join(target);
     }
-
-    public Q join(SubQueryExpression<?> target, Path<?> alias) {
+    
+    public <E> Q join(RelationalFunctionCall<E> target, Path<E> alias) {
         return queryMixin.join(target, alias);
     }
-
-    public <E> Q leftJoin(ForeignKey<E> key, RelationalPath<E>  entity) {
-        return queryMixin.leftJoin(entity).on(key.on(entity));
+    
+    public <E> Q join(ForeignKey<E> key, RelationalPath<E>  entity) {
+        return queryMixin.join(entity).on(key.on(entity));
+    }
+  
+    public Q join(SubQueryExpression<?> target, Path<?> alias) {
+        return queryMixin.join(target, alias);
     }
 
     public Q leftJoin(RelationalPath<?> target) {
         return queryMixin.leftJoin(target);
     }   
+    
+    public <E> Q leftJoin(RelationalFunctionCall<E> target, Path<E> alias) {
+        return queryMixin.leftJoin(target, alias);
+    }
+    
+    public <E> Q leftJoin(ForeignKey<E> key, RelationalPath<E>  entity) {
+        return queryMixin.leftJoin(entity).on(key.on(entity));
+    }
 
     public Q leftJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.leftJoin(target, alias);
@@ -160,12 +178,16 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
         return queryMixin.on(conditions);
     }
 
-    public <E> Q rightJoin(ForeignKey<E> key, RelationalPath<E>  entity) {
-        return queryMixin.rightJoin(entity).on(key.on(entity));
-    }
-
     public Q rightJoin(RelationalPath<?> target) {
         return queryMixin.rightJoin(target);
+    }
+    
+    public <E> Q rightJoin(RelationalFunctionCall<E> target, Path<E> alias) {
+        return queryMixin.fullJoin(target, alias);
+    }
+    
+    public <E> Q rightJoin(ForeignKey<E> key, RelationalPath<E>  entity) {
+        return queryMixin.rightJoin(entity).on(key.on(entity));
     }
 
     public Q rightJoin(SubQueryExpression<?> target, Path<?> alias) {

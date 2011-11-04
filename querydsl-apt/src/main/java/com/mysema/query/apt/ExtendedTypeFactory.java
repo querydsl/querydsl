@@ -23,12 +23,17 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.ErrorType;
+import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.NoType;
 import javax.lang.model.type.NullType;
+import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.type.TypeVariable;
+import javax.lang.model.type.TypeVisitor;
 import javax.lang.model.type.WildcardType;
+import javax.lang.model.util.AbstractTypeVisitor6;
 
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
@@ -41,6 +46,7 @@ import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.QueryTypeFactory;
 import com.mysema.query.codegen.Supertype;
 import com.mysema.query.codegen.TypeMappings;
+import com.mysema.util.ClassPathUtils;
 
 /**
  * ExtendedTypeFactory is a factory for APT inspection based Type creation
@@ -50,32 +56,209 @@ import com.mysema.query.codegen.TypeMappings;
  */
 public final class ExtendedTypeFactory {
 
-    @Nullable
-    private static Class<?> safeClassForName(String name){
-        try {
-            return Class.forName(name);
-        } catch (ClassNotFoundException e) {
-            return null;
-        }
-    }
-
     private final Map<List<String>, Type> typeCache = new HashMap<List<String>, Type>();
 
+    private final Map<List<String>, EntityType> entityTypeCache = new HashMap<List<String>, EntityType>();
+    
     private final Type defaultType;
 
     private final Set<Class<? extends Annotation>> entityAnnotations;
-
-    private final Map<List<String>, EntityType> entityTypeCache = new HashMap<List<String>, EntityType>();
 
     private final ProcessingEnvironment env;
 
     private final TypeElement numberType, comparableType;
 
-    private boolean doubleIndexEntities = true;
-
     private final TypeMappings typeMappings;
 
     private final QueryTypeFactory queryTypeFactory;
+
+    private boolean doubleIndexEntities = true;
+    
+    private final TypeVisitor<Type, Boolean> visitor = new AbstractTypeVisitor6<Type, Boolean>() {
+
+        @Override
+        public Type visitPrimitive(PrimitiveType primitiveType, Boolean p) {
+            switch (primitiveType.getKind()) {
+            case BOOLEAN: return Types.BOOLEAN;
+            case BYTE: return Types.BYTE;
+            case CHAR: return Types.CHARACTER;
+            case DOUBLE: return Types.DOUBLE;
+            case FLOAT: return Types.FLOAT;
+            case INT: return Types.INTEGER;
+            case LONG: return Types.LONG;
+            case SHORT: return Types.SHORT;
+            }
+            return null;
+        }
+
+        @Override
+        public Type visitNull(NullType nullType, Boolean p) {
+            throw new IllegalStateException();
+        }
+
+        @Override
+        public Type visitArray(ArrayType arrayType, Boolean p) {
+            return visit(arrayType.getComponentType(), p).asArrayType();
+        }
+
+        @Override
+        public Type visitDeclared(DeclaredType declaredType, Boolean p) {
+            if (declaredType.asElement() instanceof TypeElement) {
+                TypeElement typeElement = (TypeElement)declaredType.asElement();
+                switch(typeElement.getKind()){
+                case ENUM:      return createEnumType(declaredType, typeElement, p);
+                case CLASS:     return createClassType(declaredType, typeElement, p);
+                case INTERFACE: return createInterfaceType(declaredType, typeElement, p);
+                default: throw new IllegalArgumentException("Illegal type " + typeElement);
+                }
+            } else {
+                throw new IllegalArgumentException("Unsupported element type " + declaredType.asElement());
+            }
+        }
+
+        @Override
+        public Type visitError(ErrorType errorType, Boolean p) {
+            return visitDeclared(errorType, p);
+        }
+
+        @Override
+        public Type visitTypeVariable(TypeVariable typeVariable, Boolean p) {
+            String varName = typeVariable.toString();
+            if (typeVariable.getUpperBound() != null) {
+                Type type = visit(typeVariable.getUpperBound(), p);
+                return new TypeExtends(varName, type);
+            } else if (typeVariable.getLowerBound() != null && !(typeVariable.getLowerBound() instanceof NullType)) {
+                return new TypeSuper(varName, visit(typeVariable.getLowerBound(), p));
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public Type visitWildcard(WildcardType wildardType, Boolean p) {
+            if (wildardType.getExtendsBound() != null) {
+                Type type = visit(wildardType.getExtendsBound(), p);
+                return new TypeExtends(type);
+            } else if (wildardType.getSuperBound() != null) {
+                return new TypeSuper(visit(wildardType.getSuperBound(), p));
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public Type visitExecutable(ExecutableType t, Boolean p) {
+            throw new IllegalStateException();
+        }
+
+        @Override
+        public Type visitNoType(NoType t, Boolean p) {
+            return defaultType;
+        }
+
+        @Override
+        public Type visitUnknown(TypeMirror t, Boolean p) {
+            return defaultType;
+        }
+        
+    };
+
+    // TODO : return TypeMirror instead ?!?
+    
+    private final TypeVisitor<List<String>, Boolean> keyBuilder = new AbstractTypeVisitor6<List<String>, Boolean>() {
+
+        private List<String> visitBase(TypeMirror t) {
+            List<String> rv = new ArrayList<String>();
+            String name = t.toString();
+            if (name.contains("<")) {
+                name = name.substring(0, name.indexOf('<'));
+            }
+            rv.add(name);
+            return rv;
+        }
+        
+        @Override
+        public List<String> visitPrimitive(PrimitiveType t, Boolean p) {
+            // TODO  : optimize
+            switch (t.getKind()) {
+            case BOOLEAN: return Collections.singletonList("Boolean");
+            case BYTE:    return Collections.singletonList("Byte");
+            case CHAR:    return Collections.singletonList("Character");
+            case DOUBLE:  return Collections.singletonList("Double");
+            case FLOAT:   return Collections.singletonList("Float");
+            case INT:     return Collections.singletonList("Integer");
+            case LONG:    return Collections.singletonList("Long");
+            case SHORT:   return Collections.singletonList("Short");
+            }
+            return null;
+        }
+
+        @Override
+        public List<String> visitNull(NullType t, Boolean p) {
+            return Collections.singletonList("Object");
+        }
+
+        @Override
+        public List<String> visitArray(ArrayType t, Boolean p) {
+            List<String> rv = new ArrayList<String>(visit(t.getComponentType()));
+            rv.add("[]");
+            return rv;
+        }
+
+        @Override
+        public List<String> visitDeclared(DeclaredType t, Boolean p) {
+            List<String> rv = visitBase(t);            
+            for (TypeMirror arg : t.getTypeArguments()) {
+                if (p) {
+                    rv.addAll(visit(arg, false));
+                } else {
+                    rv.add(arg.toString());
+                }
+            }
+            return rv;
+        }
+
+        @Override
+        public List<String> visitError(ErrorType t, Boolean p) {
+            return visitDeclared(t, p);
+        }
+
+        @Override
+        public List<String> visitTypeVariable(TypeVariable t, Boolean p) {
+            List<String> rv = visitBase(t); 
+            if (t.getUpperBound() != null) {
+                rv.addAll(visit(t.getUpperBound(), p));
+            }
+            if (t.getLowerBound() != null) {
+                rv.addAll(visit(t.getLowerBound(), p));
+            }
+            return rv;
+        }
+
+        @Override
+        public List<String> visitWildcard(WildcardType t, Boolean p) {
+            List<String> rv = visitBase(t); 
+            if (t.getExtendsBound() != null) {
+                rv.addAll(visit(t.getExtendsBound(), p));
+            }
+            if (t.getSuperBound() != null) {
+                rv.addAll(visit(t.getSuperBound(), p));
+            }
+            return rv;
+        }
+
+        @Override
+        public List<String> visitExecutable(ExecutableType t, Boolean p) {
+            throw new IllegalStateException();
+        }
+
+        @Override
+        public List<String> visitNoType(NoType t, Boolean p) {
+            return Collections.singletonList("Object");
+        }
+
+        
+    };
 
     public ExtendedTypeFactory(
             ProcessingEnvironment env,
@@ -91,34 +274,8 @@ public final class ExtendedTypeFactory {
         this.typeMappings = typeMappings;
         this.queryTypeFactory = queryTypeFactory;
     }
-
-    private void appendToKey(List<String> key, DeclaredType t, boolean deep) {
-        for (TypeMirror arg : t.getTypeArguments()) {
-            if (deep) {
-                key.addAll(createKey(arg, false));
-            } else {
-                key.add(arg.toString());
-            }
-        }
-    }
-
-    private void appendToKey(List<String> key, TypeVariable t) {
-        if (t.getUpperBound() != null) {
-            key.addAll(createKey(t.getUpperBound(), false));
-        }
-        if (t.getLowerBound() != null) {
-            key.addAll(createKey(t.getLowerBound(), false));
-        }
-    }
-
-    private void appendToKey(List<String> key, WildcardType t) {
-        if (t.getExtendsBound() != null) {
-            key.addAll(createKey(t.getExtendsBound(), false));
-        }
-        if (t.getSuperBound() != null) {
-            key.addAll(createKey(t.getSuperBound(), false));
-        }
-    }
+    
+    
 
     private Type createType(TypeElement typeElement, TypeCategory category, List<? extends TypeMirror> typeArgs, boolean deep) {
         String name = typeElement.getQualifiedName().toString();
@@ -128,14 +285,8 @@ public final class ExtendedTypeFactory {
         for (int i = 0; i < params.length; i++) {
             params[i] = getType(typeArgs.get(i), deep);
         }
-        return new SimpleType(
-                category,
-                name,
-                packageName,
-                simpleName,
-                false,
-                typeElement.getModifiers().contains(Modifier.FINAL),
-                params);
+        return new SimpleType(category, name, packageName, simpleName, false,
+                typeElement.getModifiers().contains(Modifier.FINAL), params);
     }
 
     public Collection<EntityType> getEntityTypes() {
@@ -144,10 +295,7 @@ public final class ExtendedTypeFactory {
     
     @Nullable
     public Type getType(TypeMirror typeMirror, boolean deep){
-        if (typeMirror.getKind().isPrimitive()) {
-            typeMirror = normalizePrimitiveType(typeMirror);
-        }
-        List<String> key = createKey(typeMirror,true);
+        List<String> key = keyBuilder.visit(typeMirror,true);
         if (entityTypeCache.containsKey(key)) {
             return entityTypeCache.get(key);
         } else if (typeCache.containsKey(key)) {
@@ -160,7 +308,7 @@ public final class ExtendedTypeFactory {
     @Nullable
     private Type createType(TypeMirror typeMirror, List<String> key, boolean deep) {
         typeCache.put(key, null);
-        Type type = handle(typeMirror, deep);
+        Type type = visitor.visit(typeMirror, deep);
         if (type != null && (type.getCategory() == TypeCategory.ENTITY || type.getCategory() == TypeCategory.CUSTOM)) {
             EntityType entityType = getEntityType(typeMirror, deep);
             typeCache.put(key, entityType);
@@ -176,16 +324,13 @@ public final class ExtendedTypeFactory {
         String name = typeElement.getQualifiedName().toString();
         TypeCategory typeCategory = TypeCategory.get(name);
         
-        if (typeCategory != TypeCategory.NUMERIC
-                && isImplemented(typeElement, comparableType)
-                && isSubType(typeElement, numberType)) {
+        if (typeCategory != TypeCategory.NUMERIC && isImplemented(typeElement, comparableType) && isSubType(typeElement, numberType)) {
             typeCategory = TypeCategory.NUMERIC;
             
-        } else if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE)
-                && isImplemented(typeElement, comparableType)) {
+        } else if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && isImplemented(typeElement, comparableType)) {
             typeCategory = TypeCategory.COMPARABLE;
             
-        } if (typeCategory == TypeCategory.SIMPLE){
+        } if (typeCategory == TypeCategory.SIMPLE) {
             for (Class<? extends Annotation> entityAnn : entityAnnotations) {
                 if (typeElement.getAnnotation(entityAnn) != null) {
                     typeCategory = TypeCategory.ENTITY;
@@ -288,16 +433,13 @@ public final class ExtendedTypeFactory {
     }
 
     @Nullable
-    public EntityType getEntityType(TypeMirror typeMirrors, boolean deep) { 
-        if (typeMirrors.getKind().isPrimitive()) {
-            typeMirrors = normalizePrimitiveType(typeMirrors);
-        }
-        List<String> key = createKey(typeMirrors, true);
+    public EntityType getEntityType(TypeMirror typeMirror, boolean deep) { 
+        List<String> key = keyBuilder.visit(typeMirror, true);
         // get from cache
         if (entityTypeCache.containsKey(key)) {
             EntityType entityType = entityTypeCache.get(key);
             if (deep && entityType.getSuperTypes().isEmpty()) {
-                for (Type superType : getSupertypes(typeMirrors, entityType, deep)) {
+                for (Type superType : getSupertypes(typeMirror, entityType, deep)) {
                     entityType.addSupertype(new Supertype(superType));
                 }
             }
@@ -305,7 +447,7 @@ public final class ExtendedTypeFactory {
 
         // create
         } else {
-            return createEntityType(typeMirrors, key, deep);
+            return createEntityType(typeMirror, key, deep);
 
         }
     }
@@ -313,7 +455,7 @@ public final class ExtendedTypeFactory {
     @Nullable
     private EntityType createEntityType(TypeMirror typeMirror, List<String> key, boolean deep) {
         entityTypeCache.put(key, null);
-        Type value = handle(typeMirror, deep);
+        Type value = visitor.visit(typeMirror, deep);
         if (value != null) {
             EntityType entityType = null;
             if (value instanceof EntityType) {
@@ -372,7 +514,7 @@ public final class ExtendedTypeFactory {
         String name = typeElement.getQualifiedName().toString();
         String simpleName = typeElement.getSimpleName().toString();
         Iterator<? extends TypeMirror> i = declaredType.getTypeArguments().iterator();
-        Class<?> cl = safeClassForName(name);
+        Class<?> cl = ClassPathUtils.safeClassForName(name);
 
         if (cl == null) { // class not available
             return createType(typeElement, TypeCategory.get(name), declaredType.getTypeArguments(), deep);
@@ -393,26 +535,7 @@ public final class ExtendedTypeFactory {
             return createType(typeElement, TypeCategory.get(name), declaredType.getTypeArguments(), deep);
         }
     }
-
-    private List<String> createKey(TypeMirror typeMirror, boolean deep){
-        List<String> key = new ArrayList<String>();
-        String name = typeMirror.toString();
-        if (name.contains("<")) {
-            name = name.substring(0, name.indexOf('<'));
-        }
-        key.add(name);
-
-        if (typeMirror.getKind() == TypeKind.TYPEVAR) {
-            appendToKey(key, (TypeVariable) typeMirror);
-        } else if (typeMirror.getKind() == TypeKind.WILDCARD) {
-            appendToKey(key, (WildcardType)typeMirror);
-        } else if (typeMirror.getKind() == TypeKind.DECLARED) {
-            appendToKey(key, (DeclaredType)typeMirror, deep);
-        }
-        return key;
-    }
-
-
+    
     private Set<Type> getSupertypes(TypeMirror typeMirror, Type type, boolean deep) {
         boolean doubleIndex = doubleIndexEntities;
         doubleIndexEntities = false;
@@ -455,78 +578,8 @@ public final class ExtendedTypeFactory {
         doubleIndexEntities = doubleIndex;
         return superTypes;
     }
-
-    @Nullable
-    private Type handle(TypeMirror typeMirror, boolean deep) {
-        if (typeMirror instanceof DeclaredType) {
-            return handleDeclaredType((DeclaredType)typeMirror, deep);
-        } else if (typeMirror instanceof TypeVariable) {
-            return handleTypeVariable((TypeVariable)typeMirror, deep);
-        } else if (typeMirror instanceof WildcardType) {
-            return handleWildcard((WildcardType)typeMirror, deep);
-        } else if (typeMirror instanceof ArrayType) {
-            ArrayType t = (ArrayType)typeMirror;
-            return getType(t.getComponentType(), deep).asArrayType();
-        } else if (typeMirror instanceof NoType) {
-            return defaultType;
-        } else {
-            return null;
-        }
-    }
-
-    private Type handleDeclaredType(DeclaredType declaredType, boolean deep) {
-        if (declaredType.asElement() instanceof TypeElement) {
-            TypeElement typeElement = (TypeElement)declaredType.asElement();
-            switch(typeElement.getKind()){
-            case ENUM:      return createEnumType(declaredType, typeElement, deep);
-            case CLASS:     return createClassType(declaredType, typeElement, deep);
-            case INTERFACE: return createInterfaceType(declaredType, typeElement, deep);
-            default: throw new IllegalArgumentException("Illegal type " + typeElement);
-            }
-        } else {
-            throw new IllegalArgumentException("Unsupported element type " + declaredType.asElement());
-        }
-    }
-
-    private TypeMirror normalizePrimitiveType(TypeMirror typeMirror){
-        switch (typeMirror.getKind()) {
-        case BOOLEAN: return env.getElementUtils().getTypeElement(Boolean.class.getName()).asType();
-        case BYTE: return env.getElementUtils().getTypeElement(Byte.class.getName()).asType();
-        case CHAR: return env.getElementUtils().getTypeElement(Character.class.getName()).asType();
-        case DOUBLE: return env.getElementUtils().getTypeElement(Double.class.getName()).asType();
-        case FLOAT: return env.getElementUtils().getTypeElement(Float.class.getName()).asType();
-        case INT: return env.getElementUtils().getTypeElement(Integer.class.getName()).asType();
-        case LONG: return env.getElementUtils().getTypeElement(Long.class.getName()).asType();
-        case SHORT: return env.getElementUtils().getTypeElement(Short.class.getName()).asType();
-        }
-        throw new IllegalArgumentException("Unsupported type " + typeMirror.getKind() + " for " + typeMirror);
-    }
-
-    @Nullable
-    private Type handleTypeVariable(TypeVariable typeVariable, boolean deep) {
-        String varName = typeVariable.toString();
-        if (typeVariable.getUpperBound() != null) {
-            Type type = handle(typeVariable.getUpperBound(), deep);
-            return new TypeExtends(varName, type);
-        } else if (typeVariable.getLowerBound() != null && !(typeVariable.getLowerBound() instanceof NullType)) {
-            return new TypeSuper(varName, handle(typeVariable.getLowerBound(), deep));
-        } else {
-            return null;
-        }
-    }
-
-    @Nullable
-    private Type handleWildcard(WildcardType wildardType, boolean deep) {
-        if (wildardType.getExtendsBound() != null) {
-            Type type = handle(wildardType.getExtendsBound(), deep);
-            return new TypeExtends(type);
-        } else if (wildardType.getSuperBound() != null) {
-            return new TypeSuper(handle(wildardType.getSuperBound(), deep));
-        } else {
-            return null;
-        }
-    }
-
+   
+    
     // TODO : simplify this
     private boolean isImplemented(TypeElement type, TypeElement iface) {
         for (TypeMirror t : type.getInterfaces()) {

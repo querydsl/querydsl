@@ -8,7 +8,7 @@ import java.util.Set;
 
 import com.mysema.query.types.Expression;
 
-class GSet<T> extends AbstractGroupExpression<T, Set<T>>{
+class GSet<T> extends AbstractGroupExpression<T, Set<T>> { 
     
     private static final long serialVersionUID = -1575808026237160843L;
 

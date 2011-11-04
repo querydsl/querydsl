@@ -42,7 +42,7 @@ import com.mysema.query.types.QTuple;
  * @author tiwe
  *
  */
-public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements SQLCommonQuery<JDOSQLQuery>{
+public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements SQLCommonQuery<JDOSQLQuery> {
     
     private static final Logger logger = LoggerFactory.getLogger(JDOSQLQuery.class);
     

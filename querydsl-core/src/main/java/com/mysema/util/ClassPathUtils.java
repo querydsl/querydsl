@@ -86,7 +86,7 @@ public final class ClassPathUtils {
         }
     }
     
-    private static Class<?> safeClassForName(String className){
+    public static Class<?> safeClassForName(String className){
         try {
             if (className.startsWith("com.sun")) {
                 return null;

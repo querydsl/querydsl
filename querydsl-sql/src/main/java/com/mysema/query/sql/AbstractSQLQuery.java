@@ -30,13 +30,21 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag;
+import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.support.ProjectableQuery;
-import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.*;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.ParamExpression;
+import com.mysema.query.types.ParamNotSetException;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.Predicate;
+import com.mysema.query.types.QBean;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.query.types.template.SimpleTemplate;
@@ -103,6 +111,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     private final Configuration configuration;
     
+    protected final SQLQueryMixin<Q> queryMixin;
+    
     protected boolean unionAll;
 
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration) {
@@ -111,8 +121,9 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration, QueryMetadata metadata) {
-        super(new QueryMixin<Q>(metadata));
-        this.queryMixin.setSelf((Q) this);
+        super(new SQLQueryMixin<Q>(metadata));
+        this.queryMixin = (SQLQueryMixin<Q>)super.queryMixin;
+        this.queryMixin.setSelf((Q) this);        
         this.conn = conn;
         this.configuration = configuration;
     }
@@ -220,6 +231,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     public Q fullJoin(RelationalPath<?> target) {
         return queryMixin.fullJoin(target);
     }
+    
+    public <E> Q fullJoin(RelationalFunctionCall<E> target, Path<E> alias) {
+        return queryMixin.fullJoin(target, alias);
+    }
 
     public Q fullJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.fullJoin(target, alias);
@@ -231,6 +246,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     public Q innerJoin(RelationalPath<?> target) {
         return queryMixin.innerJoin(target);
+    }
+    
+    public <E> Q innerJoin(RelationalFunctionCall<E> target, Path<E> alias) {
+        return queryMixin.innerJoin(target, alias);
     }
 
     public Q innerJoin(SubQueryExpression<?> target, Path<?> alias) {
@@ -244,6 +263,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     public Q join(RelationalPath<?> target) {
         return queryMixin.join(target);
     }
+    
+    public <E> Q join(RelationalFunctionCall<E> target, Path<E> alias) {
+        return queryMixin.join(target, alias);
+    }
 
     public Q join(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.join(target, alias);
@@ -256,6 +279,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     public Q leftJoin(RelationalPath<?> target) {
         return queryMixin.leftJoin(target);
     }
+    
+    public <E> Q leftJoin(RelationalFunctionCall<E> target, Path<E> alias) {
+        return queryMixin.leftJoin(target, alias);
+    }
 
     public Q leftJoin(SubQueryExpression<?> target, Path<?> alias) {
         return queryMixin.leftJoin(target, alias);
@@ -267,6 +294,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     public Q rightJoin(RelationalPath<?> target) {
         return queryMixin.rightJoin(target);
+    }
+    
+    public <E> Q rightJoin(RelationalFunctionCall<E> target, Path<E> alias) {
+        return queryMixin.rightJoin(target, alias);
     }
 
     public Q rightJoin(SubQueryExpression<?> target, Path<?> alias) {

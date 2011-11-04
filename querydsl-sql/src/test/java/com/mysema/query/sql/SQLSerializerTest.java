@@ -12,7 +12,9 @@ import java.util.Arrays;
 import org.junit.Test;
 
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.SelectBaseTest.Survey;
 import com.mysema.query.sql.domain.QSurvey;
+import com.mysema.query.support.Expressions;
 
 public class SQLSerializerTest {
 
@@ -23,6 +25,24 @@ public class SQLSerializerTest {
         serializer.handle(s1.name.startsWith("X"));
         assertEquals("s1.NAME like ? escape '\\'", serializer.toString());
         assertEquals(Arrays.asList("X%"), serializer.getConstants());
+    }
+    
+    @Test
+    public void From_Function() {
+        SQLQuery query = new SQLQueryImpl(SQLTemplates.DEFAULT);
+        QSurvey survey = QSurvey.survey;
+        query.from(Expressions.template(Survey.class, "functionCall()")).join(survey);
+        query.where(survey.name.isNotNull());
+        assertEquals("from functionCall()\njoin SURVEY SURVEY\nwhere SURVEY.NAME is not null", query.toString());
+    }
+    
+    @Test
+    public void Join_To_Function_With_Alias() {
+        SQLQuery query = new SQLQueryImpl(SQLTemplates.DEFAULT);
+        QSurvey survey = QSurvey.survey;
+        query.from(survey).join(RelationalFunctionCall.create(Survey.class, "functionCall()"), Expressions.path(Survey.class, "fc"));
+        query.where(survey.name.isNotNull());
+        assertEquals("from SURVEY SURVEY\njoin functionCall() as fc\nwhere SURVEY.NAME is not null", query.toString());
     }
     
     @Test

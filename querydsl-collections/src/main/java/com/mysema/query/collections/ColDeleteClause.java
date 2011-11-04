@@ -18,7 +18,7 @@ import com.mysema.query.types.Predicate;
  *
  * @param <T>
  */
-public class ColDeleteClause<T> implements DeleteClause<ColDeleteClause<T>>{
+public class ColDeleteClause<T> implements DeleteClause<ColDeleteClause<T>> {
 
     private final Collection<? extends T> col;
 

@@ -17,7 +17,7 @@ import com.mysema.query.types.Path;
  *
  * @param <C> concrete subtype
  */
-public interface UpdateClause<C extends UpdateClause<C>> extends StoreClause<C>, FilteredClause<C>{
+public interface UpdateClause<C extends UpdateClause<C>> extends StoreClause<C>, FilteredClause<C> {
 
     /**
      * Set the paths to be updated

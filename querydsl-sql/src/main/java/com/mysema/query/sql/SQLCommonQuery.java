@@ -81,7 +81,23 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return
      */
     Q from(SubQueryExpression<?> subQuery, Path<?> alias);
-
+    
+    /**
+     * Adds a full join to the given target
+     *
+     * @param o
+     * @return
+     */
+    Q fullJoin(RelationalPath<?> o);
+    
+    /**
+     * Adds a full join to the given target
+     *
+     * @param o
+     * @return
+     */
+    <E> Q fullJoin(RelationalFunctionCall<E> o, Path<E> alias);
+    
     /**
      * Adds a full join to the given target
      *
@@ -96,15 +112,23 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q fullJoin(RelationalPath<?> o);
-
+    Q fullJoin(SubQueryExpression<?> o, Path<?> alias);
+    
+    /**
+     * Adds an inner join to the given target
+     *
+     * @param o
+     * @return
+     */
+    Q innerJoin(RelationalPath<?> o);
+    
     /**
      * Adds a full join to the given target
      *
      * @param o
      * @return
      */
-    Q fullJoin(SubQueryExpression<?> o, Path<?> alias);
+    <E> Q innerJoin(RelationalFunctionCall<E> o, Path<E> alias);
 
     /**
      * Adds an inner join to the given target
@@ -120,16 +144,24 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q innerJoin(RelationalPath<?> o);
+    Q innerJoin(SubQueryExpression<?> o, Path<?> alias);
 
     /**
-     * Adds an inner join to the given target
+     * Adds a join to the given target
      *
      * @param o
      * @return
      */
-    Q innerJoin(SubQueryExpression<?> o, Path<?> alias);
-
+    Q join(RelationalPath<?> o);
+    
+    /**
+     * Adds a full join to the given target
+     *
+     * @param o
+     * @return
+     */
+    <E> Q join(RelationalFunctionCall<E> o, Path<E> alias);
+    
     /**
      * Adds a join to the given target
      *
@@ -144,15 +176,23 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @param o
      * @return
      */
-    Q join(RelationalPath<?> o);
-
+    Q join(SubQueryExpression<?> o, Path<?> alias);
+    
     /**
-     * Adds a join to the given target
+     * Adds a left join to the given target
      *
      * @param o
      * @return
      */
-    Q join(SubQueryExpression<?> o, Path<?> alias);
+    Q leftJoin(RelationalPath<?> o);
+    
+    /**
+     * Adds a full join to the given target
+     *
+     * @param o
+     * @return
+     */
+    <E> Q leftJoin(RelationalFunctionCall<E> o, Path<E> alias);
 
     /**
      * Adds a left join to the given target
@@ -161,14 +201,6 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return
      */
     <E> Q leftJoin(ForeignKey<E> foreign, RelationalPath<E> entity);
-
-    /**
-     * Adds a left join to the given target
-     *
-     * @param o
-     * @return
-     */
-    Q leftJoin(RelationalPath<?> o);
     
     /**
      * Adds a left join to the given target
@@ -185,15 +217,7 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return
      */
     Q on(Predicate... conditions);
-
-    /**
-     * Adds a right join to the given target
-     *
-     * @param o
-     * @return
-     */
-    <E> Q rightJoin(ForeignKey<E> foreign, RelationalPath<E> entity);
-
+    
     /**
      * Adds a right join to the given target
      *
@@ -201,6 +225,22 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
      * @return
      */
     Q rightJoin(RelationalPath<?> o);
+
+    /**
+     * Adds a full join to the given target
+     *
+     * @param o
+     * @return
+     */
+    <E> Q rightJoin(RelationalFunctionCall<E> o, Path<E> alias);
+    
+    /**
+     * Adds a right join to the given target
+     *
+     * @param o
+     * @return
+     */
+    <E> Q rightJoin(ForeignKey<E> foreign, RelationalPath<E> entity);
 
     /**
      * Adds a right join to the given target

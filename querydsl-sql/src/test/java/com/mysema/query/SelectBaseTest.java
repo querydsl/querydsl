@@ -582,10 +582,9 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     }
     
-    @SuppressWarnings("unchecked")
     @Test
     public void Single_Column_via_Object_type(){
-        for (Object s : query().from(survey).list(new PathImpl(Object.class, survey.name.getMetadata()))){
+        for (Object s : query().from(survey).list(new PathImpl<Object>(Object.class, survey.name.getMetadata()))){
             assertEquals(String.class, s.getClass());
         }
     }
@@ -632,6 +631,11 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         }
     }
 
+    @Test
+    public void SubQuery_Alias() {
+        query().from(sq().from(employee).list(employee.all()).as(employee2)).list(employee2.all());
+    }
+    
     @Test
     public void SubQuery_with_Alias(){
         List<Integer> ids1 = query().from(employee).list(employee.id);
