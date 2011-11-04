@@ -145,7 +145,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     }
 
     public <E> T rightJoin(ForeignKey<E> key, RelationalPath<E> entity) {
-        return queryMixin.innerJoin(entity).on(key.on(entity));
+        return queryMixin.rightJoin(entity).on(key.on(entity));
     }
     
     public T rightJoin(SubQueryExpression<?> o, Path<?> alias) {
