@@ -17,7 +17,6 @@ import com.mysema.query.sql.RelationalFunctionCall;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLQueryMixin;
 import com.mysema.query.support.ProjectableQuery;
-import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Path;
@@ -40,7 +39,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(QueryMetadata metadata) {
-        super(new QueryMixin<T>(metadata));
+        super(new SQLQueryMixin<T>(metadata));
         this.queryMixin = (SQLQueryMixin<T>)super.queryMixin;
         this.queryMixin.setSelf((T)this);
     }

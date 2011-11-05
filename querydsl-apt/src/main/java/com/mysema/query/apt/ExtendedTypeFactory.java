@@ -65,7 +65,7 @@ public final class ExtendedTypeFactory {
 
     private final ProcessingEnvironment env;
 
-    private final TypeMirror numberType, comparableType, collectionType, setType, listType, mapType;
+    private final TypeMirror objectType, numberType, comparableType, collectionType, setType, listType, mapType;
 
     private final TypeMappings typeMappings;
 
@@ -246,6 +246,7 @@ public final class ExtendedTypeFactory {
         this.env = env;
         this.defaultType = Types.OBJECT;
         this.entityAnnotations = annotations;
+        this.objectType = getErasedType(Object.class);
         this.numberType = getErasedType(Number.class);
         this.comparableType = getErasedType(Comparable.class);
         this.collectionType = getErasedType(Collection.class);
@@ -323,9 +324,9 @@ public final class ExtendedTypeFactory {
 
         // for intersection types etc
         if (name.equals("")) {
-            TypeMirror type = env.getElementUtils().getTypeElement(Object.class.getName()).asType();
+            TypeMirror type = objectType;
             if (typeCategory == TypeCategory.COMPARABLE) {
-                type = env.getElementUtils().getTypeElement(Comparable.class.getName()).asType();
+                type = comparableType;
             }
             // find most specific type of superTypes which is a subtype of type
             List<? extends TypeMirror> superTypes = env.getTypeUtils().directSupertypes(declaredType);
@@ -365,10 +366,12 @@ public final class ExtendedTypeFactory {
         if (!typeMirrors.hasNext()) {
             return new SimpleType(Types.MAP, defaultType, defaultType);
         }
+        
         Type keyType = getType(typeMirrors.next(), deep);
         if (keyType == null) {
             keyType = defaultType;
         }
+        
         Type valueType = getType(typeMirrors.next(), deep);
         if (valueType == null) {
             valueType = defaultType;
