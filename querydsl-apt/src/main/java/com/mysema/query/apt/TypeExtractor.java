@@ -1,49 +1,52 @@
 package com.mysema.query.apt;
 
-import javax.annotation.Nullable;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.ErrorType;
+import javax.lang.model.type.ExecutableType;
 import javax.lang.model.type.NoType;
-import javax.lang.model.type.TypeMirror;
+import javax.lang.model.type.NullType;
+import javax.lang.model.type.PrimitiveType;
 import javax.lang.model.type.TypeVariable;
 import javax.lang.model.type.WildcardType;
+import javax.lang.model.util.AbstractTypeVisitor6;
 
-public class TypeExtractor {
+/**
+ * @author tiwe
+ *
+ */
+public class TypeExtractor extends AbstractTypeVisitor6<TypeElement, Void> {
 
-    private final boolean skipPrimitive, skipEnum;
+    private final boolean skipEnum;
     
-    public TypeExtractor(boolean skipPrimitive, boolean skipEnum) {
-        this.skipPrimitive = skipPrimitive;
+    public TypeExtractor(boolean skipEnum) {
         this.skipEnum = skipEnum;
     }
     
-    @Nullable
-    public TypeElement handle(TypeMirror typeMirror) {
-        if (typeMirror instanceof DeclaredType) {
-            return handleDeclaredType((DeclaredType)typeMirror);
-        } else if (typeMirror instanceof TypeVariable) {
-            return handleTypeVariable((TypeVariable)typeMirror);
-        } else if (typeMirror instanceof WildcardType) {
-            return handleWildcard((WildcardType)typeMirror);
-        } else if (typeMirror instanceof ArrayType) {
-            ArrayType t = (ArrayType)typeMirror;
-            return handle(t.getComponentType());
-        } else if (typeMirror instanceof NoType) {
-            return null;
-        } else {
-            return null;
-        }
+    @Override
+    public TypeElement visitPrimitive(PrimitiveType t, Void p) {
+        return null;
     }
-    
-    @Nullable
-    private TypeElement handleDeclaredType(DeclaredType typeMirror) {
-        if (typeMirror.asElement() instanceof TypeElement) {
-            TypeElement typeElement = (TypeElement)typeMirror.asElement();
+
+    @Override
+    public TypeElement visitNull(NullType t, Void p) {
+        return null;
+    }
+
+    @Override
+    public TypeElement visitArray(ArrayType t, Void p) {
+        return visit(t.getComponentType());
+    }
+
+    @Override
+    public TypeElement visitDeclared(DeclaredType t, Void p) {
+        if (t.asElement() instanceof TypeElement) {
+            TypeElement typeElement = (TypeElement)t.asElement();
             switch (typeElement.getKind()) {
-                case ENUM:      return handleEnumType(typeMirror, typeElement);
-                case CLASS:     return handleClassType(typeMirror, typeElement);
-                case INTERFACE: return handleInterfaceType(typeMirror, typeElement);
+                case ENUM:      return skipEnum ? null : typeElement;
+                case CLASS:     return typeElement;
+                case INTERFACE: return visit(t.getTypeArguments().get(t.getTypeArguments().size()-1));
                 default: throw new IllegalArgumentException("Illegal type " + typeElement);
             }
         } else {
@@ -51,41 +54,34 @@ public class TypeExtractor {
         }
     }
 
-    @Nullable
-    private TypeElement handleWildcard(WildcardType typeMirror) {
-        return handle(typeMirror.getExtendsBound());
+    @Override
+    public TypeElement visitError(ErrorType t, Void p) {
+        return visitDeclared(t, p);
     }
 
-    @Nullable
-    private TypeElement handleTypeVariable(TypeVariable typeMirror) {
-        if (typeMirror.getUpperBound() != null) {
-            return handle(typeMirror.getUpperBound());
+    @Override
+    public TypeElement visitTypeVariable(TypeVariable t, Void p) {
+        if (t.getUpperBound() != null) {
+            return visit(t.getUpperBound());
         } else {
-            return handle(typeMirror.getLowerBound());
+            return visit(t.getLowerBound());
         }
     }
 
-    @Nullable
-    private TypeElement handleInterfaceType(DeclaredType typeMirror, TypeElement typeElement) {
-        return handle(typeMirror.getTypeArguments().get(typeMirror.getTypeArguments().size()-1));
+    @Override
+    public TypeElement visitWildcard(WildcardType t, Void p) {
+        return visit(t.getExtendsBound());
     }
 
-    @Nullable
-    private TypeElement handleClassType(DeclaredType typeMirror, TypeElement typeElement) {
-        if (skipPrimitive && typeMirror.getKind().isPrimitive()) {
-            return null;
-        } else {
-            return typeElement;            
-        }
+    @Override
+    public TypeElement visitExecutable(ExecutableType t, Void p) {
+        return null;
     }
 
-    @Nullable
-    private TypeElement handleEnumType(DeclaredType typeMirror, TypeElement typeElement) {
-        if (skipEnum) {
-            return null;
-        } else {
-            return typeElement;
-        }        
+    @Override
+    public TypeElement visitNoType(NoType t, Void p) {
+        return null;
     }
+       
     
 }

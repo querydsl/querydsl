@@ -34,14 +34,13 @@ import com.mysema.query.codegen.TypeMappings;
 import com.mysema.util.BeanUtils;
 
 /**
- * ElementHandler is a an APT visitor for entity types
+ * TypeElementHandler is a an APT visitor for entity types
  *
  * @author tiwe
  *
  */
 @Immutable
-// TODO : rename
-public final class ElementHandler{
+public final class TypeElementHandler {
 
     private final TypeMappings typeMappings;
 
@@ -51,7 +50,7 @@ public final class ElementHandler{
 
     private final ExtendedTypeFactory typeFactory;
 
-    public ElementHandler(Configuration configuration, ExtendedTypeFactory typeFactory,
+    public TypeElementHandler(Configuration configuration, ExtendedTypeFactory typeFactory,
             TypeMappings typeMappings, QueryTypeFactory queryTypeFactory) {
         this.configuration = configuration;
         this.typeFactory = typeFactory;

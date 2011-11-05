@@ -15,33 +15,33 @@ public enum VisitorConfig {
     /**
      * visit both fields and getters
      */
-    ALL(true,true),
+    ALL(true, true, true),
 
     /**
      * visit fields only
      */
-    FIELDS_ONLY(true,false),
+    FIELDS_ONLY(true, false, true),
 
     /**
      * visit methods only
      */
-    METHODS_ONLY(false,true),
+    METHODS_ONLY(false, true, true),
 
     /**
      * visit none
      */
-    NONE(false,false);
+    NONE(false, false, false);
 
-    private final boolean visitFieldProperties, visitMethodProperties;
+    private final boolean visitFieldProperties, visitMethodProperties, visitConstructors;
 
-    VisitorConfig(boolean fields, boolean methods) {
+    VisitorConfig(boolean fields, boolean methods, boolean constructors) {
         this.visitFieldProperties = fields;
         this.visitMethodProperties = methods;
+        this.visitConstructors = constructors;
     }
 
     public boolean visitConstructors() {
-        // TODO : parametrize!
-        return true;
+        return visitConstructors;
     }
 
     public boolean visitFieldProperties() {

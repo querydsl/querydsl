@@ -9,7 +9,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 import javax.annotation.processing.Filer;
@@ -29,10 +38,10 @@ import javax.lang.model.type.NoType;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 import javax.lang.model.util.Elements;
+import javax.tools.Diagnostic.Kind;
 import javax.tools.FileObject;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardLocation;
-import javax.tools.Diagnostic.Kind;
 
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.model.Parameter;
@@ -41,7 +50,6 @@ import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.QueryDelegate;
-import com.mysema.query.annotations.QueryEntities;
 import com.mysema.query.annotations.QueryExclude;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.Variables;
@@ -53,7 +61,6 @@ import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.Supertype;
 import com.mysema.query.codegen.TypeMappings;
-import com.mysema.util.BeanUtils;
 
 /**
  * Processor handles the actual work in the Querydsl APT module
@@ -84,7 +91,7 @@ public class Processor {
 
     private final Map<String, EntityType> projectionTypes = new HashMap<String, EntityType>();
 
-    private final ElementHandler elementHandler;
+    private final TypeElementHandler elementHandler;
 
     private final Map<String, EntityType> embeddables = new HashMap<String,EntityType>();
 
@@ -98,6 +105,8 @@ public class Processor {
 
     private final ExtendedTypeFactory typeFactory;
 
+    private final TypeExtractor typeExtractor = new TypeExtractor(true);
+    
     /**
      * Create a new Processor instance
      *
@@ -121,7 +130,7 @@ public class Processor {
         TypeMappings typeMappings = configuration.getTypeMappings();
         QueryTypeFactory queryTypeFactory = configuration.getQueryTypeFactory();
         this.typeFactory = new ExtendedTypeFactory(env, configuration, entityAnnotations, typeMappings, queryTypeFactory);
-        this.elementHandler = new ElementHandler(configuration, typeFactory, typeMappings, queryTypeFactory);
+        this.elementHandler = new TypeElementHandler(configuration, typeFactory, typeMappings, queryTypeFactory);
     }
 
     public void process() {
@@ -134,6 +143,7 @@ public class Processor {
         }
         
         for (String key : entityTypes.keySet()) {
+            actualSupertypes.remove(key);
             extensionTypes.remove(key);
             embeddables.remove(key);
         }
@@ -153,8 +163,10 @@ public class Processor {
             processFromProperties();
         }
         
+        boolean hasEmbeddableAnnotation = configuration.getEmbeddableAnnotation() != null;
+        
         if (configuration.getSuperTypeAnnotation() != null) {
-            processSupertypes();
+            process(configuration.getSuperTypeAnnotation(), hasEmbeddableAnnotation, actualSupertypes);
         }
 
         if (configuration.getEmbeddedAnnotation() != null) {
@@ -162,76 +174,154 @@ public class Processor {
         }
 
         if (configuration.getEmbeddableAnnotation() != null) {
-            processEmbeddables();
+            process(configuration.getEmbeddableAnnotation(), false, embeddables);
         }
 
         if (configuration.getEntitiesAnnotation() != null) {
             processEntitiesFromPackage();
         }
 
-        processEntities();
+        process(configuration.getEntityAnnotation(), hasEmbeddableAnnotation, entityTypes);
 
         processProjectionTypes();
         
     }
+    
+    /**
+     * Get the elements with the given annotation type
+     * 
+     * @param a
+     * @return
+     */
+    private Set<? extends Element> getElements(Class<? extends Annotation> a) {
+        return roundEnv.getElementsAnnotatedWith(a);
+    }
 
     private void processExclusions() {
-        for (Element element : roundEnv.getElementsAnnotatedWith(QueryExclude.class)) {
+        for (Element element : getElements(QueryExclude.class)) {
             if (element instanceof PackageElement) {
                 configuration.addExcludedPackage(((PackageElement)element).getQualifiedName().toString());
-            } else {
+            } else if (element instanceof TypeElement) {
                 configuration.addExcludedClass(((TypeElement)element).getQualifiedName().toString());
+            } else {
+                throw new IllegalArgumentException(element.toString());
             }
         }
     }
+       
+    private void process(Class<? extends Annotation> annotation, boolean skipEmbeddables, Map<String, EntityType> types) {
+        process(getElements(annotation), skipEmbeddables, types);
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void process(Set<? extends Element> elements, boolean skipEmbeddables, Map<String, EntityType> types) {
+        Deque<Type> superTypes = new ArrayDeque<Type>();
+        List<TypeElement> allElements = new ArrayList<TypeElement>();
+        List<TypeMirror> typeMirrors = new ArrayList<TypeMirror>();
+        List<TypeMirror> superTypeMirrors = new ArrayList<TypeMirror>();
+        
+        for (TypeElement element : (Set<TypeElement>)elements) {            
+            if (skipEmbeddables && element.getAnnotation(configuration.getEmbeddableAnnotation()) != null) {
+                continue;
+            }
+            typeFactory.getEntityType(element.asType(), false);
+            typeMirrors.add(element.asType());
+            allElements.add(element);
+                
+            addAnnotationlessSupertypes(superTypeMirrors, allElements, element);
+        }
 
+        // super type handling
+        for (TypeMirror typeMirror : superTypeMirrors) {
+            typeFactory.getEntityType(typeMirror, true);
+        }
+        
+        for (TypeMirror typeMirror : typeMirrors) {
+            typeFactory.getEntityType(typeMirror, true);
+        }
+
+        // get annotated types
+        for (TypeElement element : allElements) {
+            EntityType model = elementHandler.handleEntityType(element);
+            registerTypeElement(model.getFullName(), element);
+            types.put(model.getFullName(), model);
+            if (model.getSuperType() != null) {
+                superTypes.push(model.getSuperType().getType());
+            }
+        }
+
+        mergeTypes(types, superTypes);
+    }
+    
+    private void processEmbedded() {
+        Set<Element> elements = new HashSet<Element>();
+
+        // only creation
+        for (Element element : getElements(configuration.getEmbeddedAnnotation())) {
+            TypeMirror type = element.asType();
+            if (element.getKind() == ElementKind.METHOD){
+                type = ((ExecutableElement)element).getReturnType();
+            }
+            String typeName = type.toString();
+            if (typeName.startsWith(Collection.class.getName())
+             || typeName.startsWith(List.class.getName())
+             || typeName.startsWith(Set.class.getName())) {
+                type = ((DeclaredType)type).getTypeArguments().get(0);
+                
+            } else if (typeName.startsWith(Map.class.getName())){
+                type = ((DeclaredType)type).getTypeArguments().get(1);
+            }
+            
+            TypeElement typeElement = typeExtractor.visit(type);
+            if (typeElement != null && typeElement.getAnnotation(configuration.getEntityAnnotation()) == null) {
+                elements.add(typeElement);
+            }
+        }
+
+        process(elements, false, embeddables);                
+    }      
+     
+    @SuppressWarnings("unchecked")
+    private void processEntitiesFromPackage() {
+        Class<? extends Annotation> annotation = configuration.getEntitiesAnnotation();
+        Set<Element> elements = new HashSet<Element>();
+
+        // only creation
+        for (Element element : getElements(annotation)) {
+            for (AnnotationMirror mirror : element.getAnnotationMirrors()) {
+                if (mirror.getAnnotationType().asElement().getSimpleName().toString().equals(annotation.getSimpleName())) {
+                    for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : mirror.getElementValues().entrySet()) {
+                        if (entry.getKey().getSimpleName().toString().equals("value")) {
+                            List<AnnotationValue> values = (List<AnnotationValue>) entry.getValue().getValue();
+                            for (AnnotationValue value : values) {
+                                DeclaredType type = (DeclaredType) value.getValue();
+                                elements.add(type.asElement());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        process(elements, false, entityTypes);
+    }
+    
     private void processFromProperties() {
         Set<Element> elements = new HashSet<Element>();
         for (Class<? extends Annotation> annotation : entityAnnotations) {
-            elements.addAll(roundEnv.getElementsAnnotatedWith(annotation));    
+            elements.addAll(getElements(annotation));    
         }
         
-        TypeExtractor typeExtractor = new TypeExtractor(true, true);
         Set<TypeElement> types = new HashSet<TypeElement>();
         
         // classes
         for (Element element : elements) {
             if (element instanceof TypeElement) {
-                TypeElement type = (TypeElement)element;
-                List<? extends Element> children = type.getEnclosedElements();
-                VisitorConfig config = configuration.getConfig(type, children);
-                
-                // fields
-                if (config.visitFieldProperties()) {
-                    for (VariableElement field : ElementFilter.fieldsIn(children)) {
-                        TypeElement typeElement = typeExtractor.handle(field.asType());
-                        if (typeElement != null) {
-                            types.add(typeElement);
-                        }
-                    }
-                }
-                
-                // getters
-                if (config.visitMethodProperties()) {
-                    for (ExecutableElement method : ElementFilter.methodsIn(children)) {        
-                        String name = method.getSimpleName().toString();
-                        if (name.startsWith("get") && method.getParameters().isEmpty()) {
-                            name = BeanUtils.uncapitalize(name.substring(3));
-                        } else if (name.startsWith("is") && method.getParameters().isEmpty()) {
-                            name = BeanUtils.uncapitalize(name.substring(2));
-                        } else {
-                            continue;
-                        }                        
-                        TypeElement typeElement = typeExtractor.handle(method.getReturnType());
-                        if (typeElement != null) {
-                            types.add(typeElement);
-                        }
-                    }
-                }                
+                processFromProperties((TypeElement)element, types);                
             }
         }
         
-        List<TypeMirror> typeMirrors = new ArrayList<TypeMirror>();
+        List<TypeMirror> typeMirrors = new ArrayList<TypeMirror>(types.size());
         
         for (TypeElement type : types) {
             // skip internal types
@@ -274,52 +364,34 @@ public class Processor {
             }    
         }        
     }
-
-
-    private void serializeTypes() {
-        if (!actualSupertypes.isEmpty()) {
-            env.getMessager().printMessage(Kind.NOTE, "Serializing Supertypes");
-            serialize(configuration.getSupertypeSerializer(), actualSupertypes.values());
-        }
-
-        if (!entityTypes.isEmpty()) {
-            env.getMessager().printMessage(Kind.NOTE, "Serializing Entity types");
-            serialize(configuration.getEntitySerializer(), entityTypes.values());
-        }
-
-        if (!extensionTypes.isEmpty()) {
-            env.getMessager().printMessage(Kind.NOTE, "Serializing Extension types");
-            serialize(configuration.getEmbeddableSerializer(), extensionTypes.values());
-        }
-
-        if (!embeddables.isEmpty()) {
-            env.getMessager().printMessage(Kind.NOTE, "Serializing Embeddable types");
-            serialize(configuration.getEmbeddableSerializer(), embeddables.values());
-        }
-
-        if (!projectionTypes.isEmpty()) {
-            env.getMessager().printMessage(Kind.NOTE, "Serializing Projection types");
-            serialize(configuration.getDTOSerializer(), projectionTypes.values());
-        }
-
-    }
-
-    private void serializeVariableClasses() {
-        for (Element element : roundEnv.getElementsAnnotatedWith(Variables.class)) {
-            if (element instanceof PackageElement) {
-                Variables vars = element.getAnnotation(Variables.class);
-                PackageElement packageElement = (PackageElement)element;
-                List<EntityType> models = new ArrayList<EntityType>();
-                for (EntityType model : entityTypes.values()) {
-                    if (model.getPackageName().equals(packageElement.getQualifiedName().toString())) {
-                        models.add(model);
-                    }
+   
+    private void processFromProperties(TypeElement type, Set<TypeElement> types) {
+        List<? extends Element> children = type.getEnclosedElements();
+        VisitorConfig config = configuration.getConfig(type, children);
+        
+        // fields
+        if (config.visitFieldProperties()) {
+            for (VariableElement field : ElementFilter.fieldsIn(children)) {
+                TypeElement typeElement = typeExtractor.visit(field.asType());
+                if (typeElement != null) {
+                    types.add(typeElement);
                 }
-                serializeVariableList(packageElement.getQualifiedName().toString(), vars, models);
+            }
+        }
+        
+        // getters
+        if (config.visitMethodProperties()) {
+            for (ExecutableElement method : ElementFilter.methodsIn(children)) {
+                String name = method.getSimpleName().toString();
+                if ((name.startsWith("get") || name.startsWith("is")) && method.getParameters().isEmpty()) {
+                    TypeElement typeElement = typeExtractor.visit(method.getReturnType());
+                    if (typeElement != null) {
+                        types.add(typeElement);
+                    }    
+                }                                       
             }
         }
     }
-
 
     private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes, Set<EntityType> handled) {
         if (handled.add(model)) {
@@ -336,7 +408,7 @@ public class Processor {
 
     @SuppressWarnings("unchecked")
     private Set<Element> getElementsAndCache(Class<? extends Annotation> annotationType) {
-        Set<Element> elements = (Set<Element>)roundEnv.getElementsAnnotatedWith(annotationType);
+        Set<Element> elements = (Set<Element>)getElements(annotationType);
         if (!elements.isEmpty()) {
             Set<Element> cached = elementCache.get(annotationType);
             if (cached == null) {
@@ -378,28 +450,7 @@ public class Processor {
             return Collections.emptySet();
         }
     }
-
-    @Nullable
-    private FileObject getSourceFile(String fullName) throws IOException {
-        Elements elementUtils = env.getElementUtils();
-        TypeElement sourceElement = elementUtils.getTypeElement(fullName);
-        if (sourceElement == null) {
-            return null;
-        } else {
-            if (sourceElement.getNestingKind().isNested()) {
-                sourceElement = (TypeElement) sourceElement.getEnclosingElement();
-            }
-            PackageElement packageElement = elementUtils.getPackageOf(sourceElement);
-            try {
-                return env.getFiler().getResource(StandardLocation.SOURCE_PATH,
-                        packageElement.getQualifiedName(),
-                        sourceElement.getSimpleName() + ".java");
-            } catch(Exception e) {
-                return null;
-            }
-        }
-    }
-
+  
     private void mergeTypes(Map<String, EntityType> types, Deque<Type> superTypes) {
         // get external supertypes
         while (!superTypes.isEmpty()) {
@@ -426,63 +477,19 @@ public class Processor {
         }
     }
 
-    private void process(Class<? extends Annotation> annotation, Map<String,EntityType> types) {
-        Deque<Type> superTypes = new ArrayDeque<Type>();
-        List<Element> elements = new ArrayList<Element>();
-        
-        // only creation
-        List<TypeMirror> typeMirrors = new ArrayList<TypeMirror>();
-        List<TypeMirror> superTypeMirrors = new ArrayList<TypeMirror>();
-        
-        for (Element element : roundEnv.getElementsAnnotatedWith(annotation)) {
-            if (configuration.getEmbeddableAnnotation() == null
-                    || element.getAnnotation(configuration.getEmbeddableAnnotation()) == null) {
-                typeFactory.getEntityType(element.asType(), false);
-                typeMirrors.add(element.asType());
-                elements.add(element);
-                
-                addAnnotationlessSupertypes(superTypeMirrors, elements, element);
-            }
-        }
-
-        for (TypeMirror typeMirror : superTypeMirrors) {
-            typeFactory.getEntityType(typeMirror, true);
-        }
-        
-        // super type handling
-        for (TypeMirror typeMirror : typeMirrors) {
-            typeFactory.getEntityType(typeMirror, true);
-        }
-
-        // get annotated types
-        for (Element element : elements) {
-            EntityType model = elementHandler.handleEntityType((TypeElement) element);
-            registerTypeElement(model.getFullName(), (TypeElement)element);
-            types.put(model.getFullName(), model);
-            if (model.getSuperType() != null) {
-                superTypes.push(model.getSuperType().getType());
-            }
-        }
-
-        mergeTypes(types, superTypes);
-    }
     
     private boolean hasKnownAnnotation(Element element) {
         if (configuration.getEmbeddableAnnotation() != null && element.getAnnotation(configuration.getEmbeddableAnnotation()) != null) {
             return true;
-        }
-                
-        if (configuration.getSuperTypeAnnotation() != null && element.getAnnotation(configuration.getSuperTypeAnnotation()) != null) {
+        } else if (configuration.getSuperTypeAnnotation() != null && element.getAnnotation(configuration.getSuperTypeAnnotation()) != null) {
             return true;
-        }
-        
-        if (element.getAnnotation(configuration.getEntityAnnotation()) != null) {
+        } else if (element.getAnnotation(configuration.getEntityAnnotation()) != null) {
             return true;
-        }
-        
-        return false;
+        } else {
+            return false;    
+        }                
     }
-
+    
     private void processDelegateMethod(Element delegateMethod, boolean cached) {
         ExecutableElement method = (ExecutableElement)delegateMethod;
         Element element = delegateMethod.getEnclosingElement();
@@ -517,12 +524,12 @@ public class Processor {
     }
 
     private void processDelegateMethods() {
-        // 1 : get elements from cache
+        //  get elements from cache
         for (Element delegateMethod : getElementsFromCache(QueryDelegate.class)) {
             processDelegateMethod(delegateMethod, true);
         }
 
-        // 2 : get elements from roundEnv
+        // get elements from roundEnv
         for (Element delegateMethod : getElementsAndCache(QueryDelegate.class)) {
             processDelegateMethod(delegateMethod, false);
         }
@@ -530,7 +537,7 @@ public class Processor {
 
     private void processProjectionTypes() {
         Set<Element> visitedDTOTypes = new HashSet<Element>();
-        for (Element element : roundEnv.getElementsAnnotatedWith(QueryProjection.class)) {
+        for (Element element : getElements(QueryProjection.class)) {
             Element parent = element.getEnclosingElement();
             if (parent.getAnnotation(configuration.getEntityAnnotation()) == null
                     && parent.getAnnotation(configuration.getEmbeddableAnnotation()) == null
@@ -542,58 +549,20 @@ public class Processor {
             }
         }
     }
-
-    private void processEmbeddables() {
-        List<TypeMirror> typeMirrors = new ArrayList<TypeMirror>();
-        List<TypeMirror> superTypeMirrors = new ArrayList<TypeMirror>();
-        List<Element> elements = new ArrayList<Element>();
-        
-        // only creation
-        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddableAnnotation())) {
-            // TODO: Why is this needed if there's no assignment? Just for cache?
-            typeFactory.getEntityType(element.asType(), false);
-            typeMirrors.add(element.asType());
-            elements.add(element);
-            
-            addAnnotationlessSupertypes(superTypeMirrors, elements, element);
-        }
-        
-        for (TypeMirror typeMirror : superTypeMirrors) {
-            typeFactory.getEntityType(typeMirror, true);
-        }
-
-        // supertype handling
-        for (TypeMirror typeMirror : typeMirrors) {
-            typeFactory.getEntityType(typeMirror, true);
-        }
-
-        for (Element element : elements) {
-            EntityType model = elementHandler.handleEntityType((TypeElement) element);
-            registerTypeElement(model.getFullName(), (TypeElement)element);
-            embeddables.put(model.getFullName(), model);
-        }
-        allSupertypes.putAll(embeddables);
-
-        // add super type fields
-        Set<EntityType> handled = new HashSet<EntityType>();
-        for (EntityType embeddable : embeddables.values()) {
-            addSupertypeFields(embeddable, allSupertypes, handled);
-        }
-    }
-
+ 
     private void addAnnotationlessSupertypes(List<TypeMirror> superTypeMirrors,
-            List<Element> elements, Element element) {
+            List<TypeElement> elements, TypeElement element) {
         // add annotationless supertype
-        TypeMirror superTypeMirror = ((TypeElement)element).getSuperclass();
+        TypeMirror superTypeMirror = element.getSuperclass();
         while (superTypeMirror != null){
-            Element superTypeElement = env.getTypeUtils().asElement(superTypeMirror);
+            TypeElement superTypeElement = (TypeElement) env.getTypeUtils().asElement(superTypeMirror);
             if (superTypeElement != null 
                     && !superTypeElement.toString().startsWith("java.lang.") 
                     && !hasKnownAnnotation(superTypeElement)) {
                 typeFactory.getEntityType(superTypeMirror, false);
                 superTypeMirrors.add(superTypeMirror);
                 elements.add(superTypeElement);
-                superTypeMirror = ((TypeElement)superTypeElement).getSuperclass();
+                superTypeMirror = superTypeElement.getSuperclass();
                 if (superTypeMirror instanceof NoType) {
                     superTypeMirror = null;
                 }
@@ -601,112 +570,7 @@ public class Processor {
                 superTypeMirror = null;
             }
         }
-    }
-
-
-    private void processEmbedded() {
-        List<TypeMirror> typeMirrors = new ArrayList<TypeMirror>();
-
-        // only creation
-        for (Element element : roundEnv.getElementsAnnotatedWith(configuration.getEmbeddedAnnotation())) {
-            TypeMirror type = element.asType();
-            if (element.getKind() == ElementKind.METHOD){
-                type = ((ExecutableElement)element).getReturnType();
-            }
-            String typeName = type.toString();
-            if (typeName.startsWith(Collection.class.getName())
-             || typeName.startsWith(List.class.getName())
-             || typeName.startsWith(Set.class.getName())) {
-                type = ((DeclaredType)type).getTypeArguments().get(0);
-
-            } else if (typeName.startsWith(Map.class.getName())){
-                type = ((DeclaredType)type).getTypeArguments().get(1);
-            }
-            typeFactory.getEntityType(type, false);
-            typeMirrors.add(type);
-        }
-
-        // supertype handling
-        for (TypeMirror typeMirror : typeMirrors) {
-            typeFactory.getEntityType(typeMirror, true);
-        }
-
-        // deep
-        for (TypeMirror type : typeMirrors) {
-            // remove generic signature of type for TypeElement lookup
-            String typeName = type.toString();
-            if (typeName.contains("<")) {
-                typeName = typeName.substring(0, typeName.indexOf('<'));
-            }
-            TypeElement typeElement = env.getElementUtils().getTypeElement(typeName);
-            if (typeElement == null) {
-                continue;
-            } else if (typeElement.getAnnotation(configuration.getEntityAnnotation()) != null){
-                // skip Entity types here
-                continue;
-            }
-
-            EntityType model = elementHandler.handleEntityType(typeElement);
-            registerTypeElement(model.getFullName(), typeElement);
-            embeddables.put(model.getFullName(), model);
-        }
-        allSupertypes.putAll(embeddables);
-
-        // add super type fields
-        Set<EntityType> handled = new HashSet<EntityType>();
-        for (EntityType embeddable : embeddables.values()) {
-            addSupertypeFields(embeddable, allSupertypes, handled);
-        }
-    }
-
-    private void processEntities() {
-        process(configuration.getEntityAnnotation(), entityTypes);
-    }
-
-    @SuppressWarnings("unchecked")
-    private void processEntitiesFromPackage() {
-        Class<? extends Annotation> annotation = configuration.getEntitiesAnnotation();
-        List<TypeMirror> typeMirrors = new ArrayList<TypeMirror>();
-
-        // only creation
-        for (Element element : roundEnv.getElementsAnnotatedWith(annotation)) {
-            for (AnnotationMirror mirror : element.getAnnotationMirrors()) {
-                if (mirror.getAnnotationType().asElement().getSimpleName().toString().equals(QueryEntities.class.getSimpleName())) {
-                    for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : mirror.getElementValues().entrySet()) {
-                        if (entry.getKey().getSimpleName().toString().equals("value")) {
-                            List<AnnotationValue> values = (List<AnnotationValue>) entry.getValue().getValue();
-                            for (AnnotationValue value : values) {
-                                TypeMirror type = (TypeMirror) value.getValue();
-                                typeFactory.getEntityType(type, false);
-                                typeMirrors.add(type);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        Map<String,EntityType> types = entityTypes;
-        Deque<Type> superTypes = new ArrayDeque<Type>();
-
-        // get annotated types
-        for (TypeMirror mirror : typeMirrors) {
-            typeFactory.getEntityType(mirror, true);
-            TypeElement element = (TypeElement) env.getTypeUtils().asElement(mirror);
-            EntityType model = elementHandler.handleEntityType(element);
-            registerTypeElement(model.getFullName(), element);
-            types.put(model.getFullName(), model);
-            if (model.getSuperType() != null) {
-                superTypes.push(model.getSuperType().getType());
-            }
-        }
-
-        mergeTypes(types, superTypes);
-    }
-
-    private void processSupertypes() {
-        process(configuration.getSuperTypeAnnotation(), actualSupertypes);
-    }
+    }  
 
     private void registerTypeElement(String entityName, TypeElement element) {
         Set<TypeElement> elements = typeElements.get(entityName);
@@ -715,6 +579,73 @@ public class Processor {
             typeElements.put(entityName, elements);
         }
         elements.add(element);
+    }
+    
+    // SERIALIZATION
+    
+    private void serializeTypes() {
+        if (!actualSupertypes.isEmpty()) {
+            env.getMessager().printMessage(Kind.NOTE, "Serializing Supertypes");
+            serialize(configuration.getSupertypeSerializer(), actualSupertypes.values());
+        }
+
+        if (!entityTypes.isEmpty()) {
+            env.getMessager().printMessage(Kind.NOTE, "Serializing Entity types");
+            serialize(configuration.getEntitySerializer(), entityTypes.values());
+        }
+
+        if (!extensionTypes.isEmpty()) {
+            env.getMessager().printMessage(Kind.NOTE, "Serializing Extension types");
+            serialize(configuration.getEmbeddableSerializer(), extensionTypes.values());
+        }
+
+        if (!embeddables.isEmpty()) {
+            env.getMessager().printMessage(Kind.NOTE, "Serializing Embeddable types");
+            serialize(configuration.getEmbeddableSerializer(), embeddables.values());
+        }
+
+        if (!projectionTypes.isEmpty()) {
+            env.getMessager().printMessage(Kind.NOTE, "Serializing Projection types");
+            serialize(configuration.getDTOSerializer(), projectionTypes.values());
+        }
+
+    }
+
+    private void serializeVariableClasses() {
+        for (Element element : getElements(Variables.class)) {
+            if (element instanceof PackageElement) {
+                Variables vars = element.getAnnotation(Variables.class);
+                PackageElement packageElement = (PackageElement)element;
+                List<EntityType> models = new ArrayList<EntityType>();
+                for (EntityType model : entityTypes.values()) {
+                    if (model.getPackageName().equals(packageElement.getQualifiedName().toString())) {
+                        models.add(model);
+                    }
+                }
+                serializeVariableList(packageElement.getQualifiedName().toString(), vars, models);
+            }
+        }
+    }
+
+    @Nullable
+    private FileObject getSourceFile(String fullName) throws IOException {
+        Elements elementUtils = env.getElementUtils();
+        TypeElement sourceElement = elementUtils.getTypeElement(fullName);
+        if (sourceElement == null) {
+            return null;
+        } else {
+            if (sourceElement.getNestingKind().isNested()) {
+                sourceElement = (TypeElement) sourceElement.getEnclosingElement();
+            }
+            PackageElement packageElement = elementUtils.getPackageOf(sourceElement);
+            try {
+                return env.getFiler().getResource(StandardLocation.SOURCE_PATH,
+                        packageElement.getQualifiedName(),
+                        sourceElement.getSimpleName() + ".java");
+            } catch(Exception e) {
+                return null;
+            }
+        }
     }
 
     private void serialize(Serializer serializer, Collection<EntityType> models) {

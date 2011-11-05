@@ -46,7 +46,6 @@ import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.QueryTypeFactory;
 import com.mysema.query.codegen.Supertype;
 import com.mysema.query.codegen.TypeMappings;
-import com.mysema.util.ClassPathUtils;
 
 /**
  * ExtendedTypeFactory is a factory for APT inspection based Type creation
@@ -66,7 +65,7 @@ public final class ExtendedTypeFactory {
 
     private final ProcessingEnvironment env;
 
-    private final TypeElement numberType, comparableType;
+    private final TypeMirror numberType, comparableType, collectionType, setType, listType, mapType;
 
     private final TypeMappings typeMappings;
 
@@ -78,17 +77,7 @@ public final class ExtendedTypeFactory {
 
         @Override
         public Type visitPrimitive(PrimitiveType primitiveType, Boolean p) {
-            switch (primitiveType.getKind()) {
-            case BOOLEAN: return Types.BOOLEAN;
-            case BYTE: return Types.BYTE;
-            case CHAR: return Types.CHARACTER;
-            case DOUBLE: return Types.DOUBLE;
-            case FLOAT: return Types.FLOAT;
-            case INT: return Types.INTEGER;
-            case LONG: return Types.LONG;
-            case SHORT: return Types.SHORT;
-            }
-            return null;
+            return visit(env.getTypeUtils().boxedClass(primitiveType).asType(), p);
         }
 
         @Override
@@ -179,18 +168,7 @@ public final class ExtendedTypeFactory {
         
         @Override
         public List<String> visitPrimitive(PrimitiveType t, Boolean p) {
-            // TODO  : optimize
-            switch (t.getKind()) {
-            case BOOLEAN: return Collections.singletonList("Boolean");
-            case BYTE:    return Collections.singletonList("Byte");
-            case CHAR:    return Collections.singletonList("Character");
-            case DOUBLE:  return Collections.singletonList("Double");
-            case FLOAT:   return Collections.singletonList("Float");
-            case INT:     return Collections.singletonList("Integer");
-            case LONG:    return Collections.singletonList("Long");
-            case SHORT:   return Collections.singletonList("Short");
-            }
-            return null;
+            return visit(env.getTypeUtils().boxedClass(t).asType(), p);
         }
 
         @Override
@@ -256,10 +234,9 @@ public final class ExtendedTypeFactory {
         public List<String> visitNoType(NoType t, Boolean p) {
             return Collections.singletonList("Object");
         }
-
         
     };
-
+    
     public ExtendedTypeFactory(
             ProcessingEnvironment env,
             Configuration configuration,
@@ -269,14 +246,20 @@ public final class ExtendedTypeFactory {
         this.env = env;
         this.defaultType = Types.OBJECT;
         this.entityAnnotations = annotations;
-        this.numberType = env.getElementUtils().getTypeElement(Number.class.getName());
-        this.comparableType = env.getElementUtils().getTypeElement(Comparable.class.getName());
+        this.numberType = getErasedType(Number.class);
+        this.comparableType = getErasedType(Comparable.class);
+        this.collectionType = getErasedType(Collection.class);
+        this.listType = getErasedType(List.class);
+        this.setType = getErasedType(Set.class);
+        this.mapType = getErasedType(Map.class);
         this.typeMappings = typeMappings;
         this.queryTypeFactory = queryTypeFactory;
     }
     
+    private TypeMirror getErasedType(Class<?> clazz) {
+        return env.getTypeUtils().erasure(env.getElementUtils().getTypeElement(clazz.getName()).asType());
+    }
     
-
     private Type createType(TypeElement typeElement, TypeCategory category, List<? extends TypeMirror> typeArgs, boolean deep) {
         String name = typeElement.getQualifiedName().toString();
         String simpleName = typeElement.getSimpleName().toString();
@@ -324,10 +307,10 @@ public final class ExtendedTypeFactory {
         String name = typeElement.getQualifiedName().toString();
         TypeCategory typeCategory = TypeCategory.get(name);
         
-        if (typeCategory != TypeCategory.NUMERIC && isImplemented(typeElement, comparableType) && isSubType(typeElement, numberType)) {
+        if (typeCategory != TypeCategory.NUMERIC && isAssignable(typeElement.asType(), comparableType) && isSubType(typeElement.asType(), numberType)) {
             typeCategory = TypeCategory.NUMERIC;
             
-        } else if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && isImplemented(typeElement, comparableType)) {
+        } else if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && isAssignable(typeElement.asType(), comparableType)) {
             typeCategory = TypeCategory.COMPARABLE;
             
         } if (typeCategory == TypeCategory.SIMPLE) {
@@ -399,18 +382,6 @@ public final class ExtendedTypeFactory {
             }
         }
         return new SimpleType(Types.MAP, keyType, valueType);
-    }
-
-    private Type createCollectionType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
-        return createCollectionType(Types.COLLECTION, simpleName, typeMirrors, deep);
-    }
-
-    private Type createListType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
-        return createCollectionType(Types.LIST, simpleName, typeMirrors, deep);
-    }
-
-    private Type createSetType(String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
-        return createCollectionType(Types.SET, simpleName, typeMirrors, deep);
     }
 
     private Type createCollectionType(Type baseType, String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
@@ -510,28 +481,24 @@ public final class ExtendedTypeFactory {
                 return createType(typeElement, TypeCategory.ENTITY, declaredType.getTypeArguments(), deep);
             }
         }
-
-        String name = typeElement.getQualifiedName().toString();
+        
         String simpleName = typeElement.getSimpleName().toString();
         Iterator<? extends TypeMirror> i = declaredType.getTypeArguments().iterator();
-        Class<?> cl = ClassPathUtils.safeClassForName(name);
-
-        if (cl == null) { // class not available
-            return createType(typeElement, TypeCategory.get(name), declaredType.getTypeArguments(), deep);
-
-        } else if (Map.class.isAssignableFrom(cl)) {
+        
+        if (isAssignable(declaredType, mapType)) {
             return createMapType(simpleName, i, deep);
 
-        } else if (List.class.isAssignableFrom(cl)) {
-            return createListType(simpleName, i, deep);
+        } else if (isAssignable(declaredType, listType)) {
+            return createCollectionType(Types.LIST, simpleName, i, deep);
 
-        } else if (Set.class.isAssignableFrom(cl)) {
-            return createSetType(simpleName, i, deep);
+        } else if (isAssignable(declaredType, setType)) {
+            return createCollectionType(Types.SET, simpleName, i, deep);
 
-        } else if (Collection.class.isAssignableFrom(cl)) {
-            return createCollectionType(simpleName, i, deep);
+        } else if (isAssignable(declaredType, collectionType)) {
+            return createCollectionType(Types.COLLECTION, simpleName, i, deep);
 
         } else {
+            String name = typeElement.getQualifiedName().toString();
             return createType(typeElement, TypeCategory.get(name), declaredType.getTypeArguments(), deep);
         }
     }
@@ -578,38 +545,13 @@ public final class ExtendedTypeFactory {
         doubleIndexEntities = doubleIndex;
         return superTypes;
     }
-   
     
-    // TODO : simplify this
-    private boolean isImplemented(TypeElement type, TypeElement iface) {
-        for (TypeMirror t : type.getInterfaces()) {
-            String name = t.toString();
-            if (name.contains("<")) {
-                name = name.substring(0, name.indexOf('<'));
-            }
-            // interface is directly implemented
-            if (name.equals(iface.getQualifiedName().toString())) {
-                return true;
-            }
-        }
-        if (type.getSuperclass() != null) {
-            TypeElement superType = (TypeElement) env.getTypeUtils().asElement(type.getSuperclass());
-            if (superType != null) {
-                return isImplemented(superType, iface);
-            }
-            superType = env.getElementUtils().getTypeElement(type.getSuperclass().toString());
-            if (superType != null) {
-                return isImplemented(superType, iface);
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+    private boolean isAssignable(TypeMirror type, TypeMirror iface) {
+        return env.getTypeUtils().isAssignable(type, iface);
     }
 
-    private boolean isSubType(TypeElement type1, TypeElement type2) {
-        return env.getTypeUtils().isSubtype(type1.asType(), type2.asType());
+    private boolean isSubType(TypeMirror type1, TypeMirror type2) {
+        return env.getTypeUtils().isSubtype(type1, type2);
     }
 
     private TypeMirror normalize(TypeMirror type) {
