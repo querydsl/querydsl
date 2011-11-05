@@ -189,9 +189,10 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
     }
     
     private Property validateField(Property field) {
-        if (field.getName().equals(uncapSimpleName) 
-         || field.getEscapedName().equals(uncapSimpleName)) {
-            uncapSimpleName = StringUtils.uncapitalize(getType().getSimpleName())+ (escapeSuffix++);
+        if (field.getName().equals(uncapSimpleName) || field.getEscapedName().equals(uncapSimpleName)) {
+            do {
+                uncapSimpleName = StringUtils.uncapitalize(getType().getSimpleName()) + (escapeSuffix++);
+            } while (propertyNames.contains(uncapSimpleName));
         }
         return field;
     }
