@@ -15,7 +15,11 @@ import com.mysema.util.MathUtils;
  *
  * @param <T>
  */
-public abstract class AbstractNumberType<T extends Number & Comparable<T>> implements Type<T> {
+public abstract class AbstractNumberType<T extends Number & Comparable<T>> extends AbstractType<T> {
+
+    public AbstractNumberType(int type) {
+        super(type);
+    }
 
     @Override
     public T getValue(ResultSet rs, int startIndex) throws SQLException {

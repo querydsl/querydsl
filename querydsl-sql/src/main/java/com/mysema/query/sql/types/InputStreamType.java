@@ -10,16 +10,19 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class InputStreamType implements Type<InputStream> {
+public class InputStreamType extends AbstractType<InputStream> {
 
+    public InputStreamType() {
+        super(Types.BLOB);
+    }
+    
+    public InputStreamType(int type) {
+        super(type);
+    }
+    
     @Override
     public Class<InputStream> getReturnedClass() {
         return InputStream.class;
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[] { Types.BLOB };
     }
 
     @Override

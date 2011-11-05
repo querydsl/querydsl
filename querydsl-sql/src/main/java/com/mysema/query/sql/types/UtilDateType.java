@@ -15,7 +15,15 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class UtilDateType implements Type<Date>{
+public class UtilDateType extends AbstractType<Date> {
+    
+    public UtilDateType() {
+        super(Types.TIMESTAMP);
+    }
+    
+    public UtilDateType(int type) {
+        super(type);
+    }
     
     @Override
     public Date getValue(ResultSet rs, int startIndex) throws SQLException {
@@ -30,11 +38,6 @@ public class UtilDateType implements Type<Date>{
     @Override
     public void setValue(PreparedStatement st, int startIndex, Date value) throws SQLException {
         st.setTimestamp(startIndex, new java.sql.Timestamp(value.getTime()));
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.TIMESTAMP};
     }
 
 }

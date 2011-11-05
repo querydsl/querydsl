@@ -8,16 +8,19 @@ import java.sql.Types;
 
 import org.joda.time.DateTime;
 
-public class DateTimeType implements Type<DateTime> {
+public class DateTimeType extends AbstractType<DateTime> {
+    
+    public DateTimeType() {
+        super(Types.TIMESTAMP);
+    }
+
+    public DateTimeType(int type) {
+        super(type);
+    }
 
     @Override
     public Class<DateTime> getReturnedClass() {
         return DateTime.class;
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.TIMESTAMP};
     }
 
     @Override

@@ -14,7 +14,15 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class ObjectType implements Type<Object>{
+public class ObjectType extends AbstractType<Object> {
+    
+    public ObjectType() {
+        super(Types.OTHER);
+    }
+    
+    public ObjectType(int type) {
+        super(type);
+    }
     
     @Override
     public Object getValue(ResultSet rs, int startIndex) throws SQLException {
@@ -29,14 +37,7 @@ public class ObjectType implements Type<Object>{
     @Override
     public void setValue(PreparedStatement st, int startIndex, Object value)
             throws SQLException {
-        st.setObject(startIndex, value);
-        
+        st.setObject(startIndex, value);        
     }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.OTHER};
-    }
-
-
+    
 }

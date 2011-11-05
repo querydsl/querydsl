@@ -15,7 +15,15 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class BigDecimalType implements Type<BigDecimal>{
+public class BigDecimalType extends AbstractType<BigDecimal> {
+    
+    public BigDecimalType() {
+        super(Types.DECIMAL);
+    }
+    
+    public BigDecimalType(int type) {
+        super(type);
+    }
 
     @Override
     public BigDecimal getValue(ResultSet rs, int startIndex) throws SQLException {
@@ -30,13 +38,7 @@ public class BigDecimalType implements Type<BigDecimal>{
     @Override
     public void setValue(PreparedStatement st, int startIndex, BigDecimal value)
             throws SQLException {
-        st.setBigDecimal(startIndex, value);
-        
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.DECIMAL};
+        st.setBigDecimal(startIndex, value);        
     }
 
 }

@@ -13,7 +13,15 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class IntegerType extends AbstractNumberType<Integer>{
+public class IntegerType extends AbstractNumberType<Integer> {
+    
+    public IntegerType() {
+        super(Types.INTEGER);
+    }
+
+    public IntegerType(int type) {
+        super(type);
+    }
 
     @Override
     public Class<Integer> getReturnedClass() {
@@ -23,11 +31,6 @@ public class IntegerType extends AbstractNumberType<Integer>{
     @Override
     public void setValue(PreparedStatement st, int startIndex, Integer value) throws SQLException {
         st.setInt(startIndex, value);
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.INTEGER};
     }
 
 }

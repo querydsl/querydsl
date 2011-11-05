@@ -15,6 +15,14 @@ import java.sql.Types;
  */
 public class FloatType extends AbstractNumberType<Float>{
 
+    public FloatType() {
+        super(Types.FLOAT);
+    }
+    
+    public FloatType(int type) {
+        super(type);
+    }
+
     @Override
     public Class<Float> getReturnedClass() {
         return Float.class;
@@ -23,11 +31,6 @@ public class FloatType extends AbstractNumberType<Float>{
     @Override
     public void setValue(PreparedStatement st, int startIndex, Float value) throws SQLException {
         st.setFloat(startIndex, value);
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.FLOAT};
     }
 
 }

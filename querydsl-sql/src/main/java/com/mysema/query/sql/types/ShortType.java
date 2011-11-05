@@ -15,6 +15,14 @@ import java.sql.Types;
  */
 public class ShortType extends AbstractNumberType<Short>{
 
+    public ShortType() {
+        super(Types.SMALLINT);
+    }
+    
+    public ShortType(int type) {
+        super(type);
+    }
+    
     @Override
     public Class<Short> getReturnedClass() {
         return Short.class;
@@ -23,11 +31,6 @@ public class ShortType extends AbstractNumberType<Short>{
     @Override
     public void setValue(PreparedStatement st, int startIndex, Short value) throws SQLException {
         st.setShort(startIndex, value);
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.SMALLINT};
     }
 
 }

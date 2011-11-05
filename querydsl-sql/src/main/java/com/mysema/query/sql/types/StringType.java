@@ -14,8 +14,16 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class StringType implements Type<String>{
+public class StringType extends AbstractType<String>{
 
+    public StringType() {
+        super(Types.VARCHAR);
+    }
+    
+    public StringType(int type) {
+        super(type);
+    }
+    
     @Override
     public String getValue(ResultSet rs, int startIndex) throws SQLException {
         return rs.getString(startIndex);
@@ -31,11 +39,6 @@ public class StringType implements Type<String>{
             throws SQLException {
         st.setString(startIndex, value);
         
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.VARCHAR};
     }
 
 }

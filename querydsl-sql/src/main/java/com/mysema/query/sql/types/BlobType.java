@@ -15,16 +15,14 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class BlobType implements Type<Blob>{
-
-    private final int blobType;
+public class BlobType extends AbstractType<Blob> {
 
     public BlobType() {
-        this(Types.BLOB);
+        super(Types.BLOB);
     }
 
-    public BlobType(int blobType) {
-        this.blobType = blobType;
+    public BlobType(int type) {
+        super(type);
     }
 
     @Override
@@ -40,11 +38,6 @@ public class BlobType implements Type<Blob>{
     @Override
     public void setValue(PreparedStatement st, int startIndex, Blob value) throws SQLException {
         st.setBlob(startIndex, value);
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{blobType};
     }
 
 }

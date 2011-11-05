@@ -15,7 +15,15 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class TimestampType implements Type<Timestamp>{
+public class TimestampType extends AbstractType<Timestamp> {
+    
+    public TimestampType() {
+        super(Types.TIMESTAMP);
+    }
+    
+    public TimestampType(int type) {
+        super(type);
+    }
     
     @Override
     public Timestamp getValue(ResultSet rs, int startIndex) throws SQLException {
@@ -31,10 +39,5 @@ public class TimestampType implements Type<Timestamp>{
     public void setValue(PreparedStatement st, int startIndex, Timestamp value) throws SQLException {
         st.setTimestamp(startIndex, value);
     }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.TIMESTAMP};
-    }
-
+    
 }

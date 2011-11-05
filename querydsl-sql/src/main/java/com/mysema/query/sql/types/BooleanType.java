@@ -14,7 +14,15 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class BooleanType implements Type<Boolean>{
+public class BooleanType extends AbstractType<Boolean> {
+    
+    public BooleanType() {
+        super(Types.BOOLEAN);
+    }
+
+    public BooleanType(int type) {
+        super(type);
+    }
 
     @Override
     public Boolean getValue(ResultSet rs, int startIndex) throws SQLException {
@@ -30,11 +38,6 @@ public class BooleanType implements Type<Boolean>{
     @Override
     public void setValue(PreparedStatement st, int startIndex, Boolean value) throws SQLException {
         st.setBoolean(startIndex, value);            
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.BOOLEAN};
     }
 
 }

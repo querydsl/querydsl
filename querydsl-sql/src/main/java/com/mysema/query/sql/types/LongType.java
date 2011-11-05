@@ -13,7 +13,15 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class LongType extends AbstractNumberType<Long>{
+public class LongType extends AbstractNumberType<Long> {
+    
+    public LongType() {
+        super(Types.BIGINT);
+    }
+    
+    public LongType(int type) {
+        super(type);
+    }
 
     @Override
     public Class<Long> getReturnedClass() {
@@ -23,11 +31,6 @@ public class LongType extends AbstractNumberType<Long>{
     @Override
     public void setValue(PreparedStatement st, int startIndex, Long value) throws SQLException {
         st.setLong(startIndex, value);
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.BIGINT};
     }
 
 }

@@ -8,18 +8,21 @@ import java.sql.Types;
 
 import org.joda.time.LocalDate;
 
-public class LocalDateType implements Type<LocalDate> {
+public class LocalDateType extends AbstractType<LocalDate> {
+    
+    public LocalDateType() {
+        super(Types.DATE);
+    }
+    
+    public LocalDateType(int type) {
+        super(type);
+    }
 
     @Override
     public Class<LocalDate> getReturnedClass() {
         return LocalDate.class;
     }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.DATE};
-    }
-
+    
     @Override
     public LocalDate getValue(ResultSet rs, int startIndex) throws SQLException {
         Date date = rs.getDate(startIndex);

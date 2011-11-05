@@ -14,6 +14,14 @@ import java.sql.Types;
  *
  */
 public class DoubleType extends AbstractNumberType<Double>{
+    
+    public DoubleType() {
+        super(Types.BLOB);
+    }
+
+    public DoubleType(int type) {
+        super(type);
+    }
 
     @Override
     public Class<Double> getReturnedClass() {
@@ -23,11 +31,6 @@ public class DoubleType extends AbstractNumberType<Double>{
     @Override
     public void setValue(PreparedStatement st, int startIndex, Double value) throws SQLException {
         st.setDouble(startIndex, value);
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.DOUBLE};
     }
 
 }

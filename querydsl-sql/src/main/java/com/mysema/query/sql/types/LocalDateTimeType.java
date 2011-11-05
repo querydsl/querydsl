@@ -8,16 +8,19 @@ import java.sql.Types;
 
 import org.joda.time.LocalDateTime;
 
-public class LocalDateTimeType implements Type<LocalDateTime>{
+public class LocalDateTimeType extends AbstractType<LocalDateTime> {
+    
+    public LocalDateTimeType() {
+        super(Types.TIMESTAMP);
+    }
+    
+    public LocalDateTimeType(int type) {
+        super(type);
+    }
     
     @Override
     public Class<LocalDateTime> getReturnedClass() {
         return LocalDateTime.class;
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.TIMESTAMP};
     }
 
     @Override

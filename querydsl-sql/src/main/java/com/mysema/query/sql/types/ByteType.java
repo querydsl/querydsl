@@ -13,7 +13,15 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class ByteType extends AbstractNumberType<Byte>{
+public class ByteType extends AbstractNumberType<Byte> {
+    
+    public ByteType() {
+        super(Types.TINYINT);
+    }
+
+    public ByteType(int type) {
+        super(type);
+    }
 
     @Override
     public Class<Byte> getReturnedClass() {
@@ -23,11 +31,6 @@ public class ByteType extends AbstractNumberType<Byte>{
     @Override
     public void setValue(PreparedStatement st, int startIndex, Byte value) throws SQLException {
         st.setByte(startIndex, value);
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.TINYINT};
     }
 
 }

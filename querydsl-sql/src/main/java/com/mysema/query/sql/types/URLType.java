@@ -15,8 +15,16 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class URLType implements Type<URL>{
+public class URLType extends AbstractType<URL> {
 
+    public URLType() {
+        super(Types.VARCHAR);
+    }
+    
+    public URLType(int type) {
+        super(type);
+    }
+    
     @Override
     public URL getValue(ResultSet rs, int startIndex) throws SQLException {
         return rs.getURL(startIndex);
@@ -31,11 +39,6 @@ public class URLType implements Type<URL>{
     public void setValue(PreparedStatement st, int startIndex, URL value)
             throws SQLException {
         st.setURL(startIndex, value);
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.VARCHAR};
     }
 
 }

@@ -14,16 +14,14 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class BytesType implements Type<byte[]>{
-
-    private final int blobType;
-
+public class BytesType extends AbstractType<byte[]> {
+    
     public BytesType() {
-        this(Types.BLOB);
+        super(Types.BLOB);
     }
 
-    public BytesType(int blobType) {
-        this.blobType = blobType;
+    public BytesType(int type) {
+        super(type);
     }
 
     @Override
@@ -41,9 +39,5 @@ public class BytesType implements Type<byte[]>{
         st.setBytes(startIndex, value);
     }
 
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{blobType};
-    }
 
 }

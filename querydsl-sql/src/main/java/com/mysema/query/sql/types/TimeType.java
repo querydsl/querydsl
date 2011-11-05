@@ -15,7 +15,15 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class TimeType implements Type<Time>{
+public class TimeType extends AbstractType<Time> {
+    
+    public TimeType() {
+        super(Types.TIME);
+    }
+    
+    public TimeType(int type) {
+        super(type);
+    }
     
     @Override
     public Time getValue(ResultSet rs, int startIndex) throws SQLException {
@@ -30,11 +38,6 @@ public class TimeType implements Type<Time>{
     @Override
     public void setValue(PreparedStatement st, int startIndex, Time value) throws SQLException {
         st.setTime(startIndex, value);
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.TIME};
     }
 
 }

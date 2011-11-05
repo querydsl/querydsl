@@ -15,7 +15,15 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class ClobType implements Type<Clob>{
+public class ClobType extends AbstractType<Clob> {
+    
+    public ClobType() {
+        super(Types.CLOB);
+    }
+
+    public ClobType(int type) {
+        super(type);
+    }
 
     @Override
     public Clob getValue(ResultSet rs, int startIndex) throws SQLException {
@@ -30,11 +38,6 @@ public class ClobType implements Type<Clob>{
     @Override
     public void setValue(PreparedStatement st, int startIndex, Clob value) throws SQLException {
         st.setClob(startIndex, value);
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.CLOB};
     }
 
 }

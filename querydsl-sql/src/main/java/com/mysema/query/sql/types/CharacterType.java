@@ -14,7 +14,15 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class CharacterType implements Type<Character>{
+public class CharacterType extends AbstractType<Character>{
+    
+    public CharacterType() {
+        super(Types.CHAR);
+    }
+
+    public CharacterType(int type) {
+        super(type);
+    }
 
     @Override
     public Character getValue(ResultSet rs, int startIndex) throws SQLException {
@@ -30,13 +38,7 @@ public class CharacterType implements Type<Character>{
     @Override
     public void setValue(PreparedStatement st, int startIndex, Character value)
             throws SQLException {
-        st.setString(startIndex, value.toString());
-        
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.CHAR};
+        st.setString(startIndex, value.toString());        
     }
 
 }

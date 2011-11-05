@@ -15,22 +15,22 @@ import java.sql.Types;
  *
  * @param <T>
  */
-public class EnumByOrdinalType<T extends Enum<T>> implements Type<T>{
+public class EnumByOrdinalType<T extends Enum<T>> extends AbstractType<T> {
 
     private final Class<T> type;
     
     public EnumByOrdinalType(Class<T> type) {
+        this(Types.INTEGER, type);
+    }
+    
+    public EnumByOrdinalType(int jdbcType, Class<T> type) {
+        super(jdbcType);
         this.type = type;
     }
     
     @Override
     public Class<T> getReturnedClass() {
         return type;
-    }
-
-    @Override
-    public int[] getSQLTypes() {
-        return new int[]{Types.INTEGER};
     }
 
     @Override
