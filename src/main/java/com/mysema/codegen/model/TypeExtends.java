@@ -12,7 +12,7 @@ import javax.annotation.Nullable;
 
 import net.jcip.annotations.Immutable;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author tiwe

@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.mysema.codegen</groupId>
   <artifactId>codegen</artifactId>
-  <version>0.4.3</version>
+  <version>0.4.4</version>
   <name>Codegen</name>
   <description>Code generation and compilation for Java</description>
   <parent>
@@ -18,18 +18,18 @@
   
   <properties>
     <commons.collections.version>4.01</commons.collections.version>
-    <commons.lang.version>2.4</commons.lang.version>
+    <commons.lang.version>3.0.1</commons.lang.version>
   </properties>
   
   <dependencies>
-    <dependency>
+  <dependency>
       <groupId>net.sourceforge.collections</groupId>
       <artifactId>collections-generic</artifactId>
       <version>${commons.collections.version}</version>
     </dependency> 
     <dependency>
-      <groupId>commons-lang</groupId>
-      <artifactId>commons-lang</artifactId>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
       <version>${commons.lang.version}</version>
     </dependency>
     

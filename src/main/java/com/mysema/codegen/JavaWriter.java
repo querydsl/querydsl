@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.Stack;
 
 import org.apache.commons.collections15.Transformer;
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
