@@ -17,7 +17,7 @@ import javax.tools.ToolProvider;
 
 import net.jcip.annotations.Immutable;
 
-import org.apache.commons.lang.ClassUtils;
+import org.apache.commons.lang3.ClassUtils;
 
 import com.mysema.codegen.Evaluator;
 import com.mysema.codegen.EvaluatorFactory;

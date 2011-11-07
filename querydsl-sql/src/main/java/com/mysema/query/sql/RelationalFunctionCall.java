@@ -1,9 +1,9 @@
 package com.mysema.query.sql;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
-import com.mysema.commons.lang.Assert;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionBase;
 import com.mysema.query.types.Template;
@@ -26,22 +26,47 @@ public class RelationalFunctionCall<T> extends ExpressionBase<T> implements Temp
 
     private final Template template;
 
+    private static final Template createTemplate(String function, int argCount) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(function);
+        builder.append("(");
+        for (int i = 0; i < argCount; i++) {
+            if (i > 0) builder.append(", ");
+            builder.append("{"+ i + "}");
+        }
+        builder.append(")");
+        return TemplateFactory.DEFAULT.create(builder.toString());               
+    }
+    
+    private final List<Expression<?>> normalizeArgs(Object... args) {
+        List<Expression<?>> expressions = new ArrayList<Expression<?>>();
+        for (Object arg : args) {
+            if (arg instanceof Expression) {
+                expressions.add((Expression<?>)arg);
+            } else {
+                expressions.add(new ConstantImpl<Object>(arg));
+            }
+        }
+        return expressions;
+    }
+    
+    
     /**
-     * Create a new TableValuedFunctionCall with the given template in String form and template arguments
+     * Create a new TableValuedFunctionCall for the given function and arguments
      * 
      * @param type
-     * @param template
+     * @param function
      * @param args
      * @return
      */
-    public static <T> RelationalFunctionCall<T> create(Class<? extends T> type, String template, Expression<?>... args) {
-        return new RelationalFunctionCall<T>(type, template, args);
+    public static <T> RelationalFunctionCall<T> create(Class<? extends T> type, String function, Object... args) {
+        return new RelationalFunctionCall<T>(type, function, args);
     }    
     
-    public RelationalFunctionCall(Class<? extends T> type, String template, Expression<?>... args) {
+    public RelationalFunctionCall(Class<? extends T> type, String function, Object... args) {
         super(type);
-        this.args = Arrays.asList(Assert.notNull(args,"args"));
-        this.template = TemplateFactory.DEFAULT.create(Assert.notNull(template,"template"));
+        this.args = normalizeArgs(args);
+        this.template = createTemplate(function, args.length);
     }    
 
     @Override

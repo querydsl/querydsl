@@ -10,7 +10,7 @@ Import-Template:
   javax.annotation.*;version="${findbugs.version}",
   javax.tools.*;version="1",
   org.apache.commons.collections15.*;version="${commons.collections.version}",
-  org.apache.commons.lang.*;version="${commons.lang.version}"
+  org.apache.commons.lang3.*;version="${commons.lang.version}"
 Excluded-Imports:
   edu.umd.cs.findbugs.annotations.*,
   net.jcip.annotations.*    

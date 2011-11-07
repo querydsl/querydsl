@@ -40,7 +40,7 @@ public class SQLSerializerTest {
     public void Join_To_Function_With_Alias() {
         SQLQuery query = new SQLQueryImpl(SQLTemplates.DEFAULT);
         QSurvey survey = QSurvey.survey;
-        query.from(survey).join(RelationalFunctionCall.create(Survey.class, "functionCall()"), Expressions.path(Survey.class, "fc"));
+        query.from(survey).join(RelationalFunctionCall.create(Survey.class, "functionCall"), Expressions.path(Survey.class, "fc"));
         query.where(survey.name.isNotNull());
         assertEquals("from SURVEY SURVEY\njoin functionCall() as fc\nwhere SURVEY.NAME is not null", query.toString());
     }

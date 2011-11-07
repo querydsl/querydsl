@@ -5,7 +5,19 @@
  */
 package com.mysema.query.codegen;
 
-import static com.mysema.codegen.Symbols.*;
+import static com.mysema.codegen.Symbols.ASSIGN;
+import static com.mysema.codegen.Symbols.COMMA;
+import static com.mysema.codegen.Symbols.DOT;
+import static com.mysema.codegen.Symbols.DOT_CLASS;
+import static com.mysema.codegen.Symbols.EMPTY;
+import static com.mysema.codegen.Symbols.NEW;
+import static com.mysema.codegen.Symbols.QUOTE;
+import static com.mysema.codegen.Symbols.RETURN;
+import static com.mysema.codegen.Symbols.SEMICOLON;
+import static com.mysema.codegen.Symbols.STAR;
+import static com.mysema.codegen.Symbols.SUPER;
+import static com.mysema.codegen.Symbols.THIS;
+import static com.mysema.codegen.Symbols.UNCHECKED;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -22,7 +34,7 @@ import javax.inject.Named;
 import net.jcip.annotations.Immutable;
 
 import org.apache.commons.collections15.Transformer;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.ClassType;
@@ -40,7 +52,22 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.ComparableExpression;
-import com.mysema.query.types.path.*;
+import com.mysema.query.types.path.ArrayPath;
+import com.mysema.query.types.path.BooleanPath;
+import com.mysema.query.types.path.CollectionPath;
+import com.mysema.query.types.path.ComparablePath;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.EntityPathBase;
+import com.mysema.query.types.path.EnumPath;
+import com.mysema.query.types.path.ListPath;
+import com.mysema.query.types.path.MapPath;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.PathInits;
+import com.mysema.query.types.path.SetPath;
+import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.path.TimePath;
 
 /**
  * EntitySerializer is a Serializer implementation for entity types

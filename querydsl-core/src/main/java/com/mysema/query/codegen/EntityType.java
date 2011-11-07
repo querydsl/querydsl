@@ -15,7 +15,7 @@ import java.util.TreeSet;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.mysema.codegen.model.Constructor;
 import com.mysema.codegen.model.Type;

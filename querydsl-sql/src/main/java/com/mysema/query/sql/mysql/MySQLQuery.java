@@ -8,13 +8,13 @@ package com.mysema.query.sql.mysql;
 import java.io.File;
 import java.sql.Connection;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.Query;
-import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.AbstractSQLQuery;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.MySQLTemplates;

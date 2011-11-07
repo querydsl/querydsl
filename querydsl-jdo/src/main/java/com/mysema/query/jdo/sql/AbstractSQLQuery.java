@@ -158,7 +158,11 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     @SuppressWarnings("unchecked")
     public T addJoinFlag(String flag, JoinFlag.Position position) {
         List<JoinExpression> joins = queryMixin.getMetadata().getJoins();
-        joins.get(joins.size()-1).addFlag(new JoinFlag(flag, position));
+        if (!joins.isEmpty()) {
+            joins.get(joins.size()-1).addFlag(new JoinFlag(flag, position));    
+        } else {
+            throw new IllegalStateException("No joins have been defined");
+        }        
         return (T)this;
     }
 

@@ -12,7 +12,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.ClassUtils;
+import org.apache.commons.lang3.ClassUtils;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.JoinType;

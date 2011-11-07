@@ -303,6 +303,7 @@ public final class ExtendedTypeFactory {
         }
     }
 
+    // TODO : simplify
     private Type createClassType(DeclaredType declaredType, TypeElement typeElement, boolean deep) {
         // other
         String name = typeElement.getQualifiedName().toString();
@@ -391,6 +392,7 @@ public final class ExtendedTypeFactory {
         if (!typeMirrors.hasNext()){
             return new SimpleType(baseType, defaultType);
         }
+        
         Type componentType = getType(typeMirrors.next(), deep);
         if (componentType == null) {
             componentType = defaultType;

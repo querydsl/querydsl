@@ -11,12 +11,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
-import com.mysema.query.types.*;
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.Operation;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.ParamExpression;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathType;
+import com.mysema.query.types.Template;
+import com.mysema.query.types.TemplateExpression;
+import com.mysema.query.types.Templates;
+import com.mysema.query.types.Visitor;
 
 /**
  * SerializerBase is a stub for Serializer implementations

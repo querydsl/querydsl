@@ -5,7 +5,17 @@
  */
 package com.mysema.query.apt;
 
-import static com.mysema.query.apt.APTOptions.*;
+import static com.mysema.query.apt.APTOptions.DEFAULT_OVERWRITE;
+import static com.mysema.query.apt.APTOptions.QUERYDSL_CREATE_DEFAULT_VARIABLE;
+import static com.mysema.query.apt.APTOptions.QUERYDSL_ENTITY_ACCESSORS;
+import static com.mysema.query.apt.APTOptions.QUERYDSL_EXCLUDED_CLASSES;
+import static com.mysema.query.apt.APTOptions.QUERYDSL_EXCLUDED_PACKAGES;
+import static com.mysema.query.apt.APTOptions.QUERYDSL_LIST_ACCESSORS;
+import static com.mysema.query.apt.APTOptions.QUERYDSL_MAP_ACCESSORS;
+import static com.mysema.query.apt.APTOptions.QUERYDSL_PACKAGE_SUFFIX;
+import static com.mysema.query.apt.APTOptions.QUERYDSL_PREFIX;
+import static com.mysema.query.apt.APTOptions.QUERYDSL_SUFFIX;
+import static com.mysema.query.apt.APTOptions.QUERYDSL_UNKNOWN_AS_EMBEDDABLE;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;
@@ -25,14 +35,24 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.mysema.codegen.model.ClassType;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.Config;
 import com.mysema.query.annotations.QueryProjection;
 import com.mysema.query.annotations.QueryType;
-import com.mysema.query.codegen.*;
+import com.mysema.query.codegen.CodegenModule;
+import com.mysema.query.codegen.EmbeddableSerializer;
+import com.mysema.query.codegen.EntitySerializer;
+import com.mysema.query.codegen.EntityType;
+import com.mysema.query.codegen.ProjectionSerializer;
+import com.mysema.query.codegen.QueryTypeFactory;
+import com.mysema.query.codegen.Serializer;
+import com.mysema.query.codegen.SerializerConfig;
+import com.mysema.query.codegen.SimpleSerializerConfig;
+import com.mysema.query.codegen.SupertypeSerializer;
+import com.mysema.query.codegen.TypeMappings;
 import com.mysema.query.types.Expression;
 
 /**

@@ -7,7 +7,7 @@ package com.mysema.query.sql;
 
 import java.lang.annotation.Annotation;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.mysema.query.codegen.EntityType;
 import com.mysema.util.JavaSyntaxUtils;

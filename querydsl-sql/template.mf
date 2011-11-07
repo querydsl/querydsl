@@ -12,9 +12,9 @@ Import-Template:
   javax.inject.*;version="0",
   javax.validation.*;version="1.0.0",
   net.jcip.annotations.*;version="${findbugs.version}",
-  org.apache.commons.io;version=1.4,
+  org.apache.commons.io;version=${commons.io.version},
   org.apache.commons.collections15.*;version="${commons.collections.version}",
-  org.apache.commons.lang.*;version="${commons.lang.version}",
+  org.apache.commons.lang3.*;version="${commons.lang.version}",
   org.apache.tools.ant.*;version="${ant.version}",
   org.joda.time.*;version="1.6",
   org.slf4j.*;version="${slf4j.version}"

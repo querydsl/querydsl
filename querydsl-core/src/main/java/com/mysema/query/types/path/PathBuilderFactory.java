@@ -8,7 +8,7 @@ package com.mysema.query.types.path;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * PathBuilderFactory is a factory class for PathBuilder creation
