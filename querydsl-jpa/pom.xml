@@ -103,7 +103,7 @@
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
-      <version>1.4</version>
+      <version>${commons.io.version}</version>
       <!-- license : Apache License 2.0 -->
       <scope>test</scope>
     </dependency>
