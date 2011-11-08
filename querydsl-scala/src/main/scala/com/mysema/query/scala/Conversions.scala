@@ -9,7 +9,7 @@ import com.mysema.query.alias._;
 
 import com.mysema.query.types._
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * Implicit conversions for Scala

@@ -1,6 +1,6 @@
 package com.mysema.query.scala.sql
 
-import org.apache.commons.lang.StringUtils
+import org.apache.commons.lang3.StringUtils
 import com.mysema.codegen._;
 import com.mysema.codegen.model._;
 
