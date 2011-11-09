@@ -37,6 +37,8 @@ public class SQLTemplates extends Templates {
     
     public static final Operator<Object> UNION = new OperatorImpl<Object>("UNION");
 
+    public static final Operator<Object> NEXTVAL = new OperatorImpl<Object>("NEXTVAL", String.class);
+    
     public static final SQLTemplates DEFAULT = new SQLTemplates("\"",'\\',false);
     
     private static final Pattern IDENTIFIER_CHARS = Pattern.compile("[a-zA-Z0-9_\\-]+");
@@ -173,6 +175,7 @@ public class SQLTemplates extends Templates {
 
         add(CAST, "cast({0} as {1s})");
         add(UNION, "{0}\nunion\n{1}");
+        add(NEXTVAL, "nextval('{0s}')");
 
         for (Class<?> cl : new Class[] { Boolean.class, Byte.class,
                 Double.class, Float.class, Integer.class, Long.class,

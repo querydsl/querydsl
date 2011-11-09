@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
 import org.junit.Test;
 
 import com.mysema.query.types.ConstantImpl;
+import com.mysema.query.types.Operation;
+import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.template.SimpleTemplate;
@@ -35,5 +37,20 @@ public class SQLTemplatesTest {
         assertTrue(pattern.matcher("a1").matches());
         assertTrue(pattern.matcher("a").matches());
     }
+    
+    @Test
+    public void NextVal() {
+        Operation<String> nextval = new OperationImpl<String>(String.class, SQLTemplates.NEXTVAL, ConstantImpl.create("myseq"));
+        assertEquals("nextval('myseq')", new SQLSerializer(SQLTemplates.DEFAULT).handle(nextval).toString());
+        // Derby OK
+        // H2 OK
+        // HSQLDB OK
+        // MSSQL OK
+        // MySQL
+        // Oracle OK
+        // Postgres OK
+        
+    }
+    
     
 }

@@ -58,6 +58,8 @@ public class SQLServerTemplates extends SQLTemplates{
         add(Ops.SUBSTR_2ARGS, "substring({0},{1}+1,{2})");
         add(Ops.TRIM, "ltrim(rtrim({0}))");
 
+        add(NEXTVAL, "{0s}.nextval");
+        
         // Date / time
         add(Ops.DateTimeOps.YEAR, "datepart(year, {0})");
         add(Ops.DateTimeOps.MONTH, "datepart(month, {0})");

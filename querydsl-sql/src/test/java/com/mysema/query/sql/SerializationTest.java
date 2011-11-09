@@ -12,6 +12,7 @@ import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
+import com.mysema.query.types.SubQueryExpression;
 
 public class SerializationTest {
     
@@ -75,5 +76,11 @@ public class SerializationTest {
                      "where SURVEY.ID = e.ID)", delete.toString());
     }
 
-    
+    @Test
+    public void Nextval() {
+        SubQueryExpression<?> sq = new SQLSubQuery().from(QSurvey.survey).list(SQLExpressions.nextval("myseq"));
+        SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
+        serializer.serialize(sq.getMetadata(), false);
+        assertEquals("select nextval('seq')\nfrom SURVEY SURVEY", serializer.toString());
+    }
 }

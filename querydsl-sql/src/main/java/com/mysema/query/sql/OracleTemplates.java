@@ -53,6 +53,7 @@ public class OracleTemplates extends SQLTemplates {
         addClass2TypeMappings("varchar(4000 char)", String.class);
 
         add(Ops.ALIAS, "{0} {1}");
+        add(NEXTVAL, "{0s}.nextval");
 
         // String
         add(Ops.CONCAT, "{0} || {1}");

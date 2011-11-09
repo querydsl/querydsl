@@ -10,6 +10,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.mysema.query.sql.AbstractSQLQuery.UnionBuilder;
+import com.mysema.query.types.ConstantImpl;
+import com.mysema.query.types.Operation;
+import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.path.SimplePath;
@@ -57,6 +60,12 @@ public class SQLServerTemplatesTest extends AbstractSQLTemplatesTest{
         assertEquals("with inner_query as  (   " +
         		"select survey1.ID, row_number() over () as row_number from SURVEY survey1 ) " +
         		"select *  from inner_query where row_number > ? and row_number <= ?", query.toString());
+    }
+    
+    @Test
+    public void NextVal() {
+        Operation<String> nextval = new OperationImpl<String>(String.class, SQLTemplates.NEXTVAL, ConstantImpl.create("myseq"));
+        assertEquals("myseq.nextval", new SQLSerializer(new SQLServerTemplates()).handle(nextval).toString());        
     }
 
 }

@@ -10,6 +10,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.mysema.query.sql.AbstractSQLQuery.UnionBuilder;
+import com.mysema.query.types.ConstantImpl;
+import com.mysema.query.types.Operation;
+import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.template.SimpleTemplate;
@@ -51,6 +54,12 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
         		"select survey1.ID from SURVEY survey1  ) " +
         		"a) " +
         		"where rn > 3 and rn <= 8", query.toString());
+    }
+    
+    @Test
+    public void NextVal() {
+        Operation<String> nextval = new OperationImpl<String>(String.class, SQLTemplates.NEXTVAL, ConstantImpl.create("myseq"));
+        assertEquals("myseq.nextval", new SQLSerializer(new OracleTemplates()).handle(nextval).toString());        
     }
 
 }
