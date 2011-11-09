@@ -22,11 +22,13 @@ import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.support.SerializationContext;
+import com.mysema.query.support.Expressions;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Order;
@@ -546,7 +548,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     @Override
-    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expression<?>> args) {
+    protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
         if (args.size() == 2 
          && args.get(0) instanceof Path<?> 
          && args.get(1) instanceof Constant<?>
@@ -566,6 +568,9 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
         } else if (operator.equals(Ops.ALIAS)) {
             if (stage == Stage.SELECT || stage == Stage.FROM) {
+                if (args.get(0) instanceof Operation && ((Operation)args.get(0)).getOperator() == SQLTemplates.UNION) {
+                    args = Arrays.asList(Expressions.operation(Object.class, Ops.WRAPPED, args.get(0)), args.get(1));
+                }
                 super.visitOperation(type, operator, args);
             } else {
                 // handle only target

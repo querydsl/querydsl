@@ -40,7 +40,7 @@ public abstract class SimpleExpression<T> extends ExpressionBase<T> {
     private volatile BooleanExpression isnull, isnotnull;
 
     protected final boolean primitive;
-
+    
     public SimpleExpression(Class<? extends T> type) {
         super(type);
         this.primitive = type.isPrimitive()

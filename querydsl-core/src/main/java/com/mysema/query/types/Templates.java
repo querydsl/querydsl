@@ -37,6 +37,7 @@ public class Templates {
         //CHECKSTYLE:OFF
 
         add(Ops.LIST, "{0}, {1}");
+        add(Ops.WRAPPED, "({0})");
 
         // boolean
         add(Ops.AND, "{0} && {1}", 36);

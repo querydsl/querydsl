@@ -5,11 +5,16 @@
  */
 package com.mysema.query.sql;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.OperationImpl;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.SimpleExpression;
+import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.query.types.template.NumberTemplate;
 
 /**
@@ -27,13 +32,22 @@ public class SQLSubQuery extends AbstractSQLSubQuery<SQLSubQuery> implements SQL
     public SQLSubQuery(QueryMetadata metadata) {
         super(metadata);
     }
-
-    public Expression<?> union(SubQueryExpression<?>... sq) {
-        Expression<?> rv = sq[0];
-        for (int i = 1; i < sq.length; i++) {
-            rv = OperationImpl.create(rv.getType(), SQLTemplates.UNION, rv, sq[i]);
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public <T> SimpleExpression<T> union(List<? extends SubQueryExpression<T>> sq) {
+        Expression<T> rv = sq.get(0);
+        for (int i = 1; i < sq.size(); i++) {
+            rv = SimpleOperation.create((Class)rv.getType(), SQLTemplates.UNION, rv, sq.get(i));
         }
-        return rv;
+        if (rv instanceof SimpleExpression) {
+            return (SimpleExpression<T>)rv;
+        } else {
+            return SimpleOperation.create((Class)rv.getType(), Ops.DELEGATE, rv);
+        }
+    }
+    
+    public <T> SimpleExpression<T> union(SubQueryExpression<T>... sq) {
+        return union(Arrays.asList(sq));
     }
     
     @Override

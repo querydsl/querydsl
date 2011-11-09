@@ -226,7 +226,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     }
 
     @SuppressWarnings("unchecked")
-    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expression<?>> args) {
+    protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
         Template template = templates.getTemplate(operator);
         if (template == null) {
             throw new IllegalArgumentException("Got no pattern for " + operator);

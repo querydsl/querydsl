@@ -287,7 +287,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     @Override
     @SuppressWarnings("unchecked")
-    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expression<?>> args) {
+    protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
         boolean old = wrapElements;
         wrapElements = templates.wrapElements(operator);
 
@@ -349,7 +349,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     }
 
     @SuppressWarnings("unchecked")
-    private List<Expression<?>> normalizeNumericArgs(List<Expression<?>> args) {
+    private List<? extends Expression<?>> normalizeNumericArgs(List<? extends Expression<?>> args) {
         boolean hasConstants = false;
         Class<? extends Number> numType = null;
         for (Expression<?> arg : args) {

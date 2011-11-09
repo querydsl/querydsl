@@ -44,6 +44,7 @@ public final class Ops {
     public static final Operator<Object> LIST = new OperatorImpl<Object>("LIST");
     public static final Operator<Integer> ORDINAL = new OperatorImpl<Integer>("ORDINAL");
     public static final Operator<Object> DELEGATE = new OperatorImpl<Object>("DELEGATE");
+    public static final Operator<Object> WRAPPED = new OperatorImpl<Object>("WRAPPED");
 
     // collection
     public static final Operator<Boolean> IN = new OperatorImpl<Boolean>("IN",OBJECT_X_2); // cmp. contains

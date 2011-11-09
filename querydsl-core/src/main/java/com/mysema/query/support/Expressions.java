@@ -11,6 +11,7 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -52,6 +53,11 @@ import com.mysema.query.types.template.StringTemplate;
  *
  */
 public final class Expressions {
+    
+    @SuppressWarnings("unchecked")
+    public static <D> SimpleExpression<D> as(Expression<D> source, Path<D> alias) {
+        return SimpleOperation.create((Class<D>)alias.getType(), Ops.ALIAS, source, alias);
+    }
 
     @Nullable
     public static BooleanExpression allOf(BooleanExpression... exprs) {

@@ -101,7 +101,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
     }
 
     @Override
-    protected void visitOperation(Class<?> type, Operator<?> operator, List<Expression<?>> args) {
+    protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
         if (args.size() == 2
                 && Number.class.isAssignableFrom(args.get(0).getType())
                 && Number.class.isAssignableFrom(args.get(1).getType())){
