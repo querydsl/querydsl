@@ -157,6 +157,10 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         return getFullName().hashCode();
     }
     
+    public boolean hasArrays() {
+        return hasPropertyWithType(TypeCategory.ARRAY);
+    }
+    
     public boolean hasEntityFields() {
         return hasPropertyWithType(TypeCategory.ENTITY);
     }

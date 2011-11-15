@@ -92,6 +92,41 @@ public class BeanSerializerTest {
     }
     
     @Test
+    public void ToString() throws IOException{
+        // property
+        type.addProperty(new Property(type, "entityField", type));
+        type.addProperty(new Property(type, "collection", new SimpleType(Types.COLLECTION, typeModel)));
+        type.addProperty(new Property(type, "listField", new SimpleType(Types.LIST, typeModel)));
+        type.addProperty(new Property(type, "setField", new SimpleType(Types.SET, typeModel)));
+        type.addProperty(new Property(type, "arrayField", new ClassType(TypeCategory.ARRAY, String[].class)));
+        type.addProperty(new Property(type, "mapField", new SimpleType(Types.MAP, typeModel, typeModel)));
+        
+        BeanSerializer serializer = new BeanSerializer();
+        serializer.setAddToString(true);
+        serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        System.out.println(writer.toString());
+        
+    }
+    
+    
+    @Test
+    public void FullConstructor() throws IOException{
+        // property
+        type.addProperty(new Property(type, "entityField", type));
+        type.addProperty(new Property(type, "collection", new SimpleType(Types.COLLECTION, typeModel)));
+        type.addProperty(new Property(type, "listField", new SimpleType(Types.LIST, typeModel)));
+        type.addProperty(new Property(type, "setField", new SimpleType(Types.SET, typeModel)));
+        type.addProperty(new Property(type, "arrayField", new ClassType(TypeCategory.ARRAY, String[].class)));
+        type.addProperty(new Property(type, "mapField", new SimpleType(Types.MAP, typeModel, typeModel)));
+        
+        BeanSerializer serializer = new BeanSerializer();
+        serializer.setAddFullConstructor(true);
+        serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        System.out.println(writer.toString());
+        
+    }
+    
+    @Test
     public void Properties() throws IOException{
         // property
         type.addProperty(new Property(type, "entityField", type));
