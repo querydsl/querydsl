@@ -23,7 +23,11 @@ public final class ClassPathUtils {
     private static final Pattern JAR_URL_SEPARATOR = Pattern.compile("!");
     
     public static Set<Class<?>> scanPackage(ClassLoader classLoader, Package pkg) throws IOException {
-        String packagePath = pkg.getName().replace('.', '/');
+        return scanPackage(classLoader, pkg.getName());
+    }
+    
+    public static Set<Class<?>> scanPackage(ClassLoader classLoader, String pkg) throws IOException {
+        String packagePath = pkg.replace('.', '/');
         Enumeration<URL> urls = classLoader.getResources(packagePath);
         Set<Class<?>> classes = new HashSet<Class<?>>();
         while (urls.hasMoreElements()) {
@@ -32,7 +36,7 @@ public final class ClassPathUtils {
                 scanJar(classes, url, packagePath);
 
             } else if (url.getProtocol().equals("file")) {
-                scanDirectory(pkg, classes, url, pkg.getName());
+                scanDirectory(pkg, classes, url, pkg);
 
             } else {
                 throw new IllegalArgumentException("Illegal url : " + url);
@@ -41,7 +45,7 @@ public final class ClassPathUtils {
         return classes;
     }
 
-    private static void scanDirectory(Package pkg, Set<Class<?>> classes, URL url, String packageName) throws IOException {
+    private static void scanDirectory(String pkg, Set<Class<?>> classes, URL url, String packageName) throws IOException {
         Deque<File> files = new ArrayDeque<File>();
         String packagePath;
         try {
@@ -56,7 +60,7 @@ public final class ClassPathUtils {
             for (File child : file.listFiles()) {
                 if (child.getName().endsWith(".class")) {
                     String fileName = child.getPath().substring(packagePath.length()+1).replace(File.separatorChar, '.');
-                    String className = pkg.getName() + "." + fileName.substring(0, fileName.length()-6);
+                    String className = pkg + "." + fileName.substring(0, fileName.length()-6);
                     if (className.startsWith(packageName)) {
                         Class<?> cl = safeClassForName(className);
                         if (cl != null) {

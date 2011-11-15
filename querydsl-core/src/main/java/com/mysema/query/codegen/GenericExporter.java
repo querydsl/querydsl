@@ -89,9 +89,17 @@ public class GenericExporter {
 
     @Nullable
     private Class<? extends Serializer> serializerClass;
+    
+    public void export(Package... packages) {
+        String[] pkgs = new String[packages.length];
+        for (int i = 0; i < packages.length; i++) {
+            pkgs[i] = packages[i].getName();
+        }
+        export(pkgs);
+    }
 
     @SuppressWarnings("unchecked")
-    public void export(Package... packages){
+    public void export(String... packages){
         scanPackages(packages);
 
         typeMappings = codegenModule.get(TypeMappings.class);
@@ -299,9 +307,9 @@ public class GenericExporter {
     }
 
 
-    private void scanPackages(Package... packages){
+    private void scanPackages(String... packages){
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        for (Package pkg : packages) {
+        for (String pkg : packages) {
             try {
                 for (Class<?> cl : ClassPathUtils.scanPackage(classLoader, pkg)) {
                     if (cl.getAnnotation(embeddableAnnotation) != null){
@@ -388,5 +396,16 @@ public class GenericExporter {
     public void setCreateScalaSources(boolean createScalaSources) {
         this.createScalaSources = createScalaSources;
     }
+    
+    public void setNamePrefix(String prefix) {
+        codegenModule.bind(CodegenModule.PREFIX, prefix);
+    }
+    
+    public void setNameSuffix(String suffix) {
+        codegenModule.bind(CodegenModule.SUFFIX, suffix);
+    }
 
+    public void setPackageSuffix(String suffix) {
+        codegenModule.bind(CodegenModule.PACKAGE_SUFFIX, suffix);
+    }
 }
