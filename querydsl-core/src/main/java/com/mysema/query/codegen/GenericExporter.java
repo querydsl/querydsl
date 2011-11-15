@@ -74,6 +74,8 @@ public class GenericExporter {
     private final CodegenModule codegenModule = new CodegenModule();
 
     private final SerializerConfig serializerConfig = SimpleSerializerConfig.DEFAULT;
+    
+    private boolean handleFields = true, handleMethods = true;
 
     @Nullable
     private File targetFolder;
@@ -222,45 +224,51 @@ public class GenericExporter {
 
     private void addProperties(Class<?> cl, EntityType type) {
         Set<String> handled = new HashSet<String>();
+        
         // fields
-        for (Field field : cl.getDeclaredFields()) {
-            if (!Modifier.isStatic(field.getModifiers())) {
-                AnnotatedElement annotated = ReflectionUtils.getAnnotatedElement(cl, field.getName(), field.getType());
-                Method method = ReflectionUtils.getGetterOrNull(cl, field.getName(), field.getType());
-                Type propertyType = null;
-                if (method != null) {
-                    propertyType = getPropertyType(cl, annotated, method.getReturnType(), method.getGenericReturnType());
-                } else {
-                    propertyType = getPropertyType(cl, annotated, field.getType(), field.getGenericType());
+        if (handleFields) {
+            for (Field field : cl.getDeclaredFields()) {
+                if (!Modifier.isStatic(field.getModifiers())) {
+                    AnnotatedElement annotated = ReflectionUtils.getAnnotatedElement(cl, field.getName(), field.getType());
+                    Method method = ReflectionUtils.getGetterOrNull(cl, field.getName(), field.getType());
+                    Type propertyType = null;
+                    if (method != null) {
+                        propertyType = getPropertyType(cl, annotated, method.getReturnType(), method.getGenericReturnType());
+                    } else {
+                        propertyType = getPropertyType(cl, annotated, field.getType(), field.getGenericType());
+                    }
+                    Property property = createProperty(type, field.getName(), propertyType, field);
+                    if (property != null) {
+                        type.addProperty(property);
+                    }
+                    handled.add(field.getName());
                 }
-                Property property = createProperty(type, field.getName(), propertyType, field);
-                if (property != null) {
-                    type.addProperty(property);
-                }
-                handled.add(field.getName());
-            }
+            }    
         }
+        
 
         // getters
-        for (Method method : cl.getDeclaredMethods()) {
-            if (method.getParameterTypes().length == 0
-                && (method.getName().startsWith("get") || method.getName().startsWith("is"))) {
-                String propertyName;
-                if (method.getName().startsWith("get")) {
-                    propertyName = BeanUtils.uncapitalize(method.getName().substring(3));
-                } else {
-                    propertyName = BeanUtils.uncapitalize(method.getName().substring(2));
+        if (handleMethods) {
+            for (Method method : cl.getDeclaredMethods()) {
+                if (method.getParameterTypes().length == 0
+                    && (method.getName().startsWith("get") || method.getName().startsWith("is"))) {
+                    String propertyName;
+                    if (method.getName().startsWith("get")) {
+                        propertyName = BeanUtils.uncapitalize(method.getName().substring(3));
+                    } else {
+                        propertyName = BeanUtils.uncapitalize(method.getName().substring(2));
+                    }
+                    if (handled.contains(propertyName)) {
+                        continue;
+                    }
+                    Type propertyType = getPropertyType(cl, method, method.getReturnType(), method.getGenericReturnType());
+                    Property property = createProperty(type, propertyName, propertyType, method);
+                    if (property != null) {
+                        type.addProperty(property);
+                    }
                 }
-                if (handled.contains(propertyName)) {
-                    continue;
-                }
-                Type propertyType = getPropertyType(cl, method, method.getReturnType(), method.getGenericReturnType());
-                Property property = createProperty(type, propertyName, propertyType, method);
-                if (property != null) {
-                    type.addProperty(property);
-                }
-            }
-        }
+            }    
+        }        
     }
 
     private Type getPropertyType(Class<?> cl, AnnotatedElement annotated, Class<?> type, java.lang.reflect.Type genericType) {
@@ -408,4 +416,13 @@ public class GenericExporter {
     public void setPackageSuffix(String suffix) {
         codegenModule.bind(CodegenModule.PACKAGE_SUFFIX, suffix);
     }
+    
+    public void setHandleFields(boolean b) {
+        handleFields = b;
+    }
+    
+    public void setHandleMethods(boolean b) {
+        handleMethods = b;
+    }
+    
 }

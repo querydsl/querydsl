@@ -1,5 +1,6 @@
 package com.mysema.query.codegen;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -29,16 +30,16 @@ public class GenericExporterTest {
     }
     
     @Test
-    public void Export_With_Package_Suffix() {        
-        exporter.setTargetFolder(new File("target/gen4"));
-        exporter.setPackageSuffix("types");
+    public void OverrideSerializer() {
+        exporter.setTargetFolder(new File("target/gen2"));
+        exporter.setSerializerClass(EntitySerializer.class);
         exporter.export(getClass().getPackage());
-        assertTrue(new File("target/gen4/com/mysema/query/codegentypes/QExampleEmbeddable.java").exists());
-        assertTrue(new File("target/gen4/com/mysema/query/codegentypes/QExampleEmbedded.java").exists());
-        assertTrue(new File("target/gen4/com/mysema/query/codegentypes/QExampleEntity.java").exists());
-        assertTrue(new File("target/gen4/com/mysema/query/codegentypes/QExampleEntityInterface.java").exists());
-        assertTrue(new File("target/gen4/com/mysema/query/codegentypes/QExampleSupertype.java").exists());
-        assertTrue(new File("target/gen4/com/mysema/query/codegen/subtypes/QExampleEntity2.java").exists());
+        assertTrue(new File("target/gen2/com/mysema/query/codegen/QExampleEmbeddable.java").exists());
+        assertTrue(new File("target/gen2/com/mysema/query/codegen/QExampleEmbedded.java").exists());
+        assertTrue(new File("target/gen2/com/mysema/query/codegen/QExampleEntity.java").exists());
+        assertTrue(new File("target/gen2/com/mysema/query/codegen/QExampleEntityInterface.java").exists());
+        assertTrue(new File("target/gen2/com/mysema/query/codegen/QExampleSupertype.java").exists());
+        assertTrue(new File("target/gen2/com/mysema/query/codegen/sub/QExampleEntity2.java").exists());
     }
     
     @Test
@@ -52,18 +53,27 @@ public class GenericExporterTest {
         assertTrue(new File("target/gen3/com/mysema/query/codegen/QExampleSupertype.java").exists());
         assertTrue(new File("target/gen3/com/mysema/query/codegen/sub/QExampleEntity2.java").exists());
     }
-
+    
     @Test
-    public void OverrideSerializer() {
-        exporter.setTargetFolder(new File("target/gen2"));
-        exporter.setSerializerClass(EntitySerializer.class);
+    public void Export_With_Package_Suffix() {        
+        exporter.setTargetFolder(new File("target/gen4"));
+        exporter.setPackageSuffix("types");
         exporter.export(getClass().getPackage());
-        assertTrue(new File("target/gen2/com/mysema/query/codegen/QExampleEmbeddable.java").exists());
-        assertTrue(new File("target/gen2/com/mysema/query/codegen/QExampleEmbedded.java").exists());
-        assertTrue(new File("target/gen2/com/mysema/query/codegen/QExampleEntity.java").exists());
-        assertTrue(new File("target/gen2/com/mysema/query/codegen/QExampleEntityInterface.java").exists());
-        assertTrue(new File("target/gen2/com/mysema/query/codegen/QExampleSupertype.java").exists());
-        assertTrue(new File("target/gen2/com/mysema/query/codegen/sub/QExampleEntity2.java").exists());
+        assertTrue(new File("target/gen4/com/mysema/query/codegentypes/QExampleEmbeddable.java").exists());
+        assertTrue(new File("target/gen4/com/mysema/query/codegentypes/QExampleEmbedded.java").exists());
+        assertTrue(new File("target/gen4/com/mysema/query/codegentypes/QExampleEntity.java").exists());
+        assertTrue(new File("target/gen4/com/mysema/query/codegentypes/QExampleEntityInterface.java").exists());
+        assertTrue(new File("target/gen4/com/mysema/query/codegentypes/QExampleSupertype.java").exists());
+        assertTrue(new File("target/gen4/com/mysema/query/codegen/subtypes/QExampleEntity2.java").exists());
+    }
+    
+    @Test
+    public void Export_Handle_No_Methods_Nor_Fields() {        
+        exporter.setTargetFolder(new File("target/gen5"));
+        exporter.setHandleFields(false);
+        exporter.setHandleMethods(false);
+        exporter.export(getClass().getPackage());
+        assertTrue(new File("target/gen5/com/mysema/query/codegen/QExampleEmbeddable.java").exists());
     }
 
 }
