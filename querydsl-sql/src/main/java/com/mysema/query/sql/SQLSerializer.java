@@ -46,7 +46,7 @@ import com.mysema.query.types.TemplateExpressionImpl;
  */
 public class SQLSerializer extends SerializerBase<SQLSerializer> {
     
-    enum Stage {SELECT, FROM, WHERE, GROUP_BY, HAVING, ORDER_BY}
+    protected enum Stage {SELECT, FROM, WHERE, GROUP_BY, HAVING, ORDER_BY}
 
     private final SerializationContext context = new SerializationContext() {
 
@@ -81,7 +81,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     private final boolean dml;
     
-    private Stage stage = Stage.SELECT;
+    protected Stage stage = Stage.SELECT;
 
     private boolean skipParent;
 

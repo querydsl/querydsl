@@ -38,28 +38,19 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
     val simpleName: String = model.getSimpleName
 
     // package
-    if (!model.getPackageName.isEmpty()) {
-      writer.packageDecl(model.getPackageName)
-    }
+    if (!model.getPackageName.isEmpty()) writer.packageDecl(model.getPackageName)
 
     // imports
     writer.importPackages("com.mysema.query.types","com.mysema.query.scala")
     writer.staticimports(classOf[PathMetadataFactory])
 
     var importedClasses = getAnnotationTypes(model)
-    if (model.hasLists()) {
-      importedClasses.add(classOf[List[_]].getName)
-    }
-    if (model.hasMaps()) {
-      importedClasses.add(classOf[Map[_, _]].getName)
-    }
+    if (model.hasLists()) importedClasses.add(classOf[List[_]].getName)
+    if (model.hasMaps())  importedClasses.add(classOf[Map[_, _]].getName)
 
-    writer.importClasses(importedClasses.toArray: _*)
-    
-    writeHeader(model, scalaWriter)
-    
-    var modelName = writer.getRawName(model)
-    
+    writer.importClasses(importedClasses.toArray: _*)    
+    writeHeader(model, scalaWriter)    
+    var modelName = writer.getRawName(model)    
     writeAdditionalFields(model, scalaWriter)
     
     // additional constructors

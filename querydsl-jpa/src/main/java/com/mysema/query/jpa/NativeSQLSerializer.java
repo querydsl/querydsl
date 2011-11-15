@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.persistence.Entity;
+
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Constant;
@@ -60,9 +62,11 @@ public final class NativeSQLSerializer extends SQLSerializer{
     
     @Override
     public Void visit(Path<?> path, Void context) {
-        if (path.getMetadata().getParent() == null && !path.getType().equals(path.getClass())) {
+        if (path.getMetadata().getParent() == null && path.getType().isAnnotationPresent(Entity.class)) {
             super.visit(path, context);
-            append(".*");
+            if (stage == Stage.SELECT) {
+                append(".*");    
+            }            
             entityPaths.add(path);
         } else {
             super.visit(path, context);

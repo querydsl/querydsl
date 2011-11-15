@@ -1,6 +1,6 @@
 package com.mysema.query.sql;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -21,8 +21,7 @@ public class RelationalFunctionCallTest {
         RelationalFunctionCall<String> functionCall = RelationalFunctionCall.create(String.class, "getElements", "a", str);
         assertEquals("getElements({0}, {1})", functionCall.getTemplate().toString());
         assertEquals(ConstantImpl.create("a"), functionCall.getArg(0));
-        assertEquals(str, functionCall.getArg(1));
-        
+        assertEquals(str, functionCall.getArg(1));        
     }
-
+    
 }

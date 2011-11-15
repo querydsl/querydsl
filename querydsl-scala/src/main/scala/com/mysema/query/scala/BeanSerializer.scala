@@ -19,29 +19,21 @@ import scala.collection.mutable.Set
  */
 class ScalaBeanSerializer extends Serializer {
 
-  val javaBeanSupport = true
+  var javaBeanSupport = true
 
-  val javadocSuffix = " is a Querydsl bean type"
+  var javadocSuffix = " is a Querydsl bean type"
 
   def serialize(model: EntityType, serializerConfig: SerializerConfig, writer: CodeWriter) {
     val simpleName = model.getSimpleName
 
     // package
-    if (!model.getPackageName.isEmpty) {
-      writer.packageDecl(model.getPackageName)
-    }
+    if (!model.getPackageName.isEmpty) writer.packageDecl(model.getPackageName)
 
     // imports
     val importedClasses = getAnnotationTypes(model)
-    if (javaBeanSupport) {
-      importedClasses.add("scala.reflect.BeanProperty")    
-    }    
-    if (model.hasLists()) {
-      importedClasses.add(classOf[List[_]].getName)
-    }
-    if (model.hasMaps()) {
-      importedClasses.add(classOf[Map[_, _]].getName)
-    }
+    if (javaBeanSupport)  importedClasses.add("scala.reflect.BeanProperty")    
+    if (model.hasLists()) importedClasses.add(classOf[List[_]].getName)
+    if (model.hasMaps())  importedClasses.add(classOf[Map[_, _]].getName)
 
     writer.importClasses(importedClasses.toArray: _*)
 
@@ -56,9 +48,7 @@ class ScalaBeanSerializer extends Serializer {
     // properties
     model.getProperties foreach { property =>
       property.getAnnotations.foreach(writer.annotation(_))
-      if (javaBeanSupport) {
-        writer.line("@BeanProperty")
-      }
+      if (javaBeanSupport) writer.line("@BeanProperty")
       writer.publicField(property.getType(), property.getEscapedName, "_")
     }
 

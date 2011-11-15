@@ -13,6 +13,8 @@ import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.path.PathBuilder;
+import com.mysema.query.types.path.StringPath;
 
 public class SerializationTest {
     
@@ -83,4 +85,41 @@ public class SerializationTest {
         serializer.serialize(sq.getMetadata(), false);
         assertEquals("select nextval('seq')\nfrom SURVEY SURVEY", serializer.toString());
     }
+    
+    @Test
+    public void FunctionCall() {
+        //select tab.col from Table tab join TableValuedFunction('parameter') func on tab.col not like func.col
+
+        QSurvey table = QSurvey.survey;
+        RelationalFunctionCall<String> func = RelationalFunctionCall.create(String.class, "TableValuedFunction", "parameter");
+        PathBuilder<String> funcAlias = new PathBuilder<String>(String.class, "tokFunc");
+        SQLSubQuery sq = new SQLSubQuery();
+        SubQueryExpression<?> expr = sq.from(table)
+            .join(func, funcAlias).on(table.name.like(funcAlias.getString("prop")).not()).list(table.name);
+        
+        SQLSerializer serializer = new SQLSerializer(new SQLServerTemplates());
+        serializer.serialize(expr.getMetadata(), false);
+        assertEquals("select SURVEY.NAME\n" +
+                "from SURVEY SURVEY\n" +
+                "join TableValuedFunction(?) as tokFunc\n" +
+                "on not SURVEY.NAME like tokFunc.prop escape '\\'", serializer.toString());
+
+    }
+    
+    @Test
+    public void FunctionCall2() {
+        //select tab.col from Table tab join TableValuedFunction('parameter') func on tab.col not like func.col
+
+        QSurvey table = QSurvey.survey;
+        RelationalFunctionCall<String> func = RelationalFunctionCall.create(String.class, "TableValuedFunction", "parameter");
+        PathBuilder<String> funcAlias = new PathBuilder<String>(String.class, "tokFunc");
+        SQLQuery q = new SQLQueryImpl(new SQLServerTemplates());
+        q.from(table).join(func, funcAlias).on(table.name.like(funcAlias.getString("prop")).not());
+        
+        assertEquals("from SURVEY SURVEY\n" +
+                "join TableValuedFunction(?) as tokFunc\n" +
+                "on not SURVEY.NAME like tokFunc.prop escape '\\'", q.toString());
+
+    }
+    
 }

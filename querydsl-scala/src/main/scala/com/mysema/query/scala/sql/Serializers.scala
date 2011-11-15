@@ -32,23 +32,17 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
     // primary keys
     val primaryKeys: Collection[PrimaryKeyData] =
       model.getData.get(classOf[PrimaryKeyData]).asInstanceOf[Collection[PrimaryKeyData]]
-    if (primaryKeys != null) {
-      serializePrimaryKeys(model, writer, primaryKeys)
-    }
+    if (primaryKeys != null) serializePrimaryKeys(model, writer, primaryKeys)
 
     // foreign keys
     val foreignKeys: Collection[ForeignKeyData] =
       model.getData.get(classOf[ForeignKeyData]).asInstanceOf[Collection[ForeignKeyData]]
-    if (foreignKeys != null) {
-      serializeForeignKeys(model, writer, foreignKeys, false)
-    }
+    if (foreignKeys != null) serializeForeignKeys(model, writer, foreignKeys, false)
 
     // inverse foreign keys
     val inverseForeignKeys: Collection[InverseForeignKeyData] =
       model.getData.get(classOf[InverseForeignKeyData]).asInstanceOf[Collection[InverseForeignKeyData]]
-    if (inverseForeignKeys != null) {
-      serializeForeignKeys(model, writer, inverseForeignKeys, true)
-    }
+    if (inverseForeignKeys != null) serializeForeignKeys(model, writer, inverseForeignKeys, true)
   }
 
   def serializePrimaryKeys(model: EntityType, writer: CodeWriter, primaryKeys: Collection[PrimaryKeyData]) {
@@ -71,12 +65,7 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
       } else {
         fieldName = namingStrategy.getPropertyNameForForeignKey(foreignKey.getName, model)
       }
-      val value = new StringBuilder()
-      if (inverse) {
-        value.append("createInvForeignKey(")
-      } else {
-        value.append("createForeignKey(")
-      }
+      val value = new StringBuilder(if (inverse) "createInvForeignKey(" else "createForeignKey(")
       if (foreignKey.getForeignColumns.size == 1) {
         value.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns.get(0), model))
         value.append(", \"" + foreignKey.getParentColumns().get(0) + "\"")
