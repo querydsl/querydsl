@@ -219,7 +219,7 @@ public interface Projectable {
      * return a single result for the given projection or null if no result is found
      * 
      * <p>There is some ambiguity for missing results and null valued results, for disambiguation 
-     * use your own projection methods.</p> 
+     * use the list or iterate methods instead.</p> 
      *
      * <p>for multiple results only the first one is returned</p>
      *
@@ -233,7 +233,7 @@ public interface Projectable {
      * return a single result for the given projection or null if no result is found
      *
      * <p>There is some ambiguity for missing results and null valued results, for disambiguation 
-     * use your own projection methods.</p>
+     * use the list or iterate methods instead.</p>
      *
      * <p>for multiple results only the first one is returned</p>
      *
@@ -258,7 +258,7 @@ public interface Projectable {
      * return a unique result for the given projection or null if no result is found
      * 
      * <p>There is some ambiguity for missing results and null valued results, for disambiguation 
-     * use your own projection methods.</p> 
+     * use the list or iterate methods instead.</p> 
      *
      * @param first
      * @param second
@@ -273,7 +273,7 @@ public interface Projectable {
      * return a unique result for the given projection or null if no result is found
      *
      * <p>There is some ambiguity for missing results and null valued results, for disambiguation 
-     * use your own projection methods.</p>
+     * use the list or iterate methods instead.</p>
      *
      * @param args
      * @throws NonUniqueResultException if there is more than one matching result
@@ -286,7 +286,7 @@ public interface Projectable {
      * return a unique result for the given projection or null if no result is found
      * 
      * <p>There is some ambiguity for missing results and null valued results, for disambiguation 
-     * use your own projection methods.</p>
+     * use the list or iterate methods instead.</p>
      *
      * @param <RT>
      *            return type
