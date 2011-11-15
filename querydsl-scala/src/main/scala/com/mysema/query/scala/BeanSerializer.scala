@@ -55,12 +55,11 @@ class ScalaBeanSerializer extends Serializer {
     writer.end()
   }
 
-  def getAnnotationTypes(model: EntityType): Set[String] = {
-    val imports: Set[String] = Set()
-    imports ++ model.getAnnotations.map(_.annotationType.getName);
+  private def getAnnotationTypes(model: EntityType): Set[String] = {
+    val imports = Set() ++ model.getAnnotations.map(_.annotationType.getName);
     // flatMap flattens the results of the map-function.
     // E.g. List(List(1,2,3), List(4,5,6)).flatMap(_.map(_*3)) ends up as List(3, 6, 9, 12, 15, 18).
     imports ++ model.getProperties.flatMap(_.getAnnotations.map(_.annotationType.getName));
   }
-
+  
 }
