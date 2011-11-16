@@ -2,7 +2,7 @@ package com.mysema.query.scala;
 
 //import com.mysema.query._
 import com.mysema.query.types._
-import com.mysema.query.scala.Queries._
+import com.mysema.query.scala.Helpers._
 import com.mysema.query.scala.Conversions._
 
 import com.mysema.query.jpa.impl.JPAQuery
