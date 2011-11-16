@@ -79,16 +79,21 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
     val queryTypeName = writer.getRawName(queryType)
     val classHeader = String.format(classHeaderFormat, queryTypeName, modelName)
         
-    writer.beginObject(queryTypeName)
+    writer.beginObject(enhanceCompanionClass(queryTypeName, modelName))
     writer.line("def as(variable: String) = new ", queryTypeName, "(variable)")
     writer.line("")
     writer.line("val ", model.getUncapSimpleName, " = as(\"",  model.getUncapSimpleName, "\")")
+    writeAdditionalCompanionContent(model, writer)
     writer.end()
     
     // header
     model.getAnnotations.foreach(writer.annotation(_))    
     writer.beginClass(classHeader)
   }
+  
+  def enhanceCompanionClass(name: String, modelName: String): String = name
+  
+  def writeAdditionalCompanionContent(model: EntityType, writer: ScalaWriter) = {}
 
   private def serializeEntityProperties(model: EntityType, writer: CodeWriter, properties: Collection[Property]) = {
     for (property <- properties if property.getType.getCategory == ENTITY) yield {

@@ -24,7 +24,8 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
 
   override def writeHeader(model: EntityType, writer: ScalaWriter) {
     writer.imports(classOf[RelationalPathImpl[_]])
-    writer.imports(classOf[PrimaryKey[_]].getPackage)
+    writer.imports(classOf[Relation[_]])
+    writer.imports(classOf[PrimaryKey[_]].getPackage)    
     super.writeHeader(model, writer)            
   }
     
@@ -44,7 +45,18 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
       model.getData.get(classOf[InverseForeignKeyData]).asInstanceOf[Collection[InverseForeignKeyData]]
     if (inverseForeignKeys != null) serializeForeignKeys(model, writer, inverseForeignKeys, true)
   }
-
+   
+  override def enhanceCompanionClass(name: String, modelName: String) = {
+    name + " extends Relation[" + modelName + "]"
+  }
+  
+  override def writeAdditionalCompanionContent(model: EntityType, writer: ScalaWriter) = {
+    if (model.getUncapSimpleName != "path") {
+      writer.line("")
+      writer.line("def path = ", model.getUncapSimpleName())  
+    }     
+  }
+  
   def serializePrimaryKeys(model: EntityType, writer: CodeWriter, primaryKeys: Collection[PrimaryKeyData]) {
     primaryKeys foreach { primaryKey =>
       val fieldName = namingStrategy.getPropertyNameForPrimaryKey(primaryKey.getName(), model)
