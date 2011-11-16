@@ -144,6 +144,17 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
             assertNotNull(result[0]);
         }
     }
+    
+    @Test
+    public void RelationalPath_Projection() {
+        List<Object[]> results = query().from(employee, employee2).where(employee.id.eq(employee2.id)).list(employee, employee2);
+        assertFalse(results.isEmpty());
+        for (Object[] row : results) {
+            Employee e1 = (Employee)row[0];
+            Employee e2 = (Employee)row[1];
+            assertEquals(e1.getId(), e2.getId());
+        }
+    }
 
     @Test
     public void Beans(){

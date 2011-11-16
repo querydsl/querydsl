@@ -363,40 +363,49 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return configuration;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
+        for (int i = 0; i < args.length; i++) {
+            if (args[i] instanceof RelationalPath) {
+                args[i] = wrap((RelationalPath)args[i]);
+            }
+        }        
         queryMixin.addToProjection(args);
         return iterateMultiple(queryMixin.getMetadata());
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
         if (expr instanceof RelationalPath<?>) {
-            try{
-                if (expr.getType().equals(expr.getClass())) {
-                    throw new IllegalArgumentException("RelationalPath based projection can only be used with generated Bean types");
-                }                
-                Map<String,Expression<?>> bindings = new HashMap<String,Expression<?>>();
-                for (Field field : expr.getClass().getDeclaredFields()) {
-                    if (Expression.class.isAssignableFrom(field.getType()) && !Modifier.isStatic(field.getModifiers())) {
-                        field.setAccessible(true);
-                        Expression<?> column = (Expression<?>) field.get(expr);
-                        bindings.put(field.getName(), column);
-                    }
-                }
-                if (bindings.isEmpty()) {
-                    throw new IllegalArgumentException("No bindings could be derived from " + expr);
-                }                
-                QBean<RT> bean = new QBean(expr.getType(), bindings);
-                return iterate(bean);
-            }catch(IllegalAccessException e) {
-                throw new QueryException(e);
-            }
+            return iterate(wrap((RelationalPath<RT>)expr));
         } else {
             expr = queryMixin.convert(expr);
             queryMixin.addToProjection(expr);
             return iterateSingle(queryMixin.getMetadata(), expr);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <RT> QBean<RT> wrap(RelationalPath<RT> expr) {
+        try{
+            if (expr.getType().equals(expr.getClass())) {
+                throw new IllegalArgumentException("RelationalPath based projection can only be used with generated Bean types");
+            }                
+            Map<String,Expression<?>> bindings = new HashMap<String,Expression<?>>();
+            for (Field field : expr.getClass().getDeclaredFields()) {
+                if (Expression.class.isAssignableFrom(field.getType()) && !Modifier.isStatic(field.getModifiers())) {
+                    field.setAccessible(true);
+                    Expression<?> column = (Expression<?>) field.get(expr);
+                    bindings.put(field.getName(), column);
+                }
+            }
+            if (bindings.isEmpty()) {
+                throw new IllegalArgumentException("No bindings could be derived from " + expr);
+            }                
+            return new QBean<RT>((Class)expr.getType(), bindings);
+        }catch(IllegalAccessException e) {
+            throw new QueryException(e);
         }
     }
 
