@@ -47,7 +47,7 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
   }
    
   override def enhanceCompanionClass(name: String, modelName: String) = {
-    name + " extends Relation[" + modelName + "]"
+    name + " extends Relation[" + name + "]"
   }
   
   override def writeAdditionalCompanionContent(model: EntityType, writer: ScalaWriter) = {
