@@ -5,11 +5,11 @@ import java.util.List;
 
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionBase;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Visitor;
+import com.mysema.query.types.expr.SimpleExpression;
 
 /**
  * Represents a table valued function call
@@ -18,7 +18,7 @@ import com.mysema.query.types.Visitor;
  *
  * @param <T>
  */
-public class RelationalFunctionCall<T> extends ExpressionBase<T> implements TemplateExpression<T> {
+public class RelationalFunctionCall<T> extends SimpleExpression<T> implements TemplateExpression<T> {
 
     private static final long serialVersionUID = 256739044928186923L;
     

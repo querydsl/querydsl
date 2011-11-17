@@ -4,10 +4,42 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.ConstantImpl;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.path.StringPath;
 
 public class RelationalFunctionCallTest {
+    
+    private static Expression[] serializeCollection(String... tokens) {
+        Expression[] rv = new Expression[tokens.length];
+        for (int i = 0; i < tokens.length; i++) {
+            rv[i] = ConstantImpl.create(tokens[i]); 
+        }
+        return rv;
+    }
+    
+    private static class TokenizeFunction extends RelationalFunctionCall<String> {
+        final PathBuilder<String> alias;
+        final StringPath token;
+     
+        public TokenizeFunction(String alias, String... tokens) {
+           super(String.class, "tokenize", serializeCollection(tokens));
+           this.alias = new PathBuilder<String>(String.class, alias);
+           this.token = new StringPath(this.alias, "token");        
+       }
+        
+    }
+    
+    @Test
+    public void Validation() {
+        QSurvey survey = QSurvey.survey;
+        TokenizeFunction func = new TokenizeFunction("func", "a", "b");
+        SQLSubQuery sub = new SQLSubQuery().from(func.as(func.alias)).where(survey.name.like(func.token));
+        System.out.println(sub);
+        
+    }
     
     @Test
     public void NoArgs() {

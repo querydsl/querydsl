@@ -12,6 +12,7 @@ object QSurvey {
   def as(variable: String) = new QSurvey(variable)
   
   val survey = as("survey")
+  
 }
 
 class QSurvey(cl: Class[_ <: Survey], md: PathMetadata[_]) extends RelationalPathImpl[Survey](cl, md) {

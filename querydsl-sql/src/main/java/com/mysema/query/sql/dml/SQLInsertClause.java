@@ -150,12 +150,21 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
      * @param path
      * @return
      */
+    @SuppressWarnings("unchecked")
     @Nullable
     public <T> T executeWithKey(Path<T> path) {
+        return executeWithKey((Class<T>)path.getType(), path);
+    }
+    
+    public <T> T executeWithKey(Class<T> type) {
+        return executeWithKey(type, null);
+    }
+    
+    private <T> T executeWithKey(Class<T> type, @Nullable Path<T> path) {
         ResultSet rs = executeWithKeys();
         try{
             if (rs.next()) {
-                return configuration.get(rs, path, 1, path.getType());
+                return configuration.get(rs, path, 1, type);
             } else {
                 return null;
             }
@@ -174,12 +183,21 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
      * @param path
      * @return
      */
+    @SuppressWarnings("unchecked")
     public <T> List<T> executeWithKeys(Path<T> path) {
+        return executeWithKeys((Class<T>)path.getType(), path);
+    }
+    
+    public <T> List<T> executeWithKeys(Class<T> type) {
+        return executeWithKeys(type, null);
+    }
+    
+    private <T> List<T> executeWithKeys(Class<T> type, @Nullable Path<T> path) {
         ResultSet rs = executeWithKeys();
         try{
             List<T> rv = new ArrayList<T>();
             while (rs.next()) {
-                rv.add(configuration.get(rs, path, 1, path.getType()));
+                rv.add(configuration.get(rs, path, 1, type));
             }
             return rv;
         } catch (SQLException e) {
@@ -188,7 +206,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
             close(rs);
         }
     }
-
+    
     private PreparedStatement createStatement(boolean withKeys) throws SQLException{
         SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
         if (subQueryBuilder != null) {

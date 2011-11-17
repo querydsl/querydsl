@@ -7,8 +7,9 @@ import com.mysema.query.sql._
  * 
  * @author tiwe
  */
-trait Relation[P <: RelationalPath[_]] {
+trait Relation[T] {
   
-  def path: P
+  def path: RelationalPath[T]
   
 }
+
