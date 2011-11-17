@@ -15,10 +15,10 @@ object QSurvey {
   
 }
 
-class QSurvey(cl: Class[_ <: Survey], md: PathMetadata[_]) extends RelationalPathImpl[Survey](cl, md) {
-  def this(variable: String) = this(classOf[Survey], forVariable(variable))
+class QSurvey(md: PathMetadata[_]) extends RelationalPathImpl[Survey]( md) {
+  def this(variable: String) = this(forVariable(variable))
 
-  def this(parent: Path[_], variable: String) = this(classOf[Survey], forProperty(parent, variable))
+  def this(parent: Path[_], variable: String) = this(forProperty(parent, variable))
 
   val id = createNumber("ID", classOf[Integer])
 

@@ -394,10 +394,12 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
             }                
             Map<String,Expression<?>> bindings = new HashMap<String,Expression<?>>();
             for (Field field : expr.getClass().getDeclaredFields()) {
-                if (Expression.class.isAssignableFrom(field.getType()) && !Modifier.isStatic(field.getModifiers())) {
+                if (Path.class.isAssignableFrom(field.getType()) && !Modifier.isStatic(field.getModifiers())) {
                     field.setAccessible(true);
-                    Expression<?> column = (Expression<?>) field.get(expr);
-                    bindings.put(field.getName(), column);
+                    Path<?> column = (Path<?>) field.get(expr);
+                    if (expr.equals(column.getMetadata().getParent())) {
+                        bindings.put(field.getName(), column);
+                    }                    
                 }
             }
             if (bindings.isEmpty()) {

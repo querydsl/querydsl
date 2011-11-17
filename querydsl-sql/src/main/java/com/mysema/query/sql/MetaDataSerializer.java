@@ -64,10 +64,13 @@ public class MetaDataSerializer extends EntitySerializer {
     protected void introClassHeader(CodeWriter writer, EntityType model) throws IOException {
         Type queryType = typeMappings.getPathType(model, model, true);
 
-        TypeCategory category = model.getOriginalCategory();        
-        for (Annotation annotation : model.getAnnotations()) {
-            writer.annotation(annotation);
-        }
+        TypeCategory category = model.getOriginalCategory();      
+        // serialize annotations only, if no bean types are used
+        if (model.equals(queryType)) {
+            for (Annotation annotation : model.getAnnotations()) {
+                writer.annotation(annotation);
+            }    
+        }        
         writer.beginClass(queryType, new ClassType(category, RelationalPathBase.class, model));
         writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()));
     }

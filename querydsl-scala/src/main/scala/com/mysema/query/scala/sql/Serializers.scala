@@ -20,13 +20,18 @@ import javax.inject.Inject
 class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingStrategy: NamingStrategy) 
     extends ScalaEntitySerializer(typeMappings) {
     
-  override val classHeaderFormat = "%1$s(cl: Class[_ <: %2$s], md: PathMetadata[_]) extends RelationalPathImpl[%2$s](cl, md)"
+  override val classHeaderFormat = "%1$s(md: PathMetadata[_]) extends RelationalPathImpl[%2$s](md)"
 
   override def writeHeader(model: EntityType, writer: ScalaWriter) {
     writer.imports(classOf[RelationalPathImpl[_]])
     writer.imports(classOf[Relation[_]])
     writer.imports(classOf[PrimaryKey[_]].getPackage)    
     super.writeHeader(model, writer)            
+  }
+  
+  override def writeAdditionalConstructors(modelName: String, writer: ScalaWriter) = {
+    writer.line("def this(variable: String) = this(forVariable(variable))\n")
+    writer.line("def this(parent: Path[_], variable: String) = this(forProperty(parent, variable))\n")
   }
     
   override def writeAdditionalProperties(model: EntityType, writer: ScalaWriter) {
@@ -44,6 +49,12 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
     val inverseForeignKeys: Collection[InverseForeignKeyData] =
       model.getData.get(classOf[InverseForeignKeyData]).asInstanceOf[Collection[InverseForeignKeyData]]
     if (inverseForeignKeys != null) serializeForeignKeys(model, writer, inverseForeignKeys, true)
+  }
+  
+  override def writeAnnotations(model: EntityType, queryType: Type, writer: ScalaWriter) = {
+    if (model == queryType) {
+      model.getAnnotations.foreach(writer.annotation(_))  
+    }    
   }
    
   override def enhanceCompanionClass(name: String, modelName: String) = {

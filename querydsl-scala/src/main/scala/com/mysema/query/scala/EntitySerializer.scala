@@ -32,7 +32,7 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
 //  val typeMappings = ScalaTypeMappings.typeMappings
 
   val classHeaderFormat = "%1$s(cl: Class[_ <: %2$s], md: PathMetadata[_]) extends EntityPathImpl[%2$s](cl, md)"
-  
+    
   def serialize(model: EntityType, serializerConfig: SerializerConfig, writer: CodeWriter) {
     val scalaWriter = writer.asInstanceOf[ScalaWriter]
     val simpleName: String = model.getSimpleName
@@ -50,12 +50,10 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
 
     writer.importClasses(importedClasses.toArray: _*)    
     writeHeader(model, scalaWriter)    
+    
     var modelName = writer.getRawName(model)    
     writeAdditionalFields(model, scalaWriter)
-    
-    // additional constructors
-    scalaWriter.line("def this(variable: String) = this(classOf[",modelName,"], forVariable(variable))\n")
-    scalaWriter.line("def this(parent: Path[_], variable: String) = this(classOf[",modelName,"], forProperty(parent, variable))\n")
+    writeAdditionalConstructors(modelName, scalaWriter)
 
     // properties
     serializeProperties(model, writer, model.getProperties  )
@@ -65,11 +63,16 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
     writer.end()
   }
   
-  def writeAdditionalFields(model: EntityType, writer: ScalaWriter) {
+  def writeAdditionalConstructors(modelName: String, writer: ScalaWriter) = {
+    writer.line("def this(variable: String) = this(classOf[",modelName,"], forVariable(variable))\n")
+    writer.line("def this(parent: Path[_], variable: String) = this(classOf[",modelName,"], forProperty(parent, variable))\n")
+  }
+  
+  def writeAdditionalFields(model: EntityType, writer: ScalaWriter) = {
       // override to customize
   }
   
-  def writeAdditionalProperties(model: EntityType, writer: ScalaWriter) {
+  def writeAdditionalProperties(model: EntityType, writer: ScalaWriter) = {
       // override to customize
   }
   
@@ -87,8 +90,12 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
     writer.end()
     
     // header
-    model.getAnnotations.foreach(writer.annotation(_))    
+    writeAnnotations(model, queryType, writer)
     writer.beginClass(classHeader)
+  }
+  
+  def writeAnnotations(model: EntityType, queryType: Type, writer: ScalaWriter) = {
+    model.getAnnotations.foreach(writer.annotation(_))
   }
   
   def enhanceCompanionClass(name: String, modelName: String): String = name

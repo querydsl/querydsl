@@ -17,10 +17,10 @@ object QEmployee {
   val employee = as("employee")
 }
 
-class QEmployee(cl: Class[_ <: Employee], md: PathMetadata[_]) extends RelationalPathImpl[Employee](cl, md) {
-  def this(variable: String) = this(classOf[Employee], forVariable(variable))
+class QEmployee(md: PathMetadata[_]) extends RelationalPathImpl[Employee]( md) {
+  def this(variable: String) = this(forVariable(variable))
 
-  def this(parent: Path[_], variable: String) = this(classOf[Employee], forProperty(parent, variable))
+  def this(parent: Path[_], variable: String) = this(forProperty(parent, variable))
 
   val firstname = createString("FIRSTNAME")
 
