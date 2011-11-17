@@ -91,7 +91,7 @@ public class RelationalFunctionCall<T> extends SimpleExpression<T> implements Te
        } else if (o instanceof TemplateExpression) {
            TemplateExpression<?> c = (TemplateExpression<?>)o;
            return c.getTemplate().equals(template)
-               && c.getType().equals(type);
+               && c.getType().equals(getType());
        } else {
            return false;
        }

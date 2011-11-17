@@ -62,6 +62,7 @@ class ScalaEntitySerializerTest extends CompileTestUtils {
     val serializer = new ScalaEntitySerializer(typeMappings)
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
     val str = writer.toString()
+    System.err.println(str);
     assertCompileSuccess(str)
   }
 }

@@ -18,6 +18,7 @@ import java.io.IOException
 import scala.reflect.BeanProperty
 import scala.collection.JavaConversions._
 import scala.collection.mutable.Set
+import scala.collection.immutable.Map
 
 import javax.inject.Inject;
 
@@ -30,7 +31,11 @@ import javax.inject.Inject;
 class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Serializer {
     
 //  val typeMappings = ScalaTypeMappings.typeMappings
-
+    
+  private val methodNames = Map(ARRAY->"Array", BOOLEAN->"Boolean", COLLECTION->"Collection", COMPARABLE->"Comparable",
+      DATE->"Date", DATETIME->"DateTime", ENUM->"Enum", LIST->"List", MAP->"Map", NUMERIC->"Number", SET->"Set", 
+      SIMPLE->"Simple", STRING->"String", TIME->"Time")
+  
   val classHeaderFormat = "%1$s(cl: Class[_ <: %2$s], md: PathMetadata[_]) extends EntityPathImpl[%2$s](cl, md)"
     
   def serialize(model: EntityType, serializerConfig: SerializerConfig, writer: CodeWriter) {
@@ -45,8 +50,8 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
     writer.staticimports(classOf[PathMetadataFactory])
 
     var importedClasses = getAnnotationTypes(model)
-    if (model.hasLists()) importedClasses.add(classOf[List[_]].getName)
-    if (model.hasMaps())  importedClasses.add(classOf[Map[_, _]].getName)
+    if (model.hasLists()) importedClasses.add(classOf[java.util.List[_]].getName)
+    if (model.hasMaps())  importedClasses.add(classOf[java.util.Map[_, _]].getName)
 
     writer.importClasses(importedClasses.toArray: _*)    
     writeHeader(model, scalaWriter)    
@@ -102,7 +107,7 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
   
   def writeAdditionalCompanionContent(model: EntityType, writer: ScalaWriter) = {}
 
-  private def serializeEntityProperties(model: EntityType, writer: CodeWriter, properties: Collection[Property]) = {
+  private def getEntityProperties(model: EntityType, writer: CodeWriter, properties: Collection[Property]) = {
     for (property <- properties if property.getType.getCategory == ENTITY) yield {
       val queryType = typeMappings.getPathType(property.getType, model, false)
       val typeName = writer.getRawName(queryType)
@@ -111,24 +116,9 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
     }
   }
   
-  private def serializeOtherProperties(model: EntityType, writer: CodeWriter, properties: Collection[Property]) = {
+  private def getOtherProperties(model: EntityType, writer: CodeWriter, properties: Collection[Property]) = {
     for (property <- properties if property.getType.getCategory != ENTITY) yield { 
-      val methodName: String = property.getType.getCategory match {
-        case ARRAY => "createArray"
-        case BOOLEAN => "createBoolean"  
-        case COLLECTION => "createCollection"
-        case COMPARABLE => "createComparable"        
-        case DATE => "createDate"
-        case DATETIME => "createDateTime"
-        case ENUM => "createEnum"
-        case LIST => "createList"
-        case MAP => "createMap"
-        case NUMERIC => "createNumber"
-        case SET => "createSet"
-        case SIMPLE => "createSimple"
-        case STRING => "createString"
-        case TIME => "createTime"     
-      }
+      val methodName: String = "create" + methodNames(property.getType.getCategory)
       
       val value = property.getType.getCategory match {
         case BOOLEAN | STRING => methodName + "(\"" + property.getName + "\")"
@@ -151,20 +141,18 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
   
   def serializeProperties(model: EntityType, writer: CodeWriter, properties: Collection[Property]) {
     // entity properties
-    serializeEntityProperties(model, writer, properties) foreach (writer.line(_, "\n"))
+    getEntityProperties(model, writer, properties) foreach (writer.line(_, "\n"))
     
     // other properties
-    serializeOtherProperties(model, writer, properties) foreach { case (propertyName, value) =>
+    getOtherProperties(model, writer, properties) foreach { case (propertyName, value) => 
       writer.line("val ", escape(propertyName), " = ", value, "\n")
     }
   }
   
   def escape(token: String): String = {
-      if (token == "type") "type$" // type is already available as a property in Expression
-      else if (ScalaSyntaxUtils.isReserved(token)) "`" + token + "`" 
-      else token 
+      if (ScalaSyntaxUtils.isReserved(token)) "`" + token + "`" else token 
   }
-
+  
   def getAnnotationTypes(model: EntityType): Set[String] = {
     Set() ++ (model.getAnnotations.map(_.annotationType.getName))
   }

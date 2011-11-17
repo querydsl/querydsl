@@ -18,7 +18,7 @@ public abstract class ExpressionBase<T> implements Expression<T>{
 
     private static final long serialVersionUID = -8862014178653364345L;
 
-    protected final Class<? extends T> type;
+    private final Class<? extends T> type;
     
     @Nullable
     private volatile String toString;

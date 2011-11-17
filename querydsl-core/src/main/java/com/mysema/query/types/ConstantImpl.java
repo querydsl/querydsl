@@ -113,10 +113,6 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
     public static <T> Constant<Class<T>> create(Class<T> constant) {
         return new ConstantImpl<Class<T>>(constant);
     }
-    
-//    public static <C> Constant<C> create(C value){
-//        return new ConstantImpl<C>(value);
-//    }
 
     private final T constant;
     

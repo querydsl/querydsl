@@ -150,7 +150,7 @@ public abstract class SimpleExpression<T> extends ExpressionBase<T> {
 
     @Override
     public int hashCode() {
-        return type.hashCode();
+        return getType().hashCode();
     }
 
     /**

@@ -62,7 +62,7 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T>{
             Operation<?> op = (Operation<?>)o;
             return op.getOperator().equals(operator)
                 && op.getArgs().equals(args)
-                && op.getType().equals(type);
+                && op.getType().equals(getType());
         } else {
             return false;
         }
@@ -75,7 +75,7 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T>{
 
     @Override
     public int hashCode(){
-        return type.hashCode();
+        return getType().hashCode();
     }
 
 }

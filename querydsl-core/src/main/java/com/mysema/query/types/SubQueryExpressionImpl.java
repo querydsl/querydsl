@@ -42,7 +42,7 @@ public class SubQueryExpressionImpl<T> extends ExpressionBase<T> implements SubQ
     }
 
     public int hashCode(){
-        return type.hashCode();
+        return getType().hashCode();
     }
     
     @Override

@@ -144,7 +144,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
 
     private void initFields() {
         for (String property : bindings.keySet()){
-            Class<?> beanType = type;
+            Class<?> beanType = getType();
             while (!beanType.equals(Object.class)) {
                 try {
                     Field field = beanType.getDeclaredField(property);

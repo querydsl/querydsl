@@ -405,7 +405,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
             if (bindings.isEmpty()) {
                 throw new IllegalArgumentException("No bindings could be derived from " + expr);
             }                
-            return new QBean<RT>((Class)expr.getType(), bindings);
+            return new QBean<RT>((Class)expr.getType(), true, bindings);
         }catch(IllegalAccessException e) {
             throw new QueryException(e);
         }
