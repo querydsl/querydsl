@@ -35,4 +35,12 @@ public class PathInitsTest {
         assertTrue(inits.isInitialized("1"));
         assertTrue(inits.isInitialized("2"));
     }
+    
+    @Test
+    public void Deep_Wildcard() {
+        PathInits inits = new PathInits("*.*").get("");
+        assertTrue(inits.isInitialized("1"));
+        assertTrue(inits.isInitialized("2"));
+    }
+    
 }

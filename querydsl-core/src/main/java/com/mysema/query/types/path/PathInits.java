@@ -27,6 +27,8 @@ public class PathInits implements Serializable{
     private boolean initAllProps = false;
 
     private final Map<String,PathInits> propertyToInits = new HashMap<String,PathInits>();
+    
+    private PathInits defaultValue = DEFAULT;
 
     public PathInits(String... inits) {
         for (String init : inits) {
@@ -37,6 +39,9 @@ public class PathInits implements Serializable{
     private void addInit(String initStr) {
         if (initStr.equals("*")) {
             initAllProps = true;
+        } else if (initStr.startsWith("*.")) {
+            initAllProps = true;
+            defaultValue = new PathInits(initStr.substring(2));
         } else {
             String key;
             String[] inits;
@@ -60,7 +65,7 @@ public class PathInits implements Serializable{
         if (propertyToInits.containsKey(property)) {
             return propertyToInits.get(property);
         } else if (initAllProps) {
-            return DEFAULT;
+            return defaultValue;
         } else {
             throw new IllegalArgumentException(property + " is not initialized");
         }
