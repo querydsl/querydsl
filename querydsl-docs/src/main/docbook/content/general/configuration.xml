@@ -43,7 +43,7 @@ class Customer{
     
     <para>
     Declarative path initialization is the preferred initialization strategy, but manual initialization can be activated
-    via the QuerydslConfig annotation, which is described below.
+    via the Config annotation, which is described below.
     </para>
     
     </sect2>
@@ -52,7 +52,7 @@ class Customer{
       <title>Customization of serialization</title>
       
       <para>
-      The serialization of Querydsl can be customized via QuerydslConfig annotations on packages and types. They customize the 
+      The serialization of Querydsl can be customized via Config annotations on packages and types. They customize the 
       serialization of the annotated package or type.
       </para>
       
@@ -69,7 +69,7 @@ class Customer{
 	  <para>Customization of Entity type serialization :</para>
 	  
 	  <programlisting language="java"><![CDATA[
-@QuerydslConfig(entityAccessors=true)
+@Config(entityAccessors=true)
 @Entity
 public class User {
 	//...
@@ -79,10 +79,10 @@ public class User {
     <para>Customization of package content :</para>
 	
      <programlisting language="java"><![CDATA[
-@QuerydslConfig(listAccessors=true)
+@Config(listAccessors=true)
 package com.mysema.query.domain.rel;
 
-import com.mysema.query.annotations.QuerydslConfig;
+import com.mysema.query.annotations.Config;
 ]]></programlisting>
 
     <para>
