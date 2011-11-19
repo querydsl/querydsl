@@ -15,7 +15,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -27,8 +29,8 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag;
-import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.InsertClause;
 import com.mysema.query.sql.AbstractSQLSubQuery;
 import com.mysema.query.sql.Configuration;
@@ -366,10 +368,10 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
     public SQLInsertClause populate(Object bean) {
         try {
             Class<?> beanClass = bean.getClass();
+            Map<String, Field> fields = getPathFields(entity.getClass());
             for (Field beanField : beanClass.getDeclaredFields()) {
                 if (!Modifier.isStatic(beanField.getModifiers())) {
-                    Field field = entity.getClass().getDeclaredField(beanField.getName());
-                    field.setAccessible(true);
+                    Field field = fields.get(beanField.getName());                    
                     Path path = (Path<?>) field.get(entity);
                     beanField.setAccessible(true);
                     Object propertyValue = beanField.get(bean);
@@ -394,8 +396,6 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         } catch (SecurityException e) {
             throw new QueryException(e);
         } catch (IllegalAccessException e) {
-            throw new QueryException(e);
-        } catch (NoSuchFieldException e) {
             throw new QueryException(e);
         }
     }

@@ -7,8 +7,9 @@ import com.mysema.query.types.PathMetadataFactory._;
 import java.util.List;
 import java.util.Map;
 
-object QPerson {
-  def as(variable: String) = new QPerson(variable)
+object QPerson extends QPerson("person"){
+  override def as(variable: String) = new QPerson(variable)
+  
 }
 
 class QPerson(cl: Class[_ <: Person], md: PathMetadata[_]) extends EntityPathImpl[Person](cl, md) {

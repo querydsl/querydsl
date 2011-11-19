@@ -1,4 +1,5 @@
 package com.mysema.query.scala.sql
+
 import com.mysema.query
 import com.mysema.codegen.{ScalaWriter, CodeWriter}
 import com.mysema.codegen.model._
@@ -24,7 +25,6 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
 
   override def writeHeader(model: EntityType, writer: ScalaWriter) {
     writer.imports(classOf[RelationalPathImpl[_]])
-    writer.imports(classOf[Relation[_]])
     writer.imports(classOf[PrimaryKey[_]].getPackage)    
     super.writeHeader(model, writer)            
   }
@@ -57,17 +57,6 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
     }    
   }
    
-  override def enhanceCompanionClass(name: String, modelName: String) = {
-    name + " extends Relation[" + modelName + "]"
-  }
-  
-  override def writeAdditionalCompanionContent(model: EntityType, writer: ScalaWriter) = {
-    if (model.getUncapSimpleName != "path") {
-      writer.line("")
-      writer.line("def path = ", model.getUncapSimpleName())  
-    }     
-  }
-  
   def serializePrimaryKeys(model: EntityType, writer: CodeWriter, primaryKeys: Collection[PrimaryKeyData]) {
     primaryKeys foreach { primaryKey =>
       val fieldName = namingStrategy.getPropertyNameForPrimaryKey(primaryKey.getName(), model)

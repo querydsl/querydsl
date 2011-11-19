@@ -14,6 +14,8 @@ import scala.collection.JavaConversions._
 
 class ScalaBeanSerializerTest extends CompileTestUtils {
 
+  val typeMappings = ScalaTypeMappings.create
+  
   var entityType: EntityType = null
 
   var writer = new StringWriter()
@@ -48,7 +50,8 @@ class ScalaBeanSerializerTest extends CompileTestUtils {
 
   @Test
   def Print {
-    val serializer = new ScalaBeanSerializer()
+    val serializer = new ScalaBeanSerializer(typeMappings)
+    typeMappings.register(entityType, new QueryTypeFactoryImpl("Q", "", "").create(entityType))
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
     
     println(writer.toString)
@@ -78,7 +81,9 @@ class ScalaBeanSerializerTest extends CompileTestUtils {
 
   @Test
   def Compile {
-    val serializer = new ScalaBeanSerializer()
+    val serializer = new ScalaBeanSerializer(typeMappings)
+    serializer.createCompanionObject = false
+    typeMappings.register(entityType, new QueryTypeFactoryImpl("Q", "", "").create(entityType))
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
     val str = writer.toString()
     assertCompileSuccess(str)

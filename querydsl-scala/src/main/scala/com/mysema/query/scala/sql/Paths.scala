@@ -30,8 +30,6 @@ class RelationalPathImpl[T](md: PathMetadata[_])(implicit val mf: Manifest[T])
   
   override def add[P <: Path[_]](p: P): P = { columns.add(p); p }
   
-  def all: Array[Path[_]] = columns.toArray[Path[_]](new Array[Path[_]](columns.size))
-  
   def createPrimaryKey(cols: Path[_]*): PrimaryKey[T] = {
     primaryKey = new PrimaryKey[T](this, cols:_*); primaryKey
   }

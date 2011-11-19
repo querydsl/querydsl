@@ -24,8 +24,8 @@ import com.mysema.query.sql.dml._
 
 class JDBCIntegrationTest extends CompileTestUtils {
     
-  val survey = new QSurvey("survey")
-  val employee = new QEmployee("employee")
+  val survey = QSurvey
+  val employee = QEmployee
 
   val templates = new HSQLDBTemplates()
 
@@ -86,14 +86,14 @@ class JDBCIntegrationTest extends CompileTestUtils {
   @Test
   def Generation_with_Beantypes {
     val namingStrategy = new DefaultNamingStrategy()
-    val beanSerializer = new ScalaBeanSerializer()
+    //val beanSerializer = new ScalaBeanSerializer()
     val exporter = new MetaDataExporter()
     exporter.setNamePrefix("Q")
     exporter.setPackageName("com.mysema")
     val directory = new File("target/gen2")
     exporter.setTargetFolder(directory)
     exporter.setSerializerClass(classOf[ScalaMetaDataSerializer])
-    exporter.setBeanSerializer(beanSerializer)
+    exporter.setBeanSerializerClass(classOf[ScalaBeanSerializer])
     exporter.setCreateScalaSources(true)
     exporter.setTypeMappings(ScalaTypeMappings.create)
     exporter.setSchemaPattern("PUBLIC")

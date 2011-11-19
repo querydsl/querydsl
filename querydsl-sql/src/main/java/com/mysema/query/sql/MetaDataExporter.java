@@ -148,13 +148,14 @@ public class MetaDataExporter {
         typeMappings = module.get(TypeMappings.class);
         queryTypeFactory = module.get(QueryTypeFactory.class);
         serializer = module.get(Serializer.class);
+        beanSerializer = module.get(Serializer.class, SQLCodegenModule.BEAN_SERIALIZER);
         namingStrategy = module.get(NamingStrategy.class);
         configuration = module.get(Configuration.class);
 
         if (beanPackageName == null) {
             beanPackageName =  module.getPackageName();
         }
-
+        
         if (beanSerializer == null) {
             keyDataFactory = new KeyDataFactory(namingStrategy,  module.getPackageName(), module.getPrefix(), module.getSuffix());
         } else {
@@ -410,7 +411,17 @@ public class MetaDataExporter {
      * @param beanSerializer serializer for JavaBeans (default: null)
      */
     public void setBeanSerializer(@Nullable Serializer beanSerializer) {
-        this.beanSerializer = beanSerializer;
+        module.bind(SQLCodegenModule.BEAN_SERIALIZER, beanSerializer);
+    }
+    
+    /**
+     * Set the Bean serializer class to create bean types as well
+     *
+     * @param beanSerializer serializer for JavaBeans (default: null)
+     */
+    public void setBeanSerializerClass(Class<? extends Serializer> beanSerializerClass) {
+        Assert.notNull(beanSerializerClass, "beanSerializerClass");
+        module.bind(SQLCodegenModule.BEAN_SERIALIZER, beanSerializerClass);
     }
 
     /**

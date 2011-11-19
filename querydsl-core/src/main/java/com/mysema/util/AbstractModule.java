@@ -82,9 +82,13 @@ public abstract class AbstractModule {
             return (T)namedInstances.get(name);
         } else if (namedBindings.containsKey(name)) {
             Class<?> implementation = namedBindings.get(name);
-            T instance = (T)createInstance(implementation);
-            namedInstances.put(name, instance);
-            return instance;
+            if (implementation != null) {
+                T instance = (T)createInstance(implementation);
+                namedInstances.put(name, instance);
+                return instance;    
+            } else {
+                return null;
+            }            
         } else {
             throw new IllegalArgumentException(iface.getName() + " " + name + " is not registered");
         }

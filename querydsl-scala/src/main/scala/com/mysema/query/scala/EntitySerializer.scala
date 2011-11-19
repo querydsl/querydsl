@@ -32,9 +32,10 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
     
 //  val typeMappings = ScalaTypeMappings.typeMappings
     
-  private val methodNames = Map(ARRAY->"Array", BOOLEAN->"Boolean", COLLECTION->"Collection", COMPARABLE->"Comparable",
-      DATE->"Date", DATETIME->"DateTime", ENUM->"Enum", LIST->"List", MAP->"Map", NUMERIC->"Number", SET->"Set", 
-      SIMPLE->"Simple", STRING->"String", TIME->"Time")
+  private val methodNames = Map(ARRAY->"Array", BOOLEAN->"Boolean", COLLECTION->"Collection", 
+      COMPARABLE->"Comparable",DATE->"Date", DATETIME->"DateTime", ENUM->"Enum", 
+      LIST->"List", MAP->"Map", NUMERIC->"Number", SET->"Set", SIMPLE->"Simple", 
+      STRING->"String", TIME->"Time")
   
   val classHeaderFormat = "%1$s(cl: Class[_ <: %2$s], md: PathMetadata[_]) extends EntityPathImpl[%2$s](cl, md)"
     
@@ -69,8 +70,10 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
   }
   
   def writeAdditionalConstructors(modelName: String, writer: ScalaWriter) = {
-    writer.line("def this(variable: String) = this(classOf[",modelName,"], forVariable(variable))\n")
-    writer.line("def this(parent: Path[_], variable: String) = this(classOf[",modelName,"], forProperty(parent, variable))\n")
+    writer.line("def this(variable: String) = " +
+    	"this(classOf[",modelName,"], forVariable(variable))\n")
+    writer.line("def this(parent: Path[_], variable: String) = " +
+    	"this(classOf[",modelName,"], forProperty(parent, variable))\n")
   }
   
   def writeAdditionalFields(model: EntityType, writer: ScalaWriter) = {
@@ -86,24 +89,27 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
     val modelName = writer.getRawName(model)
     val queryTypeName = writer.getRawName(queryType)
     val classHeader = String.format(classHeaderFormat, queryTypeName, modelName)
-        
-    writer.beginObject(enhanceCompanionClass(queryTypeName, modelName))
-    writer.line("def as(variable: String) = new ", queryTypeName, "(variable)")
-    writer.line("")
-    writer.line("val ", model.getUncapSimpleName, " = as(\"",  model.getUncapSimpleName, "\")")
-    writeAdditionalCompanionContent(model, writer)
-    writer.end()
+    
+    writeCompanionObject(model, queryType, writer)
     
     // header
     writeAnnotations(model, queryType, writer)
     writer.beginClass(classHeader)
   }
   
+  def writeCompanionObject(model: EntityType, queryType: Type, writer: ScalaWriter) = {
+    val queryTypeName = writer.getRawName(queryType)    
+    val variable = model.getUncapSimpleName
+    
+    writer.beginObject(queryTypeName + " extends "+queryTypeName+"(\""+variable+"\")")
+    writer.line("override def as(variable: String) = new ", queryTypeName, "(variable)")
+    writer.line("")
+    writer.end()
+  }
+  
   def writeAnnotations(model: EntityType, queryType: Type, writer: ScalaWriter) = {
     model.getAnnotations.foreach(writer.annotation(_))
   }
-  
-  def enhanceCompanionClass(name: String, modelName: String): String = name
   
   def writeAdditionalCompanionContent(model: EntityType, writer: ScalaWriter) = {}
 
@@ -125,13 +131,15 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
         case LIST | SET | COLLECTION => {
           val componentType = writer.getGenericName(true, property.getParameter(0))
           val queryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false)
-          methodName + "(\"" + property.getName + "\", classOf[" + componentType + "], classOf[" + writer.getGenericName(true, queryType) + "])"
+          methodName + "(\"" + property.getName + "\", classOf[" + componentType + "], classOf[" + 
+              writer.getGenericName(true, queryType) + "])"
         }
         case MAP => {
             val keyType = writer.getGenericName(true, property.getParameter(0))
             val valueType = writer.getGenericName(true, property.getParameter(1))
             val queryType = typeMappings.getPathType(getRaw(property.getParameter(1)), model, false)
-            methodName + "(\"" + property.getName + "\", classOf[" + keyType + "], classOf[" + valueType + "], classOf[" + writer.getGenericName(true, queryType) + "])"      
+            methodName + "(\"" + property.getName + "\", classOf[" + keyType + "], classOf[" + valueType + "], classOf[" + 
+                writer.getGenericName(true, queryType) + "])"      
         }
         case _ => methodName + "(\"" + property.getName + "\", classOf[" + writer.getRawName(property.getType) + "])"
       }

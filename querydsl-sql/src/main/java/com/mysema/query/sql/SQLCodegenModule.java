@@ -6,6 +6,8 @@ import com.mysema.query.codegen.Serializer;
 
 public class SQLCodegenModule extends CodegenModule{
     
+    public static final String BEAN_SERIALIZER = "beanSerializer";
+    
     public static final String BEAN_SUFFIX = "beanSuffix";
 
     public static final String BEAN_PREFIX = "beanPrefix";
@@ -26,6 +28,7 @@ public class SQLCodegenModule extends CodegenModule{
         bind(BEAN_PREFIX, "");
         bind(BEAN_SUFFIX, "");
         bind(PACKAGE_NAME, "com.example");
+        bind(BEAN_SERIALIZER, (Class<?>)null);
     }
     
     public String getPrefix() {

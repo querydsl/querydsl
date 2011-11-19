@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,8 +25,8 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag;
-import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryFlag.Position;
+import com.mysema.query.QueryMetadata;
 import com.mysema.query.dml.UpdateClause;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
@@ -232,10 +233,10 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
                     ? entity.getPrimaryKey().getLocalColumns() 
                     : Collections.<Path<?>>emptyList();
             Class<?> beanClass = bean.getClass();
+            Map<String, Field> fields = getPathFields(entity.getClass());
             for (Field beanField : beanClass.getDeclaredFields()) {
                 if (!Modifier.isStatic(beanField.getModifiers())) {
-                    Field field = entity.getClass().getDeclaredField(beanField.getName());
-                    field.setAccessible(true);
+                    Field field = fields.get(beanField.getName());
                     Path path = (Path<?>) field.get(entity);
                     if (!primaryKeyColumns.contains(path)) {
                         beanField.setAccessible(true);
@@ -260,8 +261,6 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
         } catch (SecurityException e) {
             throw new QueryException(e);
         } catch (IllegalAccessException e) {
-            throw new QueryException(e);
-        } catch (NoSuchFieldException e) {
             throw new QueryException(e);
         }            
     }

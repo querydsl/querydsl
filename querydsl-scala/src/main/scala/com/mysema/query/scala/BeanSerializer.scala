@@ -1,8 +1,11 @@
 package com.mysema.query.scala
 
 import com.mysema.query.codegen._
-import com.mysema.codegen.CodeWriter
+import com.mysema.codegen.{ CodeWriter, ScalaWriter }
+import com.mysema.codegen.model.Type
 import com.mysema.query
+
+import javax.inject.Inject
 
 import java.util._
 import java.io.IOException
@@ -17,8 +20,10 @@ import scala.collection.mutable.Set
  * @author tiwe
  *
  */
-class ScalaBeanSerializer extends Serializer {
+class ScalaBeanSerializer @Inject() (typeMappings: TypeMappings) extends Serializer {
 
+  var createCompanionObject = true
+  
   var javaBeanSupport = true
 
   var javadocSuffix = " is a Querydsl bean type"
@@ -36,13 +41,17 @@ class ScalaBeanSerializer extends Serializer {
     if (model.hasMaps())  importedClasses.add(classOf[Map[_, _]].getName)
 
     writer.importClasses(importedClasses.toArray: _*)
-
+    
+    if (createCompanionObject) {
+      val queryType = typeMappings.getPathType(model, model, true)
+      writeCompanionObject(model, queryType, writer.asInstanceOf[ScalaWriter])  
+    } 
+    
     // javadoc        
     writer.javadoc(simpleName + javadocSuffix)
-
+    
     // header
     model.getAnnotations foreach (writer.annotation(_))
-
     writer.beginClass(model)
 
     // properties
@@ -54,6 +63,18 @@ class ScalaBeanSerializer extends Serializer {
 
     writer.end()
   }
+  
+  private def writeCompanionObject(model: EntityType, queryType: Type, writer: ScalaWriter) = {
+    val modelName = writer.getRawName(model)
+    val queryTypeName = writer.getRawName(queryType)    
+    val variable = model.getUncapSimpleName
+    
+    writer.beginObject(modelName + " extends "+queryTypeName+"(\""+variable+"\")")
+    writer.line("override def as(variable: String) = new ", queryTypeName, "(variable)")
+    writer.line("")
+    writer.end()
+  }  
+  
 
   private def getAnnotationTypes(model: EntityType): Set[String] = {
     val imports = Set() ++ model.getAnnotations.map(_.annotationType.getName);

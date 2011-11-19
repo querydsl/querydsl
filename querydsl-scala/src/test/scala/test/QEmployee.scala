@@ -11,10 +11,9 @@ import com.mysema.query.scala.sql.RelationalPathImpl;
 
 import com.mysema.query.sql._;
 
-object QEmployee {
-  def as(variable: String) = new QEmployee(variable)
+object QEmployee extends QEmployee("employee"){
+  override def as(variable: String) = new QEmployee(variable)
   
-  val employee = as("employee")
 }
 
 class QEmployee(md: PathMetadata[_]) extends RelationalPathImpl[Employee]( md) {

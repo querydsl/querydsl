@@ -8,10 +8,8 @@ import com.mysema.query.scala.sql.RelationalPathImpl;
 
 import com.mysema.query.sql._;
 
-object QSurvey {
-  def as(variable: String) = new QSurvey(variable)
-  
-  val survey = as("survey")
+object QSurvey extends QSurvey("survey"){
+  override def as(variable: String) = new QSurvey(variable)
   
 }
 

@@ -388,25 +388,29 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
 
     @SuppressWarnings("unchecked")
     protected <RT> QBean<RT> wrap(RelationalPath<RT> expr) {
-        try{
+        try {
             if (expr.getType().equals(expr.getClass())) {
                 throw new IllegalArgumentException("RelationalPath based projection can only be used with generated Bean types");
             }                
             Map<String,Expression<?>> bindings = new HashMap<String,Expression<?>>();
-            for (Field field : expr.getClass().getDeclaredFields()) {
-                if (Path.class.isAssignableFrom(field.getType()) && !Modifier.isStatic(field.getModifiers())) {
-                    field.setAccessible(true);
-                    Path<?> column = (Path<?>) field.get(expr);
-                    if (expr.equals(column.getMetadata().getParent())) {
-                        bindings.put(field.getName(), column);
-                    }                    
-                }
-            }
+            Class<?> cl = expr.getClass();
+            while (!cl.equals(Object.class)) {
+                for (Field field : cl.getDeclaredFields()) {
+                    if (Path.class.isAssignableFrom(field.getType()) && !Modifier.isStatic(field.getModifiers())) {
+                        field.setAccessible(true);
+                        Path<?> column = (Path<?>) field.get(expr);
+                        if (expr.equals(column.getMetadata().getParent())) {
+                            bindings.put(field.getName(), column);
+                        }                    
+                    }
+                }    
+                cl = cl.getSuperclass();
+            }            
             if (bindings.isEmpty()) {
                 throw new IllegalArgumentException("No bindings could be derived from " + expr);
             }                
             return new QBean<RT>((Class)expr.getType(), true, bindings);
-        }catch(IllegalAccessException e) {
+        } catch(IllegalAccessException e) {
             throw new QueryException(e);
         }
     }

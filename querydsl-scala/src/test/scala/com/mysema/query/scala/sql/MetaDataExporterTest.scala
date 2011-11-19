@@ -76,14 +76,14 @@ class MetaDataExporterTest extends CompileTestUtils {
     def GenerateWithBeanTypes() {
         val directory = new java.io.File("target/jdbcgen2");
         val namingStrategy = new DefaultNamingStrategy();
-        val beanSerializer = new ScalaBeanSerializer();
+        //val beanSerializer = new ScalaBeanSerializer();
         val exporter = new MetaDataExporter();
         exporter.setNamePrefix("Q");
         exporter.setPackageName("com.mysema");
         exporter.setSchemaPattern("PUBLIC");
         exporter.setTargetFolder(directory);
         exporter.setSerializerClass(classOf[ScalaMetaDataSerializer]);
-        exporter.setBeanSerializer(beanSerializer)
+        exporter.setBeanSerializerClass(classOf[ScalaBeanSerializer]);
         exporter.setCreateScalaSources(true);
         exporter.setTypeMappings(ScalaTypeMappings.create);
         exporter.export(connection.getMetaData);
