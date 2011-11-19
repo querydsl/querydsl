@@ -61,21 +61,7 @@ public class AbstractSQLClause {
             }
         }
     }    
-    
-    protected Map<String, Field> getPathFields(Class<?> cl) {
-        Map<String, Field> fields = new HashMap<String, Field>();
-        while (!cl.equals(Object.class)) {
-            for (Field field : cl.getDeclaredFields()) {
-                if (Path.class.isAssignableFrom(field.getType()) && !fields.containsKey(field.getName())) {
-                    field.setAccessible(true);
-                    fields.put(field.getName(), field);
-                }
-            }
-            cl = cl.getSuperclass();
-        }
-        return fields;
-    }
-    
+        
     protected void close(PreparedStatement stmt) {
         try {
             stmt.close();

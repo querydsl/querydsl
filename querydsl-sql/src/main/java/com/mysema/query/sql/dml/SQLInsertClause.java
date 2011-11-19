@@ -364,40 +364,24 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
      * @param bean
      * @return
      */
-    @SuppressWarnings("unchecked")
     public SQLInsertClause populate(Object bean) {
-        try {
-            Class<?> beanClass = bean.getClass();
-            Map<String, Field> fields = getPathFields(entity.getClass());
-            for (Field beanField : beanClass.getDeclaredFields()) {
-                if (!Modifier.isStatic(beanField.getModifiers())) {
-                    Field field = fields.get(beanField.getName());                    
-                    Path path = (Path<?>) field.get(entity);
-                    beanField.setAccessible(true);
-                    Object propertyValue = beanField.get(bean);
-                    if (propertyValue != null) {
-                        set(path, propertyValue);
-                    }     
-                }
-            }
-//            BeanMap map = new BeanMap(bean);
-//            for (Map.Entry entry : map.entrySet()) {
-//                String property = entry.getKey().toString();
-//                if (!property.equals("class")) {
-//                    Field field = entity.getClass().getDeclaredField(property);
-//                    field.setAccessible(true);
-//                    Path path = (Path<?>) field.get(entity);
-//                    if (entry.getValue() != null) {
-//                        set(path, entry.getValue());    
-//                    }                    
-//                }
-//            }
-            return this;
-        } catch (SecurityException e) {
-            throw new QueryException(e);
-        } catch (IllegalAccessException e) {
-            throw new QueryException(e);
-        }
+        return populate(bean, DefaultMapper.DEFAULT);
+    }
+    
+    /**
+     * Populate the INSERT clause with the properties of the given bean using the given Mapper.
+     * 
+     * @param obj
+     * @param mapper
+     * @return
+     */
+    @SuppressWarnings("rawtypes")
+    public <T> SQLInsertClause populate(T obj, Mapper<T> mapper) {
+        Map<Path<?>, Object> values = mapper.createMap(entity, obj);
+        for (Map.Entry<Path<?>, Object> entry : values.entrySet()) {
+            set((Path)entry.getKey(), entry.getValue());
+        }        
+        return this;
     }
 
 }

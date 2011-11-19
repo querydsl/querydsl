@@ -10,6 +10,7 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
+import com.mysema.query.sql.dml.BeanMapper;
 import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.QEmployee;
 
@@ -36,6 +37,13 @@ public abstract class BeanPopulationBaseTest extends AbstractBaseTest{
 
         // Delete (no changes needed)
         assertEquals(1l, delete(e).where(e.id.eq(employee.getId())).execute());
+    }
+
+    @Test
+    public void Populate_With_BeanMapper() {
+        Employee employee = new Employee();
+        employee.setFirstname("John");
+        insert(e).populate(employee, new BeanMapper()).execute();        
     }
 
     @Test

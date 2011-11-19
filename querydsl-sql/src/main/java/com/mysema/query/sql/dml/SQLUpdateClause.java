@@ -228,40 +228,27 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
      */
     @SuppressWarnings("unchecked")
     public SQLUpdateClause populate(Object bean) {
-        try {
-            Collection<? extends Path<?>> primaryKeyColumns = entity.getPrimaryKey() != null 
-                    ? entity.getPrimaryKey().getLocalColumns() 
-                    : Collections.<Path<?>>emptyList();
-            Class<?> beanClass = bean.getClass();
-            Map<String, Field> fields = getPathFields(entity.getClass());
-            for (Field beanField : beanClass.getDeclaredFields()) {
-                if (!Modifier.isStatic(beanField.getModifiers())) {
-                    Field field = fields.get(beanField.getName());
-                    Path path = (Path<?>) field.get(entity);
-                    if (!primaryKeyColumns.contains(path)) {
-                        beanField.setAccessible(true);
-                        Object propertyValue = beanField.get(bean);
-                        set(path, propertyValue);
-                    }     
-                }
-            }        
-//            BeanMap map = new BeanMap(bean);
-//            for (Map.Entry entry : map.entrySet()) {
-//                String property = entry.getKey().toString();
-//                if (!property.equals("class")) {
-//                    Field field = entity.getClass().getDeclaredField(property);
-//                    field.setAccessible(true);
-//                    Path path = (Path<?>) field.get(entity);
-//                    if (!primaryKeyColumns.contains(path)) {
-//                        set(path, entry.getValue());    
-//                    }    
-//                }                                
-//            }
-            return this;
-        } catch (SecurityException e) {
-            throw new QueryException(e);
-        } catch (IllegalAccessException e) {
-            throw new QueryException(e);
-        }            
+        return populate(bean, DefaultMapper.DEFAULT);
+    }
+    
+    /**
+     * Populate the UPDATE clause with the properties of the given bean using the given Mapper.
+     * 
+     * @param obj
+     * @param mapper
+     * @return
+     */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    public <T> SQLUpdateClause populate(T obj, Mapper<T> mapper) {
+        Collection<? extends Path<?>> primaryKeyColumns = entity.getPrimaryKey() != null 
+                ? entity.getPrimaryKey().getLocalColumns() 
+                : Collections.<Path<?>>emptyList();
+        Map<Path<?>, Object> values = mapper.createMap(entity, obj);
+        for (Map.Entry<Path<?>, Object> entry : values.entrySet()) {
+            if (!primaryKeyColumns.contains(entry.getKey())) {
+                set((Path)entry.getKey(), entry.getValue());    
+            }            
+        }        
+        return this;
     }
 }
