@@ -93,7 +93,7 @@
     </dependency>       
     
     <dependency>
-      <groupId>hsqldb</groupId>
+      <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <version>${hsqldb.version}</version>
       <scope>test</scope>
@@ -101,7 +101,7 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
-      <version>1.2.133</version>
+      <version>${h2.version}</version>
       <scope>test</scope>
     </dependency>
     
