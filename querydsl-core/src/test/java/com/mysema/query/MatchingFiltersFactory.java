@@ -69,7 +69,7 @@ public class MatchingFiltersFactory {
             rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
             
-            if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL) && !target.equals(Target.POSTGRES)){
+            if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL) && !target.equals(Target.POSTGRES) && !target.equals(Target.HSQLDB)){
                 rv.add(expr.week().eq(other.week()));
             }
         }
@@ -100,7 +100,7 @@ public class MatchingFiltersFactory {
             rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
             
-            if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL) && !target.equals(Target.POSTGRES)){
+            if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL) && !target.equals(Target.POSTGRES) && !target.equals(Target.HSQLDB)){
                 rv.add(expr.week().eq(other.week()));
             }
         }

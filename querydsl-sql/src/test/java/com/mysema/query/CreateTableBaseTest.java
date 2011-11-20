@@ -51,7 +51,7 @@ public abstract class CreateTableBaseTest extends AbstractBaseTest{
     public void AutoIncrement(){
         createTable("autoinc")
           .column("id", Integer.class).notNull().autoIncrement()
-          .primaryKey("PK_AUTOINC","id")
+          //.primaryKey("PK_AUTOINC","id")
           .execute();   
     }
     

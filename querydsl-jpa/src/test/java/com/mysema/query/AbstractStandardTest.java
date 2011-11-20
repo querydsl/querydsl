@@ -5,6 +5,7 @@
  */
 package com.mysema.query;
 
+import static com.mysema.query.jpa.JPQLGrammar.sum;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -22,7 +23,11 @@ import java.util.List;
 import java.util.UUID;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
+
+import antlr.RecognitionException;
+import antlr.TokenStreamException;
 
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.jpa.JPQLQuery;
@@ -30,9 +35,11 @@ import com.mysema.query.jpa.JPQLSubQuery;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.DomesticCat;
 import com.mysema.query.jpa.domain.Employee;
+import com.mysema.query.jpa.domain.Foo;
 import com.mysema.query.jpa.domain.JobFunction;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain.QEmployee;
+import com.mysema.query.jpa.domain.QFoo;
 import com.mysema.query.jpa.domain.QShow;
 import com.mysema.query.jpa.domain.QUser;
 import com.mysema.query.jpa.domain.Show;
@@ -50,7 +57,9 @@ import com.mysema.query.types.expr.ListExpression;
 import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.path.EnumPath;
 import com.mysema.query.types.path.ListPath;
+import com.mysema.query.types.path.StringPath;
 
 /**
  * @author tiwe
@@ -172,8 +181,20 @@ public abstract class AbstractStandardTest {
         save(show);
         
         Employee employee = new Employee();
+        employee.lastName = "Smith";
         employee.jobFunctions.add(JobFunction.CODER);
         save(employee);
+        
+        Employee employee2 = new Employee();
+        employee2.lastName = "Doe";
+        employee2.jobFunctions.add(JobFunction.CODER);
+        employee2.jobFunctions.add(JobFunction.CONSULTANT);
+        employee2.jobFunctions.add(JobFunction.CONTROLLER);
+        save(employee2);
+        
+        Foo foo = new Foo();
+        foo.names = Arrays.asList("a","b");
+        save(foo);
     }
 
     @Test
@@ -497,6 +518,20 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    @Ignore
+    public void Sum() throws RecognitionException, TokenStreamException {
+        // NOT SUPPORTED
+        query().from(cat).list(sum(cat.kittens.size()));
+    }
+
+    @Test
+    @Ignore
+    public void Sum_2() throws RecognitionException, TokenStreamException {
+        // NOT SUPPORTED
+        query().from(cat).where(sum(cat.kittens.size()).gt(0)).list(cat);
+    }
+    
+    @Test
     public void SubQuery(){
         QShow show = QShow.show;
         QShow show2 = new QShow("show2");
@@ -521,17 +556,43 @@ public abstract class AbstractStandardTest {
     
     @Test
     public void One_To_One(){
+        QEmployee employee = QEmployee.employee;
+        QUser user = QUser.user;
+        
         JPQLQuery query = query();
-        query.from(QEmployee.employee);
-        query.innerJoin(QEmployee.employee.user, QUser.user);
-        query.list(QEmployee.employee);
+        query.from(employee);
+        query.innerJoin(employee.user, user);
+        query.list(employee);
     }
  
     @Test
     public void Enum_In() {
+        QEmployee employee = QEmployee.employee;
+        
         JPQLQuery query = query();
-        query.from(QEmployee.employee).where(QEmployee.employee.jobFunctions.contains(JobFunction.CODER));
+        query.from(employee).where(employee.lastName.eq("Smith"), employee.jobFunctions.contains(JobFunction.CODER));
         assertEquals(1l, query.count());
+    }
+    
+    @Test
+    public void List_ElementCollection_Of_Enum() {
+        QEmployee employee = QEmployee.employee;
+        //QJobFunction jobFunction = QJobFunction.jobFunction;
+        EnumPath<JobFunction> jobFunction = new EnumPath<JobFunction>(JobFunction.class, "jf");
+        
+        List<JobFunction> jobFunctions = query().from(employee).innerJoin(employee.jobFunctions, jobFunction).list(jobFunction);
+        assertEquals(4, jobFunctions.size());
+    }
+    
+    @Test
+    public void List_ElementCollection_Of_String() {
+        QFoo foo = QFoo.foo;
+        StringPath str = new StringPath("str");
+        
+        List<String> strings = query().from(foo).innerJoin(foo.names, str).list(str);
+        assertEquals(2, strings.size());
+        assertTrue(strings.contains("a"));
+        assertTrue(strings.contains("b"));
     }
     
 }

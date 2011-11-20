@@ -8,7 +8,7 @@ package com.mysema.query;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.Test;
+import org.junit.*;
 
 import com.mysema.query.sql.dml.BeanMapper;
 import com.mysema.query.sql.domain.Employee;
@@ -17,6 +17,11 @@ import com.mysema.query.sql.domain.QEmployee;
 public abstract class BeanPopulationBaseTest extends AbstractBaseTest{
 
     private final QEmployee e = new QEmployee("e");
+    
+    @After
+    public void tearDown() {
+        delete(e).where(e.firstname.eq("John")).execute();
+    }
 
     @Test
     public void Insert_Update_Query_and_Delete(){

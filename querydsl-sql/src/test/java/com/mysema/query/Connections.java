@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 
-import org.hsqldb.Types;
+import org.hsqldb.types.Types;
 
 import com.mysema.query.sql.DerbyTemplates;
 import com.mysema.query.sql.H2Templates;

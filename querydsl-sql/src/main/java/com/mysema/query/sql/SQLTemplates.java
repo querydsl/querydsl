@@ -330,6 +330,10 @@ public class SQLTemplates extends Templates {
         return tableAlias;
     }
 
+    public String getTypeForCast(Class<?> cl) {
+        return getTypeForClass(cl);
+    }
+    
     public final String getTypeForClass(Class<?> cl) {
         Class<?> clazz = cl.isPrimitive() ? ClassUtils.primitiveToWrapper(cl) : cl;
         if (class2type.containsKey(clazz)) {

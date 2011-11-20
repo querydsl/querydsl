@@ -537,17 +537,16 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
+    @Ignore
     public void Sum() throws RecognitionException, TokenStreamException {
+        // NOT SUPPORTED
         query().from(cat).select(sum(cat.kittens.size())).parse();
-
-//        query().from(cat)
-//         .groupBy(cat.name)
-//         .having(sum(cat.bodyWeight).gt(0))
-//         .select(cat).parse();
     }
 
     @Test
+    @Ignore
     public void Sum_2() throws RecognitionException, TokenStreamException {
+        // NOT SUPPORTED
         query().from(cat).where(sum(cat.kittens.size()).gt(0)).select(cat).parse();
     }
     

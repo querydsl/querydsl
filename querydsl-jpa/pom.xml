@@ -16,7 +16,7 @@
   <packaging>jar</packaging>
   
   <properties>
-    <hibernate.version>3.6.1.Final</hibernate.version>
+    <hibernate.version>3.6.8.Final</hibernate.version>
     <hibernate.validator.version>4.1.0.Final</hibernate.validator.version>
   </properties>
   
@@ -123,7 +123,7 @@
  	</dependency>   
  -->		
     <dependency>
-      <groupId>hsqldb</groupId>
+      <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>
       <version>${hsqldb.version}</version>
       <scope>test</scope>

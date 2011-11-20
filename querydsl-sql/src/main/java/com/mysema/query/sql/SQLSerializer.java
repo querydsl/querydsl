@@ -558,12 +558,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
             constantPaths.add((Path<?>)args.get(0));
         }        
         if (operator.equals(Ops.STRING_CAST)) {
-            String typeName = templates.getTypeForClass(String.class);
+            String typeName = templates.getTypeForCast(String.class);
             visitOperation(String.class, SQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator.equals(Ops.NUMCAST)) {
             Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
-            String typeName = templates.getTypeForClass(targetType);
+            String typeName = templates.getTypeForCast(targetType);
             visitOperation(targetType, SQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), ConstantImpl.create(typeName)));
 
         } else if (operator.equals(Ops.ALIAS)) {

@@ -7,28 +7,31 @@ package com.mysema.query.jpa.domain;
 
 import java.util.List;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.hibernate.annotations.IndexColumn;
 
 /**
  * The Class Foo.
  */
 @Entity
 public class Foo {
-    String bar;
+    public String bar;
 
     @Id
-    int id;
+    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    public int id;
 
     @ElementCollection
-    @IndexColumn(name = "_index")
-    List<String> names;
+    @CollectionTable(name = "foo_names", joinColumns = {@JoinColumn(name="foo_id")})    
+    public List<String> names;
 
     @Temporal(TemporalType.DATE)
-    java.util.Date startDate;
+    public java.util.Date startDate;
 }

@@ -13,7 +13,7 @@ import com.mysema.query.types.Path;
  * @author tiwe
  *
  */
-public class DefaultMapper implements Mapper<Object> {
+public class DefaultMapper extends AbstractMapper<Object> {
 
     public static final DefaultMapper DEFAULT = new DefaultMapper();
     
@@ -40,18 +40,6 @@ public class DefaultMapper implements Mapper<Object> {
         }
     }
     
-    protected Map<String, Field> getPathFields(Class<?> cl) {
-        Map<String, Field> fields = new HashMap<String, Field>();
-        while (!cl.equals(Object.class)) {
-            for (Field field : cl.getDeclaredFields()) {
-                if (Path.class.isAssignableFrom(field.getType()) && !fields.containsKey(field.getName())) {
-                    field.setAccessible(true);
-                    fields.put(field.getName(), field);
-                }
-            }
-            cl = cl.getSuperclass();
-        }
-        return fields;
-    }
+
 
 }

@@ -28,7 +28,13 @@ public class HSQLDBTemplates extends SQLTemplates {
         setAutoIncrement(" identity");
         add(Ops.MathOps.ROUND, "round({0},0)");
         add(Ops.TRIM, "trim(both from {0})");
-        add(Ops.NEGATE, "{0} * -1", 7);
+        add(Ops.NEGATE, "{0} * -1", 7);        
+        add(Ops.CONCAT, "{0} || {1}");
+    }
+    
+    @Override
+    public String getTypeForCast(Class<?> cl) {
+        return (cl.equals(String.class)) ? "varchar(10)" : getTypeForClass(cl);
     }
 
 }
