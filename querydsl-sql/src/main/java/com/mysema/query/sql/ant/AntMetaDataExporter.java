@@ -103,12 +103,17 @@ public class AntMetaDataExporter extends Task {
     /**
      * export validation annotations (@NotNull, @Size etc)
      */
-    private boolean validationAnnotations = true;
+    private boolean validationAnnotations = false;
     
     /**
      * charset encoding of the sources to be generated
      */
     private String sourceEncoding;
+    
+    /**
+     * 
+     */
+    private boolean columnAnnotations = false;
 
     @Override
     public void execute() throws BuildException {
@@ -141,6 +146,7 @@ public class AntMetaDataExporter extends Task {
             exporter.setInnerClassesForKeys(innerClassesForKeys);
             exporter.setSchemaPattern(schemaPattern);
             exporter.setTableNamePattern(tableNamePattern);
+            exporter.setColumnAnnotations(columnAnnotations);
             exporter.setValidationAnnotations(validationAnnotations);
             if (exportBeans){
                 exporter.setBeanSerializer(new BeanSerializer());
@@ -308,6 +314,12 @@ public class AntMetaDataExporter extends Task {
         this.sourceEncoding = sourceEncoding;
     }
 
+    public boolean isColumnAnnotations() {
+        return columnAnnotations;
+    }
 
+    public void setColumnAnnotations(boolean columnAnnotations) {
+        this.columnAnnotations = columnAnnotations;
+    }
 
 }

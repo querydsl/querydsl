@@ -11,6 +11,10 @@ import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.types.Path;
 
 /**
+ * Creates the mapping by inspecting the RelationalPath via reflection and object via bean inspection. 
+ * Given bean doesn't need to have @Column metadata, but the fields need to have the same 
+ * name as in the given relational path.
+ * 
  * @author tiwe
  *
  */

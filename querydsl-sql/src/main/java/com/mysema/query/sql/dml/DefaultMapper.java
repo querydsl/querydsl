@@ -10,6 +10,10 @@ import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.types.Path;
 
 /**
+ * Creates the mapping by inspecting the RelationalPath and Object via reflection. 
+ * Given bean doesn't need to have @Column metadata, but the fields need to have the same 
+ * name as in the given relational path. 
+ * 
  * @author tiwe
  *
  */
@@ -26,6 +30,7 @@ public class DefaultMapper extends AbstractMapper<Object> {
             for (Field beanField : beanClass.getDeclaredFields()) {
                 if (!Modifier.isStatic(beanField.getModifiers())) {
                     Field field = fields.get(beanField.getName());                    
+                    @SuppressWarnings("rawtypes")
                     Path path = (Path<?>) field.get(entity);
                     beanField.setAccessible(true);
                     Object propertyValue = beanField.get(bean);

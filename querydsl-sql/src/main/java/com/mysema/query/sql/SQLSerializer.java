@@ -131,6 +131,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     @SuppressWarnings("unchecked")
     private List<Expression<?>> getIdentifierColumns(List<JoinExpression> joins) {
         JoinExpression join = joins.get(0);
+        @SuppressWarnings("rawtypes")
         RelationalPath path = (RelationalPath)join.getTarget();
         if (path.getPrimaryKey() != null) {
             return path.getPrimaryKey().getLocalColumns();
@@ -143,7 +144,6 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         return templates;
     }
 
-    @SuppressWarnings("unchecked")
     private void handleJoinTarget(JoinExpression je) {
         // type specifier
         if (je.getTarget() instanceof RelationalPath && templates.isSupportsAlias()) {

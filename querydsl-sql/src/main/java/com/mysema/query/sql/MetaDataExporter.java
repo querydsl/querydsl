@@ -95,7 +95,9 @@ public class MetaDataExporter {
 
     private KeyDataFactory keyDataFactory;
 
-    private boolean validationAnnotations = true;
+    private boolean columnAnnotations = false;
+    
+    private boolean validationAnnotations = false;
     
     private String sourceEncoding = "UTF-8";
 
@@ -188,7 +190,9 @@ public class MetaDataExporter {
         }
         Type typeModel = new ClassType(fieldType, clazz);
         Property property = createProperty(classModel, columnName, propertyName, typeModel);
-        property.addAnnotation(new ColumnImpl(namingStrategy.normalizeColumnName(columnName)));
+        if (columnAnnotations) {
+            property.addAnnotation(new ColumnImpl(namingStrategy.normalizeColumnName(columnName)));    
+        }        
         if (validationAnnotations) {
             int nullable = columns.getInt(COLUMN_NULLABLE);
             if (nullable == DatabaseMetaData.columnNoNulls) {
@@ -446,7 +450,14 @@ public class MetaDataExporter {
         Assert.notNull(typeMappings, "typeMappings");
         module.bind(TypeMappings.class, typeMappings);
     }
-
+    
+    /**
+     * @param columnAnnotations
+     */
+    public void setColumnAnnotations(boolean columnAnnotations) {
+        this.columnAnnotations = columnAnnotations;
+    }
+    
     /**
      * @param validationAnnotations
      */

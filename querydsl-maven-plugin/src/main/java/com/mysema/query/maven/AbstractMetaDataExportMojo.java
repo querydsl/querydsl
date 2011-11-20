@@ -144,9 +144,16 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     /**
      * export validation annotations (default: true)
      *
-     * @parameter default-value=true
+     * @parameter default-value=false
      */
     private boolean validationAnnotations;
+    
+    /**
+     * export column annotations (default: false)
+     * 
+     * @parameter default-value=false
+     */
+    private boolean columnAnnotations;
 
     /**
      * @parameter
@@ -194,6 +201,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         exporter.setNamingStrategy(namingStrategy);
         exporter.setSchemaPattern(schemaPattern);
         exporter.setTableNamePattern(tableNamePattern);
+        exporter.setColumnAnnotations(columnAnnotations);
         exporter.setValidationAnnotations(validationAnnotations);
         if (exportBeans) {
             exporter.setBeanSerializer(new BeanSerializer());

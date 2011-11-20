@@ -7,6 +7,8 @@ import java.util.Map;
 import com.mysema.query.types.Path;
 
 /**
+ * Abstract base class for Mapper implementations
+ * 
  * @author tiwe
  *
  * @param <T>

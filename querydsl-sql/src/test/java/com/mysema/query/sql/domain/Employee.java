@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
 
-import com.mysema.query.sql.Column;
 import com.mysema.query.sql.Schema;
 import com.mysema.query.sql.Table;
 
@@ -17,25 +16,25 @@ import com.mysema.query.sql.Table;
 @Table("EMPLOYEE")
 public class Employee {
 
-    @Column("ID")
+    //@Column("ID")
     private Integer id;
     
-    @Column("FIRSTNAME")
+    //@Column("FIRSTNAME")
     private String firstname;
     
-    @Column("LASTNAME")
+    //@Column("LASTNAME")
     private String lastname;
     
-    @Column("SALARY")
+    //@Column("SALARY")
     private BigDecimal salary;
     
-    @Column("DATEFIELD")
+    //@Column("DATEFIELD")
     private Date datefield;
     
-    @Column("TIMEFIELD")
+    //@Column("TIMEFIELD")
     private Time timefield;
     
-    @Column("SUPERIOR_ID")
+    //@Column("SUPERIOR_ID")
     private Integer superiorId;
 
     public Employee() {}

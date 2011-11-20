@@ -41,6 +41,8 @@ public class MetaDataExporterTest {
 
     private boolean clean = true;
     
+    private boolean exportColumns = false;
+    
     @BeforeClass
     public static void setUpClass() throws ClassNotFoundException, SQLException{
         Class.forName("org.h2.Driver");
@@ -150,6 +152,7 @@ public class MetaDataExporterTest {
     
     @Test
     public void NormalSettings_with_Beans_using_ExtendedBeanSerializer() throws SQLException{
+        exportColumns = true;        
         beanSerializer = new ExtendedBeanSerializer();
         test("Q", "", "", "", defaultNaming, "target/11_ext", true, false);
 
@@ -407,6 +410,7 @@ public class MetaDataExporterTest {
         }        
 
         MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setColumnAnnotations(exportColumns);
         exporter.setSchemaPattern("PUBLIC");
         exporter.setNamePrefix(namePrefix);
         exporter.setNameSuffix(nameSuffix);
