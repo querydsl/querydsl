@@ -1,5 +1,6 @@
 package com.mysema.codegen;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
@@ -113,7 +114,7 @@ public class ScalaWriterTest {
         writer.end();
 
         System.out.println(w);
-        assertTrue(w.toString().contains("var stringArray: Array[String];"));
+        assertTrue(w.toString().contains("var stringArray: Array[String]"));
         assertTrue(w.toString().contains("def main(args: Array[String])"));
         assertTrue(w.toString().contains("def main2(args: Array[String])"));
     }
@@ -331,6 +332,14 @@ public class ScalaWriterTest {
 
         System.out.println(w);
 
+    }
+    
+    @Test
+    public void CaseClass() throws IOException {
+        writer.caseClass("TestType", new Parameter("a", Types.STRING), new Parameter("b", Types.STRING));
+        
+        System.out.println(w);
+        assertEquals("case class TestType(a: String, b: String)\n", w.toString());
     }
     
     @Test

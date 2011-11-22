@@ -4,7 +4,6 @@ import static com.mysema.codegen.Symbols.ASSIGN;
 import static com.mysema.codegen.Symbols.COMMA;
 import static com.mysema.codegen.Symbols.DOT;
 import static com.mysema.codegen.Symbols.QUOTE;
-import static com.mysema.codegen.Symbols.SEMICOLON;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -54,6 +53,8 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     private static final String PUBLIC_CLASS = "class ";
 
     private static final String PUBLIC_OBJECT = "object ";
+    
+    private static final String CASE_CLASS = "case class ";
 
     private static final String VAR = "var ";
 
@@ -185,7 +186,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
         goIn();
         return this;
     }
-
+    
     public ScalaWriter beginClass(String header) throws IOException {
         line(PUBLIC_CLASS, header, " {");
         goIn();
@@ -297,6 +298,11 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     public ScalaWriter beginStaticMethod(Type returnType, String methodName, Parameter... args) throws IOException{
         return beginMethod(DEF, returnType, methodName, args);
     }
+    
+    public ScalaWriter caseClass(String header, Parameter... parameters) throws IOException {
+        beginLine(CASE_CLASS, header).params(parameters).nl();
+        return this;
+    }
 
     @Override
     public ScalaWriter end() throws IOException {
@@ -305,17 +311,17 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     }
 
     public ScalaWriter field(Type type, String name) throws IOException {
-        line(VAR + escape(name) + ": " + getGenericName(true, type) + SEMICOLON);
+        line(VAR + escape(name) + ": " + getGenericName(true, type));
         return compact ? this : nl();
     }
 
     private ScalaWriter field(String modifier, Type type, String name) throws IOException{
-        line(modifier + escape(name) + ": " + getGenericName(true, type) + SEMICOLON);
+        line(modifier + escape(name) + ": " + getGenericName(true, type));
         return compact ? this : nl();
     }
 
     private ScalaWriter field(String modifier, Type type, String name, String value) throws IOException{
-        line(modifier + escape(name) + ": " + getGenericName(true, type) + ASSIGN + value + SEMICOLON);
+        line(modifier + escape(name) + ": " + getGenericName(true, type) + ASSIGN + value);
         return compact ? this : nl();
     }
 
@@ -373,7 +379,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     public ScalaWriter imports(Class<?>... imports) throws IOException{
         for (Class<?> cl : imports){
             classes.add(cl.getName());
-            line(IMPORT + cl.getName() + SEMICOLON);
+            line(IMPORT + cl.getName());
         }
         nl();
         return this;
@@ -383,7 +389,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     public ScalaWriter imports(Package... imports) throws IOException {
         for (Package p : imports){
             packages.add(p.getName());
-            line(IMPORT + p.getName() + "._;");
+            line(IMPORT + p.getName() + "._");
         }
         nl();
         return this;
@@ -393,7 +399,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     public ScalaWriter importClasses(String... imports) throws IOException{
         for (String cl : imports){
             classes.add(cl);
-            line(IMPORT + cl + SEMICOLON);
+            line(IMPORT + cl);
         }
         nl();
         return this;
@@ -421,7 +427,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     @Override
     public ScalaWriter packageDecl(String packageName) throws IOException {
         packages.add(packageName);
-        return line(PACKAGE + packageName + SEMICOLON).nl();
+        return line(PACKAGE + packageName).nl();
     }
 
     private <T> ScalaWriter params(Collection<T> parameters, Transformer<T,Parameter> transformer) throws IOException{
