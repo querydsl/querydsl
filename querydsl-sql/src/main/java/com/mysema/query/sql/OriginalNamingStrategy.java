@@ -5,8 +5,6 @@
  */
 package com.mysema.query.sql;
 
-import java.lang.annotation.Annotation;
-
 import org.apache.commons.lang3.StringUtils;
 
 import com.mysema.query.codegen.EntityType;
@@ -37,12 +35,8 @@ public class OriginalNamingStrategy implements NamingStrategy {
 
     @Override
     public String getDefaultAlias(EntityType entityType) {
-        for (Annotation ann : entityType.getAnnotations()) {
-            if (ann.annotationType().equals(Table.class)) {
-                return ((Table) ann).value();
-            }
-        }
-        return getDefaultVariableName(entityType);
+        String table = (String)entityType.getData().get("table");
+        return table != null ? table : getDefaultVariableName(entityType);
     }
 
     @Override

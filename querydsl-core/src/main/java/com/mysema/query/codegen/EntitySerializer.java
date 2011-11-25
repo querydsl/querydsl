@@ -97,10 +97,10 @@ public class EntitySerializer implements Serializer{
         String genericName = writer.getGenericName(true, model);
 
         boolean hasEntityFields = model.hasEntityFields();
-        String thisOrSuper = hasEntityFields ? THIS : SUPER;
-
         boolean stringOrBoolean = model.getOriginalCategory() == TypeCategory.STRING || model.getOriginalCategory() == TypeCategory.BOOLEAN;
-
+        String thisOrSuper = hasEntityFields ? THIS : SUPER;
+        String additionalParams = getAdditionalConstructorParameter(model);
+                        
         // 1
         constructorsForVariables(writer, model);
 
@@ -116,7 +116,7 @@ public class EntitySerializer implements Serializer{
             if (stringOrBoolean) {
                 writer.line("super(entity.getMetadata());");
             } else {
-                writer.line("super(entity.getType(), entity.getMetadata());");
+                writer.line("super(entity.getType(), entity.getMetadata()" +additionalParams+");");
             }
             writer.end();
         }
@@ -134,7 +134,7 @@ public class EntitySerializer implements Serializer{
             if (stringOrBoolean) {
                 writer.line("super(metadata);");
             } else {
-                writer.line("super(", localName.equals(genericName) ? EMPTY : "(Class)", localName, ".class, metadata);");
+                writer.line("super(", localName.equals(genericName) ? EMPTY : "(Class)", localName, ".class, metadata" + additionalParams + ");");
             }
             writer.end();
         }
@@ -145,7 +145,7 @@ public class EntitySerializer implements Serializer{
                 writer.suppressWarnings(UNCHECKED);
             }
             writer.beginConstructor(PATH_METADATA, PATH_INITS);
-            writer.line(thisOrSuper, "(", localName.equals(genericName) ? EMPTY : "(Class)", localName, ".class, metadata, inits);");
+            writer.line(thisOrSuper, "(", localName.equals(genericName) ? EMPTY : "(Class)", localName, ".class, metadata, inits" + additionalParams+ ");");
             writer.end();
         }
 
@@ -158,26 +158,32 @@ public class EntitySerializer implements Serializer{
                 type = new ClassType(Class.class, new TypeExtends(model));
             }
             writer.beginConstructor(new Parameter("type", type), PATH_METADATA, PATH_INITS);
-            writer.line("super(type, metadata, inits);");
+            writer.line("super(type, metadata, inits"+additionalParams+");");
             initEntityFields(writer, config, model);
             writer.end();
         }
 
+    }
+    
+    protected String getAdditionalConstructorParameter(EntityType model) {
+        return "";
     }
 
     protected void constructorsForVariables(CodeWriter writer, EntityType model) throws IOException {
         String localName = writer.getRawName(model);
         String genericName = writer.getGenericName(true, model);
 
+        
         boolean hasEntityFields = model.hasEntityFields();
         String thisOrSuper = hasEntityFields ? THIS : SUPER;
-
+        String additionalParams = hasEntityFields ? "" : getAdditionalConstructorParameter(model);
+        
         if (!localName.equals(genericName)) {
             writer.suppressWarnings(UNCHECKED);
         }
         writer.beginConstructor(new Parameter("variable", Types.STRING));
         writer.line(thisOrSuper,"(", localName.equals(genericName) ? EMPTY : "(Class)",
-                localName, ".class, forVariable(variable)", hasEntityFields ? ", INITS" : EMPTY, ");");
+                localName, ".class, forVariable(variable)", hasEntityFields ? ", INITS" : EMPTY,additionalParams,");");
         writer.end();
     }
 

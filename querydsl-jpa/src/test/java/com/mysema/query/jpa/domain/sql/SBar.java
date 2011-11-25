@@ -4,7 +4,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.DatePath;
@@ -14,7 +13,6 @@ import com.mysema.query.types.path.NumberPath;
 /**
  * SBar is a Querydsl query type for SBar
  */
-@Table("BAR")
 public class SBar extends RelationalPathBase<SBar> {
 
     private static final long serialVersionUID = 1401625130;
@@ -28,15 +26,15 @@ public class SBar extends RelationalPathBase<SBar> {
     public final PrimaryKey<SBar> sql100819184430740 = createPrimaryKey(id);
 
     public SBar(String variable) {
-        super(SBar.class, forVariable(variable));
+        super(SBar.class, forVariable(variable), null, "BAR");
     }
 
     public SBar(BeanPath<? extends SBar> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "BAR");
     }
 
     public SBar(PathMetadata<?> metadata) {
-        super(SBar.class, metadata);
+        super(SBar.class, metadata, null, "BAR");
     }
 
 }

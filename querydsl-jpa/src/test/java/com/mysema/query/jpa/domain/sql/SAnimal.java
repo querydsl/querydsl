@@ -7,7 +7,6 @@ import java.util.Date;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.DatePath;
@@ -20,7 +19,6 @@ import com.mysema.query.types.path.TimePath;
 /**
  * SAnimal is a Querydsl query type for SAnimal
  */
-@Table("ANIMAL")
 public class SAnimal extends RelationalPathBase<SAnimal> {
 
     private static final long serialVersionUID = 125412485;
@@ -70,15 +68,15 @@ public class SAnimal extends RelationalPathBase<SAnimal> {
     public final ForeignKey<SKittens> _fkd60087cc7a9f89a = new ForeignKey<SKittens>(this, id, "KITTENS_ID");
 
     public SAnimal(String variable) {
-        super(SAnimal.class, forVariable(variable));
+        super(SAnimal.class, forVariable(variable), null, "ANIMAL");
     }
 
     public SAnimal(BeanPath<? extends SAnimal> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "ANIMAL");
     }
 
     public SAnimal(PathMetadata<?> metadata) {
-        super(SAnimal.class, metadata);
+        super(SAnimal.class, metadata, null, "ANIMAL");
     }
 
 }

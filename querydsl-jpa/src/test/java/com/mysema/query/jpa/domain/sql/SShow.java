@@ -6,7 +6,6 @@ import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -15,7 +14,6 @@ import com.mysema.query.types.path.NumberPath;
 /**
  * SShow is a Querydsl query type for SShow
  */
-@Table("SHOW")
 public class SShow extends RelationalPathBase<SShow> implements RelationalPath<SShow> {
 
     private static final long serialVersionUID = 501219270;
@@ -29,15 +27,15 @@ public class SShow extends RelationalPathBase<SShow> implements RelationalPath<S
     public final ForeignKey<SShowActs> _fk5f6ee0319084d04 = new ForeignKey<SShowActs>(this, id, "SHOW_ID");
 
     public SShow(String variable) {
-        super(SShow.class, forVariable(variable));
+        super(SShow.class, forVariable(variable), null, "SHOW");
     }
 
     public SShow(BeanPath<? extends SShow> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "SHOW");
     }
 
     public SShow(PathMetadata<?> metadata) {
-        super(SShow.class, metadata);
+        super(SShow.class, metadata, null, "SHOW");
     }
 
 }

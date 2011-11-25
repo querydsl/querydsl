@@ -5,7 +5,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -14,7 +13,6 @@ import com.mysema.query.types.path.NumberPath;
 /**
  * SKittens is a Querydsl query type for SKittens
  */
-@Table("KITTENS")
 public class SKittens extends RelationalPathBase<SKittens> {
 
     private static final long serialVersionUID = -254852509;
@@ -34,15 +32,15 @@ public class SKittens extends RelationalPathBase<SKittens> {
     public final ForeignKey<SAnimal> fkd60087cc7a9f89a = new ForeignKey<SAnimal>(this, kittensId, "ID");
 
     public SKittens(String variable) {
-        super(SKittens.class, forVariable(variable));
+        super(SKittens.class, forVariable(variable), null, "KITTENS");
     }
 
     public SKittens(BeanPath<? extends SKittens> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "KITTENS");
     }
 
     public SKittens(PathMetadata<?> metadata) {
-        super(SKittens.class, metadata);
+        super(SKittens.class, metadata, null, "KITTENS");
     }
 
 }

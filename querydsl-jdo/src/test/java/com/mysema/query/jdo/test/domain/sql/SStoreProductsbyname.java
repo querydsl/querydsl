@@ -5,7 +5,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -15,7 +14,7 @@ import com.mysema.query.types.path.StringPath;
 /**
  * SStoreProductsbyname is a Querydsl query type for SStoreProductsbyname
  */
-@Table(value="STORE_PRODUCTSBYNAME")
+//@Table(value="STORE_PRODUCTSBYNAME")
 public class SStoreProductsbyname extends RelationalPathBase<SStoreProductsbyname> {
 
     private static final long serialVersionUID = 764053781;
@@ -35,15 +34,15 @@ public class SStoreProductsbyname extends RelationalPathBase<SStoreProductsbynam
     public final ForeignKey<SProduct> storeProductsbynameFk2 = new ForeignKey<SProduct>(this, productIdVid, "PRODUCT_ID");
 
     public SStoreProductsbyname(String variable) {
-        super(SStoreProductsbyname.class, forVariable(variable));
+        super(SStoreProductsbyname.class, forVariable(variable), null, "STORE_PRODUCTSBYNAME");
     }
 
     public SStoreProductsbyname(BeanPath<? extends SStoreProductsbyname> entity) {
-        super(entity.getType(),entity.getMetadata());
+        super(entity.getType(),entity.getMetadata(), null, "STORE_PRODUCTSBYNAME");
     }
 
     public SStoreProductsbyname(PathMetadata<?> metadata) {
-        super(SStoreProductsbyname.class, metadata);
+        super(SStoreProductsbyname.class, metadata, null, "STORE_PRODUCTSBYNAME");
     }
 
 }

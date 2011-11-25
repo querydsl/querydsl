@@ -70,10 +70,8 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
   }
   
   def writeAdditionalConstructors(modelName: String, writer: ScalaWriter) = {
-    writer.line("def this(variable: String) = " +
-    	"this(classOf[",modelName,"], forVariable(variable))\n")
-    writer.line("def this(parent: Path[_], variable: String) = " +
-    	"this(classOf[",modelName,"], forProperty(parent, variable))\n")
+    writer.line("def this(variable: String) = this(classOf[",modelName,"], forVariable(variable))\n")
+    writer.line("def this(parent: Path[_], variable: String) = this(classOf[",modelName,"], forProperty(parent, variable))\n")
   }
   
   def writeAdditionalFields(model: EntityType, writer: ScalaWriter) = {

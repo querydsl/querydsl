@@ -42,12 +42,12 @@ public class DefaultNamingStrategy implements NamingStrategy {
 
     @Override
     public String getDefaultAlias(EntityType entityType) {
-        return entityType.getAnnotation(Table.class).value();
+        return entityType.getData().get("table").toString();
     }
 
     @Override
     public String getDefaultVariableName(EntityType entityType) {
-        return escape(entityType, toCamelCase(entityType.getAnnotation(Table.class).value()));    
+        return escape(entityType, toCamelCase(entityType.getData().get("table").toString()));    
     }
     
     @Override

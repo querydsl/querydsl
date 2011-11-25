@@ -5,7 +5,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -14,7 +13,6 @@ import com.mysema.query.types.path.NumberPath;
 /**
  * SPlayerScores is a Querydsl query type for SPlayerScores
  */
-@Table("PLAYER_SCORES")
 public class SPlayerScores extends RelationalPathBase<SPlayerScores> implements RelationalPath<SPlayerScores> {
 
     private static final long serialVersionUID = -855115221;
@@ -28,15 +26,15 @@ public class SPlayerScores extends RelationalPathBase<SPlayerScores> implements 
     public final ForeignKey<SPlayer> fkd5dc571ff51f2004 = new ForeignKey<SPlayer>(this, playerId, "ID");
 
     public SPlayerScores(String variable) {
-        super(SPlayerScores.class, forVariable(variable));
+        super(SPlayerScores.class, forVariable(variable), null, "PLAYER_SCORES");
     }
 
     public SPlayerScores(BeanPath<? extends SPlayerScores> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "PLAYER_SCORES");
     }
 
     public SPlayerScores(PathMetadata<?> metadata) {
-        super(SPlayerScores.class, metadata);
+        super(SPlayerScores.class, metadata, null, "PLAYER_SCORES");
     }
 
 }

@@ -9,11 +9,8 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Time;
 
-import com.mysema.query.sql.Schema;
-import com.mysema.query.sql.Table;
-
-@Schema("PUBLIC")
-@Table("EMPLOYEE")
+//@Schema("PUBLIC")
+//@Table("EMPLOYEE")
 public class Employee {
 
     //@Column("ID")

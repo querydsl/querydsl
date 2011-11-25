@@ -4,8 +4,6 @@ import com.mysema.query.types._;
 import com.mysema.query.scala._;
 
 import com.mysema.query.types.PathMetadataFactory._;
-import com.mysema.query.sql.Table;
-import com.mysema.query.sql.Schema;
 
 import com.mysema.query.scala.sql.RelationalPathImpl;
 
@@ -16,7 +14,7 @@ object QEmployee extends QEmployee("employee"){
   
 }
 
-class QEmployee(md: PathMetadata[_]) extends RelationalPathImpl[Employee]( md) {
+class QEmployee(md: PathMetadata[_]) extends RelationalPathImpl[Employee](md, "PUBLIC", "EMPLOYEE") {
   def this(variable: String) = this(forVariable(variable))
 
   def this(parent: Path[_], variable: String) = this(forProperty(parent, variable))

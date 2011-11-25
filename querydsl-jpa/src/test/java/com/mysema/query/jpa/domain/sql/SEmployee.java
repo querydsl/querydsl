@@ -5,7 +5,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -15,7 +14,6 @@ import com.mysema.query.types.path.StringPath;
 /**
  * SEmployee is a Querydsl query type for SEmployee
  */
-@Table("EMPLOYEE")
 public class SEmployee extends RelationalPathBase<SEmployee> {
 
     private static final long serialVersionUID = -2043969801;
@@ -37,15 +35,15 @@ public class SEmployee extends RelationalPathBase<SEmployee> {
     public final ForeignKey<SCompany> _fk9bdfd45d8e79ac65 = new ForeignKey<SCompany>(this, id, "CEO_ID");
 
     public SEmployee(String variable) {
-        super(SEmployee.class, forVariable(variable));
+        super(SEmployee.class, forVariable(variable), null, "EMPLOYEE");
     }
 
     public SEmployee(BeanPath<? extends SEmployee> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "EMPLOYEE");
     }
 
     public SEmployee(PathMetadata<?> metadata) {
-        super(SEmployee.class, metadata);
+        super(SEmployee.class, metadata, null, "EMPLOYEE");
     }
 
 }

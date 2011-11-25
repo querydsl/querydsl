@@ -7,7 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.testutil.HibernateConfig;
 import com.mysema.testutil.HibernateTestRunner;
@@ -17,7 +16,7 @@ import com.mysema.testutil.HibernateTestRunner;
 @HibernateConfig("mysql.properties")
 public class MySQLSQLTest extends AbstractSQLTest {
     
-    @Table("Animal")
+//    @Table("Animal")
     public class SAnimal extends RelationalPathBase<SAnimal> {
 
         private static final long serialVersionUID = 1L;
@@ -25,7 +24,7 @@ public class MySQLSQLTest extends AbstractSQLTest {
         public final NumberPath<Integer> id = createNumber("id", Integer.class);
         
         public SAnimal(String variable) {
-            super(SAnimal.class, forVariable(variable));
+            super(SAnimal.class, forVariable(variable), null, "Animal");
         }
 
     }       

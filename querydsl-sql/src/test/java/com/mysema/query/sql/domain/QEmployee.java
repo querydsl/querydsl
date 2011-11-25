@@ -10,8 +10,6 @@ import java.math.BigDecimal;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Schema;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.DatePath;
@@ -19,8 +17,8 @@ import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.TimePath;
 
-@Schema("PUBLIC")
-@Table("EMPLOYEE")
+//@Schema("PUBLIC")
+//@Table("EMPLOYEE")
 public class QEmployee extends RelationalPathBase<Employee> {
 
     private static final long serialVersionUID = 1394463749655231079L;
@@ -48,11 +46,11 @@ public class QEmployee extends RelationalPathBase<Employee> {
     public final ForeignKey<Employee> _superiorIdKey = createInvForeignKey(id, "SUPERIOR_ID");
     
     public QEmployee(String path) {
-        super(Employee.class, PathMetadataFactory.forVariable(path));
+        super(Employee.class, PathMetadataFactory.forVariable(path), "PUBLIC", "EMPLOYEE");
     }
 
     public QEmployee(PathMetadata<?> metadata) {
-        super(Employee.class, metadata);
+        super(Employee.class, metadata, "PUBLIC", "EMPLOYEE");
     }
 
 }

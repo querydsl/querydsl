@@ -6,7 +6,6 @@ import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -15,7 +14,6 @@ import com.mysema.query.types.path.NumberPath;
 /**
  * SStore is a Querydsl query type for SStore
  */
-@Table("STORE")
 public class SStore extends RelationalPathBase<SStore> implements RelationalPath<SStore> {
 
     private static final long serialVersionUID = -1641714376;
@@ -33,15 +31,15 @@ public class SStore extends RelationalPathBase<SStore> implements RelationalPath
     public final ForeignKey<SStoreCustomer> _fk808055bc828daef0 = new ForeignKey<SStoreCustomer>(this, id, "STORE_ID");
 
     public SStore(String variable) {
-        super(SStore.class, forVariable(variable));
+        super(SStore.class, forVariable(variable), null, "STORE");
     }
 
     public SStore(BeanPath<? extends SStore> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "STORE");
     }
 
     public SStore(PathMetadata<?> metadata) {
-        super(SStore.class, metadata);
+        super(SStore.class, metadata, null, "STORE");
     }
 
 }

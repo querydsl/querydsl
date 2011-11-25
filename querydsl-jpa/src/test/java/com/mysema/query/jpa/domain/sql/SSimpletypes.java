@@ -7,7 +7,6 @@ import java.util.Date;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.DatePath;
@@ -20,7 +19,6 @@ import com.mysema.query.types.path.TimePath;
 /**
  * SSimpletypes is a Querydsl query type for SSimpletypes
  */
-@Table("SIMPLETYPES")
 public class SSimpletypes extends RelationalPathBase<SSimpletypes> implements RelationalPath<SSimpletypes> {
 
     private static final long serialVersionUID = -171311842;
@@ -68,15 +66,15 @@ public class SSimpletypes extends RelationalPathBase<SSimpletypes> implements Re
     public final PrimaryKey<SSimpletypes> sql100819184438610 = createPrimaryKey(id);
 
     public SSimpletypes(String variable) {
-        super(SSimpletypes.class, forVariable(variable));
+        super(SSimpletypes.class, forVariable(variable), null, "SIMPLETYPES");
     }
 
     public SSimpletypes(BeanPath<? extends SSimpletypes> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "SIMPLETYPES");
     }
 
     public SSimpletypes(PathMetadata<?> metadata) {
-        super(SSimpletypes.class, metadata);
+        super(SSimpletypes.class, metadata, null, "SIMPLETYPES");
     }
 
 }

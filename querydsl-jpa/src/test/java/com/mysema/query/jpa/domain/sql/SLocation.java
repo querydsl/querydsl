@@ -5,7 +5,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -15,7 +14,6 @@ import com.mysema.query.types.path.StringPath;
 /**
  * SLocation is a Querydsl query type for SLocation
  */
-@Table("LOCATION")
 public class SLocation extends RelationalPathBase<SLocation> {
 
     private static final long serialVersionUID = -1336395778;
@@ -31,15 +29,15 @@ public class SLocation extends RelationalPathBase<SLocation> {
     public final ForeignKey<SStore> _fk4c808c12adf2d04 = new ForeignKey<SStore>(this, id, "LOCATION_ID");
 
     public SLocation(String variable) {
-        super(SLocation.class, forVariable(variable));
+        super(SLocation.class, forVariable(variable), null, "LOCATION");
     }
 
     public SLocation(BeanPath<? extends SLocation> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "LOCATION");
     }
 
     public SLocation(PathMetadata<?> metadata) {
-        super(SLocation.class, metadata);
+        super(SLocation.class, metadata, null, "LOCATION");
     }
     
 }

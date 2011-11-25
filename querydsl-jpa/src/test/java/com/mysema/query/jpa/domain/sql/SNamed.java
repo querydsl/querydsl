@@ -5,7 +5,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -15,7 +14,6 @@ import com.mysema.query.types.path.StringPath;
 /**
  * SNamed is a Querydsl query type for SNamed
  */
-@Table("NAMED")
 public class SNamed extends RelationalPathBase<SNamed> implements RelationalPath<SNamed> {
 
     private static final long serialVersionUID = -1646900336;
@@ -29,15 +27,15 @@ public class SNamed extends RelationalPathBase<SNamed> implements RelationalPath
     public final PrimaryKey<SNamed> sql100819184435830 = createPrimaryKey(id);
 
     public SNamed(String variable) {
-        super(SNamed.class, forVariable(variable));
+        super(SNamed.class, forVariable(variable), null, "NAMED");
     }
 
     public SNamed(BeanPath<? extends SNamed> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "NAMED");
     }
 
     public SNamed(PathMetadata<?> metadata) {
-        super(SNamed.class, metadata);
+        super(SNamed.class, metadata, null, "NAMED");
     }
 
 }

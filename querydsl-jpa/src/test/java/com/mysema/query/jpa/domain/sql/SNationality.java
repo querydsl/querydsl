@@ -6,7 +6,6 @@ import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -15,7 +14,6 @@ import com.mysema.query.types.path.NumberPath;
 /**
  * SNationality is a Querydsl query type for SNationality
  */
-@Table("NATIONALITY")
 public class SNationality extends RelationalPathBase<SNationality> implements RelationalPath<SNationality> {
 
     private static final long serialVersionUID = 1320834259;
@@ -33,15 +31,15 @@ public class SNationality extends RelationalPathBase<SNationality> implements Re
     public final ForeignKey<SPerson> _fk8e488775e9d94490 = new ForeignKey<SPerson>(this, id, "NATIONALITY_ID");
 
     public SNationality(String variable) {
-        super(SNationality.class, forVariable(variable));
+        super(SNationality.class, forVariable(variable), null, "NATIONALITY");
     }
 
     public SNationality(BeanPath<? extends SNationality> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "NATIONALITY");
     }
 
     public SNationality(PathMetadata<?> metadata) {
-        super(SNationality.class, metadata);
+        super(SNationality.class, metadata, null, "NATIONALITY");
     }
     
 }

@@ -8,8 +8,8 @@ import com.mysema.query.sql._;
 /**
  * Survey is a Querydsl bean type
  */
-@Schema("PUBLIC")
-@Table("SURVEY")
+//@Schema("PUBLIC")
+//@Table("SURVEY")
 class Survey {
 
  var id: Integer = _;

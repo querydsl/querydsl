@@ -5,7 +5,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.DatePath;
@@ -18,7 +17,7 @@ import com.mysema.query.types.path.TimePath;
 /**
  * SProduct is a Querydsl query type for SProduct
  */
-@Table(value="PRODUCT")
+//@Table(value="PRODUCT")
 public class SProduct extends RelationalPathBase<SProduct> {
 
     private static final long serialVersionUID = -590374403;
@@ -50,15 +49,15 @@ public class SProduct extends RelationalPathBase<SProduct> {
     public final ForeignKey<SStoreProductsbyname> _storeProductsbynameFk2 = new ForeignKey<SStoreProductsbyname>(this, productId, "PRODUCT_ID_VID");
 
     public SProduct(String variable) {
-        super(SProduct.class, forVariable(variable));
+        super(SProduct.class, forVariable(variable), null, "PRODUCT");
     }
 
     public SProduct(BeanPath<? extends SProduct> entity) {
-        super(entity.getType(),entity.getMetadata());
+        super(entity.getType(),entity.getMetadata(), null, "PRODUCT");
     }
 
     public SProduct(PathMetadata<?> metadata) {
-        super(SProduct.class, metadata);
+        super(SProduct.class, metadata, null, "PRODUCT");
     }
     
 }

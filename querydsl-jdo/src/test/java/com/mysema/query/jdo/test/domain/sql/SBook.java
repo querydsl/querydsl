@@ -5,7 +5,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -15,7 +14,7 @@ import com.mysema.query.types.path.StringPath;
 /**
  * SBook is a Querydsl query type for SBook
  */
-@Table(value="BOOK")
+//@Table(value="BOOK")
 public class SBook extends RelationalPathBase<SBook> {
 
     private static final long serialVersionUID = -1566558053;
@@ -35,15 +34,15 @@ public class SBook extends RelationalPathBase<SBook> {
     public final ForeignKey<SProduct> bookFk1 = new ForeignKey<SProduct>(this, bookId, "PRODUCT_ID");
 
     public SBook(String variable) {
-        super(SBook.class, forVariable(variable));
+        super(SBook.class, forVariable(variable), null, "BOOK");
     }
 
     public SBook(BeanPath<? extends SBook> entity) {
-        super(entity.getType(),entity.getMetadata());
+        super(entity.getType(),entity.getMetadata(), null, "BOOK");
     }
 
     public SBook(PathMetadata<?> metadata) {
-        super(SBook.class, metadata);
+        super(SBook.class, metadata, null, "BOOK");
     }
 
 }

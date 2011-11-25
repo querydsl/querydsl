@@ -5,7 +5,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -14,7 +13,6 @@ import com.mysema.query.types.path.NumberPath;
 /**
  * SAuditlog is a Querydsl query type for SAuditlog
  */
-@Table("AUDITLOG")
 public class SAuditlog extends RelationalPathBase<SAuditlog> {
 
     private static final long serialVersionUID = 2033602002;
@@ -30,15 +28,15 @@ public class SAuditlog extends RelationalPathBase<SAuditlog> {
     public final ForeignKey<SItem> fk3e07a1891bee4d44 = new ForeignKey<SItem>(this, itemId, "ID");
 
     public SAuditlog(String variable) {
-        super(SAuditlog.class, forVariable(variable));
+        super(SAuditlog.class, forVariable(variable), null, "AUDITLOG");
     }
 
     public SAuditlog(BeanPath<? extends SAuditlog> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "AUDITLOG");
     }
 
     public SAuditlog(PathMetadata<?> metadata) {
-        super(SAuditlog.class, metadata);
+        super(SAuditlog.class, metadata, null, "AUDITLOG");
     }
     
 }

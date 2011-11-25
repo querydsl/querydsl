@@ -5,7 +5,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -14,7 +13,6 @@ import com.mysema.query.types.path.NumberPath;
 /**
  * SFormula is a Querydsl query type for SFormula
  */
-@Table("FORMULA")
 public class SFormula extends RelationalPathBase<SFormula> {
 
     private static final long serialVersionUID = -227668995;
@@ -30,15 +28,15 @@ public class SFormula extends RelationalPathBase<SFormula> {
     public final ForeignKey<SParameter> fk3ad7e94694c3fef0 = new ForeignKey<SParameter>(this, parameterId, "ID");
 
     public SFormula(String variable) {
-        super(SFormula.class, forVariable(variable));
+        super(SFormula.class, forVariable(variable), null, "FORMULA");
     }
 
     public SFormula(BeanPath<? extends SFormula> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "FORMULA");
     }
 
     public SFormula(PathMetadata<?> metadata) {
-        super(SFormula.class, metadata);
+        super(SFormula.class, metadata, null, "FORMULA");
     }
 
 }

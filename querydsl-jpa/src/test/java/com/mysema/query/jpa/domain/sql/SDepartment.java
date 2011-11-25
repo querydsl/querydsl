@@ -5,7 +5,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -15,7 +14,6 @@ import com.mysema.query.types.path.StringPath;
 /**
  * SDepartment is a Querydsl query type for SDepartment
  */
-@Table("DEPARTMENT")
 public class SDepartment extends RelationalPathBase<SDepartment> {
 
     private static final long serialVersionUID = -774771365;
@@ -33,15 +31,15 @@ public class SDepartment extends RelationalPathBase<SDepartment> {
     public final ForeignKey<SCompany> fka9601f72555fdbf0 = new ForeignKey<SCompany>(this, companyId, "ID");
 
     public SDepartment(String variable) {
-        super(SDepartment.class, forVariable(variable));
+        super(SDepartment.class, forVariable(variable), null, "DEPARTMENT");
     }
 
     public SDepartment(BeanPath<? extends SDepartment> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "DEPARTMENT");
     }
 
     public SDepartment(PathMetadata<?> metadata) {
-        super(SDepartment.class, metadata);
+        super(SDepartment.class, metadata, null, "DEPARTMENT");
     }
 
 }

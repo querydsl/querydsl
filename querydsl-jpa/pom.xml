@@ -309,7 +309,7 @@
             </goals>
           </execution>
         </executions>
-         -->
+        -->
         <configuration>
           <jdbcDriver>org.apache.derby.jdbc.EmbeddedDriver</jdbcDriver>
           <jdbcUrl>jdbc:derby:target/derbydb;create=true</jdbcUrl>

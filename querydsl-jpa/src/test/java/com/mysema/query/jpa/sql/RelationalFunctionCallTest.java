@@ -10,8 +10,6 @@ import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLServerTemplates;
 import com.mysema.query.sql.SQLSubQuery;
-import com.mysema.query.sql.Schema;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.path.PathBuilder;
@@ -19,8 +17,8 @@ import com.mysema.query.types.path.StringPath;
 
 public class RelationalFunctionCallTest {
     
-    @Schema("PUBLIC")
-    @Table("SURVEY")
+//    @Schema("PUBLIC")
+//    @Table("SURVEY")
     public class QSurvey extends RelationalPathBase<QSurvey>{
 
         private static final long serialVersionUID = -7427577079709192842L;
@@ -28,7 +26,7 @@ public class RelationalFunctionCallTest {
         public final StringPath name = createString("NAME");
 
         public QSurvey(String path) {
-            super(QSurvey.class, PathMetadataFactory.forVariable(path));
+            super(QSurvey.class, PathMetadataFactory.forVariable(path), "PUBLIC", "SURVEY");
         }
         
     }

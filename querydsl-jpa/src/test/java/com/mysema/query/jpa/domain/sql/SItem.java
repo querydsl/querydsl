@@ -5,7 +5,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -15,7 +14,6 @@ import com.mysema.query.types.path.StringPath;
 /**
  * SItem is a Querydsl query type for SItem
  */
-@Table("ITEM")
 public class SItem extends RelationalPathBase<SItem> {
 
     private static final long serialVersionUID = 500932572;
@@ -51,15 +49,15 @@ public class SItem extends RelationalPathBase<SItem> {
     public final ForeignKey<SPrice> _fk49cc129a549aeb0 = new ForeignKey<SPrice>(this, id, "PRODUCT_ID");
 
     public SItem(String variable) {
-        super(SItem.class, forVariable(variable));
+        super(SItem.class, forVariable(variable), null, "ITEM");
     }
 
     public SItem(BeanPath<? extends SItem> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "ITEM");
     }
 
     public SItem(PathMetadata<?> metadata) {
-        super(SItem.class, metadata);
+        super(SItem.class, metadata, null, "ITEM");
     }
 
 }

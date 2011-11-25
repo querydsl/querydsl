@@ -4,7 +4,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.DatePath;
@@ -15,7 +14,6 @@ import com.mysema.query.types.path.StringPath;
 /**
  * SFoo is a Querydsl query type for SFoo
  */
-@Table("FOO")
 public class SFoo extends RelationalPathBase<SFoo> {
 
     private static final long serialVersionUID = 1401629405;
@@ -31,15 +29,15 @@ public class SFoo extends RelationalPathBase<SFoo> {
     public final PrimaryKey<SFoo> sql100819184433460 = createPrimaryKey(id);
 
     public SFoo(String variable) {
-        super(SFoo.class, forVariable(variable));
+        super(SFoo.class, forVariable(variable), null, "FOO");
     }
 
     public SFoo(BeanPath<? extends SFoo> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "FOO");
     }
 
     public SFoo(PathMetadata<?> metadata) {
-        super(SFoo.class, metadata);
+        super(SFoo.class, metadata, null, "FOO");
     }
 
 }

@@ -5,7 +5,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.DatePath;
@@ -15,7 +14,6 @@ import com.mysema.query.types.path.NumberPath;
 /**
  * SCatalog is a Querydsl query type for SCatalog
  */
-@Table("CATALOG")
 public class SCatalog extends RelationalPathBase<SCatalog> {
 
     private static final long serialVersionUID = 1005460144;
@@ -31,15 +29,15 @@ public class SCatalog extends RelationalPathBase<SCatalog> {
     public final ForeignKey<SCatalogPrice> _fke4eb7d63f28fe670 = new ForeignKey<SCatalogPrice>(this, id, "CATALOG_ID");
 
     public SCatalog(String variable) {
-        super(SCatalog.class, forVariable(variable));
+        super(SCatalog.class, forVariable(variable), null, "CATALOG");
     }
 
     public SCatalog(BeanPath<? extends SCatalog> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "CATALOG");
     }
 
     public SCatalog(PathMetadata<?> metadata) {
-        super(SCatalog.class, metadata);
+        super(SCatalog.class, metadata, null, "CATALOG");
     }
 
 }

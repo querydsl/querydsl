@@ -31,7 +31,7 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
   
   override def writeAdditionalConstructors(modelName: String, writer: ScalaWriter) = {
     writer.line("def this(variable: String) = this(forVariable(variable))\n")
-    writer.line("def this(parent: Path[_], variable: String) = this(forProperty(parent, variable))\n")
+    writer.line("def this(parent: Path[_], property: String) = this(forProperty(parent, property))\n")
   }
     
   override def writeAdditionalProperties(model: EntityType, writer: ScalaWriter) {

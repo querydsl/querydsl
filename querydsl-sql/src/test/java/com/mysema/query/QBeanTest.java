@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.QBean;
@@ -15,7 +14,7 @@ import com.mysema.query.types.path.StringPath;
 
 public class QBeanTest {
 
-    @Table("PERSON")
+//    @Table("PERSON")
     public static class QPerson extends RelationalPathBase<QPerson> {
         private static final long serialVersionUID = 609527362;
         public static final QPerson person = new QPerson("PERSON");
@@ -24,15 +23,15 @@ public class QBeanTest {
         public final StringPath lastName = createString("LAST_NAME");
 
         public QPerson(String variable) {
-           super(QPerson.class, PathMetadataFactory.forVariable(variable));
+           super(QPerson.class, PathMetadataFactory.forVariable(variable), null, "PERSON");
         }
 
         public QPerson(BeanPath<? extends QPerson> entity) {
-            super(entity.getType(), entity.getMetadata());
+            super(entity.getType(), entity.getMetadata(), null, "PERSON");
         }
 
         public QPerson(PathMetadata<?> metadata) {
-            super(QPerson.class, metadata);
+            super(QPerson.class, metadata, null, "PERSON");
         }
 
     }

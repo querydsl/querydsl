@@ -5,7 +5,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -15,7 +14,6 @@ import com.mysema.query.types.path.StringPath;
 /**
  * SNamelistNames is a Querydsl query type for SNamelistNames
  */
-@Table("NAMELIST_NAMES")
 public class SNamelistNames extends RelationalPathBase<SNamelistNames> implements RelationalPath<SNamelistNames> {
 
     private static final long serialVersionUID = -1506785162;
@@ -29,15 +27,15 @@ public class SNamelistNames extends RelationalPathBase<SNamelistNames> implement
     public final ForeignKey<SNamelist> fkd6c82d72b8406ca4 = new ForeignKey<SNamelist>(this, namelistId, "ID");
 
     public SNamelistNames(String variable) {
-        super(SNamelistNames.class, forVariable(variable));
+        super(SNamelistNames.class, forVariable(variable), null, "NAMELIST_NAMES");
     }
 
     public SNamelistNames(BeanPath<? extends SNamelistNames> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "NAMELIST_NAMES");
     }
 
     public SNamelistNames(PathMetadata<?> metadata) {
-        super(SNamelistNames.class, metadata);
+        super(SNamelistNames.class, metadata, null, "NAMELIST_NAMES");
     }
 
 }

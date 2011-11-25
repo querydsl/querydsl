@@ -6,7 +6,6 @@ import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.DatePath;
@@ -17,7 +16,6 @@ import com.mysema.query.types.path.StringPath;
 /**
  * SPerson is a Querydsl query type for SPerson
  */
-@Table("PERSON")
 public class SPerson extends RelationalPathBase<SPerson> implements RelationalPath<SPerson> {
 
     private static final long serialVersionUID = 546812382;
@@ -43,15 +41,15 @@ public class SPerson extends RelationalPathBase<SPerson> implements RelationalPa
     public final ForeignKey<SAccount> _fk1d0c220d257b5f1c = new ForeignKey<SAccount>(this, i, "OWNER_I");
 
     public SPerson(String variable) {
-        super(SPerson.class, forVariable(variable));
+        super(SPerson.class, forVariable(variable), null, "PERSON");
     }
 
     public SPerson(BeanPath<? extends SPerson> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "PERSON");
     }
 
     public SPerson(PathMetadata<?> metadata) {
-        super(SPerson.class, metadata);
+        super(SPerson.class, metadata, null, "PERSON");
     }
     
 }

@@ -5,7 +5,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -15,7 +14,6 @@ import com.mysema.query.types.path.StringPath;
 /**
  * SAccount is a Querydsl query type for SAccount
  */
-@Table("ACCOUNT")
 public class SAccount extends RelationalPathBase<SAccount> {
 
     private static final long serialVersionUID = -727563068;
@@ -33,15 +31,15 @@ public class SAccount extends RelationalPathBase<SAccount> {
     public final ForeignKey<SPerson> fk1d0c220d257b5f1c = new ForeignKey<SPerson>(this, ownerI, "I");
 
     public SAccount(String variable) {
-        super(SAccount.class, forVariable(variable));
+        super(SAccount.class, forVariable(variable), null, "ACCOUNT");
     }
 
     public SAccount(BeanPath<? extends SAccount> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "ACCOUNT");
     }
 
     public SAccount(PathMetadata<?> metadata) {
-        super(SAccount.class, metadata);
+        super(SAccount.class, metadata, null, "ACCOUNT");
     }
 
 }

@@ -76,6 +76,18 @@ public class MetaDataSerializer extends EntitySerializer {
     }
 
     @Override
+    protected String getAdditionalConstructorParameter(EntityType model) {
+        StringBuilder builder = new StringBuilder();
+        if (model.getData().containsKey("schema")) {
+            builder.append(", \"").append(model.getData().get("schema")).append("\"");    
+        } else {
+            builder.append(", null");
+        }
+        builder.append(", \"").append(model.getData().get("table")).append("\"");
+        return builder.toString();
+    }
+    
+    @Override
     protected void introDefaultInstance(CodeWriter writer, EntityType entityType) throws IOException {
         String variableName = namingStrategy.getDefaultVariableName(entityType);
         String alias = namingStrategy.getDefaultAlias(entityType);
@@ -86,7 +98,7 @@ public class MetaDataSerializer extends EntitySerializer {
     @Override
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
         super.introImports(writer, config, model);
-        writer.imports(Table.class.getPackage(), List.class.getPackage());
+        writer.imports(List.class.getPackage());
     }
 
     @SuppressWarnings("unchecked")

@@ -6,7 +6,6 @@ import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -15,7 +14,6 @@ import com.mysema.query.types.path.NumberPath;
 /**
  * SPrice is a Querydsl query type for SPrice
  */
-@Table("PRICE")
 public class SPrice extends RelationalPathBase<SPrice> implements RelationalPath<SPrice> {
 
     private static final long serialVersionUID = -1644550752;
@@ -35,15 +33,15 @@ public class SPrice extends RelationalPathBase<SPrice> implements RelationalPath
     public final ForeignKey<SCatalogPrice> _fke4eb7d639d62434f = new ForeignKey<SCatalogPrice>(this, id, "PRICES_ID");
 
     public SPrice(String variable) {
-        super(SPrice.class, forVariable(variable));
+        super(SPrice.class, forVariable(variable), null, "PRICE");
     }
 
     public SPrice(BeanPath<? extends SPrice> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "PRICE");
     }
 
     public SPrice(PathMetadata<?> metadata) {
-        super(SPrice.class, metadata);
+        super(SPrice.class, metadata, null, "PRICE");
     }
 
 }

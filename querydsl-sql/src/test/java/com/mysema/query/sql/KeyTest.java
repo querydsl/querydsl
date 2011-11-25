@@ -13,7 +13,7 @@ import com.mysema.query.types.path.NumberPath;
 @SuppressWarnings("serial")
 public class KeyTest {
 
-    @Table("USER")
+//    @Table("USER")
     public static class QUser extends RelationalPathBase<QUser>{
 
         public final NumberPath<Integer> id = createNumber("ID", Integer.class);
@@ -29,12 +29,12 @@ public class KeyTest {
         public final ForeignKey<QUser> superiorIdKey = createForeignKey(superiorId,"ID");
 
         public QUser(String path) {
-            super(QUser.class, PathMetadataFactory.forVariable(path));
+            super(QUser.class, PathMetadataFactory.forVariable(path), null, "USER");
         }
 
     }
 
-    @Table("DEPARTMENT")
+//    @Table("DEPARTMENT")
     public static class QDepartment extends RelationalPathBase<QDepartment> {
 
         public final NumberPath<Integer> id = createNumber("ID", Integer.class);
@@ -46,12 +46,12 @@ public class KeyTest {
         public final ForeignKey<QCompany> companyKey = createForeignKey(company, "ID");
 
         public QDepartment(String path) {
-            super(QDepartment.class, PathMetadataFactory.forVariable(path));
+            super(QDepartment.class, PathMetadataFactory.forVariable(path), null, "DEPARTMENT");
         }
         
     }
 
-    @Table("COMPANY")
+//    @Table("COMPANY")
     public static class QCompany extends RelationalPathBase<QCompany> {
 
         public final NumberPath<Integer> id = createNumber("ID", Integer.class);
@@ -59,7 +59,7 @@ public class KeyTest {
         public final PrimaryKey<QCompany> idKey = createPrimaryKey(id);
 
         public QCompany(String path) {
-            super(QCompany.class, PathMetadataFactory.forVariable(path));
+            super(QCompany.class, PathMetadataFactory.forVariable(path), null, "COMPANY");
         }
 
     }

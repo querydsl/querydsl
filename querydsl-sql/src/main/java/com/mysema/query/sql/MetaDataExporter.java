@@ -121,11 +121,8 @@ public class MetaDataExporter {
             typeMappings.register(classModel, mappedType);
         }
 
-        if (schemaName != null) {
-            classModel.addAnnotation(new SchemaImpl(schemaName));
-        }
-
-        classModel.addAnnotation(new TableImpl(namingStrategy.normalizeTableName(tableName)));
+        classModel.getData().put("schema", schemaName);
+        classModel.getData().put("table", tableName);
         return classModel;
     }
 
@@ -210,7 +207,7 @@ public class MetaDataExporter {
         String schemaName = tables.getString(SCHEMA_NAME);
         String tableName = tables.getString(TABLE_NAME);
         String className = namingStrategy.getClassName(tableName);
-        EntityType classModel = createEntityType(schemaName, tableName, className);
+        EntityType classModel = createEntityType(schemaName, namingStrategy.normalizeTableName(tableName), className);
 
         // collect primary keys
         Map<String,PrimaryKeyData> primaryKeyData = keyDataFactory.getPrimaryKeys(md, schemaPattern, tableName);

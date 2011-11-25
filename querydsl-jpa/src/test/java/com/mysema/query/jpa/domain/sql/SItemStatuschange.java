@@ -4,7 +4,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -13,7 +12,6 @@ import com.mysema.query.types.path.NumberPath;
 /**
  * SItemStatuschange is a Querydsl query type for SItemStatuschange
  */
-@Table("ITEM_STATUSCHANGE")
 public class SItemStatuschange extends RelationalPathBase<SItemStatuschange> {
 
     private static final long serialVersionUID = 675000350;
@@ -29,15 +27,15 @@ public class SItemStatuschange extends RelationalPathBase<SItemStatuschange> {
     public final ForeignKey<SStatuschange> fkc2c9ebee2f721e35 = new ForeignKey<SStatuschange>(this, statuschangesId, "ID");
 
     public SItemStatuschange(String variable) {
-        super(SItemStatuschange.class, forVariable(variable));
+        super(SItemStatuschange.class, forVariable(variable), null, "ITEM_STATUSCHANGE");
     }
 
     public SItemStatuschange(BeanPath<? extends SItemStatuschange> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "ITEM_STATUSCHANGE");
     }
 
     public SItemStatuschange(PathMetadata<?> metadata) {
-        super(SItemStatuschange.class, metadata);
+        super(SItemStatuschange.class, metadata, null, "ITEM_STATUSCHANGE");
     }
 
 }

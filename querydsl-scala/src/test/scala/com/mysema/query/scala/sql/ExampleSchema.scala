@@ -8,8 +8,8 @@ object QUser {
   def as(path: String) = new QUser(path)
 }
 
-@Table("USER")
-class QUser(path: String) extends RelationalPathBase[QUser](classOf[QUser], path) {
+//@Table("USER")
+class QUser(path: String) extends RelationalPathBase[QUser](classOf[QUser], path, null, "USER") {
   val id = createNumber("ID", classOf[Integer])
   val department = createNumber("DEPARTMENT", classOf[Integer])
   val superiorId = createNumber("SUPERIOR_ID", classOf[Integer])
@@ -22,8 +22,8 @@ object QDepartment {
   def as(path: String) = new QDepartment(path)
 }
 
-@Table("DEPARTMENT")
-class QDepartment(path: String) extends RelationalPathBase[QDepartment](classOf[QDepartment], path) {
+//@Table("DEPARTMENT")
+class QDepartment(path: String) extends RelationalPathBase[QDepartment](classOf[QDepartment], path, null, "DEPARTMENT") {
   val id = createNumber("ID", classOf[Integer])
   val company = createNumber("COMPANY", classOf[Integer])
   val idKey = createPrimaryKey(id)
@@ -34,8 +34,8 @@ object QCompany {
   def as(path: String) = new QCompany(path)
 }
 
-@Table("COMPANY")
-class QCompany(path: String) extends RelationalPathBase[QCompany](classOf[QCompany], path) {
+//@Table("COMPANY")
+class QCompany(path: String) extends RelationalPathBase[QCompany](classOf[QCompany], path, null, "COMPANY") {
   val id = createNumber("ID", classOf[Integer])
   val idKey = createPrimaryKey(id)
 }
@@ -50,8 +50,8 @@ object QCategory {
   def as(path: String) = new QCategory(path)
 }
 
-@Table("CATEGORY")
-class QCategory(path: String) extends RelationalPathBase[QCategory](classOf[QCategory], path) {
+//@Table("CATEGORY")
+class QCategory(path: String) extends RelationalPathBase[QCategory](classOf[QCategory], path, null, "CATEGORY") {
   val id = createNumber("ID", classOf[Integer])
   val name = createString("NAME")
   val idKey = createPrimaryKey(id)
@@ -68,8 +68,8 @@ object QBook {
   def as(path: String) = new QBook(path)
 }
 
-@Table("BOOK")
-class QBook(path: String) extends RelationalPathBase[QBook](classOf[QBook], path) {
+//@Table("BOOK")
+class QBook(path: String) extends RelationalPathBase[QBook](classOf[QBook], path, null, "BOOK") {
   val id = createNumber("ID", classOf[Integer])
   val title = createString("TITLE")
   val category = createNumber("CATEGORY", classOf[Integer])

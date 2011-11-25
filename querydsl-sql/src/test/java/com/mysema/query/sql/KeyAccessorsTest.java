@@ -9,7 +9,7 @@ import com.mysema.query.types.path.NumberPath;
 
 public class KeyAccessorsTest {
 
-    @Table("EMPLOYEE")
+//    @Table("EMPLOYEE")
     public static class QEmployee extends RelationalPathBase<QEmployee> {
 
         private static final long serialVersionUID = 2020996035;
@@ -39,7 +39,7 @@ public class KeyAccessorsTest {
         public final ForeignKeys fk = new ForeignKeys();
 
         public QEmployee(String variable) {
-            super(QEmployee.class, forVariable(variable));
+            super(QEmployee.class, forVariable(variable), null, "EMPLOYEE");
         }
 
     }

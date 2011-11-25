@@ -12,7 +12,7 @@ import scala.reflect.BeanProperty
  * @author tiwe
  *
  */
-class RelationalPathImpl[T](md: PathMetadata[_])(implicit val mf: Manifest[T]) 
+class RelationalPathImpl[T](md: PathMetadata[_], schema: String, table: String)(implicit val mf: Manifest[T]) 
   extends BeanPath[T](mf.erasure.asInstanceOf[Class[T]], md) with RelationalPath[T] {
     
   private var primaryKey: PrimaryKey[T] = _
@@ -26,7 +26,7 @@ class RelationalPathImpl[T](md: PathMetadata[_])(implicit val mf: Manifest[T])
   @BeanProperty
   val inverseForeignKeys: java.util.List[ForeignKey[_]] = new ArrayList[ForeignKey[_]]
   
-  def this(variable: String)(implicit mf: Manifest[T]) = this(forVariable(variable))(mf)
+  def this(variable: String, schema: String, table: String)(implicit mf: Manifest[T]) = this(forVariable(variable), schema, table)(mf)
   
   override def add[P <: Path[_]](p: P): P = { columns.add(p); p }
   
@@ -46,8 +46,8 @@ class RelationalPathImpl[T](md: PathMetadata[_])(implicit val mf: Manifest[T])
   
   def getPrimaryKey = primaryKey
   
-  def getSchemaName = getType.getAnnotation(classOf[Schema]).value
+  def getSchemaName = schema
   
-  def getTableName = getType.getAnnotation(classOf[Table]).value
+  def getTableName = table;
   
 }

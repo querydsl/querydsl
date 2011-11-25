@@ -12,7 +12,7 @@ import com.mysema.query.types.path.EnumPath;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 
-@Table("PERSON")
+//@Table("PERSON")
 public class QPerson extends RelationalPathBase<QPerson> {
 
     private static final long serialVersionUID = 475064746;
@@ -30,15 +30,15 @@ public class QPerson extends RelationalPathBase<QPerson> {
     public final PrimaryKey<QPerson> sysIdx118 = createPrimaryKey(id);
 
     public QPerson(String variable) {
-        super(QPerson.class, PathMetadataFactory.forVariable(variable));
+        super(QPerson.class, PathMetadataFactory.forVariable(variable), null, "PERSON");
     }
 
     public QPerson(BeanPath<? extends QPerson> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "PERSON");
     }
 
     public QPerson(PathMetadata<?> metadata) {
-        super(QPerson.class, metadata);
+        super(QPerson.class, metadata, null, "PERSON");
     }
 
 }

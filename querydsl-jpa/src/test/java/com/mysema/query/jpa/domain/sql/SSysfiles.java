@@ -1,0 +1,41 @@
+package com.mysema.query.jpa.domain.sql;
+
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
+
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
+
+
+/**
+ * SSysfiles is a Querydsl query type for SSysfiles
+ */
+public class SSysfiles extends com.mysema.query.sql.RelationalPathBase<SSysfiles> {
+
+    private static final long serialVersionUID = -1709159493;
+
+    public static final SSysfiles sysfiles = new SSysfiles("SYSFILES");
+
+    public final StringPath fileid = createString("FILEID");
+
+    public final StringPath filename = createString("FILENAME");
+
+    public final NumberPath<Long> generationid = createNumber("GENERATIONID", Long.class);
+
+    public final StringPath schemaid = createString("SCHEMAID");
+
+    public SSysfiles(String variable) {
+        super(SSysfiles.class, forVariable(variable), "SYS", "SYSFILES");
+    }
+
+    public SSysfiles(Path<? extends SSysfiles> entity) {
+        super(entity.getType(), entity.getMetadata(), "SYS", "SYSFILES");
+    }
+
+    public SSysfiles(PathMetadata<?> metadata) {
+        super(SSysfiles.class, metadata, "SYS", "SYSFILES");
+    }
+
+}
+

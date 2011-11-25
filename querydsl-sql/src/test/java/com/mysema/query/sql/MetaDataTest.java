@@ -23,7 +23,8 @@ public class MetaDataTest {
         
         Type classTypeModel = new SimpleType(TypeCategory.ENTITY, packageName + "." + className, packageName, className, false, false);
         classModel = new EntityType(classTypeModel);
-        classModel.addAnnotation(new TableImpl(namingStrategy.normalizeTableName(tableName)));        
+//        classModel.addAnnotation(new TableImpl(namingStrategy.normalizeTableName(tableName)));
+        classModel.getData().put("table", namingStrategy.normalizeTableName(tableName));
     }
 
     @Test

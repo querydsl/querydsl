@@ -6,8 +6,8 @@ import javax.validation.constraints.Size;
 /**
  * Multikey is a Querydsl bean type
  */
-@Schema("PUBLIC")
-@Table("MULTIKEY")
+//@Schema("PUBLIC")
+//@Table("MULTIKEY")
 public class Multikey {
 
     @Column("ID")

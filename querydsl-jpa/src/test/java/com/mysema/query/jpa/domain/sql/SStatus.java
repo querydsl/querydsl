@@ -6,7 +6,6 @@ import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -16,7 +15,6 @@ import com.mysema.query.types.path.StringPath;
 /**
  * SStatus is a Querydsl query type for SStatus
  */
-@Table("STATUS")
 public class SStatus extends RelationalPathBase<SStatus> implements RelationalPath<SStatus> {
 
     private static final long serialVersionUID = 646047355;
@@ -34,15 +32,15 @@ public class SStatus extends RelationalPathBase<SStatus> implements RelationalPa
     public final ForeignKey<SItem> _fk22ef33bb4e150b = new ForeignKey<SItem>(this, id, "CURRENTSTATUS_ID");
 
     public SStatus(String variable) {
-        super(SStatus.class, forVariable(variable));
+        super(SStatus.class, forVariable(variable), null, "STATUS");
     }
 
     public SStatus(BeanPath<? extends SStatus> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "STATUS");
     }
 
     public SStatus(PathMetadata<?> metadata) {
-        super(SStatus.class, metadata);
+        super(SStatus.class, metadata, null, "STATUS");
     }
 
 }

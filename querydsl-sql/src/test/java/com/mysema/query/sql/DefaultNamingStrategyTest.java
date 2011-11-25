@@ -22,7 +22,8 @@ public class DefaultNamingStrategyTest {
     @Before
     public void setUp(){
         entityModel = new EntityType(Types.OBJECT);
-        entityModel.addAnnotation(new TableImpl("OBJECT"));
+        //entityModel.addAnnotation(new TableImpl("OBJECT"));
+        entityModel.getData().put("table", "OBJECT");
     }
     
     @Test

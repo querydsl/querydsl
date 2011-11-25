@@ -5,7 +5,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -14,7 +13,6 @@ import com.mysema.query.types.path.NumberPath;
 /**
  * SStoreCustomer is a Querydsl query type for SStoreCustomer
  */
-@Table("STORE_CUSTOMER")
 public class SStoreCustomer extends RelationalPathBase<SStoreCustomer> implements RelationalPath<SStoreCustomer> {
 
     private static final long serialVersionUID = 1667012918;
@@ -30,15 +28,15 @@ public class SStoreCustomer extends RelationalPathBase<SStoreCustomer> implement
     public final ForeignKey<SCustomer> fk808055bcf27d6c8d = new ForeignKey<SCustomer>(this, customersId, "ID");
 
     public SStoreCustomer(String variable) {
-        super(SStoreCustomer.class, forVariable(variable));
+        super(SStoreCustomer.class, forVariable(variable), null, "STORE_CUSTOMER");
     }
 
     public SStoreCustomer(BeanPath<? extends SStoreCustomer> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "STORE_CUSTOMER");
     }
 
     public SStoreCustomer(PathMetadata<?> metadata) {
-        super(SStoreCustomer.class, metadata);
+        super(SStoreCustomer.class, metadata, null, "STORE_CUSTOMER");
     }
 
 }

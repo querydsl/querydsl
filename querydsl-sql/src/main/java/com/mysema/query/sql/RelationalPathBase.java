@@ -8,6 +8,7 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.BeanPath;
 
 /**
@@ -32,13 +33,17 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     private final List<ForeignKey<?>> foreignKeys = new ArrayList<ForeignKey<?>>();
     
     private final List<ForeignKey<?>> inverseForeignKeys = new ArrayList<ForeignKey<?>>();
+    
+    private final String schema, table;
 
-    public RelationalPathBase(Class<? extends T> type, String variable) {
-        super(type, variable);
+    public RelationalPathBase(Class<? extends T> type, String variable, String schema, String table) {
+        this(type, PathMetadataFactory.forVariable(variable), schema, table);
     }
 
-    public RelationalPathBase(Class<? extends T> type, PathMetadata<?> metadata) {
+    public RelationalPathBase(Class<? extends T> type, PathMetadata<?> metadata, String schema, String table) {
         super(type, metadata);
+        this.schema = schema;
+        this.table = table;
     }
 
     protected PrimaryKey<T> createPrimaryKey(Path<?>... columns) {
@@ -106,12 +111,12 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
 
     @Override
     public String getSchemaName() {
-        return getType().getAnnotation(Schema.class).value();
+        return schema;
     }
     
     @Override
     public String getTableName() {
-        return getType().getAnnotation(Table.class).value();
+        return table;
     }
 
 }

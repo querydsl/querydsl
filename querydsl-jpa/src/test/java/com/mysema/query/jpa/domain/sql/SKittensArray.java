@@ -16,7 +16,6 @@ import com.mysema.query.types.path.NumberPath;
  * SKittensArray is a Querydsl query type for SKittensArray
  */
 @SuppressWarnings("serial")
-@com.mysema.query.sql.Table(value="KITTENS_ARRAY")
 public class SKittensArray extends RelationalPathBase<SKittensArray> {
 
     public final NumberPath<Integer> animalId = createNumber("ANIMAL_ID", Integer.class);
@@ -26,15 +25,15 @@ public class SKittensArray extends RelationalPathBase<SKittensArray> {
     public final NumberPath<Integer> kittensarrayId = createNumber("KITTENSARRAY_ID", Integer.class);
 
     public SKittensArray(String variable) {
-        super(SKittensArray.class, forVariable(variable));
+        super(SKittensArray.class, forVariable(variable), null, "KITTENS_ARRAY");
     }
 
     public SKittensArray(BeanPath<? extends SKittensArray> entity) {
-        super(entity.getType(),entity.getMetadata());
+        super(entity.getType(),entity.getMetadata(), null, "KITTENS_ARRAY");
     }
 
     public SKittensArray(PathMetadata<?> metadata) {
-        super(SKittensArray.class, metadata);
+        super(SKittensArray.class, metadata, null, "KITTENS_ARRAY");
     }
 
 }

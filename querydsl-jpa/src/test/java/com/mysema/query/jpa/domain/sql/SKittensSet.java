@@ -5,7 +5,6 @@ import static com.mysema.query.types.PathMetadataFactory.forVariable;
 import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.PrimaryKey;
 import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.sql.Table;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.path.BeanPath;
 import com.mysema.query.types.path.NumberPath;
@@ -14,7 +13,6 @@ import com.mysema.query.types.path.NumberPath;
 /**
  * SKittensSet is a Querydsl query type for SKittensSet
  */
-@Table("KITTENS_SET")
 public class SKittensSet extends RelationalPathBase<SKittensSet> {
 
     private static final long serialVersionUID = 1191166719;
@@ -32,15 +30,15 @@ public class SKittensSet extends RelationalPathBase<SKittensSet> {
     public final ForeignKey<SAnimal> fk4fccad6fa295046a = new ForeignKey<SAnimal>(this, animalId, "ID");
 
     public SKittensSet(String variable) {
-        super(SKittensSet.class, forVariable(variable));
+        super(SKittensSet.class, forVariable(variable), null, "KITTENS_SET");
     }
 
     public SKittensSet(BeanPath<? extends SKittensSet> entity) {
-        super(entity.getType(), entity.getMetadata());
+        super(entity.getType(), entity.getMetadata(), null, "KITTENS_SET");
     }
 
     public SKittensSet(PathMetadata<?> metadata) {
-        super(SKittensSet.class, metadata);
+        super(SKittensSet.class, metadata, null, "KITTENS_SET");
     }
 
 }
