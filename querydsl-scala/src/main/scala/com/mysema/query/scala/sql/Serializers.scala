@@ -21,14 +21,28 @@ import javax.inject.Inject
 class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingStrategy: NamingStrategy) 
     extends ScalaEntitySerializer(typeMappings) {
     
-  override val classHeaderFormat = "%1$s(md: PathMetadata[_]) extends RelationalPathImpl[%2$s](md)"
+  override val classHeaderFormat = "%s(md: PathMetadata[_]) extends RelationalPathImpl[%s](md, %s, %s)"
 
   override def writeHeader(model: EntityType, writer: ScalaWriter) {
     writer.imports(classOf[RelationalPathImpl[_]])
-    writer.imports(classOf[PrimaryKey[_]].getPackage)    
-    super.writeHeader(model, writer)            
+    writer.imports(classOf[PrimaryKey[_]].getPackage)
+    
+    val queryType = typeMappings.getPathType(model, model, true)
+    val modelName = writer.getRawName(model)
+    val queryTypeName = writer.getRawName(queryType)
+    val schema = model.getData.get("schema") match {
+      case x: String => "\""+x+"\""
+      case _ => "null"
+    }
+    val table = "\""+model.getData.get("table")+"\""
+    val classHeader = String.format(classHeaderFormat, queryTypeName, modelName, schema, table)
+    
+    writeCompanionObject(model, queryType, writer)
+    
+    // header
+    writer.beginClass(classHeader)
   }
-  
+    
   override def writeAdditionalConstructors(modelName: String, writer: ScalaWriter) = {
     writer.line("def this(variable: String) = this(forVariable(variable))\n")
     writer.line("def this(parent: Path[_], property: String) = this(forProperty(parent, property))\n")
