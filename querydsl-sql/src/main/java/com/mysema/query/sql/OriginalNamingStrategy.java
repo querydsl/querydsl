@@ -16,17 +16,7 @@ import com.mysema.util.JavaSyntaxUtils;
  * @author tiwe
  *
  */
-public class OriginalNamingStrategy implements NamingStrategy {
-    
-    private String foreignKeysClassName = "ForeignKeys";
-    
-    private String foreignKeysVariable = "fk";
-    
-    private String primaryKeysClassName = "PrimaryKeys";
-    
-    private String primaryKeysVariable = "pk";
-    
-    private String reservedSuffix = "_col";
+public class OriginalNamingStrategy extends AbstractNamingStrategy {
     
     @Override
     public String getClassName(String tableName) {
@@ -42,26 +32,6 @@ public class OriginalNamingStrategy implements NamingStrategy {
     @Override
     public String getDefaultVariableName( EntityType entityType) {
         return StringUtils.uncapitalize(entityType.getSimpleName());
-    }
-
-    @Override
-    public String getForeignKeysClassName() {
-        return foreignKeysClassName;
-    }
-
-    @Override
-    public String getForeignKeysVariable(EntityType entityType) {
-        return foreignKeysVariable;
-    }
-
-    @Override
-    public String getPrimaryKeysClassName() {
-        return primaryKeysClassName;
-    }
-
-    @Override
-    public String getPrimaryKeysVariable(EntityType entityType) {
-        return primaryKeysVariable;
     }
 
     @Override
@@ -84,9 +54,6 @@ public class OriginalNamingStrategy implements NamingStrategy {
         return getPropertyName(primaryKeyName);
     }
 
-    public String getReservedSuffix() {
-        return reservedSuffix;
-    }
 
     @Override
     public String normalizeColumnName(String columnName) {
@@ -106,26 +73,5 @@ public class OriginalNamingStrategy implements NamingStrategy {
     private String getPropertyName(String name) {
         return JavaSyntaxUtils.isReserved(name) ? name + reservedSuffix : name;
     }
-
-    public void setForeignKeysClassName(String foreignKeysClassName) {
-        this.foreignKeysClassName = foreignKeysClassName;
-    }
-
-    public void setForeignKeysVariable(String foreignKeysVariable) {
-        this.foreignKeysVariable = foreignKeysVariable;
-    }
-
-    public void setPrimaryKeysClassName(String primaryKeysClassName) {
-        this.primaryKeysClassName = primaryKeysClassName;
-    }
-
-    public void setPrimaryKeysVariable(String primaryKeysVariable) {
-        this.primaryKeysVariable = primaryKeysVariable;
-    }
-
-    public void setReservedSuffix(String reservedSuffix) {
-        this.reservedSuffix = reservedSuffix;
-    }
-
     
 }

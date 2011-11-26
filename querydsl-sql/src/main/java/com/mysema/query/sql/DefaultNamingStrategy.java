@@ -12,32 +12,24 @@ import static com.mysema.util.JavaSyntaxUtils.*;
 
 /**
  * DefaultNamingStrategy is the default implementation of the NamingStrategy
- * interface
+ * interface. It changes underscore usage into camel case form.
  *
  * @author tiwe
  *
  */
-public class DefaultNamingStrategy implements NamingStrategy {
-
-    private String foreignKeysClassName = "ForeignKeys";
+public class DefaultNamingStrategy extends AbstractNamingStrategy {
     
-    private String foreignKeysVariable = "fk";
-    
-    private String primaryKeysClassName = "PrimaryKeys";
-    
-    private String primaryKeysVariable = "pk";
-    
-    private String reservedSuffix = "Col";
+    public DefaultNamingStrategy() {
+        reservedSuffix = "Col";
+    }
     
     @Override
     public String getClassName(String tableName) {
         if (tableName.length() > 1) {
-            return tableName.substring(0, 1).toUpperCase(Locale.ENGLISH)
-                + toCamelCase(tableName.substring(1));    
+            return tableName.substring(0, 1).toUpperCase(Locale.ENGLISH) + toCamelCase(tableName.substring(1));    
         } else {
             return tableName.toUpperCase(Locale.ENGLISH);
-        }
-        
+        }        
     }
 
     @Override
@@ -51,18 +43,8 @@ public class DefaultNamingStrategy implements NamingStrategy {
     }
     
     @Override
-    public String getForeignKeysClassName() {
-        return foreignKeysClassName;
-    }
-    
-    @Override
     public String getForeignKeysVariable(EntityType entityType) {
         return escape(entityType, foreignKeysVariable);
-    }
-    
-    @Override
-    public String getPrimaryKeysClassName() {
-        return primaryKeysClassName;
     }
 
     @Override
@@ -72,44 +54,35 @@ public class DefaultNamingStrategy implements NamingStrategy {
 
     @Override
     public String getPropertyName(String columnName, EntityType entityType) {
-        return normalizePropertyName(
-            columnName.substring(0, 1).toLowerCase(Locale.ENGLISH) 
-            + toCamelCase(columnName.substring(1)));        
-    }
-
-    @Override
-    public String getPropertyNameForForeignKey(String foreignKeyName, EntityType entityType) {
-        if (foreignKeyName.toLowerCase().startsWith("fk_")) {
-            foreignKeyName = foreignKeyName.substring(3) + "_" + foreignKeyName.substring(0,2);
-        }
-        if (foreignKeyName.length() > 1) {
+        if (columnName.length() > 1) {
             return normalizePropertyName(
-                foreignKeyName.substring(0,1).toLowerCase(Locale.ENGLISH) 
-                + toCamelCase(foreignKeyName.substring(1)));    
+                    columnName.substring(0, 1).toLowerCase(Locale.ENGLISH) 
+                    + toCamelCase(columnName.substring(1)));    
         } else {
-            return foreignKeyName.toLowerCase(Locale.ENGLISH);
-        }        
+            return columnName.toLowerCase(Locale.ENGLISH);
+        }                
     }
 
     @Override
-    public String getPropertyNameForInverseForeignKey(String foreignKeyName, EntityType entityType) {
-        return "_" + getPropertyNameForForeignKey(foreignKeyName, entityType);
+    public String getPropertyNameForForeignKey(String fkName, EntityType entityType) {
+        if (fkName.toLowerCase().startsWith("fk_")) {
+            fkName = fkName.substring(3) + "_" + fkName.substring(0,2);
+        }
+        return getPropertyName(fkName, entityType);
+    }
+
+    @Override
+    public String getPropertyNameForInverseForeignKey(String fkName, EntityType entityType) {
+        return "_" + getPropertyNameForForeignKey(fkName, entityType);
     }
     
 
     @Override
-    public String getPropertyNameForPrimaryKey(String primaryKeyName, EntityType entityType) {
-        if (primaryKeyName.toLowerCase().startsWith("pk_")) {
-            primaryKeyName = primaryKeyName.substring(3) + "_" + primaryKeyName.substring(0,2);
+    public String getPropertyNameForPrimaryKey(String pkName, EntityType entityType) {
+        if (pkName.toLowerCase().startsWith("pk_")) {
+            pkName = pkName.substring(3) + "_" + pkName.substring(0,2);
         }
-        if (primaryKeyName.length() > 1) {
-            return normalizePropertyName(
-                primaryKeyName.substring(0,1).toLowerCase(Locale.ENGLISH)  
-                + toCamelCase(primaryKeyName.substring(1)));    
-        } else {
-            return primaryKeyName.toLowerCase(Locale.ENGLISH);
-        }
-        
+        return getPropertyName(pkName, entityType);        
     }
 
     @Override
@@ -142,7 +115,7 @@ public class DefaultNamingStrategy implements NamingStrategy {
             }
         }      
     }
-    
+
     protected String toCamelCase(String str) {
         boolean toLower = str.toUpperCase().equals(str);
         StringBuilder builder = new StringBuilder(str.length());
@@ -160,27 +133,5 @@ public class DefaultNamingStrategy implements NamingStrategy {
         }
         return builder.toString();
     }
-
-    public void setForeignKeysClassName(String foreignKeysClassName) {
-        this.foreignKeysClassName = foreignKeysClassName;
-    }
-
-    public void setForeignKeysVariable(String foreignKeysVariable) {
-        this.foreignKeysVariable = foreignKeysVariable;
-    }
-
-    public void setPrimaryKeysClassName(String primaryKeysClassName) {
-        this.primaryKeysClassName = primaryKeysClassName;
-    }
-
-    public void setPrimaryKeysVariable(String primaryKeysVariable) {
-        this.primaryKeysVariable = primaryKeysVariable;
-    }
-
-    public void setReservedSuffix(String reservedSuffix) {
-        this.reservedSuffix = reservedSuffix;
-    }
-
-
     
 }

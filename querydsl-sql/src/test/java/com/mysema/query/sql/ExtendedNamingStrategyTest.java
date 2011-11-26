@@ -13,9 +13,9 @@ import org.junit.Test;
 import com.mysema.codegen.model.Types;
 import com.mysema.query.codegen.EntityType;
 
-public class DefaultNamingStrategyTest {
+public class ExtendedNamingStrategyTest {
 
-    private NamingStrategy namingStrategy = new DefaultNamingStrategy();
+    private NamingStrategy namingStrategy = new ExtendedNamingStrategy();
 
     private EntityType entityModel;
     
@@ -46,12 +46,20 @@ public class DefaultNamingStrategyTest {
     @Test
     public void GetPropertyNameForInverseForeignKey(){
         assertEquals("_superiorFk", namingStrategy.getPropertyNameForInverseForeignKey("fk_superior", entityModel));
+        // fk_order_rows
+        assertEquals("rows", namingStrategy.getPropertyNameForInverseForeignKey("fk_order_rows", entityModel));
+        // fk_category_events
+        assertEquals("events", namingStrategy.getPropertyNameForInverseForeignKey("fk_category_events", entityModel));
     }
     
     @Test
     public void GetPropertyNameForForeignKey(){
         assertEquals("superiorFk", namingStrategy.getPropertyNameForForeignKey("fk_superior", entityModel));
-        assertEquals("superiorFk", namingStrategy.getPropertyNameForForeignKey("FK_SUPERIOR", entityModel));        
+        assertEquals("superiorFk", namingStrategy.getPropertyNameForForeignKey("FK_SUPERIOR", entityModel));   
+        // fk_order_rows
+        assertEquals("order", namingStrategy.getPropertyNameForForeignKey("fk_order_rows", entityModel));
+        // fk_category_events
+        assertEquals("category", namingStrategy.getPropertyNameForForeignKey("fk_category_events", entityModel));
     }
     
     @Test
