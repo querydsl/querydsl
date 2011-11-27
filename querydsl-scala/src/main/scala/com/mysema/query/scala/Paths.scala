@@ -6,6 +6,8 @@ import com.mysema.query.codegen._;
 
 import com.mysema.codegen.model.TypeCategory
 
+import TypeDefs._
+
 /**
  * Factory for Paths
  * 
@@ -20,13 +22,13 @@ object Paths {
 
   def entity[T](t: Class[_ <: T], md: PathMetadata[_]) = new EntityPathImpl[T](t, md)
 
-  def collection[T, Q <: Expression[_ >: T]](t: Class[T], q: Class[Q], md: PathMetadata[_]) = new CollectionPath[T,Q](t, q, md)
+  def collection[T, Q <: Ex[_ >: T]](t: Class[T], q: Class[Q], md: PathMetadata[_]) = new CollectionPath[T,Q](t, q, md)
 
-  def set[T, Q <: Expression[_ >: T]](t: Class[T], q: Class[Q], md: PathMetadata[_]) = new SetPath[T,Q](t, q, md)
+  def set[T, Q <: Ex[_ >: T]](t: Class[T], q: Class[Q], md: PathMetadata[_]) = new SetPath[T,Q](t, q, md)
 
-  def list[T, Q <: Expression[_ >: T]](t: Class[T], q: Class[Q], md: PathMetadata[_]) = new ListPath[T,Q](t, q, md)
+  def list[T, Q <: Ex[_ >: T]](t: Class[T], q: Class[Q], md: PathMetadata[_]) = new ListPath[T,Q](t, q, md)
 
-  def map[K, V, Q <: Expression[_ >: V]](k: Class[K], v: Class[V], q: Class[Q], md: PathMetadata[_]) = new MapPath[K, V, Q](k, v, q, md)
+  def map[K, V, Q <: Ex[_ >: V]](k: Class[K], v: Class[V], q: Class[Q], md: PathMetadata[_]) = new MapPath[K, V, Q](k, v, q, md)
 
   def comparable[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_]) = new ComparablePath[T](t, md)
 
@@ -44,9 +46,9 @@ object Paths {
 
   def enum[T <: Enum[T]](t: Class[T], md: PathMetadata[_]) = new EnumPath[T](t, md)
   
-  def any[T, Q <: Expression[_ >: T]](parent: Path[_], t: Class[T], q: Class[Q]): Q =  create(t, q, forCollectionAny(parent))      
+  def any[T, Q <: Ex[_ >: T]](parent: Path[_], t: Class[T], q: Class[Q]): Q =  create(t, q, forCollectionAny(parent))      
   
-  def create[T, Q <: Expression[_ >: T]](t :Class[T], q: Class[Q], md: PathMetadata[_]): Q = {
+  def create[T, Q <: Ex[_ >: T]](t :Class[T], q: Class[Q], md: PathMetadata[_]): Q = {
       if (q == classOf[StringPath] || q == classOf[BooleanPath]){
           q.getConstructor(classOf[PathMetadata[_]]).newInstance(md)
       }else{
@@ -83,13 +85,13 @@ class BeanPath[T](t: Class[_ <: T], md: PathMetadata[_])
 
   def createEntity[T](property: String, t: Class[T]) = add(entity(t, forProperty(property)))
 
-  def createCollection[T, Q <: Expression[_ >: T]](property: String, t: Class[T], q: Class[Q]) = add(collection(t, q, forProperty(property)))
+  def createCollection[T, Q <: Ex[_ >: T]](property: String, t: Class[T], q: Class[Q]) = add(collection(t, q, forProperty(property)))
 
-  def createSet[T, Q <: Expression[_ >: T]](property: String, t: Class[T], q: Class[Q]) = add(set(t, q, forProperty(property)))
+  def createSet[T, Q <: Ex[_ >: T]](property: String, t: Class[T], q: Class[Q]) = add(set(t, q, forProperty(property)))
 
-  def createList[T, Q <: Expression[_ >: T]](property: String, t: Class[T], q: Class[Q]) = add(list(t, q, forProperty(property)))
+  def createList[T, Q <: Ex[_ >: T]](property: String, t: Class[T], q: Class[Q]) = add(list(t, q, forProperty(property)))
 
-  def createMap[K, V, Q <: Expression[_ >: V]](property: String, k: Class[K], v: Class[V], q: Class[Q]) = add(map(k, v, q, forProperty(property)))
+  def createMap[K, V, Q <: Ex[_ >: V]](property: String, k: Class[K], v: Class[V], q: Class[Q]) = add(map(k, v, q, forProperty(property)))
 
   def createComparable[T <: Comparable[_]](property: String, t: Class[T]) = add(comparable(t, forProperty(property)))
 
@@ -118,7 +120,7 @@ class EntityPathImpl[T](t: Class[_ <: T], md: PathMetadata[_])
   
 }
 
-class CollectionPath[T, Q <: Expression[_ >: T]](t: Class[T], q: Class[Q], md: PathMetadata[_])
+class CollectionPath[T, Q <: Ex[_ >: T]](t: Class[T], q: Class[Q], md: PathMetadata[_])
   extends PathImpl[java.util.Collection[T]](classOf[java.util.Collection[T]], md) with CollectionExpression[T,Q] {
 
   def this(t: Class[T],  q: Class[Q], variable: String) = this(t, q, forVariable(variable))
@@ -129,7 +131,7 @@ class CollectionPath[T, Q <: Expression[_ >: T]](t: Class[T], q: Class[Q], md: P
   
 }
 
-class SetPath[T, Q <: Expression[_ >: T]](t: Class[T],  q: Class[Q], md: PathMetadata[_])
+class SetPath[T, Q <: Ex[_ >: T]](t: Class[T],  q: Class[Q], md: PathMetadata[_])
   extends PathImpl[java.util.Set[T]](classOf[java.util.Set[T]], md) with SetExpression[T,Q] {
     
   def this(t: Class[T], q: Class[Q], variable: String) = this(t, q, forVariable(variable))
@@ -140,7 +142,7 @@ class SetPath[T, Q <: Expression[_ >: T]](t: Class[T],  q: Class[Q], md: PathMet
   
 }
 
-class ListPath[T, Q <: Expression[_ >: T]](t: Class[T],  q: Class[Q], md: PathMetadata[_])
+class ListPath[T, Q <: Ex[_ >: T]](t: Class[T],  q: Class[Q], md: PathMetadata[_])
   extends PathImpl[java.util.List[T]](classOf[java.util.List[T]], md) with ListExpression[T,Q] {
 
   def this(t: Class[T], q: Class[Q], variable: String) = this(t, q, forVariable(variable))
@@ -151,11 +153,11 @@ class ListPath[T, Q <: Expression[_ >: T]](t: Class[T],  q: Class[Q], md: PathMe
   
   def get(i: Int): Q = Paths.create(t, q, forListAccess(this, i))
   
-  def get(i: Expression[Integer]): Q = Paths.create(t, q, forListAccess(this, i))
+  def get(i: Ex[Integer]): Q = Paths.create(t, q, forListAccess(this, i))
   
 }
 
-class MapPath[K, V, Q <: Expression[_ >: V]](k: Class[K], v: Class[V], q: Class[Q], md: PathMetadata[_])
+class MapPath[K, V, Q <: Ex[_ >: V]](k: Class[K], v: Class[V], q: Class[Q], md: PathMetadata[_])
   extends PathImpl[java.util.Map[K, V]](classOf[java.util.Map[K, V]], md) with MapExpression[K, V, Q] {
 
   def this(k: Class[K], v: Class[V], q: Class[Q], variable: String) = this(k, v, q, forVariable(variable))
@@ -164,7 +166,7 @@ class MapPath[K, V, Q <: Expression[_ >: V]](k: Class[K], v: Class[V], q: Class[
 
   def get(key: K) = Paths.create(v, q, forMapAccess(this, key))
   
-  def get(key: Expression[K]) = Paths.create(v, q, forMapAccess(this, key))
+  def get(key: Ex[K]) = Paths.create(v, q, forMapAccess(this, key))
   
 }
 

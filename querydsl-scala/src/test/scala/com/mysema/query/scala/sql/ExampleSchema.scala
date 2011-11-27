@@ -8,7 +8,6 @@ object QUser {
   def as(path: String) = new QUser(path)
 }
 
-//@Table("USER")
 class QUser(path: String) extends RelationalPathBase[QUser](classOf[QUser], path, null, "USER") {
   val id = createNumber("ID", classOf[Integer])
   val department = createNumber("DEPARTMENT", classOf[Integer])
@@ -22,7 +21,6 @@ object QDepartment {
   def as(path: String) = new QDepartment(path)
 }
 
-//@Table("DEPARTMENT")
 class QDepartment(path: String) extends RelationalPathBase[QDepartment](classOf[QDepartment], path, null, "DEPARTMENT") {
   val id = createNumber("ID", classOf[Integer])
   val company = createNumber("COMPANY", classOf[Integer])
@@ -34,7 +32,6 @@ object QCompany {
   def as(path: String) = new QCompany(path)
 }
 
-//@Table("COMPANY")
 class QCompany(path: String) extends RelationalPathBase[QCompany](classOf[QCompany], path, null, "COMPANY") {
   val id = createNumber("ID", classOf[Integer])
   val idKey = createPrimaryKey(id)
@@ -68,7 +65,6 @@ object QBook {
   def as(path: String) = new QBook(path)
 }
 
-//@Table("BOOK")
 class QBook(path: String) extends RelationalPathBase[QBook](classOf[QBook], path, null, "BOOK") {
   val id = createNumber("ID", classOf[Integer])
   val title = createString("TITLE")

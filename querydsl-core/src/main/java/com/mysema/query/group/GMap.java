@@ -22,16 +22,16 @@ class GMap<K, V> extends AbstractGroupExpression<Pair<K, V>, Map<K, V>> {
     public GroupCollector<Pair<K,V>, Map<K, V>> createGroupCollector() {
         return new GroupCollector<Pair<K,V>, Map<K, V>>() {
 
-            private final Map<K, V> set = new LinkedHashMap<K, V>();
+            private final Map<K, V> map = new LinkedHashMap<K, V>();
             
             @Override
             public void add(Pair<K,V> pair) {
-                set.put(pair.getFirst(), pair.getSecond());
+                map.put(pair.getFirst(), pair.getSecond());
             }
 
             @Override
             public Map<K, V> get() {
-                return set;
+                return map;
             }
             
         };

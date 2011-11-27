@@ -5,11 +5,11 @@ import javax.validation.constraints.Size;
 import javax.validation.constraints.NotNull;
 import com.mysema.query.sql._;
 
-/**
- * Employee is a Querydsl bean type
- */
-//@Schema("PUBLIC") 
-//@Table("EMPLOYEE")
+object Employee extends QEmployee("employee"){
+  override def as(variable: String) = new QEmployee(variable)
+  
+}
+
 class Employee {
 
   var firstname: String = _;

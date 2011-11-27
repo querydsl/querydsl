@@ -3,22 +3,23 @@ package com.mysema.query.scala;
 import com.mysema.query.types._;
 import com.mysema.query.types.PathMetadataFactory._;
 import com.mysema.query.codegen._;
+import TypeDefs._
 
 import com.mysema.codegen.model.TypeCategory
 
 // TODO : factory object for template creation 
 
-class SimpleTemplate[T](t: Class[_ <: T], template: Template, args: java.util.List[Expression[_]])
+class SimpleTemplate[T](t: Class[_ <: T], template: Template, args: java.util.List[Ex[_]])
   extends TemplateExpressionImpl[T](t, template, args) with SimpleExpression[T] {
 
 }
 
-class ComparableTemplate[T <: Comparable[_]](t: Class[_ <: T], template: Template, args: java.util.List[Expression[_]])
+class ComparableTemplate[T <: Comparable[_]](t: Class[_ <: T], template: Template, args: java.util.List[Ex[_]])
   extends TemplateExpressionImpl[T](t, template, args) with ComparableExpression[T] {
 
 }
 
-class NumberTemplate[T <: Number with Comparable[T]](t: Class[_ <: T], template: Template, args: java.util.List[Expression[_]])
+class NumberTemplate[T <: Number with Comparable[T]](t: Class[_ <: T], template: Template, args: java.util.List[Ex[_]])
   extends TemplateExpressionImpl[T](t, template, args) with NumberExpression[T] {
 
 }
@@ -28,17 +29,17 @@ class BooleanTemplate(template: Template, args: java.util.List[Expression[_]])
 
 }
 
-class StringTemplate(template: Template, args: java.util.List[Expression[_]])
+class StringTemplate(template: Template, args: java.util.List[Ex[_]])
   extends TemplateExpressionImpl[String](classOf[String], template, args) with StringExpression {
 
 }
 
-class DateTemplate[T <: Comparable[_]](t: Class[_ <: T], template: Template, args: java.util.List[Expression[_]])
+class DateTemplate[T <: Comparable[_]](t: Class[_ <: T], template: Template, args: java.util.List[Ex[_]])
   extends TemplateExpressionImpl[T](t, template, args) with DateExpression[T] {
 
 }
 
-class DateTimeTemplate[T <: Comparable[_]](t: Class[_ <: T], template: Template, args: java.util.List[Expression[_]])
+class DateTimeTemplate[T <: Comparable[_]](t: Class[_ <: T], template: Template, args: java.util.List[Ex[_]])
   extends TemplateExpressionImpl[T](t, template, args) with DateTimeExpression[T] {
 
 }

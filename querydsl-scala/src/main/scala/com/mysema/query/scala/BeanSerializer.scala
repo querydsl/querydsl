@@ -25,7 +25,7 @@ class ScalaBeanSerializer @Inject() (typeMappings: TypeMappings) extends BeanSer
     writer.javadoc(model.getSimpleName + javadocSuffix)
     
     // header
-    model.getAnnotations foreach (writer.annotation(_))
+    model.getAnnotations foreach(writer.annotation(_))
     writer.beginClass(model)
 
     // properties

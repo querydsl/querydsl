@@ -5,11 +5,11 @@ import javax.validation.constraints.Size;
 import javax.validation.constraints.NotNull;
 import com.mysema.query.sql._;
 
-/**
- * Survey is a Querydsl bean type
- */
-//@Schema("PUBLIC")
-//@Table("SURVEY")
+object Survey extends QSurvey("survey"){
+  override def as(variable: String) = new QSurvey(variable)
+  
+}
+
 class Survey {
 
  var id: Integer = _;

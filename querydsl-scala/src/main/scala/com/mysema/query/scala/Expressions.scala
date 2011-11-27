@@ -5,10 +5,6 @@
  */
 package com.mysema.query.scala;
 
-import com.mysema.query.scala.Constants._
-import com.mysema.query.scala.Operations._
-import com.mysema.query.scala.Conversions.aliasFactory;
-
 import com.mysema.query.alias.ManagedObject;
 
 import com.mysema.query.types._
@@ -17,6 +13,10 @@ import com.mysema.query.types.Ops._
 
 import java.util.Collection
 import java.util.Arrays._;
+
+import Constants._
+import Operations._
+//import Conversions.aliasFactory;
 
 object Constants {
 

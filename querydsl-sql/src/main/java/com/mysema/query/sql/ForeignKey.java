@@ -23,7 +23,6 @@ import com.mysema.query.types.path.SimplePath;
  * @author tiwe
  *
  * @param <E>
- * @param <P>
  */
 @Immutable
 public class ForeignKey <E>{

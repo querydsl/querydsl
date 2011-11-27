@@ -21,6 +21,7 @@ import com.mysema.query.scala.ScalaBeanSerializer
 import com.mysema.query.scala.ScalaTypeMappings
 
 import com.mysema.query.sql.dml._
+import com.mysema.query.scala.Helpers._
 
 class JDBCIntegrationTest extends CompileTestUtils {
     
@@ -104,63 +105,78 @@ class JDBCIntegrationTest extends CompileTestUtils {
     
   @Test
   def Populate_Bean {
-    assertEquals(2, query from (survey) list (survey) size ())
+    assertEquals(2, query.from(survey).list(survey) size ())
   }
   
   @Test
   def List {
-    assertEquals(2, query from (survey) list (survey.id) size ())
-    assertEquals(2, query from (employee) list (employee.firstname) size ())
+    assertEquals(2, query.from(survey).list(survey.id) size ())
+    assertEquals(2, query.from(employee).list(employee.firstname) size ())
+  }
+  
+  @Test
+  def Select2 {
+    assertEquals(2, query.from(survey).select(survey.id, survey.name).size)
+  }
+  
+  @Test
+  def Select3 {
+    assertEquals(2, query.from(survey).select(survey.id, survey.name, survey.name.substring(0,1)).size)
+  }
+  
+  @Test
+  def Select4 {
+    assertEquals(2, query.from(survey).select(survey.id, survey.name, survey.name + "X", survey.name + "Y").size)
   }
   
   @Test
   def Count {
-    assertEquals(2, query from (survey) count)
-    assertEquals(2, query from (employee) count)
+    assertEquals(2, query.from(survey).count)
+    assertEquals(2, query.from(employee).count)
   }
   
   @Test
   def Unique_Result {
-    assertEquals("abc", query from survey where (survey.id eq 1) uniqueResult survey.name)
-    assertEquals("def", query from survey where (survey.id eq 2) uniqueResult survey.name)
-    assertEquals("Bob", query from employee where (employee.lastname eq "Smith") uniqueResult employee.firstname)
-    assertEquals("John", query from employee where (employee.lastname eq "Doe") uniqueResult employee.firstname)
+    assertEquals("abc", query.from(survey).where(survey.id eq 1).uniqueResult(survey.name))
+    assertEquals("def", query.from(survey).where(survey.id eq 2).uniqueResult(survey.name))
+    assertEquals("Bob", query.from(employee).where(employee.lastname eq "Smith").uniqueResult(employee.firstname))
+    assertEquals("John", query.from(employee).where(employee.lastname eq "Doe").uniqueResult(employee.firstname))
   }  
   
   @Test
   def Insert {
-      val s = new Survey()
-      s.name = "XXX"
+    val s = new Survey()
+    s.name = "XXX"
           
-      val id = insert(survey) populate(s) executeWithKey(survey.id)
-      val sNew = query from survey where (survey.id === id) uniqueResult (survey)
-      assertEquals(s.name, sNew.name)
+    val id = insert(survey) populate(s) executeWithKey(survey.id)
+    val sNew = query from survey where (survey.id === id) uniqueResult (survey)
+    assertEquals(s.name, sNew.name)
   }
   
   @Test
   def Update {
-      val s = new Survey()
-      s.name = "XXX"
+    val s = new Survey()
+    s.name = "XXX"
           
-      val id = insert(survey) populate(s) executeWithKey(survey.id)
-      s.id = id
-      s.name = "YYY"
+    val id = insert(survey) populate(s) executeWithKey(survey.id)
+    s.id = id
+    s.name = "YYY"
       
-      val count = update(survey) populate(s) execute()
-      assertTrue(count > 0)
+    val count = update(survey) populate(s) execute()
+    assertTrue(count > 0)
       
-      val sNew = query from survey where (survey.id === id) uniqueResult (survey)
-      assertEquals(s.name, sNew.name)
+    val sNew = query from survey where (survey.id === id) uniqueResult (survey)
+    assertEquals(s.name, sNew.name)
   }
   
   @Test
   def Delete {
-      val s = new Survey()
-      s.name = "XXX"
+    val s = new Survey()
+    s.name = "XXX"
           
-      val id = insert(survey) populate(s) executeWithKey(survey.id)      
-      val count = delete(survey) where(survey.id === id) execute()
-      assertTrue(count > 0)
+    val id = insert(survey) populate(s) executeWithKey(survey.id)      
+    val count = delete(survey) where(survey.id === id) execute()
+    assertTrue(count > 0)
   }
   
 

@@ -3,13 +3,18 @@ package com.mysema.query.scala
 import scala.collection.JavaConversions._
 import com.mysema.query._
 import com.mysema.query.types._
+import com.mysema.query.scala.GroupBy._
 
-object Helpers {
+import Projections._
+import TypeDefs._
+
+object Helpers extends Helpers
+
+trait Helpers extends Projections with GroupBy {
   
   implicit def toRichSimpleProjectable[T](p: SimpleProjectable[T]) = new RichSimpleProjectable(p) 
   
-  implicit def toRichProjectable(p: Projectable) = new RichProjectable(p)
-   
+  implicit def toRichProjectable(p: Projectable) = new RichProjectable(p)  
 }
 
 class RichSimpleProjectable[T](private val p: SimpleProjectable[T]) {
@@ -20,32 +25,33 @@ class RichSimpleProjectable[T](private val p: SimpleProjectable[T]) {
   
   def unique: Option[T] = Option(p.uniqueResult())
   
+  override def toString: String = p.toString
+  
 }
 
 class RichProjectable(private val p: Projectable) {
   
-  def select[T](expr: Expression[T]): List[T] = p.list(expr).toList
+  def select[T](e: Ex[T]): List[T] = p.list(e).toList
   
-  def select[T,U](expr1: Expression[T], expr2: Expression[U]): List[(T,U)] = {
-    p.list(expr1, expr2).toList map(r => (r(0).asInstanceOf[T], r(1).asInstanceOf[U]))
-  }
+  def select[T,U](e1: Ex[T], e2: Ex[U]): List[(T,U)] = p.list((e1,e2)).toList
   
-  def select[T,U,V](expr1: Expression[T], expr2: Expression[U], expr3: Expression[V]): List[(T,U,V)] = {
-    p.list(expr1, expr2, expr3).toList map(r => (r(0).asInstanceOf[T], r(1).asInstanceOf[U], r(2).asInstanceOf[V]))
-  }
+  def select[T,U,V](e1: Ex[T], e2: Ex[U], e3: Ex[V]): List[(T,U,V)] = p.list((e1,e2,e3)).toList
   
-  def select[T,U,V,W](expr1: Expression[T], expr2: Expression[U], expr3: Expression[V], expr4: Expression[W]): List[(T,U,V,W)] = {
-    p.list(expr1, expr2, expr3, expr4)
-      .map(r => (r(0).asInstanceOf[T], r(1).asInstanceOf[U], r(2).asInstanceOf[V], r(3).asInstanceOf[W])).toList
-  }  
+  def select[T,U,V,W](e1: Ex[T], e2: Ex[U], e3: Ex[V], e4: Ex[W]): List[(T,U,V,W)] = p.list((e1,e2,e3,e4)).toList
+  
+  def select[T,U,V,W,X](e1: Ex[T], e2: Ex[U], e3: Ex[V], e4: Ex[W], e5: Ex[X]): List[(T,U,V,W,X)] = p.list((e1,e2,e3,e4,e5)).toList  
   
   // TODO : generalize this
-  def selectGrouped[K,T,V](expr1: Expression[K], expr2: Expression[T], expr3: Expression[V]): List[(T,List[V])] = {
-    select(expr1, expr2, expr3).groupBy(_._1).map(_._2).map(r => (r(0)._2, r.map(_._3))).toList 
+  def selectGrouped[K,T,V](key: Ex[K], parent: Ex[T], child: Ex[V]): List[(T,Set[V])] = {
+    p.transform(groupBy(key).as((parent, set(child)))).values.toList    
   }  
   
-  def single[T](expr: Expression[T]): Option[T] = Option(p.singleResult(expr))
+  def single[T](expr: Ex[T]): Option[T] = Option(p.singleResult(expr))
   
-  def unique[T](expr: Expression[T]): Option[T] = Option(p.uniqueResult(expr))
+  def unique[T](expr: Ex[T]): Option[T] = Option(p.uniqueResult(expr))
+  
+  override def toString: String = p.toString
   
 }
+
+

@@ -30,8 +30,6 @@ import javax.inject.Inject;
  */
 class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Serializer {
     
-//  val typeMappings = ScalaTypeMappings.typeMappings
-    
   private val methodNames = Map(ARRAY->"Array", BOOLEAN->"Boolean", COLLECTION->"Collection", 
       COMPARABLE->"Comparable",DATE->"Date", DATETIME->"DateTime", ENUM->"Enum", 
       LIST->"List", MAP->"Map", NUMERIC->"Number", SET->"Set", SIMPLE->"Simple", 

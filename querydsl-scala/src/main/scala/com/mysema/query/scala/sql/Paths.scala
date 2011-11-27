@@ -5,6 +5,7 @@ import com.mysema.query.types._
 import com.mysema.query.types.PathMetadataFactory._
 import java.util.ArrayList;
 import scala.reflect.BeanProperty
+import com.mysema.query.scala.TypeDefs._
 
 /**
  * Implementation of RelationsPathImpl for Scala

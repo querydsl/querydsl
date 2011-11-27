@@ -2,8 +2,6 @@ package com.mysema.query.group;
 
 
 import static com.mysema.query.group.GroupBy.groupBy;
-import static com.mysema.query.group.GroupBy.min;
-import static com.mysema.query.group.GroupBy.max;
 import static com.mysema.query.group.GroupBy.list;
 import static com.mysema.query.group.GroupBy.map;
 import static com.mysema.query.group.GroupBy.set;
