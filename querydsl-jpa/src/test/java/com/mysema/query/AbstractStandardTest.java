@@ -310,6 +310,11 @@ public abstract class AbstractStandardTest {
         catQuery().where(cat.id.in(Arrays.asList(1,2,3))).count();
         catQuery().where(cat.name.in(Arrays.asList("A","B","C"))).count();
     }
+    
+    @Test
+    public void In2() {
+        catQuery().where(cat.name.in("A,B,C".split(","))).count();
+    }
 
     @Test
     public void StartsWith(){

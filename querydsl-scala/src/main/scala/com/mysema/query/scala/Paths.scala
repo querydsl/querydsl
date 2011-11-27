@@ -49,9 +49,9 @@ object Paths {
   def any[T, Q <: Ex[_ >: T]](parent: Path[_], t: Class[T], q: Class[Q]): Q =  create(t, q, forCollectionAny(parent))      
   
   def create[T, Q <: Ex[_ >: T]](t :Class[T], q: Class[Q], md: PathMetadata[_]): Q = {
-      if (q == classOf[StringPath] || q == classOf[BooleanPath]){
+      if (q == classOf[StringPath] || q == classOf[BooleanPath]) {
           q.getConstructor(classOf[PathMetadata[_]]).newInstance(md)
-      }else{
+      } else {
           q.getConstructor(classOf[Class[_]], classOf[PathMetadata[_]]).newInstance(t, md)
       }
   }

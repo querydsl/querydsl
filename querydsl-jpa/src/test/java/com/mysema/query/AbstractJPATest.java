@@ -31,7 +31,7 @@ import com.mysema.query.jpa.impl.JPAQuery;
  * @author tiwe
  *
  */
-public abstract class AbstractJPATest extends AbstractStandardTest{
+public abstract class AbstractJPATest extends AbstractStandardTest {
 
     private EntityManager entityManager;
 
