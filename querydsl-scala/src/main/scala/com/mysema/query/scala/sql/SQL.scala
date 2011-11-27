@@ -6,26 +6,27 @@ import com.mysema.query.sql._
 import com.mysema.query.sql.dml._
 import com.mysema.query.types._
 
-/**
- * Convenience trait for injection into service implementations
- * 
- * @author tiwe
- *
- */
-trait SQL {
+trait SQLHelpers {
+  
+  def connection: Connection
+  
+  def templates: SQLTemplates
+
+  implicit def toRichSimpleQuery[T, R <: RelationalPath[T]](p: RelationalPath[T] with R) = {
+    new RichSimpleQuery[T, R](p, new SQLQueryImpl(connection, templates).from(p) )
+  }
+  
+}
+
+
+trait SQL extends SQLHelpers {
   
   private val connectionHolder = new ThreadLocal[Connection]
   
   val dataSource: DataSource
   
-  val templates : SQLTemplates
-
-  private def connection = connectionHolder.get()
-  
-  implicit def toRichSimpleQuery[T, R <: RelationalPath[T]](p: RelationalPath[T] with R) = {
-    new RichSimpleQuery[T, R](p, new SQLQueryImpl(connection, templates).from(p) )
-  }
-             
+  def connection = connectionHolder.get()
+               
   def query() = new SQLQueryImpl(connection, templates)
   
   def from(expr: Expression[_]*) = query.from(expr:_*)

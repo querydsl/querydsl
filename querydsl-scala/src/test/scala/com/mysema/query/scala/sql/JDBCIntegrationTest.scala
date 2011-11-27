@@ -23,7 +23,7 @@ import com.mysema.query.scala.ScalaTypeMappings
 import com.mysema.query.sql.dml._
 import com.mysema.query.scala.Helpers._
 
-class JDBCIntegrationTest extends CompileTestUtils {
+class JDBCIntegrationTest extends CompileTestUtils with SQLHelpers {
     
   val survey = QSurvey
   val employee = QEmployee
@@ -33,7 +33,7 @@ class JDBCIntegrationTest extends CompileTestUtils {
   var connection: Connection = _
 
   var statement: Statement = _
-
+  
   @Before
   def setUp() {
     Class.forName("org.h2.Driver")
@@ -115,8 +115,19 @@ class JDBCIntegrationTest extends CompileTestUtils {
   }
   
   @Test
+  def List_2 {
+    assertEquals(2, survey.select(_.id) size)
+    assertEquals(2, employee.select(_.firstname) size)
+  }
+  
+  @Test
   def Select2 {
     assertEquals(2, query.from(survey).select(survey.id, survey.name).size)
+  }
+  
+  @Test
+  def Select2_2 {
+    assertEquals(2, survey.select(_.id, _.name) size)
   }
   
   @Test
@@ -125,8 +136,18 @@ class JDBCIntegrationTest extends CompileTestUtils {
   }
   
   @Test
+  def Select3_2 {
+    assertEquals(2, survey.select(_.id, _.name, _.name.substring(0,1)) size)
+  }
+  
+  @Test
   def Select4 {
     assertEquals(2, query.from(survey).select(survey.id, survey.name, survey.name + "X", survey.name + "Y").size)
+  }
+  
+  @Test
+  def Select4_2 {
+    assertEquals(2, survey.select(_.id, _.name, _.name + "X", _.name + "Y") size)
   }
   
   @Test
@@ -136,12 +157,26 @@ class JDBCIntegrationTest extends CompileTestUtils {
   }
   
   @Test
+  def Count_2 {
+    assertEquals(2, survey.query.count)
+    assertEquals(2, employee.query.count)
+  }
+  
+  @Test
   def Unique_Result {
     assertEquals("abc", query.from(survey).where(survey.id eq 1).uniqueResult(survey.name))
     assertEquals("def", query.from(survey).where(survey.id eq 2).uniqueResult(survey.name))
     assertEquals("Bob", query.from(employee).where(employee.lastname eq "Smith").uniqueResult(employee.firstname))
     assertEquals("John", query.from(employee).where(employee.lastname eq "Doe").uniqueResult(employee.firstname))
   }  
+  
+  @Test
+  def Unique {
+    assertEquals("abc", survey.where(_.id eq 1).unique(_.name).get)
+    assertEquals("def", survey.where(_.id eq 2).unique(_.name).get)
+    assertEquals("Bob", employee.where(_.lastname eq "Smith").unique(_.firstname).get)
+    assertEquals("John", employee.where(_.lastname eq "Doe").unique(_.firstname).get)
+  }
   
   @Test
   def Insert {

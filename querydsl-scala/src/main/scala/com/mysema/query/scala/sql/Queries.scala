@@ -29,9 +29,19 @@ object RichSimpleQuery {
   
 }
 
+// TODO : define both callback (RelationalPath[_]) and projection expression (Ex[_])
+
 class RichSimpleQuery[T, E <: Ex[T]](expr: E, qry: SQLQuery) extends RichProjectable(qry) {
   
   def query = this
+      
+  def join[T2, R2 <: RelationalPath[T2], T3, E3 <: Ex[T3]](f : E => ForeignKey[T2], rp: R2) 
+      (implicit e2t: ExprToTarget[T,E,T2,R2,T3,E3]): RichSimpleQuery[T3,E3] = join(f(expr), rp)
+  
+  def join[T2, R2 <: RelationalPath[T2], T3, E3 <: Ex[T3]](fk: ForeignKey[T2], rp: R2) 
+      (implicit e2t: ExprToTarget[T,E,T2,R2,T3,E3]): RichSimpleQuery[T3,E3] = {    
+    new RichSimpleQuery[T3,E3](e2t.toTarget(expr, rp), qry.innerJoin(fk, rp))
+  }    
   
   def limit(l: Long) = { qry.limit(l); this } 
   
@@ -53,17 +63,28 @@ class RichSimpleQuery[T, E <: Ex[T]](expr: E, qry: SQLQuery) extends RichProject
   
   def select[T](f: E => Ex[T]): List[T] = select(f(expr))
   
+  def select[T,U](f1: E => Ex[T], f2: E => Ex[U]): List[(T,U)] =  select(f1(expr), f2(expr))
+  
+  def select[T,U,V](f1: E => Ex[T], f2: E => Ex[U], f3:E =>  Ex[V]): List[(T,U,V)] = {
+    select(f1(expr), f2(expr), f3(expr))
+  }
+  
+  def select[T,U,V,W](f1: E => Ex[T], f2: E => Ex[U], f3: E => Ex[V], f4: E => Ex[W]): List[(T,U,V,W)] = {
+    select(f1(expr), f2(expr), f3(expr), f4(expr))
+  }
+  
+  def select[T,U,V,W,X](f1: E => Ex[T], f2: E => Ex[U], f3: E => Ex[V], f4: E => Ex[W], f5: E => Ex[X]): List[(T,U,V,W,X)] = {
+    select(f1(expr), f2(expr), f3(expr), f4(expr), f5(expr))
+  }    
+  
   def single: Option[T] = single(expr)
   
-  def unique: Option[T] = unique(expr)  
-      
-  def join[T2, R2 <: RelationalPath[T2], T3, E3 <: Ex[T3]](f : E => ForeignKey[T2], rp: R2) 
-      (implicit e2t: ExprToTarget[T,E,T2,R2,T3,E3]): RichSimpleQuery[T3,E3] = join(f(expr), rp)
+  def single[T](f: E => Ex[T]): Option[T] = single(f(expr))
   
-  def join[T2, R2 <: RelationalPath[T2], T3, E3 <: Ex[T3]](fk: ForeignKey[T2], rp: R2) 
-      (implicit e2t: ExprToTarget[T,E,T2,R2,T3,E3]): RichSimpleQuery[T3,E3] = {    
-    new RichSimpleQuery[T3,E3](e2t.toTarget(expr, rp), qry.innerJoin(fk, rp))
-  }  
+  def unique: Option[T] = unique(expr)  
+  
+  def unique[T](f: E => Ex[T]): Option[T] = unique(f(expr))
+  
 }
 
 // combine E1 and E2 into E3
