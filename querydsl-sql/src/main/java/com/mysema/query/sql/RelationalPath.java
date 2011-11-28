@@ -11,6 +11,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Path;
 
 /**
@@ -63,5 +64,10 @@ public interface RelationalPath<T> extends EntityPath<T> {
      * @return
      */
     Collection<ForeignKey<?>> getInverseForeignKeys();
+    
+    /**
+     * @return
+     */
+    FactoryExpression<T> getProjection();
 
 }

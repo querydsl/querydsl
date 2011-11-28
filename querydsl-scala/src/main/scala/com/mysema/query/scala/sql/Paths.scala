@@ -4,6 +4,7 @@ import com.mysema.query.sql._
 import com.mysema.query.types._
 import com.mysema.query.types.PathMetadataFactory._
 import java.util.ArrayList;
+import java.lang.reflect._
 import scala.reflect.BeanProperty
 import com.mysema.query.scala.TypeDefs._
 
@@ -28,6 +29,22 @@ class RelationalPathImpl[T](md: PathMetadata[_], schema: String, table: String)(
   
   @BeanProperty
   val inverseForeignKeys: JList[ForeignKey[_]] = new ArrayList[ForeignKey[_]]
+  
+  // TODO : implementation into Utility class  
+  @BeanProperty
+  lazy val projection: FactoryExpression[T] = {
+    val rp = RelationalPathImpl.this
+    val bindings = new java.util.HashMap[String, Ex[_]]
+    def supers(cl: Class[_]): List[Class[_]] = cl :: Option(cl.getSuperclass).map(supers).getOrElse(Nil)    
+    supers(getClass).flatMap(_.getDeclaredFields)    
+      .filter(f => classOf[Path[_]].isAssignableFrom(f.getType) && !Modifier.isStatic(f.getModifiers))
+      .foreach(f => { 
+        f.setAccessible(true)
+        val col = f.get(rp).asInstanceOf[Path[_]]
+        if (rp == col.getMetadata.getParent) bindings.put(f.getName, col)        
+      })
+    new QBean[T](getType.asInstanceOf[Class[T]], true, bindings)
+  } 
   
   def this(variable: String, schema: String, table: String)(implicit mf: Manifest[T]) = this(forVariable(variable), schema, table)(mf)
   

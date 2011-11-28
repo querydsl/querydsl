@@ -93,7 +93,7 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
         value.append(", \"" + fk.getParentColumns().get(0) + "\"")
       } else {
         val local = fk.getForeignColumns.map(c => escape(namingStrategy.getPropertyName(c, model))).mkString(", ") 
-        val foreign = fk.getParentColumns.map(c => "\"" + c + "\"").mkString(", ")        
+        val foreign = fk.getParentColumns.map("\"" + _ + "\"").mkString(", ")        
         value.append("Arrays.asList(" + local + "), Arrays.asList(" + foreign + ")")
       }
       value.append(")")
