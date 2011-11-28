@@ -66,6 +66,10 @@ extends RichProjectable(qry) {
     select(f1(path), f2(path), f3(path), f4(path), f5(path))
   }    
   
+  def selectGrouped[K,T,V](fkey: FEx[K], fparent: FEx[T], fchild: FEx[V]): List[(T,Set[V])] = {
+    selectGrouped(fkey(path), fparent(path), fchild(path))
+  }  
+  
   def single: Option[T] = single(expr)
   
   def single[T](f: FEx[T]): Option[T] = single(f(path))

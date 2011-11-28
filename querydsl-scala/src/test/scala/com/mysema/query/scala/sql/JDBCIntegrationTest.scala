@@ -163,6 +163,13 @@ class JDBCIntegrationTest extends CompileTestUtils with SQLHelpers {
   }
   
   @Test
+  @Ignore
+  def Join {
+    val sup = Employee as "sup"
+    val result: List[(Employee, Employee)] = employee.join(_.superiorFk, sup).select
+  }
+  
+  @Test
   def Unique_Result {
     assertEquals("abc", query.from(survey).where(survey.id eq 1).uniqueResult(survey.name))
     assertEquals("def", query.from(survey).where(survey.id eq 2).uniqueResult(survey.name))
