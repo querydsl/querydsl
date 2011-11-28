@@ -14,6 +14,10 @@ import scala.reflect.BeanProperty
 import scala.collection.JavaConversions._
 import scala.collection.mutable.Set
 
+/**
+ * @author tiwe
+ *
+ */
 class ScalaBeanSerializer @Inject() (typeMappings: TypeMappings) extends BeanSerializer(typeMappings) {
 
   var javadocSuffix = " is a Querydsl bean type"
@@ -40,6 +44,10 @@ class ScalaBeanSerializer @Inject() (typeMappings: TypeMappings) extends BeanSer
   
 }
 
+/**
+ * @author tiwe
+ *
+ */
 class CaseClassSerializer @Inject() (typeMappings: TypeMappings) extends BeanSerializer(typeMappings) {
   
   def javaBeanSupport = false
@@ -51,8 +59,11 @@ class CaseClassSerializer @Inject() (typeMappings: TypeMappings) extends BeanSer
   }
 
 }  
-
  
+/**
+ * @author tiwe
+ *
+ */
 abstract class BeanSerializer(typeMappings: TypeMappings) extends Serializer {
 
   var createCompanionObject = true

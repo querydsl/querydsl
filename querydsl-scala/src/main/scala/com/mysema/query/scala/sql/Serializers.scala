@@ -72,46 +72,32 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
   }
    
   def serializePrimaryKeys(model: EntityType, writer: CodeWriter, primaryKeys: Collection[PrimaryKeyData]) {
-    primaryKeys foreach { primaryKey =>
-      val fieldName = namingStrategy.getPropertyNameForPrimaryKey(primaryKey.getName(), model)
-      val value = new StringBuilder("createPrimaryKey(")
-      value.append(primaryKey.getColumns().map({ column =>
-        escape(namingStrategy.getPropertyName(column, model))
-      }).mkString(", "))
-      value.append(")")
-      writer.publicFinal(new ClassType(classOf[PrimaryKey[_]], model), fieldName, value.toString)
+    primaryKeys.foreach { pk =>
+      val fieldName = namingStrategy.getPropertyNameForPrimaryKey(pk.getName(), model)
+      val value = pk.getColumns.map(c => escape(namingStrategy.getPropertyName(c, model)))
+          .mkString("createPrimaryKey(", ", ", ")")
+      writer.publicFinal(new ClassType(classOf[PrimaryKey[_]], model), fieldName, value)
     }
   }
 
   def serializeForeignKeys(model: EntityType, writer: CodeWriter, foreignKeys: Collection[_ <: KeyData], inverse: Boolean) {
-    foreignKeys foreach { foreignKey =>
-      var fieldName: String = null
-      if (inverse) {
-        fieldName = namingStrategy.getPropertyNameForInverseForeignKey(foreignKey.getName, model)
+    foreignKeys.foreach { fk =>
+      val fieldName = if (inverse) {
+        namingStrategy.getPropertyNameForInverseForeignKey(fk.getName, model)
       } else {
-        fieldName = namingStrategy.getPropertyNameForForeignKey(foreignKey.getName, model)
+        namingStrategy.getPropertyNameForForeignKey(fk.getName, model)
       }
       val value = new StringBuilder(if (inverse) "createInvForeignKey(" else "createForeignKey(")
-      if (foreignKey.getForeignColumns.size == 1) {
-        value.append(namingStrategy.getPropertyName(foreignKey.getForeignColumns.get(0), model))
-        value.append(", \"" + foreignKey.getParentColumns().get(0) + "\"")
+      if (fk.getForeignColumns.size == 1) {
+        value.append(namingStrategy.getPropertyName(fk.getForeignColumns.get(0), model))
+        value.append(", \"" + fk.getParentColumns().get(0) + "\"")
       } else {
-        val local = new StringBuilder()
-        val foreign = new StringBuilder()
-        var i = 0
-        while (i < foreignKey.getForeignColumns().size()) {
-          if (i > 0) {
-            local.append(", ")
-            foreign.append(", ")
-          }
-          local.append(escape(namingStrategy.getPropertyName(foreignKey.getForeignColumns().get(0), model)))
-          foreign.append("\"" + foreignKey.getParentColumns.get(0) + "\"")
-          i += 1
-        }
+        val local = fk.getForeignColumns.map(c => escape(namingStrategy.getPropertyName(c, model))).mkString(", ") 
+        val foreign = fk.getParentColumns.map(c => "\"" + c + "\"").mkString(", ")        
         value.append("Arrays.asList(" + local + "), Arrays.asList(" + foreign + ")")
       }
       value.append(")")
-      val t = new ClassType(classOf[ForeignKey[_]], foreignKey.getType)
+      val t = new ClassType(classOf[ForeignKey[_]], fk.getType)
       writer.publicFinal(t, fieldName, value.toString())
     }
   }

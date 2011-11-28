@@ -7,49 +7,65 @@ import TypeDefs._
 
 import com.mysema.codegen.model.TypeCategory
 
-// TODO : factory object for template creation 
+/**
+ * Factory for templates
+ * 
+ * @author tiwe
+ *
+ */
+object Templates {
 
-class SimpleTemplate[T](t: Class[_ <: T], template: Template, args: java.util.List[Ex[_]])
-  extends TemplateExpressionImpl[T](t, template, args) with SimpleExpression[T] {
+  def simple[T](t: Class[_ <: T], tpl: Template, args: Ex[_]*): SimpleExpression[T] = new SimpleTemplate[T](t, tpl, args: _*)
 
-}
+  def comparable[T <: Comparable[_]](t: Class[_ <: T], tpl: Template, args: Ex[_]*): ComparableExpression[T] = new ComparableTemplate[T](t, tpl, args: _*)
 
-class ComparableTemplate[T <: Comparable[_]](t: Class[_ <: T], template: Template, args: java.util.List[Ex[_]])
-  extends TemplateExpressionImpl[T](t, template, args) with ComparableExpression[T] {
+  def date[T <: Comparable[_]](t: Class[_ <: T], tpl: Template, args: Ex[_]*): DateExpression[T] = new DateTemplate[T](t, tpl, args: _*)
 
-}
+  def dateTime[T <: Comparable[_]](t: Class[_ <: T], tpl: Template, args: Ex[_]*): DateTimeExpression[T] = new DateTimeTemplate[T](t, tpl, args: _*)
 
-class NumberTemplate[T <: Number with Comparable[T]](t: Class[_ <: T], template: Template, args: java.util.List[Ex[_]])
-  extends TemplateExpressionImpl[T](t, template, args) with NumberExpression[T] {
+  def time[T <: Comparable[_]](t: Class[_ <: T], tpl: Template, args: Ex[_]*): TimeExpression[T] = new TimeTemplate[T](t, tpl, args: _*)
 
-}
+  def number[T <: Number with Comparable[T]](t: Class[_ <: T], tpl: Template, args: Ex[_]*): NumberExpression[T] = new NumberTemplate[T](t, tpl, args: _*)
 
-class BooleanTemplate(template: Template, args: java.util.List[Expression[_]])
-  extends TemplateExpressionImpl[java.lang.Boolean](classOf[java.lang.Boolean], template, args) with BooleanExpression {
+  def boolean(tpl: Template, args: Ex[_]*): BooleanExpression = new BooleanTemplate(tpl, args: _*)
 
-}
+  def string(tpl: Template, args: Ex[_]*): StringExpression = new StringTemplate(tpl, args: _*)
 
-class StringTemplate(template: Template, args: java.util.List[Ex[_]])
-  extends TemplateExpressionImpl[String](classOf[String], template, args) with StringExpression {
-
-}
-
-class DateTemplate[T <: Comparable[_]](t: Class[_ <: T], template: Template, args: java.util.List[Ex[_]])
-  extends TemplateExpressionImpl[T](t, template, args) with DateExpression[T] {
+  def enum[T <: Enum[T]](t: Class[T], tpl: Template, args: Ex[_]*): EnumExpression[T] = new EnumTemplate[T](t, tpl, args: _*)
 
 }
 
-class DateTimeTemplate[T <: Comparable[_]](t: Class[_ <: T], template: Template, args: java.util.List[Ex[_]])
-  extends TemplateExpressionImpl[T](t, template, args) with DateTimeExpression[T] {
+class SimpleTemplate[T](t: Class[_ <: T], template: Template, args: Ex[_]*)
+  extends TemplateExpressionImpl[T](t, template, args:_*) with SimpleExpression[T]
 
-}
 
-class TimeTemplate[T <: Comparable[_]](t: Class[_ <: T], template: Template)
-  extends TemplateExpressionImpl[T](t, template) with TimeExpression[T] {
+class ComparableTemplate[T <: Comparable[_]](t: Class[_ <: T], template: Template, args: Ex[_]*)
+  extends TemplateExpressionImpl[T](t, template, args:_*) with ComparableExpression[T]
 
-}
 
-class EnumTemplate[T <: Enum[T]](t: Class[_ <: T], template: Template)
-  extends TemplateExpressionImpl[T](t, template) with EnumExpression[T] {
+class NumberTemplate[T <: Number with Comparable[T]](t: Class[_ <: T], template: Template, args: Ex[_]*)
+  extends TemplateExpressionImpl[T](t, template, args:_*) with NumberExpression[T]
 
-}
+
+class BooleanTemplate(template: Template, args: Ex[_]*)
+  extends TemplateExpressionImpl[java.lang.Boolean](classOf[java.lang.Boolean], template, args:_*) with BooleanExpression
+
+  
+class StringTemplate(template: Template, args: Ex[_]*)
+  extends TemplateExpressionImpl[String](classOf[String], template, args:_*) with StringExpression
+  
+  
+class DateTemplate[T <: Comparable[_]](t: Class[_ <: T], template: Template, args: Ex[_]*)
+  extends TemplateExpressionImpl[T](t, template, args:_*) with DateExpression[T]
+
+
+class DateTimeTemplate[T <: Comparable[_]](t: Class[_ <: T], template: Template, args: Ex[_]*)
+  extends TemplateExpressionImpl[T](t, template, args:_*) with DateTimeExpression[T]
+
+
+class TimeTemplate[T <: Comparable[_]](t: Class[_ <: T], template: Template, args: Ex[_]*)
+  extends TemplateExpressionImpl[T](t, template, args:_*) with TimeExpression[T]
+
+
+class EnumTemplate[T <: Enum[T]](t: Class[_ <: T], template: Template, args: Ex[_]*)
+  extends TemplateExpressionImpl[T](t, template, args:_*) with EnumExpression[T]

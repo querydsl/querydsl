@@ -9,8 +9,6 @@ import test._
 
 class QueriesTest extends SQLHelpers {
   
-  import RichSimpleQuery._  
-  
   val templates = new H2Templates()
   
   def connection: Connection = null
@@ -46,7 +44,7 @@ class QueriesTest extends SQLHelpers {
     val sup2 = Employee as "sup2"
     assertEquals(
         "from EMPLOYEE employee\ninner join EMPLOYEE sup\non employee.SUPERIOR_ID = sup.ID\ninner join EMPLOYEE sup2\non sup.SUPERIOR_ID = sup2.ID", 
-        Employee.join(_.superiorFk, sup).join(_._2.superiorFk, sup2).toString)
+        Employee.join(_.superiorFk, sup).join(sup.superiorFk, sup2).toString)
   }
   
   @Test
@@ -55,7 +53,7 @@ class QueriesTest extends SQLHelpers {
     val sup2 = Employee as "sup2"
     assertEquals(
         "from EMPLOYEE employee\ninner join EMPLOYEE sup\non employee.SUPERIOR_ID = sup.ID\nwhere employee.ID = ?", 
-        Employee.join(_.superiorFk, sup).where( _._1.id eq 1).toString)
+        Employee.join(_.superiorFk, sup).where( _.id eq 1).toString)
   }
   
   @Test
@@ -64,7 +62,7 @@ class QueriesTest extends SQLHelpers {
     val sup2 = Employee as "sup2"
     assertEquals(
         "from EMPLOYEE employee\ninner join EMPLOYEE sup\non employee.SUPERIOR_ID = sup.ID\nwhere employee.ID = sup.ID", 
-        Employee.join(_.superiorFk, sup).where(e => e._1.id eq e._2.id).toString)
+        Employee.join(_.superiorFk, sup).where(_.id eq sup.id).toString)
   }
   
 }

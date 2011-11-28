@@ -16,16 +16,18 @@ import com.mysema.query.scala.TypeDefs._
 class RelationalPathImpl[T](md: PathMetadata[_], schema: String, table: String)(implicit val mf: Manifest[T]) 
   extends BeanPath[T](mf.erasure.asInstanceOf[Class[T]], md) with RelationalPath[T] {
     
+  type JList[X] = java.util.List[X]
+  
   private var primaryKey: PrimaryKey[T] = _
   
   @BeanProperty
-  val columns: java.util.List[Path[_]] = new ArrayList[Path[_]]
+  val columns: JList[Path[_]] = new ArrayList[Path[_]]
 
   @BeanProperty
-  val foreignKeys: java.util.List[ForeignKey[_]] = new ArrayList[ForeignKey[_]]
+  val foreignKeys: JList[ForeignKey[_]] = new ArrayList[ForeignKey[_]]
   
   @BeanProperty
-  val inverseForeignKeys: java.util.List[ForeignKey[_]] = new ArrayList[ForeignKey[_]]
+  val inverseForeignKeys: JList[ForeignKey[_]] = new ArrayList[ForeignKey[_]]
   
   def this(variable: String, schema: String, table: String)(implicit mf: Manifest[T]) = this(forVariable(variable), schema, table)(mf)
   

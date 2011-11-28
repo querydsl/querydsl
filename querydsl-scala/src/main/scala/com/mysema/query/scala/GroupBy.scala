@@ -9,6 +9,12 @@ import TypeDefs._
 
 object GroupBy extends GroupBy
 
+/**
+ * Group by result transforming functionality
+ * 
+ * @author tiwe
+ *
+ */
 trait GroupBy {
   
   def groupBy[K](key: Ex[K]) = new GroupByBuilder[K](key)
@@ -60,7 +66,7 @@ class GSet[T](e: Ex[T]) extends AbstractGroupExpression[T, Set[T]](classOf[Set[T
   }  
 }
 
-class GMap[K,V](tu2ex: Tu2Ex[K,V,_,_]) extends AbstractGroupExpression[(K,V), Map[K,V]](classOf[Map[K,V]], tu2ex) {
+class GMap[K,V](tu2ex: Tu2Ex[K,V]) extends AbstractGroupExpression[(K,V), Map[K,V]](classOf[Map[K,V]], tu2ex) {
   
   def createGroupCollector() = {
     new GroupCollector[(K,V), Map[K,V]]() {

@@ -28,7 +28,7 @@ object Constants {
 
 }
 
-trait SimpleExpression[T] extends Expression[T]{
+trait SimpleExpression[T] extends Expression[T] {
     
   def as(right: Path[T]): SimpleExpression[T] = simple(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
 

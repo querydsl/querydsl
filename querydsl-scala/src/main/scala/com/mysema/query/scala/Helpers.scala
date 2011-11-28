@@ -17,6 +17,11 @@ trait Helpers extends Projections with GroupBy {
   implicit def toRichProjectable(p: Projectable) = new RichProjectable(p)  
 }
 
+/**
+ * @author tiwe
+ *
+ * @param <T>
+ */
 class RichSimpleProjectable[T](private val p: SimpleProjectable[T]) {
   
   def select: List[T] = p.list.toList
@@ -29,6 +34,10 @@ class RichSimpleProjectable[T](private val p: SimpleProjectable[T]) {
   
 }
 
+/**
+ * @author tiwe
+ *
+ */
 class RichProjectable(private val p: Projectable) {
   
   def select[T](e: Ex[T]): List[T] = p.list(e).toList
