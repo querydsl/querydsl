@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.ProjectionRole;
 
 /**
  * RelationalPath extends EntityPath to provide access to relational metadata
@@ -20,7 +21,7 @@ import com.mysema.query.types.Path;
  * @author tiwe
  *
  */
-public interface RelationalPath<T> extends EntityPath<T> {
+public interface RelationalPath<T> extends EntityPath<T>, ProjectionRole<T> {
    
     /**
      * Get the schema name
@@ -64,10 +65,5 @@ public interface RelationalPath<T> extends EntityPath<T> {
      * @return
      */
     Collection<ForeignKey<?>> getInverseForeignKeys();
-    
-    /**
-     * @return
-     */
-    FactoryExpression<T> getProjection();
 
 }

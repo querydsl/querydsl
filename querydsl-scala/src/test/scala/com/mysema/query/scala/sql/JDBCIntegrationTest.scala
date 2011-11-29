@@ -163,7 +163,6 @@ class JDBCIntegrationTest extends CompileTestUtils with SQLHelpers {
   }
   
   @Test
-  @Ignore
   def Join {
     val sup = Employee as "sup"
     val result: List[(Employee, Employee)] = employee.join(_.superiorFk, sup).select

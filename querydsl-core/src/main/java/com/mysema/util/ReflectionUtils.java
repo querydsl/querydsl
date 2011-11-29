@@ -106,7 +106,29 @@ public final class ReflectionUtils {
         }
         return null;
     }
-
+    
+    public static Set<Class<?>> getSuperClasses(Class<?> cl) {
+        Set<Class<?>> classes = new HashSet<Class<?>>();
+        Class<?> c = cl;
+        while (c != null) {
+            classes.add(c);
+            c = c.getSuperclass();
+        }
+        return classes;
+    }
+    
+    public static Set<Field> getFields(Class<?> cl) {
+        Set<Field> fields = new HashSet<Field>();
+        Class<?> c = cl;
+        while (c != null) {
+            for (Field field : c.getDeclaredFields()) {
+                fields.add(field);
+            }
+            c = c.getSuperclass();
+        }
+        return fields;
+    }
+    
     public static Set<Class<?>> getImplementedInterfaces(Class<?> cl){
         Set<Class<?>> interfaces = new HashSet<Class<?>>();
         Deque<Class<?>> classes = new ArrayDeque<Class<?>>();

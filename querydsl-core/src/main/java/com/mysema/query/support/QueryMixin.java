@@ -11,8 +11,22 @@ import com.mysema.query.JoinType;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.types.*;
+import com.mysema.query.types.CollectionExpression;
+import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.FactoryExpressionUtils;
 import com.mysema.query.types.FactoryExpressionUtils.FactoryExpressionAdapter;
+import com.mysema.query.types.MapExpression;
+import com.mysema.query.types.OperationImpl;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.ParamExpression;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.Predicate;
+import com.mysema.query.types.ProjectionRole;
+import com.mysema.query.types.SubQueryExpression;
 
 /**
  * Mixin style Query implementation
@@ -62,7 +76,9 @@ public class QueryMixin<T>{
     }
 
     public <RT> Expression<RT> convert(Expression<RT> expr){
-        if (expr instanceof FactoryExpression<?> && !(expr instanceof FactoryExpressionAdapter<?>)) {
+        if (expr instanceof ProjectionRole<?>) {
+            return convert(((ProjectionRole) expr).getProjection());
+        } else if (expr instanceof FactoryExpression<?> && !(expr instanceof FactoryExpressionAdapter<?>)) {
             return FactoryExpressionUtils.wrap((FactoryExpression<RT>)expr);
         } else {
             return expr;

@@ -16,39 +16,41 @@ import TypeDefs._
  */
 object Paths {
 
-  def array[T <: Array[_]](t: Class[T], md: PathMetadata[_]) = new ArrayPath[T](t, md)
+  type Metadata[X] = PathMetadata[X]
+  
+  def array[T <: Array[_]](t: Class[T], md: Metadata[_]) = new ArrayPath[T](t, md)
 
-  def simple[T](t: Class[_ <: T], md: PathMetadata[_]) = new SimplePath[T](t, md)
+  def simple[T](t: Class[_ <: T], md: Metadata[_]) = new SimplePath[T](t, md)
 
-  def entity[T](t: Class[_ <: T], md: PathMetadata[_]) = new EntityPathImpl[T](t, md)
+  def entity[T](t: Class[_ <: T], md: Metadata[_]) = new EntityPathImpl[T](t, md)
 
-  def collection[T, Q <: Ex[_ >: T]](t: Class[T], q: Class[Q], md: PathMetadata[_]) = new CollectionPath[T,Q](t, q, md)
+  def collection[T, Q <: Ex[_ >: T]](t: Class[T], q: Class[Q], md: Metadata[_]) = new CollectionPath[T,Q](t, q, md)
 
-  def set[T, Q <: Ex[_ >: T]](t: Class[T], q: Class[Q], md: PathMetadata[_]) = new SetPath[T,Q](t, q, md)
+  def set[T, Q <: Ex[_ >: T]](t: Class[T], q: Class[Q], md: Metadata[_]) = new SetPath[T,Q](t, q, md)
 
-  def list[T, Q <: Ex[_ >: T]](t: Class[T], q: Class[Q], md: PathMetadata[_]) = new ListPath[T,Q](t, q, md)
+  def list[T, Q <: Ex[_ >: T]](t: Class[T], q: Class[Q], md: Metadata[_]) = new ListPath[T,Q](t, q, md)
 
-  def map[K, V, Q <: Ex[_ >: V]](k: Class[K], v: Class[V], q: Class[Q], md: PathMetadata[_]) = new MapPath[K, V, Q](k, v, q, md)
+  def map[K, V, Q <: Ex[_ >: V]](k: Class[K], v: Class[V], q: Class[Q], md: Metadata[_]) = new MapPath[K, V, Q](k, v, q, md)
 
-  def comparable[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_]) = new ComparablePath[T](t, md)
+  def comparable[T <: Comparable[_]](t: Class[_ <: T], md: Metadata[_]) = new ComparablePath[T](t, md)
 
-  def date[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_]) = new DatePath[T](t, md)
+  def date[T <: Comparable[_]](t: Class[_ <: T], md: Metadata[_]) = new DatePath[T](t, md)
 
-  def dateTime[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_]) = new DateTimePath[T](t, md)
+  def dateTime[T <: Comparable[_]](t: Class[_ <: T], md: Metadata[_]) = new DateTimePath[T](t, md)
 
-  def time[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_]) = new TimePath[T](t, md)
+  def time[T <: Comparable[_]](t: Class[_ <: T], md: Metadata[_]) = new TimePath[T](t, md)
 
-  def number[T <: Number with Comparable[T]](t: Class[T], md: PathMetadata[_]) = new NumberPath[T](t, md)
+  def number[T <: Number with Comparable[T]](t: Class[T], md: Metadata[_]) = new NumberPath[T](t, md)
 
-  def boolean(md: PathMetadata[_]) = new BooleanPath(md)
+  def boolean(md: Metadata[_]) = new BooleanPath(md)
 
-  def string(md: PathMetadata[_]) = new StringPath(md)
+  def string(md: Metadata[_]) = new StringPath(md)
 
-  def enum[T <: Enum[T]](t: Class[T], md: PathMetadata[_]) = new EnumPath[T](t, md)
+  def enum[T <: Enum[T]](t: Class[T], md: Metadata[_]) = new EnumPath[T](t, md)
   
   def any[T, Q <: Ex[_ >: T]](parent: Path[_], t: Class[T], q: Class[Q]): Q =  create(t, q, forCollectionAny(parent))      
   
-  def create[T, Q <: Ex[_ >: T]](t :Class[T], q: Class[Q], md: PathMetadata[_]): Q = {
+  def create[T, Q <: Ex[_ >: T]](t :Class[T], q: Class[Q], md: Metadata[_]): Q = {
       if (q == classOf[StringPath] || q == classOf[BooleanPath]) {
           q.getConstructor(classOf[PathMetadata[_]]).newInstance(md)
       } else {

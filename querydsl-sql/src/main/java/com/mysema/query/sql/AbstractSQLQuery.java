@@ -5,15 +5,12 @@
  */
 package com.mysema.query.sql;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +40,6 @@ import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
-import com.mysema.query.types.QBean;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
@@ -364,25 +360,16 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {
-        for (int i = 0; i < args.length; i++) {
-            if (args[i] instanceof RelationalPath) {
-                args[i] = ((RelationalPath)args[i]).getProjection();
-            }
-        }        
+    public CloseableIterator<Object[]> iterate(Expression<?>[] args) {     
         queryMixin.addToProjection(args);
         return iterateMultiple(queryMixin.getMetadata());
     }
 
     @Override
     public <RT> CloseableIterator<RT> iterate(Expression<RT> expr) {
-        if (expr instanceof RelationalPath<?>) {
-            return iterate(((RelationalPath<RT>)expr).getProjection());
-        } else {
-            expr = queryMixin.convert(expr);
-            queryMixin.addToProjection(expr);
-            return iterateSingle(queryMixin.getMetadata(), expr);
-        }
+        expr = queryMixin.convert(expr);
+        queryMixin.addToProjection(expr);
+        return iterateSingle(queryMixin.getMetadata(), expr);
     }
 
     private CloseableIterator<Object[]> iterateMultiple(QueryMetadata metadata) {
@@ -407,7 +394,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                             if (expr instanceof FactoryExpression) {
                                 objects.add(newInstance((FactoryExpression)expr, rs, index));
                                 index += ((FactoryExpression)expr).getArgs().size();
-                            }else if (expr.getType().isArray()) {
+                            } else if (expr.getType().isArray()) {
                                 for (int j = index; j < rs.getMetaData().getColumnCount(); j++) {
                                     objects.add(get(rs, expr, index++ + 1, Object.class));
                                 }
@@ -459,15 +446,15 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
                     try {
                         if (expr == null) {
                             return (RT) rs.getObject(1);
-                        }else if (expr instanceof FactoryExpression) {
+                        } else if (expr instanceof FactoryExpression) {
                             return newInstance((FactoryExpression<RT>) expr, rs, 0);
-                        }else if (expr.getType().isArray()) {
+                        } else if (expr.getType().isArray()) {
                             Object[] rv = new Object[rs.getMetaData().getColumnCount()];
                             for (int i = 0; i < rv.length; i++) {
                                 rv[i] = rs.getObject(i+1);
                             }
                             return (RT) rv;
-                        } else{
+                        } else {
                             return get(rs, expr, 1, expr.getType());
                         }
                     } catch (IllegalAccessException e) {

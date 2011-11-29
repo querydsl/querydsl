@@ -18,6 +18,7 @@ import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.QBean;
 import com.mysema.query.types.path.BeanPath;
+import com.mysema.util.ReflectionUtils;
 
 /**
  * RelationalPathBase is a base class for RelationPath implements
@@ -93,18 +94,15 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
             }                       
             try {
                 Map<String,Expression<?>> bindings = new HashMap<String,Expression<?>>();
-                Class<?> cl = getClass();
-                while (!cl.equals(Object.class)) {
-                    for (Field field : cl.getDeclaredFields()) {
-                        if (Path.class.isAssignableFrom(field.getType()) && !Modifier.isStatic(field.getModifiers())) {
-                            field.setAccessible(true);
-                            Path<?> column = (Path<?>) field.get(this);
-                            if (equals(column.getMetadata().getParent())) {
-                                bindings.put(field.getName(), column);
-                            }                    
-                        }
-                    }    
-                    cl = cl.getSuperclass();
+                for (Field field : ReflectionUtils.getFields(getClass())) {
+                    if (Path.class.isAssignableFrom(field.getType()) 
+                            && !Modifier.isStatic(field.getModifiers())) {
+                        field.setAccessible(true);
+                        Path<?> column = (Path<?>) field.get(this);
+                        if (equals(column.getMetadata().getParent())) {
+                            bindings.put(field.getName(), column);
+                        }                    
+                    }
                 }            
                 if (bindings.isEmpty()) {
                     throw new IllegalArgumentException("No bindings could be derived from " + this);
