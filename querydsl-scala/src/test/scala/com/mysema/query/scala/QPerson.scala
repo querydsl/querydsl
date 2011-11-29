@@ -19,30 +19,30 @@ class QPerson(cl: Class[_ <: Person], md: PathMetadata[_]) extends EntityPathImp
 
   lazy val other = new QPerson(this, "other")
 
-  val array = createArray("array", classOf[Array[String]])
+  val array = createArray[Array[String]]("array")
 
   val firstName = createString("firstName")
 
-  val javaCollection = createCollection("javaCollection", classOf[String], classOf[StringPath])
+  val javaCollection = createCollection[String,StringPath]("javaCollection")
 
-  val javaDouble = createNumber("javaDouble", classOf[java.lang.Double])
+  val javaDouble = createNumber[java.lang.Double]("javaDouble")
 
-  val javaInt = createNumber("javaInt", classOf[Integer])
+  val javaInt = createNumber[Integer]("javaInt")
 
-  val javaList = createList("javaList", classOf[String], classOf[StringPath])
+  val javaList = createList[String,StringPath]("javaList")
 
-  val javaMap = createMap("javaMap", classOf[String], classOf[String], classOf[StringPath])
+  val javaMap = createMap[String,String,StringPath]("javaMap")
 
-  val javaSet = createSet("javaSet", classOf[String], classOf[StringPath])
+  val javaSet = createSet[String,StringPath]("javaSet")
 
   val lastName = createString("lastName")
 
-  val listOfPersons = createList("listOfPersons", classOf[Person], classOf[QPerson])
+  val listOfPersons = createList[Person,QPerson]("listOfPersons")
 
-  val scalaInt = createNumber("scalaInt", classOf[Integer])
+  val scalaInt = createNumber[Integer]("scalaInt")
 
-  val scalaList = createList("scalaList", classOf[String], classOf[StringPath])
+  val scalaList = createList[String,StringPath]("scalaList")
 
-  val scalaMap = createMap("scalaMap", classOf[String], classOf[String], classOf[StringPath])
+  val scalaMap = createMap[String,String,StringPath]("scalaMap")
 
 }

@@ -1,4 +1,6 @@
 package com.mysema.query.scala.sql;
+
+import com.mysema.scala.ReflectionUtils._
 import com.mysema.query.scala.BeanPath
 import com.mysema.query.sql._
 import com.mysema.query.types._
@@ -7,6 +9,7 @@ import java.util.ArrayList;
 import java.lang.reflect._
 import scala.reflect.BeanProperty
 import com.mysema.query.scala.TypeDefs._
+import scala.collection.JavaConversions.mapAsJavaMap
 
 /**
  * Implementation of RelationsPathImpl for Scala
@@ -30,19 +33,18 @@ class RelationalPathImpl[T](md: PathMetadata[_], schema: String, table: String)(
   @BeanProperty
   val inverseForeignKeys: JList[ForeignKey[_]] = new ArrayList[ForeignKey[_]]
   
-  // TODO : implementation into Utility class  
   @BeanProperty
-  lazy val projection: FactoryExpression[T] = {
+  lazy val projection: FactoryExpression[T] = {    
     val rp = RelationalPathImpl.this
-    val bindings = new java.util.HashMap[String, Ex[_]]
-    def supers(cl: Class[_]): List[Class[_]] = cl :: Option(cl.getSuperclass).map(supers).getOrElse(Nil)    
-    supers(getClass).flatMap(_.getDeclaredFields)    
+    val bindings = getFields(getClass())
+      // only non static Path typed fields
       .filter(f => classOf[Path[_]].isAssignableFrom(f.getType) && !Modifier.isStatic(f.getModifiers))
-      .foreach(f => { 
-        f.setAccessible(true)
-        val col = f.get(rp).asInstanceOf[Path[_]]
-        if (rp == col.getMetadata.getParent) bindings.put(f.getName, col)        
-      })
+      // map to property,value tuples
+      .map(f => getNameAndValue[Path[_]](rp,f))
+      // filter non related tuples out
+      .filter(rp == _._2.getMetadata.getParent) 
+      .toMap
+      
     new QBean[T](getType.asInstanceOf[Class[T]], true, bindings)
   } 
   

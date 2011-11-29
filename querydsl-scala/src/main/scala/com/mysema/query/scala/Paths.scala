@@ -6,6 +6,7 @@ import com.mysema.query.codegen._;
 
 import com.mysema.codegen.model.TypeCategory
 
+import com.mysema.scala.ManifestUtils._
 import TypeDefs._
 
 /**
@@ -17,7 +18,7 @@ import TypeDefs._
 object Paths {
 
   type Metadata[X] = PathMetadata[X]
-  
+    
   def array[T <: Array[_]](t: Class[T], md: Metadata[_]) = new ArrayPath[T](t, md)
 
   def simple[T](t: Class[_ <: T], md: Metadata[_]) = new SimplePath[T](t, md)
@@ -76,40 +77,42 @@ class ArrayPath[T <: Array[_]](t: Class[T], md: PathMetadata[_])
 
 class BeanPath[T](t: Class[_ <: T], md: PathMetadata[_])
   extends PathImpl[T](t, md) with SimpleExpression[T] {
-
+  
   import Paths._  
     
+  type Mf[X] = Manifest[X]
+      
   def add[P <: Path[_]](path: P): P = path
   
-  def createArray[T <: Array[_]](property: String, t: Class[T]) = add(array(t, forProperty(property)))
+  def createArray[T <: Array[_]](property: String)(implicit mf: Mf[T]) = add(array(mf, forProperty(property)))
 
-  def createSimple[T](property: String, t: Class[T]) = add(simple(t, forProperty(property)))
+  def createSimple[T](property: String)(implicit mf: Mf[T]) = add(simple(mf, forProperty(property)))
 
-  def createEntity[T](property: String, t: Class[T]) = add(entity(t, forProperty(property)))
+  def createEntity[T](property: String)(implicit mf: Mf[T]) = add(entity(t, forProperty(property)))
 
-  def createCollection[T, Q <: Ex[_ >: T]](property: String, t: Class[T], q: Class[Q]) = add(collection(t, q, forProperty(property)))
+  def createCollection[T, Q <: Ex[_ >: T]](property: String)(implicit t: Mf[T], q: Mf[Q]) = add(collection(t, q, forProperty(property)))
 
-  def createSet[T, Q <: Ex[_ >: T]](property: String, t: Class[T], q: Class[Q]) = add(set(t, q, forProperty(property)))
+  def createSet[T, Q <: Ex[_ >: T]](property: String)(implicit t: Mf[T], q: Mf[Q]) = add(set(t, q, forProperty(property)))
 
-  def createList[T, Q <: Ex[_ >: T]](property: String, t: Class[T], q: Class[Q]) = add(list(t, q, forProperty(property)))
+  def createList[T, Q <: Ex[_ >: T]](property: String)(implicit t: Mf[T], q: Mf[Q]) = add(list(t, q, forProperty(property)))
 
-  def createMap[K, V, Q <: Ex[_ >: V]](property: String, k: Class[K], v: Class[V], q: Class[Q]) = add(map(k, v, q, forProperty(property)))
+  def createMap[K, V, Q <: Ex[_ >: V]](property: String)(implicit k: Mf[K], v: Mf[V], q: Mf[Q]) = add(map(k, v, q, forProperty(property)))
 
-  def createComparable[T <: Comparable[_]](property: String, t: Class[T]) = add(comparable(t, forProperty(property)))
+  def createComparable[T <: Comparable[_]](property: String)(implicit mf: Mf[T]) = add(comparable(mf, forProperty(property)))
 
-  def createDate[T <: Comparable[_]](property: String, t: Class[T]) = add(date(t, forProperty(property)))
+  def createDate[T <: Comparable[_]](property: String)(implicit mf: Mf[T]) = add(date(mf, forProperty(property)))
 
-  def createDateTime[T <: Comparable[_]](property: String, t: Class[T]) = add(dateTime(t, forProperty(property)))
+  def createDateTime[T <: Comparable[_]](property: String)(implicit mf: Mf[T]) = add(dateTime(mf, forProperty(property)))
 
-  def createTime[T <: Comparable[_]](property: String, t: Class[T]) = add(time(t, forProperty(property)))
+  def createTime[T <: Comparable[_]](property: String)(implicit mf: Mf[T]) = add(time(mf, forProperty(property)))
 
-  def createNumber[T <: Number with Comparable[T]](property: String, t: Class[T]) = add(number(t, forProperty(property)))
+  def createNumber[T <: Number with Comparable[T]](property: String)(implicit mf: Mf[T]) = add(number(mf, forProperty(property)))
 
   def createBoolean(property: String) = add(boolean(forProperty(property)))
 
   def createString(property: String) = add(string(forProperty(property)))
 
-  def createEnum[T <: Enum[T]](property: String, t: Class[T]) = add(enum(t, forProperty(property)))
+  def createEnum[T <: Enum[T]](property: String)(implicit mf: Mf[T]) = add(enum(mf, forProperty(property)))
   
   private def forProperty(property: String) = PathMetadataFactory.forProperty(this, property)    
     

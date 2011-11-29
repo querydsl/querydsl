@@ -11,6 +11,16 @@ import com.mysema.query.scala.TypeDefs._
 import com.mysema.query.scala.RichProjectable
 import com.mysema.query.scala.Projections._
 
+/**
+ * RichSimpleQuery provides a simplied query DSL for Querydsl SQL + Scala
+ * 
+ * @author tiwe
+ *
+ * @param <PT>
+ * @param <P>
+ * @param <T>
+ * @param <E>
+ */
 class RichSimpleQuery[PT, P <: RelationalPath[PT], T, E <: Ex[T]](path: P, expr: E, qry: SQLQuery) 
 extends RichProjectable(qry) {
   
@@ -88,12 +98,22 @@ object ExprToTarget {
   
   implicit def pathToTuple2[T,E <: RP[T],T2,E2 <: RP[T2]] = {
     new ExprToTarget[T,E,T2,E2,(T,T2),Tu2Ex[T,T2]]() {
-    def toTarget(e: E, rp: E2) = new Tu2Ex[T,T2](e,rp)
+    def toTarget(e: E, rp: E2) = new Tu2Ex[T,T2](e, rp)
   }}
   
   implicit def tuple2ToTuple3[T1,E1 <: Ex[T1],T2,E2 <: Ex[T2],T3,E3 <: RP[T3]] = {
     new ExprToTarget[(T1,T2),Tu2Ex[T1,T2],T3,E3,(T1,T2,T3),Tu3Ex[T1,T2,T3]]() {
     def toTarget(e: Tu2Ex[T1,T2], rp: E3) = new Tu3Ex[T1,T2,T3](e(0), e(1), rp)
+  }}
+  
+  implicit def tuple3ToTuple4[T1,E1 <: Ex[T1],T2,E2 <: Ex[T2],T3,E3 <: Ex[T3],T4,E4 <: RP[T4]] = {
+    new ExprToTarget[(T1,T2,T3),Tu3Ex[T1,T2,T3],T4,E4,(T1,T2,T3,T4),Tu4Ex[T1,T2,T3,T4]]() {
+    def toTarget(e: Tu3Ex[T1,T2,T3], rp: E4) = new Tu4Ex[T1,T2,T3,T4](e(0), e(1), e(2), rp)
+  }}
+  
+  implicit def tuple4ToTuple5[T1,E1 <: Ex[T1],T2,E2 <: Ex[T2],T3,E3 <: Ex[T3],T4,E4 <: Ex[T4],T5,E5 <: RP[T5]] = {
+    new ExprToTarget[(T1,T2,T3,T4),Tu4Ex[T1,T2,T3,T4],T5,E5,(T1,T2,T3,T4,T5),Tu5Ex[T1,T2,T3,T4,T5]]() {
+    def toTarget(e: Tu4Ex[T1,T2,T3,T4], rp: E5) = new Tu5Ex[T1,T2,T3,T4,T5](e(0), e(1), e(2), e(3), rp)
   }}
   
 }

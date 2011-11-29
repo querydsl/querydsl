@@ -9,7 +9,7 @@ import Matchers._
 class QPersonTest {
 
   val person = QPerson as "person"
-    
+      
   @Test 
   def EntityPath {
     assertEquals("person.other.firstName", person.other.firstName)

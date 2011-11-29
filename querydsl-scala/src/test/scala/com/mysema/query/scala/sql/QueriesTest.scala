@@ -3,6 +3,7 @@ package com.mysema.query.scala.sql
 import org.junit._
 import org.junit.Assert._
 import com.mysema.query.sql._
+import com.mysema.query.types._
 import java.sql.Connection
 
 import test._
@@ -12,7 +13,7 @@ class QueriesTest extends SQLHelpers {
   val templates = new H2Templates()
   
   def connection: Connection = null
-  
+    
   @Test
   def From {
     assertEquals("from EMPLOYEE employee", Employee.query.toString)

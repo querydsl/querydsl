@@ -21,11 +21,11 @@ class QEmployee(md: PathMetadata[_]) extends RelationalPathImpl[Employee](md, "P
 
   val firstname = createString("FIRSTNAME")
 
-  val id = createNumber("ID", classOf[Integer])
+  val id = createNumber[Integer]("ID")
 
   val lastname = createString("LASTNAME")
 
-  val superiorId = createNumber("SUPERIOR_ID", classOf[Integer])
+  val superiorId = createNumber[Integer]("SUPERIOR_ID")
 
   val sysIdx55: PrimaryKey[Employee] = createPrimaryKey(id);
 

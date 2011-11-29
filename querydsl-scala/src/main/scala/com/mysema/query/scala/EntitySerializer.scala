@@ -129,17 +129,15 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
         case LIST | SET | COLLECTION => {
           val componentType = writer.getGenericName(true, property.getParameter(0))
           val queryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false)
-          methodName + "(\"" + property.getName + "\", classOf[" + componentType + "], classOf[" + 
-              writer.getGenericName(true, queryType) + "])"
+          methodName + "["+componentType+","+writer.getGenericName(true, queryType)+"](\"" + property.getName + "\")"
         }
         case MAP => {
             val keyType = writer.getGenericName(true, property.getParameter(0))
             val valueType = writer.getGenericName(true, property.getParameter(1))
             val queryType = typeMappings.getPathType(getRaw(property.getParameter(1)), model, false)
-            methodName + "(\"" + property.getName + "\", classOf[" + keyType + "], classOf[" + valueType + "], classOf[" + 
-                writer.getGenericName(true, queryType) + "])"      
+            methodName + "["+keyType+","+valueType+","+writer.getGenericName(true, queryType)+"](\"" + property.getName + "\")"      
         }
-        case _ => methodName + "(\"" + property.getName + "\", classOf[" + writer.getRawName(property.getType) + "])"
+        case _ => methodName + "[" + writer.getRawName(property.getType) + "](\"" + property.getName + "\")"
       }
       (property.getEscapedName, value)
     }

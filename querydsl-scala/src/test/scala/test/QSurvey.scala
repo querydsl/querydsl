@@ -18,7 +18,7 @@ class QSurvey(md: PathMetadata[_]) extends RelationalPathImpl[Survey](md, "PUBLI
 
   def this(parent: Path[_], variable: String) = this(forProperty(parent, variable))
 
-  val id = createNumber("ID", classOf[Integer])
+  val id = createNumber[Integer]("ID")
 
   val name = createString("NAME")
 
