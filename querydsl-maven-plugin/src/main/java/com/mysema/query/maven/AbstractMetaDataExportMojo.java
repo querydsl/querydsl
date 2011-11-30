@@ -128,6 +128,16 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
     private String namingStrategyClass;
 
     /**
+     * @parameter
+     */
+    private String beanSerializerClass;
+    
+    /**
+     * @parameter
+     */
+    private String serializerClass;
+    
+    /**
      * serialize beans as well
      *
      * @parameter default-value=false
@@ -159,6 +169,11 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      * @parameter
      */
     private String[] customTypes;
+    
+    /**
+     * @parameter default-value=false
+     */
+    private boolean createScalaSources;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -194,6 +209,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         if (beanSuffix != null) {
             exporter.setBeanSuffix(beanSuffix);
         }
+        exporter.setCreateScalaSources(createScalaSources);
         exporter.setPackageName(packageName);
         exporter.setBeanPackageName(beanPackageName);
         exporter.setInnerClassesForKeys(innerClassesForKeys);
@@ -203,7 +219,23 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         exporter.setTableNamePattern(tableNamePattern);
         exporter.setColumnAnnotations(columnAnnotations);
         exporter.setValidationAnnotations(validationAnnotations);
+        if (serializerClass != null) {
+            try {
+                exporter.setSerializerClass((Class)Class.forName(serializerClass));
+            } catch (ClassNotFoundException e) {
+                getLog().error(e);
+                throw new MojoExecutionException(e.getMessage(), e);
+            }
+        }
         if (exportBeans) {
+            if (beanSerializerClass != null) {
+                try {
+                    exporter.setBeanSerializerClass((Class)Class.forName(beanSerializerClass));
+                } catch (ClassNotFoundException e) {
+                    getLog().error(e);
+                    throw new MojoExecutionException(e.getMessage(), e);
+                }
+            }
             exporter.setBeanSerializer(new BeanSerializer());
         }
         String sourceEncoding = (String)project.getProperties().get("project.build.sourceEncoding");
@@ -248,7 +280,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
             throw new MojoExecutionException(e.getMessage(), e);
         }
     }
-
+    
     protected boolean isForTest() {
         return false;
     }
