@@ -107,10 +107,6 @@ public class JPQLTemplates extends Templates {
         return false;
     }
 
-    public boolean wrapConstant(Constant<?> expr) {
-        return false;
-    }
-
     public boolean isTypeAsString() {
         // TODO : get rid of this when Hibernate supports type(alias)
         return false;

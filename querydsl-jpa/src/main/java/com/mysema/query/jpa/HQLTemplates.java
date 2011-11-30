@@ -1,10 +1,8 @@
 package com.mysema.query.jpa;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
-import com.mysema.query.types.Constant;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.PathType;
@@ -15,7 +13,7 @@ import com.mysema.query.types.PathType;
  * @author tiwe
  *
  */
-public class HQLTemplates extends JPQLTemplates{
+public class HQLTemplates extends JPQLTemplates {
 
     private static final List<Operator<?>> wrapElements = Arrays.<Operator<?>> asList(
             Ops.QuantOps.ALL,
@@ -59,12 +57,6 @@ public class HQLTemplates extends JPQLTemplates{
     @Override
     public boolean wrapElements(Operator<?> operator){
         return wrapElements.contains(operator);
-    }
-
-    @Override
-    public boolean wrapConstant(Constant<?> expr) {
-        Class<?> type = expr.getType();
-        return type.isArray() || Collection.class.isAssignableFrom(type);
     }
 
     @Override
