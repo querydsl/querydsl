@@ -11,7 +11,7 @@ import scala.collection.mutable.ListBuffer
 object ReflectionUtils {
     
   def getSuperClasses(cl: Class[_]): List[Class[_]] = { 
-    if (cl != null) Nil else cl :: getSuperClasses(cl.getSuperclass)
+    if (cl == null) Nil else cl :: getSuperClasses(cl.getSuperclass)
   } 
     
   def getFields(cl: Class[_]): List[Field] = {

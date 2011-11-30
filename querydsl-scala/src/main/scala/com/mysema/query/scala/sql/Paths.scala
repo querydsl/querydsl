@@ -34,19 +34,18 @@ class RelationalPathImpl[T](md: PathMetadata[_], schema: String, table: String)(
   val inverseForeignKeys: JList[ForeignKey[_]] = new ArrayList[ForeignKey[_]]
   
   @BeanProperty
-  lazy val projection: FactoryExpression[T] = {    
-    val rp = RelationalPathImpl.this
-    val bindings = getFields(getClass())
-      // only non static Path typed fields
-      .filter(f => classOf[Path[_]].isAssignableFrom(f.getType) && !Modifier.isStatic(f.getModifiers))
-      // map to property,value tuples
-      .map(f => getNameAndValue[Path[_]](rp,f))
-      // filter non related tuples out
-      .filter(rp == _._2.getMetadata.getParent) 
-      .toMap
-      
-    new QBean[T](getType.asInstanceOf[Class[T]], true, bindings)
-  } 
+  lazy val projection: FactoryExpression[T] = RelationalPathUtils.createProjection(this)
+//    val rp = RelationalPathImpl.this
+//    val bindings = getFields(getClass)
+//      // only non static Path typed fields
+//      .filter(f => classOf[Path[_]].isAssignableFrom(f.getType) && !Modifier.isStatic(f.getModifiers))
+//      // map to property,value tuples
+//      .map(f => getNameAndValue[Path[_]](rp,f))
+//      // filter non related tuples out
+//      .filter(rp == _._2.getMetadata.getParent) 
+//      .toMap      
+//    new QBean[T](getType.asInstanceOf[Class[T]], true, bindings)
+//  } 
   
   def this(variable: String, schema: String, table: String)(implicit mf: Manifest[T]) = this(forVariable(variable), schema, table)(mf)
   

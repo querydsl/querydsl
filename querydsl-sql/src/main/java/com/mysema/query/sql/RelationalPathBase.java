@@ -1,24 +1,16 @@
 package com.mysema.query.sql;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.QueryException;
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
-import com.mysema.query.types.QBean;
 import com.mysema.query.types.path.BeanPath;
-import com.mysema.util.ReflectionUtils;
 
 /**
  * RelationalPathBase is a base class for RelationPath implements
@@ -89,28 +81,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     @Override
     public FactoryExpression<T> getProjection() {
         if (projection == null) {
-            if (getType().equals(getClass())) {
-                throw new IllegalArgumentException("RelationalPath based projection can only be used with generated Bean types");
-            }                       
-            try {
-                Map<String,Expression<?>> bindings = new HashMap<String,Expression<?>>();
-                for (Field field : ReflectionUtils.getFields(getClass())) {
-                    if (Path.class.isAssignableFrom(field.getType()) 
-                            && !Modifier.isStatic(field.getModifiers())) {
-                        field.setAccessible(true);
-                        Path<?> column = (Path<?>) field.get(this);
-                        if (equals(column.getMetadata().getParent())) {
-                            bindings.put(field.getName(), column);
-                        }                    
-                    }
-                }            
-                if (bindings.isEmpty()) {
-                    throw new IllegalArgumentException("No bindings could be derived from " + this);
-                }                
-                projection = new QBean<T>((Class)getType(), true, bindings);
-            } catch(IllegalAccessException e) {
-                throw new QueryException(e);
-            }            
+            projection = RelationalPathUtils.createProjection(this);  
         }
         return projection;
         
