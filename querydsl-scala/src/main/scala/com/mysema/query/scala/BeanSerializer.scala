@@ -22,7 +22,7 @@ class ScalaBeanSerializer @Inject() (typeMappings: TypeMappings) extends BeanSer
 
   var javadocSuffix = " is a Querydsl bean type"
   
-  var javaBeanSupport = true
+  var javaBeanSupport = false
     
   def writeClass(model: EntityType, writer: ScalaWriter) = {
     // javadoc        

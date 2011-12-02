@@ -196,6 +196,17 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         } else {
             namingStrategy = new DefaultNamingStrategy();
         }
+
+        // defaults for Scala
+        if (createScalaSources) {
+            if (serializerClass == null) {
+                serializerClass = "com.mysema.query.scala.sql.ScalaMetaDataSerializer";
+            }  
+            if (exportBeans && beanSerializerClass == null) {
+                beanSerializerClass = "com.mysema.query.scala.ScalaBeanSerializer";
+            }
+        }
+
         MetaDataExporter exporter = new MetaDataExporter();
         if (namePrefix != null) {
             exporter.setNamePrefix(namePrefix);
@@ -235,8 +246,10 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
                     getLog().error(e);
                     throw new MojoExecutionException(e.getMessage(), e);
                 }
+            } else {
+                exporter.setBeanSerializer(new BeanSerializer());
             }
-            exporter.setBeanSerializer(new BeanSerializer());
+            
         }
         String sourceEncoding = (String)project.getProperties().get("project.build.sourceEncoding");
         if (sourceEncoding != null) {

@@ -163,6 +163,16 @@ class JDBCIntegrationTest extends CompileTestUtils with SQLHelpers {
   }
   
   @Test
+  def Order_By {
+    query.from(survey).orderBy(survey.id asc).select(survey)
+  }
+  
+  @Test
+  def Order_By_2 {
+    survey.orderBy(_.id asc).select
+  }
+  
+  @Test
   def Join {
     val sup = Employee as "sup"
     val result: List[(Employee, Employee)] = employee.join(_.superiorFk, sup).select
