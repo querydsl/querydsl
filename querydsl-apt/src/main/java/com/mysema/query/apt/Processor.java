@@ -70,11 +70,11 @@ import com.mysema.query.codegen.TypeMappings;
  */
 public class Processor {
 
-    /**
-     * Cache for annotated elements
-     */
-    static final Map<Class<? extends Annotation>, Set<Element>> elementCache = Collections.synchronizedMap(
-            new HashMap<Class<? extends Annotation>,Set<Element>>());
+//    /**
+//     * Cache for annotated elements
+//     */
+//    static final Map<Class<? extends Annotation>, Set<Element>> elementCache = Collections.synchronizedMap(
+//            new HashMap<Class<? extends Annotation>,Set<Element>>());
 
     /**
      * Mapping of entity types to TypeElements which contribute to the generated class
@@ -289,7 +289,7 @@ public class Processor {
         // only creation
         for (Element element : getElements(annotation)) {
             for (AnnotationMirror mirror : element.getAnnotationMirrors()) {
-                if (mirror.getAnnotationType().asElement().getSimpleName().toString().equals(annotation.getSimpleName())) {
+                if (TypeUtils.isAnnotationMirrorOfType(mirror, annotation)) {
                     for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : mirror.getElementValues().entrySet()) {
                         if (entry.getKey().getSimpleName().toString().equals("value")) {
                             List<AnnotationValue> values = (List<AnnotationValue>) entry.getValue().getValue();
@@ -406,50 +406,50 @@ public class Processor {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private Set<Element> getElementsAndCache(Class<? extends Annotation> annotationType) {
-        Set<Element> elements = (Set<Element>)getElements(annotationType);
-        if (!elements.isEmpty()) {
-            Set<Element> cached = elementCache.get(annotationType);
-            if (cached == null) {
-                cached = new HashSet<Element>();
-                elementCache.put(annotationType, cached);
-            }
-            cached.addAll(elements);
-        }
-        return elements;
-    }
+//    @SuppressWarnings("unchecked")
+//    private Set<Element> getElementsAndCache(Class<? extends Annotation> annotationType) {
+//        Set<Element> elements = (Set<Element>)getElements(annotationType);
+//        if (!elements.isEmpty()) {
+//            Set<Element> cached = elementCache.get(annotationType);
+//            if (cached == null) {
+//                cached = new HashSet<Element>();
+//                elementCache.put(annotationType, cached);
+//            }
+//            cached.addAll(elements);
+//        }
+//        return elements;
+//    }
 
-    private Set<Element> getElementsFromCache(Class<? extends Annotation> annotationType) {
-        Set<Element> cached = elementCache.get(annotationType);
-        if (cached != null) {
-            Set<Element> cloned = new HashSet<Element>();
-            for (Element element : cached) {
-                // clone type element
-                if (element instanceof TypeElement) {
-                    cloned.add(env.getElementUtils().getTypeElement(((TypeElement) element).getQualifiedName().toString()));
-                // cloned other elements via parent
-                } else {
-                    Element parent = element.getEnclosingElement();
-                    if (parent instanceof TypeElement) {
-                        parent = env.getElementUtils().getTypeElement(((TypeElement) parent).getQualifiedName().toString());
-                        for (Element child : parent.getEnclosedElements()) {
-                            // TODO : better equals check
-                            if (child.getKind() == element.getKind() && child.getSimpleName().equals(element.getSimpleName())) {
-                                cloned.add(child);
-                            }
-                        }
-                    } else {
-                        env.getMessager().printMessage(Kind.WARNING, element + " from cache");
-                        cloned.add(element);
-                    }
-                }
-            }
-            return cloned;
-        } else {
-            return Collections.emptySet();
-        }
-    }
+//    private Set<Element> getElementsFromCache(Class<? extends Annotation> annotationType) {
+//        Set<Element> cached = elementCache.get(annotationType);
+//        if (cached != null) {
+//            Set<Element> cloned = new HashSet<Element>();
+//            for (Element element : cached) {
+//                // clone type element
+//                if (element instanceof TypeElement) {
+//                    cloned.add(env.getElementUtils().getTypeElement(((TypeElement) element).getQualifiedName().toString()));
+//                // cloned other elements via parent
+//                } else {
+//                    Element parent = element.getEnclosingElement();
+//                    if (parent instanceof TypeElement) {
+//                        parent = env.getElementUtils().getTypeElement(((TypeElement) parent).getQualifiedName().toString());
+//                        for (Element child : parent.getEnclosedElements()) {
+//                            // TODO : better equals check
+//                            if (child.getKind() == element.getKind() && child.getSimpleName().equals(element.getSimpleName())) {
+//                                cloned.add(child);
+//                            }
+//                        }
+//                    } else {
+//                        env.getMessager().printMessage(Kind.WARNING, element + " from cache");
+//                        cloned.add(element);
+//                    }
+//                }
+//            }
+//            return cloned;
+//        } else {
+//            return Collections.emptySet();
+//        }
+//    }
   
     private void mergeTypes(Map<String, EntityType> types, Deque<Type> superTypes) {
         // get external supertypes
@@ -502,7 +502,7 @@ public class Processor {
 
         EntityType entityType = null;
         for (AnnotationMirror annotation : delegateMethod.getAnnotationMirrors()) {
-            if (annotation.getAnnotationType().asElement().getSimpleName().toString().equals(QueryDelegate.class.getSimpleName())) {
+            if (TypeUtils.isAnnotationMirrorOfType(annotation, QueryDelegate.class)) {
                 for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : annotation.getElementValues().entrySet()) {
                     if (entry.getKey().getSimpleName().toString().equals("value")) {
                         if (entry.getValue().getValue() instanceof TypeMirror) {
@@ -525,12 +525,14 @@ public class Processor {
 
     private void processDelegateMethods() {
         //  get elements from cache
-        for (Element delegateMethod : getElementsFromCache(QueryDelegate.class)) {
+//        for (Element delegateMethod : getElementsFromCache(QueryDelegate.class)) {
+        for (Element delegateMethod : getElements(QueryDelegate.class)) {
             processDelegateMethod(delegateMethod, true);
         }
 
         // get elements from roundEnv
-        for (Element delegateMethod : getElementsAndCache(QueryDelegate.class)) {
+//        for (Element delegateMethod : getElementsAndCache(QueryDelegate.class)) {
+        for (Element delegateMethod : getElements(QueryDelegate.class)) {
             processDelegateMethod(delegateMethod, false);
         }
     }
@@ -650,56 +652,21 @@ public class Processor {
 
     private void serialize(Serializer serializer, Collection<EntityType> models) {
         Messager msg = env.getMessager();
-        for (EntityType model : models) {
-            
+        Filer filer = env.getFiler();
+        for (EntityType model : models) {            
             try {
-
                 Type type = configuration.getTypeMappings().getPathType(model, model, true);
                 String packageName = type.getPackageName();
                 String className = !packageName.isEmpty() ? (packageName + "." + type.getSimpleName()) : type.getSimpleName();
                 
+                // skip if type is excluded class or in excluded package
                 if (configuration.isExcludedPackage(model.getPackageName()) || configuration.isExcludedClass(model.getFullName())) {
                     continue;
-                }
+                }                
                 
-                Filer filer = env.getFiler();
                 Set<TypeElement> elements = typeElements.get(model.getFullName());
                 
-                boolean generate = false;
-                try {
-                    FileObject generatedFile = filer.getResource(StandardLocation.SOURCE_OUTPUT, packageName, type.getSimpleName() + ".java");                    
-                    if (elements != null){
-                        boolean foundSources = false;
-                        for (TypeElement element : elements) {
-                            FileObject sourceFile = getSourceFile(element.getQualifiedName().toString());
-                            // Source file is accessible and exists
-                            if (sourceFile != null && sourceFile.getLastModified() > 0) {
-                                foundSources = true;
-                                // Generate if source has changed since Q-type was last time generated
-                                generate |= generatedFile.getLastModified() <= sourceFile.getLastModified();
-                            }
-                        }
-                        if (!foundSources) {
-                            if (configuration.isDefaultOverwrite()) {
-                                generate = true;
-                            } else {
-                                generate = generatedFile.getLastModified() <= 0;
-                            }
-                        }
-
-                    } else {
-                        // Play safe and generate as we don't know if source has changed or not
-                        if (configuration.isDefaultOverwrite()) {
-                            generate = true;
-                        } else {
-                            generate = generatedFile.getLastModified() <= 0;
-                        }
-                    }
-                } catch( FileNotFoundException e) {
-                    generate = true;
-                }
-                
-                if (generate) {
+                if (isGenerated(type, filer, elements)) {
                     if (elements == null) {
                         elements = new HashSet<TypeElement>();
                     }
@@ -732,6 +699,44 @@ public class Processor {
                 msg.printMessage(Kind.ERROR, e.getMessage());
             }
         }
+    }
+
+    protected boolean isGenerated(Type type, Filer filer, Set<TypeElement> elements) throws IOException {
+        String packageName = type.getPackageName();
+        boolean generate = false;
+        try {
+            FileObject generatedFile = filer.getResource(StandardLocation.SOURCE_OUTPUT, packageName, type.getSimpleName() + ".java");                    
+            if (elements != null){
+                boolean foundSources = false;
+                for (TypeElement element : elements) {
+                    FileObject sourceFile = getSourceFile(element.getQualifiedName().toString());
+                    // Source file is accessible and exists
+                    if (sourceFile != null && sourceFile.getLastModified() > 0) {
+                        foundSources = true;
+                        // Generate if source has changed since Q-type was last time generated
+                        generate |= generatedFile.getLastModified() <= sourceFile.getLastModified();
+                    }
+                }
+                if (!foundSources) {
+                    if (configuration.isDefaultOverwrite()) {
+                        generate = true;
+                    } else {
+                        generate = generatedFile.getLastModified() <= 0;
+                    }
+                }
+
+            } else {
+                // Play safe and generate as we don't know if source has changed or not
+                if (configuration.isDefaultOverwrite()) {
+                    generate = true;
+                } else {
+                    generate = generatedFile.getLastModified() <= 0;
+                }
+            }
+        } catch( FileNotFoundException e) {
+            generate = true;
+        }
+        return generate;
     }
 
     private void serializeVariableList(String packageName, Variables vars, List<EntityType> models) {
