@@ -8,7 +8,6 @@ package com.mysema.query.scala;
 import com.mysema.query.types._;
 import com.mysema.query.types.PathMetadataFactory._;
 import com.mysema.query.codegen._;
-import TypeDefs._
 
 import com.mysema.codegen.model.TypeCategory
 

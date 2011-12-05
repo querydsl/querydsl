@@ -12,12 +12,11 @@ import com.mysema.query._
 import com.mysema.query.types.{ Expression, OrderSpecifier, Predicate }
 
 import com.mysema.query.scala._
-import com.mysema.query.scala.TypeDefs._
 import com.mysema.query.scala.RichProjectable
 import com.mysema.query.scala.Projections._
 
 /**
- * RichSimpleQuery provides a simplied query DSL for Querydsl SQL + Scala
+ * RichSimpleQuery provides a simplified query DSL for Querydsl SQL + Scala
  * 
  * @author tiwe
  *

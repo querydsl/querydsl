@@ -6,14 +6,13 @@
 package com.mysema.query.scala.sql;
 
 import com.mysema.scala.ReflectionUtils._
-import com.mysema.query.scala.BeanPath
+import com.mysema.query.scala._
 import com.mysema.query.sql._
 import com.mysema.query.types._
 import com.mysema.query.types.PathMetadataFactory._
 import java.util.ArrayList;
 import java.lang.reflect._
 import scala.reflect.BeanProperty
-import com.mysema.query.scala.TypeDefs._
 import scala.collection.JavaConversions.mapAsJavaMap
 
 /**

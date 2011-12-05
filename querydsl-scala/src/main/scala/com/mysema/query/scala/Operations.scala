@@ -6,7 +6,6 @@
 package com.mysema.query.scala;
 
 import com.mysema.query.types._;
-import TypeDefs._
 
 /**
  * Factory for Operations

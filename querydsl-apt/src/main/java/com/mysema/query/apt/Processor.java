@@ -455,7 +455,7 @@ public class Processor {
         // get external supertypes
         while (!superTypes.isEmpty()) {
             Type superType = superTypes.pop();
-            if (!types.containsKey(superType.getFullName())  && !allSupertypes.containsKey(superType.getFullName())) {
+            if (!types.containsKey(superType.getFullName()) && !allSupertypes.containsKey(superType.getFullName())) {
                 TypeElement typeElement = env.getElementUtils().getTypeElement(superType.getFullName());
                 if (typeElement == null) {
                     throw new IllegalStateException("Found no type for " + superType.getFullName());
@@ -666,7 +666,7 @@ public class Processor {
                 
                 Set<TypeElement> elements = typeElements.get(model.getFullName());
                 
-                if (isGenerated(type, filer, elements)) {
+                if (isGenerate(type, filer, elements)) {
                     if (elements == null) {
                         elements = new HashSet<TypeElement>();
                     }
@@ -701,7 +701,7 @@ public class Processor {
         }
     }
 
-    protected boolean isGenerated(Type type, Filer filer, Set<TypeElement> elements) throws IOException {
+    protected boolean isGenerate(Type type, Filer filer, Set<TypeElement> elements) throws IOException {
         String packageName = type.getPackageName();
         boolean generate = false;
         try {

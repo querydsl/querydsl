@@ -8,8 +8,6 @@ package com.mysema.query.scala;
 import com.mysema.query.types._
 import java.util.{ Arrays }
 
-import TypeDefs._
-
 object Projections extends Projections
 
 /**

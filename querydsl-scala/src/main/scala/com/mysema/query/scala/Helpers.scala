@@ -11,7 +11,6 @@ import com.mysema.query.types._
 import com.mysema.query.scala.GroupBy._
 
 import Projections._
-import TypeDefs._
 
 object Helpers extends Helpers
 

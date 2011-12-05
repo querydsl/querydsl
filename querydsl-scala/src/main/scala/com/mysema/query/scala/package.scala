@@ -3,11 +3,11 @@
  * All rights reserved.
  *
  */
-package com.mysema.query.scala
+package com.mysema.query
 
-import com.mysema.query.types._
+package object scala {
 
-object TypeDefs {
+  import com.mysema.query.types._
   
   type Ex[T] = Expression[T]
   
@@ -19,6 +19,5 @@ object TypeDefs {
   
   type Tu5Ex[T1,T2,T3,T4,T5] = Tuple5Expression[T1,T2,T3,T4,T5]
   
-  type JavaList[T] = java.util.List[T]
-  
-}
+  type JavaList[T] = java.util.List[T]  
+} 

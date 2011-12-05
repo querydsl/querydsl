@@ -51,6 +51,7 @@ class ScalaBeanSerializerTest extends CompileTestUtils {
   @Test
   def Print {
     val serializer = new ScalaBeanSerializer(typeMappings)
+    serializer.javaBeanSupport = true
     typeMappings.register(entityType, new QueryTypeFactoryImpl("Q", "", "").create(entityType))
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
     

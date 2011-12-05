@@ -10,7 +10,6 @@ import com.mysema.query.group._
 
 import scala.collection.immutable.{ List, Set, Map }
 import scala.collection.mutable.{ ListBuffer, Set => MSet, Map => MMap }
-import TypeDefs._
 
 object GroupBy extends GroupBy
 

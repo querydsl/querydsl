@@ -12,7 +12,7 @@ import com.mysema.query.codegen._;
 import com.mysema.codegen.model.TypeCategory
 
 import com.mysema.scala.ManifestUtils._
-import TypeDefs._
+
 
 /**
  * Factory for Paths

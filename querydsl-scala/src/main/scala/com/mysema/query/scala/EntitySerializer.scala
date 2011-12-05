@@ -25,7 +25,7 @@ import scala.collection.JavaConversions._
 import scala.collection.mutable.Set
 import scala.collection.immutable.Map
 
-import javax.inject.Inject;
+import javax.inject.Inject
 
 /**
  * EntitySerializer for Scala
