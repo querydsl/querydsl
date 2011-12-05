@@ -19,5 +19,4 @@ package object scala {
   
   type Tu5Ex[T1,T2,T3,T4,T5] = Tuple5Expression[T1,T2,T3,T4,T5]
   
-  type JavaList[T] = java.util.List[T]  
 } 
