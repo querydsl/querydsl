@@ -17,11 +17,14 @@ import java.lang.annotation.Target;
  * The type will contain public static final constants for the entity types of the package.
  *
  * @author tiwe
+ * 
+ * @deprecated will be removed soon
  *
  */
 @Documented
 @Target({PACKAGE})
 @Retention(RUNTIME)
+@Deprecated
 public @interface Variables {
 
     /**
