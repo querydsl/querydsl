@@ -18,6 +18,7 @@ import com.mysema.query.annotations.QueryEntities;
 import com.mysema.query.apt.AbstractQuerydslProcessor;
 import com.mysema.query.apt.Configuration;
 import com.mysema.query.apt.DefaultConfiguration;
+import com.mysema.query.mongodb.Point;
 
 /**
  * Annotation processor to create Querydsl query types for Morphia annoated classes
@@ -34,8 +35,10 @@ public class MorphiaAnnotationProcessor extends AbstractQuerydslProcessor {
         Class<? extends Annotation> entity = Entity.class;
         Class<? extends Annotation> embedded = Embedded.class;
         Class<? extends Annotation> skip = Transient.class;
-        return new DefaultConfiguration(roundEnv, processingEnv.getOptions(), Collections.<String>emptySet(), 
+        DefaultConfiguration conf = new DefaultConfiguration(roundEnv, processingEnv.getOptions(), Collections.<String>emptySet(), 
                 entities, entity, null, null, embedded, skip);
+        conf.addCustomType(Double[].class, Point.class);
+        return conf;
     }
 
 }

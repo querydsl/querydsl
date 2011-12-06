@@ -45,17 +45,20 @@ class RelationalPathImpl[T](md: PathMetadata[_], schema: String, table: String)(
   override def add[P <: Path[_]](p: P): P = { columns.add(p); p }
   
   def createPrimaryKey(cols: Path[_]*): PrimaryKey[T] = {
-    primaryKey = new PrimaryKey[T](this, cols:_*); primaryKey
+    primaryKey = new PrimaryKey[T](this, cols:_*)
+    primaryKey
   }
   
   def createForeignKey[F](local: Path[_], foreign: String) = {
     val foreignKey = new ForeignKey[F](this, local, foreign)
-    foreignKeys.add(foreignKey); foreignKey
+    foreignKeys.add(foreignKey)
+    foreignKey
   }
   
   def createInvForeignKey[F](local: Path[_], foreign: String) = {
     val foreignKey = new ForeignKey[F](this, local, foreign)
-    inverseForeignKeys.add(foreignKey); foreignKey
+    inverseForeignKeys.add(foreignKey)
+    foreignKey
   }
   
   def getPrimaryKey = primaryKey

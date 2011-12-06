@@ -1,3 +1,8 @@
+/*
+ * Copyright (c) 2011 Mysema Ltd.
+ * All rights reserved.
+ *
+ */
 package com.mysema.query.apt.jpa;
 
 import java.util.Arrays;

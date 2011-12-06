@@ -18,7 +18,7 @@ import com.mysema.query.types.path.ArrayPath;
  * @author tiwe
  *
  */
-public class Point extends ArrayPath<Double>{
+public class Point extends ArrayPath<Double> {
 
     private static final long serialVersionUID = 1776628530121566388L;
 
