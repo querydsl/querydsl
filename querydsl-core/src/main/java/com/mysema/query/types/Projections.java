@@ -80,5 +80,15 @@ public final class Projections {
         return new QBean<T>(type, true, exprs);
     }
     
+    /**
+     * Create a Tuple typed projection for the given expressions
+     * 
+     * @param exprs arguments for the projection
+     * @return
+     */
+    public static QTuple tuple(Expression<?>... exprs) {
+        return new QTuple(exprs);
+    }
+    
     private Projections() {}
 }
