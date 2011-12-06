@@ -16,7 +16,7 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
     private static final String PACKAGE_PATH = "src/test/java/com/mysema/query/domain/";
     
     private static final List<String> CLASSES = getFiles(PACKAGE_PATH);
-
+    
     @Test
     public void Process() throws IOException{
         File file = new File(PACKAGE_PATH, "AbstractEntityTest.java");

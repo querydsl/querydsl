@@ -8,6 +8,7 @@ package com.mysema.query.apt;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 import javax.lang.model.element.Element;
@@ -78,6 +79,11 @@ public interface Configuration {
      * @return
      */
     Class<? extends Annotation> getEntityAnnotation();
+    
+    /**
+     * @return
+     */
+    Set<Class<? extends Annotation>> getEntityAnnotations();
 
     /**
      * @return

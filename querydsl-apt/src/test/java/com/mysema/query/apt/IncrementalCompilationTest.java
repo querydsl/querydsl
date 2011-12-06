@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.util.Collections;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class IncrementalCompilationTest extends AbstractProcessorTest{
     
     private static final String packagePath = "src/test/java/com/mysema/query/domain/";

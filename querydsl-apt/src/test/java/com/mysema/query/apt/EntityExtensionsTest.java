@@ -10,8 +10,10 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 
+@Ignore
 public class EntityExtensionsTest extends AbstractProcessorTest{
     
     private static final String packagePath = "src/test/java/com/mysema/query/apt/";

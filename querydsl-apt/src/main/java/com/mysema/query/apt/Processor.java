@@ -12,7 +12,6 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,14 +44,12 @@ import javax.tools.StandardLocation;
 
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.model.Parameter;
-import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.QueryDelegate;
 import com.mysema.query.annotations.QueryExclude;
 import com.mysema.query.annotations.QueryProjection;
-import com.mysema.query.annotations.Variables;
 import com.mysema.query.codegen.Delegate;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
@@ -68,6 +65,7 @@ import com.mysema.query.codegen.TypeMappings;
  * @author tiwe
  *
  */
+@Deprecated
 public class Processor {
 
 //    /**
@@ -150,7 +148,7 @@ public class Processor {
 
         serializeTypes();
 
-        serializeVariableClasses();
+//        serializeVariableClasses();
     }
 
     private void processAnnotations() {
@@ -613,21 +611,21 @@ public class Processor {
 
     }
 
-    private void serializeVariableClasses() {
-        for (Element element : getElements(Variables.class)) {
-            if (element instanceof PackageElement) {
-                Variables vars = element.getAnnotation(Variables.class);
-                PackageElement packageElement = (PackageElement)element;
-                List<EntityType> models = new ArrayList<EntityType>();
-                for (EntityType model : entityTypes.values()) {
-                    if (model.getPackageName().equals(packageElement.getQualifiedName().toString())) {
-                        models.add(model);
-                    }
-                }
-                serializeVariableList(packageElement.getQualifiedName().toString(), vars, models);
-            }
-        }
-    }
+//    private void serializeVariableClasses() {
+//        for (Element element : getElements(Variables.class)) {
+//            if (element instanceof PackageElement) {
+//                Variables vars = element.getAnnotation(Variables.class);
+//                PackageElement packageElement = (PackageElement)element;
+//                List<EntityType> models = new ArrayList<EntityType>();
+//                for (EntityType model : entityTypes.values()) {
+//                    if (model.getPackageName().equals(packageElement.getQualifiedName().toString())) {
+//                        models.add(model);
+//                    }
+//                }
+//                serializeVariableList(packageElement.getQualifiedName().toString(), vars, models);
+//            }
+//        }
+//    }
 
     @Nullable
     private FileObject getSourceFile(String fullName) throws IOException {
@@ -739,38 +737,38 @@ public class Processor {
         return generate;
     }
 
-    private void serializeVariableList(String packageName, Variables vars, List<EntityType> models) {
-        String className = packageName + "." + vars.value();
-        TypeMappings typeMappings = configuration.getTypeMappings();
-        try{
-            JavaFileObject fileObject = env.getFiler().createSourceFile(className);
-            Writer w = fileObject.openWriter();
-            try{
-                JavaWriter writer = new JavaWriter(w);
-                writer.packageDecl(packageName);
-                Type simpleType = new SimpleType(packageName + "." + vars.value(), packageName, vars.value());
-                if (vars.asInterface()) {
-                    writer.beginInterface(simpleType);
-                } else {
-                    writer.beginClass(simpleType, null);
-                }
-                for (EntityType model : models) {
-                    Type queryType = typeMappings.getPathType(model, model, true);
-                    String simpleName = model.getUncapSimpleName();
-                    String alias = simpleName;
-                    if (configuration.getKeywords().contains(simpleName.toUpperCase())) {
-                        alias += "1";
-                    }
-                    writer.publicStaticFinal(queryType, simpleName, "new " + queryType.getSimpleName() + "(\"" + alias + "\")");
-                }
-                writer.end();
-            } finally {
-                w.close();
-            }
-        } catch (IOException e) {            
-            env.getMessager().printMessage(Kind.ERROR, e.getMessage());
-        }
-
-    }
+//    private void serializeVariableList(String packageName, Variables vars, List<EntityType> models) {
+//        String className = packageName + "." + vars.value();
+//        TypeMappings typeMappings = configuration.getTypeMappings();
+//        try{
+//            JavaFileObject fileObject = env.getFiler().createSourceFile(className);
+//            Writer w = fileObject.openWriter();
+//            try{
+//                JavaWriter writer = new JavaWriter(w);
+//                writer.packageDecl(packageName);
+//                Type simpleType = new SimpleType(packageName + "." + vars.value(), packageName, vars.value());
+//                if (vars.asInterface()) {
+//                    writer.beginInterface(simpleType);
+//                } else {
+//                    writer.beginClass(simpleType, null);
+//                }
+//                for (EntityType model : models) {
+//                    Type queryType = typeMappings.getPathType(model, model, true);
+//                    String simpleName = model.getUncapSimpleName();
+//                    String alias = simpleName;
+//                    if (configuration.getKeywords().contains(simpleName.toUpperCase())) {
+//                        alias += "1";
+//                    }
+//                    writer.publicStaticFinal(queryType, simpleName, "new " + queryType.getSimpleName() + "(\"" + alias + "\")");
+//                }
+//                writer.end();
+//            } finally {
+//                w.close();
+//            }
+//        } catch (IOException e) {            
+//            env.getMessager().printMessage(Kind.ERROR, e.getMessage());
+//        }
+//
+//    }
 
 }

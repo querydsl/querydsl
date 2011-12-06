@@ -84,6 +84,8 @@ public class DefaultConfiguration implements Configuration {
     @Nullable
     protected final Class<? extends Annotation> entitiesAnn, superTypeAnn, embeddedAnn, embeddableAnn, skipAnn;
 
+    private final Set<Class<? extends Annotation>> entityAnnotations = new HashSet<Class<? extends Annotation>>();
+    
     private final Map<String, SerializerConfig> typeToConfig = new HashMap<String, SerializerConfig>();
 
     private boolean useFields = true, useGetters = true, defaultOverwrite = false;
@@ -108,6 +110,14 @@ public class DefaultConfiguration implements Configuration {
         this.embeddableAnn = embeddableAnn;
         this.embeddedAnn = embeddedAnn;
         this.skipAnn = skipAnn;
+        
+        entityAnnotations.add(entityAnn);
+        if (superTypeAnn != null) {
+            entityAnnotations.add(superTypeAnn);
+        }
+        if (embeddableAnn != null) {
+            entityAnnotations.add(embeddableAnn);
+        }
         for (Element element : roundEnv.getElementsAnnotatedWith(Config.class)) {
             Config querydslConfig = element.getAnnotation(Config.class);
             SerializerConfig config = SimpleSerializerConfig.getConfig(querydslConfig);
@@ -232,6 +242,11 @@ public class DefaultConfiguration implements Configuration {
         return embeddedAnn;
     }
 
+    @Override
+    public Set<Class<? extends Annotation>> getEntityAnnotations() {
+        return entityAnnotations;
+    }
+    
     @Override
     public Serializer getEntitySerializer() {
         return module.get(EntitySerializer.class);
@@ -397,6 +412,7 @@ public class DefaultConfiguration implements Configuration {
     public void setUnknownAsEmbedded(boolean unknownAsEmbedded) {
         this.unknownAsEmbedded = unknownAsEmbedded;
     }
+
 
     
 }

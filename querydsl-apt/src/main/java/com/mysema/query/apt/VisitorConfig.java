@@ -34,12 +34,22 @@ public enum VisitorConfig {
 
     private final boolean visitFieldProperties, visitMethodProperties, visitConstructors;
 
+    public static VisitorConfig get(boolean fields, boolean methods) {
+        if (fields && !methods) {
+            return VisitorConfig.FIELDS_ONLY;
+        } else if (methods && !fields) {
+            return VisitorConfig.METHODS_ONLY;
+        } else {
+            return VisitorConfig.ALL;
+        }
+    }
+    
     VisitorConfig(boolean fields, boolean methods, boolean constructors) {
         this.visitFieldProperties = fields;
         this.visitMethodProperties = methods;
         this.visitConstructors = constructors;
     }
-
+    
     public boolean visitConstructors() {
         return visitConstructors;
     }

@@ -8,8 +8,6 @@ package com.mysema.query.apt.jpa;
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -30,23 +28,6 @@ import com.mysema.query.apt.VisitorConfig;
  */
 public class JPAConfiguration extends DefaultConfiguration {
 
-    private static final Collection<String> KEYWORDS = new HashSet<String>(Arrays.asList(
-            "ABS","ALL","AND","ANY","AS","ASC","AVG","BETWEEN",
-            "BIT_LENGTH[51]","BOTH","BY","CASE","CHAR_LENGTH",
-            "CHARACTER_LENGTH","CLASS",
-            "COALESCE","CONCAT","COUNT","CURRENT_DATE","CURRENT_TIME",
-            "CURRENT_TIMESTAMP",
-            "DELETE","DESC","DISTINCT","ELSE","EMPTY","END","ENTRY",
-            "ESCAPE","EXISTS","FALSE","FETCH",
-            "FROM","GROUP","HAVING","IN","INDEX","INNER","IS","JOIN",
-            "KEY","LEADING","LEFT","LENGTH","LIKE",
-            "LOCATE","LOWER","MAX","MEMBER","MIN","MOD","NEW","NOT",
-            "NULL","NULLIF","OBJECT","OF","OR",
-            "ORDER","OUTER","POSITION","SELECT","SET","SIZE","SOME",
-            "SQRT","SUBSTRING","SUM","THEN",
-            "TRAILING","TRIM","TRUE","TYPE","UNKNOWN","UPDATE","UPPER",
-            "VALUE","WHEN","WHERE"));
-
     private final List<Class<? extends Annotation>> annotations;
 
     public JPAConfiguration(RoundEnvironment roundEnv,Map<String,String> options,
@@ -55,7 +36,7 @@ public class JPAConfiguration extends DefaultConfiguration {
             Class<? extends Annotation> embeddableAnn,
             Class<? extends Annotation> embeddedAnn,
             Class<? extends Annotation> skipAnn) throws ClassNotFoundException {
-        super(roundEnv, options, KEYWORDS, null, entityAnn, superTypeAnn, embeddableAnn, embeddedAnn, skipAnn);
+        super(roundEnv, options, Keywords.keywords, null, entityAnn, superTypeAnn, embeddableAnn, embeddedAnn, skipAnn);
         this.annotations = getAnnotations();
     }
 
@@ -86,21 +67,11 @@ public class JPAConfiguration extends DefaultConfiguration {
         boolean fields = false, methods = false;
         for (Element element : elements) {
             if (hasRelevantAnnotation(element)) {
-                if (element.getKind().equals(ElementKind.FIELD)) {
-                    fields = true;
-                } else if (element.getKind().equals(ElementKind.METHOD)) {
-                    methods = true;
-                }
+                fields |= element.getKind().equals(ElementKind.FIELD);
+                methods |= element.getKind().equals(ElementKind.METHOD);
             }
         }
-        if (fields && !methods) {
-            return VisitorConfig.FIELDS_ONLY;
-        } else if (methods && !fields) {
-            return VisitorConfig.METHODS_ONLY;
-        } else {
-            return VisitorConfig.ALL;
-        }
-
+        return VisitorConfig.get(fields, methods);
     }
 
     private boolean hasRelevantAnnotation(Element element){
