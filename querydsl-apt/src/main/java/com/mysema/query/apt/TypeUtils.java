@@ -16,6 +16,7 @@ import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeMirror;
 
 /**
  * @author tiwe
@@ -66,6 +67,15 @@ public final class TypeUtils {
             }
         }
         return elements;
+    }
+    
+    public static TypeMirror getAnnotationValueAsTypeMirror(AnnotationMirror mirror, String method) {
+        for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : mirror.getElementValues().entrySet()) {
+            if (entry.getKey().getSimpleName().toString().equals("value")) {
+                return (TypeMirror) entry.getValue().getValue();                
+            }
+        }
+        return null;
     }
     
     private TypeUtils() {}

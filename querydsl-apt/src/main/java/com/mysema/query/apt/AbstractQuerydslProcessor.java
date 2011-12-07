@@ -21,7 +21,6 @@ import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
@@ -360,14 +359,10 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
             EntityType entityType = null;
             for (AnnotationMirror annotation : delegateMethod.getAnnotationMirrors()) {
                 if (TypeUtils.isAnnotationMirrorOfType(annotation, QueryDelegate.class)) {
-                    for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : annotation.getElementValues().entrySet()) {
-                        if (entry.getKey().getSimpleName().toString().equals("value")) {
-                            if (entry.getValue().getValue() instanceof TypeMirror) {
-                                TypeMirror type = (TypeMirror)entry.getValue().getValue();
-                                entityType = typeFactory.getEntityType(type, true);
-                            }
-                        }
-                    }
+                    TypeMirror type = TypeUtils.getAnnotationValueAsTypeMirror(annotation, "value");
+                    if (type != null) {
+                        entityType = typeFactory.getEntityType(type, true);    
+                    }                    
                 }
             }
 
