@@ -173,7 +173,7 @@ public class EntitySerializer implements Serializer{
         String localName = writer.getRawName(model);
         String genericName = writer.getGenericName(true, model);
 
-        
+        boolean stringOrBoolean = model.getOriginalCategory() == TypeCategory.STRING || model.getOriginalCategory() == TypeCategory.BOOLEAN;
         boolean hasEntityFields = model.hasEntityFields();
         String thisOrSuper = hasEntityFields ? THIS : SUPER;
         String additionalParams = hasEntityFields ? "" : getAdditionalConstructorParameter(model);
@@ -182,8 +182,12 @@ public class EntitySerializer implements Serializer{
             writer.suppressWarnings(UNCHECKED);
         }
         writer.beginConstructor(new Parameter("variable", Types.STRING));
-        writer.line(thisOrSuper,"(", localName.equals(genericName) ? EMPTY : "(Class)",
-                localName, ".class, forVariable(variable)", hasEntityFields ? ", INITS" : EMPTY,additionalParams,");");
+        if (stringOrBoolean) {
+            writer.line(thisOrSuper,"(forVariable(variable)",additionalParams,");");   
+        } else {
+            writer.line(thisOrSuper,"(", localName.equals(genericName) ? EMPTY : "(Class)",
+                    localName, ".class, forVariable(variable)", hasEntityFields ? ", INITS" : EMPTY,additionalParams,");");    
+        }        
         writer.end();
     }
 
