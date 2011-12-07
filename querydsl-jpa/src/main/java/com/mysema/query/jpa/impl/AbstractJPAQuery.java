@@ -76,7 +76,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     public long count() {
         String queryString = toCountRowsString();
         logQuery(queryString);
-        Query query = createQuery(queryString, null);
+        Query query = createQuery(queryString, null, true);
         reset();
         return (Long) query.getSingleResult();
     }
@@ -91,7 +91,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         getQueryMixin().addToProjection(expr);
         String queryString = toString();
         logQuery(queryString);
-        return createQuery(queryString, getMetadata().getModifiers());
+        return createQuery(queryString, getMetadata().getModifiers(), false);
     }
 
     /**
@@ -105,7 +105,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         getQueryMixin().addToProjection(rest);
         String queryString = toString();
         logQuery(queryString);
-        return createQuery(queryString, getMetadata().getModifiers());
+        return createQuery(queryString, getMetadata().getModifiers(), false);
     }
 
     /**
@@ -118,10 +118,10 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         getQueryMixin().addToProjection(args);
         String queryString = toString();
         logQuery(queryString);
-        return createQuery(queryString, getMetadata().getModifiers());
+        return createQuery(queryString, getMetadata().getModifiers(), false);
     }
 
-    private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
+    private Query createQuery(String queryString, @Nullable QueryModifiers modifiers, boolean forCount) {
         Query query = sessionHolder.createQuery(queryString);
         JPAUtil.setConstants(query, getConstants(), getMetadata().getParams());
         if (modifiers != null && modifiers.isRestricting()) {
@@ -145,7 +145,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
 
         // set transformer, if necessary and possible
         List<? extends Expression<?>> projection = getMetadata().getProjection();
-        if (projection.size() == 1) {
+        if (projection.size() == 1 && !forCount) {
             Expression<?> expr = projection.get(0);
             if (expr instanceof FactoryExpression<?>) {
                 if (hibernateQueryClass != null && hibernateQueryClass.isInstance(query)) {
@@ -258,13 +258,13 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
 
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
         getQueryMixin().addToProjection(expr);
-        Query query = createQuery(toCountRowsString(), null);
-        long total = (Long) query.getSingleResult();
+        Query countQuery = createQuery(toCountRowsString(), null, true);
+        long total = (Long) countQuery.getSingleResult();
         if (total > 0) {
             QueryModifiers modifiers = getMetadata().getModifiers();
             String queryString = toString();
             logQuery(queryString);
-            query = createQuery(queryString, modifiers);
+            Query query = createQuery(queryString, modifiers, false);
             @SuppressWarnings("unchecked")
             List<RT> list = (List<RT>) getResultList(query);
             reset();
@@ -298,7 +298,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     private Object uniqueResult() {
         String queryString = toQueryString();
         logQuery(queryString);
-        Query query = createQuery(queryString, getMetadata().getModifiers());        
+        Query query = createQuery(queryString, getMetadata().getModifiers(), false);        
         try{
             return getSingleResult(query);
         } catch(javax.persistence.NoResultException e) {

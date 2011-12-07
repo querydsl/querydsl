@@ -77,7 +77,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         QueryModifiers modifiers = getMetadata().getModifiers();
         String queryString = toCountRowsString();
         logQuery(queryString);
-        Query query = createQuery(queryString, modifiers);
+        Query query = createQuery(queryString, modifiers, true);
         reset();
         Long rv = (Long)query.uniqueResult();
         if (rv != null) {
@@ -96,7 +96,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     public Query createQuery(Expression<?> expr) {
         getQueryMixin().addToProjection(expr);
         String queryString = toQueryString();
-        return createQuery(queryString, getMetadata().getModifiers());
+        return createQuery(queryString, getMetadata().getModifiers(), false);
     }
 
     /**
@@ -112,7 +112,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         getQueryMixin().addToProjection(rest);
         String queryString = toQueryString();
         logQuery(queryString);
-        return createQuery(queryString, getMetadata().getModifiers());
+        return createQuery(queryString, getMetadata().getModifiers(), false);
     }
 
     /**
@@ -125,10 +125,10 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         getQueryMixin().addToProjection(args);
         String queryString = toQueryString();
         logQuery(queryString);
-        return createQuery(queryString, getMetadata().getModifiers());
+        return createQuery(queryString, getMetadata().getModifiers(), false);
     }
 
-    private Query createQuery(String queryString, @Nullable QueryModifiers modifiers) {
+    private Query createQuery(String queryString, @Nullable QueryModifiers modifiers, boolean forCount) {
         Query query = session.createQuery(queryString);
         HibernateUtil.setConstants(query, getConstants(), getMetadata().getParams());
         if (fetchSize > 0) {
@@ -167,7 +167,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
 
         // set transformer, if necessary
         List<? extends Expression<?>> projection = getMetadata().getProjection();
-        if (projection.size() == 1) {
+        if (projection.size() == 1 && !forCount) {
             Expression<?> expr = projection.get(0);
             if (expr instanceof FactoryExpression<?>) {
                 query.setResultTransformer(new FactoryExpressionTransformer((FactoryExpression<?>) projection.get(0)));
@@ -221,16 +221,16 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         return query.list();
     }
 
-    public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
+    public <RT> SearchResults<RT> listResults(Expression<RT> expr) {        
         getQueryMixin().addToProjection(expr);
-        Query query = createQuery(toCountRowsString(), null);
-        long total = (Long) query.uniqueResult();
+        Query countQuery = createQuery(toCountRowsString(), null, true);
+        long total = (Long) countQuery.uniqueResult();
         try{
             if (total > 0) {
                 QueryModifiers modifiers = getMetadata().getModifiers();
                 String queryString = toQueryString();
                 logQuery(queryString);
-                query = createQuery(queryString, modifiers);
+                Query query = createQuery(queryString, modifiers, false);
                 @SuppressWarnings("unchecked")
                 List<RT> list = query.list();
                 return new SearchResults<RT>(list, modifiers, total);
@@ -392,7 +392,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
         QueryModifiers modifiers = getMetadata().getModifiers();
         String queryString = toQueryString();
         logQuery(queryString);
-        Query query = createQuery(queryString, modifiers);
+        Query query = createQuery(queryString, modifiers, false);
         reset();        
         try{
             return query.uniqueResult();    

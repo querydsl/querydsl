@@ -434,6 +434,13 @@ public abstract class AbstractStandardTest {
             assertNotNull(tuple.get(cat));
         }
     }
+    
+    @Test
+    public void TupleProjection_As_SearchResults() {
+        SearchResults<Tuple> tuples = query().from(cat).limit(1).listResults(new QTuple(cat.name, cat));
+        assertEquals(1, tuples.getResults().size());
+        assertTrue(tuples.getTotal() > 0);
+    }
 
     @SuppressWarnings("unchecked")
     @Test

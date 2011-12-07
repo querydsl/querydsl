@@ -133,7 +133,12 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 append(SELECT_COUNT_DISTINCT);
             }
             if(!select.isEmpty()) {
-                handle(COMMA, select);
+                if (select.get(0) instanceof FactoryExpression) {
+                    handle(joins.get(0).getTarget());
+                } else {
+                    // TODO : make sure this works
+                    handle(COMMA, select);    
+                }                
             } else {
                 handle(joins.get(0).getTarget());
             }
