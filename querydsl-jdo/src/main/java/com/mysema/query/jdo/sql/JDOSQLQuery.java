@@ -98,7 +98,12 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
 
     private Query createQuery(boolean forCount) {
         SQLSerializer serializer = new SQLSerializer(templates);
-        serializer.serialize(queryMixin.getMetadata(), forCount);
+        if (union != null) {
+            serializer.serializeUnion(union, queryMixin.getMetadata().getOrderBy(), unionAll);
+        } else {
+            serializer.serialize(queryMixin.getMetadata(), forCount);    
+        }
+        
 
         // create Query
         if (logger.isDebugEnabled()) {
@@ -230,7 +235,6 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     }
 
     @Nullable
-    @SuppressWarnings("unchecked")
     private Object uniqueResult() {
         if (getMetadata().getModifiers().getLimit() == null) {
             limit(2);

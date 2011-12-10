@@ -1,14 +1,17 @@
 package com.mysema.query.jdo;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.NonUniqueResultException;
@@ -17,9 +20,11 @@ import com.mysema.query.jdo.sql.JDOSQLQuery;
 import com.mysema.query.jdo.test.domain.Product;
 import com.mysema.query.jdo.test.domain.sql.SProduct;
 import com.mysema.query.sql.HSQLDBTemplates;
+import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.BooleanExpression;
 
 public class JDOSQLQueryTest extends AbstractJDOTest{
@@ -30,6 +35,10 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
     
     private JDOSQLQuery sql(){
         return new JDOSQLQuery(pm, sqlTemplates);
+    }
+    
+    protected SQLSubQuery sq() {
+        return new SQLSubQuery();
     }
     
 
@@ -104,6 +113,26 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
         assertEquals(3, results.getResults().size());
         assertEquals(30l, results.getTotal());
 
+    }
+    
+    @Ignore
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Union() throws SQLException {
+        SubQueryExpression<Integer> sq1 = sq().from(product).unique(product.amount.max());
+        SubQueryExpression<Integer> sq2 = sq().from(product).unique(product.amount.min());
+        List<Integer> list = sql().union(sq1, sq2).list();
+        assertFalse(list.isEmpty());
+    }
+    
+    @Ignore
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Union_All() {
+        SubQueryExpression<Integer> sq1 = sq().from(product).unique(product.amount.max());
+        SubQueryExpression<Integer> sq2 = sq().from(product).unique(product.amount.min());
+        List<Integer> list = sql().unionAll(sq1, sq2).list();
+        assertFalse(list.isEmpty());
     }
 
     @Test
