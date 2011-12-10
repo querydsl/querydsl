@@ -26,8 +26,12 @@ import com.mysema.query.jpa.impl.DefaultSessionHolder;
 import com.mysema.query.jpa.impl.JPASessionHolder;
 import com.mysema.query.jpa.impl.JPAUtil;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.Union;
+import com.mysema.query.sql.UnionImpl;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.query.ListSubQuery;
 
 /**
  * @author tiwe
@@ -35,10 +39,9 @@ import com.mysema.query.types.Expression;
  * @param <Q>
  */
 //TODO : add support for constructor projections
-public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> extends AbstractSQLQuery<Q> {
+public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com.mysema.query.Query> extends AbstractSQLQuery<Q> {
     
     private static final Logger logger = LoggerFactory.getLogger(AbstractJPASQLQuery.class);
-
     @Nullable
     private Map<Object,String> constants;
 
@@ -48,6 +51,11 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
     
     protected final Map<String,Object> hints = new HashMap<String,Object>();
 
+    @Nullable
+    protected SubQueryExpression<?>[] union;
+    
+    private boolean unionAll;
+    
     @Nullable
     protected LockModeType lockMode;
     
@@ -65,13 +73,16 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
     }
 
     private String buildQueryString(boolean forCountRow) {
-        if (queryMixin.getMetadata().getJoins().isEmpty()) {
-            throw new IllegalArgumentException("No joins given");
-        }
         NativeSQLSerializer serializer = new NativeSQLSerializer(sqlTemplates);
-        serializer.serialize(queryMixin.getMetadata(), forCountRow);
+        if (union != null) {
+            serializer.serializeUnion(union, queryMixin.getMetadata().getOrderBy(), unionAll);
+        } else {
+            if (queryMixin.getMetadata().getJoins().isEmpty()) {
+                throw new IllegalArgumentException("No joins given");
+            }
+            serializer.serialize(queryMixin.getMetadata(), forCountRow);    
+        }        
         constants = serializer.getConstantToLabel();
-//        entityPaths = serializer.getEntityPaths();
         return serializer.toString();
     }
 
@@ -81,7 +92,6 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
         return createQuery(toQueryString());
     }
 
-    @SuppressWarnings("unchecked")
     private Query createQuery(String queryString) {
         logQuery(queryString);
         List<? extends Expression<?>> projection = queryMixin.getMetadata().getProjection();
@@ -177,6 +187,33 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q>> exte
 
     protected String toQueryString() {
         return buildQueryString(false);
+    }
+    
+    public <RT> Union<RT> union(ListSubQuery<RT>... sq) {
+        return innerUnion(sq);
+    }
+
+    public <RT> Union<RT> union(SubQueryExpression<RT>... sq) {
+        return innerUnion(sq);
+    }
+    
+    public <RT> Union<RT> unionAll(ListSubQuery<RT>... sq) {
+        unionAll = true;
+        return innerUnion(sq);
+    }
+
+    public <RT> Union<RT> unionAll(SubQueryExpression<RT>... sq) {
+        unionAll = true;
+        return innerUnion(sq);
+    }
+    
+    private <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {
+        queryMixin.getMetadata().setValidate(false);
+        if (!queryMixin.getMetadata().getJoins().isEmpty()) {
+            throw new IllegalArgumentException("Don't mix union and from");
+        }
+        this.union = sq;
+        return new UnionImpl<Q, RT>((Q)this, union[0].getMetadata().getProjection());
     }
 
     @Override

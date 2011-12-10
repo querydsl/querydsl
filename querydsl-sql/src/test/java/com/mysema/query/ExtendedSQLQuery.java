@@ -6,6 +6,7 @@ import java.util.List;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.sql.AbstractSQLQuery;
 import com.mysema.query.sql.Configuration;
+import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
@@ -15,7 +16,7 @@ import com.mysema.query.types.QBean;
  * @author tiwe
  *
  */
-public class ExtendedSQLQuery extends AbstractSQLQuery<ExtendedSQLQuery>{
+public class ExtendedSQLQuery extends AbstractSQLQuery<ExtendedSQLQuery> implements SQLCommonQuery<ExtendedSQLQuery> {
 
     public ExtendedSQLQuery(SQLTemplates templates) {
         super(null, new Configuration(templates), new DefaultQueryMetadata());

@@ -9,7 +9,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.sql.AbstractSQLQuery.UnionBuilder;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.OperationImpl;
@@ -41,7 +40,7 @@ public class SQLServerTemplatesTest extends AbstractSQLTemplatesTest{
         NumberExpression<Integer> two = NumberTemplate.TWO;
         NumberExpression<Integer> three = NumberTemplate.THREE;
         Path<Integer> col1 = new SimplePath<Integer>(Integer.class,"col1");
-        UnionBuilder union = query.union(
+        Union union = query.union(
             sq().unique(one.as(col1)),
             sq().unique(two),
             sq().unique(three));

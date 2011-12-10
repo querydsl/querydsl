@@ -10,7 +10,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.mysema.query.sql.AbstractSQLQuery.UnionBuilder;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.expr.NumberExpression;
@@ -47,7 +46,7 @@ public abstract class AbstractSQLTemplatesTest {
         NumberExpression<Integer> two = NumberTemplate.TWO;
         NumberExpression<Integer> three = NumberTemplate.THREE;
         Path<Integer> col1 = new SimplePath<Integer>(Integer.class,"col1");
-        UnionBuilder union = query.union(
+        Union union = query.union(
             sq().unique(one.as(col1)),
             sq().unique(two),
             sq().unique(three));

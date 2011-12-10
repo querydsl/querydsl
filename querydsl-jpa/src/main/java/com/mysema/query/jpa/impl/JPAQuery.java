@@ -19,7 +19,7 @@ import com.mysema.query.jpa.JPQLTemplates;
  * @author tiwe
  *
  */
-public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements JPQLQuery{
+public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements JPQLQuery {
 
     /**
      * Creates a new detached query

@@ -17,7 +17,7 @@ import com.mysema.query.types.OrderSpecifier;
  *
  * @param <RT> return type of projection
  */
-public interface Union<RT>{
+public interface Union<RT> {
     
     /**
      * Get the projection as a typed List

@@ -6,9 +6,11 @@
 package com.mysema.query.jpa.sql;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -26,9 +28,11 @@ import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain.sql.SAnimal;
 import com.mysema.query.sql.DerbyTemplates;
+import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.testutil.JPAConfig;
 import com.mysema.testutil.JPATestRunner;
 
@@ -44,6 +48,10 @@ public class JPADerbySQLTest {
 
     protected JPASQLQuery query(){
         return new JPASQLQuery(entityManager, derbyTemplates);
+    }
+    
+    protected SQLSubQuery sq() {
+        return new SQLSubQuery();
     }
 
     public void setEntityManager(EntityManager entityManager) {
@@ -207,6 +215,26 @@ public class JPADerbySQLTest {
     public void Null_as_uniqueResult(){
         SAnimal cat = new SAnimal("cat");
         assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString())).uniqueResult(cat.name));
+    }
+    
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Union() throws SQLException {
+        SAnimal cat = new SAnimal("cat");
+        SubQueryExpression<Integer> sq1 = sq().from(cat).unique(cat.id.max());
+        SubQueryExpression<Integer> sq2 = sq().from(cat).unique(cat.id.min());
+        List<Integer> list = query().union(sq1, sq2).list();
+        assertFalse(list.isEmpty());
+    }
+    
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Union_All() {
+        SAnimal cat = new SAnimal("cat");
+        SubQueryExpression<Integer> sq1 = sq().from(cat).unique(cat.id.max());
+        SubQueryExpression<Integer> sq2 = sq().from(cat).unique(cat.id.min());
+        List<Integer> list = query().unionAll(sq1, sq2).list();
+        assertFalse(list.isEmpty());
     }
     
     private void print(Iterable<Object[]> rows){

@@ -25,6 +25,7 @@ import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
+import com.mysema.query.Query;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryFlag.Position;
@@ -35,7 +36,6 @@ import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.FactoryExpression;
-import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
@@ -51,45 +51,8 @@ import com.mysema.util.ResultSetAdapter;
  *
  * @author tiwe
  */
-public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
+public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> extends
         ProjectableQuery<Q> {
-
-    public class UnionBuilder<RT> implements Union<RT> {
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public List<RT> list() {
-            List<? extends Expression> projection = union[0].getMetadata().getProjection(); 
-            if (projection.size() == 1) {
-                return IteratorAdapter.asList(iterateSingle(union[0].getMetadata(), projection.get(0)));
-            } else {
-                return (List<RT>) IteratorAdapter.asList(iterateMultiple(union[0].getMetadata()));
-            }
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        public CloseableIterator<RT> iterate() {
-            List<? extends Expression> projection = union[0].getMetadata().getProjection(); 
-            if (projection.size() == 1) {
-                return iterateSingle(union[0].getMetadata(), projection.get(0));
-            } else {
-                return (CloseableIterator<RT>) iterateMultiple(union[0].getMetadata());
-            }
-        }
-
-        @Override
-        public UnionBuilder<RT> orderBy(OrderSpecifier<?>... o) {
-            AbstractSQLQuery.this.orderBy(o);
-            return this;
-        }
-
-        @Override
-        public String toString() {
-            return AbstractSQLQuery.this.toString();
-        }
-
-    }
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
 
@@ -346,13 +309,13 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         }
     }
 
-    private <RT> UnionBuilder<RT> innerUnion(SubQueryExpression<?>... sq) {
+    private <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {
         queryMixin.getMetadata().setValidate(false);
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("Don't mix union and from");
         }
         this.union = sq;
-        return new UnionBuilder<RT>();
+        return new UnionImpl<Q ,RT>((Q)this, union[0].getMetadata().getProjection());
     }
 
     protected Configuration getConfiguration() {
@@ -553,20 +516,20 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q>> extends
         return buildQueryString(false).trim();
     }
 
-    public <RT> UnionBuilder<RT> union(ListSubQuery<RT>... sq) {
+    public <RT> Union<RT> union(ListSubQuery<RT>... sq) {
         return innerUnion(sq);
     }
 
-    public <RT> UnionBuilder<RT> union(SubQueryExpression<RT>... sq) {
+    public <RT> Union<RT> union(SubQueryExpression<RT>... sq) {
         return innerUnion(sq);
     }
     
-    public <RT> UnionBuilder<RT> unionAll(ListSubQuery<RT>... sq) {
+    public <RT> Union<RT> unionAll(ListSubQuery<RT>... sq) {
         unionAll = true;
         return innerUnion(sq);
     }
 
-    public <RT> UnionBuilder<RT> unionAll(SubQueryExpression<RT>... sq) {
+    public <RT> Union<RT> unionAll(SubQueryExpression<RT>... sq) {
         unionAll = true;
         return innerUnion(sq);
     }

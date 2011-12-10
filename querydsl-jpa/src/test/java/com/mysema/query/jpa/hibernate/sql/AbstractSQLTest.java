@@ -1,8 +1,10 @@
 package com.mysema.query.jpa.hibernate.sql;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,9 +18,11 @@ import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain.sql.SAnimal;
 import com.mysema.query.sql.DerbyTemplates;
+import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.SubQueryExpression;
 
 public abstract class AbstractSQLTest {
 
@@ -30,6 +34,10 @@ public abstract class AbstractSQLTest {
 
     protected HibernateSQLQuery query(){
         return new HibernateSQLQuery(session, derbyTemplates);
+    }
+    
+    protected SQLSubQuery sq() {
+        return new SQLSubQuery();
     }
 
     public void setSession(Session session) {
@@ -166,6 +174,26 @@ public abstract class AbstractSQLTest {
         for (Cat c : cats) System.out.println(c.getName());
     }
 
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Union() throws SQLException {
+        SAnimal cat = new SAnimal("cat");
+        SubQueryExpression<Integer> sq1 = sq().from(cat).unique(cat.id.max());
+        SubQueryExpression<Integer> sq2 = sq().from(cat).unique(cat.id.min());
+        List<Integer> list = query().union(sq1, sq2).list();
+        assertFalse(list.isEmpty());
+    }
+    
+    @Test
+    @SuppressWarnings("unchecked")
+    public void Union_All() {
+        SAnimal cat = new SAnimal("cat");
+        SubQueryExpression<Integer> sq1 = sq().from(cat).unique(cat.id.max());
+        SubQueryExpression<Integer> sq2 = sq().from(cat).unique(cat.id.min());
+        List<Integer> list = query().unionAll(sq1, sq2).list();
+        assertFalse(list.isEmpty());
+    }
+    
     @Test
     public void Wildcard(){
         SAnimal cat = new SAnimal("cat");

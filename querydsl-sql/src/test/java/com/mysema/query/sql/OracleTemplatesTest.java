@@ -9,7 +9,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.sql.AbstractSQLQuery.UnionBuilder;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.OperationImpl;
@@ -33,7 +32,7 @@ public class OracleTemplatesTest extends AbstractSQLTemplatesTest{
         SimpleExpression<Integer> two = SimpleTemplate.create(Integer.class,"2");
         SimpleExpression<Integer> three = SimpleTemplate.create(Integer.class,"3");
         NumberPath<Integer> col1 = new NumberPath<Integer>(Integer.class,"col1");
-        UnionBuilder union = query.union(
+        Union union = query.union(
             sq().unique(one.as(col1)),
             sq().unique(two),
             sq().unique(three));

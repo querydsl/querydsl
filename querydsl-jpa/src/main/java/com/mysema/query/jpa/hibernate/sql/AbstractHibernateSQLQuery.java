@@ -26,16 +26,20 @@ import com.mysema.query.jpa.hibernate.HibernateUtil;
 import com.mysema.query.jpa.hibernate.SessionHolder;
 import com.mysema.query.jpa.hibernate.StatelessSessionHolder;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.Union;
+import com.mysema.query.sql.UnionImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.query.ListSubQuery;
 
 /**
  * @author tiwe
  *
  * @param <Q>
  */
-public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQuery<Q>> extends AbstractSQLQuery<Q> {
+public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQuery<Q> & com.mysema.query.Query> extends AbstractSQLQuery<Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractHibernateSQLQuery.class);
 
@@ -56,6 +60,11 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     protected final SQLTemplates sqlTemplates;
 
     protected int timeout = 0;
+    
+    @Nullable
+    protected SubQueryExpression<?>[] union;
+    
+    private boolean unionAll;
 
     public AbstractHibernateSQLQuery(Session session, SQLTemplates sqlTemplates) {
         this(new DefaultSessionHolder(session), sqlTemplates, new DefaultQueryMetadata());
@@ -72,11 +81,15 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     }
     
     private String buildQueryString(boolean forCountRow) {
-        if (queryMixin.getMetadata().getJoins().isEmpty()) {
-            throw new IllegalArgumentException("No joins given");
-        }
         NativeSQLSerializer serializer = new NativeSQLSerializer(sqlTemplates);
-        serializer.serialize(queryMixin.getMetadata(), forCountRow);
+        if (union != null) {
+            serializer.serializeUnion(union, queryMixin.getMetadata().getOrderBy(), unionAll);
+        } else {
+            if (queryMixin.getMetadata().getJoins().isEmpty()) {
+                throw new IllegalArgumentException("No joins given");
+            }
+            serializer.serialize(queryMixin.getMetadata(), forCountRow);
+        }        
         constants = serializer.getConstantToLabel();
         entityPaths = serializer.getEntityPaths();
         return serializer.toString();
@@ -88,7 +101,6 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         return createQuery(toQueryString());
     }
 
-    @SuppressWarnings("unchecked")
     private Query createQuery(String queryString) {
         logQuery(queryString);
         org.hibernate.SQLQuery query = session.createSQLQuery(queryString);
@@ -215,6 +227,33 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         }
     }
 
+    public <RT> Union<RT> union(ListSubQuery<RT>... sq) {
+        return innerUnion(sq);
+    }
+
+    public <RT> Union<RT> union(SubQueryExpression<RT>... sq) {
+        return innerUnion(sq);
+    }
+    
+    public <RT> Union<RT> unionAll(ListSubQuery<RT>... sq) {
+        unionAll = true;
+        return innerUnion(sq);
+    }
+
+    public <RT> Union<RT> unionAll(SubQueryExpression<RT>... sq) {
+        unionAll = true;
+        return innerUnion(sq);
+    }
+    
+    private <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {
+        queryMixin.getMetadata().setValidate(false);
+        if (!queryMixin.getMetadata().getJoins().isEmpty()) {
+            throw new IllegalArgumentException("Don't mix union and from");
+        }
+        this.union = sq;
+        return new UnionImpl<Q, RT>((Q)this, union[0].getMetadata().getProjection());
+    }
+    
     /**
      * Enable caching of this query result set.
      * @param cacheable Should the query results be cacheable?
