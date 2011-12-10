@@ -1,7 +1,15 @@
 /*
- * Copyright (c) 2011 Mysema Ltd.
- * All rights reserved.
- *
+ * Copyright 2011, Mysema Ltd
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.mysema.query.apt;
 
@@ -57,6 +65,8 @@ import com.mysema.query.codegen.TypeMappings;
  */
 public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
     
+    private static final Set<Element> delegateMethods = new HashSet<Element>();
+        
     public static final Boolean ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS = Boolean.FALSE;
     
     private final TypeExtractor typeExtractor = new TypeExtractor(true);
@@ -74,6 +84,11 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {    
         processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, "Running " + getClass().getSimpleName());
+        
+        if (roundEnv.processingOver() || annotations.size() == 0) {
+            return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
+        }
+        
         conf = createConfiguration(roundEnv);
         context = new Context();        
         Set<Class<? extends Annotation>> entityAnnotations = conf.getEntityAnnotations();        
@@ -84,11 +99,10 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         this.roundEnv = roundEnv;
        
         // process annotations
-        processAnnotations();        
-        context.clean();      
+        processAnnotations();          
         
         // serialize created types
-        serializeTypes();           
+        serializeMetaTypes();           
         return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
     }
     
@@ -138,6 +152,8 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         }
       
         processProjectionTypes(elements);
+        
+        context.clean();    
         
     }
 
@@ -346,7 +362,21 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
     }
     
     private void processDelegateMethods() {
-        for (Element delegateMethod : getElements(QueryDelegate.class)) {
+        Set<Element> elements = new HashSet<Element>();
+        elements.addAll(getElements(QueryDelegate.class));
+        for (Element element : delegateMethods) {
+            TypeElement parent = (TypeElement)element.getEnclosingElement();
+            // replace with element from current session
+            parent = processingEnv.getElementUtils().getTypeElement(parent.getQualifiedName().toString());
+            for (Element child : parent.getEnclosedElements()) {
+                if (child.getKind() == element.getKind() && child.getSimpleName().equals(element.getSimpleName())) {
+                    elements.add(child);
+                }
+            }
+        }
+       
+        
+        for (Element delegateMethod : elements) {
             ExecutableElement method = (ExecutableElement)delegateMethod;
             Element element = delegateMethod.getEnclosingElement();
             String name = method.getSimpleName().toString();
@@ -374,7 +404,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         }
     }
         
-    private void serializeTypes() {
+    private void serializeMetaTypes() {
         if (!context.supertypes.isEmpty()) {
             processingEnv.getMessager().printMessage(Kind.NOTE, "Serializing Supertypes");
             serialize(conf.getSupertypeSerializer(), context.supertypes.values());

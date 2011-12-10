@@ -1,11 +1,18 @@
 /*
- * Copyright (c) 2009 Mysema Ltd.
- * All rights reserved.
- *
+ * Copyright 2011, Mysema Ltd
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package com.mysema.query.apt;
 
-import static com.mysema.query.apt.APTOptions.DEFAULT_OVERWRITE;
 import static com.mysema.query.apt.APTOptions.QUERYDSL_CREATE_DEFAULT_VARIABLE;
 import static com.mysema.query.apt.APTOptions.QUERYDSL_ENTITY_ACCESSORS;
 import static com.mysema.query.apt.APTOptions.QUERYDSL_EXCLUDED_CLASSES;
@@ -88,7 +95,7 @@ public class DefaultConfiguration implements Configuration {
     
     private final Map<String, SerializerConfig> typeToConfig = new HashMap<String, SerializerConfig>();
 
-    private boolean useFields = true, useGetters = true, defaultOverwrite = false;
+    private boolean useFields = true, useGetters = true;
 
     public DefaultConfiguration(
             RoundEnvironment roundEnv,
@@ -154,9 +161,6 @@ public class DefaultConfiguration implements Configuration {
         }
         if (options.containsKey(QUERYDSL_SUFFIX)) {
             module.bind(CodegenModule.SUFFIX, options.get(QUERYDSL_SUFFIX));
-        }
-        if (options.containsKey(DEFAULT_OVERWRITE)) {
-            defaultOverwrite = Boolean.valueOf(options.get(DEFAULT_OVERWRITE));
         }
         if (options.containsKey(QUERYDSL_UNKNOWN_AS_EMBEDDABLE)) {
             unknownAsEmbedded = Boolean.valueOf(options.get(QUERYDSL_UNKNOWN_AS_EMBEDDABLE));
@@ -304,11 +308,6 @@ public class DefaultConfiguration implements Configuration {
             return getter.getAnnotation(skipAnn) != null
                 || getter.getModifiers().contains(Modifier.STATIC);
         }
-    }
-
-    @Override
-    public boolean isDefaultOverwrite() {
-        return defaultOverwrite;
     }
 
     @Override
