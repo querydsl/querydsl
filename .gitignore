@@ -5,3 +5,4 @@ test-output
 .project
 .settings
 /.metadata
+.cache
