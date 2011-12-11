@@ -29,6 +29,15 @@ Expressions.predicate(Ops.STARTS_WITH, personFirstName, constant);
     
     </sect2>
     
+    <sect2>
+    
+      <title>Custom projections</title>
+      
+      <para>For custom projections the com.mysema.query.types.Projections class offers a set of factory methods for Bean, constructor, Tuple
+      and other projections.</para>
+    
+    </sect2>
+    
 	<sect2>
     
       <title>Inheritance in Querydsl types</title>

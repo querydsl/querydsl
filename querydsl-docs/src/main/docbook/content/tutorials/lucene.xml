@@ -2,13 +2,13 @@
 
 <sect1 id="lucene_integration" revision="1">
   
-  <title>Querying Lucene sources</title>
+  <title>Querying Lucene</title>
   
   <para>This chapter describes the querying functionality of the Lucene module.</para>
   
   <sect2>
   
-    <title>Creating the Querydsl query types</title>
+    <title>Creating the query types</title>
   
   <para>With fields year and title a manually created query type could look something like this :</para>
   

@@ -1,6 +1,6 @@
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
 <sect1 id="hibernate_search_integration" revision="1">
-	<title>Querying Hibernate Search sources</title>
+	<title>Querying Hibernate Search</title>
 
 	<para>This chapter describes the querying functionality of
 		the Hibernate Search module.</para>

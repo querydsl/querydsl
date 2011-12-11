@@ -48,11 +48,11 @@ public class QAccount extends EntityPathBase<Account>{
   <para>A practice which we have found to be very easy to use is to provide factory methods for 
   Query instances in DAO implementations in the following form.</para>
   
-  <para>For HQL usage :</para>
+  <para>For JPA usage :</para>
   
 <programlisting language="java"><![CDATA[ 
-protected HQLQuery from(EntityPath<?>... o) {
-    return new HqlQueryImpl(session).from(o);
+protected JPAQuery from(EntityPath<?>... o) {
+    return new JPAQuery(entityManager).from(o);
 } 
 ]]></programlisting>  
   

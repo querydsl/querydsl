@@ -2,13 +2,13 @@
 
 <sect1 id="sql_integration" revision="1">
   
-  <title>Querying SQL/JDBC sources</title>
+  <title>Querying SQL</title>
   
   <para>This chapter describes the query type generation and querying functionality of the SQL module.</para>
   
   <sect2>
   
-    <title>Creating the Querydsl query types</title>
+    <title>Creating the query types</title>
   
   <para>To get started export your schema into Querydsl query types like this :</para>
   

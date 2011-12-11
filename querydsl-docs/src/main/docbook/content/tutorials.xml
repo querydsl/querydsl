@@ -8,13 +8,14 @@
     guides for the main backends of Querydsl.
     </para>
     
-    <xi:include href="tutorials/jdo.xml" />
+    
     <xi:include href="tutorials/jpa.xml" />
-    <xi:include href="tutorials/collections.xml" />
+    <xi:include href="tutorials/jdo.xml" />
     <xi:include href="tutorials/sql.xml" />
     <xi:include href="tutorials/lucene.xml" />
     <xi:include href="tutorials/hibernate-search.xml" />
     <xi:include href="tutorials/mongodb.xml" />
+    <xi:include href="tutorials/collections.xml" />
     <xi:include href="tutorials/scala.xml" />
 	
 </chapter>    
