@@ -92,7 +92,7 @@ import com.mysema.query.annotations.Config;
 	<emphasis>querydsl.mapAccessors</emphasis> to enable accessors for direct key based map access,
 	<emphasis>querydsl.prefix</emphasis> to override the prefix for query types(default: Q),
 	<emphasis>querydsl.suffix</emphasis> to set a suffix for query types,
-	<emphasis>querydsl.packagePrefix</emphasis> to set a suffix for query type packages,
+	<emphasis>querydsl.packageSuffix</emphasis> to set a suffix for query type packages,
 	<emphasis>querydsl.createDefaultVariable</emphasis> to set whether default variables are created.
 	</para>
     

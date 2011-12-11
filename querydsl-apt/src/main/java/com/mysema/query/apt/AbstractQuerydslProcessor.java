@@ -368,13 +368,16 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
             TypeElement parent = (TypeElement)element.getEnclosingElement();
             // replace with element from current session
             parent = processingEnv.getElementUtils().getTypeElement(parent.getQualifiedName().toString());
-            for (Element child : parent.getEnclosedElements()) {
-                if (child.getKind() == element.getKind() && child.getSimpleName().equals(element.getSimpleName())) {
-                    elements.add(child);
-                }
-            }
+            if (parent != null) {
+                for (Element child : parent.getEnclosedElements()) {
+                    if (child.getKind() == element.getKind() && child.getSimpleName().equals(element.getSimpleName())) {
+                        elements.add(child);
+                    }
+                }    
+            }            
         }
-       
+        delegateMethods.clear();
+        delegateMethods.addAll(elements);
         
         for (Element delegateMethod : elements) {
             ExecutableElement method = (ExecutableElement)delegateMethod;
