@@ -74,7 +74,7 @@ import com.mysema.query.codegen.TypeMappings;
  *
  */
 @Deprecated
-public class Processor {
+class Processor {
 
 //    /**
 //     * Cache for annotated elements
