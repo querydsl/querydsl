@@ -64,24 +64,24 @@ public class GroupByTest {
         
     @Test
     public void Group_Min() {
-        Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
+        Map<Integer, String> results = MiniApi.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(min(comment.text)));
         
-        assertEquals("Comment 1", results.get(1).getOne(comment.text));
-        assertEquals("Comment 2", results.get(2).getOne(comment.text));
-        assertEquals("Comment 4", results.get(3).getOne(comment.text));
+        assertEquals("Comment 1", results.get(1));
+        assertEquals("Comment 2", results.get(2));
+        assertEquals("Comment 4", results.get(3));
     }
     
     @Test
     public void Group_Max() {
-        Map<Integer, Group> results = MiniApi.from(post, posts).from(comment, comments)
+        Map<Integer, String> results = MiniApi.from(post, posts).from(comment, comments)
             .where(comment.post.id.eq(post.id))
             .transform(groupBy(post.id).as(max(comment.text)));
         
-        assertEquals("Comment 1", results.get(1).getOne(comment.text));
-        assertEquals("Comment 3", results.get(2).getOne(comment.text));
-        assertEquals("Comment 6", results.get(3).getOne(comment.text));
+        assertEquals("Comment 1", results.get(1));
+        assertEquals("Comment 3", results.get(2));
+        assertEquals("Comment 6", results.get(3));
     }
     
     @Test 
