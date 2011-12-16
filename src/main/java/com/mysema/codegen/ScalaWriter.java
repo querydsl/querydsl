@@ -409,7 +409,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     public ScalaWriter importPackages(String... imports) throws IOException {
         for (String p : imports){
             packages.add(p);
-            line(IMPORT + p + "._;");
+            line(IMPORT + p + "._");
         }
         nl();
         return this;
