@@ -44,6 +44,24 @@ public class GroupByBuilder<K> {
         return new GroupBy<K, Group>(key, expressions);
     }
     
+    @SuppressWarnings("unchecked")
+    public <V> ResultTransformer<Map<K, V>> as(Expression<V> expression) {
+        final Expression<V> lookup = (Expression<V>)
+                (expression instanceof GroupExpression ? ((GroupExpression<?,?>)expression).getExpression() : expression);
+        return new GroupBy<K, V>(key, expression) {            
+
+            @Override
+            protected Map<K, V> transform(Map<K, Group> groups) {
+                Map<K, V> results = new LinkedHashMap<K, V>((int) Math.ceil(groups.size()/0.75), 0.75f);
+                for (Map.Entry<K, Group> entry : groups.entrySet()) {
+                    results.put(entry.getKey(), entry.getValue().getOne(lookup));
+                }            
+                return results;
+            }
+            
+        };
+    }
+    
     public <V> ResultTransformer<Map<K, V>> as(FactoryExpression<V> expression) {
         Assert.notNull(expression, "expression");
         
@@ -55,8 +73,6 @@ public class GroupByBuilder<K> {
 
             @Override
             protected Map<K, V> transform(Map<K, Group> groups) {
-                // NOTE: Using new groups.size() as initialCapacity leads to unnecessary rehashing 
-                // if size is close to some power of 2
                 Map<K, V> results = new LinkedHashMap<K, V>((int) Math.ceil(groups.size()/0.75), 0.75f);
                 for (Map.Entry<K, Group> entry : groups.entrySet()) {
                     results.put(entry.getKey(), transform(entry.getValue()));

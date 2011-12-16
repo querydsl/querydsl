@@ -88,6 +88,16 @@ public class GroupByTest {
             row(null, "null post", pair(8, "comment 8")),
             row(1, "post 1", pair(3, "comment 3"))
     );
+    
+    private static final Projectable MAP2_RESULTS = projectable(
+            row(1, pair(1, "comment 1")),
+            row(1, pair(2, "comment 2")),
+            row(2, pair(5, "comment 5")),
+            row(3, pair(6, "comment 6")),
+            row(null, pair(7, "comment 7")),
+            row(null,  pair(8, "comment 8")),
+            row(1, pair(3, "comment 3"))
+    );
 
     private static final Projectable POST_W_COMMENTS = projectable(
             row(1, 1, "post 1", comment(1)),
@@ -174,6 +184,16 @@ public class GroupByTest {
         Group group = results.get(1);
         
         Map<Integer, String> comments = group.getMap(commentId, commentText);
+        assertEquals(3, comments.size());
+        assertEquals("comment 2", comments.get(2));
+    }
+    
+    @Test
+    public void Map2() {        
+        Map<Integer, Map<Integer, String>> results = MAP2_RESULTS.transform(
+            groupBy(postId).as(map(commentId, commentText)));
+        
+        Map<Integer, String> comments = results.get(1);        
         assertEquals(3, comments.size());
         assertEquals("comment 2", comments.get(2));
     }
