@@ -15,6 +15,7 @@
 package com.mysema.query.scala;
 
 import com.mysema.query.types._
+import com.mysema.query.types.{ Projections => ProjectionsFactory }
 import java.util.{ Arrays }
 
 object Projections extends Projections
@@ -24,6 +25,23 @@ object Projections extends Projections
  *
  */
 trait Projections {
+  
+  /**
+   * Create a FactoryExpressions for the given type and arguments
+   *  
+   * @param expressions
+   * @param mf
+   * @return
+   */
+  def create[T](expressions: Ex[_]*)(implicit mf: Manifest[T]) = {
+    val clazz = mf.erasure.asInstanceOf[Class[T]]
+    try {
+      clazz.getConstructor()
+      ProjectionsFactory.fields[T](clazz, expressions:_*)
+    } catch { case e: NoSuchMethodException => {
+      ProjectionsFactory.constructor[T](clazz, expressions:_*)   
+    }}    
+  }
   
   implicit def tuple2Expr[T1,T2](t: (_ <: Ex[T1], _ <: Ex[T2])) = new Tu2Ex[T1,T2](t._1, t._2) 
 

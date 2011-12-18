@@ -109,6 +109,11 @@ class JDBCIntegrationTest extends CompileTestUtils with SQLHelpers {
   }
   
   @Test
+  def Populate_Bean_via_Factory {
+    assertEquals(2, query.from(survey).list(create[Survey](survey.id, survey.name)) size ())
+  }
+  
+  @Test
   def List {
     assertEquals(2, query.from(survey).list(survey.id) size ())
     assertEquals(2, query.from(employee).list(employee.firstname) size ())

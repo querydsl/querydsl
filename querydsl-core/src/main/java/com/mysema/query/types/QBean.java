@@ -23,6 +23,8 @@ import java.util.Map;
 
 import org.apache.commons.collections15.BeanMap;
 
+import com.mysema.util.ReflectionUtils;
+
 /**
  * QBean is a JavaBean populating projection type
  *
@@ -49,10 +51,11 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
     private static final String resolvePropertyViaFields(Path<?> path) {
         String property = pathToProperty.get(path);
         if (property == null) {
-            Path<?> parent = path.getMetadata().getParent();
-            for (Field field : parent.getClass().getFields()){
+            Path<?> parent = path.getMetadata().getParent();            
+            for (Field field : ReflectionUtils.getFields(parent.getClass())){
                 try {
-                    if (field.get(parent) == path) {
+                    field.setAccessible(true);
+                    if (Expression.class.isAssignableFrom(field.getType()) && field.get(parent) == path) {                        
                         property = field.getName();
                         break;
                     }
