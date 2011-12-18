@@ -41,7 +41,7 @@ import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.Templates;
 import com.mysema.query.types.ToStringVisitor;
-import com.mysema.util.AnnotatedElementAdapter;
+import com.mysema.util.Annotations;
 
 public class PathTest {
 
@@ -114,7 +114,7 @@ public class PathTest {
         assertNull(property2.getAnnotation(Nullable.class));
 
         // property3 (both)
-        assertEquals(AnnotatedElementAdapter.class, property3.getClass());
+        assertEquals(Annotations.class, property3.getClass());
         assertTrue(property3.isAnnotationPresent(QueryTransient.class));
         assertNotNull(property3.getAnnotation(QueryTransient.class));
         assertTrue(property3.isAnnotationPresent(Nonnull.class));

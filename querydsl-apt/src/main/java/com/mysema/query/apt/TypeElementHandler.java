@@ -24,6 +24,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
 import net.jcip.annotations.Immutable;
@@ -39,6 +40,7 @@ import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.Property;
 import com.mysema.query.codegen.QueryTypeFactory;
 import com.mysema.query.codegen.TypeMappings;
+import com.mysema.util.Annotations;
 import com.mysema.util.BeanUtils;
 
 /**
@@ -72,8 +74,8 @@ public final class TypeElementHandler {
         List<? extends Element> elements = e.getEnclosedElements();
         VisitorConfig config = configuration.getConfig(e, elements);
         Set<String> blockedProperties = new HashSet<String>();
-        Map<String,Property> properties = new HashMap<String,Property>();
-        Map<String,TypeCategory> types = new HashMap<String,TypeCategory>();
+        Map<String, TypeMirror> propertyTypes = new HashMap<String, TypeMirror>();
+        Map<String, Annotations> propertyAnnotations = new HashMap<String, Annotations>();
 
         // constructors
         if (config.visitConstructors()) {
@@ -84,11 +86,14 @@ public final class TypeElementHandler {
         if (config.visitFieldProperties()) {
             for (VariableElement field : ElementFilter.fieldsIn(elements)){
                 String name = field.getSimpleName().toString();
-
                 if (configuration.isBlockedField(field)) {
                     blockedProperties.add(name);
                 } else if (configuration.isValidField(field)) {
-                    handleFieldProperty(entityType, field, properties, blockedProperties, types);
+                    Annotations annotations = new Annotations();
+                    annotations.addAnnotation(field.getAnnotation(QueryType.class));
+                    annotations.addAnnotation(field.getAnnotation(QueryInit.class));
+                    propertyAnnotations.put(name, annotations);
+                    propertyTypes.put(name, field.asType());
                 }
             }
         }
@@ -107,20 +112,49 @@ public final class TypeElementHandler {
 
                 if (configuration.isBlockedGetter(method)) {
                     blockedProperties.add(name);
-                } else if (configuration.isValidGetter(method)) {
-                    handleMethodProperty(entityType, name, method, properties, blockedProperties, types);
+                } else if (configuration.isValidGetter(method) && !blockedProperties.contains(name)) {
+                    Annotations annotations = propertyAnnotations.get(name);
+                    if (annotations == null) {
+                        annotations = new Annotations();
+                        propertyAnnotations.put(name, annotations);
+                    }
+                    annotations.addAnnotation(method.getAnnotation(QueryType.class));
+                    annotations.addAnnotation(method.getAnnotation(QueryInit.class));
+                    propertyTypes.put(name, method.getReturnType());
                 }
             }
         }
 
-        for (Map.Entry<String,Property> entry : properties.entrySet()) {
-            if (!blockedProperties.contains(entry.getKey())) {
-                entityType.addProperty(entry.getValue());
+        for (Map.Entry<String, Annotations> entry : propertyAnnotations.entrySet()) {
+            Property property = toProperty(entityType, entry.getKey(), propertyTypes.get(entry.getKey()), entry.getValue());
+            if (property != null) {
+                entityType.addProperty(property);    
             }
         }
 
         return entityType;
     }
+    
+    private Property toProperty(EntityType entityType, String name, TypeMirror type, Annotations annotations) {
+        // type
+        Type propertyType = typeFactory.getType(type, true);
+        if (annotations.isAnnotationPresent(QueryType.class)) {
+            TypeCategory typeCategory = annotations.getAnnotation(QueryType.class).value().getCategory();
+            if (typeCategory == null) {
+                return null;
+            }
+            propertyType = propertyType.as(typeCategory);
+        }
+        
+        // inits
+        String[] inits = new String[0];
+        if (annotations.isAnnotationPresent(QueryInit.class)) {
+            inits = annotations.getAnnotation(QueryInit.class).value();
+        }
+        
+        return new Property(entityType, name, propertyType, inits);
+    }
+
 
     public EntityType handleProjectionType(TypeElement e) {
         Type c = typeFactory.getType(e.asType(), true);
@@ -150,69 +184,7 @@ public final class TypeElementHandler {
                 entityType.addConstructor(new Constructor(parameters));
             }
         }
-    }
-
-    private void handleFieldProperty(EntityType entityType, VariableElement field,
-            Map<String, Property> properties,
-            Set<String> blockedProperties,
-            Map<String, TypeCategory> types) {
-        String name = field.getSimpleName().toString();
-        try{
-            Type fieldType = typeFactory.getType(field.asType(), true);
-            if (field.getAnnotation(QueryType.class) != null) {
-                TypeCategory typeCategory = field.getAnnotation(QueryType.class).value().getCategory();
-                if (typeCategory == null) {
-                    blockedProperties.add(name);
-                    return;
-                }
-                fieldType = fieldType.as(typeCategory);
-                types.put(name, typeCategory);
-            }
-            String[] inits = new String[0];
-            if (field.getAnnotation(QueryInit.class) != null) {
-                inits = field.getAnnotation(QueryInit.class).value();
-            }
-            properties.put(name, new Property(entityType, name, fieldType, inits));
-        } catch(IllegalArgumentException ex) {
-            StringBuilder builder = new StringBuilder();
-            builder.append("Caught exception for field ");
-            builder.append(entityType.getFullName()).append("#").append(field.getSimpleName());
-            throw new APTException(builder.toString(), ex);
-        }
-    }
-
-    private void handleMethodProperty(EntityType entityType, String propertyName,
-            ExecutableElement method,
-            Map<String, Property> properties, Set<String> blockedProperties,
-            Map<String, TypeCategory> types) {
-        try {
-            Type propertyType = typeFactory.getType(method.getReturnType(), true);
-            if (method.getAnnotation(QueryType.class) != null) {
-                TypeCategory typeCategory = method.getAnnotation(QueryType.class).value().getCategory();
-                if (typeCategory == null) {
-                    blockedProperties.add(propertyName);
-                    return;
-                } else if (blockedProperties.contains(propertyName)) {
-                    return;
-                }
-                propertyType = propertyType.as(typeCategory);
-            } else if (types.containsKey(propertyName)) {
-                propertyType = propertyType.as(types.get(propertyName));
-            }
-            String[] inits = new String[0];
-            if (method.getAnnotation(QueryInit.class) != null) {
-                inits = method.getAnnotation(QueryInit.class).value();
-            }
-            properties.put(propertyName, new Property(entityType, propertyName, propertyType, inits));
-
-        } catch (IllegalArgumentException ex) {
-            StringBuilder builder = new StringBuilder();
-            builder.append("Caught exception for method ");
-            builder.append(entityType.getFullName()).append("#").append(method.getSimpleName());
-            throw new APTException(builder.toString(), ex);
-        }
-    }
-
+    }   
 
     public List<Parameter> transformParams(List<? extends VariableElement> params) {
         List<Parameter> parameters = new ArrayList<Parameter>(params.size());

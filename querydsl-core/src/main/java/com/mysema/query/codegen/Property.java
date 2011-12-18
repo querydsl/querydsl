@@ -62,7 +62,7 @@ public final class Property implements Comparable<Property> {
         this.name = Assert.notNull(name,"name");
         this.escapedName = escapedName;
         this.type = Assert.notNull(type,"type");
-        this.inits = inits.clone();
+        this.inits = inits.clone();  
         this.inherited = inherited;
     }
 

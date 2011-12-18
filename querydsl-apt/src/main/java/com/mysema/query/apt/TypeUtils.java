@@ -67,7 +67,7 @@ public final class TypeUtils {
         Set<Element> elements = new HashSet<Element>();
         for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : mirror.getElementValues().entrySet()) {
             if (entry.getKey().getSimpleName().toString().equals("value")) {
-                List<AnnotationValue> values = (List) entry.getValue().getValue();
+                List<AnnotationValue> values = ((List) entry.getValue().getValue());
                 for (AnnotationValue value : values) {
                     DeclaredType type = (DeclaredType) value.getValue();
                     elements.add(type.asElement());

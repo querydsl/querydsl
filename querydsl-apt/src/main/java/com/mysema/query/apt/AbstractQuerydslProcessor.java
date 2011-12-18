@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashSet;
@@ -137,6 +138,18 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
                 context.embeddableTypes.put(entityType.getFullName(), entityType);
             } 
             context.allTypes.put(entityType.getFullName(), entityType);
+        }
+        
+        // track also methods from external entity types
+        for (EntityType entityType : new ArrayList<EntityType>(typeFactory.getEntityTypes())) {
+            String fullName = entityType.getFullName();
+            if (!context.allTypes.keySet().contains(fullName)) {
+                //System.err.println(fullName);
+                TypeElement element = processingEnv.getElementUtils().getTypeElement(fullName);
+                if (element != null) {
+                    elementHandler.handleEntityType(element);
+                }
+            }
         }
         
         // add external parents
@@ -403,6 +416,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
                 registerTypeElement(entityType.getFullName(), (TypeElement)element);
                 entityType.addDelegate(new Delegate(entityType, delegateType, name, parameters, returnType));
                 context.extensionTypes.put(entityType.getFullName(), entityType);
+                context.allTypes.put(entityType.getFullName(), entityType);
             }
         }
     }

@@ -35,6 +35,12 @@ public class QuerydslAnnotationProcessorTest extends AbstractProcessorTest{
         File file = new File(PACKAGE_PATH, "AbstractEntityTest.java");
         process(QuerydslAnnotationProcessor.class, Collections.singletonList(file.getPath()),"qdsl");
     }
+    
+    @Test
+    public void ProcessMonitoredCompany() throws IOException{
+        String path = new File(PACKAGE_PATH, "MonitoredCompany.java").getPath();
+        process(QuerydslAnnotationProcessor.class, Collections.singletonList(path),"MonitoredCompany");
+    }
 
     @Test
     public void ProcessInheritance3() throws IOException{

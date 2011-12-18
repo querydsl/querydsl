@@ -90,6 +90,8 @@ public class EntitySerializer implements Serializer{
 
     private static final Parameter PATH_INITS = new Parameter("inits", new ClassType(PathInits.class));
     
+    private static final ClassType PATH_INITS_TYPE = new ClassType(PathInits.class);
+    
     protected final TypeMappings typeMappings;
 
     protected final Collection<String> keywords;
@@ -452,19 +454,19 @@ public class EntitySerializer implements Serializer{
         if (model.hasEntityFields()) {
             List<String> inits = new ArrayList<String>();
             for (Property property : model.getProperties()) {
-                if (property.getType().getCategory() == TypeCategory.ENTITY) {
+                if (property.getType().getCategory() == TypeCategory.ENTITY ||
+                    property.getType().getCategory() == TypeCategory.CUSTOM) {
                     for (String init : property.getInits()) {
                         inits.add(property.getEscapedName() + DOT + init);
                     }
                 }
-            }
-            ClassType pathInitsType = new ClassType(PathInits.class);
+            }            
             if (!inits.isEmpty()) {
                 inits.add(0, STAR);
                 String initsAsString = QUOTE + StringUtils.join(inits, "\", \"") + QUOTE;
-                writer.privateStaticFinal(pathInitsType, "INITS", "new PathInits(" + initsAsString + ")");
+                writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "new PathInits(" + initsAsString + ")");
             } else {
-                writer.privateStaticFinal(pathInitsType, "INITS", "PathInits.DIRECT");
+                writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "PathInits.DIRECT");
             }
 
         }

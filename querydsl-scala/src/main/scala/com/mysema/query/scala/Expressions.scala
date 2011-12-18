@@ -12,9 +12,9 @@
  * limitations under the License.
  */
 
-package com.mysema.query.scala;
+package com.mysema.query.scala
 
-import com.mysema.query.alias.ManagedObject;
+import com.mysema.query.alias.ManagedObject
 
 import com.mysema.query.types._
 import com.mysema.query.types.PathMetadataFactory._

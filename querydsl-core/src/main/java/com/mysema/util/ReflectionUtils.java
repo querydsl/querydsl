@@ -34,7 +34,7 @@ import javax.annotation.Nullable;
  */
 public final class ReflectionUtils {
 
-    private static final AnnotatedElement EMPTY = new AnnotatedElementAdapter();
+    private static final AnnotatedElement EMPTY = new Annotations();
 
     private ReflectionUtils(){}
 
@@ -46,7 +46,7 @@ public final class ReflectionUtils {
         } else if (method == null || method.getAnnotations().length == 0) {
             return field;
         } else {
-            return new AnnotatedElementAdapter(field, method);
+            return new Annotations(field, method);
         }
     }
 
