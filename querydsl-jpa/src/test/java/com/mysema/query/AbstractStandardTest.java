@@ -320,7 +320,13 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
-    public void In2() {
+    public void In2(){
+        catQuery().where(cat.id.in(1,2,3)).count();
+        catQuery().where(cat.name.in("A","B","C")).count();
+    }    
+    
+    @Test
+    public void In3() {
         catQuery().where(cat.name.in("A,B,C".split(","))).count();
     }
 
