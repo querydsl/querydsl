@@ -3,7 +3,7 @@ Bundle-Name: Querydsl Core
 Bundle-Vendor: Mysema
 Bundle-ManifestVersion: 2
 Import-Template:
-  com.mysema.codegen.*;version="${codegen.version}",
+  com.mysema.codegen.*;version="${codegen.version}";resolution:=optional,
   com.mysema.commons.lang.*;version="${mysema.lang.version}",
   javax.annotation.*;version="0",
   javax.inject.*;version="1", 
@@ -12,4 +12,4 @@ Import-Template:
   org.apache.commons.lang3.*;version="${commons.lang.version}"
 Excluded-Imports:
   edu.umd.cs.findbugs.annotations.*,
-  net.jcip.annotations.*    
+  net.jcip.annotations.*
