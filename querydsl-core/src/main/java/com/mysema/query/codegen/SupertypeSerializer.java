@@ -26,6 +26,7 @@ import net.jcip.annotations.Immutable;
 
 import com.mysema.codegen.CodeWriter;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.path.SimplePath;
 
@@ -43,25 +44,27 @@ public final class SupertypeSerializer extends EntitySerializer{
         super(typeMappings, keywords);
     }
 
-    @Override
-    protected void constructorsForVariables(CodeWriter writer, EntityType model) {
-        // no constructors for variables
-    }
-
-    @Override
-    protected void introDefaultInstance(CodeWriter writer, EntityType model) {
-        // no default instance
-    }
-
-    @Override
-    protected void introFactoryMethods(CodeWriter writer, EntityType model) throws IOException {
-        // no factory methods
-    }
+//    @Override
+//    protected void constructorsForVariables(CodeWriter writer, EntityType model) {
+//        // no constructors for variables
+//    }
+//
+//    @Override
+//    protected void introDefaultInstance(CodeWriter writer, EntityType model) {
+//        // no default instance
+//    }
+//
+//    @Override
+//    protected void introFactoryMethods(CodeWriter writer, EntityType model) throws IOException {
+//        // no factory methods
+//    }
 
     @Override
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
         introDelegatePackages(writer, model);
 
+        writer.staticimports(PathMetadataFactory.class);
+        
         List<Package> packages = new ArrayList<Package>();
         packages.add(PathMetadata.class.getPackage());
         packages.add(SimplePath.class.getPackage());

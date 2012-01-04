@@ -49,8 +49,15 @@ public class Superclass2Test {
     }
 
     @Test
+    public void DefaultInstance() {
+        assertNotNull(QSuperclass2Test_CommonPersistence.commonPersistence);
+    }
+    
+    @Test
     public void test(){
         assertNotNull(QSuperclass2Test_Subtype.subtype.createdOn);
     }
+    
+    
 
 }
