@@ -276,22 +276,20 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
                 type = ((ExecutableElement)element).getReturnType();
             }
             String typeName = type.toString();
-            boolean contained = false;
+
             if (typeName.startsWith(Collection.class.getName())
              || typeName.startsWith(List.class.getName())
              || typeName.startsWith(Set.class.getName())) {
                 type = ((DeclaredType)type).getTypeArguments().get(0);
-                contained = true;
                 
             } else if (typeName.startsWith(Map.class.getName())){
                 type = ((DeclaredType)type).getTypeArguments().get(1);
-                contained = true;
             }
             
             TypeElement typeElement = typeExtractor.visit(type);
             
             if (typeElement != null && !TypeUtils.hasAnnotationOfType(typeElement, conf.getEntityAnnotations())) {
-                if (!contained || !typeElement.getQualifiedName().toString().startsWith("java.lang")) {
+                if (!typeElement.getQualifiedName().toString().startsWith("java.")) {
                     elements.add(typeElement);    
                 }                
             }

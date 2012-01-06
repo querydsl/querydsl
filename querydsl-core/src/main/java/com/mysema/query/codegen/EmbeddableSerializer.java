@@ -56,7 +56,7 @@ public final class EmbeddableSerializer extends EntitySerializer {
 
         TypeCategory category = model.getOriginalCategory();
         Class<? extends Path> pathType;
-        if (model.getProperties().isEmpty()) {
+        if (model.getProperties().isEmpty() ) {
             switch(category){
                 case COMPARABLE : pathType = ComparablePath.class; break;
                 case ENUM: pathType = EnumPath.class; break;
@@ -81,7 +81,7 @@ public final class EmbeddableSerializer extends EntitySerializer {
         if (category == TypeCategory.BOOLEAN || category == TypeCategory.STRING) {
             writer.beginClass(queryType, new ClassType(pathType));
         } else {
-            writer.beginClass(queryType, new ClassType(category,pathType, model));
+            writer.beginClass(queryType, new ClassType(category, pathType, model));
         }
 
         // TODO : generate proper serialVersionUID here

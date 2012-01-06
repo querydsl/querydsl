@@ -1,8 +1,9 @@
 package com.mysema.query.domain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Collection;
+import java.util.Locale;
 import java.util.Set;
 
 import org.junit.Test;
@@ -22,6 +23,14 @@ public class QueryEmbedded7Test {
 
         @QueryEmbedded
         Set<Long> productRoles;
+        
+        // misuse, but shouldn't cause problems
+        @QueryEmbedded 
+        Locale locale;
+
+        // misuse, but shouldn't cause problems
+        @QueryEmbedded
+        String string;
         
     }
 
