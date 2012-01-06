@@ -37,7 +37,7 @@ public class AnimalTest {
 
     @Test
     public void Properties_Are_Copied_From_Super(){
-        assertTrue("direct copy of PString field failed",  QAnimalTest_Cat.cat.name == QAnimalTest_Cat.cat._super.name);
+        assertTrue("direct copy of StringPath field failed",  QAnimalTest_Cat.cat.name == QAnimalTest_Cat.cat._super.name);
 
     }
 

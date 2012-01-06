@@ -123,14 +123,14 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         }
         
         // add properties
-        boolean embeddedAnn = conf.getEmbeddableAnnotation() != null;
+        boolean embeddableAnn = conf.getEmbeddableAnnotation() != null;
         boolean superAnn = conf.getSuperTypeAnnotation() != null;
         for (Element element : elements) {
             EntityType entityType = elementHandler.handleEntityType((TypeElement)element);
             registerTypeElement(entityType.getFullName(), (TypeElement)element);
             if (element.getAnnotation(conf.getEntityAnnotation()) != null) {
                 context.entityTypes.put(entityType.getFullName(), entityType);
-            } else if (embeddedAnn && element.getAnnotation(conf.getEmbeddableAnnotation()) != null ) {
+            } else if (embeddableAnn && element.getAnnotation(conf.getEmbeddableAnnotation()) != null ) {
                 context.embeddableTypes.put(entityType.getFullName(), entityType);
             } else if (superAnn && element.getAnnotation(conf.getSuperTypeAnnotation()) != null) {
                 context.supertypes.put(entityType.getFullName(), entityType);
@@ -276,18 +276,24 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
                 type = ((ExecutableElement)element).getReturnType();
             }
             String typeName = type.toString();
+            boolean contained = false;
             if (typeName.startsWith(Collection.class.getName())
              || typeName.startsWith(List.class.getName())
              || typeName.startsWith(Set.class.getName())) {
                 type = ((DeclaredType)type).getTypeArguments().get(0);
+                contained = true;
                 
             } else if (typeName.startsWith(Map.class.getName())){
                 type = ((DeclaredType)type).getTypeArguments().get(1);
+                contained = true;
             }
             
             TypeElement typeElement = typeExtractor.visit(type);
+            
             if (typeElement != null && !TypeUtils.hasAnnotationOfType(typeElement, conf.getEntityAnnotations())) {
-                elements.add(typeElement);
+                if (!contained || !typeElement.getQualifiedName().toString().startsWith("java.lang")) {
+                    elements.add(typeElement);    
+                }                
             }
         }
 

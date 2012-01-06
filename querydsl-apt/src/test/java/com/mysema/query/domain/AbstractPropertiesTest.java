@@ -51,4 +51,5 @@ public class AbstractPropertiesTest {
 
     }
 
+    // TODO : tests
 }
