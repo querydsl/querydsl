@@ -497,18 +497,17 @@ public final class ExtendedTypeFactory {
         
         String simpleName = typeElement.getSimpleName().toString();
         Iterator<? extends TypeMirror> i = declaredType.getTypeArguments().iterator();
-        String declaredName = declaredType.toString();
         
-        if (isAssignable(declaredType, mapType) || declaredName.contains("Map")) {
+        if (isAssignable(declaredType, mapType)) {
             return createMapType(simpleName, i, deep);
 
-        } else if (isAssignable(declaredType, listType) || declaredName.contains("List")) {
+        } else if (isAssignable(declaredType, listType)) {
             return createCollectionType(Types.LIST, simpleName, i, deep);
 
-        } else if (isAssignable(declaredType, setType) || declaredName.contains("Set")) {
+        } else if (isAssignable(declaredType, setType)) {
             return createCollectionType(Types.SET, simpleName, i, deep);
 
-        } else if (isAssignable(declaredType, collectionType) || declaredName.contains("Collection")) {
+        } else if (isAssignable(declaredType, collectionType)) {
             return createCollectionType(Types.COLLECTION, simpleName, i, deep);
 
         } else {
@@ -561,7 +560,8 @@ public final class ExtendedTypeFactory {
     }
     
     private boolean isAssignable(TypeMirror type, TypeMirror iface) {
-        return env.getTypeUtils().isAssignable(type, iface);
+        return env.getTypeUtils().isAssignable(type, iface) 
+            || env.getTypeUtils().erasure(type).equals(iface);
     }
 
     private boolean isSubType(TypeMirror type1, TypeMirror type2) {

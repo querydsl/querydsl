@@ -227,22 +227,18 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         throw new UnsupportedOperationException("Illegal operation " + expr);
     }
 
-
-
     @Override
     public Object visit(Path<?> expr, Void context) {
         PathMetadata<?> metadata = expr.getMetadata();
-        String rv = getKeyForPath(expr, metadata);
-
         if (metadata.getParent() != null){
             if (metadata.getPathType() == PathType.COLLECTION_ANY){
                 return visit(metadata.getParent(), context);
             }else if (metadata.getParent().getMetadata().getPathType() != PathType.VARIABLE){
+                String rv = getKeyForPath(expr, metadata);
                 return visit(metadata.getParent(), context) + "." + rv;
             }
-        }
-
-        return rv;
+        } 
+        return getKeyForPath(expr, metadata);
     }
 
     protected String getKeyForPath(Path<?> expr, PathMetadata<?> metadata) {
