@@ -85,7 +85,18 @@ public final class ExtendedTypeFactory {
 
         @Override
         public Type visitPrimitive(PrimitiveType primitiveType, Boolean p) {
-            return visit(env.getTypeUtils().boxedClass(primitiveType).asType(), p);
+            //return visit(env.getTypeUtils().boxedClass(primitiveType).asType(), p);
+            switch (primitiveType.getKind()) {
+            case BOOLEAN: return Types.BOOLEAN;
+            case BYTE: return Types.BYTE;
+            case SHORT: return Types.SHORT;
+            case INT: return Types.INTEGER;
+            case LONG: return Types.LONG;
+            case CHAR: return Types.CHARACTER;
+            case FLOAT: return Types.FLOAT;
+            case DOUBLE: return Types.DOUBLE;
+            default: return null;
+            }
         }
 
         @Override
@@ -317,10 +328,13 @@ public final class ExtendedTypeFactory {
         String name = typeElement.getQualifiedName().toString();
         TypeCategory typeCategory = TypeCategory.get(name);
         
-        if (typeCategory != TypeCategory.NUMERIC && isAssignable(typeElement.asType(), comparableType) && isSubType(typeElement.asType(), numberType)) {
+        if (typeCategory != TypeCategory.NUMERIC 
+                && isAssignable(typeElement.asType(), comparableType) 
+                && isSubType(typeElement.asType(), numberType)) {
             typeCategory = TypeCategory.NUMERIC;
             
-        } else if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && isAssignable(typeElement.asType(), comparableType)) {
+        } else if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) 
+                && isAssignable(typeElement.asType(), comparableType)) {
             typeCategory = TypeCategory.COMPARABLE;
             
         } if (typeCategory == TypeCategory.SIMPLE) {
@@ -560,14 +574,17 @@ public final class ExtendedTypeFactory {
     }
     
     private boolean isAssignable(TypeMirror type, TypeMirror iface) {
-        return env.getTypeUtils().isAssignable(type, iface) 
-            || env.getTypeUtils().erasure(type).equals(iface);
+        return env.getTypeUtils().isAssignable(type, iface)
+            // XXX Eclipse 3.6 support
+            || env.getTypeUtils().erasure(type).toString().equals(iface.toString());
     }
 
-    private boolean isSubType(TypeMirror type1, TypeMirror type2) {
-        return env.getTypeUtils().isSubtype(type1, type2);
+    private boolean isSubType(TypeMirror type1, TypeMirror clazz) {
+        return env.getTypeUtils().isSubtype(type1, clazz) 
+             // XXX Eclipse 3.6 support
+             ||  env.getTypeUtils().directSupertypes(type1).contains(clazz); 
     }
-
+    
     private TypeMirror normalize(TypeMirror type) {
         if (type.getKind() == TypeKind.TYPEVAR) {
             TypeVariable typeVar = (TypeVariable)type;
