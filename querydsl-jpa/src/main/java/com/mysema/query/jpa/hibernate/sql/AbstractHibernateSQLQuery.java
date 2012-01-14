@@ -42,6 +42,7 @@ import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.Union;
 import com.mysema.query.sql.UnionImpl;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
@@ -109,6 +110,12 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     }
 
     public Query createQuery(Expression<?>... args) {
+        for (int i = 0; i < args.length; i++) {
+            // create aliases for non path projections
+            if (!(args[i] instanceof Path) && !(args[i] instanceof FactoryExpression)) {
+                args[i] = ExpressionUtils.as(args[i], "col"+(i+1));
+            }
+        }
         queryMixin.getMetadata().setValidate(false);
         queryMixin.addToProjection(args);
         return createQuery(toQueryString());
@@ -258,6 +265,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         return innerUnion(sq);
     }
     
+    @SuppressWarnings("unchecked")
     private <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {
         queryMixin.getMetadata().setValidate(false);
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {

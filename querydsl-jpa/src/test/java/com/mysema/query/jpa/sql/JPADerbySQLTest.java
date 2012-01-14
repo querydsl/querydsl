@@ -103,6 +103,14 @@ public class JPADerbySQLTest {
     }
     
     @Test
+    public void List_Non_Path() {
+        assertEquals(6, query().from(cat).where(cat.dtype.eq("C")).list(
+                cat.birthdate.year(),
+                cat.birthdate.month(), 
+                cat.birthdate.dayOfMonth()).size());
+    }
+    
+    @Test
     public void List_With_Limit(){
         assertEquals(3, query().from(cat).limit(3).list(cat.id).size());
     }
