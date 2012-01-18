@@ -123,6 +123,10 @@ public class JPQLTemplates extends Templates {
     public boolean isEnumInPathSupported() {
         return true;
     }
+    
+    public boolean isSelect1Supported() {
+        return false;
+    }
         
     @Nullable
     public String getExistsProjection() {

@@ -57,5 +57,10 @@ public class EclipseLinkTemplates extends JPQLTemplates{
         add(Ops.CHAR_AT, "substring({0},{1}+1,1)");
 
     }
+    
+    @Override
+    public boolean isSelect1Supported() {
+        return true;
+    }
 
 }
