@@ -21,7 +21,7 @@ import com.mysema.query.types.Ops;
  * @author tiwe
  *
  */
-public class EclipseLinkTemplates extends JPQLTemplates{
+public class EclipseLinkTemplates extends JPQLTemplates {
 
     public static final JPQLTemplates DEFAULT = new EclipseLinkTemplates();
 
