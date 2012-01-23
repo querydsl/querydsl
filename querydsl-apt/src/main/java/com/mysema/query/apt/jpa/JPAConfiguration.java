@@ -19,9 +19,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
+import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
@@ -36,6 +40,7 @@ import javax.persistence.Version;
 import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.annotations.QueryType;
 import com.mysema.query.apt.DefaultConfiguration;
+import com.mysema.query.apt.TypeUtils;
 import com.mysema.query.apt.VisitorConfig;
 
 /**
@@ -54,7 +59,8 @@ public class JPAConfiguration extends DefaultConfiguration {
             Class<? extends Annotation> embeddableAnn,
             Class<? extends Annotation> embeddedAnn,
             Class<? extends Annotation> skipAnn) {
-        super(roundEnv, options, Keywords.keywords, null, entityAnn, superTypeAnn, embeddableAnn, embeddedAnn, skipAnn);
+        super(roundEnv, options, Keywords.keywords, null, entityAnn, superTypeAnn,
+            embeddableAnn, embeddedAnn, skipAnn);
         this.annotations = getAnnotations();
     }
 
@@ -76,6 +82,27 @@ public class JPAConfiguration extends DefaultConfiguration {
         }
         return VisitorConfig.get(fields, methods);
     }
+    
+    @Override
+    public TypeMirror getRealType(ExecutableElement method) {
+        return getManyToOneType(method);
+    }
+
+    @Override
+    public TypeMirror getRealType(VariableElement field) {
+        return getManyToOneType(field);
+    }
+    
+    private TypeMirror getManyToOneType(Element element) {
+        AnnotationMirror mirror = TypeUtils.getAnnotationMirrorOfType(element, ManyToOne.class);
+        if (mirror != null) {
+            return TypeUtils.getAnnotationValueAsTypeMirror(mirror, "targetEntity");
+        } else {
+            return null;
+        }
+    }
+    
+    
 
     private boolean hasRelevantAnnotation(Element element){
         for (Class<? extends Annotation> annotation : annotations) {

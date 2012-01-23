@@ -75,8 +75,9 @@ public final class TypeElementHandler {
         VisitorConfig config = configuration.getConfig(e, elements);
         Set<String> blockedProperties = new HashSet<String>();
         Map<String, TypeMirror> propertyTypes = new HashMap<String, TypeMirror>();
+        Map<String, TypeMirror> fixedTypes = new HashMap<String, TypeMirror>();
         Map<String, Annotations> propertyAnnotations = new HashMap<String, Annotations>();
-
+        
         // constructors
         if (config.visitConstructors()) {
             handleConstructors(entityType, elements);
@@ -94,6 +95,10 @@ public final class TypeElementHandler {
                     annotations.addAnnotation(field.getAnnotation(QueryInit.class));
                     propertyAnnotations.put(name, annotations);
                     propertyTypes.put(name, field.asType());
+                    TypeMirror fixedType = configuration.getRealType(field);
+                    if (fixedType != null) {
+                        fixedTypes.put(name, fixedType);
+                    }
                 }
             }
         }
@@ -121,10 +126,16 @@ public final class TypeElementHandler {
                     annotations.addAnnotation(method.getAnnotation(QueryType.class));
                     annotations.addAnnotation(method.getAnnotation(QueryInit.class));
                     propertyTypes.put(name, method.getReturnType());
+                    TypeMirror fixedType = configuration.getRealType(method);
+                    if (fixedType != null) {
+                        fixedTypes.put(name, fixedType);
+                    }
                 }
             }
         }
 
+        // fixed types override property types
+        propertyTypes.putAll(fixedTypes);
         for (Map.Entry<String, Annotations> entry : propertyAnnotations.entrySet()) {
             Property property = toProperty(entityType, entry.getKey(), propertyTypes.get(entry.getKey()), entry.getValue());
             if (property != null) {

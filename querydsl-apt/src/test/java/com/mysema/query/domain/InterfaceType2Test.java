@@ -1,5 +1,7 @@
 package com.mysema.query.domain;
 
+import static org.junit.Assert.*;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -86,7 +88,9 @@ public class InterfaceType2Test {
     
     @Test
     public void test() {
-        
+        assertEquals(
+                QInterfaceType2Test_PartyImpl.class,
+                QInterfaceType2Test_UserImpl.userImpl.party.getClass());
     }
 
     

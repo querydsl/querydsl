@@ -23,6 +23,7 @@ import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 
 import com.mysema.query.codegen.EntityType;
 import com.mysema.query.codegen.QueryTypeFactory;
@@ -202,5 +203,17 @@ public interface Configuration {
      * @return
      */
     boolean isExcludedClass(String className);
+
+    /**
+     * @param method
+     * @return
+     */
+    TypeMirror getRealType(ExecutableElement method);
+
+    /**
+     * @param field
+     * @return
+     */
+    TypeMirror getRealType(VariableElement field);
 
 }

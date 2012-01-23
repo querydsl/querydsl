@@ -41,6 +41,7 @@ import javax.lang.model.element.Modifier;
 import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.lang.model.type.TypeMirror;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -412,6 +413,14 @@ public class DefaultConfiguration implements Configuration {
         this.unknownAsEmbedded = unknownAsEmbedded;
     }
 
+    @Override
+    public TypeMirror getRealType(ExecutableElement method) {
+        return null;
+    }
 
+    @Override
+    public TypeMirror getRealType(VariableElement field) {
+        return null;
+    }
     
 }

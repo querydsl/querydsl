@@ -16,4 +16,6 @@ Import-Template:
   org.apache.commons.lang3.*;version="${commons.lang.version}"
 Excluded-Imports:
   edu.umd.cs.findbugs.annotations.*,
-  net.jcip.annotations.*  
+  net.jcip.annotations.*,
+  javax.persistence.*;version="[2.0.0,2.1.0)",
+  javax.jdo.*;version="[2.0.0,3.0.0)"

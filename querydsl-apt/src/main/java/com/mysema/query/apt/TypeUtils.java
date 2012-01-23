@@ -66,7 +66,7 @@ public final class TypeUtils {
     public static Set<Element> getAnnotationValuesAsElements(AnnotationMirror mirror, String method) {
         Set<Element> elements = new HashSet<Element>();
         for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : mirror.getElementValues().entrySet()) {
-            if (entry.getKey().getSimpleName().toString().equals("value")) {
+            if (entry.getKey().getSimpleName().toString().equals(method)) {
                 List<AnnotationValue> values = ((List) entry.getValue().getValue());
                 for (AnnotationValue value : values) {
                     DeclaredType type = (DeclaredType) value.getValue();
@@ -79,7 +79,7 @@ public final class TypeUtils {
     
     public static TypeMirror getAnnotationValueAsTypeMirror(AnnotationMirror mirror, String method) {
         for (Map.Entry<? extends ExecutableElement,? extends AnnotationValue> entry : mirror.getElementValues().entrySet()) {
-            if (entry.getKey().getSimpleName().toString().equals("value")) {
+            if (entry.getKey().getSimpleName().toString().equals(method)) {
                 return (TypeMirror) entry.getValue().getValue();                
             }
         }
