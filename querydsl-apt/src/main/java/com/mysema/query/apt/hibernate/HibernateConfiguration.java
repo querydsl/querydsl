@@ -14,6 +14,7 @@
 package com.mysema.query.apt.hibernate;
 
 import java.lang.annotation.Annotation;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -44,17 +45,17 @@ public class HibernateConfiguration extends JPAConfiguration{
 
     @SuppressWarnings("unchecked")
     @Override
-    protected List<Class<? extends Annotation>> getAnnotations() throws ClassNotFoundException{
-        List<Class<? extends Annotation>> annotations = super.getAnnotations();
-        for (String simpleName : Arrays.asList(
-                "Type",
-                "Cascade",
-                "LazyCollection",
-                "OnDelete")) {
-            annotations.add((Class<? extends Annotation>) Class.forName("org.hibernate.annotations."+simpleName));
+    protected List<Class<? extends Annotation>> getAnnotations() {
+        try {            
+            List<Class<? extends Annotation>> annotations = new ArrayList<Class<? extends Annotation>>();
+            annotations.addAll(super.getAnnotations());
+            for (String simpleName : Arrays.asList("Type", "Cascade", "LazyCollection", "OnDelete")) {
+                annotations.add((Class<? extends Annotation>) Class.forName("org.hibernate.annotations."+simpleName));
+            }
+            return annotations;    
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
-        return annotations;
-
     }
 
 }

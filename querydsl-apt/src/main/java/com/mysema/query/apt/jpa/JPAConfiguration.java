@@ -14,7 +14,6 @@
 package com.mysema.query.apt.jpa;
 
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +22,18 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.EmbeddedId;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Version;
 
+import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.annotations.QueryType;
 import com.mysema.query.apt.DefaultConfiguration;
 import com.mysema.query.apt.VisitorConfig;
@@ -43,31 +53,16 @@ public class JPAConfiguration extends DefaultConfiguration {
             Class<? extends Annotation> superTypeAnn,
             Class<? extends Annotation> embeddableAnn,
             Class<? extends Annotation> embeddedAnn,
-            Class<? extends Annotation> skipAnn) throws ClassNotFoundException {
+            Class<? extends Annotation> skipAnn) {
         super(roundEnv, options, Keywords.keywords, null, entityAnn, superTypeAnn, embeddableAnn, embeddedAnn, skipAnn);
         this.annotations = getAnnotations();
     }
 
     @SuppressWarnings("unchecked")
-    protected List<Class<? extends Annotation>> getAnnotations() throws ClassNotFoundException{
-        List<Class<? extends Annotation>> rv = new ArrayList<Class<? extends Annotation>>();
-        rv.add(QueryType.class);
-        for (String fullName : Arrays.asList(
-                "javax.persistence.Column",
-                "javax.persistence.Embedded",
-                "javax.persistence.EmbeddedId",
-                "javax.persistence.GeneratedValue",
-                "javax.persistence.Id",
-                "javax.persistence.Version",
-                "javax.persistence.JoinColumn",
-                "javax.persistence.ManyToOne",
-                "javax.persistence.OneToMany",
-                "javax.persistence.PrimaryKeyJoinColumn",
-                "com.mysema.query.annotations.QueryType",
-                "com.mysema.query.annotations.QueryTransient")){
-            rv.add((Class<? extends Annotation>) Class.forName(fullName));
-        }
-        return rv;
+    protected List<Class<? extends Annotation>> getAnnotations() {
+        return Arrays.asList(Column.class, Embedded.class, EmbeddedId.class, GeneratedValue.class,
+            Id.class, Version.class, JoinColumn.class, ManyToOne.class, OneToMany.class,
+            PrimaryKeyJoinColumn.class, QueryType.class, QueryTransient.class);
     }
 
     @Override

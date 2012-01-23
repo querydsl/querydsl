@@ -17,6 +17,11 @@ import java.lang.annotation.Annotation;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import com.mysema.query.apt.AbstractQuerydslProcessor;
 import com.mysema.query.apt.Configuration;
@@ -32,16 +37,12 @@ public class JPAAnnotationProcessor extends AbstractQuerydslProcessor {
     
     @Override
     protected Configuration createConfiguration(RoundEnvironment roundEnv) {
-        try {
-            Class<? extends Annotation> entity = (Class)Class.forName("javax.persistence.Entity");
-            Class<? extends Annotation> superType = (Class)Class.forName("javax.persistence.MappedSuperclass");
-            Class<? extends Annotation> embeddable = (Class)Class.forName("javax.persistence.Embeddable");
-            Class<? extends Annotation> embedded = (Class)Class.forName("javax.persistence.Embedded");
-            Class<? extends Annotation> skip = (Class)Class.forName("javax.persistence.Transient");
-            return new JPAConfiguration(roundEnv, processingEnv.getOptions(), entity, superType, embeddable, embedded, skip);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }        
+        Class<? extends Annotation> entity = Entity.class;
+        Class<? extends Annotation> superType = MappedSuperclass.class;
+        Class<? extends Annotation> embeddable = Embeddable.class;
+        Class<? extends Annotation> embedded = Embedded.class;
+        Class<? extends Annotation> skip = Transient.class;
+        return new JPAConfiguration(roundEnv, processingEnv.getOptions(), entity, superType, embeddable, embedded, skip);
     }
 
 }
