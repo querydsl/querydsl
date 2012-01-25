@@ -177,7 +177,9 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     }
 
     private ScalaWriter appendType(Class<?> type) throws IOException{
-        if (classes.contains(type.getName()) || packages.contains(type.getPackage().getName())){
+        if (type.isPrimitive()) {
+            append(StringUtils.capitalize(type.getName()));
+        } else if (type.getPackage() == null || classes.contains(type.getName()) || packages.contains(type.getPackage().getName())){
             append(type.getSimpleName());
         }else{
             append(type.getName());
