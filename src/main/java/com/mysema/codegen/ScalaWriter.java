@@ -21,13 +21,17 @@ import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.Types;
 import com.mysema.codegen.support.ScalaSyntaxUtils;
+import com.sun.xml.internal.ws.util.StringUtils;
 
 /**
  * @author tiwe
  *
  */
-public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
+public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
 
+    private static final Set<String> PRIMITIVE_TYPES = new HashSet<String>(
+            Arrays.asList("byte","char","int","long","short","double","float"));
+    
     private static final String DEF = "def ";
 
     private static final String EXTENDS = " extends ";
@@ -61,7 +65,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     private static final String VAL = "val ";
 
     private static final String TRAIT = "trait ";
-
+        
     private final Set<String> classes = new HashSet<String>();
 
     private final Set<String> packages = new HashSet<String>();
@@ -340,7 +344,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
                     builder.append(", ");
                 }
                 if (parameter == null || parameter.getFullName().equals(fullName)){
-                    builder.append("?");
+                    builder.append("_");
                 }else{
                     builder.append(getGenericName(false, parameter));
                 }
@@ -354,6 +358,9 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
     @Override
     public String getRawName(Type type) {
         String fullName = type.getFullName();
+        if (PRIMITIVE_TYPES.contains(fullName)) {
+            fullName = StringUtils.capitalize(fullName);
+        }
         String packageName = type.getPackageName();
         String rv = fullName;
         if (type.isPrimitive() && packageName.isEmpty()){
@@ -366,8 +373,10 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter>{
         }
         if (rv.endsWith("[]")){
             rv = rv.substring(0, rv.length()-2);
-            if (classes.contains(rv)){
-                rv = rv.substring(packageName.length()+1);
+            if (PRIMITIVE_TYPES.contains(rv)) {
+                rv = StringUtils.capitalize(rv);
+            } else if (classes.contains(rv)){
+                rv = rv.substring(packageName.length()+1);                
             }
             return "Array[" + rv + "]";
         }else{

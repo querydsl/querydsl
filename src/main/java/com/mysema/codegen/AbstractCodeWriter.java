@@ -5,8 +5,6 @@
  */
 package com.mysema.codegen;
 
-import static com.mysema.codegen.Symbols.NEWLINE;
-
 import java.io.IOException;
 
 import org.apache.commons.lang3.StringUtils;
@@ -89,7 +87,7 @@ public abstract class AbstractCodeWriter<T extends AbstractCodeWriter<T>> implem
 
     @Override
     public T nl() throws IOException {
-        return append(NEWLINE);
+        return append("\n");
     }
 
 }

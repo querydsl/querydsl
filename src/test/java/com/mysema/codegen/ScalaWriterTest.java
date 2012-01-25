@@ -118,6 +118,14 @@ public class ScalaWriterTest {
         assertTrue(w.toString().contains("def main(args: Array[String])"));
         assertTrue(w.toString().contains("def main2(args: Array[String])"));
     }
+    
+    @Test
+    public void Arrays2() throws IOException {
+        writer.field(Types.BYTE_P.asArrayType(), "byteArray");
+        
+        System.out.println(w);
+        assertTrue(w.toString().contains("var byteArray: Array[Byte]"));
+    }
 
     @Test
     public void Trait() throws IOException{
