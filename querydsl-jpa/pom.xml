@@ -185,7 +185,7 @@
 	
     <repository>
       <id>EclipseLink Repo</id>
-      <url>http://mirrors.ibiblio.org/pub/mirrors/eclipse/rt/eclipselink/maven.repo</url>
+      <url>http://download.eclipse.org/rt/eclipselink/maven.repo/</url>
       <releases>
         <enabled>true</enabled>
       </releases>
