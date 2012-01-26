@@ -94,7 +94,8 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
     }
   }
 
-  def serializeForeignKeys(model: EntityType, writer: CodeWriter, foreignKeys: Collection[_ <: KeyData], inverse: Boolean) {
+  def serializeForeignKeys(model: EntityType, writer: CodeWriter, 
+      foreignKeys: Collection[_ <: KeyData], inverse: Boolean) {
     for (fk <- foreignKeys) {
       val fieldName = if (inverse) {
         namingStrategy.getPropertyNameForInverseForeignKey(fk.getName, model)

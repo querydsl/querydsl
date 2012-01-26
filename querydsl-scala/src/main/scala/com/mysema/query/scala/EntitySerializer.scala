@@ -125,7 +125,8 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
   
   def writeAdditionalCompanionContent(model: EntityType, writer: ScalaWriter) = {}
 
-  private def getEntityProperties(model: EntityType, writer: CodeWriter, properties: Collection[Property]) = {
+  private def getEntityProperties(model: EntityType, writer: CodeWriter, 
+      properties: Collection[Property]) = {
     for (property <- properties if property.getType.getCategory == ENTITY) yield {
       val queryType = typeMappings.getPathType(property.getType, model, false)
       val typeName = writer.getRawName(queryType)
@@ -134,7 +135,8 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
     }
   }
   
-  private def getOtherProperties(model: EntityType, writer: CodeWriter, properties: Collection[Property]) = {
+  private def getOtherProperties(model: EntityType, writer: CodeWriter, 
+      properties: Collection[Property]) = {
     for (property <- properties if property.getType.getCategory != ENTITY) yield { 
       val methodName: String = "create" + methodNames(property.getType.getCategory)
       
@@ -143,15 +145,18 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
         case LIST | SET | COLLECTION => {
           val componentType = writer.getGenericName(true, property.getParameter(0))
           val queryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false)
-          methodName + "["+componentType+","+writer.getGenericName(true, queryType)+"](\"" + property.getName + "\")"
+          methodName + "["+componentType+","+
+            writer.getGenericName(true, queryType)+"](\"" + property.getName + "\")"
         }
         case MAP => {
             val keyType = writer.getGenericName(true, property.getParameter(0))
             val valueType = writer.getGenericName(true, property.getParameter(1))
             val queryType = typeMappings.getPathType(getRaw(property.getParameter(1)), model, false)
-            methodName + "["+keyType+","+valueType+","+writer.getGenericName(true, queryType)+"](\"" + property.getName + "\")"      
+            methodName + "["+keyType+","+valueType+","+
+              writer.getGenericName(true, queryType)+"](\"" + property.getName + "\")"      
         }
-        case _ => methodName + "[" + writer.getRawName(property.getType) + "](\"" + property.getName + "\")"
+        case _ => methodName + "[" + 
+          writer.getRawName(property.getType) + "](\"" + property.getName + "\")"
       }
       (property.getEscapedName, value)
     }

@@ -34,7 +34,8 @@ import scala.collection.mutable.Set
  * @author tiwe
  *
  */
-class ScalaBeanSerializer @Inject() (typeMappings: TypeMappings) extends AbstractSerializer(typeMappings) {
+class ScalaBeanSerializer @Inject() (typeMappings: TypeMappings) 
+  extends AbstractSerializer(typeMappings) {
 
   var javadocSuffix = " is a Querydsl bean type"
   
@@ -66,13 +67,15 @@ class ScalaBeanSerializer @Inject() (typeMappings: TypeMappings) extends Abstrac
  * @author tiwe
  *
  */
-class CaseClassSerializer @Inject() (typeMappings: TypeMappings) extends AbstractSerializer(typeMappings) {
+class CaseClassSerializer @Inject() (typeMappings: TypeMappings) 
+  extends AbstractSerializer(typeMappings) {
   
   def javaBeanSupport = false
     
   def writeClass(model: EntityType, writer: ScalaWriter) = {
     model.getAnnotations foreach (writer.annotation(_))
-    val parameters = model.getProperties.map(p => new Parameter(p.getEscapedName, p.getType)).toArray
+    val parameters = model.getProperties
+      .map(p => new Parameter(p.getEscapedName, p.getType)).toArray
     writer.caseClass(model.getSimpleName, parameters:_*) 
   }
 

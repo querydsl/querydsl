@@ -21,30 +21,44 @@ import com.mysema.query.codegen._
 import com.mysema.codegen.model.TypeCategory
 
 /**
- * Factory for templates
+ * Factory for template expressions
  * 
  * @author tiwe
  *
  */
 object Templates {
 
-  def simple[T](t: Class[_ <: T], tpl: Template, args: Ex[_]*): SimpleExpression[T] = new SimpleTemplate[T](t, tpl, args: _*)
+  def simple[T](t: Class[_ <: T], tpl: Template, args: Ex[_]*): SimpleExpression[T] = {
+    new SimpleTemplate[T](t, tpl, args: _*)
+  }
 
-  def comparable[T <: Comparable[_]](t: Class[_ <: T], tpl: Template, args: Ex[_]*): ComparableExpression[T] = new ComparableTemplate[T](t, tpl, args: _*)
+  def comparable[T <: Comparable[_]](t: Class[_ <: T], tpl: Template, args: Ex[_]*): ComparableExpression[T] = {
+    new ComparableTemplate[T](t, tpl, args: _*)
+  }
 
-  def date[T <: Comparable[_]](t: Class[_ <: T], tpl: Template, args: Ex[_]*): DateExpression[T] = new DateTemplate[T](t, tpl, args: _*)
+  def date[T <: Comparable[_]](t: Class[_ <: T], tpl: Template, args: Ex[_]*): DateExpression[T] = {
+    new DateTemplate[T](t, tpl, args: _*)
+  }
 
-  def dateTime[T <: Comparable[_]](t: Class[_ <: T], tpl: Template, args: Ex[_]*): DateTimeExpression[T] = new DateTimeTemplate[T](t, tpl, args: _*)
+  def dateTime[T <: Comparable[_]](t: Class[_ <: T], tpl: Template, args: Ex[_]*): DateTimeExpression[T] = {
+    new DateTimeTemplate[T](t, tpl, args: _*)
+  }
 
-  def time[T <: Comparable[_]](t: Class[_ <: T], tpl: Template, args: Ex[_]*): TimeExpression[T] = new TimeTemplate[T](t, tpl, args: _*)
+  def time[T <: Comparable[_]](t: Class[_ <: T], tpl: Template, args: Ex[_]*): TimeExpression[T] = {
+    new TimeTemplate[T](t, tpl, args: _*)
+  }
 
-  def number[T <: Number with Comparable[T]](t: Class[_ <: T], tpl: Template, args: Ex[_]*): NumberExpression[T] = new NumberTemplate[T](t, tpl, args: _*)
+  def number[T <: Number with Comparable[T]](t: Class[_ <: T], tpl: Template, args: Ex[_]*): NumberExpression[T] = {
+    new NumberTemplate[T](t, tpl, args: _*) 
+  }
 
   def boolean(tpl: Template, args: Ex[_]*): BooleanExpression = new BooleanTemplate(tpl, args: _*)
 
   def string(tpl: Template, args: Ex[_]*): StringExpression = new StringTemplate(tpl, args: _*)
 
-  def enum[T <: Enum[T]](t: Class[T], tpl: Template, args: Ex[_]*): EnumExpression[T] = new EnumTemplate[T](t, tpl, args: _*)
+  def enum[T <: Enum[T]](t: Class[T], tpl: Template, args: Ex[_]*): EnumExpression[T] = {
+    new EnumTemplate[T](t, tpl, args: _*)
+  }
 
 }
 

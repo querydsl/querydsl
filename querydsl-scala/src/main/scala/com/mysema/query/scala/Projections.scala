@@ -88,11 +88,13 @@ class Tuple5Expression[T1,T2,T3,T4,T5](args: Ex[_]*)
 extends FactoryExpressionBase[Tuple5[T1,T2,T3,T4,T5]](classOf[Tuple5[T1,T2,T3,T4,T5]], args:_*) {
   
   def newInstance(args: AnyRef*): (T1,T2,T3,T4,T5) = {
-    (args(0).asInstanceOf[T1], args(1).asInstanceOf[T2], args(2).asInstanceOf[T3], args(3).asInstanceOf[T4], args(4).asInstanceOf[T5])
+    (args(0).asInstanceOf[T1], args(1).asInstanceOf[T2], args(2).asInstanceOf[T3], 
+     args(3).asInstanceOf[T4], args(4).asInstanceOf[T5])
   }   
 }
 
-abstract class FactoryExpressionBase[T](cl: Class[T], args: Ex[_]*) extends ExpressionBase[T](cl) with FactoryExpression[T] {
+abstract class FactoryExpressionBase[T](cl: Class[T], args: Ex[_]*) 
+  extends ExpressionBase[T](cl) with FactoryExpression[T] {
   
   def accept[R,C](v: Visitor[R,C], context: C): R = v.visit(this, context)
   

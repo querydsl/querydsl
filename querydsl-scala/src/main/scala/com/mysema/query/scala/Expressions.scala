@@ -79,7 +79,9 @@ trait SimpleExpression[T] extends Expression[T] {
 
   def notIn(right: CollectionExpression[T,_]) = in(right).not
 
-  def is[M <: SimpleExpression[T]](f: M => BooleanExpression): BooleanExpression = if (f == null) isNull else f(this.asInstanceOf[M])
+  def is[M <: SimpleExpression[T]](f: M => BooleanExpression): BooleanExpression = {
+    if (f == null) isNull else f(this.asInstanceOf[M])
+  }
   
   def not[M <: SimpleExpression[T]](f: M => BooleanExpression): BooleanExpression = f(this.asInstanceOf[M]).not
   
@@ -91,7 +93,8 @@ trait ArrayExpression[T <: Array[_]] extends SimpleExpression[T] {
 
 }
 
-trait CollectionExpressionBase[T <: Collection[C], C, Q <: Expression[_ >: C]] extends SimpleExpression[T] with com.mysema.query.types.CollectionExpression[T,C] {
+trait CollectionExpressionBase[T <: Collection[C], C, Q <: Expression[_ >: C]] 
+  extends SimpleExpression[T] with com.mysema.query.types.CollectionExpression[T,C] {
 
   lazy val size = number[Integer](classOf[Integer], COL_SIZE, this)
 
@@ -123,7 +126,8 @@ trait ListExpression[T, Q <: Expression[_ >: T]] extends CollectionExpressionBas
     
 }
 
-trait MapExpression[K, V, Q <: Expression[_ >: V]] extends SimpleExpression[java.util.Map[K, V]] with com.mysema.query.types.MapExpression[K,V] {
+trait MapExpression[K, V, Q <: Expression[_ >: V]] 
+  extends SimpleExpression[java.util.Map[K, V]] with com.mysema.query.types.MapExpression[K,V] {
     
   lazy val size = number[Integer](classOf[Integer], MAP_SIZE, this)
 
@@ -413,7 +417,9 @@ trait StringExpression extends ComparableExpression[String] {
 
   def indexOf(left: String, right: Int): NumberExpression[Integer] = indexOf(constant(left), right)
 
-  def indexOf(left: Expression[String], right: Int) = number[Integer](classOf[Integer], Ops.INDEX_OF_2ARGS, this, left, constant(right)) 
+  def indexOf(left: Expression[String], right: Int) = {
+    number[Integer](classOf[Integer], Ops.INDEX_OF_2ARGS, this, left, constant(right))
+  } 
 
   def charAt(right: Expression[Integer]) = simple(classOf[Character], Ops.CHAR_AT, this, right) 
 
