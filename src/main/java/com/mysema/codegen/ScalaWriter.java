@@ -30,7 +30,7 @@ import com.sun.xml.internal.ws.util.StringUtils;
 public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
 
     private static final Set<String> PRIMITIVE_TYPES = new HashSet<String>(
-            Arrays.asList("byte","char","int","long","short","double","float"));
+            Arrays.asList("boolean", "byte","char","int","long","short","double","float"));
     
     private static final String DEF = "def ";
 

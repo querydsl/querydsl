@@ -24,6 +24,7 @@ import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
+import com.sun.xml.internal.ws.util.StringUtils;
 
 public class ScalaWriterTest {
 
@@ -362,6 +363,22 @@ public class ScalaWriterTest {
         System.out.println(w);
         
         assertTrue(w.toString().contains("public JavaWriterTest(a: Int) {"));
+    }
+    
+    @Test
+    public void Primive_Types() throws IOException {
+        writer.field(Types.BOOLEAN_P, "field");
+        writer.field(Types.BYTE_P, "field");
+        writer.field(Types.CHAR, "field");
+        writer.field(Types.INT, "field");
+        writer.field(Types.LONG_P, "field");
+        writer.field(Types.SHORT_P, "field");
+        writer.field(Types.DOUBLE_P, "field");
+        writer.field(Types.FLOAT_P, "field");
+        
+        for (String type : Arrays.asList("boolean", "byte","char","int","long","short","double","float")) {
+            assertTrue(w.toString().contains("field: " + StringUtils.capitalize(type)));
+        }
     }
 
     @Test
