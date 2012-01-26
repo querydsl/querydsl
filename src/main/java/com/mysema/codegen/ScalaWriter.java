@@ -16,12 +16,12 @@ import java.util.Set;
 
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.Types;
 import com.mysema.codegen.support.ScalaSyntaxUtils;
-import com.sun.xml.internal.ws.util.StringUtils;
 
 /**
  * @author tiwe

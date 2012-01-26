@@ -15,6 +15,7 @@ import java.util.List;
 import javax.validation.constraints.Max;
 
 import org.apache.commons.collections15.Transformer;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -24,7 +25,7 @@ import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
-import com.sun.xml.internal.ws.util.StringUtils;
+
 
 public class ScalaWriterTest {
 
