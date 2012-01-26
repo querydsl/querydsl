@@ -1,7 +1,7 @@
 /*
  * Copyright 2011, Mysema Ltd
  * 
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
@@ -12,11 +12,11 @@
  * limitations under the License.
  */
 
-package com.mysema.query.scala;
+package com.mysema.query.scala
 
-import com.mysema.query.types._;
-import com.mysema.query.types.PathMetadataFactory._;
-import com.mysema.query.codegen._;
+import com.mysema.query.types._
+import com.mysema.query.types.PathMetadataFactory._
+import com.mysema.query.codegen._
 
 import com.mysema.codegen.model.TypeCategory
 
@@ -65,12 +65,9 @@ object Paths {
   
   def any[T, Q <: Ex[_ >: T]](parent: Path[_], t: Class[T], q: Class[Q]): Q =  create(t, q, forCollectionAny(parent))      
   
-  def create[T, Q <: Ex[_ >: T]](t :Class[T], q: Class[Q], md: Metadata[_]): Q = {
-      if (q == classOf[StringPath] || q == classOf[BooleanPath]) {
-          q.getConstructor(classOf[PathMetadata[_]]).newInstance(md)
-      } else {
-          q.getConstructor(classOf[Class[_]], classOf[PathMetadata[_]]).newInstance(t, md)
-      }
+  def create[T, Q <: Ex[_ >: T]](t :Class[T], q: Class[Q], md: Metadata[_]): Q = q match {
+    case _ if q == classOf[StringPath] | q == classOf[BooleanPath] => q.getConstructor(classOf[PathMetadata[_]]).newInstance(md)
+    case _ => q.getConstructor(classOf[Class[_]], classOf[PathMetadata[_]]).newInstance(t, md)
   }
   
 }
@@ -146,7 +143,7 @@ class CollectionPath[T, Q <: Ex[_ >: T]](t: Class[T], q: Class[Q], md: PathMetad
 
   def getParameter(i: Int) = t
 
-  lazy val any: Q = Paths.any(this, t, q);
+  lazy val any: Q = Paths.any(this, t, q)
   
 }
 
@@ -157,7 +154,7 @@ class SetPath[T, Q <: Ex[_ >: T]](t: Class[T],  q: Class[Q], md: PathMetadata[_]
 
   def getParameter(i: Int) = t
 
-  lazy val any: Q = Paths.any(this, t, q);
+  lazy val any: Q = Paths.any(this, t, q)
   
 }
 
@@ -168,7 +165,7 @@ class ListPath[T, Q <: Ex[_ >: T]](t: Class[T],  q: Class[Q], md: PathMetadata[_
 
   def getParameter(i: Int) = t
 
-  lazy val any: Q = Paths.any(this, t, q);
+  lazy val any: Q = Paths.any(this, t, q)
   
   def get(i: Int): Q = Paths.create(t, q, forListAccess(this, i))
   

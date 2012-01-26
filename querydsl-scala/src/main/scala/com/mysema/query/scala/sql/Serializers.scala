@@ -1,7 +1,7 @@
 /*
  * Copyright 2011, Mysema Ltd
  * 
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
@@ -95,7 +95,7 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
   }
 
   def serializeForeignKeys(model: EntityType, writer: CodeWriter, foreignKeys: Collection[_ <: KeyData], inverse: Boolean) {
-    foreignKeys.foreach { fk =>
+    for (fk <- foreignKeys) {
       val fieldName = if (inverse) {
         namingStrategy.getPropertyNameForInverseForeignKey(fk.getName, model)
       } else {
@@ -108,7 +108,7 @@ class ScalaMetaDataSerializer @Inject() (typeMappings: TypeMappings, val namingS
       } else {
         val local = fk.getForeignColumns.map(c => escape(namingStrategy.getPropertyName(c, model))).mkString(", ") 
         val foreign = fk.getParentColumns.map("\"" + _ + "\"").mkString(", ")        
-        value.append("Arrays.asList(" + local + "), Arrays.asList(" + foreign + ")")
+        value.append("List(" + local + "), List(" + foreign + ")")
       }
       value.append(")")
       val t = new ClassType(classOf[ForeignKey[_]], fk.getType)

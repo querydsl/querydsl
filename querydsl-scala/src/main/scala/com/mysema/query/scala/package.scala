@@ -14,6 +14,9 @@
 
 package com.mysema.query
 
+/**
+ * Common definitions used by this querydsl-scala
+ */
 package object scala {
 
   import com.mysema.query.types._

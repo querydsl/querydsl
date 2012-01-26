@@ -1,7 +1,7 @@
 /*
  * Copyright 2011, Mysema Ltd
  * 
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
@@ -29,10 +29,12 @@ import scala.collection.JavaConversions._
 import scala.collection.mutable.Set
 
 /**
+ * Serializer for Bean types
+ * 
  * @author tiwe
  *
  */
-class ScalaBeanSerializer @Inject() (typeMappings: TypeMappings) extends BeanSerializer(typeMappings) {
+class ScalaBeanSerializer @Inject() (typeMappings: TypeMappings) extends AbstractSerializer(typeMappings) {
 
   var javadocSuffix = " is a Querydsl bean type"
   
@@ -47,7 +49,7 @@ class ScalaBeanSerializer @Inject() (typeMappings: TypeMappings) extends BeanSer
     writer.beginClass(model)
 
     // properties
-    model.getProperties foreach { property =>
+    for (property <- model.getProperties) {
       property.getAnnotations.foreach(writer.annotation(_))
       if (javaBeanSupport) writer.line("@BeanProperty")
       writer.publicField(property.getType(), property.getEscapedName, "_")
@@ -59,10 +61,12 @@ class ScalaBeanSerializer @Inject() (typeMappings: TypeMappings) extends BeanSer
 }
 
 /**
+ * Serializer for case classes
+ * 
  * @author tiwe
  *
  */
-class CaseClassSerializer @Inject() (typeMappings: TypeMappings) extends BeanSerializer(typeMappings) {
+class CaseClassSerializer @Inject() (typeMappings: TypeMappings) extends AbstractSerializer(typeMappings) {
   
   def javaBeanSupport = false
     
@@ -75,10 +79,12 @@ class CaseClassSerializer @Inject() (typeMappings: TypeMappings) extends BeanSer
 }  
  
 /**
+ * Abstract superclass for Scala type serializers
+ * 
  * @author tiwe
  *
  */
-abstract class BeanSerializer(typeMappings: TypeMappings) extends Serializer {
+abstract class AbstractSerializer(typeMappings: TypeMappings) extends Serializer {
 
   var createCompanionObject = true
   
@@ -120,10 +126,10 @@ abstract class BeanSerializer(typeMappings: TypeMappings) extends Serializer {
   }  
   
   private def getAnnotationTypes(model: EntityType): Set[String] = {
-    val imports = Set() ++ model.getAnnotations.map(_.annotationType.getName);
+    val imports = Set() ++ model.getAnnotations.map(_.annotationType.getName)
     // flatMap flattens the results of the map-function.
     // E.g. List(List(1,2,3), List(4,5,6)).flatMap(_.map(_*3)) ends up as List(3, 6, 9, 12, 15, 18).
-    imports ++ model.getProperties.flatMap(_.getAnnotations.map(_.annotationType.getName));
+    imports ++ model.getProperties.flatMap(_.getAnnotations.map(_.annotationType.getName))
   }
   
 }

@@ -1,7 +1,7 @@
 /*
  * Copyright 2011, Mysema Ltd
  * 
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
@@ -12,9 +12,9 @@
  * limitations under the License.
  */
 
-package com.mysema.query.scala;
+package com.mysema.query.scala
 
-import com.mysema.query.types._;
+import com.mysema.query.types._
 
 /**
  * Factory for Operations
@@ -38,7 +38,7 @@ object Operations {
 
   def number[T <: Number with Comparable[T]](t: Class[_ <: T], op: Op[_ >: T], args: Ex[_]*): NumberExpression[T] = 
       new OperationImpl[T](t, op, args: _*) with NumberExpression[T] {
-        override def negate = if (getOperator == Ops.NEGATE) getArg(0).asInstanceOf[NumberExpression[T]] else super.negate;      
+        override def negate = if (getOperator == Ops.NEGATE) getArg(0).asInstanceOf[NumberExpression[T]] else super.negate      
       }
 
   def boolean(op: Op[_ >: java.lang.Boolean], args: Ex[_]*): BooleanExpression = new OperationImpl[java.lang.Boolean](classOf[java.lang.Boolean], op, args: _*) with BooleanExpression

@@ -1,7 +1,7 @@
 /*
  * Copyright 2011, Mysema Ltd
  * 
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
@@ -12,39 +12,38 @@
  * limitations under the License.
  */
 
-package com.mysema.query.scala.sql;
+package com.mysema.query.scala.sql
 
 import com.mysema.scala.ReflectionUtils._
 import com.mysema.query.scala._
 import com.mysema.query.sql._
 import com.mysema.query.types._
 import com.mysema.query.types.PathMetadataFactory._
-import java.util.ArrayList;
+import java.util.{List => JavaList, ArrayList}
 import java.lang.reflect._
 import scala.reflect.BeanProperty
-import scala.collection.JavaConversions.mapAsJavaMap
 
 /**
- * Implementation of RelationsPathImpl for Scala
+ * Implementation of RelationalPath for Scala
  * 
  * @author tiwe
  *
  */
 class RelationalPathImpl[T](md: PathMetadata[_], schema: String, table: String)(implicit val mf: Manifest[T]) 
   extends BeanPath[T](mf.erasure.asInstanceOf[Class[T]], md) with RelationalPath[T] {
-    
-  type JList[X] = java.util.List[X]
+
+  import scala.collection.JavaConversions._
   
   private var primaryKey: PrimaryKey[T] = _
   
   @BeanProperty
-  val columns: JList[Path[_]] = new ArrayList[Path[_]]
+  val columns: JavaList[Path[_]] = new ArrayList[Path[_]]
 
   @BeanProperty
-  val foreignKeys: JList[ForeignKey[_]] = new ArrayList[ForeignKey[_]]
+  val foreignKeys: JavaList[ForeignKey[_]] = new ArrayList[ForeignKey[_]]
   
   @BeanProperty
-  val inverseForeignKeys: JList[ForeignKey[_]] = new ArrayList[ForeignKey[_]]
+  val inverseForeignKeys: JavaList[ForeignKey[_]] = new ArrayList[ForeignKey[_]]
   
   @BeanProperty
   lazy val projection: FactoryExpression[T] = RelationalPathUtils.createProjection(this)
@@ -64,7 +63,19 @@ class RelationalPathImpl[T](md: PathMetadata[_], schema: String, table: String)(
     foreignKey
   }
   
+  def createForeignKey[F](local: List[_ <: Path[_]], foreign: List[String]) = {
+    val foreignKey = new ForeignKey[F](this, local, foreign)
+    foreignKeys.add(foreignKey)
+    foreignKey
+  }
+  
   def createInvForeignKey[F](local: Path[_], foreign: String) = {
+    val foreignKey = new ForeignKey[F](this, local, foreign)
+    inverseForeignKeys.add(foreignKey)
+    foreignKey
+  }
+  
+  def createInvForeignKey[F](local: List[_ <: Path[_]], foreign: List[String]) = {
     val foreignKey = new ForeignKey[F](this, local, foreign)
     inverseForeignKeys.add(foreignKey)
     foreignKey
@@ -74,6 +85,6 @@ class RelationalPathImpl[T](md: PathMetadata[_], schema: String, table: String)(
   
   def getSchemaName = schema
   
-  def getTableName = table;
+  def getTableName = table
   
 }

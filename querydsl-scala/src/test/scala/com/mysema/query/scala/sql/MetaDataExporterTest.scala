@@ -48,8 +48,18 @@ class MetaDataExporterTest extends CompileTestUtils {
                     CONSTRAINT PK_employee PRIMARY KEY (id), 
                     CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))""");
             
-            // multi key
-            stmt.execute("create table multikey(id INT, id2 VARCHAR, id3 INT, CONSTRAINT pk_multikey PRIMARY KEY (id, id2, id3) )");
+                        
+            // table with count column
+            stmt.execute("create table count_table(count int)");
+            
+            // multi primary key
+            stmt.execute("create table multikey(id INT, id2 VARCHAR, id3 INT," +
+            		" CONSTRAINT pk_multikey PRIMARY KEY (id, id2, id3) )");
+            
+            // multi foreign key
+            stmt.execute("create table multikey2(id INT, id2 INT, id3 INT, id4 INT, id5 INT, id6 INT," +
+            		" CONSTRAINT pk_multikey2 FOREIGN KEY (id4, id5, id6) REFERENCES multikey2(id, id2, id3) )");
+            
         } finally {
             stmt.close();
         }

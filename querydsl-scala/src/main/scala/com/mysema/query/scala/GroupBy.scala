@@ -1,7 +1,7 @@
 /*
  * Copyright 2011, Mysema Ltd
  * 
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package com.mysema.query.scala;
+package com.mysema.query.scala
 
 import com.mysema.query.types._
 import com.mysema.query.group._
@@ -63,11 +63,9 @@ abstract class AbstractGroupExpression[T, R](cl: Class[R], expr: Ex[T]) extends 
   
   def accept[R,C](v: Visitor[R,C], context: C): R = expr.accept(v, context)
   
-  override def equals(o: Any): Boolean = {
-    o match {
-      case ge: GroupExpression[_,_] => ge.getExpression == expr
-      case _ => false
-    }
+  override def equals(o: Any): Boolean = o match {
+    case ge: GroupExpression[_,_] => ge.getExpression == expr
+    case _ => false
   }
   
   override def hashCode(): Int = expr.hashCode()

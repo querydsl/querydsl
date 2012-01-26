@@ -1,7 +1,7 @@
 /*
  * Copyright 2011, Mysema Ltd
  * 
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package com.mysema.query.scala;
+package com.mysema.query.scala
 
 import com.mysema.query.types._
 import com.mysema.query.types.{ Projections => ProjectionsFactory }
@@ -21,6 +21,8 @@ import java.util.{ Arrays }
 object Projections extends Projections
 
 /**
+ * Projections provides implicit conversions from tuples to FactoryExpressions
+ * 
  * @author tiwe
  *
  */

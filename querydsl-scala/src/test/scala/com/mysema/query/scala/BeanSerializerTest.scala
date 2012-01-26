@@ -26,25 +26,22 @@ class ScalaBeanSerializerTest extends CompileTestUtils {
     val typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false, false)
     entityType = new EntityType(typeModel)
 
-    // property
-    entityType.addProperty(new Property(entityType, "entityField", entityType, new Array[String](0)))
-    entityType.addProperty(new Property(entityType, "collection", new SimpleType(Types.COLLECTION, typeModel), new Array[String](0)))
-    entityType.addProperty(new Property(entityType, "listField", new SimpleType(Types.LIST, typeModel), new Array[String](0)))
-    entityType.addProperty(new Property(entityType, "setField", new SimpleType(Types.SET, typeModel), new Array[String](0)))
-    entityType.addProperty(new Property(entityType, "arrayField", new ClassType(TypeCategory.ARRAY, classOf[Array[String]]), new Array[String](0)))
-    entityType.addProperty(new Property(entityType, "mapField", new SimpleType(Types.MAP, typeModel, typeModel), new Array[String](0)))
-
-    List(classOf[java.lang.Boolean], classOf[Integer], classOf[java.util.Date], classOf[java.sql.Date], classOf[java.sql.Time]) map { cl ⇒
-      new Property(
-        entityType,
-        StringUtils.uncapitalize(cl.getSimpleName),
-        new ClassType(TypeCategory.get(cl.getName), cl),
-        new Array[String](0))
-    } foreach { entityType.addProperty(_) }
-
+    // properties
+    for ( (name, clazz) <- List( ("entityField",entityType), ("collection", new SimpleType(Types.COLLECTION, typeModel)),
+                                 ("listField",new SimpleType(Types.LIST, typeModel)), ("setField",new SimpleType(Types.SET, typeModel)),
+                                 ("arrayField", new ClassType(TypeCategory.ARRAY, classOf[Array[String]])),
+                                 ("mapField", new SimpleType(Types.MAP, typeModel, typeModel)))) {
+      entityType.addProperty(new Property(entityType, name, clazz, new Array[String](0)))
+    }
+    
+    for ( clazz <- List(classOf[java.lang.Boolean], classOf[Boolean], classOf[Array[Byte]],
+                        classOf[Integer], classOf[java.util.Date], classOf[java.sql.Date], classOf[java.sql.Time])) {
+      val name = StringUtils.uncapitalize(clazz.getSimpleName + (if (clazz.isPrimitive) "_p" else "")).replace("[","").replace("]","")
+      entityType.addProperty(new Property(entityType, name, new ClassType(TypeCategory.get(clazz.getName), clazz), new Array[String](0)))
+    }
     // constructor
-    val firstName = new Parameter("firstName", new ClassType(TypeCategory.STRING, classOf[String]))
-    val lastName = new Parameter("lastName", new ClassType(TypeCategory.STRING, classOf[String]))
+    val firstName = new Parameter("firstName", Types.STRING)
+    val lastName = new Parameter("lastName", Types.STRING)
     entityType.addConstructor(new Constructor(List(firstName, lastName)))
   }
 
@@ -57,6 +54,7 @@ class ScalaBeanSerializerTest extends CompileTestUtils {
     
     println(writer.toString)
     
+    // TODO : simplify
     val str = writer.toString().replaceAll("\\s+", " ")
     println(str)
     assertTrue(str.contains("package com.mysema.query"))

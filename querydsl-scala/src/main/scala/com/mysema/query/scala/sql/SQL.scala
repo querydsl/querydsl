@@ -1,7 +1,7 @@
 /*
  * Copyright 2011, Mysema Ltd
  * 
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
@@ -20,6 +20,9 @@ import com.mysema.query.sql._
 import com.mysema.query.sql.dml._
 import com.mysema.query.types._
 
+/**
+ * Implicit conversion from RelationalPath to RichSimpleQuery
+ */
 trait SQLHelpers {
   
   def connection: Connection
@@ -32,7 +35,10 @@ trait SQLHelpers {
   
 }
 
-
+/**
+ * Helper trait with RelationalPath to RichSimpleQuery conversion, factory methods for
+ * queries and DML clauses and transactional wrapping of code execution
+ */
 trait SQL extends SQLHelpers {
   
   private val connectionHolder = new ThreadLocal[Connection]

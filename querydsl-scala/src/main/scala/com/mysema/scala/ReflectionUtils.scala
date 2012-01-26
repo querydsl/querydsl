@@ -1,7 +1,7 @@
 /*
  * Copyright 2011, Mysema Ltd
  * 
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
@@ -12,10 +12,10 @@
  * limitations under the License.
  */
 
-package com.mysema.scala;
+package com.mysema.scala
 
 import java.lang.reflect._
-import javax.annotation.Nullable;
+import javax.annotation.Nullable
 import scala.collection.mutable.ListBuffer
 
 /**
@@ -38,8 +38,7 @@ object ReflectionUtils {
   
   def getNameAndValue[T](o: AnyRef, field: Field): (String,T) = {
     field.setAccessible(true)
-    val v = field.get(o).asInstanceOf[T]
-    (field.getName, v)
+    (field.getName, field.get(o).asInstanceOf[T])
   }  
   
 }

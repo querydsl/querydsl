@@ -1,7 +1,7 @@
 /*
  * Copyright 2011, Mysema Ltd
  * 
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Licensed under the Apache License, Version 2.0 (the "License")
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
@@ -168,7 +168,9 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
   }
   
   def escape(token: String): String = {
-      if (ScalaSyntaxUtils.isReserved(token)) "`" + token + "`" else token 
+    if (ScalaSyntaxUtils.isReserved(token)) "`" + token + "`" 
+    else if (token == "count") token + "_" 
+    else token 
   }
   
   def getAnnotationTypes(model: EntityType): Set[String] = {
