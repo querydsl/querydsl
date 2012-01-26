@@ -165,7 +165,7 @@ public abstract class AbstractStandardTest {
                 new Cat("Ruth123", 2, 2.0),
                 new Cat("Felix123", 3, 3.0),
                 new Cat("Allen123", 4, 4.0),
-                new Cat("Mary123", 5, 5.0))){
+                new Cat("Mary_123", 5, 5.0))){
             if (prev != null){
                 cat.addKitten(prev);
             }
@@ -339,6 +339,11 @@ public abstract class AbstractStandardTest {
     public void StartsWith2(){
         assertEquals(0, catQuery().where(cat.name.startsWith("X")).count());
     }
+
+    @Test
+    public void StartsWith3(){
+        assertEquals(1, catQuery().where(cat.name.startsWith("Mary_")).count());
+    }
     
     @Test
     public void StartsWith_IgnoreCase(){
@@ -353,6 +358,11 @@ public abstract class AbstractStandardTest {
     @Test
     public void EndsWith2(){
         assertEquals(0, catQuery().where(cat.name.endsWith("X")).count());
+    }
+
+    @Test
+    public void EndsWith3(){
+        assertEquals(1, catQuery().where(cat.name.endsWith("_123")).count());
     }
     
     @Test
@@ -369,6 +379,11 @@ public abstract class AbstractStandardTest {
     public void Contains2(){
         assertEquals(1l, catQuery().where(cat.kittens.contains(savedCats.get(0))).count());
     }
+
+    @Test
+    public void Contains3(){
+        assertEquals(1l, catQuery().where(cat.name.contains("_")).count());
+    }	
 
     @Test
     public void Length(){
@@ -407,13 +422,13 @@ public abstract class AbstractStandardTest {
 
     @Test
     public void Offset(){
-        List<String> names2 = Arrays.asList("Felix123","Mary123","Ruth123","Some");
+        List<String> names2 = Arrays.asList("Felix123","Mary_123","Ruth123","Some");
         assertEquals(names2, catQuery().orderBy(cat.name.asc()).offset(2).list(cat.name));
     }
 
     @Test
     public void Limit_and_offset(){
-        List<String> names3 = Arrays.asList("Felix123","Mary123");
+        List<String> names3 = Arrays.asList("Felix123","Mary_123");
         assertEquals(names3, catQuery().orderBy(cat.name.asc()).limit(2).offset(2).list(cat.name));
     }
 
