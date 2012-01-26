@@ -48,7 +48,9 @@ class RelationalPathImpl[T](md: PathMetadata[_], schema: String, table: String)(
   @BeanProperty
   lazy val projection: FactoryExpression[T] = RelationalPathUtils.createProjection(this)
   
-  def this(variable: String, schema: String, table: String)(implicit mf: Manifest[T]) = this(forVariable(variable), schema, table)(mf)
+  def this(variable: String, schema: String, table: String)(implicit mf: Manifest[T]) = {
+    this(forVariable(variable), schema, table)(mf)
+  }
   
   override def add[P <: Path[_]](p: P): P = { columns.add(p); p }
   
