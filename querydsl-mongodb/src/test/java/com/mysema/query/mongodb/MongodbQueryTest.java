@@ -74,6 +74,12 @@ public class MongodbQueryTest {
     }
 
     @Test
+    public void Equals_Ignore_Case() {
+        assertTrue(where(user.firstName.equalsIgnoreCase("jAaKko")).exists());
+        assertFalse(where(user.firstName.equalsIgnoreCase("AaKk")).exists());
+    }
+    
+    @Test
     public void Exists(){
         assertTrue(where(user.firstName.eq("Jaakko")).exists());
         assertFalse(where(user.firstName.eq("JaakkoX")).exists());

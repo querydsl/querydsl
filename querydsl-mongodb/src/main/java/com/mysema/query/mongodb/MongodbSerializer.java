@@ -127,7 +127,8 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         }
 
         else if (op == Ops.STARTS_WITH) {
-            return asDBObject(asDBKey(expr, 0), Pattern.compile("^" + regexValue(expr, 1)));
+            return asDBObject(asDBKey(expr, 0), 
+                    Pattern.compile("^" + regexValue(expr, 1)));
         }
 
         else if (op == Ops.STARTS_WITH_IC) {
@@ -146,7 +147,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
 
         else if (op == Ops.EQ_IGNORE_CASE) {
             return asDBObject(asDBKey(expr, 0),
-                    Pattern.compile(regexValue(expr, 1), Pattern.CASE_INSENSITIVE));
+                    Pattern.compile("^" + regexValue(expr, 1) + "$", Pattern.CASE_INSENSITIVE));
         }
 
         else if (op == Ops.STRING_CONTAINS) {
@@ -157,13 +158,6 @@ public class MongodbSerializer implements Visitor<Object, Void> {
             return asDBObject(asDBKey(expr, 0),
                     Pattern.compile(".*" + regexValue(expr, 1) + ".*", Pattern.CASE_INSENSITIVE));
         }
-
-        else if (op == Ops.EQ_IGNORE_CASE) {
-            return asDBObject(asDBKey(expr, 0),
-                    Pattern.compile(regexValue(expr, 1), Pattern.CASE_INSENSITIVE));
-        }
-        //if (op == Ops.EXISTS)
-//        if (op == Ops.MOD)
 
         else if (op == Ops.MATCHES) {
             return asDBObject(asDBKey(expr, 0), Pattern.compile(asDBValue(expr, 1).toString()));
