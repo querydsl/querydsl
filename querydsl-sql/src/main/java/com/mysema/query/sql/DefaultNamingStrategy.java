@@ -128,7 +128,7 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
         boolean toLower = str.toUpperCase().equals(str);
         StringBuilder builder = new StringBuilder(str.length());
         for (int i = 0; i < str.length(); i++) {
-            if (str.charAt(i) == '_') {
+            if (str.charAt(i) == '_' || str.charAt(i) == ' ') {
                 i += 1;
                 if (i < str.length()) {
                     builder.append(Character.toUpperCase(str.charAt(i)));    

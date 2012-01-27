@@ -50,7 +50,12 @@ public class ExtendedNamingStrategyTest {
         assertEquals("userId", namingStrategy.getPropertyName("user_id", entityModel));
         assertEquals("accountEventId", namingStrategy.getPropertyName("accountEvent_id", entityModel));
     }
-
+    
+    @Test
+    public void GetPropertyName_For_Column_With_Spaces() {
+        assertEquals("userId", namingStrategy.getPropertyName("user id", entityModel));
+    }
+    
     @Test
     public void GetPropertyNameForInverseForeignKey(){
         assertEquals("_superiorFk", namingStrategy.getPropertyNameForInverseForeignKey("fk_superior", entityModel));

@@ -52,6 +52,11 @@ public class DefaultNamingStrategyTest {
     }
 
     @Test
+    public void GetPropertyName_For_Column_With_Spaces() {
+        assertEquals("userId", namingStrategy.getPropertyName("user id", entityModel));
+    }
+    
+    @Test
     public void GetPropertyNameForInverseForeignKey(){
         assertEquals("_superiorFk", namingStrategy.getPropertyNameForInverseForeignKey("fk_superior", entityModel));
     }
