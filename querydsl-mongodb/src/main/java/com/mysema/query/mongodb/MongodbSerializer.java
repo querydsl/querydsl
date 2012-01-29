@@ -147,7 +147,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
 
         else if (op == Ops.EQ_IGNORE_CASE) {
             return asDBObject(asDBKey(expr, 0),
-                    Pattern.compile("^" + regexValue(expr, 1) + "$", Pattern.CASE_INSENSITIVE));
+                    Pattern.compile("^" + regexValue(expr, 1) + "$", Pattern.CASE_INSENSITIVE)); 
         }
 
         else if (op == Ops.STRING_CONTAINS) {

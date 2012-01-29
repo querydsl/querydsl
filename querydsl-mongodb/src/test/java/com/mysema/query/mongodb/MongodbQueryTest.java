@@ -72,7 +72,7 @@ public class MongodbQueryTest {
         u3 = addUser("Jaana", "Aakkonen", 40, new Address("Ceekatu","00300", tampere));
         u4 = addUser("Jaana", "BeekkoNen", 50, new Address("Deekatu","00400",tampere));
     }
-
+ 
     @Test
     public void Equals_Ignore_Case() {
         assertTrue(where(user.firstName.equalsIgnoreCase("jAaKko")).exists());
