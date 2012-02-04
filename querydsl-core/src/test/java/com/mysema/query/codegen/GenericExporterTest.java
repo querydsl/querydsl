@@ -13,11 +13,12 @@
  */
 package com.mysema.query.codegen;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,6 +29,15 @@ public class GenericExporterTest {
     @Before
     public void setUp() {
         exporter = new GenericExporter();
+    }
+    
+    @Test
+    public void Keywords() throws IOException {
+        exporter.setKeywords(Keywords.JPA);
+        exporter.setTargetFolder(new File("target/gen1-jpa"));
+        exporter.export(getClass().getPackage());
+        String str = FileUtils.readFileToString(new File("target/gen1-jpa/com/mysema/query/codegen/QGroup.java"));
+        assertTrue(str.contains("QGroup group = new QGroup(\"group1\");"));
     }
 
     @Test

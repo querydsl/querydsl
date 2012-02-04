@@ -84,7 +84,7 @@ public class GenericExporter {
     private final SerializerConfig serializerConfig = SimpleSerializerConfig.DEFAULT;
     
     private boolean handleFields = true, handleMethods = true;
-
+    
     @Nullable
     private File targetFolder;
 
@@ -411,6 +411,10 @@ public class GenericExporter {
 
     public void setCreateScalaSources(boolean createScalaSources) {
         this.createScalaSources = createScalaSources;
+    }
+    
+    public void setKeywords(Collection<String> keywords) {
+        codegenModule.bind(CodegenModule.KEYWORDS, keywords);
     }
     
     public void setNamePrefix(String prefix) {

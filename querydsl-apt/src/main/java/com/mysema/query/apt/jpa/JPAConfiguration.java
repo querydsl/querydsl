@@ -42,6 +42,7 @@ import com.mysema.query.annotations.QueryType;
 import com.mysema.query.apt.DefaultConfiguration;
 import com.mysema.query.apt.TypeUtils;
 import com.mysema.query.apt.VisitorConfig;
+import com.mysema.query.codegen.Keywords;
 
 /**
  * Configuration for {@link JPAAnnotationProcessor}
@@ -59,7 +60,7 @@ public class JPAConfiguration extends DefaultConfiguration {
             Class<? extends Annotation> embeddableAnn,
             Class<? extends Annotation> embeddedAnn,
             Class<? extends Annotation> skipAnn) {
-        super(roundEnv, options, Keywords.keywords, null, entityAnn, superTypeAnn,
+        super(roundEnv, options, Keywords.JPA, null, entityAnn, superTypeAnn,
             embeddableAnn, embeddedAnn, skipAnn);
         this.annotations = getAnnotations();
     }
