@@ -15,7 +15,6 @@ package com.mysema.query.jpa;
 
 import javax.annotation.Nullable;
 
-import com.mysema.query.types.Constant;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.Ops;
@@ -74,12 +73,12 @@ public class JPQLTemplates extends Templates {
         add(Ops.MATCHES, "{0} like {1}  escape '\\'", 27); // TODO : support real regexes
         add(Ops.MATCHES_IC, "{0} like {1} escape '\\'", 27); // TODO : support real regexes
         add(Ops.LOWER, "lower({0})");
-        add(Ops.SUBSTR_1ARG, "substring({0},{1}+1)");
-        add(Ops.SUBSTR_2ARGS, "substring({0},{1}+1,{2})");
+        add(Ops.SUBSTR_1ARG, "substring({0},{1s}+1)");
+        add(Ops.SUBSTR_2ARGS, "substring({0},{1s}+1,{2s}-{1s})");
         add(Ops.TRIM, "trim({0})");
         add(Ops.UPPER, "upper({0})");
         add(Ops.EQ_IGNORE_CASE, "{0l} = {1l}");
-        add(Ops.CHAR_AT, "cast(substring({0},{1}+1,1) as char)");
+        add(Ops.CHAR_AT, "cast(substring({0},{1s}+1,1) as char)");
         add(Ops.STRING_IS_EMPTY, "length({0}) = 0");
 
         add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '\\'");
@@ -89,7 +88,7 @@ public class JPQLTemplates extends Templates {
         add(Ops.STARTS_WITH, "{0} like {1%} escape '\\'");
         add(Ops.STARTS_WITH_IC, "{0l} like {1%%} escape '\\'");
         add(Ops.INDEX_OF, "locate({1},{0}) - 1");
-        add(Ops.INDEX_OF_2ARGS, "locate({1},{0},{2}+1) - 1");
+        add(Ops.INDEX_OF_2ARGS, "locate({1},{0},{2s}+1) - 1");
 
         // date time
         add(Ops.DateTimeOps.SYSDATE, "sysdate");

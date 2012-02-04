@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -46,7 +48,9 @@ import com.mysema.query.types.Visitor;
 public abstract class SerializerBase<S extends SerializerBase<S>> implements Visitor<Void,Void> {
 
     private final StringBuilder builder = new StringBuilder();
-
+        
+    private static final Pattern OPERATION = Pattern.compile("\\d+[\\+\\-]\\d+");
+    
     private String constantPrefix = "a";
 
     private String paramPrefix = "p";
@@ -61,6 +65,32 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     private final Templates templates;
     
     private final boolean dry;
+    
+    private boolean normalize = true;
+    
+    public static final String normalize(String queryString) {        
+        StringBuilder rv = new StringBuilder();
+        Matcher m = OPERATION.matcher(queryString);
+        int end = 0;
+        while (m.find()) {
+            if (m.start() > end) {
+                rv.append(queryString.subSequence(end, m.start()));
+            }
+            String str = queryString.substring(m.start(), m.end());
+            String[] operands = str.split("[\\+\\-]");
+            char operator = str.charAt(operands[0].length());
+            if (operator == '+') {
+                rv.append(Integer.valueOf(operands[0]) + Integer.valueOf(operands[1]));
+            } else {
+                rv.append(Integer.valueOf(operands[0]) - Integer.valueOf(operands[1]));
+            }
+            end = m.end();
+        }
+        if (end < queryString.length()) {
+            rv.append(queryString.substring(end));
+        }
+        return rv.toString();
+    }
 
     public SerializerBase(Templates templates) {
         this(templates, false);
@@ -171,10 +201,18 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     public void setAnonParamPrefix(String prefix){
         this.anonParamPrefix = prefix;
     }
+    
+    public void setNormalize(boolean normalize) {
+        this.normalize = normalize;       
+    }
 
     @Override
     public String toString() {
-        return builder.toString();
+        if (normalize) {
+            return normalize(builder.toString());    
+        } else {
+            return builder.toString();
+        }        
     }
 
     @Override

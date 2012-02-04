@@ -562,9 +562,12 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
          && args.get(1) instanceof Constant<?>
          && operator != Ops.STRING_CAST 
          && operator != Ops.NUMCAST
+         && operator != Ops.SUBSTR_1ARG
+         && operator != Ops.CHAR_AT
          && operator != SQLTemplates.CAST) {
             constantPaths.add((Path<?>)args.get(0));
-        }        
+        }       
+        
         if (operator.equals(Ops.STRING_CAST)) {
             String typeName = templates.getTypeForCast(String.class);
             visitOperation(String.class, SQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), ConstantImpl.create(typeName)));

@@ -52,7 +52,7 @@ public class JPQLCollectionAnyVisitorTest {
         Predicate predicate = cat.kittens.any().name.substring(1).eq("uth123");        
         assertEquals("exists (select 1\n" +
         	"from Cat cat_kittens\n" +
-        	"where cat_kittens in elements(cat.kittens) and substring(cat_kittens.name,:a1+1) = :a2)", serialize(predicate));
+        	"where cat_kittens in elements(cat.kittens) and substring(cat_kittens.name,2) = :a1)", serialize(predicate));
     }
     
     @Test

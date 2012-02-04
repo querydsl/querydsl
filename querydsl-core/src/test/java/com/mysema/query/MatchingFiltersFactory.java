@@ -256,6 +256,7 @@ public class MatchingFiltersFactory {
 
         if (module != Module.LUCENE){
             rv.add(expr.substring(0,1).eq(other.substring(0,1)));
+            rv.add(expr.substring(1,2).eq(other.substring(1,2)));
             rv.add(expr.substring(1).eq(other.substring(1)));
 
             rv.add(expr.trim().eq(other.trim()));
