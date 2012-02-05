@@ -22,7 +22,7 @@ import javax.tools.SimpleJavaFileObject;
 public class MemSourceFileObject extends SimpleJavaFileObject {
     
     private static URI toUri(String fqname) {
-        return URI.create(fqname.replace(".","/") + ".java");
+        return URI.create("file:///" + fqname.replace(".","/") + ".java");
     }
     
     private final StringBuilder contents;
