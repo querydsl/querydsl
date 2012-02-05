@@ -8,8 +8,6 @@ package com.mysema.codegen.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.annotation.Nullable;
-
 /**
  * TypeCategory defines the expression type used for a Field
  *
@@ -91,12 +89,11 @@ public enum TypeCategory {
      */
     TIME(COMPARABLE, java.sql.Time.class.getName(), "org.joda.time.LocalTime");
 
-    @Nullable
     private final TypeCategory superType;
 
     private final Set<String> types;
 
-    TypeCategory(@Nullable TypeCategory superType, String... types){
+    TypeCategory(TypeCategory superType, String... types){
         this.superType = superType;
         this.types = new HashSet<String>(types.length);
         for (String type : types){

@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 
-import javax.annotation.Nullable;
-
 import org.apache.commons.collections15.Transformer;
 
 import com.mysema.codegen.model.Parameter;
@@ -34,7 +32,7 @@ public interface CodeWriter extends Appendable{
 
     CodeWriter beginClass(Type type) throws IOException;
 
-    CodeWriter beginClass(Type type, @Nullable Type superClass, Type... interfaces) throws IOException;
+    CodeWriter beginClass(Type type, Type superClass, Type... interfaces) throws IOException;
 
     <T> CodeWriter beginConstructor(Collection<T> params, Transformer<T, Parameter> transformer) throws IOException;
 

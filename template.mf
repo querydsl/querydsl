@@ -7,6 +7,3 @@ Import-Template:
   org.apache.commons.collections15.*;version="${commons.collections.version}",
   org.apache.commons.lang3.*;version="${commons.lang.version}",
   javax.tools.*;version="1"
-Excluded-Imports:
-  edu.umd.cs.findbugs.annotations.*,
-  net.jcip.annotations.*    

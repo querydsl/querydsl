@@ -8,9 +8,7 @@ package com.mysema.codegen.model;
 import java.util.Collections;
 import java.util.Set;
 
-import javax.annotation.Nullable;
-
-import net.jcip.annotations.Immutable;
+import com.sun.istack.internal.Nullable;
 
 
 /**
@@ -19,12 +17,10 @@ import net.jcip.annotations.Immutable;
  * @author tiwe
  *
  */
-@Immutable
 public class TypeSuper extends TypeAdapter{
 
     private final Type superType;
 
-    @Nullable
     private final String varName;
 
     public TypeSuper(String varName, Type type) {

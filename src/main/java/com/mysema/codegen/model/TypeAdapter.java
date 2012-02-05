@@ -8,15 +8,12 @@ package com.mysema.codegen.model;
 import java.util.List;
 import java.util.Set;
 
-import net.jcip.annotations.Immutable;
-
 /**
  * TypeAdapter is a basic adapter implementation for the Type interface
  *
  * @author tiwe
  *
  */
-@Immutable
 public class TypeAdapter implements Type{
 
     protected final Type type;

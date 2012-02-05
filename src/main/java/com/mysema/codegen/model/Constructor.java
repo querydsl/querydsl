@@ -7,13 +7,10 @@ package com.mysema.codegen.model;
 
 import java.util.Collection;
 
-import net.jcip.annotations.Immutable;
-
 /**
  * @author tiwe
  *
  */
-@Immutable
 public final class Constructor {
 
     private final Collection<Parameter> parameters;

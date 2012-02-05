@@ -12,7 +12,6 @@ import java.net.URL;
 import java.util.Map;
 import java.util.WeakHashMap;
 
-import javax.annotation.Nullable;
 import javax.tools.JavaFileManager;
 
 /**
@@ -40,7 +39,6 @@ public final class MemFileSystemRegistry {
         System.setProperty("java.protocol.handler.pkgs",pkgs);
     }
     
-    @Nullable
     public JavaFileManager getFileSystem(URL url) {
         String prefix = url.getProtocol() + "://" + url.getHost() + "/";
         if(prefix2jfm.containsKey(prefix)) {

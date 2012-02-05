@@ -11,8 +11,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.Nullable;
-
 import com.mysema.codegen.support.ClassUtils;
 
 /**
@@ -30,10 +28,8 @@ public class ClassType implements Type {
 
     private final List<Type> parameters;
 
-    @Nullable
     private final Class<?> primitiveClass;
 
-    @Nullable
     private Type arrayType, componentType;
 
     public ClassType(Class<?> javaClass, Type... parameters) {
@@ -44,7 +40,7 @@ public class ClassType implements Type {
         this(category, javaClass, primitiveClass, Collections.<Type>emptyList());
     }
 
-    public ClassType(TypeCategory category, Class<?> javaClass, @Nullable Class<?> primitiveClass, List<Type> parameters) {
+    public ClassType(TypeCategory category, Class<?> javaClass, Class<?> primitiveClass, List<Type> parameters) {
         this.category = category;
         this.javaClass = javaClass;
         this.primitiveClass = primitiveClass;

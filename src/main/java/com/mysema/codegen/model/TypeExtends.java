@@ -8,20 +8,16 @@ package com.mysema.codegen.model;
 import java.util.Collections;
 import java.util.Set;
 
-import javax.annotation.Nullable;
-
-import net.jcip.annotations.Immutable;
-
 import org.apache.commons.lang3.StringUtils;
+
+import com.sun.istack.internal.Nullable;
 
 /**
  * @author tiwe
  *
  */
-@Immutable
 public class TypeExtends extends TypeAdapter{
 
-    @Nullable
     private final String varName;
 
     public TypeExtends(String varName, Type type) {

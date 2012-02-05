@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URI;
 
-import javax.annotation.Nullable;
 import javax.tools.SimpleJavaFileObject;
 
 /**
@@ -26,7 +25,6 @@ import javax.tools.SimpleJavaFileObject;
  */
 public class MemJavaFileObject extends SimpleJavaFileObject {
     
-    @Nullable
     private ByteArrayOutputStream baos;
     
     private final String name;
