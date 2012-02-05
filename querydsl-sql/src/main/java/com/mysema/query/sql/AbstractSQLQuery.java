@@ -96,7 +96,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     }
 
     /**
-     * Add the given String literal as a join flag to the last added join with the position BEFORE_TARGET
+     * Add the given String literal as a join flag to the last added join with the position 
+     * BEFORE_TARGET
      *
      * @param flag
      * @return
@@ -498,9 +499,11 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         constants = null;
     }
 
-    protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths, Map<ParamExpression<?>, ?> params) {
+    protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths, 
+            Map<ParamExpression<?>, ?> params) {
         if (objects.size() != constantPaths.size()) {
-            throw new IllegalArgumentException("Expected " + objects.size() + " paths, but got " + constantPaths.size());
+            throw new IllegalArgumentException("Expected " + objects.size() + 
+                    " paths, but got " + constantPaths.size());
         }
         int counter = 1;
         for (int i = 0; i < objects.size(); i++) {

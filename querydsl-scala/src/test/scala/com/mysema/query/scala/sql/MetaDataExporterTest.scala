@@ -66,7 +66,7 @@ class MetaDataExporterTest extends CompileTestUtils {
     }
     
     @Test
-    def GenerateWithoutBeanTypes() {
+    def Generate_Without_BeanTypes() {
         val directory = new java.io.File("target/jdbcgen1");
         val namingStrategy = new DefaultNamingStrategy();
         val exporter = new MetaDataExporter();
@@ -83,7 +83,7 @@ class MetaDataExporterTest extends CompileTestUtils {
     }
     
     @Test
-    def GenerateWithBeanTypes() {
+    def Generate_With_BeanTypes() {
         val directory = new java.io.File("target/jdbcgen2");
         val namingStrategy = new DefaultNamingStrategy();
         //val beanSerializer = new ScalaBeanSerializer();
@@ -98,8 +98,46 @@ class MetaDataExporterTest extends CompileTestUtils {
         exporter.setTypeMappings(ScalaTypeMappings.create);
         exporter.export(connection.getMetaData);
         
-        assertCompileSuccess(recursiveFileList(directory))
+        assertCompileSuccess(recursiveFileList(directory))        
+    }
+    
+    @Test
+    def Generate_With_Schema() {
+        val directory = new java.io.File("target/jdbcgen3");
+        val namingStrategy = new DefaultNamingStrategy();
+        //val beanSerializer = new ScalaBeanSerializer();
+        val exporter = new MetaDataExporter();
+        exporter.setNamePrefix("Q");
+        exporter.setPackageName("com.mysema");
+        exporter.setSchemaPattern("PUBLIC");
+        exporter.setSchemaToPackage(true);
+        exporter.setTargetFolder(directory);
+        exporter.setSerializerClass(classOf[ScalaMetaDataSerializer]);
+        exporter.setCreateScalaSources(true);
+        exporter.setTypeMappings(ScalaTypeMappings.create);
+        exporter.export(connection.getMetaData);
         
+        assertCompileSuccess(recursiveFileList(directory))       
+    }    
+    
+    @Test
+    def Generate_With_BeanTypes_And_Schema() {
+              val directory = new java.io.File("target/jdbcgen4");
+        val namingStrategy = new DefaultNamingStrategy();
+        //val beanSerializer = new ScalaBeanSerializer();
+        val exporter = new MetaDataExporter();
+        exporter.setNamePrefix("Q");
+        exporter.setPackageName("com.mysema");
+        exporter.setSchemaPattern("PUBLIC");
+        exporter.setSchemaToPackage(true);
+        exporter.setTargetFolder(directory);
+        exporter.setSerializerClass(classOf[ScalaMetaDataSerializer]);
+        exporter.setBeanSerializerClass(classOf[ScalaBeanSerializer]);
+        exporter.setCreateScalaSources(true);
+        exporter.setTypeMappings(ScalaTypeMappings.create);
+        exporter.export(connection.getMetaData);
+        
+        assertCompileSuccess(recursiveFileList(directory))       
     }
     
 }

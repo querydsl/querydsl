@@ -24,20 +24,24 @@ class ScalaEntitySerializerTest extends CompileTestUtils {
   def setUp() {
     val typeModel = new ClassType(TypeCategory.ENTITY, classOf[Person])
     entityType = new EntityType(typeModel)
-    entityType.addProperty(new Property(entityType, "scalaInt", Types.INTEGER))
-    entityType.addProperty(new Property(entityType, "javaInt", Types.INTEGER))
-    entityType.addProperty(new Property(entityType, "javaDouble", Types.DOUBLE))
-    entityType.addProperty(new Property(entityType, "firstName", Types.STRING))
-    entityType.addProperty(new Property(entityType, "lastName", Types.STRING))
-    entityType.addProperty(new Property(entityType, "scalaList", new SimpleType(Types.LIST, Types.STRING)))
-    entityType.addProperty(new Property(entityType, "scalaMap", new SimpleType(Types.MAP, Types.STRING, Types.STRING)))
-    entityType.addProperty(new Property(entityType, "javaCollection", new SimpleType(Types.COLLECTION, Types.STRING)))
-    entityType.addProperty(new Property(entityType, "javaSet", new SimpleType(Types.SET, Types.STRING)))
-    entityType.addProperty(new Property(entityType, "javaList", new SimpleType(Types.LIST, Types.STRING)))
-    entityType.addProperty(new Property(entityType, "javaMap", new SimpleType(Types.MAP, Types.STRING, Types.STRING)))
-    entityType.addProperty(new Property(entityType, "listOfPersons", new SimpleType(Types.LIST, entityType)))
-    entityType.addProperty(new Property(entityType, "array", new ClassType(TypeCategory.ARRAY, classOf[Array[String]])))
-    entityType.addProperty(new Property(entityType, "other", entityType))
+    for ( (name, t) <- List(
+        ("scalaInt", Types.INTEGER),
+        ("javaInt", Types.INTEGER),
+        ("javaDouble", Types.DOUBLE),
+        ("firstName", Types.STRING),
+        ("lastName", Types.STRING),
+        ("scalaList", new SimpleType(Types.LIST, Types.STRING)),
+        ("scalaMap", new SimpleType(Types.MAP, Types.STRING, Types.STRING)),
+        ("javaCollection", new SimpleType(Types.COLLECTION, Types.STRING)),
+        ("javaSet", new SimpleType(Types.SET, Types.STRING)),
+        ("javaList", new SimpleType(Types.LIST, Types.STRING)),
+        ("javaMap", new SimpleType(Types.MAP, Types.STRING, Types.STRING)),
+        ("listOfPersons", new SimpleType(Types.LIST, entityType)),
+        ("array", new ClassType(TypeCategory.ARRAY, classOf[Array[String]])),
+        ("other", entityType))) {
+      entityType.addProperty(new Property(entityType, name, t))
+    }
+        
 
   }
 
@@ -49,9 +53,12 @@ class ScalaEntitySerializerTest extends CompileTestUtils {
     serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new ScalaWriter(writer))
     val str = writer.toString()
     System.err.println(str)
-    assertTrue(str.contains("class QPerson(cl: Class[_ <: Person], md: PathMetadata[_]) extends EntityPathImpl[Person](cl, md) {"))
-    assertTrue(str.contains("def this(variable: String) = this(classOf[Person], forVariable(variable))"))
-    assertTrue(str.contains("def this(parent: Path[_], variable: String) = this(classOf[Person], forProperty(parent, variable))"))
+    assertTrue(str.contains("class QPerson(cl: Class[_ <: Person], md: PathMetadata[_]) " +
+    		"extends EntityPathImpl[Person](cl, md) {"))
+    assertTrue(str.contains("def this(variable: String) = " +
+    		"this(classOf[Person], forVariable(variable))"))
+    assertTrue(str.contains("def this(parent: Path[_], variable: String) = " +
+    		"this(classOf[Person], forProperty(parent, variable))"))
     System.err.println(str)
   }
 

@@ -45,7 +45,8 @@ class AliasTest {
   
   @Test
   def String_Append2 {
-    assertEquals("person.firstName +   + person.lastName", person.firstName $append " " $append person.lastName)
+    assertEquals("person.firstName +   + person.lastName", 
+        person.firstName $append " " $append person.lastName)
   }
 
   @Test

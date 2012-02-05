@@ -33,7 +33,7 @@ import com.mysema.query.types.path.SimplePath;
  * @param <E>
  */
 @Immutable
-public class ForeignKey <E>{
+public class ForeignKey <E> {
 
     private final RelationalPath<?> entity;
 
@@ -45,7 +45,8 @@ public class ForeignKey <E>{
         this(entity, Arrays.<Path<?>>asList(localColumn), Arrays.asList(foreignColumn));
     }
 
-    public ForeignKey(RelationalPath<?> entity, List<? extends Path<?>> localColumns, List<String> foreignColumns) {
+    public ForeignKey(RelationalPath<?> entity, List<? extends Path<?>> localColumns, 
+            List<String> foreignColumns) {
         this.entity = entity;
         this.localColumns = localColumns;
         this.foreignColumns = foreignColumns;

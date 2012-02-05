@@ -107,22 +107,29 @@ public class MetaDataExporter {
     
     private boolean validationAnnotations = false;
     
+    private boolean schemaToPackage = false;
+    
     private String sourceEncoding = "UTF-8";
 
     public MetaDataExporter() {}
-
-    protected EntityType createEntityType(@Nullable String schemaName, String tableName, final String className) {
+        
+    protected EntityType createEntityType(@Nullable String schemaName, String tableName, 
+            final String className) {
         EntityType classModel;
 
         if (beanSerializer == null) {
-            String simpleName = module.getPrefix() + className + module.getSuffix();
-            Type classTypeModel = new SimpleType(TypeCategory.ENTITY, module.getPackageName() + "." + simpleName,  module.getPackageName(), simpleName, false, false);
+            String packageName = normalizePackage(module.getPackageName(), schemaName);
+            String simpleName = module.getPrefix() + className + module.getSuffix();            
+            Type classTypeModel = new SimpleType(TypeCategory.ENTITY, 
+                    packageName + "." + simpleName,  packageName, simpleName, false, false);
             classModel = new EntityType(classTypeModel);
             typeMappings.register(classModel, classModel);
 
         } else {
+            String packageName = normalizePackage(beanPackageName, schemaName);
             String simpleName = module.getBeanPrefix() + className + module.getBeanSuffix();
-            Type classTypeModel = new SimpleType(TypeCategory.ENTITY, beanPackageName + "." + simpleName, beanPackageName, simpleName, false, false);
+            Type classTypeModel = new SimpleType(TypeCategory.ENTITY, 
+                    packageName + "." + simpleName, packageName, simpleName, false, false);
             classModel = new EntityType(classTypeModel);
             Type mappedType = queryTypeFactory.create(classModel);
             entityToWrapped.put(classModel, mappedType);
@@ -132,6 +139,15 @@ public class MetaDataExporter {
         classModel.getData().put("schema", schemaName);
         classModel.getData().put("table", tableName);
         return classModel;
+    }
+    
+
+    private String normalizePackage(String packageName, @Nullable String schemaName) {
+        if (schemaToPackage && schemaName != null) {
+            return namingStrategy.appendSchema(packageName, schemaName);
+        } else {
+            return packageName;
+        }
     }
 
     protected Property createProperty(EntityType classModel, String columnName,
@@ -164,9 +180,11 @@ public class MetaDataExporter {
         }
         
         if (beanSerializer == null) {
-            keyDataFactory = new KeyDataFactory(namingStrategy,  module.getPackageName(), module.getPrefix(), module.getSuffix());
+            keyDataFactory = new KeyDataFactory(namingStrategy,  module.getPackageName(), 
+                    module.getPrefix(), module.getSuffix(), schemaToPackage);
         } else {
-            keyDataFactory = new KeyDataFactory(namingStrategy, beanPackageName, module.getBeanPrefix(), module.getBeanSuffix());
+            keyDataFactory = new KeyDataFactory(namingStrategy, beanPackageName, 
+                    module.getBeanPrefix(), module.getBeanSuffix(), schemaToPackage);
         }
 
         ResultSet tables = md.getTables(null, schemaPattern, tableNamePattern, null);
@@ -215,22 +233,26 @@ public class MetaDataExporter {
         String schemaName = tables.getString(SCHEMA_NAME);
         String tableName = tables.getString(TABLE_NAME);
         String className = namingStrategy.getClassName(tableName);
-        EntityType classModel = createEntityType(schemaName, namingStrategy.normalizeTableName(tableName), className);
+        EntityType classModel = createEntityType(schemaName, 
+                namingStrategy.normalizeTableName(tableName), className);
 
         // collect primary keys
-        Map<String,PrimaryKeyData> primaryKeyData = keyDataFactory.getPrimaryKeys(md, schemaPattern, tableName);
+        Map<String,PrimaryKeyData> primaryKeyData = keyDataFactory
+                .getPrimaryKeys(md, schemaPattern, tableName);
         if (!primaryKeyData.isEmpty()) {
             classModel.getData().put(PrimaryKeyData.class, primaryKeyData.values());
         }
 
         // collect foreign keys
-        Map<String,ForeignKeyData> foreignKeyData = keyDataFactory.getImportedKeys(md, schemaPattern, tableName);
+        Map<String,ForeignKeyData> foreignKeyData = keyDataFactory
+                .getImportedKeys(md, schemaPattern, tableName);
         if (!foreignKeyData.isEmpty()) {
             classModel.getData().put(ForeignKeyData.class, foreignKeyData.values());
         }
 
         // collect inverse foreign keys
-        Map<String,InverseForeignKeyData> inverseForeignKeyData = keyDataFactory.getExportedKeys(md, schemaPattern, tableName);
+        Map<String,InverseForeignKeyData> inverseForeignKeyData = keyDataFactory
+                .getExportedKeys(md, schemaPattern, tableName);
         if (!inverseForeignKeyData.isEmpty()) {
             classModel.getData().put(InverseForeignKeyData.class, inverseForeignKeyData.values());
         }
@@ -256,13 +278,15 @@ public class MetaDataExporter {
             String fileSuffix = createScalaSources ? ".scala" : ".java";
 
             if (beanSerializer != null) {
-                String path = beanPackageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
+                String packageName = normalizePackage(beanPackageName, (String)type.getData().get("schema"));         
+                String path = packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
                 write(beanSerializer, path, type);
 
                 String otherPath = entityToWrapped.get(type).getFullName().replace('.', '/') + fileSuffix;
                 write(serializer, otherPath, type);
             } else {
-                String path =  module.getPackageName().replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
+                String packageName = normalizePackage(module.getPackageName(), (String)type.getData().get("schema"));
+                String path =  packageName.replace('.', '/') + "/" + type.getSimpleName() + fileSuffix;
                 write(serializer, path, type);
             }
 
@@ -338,7 +362,8 @@ public class MetaDataExporter {
     /**
      * Set the target folder
      *
-     * @param targetFolder target source folder to create the sources into (e.g. target/generated-sources/java)
+     * @param targetFolder target source folder to create the sources into 
+     *        (e.g. target/generated-sources/java)
      */
     public void setTargetFolder(File targetFolder) {
         Assert.notNull(targetFolder, "targetFolder");
@@ -475,6 +500,14 @@ public class MetaDataExporter {
      */
     public void setSourceEncoding(String sourceEncoding) {
         this.sourceEncoding = sourceEncoding;
+    }
+
+    /**
+     * @param schemaToPackage
+     */
+    public void setSchemaToPackage(boolean schemaToPackage) {
+        this.schemaToPackage = schemaToPackage;
+        module.bind(SQLCodegenModule.SCHEMA_TO_PACKAGE, schemaToPackage);
     }
        
 }

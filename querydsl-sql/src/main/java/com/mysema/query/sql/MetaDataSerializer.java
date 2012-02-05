@@ -51,18 +51,19 @@ public class MetaDataSerializer extends EntitySerializer {
     private final NamingStrategy namingStrategy;
 
     private final boolean innerClassesForKeys;
-
+    
     /**
      * Create a new MetaDataSerializer instance
      *
      * @param namingStrategy naming strategy for table to class and column to property conversion
      * @param innerClassesForKeys wrap key properties into inner classes (default: false)
+     * @param schemaToPackage if schema name is appended to package or not
      */
     @Inject
     public MetaDataSerializer(
             TypeMappings typeMappings,
             NamingStrategy namingStrategy,
-            @Named("innerClassesForKeys") boolean innerClassesForKeys) {
+            @Named(SQLCodegenModule.INNER_CLASSES_FOR_KEYS) boolean innerClassesForKeys) {
         super(typeMappings,Collections.<String>emptyList());
         this.namingStrategy = namingStrategy;
         this.innerClassesForKeys = innerClassesForKeys;

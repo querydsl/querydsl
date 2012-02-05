@@ -25,16 +25,19 @@ class ScalaMetaDataSerializerTest {
   @Before
   def setUp() {
     // type
-    val typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false, false)
+    val typeModel = new SimpleType(TypeCategory.ENTITY, 
+        "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false, false)
     entityType = new EntityType(typeModel)
     //entityType.addAnnotation(new TableImpl("DOMAIN_TYPE"))
     entityType.getData().put("table", "DOMAIN_TYPE")
 
     // properties
-    List(classOf[java.lang.Boolean], classOf[Comparable[_]], classOf[Integer], classOf[java.util.Date], classOf[java.sql.Date], classOf[java.sql.Time])
+    List(classOf[java.lang.Boolean], classOf[Comparable[_]], classOf[Integer], 
+         classOf[java.util.Date], classOf[java.sql.Date], classOf[java.sql.Time])
       .foreach(cl => {
         var classType = new ClassType(TypeCategory.get(cl.getName), cl)
-        entityType.addProperty(new Property(entityType, StringUtils.uncapitalize(cl.getSimpleName), classType, new Array[String](0)))
+        entityType.addProperty(new Property(entityType, 
+            StringUtils.uncapitalize(cl.getSimpleName), classType, new Array[String](0)))
       })
   }
 

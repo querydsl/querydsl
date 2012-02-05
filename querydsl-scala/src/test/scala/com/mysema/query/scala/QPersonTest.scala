@@ -27,7 +27,8 @@ class QPersonTest {
   
   @Test
   def List_Get_EntityPath {
-    assertEquals("person.listOfPersons.get(0).firstName is not null", person.listOfPersons(0).firstName isNotNull)
+    assertEquals("person.listOfPersons.get(0).firstName is not null", 
+        person.listOfPersons(0).firstName isNotNull)
   }
     
   def assertEquals(expected: String, actual: Any) {

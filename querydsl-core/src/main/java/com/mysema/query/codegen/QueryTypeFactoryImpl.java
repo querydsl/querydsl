@@ -19,15 +19,20 @@ import javax.inject.Named;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 
+/**
+ * 
+ * @author tiwe
+ *
+ */
 public class QueryTypeFactoryImpl implements QueryTypeFactory {
     
     private final String prefix, suffix, packageSuffix;
     
     @Inject
     public QueryTypeFactoryImpl(
-            @Named("prefix") String prefix, 
-            @Named("suffix") String suffix, 
-            @Named("packageSuffix") String packageSuffix) {
+            @Named(CodegenModule.PREFIX) String prefix, 
+            @Named(CodegenModule.SUFFIX) String suffix, 
+            @Named(CodegenModule.PACKAGE_SUFFIX) String packageSuffix) {
         this.prefix = prefix;
         this.suffix = suffix;
         this.packageSuffix = packageSuffix;
@@ -44,9 +49,12 @@ public class QueryTypeFactoryImpl implements QueryTypeFactory {
     
     private Type createWithPackage(Type type){
         String packageName = type.getPackageName();
-        String simpleName = prefix + normalizeName(type.getFullName().substring(packageName.length()+1)) + suffix;        
-        packageName = (packageName.startsWith("java") ? "ext." : "") + packageName + packageSuffix; 
-        return new SimpleType(type.getCategory(), packageName+"."+simpleName, packageName, simpleName, false, false);
+        String simpleName = prefix + normalizeName(type.getFullName()
+                .substring(packageName.length()+1)) + suffix;        
+        packageName = (packageName.startsWith("java") ? "ext." : "") 
+                + packageName + packageSuffix; 
+        return new SimpleType(type.getCategory(), packageName+"."+simpleName, 
+                packageName, simpleName, false, false);
     }
     
     private Type createWithoutPackage(Type type){

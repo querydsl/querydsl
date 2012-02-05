@@ -24,6 +24,15 @@ import com.mysema.query.codegen.EntityType;
 public interface NamingStrategy {
 
     /**
+     * Normalizes and appends the given schema name to the package name
+     * 
+     * @param packageName
+     * @param schema
+     * @return
+     */
+    String appendSchema(String packageName, String schema);
+    
+    /**
      * Convert the given tableName to a simple class name
      * @return
      */

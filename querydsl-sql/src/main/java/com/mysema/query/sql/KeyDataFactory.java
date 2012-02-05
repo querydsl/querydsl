@@ -19,6 +19,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.query.sql.support.ForeignKeyData;
@@ -34,12 +36,16 @@ public class KeyDataFactory {
     private static final int FK_FOREIGN_COLUMN_NAME = 8;
 
     private static final int FK_FOREIGN_TABLE_NAME = 7;
+    
+    private static final int FK_FOREIGN_SCHEMA_NAME = 6;
 
     private static final int FK_NAME = 12;
 
     private static final int FK_PARENT_COLUMN_NAME = 4;
 
     private static final int FK_PARENT_TABLE_NAME = 3;
+    
+    private static final int FK_PARENT_SCHEMA_NAME = 2;
     
     private static final int PK_COLUMN_NAME = 4;
 
@@ -49,11 +55,15 @@ public class KeyDataFactory {
     
     private final String packageName, prefix, suffix;
     
-    public KeyDataFactory(NamingStrategy namingStrategy, String packageName, String prefix, String suffix) {
+    private final boolean schemaToPackage;
+    
+    public KeyDataFactory(NamingStrategy namingStrategy, String packageName, 
+            String prefix, String suffix, boolean schemaToPackage) {
         this.namingStrategy = namingStrategy;
         this.packageName = packageName;
         this.prefix = prefix;
         this.suffix = suffix;
+        this.schemaToPackage = schemaToPackage;
     }
     
     public Map<String, InverseForeignKeyData> getExportedKeys(DatabaseMetaData md, 
@@ -64,11 +74,13 @@ public class KeyDataFactory {
             while (foreignKeys.next()) {
                 String name = foreignKeys.getString(FK_NAME);
                 String parentColumnName = foreignKeys.getString(FK_PARENT_COLUMN_NAME);
+                String foreignSchemaName = foreignKeys.getString(FK_FOREIGN_SCHEMA_NAME);
                 String foreignTableName = foreignKeys.getString(FK_FOREIGN_TABLE_NAME);
                 String foreignColumn = foreignKeys.getString(FK_FOREIGN_COLUMN_NAME);
                 InverseForeignKeyData data = inverseForeignKeyData.get(name);
                 if (data == null) {                    
-                    data = new InverseForeignKeyData(name, foreignTableName, createType(foreignTableName));
+                    data = new InverseForeignKeyData(name, foreignSchemaName, 
+                            foreignTableName, createType(foreignSchemaName, foreignTableName));
                     inverseForeignKeyData.put(name, data);
                 }
                 data.add(parentColumnName, foreignColumn);
@@ -86,12 +98,14 @@ public class KeyDataFactory {
         try{
             while (foreignKeys.next()) {
                 String name = foreignKeys.getString(FK_NAME);
+                String parentSchemaName = foreignKeys.getString(FK_PARENT_SCHEMA_NAME);
                 String parentTableName = foreignKeys.getString(FK_PARENT_TABLE_NAME);
                 String parentColumnName = foreignKeys.getString(FK_PARENT_COLUMN_NAME);
                 String foreignColumn = foreignKeys.getString(FK_FOREIGN_COLUMN_NAME);
                 ForeignKeyData data = foreignKeyData.get(name);
                 if (data == null) {
-                    data = new ForeignKeyData(name, parentTableName, createType(parentTableName));
+                    data = new ForeignKeyData(name, parentSchemaName, parentTableName, 
+                            createType(parentSchemaName, parentTableName));
                     foreignKeyData.put(name, data);
                 }
                 data.add(foreignColumn, parentColumnName);
@@ -124,7 +138,11 @@ public class KeyDataFactory {
         }
     }
     
-    private Type createType(String table) {
+    private Type createType(@Nullable String schemaName, String table) {
+        String packageName = this.packageName;
+        if (schemaToPackage && schemaName != null) {
+            packageName = namingStrategy.appendSchema(packageName, schemaName);
+        }
         String simpleName = prefix + namingStrategy.getClassName(table) + suffix;
         return new SimpleType(packageName + "." + simpleName, packageName, simpleName);
     }

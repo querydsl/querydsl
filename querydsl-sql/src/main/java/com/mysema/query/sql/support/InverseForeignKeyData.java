@@ -29,6 +29,9 @@ public class InverseForeignKeyData implements KeyData{
 
     private final String name;
 
+    @Nullable
+    private final String schema;
+    
     private final String table;
     
     @Nullable
@@ -38,8 +41,9 @@ public class InverseForeignKeyData implements KeyData{
     
     private final List<String> parentColumns = new ArrayList<String>();
 
-    public InverseForeignKeyData(String name, String parentTable, @Nullable Type type) {
+    public InverseForeignKeyData(String name, @Nullable String schema, String parentTable, @Nullable Type type) {
         this.name = Assert.hasLength(name,"name");
+        this.schema = schema;
         this.table = Assert.hasLength(parentTable,"parentTable");
         this.type = type;
     }
@@ -51,6 +55,10 @@ public class InverseForeignKeyData implements KeyData{
 
     public String getName() {
         return name;
+    }
+    
+    public String getSchema() {
+        return schema;
     }
 
     public String getTable() {

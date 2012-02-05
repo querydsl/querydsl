@@ -14,6 +14,7 @@
 package com.mysema.query.sql;
 
 import com.mysema.query.codegen.EntityType;
+import com.mysema.util.JavaSyntaxUtils;
 
 /**
  * @author tiwe
@@ -30,6 +31,15 @@ public abstract class AbstractNamingStrategy implements NamingStrategy {
     protected String primaryKeysVariable = "pk";
     
     protected String reservedSuffix = "_col";
+    
+    @Override
+    public String appendSchema(String packageName, String schemaName) {
+        String suffix = schemaName.toLowerCase();
+        if (JavaSyntaxUtils.isReserved(suffix)) {
+            suffix += "_";
+        }
+        return packageName + "." + suffix;
+    }
     
     @Override
     public String getForeignKeysClassName() {

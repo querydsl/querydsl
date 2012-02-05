@@ -48,7 +48,7 @@ public class KeyDataFactoryTest extends AbstractJDBCTest{
                 + "CONSTRAINT FK_survey FOREIGN KEY (survey_id, survey_name) REFERENCES survey(id,name), "
                 + "CONSTRAINT FK_superior FOREIGN KEY (superior_id) REFERENCES employee(id))");
         
-        KeyDataFactory keyDataFactory = new KeyDataFactory(new DefaultNamingStrategy(), "Q","","test");
+        KeyDataFactory keyDataFactory = new KeyDataFactory(new DefaultNamingStrategy(), "Q","","test", false);
         
         DatabaseMetaData md = connection.getMetaData();
         

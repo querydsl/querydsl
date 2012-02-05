@@ -28,6 +28,8 @@ import com.mysema.commons.lang.Assert;
 public class ForeignKeyData implements KeyData {
 
     private final String name;
+    
+    private final String schema;
 
     private final String table;
     
@@ -38,8 +40,9 @@ public class ForeignKeyData implements KeyData {
     
     private final List<String> parentColumns = new ArrayList<String>();
 
-    public ForeignKeyData(String name, String parentTable, @Nullable Type type) {
+    public ForeignKeyData(String name, @Nullable String schema, String parentTable, @Nullable Type type) {
         this.name = Assert.hasLength(name,"name");
+        this.schema = schema;
         this.table = Assert.hasLength(parentTable,"parentTable");
         this.type = type;
     }
@@ -51,6 +54,11 @@ public class ForeignKeyData implements KeyData {
 
     public String getName() {
         return name;
+    }
+    
+    @Nullable
+    public String getSchema() {
+        return schema;
     }
 
     public String getTable() {

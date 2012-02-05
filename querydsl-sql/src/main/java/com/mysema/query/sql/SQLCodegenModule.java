@@ -29,6 +29,8 @@ public class SQLCodegenModule extends CodegenModule{
     
     public static final String INNER_CLASSES_FOR_KEYS = "innerClassesForKeys";
     
+    public static final String SCHEMA_TO_PACKAGE = "schemaToPackage";
+    
     @Override
     protected void configure() {
         super.configure();
@@ -42,6 +44,7 @@ public class SQLCodegenModule extends CodegenModule{
         bind(BEAN_SUFFIX, "");
         bind(PACKAGE_NAME, "com.example");
         bind(BEAN_SERIALIZER, (Class<?>)null);
+        bind(SCHEMA_TO_PACKAGE, false);
     }
     
     public String getPrefix() {

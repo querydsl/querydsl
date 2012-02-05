@@ -19,7 +19,6 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.EntityPath;
-import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.ProjectionRole;
 

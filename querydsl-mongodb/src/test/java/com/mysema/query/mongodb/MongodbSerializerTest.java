@@ -181,7 +181,7 @@ public class MongodbSerializerTest {
                 dbo("title", dbo("$regex", "\\QA\\E$").append("$options", "i")));
 
         assertQuery(title.equalsIgnoreCase("A"),
-                dbo("title", dbo("$regex", "\\QA\\E").append("$options", "i")));
+                dbo("title", dbo("$regex", "^\\QA\\E$").append("$options", "i")));
 
         assertQuery(title.contains("A"),
                 dbo("title", dbo("$regex", ".*\\QA\\E.*").append("$options", "")));

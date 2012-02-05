@@ -34,7 +34,8 @@ public class DefaultNamingStrategy extends AbstractNamingStrategy {
     @Override
     public String getClassName(String tableName) {
         if (tableName.length() > 1) {
-            return tableName.substring(0, 1).toUpperCase(Locale.ENGLISH) + toCamelCase(tableName.substring(1));    
+            return tableName.substring(0, 1).toUpperCase(Locale.ENGLISH) + 
+                    toCamelCase(tableName.substring(1));    
         } else {
             return tableName.toUpperCase(Locale.ENGLISH);
         }        

@@ -44,7 +44,8 @@ class QueriesTest extends SQLHelpers {
     val sup = Employee as "sup"
     val sup2 = Employee as "sup2"
     assertEquals(
-        "from EMPLOYEE employee\ninner join EMPLOYEE sup\non employee.SUPERIOR_ID = sup.ID\ninner join EMPLOYEE sup2\non sup.SUPERIOR_ID = sup2.ID", 
+        "from EMPLOYEE employee\ninner join EMPLOYEE sup\non employee.SUPERIOR_ID " +
+        "= sup.ID\ninner join EMPLOYEE sup2\non sup.SUPERIOR_ID = sup2.ID", 
         Employee.join(_.superiorFk, sup).join(sup.superiorFk, sup2).toString)
   }
   
@@ -53,7 +54,8 @@ class QueriesTest extends SQLHelpers {
     val sup = Employee as "sup"
     val sup2 = Employee as "sup2"
     assertEquals(
-        "from EMPLOYEE employee\ninner join EMPLOYEE sup\non employee.SUPERIOR_ID = sup.ID\nwhere employee.ID = ?", 
+        "from EMPLOYEE employee\ninner join EMPLOYEE sup\non employee.SUPERIOR_ID " +
+        "= sup.ID\nwhere employee.ID = ?", 
         Employee.join(_.superiorFk, sup).where( _.id eq 1).toString)
   }
   
@@ -62,7 +64,8 @@ class QueriesTest extends SQLHelpers {
     val sup = Employee as "sup"
     val sup2 = Employee as "sup2"
     assertEquals(
-        "from EMPLOYEE employee\ninner join EMPLOYEE sup\non employee.SUPERIOR_ID = sup.ID\nwhere employee.ID = sup.ID", 
+        "from EMPLOYEE employee\ninner join EMPLOYEE sup\non employee.SUPERIOR_ID " +
+        "= sup.ID\nwhere employee.ID = sup.ID", 
         Employee.join(_.superiorFk, sup).where(_.id eq sup.id).toString)
   }
   

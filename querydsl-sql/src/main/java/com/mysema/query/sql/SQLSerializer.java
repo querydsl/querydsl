@@ -391,7 +391,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         
     }
 
-    public void serializeForUpdate(QueryMetadata metadata, RelationalPath<?> entity, List<Pair<Path<?>, Expression<?>>> updates) {
+    public void serializeForUpdate(QueryMetadata metadata, RelationalPath<?> entity, 
+            List<Pair<Path<?>, Expression<?>>> updates) {
         this.entity = entity;
         
         serialize(Position.START, metadata.getFlags());
@@ -570,12 +571,14 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         
         if (operator.equals(Ops.STRING_CAST)) {
             String typeName = templates.getTypeForCast(String.class);
-            visitOperation(String.class, SQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), ConstantImpl.create(typeName)));
+            visitOperation(String.class, SQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), 
+                    ConstantImpl.create(typeName)));
 
         } else if (operator.equals(Ops.NUMCAST)) {
             Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
             String typeName = templates.getTypeForCast(targetType);
-            visitOperation(targetType, SQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), ConstantImpl.create(typeName)));
+            visitOperation(targetType, SQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), 
+                    ConstantImpl.create(typeName)));
 
         } else if (operator.equals(Ops.ALIAS)) {
             if (stage == Stage.SELECT || stage == Stage.FROM) {

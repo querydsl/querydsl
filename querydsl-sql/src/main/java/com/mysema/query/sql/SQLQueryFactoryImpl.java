@@ -29,7 +29,8 @@ import com.mysema.query.types.Expression;
  * @author tiwe
  *
  */
-public class SQLQueryFactoryImpl implements SQLQueryFactory<SQLQueryImpl, SQLSubQuery, SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause>{
+public class SQLQueryFactoryImpl implements SQLQueryFactory<SQLQueryImpl, SQLSubQuery, 
+    SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause>{
 
     private final Configuration configuration;
 

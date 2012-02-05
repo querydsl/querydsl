@@ -86,7 +86,8 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     }
     
     /**
-     * Add the given String literal as a join flag to the last added join with the position BEFORE_TARGET
+     * Add the given String literal as a join flag to the last added join with the 
+     * position BEFORE_TARGET
      *
      * @param flag
      * @return

@@ -59,7 +59,8 @@ public interface SQLCommonQuery<Q extends SQLCommonQuery<Q>> extends Query<Q> {
     Q addFlag(Position position, String prefix, Expression<?> expr);
 
     /**
-     * Add the given String literal as a join flag to the last added join with the position BEFORE_TARGET
+     * Add the given String literal as a join flag to the last added join with the 
+     * position BEFORE_TARGET
      *
      * @param flag
      * @return

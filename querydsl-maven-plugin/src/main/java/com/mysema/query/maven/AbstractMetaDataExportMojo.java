@@ -182,6 +182,11 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      * @parameter default-value=false
      */
     private boolean createScalaSources;
+    
+    /**
+     * @parameter default-value=false
+     */
+    private boolean schemaToPackage;
 
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -238,6 +243,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         exporter.setTableNamePattern(tableNamePattern);
         exporter.setColumnAnnotations(columnAnnotations);
         exporter.setValidationAnnotations(validationAnnotations);
+        exporter.setSchemaToPackage(schemaToPackage);
         if (serializerClass != null) {
             try {
                 exporter.setSerializerClass((Class)Class.forName(serializerClass));

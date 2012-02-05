@@ -127,6 +127,11 @@ public class AntMetaDataExporter extends Task {
      * 
      */
     private boolean columnAnnotations = false;
+    
+    /**
+     * 
+     */
+    private boolean schemaToPackage = false;
 
     @Override
     public void execute() throws BuildException {
@@ -161,6 +166,7 @@ public class AntMetaDataExporter extends Task {
             exporter.setTableNamePattern(tableNamePattern);
             exporter.setColumnAnnotations(columnAnnotations);
             exporter.setValidationAnnotations(validationAnnotations);
+            exporter.setSchemaToPackage(schemaToPackage);
             if (exportBeans){
                 exporter.setBeanSerializer(new BeanSerializer());
             }
@@ -335,4 +341,12 @@ public class AntMetaDataExporter extends Task {
         this.columnAnnotations = columnAnnotations;
     }
 
+    public boolean isSchemaToPackage() {
+        return schemaToPackage;
+    }
+
+    public void setSchemaToPackage(boolean schemaToPackage) {
+        this.schemaToPackage = schemaToPackage;
+    }
+    
 }
