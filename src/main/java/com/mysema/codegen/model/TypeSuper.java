@@ -8,8 +8,6 @@ package com.mysema.codegen.model;
 import java.util.Collections;
 import java.util.Set;
 
-import com.sun.istack.internal.Nullable;
-
 
 /**
  * TypeSuper is a Type for type variables and wildcard types
@@ -49,7 +47,6 @@ public class TypeSuper extends TypeAdapter{
         }
     }
     
-    @Nullable
     public String getVarName(){
         return varName;
     }

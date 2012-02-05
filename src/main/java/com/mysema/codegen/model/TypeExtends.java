@@ -10,7 +10,6 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.sun.istack.internal.Nullable;
 
 /**
  * @author tiwe
@@ -49,7 +48,6 @@ public class TypeExtends extends TypeAdapter{
         }
     }
 
-    @Nullable
     public String getVarName(){
         return varName;
     }
