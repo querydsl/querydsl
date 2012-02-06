@@ -331,6 +331,12 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
+    public void In4() {
+        //$.parameterRelease.id.eq(releaseId).and($.parameterGroups.any().id.in(filter.getGroups()));        
+        catQuery().where(cat.id.eq(1), cat.kittens.any().id.in(1,2,3)).list(cat);
+    }
+    
+    @Test
     public void StartsWith(){
         assertEquals(1, catQuery().where(cat.name.startsWith("R")).count());
     }

@@ -15,6 +15,7 @@ package com.mysema.query.jpa;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.Constant;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
 import com.mysema.query.types.Ops;
@@ -131,4 +132,10 @@ public class JPQLTemplates extends Templates {
     public String getExistsProjection() {
         return null;
     }
+    
+    public boolean wrapConstant(Constant<?> expr) {
+        // related : https://hibernate.onjira.com/browse/HHH-6913
+        return false;
+    }
+
 }

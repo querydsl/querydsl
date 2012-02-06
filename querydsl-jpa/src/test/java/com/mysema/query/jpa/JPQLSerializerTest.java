@@ -59,5 +59,10 @@ public class JPQLSerializerTest {
         serializer.serializeForDelete(md);
         assertEquals("delete from Employee employee\nwhere employee.lastName is null", serializer.toString());
     }
+    
+    @Test
+    public void In() {
+        //$.parameterRelease.id.eq(releaseId).and($.parameterGroups.any().id.in(filter.getGroups()));
+    }
 }
  

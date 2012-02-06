@@ -14,8 +14,10 @@
 package com.mysema.query.jpa;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
+import com.mysema.query.types.Constant;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.PathType;
@@ -94,6 +96,13 @@ public class HQLTemplates extends JPQLTemplates {
     public boolean isEnumInPathSupported() {
         // related : http://opensource.atlassian.com/projects/hibernate/browse/HHH-5159
         return false;
+    }
+    
+    @Override
+    public boolean wrapConstant(Constant<?> expr) {
+        // related : https://hibernate.onjira.com/browse/HHH-6913
+        Class<?> type = expr.getType();
+        return type.isArray() || Collection.class.isAssignableFrom(type);
     }
     
 }
