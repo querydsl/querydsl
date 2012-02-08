@@ -185,7 +185,8 @@ public class DefaultConfiguration implements Configuration {
             }
         }
 
-        defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors, mapAccessors, createDefaultVariable);
+        defaultSerializerConfig = new SimpleSerializerConfig(entityAccessors, listAccessors, 
+                mapAccessors, createDefaultVariable);
 
     }
 

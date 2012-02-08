@@ -43,7 +43,8 @@ public class HibernateAnnotationProcessor extends JPAAnnotationProcessor{
             Class<? extends Annotation> embeddable = Embeddable.class;
             Class<? extends Annotation> embedded = Embedded.class;
             Class<? extends Annotation> skip = Transient.class;
-            return new HibernateConfiguration(roundEnv, processingEnv.getOptions(), entity, superType, embeddable, embedded, skip);
+            return new HibernateConfiguration(roundEnv, processingEnv.getOptions(), entity, superType, 
+                    embeddable, embedded, skip);
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }        
