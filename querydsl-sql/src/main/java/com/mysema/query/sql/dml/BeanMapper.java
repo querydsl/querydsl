@@ -44,12 +44,12 @@ public class BeanMapper extends AbstractMapper<Object> {
             Map<String, Field> fields = getPathFields(entity.getClass());
             for (Map.Entry entry : map.entrySet()) {
                 String property = entry.getKey().toString();
-                if (!property.equals("class")) {
+                if (!property.equals("class") && fields.containsKey(property)) {
                     Field field = fields.get(property);
                     Path path = (Path<?>) field.get(entity);
                     if (entry.getValue() != null) {
                         values.put(path, entry.getValue());    
-                    }                    
+                    }                                    
                 }
             }      
             return values;

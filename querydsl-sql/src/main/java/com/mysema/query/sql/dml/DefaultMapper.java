@@ -42,15 +42,15 @@ public class DefaultMapper extends AbstractMapper<Object> {
             Class<?> beanClass = bean.getClass();
             Map<String, Field> fields = getPathFields(entity.getClass());
             for (Field beanField : ReflectionUtils.getFields(beanClass)) {
-                if (!Modifier.isStatic(beanField.getModifiers())) {
-                    Field field = fields.get(beanField.getName());                    
+                if (!Modifier.isStatic(beanField.getModifiers()) && fields.containsKey(beanField.getName())) {
+                    Field field = fields.get(beanField.getName());
                     @SuppressWarnings("rawtypes")
                     Path path = (Path<?>) field.get(entity);
                     beanField.setAccessible(true);
                     Object propertyValue = beanField.get(bean);
                     if (propertyValue != null) {
                         values.put(path, propertyValue);
-                    }     
+                    }                     
                 }
             }
             return values;    
