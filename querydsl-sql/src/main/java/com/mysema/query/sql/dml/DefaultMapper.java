@@ -21,6 +21,7 @@ import java.util.Map;
 import com.mysema.query.QueryException;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.types.Path;
+import com.mysema.util.ReflectionUtils;
 
 /**
  * Creates the mapping by inspecting the RelationalPath and Object via reflection. 
@@ -40,7 +41,7 @@ public class DefaultMapper extends AbstractMapper<Object> {
             Map<Path<?>, Object> values = new HashMap<Path<?>, Object>();
             Class<?> beanClass = bean.getClass();
             Map<String, Field> fields = getPathFields(entity.getClass());
-            for (Field beanField : beanClass.getDeclaredFields()) {
+            for (Field beanField : ReflectionUtils.getFields(beanClass)) {
                 if (!Modifier.isStatic(beanField.getModifiers())) {
                     Field field = fields.get(beanField.getName());                    
                     @SuppressWarnings("rawtypes")
