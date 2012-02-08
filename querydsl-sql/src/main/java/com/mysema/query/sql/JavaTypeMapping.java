@@ -20,7 +20,27 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.mysema.commons.lang.Pair;
-import com.mysema.query.sql.types.*;
+import com.mysema.query.sql.types.BigDecimalType;
+import com.mysema.query.sql.types.BlobType;
+import com.mysema.query.sql.types.BooleanType;
+import com.mysema.query.sql.types.ByteType;
+import com.mysema.query.sql.types.BytesType;
+import com.mysema.query.sql.types.CharacterType;
+import com.mysema.query.sql.types.ClobType;
+import com.mysema.query.sql.types.DateType;
+import com.mysema.query.sql.types.DoubleType;
+import com.mysema.query.sql.types.FloatType;
+import com.mysema.query.sql.types.IntegerType;
+import com.mysema.query.sql.types.LongType;
+import com.mysema.query.sql.types.NullType;
+import com.mysema.query.sql.types.ObjectType;
+import com.mysema.query.sql.types.ShortType;
+import com.mysema.query.sql.types.StringType;
+import com.mysema.query.sql.types.TimeType;
+import com.mysema.query.sql.types.TimestampType;
+import com.mysema.query.sql.types.Type;
+import com.mysema.query.sql.types.URLType;
+import com.mysema.query.sql.types.UtilDateType;
 import com.mysema.util.ReflectionUtils;
 
 /**
@@ -53,6 +73,7 @@ public class JavaTypeMapping {
         registerDefault(new TimeType());
         registerDefault(new URLType());
         registerDefault(new UtilDateType());
+        registerDefault(new NullType());
         
         // initialize joda time converters only if joda time is available
         try {

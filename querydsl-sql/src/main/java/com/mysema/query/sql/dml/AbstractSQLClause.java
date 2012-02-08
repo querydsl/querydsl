@@ -47,7 +47,8 @@ public class AbstractSQLClause {
      * @param constantPaths list of paths related to the constants
      * @param params map of param to value for param resolving
      */
-    protected void setParameters(PreparedStatement stmt, List<?> objects, List<Path<?>> constantPaths, Map<Param<?>, ?> params) {
+    protected void setParameters(PreparedStatement stmt, List<?> objects, 
+            List<Path<?>> constantPaths, Map<Param<?>, ?> params) {
         if (objects.size() != constantPaths.size()) {
             throw new IllegalArgumentException("Expected " + objects.size() + " paths, but got " + constantPaths.size());
         }

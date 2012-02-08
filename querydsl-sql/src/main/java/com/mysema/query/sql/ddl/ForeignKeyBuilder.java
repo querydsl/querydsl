@@ -36,7 +36,8 @@ public class ForeignKeyBuilder {
 
     private final SQLTemplates templates;
     
-    public ForeignKeyBuilder(CreateTableClause clause, SQLTemplates templates, List<ForeignKeyData> foreignKeys, String name, String[] columns) {
+    public ForeignKeyBuilder(CreateTableClause clause, SQLTemplates templates, 
+            List<ForeignKeyData> foreignKeys, String name, String[] columns) {
         this.clause = clause;
         this.templates = templates;
         this.foreignKeys = foreignKeys;

@@ -76,7 +76,7 @@ public class SerializationTest {
         SQLInsertClause insertClause = new SQLInsertClause(connection,SQLTemplates.DEFAULT,survey);
         insertClause.set(survey.id, 1);
         insertClause.set(survey.name, (String)null);
-        assertEquals("insert into SURVEY(ID, NAME)\nvalues (?, null)", insertClause.toString());
+        assertEquals("insert into SURVEY(ID, NAME)\nvalues (?, ?)", insertClause.toString());
     }
     
     @Test

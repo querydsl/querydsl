@@ -128,7 +128,8 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
             queryString = serializer.toString();
             logger.debug(queryString);
             stmt = connection.prepareStatement(queryString);
-            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
+            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), 
+                    Collections.<Param<?>,Object>emptyMap());
         } else {
             SQLSerializer serializer = new SQLSerializer(configuration.getTemplates(), true);
             serializer.serializeForUpdate(batchMetadata.get(0), entity, batchUpdates.get(0));
@@ -137,14 +138,16 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
             
             // add first batch
             stmt = connection.prepareStatement(queryString);
-            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
+            setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), 
+                    Collections.<Param<?>,Object>emptyMap());
             stmt.addBatch();
             
             // add other batches
             for (int i = 1; i < batchUpdates.size(); i++) {
                 serializer = new SQLSerializer(configuration.getTemplates(), true, true);
                 serializer.serializeForUpdate(batchMetadata.get(i), entity, batchUpdates.get(i));
-                setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
+                setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), 
+                        Collections.<Param<?>,Object>emptyMap());
                 stmt.addBatch();
             }
         }

@@ -60,8 +60,7 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     
     @Test
     public void Insert_Without_Columns() {
-        assertEquals(1, insert(survey)
-                .values(4, "Hello").execute());
+        assertEquals(1, insert(survey).values(4, "Hello").execute());
             
     }
     
@@ -107,6 +106,22 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
         
         assertEquals(1l, query().from(survey).where(survey.name.eq("55")).count());
         assertEquals(1l, query().from(survey).where(survey.name.eq("66")).count());
+    }
+    
+    @Test
+    public void Insert_Nulls_In_Batch() {
+//        QFoo f= QFoo.foo;
+//        SQLInsertClause sic = new SQLInsertClause(c, new H2Templates(), f);
+//        sic.columns(f.c1,f.c2).values(null,null).addBatch();
+//        sic.columns(f.c1,f.c2).values(null,1).addBatch();
+//        sic.execute();
+        SQLInsertClause sic = insert(survey);
+        sic.columns(survey.id, survey.name).values(null, null).addBatch();
+        sic.columns(survey.id, survey.name).values(null, 1).addBatch();
+        System.out.println("start batch");
+        sic.execute();
+        System.out.println("end batch");
+        
     }
     
     @Test

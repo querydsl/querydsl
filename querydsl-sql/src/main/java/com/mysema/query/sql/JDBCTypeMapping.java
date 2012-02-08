@@ -21,6 +21,8 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.sql.types.Null;
+
 /**
  * JDBCTypeMapping defines a mapping from JDBC types to Java classes.
  *
@@ -76,7 +78,7 @@ public final class JDBCTypeMapping {
         registerDefault(Types.DISTINCT, Object.class);
         registerDefault(Types.DATALINK, Object.class);
         registerDefault(Types.JAVA_OBJECT, Object.class);
-        registerDefault(Types.NULL, Object.class);
+        registerDefault(Types.NULL, Null.class);
         registerDefault(Types.OTHER, Object.class);
         registerDefault(Types.REF, Object.class);
         registerDefault(Types.ROWID, Object.class);

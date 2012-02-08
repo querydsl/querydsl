@@ -42,9 +42,9 @@ import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.types.Null;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.NullExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.Param;
@@ -84,12 +84,14 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         this(connection, new Configuration(templates), entity);
     }
     
-    public SQLInsertClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity, AbstractSQLSubQuery<?> subQuery) {
+    public SQLInsertClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity, 
+            AbstractSQLSubQuery<?> subQuery) {
         this(connection, new Configuration(templates), entity);
         this.subQueryBuilder = subQuery;
     }
 
-    public SQLInsertClause(Connection connection, Configuration configuration, RelationalPath<?> entity, AbstractSQLSubQuery<?> subQuery) {
+    public SQLInsertClause(Connection connection, Configuration configuration, RelationalPath<?> entity, 
+            AbstractSQLSubQuery<?> subQuery) {
         this(connection, configuration, entity);
         this.subQueryBuilder = subQuery;
     }
@@ -225,7 +227,8 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
             serializer.serializeForInsert(metadata, entity, columns, values, subQuery);
             stmt = prepareStatementAndSetParameters(serializer, withKeys);
         } else {
-            serializer.serializeForInsert(metadata, entity, batches.get(0).getColumns(), batches.get(0).getValues(), batches.get(0).getSubQuery());
+            serializer.serializeForInsert(metadata, entity, batches.get(0).getColumns(), 
+                    batches.get(0).getValues(), batches.get(0).getSubQuery());
             stmt = prepareStatementAndSetParameters(serializer, withKeys);
 
             // add first batch
@@ -243,7 +246,8 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         return stmt;
     }
 
-    private PreparedStatement prepareStatementAndSetParameters(SQLSerializer serializer, boolean withKeys) throws SQLException {
+    private PreparedStatement prepareStatementAndSetParameters(SQLSerializer serializer, 
+            boolean withKeys) throws SQLException {
         queryString = serializer.toString();
         logger.debug(queryString);
         PreparedStatement stmt;
@@ -252,7 +256,8 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         } else {
             stmt = connection.prepareStatement(queryString);
         }
-        setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), Collections.<Param<?>,Object>emptyMap());
+        setParameters(stmt, serializer.getConstants(), serializer.getConstantPaths(), 
+                Collections.<Param<?>,Object>emptyMap());
         return stmt;
     }
 
@@ -322,7 +327,8 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         }else if (value != null) {
             values.add(new ConstantImpl<T>(value));
         } else {
-            values.add(new NullExpression<T>(path.getType()));
+            //values.add(new NullExpression<T>(path.getType()));
+            values.add(Null.CONSTANT);
         }
         return this;
     }
@@ -337,7 +343,8 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
     @Override
     public <T> SQLInsertClause setNull(Path<T> path) {
         columns.add(path);
-        values.add(new NullExpression<T>(path.getType()));
+        //values.add(new NullExpression<T>(path.getType()));
+        values.add(Null.CONSTANT);
         return this;
     }
 
@@ -349,7 +356,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
             } else if (value != null) {
                 values.add(new ConstantImpl<Object>(value));
             } else {
-                values.add(NullExpression.DEFAULT);
+                values.add(Null.CONSTANT);
             }
         }
         return this;
