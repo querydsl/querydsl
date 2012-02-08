@@ -18,6 +18,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import com.mysema.query.annotations.QueryEntity;
+import com.mysema.query.annotations.QueryInit;
 
 public class AnimalTest {
 
@@ -31,6 +32,7 @@ public class AnimalTest {
     @QueryEntity
     public static class Cat extends Animal{
 
+        @QueryInit("nameX")
         public Cat mate;
 
     }
