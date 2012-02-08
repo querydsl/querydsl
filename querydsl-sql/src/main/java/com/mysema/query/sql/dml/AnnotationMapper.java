@@ -21,6 +21,7 @@ import com.mysema.query.QueryException;
 import com.mysema.query.sql.Column;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.types.Path;
+import com.mysema.util.ReflectionUtils;
 
 /**
  * Creates the mapping via @Column annotated fields in the object. Field names don't have to match those in the RelationalPath.
@@ -40,7 +41,7 @@ public class AnnotationMapper implements Mapper<Object> {
                 columnToPath.put(column.getMetadata().getExpression().toString(), column);
             }
             Map<Path<?>, Object> values = new HashMap<Path<?>, Object>();        
-            for (Field field : object.getClass().getDeclaredFields()) {
+            for (Field field : ReflectionUtils.getFields(object.getClass())) {
                 Column ann = field.getAnnotation(Column.class);
                 if (ann != null) {
                     field.setAccessible(true);
