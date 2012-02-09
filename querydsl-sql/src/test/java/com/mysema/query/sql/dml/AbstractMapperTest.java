@@ -22,7 +22,7 @@ import org.junit.Before;
 import com.mysema.query.sql.Column;
 import com.mysema.query.sql.domain.Employee;
 
-public class AbstractMapperTest {
+public abstract class AbstractMapperTest {
     
     public static class EmployeeX {
         

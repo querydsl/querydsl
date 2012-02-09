@@ -251,8 +251,16 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
         queryString = serializer.toString();
         logger.debug(queryString);
         PreparedStatement stmt;
-        if (withKeys) {
-            stmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
+        if (withKeys) {            
+            if (entity.getPrimaryKey() != null) {
+                String[] target = new String[entity.getPrimaryKey().getLocalColumns().size()];
+                for (int i = 0; i < target.length; i++) {
+                    target[i] = entity.getPrimaryKey().getLocalColumns().get(i).getMetadata().getExpression().toString();
+                }
+                stmt = connection.prepareStatement(queryString, target);
+            } else {
+                stmt = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);  
+            }
         } else {
             stmt = connection.prepareStatement(queryString);
         }
