@@ -32,7 +32,7 @@ public class AnimalTest {
     @QueryEntity
     public static class Cat extends Animal{
 
-        @QueryInit("nameX")
+        @QueryInit("name")
         public Cat mate;
 
     }

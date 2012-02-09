@@ -18,6 +18,7 @@ import java.io.Writer;
 import java.lang.annotation.Annotation;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashSet;
@@ -101,6 +102,8 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
        
         // process annotations
         processAnnotations();          
+        
+        validateMetaTypes();
         
         // serialize created types
         serializeMetaTypes();           
@@ -421,6 +424,32 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
                 entityType.addDelegate(new Delegate(entityType, delegateType, name, parameters, returnType));
                 context.extensionTypes.put(entityType.getFullName(), entityType);
                 context.allTypes.put(entityType.getFullName(), entityType);
+            }
+        }
+    }
+    
+    private void validateMetaTypes() {
+        for (Collection<EntityType> entityTypes : Arrays.asList(
+                context.supertypes.values(),
+                context.entityTypes.values(),
+                context.extensionTypes.values(),
+                context.embeddableTypes.values(),
+                context.projectionTypes.values())) {
+            for (EntityType entityType : entityTypes) {
+                for (Property property : entityType.getProperties()) {
+                    if (property.getInits() != null && property.getInits().length > 0) {
+                        for (String init : property.getInits()) {
+                            if (!init.startsWith("*") && property.getType() instanceof EntityType) {
+                                String initProperty = init.contains(".") ? init.substring(0, init.indexOf('.')) : init;
+                                if (!((EntityType)property.getType()).getPropertyNames().contains(initProperty)) {
+                                    processingEnv.getMessager().printMessage(Kind.ERROR, 
+                                        "Illegal inits of " + entityType.getFullName()+ "." + property.getName() + ": " +
+                                        initProperty + " not found");
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

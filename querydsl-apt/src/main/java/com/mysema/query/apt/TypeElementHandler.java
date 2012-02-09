@@ -160,20 +160,7 @@ public final class TypeElementHandler {
         // inits
         String[] inits = new String[0];
         if (annotations.isAnnotationPresent(QueryInit.class)) {
-            inits = annotations.getAnnotation(QueryInit.class).value();
-//            if (propertyType instanceof EntityType) {
-//                EntityType propertyEntityType = (EntityType)propertyType;
-//                for (String init : inits) {
-//                    if (!init.startsWith("*")) {
-//                        String property = init.contains(".") ? init.substring(0, init.indexOf('.')) : init;
-//                        if (!propertyEntityType.getPropertyNames().contains(property)) {
-//                            throw new APTException("Illegal QueryInit anotation on " + entityType.getFullName() +
-//                                    "." + name);
-//                        }
-//                    }
-//                }    
-//            }
-            
+            inits = annotations.getAnnotation(QueryInit.class).value();            
         }
         
         return new Property(entityType, name, propertyType, inits);
