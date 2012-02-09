@@ -438,17 +438,21 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
             for (EntityType entityType : entityTypes) {
                 for (Property property : entityType.getProperties()) {
                     if (property.getInits() != null && property.getInits().length > 0) {
-                        for (String init : property.getInits()) {
-                            if (!init.startsWith("*") && property.getType() instanceof EntityType) {
-                                String initProperty = init.contains(".") ? init.substring(0, init.indexOf('.')) : init;
-                                if (!((EntityType)property.getType()).getPropertyNames().contains(initProperty)) {
-                                    processingEnv.getMessager().printMessage(Kind.ERROR, 
-                                        "Illegal inits of " + entityType.getFullName()+ "." + property.getName() + ": " +
-                                        initProperty + " not found");
-                                }
-                            }
-                        }
+                        validateInits(entityType, property);
                     }
+                }
+            }
+        }
+    }
+
+    protected void validateInits(EntityType entityType, Property property) {
+        for (String init : property.getInits()) {
+            if (!init.startsWith("*") && property.getType() instanceof EntityType) {
+                String initProperty = init.contains(".") ? init.substring(0, init.indexOf('.')) : init;
+                if (!((EntityType)property.getType()).getPropertyNames().contains(initProperty)) {
+                    processingEnv.getMessager().printMessage(Kind.ERROR, 
+                        "Illegal inits of " + entityType.getFullName()+ "." + property.getName() + ": " +
+                        initProperty + " not found");
                 }
             }
         }
