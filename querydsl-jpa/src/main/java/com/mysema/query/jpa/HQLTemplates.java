@@ -36,10 +36,13 @@ public class HQLTemplates extends JPQLTemplates {
             Ops.QuantOps.AVG_IN_COL,
             Ops.EXISTS);
 
-    public static final HQLTemplates DEFAULT = new HQLTemplates('\\');
+    public static final HQLTemplates DEFAULT = new HQLTemplates();
 
+    public HQLTemplates() {
+        this(DEFAULT_ESCAPE);
+    }
+    
     public HQLTemplates(char escape) {
-        super(escape);
         //CHECKSTYLE:OFF
         add(CAST, "cast({0} as {1s})");
      // TODO : remove this when Hibernate supports type(alias)

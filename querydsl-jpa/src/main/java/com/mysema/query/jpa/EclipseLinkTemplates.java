@@ -23,12 +23,16 @@ import com.mysema.query.types.Ops;
  */
 public class EclipseLinkTemplates extends JPQLTemplates {
 
-    public static final JPQLTemplates DEFAULT = new EclipseLinkTemplates('\\');
+    public static final JPQLTemplates DEFAULT = new EclipseLinkTemplates();
 
     // TODO : indexed list access
 
     // TODO : cast
 
+    public EclipseLinkTemplates() {
+        this(DEFAULT_ESCAPE);
+    }
+    
     public EclipseLinkTemplates(char escape) {
         super(escape);
         // LIKE replacements

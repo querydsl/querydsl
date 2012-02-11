@@ -32,11 +32,17 @@ import com.mysema.query.types.Templates;
  */
 public class JPQLTemplates extends Templates {
 
+    public static final char DEFAULT_ESCAPE = '!';
+    
     public static final Operator<Object> CAST = new OperatorImpl<Object>("CAST",Object.class, Object.class);
 
     public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>("MEMBER_OF",Object.class, Object.class);
 
-    public static final JPQLTemplates DEFAULT = new JPQLTemplates('\\');
+    public static final JPQLTemplates DEFAULT = new JPQLTemplates();
+    
+    protected JPQLTemplates() {
+        this(DEFAULT_ESCAPE);
+    }
     
     protected JPQLTemplates(char escape) {
         super(escape);
