@@ -22,9 +22,7 @@ import com.mysema.query.SkipForQuoted;
 import com.mysema.query.Target;
 import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.testutil.Label;
-import com.mysema.testutil.ResourceCheck;
 
-@ResourceCheck("/postgres.run")
 @Label(Target.POSTGRES)
 @SkipForQuoted
 public class SelectPostgresTest extends SelectBaseTest {

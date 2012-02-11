@@ -105,7 +105,7 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
 
     }
 
-    private final QueryExecution standardTest = new QueryExecution(Module.JDOQL, Target.H2){
+    private final QueryExecution standardTest = new QueryExecution(Module.JDO, Target.H2){
         @Override
         protected Pair<Projectable, List<Expression<?>>> createQuery() {
             return Pair.of(

@@ -79,7 +79,7 @@ public abstract class QueryExecution {
                     runProjectionDistinct(pr);
                     System.err.println();
 
-                }catch(Throwable t){
+                } catch(Throwable t) {
                     t.printStackTrace();
                     t = addError(pr, t);
                 }

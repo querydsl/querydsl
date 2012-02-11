@@ -17,9 +17,7 @@ import org.junit.BeforeClass;
 
 import com.mysema.query.Connections;
 import com.mysema.query.ExportBaseTest;
-import com.mysema.testutil.ResourceCheck;
 
-@ResourceCheck("/mysql.run")
 public class ExportMySQLTest extends ExportBaseTest{
 
     @BeforeClass

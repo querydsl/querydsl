@@ -18,8 +18,6 @@ import java.util.List;
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Temporal;
@@ -33,7 +31,7 @@ public class Foo {
     public String bar;
 
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE)
+    //@GeneratedValue(strategy=GenerationType.AUTO)
     public int id;
 
     @ElementCollection

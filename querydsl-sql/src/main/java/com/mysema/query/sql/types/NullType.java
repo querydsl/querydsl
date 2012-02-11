@@ -42,7 +42,6 @@ public class NullType extends AbstractType<Null> {
     public void setValue(PreparedStatement st, int startIndex, Null value) throws SQLException {
         int type = st.getParameterMetaData().getParameterType(startIndex);
         st.setNull(startIndex, type);
-        
     }
 
 }

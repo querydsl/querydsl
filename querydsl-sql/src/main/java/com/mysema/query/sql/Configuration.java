@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import javax.annotation.Nullable;
 
 import com.mysema.query.sql.types.Type;
+import com.mysema.query.sql.types.UntypedNullType;
 import com.mysema.query.types.Path;
 
 /**
@@ -40,6 +41,9 @@ public class Configuration {
 
     public Configuration(SQLTemplates templates) {       
         this.templates = templates;
+        if (!templates.isParameterMetadataAvailable()) {
+            javaTypeMapping.register(new UntypedNullType());
+        }
     }
 
     public SQLTemplates getTemplates() {

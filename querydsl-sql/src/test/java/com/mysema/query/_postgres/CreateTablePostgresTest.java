@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query._mysql;
+package com.mysema.query._postgres;
 
 import java.sql.SQLException;
 
@@ -19,24 +19,25 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 
 import com.mysema.query.Connections;
-import com.mysema.query.MergeBaseTest;
+import com.mysema.query.CreateTableBaseTest;
 import com.mysema.query.Target;
-import com.mysema.query.sql.MySQLTemplates;
+import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.testutil.Label;
 
-@Label(Target.MYSQL)
-public class MergeMySQLTest extends MergeBaseTest{
-
+@Label(Target.POSTGRES)
+public class CreateTablePostgresTest extends CreateTableBaseTest{
+    
     @BeforeClass
     public static void setUpClass() throws Exception {
-        Connections.initMySQL();
+        Connections.initPostgres();
     }
 
     @Before
     public void setUp() throws SQLException {
-        templates = new MySQLTemplates(){{
+        super.setUp();
+        templates = new PostgresTemplates(true){{
             newLineToSingleSpace();
         }};
-        super.setUp();
     }
+
 }

@@ -283,7 +283,7 @@ public class FilterFactory {
         rv.add(expr.notBetween("A", "Z"));
         rv.add(expr.notBetween(other, other));
 
-        if (!target.equals(Target.DERBY) && !module.equals(Module.JDOQL)){
+        if (!target.equals(Target.DERBY) && !module.equals(Module.JDO)){
             // https://issues.apache.org/jira/browse/DERBY-4389
             rv.add(new Coalesce<String>(String.class, expr, other).eq("xxx"));
         }

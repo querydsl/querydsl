@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query._derby;
+package com.mysema.query._postgres;
 
 import org.junit.runner.RunWith;
 
@@ -20,17 +20,13 @@ import com.mysema.query.Target;
 import com.mysema.testutil.JPAConfig;
 import com.mysema.testutil.JPATestRunner;
 
-/**
- * @author tiwe
- *
- */
 @RunWith(JPATestRunner.class)
-@JPAConfig("derby")
-public class DerbyJPAStandardTest extends AbstractJPATest {
+@JPAConfig("postgres")
+public class PostgresJPAStandardTest extends AbstractJPATest {
 
     @Override
     protected Target getTarget() {
-        return Target.DERBY;
+        return Target.POSTGRES;
     }
 
 }

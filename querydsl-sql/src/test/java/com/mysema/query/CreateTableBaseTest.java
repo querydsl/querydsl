@@ -21,11 +21,12 @@ import java.util.Arrays;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.sql.ddl.CreateTableClause;
 
-public abstract class CreateTableBaseTest extends AbstractBaseTest{
+public abstract class CreateTableBaseTest extends AbstractBaseTest {
     
     private Connection conn;
     
@@ -56,10 +57,11 @@ public abstract class CreateTableBaseTest extends AbstractBaseTest{
     }
     
     @Test
+    @Ignore
     public void AutoIncrement(){
         createTable("autoinc")
           .column("id", Integer.class).notNull().autoIncrement()
-          //.primaryKey("PK_AUTOINC","id")
+          .primaryKey("PK_AUTOINC","id")
           .execute();   
     }
     

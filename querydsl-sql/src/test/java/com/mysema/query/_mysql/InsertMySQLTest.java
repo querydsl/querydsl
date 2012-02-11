@@ -24,15 +24,13 @@ import org.junit.Test;
 
 import com.mysema.query.Connections;
 import com.mysema.query.InsertBaseTest;
-import com.mysema.query.Target;
 import com.mysema.query.QueryFlag.Position;
+import com.mysema.query.Target;
 import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.mysql.MySQLReplaceClause;
 import com.mysema.testutil.Label;
-import com.mysema.testutil.ResourceCheck;
 
-@ResourceCheck("/mysql.run")
 @Label(Target.MYSQL)
 public class InsertMySQLTest extends InsertBaseTest{
 

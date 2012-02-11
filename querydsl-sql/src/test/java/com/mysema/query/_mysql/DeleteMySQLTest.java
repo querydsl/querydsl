@@ -23,9 +23,7 @@ import com.mysema.query.DeleteBaseTest;
 import com.mysema.query.Target;
 import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.testutil.Label;
-import com.mysema.testutil.ResourceCheck;
 
-@ResourceCheck("/mysql.run")
 @Label(Target.MYSQL)
 public class DeleteMySQLTest extends DeleteBaseTest{
 

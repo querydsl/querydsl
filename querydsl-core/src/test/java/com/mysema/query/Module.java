@@ -25,11 +25,11 @@ public enum Module{
     /**
      *
      */
-    HQL,
+    JPA,
     /**
      *
      */
-    JDOQL,
+    JDO,
     /**
      *
      */

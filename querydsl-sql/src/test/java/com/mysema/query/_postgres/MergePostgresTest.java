@@ -23,9 +23,7 @@ import com.mysema.query.MergeBaseTest;
 import com.mysema.query.Target;
 import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.testutil.Label;
-import com.mysema.testutil.ResourceCheck;
 
-@ResourceCheck("/postgres.run")
 @Label(Target.POSTGRES)
 public class MergePostgresTest extends MergeBaseTest{
 

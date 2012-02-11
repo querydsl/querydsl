@@ -13,18 +13,16 @@
  */
 package com.mysema.query._mysql;
 
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 
-import com.mysema.query.AbstractHibernateTest;
+import com.mysema.query.AbstractJPATest;
 import com.mysema.query.Target;
-import com.mysema.testutil.HibernateConfig;
-import com.mysema.testutil.HibernateTestRunner;
+import com.mysema.testutil.JPAConfig;
+import com.mysema.testutil.JPATestRunner;
 
-@Ignore
-@RunWith(HibernateTestRunner.class)
-@HibernateConfig("mysql.properties")
-public class MySQLJPAStandardTest extends AbstractHibernateTest{
+@RunWith(JPATestRunner.class)
+@JPAConfig("mysql")
+public class MySQLJPAStandardTest extends AbstractJPATest {
 
     @Override
     protected Target getTarget() {

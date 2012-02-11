@@ -26,9 +26,7 @@ import com.mysema.query.Target;
 import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.mysql.MySQLQuery;
 import com.mysema.testutil.Label;
-import com.mysema.testutil.ResourceCheck;
 
-@ResourceCheck("/mysql.run")
 @Label(Target.MYSQL)
 public class SelectMySQLTest extends SelectBaseTest {
 

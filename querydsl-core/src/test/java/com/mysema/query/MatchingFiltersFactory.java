@@ -73,7 +73,8 @@ public class MatchingFiltersFactory {
         rv.addAll(comparable(expr, other));
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
 
-        if (!target.equals(Target.DERBY) && !module.equals(Module.JDOQL)){
+        if (!target.equals(Target.DERBY) && !module.equals(Module.JDO) 
+                && (!target.equals(Target.POSTGRES) || !module.equals(Module.JPA))){
             rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
             
@@ -104,7 +105,8 @@ public class MatchingFiltersFactory {
         rv.add(expr.hour().eq(other.hour()));
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
 
-        if (!target.equals(Target.DERBY) && !module.equals(Module.JDOQL)){
+        if (!target.equals(Target.DERBY) && !module.equals(Module.JDO)
+                && (!target.equals(Target.POSTGRES) || !module.equals(Module.JPA))){
             rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
             
@@ -216,7 +218,7 @@ public class MatchingFiltersFactory {
             rv.add(expr.length().eq(other.length()));
             rv.add(expr.like(other));
             
-            if (module != Module.JDOQL || other instanceof Constant<?>){
+            if (module != Module.JDO || other instanceof Constant<?>){
                 rv.add(expr.like(other.substring(0,1).append("%")));
                 rv.add(expr.like(other.substring(0,1).append("%").append(other.substring(2))));
                 rv.add(expr.like(other.substring(1).prepend("%")));
@@ -235,7 +237,7 @@ public class MatchingFiltersFactory {
                 
                 rv.add(expr.matches(other));
                 
-                if (module != Module.JDOQL || other instanceof Constant<?>){
+                if (module != Module.JDO || other instanceof Constant<?>){
                     rv.add(expr.matches(other.substring(0,1).append(".*")));
                     rv.add(expr.matches(other.substring(0,1).append(".").append(other.substring(2))));
                     rv.add(expr.matches(other.substring(1).prepend(".*")));

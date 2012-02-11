@@ -33,10 +33,8 @@ import com.mysema.query.QGeneratedKeysEntity;
 import com.mysema.query.sql.H2Templates;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.testutil.FilteringTestRunner;
-import com.mysema.testutil.ResourceCheck;
 
 @RunWith(FilteringTestRunner.class)
-@ResourceCheck("/mysql.run")
 public class GeneratedKeysMySQLTest {
 
     private Connection conn;

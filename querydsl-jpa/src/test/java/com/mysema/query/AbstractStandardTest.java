@@ -103,7 +103,7 @@ public abstract class AbstractStandardTest {
 
     private final java.sql.Date date;
 
-    private final ProjectionsFactory projections = new ProjectionsFactory(Module.HQL, getTarget()){
+    private final ProjectionsFactory projections = new ProjectionsFactory(Module.JPA, getTarget()){
         @Override
         public <A,Q extends SimpleExpression<A>> Collection<Expression<?>> list(ListPath<A,Q> expr, ListExpression<A,Q> other, A knownElement){
             // NOTE : expr.get(0) is only supported in the where clause
@@ -114,7 +114,7 @@ public abstract class AbstractStandardTest {
     private final List<Cat> savedCats = new ArrayList<Cat>();
 
     private final QueryExecution standardTest = new QueryExecution(
-            projections, new FilterFactory(projections, Module.HQL, getTarget()), new MatchingFiltersFactory(Module.HQL, getTarget())){
+            projections, new FilterFactory(projections, Module.JPA, getTarget()), new MatchingFiltersFactory(Module.JPA, getTarget())){
 
         @Override
         protected Pair<Projectable, List<Expression<?>>> createQuery() {
@@ -189,11 +189,13 @@ public abstract class AbstractStandardTest {
         save(show);
         
         Employee employee = new Employee();
+        employee.id = 1;
         employee.lastName = "Smith";
         employee.jobFunctions.add(JobFunction.CODER);
         save(employee);
         
         Employee employee2 = new Employee();
+        employee2.id = 2;
         employee2.lastName = "Doe";
         employee2.jobFunctions.add(JobFunction.CODER);
         employee2.jobFunctions.add(JobFunction.CONSULTANT);
@@ -201,6 +203,7 @@ public abstract class AbstractStandardTest {
         save(employee2);
         
         Foo foo = new Foo();
+        foo.id = 1;
         foo.names = Arrays.asList("a","b");
         save(foo);
     }

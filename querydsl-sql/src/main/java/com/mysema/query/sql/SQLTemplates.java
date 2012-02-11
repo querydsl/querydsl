@@ -139,6 +139,8 @@ public class SQLTemplates extends Templates {
     
     private String createUniqueIndex = "create unique index ";
     
+    private boolean parameterMetadataAvailable = true;
+    
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
         super(escape);
         this.quoteStr = Assert.notNull(quoteStr, "quoteStr");
@@ -398,6 +400,10 @@ public class SQLTemplates extends Templates {
     public String getWith() {
         return with;
     }
+    
+    public boolean isParameterMetadataAvailable() {
+        return parameterMetadataAvailable;
+    }
 
     protected void newLineToSingleSpace() {
         for (Class<?> cl : Arrays.<Class<?>>asList(getClass(), SQLTemplates.class)) {
@@ -607,5 +613,11 @@ public class SQLTemplates extends Templates {
     protected void setPrintSchema(boolean printSchema) {
         this.printSchema = printSchema;
     }
+
+    protected void setParameterMetadataAvailable(boolean parameterMetadataAvailable) {
+        this.parameterMetadataAvailable = parameterMetadataAvailable;
+    }
+    
+    
     
 }
