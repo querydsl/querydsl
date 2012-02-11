@@ -36,9 +36,10 @@ public class JPQLTemplates extends Templates {
 
     public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>("MEMBER_OF",Object.class, Object.class);
 
-    public static final JPQLTemplates DEFAULT = new JPQLTemplates();
-
-    protected JPQLTemplates() {
+    public static final JPQLTemplates DEFAULT = new JPQLTemplates('\\');
+    
+    protected JPQLTemplates(char escape) {
+        super(escape);
         //CHECKSTYLE:OFF
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
@@ -69,10 +70,10 @@ public class JPQLTemplates extends Templates {
         add(Ops.ARRAY_SIZE, "size({0})");
 
         // string
-        add(Ops.LIKE, "{0} like {1} escape '\\'",1);
+        add(Ops.LIKE, "{0} like {1} escape '"+escape+"'",1);
         add(Ops.CONCAT, "concat({0},{1})",0);
-        add(Ops.MATCHES, "{0} like {1}  escape '\\'", 27); // TODO : support real regexes
-        add(Ops.MATCHES_IC, "{0} like {1} escape '\\'", 27); // TODO : support real regexes
+        add(Ops.MATCHES, "{0} like {1}  escape '"+escape+"'", 27); // TODO : support real regexes
+        add(Ops.MATCHES_IC, "{0} like {1} escape '"+escape+"'", 27); // TODO : support real regexes
         add(Ops.LOWER, "lower({0})");
         add(Ops.SUBSTR_1ARG, "substring({0},{1s}+1)");
         add(Ops.SUBSTR_2ARGS, "substring({0},{1s}+1,{2s}-{1s})");
@@ -82,12 +83,12 @@ public class JPQLTemplates extends Templates {
         add(Ops.CHAR_AT, "cast(substring({0},{1s}+1,1) as char)");
         add(Ops.STRING_IS_EMPTY, "length({0}) = 0");
 
-        add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '\\'");
-        add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '\\'");
-        add(Ops.ENDS_WITH, "{0} like {%1} escape '\\'");
-        add(Ops.ENDS_WITH_IC, "{0l} like {%%1} escape '\\'");
-        add(Ops.STARTS_WITH, "{0} like {1%} escape '\\'");
-        add(Ops.STARTS_WITH_IC, "{0l} like {1%%} escape '\\'");
+        add(Ops.STRING_CONTAINS, "{0} like {%1%} escape '"+escape+"'");
+        add(Ops.STRING_CONTAINS_IC, "{0l} like {%%1%%} escape '"+escape+"'");
+        add(Ops.ENDS_WITH, "{0} like {%1} escape '"+escape+"'");
+        add(Ops.ENDS_WITH_IC, "{0l} like {%%1} escape '"+escape+"'");
+        add(Ops.STARTS_WITH, "{0} like {1%} escape '"+escape+"'");
+        add(Ops.STARTS_WITH_IC, "{0l} like {1%%} escape '"+escape+"'");
         add(Ops.INDEX_OF, "locate({1},{0}) - 1");
         add(Ops.INDEX_OF_2ARGS, "locate({1},{0},{2s}+1) - 1");
 

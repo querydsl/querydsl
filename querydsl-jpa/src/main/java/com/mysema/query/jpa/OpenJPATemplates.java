@@ -21,4 +21,10 @@ package com.mysema.query.jpa;
  */
 public class OpenJPATemplates extends JPQLTemplates{
 
+    public static final JPQLTemplates DEFAULT = new OpenJPATemplates('\\');
+    
+    protected OpenJPATemplates(char escape) {
+        super(escape);
+    }
+
 }

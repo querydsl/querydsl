@@ -143,7 +143,7 @@ public class SQLTemplates extends Templates {
         super(escape);
         this.quoteStr = Assert.notNull(quoteStr, "quoteStr");
         this.useQuotes = useQuotes;
-
+        
         // boolean
         add(Ops.AND, "{0} and {1}", 36);
         add(Ops.NOT, "not {0}", 3);

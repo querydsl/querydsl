@@ -23,13 +23,14 @@ import com.mysema.query.types.Ops;
  */
 public class EclipseLinkTemplates extends JPQLTemplates {
 
-    public static final JPQLTemplates DEFAULT = new EclipseLinkTemplates();
+    public static final JPQLTemplates DEFAULT = new EclipseLinkTemplates('\\');
 
     // TODO : indexed list access
 
     // TODO : cast
 
-    protected EclipseLinkTemplates() {
+    public EclipseLinkTemplates(char escape) {
+        super(escape);
         // LIKE replacements
         add(Ops.STRING_CONTAINS, "locate({1},{0}) > 0");
         add(Ops.STRING_CONTAINS_IC, "locate({1l},{0l}) > 0");

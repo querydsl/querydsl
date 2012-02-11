@@ -77,7 +77,7 @@ public class JPQLCollectionAnyVisitorTest {
     
     private String serialize(Expression<?> expression){
         Expression<?> transformed = expression.accept(JPQLCollectionAnyVisitor.DEFAULT, new Context());
-        JPQLSerializer serializer = new JPQLSerializer(new HQLTemplates());
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         serializer.handle(transformed);
         return serializer.toString();
     }

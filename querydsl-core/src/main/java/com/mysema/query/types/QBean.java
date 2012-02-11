@@ -32,7 +32,7 @@ import com.mysema.util.ReflectionUtils;
  *
  * @param <T> bean type
  */
-public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T>{
+public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> {
 
     private static final long serialVersionUID = -8210214512730989778L;
 
