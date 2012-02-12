@@ -1,9 +1,13 @@
 package com.mysema.query.domain;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
@@ -14,7 +18,12 @@ import org.junit.Test;
 
 public class InterfaceType2Test {
 
-    public interface User {        
+    public interface IEntity {
+        
+        Long getId();
+    }
+    
+    public interface User extends IEntity {        
         
         Party getParty();
         
@@ -22,7 +31,7 @@ public class InterfaceType2Test {
         
     }
     
-    public interface Party {
+    public interface Party extends IEntity {
         
         String getName();
     }
@@ -30,6 +39,17 @@ public class InterfaceType2Test {
 
     @MappedSuperclass
     public class EntityImpl {
+        
+        @Id
+        private Long id;
+
+        public Long getId() {
+            return id;
+        }
+
+        public void setId(Long id) {
+            this.id = id;
+        }
         
     }
         
@@ -85,11 +105,15 @@ public class InterfaceType2Test {
     }
     
     @Test
-    public void test() {
-        // FIXME
-//        assertEquals(
-//                QInterfaceType2Test_PartyImpl.class,
-//                QInterfaceType2Test_UserImpl.userImpl.party.getClass());
+    public void User_party_Is_Party() {
+        assertEquals(
+                QInterfaceType2Test_Party.class,
+                QInterfaceType2Test_User.user.party.getClass());
+    }
+    
+    @Test
+    public void User_id__Is_Available() {
+        assertNotNull(QInterfaceType2Test_User.user); // FIXME
     }
 
     

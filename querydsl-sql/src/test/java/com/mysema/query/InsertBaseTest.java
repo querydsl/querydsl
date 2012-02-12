@@ -24,10 +24,12 @@ import java.sql.SQLException;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.dml.SQLInsertClause;
+import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.Path;
@@ -118,9 +120,28 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
         SQLInsertClause sic = insert(survey);
         sic.columns(survey.id, survey.name).values(null, null).addBatch();
         sic.columns(survey.id, survey.name).values(null, 1).addBatch();
-        System.out.println("start batch");
+        sic.execute();        
+    }
+    
+    @Test
+    @Ignore // FIXME
+    public void Insert_Nulls_In_Batch2() {
+//        QFoo f= QFoo.foo;
+//        SQLInsertClause sic = new SQLInsertClause(c, new H2Templates(), f);
+//        Foo f1=new Foo();
+//        sic.populate(f1).addBatch();
+//        f1=new Foo();
+//        f1.setC1(1);
+//        sic.populate(f1).addBatch();
+//        sic.execute();
+        QEmployee employee = QEmployee.employee;
+        SQLInsertClause sic = insert(employee);
+        Employee e = new Employee();
+        sic.populate(e).addBatch();
+        e = new Employee();
+        e.setFirstname("X");
+        sic.populate(e).addBatch();
         sic.execute();
-        System.out.println("end batch");
         
     }
     
