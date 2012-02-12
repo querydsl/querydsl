@@ -204,16 +204,4 @@ public interface Configuration {
      */
     boolean isExcludedClass(String className);
 
-    /**
-     * @param method
-     * @return
-     */
-    TypeMirror getRealType(ExecutableElement method);
-
-    /**
-     * @param field
-     * @return
-     */
-    TypeMirror getRealType(VariableElement field);
-
 }
