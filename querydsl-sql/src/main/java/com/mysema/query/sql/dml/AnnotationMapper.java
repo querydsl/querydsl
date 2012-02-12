@@ -20,6 +20,7 @@ import java.util.Map;
 import com.mysema.query.QueryException;
 import com.mysema.query.sql.Column;
 import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.types.Null;
 import com.mysema.query.types.Path;
 import com.mysema.util.ReflectionUtils;
 
@@ -31,7 +32,19 @@ import com.mysema.util.ReflectionUtils;
  */
 public class AnnotationMapper implements Mapper<Object> {
 
-    public static final AnnotationMapper DEFAULT = new AnnotationMapper();
+    public static final AnnotationMapper DEFAULT = new AnnotationMapper(false);
+    
+    public static final AnnotationMapper WITH_NULL_BINDINGS = new AnnotationMapper(true);
+    
+    private final boolean withNullBindings;
+    
+    public AnnotationMapper() {
+        this(false);
+    }
+    
+    public AnnotationMapper(boolean withNullBindings) {
+        this.withNullBindings = withNullBindings;
+    }
     
     @Override
     public Map<Path<?>, Object> createMap(RelationalPath<?> path, Object object) {
@@ -46,8 +59,12 @@ public class AnnotationMapper implements Mapper<Object> {
                 if (ann != null) {
                     field.setAccessible(true);
                     Object propertyValue = field.get(object);
-                    if (propertyValue != null && columnToPath.containsKey(ann.value())) {
-                        values.put(columnToPath.get(ann.value()), propertyValue);
+                    if (propertyValue != null) {
+                        if (columnToPath.containsKey(ann.value())) {
+                            values.put(columnToPath.get(ann.value()), propertyValue);    
+                        }                        
+                    } else if (withNullBindings) {
+                        values.put(columnToPath.get(ann.value()), Null.DEFAULT);
                     }
                 }
             }

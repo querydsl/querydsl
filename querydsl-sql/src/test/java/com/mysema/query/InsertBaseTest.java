@@ -24,10 +24,11 @@ import java.sql.SQLException;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.sql.SQLSubQuery;
+import com.mysema.query.sql.dml.DefaultMapper;
+import com.mysema.query.sql.dml.Mapper;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.QEmployee;
@@ -124,8 +125,8 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     }
     
     @Test
-    @Ignore // FIXME
     public void Insert_Nulls_In_Batch2() {
+        Mapper<Object> mapper = DefaultMapper.WITH_NULL_BINDINGS; 
 //        QFoo f= QFoo.foo;
 //        SQLInsertClause sic = new SQLInsertClause(c, new H2Templates(), f);
 //        Foo f1=new Foo();
@@ -137,10 +138,10 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
         QEmployee employee = QEmployee.employee;
         SQLInsertClause sic = insert(employee);
         Employee e = new Employee();
-        sic.populate(e).addBatch();
+        sic.populate(e, mapper).addBatch();
         e = new Employee();
         e.setFirstname("X");
-        sic.populate(e).addBatch();
+        sic.populate(e, mapper).addBatch();
         sic.execute();
         
     }

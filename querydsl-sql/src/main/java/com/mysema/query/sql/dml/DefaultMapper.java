@@ -20,6 +20,7 @@ import java.util.Map;
 
 import com.mysema.query.QueryException;
 import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.types.Null;
 import com.mysema.query.types.Path;
 import com.mysema.util.ReflectionUtils;
 
@@ -33,7 +34,19 @@ import com.mysema.util.ReflectionUtils;
  */
 public class DefaultMapper extends AbstractMapper<Object> {
 
-    public static final DefaultMapper DEFAULT = new DefaultMapper();
+    public static final DefaultMapper DEFAULT = new DefaultMapper(false);
+    
+    public static final DefaultMapper WITH_NULL_BINDINGS = new DefaultMapper(true);
+    
+    private final boolean withNullBindings;
+    
+    public DefaultMapper() {
+        this(false);
+    }
+    
+    public DefaultMapper(boolean withNullBindings) {
+        this.withNullBindings = withNullBindings;
+    }
     
     @Override
     public Map<Path<?>, Object> createMap(RelationalPath<?> entity, Object bean) {
@@ -50,7 +63,9 @@ public class DefaultMapper extends AbstractMapper<Object> {
                     Object propertyValue = beanField.get(bean);
                     if (propertyValue != null) {
                         values.put(path, propertyValue);
-                    }                     
+                    } else if (withNullBindings) {
+                        values.put(path, Null.DEFAULT);
+                    }
                 }
             }
             return values;    

@@ -21,6 +21,7 @@ import org.apache.commons.collections15.BeanMap;
 
 import com.mysema.query.QueryException;
 import com.mysema.query.sql.RelationalPath;
+import com.mysema.query.sql.types.Null;
 import com.mysema.query.types.Path;
 
 /**
@@ -33,7 +34,19 @@ import com.mysema.query.types.Path;
  */
 public class BeanMapper extends AbstractMapper<Object> {
     
-    public static final BeanMapper DEFAULT = new BeanMapper();
+    public static final BeanMapper DEFAULT = new BeanMapper(false);
+    
+    public static final BeanMapper WITH_NULL_BINDINGS = new BeanMapper(true);
+    
+    private final boolean withNullBindings;
+    
+    public BeanMapper() {
+        this(false);
+    }
+    
+    public BeanMapper(boolean withNullBindings) {
+        this.withNullBindings = withNullBindings;
+    }
 
     @SuppressWarnings("rawtypes")
     @Override
@@ -49,7 +62,9 @@ public class BeanMapper extends AbstractMapper<Object> {
                     Path path = (Path<?>) field.get(entity);
                     if (entry.getValue() != null) {
                         values.put(path, entry.getValue());    
-                    }                                    
+                    } else if (withNullBindings) {
+                        values.put(path, Null.DEFAULT);
+                    }
                 }
             }      
             return values;
