@@ -1,7 +1,5 @@
 package com.mysema.query.domain;
 
-import static org.junit.Assert.*;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -414,4 +414,9 @@ public class DefaultConfiguration implements Configuration {
         this.unknownAsEmbedded = unknownAsEmbedded;
     }
     
+    @Override
+    public TypeMirror getRealType(TypeElement element) {
+        return element.asType();
+    }
+    
 }

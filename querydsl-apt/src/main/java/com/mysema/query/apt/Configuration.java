@@ -203,5 +203,10 @@ public interface Configuration {
      * @return
      */
     boolean isExcludedClass(String className);
+    
+    /**
+     * @return
+     */
+    TypeMirror getRealType(TypeElement element);
 
 }

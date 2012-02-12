@@ -107,7 +107,10 @@
               <showWarnings>true</showWarnings>
               <processors>
                 <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
+                <!-- 
                 <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
+                 -->
+                <processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor> 
                 <processor>com.mysema.query.apt.jdo.JDOAnnotationProcessor</processor>
               </processors>              
             </configuration>

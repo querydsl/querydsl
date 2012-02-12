@@ -69,10 +69,11 @@ public final class TypeElementHandler {
     }
     
 
-    public EntityType handleEntityType(TypeElement e) {
-        EntityType entityType = typeFactory.getEntityType(e.asType(), true);
-        List<? extends Element> elements = e.getEnclosedElements();
-        VisitorConfig config = configuration.getConfig(e, elements);
+    public EntityType handleEntityType(TypeElement element) {
+        TypeMirror typeMirror = configuration.getRealType(element);
+        EntityType entityType = typeFactory.getEntityType(typeMirror, true);
+        List<? extends Element> elements = element.getEnclosedElements();
+        VisitorConfig config = configuration.getConfig(element, elements);
         Set<String> blockedProperties = new HashSet<String>();
         Map<String, TypeMirror> propertyTypes = new HashMap<String, TypeMirror>();
         Map<String, Annotations> propertyAnnotations = new HashMap<String, Annotations>();

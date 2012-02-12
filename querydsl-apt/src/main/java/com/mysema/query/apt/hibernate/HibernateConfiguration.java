@@ -20,7 +20,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.processing.RoundEnvironment;
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
 
+import com.mysema.query.apt.TypeUtils;
 import com.mysema.query.apt.jpa.JPAConfiguration;
 
 /**
@@ -30,8 +34,18 @@ import com.mysema.query.apt.jpa.JPAConfiguration;
  * @see HibernateAnnotationProcessor
  * @see JPAConfiguration
  */
-public class HibernateConfiguration extends JPAConfiguration{
+public class HibernateConfiguration extends JPAConfiguration {
 
+    private static final Class<? extends Annotation> PROXY_CLASS;
+    
+    static {
+        try {
+            PROXY_CLASS = (Class<? extends Annotation>) Class.forName("org.hibernate.annotations.Proxy");
+        } catch (ClassNotFoundException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+    
     public HibernateConfiguration(
             RoundEnvironment roundEnv,
             Map<String,String> options,
@@ -56,6 +70,18 @@ public class HibernateConfiguration extends JPAConfiguration{
         } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    @Override
+    public TypeMirror getRealType(TypeElement element) {
+        AnnotationMirror proxy = TypeUtils.getAnnotationMirrorOfType(element, PROXY_CLASS);
+        if (proxy != null) {
+            TypeMirror type = TypeUtils.getAnnotationValueAsTypeMirror(proxy, "proxyClass");
+            if (type != null) {
+                return type;
+            }
+        }
+        return element.asType();        
     }
 
 }
