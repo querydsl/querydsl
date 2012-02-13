@@ -70,8 +70,7 @@ public final class TypeElementHandler {
     
 
     public EntityType handleEntityType(TypeElement element) {
-        TypeMirror typeMirror = configuration.getRealType(element);
-        EntityType entityType = typeFactory.getEntityType(typeMirror, true);
+        EntityType entityType = typeFactory.getEntityType(element.asType(), true);
         List<? extends Element> elements = element.getEnclosedElements();
         VisitorConfig config = configuration.getConfig(element, elements);
         Set<String> blockedProperties = new HashSet<String>();

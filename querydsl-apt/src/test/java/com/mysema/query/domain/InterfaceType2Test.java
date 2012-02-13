@@ -1,8 +1,5 @@
 package com.mysema.query.domain;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -105,16 +102,8 @@ public class InterfaceType2Test {
     }
     
     @Test
-    public void User_party_Is_Party() {
-        assertEquals(
-                QInterfaceType2Test_Party.class,
-                QInterfaceType2Test_User.user.party.getClass());
+    public void test() {
+//        QInterfaceType2Test_UserImpl.userImpl.party.
     }
-    
-    @Test
-    public void User_id__Is_Available() {
-        assertNotNull(QInterfaceType2Test_User.user); // FIXME
-    }
-
     
 }
