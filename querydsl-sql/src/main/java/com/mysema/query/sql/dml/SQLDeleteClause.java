@@ -145,11 +145,7 @@ public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<S
             if (batches.isEmpty()) {
                 return stmt.executeUpdate();    
             } else {
-                long rv = 0;
-                for (int i : stmt.executeBatch()) {
-                    rv += i;
-                }
-                return rv;
+                return executeBatch(stmt);
             }  
         } catch (SQLException e) {
             throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);

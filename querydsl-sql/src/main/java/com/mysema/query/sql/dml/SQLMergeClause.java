@@ -40,6 +40,7 @@ import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLQueryImpl;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.types.Null;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
@@ -220,11 +221,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
             if (batches.isEmpty()) {
                 return stmt.executeUpdate();    
             } else {
-                long rv = 0;
-                for (int i : stmt.executeBatch()) {
-                    rv += i;
-                }
-                return rv;
+                return executeBatch(stmt);
             }            
         } catch (SQLException e) {
             throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
@@ -258,7 +255,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
         if (value != null) {
             values.add(new ConstantImpl<T>(value));
         } else {
-            values.add(new NullExpression<T>(path.getType()));
+            values.add(Null.CONSTANT);
         }
         return this;
     }
@@ -273,7 +270,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
     @Override
     public <T> SQLMergeClause setNull(Path<T> path) {
         columns.add(path);
-        values.add(new NullExpression<T>(path.getType()));
+        values.add(Null.CONSTANT);
         return this;
     }
     
@@ -291,7 +288,7 @@ public class SQLMergeClause extends AbstractSQLClause implements StoreClause<SQL
             } else if (value != null) {
                 values.add(new ConstantImpl<Object>(value));
             } else {
-                values.add(NullExpression.DEFAULT);
+                values.add(Null.CONSTANT);
             }
         }
         return this;

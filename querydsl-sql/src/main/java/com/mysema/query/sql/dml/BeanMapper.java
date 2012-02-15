@@ -62,7 +62,7 @@ public class BeanMapper extends AbstractMapper<Object> {
                     Path path = (Path<?>) field.get(entity);
                     if (entry.getValue() != null) {
                         values.put(path, entry.getValue());    
-                    } else if (withNullBindings) {
+                    } else if (withNullBindings && !isPrimaryKeyColumn(entity, path)) {
                         values.put(path, Null.DEFAULT);
                     }
                 }

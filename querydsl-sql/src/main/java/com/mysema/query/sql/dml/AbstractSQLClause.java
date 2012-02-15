@@ -50,7 +50,8 @@ public class AbstractSQLClause {
     protected void setParameters(PreparedStatement stmt, List<?> objects, 
             List<Path<?>> constantPaths, Map<Param<?>, ?> params) {
         if (objects.size() != constantPaths.size()) {
-            throw new IllegalArgumentException("Expected " + objects.size() + " paths, but got " + constantPaths.size());
+            throw new IllegalArgumentException("Expected " + objects.size() + " paths, " +
+            		"but got " + constantPaths.size());
         }
         int counter = 1;
         for (int i = 0; i < objects.size(); i++) {
@@ -68,6 +69,19 @@ public class AbstractSQLClause {
             }
         }
     }    
+    
+    protected long executeBatch(PreparedStatement stmt) throws SQLException {
+        if (configuration.getTemplates().isBatchCountViaGetUpdateCount()) {
+            stmt.executeBatch();
+            return stmt.getUpdateCount();
+        } else {
+            long rv = 0;
+            for (int i : stmt.executeBatch()) {
+                rv += i;
+            }
+            return rv;
+        }
+    }
         
     protected void close(PreparedStatement stmt) {
         try {

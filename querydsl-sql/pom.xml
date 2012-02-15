@@ -87,12 +87,21 @@
       <version>8.4-701.jdbc4</version>
       <scope>test</scope>
     </dependency>
+    <!-- 
     <dependency>
       <groupId>com.oracle</groupId>
       <artifactId>ojdbc5</artifactId>
       <version>11.1.0.7.0</version>
       <scope>test</scope>
-    </dependency>  
+    </dependency>
+    -->  
+    <dependency>
+	  <groupId>com.oracle</groupId>
+	  <artifactId>ojdbc14</artifactId>
+	  <version>10.2.0.5.0</version>
+	  <scope>test</scope>
+    </dependency>
+          
     <dependency>
       <groupId>net.sourceforge.jtds</groupId>
       <artifactId>jtds</artifactId>

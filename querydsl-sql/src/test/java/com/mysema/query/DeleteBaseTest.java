@@ -37,7 +37,7 @@ public abstract class DeleteBaseTest extends AbstractBaseTest{
 
     private void reset() throws SQLException{
         delete(survey).where(survey.name.isNotNull()).execute();
-        insert(survey).values(1, "Hello World").execute();
+        insert(survey).values(1, "Hello World", "Hello").execute();
     }
 
     @Before
@@ -60,8 +60,8 @@ public abstract class DeleteBaseTest extends AbstractBaseTest{
     
     @Test
     public void Batch() throws SQLException{
-        insert(survey).values(2, "A").execute();
-        insert(survey).values(3, "B").execute();
+        insert(survey).values(2, "A","B").execute();
+        insert(survey).values(3, "B","C").execute();
         
         SQLDeleteClause delete = delete(survey);
         delete.where(survey.name.eq("A")).addBatch();

@@ -17,6 +17,7 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.types.Path;
 import com.mysema.util.ReflectionUtils;
 
@@ -38,6 +39,11 @@ public abstract class AbstractMapper<T> implements Mapper<T> {
             }
         }
         return fields;
+    }
+    
+    protected boolean isPrimaryKeyColumn(RelationalPath<?> parent, Path<?> property) {
+        return parent.getPrimaryKey() != null 
+            && parent.getPrimaryKey().getLocalColumns().contains(property);
     }
 
 }

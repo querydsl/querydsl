@@ -38,7 +38,8 @@ public class MatchingFiltersFactory {
         this.target = target;
     }
 
-    public <A> Collection<BooleanExpression> array(ArrayExpression<A> expr,  ArrayExpression<A> other, A knownElement, A missingElement){
+    public <A> Collection<BooleanExpression> array(ArrayExpression<A> expr,  
+            ArrayExpression<A> other, A knownElement, A missingElement){
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
 //        rv.add(expr.isEmpty().not());
         if (!module.equals(Module.RDFBEAN)){
@@ -47,7 +48,8 @@ public class MatchingFiltersFactory {
         return rv;
     }
 
-    public <A> Collection<BooleanExpression> collection(CollectionExpressionBase<?,A> expr,  CollectionExpression<?,A> other, A knownElement, A missingElement){
+    public <A> Collection<BooleanExpression> collection(CollectionExpressionBase<?,A> expr,  
+            CollectionExpression<?,A> other, A knownElement, A missingElement){
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.contains(knownElement));
@@ -59,7 +61,8 @@ public class MatchingFiltersFactory {
     }
 
     @SuppressWarnings("unchecked")
-    private <A extends Comparable> Collection<BooleanExpression> comparable(ComparableExpression<A> expr,  Expression<A> other){
+    private <A extends Comparable> Collection<BooleanExpression> comparable(ComparableExpression<A> expr,  
+            Expression<A> other){
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.add(expr.eq(other));
         rv.add(expr.goe(other));
@@ -68,17 +71,19 @@ public class MatchingFiltersFactory {
         return rv;
     }
 
-    public Collection<BooleanExpression> date(DateExpression<java.sql.Date> expr, DateExpression<java.sql.Date> other){
+    public Collection<BooleanExpression> date(DateExpression<java.sql.Date> expr, 
+            DateExpression<java.sql.Date> other){
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.addAll(comparable(expr, other));
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
 
-        if (!target.equals(Target.DERBY) && !module.equals(Module.JDO) 
+        if (!target.equals(Target.DERBY) && !module.equals(Module.JDO) && !target.equals(Target.ORACLE)
                 && (!target.equals(Target.POSTGRES) || !module.equals(Module.JPA))){
             rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
             
-            if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL) && !target.equals(Target.POSTGRES) && !target.equals(Target.HSQLDB)){
+            if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL) 
+                    && !target.equals(Target.POSTGRES) && !target.equals(Target.HSQLDB)){
                 rv.add(expr.week().eq(other.week()));
             }
         }
@@ -89,14 +94,16 @@ public class MatchingFiltersFactory {
         return rv;
     }
 
-    public Collection<BooleanExpression> date(DateExpression<java.sql.Date> expr, DateExpression<java.sql.Date> other, java.sql.Date knownValue){
+    public Collection<BooleanExpression> date(DateExpression<java.sql.Date> expr, 
+            DateExpression<java.sql.Date> other, java.sql.Date knownValue){
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.addAll(date(expr, other));
         rv.addAll(date(expr, DateConstant.create(knownValue)));
         return rv;
     }
 
-    public Collection<BooleanExpression> dateTime(DateTimeExpression<java.util.Date> expr, DateTimeExpression<java.util.Date> other){
+    public Collection<BooleanExpression> dateTime(DateTimeExpression<java.util.Date> expr, 
+            DateTimeExpression<java.util.Date> other){
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.addAll(comparable(expr, other));
         rv.add(expr.milliSecond().eq(other.milliSecond()));
@@ -105,12 +112,13 @@ public class MatchingFiltersFactory {
         rv.add(expr.hour().eq(other.hour()));
         rv.add(expr.dayOfMonth().eq(other.dayOfMonth()));
 
-        if (!target.equals(Target.DERBY) && !module.equals(Module.JDO)
+        if (!target.equals(Target.DERBY) && !module.equals(Module.JDO) && !target.equals(Target.ORACLE)
                 && (!target.equals(Target.POSTGRES) || !module.equals(Module.JPA))){
             rv.add(expr.dayOfWeek().eq(other.dayOfWeek ()));
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
             
-            if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL) && !target.equals(Target.POSTGRES) && !target.equals(Target.HSQLDB)){
+            if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL) 
+                    && !target.equals(Target.POSTGRES) && !target.equals(Target.HSQLDB)){
                 rv.add(expr.week().eq(other.week()));
             }
         }
@@ -121,18 +129,21 @@ public class MatchingFiltersFactory {
         return rv;
     }
 
-    public Collection<BooleanExpression> dateTime(DateTimeExpression<java.util.Date> expr, DateTimeExpression<java.util.Date> other, java.util.Date knownValue){
+    public Collection<BooleanExpression> dateTime(DateTimeExpression<java.util.Date> expr, 
+            DateTimeExpression<java.util.Date> other, java.util.Date knownValue){
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.addAll(dateTime(expr, other));
         rv.addAll(dateTime(expr, DateTimeConstant.create(knownValue)));
         return rv;
     }
 
-    public <A,Q extends SimpleExpression<A>> Collection<BooleanExpression> list(ListPath<A,Q> expr, ListExpression<A,Q> other, A knownElement, A missingElement){
+    public <A,Q extends SimpleExpression<A>> Collection<BooleanExpression> list(ListPath<A,Q> expr, 
+            ListExpression<A,Q> other, A knownElement, A missingElement){
         return collection(expr, other, knownElement, missingElement);
     }
 
-    public <K,V> Collection<BooleanExpression> map(MapExpressionBase<K,V,?> expr, MapExpression<K,V> other,  K knownKey, V knownValue, K missingKey, V missingValue) {
+    public <K,V> Collection<BooleanExpression> map(MapExpressionBase<K,V,?> expr, 
+            MapExpression<K,V> other,  K knownKey, V knownValue, K missingKey, V missingValue) {
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.add(expr.containsKey(knownKey));
         rv.add(expr.containsKey(missingKey).not());
@@ -144,14 +155,16 @@ public class MatchingFiltersFactory {
         return rv;
     }
 
-    public <A extends Number & Comparable<A>> Collection<BooleanExpression> numeric( NumberExpression<A> expr, NumberExpression<A> other, A knownValue){
+    public <A extends Number & Comparable<A>> Collection<BooleanExpression> numeric( 
+            NumberExpression<A> expr, NumberExpression<A> other, A knownValue){
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.addAll(numeric(expr, other));
         rv.addAll(numeric(expr, NumberConstant.create(knownValue)));
         return rv;
     }
 
-    public <A extends Number & Comparable<A>> Collection<BooleanExpression> numeric( NumberExpression<A> expr, NumberExpression<A> other){
+    public <A extends Number & Comparable<A>> Collection<BooleanExpression> numeric( 
+            NumberExpression<A> expr, NumberExpression<A> other){
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.add(expr.eq(other));
         rv.add(expr.goe(other));
@@ -275,7 +288,8 @@ public class MatchingFiltersFactory {
         return rv;
     }
 
-    public Collection<BooleanExpression> time(TimeExpression<java.sql.Time> expr,  TimeExpression<java.sql.Time> other){
+    public Collection<BooleanExpression> time(TimeExpression<java.sql.Time> expr,  
+            TimeExpression<java.sql.Time> other){
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.addAll(comparable(expr, other));
         rv.add(expr.milliSecond().eq(other.milliSecond()));
@@ -285,7 +299,8 @@ public class MatchingFiltersFactory {
         return rv;
     }
 
-    public Collection<BooleanExpression> time(TimeExpression<java.sql.Time> expr,  TimeExpression<java.sql.Time> other, java.sql.Time knownValue){
+    public Collection<BooleanExpression> time(TimeExpression<java.sql.Time> expr,  
+            TimeExpression<java.sql.Time> other, java.sql.Time knownValue){
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.addAll(time(expr, other));
         rv.addAll(time(expr, TimeConstant.create(knownValue)));

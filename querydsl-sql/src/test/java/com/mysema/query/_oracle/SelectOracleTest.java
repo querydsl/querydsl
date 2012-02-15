@@ -28,10 +28,13 @@ import org.junit.Test;
 
 import com.mysema.query.Connections;
 import com.mysema.query.SelectBaseTest;
+import com.mysema.query.SkipForQuoted;
 import com.mysema.query.Target;
 import com.mysema.query.sql.OracleTemplates;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.oracle.OracleQuery;
+import com.mysema.query.types.expr.Wildcard;
+import com.mysema.query.types.path.NumberPath;
 import com.mysema.testutil.Label;
 import com.mysema.testutil.ResourceCheck;
 
@@ -49,6 +52,21 @@ public class SelectOracleTest extends SelectBaseTest {
         templates = new OracleTemplates(){{
             newLineToSingleSpace();
         }};
+    }
+    
+    @Test
+    @SkipForQuoted
+    public void Alias_Quotes() {
+        expectedQuery = "select e.FIRSTNAME \"First Name\" from EMPLOYEE e";
+        query().from(employee).list(employee.firstname.as("First Name"));
+    }
+        
+    @Test
+    @SkipForQuoted
+    public void Count_All() {
+        expectedQuery = "select count(*) rowCount from EMPLOYEE e";
+        NumberPath<Long> rowCount = new NumberPath<Long>(Long.class, "rowCount");
+        query().from(employee).uniqueResult(Wildcard.count.as(rowCount));
     }
 
     @Test

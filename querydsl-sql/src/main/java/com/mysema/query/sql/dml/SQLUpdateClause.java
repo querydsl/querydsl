@@ -13,8 +13,6 @@
  */
 package com.mysema.query.sql.dml;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -40,9 +38,9 @@ import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLSerializer;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.types.Null;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.NullExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.expr.Param;
@@ -53,7 +51,7 @@ import com.mysema.query.types.expr.Param;
  * @author tiwe
  *
  */
-public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<SQLUpdateClause> {
+public class SQLUpdateClause extends AbstractSQLClause implements UpdateClause<SQLUpdateClause> {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
 
@@ -162,11 +160,7 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
             if (batchUpdates.isEmpty()) {
                 return stmt.executeUpdate();    
             } else {
-                long rv = 0;
-                for (int i : stmt.executeBatch()) {
-                    rv += i;
-                }
-                return rv;
+                return executeBatch(stmt);
             }  
         } catch (SQLException e) {
             throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
@@ -176,7 +170,7 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
             }
         }
     }
-
+    
     @Override
     public <T> SQLUpdateClause set(Path<T> path, T value) {
         if (value instanceof Expression<?>) {
@@ -184,7 +178,7 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
         }else if (value != null) {
             updates.add(Pair.<Path<?>,Expression<?>>of(path, new ConstantImpl<Object>(value)));
         } else {
-            updates.add(Pair.<Path<?>,Expression<?>>of(path, new NullExpression<T>(path.getType())));
+            updates.add(Pair.<Path<?>,Expression<?>>of(path, Null.CONSTANT));
         }
         return this;
     }
@@ -197,7 +191,7 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
     
     @Override
     public <T> SQLUpdateClause setNull(Path<T> path) {
-        updates.add(Pair.<Path<?>,Expression<?>>of(path, new NullExpression<T>(path.getType())));
+        updates.add(Pair.<Path<?>,Expression<?>>of(path, Null.CONSTANT));
         return this;
     }
 
@@ -210,7 +204,7 @@ public class SQLUpdateClause extends AbstractSQLClause  implements UpdateClause<
             }else if (values.get(i) != null) {
                 updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), new ConstantImpl<Object>(values.get(i))));
             } else {
-                updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), new NullExpression(paths.get(i).getType())));
+                updates.add(Pair.<Path<?>,Expression<?>>of(paths.get(i), Null.CONSTANT));
             }
         }
         return this;

@@ -67,7 +67,7 @@ public class SerializationTest {
         SQLUpdateClause updateClause = new SQLUpdateClause(connection,SQLTemplates.DEFAULT,survey);
         updateClause.set(survey.id, 1);
         updateClause.set(survey.name, (String)null);
-        assertEquals("update SURVEY\nset ID = ?, NAME = null", updateClause.toString());
+        assertEquals("update SURVEY\nset ID = ?, NAME = ?", updateClause.toString());
     }
 
     @Test

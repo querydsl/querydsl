@@ -34,6 +34,8 @@ public final class JDBCTypeMapping {
     private static final Map<Integer, Class<?>> defaultTypes = new HashMap<Integer, Class<?>>();
     
     static{
+        registerDefault(-101, Object.class);
+        
         // BOOLEAN
         registerDefault(Types.BIT, Boolean.class);
         registerDefault(Types.BOOLEAN, Boolean.class);

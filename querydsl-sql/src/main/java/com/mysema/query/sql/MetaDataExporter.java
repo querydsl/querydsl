@@ -205,6 +205,9 @@ public class MetaDataExporter {
         String columnName = columns.getString(COLUMN_NAME);
         String propertyName = namingStrategy.getPropertyName(columnName, classModel);
         Class<?> clazz = configuration.getJavaType(columns.getInt(COLUMN_TYPE), tableName, columnName);
+        if (clazz == null) {
+            throw new IllegalStateException("Found to mapping for " + columns.getInt(COLUMN_TYPE));
+        }
         TypeCategory fieldType = TypeCategory.get(clazz.getName());
         if (Number.class.isAssignableFrom(clazz)) {
             fieldType = TypeCategory.NUMERIC;

@@ -24,6 +24,7 @@ import java.sql.SQLException;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.sql.SQLSubQuery;
@@ -41,7 +42,7 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
 
     private void reset() throws SQLException{
         delete(survey).execute();
-        insert(survey).values(1, "Hello World").execute();
+        insert(survey).values(1, "Hello World", "Hello").execute();
     }
 
     @Before
@@ -63,7 +64,7 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     
     @Test
     public void Insert_Without_Columns() {
-        assertEquals(1, insert(survey).values(4, "Hello").execute());
+        assertEquals(1, insert(survey).values(4, "Hello", "World").execute());
             
     }
     
@@ -89,7 +90,7 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     public void Insert_With_SubQuery_Without_Columns() {
         int count = (int)query().from(survey).count();
         assertEquals(count, insert(survey)
-            .select(sq().from(survey2).list(survey2.id.add(10), survey2.name))
+            .select(sq().from(survey2).list(survey2.id.add(10), survey2.name, survey2.name2))
             .execute());
         
     }
@@ -119,12 +120,14 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
 //        sic.columns(f.c1,f.c2).values(null,1).addBatch();
 //        sic.execute();
         SQLInsertClause sic = insert(survey);
-        sic.columns(survey.id, survey.name).values(null, null).addBatch();
-        sic.columns(survey.id, survey.name).values(null, 1).addBatch();
+        sic.columns(survey.name, survey.name2).values(null, null).addBatch();
+        sic.columns(survey.name, survey.name2).values(null, "X").addBatch();
         sic.execute();        
     }
     
     @Test
+    @Ignore 
+    @ExcludeIn({Target.DERBY})
     public void Insert_Nulls_In_Batch2() {
         Mapper<Object> mapper = DefaultMapper.WITH_NULL_BINDINGS; 
 //        QFoo f= QFoo.foo;
@@ -180,7 +183,6 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({Target.HSQLDB, Target.DERBY, Target.POSTGRES})
     public void Insert_With_Keys() throws SQLException{
         ResultSet rs = insert(survey).set(survey.name, "Hello World").executeWithKeys();
         assertTrue(rs.next());
@@ -189,13 +191,11 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     }
     
     @Test
-    @ExcludeIn({Target.HSQLDB, Target.DERBY, Target.POSTGRES})
     public void Insert_With_Keys_Projected() throws SQLException{
         assertNotNull(insert(survey).set(survey.name, "Hello you").executeWithKey(survey.id));
     }
     
     @Test
-    @ExcludeIn({Target.HSQLDB, Target.DERBY, Target.POSTGRES})
     public void Insert_With_Keys_Projected2() throws SQLException{
         Path<Object> idPath = new PathImpl<Object>(Object.class, "id");
         Object id = insert(survey).set(survey.name, "Hello you").executeWithKey(idPath);
@@ -212,7 +212,7 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     @Test
     public void Insert_Null_Without_Columns() {
         assertEquals(1, insert(survey)
-                .values(4, null).execute());        
+                .values(4, null, null).execute());        
     }
     
     @Test

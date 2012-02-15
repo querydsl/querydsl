@@ -63,7 +63,7 @@ public class DefaultMapper extends AbstractMapper<Object> {
                     Object propertyValue = beanField.get(bean);
                     if (propertyValue != null) {
                         values.put(path, propertyValue);
-                    } else if (withNullBindings) {
+                    } else if (withNullBindings && !isPrimaryKeyColumn(entity, path)) {
                         values.put(path, Null.DEFAULT);
                     }
                 }

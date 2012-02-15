@@ -146,7 +146,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @SuppressWarnings("unchecked")
     @Test
     public void Array_Projection(){
-        List<String[]> results = query().from(employee).list(new ArrayConstructorExpression<String>(String[].class, employee.firstname));
+        List<String[]> results = query().from(employee).list(
+                new ArrayConstructorExpression<String>(String[].class, employee.firstname));
         assertFalse(results.isEmpty());
         for (String[] result : results){
             assertNotNull(result[0]);
@@ -155,7 +156,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     
     @Test
     public void RelationalPath_Projection() {
-        List<Object[]> results = query().from(employee, employee2).where(employee.id.eq(employee2.id)).list(employee, employee2);
+        List<Object[]> results = query().from(employee, employee2).where(employee.id.eq(employee2.id))
+                .list(employee, employee2);
         assertFalse(results.isEmpty());
         for (Object[] row : results) {
             Employee e1 = (Employee)row[0];
@@ -230,11 +232,6 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     public void ComplexSubQuery(){
-        //        query.from(
-        //            subQuery.from(Table.table)
-        //            .list(Table.table.field1.add(Table.table.field2).add(Table.table.field3).as("myCalculation"))).
-        //            list(myCalculation.avg(), myCalculation.min(). myCalculation.max());
-
         // alias for the salary
         NumberPath<BigDecimal> sal = new NumberPath<BigDecimal>(BigDecimal.class, "sal");
         // alias for the subquery
@@ -267,7 +264,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     public void Constructor_Projection2(){
         List<SimpleProjection> projections =query().from(employee).list(
-                ConstructorExpression.create(SimpleProjection.class, employee.firstname, employee.lastname));
+                ConstructorExpression.create(SimpleProjection.class, 
+                        employee.firstname, employee.lastname));
         assertFalse(projections.isEmpty());
         for (SimpleProjection projection : projections){
             assertNotNull(projection);
@@ -475,10 +473,12 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({DERBY,HSQLDB})
+    @ExcludeIn({DERBY,HSQLDB,ORACLE})
     @SkipForQuoted
     public void Path_Alias(){
-        expectedQuery = "select e.LASTNAME, sum(e.SALARY) as salarySum from EMPLOYEE e group by e.LASTNAME having salarySum > ?";
+        expectedQuery = "select e.LASTNAME, sum(e.SALARY) as salarySum " +
+        		"from EMPLOYEE e " +
+        		"group by e.LASTNAME having salarySum > ?";
 
         NumberExpression<BigDecimal> salarySum = employee.salary.sum().as("salarySum");
         query().from(employee)
@@ -492,7 +492,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         CloseableIterator<Object[]> results = query().from(survey).iterate(survey.all());
         assertTrue(results.hasNext());
         while (results.hasNext()){
-            assertEquals(2, results.next().length);
+            assertEquals(3, results.next().length);
         }
         results.close();
     }
@@ -500,7 +500,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     public void Projection_and_TwoColumns(){
         // projection and two columns
-        for (Object[] row : query().from(survey).list(new QIdName(survey.id, survey.name), survey.id, survey.name)){
+        for (Object[] row : query().from(survey)
+                .list(new QIdName(survey.id, survey.name), survey.id, survey.name)){
             assertEquals(3, row.length);
             assertEquals(IdName.class, row[0].getClass());
             assertEquals(Integer.class, row[1].getClass());
@@ -603,7 +604,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     
     @Test
     public void Single_Column_via_Object_type(){
-        for (Object s : query().from(survey).list(new PathImpl<Object>(Object.class, survey.name.getMetadata()))){
+        for (Object s : query().from(survey)
+                .list(new PathImpl<Object>(Object.class, survey.name.getMetadata()))){
             assertEquals(String.class, s.getClass());
         }
     }
@@ -713,7 +715,9 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
                 .from(employee)
                 .list(employee.salary.add(employee.salary).add(employee.salary).as(sal))
                 .as(sq));
-        assertEquals("(select (e.SALARY + e.SALARY + e.SALARY) as sal\nfrom EMPLOYEE e) as sq", serializer.toString());
+        assertEquals(
+                "(select (e.SALARY + e.SALARY + e.SALARY) as sal\nfrom EMPLOYEE e) as sq", 
+                serializer.toString());
     }
 
     @Test
@@ -735,7 +739,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
     @Test
     public void Tuple_Projection(){
-        List<Tuple> tuples = query().from(employee).list(new QTuple(employee.firstname, employee.lastname));
+        List<Tuple> tuples = query().from(employee)
+                .list(new QTuple(employee.firstname, employee.lastname));
         assertFalse(tuples.isEmpty());
         for (Tuple tuple : tuples){
             assertNotNull(tuple.get(employee.firstname));
@@ -746,7 +751,9 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     @SuppressWarnings("serial")
     public void MappingProjection() {
-        List<Pair<String, String>> pairs = query().from(employee).list(new MappingProjection<Pair<String,String>>(Pair.class, employee.firstname, employee.lastname) {
+        List<Pair<String, String>> pairs = query().from(employee)
+                .list(new MappingProjection<Pair<String,String>>(Pair.class, 
+                      employee.firstname, employee.lastname) {
             @Override
             protected Pair<String, String> map(Tuple row) {
                 return Pair.of(row.get(employee.firstname), row.get(employee.lastname));
@@ -762,7 +769,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     public void Nested_Tuple_Projection(){
         Concatenation concat = new Concatenation(employee.firstname, employee.lastname);
-        List<Tuple> tuples = query().from(employee).list(new QTuple(employee.firstname, employee.lastname, concat));
+        List<Tuple> tuples = query().from(employee)
+                .list(new QTuple(employee.firstname, employee.lastname, concat));
         assertFalse(tuples.isEmpty());
         for (Tuple tuple : tuples){
             String firstName = tuple.get(employee.firstname);
@@ -784,7 +792,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     public void TwoColumns_and_Projection(){
         // two columns and projection
-        for (Object[] row : query().from(survey).list(survey.id, survey.name, new QIdName(survey.id, survey.name))){
+        for (Object[] row : query().from(survey)
+                .list(survey.id, survey.name, new QIdName(survey.id, survey.name))){
             assertEquals(3, row.length);
             assertEquals(Integer.class, row[0].getClass());
             assertEquals(String.class, row[1].getClass());
@@ -922,8 +931,10 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @SuppressWarnings("unchecked")
     @Test
     public void Union_FactoryExpression() {
-        ListSubQuery<Employee> sq1 = sq().from(employee).list(Projections.constructor(Employee.class, employee.id));
-        ListSubQuery<Employee> sq2 = sq().from(employee).list(Projections.constructor(Employee.class, employee.id));        
+        ListSubQuery<Employee> sq1 = sq().from(employee)
+                .list(Projections.constructor(Employee.class, employee.id));
+        ListSubQuery<Employee> sq2 = sq().from(employee)
+                .list(Projections.constructor(Employee.class, employee.id));        
         List<Employee> employees = query().union(sq1, sq2).list();
         for (Employee employee : employees){
             assertNotNull(employee);
@@ -961,9 +972,9 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         // unique wildcard
         Object[] row = query().from(survey).limit(1).uniqueResult(survey.all());
         assertNotNull(row);
-        assertEquals(2, row.length);
+        assertEquals(3, row.length);
         assertNotNull(row[0]);
-        assertNotNull(row[1]);
+        assertNotNull(row[0] +" is not null", row[1]);
 
     }
     
@@ -1000,11 +1011,10 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         // wildcard
         for (Object[] row : query().from(survey).list(survey.all())){
             assertNotNull(row);
-            assertEquals(2, row.length);
+            assertEquals(3, row.length);
             assertNotNull(row[0]);
-            assertNotNull(row[1]);
+            assertNotNull(row[0] + " is not null", row[1]);
         }
-
     }
 
     @Test
@@ -1058,7 +1068,8 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         QTuple subordinates = new QTuple(employee2.id, employee2.firstname, employee2.lastname);
 
         Map<Integer, Group> results = qry.transform(
-            GroupBy.groupBy(employee.id).as(employee.firstname, employee.lastname, GroupBy.map(employee2.id, subordinates)));
+            GroupBy.groupBy(employee.id).as(employee.firstname, employee.lastname, 
+            GroupBy.map(employee2.id, subordinates)));
         
         assertEquals(2, results.size());
         

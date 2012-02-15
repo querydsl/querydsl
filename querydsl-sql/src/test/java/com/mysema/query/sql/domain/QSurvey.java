@@ -29,6 +29,8 @@ public class QSurvey extends RelationalPathBase<QSurvey>{
     public static final QSurvey survey = new QSurvey("SURVEY");
 
     public final StringPath name = createString("NAME");
+    
+    public final StringPath name2 = createString("NAME2");
 
     public final NumberPath<Integer> id = createNumber("ID", Integer.class);
     

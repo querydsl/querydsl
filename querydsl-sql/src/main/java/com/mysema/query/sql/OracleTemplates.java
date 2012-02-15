@@ -51,6 +51,8 @@ public class OracleTemplates extends SQLTemplates {
 
     public OracleTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
+        setParameterMetadataAvailable(false);
+        setBatchCountViaGetUpdateCount(true);
         // type mappings
         addClass2TypeMappings("number(3,0)", Byte.class);
         addClass2TypeMappings("number(1,0)", Boolean.class);

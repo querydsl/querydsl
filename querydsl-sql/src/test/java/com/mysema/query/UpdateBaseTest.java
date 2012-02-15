@@ -34,7 +34,7 @@ public abstract class UpdateBaseTest extends AbstractBaseTest{
 
     protected void reset() throws SQLException{
         delete(survey).execute();
-        insert(survey).values(1, "Hello World").execute();
+        insert(survey).values(1, "Hello World", "Hello").execute();
     }
 
     @Before
@@ -104,8 +104,8 @@ public abstract class UpdateBaseTest extends AbstractBaseTest{
     
     @Test
     public void Batch() throws SQLException{
-        insert(survey).values(2, "A").execute();
-        insert(survey).values(3, "B").execute();
+        insert(survey).values(2, "A","B").execute();
+        insert(survey).values(3, "B","C").execute();
         
         SQLUpdateClause update = update(survey);
         update.set(survey.name, "AA").where(survey.name.eq("A")).addBatch();

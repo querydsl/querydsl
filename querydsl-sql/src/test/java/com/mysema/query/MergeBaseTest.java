@@ -29,7 +29,7 @@ public abstract class MergeBaseTest extends AbstractBaseTest{
 
     private void reset() throws SQLException{
         delete(survey).execute();
-        insert(survey).values(1, "Hello World").execute();
+        insert(survey).values(1, "Hello World", "Hello").execute();
     }
 
     @Before
@@ -47,7 +47,7 @@ public abstract class MergeBaseTest extends AbstractBaseTest{
     public void Merge_with_Keys_and_Values(){
         // NOTE : doesn't work with composite merge implementation
         // keys + values
-        assertEquals(1, merge(survey).keys(survey.id).values(5, "Hello World").execute());
+        assertEquals(1, merge(survey).keys(survey.id).values(5, "Hello World", "Hello").execute());
     }
 
     @Test
@@ -73,6 +73,7 @@ public abstract class MergeBaseTest extends AbstractBaseTest{
 
         // keys + subquery
         QSurvey survey2 = new QSurvey("survey2");
-        assertEquals(2, merge(survey).keys(survey.id).select(sq().from(survey2).list(survey2.id.add(1), survey2.name)).execute());
+        assertEquals(2, merge(survey).keys(survey.id).select(
+                sq().from(survey2).list(survey2.id.add(1), survey2.name, survey2.name2)).execute());
     }
 }

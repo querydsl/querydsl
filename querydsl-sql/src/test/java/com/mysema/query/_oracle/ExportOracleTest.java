@@ -14,12 +14,13 @@
 package com.mysema.query._oracle;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 
 import com.mysema.query.Connections;
 import com.mysema.query.ExportBaseTest;
 import com.mysema.testutil.ResourceCheck;
 
-@ResourceCheck("/oralce.run")
+@ResourceCheck("/oracle.run")
 public class ExportOracleTest extends ExportBaseTest{
 
     @BeforeClass

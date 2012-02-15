@@ -29,7 +29,7 @@ public class BeanPopulationHsqldbTest extends BeanPopulationBaseTest{
     
     @BeforeClass
     public static void setUpClass() throws Exception {
-        Connections.initH2();
+        Connections.initHSQL();
     }
 
     @Before

@@ -141,6 +141,8 @@ public class SQLTemplates extends Templates {
     
     private boolean parameterMetadataAvailable = true;
     
+    private boolean batchCountViaGetUpdateCount = false;
+    
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
         super(escape);
         this.quoteStr = Assert.notNull(quoteStr, "quoteStr");
@@ -405,6 +407,10 @@ public class SQLTemplates extends Templates {
         return parameterMetadataAvailable;
     }
 
+    public boolean isBatchCountViaGetUpdateCount() {
+        return batchCountViaGetUpdateCount;
+    }
+
     protected void newLineToSingleSpace() {
         for (Class<?> cl : Arrays.<Class<?>>asList(getClass(), SQLTemplates.class)) {
             for (Field field : cl.getDeclaredFields()) {
@@ -618,6 +624,8 @@ public class SQLTemplates extends Templates {
         this.parameterMetadataAvailable = parameterMetadataAvailable;
     }
     
-    
+    protected void setBatchCountViaGetUpdateCount(boolean batchCountViaGetUpdateCount) {
+        this.batchCountViaGetUpdateCount = batchCountViaGetUpdateCount;
+    }
     
 }

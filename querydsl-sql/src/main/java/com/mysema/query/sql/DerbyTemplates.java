@@ -25,7 +25,7 @@ import com.mysema.query.types.Ops;
  *
  */
 public class DerbyTemplates extends SQLTemplates {
-
+    
     private String limitOffsetTemplate = "\noffset {1s} rows fetch next {0s} rows only";
 
     private String limitTemplate = "\nfetch first {0s} rows only";

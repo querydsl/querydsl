@@ -306,11 +306,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
             if (batches.isEmpty()) {
                 return stmt.executeUpdate();
             } else {
-                long rv = 0;
-                for (int i : stmt.executeBatch()) {
-                    rv += i;
-                }
-                return rv;
+                return executeBatch(stmt);
             }
         } catch (SQLException e) {
             throw new QueryException("Caught " + e.getClass().getSimpleName() + " for " + queryString, e);
@@ -398,7 +394,7 @@ public class SQLInsertClause extends AbstractSQLClause implements InsertClause<S
     @SuppressWarnings("rawtypes")
     public <T> SQLInsertClause populate(T obj, Mapper<T> mapper) {
         Map<Path<?>, Object> values = mapper.createMap(entity, obj);
-        for (Map.Entry<Path<?>, Object> entry : values.entrySet()) {
+        for (Map.Entry<Path<?>, Object> entry : values.entrySet()) {            
             set((Path)entry.getKey(), entry.getValue());
         }        
         return this;

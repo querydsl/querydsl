@@ -27,7 +27,7 @@ public class UntypedNullType extends AbstractType<Null> {
 
     @Override
     public void setValue(PreparedStatement st, int startIndex, Null value) throws SQLException {
-        st.setNull(startIndex, Types.OTHER);
+        st.setNull(startIndex, Types.NULL);
     }
 
 }
