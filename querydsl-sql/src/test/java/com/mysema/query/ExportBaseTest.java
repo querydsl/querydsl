@@ -33,13 +33,16 @@ public abstract class ExportBaseTest {
         File folder = new File("target", getClass().getSimpleName());
         folder.mkdirs();
         NamingStrategy namingStrategy = new DefaultNamingStrategy();
-//        Serializer serializer = new MetaDataSerializer("Q", "", "", "", null, namingStrategy, false);
         MetaDataExporter exporter = new MetaDataExporter();
+        exporter.setSchemaPattern(getSchemaPattern());
         exporter.setPackageName("test");
         exporter.setTargetFolder(folder);
         exporter.setNamingStrategy(namingStrategy);
-//        exporter.setSerializer(serializer);
         exporter.export(Connections.getConnection().getMetaData());
+    }
+    
+    protected String getSchemaPattern() {
+        return null;
     }
     
     @AfterClass

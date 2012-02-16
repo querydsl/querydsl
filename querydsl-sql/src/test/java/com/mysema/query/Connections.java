@@ -409,6 +409,17 @@ public final class Connections {
         stmt.execute("create table SURVEY (ID number(10,0), " +
         		"NAME varchar(30 char)," +
         		"NAME2 varchar(30 char))");
+        
+        stmt.execute("drop sequence survey_seq");        
+        stmt.execute("create sequence survey_seq");        
+        stmt.execute("create or replace trigger survey_trigger\n"+
+          "before insert on survey\n"+
+          "for each row\n" +
+          "when (new.id is null)\n"+
+          "begin\n"+
+          "  select survey_seq.nextval into :new.id from dual;\n"+
+          "end;\n");
+        
         stmt.execute("insert into SURVEY values (1,'Hello World','Hello')");
 
         // test
@@ -459,7 +470,17 @@ public final class Connections {
 
         // survey
         dropTable(templates, "SURVEY");
-        stmt.execute(quote("create table \"SURVEY\"(\"ID\" int, \"NAME\" varchar(30), \"NAME2\" varchar(30))"));
+        try {
+            stmt.execute("drop sequence SURVEY_SEQ");    
+        } catch(SQLException e) {
+            if (!e.getMessage().contains("does not exist")) {
+                throw e;
+            }
+        }        
+        stmt.execute("create sequence SURVEY_SEQ");        
+        stmt.execute("create table \"SURVEY\"(" +
+        		"\"ID\" int DEFAULT NEXTVAL('SURVEY_SEQ'), " +
+        		"\"NAME\" varchar(30), \"NAME2\" varchar(30))");
         stmt.execute("insert into \"SURVEY\" values (1, 'Hello World')");
 
         // test

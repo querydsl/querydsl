@@ -260,8 +260,8 @@ public class MetaDataExporter {
             classModel.getData().put(InverseForeignKeyData.class, inverseForeignKeyData.values());
         }
 
-        // collect columns
-        ResultSet columns = md.getColumns(null, schemaPattern, tableName, null);
+        // collect columns        
+        ResultSet columns = md.getColumns(null, schemaPattern, tableName.replace("/", "//"), null);
         try{
             while (columns.next()) {
                 handleColumn(classModel, tableName, columns);

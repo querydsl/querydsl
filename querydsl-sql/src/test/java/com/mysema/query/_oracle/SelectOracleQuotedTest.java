@@ -22,9 +22,7 @@ import com.mysema.query.SkipForQuoted;
 import com.mysema.query.Target;
 import com.mysema.query.sql.OracleTemplates;
 import com.mysema.testutil.Label;
-import com.mysema.testutil.ResourceCheck;
 
-@ResourceCheck("/oracle.run")
 @Label(Target.ORACLE)
 @SkipForQuoted
 public class SelectOracleQuotedTest extends SelectBaseTest {

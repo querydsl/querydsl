@@ -23,9 +23,7 @@ import com.mysema.query.DeleteBaseTest;
 import com.mysema.query.Target;
 import com.mysema.query.sql.OracleTemplates;
 import com.mysema.testutil.Label;
-import com.mysema.testutil.ResourceCheck;
 
-@ResourceCheck("/oracle.run")
 @Label(Target.ORACLE)
 public class DeleteOracleTest extends DeleteBaseTest{
 

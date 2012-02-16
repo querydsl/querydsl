@@ -25,8 +25,9 @@ import org.junit.Test;
 import com.mysema.query.sql.dml.SQLInsertClause;
 
 public abstract class LikeEscapeBaseTest extends AbstractBaseTest{
-    
-    private void reset() throws SQLException{
+
+    @Before
+    public void setUp() throws SQLException{
         delete(survey).execute();
         SQLInsertClause insert = insert(survey);
         insert.set(survey.id, 5).set(survey.name, "aaa").addBatch();
@@ -35,14 +36,10 @@ public abstract class LikeEscapeBaseTest extends AbstractBaseTest{
         insert.execute();
     }
 
-    @Before
-    public void setUp() throws SQLException{
-        reset();
-    }
-
     @After
     public void tearDown() throws SQLException{
-        reset();
+        delete(survey).execute();
+        insert(survey).values(1, "Hello World", "Hello").execute();
     }
     
     @Test

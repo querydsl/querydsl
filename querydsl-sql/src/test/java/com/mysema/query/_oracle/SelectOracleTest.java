@@ -36,9 +36,7 @@ import com.mysema.query.sql.oracle.OracleQuery;
 import com.mysema.query.types.expr.Wildcard;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.testutil.Label;
-import com.mysema.testutil.ResourceCheck;
 
-@ResourceCheck("/oracle.run")
 @Label(Target.ORACLE)
 public class SelectOracleTest extends SelectBaseTest {
 

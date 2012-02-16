@@ -14,18 +14,20 @@
 package com.mysema.query._oracle;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 
 import com.mysema.query.Connections;
 import com.mysema.query.ExportBaseTest;
-import com.mysema.testutil.ResourceCheck;
 
-@ResourceCheck("/oracle.run")
 public class ExportOracleTest extends ExportBaseTest{
 
     @BeforeClass
     public static void setUpClass() throws Exception {
         Connections.initOracle();
+    }
+    
+    @Override
+    public String getSchemaPattern() {
+        return "QUERYDSL";
     }
 
 }
