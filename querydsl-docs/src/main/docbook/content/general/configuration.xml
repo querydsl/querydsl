@@ -5,10 +5,10 @@
       <title>Path initialization</title>
     
       <para>
-      By default Querydsl initializes only direct reference properties. In cases where longer initialization paths
-      are required, these have to be annotated in the domain types via com.mysema.query.annotations.QueryInit usage.
-      QueryInit is used on properties where deep initializations are needed. The following example demonstrates the
-      usage.       
+      By default Querydsl initializes only direct reference properties. In cases where longer 
+      initialization paths are required, these have to be annotated in the domain types via 
+      com.mysema.query.annotations.QueryInit annotations. QueryInit is used on properties where 
+      deep initializations are needed. The following example demonstrates the usage.       
       </para>
       
       <programlisting language="java"><![CDATA[
@@ -31,19 +31,20 @@ class Customer{
 ]]></programlisting>      
     
     <para>
-    This example enforces the initialization of the account.customer path, when an Event path is initialized
-    as a root path / variable. The path initialization format supports wildcards as well, e.g. "customer.*" or just "*".
+    This example enforces the initialization of the account.customer path, when an Event path is 
+    initialized as a root path / variable. The path initialization format supports wildcards as 
+    well, e.g. "customer.*" or just "*".
     </para>
     
     <para>
-    The declarative path initialization replaces the manual one, which required the entity fields to be non-final. The
-    declarative format has the benefit to be applied to all top level instances of a Query type and to enable the usage
-    of final entity fields. 
+    The automatic path initialization replaces the manual one, which required the entity fields to 
+    be non-final. The declarative format has the benefit to be applied to all top level instances of 
+    a Query type and to enable the usage of final entity fields. 
     </para>
     
     <para>
-    Declarative path initialization is the preferred initialization strategy, but manual initialization can be activated
-    via the Config annotation, which is described below.
+    Automatic path initialization is the preferred initialization strategy, but manual 
+    initialization can be activated via the Config annotation, which is described below.
     </para>
     
     </sect2>
@@ -52,16 +53,17 @@ class Customer{
       <title>Customization of serialization</title>
       
       <para>
-      The serialization of Querydsl can be customized via Config annotations on packages and types. They customize the 
-      serialization of the annotated package or type.
+      The serialization of Querydsl can be customized via Config annotations on packages and types. 
+      They customize the serialization of the annotated package or type.
       </para>
       
       <para>
       The serialization options are 
-      <emphasis>entityAccessors</emphasis> to generate accessor methods for entity paths instead of public final fields (default : false), 
-      <emphasis>listAccessors</emphasis> to generate listProperty(int index) style methods (default : false), 
-      <emphasis>mapAccessors</emphasis> to generate mapProperty(Key key) style accessor methods (default : false) and
-	  <emphasis>createDefaultVariable</emphasis> to generate the default variable (default : true).
+      <emphasis>entityAccessors</emphasis> to generate accessor methods for entity paths instead of 
+      public final fields (default : false), <emphasis>listAccessors</emphasis> to generate 
+      listProperty(int index) style methods (default : false), <emphasis>mapAccessors</emphasis> to 
+      generate mapProperty(Key key) style accessor methods (default : false) and 
+      <emphasis>createDefaultVariable</emphasis> to generate the default variable (default : true).
       </para>
 	  
 	  <para>Below are some examples.</para>
@@ -106,7 +108,7 @@ import com.mysema.query.annotations.Config;
     <plugin>
       <groupId>com.mysema.maven</groupId>
       <artifactId>maven-apt-plugin</artifactId>
-      <version>1.0</version>
+      <version>1.0.2</version>
       <executions>
         <execution>
           <goals>
@@ -135,9 +137,10 @@ import com.mysema.query.annotations.Config;
       <title>Custom type mappings</title>
       
       <para>
-      Custom type mappings can be used on properties to override the derived Path type. This can be useful for example in cases where
-      comparison and String operations should be blocked on certain String paths or Date / Time support for custom
-      types needs to be added. Support for Date / Time types of the Joda time API and JDK (java.util.Date, Calendar and subtypes) 
+      Custom type mappings can be used on properties to override the derived Path type. This can be 
+      useful for example in cases where comparison and String operations should be blocked on 
+      certain String paths or Date / Time support for custom types needs to be added. Support for 
+      Date / Time types of the Joda time API and JDK (java.util.Date, Calendar and subtypes) 
       is built in, but other APIs might need to be supported using this feature.
       </para>
       
@@ -157,16 +160,18 @@ public class MyEntity{
 }        
 ]]></programlisting>          
     
-      <para>The value PropertyType.NONE can be used to skip a property in the Querydsl query type generation. This case is different
-      from @Transient or @QueryTransient annotated properties, where properties are not persisted. PropertyType.NONE just omits the
-      property from the Querydsl query type.</para>
+      <para>The value PropertyType.NONE can be used to skip a property in the Querydsl query type 
+      generation. This case is different from @Transient or @QueryTransient annotated properties, 
+      where properties are not persisted. PropertyType.NONE just omits the property from the 
+      Querydsl query type.</para>
     
     </sect2>      
 	
 	<sect2>
 		<title>Delegate methods</title>
 	
-	<para>To declare a static method as a delegate method add the QueryDelegate annotation with the corresponding domain type as a value and provide a method 
+	<para>To declare a static method as a delegate method add the QueryDelegate annotation with the 
+	corresponding domain type as a value and provide a method 
 	signature that takes the corresponding Querydsl query type as the first argument.</para>  
 	
 	
@@ -221,7 +226,8 @@ public class QueryExtensions {
 }    
 ]]></programlisting>    	  
 
-   <para>When delegate methods are declared for builtin types then subclasses with the proper delegate method usages are created : </para>
+   <para>When delegate methods are declared for builtin types then subclasses with the proper 
+   delegate method usages are created : </para>
    
 <programlisting language="java"><![CDATA[      
 public class QDate extends DatePath<java.sql.Date> {
@@ -261,14 +267,16 @@ public class QTimestamp extends DateTimePath<java.sql.Timestamp> {
 	
 	<sect2>
 	
-		<title>Query type generation for not annotated types</title>
+		<title>Query type generation for non annotated types</title>
 		
 		<para>
-		It is possible to create Querydsl query types for not annotated types by creating @QueryEntities annotations.
-		Just place a QueryEntities annotation into a package of your choice and the classes to mirrored in the value attribute.
+		It is possible to create Querydsl query types for non annotated types by creating 
+		@QueryEntities annotations. Just place a QueryEntities annotation into a package of your 
+		choice and the classes to mirrored in the value attribute.
 		</para>
 		
-		<para>To actually create the types use the com.mysema.query.apt.QuerydslAnnotationProcessor. In Maven you do it like this :</para>
+		<para>To actually create the types use the com.mysema.query.apt.QuerydslAnnotationProcessor. 
+		In Maven you do it like this :</para>
 		
     <programlisting language="xml"><![CDATA[
 <project>
@@ -278,7 +286,7 @@ public class QTimestamp extends DateTimePath<java.sql.Timestamp> {
     <plugin>
       <groupId>com.mysema.maven</groupId>
       <artifactId>maven-apt-plugin</artifactId>
-      <version>1.0</version>
+      <version>1.0.2</version>
       <executions>
         <execution>
           <goals>

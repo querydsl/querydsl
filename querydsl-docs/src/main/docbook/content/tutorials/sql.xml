@@ -20,15 +20,18 @@ exporter.setTargetFolder(new File("src/main/java"));
 exporter.export(conn.getMetaData());  
 ]]></programlisting>
 
-  <para>This declares that the database schema is to be mirrored into the com.myproject.domain package in the src/main/java folder.</para>
+  <para>This declares that the database schema is to be mirrored into the com.myproject.domain 
+  package in the src/main/java folder.</para>
   
   <para>
-  The generated types have the table name transformed to mixed case as the class name and a similar mixed case transformation
+  The generated types have the table name transformed to mixed case as the class name and a similar 
+  mixed case transformation
   applied to the columns which are available as property paths in the query type.
   </para>
  
   <para>
-  In addition to this primary key and foreign key constraints are provided as fields which can be used for compact join declarations. 
+  In addition to this primary key and foreign key constraints are provided as fields which can be 
+  used for compact join declarations. 
   </para>
   
  </sect2>
@@ -37,7 +40,8 @@ exporter.export(conn.getMetaData());
  
   <title>Maven integration</title> 
     
-  <para>This functionality is also available as a Maven plugin. The presented example can be declared like this in the POM :</para>
+  <para>This functionality is also available as a Maven plugin. The presented example can be declared 
+  like this in the POM :</para>
   
 <programlisting language="xml"><![CDATA[   
 <plugin>
@@ -78,7 +82,8 @@ exporter.export(conn.getMetaData());
 </plugin>  
 ]]></programlisting>  
 
-  <para>Use the goal <emphasis>test-export</emphasis> to add the targetFolder as a test compile source root
+  <para>Use the goal <emphasis>test-export</emphasis> to add the targetFolder as a test compile 
+  source root
   instead of a compile source root.</para>
   
   </sect2>
@@ -88,8 +93,10 @@ exporter.export(conn.getMetaData());
 	<title>ANT integration</title>
 	
 	<para>
-		The ANT task com.mysema.query.sql.ant.AntMetaDataExporter of the querydsl-sql module provides the same functionality as an ANT task.
-		The configuration parameters of the task are jdbcDriverClass, dbUrl, dbUserName, dbPassword, namePrefix, targetPackage, targetSourceFolder,
+		The ANT task com.mysema.query.sql.ant.AntMetaDataExporter of the querydsl-sql module provides 
+		the same functionality as an ANT task.
+		The configuration parameters of the task are jdbcDriverClass, dbUrl, dbUserName, dbPassword, 
+		namePrefix, targetPackage, targetSourceFolder,
 		schemaPattern, tableNamePattern, exportBeans, innerClassesForKeys and validationAnnotations.
 	</para>
 	
@@ -121,7 +128,8 @@ FROM customer c
 WHERE c.first_name = 'Bob'
 ]]></programlisting>  
 
-    <para>Querydsl uses SQL dialects to customize the SQL serialization needed for different relational databases. The
+    <para>Querydsl uses SQL dialects to customize the SQL serialization needed for different 
+    relational databases. The
     available dialects are :</para>
     
     <itemizedlist>
@@ -205,6 +213,8 @@ WHERE c.first_name = 'Bob'
   <para>Joins are constructed using the following syntax :</para>
   
 <programlisting language="java"><![CDATA[ 
+QCustomer customer = QCustomer.customer;
+QCompany company = QCompany.company;
 query.from(customer)
     .innerJoin(customer.company, company)
     .list(customer.firstName, customer.lastName, company.name);
@@ -288,10 +298,13 @@ GROUP BY c.last_name
   	<title>Using Subqueries</title>
   
   	<para>  
-		To create a subquery you create a SQLSubQuery instance, define the query parameters via from, where etc and use unique or list to create a subquery, which is just a type-safe Querydsl expression for the query. unique is used for a unique (single) result and list for a list result.
+		To create a subquery you create a SQLSubQuery instance, define the query parameters via from, 
+		where etc and use unique or list to create a subquery, which is just a type-safe Querydsl expression for the query. unique is used for a unique (single) result and list for a list result.
 	</para>
 
 <programlisting language="java"><![CDATA[ 
+QCustomer customer = QCustomer.customer;
+QCustomer customer2 = new QCustomer("customer2");
 query.from(customer).where(
   customer.status.eq(new SQLSubQuery().from(customer2).unique(customer2.status.max()))
   .list(customer.all())  
@@ -300,6 +313,7 @@ query.from(customer).where(
 	<para>Another example</para>
 
 <programlisting language="java"><![CDATA[ 
+QStatus status = QStatus.status;
 query.from(customer).where(  
   customer.status.in(new SQLSubQuery().from(status).where(status.level.lt(3)).list(status.id))  
   .list(customer.all())    
@@ -311,7 +325,8 @@ query.from(customer).where(
   
     <title>Query extension support</title>
     
-    <para>Custom query extensions to support engine specific syntax can be created by subclassing AbstractSQLQuery and adding flagging methods like 
+    <para>Custom query extensions to support engine specific syntax can be created by subclassing 
+    AbstractSQLQuery and adding flagging methods like 
     in the given MySQLQuery example : </para>
     
 <programlisting language="java"><![CDATA[          
@@ -351,7 +366,8 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery>{
   
     <title>Using DDL commands</title>
     
-    <para>CREATE TABLE commands can be used in fluent form via the CreateTableClause. Here are some examples : </para>
+    <para>CREATE TABLE commands can be used in fluent form via the CreateTableClause. Here are 
+    some examples : </para>
     
 <programlisting language="java"><![CDATA[      
 createTable("language")
@@ -392,7 +408,8 @@ createTable("statement")
     }
 ]]></programlisting>            
   
-  <para>The constructor of CreateTableClause takes the connection, the templates and the table name. The rest is declared via
+  <para>The constructor of CreateTableClause takes the connection, the templates and the table name. 
+  The rest is declared via
   column, primaryKey and foreignKey invocations. 
   </para>
   
@@ -435,7 +452,8 @@ createTable("statement")
   
     <title>Using Data manipulation commands</title>
     
-    <para>All the DMLClause implementation in the Querydsl SQL module take three parameters, the Connection, the SQLTemplates instance
+    <para>All the DMLClause implementation in the Querydsl SQL module take three parameters, the 
+    Connection, the SQLTemplates instance
     used in the queries and the main entity the DMLClause is bound to.
     </para>
     
@@ -504,8 +522,10 @@ new SQLDelecteClause(conn, dialect, survey)
   
     <title>Batch support in DML clauses</title>
     
-    <para>Querydsl SQL supports usage of JDBC batch updates through the DML APIs. If you have consecutive DML calls with a similar structure, 
-    you can bundle the the calls via addBatch() usage into one DMLClause. See the examples how it works for UPDATE, DELETE and INSERT.</para>
+    <para>Querydsl SQL supports usage of JDBC batch updates through the DML APIs. If you have 
+    consecutive DML calls with a similar structure, 
+    you can bundle the the calls via addBatch() usage into one DMLClause. See the examples how it 
+    works for UPDATE, DELETE and INSERT.</para>
 	
 <programlisting language="java"><![CDATA[   	
     private static final QSurvey survey = QSurvey.survey;
@@ -559,7 +579,8 @@ exporter.setBeanSerializer(new BeanSerializer());
 exporter.export(conn.getMetaData());  
 ]]></programlisting>	
   	
-	<para>Now you can use the bean types as arguments to the populate method in DML clauses and you can project directly
+	<para>Now you can use the bean types as arguments to the populate method in DML clauses and you 
+	can project directly
 		to bean types in queries. Here is a simple example in JUnit form :</para>  	
   	
 <programlisting language="java"><![CDATA[    	
@@ -618,8 +639,10 @@ exporter.export(conn.getMetaData());
 		<title>Custom syntax expressions</title>
 		
 		<para>
-		If you need to specify SQL function calls in Querydsl you can use TemplateExpressions to express them. For general
-		expressions you can use the SimpleTemplate class and for typed expressions BooleanTemplate, ComparableTemplate, DateTemplate,
+		If you need to specify SQL function calls in Querydsl you can use TemplateExpressions to 
+		express them. For general
+		expressions you can use the SimpleTemplate class and for typed expressions BooleanTemplate, 
+		ComparableTemplate, DateTemplate,
 		DateTimeTemplate, EnumTemplate, NumberTemplate, StringTemplate and TimeTemplate.
 		</para>
 		
@@ -645,8 +668,10 @@ NumberExpression<Integer> expression = NumberTemplate.create(Integer.class, "myf
   
     <title>Custom types</title>
     
-    <para>Querydsl SQL provides the possibility to declare custom type mappings for ResultSet/Statement interaction. The custom type mappings can be 
-	declared in com.mysema.query.sql.Configuration instances, which are supplied as constructor arguments to the actual queries :</para>
+    <para>Querydsl SQL provides the possibility to declare custom type mappings for ResultSet/Statement 
+    interaction. The custom type mappings can be 
+	declared in com.mysema.query.sql.Configuration instances, which are supplied as constructor 
+	arguments to the actual queries :</para>
 
 <programlisting language="java"><![CDATA[    
     @Test

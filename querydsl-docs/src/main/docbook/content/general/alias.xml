@@ -4,12 +4,13 @@
 
   <para>
     In cases where code generation is not an option, alias objects
-    can be used as path references for expression construction.
+    can be used as path references for expression construction. They can be used via proxied Java Bean 
+    objects through getter method invocations.
   </para>
 
   <para>
     The following examples demonstrate how alias objects can be used
-    as replacements for expressions based on generated types.
+    as replacements for expression creation based on generated types.
   </para>
 
   <para>

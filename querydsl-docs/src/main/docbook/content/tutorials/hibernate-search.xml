@@ -22,10 +22,8 @@
 		</para>
 
 		<programlisting language="java"><![CDATA[
-QUser user = new QUser("user");
-
+QUser user = QUser.user;
 SearchQuery<User> query = new SearchQuery<User>(session, user);
-
 List<User> list = query
 	.where(user.firstName.eq("Bob"))
 	.list();
@@ -44,8 +42,8 @@ List<User> list = query
         <para>
           In the query serialization the only difference to the Querydsl Lucene module is that
           paths are treated differently.
-          For <emphasis>org.hibernate.search.annotations.Field</emphasis> annotated properties the name attribute is used 
-          with the property name as fallback for the field name.
+          For <emphasis>org.hibernate.search.annotations.Field</emphasis> annotated properties the 
+          name attribute is used with the property name as fallback for the field name.
         </para>
 
 	</sect2>

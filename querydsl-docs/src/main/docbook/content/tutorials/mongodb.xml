@@ -74,7 +74,8 @@
     </para>
     
     <para>
-      If you use Eclipse, run mvn eclipse:eclipse to update your Eclipse project to include target/generated-sources/java
+      If you use Eclipse, run mvn eclipse:eclipse to update your Eclipse project to include 
+      target/generated-sources/java
       as a source folder. 
     </para>
 
@@ -173,7 +174,8 @@ query
   
     <title>Geospatial queries</title>
   
-    <para>Support for geospatial queries is available for Double typed arrays (Double[]) via the near-method :</para>
+    <para>Support for geospatial queries is available for Double typed arrays (Double[]) via the 
+    near-method :</para>
     
 <programlisting language="java"><![CDATA[ 
 query

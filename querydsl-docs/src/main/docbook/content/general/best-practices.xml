@@ -7,8 +7,8 @@
     <title>Use default variable of the Query types</title>
     
     <para>Use the default variables of the query types as much as possible. The default variables
-    are available as static final fields in the query types. The name is always the decapitalized version
-    of the simple type name. For the type Account this would be account :</para>
+    are available as static final fields in the query types. The name is always the decapitalized 
+    version of the simple type name. For the type Account this would be account :</para>
     
 <programlisting language="java"><![CDATA[     
 public class QAccount extends EntityPathBase<Account>{
@@ -19,20 +19,12 @@ public class QAccount extends EntityPathBase<Account>{
 ]]></programlisting>      
 
   <para>
-  Querydsl query types are safe to re-use, and by using Querydsl default variables you save initialization time
-  and memory.
+  Querydsl query types are safe to re-use, and by using Querydsl default variables you save 
+  initialization time and memory.
   </para>
     
   </sect2>
  
-  <sect2>
-  
-    <title>Interface based usage</title>
-  
-    <para>Whenever possible, use interface based query references : e.g. JDOQLQuery for JDO and HQLQuery for HQL</para>
-  
-  </sect2>
-  
   <sect2>
   
     <title>Custom query extensions</title>
