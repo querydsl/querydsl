@@ -36,9 +36,11 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 /**
  * CreateTableClause defines a CREATE TABLE clause
  * 
+ * 
  * @author tiwe
  *
  */
+@Deprecated
 public class CreateTableClause {
     
     private static final Logger logger = LoggerFactory.getLogger(CreateTableClause.class);

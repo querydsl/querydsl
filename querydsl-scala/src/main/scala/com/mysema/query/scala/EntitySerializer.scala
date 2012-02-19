@@ -65,8 +65,8 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
     var importedClasses = getAnnotationTypes(model)
     if (model.hasLists()) importedClasses.add(classOf[java.util.List[_]].getName)
     if (model.hasMaps())  importedClasses.add(classOf[java.util.Map[_, _]].getName)
-
     writer.importClasses(importedClasses.toArray: _*)    
+    
     writeHeader(model, scalaWriter)    
     
     var modelName = writer.getRawName(model)    

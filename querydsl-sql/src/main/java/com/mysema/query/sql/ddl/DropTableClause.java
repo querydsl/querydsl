@@ -28,6 +28,7 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
  * @author tiwe
  *
  */
+@Deprecated
 public class DropTableClause {
 
     private final Connection connection;

@@ -26,6 +26,7 @@ import org.apache.commons.lang3.StringUtils
  * @author tiwe
  *
  */
+@deprecated
 object Conversions {
 
   val aliasFactory = new AliasFactory(new escaped.PathFactoryImpl(), new TypeSystemImpl())

@@ -28,96 +28,27 @@ import scala.reflect.BeanProperty
 import scala.collection.JavaConversions._
 import scala.collection.mutable.Set
 
-/**
- * Serializer for Bean types
- * 
- * @author tiwe
- *
- */
-class ScalaBeanSerializer @Inject() (typeMappings: TypeMappings) 
-  extends AbstractSerializer(typeMappings) {
-
-  var javadocSuffix = " is a Querydsl bean type"
-  
-  var javaBeanSupport = false
-    
-  def writeClass(model: EntityType, writer: ScalaWriter) = {
-    // javadoc        
-    writer.javadoc(model.getSimpleName + javadocSuffix)
-    
-    // header
-    model.getAnnotations foreach(writer.annotation(_))
-    writer.beginClass(model)
-
-    // properties
-    for (property <- model.getProperties) {
-      property.getAnnotations.foreach(writer.annotation(_))
-      if (javaBeanSupport) writer.line("@BeanProperty")
-      writer.publicField(property.getType(), property.getEscapedName, "_")
-    }
-
-    writer.end()
-  }
-  
-}
+import Serializer._
 
 /**
- * Serializer for case classes
- * 
- * @author tiwe
- *
+ * Serializer contains common functionality used in the Serializer implementations
  */
-class CaseClassSerializer @Inject() (typeMappings: TypeMappings) 
-  extends AbstractSerializer(typeMappings) {
+object Serializer {
   
-  def javaBeanSupport = false
-    
-  def writeClass(model: EntityType, writer: ScalaWriter) = {
-    model.getAnnotations foreach (writer.annotation(_))
-    val parameters = model.getProperties
-      .map(p => new Parameter(p.getEscapedName, p.getType)).toArray
-    writer.caseClass(model.getSimpleName, parameters:_*) 
-  }
-
-}  
- 
-/**
- * Abstract superclass for Scala type serializers
- * 
- * @author tiwe
- *
- */
-abstract class AbstractSerializer(typeMappings: TypeMappings) extends Serializer {
-
-  var createCompanionObject = true
-  
-  def javaBeanSupport: Boolean
-
-  def serialize(model: EntityType, serializerConfig: SerializerConfig, writer: CodeWriter) {
-    val simpleName = model.getSimpleName
-
-    // package
+  def writePackage(model: EntityType, writer: ScalaWriter) {
     if (!model.getPackageName.isEmpty) writer.packageDecl(model.getPackageName)
-
-    // imports
+  }
+  
+  def writeImports(model: EntityType, javaBeanSupport: Boolean, writer: ScalaWriter) {
     val importedClasses = getAnnotationTypes(model)
     if (javaBeanSupport)  importedClasses.add("scala.reflect.BeanProperty")    
     if (model.hasLists()) importedClasses.add(classOf[List[_]].getName)
     if (model.hasMaps())  importedClasses.add(classOf[Map[_, _]].getName)
-
-    writer.importClasses(importedClasses.toArray: _*)
-    
-    if (createCompanionObject) {
-      val queryType = typeMappings.getPathType(model, model, true)
-      writeCompanionObject(model, queryType, writer.asInstanceOf[ScalaWriter])  
-    } 
-    
-    writeClass(model, writer.asInstanceOf[ScalaWriter])
+    writer.importClasses(importedClasses.toArray: _*)    
   }
   
-  def writeClass(model: EntityType, writer: ScalaWriter)
-  
-  def writeCompanionObject(model: EntityType, queryType: Type, writer: ScalaWriter) = {
+  def writeCompanionObject(model: EntityType, typeMappings: TypeMappings, writer: ScalaWriter) {
+    val queryType = typeMappings.getPathType(model, model, true)
     val modelName = writer.getRawName(model)
     val queryTypeName = writer.getRawName(queryType)    
     val variable = model.getUncapSimpleName
@@ -133,8 +64,74 @@ abstract class AbstractSerializer(typeMappings: TypeMappings) extends Serializer
     // flatMap flattens the results of the map-function.
     // E.g. List(List(1,2,3), List(4,5,6)).flatMap(_.map(_*3)) ends up as List(3, 6, 9, 12, 15, 18).
     imports ++ model.getProperties.flatMap(_.getAnnotations.map(_.annotationType.getName))
+  }  
+  
+}
+
+/**
+ * Serializer implementation which serializes classes as mutable optionally JavaBean
+ * compatible classes
+ */
+class ScalaBeanSerializer @Inject() (typeMappings: TypeMappings) extends Serializer {
+
+  var javadocSuffix = " is a Querydsl bean type"
+    
+  var createCompanionObject = true  
+  
+  var javaBeanSupport = false
+  
+  def serialize(model: EntityType, serializerConfig: SerializerConfig, writer: CodeWriter) {
+    val scalaWriter = writer.asInstanceOf[ScalaWriter]
+    
+    writePackage(model, scalaWriter)
+    writeImports(model, javaBeanSupport, scalaWriter)
+    if (createCompanionObject) {      
+      writeCompanionObject(model, typeMappings, scalaWriter)  
+    }
+    writeClass(model, scalaWriter)
+  }
+    
+  def writeClass(model: EntityType, writer: ScalaWriter) = {
+    writer.javadoc(model.getSimpleName + javadocSuffix)
+    model.getAnnotations foreach(writer.annotation(_))
+    writer.beginClass(model)
+    for (property <- model.getProperties) {
+      property.getAnnotations.foreach(writer.annotation(_))
+      if (javaBeanSupport) writer.line("@BeanProperty")
+      writer.publicField(property.getType(), property.getEscapedName, "_")
+    }
+    writer.end()
   }
   
 }
+
+/**
+ * Serializer implementation which serializes classes as Scala case classes
+ */
+class CaseClassSerializer @Inject() (typeMappings: TypeMappings) extends Serializer {
+  
+  var createCompanionObject = true
+  
+  def serialize(model: EntityType, serializerConfig: SerializerConfig, writer: CodeWriter) {
+    val scalaWriter = writer.asInstanceOf[ScalaWriter]
+    
+    writePackage(model, scalaWriter)
+    writeImports(model, false, scalaWriter)    
+    if (createCompanionObject) {      
+      writeCompanionObject(model, typeMappings, scalaWriter)  
+    }     
+    writeClass(model, scalaWriter)
+  }
+    
+  def writeClass(model: EntityType, writer: ScalaWriter) = {
+    model.getAnnotations foreach (writer.annotation(_))
+    val parameters = model.getProperties
+      .map(p => new Parameter(p.getEscapedName, p.getType)).toArray
+    writer.caseClass(model.getSimpleName, parameters:_*) 
+  }
+
+}  
+ 
+
 
 

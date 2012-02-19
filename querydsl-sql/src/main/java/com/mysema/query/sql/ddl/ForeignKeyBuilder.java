@@ -24,6 +24,7 @@ import com.mysema.query.sql.support.ForeignKeyData;
  * @author tiwe
  *
  */
+@Deprecated
 public class ForeignKeyBuilder {
 
     private final List<ForeignKeyData> foreignKeys;
