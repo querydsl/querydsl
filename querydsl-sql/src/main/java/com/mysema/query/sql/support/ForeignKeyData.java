@@ -29,6 +29,7 @@ public class ForeignKeyData implements KeyData {
 
     private final String name;
     
+    @Nullable
     private final String schema;
 
     private final String table;

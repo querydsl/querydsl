@@ -15,8 +15,10 @@ package com.mysema.query.jpa.domain2;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="categoryprop_")
 public class CategoryProp {
 
     @Id

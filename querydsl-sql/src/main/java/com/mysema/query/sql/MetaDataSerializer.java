@@ -73,6 +73,8 @@ public class MetaDataSerializer extends EntitySerializer {
     protected void introClassHeader(CodeWriter writer, EntityType model) throws IOException {
         Type queryType = typeMappings.getPathType(model, model, true);
 
+        writer.line("@Generated(\"", getClass().getName(), "\")");
+        
         TypeCategory category = model.getOriginalCategory();      
         // serialize annotations only, if no bean types are used
         if (model.equals(queryType)) {
@@ -107,12 +109,35 @@ public class MetaDataSerializer extends EntitySerializer {
     @Override
     protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
         super.introImports(writer, config, model);
-        writer.imports(List.class.getPackage());
+        
+        Collection<ForeignKeyData> foreignKeys = (Collection<ForeignKeyData>) 
+                model.getData().get(ForeignKeyData.class);
+        Collection<InverseForeignKeyData> inverseForeignKeys = (Collection<InverseForeignKeyData>)
+                model.getData().get(InverseForeignKeyData.class);
+        boolean addJavaUtilImport = false;
+        if (foreignKeys != null) {            
+            for (ForeignKeyData keyData : foreignKeys) {
+                if (keyData.getForeignColumns().size() > 1) {
+                    addJavaUtilImport = true;
+                }
+            }                        
+        }
+        if (inverseForeignKeys != null) {            
+            for (InverseForeignKeyData keyData : inverseForeignKeys) {
+                if (keyData.getForeignColumns().size() > 1) {
+                    addJavaUtilImport = true;
+                }
+            }                        
+        }
+        if (addJavaUtilImport) {
+            writer.imports(List.class.getPackage());    
+        }        
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    protected void serializeProperties(EntityType model,  SerializerConfig config, CodeWriter writer) throws IOException {
+    protected void serializeProperties(EntityType model,  SerializerConfig config, 
+            CodeWriter writer) throws IOException {
         Collection<PrimaryKeyData> primaryKeys =
             (Collection<PrimaryKeyData>) model.getData().get(PrimaryKeyData.class);
         Collection<ForeignKeyData> foreignKeys =

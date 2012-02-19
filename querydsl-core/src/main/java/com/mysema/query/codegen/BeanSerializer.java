@@ -68,7 +68,8 @@ public class BeanSerializer implements Serializer{
     }
 
     @Override
-    public void serialize(EntityType model, SerializerConfig serializerConfig, CodeWriter writer) throws IOException {
+    public void serialize(EntityType model, SerializerConfig serializerConfig, 
+            CodeWriter writer) throws IOException {
         String simpleName = model.getSimpleName();
 
         // package

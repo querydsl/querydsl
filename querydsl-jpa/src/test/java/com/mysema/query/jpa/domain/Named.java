@@ -15,11 +15,13 @@ package com.mysema.query.jpa.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * The Class Named.
  */
 @Entity
+@Table(name="named_")
 public class Named {
     @Id
     long id;

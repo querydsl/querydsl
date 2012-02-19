@@ -15,11 +15,13 @@ package com.mysema.query.jpa.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * The Class Name.
  */
 @Entity
+@Table(name="name_")
 public class Name {
     String firstName, lastName, nickName;
 

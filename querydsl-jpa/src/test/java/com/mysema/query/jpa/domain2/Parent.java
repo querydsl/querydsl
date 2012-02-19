@@ -16,8 +16,10 @@ package com.mysema.query.jpa.domain2;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="parent_")
 public class Parent {
 
     @Id

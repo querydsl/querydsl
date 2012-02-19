@@ -16,11 +16,13 @@ package com.mysema.query.jpa.domain;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * The Class Customer.
  */
 @Entity
+@Table(name="customer_")
 public class Customer {
     @ManyToOne
     Order currentOrder;

@@ -16,10 +16,6 @@ package com.mysema.query.jpa.domain4;
 import javax.persistence.Embeddable;
 import java.io.Serializable;
 
-/**
- * Created by IntelliJ IDEA. User: nardonep Date: 09/06/11 Time: 13:55 To change
- * this template use File | Settings | File Templates.
- */
 @Embeddable
 public class BookVersionPK implements Serializable {
 

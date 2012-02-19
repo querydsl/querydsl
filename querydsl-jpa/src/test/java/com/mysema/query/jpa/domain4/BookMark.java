@@ -16,10 +16,6 @@ package com.mysema.query.jpa.domain4;
 import javax.persistence.Basic;
 import javax.persistence.Embeddable;
 
-/**
- * Created by IntelliJ IDEA. User: nardonep Date: 09/08/11 Time: 12:24 To change
- * this template use File | Settings | File Templates.
- */
 @Embeddable
 public class BookMark {
 

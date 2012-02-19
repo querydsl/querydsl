@@ -1,55 +1,41 @@
-/*
- * Copyright 2011, Mysema Ltd
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.PathMetadataFactory.*;
 
-import com.mysema.query.sql.ForeignKey;
-import com.mysema.query.sql.PrimaryKey;
-import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.*;
+
+import javax.annotation.Generated;
 
 
 /**
  * SFormula is a Querydsl query type for SFormula
  */
-public class SFormula extends RelationalPathBase<SFormula> {
+@Generated("com.mysema.query.sql.MetaDataSerializer")
+public class SFormula extends com.mysema.query.sql.RelationalPathBase<SFormula> {
 
-    private static final long serialVersionUID = -227668995;
+    private static final long serialVersionUID = 1975056213;
 
-    public static final SFormula formula = new SFormula("FORMULA");
+    public static final SFormula formula = new SFormula("FORMULA_");
 
     public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
     public final NumberPath<Long> parameterId = createNumber("PARAMETER_ID", Long.class);
 
-    public final PrimaryKey<SFormula> sql100819184433810 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SFormula> sql120219232324550 = createPrimaryKey(id);
 
-    public final ForeignKey<SParameter> fk3ad7e94694c3fef0 = new ForeignKey<SParameter>(this, parameterId, "ID");
+    public final com.mysema.query.sql.ForeignKey<SParameter> fk1c4adbb924189298 = createForeignKey(parameterId, "ID");
 
     public SFormula(String variable) {
-        super(SFormula.class, forVariable(variable), null, "FORMULA");
+        super(SFormula.class, forVariable(variable), "APP", "FORMULA_");
     }
 
-    public SFormula(BeanPath<? extends SFormula> entity) {
-        super(entity.getType(), entity.getMetadata(), null, "FORMULA");
+    public SFormula(Path<? extends SFormula> entity) {
+        super(entity.getType(), entity.getMetadata(), "APP", "FORMULA_");
     }
 
     public SFormula(PathMetadata<?> metadata) {
-        super(SFormula.class, metadata, null, "FORMULA");
+        super(SFormula.class, metadata, "APP", "FORMULA_");
     }
 
 }

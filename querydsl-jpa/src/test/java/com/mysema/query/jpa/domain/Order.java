@@ -28,7 +28,7 @@ import org.hibernate.annotations.IndexColumn;
  * The Class Order.
  */
 @Entity
-@Table(name="ORDER_")
+@Table(name="order_")
 public class Order {
     @ManyToOne
     Customer customer;

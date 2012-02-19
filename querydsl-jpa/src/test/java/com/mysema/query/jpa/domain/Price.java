@@ -16,11 +16,13 @@ package com.mysema.query.jpa.domain;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * The Class Price.
  */
 @Entity
+@Table(name="price_")
 public class Price{
     long amount;
 

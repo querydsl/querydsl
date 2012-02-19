@@ -53,11 +53,14 @@ public final class Property implements Comparable<Property> {
         this(declaringType, name, type, inits, false);
     }
 
-    public Property(EntityType declaringType, String name, Type type, String[] inits, boolean inherited) {
-        this(declaringType, name, JavaSyntaxUtils.isReserved(name) ? (name + "$") : name, type, inits, inherited);
+    public Property(EntityType declaringType, String name, Type type, String[] inits, 
+            boolean inherited) {
+        this(declaringType, name, JavaSyntaxUtils.isReserved(name) ? (name + "$") : name, type, 
+                inits, inherited);
     }
 
-    public Property(EntityType declaringType, String name, String escapedName, Type type, String[] inits, boolean inherited) {
+    public Property(EntityType declaringType, String name, String escapedName, Type type, 
+            String[] inits, boolean inherited) {
         this.declaringType = declaringType;
         this.name = Assert.notNull(name,"name");
         this.escapedName = escapedName;

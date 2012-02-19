@@ -15,8 +15,10 @@ package com.mysema.query.jpa.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="inheritedproperties_")
 public class InheritedProperties extends Superclass {
     @Id
     long id;

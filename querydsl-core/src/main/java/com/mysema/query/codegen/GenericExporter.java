@@ -179,7 +179,8 @@ public class GenericExporter {
 
     }
 
-    private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes, Set<EntityType> handled) {
+    private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes, 
+            Set<EntityType> handled) {
         if (handled.add(model)) {
             for (Supertype supertype : model.getSuperTypes()) {
                 EntityType entityType = superTypes.get(supertype.getType().getFullName());
@@ -279,7 +280,8 @@ public class GenericExporter {
         }        
     }
 
-    private Type getPropertyType(Class<?> cl, AnnotatedElement annotated, Class<?> type, java.lang.reflect.Type genericType) {
+    private Type getPropertyType(Class<?> cl, AnnotatedElement annotated, Class<?> type, 
+            java.lang.reflect.Type genericType) {
         Type propertyType = allTypes.get(ClassUtils.getFullName(type));
         if (propertyType == null && annotated.isAnnotationPresent(embeddedAnnotation)) {
             Class<?> embeddableType = type;
@@ -304,7 +306,8 @@ public class GenericExporter {
     }
 
     @Nullable
-    private Property createProperty(EntityType entityType, String propertyName, Type propertyType, AnnotatedElement annotated) {
+    private Property createProperty(EntityType entityType, String propertyName, Type propertyType, 
+            AnnotatedElement annotated) {
         String[] inits = new String[0];
         if (annotated.isAnnotationPresent(skipAnnotation)) {
             return null;
@@ -356,7 +359,8 @@ public class GenericExporter {
         }
     }
 
-    private void write(Serializer serializer, String path, SerializerConfig serializerConfig, EntityType type) throws IOException {
+    private void write(Serializer serializer, String path, SerializerConfig serializerConfig, 
+            EntityType type) throws IOException {
         File targetFile = new File(targetFolder, path);
         Writer w = writerFor(targetFile);
         try {

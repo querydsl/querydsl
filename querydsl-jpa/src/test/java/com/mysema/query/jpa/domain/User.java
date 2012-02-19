@@ -22,7 +22,7 @@ import javax.persistence.Table;
  * The Class User.
  */
 @Entity
-@Table(name="USER_")
+@Table(name="user_")
 public class User {
     @ManyToOne
     Company company;

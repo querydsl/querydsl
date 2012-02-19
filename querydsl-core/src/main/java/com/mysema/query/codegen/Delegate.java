@@ -40,7 +40,8 @@ public class Delegate {
 
     private final Type returnType;
 
-    public Delegate(Type declaringType, Type delegateType, String name, List<Parameter> params, Type returnType) {
+    public Delegate(Type declaringType, Type delegateType, String name, List<Parameter> params, 
+            Type returnType) {
         this.declaringType = Assert.notNull(declaringType,"declaringType");
         this.delegateType = Assert.notNull(delegateType,"delegateType");
         this.name = Assert.notNull(name,"name");

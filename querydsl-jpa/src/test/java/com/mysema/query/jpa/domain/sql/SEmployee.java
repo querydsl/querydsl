@@ -1,37 +1,22 @@
-/*
- * Copyright 2011, Mysema Ltd
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.PathMetadataFactory.*;
 
-import com.mysema.query.sql.ForeignKey;
-import com.mysema.query.sql.PrimaryKey;
-import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.*;
+
+import javax.annotation.Generated;
 
 
 /**
  * SEmployee is a Querydsl query type for SEmployee
  */
-public class SEmployee extends RelationalPathBase<SEmployee> {
+@Generated("com.mysema.query.sql.MetaDataSerializer")
+public class SEmployee extends com.mysema.query.sql.RelationalPathBase<SEmployee> {
 
-    private static final long serialVersionUID = -2043969801;
+    private static final long serialVersionUID = 1816002207;
 
-    public static final SEmployee employee = new SEmployee("EMPLOYEE");
+    public static final SEmployee employee = new SEmployee("EMPLOYEE_");
 
     public final NumberPath<Integer> companyId = createNumber("COMPANY_ID", Integer.class);
 
@@ -41,22 +26,28 @@ public class SEmployee extends RelationalPathBase<SEmployee> {
 
     public final StringPath lastname = createString("LASTNAME");
 
-    public final PrimaryKey<SEmployee> sql100819184433200 = createPrimaryKey(id);
+    public final NumberPath<Long> userId = createNumber("USER_ID", Long.class);
 
-    public final ForeignKey<SCompany> fk4afd4ace555fdbf0 = new ForeignKey<SCompany>(this, companyId, "ID");
+    public final com.mysema.query.sql.PrimaryKey<SEmployee> sql120219232324010 = createPrimaryKey(id);
 
-    public final ForeignKey<SCompany> _fk9bdfd45d8e79ac65 = new ForeignKey<SCompany>(this, id, "CEO_ID");
+    public final com.mysema.query.sql.ForeignKey<SCompany> fk9d39ef71dc953998 = createForeignKey(companyId, "ID");
+
+    public final com.mysema.query.sql.ForeignKey<SUser> fk9d39ef712743b59c = createForeignKey(userId, "ID");
+
+    public final com.mysema.query.sql.ForeignKey<SCompany> _fkdc405382edf003bd = createInvForeignKey(id, "CEO_ID");
+
+    public final com.mysema.query.sql.ForeignKey<SEmployeeJobfunctions> _fk49690e2f75b8f5bc = createInvForeignKey(id, "EMPLOYEE_ID");
 
     public SEmployee(String variable) {
-        super(SEmployee.class, forVariable(variable), null, "EMPLOYEE");
+        super(SEmployee.class, forVariable(variable), "APP", "EMPLOYEE_");
     }
 
-    public SEmployee(BeanPath<? extends SEmployee> entity) {
-        super(entity.getType(), entity.getMetadata(), null, "EMPLOYEE");
+    public SEmployee(Path<? extends SEmployee> entity) {
+        super(entity.getType(), entity.getMetadata(), "APP", "EMPLOYEE_");
     }
 
     public SEmployee(PathMetadata<?> metadata) {
-        super(SEmployee.class, metadata, null, "EMPLOYEE");
+        super(SEmployee.class, metadata, "APP", "EMPLOYEE_");
     }
 
 }

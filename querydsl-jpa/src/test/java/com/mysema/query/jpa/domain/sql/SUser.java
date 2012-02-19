@@ -1,36 +1,20 @@
-/*
- * Copyright 2011, Mysema Ltd
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.PathMetadataFactory.*;
 
-import com.mysema.query.sql.ForeignKey;
-import com.mysema.query.sql.PrimaryKey;
-import com.mysema.query.sql.RelationalPath;
-import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.*;
+
+import javax.annotation.Generated;
 
 
 /**
  * SUser is a Querydsl query type for SUser
  */
-public class SUser extends RelationalPathBase<SUser> implements RelationalPath<SUser> {
+@Generated("com.mysema.query.sql.MetaDataSerializer")
+public class SUser extends com.mysema.query.sql.RelationalPathBase<SUser> {
 
-    private static final long serialVersionUID = 501289108;
+    private static final long serialVersionUID = -1388993476;
 
     public static final SUser user = new SUser("USER_");
 
@@ -44,20 +28,22 @@ public class SUser extends RelationalPathBase<SUser> implements RelationalPath<S
 
     public final StringPath username = createString("USERNAME");
 
-    public final PrimaryKey<SUser> sql100819184439940 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SUser> sql120219232331040 = createPrimaryKey(id);
 
-    public final ForeignKey<SCompany> fk4d495f4555fdbf0 = this.<SCompany>createForeignKey(companyId, "ID");
+    public final com.mysema.query.sql.ForeignKey<SCompany> fk6a68df4dc953998 = createForeignKey(companyId, "ID");
+
+    public final com.mysema.query.sql.ForeignKey<SEmployee> _fk9d39ef712743b59c = createInvForeignKey(id, "USER_ID");
 
     public SUser(String variable) {
-        super(SUser.class, forVariable(variable), null, "USER");
+        super(SUser.class, forVariable(variable), "APP", "USER_");
     }
 
-    public SUser(BeanPath<? extends SUser> entity) {
-        super(entity.getType(), entity.getMetadata(), null, "USER");
+    public SUser(Path<? extends SUser> entity) {
+        super(entity.getType(), entity.getMetadata(), "APP", "USER_");
     }
 
     public SUser(PathMetadata<?> metadata) {
-        super(SUser.class, metadata, null, "USER");
+        super(SUser.class, metadata, "APP", "USER_");
     }
 
 }

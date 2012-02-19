@@ -1,59 +1,44 @@
-/*
- * Copyright 2011, Mysema Ltd
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.PathMetadataFactory.*;
 
-import com.mysema.query.sql.ForeignKey;
-import com.mysema.query.sql.PrimaryKey;
-import com.mysema.query.sql.RelationalPath;
-import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.*;
+
+import javax.annotation.Generated;
 
 
 /**
  * SNationality is a Querydsl query type for SNationality
  */
-public class SNationality extends RelationalPathBase<SNationality> implements RelationalPath<SNationality> {
+@Generated("com.mysema.query.sql.MetaDataSerializer")
+public class SNationality extends com.mysema.query.sql.RelationalPathBase<SNationality> {
 
-    private static final long serialVersionUID = 1320834259;
+    private static final long serialVersionUID = 292541483;
 
-    public static final SNationality nationality = new SNationality("NATIONALITY");
+    public static final SNationality nationality = new SNationality("NATIONALITY_");
 
     public final NumberPath<Integer> calendarId = createNumber("CALENDAR_ID", Integer.class);
 
     public final NumberPath<Long> id = createNumber("ID", Long.class);
 
-    public final PrimaryKey<SNationality> sql100819184436080 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SNationality> sql120219232327010 = createPrimaryKey(id);
 
-    public final ForeignKey<SCalendar> fk68f2659ca61b9464 = new ForeignKey<SCalendar>(this, calendarId, "ID");
+    public final com.mysema.query.sql.ForeignKey<SCalendar> fkab8efa23591ebbc = createForeignKey(calendarId, "ID");
 
-    public final ForeignKey<SPerson> _fk8e488775e9d94490 = new ForeignKey<SPerson>(this, id, "NATIONALITY_ID");
+    public final com.mysema.query.sql.ForeignKey<SPerson> _fkd78fcfaaf6578e38 = createInvForeignKey(id, "NATIONALITY_ID");
 
     public SNationality(String variable) {
-        super(SNationality.class, forVariable(variable), null, "NATIONALITY");
+        super(SNationality.class, forVariable(variable), "APP", "NATIONALITY_");
     }
 
-    public SNationality(BeanPath<? extends SNationality> entity) {
-        super(entity.getType(), entity.getMetadata(), null, "NATIONALITY");
+    public SNationality(Path<? extends SNationality> entity) {
+        super(entity.getType(), entity.getMetadata(), "APP", "NATIONALITY_");
     }
 
     public SNationality(PathMetadata<?> metadata) {
-        super(SNationality.class, metadata, null, "NATIONALITY");
+        super(SNationality.class, metadata, "APP", "NATIONALITY_");
     }
-    
+
 }
 

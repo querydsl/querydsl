@@ -19,6 +19,7 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -26,6 +27,7 @@ import javax.persistence.TemporalType;
  * The Class Catalog.
  */
 @Entity
+@Table(name="catalog_")
 public class Catalog {
     @Temporal(TemporalType.DATE)
     Date effectiveDate;

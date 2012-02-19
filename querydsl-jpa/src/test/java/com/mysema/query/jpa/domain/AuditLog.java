@@ -16,11 +16,13 @@ package com.mysema.query.jpa.domain;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  * The Class AuditLog.
  */
 @Entity
+@Table(name="auditlog_")
 public class AuditLog {
     @Id
     int id;

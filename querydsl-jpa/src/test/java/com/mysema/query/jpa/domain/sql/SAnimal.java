@@ -1,46 +1,26 @@
-/*
- * Copyright 2011, Mysema Ltd
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.PathMetadataFactory.*;
 
-import java.util.Date;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.*;
 
-import com.mysema.query.sql.ForeignKey;
-import com.mysema.query.sql.PrimaryKey;
-import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.DatePath;
-import com.mysema.query.types.path.DateTimePath;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.path.TimePath;
+import javax.annotation.Generated;
 
 
 /**
  * SAnimal is a Querydsl query type for SAnimal
  */
-public class SAnimal extends RelationalPathBase<SAnimal> {
+@Generated("com.mysema.query.sql.MetaDataSerializer")
+public class SAnimal extends com.mysema.query.sql.RelationalPathBase<SAnimal> {
 
-    private static final long serialVersionUID = 125412485;
+    private static final long serialVersionUID = 335015469;
 
-    public static final SAnimal animal = new SAnimal("ANIMAL");
+    public static final SAnimal animal = new SAnimal("ANIMAL_");
 
     public final NumberPath<Short> alive = createNumber("ALIVE", Short.class);
 
-    public final DateTimePath<Date> birthdate = createDateTime("BIRTHDATE", Date.class);
+    public final DateTimePath<java.sql.Timestamp> birthdate = createDateTime("BIRTHDATE", java.sql.Timestamp.class);
 
     public final NumberPath<Double> bodyweight = createNumber("BODYWEIGHT", Double.class);
 
@@ -66,30 +46,30 @@ public class SAnimal extends RelationalPathBase<SAnimal> {
 
     public final NumberPath<Integer> weight = createNumber("WEIGHT", Integer.class);
 
-    public final PrimaryKey<SAnimal> sql100819184430090 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SAnimal> sql120219232319450 = createPrimaryKey(id);
 
-    public final ForeignKey<SAnimal> fk752a7a1c920d02c1 = new ForeignKey<SAnimal>(this, mateId, "ID");
+    public final com.mysema.query.sql.ForeignKey<SAnimal> fkccec31e312a37469 = createForeignKey(mateId, "ID");
 
-    public final ForeignKey<SKittens> _fkd60087cca295046a = new ForeignKey<SKittens>(this, id, "ANIMAL_ID");
+    public final com.mysema.query.sql.ForeignKey<SKittensSet> _fk4fccad6f913d64b8 = createInvForeignKey(id, "KITTENSSET_ID");
 
-    public final ForeignKey<SKittensSet> _fk4fccad6fa295046a = new ForeignKey<SKittensSet>(this, id, "ANIMAL_ID");
+    public final com.mysema.query.sql.ForeignKey<SAnimal> _fkccec31e312a37469 = createInvForeignKey(id, "MATE_ID");
 
-    public final ForeignKey<SKittensSet> _fk4fccad6f10a6f310 = new ForeignKey<SKittensSet>(this, id, "KITTENSSET_ID");
+    public final com.mysema.query.sql.ForeignKey<SKittens> _fkd60087ccf2c6f4cb = createInvForeignKey(id, "ANIMAL__ID");
 
-    public final ForeignKey<SAnimal> _fk752a7a1c920d02c1 = new ForeignKey<SAnimal>(this, id, "MATE_ID");
+    public final com.mysema.query.sql.ForeignKey<SKittens> _fkd60087cc88406a42 = createInvForeignKey(id, "KITTENS_ID");
 
-    public final ForeignKey<SKittens> _fkd60087cc7a9f89a = new ForeignKey<SKittens>(this, id, "KITTENS_ID");
+    public final com.mysema.query.sql.ForeignKey<SKittensSet> _fk4fccad6ff2c6f4cb = createInvForeignKey(id, "ANIMAL__ID");
 
     public SAnimal(String variable) {
-        super(SAnimal.class, forVariable(variable), null, "ANIMAL");
+        super(SAnimal.class, forVariable(variable), "APP", "ANIMAL_");
     }
 
-    public SAnimal(BeanPath<? extends SAnimal> entity) {
-        super(entity.getType(), entity.getMetadata(), null, "ANIMAL");
+    public SAnimal(Path<? extends SAnimal> entity) {
+        super(entity.getType(), entity.getMetadata(), "APP", "ANIMAL_");
     }
 
     public SAnimal(PathMetadata<?> metadata) {
-        super(SAnimal.class, metadata, null, "ANIMAL");
+        super(SAnimal.class, metadata, "APP", "ANIMAL_");
     }
 
 }

@@ -1,37 +1,22 @@
-/*
- * Copyright 2011, Mysema Ltd
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.PathMetadataFactory.*;
 
-import com.mysema.query.sql.ForeignKey;
-import com.mysema.query.sql.PrimaryKey;
-import com.mysema.query.sql.RelationalPath;
-import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.*;
+
+import javax.annotation.Generated;
 
 
 /**
  * SPrice is a Querydsl query type for SPrice
  */
-public class SPrice extends RelationalPathBase<SPrice> implements RelationalPath<SPrice> {
+@Generated("com.mysema.query.sql.MetaDataSerializer")
+public class SPrice extends com.mysema.query.sql.RelationalPathBase<SPrice> {
 
-    private static final long serialVersionUID = -1644550752;
+    private static final long serialVersionUID = -113768712;
 
-    public static final SPrice price = new SPrice("PRICE");
+    public static final SPrice price = new SPrice("PRICE_");
 
     public final NumberPath<Long> amount = createNumber("AMOUNT", Long.class);
 
@@ -39,22 +24,22 @@ public class SPrice extends RelationalPathBase<SPrice> implements RelationalPath
 
     public final NumberPath<Long> productId = createNumber("PRODUCT_ID", Long.class);
 
-    public final PrimaryKey<SPrice> sql100819184437800 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SPrice> sql120219232328930 = createPrimaryKey(id);
 
-    public final ForeignKey<SItem> fk49cc129a549aeb0 = new ForeignKey<SItem>(this, productId, "ID");
+    public final com.mysema.query.sql.ForeignKey<SItem> fkc59678362c7f0c58 = createForeignKey(productId, "ID");
 
-    public final ForeignKey<SCatalogPrice> _fke4eb7d639d62434f = new ForeignKey<SCatalogPrice>(this, id, "PRICES_ID");
+    public final com.mysema.query.sql.ForeignKey<SCatalog_price> _fkaa04532f5222eaf7 = createInvForeignKey(id, "PRICES_ID");
 
     public SPrice(String variable) {
-        super(SPrice.class, forVariable(variable), null, "PRICE");
+        super(SPrice.class, forVariable(variable), "APP", "PRICE_");
     }
 
-    public SPrice(BeanPath<? extends SPrice> entity) {
-        super(entity.getType(), entity.getMetadata(), null, "PRICE");
+    public SPrice(Path<? extends SPrice> entity) {
+        super(entity.getType(), entity.getMetadata(), "APP", "PRICE_");
     }
 
     public SPrice(PathMetadata<?> metadata) {
-        super(SPrice.class, metadata, null, "PRICE");
+        super(SPrice.class, metadata, "APP", "PRICE_");
     }
 
 }

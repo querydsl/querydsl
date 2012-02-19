@@ -15,6 +15,7 @@ package com.mysema.query.jpa.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -24,6 +25,7 @@ import org.hibernate.annotations.Type;
  * The Class Animal.
  */
 @Entity
+@Table(name="animal_")
 public class Animal {
     private boolean alive;
 

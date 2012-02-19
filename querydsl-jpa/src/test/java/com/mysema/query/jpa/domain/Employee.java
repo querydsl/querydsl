@@ -25,11 +25,13 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  * The Class Employee.
  */
 @Entity
+@Table(name="employee_")
 public class Employee {
     @ManyToOne
     public Company company;

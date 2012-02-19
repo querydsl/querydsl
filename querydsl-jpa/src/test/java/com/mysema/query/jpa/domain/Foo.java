@@ -20,6 +20,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -27,6 +28,7 @@ import javax.persistence.TemporalType;
  * The Class Foo.
  */
 @Entity
+@Table(name="foo_")
 public class Foo {
     public String bar;
 

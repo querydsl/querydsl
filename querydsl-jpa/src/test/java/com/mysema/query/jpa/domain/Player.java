@@ -18,11 +18,13 @@ import java.util.List;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * The Class Player.
  */
 @Entity
+@Table(name="player_")
 public class Player {
     @Id
     long id;

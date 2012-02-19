@@ -17,6 +17,7 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -24,6 +25,7 @@ import javax.persistence.TemporalType;
  * The Class Document.
  */
 @Entity
+@Table(name="document_")
 public class Document {
     @Id
     int id;

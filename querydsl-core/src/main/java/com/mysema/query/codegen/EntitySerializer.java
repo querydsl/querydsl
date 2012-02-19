@@ -144,7 +144,8 @@ public class EntitySerializer implements Serializer{
             if (stringOrBoolean) {
                 writer.line("super(metadata);");
             } else {
-                writer.line("super(", localName.equals(genericName) ? EMPTY : "(Class)", localName, ".class, metadata" + additionalParams + ");");
+                writer.line("super(", localName.equals(genericName) ? EMPTY : "(Class)", 
+                        localName, ".class, metadata" + additionalParams + ");");
             }
             writer.end();
         }
@@ -155,7 +156,8 @@ public class EntitySerializer implements Serializer{
                 writer.suppressWarnings(UNCHECKED);
             }
             writer.beginConstructor(PATH_METADATA, PATH_INITS);
-            writer.line(thisOrSuper, "(", localName.equals(genericName) ? EMPTY : "(Class)", localName, ".class, metadata, inits" + additionalParams+ ");");
+            writer.line(thisOrSuper, "(", localName.equals(genericName) ? EMPTY : "(Class)", 
+                    localName, ".class, metadata, inits" + additionalParams+ ");");
             writer.end();
         }
 
@@ -196,7 +198,8 @@ public class EntitySerializer implements Serializer{
             writer.line(thisOrSuper,"(forVariable(variable)",additionalParams,");");   
         } else {
             writer.line(thisOrSuper,"(", localName.equals(genericName) ? EMPTY : "(Class)",
-                    localName, ".class, forVariable(variable)", hasEntityFields ? ", INITS" : EMPTY,additionalParams,");");    
+                    localName, ".class, forVariable(variable)", hasEntityFields ? ", INITS" : EMPTY,
+                            additionalParams,");");    
         }        
         writer.end();
     }
@@ -211,7 +214,8 @@ public class EntitySerializer implements Serializer{
         writer.end();
     }
 
-    protected void entityField(EntityType model, Property field, SerializerConfig config, CodeWriter writer) throws IOException {
+    protected void entityField(EntityType model, Property field, SerializerConfig config, 
+            CodeWriter writer) throws IOException {
         Type queryType = typeMappings.getPathType(field.getType(), model, false);
         if (field.isInherited()) {
             writer.line("// inherited");
@@ -234,7 +238,8 @@ public class EntitySerializer implements Serializer{
         return false;
     }
 
-    protected void initEntityFields(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
+    protected void initEntityFields(CodeWriter writer, SerializerConfig config, 
+            EntityType model) throws IOException {
         Supertype superType = model.getSuperType();
         if (superType != null && superType.getEntityType() == null) {
             throw new IllegalStateException("No entity type for " + superType.getType().getFullName());
@@ -254,7 +259,8 @@ public class EntitySerializer implements Serializer{
         }
     }
 
-    protected void initEntityField(CodeWriter writer, SerializerConfig config, EntityType model, Property field) throws IOException {
+    protected void initEntityField(CodeWriter writer, SerializerConfig config, EntityType model, 
+            Property field) throws IOException {
         Type queryType = typeMappings.getPathType(field.getType(), model, false);
         if (!field.isInherited()) {
             boolean hasEntityFields = field.getType() instanceof EntityType && ((EntityType)field.getType()).hasEntityFields();
@@ -268,7 +274,8 @@ public class EntitySerializer implements Serializer{
         }
     }
 
-    protected void intro(EntityType model, SerializerConfig config, CodeWriter writer) throws IOException {
+    protected void intro(EntityType model, SerializerConfig config, 
+            CodeWriter writer) throws IOException {
         introPackage(writer, model);
         introImports(writer, config, model);
         
@@ -352,7 +359,8 @@ public class EntitySerializer implements Serializer{
             writer.beginStaticMethod(returnType, "create", c.getParameters(), new Transformer<Parameter, Parameter>() {
                 @Override
                 public Parameter transform(Parameter p) {
-                    return new Parameter(p.getName(), typeMappings.getExprType(p.getType(), model, false, false, true));
+                    return new Parameter(p.getName(), typeMappings.getExprType(
+                            p.getType(), model, false, false, true));
                 }
             });
 
@@ -389,7 +397,8 @@ public class EntitySerializer implements Serializer{
         }
     }
 
-    protected void introImports(CodeWriter writer, SerializerConfig config, EntityType model) throws IOException {
+    protected void introImports(CodeWriter writer, SerializerConfig config, 
+            EntityType model) throws IOException {
         writer.staticimports(PathMetadataFactory.class);
 
         // import package of query type
@@ -425,12 +434,14 @@ public class EntitySerializer implements Serializer{
             boolean importExprPackage = false;
             for (Constructor c : model.getConstructors()) {
                 for (Parameter cp : c.getParameters()) {
-                    importExprPackage |= cp.getType().getPackageName().equals(ComparableExpression.class.getPackage().getName());
+                    importExprPackage |= cp.getType().getPackageName()
+                            .equals(ComparableExpression.class.getPackage().getName());
                 }
             }
             for (Delegate d : model.getDelegates()) {
                 for (Parameter dp : d.getParameters()) {
-                    importExprPackage |= dp.getType().getPackageName().equals(ComparableExpression.class.getPackage().getName());
+                    importExprPackage |= dp.getType().getPackageName()
+                            .equals(ComparableExpression.class.getPackage().getName());
                 }
             }
             return importExprPackage;
@@ -474,7 +485,8 @@ public class EntitySerializer implements Serializer{
 
     protected void introJavadoc(CodeWriter writer, EntityType model) throws IOException {
         Type queryType = typeMappings.getPathType(model, model, true);
-        writer.javadoc(queryType.getSimpleName() + " is a Querydsl query type for " + model.getSimpleName());
+        writer.javadoc(queryType.getSimpleName() + " is a Querydsl query type for " + 
+        model.getSimpleName());
     }
 
     protected void introPackage(CodeWriter writer, EntityType model) throws IOException {
@@ -516,7 +528,8 @@ public class EntitySerializer implements Serializer{
         writer.line(RETURN + escapedName + ".get(key);").end();
     }
 
-    private void delegate(final EntityType model, Delegate delegate, SerializerConfig config, CodeWriter writer) throws IOException {
+    private void delegate(final EntityType model, Delegate delegate, SerializerConfig config, 
+            CodeWriter writer) throws IOException {
         Parameter[] params = delegate.getParameters().toArray(new Parameter[delegate.getParameters().size()]);
         writer.beginPublicMethod(delegate.getReturnType(), delegate.getName(), params);
 
@@ -547,7 +560,8 @@ public class EntitySerializer implements Serializer{
         writer.end();
     }
 
-    public void serialize(EntityType model, SerializerConfig config, CodeWriter writer) throws IOException{
+    public void serialize(EntityType model, SerializerConfig config, 
+            CodeWriter writer) throws IOException{
         intro(model, config, writer);
 
         // properties
@@ -575,7 +589,8 @@ public class EntitySerializer implements Serializer{
         outro(model, writer);
     }
 
-    protected void serialize(EntityType model, Property field, Type type, CodeWriter writer, String factoryMethod, String... args) throws IOException {
+    protected void serialize(EntityType model, Property field, Type type, CodeWriter writer, 
+            String factoryMethod, String... args) throws IOException {
         Supertype superType = model.getSuperType();
         // construct value
         StringBuilder value = new StringBuilder();
@@ -602,7 +617,8 @@ public class EntitySerializer implements Serializer{
         }
     }
 
-    private void customField(EntityType model, Property field, SerializerConfig config, CodeWriter writer) throws IOException {
+    private void customField(EntityType model, Property field, SerializerConfig config, 
+            CodeWriter writer) throws IOException {
         Type queryType = typeMappings.getPathType(field.getType(), model, false);
         writer.line("// custom");
         if (field.isInherited()) {
@@ -619,7 +635,8 @@ public class EntitySerializer implements Serializer{
         }
     }
 
-    protected void serializeProperties(EntityType model,  SerializerConfig config, CodeWriter writer) throws IOException {
+    protected void serializeProperties(EntityType model,  SerializerConfig config, 
+            CodeWriter writer) throws IOException {
         for (Property property : model.getProperties()) {
             // FIXME : the custom types should have the custom type category
             if (typeMappings.isRegistered(property.getType())
@@ -677,7 +694,8 @@ public class EntitySerializer implements Serializer{
                 break;
 
             case ARRAY:
-                serialize(model, property, new ClassType(ArrayPath.class, property.getType().getComponentType()), writer, "createArray", localRawName + DOT_CLASS);
+                serialize(model, property, new ClassType(ArrayPath.class, property.getType().getComponentType()), 
+                        writer, "createArray", localRawName + DOT_CLASS);
                 break;
 
             case COLLECTION:

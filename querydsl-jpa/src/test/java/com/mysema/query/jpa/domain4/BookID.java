@@ -16,12 +16,8 @@ package com.mysema.query.jpa.domain4;
 import javax.persistence.*;
 import java.io.Serializable;
 
-/**
- * Created by IntelliJ IDEA. User: nardonep Date: 09/06/11 Time: 13:36 To change
- * this template use File | Settings | File Templates.
- */
 @Entity
-@Table(name = "BookID")
+@Table(name = "bookid_")
 public class BookID implements Serializable {
 
     private static final long serialVersionUID = -3205025118656391776L;

@@ -19,6 +19,7 @@ import java.util.Map;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -29,6 +30,7 @@ import javax.persistence.TemporalType;
  */
 @SuppressWarnings("serial")
 @Entity
+@Table(name="calendar_")
 public class Calendar implements Serializable{
     @ElementCollection
     @Temporal(TemporalType.DATE)

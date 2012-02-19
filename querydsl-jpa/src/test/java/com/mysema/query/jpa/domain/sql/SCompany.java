@@ -1,37 +1,22 @@
-/*
- * Copyright 2011, Mysema Ltd
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.PathMetadataFactory.*;
 
-import com.mysema.query.sql.ForeignKey;
-import com.mysema.query.sql.PrimaryKey;
-import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.*;
+
+import javax.annotation.Generated;
 
 
 /**
  * SCompany is a Querydsl query type for SCompany
  */
-public class SCompany extends RelationalPathBase<SCompany> {
+@Generated("com.mysema.query.sql.MetaDataSerializer")
+public class SCompany extends com.mysema.query.sql.RelationalPathBase<SCompany> {
 
-    private static final long serialVersionUID = 1400239892;
+    private static final long serialVersionUID = -692002196;
 
-    public static final SCompany company = new SCompany("COMPANY");
+    public static final SCompany company = new SCompany("COMPANY_");
 
     public final NumberPath<Integer> ceoId = createNumber("CEO_ID", Integer.class);
 
@@ -39,28 +24,27 @@ public class SCompany extends RelationalPathBase<SCompany> {
 
     public final StringPath name = createString("NAME");
 
-    public final PrimaryKey<SCompany> sql100819184432220 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SCompany> sql120219232322520 = createPrimaryKey(id);
 
-    public final ForeignKey<SEmployee> fk9bdfd45d8e79ac65 = new ForeignKey<SEmployee>(this, ceoId, "ID");
+    public final com.mysema.query.sql.ForeignKey<SEmployee> fkdc405382edf003bd = createForeignKey(ceoId, "ID");
 
-    public final ForeignKey<SDepartment> _fka9601f72555fdbf0 = new ForeignKey<SDepartment>(this, id, "COMPANY_ID");
+    public final com.mysema.query.sql.ForeignKey<SEmployee> _fk9d39ef71dc953998 = createInvForeignKey(id, "COMPANY_ID");
 
-    public final ForeignKey<SUser> _fk4d495f4555fdbf0 = new ForeignKey<SUser>(this, id, "COMPANY_ID");
+    public final com.mysema.query.sql.ForeignKey<SUser> _fk6a68df4dc953998 = createInvForeignKey(id, "COMPANY_ID");
 
-    public final ForeignKey<SEmployee> _fk4afd4ace555fdbf0 = new ForeignKey<SEmployee>(this, id, "COMPANY_ID");
+    public final com.mysema.query.sql.ForeignKey<SDepartment> _fk1f3a274ddc953998 = createInvForeignKey(id, "COMPANY_ID");
 
     public SCompany(String variable) {
-        super(SCompany.class, forVariable(variable), null, "COMPANY");
+        super(SCompany.class, forVariable(variable), "APP", "COMPANY_");
     }
 
-    public SCompany(BeanPath<? extends SCompany> entity) {
-        super(entity.getType(), entity.getMetadata(), null, "COMPANY");
+    public SCompany(Path<? extends SCompany> entity) {
+        super(entity.getType(), entity.getMetadata(), "APP", "COMPANY_");
     }
 
     public SCompany(PathMetadata<?> metadata) {
-        super(SCompany.class, metadata, null, "COMPANY");
+        super(SCompany.class, metadata, "APP", "COMPANY_");
     }
-
 
 }
 

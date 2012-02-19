@@ -76,7 +76,8 @@ public final class ProjectionSerializer implements Serializer{
     }
 
     @Override
-    public void serialize(final EntityType model, SerializerConfig serializerConfig, CodeWriter writer) throws IOException{
+    public void serialize(final EntityType model, SerializerConfig serializerConfig, 
+            CodeWriter writer) throws IOException{
         // intro
         intro(model, writer);
 
@@ -87,7 +88,8 @@ public final class ProjectionSerializer implements Serializer{
             writer.beginConstructor(c.getParameters(), new Transformer<Parameter,Parameter>() {
                 @Override
                 public Parameter transform(Parameter p) {
-                    return new Parameter(p.getName(), typeMappings.getExprType(p.getType(), model, false, false, true));
+                    return new Parameter(p.getName(), typeMappings.getExprType(p.getType(), 
+                            model, false, false, true));
                 }
             });
 

@@ -15,11 +15,13 @@ package com.mysema.query.jpa.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * The Class Status.
  */
 @Entity
+@Table(name="status_")
 public class Status {
     @Id
     long id;

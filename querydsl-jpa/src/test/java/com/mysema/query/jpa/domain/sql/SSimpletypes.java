@@ -1,42 +1,22 @@
-/*
- * Copyright 2011, Mysema Ltd
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.PathMetadataFactory.*;
 
-import java.util.Date;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.*;
 
-import com.mysema.query.sql.PrimaryKey;
-import com.mysema.query.sql.RelationalPath;
-import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.DatePath;
-import com.mysema.query.types.path.DateTimePath;
-import com.mysema.query.types.path.NumberPath;
-import com.mysema.query.types.path.StringPath;
-import com.mysema.query.types.path.TimePath;
+import javax.annotation.Generated;
 
 
 /**
  * SSimpletypes is a Querydsl query type for SSimpletypes
  */
-public class SSimpletypes extends RelationalPathBase<SSimpletypes> implements RelationalPath<SSimpletypes> {
+@Generated("com.mysema.query.sql.MetaDataSerializer")
+public class SSimpletypes extends com.mysema.query.sql.RelationalPathBase<SSimpletypes> {
 
-    private static final long serialVersionUID = -171311842;
+    private static final long serialVersionUID = -1199604618;
 
-    public static final SSimpletypes simpletypes = new SSimpletypes("SIMPLETYPES");
+    public static final SSimpletypes simpletypes = new SSimpletypes("SIMPLETYPES_");
 
     public final NumberPath<Short> bbyte = createNumber("BBYTE", Short.class);
 
@@ -74,20 +54,20 @@ public class SSimpletypes extends RelationalPathBase<SSimpletypes> implements Re
 
     public final TimePath<java.sql.Time> time = createTime("TIME", java.sql.Time.class);
 
-    public final DateTimePath<Date> timestamp = createDateTime("TIMESTAMP", Date.class);
+    public final DateTimePath<java.sql.Timestamp> timestamp = createDateTime("TIMESTAMP", java.sql.Timestamp.class);
 
-    public final PrimaryKey<SSimpletypes> sql100819184438610 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SSimpletypes> sql120219232329350 = createPrimaryKey(id);
 
     public SSimpletypes(String variable) {
-        super(SSimpletypes.class, forVariable(variable), null, "SIMPLETYPES");
+        super(SSimpletypes.class, forVariable(variable), "APP", "SIMPLETYPES_");
     }
 
-    public SSimpletypes(BeanPath<? extends SSimpletypes> entity) {
-        super(entity.getType(), entity.getMetadata(), null, "SIMPLETYPES");
+    public SSimpletypes(Path<? extends SSimpletypes> entity) {
+        super(entity.getType(), entity.getMetadata(), "APP", "SIMPLETYPES_");
     }
 
     public SSimpletypes(PathMetadata<?> metadata) {
-        super(SSimpletypes.class, metadata, null, "SIMPLETYPES");
+        super(SSimpletypes.class, metadata, "APP", "SIMPLETYPES_");
     }
 
 }

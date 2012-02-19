@@ -19,10 +19,12 @@ import java.util.Locale;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
+@Table(name="simpletypes_")
 public class SimpleTypes {
     transient int test;
     @Id

@@ -19,11 +19,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  * The Class Store.
  */
 @Entity
+@Table(name="store_")
 public class Store {
     @OneToMany
     List<Customer> customers;

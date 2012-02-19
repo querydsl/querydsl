@@ -15,6 +15,7 @@ package com.mysema.query.jpa.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -22,6 +23,7 @@ import javax.persistence.TemporalType;
  * The Class StatusChange.
  */
 @Entity
+@Table(name="statuschange_")
 public class StatusChange {
     @Id
     long id;

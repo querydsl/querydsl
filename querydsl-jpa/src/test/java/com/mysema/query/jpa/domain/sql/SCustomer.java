@@ -1,36 +1,22 @@
-/*
- * Copyright 2011, Mysema Ltd
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.forVariable;
+import static com.mysema.query.types.PathMetadataFactory.*;
 
-import com.mysema.query.sql.ForeignKey;
-import com.mysema.query.sql.PrimaryKey;
-import com.mysema.query.sql.RelationalPathBase;
-import com.mysema.query.types.PathMetadata;
-import com.mysema.query.types.path.BeanPath;
-import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.*;
+import com.mysema.query.types.path.*;
+
+import javax.annotation.Generated;
 
 
 /**
  * SCustomer is a Querydsl query type for SCustomer
  */
-public class SCustomer extends RelationalPathBase<SCustomer> {
+@Generated("com.mysema.query.sql.MetaDataSerializer")
+public class SCustomer extends com.mysema.query.sql.RelationalPathBase<SCustomer> {
 
-    private static final long serialVersionUID = 1663703079;
+    private static final long serialVersionUID = 1228707791;
 
-    public static final SCustomer customer = new SCustomer("CUSTOMER");
+    public static final SCustomer customer = new SCustomer("CUSTOMER_");
 
     public final NumberPath<Long> currentorderId = createNumber("CURRENTORDER_ID", Long.class);
 
@@ -38,26 +24,26 @@ public class SCustomer extends RelationalPathBase<SCustomer> {
 
     public final NumberPath<Long> nameId = createNumber("NAME_ID", Long.class);
 
-    public final PrimaryKey<SCustomer> sql100819184432460 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SCustomer> sql120219232322890 = createPrimaryKey(id);
 
-    public final ForeignKey<SOrder> fk27fbe3fee803b049 = new ForeignKey<SOrder>(this, currentorderId, "ID");
+    public final com.mysema.query.sql.ForeignKey<SName> fk600e7c4196a83d9c = createForeignKey(nameId, "ID");
 
-    public final ForeignKey<SName> fk27fbe3fe4707a44 = new ForeignKey<SName>(this, nameId, "ID");
+    public final com.mysema.query.sql.ForeignKey<SOrder> fk600e7c419cc457f1 = createForeignKey(currentorderId, "ID");
 
-    public final ForeignKey<SStoreCustomer> _fk808055bcf27d6c8d = new ForeignKey<SStoreCustomer>(this, id, "CUSTOMERS_ID");
+    public final com.mysema.query.sql.ForeignKey<SStore_customer> _fk82ba2ce051f3c3e5 = createInvForeignKey(id, "CUSTOMERS_ID");
 
-    public final ForeignKey<SOrder> _fk8b7256f15325d064 = new ForeignKey<SOrder>(this, id, "CUSTOMER_ID");
+    public final com.mysema.query.sql.ForeignKey<SOrder> _fkc3df62d1b29c27bc = createInvForeignKey(id, "CUSTOMER_ID");
 
     public SCustomer(String variable) {
-        super(SCustomer.class, forVariable(variable), null, "CUSTOMER");
+        super(SCustomer.class, forVariable(variable), "APP", "CUSTOMER_");
     }
 
-    public SCustomer(BeanPath<? extends SCustomer> entity) {
-        super(entity.getType(), entity.getMetadata(), null, "CUSTOMER");
+    public SCustomer(Path<? extends SCustomer> entity) {
+        super(entity.getType(), entity.getMetadata(), "APP", "CUSTOMER_");
     }
 
     public SCustomer(PathMetadata<?> metadata) {
-        super(SCustomer.class, metadata, null, "CUSTOMER");
+        super(SCustomer.class, metadata, "APP", "CUSTOMER_");
     }
 
 }

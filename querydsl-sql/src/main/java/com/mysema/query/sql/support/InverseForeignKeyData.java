@@ -57,6 +57,7 @@ public class InverseForeignKeyData implements KeyData{
         return name;
     }
     
+    @Nullable
     public String getSchema() {
         return schema;
     }

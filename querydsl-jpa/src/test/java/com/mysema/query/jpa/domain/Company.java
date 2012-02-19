@@ -19,6 +19,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.IndexColumn;
 
@@ -26,6 +27,7 @@ import org.hibernate.annotations.IndexColumn;
  * The Class Company.
  */
 @Entity
+@Table(name="company_")
 public class Company {
     @ManyToOne
     Employee ceo;
