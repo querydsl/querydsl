@@ -410,7 +410,14 @@ public final class Connections {
         		"NAME varchar(30 char)," +
         		"NAME2 varchar(30 char))");
         
-        stmt.execute("drop sequence survey_seq");        
+        try {
+            stmt.execute("drop sequence survey_seq");    
+        } catch(SQLException e) {
+            if (!e.getMessage().contains("sequence does not exist")){
+                throw e;
+            }
+        }
+                
         stmt.execute("create sequence survey_seq");        
         stmt.execute("create or replace trigger survey_trigger\n"+
           "before insert on survey\n"+
@@ -435,7 +442,6 @@ public final class Connections {
 
         // employee
         dropTable(templates, "EMPLOYEE");
-        //createEmployeeTable(templates);
         stmt.execute("create table EMPLOYEE ( " +
             "ID NUMBER(10,0), " +
             "FIRSTNAME VARCHAR2(50 CHAR), " +
