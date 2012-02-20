@@ -31,7 +31,7 @@ public class OracleStandardTest extends AbstractHibernateTest{
     
     @Override
     public void JoinEmbeddable() {
-        // for some reasonable not supported
+        // for some reason not supported
     }
 
 }
