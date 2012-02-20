@@ -342,7 +342,8 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             append(") > 0");
 
         // not exists    
-        } else if (operator.equals(Ops.NOT) && args.get(0) instanceof Operation && ((Operation)args.get(0)).getOperator().equals(Ops.EXISTS)) {    
+        } else if (operator.equals(Ops.NOT) && args.get(0) instanceof Operation 
+                && ((Operation)args.get(0)).getOperator().equals(Ops.EXISTS)) {    
             SubQueryExpression subQuery = (SubQueryExpression) ((Operation)args.get(0)).getArg(0);
             append("(");
             serialize(subQuery.getMetadata(), true, true);

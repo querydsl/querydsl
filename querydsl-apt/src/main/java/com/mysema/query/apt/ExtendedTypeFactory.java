@@ -280,7 +280,8 @@ public final class ExtendedTypeFactory {
         return env.getTypeUtils().erasure(env.getElementUtils().getTypeElement(clazz.getName()).asType());
     }
     
-    private Type createType(TypeElement typeElement, TypeCategory category, List<? extends TypeMirror> typeArgs, boolean deep) {
+    private Type createType(TypeElement typeElement, TypeCategory category, 
+            List<? extends TypeMirror> typeArgs, boolean deep) {
         String name = typeElement.getQualifiedName().toString();
         String simpleName = typeElement.getSimpleName().toString();
         String packageName = env.getElementUtils().getPackageOf(typeElement).getQualifiedName().toString();
@@ -376,7 +377,8 @@ public final class ExtendedTypeFactory {
 
         // entity type
         for (Class<? extends Annotation> entityAnn : entityAnnotations) {
-            if (typeElement.getAnnotation(entityAnn) != null || (superTypeElement != null && superTypeElement.getAnnotation(entityAnn) != null)){
+            if (typeElement.getAnnotation(entityAnn) != null || 
+                    (superTypeElement != null && superTypeElement.getAnnotation(entityAnn) != null)){
                 EntityType entityType = new EntityType(type);
                 typeMappings.register(entityType, queryTypeFactory.create(entityType));
                 return entityType;
@@ -410,7 +412,8 @@ public final class ExtendedTypeFactory {
         return new SimpleType(Types.MAP, keyType, valueType);
     }
 
-    private Type createCollectionType(Type baseType, String simpleName, Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
+    private Type createCollectionType(Type baseType, String simpleName, 
+            Iterator<? extends TypeMirror> typeMirrors, boolean deep) {
         if (!typeMirrors.hasNext()){
             return new SimpleType(baseType, defaultType);
         }

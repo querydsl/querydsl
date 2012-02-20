@@ -61,7 +61,8 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
             if (values.get(i) != null) {
                 metadata.addProjection(ExpressionUtils.eqConst(((Expression)paths.get(i)), values.get(i)));
             } else {
-                metadata.addProjection(ExpressionUtils.eq(((Expression)paths.get(i)), new NullExpression(paths.get(i).getType())));
+                metadata.addProjection(ExpressionUtils.eq(((Expression)paths.get(i)), 
+                        new NullExpression(paths.get(i).getType())));
             }
         }
         return this;

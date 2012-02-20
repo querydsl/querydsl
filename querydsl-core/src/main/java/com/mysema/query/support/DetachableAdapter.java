@@ -55,7 +55,8 @@ public class DetachableAdapter implements Detachable{
         return detachable;
     }
 
-    public ListSubQuery<Object[]> list(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public ListSubQuery<Object[]> list(Expression<?> first, Expression<?> second, 
+            Expression<?>... rest) {
         return detachable.list(first, second, rest);
     }
 

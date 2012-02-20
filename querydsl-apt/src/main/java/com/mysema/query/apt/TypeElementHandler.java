@@ -136,7 +136,8 @@ public final class TypeElementHandler {
         return entityType;
     }
     
-    private Property toProperty(EntityType entityType, String name, TypeMirror type, Annotations annotations) {
+    private Property toProperty(EntityType entityType, String name, TypeMirror type, 
+            Annotations annotations) {
         // type
         Type propertyType = typeFactory.getType(type, true);
         if (annotations.isAnnotationPresent(QueryType.class)) {

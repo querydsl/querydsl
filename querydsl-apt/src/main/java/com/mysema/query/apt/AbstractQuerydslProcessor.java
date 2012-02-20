@@ -522,7 +522,8 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
                 }
 
                 processingEnv.getMessager().printMessage(Kind.NOTE, "Generating " + className + " for " + elements);
-                JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(className, elements.toArray(new Element[elements.size()]));
+                JavaFileObject fileObject = processingEnv.getFiler().createSourceFile(className, 
+                        elements.toArray(new Element[elements.size()]));
                 Writer writer = fileObject.openWriter();
                 try {
                     SerializerConfig serializerConfig = conf.getSerializerConfig(model);

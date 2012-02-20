@@ -57,7 +57,8 @@ public final class HibernateUtil {
 
     private HibernateUtil() {}
 
-    public static void setConstants(Query query, Map<Object,String> constants, Map<ParamExpression<?>, Object> params) {
+    public static void setConstants(Query query, Map<Object,String> constants, 
+            Map<ParamExpression<?>, Object> params) {
         for (Map.Entry<Object, String> entry : constants.entrySet()) {
             String key = entry.getValue();
             Object val = entry.getKey();

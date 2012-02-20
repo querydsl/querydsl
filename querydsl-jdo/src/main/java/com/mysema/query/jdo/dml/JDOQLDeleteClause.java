@@ -49,7 +49,8 @@ public class JDOQLDeleteClause implements DeleteClause<JDOQLDeleteClause>{
         this(pm, entity, JDOQLTemplates.DEFAULT);
     }
 
-    public JDOQLDeleteClause(PersistenceManager persistenceManager, EntityPath<?> entity, JDOQLTemplates templates) {
+    public JDOQLDeleteClause(PersistenceManager persistenceManager, EntityPath<?> entity, 
+            JDOQLTemplates templates) {
         this.entity = entity;
         this.persistenceManager = persistenceManager;
         this.templates = templates;

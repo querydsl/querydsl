@@ -94,15 +94,18 @@ public class HibernateDomainExporter {
         this(namePrefix, "", targetFolder, SimpleSerializerConfig.DEFAULT, configuration);
     }
 
-    public HibernateDomainExporter(String namePrefix, String nameSuffix, File targetFolder, Configuration configuration) {
+    public HibernateDomainExporter(String namePrefix, String nameSuffix, File targetFolder,
+            Configuration configuration) {
         this(namePrefix, nameSuffix, targetFolder, SimpleSerializerConfig.DEFAULT, configuration);
     }
 
-    public HibernateDomainExporter(String namePrefix, File targetFolder, SerializerConfig serializerConfig, Configuration configuration) {
+    public HibernateDomainExporter(String namePrefix, File targetFolder, 
+            SerializerConfig serializerConfig, Configuration configuration) {
         this(namePrefix, "", targetFolder, serializerConfig, configuration);
     }
 
-    public HibernateDomainExporter(String namePrefix, String nameSuffix, File targetFolder, SerializerConfig serializerConfig, Configuration configuration) {
+    public HibernateDomainExporter(String namePrefix, String nameSuffix, File targetFolder, 
+            SerializerConfig serializerConfig, Configuration configuration) {
         this.targetFolder = targetFolder;
         this.serializerConfig = serializerConfig;
         this.configuration = configuration;
@@ -150,7 +153,8 @@ public class HibernateDomainExporter {
         serialize(entityTypes, entitySerializer);
     }
 
-    private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes, Set<EntityType> handled) {
+    private void addSupertypeFields(EntityType model, Map<String, EntityType> superTypes, 
+            Set<EntityType> handled) {
         if (handled.add(model)) {
             for (Supertype supertype : model.getSuperTypes()) {
                 EntityType entityType = superTypes.get(supertype.getType().getFullName());
@@ -164,7 +168,8 @@ public class HibernateDomainExporter {
     }
 
 
-    private void collectTypes() throws IOException, XMLStreamException, ClassNotFoundException, SecurityException, NoSuchMethodException {
+    private void collectTypes() throws IOException, XMLStreamException, ClassNotFoundException, 
+        SecurityException, NoSuchMethodException {
         // super classes
         Iterator<?> superClassMappings = configuration.getMappedSuperclassMappings();
         while (superClassMappings.hasNext()) {
@@ -197,7 +202,8 @@ public class HibernateDomainExporter {
         }
     }
 
-    private void handleProperty(EntityType entityType, Class<?> cl, org.hibernate.mapping.Property p) throws NoSuchMethodException, ClassNotFoundException {
+    private void handleProperty(EntityType entityType, Class<?> cl, org.hibernate.mapping.Property p) 
+            throws NoSuchMethodException, ClassNotFoundException {
         Type propertyType = getType(cl, p.getName());
         if (p.isComposite()) {
             Class<?> embeddedClass = Class.forName(propertyType.getFullName());
@@ -216,7 +222,8 @@ public class HibernateDomainExporter {
     }
 
     @Nullable
-    private Property createProperty(EntityType entityType, String propertyName, Type propertyType, AnnotatedElement annotated) {
+    private Property createProperty(EntityType entityType, String propertyName, Type propertyType, 
+            AnnotatedElement annotated) {
         String[] inits = new String[0];
         if (annotated.isAnnotationPresent(QueryInit.class)) {
             inits = annotated.getAnnotation(QueryInit.class).value();
@@ -267,7 +274,8 @@ public class HibernateDomainExporter {
             String getter = "get"+BeanUtils.capitalize(propertyName);
             String bgetter = "is"+BeanUtils.capitalize(propertyName);
             for (Method method : cl.getDeclaredMethods()) {
-                if ((method.getName().equals(getter) || method.getName().equals(bgetter)) && method.getParameterTypes().length == 0) {
+                if ((method.getName().equals(getter) || method.getName().equals(bgetter)) 
+                        && method.getParameterTypes().length == 0) {
                     return typeFactory.create(method.getReturnType(), method.getGenericReturnType());
                 }
             }
@@ -287,7 +295,8 @@ public class HibernateDomainExporter {
             String getter = "get"+BeanUtils.capitalize(propertyName);
             String bgetter = "is"+BeanUtils.capitalize(propertyName);
             for (Method method : cl.getDeclaredMethods()) {
-                if ((method.getName().equals(getter) || method.getName().equals(bgetter)) && method.getParameterTypes().length == 0) {
+                if ((method.getName().equals(getter) || method.getName().equals(bgetter)) 
+                        && method.getParameterTypes().length == 0) {
                     return method;
                 }
             }

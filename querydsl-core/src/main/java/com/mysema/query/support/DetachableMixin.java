@@ -59,7 +59,8 @@ public class DetachableMixin implements Detachable{
     }
 
     @Override
-    public ListSubQuery<Object[]> list(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public ListSubQuery<Object[]> list(Expression<?> first, Expression<?> second, 
+            Expression<?>... rest) {
         return new ListSubQuery<Object[]>(Object[].class, projection(first, second, rest));
     }
 
@@ -144,7 +145,8 @@ public class DetachableMixin implements Detachable{
     }
 
     @Override
-    public SimpleSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public SimpleSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, 
+            Expression<?>... rest) {
         return new SimpleSubQuery<Object[]>(Object[].class, uniqueProjection(first, second, rest));
     }
 
@@ -188,7 +190,8 @@ public class DetachableMixin implements Detachable{
         return metadata;
     }
 
-    private QueryMetadata uniqueProjection(Expression<?> first, Expression<?> second, Expression<?>[] rest) {
+    private QueryMetadata uniqueProjection(Expression<?> first, Expression<?> second, 
+            Expression<?>[] rest) {
         QueryMetadata metadata = projection(first, second, rest);
         metadata.setUnique(true);
         return metadata;

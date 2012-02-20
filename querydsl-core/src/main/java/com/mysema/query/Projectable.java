@@ -61,7 +61,8 @@ public interface Projectable {
      * @param rest
      * @return an Iterator over the projection
      */
-    CloseableIterator<Object[]> iterate(Expression<?> first, Expression<?> second, Expression<?>... rest);
+    CloseableIterator<Object[]> iterate(Expression<?> first, Expression<?> second, 
+            Expression<?>... rest);
 
     /**
      * iterate over the results for the given projection
@@ -89,7 +90,8 @@ public interface Projectable {
      * @param rest
      * @return an Iterator over the projection
      */
-    CloseableIterator<Object[]> iterateDistinct(Expression<?> first, Expression<?> second, Expression<?>... rest);
+    CloseableIterator<Object[]> iterateDistinct(Expression<?> first, Expression<?> second, 
+            Expression<?>... rest);
 
     /**
      * iterate over the distinct results for the given projection

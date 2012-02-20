@@ -123,7 +123,8 @@ public final class TypeMappings {
         }
     }
 
-    private Type getQueryType(Map<TypeCategory, Type> types, Type type, EntityType model, boolean raw, boolean rawParameters, boolean extend){
+    private Type getQueryType(Map<TypeCategory, Type> types, Type type, EntityType model, boolean raw, 
+            boolean rawParameters, boolean extend){
         Type exprType = types.get(type.getCategory());
         if (type.getCategory() == TypeCategory.ARRAY && types == pathTypes) {
             return getQueryType(type.getComponentType(), model, exprType, raw, rawParameters, extend);
@@ -132,7 +133,8 @@ public final class TypeMappings {
         }        
     }
 
-    public Type getQueryType(Type type, EntityType model, Type exprType, boolean raw, boolean rawParameters, boolean extend){
+    public Type getQueryType(Type type, EntityType model, Type exprType, boolean raw, 
+            boolean rawParameters, boolean extend){
         TypeCategory category = type.getCategory();
         if (raw && category != TypeCategory.ENTITY && category != TypeCategory.CUSTOM) {
             return exprType;

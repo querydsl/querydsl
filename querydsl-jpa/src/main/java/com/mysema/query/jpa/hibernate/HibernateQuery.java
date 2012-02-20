@@ -103,7 +103,8 @@ public final class HibernateQuery extends AbstractHibernateQuery<HibernateQuery>
      * @return
      */
     public HibernateQuery clone(Session session) {
-        HibernateQuery q = new HibernateQuery(new DefaultSessionHolder(session), getTemplates(), getMetadata().clone());
+        HibernateQuery q = new HibernateQuery(new DefaultSessionHolder(session), 
+                getTemplates(), getMetadata().clone());
         q.cacheable = cacheable;
         q.cacheRegion = cacheRegion;
         q.fetchSize = fetchSize;

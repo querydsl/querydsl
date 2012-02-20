@@ -61,7 +61,8 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
-    public CloseableIterator<Object[]> iterate(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public CloseableIterator<Object[]> iterate(Expression<?> first, Expression<?> second, 
+            Expression<?>... rest) {
         return projectable.iterate(first, second, rest);
     }
 
@@ -76,7 +77,8 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
-    public CloseableIterator<Object[]> iterateDistinct(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public CloseableIterator<Object[]> iterateDistinct(Expression<?> first, Expression<?> second, 
+            Expression<?>... rest) {
         return projectable.iterateDistinct(first, second, rest);
     }
 
@@ -106,7 +108,8 @@ public class ProjectableAdapter<P extends Projectable> implements Projectable {
     }
 
     @Override
-    public List<Object[]> listDistinct(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public List<Object[]> listDistinct(Expression<?> first, Expression<?> second, 
+            Expression<?>... rest) {
         return projectable.listDistinct(first, second, rest);
     }
 

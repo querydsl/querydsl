@@ -75,7 +75,8 @@ public final class JDOQLQueryImpl extends AbstractJDOQLQuery<JDOQLQueryImpl> imp
      * @param metadata
      * @param detach
      */
-    protected JDOQLQueryImpl(PersistenceManager persistenceManager, JDOQLTemplates templates, QueryMetadata metadata, boolean detach) {
+    protected JDOQLQueryImpl(PersistenceManager persistenceManager, JDOQLTemplates templates, 
+            QueryMetadata metadata, boolean detach) {
         super(persistenceManager, templates, metadata, detach);
     }
 
@@ -86,7 +87,8 @@ public final class JDOQLQueryImpl extends AbstractJDOQLQuery<JDOQLQueryImpl> imp
      * @return
      */
     public JDOQLQueryImpl clone(PersistenceManager persistenceManager) {
-        JDOQLQueryImpl query = new JDOQLQueryImpl(persistenceManager, getTemplates(), getMetadata().clone(), isDetach());
+        JDOQLQueryImpl query = new JDOQLQueryImpl(persistenceManager, getTemplates(), 
+                getMetadata().clone(), isDetach());
         query.fetchGroups.addAll(fetchGroups);
         query.maxFetchDepth = maxFetchDepth;
         return query;

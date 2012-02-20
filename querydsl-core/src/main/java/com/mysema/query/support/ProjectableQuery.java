@@ -48,12 +48,14 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Override
-    public final CloseableIterator<Object[]> iterate(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public final CloseableIterator<Object[]> iterate(Expression<?> first, Expression<?> second, 
+            Expression<?>... rest) {
         return iterate(merge(first, second, rest));
     }
 
     @Override
-    public final CloseableIterator<Object[]> iterateDistinct(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public final CloseableIterator<Object[]> iterateDistinct(Expression<?> first, Expression<?> second, 
+            Expression<?>... rest) {
         queryMixin.setDistinct(true);
         return iterate(first, second, rest);
     }
@@ -86,7 +88,8 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Override
-    public final List<Object[]> listDistinct(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public final List<Object[]> listDistinct(Expression<?> first, Expression<?> second, 
+            Expression<?>... rest) {
         queryMixin.setDistinct(true);
         return list(first, second, rest);
     }
@@ -133,7 +136,8 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     }
 
     @Override
-    public final Object[] singleResult(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public final Object[] singleResult(Expression<?> first, Expression<?> second, 
+            Expression<?>... rest) {
         return singleResult(merge(first, second, rest));
     }
 
@@ -154,7 +158,8 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
     
     
     @Override
-    public final Object[] uniqueResult(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public final Object[] uniqueResult(Expression<?> first, Expression<?> second, 
+            Expression<?>... rest) {
         return uniqueResult(merge(first, second, rest));
     }
     

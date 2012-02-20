@@ -61,7 +61,8 @@ public class HibernateUpdateClause implements
         this(new DefaultSessionHolder(session), entity, templates);
     }
 
-    public HibernateUpdateClause(SessionHolder session, EntityPath<?> entity, JPQLTemplates templates) {
+    public HibernateUpdateClause(SessionHolder session, EntityPath<?> entity, 
+            JPQLTemplates templates) {
         this.session = session;
         this.templates = templates;
         metadata.addJoin(JoinType.DEFAULT, entity);
@@ -107,7 +108,8 @@ public class HibernateUpdateClause implements
             if (values.get(i) != null) {
                 metadata.addProjection(ExpressionUtils.eqConst((Expression)paths.get(i), values.get(i)));
             } else {
-                metadata.addProjection(ExpressionUtils.eq(((Expression)paths.get(i)), new NullExpression(paths.get(i).getType())));
+                metadata.addProjection(ExpressionUtils.eq(((Expression)paths.get(i)),
+                        new NullExpression(paths.get(i).getType())));
             }
 
         }

@@ -76,7 +76,8 @@ public class DefaultQueryEngine implements QueryEngine {
     }
 
     @Override
-    public <T> List<T> list(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables, Expression<T> projection){
+    public <T> List<T> list(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables, 
+            Expression<T> projection){
         if (metadata.getJoins().size() == 1) {
             return evaluateSingleSource(metadata, iterables, false);
         } else {
@@ -104,7 +105,8 @@ public class DefaultQueryEngine implements QueryEngine {
         return rv;
     }
 
-    private List evaluateMultipleSources(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables, boolean count) {
+    private List evaluateMultipleSources(QueryMetadata metadata, Map<Expression<?>, 
+            Iterable<?>> iterables, boolean count) {
         // from where
         Evaluator<List<Object[]>> ev = evaluatorFactory.createEvaluator(metadata, metadata.getJoins(), metadata.getWhere());
         List<Iterable<?>> iterableList = new ArrayList<Iterable<?>>(metadata.getJoins().size());
@@ -148,7 +150,8 @@ public class DefaultQueryEngine implements QueryEngine {
         return list;
     }
 
-    private List evaluateSingleSource(QueryMetadata metadata, Map<Expression<?>, Iterable<?>> iterables, boolean count) {
+    private List evaluateSingleSource(QueryMetadata metadata, Map<Expression<?>, 
+            Iterable<?>> iterables, boolean count) {
         Expression<?> source = metadata.getJoins().get(0).getTarget();
         List<Expression<?>> sources = Collections.<Expression<?>>singletonList(source);
         Iterable<?> iterable = iterables.values().iterator().next();
@@ -161,7 +164,8 @@ public class DefaultQueryEngine implements QueryEngine {
 
         // from & where
         if (metadata.getWhere() != null) {
-            Evaluator<List<?>> evaluator = (Evaluator)evaluatorFactory.createEvaluator(metadata, source, metadata.getWhere());
+            Evaluator<List<?>> evaluator = (Evaluator)evaluatorFactory
+                    .createEvaluator(metadata, source, metadata.getWhere());
             list = evaluator.evaluate(list);
         }
 

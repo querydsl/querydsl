@@ -51,7 +51,8 @@ public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q>
     }
 
     @Override
-    public ListSubQuery<Object[]> list(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public ListSubQuery<Object[]> list(Expression<?> first, Expression<?> second, 
+            Expression<?>... rest) {
         return detachableMixin.list(first, second, rest);
     }
 
@@ -91,7 +92,8 @@ public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q>
     }
 
     @Override
-    public SimpleSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, Expression<?>... rest) {
+    public SimpleSubQuery<Object[]> unique(Expression<?> first, Expression<?> second, 
+            Expression<?>... rest) {
         return detachableMixin.unique(first, second, rest);
     }
 

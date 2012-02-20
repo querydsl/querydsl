@@ -143,7 +143,8 @@ public class PropertyAccessInvocationHandler implements MethodInterceptor {
 
     @SuppressWarnings({ "unchecked"})
     @Nullable
-    protected <T> T newInstance(Class<T> type, Type genericType, Object parent, Object propKey, PathMetadata<?> metadata) {
+    protected <T> T newInstance(Class<T> type, Type genericType, Object parent, Object propKey, 
+            PathMetadata<?> metadata) {
         Expression<?> path;
         Object rv;
 
