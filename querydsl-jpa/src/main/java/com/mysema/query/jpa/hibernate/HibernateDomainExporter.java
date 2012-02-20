@@ -109,6 +109,7 @@ public class HibernateDomainExporter {
         this.targetFolder = targetFolder;
         this.serializerConfig = serializerConfig;
         this.configuration = configuration;
+        configuration.buildMappings();
         CodegenModule module = new CodegenModule();
         module.bind(CodegenModule.PREFIX, namePrefix);
         module.bind(CodegenModule.SUFFIX, nameSuffix);

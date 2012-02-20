@@ -41,7 +41,6 @@ public class HibernateDomainExporterTest {
         File contact = new File("src/test/resources/contact.hbm.xml");
         Configuration config = new Configuration();
         config.addFile(contact);
-        config.buildMappings();
         HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen1"), config);
         exporter.execute();
         
@@ -55,7 +54,6 @@ public class HibernateDomainExporterTest {
         File contact = new File("src/test/resources/contact.hbm.xml");
         Configuration config = new Configuration();
         config.addFile(contact);
-        config.buildMappings();
         HibernateDomainExporter exporter = new HibernateDomainExporter("", "Type", new File("target/gen1"), config);
         exporter.execute();
         
@@ -69,7 +67,6 @@ public class HibernateDomainExporterTest {
         File contact = new File("src/test/resources/contact2.hbm.xml");
         Configuration config = new Configuration();
         config.addFile(contact);
-        config.buildMappings();
         HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen2"), config);
         exporter.execute();
         
@@ -83,9 +80,7 @@ public class HibernateDomainExporterTest {
         Configuration config = new Configuration();
         for (Class<?> cl : Domain.classes){
             config.addAnnotatedClass(cl);
-        }
-        config.buildMappings();
-        
+        }        
         HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen3"), serializerConfig, config);
         exporter.execute();
         
@@ -112,9 +107,7 @@ public class HibernateDomainExporterTest {
         Configuration config = new Configuration();
         for (Class<?> cl : Domain2.classes){
             config.addAnnotatedClass(cl);
-        }
-        config.buildMappings();
-        
+        }        
         HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen4"), serializerConfig, config);
         exporter.execute();
         
@@ -142,7 +135,6 @@ public class HibernateDomainExporterTest {
         File contact = new File("src/test/resources/store.hbm.xml");
         Configuration config = new Configuration();
         config.addFile(contact);
-        config.buildMappings();
         HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen5"), config);
         exporter.execute();
         
