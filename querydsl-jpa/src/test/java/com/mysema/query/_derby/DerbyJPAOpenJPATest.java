@@ -13,12 +13,13 @@
  */
 package com.mysema.query._derby;
 
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 
 import com.mysema.query.AbstractJPATest;
 import com.mysema.query.Target;
-import com.mysema.query.jpa.EclipseLinkTemplates;
 import com.mysema.query.jpa.JPQLTemplates;
+import com.mysema.query.jpa.OpenJPATemplates;
 import com.mysema.testutil.JPAConfig;
 import com.mysema.testutil.JPATestRunner;
 
@@ -26,13 +27,14 @@ import com.mysema.testutil.JPATestRunner;
  * @author tiwe
  *
  */
+@Ignore
 @RunWith(JPATestRunner.class)
-@JPAConfig("derby-eclipselink")
-public class DerbyJPAEclipseLinkTest extends AbstractJPATest{
+@JPAConfig("derby-openjpa")
+public class DerbyJPAOpenJPATest extends AbstractJPATest{
 
     @Override
     protected JPQLTemplates getTemplates(){
-        return EclipseLinkTemplates.DEFAULT;
+        return OpenJPATemplates.DEFAULT;
     }
 
     @Override
@@ -46,11 +48,6 @@ public class DerbyJPAEclipseLinkTest extends AbstractJPATest{
     }
     
     @Override
-    public void Hint(){
-        // FIXME
-    }
-    
-    @Override
     public void TupleProjection(){
         // FIXME : custom projections don't work
     }
@@ -58,56 +55,6 @@ public class DerbyJPAEclipseLinkTest extends AbstractJPATest{
     @Override
     public void ArrayProjection(){
         // FIXME : custom projections don't work
-    }
-    
-    @Override
-    public void Connection_Access(){
-        // cannot unwrap to Connection instance
-    }
-    
-    @Override
-    public void Map_ContainsKey(){
-        // not supported
-    }
-
-    @Override
-    public void Map_ContainsKey2(){
-        // not supported
-    }
-    
-    @Override
-    public void Map_ContainsKey3(){
-        // not supported
-    }
-    
-    @Override
-    public void Map_ContainsValue(){
-        // not supported
-    }
-    
-    @Override
-    public void Map_ContainsValue2(){
-        // not supported
-    }
-    
-    @Override
-    public void Map_ContainsValue3(){
-        // not supported
-    }
-    
-    @Override
-    public void JoinEmbeddable() {
-        // not supported
-    }
-    
-    @Override
-    public void Any_And_Lt(){
-        // FIXME
-    }
-    
-    @Override
-    public void Any_And_Gt(){
-        // FIXME
     }
     
 }

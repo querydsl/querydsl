@@ -33,7 +33,6 @@ import com.mysema.testutil.JPATestRunner;
  * @author tiwe
  *
  */
-//@Ignore
 @RunWith(JPATestRunner.class)
 @JPAConfig("h2-eclipselink")
 public class H2JPAEclipseLinkTest extends AbstractJPATest{
@@ -50,7 +49,9 @@ public class H2JPAEclipseLinkTest extends AbstractJPATest{
     
     @Override
     public void Hint(){
-        javax.persistence.Query query = query().from(QCat.cat).setHint(QueryHints.BIND_PARAMETERS, HintValues.PERSISTENCE_UNIT_DEFAULT).createQuery(QCat.cat);
+        javax.persistence.Query query = query().from(QCat.cat)
+                .setHint(QueryHints.BIND_PARAMETERS, HintValues.PERSISTENCE_UNIT_DEFAULT)
+                .createQuery(QCat.cat);
         assertNotNull(query);
         assertTrue(query.getHints().containsKey(QueryHints.BIND_PARAMETERS));
         assertFalse(query.getResultList().isEmpty());
