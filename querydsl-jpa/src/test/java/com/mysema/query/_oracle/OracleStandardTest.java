@@ -13,7 +13,6 @@
  */
 package com.mysema.query._oracle;
 
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 
 import com.mysema.query.AbstractHibernateTest;
@@ -21,7 +20,6 @@ import com.mysema.query.Target;
 import com.mysema.testutil.HibernateConfig;
 import com.mysema.testutil.HibernateTestRunner;
 
-@Ignore // FIXME
 @RunWith(HibernateTestRunner.class)
 @HibernateConfig("oracle.properties")
 public class OracleStandardTest extends AbstractHibernateTest{
@@ -29,6 +27,11 @@ public class OracleStandardTest extends AbstractHibernateTest{
     @Override
     protected Target getTarget() {
         return Target.ORACLE;
+    }
+    
+    @Override
+    public void JoinEmbeddable() {
+        // for some reasonable not supported
     }
 
 }

@@ -44,7 +44,8 @@ public final class ResultIterator<T> implements CloseableIterator<T> {
 
     private final Transformer<Document,T> transformer;
 
-    public ResultIterator(ScoreDoc[] scoreDocs, int offset, Searcher searcher, @Nullable FieldSelector fieldSelector, Transformer<Document, T> transformer) {
+    public ResultIterator(ScoreDoc[] scoreDocs, int offset, Searcher searcher, 
+            @Nullable FieldSelector fieldSelector, Transformer<Document, T> transformer) {
         this.scoreDocs = scoreDocs;
         this.cursor = offset;
         this.searcher = searcher;

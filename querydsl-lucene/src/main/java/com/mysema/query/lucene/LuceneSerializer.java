@@ -367,7 +367,8 @@ public class LuceneSerializer {
     }
 
     @SuppressWarnings({"unchecked"})
-    protected Query range(Path<?> leftHandSide, String field, @Nullable Expression<?> min, @Nullable Expression<?> max, boolean minInc, boolean maxInc, QueryMetadata metadata) {
+    protected Query range(Path<?> leftHandSide, String field, @Nullable Expression<?> min, 
+            @Nullable Expression<?> max, boolean minInc, boolean maxInc, QueryMetadata metadata) {
         if (min != null && Number.class.isAssignableFrom(min.getType()) || max != null
                 && Number.class.isAssignableFrom(max.getType())) {
             Class<? extends Number> numType = (Class) (min != null ? min.getType() : max.getType());

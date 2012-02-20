@@ -53,7 +53,8 @@ public class FilterFactory {
         return rv;
     }
 
-    public <A> Collection<BooleanExpression> collection(CollectionExpressionBase<?,A> expr, CollectionExpression<?,A> other, A knownElement){
+    public <A> Collection<BooleanExpression> collection(CollectionExpressionBase<?,A> expr, 
+            CollectionExpression<?,A> other, A knownElement){
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.add(expr.contains(knownElement));
         rv.add(expr.isEmpty());
@@ -64,7 +65,8 @@ public class FilterFactory {
         return rv;
     }
 
-    public <A> Collection<BooleanExpression> array(ArrayExpression<A> expr, ArrayExpression<A> other, A knownElement){
+    public <A> Collection<BooleanExpression> array(ArrayExpression<A> expr, ArrayExpression<A> other, 
+            A knownElement){
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         if (!module.equals(Module.RDFBEAN)){
             rv.add(expr.size().gt(0));
@@ -73,7 +75,8 @@ public class FilterFactory {
         return rv;
     }
 
-    private <A extends Comparable<A>> Collection<BooleanExpression> comparable(ComparableExpression<A> expr, ComparableExpression<A> other, A knownValue){
+    private <A extends Comparable<A>> Collection<BooleanExpression> comparable(ComparableExpression<A> expr, 
+            ComparableExpression<A> other, A knownValue){
         List<BooleanExpression> rv = new ArrayList<BooleanExpression>();
         rv.addAll(exprFilters(expr, other, knownValue));
         rv.add(expr.gt(other));
@@ -92,7 +95,8 @@ public class FilterFactory {
 
     }
 
-    private <A extends Comparable<A>> Collection<BooleanExpression> dateOrTime(TemporalExpression<A> expr, TemporalExpression<A> other, A knownValue){
+    private <A extends Comparable<A>> Collection<BooleanExpression> dateOrTime(TemporalExpression<A> expr, 
+            TemporalExpression<A> other, A knownValue){
     List<BooleanExpression> rv = new ArrayList<BooleanExpression>();
     rv.add(expr.after(other));
         rv.add(expr.after(knownValue));
@@ -102,7 +106,8 @@ public class FilterFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public <A extends Comparable> Collection<BooleanExpression> date(DateExpression<A> expr, DateExpression<A> other, A knownValue){
+    public <A extends Comparable> Collection<BooleanExpression> date(DateExpression<A> expr,
+            DateExpression<A> other, A knownValue){
         List<BooleanExpression> rv = new ArrayList<BooleanExpression>();
         rv.addAll(comparable(expr, other, knownValue));
         rv.addAll(dateOrTime(expr, other, knownValue));
@@ -113,7 +118,8 @@ public class FilterFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public <A extends Comparable> Collection<BooleanExpression> dateTime(DateTimeExpression<A> expr, DateTimeExpression<A> other, A knownValue){
+    public <A extends Comparable> Collection<BooleanExpression> dateTime(DateTimeExpression<A> expr, 
+            DateTimeExpression<A> other, A knownValue){
         List<BooleanExpression> rv = new ArrayList<BooleanExpression>();
         rv.addAll(comparable(expr, other, knownValue));
         rv.addAll(dateOrTime(expr, other, knownValue));
@@ -139,7 +145,8 @@ public class FilterFactory {
         return rv;
     }
 
-    private <A> Collection<BooleanExpression> exprFilters(SimpleExpression<A> expr, SimpleExpression<A> other, A knownValue){
+    private <A> Collection<BooleanExpression> exprFilters(SimpleExpression<A> expr, 
+            SimpleExpression<A> other, A knownValue){
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.add(expr.eq(other));
         rv.add(expr.eq(knownValue));
@@ -149,14 +156,16 @@ public class FilterFactory {
         return rv;
     }
 
-    public <A, Q extends SimpleExpression<A>> Collection<BooleanExpression> list(ListPath<A, Q> expr, ListExpression<A, Q> other, A knownElement){
+    public <A, Q extends SimpleExpression<A>> Collection<BooleanExpression> list(ListPath<A, Q> expr, 
+            ListExpression<A, Q> other, A knownElement){
         List<BooleanExpression> rv = new ArrayList<BooleanExpression>();
         rv.addAll(collection(expr, other, knownElement));
         rv.add(expr.get(0).eq(knownElement));
         return rv;
     }
 
-    public <K,V> Collection<BooleanExpression> map(MapExpressionBase<K,V,?> expr, MapExpression<K,V> other, K knownKey, V knownValue) {
+    public <K,V> Collection<BooleanExpression> map(MapExpressionBase<K,V,?> expr, 
+            MapExpression<K,V> other, K knownKey, V knownValue) {
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.add(expr.containsKey(knownKey));
         rv.add(expr.containsValue(knownValue));
@@ -171,7 +180,8 @@ public class FilterFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public <A extends Number & Comparable<A>> Collection<BooleanExpression> numeric(NumberExpression<A> expr, NumberExpression<A> other, A knownValue){
+    public <A extends Number & Comparable<A>> Collection<BooleanExpression> numeric(NumberExpression<A> expr, 
+            NumberExpression<A> other, A knownValue){
         List<BooleanExpression> rv = new ArrayList<BooleanExpression>();
         for (NumberExpression<?> num : projections.numeric(expr, other, knownValue, true)){
             rv.add(num.lt(expr));
@@ -209,7 +219,8 @@ public class FilterFactory {
         return rv;
     }
 
-    public <A> Collection<BooleanExpression> pathFilters(SimpleExpression<A> expr, SimpleExpression<A> other, A knownValue){
+    public <A> Collection<BooleanExpression> pathFilters(SimpleExpression<A> expr, 
+            SimpleExpression<A> other, A knownValue){
         return Arrays.<BooleanExpression>asList(
              expr.isNull(),
              expr.isNotNull()
@@ -217,7 +228,8 @@ public class FilterFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public Collection<BooleanExpression> string(StringExpression expr, StringExpression other, String knownValue){
+    public Collection<BooleanExpression> string(StringExpression expr, StringExpression other, 
+            String knownValue){
         List<BooleanExpression> rv = new ArrayList<BooleanExpression>();
         if (expr instanceof Path && other instanceof Path){
             rv.addAll(pathFilters(expr, other, knownValue));
@@ -294,7 +306,8 @@ public class FilterFactory {
     }
 
     @SuppressWarnings("unchecked")
-    public <A extends Comparable> Collection<BooleanExpression> time(TimeExpression<A> expr, TimeExpression<A> other, A knownValue){
+    public <A extends Comparable> Collection<BooleanExpression> time(TimeExpression<A> expr, 
+            TimeExpression<A> other, A knownValue){
         List<BooleanExpression> rv = new ArrayList<BooleanExpression>();
         rv.addAll(comparable(expr, other, knownValue));
         rv.addAll(dateOrTime(expr, other, knownValue));

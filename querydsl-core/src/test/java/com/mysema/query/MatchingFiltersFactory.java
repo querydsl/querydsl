@@ -281,7 +281,8 @@ public class MatchingFiltersFactory {
         return rv;
     }
 
-    public Collection<BooleanExpression> string(StringExpression expr, StringExpression other,  String knownValue){
+    public Collection<BooleanExpression> string(StringExpression expr, StringExpression other,  
+            String knownValue){
         HashSet<BooleanExpression> rv = new HashSet<BooleanExpression>();
         rv.addAll(string(expr, other));
         rv.addAll(string(expr, StringConstant.create(knownValue)));

@@ -61,7 +61,8 @@ public final class LuceneUtils {
      * @param prefixLength
      * @return
      */
-    public static BooleanExpression fuzzyLike(Path<String> path, String value, float minimumSimilarity, int prefixLength){
+    public static BooleanExpression fuzzyLike(Path<String> path, String value, 
+            float minimumSimilarity, int prefixLength){
         Term term = new Term(path.getMetadata().getExpression().toString(), value);
         return new QueryElement(new FuzzyQuery(term, minimumSimilarity, prefixLength));
     }
