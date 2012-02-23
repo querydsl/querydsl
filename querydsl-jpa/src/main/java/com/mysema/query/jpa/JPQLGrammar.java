@@ -14,13 +14,16 @@
 package com.mysema.query.jpa;
 
 import com.mysema.query.types.CollectionExpression;
+import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.ComparableExpression;
-import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.ComparableOperation;
+import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 import com.mysema.query.types.expr.SimpleOperation;
+import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.expr.StringOperation;
 
 /**
  * JPQLGrammar provides factory methods for JPQL specific operations
@@ -79,6 +82,10 @@ public final class JPQLGrammar {
 
     public static <D extends Number & Comparable<? super D>> NumberExpression<Double> sumAsDouble(Expression<D> left) {
         return sum(left).doubleValue();
+    }
+    
+    public static StringExpression type(EntityPath<?> path) {
+        return StringOperation.create(JPQLTemplates.TYPE, path);
     }
 
 }

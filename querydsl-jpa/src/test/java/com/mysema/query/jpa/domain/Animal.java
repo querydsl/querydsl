@@ -13,6 +13,7 @@
  */
 package com.mysema.query.jpa.domain;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -26,6 +27,7 @@ import org.hibernate.annotations.Type;
  */
 @Entity
 @Table(name="animal_")
+@DiscriminatorValue("A")
 public class Animal {
     private boolean alive;
 
@@ -50,6 +52,12 @@ public class Animal {
 
     private java.sql.Time timeField;
 
+    public Animal() {}
+    
+    public Animal(int id) {
+        setId(id);
+    }
+    
     public java.util.Date getBirthdate() {
         return birthdate;
     }

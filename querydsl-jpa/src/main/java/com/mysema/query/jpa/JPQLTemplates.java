@@ -34,6 +34,8 @@ public class JPQLTemplates extends Templates {
 
     public static final char DEFAULT_ESCAPE = '!';
     
+    public static final Operator<String> TYPE = new OperatorImpl<String>("TYPE", Object.class);
+    
     public static final Operator<Object> CAST = new OperatorImpl<Object>("CAST",Object.class, Object.class);
 
     public static final Operator<Boolean> MEMBER_OF = new OperatorImpl<Boolean>("MEMBER_OF",Object.class, Object.class);
@@ -114,6 +116,7 @@ public class JPQLTemplates extends Templates {
         add(Ops.CASE_EQ_ELSE,  "else {0}");
 
         add(Ops.INSTANCE_OF, "type({0}) = {1}");
+        add(TYPE, "type({0})");
 
         //CHECKSTYLE:ON
     }

@@ -38,13 +38,16 @@ import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
 import com.mysema.commons.lang.Pair;
+import com.mysema.query.jpa.JPQLGrammar;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.JPQLSubQuery;
+import com.mysema.query.jpa.domain.Animal;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.DomesticCat;
 import com.mysema.query.jpa.domain.Employee;
 import com.mysema.query.jpa.domain.Foo;
 import com.mysema.query.jpa.domain.JobFunction;
+import com.mysema.query.jpa.domain.QAnimal;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.jpa.domain.QFoo;
@@ -86,10 +89,13 @@ public abstract class AbstractStandardTest {
         private static final long serialVersionUID = -5866362075090550839L;
 
         public QProjection(StringExpression str, QCat cat){
-            super(Projection.class, new Class[]{String.class, Cat.class}, new Expression[]{str, cat});
+            super(Projection.class, 
+                    new Class[]{String.class, Cat.class}, new Expression[]{str, cat});
         }
 
     }
+    
+    private static final QAnimal animal = QAnimal.animal;
 
     private static final QCat cat = QCat.cat;
 
@@ -105,7 +111,8 @@ public abstract class AbstractStandardTest {
 
     private final ProjectionsFactory projections = new ProjectionsFactory(Module.JPA, getTarget()){
         @Override
-        public <A,Q extends SimpleExpression<A>> Collection<Expression<?>> list(ListPath<A,Q> expr, ListExpression<A,Q> other, A knownElement){
+        public <A,Q extends SimpleExpression<A>> Collection<Expression<?>> list(ListPath<A,Q> expr, 
+                ListExpression<A,Q> other, A knownElement){
             // NOTE : expr.get(0) is only supported in the where clause
             return Collections.<Expression<?>>singleton(expr.size());
         }
@@ -114,7 +121,9 @@ public abstract class AbstractStandardTest {
     private final List<Cat> savedCats = new ArrayList<Cat>();
 
     private final QueryExecution standardTest = new QueryExecution(
-            projections, new FilterFactory(projections, Module.JPA, getTarget()), new MatchingFiltersFactory(Module.JPA, getTarget())){
+            projections, 
+            new FilterFactory(projections, Module.JPA, getTarget()), 
+            new MatchingFiltersFactory(Module.JPA, getTarget())){
 
         @Override
         protected Pair<Projectable, List<Expression<?>>> createQuery() {
@@ -176,6 +185,10 @@ public abstract class AbstractStandardTest {
             savedCats.add(cat);
             prev = cat;
         }
+        
+        Animal animal = new Animal(10);
+        animal.setBodyWeight(10.5);
+        save(animal);
 
         Cat cat = new Cat("Some", 6, 6.0);
         cat.setBirthdate(birthDate);
@@ -257,12 +270,16 @@ public abstract class AbstractStandardTest {
     
     @Test
     public void Any_And_Lt(){
-        assertEquals(1, catQuery().where(cat.kittens.any().name.eq("Ruth123"), cat.kittens.any().bodyWeight.lt(10.0)).count());
+        assertEquals(1, catQuery().where(
+                cat.kittens.any().name.eq("Ruth123"), 
+                cat.kittens.any().bodyWeight.lt(10.0)).count());
     }
     
     @Test
     public void Any_And_Gt(){
-        assertEquals(0, catQuery().where(cat.kittens.any().name.eq("Ruth123"), cat.kittens.any().bodyWeight.gt(10.0)).count());
+        assertEquals(0, catQuery().where(
+                cat.kittens.any().name.eq("Ruth123"), 
+                cat.kittens.any().bodyWeight.gt(10.0)).count());
     }
 
     @Test
@@ -401,12 +418,14 @@ public abstract class AbstractStandardTest {
 
     @Test
     public void IndexOf(){
-        assertEquals(Integer.valueOf(0), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("B")));
+        assertEquals(Integer.valueOf(0), catQuery().where(cat.name.eq("Bob123"))
+                .uniqueResult(cat.name.indexOf("B")));
     }
     
     @Test
     public void IndexOf2(){
-        assertEquals(Integer.valueOf(1), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("o")));
+        assertEquals(Integer.valueOf(1), catQuery().where(cat.name.eq("Bob123"))
+                .uniqueResult(cat.name.indexOf("o")));
     }
 
     @Test
@@ -414,7 +433,8 @@ public abstract class AbstractStandardTest {
         if (!getTarget().equals(Target.MYSQL)){ // NOTE : locate in MYSQL is case-insensitive
             assertEquals(0, catQuery().where(cat.name.startsWith("r")).count());
             assertEquals(0, catQuery().where(cat.name.endsWith("H123")).count());
-            assertEquals(Integer.valueOf(2), catQuery().where(cat.name.eq("Bob123")).uniqueResult(cat.name.indexOf("b")));
+            assertEquals(Integer.valueOf(2), catQuery().where(cat.name.eq("Bob123"))
+                    .uniqueResult(cat.name.indexOf("b")));
         }
     }
 
@@ -426,7 +446,8 @@ public abstract class AbstractStandardTest {
 
     @Test
     public void Limit2(){
-        assertEquals(Collections.singletonList("Allen123"), catQuery().orderBy(cat.name.asc()).limit(1).list(cat.name));
+        assertEquals(Collections.singletonList("Allen123"), 
+                catQuery().orderBy(cat.name.asc()).limit(1).list(cat.name));
     }
 
     @Test
@@ -475,15 +496,31 @@ public abstract class AbstractStandardTest {
     
     @Test
     public void TupleProjection_As_SearchResults() {
-        SearchResults<Tuple> tuples = query().from(cat).limit(1).listResults(new QTuple(cat.name, cat));
+        SearchResults<Tuple> tuples = query().from(cat).limit(1)
+                .listResults(new QTuple(cat.name, cat));
         assertEquals(1, tuples.getResults().size());
         assertTrue(tuples.getTotal() > 0);
     }
-
+    
+    @Test
+    @Ignore
+    public void Type() {
+        assertEquals(Arrays.asList("C","C","C","C","C","C","A"),
+                query().from(animal).orderBy(animal.id.asc()).list(JPQLGrammar.type(animal)));
+    }
+    
+    @Test
+    public void Type_Order() {
+        assertEquals(Arrays.asList(10,1,2,3,4,5,6),
+                query().from(animal).orderBy(JPQLGrammar.type(animal).asc(), animal.id.asc())
+                       .list(animal.id));
+    }
+    
     @SuppressWarnings("unchecked")
     @Test
     public void ArrayProjection(){
-        List<String[]> results = query().from(cat).list(new ArrayConstructorExpression<String>(String[].class, cat.name));
+        List<String[]> results = query().from(cat)
+                .list(new ArrayConstructorExpression<String>(String[].class, cat.name));
         assertFalse(results.isEmpty());
         for (String[] result : results){
             assertNotNull(result[0]);
@@ -492,7 +529,8 @@ public abstract class AbstractStandardTest {
 
     @Test
     public void ConstructorProjection(){
-        List<Projection> projections = query().from(cat).list(ConstructorExpression.create(Projection.class, cat.name, cat));
+        List<Projection> projections = query().from(cat)
+                .list(ConstructorExpression.create(Projection.class, cat.name, cat));
         assertFalse(projections.isEmpty());
         for (Projection projection : projections){
             assertNotNull(projection);
@@ -511,13 +549,15 @@ public abstract class AbstractStandardTest {
     @Test
     public void Params(){
         Param<String> name = new Param<String>(String.class,"name");
-        assertEquals("Bob123",query().from(cat).where(cat.name.eq(name)).set(name, "Bob123").uniqueResult(cat.name));
+        assertEquals("Bob123",query().from(cat).where(cat.name.eq(name)).set(name, "Bob123")
+                .uniqueResult(cat.name));
     }
 
     @Test
     public void Params_anon(){
         Param<String> name = new Param<String>(String.class);
-        assertEquals("Bob123",query().from(cat).where(cat.name.eq(name)).set(name, "Bob123").uniqueResult(cat.name));
+        assertEquals("Bob123",query().from(cat).where(cat.name.eq(name)).set(name, "Bob123")
+                .uniqueResult(cat.name));
     }
 
     @Test(expected=ParamNotSetException.class)
@@ -528,7 +568,8 @@ public abstract class AbstractStandardTest {
 
     @Test
     public void Null_as_uniqueResult(){
-        assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString())).uniqueResult(cat));
+        assertNull(query().from(cat).where(cat.name.eq(UUID.randomUUID().toString()))
+                .uniqueResult(cat));
     }
 
     @Test
@@ -585,7 +626,8 @@ public abstract class AbstractStandardTest {
     public void SubQuery(){
         QShow show = QShow.show;
         QShow show2 = new QShow("show2");
-        query().from(show).where(subQuery().from(show2).where(show2.id.ne(show.id)).count().gt(0)).count();
+        query().from(show).where(subQuery().from(show2)
+               .where(show2.id.ne(show.id)).count().gt(0)).count();
     }
     
     @Test
@@ -593,7 +635,8 @@ public abstract class AbstractStandardTest {
         QCat cat = QCat.cat;
         QCat other = new QCat("other");
         List<Cat> cats = query().from(cat)
-            .where(cat.name.in(new HibernateSubQuery().from(other).groupBy(other.name).list(other.name)))
+            .where(cat.name.in(new HibernateSubQuery().from(other)
+            .groupBy(other.name).list(other.name)))
             .list(cat);
         assertNotNull(cats);        
     }
@@ -620,7 +663,8 @@ public abstract class AbstractStandardTest {
         QEmployee employee = QEmployee.employee;
         
         JPQLQuery query = query();
-        query.from(employee).where(employee.lastName.eq("Smith"), employee.jobFunctions.contains(JobFunction.CODER));
+        query.from(employee).where(employee.lastName.eq("Smith"), employee.jobFunctions
+                .contains(JobFunction.CODER));
         assertEquals(1l, query.count());
     }
     
@@ -630,7 +674,8 @@ public abstract class AbstractStandardTest {
         //QJobFunction jobFunction = QJobFunction.jobFunction;
         EnumPath<JobFunction> jobFunction = new EnumPath<JobFunction>(JobFunction.class, "jf");
         
-        List<JobFunction> jobFunctions = query().from(employee).innerJoin(employee.jobFunctions, jobFunction).list(jobFunction);
+        List<JobFunction> jobFunctions = query().from(employee)
+                .innerJoin(employee.jobFunctions, jobFunction).list(jobFunction);
         assertEquals(4, jobFunctions.size());
     }
     

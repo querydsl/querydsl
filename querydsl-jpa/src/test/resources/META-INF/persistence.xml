@@ -6,11 +6,10 @@
    http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
   version="1.0">
 
-  <persistence-unit name="derby">
+
+  <!-- derby -->
   
-<!--   
-  <provider>org.hibernate.ejb.HibernatePersistence</provider>
- -->  
+  <persistence-unit name="derby">    
    <properties>
      <property name="hibernate.archive.autodetection" value="class" />
      <property name="hibernate.dialect" value="com.mysema.query.jpa.support.ExtendedDerbyDialect"/>
@@ -22,16 +21,16 @@
    </properties>
   </persistence-unit>
   
-    <persistence-unit name="derby-eclipselink" transaction-type="RESOURCE_LOCAL">
-      <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-      <exclude-unlisted-classes>false</exclude-unlisted-classes>
-      <properties>
-        <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
-        <property name="javax.persistence.jdbc.url" value="jdbc:derby:target/derbydb2;create=true"/>
-  	    <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
-		<property name="eclipselink.ddl-generation.output-mode" value="database" />		
-      </properties>
-    </persistence-unit>
+  <persistence-unit name="derby-eclipselink" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:derby:target/derbydb2;create=true"/>
+      <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+	  <property name="eclipselink.ddl-generation.output-mode" value="database" />		
+    </properties>
+  </persistence-unit>
     
   <persistence-unit name="derby-openjpa" transaction-type="RESOURCE_LOCAL">
     <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
@@ -47,6 +46,7 @@
     </properties>
   </persistence-unit>
     
+  <!-- hsqldb -->  
  
   <persistence-unit name="hsqldb">
    <properties>
@@ -61,46 +61,61 @@
    </properties>
   </persistence-unit>
 
-    <persistence-unit name="hsqldb-eclipselink" transaction-type="RESOURCE_LOCAL">
-      <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-      <exclude-unlisted-classes>false</exclude-unlisted-classes>
-      <properties>
-        <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
-        <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:target/testdb2"/>
-		<property name="javax.persistence.jdbc.user" value="sa"/>
-  	    <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
-		<property name="eclipselink.ddl-generation.output-mode" value="database" />
-		
-      </properties>
-    </persistence-unit>
-	
-	<persistence-unit name="h2-eclipselink" transaction-type="RESOURCE_LOCAL">
-      <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-      <exclude-unlisted-classes>false</exclude-unlisted-classes>
-      <properties>
-        <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-        <property name="javax.persistence.jdbc.url" value="jdbc:h2:target/h2"/>
-		<property name="javax.persistence.jdbc.user" value="sa"/>
-  	    <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
-		<property name="eclipselink.ddl-generation.output-mode" value="database" />
-		
-      </properties>
-    </persistence-unit>
+  <persistence-unit name="hsqldb-eclipselink" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:target/testdb2"/>
+	  <property name="javax.persistence.jdbc.user" value="sa"/>
+  	  <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+	  <property name="eclipselink.ddl-generation.output-mode" value="database" />		
+    </properties>
+  </persistence-unit>
     
-	<persistence-unit name="h2-openjpa" transaction-type="RESOURCE_LOCAL">
-      <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
-      <exclude-unlisted-classes>false</exclude-unlisted-classes>
-      <properties>
-        <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-        <property name="javax.persistence.jdbc.url" value="jdbc:h2:target/h2"/>
-		<property name="javax.persistence.jdbc.user" value="sa"/>
-		<property name="openjpa.RuntimeUnenhancedClasses" value="supported"/>
+  <!-- h2 -->
+     
+  <persistence-unit name="h2" transaction-type="RESOURCE_LOCAL">
+  <properties>
+     <property name="hibernate.archive.autodetection" value="class" />
+     <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
+     <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
+     <property name="hibernate.connection.url" value="jdbc:h2:target/h2-1"/>
+     <property name="hibernate.connection.user" value="sa"/>
+     <property name="hibernate.show_sql" value="true"/>
+     <property name="hibernate.flushMode" value="FLUSH_AUTO"/>
+     <property name="hibernate.hbm2ddl.auto" value="update"/>	
+    </properties>
+  </persistence-unit>   
+	
+  <persistence-unit name="h2-eclipselink" transaction-type="RESOURCE_LOCAL">
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:h2:target/h2-2"/>
+	  <property name="javax.persistence.jdbc.user" value="sa"/>
+  	  <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+      <property name="eclipselink.ddl-generation.output-mode" value="database" />		
+    </properties>
+  </persistence-unit>
+    
+  <persistence-unit name="h2-openjpa" transaction-type="RESOURCE_LOCAL">
+    <provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:h2:target/h2-3"/>
+	  <property name="javax.persistence.jdbc.user" value="sa"/>
+	  <property name="openjpa.RuntimeUnenhancedClasses" value="supported"/>
 		<!-- 
   	    <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
 		<property name="eclipselink.ddl-generation.output-mode" value="database" />
 		 -->
-      </properties>
-    </persistence-unit>    
+    </properties>
+  </persistence-unit>    
+
+  <!-- mysql -->
 
   <persistence-unit name="mysql">
    <properties>
@@ -116,7 +131,7 @@
    </properties>
   </persistence-unit>
   
-    <persistence-unit name="mysql-eclipselink" transaction-type="RESOURCE_LOCAL">
+  <persistence-unit name="mysql-eclipselink" transaction-type="RESOURCE_LOCAL">
       <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
       <exclude-unlisted-classes>false</exclude-unlisted-classes>
       <properties>
@@ -127,7 +142,9 @@
   	    <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
 		<property name="eclipselink.ddl-generation.output-mode" value="database" />		
       </properties>
-    </persistence-unit>  
+  </persistence-unit>  
+    
+  <!-- postgres -->  
     
   <persistence-unit name="postgres">
    <properties>
@@ -141,6 +158,22 @@
      <property name="hibernate.flushMode" value="FLUSH_AUTO"/>
      <property name="hibernate.hbm2ddl.auto" value="update"/>
    </properties>
-  </persistence-unit>    
+  </persistence-unit>
+  
+  <!-- oracle -->
+  
+  <persistence-unit name="oracle">
+   <properties>
+     <property name="hibernate.archive.autodetection" value="class" />
+     <property name="hibernate.dialect" value="com.mysema.query.jpa.support.ExtendedOracleDialect"/>
+     <property name="hibernate.connection.driver_class" value="oracle.jdbc.driver.OracleDriver"/>
+     <property name="hibernate.connection.url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
+     <property name="hibernate.connection.username" value="querydsl"/>
+     <property name="hibernate.connection.password" value="querydsl"/>
+     <property name="hibernate.show_sql" value="true"/>
+     <property name="hibernate.flushMode" value="FLUSH_AUTO"/>
+     <property name="hibernate.hbm2ddl.auto" value="update"/>
+   </properties>
+  </persistence-unit>          
   
 </persistence>

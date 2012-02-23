@@ -13,26 +13,17 @@
  */
 package com.mysema.query._h2;
 
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 
 import com.mysema.query.AbstractJPATest;
 import com.mysema.query.Target;
-import com.mysema.query.jpa.JPQLTemplates;
-import com.mysema.query.jpa.OpenJPATemplates;
 import com.mysema.testutil.JPAConfig;
 import com.mysema.testutil.JPATestRunner;
 
-@Ignore
 @RunWith(JPATestRunner.class)
-@JPAConfig("h2-openjpa")
-public class H2JPAOpenJPATest extends AbstractJPATest {
+@JPAConfig("h2")
+public class H2JPAStandardTest extends AbstractJPATest {
 
-    @Override
-    protected JPQLTemplates getTemplates(){
-        return OpenJPATemplates.DEFAULT;
-    }
-    
     @Override
     protected Target getTarget() {
         return Target.H2;

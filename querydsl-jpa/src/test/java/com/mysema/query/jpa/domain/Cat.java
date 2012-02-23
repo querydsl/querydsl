@@ -54,15 +54,19 @@ public class Cat extends Animal {
     private Cat mate;
 
     public Cat(){}
+    
+    public Cat(int id){
+        setId(id);
+    }    
 
     public Cat(String name, int id){
-        this.setId(id);
-        this.setName( name);
+        setId(id);
+        setName( name);
     }
 
     public Cat(String name, int id, double bodyWeight){
         this(name, id);
-        this.setBodyWeight(bodyWeight);
+        setBodyWeight(bodyWeight);
     }
 
     public int getBreed() {
@@ -99,3 +103,4 @@ public class Cat extends Animal {
     }
 
 }
+

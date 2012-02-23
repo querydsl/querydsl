@@ -74,7 +74,7 @@ public abstract class AbstractJPATest extends AbstractStandardTest {
     @SuppressWarnings("unchecked")
     @Test
     public void QueryExposure(){
-        save(new Cat());
+        save(new Cat(20));
         List results = query().from(QCat.cat).createQuery(QCat.cat).getResultList();
         assertNotNull(results);
         assertFalse(results.isEmpty());
