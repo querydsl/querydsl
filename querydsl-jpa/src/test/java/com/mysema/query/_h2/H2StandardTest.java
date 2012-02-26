@@ -11,26 +11,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query._oracle;
+package com.mysema.query._h2;
 
 import org.junit.runner.RunWith;
 
-import com.mysema.query.AbstractJPATest;
+import com.mysema.query.AbstractHibernateTest;
 import com.mysema.query.Target;
-import com.mysema.testutil.JPAConfig;
-import com.mysema.testutil.JPATestRunner;
+import com.mysema.testutil.HibernateConfig;
+import com.mysema.testutil.HibernateTestRunner;
 
-@RunWith(JPATestRunner.class)
-@JPAConfig("oracle")
-public class OracleJPAStandardTest extends AbstractJPATest {
+/**
+ * @author tiwe
+ *
+ */
+@RunWith(HibernateTestRunner.class)
+@HibernateConfig("h2.properties")
+public class H2StandardTest extends AbstractHibernateTest{
 
     @Override
     protected Target getTarget() {
-        return Target.ORACLE;
-    }
-    
-    @Override
-    public void JoinEmbeddable() {
-        // for some reason not supported
+        return Target.H2;
     }
 }

@@ -33,7 +33,7 @@ import com.mysema.testutil.JPATestRunner;
 public class HSQLDBJPAEclipseLinkStandardTest extends AbstractJPATest{
 
     @Override
-    protected JPQLTemplates getTemplates(){
+    protected JPQLTemplates getTemplates() {
         return EclipseLinkTemplates.DEFAULT;
     }
 

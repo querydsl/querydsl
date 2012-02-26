@@ -28,7 +28,7 @@ import com.mysema.testutil.JPATestRunner;
 
 @RunWith(JPATestRunner.class)
 @JPAConfig("derby")
-public class JPAQueryMutabilityTest{
+public class JPAQueryMutabilityTest {
 
     private EntityManager entityManager;
 

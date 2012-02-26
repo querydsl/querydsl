@@ -53,6 +53,16 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
 
     private static final Logger logger = LoggerFactory.getLogger(JPAQuery.class);
 
+    private static Class<?> hibernateQueryClass;
+    
+    static {
+        try {
+            hibernateQueryClass = Class.forName("org.hibernate.ejb.HibernateQuery");
+        } catch (ClassNotFoundException e) {
+            // do nothing
+        }
+    }
+    
     private final JPASessionHolder sessionHolder;
 
     protected final Map<String,Object> hints = new HashMap<String,Object>();
@@ -63,8 +73,8 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     @Nullable
     protected FlushModeType flushMode;
     
-    private Class<?> hibernateQueryClass;
     
+        
     protected boolean factoryExpressionUsed = false;
     
     public AbstractJPAQuery(EntityManager em) {
@@ -73,12 +83,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
 
     public AbstractJPAQuery(JPASessionHolder sessionHolder, JPQLTemplates patterns, QueryMetadata metadata) {
         super(metadata, patterns);
-        this.sessionHolder = sessionHolder;
-        try {
-            this.hibernateQueryClass = Class.forName("org.hibernate.ejb.HibernateQuery");
-        } catch (ClassNotFoundException e) {
-            // do nothing
-        }
+        this.sessionHolder = sessionHolder;        
     }
 
     public long count() {

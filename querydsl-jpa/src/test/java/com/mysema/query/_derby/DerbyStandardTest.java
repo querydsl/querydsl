@@ -32,5 +32,5 @@ public class DerbyStandardTest extends AbstractHibernateTest{
     protected Target getTarget() {
         return Target.DERBY;
     }
-
+    
 }

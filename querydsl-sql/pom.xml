@@ -78,13 +78,13 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <version>5.1.18</version>
+      <version>${mysql.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>8.4-701.jdbc4</version>
+      <version>${postgresql.version}</version>
       <scope>test</scope>
     </dependency>
     <!-- 
@@ -98,14 +98,14 @@
     <dependency>
 	  <groupId>com.oracle</groupId>
 	  <artifactId>ojdbc14</artifactId>
-	  <version>10.2.0.5.0</version>
+	  <version>${oracle.version}</version>
 	  <scope>test</scope>
     </dependency>
           
     <dependency>
       <groupId>net.sourceforge.jtds</groupId>
       <artifactId>jtds</artifactId>
-      <version>1.2.4</version>
+      <version>${jtds.version}</version>
       <scope>test</scope>
     </dependency>
     <dependency>

@@ -32,5 +32,5 @@ public class DerbyJPAStandardTest extends AbstractJPATest {
     protected Target getTarget() {
         return Target.DERBY;
     }
-
+    
 }

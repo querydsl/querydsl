@@ -109,37 +109,7 @@ public abstract class AbstractStandardTest {
 
     private final java.sql.Date date;
 
-    private final ProjectionsFactory projections = new ProjectionsFactory(Module.JPA, getTarget()){
-        @Override
-        public <A,Q extends SimpleExpression<A>> Collection<Expression<?>> list(ListPath<A,Q> expr, 
-                ListExpression<A,Q> other, A knownElement){
-            // NOTE : expr.get(0) is only supported in the where clause
-            return Collections.<Expression<?>>singleton(expr.size());
-        }
-    };
-
     private final List<Cat> savedCats = new ArrayList<Cat>();
-
-    private final QueryExecution standardTest = new QueryExecution(
-            projections, 
-            new FilterFactory(projections, Module.JPA, getTarget()), 
-            new MatchingFiltersFactory(Module.JPA, getTarget())){
-
-        @Override
-        protected Pair<Projectable, List<Expression<?>>> createQuery() {
-            // NOTE : EclipseLink needs extra conditions cond1 and code2
-            return Pair.of(
-                    (Projectable)query().from(cat, otherCat).where(cond1, cond2),
-                    Arrays.<Expression<?>>asList());
-        }
-        @Override
-        protected Pair<Projectable, List<Expression<?>>> createQuery(BooleanExpression filter) {
-            // NOTE : EclipseLink needs extra conditions cond1 and code2
-            return Pair.of(
-                    (Projectable)query().from(cat, otherCat).where(cond1, cond2, filter),
-                    Arrays.<Expression<?>>asList(cat.name, otherCat.name));
-        }
-    };
 
     private final java.sql.Time time;
 
@@ -150,10 +120,6 @@ public abstract class AbstractStandardTest {
         birthDate = cal.getTime();
         date = new java.sql.Date(cal.getTimeInMillis());
         time = new java.sql.Time(cal.getTimeInMillis());
-    }
-
-    protected JPQLQuery catQuery(){
-        return query().from(cat);
     }
 
     protected abstract Target getTarget();
@@ -226,13 +192,43 @@ public abstract class AbstractStandardTest {
         Cat kitten = savedCats.get(0);
         Cat noKitten = savedCats.get(savedCats.size()-1);
 
-        //        standardTest.runArrayTests(cat.kittensArray, otherCat.kittensArray, kitten, noKitten);
+        ProjectionsFactory projections = new ProjectionsFactory(Module.JPA, getTarget()){
+            @Override
+            public <A,Q extends SimpleExpression<A>> Collection<Expression<?>> list(ListPath<A,Q> expr, 
+                    ListExpression<A,Q> other, A knownElement){
+                // NOTE : expr.get(0) is only supported in the where clause
+                return Collections.<Expression<?>>singleton(expr.size());
+            }
+        };
+        
+        QueryExecution standardTest = new QueryExecution(
+                projections, 
+                new FilterFactory(projections, Module.JPA, getTarget()), 
+                new MatchingFiltersFactory(Module.JPA, getTarget())){
+
+            @Override
+            protected Pair<Projectable, List<Expression<?>>> createQuery() {
+                // NOTE : EclipseLink needs extra conditions cond1 and code2
+                return Pair.of(
+                        (Projectable)query().from(cat, otherCat).where(cond1, cond2),
+                        Arrays.<Expression<?>>asList());
+            }
+            @Override
+            protected Pair<Projectable, List<Expression<?>>> createQuery(BooleanExpression filter) {
+                // NOTE : EclipseLink needs extra conditions cond1 and code2
+                return Pair.of(
+                        (Projectable)query().from(cat, otherCat).where(cond1, cond2, filter),
+                        Arrays.<Expression<?>>asList(cat.name, otherCat.name));
+            }
+        };
+        
+        // standardTest.runArrayTests(cat.kittensArray, otherCat.kittensArray, kitten, noKitten);
         standardTest.runBooleanTests(cat.name.isNull(), otherCat.kittens.isEmpty());
         standardTest.runCollectionTests(cat.kittens, otherCat.kittens, kitten, noKitten);
         standardTest.runDateTests(cat.dateField, otherCat.dateField, date);
         standardTest.runDateTimeTests(cat.birthdate, otherCat.birthdate, birthDate);
         standardTest.runListTests(cat.kittens, otherCat.kittens, kitten, noKitten);
-        //        standardTest.mapTests(cat.kittensByName, otherCat.kittensByName, "Kitty", kitten);
+        // standardTest.mapTests(cat.kittensByName, otherCat.kittensByName, "Kitty", kitten);
 
         // int
         standardTest.runNumericCasts(cat.id, otherCat.id, 1);
@@ -250,34 +246,34 @@ public abstract class AbstractStandardTest {
 
     @Test
     public void Any_Simple(){
-        assertEquals(1, catQuery().where(cat.kittens.any().name.eq("Ruth123")).count());
+        assertEquals(1, query().from(cat).where(cat.kittens.any().name.eq("Ruth123")).count());
     }
 
     @Test
     public void Exists(){
-        assertTrue(catQuery().where(cat.kittens.any().name.eq("Ruth123")).exists());
+        assertTrue(query().from(cat).where(cat.kittens.any().name.eq("Ruth123")).exists());
     }
 
     @Test
     public void NotExists(){
-        assertTrue(catQuery().where(cat.kittens.any().name.eq("XXX")).notExists());
+        assertTrue(query().from(cat).where(cat.kittens.any().name.eq("XXX")).notExists());
     }
 
     @Test
     public void Any_Usage(){
-        assertEquals(1, catQuery().where(cat.kittens.any().name.eq("Ruth123")).count());
+        assertEquals(1, query().from(cat).where(cat.kittens.any().name.eq("Ruth123")).count());
     }
     
     @Test
     public void Any_And_Lt(){
-        assertEquals(1, catQuery().where(
+        assertEquals(1, query().from(cat).where(
                 cat.kittens.any().name.eq("Ruth123"), 
                 cat.kittens.any().bodyWeight.lt(10.0)).count());
     }
     
     @Test
     public void Any_And_Gt(){
-        assertEquals(0, catQuery().where(
+        assertEquals(0, query().from(cat).where(
                 cat.kittens.any().name.eq("Ruth123"), 
                 cat.kittens.any().bodyWeight.gt(10.0)).count());
     }
@@ -297,143 +293,143 @@ public abstract class AbstractStandardTest {
     
     @Test
     public void Aggregates_UniqueResult_Min(){
-        assertEquals(Integer.valueOf(1), catQuery().uniqueResult(cat.id.min()));
+        assertEquals(Integer.valueOf(1), query().from(cat).uniqueResult(cat.id.min()));
     }
 
     @Test
     public void Aggregates_UniqueResult_Max(){
-        assertEquals(Integer.valueOf(6), catQuery().uniqueResult(cat.id.max()));
+        assertEquals(Integer.valueOf(6), query().from(cat).uniqueResult(cat.id.max()));
     }
     
     @Test
     public void Aggregates_List_Min(){
-        assertEquals(Integer.valueOf(1), catQuery().list(cat.id.min()).get(0));
+        assertEquals(Integer.valueOf(1), query().from(cat).list(cat.id.min()).get(0));
     }
 
     @Test
     public void Aggregates_List_Max(){
-        assertEquals(Integer.valueOf(6), catQuery().list(cat.id.max()).get(0));
+        assertEquals(Integer.valueOf(6), query().from(cat).list(cat.id.max()).get(0));
     }
     
     @Test
     public void DistinctResults(){
         System.out.println("-- list results");
-        SearchResults<Date> res = catQuery().limit(2).listResults(cat.birthdate);
+        SearchResults<Date> res = query().from(cat).limit(2).listResults(cat.birthdate);
         assertEquals(2, res.getResults().size());
         assertEquals(6l, res.getTotal());
         System.out.println();
 
         System.out.println("-- list distinct results");
-        res = catQuery().limit(2).listDistinctResults(cat.birthdate);
+        res = query().from(cat).limit(2).listDistinctResults(cat.birthdate);
         assertEquals(1, res.getResults().size());
         assertEquals(1l, res.getTotal());
         System.out.println();
 
         System.out.println("-- list distinct");
-        assertEquals(1, catQuery().listDistinct(cat.birthdate).size());
+        assertEquals(1, query().from(cat).listDistinct(cat.birthdate).size());
     }
 
     @Test
     public void In(){
-        catQuery().where(cat.id.in(Arrays.asList(1,2,3))).count();
-        catQuery().where(cat.name.in(Arrays.asList("A","B","C"))).count();
+        query().from(cat).where(cat.id.in(Arrays.asList(1,2,3))).count();
+        query().from(cat).where(cat.name.in(Arrays.asList("A","B","C"))).count();
     }
     
     @Test
     public void In2(){
-        catQuery().where(cat.id.in(1,2,3)).count();
-        catQuery().where(cat.name.in("A","B","C")).count();
+        query().from(cat).where(cat.id.in(1,2,3)).count();
+        query().from(cat).where(cat.name.in("A","B","C")).count();
     }    
     
     @Test
     public void In3() {
-        catQuery().where(cat.name.in("A,B,C".split(","))).count();
+        query().from(cat).where(cat.name.in("A,B,C".split(","))).count();
     }
 
     @Test
     public void In4() {
         //$.parameterRelease.id.eq(releaseId).and($.parameterGroups.any().id.in(filter.getGroups()));        
-        catQuery().where(cat.id.eq(1), cat.kittens.any().id.in(1,2,3)).list(cat);
+        query().from(cat).where(cat.id.eq(1), cat.kittens.any().id.in(1,2,3)).list(cat);
     }
     
     @Test
     public void StartsWith(){
-        assertEquals(1, catQuery().where(cat.name.startsWith("R")).count());
+        assertEquals(1, query().from(cat).where(cat.name.startsWith("R")).count());
     }
     
     @Test
     public void StartsWith2(){
-        assertEquals(0, catQuery().where(cat.name.startsWith("X")).count());
+        assertEquals(0, query().from(cat).where(cat.name.startsWith("X")).count());
     }
 
     @Test
     public void StartsWith3(){
-        assertEquals(1, catQuery().where(cat.name.startsWith("Mary_")).count());
+        assertEquals(1, query().from(cat).where(cat.name.startsWith("Mary_")).count());
     }
     
     @Test
     public void StartsWith_IgnoreCase(){
-        assertEquals(1, catQuery().where(cat.name.startsWithIgnoreCase("r")).count());
+        assertEquals(1, query().from(cat).where(cat.name.startsWithIgnoreCase("r")).count());
     }
 
     @Test
     public void EndsWith(){
-        assertEquals(1, catQuery().where(cat.name.endsWith("h123")).count());
+        assertEquals(1, query().from(cat).where(cat.name.endsWith("h123")).count());
     }
     
     @Test
     public void EndsWith2(){
-        assertEquals(0, catQuery().where(cat.name.endsWith("X")).count());
+        assertEquals(0, query().from(cat).where(cat.name.endsWith("X")).count());
     }
 
     @Test
     public void EndsWith3(){
-        assertEquals(1, catQuery().where(cat.name.endsWith("_123")).count());
+        assertEquals(1, query().from(cat).where(cat.name.endsWith("_123")).count());
     }
     
     @Test
     public void EndsWith_IgnoreCase(){
-        assertEquals(1, catQuery().where(cat.name.endsWithIgnoreCase("H123")).count());
+        assertEquals(1, query().from(cat).where(cat.name.endsWithIgnoreCase("H123")).count());
     }
 
     @Test
     public void Contains1(){
-        assertEquals(1, catQuery().where(cat.name.contains("eli")).count());
+        assertEquals(1, query().from(cat).where(cat.name.contains("eli")).count());
     }
 
     @Test
     public void Contains2(){
-        assertEquals(1l, catQuery().where(cat.kittens.contains(savedCats.get(0))).count());
+        assertEquals(1l, query().from(cat).where(cat.kittens.contains(savedCats.get(0))).count());
     }
 
     @Test
     public void Contains3(){
-        assertEquals(1l, catQuery().where(cat.name.contains("_")).count());
+        assertEquals(1l, query().from(cat).where(cat.name.contains("_")).count());
     }	
 
     @Test
     public void Length(){
-        assertEquals(6, catQuery().where(cat.name.length().gt(0)).count());
+        assertEquals(6, query().from(cat).where(cat.name.length().gt(0)).count());
     }
 
     @Test
     public void IndexOf(){
-        assertEquals(Integer.valueOf(0), catQuery().where(cat.name.eq("Bob123"))
+        assertEquals(Integer.valueOf(0), query().from(cat).where(cat.name.eq("Bob123"))
                 .uniqueResult(cat.name.indexOf("B")));
     }
     
     @Test
     public void IndexOf2(){
-        assertEquals(Integer.valueOf(1), catQuery().where(cat.name.eq("Bob123"))
+        assertEquals(Integer.valueOf(1), query().from(cat).where(cat.name.eq("Bob123"))
                 .uniqueResult(cat.name.indexOf("o")));
     }
 
     @Test
     public void StringOperations(){
         if (!getTarget().equals(Target.MYSQL)){ // NOTE : locate in MYSQL is case-insensitive
-            assertEquals(0, catQuery().where(cat.name.startsWith("r")).count());
-            assertEquals(0, catQuery().where(cat.name.endsWith("H123")).count());
-            assertEquals(Integer.valueOf(2), catQuery().where(cat.name.eq("Bob123"))
+            assertEquals(0, query().from(cat).where(cat.name.startsWith("r")).count());
+            assertEquals(0, query().from(cat).where(cat.name.endsWith("H123")).count());
+            assertEquals(Integer.valueOf(2), query().from(cat).where(cat.name.eq("Bob123"))
                     .uniqueResult(cat.name.indexOf("b")));
         }
     }
@@ -441,25 +437,25 @@ public abstract class AbstractStandardTest {
     @Test
     public void Limit(){
         List<String> names1 = Arrays.asList("Allen123","Bob123");
-        assertEquals(names1, catQuery().orderBy(cat.name.asc()).limit(2).list(cat.name));
+        assertEquals(names1, query().from(cat).orderBy(cat.name.asc()).limit(2).list(cat.name));
     }
 
     @Test
     public void Limit2(){
         assertEquals(Collections.singletonList("Allen123"), 
-                catQuery().orderBy(cat.name.asc()).limit(1).list(cat.name));
+                query().from(cat).orderBy(cat.name.asc()).limit(1).list(cat.name));
     }
 
     @Test
     public void Offset(){
         List<String> names2 = Arrays.asList("Felix123","Mary_123","Ruth123","Some");
-        assertEquals(names2, catQuery().orderBy(cat.name.asc()).offset(2).list(cat.name));
+        assertEquals(names2, query().from(cat).orderBy(cat.name.asc()).offset(2).list(cat.name));
     }
 
     @Test
     public void Limit_and_offset(){
         List<String> names3 = Arrays.asList("Felix123","Mary_123");
-        assertEquals(names3, catQuery().orderBy(cat.name.asc()).limit(2).offset(2).list(cat.name));
+        assertEquals(names3, query().from(cat).orderBy(cat.name.asc()).limit(2).offset(2).list(cat.name));
     }
 
     @Test

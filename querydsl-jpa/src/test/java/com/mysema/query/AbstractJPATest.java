@@ -82,7 +82,9 @@ public abstract class AbstractJPATest extends AbstractStandardTest {
 
     @Test
     public void Hint(){
-        javax.persistence.Query query = query().from(QCat.cat).setHint("org.hibernate.cacheable", true).createQuery(QCat.cat);
+        javax.persistence.Query query = query().from(QCat.cat)
+                .setHint("org.hibernate.cacheable", true)
+                .createQuery(QCat.cat);
         assertNotNull(query);
         assertTrue(query.getHints().containsKey("org.hibernate.cacheable"));
         assertFalse(query.getResultList().isEmpty());
@@ -90,19 +92,22 @@ public abstract class AbstractJPATest extends AbstractStandardTest {
 
     @Test
     public void Hint2(){
-        assertFalse(query().from(QCat.cat).setHint("org.hibernate.cacheable", true).list(QCat.cat).isEmpty());
+        assertFalse(query().from(QCat.cat).setHint("org.hibernate.cacheable", true)
+                .list(QCat.cat).isEmpty());
     }
 
     @Test
     public void LockMode(){
-        javax.persistence.Query query = query().from(QCat.cat).setLockMode(LockModeType.PESSIMISTIC_READ).createQuery(QCat.cat);
+        javax.persistence.Query query = query().from(QCat.cat)
+                .setLockMode(LockModeType.PESSIMISTIC_READ).createQuery(QCat.cat);
         assertTrue(query.getLockMode().equals(LockModeType.PESSIMISTIC_READ));
         assertFalse(query.getResultList().isEmpty());
     }
 
     @Test
     public void LockMode2(){
-        assertFalse(query().from(QCat.cat).setLockMode(LockModeType.PESSIMISTIC_READ).list(QCat.cat).isEmpty());
+        assertFalse(query().from(QCat.cat).setLockMode(LockModeType.PESSIMISTIC_READ)
+                .list(QCat.cat).isEmpty());
     }
 
     @Test

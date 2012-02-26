@@ -13,6 +13,9 @@
  */
 package com.mysema.testutil;
 
+import java.lang.reflect.Method;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -33,6 +36,8 @@ import org.junit.runners.model.Statement;
 public class JPATestRunner extends BlockJUnit4ClassRunner {
 
     private EntityManagerFactory entityManagerFactory;
+    
+    private boolean isDerby;
 
     public JPATestRunner(Class<?> klass) throws InitializationError{
         super(klass);
@@ -47,16 +52,23 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
                 return new Statement(){
                     @Override
                     public void evaluate() throws Throwable {
-                        EntityManager entityManager = entityManagerFactory.createEntityManager();
-                        target.getClass().getMethod("setEntityManager", EntityManager.class).invoke(target, entityManager);
-                        entityManager.getTransaction().begin();
+                        EntityManager entityManager = entityManagerFactory.createEntityManager();               
                         try {
+                            Method method = target.getClass().getMethod("setEntityManager", EntityManager.class); 
+                            method.invoke(target, entityManager);
+                            entityManager.getTransaction().begin();
                             base.evaluate();
                         } finally {
-                            entityManager.getTransaction().rollback();
-                            entityManager.close();    
+                            try {
+                                if (entityManager.getTransaction().isActive()) {
+                                    entityManager.getTransaction().rollback();    
+                                }                                
+                                entityManager.clear();
+                            } finally {
+                                entityManager.close();    
+                            }                                         
                         } 
-                    }                    
+                    }                                  
                 };
             }
             
@@ -68,16 +80,38 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
     public void run(final RunNotifier notifier) {
         try {
             JPAConfig config = getTestClass().getJavaClass().getAnnotation(JPAConfig.class);
+            isDerby = config.value().contains("derby");
+            if (isDerby) {
+                Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
+            }
             entityManagerFactory = Persistence.createEntityManagerFactory(config.value());
             super.run(notifier);
         } catch (Exception e) {
             String error = "Caught " + e.getClass().getName();
             throw new RuntimeException(error, e);
         } finally {
-            if (entityManagerFactory != null){
-                entityManagerFactory.close();
-            }
+            shutdown();
         }
 
+    }
+    
+    private void shutdown() {
+        entityManagerFactory.getCache().evictAll();
+        
+        if (entityManagerFactory != null){
+            entityManagerFactory.close();
+            entityManagerFactory = null;
+        }
+        
+        // clean shutdown of derby
+        if (isDerby) {
+            try {                    
+                DriverManager.getConnection("jdbc:derby:;shutdown=true");
+            } catch (SQLException e) {
+                if (!e.getMessage().equals("Derby system shutdown.")) {
+                    throw new RuntimeException(e);    
+                }                    
+            } 
+        }
     }
 }

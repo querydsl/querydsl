@@ -15,7 +15,9 @@
      <property name="hibernate.dialect" value="com.mysema.query.jpa.support.ExtendedDerbyDialect"/>
      <property name="hibernate.connection.driver_class" value="org.apache.derby.jdbc.EmbeddedDriver"/>
      <property name="hibernate.connection.url" value="jdbc:derby:target/derbydb;create=true"/>
+     <!-- 
      <property name="hibernate.show_sql" value="true"/>
+      -->
      <property name="hibernate.flushMode" value="FLUSH_AUTO"/>
      <property name="hibernate.hbm2ddl.auto" value="update"/>
    </properties>
@@ -53,9 +55,11 @@
      <property name="hibernate.archive.autodetection" value="class" />
      <property name="hibernate.dialect" value="com.mysema.query.jpa.support.ExtendedHSQLDialect"/>
      <property name="hibernate.connection.driver_class" value="org.hsqldb.jdbcDriver"/>
-     <property name="hibernate.connection.url" value="jdbc:hsqldb:file:target/testdb"/>
+     <property name="hibernate.connection.url" value="jdbc:hsqldb:file:target/testdb;shutdown=true"/>
      <property name="hibernate.connection.user" value="sa"/>
+     <!-- 
      <property name="hibernate.show_sql" value="true"/>
+      -->
      <property name="hibernate.flushMode" value="FLUSH_AUTO"/>
      <property name="hibernate.hbm2ddl.auto" value="update"/>
    </properties>
@@ -66,7 +70,7 @@
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver"/>
-      <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:target/testdb2"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:target/testdb2;shutdown=true"/>
 	  <property name="javax.persistence.jdbc.user" value="sa"/>
   	  <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
 	  <property name="eclipselink.ddl-generation.output-mode" value="database" />		
@@ -82,7 +86,9 @@
      <property name="hibernate.connection.driver_class" value="org.h2.Driver"/>
      <property name="hibernate.connection.url" value="jdbc:h2:target/h2-1"/>
      <property name="hibernate.connection.user" value="sa"/>
+     <!-- 
      <property name="hibernate.show_sql" value="true"/>
+      -->
      <property name="hibernate.flushMode" value="FLUSH_AUTO"/>
      <property name="hibernate.hbm2ddl.auto" value="update"/>	
     </properties>
@@ -125,7 +131,9 @@
      <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/querydsl"/>
      <property name="hibernate.connection.username" value="querydsl"/>
      <property name="hibernate.connection.password" value="querydsl"/>
+     <!-- 
      <property name="hibernate.show_sql" value="true"/>
+      -->
      <property name="hibernate.flushMode" value="FLUSH_AUTO"/>
      <property name="hibernate.hbm2ddl.auto" value="update"/>
    </properties>
@@ -154,7 +162,9 @@
      <property name="hibernate.connection.url" value="jdbc:postgresql://localhost:5432/querydsl"/>
      <property name="hibernate.connection.username" value="querydsl"/>
      <property name="hibernate.connection.password" value="querydsl"/>
+     <!-- 
      <property name="hibernate.show_sql" value="true"/>
+      -->
      <property name="hibernate.flushMode" value="FLUSH_AUTO"/>
      <property name="hibernate.hbm2ddl.auto" value="update"/>
    </properties>
@@ -170,7 +180,9 @@
      <property name="hibernate.connection.url" value="jdbc:oracle:thin:@localhost:1521:xe"/>
      <property name="hibernate.connection.username" value="querydsl"/>
      <property name="hibernate.connection.password" value="querydsl"/>
+     <!-- 
      <property name="hibernate.show_sql" value="true"/>
+      -->
      <property name="hibernate.flushMode" value="FLUSH_AUTO"/>
      <property name="hibernate.hbm2ddl.auto" value="update"/>
    </properties>

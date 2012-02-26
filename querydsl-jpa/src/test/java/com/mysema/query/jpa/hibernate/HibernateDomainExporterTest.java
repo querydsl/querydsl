@@ -33,7 +33,8 @@ import com.mysema.query.jpa.domain2.Domain2;
 
 public class HibernateDomainExporterTest {
     
-    private final SerializerConfig serializerConfig = SimpleSerializerConfig.getConfig(Domain.class.getPackage().getAnnotation(Config.class));
+    private final SerializerConfig serializerConfig = SimpleSerializerConfig.getConfig(
+            Domain.class.getPackage().getAnnotation(Config.class));
         
     @Test
     public void Execute_Contact() throws IOException {

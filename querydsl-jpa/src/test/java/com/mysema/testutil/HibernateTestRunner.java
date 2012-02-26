@@ -14,6 +14,9 @@
 package com.mysema.testutil;
 
 import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
@@ -36,9 +39,11 @@ import com.mysema.query.jpa.domain.Domain;
  * @version $Id$
  */
 public class HibernateTestRunner extends BlockJUnit4ClassRunner {
-
+    
     private SessionFactory sessionFactory;
-
+    
+    private boolean isDerby = false;
+    
     public HibernateTestRunner(Class<?> klass) throws InitializationError {
         super(klass);
     }
@@ -52,16 +57,23 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
                 return new Statement(){
                     @Override
                     public void evaluate() throws Throwable {
-                        Session session = sessionFactory.openSession();
-                        target.getClass().getMethod("setSession", Session.class).invoke(target, session);
-                        session.beginTransaction();
+                        Session session = sessionFactory.openSession();            
                         try {
+                            Method method = target.getClass().getMethod("setSession", Session.class);
+                            method.invoke(target, session);
+                            session.beginTransaction();
                             base.evaluate();
                         } finally {
-                            session.getTransaction().rollback();
-                            session.close();    
+                            try {
+                                if (session.getTransaction().isActive()) {
+                                    session.getTransaction().rollback();    
+                                }                                
+                                session.clear();
+                            } finally {
+                                session.close();    
+                            }                                                        
                         } 
-                    }                    
+                    }                                        
                 };
             }
             
@@ -77,6 +89,10 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
                 cfg.addAnnotatedClass(cl);
             }
             HibernateConfig config = getTestClass().getJavaClass().getAnnotation(HibernateConfig.class);
+            isDerby = config.value().contains("derby");
+            if (isDerby) {
+                Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
+            }
             Properties props = new Properties();
             InputStream is = HibernateTestRunner.class.getResourceAsStream(config.value());
             if (is == null){
@@ -90,11 +106,29 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
             String error = "Caught " + e.getClass().getName();
             throw new RuntimeException(error, e);
         } finally {
-            if (sessionFactory != null){
-                sessionFactory.close();
-            }
+            shutdown(); 
         }
 
+    }
+    
+    private void shutdown() {
+        sessionFactory.getCache().evictEntityRegions();
+        
+        if (sessionFactory != null){
+            sessionFactory.close();
+            sessionFactory = null;                
+        }
+        
+        // clean shutdown of derby
+        if (isDerby) {
+            try {
+                DriverManager.getConnection("jdbc:derby:;shutdown=true");
+            } catch (SQLException e) {
+                if (!e.getMessage().equals("Derby system shutdown.")) {
+                    throw new RuntimeException(e);    
+                }
+            }
+        }
     }
 
 }
