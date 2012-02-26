@@ -94,7 +94,14 @@ title:*
   <para>The results are sorted ascending based on title and year.</para>
   
   <para>Alternatively a sort method call can be used to declare the sort logic as a Sort instance
-  instead.</para>
+  instead</para>
+  
+<programlisting language="java"><![CDATA[ 
+query
+    .where(doc.title.like("*"))
+    .sort(sort)
+    .list();
+]]></programlisting>  
   
   </sect2>
   
