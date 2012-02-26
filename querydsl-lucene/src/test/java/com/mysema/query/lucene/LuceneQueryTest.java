@@ -24,6 +24,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -31,16 +32,17 @@ import java.util.Locale;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
-import org.apache.lucene.document.MapFieldSelector;
-import org.apache.lucene.document.NumericField;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.MapFieldSelector;
+import org.apache.lucene.document.NumericField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriter.MaxFieldLength;
 import org.apache.lucene.search.DuplicateFilter;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Searcher;
+import org.apache.lucene.search.Sort;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
 import org.junit.After;
@@ -288,6 +290,23 @@ public class LuceneQueryTest {
         assertEquals("1990", documents.get(2).get("year"));
         assertEquals("1990", documents.get(3).get("year"));
     }
+    
+
+    @Test
+    public void List_Sort() {
+        Sort sort = LuceneSerializer.DEFAULT.toSort(Collections.singletonList(year.asc()));
+        
+        query.where(year.between(1800, 2000));
+        //query.orderBy(year.asc());
+        query.sort(sort);
+        final List<Document> documents = query.list();
+        assertFalse(documents.isEmpty());
+        assertEquals(4, documents.size());
+        assertEquals("1864", documents.get(0).get("year"));
+        assertEquals("1954", documents.get(1).get("year"));
+        assertEquals("1990", documents.get(2).get("year"));
+        assertEquals("1990", documents.get(3).get("year"));
+    }
 
     @Test
     public void List_Distinct_Property(){
@@ -320,6 +339,7 @@ public class LuceneQueryTest {
         assertEquals("1954", documents.get(2).get("year"));
         assertEquals("1864", documents.get(3).get("year"));
     }
+    
 
     @Test
     public void List_Sorted_Descending_By_Gross() {

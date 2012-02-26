@@ -72,6 +72,9 @@ SimpleProjectable<T> {
 
     @Nullable
     private Filter filter;
+    
+    @Nullable
+    private Sort querySort;
 
     @SuppressWarnings("unchecked")
     public AbstractLuceneQuery(LuceneSerializer serializer, Searcher searcher,
@@ -163,7 +166,7 @@ SimpleProjectable<T> {
         final List<OrderSpecifier<?>> orderBys = metadata.getOrderBy();
         final Long queryLimit = metadata.getModifiers().getLimit();
         final Long queryOffset = metadata.getModifiers().getOffset();
-        Sort sort = null;
+        Sort sort = querySort;
         int limit;
         final int offset = queryOffset != null ? queryOffset.intValue() : 0;
         try {
@@ -177,7 +180,7 @@ SimpleProjectable<T> {
         if (queryLimit != null && queryLimit.intValue() < limit) {
             limit = queryLimit.intValue();
         }
-        if (!orderBys.isEmpty()) {
+        if (sort == null && !orderBys.isEmpty()) {
             sort = serializer.toSort(orderBys);
         }
 
@@ -281,6 +284,12 @@ SimpleProjectable<T> {
     @Override
     public <P> Q set(ParamExpression<P> param, P value) {
         return queryMixin.set(param, value);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public Q sort(Sort sort) {
+        this.querySort = sort;
+        return (Q)this;
     }
 
     @Nullable

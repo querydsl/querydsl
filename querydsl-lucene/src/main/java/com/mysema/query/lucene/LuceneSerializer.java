@@ -530,7 +530,7 @@ public class LuceneSerializer {
         }
     }
 
-    public Sort toSort(List<OrderSpecifier<?>> orderBys) {
+    public Sort toSort(List<? extends OrderSpecifier<?>> orderBys) {
         List<SortField> sorts = new ArrayList<SortField>(orderBys.size());
         for (OrderSpecifier<?> order : orderBys) {
             if (!(order.getTarget() instanceof Path<?>)) {
