@@ -96,7 +96,8 @@ title:*
   <para>Alternatively a sort method call can be used to declare the sort logic as a Sort instance
   instead</para>
   
-<programlisting language="java"><![CDATA[ 
+<programlisting language="java"><![CDATA[
+Sort sort = ...; 
 query
     .where(doc.title.like("*"))
     .sort(sort)
