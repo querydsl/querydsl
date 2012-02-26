@@ -93,6 +93,9 @@ title:*
 
   <para>The results are sorted ascending based on title and year.</para>
   
+  <para>Alternatively a sort method call can be used to declare the sort logic as a Sort instance
+  instead.</para>
+  
   </sect2>
   
   <sect2>
