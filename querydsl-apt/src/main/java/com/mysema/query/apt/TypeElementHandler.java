@@ -135,6 +135,7 @@ public final class TypeElementHandler {
 
         return entityType;
     }
+
     
     private Property toProperty(EntityType entityType, String name, TypeMirror type, 
             Annotations annotations) {
@@ -146,7 +147,7 @@ public final class TypeElementHandler {
                 return null;
             }
             propertyType = propertyType.as(typeCategory);
-        }
+        } 
         
         // inits
         String[] inits = new String[0];

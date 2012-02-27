@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nullable;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
@@ -222,6 +223,41 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         
         // from annotation less supertypes
         elements.addAll(getAnnotationlessSupertypes(elements));
+        
+        // register possible embedded types of non-tracked supertypes
+        if (conf.getEmbeddedAnnotation() != null) {
+            Class<? extends Annotation> embedded = conf.getEmbeddedAnnotation();
+            Set<Element> embeddedElements = new HashSet<Element>();
+            for (Element element : elements) {
+                TypeMirror superTypeMirror = ((TypeElement)element).getSuperclass();
+                while (superTypeMirror != null) {
+                    TypeElement superTypeElement = (TypeElement) processingEnv.getTypeUtils().asElement(superTypeMirror);
+                    if (superTypeElement != null) {
+                        List<? extends Element> enclosed = superTypeElement.getEnclosedElements();
+                        for (Element child : enclosed) {
+                            if (child.getAnnotation(embedded) != null) {
+                                handleEmbeddedType(child, embeddedElements);
+                            }
+                        }    
+                        superTypeMirror = superTypeElement.getSuperclass();
+                        if (superTypeMirror instanceof NoType) {
+                            superTypeMirror = null;
+                        }
+                    } else {
+                        superTypeMirror = null;
+                    }
+                }
+            }
+                
+            // register found elements
+            for (Element element : embeddedElements) {
+                if (!elements.contains(element)) {
+                    elementHandler.handleEntityType((TypeElement)element);
+                }
+            }
+        }
+        
+        
         return elements;
     }
     
@@ -274,31 +310,35 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
 
         // only creation
         for (Element element : getElements(conf.getEmbeddedAnnotation())) {
-            TypeMirror type = element.asType();
-            if (element.getKind() == ElementKind.METHOD){
-                type = ((ExecutableElement)element).getReturnType();
-            }
-            String typeName = type.toString();
-
-            if (typeName.startsWith(Collection.class.getName())
-             || typeName.startsWith(List.class.getName())
-             || typeName.startsWith(Set.class.getName())) {
-                type = ((DeclaredType)type).getTypeArguments().get(0);
-                
-            } else if (typeName.startsWith(Map.class.getName())){
-                type = ((DeclaredType)type).getTypeArguments().get(1);
-            }
-            
-            TypeElement typeElement = typeExtractor.visit(type);
-            
-            if (typeElement != null && !TypeUtils.hasAnnotationOfType(typeElement, conf.getEntityAnnotations())) {
-                if (!typeElement.getQualifiedName().toString().startsWith("java.")) {
-                    elements.add(typeElement);    
-                }                
-            }
+            handleEmbeddedType(element, elements);
         }
 
         return elements;                
+    }
+
+    private void handleEmbeddedType(Element element, Set<Element> elements) {
+        TypeMirror type = element.asType();
+        if (element.getKind() == ElementKind.METHOD){
+            type = ((ExecutableElement)element).getReturnType();
+        }
+        String typeName = type.toString();
+
+        if (typeName.startsWith(Collection.class.getName())
+         || typeName.startsWith(List.class.getName())
+         || typeName.startsWith(Set.class.getName())) {
+            type = ((DeclaredType)type).getTypeArguments().get(0);
+            
+        } else if (typeName.startsWith(Map.class.getName())){
+            type = ((DeclaredType)type).getTypeArguments().get(1);
+        }
+        
+        TypeElement typeElement = typeExtractor.visit(type);
+        
+        if (typeElement != null && !TypeUtils.hasAnnotationOfType(typeElement, conf.getEntityAnnotations())) {
+            if (!typeElement.getQualifiedName().toString().startsWith("java.")) {
+                elements.add(typeElement);    
+            }                
+        }
     }      
 
     private Set<TypeElement> getTypeFromProperties(Set<Element> parents) {

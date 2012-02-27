@@ -22,6 +22,8 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mysema.query.domain.Cat;
+
 public class GenericExporterTest {
 
     private GenericExporter exporter;
@@ -39,7 +41,7 @@ public class GenericExporterTest {
         String str = FileUtils.readFileToString(new File("target/gen1-jpa/com/mysema/query/codegen/QGroup.java"));
         assertTrue(str.contains("QGroup group = new QGroup(\"group1\");"));
     }
-
+    
     @Test
     public void Export() {        
         exporter.setTargetFolder(new File("target/gen1"));
@@ -98,5 +100,12 @@ public class GenericExporterTest {
         exporter.export(getClass().getPackage());
         assertTrue(new File("target/gen5/com/mysema/query/codegen/QExampleEmbeddable.java").exists());
     }
+    
+    @Test
+    public void Export_Domain_Package() {
+        exporter.setTargetFolder(new File("target/gen6"));
+        exporter.export(Cat.class.getPackage());
+    }
+
 
 }
