@@ -6,3 +6,4 @@ test-output
 .settings
 /.metadata
 .cache
+derby.log
