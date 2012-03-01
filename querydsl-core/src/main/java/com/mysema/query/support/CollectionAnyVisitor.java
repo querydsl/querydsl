@@ -14,7 +14,26 @@
 package com.mysema.query.support;
 
 
-import com.mysema.query.types.*;
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.Operation;
+import com.mysema.query.types.OperationImpl;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.ParamExpression;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathImpl;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathType;
+import com.mysema.query.types.Predicate;
+import com.mysema.query.types.PredicateOperation;
+import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.TemplateExpression;
+import com.mysema.query.types.TemplateExpressionImpl;
+import com.mysema.query.types.Templates;
+import com.mysema.query.types.ToStringVisitor;
+import com.mysema.query.types.Visitor;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.template.BooleanTemplate;
 

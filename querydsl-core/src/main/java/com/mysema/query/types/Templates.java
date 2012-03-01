@@ -18,14 +18,11 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import net.jcip.annotations.Immutable;
-
 /**
  * Templates provides operator patterns for query expression serialization
  *
  * @author tiwe
  */
-@Immutable
 public class Templates {
 
     public static final Templates DEFAULT = new Templates();

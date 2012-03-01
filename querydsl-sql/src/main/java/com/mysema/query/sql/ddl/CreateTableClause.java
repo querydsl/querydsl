@@ -31,8 +31,6 @@ import com.mysema.query.sql.support.ForeignKeyData;
 import com.mysema.query.sql.support.IndexData;
 import com.mysema.query.sql.support.PrimaryKeyData;
 
-import edu.umd.cs.findbugs.annotations.SuppressWarnings;
-
 /**
  * CreateTableClause defines a CREATE TABLE clause
  * 

@@ -89,16 +89,15 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
         } catch (Exception e) {
             String error = "Caught " + e.getClass().getName();
             throw new RuntimeException(error, e);
-        } finally {
+        } finally {            
             shutdown();
         }
 
     }
     
     private void shutdown() {
-        entityManagerFactory.getCache().evictAll();
-        
         if (entityManagerFactory != null){
+            entityManagerFactory.getCache().evictAll();
             entityManagerFactory.close();
             entityManagerFactory = null;
         }

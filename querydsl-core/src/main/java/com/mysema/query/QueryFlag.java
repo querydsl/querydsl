@@ -15,8 +15,6 @@ package com.mysema.query;
 
 import java.io.Serializable;
 
-import net.jcip.annotations.Immutable;
-
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.TemplateExpressionImpl;
@@ -27,7 +25,6 @@ import com.mysema.query.types.TemplateExpressionImpl;
  * @author tiwe
  *
  */
-@Immutable
 public class QueryFlag implements Serializable{
     
     private static final long serialVersionUID = -7131081607441961628L;

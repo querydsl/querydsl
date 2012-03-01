@@ -22,8 +22,6 @@ import javax.annotation.Generated;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import net.jcip.annotations.Immutable;
-
 import com.mysema.codegen.CodeWriter;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
@@ -36,7 +34,6 @@ import com.mysema.query.types.path.SimplePath;
  * @author tiwe
  *
  */
-@Immutable
 public final class SupertypeSerializer extends EntitySerializer{
 
     @Inject

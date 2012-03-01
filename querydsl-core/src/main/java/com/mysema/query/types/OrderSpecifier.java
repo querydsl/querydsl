@@ -15,8 +15,6 @@ package com.mysema.query.types;
 
 import java.io.Serializable;
 
-import net.jcip.annotations.Immutable;
-
 import com.mysema.commons.lang.Assert;
 
 /**
@@ -26,7 +24,6 @@ import com.mysema.commons.lang.Assert;
  * @author tiwe
  */
 @SuppressWarnings({"unchecked"})
-@Immutable
 public class OrderSpecifier<T extends Comparable> implements Serializable {
 
     private static final long serialVersionUID = 3427652988262514678L;

@@ -16,10 +16,4 @@
 /**
  * Query implementations for HQL and JPAQL
  */
-@DefaultAnnotation( { Nonnull.class })
 package com.mysema.query.jpa;
-
-import javax.annotation.Nonnull;
-
-import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
-

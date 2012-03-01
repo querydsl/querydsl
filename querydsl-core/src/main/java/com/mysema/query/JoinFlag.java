@@ -15,8 +15,6 @@ package com.mysema.query;
 
 import java.io.Serializable;
 
-import net.jcip.annotations.Immutable;
-
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.TemplateExpressionImpl;
 
@@ -26,7 +24,6 @@ import com.mysema.query.types.TemplateExpressionImpl;
  * @author tiwe
  *
  */
-@Immutable
 public class JoinFlag implements Serializable{
     
     public enum Position {

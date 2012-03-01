@@ -18,8 +18,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import net.jcip.annotations.Immutable;
-
 import org.apache.commons.collections15.Transformer;
 
 /**
@@ -28,12 +26,10 @@ import org.apache.commons.collections15.Transformer;
  * @author tiwe
  *
  */
-@Immutable
 public final class Template implements Serializable{
 
     private static final long serialVersionUID = -1697705745769542204L;
 
-    @Immutable
     public static final class Element implements Serializable{
 
         private static final long serialVersionUID = -6861235060996903489L;

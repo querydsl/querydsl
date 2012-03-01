@@ -112,9 +112,8 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
     }
     
     private void shutdown() {
-        sessionFactory.getCache().evictEntityRegions();
-        
         if (sessionFactory != null){
+            sessionFactory.getCache().evictEntityRegions();            
             sessionFactory.close();
             sessionFactory = null;                
         }

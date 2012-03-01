@@ -19,8 +19,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.jcip.annotations.Immutable;
-
 import com.mysema.codegen.model.Type;
 import com.mysema.commons.lang.Assert;
 import com.mysema.util.JavaSyntaxUtils;
@@ -30,7 +28,6 @@ import com.mysema.util.JavaSyntaxUtils;
  *
  * @author tiwe
  */
-@Immutable
 public final class Property implements Comparable<Property> {
 
     private final EntityType declaringType;

@@ -21,8 +21,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.jcip.annotations.Immutable;
-
 import org.apache.commons.collections15.Transformer;
 
 import com.mysema.query.types.Template.Element;
@@ -33,7 +31,6 @@ import com.mysema.query.types.Template.Element;
  * @author tiwe
  *
  */
-@Immutable
 public class TemplateFactory {
 
     private static final Pattern elementPattern = Pattern.compile("\\{%?%?\\d+[slu%]?%?\\}");

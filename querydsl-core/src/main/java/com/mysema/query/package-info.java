@@ -15,10 +15,5 @@
 /**
  * Contains basic Query elements
  */
-@DefaultAnnotation( { Nonnull.class })
 package com.mysema.query;
-
-import javax.annotation.Nonnull;
-
-import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
 

@@ -15,8 +15,6 @@ package com.mysema.query.codegen;
 
 import java.util.List;
 
-import net.jcip.annotations.Immutable;
-
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
 import com.mysema.commons.lang.Assert;
@@ -27,7 +25,6 @@ import com.mysema.commons.lang.Assert;
  * @author tiwe
  *
  */
-@Immutable
 public class Delegate {
 
     private final Type declaringType;

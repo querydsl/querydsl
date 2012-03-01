@@ -27,8 +27,6 @@ import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.ElementFilter;
 
-import net.jcip.annotations.Immutable;
-
 import com.mysema.codegen.model.Constructor;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
@@ -49,7 +47,6 @@ import com.mysema.util.BeanUtils;
  * @author tiwe
  *
  */
-@Immutable
 public final class TypeElementHandler {
 
     private final TypeMappings typeMappings;

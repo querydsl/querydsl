@@ -17,8 +17,6 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
-import net.jcip.annotations.Immutable;
-
 import org.apache.commons.collections15.Transformer;
 
 import com.mysema.codegen.CodeWriter;
@@ -39,7 +37,6 @@ import com.mysema.query.types.expr.NumberExpression;
  * @author tiwe
  *
  */
-@Immutable
 public final class ProjectionSerializer implements Serializer{
 
     private final TypeMappings typeMappings;

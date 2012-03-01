@@ -123,7 +123,6 @@ public interface QueryMetadata extends Serializable {
      *
      * @return
      */
-    @Nullable
     Predicate getHaving();
 
     /**
@@ -138,7 +137,6 @@ public interface QueryMetadata extends Serializable {
      *
      * @return
      */
-    @Nullable
     QueryModifiers getModifiers();
 
     /**

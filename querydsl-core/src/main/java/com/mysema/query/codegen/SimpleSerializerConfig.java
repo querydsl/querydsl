@@ -13,8 +13,6 @@
  */
 package com.mysema.query.codegen;
 
-import net.jcip.annotations.Immutable;
-
 import com.mysema.query.annotations.Config;
 
 /**
@@ -23,7 +21,6 @@ import com.mysema.query.annotations.Config;
  * @author tiwe
  *
  */
-@Immutable
 public final class SimpleSerializerConfig implements SerializerConfig{
 
     public static final SerializerConfig DEFAULT = new SimpleSerializerConfig(false, false, false, true);

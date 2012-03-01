@@ -16,8 +16,6 @@ package com.mysema.query.sql;
 import java.util.Arrays;
 import java.util.List;
 
-import net.jcip.annotations.Immutable;
-
 import com.mysema.query.types.Path;
 
 /**
@@ -25,7 +23,6 @@ import com.mysema.query.types.Path;
  *
  * @author tiwe
  */
-@Immutable
 public class PrimaryKey <E> {
 
     private final RelationalPath<?> entity;

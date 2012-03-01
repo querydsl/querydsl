@@ -1,16 +1,3 @@
 ----------------------------------------------------------------
-Sat Feb 25 21:53:39 EET 2012:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.8.2.2 - (1181258): instance a816c00e-0135-b613-67e4-000012523d78 
-on database directory /home/tiwe/work/querydsl/querydsl-jpa/target/derbydb  with class loader sun.misc.Launcher$AppClassLoader@1cde100 
-Loaded from file:/home/tiwe/.m2/repository/org/apache/derby/derby/10.8.2.2/derby-10.8.2.2.jar
-java.vendor=Sun Microsystems Inc.
-java.runtime.version=1.6.0_26-b03
-user.dir=/home/tiwe/work/querydsl/querydsl-jpa
-derby.system.home=null
-Database Class Loader started - derby.database.classpath=''
-----------------------------------------------------------------
-Sat Feb 25 21:53:40 EET 2012: Shutting down Derby engine
-----------------------------------------------------------------
-Sat Feb 25 21:53:41 EET 2012:
-Shutting down instance a816c00e-0135-b613-67e4-000012523d78 on database directory /home/tiwe/work/querydsl/querydsl-jpa/target/derbydb with class loader sun.misc.Launcher$AppClassLoader@1cde100 
+Mon Feb 27 21:38:18 EET 2012: Shutting down Derby engine
 ----------------------------------------------------------------

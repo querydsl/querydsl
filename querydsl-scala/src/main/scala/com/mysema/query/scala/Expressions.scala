@@ -209,6 +209,15 @@ trait ComparableExpression[T <: Comparable[_]] extends ComparableExpressionBase[
   
 }
 
+/*trait NumericExpression[T,N <: Number with Comparable[N]] extends SimpleExpression[T] {
+  
+  def asNumber(): Expression[N]
+  
+  lazy val asc = new OrderSpecifier[N](Order.ASC, asNumber())
+
+  lazy val desc = new OrderSpecifier[N](Order.DESC, asNumber())
+}*/
+
 trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpressionBase[T] {
     
   type NumberExpr = Expression[_ <: Number]
@@ -347,6 +356,14 @@ trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpress
 
 }
 
+object BooleanExpression {
+    
+  def allOf(expr: BooleanExpression*) = expr reduceLeft { _ && _ }
+      
+  def anyOf(expr: BooleanExpression*) = expr reduceLeft { _ || _ }
+    
+}
+
 trait BooleanExpression extends ComparableExpression[java.lang.Boolean] with Predicate {
     
   def and(right: Predicate) = boolean(Ops.AND, this, right)
@@ -369,14 +386,6 @@ trait BooleanExpression extends ComparableExpression[java.lang.Boolean] with Pre
 
   override def as(alias: String): BooleanExpression = as(new PathImpl[java.lang.Boolean](getType, alias))
 
-}
-
-object BooleanExpression {
-    
-  def allOf(expr: BooleanExpression*) = expr reduceLeft { _ && _ }
-      
-  def anyOf(expr: BooleanExpression*) = expr reduceLeft { _ || _ }
-    
 }
 
 trait StringExpression extends ComparableExpression[String] {

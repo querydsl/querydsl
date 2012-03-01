@@ -26,8 +26,6 @@ import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Predicate;
 
-import edu.umd.cs.findbugs.annotations.SuppressWarnings;
-
 /**
  * SimpleQueryAdapter is an apdater implementation for the SimpleQuery and SimpleProjectabl interfaces
  *

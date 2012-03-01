@@ -18,14 +18,11 @@ import static java.util.Collections.unmodifiableList;
 import java.util.Arrays;
 import java.util.List;
 
-import net.jcip.annotations.Immutable;
-
 import com.mysema.commons.lang.Assert;
 
 /**
  * OperatorImpl is the default implementation of the {@link Operator}  interface
  */
-@Immutable
 public class OperatorImpl<T> implements Operator<T> {
 
     private static final long serialVersionUID = -2435035383548549877L;

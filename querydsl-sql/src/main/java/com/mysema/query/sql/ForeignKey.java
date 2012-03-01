@@ -16,8 +16,6 @@ package com.mysema.query.sql;
 import java.util.Arrays;
 import java.util.List;
 
-import net.jcip.annotations.Immutable;
-
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
@@ -32,7 +30,6 @@ import com.mysema.query.types.path.SimplePath;
  *
  * @param <E>
  */
-@Immutable
 public class ForeignKey <E> {
 
     private final RelationalPath<?> entity;

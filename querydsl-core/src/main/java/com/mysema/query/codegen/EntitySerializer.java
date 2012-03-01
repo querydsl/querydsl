@@ -39,8 +39,6 @@ import javax.annotation.Generated;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import net.jcip.annotations.Immutable;
-
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.lang3.StringUtils;
 
@@ -83,7 +81,6 @@ import com.mysema.query.types.path.TimePath;
  * @author tiwe
  *
  */
-@Immutable
 public class EntitySerializer implements Serializer{
 
     private static final Parameter PATH_METADATA = new Parameter("metadata", new ClassType(PathMetadata.class, (Type)null));

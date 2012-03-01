@@ -14,10 +14,4 @@
 /**
  * JDOQL support for Querydsl
  */
-@DefaultAnnotation( { Nonnull.class })
 package com.mysema.query.jdo;
-
-import javax.annotation.Nonnull;
-
-import edu.umd.cs.findbugs.annotations.DefaultAnnotation;
-

@@ -19,8 +19,6 @@ import java.util.List;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 
-import net.jcip.annotations.Immutable;
-
 import org.apache.commons.lang3.ObjectUtils;
 
 /**
@@ -28,7 +26,6 @@ import org.apache.commons.lang3.ObjectUtils;
  *
  * @author tiwe
  */
-@Immutable
 public final class QueryModifiers implements Serializable{
 
     private static final long serialVersionUID = 2934344588433680339L;

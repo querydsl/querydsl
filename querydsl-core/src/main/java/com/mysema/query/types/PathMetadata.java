@@ -17,8 +17,6 @@ import java.io.Serializable;
 
 import javax.annotation.Nullable;
 
-import net.jcip.annotations.Immutable;
-
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -27,7 +25,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  *
  * @author tiwe
  */
-@Immutable
 public final class PathMetadata<T> implements Serializable{
 
     private static final long serialVersionUID = -1055994185028970065L;

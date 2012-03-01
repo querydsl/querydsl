@@ -24,9 +24,9 @@ import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Ops.MathOps;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
-import com.mysema.query.types.Ops.MathOps;
 import com.mysema.util.MathUtils;
 
 /**

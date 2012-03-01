@@ -20,8 +20,6 @@ import java.sql.Statement;
 import com.mysema.query.QueryException;
 import com.mysema.query.sql.SQLTemplates;
 
-import edu.umd.cs.findbugs.annotations.SuppressWarnings;
-
 /**
  * DropTableClause defines a DROP TABLE clause
  * 

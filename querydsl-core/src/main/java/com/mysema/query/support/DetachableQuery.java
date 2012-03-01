@@ -22,7 +22,16 @@ import com.mysema.query.types.expr.DateTimeExpression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.expr.TimeExpression;
-import com.mysema.query.types.query.*;
+import com.mysema.query.types.query.BooleanSubQuery;
+import com.mysema.query.types.query.ComparableSubQuery;
+import com.mysema.query.types.query.DateSubQuery;
+import com.mysema.query.types.query.DateTimeSubQuery;
+import com.mysema.query.types.query.Detachable;
+import com.mysema.query.types.query.ListSubQuery;
+import com.mysema.query.types.query.NumberSubQuery;
+import com.mysema.query.types.query.SimpleSubQuery;
+import com.mysema.query.types.query.StringSubQuery;
+import com.mysema.query.types.query.TimeSubQuery;
 
 /**
  * DetachableQuery is a base class for queries which implement the Query and Detachable interfaces

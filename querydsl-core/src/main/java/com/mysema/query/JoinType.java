@@ -13,14 +13,11 @@
  */
 package com.mysema.query;
 
-import net.jcip.annotations.Immutable;
-
 /**
  * JoinType defines the supported join types
  *
  * @author tiwe
  */
-@Immutable
 public enum JoinType {
     /**
      * cross join
