@@ -16,33 +16,33 @@
   <packaging>jar</packaging>
   
   <dependencies>
+ 
    <dependency>
      <groupId>net.sourceforge.collections</groupId>
      <artifactId>collections-generic</artifactId>
      <version>${commons.collections.version}</version>
    </dependency> 
-   <dependency>
-    <groupId>org.apache.commons</groupId>
-    <artifactId>commons-lang3</artifactId>
-    <version>${commons.lang.version}</version>
-   </dependency>
-   <dependency>
-      <groupId>com.mysema.commons</groupId>
-      <artifactId>mysema-commons-lang</artifactId>
-      <version>${mysema.lang.version}</version>
-    </dependency>
     <dependency>
       <groupId>com.mysema.codegen</groupId>
       <artifactId>codegen</artifactId>
       <version>${codegen.version}</version>
-    </dependency>
-    
+    </dependency>    
     <dependency>  
       <groupId>javax.inject</groupId>  
       <artifactId>javax.inject</artifactId>  
       <version>1</version>  
     </dependency>  
-    
+
+    <dependency>
+      <groupId>com.mysema.commons</groupId>
+      <artifactId>mysema-commons-lang</artifactId>
+      <version>${mysema.lang.version}</version>
+    </dependency>     
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>${commons.lang.version}</version>
+    </dependency>
     <dependency>
       <groupId>net.sourceforge.findbugs</groupId>
       <artifactId>jsr305</artifactId>
