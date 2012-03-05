@@ -190,7 +190,12 @@ public class GenericExporter {
                         continue;
                     }
                     try {
-                        Class<?> cl = Class.forName(supertype.getType().getFullName());
+                        Class<?> cl;
+                        if (supertype.getType() instanceof ClassType) {
+                            cl = ((ClassType)supertype.getType()).getJavaClass();
+                        } else {
+                            cl = Class.forName(supertype.getType().getFullName());   
+                        }
                         typeFactory.addEmbeddableType(cl);
                         entityType = createEntityType(cl, new HashMap<Class<?>, EntityType>());
                         addProperties(cl, entityType);
@@ -206,7 +211,6 @@ public class GenericExporter {
     }
 
     private EntityType createEntityType(Class<?> cl, Map<Class<?>, EntityType> types) {
-//        System.err.println(cl.getName());
         if (types.get(cl) != null) {
             return types.get(cl);
         } else {
