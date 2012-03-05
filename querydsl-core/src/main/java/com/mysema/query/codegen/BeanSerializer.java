@@ -49,6 +49,8 @@ public class BeanSerializer implements Serializer{
     private final String javadocSuffix;
     
     private boolean addToString, addFullConstructor;
+    
+    private boolean printSupertype = false;
 
     public BeanSerializer() {
         this(true, " is a Querydsl bean type");
@@ -97,7 +99,12 @@ public class BeanSerializer implements Serializer{
         for (Annotation annotation : model.getAnnotations()){
             writer.annotation(annotation);
         }
-        writer.beginClass(model);
+        if (printSupertype && model.getSuperType() != null) {
+            writer.beginClass(model, model.getSuperType().getType());
+        } else {
+            writer.beginClass(model);
+        }
+        
 
         bodyStart(model, writer);
         
@@ -202,6 +209,12 @@ public class BeanSerializer implements Serializer{
     public void setAddFullConstructor(boolean addFullConstructor) {
         this.addFullConstructor = addFullConstructor;
     }
+
+    public void setPrintSupertype(boolean printSupertype) {
+        this.printSupertype = printSupertype;
+    }
+    
+    
 
     
 }
