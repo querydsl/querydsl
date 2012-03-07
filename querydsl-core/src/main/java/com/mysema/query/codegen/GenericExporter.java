@@ -71,6 +71,8 @@ public class GenericExporter {
 
     private boolean createScalaSources = false;
     
+    private final Set<Class<?>> stopClasses = new HashSet<Class<?>>();
+    
     private final Map<String, EntityType> allTypes = new HashMap<String, EntityType>();
 
     private final Map<Class<?>, EntityType> entityTypes = new HashMap<Class<?>, EntityType>();
@@ -99,6 +101,10 @@ public class GenericExporter {
 
     @Nullable
     private Class<? extends Serializer> serializerClass;
+    
+    public GenericExporter() {
+        stopClasses.add(Object.class);
+    }
     
     public void export(Package... packages) {
         String[] pkgs = new String[packages.length];
@@ -222,12 +228,14 @@ public class GenericExporter {
             allTypes.put(ClassUtils.getFullName(cl), type);
 
             typeMappings.register(type, queryTypeFactory.create(type));
-            if (cl.getSuperclass() != null && !cl.getSuperclass().equals(Object.class)) {
+            if (cl.getSuperclass() != null && !stopClasses.contains(cl.getSuperclass())) {
                 type.addSupertype(new Supertype(new ClassType(cl.getSuperclass())));
             }
             if (cl.isInterface()) {
-                for (Class<?> iface : cl.getInterfaces()){
-                    type.addSupertype(new Supertype(new ClassType(iface)));
+                for (Class<?> iface : cl.getInterfaces()) {
+                    if (!stopClasses.contains(iface)) {
+                        type.addSupertype(new Supertype(new ClassType(iface)));    
+                    }                    
                 }
             }
 
@@ -335,7 +343,9 @@ public class GenericExporter {
         for (String pkg : packages) {
             try {
                 for (Class<?> cl : ClassPathUtils.scanPackage(classLoader, pkg)) {
-                    if (cl.getAnnotation(embeddableAnnotation) != null){
+                    if (stopClasses.contains(cl)) {
+                        continue;
+                    } else if (cl.getAnnotation(embeddableAnnotation) != null) {
                         embeddableTypes.put(cl, null);
                     } else if (cl.getAnnotation(supertypeAnnotation) != null) {
                         superTypes.put(cl, null);
@@ -443,6 +453,10 @@ public class GenericExporter {
     
     public void setHandleMethods(boolean b) {
         handleMethods = b;
+    }
+    
+    public void addStopClass(Class<?> cl) {
+        stopClasses.add(cl);
     }
     
 }

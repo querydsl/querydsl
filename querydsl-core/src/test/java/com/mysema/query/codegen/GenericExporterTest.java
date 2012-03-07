@@ -13,6 +13,7 @@
  */
 package com.mysema.query.codegen;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -34,15 +35,6 @@ public class GenericExporterTest {
     }
     
     @Test
-    public void Keywords() throws IOException {
-        exporter.setKeywords(Keywords.JPA);
-        exporter.setTargetFolder(new File("target/gen1-jpa"));
-        exporter.export(getClass().getPackage());
-        String str = FileUtils.readFileToString(new File("target/gen1-jpa/com/mysema/query/codegen/QGroup.java"));
-        assertTrue(str.contains("QGroup group = new QGroup(\"group1\");"));
-    }
-    
-    @Test
     public void Export() {        
         exporter.setTargetFolder(new File("target/gen1"));
         exporter.export(getClass().getPackage());
@@ -52,6 +44,23 @@ public class GenericExporterTest {
         assertTrue(new File("target/gen1/com/mysema/query/codegen/QExampleEntityInterface.java").exists());
         assertTrue(new File("target/gen1/com/mysema/query/codegen/QExampleSupertype.java").exists());
         assertTrue(new File("target/gen1/com/mysema/query/codegen/sub/QExampleEntity2.java").exists());
+    }
+
+    @Test
+    public void Export_With_Keywords() throws IOException {
+        exporter.setKeywords(Keywords.JPA);
+        exporter.setTargetFolder(new File("target/gen1_jpa"));
+        exporter.export(getClass().getPackage());
+        String str = FileUtils.readFileToString(new File("target/gen1_jpa/com/mysema/query/codegen/QGroup.java"));
+        assertTrue(str.contains("QGroup group = new QGroup(\"group1\");"));
+    }
+    
+    @Test
+    public void Export_With_Stopclass() {        
+        exporter.setTargetFolder(new File("target/gen1_stop"));
+        exporter.addStopClass(Examples.Supertype.class);
+        exporter.export(getClass().getPackage());
+        assertFalse(new File("target/gen1_stop/com/mysema/query/codegen/QExamples_Supertype.java").exists());        
     }
     
     @Test
