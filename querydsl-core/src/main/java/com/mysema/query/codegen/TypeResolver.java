@@ -70,7 +70,8 @@ public final class TypeResolver {
             if (param instanceof EntityType) {
                 param = ((EntityType)param).getInnerType();
             }
-            if (param instanceof TypeExtends && ((TypeExtends)param).getVarName().equals(typeExtends.getVarName())){
+            if (param instanceof TypeExtends 
+                    && ((TypeExtends)param).getVarName().equals(typeExtends.getVarName())){
                 index = i;
             }
         }

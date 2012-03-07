@@ -32,6 +32,7 @@ import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.TypeExtends;
+import com.mysema.codegen.model.TypeSuper;
 import com.mysema.codegen.model.Types;
 import com.mysema.util.ReflectionUtils;
 
@@ -60,63 +61,60 @@ public final class TypeFactory {
         this.entityAnnotations = entityAnnotations;
     }
 
+    public EntityType createEntityType(Class<?> cl) {
+        return (EntityType) create(true, cl, cl);
+    }
+    
     public Type create(Class<?> cl) {
-        return create(cl, cl);
+        return create(isEntityClass(cl), cl, cl);
     }
 
     public Type create(Class<?> cl, java.lang.reflect.Type genericType) {
+        return create(isEntityClass(cl), cl, genericType);
+    }
+    
+    public Type create(boolean entity, Class<?> cl, java.lang.reflect.Type genericType) {
         List<java.lang.reflect.Type> key = Arrays.<java.lang.reflect.Type> asList(cl, genericType);
         if (cache.containsKey(key)) {
-            return cache.get(key);
+            Type value = cache.get(key);
+            if (entity && !(value instanceof EntityType)) {
+                value = new EntityType(value);
+                cache.put(key, value);
+            }
+            return value;
+            
         } else {
             if (cl.isPrimitive()) {
                 cl = ClassUtils.primitiveToWrapper(cl);
             }
             Type value;
-            boolean entity= false;
-            for (Class<? extends Annotation> clazz : entityAnnotations){
-                if (cl.getAnnotation(clazz) != null){
-                    entity = true;
-                    break;
-                }
-            }
-            if (embeddableTypes.contains(cl)) {
-                entity = true;
-            }
-
             Type[] parameters = getParameters(cl, genericType);
 
             if (cl.isArray()) {
                 value = create(cl.getComponentType()).asArrayType();
-
             } else if (cl.isEnum()) {
                 value = new ClassType(TypeCategory.ENUM, cl);
-
             } else if (Map.class.isAssignableFrom(cl)) {
                 value = new SimpleType(Types.MAP, parameters[0], parameters[1]);
-
             } else if (List.class.isAssignableFrom(cl)) {
                 value = new SimpleType(Types.LIST, parameters[0]);
-
             } else if (Set.class.isAssignableFrom(cl)) {
                 value = new SimpleType(Types.SET, parameters[0]);
-
             } else if (Collection.class.isAssignableFrom(cl)) {
                 value = new SimpleType(Types.COLLECTION, parameters[0]);
-
-            }else if (Number.class.isAssignableFrom(cl) && Comparable.class.isAssignableFrom(cl)){
+            } else if (Number.class.isAssignableFrom(cl) && Comparable.class.isAssignableFrom(cl)) {
                 value = new ClassType(TypeCategory.NUMERIC, cl, parameters);
-
             } else {
-                TypeCategory typeCategory = TypeCategory.get(cl.getName());
-                if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)) {
-                    typeCategory = TypeCategory.COMPARABLE;
-                } else if (entity) {
-                    typeCategory = TypeCategory.ENTITY;
-                } else if (unknownAsEntity && typeCategory == TypeCategory.SIMPLE && !cl.getName().startsWith("java")) {
-                    typeCategory = TypeCategory.ENTITY;
+                value = createOther(cl, entity, parameters);
+            }
+            
+            if (genericType instanceof TypeVariable) {
+                TypeVariable tv = (TypeVariable)genericType;
+                if (tv.getBounds().length == 1 && tv.getBounds()[0].equals(Object.class)) {
+                    value = new TypeSuper(tv.getName(), value);
+                } else {
+                    value = new TypeExtends(tv.getName(), value);
                 }
-                value = new ClassType(typeCategory, cl, parameters);
             }
 
             if (entity) {
@@ -127,6 +125,20 @@ public final class TypeFactory {
             return value;
         }
 
+    }
+
+    private Type createOther(Class<?> cl, boolean entity, Type[] parameters) {
+        Type value;
+        TypeCategory typeCategory = TypeCategory.get(cl.getName());
+        if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)) {
+            typeCategory = TypeCategory.COMPARABLE;
+        } else if (entity) {
+            typeCategory = TypeCategory.ENTITY;
+        } else if (unknownAsEntity && typeCategory == TypeCategory.SIMPLE && !cl.getName().startsWith("java")) {
+            typeCategory = TypeCategory.ENTITY;
+        }
+        value = new ClassType(typeCategory, cl, parameters);
+        return value;
     }
 
     private Type[] getParameters(Class<?> cl, java.lang.reflect.Type genericType) {
@@ -170,15 +182,30 @@ public final class TypeFactory {
         Type[] types = new Type[cl.getTypeParameters().length];
         for (int i = 0; i < types.length; i++) {
             TypeVariable<?> typeVariable = cl.getTypeParameters()[i];
-            if (!typeVariable.getGenericDeclaration().equals(cl)) {
-                types[i] = create((Class<?>)typeVariable.getGenericDeclaration(), typeVariable);
+            if (typeVariable.getBounds().length > 0 && typeVariable.getBounds()[0].equals(cl)) {
+                types[i] = new ClassType(cl);                
             } else {
-                types[i] = new ClassType(cl);
+                types[i] = create((Class)typeVariable.getBounds()[0], typeVariable);
             }
         }
         return types;
     }
 
+
+    private boolean isEntityClass(Class<?> cl) {
+        boolean entity= false;
+        for (Class<? extends Annotation> clazz : entityAnnotations){
+            if (cl.getAnnotation(clazz) != null){
+                entity = true;
+                break;
+            }
+        }
+        if (embeddableTypes.contains(cl)) {
+            entity = true;
+        }
+        return entity;
+    }
+    
     public void setUnknownAsEntity(boolean unknownAsEntity) {
         this.unknownAsEntity = unknownAsEntity;
     }

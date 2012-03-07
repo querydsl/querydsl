@@ -222,19 +222,19 @@ public class GenericExporter {
         } else {
             EntityType type = allTypes.get(ClassUtils.getFullName(cl));
             if (type == null) {
-                type = (EntityType)typeFactory.create(cl);
+                type = typeFactory.createEntityType(cl);
             }
             types.put(cl, type);
             allTypes.put(ClassUtils.getFullName(cl), type);
 
             typeMappings.register(type, queryTypeFactory.create(type));
-            if (cl.getSuperclass() != null && !stopClasses.contains(cl.getSuperclass())) {
-                type.addSupertype(new Supertype(new ClassType(cl.getSuperclass())));
+            if (cl.getSuperclass() != null && !stopClasses.contains(cl.getSuperclass())) {                
+                type.addSupertype(new Supertype(typeFactory.create(cl.getSuperclass(), cl.getGenericSuperclass())));
             }
             if (cl.isInterface()) {
                 for (Class<?> iface : cl.getInterfaces()) {
                     if (!stopClasses.contains(iface)) {
-                        type.addSupertype(new Supertype(new ClassType(iface)));    
+                        type.addSupertype(new Supertype(typeFactory.create(iface)));    
                     }                    
                 }
             }
