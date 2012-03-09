@@ -49,17 +49,7 @@ public class DerbyJPAEclipseLinkTest extends AbstractJPATest{
     public void Hint(){
         // FIXME
     }
-    
-    @Override
-    public void TupleProjection(){
-        // FIXME : custom projections don't work
-    }
-
-    @Override
-    public void ArrayProjection(){
-        // FIXME : custom projections don't work
-    }
-    
+        
     @Override
     public void Connection_Access(){
         // cannot unwrap to Connection instance

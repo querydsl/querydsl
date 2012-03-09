@@ -13,6 +13,7 @@
  */
 package com.mysema.query.jpa.impl;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,8 +73,6 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     
     @Nullable
     protected FlushModeType flushMode;
-    
-    
         
     protected boolean factoryExpressionUsed = false;
     
@@ -159,25 +158,31 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         // set transformer, if necessary and possible
         List<? extends Expression<?>> projection = getMetadata().getProjection();
         if (projection.size() == 1 && !forCount) {
-            Expression<?> expr = projection.get(0);
+            Expression<?> expr = projection.get(0);            
             if (expr instanceof FactoryExpression<?>) {
+                String transformation = null;
                 if (hibernateQueryClass != null && hibernateQueryClass.isInstance(query)) {
+                    transformation = "com.mysema.query.jpa.impl.HibernateQueryTransformation";
+                }
+//                else if (query.getClass().getName().startsWith("org.eclipse.persistence")) {
+//                    transformation = "com.mysema.query.jpa.impl.EclipseLinkQueryTransformation";
+//                }
+                if (transformation != null) {
                     try {
-                        Class<?> cl = Class.forName("com.mysema.query.jpa.impl.HibernateQueryTransformation");
-                        cl.getConstructor(Query.class, FactoryExpression.class).newInstance(query, expr);
-                    } catch (ClassNotFoundException e) {
-                        throw new QueryException(e.getMessage(), e);
-                    } catch (SecurityException e) {
-                        throw new QueryException(e.getMessage(), e);
-                    } catch (InstantiationException e) {
-                        throw new QueryException(e.getMessage(), e);
-                    } catch (IllegalAccessException e) {
-                        throw new QueryException(e.getMessage(), e);
-                    } catch (InvocationTargetException e) {
-                        throw new QueryException(e.getMessage(), e);
+                        Constructor<?> c = Class.forName(transformation).getConstructor(Query.class, FactoryExpression.class);
+                        c.newInstance(query, expr);
                     } catch (NoSuchMethodException e) {
-                        throw new QueryException(e.getMessage(), e);
+                        throw new QueryException(e);
+                    } catch (ClassNotFoundException e) {
+                        throw new QueryException(e);
+                    } catch (InstantiationException e) {
+                        throw new QueryException(e);
+                    } catch (IllegalAccessException e) {
+                        throw new QueryException(e);
+                    } catch (InvocationTargetException e) {
+                        throw new QueryException(e);
                     }
+                    
                 } else {
                     factoryExpressionUsed = true;
                 }
