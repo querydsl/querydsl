@@ -99,9 +99,9 @@ public final class TypeElementHandler {
         if (config.visitMethodProperties()){
             for (ExecutableElement method : ElementFilter.methodsIn(elements)) {            
                 String name = method.getSimpleName().toString();
-                if (name.startsWith("get") && method.getParameters().isEmpty()) {
+                if (name.startsWith("get") && name.length() > 3 && method.getParameters().isEmpty()) {
                     name = BeanUtils.uncapitalize(name.substring(3));
-                } else if (name.startsWith("is") && method.getParameters().isEmpty()) {
+                } else if (name.startsWith("is") && name.length() > 2 && method.getParameters().isEmpty()) {
                     name = BeanUtils.uncapitalize(name.substring(2));
                 } else {
                     continue;

@@ -289,13 +289,15 @@ public class GenericExporter {
         // getters
         if (handleMethods) {
             for (Method method : cl.getDeclaredMethods()) {
+                String name = method.getName();
                 if (method.getParameterTypes().length == 0
-                    && (method.getName().startsWith("get") || method.getName().startsWith("is"))) {
+                    && ((name.startsWith("get") && name.length() > 3)  
+                     || (name.startsWith("is") && name.length() > 2))) {
                     String propertyName;
-                    if (method.getName().startsWith("get")) {
-                        propertyName = BeanUtils.uncapitalize(method.getName().substring(3));
+                    if (name.startsWith("get")) {
+                        propertyName = BeanUtils.uncapitalize(name.substring(3));
                     } else {
-                        propertyName = BeanUtils.uncapitalize(method.getName().substring(2));
+                        propertyName = BeanUtils.uncapitalize(name.substring(2));
                     }
                     if (handled.contains(propertyName)) {
                         continue;

@@ -31,6 +31,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import com.mysema.query.annotations.QueryTransient;
@@ -64,7 +65,7 @@ public class JPAConfiguration extends DefaultConfiguration {
     protected List<Class<? extends Annotation>> getAnnotations() {
         return Arrays.asList(Column.class, Embedded.class, EmbeddedId.class, GeneratedValue.class,
             Id.class, Version.class, JoinColumn.class, ManyToOne.class, OneToMany.class,
-            PrimaryKeyJoinColumn.class, QueryType.class, QueryTransient.class);
+            PrimaryKeyJoinColumn.class, QueryType.class, QueryTransient.class, Transient.class);
     }
 
     @Override
