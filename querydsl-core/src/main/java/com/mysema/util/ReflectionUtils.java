@@ -54,7 +54,7 @@ public final class ReflectionUtils {
     }
 
     @Nullable
-    private static Field getFieldOrNull(Class<?> beanClass, String propertyName) {
+    public static Field getFieldOrNull(Class<?> beanClass, String propertyName) {
         while (beanClass != null && !beanClass.equals(Object.class)) {
             try {
                 return beanClass.getDeclaredField(propertyName);

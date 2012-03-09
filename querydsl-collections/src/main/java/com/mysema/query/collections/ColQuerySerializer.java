@@ -13,9 +13,13 @@
  */
 package com.mysema.query.collections;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysema.query.QueryException;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.ConstantImpl;
@@ -50,9 +54,32 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
             if (path.getType() != null && path.getType().equals(Boolean.class)) {
                 prefix = "is";
             }
-            handle((Expression<?>) path.getMetadata().getParent());
-            append(".").append(prefix);
-            append(BeanUtils.capitalize(path.getMetadata().getExpression().toString()) + "()");
+            String property = path.getMetadata().getExpression().toString();      
+            String accessor = prefix + BeanUtils.capitalize(property);
+            Class<?> parentType = path.getMetadata().getParent().getType();
+            try {
+                // getter
+                Method m = getMethod(parentType, accessor);
+                if (m != null && Modifier.isPublic(m.getModifiers())) {                    
+                    handle((Expression<?>) path.getMetadata().getParent());
+                    append(".").append(accessor).append("()");    
+                } else {
+                    // field
+                    Field f = getField(parentType, property);
+                    if (f != null && Modifier.isPublic(f.getModifiers())) {
+                        handle((Expression<?>) path.getMetadata().getParent());
+                        append(".").append(property);
+                    } else {
+                        // field access by reflection
+                        append(ColQueryFunctions.class.getName() + ".<");
+                        append(((Class)path.getType()).getName()).append(">get(");
+                        handle((Expression<?>) path.getMetadata().getParent());
+                        append(", \""+property+"\")");
+                    }
+                }                
+            } catch (Exception e) {
+                throw new QueryException(e);
+            }
 
         } else {
             List<Expression<?>> args = new ArrayList<Expression<?>>(2);
@@ -74,7 +101,23 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
         return null;
 
     }
+    
+    private Method getMethod(Class<?> owner, String method) {
+        try {
+            return owner.getMethod(method);
+        } catch (NoSuchMethodException e) {
+            return null;
+        }
+    }
 
+    private Field getField(Class<?> owner, String field) {
+        try {
+            return owner.getField(field);
+        } catch (NoSuchFieldException e) {
+            return null;
+        }
+    }
+    
     @Override
     public Void visit(SubQueryExpression<?> expr, Void context) {
         throw new IllegalArgumentException("Not supported");

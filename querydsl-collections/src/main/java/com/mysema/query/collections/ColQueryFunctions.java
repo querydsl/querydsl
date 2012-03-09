@@ -13,10 +13,13 @@
  */
 package com.mysema.query.collections;
 
+import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.Date;
 
 import javax.annotation.Nullable;
+
+import com.mysema.util.ReflectionUtils;
 
 /**
  * ColQueryFunctions defines function implementation for use in ColQueryTemplates
@@ -97,6 +100,20 @@ public final class ColQueryFunctions {
         return str.matches(like.replace("%", ".*").replace('_', '.'));
     }
 
+    public static <T> T get(Object parent, String f) {
+        try {
+            Field field = ReflectionUtils.getFieldOrNull(parent.getClass(), f);
+            if (field != null) {
+                field.setAccessible(true);
+                return (T)field.get(parent);    
+            } else {
+                throw new IllegalArgumentException("No field " + f + " for " + parent.getClass());
+            }            
+        } catch (IllegalAccessException e) {
+            throw new IllegalStateException(e);
+        }        
+    }
+    
     private ColQueryFunctions(){}
 
 }
