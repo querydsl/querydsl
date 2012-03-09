@@ -27,12 +27,12 @@ import org.junit.Test;
 public class EmbeddedTest {
     
     @Entity
-    public class EntityClass extends AbstractEntity<SubEntityCode> {
+    public static class EntityClass extends AbstractEntity<SubEntityCode> {
         
     }
     
     @MappedSuperclass
-    public abstract class AbstractEntity<C extends EntityCode> {
+    public static abstract class AbstractEntity<C extends EntityCode> {
 
         @Embedded
         @Column(name = "code", nullable = false, unique = true)
@@ -40,7 +40,7 @@ public class EmbeddedTest {
     }
 
     @MappedSuperclass
-    public class EntityCode {
+    public static class EntityCode {
 
         @Column(name = "code", unique = true)
         String code;
@@ -48,7 +48,7 @@ public class EmbeddedTest {
     }
     
     @Embeddable
-    public class SubEntityCode extends EntityCode {
+    public static class SubEntityCode extends EntityCode {
         
         String property;
         

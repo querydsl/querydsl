@@ -25,12 +25,12 @@ public class QueryExcludeTest {
     
     @QueryExclude
     @QueryEntity
-    public class Entity {
+    public static class Entity {
         
     }
     
     @QueryEntity
-    public class SubEntity extends Entity {
+    public static class SubEntity extends Entity {
         
     }
     

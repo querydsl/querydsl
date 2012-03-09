@@ -1,87 +1,63 @@
-/*
- * Copyright 2011, Mysema Ltd
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * http://www.apache.org/licenses/LICENSE-2.0
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.mysema.query.apt;
 
 import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.query.codegen.GenericExporter;
-import com.mysema.query.domain.EntityTest;
+import com.mysema.query.domain.AbstractEntityTest;
 
-@Ignore
-public class GenericExporterTest {
-
-    private GenericExporter exporter;
-
-    @Before
-    public void setUp() {
-        exporter = new GenericExporter();
-    }
-
+@Ignore // FIXME
+public class GenericExporterTest extends AbstractProcessorTest{
+    
+    private static final String PACKAGE_PATH = "src/test/java/com/mysema/query/domain/";
+    
+    private static final List<String> CLASSES = getFiles(PACKAGE_PATH);
+    
     @Test
-    public void Export() throws IOException {
-        if (new File("target/gen1").exists()){
-            FileUtils.cleanDirectory(new File("target/gen1"));
-        }
-
-        exporter.setTargetFolder(new File("target/gen1"));
-        exporter.export(EntityTest.class.getPackage());
-
-        Set<String> skip = new HashSet<String>();
-
-        // delegate tests
-        skip.add("QDelegate2Test_Entity.java");
-        skip.add("QDelegateTest_SimpleUser.java");
-        skip.add("QDelegateTest_SimpleUser2.java");
-        skip.add("QDelegateTest_User.java");
-
-        // projection tests
-        skip.add("QQueryProjectionTest_EntityWithProjection.java");
-
-        int total = 0;
-        Set<String> failures = new TreeSet<String>();
-        for (File file : new File("target/gen1/com/mysema/query/domain").listFiles()){
-            if (file.isDirectory() || skip.contains(file.getName())){
-                continue;
-            }
-            File result = new File("target/generated-test-sources/java/com/mysema/query/domain", file.getName());
-            if (!result.exists()){
-                continue;
-            }
+    public void Execute() throws IOException {
+        // #1
+        process(QuerydslAnnotationProcessor.class, CLASSES, "QuerydslAnnotationProcessor");
+        
+        // #2
+        GenericExporter exporter = new GenericExporter();
+        exporter.setTargetFolder(new File("target/GenericExporterTest"));
+        exporter.export(AbstractEntityTest.class.getPackage());
+        
+        List<String> expected = new ArrayList<String>();
+        // delegates are not supported
+        expected.add("QDelegateTest_SimpleUser.java");
+        expected.add("QDelegateTest_SimpleUser2.java");
+        expected.add("QDelegateTest_User.java");
+        expected.add("QDelegate2Test_Entity.java");
+        // projections are not supported
+        expected.add("QQueryProjectionTest_EntityWithProjection.java");
+        
+        List<String> failures = new ArrayList<String>();
+        int successes = 0;
+        for (File file : new File("target/GenericExporterTest/com/mysema/query/domain").listFiles()){
+            File other = new File("target/QuerydslAnnotationProcessor/com/mysema/query/domain", file.getName());
+            if (!other.exists() || !other.isFile()) continue;
             String result1 = FileUtils.readFileToString(file, "UTF-8");
-            String result2 = FileUtils.readFileToString(result, "UTF-8");
+            String result2 = FileUtils.readFileToString(other, "UTF-8");
             if (!result1.equals(result2)){
-                failures.add(file.getName());
+                if (!expected.contains(file.getName())) {
+                    System.err.println(file.getName());
+                    failures.add(file.getName());    
+                }                
+            } else {
+                successes++;
             }
-            total++;
         }
-
         if (!failures.isEmpty()){
-            for (String failure : failures){
-                System.err.println(failure);
-            }
-            fail("Failed with " + failures.size() + " failures of " + total);
+            fail("Failed with " + failures.size() + " failures, " + successes + " succeeded");
         }
     }
 

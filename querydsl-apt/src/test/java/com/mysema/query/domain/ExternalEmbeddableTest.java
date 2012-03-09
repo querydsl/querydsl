@@ -22,7 +22,7 @@ import org.junit.Ignore;
 public class ExternalEmbeddableTest {
 
     @Entity
-    public class EntityWithExternalEmbeddable {
+    public static class EntityWithExternalEmbeddable {
         
         @Embedded
         EmbeddableWithoutQType embeddable;

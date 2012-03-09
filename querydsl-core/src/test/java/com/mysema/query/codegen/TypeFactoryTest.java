@@ -28,6 +28,7 @@ import org.junit.Test;
 
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.model.TypeExtends;
 import com.mysema.codegen.model.Types;
 import com.mysema.query.types.Expression;
 
@@ -43,7 +44,7 @@ public class TypeFactoryTest {
 
     enum EnumExample { FIRST, SECOND}
 
-    class Entity<A> {
+    static class Entity<A> {
 
         List<? extends A> field;
 
@@ -60,6 +61,39 @@ public class TypeFactoryTest {
         assertEquals(Types.OBJECT, type.getParameters().get(0));
     }
 
+    @Test 
+    public void Parameters() {
+        EntityType type = factory.createEntityType(Examples.Complex.class);
+        assertEquals(1, type.getParameters().size());
+        assertEquals(TypeExtends.class, type.getParameters().get(0).getClass());
+    }
+    
+    @Test
+    public void Map_Field_Parameters() throws SecurityException, NoSuchFieldException {
+        Field field = Examples.ComplexCollections.class.getDeclaredField("map2");
+        Type type = factory.create(field.getType(), field.getGenericType());
+        assertEquals(2, type.getParameters().size());
+        Type valueType = type.getParameters().get(1);
+        assertEquals(1, valueType.getParameters().size());
+        assertEquals(TypeExtends.class, valueType.getParameters().get(0).getClass());
+    }
+    
+    @Test
+    public void OrderBys() throws SecurityException, NoSuchFieldException {
+        Field field = Examples.OrderBys.class.getDeclaredField("orderBy");
+        Type type = factory.create(field.getType(), field.getGenericType());
+        assertEquals(1, type.getParameters().size());
+    }
+    
+    @Test
+    public void Collection_Of_Collection() throws SecurityException, NoSuchFieldException {
+        Field field = Examples.GenericRelations.class.getDeclaredField("col3");
+        Type type = factory.create(field.getType(), field.getGenericType());
+        assertEquals(1, type.getParameters().size());
+        Type valueType = type.getParameters().get(0);
+        assertEquals(TypeExtends.class, valueType.getParameters().get(0).getClass());
+    }
+    
     @Test
     public void Generics_WildCard() throws SecurityException, NoSuchFieldException{
         Field field = getClass().getDeclaredField("field");

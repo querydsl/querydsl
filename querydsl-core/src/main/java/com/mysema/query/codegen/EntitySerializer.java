@@ -334,7 +334,8 @@ public class EntitySerializer implements Serializer{
         }
 
         // TODO : generate proper serialVersionUID here
-        writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(model.hashCode()));
+        long serialVersionUID = model.getFullName().replace('$', '.').hashCode(); // fix in codegen
+        writer.privateStaticFinal(Types.LONG_P, "serialVersionUID", String.valueOf(serialVersionUID));
     }
 
     protected void introDefaultInstance(CodeWriter writer, EntityType model) throws IOException {

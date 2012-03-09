@@ -14,9 +14,12 @@
 package com.mysema.util;
 
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.GenericArrayType;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 import java.util.ArrayDeque;
@@ -93,26 +96,34 @@ public final class ReflectionUtils {
     public static Class<?> getTypeParameter(java.lang.reflect.Type type, int index) {
         if (type instanceof ParameterizedType) {
             ParameterizedType ptype = (ParameterizedType) type;
-            java.lang.reflect.Type[] targs = ptype.getActualTypeArguments();
-            if (targs[index] instanceof WildcardType) {
-                WildcardType wildcardType = (WildcardType) targs[index];
-                if (wildcardType.getUpperBounds()[0] instanceof Class){
-                    return (Class<?>) wildcardType.getUpperBounds()[0];
-                }else if (wildcardType.getUpperBounds()[0] instanceof ParameterizedType){
-                    return (Class<?>) ((ParameterizedType) wildcardType.getUpperBounds()[0]).getRawType();
-                }else{
-                    return Object.class;
-                }
-
-            } else if (targs[index] instanceof TypeVariable) {
-                return (Class<?>) ((TypeVariable) targs[index]).getGenericDeclaration();
-            } else if (targs[index] instanceof ParameterizedType) {
-                return (Class<?>) ((ParameterizedType) targs[index]).getRawType();
-            } else {
-                return (Class<?>) targs[index];
+            return getClass(ptype.getActualTypeArguments()[index]);
+        } else {
+            return null;    
+        }        
+    }
+    
+    private static Class<?> getClass(Type type) {
+        if (type instanceof WildcardType) {
+            WildcardType wildcardType = (WildcardType) type;
+            if (wildcardType.getUpperBounds()[0] instanceof Class){
+                return (Class<?>) wildcardType.getUpperBounds()[0];
+            }else if (wildcardType.getUpperBounds()[0] instanceof ParameterizedType){
+                return (Class<?>) ((ParameterizedType) wildcardType.getUpperBounds()[0]).getRawType();
+            }else{
+                return Object.class;
             }
+        } else if (type instanceof TypeVariable) {
+            return (Class<?>) ((TypeVariable) type).getGenericDeclaration();
+        } else if (type instanceof ParameterizedType) {
+            return (Class<?>) ((ParameterizedType) type).getRawType();
+        } else if (type instanceof GenericArrayType) {    
+            Type component = ((GenericArrayType)type).getGenericComponentType();
+            return Array.newInstance(getClass(component), 0).getClass();
+        } else if (type instanceof Class) {
+            return (Class<?>) type;
+        } else {
+            throw new IllegalArgumentException(type.getClass().toString());
         }
-        return null;
     }
     
     public static Set<Class<?>> getSuperClasses(Class<?> cl) {

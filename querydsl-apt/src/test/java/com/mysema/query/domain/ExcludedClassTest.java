@@ -24,7 +24,7 @@ public class ExcludedClassTest {
 
     @QueryExclude
     @QueryEntity
-    public class InnerClass {
+    public static class InnerClass {
         
     }
     

@@ -27,7 +27,7 @@ import com.mysema.query.annotations.QueryType;
 public class HierarchyTest {
 
     @Entity
-    class A {
+    static class A {
 
         B b;
 
@@ -41,7 +41,7 @@ public class HierarchyTest {
     }
 
     @Entity
-    class A2 extends A {
+    static class A2 extends A {
 
         // XXX: uncomment @Comment to break generation - QA2.a2.b() will then
         // return B instead of B2
@@ -60,11 +60,11 @@ public class HierarchyTest {
     }
 
     @Entity
-    class B {
+    static class B {
     }
 
     @Entity
-    class B2 extends B {
+    static class B2 extends B {
     }
 
     @Test

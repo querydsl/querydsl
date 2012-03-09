@@ -25,13 +25,13 @@ import com.mysema.query.types.path.ComparablePath;
 public class SignatureTest {
     
     @QuerySupertype
-    public abstract class APropertyChangeSupported implements Comparable<Object>, Cloneable, Serializable {
+    public static abstract class APropertyChangeSupported implements Comparable<Object>, Cloneable, Serializable {
         
     }
    
    
     @QuerySupertype
-    public abstract class AValueObject extends APropertyChangeSupported implements Comparable<Object>, Cloneable, Serializable {
+    public static abstract class AValueObject extends APropertyChangeSupported implements Comparable<Object>, Cloneable, Serializable {
         
     }
     

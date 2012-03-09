@@ -26,7 +26,7 @@ import com.mysema.query.annotations.QueryInit;
 public class QueryInit3Test {
 
     @QueryEntity
-    public class Entity{
+    public static class Entity{
 
         @QueryInit("*.*")
         Entity prop1;

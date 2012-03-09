@@ -21,7 +21,7 @@ import com.mysema.query.annotations.QueryEntity;
 public class ExternalEntityTest {
 
     @QueryEntity
-    public class MyEntity extends AbstractEntity<MyEntity> {
+    public static class MyEntity extends AbstractEntity<MyEntity> {
         
     }
     

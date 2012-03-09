@@ -42,7 +42,14 @@ import com.mysema.util.ReflectionUtils;
  * @author tiwe
  *
  */
+// TODO : refactor this to be more understandable
 public final class TypeFactory {
+
+    private static final Type[] TYPES_0 = new Type[0];
+
+    private static final Type[] TYPES_1 = new Type[]{ Types.OBJECT };
+    
+    private static final Type[] TYPES_2 = new Type[]{ Types.OBJECT, Types.OBJECT };
 
     private final Map<List<java.lang.reflect.Type>, Type> cache = new HashMap<List<java.lang.reflect.Type>, Type>();
 
@@ -50,7 +57,7 @@ public final class TypeFactory {
 
     private final Set<Class<?>> embeddableTypes = new HashSet<Class<?>>();
 
-    private boolean unknownAsEntity;
+    private boolean unknownAsEntity = false;
 
     @SuppressWarnings("unchecked")
     public TypeFactory(Class<?>... entityAnnotations) {
@@ -62,11 +69,11 @@ public final class TypeFactory {
     }
 
     public EntityType createEntityType(Class<?> cl) {
-        return (EntityType) create(true, cl, cl);
+        return (EntityType) create(true, cl, cl.getGenericSuperclass());
     }
     
     public Type create(Class<?> cl) {
-        return create(isEntityClass(cl), cl, cl);
+        return create(isEntityClass(cl), cl, cl.getGenericSuperclass());
     }
 
     public Type create(Class<?> cl, java.lang.reflect.Type genericType) {
@@ -115,7 +122,7 @@ public final class TypeFactory {
                 } else {
                     value = new TypeExtends(tv.getName(), value);
                 }
-            }
+            } 
 
             if (entity) {
                 value = new EntityType(value);
@@ -130,9 +137,10 @@ public final class TypeFactory {
     private Type createOther(Class<?> cl, boolean entity, Type[] parameters) {
         Type value;
         TypeCategory typeCategory = TypeCategory.get(cl.getName());
-        if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)) {
+        if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)
+            && !cl.equals(Comparable.class)) {
             typeCategory = TypeCategory.COMPARABLE;
-        } else if (entity) {
+        } else if (typeCategory == TypeCategory.SIMPLE && entity) {
             typeCategory = TypeCategory.ENTITY;
         } else if (unknownAsEntity && typeCategory == TypeCategory.SIMPLE && !cl.getName().startsWith("java")) {
             typeCategory = TypeCategory.ENTITY;
@@ -145,65 +153,84 @@ public final class TypeFactory {
         int parameterCount = ReflectionUtils.getTypeParameterCount(genericType);
         if (parameterCount > 0) {
             boolean collectionOrMap = Collection.class.isAssignableFrom(cl) || Map.class.isAssignableFrom(cl);
-            return getGenericParameters(genericType, collectionOrMap, parameterCount);
-
+            return getGenericParameters(cl, genericType, collectionOrMap, parameterCount);
         } else if (Collection.class.isAssignableFrom(cl)) {
-            return new Type[]{ Types.OBJECT }; // TODO : cache
-
+            return TYPES_1; 
         } else if (Map.class.isAssignableFrom(cl)) {
-            return new Type[]{ Types.OBJECT, Types.OBJECT }; // TODO : cache
-
+            return TYPES_2; 
         } else if (cl.getTypeParameters().length > 0) {
             return getTypeParameters(cl);
-
         } else {
-            return new Type[0]; // TODO : cache
+            return TYPES_0; 
         }
-
     }
 
-    private Type[] getGenericParameters(java.lang.reflect.Type genericType, boolean collectionOrMap, int parameterCount) {
+    private Type[] getGenericParameters(Class<?> cl, java.lang.reflect.Type genericType, boolean collectionOrMap, int parameterCount) {
         Type[] types = new Type[parameterCount];
         for (int i = 0; i < types.length; i++) {
-            java.lang.reflect.Type parameter = ((ParameterizedType)genericType).getActualTypeArguments()[i];
-            if (parameter instanceof WildcardType && !collectionOrMap) {
-                types[i] = null;
-            } else {
-                types[i] = create(ReflectionUtils.getTypeParameter(genericType, i), parameter);
-                if (parameter instanceof WildcardType) {
-                    types[i] = new TypeExtends(types[i]);
-                }
-            }
+            types[i] = getGenericParameter(cl, genericType, collectionOrMap, i);            
         }
         return types;
+    }
+
+    private Type getGenericParameter(Class<?> cl, java.lang.reflect.Type genericType, boolean collectionOrMap, int i) {
+        java.lang.reflect.Type parameter = ((ParameterizedType)genericType).getActualTypeArguments()[i];
+        if (parameter instanceof TypeVariable
+            && ((TypeVariable)parameter).getBounds()[0].equals(Object.class)) {
+            return collectionOrMap ? Types.OBJECT : null;
+        } else if (parameter instanceof WildcardType 
+            && ((WildcardType)parameter).getUpperBounds()[0].equals(Object.class)
+            && ((WildcardType)parameter).getLowerBounds().length == 0) {
+            //return collectionOrMap ? Types.OBJECT : getTypeParameter(cl, i);
+            Type rv = getTypeParameter(cl, i);
+            return (collectionOrMap && rv == null) ? Types.OBJECT : rv; 
+        } else {
+            Type rv = create(ReflectionUtils.getTypeParameter(genericType, i), parameter);
+            if (collectionOrMap && parameter instanceof WildcardType) {
+                rv = new TypeExtends(rv);
+            }
+            return rv;
+        }
     }
 
     private Type[] getTypeParameters(Class<?> cl) {
         Type[] types = new Type[cl.getTypeParameters().length];
         for (int i = 0; i < types.length; i++) {
-            TypeVariable<?> typeVariable = cl.getTypeParameters()[i];
-            if (typeVariable.getBounds().length > 0 && typeVariable.getBounds()[0].equals(cl)) {
-                types[i] = new ClassType(cl);                
-            } else {
-                types[i] = create((Class)typeVariable.getBounds()[0], typeVariable);
-            }
+            types[i] = getTypeParameter(cl, i);
         }
         return types;
+    }
+    
+    private Type getTypeParameter(Class<?> cl, int i) {
+        TypeVariable<?> typeVariable = cl.getTypeParameters()[i];
+        java.lang.reflect.Type firstBound = typeVariable.getBounds()[0];
+        if (firstBound.equals(Object.class)) {
+            return null;
+        } else if (firstBound.equals(cl)) {
+            return new ClassType(cl);                
+        } else if (firstBound instanceof Class) {
+            return create((Class)typeVariable.getBounds()[0], typeVariable);    
+        } else  if (firstBound instanceof ParameterizedType){
+            ParameterizedType parameterized = (ParameterizedType)firstBound;
+            Class<?> rawType = (Class)((ParameterizedType)firstBound).getRawType();
+            if (rawType.equals(cl)) {
+                return new ClassType(cl);
+            } else {
+                return new TypeExtends(create(rawType, rawType));
+            }                
+        } else {
+            throw new IllegalStateException(typeVariable.getBounds()[0].getClass().toString());
+        }
     }
 
 
     private boolean isEntityClass(Class<?> cl) {
-        boolean entity= false;
         for (Class<? extends Annotation> clazz : entityAnnotations){
             if (cl.getAnnotation(clazz) != null){
-                entity = true;
-                break;
+                return true;
             }
         }
-        if (embeddableTypes.contains(cl)) {
-            entity = true;
-        }
-        return entity;
+        return embeddableTypes.contains(cl);
     }
     
     public void setUnknownAsEntity(boolean unknownAsEntity) {

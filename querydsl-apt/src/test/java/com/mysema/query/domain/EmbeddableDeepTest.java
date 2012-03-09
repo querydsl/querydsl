@@ -31,19 +31,19 @@ public class EmbeddableDeepTest {
     }
 
     @MappedSuperclass
-    public abstract class AValueObject implements Cloneable, Serializable {
+    public static abstract class AValueObject implements Cloneable, Serializable {
 
     }
 
     @MappedSuperclass
-    public abstract class AEntity extends AValueObject {
+    public static abstract class AEntity extends AValueObject {
 
     }
 
     // JPA
 
     @Entity
-    public class A extends AEntity {
+    public static class A extends AEntity {
 
         @Embedded
         B b;
@@ -51,7 +51,7 @@ public class EmbeddableDeepTest {
     }
 
     @Embeddable
-    public class B extends AValueObject {
+    public static class B extends AValueObject {
 
         @Embedded
         C c;
@@ -59,7 +59,7 @@ public class EmbeddableDeepTest {
     }
 
     @Embeddable
-    public class C extends AValueObject {
+    public static class C extends AValueObject {
 
         SomeType someType;
 

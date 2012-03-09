@@ -25,7 +25,7 @@ import com.mysema.query.annotations.QueryType;
 public class QueryTypeOverTransientTest {
     
     @QueryEntity
-    public class Entity {
+    public static class Entity {
         
         @QueryType(PropertyType.ENTITY)
         @QueryTransient
@@ -34,7 +34,7 @@ public class QueryTypeOverTransientTest {
     }
     
     @QueryEntity 
-    public abstract class  Entity2 {
+    public static abstract class  Entity2 {
         
         @QueryType(PropertyType.ENTITY)
         @QueryTransient

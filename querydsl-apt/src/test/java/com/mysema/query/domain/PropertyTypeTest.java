@@ -24,7 +24,7 @@ import com.mysema.query.annotations.QueryType;
 public class PropertyTypeTest {
 
     @QueryEntity
-    public class Entity {
+    public static class Entity {
         
         @QueryType(PropertyType.STRING)
         Integer numberAsString;

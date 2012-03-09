@@ -26,7 +26,7 @@ import org.junit.Test;
 public class EmbeddableInterfaceTest {
 
     @Entity
-    public class EntityClass {
+    public static class EntityClass {
         
         @ElementCollection(targetClass=EmbeddableClass.class)
         Collection<EmbeddableInterface> children;
@@ -40,7 +40,7 @@ public class EmbeddableInterfaceTest {
     }
     
     @Embeddable
-    public class EmbeddableClass implements EmbeddableInterface {
+    public static class EmbeddableClass implements EmbeddableInterface {
 
         @Override
         public String getName() {

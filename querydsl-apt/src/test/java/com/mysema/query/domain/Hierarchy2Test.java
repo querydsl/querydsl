@@ -26,14 +26,14 @@ import org.junit.Ignore;
 public class Hierarchy2Test {
 
     @MappedSuperclass
-    public abstract class SomeMappedSuperClassHavingMyEmbeddable {
+    public static abstract class SomeMappedSuperClassHavingMyEmbeddable {
 
         @Embedded
         MyEmbeddable embeddable;
     }
 
     @Entity
-    class A {
+    static class A {
 
         @OneToOne
         SomeEntity entry;
@@ -43,11 +43,11 @@ public class Hierarchy2Test {
     }
 
     @Entity
-    class SomeEntity extends SomeMappedSuperClassHavingMyEmbeddable {
+    static class SomeEntity extends SomeMappedSuperClassHavingMyEmbeddable {
     }
 
     @Embeddable
-    public class MyEmbeddable implements Comparable<MyEmbeddable> {
+    public static class MyEmbeddable implements Comparable<MyEmbeddable> {
 
         @Basic
         int foo;

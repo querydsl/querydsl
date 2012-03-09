@@ -16,7 +16,7 @@ import com.mysema.query.types.path.StringPath;
 public class QueryEmbedded7Test {
 
     @QueryEntity
-    class Entity {
+    static class Entity {
         
         @QueryEmbedded
         Collection<String> users;

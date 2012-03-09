@@ -28,7 +28,7 @@ import org.junit.Test;
 public class Embedded2Test {
     
     @MappedSuperclass
-    public class EntityCode {
+    public static class EntityCode {
 
         @Column(name = "code", unique = true)
         String code;
@@ -36,7 +36,7 @@ public class Embedded2Test {
     }
     
     @MappedSuperclass
-    public abstract class AbstractEntity<C extends EntityCode> {
+    public static abstract class AbstractEntity<C extends EntityCode> {
 
         @Embedded
         @Column(name = "code", nullable = false, unique = true)
@@ -45,12 +45,12 @@ public class Embedded2Test {
     }
     
     @MappedSuperclass
-    public class AbstractMultilingualEntity<C extends EntityCode> extends AbstractEntity<C> {
+    public static class AbstractMultilingualEntity<C extends EntityCode> extends AbstractEntity<C> {
 
     }
     
     @MappedSuperclass
-    public abstract class AbstractNamedEntity<C extends EntityCode> extends AbstractMultilingualEntity<C> {
+    public static abstract class AbstractNamedEntity<C extends EntityCode> extends AbstractMultilingualEntity<C> {
 
         @Column(name = "name_en", nullable = false)
         String nameEn;
@@ -61,7 +61,7 @@ public class Embedded2Test {
     }
         
     @javax.persistence.Entity
-    public class Brand extends AbstractNamedEntity<BrandCode> {
+    public static class Brand extends AbstractNamedEntity<BrandCode> {
 
         @Id
         @GeneratedValue(strategy = GenerationType.AUTO)
@@ -77,7 +77,7 @@ public class Embedded2Test {
     }
      
     @Embeddable
-    public class BrandCode extends EntityCode {
+    public static class BrandCode extends EntityCode {
 
     }
     

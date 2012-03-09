@@ -25,7 +25,7 @@ import com.mysema.query.annotations.QueryEntity;
 public class CollectionTest {
     
     @QueryEntity
-    public class Person {
+    public static class Person {
 
         Map<String, ?> map1;
     

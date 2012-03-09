@@ -33,7 +33,7 @@ import com.mysema.query.types.expr.BooleanExpression;
 public class AnyUsageTest {
 
     @Entity
-    public class DealerGroup implements Serializable {
+    public static class DealerGroup implements Serializable {
         private static final long serialVersionUID = 8001287260658920066L;
 
         @Id
@@ -46,7 +46,7 @@ public class AnyUsageTest {
     }
 
     @Entity
-    public class Dealer implements Serializable {
+    public static class Dealer implements Serializable {
         private static final long serialVersionUID = -6832045219902674887L;
 
         @Id
@@ -62,7 +62,7 @@ public class AnyUsageTest {
     }
     
     @Entity
-    public class Company {
+    public static class Company {
         
         @Id
         @GeneratedValue

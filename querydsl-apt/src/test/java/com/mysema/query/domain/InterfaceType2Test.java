@@ -35,7 +35,7 @@ public class InterfaceType2Test {
 
 
     @MappedSuperclass
-    public class EntityImpl {
+    public static class EntityImpl {
         
         @Id
         private Long id;
@@ -54,7 +54,7 @@ public class InterfaceType2Test {
     @Table(name = "USERS")
     @org.hibernate.annotations.AccessType("field")
     @org.hibernate.annotations.Proxy(proxyClass = User.class)
-    public class UserImpl extends EntityImpl implements User {
+    public static class UserImpl extends EntityImpl implements User {
 
         @NaturalId(mutable = true)
         @Column(name = "USERNAME", nullable = false)
@@ -86,7 +86,7 @@ public class InterfaceType2Test {
     @Table(name = "PARTY")
     @org.hibernate.annotations.AccessType("field")
     @org.hibernate.annotations.Proxy(proxyClass = Party.class)
-    public abstract class PartyImpl extends EntityImpl implements Party {
+    public static abstract class PartyImpl extends EntityImpl implements Party {
 
         @Column(name = "NAME", nullable = false)
         private String name;

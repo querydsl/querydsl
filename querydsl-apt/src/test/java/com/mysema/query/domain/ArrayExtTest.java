@@ -31,7 +31,7 @@ public class ArrayExtTest {
     private static final QArrayExtTest_BinaryFile binaryFile = QArrayExtTest_BinaryFile.binaryFile;
     
     @QueryEntity
-    public class BinaryFile {
+    public static class BinaryFile {
 
         byte[] contentPart;
         

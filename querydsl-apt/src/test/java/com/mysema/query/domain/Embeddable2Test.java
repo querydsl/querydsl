@@ -27,14 +27,14 @@ import com.mysema.query.types.path.PathInits;
 public class Embeddable2Test {
     
     @QuerySupertype
-    public abstract class SomeMappedSuperClassHavingMyEmbeddable {
+    public static abstract class SomeMappedSuperClassHavingMyEmbeddable {
 
         @QueryEmbedded
         MyEmbeddable embeddable;
     }
     
     @QueryEntity
-    public abstract class SomeEntityClassHavingMyEmbeddable {
+    public static abstract class SomeEntityClassHavingMyEmbeddable {
         
         @QueryEmbedded
         MyEmbeddable embeddable;
@@ -42,7 +42,7 @@ public class Embeddable2Test {
     }
     
     @QueryEntity
-    public class SomeEntity extends SomeMappedSuperClassHavingMyEmbeddable {
+    public static class SomeEntity extends SomeMappedSuperClassHavingMyEmbeddable {
         
     }
     

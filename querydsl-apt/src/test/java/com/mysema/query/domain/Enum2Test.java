@@ -21,12 +21,12 @@ import com.mysema.query.annotations.QueryEntity;
 public class Enum2Test {
     
     @QueryEntity
-    public abstract class EnumPermissions<P extends Enum<P> & Permission> extends EntityImpl implements Permissions<P> {
+    public static abstract class EnumPermissions<P extends Enum<P> & Permission> extends EntityImpl implements Permissions<P> {
     
     }
 
     @QueryEntity
-    public abstract class EntityImpl {
+    public static abstract class EntityImpl {
                 
     }
 
