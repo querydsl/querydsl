@@ -55,13 +55,6 @@
 		</exclusion>
 	</exclusions>      
     </dependency>    
-    
-    <dependency>
-	  <groupId>org.eclipse.persistence</groupId>
-	  <artifactId>eclipselink</artifactId>
-	  <version>2.3.0-M6</version>
-	  <scope>provided</scope>
-    </dependency>
  
     <dependency>
       <groupId>org.hibernate.javax.persistence</groupId>
@@ -100,6 +93,13 @@
     </dependency>    
 	
     <!-- test -->
+        
+    <dependency>
+	  <groupId>org.eclipse.persistence</groupId>
+	  <artifactId>eclipselink</artifactId>
+	  <version>2.3.0-M6</version>
+	  <scope>test</scope>
+    </dependency>
     
     <dependency>
       <groupId>postgresql</groupId>
