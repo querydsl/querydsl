@@ -113,7 +113,8 @@ public final class ReflectionUtils {
                 return Object.class;
             }
         } else if (type instanceof TypeVariable) {
-            return (Class<?>) ((TypeVariable) type).getGenericDeclaration();
+            //return (Class<?>) ((TypeVariable) type).getGenericDeclaration();
+            return getClass(((TypeVariable)type).getBounds()[0]);
         } else if (type instanceof ParameterizedType) {
             return (Class<?>) ((ParameterizedType) type).getRawType();
         } else if (type instanceof GenericArrayType) {    

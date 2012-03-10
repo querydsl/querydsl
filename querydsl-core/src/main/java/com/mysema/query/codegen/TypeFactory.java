@@ -52,7 +52,7 @@ public final class TypeFactory {
     private static final Type[] TYPES_2 = new Type[]{ Types.OBJECT, Types.OBJECT };
 
     private final Map<List<java.lang.reflect.Type>, Type> cache = new HashMap<List<java.lang.reflect.Type>, Type>();
-
+    
     private final Collection<Class<? extends Annotation>> entityAnnotations;
 
     private final Set<Class<?>> embeddableTypes = new HashSet<Class<?>>();
@@ -69,18 +69,18 @@ public final class TypeFactory {
     }
 
     public EntityType createEntityType(Class<?> cl) {
-        return (EntityType) create(true, cl, cl.getGenericSuperclass());
+        return (EntityType) create(true, cl, cl);
     }
     
     public Type create(Class<?> cl) {
-        return create(isEntityClass(cl), cl, cl.getGenericSuperclass());
+        return create(isEntityClass(cl), cl, cl);
     }
 
     public Type create(Class<?> cl, java.lang.reflect.Type genericType) {
         return create(isEntityClass(cl), cl, genericType);
     }
     
-    public Type create(boolean entity, Class<?> cl, java.lang.reflect.Type genericType) {
+    public Type create(boolean entity, Class<?> cl, java.lang.reflect.Type genericType) {        
         List<java.lang.reflect.Type> key = Arrays.<java.lang.reflect.Type> asList(cl, genericType);
         if (cache.containsKey(key)) {
             Type value = cache.get(key);
@@ -140,10 +140,12 @@ public final class TypeFactory {
         if (!typeCategory.isSubCategoryOf(TypeCategory.COMPARABLE) && Comparable.class.isAssignableFrom(cl)
             && !cl.equals(Comparable.class)) {
             typeCategory = TypeCategory.COMPARABLE;
+        } else if (embeddableTypes.contains(cl)) {
+            typeCategory = TypeCategory.CUSTOM;
         } else if (typeCategory == TypeCategory.SIMPLE && entity) {
             typeCategory = TypeCategory.ENTITY;
         } else if (unknownAsEntity && typeCategory == TypeCategory.SIMPLE && !cl.getName().startsWith("java")) {
-            typeCategory = TypeCategory.ENTITY;
+            typeCategory = TypeCategory.CUSTOM;
         }
         value = new ClassType(typeCategory, cl, parameters);
         return value;
@@ -181,14 +183,13 @@ public final class TypeFactory {
         } else if (parameter instanceof WildcardType 
             && ((WildcardType)parameter).getUpperBounds()[0].equals(Object.class)
             && ((WildcardType)parameter).getLowerBounds().length == 0) {
-            //return collectionOrMap ? Types.OBJECT : getTypeParameter(cl, i);
             Type rv = getTypeParameter(cl, i);
-            return (collectionOrMap && rv == null) ? Types.OBJECT : rv; 
+            return (collectionOrMap && rv == null) ? Types.OBJECT : rv;
         } else {
             Type rv = create(ReflectionUtils.getTypeParameter(genericType, i), parameter);
-            if (collectionOrMap && parameter instanceof WildcardType) {
+            if (parameter instanceof WildcardType) {
                 rv = new TypeExtends(rv);
-            }
+            } 
             return rv;
         }
     }
@@ -214,7 +215,7 @@ public final class TypeFactory {
             ParameterizedType parameterized = (ParameterizedType)firstBound;
             Class<?> rawType = (Class)((ParameterizedType)firstBound).getRawType();
             if (rawType.equals(cl)) {
-                return new ClassType(cl);
+                return new TypeExtends(typeVariable.getName(), new ClassType(cl));
             } else {
                 return new TypeExtends(create(rawType, rawType));
             }                

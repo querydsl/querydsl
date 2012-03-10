@@ -26,7 +26,7 @@ import com.mysema.query.annotations.QueryType;
 public class TransientTest {
     
     @Entity
-    class ExampleEntity {
+    static class ExampleEntity {
         
         @QueryType(PropertyType.SIMPLE)
         @Transient

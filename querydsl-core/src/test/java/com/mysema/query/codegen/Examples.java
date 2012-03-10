@@ -2,6 +2,7 @@ package com.mysema.query.codegen;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -105,5 +106,12 @@ public class Examples {
     public static class OrderBys {
         
         List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
+        
+    }
+    
+    @QueryEntity
+    public static class SimpleTypes {
+        
+        List<Class<? extends Date>> classList5;
     }
 }

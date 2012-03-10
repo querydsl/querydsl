@@ -15,6 +15,7 @@ package com.mysema.query.codegen;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -26,6 +27,7 @@ import java.util.Locale;
 
 import org.junit.Test;
 
+import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.TypeExtends;
@@ -83,6 +85,30 @@ public class TypeFactoryTest {
         Field field = Examples.OrderBys.class.getDeclaredField("orderBy");
         Type type = factory.create(field.getType(), field.getGenericType());
         assertEquals(1, type.getParameters().size());
+    }
+    
+    @Test
+    public void SubEntity() {
+        Type type = factory.create(Examples.SubEntity.class);
+        assertEquals(0, type.getParameters().size());
+    }
+    
+    @Test
+    public void AbstractEntity_Code() throws SecurityException, NoSuchFieldException {
+        Field field = EmbeddedTest.AbstractEntity.class.getDeclaredField("code");
+        Type type = factory.create(field.getType(), field.getGenericType());
+        assertTrue(type instanceof TypeExtends);
+        assertEquals("C", ((TypeExtends)type).getVarName());
+    }
+    
+    @Test
+    public void SimpleTypes_classList5() throws SecurityException, NoSuchFieldException {
+        Field field = Examples.SimpleTypes.class.getDeclaredField("classList5");
+        Type type = factory.create(field.getType(), field.getGenericType());
+        assertEquals(TypeCategory.LIST, type.getCategory());
+        Type parameter = type.getParameters().get(0);
+        assertEquals(ClassType.class, parameter.getClass());
+        assertEquals(TypeExtends.class, parameter.getParameters().get(0).getClass());
     }
     
     @Test
@@ -174,7 +200,7 @@ public class TypeFactoryTest {
 
         factory = new TypeFactory();
         factory.setUnknownAsEntity(true);
-        assertEquals(TypeCategory.ENTITY, factory.create(TypeFactoryTest.class).getCategory());
+        assertEquals(TypeCategory.CUSTOM, factory.create(TypeFactoryTest.class).getCategory());
     }
 
 }

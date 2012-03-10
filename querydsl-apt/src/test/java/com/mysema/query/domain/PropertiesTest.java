@@ -33,13 +33,13 @@ import org.junit.Test;
 public class PropertiesTest {
     
     @Entity
-    public abstract class AbstractEntity {
+    public static abstract class AbstractEntity {
         
     }
     
     @Entity
     @Table(name = "Customer")
-    public class Customer extends AbstractEntity {
+    public static class Customer extends AbstractEntity {
 
         private String name;
         private List<Pizza> pizzas = new ArrayList<Pizza>(0);
@@ -65,7 +65,7 @@ public class PropertiesTest {
     
     @Entity
     @Table(name = "Pizza")
-    public class Pizza extends AbstractEntity {
+    public static class Pizza extends AbstractEntity {
 
         private Date orderTime;
         private Customer customer;
@@ -101,7 +101,7 @@ public class PropertiesTest {
     }
 
     @Entity
-    public class Topping {
+    public static class Topping {
         
     }
     

@@ -69,6 +69,7 @@ public class Examples {
     @QueryEntity
     public static class OrderBys {
         
+        @QueryEmbedded
         List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
     }
 

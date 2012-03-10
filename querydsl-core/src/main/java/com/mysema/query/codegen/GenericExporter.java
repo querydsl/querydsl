@@ -24,6 +24,7 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -38,6 +39,7 @@ import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.ScalaWriter;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeExtends;
 import com.mysema.codegen.support.ClassUtils;
 import com.mysema.query.QueryException;
 import com.mysema.query.annotations.Config;
@@ -116,6 +118,11 @@ public class GenericExporter {
         export(pkgs);
     }
     
+    public void export(String... packages){
+        scanPackages(packages);
+        innerExport();
+    }
+        
     public void export(Class<?>...classes) {
         for (Class<?> cl : classes) {
             handleClass(cl);
@@ -123,11 +130,6 @@ public class GenericExporter {
         innerExport();
     }
 
-    public void export(String... packages){
-        scanPackages(packages);
-        innerExport();
-    }
-    
     @SuppressWarnings("unchecked")
     private void innerExport(){
         typeMappings = codegenModule.get(TypeMappings.class);
@@ -267,7 +269,10 @@ public class GenericExporter {
         // fields
         if (handleFields) {
             for (Field field : cl.getDeclaredFields()) {
-                if (!Modifier.isStatic(field.getModifiers())) { 
+                if (!Modifier.isStatic(field.getModifiers())) {
+                    if (Modifier.isTransient(field.getModifiers()) && !field.isAnnotationPresent(QueryType.class)) {
+                        continue;
+                    }
                     AnnotatedElement annotated = ReflectionUtils.getAnnotatedElement(cl, field.getName(), field.getType());
                     Method method = ReflectionUtils.getGetterOrNull(cl, field.getName(), field.getType());
                     Type propertyType = null;
@@ -313,8 +318,14 @@ public class GenericExporter {
     }
 
     private Type getPropertyType(Class<?> cl, AnnotatedElement annotated, Class<?> type, 
-            java.lang.reflect.Type genericType) {
+            java.lang.reflect.Type genericType) {        
         Type propertyType = allTypes.get(ClassUtils.getFullName(type));
+        if (propertyType != null && genericType instanceof TypeVariable) {
+            if (propertyType instanceof EntityType) {
+                propertyType = ((EntityType) propertyType).getInnerType();
+            }
+            propertyType = new TypeExtends(((TypeVariable) genericType).getName(), propertyType);
+        }
         if (propertyType == null && annotated.isAnnotationPresent(embeddedAnnotation)) {
             Class<?> embeddableType = type;
             if (Collection.class.isAssignableFrom(type)) {
@@ -359,7 +370,6 @@ public class GenericExporter {
         }
         return new Property(entityType, propertyName, propertyType, inits);
     }
-
 
     private void scanPackages(String... packages){
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
