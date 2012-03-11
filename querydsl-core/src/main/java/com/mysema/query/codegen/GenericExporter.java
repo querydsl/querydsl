@@ -209,24 +209,11 @@ public class GenericExporter {
                         // skip internal supertypes
                         continue;
                     }
-                    try {
-                        // TODO : move this to codegen module
-                        Class<?> cl;
-                        Type type = supertype.getType();
-                        if (type instanceof EntityType) {
-                            type = ((EntityType)type).getInnerType();
-                        }
-                        if (type instanceof ClassType) {
-                            cl = ((ClassType)type).getJavaClass();
-                        } else {
-                            cl = Class.forName(type.getFullName());   
-                        }
-                        typeFactory.addEmbeddableType(cl);
-                        entityType = createEntityType(cl, new HashMap<Class<?>, EntityType>());
-                        addProperties(cl, entityType);
-                    } catch (ClassNotFoundException e) {
-                        throw new QueryException(e);
-                    }
+                    Class<?> cl = supertype.getType().getJavaClass();
+                    typeFactory.addEmbeddableType(cl);
+                    entityType = createEntityType(cl, new HashMap<Class<?>, EntityType>());
+                    addProperties(cl, entityType);
+
                 }
                 addSupertypeFields(entityType, superTypes, handled);
                 supertype.setEntityType(entityType);
