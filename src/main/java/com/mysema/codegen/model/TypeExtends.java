@@ -10,12 +10,11 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
-
 /**
  * @author tiwe
- *
+ * 
  */
-public class TypeExtends extends TypeAdapter{
+public class TypeExtends extends TypeAdapter {
 
     private final String varName;
 
@@ -30,25 +29,26 @@ public class TypeExtends extends TypeAdapter{
     }
 
     @Override
-    public String getGenericName(boolean asArgType){
-        return getGenericName(asArgType, Collections.<String>emptySet(),Collections.<String>emptySet());
+    public String getGenericName(boolean asArgType) {
+        return getGenericName(asArgType, Collections.<String> emptySet(),
+                Collections.<String> emptySet());
     }
 
     @Override
-    public String getGenericName(boolean asArgType, Set<String> packages, Set<String> classes){
-        if (!asArgType){
-            if (type.equals(Types.OBJECT)){
+    public String getGenericName(boolean asArgType, Set<String> packages, Set<String> classes) {
+        if (!asArgType) {
+            if (type.equals(Types.OBJECT)) {
                 return "?";
-            }else{
+            } else {
                 String genericName = super.getGenericName(true, packages, classes);
                 return StringUtils.isEmpty(genericName) ? "?" : "? extends " + genericName;
             }
-        }else{
+        } else {
             return super.getGenericName(asArgType, packages, classes);
         }
     }
 
-    public String getVarName(){
+    public String getVarName() {
         return varName;
     }
 

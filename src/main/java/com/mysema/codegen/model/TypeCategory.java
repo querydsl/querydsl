@@ -10,9 +10,9 @@ import java.util.Set;
 
 /**
  * TypeCategory defines the expression type used for a Field
- *
+ * 
  * @author tiwe
- *
+ * 
  */
 public enum TypeCategory {
     /**
@@ -54,14 +54,9 @@ public enum TypeCategory {
     /**
      *
      */
-    DATETIME(COMPARABLE,
-        java.util.Calendar.class.getName(),
-        java.util.Date.class.getName(),
-        java.sql.Timestamp.class.getName(),
-        "org.joda.time.LocalDateTime",
-        "org.joda.time.Instant",
-        "org.joda.time.DateTime",
-        "org.joda.time.DateMidnight"),
+    DATETIME(COMPARABLE, java.util.Calendar.class.getName(), java.util.Date.class.getName(),
+            java.sql.Timestamp.class.getName(), "org.joda.time.LocalDateTime",
+            "org.joda.time.Instant", "org.joda.time.DateTime", "org.joda.time.DateMidnight"),
     /**
      * 
      */
@@ -69,8 +64,8 @@ public enum TypeCategory {
     /**
      * 
      */
-    CUSTOM(null),    
-        
+    CUSTOM(null),
+
     /**
      *
      */
@@ -93,10 +88,10 @@ public enum TypeCategory {
 
     private final Set<String> types;
 
-    TypeCategory(TypeCategory superType, String... types){
+    TypeCategory(TypeCategory superType, String... types) {
         this.superType = superType;
         this.types = new HashSet<String>(types.length);
-        for (String type : types){
+        for (String type : types) {
             this.types.add(type);
         }
     }
@@ -105,33 +100,33 @@ public enum TypeCategory {
         return superType;
     }
 
-    public boolean supports(Class<?> cl){
+    public boolean supports(Class<?> cl) {
         return supports(cl.getName());
     }
 
-    public boolean supports(String className){
+    public boolean supports(String className) {
         return types.contains(className);
     }
 
     /**
      * transitive and reflexive subCategoryOf check
-     *
+     * 
      * @param ancestor
      * @return
      */
-    public boolean isSubCategoryOf(TypeCategory ancestor){
-        if (this == ancestor){
+    public boolean isSubCategoryOf(TypeCategory ancestor) {
+        if (this == ancestor) {
             return true;
-        }else if (superType == null){
+        } else if (superType == null) {
             return false;
-        }else{
+        } else {
             return superType == ancestor || superType.isSubCategoryOf(ancestor);
         }
     }
 
-    public static TypeCategory get(String className){
-        for (TypeCategory category : values()){
-            if (category.supports(className)){
+    public static TypeCategory get(String className) {
+        for (TypeCategory category : values()) {
+            if (category.supports(className)) {
                 return category;
             }
         }

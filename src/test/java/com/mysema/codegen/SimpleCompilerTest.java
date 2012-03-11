@@ -17,9 +17,9 @@ import org.junit.After;
 import org.junit.Test;
 
 public class SimpleCompilerTest {
-    
+
     @After
-    public void tearDown(){
+    public void tearDown() {
         new File("src/test/java/com/mysema/codegen/SimpleCompilerTest.class").delete();
     }
 
@@ -32,8 +32,9 @@ public class SimpleCompilerTest {
         options.add("-s");
         options.add("target/out");
         options.add("src/test/java/com/mysema/codegen/SimpleCompilerTest.java");
-        int compilationResult = compiler.run(null, null, null, options.toArray(new String[options.size()]));
-        if(compilationResult != 0){
+        int compilationResult = compiler.run(null, null, null,
+                options.toArray(new String[options.size()]));
+        if (compilationResult != 0) {
             Assert.fail("Compilation Failed");
         }
     }

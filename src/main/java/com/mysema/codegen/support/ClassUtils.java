@@ -13,29 +13,28 @@ import java.util.Set;
 
 /**
  * @author tiwe
- *
+ * 
  */
 public final class ClassUtils {
 
-    public static String getName(Class<?> cl){
-        return getName(cl, Collections.singleton("java.lang"), Collections.<String>emptySet());
+    public static String getName(Class<?> cl) {
+        return getName(cl, Collections.singleton("java.lang"), Collections.<String> emptySet());
     }
 
-
     public static String getFullName(Class<?> cl) {
-        if (cl.isArray()){
+        if (cl.isArray()) {
             return getFullName(cl.getComponentType()) + "[]";
-        }else{
-            return cl.getName().replace('$', '.');
+        } else {
+            return cl.getCanonicalName();
         }
     }
 
-    public static String getPackageName(Class<?> cl){
-        if (cl.isArray()){
+    public static String getPackageName(Class<?> cl) {
+        if (cl.isArray()) {
             return getPackageName(cl.getComponentType());
-        }else if (cl.getPackage() != null){
+        } else if (cl.getPackage() != null) {
             return cl.getPackage().getName();
-        }else{
+        } else {
             return "";
         }
     }
@@ -45,33 +44,34 @@ public final class ClassUtils {
             return getName(cl.getComponentType(), packages, classes) + "[]";
         } else if (cl.getPackage() == null
                 || packages.contains(cl.getPackage().getName())
-                || classes.contains(cl.getName())
-                || classes.contains(cl.getName().substring(0, cl.getName().lastIndexOf('.')))) {
-            if (cl.getPackage() != null){
-                String localName = cl.getName().substring(cl.getPackage().getName().length()+1);
-                return localName.replace('$', '.');
-            }else{
-                return cl.getName().replace('$', '.');
+                || classes.contains(cl.getCanonicalName())
+                || classes.contains(cl.getCanonicalName().substring(0,
+                        cl.getName().lastIndexOf('.')))) {
+            if (cl.getPackage() != null) {
+                return cl.getCanonicalName().substring(cl.getPackage().getName().length() + 1);
+            } else {
+                return cl.getCanonicalName();
             }
         } else {
-            return cl.getName().replace('$', '.');
+            return cl.getCanonicalName();
         }
     }
 
-    public static Class<?> normalize(Class<?> clazz){
-        if (List.class.isAssignableFrom(clazz)){
+    public static Class<?> normalize(Class<?> clazz) {
+        if (List.class.isAssignableFrom(clazz)) {
             return List.class;
-        }else if (Set.class.isAssignableFrom(clazz)){
+        } else if (Set.class.isAssignableFrom(clazz)) {
             return Set.class;
-        }else if (Collection.class.isAssignableFrom(clazz)){
+        } else if (Collection.class.isAssignableFrom(clazz)) {
             return Collection.class;
-        }else if (Map.class.isAssignableFrom(clazz)){
+        } else if (Map.class.isAssignableFrom(clazz)) {
             return Map.class;
-        }else{
+        } else {
             return clazz;
         }
     }
 
-    private ClassUtils(){}
+    private ClassUtils() {
+    }
 
 }

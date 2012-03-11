@@ -13,13 +13,13 @@ package com.mysema.codegen;
  * 
  */
 public interface Evaluator<T> {
-    
+
     /**
      * @param args
      * @return
      */
     T evaluate(Object... args);
-    
+
     /**
      * @return
      */

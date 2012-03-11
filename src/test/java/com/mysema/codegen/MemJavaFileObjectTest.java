@@ -18,17 +18,17 @@ public class MemJavaFileObjectTest {
 
     @Test
     public void getCharContent() throws IOException {
-        MemJavaFileObject obj = new MemJavaFileObject("mem","Test",Kind.SOURCE);
+        MemJavaFileObject obj = new MemJavaFileObject("mem", "Test", Kind.SOURCE);
         Writer writer = obj.openWriter();
         writer.write("Hello World");
         writer.flush();
         writer.close();
         assertEquals("Hello World", obj.getCharContent(true).toString());
     }
-    
+
     @Test
     public void openInputStream() throws IOException {
-        MemJavaFileObject obj = new MemJavaFileObject("mem","Test",Kind.SOURCE);
+        MemJavaFileObject obj = new MemJavaFileObject("mem", "Test", Kind.SOURCE);
         obj.openWriter().write("test");
         obj.openInputStream().close();
     }

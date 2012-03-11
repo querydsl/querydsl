@@ -9,7 +9,7 @@ import java.util.Collection;
 
 /**
  * @author tiwe
- *
+ * 
  */
 public final class Constructor {
 
@@ -20,12 +20,12 @@ public final class Constructor {
     }
 
     @Override
-    public boolean equals(Object o){
-        if (o == this){
+    public boolean equals(Object o) {
+        if (o == this) {
             return true;
-        }else if (o instanceof Constructor){
-            return ((Constructor)o).parameters.equals(parameters);
-        }else{
+        } else if (o instanceof Constructor) {
+            return ((Constructor) o).parameters.equals(parameters);
+        } else {
             return false;
         }
     }
@@ -35,7 +35,7 @@ public final class Constructor {
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return parameters.hashCode();
     }
 

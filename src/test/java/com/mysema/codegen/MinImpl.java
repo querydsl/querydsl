@@ -7,13 +7,13 @@ import javax.validation.constraints.*;
 
 /**
  * @author tiwe
- *
+ * 
  */
 @SuppressWarnings("all")
-public class MinImpl implements Min{
-    
+public class MinImpl implements Min {
+
     private final long value;
-    
+
     public MinImpl(long value) {
         this.value = value;
     }

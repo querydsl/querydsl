@@ -21,47 +21,50 @@ import javax.tools.JavaFileObject;
 import javax.tools.JavaFileObject.Kind;
 import javax.tools.StandardLocation;
 
-
 /**
  * MemClassLoader is a mmemory based implementation of the ClassLoader interface
  * 
  * @author tiwe
- *
+ * 
  */
 public final class MemClassLoader extends ClassLoader {
-    
-    private static final LocationAndKind CLASS_KEY = new LocationAndKind(StandardLocation.CLASS_OUTPUT,Kind.CLASS);
-    
-    private static final LocationAndKind OTHER_KEY = new LocationAndKind(StandardLocation.CLASS_OUTPUT,Kind.OTHER);
-    
-    private static final LocationAndKind SOURCE_KEY = new LocationAndKind(StandardLocation.CLASS_OUTPUT,Kind.SOURCE);
-    
+
+    private static final LocationAndKind CLASS_KEY = new LocationAndKind(
+            StandardLocation.CLASS_OUTPUT, Kind.CLASS);
+
+    private static final LocationAndKind OTHER_KEY = new LocationAndKind(
+            StandardLocation.CLASS_OUTPUT, Kind.OTHER);
+
+    private static final LocationAndKind SOURCE_KEY = new LocationAndKind(
+            StandardLocation.CLASS_OUTPUT, Kind.SOURCE);
+
     private final Map<LocationAndKind, Map<String, JavaFileObject>> memFileSystem;
-    
-    public MemClassLoader(ClassLoader parent, Map<LocationAndKind, Map<String, JavaFileObject>> ramFileSystem) {
+
+    public MemClassLoader(ClassLoader parent,
+            Map<LocationAndKind, Map<String, JavaFileObject>> ramFileSystem) {
         super(parent);
         this.memFileSystem = ramFileSystem;
     }
-    
+
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
         JavaFileObject jfo = memFileSystem.get(CLASS_KEY).get(name);
         if (jfo != null) {
-            byte[] bytes = ((MemJavaFileObject)jfo).getByteArray();
+            byte[] bytes = ((MemJavaFileObject) jfo).getByteArray();
             return defineClass(name, bytes, 0, bytes.length);
-        }else{
-            return super.findClass(name);    
-        }        
+        } else {
+            return super.findClass(name);
+        }
     }
-    
+
     @Override
     protected URL findResource(String name) {
         URL retValue = super.findResource(name);
-        if(retValue != null) {
+        if (retValue != null) {
             return retValue;
         } else {
             JavaFileObject jfo = getFileObject(name);
-            if(jfo != null) {
+            if (jfo != null) {
                 try {
                     return jfo.toUri().toURL();
                 } catch (MalformedURLException ex) {
@@ -72,44 +75,44 @@ public final class MemClassLoader extends ClassLoader {
             }
         }
     }
-    
+
     private JavaFileObject getFileObject(String n) {
         LocationAndKind key;
-        String name;                
-        if(n.endsWith(Kind.CLASS.extension)) {
-            name = n.replace('.','/') + Kind.CLASS.extension;
+        String name;
+        if (n.endsWith(Kind.CLASS.extension)) {
+            name = n.replace('.', '/') + Kind.CLASS.extension;
             key = CLASS_KEY;
-        } else if(n.endsWith(Kind.SOURCE.extension)) {
-            name = n.replace('.','/') + Kind.SOURCE.extension;
+        } else if (n.endsWith(Kind.SOURCE.extension)) {
+            name = n.replace('.', '/') + Kind.SOURCE.extension;
             key = SOURCE_KEY;
-        }else{
+        } else {
             name = n;
             key = OTHER_KEY;
         }
-        if(memFileSystem.containsKey(key)) {
-            return memFileSystem.get(key).get(name);   
-        }else{
+        if (memFileSystem.containsKey(key)) {
+            return memFileSystem.get(key).get(name);
+        } else {
             return null;
-        }        
+        }
     }
 
     @Override
     public InputStream getResourceAsStream(String name) {
         JavaFileObject jfo = getFileObject(name);
         if (jfo != null) {
-            byte[] bytes = ((MemJavaFileObject)jfo).getByteArray();
+            byte[] bytes = ((MemJavaFileObject) jfo).getByteArray();
             return new ByteArrayInputStream(bytes);
-        }else{
-            return null;    
-        }        
+        } else {
+            return null;
+        }
     }
 
     @Override
     public Enumeration<URL> getResources(String name) throws IOException {
-        List<URL> retValue;       
+        List<URL> retValue;
         retValue = Collections.list(super.getResources(name));
         JavaFileObject jfo = getFileObject(name);
-        if (jfo != null){
+        if (jfo != null) {
             retValue.add(jfo.toUri().toURL());
         }
         return Collections.enumeration(retValue);

@@ -9,12 +9,12 @@ package com.mysema.codegen;
  * Defines general String constants
  * 
  * @author tiwe
- *
+ * 
  */
 public final class Symbols {
-    
+
     public static final String ASSIGN = " = ";
-    
+
     public static final String COMMA = ", ";
 
     public static final String DOT = ".";
@@ -44,6 +44,7 @@ public final class Symbols {
     public static final String THIS = "this";
 
     public static final String UNCHECKED = "unchecked";
-    
-    private Symbols(){}
+
+    private Symbols() {
+    }
 }

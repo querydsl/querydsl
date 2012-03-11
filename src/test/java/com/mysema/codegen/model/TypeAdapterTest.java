@@ -7,7 +7,7 @@ import org.junit.Test;
 public class TypeAdapterTest {
 
     @Test
-    public void Delegation(){
+    public void Delegation() {
         Type inner = Types.OBJECT;
         Type type = new TypeAdapter(inner);
         assertEquals(inner.getCategory(), type.getCategory());

@@ -8,15 +8,15 @@ import java.lang.reflect.Method;
 
 /**
  * @author tiwe
- *
+ * 
  * @param <T>
  */
 public final class MethodEvaluator<T> implements Evaluator<T> {
-    
+
     private final Method method;
-    
+
     private final Object object;
-    
+
     private final Class<? extends T> projectionType;
 
     MethodEvaluator(Method method, Object object, Class<? extends T> projectionType) {

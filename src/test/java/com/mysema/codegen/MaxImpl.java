@@ -7,13 +7,13 @@ import javax.validation.constraints.*;
 
 /**
  * @author tiwe
- *
+ * 
  */
 @SuppressWarnings("all")
-public class MaxImpl implements Max{
-    
+public class MaxImpl implements Max {
+
     private final long value;
-    
+
     public MaxImpl(long value) {
         this.value = value;
     }

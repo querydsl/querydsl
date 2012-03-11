@@ -25,13 +25,13 @@ import com.mysema.codegen.support.ScalaSyntaxUtils;
 
 /**
  * @author tiwe
- *
+ * 
  */
 public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
 
-    private static final Set<String> PRIMITIVE_TYPES = new HashSet<String>(
-            Arrays.asList("boolean", "byte","char","int","long","short","double","float"));
-    
+    private static final Set<String> PRIMITIVE_TYPES = new HashSet<String>(Arrays.asList("boolean",
+            "byte", "char", "int", "long", "short", "double", "float"));
+
     private static final String DEF = "def ";
 
     private static final String EXTENDS = " extends ";
@@ -57,7 +57,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     private static final String PUBLIC_CLASS = "class ";
 
     private static final String PUBLIC_OBJECT = "object ";
-    
+
     private static final String CASE_CLASS = "case class ";
 
     private static final String VAR = "var ";
@@ -65,7 +65,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     private static final String VAL = "val ";
 
     private static final String TRAIT = "trait ";
-        
+
     private final Set<String> classes = new HashSet<String>();
 
     private final Set<String> packages = new HashSet<String>();
@@ -74,11 +74,11 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
 
     private final boolean compact;
 
-    public ScalaWriter(Appendable appendable){
+    public ScalaWriter(Appendable appendable) {
         this(appendable, false);
     }
 
-    public ScalaWriter(Appendable appendable, boolean compact){
+    public ScalaWriter(Appendable appendable, boolean compact) {
         super(appendable, 2);
         this.classes.add("java.lang.String");
         this.classes.add("java.lang.Object");
@@ -91,7 +91,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     public ScalaWriter annotation(Annotation annotation) throws IOException {
         beginLine().append("@").appendType(annotation.annotationType());
         Method[] methods = annotation.annotationType().getDeclaredMethods();
-        if (methods.length == 1 && methods[0].getName().equals("value")){
+        if (methods.length == 1 && methods[0].getName().equals("value")) {
             try {
                 Object value = methods[0].invoke(annotation);
                 append("(");
@@ -104,22 +104,22 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
             } catch (InvocationTargetException e) {
                 throw new CodegenException(e);
             }
-        }else{
+        } else {
             boolean first = true;
-            for (Method method : methods){
+            for (Method method : methods) {
                 try {
                     Object value = method.invoke(annotation);
                     if (value == null
-                     || value.equals(method.getDefaultValue())
-                     || (value.getClass().isArray()
-                     && Arrays.equals((Object[])value, (Object[])method.getDefaultValue()))){
+                            || value.equals(method.getDefaultValue())
+                            || (value.getClass().isArray() && Arrays.equals((Object[]) value,
+                                    (Object[]) method.getDefaultValue()))) {
                         continue;
-                    }else if (!first){
+                    } else if (!first) {
                         append(COMMA);
-                    }else{
+                    } else {
                         append("(");
                     }
-                    append(escape(method.getName())+"=");
+                    append(escape(method.getName()) + "=");
                     annotationConstant(value);
                 } catch (IllegalArgumentException e) {
                     throw new CodegenException(e);
@@ -130,7 +130,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
                 }
                 first = false;
             }
-            if (!first){
+            if (!first) {
                 append(")");
             }
         }
@@ -143,45 +143,46 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     }
 
     @SuppressWarnings("unchecked")
-    private void annotationConstant(Object value) throws IOException{
-        if (value.getClass().isArray()){
+    private void annotationConstant(Object value) throws IOException {
+        if (value.getClass().isArray()) {
             append("Array(");
             boolean first = true;
-            for (Object o : (Object[])value){
-                if (!first){
+            for (Object o : (Object[]) value) {
+                if (!first) {
                     append(", ");
                 }
                 annotationConstant(o);
                 first = false;
             }
             append(")");
-        }else if (value instanceof Class){
+        } else if (value instanceof Class) {
             append("classOf[");
-            appendType((Class)value);
+            appendType((Class) value);
             append("]");
-        }else if (value instanceof Number || value instanceof Boolean){
+        } else if (value instanceof Number || value instanceof Boolean) {
             append(value.toString());
-        }else if (value instanceof Enum){
-            Enum enumValue = (Enum)value;
+        } else if (value instanceof Enum) {
+            Enum enumValue = (Enum) value;
             if (classes.contains(enumValue.getClass().getName())
-             || packages.contains(enumValue.getClass().getPackage().getName())){
+                    || packages.contains(enumValue.getClass().getPackage().getName())) {
                 append(enumValue.name());
-            }else{
-                append(enumValue.getDeclaringClass().getName()+DOT+enumValue.name());
+            } else {
+                append(enumValue.getDeclaringClass().getName() + DOT + enumValue.name());
             }
-        }else if (value instanceof String){
+        } else if (value instanceof String) {
             append(QUOTE + StringEscapeUtils.escapeJava(value.toString()) + QUOTE);
-        }else{
+        } else {
             throw new IllegalArgumentException("Unsupported annotation value : " + value);
         }
     }
 
-    private ScalaWriter appendType(Class<?> type) throws IOException{
+    private ScalaWriter appendType(Class<?> type) throws IOException {
         if (type.isPrimitive()) {
             append(StringUtils.capitalize(type.getName()));
-        } else if (type.getPackage() == null || classes.contains(type.getName()) || packages.contains(type.getPackage().getName())){
+        } else if (type.getPackage() == null || classes.contains(type.getName())
+                || packages.contains(type.getPackage().getName())) {
             append(type.getSimpleName());
-        }else{
+        } else {
             append(type.getName());
         }
         return this;
@@ -192,7 +193,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
         goIn();
         return this;
     }
-    
+
     public ScalaWriter beginClass(String header) throws IOException {
         line(PUBLIC_CLASS, header, " {");
         goIn();
@@ -205,27 +206,28 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     }
 
     @Override
-    public ScalaWriter beginClass(Type type, Type superClass, Type... interfaces) throws IOException {
+    public ScalaWriter beginClass(Type type, Type superClass, Type... interfaces)
+            throws IOException {
         packages.add(type.getPackageName());
         beginLine(PUBLIC_CLASS, getGenericName(false, type));
-        if (superClass != null){
+        if (superClass != null) {
             append(EXTENDS + getGenericName(false, superClass));
         }
-        if (interfaces.length > 0){
-            if (superClass == null){
+        if (interfaces.length > 0) {
+            if (superClass == null) {
                 append(EXTENDS);
                 append(getGenericName(false, interfaces[0]));
                 append(WITH);
-                for (int i = 1; i < interfaces.length; i++){
-                    if (i > 1){
+                for (int i = 1; i < interfaces.length; i++) {
+                    if (i > 1) {
                         append(COMMA);
                     }
                     append(getGenericName(false, interfaces[i]));
                 }
-            }else{
+            } else {
                 append(WITH);
-                for (int i = 0; i < interfaces.length; i++){
-                    if (i > 0){
+                for (int i = 0; i < interfaces.length; i++) {
+                    if (i > 0) {
                         append(COMMA);
                     }
                     append(getGenericName(false, interfaces[i]));
@@ -239,7 +241,8 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     }
 
     @Override
-    public <T> ScalaWriter beginConstructor(Collection<T> parameters, Transformer<T, Parameter> transformer) throws IOException {
+    public <T> ScalaWriter beginConstructor(Collection<T> parameters,
+            Transformer<T, Parameter> transformer) throws IOException {
         beginLine(PUBLIC + type.getSimpleName()).params(parameters, transformer).append(" {").nl();
         return goIn();
     }
@@ -251,17 +254,16 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     }
 
     @Override
-    public ScalaWriter beginInterface(Type type, Type... interfaces)
-            throws IOException {
+    public ScalaWriter beginInterface(Type type, Type... interfaces) throws IOException {
         packages.add(type.getPackageName());
         beginLine(TRAIT + getGenericName(false, type));
-        if (interfaces.length > 0){
+        if (interfaces.length > 0) {
             append(EXTENDS);
             append(getGenericName(false, interfaces[0]));
-            if (interfaces.length > 1){
+            if (interfaces.length > 1) {
                 append(WITH);
-                for (int i = 1; i < interfaces.length; i++){
-                    if (i > 1){
+                for (int i = 1; i < interfaces.length; i++) {
+                    if (i > 1) {
                         append(COMMA);
                     }
                     append(getGenericName(false, interfaces[i]));
@@ -275,36 +277,42 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
         return this;
     }
 
-    private ScalaWriter beginMethod(String modifiers, Type returnType, String methodName, Parameter... args) throws IOException{
-        if (returnType.equals(Types.VOID)){
+    private ScalaWriter beginMethod(String modifiers, Type returnType, String methodName,
+            Parameter... args) throws IOException {
+        if (returnType.equals(Types.VOID)) {
             beginLine(modifiers + escape(methodName)).params(args).append(" {").nl();
-        }else{
-            beginLine(modifiers + escape(methodName)).params(args).append(": " + getGenericName(true, returnType)).append(" {").nl();
+        } else {
+            beginLine(modifiers + escape(methodName)).params(args)
+                    .append(": " + getGenericName(true, returnType)).append(" {").nl();
         }
 
         return goIn();
     }
 
     @Override
-    public <T> ScalaWriter beginPublicMethod(Type returnType, String methodName, Collection<T> parameters, Transformer<T, Parameter> transformer) throws IOException {
+    public <T> ScalaWriter beginPublicMethod(Type returnType, String methodName,
+            Collection<T> parameters, Transformer<T, Parameter> transformer) throws IOException {
         return beginMethod(DEF, returnType, methodName, transform(parameters, transformer));
     }
 
     @Override
-    public ScalaWriter beginPublicMethod(Type returnType, String methodName, Parameter... args) throws IOException{
+    public ScalaWriter beginPublicMethod(Type returnType, String methodName, Parameter... args)
+            throws IOException {
         return beginMethod(DEF, returnType, methodName, args);
     }
 
     @Override
-    public <T> ScalaWriter beginStaticMethod(Type returnType, String methodName, Collection<T> parameters, Transformer<T, Parameter> transformer) throws IOException {
+    public <T> ScalaWriter beginStaticMethod(Type returnType, String methodName,
+            Collection<T> parameters, Transformer<T, Parameter> transformer) throws IOException {
         return beginMethod(DEF, returnType, methodName, transform(parameters, transformer));
     }
 
     @Override
-    public ScalaWriter beginStaticMethod(Type returnType, String methodName, Parameter... args) throws IOException{
+    public ScalaWriter beginStaticMethod(Type returnType, String methodName, Parameter... args)
+            throws IOException {
         return beginMethod(DEF, returnType, methodName, args);
     }
-    
+
     public ScalaWriter caseClass(String header, Parameter... parameters) throws IOException {
         beginLine(CASE_CLASS, header).params(parameters).nl();
         return this;
@@ -321,33 +329,34 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
         return compact ? this : nl();
     }
 
-    private ScalaWriter field(String modifier, Type type, String name) throws IOException{
+    private ScalaWriter field(String modifier, Type type, String name) throws IOException {
         line(modifier + escape(name) + ": " + getGenericName(true, type));
         return compact ? this : nl();
     }
 
-    private ScalaWriter field(String modifier, Type type, String name, String value) throws IOException{
+    private ScalaWriter field(String modifier, Type type, String name, String value)
+            throws IOException {
         line(modifier + escape(name) + ": " + getGenericName(true, type) + ASSIGN + value);
         return compact ? this : nl();
     }
 
     @Override
     public String getGenericName(boolean asArgType, Type type) {
-        if (type.getParameters().isEmpty()){
+        if (type.getParameters().isEmpty()) {
             return getRawName(type);
-        }else{
+        } else {
             StringBuilder builder = new StringBuilder();
             builder.append(getRawName(type));
             builder.append("[");
             boolean first = true;
             String fullName = type.getFullName();
-            for (Type parameter : type.getParameters()){
-                if (!first){
+            for (Type parameter : type.getParameters()) {
+                if (!first) {
                     builder.append(", ");
                 }
-                if (parameter == null || parameter.getFullName().equals(fullName)){
+                if (parameter == null || parameter.getFullName().equals(fullName)) {
                     builder.append("_");
-                }else{
+                } else {
                     builder.append(getGenericName(false, parameter));
                 }
                 first = false;
@@ -365,30 +374,30 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
         }
         String packageName = type.getPackageName();
         String rv = fullName;
-        if (type.isPrimitive() && packageName.isEmpty()){
+        if (type.isPrimitive() && packageName.isEmpty()) {
             rv = Character.toUpperCase(rv.charAt(0)) + rv.substring(1);
-        }        
-        if (packages.contains(packageName) || classes.contains(fullName)){
-            if (packageName.length() > 0){
-                rv = fullName.substring(packageName.length()+1);
+        }
+        if (packages.contains(packageName) || classes.contains(fullName)) {
+            if (packageName.length() > 0) {
+                rv = fullName.substring(packageName.length() + 1);
             }
         }
-        if (rv.endsWith("[]")){
-            rv = rv.substring(0, rv.length()-2);
+        if (rv.endsWith("[]")) {
+            rv = rv.substring(0, rv.length() - 2);
             if (PRIMITIVE_TYPES.contains(rv)) {
                 rv = StringUtils.capitalize(rv);
-            } else if (classes.contains(rv)){
-                rv = rv.substring(packageName.length()+1);                
+            } else if (classes.contains(rv)) {
+                rv = rv.substring(packageName.length() + 1);
             }
             return "Array[" + rv + "]";
-        }else{
+        } else {
             return rv;
         }
     }
 
     @Override
-    public ScalaWriter imports(Class<?>... imports) throws IOException{
-        for (Class<?> cl : imports){
+    public ScalaWriter imports(Class<?>... imports) throws IOException {
+        for (Class<?> cl : imports) {
             classes.add(cl.getName());
             line(IMPORT + cl.getName());
         }
@@ -398,7 +407,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
 
     @Override
     public ScalaWriter imports(Package... imports) throws IOException {
-        for (Package p : imports){
+        for (Package p : imports) {
             packages.add(p.getName());
             line(IMPORT + p.getName() + "._");
         }
@@ -407,8 +416,8 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     }
 
     @Override
-    public ScalaWriter importClasses(String... imports) throws IOException{
-        for (String cl : imports){
+    public ScalaWriter importClasses(String... imports) throws IOException {
+        for (String cl : imports) {
             classes.add(cl);
             line(IMPORT + cl);
         }
@@ -418,7 +427,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
 
     @Override
     public ScalaWriter importPackages(String... imports) throws IOException {
-        for (String p : imports){
+        for (String p : imports) {
             packages.add(p);
             line(IMPORT + p + "._");
         }
@@ -429,7 +438,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     @Override
     public ScalaWriter javadoc(String... lines) throws IOException {
         line("/**");
-        for (String line : lines){
+        for (String line : lines) {
             line(" * " + line);
         }
         return line(" */");
@@ -441,11 +450,12 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
         return line(PACKAGE + packageName).nl();
     }
 
-    private <T> ScalaWriter params(Collection<T> parameters, Transformer<T,Parameter> transformer) throws IOException{
+    private <T> ScalaWriter params(Collection<T> parameters, Transformer<T, Parameter> transformer)
+            throws IOException {
         append("(");
         boolean first = true;
-        for (T param : parameters){
-            if (!first){
+        for (T param : parameters) {
+            if (!first) {
                 append(COMMA);
             }
             param(transformer.transform(param));
@@ -455,10 +465,10 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
         return this;
     }
 
-    private ScalaWriter params(Parameter... params) throws IOException{
+    private ScalaWriter params(Parameter... params) throws IOException {
         append("(");
-        for (int i = 0; i < params.length; i++){
-            if (i > 0){
+        for (int i = 0; i < params.length; i++) {
+            if (i > 0) {
                 append(COMMA);
             }
             param(params[i]);
@@ -467,8 +477,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
         return this;
     }
 
-
-    private ScalaWriter param(Parameter parameter) throws IOException{
+    private ScalaWriter param(Parameter parameter) throws IOException {
         append(escape(parameter.getName()));
         append(": ");
         append(getGenericName(true, parameter.getType()));
@@ -537,7 +546,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
 
     @Override
     public ScalaWriter staticimports(Class<?>... imports) throws IOException {
-        for (Class<?> cl : imports){
+        for (Class<?> cl : imports) {
             line(IMPORT_STATIC + cl.getName() + "._;");
         }
         return this;
@@ -545,13 +554,14 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
 
     @Override
     public ScalaWriter suppressWarnings(String type) throws IOException {
-        return line("@SuppressWarnings(\"" + type +"\")");
+        return line("@SuppressWarnings(\"" + type + "\")");
     }
 
-    private <T> Parameter[] transform(Collection<T> parameters, Transformer<T,Parameter> transformer){
+    private <T> Parameter[] transform(Collection<T> parameters,
+            Transformer<T, Parameter> transformer) {
         Parameter[] rv = new Parameter[parameters.size()];
         int i = 0;
-        for (T value : parameters){
+        for (T value : parameters) {
             rv[i++] = transformer.transform(value);
         }
         return rv;
@@ -559,7 +569,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
 
     private String escape(String token) {
         if (ScalaSyntaxUtils.isReserved(token)) {
-            return "`" + token + "`"; 
+            return "`" + token + "`";
         } else {
             return token;
         }

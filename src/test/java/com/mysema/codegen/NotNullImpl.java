@@ -7,10 +7,10 @@ import javax.validation.constraints.*;
 
 /**
  * @author tiwe
- *
+ * 
  */
 @SuppressWarnings("all")
-public class NotNullImpl implements NotNull{
+public class NotNullImpl implements NotNull {
 
     @Override
     public Class<?>[] groups() {

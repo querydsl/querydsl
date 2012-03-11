@@ -15,7 +15,7 @@ import com.mysema.codegen.support.ClassUtils;
 
 /**
  * @author tiwe
- *
+ * 
  * @param <T>
  */
 public class ClassType implements Type {
@@ -37,10 +37,11 @@ public class ClassType implements Type {
     }
 
     public ClassType(TypeCategory category, Class<?> javaClass, Class<?> primitiveClass) {
-        this(category, javaClass, primitiveClass, Collections.<Type>emptyList());
+        this(category, javaClass, primitiveClass, Collections.<Type> emptyList());
     }
 
-    public ClassType(TypeCategory category, Class<?> javaClass, Class<?> primitiveClass, List<Type> parameters) {
+    public ClassType(TypeCategory category, Class<?> javaClass, Class<?> primitiveClass,
+            List<Type> parameters) {
         this.category = category;
         this.javaClass = javaClass;
         this.primitiveClass = primitiveClass;
@@ -58,31 +59,32 @@ public class ClassType implements Type {
 
     @Override
     public Type as(TypeCategory c) {
-        if (category == c){
+        if (category == c) {
             return this;
-        }else{
+        } else {
             return new ClassType(c, javaClass);
         }
     }
 
     @Override
     public Type asArrayType() {
-        if (arrayType == null){
-            String fullName = ClassUtils.getFullName(javaClass)+"[]";
-            String simpleName = javaClass.getSimpleName()+"[]";
-            arrayType = new SimpleType(TypeCategory.ARRAY, fullName, getPackageName(), simpleName, false, false);
+        if (arrayType == null) {
+            String fullName = ClassUtils.getFullName(javaClass) + "[]";
+            String simpleName = javaClass.getSimpleName() + "[]";
+            arrayType = new SimpleType(TypeCategory.ARRAY, fullName, getPackageName(), simpleName,
+                    false, false);
         }
         return arrayType;
     }
 
     @Override
-    public boolean equals(Object o){
-        if (o == this){
+    public boolean equals(Object o) {
+        if (o == this) {
             return true;
-        }else if (o instanceof Type){
-            Type t = (Type)o;
+        } else if (o instanceof Type) {
+            Type t = (Type) o;
             return t.getFullName().equals(className) && t.getParameters().equals(parameters);
-        }else{
+        } else {
             return false;
         }
     }
@@ -94,7 +96,7 @@ public class ClassType implements Type {
     @Override
     public Type getComponentType() {
         Class<?> clazz = javaClass.getComponentType();
-        if (clazz != null && componentType == null){
+        if (clazz != null && componentType == null) {
             componentType = new ClassType(TypeCategory.SIMPLE, clazz);
         }
         return componentType;
@@ -107,25 +109,26 @@ public class ClassType implements Type {
 
     @Override
     public String getGenericName(boolean asArgType) {
-        return getGenericName(asArgType, Collections.singleton("java.lang"), Collections.<String>emptySet());
+        return getGenericName(asArgType, Collections.singleton("java.lang"),
+                Collections.<String> emptySet());
     }
 
     @Override
     public String getGenericName(boolean asArgType, Set<String> packages, Set<String> classes) {
-        if (parameters.isEmpty()){
+        if (parameters.isEmpty()) {
             return ClassUtils.getName(javaClass, packages, classes);
-        }else{
+        } else {
             StringBuilder builder = new StringBuilder();
             builder.append(ClassUtils.getName(javaClass, packages, classes));
             builder.append("<");
             boolean first = true;
-            for (Type parameter : parameters){
-                if (!first){
+            for (Type parameter : parameters) {
+                if (!first) {
                     builder.append(", ");
                 }
-                if (parameter == null || parameter.getFullName().equals(getFullName())){
+                if (parameter == null || parameter.getFullName().equals(getFullName())) {
                     builder.append("?");
-                }else{
+                } else {
                     builder.append(parameter.getGenericName(false, packages, classes));
                 }
                 first = false;
@@ -165,7 +168,7 @@ public class ClassType implements Type {
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return className.hashCode();
     }
 
@@ -180,9 +183,8 @@ public class ClassType implements Type {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return getGenericName(true);
     }
-
 
 }

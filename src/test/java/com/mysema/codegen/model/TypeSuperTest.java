@@ -7,7 +7,7 @@ import org.junit.Test;
 public class TypeSuperTest {
 
     @Test
-    public void GetVarName(){
+    public void GetVarName() {
         assertEquals("var", new TypeSuper("var", Types.STRING).getVarName());
     }
 

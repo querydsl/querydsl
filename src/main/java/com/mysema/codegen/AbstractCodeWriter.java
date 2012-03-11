@@ -11,10 +11,11 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author tiwe
- *
+ * 
  * @param <T>
  */
-public abstract class AbstractCodeWriter<T extends AbstractCodeWriter<T>> implements Appendable, CodeWriter{
+public abstract class AbstractCodeWriter<T extends AbstractCodeWriter<T>> implements Appendable,
+        CodeWriter {
 
     private final Appendable appendable;
 
@@ -25,10 +26,10 @@ public abstract class AbstractCodeWriter<T extends AbstractCodeWriter<T>> implem
     private String indent = "";
 
     @SuppressWarnings("unchecked")
-    private final T self = (T)this;
+    private final T self = (T) this;
 
-    public AbstractCodeWriter(Appendable appendable, int spaces){
-        if (appendable == null){
+    public AbstractCodeWriter(Appendable appendable, int spaces) {
+        if (appendable == null) {
             throw new IllegalArgumentException("appendable is null");
         }
         this.appendable = appendable;
@@ -57,29 +58,28 @@ public abstract class AbstractCodeWriter<T extends AbstractCodeWriter<T>> implem
     @Override
     public T beginLine(String... segments) throws IOException {
         append(indent);
-        for (String segment : segments){
+        for (String segment : segments) {
             append(segment);
         }
         return self;
     }
 
-    protected T goIn(){
+    protected T goIn() {
         indent += spacesString;
         return self;
     }
 
-
-    protected T goOut(){
-        if (indent.length() >= spaces){
+    protected T goOut() {
+        if (indent.length() >= spaces) {
             indent = indent.substring(0, indent.length() - spaces);
         }
         return self;
     }
 
     @Override
-    public T line(String... segments) throws IOException{
+    public T line(String... segments) throws IOException {
         append(indent);
-        for (String segment : segments){
+        for (String segment : segments) {
             append(segment);
         }
         return nl();

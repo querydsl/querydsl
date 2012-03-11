@@ -22,88 +22,90 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.StandardLocation;
 import javax.tools.JavaFileObject.Kind;
 
-
-
 /**
- * MemFileManager is a memory based implementation of the JavaFileManager interface
+ * MemFileManager is a memory based implementation of the JavaFileManager
+ * interface
  * 
  * @author tiwe
- *
+ * 
  */
 public class MemFileManager extends ForwardingJavaFileManager<JavaFileManager> {
-    
+
     private final ClassLoader classLoader;
-    
+
     private final Map<LocationAndKind, Map<String, JavaFileObject>> ramFileSystem;
-    
+
     private final String urlPrefix;
-    
+
     public MemFileManager(ClassLoader parent, StandardJavaFileManager sjfm) {
         super(sjfm);
-        ramFileSystem = new HashMap<LocationAndKind,Map<String,JavaFileObject>>();
-        Map<String,JavaFileObject> classLoaderContent = new HashMap<String,JavaFileObject>();
-        ramFileSystem.put(new LocationAndKind(StandardLocation.CLASS_OUTPUT, Kind.CLASS),classLoaderContent);
+        ramFileSystem = new HashMap<LocationAndKind, Map<String, JavaFileObject>>();
+        Map<String, JavaFileObject> classLoaderContent = new HashMap<String, JavaFileObject>();
+        ramFileSystem.put(new LocationAndKind(StandardLocation.CLASS_OUTPUT, Kind.CLASS),
+                classLoaderContent);
         classLoader = new MemClassLoader(parent, ramFileSystem);
         urlPrefix = MemFileSystemRegistry.DEFAULT.getUrlPrefix(this);
     }
-    
+
     @Override
     public ClassLoader getClassLoader(JavaFileManager.Location location) {
         return classLoader;
     }
 
     @Override
-    public FileObject getFileForInput(JavaFileManager.Location location, String packageName, String relativeName) throws IOException {
+    public FileObject getFileForInput(JavaFileManager.Location location, String packageName,
+            String relativeName) throws IOException {
         throw new UnsupportedOperationException();
     }
- 
+
     @Override
-    public FileObject getFileForOutput(JavaFileManager.Location location, String packageName, String relativeName, FileObject sibling) throws IOException {
+    public FileObject getFileForOutput(JavaFileManager.Location location, String packageName,
+            String relativeName, FileObject sibling) throws IOException {
         String name = null;
-        if("".equals(packageName)) {
+        if ("".equals(packageName)) {
             name = relativeName;
         } else {
-            name = packageName.replace('.','/') + "/" + relativeName;
+            name = packageName.replace('.', '/') + "/" + relativeName;
         }
         LocationAndKind key = new LocationAndKind(location, Kind.OTHER);
-        if(ramFileSystem.containsKey(key)) {
+        if (ramFileSystem.containsKey(key)) {
             JavaFileObject jfo = ramFileSystem.get(key).get(name);
-            if(jfo != null) {
+            if (jfo != null) {
                 return jfo;
             }
         }
         JavaFileObject jfo = new MemJavaFileObject(urlPrefix, name, Kind.OTHER);
-        register(key,jfo);
+        register(key, jfo);
         return jfo;
     }
-    
+
     @Override
-    public JavaFileObject getJavaFileForInput(JavaFileManager.Location location, String className, JavaFileObject.Kind kind) throws IOException {
+    public JavaFileObject getJavaFileForInput(JavaFileManager.Location location, String className,
+            JavaFileObject.Kind kind) throws IOException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public JavaFileObject getJavaFileForOutput(Location location,
-            String name, Kind kind, FileObject sibling)
-            throws IOException {
+    public JavaFileObject getJavaFileForOutput(Location location, String name, Kind kind,
+            FileObject sibling) throws IOException {
         JavaFileObject javaFileObject = null;
-        LocationAndKind key = new LocationAndKind(location,kind);
+        LocationAndKind key = new LocationAndKind(location, kind);
 
-        if(ramFileSystem.containsKey(key)) {
+        if (ramFileSystem.containsKey(key)) {
             javaFileObject = ramFileSystem.get(key).get(name);
-            if(javaFileObject != null) {
+            if (javaFileObject != null) {
                 return javaFileObject;
             }
         }
-        if(kind == Kind.SOURCE) {
+        if (kind == Kind.SOURCE) {
             javaFileObject = new MemSourceFileObject(name);
         } else {
             javaFileObject = new MemJavaFileObject(urlPrefix, name, kind);
-        }  
-        register(key,javaFileObject);
+        }
+        register(key, javaFileObject);
         return javaFileObject;
     }
-    
+
     @Override
     public String inferBinaryName(Location loc, JavaFileObject javaFileObject) {
         String result;
@@ -119,32 +121,32 @@ public class MemFileManager extends ForwardingJavaFileManager<JavaFileManager> {
     public boolean isSameFile(FileObject a, FileObject b) {
         return a.equals(b);
     }
-    
+
     @Override
-    public Iterable<JavaFileObject> list(Location location, String pkg,
-            Set<Kind> kinds, boolean recurse) throws IOException {
-        
+    public Iterable<JavaFileObject> list(Location location, String pkg, Set<Kind> kinds,
+            boolean recurse) throws IOException {
+
         List<JavaFileObject> result = new ArrayList<JavaFileObject>();
-        for(JavaFileObject f : super.list(location, pkg, kinds, recurse)) {
+        for (JavaFileObject f : super.list(location, pkg, kinds, recurse)) {
             result.add(f);
         }
-        if(location == StandardLocation.CLASS_PATH) {
+        if (location == StandardLocation.CLASS_PATH) {
             location = StandardLocation.CLASS_OUTPUT;
         }
 
-        for(Kind kind : kinds) {
-            LocationAndKind key = new LocationAndKind(location,kind);
-            if(ramFileSystem.containsKey(key)) {
+        for (Kind kind : kinds) {
+            LocationAndKind key = new LocationAndKind(location, kind);
+            if (ramFileSystem.containsKey(key)) {
                 Map<String, JavaFileObject> locatedFiles = ramFileSystem.get(key);
-                for (Map.Entry<String,JavaFileObject> entry : locatedFiles.entrySet()){                    
+                for (Map.Entry<String, JavaFileObject> entry : locatedFiles.entrySet()) {
                     String name = entry.getKey();
                     String packageName = "";
-                    if (name.indexOf('.') > -1){
-                        packageName = name.substring(0,name.lastIndexOf('.'));
+                    if (name.indexOf('.') > -1) {
+                        packageName = name.substring(0, name.lastIndexOf('.'));
                     }
-                    if(recurse ? packageName.startsWith(pkg) : packageName.equals(pkg)) {
+                    if (recurse ? packageName.startsWith(pkg) : packageName.equals(pkg)) {
                         JavaFileObject candidate = entry.getValue();
-                        if(kinds.contains(candidate.getKind())) {
+                        if (kinds.contains(candidate.getKind())) {
                             result.add(candidate);
                         }
                     }
@@ -155,7 +157,7 @@ public class MemFileManager extends ForwardingJavaFileManager<JavaFileManager> {
     }
 
     private void register(LocationAndKind key, JavaFileObject javaFileObject) {
-        if(!ramFileSystem.containsKey(key)) {
+        if (!ramFileSystem.containsKey(key)) {
             ramFileSystem.put(key, new HashMap<String, JavaFileObject>());
         }
         ramFileSystem.get(key).put(javaFileObject.getName(), javaFileObject);

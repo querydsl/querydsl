@@ -10,15 +10,15 @@ import java.util.Set;
 
 /**
  * TypeAdapter is a basic adapter implementation for the Type interface
- *
+ * 
  * @author tiwe
- *
+ * 
  */
-public class TypeAdapter implements Type{
+public class TypeAdapter implements Type {
 
     protected final Type type;
 
-    public TypeAdapter(Type type){
+    public TypeAdapter(Type type) {
         this.type = type;
     }
 
@@ -38,7 +38,7 @@ public class TypeAdapter implements Type{
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         return type.equals(o);
     }
 
@@ -60,6 +60,11 @@ public class TypeAdapter implements Type{
     @Override
     public String getGenericName(boolean asArgType, Set<String> packages, Set<String> classes) {
         return type.getGenericName(asArgType, packages, classes);
+    }
+
+    @Override
+    public Class<?> getJavaClass() {
+        return type.getJavaClass();
     }
 
     @Override
@@ -87,12 +92,12 @@ public class TypeAdapter implements Type{
         return type.getSimpleName();
     }
 
-    protected Type getType(){
+    protected Type getType() {
         return type;
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return type.hashCode();
     }
 

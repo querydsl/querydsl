@@ -5,10 +5,9 @@
  */
 package com.mysema.codegen.model;
 
-
 /**
  * Parameter represents a parameter in a Constructor
- *
+ * 
  * @author tiwe
  * @version $Id$
  */
@@ -25,11 +24,11 @@ public final class Parameter {
 
     @Override
     public boolean equals(Object o) {
-        if (o == this){
+        if (o == this) {
             return true;
-        }else if (o instanceof Parameter){
+        } else if (o instanceof Parameter) {
             return type.equals(((Parameter) o).type);
-        }else{
+        } else {
             return false;
         }
     }
@@ -38,7 +37,7 @@ public final class Parameter {
         return name;
     }
 
-    public Type getType(){
+    public Type getType() {
         return type;
     }
 
@@ -48,7 +47,7 @@ public final class Parameter {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return type + " " + name;
     }
 }

@@ -30,8 +30,6 @@ import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.support.ClassUtils;
 
-
-
 /**
  * EvaluatorFactory is a factory implementation for creating Evaluator instances
  * 
@@ -41,7 +39,7 @@ import com.mysema.codegen.support.ClassUtils;
 public class EvaluatorFactory {
 
     private final MemFileManager fileManager;
-    
+
     private final String classpath;
 
     private final List<String> compilationOptions;
@@ -50,20 +48,20 @@ public class EvaluatorFactory {
 
     private final ClassLoader loader;
 
-    public EvaluatorFactory(URLClassLoader parent){
+    public EvaluatorFactory(URLClassLoader parent) {
         this(parent, ToolProvider.getSystemJavaCompiler());
     }
-    
+
     public EvaluatorFactory(URLClassLoader parent, JavaCompiler compiler) {
         this.fileManager = new MemFileManager(parent, compiler.getStandardFileManager(null, null, null));
-        this.compiler = compiler;                        
+        this.compiler = compiler;
         this.classpath = SimpleCompiler.getClassPath(parent);
         this.loader = fileManager.getClassLoader(StandardLocation.CLASS_OUTPUT);
         this.compilationOptions = Arrays.asList("-classpath", classpath, "-g:none");
     }
-    
-    private void compile(String source, Type projectionType,
-            String[] names, Type[] types, String id, Map<String,Object> constants) throws IOException {
+
+    private void compile(String source, Type projectionType, String[] names, Type[] types,
+            String id, Map<String, Object> constants) throws IOException {
         // create source
         StringWriter writer = new StringWriter();
         JavaWriter javaw = new JavaWriter(writer);
@@ -73,17 +71,17 @@ public class EvaluatorFactory {
         for (int i = 0; i < params.length; i++) {
             params[i] = new Parameter(names[i], types[i]);
         }
-        
-        for (Map.Entry<String,Object> entry : constants.entrySet()){
+
+        for (Map.Entry<String, Object> entry : constants.entrySet()) {
             Type type = new ClassType(TypeCategory.SIMPLE, ClassUtils.normalize(entry.getValue().getClass()));
             javaw.publicField(type, entry.getKey());
         }
 
-        if (constants.isEmpty()){
-            javaw.beginStaticMethod(projectionType, "eval", params);    
-        }else{
+        if (constants.isEmpty()) {
+            javaw.beginStaticMethod(projectionType, "eval", params);
+        } else {
             javaw.beginPublicMethod(projectionType, "eval", params);
-        }        
+        }
         javaw.append(source);
         javaw.end();
         javaw.end();
@@ -92,71 +90,63 @@ public class EvaluatorFactory {
         SimpleJavaFileObject javaFileObject = new MemSourceFileObject(id, writer.toString());
         Writer out = new StringWriter();
 
-        CompilationTask task = compiler.getTask(
-                out, 
-                fileManager,
-                null,                     
-                compilationOptions, 
-                null, 
+        CompilationTask task = compiler.getTask(out, fileManager, null, compilationOptions, null,
                 Collections.singletonList(javaFileObject));
         if (!task.call().booleanValue()) {
             throw new CodegenException("Compilation of " + source + " failed.\n" + out.toString());
         }
 
     }
-    
-    public <T> Evaluator<T> createEvaluator(
-            String source,
-            Class<? extends T> projectionType, 
-            String[] names, 
-            Class<?>[] classes,  
-            Map<String,Object> constants) {
+
+    public <T> Evaluator<T> createEvaluator(String source, Class<? extends T> projectionType,
+            String[] names, Class<?>[] classes, Map<String, Object> constants) {
         Type[] types = new Type[classes.length];
-        for (int i = 0; i < types.length; i++){
-            types[i] = new ClassType(TypeCategory.SIMPLE,classes[i]);
+        for (int i = 0; i < types.length; i++) {
+            types[i] = new ClassType(TypeCategory.SIMPLE, classes[i]);
         }
-        return createEvaluator(source, new ClassType(TypeCategory.SIMPLE,projectionType), names, types, classes, constants);
+        return createEvaluator(source, new ClassType(TypeCategory.SIMPLE, projectionType), names,
+                types, classes, constants);
     }
 
     /**
      * Create a new Evaluator instance
      * 
-     * @param <T> projection type
-     * @param source expression in Java source code form
-     * @param projection type of the source expression
-     * @param names names of the arguments
-     * @param types types of the arguments
+     * @param <T>
+     *            projection type
+     * @param source
+     *            expression in Java source code form
+     * @param projection
+     *            type of the source expression
+     * @param names
+     *            names of the arguments
+     * @param types
+     *            types of the arguments
      * @param constants
      * @return
      */
     @SuppressWarnings("unchecked")
-    public <T> Evaluator<T> createEvaluator(
-                String source,
-                ClassType projection, 
-                String[] names, 
-                Type[] types,  
-                Class<?>[] classes,
-                Map<String,Object> constants) {
+    public <T> Evaluator<T> createEvaluator(String source, ClassType projection, String[] names,
+            Type[] types, Class<?>[] classes, Map<String, Object> constants) {
         try {
             String id = toId(source, projection.getJavaClass(), types);
             Class<?> clazz;
-            try{
+            try {
                 clazz = loader.loadClass(id);
-            }catch(ClassNotFoundException e){
+            } catch (ClassNotFoundException e) {
                 compile(source, projection, names, types, id, constants);
                 // reload
                 clazz = loader.loadClass(id);
             }
-            
+
             Object object = !constants.isEmpty() ? clazz.newInstance() : null;
-            
-            for (Map.Entry<String, Object> entry : constants.entrySet()){
+
+            for (Map.Entry<String, Object> entry : constants.entrySet()) {
                 Field field = clazz.getField(entry.getKey());
                 field.set(object, entry.getValue());
             }
 
             Method method = clazz.getMethod("eval", classes);
-            return new MethodEvaluator<T>(method, object, (Class)projection.getJavaClass());
+            return new MethodEvaluator<T>(method, object, (Class) projection.getJavaClass());
         } catch (ClassNotFoundException e) {
             throw new CodegenException(e);
         } catch (SecurityException e) {
@@ -176,7 +166,7 @@ public class EvaluatorFactory {
         }
 
     }
-    
+
     protected String toId(String source, Class<?> returnType, Type... types) {
         StringBuilder b = new StringBuilder("Q");
         b.append("_").append(source.hashCode());

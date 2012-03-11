@@ -17,31 +17,31 @@ import javax.tools.SimpleJavaFileObject;
  * MemSourceFileObject defines a in-memory Java source file object
  * 
  * @author tiwe
- *
+ * 
  */
 public class MemSourceFileObject extends SimpleJavaFileObject {
-    
+
     private static URI toUri(String fqname) {
-        return URI.create("file:///" + fqname.replace(".","/") + ".java");
+        return URI.create("file:///" + fqname.replace(".", "/") + ".java");
     }
-    
+
     private final StringBuilder contents;
-    
+
     public MemSourceFileObject(String fullName) {
-        super(toUri(fullName),JavaFileObject.Kind.SOURCE);
+        super(toUri(fullName), JavaFileObject.Kind.SOURCE);
         contents = new StringBuilder(1000);
     }
-    
+
     public MemSourceFileObject(String fullName, String content) {
         this(fullName);
-        contents.append(content);        
+        contents.append(content);
     }
 
     @Override
     public CharSequence getCharContent(boolean ignoreEncodingErrors) {
         return contents;
     }
-    
+
     @Override
     public Writer openWriter() {
         return new Writer() {
@@ -52,14 +52,16 @@ public class MemSourceFileObject extends SimpleJavaFileObject {
             }
 
             @Override
-            public void close(){}
+            public void close() {
+            }
 
             @Override
-            public void flush() {}
+            public void flush() {
+            }
 
             @Override
             public void write(char[] cbuf, int off, int len) throws IOException {
-                contents.append(cbuf,off,len);
+                contents.append(cbuf, off, len);
             }
         };
     }

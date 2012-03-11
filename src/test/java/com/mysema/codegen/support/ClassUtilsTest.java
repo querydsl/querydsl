@@ -22,12 +22,13 @@ import org.junit.Test;
 
 public class ClassUtilsTest {
 
-
-
     @Test
     public void GetName() {
         assertEquals("int", ClassUtils.getName(int.class));
-        assertEquals("int", ClassUtils.getName(int.class, Collections.<String>emptySet(), Collections.<String>emptySet()));
+        assertEquals(
+                "int",
+                ClassUtils.getName(int.class, Collections.<String> emptySet(),
+                        Collections.<String> emptySet()));
         assertEquals("Object", ClassUtils.getName(Object.class));
         assertEquals("Object[]", ClassUtils.getName(Object[].class));
         assertEquals("int", ClassUtils.getName(int.class));
@@ -38,7 +39,7 @@ public class ClassUtilsTest {
     }
 
     @Test
-    public void Normalize(){
+    public void Normalize() {
         assertEquals(List.class, ClassUtils.normalize(ArrayList.class));
         assertEquals(Set.class, ClassUtils.normalize(HashSet.class));
         assertEquals(Map.class, ClassUtils.normalize(HashMap.class));

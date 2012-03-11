@@ -12,9 +12,9 @@ import java.io.IOException;
 import org.junit.Test;
 
 public class MemSourceFileObjectTest {
-    
+
     @Test
-    public void Simple(){
+    public void Simple() {
         MemSourceFileObject obj = new MemSourceFileObject("Test", "Hello World");
         assertEquals("Hello World", obj.getCharContent(true).toString());
     }
@@ -25,7 +25,7 @@ public class MemSourceFileObjectTest {
         obj.openWriter().write("Hello World");
         assertEquals("Hello World", obj.getCharContent(true).toString());
     }
-    
+
     @Test
     public void OpenWriter2() throws IOException {
         MemSourceFileObject obj = new MemSourceFileObject("Test");

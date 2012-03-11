@@ -8,14 +8,13 @@ package com.mysema.codegen.model;
 import java.util.Collections;
 import java.util.Set;
 
-
 /**
  * TypeSuper is a Type for type variables and wildcard types
- *
+ * 
  * @author tiwe
- *
+ * 
  */
-public class TypeSuper extends TypeAdapter{
+public class TypeSuper extends TypeAdapter {
 
     private final Type superType;
 
@@ -32,22 +31,23 @@ public class TypeSuper extends TypeAdapter{
         this.superType = type;
         this.varName = null;
     }
-    
+
     @Override
-    public String getGenericName(boolean asArgType){
-        return getGenericName(asArgType, Collections.<String>emptySet(),Collections.<String>emptySet());
+    public String getGenericName(boolean asArgType) {
+        return getGenericName(asArgType, Collections.<String> emptySet(),
+                Collections.<String> emptySet());
     }
 
     @Override
-    public String getGenericName(boolean asArgType, Set<String> packages, Set<String> classes){
-        if (!asArgType){
+    public String getGenericName(boolean asArgType, Set<String> packages, Set<String> classes) {
+        if (!asArgType) {
             return "? super " + superType.getGenericName(true, packages, classes);
-        }else{
+        } else {
             return super.getGenericName(asArgType, packages, classes);
         }
     }
-    
-    public String getVarName(){
+
+    public String getVarName() {
         return varName;
     }
 }

@@ -26,7 +26,7 @@ public class TypeCategoryTest {
     }
 
     @Test
-    public void Get(){
+    public void Get() {
         assertEquals(TypeCategory.BOOLEAN, TypeCategory.get(Boolean.class.getName()));
         assertEquals(TypeCategory.STRING, TypeCategory.get(String.class.getName()));
         assertEquals(TypeCategory.DATE, TypeCategory.get(Date.class.getName()));

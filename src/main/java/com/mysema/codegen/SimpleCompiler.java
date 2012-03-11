@@ -28,54 +28,54 @@ import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
 /**
- * SimpleCompiler provides a convenience wrapper of the JavaCompiler interface with automatic
- * classpath generation
+ * SimpleCompiler provides a convenience wrapper of the JavaCompiler interface
+ * with automatic classpath generation
  * 
  * @author tiwe
- *
+ * 
  */
-public class SimpleCompiler implements JavaCompiler{
-        
+public class SimpleCompiler implements JavaCompiler {
+
     public static String getClassPath(URLClassLoader classLoader) {
-        try{
+        try {
             StringBuilder path = new StringBuilder();
-            for (URL url : ((URLClassLoader)classLoader).getURLs()){
-                if (path.length() > 0){
+            for (URL url : ((URLClassLoader) classLoader).getURLs()) {
+                if (path.length() > 0) {
                     path.append(File.pathSeparator);
                 }
-                String decodedPath = URLDecoder.decode(url.getPath(),"UTF-8");
+                String decodedPath = URLDecoder.decode(url.getPath(), "UTF-8");
                 path.append(new File(decodedPath).getAbsolutePath());
             }
-            return  path.toString();    
-        }catch(UnsupportedEncodingException e){
+            return path.toString();
+        } catch (UnsupportedEncodingException e) {
             throw new CodegenException(e);
-        }        
+        }
     }
-    
+
     private final ClassLoader classLoader;
-    
-    private String classPath;    
-    
+
+    private String classPath;
+
     private final JavaCompiler compiler;
-    
-    public SimpleCompiler(){
+
+    public SimpleCompiler() {
         this(ToolProvider.getSystemJavaCompiler(), Thread.currentThread().getContextClassLoader());
     }
-    
-    public SimpleCompiler(JavaCompiler compiler, ClassLoader classLoader){
+
+    public SimpleCompiler(JavaCompiler compiler, ClassLoader classLoader) {
         this.compiler = compiler;
         this.classLoader = classLoader;
     }
-    
-    private String getClasspath(){        
-        if (classPath == null){                
-            if (classLoader instanceof URLClassLoader){
-                classPath = getClassPath((URLClassLoader)classLoader);
-            }else{
+
+    private String getClasspath() {
+        if (classPath == null) {
+            if (classLoader instanceof URLClassLoader) {
+                classPath = getClassPath((URLClassLoader) classLoader);
+            } else {
                 throw new IllegalArgumentException("Unsupported ClassLoader " + classLoader);
-            }                                
+            }
         }
-        return classPath;          
+        return classPath;
     }
 
     @Override
@@ -85,8 +85,8 @@ public class SimpleCompiler implements JavaCompiler{
 
     @Override
     public StandardJavaFileManager getStandardFileManager(
-            DiagnosticListener<? super JavaFileObject> diagnosticListener,
-            Locale locale, Charset charset) {
+            DiagnosticListener<? super JavaFileObject> diagnosticListener, Locale locale,
+            Charset charset) {
         return compiler.getStandardFileManager(diagnosticListener, locale, charset);
     }
 
@@ -95,7 +95,8 @@ public class SimpleCompiler implements JavaCompiler{
             DiagnosticListener<? super JavaFileObject> diagnosticListener,
             Iterable<String> options, Iterable<String> classes,
             Iterable<? extends JavaFileObject> compilationUnits) {
-        return compiler.getTask(out, fileManager, diagnosticListener, options, classes, compilationUnits);
+        return compiler.getTask(out, fileManager, diagnosticListener, options, classes,
+                compilationUnits);
     }
 
     @Override
@@ -105,19 +106,19 @@ public class SimpleCompiler implements JavaCompiler{
 
     @Override
     public int run(InputStream in, OutputStream out, OutputStream err, String... arguments) {
-        for (String a : arguments){
-            if (a.equals("-classpath")){
+        for (String a : arguments) {
+            if (a.equals("-classpath")) {
                 return compiler.run(in, out, err, arguments);
             }
         }
-        
+
         // no classpath given
         List<String> args = new ArrayList<String>(arguments.length + 2);
         args.add("-classpath");
         args.add(getClasspath());
-        for (String arg : arguments){
+        for (String arg : arguments) {
             args.add(arg);
-        }        
+        }
         return compiler.run(in, out, err, args.toArray(new String[args.size()]));
     }
 

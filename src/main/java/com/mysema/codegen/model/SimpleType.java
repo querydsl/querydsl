@@ -5,17 +5,28 @@
  */
 package com.mysema.codegen.model;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-
 
 /**
  * @author tiwe
  */
 public class SimpleType implements Type {
 
+    private static final Map<String, Class<?>> PRIMITIVES = new HashMap<String, Class<?>>();
+    
+    static {
+        for (Class<?> cl : Arrays.<Class<?>>asList(byte.class, int.class, long.class, short.class, 
+                float.class, double.class, boolean.class, char.class)) {
+            PRIMITIVES.put(cl.getName(), cl);
+        }
+    }
+    
     private final TypeCategory category;
 
     private final String fullName, outerClassName, packageName, simpleName, localName;
@@ -25,37 +36,40 @@ public class SimpleType implements Type {
     private final boolean primitiveClass, finalClass;
 
     private Type arrayType, componentType;
+    
+    private transient Class<?> javaClass;
 
     public SimpleType(String fullName, String packageName, String simpleName, Type... parameters) {
-        this(TypeCategory.SIMPLE, fullName, packageName, simpleName, false, false, Arrays.asList(parameters));
+        this(TypeCategory.SIMPLE, fullName, packageName, simpleName, false, false, Arrays
+                .asList(parameters));
     }
 
-    public SimpleType(String simpleName){
+    public SimpleType(String simpleName) {
         this(TypeCategory.SIMPLE, simpleName, "", simpleName, false, false);
     }
 
     public SimpleType(Type type, List<Type> parameters) {
         this(type.getCategory(), type.getFullName(), type.getPackageName(), type.getSimpleName(),
-            type.isPrimitive(), type.isFinal(), parameters);
+                type.isPrimitive(), type.isFinal(), parameters);
     }
 
     public SimpleType(Type type, Type... parameters) {
         this(type.getCategory(), type.getFullName(), type.getPackageName(), type.getSimpleName(),
-            type.isPrimitive(), type.isFinal(), Arrays.asList(parameters));
+                type.isPrimitive(), type.isFinal(), Arrays.asList(parameters));
     }
 
-    public SimpleType(TypeCategory category, String fullName, String packageName, String simpleName,
-            boolean primitiveClass, boolean finalClass, List<Type> parameters) {
+    public SimpleType(TypeCategory category, String fullName, String packageName,
+            String simpleName, boolean primitiveClass, boolean finalClass, List<Type> parameters) {
         this.category = category;
         this.fullName = fullName;
         this.packageName = packageName;
         this.simpleName = simpleName;
-        if (packageName.length() > 0){
-            this.localName = fullName.substring(packageName.length()+1);
-        }else{
+        if (packageName.length() > 0) {
+            this.localName = fullName.substring(packageName.length() + 1);
+        } else {
             this.localName = fullName;
         }
-        if (fullName.substring(packageName.length()+1).contains(".")) {
+        if (fullName.substring(packageName.length() + 1).contains(".")) {
             this.outerClassName = fullName.substring(0, fullName.lastIndexOf('.'));
         } else {
             this.outerClassName = fullName;
@@ -65,38 +79,40 @@ public class SimpleType implements Type {
         this.parameters = parameters;
     }
 
-    public SimpleType(TypeCategory typeCategory, String fullName, String packageName, String simpleName, boolean p, boolean f, Type... parameters) {
-        this(typeCategory, fullName, packageName, simpleName, p, f, Arrays
-                .asList(parameters));
+    public SimpleType(TypeCategory typeCategory, String fullName, String packageName,
+            String simpleName, boolean p, boolean f, Type... parameters) {
+        this(typeCategory, fullName, packageName, simpleName, p, f, Arrays.asList(parameters));
     }
 
     @Override
     public Type as(TypeCategory c) {
-        if (category != c){
-            return new SimpleType(c, fullName, packageName, simpleName, primitiveClass, finalClass, parameters);
-        }else{
+        if (category != c) {
+            return new SimpleType(c, fullName, packageName, simpleName, primitiveClass, finalClass,
+                    parameters);
+        } else {
             return this;
         }
     }
 
     @Override
     public Type asArrayType() {
-        if (arrayType == null){
-            String newFullName = getFullName()+"[]";
-            String newSimpleName = getSimpleName()+"[]";
-            arrayType = new SimpleType(TypeCategory.ARRAY, newFullName, getPackageName(), newSimpleName, false, false);
+        if (arrayType == null) {
+            String newFullName = getFullName() + "[]";
+            String newSimpleName = getSimpleName() + "[]";
+            arrayType = new SimpleType(TypeCategory.ARRAY, newFullName, getPackageName(),
+                    newSimpleName, false, false);
         }
         return arrayType;
     }
 
     @Override
-    public boolean equals(Object o){
-        if (o == this){
+    public boolean equals(Object o) {
+        if (o == this) {
             return true;
-        }else if (o instanceof Type){
-            Type t = (Type)o;
+        } else if (o instanceof Type) {
+            Type t = (Type) o;
             return t.getFullName().equals(fullName) && t.getParameters().equals(parameters);
-        }else{
+        } else {
             return false;
         }
     }
@@ -107,14 +123,15 @@ public class SimpleType implements Type {
 
     @Override
     public Type getComponentType() {
-        if (fullName.endsWith("[]")){
-            if (componentType == null){
-                String newFullName = fullName.substring(0, fullName.length()-2);
-                String newSimpleName = simpleName.substring(0, simpleName.length()-2);
-                componentType = new SimpleType(TypeCategory.SIMPLE, newFullName, getPackageName(), newSimpleName, false, false);
+        if (fullName.endsWith("[]")) {
+            if (componentType == null) {
+                String newFullName = fullName.substring(0, fullName.length() - 2);
+                String newSimpleName = simpleName.substring(0, simpleName.length() - 2);
+                componentType = new SimpleType(TypeCategory.SIMPLE, newFullName, getPackageName(),
+                        newSimpleName, false, false);
             }
             return componentType;
-        }else{
+        } else {
             return null;
         }
     }
@@ -126,25 +143,26 @@ public class SimpleType implements Type {
 
     @Override
     public String getGenericName(boolean asArgType) {
-        return getGenericName(asArgType, Collections.singleton("java.lang"), Collections.<String>emptySet());
+        return getGenericName(asArgType, Collections.singleton("java.lang"),
+                Collections.<String> emptySet());
     }
 
     @Override
     public String getGenericName(boolean asArgType, Set<String> packages, Set<String> classes) {
-        if (parameters.isEmpty()){
+        if (parameters.isEmpty()) {
             return getRawName(packages, classes);
-        }else{
+        } else {
             StringBuilder builder = new StringBuilder();
             builder.append(getRawName(packages, classes));
             builder.append("<");
             boolean first = true;
-            for (Type parameter : parameters){
-                if (!first){
+            for (Type parameter : parameters) {
+                if (!first) {
                     builder.append(", ");
                 }
-                if (parameter == null || parameter.getFullName().equals(fullName)){
+                if (parameter == null || parameter.getFullName().equals(fullName)) {
                     builder.append("?");
-                }else{
+                } else {
                     builder.append(parameter.getGenericName(false, packages, classes));
                 }
                 first = false;
@@ -152,6 +170,31 @@ public class SimpleType implements Type {
             builder.append(">");
             return builder.toString();
         }
+    }
+
+    @Override
+    public Class<?> getJavaClass() {
+        if (javaClass == null) {
+            String className;
+            if (packageName.length() > 0) {
+                className = packageName + "." + localName.replace('.', '$');
+            } else {
+                className = localName.replace('.', '$');
+            }
+            try {
+                if (className.endsWith("[]")) {
+                    Class<?> component = getComponentType().getJavaClass();
+                    javaClass = Array.newInstance(component, 0).getClass();
+                } else if (PRIMITIVES.containsKey(className)) {
+                    javaClass = PRIMITIVES.get(className);
+                } else {
+                    javaClass = Class.forName(className);    
+                }                
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }    
+        }
+        return javaClass;        
     }
 
     @Override
@@ -171,9 +214,10 @@ public class SimpleType implements Type {
 
     @Override
     public String getRawName(Set<String> packages, Set<String> classes) {
-        if (packages.contains(packageName) || classes.contains(fullName) || classes.contains(outerClassName)){
+        if (packages.contains(packageName) || classes.contains(fullName)
+                || classes.contains(outerClassName)) {
             return localName;
-        }else{
+        } else {
             return fullName;
         }
     }
@@ -184,7 +228,7 @@ public class SimpleType implements Type {
     }
 
     @Override
-    public int hashCode(){
+    public int hashCode() {
         return fullName.hashCode();
     }
 
@@ -199,9 +243,8 @@ public class SimpleType implements Type {
     }
 
     @Override
-    public String toString(){
+    public String toString() {
         return getGenericName(true);
     }
-
 
 }

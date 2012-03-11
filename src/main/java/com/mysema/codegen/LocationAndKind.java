@@ -14,14 +14,14 @@ import javax.tools.JavaFileObject.Kind;
  * LocationAndKind defines a pair of Location and Kind
  * 
  * @author tiwe
- *
+ * 
  */
 public class LocationAndKind {
-    
+
     private final Kind kind;
-    
+
     private final Location location;
-    
+
     public LocationAndKind(Location location, Kind kind) {
         this.location = location;
         this.kind = kind;
@@ -29,28 +29,24 @@ public class LocationAndKind {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this){
+        if (obj == this) {
             return true;
-        }else if (obj instanceof LocationAndKind){
-            LocationAndKind other = (LocationAndKind)obj;
-            return location.equals(other.location) && kind.equals(other.kind);    
-        }else{
+        } else if (obj instanceof LocationAndKind) {
+            LocationAndKind other = (LocationAndKind) obj;
+            return location.equals(other.location) && kind.equals(other.kind);
+        } else {
             return false;
-        }        
+        }
     }
 
     @Override
     public int hashCode() {
-        return kind.hashCode() * 31  + location.hashCode();
+        return kind.hashCode() * 31 + location.hashCode();
     }
 
     @Override
     public String toString() {
-        return kind.toString() + "@" + location.toString(); 
+        return kind.toString() + "@" + location.toString();
     }
-    
-    
-    
-    
-    
+
 }

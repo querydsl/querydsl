@@ -21,90 +21,90 @@ import org.junit.Test;
 public class TypeTest {
 
     private Set<String> packages = Collections.singleton("java.lang");
-    
+
     private Set<String> classes = Collections.emptySet();
-        
-    private ClassType locale = new ClassType(TypeCategory.SIMPLE,Locale.class);
-    
+
+    private ClassType locale = new ClassType(TypeCategory.SIMPLE, Locale.class);
+
     private Type string = Types.STRING;
-    
+
     private Type string2 = new SimpleType(string);
-    
+
     private Type locale2 = new SimpleType(locale);
-    
+
     private Type stringList = new ClassType(TypeCategory.LIST, List.class, Types.STRING);
-    
+
     private Type stringList2 = new SimpleType(Types.LIST, Types.STRING);
-    
+
     private Type stringMap = new ClassType(TypeCategory.MAP, Map.class, Types.STRING, Types.STRING);
-    
+
     private Type stringMap2 = new SimpleType(Types.MAP, Types.STRING, Types.STRING);
-   
+
     @Test
-    public void arrayType(){
-        assertEquals("Object[]",Types.OBJECTS.getGenericName(true).toString());
+    public void arrayType() {
+        assertEquals("Object[]", Types.OBJECTS.getGenericName(true).toString());
     }
-    
+
     @Test
-    public void Equals(){
+    public void Equals() {
         assertEquals(locale, locale2);
         assertEquals(locale2, locale);
         assertEquals(stringList, stringList2);
         assertEquals(stringList2, stringList);
     }
-    
+
     @Test
-    public void Hashcode(){
+    public void Hashcode() {
         assertEquals(locale.hashCode(), locale2.hashCode());
         assertEquals(stringList.hashCode(), stringList2.hashCode());
     }
-    
+
     @Test
     public void GetGenericNameBoolean() {
-        assertEquals("java.util.Locale",locale.getGenericName(true));
-        assertEquals("java.util.Locale",locale2.getGenericName(true));
-        assertEquals("java.util.List<String>",stringList.getGenericName(true));
-        assertEquals("java.util.List<String>",stringList2.getGenericName(true));
+        assertEquals("java.util.Locale", locale.getGenericName(true));
+        assertEquals("java.util.Locale", locale2.getGenericName(true));
+        assertEquals("java.util.List<String>", stringList.getGenericName(true));
+        assertEquals("java.util.List<String>", stringList2.getGenericName(true));
         assertEquals("java.util.Map<String, String>", stringMap.getGenericName(true));
         assertEquals("java.util.Map<String, String>", stringMap2.getGenericName(true));
-        
+
         assertEquals("String", string.getGenericName(true));
         assertEquals("String", string2.getGenericName(true));
     }
 
     @Test
     public void GetRawName() {
-        assertEquals("java.util.Locale",locale.getRawName(packages, classes));
-        assertEquals("java.util.Locale",locale2.getRawName(packages, classes));
-        assertEquals("java.util.List",stringList.getRawName(packages, classes));
-        assertEquals("java.util.List",stringList2.getRawName(packages, classes));
-        
+        assertEquals("java.util.Locale", locale.getRawName(packages, classes));
+        assertEquals("java.util.Locale", locale2.getRawName(packages, classes));
+        assertEquals("java.util.List", stringList.getRawName(packages, classes));
+        assertEquals("java.util.List", stringList2.getRawName(packages, classes));
+
         assertEquals("String", string.getRawName(packages, classes));
         assertEquals("String", string2.getRawName(packages, classes));
     }
 
     @Test
     public void GetGenericNameBooleanSetOfStringSetOfString() {
-        assertEquals("java.util.Locale",locale.getGenericName(true, packages, classes));
-        assertEquals("java.util.Locale",locale2.getGenericName(true, packages, classes));
-        assertEquals("java.util.List<String>",stringList.getGenericName(true,packages, classes));
-        assertEquals("java.util.List<String>",stringList2.getGenericName(true,packages, classes));
+        assertEquals("java.util.Locale", locale.getGenericName(true, packages, classes));
+        assertEquals("java.util.Locale", locale2.getGenericName(true, packages, classes));
+        assertEquals("java.util.List<String>", stringList.getGenericName(true, packages, classes));
+        assertEquals("java.util.List<String>", stringList2.getGenericName(true, packages, classes));
     }
 
     @Test
     public void GetFullName() {
-        assertEquals("java.util.Locale",locale.getFullName());
-        assertEquals("java.util.Locale",locale2.getFullName());
-        assertEquals("java.util.List",stringList.getFullName());
-        assertEquals("java.util.List",stringList2.getFullName());
+        assertEquals("java.util.Locale", locale.getFullName());
+        assertEquals("java.util.Locale", locale2.getFullName());
+        assertEquals("java.util.List", stringList.getFullName());
+        assertEquals("java.util.List", stringList2.getFullName());
     }
 
     @Test
     public void GetPackageName() {
-        assertEquals("java.util",locale.getPackageName());
-        assertEquals("java.util",locale2.getPackageName());
-        assertEquals("java.util",stringList.getPackageName());
-        assertEquals("java.util",stringList2.getPackageName());
+        assertEquals("java.util", locale.getPackageName());
+        assertEquals("java.util", locale2.getPackageName());
+        assertEquals("java.util", stringList.getPackageName());
+        assertEquals("java.util", stringList2.getPackageName());
     }
 
     @Test
@@ -117,15 +117,15 @@ public class TypeTest {
 
     @Test
     public void GetSimpleName() {
-        assertEquals("Locale",locale.getSimpleName());
-        assertEquals("Locale",locale2.getSimpleName());
-        assertEquals("List",stringList.getSimpleName());
-        assertEquals("List",stringList2.getSimpleName());
+        assertEquals("Locale", locale.getSimpleName());
+        assertEquals("Locale", locale2.getSimpleName());
+        assertEquals("List", stringList.getSimpleName());
+        assertEquals("List", stringList2.getSimpleName());
     }
 
     @Test
     public void GetJavaClass() {
-        assertEquals(Locale.class,locale.getJavaClass());
+        assertEquals(Locale.class, locale.getJavaClass());
     }
 
     @Test
@@ -133,7 +133,7 @@ public class TypeTest {
         assertTrue(locale.isFinal());
         assertTrue(locale2.isFinal());
         assertFalse(stringList.isFinal());
-        
+
         assertTrue(Types.STRING.isFinal());
         assertTrue(Types.LONG.isFinal());
     }
@@ -170,10 +170,10 @@ public class TypeTest {
 
     @Test
     public void ToString() {
-        assertEquals("java.util.Locale",locale.toString());
-        assertEquals("java.util.Locale",locale2.toString());
-        assertEquals("java.util.List<String>",stringList.toString());
-        assertEquals("java.util.List<String>",stringList2.toString());
+        assertEquals("java.util.Locale", locale.toString());
+        assertEquals("java.util.Locale", locale2.toString());
+        assertEquals("java.util.List<String>", stringList.toString());
+        assertEquals("java.util.List<String>", stringList2.toString());
     }
 
     @Test
