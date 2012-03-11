@@ -177,6 +177,14 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
         return hasPropertyWithType(TypeCategory.LIST);
     }
     
+    public boolean hasCollections() {
+        return hasPropertyWithType(TypeCategory.COLLECTION);
+    }
+    
+    public boolean hasSets() {
+        return hasPropertyWithType(TypeCategory.COLLECTION);
+    }
+    
     public boolean hasMaps() {
         return hasPropertyWithType(TypeCategory.MAP);
     }

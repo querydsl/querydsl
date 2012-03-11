@@ -156,7 +156,7 @@ public class BeanSerializerTest {
         for (String prop : Arrays.asList(
                 "String[] arrayField;",
                 "Boolean boolean$;",
-                "java.util.Collection<DomainClass> collection;",
+                "Collection<DomainClass> collection;",
                 "Comparable comparable;",
                 "java.util.Date date;",
                 "DomainClass entityField;",
