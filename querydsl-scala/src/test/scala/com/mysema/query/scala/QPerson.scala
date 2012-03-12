@@ -28,7 +28,7 @@ class QPerson(cl: Class[_ <: Person], md: PathMetadata[_]) extends EntityPathImp
   val javaDouble = createNumber[java.lang.Double]("javaDouble")
 
   val javaInt = createNumber[Integer]("javaInt")
-
+  
   val javaList = createList[String,StringPath]("javaList")
 
   val javaMap = createMap[String,String,StringPath]("javaMap")
@@ -39,7 +39,11 @@ class QPerson(cl: Class[_ <: Person], md: PathMetadata[_]) extends EntityPathImp
 
   val listOfPersons = createList[Person,QPerson]("listOfPersons")
 
-  val scalaInt = createNumber[Integer]("scalaInt")
+  val scalaInt = createNumber[Int]("scalaInt")
+  
+  val scalaDouble = createNumber[Double]("scalaDouble")
+  
+  //val num = createNumber[String]("x")
 
   val scalaList = createList[String,StringPath]("scalaList")
 

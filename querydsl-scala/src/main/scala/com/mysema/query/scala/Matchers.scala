@@ -30,7 +30,7 @@ object Matchers {
     
   def between[T <: Comparable[T]](left: T, right: T) = (expr: ComparableExpression[T]) => expr.between(left, right)
   
-  def between(left: Number, right: Number) = (expr: NumberExpression[_]) => expr.between(left, right)
+  def between[U : Numeric](left: U, right: U) = (expr: NumberExpression[_]) => expr.between(left, right)
     
   def like(str: String) = (expr: StringExpression) => expr.like(str)
   

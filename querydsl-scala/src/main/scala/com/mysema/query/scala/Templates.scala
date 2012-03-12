@@ -48,7 +48,7 @@ object Templates {
     new TimeTemplate[T](t, tpl, args: _*)
   }
 
-  def number[T <: Number with Comparable[T]](t: Class[_ <: T], tpl: Template, args: Ex[_]*): NumberExpression[T] = {
+  def number[T : Numeric](t: Class[_ <: T], tpl: Template, args: Ex[_]*): NumberExpression[T] = {
     new NumberTemplate[T](t, tpl, args: _*) 
   }
 
@@ -70,8 +70,10 @@ class ComparableTemplate[T <: Comparable[_]](t: Class[_ <: T], template: Templat
   extends TemplateExpressionImpl[T](t, template, args:_*) with ComparableExpression[T]
 
 
-class NumberTemplate[T <: Number with Comparable[T]](t: Class[_ <: T], template: Template, args: Ex[_]*)
-  extends TemplateExpressionImpl[T](t, template, args:_*) with NumberExpression[T]
+class NumberTemplate[T : Numeric](t: Class[_ <: T], template: Template, args: Ex[_]*)
+  extends TemplateExpressionImpl[T](t, template, args:_*) with NumberExpression[T] {
+  override def numeric = implicitly[Numeric[T]]
+}
 
 
 class BooleanTemplate(template: Template, args: Ex[_]*)

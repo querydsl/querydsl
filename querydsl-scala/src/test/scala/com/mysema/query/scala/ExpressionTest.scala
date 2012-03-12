@@ -151,6 +151,7 @@ class ExpressionTest {
   def Number_Comparison {
     assertEquals("person.scalaInt < 5", person.scalaInt lt 5)
     assertEquals("person.scalaInt = 5", person.scalaInt eq 5.asInstanceOf[Integer]) // FIXME
+    
     assertEquals("person.javaInt < 5", person.javaInt lt 5)
     assertEquals("person.javaInt > 5", person.javaInt gt 5)
     assertEquals("person.javaInt <= 5", person.javaInt loe 5)
@@ -168,6 +169,7 @@ class ExpressionTest {
   def Number_Comparison_With_Operators {
     assertEquals("person.scalaInt < 5", person.scalaInt < 5)
     assertEquals("person.scalaInt = 5", person.scalaInt === 5) 
+    
     assertEquals("person.javaInt < 5", person.javaInt < 5)
     assertEquals("person.javaInt > 5", person.javaInt > 5)
     assertEquals("person.javaInt <= 5", person.javaInt <= 5)

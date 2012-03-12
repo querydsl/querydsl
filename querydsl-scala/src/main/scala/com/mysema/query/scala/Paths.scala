@@ -59,7 +59,7 @@ object Paths {
 
   def time[T <: Comparable[_]](t: Class[_ <: T], md: Metadata[_]) = new TimePath[T](t, md)
 
-  def number[T <: Number with Comparable[T]](t: Class[T], md: Metadata[_]) = new NumberPath[T](t, md)
+  def number[T : Numeric](t: Class[T], md: Metadata[_]) = new NumberPath[T](t, md)
 
   def boolean(md: Metadata[_]) = new BooleanPath(md)
 
@@ -123,7 +123,7 @@ class BeanPath[T](t: Class[_ <: T], md: PathMetadata[_])
 
   def createTime[T <: Comparable[_]](property: String)(implicit mf: Mf[T]) = add(time(mf, forProperty(property)))
 
-  def createNumber[T <: Number with Comparable[T]](property: String)(implicit mf: Mf[T]) = add(number(mf, forProperty(property)))
+  def createNumber[T](property: String)(implicit num: Numeric[T], mf: Mf[T]) = add(number[T](mf, forProperty(property)))
 
   def createBoolean(property: String) = add(boolean(forProperty(property)))
 
@@ -199,10 +199,11 @@ class ComparablePath[T <: Comparable[_]](t: Class[_ <: T], md: PathMetadata[_])
 
 }
 
-class NumberPath[T <: Number with Comparable[T]](t: Class[T], md: PathMetadata[_])
+class NumberPath[T : Numeric](t: Class[T], md: PathMetadata[_])
   extends PathImpl[T](t, md) with NumberExpression[T] {
 
   def this(t: Class[T], variable: String) = this(t, forVariable(variable))
+  override def numeric = implicitly[Numeric[T]]
 
 }
 

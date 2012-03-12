@@ -31,4 +31,21 @@ package object scala {
   
   type Tu5Ex[T1,T2,T3,T4,T5] = Tuple5Expression[T1,T2,T3,T4,T5]
   
+  object Numeric {
+    implicit val byte = new Numeric[Byte]   
+    implicit val double = new Numeric[Double]  
+    implicit val float = new Numeric[Float]  
+    implicit val int = new Numeric[Int]  
+    implicit val long = new Numeric[Long]  
+    implicit val short = new Numeric[Short]  
+    implicit val byte2 = new Numeric[java.lang.Byte]   
+    implicit val double2 = new Numeric[java.lang.Double]  
+    implicit val float2 = new Numeric[java.lang.Float]  
+    implicit val int2 = new Numeric[java.lang.Integer]  
+    implicit val long2 = new Numeric[java.lang.Long]
+    implicit val short2 = new Numeric[java.lang.Short] 
+  }
+
+  class Numeric[Num]
+  
 } 

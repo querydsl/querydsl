@@ -38,7 +38,7 @@ object Constants {
 }
 
 trait SimpleExpression[T] extends Expression[T] {
-    
+  
   def as(right: Path[T]): SimpleExpression[T] = simple(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
 
   def as(alias: String): SimpleExpression[T] = as(new PathImpl[T](getType, alias))    
@@ -209,70 +209,65 @@ trait ComparableExpression[T <: Comparable[_]] extends ComparableExpressionBase[
   
 }
 
-/*trait NumericExpression[T,N <: Number with Comparable[N]] extends SimpleExpression[T] {
+trait NumberExpression[T] extends SimpleExpression[T] {
   
-  def asNumber(): Expression[N]
+  implicit def numeric: Numeric[T] // to be implemented in classes
   
-  lazy val asc = new OrderSpecifier[N](Order.ASC, asNumber())
+  type Ex[T] = Expression[T]
+  
+  lazy val asc = new OrderSpecifier[java.lang.Double](Order.ASC, this.asInstanceOf[Ex[java.lang.Double]])
 
-  lazy val desc = new OrderSpecifier[N](Order.DESC, asNumber())
-}*/
-
-trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpressionBase[T] {
+  lazy val desc = new OrderSpecifier[java.lang.Double](Order.DESC, this.asInstanceOf[Ex[java.lang.Double]])
     
-  type NumberExpr = Expression[_ <: Number]
+  def add[U : Numeric](right: Ex[U]) = number[T](getType, Ops.ADD, this, right)
+
+  def add[U : Numeric](right: U): NumberExpression[T] = add(constant(right))
   
-  type NumberArray = Array[_ <: Number]
+  def +[U : Numeric](right: Ex[U]) = add(right)
+
+  def +[U : Numeric](right: U) = add(right)
+
+  def goe[U : Numeric](right: U): BooleanExpression = goe(constant(right))
+
+  def goe[U : Numeric](right: Ex[U]) = boolean(Ops.GOE, this, right)
+
+  def >=[U : Numeric](right: U) = goe(right)
   
-  def add(right: NumberExpr) = number[T](getType, ADD, this, right)
-
-  def add(right: Number): NumberExpression[T] = add(constant(right))
+  def >=[U : Numeric](right: Ex[U]) = goe(right)
   
-  def +(right: NumberExpr) = add(right)
+  def gt[U : Numeric](right: U): BooleanExpression = gt(constant(right))
 
-  def +(right: Number) = add(right)
-
-  def goe(right: Number): BooleanExpression = goe(constant(right))
-
-  def goe(right: NumberExpr) = boolean(Ops.GOE, this, right)
-
-  def >=(right: Number) = goe(right)
+  def gt[U : Numeric](right: Ex[U]) = boolean(Ops.GT, this, right)
   
-  def >=(right: NumberExpr) = goe(right)
+  def >[U : Numeric](right: U) = gt(right)
   
-  def gt(right: Number): BooleanExpression = gt(constant(right))
+  def >[U : Numeric](right: Ex[U]) = gt(right)
 
-  def gt(right: NumberExpr) = boolean(Ops.GT, this, right)
+  def between[U : Numeric](left: U, right: U) = boolean(Ops.BETWEEN, this, constant(left), constant(right))
+
+  def between[U : Numeric](left: Ex[U], right: Ex[U]) = boolean(Ops.BETWEEN, this, left, right)
+
+  def notBetween[U : Numeric](left: U, right: U): BooleanExpression = between(left, right).not
+
+  def notBetween[U : Numeric](left: Ex[U], right: Ex[U]) = between(left, right).not
+
+  def loe[U : Numeric](right: U): BooleanExpression = loe(constant(right))
+
+  def loe[U : Numeric](right: Ex[U]) = boolean(Ops.LOE, this, right)
+
+  def <=[U : Numeric](right: U) = loe(right)
   
-  def >(right: Number) = gt(right)
+  def <=[U : Numeric](right: Ex[U]) = loe(right)
   
-  def >(right: NumberExpr) = gt(right)
+  def lt[U : Numeric](right: U): BooleanExpression = lt(constant(right))
 
-  def between(left: Number, right: Number) = boolean(Ops.BETWEEN, this, constant(left), constant(right))
-
-  def between(left: NumberExpr, right: NumberExpr) = boolean(Ops.BETWEEN, this, left, right)
-
-  def notBetween(left: Number, right: Number): BooleanExpression = between(left, right).not
-
-  def notBetween(left: NumberExpr, right: NumberExpr) = between(left, right).not
-
-  def loe(right: Number): BooleanExpression = loe(constant(right))
-
-  def loe(right: NumberExpr) = boolean(Ops.LOE, this, right)
-
-  def <=(right: Number) = loe(right)
+  def lt[U : Numeric](right: Ex[U]) = boolean(Ops.LT, this, right)
   
-  def <=(right: NumberExpr) = loe(right)
+  def <[U : Numeric](right: U) = lt(right)
   
-  def lt(right: Number): BooleanExpression = lt(constant(right))
+  def <[U : Numeric](right: Ex[U]) = lt(right)  
 
-  def lt(right: NumberExpr) = boolean(Ops.LT, this, right)
-  
-  def <(right: Number) = lt(right)
-  
-  def <(right: NumberExpr) = lt(right)  
-
-  def in(right: NumberArray) = boolean(IN, this, constant(asList(right: _*)))
+  def in[U : Numeric](right: Array[U]) = boolean(IN, this, constant(asList(right: _*)))
 
   lazy val min = number[T](getType, AggOps.MIN_AGG, this)
 
@@ -282,41 +277,41 @@ trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpress
 
   lazy val avg = number[T](getType, AggOps.AVG_AGG, this)
 
-  def subtract(right: NumberExpr) = number[T](getType, Ops.SUB, this, right)
+  def subtract[U : Numeric](right: Ex[U]) = number[T](getType, Ops.SUB, this, right)
 
-  def subtract(right: Number): NumberExpression[T] = subtract(constant(right))
+  def subtract[U : Numeric](right: U): NumberExpression[T] = subtract(constant(right))
   
-  def -(right: NumberExpr) = subtract(right)
+  def -[U : Numeric](right: Ex[U]) = subtract(right)
 
-  def -(right: Number) = subtract(right)  
+  def -[U : Numeric](right: U) = subtract(right)  
 
-  def notIn(right: NumberArray) = boolean(IN, this, constant(asList(right: _*))).not
+  def notIn[U : Numeric](right: Array[U]) = boolean(IN, this, constant(asList(right: _*))).not
 
-  def divide(right: NumberExpr) = number[T](getType, Ops.DIV, this, right)
+  def divide[U : Numeric](right: Ex[U]) = number[T](getType, Ops.DIV, this, right)
 
-  def divide(right: Number): NumberExpression[T] = divide(constant(right))
+  def divide[U : Numeric](right: U): NumberExpression[T] = divide(constant(right))
 
-  def /(right: NumberExpr) = divide(right)
+  def /[U : Numeric](right: Ex[U]) = divide(right)
 
-  def /(right: Number) = divide(right)     
+  def /[U : Numeric](right: U) = divide(right)     
   
-  def multiply(right: NumberExpr) = number[T](getType, Ops.MULT, this, right)
+  def multiply[U : Numeric](right: Ex[U]) = number[T](getType, Ops.MULT, this, right)
 
-  def multiply(right: Number): NumberExpression[T] = multiply(constant(right))
+  def multiply[U : Numeric](right: U): NumberExpression[T] = multiply(constant(right))
   
-  def *(right: NumberExpr) = multiply(right)
+  def *[U : Numeric](right: Ex[U]) = multiply(right)
 
-  def *(right: Number) = multiply(right)    
+  def *[U : Numeric](right: U) = multiply(right)    
 
-  def negate() = number[T](getType, Ops.NEGATE, this)
+  def negate = number[T](getType, Ops.NEGATE, this)
 
-  def mod(right: NumberExpr) = number[T](getType, Ops.MOD, this, right)
+  def mod[U : Numeric](right: Ex[U]) = number[T](getType, Ops.MOD, this, right)
 
-  def mod(right: Number): NumberExpression[T] = mod(constant(right))
+  def mod[U : Numeric](right: U): NumberExpression[T] = mod(constant(right))
   
-  def %(right: NumberExpr) = mod(right)
+  def %[U : Numeric](right: Ex[U]) = mod(right)
 
-  def %(right: Number) = mod(right)  
+  def %[U : Numeric](right: U) = mod(right)  
 
   lazy val sqrt = number[java.lang.Double](classOf[java.lang.Double], MathOps.SQRT, this)
 
@@ -342,7 +337,7 @@ trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpress
   
   def unary_-() = negate
 
-  private def castToNum[A <: Number with Comparable[A]](t: Class[A]): NumberExpression[A] = {
+  private def castToNum[A : Numeric](t: Class[A]): NumberExpression[A] = {
     if (t.equals(getType)) {
       this.asInstanceOf[NumberExpression[A]]
     } else {
@@ -350,7 +345,7 @@ trait NumberExpression[T <: Number with Comparable[T]] extends ComparableExpress
     }
   }
   
-  override def as(right: Path[T]) = number(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
+  override def as(right: Path[T]) = number(getType, ALIAS, this, right)
 
   override def as(alias: String): NumberExpression[T] = as(new PathImpl[T](getType, alias))  
 

@@ -46,9 +46,10 @@ object Operations {
     new OperationImpl[T](t, op, args: _*) with TimeExpression[T]
   }
 
-  def number[T <: Number with Comparable[T]](t: Class[_ <: T], op: Op[_ >: T], args: Ex[_]*): NumberExpression[T] = 
-      new OperationImpl[T](t, op, args: _*) with NumberExpression[T] {
+  def number[T : Numeric](t: Class[_ <: T], op: Op[_], args: Ex[_]*): NumberExpression[T] = 
+      new OperationImpl[T](t, op.asInstanceOf[Operator[T]], args: _*) with NumberExpression[T] {
         override def negate = if (getOperator == Ops.NEGATE) getArg(0).asInstanceOf[NumberExpression[T]] else super.negate      
+        override def numeric = implicitly[Numeric[T]]
       }
 
   def boolean(op: Op[_ >: java.lang.Boolean], args: Ex[_]*): BooleanExpression = {
