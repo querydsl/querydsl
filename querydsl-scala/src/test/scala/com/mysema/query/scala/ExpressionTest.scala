@@ -150,7 +150,7 @@ class ExpressionTest {
   @Test
   def Number_Comparison {
     assertEquals("person.scalaInt < 5", person.scalaInt lt 5)
-    assertEquals("person.scalaInt = 5", person.scalaInt eq 5.asInstanceOf[Integer]) // FIXME
+    assertEquals("person.scalaInt = 5", person.scalaInt eq 5)
     
     assertEquals("person.javaInt < 5", person.javaInt lt 5)
     assertEquals("person.javaInt > 5", person.javaInt gt 5)

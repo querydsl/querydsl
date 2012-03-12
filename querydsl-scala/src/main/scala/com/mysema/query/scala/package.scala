@@ -33,17 +33,20 @@ package object scala {
   
   object Numeric {
     implicit val byte = new Numeric[Byte]   
+    implicit val byte2 = new Numeric[java.lang.Byte]
     implicit val double = new Numeric[Double]  
+    implicit val double2 = new Numeric[java.lang.Double]
     implicit val float = new Numeric[Float]  
+    implicit val float2 = new Numeric[java.lang.Float]
     implicit val int = new Numeric[Int]  
+    implicit val int2 = new Numeric[java.lang.Integer]
     implicit val long = new Numeric[Long]  
-    implicit val short = new Numeric[Short]  
-    implicit val byte2 = new Numeric[java.lang.Byte]   
-    implicit val double2 = new Numeric[java.lang.Double]  
-    implicit val float2 = new Numeric[java.lang.Float]  
-    implicit val int2 = new Numeric[java.lang.Integer]  
     implicit val long2 = new Numeric[java.lang.Long]
-    implicit val short2 = new Numeric[java.lang.Short] 
+    implicit val short = new Numeric[Short]        
+    implicit val short2 = new Numeric[java.lang.Short]
+    
+    implicit val bigDecimal = new Numeric[java.math.BigDecimal]
+    implicit val bigInteger = new Numeric[java.math.BigInteger]
   }
 
   class Numeric[Num]
