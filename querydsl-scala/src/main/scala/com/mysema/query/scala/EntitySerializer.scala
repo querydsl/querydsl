@@ -19,22 +19,19 @@ import com.mysema.codegen.ScalaWriter
 import com.mysema.codegen.model._
 import com.mysema.codegen.model.TypeCategory._
 import com.mysema.codegen.support.ScalaSyntaxUtils
-
 import com.mysema.query
 import com.mysema.query.codegen._
 import com.mysema.query.sql._
 import com.mysema.query.sql.support._
 import com.mysema.query.types._
-
 import java.util._
 import java.io.IOException
-
 import scala.reflect.BeanProperty
 import scala.collection.JavaConversions._
 import scala.collection.mutable.Set
 import scala.collection.immutable.Map
-
 import javax.inject.Inject
+import org.apache.commons.lang3.StringUtils
 
 /**
  * EntitySerializer for Scala
@@ -50,6 +47,8 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
       STRING->"String", TIME->"Time")
   
   val classHeaderFormat = "%1$s(cl: Class[_ <: %2$s], md: PathMetadata[_]) extends EntityPathImpl[%2$s](cl, md)"
+    
+  var primitives = true  
     
   def serialize(model: EntityType, serializerConfig: SerializerConfig, writer: CodeWriter) {
     val scalaWriter = writer.asInstanceOf[ScalaWriter]
@@ -156,9 +155,17 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
               writer.getGenericName(true, queryType)+"](\"" + property.getName + "\")"      
         }
         case _ => methodName + "[" + 
-          writer.getRawName(property.getType) + "](\"" + property.getName + "\")"
+          getRawName(property.getType, writer) + "](\"" + property.getName + "\")"
       }
       (property.getEscapedName, value)
+    }
+  }
+  
+  private def getRawName(t: Type, writer: CodeWriter) = {
+    if (t.isPrimitive()) {
+      StringUtils.capitalize(t.getPrimitiveName())
+    } else {
+      writer.getRawName(t)
     }
   }
   

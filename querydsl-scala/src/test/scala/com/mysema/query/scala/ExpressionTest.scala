@@ -216,8 +216,8 @@ class ExpressionTest {
   
   @Test
   def Number_Casts {
-    assertEquals("cast(person.javaInt,class java.lang.Long)", person.javaInt longValue)
-    assertEquals("cast(person.scalaInt,class java.lang.Long)", person.scalaInt longValue)
+    assertEquals("cast(person.javaInt,long)", person.javaInt longValue)
+    assertEquals("cast(person.scalaInt,long)", person.scalaInt longValue)
   }
 
   @Test

@@ -25,9 +25,10 @@ class ScalaEntitySerializerTest extends CompileTestUtils {
     val typeModel = new ClassType(TypeCategory.ENTITY, classOf[Person])
     entityType = new EntityType(typeModel)
     for ( (name, t) <- List(
-        ("scalaInt", Types.INTEGER),
+        ("scalaInt", Types.INT),
         ("javaInt", Types.INTEGER),
         ("javaDouble", Types.DOUBLE),
+        ("scalaDouble", Types.DOUBLE_P),
         ("firstName", Types.STRING),
         ("lastName", Types.STRING),
         ("scalaList", new SimpleType(Types.LIST, Types.STRING)),

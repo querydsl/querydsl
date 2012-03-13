@@ -59,7 +59,7 @@ trait SimpleExpression[T] extends Expression[T] {
   
   def !==(right: Expression[T]) = ne(right)  
   
-  lazy val count = number[java.lang.Long](classOf[java.lang.Long], AggOps.COUNT_AGG, this)
+  lazy val count = number[Long](classOf[Long], AggOps.COUNT_AGG, this)
 
   def in(right: Collection[T]) = boolean(IN, this, constant(right))
 
@@ -67,7 +67,7 @@ trait SimpleExpression[T] extends Expression[T] {
 
   def in(right: CollectionExpression[T,_]) = boolean(IN, this, right)
 
-  def countDistinct() = number[java.lang.Long](classOf[java.lang.Long], AggOps.COUNT_DISTINCT_AGG, this)
+  def countDistinct() = number[Long](classOf[Long], AggOps.COUNT_DISTINCT_AGG, this)
 
   lazy val isNotNull = boolean(IS_NOT_NULL, this)
 
@@ -96,7 +96,7 @@ trait ArrayExpression[T <: Array[_]] extends SimpleExpression[T] {
 trait CollectionExpressionBase[T <: Collection[C], C, Q <: Expression[_ >: C]] 
   extends SimpleExpression[T] with com.mysema.query.types.CollectionExpression[T,C] {
 
-  lazy val size = number[Integer](classOf[Integer], COL_SIZE, this)
+  lazy val size = number[Int](classOf[Int], COL_SIZE, this)
 
   lazy val isEmpty = boolean(COL_IS_EMPTY, this)
 
@@ -129,7 +129,7 @@ trait ListExpression[T, Q <: Expression[_ >: T]] extends CollectionExpressionBas
 trait MapExpression[K, V, Q <: Expression[_ >: V]] 
   extends SimpleExpression[java.util.Map[K, V]] with com.mysema.query.types.MapExpression[K,V] {
     
-  lazy val size = number[Integer](classOf[Integer], MAP_SIZE, this)
+  lazy val size = number[Int](classOf[Int], MAP_SIZE, this)
 
   lazy val isEmpty = boolean(MAP_IS_EMPTY, this)
 
@@ -212,8 +212,6 @@ trait ComparableExpression[T <: Comparable[_]] extends ComparableExpressionBase[
 trait NumberExpression[T] extends SimpleExpression[T] {
   
   implicit def numeric: Numeric[T] // to be implemented in classes
-  
-  type Ex[T] = Expression[T] // TODO : remove
   
   lazy val asc = new OrderSpecifier[java.lang.Double](Order.ASC, this.asInstanceOf[Ex[java.lang.Double]])
 
@@ -313,21 +311,21 @@ trait NumberExpression[T] extends SimpleExpression[T] {
 
   def %[U : Numeric](right: U) = mod(right)  
 
-  lazy val sqrt = number[java.lang.Double](classOf[java.lang.Double], MathOps.SQRT, this)
+  lazy val sqrt = number[Double](classOf[Double], MathOps.SQRT, this)
 
   lazy val abs = number[T](getType, MathOps.ABS, this)
 
-  lazy val byteValue = castToNum(classOf[java.lang.Byte])
+  lazy val byteValue = castToNum(classOf[Byte])
 
-  lazy val doubleValue = castToNum(classOf[java.lang.Double])
+  lazy val doubleValue = castToNum(classOf[Double])
 
-  lazy val floatValue = castToNum(classOf[java.lang.Float])
+  lazy val floatValue = castToNum(classOf[Float])
 
-  lazy val intValue = castToNum(classOf[java.lang.Integer])
+  lazy val intValue = castToNum(classOf[Int])
 
-  lazy val longValue = castToNum(classOf[java.lang.Long])
+  lazy val longValue = castToNum(classOf[Long])
 
-  lazy val shortValue = castToNum(classOf[java.lang.Short])
+  lazy val shortValue = castToNum(classOf[Short])
 
   lazy val ceil = number[T](getType, MathOps.CEIL, this)
 
@@ -415,19 +413,19 @@ trait StringExpression extends ComparableExpression[String] {
 
   def matches(right: String): BooleanExpression = matches(constant(right)) 
 
-  def indexOf(right: Expression[String]) = number[Integer](classOf[Integer], Ops.INDEX_OF, this, right) 
+  def indexOf(right: Expression[String]) = number[Int](classOf[Int], Ops.INDEX_OF, this, right) 
 
-  def indexOf(right: String): NumberExpression[Integer] = indexOf(constant(right)) 
+  def indexOf(right: String): NumberExpression[Int] = indexOf(constant(right)) 
 
-  def indexOf(left: String, right: Int): NumberExpression[Integer] = indexOf(constant(left), right)
+  def indexOf(left: String, right: Int): NumberExpression[Int] = indexOf(constant(left), right)
 
   def indexOf(left: Expression[String], right: Int) = {
-    number[Integer](classOf[Integer], Ops.INDEX_OF_2ARGS, this, left, constant(right))
+    number[Int](classOf[Int], Ops.INDEX_OF_2ARGS, this, left, constant(right))
   } 
 
-  def charAt(right: Expression[Integer]) = simple(classOf[Character], Ops.CHAR_AT, this, right) 
+  def charAt(right: Expression[Int]) = simple(classOf[Character], Ops.CHAR_AT, this, right) 
 
-  def charAt(right: Integer): SimpleExpression[Character] = charAt(constant(right)) 
+  def charAt(right: Int): SimpleExpression[Character] = charAt(constant(right)) 
 
   def contains(right: Expression[String]) = boolean(Ops.STRING_CONTAINS, this, right)
 
@@ -443,7 +441,7 @@ trait StringExpression extends ComparableExpression[String] {
 
   lazy val isEmpty = boolean(Ops.STRING_IS_EMPTY, this) 
 
-  lazy val length = number[Integer](classOf[Integer], Ops.STRING_LENGTH, this) 
+  lazy val length = number[Int](classOf[Int], Ops.STRING_LENGTH, this) 
 
   def startsWith(right: Expression[String]) = boolean(Ops.STARTS_WITH, this, right) 
 
