@@ -213,7 +213,7 @@ trait NumberExpression[T] extends SimpleExpression[T] {
   
   implicit def numeric: Numeric[T] // to be implemented in classes
   
-  type Ex[T] = Expression[T]
+  type Ex[T] = Expression[T] // TODO : remove
   
   lazy val asc = new OrderSpecifier[java.lang.Double](Order.ASC, this.asInstanceOf[Ex[java.lang.Double]])
 
