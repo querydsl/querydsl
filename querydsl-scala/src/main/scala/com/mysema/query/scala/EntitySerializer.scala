@@ -162,8 +162,8 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
   }
   
   private def getRawName(t: Type, writer: CodeWriter) = {
-    if (t.isPrimitive()) {
-      StringUtils.capitalize(t.getPrimitiveName())
+    if (primitives && Types.PRIMITIVES.containsKey(t)) {
+      writer.getRawName(Types.PRIMITIVES.get(t)) 
     } else {
       writer.getRawName(t)
     }

@@ -99,8 +99,9 @@ public final class ProjectionSerializer implements Serializer{
                 if (!first) {
                     writer.append(", ");
                 }
-                if (p.getType().getPrimitiveName() != null) {
-                    writer.append(p.getType().getPrimitiveName()+".class");
+                if (Types.PRIMITIVES.containsKey(p.getType())) {
+                    Type primitive = Types.PRIMITIVES.get(p.getType());
+                    writer.append(primitive.getFullName()+".class");
                 } else {
                     writer.append(writer.getRawName(p.getType()));
                     writer.append(".class");

@@ -381,8 +381,9 @@ public class EntitySerializer implements Serializer{
                 if (!first) {
                     writer.append(COMMA);
                 }
-                if (p.getType().getPrimitiveName() != null) {
-                    writer.append(p.getType().getPrimitiveName()+DOT_CLASS);
+                if (Types.PRIMITIVES.containsKey(p.getType())) {
+                    Type primitive = Types.PRIMITIVES.get(p.getType());
+                    writer.append(primitive.getFullName()+DOT_CLASS);
                 } else {
                     writer.append(writer.getRawName(p.getType()));
                     writer.append(DOT_CLASS);
