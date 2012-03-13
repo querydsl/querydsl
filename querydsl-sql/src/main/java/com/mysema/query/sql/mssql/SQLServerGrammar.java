@@ -13,8 +13,14 @@
  */
 package com.mysema.query.sql.mssql;
 
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.ConstantImpl;
+import com.mysema.query.types.Template;
+import com.mysema.query.types.TemplateFactory;
+import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.template.DateTemplate;
 import com.mysema.query.types.template.NumberTemplate;
 
 /**
@@ -25,6 +31,10 @@ import com.mysema.query.types.template.NumberTemplate;
  */
 public final class SQLServerGrammar {
 
+    private static final Template DATEDIFF = TemplateFactory.DEFAULT.create("datediff('{0s}',{1},{2})");
+    
+    private static final Template DATEADD = TemplateFactory.DEFAULT.create("dateadd('{0s}',{1},{2})");
+    
     private SQLServerGrammar() {}
 
     public static final NumberExpression<Long> rowNumber = NumberTemplate.create(Long.class, "row_number");
@@ -34,5 +44,17 @@ public final class SQLServerGrammar {
     public static RowNumber rowNumber() {
         return new RowNumber();
     }
-
+    
+    private static final <T> Constant<T> constant(T constant) {
+        return new ConstantImpl<T>(constant);
+    }
+    
+    public static <D> NumberExpression<Integer> datediff(DatePart datePart, D start, D end) {
+        return NumberTemplate.create(Integer.class, DATEDIFF, constant(datePart.name()), constant(start), constant(end));
+    }
+    
+    public static <D extends Comparable<D>> DateExpression<D> dateadd(DatePart datePart, int num, D date) {
+        return DateTemplate.<D>create((Class<D>)date.getClass(), DATEADD, constant(datePart.name()), constant(num), constant(date));
+    }
+    
 }

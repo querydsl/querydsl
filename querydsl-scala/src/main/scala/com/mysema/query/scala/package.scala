@@ -48,7 +48,10 @@ package object scala {
     implicit val bigDecimal = new Numeric[java.math.BigDecimal]
     implicit val bigInteger = new Numeric[java.math.BigInteger]
   }
-
+  
+  /**
+   * Type class for Number types
+   */
   class Numeric[Num]
   
 } 
