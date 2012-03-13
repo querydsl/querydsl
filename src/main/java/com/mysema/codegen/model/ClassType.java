@@ -28,35 +28,24 @@ public class ClassType implements Type {
 
     private final List<Type> parameters;
 
-    private final Class<?> primitiveClass;
-
     private Type arrayType, componentType;
 
     public ClassType(Class<?> javaClass, Type... parameters) {
-        this(TypeCategory.SIMPLE, javaClass, null, Arrays.asList(parameters));
+        this(TypeCategory.SIMPLE, javaClass, Arrays.asList(parameters));
     }
 
-    public ClassType(TypeCategory category, Class<?> javaClass, Class<?> primitiveClass) {
-        this(category, javaClass, primitiveClass, Collections.<Type> emptyList());
+    public ClassType(TypeCategory category, Class<?> clazz, Type... parameters) {
+        this(category, clazz, Arrays.asList(parameters));
     }
 
-    public ClassType(TypeCategory category, Class<?> javaClass, Class<?> primitiveClass,
-            List<Type> parameters) {
+    public ClassType(TypeCategory category, Class<?> clazz, List<Type> parameters) {
         this.category = category;
-        this.javaClass = javaClass;
-        this.primitiveClass = primitiveClass;
+        this.javaClass = clazz;
         this.parameters = parameters;
         this.className = ClassUtils.getFullName(javaClass);
     }
 
-    public ClassType(TypeCategory category, Class<?> javaClass, List<Type> parameters) {
-        this(category, javaClass, null, parameters);
-    }
-
-    public ClassType(TypeCategory category, Class<?> clazz, Type... parameters) {
-        this(category, clazz, null, Arrays.asList(parameters));
-    }
-
+    
     @Override
     public Type as(TypeCategory c) {
         if (category == c) {
@@ -152,10 +141,10 @@ public class ClassType implements Type {
         return parameters;
     }
 
-    @Override
-    public String getPrimitiveName() {
-        return primitiveClass != null ? primitiveClass.getName() : null;
-    }
+//    @Override
+//    public String getPrimitiveName() {
+//        return primitiveClass != null ? primitiveClass.getName() : null;
+//    }
 
     @Override
     public String getRawName(Set<String> packages, Set<String> classes) {
@@ -179,7 +168,7 @@ public class ClassType implements Type {
 
     @Override
     public boolean isPrimitive() {
-        return javaClass.isPrimitive() || primitiveClass != null;
+        return javaClass.isPrimitive();
     }
 
     @Override

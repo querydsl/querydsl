@@ -207,10 +207,13 @@ public class SimpleType implements Type {
         return parameters;
     }
 
-    @Override
-    public String getPrimitiveName() {
-        return null;
-    }
+//    @Override
+//    public String getPrimitiveName() {
+//        if (primitiveClass) {
+//            return fullName;
+//        }
+//        return null;
+//    }
 
     @Override
     public String getRawName(Set<String> packages, Set<String> classes) {

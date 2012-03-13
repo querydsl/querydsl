@@ -160,13 +160,13 @@ public class TypeTest {
         assertEquals(TypeCategory.SIMPLE, stringList2.as(TypeCategory.SIMPLE).getCategory());
     }
 
-    @Test
-    public void GetPrimitiveName() {
-        assertNull(locale.getPrimitiveName());
-        assertNull(locale2.getPrimitiveName());
-        assertNull(stringList.getPrimitiveName());
-        assertNull(stringList2.getPrimitiveName());
-    }
+//    @Test
+//    public void GetPrimitiveName() {
+//        assertNull(locale.getPrimitiveName());
+//        assertNull(locale2.getPrimitiveName());
+//        assertNull(stringList.getPrimitiveName());
+//        assertNull(stringList2.getPrimitiveName());
+//    }
 
     @Test
     public void ToString() {

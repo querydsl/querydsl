@@ -56,5 +56,14 @@ public class SimpleTypeTest {
         assertEquals(Inner.class, new ClassType(Inner.class).getJavaClass());
         assertEquals(Inner.class, new SimpleType(new ClassType(Inner.class)).getJavaClass());
     }
+    
+//    @Test
+//    public void GetPrimitiveName() {
+//        assertEquals("int", Types.INT.getPrimitiveName());
+//        assertEquals("int", new SimpleType(Types.INT).getPrimitiveName());
+//        
+//        assertEquals("int", Types.INTEGER.getPrimitiveName());
+//        assertEquals("int", new SimpleType(Types.INTEGER).getPrimitiveName());
+//    }
 
 }

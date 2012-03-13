@@ -101,13 +101,13 @@ public class ClassTypeTest {
         assertTrue(Types.SHORT_P.isPrimitive());
     }
 
-    @Test
-    public void GetPrimitiveName() {
-        assertEquals("char", Types.CHARACTER.getPrimitiveName());
-        assertEquals("double", Types.DOUBLE.getPrimitiveName());
-        assertEquals("float", Types.FLOAT.getPrimitiveName());
-        assertEquals("int", Types.INTEGER.getPrimitiveName());
-        assertEquals("long", Types.LONG.getPrimitiveName());
-        assertEquals("short", Types.SHORT.getPrimitiveName());
-    }
+//    @Test
+//    public void GetPrimitiveName() {
+//        assertEquals("char", Types.CHARACTER.getPrimitiveName());
+//        assertEquals("double", Types.DOUBLE.getPrimitiveName());
+//        assertEquals("float", Types.FLOAT.getPrimitiveName());
+//        assertEquals("int", Types.INTEGER.getPrimitiveName());
+//        assertEquals("long", Types.LONG.getPrimitiveName());
+//        assertEquals("short", Types.SHORT.getPrimitiveName());
+//    }
 }

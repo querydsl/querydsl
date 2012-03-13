@@ -77,10 +77,10 @@ public class TypeAdapter implements Type {
         return type.getParameters();
     }
 
-    @Override
-    public String getPrimitiveName() {
-        return type.getPrimitiveName();
-    }
+//    @Override
+//    public String getPrimitiveName() {
+//        return type.getPrimitiveName();
+//    }
 
     @Override
     public String getRawName(Set<String> packages, Set<String> classes) {
