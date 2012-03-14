@@ -33,8 +33,6 @@ public interface Type {
 
     List<Type> getParameters();
 
-    //String getPrimitiveName();
-
     String getRawName(Set<String> packages, Set<String> classes);
 
     String getSimpleName();

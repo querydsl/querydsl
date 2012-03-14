@@ -141,11 +141,6 @@ public class ClassType implements Type {
         return parameters;
     }
 
-//    @Override
-//    public String getPrimitiveName() {
-//        return primitiveClass != null ? primitiveClass.getName() : null;
-//    }
-
     @Override
     public String getRawName(Set<String> packages, Set<String> classes) {
         return ClassUtils.getName(javaClass, packages, classes);
