@@ -50,7 +50,7 @@ public abstract class AbstractGroupExpression<T, R> extends SimpleExpression<R> 
     
     @Override
     public boolean equals(Object o) {
-        if (getClass().equals(o.getClass())) {
+        if (o != null && getClass().equals(o.getClass())) {
             return ((GroupExpression<?,?>)o).getExpression().equals(expr);
         } else {
             return false;

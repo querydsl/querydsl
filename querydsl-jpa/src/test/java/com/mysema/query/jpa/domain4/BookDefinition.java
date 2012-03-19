@@ -13,6 +13,7 @@
  */
 package com.mysema.query.jpa.domain4;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -22,7 +23,9 @@ import javax.persistence.Embeddable;
 import javax.persistence.OrderColumn;
 
 @Embeddable
-public class BookDefinition {
+public class BookDefinition implements Serializable {
+
+    private static final long serialVersionUID = 3570098308959717614L;
 
     private String name;
 

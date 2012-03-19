@@ -35,4 +35,4 @@ object Numeric {
 /**
  * Type class for Number types
  */
-class Numeric[Num]
+class Numeric[Num] extends Serializable

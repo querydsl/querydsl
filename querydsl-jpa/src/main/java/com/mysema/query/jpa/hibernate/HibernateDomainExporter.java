@@ -68,6 +68,7 @@ import com.mysema.util.BeanUtils;
  * @author tiwe
  *
  */
+// TODO : fix encoding issues
 public class HibernateDomainExporter {
 
     private static final Logger logger = LoggerFactory.getLogger(HibernateDomainExporter.class);

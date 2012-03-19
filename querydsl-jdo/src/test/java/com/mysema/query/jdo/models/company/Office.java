@@ -117,8 +117,7 @@ public class Office {
 
         Office other = (Office) o;
         return floor == other.floor
-                && (roomName == other.roomName || (roomName != null && roomName
-                        .equals(other.roomName)));
+                && (roomName == other.roomName || (roomName != null && roomName.equals(other.roomName)));
     }
 
     public String asString() {

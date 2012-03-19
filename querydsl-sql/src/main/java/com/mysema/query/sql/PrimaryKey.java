@@ -13,6 +13,7 @@
  */
 package com.mysema.query.sql;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,7 +24,9 @@ import com.mysema.query.types.Path;
  *
  * @author tiwe
  */
-public class PrimaryKey <E> {
+public class PrimaryKey <E> implements Serializable {
+
+    private static final long serialVersionUID = -6913344535043394649L;
 
     private final RelationalPath<?> entity;
 

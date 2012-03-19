@@ -13,11 +13,15 @@
  */
 package com.mysema.query.jpa.domain4;
 
+import java.io.Serializable;
+
 import javax.persistence.Basic;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class BookMark {
+public class BookMark implements Serializable {
+
+    private static final long serialVersionUID = 8027009758015834551L;
 
     private Long page;
 

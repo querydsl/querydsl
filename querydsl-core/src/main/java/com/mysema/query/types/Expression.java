@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
  * @param <T> expression type
  *
  */
-public interface Expression<T> extends Serializable{
+public interface Expression<T> extends Serializable {
 
     /**
      * Accept the visitor with the given context

@@ -62,7 +62,8 @@ public class AnyUsageTest {
     }
     
     @Entity
-    public static class Company {
+    public static class Company implements Serializable {        
+        private static final long serialVersionUID = -5369301332567282659L;
         
         @Id
         @GeneratedValue
