@@ -28,8 +28,10 @@ public final class Domain {
     public static final List<Class<?>> classes = Arrays.<Class<?>>asList(
             Account.class,
             Animal.class,
+            Author.class,
             AuditLog.class,
             Bar.class,
+            Book.class,
             Calendar.class,
             Cat.class,
             Catalog.class,

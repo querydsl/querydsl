@@ -43,6 +43,7 @@ public class HQLTemplates extends JPQLTemplates {
     }
     
     public HQLTemplates(char escape) {
+        super(escape);
         //CHECKSTYLE:OFF
         add(CAST, "cast({0} as {1s})");
      // TODO : remove this when Hibernate supports type(alias)

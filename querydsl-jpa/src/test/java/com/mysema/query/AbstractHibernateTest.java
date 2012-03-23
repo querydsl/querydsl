@@ -20,15 +20,24 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.junit.Test;
 
 import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.Pair;
+import com.mysema.query.group.GroupBy;
+import com.mysema.query.group.QPair;
 import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPQLTemplates;
+import com.mysema.query.jpa.domain.Author;
+import com.mysema.query.jpa.domain.Book;
 import com.mysema.query.jpa.domain.Cat;
+import com.mysema.query.jpa.domain.QAuthor;
+import com.mysema.query.jpa.domain.QBook;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.query.jpa.hibernate.ScrollableResultsIterator;
@@ -85,7 +94,8 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
 
     @Test
     public void Scroll() throws IOException{
-        CloseableIterator<Cat> cats = new ScrollableResultsIterator<Cat>(query().from(QCat.cat).createQuery(QCat.cat).scroll());
+        CloseableIterator<Cat> cats = new ScrollableResultsIterator<Cat>(query().from(QCat.cat)
+                .createQuery(QCat.cat).scroll());
         assertTrue(cats.hasNext());
         while (cats.hasNext()){
             assertNotNull(cats.next());
@@ -106,5 +116,38 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
             assertNotNull(row[1]);
         }
         rows.close();
+    }
+    
+    @Test
+    public void GroupBy() {
+        QAuthor author = QAuthor.author;
+        QBook book = QBook.book;
+
+        for (int i = 0; i < 10; i++) {
+            Author a = new Author();
+            a.setName(String.valueOf(i));
+            session.save(a);
+            for (int j = 0; j < 2; j++) {
+                Book b = new Book();
+                b.setTitle(String.valueOf(i)+" "+String.valueOf(j));
+                b.setAuthor(a);
+                session.save(b);
+            }           
+        }
+        
+        Map<Long, List<Pair<Long, String>>> map = new HibernateQuery(session)
+            .from(author)
+            .join(author.books, book)
+            .transform(GroupBy
+                .groupBy(author.id)
+                .as(GroupBy.list(QPair.create(book.id, book.title))));
+
+        for (Entry<Long, List<Pair<Long, String>>> entry : map.entrySet()) {
+            System.out.println("author = " + entry.getKey());
+
+            for (Pair<Long,String> pair : entry.getValue()) {
+                System.out.println("  book = " + pair.getFirst() + "," + pair.getSecond());
+            }
+        }
     }
 }
