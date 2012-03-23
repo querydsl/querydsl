@@ -25,6 +25,7 @@ import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.NumberPath;
+import com.mysema.query.types.path.StringPath;
 
 public class JPQLSerializerTest {
         
@@ -63,6 +64,14 @@ public class JPQLSerializerTest {
     @Test
     public void In() {
         //$.parameterRelease.id.eq(releaseId).and($.parameterGroups.any().id.in(filter.getGroups()));
+    }
+    
+    @Test
+    public void Like() {
+        JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
+        serializer.handle(new StringPath("str").contains("abc!"));
+        assertEquals("str like :a1 escape '!'", serializer.toString());
+        assertEquals("%abc!!%", serializer.getConstantToLabel().keySet().iterator().next().toString());
     }
 }
  

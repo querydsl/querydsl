@@ -25,7 +25,9 @@ import org.apache.commons.collections15.Transformer;
  */
 public final class Converters {
     
-    private final String escape1, escape2;
+    private final String escape;
+    
+    private final String escape1, escape2, escape3;
     
     /**
      * Create a new Converters instance
@@ -33,8 +35,10 @@ public final class Converters {
      * @param escape escape character to be used
      */
     public Converters(char escape){
-        escape1 = escape + "%";
-        escape2 = escape + "_";
+        this.escape = String.valueOf(escape);
+        this.escape1 = escape + "%";
+        this.escape2 = escape + "_";
+        this.escape3 = escape +""+ escape;
     }
     
     public final Transformer<Expression<String>,Expression<String>> toLowerCase = 
@@ -140,8 +144,8 @@ public final class Converters {
     
     public String escapeForLike(Constant<String> expr) {
         String str = expr.getConstant();
-        if (str.contains("%") || str.contains("_")) {
-            str = str.replace("%", escape1).replace("_", escape2);
+        if (str.contains(escape) || str.contains("%") || str.contains("_")) {
+            str = str.replace(escape, escape3).replace("%", escape1).replace("_", escape2);
         }
         return str;
     }

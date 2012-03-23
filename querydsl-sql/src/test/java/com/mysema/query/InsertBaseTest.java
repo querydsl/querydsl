@@ -251,4 +251,11 @@ public abstract class InsertBaseTest extends AbstractBaseTest{
     }
     
 
+    @Test
+    public void Like() {
+        insert(survey).values(11, "Hello World", "a\\b").execute();
+        assertEquals(1l, query().from(survey).where(survey.name2.contains("a\\b")).count());
+    }
+    
+
 }
