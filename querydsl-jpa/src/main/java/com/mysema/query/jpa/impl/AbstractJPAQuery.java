@@ -40,8 +40,10 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPQLQueryBase;
 import com.mysema.query.jpa.JPQLTemplates;
+import com.mysema.query.jpa.hibernate.FactoryExpressionTransformer;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.FactoryExpressionUtils;
 
 /**
  * Abstract base class for JPA API based implementations of the JPQLQuery interface
@@ -157,34 +159,39 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
 
         // set transformer, if necessary and possible
         List<? extends Expression<?>> projection = getMetadata().getProjection();
-        if (projection.size() == 1 && !forCount) {
-            Expression<?> expr = projection.get(0);            
-            if (expr instanceof FactoryExpression<?>) {
-                String transformation = null;
-                if (hibernateQueryClass != null && hibernateQueryClass.isInstance(query)) {
-                    transformation = "com.mysema.query.jpa.impl.HibernateQueryTransformation";
+        
+        FactoryExpression<?> wrapped = projection.size() > 1 ? FactoryExpressionUtils.wrap(projection) : null;
+        
+        if (!forCount && ((projection.size() == 1 && projection.get(0) instanceof FactoryExpression) || wrapped != null)) {
+            Expression<?> expr = wrapped != null ? wrapped : projection.get(0);            
+            String transformation = null;
+            if (hibernateQueryClass != null && hibernateQueryClass.isInstance(query)) {
+                transformation = "com.mysema.query.jpa.impl.HibernateQueryTransformation";
+            }
+//            else if (query.getClass().getName().startsWith("org.eclipse.persistence")) {
+//                transformation = "com.mysema.query.jpa.impl.EclipseLinkQueryTransformation";
+//            }
+            if (transformation != null) {
+                try {
+                    Constructor<?> c = Class.forName(transformation).getConstructor(Query.class, FactoryExpression.class);
+                    c.newInstance(query, expr);
+                } catch (NoSuchMethodException e) {
+                    throw new QueryException(e);
+                } catch (ClassNotFoundException e) {
+                    throw new QueryException(e);
+                } catch (InstantiationException e) {
+                    throw new QueryException(e);
+                } catch (IllegalAccessException e) {
+                    throw new QueryException(e);
+                } catch (InvocationTargetException e) {
+                    throw new QueryException(e);
                 }
-//                else if (query.getClass().getName().startsWith("org.eclipse.persistence")) {
-//                    transformation = "com.mysema.query.jpa.impl.EclipseLinkQueryTransformation";
-//                }
-                if (transformation != null) {
-                    try {
-                        Constructor<?> c = Class.forName(transformation).getConstructor(Query.class, FactoryExpression.class);
-                        c.newInstance(query, expr);
-                    } catch (NoSuchMethodException e) {
-                        throw new QueryException(e);
-                    } catch (ClassNotFoundException e) {
-                        throw new QueryException(e);
-                    } catch (InstantiationException e) {
-                        throw new QueryException(e);
-                    } catch (IllegalAccessException e) {
-                        throw new QueryException(e);
-                    } catch (InvocationTargetException e) {
-                        throw new QueryException(e);
-                    }
-                    
-                } else {
-                    factoryExpressionUsed = true;
+                
+            } else {
+                factoryExpressionUsed = true;
+                if (wrapped != null) {
+                    getMetadata().clearProjection();
+                    getMetadata().addProjection(wrapped);
                 }
             }
         }

@@ -28,7 +28,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.Map.Entry;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -38,16 +40,22 @@ import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
 import com.mysema.commons.lang.Pair;
+import com.mysema.query.group.GroupBy;
+import com.mysema.query.group.QPair;
 import com.mysema.query.jpa.JPQLGrammar;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.JPQLSubQuery;
 import com.mysema.query.jpa.domain.Animal;
+import com.mysema.query.jpa.domain.Author;
+import com.mysema.query.jpa.domain.Book;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.DomesticCat;
 import com.mysema.query.jpa.domain.Employee;
 import com.mysema.query.jpa.domain.Foo;
 import com.mysema.query.jpa.domain.JobFunction;
 import com.mysema.query.jpa.domain.QAnimal;
+import com.mysema.query.jpa.domain.QAuthor;
+import com.mysema.query.jpa.domain.QBook;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.jpa.domain.QFoo;
@@ -56,6 +64,7 @@ import com.mysema.query.jpa.domain.QUser;
 import com.mysema.query.jpa.domain.Show;
 import com.mysema.query.jpa.domain4.QBookMark;
 import com.mysema.query.jpa.domain4.QBookVersion;
+import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.query.jpa.hibernate.HibernateSubQuery;
 import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Concatenation;
@@ -686,4 +695,36 @@ public abstract class AbstractStandardTest {
         assertTrue(strings.contains("b"));
     }
     
+    @Test
+    public void GroupBy() {
+        QAuthor author = QAuthor.author;
+        QBook book = QBook.book;
+
+        for (int i = 0; i < 10; i++) {
+            Author a = new Author();
+            a.setName(String.valueOf(i));
+            save(a);
+            for (int j = 0; j < 2; j++) {
+                Book b = new Book();
+                b.setTitle(String.valueOf(i)+" "+String.valueOf(j));
+                b.setAuthor(a);
+                save(b);
+            }           
+        }
+        
+        Map<Long, List<Pair<Long, String>>> map = query()
+            .from(author)
+            .join(author.books, book)
+            .transform(GroupBy
+                .groupBy(author.id)
+                .as(GroupBy.list(QPair.create(book.id, book.title))));
+
+        for (Entry<Long, List<Pair<Long, String>>> entry : map.entrySet()) {
+            System.out.println("author = " + entry.getKey());
+
+            for (Pair<Long,String> pair : entry.getValue()) {
+                System.out.println("  book = " + pair.getFirst() + "," + pair.getSecond());
+            }
+        }
+    }
 }

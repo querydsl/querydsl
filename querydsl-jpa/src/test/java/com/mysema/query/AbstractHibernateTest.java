@@ -118,36 +118,5 @@ public abstract class AbstractHibernateTest extends AbstractStandardTest{
         rows.close();
     }
     
-    @Test
-    public void GroupBy() {
-        QAuthor author = QAuthor.author;
-        QBook book = QBook.book;
 
-        for (int i = 0; i < 10; i++) {
-            Author a = new Author();
-            a.setName(String.valueOf(i));
-            session.save(a);
-            for (int j = 0; j < 2; j++) {
-                Book b = new Book();
-                b.setTitle(String.valueOf(i)+" "+String.valueOf(j));
-                b.setAuthor(a);
-                session.save(b);
-            }           
-        }
-        
-        Map<Long, List<Pair<Long, String>>> map = new HibernateQuery(session)
-            .from(author)
-            .join(author.books, book)
-            .transform(GroupBy
-                .groupBy(author.id)
-                .as(GroupBy.list(QPair.create(book.id, book.title))));
-
-        for (Entry<Long, List<Pair<Long, String>>> entry : map.entrySet()) {
-            System.out.println("author = " + entry.getKey());
-
-            for (Pair<Long,String> pair : entry.getValue()) {
-                System.out.println("  book = " + pair.getFirst() + "," + pair.getSecond());
-            }
-        }
-    }
 }
