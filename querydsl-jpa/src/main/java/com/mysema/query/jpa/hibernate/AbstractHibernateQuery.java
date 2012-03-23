@@ -39,8 +39,10 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPQLQueryBase;
 import com.mysema.query.jpa.JPQLTemplates;
+import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.FactoryExpressionUtils;
 import com.mysema.query.types.Path;
 
 /**
@@ -180,8 +182,12 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
             if (expr instanceof FactoryExpression<?>) {
                 query.setResultTransformer(new FactoryExpressionTransformer((FactoryExpression<?>) projection.get(0)));
             }
+        } else if (!forCount){
+            FactoryExpression<?> proj = FactoryExpressionUtils.wrap(projection);
+            if (proj != null) {
+                query.setResultTransformer(new FactoryExpressionTransformer(proj));    
+            }            
         }
-
         return query;
     }
 

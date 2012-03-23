@@ -47,7 +47,7 @@ public class GroupByBuilder<K> {
     @SuppressWarnings("unchecked")
     public <V> ResultTransformer<Map<K, V>> as(Expression<V> expression) {
         final Expression<V> lookup = (Expression<V>)
-                (expression instanceof GroupExpression ? ((GroupExpression<?,?>)expression).getExpression() : expression);
+                (expression instanceof GroupExpression ? ((GroupExpression<?,?> )expression).getExpression() : expression);
         return new GroupBy<K, V>(key, expression) {            
 
             @Override

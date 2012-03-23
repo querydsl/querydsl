@@ -38,7 +38,7 @@ public class ArrayConstructorExpression<T> extends ExpressionBase<T[]> implement
     public ArrayConstructorExpression(Expression<?>... args) {
         this((Class)Object[].class, (Expression[])args);
     }
-
+    
     @SuppressWarnings("unchecked")
     public ArrayConstructorExpression(Class<T[]> type, Expression<T>... args) {
         super(type);

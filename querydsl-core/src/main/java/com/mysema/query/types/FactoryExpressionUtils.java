@@ -56,6 +56,23 @@ public final class FactoryExpressionUtils {
         }
 
     }
+    
+    /**
+     * @param exprs
+     * @return
+     */
+    public static FactoryExpression<?> wrap(List<? extends Expression<?>> projection) {
+        boolean usesFactoryExpressions = false;
+        for (Expression<?> e : projection) {
+            usesFactoryExpressions |= e instanceof FactoryExpression;
+        }
+        if (usesFactoryExpressions) {
+            return wrap(new ArrayConstructorExpression(
+                    projection.toArray(new Expression[projection.size()])));    
+        } else {
+            return null;
+        }        
+    }
 
     public static <T> FactoryExpression<T> wrap(FactoryExpression<T> expr){
         for (Expression<?> arg : expr.getArgs()) {
@@ -108,7 +125,8 @@ public final class FactoryExpressionUtils {
                 if (expr instanceof FactoryExpression<?>) {
                     FactoryExpression<?> fe = (FactoryExpression<?>)expr;
                     int fullArgsLength = countArguments(fe);
-                    Object[] compressed = compress(fe.getArgs(), ArrayUtils.subarray(args, offset, offset + fullArgsLength));
+                    Object[] compressed = compress(fe.getArgs(), ArrayUtils
+                            .subarray(args, offset, offset + fullArgsLength));
                     rv[i] = fe.newInstance(compressed);
                     offset += fullArgsLength;
                 } else {
