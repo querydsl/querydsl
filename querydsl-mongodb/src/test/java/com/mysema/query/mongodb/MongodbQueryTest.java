@@ -37,6 +37,7 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.mongodb.domain.Address;
 import com.mysema.query.mongodb.domain.City;
 import com.mysema.query.mongodb.domain.Item;
+import com.mysema.query.mongodb.domain.QAddress;
 import com.mysema.query.mongodb.domain.QItem;
 import com.mysema.query.mongodb.domain.QUser;
 import com.mysema.query.mongodb.domain.User;
@@ -54,6 +55,7 @@ public class MongodbQueryTest {
     private final Datastore ds = morphia.createDatastore(dbname);
     private final QUser user = QUser.user;
     private final QItem item = QItem.item;
+    private final QAddress address = QAddress.address;
 
     User u1, u2, u3, u4;
     City tampere, helsinki;
@@ -122,6 +124,18 @@ public class MongodbQueryTest {
     public void CollectionPath(){
         assertEquals(1, query().where(user.addresses.any().street.eq("Aakatu1")).count());
         assertEquals(0, query().where(user.addresses.any().street.eq("akatu")).count());
+    }
+    
+    @Test
+    public void ElemMatch() {
+//      { "addresses" : { "$elemMatch" : { "street" : "Aakatu1"}}}
+        assertEquals(1, query().anyEmbedded(user.addresses, address).on(address.street.eq("Aakatu1")).count());
+//      { "addresses" : { "$elemMatch" : { "street" : "Aakatu1" , "postCode" : "00100"}}}
+        assertEquals(1, query().anyEmbedded(user.addresses, address).on(address.street.eq("Aakatu1"), address.postCode.eq("00100")).count());
+//      { "addresses" : { "$elemMatch" : { "street" : "akatu"}}}
+        assertEquals(0, query().anyEmbedded(user.addresses, address).on(address.street.eq("akatu")).count());
+//      { "addresses" : { "$elemMatch" : { "street" : "Aakatu1" , "postCode" : "00200"}}}
+        assertEquals(0, query().anyEmbedded(user.addresses, address).on(address.street.eq("Aakatu1"), address.postCode.eq("00200")).count());
     }
 
     @Test
@@ -337,7 +351,7 @@ public class MongodbQueryTest {
         assertTrue(where(item, item.ctds.in(i.getCtds())).count() > 0);
         assertTrue(where(item, item.ctds.in(Arrays.asList(ObjectId.get(), ObjectId.get()))).count() == 0);
     }
-
+    
     //TODO
     // - test dates
     // - test with empty values and nulls

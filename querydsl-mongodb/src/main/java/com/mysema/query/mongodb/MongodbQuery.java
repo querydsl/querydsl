@@ -14,6 +14,7 @@
 package com.mysema.query.mongodb;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.collections15.Transformer;
@@ -33,6 +34,7 @@ import com.mysema.query.SimpleQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 
 /**
@@ -58,7 +60,11 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProj
         this.collection = collection;
         this.serializer = serializer;
     }
-
+    
+    public <T> AnyEmbeddedBuilder<K> anyEmbedded(Path<? extends Collection<T>> collection, Path<T> target) {
+        return new AnyEmbeddedBuilder<K>(queryMixin, collection);
+    }
+    
     @Override
     public boolean exists() {
         return collection.findOne(createQuery()) != null;
