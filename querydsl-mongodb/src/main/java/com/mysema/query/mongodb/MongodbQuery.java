@@ -61,6 +61,10 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProj
         this.serializer = serializer;
     }
     
+    public <T> JoinBuilder<K,T> join(Path<T> ref, Path<T> target) {
+        return new JoinBuilder<K,T>(queryMixin, ref, target);
+    }
+    
     public <T> AnyEmbeddedBuilder<K> anyEmbedded(Path<? extends Collection<T>> collection, Path<T> target) {
         return new AnyEmbeddedBuilder<K>(queryMixin, collection);
     }
