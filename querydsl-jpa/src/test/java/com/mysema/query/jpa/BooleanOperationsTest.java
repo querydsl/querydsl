@@ -60,7 +60,7 @@ public class BooleanOperationsTest extends AbstractQueryTest {
     
     @Test
     public void LogicalOperations_And2() {
-        assertToString("cat is null and (kitten is null or kitten.bodyWeight > :a1)",
+        assertToString("cat is null and (kitten is null or kitten.bodyWeight > ?1)",
                 cat.isNull().and(kitten.isNull().or(kitten.bodyWeight.gt(10))));
     }
 

@@ -41,7 +41,7 @@ public final class JPAUtil {
                     throw new ParamNotSetException((Param<?>) entry.getKey());
                 }
             }
-            query.setParameter(key, val);
+            query.setParameter(Integer.valueOf(key), val);
         }
     }
 

@@ -102,13 +102,13 @@ public class SubQueryTest extends AbstractQueryTest{
     
     @Test
     public void Exists_Where(){
-        assertToString("exists (select 1 from Cat cat where cat.weight < :a1)", 
+        assertToString("exists (select 1 from Cat cat where cat.weight < ?1)", 
                 sub().from(cat).where(cat.weight.lt(1)).exists());
     }
     
     @Test
     public void Exists_Via_Unique(){
-        assertToString("exists (select 1 from Cat cat where cat.weight < :a1)", 
+        assertToString("exists (select 1 from Cat cat where cat.weight < ?1)", 
                 sub().from(cat).where(cat.weight.lt(1)).unique(cat).exists());
     }
     
@@ -120,13 +120,13 @@ public class SubQueryTest extends AbstractQueryTest{
     
     @Test
     public void NotExists_Where(){
-        assertToString("not exists (select 1 from Cat cat where cat.weight < :a1)",
+        assertToString("not exists (select 1 from Cat cat where cat.weight < ?1)",
                 sub().from(cat).where(cat.weight.lt(1)).notExists());    
     }
     
     @Test
     public void NotExists_Via_Unique(){
-        assertToString("not exists (select 1 from Cat cat where cat.weight < :a1)", 
+        assertToString("not exists (select 1 from Cat cat where cat.weight < ?1)", 
                 sub().from(cat).where(cat.weight.lt(1)).unique(cat).notExists());   
     }
 
@@ -166,7 +166,7 @@ public class SubQueryTest extends AbstractQueryTest{
     public void Indexed_Access(){
         assertToString("(select count(cat) from Cat cat   " +
         		"left join cat.kittens as cat_kittens_0 " +
-        		"where index(cat_kittens_0) = :a1 and cat_kittens_0.name = :a2)", 
+        		"where index(cat_kittens_0) = ?1 and cat_kittens_0.name = ?2)", 
         		                                                          
         		sub().from(cat).where(cat.kittens.get(0).name.eq("Kate")).count());
     }
@@ -175,7 +175,7 @@ public class SubQueryTest extends AbstractQueryTest{
     public void Indexed_Access_Without_Constant(){
         assertToString("(select count(cat) from Cat cat   " +
                         "left join cat.kittens as cat_kittens_cat_id " +
-                        "where index(cat_kittens_cat_id) = cat.id and cat_kittens_cat_id.name = :a1)", 
+                        "where index(cat_kittens_cat_id) = cat.id and cat_kittens_cat_id.name = ?1)", 
                                                                                   
                         sub().from(cat).where(cat.kittens.get(cat.id).name.eq("Kate")).count());
     }

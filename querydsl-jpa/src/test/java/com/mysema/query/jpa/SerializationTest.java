@@ -73,7 +73,7 @@ public class SerializationTest {
         
         // create new query
         JPAQuery query2 = new JPAQuery(entityManager, metadata2);
-        assertEquals("from Cat cat\nwhere cat.name = :a1", query2.toString());
+        assertEquals("from Cat cat\nwhere cat.name = ?1", query2.toString());
         query2.list(cat);        
     }
 

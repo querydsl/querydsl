@@ -70,7 +70,7 @@ public class JPQLSerializerTest {
     public void Like() {
         JPQLSerializer serializer = new JPQLSerializer(HQLTemplates.DEFAULT);
         serializer.handle(new StringPath("str").contains("abc!"));
-        assertEquals("str like :a1 escape '!'", serializer.toString());
+        assertEquals("str like ?1 escape '!'", serializer.toString());
         assertEquals("%abc!!%", serializer.getConstantToLabel().keySet().iterator().next().toString());
     }
 }

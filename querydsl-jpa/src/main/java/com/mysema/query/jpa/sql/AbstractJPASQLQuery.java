@@ -58,6 +58,7 @@ import com.mysema.query.types.query.ListSubQuery;
 public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com.mysema.query.Query> extends AbstractSQLQuery<Q> {
     
     private static final Logger logger = LoggerFactory.getLogger(AbstractJPASQLQuery.class);
+    
     @Nullable
     private Map<Object,String> constants;
 

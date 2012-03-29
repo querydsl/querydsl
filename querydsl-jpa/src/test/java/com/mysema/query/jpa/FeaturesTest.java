@@ -68,7 +68,7 @@ public class FeaturesTest extends AbstractQueryTest {
     public void ArgumentHandling() {
         // Kitty is reused, so it should be used via one named parameter
         assertToString(
-                "cat.name = :a1 or cust.name.firstName = :a2 or kitten.name = :a1",
+                "cat.name = ?1 or cust.name.firstName = ?2 or kitten.name = ?1",
                 cat.name.eq("Kitty").or(cust.name.firstName.eq("Hans")).or(kitten.name.eq("Kitty")));
     }
 
@@ -129,14 +129,14 @@ public class FeaturesTest extends AbstractQueryTest {
         assertToString("cat.name", cat.name);
 
         assertToString("cust.name", cust.name);
-        assertToString("cust.name.firstName = :a1", cust.name.firstName.eq("Martin"));
+        assertToString("cust.name.firstName = ?1", cust.name.firstName.eq("Martin"));
 
         // toString("cat.kittens as kitten", cat.kittens.as(kitten));
 
-        assertToString("cat.bodyWeight + :a1", cat.bodyWeight.add(10));
-        assertToString("cat.bodyWeight - :a1", cat.bodyWeight.subtract(10));
-        assertToString("cat.bodyWeight * :a1", cat.bodyWeight.multiply(10));
-        assertToString("cat.bodyWeight / :a1", cat.bodyWeight.divide(10));
+        assertToString("cat.bodyWeight + ?1", cat.bodyWeight.add(10));
+        assertToString("cat.bodyWeight - ?1", cat.bodyWeight.subtract(10));
+        assertToString("cat.bodyWeight * ?1", cat.bodyWeight.multiply(10));
+        assertToString("cat.bodyWeight / ?1", cat.bodyWeight.divide(10));
 
         // toString("cat.bodyWeight as bw", cat.bodyWeight.as("bw"));
 

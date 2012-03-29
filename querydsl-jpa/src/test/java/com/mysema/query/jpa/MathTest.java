@@ -28,64 +28,64 @@ public class MathTest extends AbstractQueryTest{
 
     @Test
     public void Add() {
-        assertToString("cat.bodyWeight + :a1", cat.bodyWeight.add(10));
+        assertToString("cat.bodyWeight + ?1", cat.bodyWeight.add(10));
     }
     
     @Test
     public void Subtract() {
-        assertToString("cat.bodyWeight - :a1", cat.bodyWeight.subtract(10));
+        assertToString("cat.bodyWeight - ?1", cat.bodyWeight.subtract(10));
     }
     
     @Test
     public void Multiply() {
-        assertToString("cat.bodyWeight * :a1", cat.bodyWeight.multiply(10));
+        assertToString("cat.bodyWeight * ?1", cat.bodyWeight.multiply(10));
     }
     
     @Test
     public void Divide() {
-        assertToString("cat.bodyWeight / :a1", cat.bodyWeight.divide(10));   
+        assertToString("cat.bodyWeight / ?1", cat.bodyWeight.divide(10));   
     }
         
     @Test
     public void Add_And_Compare() {
-        assertToString("cat.bodyWeight + :a1 < :a1", cat.bodyWeight.add(10.0).lt(10.0));
+        assertToString("cat.bodyWeight + ?1 < ?1", cat.bodyWeight.add(10.0).lt(10.0));
     }
     
     @Test
     public void Subtract_And_Compare() {
-        assertToString("cat.bodyWeight - :a1 < :a1", cat.bodyWeight.subtract(10.0).lt(10.0));    
+        assertToString("cat.bodyWeight - ?1 < ?1", cat.bodyWeight.subtract(10.0).lt(10.0));    
     }
     
     @Test
     public void Multiply_And_Compare() {
-        assertToString("cat.bodyWeight * :a1 < :a1", cat.bodyWeight.multiply(10.0).lt(10.0));   
+        assertToString("cat.bodyWeight * ?1 < ?1", cat.bodyWeight.multiply(10.0).lt(10.0));   
     }
     
     @Test
     public void Divide_And_Compare() {
-        assertToString("cat.bodyWeight / :a1 < :a2", cat.bodyWeight.divide(10.0).lt(20.0));
+        assertToString("cat.bodyWeight / ?1 < ?2", cat.bodyWeight.divide(10.0).lt(20.0));
     }
     
     @Test
     public void Add_And_Multiply() {
-        assertToString("(cat.bodyWeight + :a1) * :a2", cat.bodyWeight.add(10).multiply(20));
+        assertToString("(cat.bodyWeight + ?1) * ?2", cat.bodyWeight.add(10).multiply(20));
     }
     
     @Test
     public void Subtract_And_Multiply() {
-        assertToString("(cat.bodyWeight - :a1) * :a2", cat.bodyWeight.subtract(10).multiply(20));
+        assertToString("(cat.bodyWeight - ?1) * ?2", cat.bodyWeight.subtract(10).multiply(20));
     }
     
     
     @Test
     public void Multiply_And_Add() {
-        assertToString("cat.bodyWeight * :a1 + :a2", cat.bodyWeight.multiply(10).add(20));
+        assertToString("cat.bodyWeight * ?1 + ?2", cat.bodyWeight.multiply(10).add(20));
     }
     
     
     @Test
     public void Multiply_And_Subtract() {
-        assertToString("cat.bodyWeight * :a1 - :a2", cat.bodyWeight.multiply(10).subtract(20));
+        assertToString("cat.bodyWeight * ?1 - ?2", cat.bodyWeight.multiply(10).subtract(20));
     }
     
     

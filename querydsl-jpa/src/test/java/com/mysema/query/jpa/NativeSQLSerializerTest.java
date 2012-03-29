@@ -36,7 +36,7 @@ public class NativeSQLSerializerTest {
         md.addWhere(cat.name.in("X", "Y"));
         md.addProjection(cat.id);
         serializer.serialize(md, false);
-        assertEquals("cat.*.id in :a1", serializer.toString());        
+        assertEquals("cat.*.id in ?1", serializer.toString());        
     }
 
 }

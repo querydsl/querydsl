@@ -352,6 +352,12 @@ public class MongodbQueryTest {
         assertTrue(where(item, item.ctds.in(Arrays.asList(ObjectId.get(), ObjectId.get()))).count() == 0);
     }
     
+    @Test
+    public void Join() {
+        User friend = new User();
+        friend.setFirstName("Max");
+    }
+    
     //TODO
     // - test dates
     // - test with empty values and nulls

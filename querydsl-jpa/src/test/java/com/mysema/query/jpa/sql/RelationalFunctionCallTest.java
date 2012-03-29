@@ -59,7 +59,7 @@ public class RelationalFunctionCallTest {
         serializer.serialize(expr.getMetadata(), false);
         assertEquals("select SURVEY.NAME\n" +
                 "from SURVEY SURVEY\n" +
-                "join TableValuedFunction(:a1) as tokFunc\n" +
+                "join TableValuedFunction(?1) as tokFunc\n" +
                 "on not SURVEY.NAME like tokFunc.prop escape '\\'", serializer.toString());
 
     }

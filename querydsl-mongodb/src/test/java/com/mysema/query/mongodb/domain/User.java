@@ -48,6 +48,9 @@ public class User {
     @Reference
     private final List<User> friends = new ArrayList<User>();
     
+    @Reference
+    private User friend;
+    
     private int age;
     
     public User() {
@@ -149,6 +152,14 @@ public class User {
 
     public void setGender(Gender gender) {
         this.gender = gender;
+    }
+    
+    public User getFriend() {
+        return friend;
+    }
+    
+    public void setFriend(User friend) {
+        this.friend = friend;
     }
 
     @Override

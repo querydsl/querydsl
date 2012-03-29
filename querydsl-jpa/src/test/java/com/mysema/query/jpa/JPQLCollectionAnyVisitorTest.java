@@ -44,7 +44,7 @@ public class JPQLCollectionAnyVisitorTest {
         Predicate predicate = cat.kittens.any().name.eq("Ruth123");        
         assertEquals("exists (select 1\n" +
         	"from Cat cat_kittens\n" +
-        	"where cat_kittens in elements(cat.kittens) and cat_kittens.name = :a1)", serialize(predicate));
+        	"where cat_kittens in elements(cat.kittens) and cat_kittens.name = ?1)", serialize(predicate));
     }
     
     @Test
@@ -52,7 +52,7 @@ public class JPQLCollectionAnyVisitorTest {
         Predicate predicate = cat.kittens.any().name.substring(1).eq("uth123");        
         assertEquals("exists (select 1\n" +
         	"from Cat cat_kittens\n" +
-        	"where cat_kittens in elements(cat.kittens) and substring(cat_kittens.name,2) = :a1)", serialize(predicate));
+        	"where cat_kittens in elements(cat.kittens) and substring(cat_kittens.name,2) = ?1)", serialize(predicate));
     }
     
     @Test
@@ -61,9 +61,9 @@ public class JPQLCollectionAnyVisitorTest {
         Predicate predicate = cat.kittens.any().name.eq("Ruth123").and(cat.kittens.any().bodyWeight.gt(10.0));
         assertEquals("exists (select 1\n" +
                 "from Cat cat_kittens\n" +
-                "where cat_kittens in elements(cat.kittens) and cat_kittens.name = :a1) and exists (select 1\n" +
+                "where cat_kittens in elements(cat.kittens) and cat_kittens.name = ?1) and exists (select 1\n" +
                 "from Cat cat_kittens\n" +
-                "where cat_kittens in elements(cat.kittens) and cat_kittens.bodyWeight > :a2)", serialize(predicate));
+                "where cat_kittens in elements(cat.kittens) and cat_kittens.bodyWeight > ?2)", serialize(predicate));
     }
     
     @Test
@@ -72,7 +72,7 @@ public class JPQLCollectionAnyVisitorTest {
                 cat.kittens.any().name, ConstantImpl.create("Ruth123"));
         assertEquals("exists (select 1\n" +
                 "from Cat cat_kittens\n" +
-                "where cat_kittens in elements(cat.kittens) and cat_kittens.name = :a1)", serialize(templateExpr));
+                "where cat_kittens in elements(cat.kittens) and cat_kittens.name = ?1)", serialize(templateExpr));
     }
     
     private String serialize(Expression<?> expression){

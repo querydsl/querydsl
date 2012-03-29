@@ -241,9 +241,9 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         if (wrap) {
              append("(");
         }
-        append(":");
+        append("?");
         if (!getConstantToLabel().containsKey(expr.getConstant())) {
-            String constLabel = getConstantPrefix() + (getConstantToLabel().size()+1);
+            String constLabel = String.valueOf(getConstantToLabel().size()+1);
             getConstantToLabel().put(expr.getConstant(), constLabel);
             append(constLabel);
         } else {
@@ -257,8 +257,14 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     @Override
     public Void visit(ParamExpression<?> param, Void context) {
-        append(":");
-        super.visit(param, context);
+        append("?");
+        if (!getConstantToLabel().containsKey(param)) {
+            String paramLabel = String.valueOf(getConstantToLabel().size()+1);
+            getConstantToLabel().put(param, paramLabel);
+            append(paramLabel);    
+        } else {
+            append(getConstantToLabel().get(param));
+        }        
         return null;
     }
 

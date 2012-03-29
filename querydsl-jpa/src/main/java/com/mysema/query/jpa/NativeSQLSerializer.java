@@ -60,11 +60,11 @@ public final class NativeSQLSerializer extends SQLSerializer{
 
     private void visitConstant(Object constant) {
         if (!getConstantToLabel().containsKey(constant)) {
-            String constLabel = getConstantPrefix() + (getConstantToLabel().size() + 1);
+            String constLabel = String.valueOf(getConstantToLabel().size() + 1);
             getConstantToLabel().put(constant, constLabel);
-            append(":"+constLabel);
+            append("?"+constLabel);
         } else {
-            append(":"+getConstantToLabel().get(constant));
+            append("?"+getConstantToLabel().get(constant));
         }
     }
     

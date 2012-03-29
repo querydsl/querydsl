@@ -23,16 +23,16 @@ public class MapTest  extends AbstractQueryTest{
     
     @Test
     public void Contains(){
-        assertToString("show.acts[:a1] = :a2", show.acts.contains("x", "y"));
+        assertToString("show.acts[?1] = ?2", show.acts.contains("x", "y"));
     }
     
     @Test
     public void Contains_Key(){
-        assertToString(":a1 in indices(show.acts)", show.acts.containsKey("x"));
+        assertToString("?1 in indices(show.acts)", show.acts.containsKey("x"));
     }
     
     @Test
     public void Contains_Value(){
-        assertToString(":a1 in elements(show.acts)", show.acts.containsValue("y"));
+        assertToString("?1 in elements(show.acts)", show.acts.containsValue("y"));
     }
 }

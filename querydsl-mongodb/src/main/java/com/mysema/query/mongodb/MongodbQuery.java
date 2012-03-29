@@ -62,6 +62,7 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProj
     }
     
     public <T> JoinBuilder<K,T> join(Path<T> ref, Path<T> target) {
+        
         return new JoinBuilder<K,T>(queryMixin, ref, target);
     }
     

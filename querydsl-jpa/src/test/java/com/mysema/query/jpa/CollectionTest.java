@@ -21,12 +21,12 @@ public class CollectionTest extends AbstractQueryTest{
 
     @Test
     public void Constant_InElements_Set(){
-        assertToString(":a1 in elements(cat.kittensSet)", cat.kittensSet.contains(new Cat()));
+        assertToString("?1 in elements(cat.kittensSet)", cat.kittensSet.contains(new Cat()));
     }
     
     @Test
     public void Constant_InElements_List(){
-        assertToString(":a1 in elements(cat.kittens)", cat.kittens.contains(new Cat()));
+        assertToString("?1 in elements(cat.kittens)", cat.kittens.contains(new Cat()));
     }
 
     @Test
