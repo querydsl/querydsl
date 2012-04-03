@@ -19,6 +19,7 @@ import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
 import com.google.code.morphia.mapping.cache.DefaultEntityCache;
 import com.google.code.morphia.mapping.cache.EntityCache;
+import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mysema.query.mongodb.MongodbQuery;
@@ -34,6 +35,8 @@ import com.mysema.query.types.EntityPath;
 public class MorphiaQuery<K> extends MongodbQuery<K> {
 
     private final EntityCache cache;
+    
+    private final Datastore datastore;
 
     public MorphiaQuery(Morphia morphia, Datastore datastore, EntityPath<K> entityPath) {
         this(morphia, datastore, new DefaultEntityCache(), entityPath);
@@ -47,6 +50,7 @@ public class MorphiaQuery<K> extends MongodbQuery<K> {
                 return morphia.fromDBObject(entityPath.getType(), dbObject, cache);
             }
         }, MorphiaSerializer.DEFAULT);
+        this.datastore = datastore;
         this.cache = cache;
     }
 
@@ -54,6 +58,11 @@ public class MorphiaQuery<K> extends MongodbQuery<K> {
     protected DBCursor createCursor() {
         cache.flush();
         return super.createCursor();
+    }
+
+    @Override
+    protected DBCollection getCollection(Class<?> type) {
+        return datastore.getCollection(type);
     }
 
 }

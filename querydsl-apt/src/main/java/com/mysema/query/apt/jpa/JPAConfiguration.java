@@ -22,6 +22,8 @@ import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
@@ -31,6 +33,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
@@ -65,11 +68,20 @@ public class JPAConfiguration extends DefaultConfiguration {
     protected List<Class<? extends Annotation>> getAnnotations() {
         return Arrays.asList(Column.class, Embedded.class, EmbeddedId.class, GeneratedValue.class,
             Id.class, Version.class, JoinColumn.class, ManyToOne.class, OneToMany.class,
-            PrimaryKeyJoinColumn.class, QueryType.class, QueryTransient.class, Transient.class);
+            PrimaryKeyJoinColumn.class, QueryType.class, QueryTransient.class, Temporal.class,
+            Transient.class);
     }
 
     @Override
     public VisitorConfig getConfig(TypeElement e, List<? extends Element> elements){
+        Access access = e.getAnnotation(Access.class);
+        if (access != null) {
+            if (access.value() == AccessType.FIELD) {
+                return VisitorConfig.FIELDS_ONLY;
+            } else {
+                return VisitorConfig.METHODS_ONLY;
+            }
+        }
         boolean fields = false, methods = false;
         for (Element element : elements) {
             if (hasRelevantAnnotation(element)) {

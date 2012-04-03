@@ -30,6 +30,8 @@ public final class QueryModifiers implements Serializable{
 
     private static final long serialVersionUID = 2934344588433680339L;
 
+    public static final QueryModifiers EMPTY = new QueryModifiers();
+    
     public static QueryModifiers limit(@Nonnegative long limit) {
         return new QueryModifiers(Long.valueOf(limit), null);
     }
@@ -41,7 +43,7 @@ public final class QueryModifiers implements Serializable{
     @Nullable
     private final Long limit, offset;
 
-    public QueryModifiers() {
+    private QueryModifiers() {
         limit = null;
         offset = null;
     }

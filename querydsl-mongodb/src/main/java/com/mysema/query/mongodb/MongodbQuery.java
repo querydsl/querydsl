@@ -15,7 +15,10 @@ package com.mysema.query.mongodb;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import org.apache.commons.collections15.Transformer;
 
@@ -25,6 +28,7 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.JoinExpression;
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
@@ -32,6 +36,8 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.SimpleProjectable;
 import com.mysema.query.SimpleQuery;
 import com.mysema.query.support.QueryMixin;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.Operation;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Path;
@@ -44,8 +50,8 @@ import com.mysema.query.types.Predicate;
  *
  * @param <K>
  */
-public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProjectable<K> {
-
+public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProjectable<K> {
+    
     private final MongodbSerializer serializer;
 
     private final QueryMixin<MongodbQuery<K>> queryMixin;
@@ -61,8 +67,7 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProj
         this.serializer = serializer;
     }
     
-    public <T> JoinBuilder<K,T> join(Path<T> ref, Path<T> target) {
-        
+    public <T> JoinBuilder<K,T> join(Path<T> ref, Path<T> target) {        
         return new JoinBuilder<K,T>(queryMixin, ref, target);
     }
     
@@ -70,14 +75,40 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProj
         return new AnyEmbeddedBuilder<K>(queryMixin, collection);
     }
     
+    protected abstract DBCollection getCollection(Class<?> type);
+    
     @Override
     public boolean exists() {
-        return collection.findOne(createQuery()) != null;
+        QueryMetadata metadata = queryMixin.getMetadata();        
+        if (!metadata.getJoins().isEmpty()) {
+            Predicate extraFilter = null;
+            List<JoinExpression> joins = metadata.getJoins();
+            for (int i = joins.size() - 1; i >= 0; i--) {
+                JoinExpression join = joins.get(i);
+                Expression<?> source = ((Operation<?>)join.getTarget()).getArg(0);
+                Class<?> target = ((Operation<?>)join.getTarget()).getArg(1).getType();
+                List<DBObject> ids = getIds(target, join.getCondition());
+            }
+        } else {
+            return collection.findOne(createQuery(metadata.getWhere())) != null;    
+        }        
     }
+    
+    protected List<DBObject> getIds(Class<?> target, Predicate condition) {
+        DBCollection collection = getCollection(target);
+        DBCursor cursor = createCursor(condition, QueryModifiers.EMPTY, Collections.<OrderSpecifier<?>>emptyList());
+        if (cursor.hasNext()) {
+            
+        } else {
+            return Collections.emptyList();
+        }
+    }
+    
+
 
     @Override
     public boolean notExists() {
-        return collection.findOne(createQuery()) == null;
+        return !exists();
     }
 
     @Override
@@ -153,20 +184,23 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProj
         }
         return results;
     }
-
+    
     protected DBCursor createCursor() {
         QueryMetadata metadata = queryMixin.getMetadata();
-        QueryModifiers modifiers = metadata.getModifiers();
+        return createCursor(metadata.getWhere(), metadata.getModifiers(), metadata.getOrderBy());
+    }
 
-        DBCursor cursor = collection.find(createQuery());
+    protected DBCursor createCursor(@Nullable Predicate where, QueryModifiers modifiers,
+            List<OrderSpecifier<?>> orderBy) {
+        DBCursor cursor = collection.find(createQuery(where));
         if (modifiers.getLimit() != null){
             cursor.limit(modifiers.getLimit().intValue());
         }
         if (modifiers.getOffset() != null){
             cursor.skip(modifiers.getOffset().intValue());
         }
-        if (metadata.getOrderBy().size() > 0) {
-            cursor.sort(serializer.toSort(metadata.getOrderBy()));
+        if (orderBy.size() > 0) {
+            cursor.sort(serializer.toSort(orderBy));
         }
         return cursor;
     }
@@ -221,7 +255,7 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProj
 
     @Override
     public long count() {
-        return collection.count(createQuery());
+        return collection.count(createQuery(queryMixin.getMetadata().getWhere()));
     }
 
     @Override
@@ -229,19 +263,17 @@ public class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProj
         return count();
     }
 
-    private DBObject createQuery() {
-        QueryMetadata metadata = queryMixin.getMetadata();
-        if (metadata.getWhere() != null){
-            return (DBObject) serializer.handle(metadata.getWhere());
+    private DBObject createQuery(@Nullable Predicate predicate) {
+        if (predicate != null){
+            return (DBObject) serializer.handle(predicate);
         } else {
             return new BasicDBObject();
         }
-
     }
 
     @Override
     public String toString() {
-        return createQuery().toString();
+        return createQuery(queryMixin.getMetadata().getWhere()).toString();
     }
 
 }

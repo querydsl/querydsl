@@ -54,7 +54,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     private List<JoinExpression> joins = new ArrayList<JoinExpression>();
 
     @Nullable
-    private QueryModifiers modifiers = new QueryModifiers();
+    private QueryModifiers modifiers = QueryModifiers.EMPTY;
 
     private List<OrderSpecifier<?>> orderBy = new ArrayList<OrderSpecifier<?>>();
 
@@ -244,7 +244,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     public void reset() {
         clearProjection();
         params = new HashMap<ParamExpression<?>,Object>();
-        modifiers = new QueryModifiers();
+        modifiers = QueryModifiers.EMPTY;
     }
 
     @Override

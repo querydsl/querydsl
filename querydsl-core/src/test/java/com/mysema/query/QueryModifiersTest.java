@@ -63,7 +63,7 @@ public class QueryModifiersTest {
         QueryModifiers modifiers2 = new QueryModifiers(1l, null);
         QueryModifiers modifiers3 = new QueryModifiers(null, 1l);
 
-        assertEquals(modifiers1.hashCode(), new QueryModifiers().hashCode());
+        assertEquals(modifiers1.hashCode(), QueryModifiers.EMPTY.hashCode());
         assertEquals(modifiers2.hashCode(), QueryModifiers.limit(1l).hashCode());
         assertEquals(modifiers3.hashCode(), QueryModifiers.offset(1l).hashCode());
     }
