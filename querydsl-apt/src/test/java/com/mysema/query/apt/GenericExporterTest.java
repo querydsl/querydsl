@@ -77,6 +77,8 @@ public class GenericExporterTest extends AbstractProcessorTest{
         // GenericExporter doesn't include field/method selection
         expected.add("QFileAttachment.java");
         
+        expected.add("QJodaTest_BaseEntity.java");
+        
         // FIXME
         expected.add("QEntityInheritanceTest_TestEntity.java");
         

@@ -1,5 +1,7 @@
 package com.mysema.query.domain;
 
+import static org.junit.Assert.*;
+
 import java.util.Date;
 
 import javax.persistence.Access;
@@ -37,6 +39,6 @@ public class JodaTest {
     
     @Test
     public void test() {
-        // TODO
+        assertEquals(Date.class, QJodaTest_BaseEntity.baseEntity.createdDate.getType());
     }
 }
