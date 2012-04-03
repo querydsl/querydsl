@@ -31,6 +31,7 @@
         <groupId>com.google.code.morphia</groupId>
         <artifactId>morphia</artifactId>
         <version>${morphia.version}</version>
+        <optional>true</optional>
     </dependency>
     <!-- Optional Jars (for certain features) but required by maven for bulding. -->
     <dependency>
