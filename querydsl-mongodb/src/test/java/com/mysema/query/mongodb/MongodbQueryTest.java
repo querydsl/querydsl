@@ -16,9 +16,11 @@ package com.mysema.query.mongodb;
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,6 +34,8 @@ import org.junit.Test;
 
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
+import com.mongodb.Mongo;
+import com.mongodb.MongoException;
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.SearchResults;
 import com.mysema.query.mongodb.domain.Address;
@@ -50,9 +54,11 @@ import com.mysema.query.types.path.StringPath;
 
 public class MongodbQueryTest {
 
+    private final Mongo mongo;
+    private final Morphia morphia;
+    private final Datastore ds; 
+    
     private final String dbname = "testdb";
-    private final Morphia morphia = new Morphia().map(User.class).map(Item.class);
-    private final Datastore ds = morphia.createDatastore(dbname);
     private final QUser user = QUser.user;
     private final QItem item = QItem.item;
     private final QAddress address = QAddress.address;
@@ -60,8 +66,15 @@ public class MongodbQueryTest {
     User u1, u2, u3, u4;
     City tampere, helsinki;
 
+    public MongodbQueryTest() throws UnknownHostException, MongoException {
+        mongo = new Mongo();
+        morphia = new Morphia().map(User.class).map(Item.class);
+        ds = morphia.createDatastore(mongo, dbname, null, null);
+    }    
+    
     @Before
-    public void before() {
+    public void before() throws UnknownHostException, MongoException {
+        ds.delete(ds.createQuery(Item.class));
         ds.delete(ds.createQuery(User.class));
 
         tampere = new City("Tampere", 61.30, 23.50);
@@ -354,10 +367,43 @@ public class MongodbQueryTest {
     
     @Test
     public void Join() {
-        User friend = new User();
-        friend.setFirstName("Max");
+        User friend1 = new User("Max", null);
+        User friend2 = new User("Jack", null);
+        User friend3 = new User("Bob", null);
+        ds.save(friend1, friend2, friend3);
+        
+        User user1 = new User("Jane", null, friend1);
+        User user2 = new User("Mary", null, user1);
+        User user3 = new User("Ann", null, friend3);
+        ds.save(user1, user2, user3);
+        
+        QUser friend = new QUser("friend");
+        
+        // count
+        assertEquals(1, where().join(user.friend(), friend).on(friend.firstName.eq("Max")).count());
+        assertEquals(1, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).count());
+        assertEquals(0, where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).count());
+        assertEquals(0, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).count());
+        
+        // exists
+        assertTrue(where().join(user.friend(), friend).on(friend.firstName.eq("Max")).exists());
+        assertTrue(where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).exists());
+        assertFalse(where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).exists());
+        assertFalse(where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).exists());
+        
+        // list
+        assertEquals(1, where().join(user.friend(), friend).on(friend.firstName.eq("Max")).list().size());
+        assertEquals(1, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).list().size());
+        assertEquals(0, where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).list().size());
+        assertEquals(0, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).list().size());
+        
+        // single
+        assertEquals("Jane", where().join(user.friend(), friend).on(friend.firstName.eq("Max")).singleResult().getFirstName());
+        assertEquals("Jane", where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).singleResult().getFirstName());
+        assertNull(where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).singleResult());
+        assertNull(where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).singleResult());
     }
-    
+        
     //TODO
     // - test dates
     // - test with empty values and nulls

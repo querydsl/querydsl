@@ -37,10 +37,12 @@ import com.mysema.query.SimpleProjectable;
 import com.mysema.query.SimpleQuery;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Predicate;
 
 /**
@@ -51,6 +53,9 @@ import com.mysema.query.types.Predicate;
  * @param <K>
  */
 public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, SimpleProjectable<K> {
+    
+    @SuppressWarnings("serial")
+    private static class NoResults extends RuntimeException {}
     
     private final MongodbSerializer serializer;
 
@@ -78,34 +83,61 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     protected abstract DBCollection getCollection(Class<?> type);
     
     @Override
-    public boolean exists() {
-        QueryMetadata metadata = queryMixin.getMetadata();        
-        if (!metadata.getJoins().isEmpty()) {
-            Predicate extraFilter = null;
-            List<JoinExpression> joins = metadata.getJoins();
-            for (int i = joins.size() - 1; i >= 0; i--) {
-                JoinExpression join = joins.get(i);
-                Expression<?> source = ((Operation<?>)join.getTarget()).getArg(0);
-                Class<?> target = ((Operation<?>)join.getTarget()).getArg(1).getType();
-                List<DBObject> ids = getIds(target, join.getCondition());
-            }
-        } else {
-            return collection.findOne(createQuery(metadata.getWhere())) != null;    
+    public boolean exists() {        
+        try {
+            QueryMetadata metadata = queryMixin.getMetadata();
+            Predicate filter = createFilter(metadata);
+            return collection.findOne(createQuery(filter)) != null;
+        } catch (NoResults ex) {
+            return false;
         }        
     }
     
-    protected List<DBObject> getIds(Class<?> target, Predicate condition) {
+    @Nullable
+    protected Predicate createFilter(QueryMetadata metadata) {        
+        Predicate filter;
+        if (!metadata.getJoins().isEmpty()) {
+            filter = ExpressionUtils.allOf(metadata.getWhere(), createJoinFilter(metadata));
+        } else {
+            filter = metadata.getWhere();
+        }   
+        return filter;
+    }
+    
+    @Nullable
+    protected Predicate createJoinFilter(QueryMetadata metadata) {
+        Predicate extraFilter = null;
+        List<JoinExpression> joins = metadata.getJoins();
+        for (int i = joins.size() - 1; i >= 0; i--) {
+            JoinExpression join = joins.get(i);
+            Expression<?> source = ((Operation<?>)join.getTarget()).getArg(0);
+            Class<?> target = ((Operation<?>)join.getTarget()).getArg(1).getType();
+            Predicate filter = ExpressionUtils.allOf(join.getCondition(), extraFilter);
+            List<Object> ids = getIds(target, filter);
+            if (ids.isEmpty()) {
+                throw new NoResults();
+            }
+            Path path = new PathImpl<String>(String.class, (Path)source, "$id");
+            extraFilter = ExpressionUtils.in(path, ids);
+        }
+        return extraFilter;
+    }
+    
+    protected List<Object> getIds(Class<?> target, Predicate condition) {
         DBCollection collection = getCollection(target);
-        DBCursor cursor = createCursor(condition, QueryModifiers.EMPTY, Collections.<OrderSpecifier<?>>emptyList());
+        // TODO : fetch only ids
+        DBCursor cursor = createCursor(collection, condition, QueryModifiers.EMPTY, Collections.<OrderSpecifier<?>>emptyList());
         if (cursor.hasNext()) {
-            
+            List<Object> ids = new ArrayList<Object>(cursor.count());
+            for (DBObject obj : cursor) {
+                ids.add(obj.containsField("id") ? obj.get("id") : obj.get("_id"));
+            }
+            return ids;
         } else {
             return Collections.emptyList();
         }
     }
     
-
-
     @Override
     public boolean notExists() {
         return !exists();
@@ -177,20 +209,25 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
 
     @Override
     public List<K> list() {
-        DBCursor cursor = createCursor();
-        List<K> results = new ArrayList<K>(cursor.size());
-        for (DBObject dbObject : cursor) {
-            results.add(transformer.transform(dbObject));
-        }
-        return results;
+        try {
+            DBCursor cursor = createCursor();
+            List<K> results = new ArrayList<K>(cursor.size());
+            for (DBObject dbObject : cursor) {
+                results.add(transformer.transform(dbObject));
+            }
+            return results;    
+        } catch (NoResults ex) {
+            return Collections.emptyList();
+        }        
     }
     
     protected DBCursor createCursor() {
         QueryMetadata metadata = queryMixin.getMetadata();
-        return createCursor(metadata.getWhere(), metadata.getModifiers(), metadata.getOrderBy());
+        Predicate filter = createFilter(metadata);
+        return createCursor(collection, filter, metadata.getModifiers(), metadata.getOrderBy());     
     }
 
-    protected DBCursor createCursor(@Nullable Predicate where, QueryModifiers modifiers,
+    protected DBCursor createCursor(DBCollection collection, @Nullable Predicate where, QueryModifiers modifiers,
             List<OrderSpecifier<?>> orderBy) {
         DBCursor cursor = collection.find(createQuery(where));
         if (modifiers.getLimit() != null){
@@ -212,40 +249,52 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
 
     @Override
     public K singleResult() {
-        DBCursor c = createCursor().limit(1);
-        if (c.hasNext()){
-            return transformer.transform(c.next());
-        } else {
+        try {
+            DBCursor c = createCursor().limit(1);
+            if (c.hasNext()){
+                return transformer.transform(c.next());
+            } else {
+                return null;
+            }    
+        } catch (NoResults ex) {
             return null;
-        }
+        }        
     }
 
     @Override
     public K uniqueResult() {
-        Long limit = queryMixin.getMetadata().getModifiers().getLimit();
-        if (limit == null){
-            limit = 2l;
-        }
-        DBCursor c = createCursor().limit(limit.intValue());
-        if (c.hasNext()){
-            K rv = transformer.transform(c.next());
-            if (c.hasNext()){
-                throw new NonUniqueResultException();
+        try {
+            Long limit = queryMixin.getMetadata().getModifiers().getLimit();
+            if (limit == null){
+                limit = 2l;
             }
-            return rv;
-        } else {
+            DBCursor c = createCursor().limit(limit.intValue());
+            if (c.hasNext()){
+                K rv = transformer.transform(c.next());
+                if (c.hasNext()){
+                    throw new NonUniqueResultException();
+                }
+                return rv;
+            } else {
+                return null;
+            }    
+        } catch (NoResults ex) {
             return null;
-        }
+        }        
     }
 
     @Override
     public SearchResults<K> listResults() {
-        long total = count();
-        if (total > 0l){
-            return new SearchResults<K>(list(), queryMixin.getMetadata().getModifiers(), total);
-        } else {
+        try {
+            long total = count();
+            if (total > 0l){
+                return new SearchResults<K>(list(), queryMixin.getMetadata().getModifiers(), total);
+            } else {
+                return SearchResults.emptyResults();
+            }    
+        } catch (NoResults ex) {
             return SearchResults.emptyResults();
-        }
+        }        
     }
 
     @Override
@@ -255,7 +304,12 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
 
     @Override
     public long count() {
-        return collection.count(createQuery(queryMixin.getMetadata().getWhere()));
+        try {
+            Predicate filter = createFilter(queryMixin.getMetadata());            
+            return collection.count(createQuery(filter));    
+        } catch (NoResults ex) {
+            return 0l;
+        }        
     }
 
     @Override
