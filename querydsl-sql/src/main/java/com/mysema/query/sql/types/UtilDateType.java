@@ -16,8 +16,8 @@ package com.mysema.query.sql.types;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.sql.Types;
+import java.util.Date;
 
 /**
  * @author tiwe

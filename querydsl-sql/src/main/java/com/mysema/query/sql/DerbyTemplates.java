@@ -15,7 +15,6 @@ package com.mysema.query.sql;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.sql.support.SerializationContext;
 import com.mysema.query.types.Ops;
 
 /**

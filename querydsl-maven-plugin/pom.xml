@@ -38,7 +38,7 @@
 
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-sql</artifactId>
+      <artifactId>querydsl-sql-codegen</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
 	

@@ -15,8 +15,6 @@ package com.mysema.query.sql;
 
 import java.util.Map;
 
-import com.mysema.query.sql.RelationalPath;
-
 /**
  * Beans contains a list of beans
  * 

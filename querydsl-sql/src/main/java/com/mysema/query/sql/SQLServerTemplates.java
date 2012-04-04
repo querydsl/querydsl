@@ -17,7 +17,6 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.sql.mssql.RowNumber;
 import com.mysema.query.sql.mssql.SQLServerGrammar;
-import com.mysema.query.sql.support.SerializationContext;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
 

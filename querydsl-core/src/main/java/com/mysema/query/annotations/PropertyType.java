@@ -13,9 +13,6 @@
  */
 package com.mysema.query.annotations;
 
-import javax.annotation.Nullable;
-
-import com.mysema.codegen.model.TypeCategory;
 
 /**
  * PropertyType defines the Path type to be used for a Domain property
@@ -27,63 +24,63 @@ public enum PropertyType {
     /**
      * 
      */    
-    COMPARABLE(TypeCategory.COMPARABLE),
+    COMPARABLE,//(TypeCategory.COMPARABLE),
     
     /**
      * 
      */    
-    ENUM(TypeCategory.ENUM),
+    ENUM,//(TypeCategory.ENUM),
     
     /**
      * 
      */    
-    DATE(TypeCategory.DATE),
+    DATE,//(TypeCategory.DATE),
     
     /**
      * 
      */    
-    DATETIME(TypeCategory.DATETIME),
+    DATETIME,//(TypeCategory.DATETIME),
     
     /**
      * 
      */    
-    NONE(null),
+    NONE,//(null),
     
     /**
      * 
      */
-    NUMERIC(TypeCategory.NUMERIC),
+    NUMERIC,//(TypeCategory.NUMERIC),
     
     /**
      * 
      */    
-    SIMPLE(TypeCategory.SIMPLE),
+    SIMPLE,//(TypeCategory.SIMPLE),
     
     /**
      * 
      */
-    STRING(TypeCategory.STRING),
+    STRING,//(TypeCategory.STRING),
     
     /**
      * 
      */
-    TIME(TypeCategory.TIME),
+    TIME,//(TypeCategory.TIME),
     
     /**
      *
      */
-    ENTITY(TypeCategory.ENTITY);
-    
-    @Nullable
-    private final TypeCategory category;
-    
-    PropertyType(@Nullable TypeCategory category) {
-        this.category = category;
-    }
-    
-    @Nullable
-    public TypeCategory getCategory() {
-        return category;
-    }
+    ENTITY,//(TypeCategory.ENTITY);
+
+//    @Nullable
+//    private final TypeCategory category;
+//    
+//    PropertyType(@Nullable TypeCategory category) {
+//        this.category = category;
+//    }
+//    
+//    @Nullable
+//    public TypeCategory getCategory() {
+//        return category;
+//    }
 
 }

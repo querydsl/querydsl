@@ -4,9 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.mysema.query.sql.mssql.DatePart;
-import com.mysema.query.sql.mssql.SQLServerGrammar;
-
 public class SQLServerGrammarTest {
     
     @Test

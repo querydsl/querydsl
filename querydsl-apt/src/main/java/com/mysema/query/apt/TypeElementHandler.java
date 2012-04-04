@@ -139,11 +139,16 @@ public final class TypeElementHandler {
         // type
         Type propertyType = typeFactory.getType(type, true);
         if (annotations.isAnnotationPresent(QueryType.class)) {
-            TypeCategory typeCategory = annotations.getAnnotation(QueryType.class).value().getCategory();
-            if (typeCategory == null) {
+            PropertyType propertyTypeAnn = annotations.getAnnotation(QueryType.class).value();
+            if (propertyTypeAnn != PropertyType.NONE) {
+                TypeCategory typeCategory = TypeCategory.valueOf(annotations.getAnnotation(QueryType.class).value().name());
+                if (typeCategory == null) {
+                    return null;
+                }
+                propertyType = propertyType.as(typeCategory);
+            } else {
                 return null;
-            }
-            propertyType = propertyType.as(typeCategory);
+            }                        
         } 
         
         // inits
@@ -169,8 +174,8 @@ public final class TypeElementHandler {
         Type rv = typeFactory.getType(element.asType(), true);
         if (element.getAnnotation(QueryType.class) != null) {
             QueryType qt = element.getAnnotation(QueryType.class);
-            if (qt.value() != PropertyType.NONE) {
-                TypeCategory typeCategory = qt.value().getCategory();
+            if (qt.value() != PropertyType.NONE) {                
+                TypeCategory typeCategory = TypeCategory.valueOf(qt.value().name());
                 rv = rv.as(typeCategory);
             }
         }

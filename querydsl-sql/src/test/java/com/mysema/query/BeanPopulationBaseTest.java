@@ -16,7 +16,8 @@ package com.mysema.query;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Test;
 
 import com.mysema.query.sql.dml.BeanMapper;
 import com.mysema.query.sql.domain.Employee;

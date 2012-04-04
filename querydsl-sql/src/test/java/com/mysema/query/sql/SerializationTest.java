@@ -27,7 +27,6 @@ import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.path.PathBuilder;
-import com.mysema.query.types.path.StringPath;
 
 public class SerializationTest {
     

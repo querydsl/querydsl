@@ -30,8 +30,6 @@ import com.mysema.query.sql.OracleTemplates;
 import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.query.sql.SQLServerTemplates;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.sql.ddl.CreateTableClause;
-import com.mysema.query.sql.ddl.DropTableClause;
 
 /**
  * @author tiwe

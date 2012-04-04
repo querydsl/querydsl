@@ -22,11 +22,6 @@
      <artifactId>collections-generic</artifactId>
      <version>${commons.collections.version}</version>
    </dependency> 
-    <dependency>
-      <groupId>com.mysema.codegen</groupId>
-      <artifactId>codegen</artifactId>
-      <version>${codegen.version}</version>
-    </dependency>    
     <dependency>  
       <groupId>javax.inject</groupId>  
       <artifactId>javax.inject</artifactId>  

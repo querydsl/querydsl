@@ -28,7 +28,7 @@
     </dependency>
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-core</artifactId>
+      <artifactId>querydsl-codegen</artifactId>
       <version>${project.parent.version}</version>
       <exclusions>
         <exclusion>
