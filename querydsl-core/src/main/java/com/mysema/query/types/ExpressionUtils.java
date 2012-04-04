@@ -34,6 +34,23 @@ public final class ExpressionUtils {
      * @return
      */
     @Nullable
+    public static Predicate allOf(Collection<Predicate> exprs) {
+        Predicate rv = null;
+        for (Predicate b : exprs) {
+            if (b != null) {
+                rv = rv == null ? b : ExpressionUtils.and(rv,b);    
+            }            
+        }
+        return rv;
+    }
+    
+    /**
+     * Create the intersection of the given arguments
+     * 
+     * @param exprs
+     * @return
+     */
+    @Nullable
     public static Predicate allOf(Predicate... exprs){
         Predicate rv = null;
         for (Predicate b : exprs) {
@@ -53,6 +70,24 @@ public final class ExpressionUtils {
      */
     public static Predicate and(Predicate left, Predicate right){
         return new PredicateOperation(Ops.AND, left, right);
+    }
+    
+
+    /**
+     * Create the union of the given arguments
+     * 
+     * @param exprs
+     * @return
+     */
+    @Nullable
+    public static Predicate anyOf(Collection<Predicate> exprs){
+        Predicate rv = null;
+        for (Predicate b : exprs) {
+            if (b != null) {
+                rv = rv == null ? b : ExpressionUtils.or(rv,b);    
+            }            
+        }
+        return rv;
     }
     
     /**

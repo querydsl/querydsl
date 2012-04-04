@@ -51,6 +51,9 @@ public class User {
     @Reference
     private User friend;
     
+    @Reference
+    private User enemy;
+    
     private int age;
     
     public User() {
@@ -165,6 +168,14 @@ public class User {
     
     public void setFriend(User friend) {
         this.friend = friend;
+    }
+    
+    public User getEnemy() {
+        return enemy;
+    }
+    
+    public void setEnemy(User enemy) {
+        this.enemy = enemy;
     }
 
     @Override

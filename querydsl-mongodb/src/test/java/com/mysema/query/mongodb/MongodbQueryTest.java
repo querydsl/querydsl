@@ -364,45 +364,6 @@ public class MongodbQueryTest {
         assertTrue(where(item, item.ctds.in(i.getCtds())).count() > 0);
         assertTrue(where(item, item.ctds.in(Arrays.asList(ObjectId.get(), ObjectId.get()))).count() == 0);
     }
-    
-    @Test
-    public void Join() {
-        User friend1 = new User("Max", null);
-        User friend2 = new User("Jack", null);
-        User friend3 = new User("Bob", null);
-        ds.save(friend1, friend2, friend3);
-        
-        User user1 = new User("Jane", null, friend1);
-        User user2 = new User("Mary", null, user1);
-        User user3 = new User("Ann", null, friend3);
-        ds.save(user1, user2, user3);
-        
-        QUser friend = new QUser("friend");
-        
-        // count
-        assertEquals(1, where().join(user.friend(), friend).on(friend.firstName.eq("Max")).count());
-        assertEquals(1, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).count());
-        assertEquals(0, where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).count());
-        assertEquals(0, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).count());
-        
-        // exists
-        assertTrue(where().join(user.friend(), friend).on(friend.firstName.eq("Max")).exists());
-        assertTrue(where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).exists());
-        assertFalse(where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).exists());
-        assertFalse(where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).exists());
-        
-        // list
-        assertEquals(1, where().join(user.friend(), friend).on(friend.firstName.eq("Max")).list().size());
-        assertEquals(1, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).list().size());
-        assertEquals(0, where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).list().size());
-        assertEquals(0, where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).list().size());
-        
-        // single
-        assertEquals("Jane", where().join(user.friend(), friend).on(friend.firstName.eq("Max")).singleResult().getFirstName());
-        assertEquals("Jane", where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Max")).singleResult().getFirstName());
-        assertNull(where(user.firstName.eq("Mary")).join(user.friend(), friend).on(friend.firstName.eq("Max")).singleResult());
-        assertNull(where(user.firstName.eq("Jane")).join(user.friend(), friend).on(friend.firstName.eq("Jack")).singleResult());
-    }
         
     //TODO
     // - test dates

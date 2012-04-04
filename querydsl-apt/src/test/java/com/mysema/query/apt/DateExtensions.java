@@ -26,5 +26,5 @@ public class DateExtensions {
     public static Predicate extension(DateExpression<Date> date){
         return new BooleanPath("b");
     }
-
+    
 }

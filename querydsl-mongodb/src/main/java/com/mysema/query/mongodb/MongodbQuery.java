@@ -21,6 +21,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import org.apache.commons.collections15.Transformer;
+import org.apache.commons.collections15.multimap.MultiHashMap;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
@@ -106,31 +107,38 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     
     @Nullable
     protected Predicate createJoinFilter(QueryMetadata metadata) {
-        Predicate extraFilter = null;
+        MultiHashMap<Expression<?>, Predicate> predicates = new MultiHashMap<Expression<?>, Predicate>();
         List<JoinExpression> joins = metadata.getJoins();
         for (int i = joins.size() - 1; i >= 0; i--) {
             JoinExpression join = joins.get(i);
-            Expression<?> source = ((Operation<?>)join.getTarget()).getArg(0);
-            Class<?> target = ((Operation<?>)join.getTarget()).getArg(1).getType();
-            Predicate filter = ExpressionUtils.allOf(join.getCondition(), extraFilter);
-            List<Object> ids = getIds(target, filter);
+            Path source = (Path)((Operation<?>)join.getTarget()).getArg(0);
+            Path target = (Path)((Operation<?>)join.getTarget()).getArg(1);
+            Collection<Predicate> extraFilters = predicates.get(target.getRoot());
+            Predicate filter = ExpressionUtils.allOf(join.getCondition(), allOf(extraFilters));
+            List<Object> ids = getIds(target.getType(), filter);
             if (ids.isEmpty()) {
                 throw new NoResults();
             }
-            Path path = new PathImpl<String>(String.class, (Path)source, "$id");
-            extraFilter = ExpressionUtils.in(path, ids);
+            Path path = new PathImpl<String>(String.class, source, "$id");
+            predicates.put(source.getRoot(), ExpressionUtils.in(path, ids));
+//            System.err.println(predicates);
         }
-        return extraFilter;
+        Path source = (Path)((Operation)joins.get(0).getTarget()).getArg(0);
+        return allOf(predicates.get(source.getRoot()));
     }
     
-    protected List<Object> getIds(Class<?> target, Predicate condition) {
-        DBCollection collection = getCollection(target);
+    private Predicate allOf(Collection<Predicate> predicates) {
+        return predicates != null ? ExpressionUtils.allOf(predicates) : null;
+    }
+    
+    protected List<Object> getIds(Class<?> targetType, Predicate condition) {
+        DBCollection collection = getCollection(targetType);
         // TODO : fetch only ids
         DBCursor cursor = createCursor(collection, condition, QueryModifiers.EMPTY, Collections.<OrderSpecifier<?>>emptyList());
         if (cursor.hasNext()) {
             List<Object> ids = new ArrayList<Object>(cursor.count());
             for (DBObject obj : cursor) {
-                ids.add(obj.containsField("id") ? obj.get("id") : obj.get("_id"));
+                ids.add(obj.get("_id"));
             }
             return ids;
         } else {
