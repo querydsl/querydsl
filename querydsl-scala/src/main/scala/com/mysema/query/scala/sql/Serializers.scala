@@ -20,6 +20,7 @@ import com.mysema.codegen.model._
 import com.mysema.query.codegen._
 import com.mysema.query.scala.ScalaEntitySerializer
 import com.mysema.query.sql._
+import com.mysema.query.sql.codegen._
 import com.mysema.query.sql.support._
 import java.util._
 import scala.collection.JavaConversions._

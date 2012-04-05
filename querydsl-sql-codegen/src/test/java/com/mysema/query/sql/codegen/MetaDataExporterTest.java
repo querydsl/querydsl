@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.sql;
+package com.mysema.query.sql.codegen;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -40,6 +40,10 @@ import org.junit.Test;
 import com.mysema.codegen.SimpleCompiler;
 import com.mysema.query.codegen.BeanSerializer;
 import com.mysema.query.codegen.Serializer;
+import com.mysema.query.sql.codegen.DefaultNamingStrategy;
+import com.mysema.query.sql.codegen.MetaDataExporter;
+import com.mysema.query.sql.codegen.NamingStrategy;
+import com.mysema.query.sql.codegen.OriginalNamingStrategy;
 
 public class MetaDataExporterTest {
 

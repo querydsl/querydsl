@@ -1,11 +1,12 @@
 package com.mysema.query.scala.sql
 
 import org.apache.commons.lang3.StringUtils
-import com.mysema.codegen._;
-import com.mysema.codegen.model._;
+import com.mysema.codegen._
+import com.mysema.codegen.model._
 
-import com.mysema.query.codegen._;
+import com.mysema.query.codegen._
 import com.mysema.query.sql._
+import com.mysema.query.sql.codegen._
 
 import java.io.StringWriter;
 

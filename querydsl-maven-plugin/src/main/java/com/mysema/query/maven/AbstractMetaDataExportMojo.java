@@ -23,6 +23,8 @@ import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 
+import com.mysema.query.codegen.*;
+import com.mysema.query.sql.codegen.*;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.types.Type;

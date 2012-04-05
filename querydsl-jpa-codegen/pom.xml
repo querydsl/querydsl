@@ -68,7 +68,12 @@
       <artifactId>querydsl-codegen</artifactId>
       <version>${project.parent.version}</version>
     </dependency>
-        <dependency>
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-jpa</artifactId>
+      <version>${project.parent.version}</version>
+    </dependency>    
+    <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-jpa</artifactId>
       <version>${project.parent.version}</version>

@@ -6,6 +6,7 @@ import com.mysema.codegen.model._;
 
 import com.mysema.query.codegen._;
 import com.mysema.query.sql._
+import com.mysema.query.sql.codegen._
 
 import java.io.StringWriter;
 

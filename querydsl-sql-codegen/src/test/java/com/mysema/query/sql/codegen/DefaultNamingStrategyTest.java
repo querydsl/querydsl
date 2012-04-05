@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.sql;
+package com.mysema.query.sql.codegen;
 
 import static org.junit.Assert.assertEquals;
 
@@ -20,6 +20,8 @@ import org.junit.Test;
 
 import com.mysema.codegen.model.Types;
 import com.mysema.query.codegen.EntityType;
+import com.mysema.query.sql.codegen.DefaultNamingStrategy;
+import com.mysema.query.sql.codegen.NamingStrategy;
 
 public class DefaultNamingStrategyTest {
 

@@ -20,6 +20,7 @@ import com.mysema.query.scala.CompileTestUtils
 import com.mysema.query.scala.ScalaBeanSerializer
 import com.mysema.query.scala.ScalaTypeMappings
 
+import com.mysema.query.sql.codegen._
 import com.mysema.query.sql.dml._
 import com.mysema.query.scala.Helpers._
 

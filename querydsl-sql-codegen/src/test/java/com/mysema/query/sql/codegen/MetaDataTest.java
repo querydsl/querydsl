@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.sql;
+package com.mysema.query.sql.codegen;
 
 import static org.junit.Assert.assertEquals;
 
@@ -22,6 +22,8 @@ import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.query.codegen.EntityType;
+import com.mysema.query.sql.codegen.DefaultNamingStrategy;
+import com.mysema.query.sql.codegen.NamingStrategy;
 
 public class MetaDataTest {
     

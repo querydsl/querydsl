@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.sql;
+package com.mysema.query.sql.codegen;
 
 import java.io.File;
 import java.sql.SQLException;
@@ -26,6 +26,9 @@ import org.junit.Test;
 
 import com.mysema.codegen.SimpleCompiler;
 import com.mysema.query.AbstractJDBCTest;
+import com.mysema.query.sql.codegen.DefaultNamingStrategy;
+import com.mysema.query.sql.codegen.MetaDataExporter;
+import com.mysema.query.sql.codegen.NamingStrategy;
 
 public class MetaDataSerializerTest extends AbstractJDBCTest{
 

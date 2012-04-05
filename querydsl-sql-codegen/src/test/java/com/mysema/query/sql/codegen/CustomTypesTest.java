@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.sql;
+package com.mysema.query.sql.codegen;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -26,6 +26,15 @@ import org.junit.Test;
 
 import com.mysema.query.AbstractJDBCTest;
 import com.mysema.query.alias.Gender;
+import com.mysema.query.sql.Configuration;
+import com.mysema.query.sql.EncryptedString;
+import com.mysema.query.sql.HSQLDBTemplates;
+import com.mysema.query.sql.QPerson;
+import com.mysema.query.sql.SQLQuery;
+import com.mysema.query.sql.SQLQueryImpl;
+import com.mysema.query.sql.codegen.DefaultNamingStrategy;
+import com.mysema.query.sql.codegen.MetaDataExporter;
+import com.mysema.query.sql.codegen.NamingStrategy;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.types.EnumByNameType;

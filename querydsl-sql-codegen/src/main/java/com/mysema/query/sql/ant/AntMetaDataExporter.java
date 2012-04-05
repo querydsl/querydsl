@@ -22,9 +22,9 @@ import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 
 import com.mysema.query.codegen.BeanSerializer;
-import com.mysema.query.sql.DefaultNamingStrategy;
-import com.mysema.query.sql.MetaDataExporter;
-import com.mysema.query.sql.NamingStrategy;
+import com.mysema.query.sql.codegen.DefaultNamingStrategy;
+import com.mysema.query.sql.codegen.MetaDataExporter;
+import com.mysema.query.sql.codegen.NamingStrategy;
 
 /**
  * AntMetaDataExporter exports JDBC metadata to Querydsl query types

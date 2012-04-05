@@ -120,12 +120,12 @@ public final class Connections {
         return DriverManager.getConnection(url, "querydsl","querydsl");
     }
 
-    private static CreateTableClause createTable(SQLTemplates templates, String table){
-        return new CreateTableClause(connHolder.get(), templates, table);
-    }
+//    private static CreateTableClause createTable(SQLTemplates templates, String table){
+//        return new CreateTableClause(connHolder.get(), templates, table);
+//    }
     
     private static void dropTable(SQLTemplates templates, String table){
-        new DropTableClause(connHolder.get(), templates, table).execute();
+//        new DropTableClause(connHolder.get(), templates, table).execute();
     }
     
     public static Statement getStatement(){
@@ -133,17 +133,17 @@ public final class Connections {
     }
 
     private static void createEmployeeTable(SQLTemplates templates) {
-        createTable(templates, "EMPLOYEE")
-        .column("ID", Integer.class)
-        .column("FIRSTNAME", String.class).size(50)
-        .column("LASTNAME", String.class).size(50)
-        .column("SALARY",Double.class)
-        .column("DATEFIELD",Date.class)
-        .column("TIMEFIELD",Time.class)
-        .column("SUPERIOR_ID",Integer.class)
-        .primaryKey("PK_EMPLOYEE", "ID")
-        .foreignKey("FK_SUPERIOR","SUPERIOR_ID").references("EMPLOYEE","ID")
-        .execute();
+//        createTable(templates, "EMPLOYEE")
+//        .column("ID", Integer.class)
+//        .column("FIRSTNAME", String.class).size(50)
+//        .column("LASTNAME", String.class).size(50)
+//        .column("SALARY",Double.class)
+//        .column("DATEFIELD",Date.class)
+//        .column("TIMEFIELD",Time.class)
+//        .column("SUPERIOR_ID",Integer.class)
+//        .primaryKey("PK_EMPLOYEE", "ID")
+//        .foreignKey("FK_SUPERIOR","SUPERIOR_ID").references("EMPLOYEE","ID")
+//        .execute();
     }
     
     public static void initDerby() throws SQLException, ClassNotFoundException{
