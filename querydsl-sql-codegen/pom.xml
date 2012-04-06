@@ -20,7 +20,6 @@
   </properties>
 
   <dependencies>
-
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-codegen</artifactId>
@@ -31,13 +30,7 @@
       <artifactId>querydsl-sql</artifactId>
       <version>${project.parent.version}</version>
     </dependency>    
-    <dependency>
-      <groupId>com.mysema.querydsl</groupId>
-      <artifactId>querydsl-sql</artifactId>
-      <version>${project.parent.version}</version>
-      <scope>test</scope>
-      <type>test-jar</type>
-    </dependency>   	
+
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
@@ -48,22 +41,7 @@
   	  <scope>provided</scope>      
     </dependency>    
 
-    <dependency>
-      <groupId>joda-time</groupId>
-      <artifactId>joda-time</artifactId>
-      <version>1.6</version>
-    </dependency>
-
-   <!-- code generation -->
-   
-    <dependency>
-   	  <groupId>javax.validation</groupId>
-	  <artifactId>validation-api</artifactId>
-	  <version>1.0.0.GA</version>
-    </dependency>
-
-	<!-- ANT integration -->
-	
+	<!-- ANT integration -->	
 	<dependency>
 	    <groupId>org.apache.ant</groupId>
 	    <artifactId>ant</artifactId>
@@ -72,7 +50,13 @@
 	</dependency>	
 
     <!-- test -->
-
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-sql</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>test</scope>
+      <type>test-jar</type>
+    </dependency>   	    
     <dependency>
       <groupId>org.hsqldb</groupId>
       <artifactId>hsqldb</artifactId>

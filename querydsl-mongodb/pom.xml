@@ -25,8 +25,7 @@
         <groupId>org.mongodb</groupId>
         <artifactId>mongo-java-driver</artifactId>
         <version>${mongodb.version}</version>
-    </dependency>
-    
+    </dependency>    
     <dependency>
         <groupId>com.google.code.morphia</groupId>
         <artifactId>morphia</artifactId>

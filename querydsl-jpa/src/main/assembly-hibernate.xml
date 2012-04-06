@@ -37,7 +37,8 @@
       <unpack>true</unpack>
 	  <scope>provided</scope>
 	  <includes>
-	  	<include>com.mysema.querydsl:querydsl-apt</include>
+	  	<include>com.mysema.querydsl:*</include>
+	  	<include>com.mysema.codegen:*</include>
 	  	<include>org.hibernate:hibernate-core</include>					
 	  </includes>
     </dependencySet>	

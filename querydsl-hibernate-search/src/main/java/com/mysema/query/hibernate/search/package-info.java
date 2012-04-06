@@ -12,4 +12,4 @@
  * limitations under the License.
  */
 
-package com.mysema.query.search;
+package com.mysema.query.hibernate.search;

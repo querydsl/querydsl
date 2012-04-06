@@ -17,6 +17,7 @@
 
   <properties>
     <jdo.version>2.3-eb</jdo.version>
+    <morphia.version>0.99</morphia.version>
   </properties>
 
   <dependencies>
@@ -50,7 +51,7 @@
 	  <artifactId>hibernate-jpa-2.0-api</artifactId>
 	  <version>1.0.0.Final</version>
 	  <scope>provided</scope>
-    </dependency>    
+    </dependency>
     
     <!-- test -->
     <dependency>

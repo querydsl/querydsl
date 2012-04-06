@@ -90,7 +90,7 @@ public class HibernateDomainExporterTest {
         for (File file : new File("target/gen3/com/mysema/query/jpa/domain").listFiles()){
             String result1 = FileUtils.readFileToString(file, "UTF-8");
             String result2 = FileUtils.readFileToString(
-                new File("target/generated-test-sources/java/com/mysema/query/jpa/domain", file.getName()));
+                new File("../querydsl-jpa/target/generated-test-sources/java/com/mysema/query/jpa/domain", file.getName()));
             if (!result1.equals(result2)){
                 System.err.println(file.getName());
                 failures.add(file.getName());
@@ -117,7 +117,7 @@ public class HibernateDomainExporterTest {
         for (File file : new File("target/gen4/com/mysema/query/jpa/domain2").listFiles()){
             String result1 = FileUtils.readFileToString(file, "UTF-8");
             String result2 = FileUtils.readFileToString(
-                new File("target/generated-test-sources/java/com/mysema/query/jpa/domain2", file.getName()));
+                new File("../querydsl-jpa/target/generated-test-sources/java/com/mysema/query/jpa/domain2", file.getName()));
             if (!result1.equals(result2)){
                 System.err.println(file.getName());
                 failures.add(file.getName());

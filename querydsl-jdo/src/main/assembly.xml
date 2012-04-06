@@ -31,7 +31,8 @@
       <unpack>true</unpack>
 	  <scope>provided</scope>
 	  <includes>
-	  	<include>com.mysema.querydsl:querydsl-apt</include>					
+	  	<include>com.mysema.querydsl:*</include>		
+	  	<include>com.mysema.codegen:*</include>							
 	  </includes>
     </dependencySet>		
   </dependencySets>

@@ -11,11 +11,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.mysema.query.search;
+package com.mysema.query.hibernate.search;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import com.mysema.query.hibernate.search.SearchSerializer;
 
 public class SearchSerializerTest {
 

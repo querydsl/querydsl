@@ -41,6 +41,12 @@
     </dependency>
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
+      <artifactId>querydsl-codegen</artifactId>
+      <version>${project.parent.version}</version>
+      <scope>provided</scope>
+    </dependency>        
+    <dependency>
+      <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-apt</artifactId>
       <version>${project.parent.version}</version>
 	  <scope>provided</scope>
