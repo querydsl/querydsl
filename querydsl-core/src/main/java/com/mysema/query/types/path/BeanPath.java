@@ -20,6 +20,8 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.BooleanBuilder;
+import com.mysema.query.support.Expressions;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.ExpressionException;
 import com.mysema.query.types.Ops;
@@ -330,6 +332,15 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
      */
     public <B extends T> BooleanExpression instanceOf(Class<B> type) {
         return BooleanOperation.create(Ops.INSTANCE_OF, this, new ConstantImpl<Class<B>>(type));
+    }
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public BooleanExpression instanceOfAny(Class... types) {
+        BooleanExpression[] exprs = new BooleanExpression[types.length];
+        for (int i = 0; i < types.length; i++) {
+            exprs[i] = this.instanceOf(types[i]);
+        }
+        return Expressions.anyOf(exprs);
     }
 
     @Override

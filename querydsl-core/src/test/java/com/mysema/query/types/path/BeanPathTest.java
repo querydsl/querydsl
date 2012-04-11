@@ -24,8 +24,13 @@ import org.junit.Test;
 import com.mysema.query.annotations.PropertyType;
 import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathMetadataFactory;
+import com.mysema.query.types.expr.BooleanExpression;
 
 public class BeanPathTest {
+    
+    public static class SubClass extends BeanPathTest {
+        
+    }
     
     public static class MyBeanPath extends BeanPath<BeanPathTest>{
 
@@ -85,6 +90,15 @@ public class BeanPathTest {
     @Test
     public void InstanceOf(){
         assertNotNull(beanPath.instanceOf(BeanPathTest.class));
+    }
+    
+    @Test
+    public void InstanceOfAny() {
+        BooleanExpression pred1 = beanPath.instanceOf(BeanPathTest.class).or(beanPath.instanceOf(SubClass.class));
+        BooleanExpression pred2 = beanPath.instanceOfAny(BeanPathTest.class, SubClass.class);
+        assertEquals(pred1, pred2);
+        assertEquals("p.class = class com.mysema.query.types.path.BeanPathTest || " +
+        	     "p.class = class com.mysema.query.types.path.BeanPathTest$SubClass", pred2.toString());
     }
 
 }
