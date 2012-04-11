@@ -7,38 +7,42 @@
   <para>This chapter describes the query type generation and querying functionality of the SQL module.</para>
   
   <sect2>
-  
-    <title>Creating the query types</title>
-  
-  <para>To get started export your schema into Querydsl query types like this :</para>
-  
-<programlisting language="java"><![CDATA[  
-java.sql.Connection conn = ...;
-MetaDataExporter exporter = new MetaDataExporter();
-exporter.setPackageName("com.myproject.mydomain");
-exporter.setTargetFolder(new File("src/main/java"));
-exporter.export(conn.getMetaData());  
+    <title>Maven integration</title>
+
+    <para>
+      Add the following dependencies to your Maven project and make sure that
+      the Maven 2 repo of Mysema Source (http://source.mysema.com/maven2/releases) is accessible 
+      from your POM :
+    </para>
+
+    <programlisting language="xml"><![CDATA[
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-sql</artifactId>
+  <version>${querydsl.version}</version>
+</dependency>    
+        
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-sql-codegen</artifactId>
+  <version>${querydsl.version}</version>
+  <scope>provided</scope>
+</dependency>
+
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  <version>1.6.1</version>
+</dependency>   
 ]]></programlisting>
 
-  <para>This declares that the database schema is to be mirrored into the com.myproject.domain 
-  package in the src/main/java folder.</para>
+  <para>The querydsl-sql-codegen dependency can be skipped, if code generation happens via Maven or Ant.</para>
+
+  </sect2>  
   
-  <para>
-  The generated types have the table name transformed to mixed case as the class name and a similar 
-  mixed case transformation
-  applied to the columns which are available as property paths in the query type.
-  </para>
- 
-  <para>
-  In addition to this primary key and foreign key constraints are provided as fields which can be 
-  used for compact join declarations. 
-  </para>
-  
- </sect2>
- 
  <sect2>
  
-  <title>Maven integration</title> 
+  <title>Code generation via Maven</title> 
     
   <para>This functionality is also available as a Maven plugin. The presented example can be declared 
   like this in the POM :</para>
@@ -90,7 +94,7 @@ exporter.export(conn.getMetaData());
   
   <sect2>
   	
-	<title>ANT integration</title>
+	<title>Code generation via ANT</title>
 	
 	<para>
 		The ANT task com.mysema.query.sql.ant.AntMetaDataExporter of the querydsl-sql module provides 
@@ -101,6 +105,36 @@ exporter.export(conn.getMetaData());
 	</para>
 	
   </sect2>	
+  
+<sect2>
+  
+    <title>Creating the query types</title>
+  
+  <para>To get started export your schema into Querydsl query types like this :</para>
+  
+<programlisting language="java"><![CDATA[  
+java.sql.Connection conn = ...;
+MetaDataExporter exporter = new MetaDataExporter();
+exporter.setPackageName("com.myproject.mydomain");
+exporter.setTargetFolder(new File("src/main/java"));
+exporter.export(conn.getMetaData());  
+]]></programlisting>
+
+  <para>This declares that the database schema is to be mirrored into the com.myproject.domain 
+  package in the src/main/java folder.</para>
+  
+  <para>
+  The generated types have the table name transformed to mixed case as the class name and a similar 
+  mixed case transformation
+  applied to the columns which are available as property paths in the query type.
+  </para>
+ 
+  <para>
+  In addition to this primary key and foreign key constraints are provided as fields which can be 
+  used for compact join declarations. 
+  </para>
+  
+ </sect2>  
   
   <sect2>
   

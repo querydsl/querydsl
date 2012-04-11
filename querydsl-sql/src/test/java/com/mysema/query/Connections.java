@@ -254,6 +254,10 @@ public final class Connections {
             return;
         }
 
+        // qtest
+        stmt.execute("drop table QTEST if exists");
+        stmt.execute("create table QTEST (ID int IDENTITY(1,1) NOT NULL,  C1 int NULL)");
+        
         // survey
         stmt.execute("drop table SURVEY if exists");
         stmt.execute(CREATE_TABLE_SURVEY);
