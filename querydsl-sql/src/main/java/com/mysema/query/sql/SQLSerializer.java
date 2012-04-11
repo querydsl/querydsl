@@ -361,7 +361,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         dmlWithSchema = false;
         // columns
         if (!columns.isEmpty()) {
-            append("(");
+            append(" (");
             skipParent = true;
             handle(COMMA, columns);
             skipParent = false;

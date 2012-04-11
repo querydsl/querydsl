@@ -55,7 +55,7 @@ public class InsertMySQLTest extends InsertBaseTest{
         
         clause.addFlag(Position.START_OVERRIDE, "insert ignore into ");
         
-        assertEquals("insert ignore into SURVEY(ID, NAME) values (?, ?)", clause.toString());
+        assertEquals("insert ignore into SURVEY (ID, NAME) values (?, ?)", clause.toString());
         clause.execute();        
     }
 
@@ -65,7 +65,7 @@ public class InsertMySQLTest extends InsertBaseTest{
         clause.columns(survey.id, survey.name)
             .values(3, "Hello");
         
-        assertEquals("replace into SURVEY(ID, NAME) values (?, ?)", clause.toString());
+        assertEquals("replace into SURVEY (ID, NAME) values (?, ?)", clause.toString());
         clause.execute();
     }
 }
