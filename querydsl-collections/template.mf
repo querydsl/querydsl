@@ -7,7 +7,7 @@ Import-Template:
   com.mysema.commons.lang.*;version="${mysema.lang.version}",
   com.mysema.query.*;version="${project.version}",   
   com.mysema.util.*;version="${project.version}",
-  javax.annotation.*;version="${findbugs.version}",
+  javax.annotation.*;version="0",
   javax.tools.*;version="1",
   org.apache.commons.collections15.*;version="${commons.collections.version}",
   org.apache.commons.lang3.*;version="${commons.lang.version}"
