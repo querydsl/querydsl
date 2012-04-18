@@ -14,10 +14,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.collections15.Transformer;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
-
+import com.google.common.base.Function;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.Types;
@@ -170,7 +167,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
                 append(enumValue.getDeclaringClass().getName() + DOT + enumValue.name());
             }
         } else if (value instanceof String) {
-            append(QUOTE + StringEscapeUtils.escapeJava(value.toString()) + QUOTE);
+            append(QUOTE + StringUtils.escapeJava(value.toString()) + QUOTE);
         } else {
             throw new IllegalArgumentException("Unsupported annotation value : " + value);
         }
@@ -242,7 +239,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
 
     @Override
     public <T> ScalaWriter beginConstructor(Collection<T> parameters,
-            Transformer<T, Parameter> transformer) throws IOException {
+            Function<T, Parameter> transformer) throws IOException {
         beginLine(PUBLIC + type.getSimpleName()).params(parameters, transformer).append(" {").nl();
         return goIn();
     }
@@ -291,7 +288,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
 
     @Override
     public <T> ScalaWriter beginPublicMethod(Type returnType, String methodName,
-            Collection<T> parameters, Transformer<T, Parameter> transformer) throws IOException {
+            Collection<T> parameters, Function<T, Parameter> transformer) throws IOException {
         return beginMethod(DEF, returnType, methodName, transform(parameters, transformer));
     }
 
@@ -303,7 +300,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
 
     @Override
     public <T> ScalaWriter beginStaticMethod(Type returnType, String methodName,
-            Collection<T> parameters, Transformer<T, Parameter> transformer) throws IOException {
+            Collection<T> parameters, Function<T, Parameter> transformer) throws IOException {
         return beginMethod(DEF, returnType, methodName, transform(parameters, transformer));
     }
 
@@ -450,7 +447,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
         return line(PACKAGE + packageName).nl();
     }
 
-    private <T> ScalaWriter params(Collection<T> parameters, Transformer<T, Parameter> transformer)
+    private <T> ScalaWriter params(Collection<T> parameters, Function<T, Parameter> transformer)
             throws IOException {
         append("(");
         boolean first = true;
@@ -458,7 +455,7 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
             if (!first) {
                 append(COMMA);
             }
-            param(transformer.transform(param));
+            param(transformer.apply(param));
             first = false;
         }
         append(")");
@@ -558,11 +555,11 @@ public class ScalaWriter extends AbstractCodeWriter<ScalaWriter> {
     }
 
     private <T> Parameter[] transform(Collection<T> parameters,
-            Transformer<T, Parameter> transformer) {
+            Function<T, Parameter> transformer) {
         Parameter[] rv = new Parameter[parameters.size()];
         int i = 0;
         for (T value : parameters) {
-            rv[i++] = transformer.transform(value);
+            rv[i++] = transformer.apply(value);
         }
         return rv;
     }

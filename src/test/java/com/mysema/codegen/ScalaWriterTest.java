@@ -14,11 +14,10 @@ import java.util.List;
 
 import javax.validation.constraints.Max;
 
-import org.apache.commons.collections15.Transformer;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.base.Function;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.SimpleType;
@@ -28,9 +27,9 @@ import com.mysema.codegen.model.Types;
 
 public class ScalaWriterTest {
 
-    private static final Transformer<Parameter, Parameter> transformer = new Transformer<Parameter, Parameter>() {
+    private static final Function<Parameter, Parameter> transformer = new Function<Parameter, Parameter>() {
         @Override
-        public Parameter transform(Parameter input) {
+        public Parameter apply(Parameter input) {
             return input;
         }
     };

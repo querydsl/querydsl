@@ -22,9 +22,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Stack;
 
-import org.apache.commons.collections15.Transformer;
-import org.apache.commons.lang3.StringEscapeUtils;
-
+import com.google.common.base.Function;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
 
@@ -160,7 +158,7 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter> {
                 append(enumValue.getDeclaringClass().getName() + DOT + enumValue.name());
             }
         } else if (value instanceof String) {
-            String escaped = StringEscapeUtils.escapeJava(value.toString());
+            String escaped = StringUtils.escapeJava(value.toString());
             append(QUOTE + escaped.replace("\\/", "/") + QUOTE);
         } else {
             throw new IllegalArgumentException("Unsupported annotation value : " + value);
@@ -205,7 +203,7 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter> {
 
     @Override
     public <T> JavaWriter beginConstructor(Collection<T> parameters,
-            Transformer<T, Parameter> transformer) throws IOException {
+            Function<T, Parameter> transformer) throws IOException {
         types.push(types.peek());
         beginLine(PUBLIC + types.peek().getSimpleName()).params(parameters, transformer)
                 .append(" {").nl();
@@ -249,7 +247,7 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter> {
 
     @Override
     public <T> JavaWriter beginPublicMethod(Type returnType, String methodName,
-            Collection<T> parameters, Transformer<T, Parameter> transformer) throws IOException {
+            Collection<T> parameters, Function<T, Parameter> transformer) throws IOException {
         return beginMethod(PUBLIC, returnType, methodName, transform(parameters, transformer));
     }
 
@@ -261,7 +259,7 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter> {
 
     @Override
     public <T> JavaWriter beginStaticMethod(Type returnType, String methodName,
-            Collection<T> parameters, Transformer<T, Parameter> transformer) throws IOException {
+            Collection<T> parameters, Function<T, Parameter> transformer) throws IOException {
         return beginMethod(PUBLIC_STATIC, returnType, methodName,
                 transform(parameters, transformer));
     }
@@ -362,7 +360,7 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter> {
         return line(PACKAGE + packageName + SEMICOLON).nl();
     }
 
-    private <T> JavaWriter params(Collection<T> parameters, Transformer<T, Parameter> transformer)
+    private <T> JavaWriter params(Collection<T> parameters, Function<T, Parameter> transformer)
             throws IOException {
         append("(");
         boolean first = true;
@@ -370,7 +368,7 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter> {
             if (!first) {
                 append(COMMA);
             }
-            param(transformer.transform(param));
+            param(transformer.apply(param));
             first = false;
         }
         append(")");
@@ -470,11 +468,11 @@ public final class JavaWriter extends AbstractCodeWriter<JavaWriter> {
     }
 
     private <T> Parameter[] transform(Collection<T> parameters,
-            Transformer<T, Parameter> transformer) {
+            Function<T, Parameter> transformer) {
         Parameter[] rv = new Parameter[parameters.size()];
         int i = 0;
         for (T value : parameters) {
-            rv[i++] = transformer.transform(value);
+            rv[i++] = transformer.apply(value);
         }
         return rv;
     }

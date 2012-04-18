@@ -3,7 +3,6 @@ Bundle-Name: Codegen
 Bundle-Vendor: Mysema
 Bundle-ManifestVersion: 2
 Import-Template:  
-  javax.annotation.*;version="0",
-  org.apache.commons.collections15.*;version="${commons.collections.version}",
-  org.apache.commons.lang3.*;version="${commons.lang.version}",
-  javax.tools.*;version="0"
+  javax.annotation.*;version="0",  
+  javax.tools.*;version="0",
+  com.google.common.*;version="${guava.version}"

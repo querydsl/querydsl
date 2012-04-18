@@ -7,7 +7,7 @@ package com.mysema.codegen;
 
 import java.io.IOException;
 
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.base.Strings;
 
 /**
  * @author tiwe
@@ -34,7 +34,7 @@ public abstract class AbstractCodeWriter<T extends AbstractCodeWriter<T>> implem
         }
         this.appendable = appendable;
         this.spaces = spaces;
-        this.spacesString = StringUtils.leftPad("", spaces);
+        this.spacesString = Strings.repeat(" ", spaces);        
     }
 
     @Override

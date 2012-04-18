@@ -8,7 +8,7 @@ package com.mysema.codegen.model;
 import java.util.Collections;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.base.Strings;
 
 /**
  * @author tiwe
@@ -41,7 +41,7 @@ public class TypeExtends extends TypeAdapter {
                 return "?";
             } else {
                 String genericName = super.getGenericName(true, packages, classes);
-                return StringUtils.isEmpty(genericName) ? "?" : "? extends " + genericName;
+                return Strings.isNullOrEmpty(genericName) ? "?" : "? extends " + genericName;
             }
         } else {
             return super.getGenericName(asArgType, packages, classes);

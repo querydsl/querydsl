@@ -15,11 +15,12 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Target;
 import java.util.Arrays;
 
-import org.apache.commons.collections15.Transformer;
-import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.base.Charsets;
+import com.google.common.base.Function;
+import com.google.common.io.Resources;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.SimpleType;
@@ -29,9 +30,9 @@ import com.mysema.codegen.model.Types;
 
 public class JavaWriterTest {
 
-    private static final Transformer<Parameter, Parameter> transformer = new Transformer<Parameter, Parameter>() {
+    private static final Function<Parameter, Parameter> transformer = new Function<Parameter, Parameter>() {
         @Override
-        public Parameter transform(Parameter input) {
+        public Parameter apply(Parameter input) {
             return input;
         }
     };
@@ -44,8 +45,7 @@ public class JavaWriterTest {
 
     private static void match(String resource, String text) throws IOException {
         // TODO : try to compile ?
-        String expected = IOUtils
-                .toString(JavaWriterTest.class.getResourceAsStream(resource), "UTF-8")
+        String expected = Resources.toString(JavaWriterTest.class.getResource(resource), Charsets.UTF_8)        
                 .replace("\r\n", "\n").trim();
         String actual = text.trim();
         assertEquals(expected, actual);

@@ -8,7 +8,6 @@ package com.mysema.codegen.support;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,7 +16,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.collections15.Bag;
 import org.junit.Test;
 
 public class ClassUtilsTest {
@@ -43,7 +41,7 @@ public class ClassUtilsTest {
         assertEquals(List.class, ClassUtils.normalize(ArrayList.class));
         assertEquals(Set.class, ClassUtils.normalize(HashSet.class));
         assertEquals(Map.class, ClassUtils.normalize(HashMap.class));
-        assertEquals(Collection.class, ClassUtils.normalize(Bag.class));
+//        assertEquals(Collection.class, ClassUtils.normalize(Bag.class));
     }
 
 }

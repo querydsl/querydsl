@@ -9,8 +9,7 @@ import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Collection;
 
-import org.apache.commons.collections15.Transformer;
-
+import com.google.common.base.Function;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
 
@@ -34,7 +33,7 @@ public interface CodeWriter extends Appendable {
 
     CodeWriter beginClass(Type type, Type superClass, Type... interfaces) throws IOException;
 
-    <T> CodeWriter beginConstructor(Collection<T> params, Transformer<T, Parameter> transformer) throws IOException;
+    <T> CodeWriter beginConstructor(Collection<T> params, Function<T, Parameter> transformer) throws IOException;
 
     CodeWriter beginConstructor(Parameter... params) throws IOException;
 
@@ -43,12 +42,12 @@ public interface CodeWriter extends Appendable {
     CodeWriter beginLine(String... segments) throws IOException;
 
     <T> CodeWriter beginPublicMethod(Type returnType, String methodName, Collection<T> parameters,
-            Transformer<T, Parameter> transformer) throws IOException;
+            Function<T, Parameter> transformer) throws IOException;
 
     CodeWriter beginPublicMethod(Type returnType, String methodName, Parameter... args) throws IOException;
 
     <T> CodeWriter beginStaticMethod(Type type, String name, Collection<T> params,
-            Transformer<T, Parameter> transformer) throws IOException;
+            Function<T, Parameter> transformer) throws IOException;
 
     CodeWriter beginStaticMethod(Type returnType, String methodName, Parameter... args) throws IOException;
 
