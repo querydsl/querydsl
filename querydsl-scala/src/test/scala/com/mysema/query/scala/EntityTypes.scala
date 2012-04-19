@@ -2,7 +2,7 @@ package com.mysema.query.scala
 
 import com.mysema.codegen.model._
 import com.mysema.query.codegen._
-import org.apache.commons.lang3.StringUtils
+import com.google.common.base.CaseFormat
 
 import scala.collection.JavaConversions._
 
@@ -25,7 +25,7 @@ object EntityTypes {
     for ( clazz <- List(
         classOf[java.lang.Boolean], classOf[Boolean], classOf[Array[Byte]],
         classOf[Integer], classOf[java.util.Date], classOf[java.sql.Date], classOf[java.sql.Time])) {
-      val name = StringUtils.uncapitalize(clazz.getSimpleName + 
+      val name = uncapitalize(clazz.getSimpleName + 
           (if (clazz.isPrimitive) "_p" else "")).replace("[","").replace("]","")
       entityType.addProperty(new Property(entityType, name, 
           new ClassType(TypeCategory.get(clazz.getName), clazz), new Array[String](0)))
@@ -36,5 +36,7 @@ object EntityTypes {
     val lastName = new Parameter("lastName", Types.STRING)
     
     entityType.addConstructor(new Constructor(List(firstName, lastName)))
+    
+    def uncapitalize(str: String) = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, str)
 
 }

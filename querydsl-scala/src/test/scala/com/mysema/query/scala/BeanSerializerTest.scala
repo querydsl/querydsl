@@ -1,6 +1,5 @@
 package com.mysema.query.scala
 
-import org.apache.commons.lang3.StringUtils
 import com.mysema.codegen._;
 import com.mysema.codegen.model._;
 import com.mysema.query.codegen._;

@@ -13,8 +13,7 @@
  */
 package com.mysema.query.sql.codegen;
 
-import org.apache.commons.lang3.StringUtils;
-
+import com.mysema.codegen.StringUtils;
 import com.mysema.query.codegen.EntityType;
 import com.mysema.util.JavaSyntaxUtils;
 

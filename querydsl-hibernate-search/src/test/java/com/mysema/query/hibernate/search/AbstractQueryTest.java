@@ -20,7 +20,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.commons.io.FileUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -30,14 +29,16 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 
+import com.mysema.util.FileUtils;
+
 public abstract class AbstractQueryTest {
 
     private static SessionFactory sessionFactory;
 
     @BeforeClass
     public static void setUpClass() throws IOException{
-        FileUtils.deleteDirectory(new File("target/derbydb"));
-        FileUtils.deleteDirectory(new File("target/lucene"));
+        FileUtils.delete(new File("target/derbydb"));
+        FileUtils.delete(new File("target/lucene"));
         AnnotationConfiguration cfg = new AnnotationConfiguration();
         cfg.addAnnotatedClass(User.class);
         Properties props = new Properties();

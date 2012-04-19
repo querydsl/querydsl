@@ -13,12 +13,11 @@
  */
 package com.mysema.query.mongodb.morphia;
 
-import org.apache.commons.collections15.Transformer;
-
 import com.google.code.morphia.Datastore;
 import com.google.code.morphia.Morphia;
 import com.google.code.morphia.mapping.cache.DefaultEntityCache;
 import com.google.code.morphia.mapping.cache.EntityCache;
+import com.google.common.base.Function;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
@@ -44,9 +43,9 @@ public class MorphiaQuery<K> extends MongodbQuery<K> {
 
     public MorphiaQuery(final Morphia morphia, final Datastore datastore,
             final EntityCache cache, final EntityPath<K> entityPath) {
-        super(datastore.getCollection(entityPath.getType()), new Transformer<DBObject, K>(){
+        super(datastore.getCollection(entityPath.getType()), new Function<DBObject, K>(){
             @Override
-            public K transform(DBObject dbObject) {
+            public K apply(DBObject dbObject) {
                 return morphia.fromDBObject(entityPath.getType(), dbObject, cache);
             }
         }, MorphiaSerializer.DEFAULT);

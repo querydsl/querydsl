@@ -25,8 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang3.ClassUtils;
-
+import com.google.common.primitives.Primitives;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
@@ -92,7 +91,8 @@ public final class TypeFactory {
             
         } else {
             if (cl.isPrimitive()) {
-                cl = ClassUtils.primitiveToWrapper(cl);
+//                cl = ClassUtils.primitiveToWrapper(cl);
+                cl = Primitives.wrap(cl);
             }
             Type value;
             Type[] parameters = getParameters(cl, genericType);

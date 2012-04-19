@@ -30,50 +30,50 @@ public class ConvertersTest {
     
     @Test
     public void ToLowerCase() {
-        assertEquals("abcdef", converters.toLowerCase.transform(constant).toString());
-        assertEquals("lower(string)", converters.toLowerCase.transform(path).toString());
+        assertEquals("abcdef", converters.toLowerCase.apply(constant).toString());
+        assertEquals("lower(string)", converters.toLowerCase.apply(path).toString());
     }
     
     @Test
     public void ToUpperCase() {
-        assertEquals("ABCDEF", converters.toUpperCase.transform(constant).toString());
-        assertEquals("upper(string)", converters.toUpperCase.transform(path).toString());
+        assertEquals("ABCDEF", converters.toUpperCase.apply(constant).toString());
+        assertEquals("upper(string)", converters.toUpperCase.apply(path).toString());
     }
     
     @Test
     public void ToStartsWithViaLike() {
-        assertEquals("abcDEF%", converters.toStartsWithViaLike.transform(constant).toString());
-        assertEquals("string + %", converters.toStartsWithViaLike.transform(path).toString());
+        assertEquals("abcDEF%", converters.toStartsWithViaLike.apply(constant).toString());
+        assertEquals("string + %", converters.toStartsWithViaLike.apply(path).toString());
     }
     
     @Test
     public void ToStartsWithViaLikeLower() {
-        assertEquals("abcdef%", converters.toStartsWithViaLikeLower.transform(constant).toString());
-        assertEquals("lower(string + %)", converters.toStartsWithViaLikeLower.transform(path).toString());
+        assertEquals("abcdef%", converters.toStartsWithViaLikeLower.apply(constant).toString());
+        assertEquals("lower(string + %)", converters.toStartsWithViaLikeLower.apply(path).toString());
     }
     
     @Test
     public void ToEndsWithViaLike() {
-        assertEquals("%abcDEF", converters.toEndsWithViaLike.transform(constant).toString());
-        assertEquals("% + string", converters.toEndsWithViaLike.transform(path).toString());
+        assertEquals("%abcDEF", converters.toEndsWithViaLike.apply(constant).toString());
+        assertEquals("% + string", converters.toEndsWithViaLike.apply(path).toString());
     }
     
     @Test
     public void ToEndsWithViaLikeLower() {
-        assertEquals("%abcdef", converters.toEndsWithViaLikeLower.transform(constant).toString());
-        assertEquals("lower(% + string)", converters.toEndsWithViaLikeLower.transform(path).toString());
+        assertEquals("%abcdef", converters.toEndsWithViaLikeLower.apply(constant).toString());
+        assertEquals("lower(% + string)", converters.toEndsWithViaLikeLower.apply(path).toString());
     }
     
     @Test
     public void ToContainsViaLike() {
-        assertEquals("%abcDEF%", converters.toContainsViaLike.transform(constant).toString());
-        assertEquals("% + string + %", converters.toContainsViaLike.transform(path).toString());
+        assertEquals("%abcDEF%", converters.toContainsViaLike.apply(constant).toString());
+        assertEquals("% + string + %", converters.toContainsViaLike.apply(path).toString());
     }
     
     @Test
     public void ToContainsViaLikeLower() {
-        assertEquals("%abcdef%", converters.toContainsViaLikeLower.transform(constant).toString());
-        assertEquals("lower(% + string + %)", converters.toContainsViaLikeLower.transform(path).toString());
+        assertEquals("%abcdef%", converters.toContainsViaLikeLower.apply(constant).toString());
+        assertEquals("lower(% + string + %)", converters.toContainsViaLikeLower.apply(path).toString());
     }
 }
 

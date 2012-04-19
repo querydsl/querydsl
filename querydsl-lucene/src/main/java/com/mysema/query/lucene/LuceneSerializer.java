@@ -21,10 +21,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.BooleanClause;
@@ -42,6 +42,8 @@ import org.apache.lucene.search.TermRangeQuery;
 import org.apache.lucene.search.WildcardQuery;
 import org.apache.lucene.util.NumericUtils;
 
+import com.google.common.base.Splitter;
+import com.google.common.collect.Iterables;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.Expression;
@@ -72,6 +74,8 @@ public class LuceneSerializer {
         sortFields.put(BigDecimal.class, SortField.DOUBLE);
         sortFields.put(BigInteger.class, SortField.LONG);
     }
+    
+    private static final Splitter WS_SPLITTER = Splitter.on(Pattern.compile("\\s+"));
 
     public static final LuceneSerializer DEFAULT = new LuceneSerializer(false, true);
 
@@ -472,7 +476,7 @@ public class LuceneSerializer {
      */
     protected String[] convert(Path<?> leftHandSide, Expression<?> rightHandSide, QueryMetadata metadata) {
         if (rightHandSide instanceof PhraseElement) {
-            return StringUtils.split(rightHandSide.toString());
+            return Iterables.toArray(WS_SPLITTER.split(rightHandSide.toString()), String.class);
         } else if (rightHandSide instanceof TermElement) {
             return new String[] { rightHandSide.toString() };
         } else if (rightHandSide instanceof ParamExpression<?>){
@@ -505,7 +509,8 @@ public class LuceneSerializer {
             if (str.equals("")) {
                 return new String[] { str };
             } else {
-                return StringUtils.split(str);
+//                return StringUtils.split(str);
+                return Iterables.toArray(WS_SPLITTER.split(str), String.class);
             }
         } else {
             return new String[] { str };

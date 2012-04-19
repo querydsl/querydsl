@@ -18,8 +18,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.ObjectUtils;
-
+import com.google.common.base.Objects;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.ExtractorVisitor;
@@ -107,7 +106,7 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
         if (o == this) {
             return true;
         } else if (o instanceof BooleanBuilder) {
-            return ObjectUtils.equals(((BooleanBuilder)o).getValue(), predicate);
+            return Objects.equal(((BooleanBuilder)o).getValue(), predicate);
         } else {
             return false;
         }

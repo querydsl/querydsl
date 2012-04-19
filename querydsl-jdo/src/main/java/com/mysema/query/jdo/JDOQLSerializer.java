@@ -25,8 +25,7 @@ import java.util.Stack;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.ClassUtils;
-
+import com.google.common.primitives.Primitives;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.SerializerBase;
@@ -351,8 +350,8 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
                 
         } else if (operator.equals(Ops.NUMCAST)) {
             Class<?> clazz = ((Constant<Class<?>>)args.get(1)).getConstant();
-            if (Number.class.isAssignableFrom(clazz) && ClassUtils.wrapperToPrimitive(clazz) != null) {
-                clazz = ClassUtils.wrapperToPrimitive(clazz);
+            if (Number.class.isAssignableFrom(clazz) && Primitives.isWrapperType(clazz)) {
+                clazz = Primitives.unwrap(clazz);
             }
             append("(",clazz.getSimpleName(),")").handle(args.get(0));
 

@@ -21,8 +21,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.StringUtils;
-
+import com.google.common.base.Strings;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
@@ -430,7 +429,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     private void serializeSources(List<JoinExpression> joins) {        
         if (joins.isEmpty()) {
             String dummyTable = templates.getDummyTable();
-            if (!StringUtils.isEmpty(dummyTable)) {
+            if (!Strings.isNullOrEmpty(dummyTable)) {
                 append(templates.getFrom());
                 append(dummyTable);
             }

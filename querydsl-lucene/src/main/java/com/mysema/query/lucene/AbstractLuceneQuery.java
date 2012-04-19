@@ -19,7 +19,6 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.collections15.Transformer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.FieldSelector;
 import org.apache.lucene.document.MapFieldSelector;
@@ -31,6 +30,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Searcher;
 import org.apache.lucene.search.Sort;
 
+import com.google.common.base.Function;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.commons.lang.EmptyCloseableIterator;
 import com.mysema.commons.lang.IteratorAdapter;
@@ -65,7 +65,7 @@ SimpleProjectable<T> {
 
     private final LuceneSerializer serializer;
 
-    private final Transformer<Document, T> transformer;
+    private final Function<Document, T> transformer;
 
     @Nullable
     private FieldSelector fieldSelector;
@@ -78,14 +78,14 @@ SimpleProjectable<T> {
 
     @SuppressWarnings("unchecked")
     public AbstractLuceneQuery(LuceneSerializer serializer, Searcher searcher,
-                               Transformer<Document, T> transformer) {
+            Function<Document, T> transformer) {
         queryMixin = new QueryMixin<Q>((Q) this, new DefaultQueryMetadata(false));
         this.serializer = serializer;
         this.searcher = searcher;
         this.transformer = transformer;
     }
 
-    public AbstractLuceneQuery(Searcher searcher, Transformer<Document, T> transformer) {
+    public AbstractLuceneQuery(Searcher searcher, Function<Document, T> transformer) {
         this(LuceneSerializer.DEFAULT, searcher, transformer);
     }
 
@@ -317,7 +317,7 @@ SimpleProjectable<T> {
                 } else {
                     document = searcher.doc(scoreDocs[index].doc);
                 }
-                return transformer.transform(document);
+                return transformer.apply(document);
             } else {
                 return null;
             }

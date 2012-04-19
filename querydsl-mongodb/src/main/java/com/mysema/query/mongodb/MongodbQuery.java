@@ -20,9 +20,9 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.collections15.Transformer;
-import org.apache.commons.collections15.multimap.MultiHashMap;
-
+import com.google.common.base.Function;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -64,9 +64,9 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
 
     private final DBCollection collection;
 
-    private final Transformer<DBObject, K> transformer;
+    private final Function<DBObject, K> transformer;
 
-    public MongodbQuery(DBCollection collection, Transformer<DBObject, K> transformer, MongodbSerializer serializer) {
+    public MongodbQuery(DBCollection collection, Function<DBObject, K> transformer, MongodbSerializer serializer) {
         this.queryMixin = new QueryMixin<MongodbQuery<K>>(this, new DefaultQueryMetadata(false));
         this.transformer = transformer;
         this.collection = collection;
@@ -107,7 +107,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
     
     @Nullable
     protected Predicate createJoinFilter(QueryMetadata metadata) {
-        MultiHashMap<Expression<?>, Predicate> predicates = new MultiHashMap<Expression<?>, Predicate>();
+        Multimap<Expression<?>, Predicate> predicates = HashMultimap.<Expression<?>, Predicate>create();
         List<JoinExpression> joins = metadata.getJoins();
         for (int i = joins.size() - 1; i >= 0; i--) {
             JoinExpression join = joins.get(i);
@@ -197,7 +197,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
 
             @Override
             public K next() {
-                return transformer.transform(cursor.next());
+                return transformer.apply(cursor.next());
             }
 
             @Override
@@ -221,7 +221,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
             DBCursor cursor = createCursor();
             List<K> results = new ArrayList<K>(cursor.size());
             for (DBObject dbObject : cursor) {
-                results.add(transformer.transform(dbObject));
+                results.add(transformer.apply(dbObject));
             }
             return results;    
         } catch (NoResults ex) {
@@ -260,7 +260,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
         try {
             DBCursor c = createCursor().limit(1);
             if (c.hasNext()){
-                return transformer.transform(c.next());
+                return transformer.apply(c.next());
             } else {
                 return null;
             }    
@@ -278,7 +278,7 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
             }
             DBCursor c = createCursor().limit(limit.intValue());
             if (c.hasNext()){
-                K rv = transformer.transform(c.next());
+                K rv = transformer.apply(c.next());
                 if (c.hasNext()){
                     throw new NonUniqueResultException();
                 }

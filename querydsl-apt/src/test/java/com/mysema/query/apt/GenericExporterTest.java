@@ -13,9 +13,10 @@ import javax.persistence.Entity;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 import com.mysema.query.apt.hibernate.HibernateAnnotationProcessor;
 import com.mysema.query.codegen.GenericExporter;
 import com.mysema.query.codegen.Keywords;
@@ -92,8 +93,8 @@ public class GenericExporterTest extends AbstractProcessorTest{
         for (File file : new File("target/"+genericExporterFolder+"/com/mysema/query/domain").listFiles()){
             File other = new File("target/"+aptFolder+"/com/mysema/query/domain", file.getName());
             if (!other.exists() || !other.isFile()) continue;
-            String result1 = FileUtils.readFileToString(file, "UTF-8");
-            String result2 = FileUtils.readFileToString(other, "UTF-8");
+            String result1 = Files.toString(file, Charsets.UTF_8);
+            String result2 = Files.toString(other, Charsets.UTF_8);
             if (!result1.equals(result2)){
                 if (!expected.contains(file.getName())) {
                     System.err.println(file.getName());

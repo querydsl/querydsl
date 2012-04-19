@@ -13,15 +13,17 @@
  */
 package com.mysema.query.apt;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Test;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 
 public class BooleanExtensionsTest extends AbstractProcessorTest{
 
@@ -33,7 +35,7 @@ public class BooleanExtensionsTest extends AbstractProcessorTest{
                 new File(packagePath, "BooleanExtensions.java").getPath(),
                 new File(packagePath, "ExampleEntity.java").getPath());
         process(QuerydslAnnotationProcessor.class, sources,"booleanExtensions");
-        String qtypeContent = FileUtils.readFileToString(new File("target/booleanExtensions/com/mysema/query/QExampleEntity.java"));
+        String qtypeContent = Files.toString(new File("target/booleanExtensions/com/mysema/query/QExampleEntity.java"), Charsets.UTF_8);
         assertTrue(qtypeContent.contains("ext.java.lang.QBoolean booleanProp"));
         assertTrue(qtypeContent.contains("ext.java.lang.QBoolean booleanProp2"));
     }
@@ -44,7 +46,7 @@ public class BooleanExtensionsTest extends AbstractProcessorTest{
                 new File(packagePath, "BooleanExtensions2.java").getPath(),
                 new File(packagePath, "ExampleEntity.java").getPath());
         process(QuerydslAnnotationProcessor.class, sources,"booleanExtensions2");
-        String qtypeContent = FileUtils.readFileToString(new File("target/booleanExtensions2/com/mysema/query/QExampleEntity.java"));
+        String qtypeContent = Files.toString(new File("target/booleanExtensions2/com/mysema/query/QExampleEntity.java"), Charsets.UTF_8);
         assertTrue(qtypeContent.contains("ext.java.lang.QBoolean booleanProp"));
         assertTrue(qtypeContent.contains("ext.java.lang.QBoolean booleanProp2"));
     }

@@ -21,8 +21,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.StringUtils;
-
+import com.google.common.base.Joiner;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryFlag;
@@ -103,7 +102,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     
     public S prepend(String... str) {
         if (!dry){
-            builder.insert(0, StringUtils.join(str));                
+            builder.insert(0, Joiner.on("").join(str));                
         }        
         return self;
     }

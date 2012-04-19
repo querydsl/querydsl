@@ -8,5 +8,5 @@ Import-Template:
   javax.annotation.*;version="0",
   javax.inject.*;version="0",
   javax.jdo.*;version="[2.0.0,3.0.0)",
-  org.apache.commons.lang3.*;version="${commons.lang.version}",
+  com.google.common.*;version="${guava.version}",
   org.slf4j.*;version="${slf4j.version}"

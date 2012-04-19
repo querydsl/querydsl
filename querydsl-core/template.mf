@@ -7,5 +7,4 @@ Import-Template:
   javax.annotation.*;version="0",
   javax.inject.*;version="0", 
   net.sf.cglib.proxy.*;version="${cglib.version}",
-  org.apache.commons.collections15.*;version="${commons.collections.version}",
-  org.apache.commons.lang3.*;version="${commons.lang.version}"
+  com.google.common.*;version="${guava.version}"

@@ -21,8 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.collections15.IteratorUtils;
-
+import com.google.common.collect.Iterators;
 import com.mysema.codegen.Evaluator;
 import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.JoinExpression;
@@ -215,9 +214,10 @@ public class DefaultQueryEngine implements QueryEngine {
 
     private List<?> project(QueryMetadata metadata, List<Expression<?>> sources, List<?> list) {
         Evaluator projectionEvaluator = evaluatorFactory.create(metadata, sources, metadata.getProjection().get(0));
-        EvaluatorTransformer transformer = new EvaluatorTransformer(projectionEvaluator);
-        list = IteratorUtils.toList(IteratorUtils.transformedIterator(list.iterator(), transformer));
-        return list;
+        EvaluatorFunction transformer = new EvaluatorFunction(projectionEvaluator);
+        List target = new ArrayList();
+        Iterators.addAll(target, Iterators.transform(list.iterator(), transformer));
+        return target;
     }
 
 

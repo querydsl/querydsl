@@ -19,9 +19,8 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.collections15.IteratorUtils;
-
 import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.NonUniqueResultException;
 import com.mysema.query.Projectable;
 import com.mysema.query.ResultTransformer;
@@ -79,12 +78,12 @@ public abstract class ProjectableQuery<Q extends ProjectableQuery<Q>>
 
     @Override
     public List<Object[]> list(Expression<?>[] args) {
-        return IteratorUtils.toList(iterate(args));
+        return IteratorAdapter.asList(iterate(args));
     }
 
     @Override
     public <RT> List<RT> list(Expression<RT> projection) {
-        return IteratorUtils.toList(iterate(projection));
+        return IteratorAdapter.asList(iterate(projection));
     }
 
     @Override

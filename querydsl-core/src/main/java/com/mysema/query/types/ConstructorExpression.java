@@ -20,7 +20,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.ClassUtils;
+import com.google.common.primitives.Primitives;
 
 /**
  * ConstructorExpression represents a constructor invocation
@@ -34,11 +34,7 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
     private static final long serialVersionUID = -602747921848073175L;
 
     private static Class<?> normalize(Class<?> clazz){
-        if (clazz.isPrimitive()){
-            return ClassUtils.primitiveToWrapper(clazz);
-        }else{
-            return clazz;
-        }
+        return Primitives.wrap(clazz);
     }
     
     private static Class<?>[] getRealParameters(Class<?> type, Class<?>[] givenTypes) {

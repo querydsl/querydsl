@@ -13,9 +13,10 @@
  */
 package com.mysema.query.lucene;
 
-import org.apache.commons.collections15.Transformer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Searcher;
+
+import com.google.common.base.Function;
 
 /**
  * TypedQuery is a typed query implementation for Lucene queries.
@@ -25,11 +26,11 @@ import org.apache.lucene.search.Searcher;
  */
 public class TypedQuery<T> extends AbstractLuceneQuery<T, TypedQuery<T>> {
 
-    public TypedQuery(Searcher searcher, Transformer<Document, T> transformer) {
+    public TypedQuery(Searcher searcher, Function<Document, T> transformer) {
         super(searcher, transformer);
     }
 
-    public TypedQuery(LuceneSerializer serializer, Searcher searcher, Transformer<Document, T> transformer) {
+    public TypedQuery(LuceneSerializer serializer, Searcher searcher, Function<Document, T> transformer) {
         super(serializer, searcher, transformer);
     }
   

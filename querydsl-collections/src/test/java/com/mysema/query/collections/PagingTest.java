@@ -18,9 +18,9 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.collections15.IteratorUtils;
 import org.junit.Test;
 
+import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.types.path.NumberPath;
@@ -56,7 +56,7 @@ public class PagingTest extends AbstractQueryTest {
         assertEquals(total, createQuery(modifiers).count());
 
         // via iterator
-        assertEquals(size, IteratorUtils.toList(createQuery(modifiers).iterate(var)).size());
+        assertEquals(size, IteratorAdapter.asList(createQuery(modifiers).iterate(var)).size());
     }
 
     private ColQuery createQuery(QueryModifiers modifiers) {

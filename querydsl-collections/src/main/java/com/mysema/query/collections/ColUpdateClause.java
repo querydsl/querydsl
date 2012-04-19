@@ -17,12 +17,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections15.BeanMap;
-
 import com.mysema.query.dml.UpdateClause;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
+import com.mysema.util.BeanMap;
 
 /**
  * ColUpdateClause is an implementation of the UpdateClause interface for Querydsl Collections

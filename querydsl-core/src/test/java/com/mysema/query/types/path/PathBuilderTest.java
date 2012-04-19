@@ -20,10 +20,10 @@ import java.sql.Time;
 import java.util.Date;
 import java.util.Map;
 
-import org.apache.commons.collections15.BeanMap;
 import org.junit.Test;
 
 import com.mysema.query.BooleanBuilder;
+import com.mysema.util.BeanMap;
 
 public class PathBuilderTest {
 
@@ -113,7 +113,8 @@ public class PathBuilderTest {
     private <T> BooleanBuilder getByExample(T entity){
         PathBuilder<T> entityPath = new PathBuilder<T>((Class<T>)entity.getClass(), "entity");
         BooleanBuilder conditions = new BooleanBuilder();
-        for (Map.Entry<String,Object> entry : new BeanMap(entity).entrySet()){
+        Map<String, Object> beanMap = new BeanMap(entity);
+        for (Map.Entry<String,Object> entry : beanMap.entrySet()){
             if (!entry.getKey().equals("class")){
                 if (entry.getValue() != null){
                     conditions.and(entityPath.get(entry.getKey()).eq(entry.getValue()));

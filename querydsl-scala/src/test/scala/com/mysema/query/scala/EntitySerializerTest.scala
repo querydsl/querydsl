@@ -5,7 +5,6 @@ import com.mysema.query.types._
 import org.junit.{ Test, Before, After, Assert }
 import org.junit.Assert._
 
-import org.apache.commons.lang3.StringUtils
 import com.mysema.codegen._
 import com.mysema.codegen.model._
 

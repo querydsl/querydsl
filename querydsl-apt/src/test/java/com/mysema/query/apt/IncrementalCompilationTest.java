@@ -20,9 +20,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import com.google.common.io.Files;
 
 @Ignore
 public class IncrementalCompilationTest extends AbstractProcessorTest{
@@ -46,7 +47,7 @@ public class IncrementalCompilationTest extends AbstractProcessorTest{
         assertEquals(modified, qType.lastModified());
 
         // TestEntity is updated, QTestEntity is overwritten
-        FileUtils.touch(source);
+        Files.touch(source);
         compile(QuerydslAnnotationProcessor.class, Collections.singletonList(path), "overwrite");
         assertTrue("" + modified + " >= " + qType.lastModified(), modified < qType.lastModified());
         

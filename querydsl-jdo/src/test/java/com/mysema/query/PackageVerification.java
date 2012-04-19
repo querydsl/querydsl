@@ -23,9 +23,10 @@ import java.net.URLClassLoader;
 
 import javax.jdo.annotations.PersistenceCapable;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.query.apt.jdo.JDOAnnotationProcessor;
 import com.mysema.query.types.Expression;
@@ -47,7 +48,7 @@ public class PackageVerification {
         oneJarClassLoader.loadClass(PersistenceCapable.class.getName()); // jdo        
         oneJarClassLoader.loadClass(JDOAnnotationProcessor.class.getName()); // querydsl-apt
         String resourceKey = "META-INF/services/javax.annotation.processing.Processor";
-        assertEquals(JDOAnnotationProcessor.class.getName(), IOUtils.toString(oneJarClassLoader.findResource(resourceKey).openStream()));
+        assertEquals(JDOAnnotationProcessor.class.getName(), Resources.toString(oneJarClassLoader.findResource(resourceKey), Charsets.UTF_8));
     }
     
 }

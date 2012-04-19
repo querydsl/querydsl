@@ -33,10 +33,10 @@ public class EvaluatorTransformerTest {
         DefaultEvaluatorFactory evaluatorFactory = new DefaultEvaluatorFactory(ColQueryTemplates.DEFAULT);
         QCat cat = QCat.cat;
         Evaluator projectionEvaluator = evaluatorFactory.create(metadata, Collections.singletonList(cat), cat.name);
-        EvaluatorTransformer transformer = new EvaluatorTransformer(projectionEvaluator);
+        EvaluatorFunction transformer = new EvaluatorFunction(projectionEvaluator);
 
         Cat c = new Cat("Kitty");
-        assertEquals("Kitty", transformer.transform(c));
+        assertEquals("Kitty", transformer.apply(c));
     }
 
 }

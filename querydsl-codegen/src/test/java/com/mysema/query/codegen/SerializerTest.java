@@ -23,11 +23,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.codegen.JavaWriter;
+import com.mysema.codegen.StringUtils;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Constructor;
 import com.mysema.codegen.model.Parameter;

@@ -17,8 +17,7 @@ import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-
+import com.google.common.base.Objects;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Predicate;
@@ -93,10 +92,9 @@ public final class JoinExpression implements Serializable{
             return true;
         } else if (o instanceof JoinExpression) {
             JoinExpression j = (JoinExpression) o;
-            return new EqualsBuilder()
-                .append(condition, j.condition)
-                .append(target, j.target)
-                .append(type, j.type).isEquals();
+            return Objects.equal(condition, j.condition) &&
+                   Objects.equal(target, j.target) &&
+                   Objects.equal(type, j.type);
         } else {
             return false;
         }

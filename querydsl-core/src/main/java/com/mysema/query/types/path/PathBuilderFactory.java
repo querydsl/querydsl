@@ -16,7 +16,7 @@ package com.mysema.query.types.path;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
+import com.google.common.base.CaseFormat;
 
 /**
  * PathBuilderFactory is a factory class for PathBuilder creation
@@ -32,7 +32,7 @@ public final class PathBuilderFactory {
     public <T> PathBuilder<T> create(Class<T> clazz) {
         PathBuilder<T> rv = (PathBuilder<T>) paths.get(clazz);
         if (rv == null) {
-            rv = new PathBuilder<T>(clazz, StringUtils.uncapitalize(clazz.getSimpleName()));
+            rv = new PathBuilder<T>(clazz, CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, clazz.getSimpleName()));
             paths.put(clazz, rv);
         }
         return rv;

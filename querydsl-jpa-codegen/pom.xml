@@ -90,15 +90,6 @@
       <artifactId>slf4j-log4j12</artifactId>
     </dependency>    
 	    
-    <!-- test -->    
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>1.4</version>
-      <!-- license : Apache License 2.0 -->
-      <scope>test</scope>
-    </dependency>    	    
-	    
   </dependencies>
   
   <repositories>

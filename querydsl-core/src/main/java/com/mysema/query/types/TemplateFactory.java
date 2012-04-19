@@ -21,8 +21,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.collections15.Transformer;
-
+import com.google.common.base.Function;
 import com.mysema.query.types.Template.Element;
 
 /**
@@ -58,7 +57,7 @@ public class TemplateFactory {
                 }
                 String str = template.substring(m.start() + 1, m.end() - 1).toLowerCase(Locale.ENGLISH);
                 boolean asString = false;
-                Transformer<? extends Expression<?>, ? extends Expression<?>> transformer = null;
+                Function<? extends Expression<?>, ? extends Expression<?>> transformer = null;
                 if (str.charAt(0) == '%') {
                     if (str.charAt(1) == '%') {
                         transformer = converters.toEndsWithViaLikeLower;

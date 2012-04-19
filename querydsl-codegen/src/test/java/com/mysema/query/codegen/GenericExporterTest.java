@@ -19,10 +19,11 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 import com.mysema.query.domain.Cat;
 
 public class GenericExporterTest {
@@ -75,7 +76,7 @@ public class GenericExporterTest {
         exporter.setKeywords(Keywords.JPA);
         exporter.setTargetFolder(new File("target/gen1_jpa"));
         exporter.export(getClass().getPackage());
-        String str = FileUtils.readFileToString(new File("target/gen1_jpa/com/mysema/query/codegen/QGroup.java"));
+        String str = Files.toString(new File("target/gen1_jpa/com/mysema/query/codegen/QGroup.java"), Charsets.UTF_8);
         assertTrue(str.contains("QGroup group = new QGroup(\"group1\");"));
     }
     

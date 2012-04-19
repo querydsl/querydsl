@@ -17,12 +17,12 @@ import java.io.IOException;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.collections15.Transformer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.FieldSelector;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Searcher;
 
+import com.google.common.base.Function;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.QueryException;
 
@@ -42,10 +42,10 @@ public final class ResultIterator<T> implements CloseableIterator<T> {
     @Nullable
     private final FieldSelector fieldSelector;
 
-    private final Transformer<Document,T> transformer;
+    private final Function<Document,T> transformer;
 
     public ResultIterator(ScoreDoc[] scoreDocs, int offset, Searcher searcher, 
-            @Nullable FieldSelector fieldSelector, Transformer<Document, T> transformer) {
+            @Nullable FieldSelector fieldSelector, Function<Document, T> transformer) {
         this.scoreDocs = scoreDocs;
         this.cursor = offset;
         this.searcher = searcher;
@@ -67,7 +67,7 @@ public final class ResultIterator<T> implements CloseableIterator<T> {
             } else {
                 document = searcher.doc(scoreDocs[cursor++].doc);
             }
-            return transformer.transform(document);
+            return transformer.apply(document);
         } catch (IOException e) {
             throw new QueryException(e);
         }

@@ -29,13 +29,6 @@
     
     <!-- test -->    
     <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>1.4</version>
-      <!-- license : Apache License 2.0 -->
-      <scope>test</scope>
-    </dependency>    
-    <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-core</artifactId>
       <version>${project.parent.version}</version>

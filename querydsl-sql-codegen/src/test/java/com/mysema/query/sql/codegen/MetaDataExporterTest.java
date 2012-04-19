@@ -30,7 +30,6 @@ import javax.tools.JavaCompiler;
 
 import junit.framework.Assert;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -40,10 +39,7 @@ import org.junit.Test;
 import com.mysema.codegen.SimpleCompiler;
 import com.mysema.query.codegen.BeanSerializer;
 import com.mysema.query.codegen.Serializer;
-import com.mysema.query.sql.codegen.DefaultNamingStrategy;
-import com.mysema.query.sql.codegen.MetaDataExporter;
-import com.mysema.query.sql.codegen.NamingStrategy;
-import com.mysema.query.sql.codegen.OriginalNamingStrategy;
+import com.mysema.util.FileUtils;
 
 public class MetaDataExporterTest {
 
@@ -244,7 +240,7 @@ public class MetaDataExporterTest {
         if (clean) {
             try {
                 if (targetDir.exists()){
-                    FileUtils.cleanDirectory(targetDir);
+                    FileUtils.delete(targetDir);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

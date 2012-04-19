@@ -16,6 +16,7 @@ package com.mysema.query.sql.codegen;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,10 +27,10 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.io.Files;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.ScalaWriter;
@@ -311,14 +312,16 @@ public class MetaDataExporter {
         boolean generate = true;
         byte[] bytes = w.toString().getBytes(sourceEncoding);
         if (targetFile.exists() && targetFile.length() == bytes.length) {
-            String str = FileUtils.readFileToString(targetFile, sourceEncoding);
+            String str = Files.toString(targetFile, Charset.forName(sourceEncoding));
             if (str.equals(w.toString())) {
                 generate = false;
             }
+        } else {
+            targetFile.getParentFile().mkdirs();
         }
         
         if (generate) {
-            FileUtils.writeByteArrayToFile(targetFile, bytes);
+            Files.write(bytes, targetFile);
         }
     }
     

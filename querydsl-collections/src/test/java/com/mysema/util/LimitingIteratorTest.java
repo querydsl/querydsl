@@ -20,9 +20,9 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.collections15.IteratorUtils;
 import org.junit.Test;
 
+import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.util.LimitingIterator;
 
@@ -38,7 +38,7 @@ public class LimitingIteratorTest {
 
     private List<Integer> transform(List<Integer> ints, Long limit, @Nullable Long offset) {
         QueryModifiers modifiers = new QueryModifiers(limit, offset);
-        return IteratorUtils.toList(LimitingIterator.create(ints.iterator(), modifiers));
+        return IteratorAdapter.asList(LimitingIterator.create(ints.iterator(), modifiers));
     }
 
 }

@@ -25,8 +25,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.ObjectUtils;
-
+import com.google.common.base.Objects;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
@@ -318,15 +317,15 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
             QueryMetadata q = (QueryMetadata)o;
             return q.getFlags().equals(flags)
                 && q.getGroupBy().equals(groupBy)
-                && ObjectUtils.equals(q.getHaving(), having.getValue())
+                && Objects.equal(q.getHaving(), having.getValue())
                 && q.isDistinct() == distinct
                 && q.isUnique() == unique
                 && q.getJoins().equals(joins)
-                && ObjectUtils.equals(q.getModifiers(), modifiers)
+                && Objects.equal(q.getModifiers(), modifiers)
                 && q.getOrderBy().equals(orderBy)
                 && q.getParams().equals(params)
                 && q.getProjection().equals(projection)
-                && ObjectUtils.equals(q.getWhere(), where.getValue());
+                && Objects.equal(q.getWhere(), where.getValue());
             
         } else {
             return false;

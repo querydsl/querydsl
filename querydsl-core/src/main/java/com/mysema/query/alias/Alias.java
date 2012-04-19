@@ -24,8 +24,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.StringUtils;
-
+import com.google.common.base.CaseFormat;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
@@ -190,7 +189,7 @@ public final class Alias {
     //CHECKSTYLE:ON
 
     public static <A> A alias(Class<A> cl) {
-        return alias(cl, StringUtils.uncapitalize(cl.getSimpleName()));
+        return alias(cl, CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, cl.getSimpleName()));
     }
 
     public static <A> A alias(Class<A> cl, Expression<? extends A> expr) {

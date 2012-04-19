@@ -22,12 +22,6 @@
 
   <dependencies>
     <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>${commons.io.version}</version>
-      <!-- license : Apache License 2.0 -->
-    </dependency>
-    <dependency>
       <groupId>com.mysema.querydsl</groupId>
       <artifactId>querydsl-codegen</artifactId>
       <version>${project.parent.version}</version>

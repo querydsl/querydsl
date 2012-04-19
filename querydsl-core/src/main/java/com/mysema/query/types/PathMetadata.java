@@ -14,11 +14,11 @@
 package com.mysema.query.types;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import com.google.common.base.Objects;
 
 /**
  * PathMetadata provides metadata for {@link Path} expressions.
@@ -43,7 +43,7 @@ public final class PathMetadata<T> implements Serializable{
         this.expression = expression;
         this.pathType = type;
         this.root = parent != null ? parent.getRoot() : null;
-        this.hashCode = new HashCodeBuilder().append(expression).append(parent).append(pathType).toHashCode();
+        this.hashCode = Arrays.asList(expression, parent, pathType).hashCode();
     }
 
     @Override
@@ -52,10 +52,9 @@ public final class PathMetadata<T> implements Serializable{
             return true;
         } else if (obj instanceof PathMetadata<?>) { 
             PathMetadata<?> p = (PathMetadata<?>) obj;
-            return new EqualsBuilder()
-                .append(expression, p.expression)
-                .append(parent, p.parent)
-                .append(pathType, p.pathType).isEquals();
+            return Objects.equal(expression, p.expression) &&
+                   Objects.equal(parent, p.parent) &&
+                   Objects.equal(pathType, p.pathType);
         } else {
             return false;
         }

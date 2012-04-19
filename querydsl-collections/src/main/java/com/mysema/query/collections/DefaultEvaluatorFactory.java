@@ -23,8 +23,7 @@ import javax.annotation.Nullable;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
-import org.apache.commons.lang3.ClassUtils;
-
+import com.google.common.primitives.Primitives;
 import com.mysema.codegen.Evaluator;
 import com.mysema.codegen.EvaluatorFactory;
 import com.mysema.codegen.model.ClassType;
@@ -94,8 +93,8 @@ public class DefaultEvaluatorFactory {
 
         // normalize types
         for (int i = 0; i < types.length; i++) {
-            if (ClassUtils.wrapperToPrimitive(types[i]) != null){
-                types[i] = ClassUtils.wrapperToPrimitive(types[i]);
+            if (Primitives.isWrapperType(types[i])){
+                types[i] = Primitives.unwrap(types[i]);
             }
         }
 

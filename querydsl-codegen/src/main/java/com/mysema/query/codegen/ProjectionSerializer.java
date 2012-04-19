@@ -17,8 +17,7 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
-import org.apache.commons.collections15.Transformer;
-
+import com.google.common.base.Function;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Constructor;
@@ -82,9 +81,9 @@ public final class ProjectionSerializer implements Serializer{
         
         for (Constructor c : model.getConstructors()) {
             // begin
-            writer.beginConstructor(c.getParameters(), new Transformer<Parameter,Parameter>() {
+            writer.beginConstructor(c.getParameters(), new Function<Parameter,Parameter>() {
                 @Override
-                public Parameter transform(Parameter p) {
+                public Parameter apply(Parameter p) {
                     return new Parameter(p.getName(), typeMappings.getExprType(p.getType(), 
                             model, false, false, true));
                 }

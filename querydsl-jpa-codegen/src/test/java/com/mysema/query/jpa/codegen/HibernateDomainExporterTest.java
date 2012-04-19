@@ -21,16 +21,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.hibernate.cfg.Configuration;
 import org.junit.Test;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 import com.mysema.query.annotations.Config;
 import com.mysema.query.codegen.SerializerConfig;
 import com.mysema.query.codegen.SimpleSerializerConfig;
-import com.mysema.query.jpa.codegen.HibernateDomainExporter;
 import com.mysema.query.jpa.domain.Domain;
 import com.mysema.query.jpa.domain2.Domain2;
+import com.mysema.util.FileUtils;
 
 public class HibernateDomainExporterTest {
     
@@ -39,7 +40,7 @@ public class HibernateDomainExporterTest {
         
     @Test
     public void Execute_Contact() throws IOException {
-        FileUtils.deleteDirectory(new File("target/gen1"));
+        FileUtils.delete(new File("target/gen1"));
         File contact = new File("src/test/resources/contact.hbm.xml");
         Configuration config = new Configuration();
         config.addFile(contact);
@@ -52,7 +53,7 @@ public class HibernateDomainExporterTest {
     
     @Test
     public void Execute_Contact_with_Suffix() throws IOException {
-        FileUtils.deleteDirectory(new File("target/gen1"));
+        FileUtils.delete(new File("target/gen1"));
         File contact = new File("src/test/resources/contact.hbm.xml");
         Configuration config = new Configuration();
         config.addFile(contact);
@@ -65,7 +66,7 @@ public class HibernateDomainExporterTest {
     
     @Test
     public void Execute_Contact2() throws IOException {
-        FileUtils.deleteDirectory(new File("target/gen2"));
+        FileUtils.delete(new File("target/gen2"));
         File contact = new File("src/test/resources/contact2.hbm.xml");
         Configuration config = new Configuration();
         config.addFile(contact);
@@ -78,7 +79,7 @@ public class HibernateDomainExporterTest {
     
     @Test
     public void Execute_Multiple() throws IOException{
-        FileUtils.deleteDirectory(new File("target/gen3"));
+        FileUtils.delete(new File("target/gen3"));
         Configuration config = new Configuration();
         for (Class<?> cl : Domain.classes){
             config.addAnnotatedClass(cl);
@@ -88,9 +89,9 @@ public class HibernateDomainExporterTest {
         
         List<String> failures = new ArrayList<String>();
         for (File file : new File("target/gen3/com/mysema/query/jpa/domain").listFiles()){
-            String result1 = FileUtils.readFileToString(file, "UTF-8");
-            String result2 = FileUtils.readFileToString(
-                new File("../querydsl-jpa/target/generated-test-sources/java/com/mysema/query/jpa/domain", file.getName()));
+            String result1 = Files.toString(file, Charsets.UTF_8);
+            String result2 = Files.toString(
+                new File("../querydsl-jpa/target/generated-test-sources/java/com/mysema/query/jpa/domain", file.getName()), Charsets.UTF_8);
             if (!result1.equals(result2)){
                 System.err.println(file.getName());
                 failures.add(file.getName());
@@ -105,7 +106,7 @@ public class HibernateDomainExporterTest {
     
     @Test
     public void Execute_Multiple2() throws IOException{
-        FileUtils.deleteDirectory(new File("target/gen4"));
+        FileUtils.delete(new File("target/gen4"));
         Configuration config = new Configuration();
         for (Class<?> cl : Domain2.classes){
             config.addAnnotatedClass(cl);
@@ -115,9 +116,9 @@ public class HibernateDomainExporterTest {
         
         List<String> failures = new ArrayList<String>();
         for (File file : new File("target/gen4/com/mysema/query/jpa/domain2").listFiles()){
-            String result1 = FileUtils.readFileToString(file, "UTF-8");
-            String result2 = FileUtils.readFileToString(
-                new File("../querydsl-jpa/target/generated-test-sources/java/com/mysema/query/jpa/domain2", file.getName()));
+            String result1 = Files.toString(file, Charsets.UTF_8);
+            String result2 = Files.toString(
+                new File("../querydsl-jpa/target/generated-test-sources/java/com/mysema/query/jpa/domain2", file.getName()), Charsets.UTF_8);
             if (!result1.equals(result2)){
                 System.err.println(file.getName());
                 failures.add(file.getName());
@@ -133,7 +134,7 @@ public class HibernateDomainExporterTest {
 
     @Test
     public void Execute_Store() throws IOException {
-        FileUtils.deleteDirectory(new File("target/gen5"));
+        FileUtils.delete(new File("target/gen5"));
         File contact = new File("src/test/resources/store.hbm.xml");
         Configuration config = new Configuration();
         config.addFile(contact);
@@ -149,7 +150,7 @@ public class HibernateDomainExporterTest {
 
     private static void assertContains(File file, String... strings) throws IOException{
         assertTrue(file.getPath() + " doesn't exist", file.exists());
-        String result = FileUtils.readFileToString(file, "UTF-8");
+        String result = Files.toString(file, Charsets.UTF_8);
         for (String str : strings){
             assertTrue(str + " was not contained", result.contains(str));    
         }

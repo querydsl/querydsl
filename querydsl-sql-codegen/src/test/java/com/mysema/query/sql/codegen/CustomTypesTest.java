@@ -20,10 +20,11 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 import com.mysema.query.AbstractJDBCTest;
 import com.mysema.query.alias.Gender;
 import com.mysema.query.sql.Configuration;
@@ -32,9 +33,6 @@ import com.mysema.query.sql.HSQLDBTemplates;
 import com.mysema.query.sql.QPerson;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLQueryImpl;
-import com.mysema.query.sql.codegen.DefaultNamingStrategy;
-import com.mysema.query.sql.codegen.MetaDataExporter;
-import com.mysema.query.sql.codegen.NamingStrategy;
 import com.mysema.query.sql.dml.SQLInsertClause;
 import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.sql.types.EnumByNameType;
@@ -83,7 +81,7 @@ public class CustomTypesTest extends AbstractJDBCTest{
         
         // export
         exporter.export(connection.getMetaData());
-        String person = FileUtils.readFileToString(new File("target/customExport/test/QPerson.java"));
+        String person = Files.toString(new File("target/customExport/test/QPerson.java"), Charsets.UTF_8);
         assertTrue(person.contains("createEnum(\"GENDER\""));              
     }
     

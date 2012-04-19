@@ -20,8 +20,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang3.ClassUtils;
-
+import com.google.common.primitives.Primitives;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryException;
@@ -346,7 +345,7 @@ public class SQLTemplates extends Templates {
     }
     
     public final String getTypeForClass(Class<?> cl) {
-        Class<?> clazz = cl.isPrimitive() ? ClassUtils.primitiveToWrapper(cl) : cl;
+        Class<?> clazz = Primitives.wrap(cl);
         if (class2type.containsKey(clazz)) {
             return class2type.get(clazz);
         } else {

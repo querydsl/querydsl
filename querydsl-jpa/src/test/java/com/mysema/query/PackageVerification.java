@@ -23,9 +23,10 @@ import java.net.URLClassLoader;
 
 import javax.persistence.Entity;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.query.apt.hibernate.HibernateAnnotationProcessor;
 import com.mysema.query.apt.jpa.JPAAnnotationProcessor;
@@ -56,7 +57,7 @@ public class PackageVerification {
         }
         oneJarClassLoader.loadClass(processor.getName()); // querydsl-apt
         String resourceKey = "META-INF/services/javax.annotation.processing.Processor";
-        assertEquals(processor.getName(), IOUtils.toString(oneJarClassLoader.findResource(resourceKey).openStream()));
+        assertEquals(processor.getName(), Resources.toString(oneJarClassLoader.findResource(resourceKey), Charsets.UTF_8));
     }
     
 }

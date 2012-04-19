@@ -25,12 +25,14 @@ import javax.tools.JavaCompiler;
 
 import junit.framework.Assert;
 
-import org.apache.commons.io.FileUtils;
 import org.eclipse.jdt.internal.compiler.tool.EclipseCompiler;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 import com.mysema.codegen.SimpleCompiler;
+import com.mysema.util.FileUtils;
 
 public class EclipseCompilationTest {
 
@@ -50,7 +52,7 @@ public class EclipseCompilationTest {
 
         // prepare output
         File out = new File("target/out-eclipse");
-        FileUtils.deleteDirectory(out);
+        FileUtils.delete(out);
         if (!out.mkdirs()){
             Assert.fail("Creation of " + out.getPath() + " failed");
         }
@@ -80,7 +82,7 @@ public class EclipseCompilationTest {
 
         File resultFile = new File("target/out-eclipse/com/mysema/query/eclipse/QSimpleEntity.java");
         assertTrue(resultFile.exists());
-        String result = FileUtils.readFileToString(resultFile);
+        String result = Files.toString(resultFile, Charsets.UTF_8);
         assertTrue(result.contains("NumberPath<java.math.BigDecimal> bigDecimalProp"));
         assertTrue(result.contains("NumberPath<Integer> integerProp"));
         assertTrue(result.contains("NumberPath<Integer> intProp"));

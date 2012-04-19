@@ -17,12 +17,11 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.collections15.BeanMap;
-
 import com.mysema.query.QueryException;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.types.Null;
 import com.mysema.query.types.Path;
+import com.mysema.util.BeanMap;
 
 /**
  * Creates the mapping by inspecting the RelationalPath via reflection and object via bean inspection. 
@@ -48,12 +47,12 @@ public class BeanMapper extends AbstractMapper<Object> {
         this.withNullBindings = withNullBindings;
     }
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public Map<Path<?>, Object> createMap(RelationalPath<?> entity, Object bean) {
         try {
             Map<Path<?>, Object> values = new HashMap<Path<?>, Object>();
-            BeanMap map = new BeanMap(bean);
+            Map<String, Object> map = new BeanMap(bean);
             Map<String, Field> fields = getPathFields(entity.getClass());
             for (Map.Entry entry : map.entrySet()) {
                 String property = entry.getKey().toString();

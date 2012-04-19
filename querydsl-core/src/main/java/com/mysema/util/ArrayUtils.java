@@ -13,6 +13,8 @@
  */
 package com.mysema.util;
 
+import java.lang.reflect.Array;
+
 /**
  * @author tiwe
  *
@@ -27,6 +29,19 @@ public final class ArrayUtils {
             offset += arr.length;
         }
         return target;
+    }    
+    
+    // copied and modified from commons-lang-2.3
+    // originally licensed under ASL 2.0
+    public static Object[] subarray(Object[] array, int startIndexInclusive, int endIndexExclusive) {
+        int newSize = endIndexExclusive - startIndexInclusive;
+        Class<?> type = array.getClass().getComponentType();
+        if (newSize <= 0) {
+            return (Object[]) Array.newInstance(type, 0);
+        }
+        Object[] subarray = (Object[]) Array.newInstance(type, newSize);
+        System.arraycopy(array, startIndexInclusive, subarray, 0, newSize);
+        return subarray;
     }
 
     private ArrayUtils() {}

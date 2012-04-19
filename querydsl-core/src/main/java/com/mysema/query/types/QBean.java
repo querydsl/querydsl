@@ -21,8 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections15.BeanMap;
-
+import com.mysema.util.BeanMap;
 import com.mysema.util.ReflectionUtils;
 
 /**
@@ -184,7 +183,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
                     }
                 }
             }else{
-                BeanMap beanMap = new BeanMap(rv);
+                Map<String, Object> beanMap = new BeanMap(rv);
                 for (Map.Entry<String, ? extends Expression<?>> entry : bindings.entrySet()) {
                     Object value = a[this.args.indexOf(entry.getValue())];
                     if (value != null) {

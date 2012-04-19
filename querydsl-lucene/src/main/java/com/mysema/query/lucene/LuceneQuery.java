@@ -13,9 +13,10 @@
  */
 package com.mysema.query.lucene;
 
-import org.apache.commons.collections15.Transformer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Searcher;
+
+import com.google.common.base.Function;
 
 /**
  * LuceneQuery is a Querydsl query implementation for Lucene queries.
@@ -24,13 +25,11 @@ import org.apache.lucene.search.Searcher;
  */
 public class LuceneQuery extends AbstractLuceneQuery<Document, LuceneQuery>{
     
-    private static final Transformer<Document,Document> TRANSFORMER = new Transformer<Document,Document>() {
-
+    private static final Function<Document,Document> TRANSFORMER = new Function<Document,Document>() {
         @Override
-        public Document transform(Document input) {
+        public Document apply(Document input) {
             return input;
-        }
-        
+        }        
     };
   
     public LuceneQuery(Searcher searcher) {

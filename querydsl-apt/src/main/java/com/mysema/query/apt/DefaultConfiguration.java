@@ -42,8 +42,7 @@ import javax.lang.model.element.PackageElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
 
-import org.apache.commons.lang3.StringUtils;
-
+import com.google.common.base.Strings;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.annotations.Config;
@@ -168,7 +167,7 @@ public class DefaultConfiguration implements Configuration {
         
         if (options.containsKey(QUERYDSL_EXCLUDED_PACKAGES)) {
             String packageString = options.get(QUERYDSL_EXCLUDED_PACKAGES);
-            if (StringUtils.isNotBlank(packageString)) {
+            if (!Strings.isNullOrEmpty(packageString)) {
                 for (String packageName : packageString.split(DEFAULT_SEPARATOR)) {
                     excludedPackages.add(packageName);
                 }
@@ -177,7 +176,7 @@ public class DefaultConfiguration implements Configuration {
         
         if (options.containsKey(QUERYDSL_EXCLUDED_CLASSES)) {
             String classString = options.get(QUERYDSL_EXCLUDED_CLASSES);
-            if (StringUtils.isNotBlank(classString)) {
+            if (!Strings.isNullOrEmpty(classString)) {
                 for (String className : classString.split(DEFAULT_SEPARATOR)) {
                     excludedClasses.add(className);
                 }

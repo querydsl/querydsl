@@ -22,8 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.collections15.Transformer;
-
+import com.google.common.base.Function;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.TypeCategory;
@@ -38,9 +37,9 @@ import com.mysema.util.BeanUtils;
  */
 public class BeanSerializer implements Serializer{
     
-    private static final Transformer<Property, Parameter> propertyToParameter = new Transformer<Property, Parameter>() {
+    private static final Function<Property, Parameter> propertyToParameter = new Function<Property, Parameter>() {
         @Override
-        public Parameter transform(Property input) {
+        public Parameter apply(Property input) {
             return new Parameter(input.getName(), input.getType()); 
         }                
     };

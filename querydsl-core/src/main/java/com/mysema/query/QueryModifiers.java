@@ -19,7 +19,7 @@ import java.util.List;
 import javax.annotation.Nonnegative;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.ObjectUtils;
+import com.google.common.base.Objects;
 
 /**
  * QueryModifiers combines limit and offset info into a single type.
@@ -106,7 +106,7 @@ public final class QueryModifiers implements Serializable{
             return true;
         } else if (o instanceof QueryModifiers) {
             QueryModifiers qm = (QueryModifiers)o;
-            return ObjectUtils.equals(qm.getLimit(), limit) && ObjectUtils.equals(qm.getOffset(), offset);
+            return Objects.equal(qm.getLimit(), limit) && Objects.equal(qm.getOffset(), offset);
         } else {
             return false;
         }

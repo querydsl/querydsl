@@ -21,13 +21,12 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionBase;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.QBean;
 import com.mysema.query.types.Visitor;
+import com.mysema.util.ArrayUtils;
 
 /**
  * Expression used to project a list of beans

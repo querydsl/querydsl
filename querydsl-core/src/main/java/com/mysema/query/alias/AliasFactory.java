@@ -13,18 +13,18 @@
  */
 package com.mysema.query.alias;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import javax.annotation.Nullable;
 
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 
-import org.apache.commons.collections15.Transformer;
-import org.apache.commons.collections15.map.LazyMap;
-
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.mysema.commons.lang.Pair;
+import com.mysema.query.QueryException;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.PathMetadataFactory;
@@ -43,14 +43,13 @@ public class AliasFactory {
     private final TypeSystem typeSystem;
     
     // caches top level paths (class/var as key)
-    private final Map<Pair<Class<?>,String>, EntityPath<?>> pathCache;
+    private final LoadingCache<Pair<Class<?>,String>, EntityPath<?>> pathCache;
         
-    private final Map<Pair<Class<?>,Expression<?>>, ManagedObject> proxyCache =
-        LazyMap.decorate(
-            new HashMap<Pair<Class<?>,Expression<?>>,ManagedObject>(),
-            new Transformer<Pair<Class<?>,Expression<?>>,ManagedObject>() {
+    private final LoadingCache<Pair<Class<?>,Expression<?>>, ManagedObject> proxyCache =
+        CacheBuilder.newBuilder().build(
+            new CacheLoader<Pair<Class<?>,Expression<?>>,ManagedObject>() {
                 @Override
-                public ManagedObject transform(Pair<Class<?>, Expression<?>> input) {
+                public ManagedObject load(Pair<Class<?>, Expression<?>> input) {
                     return (ManagedObject) createProxy(input.getFirst(), input.getSecond());
                 }
             });
@@ -58,10 +57,10 @@ public class AliasFactory {
     public AliasFactory(final PathFactory pathFactory, TypeSystem typeSystem) {
         this.pathFactory = pathFactory; 
         this.typeSystem = typeSystem;
-        this.pathCache = LazyMap.decorate(new HashMap<Pair<Class<?>,String>,EntityPath<?>>(), 
-            new Transformer<Pair<Class<?>, String>, EntityPath<?>>() {
+        this.pathCache = CacheBuilder.newBuilder().build( 
+            new CacheLoader<Pair<Class<?>, String>, EntityPath<?>>() {
                 @Override
-                public EntityPath<?> transform( Pair<Class<?>, String> input) {
+                public EntityPath<?> load( Pair<Class<?>, String> input) {
                     return (EntityPath<?>)pathFactory.createEntityPath(
                             input.getFirst(), 
                             PathMetadataFactory.forVariable(input.getSecond()));
@@ -79,7 +78,11 @@ public class AliasFactory {
      */
     @SuppressWarnings("unchecked")
     public <A> A createAliasForExpr(Class<A> cl, Expression<? extends A> expr) {
-        return (A) proxyCache.get(Pair.of(cl, expr));
+        try {
+            return (A) proxyCache.get(Pair.<Class<?>, Expression<?>>of(cl, expr));
+        } catch (ExecutionException e) {
+           throw new QueryException(e);
+        }
     }
 
     /**
@@ -105,8 +108,12 @@ public class AliasFactory {
      */
     @SuppressWarnings("unchecked")
     public <A> A createAliasForVariable(Class<A> cl, String var) {
-        Expression<?> path = pathCache.get(Pair.of(cl, var));
-        return (A) proxyCache.get(Pair.of(cl, path));
+        try {
+            Expression<?> path = pathCache.get(Pair.<Class<?>, String>of(cl, var));
+            return (A) proxyCache.get(Pair.<Class<?>, Expression<?>>of(cl, path));
+        } catch (ExecutionException e) {
+            throw new QueryException(e);
+        }        
     }
 
     /**

@@ -15,7 +15,7 @@ package com.mysema.query.types;
 
 import java.util.Locale;
 
-import org.apache.commons.collections15.Transformer;
+import com.google.common.base.Function;
 
 /**
  * Converters provides expression converters for lower case, upper case and prefix/suffix conversions
@@ -41,10 +41,10 @@ public final class Converters {
         this.escape3 = escape +""+ escape;
     }
     
-    public final Transformer<Expression<String>,Expression<String>> toLowerCase = 
-        new Transformer<Expression<String>,Expression<String>>() {
+    public final Function<Expression<String>,Expression<String>> toLowerCase = 
+        new Function<Expression<String>,Expression<String>>() {
         @Override
-        public Expression<String> transform(Expression<String> arg) {
+        public Expression<String> apply(Expression<String> arg) {
             if (arg instanceof Constant<?>) {
                 return ConstantImpl.create(arg.toString().toLowerCase(Locale.ENGLISH));
             } else {
@@ -53,10 +53,10 @@ public final class Converters {
         }
     };
 
-    public final Transformer<Expression<String>,Expression<String>> toUpperCase = 
-        new Transformer<Expression<String>,Expression<String>>() {
+    public final Function<Expression<String>,Expression<String>> toUpperCase = 
+        new Function<Expression<String>,Expression<String>>() {
         @Override
-        public Expression<String> transform(Expression<String> arg) {
+        public Expression<String> apply(Expression<String> arg) {
             if (arg instanceof Constant<?>){
                 return ConstantImpl.create(arg.toString().toUpperCase(Locale.ENGLISH));
             } else {
@@ -65,10 +65,10 @@ public final class Converters {
         }
     };
 
-    public final Transformer<Expression<String>,Expression<String>> toStartsWithViaLike = 
-        new Transformer<Expression<String>,Expression<String>>() {
+    public final Function<Expression<String>,Expression<String>> toStartsWithViaLike = 
+        new Function<Expression<String>,Expression<String>>() {
         @Override
-        public Expression<String> transform(Expression<String> arg) {
+        public Expression<String> apply(Expression<String> arg) {
             if (arg instanceof Constant<?>) {
                 return ConstantImpl.create(escapeForLike((Constant<String>)arg) + "%"); 
             } else {
@@ -77,10 +77,10 @@ public final class Converters {
         }
     };
 
-    public final Transformer<Expression<String>,Expression<String>> toStartsWithViaLikeLower = 
-        new Transformer<Expression<String>,Expression<String>>(){
+    public final Function<Expression<String>,Expression<String>> toStartsWithViaLikeLower = 
+        new Function<Expression<String>,Expression<String>>(){
         @Override
-        public Expression<String> transform(Expression<String> arg) {
+        public Expression<String> apply(Expression<String> arg) {
             if (arg instanceof Constant<?>) {
                 return ConstantImpl.create(escapeForLike((Constant<String>)arg).toLowerCase(Locale.ENGLISH) + "%"); 
             } else {
@@ -90,10 +90,10 @@ public final class Converters {
         }
     };
 
-    public final Transformer<Expression<String>,Expression<String>> toEndsWithViaLike =
-        new Transformer<Expression<String>,Expression<String>>(){
+    public final Function<Expression<String>,Expression<String>> toEndsWithViaLike =
+        new Function<Expression<String>,Expression<String>>(){
         @Override
-        public Expression<String> transform(Expression<String> arg) {
+        public Expression<String> apply(Expression<String> arg) {
             if (arg instanceof Constant<?>) {
                 return ConstantImpl.create("%" + escapeForLike((Constant<String>)arg)); 
             } else {
@@ -102,10 +102,10 @@ public final class Converters {
         }
     };
 
-    public final Transformer<Expression<String>,Expression<String>> toEndsWithViaLikeLower = 
-        new Transformer<Expression<String>,Expression<String>>(){
+    public final Function<Expression<String>,Expression<String>> toEndsWithViaLikeLower = 
+        new Function<Expression<String>,Expression<String>>(){
         @Override
-        public Expression<String> transform(Expression<String> arg) {
+        public Expression<String> apply(Expression<String> arg) {
             if (arg instanceof Constant<?>) {
                 return ConstantImpl.create("%" + escapeForLike((Constant<String>)arg).toLowerCase(Locale.ENGLISH)); 
             } else {
@@ -115,10 +115,10 @@ public final class Converters {
         }
     };
 
-    public final Transformer<Expression<String>,Expression<String>> toContainsViaLike = 
-        new Transformer<Expression<String>,Expression<String>>(){
+    public final Function<Expression<String>,Expression<String>> toContainsViaLike = 
+        new Function<Expression<String>,Expression<String>>(){
         @Override
-        public Expression<String> transform(Expression<String> arg) {
+        public Expression<String> apply(Expression<String> arg) {
             if (arg instanceof Constant<?>) {
                 return ConstantImpl.create("%" + escapeForLike((Constant<String>)arg) + "%"); 
             } else {
@@ -128,10 +128,10 @@ public final class Converters {
         }
     };
 
-    public final Transformer<Expression<String>,Expression<String>> toContainsViaLikeLower = 
-        new Transformer<Expression<String>,Expression<String>>(){
+    public final Function<Expression<String>,Expression<String>> toContainsViaLikeLower = 
+        new Function<Expression<String>,Expression<String>>(){
         @Override
-        public Expression<String> transform(Expression<String> arg) {
+        public Expression<String> apply(Expression<String> arg) {
             if (arg instanceof Constant<?>) {
                 return ConstantImpl.create("%" + escapeForLike((Constant<String>)arg).toLowerCase(Locale.ENGLISH) + "%"); 
             } else {

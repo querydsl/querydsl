@@ -16,7 +16,7 @@ package com.mysema.query.types;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
+import com.mysema.util.ArrayUtils;
 
 /**
  * Utility class to expand FactoryExpression constructor arguments and compress FactoryExpression invocation arguments
@@ -112,7 +112,7 @@ public final class FactoryExpressionUtils {
         }
         return counter;
     }
-
+    
     private static Object[] compress(List<Expression<?>> exprs, Object[] args){
         if (exprs.size() != args.length){
             Object[] rv = new Object[exprs.size()];
@@ -125,8 +125,7 @@ public final class FactoryExpressionUtils {
                 if (expr instanceof FactoryExpression<?>) {
                     FactoryExpression<?> fe = (FactoryExpression<?>)expr;
                     int fullArgsLength = countArguments(fe);
-                    Object[] compressed = compress(fe.getArgs(), ArrayUtils
-                            .subarray(args, offset, offset + fullArgsLength));
+                    Object[] compressed = compress(fe.getArgs(), ArrayUtils.subarray(args, offset, offset + fullArgsLength));
                     rv[i] = fe.newInstance(compressed);
                     offset += fullArgsLength;
                 } else {

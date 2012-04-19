@@ -18,7 +18,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.collections15.Transformer;
+import com.google.common.base.Function;
 
 /**
  * Template for {@link Operation}, {@link TemplateExpression} and {@link Path} serialization
@@ -40,16 +40,16 @@ public final class Template implements Serializable{
         private final String staticText;
 
         @Nullable
-        private final transient Transformer<Expression<?>,Expression<?>> transformer;
+        private final transient Function<Expression<?>,Expression<?>> transformer;
 
         private final boolean asString;
 
         private final String toString;
 
         @SuppressWarnings("unchecked")
-        Element(int index, Transformer<? extends Expression<?>,? extends Expression<?>> transformer) {
+        Element(int index, Function<? extends Expression<?>,? extends Expression<?>> transformer) {
             this.asString = false;
-            this.transformer = (Transformer)transformer;
+            this.transformer = (Function)transformer;
             this.index = index;
             this.staticText = null;
             this.toString = String.valueOf(index);
@@ -89,7 +89,7 @@ public final class Template implements Serializable{
         }
 
         public Expression<?> convert(Expression<?> source){
-            return transformer.transform(source);
+            return transformer.apply(source);
         }
 
         @Override

@@ -16,11 +16,11 @@
   <packaging>jar</packaging>
   
   <dependencies>
-   <dependency>
-     <groupId>net.sourceforge.collections</groupId>
-     <artifactId>collections-generic</artifactId>
-     <version>${commons.collections.version}</version>
-   </dependency>
+    <dependency>
+	  <groupId>com.google.guava</groupId>
+	  <artifactId>guava</artifactId>
+	  <version>${guava.version}</version>
+    </dependency>
     <dependency>  
       <groupId>javax.inject</groupId>  
       <artifactId>javax.inject</artifactId>  
@@ -31,11 +31,6 @@
       <artifactId>mysema-commons-lang</artifactId>
       <version>${mysema.lang.version}</version>
     </dependency>     
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-      <version>${commons.lang.version}</version>
-    </dependency>
     <dependency>
       <groupId>net.sourceforge.findbugs</groupId>
       <artifactId>jsr305</artifactId>
@@ -56,13 +51,6 @@
       <version>2.9.1</version>
       <scope>test</scope>
 	</dependency>    
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>1.4</version>
-      <!-- license : Apache License 2.0 -->
-      <scope>test</scope>
-    </dependency>                
   </dependencies>
   
   <build>

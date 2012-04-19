@@ -21,11 +21,11 @@ import java.io.Writer;
 import java.util.Arrays;
 import java.util.Date;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.codegen.JavaWriter;
+import com.mysema.codegen.StringUtils;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
