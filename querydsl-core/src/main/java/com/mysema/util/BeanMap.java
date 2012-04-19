@@ -60,13 +60,13 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
     /**
      * An empty array.  Used to invoke accessors via reflection.
      */
-    public static final Object[] NULL_ARGUMENTS = {};
+    private static final Object[] NULL_ARGUMENTS = {};
 
     /**
      * Maps primitive Class types to transformers.  The transformer
      * transform strings into the appropriate primitive wrapper.
      */
-    public static HashMap<Class<?>, Function<?,?>> defaultFunctions = new HashMap<Class<?>, Function<?,?>>();
+    private static final Map<Class<?>, Function<?,?>> defaultFunctions = new HashMap<Class<?>, Function<?,?>>();
 
     static {
         defaultFunctions.put(Boolean.TYPE, new Function() {
@@ -76,7 +76,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
         });
         defaultFunctions.put(Character.TYPE, new Function() {
             public Object apply(Object input) {
-                return new Character(input.toString().charAt(0));
+                return Character.valueOf(input.toString().charAt(0));
             }
         });
         defaultFunctions.put(Byte.TYPE, new Function() {

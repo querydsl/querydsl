@@ -213,7 +213,7 @@ public final class TypeFactory {
             return create((Class)typeVariable.getBounds()[0], typeVariable);    
         } else  if (firstBound instanceof ParameterizedType){
             ParameterizedType parameterized = (ParameterizedType)firstBound;
-            Class<?> rawType = (Class)((ParameterizedType)firstBound).getRawType();
+            Class<?> rawType = (Class)parameterized.getRawType();
             if (rawType.equals(cl)) {
                 return new TypeExtends(typeVariable.getName(), new ClassType(cl));
             } else {

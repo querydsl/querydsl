@@ -25,6 +25,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.TypeVariable;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -37,7 +38,6 @@ import javax.annotation.Nullable;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.ScalaWriter;
-import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.TypeExtends;
@@ -106,9 +106,16 @@ public class GenericExporter {
     @Nullable
     private Class<? extends Serializer> serializerClass;
     
-    public GenericExporter() {
+    private final Charset charset;
+    
+    public GenericExporter(Charset charset) {
+        this.charset = charset;
         stopClasses.add(Object.class);
-        stopClasses.add(Enum.class);
+        stopClasses.add(Enum.class);        
+    }
+    
+    public GenericExporter() {
+        this(Charset.defaultCharset());
     }
     
     public void export(Package... packages) {
@@ -416,7 +423,7 @@ public class GenericExporter {
             System.err.println("Folder " + file.getParent() + " could not be created");
         }
         try {
-            return new OutputStreamWriter(new FileOutputStream(file));
+            return new OutputStreamWriter(new FileOutputStream(file), charset);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e.getMessage(), e);
         }

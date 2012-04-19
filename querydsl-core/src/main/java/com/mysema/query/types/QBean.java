@@ -104,7 +104,7 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
 
     private final Map<String, ? extends Expression<?>> bindings;
 
-    private final Map<String, Field> fields = new HashMap<String, Field>();
+    private final transient Map<String, Field> fields = new HashMap<String, Field>();
 
     private final List<Expression<?>> args;
 

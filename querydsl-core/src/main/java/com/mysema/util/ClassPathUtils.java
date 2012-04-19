@@ -85,17 +85,21 @@ public final class ClassPathUtils {
     private static void scanJar(Set<Class<?>> classes, URL url, String packagePath) throws IOException {
         String[] fileAndPath = JAR_URL_SEPARATOR.split(url.getFile().substring(5));
         JarFile jarFile = new JarFile(fileAndPath[0]);
-        Enumeration<JarEntry> entries = jarFile.entries();
-        while (entries.hasMoreElements()) {
-            JarEntry entry = entries.nextElement();            
-            if (entry.getName().endsWith(".class") && entry.getName().startsWith(packagePath) && entry.getName().startsWith(fileAndPath[1].substring(1))) {
-                String className = entry.getName().substring(0, entry.getName().length()-6).replace('/', '.');
-                Class<?> cl = safeClassForName(className);
-                if (cl != null) {
-                    classes.add(cl);
+        try {
+            Enumeration<JarEntry> entries = jarFile.entries();
+            while (entries.hasMoreElements()) {
+                JarEntry entry = entries.nextElement();            
+                if (entry.getName().endsWith(".class") && entry.getName().startsWith(packagePath) && entry.getName().startsWith(fileAndPath[1].substring(1))) {
+                    String className = entry.getName().substring(0, entry.getName().length()-6).replace('/', '.');
+                    Class<?> cl = safeClassForName(className);
+                    if (cl != null) {
+                        classes.add(cl);
+                    }
                 }
-            }
-        }
+            }    
+        } finally {
+            jarFile.close();    
+        }                
     }
     
     public static Class<?> safeClassForName(String className){
