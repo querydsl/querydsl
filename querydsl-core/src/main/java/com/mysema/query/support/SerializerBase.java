@@ -46,6 +46,8 @@ import com.mysema.query.types.Visitor;
  */
 public abstract class SerializerBase<S extends SerializerBase<S>> implements Visitor<Void,Void> {
 
+    private static final Joiner EMPTY_JOINER = Joiner.on("");
+
     private final StringBuilder builder = new StringBuilder();
         
     private static final Pattern OPERATION = Pattern.compile("\\d+[\\+\\-]\\d+");
@@ -102,7 +104,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     
     public S prepend(String... str) {
         if (!dry){
-            builder.insert(0, Joiner.on("").join(str));                
+            builder.insert(0, EMPTY_JOINER.join(str));                
         }        
         return self;
     }

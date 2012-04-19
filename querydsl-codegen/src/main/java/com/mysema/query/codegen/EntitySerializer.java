@@ -42,7 +42,6 @@ import javax.inject.Named;
 import com.google.common.base.Function;
 import com.google.common.base.Joiner;
 import com.mysema.codegen.CodeWriter;
-import com.mysema.codegen.StringUtils;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.Constructor;
 import com.mysema.codegen.model.Parameter;
@@ -82,6 +81,8 @@ import com.mysema.query.types.path.TimePath;
  *
  */
 public class EntitySerializer implements Serializer{
+
+    private static final Joiner JOINER = Joiner.on("\", \"");
 
     private static final Parameter PATH_METADATA = new Parameter("metadata", new ClassType(PathMetadata.class, (Type)null));
 
@@ -479,7 +480,7 @@ public class EntitySerializer implements Serializer{
             }            
             if (!inits.isEmpty()) {
                 inits.add(0, STAR);
-                String initsAsString = QUOTE + Joiner.on("\", \"").join(inits) + QUOTE;
+                String initsAsString = QUOTE + JOINER.join(inits) + QUOTE;
                 writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "new PathInits(" + initsAsString + ")");
             } else {
                 writer.privateStaticFinal(PATH_INITS_TYPE, "INITS", "PathInits.DIRECT");

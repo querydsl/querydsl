@@ -37,6 +37,8 @@ import com.mysema.query.sql.SQLTemplates;
  */
 public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> implements SQLCommonQuery<MySQLQuery>{
     
+    private static final Joiner JOINER = Joiner.on(", ");
+
     public MySQLQuery(Connection conn) {
         this(conn, new Configuration(new MySQLTemplates()), new DefaultQueryMetadata());
     }
@@ -106,7 +108,7 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> implements SQLCommo
     }
     
     public MySQLQuery useIndex(String... indexes) {
-        return addJoinFlag(" use_index (" + Joiner.on(", ").join(indexes) + ")", JoinFlag.Position.END);
+        return addJoinFlag(" use_index (" + JOINER.join(indexes) + ")", JoinFlag.Position.END);
     }
     
     public MySQLQuery withRollup() {
