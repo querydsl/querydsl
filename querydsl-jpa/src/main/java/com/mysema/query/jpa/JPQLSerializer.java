@@ -88,6 +88,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         joinTypes.put(JoinType.INNERJOIN, "\n  inner join ");
         joinTypes.put(JoinType.JOIN, "\n  join ");
         joinTypes.put(JoinType.LEFTJOIN, "\n  left join ");
+        joinTypes.put(JoinType.RIGHTJOIN, "\n  right join ");
     }
 
     private boolean wrapElements = false;

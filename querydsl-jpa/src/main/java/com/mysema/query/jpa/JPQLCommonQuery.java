@@ -38,7 +38,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
     Q from(EntityPath<?>... sources);
 
     /**
-     * Create an inner join with the given target.
+     * Create a inner join with the given target.
      * Use fetch() to add the fetch parameter to this join.
      *
      *
@@ -49,7 +49,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
     <P> Q innerJoin(EntityPath<P> target);
 
     /**
-     * Create an inner join with the given target and alias.
+     * Create a inner join with the given target and alias.
      *
      * @param <P>
      * @param target
@@ -59,7 +59,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
     <P> Q innerJoin(EntityPath<P> target, EntityPath<P> alias);
 
     /**
-     * Create an inner join with the given target.
+     * Create a inner join with the given target.
      * Use fetch() to add the fetch parameter to this join.
      *
      * @param <P>
@@ -69,7 +69,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
     <P> Q innerJoin(CollectionExpression<?,P> target);
 
     /**
-     * Create an inner join with the given target and alias.
+     * Create a inner join with the given target and alias.
      *
      * @param <P>
      * @param target
@@ -79,7 +79,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
     <P> Q innerJoin(CollectionExpression<?,P> target, Path<P> alias);
 
     /**
-     * Create an inner join with the given target.
+     * Create a inner join with the given target.
      * Use fetch() to add the fetch parameter to this join.
      *
      * @param <P>
@@ -89,7 +89,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
     <P> Q innerJoin(MapExpression<?, P> target);
 
     /**
-     * Create an inner join with the given target and alias.
+     * Create a inner join with the given target and alias.
      *
      * @param <P>
      * @param target
@@ -99,7 +99,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
     <P> Q innerJoin(MapExpression<?, P> target, Path<P> alias);
 
     /**
-     * Create an join with the given target.
+     * Create a join with the given target.
      * Use fetch() to add the fetch parameter to this join.
      *
      * @param <P>
@@ -119,7 +119,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
     <P> Q join(EntityPath<P> target, EntityPath<P> alias);
 
     /**
-     * Create an join with the given target.
+     * Create a join with the given target.
      * Use fetch() to add the fetch parameter to this join.
      *
      * @param <P>
@@ -137,7 +137,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
     <P> Q join(CollectionExpression<?,P> target, Path<P> alias);
 
     /**
-     * Create an join with the given target.
+     * Create a join with the given target.
      * Use fetch() to add the fetch parameter to this join.
      *
      * @param <P>
@@ -157,7 +157,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
     <P> Q join(MapExpression<?, P> target, Path<P> alias);
 
     /**
-     * Create an left join with the given target.
+     * Create a left join with the given target.
      * Use fetch() to add the fetch parameter to this join.
      *
      * @param <P>
@@ -177,7 +177,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
     <P> Q leftJoin(EntityPath<P> target, EntityPath<P> alias);
 
     /**
-     * Create an left join with the given target.
+     * Create a left join with the given target.
      * Use fetch() to add the fetch parameter to this join.
      *
      * @param <P>
@@ -197,7 +197,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
     <P> Q leftJoin(CollectionExpression<?,P> target, Path<P> alias);
 
     /**
-     * Create an left join with the given target.
+     * Create a left join with the given target.
      * Use fetch() to add the fetch parameter to this join.
      *
      * @param <P>
@@ -215,9 +215,70 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
      * @return
      */
     <P> Q leftJoin(MapExpression<?, P> target, Path<P> alias);
+    
+    /**
+     * Create a right join with the given target.
+     * Use fetch() to add the fetch parameter to this join.
+     *
+     * @param <P>
+     * @param target
+     * @return
+     */
+    <P> Q rightJoin(EntityPath<P> target);
 
     /**
-     * Create an full join with the given target.
+     * Create a right join with the given target and alias.
+     *
+     * @param <P>
+     * @param target
+     * @param alias
+     * @return
+     */
+    <P> Q rightJoin(EntityPath<P> target, EntityPath<P> alias);
+
+    /**
+     * Create a right join with the given target.
+     * Use fetch() to add the fetch parameter to this join.
+     *
+     * @param <P>
+     * @param target
+     * @return
+     */
+    <P> Q rightJoin(CollectionExpression<?,P> target);
+
+    /**
+     * Create a right join with the given target and alias.
+     *
+     * @param <P>
+     * @param target
+     * @param alias
+     * @return
+     */
+    <P> Q rightJoin(CollectionExpression<?,P> target, Path<P> alias);
+
+    /**
+     * Create a right join with the given target.
+     * Use fetch() to add the fetch parameter to this join.
+     *
+     * @param <P>
+     * @param target
+     * @return
+     */
+    <P> Q rightJoin(MapExpression<?, P> target);
+
+    /**
+     * Create a right join with the given target and alias.
+     *
+     * @param <P>
+     * @param target
+     * @param alias
+     * @return
+     */
+    <P> Q rightJoin(MapExpression<?, P> target, Path<P> alias);
+
+
+    /**
+     * Create a full join with the given target.
      * Use fetch() to add the fetch parameter to this join.
      *
      * @param <P>
@@ -237,7 +298,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
     <P> Q fullJoin(EntityPath<P> target, EntityPath<P> alias);
 
     /**
-     * Create an full join with the given target.
+     * Create a full join with the given target.
      * Use fetch() to add the fetch parameter to this join.
      *
      * @param <P>
@@ -257,7 +318,7 @@ public interface JPQLCommonQuery<Q extends JPQLCommonQuery<Q>>  extends Query<Q>
     <P> Q fullJoin(CollectionExpression<?,P> target, Path<P> alias);
 
     /**
-     * Create an full join with the given target.
+     * Create a full join with the given target.
      * Use fetch() to add the fetch parameter to this join.
      *
      * @param <P>

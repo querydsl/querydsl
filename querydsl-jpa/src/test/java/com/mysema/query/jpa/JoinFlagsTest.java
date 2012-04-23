@@ -37,4 +37,9 @@ public class JoinFlagsTest extends AbstractQueryTest{
         assertEquals("from Cat cat\n  inner join fetch cat.mate as cat1", query.toString());
     }
 
+    @Test
+    public void RightJoin() {
+        QueryHelper query = query().from(cat).rightJoin(cat.mate, cat1);
+        assertEquals("from Cat cat\n  right join cat.mate as cat1", query.toString());
+    }
 }
