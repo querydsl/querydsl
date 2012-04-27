@@ -42,7 +42,7 @@ public class ColQueryTest extends AbstractQueryTest {
             add(Ops.DateTimeOps.MONTH, "{0}.getMonthOfYear()");
             add(Ops.DateTimeOps.YEAR, "{0}.getYear()");
         }};
-        ColQuery query = new ColQueryImpl(templates);
+        new ColQueryImpl(templates);
     }
     
     @Test
