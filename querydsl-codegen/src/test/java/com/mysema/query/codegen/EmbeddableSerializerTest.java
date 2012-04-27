@@ -37,7 +37,7 @@ public class EmbeddableSerializerTest {
 
     private final QueryTypeFactory queryTypeFactory = new QueryTypeFactoryImpl("Q", "", "");
 
-    private final TypeMappings typeMappings = new TypeMappings();
+    private final TypeMappings typeMappings = new JavaTypeMappings();
 
     private final EntitySerializer serializer = new EmbeddableSerializer(typeMappings, Collections.<String>emptySet());
 

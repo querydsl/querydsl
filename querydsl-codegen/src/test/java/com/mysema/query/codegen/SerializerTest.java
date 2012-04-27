@@ -49,7 +49,7 @@ public class SerializerTest {
 
     private Writer writer = new StringWriter();
 
-    private TypeMappings typeMappings = new TypeMappings();
+    private TypeMappings typeMappings = new JavaTypeMappings();
 
     @SuppressWarnings("unchecked")
     @Before

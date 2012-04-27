@@ -1,22 +1,27 @@
 package com.mysema.query.scala;
 
-import com.mysema.query.annotations._
+import javax.persistence._
 import com.mysema.query.codegen.GenericExporter
 import org.junit.Test
 import io.Source.fromFile
 
-class GenericExporterTest extends CompileTestUtils {
+class GenericExporterJPATest extends CompileTestUtils {
 
   @Test
   def Export {
     val exporter = new GenericExporter()
-    exporter.setTargetFolder(new java.io.File("target/gen1"))
+    exporter.setTargetFolder(new java.io.File("target/gen1-jpa"))
     exporter.setSerializerClass(classOf[ScalaEntitySerializer])
     exporter.setTypeMappingsClass(classOf[ScalaTypeMappings])
+    exporter.setEmbeddableAnnotation(classOf[Embeddable])
+    exporter.setEmbeddedAnnotation(classOf[Embedded])
+    exporter.setEntityAnnotation(classOf[Entity])
+    exporter.setSkipAnnotation(classOf[Transient])
+    exporter.setSupertypeAnnotation(classOf[MappedSuperclass])
     exporter.setCreateScalaSources(true)
     exporter.export(getClass.getPackage)
 
-    val targetFolder = new java.io.File("target/gen1/com/mysema/query/scala/")
+    val targetFolder = new java.io.File("target/gen1-jpa/com/mysema/query/scala/")
     val sources = (targetFolder listFiles ()
       filter (_.getName.endsWith(".scala"))
       map (fromFile(_).mkString)
@@ -26,15 +31,15 @@ class GenericExporterTest extends CompileTestUtils {
 
 }
 
-@QuerySupertype
-class Superclass {
+@MappedSuperclass
+class JPASuperclass {
 
   var id: Int = _
 
 }
 
-@QueryEntity
-class EscapedWords {
+@Entity
+class JPAEscapedWords {
   
   var `object`: String = _  
     
@@ -46,8 +51,8 @@ class EscapedWords {
     
 }
 
-@QueryEntity
-class EntityClass extends Superclass {
+@Entity
+class JPAEntityClass extends JPASuperclass {
 
   // FIXME
   //  var comparable: Comparable[_] = _   
@@ -56,19 +61,19 @@ class EntityClass extends Superclass {
 
   var stringList: java.util.List[String] = _
 
-  var embedded: EmbeddableClass = _
+  var embedded: JPAEmbeddableClass = _
 
 }
 
-@QueryEntity
-class EntitySubclass extends EntityClass {
+@Entity
+class JPAEntitySubclass extends JPAEntityClass {
 
   var property: String = _
 
 }
 
-@QueryEmbeddable
-class EmbeddableClass {
+@Embeddable
+class JPAEmbeddableClass {
 
   var property: String = _
 

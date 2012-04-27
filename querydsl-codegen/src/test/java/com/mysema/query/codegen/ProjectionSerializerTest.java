@@ -45,7 +45,7 @@ public class ProjectionSerializerTest {
         type.addConstructor(new Constructor(Arrays.asList(firstName, lastName, age)));
         
         Writer writer = new StringWriter();
-        ProjectionSerializer serializer = new ProjectionSerializer(new TypeMappings());
+        ProjectionSerializer serializer = new ProjectionSerializer(new JavaTypeMappings());
         serializer.serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
         assertTrue(writer.toString().contains("StringExpression firstName"));
         assertTrue(writer.toString().contains("StringExpression lastName"));

@@ -29,7 +29,7 @@ public class TypeMappingsTest {
 
     @Test
     public void GetPathType_Of_InnerClass(){
-        TypeMappings typeMappings = new TypeMappings();
+        TypeMappings typeMappings = new JavaTypeMappings();
         EntityType model = new EntityType(new ClassType(TypeMappingsTest.class));
         EntityType type = new EntityType(new ClassType(Entity.class));
         typeMappings.register(type, new QueryTypeFactoryImpl("Q","","").create(type));
@@ -40,7 +40,7 @@ public class TypeMappingsTest {
 
     @Test
     public void IsRegistered(){
-        TypeMappings typeMappings = new TypeMappings();
+        TypeMappings typeMappings = new JavaTypeMappings();
         typeMappings.register(new ClassType(Double[].class), new ClassType(Point.class));
         assertTrue(typeMappings.isRegistered(new ClassType(Double[].class)));
 

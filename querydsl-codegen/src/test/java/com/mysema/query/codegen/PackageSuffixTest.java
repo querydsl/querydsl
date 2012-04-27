@@ -29,7 +29,7 @@ public class PackageSuffixTest {
     
     private final QueryTypeFactory queryTypeFactory = new QueryTypeFactoryImpl("Q", "", ".query");
 
-    private final TypeMappings typeMappings = new TypeMappings();
+    private final TypeMappings typeMappings = new JavaTypeMappings();
 
     private final EntitySerializer serializer = new EntitySerializer(typeMappings, Collections.<String>emptySet());
 

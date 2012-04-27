@@ -459,6 +459,10 @@ public class GenericExporter {
         codegenModule.bind(serializerClass);
         this.serializerClass = serializerClass;
     }
+    
+    public void setTypeMappingsClass(Class<? extends TypeMappings> typeMappingsClass) {
+        codegenModule.bind(TypeMappings.class, typeMappingsClass);
+    }
 
     public void setCreateScalaSources(boolean createScalaSources) {
         this.createScalaSources = createScalaSources;

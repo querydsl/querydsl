@@ -30,7 +30,7 @@ public class CustomTypeTest {
 
     private final QueryTypeFactory queryTypeFactory = new QueryTypeFactoryImpl("Q", "", "");
 
-    private final TypeMappings typeMappings = new TypeMappings();
+    private final TypeMappings typeMappings = new JavaTypeMappings();
 
     private final EntitySerializer serializer = new EntitySerializer(typeMappings, Collections.<String>emptySet());
 

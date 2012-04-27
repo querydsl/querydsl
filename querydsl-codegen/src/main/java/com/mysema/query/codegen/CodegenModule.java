@@ -33,7 +33,7 @@ public class CodegenModule  extends AbstractModule{
 
     @Override
     protected void configure() {
-        bind(TypeMappings.class);
+        bind(TypeMappings.class, JavaTypeMappings.class);
         bind(QueryTypeFactory.class, QueryTypeFactoryImpl.class);
         bind(EntitySerializer.class);
         bind(EmbeddableSerializer.class);
