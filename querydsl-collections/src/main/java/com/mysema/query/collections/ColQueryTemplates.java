@@ -23,7 +23,7 @@ import com.mysema.query.types.PathType;
  *
  * @author tiwe
  */
-public final class ColQueryTemplates extends JavaTemplates {
+public class ColQueryTemplates extends JavaTemplates {
 
     public static final ColQueryTemplates DEFAULT = new ColQueryTemplates();
 

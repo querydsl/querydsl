@@ -32,6 +32,15 @@ public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQ
     }
 
     /**
+     * Creates a new ColQueryImpl instance
+     * 
+     * @param templates
+     */
+    public ColQueryImpl(ColQueryTemplates templates) {
+        this(new DefaultQueryEngine(new DefaultEvaluatorFactory(ColQueryTemplates.DEFAULT)));
+    }
+    
+    /**
      * Create a new ColQueryImpl instance
      *
      * @param evaluatorFactory

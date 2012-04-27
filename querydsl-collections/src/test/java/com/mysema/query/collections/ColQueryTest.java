@@ -24,6 +24,7 @@ import java.util.Date;
 import org.junit.Test;
 
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.path.StringPath;
 
@@ -35,6 +36,15 @@ import com.mysema.query.types.path.StringPath;
  */
 public class ColQueryTest extends AbstractQueryTest {
 
+    @Test
+    public void CustomTemplates() {
+        ColQueryTemplates templates = new ColQueryTemplates() {{
+            add(Ops.DateTimeOps.MONTH, "{0}.getMonthOfYear()");
+            add(Ops.DateTimeOps.YEAR, "{0}.getYear()");
+        }};
+        ColQuery query = new ColQueryImpl(templates);
+    }
+    
     @Test
     public void InstanceOf() {
         assertEquals(
