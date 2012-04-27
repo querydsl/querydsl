@@ -35,7 +35,7 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
     </dependency>    
-
+    
     <!-- test -->
 
     <dependency>
@@ -45,6 +45,13 @@
       <scope>test</scope>
       <type>test-jar</type>
     </dependency>
+    
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>1.6</version>
+      <scope>test</scope>
+    </dependency>    
 
   </dependencies>
 
