@@ -40,6 +40,7 @@ import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.NullExpression;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.testutil.JPAConfig;
 import com.mysema.testutil.JPATestRunner;
@@ -241,6 +242,16 @@ public class JPADerbySQLTest {
         SubQueryExpression<Integer> sq2 = sq().from(cat).unique(cat.id.min());
         List<Integer> list = query().union(sq1, sq2).list();
         assertFalse(list.isEmpty());
+    }
+    
+    @Test
+    @Ignore
+    public void Union2() {
+        SAnimal cat = new SAnimal("cat");
+        assertEquals(2, query().union(
+            new SQLSubQuery().from(cat).where(cat.name.eq("Beck")).distinct().list(cat.name, cat.id), 
+            new SQLSubQuery().from(cat).where(cat.name.eq("Kate")).distinct().list(cat.name, null))
+        .list().size());
     }
     
     @Test
