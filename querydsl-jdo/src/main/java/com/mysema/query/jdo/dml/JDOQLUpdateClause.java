@@ -54,7 +54,7 @@ public class JDOQLUpdateClause implements UpdateClause<JDOQLUpdateClause>{
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public JDOQLUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++) {

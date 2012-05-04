@@ -251,7 +251,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
         reset();
         Object rv = execute(query);
         if (rv instanceof List) {
-            List<?> list = (List)rv;
+            List<?> list = (List<?>)rv;
             if (!list.isEmpty()) {
                 if (list.size() > 1) {
                     throw new NonUniqueResultException();

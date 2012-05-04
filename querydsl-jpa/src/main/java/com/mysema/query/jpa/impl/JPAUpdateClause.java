@@ -90,7 +90,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
         return this;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public JPAUpdateClause set(List<? extends Path<?>> paths, List<?> values) {
         for (int i = 0; i < paths.size(); i++) {

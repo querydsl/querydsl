@@ -46,6 +46,7 @@ import com.mysema.query.types.template.SimpleTemplate;
  *
  * @param <T>
  */
+@SuppressWarnings("rawtypes")
 public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & com.mysema.query.Query> extends ProjectableQuery<T> {
 
     protected final SQLQueryMixin<T> queryMixin;
@@ -215,6 +216,7 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & com.mysem
         return innerUnion(sq);
     }
     
+    @SuppressWarnings("unchecked")
     private <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {
         queryMixin.getMetadata().setValidate(false);
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
