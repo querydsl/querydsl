@@ -466,7 +466,8 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
 
     @Override
     public <RT> SearchResults<RT> listResults(Expression<RT> expr) {
-        queryMixin.addToProjection(expr);
+          //FIX for issue 140. Ambiguous column exception with Oracle DB.
+       // queryMixin.addToProjection(expr);
         long total = count();
         try {
             if (total > 0) {
