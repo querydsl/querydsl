@@ -17,21 +17,22 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.util.Collections;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.junit.Test;
 
 
-public class TestMetadataExportMojoTest {
-    
-    private final String url = "jdbc:h2:mem:testdb" + System.currentTimeMillis();
+public class TestMetadataExportMojoTest extends AbstractMojoTest {
 
+    private final String url = "jdbc:h2:mem:testdb" + System.currentTimeMillis();
+    
+    public TestMetadataExportMojoTest() {
+        super(AbstractMetaDataExportMojo.class);
+    }
+    
     @Test
-    public void Execute() throws SecurityException, NoSuchFieldException, IllegalAccessException, MojoExecutionException, MojoFailureException {
+    public void Execute() throws Exception {
         MavenProject project = new MavenProject();
         TestMetadataExportMojo mojo = new TestMetadataExportMojo();
         set(mojo, "project", project);
@@ -49,12 +50,6 @@ public class TestMetadataExportMojoTest {
 
         assertEquals(Collections.singletonList("target/export2"), project.getTestCompileSourceRoots());
         assertTrue(new File("target/export2").exists());
-    }
-
-    private void set(Object obj, String fieldName, Object value) throws SecurityException, NoSuchFieldException, IllegalAccessException{
-        Field field = AbstractMetaDataExportMojo.class.getDeclaredField(fieldName);
-        field.setAccessible(true);
-        field.set(obj, value);
     }
     
 }

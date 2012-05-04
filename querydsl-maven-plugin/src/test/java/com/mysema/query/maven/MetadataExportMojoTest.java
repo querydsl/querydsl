@@ -17,11 +17,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.util.Collections;
 
-import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.project.MavenProject;
 import org.junit.Test;
 
@@ -30,16 +27,20 @@ import com.mysema.query.sql.types.DateTimeType;
 import com.mysema.query.sql.types.LocalDateType;
 import com.mysema.query.sql.types.LocalTimeType;
 
-public class MetadataExportMojoTest {
+public class MetadataExportMojoTest extends AbstractMojoTest {
 
     private final String url = "jdbc:h2:mem:testdb" + System.currentTimeMillis();
 
     private final MavenProject project = new MavenProject();
     
     private final MetadataExportMojo mojo = new MetadataExportMojo();
+
+    public MetadataExportMojoTest() {
+        super(AbstractMetaDataExportMojo.class);
+    }
     
     @Test
-    public void Execute() throws SecurityException, NoSuchFieldException, IllegalAccessException, MojoExecutionException, MojoFailureException {
+    public void Execute() throws Exception {
         set(mojo, "project", project);
         set(mojo, "jdbcDriver", "org.h2.Driver");
         set(mojo, "jdbcUrl", url);
@@ -56,7 +57,7 @@ public class MetadataExportMojoTest {
     }
 
     @Test
-    public void Execute_With_CustomTypes() throws SecurityException, NoSuchFieldException, IllegalAccessException, MojoExecutionException, MojoFailureException {
+    public void Execute_With_CustomTypes() throws Exception {
         set(mojo, "project", project);
         set(mojo, "jdbcDriver", "org.h2.Driver");
         set(mojo, "jdbcUrl", url);
@@ -73,7 +74,7 @@ public class MetadataExportMojoTest {
     }
     
     @Test
-    public void Execute_With_JodaTypes() throws MojoExecutionException, MojoFailureException, SecurityException, NoSuchFieldException, IllegalAccessException{
+    public void Execute_With_JodaTypes() throws Exception{
         set(mojo, "project", project);
         set(mojo, "jdbcDriver", "org.h2.Driver");
         set(mojo, "jdbcUrl", url);
@@ -87,12 +88,6 @@ public class MetadataExportMojoTest {
 
         assertEquals(Collections.singletonList("target/export3"), project.getCompileSourceRoots());
         assertTrue(new File("target/export3").exists());
-    }
-
-    private void set(Object obj, String fieldName, Object value) throws SecurityException, NoSuchFieldException, IllegalAccessException{
-        Field field = AbstractMetaDataExportMojo.class.getDeclaredField(fieldName);
-        field.setAccessible(true);
-        field.set(obj, value);
     }
 
 }

@@ -44,7 +44,7 @@ import com.mysema.query.codegen.TypeMappings;
  * GenericExporterMojo calls the GenericExporter tool using the classpath of the module
  * 
  * @goal generic-export
- * @requiresDependencyResolution compile
+ * @requiresDependencyResolution test
  */
 public class GenericExporterMojo extends AbstractMojo {
 
@@ -82,12 +82,15 @@ public class GenericExporterMojo extends AbstractMojo {
      * @parameter
      */
     private String sourceEncoding;
+    
+    /**
+     * @parameter default-value=false
+     */
+    private boolean testClasspath;
         
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
-        // TODO : create classLoader for project compile classpath
-        ClassLoader classLoader = null;
-        Charset charset = sourceEncoding != null ? Charset.forName(sourceEncoding) : Charset.defaultCharset();
+        ClassLoader classLoader = null;        
         try {
             classLoader = getProjectClassLoader();
         } catch (MalformedURLException e) {
@@ -96,8 +99,9 @@ public class GenericExporterMojo extends AbstractMojo {
             throw new MojoFailureException(e.getMessage(), e);
         }
         
+        Charset charset = sourceEncoding != null ? Charset.forName(sourceEncoding) : Charset.defaultCharset();
         GenericExporter exporter = new GenericExporter(classLoader, charset);
-        exporter.setTargetFolder(new java.io.File(targetFolder));
+        exporter.setTargetFolder(new File(targetFolder));
         if (scala) {
             try {
                 exporter.setSerializerClass((Class<? extends Serializer>) 
@@ -123,11 +127,18 @@ public class GenericExporterMojo extends AbstractMojo {
             exporter.setSkipAnnotation(NotPersistent.class);
             exporter.setSupertypeAnnotation(null);
         }        
+        
         exporter.export(packages);
     }
     
     protected ClassLoader getProjectClassLoader() throws DependencyResolutionRequiredException, MalformedURLException {
-        List<String> classpathElements = project.getCompileClasspathElements();
+        List<String> classpathElements;
+        if (testClasspath) {
+            classpathElements = project.getTestClasspathElements();
+        } else {
+            classpathElements = project.getCompileClasspathElements();
+        }
+        System.err.println(classpathElements.size());
         List<URL> urls = new ArrayList<URL>(classpathElements.size());
         for (String element : classpathElements){
             File file = new File(element);
