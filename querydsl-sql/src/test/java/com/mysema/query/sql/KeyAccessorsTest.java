@@ -16,6 +16,8 @@ package com.mysema.query.sql;
 import static com.mysema.query.types.PathMetadataFactory.forVariable;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.Serializable;
+
 import org.junit.Test;
 
 import com.mysema.query.types.path.NumberPath;
@@ -29,13 +31,17 @@ public class KeyAccessorsTest {
 
         public static final QEmployee employee = new QEmployee("EMPLOYEE");
 
-        public class PrimaryKeys {
+        public class PrimaryKeys implements Serializable {
+
+            private static final long serialVersionUID = 3378990153959880914L;
 
             public final PrimaryKey<QEmployee> sysIdx53 = createPrimaryKey(id);
 
         }
 
-        public class ForeignKeys {
+        public class ForeignKeys implements Serializable {
+
+            private static final long serialVersionUID = 4541576457291793933L;
 
             public final ForeignKey<QEmployee> superiorFk = createForeignKey(superiorId, "ID");
 
