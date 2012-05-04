@@ -436,6 +436,14 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         query().from(employee).limit(4).offset(3).list(employee.id);
 
     }
+    
+    @Test
+    public void ListResults() {
+        SearchResults<Integer> results = query().from(employee)
+                .limit(10).offset(1).orderBy(employee.id.asc())
+                .listResults(employee.id);
+        assertEquals(10, results.getTotal());        
+    }
 
     @Test
     @ExcludeIn({HSQLDB, H2, MYSQL})

@@ -485,6 +485,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         long total = count();
         try {
             if (total > 0) {
+                queryMixin.getMetadata().clearProjection();
                 QueryModifiers modifiers = queryMixin.getMetadata().getModifiers();
                 return new SearchResults<RT>(list(expr), modifiers, total);
             } else {
