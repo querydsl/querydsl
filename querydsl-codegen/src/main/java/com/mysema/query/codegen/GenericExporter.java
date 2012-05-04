@@ -108,14 +108,25 @@ public class GenericExporter {
     
     private final Charset charset;
     
-    public GenericExporter(Charset charset) {
+    private final ClassLoader classLoader;
+    
+    public GenericExporter(ClassLoader classLoader, Charset charset) {
+        this.classLoader = classLoader;
         this.charset = charset;
         stopClasses.add(Object.class);
         stopClasses.add(Enum.class);        
     }
     
+    public GenericExporter(ClassLoader classLoader) {
+        this(classLoader, Charset.defaultCharset());
+    }
+    
+    public GenericExporter(Charset charset) {
+        this(Thread.currentThread().getContextClassLoader(), charset);
+    }    
+    
     public GenericExporter() {
-        this(Charset.defaultCharset());
+        this(Thread.currentThread().getContextClassLoader(), Charset.defaultCharset());
     }
     
     public void export(Package... packages) {
@@ -367,8 +378,7 @@ public class GenericExporter {
         return new Property(entityType, propertyName, propertyType, inits);
     }
 
-    private void scanPackages(String... packages){
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+    private void scanPackages(String... packages){        
         for (String pkg : packages) {
             try {
                 for (Class<?> cl : ClassPathUtils.scanPackage(classLoader, pkg)) {
