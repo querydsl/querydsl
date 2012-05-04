@@ -17,6 +17,7 @@
   
   <properties>
     <mvn.version>2.2.1</mvn.version>
+    <jdo.version>2.3-eb</jdo.version>
   </properties>  
 
   <dependencies>
@@ -46,6 +47,18 @@
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-log4j12</artifactId>
       <version>1.6.1</version>
+    </dependency>    
+    
+    <!-- annotations -->
+    <dependency>
+      <groupId>javax.jdo</groupId>
+      <artifactId>jdo2-api</artifactId>
+      <version>${jdo.version}</version>
+    </dependency>    
+    <dependency>
+      <groupId>org.hibernate.javax.persistence</groupId>
+	  <artifactId>hibernate-jpa-2.0-api</artifactId>
+	  <version>1.0.0.Final</version>
     </dependency>    
 
     <!-- test -->
