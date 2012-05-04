@@ -33,6 +33,7 @@ import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
+import com.mysema.query.JoinType;
 import com.mysema.query.Query;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag;
@@ -40,6 +41,7 @@ import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
+import com.mysema.query.support.Expressions;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
@@ -158,7 +160,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     protected String buildQueryString(boolean forCountRow) {
         SQLSerializer serializer = createSerializer();
         if (union != null) {
-            serializer.serializeUnion(union, queryMixin.getMetadata().getOrderBy(), unionAll);
+            serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
         } else {
             serializer.serialize(queryMixin.getMetadata(), forCountRow);
         }
@@ -167,6 +169,19 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         return serializer.toString();
     }
 
+    private Expression<?> combineUnion(SubQueryExpression<?>[] union, Path<?> alias) {
+        SQLTemplates templates = configuration.getTemplates();
+        StringBuilder builder = new StringBuilder("(");
+        String separator = unionAll ? templates.getUnionAll() : templates.getUnion();
+        for (int i = 0; i < union.length; i++) {
+            if (i > 0) builder.append(separator);
+            builder.append("{"+i+"}");
+        }
+        builder.append(")");
+        Expression<?> combined = Expressions.template(Object.class, builder.toString(), union);
+        return ExpressionUtils.as((Expression)combined, alias);
+    }
+    
     @Override
     public long count() {
         try {
@@ -530,19 +545,35 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     public <RT> Union<RT> union(ListSubQuery<RT>... sq) {
         return innerUnion(sq);
     }
+    
+    public <RT> Q union(Path<?> alias, ListSubQuery<RT>... sq) {
+        return from(combineUnion(sq, alias));
+    }
 
     public <RT> Union<RT> union(SubQueryExpression<RT>... sq) {
         return innerUnion(sq);
+    }
+    
+    public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
+        return from(combineUnion(sq, alias));
     }
     
     public <RT> Union<RT> unionAll(ListSubQuery<RT>... sq) {
         unionAll = true;
         return innerUnion(sq);
     }
+    
+    public <RT> Q unionAll(Path<?> alias, ListSubQuery<RT>... sq) {
+        return from(combineUnion(sq, alias));
+    }
 
     public <RT> Union<RT> unionAll(SubQueryExpression<RT>... sq) {
         unionAll = true;
         return innerUnion(sq);
+    }
+    
+    public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
+        return from(combineUnion(sq, alias));
     }
 
     @Override

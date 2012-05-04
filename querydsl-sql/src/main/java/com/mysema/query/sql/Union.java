@@ -16,6 +16,7 @@ package com.mysema.query.sql;
 import java.util.List;
 
 import com.mysema.commons.lang.CloseableIterator;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
 
 /**
@@ -34,12 +35,14 @@ public interface Union<RT> {
      */
     List<RT> list();
     
+    
     /**
      * Get the projection as a typed Iterator
      *
      * @return
      */
     CloseableIterator<RT> iterate();
+    
 
     /**
      * Define the ordering of the query results

@@ -92,7 +92,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     private String buildQueryString(boolean forCountRow) {
         NativeSQLSerializer serializer = new NativeSQLSerializer(sqlTemplates);
         if (union != null) {
-            serializer.serializeUnion(union, queryMixin.getMetadata().getOrderBy(), unionAll);
+            serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
         } else {
             if (queryMixin.getMetadata().getJoins().isEmpty()) {
                 throw new IllegalArgumentException("No joins given");

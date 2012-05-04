@@ -18,6 +18,7 @@ import java.sql.ResultSet;
 
 import com.mysema.query.Projectable;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.query.ListSubQuery;
 
@@ -37,6 +38,15 @@ public interface SQLQuery extends SQLCommonQuery<SQLQuery>, Projectable {
      * @return
      */
     <RT> Union<RT> union(ListSubQuery<RT>... sq);
+    
+    /**
+     * Creates an union expression for the given subqueries
+     *
+     * @param <RT>
+     * @param sq
+     * @return
+     */
+    <RT> SQLQuery union(Path<?> alias, ListSubQuery<RT>... sq);
 
     /**
      * Creates an union expression for the given subqueries
@@ -47,7 +57,15 @@ public interface SQLQuery extends SQLCommonQuery<SQLQuery>, Projectable {
      */
     <RT> Union<RT> union(SubQueryExpression<RT>... sq);
     
-
+    /**
+     * Creates an union expression for the given subqueries
+     *
+     * @param <RT>
+     * @param sq
+     * @return
+     */
+    <RT> SQLQuery union(Path<?> alias, SubQueryExpression<RT>... sq);
+    
     /**
      * Creates an union expression for the given subqueries
      *
@@ -56,6 +74,15 @@ public interface SQLQuery extends SQLCommonQuery<SQLQuery>, Projectable {
      * @return
      */
     <RT> Union<RT> unionAll(ListSubQuery<RT>... sq);
+    
+    /**
+     * Creates an union expression for the given subqueries
+     *
+     * @param <RT>
+     * @param sq
+     * @return
+     */
+    <RT> SQLQuery unionAll(Path<?> alias, ListSubQuery<RT>... sq);
 
     /**
      * Creates an union expression for the given subqueries
@@ -66,6 +93,16 @@ public interface SQLQuery extends SQLCommonQuery<SQLQuery>, Projectable {
      */
     <RT> Union<RT> unionAll(SubQueryExpression<RT>... sq);
 
+
+    /**
+     * Creates an union expression for the given subqueries
+     *
+     * @param <RT>
+     * @param sq
+     * @return
+     */
+    <RT> SQLQuery unionAll(Path<?> alias, SubQueryExpression<RT>... sq);
+    
     /**
      * Clone the state of the Query for the given Connection
      *

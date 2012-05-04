@@ -18,21 +18,25 @@ import java.util.List;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
+import com.mysema.query.support.ProjectableAdapter;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.Predicate;
 
 /**
+ * Default implementation of the Union interface
+ * 
  * @author tiwe
  *
  * @param <Q>
  * @param <RT>
  */
-public class UnionImpl<Q extends Query & Projectable, RT> implements Union<RT> {
+public class UnionImpl<Q extends Query & Projectable, RT>  implements Union<RT>{
     
     private final Q query;
     
     private final Expression<?>[] projection;
-    
+        
     public UnionImpl(Q query, List<? extends Expression<?>> projection) {
         this.query = query;
         this.projection = projection.toArray(new Expression[projection.size()]);
@@ -57,7 +61,7 @@ public class UnionImpl<Q extends Query & Projectable, RT> implements Union<RT> {
             return (CloseableIterator<RT>) query.iterate(projection);
         }
     }
-
+    
     @Override
     public Union<RT> orderBy(OrderSpecifier<?>... o) {
         query.orderBy(o);
@@ -68,5 +72,7 @@ public class UnionImpl<Q extends Query & Projectable, RT> implements Union<RT> {
     public String toString() {
         return query.toString();
     }
+
+
 
 }

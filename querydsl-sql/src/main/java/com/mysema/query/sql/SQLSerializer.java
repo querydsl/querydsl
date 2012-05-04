@@ -456,16 +456,16 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     }
 
     @SuppressWarnings("unchecked")
-    public void serializeUnion(SubQueryExpression[] sqs, List<OrderSpecifier<?>> orderBy, boolean unionAll) {
+    public void serializeUnion(SubQueryExpression[] sqs, QueryMetadata metadata, boolean unionAll) {
         // union
         handle(unionAll ? templates.getUnionAll() : templates.getUnion(), Arrays.asList(sqs));
 
         // order by
-        if (!orderBy.isEmpty()) {
+        if (!metadata.getOrderBy().isEmpty()) {
             append(templates.getOrderBy());
             boolean first = true;
             skipParent = true;
-            for (OrderSpecifier<?> os : orderBy) {
+            for (OrderSpecifier<?> os : metadata.getOrderBy()) {
                 if (!first) {
                     append(COMMA);
                 }

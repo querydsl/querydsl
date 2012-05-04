@@ -107,7 +107,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
     private Query createQuery(boolean forCount) {
         SQLSerializer serializer = new SQLSerializer(templates);
         if (union != null) {
-            serializer.serializeUnion(union, queryMixin.getMetadata().getOrderBy(), unionAll);
+            serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
         } else {
             serializer.serialize(queryMixin.getMetadata(), forCount);    
         }

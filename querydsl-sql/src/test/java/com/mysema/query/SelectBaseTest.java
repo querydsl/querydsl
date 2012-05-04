@@ -862,6 +862,14 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
     
     @Test
+    @ExcludeIn({DERBY})
+    public void Union4() {
+        SimpleSubQuery<Object[]> sq1 = sq().from(employee).unique(employee.id, employee.firstname);
+        SimpleSubQuery<Object[]> sq2 = sq().from(employee).unique(employee.id, employee.firstname);
+        query().union(employee, sq1, sq2).list(employee.id.count());
+    }
+    
+    @Test
     @SuppressWarnings("unchecked")
     public void Union_With_Order() throws SQLException {
         SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id);
