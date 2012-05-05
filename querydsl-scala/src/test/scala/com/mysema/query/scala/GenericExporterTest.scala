@@ -23,7 +23,7 @@ class GenericExporterTest extends CompileTestUtils {
       mkString ("\n"))
     assertCompileSuccess(sources)
   }
-
+  
 }
 
 @QuerySupertype

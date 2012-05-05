@@ -26,6 +26,10 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.Pattern;
 
+/**
+ * @author tiwe
+ *
+ */
 public final class ClassPathUtils {
     
     private static final Pattern JAR_URL_SEPARATOR = Pattern.compile("!");
@@ -41,10 +45,10 @@ public final class ClassPathUtils {
         while (urls.hasMoreElements()) {
             URL url = urls.nextElement();
             if (url.getProtocol().equals("jar")) {
-                scanJar(classes, url, packagePath);
+                scanJar(classLoader, classes, url, packagePath);
 
             } else if (url.getProtocol().equals("file")) {
-                scanDirectory(pkg, classes, url, pkg);
+                scanDirectory(classLoader, pkg, classes, url, pkg);
 
             } else {
                 throw new IllegalArgumentException("Illegal url : " + url);
@@ -53,7 +57,7 @@ public final class ClassPathUtils {
         return classes;
     }
 
-    private static void scanDirectory(String pkg, Set<Class<?>> classes, URL url, String packageName) throws IOException {
+    private static void scanDirectory(ClassLoader classLoader, String pkg, Set<Class<?>> classes, URL url, String packageName) throws IOException {
         Deque<File> files = new ArrayDeque<File>();
         String packagePath;
         try {
@@ -70,7 +74,7 @@ public final class ClassPathUtils {
                     String fileName = child.getPath().substring(packagePath.length()+1).replace(File.separatorChar, '.');
                     String className = pkg + "." + fileName.substring(0, fileName.length()-6);
                     if (className.startsWith(packageName)) {
-                        Class<?> cl = safeClassForName(className);
+                        Class<?> cl = safeClassForName(classLoader, className);
                         if (cl != null) {
                             classes.add(cl);
                         }    
@@ -82,7 +86,7 @@ public final class ClassPathUtils {
         }
     }
 
-    private static void scanJar(Set<Class<?>> classes, URL url, String packagePath) throws IOException {
+    private static void scanJar(ClassLoader classLoader, Set<Class<?>> classes, URL url, String packagePath) throws IOException {
         String[] fileAndPath = JAR_URL_SEPARATOR.split(url.getFile().substring(5));
         JarFile jarFile = new JarFile(fileAndPath[0]);
         try {
@@ -91,7 +95,7 @@ public final class ClassPathUtils {
                 JarEntry entry = entries.nextElement();            
                 if (entry.getName().endsWith(".class") && entry.getName().startsWith(packagePath) && entry.getName().startsWith(fileAndPath[1].substring(1))) {
                     String className = entry.getName().substring(0, entry.getName().length()-6).replace('/', '.');
-                    Class<?> cl = safeClassForName(className);
+                    Class<?> cl = safeClassForName(classLoader, className);
                     if (cl != null) {
                         classes.add(cl);
                     }
@@ -102,12 +106,13 @@ public final class ClassPathUtils {
         }                
     }
     
-    public static Class<?> safeClassForName(String className){
+    public static Class<?> safeClassForName(ClassLoader classLoader, String className){
         try {
             if (className.startsWith("com.sun")) {
                 return null;
             } else {
-                return Class.forName(className);
+                //return Class.forName(className);
+                return classLoader.loadClass(className);
             }
         } catch (ClassNotFoundException e) {
             return null;

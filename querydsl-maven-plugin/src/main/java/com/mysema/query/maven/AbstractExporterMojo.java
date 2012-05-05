@@ -109,7 +109,6 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
         } else {
             classpathElements = project.getCompileClasspathElements();
         }
-        System.err.println(classpathElements.size());
         List<URL> urls = new ArrayList<URL>(classpathElements.size());
         for (String element : classpathElements){
             File file = new File(element);
