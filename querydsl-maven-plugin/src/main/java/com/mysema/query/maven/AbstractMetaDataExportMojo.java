@@ -186,6 +186,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      */
     private boolean schemaToPackage;
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         if (isForTest()) {

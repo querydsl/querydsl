@@ -10,7 +10,7 @@ import org.junit.Test;
 public class GenericExporterMojoTest extends AbstractMojoTest {
 
     public GenericExporterMojoTest() {
-        super(GenericExporterMojo.class);
+        super(AbstractExporterMojo.class);
     }
 
     @Test

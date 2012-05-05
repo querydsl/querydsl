@@ -13,19 +13,30 @@
  */
 package com.mysema.query.maven;
 
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+
 import com.mysema.query.codegen.GenericExporter;
 
 /**
- * GenericExporterMojo calls the GenericExporter tool using the classpath of the module
+ * JPAExporterMojo calls the GenericExporter tool using the classpath of the module
  * 
- * @goal generic-export
+ * @goal jpa-export
  * @requiresDependencyResolution test
+ * @author tiwe
  */
-public class GenericExporterMojo extends AbstractExporterMojo {
+public class JPAExporterMojo extends AbstractExporterMojo {
 
     @Override
     protected void configure(GenericExporter exporter) {
-        // do nothing        
+        exporter.setEmbeddableAnnotation(Embeddable.class);
+        exporter.setEmbeddedAnnotation(Embedded.class);
+        exporter.setEntityAnnotation(Entity.class);
+        exporter.setSkipAnnotation(Transient.class);
+        exporter.setSupertypeAnnotation(MappedSuperclass.class);
     }
 
 }
