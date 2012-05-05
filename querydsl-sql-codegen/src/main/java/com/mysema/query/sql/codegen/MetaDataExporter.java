@@ -20,6 +20,7 @@ import java.nio.charset.Charset;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -160,7 +161,7 @@ public class MetaDataExporter {
                 namingStrategy.normalizeColumnName(columnName),
                 propertyName,
                 typeModel,
-                new String[0],
+                Collections.<String>emptyList(),
                 false);
     }
 

@@ -14,6 +14,8 @@
 package com.mysema.query.apt;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -152,9 +154,9 @@ public final class TypeElementHandler {
         } 
         
         // inits
-        String[] inits = new String[0];
+        List<String> inits = Collections.<String>emptyList();
         if (annotations.isAnnotationPresent(QueryInit.class)) {
-            inits = annotations.getAnnotation(QueryInit.class).value();            
+            inits = Arrays.asList(annotations.getAnnotation(QueryInit.class).value());            
         }
         
         return new Property(entityType, name, propertyType, inits);

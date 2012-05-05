@@ -59,18 +59,18 @@ public class SerializerTest {
         type = new EntityType(typeModel);
 
         // property
-        type.addProperty(new Property(type, "entityField", type, new String[0]));
-        type.addProperty(new Property(type, "collection", new ClassType(TypeCategory.COLLECTION, Collection.class, typeModel), new String[0]));
-        type.addProperty(new Property(type, "listField", new ClassType(TypeCategory.LIST, List.class, typeModel), new String[0]));
-        type.addProperty(new Property(type, "setField", new ClassType(TypeCategory.SET, Set.class, typeModel), new String[0]));
-        type.addProperty(new Property(type, "arrayField", new ClassType(TypeCategory.ARRAY, String[].class, typeModel), new String[0]));
-        type.addProperty(new Property(type, "mapField", new ClassType(TypeCategory.MAP, List.class, typeModel, typeModel), new String[0]));
-        type.addProperty(new Property(type, "superTypeField", new TypeExtends(new ClassType(TypeCategory.MAP, List.class, typeModel, typeModel)), new String[0]));
-        type.addProperty(new Property(type, "extendsTypeField", new TypeSuper(new ClassType(TypeCategory.MAP, List.class, typeModel, typeModel)), new String[0]));
+        type.addProperty(new Property(type, "entityField", type));
+        type.addProperty(new Property(type, "collection", new ClassType(TypeCategory.COLLECTION, Collection.class, typeModel)));
+        type.addProperty(new Property(type, "listField", new ClassType(TypeCategory.LIST, List.class, typeModel)));
+        type.addProperty(new Property(type, "setField", new ClassType(TypeCategory.SET, Set.class, typeModel)));
+        type.addProperty(new Property(type, "arrayField", new ClassType(TypeCategory.ARRAY, String[].class, typeModel)));
+        type.addProperty(new Property(type, "mapField", new ClassType(TypeCategory.MAP, List.class, typeModel, typeModel)));
+        type.addProperty(new Property(type, "superTypeField", new TypeExtends(new ClassType(TypeCategory.MAP, List.class, typeModel, typeModel))));
+        type.addProperty(new Property(type, "extendsTypeField", new TypeSuper(new ClassType(TypeCategory.MAP, List.class, typeModel, typeModel))));
 
         for (Class<?> cl : Arrays.asList(Boolean.class, Comparable.class, Integer.class, Date.class, java.sql.Date.class, java.sql.Time.class)){
             Type classType = new ClassType(TypeCategory.get(cl.getName()), cl);
-            type.addProperty(new Property(type, StringUtils.uncapitalize(cl.getSimpleName()), classType, new String[0]));
+            type.addProperty(new Property(type, StringUtils.uncapitalize(cl.getSimpleName()), classType));
         }
 
         // constructor

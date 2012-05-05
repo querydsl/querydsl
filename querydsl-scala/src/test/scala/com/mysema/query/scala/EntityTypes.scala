@@ -19,7 +19,7 @@ object EntityTypes {
         ("listField",new SimpleType(Types.LIST, typeModel)), ("setField",new SimpleType(Types.SET, typeModel)),
         ("arrayField", new ClassType(TypeCategory.ARRAY, classOf[Array[String]])),
         ("mapField", new SimpleType(Types.MAP, typeModel, typeModel)))) {
-      entityType.addProperty(new Property(entityType, name, clazz, new Array[String](0)))
+      entityType.addProperty(new Property(entityType, name, clazz))
     }
     
     for ( clazz <- List(
@@ -28,7 +28,7 @@ object EntityTypes {
       val name = uncapitalize(clazz.getSimpleName + 
           (if (clazz.isPrimitive) "_p" else "")).replace("[","").replace("]","")
       entityType.addProperty(new Property(entityType, name, 
-          new ClassType(TypeCategory.get(clazz.getName), clazz), new Array[String](0)))
+          new ClassType(TypeCategory.get(clazz.getName), clazz)))
     }
     
     // constructor

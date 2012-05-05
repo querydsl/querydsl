@@ -15,6 +15,8 @@ package com.mysema.query.codegen;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Collections;
+
 import org.junit.Test;
 
 import com.mysema.codegen.model.SimpleType;
@@ -27,8 +29,8 @@ public class PropertyTest {
     public void Equals_And_HashCode(){
         Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false,false);
         EntityType type = new EntityType(typeModel);
-        Property p1 = new Property(type, "property", type, new String[0]);
-        Property p2 = new Property(type, "property", type, new String[0]);
+        Property p1 = new Property(type, "property", type, Collections.<String>emptyList());
+        Property p2 = new Property(type, "property", type, Collections.<String>emptyList());
         assertEquals(p1, p1);
         assertEquals(p1, p2);
         assertEquals(p1.hashCode(), p2.hashCode());
@@ -38,7 +40,7 @@ public class PropertyTest {
     public void EscapedName(){
         Type typeModel = new SimpleType(TypeCategory.ENTITY, "com.mysema.query.DomainClass", "com.mysema.query", "DomainClass", false,false);
         EntityType type = new EntityType(typeModel);
-        Property property = new Property(type, "boolean", type, new String[0]);
+        Property property = new Property(type, "boolean", type, Collections.<String>emptyList());
         assertEquals("boolean$", property.getEscapedName());
     }
     

@@ -17,6 +17,7 @@ import java.lang.annotation.Annotation;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.mysema.codegen.model.Type;
@@ -34,7 +35,7 @@ public final class Property implements Comparable<Property> {
 
     private final boolean inherited;
 
-    private final String[] inits;
+    private final List<String> inits;
 
     private final String name, escapedName;
 
@@ -43,26 +44,26 @@ public final class Property implements Comparable<Property> {
     private final Type type;
 
     public Property(EntityType declaringType, String name, Type type) {
-        this(declaringType, name, type, new String[0], false);
+        this(declaringType, name, type, Collections.<String>emptyList(), false);
     }
 
-    public Property(EntityType declaringType, String name, Type type, String[] inits) {
+    public Property(EntityType declaringType, String name, Type type, List<String> inits) {
         this(declaringType, name, type, inits, false);
     }
 
-    public Property(EntityType declaringType, String name, Type type, String[] inits, 
+    public Property(EntityType declaringType, String name, Type type, List<String> inits, 
             boolean inherited) {
         this(declaringType, name, JavaSyntaxUtils.isReserved(name) ? (name + "$") : name, type, 
                 inits, inherited);
     }
 
     public Property(EntityType declaringType, String name, String escapedName, Type type, 
-            String[] inits, boolean inherited) {
+            List<String> inits, boolean inherited) {
         this.declaringType = declaringType;
         this.name = Assert.notNull(name,"name");
         this.escapedName = escapedName;
         this.type = Assert.notNull(type,"type");
-        this.inits = inits.clone();  
+        this.inits = inits;  
         this.inherited = inherited;
     }
 
@@ -122,7 +123,7 @@ public final class Property implements Comparable<Property> {
         return escapedName;
     }
 
-    public String[] getInits() {
+    public List<String> getInits() {
         return inits;
     }
 

@@ -22,9 +22,12 @@ import java.io.Writer;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -242,9 +245,9 @@ public class HibernateDomainExporter {
     @Nullable
     private Property createProperty(EntityType entityType, String propertyName, Type propertyType, 
             AnnotatedElement annotated) {
-        String[] inits = new String[0];
+        List<String> inits = Collections.<String>emptyList();
         if (annotated.isAnnotationPresent(QueryInit.class)) {
-            inits = annotated.getAnnotation(QueryInit.class).value();
+            inits = Arrays.asList(annotated.getAnnotation(QueryInit.class).value());
         }
         if (annotated.isAnnotationPresent(QueryType.class)) {
             QueryType queryType = annotated.getAnnotation(QueryType.class);

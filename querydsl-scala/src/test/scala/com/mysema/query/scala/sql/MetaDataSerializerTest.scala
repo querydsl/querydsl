@@ -37,7 +37,7 @@ class ScalaMetaDataSerializerTest {
       .foreach(cl => {
         var classType = new ClassType(TypeCategory.get(cl.getName), cl)
         entityType.addProperty(new Property(entityType, 
-            StringUtils.uncapitalize(cl.getSimpleName), classType, new Array[String](0)))
+            StringUtils.uncapitalize(cl.getSimpleName), classType))
       })
   }
 

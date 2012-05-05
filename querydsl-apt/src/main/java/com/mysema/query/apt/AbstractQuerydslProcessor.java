@@ -476,7 +476,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
                 context.projectionTypes.values())) {
             for (EntityType entityType : entityTypes) {
                 for (Property property : entityType.getProperties()) {
-                    if (property.getInits() != null && property.getInits().length > 0) {
+                    if (property.getInits() != null && property.getInits().size() > 0) {
                         validateInits(entityType, property);
                     }
                 }

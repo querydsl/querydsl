@@ -15,6 +15,8 @@ package com.mysema.query.codegen;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Collections;
+
 import org.junit.Test;
 
 import com.mysema.codegen.model.ClassType;
@@ -52,7 +54,7 @@ public class EntityTypeTest {
         EntityType entityModel = new EntityType(typeModel);
         assertEquals("object", entityModel.getUncapSimpleName());
         
-        entityModel.addProperty(new Property(entityModel, "OBJECT", "object", typeModel, new String[0], false));
+        entityModel.addProperty(new Property(entityModel, "OBJECT", "object", typeModel, Collections.<String>emptyList(), false));
         assertEquals("object1", entityModel.getUncapSimpleName());
     }
     

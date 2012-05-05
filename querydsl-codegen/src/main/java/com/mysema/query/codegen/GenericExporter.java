@@ -28,8 +28,10 @@ import java.lang.reflect.TypeVariable;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -359,13 +361,13 @@ public class GenericExporter {
     @Nullable
     private Property createProperty(EntityType entityType, String propertyName, Type propertyType, 
             AnnotatedElement annotated) {
-        String[] inits = new String[0];
+        List<String> inits = Collections.<String>emptyList();
         if (annotated.isAnnotationPresent(skipAnnotation) 
             && !annotated.isAnnotationPresent(QueryType.class)) {
             return null;
         }
         if (annotated.isAnnotationPresent(QueryInit.class)) {
-            inits = annotated.getAnnotation(QueryInit.class).value();
+            inits = Arrays.asList(annotated.getAnnotation(QueryInit.class).value());
         }
         if (annotated.isAnnotationPresent(QueryType.class)) {
             QueryType queryType = annotated.getAnnotation(QueryType.class);
