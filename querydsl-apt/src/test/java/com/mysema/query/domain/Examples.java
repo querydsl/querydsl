@@ -64,6 +64,9 @@ public class Examples {
             return 0;
         }
         
+        public boolean equals(Object o) {
+            return o == this;
+        }
     }
     
     @QueryEntity

@@ -48,7 +48,7 @@ public class Qualification {
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        this.date = new Date(date.getTime());
     }
 
     public Date getDate() {

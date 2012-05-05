@@ -38,7 +38,7 @@ public class Superclass2Test {
         }
 
         public Date getCreatedOn() {
-            return createdOn;
+            return new Date(createdOn.getTime());
         }
 
     }

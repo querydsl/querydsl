@@ -81,11 +81,11 @@ public class Employee {
     }
 
     public Date getDatefield() {
-        return datefield;
+        return new Date(datefield.getTime());
     }
 
     public void setDatefield(Date datefield) {
-        this.datefield = datefield;
+        this.datefield = new Date(datefield.getTime());
     }
 
     public Time getTimefield() {

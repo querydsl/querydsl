@@ -32,7 +32,7 @@ public class ForeignKeyBuilder {
         this.templates = templates;
         this.foreignKeys = foreignKeys;
         this.name = name;
-        this.foreignColumns = columns;
+        this.foreignColumns = columns.clone();
     }
 
     public CreateTableClause references(String table, String... parentColumns) {

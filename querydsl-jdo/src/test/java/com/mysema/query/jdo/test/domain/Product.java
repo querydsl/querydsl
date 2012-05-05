@@ -55,7 +55,7 @@ public class Product {
         this.description = description;
         this.price = price;
         this.amount = amount;
-        this.publicationDate = publicationDate;
+        this.publicationDate = new Date(publicationDate.getTime());
         this.dateField = new java.sql.Date(publicationDate.getTime());
         this.timeField = new java.sql.Time(publicationDate.getTime());
     }
@@ -97,15 +97,15 @@ public class Product {
     }
 
     public void setPublicationDate(Date publicationDate) {
-        this.publicationDate = publicationDate;
+        this.publicationDate = new java.sql.Date(publicationDate.getTime());
     }
 
     public java.sql.Date getDateField() {
-        return dateField;
+        return new java.sql.Date(dateField.getTime());
     }
 
     public void setDateField(java.sql.Date dateField) {
-        this.dateField = dateField;
+        this.dateField = new java.sql.Date(dateField.getTime());
     }
 
     public java.sql.Time getTimeField() {

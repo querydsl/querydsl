@@ -94,18 +94,18 @@ public class TypeTest implements InvocationHandler{
     public void test() throws MalformedURLException, SQLException{
         List<Pair<?,?>> valueAndType = new ArrayList<Pair<?,?>>();
         valueAndType.add(Pair.of(new BigDecimal("1"), new BigDecimalType()));
-        valueAndType.add(Pair.of(new Boolean(true),   new BooleanType()));
-        valueAndType.add(Pair.of(new Byte((byte)1),   new ByteType()));
+        valueAndType.add(Pair.of(Boolean.TRUE,         new BooleanType()));
+        valueAndType.add(Pair.of(Byte.valueOf((byte)1),   new ByteType()));
         valueAndType.add(Pair.of(new byte[0],         new BytesType()));        
         valueAndType.add(Pair.of(new Character('c'),  new CharacterType()));
         valueAndType.add(Pair.of(new java.sql.Date(0),new DateType()));
-        valueAndType.add(Pair.of(new Double(1),       new DoubleType()));
-        valueAndType.add(Pair.of(new Float(1),        new FloatType()));
-        valueAndType.add(Pair.of(new Integer(1),      new IntegerType()));
-        valueAndType.add(Pair.of(new Long(1),         new LongType()));
+        valueAndType.add(Pair.of(Double.valueOf(1),       new DoubleType()));
+        valueAndType.add(Pair.of(Float.valueOf(1),        new FloatType()));
+        valueAndType.add(Pair.of(Integer.valueOf(1),      new IntegerType()));
+        valueAndType.add(Pair.of(Long.valueOf(1),         new LongType()));
         valueAndType.add(Pair.of(new Object(),        new ObjectType()));
-        valueAndType.add(Pair.of(new Short((short)1), new ShortType()));
-        valueAndType.add(Pair.of(new String(""),      new StringType()));
+        valueAndType.add(Pair.of(Short.valueOf((short)1), new ShortType()));
+        valueAndType.add(Pair.of("",                   new StringType()));
         valueAndType.add(Pair.of(new Timestamp(0),    new TimestampType()));
         valueAndType.add(Pair.of(new Time(0),         new TimeType()));
         valueAndType.add(Pair.of(new URL("http://www.mysema.com"), new URLType()));

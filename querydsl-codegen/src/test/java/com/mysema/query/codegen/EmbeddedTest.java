@@ -19,20 +19,20 @@ public class EmbeddedTest {
     public static abstract class AbstractEntity<C extends EntityCode> {
 
         @QueryEmbedded
-        C code;
+        public C code;
     }
 
     @QuerySupertype
     public static class EntityCode {
 
-        String code;
+        public String code;
 
     }
     
     @QueryEmbeddable
     public static class SubEntityCode extends EntityCode {
         
-        String property;
+        public String property;
         
     }
     

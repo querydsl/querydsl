@@ -17,7 +17,7 @@ public class Examples {
     
     public static class Supertype {
         
-        String supertypeProperty;
+        public String supertypeProperty;
     }
     
     @QueryEntity
@@ -28,16 +28,16 @@ public class Examples {
     @QueryEntity
     public static abstract class AbstractEntity<Id extends java.io.Serializable> {
 
-        Id id;
+        public Id id;
 
-        String first;
+        public String first;
 
     }
 
     @QueryEntity
     public static class SubEntity extends AbstractEntity<java.lang.Long> {
      
-        String second;
+        public String second;
      
     } 
     
@@ -46,16 +46,16 @@ public class Examples {
     public static class ComplexCollections {
     
         @QueryEmbedded
-        List<Complex<String>> list;
+        public List<Complex<String>> list;
         
         @QueryEmbedded
-        Map<String, Complex<String>> map;
+        public Map<String, Complex<String>> map;
         
         @QueryEmbedded
-        Map<String, Complex<?>> map2;
+        public Map<String, Complex<?>> map2;
         
         @QueryEmbedded
-        Map<?, Complex<String>> map3;
+        public Map<?, Complex<String>> map3;
                 
                 
     }
@@ -63,13 +63,16 @@ public class Examples {
     
     public static class Complex<T extends Comparable<T>> implements Comparable<Complex<T>> {
 
-        T a;
+        public T a;
         
         @Override
         public int compareTo(Complex<T> arg0) {
             return 0;
         }
         
+        public boolean equals(Object o) {
+            return o == this;
+        }
     }
     
     @QueryEntity
@@ -79,20 +82,20 @@ public class Examples {
 
     @QueryEntity
     public static class GenericRelations{
-        Collection<Collection<Reference>> col1;
-        Collection<List<Reference>> col2;
-        Collection<Collection<? extends Reference>> col3;
-        Collection<List<? extends Reference>> col4;
+        public Collection<Collection<Reference>> col1;
+        public Collection<List<Reference>> col2;
+        public Collection<Collection<? extends Reference>> col3;
+        public Collection<List<? extends Reference>> col4;
 
-        Set<List<Reference>> set1;
-        Set<Collection<Reference>> set2;
-        Set<List<? extends Reference>> set3;
-        Set<Collection<? extends Reference>> set4;
+        public Set<List<Reference>> set1;
+        public Set<Collection<Reference>> set2;
+        public Set<List<? extends Reference>> set3;
+        public Set<Collection<? extends Reference>> set4;
 
-        Map<String,List<String>> map1;
-        Map<List<String>,String> map2;
-        Map<String,List<? extends String>> map3;
-        Map<List<? extends String>,String> map4;
+        public Map<String,List<String>> map1;
+        public Map<List<String>,String> map2;
+        public Map<String,List<? extends String>> map3;
+        public Map<List<? extends String>,String> map4;
     }
 
     @QueryEntity

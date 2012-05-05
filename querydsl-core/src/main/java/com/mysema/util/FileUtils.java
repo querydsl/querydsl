@@ -11,7 +11,13 @@ public abstract class FileUtils {
                 delete(f);
             }
         }
-        file.delete();
+        if (file.isDirectory() || file.isFile()) {
+            if (!file.delete()) {
+                throw new IllegalStateException("Deletion of " + file.getPath() + " failed");
+            }
+        }
+        
+        
     }
     
     private FileUtils() {}

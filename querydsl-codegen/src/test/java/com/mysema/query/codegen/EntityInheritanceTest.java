@@ -11,16 +11,16 @@ public class EntityInheritanceTest {
     @QuerySupertype
     public static class TreeEntity<T extends TreeEntity<T>> {
         
-        Integer id;
+        public Integer id;
         
-        T parent;
+        public T parent;
         
     }
 
     @QueryEntity
     public static class TestEntity extends TreeEntity<TestEntity> {
         
-        String name;
+        public String name;
         
     }
     

@@ -51,7 +51,11 @@ public class Inheritance7Test {
         public int compareTo(T o) {
             return 0;
         }
-
+        
+        public boolean equals(Object o) {
+            return o == this;
+        }
+        
         public T getParent() {
             return parent;
         }

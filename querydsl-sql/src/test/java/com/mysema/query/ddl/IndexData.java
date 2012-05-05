@@ -19,7 +19,7 @@ public class IndexData {
     
     public IndexData(String name, String[] columns) {
         this.name = name;
-        this.columns = columns;
+        this.columns = columns.clone();
     }
 
     public String getName() {
@@ -27,7 +27,7 @@ public class IndexData {
     }
 
     public String[] getColumns() {
-        return columns;
+        return columns.clone();
     }
 
     public boolean isUnique() {

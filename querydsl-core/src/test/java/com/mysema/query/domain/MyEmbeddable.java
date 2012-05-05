@@ -24,6 +24,10 @@ public class MyEmbeddable implements Comparable<MyEmbeddable> {
         return -1;
     }
     
+    public boolean equals(Object o) {
+        return o == this;
+    }
+    
     public int getFoo() {
         return foo;
     }

@@ -48,6 +48,10 @@ public class AbstractClassesTest {
         public int compareTo(BaseArchetype o) {
             return 0;
         }
+        
+        public boolean equals(Object o) {
+            return o == this;
+        }
     }
 
     @Entity
@@ -55,6 +59,10 @@ public class AbstractClassesTest {
 
         public int compareTo(S o) {
             return 0;
+        }
+        
+        public boolean equals(Object o) {
+            return o == this;
         }
 
     }
@@ -67,6 +75,10 @@ public class AbstractClassesTest {
 
         public int compareTo(Party o) {
             return 0;
+        }
+        
+        public boolean equals(Object o) {
+            return o == this;
         }
 
     }

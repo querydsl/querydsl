@@ -30,6 +30,10 @@ public class ComparableTest {
             return 0;
         }
         
+        public boolean equals(Object o) {
+            return o == this;
+        }
+        
     }
     
     @QueryEmbeddable
@@ -38,6 +42,10 @@ public class ComparableTest {
         @Override
         public int compareTo(CustomComparable2 o) {
             return 0;
+        }
+        
+        public boolean equals(Object o) {
+            return o == this;
         }
         
     }

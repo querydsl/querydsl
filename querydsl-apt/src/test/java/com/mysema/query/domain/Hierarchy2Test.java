@@ -55,6 +55,10 @@ public class Hierarchy2Test {
         public int compareTo(MyEmbeddable individualToCompare) {
             return -1;
         }
+        
+        public boolean equals(Object o) {
+            return o == this;
+        }
     }
 
 }

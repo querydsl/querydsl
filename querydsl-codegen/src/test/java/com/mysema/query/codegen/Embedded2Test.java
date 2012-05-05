@@ -28,7 +28,7 @@ public class Embedded2Test {
     @QuerySupertype
     public static class EntityCode {
 
-        String code;
+        public String code;
 
     }
     
@@ -36,7 +36,7 @@ public class Embedded2Test {
     public static abstract class AbstractEntity<C extends EntityCode> {
 
         @QueryEmbedded
-        C code;
+        public C code;
         
     }
     
@@ -48,16 +48,16 @@ public class Embedded2Test {
     @QuerySupertype
     public static abstract class AbstractNamedEntity<C extends EntityCode> extends AbstractMultilingualEntity<C> {
 
-        String nameEn;
+        public String nameEn;
 
-        String nameNl;
+        public String nameNl;
 
     }
         
     @QueryEntity
     public static class Brand extends AbstractNamedEntity<BrandCode> {
 
-        Long id;
+        public Long id;
 
     }
         

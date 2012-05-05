@@ -57,6 +57,10 @@ public class QueryEmbedded4Test {
             return 0;
         }
         
+        public boolean equals(Object o) {
+            return o == this;
+        }
+        
     }
     
     @Test

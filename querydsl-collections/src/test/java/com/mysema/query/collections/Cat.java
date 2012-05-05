@@ -74,7 +74,7 @@ public class Cat extends Animal {
 
     public Cat(String name, int id, Date birthdate) {
         this(name, id);
-        this.birthdate = birthdate;
+        this.birthdate = new Date(birthdate.getTime());
         this.dateField = new java.sql.Date(birthdate.getTime());
         this.timeField = new java.sql.Time(birthdate.getTime());
     }
@@ -120,7 +120,7 @@ public class Cat extends Animal {
     }
 
     public void setDateField(java.sql.Date dateField) {
-        this.dateField = dateField;
+        this.dateField = new java.sql.Date(dateField.getTime());
     }
 
     public void setEyecolor(Color eyecolor) {
@@ -156,7 +156,7 @@ public class Cat extends Animal {
     }
 
     public void setKittenArray(Cat[] kittenArray) {
-        this.kittenArray = kittenArray;
+        this.kittenArray = kittenArray.clone();
     }
 
     public String toString() {

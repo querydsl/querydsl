@@ -86,11 +86,11 @@ public class UserProp {
     }
 
     public Date getCreationDate() {
-        return creationDate;
+        return new Date(creationDate.getTime());
     }
 
     public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+        this.creationDate = new Date(creationDate.getTime());
     }
 
     public double getModifiedBy() {
@@ -102,11 +102,11 @@ public class UserProp {
     }
 
     public Date getModificationDate() {
-        return modificationDate;
+        return new Date(modificationDate.getTime());
     }
 
     public void setModificationDate(Date modificationDate) {
-        this.modificationDate = modificationDate;
+        this.modificationDate = new Date(modificationDate.getTime());
     }
 
     public double getDeletedBy() {
@@ -118,11 +118,11 @@ public class UserProp {
     }
 
     public Date getDeleteDate() {
-        return deleteDate;
+        return new Date(deleteDate.getTime());
     }
 
     public void setDeleteDate(Date deleteDate) {
-        this.deleteDate = deleteDate;
+        this.deleteDate = new Date(deleteDate.getTime());
     }
 
     public Set<Category> getChildCategories() {

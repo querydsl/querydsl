@@ -74,7 +74,7 @@ public class Animal {
     }
 
     public void setBirthdate(java.util.Date birthdate) {
-        this.birthdate = birthdate;
+        this.birthdate = new Date(birthdate.getTime());
     }
 
     public void setBodyWeight(int bodyWeight) {
@@ -106,7 +106,7 @@ public class Animal {
     }
 
     public void setDateAsSimple(Date dateAsSimple) {
-        this.dateAsSimple = dateAsSimple;
+        this.dateAsSimple = new Date(dateAsSimple.getTime());
     }
 
 }

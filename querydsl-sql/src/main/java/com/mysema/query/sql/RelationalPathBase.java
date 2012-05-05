@@ -105,7 +105,7 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
             all = new Path[columns.size()];
             columns.toArray(all);
         }
-        return all;
+        return all.clone();
     }
     
     @Override

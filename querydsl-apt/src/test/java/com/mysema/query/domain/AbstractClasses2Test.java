@@ -52,12 +52,20 @@ public class AbstractClasses2Test {
         public int compareTo(BaseArchetype o) {
             return 0;
         }
+        
+        public boolean equals(Object o) {
+            return o == this;
+        }
     }
     
     @Entity
     public static class Grant<P extends Party, S extends Party> extends BaseArchetype<P, S> {
         public int compareTo(S o) {
             return 0;
+        }
+        
+        public boolean equals(Object o) {
+            return o == this;
         }
     }
     
@@ -72,6 +80,10 @@ public class AbstractClasses2Test {
         public int compareTo(Party o) {
             return 0;
         }
+        
+        public boolean equals(Object o) {
+            return o == this;
+        }
     }
     
     @Entity
@@ -83,6 +95,10 @@ public class AbstractClasses2Test {
 
         public int compareTo(PartyRole o) {
             return 0;
+        }
+        
+        public boolean equals(Object o) {
+            return o == this;
         }
     }
     

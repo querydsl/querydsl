@@ -32,11 +32,11 @@ public class Inheritance5Test {
         private Date createdOn;
 
         public Date getCreatedOn() {
-            return createdOn;
+            return new Date(createdOn.getTime());
         }
 
         public void setCreatedOn(Date createdOn) {
-            this.createdOn = createdOn;
+            this.createdOn = new Date(createdOn.getTime());
         }
 
     }

@@ -73,11 +73,11 @@ public class PropertiesTest {
 
         @Column @Temporal(TemporalType.TIMESTAMP)
         public Date getOrderTime() {
-            return orderTime;
+            return new Date(orderTime.getTime());
         }
 
         public void setOrderTime(Date orderTime) {
-            this.orderTime = orderTime;
+            this.orderTime = new Date(orderTime.getTime());
         }
 
         @ManyToOne

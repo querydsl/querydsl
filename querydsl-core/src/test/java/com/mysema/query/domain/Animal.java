@@ -35,7 +35,7 @@ public class Animal {
     private java.sql.Time timeField;
 
     public java.util.Date getBirthdate() {
-        return birthdate;
+        return new java.util.Date(birthdate.getTime());
     }
 
     public double getBodyWeight() {
@@ -44,7 +44,7 @@ public class Animal {
 
 
     public java.sql.Date getDateField() {
-        return dateField;
+        return new java.sql.Date(dateField.getTime());
     }
 
     public int getId() {
@@ -76,7 +76,7 @@ public class Animal {
     }
 
     public void setBirthdate(java.util.Date birthdate) {
-        this.birthdate = birthdate;
+        this.birthdate = new java.util.Date(birthdate.getTime());
     }
 
     public void setBodyWeight(double bodyWeight) {
@@ -84,7 +84,7 @@ public class Animal {
     }
 
     public void setDateField(java.sql.Date dateField) {
-        this.dateField = dateField;
+        this.dateField = new java.sql.Date(dateField.getTime());
     }
 
     public void setId(int id) {

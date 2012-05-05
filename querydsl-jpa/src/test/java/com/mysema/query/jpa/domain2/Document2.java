@@ -96,11 +96,11 @@ public class Document2 {
     }
 
     public Date getCreationDate() {
-        return creationDate;
+        return new Date(creationDate.getTime());
     }
 
     public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
+        this.creationDate = new Date(creationDate.getTime());
     }
 
     public double getModifiedBy() {
@@ -112,11 +112,11 @@ public class Document2 {
     }
 
     public Date getModificationDate() {
-        return modificationDate;
+        return new Date(modificationDate.getTime());
     }
 
     public void setModificationDate(Date modificationDate) {
-        this.modificationDate = modificationDate;
+        this.modificationDate = new Date(modificationDate.getTime());
     }
 
     public double getDeletedBy() {
@@ -128,11 +128,11 @@ public class Document2 {
     }
 
     public Date getDeletedDate() {
-        return deletedDate;
+        return new Date(deletedDate.getTime());
     }
 
     public void setDeletedDate(Date deletedDate) {
-        this.deletedDate = deletedDate;
+        this.deletedDate = new Date(deletedDate.getTime());
     }
 
     public double getDocumentVersion() {

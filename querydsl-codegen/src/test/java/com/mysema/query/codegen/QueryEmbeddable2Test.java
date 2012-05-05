@@ -25,6 +25,10 @@ public class QueryEmbeddable2Test {
             return 0;
         }
         
+        public boolean equals(Object o) {
+            return o == this;
+        }
+        
     }
         
 }

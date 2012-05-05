@@ -22,6 +22,7 @@ import java.io.Writer;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -72,7 +73,6 @@ import com.mysema.util.BeanUtils;
  * @author tiwe
  *
  */
-// TODO : fix encoding issues
 public class HibernateDomainExporter {
 
     private static final Logger logger = LoggerFactory.getLogger(HibernateDomainExporter.class);
@@ -105,30 +105,46 @@ public class HibernateDomainExporter {
     private final Serializer supertypeSerializer;
 
     private final SerializerConfig serializerConfig;
+    
+    private final Charset charset;
 
     public HibernateDomainExporter(File targetFolder, Configuration configuration) {
-        this("Q", "", targetFolder, SimpleSerializerConfig.DEFAULT, configuration);
+        this("Q", "", targetFolder, SimpleSerializerConfig.DEFAULT, configuration, 
+                Charset.defaultCharset());
     }
 
     public HibernateDomainExporter(String namePrefix, File targetFolder, Configuration configuration) {
-        this(namePrefix, "", targetFolder, SimpleSerializerConfig.DEFAULT, configuration);
+        this(namePrefix, "", targetFolder, SimpleSerializerConfig.DEFAULT, configuration, 
+                Charset.defaultCharset());
+    }
+    
+    public HibernateDomainExporter(String namePrefix, File targetFolder, Configuration configuration, 
+            Charset charset) {
+        this(namePrefix, "", targetFolder, SimpleSerializerConfig.DEFAULT, configuration, charset);
     }
 
     public HibernateDomainExporter(String namePrefix, String nameSuffix, File targetFolder,
             Configuration configuration) {
-        this(namePrefix, nameSuffix, targetFolder, SimpleSerializerConfig.DEFAULT, configuration);
+        this(namePrefix, nameSuffix, targetFolder, SimpleSerializerConfig.DEFAULT, configuration, 
+                Charset.defaultCharset());
     }
-
+    
     public HibernateDomainExporter(String namePrefix, File targetFolder, 
             SerializerConfig serializerConfig, Configuration configuration) {
-        this(namePrefix, "", targetFolder, serializerConfig, configuration);
+        this(namePrefix, "", targetFolder, serializerConfig, configuration, Charset.defaultCharset());
+    }
+    
+    public HibernateDomainExporter(String namePrefix, File targetFolder, 
+            SerializerConfig serializerConfig, Configuration configuration, Charset charset) {
+        this(namePrefix, "", targetFolder, serializerConfig, configuration, charset);
     }
 
     public HibernateDomainExporter(String namePrefix, String nameSuffix, File targetFolder, 
-            SerializerConfig serializerConfig, Configuration configuration) {
+            SerializerConfig serializerConfig, Configuration configuration, Charset charset) {
         this.targetFolder = targetFolder;
         this.serializerConfig = serializerConfig;
         this.configuration = configuration;
+        this.charset = charset;
         configuration.buildMappings();
         CodegenModule module = new CodegenModule();
         module.bind(CodegenModule.PREFIX, namePrefix);
@@ -356,7 +372,7 @@ public class HibernateDomainExporter {
             logger.error("Folder " + file.getParent() + " could not be created");
         }
         try {
-            return new OutputStreamWriter(new FileOutputStream(file));
+            return new OutputStreamWriter(new FileOutputStream(file), charset);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e.getMessage(), e);
         }
