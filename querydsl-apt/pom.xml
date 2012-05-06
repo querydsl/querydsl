@@ -79,6 +79,7 @@
 
   <build>
     <plugins>
+    <!-- 
       <plugin>
         <groupId>com.mysema.querydsl</groupId>
         <artifactId>querydsl-maven-plugin</artifactId>
@@ -91,6 +92,7 @@
           </packages>
         </configuration>
       </plugin>
+       -->
       <plugin>
         <groupId>com.springsource.bundlor</groupId>
         <artifactId>com.springsource.bundlor.maven</artifactId>

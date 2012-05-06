@@ -31,7 +31,7 @@ public class PathInitsTest {
         assertFalse(inits.isInitialized("1"));
         assertTrue(inits.isInitialized("2"));
     }
-    
+        
     @Test
     public void Wildcard(){
         assertTrue(new PathInits("*").isInitialized(""));
@@ -39,7 +39,7 @@ public class PathInitsTest {
 
     @Test
     public void Wildcard2(){
-        PathInits inits = new PathInits(".*").get("");
+        PathInits inits = new PathInits(".*").get("");        
         assertTrue(inits.isInitialized("1"));
         assertTrue(inits.isInitialized("2"));
     }
