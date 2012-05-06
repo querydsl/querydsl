@@ -95,8 +95,8 @@ public final class Alias {
         return aliasFactory.<EnumPath<T>> getCurrentAndReset();
     }
 
-    public static <D, Q extends SimpleExpression<D>> CollectionPath<D, Q> $(Collection<D> args) {
-        return aliasFactory.<CollectionPath<D,Q>> getCurrentAndReset();
+    public static <D> CollectionPath<D, SimpleExpression<D>> $(Collection<D> args) {
+        return aliasFactory.<CollectionPath<D, SimpleExpression<D>>> getCurrentAndReset();
     }
 
     public static <D extends Comparable<?>> ComparablePath<D> $(D arg) {
@@ -124,20 +124,20 @@ public final class Alias {
         return aliasFactory.<DateTimePath<java.util.Date>> getCurrentAndReset();
     }
 
-    public static <D, Q extends SimpleExpression<D>> ListPath<D,Q> $(List<D> args) {
-        return aliasFactory.<ListPath<D,Q>> getCurrentAndReset();
+    public static <D> ListPath<D, SimpleExpression<D>> $(List<D> args) {
+        return aliasFactory.<ListPath<D, SimpleExpression<D>>> getCurrentAndReset();
     }
 
     public static NumberPath<Long> $(Long arg) {
         return aliasFactory.<NumberPath<Long>> getCurrentAndReset();
     }
 
-    public static <K, V, Q extends SimpleExpression<V>> MapPath<K, V, Q> $(Map<K, V> args) {
-        return aliasFactory.<MapPath<K, V, Q>> getCurrentAndReset();
+    public static <K, V> MapPath<K, V, SimpleExpression<V>> $(Map<K, V> args) {
+        return aliasFactory.<MapPath<K, V, SimpleExpression<V>>> getCurrentAndReset();
     }
 
-    public static <D, Q extends SimpleExpression<D>> SetPath<D, Q> $(Set<D> args) {
-        return aliasFactory.<SetPath<D, Q>> getCurrentAndReset();
+    public static <D> SetPath<D, SimpleExpression<D>> $(Set<D> args) {
+        return aliasFactory.<SetPath<D, SimpleExpression<D>>> getCurrentAndReset();
     }
 
     public static NumberPath<Short> $(Short arg) {
