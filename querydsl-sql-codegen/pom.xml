@@ -82,19 +82,11 @@
       <version>${postgresql.version}</version>
       <scope>test</scope>
     </dependency>
-    <!-- 
     <dependency>
       <groupId>com.oracle</groupId>
-      <artifactId>ojdbc5</artifactId>
+      <artifactId>ojdbc6</artifactId>
       <version>11.1.0.7.0</version>
       <scope>test</scope>
-    </dependency>
-    -->  
-    <dependency>
-	  <groupId>com.oracle</groupId>
-	  <artifactId>ojdbc14</artifactId>
-	  <version>${oracle.version}</version>
-	  <scope>test</scope>
     </dependency>
           
     <dependency>
