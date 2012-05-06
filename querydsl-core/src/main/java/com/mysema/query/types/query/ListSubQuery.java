@@ -23,6 +23,7 @@ import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.SubQueryExpressionImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -45,7 +46,7 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
 
     private final Class<T> elementType;
 
-    private final SubQueryExpressionImpl<List<T>> subQueryMixin;
+    private final SubQueryExpression<List<T>> subQueryMixin;
 
     @Nullable
     private volatile BooleanExpression exists;
@@ -56,7 +57,7 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
     @Nullable
     private volatile NumberExpression<Long> countDistinct;
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public ListSubQuery(Class<T> elementType, QueryMetadata md) {
         super((Class)List.class);
         this.elementType = elementType;

@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.SubQueryExpressionImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -32,7 +33,7 @@ public final class StringSubQuery extends StringExpression implements ExtendedSu
 
     private static final long serialVersionUID = -64156984110154969L;
 
-    private final SubQueryExpressionImpl<String> subQueryMixin;
+    private final SubQueryExpression<String> subQueryMixin;
     
     @Nullable
     private volatile BooleanExpression exists;
