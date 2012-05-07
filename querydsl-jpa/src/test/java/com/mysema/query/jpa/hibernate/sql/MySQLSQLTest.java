@@ -19,6 +19,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.testutil.HibernateConfig;
@@ -28,6 +29,10 @@ import com.mysema.testutil.HibernateTestRunner;
 @RunWith(HibernateTestRunner.class)
 @HibernateConfig("mysql.properties")
 public class MySQLSQLTest extends AbstractSQLTest {
+    
+    public MySQLSQLTest() {
+        super(new MySQLTemplates());
+    }
     
 //    @Table("Animal")
     public class SAnimal extends RelationalPathBase<SAnimal> {

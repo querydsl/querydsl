@@ -13,18 +13,34 @@
  */
 package com.mysema.query.jpa.hibernate.sql;
 
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.mysema.query.sql.DerbyTemplates;
+import com.mysema.query.sql.H2Templates;
 import com.mysema.testutil.HibernateConfig;
 import com.mysema.testutil.HibernateTestRunner;
 
 @RunWith(HibernateTestRunner.class)
-@HibernateConfig("derby.properties")
-public class DerbySQLTest extends AbstractSQLTest{
-
-    public DerbySQLTest() {
-        super(new DerbyTemplates());
+@HibernateConfig("h2.properties")
+public class H2SQLTest extends AbstractSQLTest{
+    
+    public H2SQLTest() {
+        super(new H2Templates());
+    }
+    
+    @Test
+    public void Count_Via_Unique(){
+        // 
+    }    
+    
+    @Test
+    public void List_With_Offset(){
+        // 
+    }
+    
+    @Test
+    public void Wildcard(){
+        // 
     }
 
 

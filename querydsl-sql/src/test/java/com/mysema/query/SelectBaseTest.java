@@ -859,7 +859,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         assertFalse(list.isEmpty());
 
     }
-    
+                                                                                                                          
     @Test
     @SuppressWarnings("unchecked")
     public void Union3() throws SQLException {
@@ -875,6 +875,28 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         SimpleSubQuery<Object[]> sq1 = sq().from(employee).unique(employee.id, employee.firstname);
         SimpleSubQuery<Object[]> sq2 = sq().from(employee).unique(employee.id, employee.firstname);
         query().union(employee, sq1, sq2).list(employee.id.count());
+    }
+    
+    @Test
+    @ExcludeIn({DERBY})
+    public void Union5() {
+        /* (select e.ID, e.FIRSTNAME, superior.ID as sup_id, superior.FIRSTNAME as sup_name 
+         * from EMPLOYEE e join EMPLOYEE superior on e.SUPERIOR_ID = superior.ID) 
+         * union 
+         * (select e.ID, e.FIRSTNAME, null, null from EMPLOYEE e) 
+         * order by ID asc
+         */
+        QEmployee superior = new QEmployee("superior");
+        ListSubQuery<Object[]> sq1 = sq().from(employee)
+                .join(employee.superiorIdKey, superior)
+                .list(employee.id, employee.firstname, superior.id.as("sup_id"), superior.firstname.as("sup_name"));
+        ListSubQuery<Object[]> sq2 = sq().from(employee)
+                .list(employee.id, employee.firstname, null, null);
+        List<Object[]> results = query().union(sq1, sq2).orderBy(employee.id.asc()).list();
+        for (Object[] result : results) {
+            System.err.println(Arrays.asList(result));
+        }
+ 
     }
     
     @Test

@@ -18,10 +18,8 @@ import java.util.List;
 import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.Projectable;
 import com.mysema.query.Query;
-import com.mysema.query.support.ProjectableAdapter;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Predicate;
 
 /**
  * Default implementation of the Union interface
@@ -62,6 +60,7 @@ public class UnionImpl<Q extends Query & Projectable, RT>  implements Union<RT>{
         }
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     public Union<RT> orderBy(OrderSpecifier<?>... o) {
         query.orderBy(o);

@@ -16,7 +16,6 @@ package com.mysema.query.sql;
 import java.util.List;
 
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.OrderSpecifier;
 
 /**
