@@ -33,7 +33,6 @@ import com.mysema.commons.lang.IteratorAdapter;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinFlag;
-import com.mysema.query.JoinType;
 import com.mysema.query.Query;
 import com.mysema.query.QueryException;
 import com.mysema.query.QueryFlag;
@@ -169,19 +168,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         return serializer.toString();
     }
 
-    private Expression<?> combineUnion(SubQueryExpression<?>[] union, Path<?> alias) {
-        SQLTemplates templates = configuration.getTemplates();
-        StringBuilder builder = new StringBuilder("(");
-        String separator = unionAll ? templates.getUnionAll() : templates.getUnion();
-        for (int i = 0; i < union.length; i++) {
-            if (i > 0) builder.append(separator);
-            builder.append("{"+i+"}");
-        }
-        builder.append(")");
-        Expression<?> combined = Expressions.template(Object.class, builder.toString(), union);
-        return ExpressionUtils.as((Expression)combined, alias);
-    }
-    
+
     @Override
     public long count() {
         try {
@@ -548,7 +535,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     }
     
     public <RT> Q union(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(combineUnion(sq, alias));
+        return from(UnionUtils.combineUnion(sq, alias, configuration.getTemplates(), false));
     }
 
     public <RT> Union<RT> union(SubQueryExpression<RT>... sq) {
@@ -556,7 +543,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     }
     
     public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(combineUnion(sq, alias));
+        return from(UnionUtils.combineUnion(sq, alias, configuration.getTemplates(), false));
     }
     
     public <RT> Union<RT> unionAll(ListSubQuery<RT>... sq) {
@@ -565,7 +552,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     }
     
     public <RT> Q unionAll(Path<?> alias, ListSubQuery<RT>... sq) {
-        return from(combineUnion(sq, alias));
+        return from(UnionUtils.combineUnion(sq, alias, configuration.getTemplates(), true));
     }
 
     public <RT> Union<RT> unionAll(SubQueryExpression<RT>... sq) {
@@ -574,7 +561,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     }
     
     public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
-        return from(combineUnion(sq, alias));
+        return from(UnionUtils.combineUnion(sq, alias, configuration.getTemplates(), true));
     }
 
     @Override

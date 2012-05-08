@@ -26,8 +26,10 @@ import com.mysema.query.sql.ForeignKey;
 import com.mysema.query.sql.RelationalFunctionCall;
 import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLQueryMixin;
+import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.Union;
 import com.mysema.query.sql.UnionImpl;
+import com.mysema.query.sql.UnionUtils;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
@@ -56,9 +58,12 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & com.mysem
     
     protected boolean unionAll;
     
+    protected final SQLTemplates templates;
+    
     @SuppressWarnings("unchecked")
-    public AbstractSQLQuery(QueryMetadata metadata) {
+    public AbstractSQLQuery(QueryMetadata metadata, SQLTemplates templates) {
         super(new SQLQueryMixin<T>(metadata));
+        this.templates = templates;
         this.queryMixin = (SQLQueryMixin<T>)super.queryMixin;
         this.queryMixin.setSelf((T)this);
     }
@@ -215,6 +220,22 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T> & com.mysem
         unionAll = true;
         return innerUnion(sq);
     }
+    
+    public <RT> T union(Path<?> alias, ListSubQuery<RT>... sq) {
+        return from(UnionUtils.combineUnion(sq, alias, templates, false));
+    }
+    
+    public <RT> T union(Path<?> alias, SubQueryExpression<RT>... sq) {
+        return from(UnionUtils.combineUnion(sq, alias, templates, false));
+    }
+        
+    public <RT> T unionAll(Path<?> alias, ListSubQuery<RT>... sq) {
+        return from(UnionUtils.combineUnion(sq, alias, templates, true));
+    }
+    
+    public <RT> T unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
+        return from(UnionUtils.combineUnion(sq, alias, templates, true));
+    }    
     
     @SuppressWarnings("unchecked")
     private <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {

@@ -70,8 +70,6 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
 
     private List<Query> queries = new ArrayList<Query>(2);
 
-    private final SQLTemplates templates;
-
     public JDOSQLQuery(@Nullable PersistenceManager persistenceManager, SQLTemplates templates) {
         this(persistenceManager, templates, new DefaultQueryMetadata(), false);
     }
@@ -80,8 +78,7 @@ public final class JDOSQLQuery extends AbstractSQLQuery<JDOSQLQuery> implements 
             @Nullable PersistenceManager persistenceManager,
             SQLTemplates templates,
             QueryMetadata metadata, boolean detach) {
-        super(metadata);
-        this.templates = templates;
+        super(metadata, templates);
         this.persistenceManager = persistenceManager;
         this.detach = detach;
     }

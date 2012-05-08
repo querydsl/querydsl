@@ -62,15 +62,6 @@ import com.mysema.query.types.template.StringTemplate;
  *
  */
 public final class Expressions {
-
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public static <D> SimpleExpression<D> as(D source, Path<D> alias) {
-        if (source == null) {
-            return as((Expression)NullExpression.DEFAULT, alias);
-        } else {
-            return as(new ConstantImpl<D>(source), alias);
-        }
-    }
     
     @SuppressWarnings("unchecked")
     public static <D> SimpleExpression<D> as(Expression<D> source, Path<D> alias) {
@@ -78,8 +69,7 @@ public final class Expressions {
             return as((Expression)NullExpression.DEFAULT, alias);
         } else {
             return SimpleOperation.create((Class<D>)alias.getType(), Ops.ALIAS, source, alias);    
-        }
-        
+        }        
     }
 
     @Nullable
@@ -94,6 +84,15 @@ public final class Expressions {
         
     public static <T> Expression<T> constant(T value) {
         return new ConstantImpl<T>(value);    
+    }
+    
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public static <D> SimpleExpression<D> constantAs(D source, Path<D> alias) {
+        if (source == null) {
+            return as((Expression)NullExpression.DEFAULT, alias);
+        } else {
+            return as(new ConstantImpl<D>(source), alias);
+        }
     }
     
     public static <T> SimpleExpression<T> template(Class<T> cl, String template, Expression<?>... args) {

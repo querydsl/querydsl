@@ -274,6 +274,14 @@ public abstract class AbstractJPASQLTest {
     }
     
     @Test
+    public void Union4() {
+        query().union(cat,
+            new SQLSubQuery().from(cat).where(cat.name.eq("Beck")).distinct().list(cat.name, cat.id), 
+            new SQLSubQuery().from(cat).where(cat.name.eq("Kate")).distinct().list(cat.name, null))
+        .list(cat.name, cat.id);        
+    }
+    
+    @Test
     @SuppressWarnings("unchecked")
     public void Union_All() {
         SAnimal cat = new SAnimal("cat");

@@ -20,11 +20,16 @@ public class DerbyJPASQLTest extends AbstractJPASQLTest {
     public void Union2() {
         // not supported in Derby
     }
-    
-    
+        
     @Test
     @Override
     public void Union3() {
+        // not supported in Derby
+    }
+    
+    @Test
+    @Override
+    public void Union4() {
         // not supported in Derby
     }
     

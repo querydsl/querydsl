@@ -35,7 +35,6 @@ public class ExpressionsTest {
     @Test
     public void As() {
         assertEquals("null as str", Expressions.as(null, str).toString());
-        assertEquals("str as str", Expressions.as("str", str).toString());
         assertEquals("s as str", Expressions.as(new StringPath("s"), str).toString());
     }
     
@@ -68,6 +67,11 @@ public class ExpressionsTest {
         assertEquals("X", Expressions.constant("X").toString());
     }
 
+    @Test
+    public void Constant_As() {
+        assertEquals("str as str", Expressions.constantAs("str", str).toString());
+    }
+    
     @Test
     public void Template() {
         assertEquals("a && b", Expressions.template(Object.class, "{0} && {1}", a, b).toString());

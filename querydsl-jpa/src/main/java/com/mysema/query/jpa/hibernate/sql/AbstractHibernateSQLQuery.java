@@ -41,8 +41,8 @@ import com.mysema.query.jpa.hibernate.StatelessSessionHolder;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.Union;
 import com.mysema.query.sql.UnionImpl;
+import com.mysema.query.sql.UnionUtils;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
@@ -72,7 +72,7 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
 
     private final SessionHolder session;
 
-    protected final SQLTemplates sqlTemplates;
+    protected final SQLTemplates templates;
 
     protected int timeout = 0;
     
@@ -92,11 +92,11 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     public AbstractHibernateSQLQuery(SessionHolder session, SQLTemplates sqlTemplates, QueryMetadata metadata) {
         super(metadata);
         this.session = session;
-        this.sqlTemplates = sqlTemplates;
+        this.templates = sqlTemplates;
     }
     
     private String buildQueryString(boolean forCountRow) {
-        NativeSQLSerializer serializer = new NativeSQLSerializer(sqlTemplates);
+        NativeSQLSerializer serializer = new NativeSQLSerializer(templates);
         if (union != null) {
             serializer.serializeUnion(union, queryMixin.getMetadata(), unionAll);
         } else {
@@ -111,13 +111,6 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
     }
 
     public Query createQuery(Expression<?>... args) {
-//        for (int i = 0; i < args.length; i++) {
-//            // create aliases for non path projections
-//            // https://github.com/mysema/querydsl/issues/80
-//            if (!(args[i] instanceof Path) && !(args[i] instanceof FactoryExpression)) {
-//                args[i] = ExpressionUtils.as(args[i], "col"+(i+1));
-//            }
-//        }
         queryMixin.getMetadata().setValidate(false);
         queryMixin.addToProjection(args);
         return createQuery(toQueryString());
@@ -266,6 +259,22 @@ public abstract class AbstractHibernateSQLQuery<Q extends AbstractHibernateSQLQu
         unionAll = true;
         return innerUnion(sq);
     }
+    
+    public <RT> Q union(Path<?> alias, ListSubQuery<RT>... sq) {
+        return from(UnionUtils.combineUnion(sq, alias, templates, false));
+    }
+    
+    public <RT> Q union(Path<?> alias, SubQueryExpression<RT>... sq) {
+        return from(UnionUtils.combineUnion(sq, alias, templates, false));
+    }
+        
+    public <RT> Q unionAll(Path<?> alias, ListSubQuery<RT>... sq) {
+        return from(UnionUtils.combineUnion(sq, alias, templates, true));
+    }
+    
+    public <RT> Q unionAll(Path<?> alias, SubQueryExpression<RT>... sq) {
+        return from(UnionUtils.combineUnion(sq, alias, templates, true));
+    }    
     
     @SuppressWarnings("unchecked")
     private <RT> Union<RT> innerUnion(SubQueryExpression<?>... sq) {
