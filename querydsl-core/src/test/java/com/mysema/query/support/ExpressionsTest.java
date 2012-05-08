@@ -33,6 +33,13 @@ public class ExpressionsTest {
     private static final BooleanExpression a = new BooleanPath("a"), b = new BooleanPath("b");
     
     @Test
+    public void As() {
+        assertEquals("null as str", Expressions.as(null, str).toString());
+        assertEquals("str as str", Expressions.as("str", str).toString());
+        assertEquals("s as str", Expressions.as(new StringPath("s"), str).toString());
+    }
+    
+    @Test
     public void AllOf() {
         assertEquals("a && b", Expressions.allOf(a, b).toString());
     }

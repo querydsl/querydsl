@@ -18,6 +18,7 @@ import javax.annotation.Nullable;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.NullExpression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
@@ -61,10 +62,24 @@ import com.mysema.query.types.template.StringTemplate;
  *
  */
 public final class Expressions {
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public static <D> SimpleExpression<D> as(D source, Path<D> alias) {
+        if (source == null) {
+            return as((Expression)NullExpression.DEFAULT, alias);
+        } else {
+            return as(new ConstantImpl<D>(source), alias);
+        }
+    }
     
     @SuppressWarnings("unchecked")
     public static <D> SimpleExpression<D> as(Expression<D> source, Path<D> alias) {
-        return SimpleOperation.create((Class<D>)alias.getType(), Ops.ALIAS, source, alias);
+        if (source == null) {
+            return as((Expression)NullExpression.DEFAULT, alias);
+        } else {
+            return SimpleOperation.create((Class<D>)alias.getType(), Ops.ALIAS, source, alias);    
+        }
+        
     }
 
     @Nullable
