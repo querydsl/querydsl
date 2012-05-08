@@ -256,6 +256,24 @@ public abstract class AbstractJPASQLTest {
     }
     
     @Test
+    public void Union3() {
+        SAnimal cat = new SAnimal("cat");
+        SAnimal cat2 = new SAnimal("cat2");
+        List<Object[]> rows = query().union(
+            new SQLSubQuery().from(cat).innerJoin(cat2).on(cat2.id.eq(cat.id)).list(cat.id, cat2.id), 
+            new SQLSubQuery().from(cat).list(cat.id, null))
+        .list();
+        
+        assertEquals(12, rows.size());
+        int nulls = 0;
+        for (Object[] row : rows) {
+            System.err.println(Arrays.asList(row));
+            if (row[1] == null) nulls++;
+        }
+        assertEquals(6, nulls);
+    }
+    
+    @Test
     @SuppressWarnings("unchecked")
     public void Union_All() {
         SAnimal cat = new SAnimal("cat");

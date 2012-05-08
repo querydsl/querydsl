@@ -104,13 +104,13 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     }
 
     public Query createQuery(Expression<?>... args) {
-        for (int i = 0; i < args.length; i++) {
-            // create aliases for non path projections
-            // https://github.com/mysema/querydsl/issues/80
-            if (!(args[i] instanceof Path) && !(args[i] instanceof FactoryExpression)) {
-                args[i] = ExpressionUtils.as(args[i], "col"+(i+1));
-            }
-        }        
+//        for (int i = 0; i < args.length; i++) {
+//            // create aliases for non path projections
+//            // https://github.com/mysema/querydsl/issues/80
+//            if (!(args[i] instanceof Path) && !(args[i] instanceof FactoryExpression)) {
+//                args[i] = ExpressionUtils.as(args[i], "col"+(i+1));
+//            }
+//        }        
         queryMixin.getMetadata().setValidate(false);
         queryMixin.addToProjection(args);
         return createQuery(toQueryString());

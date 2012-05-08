@@ -12,9 +12,7 @@
  * limitations under the License.
  */
 
-
 /**
- * HQL Support classes
+ * JPQL for JPA
  */
 package com.mysema.query.jpa.impl;
-

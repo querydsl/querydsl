@@ -189,8 +189,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
                 sqlSelect.add(selectExpr);
             }
         }
-        
-        
+                
         // start
         serialize(Position.START, flags);
 
