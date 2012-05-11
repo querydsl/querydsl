@@ -100,4 +100,13 @@ public class DerbyJPAEclipseLinkTest extends AbstractJPATest{
         // FIXME
     }
     
+    @Override
+    public void In5() {
+        // not supported
+    }
+    
+    @Override
+    public void In7() {
+        // not supported
+    }
 }

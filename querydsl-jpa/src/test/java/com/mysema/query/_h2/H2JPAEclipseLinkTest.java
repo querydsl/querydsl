@@ -19,6 +19,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.mysema.query.AbstractJPATest;
@@ -110,6 +112,16 @@ public class H2JPAEclipseLinkTest extends AbstractJPATest{
     @Override
     public void Any_And_Gt(){
         // FIXME
+    }
+    
+    @Override
+    public void In5() {
+        // not supported
+    }
+    
+    @Override
+    public void In7() {
+        // not supported
     }
     
 }
