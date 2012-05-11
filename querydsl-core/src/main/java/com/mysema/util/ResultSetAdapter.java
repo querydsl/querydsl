@@ -277,6 +277,11 @@ public class ResultSetAdapter implements ResultSet{
     public Object getObject(int columnIndex) throws SQLException {
         return rs.getObject(columnIndex);
     }
+    
+    public <T> T getObject(int columnIndex, Class<T> type) throws SQLException {
+        // this getObject(int, Class) is available in JDK 7
+        return (T)rs.getObject(columnIndex);
+    }
 
     public Object getObject(String columnLabel, Map<String, Class<?>> map)
             throws SQLException {
@@ -285,6 +290,11 @@ public class ResultSetAdapter implements ResultSet{
 
     public Object getObject(String columnLabel) throws SQLException {
         return rs.getObject(columnLabel);
+    }
+    
+    public <T> T getObject(String columnLabel, Class<T> type) throws SQLException {
+        // this getObject(String, Class) is available in JDK 7
+        return (T)rs.getObject(columnLabel);
     }
 
     public Ref getRef(int columnIndex) throws SQLException {

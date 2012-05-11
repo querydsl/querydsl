@@ -64,15 +64,18 @@
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>maven-apt-plugin</artifactId>
+        <version>1.0.3</version>        
         <executions>
           <execution>
             <goals>
               <goal>test-process</goal>
-            </goals>
+              <goal>add-test-sources</goal>              
+            </goals>            
             <configuration>
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
               <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
-            </configuration>
+              <showWarnings>true</showWarnings>
+            </configuration>        
           </execution>
         </executions>
       </plugin>   

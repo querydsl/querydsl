@@ -97,28 +97,23 @@
         <groupId>com.springsource.bundlor</groupId>
         <artifactId>com.springsource.bundlor.maven</artifactId>
       </plugin>    
+      
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>maven-apt-plugin</artifactId>
-        <version>1.0</version>
-        <configuration>
-          <outputDirectory>target/generated-test-sources/java</outputDirectory>
-          <showWarnings>true</showWarnings>
-        </configuration>
+        <version>1.0.3</version>
         <executions>  
           <execution>
-            <id>qd</id>
             <phase>generate-test-sources</phase>
             <goals>
               <goal>test-process</goal>
+              <goal>add-test-sources</goal>
             </goals>
             <configuration>
+              <outputDirectory>target/generated-test-sources/java</outputDirectory>
               <showWarnings>true</showWarnings>
               <processors>
                 <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
-                <!-- 
-                <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
-                 -->
                 <processor>com.mysema.query.apt.hibernate.HibernateAnnotationProcessor</processor> 
                 <processor>com.mysema.query.apt.jdo.JDOAnnotationProcessor</processor>
               </processors>              
@@ -126,6 +121,8 @@
           </execution>		                    
         </executions>
       </plugin>
+      
+      <!-- 
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
@@ -144,6 +141,7 @@
           </execution>
         </executions>
       </plugin>
+       -->
     </plugins>
   </build>
   

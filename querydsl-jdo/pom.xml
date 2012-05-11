@@ -244,25 +244,19 @@
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>maven-apt-plugin</artifactId>
-        <version>1.0.2</version>
+        <version>1.0.3</version>
         <executions>
           <execution>
             <goals>
               <goal>test-process</goal>
+              <goal>add-test-sources</goal>
             </goals>
             <configuration>
               <outputDirectory>target/generated-test-sources/java</outputDirectory>
               <processor>com.mysema.query.apt.QuerydslAnnotationProcessor</processor>
             </configuration>
           </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>com.mysema.querydsl</groupId>
-            <artifactId>querydsl-apt</artifactId>
-            <version>${project.parent.version}</version>
-          </dependency>                
-        </dependencies>    
+        </executions>    
       </plugin>   
 	  
       <plugin>

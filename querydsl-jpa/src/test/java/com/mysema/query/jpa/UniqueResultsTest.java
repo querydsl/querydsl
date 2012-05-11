@@ -20,7 +20,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.mysema.query.jpa.domain.Cat;
-import static com.mysema.query.jpa.domain.QCat.cat;
+import static com.mysema.query.jpa.domain.QCat.*;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.testutil.HibernateConfig;
 import com.mysema.testutil.HibernateTestRunner;

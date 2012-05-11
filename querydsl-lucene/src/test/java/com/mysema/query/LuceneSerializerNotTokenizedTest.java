@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 package com.mysema.query;
-import static com.mysema.query.QPerson.person;
+import static com.mysema.query.QPerson.*;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
