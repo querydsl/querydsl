@@ -29,8 +29,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Ignore;
@@ -64,7 +64,6 @@ import com.mysema.query.jpa.domain.QUser;
 import com.mysema.query.jpa.domain.Show;
 import com.mysema.query.jpa.domain4.QBookMark;
 import com.mysema.query.jpa.domain4.QBookVersion;
-import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.query.jpa.hibernate.HibernateSubQuery;
 import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Concatenation;
@@ -359,6 +358,22 @@ public abstract class AbstractStandardTest {
     public void In4() {
         //$.parameterRelease.id.eq(releaseId).and($.parameterGroups.any().id.in(filter.getGroups()));        
         query().from(cat).where(cat.id.eq(1), cat.kittens.any().id.in(1,2,3)).list(cat);
+    }
+    
+    @Test
+    public void In5() {
+        query().from(cat).where(cat.mate.in(savedCats)).count();
+    }
+    
+    @Test
+    @Ignore
+    public void In6() {
+        query().from(cat).where(cat.kittens.in(savedCats)).count();
+    }
+    
+    @Test
+    public void In7() {
+        query().from(cat).where(cat.kittens.any().in(savedCats)).count();
     }
     
     @Test
