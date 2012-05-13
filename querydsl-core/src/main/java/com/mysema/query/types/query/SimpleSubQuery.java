@@ -22,7 +22,7 @@ import com.mysema.query.types.SubQueryExpressionImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.BooleanOperation;
-import com.mysema.query.types.expr.SimpleExpression;
+import com.mysema.query.types.expr.DslExpression;
 
 /**
  * Object typed single result subquery
@@ -31,7 +31,7 @@ import com.mysema.query.types.expr.SimpleExpression;
  *
  * @param <T> expression type
  */
-public final class SimpleSubQuery<T> extends SimpleExpression<T> implements ExtendedSubQueryExpression<T>{
+public final class SimpleSubQuery<T> extends DslExpression<T> implements ExtendedSubQueryExpression<T>{
 
     private static final long serialVersionUID = -64156984110154969L;
 

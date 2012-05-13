@@ -28,6 +28,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.mysema.query.types.expr.DslExpression;
 import com.mysema.query.types.expr.SimpleExpression;
 
 public class SignatureTest {
@@ -60,6 +61,7 @@ public class SignatureTest {
                 if (!skippedMethods.contains(m.getName())
                  && Modifier.isPublic(m.getModifiers())
                  && Expression.class.isAssignableFrom(m.getReturnType())
+                 && !DslExpression.class.isAssignableFrom(m.getReturnType())
                  && !SimpleExpression.class.isAssignableFrom(m.getReturnType())){
                     errors.add(cl.getSimpleName()+"."+m.getName() + " has illegal return type");
                 }

@@ -28,6 +28,10 @@ import com.mysema.codegen.model.TypeCategory
  */
 object Templates {
 
+  def dsl[T](t: Class[_ <: T], tpl: Template, args: Ex[_]*): DslExpression[T] = {
+    new DslTemplate[T](t, tpl, args: _*)
+  }
+  
   def simple[T](t: Class[_ <: T], tpl: Template, args: Ex[_]*): SimpleExpression[T] = {
     new SimpleTemplate[T](t, tpl, args: _*)
   }
@@ -61,6 +65,9 @@ object Templates {
   }
 
 }
+
+class DslTemplate[T](t: Class[_ <: T], template: Template, args: Ex[_]*)
+  extends TemplateExpressionImpl[T](t, template, args:_*) with DslExpression[T]
 
 class SimpleTemplate[T](t: Class[_ <: T], template: Template, args: Ex[_]*)
   extends TemplateExpressionImpl[T](t, template, args:_*) with SimpleExpression[T]

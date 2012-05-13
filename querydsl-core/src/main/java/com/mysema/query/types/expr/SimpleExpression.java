@@ -22,7 +22,6 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionBase;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
@@ -34,7 +33,7 @@ import com.mysema.query.types.PathImpl;
  *
  * @param <T> expression type
  */
-public abstract class SimpleExpression<T> extends ExpressionBase<T> {
+public abstract class SimpleExpression<T> extends DslExpression<T> {
 
     private static final long serialVersionUID = -4405387187738167105L;
 
@@ -57,6 +56,26 @@ public abstract class SimpleExpression<T> extends ExpressionBase<T> {
             || Character.class.equals(type);
     }
 
+
+    /**
+     * Create an alias for the expression
+     *
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public SimpleExpression<T> as(Path<T> alias) {
+        return SimpleOperation.create((Class<T>)getType(),Ops.ALIAS, this, alias);
+    }
+
+    /**
+     * Create an alias for the expression
+     *
+     * @return
+     */
+    public SimpleExpression<T> as(String alias) {
+        return as(new PathImpl<T>(getType(), alias));
+    }
+    
     /**
      * Create a <code>this is not null</code> expression
      *
@@ -79,25 +98,6 @@ public abstract class SimpleExpression<T> extends ExpressionBase<T> {
             isnull = BooleanOperation.create(Ops.IS_NULL, this);
         }
         return isnull;
-    }
-
-    /**
-     * Create an alias for the expression
-     *
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    public SimpleExpression<T> as(Path<T> alias) {
-        return SimpleOperation.create((Class<T>)getType(),Ops.ALIAS, this, alias);
-    }
-
-    /**
-     * Create an alias for the expression
-     *
-     * @return
-     */
-    public SimpleExpression<T> as(String alias) {
-        return as(new PathImpl<T>(getType(), alias));
     }
 
     /**

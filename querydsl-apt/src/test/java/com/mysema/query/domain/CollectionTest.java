@@ -43,6 +43,10 @@ public class CollectionTest {
         
         Collection collection2;
         
+        Collection<Collection<Person>> collectionOfCOllection;
+        
+        Collection<Set<String>> collectionOfSet;
+        
         Set<?> set1;
         
         Set set2;

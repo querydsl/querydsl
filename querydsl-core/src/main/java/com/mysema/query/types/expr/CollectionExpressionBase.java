@@ -30,7 +30,7 @@ import com.mysema.query.types.Ops;
  * @param <T> expression type
  * @param <E> collection element type
  */
-public abstract class CollectionExpressionBase<T extends Collection<E>, E> extends SimpleExpression<T> implements CollectionExpression<T, E> {
+public abstract class CollectionExpressionBase<T extends Collection<E>, E> extends DslExpression<T> implements CollectionExpression<T, E> {
 
     private static final long serialVersionUID = 691230660037162054L;
 
@@ -53,6 +53,8 @@ public abstract class CollectionExpressionBase<T extends Collection<E>, E> exten
     }
 
     public abstract Class<E> getElementType();
+    
+
 
     public final BooleanExpression isEmpty() {
         if (empty == null) {

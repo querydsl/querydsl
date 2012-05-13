@@ -30,7 +30,7 @@ import com.mysema.query.types.Ops;
  * @param <K> key type
  * @param <V> value type
  */
-public abstract class MapExpressionBase<K, V, Q extends SimpleExpression<? super V>> extends SimpleExpression<Map<K,V>> implements MapExpression<K,V> {
+public abstract class MapExpressionBase<K, V, Q extends SimpleExpression<? super V>> extends DslExpression<Map<K,V>> implements MapExpression<K,V> {
 
     private static final long serialVersionUID = 2856001983312366841L;
 
@@ -43,7 +43,7 @@ public abstract class MapExpressionBase<K, V, Q extends SimpleExpression<? super
     public MapExpressionBase(Class<? extends Map<K, V>> type) {
         super(type);
     }
-
+    
     public final BooleanExpression contains(K key, V value) {
         return get(key).eq(value);
     }

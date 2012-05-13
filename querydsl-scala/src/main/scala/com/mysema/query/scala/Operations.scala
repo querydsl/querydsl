@@ -26,6 +26,10 @@ object Operations {
 
   type Op[X] = Operator[X]
   
+  def dsl[T](t: Class[_ <: T], op: Op[_ >: T], args: Ex[_]*): DslExpression[T] = {
+    new OperationImpl[T](t, op, args: _*) with DslExpression[T]
+  }
+  
   def simple[T](t: Class[_ <: T], op: Op[_ >: T], args: Ex[_]*): SimpleExpression[T] = {
     new OperationImpl[T](t, op, args: _*) with SimpleExpression[T]
   }

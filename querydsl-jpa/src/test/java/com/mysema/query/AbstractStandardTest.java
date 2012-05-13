@@ -369,7 +369,7 @@ public abstract class AbstractStandardTest {
     @Test
     @Ignore
     public void In6() {
-        query().from(cat).where(cat.kittens.in(savedCats)).count();
+        //query().from(cat).where(cat.kittens.in(savedCats)).count();
     }
     
     @Test
@@ -381,13 +381,13 @@ public abstract class AbstractStandardTest {
     public void Collection_Predicates() {
         ListPath<Cat, QCat> path = cat.kittens;
         List<Predicate> predicates = Arrays.<Predicate>asList(
-            //path.eq(savedCats),
-            //path.in(savedCats),
-            //path.isNotNull(),
-            //path.isNull(),
-            //path.ne(savedCats),
-            //path.notIn(savedCats)
-            //path.when(other)
+//            path.eq(savedCats),
+//            path.in(savedCats),
+//            path.isNotNull(),
+//            path.isNull(),
+//            path.ne(savedCats),
+//            path.notIn(savedCats)
+//            path.when(other)
         );
         for (Predicate pred : predicates) {
             System.err.println(pred);
@@ -399,8 +399,8 @@ public abstract class AbstractStandardTest {
     public void Collection_Projections() {
         ListPath<Cat, QCat> path = cat.kittens;
         List<Expression<?>> projections = Arrays.<Expression<?>>asList(
-            //path.count(),
-            //path.countDistinct()
+//            path.count(),
+//            path.countDistinct()
         );
         for (Expression<?> proj : projections) {
             System.err.println(proj);

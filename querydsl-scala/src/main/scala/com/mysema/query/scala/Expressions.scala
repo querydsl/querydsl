@@ -37,11 +37,19 @@ object Constants {
 
 }
 
-trait SimpleExpression[T] extends Expression[T] {
-  
-  def as(right: Path[T]): SimpleExpression[T] = simple(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
+trait DslExpression[T] extends Expression[T] {
 
-  def as(alias: String): SimpleExpression[T] = as(new PathImpl[T](getType, alias))    
+  def as(right: Path[T]): DslExpression[T] = dsl(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
+
+  def as(alias: String): DslExpression[T] = as(new PathImpl[T](getType, alias))    
+  
+}
+
+trait SimpleExpression[T] extends DslExpression[T] {
+  
+  override def as(right: Path[T]): SimpleExpression[T] = simple(getType, ALIAS.asInstanceOf[Operator[T]], this, right)
+
+  override def as(alias: String): SimpleExpression[T] = as(new PathImpl[T](getType, alias))    
   
   def eq(right: T): BooleanExpression = eq(constant(right))
   
@@ -87,14 +95,14 @@ trait SimpleExpression[T] extends Expression[T] {
   
 }
 
-trait ArrayExpression[T <: Array[_]] extends SimpleExpression[T] {
+trait ArrayExpression[T <: Array[_]] extends DslExpression[T] {
 
   lazy val size = number[Integer](classOf[Integer], Ops.ARRAY_SIZE, this)
 
 }
 
 trait CollectionExpressionBase[T <: Collection[C], C, Q <: Expression[_ >: C]] 
-  extends SimpleExpression[T] with com.mysema.query.types.CollectionExpression[T,C] {
+  extends DslExpression[T] with com.mysema.query.types.CollectionExpression[T,C] {
 
   lazy val size = number[Int](classOf[Int], COL_SIZE, this)
 
@@ -127,7 +135,7 @@ trait ListExpression[T, Q <: Expression[_ >: T]] extends CollectionExpressionBas
 }
 
 trait MapExpression[K, V, Q <: Expression[_ >: V]] 
-  extends SimpleExpression[java.util.Map[K, V]] with com.mysema.query.types.MapExpression[K,V] {
+  extends DslExpression[java.util.Map[K, V]] with com.mysema.query.types.MapExpression[K,V] {
     
   lazy val size = number[Int](classOf[Int], MAP_SIZE, this)
 

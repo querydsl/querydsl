@@ -22,6 +22,7 @@ import com.mysema.query.types.NullExpression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.BooleanOperation;
@@ -32,6 +33,8 @@ import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.DateOperation;
 import com.mysema.query.types.expr.DateTimeExpression;
 import com.mysema.query.types.expr.DateTimeOperation;
+import com.mysema.query.types.expr.DslExpression;
+import com.mysema.query.types.expr.DslOperation;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
 import com.mysema.query.types.expr.SimpleExpression;
@@ -44,13 +47,16 @@ import com.mysema.query.types.path.BooleanPath;
 import com.mysema.query.types.path.ComparablePath;
 import com.mysema.query.types.path.DatePath;
 import com.mysema.query.types.path.DateTimePath;
+import com.mysema.query.types.path.DslPath;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.TimePath;
+import com.mysema.query.types.query.ExtendedSubQueryExpression;
 import com.mysema.query.types.query.SimpleSubQuery;
 import com.mysema.query.types.template.BooleanTemplate;
 import com.mysema.query.types.template.ComparableTemplate;
+import com.mysema.query.types.template.DslTemplate;
 import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.query.types.template.SimpleTemplate;
 import com.mysema.query.types.template.StringTemplate;
@@ -70,6 +76,10 @@ public final class Expressions {
         } else {
             return SimpleOperation.create((Class<D>)alias.getType(), Ops.ALIAS, source, alias);    
         }        
+    }
+    
+    public static <D> SimpleExpression<D> as(Expression<D> source, String alias) {
+        return as(source, new PathImpl<D>(source.getType(), alias));
     }
 
     @Nullable
@@ -99,6 +109,10 @@ public final class Expressions {
         return SimpleTemplate.create(cl, template, args);
     }
     
+    public static <T> DslExpression<T> dslTemplate(Class<T> cl, String template, Expression<?>... args) {
+        return DslTemplate.create(cl, template, args);
+    }
+    
     public static <T extends Comparable<?>> ComparableExpression<T> comparableTemplate(Class<T> cl, 
             String template, Expression<?>... args) {
         return ComparableTemplate.create(cl, template, args);
@@ -117,7 +131,7 @@ public final class Expressions {
         return BooleanTemplate.create(template, args);
     }
     
-    public static <T> SimpleExpression<T> subQuery(Class<T> type, QueryMetadata metadata) {
+    public static <T> ExtendedSubQueryExpression<T> subQuery(Class<T> type, QueryMetadata metadata) {
         return new SimpleSubQuery<T>(type, metadata);
     }
     
@@ -128,6 +142,11 @@ public final class Expressions {
     public static <T> SimpleExpression<T> operation(Class<T> type, Operator<? super T> operator, 
             Expression<?>... args) {
         return SimpleOperation.create(type, operator, args);
+    }
+    
+    public static <T> DslExpression<T> dslOperation(Class<T> type, Operator<? super T> operator, 
+            Expression<?>... args) {
+        return DslOperation.create(type, operator, args);
     }
     
     public static BooleanExpression booleanOperation(Operator<Boolean> operation, Expression<?>... args) {
@@ -166,10 +185,18 @@ public final class Expressions {
     public static <T> SimplePath<T> path(Class<T> type, String variable) {
         return new SimplePath<T>(type, PathMetadataFactory.forVariable(variable));
     }
-
+   
     public static <T> SimplePath<T> path(Class<T> type, Path<?> parent, String property) {
         return new SimplePath<T>(type, PathMetadataFactory.forProperty(parent, property));
-    }    
+    }
+    
+    public static <T> DslPath<T> dslPath(Class<T> type, String variable) {
+        return new DslPath<T>(type, PathMetadataFactory.forVariable(variable));
+    }
+
+    public static <T> DslPath<T> dslPath(Class<T> type, Path<?> parent, String property) {
+        return new DslPath<T>(type, PathMetadataFactory.forProperty(parent, property));
+    }
     
     public static <T extends Comparable<?>> ComparablePath<T> comparablePath(Class<T> type, 
             String variable) {

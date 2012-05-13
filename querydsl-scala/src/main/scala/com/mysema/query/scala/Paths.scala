@@ -35,6 +35,8 @@ object Paths {
     
   def array[T <: Array[_]](t: Class[T], md: Metadata[_]) = new ArrayPath[T](t, md)
 
+  def dsl[T](t: Class[_ <: T], md: Metadata[_]) = new DslPath[T](t, md)
+  
   def simple[T](t: Class[_ <: T], md: Metadata[_]) = new SimplePath[T](t, md)
 
   def entity[T](t: Class[_ <: T], md: Metadata[_]) = new EntityPathImpl[T](t, md)
@@ -76,6 +78,13 @@ object Paths {
     case _ => q.getConstructor(classOf[Class[_]], classOf[PathMetadata[_]]).newInstance(t, md)
   }
   
+}
+
+class DslPath[T](t: Class[_ <: T], md: PathMetadata[_])
+  extends PathImpl[T](t, md) with DslExpression[T] {
+
+  def this(t: Class[_ <: T], variable: String) = this(t, forVariable(variable))
+
 }
 
 class SimplePath[T](t: Class[_ <: T], md: PathMetadata[_])

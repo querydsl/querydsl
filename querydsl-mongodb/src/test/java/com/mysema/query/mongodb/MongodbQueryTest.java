@@ -361,8 +361,8 @@ public class MongodbQueryTest {
         i.setCtds(Arrays.asList(ObjectId.get(), ObjectId.get(), ObjectId.get()));
         ds.save(i);
         
-        assertTrue(where(item, item.ctds.in(i.getCtds())).count() > 0);
-        assertTrue(where(item, item.ctds.in(Arrays.asList(ObjectId.get(), ObjectId.get()))).count() == 0);
+        assertTrue(where(item, item.ctds.any().in(i.getCtds())).count() > 0);
+        assertTrue(where(item, item.ctds.any().in(Arrays.asList(ObjectId.get(), ObjectId.get()))).count() == 0);
     }
         
     //TODO

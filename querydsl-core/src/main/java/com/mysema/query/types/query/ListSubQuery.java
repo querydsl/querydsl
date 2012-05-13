@@ -74,7 +74,7 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
        return subQueryMixin.equals(o);
     }
 
-    @Override
+    //@Override
     public NumberExpression<Long> count(){
         if (count == null) {
             count = count(Ops.AggOps.COUNT_AGG);    
@@ -82,7 +82,7 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
         return count;
     }
 
-    @Override
+    //@Override
     public NumberExpression<Long> countDistinct(){
         if (countDistinct == null) {
             countDistinct = count(Ops.AggOps.COUNT_DISTINCT_AGG);    
