@@ -378,7 +378,7 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
-    public void Collection_Methods() {
+    public void Collection_Predicates() {
         ListPath<Cat, QCat> path = cat.kittens;
         List<Predicate> predicates = Arrays.<Predicate>asList(
             //path.eq(savedCats),
@@ -392,6 +392,19 @@ public abstract class AbstractStandardTest {
         for (Predicate pred : predicates) {
             System.err.println(pred);
             query().from(cat).where(pred).list(cat);
+        }
+    }
+    
+    @Test
+    public void Collection_Projections() {
+        ListPath<Cat, QCat> path = cat.kittens;
+        List<Expression<?>> projections = Arrays.<Expression<?>>asList(
+            //path.count(),
+            //path.countDistinct()
+        );
+        for (Expression<?> proj : projections) {
+            System.err.println(proj);
+            query().from(cat).list(proj);
         }
     }
     
