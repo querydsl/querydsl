@@ -70,6 +70,7 @@ import com.mysema.query.types.Concatenation;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ParamNotSetException;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.QTuple;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ListExpression;
@@ -374,6 +375,24 @@ public abstract class AbstractStandardTest {
     @Test
     public void In7() {
         query().from(cat).where(cat.kittens.any().in(savedCats)).count();
+    }
+    
+    @Test
+    public void Collection_Methods() {
+        ListPath<Cat, QCat> path = cat.kittens;
+        List<Predicate> predicates = Arrays.<Predicate>asList(
+            //path.eq(savedCats),
+            //path.in(savedCats),
+            //path.isNotNull(),
+            //path.isNull(),
+            //path.ne(savedCats),
+            //path.notIn(savedCats)
+            //path.when(other)
+        );
+        for (Predicate pred : predicates) {
+            System.err.println(pred);
+            query().from(cat).where(pred).list(cat);
+        }
     }
     
     @Test
