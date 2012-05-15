@@ -4,6 +4,7 @@ Bundle-Vendor: Mysema
 Bundle-ManifestVersion: 2
 Import-Template:
   com.mysema.commons.lang.*;version="${mysema.lang.version}",
+  com.mysema.query.sql.*;version="${project.version}";resolution:=optional,
   com.mysema.query.*;version="${project.version}",
   com.mysema.util.*;version="${project.version}",
   javax.annotation.*;version="0",
