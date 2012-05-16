@@ -81,7 +81,15 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
         
         Charset charset = sourceEncoding != null ? Charset.forName(sourceEncoding) : Charset.defaultCharset();
         GenericExporter exporter = new GenericExporter(classLoader, charset);
-        exporter.setTargetFolder(new File(targetFolder));
+        
+        // see http://maven.apache.org/plugin-developers/common-bugs.html#Resolving_Relative_Paths,
+        // Consider changing targetFolder to type File instead
+        File targetDir = new File(targetFolder);
+        if(!targetDir.isAbsolute()) {
+        	targetDir = new File(project.getBasedir(), targetFolder);
+        }
+        exporter.setTargetFolder(targetDir);
+        
         if (scala) {
             try {
                 exporter.setSerializerClass((Class<? extends Serializer>) 
@@ -101,6 +109,7 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     
     protected abstract void configure(GenericExporter exporter);
     
+   
     @SuppressWarnings("unchecked")
     protected ClassLoader getProjectClassLoader() throws DependencyResolutionRequiredException, MalformedURLException {
         List<String> classpathElements;
