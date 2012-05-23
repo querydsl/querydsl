@@ -19,7 +19,7 @@ public class GenericExporterMojoTest extends AbstractMojoTest {
         mavenProject.getBuild().setOutputDirectory("target/classes");
         
         GenericExporterMojo mojo = new GenericExporterMojo();
-        set(mojo, "targetFolder", "target/generated-test-data");
+        set(mojo, "targetFolder", new File("target/generated-test-data"));
         set(mojo, "packages", new String[]{"com.mysema.query.maven"});
         set(mojo, "project", mavenProject);
         mojo.execute();

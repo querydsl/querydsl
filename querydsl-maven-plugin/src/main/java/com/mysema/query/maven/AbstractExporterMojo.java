@@ -40,7 +40,7 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
     /**
      * @parameter
      */
-    private String targetFolder;
+    private File targetFolder;
     
     /**
      * @parameter default-value=false
@@ -81,14 +81,7 @@ public abstract class AbstractExporterMojo extends AbstractMojo {
         
         Charset charset = sourceEncoding != null ? Charset.forName(sourceEncoding) : Charset.defaultCharset();
         GenericExporter exporter = new GenericExporter(classLoader, charset);
-        
-        // see http://maven.apache.org/plugin-developers/common-bugs.html#Resolving_Relative_Paths,
-        // Consider changing targetFolder to type File instead
-        File targetDir = new File(targetFolder);
-        if(!targetDir.isAbsolute()) {
-        	targetDir = new File(project.getBasedir(), targetFolder);
-        }
-        exporter.setTargetFolder(targetDir);
+        exporter.setTargetFolder(targetFolder);
         
         if (scala) {
             try {
