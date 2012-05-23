@@ -43,6 +43,11 @@ public class SubQueryTest extends AbstractQueryTest{
         assertEquals("from Cat cat, Cat fatcat", 
                 query.toString());
     }
+    
+    @Test
+    public void In() {
+        cat.in(sub().from(cat).list(cat));
+    }
         
     @Test
     public void InnerJoin(){
