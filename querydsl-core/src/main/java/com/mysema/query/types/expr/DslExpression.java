@@ -57,12 +57,7 @@ public abstract class DslExpression<T> implements Expression<T> {
     public DslExpression<T> as(String alias) {
         return as(new PathImpl<T>(getType(), alias));
     }
-    
-//    @Override
-//    public final <R,C> R accept(Visitor<R,C> v, C context) {
-//        return mixin.accept(v, context); 
-//    }
-    
+        
     @Override
     public boolean equals(Object o) { // can be overwritten
         return mixin.equals(o);
