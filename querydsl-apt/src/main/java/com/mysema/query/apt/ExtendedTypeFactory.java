@@ -115,6 +115,7 @@ public final class ExtendedTypeFactory {
                 TypeElement typeElement = (TypeElement)declaredType.asElement();
                 switch(typeElement.getKind()){
                 case ENUM:      return createEnumType(declaredType, typeElement, p);
+                case ANNOTATION_TYPE:
                 case CLASS:     return createClassType(declaredType, typeElement, p);
                 case INTERFACE: return createInterfaceType(declaredType, typeElement, p);
                 default: throw new IllegalArgumentException("Illegal type " + typeElement);
