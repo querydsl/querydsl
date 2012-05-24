@@ -40,8 +40,8 @@ public abstract class MapExpressionBase<K, V, Q extends SimpleExpression<? super
     @Nullable
     private volatile BooleanExpression empty;
 
-    public MapExpressionBase(Class<? extends Map<K, V>> type) {
-        super(type);
+    public MapExpressionBase(Expression<Map<K, V>> mixin) {
+        super(mixin);
     }
     
     public final BooleanExpression contains(K key, V value) {

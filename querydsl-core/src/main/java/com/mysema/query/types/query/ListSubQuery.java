@@ -59,19 +59,14 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     public ListSubQuery(Class<T> elementType, QueryMetadata md) {
-        super((Class)List.class);
+        super(new SubQueryExpressionImpl<List<T>>((Class)List.class, md));
         this.elementType = elementType;
-        this.subQueryMixin = new SubQueryExpressionImpl<List<T>>((Class)List.class, md);
+        this.subQueryMixin = (SubQueryExpression<List<T>>)mixin;
     }
-
+    
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-       return subQueryMixin.equals(o);
     }
 
     //@Override
@@ -119,11 +114,6 @@ public final class ListSubQuery<T> extends CollectionExpressionBase<List<T>,T> i
     @Override
     public QueryMetadata getMetadata() {
         return subQueryMixin.getMetadata();
-    }
-
-    @Override
-    public int hashCode(){
-        return subQueryMixin.hashCode();
     }
 
     @Override

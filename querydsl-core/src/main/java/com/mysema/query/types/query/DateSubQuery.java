@@ -41,18 +41,13 @@ public final class DateSubQuery<T extends Comparable<?>> extends DateExpression<
     private volatile BooleanExpression exists;
 
     public DateSubQuery(Class<T> type, QueryMetadata md) {
-        super(type);
-        subQueryMixin = new SubQueryExpressionImpl<T>(type, md);
+        super(new SubQueryExpressionImpl<T>(type, md));
+        subQueryMixin = (SubQueryExpression<T>)mixin;
     }
-
+    
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-       return subQueryMixin.equals(o);
     }
 
     @Override
@@ -66,11 +61,6 @@ public final class DateSubQuery<T extends Comparable<?>> extends DateExpression<
     @Override
     public QueryMetadata getMetadata() {
         return subQueryMixin.getMetadata();
-    }
-
-    @Override
-    public int hashCode(){
-        return subQueryMixin.hashCode();
     }
 
     @Override

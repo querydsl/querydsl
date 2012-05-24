@@ -25,7 +25,17 @@ import com.mysema.commons.lang.Pair;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.MapExpression;
-import com.mysema.query.types.expr.*;
+import com.mysema.query.types.expr.ArrayExpression;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.CollectionExpressionBase;
+import com.mysema.query.types.expr.DateExpression;
+import com.mysema.query.types.expr.DateTimeExpression;
+import com.mysema.query.types.expr.ListExpression;
+import com.mysema.query.types.expr.MapExpressionBase;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.SimpleExpression;
+import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.expr.TimeExpression;
 import com.mysema.query.types.path.ListPath;
 
 /**

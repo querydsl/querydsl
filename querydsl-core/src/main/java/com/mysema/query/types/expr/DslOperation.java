@@ -46,19 +46,19 @@ public class DslOperation<T> extends DslExpression<T> implements Operation<T> {
         return new DslOperation<D>(type, op, args);
     }
 
-    private final Operation< T> opMixin;
+    private final Operation<T> opMixin;
 
     protected DslOperation(Class<T> type, Operator<? super T> op, Expression<?>... args) {
         this(type, op, Arrays.asList(args));
     }
 
     protected DslOperation(Class<T> type, Operator<? super T> op, List<Expression<?>> args) {
-        super(type);
-        this.opMixin = new OperationImpl<T>(type, op, args);
+        super(new OperationImpl<T>(type, op, args));
+        this.opMixin = (Operation<T>)mixin;
     }
-
+    
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
 
@@ -75,16 +75,6 @@ public class DslOperation<T> extends DslExpression<T> implements Operation<T> {
     @Override
     public Operator<? super T> getOperator() {
         return opMixin.getOperator();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return opMixin.equals(o);
-    }
-
-    @Override
-    public int hashCode() {
-        return getType().hashCode();
     }
 
 }

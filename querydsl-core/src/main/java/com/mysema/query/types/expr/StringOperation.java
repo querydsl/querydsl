@@ -43,11 +43,12 @@ public class StringOperation extends StringExpression implements Operation<Strin
     }
 
     protected StringOperation(Operator<? super String> op, List<Expression<?>> args) {
-        this.opMixin = new OperationImpl<String>(String.class, op, args);
+        super(new OperationImpl<String>(String.class, op, args));
+        this.opMixin = (Operation<String>)mixin;
     }
-
+    
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
 
@@ -64,16 +65,6 @@ public class StringOperation extends StringExpression implements Operation<Strin
     @Override
     public Operator<? super String> getOperator() {
         return opMixin.getOperator();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return opMixin.equals(o);
-    }
-
-    @Override
-    public int hashCode() {
-        return getType().hashCode();
     }
 
 }

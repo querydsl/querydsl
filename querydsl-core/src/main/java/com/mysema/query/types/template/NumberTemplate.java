@@ -57,15 +57,15 @@ public class NumberTemplate<T extends Number & Comparable<?>> extends NumberExpr
     private final TemplateExpression<T> templateMixin;
 
     public NumberTemplate(Class<T> type, Template template, List<Expression<?>> args) {
-        super(type);
-        templateMixin = new TemplateExpressionImpl<T>(type, template, args);
+        super(new TemplateExpressionImpl<T>(type, template, args));
+        templateMixin = (TemplateExpression<T>)mixin;
     }
 
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
-
+    
     @Override
     public Expression<?> getArg(int index) {
         return templateMixin.getArg(index);
@@ -79,16 +79,6 @@ public class NumberTemplate<T extends Number & Comparable<?>> extends NumberExpr
     @Override
     public Template getTemplate() {
         return templateMixin.getTemplate();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return templateMixin.equals(o);
-    }
-
-    @Override
-    public int hashCode() {
-        return getType().hashCode();
     }
 
 }

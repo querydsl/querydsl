@@ -42,20 +42,15 @@ public final class ComparableSubQuery<T extends Comparable<?>> extends Comparabl
     private volatile BooleanExpression exists;
 
     public ComparableSubQuery(Class<T> type, QueryMetadata md) {
-        super(type);
-        subQueryMixin = new SubQueryExpressionImpl<T>(type, md);
+        super(new SubQueryExpressionImpl<T>(type, md));
+        subQueryMixin = (SubQueryExpression<T>)mixin;
     }
 
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
-
-    @Override
-    public boolean equals(Object o) {
-       return subQueryMixin.equals(o);
-    }
-
+    
     @Override
     public BooleanExpression exists() {
         if (exists == null) {
@@ -67,11 +62,6 @@ public final class ComparableSubQuery<T extends Comparable<?>> extends Comparabl
     @Override
     public QueryMetadata getMetadata() {
         return subQueryMixin.getMetadata();
-    }
-
-    @Override
-    public int hashCode(){
-        return subQueryMixin.hashCode();
     }
 
     @Override

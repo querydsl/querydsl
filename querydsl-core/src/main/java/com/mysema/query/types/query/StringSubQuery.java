@@ -39,17 +39,13 @@ public final class StringSubQuery extends StringExpression implements ExtendedSu
     private volatile BooleanExpression exists;
 
     public StringSubQuery(QueryMetadata md) {
-        subQueryMixin = new SubQueryExpressionImpl<String>(String.class, md);
+        super(new SubQueryExpressionImpl<String>(String.class, md));
+        this.subQueryMixin = (SubQueryExpression<String>)mixin;
     }
-
+    
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-       return subQueryMixin.equals(o);
     }
 
     @Override
@@ -63,11 +59,6 @@ public final class StringSubQuery extends StringExpression implements ExtendedSu
     @Override
     public QueryMetadata getMetadata() {
         return subQueryMixin.getMetadata();
-    }
-
-    @Override
-    public int hashCode(){
-        return subQueryMixin.hashCode();
     }
 
     @Override

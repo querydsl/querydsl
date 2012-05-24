@@ -15,6 +15,7 @@ package com.mysema.query.types.expr;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
@@ -68,8 +69,8 @@ public abstract class BooleanExpression extends ComparableExpression<Boolean> im
     @Nullable
     private volatile BooleanExpression not;
 
-    public BooleanExpression() {
-        super(Boolean.class);
+    public BooleanExpression(Expression<Boolean> mixin) {
+        super(mixin);
     }
 
     @Override

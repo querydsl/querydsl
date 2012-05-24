@@ -59,21 +59,16 @@ public class ArrayPath<E> extends SimpleExpression<E[]> implements Path<E[]>, Ar
     
     @SuppressWarnings("unchecked")
     public ArrayPath(Class<? super E[]> type, PathMetadata<?> metadata) {
-        super((Class)type);
-        this.pathMixin = new PathImpl<E[]>((Class)type, metadata);
+        super(new PathImpl<E[]>((Class)type, metadata));
+        this.pathMixin = (Path<E[]>)mixin;
         this.componentType = (Class<E>) Assert.notNull(type.getComponentType(),"componentType");
     }
 
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
-
-    @Override
-    public boolean equals(Object o) {
-        return pathMixin.equals(o);
-    }
-
+    
     /**
      * Create a expression for indexed access
      *
@@ -108,11 +103,6 @@ public class ArrayPath<E> extends SimpleExpression<E[]> implements Path<E[]>, Ar
     @Override
     public Path<?> getRoot() {
         return pathMixin.getRoot();
-    }
-
-    @Override
-    public int hashCode() {
-        return pathMixin.hashCode();
     }
 
     @Override

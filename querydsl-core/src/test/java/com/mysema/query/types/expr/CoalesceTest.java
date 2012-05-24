@@ -40,7 +40,7 @@ public class CoalesceTest {
     @Test
     public void asComparable(){
         Coalesce<String> c = new Coalesce<String>(firstname, lastname);
-        c.asc();
+        c.getValue().asc();
     }
 
     @Test

@@ -48,8 +48,9 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
 
     protected final boolean primitive;
     
-    public SimpleExpression(Class<? extends T> type) {
-        super(type);
+    public SimpleExpression(Expression<T> mixin) {
+        super(mixin);
+        Class<? extends T> type = mixin.getType();
         this.primitive = type.isPrimitive()
             || Number.class.isAssignableFrom(type)
             || Boolean.class.equals(type)
@@ -151,14 +152,6 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         } else {
             return BooleanOperation.create(Ops.EQ_OBJECT, this, right);
         }
-    }
-
-    @Override
-    public abstract boolean equals(Object o);
-
-    @Override
-    public int hashCode() {
-        return getType().hashCode();
     }
 
     /**

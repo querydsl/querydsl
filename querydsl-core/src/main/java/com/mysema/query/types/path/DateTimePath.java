@@ -29,7 +29,6 @@ import com.mysema.query.types.expr.DateTimeExpression;
  *
  * @param <T> expression type
  */
-@SuppressWarnings({"unchecked"})
 public class DateTimePath<T extends Comparable> extends DateTimeExpression<T> implements Path<T> {
 
     private static final long serialVersionUID = -2807916228198184631L;
@@ -41,8 +40,8 @@ public class DateTimePath<T extends Comparable> extends DateTimeExpression<T> im
     }
 
     public DateTimePath(Class<? extends T> type, PathMetadata<?> metadata) {
-        super(type);
-        this.pathMixin = new PathImpl<T>(type, metadata);
+        super(new PathImpl<T>(type, metadata));
+        this.pathMixin = (Path<T>)mixin;
     }
 
     public DateTimePath(Class<? extends T> type, String var) {
@@ -50,15 +49,10 @@ public class DateTimePath<T extends Comparable> extends DateTimeExpression<T> im
     }
 
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
-
-    @Override
-    public boolean equals(Object o) {
-        return pathMixin.equals(o);
-    }
-
+    
     @Override
     public PathMetadata<?> getMetadata() {
         return pathMixin.getMetadata();
@@ -70,12 +64,8 @@ public class DateTimePath<T extends Comparable> extends DateTimeExpression<T> im
     }
 
     @Override
-    public int hashCode() {
-        return pathMixin.hashCode();
-    }
-
-    @Override
     public AnnotatedElement getAnnotatedElement() {
         return pathMixin.getAnnotatedElement();
     }
+    
 }

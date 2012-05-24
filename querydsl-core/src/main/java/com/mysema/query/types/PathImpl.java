@@ -74,11 +74,6 @@ public class PathImpl<T> extends ExpressionBase<T> implements Path<T> {
     }
 
     @Override
-    public int hashCode() {
-        return metadata.hashCode();
-    }
-
-    @Override
     public AnnotatedElement getAnnotatedElement() {
         if (annotatedElement == null) {
             if (metadata.getPathType() == PathType.PROPERTY) {

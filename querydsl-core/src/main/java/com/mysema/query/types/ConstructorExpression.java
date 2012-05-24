@@ -119,11 +119,6 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
         }
     }
 
-    @Override
-    public int hashCode() {
-        return getType().hashCode();
-    }
-
     public final List<Expression<?>> getArgs() {
         return args;
     }

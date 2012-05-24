@@ -45,14 +45,15 @@ public class StringTemplate extends StringExpression implements TemplateExpressi
     private final TemplateExpression<String> templateMixin;
 
     public StringTemplate(Template template, List<Expression<?>> args) {
-        templateMixin = new TemplateExpressionImpl<String>(String.class, template, args);
+        super(new TemplateExpressionImpl<String>(String.class, template, args));
+        this.templateMixin = (TemplateExpression<String>)mixin;
     }
 
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
-
+    
     @Override
     public Expression<?> getArg(int index) {
         return templateMixin.getArg(index);
@@ -66,16 +67,6 @@ public class StringTemplate extends StringExpression implements TemplateExpressi
     @Override
     public Template getTemplate() {
         return templateMixin.getTemplate();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return templateMixin.equals(o);
-    }
-
-    @Override
-    public int hashCode() {
-        return getType().hashCode();
     }
 
 }

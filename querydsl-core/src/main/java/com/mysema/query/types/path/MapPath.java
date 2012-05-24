@@ -63,11 +63,16 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
     
     @SuppressWarnings("unchecked")
     public MapPath(Class<? super K> keyType, Class<? super V> valueType, Class<E> queryType, PathMetadata<?> metadata) {
-        super((Class)Map.class);
+        super(new PathImpl<Map<K,V>>((Class)Map.class, metadata));
         this.keyType = (Class<K>) keyType;
         this.valueType = (Class<V>) valueType;
         this.queryType = queryType;
-        this.pathMixin = new PathImpl<Map<K,V>>((Class)Map.class, metadata);
+        this.pathMixin = (Path<Map<K,V>>)mixin;
+    }
+    
+    @Override
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
+        return v.visit(this, context);
     }
 
     protected PathMetadata<K> forMapAccess(K key){
@@ -76,16 +81,6 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
 
     protected PathMetadata<K> forMapAccess(Expression<K> key){
         return PathMetadataFactory.forMapAccess(this, key);
-    }
-
-    @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
-        return v.visit(this, context);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return pathMixin.equals(o);
     }
 
     @Override
@@ -136,11 +131,6 @@ public class MapPath<K, V, E extends SimpleExpression<? super V>> extends MapExp
 
     public Class<V> getValueType() {
         return valueType;
-    }
-
-    @Override
-    public int hashCode() {
-        return pathMixin.hashCode();
     }
 
     @Override

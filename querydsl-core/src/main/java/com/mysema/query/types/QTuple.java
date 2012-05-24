@@ -102,11 +102,6 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
     }
 
     @Override
-    public int hashCode(){
-        return getType().hashCode();
-    }
-
-    @Override
     public List<Expression<?>> getArgs() {
         return args;
     }

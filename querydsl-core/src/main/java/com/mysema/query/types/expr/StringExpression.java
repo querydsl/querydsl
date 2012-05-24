@@ -43,8 +43,8 @@ public abstract class StringExpression extends ComparableExpression<String> {
     @Nullable
     private volatile BooleanExpression isempty;
 
-    public StringExpression() {
-        super(String.class);
+    public StringExpression(Expression<String> mixin) {
+        super(mixin);
     }
 
     @Override

@@ -49,14 +49,15 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
     private final TemplateExpression<Boolean> templateMixin;
 
     public BooleanTemplate(Template template, List<Expression<?>> args) {
-        templateMixin = new TemplateExpressionImpl<Boolean>(Boolean.class, template, args);
+        super(new TemplateExpressionImpl<Boolean>(Boolean.class, template, args));
+        this.templateMixin = (TemplateExpression<Boolean>)mixin;
     }
 
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
-
+    
     @Override
     public Expression<?> getArg(int index) {
         return templateMixin.getArg(index);
@@ -70,16 +71,6 @@ public class BooleanTemplate extends BooleanExpression implements TemplateExpres
     @Override
     public Template getTemplate() {
         return templateMixin.getTemplate();
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return templateMixin.equals(o);
-    }
-
-    @Override
-    public int hashCode() {
-        return getType().hashCode();
     }
 
 }

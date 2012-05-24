@@ -18,7 +18,10 @@ import java.util.List;
 
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionBase;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Visitor;
 
 /**
@@ -31,15 +34,17 @@ import com.mysema.query.types.Visitor;
  * @param <T> expression type
  */
 @SuppressWarnings("unchecked")
-public class Coalesce<T extends Comparable> extends ComparableExpression<T>{
+public class Coalesce<T extends Comparable> extends ExpressionBase<T> {
 
     private static final long serialVersionUID = 445439522266250417L;
 
     private final List<Expression<? extends T>> exprs = new ArrayList<Expression<? extends T>>();
 
-    public Coalesce(Class<? extends T> type, Expression...exprs){
-        // NOTE : type parameters for the varargs, would result in compiler warnings
+    private volatile ComparableExpression<T> value;
+    
+    public Coalesce(Class<? extends T> type, Expression...exprs) {
         super(type);
+        // NOTE : type parameters for the varargs, would result in compiler warnings
         for (Expression expr : exprs){
             add(expr);
         }
@@ -52,17 +57,43 @@ public class Coalesce<T extends Comparable> extends ComparableExpression<T>{
 
     @Override
     public <R,C> R accept(Visitor<R,C> v, C context) {
-        return SimpleOperation.create(getType(), Ops.COALESCE, getExpressionList()).accept(v, context);
+        return getValue().accept(v, context);
+    }
+    
+    public ComparableExpression<T> getValue() {
+        if (value == null) {
+            value = (ComparableExpression<T>)ComparableOperation.create(getType(), Ops.COALESCE, getExpressionList());
+        }
+        return value;
+    }
+    
+    /**
+     * Create an alias for the expression
+     *
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public DslExpression<T> as(Path<T> alias) {
+        return DslOperation.create((Class<T>)getType(),Ops.ALIAS, this, alias);
     }
 
+    /**
+     * Create an alias for the expression
+     *
+     * @return
+     */
+    public DslExpression<T> as(String alias) {
+        return as(new PathImpl<T>(getType(), alias));
+    }
+    
     public final Coalesce<T> add(Expression<T> expr){
+        value = null;
         this.exprs.add(expr);
         return this;
     }
 
     public final Coalesce<T> add(T constant){
-        this.exprs.add(new ConstantImpl<T>(constant));
-        return this;
+        return add(new ConstantImpl<T>(constant));
     }
 
     public DateExpression<T> asDate(){
@@ -85,6 +116,14 @@ public class Coalesce<T extends Comparable> extends ComparableExpression<T>{
         return (TimeExpression<T>) TimeOperation.create(getType(), Ops.COALESCE, getExpressionList());
     }
 
+    private Expression<?> getExpressionList(){
+        Expression<?> arg = exprs.get(0);
+        for (int i = 1; i < exprs.size(); i++) {
+            arg = SimpleOperation.create(List.class, Ops.LIST, arg, exprs.get(i));
+        }
+        return arg;
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (o == this) {
@@ -95,19 +134,6 @@ public class Coalesce<T extends Comparable> extends ComparableExpression<T>{
         } else {
             return false;
         }
-    }
-
-    private Expression<?> getExpressionList(){
-        Expression<?> arg = exprs.get(0);
-        for (int i = 1; i < exprs.size(); i++) {
-            arg = SimpleOperation.create(List.class, Ops.LIST, arg, exprs.get(i));
-        }
-        return arg;
-    }
-
-    @Override
-    public int hashCode(){
-        return exprs.hashCode();
     }
 
 }

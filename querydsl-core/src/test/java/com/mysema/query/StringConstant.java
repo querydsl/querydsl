@@ -18,6 +18,7 @@ import java.util.Locale;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Constant;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -48,14 +49,15 @@ final class StringConstant extends StringExpression implements Constant<String>{
     private volatile StringExpression lower, trim, upper;
 
     StringConstant(String constant){
+        super(ConstantImpl.create(constant));
         this.constant = constant;
     }
 
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
-
+    
     @SuppressWarnings("unchecked")
     @Override
     public StringExpression append(Expression<String> s) {
@@ -86,18 +88,6 @@ final class StringConstant extends StringExpression implements Constant<String>{
         return BooleanConstant.create(constant.equals(s));
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean equals(Object o) {
-        if (o == this){
-            return true;
-        }else if (o instanceof Constant){
-            return ((Constant)o).getConstant().equals(constant);
-        }else{
-            return false;
-        }
-    }
-
     @Override
     public BooleanExpression equalsIgnoreCase(String str) {
         return BooleanConstant.create(constant.equalsIgnoreCase(str));
@@ -106,11 +96,6 @@ final class StringConstant extends StringExpression implements Constant<String>{
     @Override
     public String getConstant() {
         return constant;
-    }
-
-    @Override
-    public int hashCode() {
-        return constant.hashCode();
     }
 
     @Override

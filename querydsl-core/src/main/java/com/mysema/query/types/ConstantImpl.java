@@ -154,8 +154,4 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
         return constant;
     }
     
-    public int hashCode() {
-        return constant.hashCode();
-    }
-
 }

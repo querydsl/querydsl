@@ -20,6 +20,7 @@ import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Template;
 import com.mysema.query.types.TemplateExpression;
+import com.mysema.query.types.TemplateExpressionImpl;
 import com.mysema.query.types.TemplateFactory;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.SimpleExpression;
@@ -34,10 +35,6 @@ import com.mysema.query.types.expr.SimpleExpression;
 public class RelationalFunctionCall<T> extends SimpleExpression<T> implements TemplateExpression<T> {
 
     private static final long serialVersionUID = 256739044928186923L;
-    
-    private final List<Expression<?>> args;
-
-    private final Template template;
 
     private static final Template createTemplate(String function, int argCount) {
         StringBuilder builder = new StringBuilder();
@@ -51,7 +48,7 @@ public class RelationalFunctionCall<T> extends SimpleExpression<T> implements Te
         return TemplateFactory.DEFAULT.create(builder.toString());               
     }
     
-    private final List<Expression<?>> normalizeArgs(Object... args) {
+    private static final List<Expression<?>> normalizeArgs(Object... args) {
         List<Expression<?>> expressions = new ArrayList<Expression<?>>();
         for (Object arg : args) {
             if (arg instanceof Expression) {
@@ -63,6 +60,7 @@ public class RelationalFunctionCall<T> extends SimpleExpression<T> implements Te
         return expressions;
     }
     
+    private final TemplateExpression<T> templateMixin;
     
     /**
      * Create a new TableValuedFunctionCall for the given function and arguments
@@ -77,47 +75,28 @@ public class RelationalFunctionCall<T> extends SimpleExpression<T> implements Te
     }    
     
     public RelationalFunctionCall(Class<? extends T> type, String function, Object... args) {
-        super(type);
-        this.args = normalizeArgs(args);
-        this.template = createTemplate(function, args.length);
+        super(new TemplateExpressionImpl<T>(type, createTemplate(function, args.length), normalizeArgs(args)));
+        templateMixin = (TemplateExpression<T>)mixin;
     }    
 
     @Override
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
+        return v.visit(this, context);
+    }
+    
+    @Override
     public Expression<?> getArg(int index) {
-        return getArgs().get(index);
+        return templateMixin.getArg(index);
     }
 
     @Override
     public List<Expression<?>> getArgs() {
-        return args;
+        return templateMixin.getArgs();
     }
 
     @Override
     public Template getTemplate() {
-        return template;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-       if (o == this) {
-           return true;
-       } else if (o instanceof TemplateExpression) {
-           TemplateExpression<?> c = (TemplateExpression<?>)o;
-           return c.getTemplate().equals(template)
-               && c.getType().equals(getType());
-       } else {
-           return false;
-       }
-    }
-
-    @Override
-    public int hashCode(){
-        return getType().hashCode();
-    }
-    
-    @Override
-    public <R, C> R accept(Visitor<R, C> v, C context) {
-        return v.visit(this, context);
+        return templateMixin.getTemplate();
     }
     
 }

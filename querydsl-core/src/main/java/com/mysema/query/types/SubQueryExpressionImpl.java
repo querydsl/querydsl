@@ -48,10 +48,6 @@ public class SubQueryExpressionImpl<T> extends ExpressionBase<T> implements SubQ
     public QueryMetadata getMetadata() {
         return metadata;
     }
-
-    public int hashCode(){
-        return getType().hashCode();
-    }
     
     @Override
     public <R, C> R accept(Visitor<R, C> v, C context) {

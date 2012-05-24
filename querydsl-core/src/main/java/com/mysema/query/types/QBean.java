@@ -236,11 +236,6 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
     }
 
     @Override
-    public int hashCode(){
-        return getType().hashCode();
-    }
-
-    @Override
     public List<Expression<?>> getArgs() {
         return args;
     }

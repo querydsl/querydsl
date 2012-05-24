@@ -81,9 +81,4 @@ public class OperationImpl<T> extends ExpressionBase<T> implements Operation<T>{
         return v.visit(this, context);
     }
 
-    @Override
-    public int hashCode(){
-        return getType().hashCode();
-    }
-
 }

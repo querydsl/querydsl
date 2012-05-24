@@ -16,6 +16,7 @@ package com.mysema.query;
 import java.util.Calendar;
 
 import com.mysema.query.types.Constant;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.NumberExpression;
@@ -38,17 +39,17 @@ final class DateConstant<D extends java.util.Date> extends DateExpression<D> imp
 
     @SuppressWarnings("unchecked")
     public DateConstant(D date) {
-        super((Class<D>)date.getClass());
+        super(new ConstantImpl<D>(date));
         this.date = (D) date.clone();
         this.calendar = Calendar.getInstance();
         calendar.setTime(date);
     }
 
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
-
+    
     @Override
     public NumberExpression<Integer> dayOfMonth(){
         return NumberConstant.create(calendar.get(Calendar.DAY_OF_MONTH));
@@ -87,23 +88,6 @@ final class DateConstant<D extends java.util.Date> extends DateExpression<D> imp
     @Override
     public D getConstant() {
         return date;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean equals(Object o) {
-        if (o == this){
-            return true;
-        }else if (o instanceof Constant){
-            return ((Constant)o).getConstant().equals(date);
-        }else{
-            return false;
-        }
-    }
-
-    @Override
-    public int hashCode(){
-        return date.hashCode();
     }
 
 }

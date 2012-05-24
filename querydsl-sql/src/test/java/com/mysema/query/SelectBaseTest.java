@@ -200,7 +200,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     public void Coalesce(){
         Coalesce<String> c = new Coalesce<String>(employee.firstname, employee.lastname).add("xxx");
-        query().from(employee).where(c.eq("xxx")).list(employee.id);
+        query().from(employee).where(c.getValue().eq("xxx")).list(employee.id);
     }
 
     @Test

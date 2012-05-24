@@ -22,7 +22,20 @@ import java.util.List;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.expr.*;
+import com.mysema.query.types.expr.ArrayExpression;
+import com.mysema.query.types.expr.BooleanExpression;
+import com.mysema.query.types.expr.Coalesce;
+import com.mysema.query.types.expr.CollectionExpressionBase;
+import com.mysema.query.types.expr.ComparableExpression;
+import com.mysema.query.types.expr.DateExpression;
+import com.mysema.query.types.expr.DateTimeExpression;
+import com.mysema.query.types.expr.ListExpression;
+import com.mysema.query.types.expr.MapExpressionBase;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.expr.SimpleExpression;
+import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.expr.TemporalExpression;
+import com.mysema.query.types.expr.TimeExpression;
 import com.mysema.query.types.path.ListPath;
 
 /**
@@ -297,7 +310,7 @@ public class FilterFactory {
 
         if (!target.equals(Target.DERBY) && !module.equals(Module.JDO)){
             // https://issues.apache.org/jira/browse/DERBY-4389
-            rv.add(new Coalesce<String>(String.class, expr, other).eq("xxx"));
+            rv.add(new Coalesce<String>(String.class, expr, other).getValue().eq("xxx"));
         }
 
 //        rv.add(expr.in(IntervalImpl.create("A", "Z")));

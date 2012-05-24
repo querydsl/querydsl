@@ -96,11 +96,6 @@ public class TemplateExpressionImpl<T> extends ExpressionBase<T> implements Temp
            return false;
        }
     }
-
-    @Override
-    public int hashCode(){
-        return getType().hashCode();
-    }
     
     @Override
     public <R, C> R accept(Visitor<R, C> v, C context) {

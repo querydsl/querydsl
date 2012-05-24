@@ -16,6 +16,7 @@ package com.mysema.query.types.expr;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.ConstantImpl;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
@@ -39,8 +40,8 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
     @Nullable
     private volatile StringExpression stringCast;
 
-    public ComparableExpressionBase(Class<? extends T> type) {
-        super(type);
+    public ComparableExpressionBase(Expression<T> mixin) {
+        super(mixin);
     }
 
     /**

@@ -40,8 +40,8 @@ public abstract class CollectionExpressionBase<T extends Collection<E>, E> exten
     @Nullable
     private volatile NumberExpression<Integer> size;
 
-    public CollectionExpressionBase(Class<? extends T> type) {
-        super(type);
+    public CollectionExpressionBase(Expression<T> mixin) {
+        super(mixin);
     }
 
     public final BooleanExpression contains(E child) {

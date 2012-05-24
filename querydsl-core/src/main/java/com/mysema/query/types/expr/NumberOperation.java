@@ -55,13 +55,8 @@ public class NumberOperation<T extends Number & Comparable<?>>
     }
 
     protected NumberOperation(Class<? extends T> type, Operator<? super T> op, List<Expression<?>> args) {
-        super(type);
-        this.opMixin = new OperationImpl<T>(type, op, args);
-    }
-
-    @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
-        return v.visit(this, context);
+        super(new OperationImpl<T>(type, op, args));
+        this.opMixin = (Operation<T>)mixin;
     }
 
     @SuppressWarnings("unchecked")
@@ -72,6 +67,11 @@ public class NumberOperation<T extends Number & Comparable<?>>
         } else {
             return super.negate();
         }
+    }
+    
+    @Override
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
+        return v.visit(this, context);
     }
     
     @Override
@@ -87,16 +87,6 @@ public class NumberOperation<T extends Number & Comparable<?>>
     @Override
     public Operator<? super T> getOperator() {
         return opMixin.getOperator();
-    }
-
-    @Override
-    public boolean equals(Object o){
-        return opMixin.equals(o);
-    }
-
-    @Override
-    public int hashCode(){
-        return getType().hashCode();
     }
 
 }

@@ -34,8 +34,8 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
 
     private static final long serialVersionUID = 5761359576767404270L;
 
-    public ComparableExpression(Class<? extends T> type) {
-        super(type);
+    public ComparableExpression(Expression<T> mixin) {
+        super(mixin);
     }
     
     @Override

@@ -13,10 +13,21 @@
  */
 package com.mysema.query;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
-import com.mysema.query.types.*;
-import com.mysema.query.types.path.*;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.ParamExpression;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.Predicate;
+import com.mysema.query.types.ValidatingVisitor;
+import com.mysema.query.types.path.BeanPath;
+import com.mysema.query.types.path.BooleanPath;
+import com.mysema.query.types.path.EntityPathBase;
+import com.mysema.query.types.path.ListPath;
+import com.mysema.query.types.path.MapPath;
+import com.mysema.query.types.path.SetPath;
+import com.mysema.query.types.path.SimplePath;
 
 
 /**

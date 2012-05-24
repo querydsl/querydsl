@@ -23,7 +23,6 @@ import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.Projectable;
 import com.mysema.query.ResultTransformer;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.expr.SimpleExpression;
 
 /**
  * Groups results by the first expression.
@@ -39,23 +38,23 @@ public class GroupBy<K, V> implements ResultTransformer<Map<K,V>> {
         return new GroupByBuilder<K>(key);
     }
     
-    public static <E extends Comparable<E>> SimpleExpression<E> min(Expression<E> expression) {
+    public static <E extends Comparable<E>> AbstractGroupExpression<?,E> min(Expression<E> expression) {
         return new GMin<E>(expression);
     }    
     
-    public static <E extends Comparable<E>> SimpleExpression<E> max(Expression<E> expression) {
+    public static <E extends Comparable<E>> AbstractGroupExpression<?,E> max(Expression<E> expression) {
         return new GMax<E>(expression);
     }
            
-    public static <E> SimpleExpression<List<E>> list(Expression<E> expression) {
+    public static <E> AbstractGroupExpression<?,List<E>> list(Expression<E> expression) {
         return new GList<E>(expression);
     }
     
-    public static <E> SimpleExpression<Set<E>> set(Expression<E> expression) {
+    public static <E> AbstractGroupExpression<?,Set<E>> set(Expression<E> expression) {
         return new GSet<E>(expression);
     }
     
-    public static <K, V> SimpleExpression<Map<K, V>> map(Expression<K> key, Expression<V> value) {
+    public static <K, V> Expression<Map<K, V>> map(Expression<K> key, Expression<V> value) {
         QPair<K,V> qPair = new QPair<K,V>(key, value);
         return new GMap<K,V>(qPair);
     }

@@ -57,14 +57,14 @@ public class CollectionPath<E, Q extends SimpleExpression<? super E>> extends Co
     
     @SuppressWarnings("unchecked")
     public CollectionPath(Class<? super E> type, Class<Q> queryType, PathMetadata<?> metadata) {
-        super((Class)Collection.class);
+        super(new PathImpl<Collection<E>>((Class)Collection.class, metadata));
         this.elementType = (Class<E>) Assert.notNull(type,"type");
         this.queryType = queryType;
-        this.pathMixin = new PathImpl<Collection<E>>((Class)Collection.class, metadata);
+        this.pathMixin = (Path<Collection<E>>)mixin;
     }
-
+    
     @Override
-    public <R, C> R accept(Visitor<R, C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
     
@@ -74,11 +74,6 @@ public class CollectionPath<E, Q extends SimpleExpression<? super E>> extends Co
             any = newInstance(queryType, PathMetadataFactory.forCollectionAny(this));
         }
         return any;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return pathMixin.equals(o);
     }
 
     public Class<E> getElementType() {
@@ -93,11 +88,6 @@ public class CollectionPath<E, Q extends SimpleExpression<? super E>> extends Co
     @Override
     public Path<?> getRoot() {
         return pathMixin.getRoot();
-    }
-
-    @Override
-    public int hashCode() {
-        return pathMixin.hashCode();
     }
 
     @Override

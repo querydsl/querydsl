@@ -44,11 +44,12 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
     }
 
     protected BooleanOperation(Operator<? super Boolean> op, List<Expression<?>> args) {
-        opMixin = new OperationImpl<Boolean>(Boolean.class, op, args);
+        super(new OperationImpl<Boolean>(Boolean.class, op, args));
+        opMixin = (Operation<Boolean>)mixin;
     }
-
+    
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
 
@@ -74,16 +75,6 @@ public class BooleanOperation extends BooleanExpression implements Operation<Boo
         } else {
             return super.not();
         }
-    }
-
-    @Override
-    public boolean equals(Object o){
-        return opMixin.equals(o);
-    }
-
-    @Override
-    public int hashCode(){
-        return getType().hashCode();
     }
 
 }

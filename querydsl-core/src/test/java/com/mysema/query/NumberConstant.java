@@ -15,6 +15,7 @@ package com.mysema.query;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Constant;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
@@ -47,19 +48,18 @@ final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpre
     private final D constant;
 
     public NumberConstant(Class<? extends D> type, D constant) {
-        super(type);
+        super(new ConstantImpl<D>(constant));
         this.constant = constant;
     }
 
     @Override
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
+        return v.visit(this, context);
+    }
+    
+    @Override
     public BooleanExpression eq(D b){
         return BooleanConstant.create(constant.equals(b));
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean equals(Object o) {
-        return o instanceof Constant ? ((Constant<?>) o).getConstant().equals(constant) : false;
     }
 
     @Override
@@ -68,18 +68,8 @@ final class NumberConstant<D extends Number & Comparable<?>> extends NumberExpre
     }
 
     @Override
-    public int hashCode() {
-        return constant.hashCode();
-    }
-
-    @Override
     public BooleanExpression ne(D b){
         return BooleanConstant.create(!constant.equals(b));
-    }
-
-    @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
-        return v.visit(this, context);
     }
 
     @Override

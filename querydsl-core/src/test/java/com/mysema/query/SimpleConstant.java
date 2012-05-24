@@ -15,6 +15,7 @@ package com.mysema.query;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Constant;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.SimpleExpression;
@@ -50,30 +51,18 @@ final class SimpleConstant<D> extends SimpleExpression<D> implements Constant<D>
 
     @SuppressWarnings("unchecked")
     SimpleConstant(D constant) {
-        super((Class<D>) constant.getClass());
+        super(new ConstantImpl<D>(constant));
         this.constant = constant;
     }
 
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
-
+    
     @Override
     public BooleanExpression eq(D s){
         return BooleanConstant.create(constant.equals(s));
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean equals(Object o) {
-        if (o == this){
-            return true;
-        }else if (o instanceof Constant){
-            return ((Constant)o).getConstant().equals(constant);
-        }else{
-            return false;
-        }
     }
 
     /**
@@ -84,11 +73,6 @@ final class SimpleConstant<D> extends SimpleExpression<D> implements Constant<D>
     @Override
     public D getConstant() {
         return constant;
-    }
-
-    @Override
-    public int hashCode() {
-        return constant.hashCode();
     }
 
     @Override

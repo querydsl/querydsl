@@ -39,21 +39,17 @@ public class StringPath extends StringExpression implements Path<String> {
     }
 
     public StringPath(PathMetadata<?> metadata) {
-        this.pathMixin = new PathImpl<String>(String.class, metadata);
+        super(new PathImpl<String>(String.class, metadata));
+        this.pathMixin = (Path<String>)mixin;
     }
 
     public StringPath(String var) {
         this(PathMetadataFactory.forVariable(var));
     }
-
+    
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return pathMixin.equals(o);
     }
 
     @Override
@@ -64,11 +60,6 @@ public class StringPath extends StringExpression implements Path<String> {
     @Override
     public Path<?> getRoot() {
         return pathMixin.getRoot();
-    }
-
-    @Override
-    public int hashCode() {
-        return pathMixin.hashCode();
     }
     
     @Override

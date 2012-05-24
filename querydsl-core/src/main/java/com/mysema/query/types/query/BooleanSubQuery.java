@@ -38,17 +38,13 @@ public final class BooleanSubQuery extends BooleanExpression implements Extended
     private volatile BooleanExpression exists;
 
     public BooleanSubQuery(QueryMetadata md) {
-        subQueryMixin = new SubQueryExpressionImpl<Boolean>(Boolean.class, md);
+        super(new SubQueryExpressionImpl<Boolean>(Boolean.class, md));
+        subQueryMixin = (SubQueryExpression<Boolean>)mixin;
     }
-
+    
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-       return subQueryMixin.equals(o);
     }
 
     @Override
@@ -62,11 +58,6 @@ public final class BooleanSubQuery extends BooleanExpression implements Extended
     @Override
     public QueryMetadata getMetadata() {
         return subQueryMixin.getMetadata();
-    }
-
-    @Override
-    public int hashCode(){
-        return subQueryMixin.hashCode();
     }
 
     @Override

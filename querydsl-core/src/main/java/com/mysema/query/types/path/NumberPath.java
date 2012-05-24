@@ -40,8 +40,8 @@ public class NumberPath<T extends Number & Comparable<?>> extends NumberExpressi
     }
 
     public NumberPath(Class<? extends T> type, PathMetadata<?> metadata) {
-        super(type);
-        this.pathMixin = new PathImpl<T>(type, metadata);
+        super(new PathImpl<T>(type, metadata));
+        this.pathMixin = (Path<T>)mixin;
     }
 
     public NumberPath(Class<? extends T> type, String var) {
@@ -49,15 +49,10 @@ public class NumberPath<T extends Number & Comparable<?>> extends NumberExpressi
     }
 
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
-
-    @Override
-    public boolean equals(Object o) {
-        return pathMixin.equals(o);
-    }
-
+    
     @Override
     public PathMetadata<?> getMetadata() {
         return pathMixin.getMetadata();
@@ -66,11 +61,6 @@ public class NumberPath<T extends Number & Comparable<?>> extends NumberExpressi
     @Override
     public Path<?> getRoot() {
         return pathMixin.getRoot();
-    }
-
-    @Override
-    public int hashCode() {
-        return pathMixin.hashCode();
     }
 
     @Override

@@ -16,6 +16,7 @@ package com.mysema.query;
 import java.util.Calendar;
 
 import com.mysema.query.types.Constant;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.TimeExpression;
@@ -38,14 +39,14 @@ final class TimeConstant<D extends java.util.Date> extends TimeExpression<D> imp
 
     @SuppressWarnings("unchecked")
     public TimeConstant(D time) {
-        super((Class<D>)time.getClass());
+        super(new ConstantImpl<D>(time));
         this.calendar = Calendar.getInstance();
         this.time = (D) time.clone();
         calendar.setTime(time);
     }
-
+    
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
 
@@ -72,23 +73,6 @@ final class TimeConstant<D extends java.util.Date> extends TimeExpression<D> imp
     @Override
     public D getConstant() {
         return time;
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean equals(Object o) {
-        if (o == this){
-            return true;
-        }else if (o instanceof Constant){
-            return ((Constant)o).getConstant().equals(time);
-        }else{
-            return false;
-        }
-    }
-
-    @Override
-    public int hashCode(){
-        return time.hashCode();
     }
 
 }

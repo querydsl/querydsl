@@ -63,14 +63,14 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
     
     @SuppressWarnings("unchecked")
     public ListPath(Class<? super E> elementType, Class<Q> queryType, PathMetadata<?> metadata) {
-        super((Class)List.class);
+        super(new PathImpl<List<E>>((Class)List.class, metadata));
         this.elementType = (Class<E>) Assert.notNull(elementType,"type");
         this.queryType = queryType;
-        this.pathMixin = new PathImpl<List<E>>((Class)List.class, metadata);
+        this.pathMixin = (Path<List<E>>)mixin;
     }
-
+    
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
     
@@ -93,11 +93,6 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
     private Q create(int index){
         PathMetadata<Integer> md = forListAccess(index);
         return newInstance(queryType, md);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return pathMixin.equals(o);
     }
 
     @Override
@@ -130,11 +125,6 @@ public class ListPath<E, Q extends SimpleExpression<? super E>> extends Collecti
     @Override
     public Path<?> getRoot() {
         return pathMixin.getRoot();
-    }
-
-    @Override
-    public int hashCode() {
-        return pathMixin.hashCode();
     }
 
     @Override

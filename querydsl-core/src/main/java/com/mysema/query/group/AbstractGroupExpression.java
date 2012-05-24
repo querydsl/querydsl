@@ -15,8 +15,12 @@ package com.mysema.query.group;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Visitor;
-import com.mysema.query.types.expr.SimpleExpression;
+import com.mysema.query.types.expr.DslExpression;
+import com.mysema.query.types.expr.DslOperation;
 
 /**
  * A base class for GroupExpressions
@@ -25,17 +29,38 @@ import com.mysema.query.types.expr.SimpleExpression;
  * @param <T>
  * @param <R>
  */
-public abstract class AbstractGroupExpression<T, R> extends SimpleExpression<R> implements GroupExpression<T, R> {
+public abstract class AbstractGroupExpression<T, R> implements GroupExpression<T, R> {
     
     private static final long serialVersionUID = 1509709546966783160L;
+    
+    private final Class<? extends R> type;
     
     private final Expression<T> expr;
     
     @SuppressWarnings("unchecked")
     public AbstractGroupExpression(Class<? super R> type, Expression<T> expr) {
-        super((Class)type);
+        this.type = (Class)type;
         Assert.notNull(expr, "expr");        
         this.expr = expr;
+    }
+    
+    /**
+     * Create an alias for the expression
+     *
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public DslExpression<R> as(Path<R> alias) {
+        return DslOperation.create((Class<R>)getType(),Ops.ALIAS, this, alias);
+    }
+
+    /**
+     * Create an alias for the expression
+     *
+     * @return
+     */
+    public DslExpression<R> as(String alias) {
+        return as(new PathImpl<R>((Class<R>)getType(), alias));
     }
     
     @Override
@@ -58,8 +83,18 @@ public abstract class AbstractGroupExpression<T, R> extends SimpleExpression<R> 
     }
     
     @Override
+    public Class<? extends R> getType() {
+        return type;
+    }
+    
+    @Override
     public int hashCode() {
         return expr.hashCode();
+    }
+    
+    @Override
+    public String toString() {
+        return expr.toString();
     }
     
 }

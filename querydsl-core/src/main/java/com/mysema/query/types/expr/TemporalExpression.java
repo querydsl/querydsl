@@ -27,8 +27,8 @@ public abstract class TemporalExpression<T extends Comparable> extends Comparabl
 
     private static final long serialVersionUID = 1137918766051524298L;
 
-    public TemporalExpression(Class<? extends T> type) {
-        super(type);
+    public TemporalExpression(Expression<T> mixin) {
+        super(mixin);
     }
 
     /**

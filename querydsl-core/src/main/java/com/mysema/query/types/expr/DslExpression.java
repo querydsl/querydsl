@@ -13,7 +13,7 @@
  */
 package com.mysema.query.types.expr;
 
-import com.mysema.query.types.ExpressionBase;
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
@@ -25,14 +25,20 @@ import com.mysema.query.types.PathImpl;
  * @author tiwe
  *
  */
-public abstract class DslExpression<T> extends ExpressionBase<T>{
+public abstract class DslExpression<T> implements Expression<T> {
 
     private static final long serialVersionUID = -3383063447710753290L;
     
-    public DslExpression(Class<? extends T> type) {
-        super(type);
+    protected final Expression<T> mixin;
+    
+    public DslExpression(Expression<T> mixin) {
+        this.mixin = mixin;
     }
-
+        
+    public final Class<? extends T> getType() {
+        return mixin.getType();
+    }
+    
     /**
      * Create an alias for the expression
      *
@@ -50,6 +56,26 @@ public abstract class DslExpression<T> extends ExpressionBase<T>{
      */
     public DslExpression<T> as(String alias) {
         return as(new PathImpl<T>(getType(), alias));
+    }
+    
+//    @Override
+//    public final <R,C> R accept(Visitor<R,C> v, C context) {
+//        return mixin.accept(v, context); 
+//    }
+    
+    @Override
+    public boolean equals(Object o) { // can be overwritten
+        return mixin.equals(o);
+    }
+
+    @Override
+    public final int hashCode() {
+        return mixin.hashCode();
+    }
+    
+    @Override
+    public final String toString() {
+        return mixin.toString();
     }
     
 }

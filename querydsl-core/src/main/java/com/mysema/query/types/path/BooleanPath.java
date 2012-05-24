@@ -40,21 +40,17 @@ public class BooleanPath extends BooleanExpression implements Path<Boolean> {
     }
 
     public BooleanPath(PathMetadata<?> metadata) {
-        this.pathMixin = new PathImpl<Boolean>(Boolean.class, metadata);
+        super(new PathImpl<Boolean>(Boolean.class, metadata));
+        this.pathMixin = (Path<Boolean>)mixin;
     }
 
     public BooleanPath(String var) {
         this(PathMetadataFactory.forVariable(var));
     }
-
+    
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return pathMixin.equals(o);
     }
 
     @Override
@@ -65,11 +61,6 @@ public class BooleanPath extends BooleanExpression implements Path<Boolean> {
     @Override
     public Path<?> getRoot() {
         return pathMixin.getRoot();
-    }
-
-    @Override
-    public int hashCode() {
-        return pathMixin.hashCode();
     }
 
     @Override

@@ -38,8 +38,8 @@ public abstract class CollectionPathBase<C extends Collection<E>, E, Q extends S
 
     private static final long serialVersionUID = -9004995667633601298L;
 
-    public CollectionPathBase(Class<? extends C> type) {
-        super(type);
+    public CollectionPathBase(Path<C> mixin) {
+        super(mixin);
     }
 
     @Nullable

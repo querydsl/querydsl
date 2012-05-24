@@ -82,8 +82,8 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     @Nullable
     private volatile NumberExpression<Integer> round;
 
-    public NumberExpression(Class<? extends T> type) {
-        super(type);
+    public NumberExpression(Expression<T> mixin) {
+        super(mixin);
     }
 
     @Override

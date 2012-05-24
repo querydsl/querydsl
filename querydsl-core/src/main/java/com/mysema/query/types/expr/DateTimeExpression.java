@@ -17,6 +17,7 @@ import java.util.Date;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
@@ -89,8 +90,8 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     @Nullable
     private volatile NumberExpression<Integer> week, month, year, yearMonth;
 
-    public DateTimeExpression(Class<? extends T> type) {
-        super(type);
+    public DateTimeExpression(Expression<T> mixin) {
+        super(mixin);
     }
 
     @Override

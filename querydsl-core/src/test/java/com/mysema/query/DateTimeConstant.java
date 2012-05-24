@@ -14,6 +14,7 @@
 package com.mysema.query;
 
 import com.mysema.query.types.Constant;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.DateTimeExpression;
 import com.mysema.query.types.expr.NumberExpression;
@@ -36,16 +37,16 @@ final class DateTimeConstant<D extends java.util.Date> extends DateTimeExpressio
 
     @SuppressWarnings("unchecked")
     public DateTimeConstant(D date) {
-        super((Class<D>)date.getClass());
+        super(new ConstantImpl<D>(date));
         this.date = new DateConstant<D>(date);
         this.time = new TimeConstant<D>(date);
     }
 
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
-
+    
     @Override
     public NumberExpression<Integer> dayOfMonth(){
         return date.dayOfMonth();
@@ -104,23 +105,6 @@ final class DateTimeConstant<D extends java.util.Date> extends DateTimeExpressio
     @Override
     public D getConstant() {
         return date.getConstant();
-    }
-
-    @Override
-    public int hashCode(){
-        return date.hashCode();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean equals(Object o) {
-        if (o == this){
-            return true;
-        }else if (o instanceof Constant){
-            return ((Constant)o).getConstant().equals(date);
-        }else{
-            return false;
-        }
     }
 
 }

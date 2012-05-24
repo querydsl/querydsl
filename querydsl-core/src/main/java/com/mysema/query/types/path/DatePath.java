@@ -41,22 +41,17 @@ public class DatePath<T extends Comparable> extends DateExpression<T> implements
     }
 
     public DatePath(Class<? extends T> type, PathMetadata<?> metadata) {
-        super(type);
-        this.pathMixin = new PathImpl<T>(type, metadata);
+        super(new PathImpl<T>(type, metadata));
+        this.pathMixin = (Path<T>)mixin;
     }
 
     public DatePath(Class<? extends T> type, String var) {
         this(type, PathMetadataFactory.forVariable(var));
     }
-
+    
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return pathMixin.equals(o);
     }
 
     @Override
@@ -67,11 +62,6 @@ public class DatePath<T extends Comparable> extends DateExpression<T> implements
     @Override
     public Path<?> getRoot() {
         return pathMixin.getRoot();
-    }
-
-    @Override
-    public int hashCode() {
-        return pathMixin.hashCode();
     }
 
     @Override

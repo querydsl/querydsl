@@ -13,6 +13,7 @@
  */
 package com.mysema.query.types.expr;
 
+import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
@@ -28,8 +29,8 @@ public abstract class EnumExpression<T extends Enum<T>> extends ComparableExpres
 
     private static final long serialVersionUID = 8819222316513862829L;
 
-    public EnumExpression(Class<? extends T> type) {
-        super(type);
+    public EnumExpression(Expression<T> mixin) {
+        super(mixin);
     }
 
     @Override

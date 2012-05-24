@@ -65,13 +65,13 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
     }
 
     public BeanPath(Class<? extends T> type, PathMetadata<?> metadata, @Nullable PathInits inits) {
-        super(type);
-        this.pathMixin = new PathImpl<T>(type, metadata);
+        super(new PathImpl<T>(type, metadata));
+        this.pathMixin = (Path<T>)mixin;
         this.inits = inits;
     }
-
+    
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
 
@@ -299,11 +299,6 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
         return add(new TimePath<A>((Class) type, forProperty(property)));
     }
 
-    @Override
-    public boolean equals(Object o) {
-        return pathMixin.equals(o);
-    }
-
     protected PathMetadata<?> forProperty(String property) {
         return PathMetadataFactory.forProperty(this, property);
     }
@@ -316,11 +311,6 @@ public class BeanPath<T> extends SimpleExpression<T> implements Path<T> {
     @Override
     public Path<?> getRoot() {
         return pathMixin.getRoot();
-    }
-
-    @Override
-    public int hashCode() {
-        return pathMixin.hashCode();
     }
 
     /**

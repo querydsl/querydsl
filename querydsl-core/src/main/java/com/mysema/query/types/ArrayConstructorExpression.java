@@ -85,9 +85,4 @@ public class ArrayConstructorExpression<T> extends ExpressionBase<T[]> implement
         }
     }
 
-    @Override
-    public int hashCode(){
-        return getType().hashCode();
-    }
-
 }

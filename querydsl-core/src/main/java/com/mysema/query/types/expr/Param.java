@@ -13,8 +13,8 @@
  */
 package com.mysema.query.types.expr;
 
-import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.ParamExpression;
+import com.mysema.query.types.ParamExpressionImpl;
 import com.mysema.query.types.Visitor;
 
 /**
@@ -28,61 +28,32 @@ public class Param<T> extends SimpleExpression<T> implements ParamExpression<T>{
 
     private static final long serialVersionUID = -6872502615009012503L;
 
-    private static volatile long counter = 0;
-
-    private final String name;
-
-    private final boolean anon;
-
+    private final ParamExpression<T> paramMixin;
+    
     public Param(Class<? extends T> type, String name) {
-        super(type);
-        this.name = Assert.notNull(name, "name");
-        this.anon = false;
+        super(new ParamExpressionImpl<T>(type, name));
+        this.paramMixin = (ParamExpression<T>)mixin;
     }
 
     public Param(Class<? extends T> type) {
-        super(type);
-        this.name = "param" + (++counter);
-        this.anon = true;
+        super(new ParamExpressionImpl<T>(type));
+        this.paramMixin = (ParamExpression<T>)mixin;
     }
-
+    
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
+    public final <R,C> R accept(Visitor<R,C> v, C context) {
         return v.visit(this, context);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        } else if (o instanceof Param<?>) {
-            Param<?> other = (Param<?>)o;
-            return other.getType().equals(getType())
-                && other.getName().equals(name)
-                && other.anon == anon;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public int hashCode(){
-        return name.hashCode();
-    }
-
     public String getName() {
-        return name;
+        return paramMixin.getName();
     }
 
     public boolean isAnon(){
-        return anon;
+        return paramMixin.isAnon();
     }
 
     public String getNotSetMessage() {
-        if (!anon) {
-            return "The parameter " + name + " needs to be set";
-        } else {
-            return "A parameter of type " + getType().getName() + " was not set";
-        }
+        return paramMixin.getNotSetMessage();
     }
 }

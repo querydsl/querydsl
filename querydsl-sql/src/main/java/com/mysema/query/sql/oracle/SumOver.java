@@ -20,6 +20,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionBase;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.template.NumberTemplate;
@@ -30,7 +31,7 @@ import com.mysema.query.types.template.NumberTemplate;
  *
  * @author tiwe
  */
-public class SumOver<A extends Number & Comparable<? super A>> extends NumberExpression<A> {
+public class SumOver<A extends Number & Comparable<? super A>> extends ExpressionBase<A> {
 
     private static final long serialVersionUID = -4130672293308756779L;
 
@@ -42,43 +43,51 @@ public class SumOver<A extends Number & Comparable<? super A>> extends NumberExp
 
     private final Expression<A> target;
 
+    private volatile NumberExpression<A> value;
+    
     public SumOver(Expression<A> expr) {
         super(expr.getType());
         target = expr;
     }
+    
+    public NumberExpression<A> getValue() {
+        if (value == null) {
+            List<Expression<?>> args = new ArrayList<Expression<?>>();
+            StringBuilder builder = new StringBuilder();
+            builder.append("sum({0}) over (");
+            args.add(target);
+            if (partitionBy != null) {
+                builder.append("partition by {1}");
+                args.add(partitionBy);
+            }
+            if (!orderBy.isEmpty()) {
+                if (partitionBy != null) {
+                    builder.append(" ");
+                }
+                builder.append("order by ");
+                boolean first = true;
+                for (Expression<?> expr : orderBy) {
+                    if (!first) {
+                        builder.append(", ");
+                    }
+                    builder.append("{" + args.size()+"}");
+                    args.add(expr);
+                    first = false;
+                }
+            }
+            builder.append(")");
+            value = NumberTemplate.<A>create(
+                    (Class<A>)target.getType(),
+                    builder.toString(),
+                    args.toArray(new Expression[args.size()]));
+        }
+        return value;
+    }
 
     @SuppressWarnings("unchecked")
     @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
-        List<Expression<?>> args = new ArrayList<Expression<?>>();
-        StringBuilder builder = new StringBuilder();
-        builder.append("sum({0}) over (");
-        args.add(target);
-        if (partitionBy != null) {
-            builder.append("partition by {1}");
-            args.add(partitionBy);
-        }
-        if (!orderBy.isEmpty()) {
-            if (partitionBy != null) {
-                builder.append(" ");
-            }
-            builder.append("order by ");
-            boolean first = true;
-            for (Expression<?> expr : orderBy) {
-                if (!first) {
-                    builder.append(", ");
-                }
-                builder.append("{" + args.size()+"}");
-                args.add(expr);
-                first = false;
-            }
-        }
-        builder.append(")");
-        NumberExpression<A> expr = NumberTemplate.<A>create(
-                (Class<A>)target.getType(),
-                builder.toString(),
-                args.toArray(new Expression[args.size()]));
-        return expr.accept(v, context);
+    public <R,C> R accept(Visitor<R,C> v, C context) {        
+        return getValue().accept(v, context);
     }
 
     @SuppressWarnings("unchecked")
@@ -96,17 +105,14 @@ public class SumOver<A extends Number & Comparable<? super A>> extends NumberExp
         }
     }
 
-    @Override
-    public int hashCode() {
-        return target.hashCode();
-    }
-
     public SumOver<A> order(Expression<?>... orderBy) {
+        value = null;
         this.orderBy.addAll(Arrays.asList(orderBy));
         return this;
     }
 
     public SumOver<A> partition(Expression<?> partitionBy) {
+        value = null;
         this.partitionBy = partitionBy;
         return this;
     }
