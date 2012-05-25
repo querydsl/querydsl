@@ -24,63 +24,51 @@ public enum PropertyType {
     /**
      * 
      */    
-    COMPARABLE,//(TypeCategory.COMPARABLE),
+    COMPARABLE,
     
     /**
      * 
      */    
-    ENUM,//(TypeCategory.ENUM),
+    ENUM,
     
     /**
      * 
      */    
-    DATE,//(TypeCategory.DATE),
+    DATE,
     
     /**
      * 
      */    
-    DATETIME,//(TypeCategory.DATETIME),
+    DATETIME,
     
     /**
      * 
      */    
-    NONE,//(null),
+    NONE,
     
     /**
      * 
      */
-    NUMERIC,//(TypeCategory.NUMERIC),
+    NUMERIC,
     
     /**
      * 
      */    
-    SIMPLE,//(TypeCategory.SIMPLE),
+    SIMPLE,
     
     /**
      * 
      */
-    STRING,//(TypeCategory.STRING),
+    STRING,
     
     /**
      * 
      */
-    TIME,//(TypeCategory.TIME),
+    TIME,
     
     /**
      *
      */
-    ENTITY,//(TypeCategory.ENTITY);
-
-//    @Nullable
-//    private final TypeCategory category;
-//    
-//    PropertyType(@Nullable TypeCategory category) {
-//        this.category = category;
-//    }
-//    
-//    @Nullable
-//    public TypeCategory getCategory() {
-//        return category;
-//    }
+    ENTITY,
 
 }
