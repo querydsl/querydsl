@@ -20,12 +20,7 @@
 	  <groupId>com.google.guava</groupId>
 	  <artifactId>guava</artifactId>
 	  <version>${guava.version}</version>
-    </dependency>
-    <dependency>  
-      <groupId>javax.inject</groupId>  
-      <artifactId>javax.inject</artifactId>  
-      <version>1</version>  
-    </dependency>  
+    </dependency>      
     <dependency>
       <groupId>com.mysema.commons</groupId>
       <artifactId>mysema-commons-lang</artifactId>

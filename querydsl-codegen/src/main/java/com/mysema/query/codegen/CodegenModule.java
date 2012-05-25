@@ -15,7 +15,6 @@ package com.mysema.query.codegen;
 
 import java.util.Collections;
 
-import com.mysema.util.AbstractModule;
 
 /**
  * @author tiwe
