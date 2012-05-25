@@ -3,7 +3,12 @@ package com.mysema.util;
 import java.io.File;
 import java.io.IOException;
 
-public abstract class FileUtils {
+/**
+ * 
+ * @author tiwe
+ *
+ */
+public final class FileUtils {
 
     public static void delete(File file) throws IOException {
         if (file.isDirectory()) {

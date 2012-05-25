@@ -16,6 +16,10 @@ package com.mysema.util;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+/**
+ * @author tiwe
+ *
+ */
 public final class MathUtils {
 
     private MathUtils(){}

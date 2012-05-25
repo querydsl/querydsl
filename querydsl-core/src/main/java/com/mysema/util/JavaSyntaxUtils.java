@@ -17,6 +17,10 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author tiwe
+ *
+ */
 public final class JavaSyntaxUtils {
 
     private JavaSyntaxUtils() {}
