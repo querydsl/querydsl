@@ -264,29 +264,27 @@ class Department {
 	<para>And here are some query examples</para>   	
  
  <programlisting language="java"><![CDATA[
-import com.mysema.query.scala.Conversions._
 import com.mysema.query.jpa.impl.JPAQuery
 
-import com.mysema.query.types.path._
 import org.junit.Test
 
 class JPAQueryTest {
 
-  val person = alias(classOf[Person])
+  val person = Person as "person"
 
   @Test
   def Various() {
     // list
-    query from person where (person.firstName $like "Rob%") 
+    query from person where (person.firstName like "Rob%") 
       .list person
 
     // unique result
-    query from person where (person.firstName $like "Rob%") 
+    query from person where (person.firstName like "Rob%") 
       .unique person
 
     // long where
     query from person 
-      .where (person.firstName $like "Rob%", person.lastName $like "An%") 
+      .where (person.firstName like "Rob%", person.lastName like "An%") 
       .list person
 
     // order
@@ -294,7 +292,7 @@ class JPAQueryTest {
 
     // not null 
     query from person 
-      .where (person.firstName $isEmpty, person.lastName $isNotNull) 
+      .where (person.firstName isEmpty, person.lastName isNotNull) 
       .list person
   }
 
@@ -318,25 +316,7 @@ def query() = new JPAQuery(entityManager)
 	<para>In addition to queries you need variables which can be created like this</para>
 
 <programlisting language="java"><![CDATA[
-var person = alias(classOf[Person])
-]]></programlisting>    
-
-	<para>The person variable is a proxy instance of the the Person class which can be used in queries. 
-	Now you can construct your queries, populate them via from-where-...-orderBy calls and get the 
-	projection out via list/uniqueResult/listResults calls.</para>
-
-	<para>Querydsl expressions are constructed via method calls starting with the "$" sign.</para>
-
-	<para>With the Querydsl Java API a simple like expression would be constructed like this :</para>
-
-<programlisting language="java"><![CDATA[  
-person.firstName.like("Rob%")
-]]></programlisting>    
-
-	<para>Using the Scala API it is</para>
-
-<programlisting language="java"><![CDATA[
-person.firstName $like "Rob%"   
+val person = Person as "person"
 ]]></programlisting>    
   	
   </sect2>
