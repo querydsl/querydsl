@@ -28,6 +28,12 @@ import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLServerTemplates;
 import com.mysema.query.sql.SQLTemplates;
 
+/**
+ * SQLServerQuery provides SQL Server related extensions to SQLQuery
+ * 
+ * @author tiwe
+ *
+ */
 public class SQLServerQuery extends AbstractSQLQuery<SQLServerQuery> implements SQLCommonQuery<SQLServerQuery> {
     
     public SQLServerQuery(Connection conn) {

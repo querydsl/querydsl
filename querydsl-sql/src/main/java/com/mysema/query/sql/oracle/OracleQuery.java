@@ -38,6 +38,8 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> implements SQLCom
     private static final String CONNECT_BY_NOCYCLE_PRIOR = "\nconnect by nocycle prior ";
 
     private static final String CONNECT_BY_PRIOR = "\nconnect by prior ";
+    
+    private static final String FOR_UPDATE = "\nfor update ";
 
     private static final String ORDER_SIBLINGS_BY = "\norder siblings by ";
 
@@ -74,7 +76,11 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> implements SQLCom
     public OracleQuery connectByNocyclePrior(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY_NOCYCLE_PRIOR, cond);
     }
-
+    
+    public OracleQuery forUpdate() {
+        return addFlag(Position.END, FOR_UPDATE);
+    }
+       
     public <A> OracleQuery startWith(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, START_WITH, cond);
     }

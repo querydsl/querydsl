@@ -29,6 +29,9 @@ import com.mysema.query.types.template.NumberTemplate;
  * SumOver is a fluent type for Oracle specific sum over / partition by / order
  * by constructs
  *
+ * <p>SumOver doesn't provide the full interface for number expressions. To get an immutable copy with the full
+ * expressiveness of Number expressions, call getValue().</p>
+ *
  * @author tiwe
  */
 public class SumOver<A extends Number & Comparable<? super A>> extends ExpressionBase<A> {

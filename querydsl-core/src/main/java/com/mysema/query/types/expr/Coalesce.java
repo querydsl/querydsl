@@ -28,6 +28,9 @@ import com.mysema.query.types.Visitor;
  * Coalesce defines a coalesce function invocation. The coalesce function
  * returns null if all arguments are null and the first non-null argument
  * otherwise
+ * 
+ * <p>Coalesce doesn't provide the full interface for comparable expressions. To get an immutable 
+ * copy with the full expressiveness of Comparable expressions, call getValue().</p>
  *
  * @author tiwe
  *

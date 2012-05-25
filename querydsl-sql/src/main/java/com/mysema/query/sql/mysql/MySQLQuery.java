@@ -37,8 +37,30 @@ import com.mysema.query.sql.SQLTemplates;
  */
 public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> implements SQLCommonQuery<MySQLQuery>{
     
-    private static final Joiner JOINER = Joiner.on(", ");
+    private static final String WITH_ROLLUP = "\nwith rollup ";
 
+    private static final String STRAIGHT_JOIN = "straight_join ";
+    
+    private static final String SQL_SMALL_RESULT = "sql_small_result ";
+    
+    private static final String SQL_NO_CACHE = "sql_no_cache ";
+    
+    private static final String LOCK_IN_SHARE_MODE = "\nlock in share mode ";
+    
+    private static final String HIGH_PRIORITY = "high_priority ";
+    
+    private static final String FOR_UPDATE = "\nfor update ";
+    
+    private static final String SQL_CALC_FOUND_ROWS = "sql_calc_found_rows ";
+    
+    private static final String SQL_CACHE = "sql_cache ";
+    
+    private static final String SQL_BUFFER_RESULT = "sql_buffer_result ";
+    
+    private static final String SQL_BIG_RESULT = "sql_big_result ";
+    
+    private static final Joiner JOINER = Joiner.on(", ");
+    
     public MySQLQuery(Connection conn) {
         this(conn, new Configuration(new MySQLTemplates()), new DefaultQueryMetadata());
     }
@@ -56,27 +78,27 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> implements SQLCommo
     }
     
     public MySQLQuery bigResult() {
-        return addFlag(Position.AFTER_SELECT, "sql_big_result ");
+        return addFlag(Position.AFTER_SELECT, SQL_BIG_RESULT);
     }
     
     public MySQLQuery bufferResult() {
-        return addFlag(Position.AFTER_SELECT, "sql_buffer_result ");
+        return addFlag(Position.AFTER_SELECT, SQL_BUFFER_RESULT);
     }
     
     public MySQLQuery cache() {
-        return addFlag(Position.AFTER_SELECT, "sql_cache ");
+        return addFlag(Position.AFTER_SELECT, SQL_CACHE);
     }
     
     public MySQLQuery calcFoundRows() {
-        return addFlag(Position.AFTER_SELECT, "sql_calc_found_rows ");
+        return addFlag(Position.AFTER_SELECT, SQL_CALC_FOUND_ROWS);
     }
     
     public MySQLQuery forUpdate() {
-        return addFlag(Position.END, "\nfor update ");
+        return addFlag(Position.END, FOR_UPDATE);
     }
     
     public MySQLQuery highPriority() {
-        return addFlag(Position.AFTER_SELECT, "high_priority ");
+        return addFlag(Position.AFTER_SELECT, HIGH_PRIORITY);
     }
     
     public MySQLQuery into(String var) {
@@ -92,19 +114,19 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> implements SQLCommo
     }
     
     public MySQLQuery lockInShareMode() {
-        return addFlag(Position.END, "\nlock in share mode ");
+        return addFlag(Position.END, LOCK_IN_SHARE_MODE);
     }
     
     public MySQLQuery noCache() {
-        return addFlag(Position.AFTER_SELECT, "sql_no_cache ");
+        return addFlag(Position.AFTER_SELECT, SQL_NO_CACHE);
     }
     
     public MySQLQuery smallResult() {
-        return addFlag(Position.AFTER_SELECT, "sql_small_result ");
+        return addFlag(Position.AFTER_SELECT, SQL_SMALL_RESULT);
     }
     
     public MySQLQuery straightJoin() {
-        return addFlag(Position.AFTER_SELECT, "straight_join ");
+        return addFlag(Position.AFTER_SELECT, STRAIGHT_JOIN);
     }
     
     public MySQLQuery useIndex(String... indexes) {
@@ -112,7 +134,7 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> implements SQLCommo
     }
     
     public MySQLQuery withRollup() {
-        return addFlag(Position.AFTER_GROUP_BY, "\nwith rollup ");
+        return addFlag(Position.AFTER_GROUP_BY, WITH_ROLLUP);
     }
     
 }
