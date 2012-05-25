@@ -49,6 +49,7 @@ import com.mysema.query.jpa.domain.Animal;
 import com.mysema.query.jpa.domain.Author;
 import com.mysema.query.jpa.domain.Book;
 import com.mysema.query.jpa.domain.Cat;
+import com.mysema.query.jpa.domain.Company;
 import com.mysema.query.jpa.domain.DomesticCat;
 import com.mysema.query.jpa.domain.Employee;
 import com.mysema.query.jpa.domain.Foo;
@@ -57,11 +58,13 @@ import com.mysema.query.jpa.domain.QAnimal;
 import com.mysema.query.jpa.domain.QAuthor;
 import com.mysema.query.jpa.domain.QBook;
 import com.mysema.query.jpa.domain.QCat;
+import com.mysema.query.jpa.domain.QCompany;
 import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.jpa.domain.QFoo;
 import com.mysema.query.jpa.domain.QShow;
 import com.mysema.query.jpa.domain.QUser;
 import com.mysema.query.jpa.domain.Show;
+import com.mysema.query.jpa.domain.Company.Rating;
 import com.mysema.query.jpa.domain4.QBookMark;
 import com.mysema.query.jpa.domain4.QBookVersion;
 import com.mysema.query.jpa.hibernate.HibernateSubQuery;
@@ -103,6 +106,8 @@ public abstract class AbstractStandardTest {
         }
 
     }
+
+    private static final QCompany company = QCompany.company;
     
     private static final QAnimal animal = QAnimal.animal;
 
@@ -175,6 +180,12 @@ public abstract class AbstractStandardTest {
         show.acts.put("a","A");
         show.acts.put("b","B");
         save(show);
+        
+        Company company = new Company();
+        company.id = 1;
+        company.ratingOrdinal = Company.Rating.A;
+        company.ratingString = Company.Rating.AA;
+        save(company);
         
         Employee employee = new Employee();
         employee.id = 1;
@@ -252,7 +263,7 @@ public abstract class AbstractStandardTest {
 
         standardTest.report();
     }
-
+    
     @Test
     public void Any_Simple(){
         assertEquals(1, query().from(cat).where(cat.kittens.any().name.eq("Ruth123")).count());
@@ -336,6 +347,12 @@ public abstract class AbstractStandardTest {
 
         System.out.println("-- list distinct");
         assertEquals(1, query().from(cat).listDistinct(cat.birthdate).size());
+    }
+    
+    @Test
+    public void Enum_in() {
+        assertEquals(1, query().from(company).where(company.ratingOrdinal.in(Rating.A, Rating.AA)).count());
+        assertEquals(1, query().from(company).where(company.ratingString.in(Rating.A, Rating.AA)).count());
     }
 
     @Test

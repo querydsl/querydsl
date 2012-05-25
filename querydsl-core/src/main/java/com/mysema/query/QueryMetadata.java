@@ -116,7 +116,7 @@ public interface QueryMetadata extends Serializable {
      *
      * @return
      */
-    List<? extends Expression<?>> getGroupBy();
+    List<Expression<?>> getGroupBy();
 
     /**
      * Get the having expressions
@@ -151,7 +151,7 @@ public interface QueryMetadata extends Serializable {
      *
      * @return
      */
-    List<? extends Expression<?>> getProjection();
+    List<Expression<?>> getProjection();
 
     /**
      * Get the parameters

@@ -16,6 +16,8 @@ package com.mysema.query.jpa.domain;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -29,15 +31,24 @@ import org.hibernate.annotations.IndexColumn;
 @Entity
 @Table(name="company_")
 public class Company {
+    
+    public enum Rating { A, AA, AAA }
+    
+    @Enumerated
+    public Rating ratingOrdinal; 
+    
+    @Enumerated(EnumType.STRING)
+    public Rating ratingString;
+    
     @ManyToOne
-    Employee ceo;
+    public Employee ceo;
 
     @OneToMany
     @IndexColumn(name = "_index")
-    List<Department> departments;
+    public List<Department> departments;
 
     @Id
-    int id;
+    public int id;
 
-    String name;
+    public String name;
 }

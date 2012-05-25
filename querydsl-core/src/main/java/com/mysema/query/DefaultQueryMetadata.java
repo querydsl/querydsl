@@ -190,7 +190,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     @Override
-    public List<? extends Expression<?>> getGroupBy() {
+    public List<Expression<?>> getGroupBy() {
         return Collections.unmodifiableList(groupBy);
     }
 
@@ -220,7 +220,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     }
 
     @Override
-    public List<? extends Expression<?>> getProjection() {
+    public List<Expression<?>> getProjection() {
         return Collections.unmodifiableList(projection);
     }
 
