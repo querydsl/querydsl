@@ -114,13 +114,7 @@ public final class QueryModifiers implements Serializable{
 
     @Override
     public int hashCode(){
-        if (limit != null) {
-            return limit.hashCode();
-        } else if (offset != null) {
-            return offset.hashCode();
-        } else {
-            return 0;
-        }
+        return Objects.hashCode(limit, offset);
     }
 
 }

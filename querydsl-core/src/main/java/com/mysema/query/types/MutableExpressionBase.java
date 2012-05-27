@@ -1,5 +1,5 @@
 /*
- * Copyright 2011, Mysema Ltd
+ * Copyright 2012, Mysema Ltd
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,28 +13,21 @@
  */
 package com.mysema.query.types;
 
-import javax.annotation.Nullable;
 
 /**
- * ExpressionBase is the base class for immutable Expression implementations
+ * MutableExpressionBase is the base class for mutable Expression implementations
  * 
  * @author tiwe
  *
- * @param <T> expression type
+ * @param <T>
  */
-public abstract class ExpressionBase<T> implements Expression<T>{
+public abstract class MutableExpressionBase<T> implements Expression<T> {
 
-    private static final long serialVersionUID = -8862014178653364345L;
+    private static final long serialVersionUID = -6830426684911919114L;
 
     private final Class<? extends T> type;
-    
-    @Nullable
-    private volatile String toString;
 
-    @Nullable
-    private volatile Integer hashCode;
-    
-    public ExpressionBase(Class<? extends T> type) {
+    public MutableExpressionBase(Class<? extends T> type) {
         this.type = type;
     }
     
@@ -43,18 +36,12 @@ public abstract class ExpressionBase<T> implements Expression<T>{
     }
     
     public final int hashCode() {
-        if (hashCode == null) {
-            hashCode = accept(HashCodeVisitor.DEFAULT, null);
-        }
-        return hashCode.intValue();
+        return accept(HashCodeVisitor.DEFAULT, null);
     }
     
     @Override
     public final String toString() {
-        if (toString == null) {            
-            toString = accept(ToStringVisitor.DEFAULT, Templates.DEFAULT);
-        }
-        return toString;
+        return accept(ToStringVisitor.DEFAULT, Templates.DEFAULT);
     }
-    
+
 }

@@ -31,7 +31,7 @@ import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.Expression;
 
 /**
- * MySQL specific implementation of SQLQueryFactory
+ * SQL Server specific implementation of SQLQueryFactory
  *
  * @author tiwe
  *

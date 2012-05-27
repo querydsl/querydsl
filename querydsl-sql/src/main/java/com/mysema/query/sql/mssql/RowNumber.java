@@ -19,9 +19,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.MutableExpressionBase;
 import com.mysema.query.types.OrderSpecifier;
-import com.mysema.query.types.Templates;
-import com.mysema.query.types.ToStringVisitor;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.NumberExpression;
@@ -29,11 +28,14 @@ import com.mysema.query.types.template.NumberTemplate;
 
 /**
  * RowNumber supports row_number constructs for MS SQL Server
+ * 
+ * <p>RowNumber doesn't provide the full interface for number expressions. To get an immutable copy with the full
+ * expressiveness of Number expressions, call getValue().</p>
  *
  * @author tiwe
  *
  */
-public class RowNumber implements Expression<Long>{
+public class RowNumber extends MutableExpressionBase<Long> {
 
     private static final long serialVersionUID = 3499501725767772281L;
 
@@ -43,31 +45,42 @@ public class RowNumber implements Expression<Long>{
 
     @Nullable
     private Expression<Long> target;
+    
+    private volatile NumberExpression<Long> value;
 
-    @Override
-    public <R,C> R accept(Visitor<R,C> v, C context) {
-        List<Expression<?>> args = new ArrayList<Expression<?>>(partitionBy.size() + orderBy.size());
-        StringBuilder builder = new StringBuilder("row_number() over (");
-        if (!partitionBy.isEmpty()) {
-            builder.append("partition by ");
-            appendPartition(args, builder);
-        }
-        if (!orderBy.isEmpty()) {
+    public RowNumber() {
+        super(Long.class);
+    }
+    
+    public NumberExpression<Long> getValue() {
+        if (value == null) {
+            List<Expression<?>> args = new ArrayList<Expression<?>>(partitionBy.size() + orderBy.size());
+            StringBuilder builder = new StringBuilder("row_number() over (");
             if (!partitionBy.isEmpty()) {
-                builder.append(" ");
+                builder.append("partition by ");
+                appendPartition(args, builder);
             }
-            builder.append("order by ");
-            appendOrder(args, builder);
-        }
-        builder.append(")");
+            if (!orderBy.isEmpty()) {
+                if (!partitionBy.isEmpty()) {
+                    builder.append(" ");
+                }
+                builder.append("order by ");
+                appendOrder(args, builder);
+            }
+            builder.append(")");
 
-        if (target != null) {
-            builder.append(" as {" + args.size() + "}");
-            args.add(target);
+            if (target != null) {
+                builder.append(" as {" + args.size() + "}");
+                args.add(target);
+            }
+            value = NumberTemplate.create(Long.class, builder.toString(), args.toArray(new Expression[args.size()]));
         }
-
-        NumberExpression<Long> expr = NumberTemplate.create(Long.class, builder.toString(), args.toArray(new Expression[args.size()]));
-        return expr.accept(v, context);
+        return value;
+    }
+    
+    @Override
+    public <R,C> R accept(Visitor<R,C> v, C context) {        
+        return getValue().accept(v, context);
     }
 
     // TODO : externalize
@@ -100,6 +113,7 @@ public class RowNumber implements Expression<Long>{
     }
 
     public RowNumber orderBy(OrderSpecifier<?>... order) {
+        value = null;
         for (OrderSpecifier<?> o : order) {
             orderBy.add(o);
         }
@@ -107,6 +121,7 @@ public class RowNumber implements Expression<Long>{
     }
 
     public RowNumber orderBy(ComparableExpression<?>... order) {
+        value = null;
         for (ComparableExpression<?> o : order) {
             orderBy.add(o.asc());
         }
@@ -114,6 +129,7 @@ public class RowNumber implements Expression<Long>{
     }
 
     public RowNumber partitionBy(Expression<?>... exprs) {
+        value = null;
         for (Expression<?> expr : exprs) {
             partitionBy.add(expr);
         }
@@ -121,18 +137,9 @@ public class RowNumber implements Expression<Long>{
     }
 
     public RowNumber as(Expression<Long> target) {
+        value = null;
         this.target = target;
         return this;
-    }
-    
-    @Override
-    public Class<? extends Long> getType() {
-        return Long.class;
-    }
-
-    @Override
-    public int hashCode() {
-        return orderBy.hashCode();
     }
 
     @Override
@@ -146,11 +153,5 @@ public class RowNumber implements Expression<Long>{
             return false;
         }
     }
-    
-    @Override
-    public String toString() {
-        return accept(ToStringVisitor.DEFAULT, Templates.DEFAULT);
-    }
-
 
 }

@@ -28,7 +28,7 @@ public class PredicateTemplate extends TemplateExpressionImpl<Boolean> implement
     private static final long serialVersionUID = -5371430939203772072L;
 
     @Nullable
-    private Predicate not;
+    private volatile Predicate not;
     
     public PredicateTemplate(String template, Expression<?>... args){
         super(Boolean.class, TemplateFactory.DEFAULT.create(template), args);

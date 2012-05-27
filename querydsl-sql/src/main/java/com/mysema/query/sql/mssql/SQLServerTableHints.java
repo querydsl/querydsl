@@ -13,6 +13,10 @@
  */
 package com.mysema.query.sql.mssql;
 
+/**
+ * @author tiwe
+ *
+ */
 public enum SQLServerTableHints {
     NOEXPAND,
     FASTFIRSTROW, 

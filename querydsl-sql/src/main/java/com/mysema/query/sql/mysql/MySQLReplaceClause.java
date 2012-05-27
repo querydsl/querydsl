@@ -27,14 +27,16 @@ import com.mysema.query.sql.dml.SQLInsertClause;
  */
 public class MySQLReplaceClause extends SQLInsertClause{
     
+    private static final String REPLACE_INTO = "replace into ";
+
     public MySQLReplaceClause(Connection connection, SQLTemplates templates, RelationalPath<?> entity) {
         super(connection, templates, entity);
-        addFlag(Position.START_OVERRIDE, "replace into ");
+        addFlag(Position.START_OVERRIDE, REPLACE_INTO);
     }
     
     public MySQLReplaceClause(Connection connection, Configuration configuration, RelationalPath<?> entity) {
         super(connection, configuration, entity);
-        addFlag(Position.START_OVERRIDE, "replace into ");
+        addFlag(Position.START_OVERRIDE, REPLACE_INTO);
     }
 
 }

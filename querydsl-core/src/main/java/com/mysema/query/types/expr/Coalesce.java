@@ -18,7 +18,7 @@ import java.util.List;
 
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionBase;
+import com.mysema.query.types.MutableExpressionBase;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
@@ -37,7 +37,7 @@ import com.mysema.query.types.Visitor;
  * @param <T> expression type
  */
 @SuppressWarnings("unchecked")
-public class Coalesce<T extends Comparable> extends ExpressionBase<T> {
+public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
 
     private static final long serialVersionUID = 445439522266250417L;
 

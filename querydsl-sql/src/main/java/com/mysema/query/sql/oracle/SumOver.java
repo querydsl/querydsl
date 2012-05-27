@@ -20,7 +20,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.ExpressionBase;
+import com.mysema.query.types.MutableExpressionBase;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.template.NumberTemplate;
@@ -34,7 +34,7 @@ import com.mysema.query.types.template.NumberTemplate;
  *
  * @author tiwe
  */
-public class SumOver<A extends Number & Comparable<? super A>> extends ExpressionBase<A> {
+public class SumOver<A extends Number & Comparable<? super A>> extends MutableExpressionBase<A> {
 
     private static final long serialVersionUID = -4130672293308756779L;
 
@@ -108,10 +108,19 @@ public class SumOver<A extends Number & Comparable<? super A>> extends Expressio
         }
     }
 
-    public SumOver<A> order(Expression<?>... orderBy) {
+
+    public SumOver<A> orderBy(Expression<?>... orderBy) {
         value = null;
         this.orderBy.addAll(Arrays.asList(orderBy));
         return this;
+    }
+    
+    /**
+     * use orderBy instead
+     */
+    @Deprecated
+    public SumOver<A> order(Expression<?>... orderBy) {
+        return orderBy(orderBy);
     }
 
     public SumOver<A> partition(Expression<?> partitionBy) {

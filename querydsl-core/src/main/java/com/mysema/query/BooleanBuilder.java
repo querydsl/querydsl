@@ -138,7 +138,7 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
 
     @Override
     public int hashCode(){
-        return predicate != null ? predicate.hashCode() : super.hashCode();
+        return predicate != null ? predicate.hashCode() : 0;
     }
 
     /**

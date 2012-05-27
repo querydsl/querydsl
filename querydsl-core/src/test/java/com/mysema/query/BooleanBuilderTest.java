@@ -138,6 +138,7 @@ public class BooleanBuilderTest {
     @Test
     public void HashCode(){
         assertEquals(new BooleanBuilder(first).hashCode(), new BooleanBuilder(first).hashCode());
+        assertEquals(new BooleanBuilder().hashCode(), new BooleanBuilder().hashCode());
     }
 
     @Test
@@ -167,4 +168,5 @@ public class BooleanBuilderTest {
         builder.or(new BooleanPath("condition"));
         assertEquals("true || condition", builder.accept(ToStringVisitor.DEFAULT, Templates.DEFAULT));
     }
+    
 }

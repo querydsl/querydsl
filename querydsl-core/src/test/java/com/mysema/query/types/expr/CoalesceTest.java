@@ -26,31 +26,38 @@ public class CoalesceTest {
     private final StringPath lastname = new StringPath("lastname");
 
     @Test
-    public void withList(){
+    public void Mutable() {
+        Coalesce<String> c = new Coalesce<String>(firstname, lastname).add("xxx");
+        assertEquals("coalesce(firstname, lastname, xxx)", c.toString());
+        assertEquals("coalesce(firstname, lastname, xxx, yyy)", c.add("yyy").toString());
+    }
+    
+    @Test
+    public void WithList(){
         Coalesce<String> c = new Coalesce<String>(firstname, lastname).add("xxx");
         assertEquals("coalesce(firstname, lastname, xxx)", c.toString());
     }
 
     @Test
-    public void withSingleArg(){
+    public void WithSingleArg(){
         Coalesce<String> c = new Coalesce<String>().add("xxx");
         assertEquals("coalesce(xxx)", c.toString());
     }
 
     @Test
-    public void asComparable(){
+    public void AsComparable(){
         Coalesce<String> c = new Coalesce<String>(firstname, lastname);
         c.getValue().asc();
     }
 
     @Test
-    public void asString(){
+    public void AsString(){
         Coalesce<String> c = new Coalesce<String>(firstname, lastname);
         c.asString().lower();
     }
 
     @Test
-    public void withoutWarnings() {
+    public void WithoutWarnings() {
         Coalesce<String> c = new Coalesce<String>(String.class).add(firstname).add(lastname);
         assertEquals("coalesce(firstname, lastname)", c.toString());
     }
