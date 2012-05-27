@@ -15,6 +15,7 @@ package com.mysema.query;
 
 import java.io.Serializable;
 
+import com.google.common.base.Objects;
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.TemplateExpressionImpl;
@@ -121,7 +122,7 @@ public class QueryFlag implements Serializable{
 
     @Override
     public int hashCode() {
-        return flag.hashCode();
+        return Objects.hashCode(position, flag);
     }
 
     @Override

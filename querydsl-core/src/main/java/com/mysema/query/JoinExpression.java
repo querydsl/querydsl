@@ -83,7 +83,7 @@ public final class JoinExpression implements Serializable{
 
     @Override
     public int hashCode() {
-        return target.hashCode();
+        return Objects.hashCode(condition, target, type);
     }
 
     @Override

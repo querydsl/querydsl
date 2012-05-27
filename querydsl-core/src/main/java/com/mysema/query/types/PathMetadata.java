@@ -14,7 +14,6 @@
 package com.mysema.query.types;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 import javax.annotation.Nullable;
 
@@ -43,7 +42,7 @@ public final class PathMetadata<T> implements Serializable{
         this.expression = expression;
         this.pathType = type;
         this.root = parent != null ? parent.getRoot() : null;
-        this.hashCode = Arrays.asList(expression, parent, pathType).hashCode();
+        this.hashCode = Objects.hashCode(expression, parent, pathType);
     }
 
     @Override

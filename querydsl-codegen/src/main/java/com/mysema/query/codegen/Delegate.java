@@ -15,6 +15,7 @@ package com.mysema.query.codegen;
 
 import java.util.List;
 
+import com.google.common.base.Objects;
 import com.mysema.codegen.model.Parameter;
 import com.mysema.codegen.model.Type;
 import com.mysema.commons.lang.Assert;
@@ -80,7 +81,7 @@ public class Delegate {
 
     @Override
     public int hashCode() {
-        return name.hashCode();
+        return Objects.hashCode(name, parameters);
     }
 
     @Override

@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.base.Objects;
 import com.mysema.codegen.model.Type;
 import com.mysema.commons.lang.Assert;
 import com.mysema.util.JavaSyntaxUtils;
@@ -96,11 +97,7 @@ public final class Property implements Comparable<Property> {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + name.hashCode();
-        result = prime * result + type.hashCode();
-        return result;
+        return Objects.hashCode(name, type);
     }
 
     @Override
