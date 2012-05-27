@@ -334,19 +334,8 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = prime + (distinct ? 1231 : 1237);
-        result = prime * result + flags.hashCode();
-        result = prime * result + groupBy.hashCode();
-        result = prime * result + having.hashCode();
-        result = prime * result + joins.hashCode();
-        result = prime * result + ((modifiers == null) ? 0 : modifiers.hashCode());
-        result = prime * result + orderBy.hashCode();
-        result = prime * result + params.hashCode();
-        result = prime * result + projection.hashCode();
-        result = prime * result + (unique ? 1231 : 1237);
-        result = prime * result + where.hashCode();
-        return result;
+        return Objects.hashCode(flags, groupBy, having, joins, modifiers, 
+                orderBy, params, projection, unique, where);        
     }
     
     
