@@ -22,26 +22,41 @@ public enum JoinType {
     /**
      * cross join
      */
-    DEFAULT,
+    DEFAULT(false, false),
     /**
      * inner join
      */
-    INNERJOIN,
+    INNERJOIN(true, false),
     /**
      * join
      */
-    JOIN,
+    JOIN(true, false),
     /**
      * left join
      */
-    LEFTJOIN,
+    LEFTJOIN(false, true),
     /**
      * right join
      */
-    RIGHTJOIN,
+    RIGHTJOIN(false, true),
     /**
      * full join
      */
-    FULLJOIN;
+    FULLJOIN(false, true);
 
+    private final boolean inner, outer;
+    
+    JoinType(boolean inner, boolean outer) {
+        this.inner = inner;
+        this.outer = outer;
+    }
+    
+    public boolean isInner() {
+        return inner;
+    }
+    
+    public boolean isOuter() {
+        return outer;
+    }
+    
 }

@@ -41,7 +41,8 @@ public class OrderedQueryMetadata extends DefaultQueryMetadata{
     private JoinExpression last;
     
     public OrderedQueryMetadata(){
-        super(false);
+        super();
+        noValidate();
     }
     
     @Override

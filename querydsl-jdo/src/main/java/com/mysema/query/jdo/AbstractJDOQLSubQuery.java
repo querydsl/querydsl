@@ -30,7 +30,7 @@ import com.mysema.query.types.Expression;
 public class AbstractJDOQLSubQuery<Q extends AbstractJDOQLSubQuery<Q>> extends DetachableQuery<Q>{
 
     public AbstractJDOQLSubQuery() {
-        this(new DefaultQueryMetadata(false));
+        this(new DefaultQueryMetadata().noValidate());
     }
 
     @SuppressWarnings("unchecked")

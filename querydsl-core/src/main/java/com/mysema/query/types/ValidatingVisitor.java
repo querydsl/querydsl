@@ -20,6 +20,10 @@ import java.util.HashSet;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 
+/**
+ * @author tiwe
+ *
+ */
 public class ValidatingVisitor implements Visitor<Void, Void>, Serializable{
 
     private static final long serialVersionUID = 691350069621050872L;

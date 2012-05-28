@@ -70,16 +70,17 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
     
     private final ValidatingVisitor validatingVisitor = new ValidatingVisitor(exprInJoins);
 
-    private boolean validate;
-    
-    public DefaultQueryMetadata(boolean validate) {
-        this.validate = validate;
-    }    
+    private boolean validate = true;
     
     public DefaultQueryMetadata() {
-        this(true);
+        
     }
-    
+        
+    public DefaultQueryMetadata noValidate() {
+        validate = false;
+        return this;
+    }
+            
     @Override
     public void addGroupBy(Expression<?>... o) {
         validate(o);
@@ -106,9 +107,7 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         for (JoinExpression join : j) {
             Expression<?> expr = join.getTarget();
             if (!exprInJoins.contains(expr)) {
-                if (expr instanceof Path<?> && join.getType() == JoinType.DEFAULT) {
-                    ensureRoot((Path<?>) expr);
-                }
+                validateJoin(join);
                 exprInJoins.add(expr);
                 validate(expr);
                 joins.add(join);
@@ -118,6 +117,20 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
         }        
     }
 
+    private void validateJoin(JoinExpression join) {
+        if (join.getTarget() instanceof Path) {
+            Path<?> path = (Path<?>)join.getTarget();
+            if (join.getType() == JoinType.DEFAULT) {
+                ensureRoot(path);
+            } 
+//            else if (join.getType().isInner()) {
+//                validateJoin(path, innerJoinsAsRoot); 
+//            } else if (join.getType().isOuter()) {
+//                validateJoin(path, outerJoinsAsRoot);
+//            }    
+        }         
+    }
+    
     @Override
     public void addJoinCondition(Predicate o) {
         if (!joins.isEmpty()) {

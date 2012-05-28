@@ -40,7 +40,6 @@ import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
-import com.mysema.query.support.Expressions;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
@@ -84,7 +83,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
     protected boolean unionAll;
 
     public AbstractSQLQuery(@Nullable Connection conn, Configuration configuration) {
-        this(conn, configuration, new DefaultQueryMetadata());
+        this(conn, configuration, new DefaultQueryMetadata().noValidate());
     }
 
     @SuppressWarnings("unchecked")

@@ -79,7 +79,7 @@ SimpleProjectable<T> {
     @SuppressWarnings("unchecked")
     public AbstractLuceneQuery(LuceneSerializer serializer, Searcher searcher,
             Function<Document, T> transformer) {
-        queryMixin = new QueryMixin<Q>((Q) this, new DefaultQueryMetadata(false));
+        queryMixin = new QueryMixin<Q>((Q) this, new DefaultQueryMetadata().noValidate());
         this.serializer = serializer;
         this.searcher = searcher;
         this.transformer = transformer;

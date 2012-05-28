@@ -13,12 +13,13 @@
  */
 package com.mysema.query.support;
 
+import static com.mysema.query.alias.Alias.$;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static com.mysema.query.alias.Alias.*;
 
 import org.junit.Test;
 
+import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.domain.QCommonPersistence;

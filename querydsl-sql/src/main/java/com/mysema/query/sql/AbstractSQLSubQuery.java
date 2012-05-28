@@ -40,7 +40,7 @@ public class AbstractSQLSubQuery<Q extends AbstractSQLSubQuery<Q>> extends Detac
     protected final SQLQueryMixin<Q> queryMixin;
     
     public AbstractSQLSubQuery() {
-        this(new DefaultQueryMetadata(false));
+        this(new DefaultQueryMetadata().noValidate());
     }
 
     @SuppressWarnings("unchecked")
