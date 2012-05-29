@@ -39,6 +39,7 @@ import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.query.ListSubQuery;
 
 public abstract class AbstractJPASQLTest {
 
@@ -279,6 +280,23 @@ public abstract class AbstractJPASQLTest {
             new SQLSubQuery().from(cat).where(cat.name.eq("Beck")).distinct().list(cat.name, cat.id), 
             new SQLSubQuery().from(cat).where(cat.name.eq("Kate")).distinct().list(cat.name, null))
         .list(cat.name, cat.id);        
+    }
+    
+    @Test
+    public void Union5() {
+        SAnimal cat = new SAnimal("cat");
+        SAnimal cat2 = new SAnimal("cat2");
+        List<Object[]> rows = query().union(
+            new SQLSubQuery().from(cat).join(cat2).on(cat2.id.eq(cat.id.add(1))).list(cat.id, cat2.id),
+            new SQLSubQuery().from(cat).join(cat2).on(cat2.id.eq(cat.id.add(1))).list(cat.id, cat2.id))
+        .list();
+        
+        assertEquals(5, rows.size());
+        for (Object[] row : rows) {
+            int first = ((Integer)row[0]).intValue();
+            int second = ((Integer)row[1]).intValue();
+            assertEquals(first + 1, second);
+        }
     }
     
     @Test

@@ -15,22 +15,25 @@ public class DerbyJPASQLTest extends AbstractJPASQLTest {
         super(new DerbyTemplates());
     }
     
-    @Test
     @Override
     public void Union2() {
         // not supported in Derby
     }
         
-    @Test
     @Override
     public void Union3() {
         // not supported in Derby
     }
     
-    @Test
     @Override
     public void Union4() {
         // not supported in Derby
     }
+    
+    @Override
+    public void Union5() {
+        // not supported in Derby
+    }
+    
     
 }
