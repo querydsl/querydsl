@@ -42,6 +42,11 @@ public class H2SQLTest extends AbstractSQLTest{
     public void Wildcard(){
         // 
     }
+    
+    @Test
+    public void List_Wildcard() {
+        //
+    }
 
 
 }

@@ -36,6 +36,7 @@ import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.expr.Wildcard;
 
 public abstract class AbstractSQLTest {
 
@@ -95,6 +96,11 @@ public abstract class AbstractSQLTest {
     @Test
     public void List(){
         assertEquals(6, query().from(cat).where(cat.dtype.eq("C")).list(cat.id).size());
+    }
+    
+    @Test
+    public void List_Wildcard() {
+        assertEquals(6l, query().from(cat).where(cat.dtype.eq("C")).list(Wildcard.all).size());
     }
     
     @Test

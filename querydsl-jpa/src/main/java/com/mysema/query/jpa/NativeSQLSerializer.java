@@ -62,8 +62,10 @@ public final class NativeSQLSerializer extends SQLSerializer{
                 }
             } else if (!isAlias(args[i]) && !(args[i] instanceof FactoryExpression)) {    
                 // https://github.com/mysema/querydsl/issues/80
-                args[i] = ExpressionUtils.as(args[i], "col__"+(i+1));
-                modified = true;
+                if (!args[i].toString().contains("*")) {
+                    args[i] = ExpressionUtils.as(args[i], "col__"+(i+1));
+                    modified = true;    
+                }                
             }
         }        
         if (modified) {

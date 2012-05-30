@@ -30,4 +30,9 @@ public class H2JPASQLTest extends AbstractJPASQLTest {
         // 
     }
 
+    
+    @Test
+    public void List_Wildcard() {
+        //
+    }
 }
