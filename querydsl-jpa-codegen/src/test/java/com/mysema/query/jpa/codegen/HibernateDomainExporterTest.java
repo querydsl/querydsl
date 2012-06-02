@@ -39,6 +39,19 @@ public class HibernateDomainExporterTest {
             Domain.class.getPackage().getAnnotation(Config.class));
         
     @Test
+    public void Execute_MyEntity() throws IOException {
+        FileUtils.delete(new File("target/gen6"));
+        File myEntity = new File("src/test/resources/entity.hbm.xml");
+        Configuration config = new Configuration();
+        config.addFile(myEntity);
+        HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen6"), config);
+        exporter.execute();
+        
+        File targetFile = new File("target/gen6/com/mysema/query/jpa/codegen/QMyEntity.java");
+        assertContains(targetFile, "StringPath pk1", "StringPath pk2", "StringPath prop1");
+    }
+    
+    @Test
     public void Execute_Contact() throws IOException {
         FileUtils.delete(new File("target/gen1"));
         File contact = new File("src/test/resources/contact.hbm.xml");

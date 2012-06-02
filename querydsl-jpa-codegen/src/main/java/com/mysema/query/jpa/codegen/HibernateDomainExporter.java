@@ -39,6 +39,7 @@ import javax.xml.stream.XMLStreamException;
 
 import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Component;
+import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.MappedSuperclass;
 import org.hibernate.mapping.PersistentClass;
 import org.slf4j.Logger;
@@ -228,9 +229,19 @@ public class HibernateDomainExporter {
             EntityType entityType = createEntityType(pc.getMappedClass());
             if (pc.getDeclaredIdentifierProperty() != null) {
                 handleProperty(entityType, pc.getMappedClass(), pc.getDeclaredIdentifierProperty());
-            }else if (!pc.isInherited() && pc.hasIdentifierProperty()) {
+            } else if (!pc.isInherited() && pc.hasIdentifierProperty()) {
                 logger.info(entityType.toString() + pc.getIdentifierProperty());
                 handleProperty(entityType, pc.getMappedClass(), pc.getIdentifierProperty());
+            } else if (pc.getIdentifier() != null) {
+                KeyValue identifier = pc.getIdentifier();
+                if (identifier instanceof Component) {
+                    Iterator<?> properties = ((Component)identifier).getPropertyIterator();
+                    while (properties.hasNext()) {
+                        handleProperty(entityType, pc.getMappedClass(), (org.hibernate.mapping.Property) properties.next());
+                    }
+                } else {
+                    // ?!?
+                }
             }
             Iterator<?> properties = pc.getDeclaredPropertyIterator();
             while (properties.hasNext()) {
