@@ -16,9 +16,9 @@ package com.mysema.query.sql;
 import com.mysema.query.types.Ops;
 
 /**
- * PostgresTemplates is an SQL dialect for Postgres
+ * PostgresTemplates is an SQL dialect for PostgreSQL
  *
- * tested with Postgres 8.4
+ * tested with PostgreSQL 8.4
  *
  * @author tiwe
  *
