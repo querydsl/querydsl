@@ -34,6 +34,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.mysema.codegen.SimpleCompiler;
@@ -186,7 +187,11 @@ public class MetaDataExporterTest {
         exporter.setTargetFolder(new File("target/7"));
         exporter.setNamingStrategy(new DefaultNamingStrategy());
         exporter.setBeanSerializer(new BeanSerializer());
+        exporter.setBeanPackageName("test2");
         exporter.export(connection.getMetaData());
+        
+        assertTrue(new File("target/7/test/QDateTest.java").exists());
+        assertTrue(new File("target/7/test2/DateTest.java").exists());
     }
 
     @Test
@@ -196,6 +201,8 @@ public class MetaDataExporterTest {
         exporter.setPackageName("test");
         exporter.setTargetFolder(new File("target/8"));
         exporter.export(connection.getMetaData());
+        
+        assertTrue(new File("target/8/test/QDateTest.java").exists());
     }
 
     @Test
@@ -207,6 +214,8 @@ public class MetaDataExporterTest {
         exporter.setNameSuffix("Type");
         exporter.setTargetFolder(new File("target/9"));
         exporter.export(connection.getMetaData());
+        
+        assertTrue(new File("target/9/test/DateTestType.java").exists());
     }
 
     @Test
@@ -219,6 +228,9 @@ public class MetaDataExporterTest {
         exporter.setBeanSerializer(new BeanSerializer());
         exporter.setTargetFolder(new File("target/a"));
         exporter.export(connection.getMetaData());
+        
+        assertTrue(new File("target/a/test/DateTest.java").exists());
+        assertTrue(new File("target/a/test/BeanDateTest.java").exists());
     }
 
     @Test
@@ -231,6 +243,9 @@ public class MetaDataExporterTest {
         exporter.setBeanSerializer(new BeanSerializer());
         exporter.setTargetFolder(new File("target/b"));
         exporter.export(connection.getMetaData());
+        
+        assertTrue(new File("target/b/test/DateTest.java").exists());
+        assertTrue(new File("target/b/test/DateTestBean.java").exists());
     }
     
     private void test(String namePrefix, String nameSuffix, String beanPrefix, String beanSuffix, 

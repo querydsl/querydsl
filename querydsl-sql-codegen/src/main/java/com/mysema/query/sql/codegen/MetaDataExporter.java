@@ -130,10 +130,10 @@ public class MetaDataExporter {
             typeMappings.register(classModel, classModel);
 
         } else {
-            String packageName = normalizePackage(beanPackageName, schemaName);
+            String beanPackage = normalizePackage(beanPackageName, schemaName);
             String simpleName = module.getBeanPrefix() + className + module.getBeanSuffix();
             Type classTypeModel = new SimpleType(TypeCategory.ENTITY, 
-                    packageName + "." + simpleName, packageName, simpleName, false, false);
+                    beanPackage + "." + simpleName, beanPackage, simpleName, false, false);
             classModel = new EntityType(classTypeModel);
             Type mappedType = queryTypeFactory.create(classModel);
             entityToWrapped.put(classModel, mappedType);
@@ -172,16 +172,17 @@ public class MetaDataExporter {
      * @throws SQLException
      */
     public void export(DatabaseMetaData md) throws SQLException {
+        if (beanPackageName == null) {
+            beanPackageName =  module.getPackageName();
+        }
+        module.bind(SQLCodegenModule.BEAN_PACKAGE_NAME, beanPackageName);
+        
         typeMappings = module.get(TypeMappings.class);
         queryTypeFactory = module.get(QueryTypeFactory.class);
         serializer = module.get(Serializer.class);
         beanSerializer = module.get(Serializer.class, SQLCodegenModule.BEAN_SERIALIZER);
         namingStrategy = module.get(NamingStrategy.class);
         configuration = module.get(Configuration.class);
-
-        if (beanPackageName == null) {
-            beanPackageName =  module.getPackageName();
-        }
         
         if (beanSerializer == null) {
             keyDataFactory = new KeyDataFactory(namingStrategy,  module.getPackageName(), 

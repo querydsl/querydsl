@@ -18,6 +18,10 @@ import com.mysema.query.codegen.QueryTypeFactory;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.sql.Configuration;
 
+/**
+ * @author tiwe
+ *
+ */
 public class SQLCodegenModule extends CodegenModule{
     
     public static final String BEAN_SERIALIZER = "beanSerializer";
@@ -25,6 +29,8 @@ public class SQLCodegenModule extends CodegenModule{
     public static final String BEAN_SUFFIX = "beanSuffix";
 
     public static final String BEAN_PREFIX = "beanPrefix";
+    
+    public static final String BEAN_PACKAGE_NAME = "beanPackageName";
     
     public static final String PACKAGE_NAME = "packageName";
     
@@ -42,7 +48,8 @@ public class SQLCodegenModule extends CodegenModule{
         
         bind(INNER_CLASSES_FOR_KEYS, false);
         bind(BEAN_PREFIX, "");
-        bind(BEAN_SUFFIX, "");
+        bind(BEAN_SUFFIX, "");        
+        bind(BEAN_PACKAGE_NAME, "com.example");
         bind(PACKAGE_NAME, "com.example");
         bind(BEAN_SERIALIZER, (Class<?>)null);
         bind(SCHEMA_TO_PACKAGE, false);

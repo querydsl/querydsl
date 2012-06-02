@@ -20,18 +20,31 @@ import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.query.codegen.QueryTypeFactory;
 
+/**
+ * @author tiwe
+ *
+ */
 public final class SQLQueryTypeFactory implements QueryTypeFactory{
 
+    private final String packageName, beanPackageName;
+    
     private final int stripStart, stripEnd;
 
     private final String prefix, suffix;
     
+    private final boolean replacePackage;
+    
     @Inject
     public SQLQueryTypeFactory(
+            @Named(SQLCodegenModule.PACKAGE_NAME) String packageName,
+            @Named(SQLCodegenModule.BEAN_PACKAGE_NAME) String beanPackageName,
             @Named(SQLCodegenModule.BEAN_PREFIX) String beanPrefix,
             @Named(SQLCodegenModule.BEAN_SUFFIX) String beanSuffix,
             @Named(SQLCodegenModule.PREFIX) String prefix,
             @Named(SQLCodegenModule.SUFFIX) String suffix) {
+        this.packageName = packageName;
+        this.beanPackageName = beanPackageName;
+        this.replacePackage = !packageName.equals(beanPackageName);
         this.stripStart = beanPrefix.length();
         this.stripEnd = beanSuffix.length();
         this.prefix = prefix;
@@ -41,6 +54,9 @@ public final class SQLQueryTypeFactory implements QueryTypeFactory{
     @Override
     public Type create(Type type) {
         String packageName = type.getPackageName();
+        if (replacePackage) {
+            packageName = this.packageName + packageName.substring(beanPackageName.length());
+        }
         String simpleName = type.getSimpleName();        
         simpleName = prefix + simpleName.substring(stripStart, simpleName.length()-stripEnd) + suffix;
         return new SimpleType(packageName + "." + simpleName, packageName, simpleName);
