@@ -39,9 +39,6 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
     @Nullable
     private PrimaryKey<T> primaryKey;
     
-    @Nullable
-    private Path<?>[] all;
-    
     private final List<Path<?>> columns = new ArrayList<Path<?>>();
     
     private final List<ForeignKey<?>> foreignKeys = new ArrayList<ForeignKey<?>>();
@@ -96,16 +93,13 @@ public class RelationalPathBase<T> extends BeanPath<T> implements RelationalPath
         if (projection == null) {
             projection = RelationalPathUtils.createProjection(this);  
         }
-        return projection;
-        
+        return projection;        
     }
     
     public Path<?>[] all() {
-        if (all == null || all.length != columns.size()) {
-            all = new Path[columns.size()];
-            columns.toArray(all);
-        }
-        return all.clone();
+        Path<?>[] all = new Path[columns.size()];
+        columns.toArray(all);
+        return all;
     }
     
     @Override
