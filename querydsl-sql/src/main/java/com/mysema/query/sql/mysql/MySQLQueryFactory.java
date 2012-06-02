@@ -18,17 +18,12 @@ import java.sql.Connection;
 import javax.inject.Provider;
 
 import com.mysema.query.QueryFlag.Position;
+import com.mysema.query.sql.AbstractSQLQueryFactory;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.MySQLTemplates;
 import com.mysema.query.sql.RelationalPath;
-import com.mysema.query.sql.SQLQueryFactory;
-import com.mysema.query.sql.SQLQueryFactoryImpl;
-import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
-import com.mysema.query.sql.dml.SQLMergeClause;
-import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.TemplateExpressionImpl;
 
@@ -38,12 +33,10 @@ import com.mysema.query.types.TemplateExpressionImpl;
  * @author tiwe
  *
  */
-public class MySQLQueryFactory implements SQLQueryFactory<MySQLQuery, SQLSubQuery, SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause>{
-
-    private final SQLQueryFactoryImpl queryFactory;
+public class MySQLQueryFactory extends AbstractSQLQueryFactory<MySQLQuery>{
 
     public MySQLQueryFactory(Configuration configuration, Provider<Connection> connection) {
-        queryFactory = new SQLQueryFactoryImpl(configuration, connection);
+        super(configuration, connection);
     }
 
     public MySQLQueryFactory(Provider<Connection> connection) {
@@ -52,18 +45,6 @@ public class MySQLQueryFactory implements SQLQueryFactory<MySQLQuery, SQLSubQuer
 
     public MySQLQueryFactory(SQLTemplates templates, Provider<Connection> connection) {
         this(new Configuration(templates), connection);
-    }
-
-    public SQLDeleteClause delete(RelationalPath<?> path) {
-        return queryFactory.delete(path);
-    }
-
-    public MySQLQuery from(Expression<?> from) {
-        return query().from(from);
-    }
-
-    public SQLInsertClause insert(RelationalPath<?> path) {
-        return queryFactory.insert(path);
     }
 
     public SQLInsertClause insertIgnore(RelationalPath<?> entity) {
@@ -84,30 +65,12 @@ public class MySQLQueryFactory implements SQLQueryFactory<MySQLQuery, SQLSubQuer
         return insert;
     }
     
-    
-    public SQLMergeClause merge(RelationalPath<?> path) {
-        return queryFactory.merge(path);
-    }
-
     public MySQLQuery query() {
-        return new MySQLQuery(queryFactory.getConnection(), queryFactory.getConfiguration());
+        return new MySQLQuery(connection.get(), configuration);
     }
 
     public MySQLReplaceClause replace(RelationalPath<?> entity) {
-        return new MySQLReplaceClause(queryFactory.getConnection(), queryFactory.getConfiguration(), entity);
+        return new MySQLReplaceClause(connection.get(), configuration, entity);
     }
-
-    public SQLSubQuery subQuery() {
-        return queryFactory.subQuery();
-    }
-
-    public SQLSubQuery subQuery(Expression<?> from) {
-        return subQuery().from(from);
-    }
-
-    public SQLUpdateClause update(RelationalPath<?> path) {
-        return queryFactory.update(path);
-    }
-
 
 }

@@ -13,7 +13,6 @@
  */
 package com.mysema.query.sql;
 
-import com.mysema.query.Query;
 import com.mysema.query.QueryFactory;
 import com.mysema.query.sql.dml.SQLDeleteClause;
 import com.mysema.query.sql.dml.SQLInsertClause;
@@ -33,7 +32,7 @@ import com.mysema.query.types.Expression;
  * @param <I> insert clause type
  * @param <M> merge clause type
  */
-public interface SQLQueryFactory<Q extends Query<?>, // extends AbstractSQLQuery<?>
+public interface SQLQueryFactory<Q extends SQLCommonQuery<?>, // extends AbstractSQLQuery<?>
     SQ extends AbstractSQLSubQuery<?>,
     D extends SQLDeleteClause,
     U extends SQLUpdateClause,

@@ -17,18 +17,10 @@ import java.sql.Connection;
 
 import javax.inject.Provider;
 
+import com.mysema.query.sql.AbstractSQLQueryFactory;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.OracleTemplates;
-import com.mysema.query.sql.RelationalPath;
-import com.mysema.query.sql.SQLQueryFactory;
-import com.mysema.query.sql.SQLQueryFactoryImpl;
-import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.sql.dml.SQLDeleteClause;
-import com.mysema.query.sql.dml.SQLInsertClause;
-import com.mysema.query.sql.dml.SQLMergeClause;
-import com.mysema.query.sql.dml.SQLUpdateClause;
-import com.mysema.query.types.Expression;
 
 /**
  * Oracle specific implementation of SQLQueryFactory
@@ -36,12 +28,10 @@ import com.mysema.query.types.Expression;
  * @author tiwe
  *
  */
-public class OracleQueryFactory implements SQLQueryFactory<OracleQuery, SQLSubQuery, SQLDeleteClause, SQLUpdateClause, SQLInsertClause, SQLMergeClause> {
-
-    private final SQLQueryFactoryImpl queryFactory;
+public class OracleQueryFactory extends AbstractSQLQueryFactory<OracleQuery> {
 
     public OracleQueryFactory(Configuration configuration, Provider<Connection> connection) {
-        queryFactory = new SQLQueryFactoryImpl(configuration, connection);
+        super(configuration, connection);
     }
 
     public OracleQueryFactory(Provider<Connection> connection) {
@@ -52,37 +42,8 @@ public class OracleQueryFactory implements SQLQueryFactory<OracleQuery, SQLSubQu
         this(new Configuration(templates), connection);
     }
 
-    public SQLDeleteClause delete(RelationalPath<?> path) {
-        return queryFactory.delete(path);
-    }
-
-    public OracleQuery from(Expression<?> from) {
-        return query().from(from);
-    }
-
-    public SQLInsertClause insert(RelationalPath<?> path) {
-        return queryFactory.insert(path);
-    }
-
-    public SQLMergeClause merge(RelationalPath<?> path) {
-        return queryFactory.merge(path);
-    }
-
     public OracleQuery query() {
-        return new OracleQuery(queryFactory.getConnection(), queryFactory.getConfiguration());
+        return new OracleQuery(connection.get(), configuration);
     }
-
-    public SQLSubQuery subQuery() {
-        return queryFactory.subQuery();
-    }
-
-    public SQLSubQuery subQuery(Expression<?> from) {
-        return subQuery().from(from);
-    }
-
-    public SQLUpdateClause update(RelationalPath<?> path) {
-        return queryFactory.update(path);
-    }
-
 
 }
