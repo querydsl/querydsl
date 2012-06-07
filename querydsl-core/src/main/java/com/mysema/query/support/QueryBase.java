@@ -52,10 +52,6 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
         return queryMixin.where(o);
     }
 
-    public String toString() {
-        return queryMixin.toString();
-    }
-
     public Q limit(long limit) {
         return queryMixin.limit(limit);
     }
@@ -70,6 +66,28 @@ public abstract class QueryBase<Q extends QueryBase<Q>> {
 
     public <P> Q set(ParamExpression<P> param, P value) {
         return queryMixin.set(param, value);
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        } else if (o instanceof QueryBase) {
+            QueryBase q = (QueryBase)o;
+            return q.queryMixin.equals(queryMixin);
+        } else {
+            return false;
+        }
+    }
+  
+    @Override
+    public int hashCode() {
+        return queryMixin.hashCode();
+    }
+        
+    @Override
+    public String toString() {
+        return queryMixin.toString();
     }
 
 }

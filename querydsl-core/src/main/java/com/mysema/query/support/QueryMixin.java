@@ -390,11 +390,6 @@ public class QueryMixin<T>{
         metadata.setUnique(unique);
     }
 
-    @Override
-    public String toString() {
-        return metadata.toString();
-    }
-
     public T where(Predicate... o) {
         metadata.addWhere(normalize(o, true));
         return self;
@@ -403,5 +398,28 @@ public class QueryMixin<T>{
     protected Predicate[] normalize(Predicate[] conditions, boolean where) {
         return conditions;
     }
+  
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        } else if (o instanceof QueryMixin) {
+            QueryMixin q = (QueryMixin)o;
+            return q.metadata.equals(metadata);
+        } else {
+            return false;
+        }
+    }
+  
+    @Override
+    public int hashCode() {
+        return metadata.hashCode();
+    }
+        
+    @Override
+    public String toString() {
+        return metadata.toString();
+    }
+
 
 }
