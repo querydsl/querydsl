@@ -13,6 +13,7 @@
  */
 package com.mysema.query.types;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -39,8 +40,10 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
     
     private static Class<?>[] getRealParameters(Class<?> type, Class<?>[] givenTypes) {
         for (Constructor<?> c : type.getConstructors()){
-            Class<?>[] paramTypes = c.getParameterTypes();
-            if (paramTypes.length == givenTypes.length) {
+            Class<?>[] paramTypes = c.getParameterTypes();     
+            if (c.isVarArgs()) {
+                return paramTypes;
+            } else if (paramTypes.length == givenTypes.length) {
                 boolean found = true;
                 for (int i = 0; i < paramTypes.length; i++) {
                     if (!normalize(paramTypes[i]).isAssignableFrom(normalize(givenTypes[i]))) {
@@ -67,10 +70,10 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
     private final List<Expression<?>> args;
 
     private final Class<?>[] parameterTypes;
-
+    
     @Nullable
     private transient Constructor<?> constructor;
-
+    
     public ConstructorExpression(Class<T> type, Class<?>[] paramTypes, Expression<?>... args) {
         this(type, paramTypes, Arrays.asList(args));
     }
@@ -94,7 +97,7 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
     /**
      * Create an alias for the expression
      *
-     * @return
+     * @retu rn
      */
     public Expression<T> as(String alias) {
         return as(new PathImpl<T>(getType(), alias));
@@ -129,7 +132,22 @@ public class ConstructorExpression<T> extends ExpressionBase<T> implements Facto
             if (constructor == null) {
                 constructor = getType().getConstructor(parameterTypes);
             }
-            return (T) constructor.newInstance(args);
+            if (constructor.isVarArgs()) {
+                Class<?>[] paramTypes = constructor.getParameterTypes();
+                // constructor args
+                Object[] cargs = new Object[paramTypes.length];                
+                System.arraycopy(args, 0, cargs, 0, cargs.length - 1);
+                // array with vargs
+                int size = args.length - cargs.length + 1;
+                Object array = Array.newInstance(
+                        paramTypes[paramTypes.length - 1].getComponentType(), size);
+                cargs[cargs.length - 1] = array;
+                System.arraycopy(args, cargs.length - 1, array, 0, size);                
+                return (T) constructor.newInstance(cargs);
+            } else {
+                return (T) constructor.newInstance(args);    
+            }            
+            
         } catch (SecurityException e) {
            throw new ExpressionException(e.getMessage(), e);
         } catch (NoSuchMethodException e) {

@@ -13,7 +13,7 @@
  */
 package com.mysema.query.types;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -22,10 +22,31 @@ import com.mysema.query.types.path.PathBuilder;
 
 public class ProjectionsTest {
 
+    public static class VarArgs {
+        
+        String[] args;
+        
+        public VarArgs(String... strs) {
+            args = strs;
+        }
+    }
+    
+    public static class VarArgs2 {
+        
+        String arg;
+        String[] args;
+        
+        public VarArgs2(String s, String... strs) {
+            arg = s;
+            args = strs;
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     @Test
     public void Array() {
-        FactoryExpression<String[]> expr = Projections.array(String[].class, new PathImpl(String.class, "p1"), new PathImpl(String.class, "p2"));
+        FactoryExpression<String[]> expr = Projections.array(String[].class, 
+                new PathImpl(String.class, "p1"), new PathImpl(String.class, "p2"));
         assertEquals(String[].class, expr.newInstance("1","2").getClass());
     }
 
@@ -43,7 +64,23 @@ public class ProjectionsTest {
     public void Constructor() {
         Expression<Long> longVal = ConstantImpl.create(1l);
         Expression<String> stringVal = ConstantImpl.create("");
-        assertEquals(ProjectionExample.class, Projections.constructor(ProjectionExample.class, longVal, stringVal).newInstance(0l,"").getClass());
+        assertEquals(ProjectionExample.class, Projections.constructor(ProjectionExample.class, longVal, stringVal)
+                .newInstance(0l,"").getClass());
+    }
+    
+    @Test
+    public void Constructor_VarArgs() {
+        Expression<String> stringVal = ConstantImpl.create("");
+        VarArgs instance = Projections.constructor(VarArgs.class, stringVal).newInstance("X", "Y");
+        assertArrayEquals(new String[]{"X", "Y"}, instance.args);        
+    }
+    
+    @Test
+    public void Constructor_VarArgs2() {
+        Expression<String> stringVal = ConstantImpl.create("");
+        VarArgs2 instance = Projections.constructor(VarArgs2.class, stringVal).newInstance("X", "Y", "Z");
+        assertEquals("X", instance.arg);
+        assertArrayEquals(new String[]{"Y", "Z"}, instance.args);        
     }
 
     @Test
