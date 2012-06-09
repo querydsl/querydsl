@@ -130,6 +130,16 @@ public final class Connections {
         new DropTableClause(connHolder.get(), templates, table).execute();
     }
     
+    private static void dropType(Statement stmt, String type) throws SQLException {
+        try {
+            stmt.execute("drop type " + type);    
+        } catch (SQLException e) {
+            if (!e.getMessage().contains("does not exist")) {
+                throw e;
+            }
+        }  
+    }
+    
     public static Statement getStatement(){
         return stmtHolder.get();
     }
@@ -158,6 +168,10 @@ public final class Connections {
         if (derbyInited){
             return;
         }
+        
+        // types
+        dropType(stmt, "price restrict");    
+        stmt.execute("create type price external name 'com.example.Price' language java");
 
         // survey
         dropTable(templates, "SURVEY");
@@ -407,6 +421,9 @@ public final class Connections {
         if (oracleInited){
             return;
         }
+        
+        // types
+        stmt.execute("create or replace type ssn_t as object (ssn_type char(11))");
 
         // survey
         dropTable(templates, "SURVEY");
@@ -478,6 +495,13 @@ public final class Connections {
             return;
         }
 
+        // types
+        dropType(stmt, "u_country");
+        stmt.execute("create type u_country as enum ('Brazil', 'England', 'Germany')");
+        
+        dropType(stmt, "u_street_type");
+        stmt.execute("create type u_street_type as (street VARCHAR(100), number VARCHAR(30))");
+        
         // survey
         dropTable(templates, "SURVEY");
         try {
