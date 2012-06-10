@@ -22,7 +22,6 @@ import java.sql.Statement;
 import java.sql.Time;
 
 import org.hsqldb.types.Types;
-import org.sqlite.SQLiteConfig;
 
 import com.mysema.query.ddl.CreateTableClause;
 import com.mysema.query.ddl.DropTableClause;
@@ -33,7 +32,6 @@ import com.mysema.query.sql.OracleTemplates;
 import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.query.sql.SQLServerTemplates;
 import com.mysema.query.sql.SQLTemplates;
-import com.mysema.query.sql.SQLiteTemplates;
 
 /**
  * @author tiwe

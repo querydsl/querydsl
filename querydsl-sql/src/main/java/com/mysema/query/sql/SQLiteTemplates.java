@@ -39,10 +39,10 @@ public class SQLiteTemplates extends SQLTemplates {
         add(Ops.INDEX_OF, "charindex({1},{0},1)-1");
         add(Ops.INDEX_OF_2ARGS, "charindex({1},{0},{2s}+1)-1");
                 
-        add(Ops.DateTimeOps.YEAR, "cast(strftime('%Y',{0}) as integer)");
+        add(Ops.DateTimeOps.YEAR, "cast(strftime('%Y',{0},'unixepoch') as integer)");
         add(Ops.DateTimeOps.YEAR_MONTH, "strftime('%Y',{0}) * 100 + strftime('%m',{0})");
-        add(Ops.DateTimeOps.MONTH, "cast(strftime('%m',{0}) as integer)");
-        add(Ops.DateTimeOps.WEEK, "cast(strftime('%W',{0}) as integer) + 1");
+        add(Ops.DateTimeOps.MONTH, "cast(strftime('%m',{0},'unixepoch') as integer)");
+        add(Ops.DateTimeOps.WEEK, "cast(strftime('%W',{0},'unixepoch') as integer) + 1");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "cast(strftime('%d',{0}) as integer) + 1");
         add(Ops.DateTimeOps.DAY_OF_WEEK, "cast(strftime('%w',{0}) as integer) ");
         add(Ops.DateTimeOps.DAY_OF_YEAR, "cast(strftime('%j',{0}) as integer)");

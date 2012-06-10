@@ -13,13 +13,17 @@
  */
 package com.mysema.query._sqlite;
 
+import static com.mysema.query.Constants.employee;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.junit.Test;
 
 import com.mysema.query.Connections;
 import com.mysema.query.SelectBaseTest;
 import com.mysema.query.Target;
+import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLiteTemplates;
 import com.mysema.testutil.Label;
 
@@ -39,4 +43,12 @@ public class SelectSQLiteTest extends SelectBaseTest {
         }};
     }
 
+    @Test
+    public void DateTime() {
+        SQLQuery query = query().from(employee); 
+        System.out.println(query.limit(1).list(employee.datefield.dayOfMonth()));
+        System.out.println(query.limit(1).list(employee.datefield.month()));
+        System.out.println(query.limit(1).list(employee.datefield.year()));
+    }
+    
 }
