@@ -32,6 +32,7 @@
     <mysql.version>5.1.18</mysql.version>
     <jtds.version>1.2.4</jtds.version>
     <cubrid.version>8.4.1.2032</cubrid.version>
+    <sqlite.version>3.7.2</sqlite.version>
     
     <guava.version>11.0.2</guava.version>
     <codegen.version>0.4.11</codegen.version>

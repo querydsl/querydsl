@@ -25,7 +25,7 @@ import com.mysema.query.types.Predicate;
  * @author tiwe
  * @see SimpleQuery
  */
-public interface Query<Q extends Query<Q>> extends SimpleQuery<Q>{
+public interface Query<Q extends Query<Q>> extends SimpleQuery<Q> {
 
     /**
      * Defines the grouping/aggregation expressions

@@ -22,6 +22,7 @@ import java.sql.Statement;
 import java.sql.Time;
 
 import org.hsqldb.types.Types;
+import org.sqlite.SQLiteConfig;
 
 import com.mysema.query.ddl.CreateTableClause;
 import com.mysema.query.ddl.DropTableClause;
@@ -32,6 +33,7 @@ import com.mysema.query.sql.OracleTemplates;
 import com.mysema.query.sql.PostgresTemplates;
 import com.mysema.query.sql.SQLServerTemplates;
 import com.mysema.query.sql.SQLTemplates;
+import com.mysema.query.sql.SQLiteTemplates;
 
 /**
  * @author tiwe
@@ -65,7 +67,7 @@ public final class Connections {
 
     private static ThreadLocal<Statement> stmtHolder = new ThreadLocal<Statement>();
 
-    private static boolean derbyInited, sqlServerInited, h2Inited, hsqlInited, mysqlInited, cubridInited, oracleInited, postgresInited;
+    private static boolean derbyInited, sqlServerInited, h2Inited, hsqlInited, mysqlInited, cubridInited, oracleInited, postgresInited, sqliteInited;
 
     public static void close() throws SQLException{
         if (stmtHolder.get() != null){
@@ -126,6 +128,12 @@ public final class Connections {
         Class.forName("cubrid.jdbc.driver.CUBRIDDriver");
         String url = "jdbc:cubrid:localhost:30000:demodb:public::";
         return DriverManager.getConnection(url);
+    }
+    
+    private static Connection getSQLite() throws SQLException, ClassNotFoundException {
+        System.setProperty("sqlite.purejava", "true");
+        Class.forName("org.sqlite.JDBC");
+        return DriverManager.getConnection("jdbc:sqlite:");
     }
     
     private static CreateTableClause createTable(SQLTemplates templates, String table){
@@ -311,6 +319,67 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
         h2Inited = true;
+    }
+    
+    public static void initSQLite() throws SQLException, ClassNotFoundException{
+//        SQLTemplates templates = new SQLiteTemplates();
+        Connection c = getSQLite();
+        connHolder.set(c);
+        Statement stmt = c.createStatement();
+        stmtHolder.set(stmt);
+
+        if (sqliteInited){
+            return;
+        }
+
+        // qtest
+        stmt.execute("drop table if exists QTEST");
+        stmt.execute("create table QTEST (ID int IDENTITY(1,1) NOT NULL,  C1 int NULL)");
+        
+        // survey
+        stmt.execute("drop table if exists SURVEY");
+        stmt.execute("create table SURVEY(ID int auto_increment, " +
+                "NAME varchar(30)," +
+                "NAME2 varchar(30)," +
+                "constraint suryey_pk primary key(ID))");
+        stmt.execute("insert into SURVEY values (1,'Hello World','Hello');");
+        
+        // test
+        stmt.execute("drop table if exists TEST");
+        stmt.execute(CREATE_TABLE_TEST);
+        PreparedStatement pstmt = c.prepareStatement(INSERT_INTO_TEST_VALUES);
+        try{
+            for (int i = 0; i < TEST_ROW_COUNT; i++) {
+                pstmt.setString(1, "name" + i);
+                pstmt.addBatch();
+            }
+            pstmt.executeBatch();
+        }finally{
+            pstmt.close();
+        }
+
+        // employee
+        stmt.execute("drop table if exists EMPLOYEE");
+        stmt.execute("create table EMPLOYEE ( " +
+                "ID INT AUTO_INCREMENT, " +
+                "FIRSTNAME VARCHAR(50), " +
+                "LASTNAME VARCHAR(50), " +
+                "SALARY DECIMAL, "  +
+                "DATEFIELD DATE, " +
+                "TIMEFIELD TIME, " +
+                "SUPERIOR_ID INT, " +
+                "CONSTRAINT PK_EMPLOYEE PRIMARY KEY(ID),"+
+                "CONSTRAINT FK_SUPERIOR FOREIGN KEY(SUPERIOR_ID) REFERENCES EMPLOYEE(ID) " +
+              ")");        
+        addEmployees(INSERT_INTO_EMPLOYEE);
+        
+
+        // date_test and time_test
+        stmt.execute("drop table if exists TIME_TEST");
+        stmt.execute("drop table if exists DATE_TEST");
+        stmt.execute(CREATE_TABLE_TIMETEST);
+        stmt.execute(CREATE_TABLE_DATETEST);
+        sqliteInited = true;
     }
 
     public static void initHSQL() throws SQLException, ClassNotFoundException{

@@ -19,14 +19,15 @@ import static com.mysema.query.Constants.employee2;
 import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Constants.survey2;
 import static com.mysema.query.Constants.time;
+import static com.mysema.query.Target.CUBRID;
 import static com.mysema.query.Target.DERBY;
 import static com.mysema.query.Target.H2;
 import static com.mysema.query.Target.HSQLDB;
 import static com.mysema.query.Target.MYSQL;
 import static com.mysema.query.Target.ORACLE;
 import static com.mysema.query.Target.POSTGRES;
+import static com.mysema.query.Target.SQLITE;
 import static com.mysema.query.Target.SQLSERVER;
-import static com.mysema.query.Target.CUBRID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -354,6 +355,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
+    @ExcludeIn(SQLITE)
     public void Right_Join() throws SQLException {
         query().from(employee).rightJoin(employee2)
             .on(employee.superiorIdKey.on(employee2))
@@ -361,7 +363,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    @IncludeIn({POSTGRES})
+    @IncludeIn(POSTGRES)
     public void Full_Join() throws SQLException {
         query().from(employee).fullJoin(employee2)
             .on(employee.superiorIdKey.on(employee2))
@@ -447,7 +449,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({HSQLDB, H2, MYSQL})
+    @ExcludeIn({HSQLDB, H2, MYSQL, SQLITE})
     public void Offset_Only(){
         // offset
         query().from(employee)
@@ -697,6 +699,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
+    @ExcludeIn(SQLITE)
     public void SubQuery_RightJoin(){
         ListSubQuery<Integer> sq = sq().from(employee2).list(employee2.id);
         QEmployee sqEmp = new QEmployee("sq");

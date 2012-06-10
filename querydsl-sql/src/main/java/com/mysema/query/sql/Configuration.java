@@ -19,6 +19,7 @@ import java.sql.SQLException;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.sql.types.BigDecimalAsDoubleType;
 import com.mysema.query.sql.types.Type;
 import com.mysema.query.sql.types.UntypedNullType;
 import com.mysema.query.types.Path;
@@ -43,6 +44,9 @@ public class Configuration {
         this.templates = templates;
         if (!templates.isParameterMetadataAvailable()) {
             javaTypeMapping.register(new UntypedNullType());
+        }
+        if (!templates.isBigDecimalSupported()) {
+            javaTypeMapping.register(new BigDecimalAsDoubleType());
         }
     }
 

@@ -141,6 +141,8 @@ public class SQLTemplates extends Templates {
     
     private boolean batchCountViaGetUpdateCount = false;
     
+    private boolean bigDecimalSupported = true;
+    
     protected SQLTemplates(String quoteStr, char escape, boolean useQuotes) {
         super(escape);
         this.quoteStr = Assert.notNull(quoteStr, "quoteStr");
@@ -621,5 +623,15 @@ public class SQLTemplates extends Templates {
     protected void setBatchCountViaGetUpdateCount(boolean batchCountViaGetUpdateCount) {
         this.batchCountViaGetUpdateCount = batchCountViaGetUpdateCount;
     }
+
+    public boolean isBigDecimalSupported() {
+        return bigDecimalSupported;
+    }
+
+    public void setBigDecimalSupported(boolean bigDecimalSupported) {
+        this.bigDecimalSupported = bigDecimalSupported;
+    }
+    
+    
     
 }

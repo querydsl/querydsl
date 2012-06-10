@@ -13,7 +13,9 @@
  */
 package com.mysema.query.sql.types;
 
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
@@ -21,24 +23,30 @@ import java.sql.Types;
  * @author tiwe
  *
  */
-public class DoubleType extends AbstractNumberType<Double>{
+public class BigDecimalAsDoubleType extends AbstractType<BigDecimal> {
     
-    public DoubleType() {
+    public BigDecimalAsDoubleType() {
         super(Types.DOUBLE);
     }
-
-    public DoubleType(int type) {
+    
+    public BigDecimalAsDoubleType(int type) {
         super(type);
     }
 
     @Override
-    public Class<Double> getReturnedClass() {
-        return Double.class;
+    public BigDecimal getValue(ResultSet rs, int startIndex) throws SQLException {
+        return BigDecimal.valueOf(rs.getDouble(startIndex));
     }
 
     @Override
-    public void setValue(PreparedStatement st, int startIndex, Double value) throws SQLException {
-        st.setDouble(startIndex, value);
+    public Class<BigDecimal> getReturnedClass() {
+        return BigDecimal.class;
+    }
+
+    @Override
+    public void setValue(PreparedStatement st, int startIndex, BigDecimal value)
+            throws SQLException {
+        st.setDouble(startIndex, value.doubleValue());
     }
 
 }

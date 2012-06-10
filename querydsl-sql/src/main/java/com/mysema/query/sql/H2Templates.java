@@ -28,7 +28,7 @@ public class H2Templates extends SQLTemplates{
     }
     
     public H2Templates(boolean quote) {
-        this('\\',quote);
+        this('\\', quote);
     }
 
     public H2Templates(char escape, boolean quote) {

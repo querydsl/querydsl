@@ -27,8 +27,6 @@ public class CUBRIDTemplates extends SQLTemplates {
     private final String limitTemplate = "\nlimit {0}";
     
     private final String offsetLimitTemplate = "\nlimit {0}, {1}";
-    
-//    private String offsetTemplate = "\noffset {0}";
 
     public CUBRIDTemplates() {
         this('\\', false);
@@ -42,10 +40,6 @@ public class CUBRIDTemplates extends SQLTemplates {
         super("\"", escape, quote);
         setParameterMetadataAvailable(false);
         add(Ops.MATCHES, "{0} regexp {1}");
-//        setNativeMerge(true);
-//        add(Ops.MathOps.ROUND, "round({0},0)");
-//        add(Ops.TRIM, "trim(both from {0})");
-//        add(Ops.CONCAT, "concat({0},{1})");
     }
     
     protected void serializeModifiers(QueryMetadata metadata, SerializationContext context) {

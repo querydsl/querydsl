@@ -53,7 +53,11 @@ public enum Target{
     /**
      * Microsoft SQL Server
      */
-    SQLSERVER,
+    SQLSERVER,    
+    /**
+     * SQLite
+     */
+    SQLITE,
     /**
      *
      */
