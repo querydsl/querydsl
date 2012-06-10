@@ -65,7 +65,7 @@ public final class Connections {
 
     private static ThreadLocal<Statement> stmtHolder = new ThreadLocal<Statement>();
 
-    private static boolean derbyInited, sqlServerInited, h2Inited, hsqlInited, mysqlInited, oracleInited, postgresInited;
+    private static boolean derbyInited, sqlServerInited, h2Inited, hsqlInited, mysqlInited, cubridInited, oracleInited, postgresInited;
 
     public static void close() throws SQLException{
         if (stmtHolder.get() != null){
@@ -122,6 +122,12 @@ public final class Connections {
         return DriverManager.getConnection(url, "querydsl","querydsl");
     }
 
+    private static Connection getCubrid() throws ClassNotFoundException, SQLException {
+        Class.forName("cubrid.jdbc.driver.CUBRIDDriver");
+        String url = "jdbc:cubrid:localhost:30000:demodb:public::";
+        return DriverManager.getConnection(url);
+    }
+    
     private static CreateTableClause createTable(SQLTemplates templates, String table){
         return new CreateTableClause(connHolder.get(), templates, table);
     }
@@ -353,6 +359,63 @@ public final class Connections {
         stmt.execute(CREATE_TABLE_TIMETEST);
         stmt.execute(CREATE_TABLE_DATETEST);
         hsqlInited = true;
+    }
+    
+    public static void initCubrid() throws SQLException, ClassNotFoundException{
+        //SQLTemplates templates = new MySQLTemplates();
+        Connection c = getCubrid();
+        connHolder.set(c);
+        Statement stmt = c.createStatement();
+        stmtHolder.set(stmt);
+
+        if (cubridInited){
+            return;
+        }
+
+        // survey
+        stmt.execute("drop table if exists SURVEY");
+        stmt.execute("create table SURVEY(ID int auto_increment(16693,2), " +
+                        "NAME varchar(30)," +
+                        "NAME2 varchar(30)," +
+                        "constraint suryey_pk primary key(ID))");
+        stmt.execute("insert into SURVEY values (1,'Hello World','Hello');");
+
+        // test
+        stmt.execute("drop table if exists \"TEST\"");
+        stmt.execute("create table \"TEST\"(NAME varchar(255))");
+        PreparedStatement pstmt = c.prepareStatement("insert into \"TEST\" values(?)");
+        try{
+            for (int i = 0; i < TEST_ROW_COUNT; i++) {
+                pstmt.setString(1, "name" + i);
+                pstmt.addBatch();
+            }
+            pstmt.executeBatch();
+        }finally{
+            pstmt.close();
+        }
+
+        // employee
+        stmt.execute("drop table if exists EMPLOYEE");
+        //createEmployeeTable(templates);
+        stmt.execute("create table EMPLOYEE ( " +
+          "ID INT PRIMARY KEY AUTO_INCREMENT, " +
+          "FIRSTNAME VARCHAR(50), " +
+          "LASTNAME VARCHAR(50), " +
+          "SALARY DECIMAL, "  +
+          "DATEFIELD DATE, " +
+          "TIMEFIELD TIME, " +
+          "SUPERIOR_ID INT, " +
+          "CONSTRAINT FK_SUPERIOR FOREIGN KEY(SUPERIOR_ID) REFERENCES EMPLOYEE(ID) " +
+        ")"); 
+                        
+        addEmployees(INSERT_INTO_EMPLOYEE);
+
+        // date_test and time_test
+        stmt.execute("drop table if exists TIME_TEST");
+        stmt.execute("drop table if exists DATE_TEST");
+        stmt.execute(CREATE_TABLE_TIMETEST);
+        stmt.execute(CREATE_TABLE_DATETEST);
+        cubridInited = true;
     }
 
     public static void initMySQL() throws SQLException, ClassNotFoundException{

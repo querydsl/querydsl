@@ -26,6 +26,7 @@ import static com.mysema.query.Target.MYSQL;
 import static com.mysema.query.Target.ORACLE;
 import static com.mysema.query.Target.POSTGRES;
 import static com.mysema.query.Target.SQLSERVER;
+import static com.mysema.query.Target.CUBRID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -424,7 +425,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({ORACLE,DERBY,SQLSERVER})
+    @ExcludeIn({ORACLE,DERBY,SQLSERVER,CUBRID})
     @SkipForQuoted
     public void Limit_and_Offset2() throws SQLException {
         // limit
@@ -877,8 +878,9 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         query().union(employee, sq1, sq2).list(employee.id.count());
     }
     
+    // FIXME for CUBRID
     @Test
-    @ExcludeIn({DERBY})
+    @ExcludeIn({DERBY, CUBRID})
     public void Union5() {
         /* (select e.ID, e.FIRSTNAME, superior.ID as sup_id, superior.FIRSTNAME as sup_name 
          * from EMPLOYEE e join EMPLOYEE superior on e.SUPERIOR_ID = superior.ID) 

@@ -32,7 +32,7 @@ public class MySQLTemplates extends SQLTemplates {
     }
 
     public MySQLTemplates(boolean quote) {
-        this('\\',quote);
+        this('\\', quote);
     }
     
     public MySQLTemplates(char escape, boolean quote) {

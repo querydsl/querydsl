@@ -101,6 +101,12 @@
       <version>${h2.version}</version>
       <scope>test</scope>
     </dependency>
+    
+    <dependency>
+      <groupId>cubrid</groupId>
+      <artifactId>cubrid-jdbc</artifactId>
+      <version>${cubrid.version}</version>
+    </dependency>    
 
     <dependency>
       <groupId>com.mysema.querydsl</groupId>
@@ -214,6 +220,12 @@
         <enabled>false</enabled>
       </snapshots>
 	</repository>
+	
+    <repository>
+      <id>CUBRID</id>
+      <name>CUBRID-releases</name>
+      <url> http://maven.cubrid.org </url>
+    </repository>	
   </repositories>
 
 </project>

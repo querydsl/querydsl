@@ -19,6 +19,10 @@ package com.mysema.query;
  */
 public enum Target{
     /**
+     * CUBRID
+     */
+    CUBRID,
+    /**
      * Derby
      */
     DERBY,

@@ -442,10 +442,6 @@ public class SQLTemplates extends Templates {
     
     public void serialize(QueryMetadata metadata, boolean forCountRow, SerializationContext context) {
         context.serialize(metadata, forCountRow);
-//
-//        if (!forCountRow && metadata.getModifiers().isRestricting()) {
-//            serializeModifiers(metadata, context);
-//        }
     }
 
     protected void serializeModifiers(QueryMetadata metadata, SerializationContext context) {

@@ -94,6 +94,7 @@ public class MatchingFiltersFactory {
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
             
             if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL) 
+                    && !target.equals(Target.CUBRID)
                     && !target.equals(Target.POSTGRES) && !target.equals(Target.HSQLDB)){
                 rv.add(expr.week().eq(other.week()));
             }
@@ -129,6 +130,7 @@ public class MatchingFiltersFactory {
             rv.add(expr.dayOfYear().eq(other.dayOfYear()));
             
             if (!target.equals(Target.SQLSERVER) && !target.equals(Target.MYSQL) 
+                    && !target.equals(Target.CUBRID)
                     && !target.equals(Target.POSTGRES) && !target.equals(Target.HSQLDB)){
                 rv.add(expr.week().eq(other.week()));
             }

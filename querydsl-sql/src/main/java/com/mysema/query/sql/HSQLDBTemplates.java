@@ -28,7 +28,7 @@ public class HSQLDBTemplates extends SQLTemplates {
     }
     
     public HSQLDBTemplates(boolean quote) {
-        this('\\',quote);
+        this('\\', quote);
     }
 
     public HSQLDBTemplates(char escape, boolean quote) {

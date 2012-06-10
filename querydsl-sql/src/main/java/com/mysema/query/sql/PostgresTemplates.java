@@ -26,11 +26,11 @@ import com.mysema.query.types.Ops;
 public class PostgresTemplates extends SQLTemplates {
 
     public PostgresTemplates() {
-        this('\\',false);
+        this('\\', false);
     }
     
     public PostgresTemplates(boolean quote) {
-        this('\\',quote);
+        this('\\', quote);
     }
 
     public PostgresTemplates(char escape, boolean quote) {
