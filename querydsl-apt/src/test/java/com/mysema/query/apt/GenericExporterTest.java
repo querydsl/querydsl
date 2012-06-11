@@ -44,6 +44,7 @@ public class GenericExporterTest extends AbstractProcessorTest{
         expected.add("QDelegateTest_SimpleUser2.java");
         expected.add("QDelegateTest_User.java");
         expected.add("QDelegate2Test_Entity.java");
+        expected.add("QExampleEntity.java");
         // projections are not supported
         expected.add("QQueryProjectionTest_EntityWithProjection.java");
         
