@@ -131,11 +131,6 @@
       <url>LICENSE.txt</url>
     </license>
   </licenses>
-
-  <scm>
-    <connection>${svn.path}/${path.suffix}</connection>
-    <developerConnection>${svn.path}/${path.suffix}</developerConnection>
-  </scm>
   
   <build>
     <pluginManagement>
