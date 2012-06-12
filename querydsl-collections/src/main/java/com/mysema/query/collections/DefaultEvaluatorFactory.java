@@ -57,9 +57,8 @@ public class DefaultEvaluatorFactory {
     private final ColQueryTemplates templates;
 
     public DefaultEvaluatorFactory(ColQueryTemplates templates){
-        // TODO : which ClassLoader to pick ?!?
         this(templates,
-        (URLClassLoader)DefaultEvaluatorFactory.class.getClassLoader(),
+        (URLClassLoader)Thread.currentThread().getContextClassLoader(),
         ToolProvider.getSystemJavaCompiler());
     }
 
