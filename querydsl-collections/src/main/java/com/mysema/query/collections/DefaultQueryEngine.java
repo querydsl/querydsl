@@ -43,6 +43,8 @@ import com.mysema.query.types.OrderSpecifier;
 @SuppressWarnings("unchecked")
 public class DefaultQueryEngine implements QueryEngine {
 
+    public static final QueryEngine DEFAULT = new DefaultQueryEngine(new DefaultEvaluatorFactory(ColQueryTemplates.DEFAULT));
+    
     private final DefaultEvaluatorFactory evaluatorFactory;
 
     public DefaultQueryEngine(DefaultEvaluatorFactory evaluatorFactory) {

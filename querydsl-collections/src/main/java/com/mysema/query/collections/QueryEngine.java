@@ -28,11 +28,6 @@ import com.mysema.query.types.Expression;
 public interface QueryEngine {
 
     /**
-     * Default instance
-     */
-    QueryEngine DEFAULT = new DefaultQueryEngine(new DefaultEvaluatorFactory(ColQueryTemplates.DEFAULT));
-
-    /**
      * Evaluate the given query and return the count of matched rows
      *
      * @param metadata

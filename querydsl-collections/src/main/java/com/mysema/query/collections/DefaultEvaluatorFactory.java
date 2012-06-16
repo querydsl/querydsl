@@ -62,7 +62,7 @@ public class DefaultEvaluatorFactory {
         ToolProvider.getSystemJavaCompiler());
     }
 
-    public DefaultEvaluatorFactory(ColQueryTemplates templates,
+    protected DefaultEvaluatorFactory(ColQueryTemplates templates,
             URLClassLoader classLoader, JavaCompiler compiler){
         this.templates = templates;
         this.factory = new EvaluatorFactory(classLoader, compiler);

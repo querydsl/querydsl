@@ -28,7 +28,7 @@ public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQ
      * Create a new ColQueryImpl instance
      */
     public ColQueryImpl() {
-        super(new DefaultQueryMetadata(), QueryEngine.DEFAULT);
+        super(new DefaultQueryMetadata(), DefaultQueryEngine.DEFAULT);
     }
 
     /**
@@ -57,7 +57,7 @@ public class ColQueryImpl extends AbstractColQuery<ColQueryImpl> implements ColQ
      * @param evaluatorFactory
      */
     public ColQueryImpl(QueryMetadata metadata) {
-        super(metadata, QueryEngine.DEFAULT);
+        super(metadata, DefaultQueryEngine.DEFAULT);
     }
 
     /**
