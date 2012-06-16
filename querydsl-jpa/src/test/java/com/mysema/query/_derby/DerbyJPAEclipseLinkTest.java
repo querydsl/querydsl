@@ -31,11 +31,6 @@ import com.mysema.testutil.JPATestRunner;
 public class DerbyJPAEclipseLinkTest extends AbstractJPATest{
 
     @Override
-    protected JPQLTemplates getTemplates(){
-        return EclipseLinkTemplates.DEFAULT;
-    }
-
-    @Override
     protected Target getTarget() {
         return Target.DERBY;
     }

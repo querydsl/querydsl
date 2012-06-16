@@ -18,8 +18,6 @@ import org.junit.runner.RunWith;
 
 import com.mysema.query.AbstractJPATest;
 import com.mysema.query.Target;
-import com.mysema.query.jpa.EclipseLinkTemplates;
-import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.testutil.JPAConfig;
 import com.mysema.testutil.JPATestRunner;
 
@@ -31,11 +29,6 @@ import com.mysema.testutil.JPATestRunner;
 @RunWith(JPATestRunner.class)
 @JPAConfig("hsqldb-eclipselink")
 public class HSQLDBJPAEclipseLinkStandardTest extends AbstractJPATest{
-
-    @Override
-    protected JPQLTemplates getTemplates() {
-        return EclipseLinkTemplates.DEFAULT;
-    }
 
     @Override
     protected Target getTarget() {

@@ -29,8 +29,6 @@ import javax.persistence.LockModeType;
 
 import org.junit.Test;
 
-import com.mysema.query.jpa.HQLTemplates;
-import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.impl.JPAQuery;
@@ -45,13 +43,9 @@ public abstract class AbstractJPATest extends AbstractStandardTest {
 
     @Override
     protected JPAQuery query(){
-        return new JPAQuery(entityManager, getTemplates());
+        return new JPAQuery(entityManager);
     }
     
-    protected JPQLTemplates getTemplates(){
-        return HQLTemplates.DEFAULT;
-    }
-
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }

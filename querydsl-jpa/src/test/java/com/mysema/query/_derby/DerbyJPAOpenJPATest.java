@@ -33,11 +33,6 @@ import com.mysema.testutil.JPATestRunner;
 public class DerbyJPAOpenJPATest extends AbstractJPATest{
 
     @Override
-    protected JPQLTemplates getTemplates(){
-        return OpenJPATemplates.DEFAULT;
-    }
-
-    @Override
     protected Target getTarget() {
         return Target.DERBY;
     }

@@ -17,8 +17,8 @@ import javax.persistence.EntityManager;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.HQLTemplates;
+import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.JPQLTemplates;
 
 /**
@@ -40,29 +40,30 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements JPQLQu
     /**
      * Creates a new EntityManager bound query
      *
-     * @param entityManager
+     * @param em
      */
-    public JPAQuery(EntityManager entityManager) {
-        super(new DefaultSessionHolder(entityManager), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
+    public JPAQuery(EntityManager em) {
+        super(new DefaultSessionHolder(em), JPAProvider.getTemplates(em), 
+              new DefaultQueryMetadata());
     }
     
     /**
      * Creates a new EntityManager bound query
      *
-     * @param entityManager
+     * @param em
      */
-    public JPAQuery(EntityManager entityManager, QueryMetadata metadata) {
-        super(new DefaultSessionHolder(entityManager), HQLTemplates.DEFAULT, metadata);
+    public JPAQuery(EntityManager em, QueryMetadata metadata) {
+        super(new DefaultSessionHolder(em), JPAProvider.getTemplates(em), metadata);
     }
 
     /**
      * Creates a new query
      *
-     * @param entityManager
+     * @param em
      * @param patterns
      */
-    public JPAQuery(EntityManager entityManager, JPQLTemplates patterns) {
-        super(new DefaultSessionHolder(entityManager), patterns, new DefaultQueryMetadata());
+    public JPAQuery(EntityManager em, JPQLTemplates patterns) {
+        super(new DefaultSessionHolder(em), patterns, new DefaultQueryMetadata());
     }
 
     /**
