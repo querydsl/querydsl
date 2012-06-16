@@ -6,6 +6,7 @@
 package com.mysema.codegen;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.jar.Manifest;
 
 import javax.lang.model.SourceVersion;
 import javax.tools.DiagnosticListener;
@@ -26,6 +28,8 @@ import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
+
+import com.google.common.base.Joiner;
 
 /**
  * SimpleCompiler provides a convenience wrapper of the JavaCompiler interface
@@ -36,18 +40,32 @@ import javax.tools.ToolProvider;
  */
 public class SimpleCompiler implements JavaCompiler {
 
-    public static String getClassPath(URLClassLoader classLoader) {
+    private static final Joiner pathJoiner = Joiner.on(File.pathSeparator);
+    
+    public static String getClassPath(URLClassLoader cl) {
         try {
-            StringBuilder path = new StringBuilder();
-            for (URL url : ((URLClassLoader) classLoader).getURLs()) {
-                if (path.length() > 0) {
-                    path.append(File.pathSeparator);
+            List<String> paths = new ArrayList<String>();
+            if (cl.getURLs().length == 1 && cl.getURLs()[0].getPath().contains("surefirebooter")) {
+                // extract MANIFEST.MF Class-Path entry, since the Java Compiler doesn't handle
+                // manifest only jars in the classpath correctly
+                URL url = cl.findResource("META-INF/MANIFEST.MF");
+                Manifest manifest = new Manifest(url.openStream());
+                String classpath = (String) manifest.getMainAttributes().getValue("Class-Path");
+                for (String entry : classpath.split(" ")) {
+                    URL entryUrl = new URL(entry);
+                    String decodedPath = URLDecoder.decode(entryUrl.getPath(), "UTF-8");
+                    paths.add(new File(decodedPath).getAbsolutePath());
                 }
-                String decodedPath = URLDecoder.decode(url.getPath(), "UTF-8");
-                path.append(new File(decodedPath).getAbsolutePath());
-            }
-            return path.toString();
+            } else {
+                for (URL url : cl.getURLs()) {
+                    String decodedPath = URLDecoder.decode(url.getPath(), "UTF-8");
+                    paths.add(new File(decodedPath).getAbsolutePath());
+                }    
+            }            
+            return pathJoiner.join(paths);
         } catch (UnsupportedEncodingException e) {
+            throw new CodegenException(e);
+        } catch (IOException e) {
             throw new CodegenException(e);
         }
     }
@@ -119,6 +137,7 @@ public class SimpleCompiler implements JavaCompiler {
         for (String arg : arguments) {
             args.add(arg);
         }
+        System.err.println(args);
         return compiler.run(in, out, err, args.toArray(new String[args.size()]));
     }
 

@@ -6,6 +6,7 @@
 package com.mysema.codegen;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -24,9 +25,10 @@ public class AnnotationTest {
     @Test
     public void ClassAnnotation() throws IOException {
         writer.annotation(getClass().getAnnotation(Annotation.class));
-        assertEquals(
-                "@com.mysema.codegen.Annotation(clazz=com.mysema.codegen.AnnotationTest.class, prop2=false)",
-                w.toString().trim());
+        String option1 = "@com.mysema.codegen.Annotation(clazz=com.mysema.codegen.AnnotationTest.class, prop2=false)";
+        String option2 = "@com.mysema.codegen.Annotation(prop2=false, clazz=com.mysema.codegen.AnnotationTest.class)";
+        String serialized = w.toString().trim();
+        assertTrue(serialized.equals(option1) || serialized.equals(option2));
     }
 
     @Test
