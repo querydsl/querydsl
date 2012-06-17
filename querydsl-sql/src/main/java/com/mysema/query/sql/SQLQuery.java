@@ -32,7 +32,9 @@ public interface SQLQuery extends SQLCommonQuery<SQLQuery>, Projectable {
 
     /**
      * If you use forUpdate() with a backend that uses page or row locks, rows examined by the 
-     * query are write-locked until the end of the current transaction
+     * query are write-locked until the end of the current transaction.
+     * 
+     * Not supported for SQLite and CUBRID
      * 
      * @return
      */
