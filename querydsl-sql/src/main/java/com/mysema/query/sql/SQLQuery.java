@@ -31,6 +31,9 @@ import com.mysema.query.types.query.ListSubQuery;
 public interface SQLQuery extends SQLCommonQuery<SQLQuery>, Projectable {
 
     /**
+     * If you use forUpdate() with a backend that uses page or row locks, rows examined by the 
+     * query are write-locked until the end of the current transaction
+     * 
      * @return
      */
     SQLQuery forUpdate();
