@@ -63,7 +63,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         ProjectableQuery<Q> {
 
     private static final Logger logger = LoggerFactory.getLogger(AbstractSQLQuery.class);
-
+    
     @Nullable
     private final Connection conn;
 
@@ -184,6 +184,10 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
         return limit(1).uniqueResult(NumberTemplate.ONE) != null;
     }
 
+    public Q forUpdate() {
+        return addFlag(Position.END, configuration.getTemplates().getForUpdate());
+    }
+    
     protected SQLSerializer createSerializer() {
         return new SQLSerializer(configuration.getTemplates());
     }

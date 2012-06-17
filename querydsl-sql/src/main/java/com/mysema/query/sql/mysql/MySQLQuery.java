@@ -49,8 +49,6 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> implements SQLCommo
     
     private static final String HIGH_PRIORITY = "high_priority ";
     
-    private static final String FOR_UPDATE = "\nfor update ";
-    
     private static final String SQL_CALC_FOUND_ROWS = "sql_calc_found_rows ";
     
     private static final String SQL_CACHE = "sql_cache ";
@@ -91,10 +89,6 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> implements SQLCommo
     
     public MySQLQuery calcFoundRows() {
         return addFlag(Position.AFTER_SELECT, SQL_CALC_FOUND_ROWS);
-    }
-    
-    public MySQLQuery forUpdate() {
-        return addFlag(Position.END, FOR_UPDATE);
     }
     
     public MySQLQuery highPriority() {

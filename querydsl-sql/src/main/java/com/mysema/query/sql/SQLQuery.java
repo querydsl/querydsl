@@ -31,6 +31,11 @@ import com.mysema.query.types.query.ListSubQuery;
 public interface SQLQuery extends SQLCommonQuery<SQLQuery>, Projectable {
 
     /**
+     * @return
+     */
+    SQLQuery forUpdate();
+    
+    /**
      * Creates an union expression for the given subqueries
      *
      * @param <RT>
@@ -102,7 +107,7 @@ public interface SQLQuery extends SQLCommonQuery<SQLQuery>, Projectable {
      * @return
      */
     <RT> SQLQuery unionAll(Path<?> alias, SubQueryExpression<RT>... sq);
-    
+        
     /**
      * Clone the state of the Query for the given Connection
      *

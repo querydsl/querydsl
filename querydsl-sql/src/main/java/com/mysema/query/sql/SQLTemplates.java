@@ -79,8 +79,10 @@ public class SQLTemplates extends Templates {
 
     private String dummyTable = "dual";
 
+    private String forUpdate = "\nfor update ";
+    
     private String from = "\nfrom ";
-
+    
     private String fullJoin = "\nfull join ";
 
     private String groupBy = "\ngroup by ";
@@ -633,7 +635,13 @@ public class SQLTemplates extends Templates {
     public void setBigDecimalSupported(boolean bigDecimalSupported) {
         this.bigDecimalSupported = bigDecimalSupported;
     }
-    
-    
+
+    public String getForUpdate() {
+        return forUpdate;
+    }
+
+    public void setForUpdate(String forUpdate) {
+        this.forUpdate = forUpdate;
+    }
     
 }
