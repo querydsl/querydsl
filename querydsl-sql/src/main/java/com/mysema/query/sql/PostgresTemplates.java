@@ -40,7 +40,6 @@ public class PostgresTemplates extends SQLTemplates {
         addClass2TypeMappings("double precision", Double.class);
 
         // String
-        add(Ops.CONCAT, "{0} || {1}");
         add(Ops.MATCHES, "{0} ~ {1}");
         add(Ops.INDEX_OF, "strpos({0},{1})-1");
         add(Ops.INDEX_OF_2ARGS, "strpos({0},{1})-1"); //FIXME

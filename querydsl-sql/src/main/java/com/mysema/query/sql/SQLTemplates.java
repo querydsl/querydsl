@@ -168,6 +168,8 @@ public class SQLTemplates extends Templates {
         add(Ops.DateTimeOps.YEAR_MONTH, "year({0}) * 100 + month({0})");
 
         // string
+        add(Ops.CONCAT, "{0} || {1}", 38);
+        add(Ops.MATCHES, "{0} regexp {1}", 25);
         add(Ops.CHAR_AT, "cast(substr({0},{1s}+1,1) as char)");
         add(Ops.EQ_IGNORE_CASE, "{0l} = {1l}");
         add(Ops.INDEX_OF, "locate({1},{0})-1");

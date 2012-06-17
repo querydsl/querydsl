@@ -95,7 +95,7 @@ public class Templates {
         add(Ops.IS_NULL, "{0} is null", 26);
         add(Ops.IS_NOT_NULL, "{0} is not null", 26);
         add(Ops.ALIAS, "{0} as {1}");
-
+        
         add(Ops.EXISTS, "exists({0})");
 
         add(Ops.NUMCAST, "cast({0},{1})");

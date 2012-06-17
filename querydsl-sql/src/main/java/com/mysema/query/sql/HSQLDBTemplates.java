@@ -37,7 +37,6 @@ public class HSQLDBTemplates extends SQLTemplates {
         add(Ops.MathOps.ROUND, "round({0},0)");
         add(Ops.TRIM, "trim(both from {0})");
         add(Ops.NEGATE, "{0} * -1", 7);        
-        add(Ops.CONCAT, "{0} || {1}");
     }
     
     @Override

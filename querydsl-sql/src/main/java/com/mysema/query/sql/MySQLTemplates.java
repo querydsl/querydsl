@@ -48,7 +48,6 @@ public class MySQLTemplates extends SQLTemplates {
 //        addClass2TypeMappings("text", String.class);
 
         add(Ops.CONCAT, "concat({0}, {1})",0);
-        add(Ops.MATCHES, "{0} regexp {1}");
         add(Ops.DateTimeOps.YEAR_MONTH, "extract(year_month from {0})");
 
         // like without escape

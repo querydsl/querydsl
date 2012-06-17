@@ -39,7 +39,6 @@ public class CUBRIDTemplates extends SQLTemplates {
     public CUBRIDTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
         setParameterMetadataAvailable(false);
-        add(Ops.MATCHES, "{0} regexp {1}");
     }
     
     protected void serializeModifiers(QueryMetadata metadata, SerializationContext context) {

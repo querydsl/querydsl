@@ -36,7 +36,6 @@ public class H2Templates extends SQLTemplates{
         setNativeMerge(true);
         add(Ops.MathOps.ROUND, "round({0},0)");
         add(Ops.TRIM, "trim(both from {0})");
-        add(Ops.CONCAT, "concat({0},{1})");
     }
 
 }
