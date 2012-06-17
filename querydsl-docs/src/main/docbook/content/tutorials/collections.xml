@@ -20,6 +20,9 @@
   </para>
 
     <programlisting language="java"><![CDATA[
+// needed for access of the Querydsl Collections API    
+import static com.mysema.query.collections.MiniApi.*;
+// needed, if you use the $-invocations    
 import static com.mysema.query.alias.Alias.*;
 ]]></programlisting>
     
@@ -115,6 +118,34 @@ for (String name : from(cat,cats)
   <sect2>
   
    <title>Maven integration</title>   
+   
+    <para>
+      Add the following dependencies to your Maven project and make sure that
+      the Maven 2 repo of Mysema Source (http://source.mysema.com/maven2/releases) is accessible 
+      from your POM :
+    </para>
+
+    <programlisting language="xml"><![CDATA[
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-apt</artifactId>
+  <version>${querydsl.version}</version>
+  <scope>provided</scope>
+</dependency>    
+    
+<dependency>
+  <groupId>com.mysema.querydsl</groupId>
+  <artifactId>querydsl-collections</artifactId>
+  <version>${querydsl.version}</version>
+</dependency>
+
+<dependency>
+  <groupId>org.slf4j</groupId>
+  <artifactId>slf4j-log4j12</artifactId>
+  <version>1.6.1</version>
+</dependency>   
+]]></programlisting>
+       
    
    <para>
    If you are not using JPA or JDO you can generate Querydsl query types for your domain types by 
