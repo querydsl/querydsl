@@ -167,48 +167,15 @@ WHERE c.first_name = 'Bob'
     available dialects are :</para>
     
     <itemizedlist>
-      <listitem>
-        <para>DerbyTemplates</para>
-        <itemizedlist>
-          <listitem><para>tested with version 10.5.3</para></listitem>
-        </itemizedlist>        
-      </listitem>
-      <listitem>
-        <para>HSQLDBTemplates</para>
-        <itemizedlist>
-          <listitem><para>tested with version 1.8.0.7</para></listitem>
-        </itemizedlist>        
-      </listitem>
-	<listitem>
-        <para>H2Templates</para>
-        <itemizedlist>
-          <listitem><para>tested with H2 1.2.133</para></listitem>
-        </itemizedlist>
-      </listitem>      
-      <listitem>
-        <para>MySQLTemplates</para>
-        <itemizedlist>
-          <listitem><para>tested with MySQL CE 5.1</para></listitem>
-        </itemizedlist>
-      </listitem>
-      <listitem>
-        <para>OracleTemplates</para>
-        <itemizedlist>
-          <listitem><para>tested with Oracle 10g XE</para></listitem>
-        </itemizedlist>
-      </listitem>
-      <listitem>
-        <para>PostgresTemplates</para>
-        <itemizedlist>
-          <listitem><para>tested with Postgres 8.4</para></listitem>
-        </itemizedlist>
-      </listitem>
-      <listitem>
-        <para>SQLServerTemplates</para>
-        <itemizedlist>
-          <listitem><para>tested with SQL Server 2008</para></listitem>
-        </itemizedlist>
-      </listitem>
+      <listitem><para>CUBRIDTemplates (tested with 8.4)</para></listitem>
+      <listitem><para>DerbyTemplates (tested with 10.8.2.2)</para></listitem>
+      <listitem><para>HSQLDBTemplates (tested with 2.2.4)</para></listitem>
+	  <listitem><para>H2Templates (tested with 1.3.164)</para></listitem>      
+      <listitem><para>MySQLTemplates (tested with MySQL 5.5)</para></listitem>
+      <listitem><para>OracleTemplates (test with Oracle XE 10.2.0.1.0)</para></listitem>
+      <listitem><para>PostgresTemplates (tested with 9.1)</para></listitem>
+      <listitem><para>SQLiteTemplates (tested with xerial JDBC 3.7.2)</para></listitem>
+      <listitem><para>SQLServerTemplates (tested with SQL Server 2008)</para></listitem>      
     </itemizedlist>
     
   </sect2>
