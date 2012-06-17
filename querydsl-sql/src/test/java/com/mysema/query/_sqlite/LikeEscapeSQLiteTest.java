@@ -13,40 +13,31 @@
  */
 package com.mysema.query._sqlite;
 
-import static com.mysema.query.Constants.employee;
+import java.sql.SQLException;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
 
 import com.mysema.query.Connections;
-import com.mysema.query.SelectBaseTest;
+import com.mysema.query.LikeEscapeBaseTest;
 import com.mysema.query.Target;
-import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLiteTemplates;
 import com.mysema.testutil.Label;
 
 @Label(Target.SQLITE)
-public class SelectSQLiteTest extends SelectBaseTest {
+public class LikeEscapeSQLiteTest extends LikeEscapeBaseTest{
 
     @BeforeClass
-    public static void setUp() throws Exception {
+    public static void setUpClass() throws Exception {
         Connections.initSQLite();
     }
 
     @Before
-    public void setUpForTest() {
-        templates = new SQLiteTemplates(){{
+    public void setUp() throws SQLException {
+        templates = new SQLiteTemplates('!', false){{
             newLineToSingleSpace();
         }};
+        super.setUp();
     }
 
-    @Test
-    public void DateTime() {
-        SQLQuery query = query().from(employee); 
-        System.out.println(query.limit(1).list(employee.datefield.dayOfMonth()));
-        System.out.println(query.limit(1).list(employee.datefield.month()));
-        System.out.println(query.limit(1).list(employee.datefield.year()));
-    }
-    
 }

@@ -15,7 +15,6 @@ package com.mysema.query.sql;
 
 import com.mysema.query.types.Ops;
 
-//work in progress
 /**
  * @author tiwe
  *
@@ -38,17 +37,20 @@ public class SQLiteTemplates extends SQLTemplates {
         
         add(Ops.INDEX_OF, "charindex({1},{0},1)-1");
         add(Ops.INDEX_OF_2ARGS, "charindex({1},{0},{2s}+1)-1");
+        
+        add(Ops.CONCAT, "{0} || {1}");
                 
-        add(Ops.DateTimeOps.YEAR, "cast(strftime('%Y',{0},'unixepoch') as integer)");
-        add(Ops.DateTimeOps.YEAR_MONTH, "strftime('%Y',{0}) * 100 + strftime('%m',{0})");
-        add(Ops.DateTimeOps.MONTH, "cast(strftime('%m',{0},'unixepoch') as integer)");
-        add(Ops.DateTimeOps.WEEK, "cast(strftime('%W',{0},'unixepoch') as integer) + 1");
-        add(Ops.DateTimeOps.DAY_OF_MONTH, "cast(strftime('%d',{0}) as integer) + 1");
-        add(Ops.DateTimeOps.DAY_OF_WEEK, "cast(strftime('%w',{0}) as integer) ");
-        add(Ops.DateTimeOps.DAY_OF_YEAR, "cast(strftime('%j',{0}) as integer)");
-        add(Ops.DateTimeOps.HOUR, "cast(strftime('%H',{0}) as integer)");
-        add(Ops.DateTimeOps.MINUTE, "cast(strftime('%M',{0}) as integer)");
-        add(Ops.DateTimeOps.SECOND, "cast(strftime('%S',{0}) as integer)");
+        // TODO : optimize
+        add(Ops.DateTimeOps.YEAR, "cast(strftime('%Y',{0} / 1000, 'unixepoch', 'localtime') as integer)");
+        add(Ops.DateTimeOps.YEAR_MONTH, "strftime('%Y',{0} / 1000, 'unixepoch', 'localtime') * 100 + strftime('%m',{0} / 1000, 'unixepoch', 'localtime')");
+        add(Ops.DateTimeOps.MONTH, "cast(strftime('%m',{0} / 1000, 'unixepoch', 'localtime') as integer)");
+        add(Ops.DateTimeOps.WEEK, "cast(strftime('%W',{0} / 1000, 'unixepoch', 'localtime') as integer) + 1");
+        add(Ops.DateTimeOps.DAY_OF_MONTH, "cast(strftime('%d',{0} / 1000, 'unixepoch', 'localtime') as integer)");
+        add(Ops.DateTimeOps.DAY_OF_WEEK, "cast(strftime('%w',{0} / 1000, 'unixepoch', 'localtime') as integer) + 1");
+        add(Ops.DateTimeOps.DAY_OF_YEAR, "cast(strftime('%j',{0} / 1000, 'unixepoch', 'localtime') as integer)");
+        add(Ops.DateTimeOps.HOUR, "cast(strftime('%H',{0} / 1000, 'unixepoch', 'localtime') as integer)");
+        add(Ops.DateTimeOps.MINUTE, "cast(strftime('%M',{0} / 1000, 'unixepoch', 'localtime') as integer)");
+        add(Ops.DateTimeOps.SECOND, "cast(strftime('%S',{0} / 1000, 'unixepoch', 'localtime') as integer)");
     }
-
+    
 }

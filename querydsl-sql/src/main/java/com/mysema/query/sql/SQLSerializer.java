@@ -43,6 +43,7 @@ import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.SubQueryExpression;
+import com.mysema.query.types.TemplateExpression;
 import com.mysema.query.types.TemplateExpressionImpl;
 
 /**
@@ -96,6 +97,8 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     private RelationalPath<?> entity;
 
     private final SQLTemplates templates;
+    
+    private boolean inUnion = false;
     
     public SQLSerializer(SQLTemplates templates) {
         this(templates, false, false);
@@ -457,7 +460,10 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
     @SuppressWarnings("unchecked")
     public void serializeUnion(SubQueryExpression[] sqs, QueryMetadata metadata, boolean unionAll) {
         // union
+        boolean oldInUnion = inUnion;
+        inUnion = true;
         handle(unionAll ? templates.getUnionAll() : templates.getUnion(), Arrays.asList(sqs));
+        inUnion = oldInUnion;
 
         // order by
         if (!metadata.getOrderBy().isEmpty()) {
@@ -547,9 +553,26 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
 
     @Override
     public Void visit(SubQueryExpression<?> query, Void context) {
-        append("(");
-        serialize(query.getMetadata(), false);
-        append(")");
+        if (inUnion) {
+            serialize(query.getMetadata(), false);    
+        } else {
+            append("(");
+            serialize(query.getMetadata(), false);
+            append(")");            
+        }        
+        return null;
+    }
+    
+    @Override
+    public Void visit(TemplateExpression<?> expr, Void context) {
+        if (expr.getTemplate().toString().toLowerCase().contains("union")) {
+            boolean oldInUnion = inUnion;
+            inUnion = true;
+            super.visit(expr, context);
+            inUnion = oldInUnion;
+        } else {
+            super.visit(expr, context);
+        }
         return null;
     }
 

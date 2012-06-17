@@ -259,6 +259,7 @@ public class MatchingFiltersFactory {
             || (!target.equals(Target.HSQLDB)
             && !target.equals(Target.H2)
             && !target.equals(Target.DERBY)
+            && !target.equals(Target.SQLITE)
             && !target.equals(Target.SQLSERVER))){
                 
                 rv.add(expr.matches(other));

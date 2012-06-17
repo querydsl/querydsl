@@ -129,9 +129,9 @@ public final class Connections {
     }
     
     private static Connection getSQLite() throws SQLException, ClassNotFoundException {
-        System.setProperty("sqlite.purejava", "true");
+        //System.setProperty("sqlite.purejava", "true");
         Class.forName("org.sqlite.JDBC");
-        return DriverManager.getConnection("jdbc:sqlite:");
+        return DriverManager.getConnection("jdbc:sqlite:target/sample.db");
     }
     
     private static CreateTableClause createTable(SQLTemplates templates, String table){
