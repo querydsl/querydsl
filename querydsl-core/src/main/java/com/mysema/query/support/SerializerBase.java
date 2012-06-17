@@ -13,6 +13,7 @@
  */
 package com.mysema.query.support;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +51,13 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     private final StringBuilder builder = new StringBuilder();
         
-    private static final Pattern OPERATION = Pattern.compile("\\d+[\\+\\-]\\d+");
+    private static final String NUMBER = "[\\+\\-]?\\d+\\.?\\d*";
+    
+    private static final String WS = "\\s*";
+    
+    private static final Pattern OPERATOR = Pattern.compile(WS + "[\\+\\-]" + WS);
+    
+    private static final Pattern OPERATION = Pattern.compile(NUMBER + WS + "[\\+\\-]" + WS + NUMBER);
     
     private String constantPrefix = "a";
 
@@ -78,13 +85,15 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 rv.append(queryString.subSequence(end, m.start()));
             }
             String str = queryString.substring(m.start(), m.end());
-            String[] operands = str.split("[\\+\\-]");
+            String[] operands = OPERATOR.split(str);
             char operator = str.charAt(operands[0].length());
+            BigDecimal result = null;
             if (operator == '+') {
-                rv.append(Integer.valueOf(operands[0]) + Integer.valueOf(operands[1]));
+                result = new BigDecimal(operands[0]).add(new BigDecimal(operands[1]));
             } else {
-                rv.append(Integer.valueOf(operands[0]) - Integer.valueOf(operands[1]));
+                result = new BigDecimal(operands[0]).add(new BigDecimal(operands[1]));
             }
+            rv.append(result.toString()); 
             end = m.end();
         }
         if (end < queryString.length()) {
