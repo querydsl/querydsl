@@ -715,6 +715,13 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    public void Substring() {
+        for (String str : query().from(cat).list(cat.name.substring(1,2))) {
+            assertEquals(1, str.length());
+        }
+    }
+    
+    @Test
     public void SubQuery(){
         QShow show = QShow.show;
         QShow show2 = new QShow("show2");

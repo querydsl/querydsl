@@ -23,7 +23,7 @@ import com.mysema.query.types.PredicateOperation;
  * @author tiwe
  *
  */
-public final class JPQLCollectionAnyVisitor extends CollectionAnyVisitor{
+public final class JPQLCollectionAnyVisitor extends CollectionAnyVisitor {
     
     public static final JPQLCollectionAnyVisitor DEFAULT = new JPQLCollectionAnyVisitor();
     

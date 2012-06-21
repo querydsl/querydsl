@@ -14,6 +14,8 @@
 package com.mysema.query.support;
 
 
+import java.util.UUID;
+
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
@@ -118,9 +120,10 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context>{
     @SuppressWarnings("unchecked")
     @Override
     public Expression<?> visit(Path<?> expr, Context context) {
-        if (expr.getMetadata().getPathType() == PathType.COLLECTION_ANY){
+        if (expr.getMetadata().getPathType() == PathType.COLLECTION_ANY){             
             String variable = expr.accept(ToStringVisitor.DEFAULT, TEMPLATE).replace('.', '_');
-            EntityPath<?> replacement = new EntityPathBase(expr.getType(), variable);
+            String suffix = UUID.randomUUID().toString().replace("-", "").substring(0,5);
+            EntityPath<?> replacement = new EntityPathBase(expr.getType(), variable + suffix);
             context.add(expr, replacement);
             return replacement;
             
@@ -134,7 +137,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context>{
         }
         return expr;
     }
-
+    
     @Override
     public Expression<?> visit(SubQueryExpression<?> expr, Context context) {
         return expr;

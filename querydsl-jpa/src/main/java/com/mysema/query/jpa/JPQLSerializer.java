@@ -330,17 +330,6 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         }
         return null;
     }
-        
-    @SuppressWarnings("rawtypes")
-    private SingularAttribute<?,?> getIdProperty(EntityType entity) {        
-        Set<SingularAttribute> singularAttributes = entity.getSingularAttributes();
-        for (SingularAttribute singularAttribute : singularAttributes) {
-            if (singularAttribute.isId()){
-                return singularAttribute;
-            }
-        }
-        return null;
-    }
 
     @Override
     @SuppressWarnings("unchecked")
@@ -348,7 +337,6 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         boolean old = wrapElements;
         wrapElements = templates.wrapElements(operator);
 
-        // TODO : refactor each case into own method
         if (operator.equals(Ops.IN)) {
             if (args.get(1) instanceof Path) {
                 visitAnyInPath(type, args);
@@ -359,24 +347,10 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             }
 
         } else if (operator.equals(Ops.INSTANCE_OF)) {
-            if (templates.isTypeAsString()) {
-                List<Expression<?>> newArgs = new ArrayList<Expression<?>>(args);
-                Class<?> cl = ((Class<?>) ((Constant<?>) newArgs.get(1)).getConstant());
-                // use discriminator value instead of fqnm
-                if (cl.getAnnotation(DiscriminatorValue.class) != null) {
-                    newArgs.set(1, ConstantImpl.create(cl.getAnnotation(DiscriminatorValue.class).value()));
-                } else {
-                    newArgs.set(1, ConstantImpl.create(cl.getName()));
-                }
-                super.visitOperation(type, operator, newArgs);
-            } else {
-                super.visitOperation(type, operator, args);
-            }
+            visitInstanceOf(type, operator, args);
 
         } else if (operator.equals(Ops.NUMCAST)) {
-            Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
-            String typeName = targetType.getSimpleName().toLowerCase(Locale.ENGLISH);
-            visitOperation(targetType, JPQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), ConstantImpl.create(typeName)));
+            visitNumCast(args);
 
         } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQueryExpression) {
             SubQueryExpression subQuery = (SubQueryExpression) args.get(0);
@@ -398,6 +372,29 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         wrapElements = old;
     }
 
+    private void visitNumCast(List<? extends Expression<?>> args) {
+        Class<?> targetType = (Class<?>) ((Constant<?>) args.get(1)).getConstant();
+        String typeName = targetType.getSimpleName().toLowerCase(Locale.ENGLISH);
+        visitOperation(targetType, JPQLTemplates.CAST, Arrays.<Expression<?>>asList(args.get(0), ConstantImpl.create(typeName)));
+    }
+
+    private void visitInstanceOf(Class<?> type, Operator<?> operator,
+            List<? extends Expression<?>> args) {
+        if (templates.isTypeAsString()) {
+            List<Expression<?>> newArgs = new ArrayList<Expression<?>>(args);
+            Class<?> cl = ((Class<?>) ((Constant<?>) newArgs.get(1)).getConstant());
+            // use discriminator value instead of fqnm
+            if (cl.getAnnotation(DiscriminatorValue.class) != null) {
+                newArgs.set(1, ConstantImpl.create(cl.getAnnotation(DiscriminatorValue.class).value()));
+            } else {
+                newArgs.set(1, ConstantImpl.create(cl.getName()));
+            }
+            super.visitOperation(type, operator, newArgs);
+        } else {
+            super.visitOperation(type, operator, args);
+        }
+    }
+
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private void visitPathInCollection(Class<?> type, Operator<?> operator,
             List<? extends Expression<?>> args) {
@@ -410,7 +407,9 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             EntityType<?> entityType = metamodel.entity(args.get(0).getType());
             if (entityType.hasSingleIdAttribute()) {
                 SingularAttribute<?,?> id = getIdProperty(entityType);
+                // turn lhs into id path
                 lhs = new PathImpl(id.getJavaType(), lhs, id.getName());
+                // turn rhs into id collection
                 Set ids = new HashSet();
                 for (Object entity : (Collection<?>)rhs.getConstant()) {
                     ids.add(util.getIdentifier(entity));
@@ -420,6 +419,17 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             }
         }
         super.visitOperation(type, operator, args);
+    }
+
+    @SuppressWarnings("rawtypes")
+    private SingularAttribute<?,?> getIdProperty(EntityType entity) {        
+        Set<SingularAttribute> singularAttributes = entity.getSingularAttributes();
+        for (SingularAttribute singularAttribute : singularAttributes) {
+            if (singularAttribute.isId()){
+                return singularAttribute;
+            }
+        }
+        return null;
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

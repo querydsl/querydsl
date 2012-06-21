@@ -36,7 +36,7 @@ import com.mysema.testutil.JPATestRunner;
 @JPAConfig("hsqldb")
 public class JPAIntegrationTest extends ParsingTest {
 
-    private EntityManager entityManager;
+    private EntityManager em;
 
     @Override
     protected QueryHelper query() {
@@ -47,7 +47,7 @@ public class JPAIntegrationTest extends ParsingTest {
                     System.out.println("query : " + toString().replace('\n', ' '));
 
                     // create Query and execute it
-                    Query query = entityManager.createQuery(toString());
+                    Query query = em.createQuery(toString());
                     JPAUtil.setConstants(query, getConstants(),getMetadata().getParams());
                     try {
                         query.getResultList();
@@ -86,8 +86,8 @@ public class JPAIntegrationTest extends ParsingTest {
         // NOTE : commented out, because HQLSDB doesn't support these queries
     }
 
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    public void setEntityManager(EntityManager em) {
+        this.em = em;
     }
 
 }

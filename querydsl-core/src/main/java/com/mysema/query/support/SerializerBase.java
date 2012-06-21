@@ -59,6 +59,10 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     
     private static final Pattern OPERATION = Pattern.compile(NUMBER + WS + "[\\+\\-]" + WS + NUMBER);
     
+    private static final Pattern ADDITION = Pattern.compile(NUMBER + WS + "\\+" + WS + NUMBER);
+    
+    //private static final Pattern SUBTRACTION = Pattern.compile(NUMBER + WS + "\\-" + WS + NUMBER);
+    
     private String constantPrefix = "a";
 
     private String paramPrefix = "p";
@@ -85,13 +89,13 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 rv.append(queryString.subSequence(end, m.start()));
             }
             String str = queryString.substring(m.start(), m.end());
+            boolean addition = ADDITION.matcher(str).matches();
             String[] operands = OPERATOR.split(str);
-            char operator = str.charAt(operands[0].length());
             BigDecimal result = null;
-            if (operator == '+') {
+            if (addition) {
                 result = new BigDecimal(operands[0]).add(new BigDecimal(operands[1]));
             } else {
-                result = new BigDecimal(operands[0]).add(new BigDecimal(operands[1]));
+                result = new BigDecimal(operands[0]).subtract(new BigDecimal(operands[1]));
             }
             rv.append(result.toString()); 
             end = m.end();
