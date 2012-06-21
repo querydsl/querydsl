@@ -39,7 +39,6 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPQLQueryBase;
 import com.mysema.query.jpa.JPQLTemplates;
-import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.FactoryExpressionUtils;
@@ -78,7 +77,7 @@ public abstract class AbstractHibernateQuery<Q extends AbstractHibernateQuery<Q>
     }
 
     public AbstractHibernateQuery(SessionHolder session, JPQLTemplates patterns, QueryMetadata metadata) {
-        super(metadata, patterns);
+        super(metadata, patterns, null);
         this.session = session;
     }
 

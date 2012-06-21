@@ -54,7 +54,7 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause>{
 
     @Override
     public long execute() {
-        JPQLSerializer serializer = new JPQLSerializer(templates);
+        JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
         serializer.serializeForDelete(metadata);
         Map<Object,String> constants = serializer.getConstantToLabel();
 
@@ -71,7 +71,7 @@ public class JPADeleteClause implements DeleteClause<JPADeleteClause>{
     
     @Override
     public String toString() {
-        JPQLSerializer serializer = new JPQLSerializer(templates);
+        JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
         serializer.serializeForDelete(metadata);
         return serializer.toString();
     }

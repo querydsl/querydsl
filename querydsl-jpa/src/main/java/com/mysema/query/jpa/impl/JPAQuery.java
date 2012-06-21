@@ -34,7 +34,7 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements JPQLQu
      * The query can be attached via the clone method
      */
     public JPAQuery() {
-        super(new NoSessionHolder(), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
+        super(null, HQLTemplates.DEFAULT, new DefaultQueryMetadata());
     }
 
     /**
@@ -43,8 +43,7 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements JPQLQu
      * @param em
      */
     public JPAQuery(EntityManager em) {
-        super(new DefaultSessionHolder(em), JPAProvider.getTemplates(em), 
-              new DefaultQueryMetadata());
+        super(em, JPAProvider.getTemplates(em), new DefaultQueryMetadata());
     }
     
     /**
@@ -53,7 +52,7 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements JPQLQu
      * @param em
      */
     public JPAQuery(EntityManager em, QueryMetadata metadata) {
-        super(new DefaultSessionHolder(em), JPAProvider.getTemplates(em), metadata);
+        super(em, JPAProvider.getTemplates(em), metadata);
     }
 
     /**
@@ -63,18 +62,18 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements JPQLQu
      * @param patterns
      */
     public JPAQuery(EntityManager em, JPQLTemplates patterns) {
-        super(new DefaultSessionHolder(em), patterns, new DefaultQueryMetadata());
+        super(em, patterns, new DefaultQueryMetadata());
     }
 
     /**
      * Creates a new query
      * 
-     * @param session
+     * @param em
      * @param templates
      * @param metadata
      */
-    public JPAQuery(JPASessionHolder session, JPQLTemplates templates, QueryMetadata metadata) {
-        super(session, templates, metadata);
+    public JPAQuery(EntityManager em, JPQLTemplates templates, QueryMetadata metadata) {
+        super(em, templates, metadata);
     }
 
     /**
@@ -84,7 +83,7 @@ public final class JPAQuery extends AbstractJPAQuery<JPAQuery> implements JPQLQu
      * @return
      */
     public JPAQuery clone(EntityManager entityManager) {
-        JPAQuery q = new JPAQuery(new DefaultSessionHolder(entityManager), getTemplates(), getMetadata().clone());
+        JPAQuery q = new JPAQuery(entityManager, getTemplates(), getMetadata().clone());
         q.factoryExpressionUsed = factoryExpressionUsed;
         q.flushMode = flushMode;
         q.hints.putAll(hints);

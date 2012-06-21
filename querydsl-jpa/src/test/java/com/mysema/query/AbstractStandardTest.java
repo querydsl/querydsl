@@ -39,6 +39,7 @@ import org.junit.Test;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
+import com.google.common.collect.Lists;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.group.GroupBy;
 import com.mysema.query.group.QPair;
@@ -298,6 +299,28 @@ public abstract class AbstractStandardTest {
                 cat.kittens.any().bodyWeight.gt(10.0)).count());
     }
 
+    @Test
+    public void Any_In1() {
+        //select cat from Cat cat where exists (
+        //  select cat_kittens from Cat cat_kittens where cat_kittens member of cat.kittens and cat_kittens in ?1)
+        query().from(cat).where(cat.kittens.any().in(savedCats)).list(cat);
+    }
+    
+    @Test
+    public void Any_In11() {
+        List<Integer> ids = Lists.newArrayList();
+        for (Cat cat : savedCats) ids.add(cat.getId());
+        query().from(cat).where(cat.kittens.any().id.in(ids)).list(cat);
+    }
+    
+    @Test
+    public void Any_In2() {
+        query().from(cat).where(
+                cat.kittens.any().in(savedCats),
+                cat.kittens.any().in(savedCats.subList(0, 1)).not())
+            .list(cat);
+    }
+    
     @Test
     public void JoinEmbeddable() {
         QBookVersion bookVersion = QBookVersion.bookVersion;

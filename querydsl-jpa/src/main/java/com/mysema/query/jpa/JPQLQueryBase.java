@@ -15,6 +15,9 @@ package com.mysema.query.jpa;
 
 import java.util.Map;
 
+import javax.annotation.Nullable;
+import javax.persistence.EntityManager;
+
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.CollectionExpression;
@@ -36,6 +39,18 @@ public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends Projecta
     private final JPQLQueryMixin<Q> queryMixin;
 
     private final JPQLTemplates templates;
+    
+    @Nullable
+    protected final EntityManager entityManager;
+
+    @SuppressWarnings("unchecked")
+    public JPQLQueryBase(QueryMetadata md, JPQLTemplates templates, @Nullable EntityManager entityManager) {
+        super(new JPQLQueryMixin<Q>(md));
+        super.queryMixin.setSelf((Q) this);
+        this.queryMixin = (JPQLQueryMixin) super.queryMixin;
+        this.templates = templates;
+        this.entityManager = entityManager;
+    }
 
     protected JPQLTemplates getTemplates() {
         return templates;
@@ -44,20 +59,12 @@ public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends Projecta
     protected JPQLQueryMixin<Q> getQueryMixin() {
         return queryMixin;
     }
-
-    @SuppressWarnings("unchecked")
-    public JPQLQueryBase(QueryMetadata md, JPQLTemplates templates) {
-        super(new JPQLQueryMixin<Q>(md));
-        super.queryMixin.setSelf((Q) this);
-        this.queryMixin = (JPQLQueryMixin) super.queryMixin;
-        this.templates = templates;
-    }
-
+    
     protected String buildQueryString(boolean forCountRow) {
         if (queryMixin.getMetadata().getJoins().isEmpty()) {
             throw new IllegalArgumentException("No joins given");
         }
-        JPQLSerializer serializer = new JPQLSerializer(templates);
+        JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
         serializer.serialize(queryMixin.getMetadata(), forCountRow, null);
         constants = serializer.getConstantToLabel();
         return serializer.toString();

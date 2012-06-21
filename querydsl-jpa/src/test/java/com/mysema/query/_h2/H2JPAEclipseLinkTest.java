@@ -19,14 +19,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
-import org.junit.Ignore;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.mysema.query.AbstractJPATest;
 import com.mysema.query.Target;
-import com.mysema.query.jpa.EclipseLinkTemplates;
-import com.mysema.query.jpa.JPQLTemplates;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.testutil.JPAConfig;
 import com.mysema.testutil.JPATestRunner;

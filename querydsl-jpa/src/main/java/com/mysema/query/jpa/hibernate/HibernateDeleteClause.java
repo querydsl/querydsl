@@ -63,7 +63,7 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
 
     @Override
     public long execute() {
-        JPQLSerializer serializer = new JPQLSerializer(templates);
+        JPQLSerializer serializer = new JPQLSerializer(templates, null);
         serializer.serializeForDelete(md);
         Map<Object,String> constants = serializer.getConstantToLabel();
 
@@ -80,7 +80,7 @@ public class HibernateDeleteClause implements DeleteClause<HibernateDeleteClause
     
     @Override
     public String toString() {
-        JPQLSerializer serializer = new JPQLSerializer(templates);
+        JPQLSerializer serializer = new JPQLSerializer(templates, null);
         serializer.serializeForDelete(md);
         return serializer.toString();
     }

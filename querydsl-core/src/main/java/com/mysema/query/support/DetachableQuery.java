@@ -42,7 +42,7 @@ import com.mysema.query.types.query.TimeSubQuery;
  */
 public class DetachableQuery <Q extends DetachableQuery<Q>> extends QueryBase<Q> implements Detachable {
 
-    private final DetachableMixin detachableMixin;
+    private final Detachable detachableMixin;
 
     public DetachableQuery(QueryMixin<Q> queryMixin) {
         super(queryMixin);

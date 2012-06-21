@@ -34,7 +34,7 @@ import com.mysema.query.types.Expression;
 class QueryHelper extends JPQLQueryBase<QueryHelper> {
 
     public QueryHelper() {
-        super(new DefaultQueryMetadata(), HQLTemplates.DEFAULT);
+        super(new DefaultQueryMetadata(), HQLTemplates.DEFAULT, null);
     }
 
     public long count() {

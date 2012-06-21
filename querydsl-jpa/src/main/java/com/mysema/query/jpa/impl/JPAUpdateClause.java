@@ -59,7 +59,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
 
     @Override
     public long execute() {
-        JPQLSerializer serializer = new JPQLSerializer(templates);
+        JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
         serializer.serializeForUpdate(metadata);
         Map<Object,String> constants = serializer.getConstantToLabel();
 
@@ -112,7 +112,7 @@ public class JPAUpdateClause implements UpdateClause<JPAUpdateClause>{
     
     @Override
     public String toString() {
-        JPQLSerializer serializer = new JPQLSerializer(templates);
+        JPQLSerializer serializer = new JPQLSerializer(templates, entityManager);
         serializer.serializeForUpdate(metadata);
         return serializer.toString();
     }

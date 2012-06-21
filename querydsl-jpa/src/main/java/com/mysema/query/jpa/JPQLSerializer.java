@@ -26,14 +26,33 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.PersistenceUnitUtil;
+import javax.persistence.metamodel.EntityType;
+import javax.persistence.metamodel.Metamodel;
+import javax.persistence.metamodel.SingularAttribute;
 
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.SerializerBase;
-import com.mysema.query.types.*;
+import com.mysema.query.types.Constant;
+import com.mysema.query.types.ConstantImpl;
+import com.mysema.query.types.EntityPath;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
+import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.Operator;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.OrderSpecifier;
+import com.mysema.query.types.ParamExpression;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathImpl;
+import com.mysema.query.types.PathType;
+import com.mysema.query.types.Predicate;
+import com.mysema.query.types.SubQueryExpression;
 import com.mysema.util.MathUtils;
 
 /**
@@ -80,6 +99,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     private final JPQLTemplates templates;
 
+    private final EntityManager entityManager;
+    
     private boolean inProjection = false;
     
     static{
@@ -94,8 +115,13 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     private boolean wrapElements = false;
 
     public JPQLSerializer(JPQLTemplates templates) {
+        this(templates, null);
+    }
+    
+    public JPQLSerializer(JPQLTemplates templates, EntityManager em) {
         super(templates);
         this.templates = templates;
+        this.entityManager = em;
     }
 
     private void handleJoinTarget(JoinExpression je) {
@@ -304,6 +330,17 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         }
         return null;
     }
+        
+    @SuppressWarnings("rawtypes")
+    private SingularAttribute<?,?> getIdProperty(EntityType entity) {        
+        Set<SingularAttribute> singularAttributes = entity.getSingularAttributes();
+        for (SingularAttribute singularAttribute : singularAttributes) {
+            if (singularAttribute.isId()){
+                return singularAttribute;
+            }
+        }
+        return null;
+    }
 
     @Override
     @SuppressWarnings("unchecked")
@@ -311,20 +348,13 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         boolean old = wrapElements;
         wrapElements = templates.wrapElements(operator);
 
+        // TODO : refactor each case into own method
         if (operator.equals(Ops.IN)) {
             if (args.get(1) instanceof Path) {
-                if (!templates.isEnumInPathSupported() && args.get(0) instanceof Constant && Enum.class.isAssignableFrom(args.get(0).getType())) {
-                    Enumerated enumerated = ((Path)args.get(1)).getAnnotatedElement().getAnnotation(Enumerated.class);
-                    Enum constant = (Enum)((Constant)args.get(0)).getConstant();
-                    if (enumerated == null || enumerated.value() == EnumType.ORDINAL) {
-                        args = Arrays.asList(new ConstantImpl<Integer>(constant.ordinal()), args.get(1));
-                    } else {
-                        args = Arrays.asList(new ConstantImpl<String>(constant.name()), args.get(1));
-                    }
-                }                
-                
-                super.visitOperation(type, JPQLTemplates.MEMBER_OF, args);
-            } else {
+                visitAnyInPath(type, args);
+            } else if (args.get(0) instanceof Path && args.get(1) instanceof Constant) {
+                visitPathInCollection(type, operator, args);
+            } else {                
                 super.visitOperation(type, operator, args);
             }
 
@@ -368,7 +398,45 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         wrapElements = old;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private void visitPathInCollection(Class<?> type, Operator<?> operator,
+            List<? extends Expression<?>> args) {
+        // NOTE turns entityPath in collection into entityPath.id in (collection of ids)                
+        if (entityManager != null && args.get(0).getType().isAnnotationPresent(Entity.class)) {
+            Path<?> lhs = (Path<?>) args.get(0);
+            Constant<?> rhs = (Constant<?>) args.get(1);
+            Metamodel metamodel = entityManager.getMetamodel();
+            PersistenceUnitUtil util = entityManager.getEntityManagerFactory().getPersistenceUnitUtil();
+            EntityType<?> entityType = metamodel.entity(args.get(0).getType());
+            if (entityType.hasSingleIdAttribute()) {
+                SingularAttribute<?,?> id = getIdProperty(entityType);
+                lhs = new PathImpl(id.getJavaType(), lhs, id.getName());
+                Set ids = new HashSet();
+                for (Object entity : (Collection<?>)rhs.getConstant()) {
+                    ids.add(util.getIdentifier(entity));
+                }
+                rhs = new ConstantImpl(ids);
+                args = Arrays.asList(lhs, rhs);
+            }
+        }
+        super.visitOperation(type, operator, args);
+    }
+
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    private void visitAnyInPath(Class<?> type, List<? extends Expression<?>> args) {
+        if (!templates.isEnumInPathSupported() && args.get(0) instanceof Constant && Enum.class.isAssignableFrom(args.get(0).getType())) {
+            Enumerated enumerated = ((Path)args.get(1)).getAnnotatedElement().getAnnotation(Enumerated.class);
+            Enum constant = (Enum)((Constant)args.get(0)).getConstant();
+            if (enumerated == null || enumerated.value() == EnumType.ORDINAL) {
+                args = Arrays.asList(new ConstantImpl<Integer>(constant.ordinal()), args.get(1));
+            } else {
+                args = Arrays.asList(new ConstantImpl<String>(constant.name()), args.get(1));
+            }
+        }                
+        super.visitOperation(type, JPQLTemplates.MEMBER_OF, args);
+    }
+
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private List<? extends Expression<?>> normalizeNumericArgs(List<? extends Expression<?>> args) {
         boolean hasConstants = false;
         Class<? extends Number> numType = null;

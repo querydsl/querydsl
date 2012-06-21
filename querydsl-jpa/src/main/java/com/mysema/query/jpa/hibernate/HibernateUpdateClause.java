@@ -70,7 +70,7 @@ public class HibernateUpdateClause implements
 
     @Override
     public long execute() {
-        JPQLSerializer serializer = new JPQLSerializer(templates);
+        JPQLSerializer serializer = new JPQLSerializer(templates, null);
         serializer.serializeForUpdate(metadata);
         Map<Object, String> constants = serializer.getConstantToLabel();
 
@@ -124,7 +124,7 @@ public class HibernateUpdateClause implements
     
     @Override
     public String toString() {
-        JPQLSerializer serializer = new JPQLSerializer(templates);
+        JPQLSerializer serializer = new JPQLSerializer(templates, null);
         serializer.serializeForUpdate(metadata);
         return serializer.toString();
     }

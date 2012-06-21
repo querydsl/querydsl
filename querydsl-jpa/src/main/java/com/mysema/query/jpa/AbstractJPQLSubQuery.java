@@ -191,7 +191,7 @@ public class AbstractJPQLSubQuery<Q extends AbstractJPQLSubQuery<Q>> extends Det
     
     public String toString() {
         if (!queryMixin.getMetadata().getJoins().isEmpty()) {
-            JPQLSerializer serializer = new JPQLSerializer(JPQLTemplates.DEFAULT);
+            JPQLSerializer serializer = new JPQLSerializer(JPQLTemplates.DEFAULT, null);
             serializer.serialize(queryMixin.getMetadata(), false, null);
             return serializer.toString().trim();
         } else {

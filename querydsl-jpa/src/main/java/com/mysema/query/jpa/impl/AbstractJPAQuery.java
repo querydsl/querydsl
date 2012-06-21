@@ -65,8 +65,6 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
         }
     }
     
-    private final JPASessionHolder sessionHolder;
-
     protected final Map<String,Object> hints = new HashMap<String,Object>();
 
     @Nullable
@@ -78,12 +76,11 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     protected boolean factoryExpressionUsed = false;
     
     public AbstractJPAQuery(EntityManager em) {
-        this(new DefaultSessionHolder(em), HQLTemplates.DEFAULT, new DefaultQueryMetadata());
+        this(em, HQLTemplates.DEFAULT, new DefaultQueryMetadata());
     }
 
-    public AbstractJPAQuery(JPASessionHolder sessionHolder, JPQLTemplates patterns, QueryMetadata metadata) {
-        super(metadata, patterns);
-        this.sessionHolder = sessionHolder;        
+    public AbstractJPAQuery(EntityManager em, JPQLTemplates patterns, QueryMetadata metadata) {
+        super(metadata, patterns, em); 
     }
 
     public long count() {
@@ -135,7 +132,7 @@ public abstract class AbstractJPAQuery<Q extends AbstractJPAQuery<Q>> extends JP
     }
 
     private Query createQuery(String queryString, @Nullable QueryModifiers modifiers, boolean forCount) {
-        Query query = sessionHolder.createQuery(queryString);
+        Query query = entityManager.createQuery(queryString);
         JPAUtil.setConstants(query, getConstants(), getMetadata().getParams());
         if (modifiers != null && modifiers.isRestricting()) {
             if (modifiers.getLimit() != null) {

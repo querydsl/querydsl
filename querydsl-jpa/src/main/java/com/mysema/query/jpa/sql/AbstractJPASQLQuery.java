@@ -35,8 +35,6 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.SearchResults;
 import com.mysema.query.jpa.AbstractSQLQuery;
 import com.mysema.query.jpa.NativeSQLSerializer;
-import com.mysema.query.jpa.impl.DefaultSessionHolder;
-import com.mysema.query.jpa.impl.JPASessionHolder;
 import com.mysema.query.jpa.impl.JPAUtil;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.Union;
@@ -61,7 +59,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     @Nullable
     private Map<Object,String> constants;
 
-    private final JPASessionHolder session;
+    private final EntityManager entityManager;
 
     protected final SQLTemplates templates;
     
@@ -79,12 +77,12 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     protected FlushModeType flushMode;
 
     public AbstractJPASQLQuery(EntityManager entityManager, SQLTemplates sqlTemplates) {
-        this(new DefaultSessionHolder(entityManager), sqlTemplates, new DefaultQueryMetadata());
+        this(entityManager, sqlTemplates, new DefaultQueryMetadata());
     }
 
-    public AbstractJPASQLQuery(JPASessionHolder session, SQLTemplates sqlTemplates, QueryMetadata metadata) {
+    public AbstractJPASQLQuery(EntityManager entityManager, SQLTemplates sqlTemplates, QueryMetadata metadata) {
         super(metadata);
-        this.session = session;
+        this.entityManager = entityManager;
         this.templates = sqlTemplates;
     }
 
@@ -114,13 +112,13 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
         Query query;
         if (projection.get(0) instanceof EntityPath) {
             if (projection.size() == 1) {
-                query = session.createSQLQuery(queryString, projection.get(0).getType());
+                query = entityManager.createNativeQuery(queryString, projection.get(0).getType());
             } else {
                 throw new IllegalArgumentException("Only single element entity projections are supported");
             }
 
         } else {
-            query = session.createSQLQuery(queryString);
+            query = entityManager.createNativeQuery(queryString);
         }
         
         if (lockMode != null) {
