@@ -28,12 +28,6 @@ import com.mysema.query.jpa.domain.QInheritedProperties;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.path.NumberPath;
 
-/**
- * FeaturesTest provides.
- *
- * @author tiwe
- * @version $Id$
- */
 public class FeaturesTest extends AbstractQueryTest {
 
     @Test

@@ -26,12 +26,6 @@ import com.mysema.query.jpa.impl.JPAUtil;
 import com.mysema.testutil.JPAConfig;
 import com.mysema.testutil.JPATestRunner;
 
-/**
- * HibernatePersistenceTest provides.
- *
- * @author tiwe
- * @version $Id$
- */
 @RunWith(JPATestRunner.class)
 @JPAConfig("hsqldb")
 public class JPAIntegrationTest extends ParsingTest {

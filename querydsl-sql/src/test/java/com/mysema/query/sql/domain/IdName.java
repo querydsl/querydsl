@@ -15,12 +15,6 @@ package com.mysema.query.sql.domain;
 
 import com.mysema.query.annotations.QueryProjection;
 
-/**
- * IAndName provides
- *
- * @author tiwe
- * @version $Id$
- */
 public class IdName {
 
     private int id;

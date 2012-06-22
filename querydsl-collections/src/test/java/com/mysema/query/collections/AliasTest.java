@@ -31,12 +31,6 @@ import com.mysema.query.alias.Alias;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 
-/**
- * AliasTEst provides
- *
- * @author tiwe
- * @version $Id$
- */
 public class AliasTest extends AbstractQueryTest {
 
     @Before

@@ -37,12 +37,6 @@ import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.TypeExtends;
 import com.mysema.codegen.model.TypeSuper;
 
-/**
- * SerializerTest provides.
- *
- * @author tiwe
- * @version $Id$
- */
 public class SerializerTest {
 
     private EntityType type;

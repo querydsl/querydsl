@@ -22,12 +22,6 @@ import org.junit.Before;
 import com.mysema.query.alias.Alias;
 import com.mysema.query.types.Expression;
 
-/**
- * AbstractQueryTest provides
- *
- * @author tiwe
- * @version $Id$
- */
 public abstract class AbstractQueryTest {
 
     protected Cat c1 = new Cat("Kitty");

@@ -22,12 +22,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-/**
- * OrderTest provides
- *
- * @author tiwe
- * @version $Id$
- */
 public class OrderTest extends AbstractQueryTest {
 
     @Test

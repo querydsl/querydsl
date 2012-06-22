@@ -38,12 +38,6 @@ import com.mysema.query.types.EntityPath;
 import com.mysema.testutil.HibernateConfig;
 import com.mysema.testutil.HibernateTestRunner;
 
-/**
- * IntegrationTest provides.
- *
- * @author tiwe
- * @version $Id$
- */
 @RunWith(HibernateTestRunner.class)
 @HibernateConfig("hsqldb.properties")
 public class IntegrationTest extends ParsingTest {

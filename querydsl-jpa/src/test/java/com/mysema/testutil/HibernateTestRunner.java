@@ -32,12 +32,6 @@ import org.junit.runners.model.Statement;
 
 import com.mysema.query.jpa.domain.Domain;
 
-/**
- * HibernateTestRunner provides.
- *
- * @author tiwe
- * @version $Id$
- */
 public class HibernateTestRunner extends BlockJUnit4ClassRunner {
     
     private SessionFactory sessionFactory;

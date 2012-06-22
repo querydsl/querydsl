@@ -23,12 +23,6 @@ import org.junit.Test;
 
 import com.mysema.query.types.path.StringPath;
 
-/**
- * StringHandlingTest provides
- *
- * @author tiwe
- * @version $Id$
- */
 public class StringHandlingTest extends AbstractQueryTest {
 
     private List<String> data1 = Arrays.asList("petER", "THomas", "joHAN");

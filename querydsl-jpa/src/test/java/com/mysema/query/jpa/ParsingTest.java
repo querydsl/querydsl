@@ -31,12 +31,6 @@ import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.NumberExpression;
 
-/**
- * ParsingTest provides.
- *
- * @author tiwe
- * @version $Id$
- */
 public class ParsingTest extends AbstractQueryTest{
 
     @Test

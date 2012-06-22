@@ -22,12 +22,6 @@ import org.junit.Test;
 
 import com.mysema.query.types.path.NumberPath;
 
-/**
- * DistinctTest provides
- *
- * @author tiwe
- * @version $Id$
- */
 public class DistinctTest extends AbstractQueryTest {
 
     private NumberPath<Integer> intVar1 = new NumberPath<Integer>(Integer.class, "var1");

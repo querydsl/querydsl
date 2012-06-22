@@ -25,12 +25,6 @@ import org.junit.Test;
 
 import com.mysema.util.MultiIterator;
 
-/**
- * MultiIteratorTest provides
- *
- * @author tiwe
- * @version $Id$
- */
 @SuppressWarnings("unchecked")
 public class MultiIteratorTest extends AbstractIteratorTest {
 
