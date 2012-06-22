@@ -22,17 +22,8 @@ import java.util.Map;
 
 import org.junit.Test;
 
-/**
- * OpsTest provides.
- *
- * @author tiwe
- * @version $Id$
- */
 public class OpsTest {
 
-    /**
-     * Test.
-     */
     @Test
     public void test(){
         Map<String,Field> fields = new HashMap<String,Field>();

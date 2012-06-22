@@ -57,7 +57,6 @@ public class CollectionAnyVisitorTest {
     
     @Test
     public void And_Operation(){
-        // TODO : the subqueries should be merged
         Predicate predicate = cat.kittens.any().name.eq("Ruth123").and(cat.kittens.any().bodyWeight.gt(10.0));
         assertMatches("cat_kittens.*\\.name = Ruth123 && cat_kittens.*\\.bodyWeight > 10.0", serialize(predicate));
     }

@@ -65,7 +65,8 @@ public class EntitySerializerTest {
         
         serializer.serialize(entityType, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));        
 //        System.err.println(writer.toString());
-        assertTrue(writer.toString().contains("public class QEntitySerializerTest_Entity extends EntityPathBase<com.mysema.query.codegen.EntitySerializerTest.Entity>"));
+        assertTrue(writer.toString().contains("public class QEntitySerializerTest_Entity " +
+        		"extends EntityPathBase<com.mysema.query.codegen.EntitySerializerTest.Entity>"));
     }
     
 

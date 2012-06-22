@@ -56,7 +56,8 @@ public class GroovyBeanSerializerTest {
         type.addProperty(new Property(type, "arrayField", new ClassType(TypeCategory.ARRAY, String[].class)));
         type.addProperty(new Property(type, "mapField", new SimpleType(Types.MAP, typeModel, typeModel)));
 
-        for (Class<?> cl : Arrays.<Class<?>>asList(Boolean.class, Comparable.class, Integer.class, Date.class, java.sql.Date.class, java.sql.Time.class)){
+        for (Class<?> cl : Arrays.<Class<?>>asList(Boolean.class, Comparable.class, Integer.class, 
+                Date.class, java.sql.Date.class, java.sql.Time.class)){
             Type classType = new ClassType(TypeCategory.get(cl.getName()), cl);
             type.addProperty(new Property(type, StringUtils.uncapitalize(cl.getSimpleName()), classType));
         }

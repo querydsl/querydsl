@@ -21,7 +21,8 @@ import com.mysema.query.types.ConstantImpl;
 
 public class MapPathTest {
 
-    private MapPath<String,String,StringPath> mapPath = new MapPath<String,String,StringPath>(String.class, String.class, StringPath.class, "p");
+    private MapPath<String,String,StringPath> mapPath = new MapPath<String,String,StringPath>(
+            String.class, String.class, StringPath.class, "p");
     
     @Test
     public void Get() {

@@ -30,18 +30,21 @@ public class ToStringVisitorTest {
     
     @Test
     public void Operation(){
-        assertEquals("cat_name is not null", QCat.cat.name.isNotNull().accept(ToStringVisitor.DEFAULT, templates));
+        assertEquals("cat_name is not null", 
+                QCat.cat.name.isNotNull().accept(ToStringVisitor.DEFAULT, templates));
     }
         
     @Test
     public void Template(){
         Expression<Boolean> template = TemplateExpressionImpl.create(Boolean.class, "{0} is not null", QCat.cat.name);
-        assertEquals("cat_name is not null", template.accept(ToStringVisitor.DEFAULT, templates));
+        assertEquals("cat_name is not null", 
+                template.accept(ToStringVisitor.DEFAULT, templates));
     }
     
     @Test
     public void Path(){
-        assertEquals("cat_kittens_kittens_name", QCat.cat.kittens.any().kittens.any().name.accept(ToStringVisitor.DEFAULT, templates));
+        assertEquals("cat_kittens_kittens_name", 
+                QCat.cat.kittens.any().kittens.any().name.accept(ToStringVisitor.DEFAULT, templates));
     }
 
 }

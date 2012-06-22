@@ -69,14 +69,16 @@ public class BeanPathTest {
     
     @Test
     public void As_Class_with_Inits(){       
-        beanPath = new BeanPath<BeanPathTest>(BeanPathTest.class, PathMetadataFactory.forVariable("p"), PathInits.DEFAULT);
+        beanPath = new BeanPath<BeanPathTest>(BeanPathTest.class, 
+                PathMetadataFactory.forVariable("p"), PathInits.DEFAULT);
         MyBeanPath otherPath = beanPath.as(MyBeanPath.class);
         assertEquals(beanPath, otherPath);
     }
     
     @Test
     public void As_Class_with_Inits_Cached(){       
-        beanPath = new BeanPath<BeanPathTest>(BeanPathTest.class, PathMetadataFactory.forVariable("p"), PathInits.DEFAULT);
+        beanPath = new BeanPath<BeanPathTest>(BeanPathTest.class, 
+                PathMetadataFactory.forVariable("p"), PathInits.DEFAULT);
         MyBeanPath otherPath = beanPath.as(MyBeanPath.class);
         assertEquals(beanPath, otherPath);
         assertTrue(otherPath == beanPath.as(MyBeanPath.class));

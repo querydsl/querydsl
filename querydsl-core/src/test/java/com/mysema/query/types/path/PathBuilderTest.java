@@ -84,7 +84,8 @@ public class PathBuilderTest {
         User user = new User();
         user.setFirstName("firstName");
         user.setLastName("lastName");
-        assertEquals("entity.lastName = lastName && entity.firstName = firstName", getByExample(user).toString());
+        assertEquals("entity.lastName = lastName && entity.firstName = firstName", 
+                getByExample(user).toString());
     }
 
     @Test

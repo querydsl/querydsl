@@ -57,7 +57,6 @@ public class ListAccessVisitorTest {
     
     @Test
     public void And_Operation(){
-        // TODO : the subqueries should be merged
         Predicate predicate = cat.kittens.get(0).name.eq("Ruth123").and(cat.kittens.get(1).bodyWeight.gt(10.0));
         assertEquals("cat_kittens_0.name = Ruth123 && cat_kittens_1.bodyWeight > 10.0", serialize(predicate));
     }

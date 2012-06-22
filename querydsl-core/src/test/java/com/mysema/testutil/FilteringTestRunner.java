@@ -17,12 +17,6 @@ import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
 
-/**
- * FilteringTestRunner provides
- *
- * @author tiwe
- * @version $Id$
- */
 public class FilteringTestRunner extends BlockJUnit4ClassRunner {
 
     private boolean run = true;

@@ -79,7 +79,8 @@ public class ExpressionsTest {
 
     @Test
     public void ComparableTemplate() {
-        assertEquals("a && b", Expressions.comparableTemplate(Boolean.class, "{0} && {1}", a, b).toString());
+        assertEquals("a && b", 
+                Expressions.comparableTemplate(Boolean.class, "{0} && {1}", a, b).toString());
     }
 
     @Test
@@ -119,7 +120,8 @@ public class ExpressionsTest {
 
     @Test
     public void PathClassOfTPathOfQString() {
-        assertEquals("variable.property", Expressions.path(String.class, Expressions.path(Object.class, "variable"), "property").toString());
+        assertEquals("variable.property", Expressions.path(String.class, 
+                Expressions.path(Object.class, "variable"), "property").toString());
     }
 
     @Test
@@ -129,7 +131,8 @@ public class ExpressionsTest {
 
     @Test
     public void ComparablePathClassOfTPathOfQString() {
-        assertEquals("variable.property", Expressions.comparablePath(String.class, Expressions.path(Object.class, "variable"), "property").toString());
+        assertEquals("variable.property", Expressions.comparablePath(String.class, 
+                Expressions.path(Object.class, "variable"), "property").toString());
     }
 
     @Test
@@ -139,7 +142,8 @@ public class ExpressionsTest {
 
     @Test
     public void DatePathClassOfTPathOfQString() {
-        assertEquals("variable.property", Expressions.datePath(Date.class, Expressions.path(Object.class, "variable"), "property").toString());
+        assertEquals("variable.property", Expressions.datePath(Date.class, 
+                Expressions.path(Object.class, "variable"), "property").toString());
     }
 
     @Test
@@ -149,7 +153,8 @@ public class ExpressionsTest {
 
     @Test
     public void DateTimePathClassOfTPathOfQString() {
-        assertEquals("variable.property", Expressions.dateTimePath(Date.class, Expressions.path(Object.class, "variable"), "property").toString());
+        assertEquals("variable.property", Expressions.dateTimePath(Date.class,
+                Expressions.path(Object.class, "variable"), "property").toString());
     }
 
     @Test
@@ -159,7 +164,8 @@ public class ExpressionsTest {
 
     @Test
     public void TimePathClassOfTPathOfQString() {
-        assertEquals("variable.property", Expressions.timePath(Date.class, Expressions.path(Object.class, "variable"), "property").toString());
+        assertEquals("variable.property", Expressions.timePath(Date.class, 
+                Expressions.path(Object.class, "variable"), "property").toString());
     }
 
     @Test
@@ -169,7 +175,8 @@ public class ExpressionsTest {
 
     @Test
     public void NumberPathClassOfTPathOfQString() {
-        assertEquals("variable.property", Expressions.numberPath(Integer.class, Expressions.path(Object.class, "variable"), "property").toString());
+        assertEquals("variable.property", Expressions.numberPath(Integer.class, 
+                Expressions.path(Object.class, "variable"), "property").toString());
     }
 
     @Test
@@ -179,12 +186,14 @@ public class ExpressionsTest {
 
     @Test
     public void StringPathPathOfQString() {
-        assertEquals("variable.property", Expressions.stringPath(Expressions.path(Object.class, "variable"), "property").toString());
+        assertEquals("variable.property", 
+                Expressions.stringPath(Expressions.path(Object.class, "variable"), "property").toString());
     }
 
     @Test
     public void StringOperation() {
-        assertEquals("substring(str,2)", Expressions.stringOperation(Ops.SUBSTR_1ARG, str, ConstantImpl.create(2)).toString());
+        assertEquals("substring(str,2)", 
+                Expressions.stringOperation(Ops.SUBSTR_1ARG, str, ConstantImpl.create(2)).toString());
     }
     
     @Test
@@ -194,7 +203,8 @@ public class ExpressionsTest {
 
     @Test
     public void BooleanPathPathOfQString() {
-        assertEquals("variable.property", Expressions.booleanPath(Expressions.path(Object.class, "variable"), "property").toString());
+        assertEquals("variable.property", 
+                Expressions.booleanPath(Expressions.path(Object.class, "variable"), "property").toString());
     }
     
     @Test
@@ -209,17 +219,20 @@ public class ExpressionsTest {
     
     @Test
     public void DateOperation() {
-        assertEquals("current_date()", Expressions.dateOperation(Date.class, Ops.DateTimeOps.CURRENT_DATE).toString());
+        assertEquals("current_date()", 
+                Expressions.dateOperation(Date.class, Ops.DateTimeOps.CURRENT_DATE).toString());
     }
     
     @Test
     public void DateTimeOperation() {
-        assertEquals("current_timestamp()", Expressions.dateTimeOperation(Date.class, Ops.DateTimeOps.CURRENT_TIMESTAMP).toString());
+        assertEquals("current_timestamp()", 
+                Expressions.dateTimeOperation(Date.class, Ops.DateTimeOps.CURRENT_TIMESTAMP).toString());
     }
     
     @Test
     public void TimeOperation() {
-        assertEquals("current_time()", Expressions.timeOperation(Time.class, Ops.DateTimeOps.CURRENT_TIME).toString());
+        assertEquals("current_time()", 
+                Expressions.timeOperation(Time.class, Ops.DateTimeOps.CURRENT_TIME).toString());
     }
     
     @Test

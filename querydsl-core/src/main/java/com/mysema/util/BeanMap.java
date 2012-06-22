@@ -298,13 +298,9 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
                 try {
                     return method.invoke(bean, NULL_ARGUMENTS);
                 } catch (IllegalAccessException e) {
-                    logWarn(e);
                 } catch (IllegalArgumentException e) {
-                    logWarn(e);
                 } catch (InvocationTargetException e) {
-                    logWarn(e);
                 } catch (NullPointerException e) {
-                    logWarn(e);
                 }
             }
         }
@@ -336,10 +332,8 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
                 Object newValue = get(name);
                 firePropertyChange(name, oldValue, newValue);
             } catch (InvocationTargetException e) {
-                logInfo(e);
                 throw new IllegalArgumentException(e.getMessage());
             } catch (IllegalAccessException e) {
-                logInfo(e);
                 throw new IllegalArgumentException(e.getMessage());
             }
             return oldValue;
@@ -565,7 +559,7 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
                 }
             }
         } catch (IntrospectionException e) {
-            logWarn(e);
+            
         }
     }
 
@@ -662,10 +656,8 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
             Object[] answer = {value};
             return answer;
         } catch (InvocationTargetException e) {
-            logInfo(e);
             throw new IllegalArgumentException(e.getMessage());
         } catch (InstantiationException e) {
-            logInfo(e);
             throw new IllegalArgumentException(e.getMessage());
         }
     }
@@ -731,26 +723,4 @@ public class BeanMap extends AbstractMap<String, Object> implements Cloneable {
         return (Function<?,?>) defaultFunctions.get(aType);
     }
 
-    /**
-     * Logs the given exception to <code>System.out</code>.  Used to display
-     * warnings while accessing/mutating the bean.
-     *
-     * @param ex the exception to log
-     */
-    protected void logInfo(Exception ex) {
-        // Deliberately do not use LOG4J or Commons Logging to avoid dependencies
-        System.out.println("INFO: Exception: " + ex);
-    }
-
-    /**
-     * Logs the given exception to <code>System.err</code>.  Used to display
-     * errors while accessing/mutating the bean.
-     *
-     * @param ex the exception to log
-     */
-    protected void logWarn(Exception ex) {
-        // Deliberately do not use LOG4J or Commons Logging to avoid dependencies
-        System.out.println("WARN: Exception: " + ex);
-        ex.printStackTrace();
-    }
 }
