@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -75,6 +76,7 @@ import com.mysema.query.types.QTuple;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.Coalesce;
+import com.mysema.query.types.expr.MathExpressions;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.expr.Wildcard;
@@ -657,6 +659,56 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
 
         standardTest.report();
     }
+    
+    @Test
+    public void Math() {
+        Expression<Integer> expr = NumberTemplate.create(Integer.class, "0.5");
+        
+        assertEquals(Math.acos(0.5), unique(MathExpressions.acos(expr)), 0.001);
+        assertEquals(Math.asin(0.5), unique(MathExpressions.asin(expr)), 0.001);
+        assertEquals(Math.atan(0.5), unique(MathExpressions.atan(expr)), 0.001);
+        assertEquals(Math.cos(0.5),  unique(MathExpressions.cos(expr)), 0.001);
+        assertEquals(Math.cosh(0.5), unique(MathExpressions.cosh(expr)), 0.001);
+        assertEquals(cot(0.5),       unique(MathExpressions.cot(expr)), 0.001);
+        assertEquals(coth(0.5),      unique(MathExpressions.coth(expr)), 0.001);
+        assertEquals(degrees(0.5),   unique(MathExpressions.degrees(expr)), 0.001);
+        assertEquals(Math.exp(0.5),  unique(MathExpressions.exp(expr)), 0.001);
+        assertEquals(Math.log(0.5),  unique(MathExpressions.ln(expr)), 0.001);
+        assertEquals(log(0.5, 10),   unique(MathExpressions.log(expr, 10)), 0.001);
+        assertEquals(0.25,           unique(MathExpressions.power(expr, 2)), 0.001);
+        assertEquals(radians(0.5),   unique(MathExpressions.radians(expr)), 0.001);
+        assertEquals(Integer.valueOf(1),              
+                                     unique(MathExpressions.sign(expr)));
+        assertEquals(Math.sin(0.5),  unique(MathExpressions.sin(expr)), 0.001);
+        assertEquals(Math.sinh(0.5), unique(MathExpressions.sinh(expr)), 0.001);
+        assertEquals(Math.tan(0.5),  unique(MathExpressions.tan(expr)), 0.001);
+        assertEquals(Math.tanh(0.5), unique(MathExpressions.tanh(expr)), 0.001);
+        
+    }
+    
+    private double cot(double x) {
+        return Math.cos(x) / Math.sin(x);
+    }
+    
+    private double coth(double x) {
+        return Math.cosh(x) / Math.sinh(x);
+    }
+    
+    private double degrees(double x) {
+        return x * 180.0 / Math.PI;
+    }
+    
+    private double radians(double x) {
+        return x * Math.PI / 180.0;
+    }
+    
+    private double log(double x, int y) {
+        return Math.log(x) / Math.log(y);
+    }
+        
+    private <T> T unique(Expression<T> expr) {
+        return query().uniqueResult(expr);
+    }
 
     @Test
     public void StringFunctions2() throws SQLException {
@@ -669,6 +721,20 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         }
     }
 
+    @Test
+    @ExcludeIn(SQLITE)
+    public void SubQuery_Any() {
+        query().from(employee).where(employee.id.gtAny(
+                sq().from(employee2).list(employee2.id))).count();
+    }
+    
+    @Test
+    @ExcludeIn(SQLITE)
+    public void SubQuery_All() {
+        query().from(employee).where(employee.id.gtAll(
+                sq().from(employee2).list(employee2.id))).count();
+    }
+    
     @Test
     public void SubQuery_Alias() {
         query().from(sq().from(employee).list(employee.all()).as(employee2)).list(employee2.all());

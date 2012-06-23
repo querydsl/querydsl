@@ -31,6 +31,7 @@ public class SQLiteTemplates extends SQLTemplates {
 
     public SQLiteTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
+        setDummyTable(null);
         setBigDecimalSupported(false);
         add(Ops.MOD, "{0} % {1}");
         
@@ -48,6 +49,9 @@ public class SQLiteTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.HOUR, "cast(strftime('%H',{0} / 1000, 'unixepoch', 'localtime') as integer)");
         add(Ops.DateTimeOps.MINUTE, "cast(strftime('%M',{0} / 1000, 'unixepoch', 'localtime') as integer)");
         add(Ops.DateTimeOps.SECOND, "cast(strftime('%S',{0} / 1000, 'unixepoch', 'localtime') as integer)");
+        
+        add(Ops.MathOps.LN, "log({0})");
+        add(Ops.MathOps.LOG, "(log({0}) / log({1}))");
     }
     
 }

@@ -73,8 +73,12 @@ public class OracleTemplates extends SQLTemplates {
         // Number
         add(Ops.MathOps.CEIL, "ceil({0})");
         add(Ops.MathOps.RANDOM, "dbms_random.value");
-        add(Ops.MathOps.LOG, "ln({0})");
-        add(Ops.MathOps.LOG10, "log(10,{0})");
+        add(Ops.MathOps.LN, "ln({0})");
+        add(Ops.MathOps.LOG, "log({1},{0})");        
+        add(Ops.MathOps.COT, "(cos({0}) / sin({0}))");
+        add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
+        add(Ops.MathOps.DEG, "({0} * 180 / "+Math.PI+")");
+        add(Ops.MathOps.RAD, "({0} * "+Math.PI+" / 180)");
 
         // Date / time
         add(Ops.DateTimeOps.YEAR, "extract(year from {0})");
@@ -92,7 +96,7 @@ public class OracleTemplates extends SQLTemplates {
 
     @Override
     public void serialize(QueryMetadata metadata, boolean forCountRow, SerializationContext context) {
-        if (!forCountRow && metadata.getModifiers().isRestricting()) {
+        if (!forCountRow && metadata.getModifiers().isRestricting() && !metadata.getJoins().isEmpty()) {
             QueryModifiers mod = metadata.getModifiers();
 
             if (mod.getOffset() == null) {

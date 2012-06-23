@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
@@ -153,6 +154,22 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
             return BooleanOperation.create(Ops.EQ_OBJECT, this, right);
         }
     }
+    
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression eqAll(CollectionExpression<?, ? super T> right) {
+        return eq(ExpressionUtils.all(right));
+    }
+
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression eqAny(CollectionExpression<?, ? super T> right) {
+        return eq(ExpressionUtils.any(right));
+    }
 
     /**
      * Get a <code>this in right</code> expression
@@ -215,6 +232,22 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
         } else {
             return BooleanOperation.create(Ops.NE_OBJECT, this, right);
         }
+    }
+    
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression neAll(CollectionExpression<?, ? super T> right) {
+        return ne(ExpressionUtils.all(right));
+    }
+
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression neAny(CollectionExpression<?, ? super T> right) {
+        return ne(ExpressionUtils.any(right));
     }
 
     /**

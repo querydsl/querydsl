@@ -20,8 +20,10 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Ops.MathOps;
@@ -281,6 +283,22 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression goeAll(CollectionExpression<?, ? super T> right) {
+        return goe(ExpressionUtils.<T>all(right));
+    }
+    
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression goeAny(CollectionExpression<?, ? super T> right) {
+        return goe(ExpressionUtils.<T>any(right));
+    }
+    
+    /**
      * Create a <code>this &gt; right</code> expression
      *
      * @param <A>
@@ -290,6 +308,34 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      */
     public final <A extends Number & Comparable<?>> BooleanExpression gt(A right) {
         return gt(new ConstantImpl<T>(cast(right)));
+    }
+    
+    /**
+     * Create a <code>this &gt; right</code> expression
+     *
+     * @param <A>
+     * @param right rhs of the comparison
+     * @return this > right
+     * @see java.lang.Comparable#compareTo(Object)
+     */
+    public final <A extends Number & Comparable<?>> BooleanExpression gt(Expression<A> right) {
+        return BooleanOperation.create(Ops.GT, this, right);
+    }
+    
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression gtAll(CollectionExpression<?, ? super T> right) {
+        return gt(ExpressionUtils.<T>all(right));
+    }
+    
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression gtAny(CollectionExpression<?, ? super T> right) {
+        return gt(ExpressionUtils.<T>any(right));
     }
 
     /**
@@ -355,18 +401,6 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     }
 
     /**
-     * Create a <code>this &gt; right</code> expression
-     *
-     * @param <A>
-     * @param right rhs of the comparison
-     * @return this > right
-     * @see java.lang.Comparable#compareTo(Object)
-     */
-    public final <A extends Number & Comparable<?>> BooleanExpression gt(Expression<A> right) {
-        return BooleanOperation.create(Ops.GT, this, right);
-    }
-
-    /**
      * Get the int expression of this numeric expression
      *
      * @return this.intValue()
@@ -398,6 +432,22 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      */
     public final <A extends Number & Comparable<?>> BooleanExpression loe(Expression<A> right) {
         return BooleanOperation.create(Ops.LOE, this, right);
+    }
+    
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression loeAll(CollectionExpression<?, ? super T> right) {
+        return loe(ExpressionUtils.<T>all(right));
+    }
+    
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression loeAny(CollectionExpression<?, ? super T> right) {
+        return loe(ExpressionUtils.<T>any(right));
     }
 
     /**
@@ -433,6 +483,22 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
     public final <A extends Number & Comparable<?>> BooleanExpression lt(Expression<A> right) {
         return BooleanOperation.create(Ops.LT, this, right);
     }
+    
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression ltAll(CollectionExpression<?, ? super T> right) {
+        return lt(ExpressionUtils.<T>all(right));
+    }
+    
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression ltAny(CollectionExpression<?, ? super T> right) {
+        return lt(ExpressionUtils.<T>any(right));
+    }
 
     /**
      * Get the maximum value of this expression (aggregation)
@@ -464,7 +530,7 @@ public abstract class NumberExpression<T extends Number & Comparable<?>> extends
      * @param num
      * @return
      */
-    public NumberExpression<T> mod(NumberExpression<T> num){
+    public NumberExpression<T> mod(Expression<T> num){
         return NumberOperation.create(getType(), Ops.MOD, this, num);
     }
 

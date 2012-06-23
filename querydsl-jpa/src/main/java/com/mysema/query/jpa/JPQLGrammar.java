@@ -21,7 +21,6 @@ import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.ComparableOperation;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.NumberOperation;
-import com.mysema.query.types.expr.SimpleOperation;
 import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.expr.StringOperation;
 
@@ -36,13 +35,13 @@ public final class JPQLGrammar {
 
     private JPQLGrammar() {}
     
-    public static <D> Expression<D> all(CollectionExpression<?,D> col) {
-        return SimpleOperation.create((Class)col.getParameter(0), Ops.QuantOps.ALL, (Expression<?>)col);
-    }
-
-    public static <D> Expression<D> any(CollectionExpression<?,D> col) {
-        return SimpleOperation.create((Class)col.getParameter(0), Ops.QuantOps.ANY, (Expression<?>)col);
-    }
+//    public static <D> Expression<D> all(CollectionExpression<?,D> col) {
+//        return SimpleOperation.create((Class)col.getParameter(0), Ops.QuantOps.ALL, (Expression<?>)col);
+//    }
+//
+//    public static <D> Expression<D> any(CollectionExpression<?,D> col) {
+//        return SimpleOperation.create((Class)col.getParameter(0), Ops.QuantOps.ANY, (Expression<?>)col);
+//    }
 
     public static <A extends Comparable<? super A>> ComparableExpression<A> avg(CollectionExpression<?,A> col) {
         return ComparableOperation.create((Class)col.getParameter(0), Ops.QuantOps.AVG_IN_COL, (Expression<?>)col);
@@ -56,9 +55,9 @@ public final class JPQLGrammar {
         return ComparableOperation.create((Class)left.getParameter(0), Ops.QuantOps.MIN_IN_COL, (Expression<?>)left);
     }
 
-    public static <D> Expression<D> some(CollectionExpression<?,D> col) {
-        return any(col);
-    }
+//    public static <D> Expression<D> some(CollectionExpression<?,D> col) {
+//        return any(col);
+//    }
 
     /**
      * SUM returns Long when applied to state-fields of integral types (other

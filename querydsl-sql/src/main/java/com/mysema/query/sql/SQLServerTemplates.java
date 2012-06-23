@@ -83,7 +83,7 @@ public class SQLServerTemplates extends SQLTemplates{
 
     @Override
     public void serialize(QueryMetadata metadata, boolean forCountRow, SerializationContext context) {
-        if (!forCountRow && metadata.getModifiers().isRestricting()) {
+        if (!forCountRow && metadata.getModifiers().isRestricting() && !metadata.getJoins().isEmpty()) {
             // TODO : provide simpler template for limit ?!?
 
             context.append(outerQueryStart);

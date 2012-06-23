@@ -15,8 +15,6 @@ package com.mysema.query.jpa;
 
 import static com.mysema.query.alias.Alias.$;
 import static com.mysema.query.alias.Alias.alias;
-import static com.mysema.query.jpa.JPQLGrammar.all;
-import static com.mysema.query.jpa.JPQLGrammar.some;
 import static com.mysema.query.jpa.JPQLGrammar.sum;
 import static org.junit.Assert.assertEquals;
 
@@ -26,7 +24,17 @@ import org.junit.Test;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
-import com.mysema.query.jpa.domain.*;
+import com.mysema.query.jpa.domain.Cat;
+import com.mysema.query.jpa.domain.Catalog;
+import com.mysema.query.jpa.domain.Color;
+import com.mysema.query.jpa.domain.Customer;
+import com.mysema.query.jpa.domain.DomesticCat;
+import com.mysema.query.jpa.domain.Payment;
+import com.mysema.query.jpa.domain.Product;
+import com.mysema.query.jpa.domain.QFamily;
+import com.mysema.query.jpa.domain.QFooDTO;
+import com.mysema.query.jpa.domain.QItem;
+import com.mysema.query.jpa.domain.QProduct;
 import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.NumberExpression;
@@ -94,7 +102,7 @@ public class ParsingTest extends AbstractQueryTest{
     @Test
     public void DocoExamples911_2() throws Exception {
         query().from(cat).where(
-                cat.name.eq(some(sub().from(name).list(name.nickName))))
+                cat.name.eqAny(sub().from(name).list(name.nickName)))
                 .parse();
     }
     
@@ -127,10 +135,10 @@ public class ParsingTest extends AbstractQueryTest{
                         ord.paid.not().and(ord.customer.eq(cust)).and(
                                 price.product.eq(product)).and(
                                 catalog.effectiveDate.gt(DateExpression.currentDate())).and(
-                                catalog.effectiveDate.gt(all(
+                                catalog.effectiveDate.gtAny(
                                         sub().from(catalog).where(
                                                 catalog.effectiveDate.lt(DateExpression.currentDate()))
-                                             .list(catalog.effectiveDate)))))
+                                             .list(catalog.effectiveDate))))
                 .groupBy(ord).having(sum(price.amount).gt(0l))
                 .orderBy(sum(price.amount).desc())
                 .select(ord.id, sum(price.amount), item.count());
@@ -344,7 +352,7 @@ public class ParsingTest extends AbstractQueryTest{
 
         query().select(mother).from(mother, kit).where(kit.in(mother.kittens)).parse();
 
-        query().select(p).from(list, p).where(p.name.eq(some(list.names))).parse();
+        query().select(p).from(list, p).where(p.name.eqAny(list.names)).parse();
 
         query().from(cat).where(cat.kittens.isNotEmpty()).parse();
 
@@ -367,7 +375,7 @@ public class ParsingTest extends AbstractQueryTest{
                 .where(
                         prod.name.eq("widget").and(
                                 store.location.name.in("Melbourne", "Sydney"))
-                                .and(prod.eq(all(cust.currentOrder.lineItems))))
+                                .and(prod.eqAll(cust.currentOrder.lineItems)))
                 .parse();
 
         prod.eq(new Product());

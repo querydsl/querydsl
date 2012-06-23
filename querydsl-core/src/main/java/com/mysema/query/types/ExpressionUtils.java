@@ -26,6 +26,25 @@ import javax.annotation.Nullable;
  *
  */
 public final class ExpressionUtils {
+    
+    
+    /**
+     * @param col
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Expression<T> all(CollectionExpression<?, ? super T> col) {
+        return OperationImpl.create((Class<T>)col.getParameter(0), Ops.QuantOps.ALL, col);
+    }
+
+    /**
+     * @param col
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Expression<T> any(CollectionExpression<?, ? super T> col) {
+        return OperationImpl.create((Class<T>)col.getParameter(0), Ops.QuantOps.ANY, col);
+    }
         
     /**
      * Create the intersection of the given arguments

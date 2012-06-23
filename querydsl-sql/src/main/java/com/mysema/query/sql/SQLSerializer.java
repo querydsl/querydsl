@@ -273,7 +273,7 @@ public class SQLSerializer extends SerializerBase<SQLSerializer> {
         }
         
 
-        if (!forCountRow && metadata.getModifiers().isRestricting()) {
+        if (!forCountRow && metadata.getModifiers().isRestricting() && !joins.isEmpty()) {
             templates.serializeModifiers(metadata, context);
         }
         

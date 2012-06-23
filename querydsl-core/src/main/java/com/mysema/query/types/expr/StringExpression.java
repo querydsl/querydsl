@@ -316,7 +316,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
      * @param str
      * @return
      */
-    public BooleanExpression like(StringExpression str){
+    public BooleanExpression like(Expression<String> str){
         return BooleanOperation.create(Ops.LIKE, this, str);
     }
 
@@ -377,6 +377,26 @@ public abstract class StringExpression extends ComparableExpression<String> {
             min = StringOperation.create(Ops.AggOps.MIN_AGG, this);
         }
         return min;
+    }
+    
+    /**
+     * Expr: <code>this not like str</code>
+     *
+     * @param str
+     * @return
+     */
+    public BooleanExpression notLike(String str){
+        return like(str).not();
+    }
+
+    /**
+     * Expr: <code>this not like str</code>
+     *
+     * @param str
+     * @return
+     */
+    public BooleanExpression notLike(Expression<String> str){
+        return like(str).not();
     }
 
     /**
@@ -479,6 +499,29 @@ public abstract class StringExpression extends ComparableExpression<String> {
         return StringOperation.create(Ops.SUBSTR_2ARGS, this, ConstantImpl.create(beginIndex), ConstantImpl.create(endIndex));
     }
 
+    /**
+     * Get the given substring
+     *
+     * @param beginIndex
+     * @return this.substring(beginIndex)
+     * @see java.lang.String#substring(int)
+     */
+    public StringExpression substring(Expression<Integer> beginIndex) {
+        return StringOperation.create(Ops.SUBSTR_1ARG, this, beginIndex);
+    }
+
+    /**
+     * Get the given substring
+     *
+     * @param beginIndex
+     * @param endIndex
+     * @return this.substring(beginIndex, endIndex)
+     * @see java.lang.String#substring(int, int)
+     */
+    public StringExpression substring(Expression<Integer> beginIndex, Expression<Integer> endIndex) {
+        return StringOperation.create(Ops.SUBSTR_2ARGS, this, beginIndex, endIndex);
+    }
+    
     /**
      * Get the lower case form
      *

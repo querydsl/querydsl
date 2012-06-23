@@ -198,10 +198,18 @@ public final class Ops {
         public static final Operator<Number> POWER = new OperatorImpl<Number>("POWER",NUMBER_X_2);
         public static final Operator<Number> MIN = new OperatorImpl<Number>("MIN",NUMBER_X_2);
         public static final Operator<Number> MAX = new OperatorImpl<Number>("MAX",NUMBER_X_2);
-        public static final Operator<Number> LOG10 = new OperatorImpl<Number>("LOG10",Number.class);
-        public static final Operator<Number> LOG = new OperatorImpl<Number>("LOG",Number.class);
+        public static final Operator<Number> LOG = new OperatorImpl<Number>("LOG",NUMBER_X_2);
         public static final Operator<Number> FLOOR = new OperatorImpl<Number>("FLOOR",Number.class);
         public static final Operator<Number> EXP = new OperatorImpl<Number>("EXP",Number.class);
+        public static final Operator<Number> COSH = new OperatorImpl<Number>("COSH",Number.class);
+        public static final Operator<Number> COT = new OperatorImpl<Number>("COT",Number.class);
+        public static final Operator<Number> COTH = new OperatorImpl<Number>("COTH",Number.class);
+        public static final Operator<Number> DEG = new OperatorImpl<Number>("DEG",Number.class);
+        public static final Operator<Number> LN = new OperatorImpl<Number>("LN",Number.class);
+        public static final Operator<Number> RAD = new OperatorImpl<Number>("RAD",Number.class);
+        public static final Operator<Number> SIGN = new OperatorImpl<Number>("SIGN",Number.class);
+        public static final Operator<Number> SINH = new OperatorImpl<Number>("SINH",Number.class);
+        public static final Operator<Number> TANH = new OperatorImpl<Number>("TANH",Number.class);
         private MathOps() {}
     }
 

@@ -15,6 +15,7 @@ package com.mysema.query.sql;
 
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
+import com.mysema.query.types.Ops;
 
 /**
  * 
@@ -37,7 +38,15 @@ public class CUBRIDTemplates extends SQLTemplates {
 
     public CUBRIDTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
+        setDummyTable(null);
         setParameterMetadataAvailable(false);
+        
+        add(Ops.MathOps.LN, "ln({0})");
+        add(Ops.MathOps.LOG, "(ln({0}) / ln({1}))");
+        add(Ops.MathOps.COSH, "(exp({0}) + exp({0} * -1)) / 2");
+        add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
+        add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
+        add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
     }
     
     protected void serializeModifiers(QueryMetadata metadata, SerializationContext context) {

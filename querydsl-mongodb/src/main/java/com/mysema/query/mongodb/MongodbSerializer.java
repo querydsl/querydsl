@@ -89,17 +89,15 @@ public class MongodbSerializer implements Visitor<Object, Void> {
         if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE ) {
             return asDBObject(asDBKey(expr, 0), asDBValue(expr, 1));
 
-        }else if (op == Ops.STRING_IS_EMPTY){
+        } else if (op == Ops.STRING_IS_EMPTY){
             return asDBObject(asDBKey(expr, 0), "");
-        }
-
-        else if (op == Ops.AND) {
+            
+        } else if (op == Ops.AND) {
             BasicDBObject left = (BasicDBObject) handle(expr.getArg(0));
             left.putAll((BSONObject) handle(expr.getArg(1)));
             return left;
-        }
-
-        else if (op == Ops.NOT) {
+            
+        } else if (op == Ops.NOT) {
             //Handle the not's child
             BasicDBObject arg = (BasicDBObject) handle(expr.getArg(0));
 
@@ -113,67 +111,54 @@ public class MongodbSerializer implements Visitor<Object, Void> {
             } else {
                 return asDBObject(key, asDBObject("$ne", arg.get(key)));
             }
-        }
-
-        else if (op == Ops.OR){
+            
+        } else if (op == Ops.OR){
             BasicDBList list = new BasicDBList();
             list.add(handle(expr.getArg(0)));
             list.add(handle(expr.getArg(1)));
             return asDBObject("$or", list);
-        }
-
-        else if (op == Ops.NE_OBJECT || op == Ops.NE_PRIMITIVE) {
+            
+        } else if (op == Ops.NE_OBJECT || op == Ops.NE_PRIMITIVE) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$ne", asDBValue(expr, 1)));
-        }
-
-        else if (op == Ops.STARTS_WITH) {
+            
+        } else if (op == Ops.STARTS_WITH) {
             return asDBObject(asDBKey(expr, 0), 
                     Pattern.compile("^" + regexValue(expr, 1)));
-        }
-
-        else if (op == Ops.STARTS_WITH_IC) {
-            return asDBObject(asDBKey(expr, 0),
+            
+        } else if (op == Ops.STARTS_WITH_IC) {
+            return asDBObject(asDBKey(expr, 0),          
                     Pattern.compile("^" + regexValue(expr, 1), Pattern.CASE_INSENSITIVE));
-        }
-
-        else if (op == Ops.ENDS_WITH) {
+            
+        } else if (op == Ops.ENDS_WITH) {
             return asDBObject(asDBKey(expr, 0), Pattern.compile(regexValue(expr, 1) + "$"));
-        }
-
-        else if (op == Ops.ENDS_WITH_IC) {
+            
+        } else if (op == Ops.ENDS_WITH_IC) {
             return asDBObject(asDBKey(expr, 0),
                     Pattern.compile(regexValue(expr, 1) + "$", Pattern.CASE_INSENSITIVE));
-        }
-
-        else if (op == Ops.EQ_IGNORE_CASE) {
+            
+        } else if (op == Ops.EQ_IGNORE_CASE) {
             return asDBObject(asDBKey(expr, 0),
-                    Pattern.compile("^" + regexValue(expr, 1) + "$", Pattern.CASE_INSENSITIVE)); 
-        }
-
-        else if (op == Ops.STRING_CONTAINS) {
+                    Pattern.compile("^" + regexValue(expr, 1) + "$", Pattern.CASE_INSENSITIVE));
+            
+        } else if (op == Ops.STRING_CONTAINS) {
             return asDBObject(asDBKey(expr, 0), Pattern.compile(".*" + regexValue(expr, 1) + ".*"));
-        }
-
-        else if (op == Ops.STRING_CONTAINS_IC) {
+            
+        } else if (op == Ops.STRING_CONTAINS_IC) {
             return asDBObject(asDBKey(expr, 0),
                     Pattern.compile(".*" + regexValue(expr, 1) + ".*", Pattern.CASE_INSENSITIVE));
-        }
-
-        else if (op == Ops.MATCHES) {
-            return asDBObject(asDBKey(expr, 0), Pattern.compile(asDBValue(expr, 1).toString()));
-        }
-
-        else if (op == Ops.MATCHES_IC) {
-            return asDBObject(asDBKey(expr, 0), Pattern.compile(asDBValue(expr, 1).toString(), Pattern.CASE_INSENSITIVE));
-        }
             
-        else if (op == Ops.BETWEEN) {
+        } else if (op == Ops.MATCHES) {
+            return asDBObject(asDBKey(expr, 0), Pattern.compile(asDBValue(expr, 1).toString()));
+            
+        } else if (op == Ops.MATCHES_IC) {
+            return asDBObject(asDBKey(expr, 0), Pattern.compile(asDBValue(expr, 1).toString(), Pattern.CASE_INSENSITIVE));
+            
+        } else if (op == Ops.BETWEEN) {
             BasicDBObject value = new BasicDBObject("$gte", asDBValue(expr, 1));
             value.append("$lte", asDBValue(expr, 2));
             return asDBObject(asDBKey(expr, 0), value);
-        }
-
-        else if (op == Ops.IN) {
+            
+        } else if (op == Ops.IN) {
             int constIndex = 0;
             int exprIndex = 1;            
             if (expr.getArg(1) instanceof Constant<?>) {

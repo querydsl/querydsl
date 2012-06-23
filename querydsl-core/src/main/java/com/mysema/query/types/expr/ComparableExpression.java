@@ -15,8 +15,10 @@ package com.mysema.query.types.expr;
 
 import javax.annotation.Nullable;
 
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
@@ -134,6 +136,23 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     public BooleanExpression gt(Expression<T> right) {
         return BooleanOperation.create(Ops.AFTER, this, right);
     }
+    
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression gtAll(CollectionExpression<?, ? super T> right) {
+        return gt(ExpressionUtils.<T>all(right));
+    }
+
+    
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression gtAny(CollectionExpression<?, ? super T> right) {
+        return gt(ExpressionUtils.<T>any(right));
+    }
 
     /**
      * Get a <code>this &gt;= right</code> expression
@@ -155,6 +174,22 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      */
     public BooleanExpression goe(Expression<T> right) {
         return BooleanOperation.create(Ops.AOE, this, right);
+    }
+    
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression goeAll(CollectionExpression<?, ? super T> right) {
+        return goe(ExpressionUtils.<T>all(right));
+    }
+    
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression goeAny(CollectionExpression<?, ? super T> right) {
+        return goe(ExpressionUtils.<T>any(right));
     }
 
     /**
@@ -178,6 +213,23 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
     public final BooleanExpression lt(Expression<T> right) {
         return BooleanOperation.create(Ops.BEFORE, this, right);
     }
+    
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression ltAll(CollectionExpression<?, ? super T> right) {
+        return lt(ExpressionUtils.<T>all(right));
+    }
+
+    
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression ltAny(CollectionExpression<?, ? super T> right) {
+        return lt(ExpressionUtils.<T>any(right));
+    }
 
     /**
      * Get a <code>this &lt;= right</code> expression
@@ -199,6 +251,22 @@ public abstract class ComparableExpression<T extends Comparable> extends Compara
      */
     public final BooleanExpression loe(Expression<T> right) {
         return BooleanOperation.create(Ops.BOE, this, right);
+    }
+    
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression loeAll(CollectionExpression<?, ? super T> right) {
+        return loe(ExpressionUtils.<T>all(right));
+    }
+    
+    /**
+     * @param right
+     * @return
+     */
+    public BooleanExpression loeAny(CollectionExpression<?, ? super T> right) {
+        return loe(ExpressionUtils.<T>any(right));
     }
 
 }

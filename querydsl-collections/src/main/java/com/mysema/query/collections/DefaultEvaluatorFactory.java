@@ -182,7 +182,7 @@ public class DefaultEvaluatorFactory {
                     ser.append("boolean " + matcher + " = false;\n");
                     anyJoinMatchers.add(matcher);
                 }
-                ser.append("for ( " + typeName + " " + alias.getArg(1) + " : ");
+                ser.append("for (" + typeName + " " + alias.getArg(1) + " : ");
                 if (colAnyJoin) {
                     Context context = new Context();
                     Expression<?> replacement = (Expression<?>) alias.getArg(0)

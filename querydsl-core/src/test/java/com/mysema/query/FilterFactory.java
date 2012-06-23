@@ -294,6 +294,10 @@ public class FilterFactory {
         rv.add(expr.like("%"+knownValue.substring(1)));
         rv.add(expr.like("%"+knownValue.substring(1,2)+"%"));
 
+        rv.add(expr.notLike(knownValue.substring(0,1)+"%"));
+        rv.add(expr.notLike("%"+knownValue.substring(1)));
+        rv.add(expr.notLike("%"+knownValue.substring(1,2)+"%"));
+        
         if (!target.equals(Target.DERBY)
          && !target.equals(Target.HSQLDB)
          && !target.equals(Target.H2)

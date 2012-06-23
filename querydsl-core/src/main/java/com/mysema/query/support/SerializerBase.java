@@ -14,6 +14,7 @@
 package com.mysema.query.support;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,17 +52,21 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     private final StringBuilder builder = new StringBuilder();
         
-    private static final String NUMBER = "[\\+\\-]?\\d+\\.?\\d*";
+    private static final String NUMBER = "([\\+\\-]?\\d+\\.?\\d*)";
     
     private static final String WS = "\\s*";
     
-    private static final Pattern OPERATOR = Pattern.compile(WS + "[\\+\\-]" + WS);
+    private static final Pattern OPERATOR = Pattern.compile(WS + "[\\+\\-\\/\\*]" + WS);
     
-    private static final Pattern OPERATION = Pattern.compile(NUMBER + WS + "[\\+\\-]" + WS + NUMBER);
+    private static final Pattern OPERATION = Pattern.compile(NUMBER + OPERATOR.pattern() + NUMBER);
     
     private static final Pattern ADDITION = Pattern.compile(NUMBER + WS + "\\+" + WS + NUMBER);
     
-    //private static final Pattern SUBTRACTION = Pattern.compile(NUMBER + WS + "\\-" + WS + NUMBER);
+    private static final Pattern SUBTRACTION = Pattern.compile(NUMBER + WS + "\\-" + WS + NUMBER);
+    
+    private static final Pattern DIVISION = Pattern.compile(NUMBER + WS + "\\/" + WS + NUMBER);
+    
+    private static final Pattern MULTIPLICATION = Pattern.compile(NUMBER + WS + "\\*" + WS + NUMBER);
     
     private String constantPrefix = "a";
 
@@ -89,21 +94,40 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
                 rv.append(queryString.subSequence(end, m.start()));
             }
             String str = queryString.substring(m.start(), m.end());
-            boolean addition = ADDITION.matcher(str).matches();
-            String[] operands = OPERATOR.split(str);
-            BigDecimal result = null;
-            if (addition) {
-                result = new BigDecimal(operands[0]).add(new BigDecimal(operands[1]));
+            boolean add = ADDITION.matcher(str).matches();
+            boolean subtract = SUBTRACTION.matcher(str).matches();
+            boolean divide = DIVISION.matcher(str).matches();
+            boolean multiply = MULTIPLICATION.matcher(str).matches();
+            Matcher matcher = OPERATION.matcher(str);
+            matcher.matches();            
+            BigDecimal first = new BigDecimal(matcher.group(1));
+            BigDecimal second = new BigDecimal(matcher.group(2));
+            String result = null;
+            if (multiply) {
+                result = first.multiply(second).toString();
+            } else if (divide) {
+                result = first.divide(second, 5, RoundingMode.HALF_UP).toString();                    
+            } else if (subtract) {
+                result = first.subtract(second).toString();
+            } else if (add) {
+                result = first.add(second).toString();
             } else {
-                result = new BigDecimal(operands[0]).subtract(new BigDecimal(operands[1]));
+                throw new IllegalStateException("Unsupported expression " + str);
             }
-            rv.append(result.toString()); 
+            while (result.contains(".") && (result.endsWith("0") || result.endsWith("."))) {
+                result = result.substring(0, result.length()-1);
+            }
+            rv.append(result); 
             end = m.end();
         }
         if (end < queryString.length()) {
             rv.append(queryString.substring(end));
         }
-        return rv.toString();
+        if (rv.toString().equals(queryString)) {
+            return rv.toString();
+        } else {
+            return normalize(rv.toString());
+        }
     }
 
     public SerializerBase(Templates templates) {

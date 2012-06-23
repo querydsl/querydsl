@@ -41,11 +41,11 @@ public class DerbyTemplates extends SQLTemplates {
     
     public DerbyTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
+        setDummyTable("sysibm.sysdummy1");        
         addClass2TypeMappings("smallint", Byte.class);
         setAutoIncrement(" generated always as identity");
         
         add(Ops.CONCAT, "varchar({0} || {1})");
-        add(Ops.MathOps.ROUND, "floor({0})");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "day({0})");
 
         add(NEXTVAL, "next value for {0s}");
@@ -54,6 +54,12 @@ public class DerbyTemplates extends SQLTemplates {
         add(Ops.CASE_EQ, "case {1} end");
         add(Ops.CASE_EQ_WHEN,  "when {0} = {1} then {2} {3}");
         add(Ops.CASE_EQ_ELSE,  "else {0}");
+        
+        add(Ops.MathOps.ROUND, "floor({0})"); // FIXME
+        add(Ops.MathOps.POWER, "exp({1} * log({0}))");
+        add(Ops.MathOps.LN, "log({0})");
+        add(Ops.MathOps.LOG, "(log({0}) / log({1}))");
+        add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
 
     }
 

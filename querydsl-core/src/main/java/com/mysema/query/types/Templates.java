@@ -154,16 +154,24 @@ public class Templates {
         add(Ops.MathOps.ATAN, "atan({0})");
         add(Ops.MathOps.CEIL, "ceil({0})");
         add(Ops.MathOps.COS, "cos({0})");
+        add(Ops.MathOps.COSH, "cosh({0})");
+        add(Ops.MathOps.COT, "cot({0})");
+        add(Ops.MathOps.COTH, "coth({0})");
+        add(Ops.MathOps.DEG, "degrees({0})");
         add(Ops.MathOps.TAN, "tan({0})");
+        add(Ops.MathOps.TANH, "tanh({0})");
         add(Ops.MathOps.SQRT, "sqrt({0})");
+        add(Ops.MathOps.SIGN, "sign({0})");
         add(Ops.MathOps.SIN, "sin({0})");
+        add(Ops.MathOps.SINH, "sinh({0})");
         add(Ops.MathOps.ROUND, "round({0})");
+        add(Ops.MathOps.RAD, "radians({0})");
         add(Ops.MathOps.RANDOM, "random()");
         add(Ops.MathOps.POWER, "pow({0},{1})");
         add(Ops.MathOps.MIN, "min({0},{1})");
         add(Ops.MathOps.MAX, "max({0},{1})");
-        add(Ops.MathOps.LOG10, "log10({0})");
-        add(Ops.MathOps.LOG, "log({0})");
+        add(Ops.MathOps.LOG, "log({0},{1})");
+        add(Ops.MathOps.LN, "ln({0})");
         add(Ops.MathOps.FLOOR, "floor({0})");
         add(Ops.MathOps.EXP, "exp({0})");
 

@@ -391,6 +391,11 @@ public final class Connections {
             return;
         }
 
+        // dual
+        stmt.execute("drop table DUAL if exists");
+        stmt.execute("create table DUAL ( DUMMY varchar(1) )");
+        stmt.execute("insert into DUAL (DUMMY) values ('X')");
+        
         // survey
         stmt.execute("drop table SURVEY if exists");
         //stmt.execute(CREATE_TABLE_SURVEY);

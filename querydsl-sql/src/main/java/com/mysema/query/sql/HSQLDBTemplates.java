@@ -33,10 +33,18 @@ public class HSQLDBTemplates extends SQLTemplates {
 
     public HSQLDBTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
-        setAutoIncrement(" identity");
-        add(Ops.MathOps.ROUND, "round({0},0)");
+        //setDummyTable(null);
+        setAutoIncrement(" identity");        
         add(Ops.TRIM, "trim(both from {0})");
-        add(Ops.NEGATE, "{0} * -1", 7);        
+        add(Ops.NEGATE, "{0} * -1", 7);
+        
+        add(Ops.MathOps.ROUND, "round({0},0)");
+        add(Ops.MathOps.LN, "log({0})");
+        add(Ops.MathOps.LOG, "(log({0}) / log({1}))");
+        add(Ops.MathOps.COSH, "(exp({0}) + exp({0} * -1)) / 2");
+        add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
+        add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
+        add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
     }
     
     @Override

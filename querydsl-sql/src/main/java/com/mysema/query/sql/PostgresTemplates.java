@@ -35,6 +35,7 @@ public class PostgresTemplates extends SQLTemplates {
 
     public PostgresTemplates(char escape, boolean quote) {
         super("\"", escape, quote);
+        setDummyTable(null);
         // type mappings
         addClass2TypeMappings("numeric(3,0)", Byte.class);
         addClass2TypeMappings("double precision", Double.class);
@@ -57,8 +58,12 @@ public class PostgresTemplates extends SQLTemplates {
         
         // Number
         add(Ops.MathOps.RANDOM, "random()");
-        add(Ops.MathOps.LOG, "ln({0})");
-        add(Ops.MathOps.LOG10, "log({0})");
+        add(Ops.MathOps.LN, "ln({0})");
+        add(Ops.MathOps.LOG, "log({1},{0})");
+        add(Ops.MathOps.COSH, "(exp({0}) + exp({0} * -1)) / 2");
+        add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
+        add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
+        add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
 
         // Date / time
         add(Ops.DateTimeOps.YEAR, "extract(year from {0})");

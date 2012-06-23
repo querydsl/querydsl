@@ -13,6 +13,14 @@
  */
 package com.mysema.query.sql;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
+
+import com.mysema.query.types.Path;
+import com.mysema.query.types.expr.NumberExpression;
+import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.template.NumberTemplate;
 
 
 public class PostgresTemplatesTest extends AbstractSQLTemplatesTest{
@@ -21,6 +29,31 @@ public class PostgresTemplatesTest extends AbstractSQLTemplatesTest{
     protected SQLTemplates createTemplates() {
         return new PostgresTemplates();
     }    
+    
+    @Test
+    public void NoFrom(){
+        query.getMetadata().addProjection(NumberTemplate.ONE);
+        assertEquals("select 1", query.toString());
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Test
+    public void Union(){        
+        NumberExpression<Integer> one = NumberTemplate.ONE;
+        NumberExpression<Integer> two = NumberTemplate.TWO;
+        NumberExpression<Integer> three = NumberTemplate.THREE;
+        Path<Integer> col1 = new SimplePath<Integer>(Integer.class,"col1");
+        Union union = query.union(
+            sq().unique(one.as(col1)),
+            sq().unique(two),
+            sq().unique(three));
+        assertEquals(
+                "select 1 as col1 " +
+                "union " +
+                "select 2 " +
+                "union " +
+                "select 3", union.toString());
+    }
 
 
 }

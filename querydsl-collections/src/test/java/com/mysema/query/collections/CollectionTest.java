@@ -45,7 +45,9 @@ public class CollectionTest {
     
     @Test
     public void Join(){
-        assertEquals("4", MiniApi.from(cat, cats).innerJoin(cat.kittens, other).where(other.name.eq("4")).uniqueResult(cat.name));
+        assertEquals("4", MiniApi.from(cat, cats)
+                .innerJoin(cat.kittens, other)
+                .where(other.name.eq("4")).uniqueResult(cat.name));
     }
     
     @Test
@@ -61,22 +63,27 @@ public class CollectionTest {
     
     @Test
     public void Any_UniqueResult(){
-        assertEquals("4", MiniApi.from(cat, cats).where(cat.kittens.any().name.eq("4")).uniqueResult(cat.name));
+        assertEquals("4", MiniApi.from(cat, cats)
+                .where(cat.kittens.any().name.eq("4")).uniqueResult(cat.name));
     }
     
     @Test
     public void Any_Count(){
-        assertEquals(4, MiniApi.from(cat, cats).where(cat.kittens.any().name.isNotNull()).count());
+        assertEquals(4, MiniApi.from(cat, cats)
+                .where(cat.kittens.any().name.isNotNull()).count());
     }
     
     @Test
     public void Any_Two_Levels(){
-        assertEquals(4, MiniApi.from(cat, cats).where(cat.kittens.any().name.isNotNull(), cat.kittens.any().kittens.any().isNotNull()).count());
+        assertEquals(4, MiniApi.from(cat, cats).where(
+                cat.kittens.any().name.isNotNull(), 
+                cat.kittens.any().kittens.any().isNotNull()).count());
     }
     
     @Test
     public void Any_From_Two_Sources(){
-        assertEquals(16, MiniApi.from(cat, cats).from(other, cats).where(cat.kittens.any().name.eq(other.kittens.any().name)).count());
+        assertEquals(16, MiniApi.from(cat, cats).from(other, cats).where(
+                cat.kittens.any().name.eq(other.kittens.any().name)).count());
     }
     
     @Test
