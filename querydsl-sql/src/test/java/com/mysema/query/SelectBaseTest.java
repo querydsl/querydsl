@@ -662,7 +662,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     
     @Test
     public void Math() {
-        Expression<Integer> expr = NumberTemplate.create(Integer.class, "0.5");
+        Expression<Double> expr = NumberTemplate.create(Double.class, "0.5");
         
         assertEquals(Math.acos(0.5), unique(MathExpressions.acos(expr)), 0.001);
         assertEquals(Math.asin(0.5), unique(MathExpressions.asin(expr)), 0.001);

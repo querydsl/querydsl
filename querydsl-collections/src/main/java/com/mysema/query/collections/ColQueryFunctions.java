@@ -32,6 +32,26 @@ public final class ColQueryFunctions {
     public static <A extends Comparable<? super A>> boolean between(A a, A b, A c) {
         return a.compareTo(b) >= 0 && a.compareTo(c) <= 0;
     }
+    
+    public static double cot(double x) {
+        return Math.cos(x) / Math.sin(x);
+    }
+    
+    public static double coth(double x) {
+        return Math.cosh(x) / Math.sinh(x);
+    }
+    
+    public static double degrees(double x) {
+        return x * 180.0 / Math.PI;
+    }
+    
+    public static double radians(double x) {
+        return x * Math.PI / 180.0;
+    }
+    
+    public static double log(double x, int y) {
+        return Math.log(x) / Math.log(y);
+    }
 
     @Nullable
     public static <T> T coalesce(T... args){

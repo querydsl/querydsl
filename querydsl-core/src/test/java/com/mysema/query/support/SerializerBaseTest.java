@@ -46,7 +46,7 @@ public class SerializerBaseTest {
     
     @Test
     public void PI() {
-        assertEquals("0.15915", SerializerBase.normalize("0.5 / " + Math.PI));
+        assertEquals("0.1591549431", SerializerBase.normalize("0.5 / " + Math.PI));
     }
     
 }

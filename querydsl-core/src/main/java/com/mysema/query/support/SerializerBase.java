@@ -52,11 +52,11 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
 
     private final StringBuilder builder = new StringBuilder();
         
-    private static final String NUMBER = "([\\+\\-]?\\d+\\.?\\d*)";
+    private static final String NUMBER = "([+\\-]?\\d+\\.?\\d*)";
     
     private static final String WS = "\\s*";
     
-    private static final Pattern OPERATOR = Pattern.compile(WS + "[\\+\\-\\/\\*]" + WS);
+    private static final Pattern OPERATOR = Pattern.compile(WS + "[+\\-/*]" + WS);
     
     private static final Pattern OPERATION = Pattern.compile(NUMBER + OPERATOR.pattern() + NUMBER);
     
@@ -64,7 +64,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     
     private static final Pattern SUBTRACTION = Pattern.compile(NUMBER + WS + "\\-" + WS + NUMBER);
     
-    private static final Pattern DIVISION = Pattern.compile(NUMBER + WS + "\\/" + WS + NUMBER);
+    private static final Pattern DIVISION = Pattern.compile(NUMBER + WS + "/" + WS + NUMBER);
     
     private static final Pattern MULTIPLICATION = Pattern.compile(NUMBER + WS + "\\*" + WS + NUMBER);
     
@@ -106,7 +106,7 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
             if (multiply) {
                 result = first.multiply(second).toString();
             } else if (divide) {
-                result = first.divide(second, 5, RoundingMode.HALF_UP).toString();                    
+                result = first.divide(second, 10, RoundingMode.HALF_UP).toString();                    
             } else if (subtract) {
                 result = first.subtract(second).toString();
             } else if (add) {
