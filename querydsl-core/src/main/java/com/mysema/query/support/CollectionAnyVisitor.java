@@ -16,6 +16,7 @@ package com.mysema.query.support;
 
 import java.util.UUID;
 
+import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
@@ -27,6 +28,7 @@ import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.PathType;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.PredicateOperation;
@@ -37,6 +39,8 @@ import com.mysema.query.types.Templates;
 import com.mysema.query.types.ToStringVisitor;
 import com.mysema.query.types.Visitor;
 import com.mysema.query.types.path.EntityPathBase;
+import com.mysema.query.types.path.ListPath;
+import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.template.BooleanTemplate;
 
 /**
@@ -47,7 +51,7 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context>{
     
     public static final CollectionAnyVisitor DEFAULT = new CollectionAnyVisitor();
     
-    public static final Templates TEMPLATE = new Templates() {
+    public static final Templates TEMPLATES = new Templates() {
     {
         add(PathType.PROPERTY, "{0}_{1}");
         add(PathType.COLLECTION_ANY, "{0}");
@@ -58,7 +62,12 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context>{
     private static <T> Path<T> replaceParent(Path<T> path, Path<?> parent) {
         PathMetadata<?> metadata = new PathMetadata(parent, path.getMetadata().getExpression(), 
                 path.getMetadata().getPathType());
-        return new PathImpl<T>(path.getType(), metadata);
+        if (path instanceof CollectionExpression) {
+            CollectionExpression col = (CollectionExpression)path;
+            return new ListPath(col.getParameter(0), SimplePath.class, metadata);
+        } else {
+            return new PathImpl<T>(path.getType(), metadata);    
+        }        
     }
 
     @Override
@@ -120,8 +129,10 @@ public class CollectionAnyVisitor implements Visitor<Expression<?>,Context>{
     @SuppressWarnings("unchecked")
     @Override
     public Expression<?> visit(Path<?> expr, Context context) {
-        if (expr.getMetadata().getPathType() == PathType.COLLECTION_ANY){             
-            String variable = expr.accept(ToStringVisitor.DEFAULT, TEMPLATE).replace('.', '_');
+        if (expr.getMetadata().getPathType() == PathType.COLLECTION_ANY) {
+            Path<?> parent = (Path<?>) expr.getMetadata().getParent().accept(this, context);
+            expr = new PathImpl(expr.getType(), PathMetadataFactory.forCollectionAny(parent));            
+            String variable = expr.accept(ToStringVisitor.DEFAULT, TEMPLATES).replace('.', '_');
             String suffix = UUID.randomUUID().toString().replace("-", "").substring(0,5);
             EntityPath<?> replacement = new EntityPathBase(expr.getType(), variable + suffix);
             context.add(expr, replacement);

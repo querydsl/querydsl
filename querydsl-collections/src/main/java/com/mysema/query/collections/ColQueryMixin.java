@@ -32,6 +32,8 @@ import com.mysema.query.types.template.BooleanTemplate;
  */
 public class ColQueryMixin<T> extends QueryMixin<T> {
     
+    private static final Predicate ANY = BooleanTemplate.create("any");
+
     public ColQueryMixin() {}
 
     public ColQueryMixin(QueryMetadata metadata) {
@@ -63,7 +65,7 @@ public class ColQueryMixin<T> extends QueryMixin<T> {
                 innerJoin(
                     (CollectionExpression)context.paths.get(i).getMetadata().getParent(), 
                     (Path)context.replacements.get(i));
-                on(BooleanTemplate.create("any"));
+                on(ANY);
             }
             return transformed;    
         }        

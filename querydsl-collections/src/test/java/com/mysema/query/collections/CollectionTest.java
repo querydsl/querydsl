@@ -76,6 +76,12 @@ public class CollectionTest {
     
     @Test
     public void Any_Two_Levels(){
+        assertEquals(4, MiniApi.from(cat, cats).where( 
+                cat.kittens.any().kittens.any().isNotNull()).count());
+    }
+    
+    @Test
+    public void Any_Two_Levels2(){
         assertEquals(4, MiniApi.from(cat, cats).where(
                 cat.kittens.any().name.isNotNull(), 
                 cat.kittens.any().kittens.any().isNotNull()).count());
