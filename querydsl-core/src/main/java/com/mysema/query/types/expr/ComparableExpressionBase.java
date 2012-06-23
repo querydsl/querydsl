@@ -55,7 +55,11 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
         }
         return asc;
     }
-
+    
+    public final Coalesce<T> coalesce(Expression<?>...exprs) {
+        return new Coalesce<T>(getType(), this, exprs);
+    }
+    
     /**
      * Create a cast expression to the given numeric type
      *

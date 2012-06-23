@@ -42,7 +42,7 @@ public abstract class EnumExpression<T extends Enum<T>> extends ComparableExpres
     public EnumExpression<T> as(String alias) {
         return as(new PathImpl<T>(getType(), alias));
     }
-
+    
     /**
      * @return
      */

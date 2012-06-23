@@ -13,6 +13,9 @@
  */
 package com.mysema.query.support;
 
+import java.sql.Time;
+import java.util.Date;
+
 import javax.annotation.Nullable;
 
 import com.mysema.query.QueryMetadata;
@@ -76,6 +79,18 @@ public final class Expressions {
         } else {
             return SimpleOperation.create((Class<D>)alias.getType(), Ops.ALIAS, source, alias);    
         }        
+    }
+    
+    public static DateExpression<Date> currentDate() {
+        return DateExpression.currentDate();
+    }
+    
+    public static DateTimeExpression<Date> currentTimestamp() {
+        return DateTimeExpression.currentTimestamp();
+    }
+    
+    public static TimeExpression<Time> currentTime() {
+        return TimeExpression.currentTime();
     }
     
     public static <D> SimpleExpression<D> as(Expression<D> source, String alias) {

@@ -66,6 +66,7 @@ public class ColQueryTemplates extends JavaTemplates {
 
         // String
         add(Ops.LIKE, functions + ".like({0},{1})");
+        add(Ops.LIKE_ESCAPE, functions + ".like({0},{1},{2})");
 
         // Path types
         for (PathType type : new PathType[] {

@@ -43,7 +43,7 @@ import com.mysema.query.types.SubQueryExpression;
  *
  * @param <T> type of wrapped query
  */
-public class QueryMixin<T>{
+public class QueryMixin<T> {
 
     private final QueryMetadata metadata;
 

@@ -13,9 +13,6 @@
  */
 package com.mysema.query.jdo;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.CollectionAnyVisitor;
@@ -35,8 +32,6 @@ import com.mysema.query.types.Predicate;
  * @param <T>
  */
 public class JDOQLQueryMixin<T> extends QueryMixin<T> {
-    
-    private final Set<Path<?>> anyPaths = new HashSet<Path<?>>();
     
     public JDOQLQueryMixin() {}
 
@@ -62,13 +57,11 @@ public class JDOQLQueryMixin<T> extends QueryMixin<T> {
         if (predicate instanceof BooleanBuilder && ((BooleanBuilder)predicate).getValue() == null) {
             return predicate;
         } else {
-            Context context = new Context();
+            Context context = new Context();            
             Predicate transformed = (Predicate) predicate.accept(CollectionAnyVisitor.DEFAULT, context);
             for (int i = 0; i < context.paths.size(); i++) {
                 Path<?> path = context.paths.get(i);            
-                if (!anyPaths.contains(path)) {
-                    addCondition(context, i, path, where);
-                }
+                addCondition(context, i, path, where);
             }
             return transformed;    
         }        
@@ -76,7 +69,6 @@ public class JDOQLQueryMixin<T> extends QueryMixin<T> {
 
     @SuppressWarnings("unchecked")
     private void addCondition(Context context, int i, Path<?> path, boolean where) {
-        anyPaths.add(path);
         EntityPath<?> alias = context.replacements.get(i);                 
         from(alias);
         Predicate condition = ExpressionUtils.in(alias, (CollectionExpression)path.getMetadata().getParent());

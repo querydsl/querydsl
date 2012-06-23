@@ -40,7 +40,7 @@ public class CollectionAnyVisitorTest {
     
     @Test
     public void Very_Long_Path(){
-        assertMatches("cat_kittens_kittens.*\\.name", serialize(cat.kittens.any().kittens.any().name));
+        assertMatches("cat_kittens.*_kittens.*\\.name", serialize(cat.kittens.any().kittens.any().name));
     }
     
     @Test

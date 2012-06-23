@@ -43,7 +43,7 @@ public abstract class LikeEscapeBaseTest extends AbstractBaseTest{
     }
     
     @Test
-    public void Like_with_Escape(){        
+    public void Like(){        
         assertEquals(1l, query().from(survey).where(survey.name.like("a!%")).count());
         assertEquals(1l, query().from(survey).where(survey.name.like("a!_")).count());
         assertEquals(3l, query().from(survey).where(survey.name.like("a%")).count());
@@ -53,5 +53,12 @@ public abstract class LikeEscapeBaseTest extends AbstractBaseTest{
         assertEquals(1l, query().from(survey).where(survey.name.startsWith("a%")).count());
     }
     
+    @Test
+    public void Like_with_Escape(){        
+        assertEquals(1l, query().from(survey).where(survey.name.like("a!%", '!')).count());
+        assertEquals(1l, query().from(survey).where(survey.name.like("a!_", '!')).count());
+        assertEquals(3l, query().from(survey).where(survey.name.like("a%", '!')).count());
+        assertEquals(2l, query().from(survey).where(survey.name.like("a_", '!')).count());        
+    }
 
 }

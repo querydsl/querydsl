@@ -33,6 +33,8 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
     
     private static final int CACHE_SIZE = 256;
     
+    private static final Constant<Character>[] CHARACTERS = new Constant[CACHE_SIZE];
+    
     private static final Constant<Byte>[] BYTES = new Constant[CACHE_SIZE];
 
     private static final Constant<Integer>[] INTEGERS = new Constant[CACHE_SIZE];
@@ -62,6 +64,7 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
             INTEGERS[i] = new ConstantImpl<Integer>(Integer.class, Integer.valueOf(i));
             SHORTS[i] = new ConstantImpl<Short>(Short.class, Short.valueOf((short)i));
             BYTES[i] = new ConstantImpl<Byte>(Byte.class, Byte.valueOf((byte)i));
+            CHARACTERS[i] = new ConstantImpl<Character>(Character.class, Character.valueOf((char)i));
             LONGS[i] = new ConstantImpl<Long>(Long.class, Long.valueOf(i));
         }
     }
@@ -75,6 +78,14 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
             return BYTES[i];
         } else {
             return new ConstantImpl<Byte>(Byte.class, Byte.valueOf(i));
+        }
+    }
+    
+    public static Constant<Character> create(char i) {
+        if (i >= 0 && i < CACHE_SIZE) {
+            return CHARACTERS[i];
+        } else {
+            return new ConstantImpl<Character>(Character.class, Character.valueOf(i));
         }
     }
 

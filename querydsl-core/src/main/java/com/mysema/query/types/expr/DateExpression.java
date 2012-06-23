@@ -39,7 +39,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
     private static final long serialVersionUID = 6054664454254721302L;
 
     /**
-     * Get an expression representing the current date as a EDate instance
+     * Get an expression representing the current date as a DateExpression instance
      *
      * @return
      */
@@ -48,7 +48,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
     }
 
     /**
-     * Get an expression representing the current date as a EDate instance
+     * Get an expression representing the current date as a DateExpression instance
      *
      * @return
      */
@@ -78,7 +78,7 @@ public abstract class DateExpression<T extends Comparable> extends TemporalExpre
     public DateExpression<T> as(String alias) {
         return as(new PathImpl<T>(getType(), alias));
     }
-
+    
     /**
      * Get a day of month expression (range 1-31)
      *

@@ -45,11 +45,20 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
 
     private volatile ComparableExpression<T> value;
     
-    public Coalesce(Class<? extends T> type, Expression...exprs) {
+    public Coalesce(Class<? extends T> type, Expression<?>... exprs) {
         super(type);
         // NOTE : type parameters for the varargs, would result in compiler warnings
         for (Expression expr : exprs){
             add(expr);
+        }
+    }
+    
+    public Coalesce(Class<? extends T> type, Expression expr, Expression[] exprs) {
+        super(type);
+        // NOTE : type parameters for the varargs, would result in compiler warnings
+        add(expr);
+        for (Expression e : exprs){
+            add(e);
         }
     }
 
@@ -99,12 +108,20 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
         return add(new ConstantImpl<T>(constant));
     }
 
+    public BooleanExpression asBoolean(){
+        return BooleanOperation.create(Ops.COALESCE, getExpressionList());
+    }
+    
     public DateExpression<T> asDate(){
         return (DateExpression<T>) DateOperation.create(getType(), Ops.COALESCE, getExpressionList());
     }
 
     public DateTimeExpression<T> asDateTime(){
         return (DateTimeExpression<T>) DateTimeOperation.create(getType(), Ops.COALESCE, getExpressionList());
+    }
+    
+    public EnumExpression<?> asEnum() {
+        return EnumOperation.create((Class)getType(), Ops.COALESCE, getExpressionList());
     }
 
     public NumberExpression<?> asNumber(){
@@ -138,5 +155,6 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
             return false;
         }
     }
+
 
 }

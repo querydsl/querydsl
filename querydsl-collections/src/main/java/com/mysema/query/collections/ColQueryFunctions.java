@@ -119,6 +119,10 @@ public final class ColQueryFunctions {
         // TODO : better escaping
         return str.matches(like.replace("%", ".*").replace('_', '.'));
     }
+    
+    public static boolean like(String str, String like, char escape) {
+        return like(str, like);
+    }
 
     public static <T> T get(Object parent, String f) {
         try {

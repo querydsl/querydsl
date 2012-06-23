@@ -13,7 +13,7 @@
  */
 package com.mysema.query.types.expr;
 
-import java.util.Date;
+import java.sql.Time;
 
 import javax.annotation.Nullable;
 
@@ -34,7 +34,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
 
     private static final long serialVersionUID = 7360552308332457990L;
 
-    private static final TimeExpression<Date> CURRENT_TIME = currentTime(Date.class);
+    private static final TimeExpression<Time> CURRENT_TIME = currentTime(Time.class);
 
     @Nullable
     private volatile NumberExpression<Integer> hours, minutes, seconds, milliseconds;
@@ -52,7 +52,7 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
     public TimeExpression<T> as(String alias) {
         return as(new PathImpl<T>(getType(), alias));
     }
-
+    
     /**
      * Get a hours expression (range 0-23)
      *
@@ -103,16 +103,16 @@ public abstract class TimeExpression<T extends Comparable> extends TemporalExpre
     }
 
     /**
-     * Get an expression representing the current time as a ETime instance
+     * Get an expression representing the current time as a TimeExpression instance
      *
      * @return
      */
-    public static TimeExpression<Date> currentTime() {
+    public static TimeExpression<Time> currentTime() {
         return CURRENT_TIME;
     }
 
     /**
-     * Get an expression representing the current time as a ETime instance
+     * Get an expression representing the current time as a TimeExpression instance
      *
      * @return
      */

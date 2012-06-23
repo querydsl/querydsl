@@ -41,7 +41,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     private static final long serialVersionUID = -6879277113694148047L;
 
     /**
-     * Get an expression representing the current date as a EDateTime instance
+     * Get an expression representing the current date as a DateTimeExpression instance
      *
      * @return
      */
@@ -50,7 +50,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     }
 
     /**
-     * Get an expression representing the current date as a EDateTime instance
+     * Get an expression representing the current date as a DateTimeExpression instance
      *
      * @return
      */
@@ -59,7 +59,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     }
 
     /**
-     * Get an expression representing the current time instant as a EDateTime instance
+     * Get an expression representing the current time instant as a DateTimeExpression instance
      *
      * @return
      */
@@ -68,7 +68,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     }
 
     /**
-     * Get an expression representing the current time instant as a EDateTime instance
+     * Get an expression representing the current time instant as a DateTimeExpression instance
      *
      * @return
      */
@@ -103,7 +103,7 @@ public abstract class DateTimeExpression<T extends Comparable> extends TemporalE
     public DateTimeExpression<T> as(String alias) {
         return as(new PathImpl<T>(getType(), alias));
     }
-
+    
     /**
      * Get a day of month expression (range 1-31)
      *

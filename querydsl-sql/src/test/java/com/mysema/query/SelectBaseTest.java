@@ -37,7 +37,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -62,6 +61,7 @@ import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QEmployee;
 import com.mysema.query.sql.domain.QIdName;
 import com.mysema.query.sql.domain.QSurvey;
+import com.mysema.query.support.Expressions;
 import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Concatenation;
 import com.mysema.query.types.ConstructorExpression;
@@ -79,6 +79,7 @@ import com.mysema.query.types.expr.Coalesce;
 import com.mysema.query.types.expr.MathExpressions;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.Param;
+import com.mysema.query.types.expr.StringExpressions;
 import com.mysema.query.types.expr.Wildcard;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
@@ -662,7 +663,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     
     @Test
     public void Math() {
-        Expression<Double> expr = NumberTemplate.create(Double.class, "0.5");
+        Expression<Double> expr = Expressions.numberTemplate(Double.class, "0.5");
         
         assertEquals(Math.acos(0.5), unique(MathExpressions.acos(expr)), 0.001);
         assertEquals(Math.asin(0.5), unique(MathExpressions.asin(expr)), 0.001);
@@ -682,8 +683,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         assertEquals(Math.sin(0.5),  unique(MathExpressions.sin(expr)), 0.001);
         assertEquals(Math.sinh(0.5), unique(MathExpressions.sinh(expr)), 0.001);
         assertEquals(Math.tan(0.5),  unique(MathExpressions.tan(expr)), 0.001);
-        assertEquals(Math.tanh(0.5), unique(MathExpressions.tanh(expr)), 0.001);
-        
+        assertEquals(Math.tanh(0.5), unique(MathExpressions.tanh(expr)), 0.001);        
     }
     
     private double cot(double x) {
@@ -704,6 +704,16 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     
     private double log(double x, int y) {
         return Math.log(x) / Math.log(y);
+    }
+    
+    @Test
+    @ExcludeIn(SQLITE)
+    public void String() {
+        Expression<String> str = Expressions.stringTemplate("'  abcd  '");
+        
+        assertEquals("abcd  ", unique(StringExpressions.ltrim(str)));
+        assertEquals(Integer.valueOf(3), unique(StringExpressions.position(str, "a")));
+        assertEquals("  abcd", unique(StringExpressions.rtrim(str)));
     }
         
     private <T> T unique(Expression<T> expr) {

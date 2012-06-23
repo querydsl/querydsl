@@ -18,6 +18,8 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 
 /**
+ * Extended Math expressions, supported by the SQL module
+ * 
  * @author tiwe
  *
  */

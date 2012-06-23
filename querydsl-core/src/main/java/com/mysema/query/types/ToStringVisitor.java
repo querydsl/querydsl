@@ -60,7 +60,7 @@ public final class ToStringVisitor implements Visitor<String,Templates>{
             return builder.toString();
         } else {
             return "unknown operation with args " + o.getArgs();
-        }
+        }                  
     }
 
     @Override

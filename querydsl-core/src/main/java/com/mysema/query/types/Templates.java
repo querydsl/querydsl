@@ -122,6 +122,7 @@ public class Templates {
         add(Ops.INDEX_OF_2ARGS, "indexOf({0},{1},{2})");
         add(Ops.STRING_IS_EMPTY, "empty({0})");
         add(Ops.LIKE, "{0} like {1}");
+        add(Ops.LIKE_ESCAPE, "{0} like {1} escape '{2s}'");
 
         add(Ops.StringOps.LTRIM, "ltrim({0})");
         add(Ops.StringOps.RTRIM, "rtrim({0})");
@@ -129,6 +130,7 @@ public class Templates {
         add(Ops.StringOps.LAST_INDEX, "lastIndexOf({0},{1})");
         add(Ops.StringOps.LAST_INDEX_2ARGS, "lastIndexOf({0},{1},{2})");
         add(Ops.StringOps.SPLIT, "split({0},{1})");
+        add(Ops.StringOps.POSITION, "position({0},{1})");
 
         // date time
         add(Ops.DateTimeOps.SYSDATE, "sysdate");

@@ -13,7 +13,6 @@
  */
 package com.mysema.query.types.expr;
 
-import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;

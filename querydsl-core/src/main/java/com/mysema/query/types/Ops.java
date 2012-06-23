@@ -37,6 +37,8 @@ public final class Ops {
     private static final List<Class<?>> NUMBER_X_2 = unmodifiableList(Arrays.<Class<?>> asList(Number.class, Number.class));
 
     private static final List<Class<?>> STRING_X_2 = unmodifiableList(Arrays.<Class<?>> asList(String.class, String.class));
+    
+    private static final List<Class<?>> STRING_X_3 = unmodifiableList(Arrays.<Class<?>> asList(String.class, String.class, String.class));
 
     // general
     public static final Operator<Boolean> EQ_PRIMITIVE = new OperatorImpl<Boolean>("EQ_PRIMITIVE",OBJECT_X_2);
@@ -118,6 +120,7 @@ public final class Ops {
     public static final Operator<Boolean> STRING_CONTAINS = new OperatorImpl<Boolean>("STRING_CONTAINS",STRING_X_2);
     public static final Operator<Boolean> STRING_CONTAINS_IC = new OperatorImpl<Boolean>("STRING_CONTAINS_IC",STRING_X_2);
     public static final Operator<Boolean> LIKE = new OperatorImpl<Boolean>("LIKE",STRING_X_2);
+    public static final Operator<Boolean> LIKE_ESCAPE = new OperatorImpl<Boolean>("LIKE_ESCAPE",STRING_X_3);
 
     // case
     public static final Operator<Object> CASE = new OperatorImpl<Object>("CASE",Object.class);
@@ -223,6 +226,7 @@ public final class Ops {
         public static final Operator<String[]> SPLIT = new OperatorImpl<String[]>("SPLIT",STRING_X_2);
         public static final Operator<Number> LAST_INDEX_2ARGS = new OperatorImpl<Number>("LAST_INDEX2");
         public static final Operator<Number> LAST_INDEX = new OperatorImpl<Number>("LAST_INDEX",STRING_X_2);
+        public static final Operator<Number> POSITION = new OperatorImpl<Number>("POSITION", STRING_X_2);
         private StringOps() {}
     }
 

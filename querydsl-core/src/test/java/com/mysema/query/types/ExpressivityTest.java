@@ -7,11 +7,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.mysema.query.support.DetachableMixin;
+import com.mysema.query.support.Expressions;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.MathExpressions;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.StringExpression;
+import com.mysema.query.types.expr.StringExpressions;
 import com.mysema.query.types.path.DatePath;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
@@ -94,7 +96,7 @@ public class ExpressivityTest {
         //Field<Integer>         charLength()
         str.length();
         //Field<T>               coalesce(Field<T> option, Field<?>... options)
-        
+        str.coalesce(str);
         //Field<T>               coalesce(T option, T... options)
 
         //Field<String>          concat(Field<?>... fields)
@@ -120,11 +122,11 @@ public class ExpressivityTest {
         //WindowPartitionByStep<Integer>         countOver()
 
         // currentDate
-        
+        Expressions.currentDate();
         // currentTime
-        
+        Expressions.currentTime();
         // currentTimestamp
-        
+        Expressions.currentTimestamp();
         // currval
         
         // dateDiff
@@ -220,7 +222,7 @@ public class ExpressivityTest {
         //Condition              greaterThanAny(T... array)
 
         //Field<T>               greatest(Field<?>... others)
-        NumberExpression.max(num, num);
+        MathExpressions.max(num, num);
         //Field<T>               greatest(T... others)
 
         //Condition              in(Collection<T> values)
@@ -260,7 +262,7 @@ public class ExpressivityTest {
         //WindowIgnoreNullsStep<T>       lead(int offset, T defaultValue)
 
         //Field<T>               least(Field<?>... others)
-        NumberExpression.min(num, num);
+        MathExpressions.min(num, num);
         //Field<T>               least(T... others)
 
         //Field<Integer>         length()
@@ -304,11 +306,11 @@ public class ExpressivityTest {
         //Condition              like(Field<String> value)
         str.like(str);
         //Condition              like(Field<String> value, char escape)
-     
+        str.like(str, '!');
         //Condition              like(String value)
         str.like("a%");
         //Condition              like(String value, char escape)
-      
+        str.like("a%", '!');
         //Field<BigDecimal>      ln()
         MathExpressions.ln(num);
         //Field<BigDecimal>      log(int base)
@@ -324,7 +326,7 @@ public class ExpressivityTest {
         //Field<String>          lpad(int length, char character)
        
         //Field<String>          ltrim()
-      
+        StringExpressions.ltrim(str);
         //Field<T>               max()
         num.max();
         //WindowPartitionByStep<T>       maxOver()
@@ -382,11 +384,11 @@ public class ExpressivityTest {
         //Condition              notLike(Field<String> value)
         str.notLike(str);
         //Condition              notLike(Field<String> value, char escape)
-
+        str.notLike(str, '!');
         //Condition              notLike(String value)
         str.notLike("a%");
         //Condition              notLike(String value, char escape)
-
+        str.notLike("a%",'!');
         //Field<T>               nullif(Field<T> other)
         
         //Field<T>               nullif(T other)
@@ -402,12 +404,12 @@ public class ExpressivityTest {
         //Field<Integer>         octetLength()
 
         //Field<Integer>         position(Field<String> search)
-
+        StringExpressions.position(str, str);
         //Field<Integer>         position(String search)
-
+        StringExpressions.position(str, "a");
         //Field<BigDecimal>      power(Number exponent)
         MathExpressions.power(num, 4);
-        //Field<BigDecimal>      rad()
+        //Field<BigDecimal>      rad() 
         MathExpressions.radians(num);
         //Field<String>          repeat(Field<? extends Number> count)
 
@@ -434,7 +436,7 @@ public class ExpressivityTest {
         //Field<String>          rpad(int length, char character)
 
         //Field<String>          rtrim()
-
+        StringExpressions.rtrim(str);
         // shl (bitwise shift left)
         
         // shr (bitwise shift right)

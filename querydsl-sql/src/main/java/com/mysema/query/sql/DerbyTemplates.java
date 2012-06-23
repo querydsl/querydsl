@@ -47,7 +47,7 @@ public class DerbyTemplates extends SQLTemplates {
         
         add(Ops.CONCAT, "varchar({0} || {1})");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "day({0})");
-
+        
         add(NEXTVAL, "next value for {0s}");
         
         // case for eq

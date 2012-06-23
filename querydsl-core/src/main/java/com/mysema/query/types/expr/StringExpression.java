@@ -98,7 +98,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     public SimpleExpression<Character> charAt(int i) {
         return charAt(ConstantImpl.create(i));
     }
-
+    
     /**
      * Get the concatenation of this and str
      *
@@ -196,7 +196,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     }
 
     /**
-     * Compares this {@code EString} to another {@code EString}, ignoring case
+     * Compares this {@code StringExpression} to another {@code StringExpression}, ignoring case
      * considerations.
      *
      * @param str
@@ -208,7 +208,7 @@ public abstract class StringExpression extends ComparableExpression<String> {
     }
 
     /**
-     * Compares this {@code EString} to another {@code EString}, ignoring case
+     * Compares this {@code StringExpression} to another {@code StringExpression}, ignoring case
      * considerations.
      *
      * @param str
@@ -319,6 +319,26 @@ public abstract class StringExpression extends ComparableExpression<String> {
     public BooleanExpression like(Expression<String> str){
         return BooleanOperation.create(Ops.LIKE, this, str);
     }
+    
+    /**
+     * Expr: <code>this like str</code>
+     *
+     * @param str
+     * @return
+     */
+    public BooleanExpression like(String str, char escape){
+        return BooleanOperation.create(Ops.LIKE_ESCAPE, this, ConstantImpl.create(str), ConstantImpl.create(escape));
+    }
+
+    /**
+     * Expr: <code>this like str</code>
+     *
+     * @param str
+     * @return
+     */
+    public BooleanExpression like(Expression<String> str, char escape){
+        return BooleanOperation.create(Ops.LIKE_ESCAPE, this, str, ConstantImpl.create(escape));
+    }
 
     /**
      * Get the lower case form
@@ -398,7 +418,27 @@ public abstract class StringExpression extends ComparableExpression<String> {
     public BooleanExpression notLike(Expression<String> str){
         return like(str).not();
     }
+        
+    /**
+     * Expr: <code>this not like str</code>
+     *
+     * @param str
+     * @return
+     */
+    public BooleanExpression notLike(String str, char escape){
+        return like(str, escape).not();
+    }
 
+    /**
+     * Expr: <code>this not like str</code>
+     *
+     * @param str
+     * @return
+     */
+    public BooleanExpression notLike(Expression<String> str, char escape){
+        return like(str, escape).not();
+    }
+    
     /**
      * Prepend the given String and return the result
      *
@@ -468,9 +508,6 @@ public abstract class StringExpression extends ComparableExpression<String> {
         return startsWithIgnoreCase(ConstantImpl.create(str));
     }
 
-    /* (non-Javadoc)
-     * @see com.mysema.query.types.expr.EComparable#stringValue()
-     */
     @Override
     public StringExpression stringValue() {
         return this;

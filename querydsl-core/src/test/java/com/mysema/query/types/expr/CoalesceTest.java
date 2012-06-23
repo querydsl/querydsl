@@ -61,4 +61,14 @@ public class CoalesceTest {
         Coalesce<String> c = new Coalesce<String>(String.class).add(firstname).add(lastname);
         assertEquals("coalesce(firstname, lastname)", c.toString());
     }
+    
+    @Test
+    public void Dsl() {
+        assertEquals("coalesce(firstname, lastname)", firstname.coalesce(lastname).toString());
+    }
+    
+    @Test
+    public void Dsl2() {
+        assertEquals("coalesce(firstname, lastname, xxx)", firstname.coalesce(lastname).add("xxx").toString());
+    }
 }

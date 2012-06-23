@@ -329,7 +329,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
             handle(args.get(0)).append(" instanceof ");
             append(((Constant<Class<?>>) args.get(1)).getConstant().getName());
 
-        } else if (operator.equals(Ops.LIKE)) {
+        } else if (operator.equals(Ops.LIKE) || operator.equals(Ops.LIKE_ESCAPE)) {
             super.visitOperation(type, Ops.MATCHES, 
                 Arrays.asList(args.get(0), ExpressionUtils.likeToRegex((Expression<String>) args.get(1))));
             
