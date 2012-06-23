@@ -46,7 +46,7 @@ public final class MathExpressions {
     public static <A extends Number & Comparable<?>> NumberExpression<Double> atan(Expression<A> num) {
         return NumberOperation.create(Double.class, Ops.MathOps.ATAN, num);
     }
-
+    
     /**
      * @param num
      * @return cos(num)
@@ -113,6 +113,24 @@ public final class MathExpressions {
     }
 
     /**
+     * Return the greater of the given values
+     *
+     * @return max(left, right)
+     */
+    public static <A extends Number & Comparable<?>> NumberExpression<A> max(Expression<A> left, Expression<A> right) {
+        return NumberExpression.max(left, right);
+    }
+
+    /**
+     * Return the smaller of the given values
+     *
+     * @return min(left, right)
+     */
+    public static <A extends Number & Comparable<?>> NumberExpression<A> min(Expression<A> left, Expression<A> right) {
+        return NumberExpression.min(left, right);
+    }
+
+    /**
      * @param num
      * @param exponent
      * @return power(num, exponent)
@@ -127,6 +145,14 @@ public final class MathExpressions {
      */
     public static <A extends Number & Comparable<?>> NumberExpression<Double> radians(Expression<A> num) {
         return NumberOperation.create(Double.class, Ops.MathOps.RAD, num);
+    }
+
+    /**
+     * Returns the random expression
+     * @return random()
+     */
+    public static NumberExpression<Double> random(){
+        return NumberExpression.random();
     }
 
     /**
