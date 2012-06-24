@@ -153,24 +153,27 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
 
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
-        if (args.size() == 2
-                && Number.class.isAssignableFrom(args.get(0).getType())
-                && Number.class.isAssignableFrom(args.get(1).getType())){
-
-            if (operator == Ops.AFTER){
+        if (args.size() == 2 && isPrimitive(args.get(0).getType()) && isPrimitive(args.get(1).getType())){
+            // TODO improve me!
+            if (operator == Ops.EQ) {
+                handle(args.get(0)).append(" == ").handle(args.get(1));
+                return;
+            } else if (operator == Ops.NE) {            
+                handle(args.get(0)).append(" != ").handle(args.get(1));
+                return;
+            } else if (operator == Ops.GT){
                 handle(args.get(0)).append(" > ").handle(args.get(1));
                 return;
-            }else if (operator == Ops.BEFORE){
+            } else if (operator == Ops.LT){
                 handle(args.get(0)).append(" < ").handle(args.get(1));
                 return;
-            }else if (operator == Ops.AOE){
+            } else if (operator == Ops.GOE){
                 handle(args.get(0)).append(" >= ").handle(args.get(1));
                 return;
-            }else if (operator == Ops.BOE){
+            } else if (operator == Ops.LOE){
                 handle(args.get(0)).append(" <= ").handle(args.get(1));
                 return;
             }
-            // TODO : Ops.BETWEEN
         }
 
         if (operator == Ops.STRING_CAST) {
@@ -180,6 +183,13 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
         } else {
             super.visitOperation(type, operator, args);
         }
+    }
+    
+    private static boolean isPrimitive(Class<?> type){
+        return type.isPrimitive()
+            || Number.class.isAssignableFrom(type)
+            || Boolean.class.equals(type)
+            || Character.class.equals(type);
     }
 
     @SuppressWarnings("unchecked")

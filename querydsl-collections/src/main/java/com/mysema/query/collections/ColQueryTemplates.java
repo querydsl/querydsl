@@ -29,15 +29,15 @@ public class ColQueryTemplates extends JavaTemplates {
 
     protected ColQueryTemplates() {
         String functions = ColQueryFunctions.class.getName();
-        add(Ops.EQ_OBJECT, "{0}.equals({1})");
-        add(Ops.NE_OBJECT, "!{0}.equals({1})");
+        add(Ops.EQ, "{0}.equals({1})");
+        add(Ops.NE, "!{0}.equals({1})");
         add(Ops.INSTANCE_OF, "{1}.isInstance({0})");
 
         // Comparable
-        add(Ops.AFTER, "{0}.compareTo({1}) > 0");
-        add(Ops.BEFORE, "{0}.compareTo({1}) < 0");
-        add(Ops.AOE, "{0}.compareTo({1}) >= 0");
-        add(Ops.BOE, "{0}.compareTo({1}) <= 0");
+        add(Ops.GT, "{0}.compareTo({1}) > 0");
+        add(Ops.LT, "{0}.compareTo({1}) < 0");
+        add(Ops.GOE, "{0}.compareTo({1}) >= 0");
+        add(Ops.LOE, "{0}.compareTo({1}) <= 0");
         add(Ops.BETWEEN, functions + ".between({0},{1},{2})");
         add(Ops.STRING_CAST, "String.valueOf({0})");
 

@@ -53,7 +53,7 @@ trait SimpleExpression[T] extends DslExpression[T] {
   
   def eq(right: T): BooleanExpression = eq(constant(right))
   
-  def eq(right: Expression[T]) = boolean(EQ_OBJECT, this, right)
+  def eq(right: Expression[T]) = boolean(EQ, this, right)
   
   def ===(right: T) = eq(right)
   
@@ -61,7 +61,7 @@ trait SimpleExpression[T] extends DslExpression[T] {
   
   def ne(right: T): BooleanExpression = ne(constant(right))
 
-  def ne(right: Expression[T]) = boolean(NE_OBJECT, this, right)    
+  def ne(right: Expression[T]) = boolean(NE, this, right)    
 
   def !==(right: T) = ne(right)
   
@@ -173,7 +173,7 @@ trait ComparableExpression[T <: Comparable[_]] extends ComparableExpressionBase[
   
   def lt(right: T): BooleanExpression = lt(constant(right))
 
-  def lt(right: Expression[T]): BooleanExpression = boolean(BEFORE, this, right)
+  def lt(right: Expression[T]): BooleanExpression = boolean(LT, this, right)
 
   def <(right: T) = lt(right)
   
@@ -189,7 +189,7 @@ trait ComparableExpression[T <: Comparable[_]] extends ComparableExpressionBase[
   
   def gt(right: T): BooleanExpression = gt(constant(right))
 
-  def gt(right: Expression[T]) = boolean(AFTER, this, right)
+  def gt(right: Expression[T]) = boolean(GT, this, right)
   
   def >(right: T) = gt(right)
   
@@ -197,7 +197,7 @@ trait ComparableExpression[T <: Comparable[_]] extends ComparableExpressionBase[
   
   def goe(right: T): BooleanExpression = goe(constant(right))
 
-  def goe(right: Expression[T]) = boolean(AOE, this, right)
+  def goe(right: Expression[T]) = boolean(GOE, this, right)
   
   def >=(right: T) = goe(right)
   
@@ -205,7 +205,7 @@ trait ComparableExpression[T <: Comparable[_]] extends ComparableExpressionBase[
   
   def loe(right: T): BooleanExpression = loe(constant(right))
 
-  def loe(right: Expression[T]) = boolean(BOE, this, right)
+  def loe(right: Expression[T]) = boolean(LOE, this, right)
   
   def <=(right: T) = loe(right)
   

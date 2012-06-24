@@ -179,11 +179,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static <D> Predicate eq(Expression<D> left, Expression<? extends D> right) {
-        if (isPrimitive(left.getType())) {
-            return new PredicateOperation(Ops.EQ_PRIMITIVE, left, right);
-        } else {
-            return new PredicateOperation(Ops.EQ_OBJECT, left, right);
-        }
+        return new PredicateOperation(Ops.EQ, left, right);
     }
     
     /**
@@ -232,14 +228,7 @@ public final class ExpressionUtils {
      */
     public static Predicate isNotNull(Expression<?> left) {
         return new PredicateOperation(Ops.IS_NOT_NULL, left);
-    }
-    
-    private static boolean isPrimitive(Class<?> type){
-        return type.isPrimitive()
-            || Number.class.isAssignableFrom(type)
-            || Boolean.class.equals(type)
-            || Character.class.equals(type);
-    }
+    }   
     
     /**
      * Convert the given like pattern to a regex pattern
@@ -323,11 +312,7 @@ public final class ExpressionUtils {
      * @return
      */
     public static <D> Predicate ne(Expression<D> left, Expression<? super D> right) {
-        if (isPrimitive(left.getType())) {
-            return new PredicateOperation(Ops.NE_PRIMITIVE, left, right);
-        } else {
-            return new PredicateOperation(Ops.NE_OBJECT, left, right);
-        }
+        return new PredicateOperation(Ops.NE, left, right);
     }
     
     /**

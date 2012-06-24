@@ -86,7 +86,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
     @Override
     public Object visit(Operation<?> expr, Void context) {
         Operator<?> op = expr.getOperator();
-        if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE ) {
+        if (op == Ops.EQ) {
             return asDBObject(asDBKey(expr, 0), asDBValue(expr, 1));
 
         } else if (op == Ops.STRING_IS_EMPTY){
@@ -106,7 +106,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
             String key = arg.keySet().iterator().next();
 
             Operator<?> subOp = ((Operation<?>) expr.getArg(0)).getOperator();
-            if (subOp != Ops.EQ_OBJECT && subOp != Ops.EQ_PRIMITIVE && subOp != Ops.STRING_IS_EMPTY){
+            if (subOp != Ops.EQ && subOp != Ops.STRING_IS_EMPTY){
                 return asDBObject(key, asDBObject("$not", arg.get(key)));
             } else {
                 return asDBObject(key, asDBObject("$ne", arg.get(key)));
@@ -118,7 +118,7 @@ public class MongodbSerializer implements Visitor<Object, Void> {
             list.add(handle(expr.getArg(1)));
             return asDBObject("$or", list);
             
-        } else if (op == Ops.NE_OBJECT || op == Ops.NE_PRIMITIVE) {
+        } else if (op == Ops.NE) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$ne", asDBValue(expr, 1)));
             
         } else if (op == Ops.STARTS_WITH) {
@@ -172,38 +172,28 @@ public class MongodbSerializer implements Visitor<Object, Void> {
                 return asDBObject(asDBKey(expr, exprIndex), asDBValue(expr, constIndex));
             }
             
-        }
-       
-        
-        else if (op == Ops.LT || op == Ops.BEFORE) {
+        } else if (op == Ops.LT) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$lt", asDBValue(expr, 1)));
-        }
-
-        else if (op == Ops.GT || op == Ops.AFTER) {
+            
+        } else if (op == Ops.GT) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$gt", asDBValue(expr, 1)));
-        }
-
-        else if (op == Ops.LOE || op == Ops.BOE) {
+            
+        } else if (op == Ops.LOE) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$lte", asDBValue(expr, 1)));
-        }
-
-        else if (op == Ops.GOE || op == Ops.AOE) {
+            
+        } else if (op == Ops.GOE) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$gte", asDBValue(expr, 1)));
-        }
-        
-        else if (op == Ops.IS_NULL){
+            
+        } else if (op == Ops.IS_NULL){
             return asDBObject(asDBKey(expr, 0), asDBObject("$exists", false));
-        }
-        
-        else if (op == Ops.IS_NOT_NULL){
+            
+        } else if (op == Ops.IS_NOT_NULL){
             return asDBObject(asDBKey(expr, 0), asDBObject("$exists", true));
-        }
-        
-        else if (op == MongodbOps.NEAR) {
+            
+        } else if (op == MongodbOps.NEAR) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$near", asDBValue(expr, 1)));
-        }
-
-        else if (op == MongodbOps.ELEM_MATCH) {
+            
+        } else if (op == MongodbOps.ELEM_MATCH) {
             return asDBObject(asDBKey(expr, 0), asDBObject("$elemMatch", asDBValue(expr, 1)));
         }
         

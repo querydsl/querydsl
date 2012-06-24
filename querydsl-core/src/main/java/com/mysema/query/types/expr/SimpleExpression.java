@@ -46,16 +46,9 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
 
     @Nullable
     private volatile BooleanExpression isnull, isnotnull;
-
-    protected final boolean primitive;
     
     public SimpleExpression(Expression<T> mixin) {
         super(mixin);
-        Class<? extends T> type = mixin.getType();
-        this.primitive = type.isPrimitive()
-            || Number.class.isAssignableFrom(type)
-            || Boolean.class.equals(type)
-            || Character.class.equals(type);
     }
 
 
@@ -148,11 +141,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @return
      */
     public BooleanExpression eq(Expression<? super T> right) {
-        if (primitive) {
-            return BooleanOperation.create(Ops.EQ_PRIMITIVE, this, right);
-        } else {
-            return BooleanOperation.create(Ops.EQ_OBJECT, this, right);
-        }
+        return BooleanOperation.create(Ops.EQ, this, right);
     }
     
     /**
@@ -227,11 +216,7 @@ public abstract class SimpleExpression<T> extends DslExpression<T> {
      * @return
      */
     public BooleanExpression ne(Expression<? super T> right) {
-        if (primitive) {
-            return BooleanOperation.create(Ops.NE_PRIMITIVE, this, right);
-        } else {
-            return BooleanOperation.create(Ops.NE_OBJECT, this, right);
-        }
+        return BooleanOperation.create(Ops.NE, this, right);
     }
     
     /**

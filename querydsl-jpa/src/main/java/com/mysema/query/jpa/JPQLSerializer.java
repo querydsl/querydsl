@@ -64,8 +64,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
 
     private static final Set<Operator<?>> NUMERIC = new HashSet<Operator<?>>(Arrays.<Operator<?>>asList(
             Ops.ADD, Ops.SUB, Ops.MULT, Ops.DIV,
-            Ops.LT, Ops.LOE, Ops.GT, Ops.GOE, Ops.BETWEEN,
-            Ops.BEFORE, Ops.AFTER, Ops.BOE, Ops.AOE));
+            Ops.LT, Ops.LOE, Ops.GT, Ops.GOE, Ops.BETWEEN));
 
     private static final String COMMA = ", ";
 

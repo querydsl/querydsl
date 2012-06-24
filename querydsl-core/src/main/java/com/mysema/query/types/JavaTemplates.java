@@ -26,8 +26,7 @@ import java.lang.reflect.Field;
 public class JavaTemplates extends Templates {
 
     public JavaTemplates() {
-        add(Ops.EQ_PRIMITIVE, "{0} == {1}");
-        add(Ops.EQ_OBJECT, "{0} == {1}");
+        add(Ops.EQ, "{0} == {1}");
         add(Ops.IS_NULL, "{0} == null");
         add(Ops.IS_NOT_NULL, "{0} != null");
         add(Ops.INSTANCE_OF, "{0} instanceof {1}");

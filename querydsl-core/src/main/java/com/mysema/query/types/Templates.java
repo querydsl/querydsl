@@ -71,10 +71,10 @@ public class Templates {
         add(Ops.LOE, "{0} <= {1}", 22);
         add(Ops.LT, "{0} < {1}", 23);
 
-        add(Ops.AFTER, "{0} > {1}", 21);
-        add(Ops.BEFORE, "{0} < {1}", 23);
-        add(Ops.AOE, "{0} >= {1}", 21);
-        add(Ops.BOE, "{0} <= {1}", 23);
+//        add(Ops.AFTER, "{0} > {1}", 21);
+//        add(Ops.BEFORE, "{0} < {1}", 23);
+//        add(Ops.AOE, "{0} >= {1}", 21);
+//        add(Ops.BOE, "{0} <= {1}", 23);
 
         // numeric
         add(Ops.NEGATE, "-{0}", 6);
@@ -85,12 +85,10 @@ public class Templates {
         add(Ops.SUB, "{0} - {1}", 12);
 
         // various
-        add(Ops.EQ_PRIMITIVE, "{0} = {1}", 18);
-        add(Ops.EQ_OBJECT, "{0} = {1}", 18);
+        add(Ops.EQ, "{0} = {1}", 18);
         add(Ops.EQ_IGNORE_CASE, "eqIc({0},{1})", 18);
         add(Ops.INSTANCE_OF, "{0}.class = {1}");
-        add(Ops.NE_PRIMITIVE, "{0} != {1}", 25);
-        add(Ops.NE_OBJECT, "{0} != {1}", 25);
+        add(Ops.NE, "{0} != {1}", 25);
         add(Ops.IN, "{0} in {1}");
         add(Ops.IS_NULL, "{0} is null", 26);
         add(Ops.IS_NOT_NULL, "{0} is not null", 26);

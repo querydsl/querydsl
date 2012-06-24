@@ -108,12 +108,12 @@ public class LuceneSerializer {
             return bq;
         } else if (op == Ops.LIKE) {
             return like(operation, metadata);
-        } else if (op == Ops.EQ_OBJECT || op == Ops.EQ_PRIMITIVE) {
+        } else if (op == Ops.EQ) {
             return eq(operation, metadata, false);
         } else if (op == Ops.EQ_IGNORE_CASE) {
             throw new IgnoreCaseUnsupportedException();
             // return eq(operation, metadata, true);
-        } else if (op == Ops.NE_OBJECT || op == Ops.NE_PRIMITIVE) {
+        } else if (op == Ops.NE) {
             return ne(operation, metadata, false);
         } else if (op == Ops.STARTS_WITH) {
             return startsWith(metadata, operation, false);
@@ -134,13 +134,13 @@ public class LuceneSerializer {
             return between(operation, metadata);
         } else if (op == Ops.IN) {
             return in(operation, metadata, false);
-        } else if (op == Ops.LT || op == Ops.BEFORE) {
+        } else if (op == Ops.LT) {
             return lt(operation, metadata);
-        } else if (op == Ops.GT || op == Ops.AFTER) {
+        } else if (op == Ops.GT) {
             return gt(operation, metadata);
-        } else if (op == Ops.LOE || op == Ops.BOE) {
+        } else if (op == Ops.LOE) {
             return le(operation, metadata);
-        } else if (op == Ops.GOE || op == Ops.AOE) {
+        } else if (op == Ops.GOE) {
             return ge(operation, metadata);
         } else if (op == Ops.DELEGATE){
             return toQuery(operation.getArg(0), metadata);

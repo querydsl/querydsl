@@ -41,13 +41,11 @@ public final class Ops {
     private static final List<Class<?>> STRING_X_3 = unmodifiableList(Arrays.<Class<?>> asList(String.class, String.class, String.class));
 
     // general
-    public static final Operator<Boolean> EQ_PRIMITIVE = new OperatorImpl<Boolean>("EQ_PRIMITIVE",OBJECT_X_2);
-    public static final Operator<Boolean> EQ_OBJECT = new OperatorImpl<Boolean>("EQ_OBJECT",OBJECT_X_2);
+    public static final Operator<Boolean> EQ = new OperatorImpl<Boolean>("EQ",OBJECT_X_2);
     public static final Operator<Boolean> IS_NOT_NULL = new OperatorImpl<Boolean>("IS_NOT_NULL",Object.class);
     public static final Operator<Boolean> IS_NULL = new OperatorImpl<Boolean>("IS_NULL",Object.class);
     public static final Operator<Boolean> INSTANCE_OF = new OperatorImpl<Boolean>("INSTANCE_OF");
-    public static final Operator<Boolean> NE_PRIMITIVE = new OperatorImpl<Boolean>("NE_PRIMITIVE",OBJECT_X_2);
-    public static final Operator<Boolean> NE_OBJECT = new OperatorImpl<Boolean>("NE_OBJECT",OBJECT_X_2);
+    public static final Operator<Boolean> NE = new OperatorImpl<Boolean>("NE",OBJECT_X_2);
     public static final Operator<Number> NUMCAST = new OperatorImpl<Number>("NUMCAST");
     public static final Operator<String> STRING_CAST = new OperatorImpl<String>("STING_CAST",Object.class);
     public static final Operator<Object> ALIAS = new OperatorImpl<Object>("ALIAS");
@@ -85,10 +83,10 @@ public final class Ops {
     public static final Operator<Boolean> LT = new OperatorImpl<Boolean>("LT",COMPARABLE_X_2);
 
     // Date / Comparable
-    public static final Operator<Boolean> AFTER = new OperatorImpl<Boolean>("AFTER",COMPARABLE_X_2);
-    public static final Operator<Boolean> BEFORE = new OperatorImpl<Boolean>("BEFORE",COMPARABLE_X_2);
-    public static final Operator<Boolean> AOE = new OperatorImpl<Boolean>("AOE",COMPARABLE_X_2);
-    public static final Operator<Boolean> BOE = new OperatorImpl<Boolean>("BOE",COMPARABLE_X_2);
+//    public static final Operator<Boolean> AFTER = new OperatorImpl<Boolean>("AFTER",COMPARABLE_X_2);
+//    public static final Operator<Boolean> BEFORE = new OperatorImpl<Boolean>("BEFORE",COMPARABLE_X_2);
+//    public static final Operator<Boolean> AOE = new OperatorImpl<Boolean>("AOE",COMPARABLE_X_2);
+//    public static final Operator<Boolean> BOE = new OperatorImpl<Boolean>("BOE",COMPARABLE_X_2);
 
     // Number
     public static final Operator<Number> NEGATE = new OperatorImpl<Number>("NEGATE",Number.class);
@@ -138,11 +136,11 @@ public final class Ops {
     // subquery operations
     public static final Operator<Boolean> EXISTS = new OperatorImpl<Boolean>("EXISTS",Object.class);
 
-    public static final List<Operator<?>> equalsOps = unmodifiableList(Arrays.<Operator<?>> asList(EQ_OBJECT, EQ_PRIMITIVE));
+    public static final List<Operator<?>> equalsOps = unmodifiableList(Arrays.<Operator<?>> asList(EQ));
 
-    public static final List<Operator<?>> notEqualsOps = unmodifiableList(Arrays.<Operator<?>> asList(NE_OBJECT, NE_PRIMITIVE));
+    public static final List<Operator<?>> notEqualsOps = unmodifiableList(Arrays.<Operator<?>> asList(NE));
 
-    public static final List<Operator<?>> compareOps = unmodifiableList(Arrays.<Operator<?>> asList(EQ_OBJECT, EQ_PRIMITIVE,LT, GT, GOE, LOE));
+    public static final List<Operator<?>> compareOps = unmodifiableList(Arrays.<Operator<?>> asList(EQ, NE, LT, GT, GOE, LOE));
 
     /**
      * Aggreation operators
