@@ -34,29 +34,11 @@ public final class StringExpressions {
     }
 
     /**
-     * @param in
-     * @param search
-     * @return position(in, search)
-     */
-    public static NumberExpression<Integer> position(Expression<String> in, Expression<String> search) {
-        return NumberOperation.create(Integer.class, Ops.StringOps.POSITION, in, search);
-    }
-
-    /**
      * @param str
      * @return rtrim(str)
      */
     public static StringExpression rtrim(Expression<String> str) {
         return StringOperation.create(Ops.StringOps.RTRIM, str);
-    }
-
-    /**
-     * @param in
-     * @param search
-     * @return position(in, search)
-     */
-    public static NumberExpression<Integer> position(Expression<String> in, String search) {
-        return NumberOperation.create(Integer.class, Ops.StringOps.POSITION, in, ConstantImpl.create(search));
     }
     
     /**

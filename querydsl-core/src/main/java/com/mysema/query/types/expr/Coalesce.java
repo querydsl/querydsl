@@ -53,15 +53,6 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
         }
     }
     
-    public Coalesce(Class<? extends T> type, Expression expr, Expression[] exprs) {
-        super(type);
-        // NOTE : type parameters for the varargs, would result in compiler warnings
-        add(expr);
-        for (Expression e : exprs){
-            add(e);
-        }
-    }
-
     public Coalesce(Expression... exprs){
         // NOTE : type parameters for the varargs, would result in compiler warnings
         this((exprs.length > 0 ? exprs[0].getType() : Object.class), exprs);

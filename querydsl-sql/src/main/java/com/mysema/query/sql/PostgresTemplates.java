@@ -44,7 +44,8 @@ public class PostgresTemplates extends SQLTemplates {
         add(Ops.MATCHES, "{0} ~ {1}");
         add(Ops.INDEX_OF, "strpos({0},{1})-1");
         add(Ops.INDEX_OF_2ARGS, "strpos({0},{1})-1"); //FIXME
-        add(Ops.StringOps.POSITION, "position({1} in {0})");
+        add(Ops.StringOps.LOCATE,  "strpos({1},{0})");
+        add(Ops.StringOps.LOCATE2, "strpos(repeat('^',{2s}-1) || substr({1},{2s}),{0})");
 
         // like without escape
         if (escape == '\\') {

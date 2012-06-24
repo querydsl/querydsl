@@ -172,7 +172,7 @@ public class ExpressivityTest {
         //Condition              equalIgnoreCase(Field<String> value)
         str.equalsIgnoreCase(str);
         //Condition              equalIgnoreCase(String value)
-        str.equalsIgnoreCase("");
+        str.equalsIgnoreCase("abc");
         //Field<BigDecimal>      exp()
         MathExpressions.exp(num);
         //Field<Integer>         extract(DatePart datePart)
@@ -370,9 +370,9 @@ public class ExpressivityTest {
         //Condition              notEqualAny(T... array) -> notIn
 
         //Condition              notEqualIgnoreCase(Field<String> value)
-
+        str.notEqualsIgnoreCase(str);
         //Condition              notEqualIgnoreCase(String value)
-
+        str.notEqualsIgnoreCase("abc");
         //Condition              notIn(Collection<T> values)
         num.notIn(Arrays.asList(1,2,3));
         //Condition              notIn(Field<?>... values)
@@ -394,9 +394,9 @@ public class ExpressivityTest {
         //Field<T>               nullif(T other)
 
         //Field<T>               nvl(Field<T> defaultValue)
-
+        str.coalesce(str);
         //Field<T>               nvl(T defaultValue)
-
+        str.coalesce("abc");
         //<Z> Field<Z>           nvl2(Field<Z> valueIfNotNull, Field<Z> valueIfNull)
 
         //<Z> Field<Z>           nvl2(Z valueIfNotNull, Z valueIfNull)
@@ -404,9 +404,9 @@ public class ExpressivityTest {
         //Field<Integer>         octetLength()
 
         //Field<Integer>         position(Field<String> search)
-        StringExpressions.position(str, str);
+        str.locate(str);        
         //Field<Integer>         position(String search)
-        StringExpressions.position(str, "a");
+        str.locate("a");
         //Field<BigDecimal>      power(Number exponent)
         MathExpressions.power(num, 4);
         //Field<BigDecimal>      rad() 

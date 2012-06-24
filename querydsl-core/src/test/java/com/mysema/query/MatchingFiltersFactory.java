@@ -227,7 +227,8 @@ public class MatchingFiltersFactory {
         rv.add(expr.equalsIgnoreCase(other));
 
         if (module != Module.LUCENE){
-            rv.add(expr.indexOf(other).eq(0));
+            rv.add(expr.indexOf(other).eq(0));            
+            rv.add(expr.locate(other).eq(1));
         }
 
         if (target != Target.DERBY && module != Module.LUCENE){

@@ -57,7 +57,19 @@ public abstract class ComparableExpressionBase<T extends Comparable> extends Sim
     }
     
     public final Coalesce<T> coalesce(Expression<?>...exprs) {
-        return new Coalesce<T>(getType(), this, exprs);
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), this);
+        for (Expression expr : exprs) {
+            coalesce.add(expr);
+        }
+        return coalesce;
+    }
+    
+    public final Coalesce<T> coalesce(T... args) {
+        Coalesce<T> coalesce = new Coalesce<T>(getType(), this);
+        for (T arg : args) {
+            coalesce.add(arg);
+        }
+        return coalesce;
     }
     
     /**

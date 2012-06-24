@@ -24,8 +24,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.mysema.query.support.Expressions;
-import com.mysema.query.types.Expression;
 import com.mysema.query.types.OperationImpl;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;

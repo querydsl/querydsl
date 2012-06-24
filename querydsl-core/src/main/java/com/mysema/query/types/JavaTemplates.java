@@ -73,6 +73,8 @@ public class JavaTemplates extends Templates {
         add(Ops.StringOps.SPLIT, "{0}.split({1})");
         add(Ops.StringOps.LAST_INDEX, "{0}.lastIndexOf({1})");
         add(Ops.StringOps.LAST_INDEX_2ARGS, "{0}.lastIndexOf({1},{2})");
+        add(Ops.StringOps.LOCATE, "({1}.indexOf({0})+1)");
+        add(Ops.StringOps.LOCATE2, "({1}.indexOf({0},{2s}-1)+1)");
 
         // Date and Time
         add(Ops.DateTimeOps.DAY_OF_MONTH, "{0}.getDayOfMonth()");

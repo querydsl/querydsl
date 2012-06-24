@@ -80,6 +80,7 @@ import com.mysema.query.types.expr.Coalesce;
 import com.mysema.query.types.expr.MathExpressions;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.expr.Param;
+import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.expr.StringExpressions;
 import com.mysema.query.types.expr.Wildcard;
 import com.mysema.query.types.path.NumberPath;
@@ -710,10 +711,12 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     @Test
     @ExcludeIn(SQLITE)
     public void String() {
-        Expression<String> str = Expressions.stringTemplate("'  abcd  '");
+        StringExpression str = Expressions.stringTemplate("'  abcd  '");
         
         assertEquals("abcd  ", unique(StringExpressions.ltrim(str)));
-        assertEquals(Integer.valueOf(3), unique(StringExpressions.position(str, "a")));
+        assertEquals(Integer.valueOf(3), unique(str.locate("a")));
+        assertEquals(Integer.valueOf(0), unique(str.locate("a", 4)));
+        assertEquals(Integer.valueOf(4), unique(str.locate("b", 2)));
         assertEquals("  abcd", unique(StringExpressions.rtrim(str)));
     }
     

@@ -37,6 +37,9 @@ public class SQLiteTemplates extends SQLTemplates {
         
         add(Ops.INDEX_OF, "charindex({1},{0},1)-1");
         add(Ops.INDEX_OF_2ARGS, "charindex({1},{0},{2s}+1)-1");
+        
+        add(Ops.StringOps.LOCATE, "charindex({0},{1})");
+        add(Ops.StringOps.LOCATE2, "charindex({0},{1},{2s})");
                 
         // TODO : optimize
         add(Ops.DateTimeOps.YEAR, "cast(strftime('%Y',{0} / 1000, 'unixepoch', 'localtime') as integer)");

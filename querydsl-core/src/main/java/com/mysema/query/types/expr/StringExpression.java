@@ -341,6 +341,46 @@ public abstract class StringExpression extends ComparableExpression<String> {
     }
 
     /**
+     * Get the position of the given String in this String, the first position is 1
+     * 
+     * @param str
+     * @return locate(str, this)
+     */
+    public NumberExpression<Integer> locate(Expression<String> str) {
+        return NumberOperation.create(Integer.class, Ops.StringOps.LOCATE, str, this);
+    }
+    
+    /**
+     * Get the position of the given String in this String, the first position is 1
+     * 
+     * @param str
+     * @return locate(str, this)
+     */
+    public NumberExpression<Integer> locate(String str) {
+        return NumberOperation.create(Integer.class, Ops.StringOps.LOCATE, ConstantImpl.create(str), this);
+    }
+    
+    /**
+     * Get the position of the given String in this String, the first position is 1
+     * 
+     * @param str
+     * @return locate(str, this, start)
+     */
+    public NumberExpression<Integer> locate(Expression<String> str, NumberExpression<Integer> start) {
+        return NumberOperation.create(Integer.class, Ops.StringOps.LOCATE2, str, this, start);
+    }
+    
+    /**
+     * Get the position of the given String in this String, the first position is 1
+     * 
+     * @param str
+     * @return locate(str, this, start)
+     */
+    public NumberExpression<Integer> locate(String str, int start) {
+        return NumberOperation.create(Integer.class, Ops.StringOps.LOCATE2, ConstantImpl.create(str), this, ConstantImpl.create(start));
+    }
+    
+    /**
      * Get the lower case form
      *
      * @return this.toLowerCase()
@@ -397,6 +437,31 @@ public abstract class StringExpression extends ComparableExpression<String> {
             min = StringOperation.create(Ops.AggOps.MIN_AGG, this);
         }
         return min;
+    }
+    
+    /**
+     * Compares this {@code StringExpression} to another {@code StringExpression}, ignoring case
+     * considerations.
+     *
+     * @param str
+     * @return !this.equalsIgnoreCase(str)
+     * @see java.lang.String#equalsIgnoreCase(String)
+     */
+    public BooleanExpression notEqualsIgnoreCase(Expression<String> str) {
+        return equalsIgnoreCase(str).not();
+    }
+
+
+    /**
+     * Compares this {@code StringExpression} to another {@code StringExpression}, ignoring case
+     * considerations.
+     *
+     * @param str
+     * @return !this.equalsIgnoreCase(str)
+     * @see java.lang.String#equalsIgnoreCase(String)
+     */
+    public BooleanExpression notEqualsIgnoreCase(String str) {
+        return equalsIgnoreCase(str).not();
     }
     
     /**

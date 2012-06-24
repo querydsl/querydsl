@@ -179,7 +179,8 @@ public class SQLTemplates extends Templates {
         add(Ops.STRING_IS_EMPTY, "length({0}) = 0");
         add(Ops.SUBSTR_1ARG, "substr({0},{1s}+1)");
         add(Ops.SUBSTR_2ARGS, "substr({0},{1s}+1,{2s}-{1s})");
-        add(Ops.StringOps.POSITION, "locate({1},{0})");
+        add(Ops.StringOps.LOCATE, "locate({0},{1})");
+        add(Ops.StringOps.LOCATE2, "locate({0},{1},{2})");
         
         // like with escape
         add(Ops.LIKE, "{0} like {1} escape '"+escape+"'");

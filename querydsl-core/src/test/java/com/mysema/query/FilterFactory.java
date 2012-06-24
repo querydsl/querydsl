@@ -277,6 +277,10 @@ public class FilterFactory {
         rv.add(expr.indexOf(other).gt(0));
         rv.add(expr.indexOf("X", 1).gt(0));
         rv.add(expr.indexOf(knownValue).gt(0));
+        
+        rv.add(expr.locate(other).gt(1));
+        rv.add(expr.locate("X", 2).gt(1));
+        rv.add(expr.locate(knownValue).gt(1));
 
 //        if (!module.equals(Module.HQL) && !module.equals(Module.JDOQL) && !module.equals(Module.SQL)){
 //            rv.add(expr.lastIndexOf(other).gt(0));
