@@ -69,9 +69,6 @@ public class JavaTemplates extends Templates {
         add(Ops.EQ_IGNORE_CASE, "{0}.equalsIgnoreCase({1})");
         add(Ops.ENDS_WITH, "{0}.endsWith({1})");
         add(Ops.ENDS_WITH_IC, "{0l}.endsWith({1l})");
-        add(Ops.StringOps.SPLIT, "{0}.split({1})");
-        add(Ops.StringOps.LAST_INDEX, "{0}.lastIndexOf({1})");
-        add(Ops.StringOps.LAST_INDEX_2ARGS, "{0}.lastIndexOf({1},{2})");
         add(Ops.StringOps.LOCATE, "({1}.indexOf({0})+1)");
         add(Ops.StringOps.LOCATE2, "({1}.indexOf({0},{2s}-1)+1)");
 

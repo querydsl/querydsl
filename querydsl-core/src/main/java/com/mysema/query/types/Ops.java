@@ -224,10 +224,7 @@ public final class Ops {
         public static final Operator<String> RPAD = new OperatorImpl<String>("RPAD",String.class, Integer.class);
         public static final Operator<String> LPAD2 = new OperatorImpl<String>("LPAD2",String.class, Integer.class, Character.class);
         public static final Operator<String> RPAD2 = new OperatorImpl<String>("RPAD2",String.class, Integer.class, Character.class);
-        public static final Operator<String> SPACE = new OperatorImpl<String>("SPACE",Integer.class);
         public static final Operator<String[]> SPLIT = new OperatorImpl<String[]>("SPLIT",STRING_X_2);
-        public static final Operator<Number> LAST_INDEX_2ARGS = new OperatorImpl<Number>("LAST_INDEX2");
-        public static final Operator<Number> LAST_INDEX = new OperatorImpl<Number>("LAST_INDEX",STRING_X_2);
         public static final Operator<Number> LOCATE = new OperatorImpl<Number>("LOCATE", STRING_X_2);
         public static final Operator<Number> LOCATE2 = new OperatorImpl<Number>("LOCATE2", String.class, String.class, Integer.class);
         private StringOps() {}
