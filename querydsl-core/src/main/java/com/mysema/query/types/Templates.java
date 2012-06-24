@@ -131,7 +131,7 @@ public class Templates {
         add(Ops.StringOps.LAST_INDEX_2ARGS, "lastIndexOf({0},{1},{2})");
         add(Ops.StringOps.SPLIT, "split({0},{1})");
         add(Ops.StringOps.LOCATE, "locate({0},{1})");
-        add(Ops.StringOps.LOCATE2, "locate({0},{1},{2})");
+        add(Ops.StringOps.LOCATE2, "locate({0},{1},{2s})");
         add(Ops.StringOps.LPAD, "lpad({0},{1})");
         add(Ops.StringOps.RPAD, "rpad({0},{1})");
         add(Ops.StringOps.LPAD2, "lpad({0},{1},'{2s}')");
