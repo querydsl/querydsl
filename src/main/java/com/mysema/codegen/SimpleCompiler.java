@@ -137,7 +137,6 @@ public class SimpleCompiler implements JavaCompiler {
         for (String arg : arguments) {
             args.add(arg);
         }
-        System.err.println(args);
         return compiler.run(in, out, err, args.toArray(new String[args.size()]));
     }
 
