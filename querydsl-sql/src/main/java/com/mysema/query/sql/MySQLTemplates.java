@@ -50,6 +50,9 @@ public class MySQLTemplates extends SQLTemplates {
         add(Ops.CONCAT, "concat({0}, {1})",0);
         add(Ops.DateTimeOps.YEAR_MONTH, "extract(year_month from {0})");
 
+        add(Ops.StringOps.LPAD, "lpad({0},{1},' ')");
+        add(Ops.StringOps.RPAD, "rpad({0},{1},' ')");
+        
         // like without escape
         if (escape == '\\') {
             add(Ops.LIKE, "{0} like {1}");

@@ -59,6 +59,86 @@ public final class StringExpressions {
         return NumberOperation.create(Integer.class, Ops.StringOps.POSITION, in, ConstantImpl.create(search));
     }
     
+    /**
+     * @param in
+     * @param length
+     * @return
+     */
+    public static StringExpression lpad(Expression<String> in, int length) {
+        return StringOperation.create(Ops.StringOps.LPAD, in, ConstantImpl.create(length));
+    }
+    
+    /**
+     * @param in
+     * @param length
+     * @return
+     */
+    public static StringExpression lpad(Expression<String> in, Expression<Integer> length) {
+        return StringOperation.create(Ops.StringOps.LPAD, in, length);
+    }
+    
+    /**
+     * @param in
+     * @param length
+     * @return
+     */
+    public static StringExpression rpad(Expression<String> in, int length) {
+        return StringOperation.create(Ops.StringOps.RPAD, in, ConstantImpl.create(length));
+    }
+    
+    /**
+     * @param in
+     * @param length
+     * @return
+     */
+    public static StringExpression rpad(Expression<String> in, Expression<Integer> length) {
+        return StringOperation.create(Ops.StringOps.RPAD, in, length);
+    }
+    
     private StringExpressions() {}
+
+    /**
+     * @param in
+     * @param length
+     * @param c
+     * @return
+     */
+    public static StringExpression lpad(Expression<String> in, NumberExpression<Integer> length, char c) {
+        return StringOperation.create(Ops.StringOps.LPAD2, in, length, ConstantImpl.create(c));
+        
+    }
+
+    /**
+     * @param in
+     * @param length
+     * @param c
+     * @return
+     */
+    public static StringExpression lpad(Expression<String> in, int length, char c) {
+        return StringOperation.create(Ops.StringOps.LPAD2, in, ConstantImpl.create(length), ConstantImpl.create(c));
+        
+    }
+
+    /**
+     * @param in
+     * @param length
+     * @param c
+     * @return
+     */
+    public static StringExpression rpad(Expression<String> in, NumberExpression<Integer> length, char c) {
+        return StringOperation.create(Ops.StringOps.RPAD2, in, length, ConstantImpl.create(c));
+        
+    }
+
+    /**
+     * @param in
+     * @param length
+     * @param c
+     * @return
+     */
+    public static StringExpression rpad(Expression<String> in, int length, char c) {
+        return StringOperation.create(Ops.StringOps.RPAD2, in, ConstantImpl.create(length), ConstantImpl.create(c));
+        
+    }
 
 }

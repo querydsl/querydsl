@@ -64,6 +64,7 @@ import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Concatenation;
+import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.MappingProjection;
@@ -714,6 +715,20 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         assertEquals("abcd  ", unique(StringExpressions.ltrim(str)));
         assertEquals(Integer.valueOf(3), unique(StringExpressions.position(str, "a")));
         assertEquals("  abcd", unique(StringExpressions.rtrim(str)));
+    }
+    
+    @Test
+    @ExcludeIn({SQLITE, DERBY})
+    public void LPad() {
+        assertEquals("  ab", unique(StringExpressions.lpad(ConstantImpl.create("ab"), 4)));
+        assertEquals("!!ab", unique(StringExpressions.lpad(ConstantImpl.create("ab"), 4, '!')));
+    }
+    
+    @Test
+    @ExcludeIn({SQLITE, DERBY})
+    public void Rpad() {
+        assertEquals("ab  ", unique(StringExpressions.rpad(ConstantImpl.create("ab"), 4)));
+        assertEquals("ab!!", unique(StringExpressions.rpad(ConstantImpl.create("ab"), 4,'!')));
     }
         
     private <T> T unique(Expression<T> expr) {

@@ -318,13 +318,13 @@ public class ExpressivityTest {
         //Field<String>          lower()
         str.lower();
         //Field<String>          lpad(Field<? extends Number> length)
-      
+        StringExpressions.lpad(str, num);
         //Field<String>          lpad(Field<? extends Number> length, Field<String> character)
-       
+        StringExpressions.lpad(str, num, '!');
         //Field<String>          lpad(int length)
-       
+        StringExpressions.lpad(str, 10);
         //Field<String>          lpad(int length, char character)
-       
+        StringExpressions.lpad(str, 10, '!');
         //Field<String>          ltrim()
         StringExpressions.ltrim(str);
         //Field<T>               max()
@@ -428,13 +428,13 @@ public class ExpressivityTest {
         //Field<T>               round(int decimals)
 
         //Field<String>          rpad(Field<? extends Number> length)
-
+        StringExpressions.rpad(str, num);
         //Field<String>          rpad(Field<? extends Number> length, Field<String> character)
-
+        StringExpressions.rpad(str, num, '!');
         //Field<String>          rpad(int length)
-
+        StringExpressions.rpad(str, 10);
         //Field<String>          rpad(int length, char character)
-
+        StringExpressions.rpad(str, 10, '!');
         //Field<String>          rtrim()
         StringExpressions.rtrim(str);
         // shl (bitwise shift left)

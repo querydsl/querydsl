@@ -52,6 +52,9 @@ public class SQLiteTemplates extends SQLTemplates {
         
         add(Ops.MathOps.LN, "log({0})");
         add(Ops.MathOps.LOG, "(log({0}) / log({1}))");
+        
+//        add(Ops.StringOps.LPAD, "concat(repeat(' ', {1} - length({0})), {0})");
+//        add(Ops.StringOps.RPAD, "concat({0}, repeat(' ', {1} - length({0})))");
     }
     
 }
