@@ -525,17 +525,6 @@ public abstract class StringExpression extends ComparableExpression<String> {
     }
 
     /**
-     * Split the given String with regex as the matcher for the separator
-     *
-     * @param regex
-     * @return this.split(regex)
-     * @see java.lang.String#split(String)
-     */
-    public SimpleExpression<String[]> split(String regex) {
-        return SimpleOperation.create(String[].class, Ops.StringOps.SPLIT, this, ConstantImpl.create(regex));
-    }
-
-    /**
      * Return true if this starts with str
      *
      * @param str

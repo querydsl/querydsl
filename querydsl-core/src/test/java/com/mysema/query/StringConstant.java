@@ -150,11 +150,6 @@ final class StringConstant extends StringExpression implements Constant<String>{
     }
 
     @Override
-    public SimpleExpression<String[]> split(String regex) {
-        return SimpleConstant.create(constant.split(regex));
-    }
-
-    @Override
     public StringExpression substring(int beginIndex) {
         return new StringConstant(constant.substring(beginIndex));
     }

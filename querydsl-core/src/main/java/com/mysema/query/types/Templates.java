@@ -71,11 +71,6 @@ public class Templates {
         add(Ops.LOE, "{0} <= {1}", 22);
         add(Ops.LT, "{0} < {1}", 23);
 
-//        add(Ops.AFTER, "{0} > {1}", 21);
-//        add(Ops.BEFORE, "{0} < {1}", 23);
-//        add(Ops.AOE, "{0} >= {1}", 21);
-//        add(Ops.BOE, "{0} <= {1}", 23);
-
         // numeric
         add(Ops.NEGATE, "-{0}", 6);
         add(Ops.ADD, "{0} + {1}", 13);
@@ -124,7 +119,6 @@ public class Templates {
 
         add(Ops.StringOps.LTRIM, "ltrim({0})");
         add(Ops.StringOps.RTRIM, "rtrim({0})");
-        add(Ops.StringOps.SPLIT, "split({0},{1})");
         add(Ops.StringOps.LOCATE, "locate({0},{1})");
         add(Ops.StringOps.LOCATE2, "locate({0},{1},{2s})");
         add(Ops.StringOps.LPAD, "lpad({0},{1})");

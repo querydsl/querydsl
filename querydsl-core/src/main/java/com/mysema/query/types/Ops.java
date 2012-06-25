@@ -42,30 +42,30 @@ public final class Ops {
 
     // general
     public static final Operator<Boolean> EQ = new OperatorImpl<Boolean>("EQ",OBJECT_X_2);
-    public static final Operator<Boolean> IS_NOT_NULL = new OperatorImpl<Boolean>("IS_NOT_NULL",Object.class);
-    public static final Operator<Boolean> IS_NULL = new OperatorImpl<Boolean>("IS_NULL",Object.class);
-    public static final Operator<Boolean> INSTANCE_OF = new OperatorImpl<Boolean>("INSTANCE_OF");
     public static final Operator<Boolean> NE = new OperatorImpl<Boolean>("NE",OBJECT_X_2);
-    public static final Operator<Number> NUMCAST = new OperatorImpl<Number>("NUMCAST");
-    public static final Operator<String> STRING_CAST = new OperatorImpl<String>("STING_CAST",Object.class);
-    public static final Operator<Object> ALIAS = new OperatorImpl<Object>("ALIAS");
-    public static final Operator<Object> LIST = new OperatorImpl<Object>("LIST");
+    public static final Operator<Boolean> IS_NULL = new OperatorImpl<Boolean>("IS_NULL",Object.class);
+    public static final Operator<Boolean> IS_NOT_NULL = new OperatorImpl<Boolean>("IS_NOT_NULL",Object.class);    
+    public static final Operator<Boolean> INSTANCE_OF = new OperatorImpl<Boolean>("INSTANCE_OF");    
+    public static final Operator<Number>  NUMCAST = new OperatorImpl<Number>("NUMCAST");
+    public static final Operator<String>  STRING_CAST = new OperatorImpl<String>("STING_CAST",Object.class);
+    public static final Operator<Object>  ALIAS = new OperatorImpl<Object>("ALIAS");
+    public static final Operator<Object>  LIST = new OperatorImpl<Object>("LIST");
     public static final Operator<Integer> ORDINAL = new OperatorImpl<Integer>("ORDINAL");
-    public static final Operator<Object> DELEGATE = new OperatorImpl<Object>("DELEGATE");
-    public static final Operator<Object> WRAPPED = new OperatorImpl<Object>("WRAPPED");
+    public static final Operator<Object>  DELEGATE = new OperatorImpl<Object>("DELEGATE");
+    public static final Operator<Object>  WRAPPED = new OperatorImpl<Object>("WRAPPED");
 
     // collection
     public static final Operator<Boolean> IN = new OperatorImpl<Boolean>("IN",OBJECT_X_2); // cmp. contains
     public static final Operator<Boolean> COL_IS_EMPTY = new OperatorImpl<Boolean>("COL_IS_EMPTY",Object.class);
-    public static final Operator<Number> COL_SIZE = new OperatorImpl<Number>("COL_SIZE",Object.class);
+    public static final Operator<Number>  COL_SIZE = new OperatorImpl<Number>("COL_SIZE",Object.class);
 
     // array
-    public static final Operator<Number> ARRAY_SIZE = new OperatorImpl<Number>("ARRAY_SIZE",Object.class);
+    public static final Operator<Number>  ARRAY_SIZE = new OperatorImpl<Number>("ARRAY_SIZE",Object.class);
 
     // map
     public static final Operator<Boolean> CONTAINS_KEY = new OperatorImpl<Boolean>("CONTAINS_KEY",OBJECT_X_2);
     public static final Operator<Boolean> CONTAINS_VALUE = new OperatorImpl<Boolean>("CONTAINS_VALUE",OBJECT_X_2);
-    public static final Operator<Number> MAP_SIZE = new OperatorImpl<Number>("MAP_SIZE",Object.class);
+    public static final Operator<Number>  MAP_SIZE = new OperatorImpl<Number>("MAP_SIZE",Object.class);
     public static final Operator<Boolean> MAP_IS_EMPTY = new OperatorImpl<Boolean>("MAP_IS_EMPTY",Object.class);
 
     // Boolean
@@ -82,36 +82,30 @@ public final class Ops {
     public static final Operator<Boolean> LOE = new OperatorImpl<Boolean>("LOE",COMPARABLE_X_2);
     public static final Operator<Boolean> LT = new OperatorImpl<Boolean>("LT",COMPARABLE_X_2);
 
-    // Date / Comparable
-//    public static final Operator<Boolean> AFTER = new OperatorImpl<Boolean>("AFTER",COMPARABLE_X_2);
-//    public static final Operator<Boolean> BEFORE = new OperatorImpl<Boolean>("BEFORE",COMPARABLE_X_2);
-//    public static final Operator<Boolean> AOE = new OperatorImpl<Boolean>("AOE",COMPARABLE_X_2);
-//    public static final Operator<Boolean> BOE = new OperatorImpl<Boolean>("BOE",COMPARABLE_X_2);
-
     // Number
-    public static final Operator<Number> NEGATE = new OperatorImpl<Number>("NEGATE",Number.class);
-    public static final Operator<Number> ADD = new OperatorImpl<Number>("ADD",NUMBER_X_2);
-    public static final Operator<Number> DIV = new OperatorImpl<Number>("DIV",NUMBER_X_2);
-    public static final Operator<Number> MULT = new OperatorImpl<Number>("MULT",NUMBER_X_2);
-    public static final Operator<Number> SUB = new OperatorImpl<Number>("SUB",NUMBER_X_2);
-    public static final Operator<Number> MOD = new OperatorImpl<Number>("MOD",NUMBER_X_2);
+    public static final Operator<Number>  NEGATE = new OperatorImpl<Number>("NEGATE",Number.class);
+    public static final Operator<Number>  ADD = new OperatorImpl<Number>("ADD",NUMBER_X_2);
+    public static final Operator<Number>  DIV = new OperatorImpl<Number>("DIV",NUMBER_X_2);
+    public static final Operator<Number>  MULT = new OperatorImpl<Number>("MULT",NUMBER_X_2);
+    public static final Operator<Number>  SUB = new OperatorImpl<Number>("SUB",NUMBER_X_2);
+    public static final Operator<Number>  MOD = new OperatorImpl<Number>("MOD",NUMBER_X_2);
 
     // String
     public static final Operator<Character> CHAR_AT = new OperatorImpl<Character>("CHAR_AT");
-    public static final Operator<String> CONCAT = new OperatorImpl<String>("CONCAT",STRING_X_2);
-    public static final Operator<String> LOWER = new OperatorImpl<String>("LOWER",String.class);
-    public static final Operator<String> SUBSTR_1ARG = new OperatorImpl<String>("SUBSTR");
-    public static final Operator<String> SUBSTR_2ARGS = new OperatorImpl<String>("SUBSTR2");
-    public static final Operator<String> TRIM = new OperatorImpl<String>("TRIM",String.class);
-    public static final Operator<String> UPPER = new OperatorImpl<String>("UPPER",String.class);
+    public static final Operator<String>  CONCAT = new OperatorImpl<String>("CONCAT",STRING_X_2);
+    public static final Operator<String>  LOWER = new OperatorImpl<String>("LOWER",String.class);
+    public static final Operator<String>  SUBSTR_1ARG = new OperatorImpl<String>("SUBSTR");
+    public static final Operator<String>  SUBSTR_2ARGS = new OperatorImpl<String>("SUBSTR2");
+    public static final Operator<String>  TRIM = new OperatorImpl<String>("TRIM",String.class);
+    public static final Operator<String>  UPPER = new OperatorImpl<String>("UPPER",String.class);
     public static final Operator<Boolean> MATCHES = new OperatorImpl<Boolean>("MATCHES",STRING_X_2);
     public static final Operator<Boolean> MATCHES_IC = new OperatorImpl<Boolean>("MATCHES_IC",STRING_X_2);
-    public static final Operator<Number> STRING_LENGTH = new OperatorImpl<Number>("STRING_LENGTH",String.class);
+    public static final Operator<Number>  STRING_LENGTH = new OperatorImpl<Number>("STRING_LENGTH",String.class);
     public static final Operator<Boolean> STRING_IS_EMPTY = new OperatorImpl<Boolean>("STRING_IS_EMPTY",String.class);
     public static final Operator<Boolean> STARTS_WITH = new OperatorImpl<Boolean>("STARTS_WITH",STRING_X_2);
     public static final Operator<Boolean> STARTS_WITH_IC = new OperatorImpl<Boolean>("STATS_WITH_IC",STRING_X_2);
-    public static final Operator<Number> INDEX_OF_2ARGS = new OperatorImpl<Number>("INDEX_OF2");
-    public static final Operator<Number> INDEX_OF = new OperatorImpl<Number>("INDEX_OF");
+    public static final Operator<Number>  INDEX_OF_2ARGS = new OperatorImpl<Number>("INDEX_OF2");
+    public static final Operator<Number>  INDEX_OF = new OperatorImpl<Number>("INDEX_OF");
     public static final Operator<Boolean> EQ_IGNORE_CASE = new OperatorImpl<Boolean>("EQ_IGNORE_CASE",STRING_X_2);
     public static final Operator<Boolean> ENDS_WITH = new OperatorImpl<Boolean>("ENDS_WITH",STRING_X_2);
     public static final Operator<Boolean> ENDS_WITH_IC = new OperatorImpl<Boolean>("ENDS_WITH_IC",STRING_X_2);
@@ -121,17 +115,17 @@ public final class Ops {
     public static final Operator<Boolean> LIKE_ESCAPE = new OperatorImpl<Boolean>("LIKE_ESCAPE",STRING_X_3);
 
     // case
-    public static final Operator<Object> CASE = new OperatorImpl<Object>("CASE",Object.class);
-    public static final Operator<Object> CASE_WHEN = new OperatorImpl<Object>("CASE_WHEN");
-    public static final Operator<Object> CASE_ELSE = new OperatorImpl<Object>("CASE_ELSE",Object.class);
+    public static final Operator<Object>  CASE = new OperatorImpl<Object>("CASE",Object.class);
+    public static final Operator<Object>  CASE_WHEN = new OperatorImpl<Object>("CASE_WHEN");
+    public static final Operator<Object>  CASE_ELSE = new OperatorImpl<Object>("CASE_ELSE",Object.class);
 
     // case for eq
-    public static final Operator<Object> CASE_EQ = new OperatorImpl<Object>("CASE_EQ",Object.class);
-    public static final Operator<Object> CASE_EQ_WHEN = new OperatorImpl<Object>("CASE_EQ_WHEN");
-    public static final Operator<Object> CASE_EQ_ELSE = new OperatorImpl<Object>("CASE_EQ_ELSE",Object.class);
+    public static final Operator<Object>  CASE_EQ = new OperatorImpl<Object>("CASE_EQ",Object.class);
+    public static final Operator<Object>  CASE_EQ_WHEN = new OperatorImpl<Object>("CASE_EQ_WHEN");
+    public static final Operator<Object>  CASE_EQ_ELSE = new OperatorImpl<Object>("CASE_EQ_ELSE",Object.class);
 
     // coalesce
-    public static final Operator<Object> COALESCE = new OperatorImpl<Object>("COALESCE",Object.class);
+    public static final Operator<Object>  COALESCE = new OperatorImpl<Object>("COALESCE",Object.class);
 
     // subquery operations
     public static final Operator<Boolean> EXISTS = new OperatorImpl<Boolean>("EXISTS",Object.class);
@@ -143,7 +137,7 @@ public final class Ops {
     public static final List<Operator<?>> compareOps = unmodifiableList(Arrays.<Operator<?>> asList(EQ, NE, LT, GT, GOE, LOE));
 
     /**
-     * Aggreation operators
+     * Aggregation operators
      */
     @SuppressWarnings("unchecked")
     public static final class AggOps{
@@ -155,6 +149,20 @@ public final class Ops {
         public static final Operator<Number> COUNT_DISTINCT_AGG = new OperatorImpl<Number>("COUNT_DISTINCT_AGG",Object.class);
         public static final Operator<Number> COUNT_ALL_AGG = new OperatorImpl<Number>("COUNT_ALL_AGG");
         private AggOps() {}
+    }
+    
+    /**
+     * Quantification operators
+     */
+    @SuppressWarnings("unchecked")
+    public static final class QuantOps {
+        public static final Operator<Comparable> AVG_IN_COL = new OperatorImpl<Comparable>("AVG_IN_COL",Collection.class);
+        public static final Operator<Comparable> MAX_IN_COL = new OperatorImpl<Comparable>("MAX_IN_COL",Collection.class);
+        public static final Operator<Comparable> MIN_IN_COL = new OperatorImpl<Comparable>("MIN_IN_COL",Collection.class);
+
+        public static final Operator<Object> ANY = new OperatorImpl<Object>("ANY",Object.class);
+        public static final Operator<Object> ALL = new OperatorImpl<Object>("ALL",Object.class);
+        private QuantOps() {}
     }
 
     /**
@@ -224,29 +232,11 @@ public final class Ops {
         public static final Operator<String> RPAD = new OperatorImpl<String>("RPAD",String.class, Integer.class);
         public static final Operator<String> LPAD2 = new OperatorImpl<String>("LPAD2",String.class, Integer.class, Character.class);
         public static final Operator<String> RPAD2 = new OperatorImpl<String>("RPAD2",String.class, Integer.class, Character.class);
-        public static final Operator<String[]> SPLIT = new OperatorImpl<String[]>("SPLIT",STRING_X_2);
         public static final Operator<Number> LOCATE = new OperatorImpl<Number>("LOCATE", STRING_X_2);
         public static final Operator<Number> LOCATE2 = new OperatorImpl<Number>("LOCATE2", String.class, String.class, Integer.class);
         private StringOps() {}
     }
 
-    /**
-     * Quantification operators
-     */
-    @SuppressWarnings("unchecked")
-    public static final class QuantOps {
-        public static final Operator<Comparable> AVG_IN_COL = new OperatorImpl<Comparable>("AVG_IN_COL",Collection.class);
-        public static final Operator<Comparable> MAX_IN_COL = new OperatorImpl<Comparable>("MAX_IN_COL",Collection.class);
-        public static final Operator<Comparable> MIN_IN_COL = new OperatorImpl<Comparable>("MIN_IN_COL",Collection.class);
-
-        // some / any = true for any
-        // all = true for all
-        // exists = true is subselect matches
-        // not exists = true if subselect doesn't match
-        public static final Operator<Object> ANY = new OperatorImpl<Object>("ANY",Object.class);
-        public static final Operator<Object> ALL = new OperatorImpl<Object>("ALL",Object.class);
-        private QuantOps() {}
-    }
     
     private Ops() {}
 }
