@@ -80,7 +80,6 @@ import com.mysema.query.types.expr.BooleanExpression;
 import com.mysema.query.types.expr.ListExpression;
 import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.expr.SimpleExpression;
-import com.mysema.query.types.expr.StringExpression;
 import com.mysema.query.types.path.EnumPath;
 import com.mysema.query.types.path.ListPath;
 import com.mysema.query.types.path.StringPath;
@@ -90,23 +89,6 @@ import com.mysema.query.types.path.StringPath;
  *
  */
 public abstract class AbstractStandardTest {
-
-    public static class Projection {
-
-        public Projection(String str, Cat cat) {}
-
-    }
-
-    public static class QProjection extends ConstructorExpression<Projection>{
-
-        private static final long serialVersionUID = -5866362075090550839L;
-
-        public QProjection(StringExpression str, QCat cat){
-            super(Projection.class, 
-                    new Class[]{String.class, Cat.class}, new Expression[]{str, cat});
-        }
-
-    }
 
     private static final QCompany company = QCompany.company;
     
@@ -319,6 +301,11 @@ public abstract class AbstractStandardTest {
                 cat.kittens.any().in(savedCats),
                 cat.kittens.any().in(savedCats.subList(0, 1)).not())
             .list(cat);
+    }
+    
+    @Test
+    public void Any_In_Projection() {
+        query().from(cat).list(cat.kittens.any());
     }
     
     @Test

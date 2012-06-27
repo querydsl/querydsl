@@ -85,9 +85,11 @@ public class QueryMetadaSerializationTest {
     @Test
     public void FullySerizable(){
         Set<Class<?>> checked = new HashSet<Class<?>>();
-        checked.addAll(Arrays.<Class<?>>asList(Collection.class, List.class, Set.class, Map.class, Object.class, String.class, Class.class));
+        checked.addAll(Arrays.<Class<?>>asList(Collection.class, List.class, Set.class, Map.class, 
+                Object.class, String.class, Class.class));
         Stack<Class<?>> classes = new Stack<Class<?>>();
-        classes.addAll(Arrays.<Class<?>>asList(NumberPath.class, NumberOperation.class, NumberTemplate.class, BeanPath.class, DefaultQueryMetadata.class));
+        classes.addAll(Arrays.<Class<?>>asList(NumberPath.class, NumberOperation.class, 
+                NumberTemplate.class, BeanPath.class, DefaultQueryMetadata.class));
         while (!classes.isEmpty()){            
             Class<?> clazz = classes.pop();
             checked.add(clazz);

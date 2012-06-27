@@ -43,7 +43,7 @@ public class ColQueryMixin<T> extends QueryMixin<T> {
     public ColQueryMixin(T self, QueryMetadata metadata) {
         super(self, metadata);
     }
-
+    
     @Override
     protected Predicate[] normalize(Predicate[] conditions, boolean where) {
         for (int i = 0; i < conditions.length; i++) {

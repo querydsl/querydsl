@@ -37,7 +37,7 @@ public class PathImpl<T> extends ExpressionBase<T> implements Path<T> {
 
     @Nullable
     private AnnotatedElement annotatedElement;
-
+    
     public PathImpl(Class<? extends T> type, String variable) {
         this(type, PathMetadataFactory.forVariable(variable));
     }

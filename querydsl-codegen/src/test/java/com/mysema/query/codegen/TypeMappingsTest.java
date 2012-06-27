@@ -23,9 +23,7 @@ import com.mysema.codegen.model.Type;
 
 public class TypeMappingsTest {
 
-    static class Entity{
-
-    }
+    static class Entity { }
 
     @Test
     public void GetPathType_Of_InnerClass(){

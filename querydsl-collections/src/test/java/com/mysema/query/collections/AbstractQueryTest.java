@@ -24,32 +24,33 @@ import com.mysema.query.types.Expression;
 
 public abstract class AbstractQueryTest {
 
-    protected Cat c1 = new Cat("Kitty");
+    protected final Cat c1 = new Cat("Kitty");
 
-    protected Cat c2 = new Cat("Bob");
+    protected final Cat c2 = new Cat("Bob");
 
-    protected Cat c3 = new Cat("Alex");
+    protected final Cat c3 = new Cat("Alex");
 
-    protected Cat c4 = new Cat("Francis");
+    protected final Cat c4 = new Cat("Francis");
 
-    protected QCat cat = new QCat("cat");
+    protected final QCat cat = new QCat("cat");
 
-    protected QCat kitten = new QCat("kitten");
+    protected final QCat kitten = new QCat("kitten");
 
+    protected final QCat offspr = new QCat("offspr");
+
+    protected final QCat otherCat = new QCat("otherCat");
+    
+    protected final QCat mate = new QCat("mate");
+    
     protected List<Cat> cats = Arrays.asList(c1, c2, c3, c4);
 
     protected List<Integer> ints = new ArrayList<Integer>();
 
-    protected TestQuery last;
-
-    protected QCat mate = new QCat("mate");
-
     protected List<Integer> myInts = new ArrayList<Integer>();
 
-    protected QCat offspr = new QCat("offspr");
+    protected TestQuery last;
 
-    protected QCat otherCat = new QCat("otherCat");
-
+    
     @Before
     public void setUp() {
         myInts.addAll(Arrays.asList(1, 2, 3, 4));

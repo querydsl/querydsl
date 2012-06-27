@@ -65,7 +65,8 @@ public class DeepPopulationTest {
         StringPath name = new StringPath("name");
         StringPath id = new StringPath("id");
         QBean<Entity2> entity2Bean = new QBean<Entity2>(Entity2.class, name, id);
-        QBean<Entity1> entity1Bean = new QBean<Entity1>(Entity1.class, Collections.singletonMap("entity2", entity2Bean));
+        QBean<Entity1> entity1Bean = new QBean<Entity1>(Entity1.class, 
+                Collections.singletonMap("entity2", entity2Bean));
 
         Entity1 entity1 = FactoryExpressionUtils.wrap(entity1Bean).newInstance("nameX","idX");
         assertEquals("nameX", entity1.getEntity2().getName());

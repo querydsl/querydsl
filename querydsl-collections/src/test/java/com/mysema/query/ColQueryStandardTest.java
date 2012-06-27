@@ -39,13 +39,6 @@ import com.mysema.query.types.expr.Param;
 
 public class ColQueryStandardTest {
 
-    public static class Projection {
-
-        public Projection(String str, Cat cat) {
-        }
-
-    }
-
     private final Date birthDate = new Date();
 
     private final java.sql.Date date = new java.sql.Date(birthDate.getTime());

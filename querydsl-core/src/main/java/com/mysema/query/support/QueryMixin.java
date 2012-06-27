@@ -13,6 +13,8 @@
  */
 package com.mysema.query.support;
 
+import java.util.UUID;
+
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinType;
@@ -32,6 +34,8 @@ import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Path;
+import com.mysema.query.types.PathImpl;
+import com.mysema.query.types.PathType;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.ProjectionRole;
 import com.mysema.query.types.SubQueryExpression;
@@ -84,7 +88,15 @@ public class QueryMixin<T> {
     }
 
     public <RT> Expression<RT> convert(Expression<RT> expr){
-        if (expr instanceof ProjectionRole<?>) {
+        if (expr instanceof Path && ((Path)expr).getMetadata().getPathType() == PathType.COLLECTION_ANY) {
+            // turn collection any in projection into an inner joined projection
+            Path<?> path = (Path<?>) expr;
+            String suffix = UUID.randomUUID().toString().replace("-", "").substring(0,5);
+            String name = uncapitalize(path.getType().getSimpleName()) + suffix;
+            Path joined = new PathImpl(path.getType(), name);
+            this.innerJoin((CollectionExpression)path.getMetadata().getParent(), joined);
+            return joined;
+        } else if (expr instanceof ProjectionRole<?>) {
             return convert(((ProjectionRole) expr).getProjection());
         } else if (expr instanceof FactoryExpression<?> && !(expr instanceof FactoryExpressionAdapter<?>)) {
             return FactoryExpressionUtils.wrap((FactoryExpression<RT>)expr);
@@ -419,6 +431,15 @@ public class QueryMixin<T> {
     @Override
     public String toString() {
         return metadata.toString();
+    }
+    
+
+    private static String uncapitalize(String str) {
+        if (str.length() > 1) {
+            return Character.toLowerCase(str.charAt(0)) + str.substring(1);
+        } else {
+            return str.toLowerCase();
+        }
     }
 
 

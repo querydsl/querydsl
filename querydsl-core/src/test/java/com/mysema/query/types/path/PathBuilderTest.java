@@ -27,50 +27,6 @@ import com.mysema.util.BeanMap;
 
 public class PathBuilderTest {
 
-    enum Gender {
-        MALE, FEMALE
-    }
-
-    public static class User {
-
-        private String firstName, lastName, username;
-
-        private Gender gender;
-
-        public String getFirstName() {
-            return firstName;
-        }
-
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
-
-        public String getLastName() {
-            return lastName;
-        }
-
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
-
-        public String getUsername() {
-            return username;
-        }
-
-        public void setUsername(String username) {
-            this.username = username;
-        }
-
-        public Gender getGender() {
-            return gender;
-        }
-
-        public void setGender(Gender gender) {
-            this.gender = gender;
-        }
-
-    }
-
     @Test
     public void getEnum(){
         PathBuilder<User> entityPath = new PathBuilder<User>(User.class, "entity");

@@ -129,8 +129,10 @@ public class ExpressivityTest {
         Expressions.currentTimestamp();
         // currval
         
-        // dateDiff
+        // dateadd
         
+        // dateDiff
+        // TODO
         //<Z> Field<Z>           decode(Field<T> search, Field<Z> result)
 
         //<Z> Field<Z>           decode(Field<T> search, Field<Z> result, Field<?>... more)

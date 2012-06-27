@@ -71,6 +71,12 @@ public class CollectionTest extends AbstractJDOTest {
         query(store, store.products.any().name.eq("Sony Discman").and(store.products.any().price.gt(10.0)));
     }
     
+    @Test
+    @Ignore // Not supported
+    public void Collection_Any_In_Projection() {
+        query().from(store).list(store.products.any());
+    }
+    
     @BeforeClass
     public static void doPersist() {
         // Persistence of a Product and a Book.

@@ -75,26 +75,31 @@ public class SerializerTest {
 
     @Test
     public void EntitySerializer() throws Exception {
-        new EntitySerializer(typeMappings,Collections.<String>emptyList()).serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        new EntitySerializer(typeMappings, Collections.<String>emptyList())
+            .serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
     }
 
     @Test
     public void EntitySerializer2() throws Exception {
-        new EntitySerializer(typeMappings,Collections.<String>emptyList()).serialize(type, new SimpleSerializerConfig(true,true,true,true), new JavaWriter(writer));
+        new EntitySerializer(typeMappings,Collections.<String>emptyList())
+            .serialize(type, new SimpleSerializerConfig(true,true,true,true), new JavaWriter(writer));
     }
 
     @Test
     public void EmbeddableSerializer() throws Exception {
-        new EmbeddableSerializer(typeMappings,Collections.<String>emptyList()).serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        new EmbeddableSerializer(typeMappings,Collections.<String>emptyList())
+            .serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
     }
 
     @Test
     public void SupertypeSerializer() throws IOException{
-        new SupertypeSerializer(typeMappings,Collections.<String>emptyList()).serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        new SupertypeSerializer(typeMappings,Collections.<String>emptyList())
+            .serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
     }
 
     @Test
     public void DTOSerializer() throws IOException{
-        new ProjectionSerializer(typeMappings).serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
+        new ProjectionSerializer(typeMappings)
+            .serialize(type, SimpleSerializerConfig.DEFAULT, new JavaWriter(writer));
     }
 }
