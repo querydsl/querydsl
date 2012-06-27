@@ -7,6 +7,11 @@ import org.junit.Test;
 public class SerializerBaseTest {
         
     @Test
+    public void Variables() {
+        assertEquals("var1 + 3", SerializerBase.normalize("var1 + 3"));
+    }
+    
+    @Test
     public void Normalize_Addition() {
         assertEquals("3", SerializerBase.normalize("1+2"));
         assertEquals("where 3 = 3", SerializerBase.normalize("where 1+2 = 3"));

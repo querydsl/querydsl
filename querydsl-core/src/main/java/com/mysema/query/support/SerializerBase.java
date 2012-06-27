@@ -51,22 +51,24 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
     private static final Joiner EMPTY_JOINER = Joiner.on("");
 
     private final StringBuilder builder = new StringBuilder();
-        
+    
+    private static final String START = "\\b";
+    
     private static final String NUMBER = "([+\\-]?\\d+\\.?\\d*)";
     
     private static final String WS = "\\s*";
     
     private static final Pattern OPERATOR = Pattern.compile(WS + "[+\\-/*]" + WS);
     
-    private static final Pattern OPERATION = Pattern.compile(NUMBER + OPERATOR.pattern() + NUMBER);
+    private static final Pattern OPERATION = Pattern.compile(START + NUMBER + OPERATOR.pattern() + NUMBER);
     
-    private static final Pattern ADDITION = Pattern.compile(NUMBER + WS + "\\+" + WS + NUMBER);
+    private static final Pattern ADDITION = Pattern.compile(START + NUMBER + WS + "\\+" + WS + NUMBER);
     
-    private static final Pattern SUBTRACTION = Pattern.compile(NUMBER + WS + "\\-" + WS + NUMBER);
+    private static final Pattern SUBTRACTION = Pattern.compile(START + NUMBER + WS + "\\-" + WS + NUMBER);
     
-    private static final Pattern DIVISION = Pattern.compile(NUMBER + WS + "/" + WS + NUMBER);
+    private static final Pattern DIVISION = Pattern.compile(START + NUMBER + WS + "/" + WS + NUMBER);
     
-    private static final Pattern MULTIPLICATION = Pattern.compile(NUMBER + WS + "\\*" + WS + NUMBER);
+    private static final Pattern MULTIPLICATION = Pattern.compile(START + NUMBER + WS + "\\*" + WS + NUMBER);
     
     private String constantPrefix = "a";
 
