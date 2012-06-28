@@ -13,6 +13,7 @@
  */
 package com.mysema.query.collections;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,7 +82,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
         }
     }
 
-    private <D> Expression<D> createAlias(CollectionExpression<?,D> target, Path<D> alias){
+    private <D> Expression<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias){
         return OperationImpl.create(alias.getType(), Ops.ALIAS, target, alias);
     }
 
@@ -109,7 +110,7 @@ public abstract class AbstractColQuery<Q extends AbstractColQuery<Q>>  extends P
     }
 
     @SuppressWarnings("unchecked")
-    public <P> Q innerJoin(CollectionExpression<?, P> target, Path<P> alias) {
+    public <P> Q innerJoin(Path<? extends Collection<P>> target, Path<P> alias) {
         getMetadata().addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return (Q)this;
     }

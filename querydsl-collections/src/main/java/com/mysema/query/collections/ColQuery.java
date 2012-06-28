@@ -13,9 +13,10 @@
  */
 package com.mysema.query.collections;
 
+import java.util.Collection;
+
 import com.mysema.query.Projectable;
 import com.mysema.query.SimpleQuery;
-import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.Path;
 
@@ -61,7 +62,7 @@ public interface ColQuery extends SimpleQuery<ColQuery>, Projectable {
      * @param alias
      * @return
      */
-    <P> ColQuery innerJoin(CollectionExpression<?, P> collectionPath, Path<P> alias);
+    <P> ColQuery innerJoin(Path<? extends Collection<P>> collectionPath, Path<P> alias);
 
     /**
      * Define an inner join from the Map typed path to the alias

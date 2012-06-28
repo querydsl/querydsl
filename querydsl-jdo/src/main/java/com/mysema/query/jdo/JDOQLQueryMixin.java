@@ -42,18 +42,9 @@ public class JDOQLQueryMixin<T> extends QueryMixin<T> {
     public JDOQLQueryMixin(T self, QueryMetadata metadata) {
         super(self, metadata);
     }
-
+        
     @Override
-    protected Predicate[] normalize(Predicate[] conditions, boolean where) {
-        for (int i = 0; i < conditions.length; i++) {
-            if (conditions[i] != null) {
-                conditions[i] = normalize(conditions[i], where);    
-            }   
-        }
-        return conditions;
-    }
-
-    private Predicate normalize(Predicate predicate, boolean where) {
+    protected Predicate normalize(Predicate predicate, boolean where) {
         if (predicate instanceof BooleanBuilder && ((BooleanBuilder)predicate).getValue() == null) {
             return predicate;
         } else {

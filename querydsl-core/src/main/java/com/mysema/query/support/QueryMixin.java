@@ -13,6 +13,7 @@
  */
 package com.mysema.query.support;
 
+import java.util.Collection;
 import java.util.UUID;
 
 import com.mysema.commons.lang.Assert;
@@ -94,7 +95,7 @@ public class QueryMixin<T> {
             String suffix = UUID.randomUUID().toString().replace("-", "").substring(0,5);
             String name = uncapitalize(path.getType().getSimpleName()) + suffix;
             Path joined = new PathImpl(path.getType(), name);
-            this.innerJoin((CollectionExpression)path.getMetadata().getParent(), joined);
+            this.innerJoin((Path)path.getMetadata().getParent(), joined);
             return joined;
         } else if (expr instanceof ProjectionRole<?>) {
             return convert(((ProjectionRole) expr).getProjection());
@@ -105,7 +106,7 @@ public class QueryMixin<T> {
         }
     }
 
-    public Expression<?>[] convert(Expression<?>[] exprs){
+    public final Expression<?>[] convert(Expression<?>[] exprs){
         for (int i = 0; i < exprs.length; i++) {
             exprs[i] = convert(exprs[i]);
         }
@@ -118,7 +119,7 @@ public class QueryMixin<T> {
         return ExpressionUtils.as(path, alias);
     }
 
-    protected <D> Expression<D> createAlias(CollectionExpression<?,D> target, Path<D> alias){
+    protected <D> Expression<D> createAlias(Path<? extends Collection<D>> target, Path<D> alias){
         assertRoot(alias);
         return OperationImpl.create(alias.getType(), Ops.ALIAS, target, alias);
     }
@@ -162,12 +163,12 @@ public class QueryMixin<T> {
         return self;
     }
 
-    public <P> T fullJoin(CollectionExpression<?,P> target) {
+    public <P> T fullJoin(Path<? extends Collection<P>> target) {
         metadata.addJoin(JoinType.FULLJOIN, target);
         return self;
     }
 
-    public <P> T fullJoin(CollectionExpression<?,P> target, Path<P> alias) {
+    public <P> T fullJoin(Path<? extends Collection<P>> target, Path<P> alias) {
         metadata.addJoin(JoinType.FULLJOIN, createAlias(target, alias));
         return self;
     }
@@ -216,12 +217,12 @@ public class QueryMixin<T> {
         return self;
     }
 
-    public <P> T innerJoin(CollectionExpression<?,P> target) {
+    public <P> T innerJoin(Path<? extends Collection<P>> target) {
         metadata.addJoin(JoinType.INNERJOIN, target);
         return self;
     }
 
-    public <P> T innerJoin(CollectionExpression<?,P>target, Path<P> alias) {
+    public <P> T innerJoin(Path<? extends Collection<P>>target, Path<P> alias) {
         metadata.addJoin(JoinType.INNERJOIN, createAlias(target, alias));
         return self;
     }
@@ -260,12 +261,12 @@ public class QueryMixin<T> {
         return getSelf();
     }
 
-    public <P> T join(CollectionExpression<?,P> target) {
+    public <P> T join(Path<? extends Collection<P>> target) {
         metadata.addJoin(JoinType.JOIN, target);
         return getSelf();
     }
 
-    public <P> T join(CollectionExpression<?,P> target, Path<P> alias) {
+    public <P> T join(Path<? extends Collection<P>> target, Path<P> alias) {
         metadata.addJoin(JoinType.JOIN, createAlias(target, alias));
         return getSelf();
     }
@@ -296,12 +297,12 @@ public class QueryMixin<T> {
         return getSelf();
     }
 
-    public <P> T leftJoin(CollectionExpression<?,P> target) {
+    public <P> T leftJoin(Path<? extends Collection<P>> target) {
         metadata.addJoin(JoinType.LEFTJOIN, target);
         return getSelf();
     }
 
-    public <P> T leftJoin(CollectionExpression<?,P> target, Path<P> alias) {
+    public <P> T leftJoin(Path<? extends Collection<P>> target, Path<P> alias) {
         metadata.addJoin(JoinType.LEFTJOIN, createAlias(target, alias));
         return getSelf();
     }
@@ -359,12 +360,12 @@ public class QueryMixin<T> {
         return getSelf();
     }
 
-    public <P> T rightJoin(CollectionExpression<?,P> target) {
+    public <P> T rightJoin(Path<? extends Collection<P>> target) {
         metadata.addJoin(JoinType.RIGHTJOIN, target);
         return getSelf();
     }
 
-    public <P> T rightJoin(CollectionExpression<?,P> target, Path<P> alias) {
+    public <P> T rightJoin(Path<? extends Collection<P>> target, Path<P> alias) {
         metadata.addJoin(JoinType.RIGHTJOIN, createAlias(target, alias));
         return getSelf();
     }
@@ -407,7 +408,16 @@ public class QueryMixin<T> {
         return self;
     }
 
-    protected Predicate[] normalize(Predicate[] conditions, boolean where) {
+    protected Predicate normalize(Predicate condition, boolean where) {
+        return condition;
+    }
+    
+    protected final Predicate[] normalize(Predicate[] conditions, boolean where) {
+        for (int i = 0; i < conditions.length; i++) {
+            if (conditions[i] != null) {
+                conditions[i] = normalize(conditions[i], where);    
+            }            
+        }
         return conditions;
     }
   

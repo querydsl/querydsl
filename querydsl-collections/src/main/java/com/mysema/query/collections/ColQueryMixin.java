@@ -18,7 +18,6 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.CollectionAnyVisitor;
 import com.mysema.query.support.Context;
 import com.mysema.query.support.QueryMixin;
-import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.template.BooleanTemplate;
@@ -44,18 +43,8 @@ public class ColQueryMixin<T> extends QueryMixin<T> {
         super(self, metadata);
     }
     
-    @Override
-    protected Predicate[] normalize(Predicate[] conditions, boolean where) {
-        for (int i = 0; i < conditions.length; i++) {
-            if (conditions[i] != null) {
-                conditions[i] = normalize(conditions[i], where);    
-            }            
-        }
-        return conditions;
-    }
-
     @SuppressWarnings("unchecked")
-    private Predicate normalize(Predicate predicate, boolean where) {
+    protected Predicate normalize(Predicate predicate, boolean where) {
         if (predicate instanceof BooleanBuilder && ((BooleanBuilder)predicate).getValue() == null) {
             return predicate;
         } else {
@@ -63,7 +52,7 @@ public class ColQueryMixin<T> extends QueryMixin<T> {
             Predicate transformed = (Predicate) predicate.accept(CollectionAnyVisitor.DEFAULT, context);
             for (int i = 0; i < context.paths.size(); i++) {
                 innerJoin(
-                    (CollectionExpression)context.paths.get(i).getMetadata().getParent(), 
+                    (Path)context.paths.get(i).getMetadata().getParent(), 
                     (Path)context.replacements.get(i));
                 on(ANY);
             }
