@@ -10,16 +10,10 @@
     <fileSet>
       <directory>src/apt-hibernate</directory>	
 	  <outputDirectory>/</outputDirectory>
-	  <includes>
-	    <include>**/*</include>	
-	  </includes>	
 	</fileSet>
     <fileSet>
       <directory>src/license</directory>	
 	  <outputDirectory>/license</outputDirectory>
-	  <includes>
-	    <include>**/*</include>	
-	  </includes>	
 	</fileSet>			
   </fileSets>	
   <dependencySets>

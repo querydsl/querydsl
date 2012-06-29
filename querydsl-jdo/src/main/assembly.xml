@@ -10,9 +10,6 @@
     <fileSet>
       <directory>src/apt</directory>	
 	  <outputDirectory>/</outputDirectory>
-	  <includes>
-	    <include>**/*</include>	
-	  </includes>	
 	</fileSet>	
   </fileSets>	
   <dependencySets>

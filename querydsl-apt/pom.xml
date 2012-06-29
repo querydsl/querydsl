@@ -105,6 +105,28 @@
           <useSystemClassLoader>false</useSystemClassLoader>
         </configuration>
       </plugin>  
+      
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+		<executions>
+		  <execution>
+		  	<id>apt-jars</id>
+			<goals>
+			  <goal>single</goal>	
+			</goals>
+			<phase>package</phase>
+		  	<configuration>
+              <descriptors>
+                <descriptor>src/main/general.xml</descriptor>
+                <descriptor>src/main/hibernate.xml</descriptor>
+                <descriptor>src/main/jdo.xml</descriptor>
+                <descriptor>src/main/jpa.xml</descriptor>
+              </descriptors>
+			  <outputDirectory>${project.build.directory}</outputDirectory>
+            </configuration>
+		  </execution>	
+		</executions>        
+      </plugin>	     
          
       <plugin>
         <groupId>com.mysema.maven</groupId>
