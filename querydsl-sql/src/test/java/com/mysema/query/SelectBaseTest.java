@@ -368,7 +368,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    @IncludeIn(POSTGRES)
+    @ExcludeIn({H2, SQLITE, DERBY, MYSQL})
     public void Full_Join() throws SQLException {
         query().from(employee).fullJoin(employee2)
             .on(employee.superiorIdKey.on(employee2))
