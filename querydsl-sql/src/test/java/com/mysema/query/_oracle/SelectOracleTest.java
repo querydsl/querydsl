@@ -163,8 +163,8 @@ public class SelectOracleTest extends SelectBaseTest {
             .list(
                employee.lastname,
                employee.salary,
-               sumOver(employee.salary).partition(employee.superiorId).order(employee.lastname, employee.salary),
-               sumOver(employee.salary).order(employee.superiorId, employee.salary),
+               sumOver(employee.salary).partition(employee.superiorId).orderBy(employee.lastname, employee.salary),
+               sumOver(employee.salary).orderBy(employee.superiorId, employee.salary),
                sumOver(employee.salary));
 
         // shorter version
@@ -172,8 +172,8 @@ public class SelectOracleTest extends SelectBaseTest {
         qo().from(e)
             .orderBy(e.salary.asc(), e.superiorId.asc())
             .list(e.lastname, e.salary,
-               sumOver(e.salary).partition(e.superiorId).order(e.lastname, e.salary),
-               sumOver(e.salary).order(e.superiorId, e.salary),
+               sumOver(e.salary).partition(e.superiorId).orderBy(e.lastname, e.salary),
+               sumOver(e.salary).orderBy(e.superiorId, e.salary),
                sumOver(e.salary));
     }
 

@@ -32,7 +32,7 @@ public class OracleGrammarTest {
     @Test
     public void SumOver(){
         NumberPath<Integer> intPath = new NumberPath<Integer>(Integer.class, "intPath");
-        SumOver<Integer> sumOver = OracleGrammar.sumOver(intPath).order(intPath).partition(intPath);
+        SumOver<Integer> sumOver = OracleGrammar.sumOver(intPath).orderBy(intPath).partition(intPath);
         assertEquals("sum(intPath) over (partition by intPath order by intPath)", sumOver.toString());
     }
 

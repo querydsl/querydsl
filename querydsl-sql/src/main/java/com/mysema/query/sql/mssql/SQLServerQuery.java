@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.mysema.query.DefaultQueryMetadata;
-import com.mysema.query.QueryFlag;
+import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.AbstractSQLQuery;
 import com.mysema.query.sql.Configuration;
@@ -73,8 +73,8 @@ public class SQLServerQuery extends AbstractSQLQuery<SQLServerQuery> implements 
             while (it.hasNext()) {
                 tableHintsStr.append(", ").append(it.next());
             }
-            tableHintsStr.append(") ");
-            addFlag(QueryFlag.Position.BEFORE_FILTERS, tableHintsStr.toString());
+            tableHintsStr.append(")");
+            addJoinFlag(tableHintsStr.toString(), JoinFlag.Position.END);
         }
         return this;
     }

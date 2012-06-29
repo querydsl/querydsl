@@ -115,14 +115,6 @@ public class SumOver<A extends Number & Comparable<? super A>> extends MutableEx
         return this;
     }
     
-    /**
-     * use orderBy instead
-     */
-    @Deprecated
-    public SumOver<A> order(Expression<?>... orderBy) {
-        return orderBy(orderBy);
-    }
-
     public SumOver<A> partition(Expression<?> partitionBy) {
         value = null;
         this.partitionBy = partitionBy;

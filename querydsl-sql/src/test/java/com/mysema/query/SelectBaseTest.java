@@ -25,7 +25,6 @@ import static com.mysema.query.Target.H2;
 import static com.mysema.query.Target.HSQLDB;
 import static com.mysema.query.Target.MYSQL;
 import static com.mysema.query.Target.ORACLE;
-import static com.mysema.query.Target.POSTGRES;
 import static com.mysema.query.Target.SQLITE;
 import static com.mysema.query.Target.SQLSERVER;
 import static org.junit.Assert.assertEquals;
@@ -90,7 +89,6 @@ import com.mysema.query.types.query.NumberSubQuery;
 import com.mysema.query.types.query.SimpleSubQuery;
 import com.mysema.query.types.template.NumberTemplate;
 import com.mysema.testutil.ExcludeIn;
-import com.mysema.testutil.IncludeIn;
 import com.mysema.testutil.Label;
 
 public abstract class SelectBaseTest extends AbstractBaseTest{
@@ -368,7 +366,7 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({H2, SQLITE, DERBY, MYSQL})
+    @ExcludeIn({H2, SQLITE, DERBY, CUBRID, MYSQL})
     public void Full_Join() throws SQLException {
         query().from(employee).fullJoin(employee2)
             .on(employee.superiorIdKey.on(employee2))

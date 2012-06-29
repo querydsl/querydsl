@@ -14,7 +14,6 @@
 package com.mysema.query.support;
 
 import java.util.Collection;
-import java.util.UUID;
 
 import com.mysema.commons.lang.Assert;
 import com.mysema.query.DefaultQueryMetadata;
@@ -22,7 +21,6 @@ import com.mysema.query.JoinType;
 import com.mysema.query.QueryFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.QueryModifiers;
-import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
@@ -35,8 +33,6 @@ import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Path;
-import com.mysema.query.types.PathImpl;
-import com.mysema.query.types.PathType;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.ProjectionRole;
 import com.mysema.query.types.SubQueryExpression;
@@ -93,13 +89,17 @@ public class QueryMixin<T> {
         if (expr instanceof Path) {
             Context context = new Context();            
             Expression replaced = expr.accept(CollectionAnyVisitor.DEFAULT, context);
-            for (int i = 0; i < context.paths.size(); i++) {
-                Path path = context.paths.get(i).getMetadata().getParent();
-                Path replacement = context.replacements.get(i);
-                this.innerJoin(path, replacement);
-            }
-            return replaced;
-        } else if (expr instanceof ProjectionRole<?>) {
+            if (!replaced.equals(expr)) {
+                for (int i = 0; i < context.paths.size(); i++) {
+                    Path path = context.paths.get(i).getMetadata().getParent();
+                    Path replacement = context.replacements.get(i);
+                    this.innerJoin(path, replacement);
+                }
+                return replaced;    
+            }            
+        } 
+        
+        if (expr instanceof ProjectionRole<?>) {
             return convert(((ProjectionRole) expr).getProjection());
         } else if (expr instanceof FactoryExpression<?> && !(expr instanceof FactoryExpressionAdapter<?>)) {
             return FactoryExpressionUtils.wrap((FactoryExpression<RT>)expr);
