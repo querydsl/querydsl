@@ -101,7 +101,7 @@ public class DefaultEvaluatorFactory {
         if (projection instanceof FactoryExpression<?>) {
             javaSource = "("+com.mysema.codegen.support.ClassUtils.getName(projection.getType())+")(" + javaSource+")";
         }
-
+        
         return factory.createEvaluator("return " + javaSource +";", projection.getType(), names, 
                 types, constants);
     }
@@ -131,7 +131,7 @@ public class DefaultEvaluatorFactory {
 
         Type sourceType = new ClassType(TypeCategory.SIMPLE, source.getType());
         ClassType sourceListType = new ClassType(TypeCategory.SIMPLE, Iterable.class, sourceType);
-
+        
         return factory.createEvaluator(
                 ser.toString(),
                 sourceListType,
@@ -177,8 +177,9 @@ public class DefaultEvaluatorFactory {
             } else if (join.getType() == JoinType.INNERJOIN) {
                 Operation alias = (Operation)join.getTarget();
                 boolean colAnyJoin = join.getCondition() != null && join.getCondition().toString().equals("any");
+                String matcher = null;
                 if (colAnyJoin){
-                    String matcher = alias.getArg(1).toString() + "_matched";
+                    matcher = alias.getArg(1).toString() + "_matched";
                     ser.append("boolean " + matcher + " = false;\n");
                     anyJoinMatchers.add(matcher);
                 }
@@ -187,7 +188,7 @@ public class DefaultEvaluatorFactory {
                     Context context = new Context();
                     Expression<?> replacement = (Expression<?>) alias.getArg(0)
                             .accept(CollectionAnyVisitor.DEFAULT, context);
-                    ser.handle(replacement);
+                    ser.handle(replacement);                    
                 } else {
                     ser.handle(alias.getArg(0));
                 }
@@ -195,6 +196,9 @@ public class DefaultEvaluatorFactory {
                     ser.append(".values()");
                 }
                 ser.append("){\n");
+                if (matcher != null) {
+                    ser.append("if (!" + matcher + "){\n");
+                }                
                 vars.append(alias.getArg(1));
 
             } else {
@@ -205,9 +209,9 @@ public class DefaultEvaluatorFactory {
         // filter
         if (filter != null) {
             ser.append("if (");
-            for (String matcher : anyJoinMatchers) {
-                ser.append("!" + matcher + " && ");
-            }
+//            for (String matcher : anyJoinMatchers) {
+//                ser.append("!" + matcher + " && ");
+//            }
             ser.handle(filter).append("){\n");
             for (String matcher : anyJoinMatchers) {
                 ser.append("    "+ matcher + " = true;\n");
@@ -220,6 +224,9 @@ public class DefaultEvaluatorFactory {
 
         // closing context
         for (int i = 0; i < joins.size(); i++) {
+            ser.append("}\n");
+        }
+        for (int i = 0; i < anyJoinMatchers.size(); i++) {
             ser.append("}\n");
         }
         ser.append("return rv;");

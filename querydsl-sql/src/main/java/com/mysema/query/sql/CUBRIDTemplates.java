@@ -47,6 +47,8 @@ public class CUBRIDTemplates extends SQLTemplates {
         add(Ops.MathOps.COTH, "(exp({0} * 2) + 1) / (exp({0} * 2) - 1)");
         add(Ops.MathOps.SINH, "(exp({0}) - exp({0} * -1)) / 2");
         add(Ops.MathOps.TANH, "(exp({0} * 2) - 1) / (exp({0} * 2) + 1)");
+        
+//        add(Ops.DateTimeOps.DATE_ADD, "date_add({0}, interval {1} {2s})");
     }
     
     protected void serializeModifiers(QueryMetadata metadata, SerializationContext context) {

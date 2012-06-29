@@ -40,6 +40,9 @@ public class H2Templates extends SQLTemplates{
         add(Ops.MathOps.LN, "log({0})");
         add(Ops.MathOps.LOG, "(log({0}) / log({1}))");
         add(Ops.MathOps.COTH, "(cosh({0}) / sinh({0}))");
+        
+//        add(Ops.DateTimeOps.DATE_ADD, "dateadd('{2s}', {1}, {0})");
+//        add(Ops.DateTimeOps.DATE_DIFF, "datediff('{2s}', {0}, {1})");
     }
 
 }

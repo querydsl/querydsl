@@ -78,6 +78,8 @@ public class PostgresTemplates extends SQLTemplates {
         add(Ops.DateTimeOps.HOUR, "extract(hour from {0})");
         add(Ops.DateTimeOps.MINUTE, "extract(minute from {0})");
         add(Ops.DateTimeOps.SECOND, "extract(second from {0})");
+        
+//        add(Ops.DateTimeOps.DATE_ADD, "timestamp {0} + interval '{1s} {2s}s'");
 
     }
 

@@ -720,6 +720,28 @@ public abstract class SelectBaseTest extends AbstractBaseTest{
         assertEquals("  abcd", unique(StringExpressions.rtrim(str)));
     }
     
+//    @Test
+//    public void Date_Add() {
+//        Date date = new Date();
+//        Expression<Date> expr = new ConstantImpl<Date>(date);
+//        
+//        Date date3 = unique(DateExpressions.dateadd(expr, 1, DatePart.day));
+//        assertTrue(date3.after(date));
+//    }
+//    
+//    @Test
+//    public void Date_Diff() {
+//        long ts = System.currentTimeMillis();
+//        Date date = new Date(ts);
+//        Date date2 = new Date(ts + 60 * 60 * 1000);        
+//        Expression<Date> expr = new ConstantImpl<Date>(date);
+//        
+//        assertEquals(1,       unique(DateExpressions.datediff(expr, date2, DatePart.hour)).intValue());
+//        assertEquals(60,      unique(DateExpressions.datediff(expr, date2, DatePart.minute)).intValue());
+//        assertEquals(3600,    unique(DateExpressions.datediff(expr, date2, DatePart.second)).intValue());
+//        //assertEquals(3600000, unique(DateExpressions.datediff(expr, date2, DatePart.millisecond)).intValue());
+//    }
+    
     @Test
     @ExcludeIn({SQLITE, DERBY})
     public void LPad() {

@@ -142,6 +142,8 @@ public class Templates {
         add(Ops.DateTimeOps.DAY_OF_WEEK, "dayofweek({0})");
         add(Ops.DateTimeOps.DAY_OF_MONTH, "dayofmonth({0})");
         add(Ops.DateTimeOps.DAY_OF_YEAR, "dayofyear({0})");
+//        add(Ops.DateTimeOps.DATE_ADD, "dateadd({0},{1},{2})");
+//        add(Ops.DateTimeOps.DATE_DIFF, "datediff({0},{1},{2})");
 
         // math
         add(Ops.MathOps.ABS, "abs({0})");

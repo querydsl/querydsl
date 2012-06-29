@@ -49,7 +49,7 @@ public final class SQLServerGrammar {
         return new ConstantImpl<T>(constant);
     }
     
-    public static <D> NumberExpression<Integer> datediff(DatePart datePart, D start, D end) {
+    public static <D extends Comparable<D>> NumberExpression<Integer> datediff(DatePart datePart, D start, D end) {
         return NumberTemplate.create(Integer.class, DATEDIFF, constant(datePart.name()), constant(start), constant(end));
     }
     
