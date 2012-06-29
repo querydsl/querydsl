@@ -20,24 +20,15 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import org.hibernate.LockMode;
 import org.hibernate.Session;
 import org.junit.Test;
 
 import com.mysema.commons.lang.CloseableIterator;
-import com.mysema.commons.lang.Pair;
-import com.mysema.query.group.GroupBy;
-import com.mysema.query.group.QPair;
 import com.mysema.query.jpa.HQLTemplates;
 import com.mysema.query.jpa.JPQLTemplates;
-import com.mysema.query.jpa.domain.Author;
-import com.mysema.query.jpa.domain.Book;
 import com.mysema.query.jpa.domain.Cat;
-import com.mysema.query.jpa.domain.QAuthor;
-import com.mysema.query.jpa.domain.QBook;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
 import com.mysema.query.jpa.hibernate.ScrollableResultsIterator;

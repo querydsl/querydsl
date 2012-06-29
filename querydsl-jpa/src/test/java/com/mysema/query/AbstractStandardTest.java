@@ -51,7 +51,9 @@ import com.mysema.query.jpa.domain.Author;
 import com.mysema.query.jpa.domain.Book;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.Company;
+import com.mysema.query.jpa.domain.Company.Rating;
 import com.mysema.query.jpa.domain.DomesticCat;
+import com.mysema.query.jpa.domain.DoubleProjection;
 import com.mysema.query.jpa.domain.Employee;
 import com.mysema.query.jpa.domain.Foo;
 import com.mysema.query.jpa.domain.JobFunction;
@@ -60,12 +62,12 @@ import com.mysema.query.jpa.domain.QAuthor;
 import com.mysema.query.jpa.domain.QBook;
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain.QCompany;
+import com.mysema.query.jpa.domain.QDoubleProjection;
 import com.mysema.query.jpa.domain.QEmployee;
 import com.mysema.query.jpa.domain.QFoo;
 import com.mysema.query.jpa.domain.QShow;
 import com.mysema.query.jpa.domain.QUser;
 import com.mysema.query.jpa.domain.Show;
-import com.mysema.query.jpa.domain.Company.Rating;
 import com.mysema.query.jpa.domain4.QBookMark;
 import com.mysema.query.jpa.domain4.QBookVersion;
 import com.mysema.query.jpa.hibernate.HibernateSubQuery;
@@ -538,7 +540,7 @@ public abstract class AbstractStandardTest {
     public void Max() {
         query().from(cat).uniqueResult(cat.bodyWeight.max());
     }
-    
+        
     @Test
     public void Offset(){
         List<String> names2 = Arrays.asList("Felix123","Mary_123","Ruth123","Some");
@@ -709,6 +711,18 @@ public abstract class AbstractStandardTest {
     public void Sum_2() throws RecognitionException, TokenStreamException {
         // NOT SUPPORTED
         query().from(cat).where(sum(cat.kittens.size()).gt(0)).list(cat);
+    }
+    
+    @Test
+    public void Sum_3() {
+        query().from(cat).uniqueResult(cat.bodyWeight.sum());
+    }
+    
+    @Test
+    public void Sum_3_Projected() {
+        double val = query().from(cat).uniqueResult(cat.bodyWeight.sum());
+        DoubleProjection projection = query().from(cat).uniqueResult(new QDoubleProjection(cat.bodyWeight.sum()));
+        assertEquals(val, projection.val, 0.001); 
     }
     
     @Test
