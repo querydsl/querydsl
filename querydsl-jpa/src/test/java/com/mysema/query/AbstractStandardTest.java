@@ -438,6 +438,12 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    @Ignore // FIXME https://github.com/mysema/querydsl/issues/185
+    public void Case() {
+        query().from(cat).list(cat.name.when("Bob").then(1).otherwise(2));
+    }
+    
+    @Test
     public void StartsWith(){
         assertEquals(1, query().from(cat).where(cat.name.startsWith("R")).count());
     }
