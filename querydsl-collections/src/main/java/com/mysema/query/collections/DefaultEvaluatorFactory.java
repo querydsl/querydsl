@@ -209,9 +209,6 @@ public class DefaultEvaluatorFactory {
         // filter
         if (filter != null) {
             ser.append("if (");
-//            for (String matcher : anyJoinMatchers) {
-//                ser.append("!" + matcher + " && ");
-//            }
             ser.handle(filter).append("){\n");
             for (String matcher : anyJoinMatchers) {
                 ser.append("    "+ matcher + " = true;\n");
@@ -223,10 +220,8 @@ public class DefaultEvaluatorFactory {
         }
 
         // closing context
-        for (int i = 0; i < joins.size(); i++) {
-            ser.append("}\n");
-        }
-        for (int i = 0; i < anyJoinMatchers.size(); i++) {
+        int amount = joins.size() + anyJoinMatchers.size();
+        for (int i = 0; i < amount; i++) {
             ser.append("}\n");
         }
         ser.append("return rv;");
