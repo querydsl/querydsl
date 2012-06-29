@@ -88,15 +88,17 @@ public class QueryMixin<T> {
         return p;
     }
 
+    @SuppressWarnings("rawtypes")
     public <RT> Expression<RT> convert(Expression<RT> expr){
-        if (expr instanceof Path && ((Path)expr).getMetadata().getPathType() == PathType.COLLECTION_ANY) {
-            // turn collection any in projection into an inner joined projection
-            Path<?> path = (Path<?>) expr;
-            String suffix = UUID.randomUUID().toString().replace("-", "").substring(0,5);
-            String name = uncapitalize(path.getType().getSimpleName()) + suffix;
-            Path joined = new PathImpl(path.getType(), name);
-            this.innerJoin((Path)path.getMetadata().getParent(), joined);
-            return joined;
+        if (expr instanceof Path) {
+            Context context = new Context();            
+            Expression replaced = expr.accept(CollectionAnyVisitor.DEFAULT, context);
+            for (int i = 0; i < context.paths.size(); i++) {
+                Path path = context.paths.get(i).getMetadata().getParent();
+                Path replacement = context.replacements.get(i);
+                this.innerJoin(path, replacement);
+            }
+            return replaced;
         } else if (expr instanceof ProjectionRole<?>) {
             return convert(((ProjectionRole) expr).getProjection());
         } else if (expr instanceof FactoryExpression<?> && !(expr instanceof FactoryExpressionAdapter<?>)) {
