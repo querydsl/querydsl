@@ -48,7 +48,8 @@ public class PackageVerification {
         oneJarClassLoader.loadClass(PersistenceCapable.class.getName()); // jdo        
         oneJarClassLoader.loadClass(JDOAnnotationProcessor.class.getName()); // querydsl-apt
         String resourceKey = "META-INF/services/javax.annotation.processing.Processor";
-        assertEquals(JDOAnnotationProcessor.class.getName(), Resources.toString(oneJarClassLoader.findResource(resourceKey), Charsets.UTF_8));
+        assertEquals(JDOAnnotationProcessor.class.getName(), 
+                Resources.toString(oneJarClassLoader.findResource(resourceKey), Charsets.UTF_8));
     }
     
 }

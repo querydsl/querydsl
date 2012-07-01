@@ -85,7 +85,8 @@ public class ContainerTest extends AbstractTest{
     /**
      * Tests NOT contains in Map.keys
      */
-    @Test public void NotContainsKeysInMapFields() {
+    @Test 
+    public void NotContainsKeysInMapFields() {
 
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
 //                + "WHERE !this.wardrobes2.containsKey(wrd) "
@@ -151,7 +152,8 @@ public class ContainerTest extends AbstractTest{
     /**
      * Tests get
      */
-    @Test public void GetInMapFields() {
+    @Test 
+    public void GetInMapFields() {
 
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
 //                + "WHERE this.wardrobes.get(wrd.model) == wrd "
@@ -168,7 +170,8 @@ public class ContainerTest extends AbstractTest{
     /**
      * Tests get method used in ordering
      */
-    @Test public void GetInOrderingInMapFields() {
+    @Test 
+    public void GetInOrderingInMapFields() {
 //        "SELECT FROM org.jpox.samples.models.fitness.Gym "
 //                + "PARAMETERS org.jpox.samples.models.fitness.Wardrobe wrd");
 //        .setOrdering("this.wardrobes.get(wrd.model).model ascending");

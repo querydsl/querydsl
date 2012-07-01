@@ -168,7 +168,8 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
     @Ignore
     public void ArrayProjection(){
         // typed array not supported
-        List<String[]> results = query().from(store).list(new ArrayConstructorExpression<String>(String[].class, store.name));
+        List<String[]> results = query().from(store)
+                .list(new ArrayConstructorExpression<String>(String[].class, store.name));
         assertFalse(results.isEmpty());
         for (String[] result : results){
             assertNotNull(result);
@@ -178,7 +179,8 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
 
     @Test
     public void ConstructorProjection(){
-        List<Projection> projections = query().from(store).list(ConstructorExpression.create(Projection.class, store.name));
+        List<Projection> projections = query().from(store)
+                .list(ConstructorExpression.create(Projection.class, store.name));
         assertFalse(projections.isEmpty());
         for (Projection projection : projections){
             assertNotNull(projection);
@@ -188,19 +190,22 @@ public class JDOQLQueryStandardTest extends AbstractJDOTest {
     @Test
     public void Params(){
         Param<String> name = new Param<String>(String.class,"name");
-        assertEquals("ABC0",query().from(product).where(product.name.eq(name)).set(name, "ABC0").uniqueResult(product.name));
+        assertEquals("ABC0",query().from(product).where(product.name.eq(name)).set(name, "ABC0")
+                .uniqueResult(product.name));
     }
 
     @Test
     public void Params_anon(){
         Param<String> name = new Param<String>(String.class);
-        assertEquals("ABC0",query().from(product).where(product.name.eq(name)).set(name, "ABC0").uniqueResult(product.name));
+        assertEquals("ABC0",query().from(product).where(product.name.eq(name)).set(name, "ABC0")
+                .uniqueResult(product.name));
     }
 
     @Test(expected=ParamNotSetException.class)
     public void Params_not_set(){
         Param<String> name = new Param<String>(String.class,"name");
-        assertEquals("ABC0",query().from(product).where(product.name.eq(name)).uniqueResult(product.name));
+        assertEquals("ABC0",query().from(product).where(product.name.eq(name))
+                .uniqueResult(product.name));
     }
 
     @Test

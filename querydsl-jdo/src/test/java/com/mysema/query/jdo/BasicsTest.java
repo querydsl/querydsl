@@ -107,13 +107,15 @@ public class BasicsTest extends AbstractJDOTest {
     @Test
     public void SimpleTest() throws IOException{
         JDOQLQuery query = new JDOQLQueryImpl(pm, templates, false);
-        assertEquals("Sony Discman", query.from(product).where(product.name.eq("Sony Discman")).uniqueResult(product.name));
+        assertEquals("Sony Discman", query.from(product).where(product.name.eq("Sony Discman"))
+                .uniqueResult(product.name));
         query.close();
     }
 
     @Test
     public void ProjectionTests() {
-        assertEquals("Sony Discman", query().from(product).where(product.name.eq("Sony Discman")).uniqueResult(product.name));
+        assertEquals("Sony Discman", query().from(product).where(product.name.eq("Sony Discman"))
+                .uniqueResult(product.name));
     }
 
     @Test

@@ -322,7 +322,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
         return null;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
         if (operator.equals(Ops.INSTANCE_OF)) {

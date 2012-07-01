@@ -40,6 +40,49 @@ public class MySQLQueryTest {
     }
     
     @Test
+    public void Syntax() {                
+//        SELECT
+//        [ALL | DISTINCT | DISTINCTROW ]
+//          [HIGH_PRIORITY]
+        query.highPriority();
+//          [STRAIGHT_JOIN]
+        query.straightJoin();
+//          [SQL_SMALL_RESULT] [SQL_BIG_RESULT] [SQL_BUFFER_RESULT]
+        query.smallResult();
+        query.bigResult();
+        query.bufferResult();
+//          [SQL_CACHE | SQL_NO_CACHE] [SQL_CALC_FOUND_ROWS]
+        query.cache();
+        query.noCache();
+        query.calcFoundRows();
+//        select_expr [, select_expr ...]
+//        [FROM table_references
+        query.from(survey);
+//        [WHERE where_condition]
+        query.where(survey.id.isNotNull());
+//        [GROUP BY {col_name | expr | position}
+        query.groupBy(survey.name);
+//          [ASC | DESC], ... [WITH ROLLUP]]
+        query.withRollup();
+//        [HAVING where_condition]
+        query.having(survey.name.isNull());
+//        [ORDER BY {col_name | expr | position}
+//          [ASC | DESC], ...]
+        query.orderBy(survey.name.asc());
+//        [LIMIT {[offset,] row_count | row_count OFFSET offset}]
+        query.limit(2);
+        query.offset(3);
+//        [PROCEDURE procedure_name(argument_list)]
+        // TODO
+//        [INTO OUTFILE 'file_name' export_options
+//          | INTO DUMPFILE 'file_name'
+//          | INTO var_name [, var_name]]
+//        [FOR UPDATE | LOCK IN SHARE MODE]]
+        query.forUpdate();
+        query.lockInShareMode();
+    }
+    
+    @Test
     public void UseIndex(){
         query.useIndex("col1_index");        
         assertEquals("select survey.NAME from SURVEY survey use_index (col1_index) order by survey.NAME asc", toString(query));
