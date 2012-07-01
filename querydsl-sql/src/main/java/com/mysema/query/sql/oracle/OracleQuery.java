@@ -39,8 +39,6 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> implements SQLCom
 
     private static final String CONNECT_BY_PRIOR = "\nconnect by prior ";
     
-    private static final String FOR_UPDATE = "\nfor update ";
-
     private static final String ORDER_SIBLINGS_BY = "\norder siblings by ";
 
     private static final String START_WITH = "\nstart with ";
@@ -65,26 +63,42 @@ public class OracleQuery extends AbstractSQLQuery<OracleQuery> implements SQLCom
         super(conn, new Configuration(templates), metadata);
     }
     
+    /**
+     * @param cond
+     * @return
+     */
     public OracleQuery connectByPrior(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY_PRIOR, cond);
     }
 
+    /**
+     * @param cond
+     * @return
+     */
     public OracleQuery connectBy(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY, cond);
     }
 
+    /**
+     * @param cond
+     * @return
+     */
     public OracleQuery connectByNocyclePrior(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, CONNECT_BY_NOCYCLE_PRIOR, cond);
     }
-    
-    public OracleQuery forUpdate() {
-        return addFlag(Position.END, FOR_UPDATE);
-    }
-       
+           
+    /**
+     * @param cond
+     * @return
+     */
     public <A> OracleQuery startWith(Predicate cond) {
         return addFlag(Position.BEFORE_ORDER, START_WITH, cond);
     }
 
+    /**
+     * @param path
+     * @return
+     */
     public OracleQuery orderSiblingsBy(Expression<?> path) {
         return addFlag(Position.BEFORE_ORDER, ORDER_SIBLINGS_BY, path);
     }

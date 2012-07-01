@@ -51,14 +51,24 @@ public class PostgresQuery extends AbstractSQLQuery<PostgresQuery> implements SQ
         super(conn, configuration, metadata);
     }
     
+    /**
+     * @return
+     */
     public PostgresQuery forShare() {
         return addFlag(Position.END, getConfiguration().getTemplates().getForShare());
     }
     
+    /**
+     * @return
+     */
     public PostgresQuery noWait() {
         return addFlag(Position.END, getConfiguration().getTemplates().getNoWait());
     }
     
+    /**
+     * @param paths
+     * @return
+     */
     public PostgresQuery of(RelationalPath<?>... paths) {
         StringBuilder builder = new StringBuilder(" of ");
         for (RelationalPath<?> path : paths) {

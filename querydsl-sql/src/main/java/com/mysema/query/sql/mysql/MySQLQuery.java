@@ -75,58 +75,104 @@ public class MySQLQuery extends AbstractSQLQuery<MySQLQuery> implements SQLCommo
         super(conn, configuration, metadata);
     }
     
+    /**
+     * @return
+     */
     public MySQLQuery bigResult() {
         return addFlag(Position.AFTER_SELECT, SQL_BIG_RESULT);
     }
     
+    /**
+     * @return
+     */
     public MySQLQuery bufferResult() {
         return addFlag(Position.AFTER_SELECT, SQL_BUFFER_RESULT);
     }
     
+    /**
+     * @return
+     */
     public MySQLQuery cache() {
         return addFlag(Position.AFTER_SELECT, SQL_CACHE);
     }
     
+    /**
+     * @return
+     */
     public MySQLQuery calcFoundRows() {
         return addFlag(Position.AFTER_SELECT, SQL_CALC_FOUND_ROWS);
     }
     
+    /**
+     * @return
+     */
     public MySQLQuery highPriority() {
         return addFlag(Position.AFTER_SELECT, HIGH_PRIORITY);
     }
     
+    /**
+     * @param var
+     * @return
+     */
     public MySQLQuery into(String var) {
         return addFlag(Position.END, "\ninto " + var);
     }
 
+    /**
+     * @param file
+     * @return
+     */
     public MySQLQuery intoDumpfile(File file) {
         return addFlag(Position.END, "\ninto dumpfile '" + file.getPath() + "'" );
     }
     
+    /**
+     * @param file
+     * @return
+     */
     public MySQLQuery intoOutfile(File file) {
         return addFlag(Position.END, "\ninto outfile '" + file.getPath() + "'" );
     }
     
+    /**
+     * @return
+     */
     public MySQLQuery lockInShareMode() {
         return addFlag(Position.END, LOCK_IN_SHARE_MODE);
     }
     
+    /**
+     * @return
+     */
     public MySQLQuery noCache() {
         return addFlag(Position.AFTER_SELECT, SQL_NO_CACHE);
     }
     
+    /**
+     * @return
+     */
     public MySQLQuery smallResult() {
         return addFlag(Position.AFTER_SELECT, SQL_SMALL_RESULT);
     }
     
+    /**
+     * @return
+     */
     public MySQLQuery straightJoin() {
         return addFlag(Position.AFTER_SELECT, STRAIGHT_JOIN);
     }
     
+    /**
+     * @param indexes
+     * @return
+     */
     public MySQLQuery useIndex(String... indexes) {
         return addJoinFlag(" use_index (" + JOINER.join(indexes) + ")", JoinFlag.Position.END);
     }
     
+    /**
+     * @return
+     */
     public MySQLQuery withRollup() {
         return addFlag(Position.AFTER_GROUP_BY, WITH_ROLLUP);
     }
