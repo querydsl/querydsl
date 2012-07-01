@@ -152,7 +152,8 @@ public class JDOSQLQueryTest extends AbstractJDOTest{
     public void EntityProjections(){
         List<Product> products = sql()
             .from(product)
-            .list(ConstructorExpression.create(Product.class, product.name, product.description, product.price, product.amount));
+            .list(ConstructorExpression.create(Product.class,
+                    product.name, product.description, product.price, product.amount));
         assertEquals(30, products.size());
         for (Product p : products){
             assertNotNull(p.getName());

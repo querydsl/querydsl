@@ -18,6 +18,7 @@ import java.util.List;
 
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.MutableExpressionBase;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
@@ -128,11 +129,7 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
     }
 
     private Expression<?> getExpressionList(){
-        Expression<?> arg = exprs.get(0);
-        for (int i = 1; i < exprs.size(); i++) {
-            arg = SimpleOperation.create(List.class, Ops.LIST, arg, exprs.get(i));
-        }
-        return arg;
+        return ExpressionUtils.list(exprs);
     }
     
     @Override

@@ -35,7 +35,8 @@ public abstract class AbstractJDOTest {
 
     private static final JDOQLTemplates templates = new JDOQLTemplates();
     
-    protected static final PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
+    protected static final PersistenceManagerFactory pmf = 
+            JDOHelper.getPersistenceManagerFactory("datanucleus.properties");
 
     protected PersistenceManager pm;
 

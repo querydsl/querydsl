@@ -98,7 +98,7 @@ public class ExtendedSQLTest {
                      "order by author.LAST_NAME asc\n"+
                      "limit ?\n"+
                      "offset ?\n"+
-                     "for update ", serializer.toString());
+                     "for update", serializer.toString());
            
     }
     

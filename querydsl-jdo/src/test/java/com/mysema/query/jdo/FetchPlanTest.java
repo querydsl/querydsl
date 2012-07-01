@@ -61,7 +61,8 @@ public class FetchPlanTest extends AbstractJDOTest{
         queriesField.setAccessible(true);
         List<Query> queries = (List<Query>)queriesField.get(query);
         Query jdoQuery = queries.get(0);
-        assertEquals(new HashSet<String>(Arrays.asList("myfetchgroup1","myfetchgroup2")), jdoQuery.getFetchPlan().getGroups());
+        assertEquals(new HashSet<String>(Arrays.asList("myfetchgroup1","myfetchgroup2")), 
+                jdoQuery.getFetchPlan().getGroups());
         assertEquals(2, jdoQuery.getFetchPlan().getMaxFetchDepth());
     }
     
@@ -78,7 +79,8 @@ public class FetchPlanTest extends AbstractJDOTest{
         queriesField.setAccessible(true);
         List<Query> queries = (List<Query>)queriesField.get(query);
         Query jdoQuery = queries.get(0);
-        assertEquals(new HashSet<String>(Arrays.asList("products")), jdoQuery.getFetchPlan().getGroups());
+        assertEquals(new HashSet<String>(Arrays.asList("products")), 
+                jdoQuery.getFetchPlan().getGroups());
         assertEquals(1, jdoQuery.getFetchPlan().getMaxFetchDepth());
     }
     

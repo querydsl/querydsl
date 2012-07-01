@@ -25,7 +25,7 @@ import com.mysema.query.types.FactoryExpression;
  * @author tiwe
  *
  */
-public final class FactoryExpressionTransformer implements ResultTransformer{
+public final class FactoryExpressionTransformer implements ResultTransformer {
 
     private static final long serialVersionUID = -3625957233853100239L;
 

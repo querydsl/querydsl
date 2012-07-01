@@ -16,10 +16,12 @@ package com.mysema.query.sql.postgres;
 import java.sql.Connection;
 
 import com.mysema.query.DefaultQueryMetadata;
+import com.mysema.query.QueryFlag.Position;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.sql.AbstractSQLQuery;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.sql.MySQLTemplates;
+import com.mysema.query.sql.RelationalPath;
 import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.SQLTemplates;
@@ -49,6 +51,23 @@ public class PostgresQuery extends AbstractSQLQuery<PostgresQuery> implements SQ
         super(conn, configuration, metadata);
     }
     
-    // TODO : extensions
+    public PostgresQuery forShare() {
+        return addFlag(Position.END, getConfiguration().getTemplates().getForShare());
+    }
+    
+    public PostgresQuery noWait() {
+        return addFlag(Position.END, getConfiguration().getTemplates().getNoWait());
+    }
+    
+    public PostgresQuery of(RelationalPath<?>... paths) {
+        StringBuilder builder = new StringBuilder(" of ");
+        for (RelationalPath<?> path : paths) {
+            if (builder.length() > 4) {
+                builder.append(", ");
+            }
+            builder.append(getConfiguration().getTemplates().quoteIdentifier(path.getTableName()));
+        }
+        return addFlag(Position.END, builder.toString());
+    }
     
 }

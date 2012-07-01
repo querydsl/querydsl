@@ -79,7 +79,9 @@ public class SQLTemplates extends Templates {
 
     private String dummyTable = "dual";
 
-    private String forUpdate = "\nfor update ";
+    private String forUpdate = "\nfor update";
+    
+    private String forShare = "\nfor share";
     
     private String from = "\nfrom ";
     
@@ -108,6 +110,8 @@ public class SQLTemplates extends Templates {
     private boolean nativeMerge;
 
     private String notNull = " not null";
+    
+    private String noWait = " nowait";
 
     private String offsetTemplate = "\noffset {0}";
 
@@ -644,6 +648,22 @@ public class SQLTemplates extends Templates {
 
     public void setForUpdate(String forUpdate) {
         this.forUpdate = forUpdate;
+    }
+
+    public String getForShare() {
+        return forShare;
+    }
+
+    public void setForShare(String forShare) {
+        this.forShare = forShare;
+    }
+
+    public String getNoWait() {
+        return noWait;
+    }
+
+    public void setNoWait(String noWait) {
+        this.noWait = noWait;
     }
     
 }

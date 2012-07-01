@@ -13,6 +13,7 @@
  */
 package com.mysema.query.types;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public final class ExpressionUtils {
     public static <T> Expression<T> any(CollectionExpression<?, ? super T> col) {
         return OperationImpl.create((Class<T>)col.getParameter(0), Ops.QuantOps.ANY, col);
     }
-        
+            
     /**
      * Create the intersection of the given arguments
      * 
@@ -254,6 +255,27 @@ public final class ExpressionUtils {
             return expr;    
         }        
     }
+    
+    /**
+     * @param exprs
+     * @return
+     */
+    public static Expression<?> list(Expression<?>... exprs) {
+        return list(Arrays.asList(exprs));
+    }
+    
+
+    /**
+     * @param exprs
+     * @return
+     */
+    public static Expression<?> list(List<? extends Expression<?>> exprs) {
+        Expression<?> rv = exprs.get(0);
+        for (int i = 1; i < exprs.size(); i++) {
+            rv = OperationImpl.create(Object.class, Ops.LIST, rv, exprs.get(i));
+        }
+        return rv;
+    }    
     
     /**
      * @param expressions
