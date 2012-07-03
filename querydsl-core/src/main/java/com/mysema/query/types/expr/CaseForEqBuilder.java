@@ -20,6 +20,7 @@ import javax.annotation.Nullable;
 
 import com.mysema.query.types.ConstantImpl;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.NullExpression;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 
@@ -90,6 +91,10 @@ public final class CaseForEqBuilder<D> {
 
     public <T> Cases<T,Expression<T>> then(T then){
         return then(new ConstantImpl<T>(then));
+    }
+    
+    public <T> Cases<T,Expression<T>> thenNull() {
+        return then((Expression<T>)NullExpression.DEFAULT);
     }
 
     public <T extends Number & Comparable<?>> Cases<T,NumberExpression<T>> then(T then){

@@ -86,4 +86,5 @@ public class CoalesceTest {
     public void Desc() {
         assertEquals("coalesce(firstname, xxx) DESC", firstname.coalesce("xxx").desc().toString());
     }
+    
 }

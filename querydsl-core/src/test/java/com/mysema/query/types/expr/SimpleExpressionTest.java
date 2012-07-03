@@ -54,6 +54,13 @@ public class SimpleExpressionTest {
         assertEquals("str as alias", str.as("alias").toString());
         assertEquals("str as alias", str.as(new StringPath("alias")).toString());
     }
+    
+    @Test
+    public void Case() {
+        SimpleExpression<String> str = new StringPath("str");
+        // nullif(str, 'xxx')
+        str.when("xxx").thenNull().otherwise(str);
+    }
 
     @Test
     public void Subclasses_Override_As() throws SecurityException, NoSuchMethodException{
