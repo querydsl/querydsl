@@ -21,6 +21,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.MutableExpressionBase;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.OrderSpecifier;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Visitor;
@@ -96,6 +97,14 @@ public class Coalesce<T extends Comparable> extends MutableExpressionBase<T> {
         return this;
     }
 
+    public OrderSpecifier<T> asc() {
+        return getValue().asc();
+    }
+    
+    public OrderSpecifier<T> desc() {
+        return getValue().desc();
+    }
+    
     public final Coalesce<T> add(T constant){
         return add(new ConstantImpl<T>(constant));
     }
