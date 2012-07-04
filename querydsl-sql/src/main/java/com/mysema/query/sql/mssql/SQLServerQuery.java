@@ -14,10 +14,6 @@
 package com.mysema.query.sql.mssql;
 
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 
 import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.JoinFlag;
@@ -56,26 +52,16 @@ public class SQLServerQuery extends AbstractSQLQuery<SQLServerQuery> implements 
         super(conn, configuration);
     }
 
+    /**
+     * @param tableHints
+     * @return
+     */
     public SQLServerQuery tableHints(SQLServerTableHints... tableHints) {
-        List<String> tableHintStrs = new ArrayList<String>(tableHints.length);
-        for (SQLServerTableHints tableHint : tableHints) {
-            tableHintStrs.add(tableHint.name());
-        }
-        return tableHints(tableHintStrs);
-    }
-
-    private SQLServerQuery tableHints(Collection<String> tableHints) {
-        if (!tableHints.isEmpty()) {
-            String with = getConfiguration().getTemplates().getWith();
-            StringBuilder tableHintsStr = new StringBuilder(" ").append(with).append("(");
-            Iterator<String> it = tableHints.iterator();
-            tableHintsStr.append(it.next());
-            while (it.hasNext()) {
-                tableHintsStr.append(", ").append(it.next());
-            }
-            tableHintsStr.append(")");
-            addJoinFlag(tableHintsStr.toString(), JoinFlag.Position.END);
+        if (tableHints.length > 0) {
+            String hints = SQLServerGrammar.tableHints(tableHints);
+            addJoinFlag(hints, JoinFlag.Position.END);
         }
         return this;
     }
+
 }
