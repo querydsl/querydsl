@@ -15,7 +15,6 @@ package com.mysema.query.jpa;
 
 import static com.mysema.query.alias.Alias.$;
 import static com.mysema.query.alias.Alias.alias;
-import static com.mysema.query.jpa.JPQLGrammar.sum;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Ignore;
@@ -70,7 +69,7 @@ public class ParsingTest extends AbstractQueryTest{
     public void DocoExamples910() throws Exception {
         query().from(cat)
                .groupBy(cat.color)
-               .select(cat.color, sum(cat.weight), cat.count()).parse();
+               .select(cat.color, cat.weight.sum(), cat.count()).parse();
     }
 
     @Test
@@ -78,7 +77,7 @@ public class ParsingTest extends AbstractQueryTest{
         query().from(cat)
                .groupBy(cat.color)
                .having(cat.color.in(Color.TABBY, Color.BLACK))
-               .select(cat.color, sum(cat.weight), cat.count()).parse();
+               .select(cat.color, cat.weight.sum(), cat.count()).parse();
     }
 
     @Test
@@ -87,7 +86,7 @@ public class ParsingTest extends AbstractQueryTest{
         query().from(cat).join(cat.kittens, kitten)
                .groupBy(cat)
                .having(kitten.weight.avg().gt(100.0))
-               .orderBy(kitten.count().asc(), sum(kitten.weight).desc())
+               .orderBy(kitten.count().asc(), kitten.weight.sum().desc())
                .select(cat)
                .parse();
     }
@@ -139,9 +138,9 @@ public class ParsingTest extends AbstractQueryTest{
                                         sub().from(catalog).where(
                                                 catalog.effectiveDate.lt(DateExpression.currentDate()))
                                              .list(catalog.effectiveDate))))
-                .groupBy(ord).having(sum(price.amount).gt(0l))
-                .orderBy(sum(price.amount).desc())
-                .select(ord.id, sum(price.amount), item.count());
+                .groupBy(ord).having(price.amount.sum().gt(0l))
+                .orderBy(price.amount.sum().desc())
+                .select(ord.id, price.amount.sum(), item.count());
 
         Customer c1 = new Customer();
         Catalog c2 = new Catalog();
@@ -151,9 +150,9 @@ public class ParsingTest extends AbstractQueryTest{
                .from(catalog).join(catalog.prices, price).where(
                         ord.paid.not().and(ord.customer.eq(c1)).and(
                                 price.product.eq(product)).and(catalog.eq(c2)))
-                .groupBy(ord).having(sum(price.amount).gt(0l))
-                .orderBy(sum(price.amount).desc())
-                .select(ord.id, sum(price.amount), item.count());
+                .groupBy(ord).having(price.amount.sum().gt(0l))
+                .orderBy(price.amount.sum().desc())
+                .select(ord.id, price.amount.sum(), item.count());
 
     }
 
@@ -550,14 +549,14 @@ public class ParsingTest extends AbstractQueryTest{
     @Ignore
     public void Sum() throws RecognitionException, TokenStreamException {
         // NOT SUPPORTED
-        query().from(cat).select(sum(cat.kittens.size())).parse();
+        query().from(cat).select(cat.kittens.size().sum()).parse();
     }
 
     @Test
     @Ignore
     public void Sum_2() throws RecognitionException, TokenStreamException {
         // NOT SUPPORTED
-        query().from(cat).where(sum(cat.kittens.size()).gt(0)).select(cat).parse();
+        query().from(cat).where(cat.kittens.size().sum().gt(0)).select(cat).parse();
     }
     
     @Test

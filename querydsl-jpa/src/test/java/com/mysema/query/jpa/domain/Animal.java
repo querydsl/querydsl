@@ -41,6 +41,8 @@ public class Animal {
     // needed for JPA tests
     @Type(type="com.mysema.query.ExtDoubleType")
     private double bodyWeight;
+    
+    private float floatProperty;
 
     private Color color;
 
@@ -140,4 +142,12 @@ public class Animal {
         this.weight = weight;
     }
 
+    public float getFloatProperty() {
+        return floatProperty;
+    }
+
+    public void setFloatProperty(float floatProperty) {
+        this.floatProperty = floatProperty;
+    }
+    
 }

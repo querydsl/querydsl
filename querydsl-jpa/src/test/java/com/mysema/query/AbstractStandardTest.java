@@ -13,7 +13,6 @@
  */
 package com.mysema.query;
 
-import static com.mysema.query.jpa.JPQLGrammar.sum;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -55,6 +54,7 @@ import com.mysema.query.jpa.domain.Company.Rating;
 import com.mysema.query.jpa.domain.DomesticCat;
 import com.mysema.query.jpa.domain.DoubleProjection;
 import com.mysema.query.jpa.domain.Employee;
+import com.mysema.query.jpa.domain.FloatProjection;
 import com.mysema.query.jpa.domain.Foo;
 import com.mysema.query.jpa.domain.JobFunction;
 import com.mysema.query.jpa.domain.QAnimal;
@@ -64,6 +64,7 @@ import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.domain.QCompany;
 import com.mysema.query.jpa.domain.QDoubleProjection;
 import com.mysema.query.jpa.domain.QEmployee;
+import com.mysema.query.jpa.domain.QFloatProjection;
 import com.mysema.query.jpa.domain.QFoo;
 import com.mysema.query.jpa.domain.QShow;
 import com.mysema.query.jpa.domain.QUser;
@@ -709,14 +710,14 @@ public abstract class AbstractStandardTest {
     @Ignore
     public void Sum() throws RecognitionException, TokenStreamException {
         // NOT SUPPORTED
-        query().from(cat).list(sum(cat.kittens.size()));
+        query().from(cat).list(cat.kittens.size().sum());
     }
 
     @Test
     @Ignore
     public void Sum_2() throws RecognitionException, TokenStreamException {
         // NOT SUPPORTED
-        query().from(cat).where(sum(cat.kittens.size()).gt(0)).list(cat);
+        query().from(cat).where(cat.kittens.size().sum().gt(0)).list(cat);
     }
     
     @Test
@@ -729,6 +730,19 @@ public abstract class AbstractStandardTest {
         double val = query().from(cat).uniqueResult(cat.bodyWeight.sum());
         DoubleProjection projection = query().from(cat).uniqueResult(new QDoubleProjection(cat.bodyWeight.sum()));
         assertEquals(val, projection.val, 0.001); 
+    }
+    
+    @Test
+    public void Sum_as_Float() {
+        float val = query().from(cat).uniqueResult(cat.floatProperty.sum());
+        assertTrue(val > 0);
+    }
+        
+    @Test
+    public void Sum_as_Float_Projected() {
+        float val = query().from(cat).uniqueResult(cat.floatProperty.sum());
+        FloatProjection projection = query().from(cat).uniqueResult(new QFloatProjection(cat.floatProperty.sum()));
+        assertEquals(val, projection.val, 0.001);
     }
     
     @Test

@@ -67,6 +67,7 @@ public class Cat extends Animal {
     public Cat(String name, int id, double bodyWeight){
         this(name, id);
         setBodyWeight(bodyWeight);
+        setFloatProperty((float)bodyWeight);
     }
 
     public int getBreed() {

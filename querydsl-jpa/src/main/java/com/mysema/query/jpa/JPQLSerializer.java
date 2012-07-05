@@ -37,6 +37,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
+import com.mysema.query.support.Expressions;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.ConstantImpl;
