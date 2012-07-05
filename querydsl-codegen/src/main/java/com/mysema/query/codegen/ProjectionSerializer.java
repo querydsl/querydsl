@@ -15,6 +15,7 @@ package com.mysema.query.codegen;
 
 import java.io.IOException;
 
+import javax.annotation.Generated;
 import javax.inject.Inject;
 
 import com.google.common.base.Function;
@@ -56,10 +57,13 @@ public final class ProjectionSerializer implements Serializer{
 
         // imports
         writer.imports(Expression.class.getPackage(), NumberExpression.class.getPackage());
+        writer.imports(Generated.class);
 
         // javadoc
         writer.javadoc(queryType + " is a Querydsl Projection type for " + simpleName);
 
+        writer.line("@Generated(\"", getClass().getName(), "\")");
+        
         // class header
 //        writer.suppressWarnings("serial");
         Type superType = new ClassType(TypeCategory.SIMPLE, ConstructorExpression.class, model);
