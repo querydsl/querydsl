@@ -107,14 +107,13 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         
         // serialize created types
         serializeMetaTypes();           
+        
         return ALLOW_OTHER_PROCESSORS_TO_CLAIM_ANNOTATIONS;
     }
     
     private void processAnnotations() {        
         processExclusions();        
-        
-        processDelegateMethods();
-
+                
         Set<Element> elements = collectElements();
         
         // create meta models
@@ -137,6 +136,8 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
                 context.embeddableTypes.put(entityType.getFullName(), entityType);
             } else if (superAnn && element.getAnnotation(conf.getSuperTypeAnnotation()) != null) {
                 context.supertypes.put(entityType.getFullName(), entityType);
+            } else if (!entityType.getDelegates().isEmpty()) {    
+                context.extensionTypes.put(entityType.getFullName(), entityType);
             } else {
                 context.embeddableTypes.put(entityType.getFullName(), entityType);
             } 
@@ -196,8 +197,12 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
     }
 
     protected Set<Element> collectElements() {
-        // from class annotations
         Set<Element> elements = new HashSet<Element>();
+        
+        // from delegate methods
+        elements.addAll(processDelegateMethods());
+
+        // from class annotations
         for (Class<? extends Annotation> annotation : conf.getEntityAnnotations()) {
             elements.addAll(getElements(annotation));    
         }                
@@ -420,7 +425,7 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         }
     }
     
-    private void processDelegateMethods() {
+    private Set<Element> processDelegateMethods() {
         Set<Element> elements = new HashSet<Element>();
         elements.addAll(getElements(QueryDelegate.class));
         for (Element element : delegateMethods) {
@@ -438,6 +443,8 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
         delegateMethods.clear();
         delegateMethods.addAll(elements);
         
+        Set<Element> typeElements = new HashSet<Element>();
+        
         for (Element delegateMethod : elements) {
             ExecutableElement method = (ExecutableElement)delegateMethod;
             Element element = delegateMethod.getEnclosingElement();
@@ -453,18 +460,33 @@ public abstract class AbstractQuerydslProcessor extends AbstractProcessor {
                 if (TypeUtils.isAnnotationMirrorOfType(annotation, QueryDelegate.class)) {
                     TypeMirror type = TypeUtils.getAnnotationValueAsTypeMirror(annotation, "value");
                     if (type != null) {
-                        entityType = typeFactory.getEntityType(type, true);    
+                        entityType = typeFactory.getEntityType(type, true);
                     }                    
                 }
             }
 
-            if (entityType != null) {
+            if (entityType != null) {                
                 registerTypeElement(entityType.getFullName(), (TypeElement)element);
                 entityType.addDelegate(new Delegate(entityType, delegateType, name, parameters, returnType));
-                context.extensionTypes.put(entityType.getFullName(), entityType);
-                context.allTypes.put(entityType.getFullName(), entityType);
+                TypeElement typeElement = processingEnv.getElementUtils().getTypeElement(entityType.getFullName());
+                boolean isAnnotated = false;
+                for (Class<? extends Annotation> ann : conf.getEntityAnnotations()) {
+                    if (typeElement.getAnnotation(ann) != null) {
+                        isAnnotated = true;
+                    }
+                }
+                if (isAnnotated) {
+                    // handle also properties of entity type
+                    typeElements.add(processingEnv.getElementUtils().getTypeElement(entityType.getFullName()));    
+                } else {
+                    // skip handling properties
+                    context.extensionTypes.put(entityType.getFullName(), entityType);
+                    context.allTypes.put(entityType.getFullName(), entityType);   
+                }                
             }
         }
+        
+        return typeElements;
     }
     
     private void validateMetaTypes() {
