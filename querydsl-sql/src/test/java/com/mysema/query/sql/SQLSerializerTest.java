@@ -22,7 +22,7 @@ import java.util.List;
 import org.junit.Test;
 
 import com.mysema.query.BooleanBuilder;
-import com.mysema.query.SelectBaseTest.Survey;
+import com.mysema.query.Survey;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.query.support.Expressions;
 import com.mysema.query.types.Expression;

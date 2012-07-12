@@ -42,6 +42,10 @@ public final class Connections {
     public static final int TEST_ROW_COUNT = 100;
 
     private static ThreadLocal<Connection> connHolder = new ThreadLocal<Connection>();
+    
+    private static ThreadLocal<Target> targetHolder = new ThreadLocal<Target>();
+    
+    private static ThreadLocal<SQLTemplates> templatesHolder = new ThreadLocal<SQLTemplates>();
 
     // datetest
     private static final String CREATE_TABLE_DATETEST = "create table DATE_TEST(DATE_TEST date)";
@@ -78,6 +82,18 @@ public final class Connections {
 
     public static Connection getConnection(){
         return connHolder.get();
+    }
+    
+    public static Target getTarget() {
+        return targetHolder.get();
+    }
+    
+    public static SQLTemplates getTemplates() {
+        return templatesHolder.get();
+    }
+    
+    public static void setTemplates(SQLTemplates templates) {
+        templatesHolder.set(templates);
     }
 
     private static Connection getDerby() throws SQLException, ClassNotFoundException {
@@ -170,7 +186,8 @@ public final class Connections {
         .execute();
     }
     
-    public static void initDerby() throws SQLException, ClassNotFoundException{
+    public static void initDerby() throws SQLException, ClassNotFoundException {
+        targetHolder.set(Target.DERBY);
         SQLTemplates templates = new DerbyTemplates();
         Connection c = getDerby();
         connHolder.set(c);
@@ -226,7 +243,8 @@ public final class Connections {
 
 
 
-    public static void initSQLServer() throws SQLException, ClassNotFoundException{
+    public static void initSQLServer() throws SQLException, ClassNotFoundException {
+        targetHolder.set(Target.SQLSERVER);
         SQLTemplates templates = new SQLServerTemplates();
         Connection c = getSQLServer();
         connHolder.set(c);
@@ -270,6 +288,7 @@ public final class Connections {
     }
 
     public static void initH2() throws SQLException, ClassNotFoundException{
+        targetHolder.set(Target.H2);
         SQLTemplates templates = new H2Templates();
         Connection c = getH2();
         connHolder.set(c);
@@ -320,6 +339,7 @@ public final class Connections {
     }
     
     public static void initSQLite() throws SQLException, ClassNotFoundException{
+        targetHolder.set(Target.SQLITE);
 //        SQLTemplates templates = new SQLiteTemplates();
         Connection c = getSQLite();
         connHolder.set(c);
@@ -381,6 +401,7 @@ public final class Connections {
     }
 
     public static void initHSQL() throws SQLException, ClassNotFoundException{
+        targetHolder.set(Target.HSQLDB);
         SQLTemplates templates = new HSQLDBTemplates();
         Connection c = getHSQL();
         connHolder.set(c);
@@ -434,6 +455,7 @@ public final class Connections {
     }
     
     public static void initCubrid() throws SQLException, ClassNotFoundException{
+        targetHolder.set(Target.CUBRID);
         //SQLTemplates templates = new MySQLTemplates();
         Connection c = getCubrid();
         connHolder.set(c);
@@ -491,6 +513,7 @@ public final class Connections {
     }
 
     public static void initMySQL() throws SQLException, ClassNotFoundException{
+        targetHolder.set(Target.MYSQL);
         //SQLTemplates templates = new MySQLTemplates();
         Connection c = getMySQL();
         connHolder.set(c);
@@ -547,6 +570,7 @@ public final class Connections {
     }
 
     public static void initOracle() throws SQLException, ClassNotFoundException{
+        targetHolder.set(Target.ORACLE);
         SQLTemplates templates = new OracleTemplates();
         Connection c = getOracle();
         connHolder.set(c);
@@ -619,6 +643,7 @@ public final class Connections {
     }
 
     public static void initPostgres() throws SQLException, ClassNotFoundException{
+        targetHolder.set(Target.POSTGRES);
         SQLTemplates templates = new PostgresTemplates(true);
         // NOTE : unquoted identifiers are converted to lower case in Postgres
         Connection c = getPostgres();

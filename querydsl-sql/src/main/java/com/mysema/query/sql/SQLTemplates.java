@@ -420,6 +420,26 @@ public class SQLTemplates extends Templates {
     public boolean isBatchCountViaGetUpdateCount() {
         return batchCountViaGetUpdateCount;
     }
+    
+    public boolean isBigDecimalSupported() {
+        return bigDecimalSupported;
+    }
+
+    public String getForUpdate() {
+        return forUpdate;
+    }
+
+    public String getForShare() {
+        return forShare;
+    }
+
+    public boolean isUseQuotes() {
+        return useQuotes;
+    }
+    
+    public String getNoWait() {
+        return noWait;
+    }
 
     protected void newLineToSingleSpace() {
         for (Class<?> cl : Arrays.<Class<?>>asList(getClass(), SQLTemplates.class)) {
@@ -634,36 +654,20 @@ public class SQLTemplates extends Templates {
         this.batchCountViaGetUpdateCount = batchCountViaGetUpdateCount;
     }
 
-    public boolean isBigDecimalSupported() {
-        return bigDecimalSupported;
-    }
-
-    public void setBigDecimalSupported(boolean bigDecimalSupported) {
+    protected void setBigDecimalSupported(boolean bigDecimalSupported) {
         this.bigDecimalSupported = bigDecimalSupported;
     }
-
-    public String getForUpdate() {
-        return forUpdate;
-    }
-
-    public void setForUpdate(String forUpdate) {
+    
+    protected void setForUpdate(String forUpdate) {
         this.forUpdate = forUpdate;
     }
-
-    public String getForShare() {
-        return forShare;
-    }
-
-    public void setForShare(String forShare) {
+   
+    protected void setForShare(String forShare) {
         this.forShare = forShare;
-    }
-
-    public String getNoWait() {
-        return noWait;
-    }
-
-    public void setNoWait(String noWait) {
+    }       
+   
+    protected void setNoWait(String noWait) {
         this.noWait = noWait;
     }
-    
+
 }
