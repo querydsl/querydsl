@@ -110,7 +110,7 @@ public class DefaultConfiguration implements Configuration {
 		this.excludedPackages = new HashSet<String>();
         module.bind(RoundEnvironment.class, roundEnv);
         module.bind(CodegenModule.KEYWORDS, keywords);
-        this.entitiesAnn = entitiesAnn;
+        this.entitiesAnn = Assert.notNull(entitiesAnn, "entitiesAnn");
         this.entityAnn = Assert.notNull(entityAnn,"entityAnn");
         this.superTypeAnn = superTypeAnn;
         this.embeddableAnn = embeddableAnn;

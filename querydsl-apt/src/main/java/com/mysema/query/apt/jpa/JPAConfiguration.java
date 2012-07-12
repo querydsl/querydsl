@@ -37,6 +37,7 @@ import javax.persistence.Temporal;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import com.mysema.query.annotations.QueryEntities;
 import com.mysema.query.annotations.QueryTransient;
 import com.mysema.query.annotations.QueryType;
 import com.mysema.query.apt.DefaultConfiguration;
@@ -59,7 +60,7 @@ public class JPAConfiguration extends DefaultConfiguration {
             Class<? extends Annotation> embeddableAnn,
             Class<? extends Annotation> embeddedAnn,
             Class<? extends Annotation> skipAnn) {
-        super(roundEnv, options, Keywords.JPA, null, entityAnn, superTypeAnn,
+        super(roundEnv, options, Keywords.JPA, QueryEntities.class, entityAnn, superTypeAnn,
             embeddableAnn, embeddedAnn, skipAnn);
         this.annotations = getAnnotations();
     }

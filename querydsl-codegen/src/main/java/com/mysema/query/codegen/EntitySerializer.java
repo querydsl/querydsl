@@ -115,21 +115,23 @@ public class EntitySerializer implements Serializer{
         constructorsForVariables(writer, model);
 
         // 2
-        if (!hasEntityFields) {
-            if (model.isFinal()) {
-                Type type = new ClassType(Path.class, model);
-                writer.beginConstructor(new Parameter("entity", type));
-            } else {
-                Type type = new ClassType(Path.class, new TypeExtends(model));
-                writer.beginConstructor(new Parameter("entity", type));
-            }
-            if (stringOrBoolean) {
-                writer.line("super(entity.getMetadata());");
-            } else {
-                writer.line("super(entity.getType(), entity.getMetadata()" +additionalParams+");");
-            }
-            writer.end();
+        if (model.isFinal()) {
+            Type type = new ClassType(Path.class, model);
+            writer.beginConstructor(new Parameter("path", type));
+        } else {
+            Type type = new ClassType(Path.class, new TypeExtends(model));
+            writer.beginConstructor(new Parameter("path", type));
         }
+        if (!hasEntityFields) {            
+            if (stringOrBoolean) {
+                writer.line("super(path.getMetadata());");
+            } else {
+                writer.line("super(path.getType(), path.getMetadata()" +additionalParams+");");
+            }            
+        } else {
+            writer.line("this(path.getType(), path.getMetadata(), path.getMetadata().isRoot() ? INITS : PathInits.DEFAULT);");
+        }
+        writer.end();
 
         // 3
         if (hasEntityFields) {

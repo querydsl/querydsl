@@ -22,6 +22,7 @@ import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.persistence.Embedded;
 
+import com.mysema.query.annotations.QueryEntities;
 import com.mysema.query.apt.AbstractQuerydslProcessor;
 import com.mysema.query.apt.Configuration;
 import com.mysema.query.apt.DefaultConfiguration;
@@ -42,7 +43,7 @@ public class JDOAnnotationProcessor extends AbstractQuerydslProcessor {
         Class<? extends Annotation> embeddable = EmbeddedOnly.class;
         Class<? extends Annotation> embedded = Embedded.class;
         Class<? extends Annotation> skip = NotPersistent.class;
-        return new DefaultConfiguration(roundEnv, processingEnv.getOptions(), Keywords.JDO, null, 
-                entity, null, embeddable, embedded, skip);        
+        return new DefaultConfiguration(roundEnv, processingEnv.getOptions(), Keywords.JDO, 
+                QueryEntities.class, entity, null, embeddable, embedded, skip);        
     }
 }
