@@ -1,11 +1,12 @@
 package com.mysema.query.collections;
 
-import static com.mysema.query.group.GroupBy.list;
-import static org.junit.Assert.*;
+import static com.mysema.query.group.GroupBy.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
@@ -59,17 +60,28 @@ public class GroupBy2Test {
             this.roleNames = roleNames;
             this.secIds = secIds;
         }
+        
+        @QueryProjection
+        public UserDto(Long id, String name, Map<Long, String> roles, Map<Long, String> groups) {
+            this.id = id;
+            this.name = name;
+            this.roleIds = Lists.newArrayList(roles.keySet());
+            this.roleNames = Lists.newArrayList(roles.values());
+            this.secIds = Lists.newArrayList(groups.keySet());
+        }
     }
     
-    @Test
-    public void test() {                       
+    private List<User> users;
+    
+    @Before
+    public void setUp() {
         Role r1 = new Role();
         r1.id = 1l;
         r1.name = "User";
         r1.groups = Lists.newArrayList(new SecurityGroup(1l, "User 1"));
                 
         Role r2 = new Role();
-        r2.id = 1l;
+        r2.id = 2l;
         r2.name = null; // NOTE this is null on purpose
         r2.groups = Lists.newArrayList(new SecurityGroup(2l, "Admin 1"),
                                        new SecurityGroup(3l, "Admin 2"));
@@ -84,11 +96,16 @@ public class GroupBy2Test {
         u2.name = "Ann";
         u2.roles = Lists.newArrayList(r1, r2);
         
+        users = Lists.newArrayList(u1, u2);
+    }
+    
+    @Test
+    public void test() {                               
         QGroupBy2Test_User user = QGroupBy2Test_User.user;
         QGroupBy2Test_Role role = QGroupBy2Test_Role.role;
         QGroupBy2Test_SecurityGroup group = QGroupBy2Test_SecurityGroup.securityGroup;
         
-        Map<Long, UserDto> userDtos = MiniApi.from(user, Lists.newArrayList(u1, u2))
+        Map<Long, UserDto> userDtos = MiniApi.from(user, users)
                 .innerJoin(user.roles, role)
                 .innerJoin(role.groups, group)
                 .transform(GroupBy.groupBy(user.id)
@@ -107,8 +124,34 @@ public class GroupBy2Test {
         UserDto dto2 = userDtos.get(32l);
         assertEquals(3, dto2.roleIds.size());
         assertEquals(3, dto2.roleNames.size());
-        assertEquals(3, dto2.secIds.size());
+        assertEquals(3, dto2.secIds.size());        
+    }
+    
+    @Test
+    public void test2() {
+        QGroupBy2Test_User user = QGroupBy2Test_User.user;
+        QGroupBy2Test_Role role = QGroupBy2Test_Role.role;
+        QGroupBy2Test_SecurityGroup group = QGroupBy2Test_SecurityGroup.securityGroup;
         
+        Map<Long, UserDto> userDtos = MiniApi.from(user, users)
+                .innerJoin(user.roles, role)
+                .innerJoin(role.groups, group)
+                .transform(GroupBy.groupBy(user.id)
+                    .as(new QGroupBy2Test_UserDto(
+                            user.id,
+                            user.name,
+                            map(role.id, role.name),
+                            map(group.id, group.name))));
+        
+        UserDto dto1 = userDtos.get(3l);
+        assertEquals(1, dto1.roleIds.size());
+        assertEquals(1, dto1.roleNames.size());
+        assertEquals(1, dto1.secIds.size());
+        
+        UserDto dto2 = userDtos.get(32l);
+        assertEquals(2, dto2.roleIds.size());
+        assertEquals(2, dto2.roleNames.size());
+        assertEquals(3, dto2.secIds.size());    
     }
 
 }
