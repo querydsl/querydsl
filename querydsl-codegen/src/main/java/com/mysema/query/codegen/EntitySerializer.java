@@ -165,12 +165,7 @@ public class EntitySerializer implements Serializer{
 
         // 5
         if (hasEntityFields) {
-            Type type;
-            if (model.isFinal()) {
-                type = new ClassType(Class.class, model);
-            } else {
-                type = new ClassType(Class.class, new TypeExtends(model));
-            }
+            Type type = new ClassType(Class.class, new TypeExtends(model));
             writer.beginConstructor(new Parameter("type", type), PATH_METADATA, PATH_INITS);
             writer.line("super(type, metadata, inits"+additionalParams+");");
             initEntityFields(writer, config, model);

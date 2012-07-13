@@ -37,6 +37,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import com.google.common.collect.Sets;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.ScalaWriter;
@@ -174,7 +175,7 @@ public class GenericExporter {
 
         // add properties
         for (Map<Class<?>, EntityType> entries : Arrays.asList(superTypes, embeddableTypes, entityTypes)) {
-            for (Map.Entry<Class<?>, EntityType> entry : entries.entrySet()) {
+            for (Map.Entry<Class<?>, EntityType> entry : Sets.newHashSet(entries.entrySet())) {
                 addProperties(entry.getKey(), entry.getValue());
             }
         }
@@ -296,8 +297,7 @@ public class GenericExporter {
                     handled.add(field.getName());
                 }
             }    
-        }
-        
+        }        
 
         // getters
         if (handleMethods) {
