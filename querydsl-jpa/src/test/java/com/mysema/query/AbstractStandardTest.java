@@ -753,6 +753,14 @@ public abstract class AbstractStandardTest {
                       .or(str.like("Ruth%").and(str.like("%uth123")));
         assertEquals(2l, query().from(cat).where(where).count());
     }
+    
+    @Test
+    public void Precedence2() {
+        StringPath str = cat.name;
+        Predicate where = str.like("Bob%").and(str.like("%ob123")
+                      .or(str.like("Ruth%"))).and(str.like("%uth123"));
+        assertEquals(0l, query().from(cat).where(where).count());
+    }
         
     @Test
     public void Substring() {

@@ -20,7 +20,7 @@ import java.io.PrintStream;
 
 import javax.annotation.Nullable;
 
-import org.hibernate.hql.ast.HqlParser;
+import org.hibernate.hql.internal.ast.HqlParser;
 
 import antlr.RecognitionException;
 import antlr.TokenStreamException;

@@ -19,7 +19,7 @@ import java.util.List;
 import org.hibernate.dialect.DerbyDialect;
 import org.hibernate.dialect.function.CastFunction;
 import org.hibernate.dialect.function.VarArgsSQLFunction;
-import org.hibernate.engine.SessionFactoryImplementor;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 
