@@ -256,7 +256,8 @@ public final class ExpressionUtils {
                     like = like + "$";
                 }   
             }            
-            like = like.replace(".", "\\.").replace("%", ".*").replace("_", ".");
+            like = like.replace(".", "\\.").replace("*", "\\*").replace("?", "\\?")
+                       .replace("%", ".*").replace("_", ".");
             return ConstantImpl.create(like);
         } else if (expr instanceof Operation<?>) {
             Operation<?> o = (Operation<?>)expr;
