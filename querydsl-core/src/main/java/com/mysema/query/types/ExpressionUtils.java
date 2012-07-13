@@ -241,7 +241,15 @@ public final class ExpressionUtils {
     public static Expression<String> likeToRegex(Expression<String> expr){
         // TODO : this should take the escape character into account
         if (expr instanceof Constant<?>) {
-            return ConstantImpl.create(expr.toString().replace("%", ".*").replace("_", "."));
+            String like = expr.toString();
+            if (!like.startsWith("%") && !like.startsWith("_")) {
+                like = "^" + like;
+            }
+            if (!like.endsWith("%") && !like.endsWith("_")) {
+                like = like + "$";
+            }
+            like = like.replace("%", ".*").replace("_", ".");
+            return ConstantImpl.create(like);
         } else if (expr instanceof Operation<?>) {
             Operation<?> o = (Operation<?>)expr;
             if (o.getOperator() == Ops.CONCAT) {

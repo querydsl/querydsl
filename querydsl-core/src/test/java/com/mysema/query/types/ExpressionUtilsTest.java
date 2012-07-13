@@ -30,6 +30,8 @@ public class ExpressionUtilsTest {
     @Test
     public void LikeToRegex() {
         assertEquals(".*", regex(ConstantImpl.create("%")));
+        assertEquals("^abc.*", regex(ConstantImpl.create("abc%")));
+        assertEquals(".*abc$", regex(ConstantImpl.create("%abc")));
         assertEquals(".",  regex(ConstantImpl.create("_")));
         
         StringPath path = new StringPath("path");

@@ -236,6 +236,14 @@ public class MongodbQueryTest {
 
         assertQuery(user.firstName.matches(".*aa.*[^i]$"), u3, u4, u1);
     }
+    
+    @Test
+    public void Like() {
+        assertQuery(user.firstName.like("Jaan%"), u3, u4);
+        assertQuery(user.firstName.like("jaan%"));
+        
+        assertQuery(user.lastName.like("%unen"), u2, u1);        
+    }
 
     @Test
     public void IsNotNull(){
