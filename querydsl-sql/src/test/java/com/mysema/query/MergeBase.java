@@ -27,6 +27,8 @@ import com.mysema.query.sql.dml.SQLMergeClause;
 import com.mysema.query.sql.domain.QSurvey;
 import com.mysema.testutil.IncludeIn;
 
+import static com.mysema.query.Target.*;
+
 public class MergeBase extends AbstractBaseTest{
 
     private void reset() throws SQLException{
@@ -45,7 +47,7 @@ public class MergeBase extends AbstractBaseTest{
     }
 
     @Test
-    @IncludeIn(Target.H2)
+    @IncludeIn(H2)
     public void Merge_with_Keys_and_Values(){
         // NOTE : doesn't work with composite merge implementation
         // keys + values
@@ -69,7 +71,7 @@ public class MergeBase extends AbstractBaseTest{
     }
 
     @Test
-    @IncludeIn(Target.H2)
+    @IncludeIn(H2)
     public void Merge_with_Keys_and_SubQuery(){    
         assertEquals(1, insert(survey).set(survey.id, 6).set(survey.name, "H").execute());
 
@@ -80,7 +82,7 @@ public class MergeBase extends AbstractBaseTest{
     }
     
     @Test
-    @IncludeIn(Target.H2)
+    @IncludeIn(H2)
     public void MergeBatch(){
         SQLMergeClause merge = merge(survey)
             .keys(survey.id)
@@ -101,7 +103,7 @@ public class MergeBase extends AbstractBaseTest{
     }
     
     @Test
-    @IncludeIn(Target.H2)
+    @IncludeIn(H2)
     public void MergeBatch_with_subquery(){
         SQLMergeClause merge = merge(survey)
             .keys(survey.id)

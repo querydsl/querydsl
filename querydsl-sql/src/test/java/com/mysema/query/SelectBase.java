@@ -19,14 +19,7 @@ import static com.mysema.query.Constants.employee2;
 import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Constants.survey2;
 import static com.mysema.query.Constants.time;
-import static com.mysema.query.Target.CUBRID;
-import static com.mysema.query.Target.DERBY;
-import static com.mysema.query.Target.H2;
-import static com.mysema.query.Target.HSQLDB;
-import static com.mysema.query.Target.MYSQL;
-import static com.mysema.query.Target.ORACLE;
-import static com.mysema.query.Target.SQLITE;
-import static com.mysema.query.Target.SQLSERVER;
+import static com.mysema.query.Target.*;
 import static com.mysema.query.sql.mssql.SQLServerGrammar.rn;
 import static com.mysema.query.sql.mssql.SQLServerGrammar.rowNumber;
 import static com.mysema.query.sql.oracle.OracleGrammar.level;
@@ -133,7 +126,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @ExcludeIn({Target.MYSQL, ORACLE})
+    @ExcludeIn({MYSQL, ORACLE})
     @SkipForQuoted
     public void Alias_Quotes() {
         expectedQuery = "select e.FIRSTNAME as \"First Name\" from EMPLOYEE e";
@@ -141,7 +134,7 @@ public class SelectBase extends AbstractBaseTest{
     }
     
     @Test
-    @IncludeIn(Target.MYSQL)
+    @IncludeIn(MYSQL)
     @SkipForQuoted
     public void Alias_Quotes_MySQL() {
         expectedQuery = "select e.FIRSTNAME as `First Name` from EMPLOYEE e";
@@ -149,7 +142,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test    
-    @IncludeIn(Target.ORACLE)
+    @IncludeIn(ORACLE)
     @SkipForQuoted
     public void Alias_Quotes_Oracle() {
         expectedQuery = "select e.FIRSTNAME \"First Name\" from EMPLOYEE e";
@@ -263,7 +256,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @IncludeIn(Target.ORACLE)
+    @IncludeIn(ORACLE)
     @SkipForQuoted
     public void ConnectByPrior() throws SQLException{
         expectedQuery =  "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
@@ -275,7 +268,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @IncludeIn(Target.ORACLE)
+    @IncludeIn(ORACLE)
     @SkipForQuoted
     public void ConnectByPrior2() throws SQLException{
         expectedQuery =
@@ -290,7 +283,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @IncludeIn(Target.ORACLE)
+    @IncludeIn(ORACLE)
     @SkipForQuoted
     public void ConnectByPrior3() throws SQLException{
         expectedQuery =
@@ -307,7 +300,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @IncludeIn(Target.ORACLE)
+    @IncludeIn(ORACLE)
     @SkipForQuoted
     public void ConnectByPrior4() throws SQLException{
         expectedQuery =
@@ -359,7 +352,7 @@ public class SelectBase extends AbstractBaseTest{
     
     @Test
     @SkipForQuoted
-    @ExcludeIn(Target.ORACLE)
+    @ExcludeIn(ORACLE)
     public void Count_All() {
         expectedQuery = "select count(*) as rowCount from EMPLOYEE e";
         NumberPath<Long> rowCount = new NumberPath<Long>(Long.class, "rowCount");
@@ -368,7 +361,7 @@ public class SelectBase extends AbstractBaseTest{
 
     @Test
     @SkipForQuoted
-    @IncludeIn(Target.ORACLE)
+    @IncludeIn(ORACLE)
     public void Count_All_Oracle() {
         expectedQuery = "select count(*) rowCount from EMPLOYEE e";
         NumberPath<Long> rowCount = new NumberPath<Long>(Long.class, "rowCount");
@@ -420,7 +413,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @IncludeIn(Target.MYSQL)
+    @IncludeIn(MYSQL)
     public void Extensions(){
         mysqlQuery().from(survey).bigResult().list(survey.id);
         mysqlQuery().from(survey).bufferResult().list(survey.id);
@@ -572,7 +565,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @IncludeIn(Target.ORACLE)
+    @IncludeIn(ORACLE)
     @SkipForQuoted
     public void Limit_and_Offset_In_Oracle() throws SQLException {
         // limit
@@ -632,7 +625,7 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    @IncludeIn(Target.SQLSERVER)
+    @IncludeIn(SQLSERVER)
     public void Manual_Paging(){
         RowNumber rowNumber = rowNumber().orderBy(employee.lastname.asc()).as(rn);
         // TODO : create a short cut for wild card
@@ -1037,7 +1030,7 @@ public class SelectBase extends AbstractBaseTest{
 
 
     @Test
-    @IncludeIn(Target.ORACLE)
+    @IncludeIn(ORACLE)
     @SkipForQuoted
     public void SumOver() throws SQLException{
 //        SQL> select deptno,

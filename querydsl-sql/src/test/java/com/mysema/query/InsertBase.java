@@ -40,6 +40,8 @@ import com.mysema.query.types.PathImpl;
 import com.mysema.testutil.ExcludeIn;
 import com.mysema.testutil.IncludeIn;
 
+import static com.mysema.query.Target.*;
+
 public class InsertBase extends AbstractBaseTest{
 
     private void reset() throws SQLException{
@@ -115,7 +117,7 @@ public class InsertBase extends AbstractBaseTest{
     }
     
     @Test
-    @ExcludeIn(Target.ORACLE)
+    @ExcludeIn(ORACLE)
     public void Insert_Nulls_In_Batch() {
 //        QFoo f= QFoo.foo;
 //        SQLInsertClause sic = new SQLInsertClause(c, new H2Templates(), f);
@@ -130,7 +132,7 @@ public class InsertBase extends AbstractBaseTest{
     
     @Test
     @Ignore 
-    @ExcludeIn({Target.DERBY})
+    @ExcludeIn({DERBY})
     public void Insert_Nulls_In_Batch2() {
         Mapper<Object> mapper = DefaultMapper.WITH_NULL_BINDINGS; 
 //        QFoo f= QFoo.foo;
@@ -188,7 +190,7 @@ public class InsertBase extends AbstractBaseTest{
  // http://sourceforge.net/tracker/index.php?func=detail&aid=3513432&group_id=280608&atid=2377440
 
     @Test
-    @ExcludeIn(Target.CUBRID)
+    @ExcludeIn(CUBRID)
     public void Insert_With_Keys() throws SQLException{
         ResultSet rs = insert(survey).set(survey.name, "Hello World").executeWithKeys();
         assertTrue(rs.next());
@@ -197,13 +199,13 @@ public class InsertBase extends AbstractBaseTest{
     }
     
     @Test
-    @ExcludeIn(Target.CUBRID)
+    @ExcludeIn(CUBRID)
     public void Insert_With_Keys_Projected() throws SQLException{
         assertNotNull(insert(survey).set(survey.name, "Hello you").executeWithKey(survey.id));
     }
     
     @Test
-    @ExcludeIn(Target.CUBRID)
+    @ExcludeIn(CUBRID)
     public void Insert_With_Keys_Projected2() throws SQLException{
         Path<Object> idPath = new PathImpl<Object>(Object.class, "id");
         Object id = insert(survey).set(survey.name, "Hello you").executeWithKey(idPath);
@@ -259,7 +261,7 @@ public class InsertBase extends AbstractBaseTest{
     }
     
     @Test
-    @IncludeIn(Target.MYSQL)
+    @IncludeIn(MYSQL)
     @SkipForQuoted
     public void Insert_with_Special_Options(){
         SQLInsertClause clause = insert(survey)
@@ -273,7 +275,7 @@ public class InsertBase extends AbstractBaseTest{
     }
 
     @Test
-    @IncludeIn(Target.MYSQL)
+    @IncludeIn(MYSQL)
     @SkipForQuoted
     public void Replace(){
         SQLInsertClause clause = mysqlReplace(survey);

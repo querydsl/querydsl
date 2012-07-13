@@ -5,6 +5,8 @@ import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static com.mysema.query.Target.*;
+
 import org.junit.Test;
 
 import com.mysema.testutil.ExcludeIn;
@@ -12,7 +14,7 @@ import com.mysema.testutil.ExcludeIn;
 public class TypesBase extends AbstractBaseTest {
         
     @Test
-    @ExcludeIn({Target.CUBRID, Target.POSTGRES})
+    @ExcludeIn({CUBRID, POSTGRES})
     public void DumpTypes() throws SQLException {
         Connection conn = Connections.getConnection();
         DatabaseMetaData md = conn.getMetaData();
