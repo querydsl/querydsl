@@ -19,7 +19,14 @@ import static com.mysema.query.Constants.employee2;
 import static com.mysema.query.Constants.survey;
 import static com.mysema.query.Constants.survey2;
 import static com.mysema.query.Constants.time;
-import static com.mysema.query.Target.*;
+import static com.mysema.query.Target.CUBRID;
+import static com.mysema.query.Target.DERBY;
+import static com.mysema.query.Target.H2;
+import static com.mysema.query.Target.HSQLDB;
+import static com.mysema.query.Target.MYSQL;
+import static com.mysema.query.Target.ORACLE;
+import static com.mysema.query.Target.SQLITE;
+import static com.mysema.query.Target.SQLSERVER;
 import static com.mysema.query.sql.mssql.SQLServerGrammar.rn;
 import static com.mysema.query.sql.mssql.SQLServerGrammar.rowNumber;
 import static com.mysema.query.sql.oracle.OracleGrammar.level;
@@ -48,9 +55,6 @@ import com.mysema.query.group.GroupBy;
 import com.mysema.query.sql.Beans;
 import com.mysema.query.sql.QBeans;
 import com.mysema.query.sql.SQLQuery;
-import com.mysema.query.sql.SQLSerializer;
-import com.mysema.query.sql.SQLSubQuery;
-import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.IdName;
 import com.mysema.query.sql.domain.QEmployee;
@@ -67,7 +71,7 @@ import com.mysema.query.types.MappingProjection;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
-import com.mysema.query.types.Projections;
+import com.mysema.query.types.Predicate;
 import com.mysema.query.types.QBean;
 import com.mysema.query.types.QTuple;
 import com.mysema.query.types.SubQueryExpression;
@@ -82,6 +86,7 @@ import com.mysema.query.types.expr.Wildcard;
 import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.PathBuilder;
 import com.mysema.query.types.path.SimplePath;
+import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.query.ListSubQuery;
 import com.mysema.query.types.query.NumberSubQuery;
 import com.mysema.query.types.query.SimpleSubQuery;
@@ -788,6 +793,14 @@ public class SelectBase extends AbstractBaseTest{
         query().from(survey).where(survey.name.in(Arrays.asList("a"))).count();
         query().from(survey).where(survey.name.in(Arrays.asList("a","b"))).count();
         query().from(survey).where(survey.name.in(Arrays.asList("a","b","c"))).count();
+    }
+    
+    @Test
+    public void Precedence() {
+        StringPath fn = employee.firstname;
+        StringPath ln = employee.lastname;
+        Predicate where = fn.eq("Mike").and(ln.eq("Smith")).or(fn.eq("Joe").and(ln.eq("Divis")));
+        assertEquals(2l, query().from(employee).where(where).count());
     }
     
     @Test

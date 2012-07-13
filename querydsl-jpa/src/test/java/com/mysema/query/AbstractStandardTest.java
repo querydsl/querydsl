@@ -13,6 +13,7 @@
  */
 package com.mysema.query;
 
+import static com.mysema.query.Constants.employee;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -744,7 +745,15 @@ public abstract class AbstractStandardTest {
         FloatProjection projection = query().from(cat).uniqueResult(new QFloatProjection(cat.floatProperty.sum()));
         assertEquals(val, projection.val, 0.001);
     }
-    
+        
+    @Test
+    public void Precedence() {
+        StringPath str = cat.name;
+        Predicate where = str.like("Bob%").and(str.like("%ob123"))
+                      .or(str.like("Ruth%").and(str.like("%uth123")));
+        assertEquals(2l, query().from(cat).where(where).count());
+    }
+        
     @Test
     public void Substring() {
         for (String str : query().from(cat).list(cat.name.substring(1,2))) {
