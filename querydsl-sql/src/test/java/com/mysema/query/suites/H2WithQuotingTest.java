@@ -5,14 +5,14 @@ import org.junit.BeforeClass;
 import com.mysema.query.Connections;
 import com.mysema.query.sql.H2Templates;
 
-public class H2SuiteTest extends AbstractSuite {
-    
+public class H2WithQuotingTest extends AbstractSuite {
+        
     @BeforeClass
     public static void setUp() throws Exception {
         Connections.initH2();
-        Connections.setTemplates(new H2Templates(){{
-            newLineToSingleSpace();            
+        Connections.setTemplates(new H2Templates(true){{
+            newLineToSingleSpace();
         }});
     }
-        
+
 }

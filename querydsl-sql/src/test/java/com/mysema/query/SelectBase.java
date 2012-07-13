@@ -142,8 +142,17 @@ public class SelectBase extends AbstractBaseTest{
     
     @Test
     @IncludeIn(Target.MYSQL)
+    @SkipForQuoted
     public void Alias_Quotes_MySQL() {
         expectedQuery = "select e.FIRSTNAME as `First Name` from EMPLOYEE e";
+        query().from(employee).list(employee.firstname.as("First Name"));
+    }
+
+    @Test    
+    @IncludeIn(Target.ORACLE)
+    @SkipForQuoted
+    public void Alias_Quotes_Oracle() {
+        expectedQuery = "select e.FIRSTNAME \"First Name\" from EMPLOYEE e";
         query().from(employee).list(employee.firstname.as("First Name"));
     }
 
@@ -154,7 +163,7 @@ public class SelectBase extends AbstractBaseTest{
             assertEquals(survey, path.getMetadata().getParent());
         }
     }
-
+    
     @SuppressWarnings("unchecked")
     @Test
     public void Array_Projection(){
@@ -163,18 +172,6 @@ public class SelectBase extends AbstractBaseTest{
         assertFalse(results.isEmpty());
         for (String[] result : results){
             assertNotNull(result[0]);
-        }
-    }
-    
-    @Test
-    public void RelationalPath_Projection() {
-        List<Object[]> results = query().from(employee, employee2).where(employee.id.eq(employee2.id))
-                .list(employee, employee2);
-        assertFalse(results.isEmpty());
-        for (Object[] row : results) {
-            Employee e1 = (Employee)row[0];
-            Employee e2 = (Employee)row[1];
-            assertEquals(e1.getId(), e2.getId());
         }
     }
 
@@ -256,12 +253,79 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
+    @Ignore
+    public void ConnectBy() throws SQLException{
+        // TODO : come up with a legal case
+        oracleQuery().from(employee)
+            .where(level.eq(-1))
+            .connectBy(level.lt(1000))
+            .list(employee.id);
+    }
+
+    @Test
+    @IncludeIn(Target.ORACLE)
+    @SkipForQuoted
+    public void ConnectByPrior() throws SQLException{
+        expectedQuery =  "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
+                        "from EMPLOYEE e " +
+                        "connect by prior e.ID = e.SUPERIOR_ID";
+        oracleQuery().from(employee)
+            .connectByPrior(employee.id.eq(employee.superiorId))
+            .list(employee.id, employee.lastname, employee.superiorId);
+    }
+
+    @Test
+    @IncludeIn(Target.ORACLE)
+    @SkipForQuoted
+    public void ConnectByPrior2() throws SQLException{
+        expectedQuery =
+                "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
+                "from EMPLOYEE e " +
+                "start with e.ID = ? " +
+                "connect by prior e.ID = e.SUPERIOR_ID";
+        oracleQuery().from(employee)
+            .startWith(employee.id.eq(1))
+            .connectByPrior(employee.id.eq(employee.superiorId))
+            .list(employee.id, employee.lastname, employee.superiorId);
+    }
+
+    @Test
+    @IncludeIn(Target.ORACLE)
+    @SkipForQuoted
+    public void ConnectByPrior3() throws SQLException{
+        expectedQuery =
+                "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
+                "from EMPLOYEE e " +
+                "start with e.ID = ? " +
+                "connect by prior e.ID = e.SUPERIOR_ID " +
+                "order siblings by e.LASTNAME";
+        oracleQuery().from(employee)
+            .startWith(employee.id.eq(1))
+            .connectByPrior(employee.id.eq(employee.superiorId))
+            .orderSiblingsBy(employee.lastname)
+            .list(employee.id, employee.lastname, employee.superiorId);
+    }
+
+    @Test
+    @IncludeIn(Target.ORACLE)
+    @SkipForQuoted
+    public void ConnectByPrior4() throws SQLException{
+        expectedQuery =
+                "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
+                "from EMPLOYEE e " +
+                "connect by nocycle prior e.ID = e.SUPERIOR_ID";
+        oracleQuery().from(employee)
+            .connectByNocyclePrior(employee.id.eq(employee.superiorId))
+            .list(employee.id, employee.lastname, employee.superiorId);
+    }
+    
+    @Test
     public void Constructor() throws Exception {
         for (IdName idName : query().from(survey).list(new QIdName(survey.id, survey.name))) {
             System.out.println("id and name : " + idName.getId() + ","+ idName.getName());
         }
     }
-
+    
     @Test
     public void Constructor_Projection(){
         // constructor projection
@@ -272,6 +336,7 @@ public class SelectBase extends AbstractBaseTest{
         }
 
     }
+
 
     @Test
     public void Constructor_Projection2(){
@@ -284,11 +349,28 @@ public class SelectBase extends AbstractBaseTest{
         }
     }
 
+    private double cot(double x) {
+        return Math.cos(x) / Math.sin(x);
+    }
+
+    private double coth(double x) {
+        return Math.cosh(x) / Math.sinh(x);
+    }
+    
     @Test
     @SkipForQuoted
     @ExcludeIn(Target.ORACLE)
     public void Count_All() {
         expectedQuery = "select count(*) as rowCount from EMPLOYEE e";
+        NumberPath<Long> rowCount = new NumberPath<Long>(Long.class, "rowCount");
+        query().from(employee).uniqueResult(Wildcard.count.as(rowCount));
+    }
+
+    @Test
+    @SkipForQuoted
+    @IncludeIn(Target.ORACLE)
+    public void Count_All_Oracle() {
+        expectedQuery = "select count(*) rowCount from EMPLOYEE e";
         NumberPath<Long> rowCount = new NumberPath<Long>(Long.class, "rowCount");
         query().from(employee).uniqueResult(Wildcard.count.as(rowCount));
     }
@@ -305,14 +387,19 @@ public class SelectBase extends AbstractBaseTest{
             assertNotNull(tuple.getExpr(employee.lastname));
         }
     }
-    
+
     @Test
-    public void Distinct_List(){
-        List<Integer> lengths1 = query().from(employee).listDistinct(employee.firstname.length());
-        List<Integer> lengths2 = query().from(employee).distinct().list(employee.firstname.length());
-        assertEquals(lengths1, lengths2);
+    public void DateTime() {
+        SQLQuery query = query().from(employee); 
+        System.out.println(query.limit(1).list(employee.datefield.dayOfMonth()));
+        System.out.println(query.limit(1).list(employee.datefield.month()));
+        System.out.println(query.limit(1).list(employee.datefield.year()));
     }
-    
+
+    private double degrees(double x) {
+        return x * 180.0 / Math.PI;
+    }
+
     @Test
     public void Distinct_Count(){
         long count1 = query().from(employee).countDistinct();
@@ -320,6 +407,40 @@ public class SelectBase extends AbstractBaseTest{
         assertEquals(count1, count2);
     }
 
+    @Test
+    public void Distinct_List(){
+        List<Integer> lengths1 = query().from(employee).listDistinct(employee.firstname.length());
+        List<Integer> lengths2 = query().from(employee).distinct().list(employee.firstname.length());
+        assertEquals(lengths1, lengths2);
+    }
+
+    @Test
+    public void Exists(){
+        assertTrue(query().from(employee).where(employee.firstname.eq("Barbara")).exists());
+    }
+
+    @Test
+    @IncludeIn(Target.MYSQL)
+    public void Extensions(){
+        mysqlQuery().from(survey).bigResult().list(survey.id);
+        mysqlQuery().from(survey).bufferResult().list(survey.id);
+        mysqlQuery().from(survey).cache().list(survey.id);        
+        mysqlQuery().from(survey).calcFoundRows().list(survey.id);
+        mysqlQuery().from(survey).noCache().list(survey.id);
+        
+        mysqlQuery().from(survey).highPriority().list(survey.id);
+        mysqlQuery().from(survey).lockInShareMode().list(survey.id);
+        mysqlQuery().from(survey).smallResult().list(survey.id);
+        mysqlQuery().from(survey).straightJoin().list(survey.id);        
+    }
+
+    @Test
+    @ExcludeIn({H2, SQLITE, DERBY, CUBRID, MYSQL})
+    public void Full_Join() throws SQLException {
+        query().from(employee).fullJoin(employee2)
+            .on(employee.superiorIdKey.on(employee2))
+            .list(employee.id, employee2.id);
+    }
 
     @Test
     public void getResultSet() throws IOException, SQLException{
@@ -330,6 +451,39 @@ public class SelectBase extends AbstractBaseTest{
         results.close();
     }
 
+    @Test    
+    public void GroupBy_Superior() {
+        SQLQuery qry = query()
+            .from(employee)
+            .innerJoin(employee._superiorIdKey, employee2);
+        
+        QTuple subordinates = new QTuple(employee2.id, employee2.firstname, employee2.lastname);
+
+        Map<Integer, Group> results = qry.transform(
+            GroupBy.groupBy(employee.id).as(employee.firstname, employee.lastname, 
+            GroupBy.map(employee2.id, subordinates)));
+        
+        assertEquals(2, results.size());
+        
+        // Mike Smith
+        Group group = results.get(1);
+        assertEquals("Mike", group.getOne(employee.firstname));
+        assertEquals("Smith", group.getOne(employee.lastname));
+
+        Map<Integer, Tuple> emps = group.getMap(employee2.id, subordinates);
+        assertEquals(4, emps.size());
+        assertEquals("Steve", emps.get(12).get(employee2.firstname));
+
+        // Mary Smith
+        group = results.get(2);
+        assertEquals("Mary", group.getOne(employee.firstname));
+        assertEquals("Smith", group.getOne(employee.lastname));
+        
+        emps = group.getMap(employee2.id, subordinates);
+        assertEquals(4, emps.size());
+        assertEquals("Mason", emps.get(21).get(employee2.lastname));
+    }
+
     @SuppressWarnings("unchecked")
     @Test(expected=IllegalArgumentException.class)
     public void IllegalUnion() throws SQLException {
@@ -337,20 +491,12 @@ public class SelectBase extends AbstractBaseTest{
         SubQueryExpression<Integer> sq2 = sq().from(employee).unique(employee.id.max());
         query().from(employee).union(sq1, sq2).list();
     }
-
-    @Test
-    public void Join() throws Exception {
-        for (String name : query().from(survey, survey2)
-                .where(survey.id.eq(survey2.id)).list(survey.name)) {
-            System.out.println(name);
-        }
-    }
     
     @Test
     public void In(){
         query().from(employee).where(employee.id.in(Arrays.asList(1,2))).list(employee);
     }
-
+    
     @Test
     public void Inner_Join() throws SQLException {
         query().from(employee).innerJoin(employee2)
@@ -359,26 +505,11 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    public void Left_Join() throws SQLException {
-        query().from(employee).leftJoin(employee2)
-            .on(employee.superiorIdKey.on(employee2))
-            .list(employee.id, employee2.id);
-    }
-
-    @Test
-    @ExcludeIn(SQLITE)
-    public void Right_Join() throws SQLException {
-        query().from(employee).rightJoin(employee2)
-            .on(employee.superiorIdKey.on(employee2))
-            .list(employee.id, employee2.id);
-    }
-
-    @Test
-    @ExcludeIn({H2, SQLITE, DERBY, CUBRID, MYSQL})
-    public void Full_Join() throws SQLException {
-        query().from(employee).fullJoin(employee2)
-            .on(employee.superiorIdKey.on(employee2))
-            .list(employee.id, employee2.id);
+    public void Join() throws Exception {
+        for (String name : query().from(survey, survey2)
+                .where(survey.id.eq(survey2.id)).list(survey.name)) {
+            System.out.println(name);
+        }
     }
 
     @Test
@@ -392,13 +523,10 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    public void Exists(){
-        assertTrue(query().from(employee).where(employee.firstname.eq("Barbara")).exists());
-    }
-
-    @Test
-    public void NotExists(){
-        assertTrue(query().from(employee).where(employee.firstname.eq("Barb")).notExists());
+    public void Left_Join() throws SQLException {
+        query().from(employee).leftJoin(employee2)
+            .on(employee.superiorIdKey.on(employee2))
+            .list(employee.id, employee2.id);
     }
 
     @Test
@@ -418,16 +546,6 @@ public class SelectBase extends AbstractBaseTest{
     }
 
     @Test
-    public void Limit_and_Order(){
-        // limit
-        List<String> names1 = Arrays.asList("Barbara","Daisy","Helen","Jennifer");
-        assertEquals(names1, query().from(employee)
-                .orderBy(employee.firstname.asc())
-                .limit(4)
-                .list(employee.firstname));
-    }
-
-    @Test
     public void Limit_and_Offset_and_Order(){
         // limit + offset
         List<String> names2 = Arrays.asList("Helen","Jennifer","Jim","Joe");
@@ -437,20 +555,6 @@ public class SelectBase extends AbstractBaseTest{
                 .list(employee.firstname));
     }
 
-    @Test
-    @ExcludeIn({ORACLE,DERBY,SQLSERVER,CUBRID})
-    @SkipForQuoted
-    public void Limit_and_Offset2() throws SQLException {
-        // limit
-        expectedQuery = "select e.ID from EMPLOYEE e limit ?";
-        query().from(employee).limit(4).list(employee.id);
-
-        // limit offset
-        expectedQuery = "select e.ID from EMPLOYEE e limit ? offset ?";
-        query().from(employee).limit(4).offset(3).list(employee.id);
-
-    }
-    
     @Test
     @IncludeIn(DERBY)
     public void Limit_and_Offset_In_Derby() throws SQLException {
@@ -466,7 +570,48 @@ public class SelectBase extends AbstractBaseTest{
         query().from(employee).offset(3).list(employee.id);
 
     }
+
+    @Test
+    @IncludeIn(Target.ORACLE)
+    @SkipForQuoted
+    public void Limit_and_Offset_In_Oracle() throws SQLException {
+        // limit
+        expectedQuery = "select * from (   select e.ID from EMPLOYEE e ) where rownum <= ?";
+        query().from(employee).limit(4).list(employee.id);
+
+        // offset
+        expectedQuery = "select * from (  select a.*, rownum rn from (   select e.ID from EMPLOYEE e  ) a) where rn > ?";
+        query().from(employee).offset(3).list(employee.id);
+
+        // limit offset
+        expectedQuery =  "select * from (  select a.*, rownum rn from (   select e.ID from EMPLOYEE e  ) a) where rn > 3 and rn <= 7";
+        query().from(employee).limit(4).offset(3).list(employee.id);
+    }
     
+    @Test
+    @ExcludeIn({ORACLE,DERBY,SQLSERVER,CUBRID})
+    @SkipForQuoted
+    public void Limit_and_Offset2() throws SQLException {
+        // limit
+        expectedQuery = "select e.ID from EMPLOYEE e limit ?";
+        query().from(employee).limit(4).list(employee.id);
+
+        // limit offset
+        expectedQuery = "select e.ID from EMPLOYEE e limit ? offset ?";
+        query().from(employee).limit(4).offset(3).list(employee.id);
+
+    }
+    
+    @Test
+    public void Limit_and_Order(){
+        // limit
+        List<String> names1 = Arrays.asList("Barbara","Daisy","Helen","Jennifer");
+        assertEquals(names1, query().from(employee)
+                .orderBy(employee.firstname.asc())
+                .limit(4)
+                .list(employee.firstname));
+    }
+
     @Test
     public void ListResults() {
         SearchResults<Integer> results = query().from(employee)
@@ -474,232 +619,77 @@ public class SelectBase extends AbstractBaseTest{
                 .listResults(employee.id);
         assertEquals(10, results.getTotal());        
     }
-
-    @Test
-    @ExcludeIn({HSQLDB, H2, MYSQL, SQLITE})
-    public void Offset_Only(){
-        // offset
-        query().from(employee)
-        .orderBy(employee.firstname.asc())
-        .offset(3).list(employee.id);
+    
+    private double log(double x, int y) {
+        return Math.log(x) / Math.log(y);
     }
 
     @Test
-    public void Params(){
-        Param<String> name = new Param<String>(String.class,"name");
-        assertEquals("Mike",query()
-                .from(employee).where(employee.firstname.eq(name))
-                .set(name, "Mike")
-                .uniqueResult(employee.firstname));
+    @ExcludeIn({SQLITE, DERBY})
+    public void LPad() {
+        assertEquals("  ab", unique(StringExpressions.lpad(ConstantImpl.create("ab"), 4)));
+        assertEquals("!!ab", unique(StringExpressions.lpad(ConstantImpl.create("ab"), 4, '!')));
     }
 
     @Test
-    public void Params_anon(){
-        Param<String> name = new Param<String>(String.class);
-        assertEquals("Mike",query()
-                .from(employee).where(employee.firstname.eq(name))
-                .set(name, "Mike")
-                .uniqueResult(employee.firstname));
-    }
+    @IncludeIn(Target.SQLSERVER)
+    public void Manual_Paging(){
+        RowNumber rowNumber = rowNumber().orderBy(employee.lastname.asc()).as(rn);
+        // TODO : create a short cut for wild card
+        Expression<Object[]> all = SimpleTemplate.create(Object[].class, "*");
 
-    @Test(expected=ParamNotSetException.class)
-    public void Params_not_set(){
-        Param<String> name = new Param<String>(String.class,"name");
-        assertEquals("Mike",query()
-                .from(employee).where(employee.firstname.eq(name))
-                .uniqueResult(employee.firstname));
-    }
-
-    @Test
-    @ExcludeIn({DERBY,HSQLDB,ORACLE})
-    @SkipForQuoted
-    public void Path_Alias(){
-        expectedQuery = "select e.LASTNAME, sum(e.SALARY) as salarySum " +
-        		"from EMPLOYEE e " +
-        		"group by e.LASTNAME having salarySum > ?";
-
-        NumberExpression<BigDecimal> salarySum = employee.salary.sum().as("salarySum");
-        query().from(employee)
-        .groupBy(employee.lastname)
-        .having(salarySum.gt(10000))
-        .list(employee.lastname, salarySum);
-    }
-
-    @Test
-    public void Projection() throws IOException{
-        CloseableIterator<Object[]> results = query().from(survey).iterate(survey.all());
-        assertTrue(results.hasNext());
-        while (results.hasNext()){
-            assertEquals(3, results.next().length);
+        // simple
+        System.out.println("#1");
+        for (Object[] row : query().from(employee).list(employee.firstname, employee.lastname, rowNumber)){
+            System.out.println(Arrays.asList(row));
         }
-        results.close();
-    }
+        System.out.println();
 
-    @Test
-    public void Projection_and_TwoColumns(){
-        // projection and two columns
-        for (Object[] row : query().from(survey)
-                .list(new QIdName(survey.id, survey.name), survey.id, survey.name)){
-            assertEquals(3, row.length);
-            assertEquals(IdName.class, row[0].getClass());
-            assertEquals(Integer.class, row[1].getClass());
-            assertEquals(String.class, row[2].getClass());
+        // with subquery, generic alias
+        System.out.println("#2");
+        ListSubQuery<Object[]> sub = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
+        SimplePath<Object[]> subAlias = new SimplePath<Object[]>(Object[].class, "s");
+        for (Object[] row : query().from(sub.as(subAlias)).list(all)){
+            System.out.println(Arrays.asList(row));
         }
-    }
+        System.out.println();
 
-    @Test
-    public void Projection2() throws IOException{
-        // TODO : add assertions
-        CloseableIterator<Object[]> results = query().from(survey).iterate(survey.id, survey.name);
-        assertTrue(results.hasNext());
-        while (results.hasNext()){
-            assertEquals(2, results.next().length);
+        // with subquery, only row number
+        System.out.println("#3");
+        SimpleSubQuery<Long> sub2 = sq().from(employee).unique(rowNumber);
+        SimplePath<Long> subAlias2 = new SimplePath<Long>(Long.class, "s");
+        for (Object[] row : query().from(sub2.as(subAlias2)).list(all)){
+            System.out.println(Arrays.asList(row));
         }
-        results.close();
+        System.out.println();
+
+        // with subquery, specific alias
+        System.out.println("#4");
+        ListSubQuery<Object[]> sub3 = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
+        for (Object[] row : query().from(sub3.as(employee2)).list(employee2.firstname, employee2.lastname)){
+            System.out.println(Arrays.asList(row));
+        }
     }
     
+
     @Test
-    @IncludeIn(Target.MYSQL)
-    public void Extensions(){
-        mysqlQuery().from(survey).bigResult().list(survey.id);
-        mysqlQuery().from(survey).bufferResult().list(survey.id);
-        mysqlQuery().from(survey).cache().list(survey.id);        
-        mysqlQuery().from(survey).calcFoundRows().list(survey.id);
-        mysqlQuery().from(survey).noCache().list(survey.id);
+    @SuppressWarnings("serial")
+    public void MappingProjection() {
+        List<Pair<String, String>> pairs = query().from(employee)
+                .list(new MappingProjection<Pair<String,String>>(Pair.class, 
+                      employee.firstname, employee.lastname) {
+            @Override
+            protected Pair<String, String> map(Tuple row) {
+                return Pair.of(row.get(employee.firstname), row.get(employee.lastname));
+            }            
+        });
         
-        mysqlQuery().from(survey).highPriority().list(survey.id);
-        mysqlQuery().from(survey).lockInShareMode().list(survey.id);
-        mysqlQuery().from(survey).smallResult().list(survey.id);
-        mysqlQuery().from(survey).straightJoin().list(survey.id);        
-    }
-    
-    @Test
-    public void Projection3() throws IOException{
-        CloseableIterator<String> names = query().from(survey).iterate(survey.name);
-        assertTrue(names.hasNext());
-        while (names.hasNext()){
-            System.out.println(names.next());
-        }
-        names.close();
-    }
-
-    @Test
-    public void TemplateExpression(){
-        NumberExpression<Integer> one = NumberTemplate.create(Integer.class, "1");
-        query().from(survey).list(one.as("col1"));
-    }
-    
-    @Test
-    public void Query_with_Constant() throws Exception {
-        for (Object[] row : query().from(survey)
-                .where(survey.id.eq(1))
-                .list(survey.id, survey.name)) {
-            System.out.println(row[0] + ", " + row[1]);
+        for (Pair<String, String> pair : pairs) {
+            assertNotNull(pair.getFirst());
+            assertNotNull(pair.getSecond());
         }
     }
 
-    @Test
-    public void Query1() throws Exception {
-        for (String s : query().from(survey).list(survey.name)) {
-            System.out.println(s);
-        }
-    }
-
-    @Test
-    public void Query2() throws Exception {
-        for (Object[] row : query().from(survey).list(survey.id, survey.name)) {
-            System.out.println(row[0] + ", " + row[1]);
-        }
-    }
-    
-
-    @Test
-    @Ignore
-    @ExcludeIn({ORACLE, DERBY, SQLSERVER})
-    public void Select_BooleanExpr() throws SQLException {
-        // TODO : FIXME
-        System.out.println(query().from(survey).list(survey.id.eq(0)));
-    }
-
-    @Test
-    @Ignore
-    @ExcludeIn({ORACLE, DERBY, SQLSERVER})
-    public void Select_BooleanExpr2() throws SQLException {
-        // TODO : FIXME
-        System.out.println(query().from(survey).list(survey.id.gt(0)));
-    }
-
-    @Test
-    public void Select_Concat() throws SQLException {
-        System.out.println(query().from(survey).list(survey.name.append("Hello World")));
-    }
-
-    @Test
-    @ExcludeIn({SQLITE, CUBRID})
-    public void Select_For_Update() {
-        query().from(survey).forUpdate().list(survey.id);
-    }
-    
-    @Test
-    @SkipForQuoted
-    public void Serialization(){
-        SQLQuery query = query();
-
-        query.from(survey);
-        assertEquals("from SURVEY s", query.toString());
-
-        query.from(survey2);
-        assertEquals("from SURVEY s, SURVEY s2", query.toString());
-    }
-
-    @Test
-    public void Single_Column(){
-        // single column
-        for (String s : query().from(survey).list(survey.name)){
-            assertNotNull(s);
-        }
-
-    }
-    
-    @Test
-    public void Single_Column_via_Object_type(){
-        for (Object s : query().from(survey)
-                .list(new PathImpl<Object>(Object.class, survey.name.getMetadata()))){
-            assertEquals(String.class, s.getClass());
-        }
-    }
-
-    @Test
-    @SkipForQuoted
-    public void SubQueries() throws SQLException {
-        // subquery in where block
-        expectedQuery = "select e.ID from EMPLOYEE e "
-            + "where e.ID = (select max(e.ID) "
-            + "from EMPLOYEE e)";
-        List<Integer> list = query().from(employee)
-        .where(employee.id.eq(sq().from(employee).unique(employee.id.max())))
-        .list(employee.id);
-        assertFalse(list.isEmpty());
-    }
-    
-    @Test
-    public void StandardTest(){
-        standardTest.runBooleanTests(employee.firstname.isNull(), employee2.lastname.isNotNull());
-        standardTest.runDateTests(employee.datefield, employee2.datefield, date);
-
-        // int
-        standardTest.runNumericCasts(employee.id, employee2.id, 1);
-        standardTest.runNumericTests(employee.id, employee2.id, 1);
-
-        // BigDecimal
-        standardTest.runNumericTests(employee.salary, employee2.salary, new BigDecimal("30000.00"));
-
-        standardTest.runStringTests(employee.firstname, employee2.firstname, "Jennifer");
-        standardTest.runTimeTests(employee.timefield, employee2.timefield, time);
-
-        standardTest.report();
-    }
-    
     @Test
     public void Math() {
         Expression<Double> expr = Expressions.numberTemplate(Double.class, "0.5");
@@ -724,37 +714,142 @@ public class SelectBase extends AbstractBaseTest{
         assertEquals(Math.tan(0.5),  unique(MathExpressions.tan(expr)), 0.001);
         assertEquals(Math.tanh(0.5), unique(MathExpressions.tanh(expr)), 0.001);        
     }
-    
-    private double cot(double x) {
-        return Math.cos(x) / Math.sin(x);
+
+    @Test
+    public void Nested_Tuple_Projection(){
+        Concatenation concat = new Concatenation(employee.firstname, employee.lastname);
+        List<Tuple> tuples = query().from(employee)
+                .list(new QTuple(employee.firstname, employee.lastname, concat));
+        assertFalse(tuples.isEmpty());
+        for (Tuple tuple : tuples){
+            String firstName = tuple.get(employee.firstname);
+            String lastName = tuple.get(employee.lastname);
+            assertEquals(firstName + lastName, tuple.get(concat));
+        }
     }
-    
-    private double coth(double x) {
-        return Math.cosh(x) / Math.sinh(x);
-    }
-    
-    private double degrees(double x) {
-        return x * 180.0 / Math.PI;
-    }
-    
-    private double radians(double x) {
-        return x * Math.PI / 180.0;
-    }
-    
-    private double log(double x, int y) {
-        return Math.log(x) / Math.log(y);
+
+    @Test
+    public void NotExists(){
+        assertTrue(query().from(employee).where(employee.firstname.eq("Barb")).notExists());
     }
     
     @Test
-    @ExcludeIn(SQLITE)
-    public void String() {
-        StringExpression str = Expressions.stringTemplate("'  abcd  '");
-        
-        assertEquals("abcd  ", unique(StringExpressions.ltrim(str)));
-        assertEquals(Integer.valueOf(3), unique(str.locate("a")));
-        assertEquals(Integer.valueOf(0), unique(str.locate("a", 4)));
-        assertEquals(Integer.valueOf(4), unique(str.locate("b", 2)));
-        assertEquals("  abcd", unique(StringExpressions.rtrim(str)));
+    @ExcludeIn({HSQLDB, H2, MYSQL, SQLITE})
+    public void Offset_Only(){
+        // offset
+        query().from(employee)
+        .orderBy(employee.firstname.asc())
+        .offset(3).list(employee.id);
+    }
+
+    @Test
+    public void Operation_in_Constant_list(){
+        query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a'))).count();
+        query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a','b'))).count();
+        query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a','b','c'))).count();
+    }
+    
+    @Test
+    public void Params(){
+        Param<String> name = new Param<String>(String.class,"name");
+        assertEquals("Mike",query()
+                .from(employee).where(employee.firstname.eq(name))
+                .set(name, "Mike")
+                .uniqueResult(employee.firstname));
+    }
+
+    @Test
+    public void Params_anon(){
+        Param<String> name = new Param<String>(String.class);
+        assertEquals("Mike",query()
+                .from(employee).where(employee.firstname.eq(name))
+                .set(name, "Mike")
+                .uniqueResult(employee.firstname));
+    }
+    
+    @Test(expected=ParamNotSetException.class)
+    public void Params_not_set(){
+        Param<String> name = new Param<String>(String.class,"name");
+        assertEquals("Mike",query()
+                .from(employee).where(employee.firstname.eq(name))
+                .uniqueResult(employee.firstname));
+    }
+    
+    @Test
+    @ExcludeIn({DERBY,HSQLDB,ORACLE})
+    @SkipForQuoted
+    public void Path_Alias(){
+        expectedQuery = "select e.LASTNAME, sum(e.SALARY) as salarySum " +
+        		"from EMPLOYEE e " +
+        		"group by e.LASTNAME having salarySum > ?";
+
+        NumberExpression<BigDecimal> salarySum = employee.salary.sum().as("salarySum");
+        query().from(employee)
+        .groupBy(employee.lastname)
+        .having(salarySum.gt(10000))
+        .list(employee.lastname, salarySum);
+    }
+    
+    @Test
+    public void Path_in_Constant_list(){
+        query().from(survey).where(survey.name.in(Arrays.asList("a"))).count();
+        query().from(survey).where(survey.name.in(Arrays.asList("a","b"))).count();
+        query().from(survey).where(survey.name.in(Arrays.asList("a","b","c"))).count();
+    }
+    
+    @Test
+    public void Projection() throws IOException{
+        CloseableIterator<Object[]> results = query().from(survey).iterate(survey.all());
+        assertTrue(results.hasNext());
+        while (results.hasNext()){
+            assertEquals(3, results.next().length);
+        }
+        results.close();
+    }
+    
+    @Test
+    public void Projection_and_TwoColumns(){
+        // projection and two columns
+        for (Object[] row : query().from(survey)
+                .list(new QIdName(survey.id, survey.name), survey.id, survey.name)){
+            assertEquals(3, row.length);
+            assertEquals(IdName.class, row[0].getClass());
+            assertEquals(Integer.class, row[1].getClass());
+            assertEquals(String.class, row[2].getClass());
+        }
+    }
+    
+    @Test
+    public void Projection2() throws IOException{
+        // TODO : add assertions
+        CloseableIterator<Object[]> results = query().from(survey).iterate(survey.id, survey.name);
+        assertTrue(results.hasNext());
+        while (results.hasNext()){
+            assertEquals(2, results.next().length);
+        }
+        results.close();
+    }
+    
+    @Test
+    public void Projection3() throws IOException{
+        CloseableIterator<String> names = query().from(survey).iterate(survey.name);
+        assertTrue(names.hasNext());
+        while (names.hasNext()){
+            System.out.println(names.next());
+        }
+        names.close();
+    }
+    
+    @Test
+    public void QBeanUsage(){
+        QSurvey survey = QSurvey.survey;
+        PathBuilder<Object[]> sq = new PathBuilder<Object[]>(Object[].class, "sq");
+        List<Survey> surveys = 
+            query().from(
+                sq().from(survey).list(survey.all()).as("sq"))
+            .list(new QBean<Survey>(Survey.class, Collections.singletonMap("name", sq.get(survey.name))));        
+        assertFalse(surveys.isEmpty());
+
     }
     
 //    @Test
@@ -780,10 +875,50 @@ public class SelectBase extends AbstractBaseTest{
 //    }
     
     @Test
-    @ExcludeIn({SQLITE, DERBY})
-    public void LPad() {
-        assertEquals("  ab", unique(StringExpressions.lpad(ConstantImpl.create("ab"), 4)));
-        assertEquals("!!ab", unique(StringExpressions.lpad(ConstantImpl.create("ab"), 4, '!')));
+    public void Query_with_Constant() throws Exception {
+        for (Object[] row : query().from(survey)
+                .where(survey.id.eq(1))
+                .list(survey.id, survey.name)) {
+            System.out.println(row[0] + ", " + row[1]);
+        }
+    }
+    
+    @Test
+    public void Query1() throws Exception {
+        for (String s : query().from(survey).list(survey.name)) {
+            System.out.println(s);
+        }
+    }
+        
+    @Test
+    public void Query2() throws Exception {
+        for (Object[] row : query().from(survey).list(survey.id, survey.name)) {
+            System.out.println(row[0] + ", " + row[1]);
+        }
+    }
+
+    private double radians(double x) {
+        return x * Math.PI / 180.0;
+    }
+
+    @Test
+    public void RelationalPath_Projection() {
+        List<Object[]> results = query().from(employee, employee2).where(employee.id.eq(employee2.id))
+                .list(employee, employee2);
+        assertFalse(results.isEmpty());
+        for (Object[] row : results) {
+            Employee e1 = (Employee)row[0];
+            Employee e2 = (Employee)row[1];
+            assertEquals(e1.getId(), e2.getId());
+        }
+    }
+    
+    @Test
+    @ExcludeIn(SQLITE)
+    public void Right_Join() throws SQLException {
+        query().from(employee).rightJoin(employee2)
+            .on(employee.superiorIdKey.on(employee2))
+            .list(employee.id, employee2.id);
     }
     
     @Test
@@ -792,9 +927,101 @@ public class SelectBase extends AbstractBaseTest{
         assertEquals("ab  ", unique(StringExpressions.rpad(ConstantImpl.create("ab"), 4)));
         assertEquals("ab!!", unique(StringExpressions.rpad(ConstantImpl.create("ab"), 4,'!')));
     }
+    
+    @Test
+    @Ignore
+    @ExcludeIn({ORACLE, DERBY, SQLSERVER})
+    public void Select_BooleanExpr() throws SQLException {
+        // TODO : FIXME
+        System.out.println(query().from(survey).list(survey.id.eq(0)));
+    }
+    
+    @Test
+    @Ignore
+    @ExcludeIn({ORACLE, DERBY, SQLSERVER})
+    public void Select_BooleanExpr2() throws SQLException {
+        // TODO : FIXME
+        System.out.println(query().from(survey).list(survey.id.gt(0)));
+    }
+    
+    @Test
+    public void Select_Concat() throws SQLException {
+        System.out.println(query().from(survey).list(survey.name.append("Hello World")));
+    }
+
+    @Test
+    @ExcludeIn({SQLITE, CUBRID})
+    public void Select_For_Update() {
+        query().from(survey).forUpdate().list(survey.id);
+    }
+
+    @Test
+    @SkipForQuoted
+    public void Serialization(){
+        SQLQuery query = query();
+
+        query.from(survey);
+        assertEquals("from SURVEY s", query.toString());
+
+        query.from(survey2);
+        assertEquals("from SURVEY s, SURVEY s2", query.toString());
+    }
+
+    @Test
+    public void Single(){
+        assertNotNull(query().from(survey).singleResult(survey.name));
+    }
+
+    @Test
+    public void Single_Array(){
+        assertNotNull(query().from(survey).singleResult(new Expression<?>[]{survey.name}));
+    }
+
+    @Test
+    public void Single_Column(){
+        // single column
+        for (String s : query().from(survey).list(survey.name)){
+            assertNotNull(s);
+        }
+
+    }
+
+    @Test
+    public void Single_Column_via_Object_type(){
+        for (Object s : query().from(survey)
+                .list(new PathImpl<Object>(Object.class, survey.name.getMetadata()))){
+            assertEquals(String.class, s.getClass());
+        }
+    }
         
-    private <T> T unique(Expression<T> expr) {
-        return query().uniqueResult(expr);
+    @Test
+    public void StandardTest(){
+        standardTest.runBooleanTests(employee.firstname.isNull(), employee2.lastname.isNotNull());
+        standardTest.runDateTests(employee.datefield, employee2.datefield, date);
+
+        // int
+        standardTest.runNumericCasts(employee.id, employee2.id, 1);
+        standardTest.runNumericTests(employee.id, employee2.id, 1);
+
+        // BigDecimal
+        standardTest.runNumericTests(employee.salary, employee2.salary, new BigDecimal("30000.00"));
+
+        standardTest.runStringTests(employee.firstname, employee2.firstname, "Jennifer");
+        standardTest.runTimeTests(employee.timefield, employee2.timefield, time);
+
+        standardTest.report();
+    }
+    
+    @Test
+    @ExcludeIn(SQLITE)
+    public void String() {
+        StringExpression str = Expressions.stringTemplate("'  abcd  '");
+        
+        assertEquals("abcd  ", unique(StringExpressions.ltrim(str)));
+        assertEquals(Integer.valueOf(3), unique(str.locate("a")));
+        assertEquals(Integer.valueOf(0), unique(str.locate("a", 4)));
+        assertEquals(Integer.valueOf(4), unique(str.locate("b", 2)));
+        assertEquals("  abcd", unique(StringExpressions.rtrim(str)));
     }
 
     @Test
@@ -808,89 +1035,45 @@ public class SelectBase extends AbstractBaseTest{
         }
     }
 
+
     @Test
-    @ExcludeIn(SQLITE)
-    public void SubQuery_Any() {
-        query().from(employee).where(employee.id.gtAny(
-                sq().from(employee2).list(employee2.id))).count();
+    @IncludeIn(Target.ORACLE)
+    @SkipForQuoted
+    public void SumOver() throws SQLException{
+//        SQL> select deptno,
+//        2  ename,
+//        3  sal,
+//        4  sum(sal) over (partition by deptno
+//        5  order by sal,ename) CumDeptTot,
+//        6  sum(sal) over (partition by deptno) SalByDept,
+//        7  sum(sal) over (order by deptno, sal) CumTot,
+//        8  sum(sal) over () TotSal
+//        9  from emp
+//       10  order by deptno, sal;
+        expectedQuery = "select e.LASTNAME, e.SALARY, " +
+            "sum(e.SALARY) over (partition by e.SUPERIOR_ID order by e.LASTNAME, e.SALARY), " +
+            "sum(e.SALARY) over (order by e.SUPERIOR_ID, e.SALARY), " +
+            "sum(e.SALARY) over () from EMPLOYEE e order by e.SALARY asc, e.SUPERIOR_ID asc";
+
+        oracleQuery().from(employee)
+            .orderBy(employee.salary.asc(), employee.superiorId.asc())
+            .list(
+               employee.lastname,
+               employee.salary,
+               sumOver(employee.salary).partition(employee.superiorId).orderBy(employee.lastname, employee.salary),
+               sumOver(employee.salary).orderBy(employee.superiorId, employee.salary),
+               sumOver(employee.salary));
+
+        // shorter version
+        QEmployee e = employee;
+        oracleQuery().from(e)
+            .orderBy(e.salary.asc(), e.superiorId.asc())
+            .list(e.lastname, e.salary,
+               sumOver(e.salary).partition(e.superiorId).orderBy(e.lastname, e.salary),
+               sumOver(e.salary).orderBy(e.superiorId, e.salary),
+               sumOver(e.salary));
     }
     
-    @Test
-    @ExcludeIn(SQLITE)
-    public void SubQuery_All() {
-        query().from(employee).where(employee.id.gtAll(
-                sq().from(employee2).list(employee2.id))).count();
-    }
-    
-    @Test
-    public void SubQuery_Alias() {
-        query().from(sq().from(employee).list(employee.all()).as(employee2)).list(employee2.all());
-    }
-    
-    @Test
-    public void SubQuery_with_Alias(){
-        List<Integer> ids1 = query().from(employee).list(employee.id);
-        List<Integer> ids2 = query().from(sq().from(employee).list(employee.id), employee).list(employee.id);
-        assertEquals(ids1, ids2);
-    }
-    
-    @Test
-    public void SubQuery_with_Alias2(){
-        List<Integer> ids1 = query().from(employee).list(employee.id);
-        List<Integer> ids2 = query().from(sq().from(employee).list(employee.id).as(employee)).list(employee.id);
-        assertEquals(ids1, ids2);
-    }
-    
-    @Test
-    public void SubQuery_InnerJoin(){
-        ListSubQuery<Integer> sq = sq().from(employee2).list(employee2.id);
-        QEmployee sqEmp = new QEmployee("sq");
-        query().from(employee).innerJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
-
-    }
-
-    @Test
-    public void SubQuery_LeftJoin(){
-        ListSubQuery<Integer> sq = sq().from(employee2).list(employee2.id);
-        QEmployee sqEmp = new QEmployee("sq");
-        query().from(employee).leftJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
-
-    }
-
-    @Test
-    @ExcludeIn(SQLITE)
-    public void SubQuery_RightJoin(){
-        ListSubQuery<Integer> sq = sq().from(employee2).list(employee2.id);
-        QEmployee sqEmp = new QEmployee("sq");
-        query().from(employee).rightJoin(sq, sqEmp).on(sqEmp.id.eq(employee.id)).list(employee.id);
-    }
-
-    @Test
-    public void SubQuerySerialization(){
-        SQLSubQuery query = sq();
-        query.from(survey);
-        assertEquals("from SURVEY s", query.toString());
-
-        query.from(survey2);
-        assertEquals("from SURVEY s, SURVEY s2", query.toString());
-    }
-
-    @Test
-    public void SubQuerySerialization2(){
-        NumberPath<BigDecimal> sal = new NumberPath<BigDecimal>(BigDecimal.class, "sal");
-        PathBuilder<Object[]> sq = new PathBuilder<Object[]>(Object[].class, "sq");
-        SQLSerializer serializer = new SQLSerializer(SQLTemplates.DEFAULT);
-
-        serializer.handle(
-                sq()
-                .from(employee)
-                .list(employee.salary.add(employee.salary).add(employee.salary).as(sal))
-                .as(sq));
-        assertEquals(
-                "(select (e.SALARY + e.SALARY + e.SALARY) as sal\nfrom EMPLOYEE e) as sq", 
-                serializer.toString());
-    }
-
     @Test
     public void Syntax_For_Employee() throws SQLException {
         query().from(employee).groupBy(employee.superiorId)
@@ -907,7 +1090,13 @@ public class SelectBase extends AbstractBaseTest{
         .orderBy(employee.superiorId.asc())
         .list(employee.salary.avg(),employee.id.max());
     }
-
+    
+    @Test
+    public void TemplateExpression(){
+        NumberExpression<Integer> one = NumberTemplate.create(Integer.class, "1");
+        query().from(survey).list(one.as("col1"));
+    }
+    
     @Test
     public void Tuple_Projection(){
         List<Tuple> tuples = query().from(employee)
@@ -918,38 +1107,7 @@ public class SelectBase extends AbstractBaseTest{
             assertNotNull(tuple.get(employee.lastname));
         }
     }
-        
-    @Test
-    @SuppressWarnings("serial")
-    public void MappingProjection() {
-        List<Pair<String, String>> pairs = query().from(employee)
-                .list(new MappingProjection<Pair<String,String>>(Pair.class, 
-                      employee.firstname, employee.lastname) {
-            @Override
-            protected Pair<String, String> map(Tuple row) {
-                return Pair.of(row.get(employee.firstname), row.get(employee.lastname));
-            }            
-        });
-        
-        for (Pair<String, String> pair : pairs) {
-            assertNotNull(pair.getFirst());
-            assertNotNull(pair.getSecond());
-        }
-    }
     
-    @Test
-    public void Nested_Tuple_Projection(){
-        Concatenation concat = new Concatenation(employee.firstname, employee.lastname);
-        List<Tuple> tuples = query().from(employee)
-                .list(new QTuple(employee.firstname, employee.lastname, concat));
-        assertFalse(tuples.isEmpty());
-        for (Tuple tuple : tuples){
-            String firstName = tuple.get(employee.firstname);
-            String lastName = tuple.get(employee.lastname);
-            assertEquals(firstName + lastName, tuple.get(concat));
-        }
-    }
-
     @Test
     public void TwoColumns(){
         // two columns
@@ -959,7 +1117,7 @@ public class SelectBase extends AbstractBaseTest{
             assertEquals(String.class, row[1].getClass());
         }
     }
-
+    
     @Test
     public void TwoColumns_and_Projection(){
         // two columns and projection
@@ -971,178 +1129,12 @@ public class SelectBase extends AbstractBaseTest{
             assertEquals(IdName.class, row[2].getClass());
         }
     }
-
     
-    @Test
-    @SuppressWarnings("unchecked")
-    public void Union() throws SQLException {
-        SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id.max());
-        SubQueryExpression<Integer> sq2 = sq().from(employee).unique(employee.id.min());
-        List<Integer> list = query().union(sq1, sq2).list();
-        assertFalse(list.isEmpty());
-    }
     
-    @Test
-    @SuppressWarnings("unchecked")
-    public void Union_All() {
-        SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id.max());
-        SubQueryExpression<Integer> sq2 = sq().from(employee).unique(employee.id.min());
-        List<Integer> list = query().unionAll(sq1, sq2).list();
-        assertFalse(list.isEmpty());
-    }
-    
-    @SuppressWarnings("unchecked")
-    @Test
-    public void Union_Multiple_Columns() throws SQLException {
-        SubQueryExpression<Object[]> sq1 = sq().from(employee).unique(employee.firstname, employee.lastname);
-        SubQueryExpression<Object[]> sq2 = sq().from(employee).unique(employee.lastname, employee.firstname);
-        List<Object[]> list = query().union(sq1, sq2).list();
-        assertFalse(list.isEmpty());
-        for (Object[] row : list){
-            assertNotNull(row[0]);
-            assertNotNull(row[1]);
-        }
-    }
-    
-    @Test
-    @SuppressWarnings("unchecked")
-    public void Union_Empty_Result() throws SQLException {
-        SubQueryExpression<Integer> sq1 = sq().from(employee).where(employee.firstname.eq("XXX")).unique(employee.id);
-        SubQueryExpression<Integer> sq2 = sq().from(employee).where(employee.firstname.eq("YYY")).unique(employee.id);
-        List<Integer> list = query().union(sq1, sq2).list();
-        assertTrue(list.isEmpty());
-    }
-    
-    @Test
-    @SuppressWarnings("unchecked")
-    public void Union2() throws SQLException {
-        List<Integer> list = query().union(
-                sq().from(employee).unique(employee.id.max()),
-                sq().from(employee).unique(employee.id.min())).list();
-        assertFalse(list.isEmpty());
-
-    }
-                                                                                                                          
-    @Test
-    @SuppressWarnings("unchecked")
-    public void Union3() throws SQLException {
-        SimpleSubQuery<Object[]> sq3 = sq().from(employee).unique(new Expression[]{employee.id.max()});
-        SimpleSubQuery<Object[]> sq4 = sq().from(employee).unique(new Expression[]{employee.id.min()});
-        List<Object[]> list2 = query().union(sq3, sq4).list();
-        assertFalse(list2.isEmpty());
-    }
-    
-    @Test
-    @ExcludeIn({DERBY})
-    public void Union4() {
-        SimpleSubQuery<Object[]> sq1 = sq().from(employee).unique(employee.id, employee.firstname);
-        SimpleSubQuery<Object[]> sq2 = sq().from(employee).unique(employee.id, employee.firstname);
-        query().union(employee, sq1, sq2).list(employee.id.count());
-    }
-    
-    // FIXME for CUBRID
-    @Test
-    @ExcludeIn({DERBY, CUBRID})
-    public void Union5() {
-        /* (select e.ID, e.FIRSTNAME, superior.ID as sup_id, superior.FIRSTNAME as sup_name 
-         * from EMPLOYEE e join EMPLOYEE superior on e.SUPERIOR_ID = superior.ID) 
-         * union 
-         * (select e.ID, e.FIRSTNAME, null, null from EMPLOYEE e) 
-         * order by ID asc
-         */
-        QEmployee superior = new QEmployee("superior");
-        ListSubQuery<Object[]> sq1 = sq().from(employee)
-                .join(employee.superiorIdKey, superior)
-                .list(employee.id, employee.firstname, superior.id.as("sup_id"), superior.firstname.as("sup_name"));
-        ListSubQuery<Object[]> sq2 = sq().from(employee)
-                .list(employee.id, employee.firstname, null, null);
-        List<Object[]> results = query().union(sq1, sq2).orderBy(employee.id.asc()).list();
-        for (Object[] result : results) {
-            System.err.println(Arrays.asList(result));
-        }
- 
-    }
-    
-    @Test
-    @SuppressWarnings("unchecked")
-    public void Union_With_Order() throws SQLException {
-        SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id);
-        SubQueryExpression<Integer> sq2 = sq().from(employee).unique(employee.id);
-        List<Integer> list = query().union(sq1, sq2).orderBy(employee.id.asc()).list();
-        assertFalse(list.isEmpty());
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void Union_Multi_Column_Projection_List() throws IOException{
-        SubQueryExpression<Object[]> sq1 = sq().from(employee).unique(employee.id.max(), employee.id.max().subtract(1));
-        SubQueryExpression<Object[]> sq2 = sq().from(employee).unique(employee.id.min(), employee.id.min().subtract(1));
-
-        List<Object[]> list = query().union(sq1, sq2).list();
-        assertEquals(2, list.size());
-        assertTrue(list.get(0) != null);
-        assertTrue(list.get(1) != null);
-    }
-    
-    @SuppressWarnings("unchecked")
-    @Test
-    public void Union_Multi_Column_Projection_Iterate() throws IOException{
-        SubQueryExpression<Object[]> sq1 = sq().from(employee).unique(employee.id.max(), employee.id.max().subtract(1));
-        SubQueryExpression<Object[]> sq2 = sq().from(employee).unique(employee.id.min(), employee.id.min().subtract(1));
-
-        CloseableIterator<Object[]> iterator = query().union(sq1,sq2).iterate();
-        try{
-            assertTrue(iterator.hasNext());
-            assertTrue(iterator.next() != null);
-            assertTrue(iterator.next() != null);
-            assertFalse(iterator.hasNext());
-        }finally{
-            iterator.close();
-        }
+    private <T> T unique(Expression<T> expr) {
+        return query().uniqueResult(expr);
     }
         
-    @SuppressWarnings("unchecked")
-    @Test
-    public void Union_Single_Column_Projections_List() throws IOException{
-        SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id.max());
-        SubQueryExpression<Integer> sq2 = sq().from(employee).unique(employee.id.min());
-
-        List<Integer> list = query().union(sq1, sq2).list();
-        assertEquals(2, list.size());
-        assertTrue(list.get(0) != null);
-        assertTrue(list.get(1) != null);
-    }
-    
-    @SuppressWarnings("unchecked")
-    @Test
-    public void Union_Single_Column_Projections_Iterate() throws IOException{
-        SubQueryExpression<Integer> sq1 = sq().from(employee).unique(employee.id.max());
-        SubQueryExpression<Integer> sq2 = sq().from(employee).unique(employee.id.min());
-
-        CloseableIterator<Integer> iterator = query().union(sq1,sq2).iterate();
-        try{
-            assertTrue(iterator.hasNext());
-            assertTrue(iterator.next() != null);
-            assertTrue(iterator.next() != null);
-            assertFalse(iterator.hasNext());
-        }finally{
-            iterator.close();
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Test
-    public void Union_FactoryExpression() {
-        ListSubQuery<Employee> sq1 = sq().from(employee)
-                .list(Projections.constructor(Employee.class, employee.id));
-        ListSubQuery<Employee> sq2 = sq().from(employee)
-                .list(Projections.constructor(Employee.class, employee.id));        
-        List<Employee> employees = query().union(sq1, sq2).list();
-        for (Employee employee : employees){
-            assertNotNull(employee);
-        }
-    }
-    
     @Test
     public void Unique_Constructor_Projection(){
         IdName idAndName = query().from(survey).limit(1).uniqueResult(new QIdName(survey.id, survey.name));
@@ -1158,16 +1150,6 @@ public class SelectBase extends AbstractBaseTest{
         assertNotNull(s);
 
     }
-    
-    @Test
-    public void Single(){
-        assertNotNull(query().from(survey).singleResult(survey.name));
-    }
-    
-    @Test
-    public void Single_Array(){
-        assertNotNull(query().from(survey).singleResult(new Expression<?>[]{survey.name}));
-    }
 
     @Test
     public void Unique_Wildcard(){
@@ -1179,7 +1161,7 @@ public class SelectBase extends AbstractBaseTest{
         assertNotNull(row[0] +" is not null", row[1]);
 
     }
-    
+
     @Test(expected=NonUniqueResultException.class)
     public void UniqueResultContract(){
         query().from(employee).uniqueResult(employee.all());
@@ -1225,7 +1207,7 @@ public class SelectBase extends AbstractBaseTest{
         expectedQuery = "select * from EMPLOYEE e";
         query().from(employee).list(Wildcard.all);
     }
-
+    
     @Test
     public void Wildcard_and_QTuple(){
         // wildcard and QTuple
@@ -1233,247 +1215,6 @@ public class SelectBase extends AbstractBaseTest{
             assertNotNull(tuple.get(survey.id));
             assertNotNull(tuple.get(survey.name));
         }
-    }
-    
-    @Test
-    @IncludeIn(Target.SQLSERVER)
-    public void Manual_Paging(){
-        RowNumber rowNumber = rowNumber().orderBy(employee.lastname.asc()).as(rn);
-        // TODO : create a short cut for wild card
-        Expression<Object[]> all = SimpleTemplate.create(Object[].class, "*");
-
-        // simple
-        System.out.println("#1");
-        for (Object[] row : query().from(employee).list(employee.firstname, employee.lastname, rowNumber)){
-            System.out.println(Arrays.asList(row));
-        }
-        System.out.println();
-
-        // with subquery, generic alias
-        System.out.println("#2");
-        ListSubQuery<Object[]> sub = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
-        SimplePath<Object[]> subAlias = new SimplePath<Object[]>(Object[].class, "s");
-        for (Object[] row : query().from(sub.as(subAlias)).list(all)){
-            System.out.println(Arrays.asList(row));
-        }
-        System.out.println();
-
-        // with subquery, only row number
-        System.out.println("#3");
-        SimpleSubQuery<Long> sub2 = sq().from(employee).unique(rowNumber);
-        SimplePath<Long> subAlias2 = new SimplePath<Long>(Long.class, "s");
-        for (Object[] row : query().from(sub2.as(subAlias2)).list(all)){
-            System.out.println(Arrays.asList(row));
-        }
-        System.out.println();
-
-        // with subquery, specific alias
-        System.out.println("#4");
-        ListSubQuery<Object[]> sub3 = sq().from(employee).list(employee.firstname, employee.lastname, rowNumber);
-        for (Object[] row : query().from(sub3.as(employee2)).list(employee2.firstname, employee2.lastname)){
-            System.out.println(Arrays.asList(row));
-        }
-    }
-    
-    @Test
-    public void QBeanUsage(){
-        QSurvey survey = QSurvey.survey;
-        PathBuilder<Object[]> sq = new PathBuilder<Object[]>(Object[].class, "sq");
-        List<Survey> surveys = 
-            query().from(
-                sq().from(survey).list(survey.all()).as("sq"))
-            .list(new QBean<Survey>(Survey.class, Collections.singletonMap("name", sq.get(survey.name))));        
-        assertFalse(surveys.isEmpty());
-
-    }
-    
-    @Test
-    public void Operation_in_Constant_list(){
-        query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a'))).count();
-        query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a','b'))).count();
-        query().from(survey).where(survey.name.charAt(0).in(Arrays.asList('a','b','c'))).count();
-    }
-    
-    @Test
-    public void Path_in_Constant_list(){
-        query().from(survey).where(survey.name.in(Arrays.asList("a"))).count();
-        query().from(survey).where(survey.name.in(Arrays.asList("a","b"))).count();
-        query().from(survey).where(survey.name.in(Arrays.asList("a","b","c"))).count();
-    }
-    
-    @Test    
-    public void GroupBy_Superior() {
-        SQLQuery qry = query()
-            .from(employee)
-            .innerJoin(employee._superiorIdKey, employee2);
-        
-        QTuple subordinates = new QTuple(employee2.id, employee2.firstname, employee2.lastname);
-
-        Map<Integer, Group> results = qry.transform(
-            GroupBy.groupBy(employee.id).as(employee.firstname, employee.lastname, 
-            GroupBy.map(employee2.id, subordinates)));
-        
-        assertEquals(2, results.size());
-        
-        // Mike Smith
-        Group group = results.get(1);
-        assertEquals("Mike", group.getOne(employee.firstname));
-        assertEquals("Smith", group.getOne(employee.lastname));
-
-        Map<Integer, Tuple> emps = group.getMap(employee2.id, subordinates);
-        assertEquals(4, emps.size());
-        assertEquals("Steve", emps.get(12).get(employee2.firstname));
-
-        // Mary Smith
-        group = results.get(2);
-        assertEquals("Mary", group.getOne(employee.firstname));
-        assertEquals("Smith", group.getOne(employee.lastname));
-        
-        emps = group.getMap(employee2.id, subordinates);
-        assertEquals(4, emps.size());
-        assertEquals("Mason", emps.get(21).get(employee2.lastname));
-    }
-    
-    
-    @Test
-    @SkipForQuoted
-    @IncludeIn(Target.ORACLE)
-    public void Alias_Quotes_Oracle() {
-        expectedQuery = "select e.FIRSTNAME \"First Name\" from EMPLOYEE e";
-        query().from(employee).list(employee.firstname.as("First Name"));
-    }
-        
-    @Test
-    @SkipForQuoted
-    @IncludeIn(Target.ORACLE)
-    public void Count_All_Oracle() {
-        expectedQuery = "select count(*) rowCount from EMPLOYEE e";
-        NumberPath<Long> rowCount = new NumberPath<Long>(Long.class, "rowCount");
-        query().from(employee).uniqueResult(Wildcard.count.as(rowCount));
-    }
-
-    @Test
-    @IncludeIn(Target.ORACLE)
-    public void Limit_and_Offset_In_Oracle() throws SQLException {
-        // limit
-        expectedQuery = "select * from (   select e.ID from EMPLOYEE e ) where rownum <= ?";
-        query().from(employee).limit(4).list(employee.id);
-
-        // offset
-        expectedQuery = "select * from (  select a.*, rownum rn from (   select e.ID from EMPLOYEE e  ) a) where rn > ?";
-        query().from(employee).offset(3).list(employee.id);
-
-        // limit offset
-        expectedQuery =  "select * from (  select a.*, rownum rn from (   select e.ID from EMPLOYEE e  ) a) where rn > 3 and rn <= 7";
-        query().from(employee).limit(4).offset(3).list(employee.id);
-    }
-
-    @Test
-    @IncludeIn(Target.ORACLE)
-    public void ConnectByPrior() throws SQLException{
-        expectedQuery =  "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
-                        "from EMPLOYEE e " +
-                        "connect by prior e.ID = e.SUPERIOR_ID";
-        oracleQuery().from(employee)
-            .connectByPrior(employee.id.eq(employee.superiorId))
-            .list(employee.id, employee.lastname, employee.superiorId);
-    }
-
-    @Test
-    @IncludeIn(Target.ORACLE)
-    public void ConnectByPrior2() throws SQLException{
-        expectedQuery =
-                "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
-                "from EMPLOYEE e " +
-                "start with e.ID = ? " +
-                "connect by prior e.ID = e.SUPERIOR_ID";
-        oracleQuery().from(employee)
-            .startWith(employee.id.eq(1))
-            .connectByPrior(employee.id.eq(employee.superiorId))
-            .list(employee.id, employee.lastname, employee.superiorId);
-    }
-
-    @Test
-    @IncludeIn(Target.ORACLE)
-    public void ConnectByPrior3() throws SQLException{
-        expectedQuery =
-                "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
-                "from EMPLOYEE e " +
-                "start with e.ID = ? " +
-                "connect by prior e.ID = e.SUPERIOR_ID " +
-                "order siblings by e.LASTNAME";
-        oracleQuery().from(employee)
-            .startWith(employee.id.eq(1))
-            .connectByPrior(employee.id.eq(employee.superiorId))
-            .orderSiblingsBy(employee.lastname)
-            .list(employee.id, employee.lastname, employee.superiorId);
-    }
-
-    @Test
-    @IncludeIn(Target.ORACLE)
-    public void ConnectByPrior4() throws SQLException{
-        expectedQuery =
-                "select e.ID, e.LASTNAME, e.SUPERIOR_ID " +
-                "from EMPLOYEE e " +
-                "connect by nocycle prior e.ID = e.SUPERIOR_ID";
-        oracleQuery().from(employee)
-            .connectByNocyclePrior(employee.id.eq(employee.superiorId))
-            .list(employee.id, employee.lastname, employee.superiorId);
-    }
-
-    @Test
-    @Ignore
-    public void ConnectBy() throws SQLException{
-        // TODO : come up with a legal case
-        oracleQuery().from(employee)
-            .where(level.eq(-1))
-            .connectBy(level.lt(1000))
-            .list(employee.id);
-    }
-
-    @Test
-    @IncludeIn(Target.ORACLE)
-    public void SumOver() throws SQLException{
-//        SQL> select deptno,
-//        2  ename,
-//        3  sal,
-//        4  sum(sal) over (partition by deptno
-//        5  order by sal,ename) CumDeptTot,
-//        6  sum(sal) over (partition by deptno) SalByDept,
-//        7  sum(sal) over (order by deptno, sal) CumTot,
-//        8  sum(sal) over () TotSal
-//        9  from emp
-//       10  order by deptno, sal;
-        expectedQuery = "select e.LASTNAME, e.SALARY, " +
-            "sum(e.SALARY) over (partition by e.SUPERIOR_ID order by e.LASTNAME, e.SALARY), " +
-            "sum(e.SALARY) over (order by e.SUPERIOR_ID, e.SALARY), " +
-            "sum(e.SALARY) over () from EMPLOYEE e order by e.SALARY asc, e.SUPERIOR_ID asc";
-
-        oracleQuery().from(employee)
-            .orderBy(employee.salary.asc(), employee.superiorId.asc())
-            .list(
-               employee.lastname,
-               employee.salary,
-               sumOver(employee.salary).partition(employee.superiorId).orderBy(employee.lastname, employee.salary),
-               sumOver(employee.salary).orderBy(employee.superiorId, employee.salary),
-               sumOver(employee.salary));
-
-        // shorter version
-        QEmployee e = employee;
-        oracleQuery().from(e)
-            .orderBy(e.salary.asc(), e.superiorId.asc())
-            .list(e.lastname, e.salary,
-               sumOver(e.salary).partition(e.superiorId).orderBy(e.lastname, e.salary),
-               sumOver(e.salary).orderBy(e.superiorId, e.salary),
-               sumOver(e.salary));
-    }
-    
-    @Test
-    public void DateTime() {
-        SQLQuery query = query().from(employee); 
-        System.out.println(query.limit(1).list(employee.datefield.dayOfMonth()));
-        System.out.println(query.limit(1).list(employee.datefield.month()));
-        System.out.println(query.limit(1).list(employee.datefield.year()));
     }
 
 }

@@ -260,6 +260,7 @@ public class InsertBase extends AbstractBaseTest{
     
     @Test
     @IncludeIn(Target.MYSQL)
+    @SkipForQuoted
     public void Insert_with_Special_Options(){
         SQLInsertClause clause = insert(survey)
             .columns(survey.id, survey.name)
@@ -273,6 +274,7 @@ public class InsertBase extends AbstractBaseTest{
 
     @Test
     @IncludeIn(Target.MYSQL)
+    @SkipForQuoted
     public void Replace(){
         SQLInsertClause clause = mysqlReplace(survey);
         clause.columns(survey.id, survey.name)

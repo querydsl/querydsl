@@ -14,7 +14,9 @@ import com.mysema.query.InsertBase;
 import com.mysema.query.LikeEscapeBase;
 import com.mysema.query.MergeBase;
 import com.mysema.query.SelectBase;
+import com.mysema.query.SubqueriesBase;
 import com.mysema.query.TypesBase;
+import com.mysema.query.UnionBase;
 import com.mysema.query.UpdateBase;
 
 // TODO classpath scan for classes instead
@@ -22,16 +24,13 @@ import com.mysema.query.UpdateBase;
 @SuiteClasses({
     BeanPopulationBase.class,
     DeleteBase.class,
-    // TODO with setPrintSchema(true)
     InsertBase.class,
-    // TODO with setPrintSchema(true)
     LikeEscapeBase.class,
     MergeBase.class,
     SelectBase.class,
-    // TODO with setPrintSchema(true)
-    // TODO with quoting
+    SubqueriesBase.class,
     TypesBase.class,
-    // TODO with setPrintSchema(true)
+    UnionBase.class,
     UpdateBase.class})
 public abstract class AbstractSuite {
     
