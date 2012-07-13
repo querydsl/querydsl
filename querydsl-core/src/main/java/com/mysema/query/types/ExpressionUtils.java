@@ -231,30 +231,38 @@ public final class ExpressionUtils {
         return new PredicateOperation(Ops.IS_NOT_NULL, left);
     }   
     
+    
+    
     /**
      * Convert the given like pattern to a regex pattern
      * 
      * @param expr
      * @return
-     */
-    @SuppressWarnings("unchecked")
+     */    
     public static Expression<String> likeToRegex(Expression<String> expr){
+        return likeToRegex(expr, true);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static Expression<String> likeToRegex(Expression<String> expr, boolean matchStartAndEnd){
         // TODO : this should take the escape character into account
         if (expr instanceof Constant<?>) {
             String like = expr.toString();
-            if (!like.startsWith("%") && !like.startsWith("_")) {
-                like = "^" + like;
-            }
-            if (!like.endsWith("%") && !like.endsWith("_")) {
-                like = like + "$";
-            }
-            like = like.replace("%", ".*").replace("_", ".");
+            if (matchStartAndEnd) {
+                if (!like.startsWith("%")) {
+                    like = "^" + like;
+                }
+                if (!like.endsWith("%")) {
+                    like = like + "$";
+                }   
+            }            
+            like = like.replace(".", "\\.").replace("%", ".*").replace("_", ".");
             return ConstantImpl.create(like);
         } else if (expr instanceof Operation<?>) {
             Operation<?> o = (Operation<?>)expr;
             if (o.getOperator() == Ops.CONCAT) {
-                Expression<String> lhs = likeToRegex((Expression<String>) o.getArg(0));
-                Expression<String> rhs = likeToRegex((Expression<String>) o.getArg(1));
+                Expression<String> lhs = likeToRegex((Expression<String>) o.getArg(0), false);
+                Expression<String> rhs = likeToRegex((Expression<String>) o.getArg(1), false);
                 return new OperationImpl<String>(String.class, Ops.CONCAT, lhs, rhs);
             } else {
                 return expr;

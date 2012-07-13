@@ -239,6 +239,7 @@ public class MongodbQueryTest {
     
     @Test
     public void Like() {
+        assertQuery(user.firstName.like("Jaan"));
         assertQuery(user.firstName.like("Jaan%"), u3, u4);
         assertQuery(user.firstName.like("jaan%"));
         

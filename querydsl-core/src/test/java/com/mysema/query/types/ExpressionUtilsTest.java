@@ -32,13 +32,18 @@ public class ExpressionUtilsTest {
         assertEquals(".*", regex(ConstantImpl.create("%")));
         assertEquals("^abc.*", regex(ConstantImpl.create("abc%")));
         assertEquals(".*abc$", regex(ConstantImpl.create("%abc")));
-        assertEquals(".",  regex(ConstantImpl.create("_")));
+        assertEquals("^.$",  regex(ConstantImpl.create("_")));
         
         StringPath path = new StringPath("path");
         assertEquals("path + .*", regex(path.append("%")));
         assertEquals(".* + path", regex(path.prepend("%")));
         assertEquals("path + .", regex(path.append("_")));
         assertEquals(". + path", regex(path.prepend("_")));
+    }
+    
+    @Test
+    public void LikeToRegex_Escape() {        
+        assertEquals("^\\.$",  regex(ConstantImpl.create(".")));
     }
     
     @Test

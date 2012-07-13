@@ -331,7 +331,7 @@ public final class JDOQLSerializer extends SerializerBase<JDOQLSerializer> {
 
         } else if (operator.equals(Ops.LIKE) || operator.equals(Ops.LIKE_ESCAPE)) {
             super.visitOperation(type, Ops.MATCHES, 
-                Arrays.asList(args.get(0), ExpressionUtils.likeToRegex((Expression<String>) args.get(1))));
+                Arrays.asList(args.get(0), ExpressionUtils.likeToRegex((Expression<String>) args.get(1), false)));
             
         // exists    
         } else if (operator.equals(Ops.EXISTS) && args.get(0) instanceof SubQueryExpression) {
