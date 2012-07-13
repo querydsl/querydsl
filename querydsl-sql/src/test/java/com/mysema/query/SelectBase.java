@@ -804,6 +804,14 @@ public class SelectBase extends AbstractBaseTest{
     }
     
     @Test
+    public void Precedence2() {
+        StringPath fn = employee.firstname;
+        StringPath ln = employee.lastname;
+        Predicate where = fn.eq("Mike").and(ln.eq("Smith").or(fn.eq("Joe")).and(ln.eq("Divis")));
+        assertEquals(0l, query().from(employee).where(where).count());
+    }
+    
+    @Test
     public void Projection() throws IOException{
         CloseableIterator<Object[]> results = query().from(survey).iterate(survey.all());
         assertTrue(results.hasNext());
