@@ -11,33 +11,23 @@ import javax.annotation.Generated;
 /**
  * SSystables is a Querydsl query type for SSystables
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SSystables extends com.mysema.query.sql.RelationalPathBase<SSystables> {
 
     private static final long serialVersionUID = -1051208287;
 
-    public static final SSystables systables = new SSystables("SYSTABLES");
-
-    public final StringPath lockgranularity = createString("LOCKGRANULARITY");
-
-    public final StringPath schemaid = createString("SCHEMAID");
-
-    public final StringPath tableid = createString("TABLEID");
-
-    public final StringPath tablename = createString("TABLENAME");
-
-    public final StringPath tabletype = createString("TABLETYPE");
+    public static final SSystables systables = new SSystables("systables");
 
     public SSystables(String variable) {
-        super(SSystables.class, forVariable(variable), "SYS", "SYSTABLES");
+        super(SSystables.class, forVariable(variable), "sys", "systables");
     }
 
-    public SSystables(Path<? extends SSystables> entity) {
-        super(entity.getType(), entity.getMetadata(), "SYS", "SYSTABLES");
+    public SSystables(Path<? extends SSystables> path) {
+        super(path.getType(), path.getMetadata(), "sys", "systables");
     }
 
     public SSystables(PathMetadata<?> metadata) {
-        super(SSystables.class, metadata, "SYS", "SYSTABLES");
+        super(SSystables.class, metadata, "sys", "systables");
     }
 
 }

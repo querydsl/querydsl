@@ -11,39 +11,23 @@ import javax.annotation.Generated;
 /**
  * SSysconglomerates is a Querydsl query type for SSysconglomerates
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SSysconglomerates extends com.mysema.query.sql.RelationalPathBase<SSysconglomerates> {
 
     private static final long serialVersionUID = 2134368727;
 
-    public static final SSysconglomerates sysconglomerates = new SSysconglomerates("SYSCONGLOMERATES");
-
-    public final StringPath conglomerateid = createString("CONGLOMERATEID");
-
-    public final StringPath conglomeratename = createString("CONGLOMERATENAME");
-
-    public final NumberPath<Long> conglomeratenumber = createNumber("CONGLOMERATENUMBER", Long.class);
-
-    public final SimplePath<Object> descriptor = createSimple("DESCRIPTOR", Object.class);
-
-    public final BooleanPath isconstraint = createBoolean("ISCONSTRAINT");
-
-    public final BooleanPath isindex = createBoolean("ISINDEX");
-
-    public final StringPath schemaid = createString("SCHEMAID");
-
-    public final StringPath tableid = createString("TABLEID");
+    public static final SSysconglomerates sysconglomerates = new SSysconglomerates("sysconglomerates");
 
     public SSysconglomerates(String variable) {
-        super(SSysconglomerates.class, forVariable(variable), "SYS", "SYSCONGLOMERATES");
+        super(SSysconglomerates.class, forVariable(variable), "sys", "sysconglomerates");
     }
 
-    public SSysconglomerates(Path<? extends SSysconglomerates> entity) {
-        super(entity.getType(), entity.getMetadata(), "SYS", "SYSCONGLOMERATES");
+    public SSysconglomerates(Path<? extends SSysconglomerates> path) {
+        super(path.getType(), path.getMetadata(), "sys", "sysconglomerates");
     }
 
     public SSysconglomerates(PathMetadata<?> metadata) {
-        super(SSysconglomerates.class, metadata, "SYS", "SYSCONGLOMERATES");
+        super(SSysconglomerates.class, metadata, "sys", "sysconglomerates");
     }
 
 }

@@ -13,6 +13,7 @@
  */
 package com.mysema.query;
 
+import static com.mysema.query.Target.MYSQL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -86,6 +87,7 @@ import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.path.EnumPath;
 import com.mysema.query.types.path.ListPath;
 import com.mysema.query.types.path.StringPath;
+import com.mysema.testutil.ExcludeIn;
 
 /**
  * @author tiwe
@@ -122,7 +124,9 @@ public abstract class AbstractStandardTest {
         time = new java.sql.Time(cal.getTimeInMillis());
     }
 
-    protected abstract Target getTarget();
+    protected Target getTarget() {
+        return Mode.target.get();
+    }
 
     protected abstract JPQLQuery query();
     
@@ -133,7 +137,7 @@ public abstract class AbstractStandardTest {
     protected abstract void save(Object entity);
 
     @Before
-    public void setUp(){
+    public void setUp() {
         Cat prev = null;
         for (Cat cat : Arrays.asList(
                 new Cat("Bob123", 1, 1.0),
@@ -194,6 +198,7 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
+    @HibernateOnly
     public void test(){
         Cat kitten = savedCats.get(0);
         Cat noKitten = savedCats.get(savedCats.size()-1);
@@ -312,6 +317,8 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    @HibernateOnly
+    @ExcludeIn(Target.ORACLE)
     public void JoinEmbeddable() {
         QBookVersion bookVersion = QBookVersion.bookVersion;
         QBookMark bookMark = QBookMark.bookMark;
@@ -671,36 +678,42 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
+    @HibernateOnly
     public void Map_ContainsKey(){
         QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsKey("a")).count());
     }
 
     @Test
+    @HibernateOnly
     public void Map_ContainsKey2(){
         QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsKey("b")).count());
     }
     
     @Test
+    @HibernateOnly
     public void Map_ContainsKey3(){
         QShow show = QShow.show;
         assertEquals(0l, query().from(show).where(show.acts.containsKey("c")).count());
     }
     
     @Test
+    @HibernateOnly
     public void Map_ContainsValue(){
         QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsValue("A")).count());
     }
     
     @Test
+    @HibernateOnly
     public void Map_ContainsValue2(){
         QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsValue("B")).count());
     }
     
     @Test
+    @HibernateOnly
     public void Map_ContainsValue3(){
         QShow show = QShow.show;
         assertEquals(0l, query().from(show).where(show.acts.containsValue("C")).count());
@@ -728,7 +741,8 @@ public abstract class AbstractStandardTest {
     @Test
     public void Sum_3_Projected() {
         double val = query().from(cat).uniqueResult(cat.bodyWeight.sum());
-        DoubleProjection projection = query().from(cat).uniqueResult(new QDoubleProjection(cat.bodyWeight.sum()));
+        DoubleProjection projection = query().from(cat)
+                .uniqueResult(new QDoubleProjection(cat.bodyWeight.sum()));
         assertEquals(val, projection.val, 0.001); 
     }
     
@@ -741,7 +755,8 @@ public abstract class AbstractStandardTest {
     @Test
     public void Sum_as_Float_Projected() {
         float val = query().from(cat).uniqueResult(cat.floatProperty.sum());
-        FloatProjection projection = query().from(cat).uniqueResult(new QFloatProjection(cat.floatProperty.sum()));
+        FloatProjection projection = query().from(cat)
+                .uniqueResult(new QFloatProjection(cat.floatProperty.sum()));
         assertEquals(val, projection.val, 0.001);
     }
         
@@ -844,6 +859,7 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    @ExcludeIn(MYSQL)
     public void GroupBy() {
         QAuthor author = QAuthor.author;
         QBook book = QBook.book;

@@ -11,39 +11,43 @@ import javax.annotation.Generated;
 /**
  * SUser is a Querydsl query type for SUser
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SUser extends com.mysema.query.sql.RelationalPathBase<SUser> {
 
     private static final long serialVersionUID = -1388993476;
 
-    public static final SUser user = new SUser("USER_");
+    public static final SUser user = new SUser("user_");
 
-    public final NumberPath<Integer> companyId = createNumber("COMPANY_ID", Integer.class);
+    public final NumberPath<Integer> companyId = createNumber("company_id", Integer.class);
 
-    public final StringPath firstname = createString("FIRSTNAME");
+    public final StringPath firstName = createString("firstName");
 
-    public final NumberPath<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final StringPath lastname = createString("LASTNAME");
+    public final StringPath lastName = createString("lastName");
 
-    public final StringPath username = createString("USERNAME");
+    public final StringPath userName = createString("userName");
 
-    public final com.mysema.query.sql.PrimaryKey<SUser> sql120219232331040 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SUser> primary = createPrimaryKey(id);
 
-    public final com.mysema.query.sql.ForeignKey<SCompany> fk6a68df4dc953998 = createForeignKey(companyId, "ID");
+    public final com.mysema.query.sql.ForeignKey<SCompany> user_COMPANYIDFK = createForeignKey(companyId, "id");
 
-    public final com.mysema.query.sql.ForeignKey<SEmployee> _fk9d39ef712743b59c = createInvForeignKey(id, "USER_ID");
+    public final com.mysema.query.sql.ForeignKey<SCompany> fk6a68df4dc953998 = createForeignKey(companyId, "id");
+
+    public final com.mysema.query.sql.ForeignKey<SEmployee> _employee_USERIDFK = createInvForeignKey(id, "user_id");
+
+    public final com.mysema.query.sql.ForeignKey<SEmployee> _fk9d39ef712743b59c = createInvForeignKey(id, "user_id");
 
     public SUser(String variable) {
-        super(SUser.class, forVariable(variable), "APP", "USER_");
+        super(SUser.class, forVariable(variable), "null", "user_");
     }
 
-    public SUser(Path<? extends SUser> entity) {
-        super(entity.getType(), entity.getMetadata(), "APP", "USER_");
+    public SUser(Path<? extends SUser> path) {
+        super(path.getType(), path.getMetadata(), "null", "user_");
     }
 
     public SUser(PathMetadata<?> metadata) {
-        super(SUser.class, metadata, "APP", "USER_");
+        super(SUser.class, metadata, "null", "user_");
     }
 
 }

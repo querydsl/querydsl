@@ -11,29 +11,31 @@ import javax.annotation.Generated;
 /**
  * SNamelist is a Querydsl query type for SNamelist
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SNamelist extends com.mysema.query.sql.RelationalPathBase<SNamelist> {
 
     private static final long serialVersionUID = -1831139942;
 
-    public static final SNamelist namelist = new SNamelist("NAMELIST_");
+    public static final SNamelist namelist = new SNamelist("namelist_");
 
-    public final NumberPath<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final com.mysema.query.sql.PrimaryKey<SNamelist> sql120219232326820 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SNamelist> primary = createPrimaryKey(id);
 
-    public final com.mysema.query.sql.ForeignKey<SNamelistNames> _fkd6c82d7217b6c3fc = createInvForeignKey(id, "NAMELIST_ID");
+    public final com.mysema.query.sql.ForeignKey<SNameListNAMES> _nameListNAMESNameListIDFK = createInvForeignKey(id, "NameList_ID");
+
+    public final com.mysema.query.sql.ForeignKey<SNameListNames> _fkd6c82d7217b6c3fc = createInvForeignKey(id, "NameList_id");
 
     public SNamelist(String variable) {
-        super(SNamelist.class, forVariable(variable), "APP", "NAMELIST_");
+        super(SNamelist.class, forVariable(variable), "null", "namelist_");
     }
 
-    public SNamelist(Path<? extends SNamelist> entity) {
-        super(entity.getType(), entity.getMetadata(), "APP", "NAMELIST_");
+    public SNamelist(Path<? extends SNamelist> path) {
+        super(path.getType(), path.getMetadata(), "null", "namelist_");
     }
 
     public SNamelist(PathMetadata<?> metadata) {
-        super(SNamelist.class, metadata, "APP", "NAMELIST_");
+        super(SNamelist.class, metadata, "null", "namelist_");
     }
 
 }

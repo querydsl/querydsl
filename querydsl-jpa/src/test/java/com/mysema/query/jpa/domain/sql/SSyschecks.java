@@ -11,29 +11,23 @@ import javax.annotation.Generated;
 /**
  * SSyschecks is a Querydsl query type for SSyschecks
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SSyschecks extends com.mysema.query.sql.RelationalPathBase<SSyschecks> {
 
     private static final long serialVersionUID = -1531358297;
 
-    public static final SSyschecks syschecks = new SSyschecks("SYSCHECKS");
-
-    public final StringPath checkdefinition = createString("CHECKDEFINITION");
-
-    public final StringPath constraintid = createString("CONSTRAINTID");
-
-    public final SimplePath<Object> referencedcolumns = createSimple("REFERENCEDCOLUMNS", Object.class);
+    public static final SSyschecks syschecks = new SSyschecks("syschecks");
 
     public SSyschecks(String variable) {
-        super(SSyschecks.class, forVariable(variable), "SYS", "SYSCHECKS");
+        super(SSyschecks.class, forVariable(variable), "sys", "syschecks");
     }
 
-    public SSyschecks(Path<? extends SSyschecks> entity) {
-        super(entity.getType(), entity.getMetadata(), "SYS", "SYSCHECKS");
+    public SSyschecks(Path<? extends SSyschecks> path) {
+        super(path.getType(), path.getMetadata(), "sys", "syschecks");
     }
 
     public SSyschecks(PathMetadata<?> metadata) {
-        super(SSyschecks.class, metadata, "SYS", "SYSCHECKS");
+        super(SSyschecks.class, metadata, "sys", "syschecks");
     }
 
 }

@@ -23,13 +23,10 @@ import com.mysema.query.JoinFlag;
 import com.mysema.query.QueryMetadata;
 import com.mysema.query.support.Context;
 import com.mysema.query.support.ListAccessVisitor;
-import com.mysema.query.support.NumberConversion;
-import com.mysema.query.support.NumberConversions;
 import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
-import com.mysema.query.types.FactoryExpression;
 import com.mysema.query.types.Operation;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
@@ -81,32 +78,26 @@ public class JPQLQueryMixin<T> extends QueryMixin<T> {
         return getSelf();
     }
     
+    @Override
     public <RT> Expression<RT> convert(Expression<RT> expr){
-        if (isAggSumWithConversion(expr)) {
-            expr = new NumberConversion(expr);
-        } else if (expr instanceof FactoryExpression) {
-            FactoryExpression<?> factorye = (FactoryExpression<?>)expr;           
-            for (Expression e : factorye.getArgs()) {
-                if (isAggSumWithConversion(e)) {
-                    expr = new NumberConversions(factorye);
-                    break;
-                }
-            }
-            
-        }
-        return super.convert(expr);
+        return super.convert(Conversions.convert(expr));
     }
     
     private boolean isAggSumWithConversion(Expression<?> expr) {
         if (expr instanceof Operation && ((Operation)expr).getOperator() == Ops.AggOps.SUM_AGG) {
             Class type = ((Operation)expr).getType();
-            if (type.equals(Float.class) || type.equals(Integer.class) || type.equals(Short.class) || type.equals(Byte.class)) {
+            if (type.equals(Float.class) || type.equals(Integer.class) 
+                    || type.equals(Short.class) || type.equals(Byte.class)) {
                 return true;
             }
         } 
         return false;
     }
 
+    private boolean isCountAggConversion(Expression<?> expr) {
+        return expr instanceof Operation && ((Operation)expr).getOperator() == Ops.AggOps.COUNT_AGG;
+    }
+    
     @Override    
     protected Predicate normalize(Predicate predicate, boolean where) {
         if (predicate instanceof BooleanBuilder && ((BooleanBuilder)predicate).getValue() == null){

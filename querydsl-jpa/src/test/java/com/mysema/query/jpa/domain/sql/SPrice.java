@@ -11,12 +11,12 @@ import javax.annotation.Generated;
 /**
  * SPrice is a Querydsl query type for SPrice
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SPrice extends com.mysema.query.sql.RelationalPathBase<SPrice> {
 
     private static final long serialVersionUID = -113768712;
 
-    public static final SPrice price = new SPrice("PRICE_");
+    public static final SPrice price = new SPrice("price_");
 
     public final NumberPath<Long> amount = createNumber("AMOUNT", Long.class);
 
@@ -24,22 +24,22 @@ public class SPrice extends com.mysema.query.sql.RelationalPathBase<SPrice> {
 
     public final NumberPath<Long> productId = createNumber("PRODUCT_ID", Long.class);
 
-    public final com.mysema.query.sql.PrimaryKey<SPrice> sql120219232328930 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SPrice> primary = createPrimaryKey(id);
 
-    public final com.mysema.query.sql.ForeignKey<SItem> fkc59678362c7f0c58 = createForeignKey(productId, "ID");
+    public final com.mysema.query.sql.ForeignKey<SItem> price_PRODUCTIDFK = createForeignKey(productId, "ID");
 
-    public final com.mysema.query.sql.ForeignKey<SCatalog_price> _fkaa04532f5222eaf7 = createInvForeignKey(id, "PRICES_ID");
+    public final com.mysema.query.sql.ForeignKey<SCatalog_price> _catalog_price_pricesIDFK = createInvForeignKey(id, "prices_ID");
 
     public SPrice(String variable) {
-        super(SPrice.class, forVariable(variable), "APP", "PRICE_");
+        super(SPrice.class, forVariable(variable), "null", "price_");
     }
 
-    public SPrice(Path<? extends SPrice> entity) {
-        super(entity.getType(), entity.getMetadata(), "APP", "PRICE_");
+    public SPrice(Path<? extends SPrice> path) {
+        super(path.getType(), path.getMetadata(), "null", "price_");
     }
 
     public SPrice(PathMetadata<?> metadata) {
-        super(SPrice.class, metadata, "APP", "PRICE_");
+        super(SPrice.class, metadata, "null", "price_");
     }
 
 }

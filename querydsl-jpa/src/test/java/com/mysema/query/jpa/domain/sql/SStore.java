@@ -11,33 +11,35 @@ import javax.annotation.Generated;
 /**
  * SStore is a Querydsl query type for SStore
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SStore extends com.mysema.query.sql.RelationalPathBase<SStore> {
 
     private static final long serialVersionUID = -110932336;
 
-    public static final SStore store = new SStore("STORE_");
+    public static final SStore store = new SStore("store_");
 
     public final NumberPath<Long> id = createNumber("ID", Long.class);
 
     public final NumberPath<Long> locationId = createNumber("LOCATION_ID", Long.class);
 
-    public final com.mysema.query.sql.PrimaryKey<SStore> sql120219232330110 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SStore> primary = createPrimaryKey(id);
 
-    public final com.mysema.query.sql.ForeignKey<SLocation> fkcad4239e8a55845c = createForeignKey(locationId, "ID");
+    public final com.mysema.query.sql.ForeignKey<SLocation> store_LOCATIONIDFK = createForeignKey(locationId, "ID");
 
-    public final com.mysema.query.sql.ForeignKey<SStore_customer> _fk82ba2ce035d2d6bb = createInvForeignKey(id, "STORE__ID");
+    public final com.mysema.query.sql.ForeignKey<SStore_customer> _store_customer_StoreIDFK = createInvForeignKey(id, "Store_ID");
+
+    public final com.mysema.query.sql.ForeignKey<SStore_customer> _fk82ba2ce035d2d6bb = createInvForeignKey(id, "store__id");
 
     public SStore(String variable) {
-        super(SStore.class, forVariable(variable), "APP", "STORE_");
+        super(SStore.class, forVariable(variable), "null", "store_");
     }
 
-    public SStore(Path<? extends SStore> entity) {
-        super(entity.getType(), entity.getMetadata(), "APP", "STORE_");
+    public SStore(Path<? extends SStore> path) {
+        super(path.getType(), path.getMetadata(), "null", "store_");
     }
 
     public SStore(PathMetadata<?> metadata) {
-        super(SStore.class, metadata, "APP", "STORE_");
+        super(SStore.class, metadata, "null", "store_");
     }
 
 }

@@ -20,7 +20,7 @@ import com.mysema.query.types.Expression;
 public abstract class AbstractQueryTest implements Constants{
 
     protected QueryHelper query() {
-        return new QueryHelper();
+        return new QueryHelper(HQLTemplates.DEFAULT);
     }
 
     protected JPQLSubQuery sub(){

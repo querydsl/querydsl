@@ -11,12 +11,12 @@ import javax.annotation.Generated;
 /**
  * SDocumentprop is a Querydsl query type for SDocumentprop
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SDocumentprop extends com.mysema.query.sql.RelationalPathBase<SDocumentprop> {
 
     private static final long serialVersionUID = 423175791;
 
-    public static final SDocumentprop documentprop = new SDocumentprop("DOCUMENTPROP_");
+    public static final SDocumentprop documentprop = new SDocumentprop("documentprop_");
 
     public final NumberPath<Double> documentid = createNumber("DOCUMENTID", Double.class);
 
@@ -28,18 +28,18 @@ public class SDocumentprop extends com.mysema.query.sql.RelationalPathBase<SDocu
 
     public final StringPath propvaluedetails = createString("PROPVALUEDETAILS");
 
-    public final com.mysema.query.sql.PrimaryKey<SDocumentprop> sql120219232323820 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SDocumentprop> primary = createPrimaryKey(id);
 
     public SDocumentprop(String variable) {
-        super(SDocumentprop.class, forVariable(variable), "APP", "DOCUMENTPROP_");
+        super(SDocumentprop.class, forVariable(variable), "null", "documentprop_");
     }
 
-    public SDocumentprop(Path<? extends SDocumentprop> entity) {
-        super(entity.getType(), entity.getMetadata(), "APP", "DOCUMENTPROP_");
+    public SDocumentprop(Path<? extends SDocumentprop> path) {
+        super(path.getType(), path.getMetadata(), "null", "documentprop_");
     }
 
     public SDocumentprop(PathMetadata<?> metadata) {
-        super(SDocumentprop.class, metadata, "APP", "DOCUMENTPROP_");
+        super(SDocumentprop.class, metadata, "null", "documentprop_");
     }
 
 }

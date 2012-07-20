@@ -40,13 +40,10 @@ import com.mysema.query.sql.SQLSubQuery;
 import com.mysema.query.sql.SQLTemplates;
 import com.mysema.query.types.ConstructorExpression;
 import com.mysema.query.types.Expression;
-import com.mysema.query.types.NullExpression;
 import com.mysema.query.types.SubQueryExpression;
-import com.mysema.testutil.JPAConfig;
 import com.mysema.testutil.JPATestRunner;
 
 @RunWith(JPATestRunner.class)
-@JPAConfig("derby")
 public class JPADerbySQLTest {
 
     private final SAnimal cat = new SAnimal("cat");
@@ -128,7 +125,7 @@ public class JPADerbySQLTest {
     
     @Test
     public void List_Multiple(){
-        print(query().from(cat).where(cat.dtype.eq("C")).list(cat.id, cat.name, cat.bodyweight));    
+        print(query().from(cat).where(cat.dtype.eq("C")).list(cat.id, cat.name, cat.bodyWeight));    
     }
     
     @Test

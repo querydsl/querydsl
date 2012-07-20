@@ -11,57 +11,23 @@ import javax.annotation.Generated;
 /**
  * SSystriggers is a Querydsl query type for SSystriggers
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SSystriggers extends com.mysema.query.sql.RelationalPathBase<SSystriggers> {
 
     private static final long serialVersionUID = 1504647671;
 
-    public static final SSystriggers systriggers = new SSystriggers("SYSTRIGGERS");
-
-    public final StringPath actionstmtid = createString("ACTIONSTMTID");
-
-    public final DateTimePath<java.sql.Timestamp> creationtimestamp = createDateTime("CREATIONTIMESTAMP", java.sql.Timestamp.class);
-
-    public final StringPath event = createString("EVENT");
-
-    public final StringPath firingtime = createString("FIRINGTIME");
-
-    public final StringPath newreferencingname = createString("NEWREFERENCINGNAME");
-
-    public final StringPath oldreferencingname = createString("OLDREFERENCINGNAME");
-
-    public final SimplePath<Object> referencedcolumns = createSimple("REFERENCEDCOLUMNS", Object.class);
-
-    public final BooleanPath referencingnew = createBoolean("REFERENCINGNEW");
-
-    public final BooleanPath referencingold = createBoolean("REFERENCINGOLD");
-
-    public final StringPath schemaid = createString("SCHEMAID");
-
-    public final StringPath state = createString("STATE");
-
-    public final StringPath tableid = createString("TABLEID");
-
-    public final StringPath triggerdefinition = createString("TRIGGERDEFINITION");
-
-    public final StringPath triggerid = createString("TRIGGERID");
-
-    public final StringPath triggername = createString("TRIGGERNAME");
-
-    public final StringPath type = createString("TYPE");
-
-    public final StringPath whenstmtid = createString("WHENSTMTID");
+    public static final SSystriggers systriggers = new SSystriggers("systriggers");
 
     public SSystriggers(String variable) {
-        super(SSystriggers.class, forVariable(variable), "SYS", "SYSTRIGGERS");
+        super(SSystriggers.class, forVariable(variable), "sys", "systriggers");
     }
 
-    public SSystriggers(Path<? extends SSystriggers> entity) {
-        super(entity.getType(), entity.getMetadata(), "SYS", "SYSTRIGGERS");
+    public SSystriggers(Path<? extends SSystriggers> path) {
+        super(path.getType(), path.getMetadata(), "sys", "systriggers");
     }
 
     public SSystriggers(PathMetadata<?> metadata) {
-        super(SSystriggers.class, metadata, "SYS", "SYSTRIGGERS");
+        super(SSystriggers.class, metadata, "sys", "systriggers");
     }
 
 }

@@ -125,7 +125,7 @@
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<properties>
 			<property name="hibernate.archive.autodetection" value="class" />
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLInnoDBDialect" />
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
 			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
 			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/querydsl" />
 			<property name="hibernate.connection.username" value="querydsl" />
@@ -143,7 +143,8 @@
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/querydsl" />
-			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.user" value="querydsl" />
+			<property name="javax.persistence.jdbc.password" value="querydsl" />
 			<property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
 			<property name="eclipselink.ddl-generation.output-mode" value="database" />
 		</properties>

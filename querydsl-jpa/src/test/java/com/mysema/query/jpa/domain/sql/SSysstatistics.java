@@ -11,39 +11,23 @@ import javax.annotation.Generated;
 /**
  * SSysstatistics is a Querydsl query type for SSysstatistics
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SSysstatistics extends com.mysema.query.sql.RelationalPathBase<SSysstatistics> {
 
     private static final long serialVersionUID = 1399278175;
 
-    public static final SSysstatistics sysstatistics = new SSysstatistics("SYSSTATISTICS");
-
-    public final NumberPath<Integer> colcount = createNumber("COLCOUNT", Integer.class);
-
-    public final DateTimePath<java.sql.Timestamp> creationtimestamp = createDateTime("CREATIONTIMESTAMP", java.sql.Timestamp.class);
-
-    public final StringPath referenceid = createString("REFERENCEID");
-
-    public final StringPath statid = createString("STATID");
-
-    public final SimplePath<Object> statistics = createSimple("STATISTICS", Object.class);
-
-    public final StringPath tableid = createString("TABLEID");
-
-    public final StringPath type = createString("TYPE");
-
-    public final BooleanPath valid = createBoolean("VALID");
+    public static final SSysstatistics sysstatistics = new SSysstatistics("sysstatistics");
 
     public SSysstatistics(String variable) {
-        super(SSysstatistics.class, forVariable(variable), "SYS", "SYSSTATISTICS");
+        super(SSysstatistics.class, forVariable(variable), "sys", "sysstatistics");
     }
 
-    public SSysstatistics(Path<? extends SSysstatistics> entity) {
-        super(entity.getType(), entity.getMetadata(), "SYS", "SYSSTATISTICS");
+    public SSysstatistics(Path<? extends SSysstatistics> path) {
+        super(path.getType(), path.getMetadata(), "sys", "sysstatistics");
     }
 
     public SSysstatistics(PathMetadata<?> metadata) {
-        super(SSysstatistics.class, metadata, "SYS", "SYSSTATISTICS");
+        super(SSysstatistics.class, metadata, "sys", "sysstatistics");
     }
 
 }

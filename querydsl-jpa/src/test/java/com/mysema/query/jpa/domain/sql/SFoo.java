@@ -11,12 +11,12 @@ import javax.annotation.Generated;
 /**
  * SFoo is a Querydsl query type for SFoo
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SFoo extends com.mysema.query.sql.RelationalPathBase<SFoo> {
 
     private static final long serialVersionUID = -1291746763;
 
-    public static final SFoo foo = new SFoo("FOO_");
+    public static final SFoo foo = new SFoo("foo_");
 
     public final StringPath bar = createString("BAR");
 
@@ -24,20 +24,20 @@ public class SFoo extends com.mysema.query.sql.RelationalPathBase<SFoo> {
 
     public final DatePath<java.sql.Date> startdate = createDate("STARTDATE", java.sql.Date.class);
 
-    public final com.mysema.query.sql.PrimaryKey<SFoo> sql120219232324250 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SFoo> primary = createPrimaryKey(id);
 
-    public final com.mysema.query.sql.ForeignKey<SFooNames> _fkb6129a8f94e297f8 = createInvForeignKey(id, "FOO_ID");
+    public final com.mysema.query.sql.ForeignKey<SFooNames> _fooNamesFooIdFK = createInvForeignKey(id, "foo_id");
 
     public SFoo(String variable) {
-        super(SFoo.class, forVariable(variable), "APP", "FOO_");
+        super(SFoo.class, forVariable(variable), "null", "foo_");
     }
 
-    public SFoo(Path<? extends SFoo> entity) {
-        super(entity.getType(), entity.getMetadata(), "APP", "FOO_");
+    public SFoo(Path<? extends SFoo> path) {
+        super(path.getType(), path.getMetadata(), "null", "foo_");
     }
 
     public SFoo(PathMetadata<?> metadata) {
-        super(SFoo.class, metadata, "APP", "FOO_");
+        super(SFoo.class, metadata, "null", "foo_");
     }
 
 }

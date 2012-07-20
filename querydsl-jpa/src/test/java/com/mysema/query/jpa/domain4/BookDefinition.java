@@ -52,9 +52,7 @@ public class BookDefinition implements Serializable {
     }
 
     @ElementCollection()
-    @CollectionTable(name = "book_bookmarks"
-
-    )
+    @CollectionTable(name = "book_bookmarks")
     @OrderColumn()
     public List<BookMark> getBookMarks() {
         return bookMarks;

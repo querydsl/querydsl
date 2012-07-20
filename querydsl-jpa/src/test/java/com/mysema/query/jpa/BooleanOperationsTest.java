@@ -90,12 +90,12 @@ public class BooleanOperationsTest extends AbstractQueryTest {
 
     @Test
     public void BooleanBuilder_With_Null_In_Where(){
-        assertEquals("from Cat cat", sub().from(cat).where(new BooleanBuilder()).toString());
+        assertEquals("select cat\nfrom Cat cat", sub().from(cat).where(new BooleanBuilder()).toString());
     }
     
     @Test
     public void BooleanBuilder_With_Null_In_Having(){
-        assertEquals("from Cat cat\ngroup by cat.name",
+        assertEquals("select cat\nfrom Cat cat\ngroup by cat.name",
                 sub().from(cat).groupBy(cat.name).having(new BooleanBuilder()).toString());
     }
 

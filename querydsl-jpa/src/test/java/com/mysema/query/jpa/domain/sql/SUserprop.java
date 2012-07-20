@@ -11,12 +11,12 @@ import javax.annotation.Generated;
 /**
  * SUserprop is a Querydsl query type for SUserprop
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SUserprop extends com.mysema.query.sql.RelationalPathBase<SUserprop> {
 
     private static final long serialVersionUID = 356895135;
 
-    public static final SUserprop userprop = new SUserprop("USERPROP_");
+    public static final SUserprop userprop = new SUserprop("userprop_");
 
     public final StringPath categorydescription = createString("CATEGORYDESCRIPTION");
 
@@ -36,24 +36,28 @@ public class SUserprop extends com.mysema.query.sql.RelationalPathBase<SUserprop
 
     public final NumberPath<Double> modifiedby = createNumber("MODIFIEDBY", Double.class);
 
-    public final com.mysema.query.sql.PrimaryKey<SUserprop> sql120219232331240 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SUserprop> primary = createPrimaryKey(id);
 
-    public final com.mysema.query.sql.ForeignKey<SUserprop_category> _fk851f48d3904c19df = createInvForeignKey(id, "USERPROP__ID");
+    public final com.mysema.query.sql.ForeignKey<SUserprop_category> _userprop_category_UserPropIDFK = createInvForeignKey(id, "UserProp_ID");
 
-    public final com.mysema.query.sql.ForeignKey<SUserprop_categoryprop> _fke0fdb7d0904c19df = createInvForeignKey(id, "USERPROP__ID");
+    public final com.mysema.query.sql.ForeignKey<SUser2_userprop> _user2_userprop_propertiesIDFK = createInvForeignKey(id, "properties_ID");
 
-    public final com.mysema.query.sql.ForeignKey<SUser2_userprop> _fk4611b46aa56541dd = createInvForeignKey(id, "PROPERTIES_ID");
+    public final com.mysema.query.sql.ForeignKey<SUserprop_category> _fk851f48d3904c19df = createInvForeignKey(id, "userprop__id");
+
+    public final com.mysema.query.sql.ForeignKey<SUserprop_categoryprop> _fke0fdb7d0904c19df = createInvForeignKey(id, "userprop__id");
+
+    public final com.mysema.query.sql.ForeignKey<SUserprop_categoryprop> _userprop_categoryprop_UserPropIDFK = createInvForeignKey(id, "UserProp_ID");
 
     public SUserprop(String variable) {
-        super(SUserprop.class, forVariable(variable), "APP", "USERPROP_");
+        super(SUserprop.class, forVariable(variable), "null", "userprop_");
     }
 
-    public SUserprop(Path<? extends SUserprop> entity) {
-        super(entity.getType(), entity.getMetadata(), "APP", "USERPROP_");
+    public SUserprop(Path<? extends SUserprop> path) {
+        super(path.getType(), path.getMetadata(), "null", "userprop_");
     }
 
     public SUserprop(PathMetadata<?> metadata) {
-        super(SUserprop.class, metadata, "APP", "USERPROP_");
+        super(SUserprop.class, metadata, "null", "userprop_");
     }
 
 }

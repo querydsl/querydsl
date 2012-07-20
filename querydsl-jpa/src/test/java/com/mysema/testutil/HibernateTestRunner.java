@@ -30,8 +30,13 @@ import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 
+import com.mysema.query.Mode;
 import com.mysema.query.jpa.domain.Domain;
 
+/**
+ * @author tiwe
+ *
+ */
 public class HibernateTestRunner extends BlockJUnit4ClassRunner {
     
     private SessionFactory sessionFactory;
@@ -82,15 +87,15 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
             for (Class<?> cl : Domain.classes){
                 cfg.addAnnotatedClass(cl);
             }
-            HibernateConfig config = getTestClass().getJavaClass().getAnnotation(HibernateConfig.class);
-            isDerby = config.value().contains("derby");
+            String mode = Mode.mode.get() + ".properties";
+            isDerby = mode.contains("derby");
             if (isDerby) {
                 Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
             }
             Properties props = new Properties();
-            InputStream is = HibernateTestRunner.class.getResourceAsStream(config.value());
+            InputStream is = HibernateTestRunner.class.getResourceAsStream(mode);
             if (is == null){
-                throw new IllegalArgumentException("No configuration available at classpath:" + config.value());
+                throw new IllegalArgumentException("No configuration available at classpath:" + mode);
             }
             props.load(is);
             cfg.setProperties(props);

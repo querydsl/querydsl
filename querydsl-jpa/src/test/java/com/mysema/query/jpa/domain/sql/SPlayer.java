@@ -11,29 +11,31 @@ import javax.annotation.Generated;
 /**
  * SPlayer is a Querydsl query type for SPlayer
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SPlayer extends com.mysema.query.sql.RelationalPathBase<SPlayer> {
 
     private static final long serialVersionUID = 762379026;
 
-    public static final SPlayer player = new SPlayer("PLAYER_");
+    public static final SPlayer player = new SPlayer("player_");
 
-    public final NumberPath<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final com.mysema.query.sql.PrimaryKey<SPlayer> sql120219232328630 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SPlayer> primary = createPrimaryKey(id);
 
-    public final com.mysema.query.sql.ForeignKey<SPlayerScores> _fkd5dc571fd8736d5c = createInvForeignKey(id, "PLAYER_ID");
+    public final com.mysema.query.sql.ForeignKey<SPlayerScores> _fkd5dc571fd8736d5c = createInvForeignKey(id, "Player_id");
+
+    public final com.mysema.query.sql.ForeignKey<SPlayerSCORES> _playerSCORESPlayerIDFK = createInvForeignKey(id, "Player_ID");
 
     public SPlayer(String variable) {
-        super(SPlayer.class, forVariable(variable), "APP", "PLAYER_");
+        super(SPlayer.class, forVariable(variable), "null", "player_");
     }
 
-    public SPlayer(Path<? extends SPlayer> entity) {
-        super(entity.getType(), entity.getMetadata(), "APP", "PLAYER_");
+    public SPlayer(Path<? extends SPlayer> path) {
+        super(path.getType(), path.getMetadata(), "null", "player_");
     }
 
     public SPlayer(PathMetadata<?> metadata) {
-        super(SPlayer.class, metadata, "APP", "PLAYER_");
+        super(SPlayer.class, metadata, "null", "player_");
     }
 
 }

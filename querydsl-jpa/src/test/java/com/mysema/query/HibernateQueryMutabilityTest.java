@@ -19,16 +19,16 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import org.hibernate.Session;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.hibernate.HibernateQuery;
-import com.mysema.testutil.HibernateConfig;
 import com.mysema.testutil.HibernateTestRunner;
 
+@Ignore
 @RunWith(HibernateTestRunner.class)
-@HibernateConfig("derby.properties")
 public class HibernateQueryMutabilityTest{
 
     private Session session;

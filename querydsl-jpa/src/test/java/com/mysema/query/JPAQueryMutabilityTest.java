@@ -18,16 +18,16 @@ import static org.junit.Assert.assertTrue;
 
 import javax.persistence.EntityManager;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import com.mysema.query.jpa.domain.QCat;
 import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.testutil.JPAConfig;
 import com.mysema.testutil.JPATestRunner;
 
+@Ignore
 @RunWith(JPATestRunner.class)
-@JPAConfig("derby")
 public class JPAQueryMutabilityTest {
 
     private EntityManager entityManager;

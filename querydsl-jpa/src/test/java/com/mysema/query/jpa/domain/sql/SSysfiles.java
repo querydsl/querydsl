@@ -11,31 +11,23 @@ import javax.annotation.Generated;
 /**
  * SSysfiles is a Querydsl query type for SSysfiles
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SSysfiles extends com.mysema.query.sql.RelationalPathBase<SSysfiles> {
 
     private static final long serialVersionUID = -1709159493;
 
-    public static final SSysfiles sysfiles = new SSysfiles("SYSFILES");
-
-    public final StringPath fileid = createString("FILEID");
-
-    public final StringPath filename = createString("FILENAME");
-
-    public final NumberPath<Long> generationid = createNumber("GENERATIONID", Long.class);
-
-    public final StringPath schemaid = createString("SCHEMAID");
+    public static final SSysfiles sysfiles = new SSysfiles("sysfiles");
 
     public SSysfiles(String variable) {
-        super(SSysfiles.class, forVariable(variable), "SYS", "SYSFILES");
+        super(SSysfiles.class, forVariable(variable), "sys", "sysfiles");
     }
 
-    public SSysfiles(Path<? extends SSysfiles> entity) {
-        super(entity.getType(), entity.getMetadata(), "SYS", "SYSFILES");
+    public SSysfiles(Path<? extends SSysfiles> path) {
+        super(path.getType(), path.getMetadata(), "sys", "sysfiles");
     }
 
     public SSysfiles(PathMetadata<?> metadata) {
-        super(SSysfiles.class, metadata, "SYS", "SYSFILES");
+        super(SSysfiles.class, metadata, "sys", "sysfiles");
     }
 
 }

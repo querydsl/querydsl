@@ -13,6 +13,7 @@
  */
 package com.mysema.query.jpa.sql;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,8 @@ import com.mysema.query.sql.UnionImpl;
 import com.mysema.query.sql.UnionUtils;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
+import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.FactoryExpressionUtils;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.query.ListSubQuery;
@@ -75,6 +78,8 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     
     @Nullable
     protected FlushModeType flushMode;
+    
+    protected boolean factoryExpressionUsed = false;
 
     public AbstractJPASQLQuery(EntityManager entityManager, SQLTemplates sqlTemplates) {
         this(entityManager, sqlTemplates, new DefaultQueryMetadata());
@@ -132,8 +137,22 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
             query.setHint(entry.getKey(), entry.getValue());
         }
         
+
         // set constants
         JPAUtil.setConstants(query, constants, queryMixin.getMetadata().getParams());
+        
+        FactoryExpression<?> wrapped = projection.size() > 1 ? FactoryExpressionUtils.wrap(projection) : null;        
+        if ((projection.size() == 1 && projection.get(0) instanceof FactoryExpression) || wrapped != null) {
+            
+            // TODO : add conversion logic like in AbstractJPAQuery
+            
+            factoryExpressionUsed = true;
+            if (wrapped != null) {
+                getMetadata().clearProjection();
+                getMetadata().addProjection(wrapped);
+            }
+        }
+        
         return query;
     }
 
@@ -141,16 +160,67 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     @Override
     public List<Object[]> list(Expression<?>[] args) {
         Query query = createQuery(args);
-        reset();
-        return query.getResultList();
+        //reset();
+        return (List<Object[]>) getResultList(query);
+    }
+    
+    /**
+     * Transforms results using FactoryExpression if ResultTransformer can't be used
+     * 
+     * @param query
+     * @return
+     */
+    private List<?> getResultList(Query query) {
+        // TODO : use lazy list here?
+        if (factoryExpressionUsed) {
+            List<?> results = query.getResultList();
+            List<Object> rv = new ArrayList<Object>(results.size());
+            FactoryExpression<?> expr = (FactoryExpression<?>)getMetadata().getProjection().get(0);
+            for (Object o : results) {
+                if (o != null) {
+                    if (!o.getClass().isArray()) {
+                        o = new Object[]{o};
+                    }   
+                    rv.add(expr.newInstance((Object[])o));
+                } else {
+                    rv.add(null);
+                }                
+            }
+            return rv;
+        } else {
+            return query.getResultList();
+        }
+    }
+    
+    /**
+     * Transforms results using FactoryExpression if ResultTransformer can't be used
+     * 
+     * @param query
+     * @return
+     */
+    @Nullable
+    private Object getSingleResult(Query query) {
+        if (factoryExpressionUsed) {
+            Object result = query.getSingleResult();
+            FactoryExpression<?> expr = (FactoryExpression<?>)getMetadata().getProjection().get(0);
+            if (result != null) {
+                if (!result.getClass().isArray()) {
+                    result = new Object[]{result};
+                }
+                return expr.newInstance((Object[])result);    
+            } else {
+                return null;
+            }            
+        } else {
+            return query.getSingleResult();
+        }
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public <RT> List<RT> list(Expression<RT> projection) {
         Query query = createQuery(projection);
-        reset();
-        return query.getResultList();
+        return (List<RT>) getResultList(query);
     }
 
     @Override
@@ -174,7 +244,7 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
             String queryString = toQueryString();
             query = createQuery(queryString);
             @SuppressWarnings("unchecked")
-            List<RT> list = query.getResultList();
+            List<RT> list = (List<RT>) getResultList(query);
             reset();
             return new SearchResults<RT>(list, modifiers, total);
         } else {
@@ -265,15 +335,16 @@ public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com
     }
 
     @Nullable
-    private Object uniqueResult(Query query) {
-        reset();
+    private Object uniqueResult(Query query) {        
         try{
-            return query.getSingleResult();
-        }catch(javax.persistence.NoResultException e) {
+            return getSingleResult(query);
+        } catch(javax.persistence.NoResultException e) {
             logger.debug(e.getMessage(),e);
             return null;
-        }catch(javax.persistence.NonUniqueResultException e) {
+        } catch(javax.persistence.NonUniqueResultException e) {
             throw new NonUniqueResultException();
+        } finally {
+            reset();
         }
     }
 

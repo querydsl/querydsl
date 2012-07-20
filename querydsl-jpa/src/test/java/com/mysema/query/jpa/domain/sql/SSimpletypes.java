@@ -11,16 +11,16 @@ import javax.annotation.Generated;
 /**
  * SSimpletypes is a Querydsl query type for SSimpletypes
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SSimpletypes extends com.mysema.query.sql.RelationalPathBase<SSimpletypes> {
 
     private static final long serialVersionUID = -1199604618;
 
-    public static final SSimpletypes simpletypes = new SSimpletypes("SIMPLETYPES_");
+    public static final SSimpletypes simpletypes = new SSimpletypes("simpletypes_");
 
-    public final NumberPath<Short> bbyte = createNumber("BBYTE", Short.class);
+    public final NumberPath<Byte> bbyte = createNumber("BBYTE", Byte.class);
 
-    public final NumberPath<Short> bbyte2 = createNumber("BBYTE2", Short.class);
+    public final NumberPath<Byte> bbyte2 = createNumber("BBYTE2", Byte.class);
 
     public final NumberPath<java.math.BigDecimal> bigdecimal = createNumber("BIGDECIMAL", java.math.BigDecimal.class);
 
@@ -34,9 +34,9 @@ public class SSimpletypes extends com.mysema.query.sql.RelationalPathBase<SSimpl
 
     public final NumberPath<Double> ddouble2 = createNumber("DDOUBLE2", Double.class);
 
-    public final NumberPath<Double> ffloat = createNumber("FFLOAT", Double.class);
+    public final NumberPath<Float> ffloat = createNumber("FFLOAT", Float.class);
 
-    public final NumberPath<Double> ffloat2 = createNumber("FFLOAT2", Double.class);
+    public final NumberPath<Float> ffloat2 = createNumber("FFLOAT2", Float.class);
 
     public final NumberPath<Long> id = createNumber("ID", Long.class);
 
@@ -44,7 +44,7 @@ public class SSimpletypes extends com.mysema.query.sql.RelationalPathBase<SSimpl
 
     public final NumberPath<Integer> iint2 = createNumber("IINT2", Integer.class);
 
-    public final StringPath llocale = createString("LLOCALE");
+    public final SimplePath<byte[]> llocale = createSimple("LLOCALE", byte[].class);
 
     public final NumberPath<Long> llong = createNumber("LLONG", Long.class);
 
@@ -56,18 +56,18 @@ public class SSimpletypes extends com.mysema.query.sql.RelationalPathBase<SSimpl
 
     public final DateTimePath<java.sql.Timestamp> timestamp = createDateTime("TIMESTAMP", java.sql.Timestamp.class);
 
-    public final com.mysema.query.sql.PrimaryKey<SSimpletypes> sql120219232329350 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SSimpletypes> primary = createPrimaryKey(id);
 
     public SSimpletypes(String variable) {
-        super(SSimpletypes.class, forVariable(variable), "APP", "SIMPLETYPES_");
+        super(SSimpletypes.class, forVariable(variable), "null", "simpletypes_");
     }
 
-    public SSimpletypes(Path<? extends SSimpletypes> entity) {
-        super(entity.getType(), entity.getMetadata(), "APP", "SIMPLETYPES_");
+    public SSimpletypes(Path<? extends SSimpletypes> path) {
+        super(path.getType(), path.getMetadata(), "null", "simpletypes_");
     }
 
     public SSimpletypes(PathMetadata<?> metadata) {
-        super(SSimpletypes.class, metadata, "APP", "SIMPLETYPES_");
+        super(SSimpletypes.class, metadata, "null", "simpletypes_");
     }
 
 }

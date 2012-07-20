@@ -13,7 +13,35 @@
  */
 package com.mysema.query.jpa;
 
-import com.mysema.query.jpa.domain.*;
+import com.mysema.query.jpa.domain.QAccount;
+import com.mysema.query.jpa.domain.QAnimal;
+import com.mysema.query.jpa.domain.QAuditLog;
+import com.mysema.query.jpa.domain.QBar;
+import com.mysema.query.jpa.domain.QCalendar;
+import com.mysema.query.jpa.domain.QCat;
+import com.mysema.query.jpa.domain.QCatalog;
+import com.mysema.query.jpa.domain.QCompany;
+import com.mysema.query.jpa.domain.QCustomer;
+import com.mysema.query.jpa.domain.QDocument;
+import com.mysema.query.jpa.domain.QDomesticCat;
+import com.mysema.query.jpa.domain.QFoo;
+import com.mysema.query.jpa.domain.QFormula;
+import com.mysema.query.jpa.domain.QItem;
+import com.mysema.query.jpa.domain.QName;
+import com.mysema.query.jpa.domain.QNameList;
+import com.mysema.query.jpa.domain.QNamed;
+import com.mysema.query.jpa.domain.QOrder;
+import com.mysema.query.jpa.domain.QParameter;
+import com.mysema.query.jpa.domain.QPayment;
+import com.mysema.query.jpa.domain.QPerson;
+import com.mysema.query.jpa.domain.QPlayer;
+import com.mysema.query.jpa.domain.QPrice;
+import com.mysema.query.jpa.domain.QProduct;
+import com.mysema.query.jpa.domain.QShow;
+import com.mysema.query.jpa.domain.QStatus;
+import com.mysema.query.jpa.domain.QStatusChange;
+import com.mysema.query.jpa.domain.QStore;
+import com.mysema.query.jpa.domain.QUser;
 
 public interface Constants {
 

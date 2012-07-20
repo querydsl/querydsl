@@ -27,22 +27,14 @@ public class EclipseLinkTemplates extends JPQLTemplates {
 
     // TODO : indexed list access
 
-    // TODO : cast
-
     public EclipseLinkTemplates() {
         this(DEFAULT_ESCAPE);
     }
     
     public EclipseLinkTemplates(char escape) {
-        super(escape);
-        // LIKE replacements
-        add(Ops.STRING_CONTAINS, "locate({1},{0}) > 0");
-        add(Ops.STRING_CONTAINS_IC, "locate({1l},{0l}) > 0");
-        add(Ops.ENDS_WITH, "locate({1},{0})=length({0})-length({1})+1"); // TODO : simplify
-        add(Ops.ENDS_WITH_IC, "locate({1l},{0l})=length({0})-length({1})+1"); // TODO : simplify
-        add(Ops.STARTS_WITH, "locate({1},{0})=1");
-        add(Ops.STARTS_WITH_IC, "locate({1l},{0l})=1");
-
+        super(escape);        
+        add(Ops.STRING_CAST, "cast({0} as varchar)");
+        
         // EclipseLink specific (works at least with Derby, HSQLDB and H2)
         add(Ops.DateTimeOps.MILLISECOND, "0"); // NOT SUPPORTED
         add(Ops.DateTimeOps.SECOND, "func('second',{0})");
@@ -56,9 +48,6 @@ public class EclipseLinkTemplates extends JPQLTemplates {
         add(Ops.DateTimeOps.YEAR, "func('year',{0})");
         add(Ops.DateTimeOps.YEAR_MONTH, "func('year',{0}) * 100 + func('month',{0})");
         
-        // H2 specific cast
-        // proper fix depends on https://bugs.eclipse.org/bugs/show_bug.cgi?id=315087
-        add(CAST, "func('convert', {0}, {1s})");
         add(Ops.CHAR_AT, "substring({0},{1}+1,1)");
 
     }
@@ -67,5 +56,5 @@ public class EclipseLinkTemplates extends JPQLTemplates {
     public boolean isSelect1Supported() {
         return true;
     }
-
+    
 }

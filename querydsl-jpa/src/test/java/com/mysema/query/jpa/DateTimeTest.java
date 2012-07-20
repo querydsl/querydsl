@@ -23,22 +23,22 @@ public class DateTimeTest extends AbstractQueryTest {
 
     @Test
     public void CurrentDate() {
-        assertToString("current_date()", DateExpression.currentDate());
+        assertToString("current_date", DateExpression.currentDate());
     }
     
     @Test
     public void CurrentDate2(){
-        assertToString("current_date()", DateTimeExpression.currentDate());
+        assertToString("current_date", DateTimeExpression.currentDate());
     }
     
     @Test
     public void CurrentTime(){
-        assertToString("current_time()", TimeExpression.currentTime());   
+        assertToString("current_time", TimeExpression.currentTime());   
     }
     
     @Test
     public void CurrentTimestamp(){
-        assertToString("current_timestamp()", DateTimeExpression.currentTimestamp());
+        assertToString("current_timestamp", DateTimeExpression.currentTimestamp());
     }
     
     @Test

@@ -11,35 +11,47 @@ import javax.annotation.Generated;
 /**
  * SOrder is a Querydsl query type for SOrder
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SOrder extends com.mysema.query.sql.RelationalPathBase<SOrder> {
 
     private static final long serialVersionUID = -114696963;
 
-    public static final SOrder order = new SOrder("ORDER_");
+    public static final SOrder order = new SOrder("order_");
 
-    public final NumberPath<Integer> customerId = createNumber("CUSTOMER_ID", Integer.class);
+    public final NumberPath<Integer> customerId = createNumber("customer_id", Integer.class);
 
-    public final NumberPath<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final NumberPath<Short> paid = createNumber("PAID", Short.class);
+    public final BooleanPath paid = createBoolean("paid");
 
-    public final com.mysema.query.sql.PrimaryKey<SOrder> sql120219232327190 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SOrder> primary = createPrimaryKey(id);
 
-    public final com.mysema.query.sql.ForeignKey<SCustomer> fkc3df62d1b29c27bc = createForeignKey(customerId, "ID");
+    public final com.mysema.query.sql.ForeignKey<SCustomer> fkc3df62d1b29c27bc = createForeignKey(customerId, "id");
 
-    public final com.mysema.query.sql.ForeignKey<SCustomer> _fk600e7c419cc457f1 = createInvForeignKey(id, "CURRENTORDER_ID");
+    public final com.mysema.query.sql.ForeignKey<SCustomer> order_CUSTOMERIDFK = createForeignKey(customerId, "id");
+
+    public final com.mysema.query.sql.ForeignKey<SOrder_item> _order_item_OrderIDFK = createInvForeignKey(id, "Order_ID");
+
+    public final com.mysema.query.sql.ForeignKey<SOrderDELIVEREDITEMINDICES> _orderDELIVEREDITEMINDICESOrderIDFK = createInvForeignKey(id, "Order_ID");
+
+    public final com.mysema.query.sql.ForeignKey<SCustomer> _customer_CURRENTORDERIDFK = createInvForeignKey(id, "currentOrder_id");
+
+    public final com.mysema.query.sql.ForeignKey<SOrder_item> _fk1b5e8cbeb968f515 = createInvForeignKey(id, "order__id");
+
+    public final com.mysema.query.sql.ForeignKey<SCustomer> _fk600e7c419cc457f1 = createInvForeignKey(id, "currentOrder_id");
+
+    public final com.mysema.query.sql.ForeignKey<SOrderDeliveredItemIndices> _fk30cbd6611a4d2378 = createInvForeignKey(id, "Order_id");
 
     public SOrder(String variable) {
-        super(SOrder.class, forVariable(variable), "APP", "ORDER_");
+        super(SOrder.class, forVariable(variable), "null", "order_");
     }
 
-    public SOrder(Path<? extends SOrder> entity) {
-        super(entity.getType(), entity.getMetadata(), "APP", "ORDER_");
+    public SOrder(Path<? extends SOrder> path) {
+        super(path.getType(), path.getMetadata(), "null", "order_");
     }
 
     public SOrder(PathMetadata<?> metadata) {
-        super(SOrder.class, metadata, "APP", "ORDER_");
+        super(SOrder.class, metadata, "null", "order_");
     }
 
 }

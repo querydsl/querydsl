@@ -32,7 +32,7 @@ public class SubQueryTest extends AbstractQueryTest{
     public void Single_Source(){
         JPQLSubQuery query = sub();
         query.from(cat);
-        assertEquals("from Cat cat", query.toString());
+        assertEquals("select cat\nfrom Cat cat", query.toString());
     }
     
     @Test
@@ -40,7 +40,7 @@ public class SubQueryTest extends AbstractQueryTest{
         JPQLSubQuery query = sub();
         query.from(cat);
         query.from(fatcat);
-        assertEquals("from Cat cat, Cat fatcat", 
+        assertEquals("select cat\nfrom Cat cat, Cat fatcat", 
                 query.toString());
     }
     
@@ -51,7 +51,7 @@ public class SubQueryTest extends AbstractQueryTest{
         
     @Test
     public void InnerJoin(){
-        assertEquals("from Cat cat\n  inner join cat.mate", 
+        assertEquals("select cat\nfrom Cat cat\n  inner join cat.mate", 
                 sub().from(cat).innerJoin(cat.mate).toString());
     }
     
@@ -59,25 +59,25 @@ public class SubQueryTest extends AbstractQueryTest{
     public void InnerJoin2(){
         QEmployee employee = QEmployee.employee;
         QUser user = QUser.user;
-        assertEquals("from Employee employee\n  inner join employee.user as user", 
+        assertEquals("select employee\nfrom Employee employee\n  inner join employee.user as user", 
                 sub().from(employee).innerJoin(employee.user, user).toString());
     }
         
     @Test
     public void LeftJoin(){
-        assertEquals("from Cat cat\n  left join cat.mate", 
+        assertEquals("select cat\nfrom Cat cat\n  left join cat.mate", 
                 sub().from(cat).leftJoin(cat.mate).toString());
     }
     
     @Test
     public void FullJoin(){
-        assertEquals("from Cat cat\n  full join cat.mate", 
+        assertEquals("select cat\nfrom Cat cat\n  full join cat.mate", 
                 sub().from(cat).fullJoin(cat.mate).toString());
     }
     
     @Test
     public void Join(){
-        assertEquals("from Cat cat\n  join cat.mate", 
+        assertEquals("select cat\nfrom Cat cat\n  join cat.mate", 
                 sub().from(cat).join(cat.mate).toString());
     }
 

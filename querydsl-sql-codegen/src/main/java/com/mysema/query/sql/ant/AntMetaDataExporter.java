@@ -132,6 +132,11 @@ public class AntMetaDataExporter extends Task {
      * 
      */
     private boolean schemaToPackage = false;
+    
+    /**
+     * 
+     */
+    private boolean lowerCase = false;
 
     @Override
     public void execute() throws BuildException {
@@ -167,6 +172,7 @@ public class AntMetaDataExporter extends Task {
             exporter.setColumnAnnotations(columnAnnotations);
             exporter.setValidationAnnotations(validationAnnotations);
             exporter.setSchemaToPackage(schemaToPackage);
+            exporter.setLowerCase(lowerCase);
             if (exportBeans){
                 exporter.setBeanSerializer(new BeanSerializer());
             }
@@ -348,5 +354,15 @@ public class AntMetaDataExporter extends Task {
     public void setSchemaToPackage(boolean schemaToPackage) {
         this.schemaToPackage = schemaToPackage;
     }
+
+    public boolean isLowerCase() {
+        return lowerCase;
+    }
+
+    public void setLowerCase(boolean lowerCase) {
+        this.lowerCase = lowerCase;
+    }
+    
+    
     
 }

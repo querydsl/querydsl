@@ -115,6 +115,8 @@ public class MetaDataExporter {
     
     private String sourceEncoding = "UTF-8";
 
+    private boolean lowerCase = false;
+    
     public MetaDataExporter() {}
         
     protected EntityType createEntityType(@Nullable String schemaName, String tableName, 
@@ -207,7 +209,7 @@ public class MetaDataExporter {
     }
 
     private void handleColumn(EntityType classModel, String tableName, ResultSet columns) throws SQLException {
-        String columnName = columns.getString(COLUMN_NAME);
+        String columnName = normalize(columns.getString(COLUMN_NAME));
         String propertyName = namingStrategy.getPropertyName(columnName, classModel);
         Class<?> clazz = configuration.getJavaType(columns.getInt(COLUMN_TYPE), tableName, columnName);
         if (clazz == null) {
@@ -238,8 +240,8 @@ public class MetaDataExporter {
     }
 
     private void handleTable(DatabaseMetaData md, ResultSet tables) throws SQLException {
-        String schemaName = tables.getString(SCHEMA_NAME);
-        String tableName = tables.getString(TABLE_NAME);
+        String schemaName = normalize(tables.getString(SCHEMA_NAME));
+        String tableName = normalize(tables.getString(TABLE_NAME));
         String className = namingStrategy.getClassName(tableName);
         EntityType classModel = createEntityType(schemaName, 
                 namingStrategy.normalizeTableName(tableName), className);
@@ -279,6 +281,14 @@ public class MetaDataExporter {
         serialize(classModel);
 
         logger.info("Exported " + tableName + " successfully");
+    }
+
+    private String normalize(String str) {
+        if (lowerCase && str != null) {
+            return str.toLowerCase();
+        } else {
+            return str;
+        }
     }
 
     private void serialize(EntityType type) {
@@ -519,5 +529,14 @@ public class MetaDataExporter {
         this.schemaToPackage = schemaToPackage;
         module.bind(SQLCodegenModule.SCHEMA_TO_PACKAGE, schemaToPackage);
     }
+
+    /**
+     * @param lowerCase
+     */
+    public void setLowerCase(boolean lowerCase) {
+        this.lowerCase = lowerCase;
+    }
+    
+    
        
 }

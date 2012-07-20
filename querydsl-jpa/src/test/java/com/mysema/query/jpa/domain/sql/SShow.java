@@ -11,29 +11,31 @@ import javax.annotation.Generated;
 /**
  * SShow is a Querydsl query type for SShow
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SShow extends com.mysema.query.sql.RelationalPathBase<SShow> {
 
     private static final long serialVersionUID = -1389063314;
 
-    public static final SShow show = new SShow("SHOW_");
+    public static final SShow show = new SShow("show_");
 
-    public final NumberPath<Long> id = createNumber("ID", Long.class);
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
-    public final com.mysema.query.sql.PrimaryKey<SShow> sql120219232329130 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SShow> primary = createPrimaryKey(id);
 
-    public final com.mysema.query.sql.ForeignKey<SShowActs> _fk5f6ee03ab40105c = createInvForeignKey(id, "SHOW_ID");
+    public final com.mysema.query.sql.ForeignKey<SShowACTS> _showACTSShowIDFK = createInvForeignKey(id, "Show_ID");
+
+    public final com.mysema.query.sql.ForeignKey<SShowActs> _fk5f6ee03ab40105c = createInvForeignKey(id, "Show_id");
 
     public SShow(String variable) {
-        super(SShow.class, forVariable(variable), "APP", "SHOW_");
+        super(SShow.class, forVariable(variable), "null", "show_");
     }
 
-    public SShow(Path<? extends SShow> entity) {
-        super(entity.getType(), entity.getMetadata(), "APP", "SHOW_");
+    public SShow(Path<? extends SShow> path) {
+        super(path.getType(), path.getMetadata(), "null", "show_");
     }
 
     public SShow(PathMetadata<?> metadata) {
-        super(SShow.class, metadata, "APP", "SHOW_");
+        super(SShow.class, metadata, "null", "show_");
     }
 
 }

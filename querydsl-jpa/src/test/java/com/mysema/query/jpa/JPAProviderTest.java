@@ -1,6 +1,6 @@
 package com.mysema.query.jpa;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

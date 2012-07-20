@@ -47,7 +47,12 @@ public abstract class AbstractSQLQuery<T extends AbstractSQLQuery<T>> extends Pr
     
     @SuppressWarnings("unchecked")
     public AbstractSQLQuery(QueryMetadata metadata) {
-        super(new SQLQueryMixin<T>(metadata));
+        super(new SQLQueryMixin<T>(metadata){
+            @Override
+            public <RT> Expression<RT> convert(Expression<RT> expr){
+                return super.convert(Conversions.convert(expr));
+            }
+        });
         this.queryMixin = (SQLQueryMixin<T>)super.queryMixin;
         this.queryMixin.setSelf((T)this);
     }

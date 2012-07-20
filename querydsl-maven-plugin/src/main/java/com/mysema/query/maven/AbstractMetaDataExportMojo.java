@@ -185,6 +185,11 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
      * @parameter default-value=false
      */
     private boolean schemaToPackage;
+    
+    /**
+     * @parameter default-value=false
+     */
+    private boolean lowerCase;
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
@@ -243,6 +248,7 @@ public class AbstractMetaDataExportMojo extends AbstractMojo{
         exporter.setColumnAnnotations(columnAnnotations);
         exporter.setValidationAnnotations(validationAnnotations);
         exporter.setSchemaToPackage(schemaToPackage);
+        exporter.setLowerCase(lowerCase);
         if (serializerClass != null) {
             try {
                 exporter.setSerializerClass((Class)Class.forName(serializerClass));

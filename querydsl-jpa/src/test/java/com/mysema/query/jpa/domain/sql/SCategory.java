@@ -11,12 +11,12 @@ import javax.annotation.Generated;
 /**
  * SCategory is a Querydsl query type for SCategory
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SCategory extends com.mysema.query.sql.RelationalPathBase<SCategory> {
 
     private static final long serialVersionUID = 673043695;
 
-    public static final SCategory category = new SCategory("CATEGORY_");
+    public static final SCategory category = new SCategory("category_");
 
     public final StringPath categorydescription = createString("CATEGORYDESCRIPTION");
 
@@ -36,26 +36,30 @@ public class SCategory extends com.mysema.query.sql.RelationalPathBase<SCategory
 
     public final NumberPath<Double> modifiedby = createNumber("MODIFIEDBY", Double.class);
 
-    public final com.mysema.query.sql.PrimaryKey<SCategory> sql120219232321330 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SCategory> primary = createPrimaryKey(id);
 
-    public final com.mysema.query.sql.ForeignKey<SCategory_category> _fkc4e60b832974945f = createInvForeignKey(id, "CATEGORY__ID");
+    public final com.mysema.query.sql.ForeignKey<SUserprop_category> _userprop_category_childCategoriesIDFK = createInvForeignKey(id, "childCategories_ID");
 
-    public final com.mysema.query.sql.ForeignKey<SUserprop_category> _fk851f48d37ab543e8 = createInvForeignKey(id, "CHILDCATEGORIES_ID");
+    public final com.mysema.query.sql.ForeignKey<SCategory_category> _fkc4e60b832974945f = createInvForeignKey(id, "category__id");
 
-    public final com.mysema.query.sql.ForeignKey<SCategory_categoryprop> _fk8543a2802974945f = createInvForeignKey(id, "CATEGORY__ID");
+    public final com.mysema.query.sql.ForeignKey<SCategory_category> _category_category_CategoryIDFK = createInvForeignKey(id, "Category_ID");
 
-    public final com.mysema.query.sql.ForeignKey<SCategory_category> _fkc4e60b837ab543e8 = createInvForeignKey(id, "CHILDCATEGORIES_ID");
+    public final com.mysema.query.sql.ForeignKey<SCategory_categoryprop> _category_categoryprop_CategoryIDFK = createInvForeignKey(id, "Category_ID");
+
+    public final com.mysema.query.sql.ForeignKey<SCategory_category> _category_category_childCategoriesIDFK = createInvForeignKey(id, "childCategories_ID");
+
+    public final com.mysema.query.sql.ForeignKey<SCategory_categoryprop> _fk8543a2802974945f = createInvForeignKey(id, "category__id");
 
     public SCategory(String variable) {
-        super(SCategory.class, forVariable(variable), "APP", "CATEGORY_");
+        super(SCategory.class, forVariable(variable), "null", "category_");
     }
 
-    public SCategory(Path<? extends SCategory> entity) {
-        super(entity.getType(), entity.getMetadata(), "APP", "CATEGORY_");
+    public SCategory(Path<? extends SCategory> path) {
+        super(path.getType(), path.getMetadata(), "null", "category_");
     }
 
     public SCategory(PathMetadata<?> metadata) {
-        super(SCategory.class, metadata, "APP", "CATEGORY_");
+        super(SCategory.class, metadata, "null", "category_");
     }
 
 }

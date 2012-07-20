@@ -29,6 +29,8 @@ import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 import org.junit.runners.model.Statement;
 
+import com.mysema.query.Mode;
+
 /**
  * @author tiwe
  *
@@ -61,7 +63,7 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
                         } finally {
                             try {
                                 if (entityManager.getTransaction().isActive()) {
-                                    entityManager.getTransaction().rollback();    
+                                    entityManager.getTransaction().rollback();
                                 }                                
                                 entityManager.clear();
                             } finally {
@@ -79,12 +81,13 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
     @Override
     public void run(final RunNotifier notifier) {
         try {
-            JPAConfig config = getTestClass().getJavaClass().getAnnotation(JPAConfig.class);
-            isDerby = config.value().contains("derby");
+            String mode = Mode.mode.get();
+            System.out.println(mode);
+            isDerby = mode.contains("derby");
             if (isDerby) {
                 Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
             }
-            entityManagerFactory = Persistence.createEntityManagerFactory(config.value());
+            entityManagerFactory = Persistence.createEntityManagerFactory(mode);
             super.run(notifier);
         } catch (Exception e) {
             String error = "Caught " + e.getClass().getName();

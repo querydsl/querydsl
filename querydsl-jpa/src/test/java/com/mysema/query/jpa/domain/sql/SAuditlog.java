@@ -11,31 +11,31 @@ import javax.annotation.Generated;
 /**
  * SAuditlog is a Querydsl query type for SAuditlog
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SAuditlog extends com.mysema.query.sql.RelationalPathBase<SAuditlog> {
 
     private static final long serialVersionUID = 1598606714;
 
-    public static final SAuditlog auditlog = new SAuditlog("AUDITLOG_");
+    public static final SAuditlog auditlog = new SAuditlog("auditlog_");
 
     public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
     public final NumberPath<Long> itemId = createNumber("ITEM_ID", Long.class);
 
-    public final com.mysema.query.sql.PrimaryKey<SAuditlog> sql120219232319680 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SAuditlog> primary = createPrimaryKey(id);
 
-    public final com.mysema.query.sql.ForeignKey<SItem> fkb88fbf6ae26109c = createForeignKey(itemId, "ID");
+    public final com.mysema.query.sql.ForeignKey<SItem> auditlog_ITEMIDFK = createForeignKey(itemId, "ID");
 
     public SAuditlog(String variable) {
-        super(SAuditlog.class, forVariable(variable), "APP", "AUDITLOG_");
+        super(SAuditlog.class, forVariable(variable), "null", "auditlog_");
     }
 
-    public SAuditlog(Path<? extends SAuditlog> entity) {
-        super(entity.getType(), entity.getMetadata(), "APP", "AUDITLOG_");
+    public SAuditlog(Path<? extends SAuditlog> path) {
+        super(path.getType(), path.getMetadata(), "null", "auditlog_");
     }
 
     public SAuditlog(PathMetadata<?> metadata) {
-        super(SAuditlog.class, metadata, "APP", "AUDITLOG_");
+        super(SAuditlog.class, metadata, "null", "auditlog_");
     }
 
 }

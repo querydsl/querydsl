@@ -11,31 +11,23 @@ import javax.annotation.Generated;
 /**
  * SSysdepends is a Querydsl query type for SSysdepends
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SSysdepends extends com.mysema.query.sql.RelationalPathBase<SSysdepends> {
 
     private static final long serialVersionUID = 584370123;
 
-    public static final SSysdepends sysdepends = new SSysdepends("SYSDEPENDS");
-
-    public final SimplePath<Object> dependentfinder = createSimple("DEPENDENTFINDER", Object.class);
-
-    public final StringPath dependentid = createString("DEPENDENTID");
-
-    public final SimplePath<Object> providerfinder = createSimple("PROVIDERFINDER", Object.class);
-
-    public final StringPath providerid = createString("PROVIDERID");
+    public static final SSysdepends sysdepends = new SSysdepends("sysdepends");
 
     public SSysdepends(String variable) {
-        super(SSysdepends.class, forVariable(variable), "SYS", "SYSDEPENDS");
+        super(SSysdepends.class, forVariable(variable), "sys", "sysdepends");
     }
 
-    public SSysdepends(Path<? extends SSysdepends> entity) {
-        super(entity.getType(), entity.getMetadata(), "SYS", "SYSDEPENDS");
+    public SSysdepends(Path<? extends SSysdepends> path) {
+        super(path.getType(), path.getMetadata(), "sys", "sysdepends");
     }
 
     public SSysdepends(PathMetadata<?> metadata) {
-        super(SSysdepends.class, metadata, "SYS", "SYSDEPENDS");
+        super(SSysdepends.class, metadata, "sys", "sysdepends");
     }
 
 }

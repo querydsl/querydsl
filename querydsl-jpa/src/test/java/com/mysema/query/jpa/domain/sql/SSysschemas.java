@@ -11,29 +11,23 @@ import javax.annotation.Generated;
 /**
  * SSysschemas is a Querydsl query type for SSysschemas
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SSysschemas extends com.mysema.query.sql.RelationalPathBase<SSysschemas> {
 
     private static final long serialVersionUID = 947375926;
 
-    public static final SSysschemas sysschemas = new SSysschemas("SYSSCHEMAS");
-
-    public final StringPath authorizationid = createString("AUTHORIZATIONID");
-
-    public final StringPath schemaid = createString("SCHEMAID");
-
-    public final StringPath schemaname = createString("SCHEMANAME");
+    public static final SSysschemas sysschemas = new SSysschemas("sysschemas");
 
     public SSysschemas(String variable) {
-        super(SSysschemas.class, forVariable(variable), "SYS", "SYSSCHEMAS");
+        super(SSysschemas.class, forVariable(variable), "sys", "sysschemas");
     }
 
-    public SSysschemas(Path<? extends SSysschemas> entity) {
-        super(entity.getType(), entity.getMetadata(), "SYS", "SYSSCHEMAS");
+    public SSysschemas(Path<? extends SSysschemas> path) {
+        super(path.getType(), path.getMetadata(), "sys", "sysschemas");
     }
 
     public SSysschemas(PathMetadata<?> metadata) {
-        super(SSysschemas.class, metadata, "SYS", "SYSSCHEMAS");
+        super(SSysschemas.class, metadata, "sys", "sysschemas");
     }
 
 }

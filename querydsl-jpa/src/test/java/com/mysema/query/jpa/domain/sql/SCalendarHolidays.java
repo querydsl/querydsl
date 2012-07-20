@@ -11,33 +11,33 @@ import javax.annotation.Generated;
 /**
  * SCalendarHolidays is a Querydsl query type for SCalendarHolidays
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SCalendarHolidays extends com.mysema.query.sql.RelationalPathBase<SCalendarHolidays> {
 
     private static final long serialVersionUID = 850508650;
 
-    public static final SCalendarHolidays calendarHolidays = new SCalendarHolidays("CALENDAR_HOLIDAYS");
+    public static final SCalendarHolidays CalendarHolidays = new SCalendarHolidays("Calendar_holidays");
 
-    public final NumberPath<Integer> calendarId = createNumber("CALENDAR_ID", Integer.class);
+    public final NumberPath<Integer> calendarId = createNumber("Calendar_id", Integer.class);
 
-    public final DatePath<java.sql.Date> holidays = createDate("HOLIDAYS", java.sql.Date.class);
+    public final DatePath<java.sql.Date> holidays = createDate("holidays", java.sql.Date.class);
 
-    public final StringPath holidaysKey = createString("HOLIDAYS_KEY");
+    public final StringPath holidaysKEY = createString("holidays_KEY");
 
-    public final com.mysema.query.sql.PrimaryKey<SCalendarHolidays> sql120219232318470 = createPrimaryKey(calendarId, holidaysKey);
+    public final com.mysema.query.sql.PrimaryKey<SCalendarHolidays> primary = createPrimaryKey(calendarId, holidaysKEY);
 
-    public final com.mysema.query.sql.ForeignKey<SCalendar> fk31ce1edc591ebbc = createForeignKey(calendarId, "ID");
+    public final com.mysema.query.sql.ForeignKey<SCalendar> fk31ce1edc591ebbc = createForeignKey(calendarId, "id");
 
     public SCalendarHolidays(String variable) {
-        super(SCalendarHolidays.class, forVariable(variable), "APP", "CALENDAR_HOLIDAYS");
+        super(SCalendarHolidays.class, forVariable(variable), "null", "Calendar_holidays");
     }
 
-    public SCalendarHolidays(Path<? extends SCalendarHolidays> entity) {
-        super(entity.getType(), entity.getMetadata(), "APP", "CALENDAR_HOLIDAYS");
+    public SCalendarHolidays(Path<? extends SCalendarHolidays> path) {
+        super(path.getType(), path.getMetadata(), "null", "Calendar_holidays");
     }
 
     public SCalendarHolidays(PathMetadata<?> metadata) {
-        super(SCalendarHolidays.class, metadata, "APP", "CALENDAR_HOLIDAYS");
+        super(SCalendarHolidays.class, metadata, "null", "Calendar_holidays");
     }
 
 }

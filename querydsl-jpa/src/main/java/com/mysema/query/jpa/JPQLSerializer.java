@@ -37,7 +37,6 @@ import javax.persistence.metamodel.SingularAttribute;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
-import com.mysema.query.support.Expressions;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.ConstantImpl;
@@ -45,6 +44,7 @@ import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.FactoryExpression;
+import com.mysema.query.types.Operation;
 import com.mysema.query.types.Operator;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.OrderSpecifier;
@@ -94,6 +94,8 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
     private static final String WHERE = "\nwhere ";
 
     private static final String WITH = " with ";
+    
+    private static final String ON = " on ";
 
     private static final Map<JoinType, String> joinTypes = new HashMap<JoinType, String>();
 
@@ -161,7 +163,7 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         if (projection != null) {
             append(SELECT).append(projection).append("\n");
 
-        }else if (forCountRow) {
+        } else if (forCountRow) {
             if (!metadata.isDistinct()) {
                 append(SELECT_COUNT);
             } else {
@@ -179,13 +181,18 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
             }
             append(")\n");
 
-        } else if (!select.isEmpty()) {
+        } else {
             if (!metadata.isDistinct()) {
                 append(SELECT);
             } else {
                 append(SELECT_DISTINCT);
             }
-            handle(COMMA, select).append("\n");
+            if (!select.isEmpty()) {
+                handle(COMMA, select);    
+            } else {
+                handle(metadata.getJoins().get(0).getTarget());
+            }            
+            append("\n");
 
         }
         inProjection = inProjectionOrig;
@@ -252,12 +259,14 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
                 handle(JPQLQueryMixin.FETCH);
             }
             handleJoinTarget(je);
+            // XXX Hibernate specific flag
             if (je.hasFlag(JPQLQueryMixin.FETCH_ALL_PROPERTIES) && !forCountRow) {
                 handle(JPQLQueryMixin.FETCH_ALL_PROPERTIES);
             }
 
             if (je.getCondition() != null) {
-                append(WITH).handle(je.getCondition());
+                append(templates.isWithForOn() ? WITH : ON);             
+                handle(je.getCondition());
             }
         }
     }
@@ -337,7 +346,12 @@ public class JPQLSerializer extends SerializerBase<JPQLSerializer> {
         boolean old = wrapElements;
         wrapElements = templates.wrapElements(operator);
 
-        if (operator.equals(Ops.IN)) {
+        if (operator.equals(Ops.EQ) && args.get(1) instanceof Operation &&
+                ((Operation)args.get(1)).getOperator() == Ops.QuantOps.ANY) {
+            args = Arrays.<Expression<?>>asList(args.get(0), ((Operation)args.get(1)).getArg(0));
+            visitOperation(type, Ops.IN, args);
+            
+        } else if (operator.equals(Ops.IN)) {
             if (args.get(1) instanceof Path) {
                 visitAnyInPath(type, args);
             } else if (args.get(0) instanceof Path && args.get(1) instanceof Constant) {

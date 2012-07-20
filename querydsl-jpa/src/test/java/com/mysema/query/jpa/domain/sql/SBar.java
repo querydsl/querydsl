@@ -11,29 +11,29 @@ import javax.annotation.Generated;
 /**
  * SBar is a Querydsl query type for SBar
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SBar extends com.mysema.query.sql.RelationalPathBase<SBar> {
 
     private static final long serialVersionUID = -1291751038;
 
-    public static final SBar bar = new SBar("BAR_");
+    public static final SBar bar = new SBar("bar_");
 
     public final DatePath<java.sql.Date> date = createDate("DATE", java.sql.Date.class);
 
     public final NumberPath<Integer> id = createNumber("ID", Integer.class);
 
-    public final com.mysema.query.sql.PrimaryKey<SBar> sql120219232319900 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SBar> primary = createPrimaryKey(id);
 
     public SBar(String variable) {
-        super(SBar.class, forVariable(variable), "APP", "BAR_");
+        super(SBar.class, forVariable(variable), "null", "bar_");
     }
 
-    public SBar(Path<? extends SBar> entity) {
-        super(entity.getType(), entity.getMetadata(), "APP", "BAR_");
+    public SBar(Path<? extends SBar> path) {
+        super(path.getType(), path.getMetadata(), "null", "bar_");
     }
 
     public SBar(PathMetadata<?> metadata) {
-        super(SBar.class, metadata, "APP", "BAR_");
+        super(SBar.class, metadata, "null", "bar_");
     }
 
 }

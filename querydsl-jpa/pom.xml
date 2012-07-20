@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.mysema.querydsl</groupId>
     <artifactId>querydsl-root</artifactId>
-    <version>2.7.1</version>
+    <version>2.7.1.BUILD-SNAPSHOT</version>
     <relativePath>../querydsl-root/pom.xml</relativePath> 
   </parent>
 
@@ -97,7 +97,7 @@
     <dependency>
 	  <groupId>org.eclipse.persistence</groupId>
 	  <artifactId>eclipselink</artifactId>
-	  <version>2.3.0-M6</version>
+	  <version>2.4.0</version>
 	  <scope>test</scope>
     </dependency>
     
@@ -280,6 +280,9 @@
         <artifactId>maven-surefire-plugin</artifactId>
 		<version>2.6</version>
 		<configuration>
+		  <includes>
+            <include>**/*Test.java</include>
+          </includes> 
           <systemProperties>
             <property>
                 <name>derby.stream.error.file</name>

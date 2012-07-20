@@ -11,12 +11,12 @@ import javax.annotation.Generated;
 /**
  * SInheritedproperties is a Querydsl query type for SInheritedproperties
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SInheritedproperties extends com.mysema.query.sql.RelationalPathBase<SInheritedproperties> {
 
     private static final long serialVersionUID = -1417492740;
 
-    public static final SInheritedproperties inheritedproperties = new SInheritedproperties("INHERITEDPROPERTIES_");
+    public static final SInheritedproperties inheritedproperties = new SInheritedproperties("inheritedproperties_");
 
     public final StringPath classproperty = createString("CLASSPROPERTY");
 
@@ -26,18 +26,18 @@ public class SInheritedproperties extends com.mysema.query.sql.RelationalPathBas
 
     public final StringPath superclassproperty = createString("SUPERCLASSPROPERTY");
 
-    public final com.mysema.query.sql.PrimaryKey<SInheritedproperties> sql120219232324840 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SInheritedproperties> primary = createPrimaryKey(id);
 
     public SInheritedproperties(String variable) {
-        super(SInheritedproperties.class, forVariable(variable), "APP", "INHERITEDPROPERTIES_");
+        super(SInheritedproperties.class, forVariable(variable), "null", "inheritedproperties_");
     }
 
-    public SInheritedproperties(Path<? extends SInheritedproperties> entity) {
-        super(entity.getType(), entity.getMetadata(), "APP", "INHERITEDPROPERTIES_");
+    public SInheritedproperties(Path<? extends SInheritedproperties> path) {
+        super(path.getType(), path.getMetadata(), "null", "inheritedproperties_");
     }
 
     public SInheritedproperties(PathMetadata<?> metadata) {
-        super(SInheritedproperties.class, metadata, "APP", "INHERITEDPROPERTIES_");
+        super(SInheritedproperties.class, metadata, "null", "inheritedproperties_");
     }
 
 }

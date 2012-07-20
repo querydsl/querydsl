@@ -11,12 +11,12 @@ import javax.annotation.Generated;
 /**
  * SParent is a Querydsl query type for SParent
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SParent extends com.mysema.query.sql.RelationalPathBase<SParent> {
 
     private static final long serialVersionUID = 752707803;
 
-    public static final SParent parent = new SParent("PARENT_");
+    public static final SParent parent = new SParent("parent_");
 
     public final StringPath childname = createString("CHILDNAME");
 
@@ -24,18 +24,18 @@ public class SParent extends com.mysema.query.sql.RelationalPathBase<SParent> {
 
     public final StringPath name = createString("NAME");
 
-    public final com.mysema.query.sql.PrimaryKey<SParent> sql120219232327860 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SParent> primary = createPrimaryKey(id);
 
     public SParent(String variable) {
-        super(SParent.class, forVariable(variable), "APP", "PARENT_");
+        super(SParent.class, forVariable(variable), "null", "parent_");
     }
 
-    public SParent(Path<? extends SParent> entity) {
-        super(entity.getType(), entity.getMetadata(), "APP", "PARENT_");
+    public SParent(Path<? extends SParent> path) {
+        super(path.getType(), path.getMetadata(), "null", "parent_");
     }
 
     public SParent(PathMetadata<?> metadata) {
-        super(SParent.class, metadata, "APP", "PARENT_");
+        super(SParent.class, metadata, "null", "parent_");
     }
 
 }

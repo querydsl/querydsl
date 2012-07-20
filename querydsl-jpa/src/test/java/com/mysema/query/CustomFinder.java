@@ -24,6 +24,10 @@ import com.mysema.query.types.path.ComparablePath;
 import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.path.SimplePath;
 
+/**
+ * @author tiwe
+ *
+ */
 public class CustomFinder {
     
     public static <T> List<T> findCustom(EntityManager em, Class<T> entityClass,Map<String,?> filters, String sort) {

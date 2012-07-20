@@ -36,7 +36,7 @@ public class JPQLSerializerTest {
         QueryMetadata md = new DefaultQueryMetadata();
         md.addJoin(JoinType.DEFAULT, entityPath);
         serializer.serialize(md, false, null);
-        assertEquals("from Location2 entity", serializer.toString());
+        assertEquals("select entity\nfrom Location2 entity", serializer.toString());
     }
 
     @Test

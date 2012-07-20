@@ -67,7 +67,9 @@ public class JPQLTemplates extends Templates {
         add(Ops.NE, "{0} <> {1}", 25);
         add(Ops.IS_NULL, "{0} is null", 26);
         add(Ops.IS_NOT_NULL, "{0} is not null", 26);
-
+        add(CAST, "cast({0} as {1s})");
+        add(Ops.NUMCAST, "cast({0} as {1s})");
+        
         // collection
         add(MEMBER_OF, "{0} member of {1}");
 
@@ -101,9 +103,9 @@ public class JPQLTemplates extends Templates {
 
         // date time
         add(Ops.DateTimeOps.SYSDATE, "sysdate");
-        add(Ops.DateTimeOps.CURRENT_DATE, "current_date()");
-        add(Ops.DateTimeOps.CURRENT_TIME, "current_time()");
-        add(Ops.DateTimeOps.CURRENT_TIMESTAMP, "current_timestamp()");
+        add(Ops.DateTimeOps.CURRENT_DATE, "current_date");
+        add(Ops.DateTimeOps.CURRENT_TIME, "current_time");
+        add(Ops.DateTimeOps.CURRENT_TIMESTAMP, "current_timestamp");
 
         // path types
         add(PathType.PROPERTY, "{0}.{1s}");
@@ -144,6 +146,10 @@ public class JPQLTemplates extends Templates {
     
     public boolean wrapConstant(Constant<?> expr) {
         // related : https://hibernate.onjira.com/browse/HHH-6913
+        return false;
+    }
+    
+    public boolean isWithForOn() {
         return false;
     }
 

@@ -11,43 +11,23 @@ import javax.annotation.Generated;
 /**
  * SSystableperms is a Querydsl query type for SSystableperms
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SSystableperms extends com.mysema.query.sql.RelationalPathBase<SSystableperms> {
 
     private static final long serialVersionUID = 4684209;
 
-    public static final SSystableperms systableperms = new SSystableperms("SYSTABLEPERMS");
-
-    public final StringPath deletepriv = createString("DELETEPRIV");
-
-    public final StringPath grantee = createString("GRANTEE");
-
-    public final StringPath grantor = createString("GRANTOR");
-
-    public final StringPath insertpriv = createString("INSERTPRIV");
-
-    public final StringPath referencespriv = createString("REFERENCESPRIV");
-
-    public final StringPath selectpriv = createString("SELECTPRIV");
-
-    public final StringPath tableid = createString("TABLEID");
-
-    public final StringPath tablepermsid = createString("TABLEPERMSID");
-
-    public final StringPath triggerpriv = createString("TRIGGERPRIV");
-
-    public final StringPath updatepriv = createString("UPDATEPRIV");
+    public static final SSystableperms systableperms = new SSystableperms("systableperms");
 
     public SSystableperms(String variable) {
-        super(SSystableperms.class, forVariable(variable), "SYS", "SYSTABLEPERMS");
+        super(SSystableperms.class, forVariable(variable), "sys", "systableperms");
     }
 
-    public SSystableperms(Path<? extends SSystableperms> entity) {
-        super(entity.getType(), entity.getMetadata(), "SYS", "SYSTABLEPERMS");
+    public SSystableperms(Path<? extends SSystableperms> path) {
+        super(path.getType(), path.getMetadata(), "sys", "systableperms");
     }
 
     public SSystableperms(PathMetadata<?> metadata) {
-        super(SSystableperms.class, metadata, "SYS", "SYSTABLEPERMS");
+        super(SSystableperms.class, metadata, "sys", "systableperms");
     }
 
 }

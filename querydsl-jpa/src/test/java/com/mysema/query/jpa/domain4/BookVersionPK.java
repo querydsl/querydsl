@@ -13,8 +13,9 @@
  */
 package com.mysema.query.jpa.domain4;
 
-import javax.persistence.Embeddable;
 import java.io.Serializable;
+
+import javax.persistence.Embeddable;
 
 @Embeddable
 public class BookVersionPK implements Serializable {

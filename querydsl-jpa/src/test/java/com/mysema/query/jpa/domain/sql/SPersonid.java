@@ -11,12 +11,12 @@ import javax.annotation.Generated;
 /**
  * SPersonid is a Querydsl query type for SPersonid
  */
-@Generated("com.mysema.query.sql.MetaDataSerializer")
+@Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class SPersonid extends com.mysema.query.sql.RelationalPathBase<SPersonid> {
 
     private static final long serialVersionUID = 1065697057;
 
-    public static final SPersonid personid = new SPersonid("PERSONID_");
+    public static final SPersonid personid = new SPersonid("personid_");
 
     public final StringPath country = createString("COUNTRY");
 
@@ -24,20 +24,20 @@ public class SPersonid extends com.mysema.query.sql.RelationalPathBase<SPersonid
 
     public final NumberPath<Integer> medicarenumber = createNumber("MEDICARENUMBER", Integer.class);
 
-    public final com.mysema.query.sql.PrimaryKey<SPersonid> sql120219232328340 = createPrimaryKey(id);
+    public final com.mysema.query.sql.PrimaryKey<SPersonid> primary = createPrimaryKey(id);
 
-    public final com.mysema.query.sql.ForeignKey<SPerson> _fkd78fcfaad7999e61 = createInvForeignKey(id, "PID_ID");
+    public final com.mysema.query.sql.ForeignKey<SPerson> _person_PIDIDFK = createInvForeignKey(id, "PID_ID");
 
     public SPersonid(String variable) {
-        super(SPersonid.class, forVariable(variable), "APP", "PERSONID_");
+        super(SPersonid.class, forVariable(variable), "null", "personid_");
     }
 
-    public SPersonid(Path<? extends SPersonid> entity) {
-        super(entity.getType(), entity.getMetadata(), "APP", "PERSONID_");
+    public SPersonid(Path<? extends SPersonid> path) {
+        super(path.getType(), path.getMetadata(), "null", "personid_");
     }
 
     public SPersonid(PathMetadata<?> metadata) {
-        super(SPersonid.class, metadata, "APP", "PERSONID_");
+        super(SPersonid.class, metadata, "null", "personid_");
     }
 
 }

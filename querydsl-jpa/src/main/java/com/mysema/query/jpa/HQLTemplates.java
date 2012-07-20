@@ -45,7 +45,7 @@ public class HQLTemplates extends JPQLTemplates {
     public HQLTemplates(char escape) {
         super(escape);
         //CHECKSTYLE:OFF
-        add(CAST, "cast({0} as {1s})");
+        //add(CAST, "cast({0} as {1s})");
      // TODO : remove this when Hibernate supports type(alias)
         add(Ops.INSTANCE_OF, "{0}.class = {1}");
      // TODO : remove this when Hibernate supports type(alias)
@@ -110,6 +110,11 @@ public class HQLTemplates extends JPQLTemplates {
         // related : https://hibernate.onjira.com/browse/HHH-6913
         Class<?> type = expr.getType();
         return type.isArray() || Collection.class.isAssignableFrom(type);
+    }
+    
+    @Override
+    public boolean isWithForOn() {
+        return true;
     }
     
 }
