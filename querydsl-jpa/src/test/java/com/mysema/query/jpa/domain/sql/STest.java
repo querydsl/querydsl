@@ -1,16 +1,20 @@
 package com.mysema.query.jpa.domain.sql;
 
-import static com.mysema.query.types.PathMetadataFactory.*;
-
-import com.mysema.query.types.*;
-import com.mysema.query.types.path.*;
+import static com.mysema.query.types.PathMetadataFactory.forVariable;
 
 import javax.annotation.Generated;
+
+import org.junit.Ignore;
+
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathMetadata;
+import com.mysema.query.types.path.StringPath;
 
 
 /**
  * STest is a Querydsl query type for STest
  */
+@Ignore
 @Generated("com.mysema.query.sql.codegen.MetaDataSerializer")
 public class STest extends com.mysema.query.sql.RelationalPathBase<STest> {
 

@@ -29,7 +29,7 @@ public class HibernateQueryTest {
         QEmployee employee = QEmployee.employee;
         hqlQuery.from(employee);
         hqlQuery.innerJoin(employee.user, QUser.user);
-        assertEquals("from Employee employee\n  inner join employee.user as user", hqlQuery.toString());
+        assertEquals("select employee\nfrom Employee employee\n  inner join employee.user as user", hqlQuery.toString());
     }
     
 }
