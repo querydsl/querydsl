@@ -13,11 +13,15 @@
  */
 package com.mysema.query.jpa;
 
+import java.util.Date;
+
 import org.junit.Test;
 
 import com.mysema.query.types.expr.DateExpression;
 import com.mysema.query.types.expr.DateTimeExpression;
 import com.mysema.query.types.expr.TimeExpression;
+import com.mysema.query.types.path.DatePath;
+import com.mysema.query.types.path.DateTimePath;
 
 public class DateTimeTest extends AbstractQueryTest {
 
@@ -39,6 +43,16 @@ public class DateTimeTest extends AbstractQueryTest {
     @Test
     public void CurrentTimestamp(){
         assertToString("current_timestamp", DateTimeExpression.currentTimestamp());
+    }
+    
+    @Test
+    public void DayOfMonth() {
+        assertToString("day(date)", new DatePath<Date>(Date.class, "date").dayOfMonth());
+    }
+    
+    @Test
+    public void DayOfMonth2() {
+        assertToString("day(date)", new DateTimePath<Date>(Date.class, "date").dayOfMonth());
     }
     
     @Test

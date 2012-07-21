@@ -36,17 +36,17 @@ public class EclipseLinkTemplates extends JPQLTemplates {
         add(Ops.STRING_CAST, "cast({0} as varchar)");
         
         // EclipseLink specific (works at least with Derby, HSQLDB and H2)
-        add(Ops.DateTimeOps.MILLISECOND, "0"); // NOT SUPPORTED
-        add(Ops.DateTimeOps.SECOND, "func('second',{0})");
-        add(Ops.DateTimeOps.MINUTE, "func('minute',{0})");
-        add(Ops.DateTimeOps.HOUR, "func('hour',{0})");
-        add(Ops.DateTimeOps.DAY_OF_WEEK, "func('dayofweek',{0})");
-        add(Ops.DateTimeOps.DAY_OF_MONTH, "func('day',{0})");
-        add(Ops.DateTimeOps.DAY_OF_YEAR, "func('dayofyear',{0})");
-        add(Ops.DateTimeOps.MONTH, "func('month',{0})");
-        add(Ops.DateTimeOps.WEEK, "func('week',{0})");
-        add(Ops.DateTimeOps.YEAR, "func('year',{0})");
-        add(Ops.DateTimeOps.YEAR_MONTH, "func('year',{0}) * 100 + func('month',{0})");
+//        add(Ops.DateTimeOps.MILLISECOND, "0"); // NOT SUPPORTED
+//        add(Ops.DateTimeOps.SECOND, "func('second',{0})");
+//        add(Ops.DateTimeOps.MINUTE, "func('minute',{0})");
+//        add(Ops.DateTimeOps.HOUR, "func('hour',{0})");
+//        add(Ops.DateTimeOps.DAY_OF_WEEK, "func('dayofweek',{0})");
+//        add(Ops.DateTimeOps.DAY_OF_MONTH, "func('day',{0})");
+//        add(Ops.DateTimeOps.DAY_OF_YEAR, "func('dayofyear',{0})");
+//        add(Ops.DateTimeOps.MONTH, "func('month',{0})");
+//        add(Ops.DateTimeOps.WEEK, "func('week',{0})");
+//        add(Ops.DateTimeOps.YEAR, "func('year',{0})");
+//        add(Ops.DateTimeOps.YEAR_MONTH, "func('year',{0}) * 100 + func('month',{0})");
         
         add(Ops.CHAR_AT, "substring({0},{1}+1,1)");
 

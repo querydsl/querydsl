@@ -106,6 +106,15 @@ public class JPQLTemplates extends Templates {
         add(Ops.DateTimeOps.CURRENT_DATE, "current_date");
         add(Ops.DateTimeOps.CURRENT_TIME, "current_time");
         add(Ops.DateTimeOps.CURRENT_TIMESTAMP, "current_timestamp");
+        
+        add(Ops.DateTimeOps.MILLISECOND, "0"); // NOT supported in HQL
+        add(Ops.DateTimeOps.SECOND, "second({0})");
+        add(Ops.DateTimeOps.MINUTE, "minute({0})");
+        add(Ops.DateTimeOps.HOUR, "hour({0})");
+        add(Ops.DateTimeOps.DAY_OF_MONTH, "day({0})");
+        add(Ops.DateTimeOps.MONTH, "month({0})");
+        add(Ops.DateTimeOps.YEAR, "year({0})");
+        add(Ops.DateTimeOps.YEAR_MONTH, "year({0}) * 100 + month({0})");
 
         // path types
         add(PathType.PROPERTY, "{0}.{1s}");
