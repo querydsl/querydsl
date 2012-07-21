@@ -31,33 +31,36 @@ public enum JPAProvider {
     /**
      * Hibernate
      */
-    HIBERNATE("org.hibernate.ejb.HibernateEntityManager", HQLTemplates.DEFAULT),
+    HIBERNATE("org.hibernate.ejb.HibernateEntityManager", HQLTemplates.DEFAULT, "hibernate"),
     
     /**
      * EclipseLink
      */
-    ECLIPSELINK("org.eclipse.persistence.jpa.JpaEntityManager", EclipseLinkTemplates.DEFAULT),
+    ECLIPSELINK("org.eclipse.persistence.jpa.JpaEntityManager", EclipseLinkTemplates.DEFAULT, "eclipselink"),
     
     /**
      * OpenJPA
      */
-    OPEN_JPA("org.apache.openjpa.persistence.OpenJPAEntityManager", OpenJPATemplates.DEFAULT),
+    OPEN_JPA("org.apache.openjpa.persistence.OpenJPAEntityManager", OpenJPATemplates.DEFAULT, "openjpa"),
     
     /**
      * Generic JPA provider
      */
-    GENERIC("javax.persistence.EntityManager", JPQLTemplates.DEFAULT); 
+    GENERIC("javax.persistence.EntityManager", JPQLTemplates.DEFAULT, ""); 
     
     private Class<?> emClass;
     
     private final JPQLTemplates templates;
     
+    private final String searchKey;
+    
     /**
      * @param emClassName class name of EntityManager implementation
      * @param templates
      */
-    JPAProvider(String emClassName, JPQLTemplates templates) {
+    JPAProvider(String emClassName, JPQLTemplates templates, String searchKey) {
         this.templates = templates;
+        this.searchKey = searchKey;
         try {            
             this.emClass = Class.forName(emClassName);            
         } catch (ClassNotFoundException e) {}
@@ -68,11 +71,15 @@ public enum JPAProvider {
     }
 
     public static JPAProvider get(EntityManager em) {
+        String propsToString = em.getEntityManagerFactory().getProperties().toString();
         for (JPAProvider provider : values()) {
             if (provider.emClass != null && provider.emClass.isAssignableFrom(em.getClass())) {
                 return provider;
             }
-        }
+            if (propsToString.contains(provider.searchKey)) {
+                return provider;
+            }
+        }       
         throw new IllegalStateException("No Provider for " + em.getClass().getName());
     }
     

@@ -2,43 +2,96 @@ package com.mysema.query.jpa;
 
 import static org.junit.Assert.assertEquals;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Map;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import org.junit.After;
 import org.junit.Test;
 
 import com.mysema.query.jpa.impl.JPAProvider;
 
 public class JPAProviderTest {
 
+    private EntityManagerFactory factory;
+    
+    private EntityManager em;
+    
+    @After
+    public void tearDown() {
+        if (em != null) {
+            em.close();    
+        }
+        if (factory != null) {
+            factory.close();    
+        }        
+    }
+    
     @Test
     public void Hibernate() {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("h2");
-        EntityManager em = factory.createEntityManager();
-        try {
-            assertEquals(JPAProvider.HIBERNATE, JPAProvider.get(em));
-        } finally {
-            em.close();
-            factory.close();
-        }
+        factory = Persistence.createEntityManagerFactory("h2");
+        em = factory.createEntityManager();
+        println(em.getEntityManagerFactory().getProperties());
+        assertEquals(JPAProvider.HIBERNATE, JPAProvider.get(em));
+    }
+    
+    @Test
+    public void Hibernate_For_Proxy() {
+        factory = Persistence.createEntityManagerFactory("h2");
+        em = factory.createEntityManager();
+        InvocationHandler handler = new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                return method.invoke(em, args);
+            }            
+        };
+        EntityManager proxy = (EntityManager) Proxy.newProxyInstance(
+                Thread.currentThread().getContextClassLoader(), 
+                new Class[]{EntityManager.class}, 
+                handler);
+        assertEquals(JPAProvider.HIBERNATE, JPAProvider.get(proxy));
     }
     
     @Test
     public void EclipseLink() {
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("h2-eclipselink");
-        EntityManager em = factory.createEntityManager();
-        try {
-            assertEquals(JPAProvider.ECLIPSELINK, JPAProvider.get(em));
-        } finally {
-            em.close();
-            factory.close();
-        }
+        factory = Persistence.createEntityManagerFactory("h2-eclipselink");
+        em = factory.createEntityManager();
+        println(em.getEntityManagerFactory().getProperties());
+        assertEquals(JPAProvider.ECLIPSELINK, JPAProvider.get(em));
     }
     
     @Test
-    public void OpenJPA() {
+    public void EclipseLink_For_Proxy() {
+        factory = Persistence.createEntityManagerFactory("h2-eclipselink");
+        em = factory.createEntityManager();
+        InvocationHandler handler = new InvocationHandler() {
+            @Override
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                return method.invoke(em, args);
+            }            
+        };
+        EntityManager proxy = (EntityManager) Proxy.newProxyInstance(
+                Thread.currentThread().getContextClassLoader(), 
+                new Class[]{EntityManager.class}, 
+                handler);
+        assertEquals(JPAProvider.ECLIPSELINK, JPAProvider.get(proxy));
+    }
         
+    @Test
+    public void OpenJPA() {
+        // TODO
+    }
+    
+    private void println(Map<String, Object> properties) {
+        for (Map.Entry<String, Object> entry : properties.entrySet()) {
+            System.out.println(entry.getKey() + " = " + entry.getValue());
+        }
+        System.out.println();
     }
     
 }
