@@ -86,6 +86,7 @@ import com.mysema.query.types.expr.Param;
 import com.mysema.query.types.expr.SimpleExpression;
 import com.mysema.query.types.path.EnumPath;
 import com.mysema.query.types.path.ListPath;
+import com.mysema.query.types.path.NumberPath;
 import com.mysema.query.types.path.StringPath;
 import com.mysema.testutil.ExcludeIn;
 
@@ -553,6 +554,12 @@ public abstract class AbstractStandardTest {
     @Test
     public void Max() {
         query().from(cat).uniqueResult(cat.bodyWeight.max());
+    }
+    
+    @Test
+    public void Order() {
+        NumberPath<Double> weight = new NumberPath<Double>(Double.class, "weight");
+        query().from(cat).orderBy(weight.asc()).list(cat.bodyWeight.as(weight));
     }
         
     @Test

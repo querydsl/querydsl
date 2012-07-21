@@ -141,9 +141,8 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     @Override
     public void addOrderBy(OrderSpecifier<?>... o) {
-        for (OrderSpecifier<?> os : o) {
-            validate(os.getTarget());
-        }
+        // order specifiers can't be validated, since they can refer to projection elements
+        // that are declared later
         orderBy.addAll(Arrays.asList(o));
     }
 
