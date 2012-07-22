@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mysema.query.QueryException;
+import com.mysema.query.codegen.Serializer;
 import com.mysema.query.support.SerializerBase;
 import com.mysema.query.types.Constant;
 import com.mysema.query.types.ConstantImpl;
@@ -34,7 +35,7 @@ import com.mysema.query.types.Template;
 import com.mysema.util.BeanUtils;
 
 /**
- * ColQuerySerializer is a Serializer implementation for the Java language
+ * ColQuerySerializer is a {@link Serializer} implementation for the Java language
  *
  * @author tiwe
  */

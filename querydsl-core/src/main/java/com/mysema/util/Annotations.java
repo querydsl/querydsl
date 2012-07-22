@@ -21,10 +21,12 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 /**
+ * Annotations is a merging apapter for the {@link AnnotatedElement} interface
+ * 
  * @author tiwe
  *
  */
-public class Annotations implements AnnotatedElement{
+public class Annotations implements AnnotatedElement {
 
     private final Map<Class<? extends Annotation>,Annotation> annotations = new HashMap<Class<? extends Annotation>,Annotation>();
 

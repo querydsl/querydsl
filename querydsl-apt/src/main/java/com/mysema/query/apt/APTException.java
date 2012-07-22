@@ -14,6 +14,8 @@
 package com.mysema.query.apt;
 
 /**
+ * Exception thrown on APT processing errors
+ * 
  * @author tiwe
  *
  */

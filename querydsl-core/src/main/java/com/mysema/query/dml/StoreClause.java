@@ -19,7 +19,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 
 /**
- * Parent interface for InsertClause and UpdateCluase
+ * Parent interface for {@link InsertClause} and {@link UpdateClause}
  * 
  * @author tiwe
  *

@@ -26,6 +26,8 @@ import javax.lang.model.type.WildcardType;
 import javax.lang.model.util.AbstractTypeVisitor6;
 
 /**
+ * TypeExtractor is a visitor implementation which a concrete type given a general {@link TypeElement}
+ * 
  * @author tiwe
  *
  */

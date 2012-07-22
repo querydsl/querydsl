@@ -17,6 +17,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
+ * MathUtils provides Math related functionality
+ * 
  * @author tiwe
  *
  */

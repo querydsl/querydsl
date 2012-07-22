@@ -19,6 +19,12 @@ import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Path;
 import com.mysema.query.types.SubQueryExpression;
 
+/**
+ * UnionUtils provides static utility methods for Union handling
+ * 
+ * @author tiwe
+ *
+ */
 public final class UnionUtils {
     
     public static Expression<?> combineUnion(SubQueryExpression<?>[] union, Path<?> alias, SQLTemplates templates, boolean unionAll) {

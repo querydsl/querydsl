@@ -16,6 +16,8 @@ package com.mysema.query.apt;
 import javax.lang.model.type.TypeMirror;
 
 /**
+ * UnsupportedTypeException is thrown for unsupported types
+ * 
  * @author tiwe
  *
  */

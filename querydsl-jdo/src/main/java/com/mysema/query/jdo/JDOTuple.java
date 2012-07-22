@@ -24,7 +24,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Path;
 
 /**
- * JDOTuple is a Tuple implementation for JDOQuery instances
+ * JDOTuple is a {@link Tuple} implementation for JDOQuery instances
  * 
  * @author tiwe
  *

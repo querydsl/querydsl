@@ -32,6 +32,9 @@ import com.mysema.query.types.Path;
  */
 public class Configuration {
     
+    /**
+     * Default instance
+     */
     public static final Configuration DEFAULT = new Configuration(SQLTemplates.DEFAULT);
     
     private final JDBCTypeMapping jdbcTypeMapping = new JDBCTypeMapping();
@@ -40,6 +43,11 @@ public class Configuration {
     
     private final SQLTemplates templates;
 
+    /**
+     * Create a new Configuration instance
+     * 
+     * @param templates
+     */
     public Configuration(SQLTemplates templates) {       
         this.templates = templates;
         if (!templates.isParameterMetadataAvailable()) {

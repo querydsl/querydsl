@@ -50,11 +50,12 @@ import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.query.ListSubQuery;
 
 /**
+ * AbstractJPASQLQuery is the base class for JPA Native SQL queries
+ * 
  * @author tiwe
  *
  * @param <Q>
  */
-//TODO : add support for constructor projections
 public abstract class AbstractJPASQLQuery<Q extends AbstractJPASQLQuery<Q> & com.mysema.query.Query> extends AbstractSQLQuery<Q> {
     
     private static final Logger logger = LoggerFactory.getLogger(AbstractJPASQLQuery.class);

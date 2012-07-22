@@ -17,6 +17,8 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 /**
+ * NullSafeComparableComparator is a null safe comparator for Comparable objects
+ * 
  * @author tiwe
  *
  * @param <T>

@@ -62,6 +62,9 @@ import com.mysema.query.codegen.Supertype;
 import com.mysema.query.codegen.TypeMappings;
 
 /**
+ * Base class for Querydsl annotation processors, contains the main processing logic. The subclasses
+ * just provide the configuration.
+ * 
  * @author tiwe
  *
  */

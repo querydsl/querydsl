@@ -17,6 +17,8 @@ import java.util.Collections;
 
 
 /**
+ * CodegenModule provides a module general serialization
+ * 
  * @author tiwe
  *
  */

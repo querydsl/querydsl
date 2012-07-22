@@ -19,6 +19,8 @@ import com.mysema.query.codegen.Serializer;
 import com.mysema.query.sql.Configuration;
 
 /**
+ * SQLCodegenModule is a dependency injection module with codegen configuration
+ * 
  * @author tiwe
  *
  */

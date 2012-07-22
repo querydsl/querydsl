@@ -35,7 +35,7 @@ import com.mysema.query.types.TemplateExpressionImpl;
 import com.mysema.query.types.path.ListPath;
 
 /**
- * JPQLQueryMixin extends QueryMixin to support JPQL join construction
+ * JPQLQueryMixin extends {@link QueryMixin} to support JPQL join construction
  * 
  * @author tiwe
  *

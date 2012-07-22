@@ -32,7 +32,8 @@ import com.mysema.query.codegen.Serializer;
 import com.mysema.query.codegen.TypeMappings;
 
 /**
- * AbstractExporterMojo calls the GenericExporter tool using the classpath of the module
+ * AbstractExporterMojo calls the {@link GenericExporter} tool using the classpath of the module
+ * the plugin is invoked in.
  * 
  */
 public abstract class AbstractExporterMojo extends AbstractMojo {

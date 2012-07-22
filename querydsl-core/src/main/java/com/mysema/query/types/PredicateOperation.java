@@ -28,7 +28,7 @@ public class PredicateOperation extends OperationImpl<Boolean> implements Predic
     private static final long serialVersionUID = -5371430939203772072L;
 
     @Nullable
-    private Predicate not;
+    private volatile Predicate not;
     
     public PredicateOperation(Operator<Boolean> operator, Expression<?>... args){
         super(Boolean.class, operator, args);

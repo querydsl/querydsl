@@ -45,6 +45,8 @@ import com.mysema.query.types.template.StringTemplate;
 import com.mysema.query.types.template.TimeTemplate;
 
 /**
+ * JavaTypeMappings defines mappings from {@link TypeCategory} instances to {@link Expression} types
+ * 
  * @author tiwe
  *
  */

@@ -26,22 +26,57 @@ import com.mysema.query.types.Path;
  */
 public final class MiniApi {
 
+    /**
+     * Create a new delete clause 
+     * 
+     * @param path source expression
+     * @param col source collection
+     * @return
+     */
     public static <A> ColDeleteClause<A> delete(Path<A> path, Collection<A> col) {
         return new ColDeleteClause<A>(path, col);
     }
 
+    /**
+     * Create a new query
+     * 
+     * @param alias source alias
+     * @param col source collection
+     * @return
+     */
     public static <A> ColQuery from(A alias, Iterable<A> col) {
         return new ColQueryImpl().from(Alias.$(alias), col);
     }
 
+    /**
+     * Create a new query
+     * 
+     * @param path source expression
+     * @param arr source array
+     * @return
+     */
     public static <A> ColQuery from(Path<A> path, A... arr) {
         return new ColQueryImpl().from(path, Arrays.asList(arr));
     }
 
+    /**
+     * Create a new query
+     * 
+     * @param path source expression
+     * @param col source collection
+     * @return
+     */
     public static <A> ColQuery from(Path<A> path, Iterable<A> col) {
         return new ColQueryImpl().from(path, col);
     }
 
+    /**
+     * Create a new update clause
+     * 
+     * @param path source expression
+     * @param col source collection
+     * @return
+     */
     public static <A> ColUpdateClause<A> update(Path<A> path, Iterable<A> col) {
         return new ColUpdateClause<A>(path, col);
     }

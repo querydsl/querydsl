@@ -22,38 +22,114 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 
 /**
+ * PathFactory defines a factory interface for Path creation
+ * 
  * @author tiwe
  *
  */
 public interface PathFactory {
         
+    /**
+     * @param type
+     * @param metadata
+     * @return
+     */
     <T> Path<T[]> createArrayPath(Class<T[]> type, PathMetadata<?> metadata);
     
+    /**
+     * @param type
+     * @param metadata
+     * @return
+     */
     <T> Path<T> createEntityPath(Class<T> type, PathMetadata<?> metadata);
 
+    /**
+     * @param type
+     * @param metadata
+     * @return
+     */
     <T> Path<T> createSimplePath(Class<T> type, PathMetadata<?> metadata);
     
+    /**
+     * @param type
+     * @param metadata
+     * @return
+     */
     <T extends Comparable<?>> Path<T> createComparablePath(Class<T> type, PathMetadata<?> metadata);
     
+    /**
+     * @param type
+     * @param metadata
+     * @return
+     */
     <T extends Enum<T>> Path<T> createEnumPath(Class<T> type, PathMetadata<?> metadata);
     
+    /**
+     * @param type
+     * @param metadata
+     * @return
+     */
     <T extends Comparable<?>> Path<T> createDatePath(Class<T> type, PathMetadata<?> metadata);
     
+    /**
+     * @param type
+     * @param metadata
+     * @return
+     */
     <T extends Comparable<?>> Path<T> createTimePath(Class<T> type, PathMetadata<?> metadata);
     
+    /**
+     * @param type
+     * @param metadata
+     * @return
+     */
     <T extends Comparable<?>> Path<T> createDateTimePath(Class<T> type, PathMetadata<?> metadata);
     
+    /**
+     * @param type
+     * @param metadata
+     * @return
+     */
     <T extends Number & Comparable<T>> Path<T> createNumberPath(Class<T> type, PathMetadata<?> metadata);
     
+    /**
+     * @param metadata
+     * @return
+     */
     Path<Boolean> createBooleanPath(PathMetadata<?> metadata);
     
+    /**
+     * @param metadata
+     * @return
+     */
     Path<String> createStringPath(PathMetadata<?> metadata);
 
+    /**
+     * @param elementType
+     * @param metadata
+     * @return
+     */
     <E> Path<List<E>> createListPath(Class<E> elementType, PathMetadata<?> metadata);
     
+    /**
+     * @param elementType
+     * @param metadata
+     * @return
+     */
     <E> Path<Set<E>> createSetPath(Class<E> elementType, PathMetadata<?> metadata);
     
+    /**
+     * @param elementType
+     * @param metadata
+     * @return
+     */
     <E> Path<Collection<E>> createCollectionPath(Class<E> elementType, PathMetadata<?> metadata);
     
+    /**
+     * @param keyType
+     * @param valueType
+     * @param metadata
+     * @return
+     */
     <K,V> Path<Map<K,V>> createMapPath(Class<K> keyType, Class<V> valueType, PathMetadata<?> metadata);
 }

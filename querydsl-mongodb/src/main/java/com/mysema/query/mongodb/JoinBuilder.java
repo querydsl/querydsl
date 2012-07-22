@@ -21,6 +21,8 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 
 /**
+ * JoinBuilder is a builder for join constraints
+ * 
  * @author tiwe
  *
  * @param <K>

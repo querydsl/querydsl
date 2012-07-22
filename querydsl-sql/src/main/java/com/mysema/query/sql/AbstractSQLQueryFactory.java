@@ -24,6 +24,8 @@ import com.mysema.query.sql.dml.SQLUpdateClause;
 import com.mysema.query.types.Expression;
 
 /**
+ * AbstractSQLQueryFactory is the base class for {@link SQLQueryFactory} implementations
+ * 
  * @author tiwe
  *
  */

@@ -22,6 +22,32 @@ import java.lang.annotation.Target;
 
 /**
  * Declaration of a static delegate method
+ * 
+ * <p>Example :</p>
+ * 
+ * <pre>
+ * {@code @QueryDelegate(User.class)}
+ * public static Predicate like(QUser entity, User user) {
+ *     BooleanBuilder builder = new BooleanBuilder(); 
+ *     if (user.getFirstName() != null) {
+ *         builder.and(entity.firstName.eq(user.getFirstName()));
+ *     }
+ *     if (user.getLastName() != null) {
+ *         builder.and(entity.lastName.eq(user.getLastName()));
+ *     }
+ *     return builder.getValue();
+ * }
+ * </pre>
+ * 
+ * <p>This will be then available in the QUser type as an instance method without the first 
+ * argument:</p>
+ * 
+ * <pre>
+ * User user = new User();
+ * user.setFirstName("John");
+ * user.setLastName("Doe");
+ * Predicate predicate = QUser.user.like(user);
+ * </pre>
  *
  * @author tiwe
  *

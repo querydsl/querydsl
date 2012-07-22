@@ -27,6 +27,8 @@ import com.mysema.commons.lang.CloseableIterator;
 import com.mysema.query.QueryException;
 
 /**
+ * ResultIterator is a {@link CloseableIterator} implementation for Lucene query results
+ * 
  * @author tiwe
  *
  * @param <T>

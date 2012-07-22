@@ -23,7 +23,7 @@ import com.mysema.query.types.Predicate;
 import com.mysema.query.types.template.BooleanTemplate;
 
 /**
- * ColQueryMixin extends QueryMixin 
+ * ColQueryMixin extends {@link QueryMixin} to provide normalization logic specific to this module
  * 
  * @author tiwe
  *

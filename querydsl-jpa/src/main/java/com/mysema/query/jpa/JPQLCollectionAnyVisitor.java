@@ -20,6 +20,9 @@ import com.mysema.query.types.Predicate;
 import com.mysema.query.types.PredicateOperation;
 
 /**
+ * JPQLCollectionAnyVisitor extends the {@link CollectionAnyVisitor} class with module specific
+ * extensions
+ * 
  * @author tiwe
  *
  */

@@ -26,7 +26,6 @@ import com.mysema.query.QueryMetadata;
 import com.mysema.query.SearchResults;
 import com.mysema.query.support.ProjectableQuery;
 import com.mysema.query.types.ArrayConstructorExpression;
-import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.OperationImpl;

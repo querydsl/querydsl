@@ -47,7 +47,7 @@ import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Predicate;
 
 /**
- * MongodbQuery provides a general Querydsl query implementation with a pluugable DBObject to Bean transformation
+ * MongodbQuery provides a general Querydsl query implementation with a pluggable DBObject to Bean transformation
  *
  * @author laimw
  *
@@ -66,6 +66,13 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
 
     private final Function<DBObject, K> transformer;
 
+    /**
+     * Create a new MongodbQuery instance
+     * 
+     * @param collection
+     * @param transformer
+     * @param serializer
+     */
     public MongodbQuery(DBCollection collection, Function<DBObject, K> transformer, MongodbSerializer serializer) {
         this.queryMixin = new QueryMixin<MongodbQuery<K>>(this, new DefaultQueryMetadata().noValidate());
         this.transformer = transformer;
@@ -73,10 +80,24 @@ public abstract class MongodbQuery<K> implements SimpleQuery<MongodbQuery<K>>, S
         this.serializer = serializer;
     }
     
+    /**
+     * Define a join 
+     * 
+     * @param ref
+     * @param target
+     * @return
+     */
     public <T> JoinBuilder<K,T> join(Path<T> ref, Path<T> target) {        
         return new JoinBuilder<K,T>(queryMixin, ref, target);
     }
     
+    /**
+     * Define a constraint for an embedded object
+     * 
+     * @param collection
+     * @param target
+     * @return
+     */
     public <T> AnyEmbeddedBuilder<K> anyEmbedded(Path<? extends Collection<T>> collection, Path<T> target) {
         return new AnyEmbeddedBuilder<K>(queryMixin, collection);
     }

@@ -22,7 +22,7 @@ import com.mysema.query.types.Ops;
 /**
  * OracleTemplates is an SQL dialect for Oracle
  *
- * tested with Oracle 10g XE
+ * <p>tested with Oracle 10g XE</p>
  *
  * @author tiwe
  */

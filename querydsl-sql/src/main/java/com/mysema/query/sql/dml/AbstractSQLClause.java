@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.mysema.query.QueryException;
+import com.mysema.query.dml.DMLClause;
 import com.mysema.query.sql.Configuration;
 import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Path;
@@ -31,10 +32,13 @@ import com.mysema.query.types.expr.Param;
  * @author tiwe
  *
  */
-public class AbstractSQLClause {
+public abstract class AbstractSQLClause<C extends AbstractSQLClause<C>> implements DMLClause<C> {
     
     protected final Configuration configuration;
     
+    /**
+     * @param configuration
+     */
     public AbstractSQLClause(Configuration configuration) {
         this.configuration = configuration;
     }

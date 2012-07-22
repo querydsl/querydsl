@@ -33,8 +33,8 @@ import com.mysema.query.types.Ops;
 import com.mysema.query.types.Path;
 
 /**
- * NativeSQLSerializer extends the SQLSerializer to extract referenced entity paths and change some
- * serialization formats 
+ * NativeSQLSerializer extends the SQLSerializer class to extract referenced entity paths and change 
+ * some serialization formats 
  * 
  * @author tiwe
  *

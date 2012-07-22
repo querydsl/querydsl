@@ -19,6 +19,17 @@ import com.mysema.query.types.Expression;
 
 /**
  * Tuple defines an interface for generic query result projection
+ * 
+ * <p>Usage example:</p>
+ * <pre>
+ * {@code 
+ * List<Tuple> result = query.from(employee).list(new QTuple(employee.firstName, employee.lastName));
+ * for (Tuple row : result) {
+ *     System.out.println("firstName " + row.get(employee.firstName));
+ *     System.out.println("lastName " + row.get(employee.lastName)); 
+ * }
+ * } 
+ * </pre>
  *
  * @author tiwe
  *

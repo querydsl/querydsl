@@ -27,6 +27,8 @@ import java.util.jar.JarFile;
 import java.util.regex.Pattern;
 
 /**
+ * ClassPathUtils provides classpath scanning functionality
+ * 
  * @author tiwe
  *
  */
@@ -57,7 +59,8 @@ public final class ClassPathUtils {
         return classes;
     }
 
-    private static void scanDirectory(ClassLoader classLoader, String pkg, Set<Class<?>> classes, URL url, String packageName) throws IOException {
+    private static void scanDirectory(ClassLoader classLoader, String pkg, Set<Class<?>> classes, 
+            URL url, String packageName) throws IOException {
         Deque<File> files = new ArrayDeque<File>();
         String packagePath;
         try {
@@ -86,14 +89,16 @@ public final class ClassPathUtils {
         }
     }
 
-    private static void scanJar(ClassLoader classLoader, Set<Class<?>> classes, URL url, String packagePath) throws IOException {
+    private static void scanJar(ClassLoader classLoader, Set<Class<?>> classes, URL url, 
+            String packagePath) throws IOException {
         String[] fileAndPath = JAR_URL_SEPARATOR.split(url.getFile().substring(5));
         JarFile jarFile = new JarFile(fileAndPath[0]);
         try {
             Enumeration<JarEntry> entries = jarFile.entries();
             while (entries.hasMoreElements()) {
                 JarEntry entry = entries.nextElement();            
-                if (entry.getName().endsWith(".class") && entry.getName().startsWith(packagePath) && entry.getName().startsWith(fileAndPath[1].substring(1))) {
+                if (entry.getName().endsWith(".class") && entry.getName().startsWith(packagePath) 
+                        && entry.getName().startsWith(fileAndPath[1].substring(1))) {
                     String className = entry.getName().substring(0, entry.getName().length()-6).replace('/', '.');
                     Class<?> cl = safeClassForName(classLoader, className);
                     if (cl != null) {

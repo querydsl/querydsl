@@ -188,14 +188,34 @@ public final class Alias {
     
     //CHECKSTYLE:ON
 
+    /**
+     * Create a new alias proxy of the given type
+     * 
+     * @param cl
+     * @return
+     */
     public static <A> A alias(Class<A> cl) {
         return alias(cl, CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, cl.getSimpleName()));
     }
 
+    /**
+     * Create a new alias proxy of the given type for the given expression
+     * 
+     * @param cl
+     * @param expr
+     * @return
+     */
     public static <A> A alias(Class<A> cl, Expression<? extends A> expr) {
         return aliasFactory.createAliasForExpr(cl, expr);
     }
 
+    /**
+     * Create a new alias proxy of the given type for the given variable
+     * 
+     * @param cl
+     * @param var
+     * @return
+     */
     public static <A> A alias(Class<A> cl, String var) {
         return aliasFactory.createAliasForVariable(cl, var);
     }

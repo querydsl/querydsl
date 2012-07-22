@@ -36,6 +36,11 @@ public class GroupByBuilder<K> {
 
     private final Expression<K> key;
     
+    /**
+     * Create a new GroupByBuilder for the given key expression
+     * 
+     * @param key
+     */
     public GroupByBuilder(Expression<K> key) {
         this.key = key;
     }

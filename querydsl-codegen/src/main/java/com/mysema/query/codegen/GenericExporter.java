@@ -61,6 +61,32 @@ import com.mysema.util.ClassPathUtils;
 import com.mysema.util.ReflectionUtils;
 
 /**
+ * GenericExporter provides query type serialization logic for cases where APT annotation processors 
+ * can't be used. GenericExporter scans the classpath for classes annotated with specified annotations 
+ * in specific packages and mirrors them into Querydsl expression types.
+ * 
+ * <p>Example with Querydsl annotations: </p>
+ * <pre>
+ * {@code
+ * GenericExporter exporter = new GenericExporter();
+ * exporter.setTargetFolder(new File("target/generated-sources/java"));
+ * exporter.export(com.example.domain.Entity.class.getPackage());}  
+ * </pre>
+ * 
+ * <p>Example with JPA annotations:</p>
+ * <pre>
+ * {@code
+ * GenericExporter exporter = new GenericExporter();
+ * exporter.setKeywords(Keywords.JPA);
+ * exporter.setEntityAnnotation(Entity.class);
+ * exporter.setEmbeddableAnnotation(Embeddable.class);
+ * exporter.setEmbeddedAnnotation(Embedded.class);        
+ * exporter.setSupertypeAnnotation(MappedSuperclass.class);
+ * exporter.setSkipAnnotation(Transient.class);
+ * exporter.setTargetFolder(new File("target/generated-sources/java"));
+ * exporter.export(com.example.domain.Entity.class.getPackage());}
+ * </pre>
+ * 
  * @author tiwe
  *
  */
@@ -113,6 +139,13 @@ public class GenericExporter {
     
     private final ClassLoader classLoader;
     
+    /**
+     * Create a GenericExporter instance using the given classloader and charset for serializing 
+     * source files
+     * 
+     * @param classLoader
+     * @param charset
+     */
     public GenericExporter(ClassLoader classLoader, Charset charset) {
         this.classLoader = classLoader;
         this.charset = charset;
@@ -120,18 +153,36 @@ public class GenericExporter {
         stopClasses.add(Enum.class);        
     }
     
+    /**
+     * Create a GenericExporter instance using the given classloader and default charset
+     * 
+     * @param classLoader
+     */
     public GenericExporter(ClassLoader classLoader) {
         this(classLoader, Charset.defaultCharset());
     }
     
+    /**
+     * Create a GenericExporter instance using the context classloader and the given charset
+     * 
+     * @param charset
+     */
     public GenericExporter(Charset charset) {
         this(Thread.currentThread().getContextClassLoader(), charset);
     }    
     
+    /**
+     * Create a GenericExporter instance using the context classloader and default charset
+     */
     public GenericExporter() {
         this(Thread.currentThread().getContextClassLoader(), Charset.defaultCharset());
     }
     
+    /**
+     * Export the given packages
+     * 
+     * @param packages
+     */
     public void export(Package... packages) {
         String[] pkgs = new String[packages.length];
         for (int i = 0; i < packages.length; i++) {
@@ -140,11 +191,21 @@ public class GenericExporter {
         export(pkgs);
     }
     
+    /**
+     * Export the given packages
+     * 
+     * @param packages
+     */
     public void export(String... packages){
         scanPackages(packages);
         innerExport();
     }
         
+    /**
+     * Export the given classes
+     * 
+     * @param classes
+     */
     public void export(Class<?>...classes) {
         for (Class<?> cl : classes) {
             handleClass(cl);
@@ -441,69 +502,149 @@ public class GenericExporter {
         }
     }
 
+    /**
+     * Set the entity annotation
+     * 
+     * @param entityAnnotation
+     */
     public void setEntityAnnotation(Class<? extends Annotation> entityAnnotation) {
         this.entityAnnotation = entityAnnotation;
     }
 
+    /**
+     * Set the supertype annotation
+     * 
+     * @param supertypeAnnotation
+     */
     public void setSupertypeAnnotation(
             Class<? extends Annotation> supertypeAnnotation) {
         this.supertypeAnnotation = supertypeAnnotation;
     }
 
+    /**
+     * Set the embeddable annotation
+     * 
+     * @param embeddableAnnotation
+     */
     public void setEmbeddableAnnotation(
             Class<? extends Annotation> embeddableAnnotation) {
         this.embeddableAnnotation = embeddableAnnotation;
     }
 
+    /**
+     * Set the embedded annotation
+     * 
+     * @param embeddedAnnotation
+     */
     public void setEmbeddedAnnotation(Class<? extends Annotation> embeddedAnnotation) {
         this.embeddedAnnotation = embeddedAnnotation;
     }
 
+    /**
+     * Set the skip annotation
+     * 
+     * @param skipAnnotation
+     */
     public void setSkipAnnotation(Class<? extends Annotation> skipAnnotation) {
         this.skipAnnotation = skipAnnotation;
     }
 
+    /**
+     * Set the target folder for generated sources
+     * 
+     * @param targetFolder
+     */
     public void setTargetFolder(File targetFolder) {
         this.targetFolder = targetFolder;
     }
 
+    /**
+     * Set the serializer class to be used
+     * 
+     * @param serializerClass
+     */
     public void setSerializerClass(Class<? extends Serializer> serializerClass) {
         codegenModule.bind(serializerClass);
         this.serializerClass = serializerClass;
     }
     
+    /**
+     * Set the typemappings class to be used
+     * 
+     * @param typeMappingsClass
+     */
     public void setTypeMappingsClass(Class<? extends TypeMappings> typeMappingsClass) {
         codegenModule.bind(TypeMappings.class, typeMappingsClass);
     }
 
+    /**
+     * Set whether Scala sources are generated
+     * 
+     * @param createScalaSources
+     */
     public void setCreateScalaSources(boolean createScalaSources) {
         this.createScalaSources = createScalaSources;
     }
     
+    /**
+     * Set the keywords to be used
+     * 
+     * @param keywords
+     */
     public void setKeywords(Collection<String> keywords) {
         codegenModule.bind(CodegenModule.KEYWORDS, keywords);
     }
     
+    /**
+     * Set the name prefix
+     * 
+     * @param prefix
+     */
     public void setNamePrefix(String prefix) {
         codegenModule.bind(CodegenModule.PREFIX, prefix);
     }
     
+    /**
+     * Set the name suffix
+     * 
+     * @param suffix
+     */
     public void setNameSuffix(String suffix) {
         codegenModule.bind(CodegenModule.SUFFIX, suffix);
     }
 
+    /**
+     * Set the package suffix
+     * 
+     * @param suffix
+     */
     public void setPackageSuffix(String suffix) {
         codegenModule.bind(CodegenModule.PACKAGE_SUFFIX, suffix);
     }
     
+    /**
+     * Set whether fields are handled (default true)
+     * 
+     * @param b
+     */
     public void setHandleFields(boolean b) {
         handleFields = b;
     }
     
+    /**
+     * Set whether fields are handled (default true)
+     * 
+     * @param b
+     */
     public void setHandleMethods(boolean b) {
         handleMethods = b;
     }
     
+    /**
+     * Add a stop class to be used (default Object.class and Enum.class)
+     * 
+     * @param cl
+     */
     public void addStopClass(Class<?> cl) {
         stopClasses.add(cl);
     }

@@ -29,7 +29,17 @@ import com.mysema.query.types.Predicate;
 import com.mysema.query.types.Visitor;
 
 /**
- * BooleanBuilder is a cascading builder for {@link Predicate} expressions.
+ * BooleanBuilder is a cascading builder for {@link Predicate} expressions. BooleanBuilder is a mutable
+ * Expression implementation.
+ * 
+ * <p>Usage example:</p>
+ * <pre>
+ * QEmployee employee = QEmployee.employee;
+ * BooleanBuilder builder = new BooleanBuilder();
+ * for (String name : names) {
+ *     builder.or(employee.name.equalsIgnoreCase(name));      
+ * }
+ * </pre>
  *
  * @author tiwe
  */
@@ -40,8 +50,16 @@ public final class BooleanBuilder implements Predicate, Cloneable, Operation<Boo
     @Nullable
     private Predicate predicate;
 
+    /**
+     * Create an empty BooleanBuilder
+     */
     public BooleanBuilder() {  }
 
+    /**
+     * Create a BooleanBuilder with the given initial value
+     * 
+     * @param initial
+     */
     public BooleanBuilder(Predicate initial) {
         predicate = (Predicate) initial.accept(ExtractorVisitor.DEFAULT, null);
     }

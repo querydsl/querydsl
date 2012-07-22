@@ -69,10 +69,22 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
         }
     }
 
+    /**
+     * Get a constant for the given boolean value
+     * 
+     * @param b
+     * @return
+     */
     public static Constant<Boolean> create(boolean b) {
         return b ? TRUE : FALSE;
     }
     
+    /**
+     * Get a constant for the given byte value
+     * 
+     * @param i
+     * @return
+     */
     public static Constant<Byte> create(byte i) {
         if (i >= 0 && i < CACHE_SIZE) {
             return BYTES[i];
@@ -81,6 +93,12 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
         }
     }
     
+    /**
+     * Get a constant for the given char value
+     * 
+     * @param i
+     * @return
+     */
     public static Constant<Character> create(char i) {
         if (i >= 0 && i < CACHE_SIZE) {
             return CHARACTERS[i];
@@ -89,6 +107,12 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
         }
     }
 
+    /**
+     * Get a constant for the given int value
+     * 
+     * @param i
+     * @return
+     */
     public static Constant<Integer> create(int i) {
         if (i >= 0 && i < CACHE_SIZE) {
             return INTEGERS[i];
@@ -97,6 +121,12 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
         }
     }
 
+    /**
+     * Get a constant for the given long value
+     * 
+     * @param i
+     * @return
+     */
     public static Constant<Long> create(long i) {
         if (i >= 0 && i < CACHE_SIZE) {
             return LONGS[(int)i];
@@ -105,6 +135,12 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
         }
     }
 
+    /**
+     * Create a constant for the given short value
+     * 
+     * @param i
+     * @return
+     */
     public static Constant<Short> create(short i) {
         if (i >= 0 && i < CACHE_SIZE) {
             return SHORTS[i];
@@ -113,10 +149,23 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
         }
     }
     
+    /**
+     * Create a constant for the given string 
+     * 
+     * @param str
+     * @return
+     */
     public static Constant<String> create(String str) {
         return create(str, false);
     }
 
+    /**
+     * Create a constant for the given string 
+     * 
+     * @param str
+     * @param populateCache whether to add the created constant to the cache
+     * @return
+     */
     public static Constant<String> create(String str, boolean populateCache) {
         if (STRINGS.containsKey(str)) {
             return STRINGS.get(str);
@@ -129,16 +178,33 @@ public class ConstantImpl<T> extends ExpressionBase<T> implements Constant<T> {
         }
     }
     
+    /**
+     * Create a constant for the given class
+     * 
+     * @param constant
+     * @return
+     */
     public static <T> Constant<Class<T>> create(Class<T> constant) {
         return new ConstantImpl<Class<T>>(constant);
     }
 
     private final T constant;
     
+    /**
+     * Create a new Constant for the given object
+     * 
+     * @param constant
+     */
     public ConstantImpl(T constant) {
         this((Class)constant.getClass(), constant);
     }
     
+    /**
+     * Create a new Constant of the given type for the given object
+     * 
+     * @param type
+     * @param constant
+     */
     public ConstantImpl(Class<T> type, T constant) {
         super(type);
         this.constant = constant;

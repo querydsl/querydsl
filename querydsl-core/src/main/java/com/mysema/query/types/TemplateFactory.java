@@ -34,6 +34,9 @@ public class TemplateFactory {
 
     private static final Pattern elementPattern = Pattern.compile("\\{%?%?\\d+[slu%]?%?\\}");
 
+    /**
+     * Default instance 
+     */
     public static final TemplateFactory DEFAULT = new TemplateFactory('\\');
 
     private final Map<String,Template> cache = new HashMap<String,Template>();

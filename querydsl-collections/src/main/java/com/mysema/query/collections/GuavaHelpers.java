@@ -11,6 +11,9 @@ import com.mysema.query.types.PathExtractor;
 import com.mysema.query.types.Predicate;
 
 /**
+ * GuavaHelpers provides functionality to wrap Querydsl {@link Predicate} instances to Guava predicates
+ * and Querydsl {@link Expression} instances to Guava functions 
+ * 
  * @author tiwe
  *
  */

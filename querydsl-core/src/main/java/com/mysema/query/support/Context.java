@@ -19,6 +19,12 @@ import java.util.List;
 import com.mysema.query.types.EntityPath;
 import com.mysema.query.types.Path;
 
+/**
+ * Context is used in {@link CollectionAnyVisitor} as the visitor context
+ * 
+ * @author tiwe
+ *
+ */
 public class Context {
     
     public boolean replace;

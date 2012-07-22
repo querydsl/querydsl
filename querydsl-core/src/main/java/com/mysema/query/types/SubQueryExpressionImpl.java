@@ -16,7 +16,7 @@ package com.mysema.query.types;
 import com.mysema.query.QueryMetadata;
 
 /**
- * SubQueryExpressionImpl is the default implementation of the SubQueryExpression interface
+ * SubQueryExpressionImpl is the default implementation of the {@link SubQueryExpression} interface
  *
  * @author tiwe
  *

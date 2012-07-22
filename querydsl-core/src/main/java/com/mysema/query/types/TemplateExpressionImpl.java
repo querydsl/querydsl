@@ -19,7 +19,7 @@ import java.util.List;
 import com.mysema.commons.lang.Assert;
 
 /**
- * Default implementation of the TemplateExpression interface
+ * Default implementation of the {@link TemplateExpression} interface
  * 
  * @author tiwe
  *

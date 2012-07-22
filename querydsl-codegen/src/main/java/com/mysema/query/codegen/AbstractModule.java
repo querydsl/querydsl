@@ -23,6 +23,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
+ * AbstractModule provides a base class for annotation based dependency injection
+ * 
  * @author tiwe
  *
  */

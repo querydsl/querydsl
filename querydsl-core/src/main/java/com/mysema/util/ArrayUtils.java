@@ -16,6 +16,8 @@ package com.mysema.util;
 import java.lang.reflect.Array;
 
 /**
+ * ArrayUtils provides array related utility functionality
+ * 
  * @author tiwe
  *
  */

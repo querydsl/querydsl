@@ -17,6 +17,8 @@ import com.mysema.query.types.Operator;
 import com.mysema.query.types.OperatorImpl;
 
 /**
+ * Mongodb specific operators
+ * 
  * @author tiwe
  *
  */

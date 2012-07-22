@@ -35,7 +35,7 @@ import com.mysema.query.types.Order;
 import com.mysema.query.types.OrderSpecifier;
 
 /**
- * Default implementation of the QueryEngine interface
+ * Default implementation of the {@link QueryEngine} interface
  *
  * @author tiwe
  *

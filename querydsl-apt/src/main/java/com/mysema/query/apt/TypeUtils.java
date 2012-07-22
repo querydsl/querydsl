@@ -27,6 +27,8 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeMirror;
 
 /**
+ * Various utility classes for {@link Element} and {@link AnnotationMirror} handling
+ * 
  * @author tiwe
  *
  */

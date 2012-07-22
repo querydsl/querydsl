@@ -22,7 +22,7 @@ import org.hibernate.ScrollableResults;
 import com.mysema.commons.lang.CloseableIterator;
 
 /**
- * ScrollableResultsIterator is an CloseableIterator adapter for ScrollableResults
+ * ScrollableResultsIterator is an {@link CloseableIterator} adapter for ScrollableResults
  *
  * @author tiwe
  *

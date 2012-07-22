@@ -24,34 +24,42 @@ public enum PathType implements Operator<Path<?>> {
      * Indexed array access (array[i])
      */
     ARRAYVALUE,
+    
     /**
      * Indexed array access with constant (array[i])
      */
     ARRAYVALUE_CONSTANT,    
+    
     /**
      * Access of any element in a collection
      */
     COLLECTION_ANY,
+    
     /**
      * Indexed list access (list.get(index))
      */
     LISTVALUE,
+    
     /**
      * Indexed list access with constant (list.get(index))
      */
     LISTVALUE_CONSTANT,
+    
     /**
      * Map value access (map.get(key))
      */
     MAPVALUE,
+    
     /**
      * Map value access with constant (map.get(key))
      */
     MAPVALUE_CONSTANT,
+    
     /**
      * Property of the parent
      */
     PROPERTY,
+    
     /**
      * Root path
      */

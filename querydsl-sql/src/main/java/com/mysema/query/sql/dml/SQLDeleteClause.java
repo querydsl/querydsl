@@ -45,7 +45,7 @@ import com.mysema.query.types.expr.Param;
  * @author tiwe
  *
  */
-public class SQLDeleteClause extends AbstractSQLClause implements DeleteClause<SQLDeleteClause> {
+public class SQLDeleteClause extends AbstractSQLClause<SQLDeleteClause> implements DeleteClause<SQLDeleteClause> {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLDeleteClause.class);
 

@@ -23,7 +23,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 
 /**
- * CollectionExpressionBase is an abstract base class for CollectionExpression implementations
+ * CollectionExpressionBase is an abstract base class for {@link CollectionExpression} implementations
  *
  * @author tiwe
  *

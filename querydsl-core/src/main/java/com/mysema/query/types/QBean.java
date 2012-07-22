@@ -26,6 +26,17 @@ import com.mysema.util.ReflectionUtils;
 
 /**
  * QBean is a JavaBean populating projection type
+ * 
+ * <p>Example</p>
+ * 
+ * <pre>
+ * {@code
+ * QEmployee employee = QEmployee.employee;
+ * List<EmployeeInfo> result = query.from(employee)
+ *      .where(employee.valid.eq(true))
+ *      .list(new QBean<EmployeeInfo>(EmployeeInfo.class, employee.firstName, employee.lastName));
+ * }     
+ * </pre>
  *
  * @author tiwe
  *
@@ -110,38 +121,90 @@ public class QBean<T> extends ExpressionBase<T> implements FactoryExpression<T> 
 
     private final boolean fieldAccess;
 
+    /**
+     * Create a new QBean instance
+     * 
+     * @param type
+     * @param args
+     */
     @SuppressWarnings("unchecked")
     public QBean(Path<T> type, Expression<?>... args) {
         this((Class)type.getType(), false, args);
     }
 
+    /**
+     * Create a new QBean instance
+     * 
+     * @param type
+     * @param bindings
+     */
     @SuppressWarnings("unchecked")
     public QBean(Path<T> type, Map<String, ? extends Expression<?>> bindings) {
         this((Class)type.getType(), false, bindings);
     }
 
+    /**
+     * Create a new QBean instance
+     * 
+     * @param type
+     * @param fieldAccess
+     * @param args
+     */
     @SuppressWarnings("unchecked")
     public QBean(Path<T> type, boolean fieldAccess, Expression<?>... args) {
         this((Class)type.getType(), fieldAccess, args);
     }
 
+    /**
+     * Create a new QBean instance
+     * 
+     * @param type
+     * @param fieldAccess
+     * @param bindings
+     */
     @SuppressWarnings("unchecked")
     public QBean(Path<T> type, boolean fieldAccess, Map<String, ? extends Expression<?>> bindings) {
         this((Class)type.getType(), fieldAccess, bindings);
     }
 
+    /**
+     * Create a new QBean instance
+     * 
+     * @param type
+     * @param bindings
+     */
     public QBean(Class<T> type, Map<String, ? extends Expression<?>> bindings) {
         this(type, false, bindings);
     }
 
+    /**
+     * Create a new QBean instance
+     * 
+     * @param type
+     * @param args
+     */
     public QBean(Class<T> type, Expression<?>... args) {
         this(type, false, args);
     }
 
+    /**
+     * Create a new QBean instance
+     * 
+     * @param type
+     * @param fieldAccess
+     * @param args
+     */
     public QBean(Class<T> type, boolean fieldAccess, Expression<?>... args) {
         this(type, fieldAccess, createBindings(args));
     }
 
+    /**
+     * Create a new QBean instance
+     * 
+     * @param type
+     * @param fieldAccess
+     * @param bindings
+     */
     public QBean(Class<T> type, boolean fieldAccess, Map<String, ? extends Expression<?>> bindings) {
         super(type);
         this.bindings = bindings;

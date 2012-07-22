@@ -38,10 +38,12 @@ import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.TimePath;
 
 /**
+ * DefaultPathFactory is the default implementation of the {@link PathFactory} interface
+ * 
  * @author tiwe
  *
  */
-public class DefaultPathFactory implements PathFactory{
+public class DefaultPathFactory implements PathFactory {
 
     @Override
     public <T> Path<T[]> createArrayPath(Class<T[]> arrayType, PathMetadata<?> metadata) {

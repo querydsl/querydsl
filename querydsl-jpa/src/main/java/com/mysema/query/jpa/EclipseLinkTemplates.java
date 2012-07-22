@@ -16,7 +16,7 @@ package com.mysema.query.jpa;
 import com.mysema.query.types.Ops;
 
 /**
- * NOTE : this is under construction
+ * EclipseLinkTemplates extends JPQLTemplates with EclipseLink specific extensions
  *
  * @author tiwe
  *
@@ -33,21 +33,7 @@ public class EclipseLinkTemplates extends JPQLTemplates {
     
     public EclipseLinkTemplates(char escape) {
         super(escape);        
-        add(Ops.STRING_CAST, "cast({0} as varchar)");
-        
-        // EclipseLink specific (works at least with Derby, HSQLDB and H2)
-//        add(Ops.DateTimeOps.MILLISECOND, "0"); // NOT SUPPORTED
-//        add(Ops.DateTimeOps.SECOND, "func('second',{0})");
-//        add(Ops.DateTimeOps.MINUTE, "func('minute',{0})");
-//        add(Ops.DateTimeOps.HOUR, "func('hour',{0})");
-//        add(Ops.DateTimeOps.DAY_OF_WEEK, "func('dayofweek',{0})");
-//        add(Ops.DateTimeOps.DAY_OF_MONTH, "func('day',{0})");
-//        add(Ops.DateTimeOps.DAY_OF_YEAR, "func('dayofyear',{0})");
-//        add(Ops.DateTimeOps.MONTH, "func('month',{0})");
-//        add(Ops.DateTimeOps.WEEK, "func('week',{0})");
-//        add(Ops.DateTimeOps.YEAR, "func('year',{0})");
-//        add(Ops.DateTimeOps.YEAR_MONTH, "func('year',{0}) * 100 + func('month',{0})");
-        
+        add(Ops.STRING_CAST, "cast({0} as varchar)");        
         add(Ops.CHAR_AT, "substring({0},{1}+1,1)");
 
     }

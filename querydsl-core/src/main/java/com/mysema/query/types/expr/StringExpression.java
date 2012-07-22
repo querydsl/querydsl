@@ -22,7 +22,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 
 /**
- * StringExpression represents String expressions
+ * StringExpression represents {@link java.lang.String} expressions
  *
  * @author tiwe
  * @see java.lang.String

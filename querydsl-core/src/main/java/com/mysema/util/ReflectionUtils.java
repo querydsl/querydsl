@@ -32,6 +32,8 @@ import javax.annotation.Nullable;
 
 
 /**
+ * ReflectionUtils provides Reflection related functionality
+ * 
  * @author tiwe
  *
  */

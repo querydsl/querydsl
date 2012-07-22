@@ -17,6 +17,8 @@ import com.mysema.query.codegen.EntityType;
 import com.mysema.util.JavaSyntaxUtils;
 
 /**
+ * AbstractNamingStrategy is an abstract base class for NamingStrategy implementations
+ * 
  * @author tiwe
  *
  */

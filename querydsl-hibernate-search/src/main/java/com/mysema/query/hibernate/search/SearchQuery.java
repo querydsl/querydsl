@@ -53,6 +53,12 @@ public class SearchQuery<T> implements SimpleQuery<SearchQuery<T>>, SimpleProjec
 
     private final FullTextSession session;
 
+    /**
+     * Create a new SearchQuery instance
+     * 
+     * @param session
+     * @param path
+     */
     public SearchQuery(FullTextSession session, EntityPath<T> path) {
         this.queryMixin = new QueryMixin<SearchQuery<T>>(this);
         this.session = Assert.notNull(session,"session");

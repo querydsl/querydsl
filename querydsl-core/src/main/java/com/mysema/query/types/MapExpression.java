@@ -16,7 +16,7 @@ package com.mysema.query.types;
 import java.util.Map;
 
 /**
- * MapExpression represents java.util.Map typed expressions
+ * MapExpression represents {@link java.util.Map} typed expressions
  *
  * @author tiwe
  *

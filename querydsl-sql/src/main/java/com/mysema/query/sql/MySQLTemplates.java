@@ -20,7 +20,7 @@ import com.mysema.query.types.Ops;
 /**
  * MySQLTemplates is an SQL dialect for MySQL
  *
- * tested with MySQL CE 5.1
+ * <p>tested with MySQL CE 5.1 and 5.5</p>
  *
  * @author tiwe
  *

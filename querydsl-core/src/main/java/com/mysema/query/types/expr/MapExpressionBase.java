@@ -23,7 +23,7 @@ import com.mysema.query.types.MapExpression;
 import com.mysema.query.types.Ops;
 
 /**
- * MapExpressionBase is an abstract base class for MapExpression implementations
+ * MapExpressionBase is an abstract base class for {@link MapExpression} implementations
  *
  * @author tiwe
  *

@@ -24,12 +24,13 @@ import java.util.Set;
 import com.mysema.codegen.CodeWriter;
 
 /**
- * BeanSerializer is a Serializer implementation which serializes EntityType instances into JavaBean classes
+ * GroovyBeanSerializer is a {@link Serializer} implementation which serializes {@link EntityType} 
+ * instances into Groovy classes
  *
  * @author tiwe
  *
  */
-public class GroovyBeanSerializer implements Serializer{
+public class GroovyBeanSerializer implements Serializer {
     
     private final boolean propertyAnnotations;
     
@@ -37,18 +38,37 @@ public class GroovyBeanSerializer implements Serializer{
     
     private boolean printSupertype = false;
 
+    /**
+     * Create a new GroovyBeanSerializer instance
+     */
     public GroovyBeanSerializer() {
         this(true, " is a Querydsl bean type");
     }
 
+    /**
+     * Create a new GroovyBeanSerializer instance
+     * 
+     * @param javadocSuffix
+     */
     public GroovyBeanSerializer(String javadocSuffix) {
         this(true, javadocSuffix);
     }
     
+    /**
+     * Create a new GroovyBeanSerializer instance
+     * 
+     * @param propertyAnnotations
+     */
     public GroovyBeanSerializer(boolean propertyAnnotations) {
         this(propertyAnnotations, " is a Querydsl bean type");
     }
 
+    /**
+     * Create a new GroovyBeanSerializer instance
+     * 
+     * @param propertyAnnotations
+     * @param javadocSuffix
+     */
     public GroovyBeanSerializer(boolean propertyAnnotations, String javadocSuffix) {
         this.propertyAnnotations = propertyAnnotations;
         this.javadocSuffix = javadocSuffix;

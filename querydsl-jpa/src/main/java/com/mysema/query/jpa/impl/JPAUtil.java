@@ -22,7 +22,7 @@ import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.expr.Param;
 
 /**
- * Utility methods for JPA
+ * JPAUtil provides static utility methods for JPA
  *
  * @author tiwe
  *

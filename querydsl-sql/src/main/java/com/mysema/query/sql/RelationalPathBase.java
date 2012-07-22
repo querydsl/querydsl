@@ -26,7 +26,7 @@ import com.mysema.query.types.PathMetadataFactory;
 import com.mysema.query.types.path.BeanPath;
 
 /**
- * RelationalPathBase is a base class for RelationPath implements
+ * RelationalPathBase is a base class for {@link RelationalPath} implementations
  * 
  * @author tiwe
  *

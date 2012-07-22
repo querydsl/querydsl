@@ -29,7 +29,7 @@ import com.mysema.query.types.Path;
  *
  * @param <Q>
  */
-public class AbstractJDOQLSubQuery<Q extends AbstractJDOQLSubQuery<Q>> extends DetachableQuery<Q>{
+public class AbstractJDOQLSubQuery<Q extends AbstractJDOQLSubQuery<Q>> extends DetachableQuery<Q> {
 
     public AbstractJDOQLSubQuery() {
         this(new DefaultQueryMetadata().noValidate());

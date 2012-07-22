@@ -29,7 +29,8 @@ import com.mysema.query.apt.DefaultConfiguration;
 import com.mysema.query.codegen.Keywords;
 
 /**
- * AnnotationProcessor for JDO which takes @PersistenceCapable, @EmbeddedOnly and @NotPersistent into account
+ * AnnotationProcessor for JDO which takes {@link PersistenceCapable}, {@link EmbeddedOnly} and 
+ * {@link NotPersistent} into account
  * 
  * @author tiwe
  *

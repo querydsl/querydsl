@@ -18,7 +18,7 @@ import com.mysema.query.types.Ops;
 import com.mysema.query.types.PathType;
 
 /**
- * ColQueryTemplates extends JavaTemplates to add Java syntax specific operation
+ * ColQueryTemplates extends {@link JavaTemplates} to add module specific operation
  * templates.
  *
  * @author tiwe

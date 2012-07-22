@@ -20,7 +20,7 @@ import org.hibernate.Session;
 import com.mysema.commons.lang.Assert;
 
 /**
- * DefaultSessionHolder is the default implementation of the SessionHolder interface
+ * DefaultSessionHolder is the default implementation of the {@link SessionHolder} interface
  * 
  * @author tiwe
  *

@@ -25,7 +25,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 
 /**
- * JDOQLQueryMixin extends QueryMixin 
+ * JDOQLQueryMixin extends {@link QueryMixin} to provide module specific extensions 
  * 
  * @author tiwe
  *

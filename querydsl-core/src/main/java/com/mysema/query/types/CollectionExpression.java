@@ -16,7 +16,7 @@ package com.mysema.query.types;
 import java.util.Collection;
 
 /**
- * CollectionExpression represents java.util.Collection typed expressions
+ * CollectionExpression represents {@link java.util.Collection} typed expressions
  *
  * @author tiwe
  *

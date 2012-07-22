@@ -14,6 +14,8 @@
 package com.mysema.query.maven;
 
 /**
+ * MetadataExportMojo is a goal for MetaDataExporter usage and is bound to the generate-sources phased
+ * 
  * @phase generate-sources
  * @goal export
  *

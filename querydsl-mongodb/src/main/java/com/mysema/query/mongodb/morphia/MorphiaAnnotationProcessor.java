@@ -29,7 +29,7 @@ import com.mysema.query.apt.DefaultConfiguration;
 import com.mysema.query.mongodb.Point;
 
 /**
- * Annotation processor to create Querydsl query types for Morphia annoated classes
+ * Annotation processor to create Querydsl query types for Morphia annotated classes
  *
  * @author tiwe
  *

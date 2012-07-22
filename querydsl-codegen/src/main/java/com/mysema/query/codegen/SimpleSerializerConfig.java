@@ -16,7 +16,7 @@ package com.mysema.query.codegen;
 import com.mysema.query.annotations.Config;
 
 /**
- * SimpleSerializerConfig is the default implementation of the SerializerConfig interface
+ * SimpleSerializerConfig is the default implementation of the {@link SerializerConfig} interface
  * 
  * @author tiwe
  *

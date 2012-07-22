@@ -57,10 +57,21 @@ public class EntityType extends TypeAdapter implements Comparable<EntityType> {
 
     private String uncapSimpleName;
     
+    /**
+     * Create a new EntityType instance for the given type
+     * 
+     * @param type
+     */
     public EntityType(Type type) {
         this(type, new HashSet<Supertype>());
     }
     
+    /**
+     * Create a new EntityType instance for the given type and superTypes
+     * 
+     * @param type
+     * @param superTypes
+     */
     public EntityType(Type type, Set<Supertype> superTypes) {
         super(type);
         this.uncapSimpleName = StringUtils.uncapitalize(type.getSimpleName());

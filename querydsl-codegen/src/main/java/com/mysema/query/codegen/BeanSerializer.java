@@ -30,7 +30,8 @@ import com.mysema.codegen.model.Types;
 import com.mysema.util.BeanUtils;
 
 /**
- * BeanSerializer is a Serializer implementation which serializes EntityType instances into JavaBean classes
+ * BeanSerializer is a {@link Serializer} implementation which serializes {@link EntityType} 
+ * instances into JavaBean classes
  *
  * @author tiwe
  *
@@ -52,18 +53,37 @@ public class BeanSerializer implements Serializer{
     
     private boolean printSupertype = false;
 
+    /**
+     * Create a new BeanSerializer 
+     */
     public BeanSerializer() {
         this(true, " is a Querydsl bean type");
     }
 
+    /**
+     * Create a new BeanSerializer with the given javadoc suffix
+     * 
+     * @param javadocSuffix
+     */
     public BeanSerializer(String javadocSuffix) {
         this(true, javadocSuffix);
     }
     
+    /**
+     * Create a new BeanSerializer 
+     * 
+     * @param propertyAnnotations
+     */
     public BeanSerializer(boolean propertyAnnotations) {
         this(propertyAnnotations, " is a Querydsl bean type");
     }
 
+    /**
+     * Create a new BeanSerializer
+     * 
+     * @param propertyAnnotations
+     * @param javadocSuffix
+     */
     public BeanSerializer(boolean propertyAnnotations, String javadocSuffix) {
         this.propertyAnnotations = propertyAnnotations;
         this.javadocSuffix = javadocSuffix;

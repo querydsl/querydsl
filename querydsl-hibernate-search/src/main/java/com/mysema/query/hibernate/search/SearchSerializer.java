@@ -28,6 +28,12 @@ public class SearchSerializer extends LuceneSerializer{
 
     public static final SearchSerializer DEFAULT = new SearchSerializer(false,true);
 
+    /**
+     * Create a new SearchSerializer instance
+     * 
+     * @param lowerCase
+     * @param splitTerms
+     */
     public SearchSerializer(boolean lowerCase, boolean splitTerms){
         super(lowerCase, splitTerms);
     }

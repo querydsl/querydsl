@@ -19,7 +19,8 @@ import java.util.List;
 import com.mysema.util.ArrayUtils;
 
 /**
- * Utility class to expand FactoryExpression constructor arguments and compress FactoryExpression invocation arguments
+ * Utility class to expand FactoryExpression constructor arguments and compress {@link FactoryExpression} 
+ * invocation arguments
  *
  * @author tiwe
  *

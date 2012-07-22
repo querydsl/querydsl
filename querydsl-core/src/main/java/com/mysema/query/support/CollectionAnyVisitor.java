@@ -44,6 +44,9 @@ import com.mysema.query.types.path.SimplePath;
 import com.mysema.query.types.template.BooleanTemplate;
 
 /**
+ * CollectionAnyVisitor is an expression visitor which transforms any() path expressions which are
+ * often transformed into subqueries
+ * 
  * @author tiwe
  *
  */

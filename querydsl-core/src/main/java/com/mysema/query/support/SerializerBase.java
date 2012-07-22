@@ -42,7 +42,7 @@ import com.mysema.query.types.Templates;
 import com.mysema.query.types.Visitor;
 
 /**
- * SerializerBase is a stub for Serializer implementations
+ * SerializerBase is a stub for Serializer implementations which serialize query metadata to Strings
  *
  * @author tiwe
  */

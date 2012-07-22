@@ -19,7 +19,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 
 /**
- * DslExpression is the base class for DSL expressions, but SimpleExpression is the base class
+ * DslExpression is the base class for DSL expressions, but {@link SimpleExpression} is the base class
  * for scalar Expressions 
  * 
  * @author tiwe

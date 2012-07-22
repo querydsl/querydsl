@@ -17,6 +17,8 @@ import com.mysema.query.QueryMetadata;
 
 
 /**
+ * SerializationContext defines a callback interface for SQLQuery serialization
+ * 
  * @author tiwe
  *
  */

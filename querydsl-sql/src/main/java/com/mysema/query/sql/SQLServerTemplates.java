@@ -23,7 +23,7 @@ import com.mysema.query.types.OrderSpecifier;
 /**
  * SQLServerTemplates is an SQL dialect for Microsoft SQL Server
  *
- * tested with MS SQL Server 2008 Express
+ * <p>tested with MS SQL Server 2008 Express</p>
  *
  * @author tiwe
  *

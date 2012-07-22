@@ -18,7 +18,7 @@ import java.io.IOException;
 import com.mysema.codegen.CodeWriter;
 
 /**
- * Serializer defines a common interface for EntityType serializers
+ * Serializer defines a common interface for {@link EntityType} serializers
  *
  * @author tiwe
  *
@@ -26,7 +26,7 @@ import com.mysema.codegen.CodeWriter;
 public interface Serializer {
 
     /**
-     * Serialize the given EntityType
+     * Serialize the given {@link EntityType}
      *
      * @param type EntityType to serialize
      * @param serializerConfig TODO

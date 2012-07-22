@@ -21,6 +21,8 @@ import com.mysema.codegen.model.Type;
 import com.mysema.query.codegen.QueryTypeFactory;
 
 /**
+ * SQLQueryTypeFactory is a QueryTypeFactory implementation with configuration data from this module
+ * 
  * @author tiwe
  *
  */

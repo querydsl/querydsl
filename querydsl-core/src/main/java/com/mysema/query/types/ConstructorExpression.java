@@ -25,6 +25,17 @@ import com.google.common.primitives.Primitives;
 
 /**
  * ConstructorExpression represents a constructor invocation
+ * 
+ * <p>Example</p>
+ * 
+ * <pre>
+ * {@code
+ * QEmployee employee = QEmployee.employee;
+ * List<EmployeeInfo> result = query.from(employee)
+ *   .where(employee.valid.eq(true))
+ *   .list(ConstructorExpression.create(EmployeeInfo.class, employee.firstName, employee.lastName)); 
+ * }
+ * </pre>
  *
  * @author tiwe
  *

@@ -16,7 +16,7 @@ package com.mysema.query.types;
 import javax.annotation.Nullable;
 
 /**
- * ExpressionBase is the base class for immutable Expression implementations
+ * ExpressionBase is the base class for immutable {@link Expression} implementations
  * 
  * @author tiwe
  *

@@ -27,7 +27,8 @@ import com.mysema.query.types.ParamExpression;
 import com.mysema.query.types.Predicate;
 
 /**
- * SimpleQueryAdapter is an apdater implementation for the SimpleQuery and SimpleProjectabl interfaces
+ * SimpleQueryAdapter is an adapter implementation for the {@link SimpleQuery} and 
+ * {@link SimpleProjectable} interfaces
  *
  * @author tiwe
  *

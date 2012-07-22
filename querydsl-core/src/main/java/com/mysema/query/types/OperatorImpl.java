@@ -21,7 +21,7 @@ import java.util.List;
 import com.mysema.commons.lang.Assert;
 
 /**
- * OperatorImpl is the default implementation of the {@link Operator}  interface
+ * OperatorImpl is the default implementation of the {@link Operator} interface
  */
 public class OperatorImpl<T> implements Operator<T> {
 

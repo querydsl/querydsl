@@ -21,7 +21,7 @@ import com.mysema.query.types.CollectionExpression;
 import com.mysema.query.types.Expression;
 
 /**
- * ListExpression represents java.util.List typed expressions
+ * ListExpression represents {@link java.util.List} typed expressions
  *
  * @author tiwe
  *

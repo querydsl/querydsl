@@ -21,6 +21,17 @@ import com.mysema.query.Tuple;
 
 /**
  * Projection template that allows implementing arbitrary mapping of rows to result objects.
+ * 
+ * <p>Example</p>
+ * 
+ * <pre>
+ * MappingProjection&lt;Pair&lt;String,String&gt;&gt; mapping = new MappingProjection&lt;Pair&lt;String,String&gt;&gt;(Pair.class, str1, str2){
+ *     {@code @Override}
+ *     protected Pair&lt;String, String&gt; map(Tuple row) {
+ *         return Pair.of(row.get(str1), row.get(str2));
+ *     }            
+ * }; 
+ * </pre>
  *
  * @param <T> expression type
  */
@@ -30,12 +41,24 @@ public abstract class MappingProjection<T> extends ExpressionBase<T> implements 
 
     private final QTuple qTuple;
 
+    /**
+     * Create a new MappingProjection instance
+     * 
+     * @param type
+     * @param args
+     */
     @SuppressWarnings("unchecked")
     public MappingProjection(Class<? super T> type, Expression<?>... args) {
         super((Class)type);
         qTuple = new QTuple(args);
     }
 
+    /**
+     * Create a new MappingProjection instance
+     * 
+     * @param type
+     * @param args
+     */
     @SuppressWarnings("unchecked")
     public MappingProjection(Class<? super T> type, Expression<?>[]... args) {
         super((Class)type);

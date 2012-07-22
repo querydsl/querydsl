@@ -34,6 +34,14 @@ public final class SearchResults<T> {
 
     private final List<T> results;
 
+    /**
+     * Create a new SearchResults instance
+     * 
+     * @param results paged results
+     * @param limit used limit
+     * @param offset used offset
+     * @param total total result rows count
+     */
     public SearchResults(List<T> results, @Nullable Long limit, @Nullable Long offset, long total) {
         this.limit = limit != null ? limit : Long.MAX_VALUE;
         this.offset = offset != null ? offset : 0l;
@@ -41,6 +49,13 @@ public final class SearchResults<T> {
         this.results = results;
     }
 
+    /**
+     * Create a new SearchResults instance
+     * 
+     * @param results paged results
+     * @param mod limit and offset
+     * @param total total result rows count
+     */
     public SearchResults(List<T> results, QueryModifiers mod, long total) {
         this(results, mod.getLimit(), mod.getOffset(), total);
     }

@@ -17,8 +17,9 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.TemplateExpressionImpl;
 
-
 /**
+ * Wildcard provides constant Expressions for general wildcard expressions
+ * 
  * @author tiwe
  *
  */

@@ -18,7 +18,7 @@ import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeExtends;
 
 /**
- * TypeResolver provides type resolving funcationlity for resolving generic type variables to concrete types
+ * TypeResolver provides type resolving functionality for resolving generic type variables to concrete types
  * 
  * @author tiwe
  *

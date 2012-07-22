@@ -67,10 +67,11 @@ import com.mysema.query.codegen.Supertype;
 import com.mysema.query.codegen.SupertypeSerializer;
 import com.mysema.query.codegen.TypeFactory;
 import com.mysema.query.codegen.TypeMappings;
-import com.mysema.query.jpa.hibernate.Constants;
 import com.mysema.util.BeanUtils;
 
 /**
+ * HibernateDomainExporter exports Hibernate XML configuration files to Querydsl expression types
+ * 
  * @author tiwe
  *
  */
@@ -109,37 +110,93 @@ public class HibernateDomainExporter {
     
     private final Charset charset;
 
+    /**
+     * Create a new HibernateDomainExporter instance
+     * 
+     * @param targetFolder
+     * @param configuration
+     */
     public HibernateDomainExporter(File targetFolder, Configuration configuration) {
         this("Q", "", targetFolder, SimpleSerializerConfig.DEFAULT, configuration, 
                 Charset.defaultCharset());
     }
 
+    /**
+     * Create a new HibernateDomainExporter instance
+     * 
+     * @param namePrefix
+     * @param targetFolder
+     * @param configuration
+     */
     public HibernateDomainExporter(String namePrefix, File targetFolder, Configuration configuration) {
         this(namePrefix, "", targetFolder, SimpleSerializerConfig.DEFAULT, configuration, 
                 Charset.defaultCharset());
     }
     
+    /**
+     * Create a new HibernateDomainExporter instance
+     * 
+     * @param namePrefix
+     * @param targetFolder
+     * @param configuration
+     * @param charset
+     */
     public HibernateDomainExporter(String namePrefix, File targetFolder, Configuration configuration, 
             Charset charset) {
         this(namePrefix, "", targetFolder, SimpleSerializerConfig.DEFAULT, configuration, charset);
     }
 
+    /**
+     * Create a new HibernateDomainExporter instance
+     * 
+     * @param namePrefix
+     * @param nameSuffix
+     * @param targetFolder
+     * @param configuration
+     */
     public HibernateDomainExporter(String namePrefix, String nameSuffix, File targetFolder,
             Configuration configuration) {
         this(namePrefix, nameSuffix, targetFolder, SimpleSerializerConfig.DEFAULT, configuration, 
                 Charset.defaultCharset());
     }
     
+    /**
+     * Create a new HibernateDomainExporter instance
+     * 
+     * @param namePrefix
+     * @param targetFolder
+     * @param serializerConfig
+     * @param configuration
+     */
     public HibernateDomainExporter(String namePrefix, File targetFolder, 
             SerializerConfig serializerConfig, Configuration configuration) {
         this(namePrefix, "", targetFolder, serializerConfig, configuration, Charset.defaultCharset());
     }
     
+    /**
+     * Create a new HibernateDomainExporter instance
+     * 
+     * @param namePrefix
+     * @param targetFolder
+     * @param serializerConfig
+     * @param configuration
+     * @param charset
+     */
     public HibernateDomainExporter(String namePrefix, File targetFolder, 
             SerializerConfig serializerConfig, Configuration configuration, Charset charset) {
         this(namePrefix, "", targetFolder, serializerConfig, configuration, charset);
     }
 
+    /**
+     * Create a new HibernateDomainExporter instance
+     * 
+     * @param namePrefix
+     * @param nameSuffix
+     * @param targetFolder
+     * @param serializerConfig
+     * @param configuration
+     * @param charset
+     */
     public HibernateDomainExporter(String namePrefix, String nameSuffix, File targetFolder, 
             SerializerConfig serializerConfig, Configuration configuration, Charset charset) {
         this.targetFolder = targetFolder;
@@ -159,6 +216,11 @@ public class HibernateDomainExporter {
         typeFactory.setUnknownAsEntity(true);
     }
 
+    /**
+     * Export the contents
+     * 
+     * @throws IOException
+     */
     public void execute() throws IOException {
         // collect types
         try {

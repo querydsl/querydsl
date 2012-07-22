@@ -46,13 +46,19 @@ import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.TimePath;
 
 /**
- * EmbeddableSerializer is a Serializer implementation for embeddable types
+ * EmbeddableSerializer is a {@link Serializer} implementation for embeddable types
  *
  * @author tiwe
  *
  */
 public final class EmbeddableSerializer extends EntitySerializer {
     
+    /**
+     * Create a new EmbeddableSerializer instance
+     * 
+     * @param typeMappings
+     * @param keywords
+     */
     @Inject
     public EmbeddableSerializer(TypeMappings typeMappings, @Named("keywords") Collection<String> keywords) {
         super(typeMappings, keywords);

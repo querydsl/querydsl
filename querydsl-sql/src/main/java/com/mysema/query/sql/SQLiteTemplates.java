@@ -16,6 +16,8 @@ package com.mysema.query.sql;
 import com.mysema.query.types.Ops;
 
 /**
+ * CUBRIDTemplates is a SQL dialect for SQLite
+ * 
  * @author tiwe
  *
  */

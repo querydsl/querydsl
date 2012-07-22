@@ -72,10 +72,18 @@ public class DefaultQueryMetadata implements QueryMetadata, Cloneable {
 
     private boolean validate = true;
     
+    /**
+     * Create an empty DefaultQueryMetadata instance
+     */
     public DefaultQueryMetadata() {
         
     }
         
+    /**
+     * Disable validation
+     * 
+     * @return
+     */
     public DefaultQueryMetadata noValidate() {
         validate = false;
         return this;

@@ -21,6 +21,8 @@ import com.mysema.query.JoinExpression;
 import com.mysema.query.QueryMetadata;
 
 /**
+ * ValidatingVisitor visits expressions and ensures that only known path instances are used
+ * 
  * @author tiwe
  *
  */

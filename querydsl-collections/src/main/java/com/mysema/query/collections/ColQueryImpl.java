@@ -17,7 +17,7 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 
 /**
- * ColQueryImpl is the default implementation of the ColQuery interface
+ * ColQueryImpl is the default implementation of the {@link ColQuery} interface
  *
  * @author tiwe
  *

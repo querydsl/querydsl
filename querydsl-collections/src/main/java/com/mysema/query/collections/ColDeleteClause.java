@@ -20,7 +20,8 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 
 /**
- * ColDeleteClause is an implementation of the DeleteClause interface for the Querydsl Collections module
+ * ColDeleteClause is an implementation of the {@link DeleteClause} interface for the Querydsl 
+ * Collections module
  *
  * @author tiwe
  *

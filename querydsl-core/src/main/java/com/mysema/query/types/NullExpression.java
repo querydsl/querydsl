@@ -28,6 +28,9 @@ public class NullExpression<T> extends TemplateExpressionImpl<T> {
 
     private static final long serialVersionUID = -5311968198973316411L;
 
+    /**
+     * Default instance for an {@link java.lang.Object} typed NullExpression
+     */
     public static final NullExpression<Object> DEFAULT = new NullExpression<Object>(Object.class);
 
     public NullExpression(Class<? extends T> type) {

@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * JavaSyntaxUtils defines reserved keywords for Java
+ * 
  * @author tiwe
  *
  */

@@ -20,7 +20,7 @@ import com.mysema.query.types.PathMetadata;
 import com.mysema.query.types.PathType;
 
 /**
- * MorphiaSerializer extends MongodbSerializer with Morphia specific annotation handling
+ * MorphiaSerializer extends {@link MongodbSerializer} with Morphia specific annotation handling
  *
  * @author tiwe
  *

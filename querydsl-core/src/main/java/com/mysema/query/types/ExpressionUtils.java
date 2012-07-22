@@ -21,14 +21,15 @@ import javax.annotation.Nullable;
 
 
 /**
- * ExpressionUtils provides utilities for constructing common operation instances
+ * ExpressionUtils provides utilities for constructing common operation instances. This class is 
+ * used internally in Querydsl and is not suitable to be used in cases where DSL methods are needed,
+ * since the Expression implementations used in this class are minimal internal implementations.
  * 
  * @author tiwe
  *
  */
 public final class ExpressionUtils {
-    
-    
+        
     /**
      * @param col
      * @return

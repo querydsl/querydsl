@@ -16,6 +16,8 @@ package com.mysema.util;
 import java.beans.Introspector;
 
 /**
+ * BeanUtils provides JavaBean compliant property de/capitalization functionality
+ * 
  * @author tiwe
  *
  */

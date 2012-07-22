@@ -36,7 +36,7 @@ import com.mysema.codegen.model.Types;
 import com.mysema.util.ReflectionUtils;
 
 /**
- * TypeFactory is a factory class for Type instances
+ * TypeFactory is a factory class for {@link Type} instances
  *
  * @author tiwe
  *
@@ -167,7 +167,8 @@ public final class TypeFactory {
         }
     }
 
-    private Type[] getGenericParameters(Class<?> cl, java.lang.reflect.Type genericType, boolean collectionOrMap, int parameterCount) {
+    private Type[] getGenericParameters(Class<?> cl, java.lang.reflect.Type genericType,
+            boolean collectionOrMap, int parameterCount) {
         Type[] types = new Type[parameterCount];
         for (int i = 0; i < types.length; i++) {
             types[i] = getGenericParameter(cl, genericType, collectionOrMap, i);            
@@ -175,7 +176,8 @@ public final class TypeFactory {
         return types;
     }
 
-    private Type getGenericParameter(Class<?> cl, java.lang.reflect.Type genericType, boolean collectionOrMap, int i) {
+    private Type getGenericParameter(Class<?> cl, java.lang.reflect.Type genericType,
+            boolean collectionOrMap, int i) {
         java.lang.reflect.Type parameter = ((ParameterizedType)genericType).getActualTypeArguments()[i];
         if (parameter instanceof TypeVariable
             && ((TypeVariable)parameter).getBounds()[0].equals(Object.class)) {

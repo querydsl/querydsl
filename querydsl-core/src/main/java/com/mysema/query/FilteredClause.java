@@ -16,7 +16,7 @@ package com.mysema.query;
 import com.mysema.query.types.Predicate;
 
 /**
- * Parent interface for clauses with a filter condition
+ * FilteredClause is an interface for clauses with a filter condition
  *
  * @author tiwe
  *

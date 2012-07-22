@@ -56,7 +56,7 @@ import com.mysema.util.ResultSetAdapter;
  * @author tiwe
  *
  */
-public class SQLInsertClause extends AbstractSQLClause implements InsertClause<SQLInsertClause> {
+public class SQLInsertClause extends AbstractSQLClause<SQLInsertClause> implements InsertClause<SQLInsertClause> {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
 

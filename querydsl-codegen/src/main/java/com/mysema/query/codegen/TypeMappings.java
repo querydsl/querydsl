@@ -28,7 +28,8 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.TemplateExpression;
 
 /**
- * TypeMappings defines mappings from Java types to {@link Expression}, {@link Path} and {@link TemplateExpression} types
+ * TypeMappings defines mappings from Java types to {@link Expression}, {@link Path} and 
+ * {@link TemplateExpression} types
  *
  * @author tiwe
  *

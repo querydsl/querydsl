@@ -14,7 +14,7 @@
 package com.mysema.query.codegen;
 
 /**
- * SerializerConfig defines serialization options to be used in the Serializer
+ * SerializerConfig defines serialization options to be used in the {@link Serializer}
  * 
  * @author tiwe
  *

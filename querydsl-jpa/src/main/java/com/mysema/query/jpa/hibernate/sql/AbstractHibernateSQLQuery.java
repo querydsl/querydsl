@@ -49,6 +49,8 @@ import com.mysema.query.types.SubQueryExpression;
 import com.mysema.query.types.query.ListSubQuery;
 
 /**
+ * AbstractHibernateSQLQuery is the base class for Hibernate Native SQL queries
+ * 
  * @author tiwe
  *
  * @param <Q>

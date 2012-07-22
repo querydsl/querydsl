@@ -20,12 +20,12 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-@Documented
-@Target(TYPE)
-@Retention(RUNTIME)
 /**
  * Annotation for APT based Domain query type generation.
  */
+@Documented
+@Target(TYPE)
+@Retention(RUNTIME)
 public @interface QuerySupertype {
 
 }

@@ -32,7 +32,7 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.expr.NumberExpression;
 
 /**
- * ProjectionSerializer is a Serializer implementation for DTO types
+ * ProjectionSerializer is a {@link Serializer} implementation for projection types
  *
  * @author tiwe
  *
@@ -41,6 +41,11 @@ public final class ProjectionSerializer implements Serializer{
 
     private final TypeMappings typeMappings;
 
+    /**
+     * Create a new ProjectionSerializer instance
+     * 
+     * @param typeMappings
+     */
     @Inject
     public ProjectionSerializer(TypeMappings typeMappings){
         this.typeMappings = Assert.notNull(typeMappings,"typeMappings");

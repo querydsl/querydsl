@@ -17,7 +17,7 @@ import com.google.common.base.Function;
 import com.mysema.codegen.Evaluator;
 
 /**
- * Function implementation which uses an Evaluator for transformation
+ * Function implementation which uses an {@link Evaluator} for transformation
  * 
  * @author tiwe
  */

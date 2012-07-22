@@ -28,8 +28,8 @@ import com.mysema.query.SearchResults;
 import com.mysema.query.types.Expression;
 
 /**
- * ProjectableQuery extends the QueryBase class to provide default
- * implementations of the methods of the Projectable interface
+ * ProjectableQuery extends the {@link QueryBase} class to provide default
+ * implementations of the methods of the {@link Projectable} interface
  *
  * @author tiwe
  */

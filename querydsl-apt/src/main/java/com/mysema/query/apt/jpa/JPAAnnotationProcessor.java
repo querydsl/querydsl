@@ -27,7 +27,8 @@ import com.mysema.query.apt.AbstractQuerydslProcessor;
 import com.mysema.query.apt.Configuration;
 
 /**
- * AnnotationProcessor for JPA which takes @Entity, @MappedSuperclass, @Embeddable and @Transient into account
+ * AnnotationProcessor for JPA which takes {@link Entity}, {@link MappedSuperclass}, {@link Embeddable} 
+ * and {@link Transient} into account
  * 
  * @author tiwe
  *

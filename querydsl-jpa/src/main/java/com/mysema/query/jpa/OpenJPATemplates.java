@@ -14,7 +14,7 @@
 package com.mysema.query.jpa;
 
 /**
- * JPQLTemplates subclass for OpenJPA specific serialization
+ * OpenJPATemplates extends JPQLTemplates with OpenJPA specific extensions
  * 
  * @author tiwe
  *

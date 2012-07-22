@@ -20,7 +20,7 @@ import com.mysema.query.sql.SQLCommonQuery;
 import com.mysema.query.sql.SQLTemplates;
 
 /**
- * JPASQLQuery is an SQLQuery implementation that uses Hibernate's Native SQL functionality
+ * JPASQLQuery is an SQLQuery implementation that uses JPA Native SQL functionality
  * to execute queries
  *
  * @author tiwe

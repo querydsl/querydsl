@@ -15,7 +15,7 @@ package com.mysema.query;
 
 
 /**
- * Executes query on a Projectable and transforms results into T. This can be used for example
+ * Executes query on a {@link Projectable} and transforms results into T. This can be used for example
  * to group projected columns or to filter out duplicate results.
  * 
  * @see com.mysema.query.group.GroupBy
@@ -25,6 +25,10 @@ package com.mysema.query;
  */
 public interface ResultTransformer<T> {
 
+    /**
+     * @param projectable
+     * @return
+     */
     T transform(Projectable projectable);
     
 }

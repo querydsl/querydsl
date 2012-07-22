@@ -15,6 +15,11 @@ package com.mysema.query.group;
 
 import com.mysema.query.types.Expression;
 
+/**
+ * @author tiwe
+ *
+ * @param <T>
+ */
 class GOne<T> extends AbstractGroupExpression<T, T> {
 
     private static final long serialVersionUID = 3518868612387641383L;

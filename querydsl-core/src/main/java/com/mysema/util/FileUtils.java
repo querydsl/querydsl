@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+ * FileUtils provides File handling functionality
  * 
  * @author tiwe
  *
@@ -21,8 +22,6 @@ public final class FileUtils {
                 throw new IllegalStateException("Deletion of " + file.getPath() + " failed");
             }
         }
-        
-        
     }
     
     private FileUtils() {}

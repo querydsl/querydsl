@@ -14,12 +14,14 @@
 package com.mysema.query.types;
 
 /**
- * Defines a custom projection for an Expression type
+ * Defines a custom projection for an Expression type. This interface can be used for Expressions which 
+ * behave in a different way when used as part of the projection.
+ * 
+ * <p>Usually FactoryExpression instances are used as the custom projection.</p>
  * 
  * @author tiwe
  *
  */
-// TODO : maybe find a better name
 public interface ProjectionRole<T> extends Expression<T> {
 
     /**

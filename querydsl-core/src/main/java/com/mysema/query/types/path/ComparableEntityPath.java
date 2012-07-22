@@ -18,6 +18,8 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathMetadata;
 
 /**
+ * ComparableEntityPath extends the ComparablePath class to implement the EntityPath interface
+ * 
  * @author tiwe
  *
  * @param <T>

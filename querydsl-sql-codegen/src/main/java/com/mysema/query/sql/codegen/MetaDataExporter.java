@@ -57,6 +57,15 @@ import com.mysema.query.sql.support.SizeImpl;
 
 /**
  * MetadataExporter exports JDBC metadata to Querydsl query types
+ * 
+ * <p>Example</p>
+ * 
+ * <pre>
+ * MetaDataExporter exporter = new MetaDataExporter();
+ * exporter.setPackageName("com.example.domain");
+ * exporter.setTargetFolder(new File("target/generated-sources/java"));
+ * exporter.export(connection.getMetaData());
+ * </pre>
  *
  * @author tiwe
  */

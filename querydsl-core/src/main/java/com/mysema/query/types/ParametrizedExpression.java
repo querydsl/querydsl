@@ -14,6 +14,8 @@
 package com.mysema.query.types;
 
 /**
+ * ParametrizedExpression is a common interface for expressions with generic type parameters
+ * 
  * @author tiwe
  *
  * @param <T> expression type

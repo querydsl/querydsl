@@ -31,6 +31,7 @@ import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.codegen.model.Types;
+import com.mysema.codegen.support.ClassUtils;
 import com.mysema.query.JoinExpression;
 import com.mysema.query.JoinType;
 import com.mysema.query.QueryMetadata;
@@ -44,8 +45,7 @@ import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.Predicate;
 
 /**
- * DefaultEvaluatorFactory extends the EvaluatorFactory class to provide Java source
- * templates for evaluation of ColQuery queries
+ * DefaultEvaluatorFactory provides Java source templates for evaluation of ColQuery queries
  *
  * @author tiwe
  *
@@ -56,6 +56,9 @@ public class DefaultEvaluatorFactory {
 
     private final ColQueryTemplates templates;
 
+    /**
+     * @param templates
+     */
     public DefaultEvaluatorFactory(ColQueryTemplates templates){
         this(templates,
         (URLClassLoader)Thread.currentThread().getContextClassLoader(),
@@ -99,7 +102,7 @@ public class DefaultEvaluatorFactory {
 
         String javaSource = serializer.toString();
         if (projection instanceof FactoryExpression<?>) {
-            javaSource = "("+com.mysema.codegen.support.ClassUtils.getName(projection.getType())+")(" + javaSource+")";
+            javaSource = "("+ClassUtils.getName(projection.getType())+")(" + javaSource+")";
         }
         
         return factory.createEvaluator("return " + javaSource +";", projection.getType(), names, 
@@ -116,7 +119,7 @@ public class DefaultEvaluatorFactory {
      */
     public <T> Evaluator<List<T>> createEvaluator(QueryMetadata metadata, 
             Expression<? extends T> source, Predicate filter){
-        String typeName = com.mysema.codegen.support.ClassUtils.getName(source.getType());
+        String typeName = ClassUtils.getName(source.getType());
         ColQuerySerializer ser = new ColQuerySerializer(templates);
         ser.append("java.util.List<"+typeName+"> rv = new java.util.ArrayList<"+typeName+">();\n");
         ser.append("for (" + typeName + " "+ source + " : " + source + "_){\n");

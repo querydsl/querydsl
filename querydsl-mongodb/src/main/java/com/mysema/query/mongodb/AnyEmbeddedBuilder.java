@@ -22,6 +22,8 @@ import com.mysema.query.types.Predicate;
 import com.mysema.query.types.PredicateOperation;
 
 /**
+ * AnyEmbeddedBuilder is a builder for constraints on embedded objects
+ * 
  * @author tiwe
  *
  * @param <K>

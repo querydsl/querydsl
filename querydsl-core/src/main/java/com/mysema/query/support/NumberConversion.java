@@ -23,6 +23,9 @@ import com.mysema.query.types.Visitor;
 import com.mysema.util.MathUtils;
 
 /**
+ * NumberConversion ensures that the results of a numeric projection confirm to the type of the
+ * projection expression
+ * 
  * @author tiwe
  *
  * @param <T>

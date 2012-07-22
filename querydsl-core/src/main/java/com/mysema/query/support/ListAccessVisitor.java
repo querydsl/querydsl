@@ -38,6 +38,8 @@ import com.mysema.query.types.path.EntityPathBase;
 import com.mysema.query.types.template.BooleanTemplate;
 
 /**
+ * ListAccessVisitor is expression visitor implementation
+ * 
  * @author tiwe
  *
  */

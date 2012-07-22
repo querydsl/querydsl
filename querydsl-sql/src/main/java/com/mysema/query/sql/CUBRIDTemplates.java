@@ -18,6 +18,7 @@ import com.mysema.query.QueryModifiers;
 import com.mysema.query.types.Ops;
 
 /**
+ * CUBRIDTemplates is a SQL dialect for CUBRID
  * 
  * @author tiwe
  *

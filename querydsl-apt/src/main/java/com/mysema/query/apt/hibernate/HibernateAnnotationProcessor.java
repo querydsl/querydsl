@@ -27,10 +27,11 @@ import com.mysema.query.apt.Configuration;
 import com.mysema.query.apt.jpa.JPAAnnotationProcessor;
 
 /**
- * Extended JPAAnnotationProcessor which takes Hibernate specific annotations into account
+ * HibernateAnnotationProcessor extends {@link JPAAnnotationProcessor} to take Hibernate specific 
+ * annotations into account
  * 
  * @author tiwe
- *
+ * @see JPAAnnotationProcessor
  */
 @SupportedAnnotationTypes({"com.mysema.query.annotations.*","javax.persistence.*", "org.hibernate.annotations.*"})
 public class HibernateAnnotationProcessor extends JPAAnnotationProcessor{

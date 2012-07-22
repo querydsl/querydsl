@@ -39,20 +39,60 @@ public interface SQLQueryFactory<Q extends SQLCommonQuery<?>, // extends Abstrac
     I extends SQLInsertClause,
     M extends SQLMergeClause> extends QueryFactory<Q,SQ> {
 
+    /**
+     * Create a new DELETE clause
+     * 
+     * @param path
+     * @return
+     */
     D delete(RelationalPath<?> path);
 
+    /**
+     * Create a new SELECT query
+     * 
+     * @param from
+     * @return
+     */
     Q from(Expression<?> from);
 
+    /**
+     * Create a new INSERT INTO clause
+     * 
+     * @param path
+     * @return
+     */
     I insert(RelationalPath<?> path);
 
+    /**
+     * Create a new MERGE clause
+     * 
+     * @param path
+     * @return
+     */
     M merge(RelationalPath<?> path);
 
+    /**
+     * Create a new UPDATE clause
+     * 
+     * @param path
+     * @return
+     */
     U update(RelationalPath<?> path);
 
+    /* (non-Javadoc)
+     * @see com.mysema.query.QueryFactory#query()
+     */
     Q query();
 
+    /* (non-Javadoc)
+     * @see com.mysema.query.QueryFactory#subQuery()
+     */
     SQ subQuery();
 
+    /**
+     * @param from
+     * @return
+     */
     SQ subQuery(Expression<?> from);
 
 }

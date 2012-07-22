@@ -35,7 +35,7 @@ import com.mysema.query.types.ParamNotSetException;
 import com.mysema.query.types.expr.Param;
 
 /**
- * Utility methods for Hibernate
+ * HibernateUtil provides static utility methods for Hibernate
  *
  * @author tiwe
  *

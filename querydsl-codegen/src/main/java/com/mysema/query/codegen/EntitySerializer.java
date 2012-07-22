@@ -75,7 +75,7 @@ import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.TimePath;
 
 /**
- * EntitySerializer is a Serializer implementation for entity types
+ * EntitySerializer is a {@link Serializer} implementation for entity types
  *
  * @author tiwe
  *
@@ -94,6 +94,12 @@ public class EntitySerializer implements Serializer{
 
     protected final Collection<String> keywords;
 
+    /**
+     * Create a new EntitySerializer instance
+     * 
+     * @param mappings
+     * @param keywords
+     */
     @Inject
     public EntitySerializer(TypeMappings mappings, @Named("keywords") Collection<String> keywords){
         this.typeMappings = Assert.notNull(mappings,"mappings");

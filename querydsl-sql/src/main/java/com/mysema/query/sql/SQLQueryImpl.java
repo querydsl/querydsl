@@ -19,7 +19,7 @@ import com.mysema.query.DefaultQueryMetadata;
 import com.mysema.query.QueryMetadata;
 
 /**
- * SQLQueryImpl is a JDBC based implementation of the Querydsl SQLQuery interface
+ * SQLQueryImpl is a JDBC based implementation of the {@link SQLQuery} interface
  *
  * @author tiwe
  */

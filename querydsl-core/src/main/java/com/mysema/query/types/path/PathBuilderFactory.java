@@ -28,6 +28,12 @@ public final class PathBuilderFactory {
 
     private final Map<Class<?>, PathBuilder<?>> paths = new HashMap<Class<?>, PathBuilder<?>>();
 
+    /**
+     * Create a new PathBuilder instance for the given type
+     * 
+     * @param clazz
+     * @return
+     */
     @SuppressWarnings("unchecked")
     public <T> PathBuilder<T> create(Class<T> clazz) {
         PathBuilder<T> rv = (PathBuilder<T>) paths.get(clazz);

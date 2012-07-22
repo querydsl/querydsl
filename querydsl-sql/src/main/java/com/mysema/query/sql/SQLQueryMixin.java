@@ -19,6 +19,8 @@ import com.mysema.query.support.QueryMixin;
 import com.mysema.query.types.Path;
 
 /**
+ * SQLQueryMixin extends QueryMixin with module specific functionality
+ * 
  * @author tiwe
  *
  * @param <T>

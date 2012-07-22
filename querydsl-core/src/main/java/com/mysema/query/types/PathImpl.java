@@ -21,7 +21,7 @@ import com.mysema.commons.lang.Assert;
 import com.mysema.util.ReflectionUtils;
 
 /**
- * PathImpl defines a default implementation of the Path interface
+ * PathImpl defines a default implementation of the {@link Path} interface
  *
  * @author tiwe
  *

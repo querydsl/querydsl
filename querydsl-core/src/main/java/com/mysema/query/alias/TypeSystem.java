@@ -14,17 +14,36 @@
 package com.mysema.query.alias;
 
 /**
+ * TypeSystem defines an interface for detecting whether a given class confirms to certain Collection
+ * contract
+ * 
  * @author tiwe
  *
  */
 public interface TypeSystem {
     
+    /**
+     * @param cl
+     * @return
+     */
     boolean isCollectionType(Class<?> cl);
     
+    /**
+     * @param cl
+     * @return
+     */
     boolean isSetType(Class<?> cl);
     
+    /**
+     * @param cl
+     * @return
+     */
     boolean isListType(Class<?> cl);
     
+    /**
+     * @param cl
+     * @return
+     */
     boolean isMapType(Class<?> cl);
 
 }

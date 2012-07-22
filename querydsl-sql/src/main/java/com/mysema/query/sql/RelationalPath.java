@@ -23,7 +23,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.ProjectionRole;
 
 /**
- * RelationalPath extends EntityPath to provide access to relational metadata
+ * RelationalPath extends {@link EntityPath} to provide access to relational metadata
  * 
  * @author tiwe
  *

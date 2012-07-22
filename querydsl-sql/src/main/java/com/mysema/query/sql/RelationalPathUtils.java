@@ -27,6 +27,8 @@ import com.mysema.query.types.QBean;
 import com.mysema.util.ReflectionUtils;
 
 /**
+ * RelationalPathUtils provides static utility methods for {@link RelationalPath} instances
+ * 
  * @author tiwe
  *
  */

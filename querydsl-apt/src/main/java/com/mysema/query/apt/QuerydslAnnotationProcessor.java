@@ -27,8 +27,8 @@ import com.mysema.query.annotations.QuerySupertype;
 import com.mysema.query.annotations.QueryTransient;
 
 /**
- * Default annotation processor for Querydsl which handles @QueryEntity, @QuerySupertype, 
- * @QueryEmbeddable and @QueryTransient
+ * Default annotation processor for Querydsl which handles {@link QueryEntity}, {@link QuerySupertype}, 
+ * {@link QueryEmbeddable}, {@link QueryEmbedded} and {@link QueryTransient}
  * 
  * @author tiwe
  *

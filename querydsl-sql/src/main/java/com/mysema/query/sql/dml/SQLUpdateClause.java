@@ -51,7 +51,7 @@ import com.mysema.query.types.expr.Param;
  * @author tiwe
  *
  */
-public class SQLUpdateClause extends AbstractSQLClause implements UpdateClause<SQLUpdateClause> {
+public class SQLUpdateClause extends AbstractSQLClause<SQLUpdateClause> implements UpdateClause<SQLUpdateClause> {
 
     private static final Logger logger = LoggerFactory.getLogger(SQLInsertClause.class);
 

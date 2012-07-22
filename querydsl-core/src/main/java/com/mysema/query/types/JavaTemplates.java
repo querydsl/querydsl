@@ -17,7 +17,7 @@ import java.lang.reflect.Field;
 
 
 /**
- * JavaTemplates extends Templates to provide Java syntax compliant serialization
+ * JavaTemplates extends {@link Templates} to provide Java syntax compliant serialization
  * of Querydsl expressions
  *
  * @author tiwe

@@ -22,7 +22,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.Predicate;
 
 /**
- * JPQLCommonQuery is a common interface for HQLQuery and HQLSubQuery
+ * JPQLCommonQuery is a common interface for queries and subqueries of this module
  * 
  * @author tiwe
  *

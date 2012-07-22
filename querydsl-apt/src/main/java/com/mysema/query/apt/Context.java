@@ -22,6 +22,8 @@ import javax.lang.model.element.TypeElement;
 import com.mysema.query.codegen.EntityType;
 
 /**
+ * Context of handled types used by {@link AbstractQuerydslProcessor}
+ * 
  * @author tiwe
  *
  */

@@ -29,13 +29,19 @@ import com.mysema.query.types.expr.ComparableExpression;
 import com.mysema.query.types.path.SimplePath;
 
 /**
- * SupertypeSerializer is a Serializer implementation for supertypes
+ * SupertypeSerializer is a {@link Serializer} implementation for supertypes
  *
  * @author tiwe
  *
  */
 public final class SupertypeSerializer extends EntitySerializer{
 
+    /**
+     * Create a new SupertypeSerializer instance
+     * 
+     * @param typeMappings
+     * @param keywords
+     */
     @Inject
     public SupertypeSerializer(TypeMappings typeMappings, @Named("keywords") Collection<String> keywords) {
         super(typeMappings, keywords);

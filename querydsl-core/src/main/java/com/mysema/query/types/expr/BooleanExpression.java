@@ -23,7 +23,7 @@ import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Predicate;
 
 /**
- * BooleanExpression represents boolean expressions
+ * BooleanExpression represents {@link java.lang.Boolean} expressions
  *
  * @author tiwe
  * @see java.lang.Boolean

@@ -16,7 +16,7 @@ package com.mysema.query.sql;
 import java.util.Map;
 
 /**
- * Beans contains a list of beans
+ * Beans contains Objects mapped to {@link RelationalPath} instances
  * 
  * @author luis
  */

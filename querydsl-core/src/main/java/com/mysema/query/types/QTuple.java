@@ -21,6 +21,17 @@ import com.mysema.query.Tuple;
 
 /**
  * QTuple represents a projection of type Tuple
+ * 
+ * <p>Usage example:</p>
+ * <pre>
+ * {@code 
+ * List<Tuple> result = query.from(employee).list(new QTuple(employee.firstName, employee.lastName));
+ * for (Tuple row : result) {
+ *     System.out.println("firstName " + row.get(employee.firstName));
+ *     System.out.println("lastName " + row.get(employee.lastName)); 
+ * }
+ * } 
+ * </pre>
  *
  * @author tiwe
  *
@@ -31,11 +42,21 @@ public class QTuple extends ExpressionBase<Tuple> implements FactoryExpression<T
 
     private final List<Expression<?>> args;
 
+    /**
+     * Create a new QTuple instance
+     * 
+     * @param args
+     */
     public QTuple(Expression<?>... args) {
         super(Tuple.class);
         this.args = Arrays.asList(args);
     }
 
+    /**
+     * Create a new QTuple instance
+     * 
+     * @param args
+     */
     public QTuple(Expression<?>[]... args) {
         super(Tuple.class);
         this.args = new ArrayList<Expression<?>>();

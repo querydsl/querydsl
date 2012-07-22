@@ -13,6 +13,6 @@
  */
 
 /**
- * APTFactory and related classes
+ * APT related classes
  */
 package com.mysema.query.apt;

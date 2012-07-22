@@ -25,7 +25,7 @@ import com.mysema.query.types.Path;
 import com.mysema.query.types.PathImpl;
 
 /**
- * ComparableExpression extends ComparableExpressionBase to provide comparison methods.
+ * ComparableExpression extends {@link ComparableExpressionBase} to provide comparison methods.
  *
  * @author tiwe
  *

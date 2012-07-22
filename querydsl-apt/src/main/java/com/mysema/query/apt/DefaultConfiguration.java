@@ -62,7 +62,7 @@ import com.mysema.query.codegen.TypeMappings;
 import com.mysema.query.types.Expression;
 
 /**
- * DefaultConfiguration is a simple implementation of the Configuration interface
+ * DefaultConfiguration is a simple implementation of the {@link Configuration} interface
  *
  * @author tiwe
  *
