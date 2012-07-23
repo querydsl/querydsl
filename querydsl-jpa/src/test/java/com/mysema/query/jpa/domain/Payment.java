@@ -16,6 +16,7 @@ package com.mysema.query.jpa.domain;
 import java.util.Collection;
 
 import javax.persistence.Entity;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -27,7 +28,8 @@ public class Payment extends Item {
     @ManyToOne
     Status currentStatus, status;
 
-    PaymentStatus name;
+    @Enumerated
+    PaymentStatus paymentStatus;
 
     @OneToMany
     Collection<StatusChange> statusChanges;

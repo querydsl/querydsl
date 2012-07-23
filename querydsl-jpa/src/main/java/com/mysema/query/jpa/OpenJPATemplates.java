@@ -13,6 +13,8 @@
  */
 package com.mysema.query.jpa;
 
+import com.mysema.query.types.Ops;
+
 /**
  * OpenJPATemplates extends JPQLTemplates with OpenJPA specific extensions
  * 
@@ -24,7 +26,8 @@ public class OpenJPATemplates extends JPQLTemplates{
     public static final JPQLTemplates DEFAULT = new OpenJPATemplates();
     
     public OpenJPATemplates() {
-        this(DEFAULT_ESCAPE);    
+        this(DEFAULT_ESCAPE);  
+        add(Ops.ALIAS, "{0} {1}");
     }
     
     public OpenJPATemplates(char escape) {

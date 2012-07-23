@@ -25,8 +25,6 @@ public class EclipseLinkTemplates extends JPQLTemplates {
 
     public static final JPQLTemplates DEFAULT = new EclipseLinkTemplates();
 
-    // TODO : indexed list access
-
     public EclipseLinkTemplates() {
         this(DEFAULT_ESCAPE);
     }

@@ -53,7 +53,7 @@ public class JPASQLBase {
     public static MethodRule targetRule = new TargetRule();
     
     @Rule
-    public static MethodRule hibernateOnly = new HibernateOnlyRule();
+    public static MethodRule hibernateOnly = new JPAProviderRule();
             
     private final SAnimal cat = new SAnimal("cat");
     

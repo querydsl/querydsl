@@ -48,7 +48,7 @@ public class JPABase extends AbstractStandardTest {
     public static MethodRule targetRule = new TargetRule();
     
     @Rule
-    public static MethodRule hibernateOnly = new HibernateOnlyRule();
+    public static MethodRule hibernateOnly = new JPAProviderRule();
     
     private EntityManager entityManager;
     
@@ -85,7 +85,7 @@ public class JPABase extends AbstractStandardTest {
     }
 
     @Test
-    @HibernateOnly
+    @NoEclipseLink @NoOpenJPA
     public void Hint(){
         javax.persistence.Query query = query().from(QCat.cat)
                 .setHint("org.hibernate.cacheable", true)
@@ -126,7 +126,7 @@ public class JPABase extends AbstractStandardTest {
     }
 
     @Test
-    @HibernateOnly
+    @NoEclipseLink @NoOpenJPA
     public void Connection_Access(){
         assertNotNull(query().from(QCat.cat).createQuery(QCat.cat).unwrap(Connection.class));
     }

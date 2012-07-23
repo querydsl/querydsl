@@ -199,7 +199,7 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    @HibernateOnly
+    @NoEclipseLink @NoOpenJPA
     public void test(){
         Cat kitten = savedCats.get(0);
         Cat noKitten = savedCats.get(savedCats.size()-1);
@@ -318,7 +318,7 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
-    @HibernateOnly
+    @NoEclipseLink
     @ExcludeIn(Target.ORACLE)
     public void JoinEmbeddable() {
         QBookVersion bookVersion = QBookVersion.bookVersion;
@@ -513,25 +513,28 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
+    @NoOpenJPA
     public void IndexOf(){
         assertEquals(Integer.valueOf(0), query().from(cat).where(cat.name.eq("Bob123"))
                 .uniqueResult(cat.name.indexOf("B")));
     }
     
     @Test
+    @NoOpenJPA
     public void IndexOf2(){
         assertEquals(Integer.valueOf(1), query().from(cat).where(cat.name.eq("Bob123"))
                 .uniqueResult(cat.name.indexOf("o")));
     }
 
     @Test
+    @ExcludeIn(Target.MYSQL)
+    @NoOpenJPA
     public void StringOperations(){
-        if (!getTarget().equals(Target.MYSQL)){ // NOTE : locate in MYSQL is case-insensitive
-            assertEquals(0, query().from(cat).where(cat.name.startsWith("r")).count());
-            assertEquals(0, query().from(cat).where(cat.name.endsWith("H123")).count());
-            assertEquals(Integer.valueOf(2), query().from(cat).where(cat.name.eq("Bob123"))
-                    .uniqueResult(cat.name.indexOf("b")));
-        }
+        // NOTE : locate in MYSQL is case-insensitive
+        assertEquals(0, query().from(cat).where(cat.name.startsWith("r")).count());
+        assertEquals(0, query().from(cat).where(cat.name.endsWith("H123")).count());
+        assertEquals(Integer.valueOf(2), query().from(cat).where(cat.name.eq("Bob123"))
+                .uniqueResult(cat.name.indexOf("b")));
     }
 
     @Test
@@ -563,6 +566,7 @@ public abstract class AbstractStandardTest {
     }
         
     @Test
+    @NoOpenJPA // FIXME
     public void Offset(){
         List<String> names2 = Arrays.asList("Felix123","Mary_123","Ruth123","Some");
         assertEquals(names2, query().from(cat).orderBy(cat.name.asc()).offset(2).list(cat.name));
@@ -580,7 +584,7 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
-    public void InstanceOf_DomensticCat(){
+    public void InstanceOf_DomesticCat(){
         assertEquals(0l, query().from(cat).where(cat.instanceOf(DomesticCat.class)).count());
     }
 
@@ -622,6 +626,7 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    @NoOpenJPA
     public void Type_Order() {
         assertEquals(Arrays.asList(10,1,2,3,4,5,6),
                 query().from(animal).orderBy(JPQLGrammar.type(animal).asc(), animal.id.asc())
@@ -685,42 +690,42 @@ public abstract class AbstractStandardTest {
     }
 
     @Test
-    @HibernateOnly
+    @NoEclipseLink @NoOpenJPA
     public void Map_ContainsKey(){
         QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsKey("a")).count());
     }
 
     @Test
-    @HibernateOnly
+    @NoEclipseLink @NoOpenJPA
     public void Map_ContainsKey2(){
         QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsKey("b")).count());
     }
     
     @Test
-    @HibernateOnly
+    @NoEclipseLink @NoOpenJPA
     public void Map_ContainsKey3(){
         QShow show = QShow.show;
         assertEquals(0l, query().from(show).where(show.acts.containsKey("c")).count());
     }
     
     @Test
-    @HibernateOnly
+    @NoEclipseLink @NoOpenJPA
     public void Map_ContainsValue(){
         QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsValue("A")).count());
     }
     
     @Test
-    @HibernateOnly
+    @NoEclipseLink @NoOpenJPA
     public void Map_ContainsValue2(){
         QShow show = QShow.show;
         assertEquals(1l, query().from(show).where(show.acts.containsValue("B")).count());
     }
     
     @Test
-    @HibernateOnly
+    @NoEclipseLink @NoOpenJPA
     public void Map_ContainsValue3(){
         QShow show = QShow.show;
         assertEquals(0l, query().from(show).where(show.acts.containsValue("C")).count());

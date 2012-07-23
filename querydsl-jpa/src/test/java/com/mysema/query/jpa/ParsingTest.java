@@ -29,7 +29,8 @@ import org.junit.Test;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
-import com.mysema.query.HibernateOnly;
+import com.mysema.query.NoEclipseLink;
+import com.mysema.query.NoOpenJPA;
 import com.mysema.query.jpa.domain.Cat;
 import com.mysema.query.jpa.domain.Catalog;
 import com.mysema.query.jpa.domain.Color;
@@ -250,6 +251,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test
+    @NoOpenJPA
     public void DocoExamples94_3() throws Exception {
         query().from(cat).select(cat.kittens).parse();
     }
@@ -341,7 +343,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test
-    @HibernateOnly
+    @NoEclipseLink
     public void DocoExamples97_10() throws Exception {
         query().from(log, payment).where(
                 log.item.instanceOf(Payment.class),
@@ -386,7 +388,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test
-    @HibernateOnly
+    @NoEclipseLink
     public void DocoExamples98_7() throws Exception {
         query().from(list, p).select(p).where(p.name.eqAny(list.names)).parse();
     }
@@ -397,7 +399,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test
-    @HibernateOnly
+    @NoEclipseLink @NoOpenJPA
     public void DocoExamples98_9() throws Exception {
         query().from(person, calendar).select(person).where(
                 calendar.holidays("national holiday").eq(person.birthDay),
@@ -405,7 +407,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test
-    @HibernateOnly
+    @NoEclipseLink @NoOpenJPA
     @ExcludeIn({DERBY, HSQLDB, ORACLE})
     public void DocoExamples98_10() throws Exception {
         query().from(item, ord).select(item).where(
@@ -414,7 +416,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test
-    @HibernateOnly
+    @NoEclipseLink
     @ExcludeIn({DERBY, HSQLDB, H2, MYSQL, ORACLE, POSTGRES})
     @Ignore
     public void DocoExamples98_11() throws Exception {
@@ -424,7 +426,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test
-    @HibernateOnly
+    @NoEclipseLink @NoOpenJPA
     @ExcludeIn({DERBY, HSQLDB, ORACLE})
     public void DocoExamples98_12() throws Exception {
         query()        
@@ -464,11 +466,13 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
+    @NoOpenJPA
     public void Fetch() throws RecognitionException, TokenStreamException{
         query().from(cat).innerJoin(cat.mate, mate).fetch().parse();               
     }
     
     @Test
+    @NoOpenJPA
     public void Fetch2() throws RecognitionException, TokenStreamException{
         query().from(cat).innerJoin(cat.mate, mate).fetch().fetch().parse();
     }
@@ -484,19 +488,19 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
-    @HibernateOnly
+    @NoEclipseLink @NoOpenJPA
     public void JoinFlags1() throws RecognitionException, TokenStreamException{
         query().from(cat).fetchAll().parse();
     }
 
     @Test
-    @HibernateOnly
+    @NoEclipseLink @NoOpenJPA
     public void JoinFlags2() throws RecognitionException, TokenStreamException{
         query().from(cat).fetchAll().from(cat1).fetchAll().parse();
     }
 
     @Test
-    @HibernateOnly
+    @NoEclipseLink @NoOpenJPA
     public void JoinFlags3() throws RecognitionException, TokenStreamException{
         query().from(cat).fetchAll().from(cat1).fetchAll().parse();
     }
@@ -516,7 +520,8 @@ public class ParsingTest extends AbstractQueryTest{
         query().from(cat).leftJoin(cat.mate, mate).select(cat).parse();
     }
     
-    @Test
+    @Test 
+    @NoOpenJPA
     public void Joins2() throws RecognitionException, TokenStreamException{
         query().from(cat).join(cat.mate, mate).with(mate.name.eq("Bob")).parse();
     }
@@ -538,7 +543,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
 
     @Test
-    @HibernateOnly
+    @NoEclipseLink @NoOpenJPA
     @ExcludeIn(MYSQL)
     public void Casts_Byte() throws Exception {
         NumberExpression<Double> bw = cat.bodyWeight;
@@ -546,12 +551,14 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test
+    @NoOpenJPA
     public void Casts_Double() throws Exception {
         NumberExpression<Double> bw = cat.bodyWeight;
         query().from(cat).select(bw.doubleValue()).parse();     
     }
     
     @Test
+    @NoOpenJPA
     @ExcludeIn(MYSQL)
     public void Casts_Float() throws Exception {
         NumberExpression<Double> bw = cat.bodyWeight;
@@ -559,6 +566,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test
+    @NoOpenJPA
     @ExcludeIn(MYSQL)
     public void Casts_Int() throws Exception {
         NumberExpression<Double> bw = cat.bodyWeight;
@@ -566,6 +574,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test
+    @NoOpenJPA
     @ExcludeIn({DERBY, HSQLDB, MYSQL})
     public void Casts_Long() throws Exception {
         NumberExpression<Double> bw = cat.bodyWeight;
@@ -573,7 +582,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test
-    @HibernateOnly
+    @NoEclipseLink @NoOpenJPA
     @ExcludeIn(MYSQL)
     public void Casts_Short() throws Exception {
         NumberExpression<Double> bw = cat.bodyWeight;
@@ -581,6 +590,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test
+    @NoOpenJPA
     @ExcludeIn({DERBY, HSQLDB, MYSQL})
     public void Casts_String() throws Exception {
         NumberExpression<Double> bw = cat.bodyWeight;
@@ -588,7 +598,7 @@ public class ParsingTest extends AbstractQueryTest{
     }
     
     @Test
-    @HibernateOnly
+    @NoEclipseLink @NoOpenJPA
     @ExcludeIn(MYSQL)
     public void Casts_2() throws Exception {
         NumberExpression<Double> bw = cat.bodyWeight;
@@ -651,10 +661,12 @@ public class ParsingTest extends AbstractQueryTest{
     @Test
     @Ignore
     public void OrderBy() throws Exception {
+        // NOT SUPPORTED
         query().from(qat).orderBy(qat.toes.avg().asc()).parse();
     }
    
     @Test
+    @NoOpenJPA
     public void OrderBy_2() throws Exception {
         query().from(an).orderBy(an.bodyWeight.sqrt().divide(2.0).asc()).parse();
     }

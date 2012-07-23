@@ -23,7 +23,7 @@ import org.junit.runner.RunWith;
 import antlr.RecognitionException;
 import antlr.TokenStreamException;
 
-import com.mysema.query.HibernateOnlyRule;
+import com.mysema.query.JPAProviderRule;
 import com.mysema.query.TargetRule;
 import com.mysema.query.jpa.impl.JPAProvider;
 import com.mysema.query.jpa.impl.JPAUtil;
@@ -36,7 +36,7 @@ public class JPAIntegrationBase extends ParsingTest {
     public static MethodRule targetRule = new TargetRule();
     
     @Rule
-    public static MethodRule hibernateOnly = new HibernateOnlyRule();
+    public static MethodRule hibernateOnly = new JPAProviderRule();
         
     private EntityManager em;
 

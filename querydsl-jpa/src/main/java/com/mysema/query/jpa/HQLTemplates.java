@@ -44,8 +44,6 @@ public class HQLTemplates extends JPQLTemplates {
     
     public HQLTemplates(char escape) {
         super(escape);
-        //CHECKSTYLE:OFF
-        //add(CAST, "cast({0} as {1s})");
      // TODO : remove this when Hibernate supports type(alias)
         add(Ops.INSTANCE_OF, "{0}.class = {1}");
      // TODO : remove this when Hibernate supports type(alias)
@@ -65,7 +63,6 @@ public class HQLTemplates extends JPQLTemplates {
         
         add(Ops.CONTAINS_KEY, "{1} in indices({0})");
         add(Ops.CONTAINS_VALUE, "{1} in elements({0})");
-        //CHECKSTYLE:ON
     }
 
     @Override
