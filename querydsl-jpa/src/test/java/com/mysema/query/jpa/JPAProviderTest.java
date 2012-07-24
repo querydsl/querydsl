@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -36,7 +35,8 @@ public class JPAProviderTest {
     public void Hibernate() {
         factory = Persistence.createEntityManagerFactory("h2");
         em = factory.createEntityManager();
-        println(em.getEntityManagerFactory().getProperties());
+        System.out.println(em.getDelegate().getClass());
+//        println(em.getEntityManagerFactory().getProperties());
         assertEquals(JPAProvider.HIBERNATE, JPAProvider.get(em));
     }
     
@@ -61,7 +61,8 @@ public class JPAProviderTest {
     public void EclipseLink() {
         factory = Persistence.createEntityManagerFactory("h2-eclipselink");
         em = factory.createEntityManager();
-        println(em.getEntityManagerFactory().getProperties());
+        System.out.println(em.getDelegate().getClass());
+//        println(em.getEntityManagerFactory().getProperties());
         assertEquals(JPAProvider.ECLIPSELINK, JPAProvider.get(em));
     }
     
@@ -84,14 +85,18 @@ public class JPAProviderTest {
         
     @Test
     public void OpenJPA() {
-        // TODO
+        factory = Persistence.createEntityManagerFactory("derby-openjpa");
+        em = factory.createEntityManager();
+        System.out.println(em.getDelegate().getClass());
+//        println(em.getEntityManagerFactory().getProperties());
+        assertEquals(JPAProvider.OPEN_JPA, JPAProvider.get(em));
     }
     
-    private void println(Map<String, Object> properties) {
-        for (Map.Entry<String, Object> entry : properties.entrySet()) {
-            System.out.println(entry.getKey() + " = " + entry.getValue());
-        }
-        System.out.println();
-    }
+//    private void println(Map<String, Object> properties) {
+//        for (Map.Entry<String, Object> entry : properties.entrySet()) {
+//            System.out.println(entry.getKey() + " = " + entry.getValue());
+//        }
+//        System.out.println();
+//    }
     
 }

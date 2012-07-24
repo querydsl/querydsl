@@ -34,7 +34,6 @@
 		</properties>
 	</persistence-unit>
 
-<!-- 
 	<persistence-unit name="derby-openjpa"
 		transaction-type="RESOURCE_LOCAL">
 		<provider>org.apache.openjpa.persistence.PersistenceProviderImpl</provider>
@@ -43,10 +42,8 @@
 			<property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:derby:target/derbydb3;create=true" />
 			<property name="openjpa.RuntimeUnenhancedClasses" value="supported" />
-			<property name="openjpa.RuntimeUnenhancedClasses" value="supported" />
 		</properties>
 	</persistence-unit>
--->	
 
 	<!-- hsqldb -->
 
@@ -147,7 +144,7 @@
 			<property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:h2:target/h2-3" />
 			<property name="javax.persistence.jdbc.user" value="sa" />
-			<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(SchemaAction='dropDB,deleteTableContents',ForeignKeys=true)"/>
+			<property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema(SchemaAction='dropDB',ForeignKeys=true)"/>
 			<property name="openjpa.RuntimeUnenhancedClasses" value="supported" />
 			<property name="openjpa.jdbc.Schemas" value="PUBLIC"/>
 			<property name="openjpa.jdbc.DBDictionary" value="h2(useSchemaName=true)"/>            

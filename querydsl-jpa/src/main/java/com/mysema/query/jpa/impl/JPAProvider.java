@@ -31,38 +31,31 @@ public enum JPAProvider {
     /**
      * Hibernate
      */
-    HIBERNATE("org.hibernate.ejb.HibernateEntityManager", HQLTemplates.DEFAULT, "hibernate"),
+    HIBERNATE("org.hibernate.Session", HQLTemplates.DEFAULT),
     
     /**
      * EclipseLink
      */
-    ECLIPSELINK("org.eclipse.persistence.jpa.JpaEntityManager", EclipseLinkTemplates.DEFAULT, "eclipselink"),
+    ECLIPSELINK("org.eclipse.persistence.jpa.JpaEntityManager", EclipseLinkTemplates.DEFAULT),
     
     /**
      * OpenJPA
      */
-    OPEN_JPA("org.apache.openjpa.persistence.OpenJPAEntityManager", OpenJPATemplates.DEFAULT, "openjpa"),
+    OPEN_JPA("org.apache.openjpa.persistence.OpenJPAEntityManager", OpenJPATemplates.DEFAULT),
     
     /**
      * Generic JPA provider
      */
-    GENERIC("javax.persistence.EntityManager", JPQLTemplates.DEFAULT, ""); 
+    GENERIC("javax.persistence.EntityManager", JPQLTemplates.DEFAULT); 
     
-    private Class<?> emClass;
+    private Class<?> delegateClass;
     
     private final JPQLTemplates templates;
     
-    private final String searchKey;
-    
-    /**
-     * @param emClassName class name of EntityManager implementation
-     * @param templates
-     */
-    JPAProvider(String emClassName, JPQLTemplates templates, String searchKey) {
+    JPAProvider(String emClassName, JPQLTemplates templates) {
         this.templates = templates;
-        this.searchKey = searchKey;
         try {            
-            this.emClass = Class.forName(emClassName);            
+            this.delegateClass = Class.forName(emClassName);            
         } catch (ClassNotFoundException e) {}
     }
     
@@ -71,12 +64,9 @@ public enum JPAProvider {
     }
 
     public static JPAProvider get(EntityManager em) {
-        String propsToString = em.getEntityManagerFactory().getProperties().toString();
         for (JPAProvider provider : values()) {
-            if (provider.emClass != null && provider.emClass.isAssignableFrom(em.getClass())) {
-                return provider;
-            }
-            if (propsToString.contains(provider.searchKey)) {
+            if (provider.delegateClass != null 
+             && provider.delegateClass.isAssignableFrom(em.getDelegate().getClass())) {
                 return provider;
             }
         }       
