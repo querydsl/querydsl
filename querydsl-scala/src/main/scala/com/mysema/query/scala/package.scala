@@ -51,4 +51,14 @@ package object scala {
   
   type Tu15Ex[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O] = Tuple15Expression[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O]
   
+  type Tu16Ex[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P] = Tuple16Expression[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P]
+  
+  type Tu17Ex[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q] = Tuple17Expression[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q]
+  
+  type Tu18Ex[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R] = Tuple18Expression[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R]
+  
+  type Tu19Ex[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S] = Tuple19Expression[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S]
+  
+  type Tu20Ex[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T] = Tuple20Expression[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T]
+  
 } 

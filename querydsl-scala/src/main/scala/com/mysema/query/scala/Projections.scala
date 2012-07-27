@@ -45,220 +45,327 @@ trait Projections {
     }}    
   }
   
-  implicit def tuple2Expr[T1,T2](t: (_ <: Ex[T1], _ <: Ex[T2])) = new Tu2Ex[T1,T2](t._1, t._2) 
+  implicit def tuple2Expr[A,B](t: (_ <: Ex[A], _ <: Ex[B])) = new Tu2Ex[A,B](t._1, t._2) 
 
-  implicit def tuple3Expr[T1,T2,T3](t: (_ <: Ex[T1], _ <: Ex[T2], _ <: Ex[T3])) = {
-    new Tu3Ex[T1,T2,T3](t._1, t._2, t._3) 
+  implicit def tuple3Expr[A,B,C](t: (_ <: Ex[A], _ <: Ex[B], _ <: Ex[C])) = {
+    new Tu3Ex[A,B,C](t._1, t._2, t._3) 
   }
 
-  implicit def tuple4Expr[T1,T2,T3,T4](t: (_ <: Ex[T1], _ <: Ex[T2], _ <: Ex[T3], _ <: Ex[T4])) = {
-    new Tu4Ex[T1,T2,T3,T4](t._1, t._2, t._3, t._4)
+  implicit def tuple4Expr[A,B,C,D](t: (_ <: Ex[A], _ <: Ex[B], _ <: Ex[C], _ <: Ex[D])) = {
+    new Tu4Ex[A,B,C,D](t._1, t._2, t._3, t._4)
   }
   
-  implicit def tuple5Expr[T1,T2,T3,T4,T5](t: (_ <: Ex[T1], _ <: Ex[T2], _ <: Ex[T3], _ <: Ex[T4], 
-      _<: Ex[T5])) = {
-    new Tu5Ex[T1,T2,T3,T4,T5](t._1, t._2, t._3, t._4, t._5)
+  implicit def tuple5Expr[A,B,C,D,E](t: (_ <: Ex[A], _ <: Ex[B], _ <: Ex[C], _ <: Ex[D], 
+      _<: Ex[E])) = {
+    new Tu5Ex[A,B,C,D,E](t._1, t._2, t._3, t._4, t._5)
   }
   
-  implicit def tuple6Expr[T1,T2,T3,T4,T5,T6](t: (_ <: Ex[T1], _ <: Ex[T2], _ <: Ex[T3], _ <: Ex[T4], 
-      _<: Ex[T5], _ <: Ex[T6])) = {
-    new Tu6Ex[T1,T2,T3,T4,T5,T6](t._1, t._2, t._3, t._4, t._5, t._6)
+  implicit def tuple6Expr[A,B,C,D,E,F](t: (_ <: Ex[A], _ <: Ex[B], _ <: Ex[C], _ <: Ex[D], 
+      _<: Ex[E], _ <: Ex[F])) = {
+    new Tu6Ex[A,B,C,D,E,F](t._1, t._2, t._3, t._4, t._5, t._6)
   }
   
-  implicit def tuple7Expr[T1,T2,T3,T4,T5,T6,T7](t: (_ <: Ex[T1], _ <: Ex[T2], _ <: Ex[T3], _ <: Ex[T4], 
-      _<: Ex[T5], _ <: Ex[T6], _ <: Ex[T7])) = {
-    new Tu7Ex[T1,T2,T3,T4,T5,T6,T7](t._1, t._2, t._3, t._4, t._5, t._6, t._7)
+  implicit def tuple7Expr[A,B,C,D,E,F,G](t: (_ <: Ex[A], _ <: Ex[B], _ <: Ex[C], _ <: Ex[D], 
+      _<: Ex[E], _ <: Ex[F], _ <: Ex[G])) = {
+    new Tu7Ex[A,B,C,D,E,F,G](t._1, t._2, t._3, t._4, t._5, t._6, t._7)
   }
   
-  implicit def tuple8Expr[T1,T2,T3,T4,T5,T6,T7,T8](t: (_ <: Ex[T1], _ <: Ex[T2], _ <: Ex[T3], _ <: Ex[T4], 
-      _<: Ex[T5], _ <: Ex[T6], _ <: Ex[T7], _ <: Ex[T8])) = {
-    new Tu8Ex[T1,T2,T3,T4,T5,T6,T7,T8](t._1, t._2, t._3, t._4, t._5, t._6, t._7, t._8)
+  implicit def tuple8Expr[A,B,C,D,E,F,G,H](t: (_ <: Ex[A], _ <: Ex[B], _ <: Ex[C], _ <: Ex[D], 
+      _<: Ex[E], _ <: Ex[F], _ <: Ex[G], _ <: Ex[H])) = {
+    new Tu8Ex[A,B,C,D,E,F,G,H](t._1, t._2, t._3, t._4, t._5, t._6, t._7, t._8)
   }
   
-  implicit def tuple9Expr[T1,T2,T3,T4,T5,T6,T7,T8,T9](t: (_ <: Ex[T1], _ <: Ex[T2], _ <: Ex[T3],
-      _ <: Ex[T4], _<: Ex[T5], _ <: Ex[T6], _ <: Ex[T7], _ <: Ex[T8], _ <: Ex[T9])) = {
-    new Tu9Ex[T1,T2,T3,T4,T5,T6,T7,T8,T9](t._1, t._2, t._3, t._4, t._5, t._6, t._7, t._8, t._9)
+  implicit def tuple9Expr[A,B,C,D,E,F,G,H,I](t: (_ <: Ex[A], _ <: Ex[B], _ <: Ex[C],
+      _ <: Ex[D], _<: Ex[E], _ <: Ex[F], _ <: Ex[G], _ <: Ex[H], _ <: Ex[I])) = {
+    new Tu9Ex[A,B,C,D,E,F,G,H,I](t._1, t._2, t._3, t._4, t._5, t._6, t._7, t._8, t._9)
   }
   
-  implicit def tuple10Expr[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10](t: (_ <: Ex[T1], _ <: Ex[T2], _ <: Ex[T3], 
-      _ <: Ex[T4], _<: Ex[T5], _ <: Ex[T6], _ <: Ex[T7], _ <: Ex[T8], _ <: Ex[T9], _ <: Ex[T10])) = {
-    new Tu10Ex[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10](t._1, t._2, t._3, t._4, t._5, t._6, t._7, t._8, t._9, t._10)
+  implicit def tuple10Expr[A,B,C,D,E,F,G,H,I,J](t: (_ <: Ex[A], _ <: Ex[B], _ <: Ex[C], 
+      _ <: Ex[D], _<: Ex[E], _ <: Ex[F], _ <: Ex[G], _ <: Ex[H], _ <: Ex[I], _ <: Ex[J])) = {
+    new Tu10Ex[A,B,C,D,E,F,G,H,I,J](t._1, t._2, t._3, t._4, t._5, t._6, t._7, t._8, t._9, t._10)
   }
   
-  implicit def tuple11Expr[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11](t: (_ <: Ex[T1], _ <: Ex[T2], 
-      _ <: Ex[T3], _ <: Ex[T4], _<: Ex[T5], _ <: Ex[T6], _ <: Ex[T7], _ <: Ex[T8], _ <: Ex[T9], 
-      _ <: Ex[T10], _ <: Ex[T11])) = {
-    new Tu11Ex[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11](t._1, t._2, t._3, t._4, t._5, t._6, t._7, t._8, 
+  implicit def tuple11Expr[A,B,C,D,E,F,G,H,I,J,K](t: (_ <: Ex[A], _ <: Ex[B], 
+      _ <: Ex[C], _ <: Ex[D], _<: Ex[E], _ <: Ex[F], _ <: Ex[G], _ <: Ex[H], _ <: Ex[I], 
+      _ <: Ex[J], _ <: Ex[K])) = {
+    new Tu11Ex[A,B,C,D,E,F,G,H,I,J,K](t._1, t._2, t._3, t._4, t._5, t._6, t._7, t._8, 
         t._9, t._10, t._11)
   }
   
-  implicit def tuple12Expr[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12](t: (_ <: Ex[T1], _ <: Ex[T2], 
-      _ <: Ex[T3], _ <: Ex[T4], _<: Ex[T5], _ <: Ex[T6], _ <: Ex[T7], _ <: Ex[T8], _ <: Ex[T9], 
-      _ <: Ex[T10], _ <: Ex[T11], _ <: Ex[T12])) = {
-    new Tu12Ex[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12](t._1, t._2, t._3, t._4, t._5, t._6, t._7, 
+  implicit def tuple12Expr[A,B,C,D,E,F,G,H,I,J,K,L](t: (_ <: Ex[A], _ <: Ex[B], 
+      _ <: Ex[C], _ <: Ex[D], _<: Ex[E], _ <: Ex[F], _ <: Ex[G], _ <: Ex[H], _ <: Ex[I], 
+      _ <: Ex[J], _ <: Ex[K], _ <: Ex[L])) = {
+    new Tu12Ex[A,B,C,D,E,F,G,H,I,J,K,L](t._1, t._2, t._3, t._4, t._5, t._6, t._7, 
         t._8, t._9, t._10, t._11, t._12)
   }
   
-  implicit def tuple13Expr[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13](t: (_ <: Ex[T1], _ <: Ex[T2], 
-      _ <: Ex[T3], _ <: Ex[T4], _<: Ex[T5], _ <: Ex[T6], _ <: Ex[T7], _ <: Ex[T8], _ <: Ex[T9], 
-      _ <: Ex[T10], _ <: Ex[T11], _ <: Ex[T12], _ <: Ex[T13])) = {
-    new Tu13Ex[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13](t._1, t._2, t._3, t._4, t._5, t._6, t._7, 
+  implicit def tuple13Expr[A,B,C,D,E,F,G,H,I,J,K,L,M](t: (_ <: Ex[A], _ <: Ex[B], 
+      _ <: Ex[C], _ <: Ex[D], _<: Ex[E], _ <: Ex[F], _ <: Ex[G], _ <: Ex[H], _ <: Ex[I], 
+      _ <: Ex[J], _ <: Ex[K], _ <: Ex[L], _ <: Ex[M])) = {
+    new Tu13Ex[A,B,C,D,E,F,G,H,I,J,K,L,M](t._1, t._2, t._3, t._4, t._5, t._6, t._7, 
         t._8, t._9, t._10, t._11, t._12, t._13)
   }
   
-  implicit def tuple14Expr[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14](t: (_ <: Ex[T1], _ <: Ex[T2], 
-      _ <: Ex[T3], _ <: Ex[T4], _<: Ex[T5], _ <: Ex[T6], _ <: Ex[T7], _ <: Ex[T8], _ <: Ex[T9], 
-      _ <: Ex[T10], _ <: Ex[T11], _ <: Ex[T12], _ <: Ex[T13], _ <: Ex[T14])) = {
-    new Tu14Ex[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14](t._1, t._2, t._3, t._4, t._5, t._6, t._7, 
+  implicit def tuple14Expr[A,B,C,D,E,F,G,H,I,J,K,L,M,N](t: (_ <: Ex[A], _ <: Ex[B], 
+      _ <: Ex[C], _ <: Ex[D], _<: Ex[E], _ <: Ex[F], _ <: Ex[G], _ <: Ex[H], _ <: Ex[I], 
+      _ <: Ex[J], _ <: Ex[K], _ <: Ex[L], _ <: Ex[M], _ <: Ex[N])) = {
+    new Tu14Ex[A,B,C,D,E,F,G,H,I,J,K,L,M,N](t._1, t._2, t._3, t._4, t._5, t._6, t._7, 
         t._8, t._9, t._10, t._11, t._12, t._13, t._14)
   }
   
-  implicit def tuple15Expr[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15](t: (_ <: Ex[T1], _ <: Ex[T2], 
-      _ <: Ex[T3], _ <: Ex[T4], _<: Ex[T5], _ <: Ex[T6], _ <: Ex[T7], _ <: Ex[T8], _ <: Ex[T9], 
-      _ <: Ex[T10], _ <: Ex[T11], _ <: Ex[T12], _ <: Ex[T13], _ <: Ex[T14], _ <: Ex[T15])) = {
-    new Tu15Ex[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15](t._1, t._2, t._3, t._4, t._5, t._6, t._7, 
+  implicit def tuple15Expr[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O](t: (_ <: Ex[A], _ <: Ex[B], 
+      _ <: Ex[C], _ <: Ex[D], _<: Ex[E], _ <: Ex[F], _ <: Ex[G], _ <: Ex[H], _ <: Ex[I], 
+      _ <: Ex[J], _ <: Ex[K], _ <: Ex[L], _ <: Ex[M], _ <: Ex[N], _ <: Ex[O])) = {
+    new Tu15Ex[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O](t._1, t._2, t._3, t._4, t._5, t._6, t._7, 
         t._8, t._9, t._10, t._11, t._12, t._13, t._14, t._15)
   }    
-     
+  
+  implicit def tuple16Expr[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P](t: (_ <: Ex[A], _ <: Ex[B], 
+      _ <: Ex[C], _ <: Ex[D], _<: Ex[E], _ <: Ex[F], _ <: Ex[G], _ <: Ex[H], _ <: Ex[I], 
+      _ <: Ex[J], _ <: Ex[K], _ <: Ex[L], _ <: Ex[M], _ <: Ex[N], _ <: Ex[O],
+      _ <: Ex[P])) = {
+    new Tu16Ex[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P](t._1, t._2, t._3, t._4, t._5, t._6, t._7, 
+        t._8, t._9, t._10, t._11, t._12, t._13, t._14, t._15, t._16)
+  }
+  
+  implicit def tuple17Expr[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q](t: (_ <: Ex[A], _ <: Ex[B], 
+      _ <: Ex[C], _ <: Ex[D], _<: Ex[E], _ <: Ex[F], _ <: Ex[G], _ <: Ex[H], _ <: Ex[I], 
+      _ <: Ex[J], _ <: Ex[K], _ <: Ex[L], _ <: Ex[M], _ <: Ex[N], _ <: Ex[O],
+      _ <: Ex[P], _ <: Ex[Q])) = {
+    new Tu17Ex[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q](t._1, t._2, t._3, t._4, t._5, t._6, t._7, 
+        t._8, t._9, t._10, t._11, t._12, t._13, t._14, t._15, t._16, t._17)
+  }
+  
+  implicit def tuple18Expr[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R](t: (_ <: Ex[A], _ <: Ex[B], 
+      _ <: Ex[C], _ <: Ex[D], _<: Ex[E], _ <: Ex[F], _ <: Ex[G], _ <: Ex[H], _ <: Ex[I], 
+      _ <: Ex[J], _ <: Ex[K], _ <: Ex[L], _ <: Ex[M], _ <: Ex[N], _ <: Ex[O],
+      _ <: Ex[P], _ <: Ex[Q], _ <: Ex[R])) = {
+    new Tu18Ex[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R](t._1, t._2, t._3, t._4, t._5, t._6, t._7, 
+        t._8, t._9, t._10, t._11, t._12, t._13, t._14, t._15, t._16, t._17, t._18)
+  }
+  
+  implicit def tuple19Expr[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S](t: (_ <: Ex[A], _ <: Ex[B], 
+      _ <: Ex[C], _ <: Ex[D], _<: Ex[E], _ <: Ex[F], _ <: Ex[G], _ <: Ex[H], _ <: Ex[I], 
+      _ <: Ex[J], _ <: Ex[K], _ <: Ex[L], _ <: Ex[M], _ <: Ex[N], _ <: Ex[O],
+      _ <: Ex[P], _ <: Ex[Q], _ <: Ex[R], _ <: Ex[S])) = {
+    new Tu19Ex[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S](t._1, t._2, t._3, t._4, t._5, t._6, t._7, 
+        t._8, t._9, t._10, t._11, t._12, t._13, t._14, t._15, t._16, t._17, t._18, t._19)
+  }
+  
+  implicit def tuple20Expr[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T](t: (_ <: Ex[A], _ <: Ex[B], 
+      _ <: Ex[C], _ <: Ex[D], _<: Ex[E], _ <: Ex[F], _ <: Ex[G], _ <: Ex[H], _ <: Ex[I], 
+      _ <: Ex[J], _ <: Ex[K], _ <: Ex[L], _ <: Ex[M], _ <: Ex[N], _ <: Ex[O],
+      _ <: Ex[P], _ <: Ex[Q], _ <: Ex[R], _ <: Ex[S], _ <: Ex[T])) = {
+    new Tu20Ex[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T](t._1, t._2, t._3, t._4, t._5, t._6, t._7, 
+        t._8, t._9, t._10, t._11, t._12, t._13, t._14, t._15, t._16, t._17, t._18, t._19, t._20)
+  }
+       
 }
 
-class Tuple2Expression[T1,T2](args: Ex[_]*) 
-extends FactoryExpressionBase[(T1,T2)](classOf[Tuple2[T1,T2]], args:_*) {  
-  def newInstance(args: AnyRef*): (T1,T2) = {
-    (args(0).asInstanceOf[T1], args(1).asInstanceOf[T2]) 
+class Tuple2Expression[A,B](args: Ex[_]*) 
+extends FactoryExpressionBase[(A,B)](classOf[Tuple2[A,B]], args:_*) {  
+  def newInstance(args: AnyRef*): (A,B) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B]) 
   }     
 }
 
-class Tuple3Expression[T1,T2,T3](args: Ex[_]*) 
-extends FactoryExpressionBase[Tuple3[T1,T2,T3]](classOf[Tuple3[T1,T2,T3]], args:_*) {
+class Tuple3Expression[A,B,C](args: Ex[_]*) 
+extends FactoryExpressionBase[Tuple3[A,B,C]](classOf[Tuple3[A,B,C]], args:_*) {
   
-  def newInstance(args: AnyRef*): (T1,T2,T3) = {
-    (args(0).asInstanceOf[T1], args(1).asInstanceOf[T2], args(2).asInstanceOf[T3])
+  def newInstance(args: AnyRef*): (A,B,C) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B], args(2).asInstanceOf[C])
   }   
 }
 
-class Tuple4Expression[T1,T2,T3,T4](args: Ex[_]*) 
-extends FactoryExpressionBase[Tuple4[T1,T2,T3,T4]](classOf[Tuple4[T1,T2,T3,T4]], args:_*) {
+class Tuple4Expression[A,B,C,D](args: Ex[_]*) 
+extends FactoryExpressionBase[Tuple4[A,B,C,D]](classOf[Tuple4[A,B,C,D]], args:_*) {
   
-  def newInstance(args: AnyRef*): (T1,T2,T3,T4) = {
-    (args(0).asInstanceOf[T1], args(1).asInstanceOf[T2], args(2).asInstanceOf[T3], args(3).asInstanceOf[T4])
+  def newInstance(args: AnyRef*): (A,B,C,D) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B], args(2).asInstanceOf[C], args(3).asInstanceOf[D])
   }   
 }
 
-class Tuple5Expression[T1,T2,T3,T4,T5](args: Ex[_]*) 
-extends FactoryExpressionBase[Tuple5[T1,T2,T3,T4,T5]](classOf[Tuple5[T1,T2,T3,T4,T5]], args:_*) {
+class Tuple5Expression[A,B,C,D,E](args: Ex[_]*) 
+extends FactoryExpressionBase[Tuple5[A,B,C,D,E]](classOf[Tuple5[A,B,C,D,E]], args:_*) {
   
-  def newInstance(args: AnyRef*): (T1,T2,T3,T4,T5) = {
-    (args(0).asInstanceOf[T1], args(1).asInstanceOf[T2], args(2).asInstanceOf[T3], 
-     args(3).asInstanceOf[T4], args(4).asInstanceOf[T5])
+  def newInstance(args: AnyRef*): (A,B,C,D,E) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B], args(2).asInstanceOf[C], 
+     args(3).asInstanceOf[D], args(4).asInstanceOf[E])
   }   
 }
 
-class Tuple6Expression[T1,T2,T3,T4,T5,T6](args: Ex[_]*) 
-extends FactoryExpressionBase[Tuple6[T1,T2,T3,T4,T5,T6]](classOf[Tuple6[T1,T2,T3,T4,T5,T6]], args:_*) {
+class Tuple6Expression[A,B,C,D,E,F](args: Ex[_]*) 
+extends FactoryExpressionBase[Tuple6[A,B,C,D,E,F]](classOf[Tuple6[A,B,C,D,E,F]], args:_*) {
   
-  def newInstance(args: AnyRef*): (T1,T2,T3,T4,T5,T6) = {
-    (args(0).asInstanceOf[T1], args(1).asInstanceOf[T2], args(2).asInstanceOf[T3], 
-     args(3).asInstanceOf[T4], args(4).asInstanceOf[T5], args(5).asInstanceOf[T6])
+  def newInstance(args: AnyRef*): (A,B,C,D,E,F) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B], args(2).asInstanceOf[C], 
+     args(3).asInstanceOf[D], args(4).asInstanceOf[E], args(5).asInstanceOf[F])
   }   
 }
 
-class Tuple7Expression[T1,T2,T3,T4,T5,T6,T7](args: Ex[_]*) 
-extends FactoryExpressionBase[Tuple7[T1,T2,T3,T4,T5,T6,T7]](classOf[Tuple7[T1,T2,T3,T4,T5,T6,T7]], args:_*) {
+class Tuple7Expression[A,B,C,D,E,F,G](args: Ex[_]*) 
+extends FactoryExpressionBase[Tuple7[A,B,C,D,E,F,G]](classOf[Tuple7[A,B,C,D,E,F,G]], args:_*) {
   
-  def newInstance(args: AnyRef*): (T1,T2,T3,T4,T5,T6,T7) = {
-    (args(0).asInstanceOf[T1], args(1).asInstanceOf[T2], args(2).asInstanceOf[T3], 
-     args(3).asInstanceOf[T4], args(4).asInstanceOf[T5], args(5).asInstanceOf[T6],
-     args(6).asInstanceOf[T7])
+  def newInstance(args: AnyRef*): (A,B,C,D,E,F,G) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B], args(2).asInstanceOf[C], 
+     args(3).asInstanceOf[D], args(4).asInstanceOf[E], args(5).asInstanceOf[F],
+     args(6).asInstanceOf[G])
   }   
 }
 
-class Tuple8Expression[T1,T2,T3,T4,T5,T6,T7,T8](args: Ex[_]*) 
-extends FactoryExpressionBase[Tuple8[T1,T2,T3,T4,T5,T6,T7,T8]](classOf[Tuple8[T1,T2,T3,T4,T5,T6,T7,T8]], args:_*) {
+class Tuple8Expression[A,B,C,D,E,F,G,H](args: Ex[_]*) 
+extends FactoryExpressionBase[Tuple8[A,B,C,D,E,F,G,H]](classOf[Tuple8[A,B,C,D,E,F,G,H]], args:_*) {
   
-  def newInstance(args: AnyRef*): (T1,T2,T3,T4,T5,T6,T7,T8) = {
-    (args(0).asInstanceOf[T1], args(1).asInstanceOf[T2], args(2).asInstanceOf[T3], 
-     args(3).asInstanceOf[T4], args(4).asInstanceOf[T5], args(5).asInstanceOf[T6],
-     args(6).asInstanceOf[T7], args(7).asInstanceOf[T8])
+  def newInstance(args: AnyRef*): (A,B,C,D,E,F,G,H) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B], args(2).asInstanceOf[C], 
+     args(3).asInstanceOf[D], args(4).asInstanceOf[E], args(5).asInstanceOf[F],
+     args(6).asInstanceOf[G], args(7).asInstanceOf[H])
   }   
 }
 
-class Tuple9Expression[T1,T2,T3,T4,T5,T6,T7,T8,T9](args: Ex[_]*) 
-extends FactoryExpressionBase[Tuple9[T1,T2,T3,T4,T5,T6,T7,T8,T9]](classOf[Tuple9[T1,T2,T3,T4,T5,T6,T7,T8,T9]], args:_*) {
+class Tuple9Expression[A,B,C,D,E,F,G,H,I](args: Ex[_]*) 
+extends FactoryExpressionBase[Tuple9[A,B,C,D,E,F,G,H,I]](classOf[Tuple9[A,B,C,D,E,F,G,H,I]], args:_*) {
   
-  def newInstance(args: AnyRef*): (T1,T2,T3,T4,T5,T6,T7,T8,T9) = {
-    (args(0).asInstanceOf[T1], args(1).asInstanceOf[T2], args(2).asInstanceOf[T3], 
-     args(3).asInstanceOf[T4], args(4).asInstanceOf[T5], args(5).asInstanceOf[T6],
-     args(6).asInstanceOf[T7], args(7).asInstanceOf[T8], args(8).asInstanceOf[T9])
+  def newInstance(args: AnyRef*): (A,B,C,D,E,F,G,H,I) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B], args(2).asInstanceOf[C], 
+     args(3).asInstanceOf[D], args(4).asInstanceOf[E], args(5).asInstanceOf[F],
+     args(6).asInstanceOf[G], args(7).asInstanceOf[H], args(8).asInstanceOf[I])
   }   
 }
 
-class Tuple10Expression[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10](args: Ex[_]*) 
-extends FactoryExpressionBase[Tuple10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]](classOf[Tuple10[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10]], args:_*) {
+class Tuple10Expression[A,B,C,D,E,F,G,H,I,J](args: Ex[_]*) 
+extends FactoryExpressionBase[Tuple10[A,B,C,D,E,F,G,H,I,J]](classOf[Tuple10[A,B,C,D,E,F,G,H,I,J]], args:_*) {
   
-  def newInstance(args: AnyRef*): (T1,T2,T3,T4,T5,T6,T7,T8,T9,T10) = {
-    (args(0).asInstanceOf[T1], args(1).asInstanceOf[T2], args(2).asInstanceOf[T3], 
-     args(3).asInstanceOf[T4], args(4).asInstanceOf[T5], args(5).asInstanceOf[T6],
-     args(6).asInstanceOf[T7], args(7).asInstanceOf[T8], args(8).asInstanceOf[T9],
-     args(9).asInstanceOf[T10])
+  def newInstance(args: AnyRef*): (A,B,C,D,E,F,G,H,I,J) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B], args(2).asInstanceOf[C], 
+     args(3).asInstanceOf[D], args(4).asInstanceOf[E], args(5).asInstanceOf[F],
+     args(6).asInstanceOf[G], args(7).asInstanceOf[H], args(8).asInstanceOf[I],
+     args(9).asInstanceOf[J])
   }   
 }
 
-class Tuple11Expression[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11](args: Ex[_]*) 
-extends FactoryExpressionBase[Tuple11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]](classOf[Tuple11[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11]], args:_*) {
+class Tuple11Expression[A,B,C,D,E,F,G,H,I,J,K](args: Ex[_]*) 
+extends FactoryExpressionBase[Tuple11[A,B,C,D,E,F,G,H,I,J,K]](classOf[Tuple11[A,B,C,D,E,F,G,H,I,J,K]], args:_*) {
   
-  def newInstance(args: AnyRef*): (T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11) = {
-    (args(0).asInstanceOf[T1], args(1).asInstanceOf[T2], args(2).asInstanceOf[T3], 
-     args(3).asInstanceOf[T4], args(4).asInstanceOf[T5], args(5).asInstanceOf[T6],
-     args(6).asInstanceOf[T7], args(7).asInstanceOf[T8], args(8).asInstanceOf[T9],
-     args(9).asInstanceOf[T10], args(10).asInstanceOf[T11])
+  def newInstance(args: AnyRef*): (A,B,C,D,E,F,G,H,I,J,K) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B], args(2).asInstanceOf[C], 
+     args(3).asInstanceOf[D], args(4).asInstanceOf[E], args(5).asInstanceOf[F],
+     args(6).asInstanceOf[G], args(7).asInstanceOf[H], args(8).asInstanceOf[I],
+     args(9).asInstanceOf[J], args(10).asInstanceOf[K])
   }   
 }
 
-class Tuple12Expression[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12](args: Ex[_]*) 
-extends FactoryExpressionBase[Tuple12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]](classOf[Tuple12[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12]], args:_*) {
+class Tuple12Expression[A,B,C,D,E,F,G,H,I,J,K,L](args: Ex[_]*) 
+extends FactoryExpressionBase[Tuple12[A,B,C,D,E,F,G,H,I,J,K,L]](classOf[Tuple12[A,B,C,D,E,F,G,H,I,J,K,L]], args:_*) {
   
-  def newInstance(args: AnyRef*): (T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12) = {
-    (args(0).asInstanceOf[T1], args(1).asInstanceOf[T2], args(2).asInstanceOf[T3], 
-     args(3).asInstanceOf[T4], args(4).asInstanceOf[T5], args(5).asInstanceOf[T6],
-     args(6).asInstanceOf[T7], args(7).asInstanceOf[T8], args(8).asInstanceOf[T9],
-     args(9).asInstanceOf[T10], args(10).asInstanceOf[T11], args(11).asInstanceOf[T12])
+  def newInstance(args: AnyRef*): (A,B,C,D,E,F,G,H,I,J,K,L) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B], args(2).asInstanceOf[C], 
+     args(3).asInstanceOf[D], args(4).asInstanceOf[E], args(5).asInstanceOf[F],
+     args(6).asInstanceOf[G], args(7).asInstanceOf[H], args(8).asInstanceOf[I],
+     args(9).asInstanceOf[J], args(10).asInstanceOf[K], args(11).asInstanceOf[L])
   }   
 }
 
-class Tuple13Expression[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13](args: Ex[_]*) 
-extends FactoryExpressionBase[Tuple13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]](classOf[Tuple13[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13]], args:_*) {
+class Tuple13Expression[A,B,C,D,E,F,G,H,I,J,K,L,M](args: Ex[_]*) 
+extends FactoryExpressionBase[Tuple13[A,B,C,D,E,F,G,H,I,J,K,L,M]](classOf[Tuple13[A,B,C,D,E,F,G,H,I,J,K,L,M]], args:_*) {
   
-  def newInstance(args: AnyRef*): (T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13) = {
-    (args(0).asInstanceOf[T1], args(1).asInstanceOf[T2], args(2).asInstanceOf[T3], 
-     args(3).asInstanceOf[T4], args(4).asInstanceOf[T5], args(5).asInstanceOf[T6],
-     args(6).asInstanceOf[T7], args(7).asInstanceOf[T8], args(8).asInstanceOf[T9],
-     args(9).asInstanceOf[T10], args(10).asInstanceOf[T11], args(11).asInstanceOf[T12],
-     args(12).asInstanceOf[T13])
+  def newInstance(args: AnyRef*): (A,B,C,D,E,F,G,H,I,J,K,L,M) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B], args(2).asInstanceOf[C], 
+     args(3).asInstanceOf[D], args(4).asInstanceOf[E], args(5).asInstanceOf[F],
+     args(6).asInstanceOf[G], args(7).asInstanceOf[H], args(8).asInstanceOf[I],
+     args(9).asInstanceOf[J], args(10).asInstanceOf[K], args(11).asInstanceOf[L],
+     args(12).asInstanceOf[M])
   }   
 }
 
-class Tuple14Expression[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14](args: Ex[_]*) 
-extends FactoryExpressionBase[Tuple14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]](classOf[Tuple14[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14]], args:_*) {
+class Tuple14Expression[A,B,C,D,E,F,G,H,I,J,K,L,M,N](args: Ex[_]*) 
+extends FactoryExpressionBase[Tuple14[A,B,C,D,E,F,G,H,I,J,K,L,M,N]](classOf[Tuple14[A,B,C,D,E,F,G,H,I,J,K,L,M,N]], args:_*) {
   
-  def newInstance(args: AnyRef*): (T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14) = {
-    (args(0).asInstanceOf[T1], args(1).asInstanceOf[T2], args(2).asInstanceOf[T3], 
-     args(3).asInstanceOf[T4], args(4).asInstanceOf[T5], args(5).asInstanceOf[T6],
-     args(6).asInstanceOf[T7], args(7).asInstanceOf[T8], args(8).asInstanceOf[T9],
-     args(9).asInstanceOf[T10], args(10).asInstanceOf[T11], args(11).asInstanceOf[T12],
-     args(12).asInstanceOf[T13], args(13).asInstanceOf[T14])
+  def newInstance(args: AnyRef*): (A,B,C,D,E,F,G,H,I,J,K,L,M,N) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B], args(2).asInstanceOf[C], 
+     args(3).asInstanceOf[D], args(4).asInstanceOf[E], args(5).asInstanceOf[F],
+     args(6).asInstanceOf[G], args(7).asInstanceOf[H], args(8).asInstanceOf[I],
+     args(9).asInstanceOf[J], args(10).asInstanceOf[K], args(11).asInstanceOf[L],
+     args(12).asInstanceOf[M], args(13).asInstanceOf[N])
   }   
 }
 
-class Tuple15Expression[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15](args: Ex[_]*) 
-extends FactoryExpressionBase[Tuple15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]](classOf[Tuple15[T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15]], args:_*) {
+class Tuple15Expression[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O](args: Ex[_]*) 
+extends FactoryExpressionBase[Tuple15[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O]](classOf[Tuple15[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O]], args:_*) {
   
-  def newInstance(args: AnyRef*): (T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15) = {
-    (args(0).asInstanceOf[T1], args(1).asInstanceOf[T2], args(2).asInstanceOf[T3], 
-     args(3).asInstanceOf[T4], args(4).asInstanceOf[T5], args(5).asInstanceOf[T6],
-     args(6).asInstanceOf[T7], args(7).asInstanceOf[T8], args(8).asInstanceOf[T9],
-     args(9).asInstanceOf[T10], args(10).asInstanceOf[T11], args(11).asInstanceOf[T12],
-     args(12).asInstanceOf[T13], args(13).asInstanceOf[T14], args(14).asInstanceOf[T15])
+  def newInstance(args: AnyRef*): (A,B,C,D,E,F,G,H,I,J,K,L,M,N,O) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B], args(2).asInstanceOf[C], 
+     args(3).asInstanceOf[D], args(4).asInstanceOf[E], args(5).asInstanceOf[F],
+     args(6).asInstanceOf[G], args(7).asInstanceOf[H], args(8).asInstanceOf[I],
+     args(9).asInstanceOf[J], args(10).asInstanceOf[K], args(11).asInstanceOf[L],
+     args(12).asInstanceOf[M], args(13).asInstanceOf[N], args(14).asInstanceOf[O])
+  }   
+}
+
+class Tuple16Expression[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P](args: Ex[_]*) 
+extends FactoryExpressionBase[Tuple16[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P]](classOf[Tuple16[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P]], args:_*) {
+  
+  def newInstance(args: AnyRef*): (A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B], args(2).asInstanceOf[C], 
+     args(3).asInstanceOf[D], args(4).asInstanceOf[E], args(5).asInstanceOf[F],
+     args(6).asInstanceOf[G], args(7).asInstanceOf[H], args(8).asInstanceOf[I],
+     args(9).asInstanceOf[J], args(10).asInstanceOf[K], args(11).asInstanceOf[L],
+     args(12).asInstanceOf[M], args(13).asInstanceOf[N], args(14).asInstanceOf[O],
+     args(15).asInstanceOf[P])
+  }   
+}
+
+class Tuple17Expression[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q](args: Ex[_]*) 
+extends FactoryExpressionBase[Tuple17[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q]](classOf[Tuple17[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q]], args:_*) {
+  
+  def newInstance(args: AnyRef*): (A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B], args(2).asInstanceOf[C], 
+     args(3).asInstanceOf[D], args(4).asInstanceOf[E], args(5).asInstanceOf[F],
+     args(6).asInstanceOf[G], args(7).asInstanceOf[H], args(8).asInstanceOf[I],
+     args(9).asInstanceOf[J], args(10).asInstanceOf[K], args(11).asInstanceOf[L],
+     args(12).asInstanceOf[M], args(13).asInstanceOf[N], args(14).asInstanceOf[O],
+     args(15).asInstanceOf[P], args(16).asInstanceOf[Q])
+  }   
+}
+
+class Tuple18Expression[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R](args: Ex[_]*) 
+extends FactoryExpressionBase[Tuple18[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R]](classOf[Tuple18[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R]], args:_*) {
+  
+  def newInstance(args: AnyRef*): (A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B], args(2).asInstanceOf[C], 
+     args(3).asInstanceOf[D], args(4).asInstanceOf[E], args(5).asInstanceOf[F],
+     args(6).asInstanceOf[G], args(7).asInstanceOf[H], args(8).asInstanceOf[I],
+     args(9).asInstanceOf[J], args(10).asInstanceOf[K], args(11).asInstanceOf[L],
+     args(12).asInstanceOf[M], args(13).asInstanceOf[N], args(14).asInstanceOf[O],
+     args(15).asInstanceOf[P], args(16).asInstanceOf[Q], args(17).asInstanceOf[R])
+  }   
+}
+
+class Tuple19Expression[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S](args: Ex[_]*) 
+extends FactoryExpressionBase[Tuple19[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S]](classOf[Tuple19[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S]], args:_*) {
+  
+  def newInstance(args: AnyRef*): (A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B], args(2).asInstanceOf[C], 
+     args(3).asInstanceOf[D], args(4).asInstanceOf[E], args(5).asInstanceOf[F],
+     args(6).asInstanceOf[G], args(7).asInstanceOf[H], args(8).asInstanceOf[I],
+     args(9).asInstanceOf[J], args(10).asInstanceOf[K], args(11).asInstanceOf[L],
+     args(12).asInstanceOf[M], args(13).asInstanceOf[N], args(14).asInstanceOf[O],
+     args(15).asInstanceOf[P], args(16).asInstanceOf[Q], args(17).asInstanceOf[R],
+     args(18).asInstanceOf[S])
+  }   
+}
+
+class Tuple20Expression[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T](args: Ex[_]*) 
+extends FactoryExpressionBase[Tuple20[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T]](classOf[Tuple20[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T]], args:_*) {
+  
+  def newInstance(args: AnyRef*): (A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T) = {
+    (args(0).asInstanceOf[A], args(1).asInstanceOf[B], args(2).asInstanceOf[C], 
+     args(3).asInstanceOf[D], args(4).asInstanceOf[E], args(5).asInstanceOf[F],
+     args(6).asInstanceOf[G], args(7).asInstanceOf[H], args(8).asInstanceOf[I],
+     args(9).asInstanceOf[J], args(10).asInstanceOf[K], args(11).asInstanceOf[L],
+     args(12).asInstanceOf[M], args(13).asInstanceOf[N], args(14).asInstanceOf[O],
+     args(15).asInstanceOf[P], args(16).asInstanceOf[Q], args(17).asInstanceOf[R],
+     args(18).asInstanceOf[S], args(19).asInstanceOf[T])
   }   
 }
 
