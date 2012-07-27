@@ -61,15 +61,72 @@ class RichSimpleProjectable[T](private val p: SimpleProjectable[T]) {
  */
 class RichProjectable(private val p: Projectable) {
   
-  def select[T](e: Ex[T]): List[T] = p.list(e).toList
+  def select[T](e: Ex[T]): List[T] = p.list(e).toList 
   
-  def select[T,U](e1: Ex[T], e2: Ex[U]): List[(T,U)] = p.list((e1,e2)).toList
+  def select[T,U](e1: Ex[T], e2: Ex[U]): List[(T,U)] = p.list((e1,e2)).toList 
   
   def select[T,U,V](e1: Ex[T], e2: Ex[U], e3: Ex[V]): List[(T,U,V)] = p.list((e1,e2,e3)).toList
   
-  def select[T,U,V,W](e1: Ex[T], e2: Ex[U], e3: Ex[V], e4: Ex[W]): List[(T,U,V,W)] = p.list((e1,e2,e3,e4)).toList
+  def select[T,U,V,W](e1: Ex[T], e2: Ex[U], e3: Ex[V], e4: Ex[W]): List[(T,U,V,W)] = {
+    p.list((e1,e2,e3,e4)).toList
+  }
   
-  def select[T,U,V,W,X](e1: Ex[T], e2: Ex[U], e3: Ex[V], e4: Ex[W], e5: Ex[X]): List[(T,U,V,W,X)] = p.list((e1,e2,e3,e4,e5)).toList  
+  def select[T,U,V,W,X](e1: Ex[T], e2: Ex[U], e3: Ex[V], e4: Ex[W], e5: Ex[X]): List[(T,U,V,W,X)] = {
+    p.list((e1,e2,e3,e4,e5)).toList
+  }
+  
+  def select[T,U,V,W,X,Y](e1: Ex[T], e2: Ex[U], e3: Ex[V], e4: Ex[W], e5: Ex[X], e6: Ex[Y]): List[(T,U,V,W,X,Y)] = {
+    p.list((e1,e2,e3,e4,e5,e6)).toList
+  }
+  
+  def select[T,U,V,W,X,Y,Z](e1: Ex[T], e2: Ex[U], e3: Ex[V], e4: Ex[W], e5: Ex[X], e6: Ex[Y], 
+      e7: Ex[Z]): List[(T,U,V,W,X,Y,Z)] = {
+    p.list((e1,e2,e3,e4,e5,e6,e7)).toList
+  }
+  
+  def select[T,U,V,W,X,Y,Z,Z1](e1: Ex[T], e2: Ex[U], e3: Ex[V], e4: Ex[W], e5: Ex[X], e6: Ex[Y], 
+      e7: Ex[Z], e8: Ex[Z1]): List[(T,U,V,W,X,Y,Z,Z1)] = {
+    p.list((e1,e2,e3,e4,e5,e6,e7,e8)).toList
+  }
+  
+  def select[T,U,V,W,X,Y,Z,Z1,Z2](e1: Ex[T], e2: Ex[U], e3: Ex[V], e4: Ex[W], e5: Ex[X], e6: Ex[Y], 
+      e7: Ex[Z], e8: Ex[Z1], e9: Ex[Z2]): List[(T,U,V,W,X,Y,Z,Z1,Z2)] = {
+    p.list((e1,e2,e3,e4,e5,e6,e7,e8,e9)).toList
+  }
+  
+  def select[T,U,V,W,X,Y,Z,Z1,Z2,Z3](e1: Ex[T], e2: Ex[U], e3: Ex[V], e4: Ex[W], e5: Ex[X], e6: Ex[Y], 
+      e7: Ex[Z], e8: Ex[Z1], e9: Ex[Z2], e10: Ex[Z3]): List[(T,U,V,W,X,Y,Z,Z1,Z2,Z3)] = {
+    p.list((e1,e2,e3,e4,e5,e6,e7,e8,e9,e10)).toList
+  }
+  
+  def select[T,U,V,W,X,Y,Z,Z1,Z2,Z3,Z4](e1: Ex[T], e2: Ex[U], e3: Ex[V], e4: Ex[W], e5: Ex[X], e6: Ex[Y], 
+      e7: Ex[Z], e8: Ex[Z1], e9: Ex[Z2], e10: Ex[Z3], e11: Ex[Z4]): List[(T,U,V,W,X,Y,Z,Z1,Z2,Z3,Z4)] = {
+    p.list((e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11)).toList
+  }
+  
+  def select[T,U,V,W,X,Y,Z,Z1,Z2,Z3,Z4,Z5](e1: Ex[T], e2: Ex[U], e3: Ex[V], e4: Ex[W], e5: Ex[X], 
+      e6: Ex[Y], e7: Ex[Z], e8: Ex[Z1], e9: Ex[Z2], e10: Ex[Z3], e11: Ex[Z4], 
+      e12: Ex[Z5]): List[(T,U,V,W,X,Y,Z,Z1,Z2,Z3,Z4,Z5)] = {
+    p.list((e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12)).toList
+  }
+  
+  def select[T,U,V,W,X,Y,Z,Z1,Z2,Z3,Z4,Z5,Z6](e1: Ex[T], e2: Ex[U], e3: Ex[V], e4: Ex[W], e5: Ex[X], 
+      e6: Ex[Y], e7: Ex[Z], e8: Ex[Z1], e9: Ex[Z2], e10: Ex[Z3], e11: Ex[Z4], e12: Ex[Z5],
+      e13: Ex[Z6]): List[(T,U,V,W,X,Y,Z,Z1,Z2,Z3,Z4,Z5,Z6)] = {
+    p.list((e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12,e13)).toList
+  }
+  
+  def select[T,U,V,W,X,Y,Z,Z1,Z2,Z3,Z4,Z5,Z6,Z7](e1: Ex[T], e2: Ex[U], e3: Ex[V], e4: Ex[W], 
+      e5: Ex[X], e6: Ex[Y], e7: Ex[Z], e8: Ex[Z1], e9: Ex[Z2], e10: Ex[Z3], e11: Ex[Z4], e12: Ex[Z5], 
+      e13: Ex[Z6], e14: Ex[Z7]): List[(T,U,V,W,X,Y,Z,Z1,Z2,Z3,Z4,Z5,Z6,Z7)] = {
+    p.list((e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12,e13,e14)).toList
+  }
+  
+  def select[T,U,V,W,X,Y,Z,Z1,Z2,Z3,Z4,Z5,Z6,Z7,Z8](e1: Ex[T], e2: Ex[U], e3: Ex[V], e4: Ex[W], 
+      e5: Ex[X], e6: Ex[Y], e7: Ex[Z], e8: Ex[Z1], e9: Ex[Z2], e10: Ex[Z3], e11: Ex[Z4], e12: Ex[Z5], 
+      e13: Ex[Z6], e14: Ex[Z7], e15: Ex[Z8]): List[(T,U,V,W,X,Y,Z,Z1,Z2,Z3,Z4,Z5,Z6,Z7,Z8)] = {
+    p.list((e1,e2,e3,e4,e5,e6,e7,e8,e9,e10,e11,e12,e13,e14,e15)).toList
+  }
   
   // TODO : generalize this
   def selectGrouped[K,T,V](key: Ex[K], parent: Ex[T], child: Ex[V]): List[(T,Set[V])] = {
@@ -78,7 +135,11 @@ class RichProjectable(private val p: Projectable) {
   
   def single[T](expr: Ex[T]): Option[T] = Option(p.singleResult(expr))
   
+  // TODO : single variants for multiple arguments
+  
   def unique[T](expr: Ex[T]): Option[T] = Option(p.uniqueResult(expr))
+  
+  // TODO : unique variants for multiple arguments
   
   override def toString: String = p.toString
   

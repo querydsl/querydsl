@@ -49,6 +49,9 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
     
   var primitives = true  
     
+  /**
+   * 
+   */
   def serialize(model: EntityType, serializerConfig: SerializerConfig, writer: CodeWriter) {
     val scalaWriter = writer.asInstanceOf[ScalaWriter]
     val simpleName: String = model.getSimpleName

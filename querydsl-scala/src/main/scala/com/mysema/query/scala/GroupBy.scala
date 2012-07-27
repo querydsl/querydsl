@@ -36,16 +36,28 @@ object GroupBy extends GroupBy {
 
 trait GroupBy {
     
+  /**
+   * 
+   */
   def groupBy[K](key: Ex[K]) = new GroupByBuilder[K](key)
   
+  /**
+   * 
+   */
   def set[T](e: Ex[T]) = new AbstractGroupExpression[T,Set[T]](classOf[Set[T]], e) {
     def createGroupCollector() = new BuilderCollector(Set.newBuilder[T])
   }
     
+  /**
+   * 
+   */
   def list[T](e: Ex[T]) = new AbstractGroupExpression[T,List[T]](classOf[List[T]], e) {
     def createGroupCollector = new BuilderCollector(List.newBuilder[T])
   }
-      
+     
+  /**
+   * 
+   */
   def map[K,V](k: Ex[K], v: Ex[V]) = new AbstractGroupExpression[(K,V),Map[K,V]](
       classOf[Map[K,V]], new Tu2Ex(k,v)) {
     def createGroupCollector = new BuilderCollector(Map.newBuilder[K,V])

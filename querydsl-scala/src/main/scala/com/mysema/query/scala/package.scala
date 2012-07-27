@@ -23,12 +23,32 @@ package object scala {
   
   type Ex[T] = Expression[T]
   
-  type Tu2Ex[T1,T2] = Tuple2Expression[T1,T2]
+  type Tu2Ex[A,B] = Tuple2Expression[A,B]
   
-  type Tu3Ex[T1,T2,T3] = Tuple3Expression[T1,T2,T3]
+  type Tu3Ex[A,B,C] = Tuple3Expression[A,B,C]
   
-  type Tu4Ex[T1,T2,T3,T4] = Tuple4Expression[T1,T2,T3,T4]
+  type Tu4Ex[A,B,C,D] = Tuple4Expression[A,B,C,D]
   
-  type Tu5Ex[T1,T2,T3,T4,T5] = Tuple5Expression[T1,T2,T3,T4,T5]
+  type Tu5Ex[A,B,C,D,E] = Tuple5Expression[A,B,C,D,E]
+  
+  type Tu6Ex[A,B,C,D,E,F] = Tuple6Expression[A,B,C,D,E,F]
+  
+  type Tu7Ex[A,B,C,D,E,F,G] = Tuple7Expression[A,B,C,D,E,F,G]
+  
+  type Tu8Ex[A,B,C,D,E,F,G,H] = Tuple8Expression[A,B,C,D,E,F,G,H]
+  
+  type Tu9Ex[A,B,C,D,E,F,G,H,I] = Tuple9Expression[A,B,C,D,E,F,G,H,I]
+  
+  type Tu10Ex[A,B,C,D,E,F,G,H,I,J] = Tuple10Expression[A,B,C,D,E,F,G,H,I,J]
+  
+  type Tu11Ex[A,B,C,D,E,F,G,H,I,J,K] = Tuple11Expression[A,B,C,D,E,F,G,H,I,J,K]
+  
+  type Tu12Ex[A,B,C,D,E,F,G,H,I,J,K,L] = Tuple12Expression[A,B,C,D,E,F,G,H,I,J,K,L]
+  
+  type Tu13Ex[A,B,C,D,E,F,G,H,I,J,K,L,M] = Tuple13Expression[A,B,C,D,E,F,G,H,I,J,K,L,M]
+  
+  type Tu14Ex[A,B,C,D,E,F,G,H,I,J,K,L,M,N] = Tuple14Expression[A,B,C,D,E,F,G,H,I,J,K,L,M,N]
+  
+  type Tu15Ex[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O] = Tuple15Expression[A,B,C,D,E,F,G,H,I,J,K,L,M,N,O]
   
 } 

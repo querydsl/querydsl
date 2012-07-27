@@ -35,10 +35,16 @@ import Serializer._
  */
 object Serializer {
   
+  /**
+   * 
+   */
   def writePackage(model: EntityType, writer: ScalaWriter) {
     if (!model.getPackageName.isEmpty) writer.packageDecl(model.getPackageName)
   }
   
+  /**
+   * 
+   */
   def writeImports(model: EntityType, javaBeanSupport: Boolean, writer: ScalaWriter) {
     val importedClasses = getAnnotationTypes(model)
     if (javaBeanSupport)  importedClasses.add("scala.reflect.BeanProperty")    
@@ -47,6 +53,9 @@ object Serializer {
     writer.importClasses(importedClasses.toArray: _*)    
   }
   
+  /**
+   * 
+   */
   def writeCompanionObject(model: EntityType, typeMappings: TypeMappings, writer: ScalaWriter) {
     val queryType = typeMappings.getPathType(model, model, true)
     val modelName = writer.getRawName(model)
@@ -80,6 +89,9 @@ class ScalaBeanSerializer @Inject() (typeMappings: TypeMappings) extends Seriali
   
   var javaBeanSupport = false
   
+  /**
+   * 
+   */
   def serialize(model: EntityType, serializerConfig: SerializerConfig, writer: CodeWriter) {
     val scalaWriter = writer.asInstanceOf[ScalaWriter]
     
@@ -112,6 +124,9 @@ class CaseClassSerializer @Inject() (typeMappings: TypeMappings) extends Seriali
   
   var createCompanionObject = true
   
+  /**
+   * 
+   */
   def serialize(model: EntityType, serializerConfig: SerializerConfig, writer: CodeWriter) {
     val scalaWriter = writer.asInstanceOf[ScalaWriter]
     
