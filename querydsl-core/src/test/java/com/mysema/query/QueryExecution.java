@@ -255,7 +255,13 @@ public abstract class QueryExecution {
             if (!errors.isEmpty()){
                 buffer.append(errors.size()).append(" error(s) ");
             }
-            buffer.append("of ").append(total).append(" tests");
+            buffer.append("of ").append(total).append(" tests\n");
+            for (String f : failures) {
+                buffer.append(f + "\n");
+            }
+            for (String e : errors) {
+                buffer.append(e + "\n");
+            }
             Assert.fail(buffer.toString());
         }else{
             System.out.println("Success with " + total + " tests");

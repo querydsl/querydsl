@@ -39,6 +39,10 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
 
     private EntityManagerFactory entityManagerFactory;
     
+    private EntityManager entityManager;
+    
+    private Method setter;
+    
     private boolean isDerby;
 
     public JPATestRunner(Class<?> klass) throws InitializationError{
@@ -54,22 +58,11 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
                 return new Statement(){
                     @Override
                     public void evaluate() throws Throwable {
-                        EntityManager entityManager = entityManagerFactory.createEntityManager();               
-                        try {
-                            Method method = target.getClass().getMethod("setEntityManager", EntityManager.class); 
-                            method.invoke(target, entityManager);
-                            entityManager.getTransaction().begin();
-                            base.evaluate();
-                        } finally {
-                            try {
-                                if (entityManager.getTransaction().isActive()) {
-                                    entityManager.getTransaction().rollback();
-                                }                                
-                                entityManager.clear();
-                            } finally {
-                                entityManager.close();    
-                            }                                         
-                        } 
+                        if (setter == null) {
+                            setter = target.getClass().getMethod("setEntityManager", EntityManager.class);    
+                        }                         
+                        setter.invoke(target, entityManager);                            
+                        base.evaluate();
                     }                                  
                 };
             }
@@ -81,24 +74,41 @@ public class JPATestRunner extends BlockJUnit4ClassRunner {
     @Override
     public void run(final RunNotifier notifier) {
         try {
-            String mode = Mode.mode.get();
-            System.out.println(mode);
-            isDerby = mode.contains("derby");
-            if (isDerby) {
-                Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
-            }
-            entityManagerFactory = Persistence.createEntityManagerFactory(mode);
+            start();
             super.run(notifier);
         } catch (Exception e) {
             String error = "Caught " + e.getClass().getName();
             throw new RuntimeException(error, e);
-        } finally {            
+        } finally {   
             shutdown();
         }
 
     }
     
+    private void start() throws Exception {
+        String mode = Mode.mode.get();
+        System.out.println(mode);
+        isDerby = mode.contains("derby");
+        if (isDerby) {
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
+        }
+        entityManagerFactory = Persistence.createEntityManagerFactory(mode);
+        entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+    }
+    
     private void shutdown() {
+        if (entityManager != null) {
+            try {
+                if (entityManager.getTransaction().isActive()) {
+                    entityManager.getTransaction().rollback();
+                }                     
+            } finally {
+                entityManager.close();    
+                entityManager = null;
+            }    
+        }            
+        
         if (entityManagerFactory != null){
             entityManagerFactory.getCache().evictAll();
             entityManagerFactory.close();

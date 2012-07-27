@@ -41,6 +41,10 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
     
     private SessionFactory sessionFactory;
     
+    private Session session;
+    
+    private Method setter;
+    
     private boolean isDerby = false;
     
     public HibernateTestRunner(Class<?> klass) throws InitializationError {
@@ -56,22 +60,11 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
                 return new Statement(){
                     @Override
                     public void evaluate() throws Throwable {
-                        Session session = sessionFactory.openSession();            
-                        try {
-                            Method method = target.getClass().getMethod("setSession", Session.class);
-                            method.invoke(target, session);
-                            session.beginTransaction();
-                            base.evaluate();
-                        } finally {
-                            try {
-                                if (session.getTransaction().isActive()) {
-                                    session.getTransaction().rollback();    
-                                }                                
-                                session.clear();
-                            } finally {
-                                session.close();    
-                            }                                                        
-                        } 
+                        if (setter == null) {
+                            setter = target.getClass().getMethod("setSession", Session.class);
+                        }
+                        setter.invoke(target, session);                            
+                        base.evaluate();
                     }                                        
                 };
             }
@@ -83,23 +76,7 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
     @Override
     public void run(final RunNotifier notifier) {
         try {
-            Configuration cfg = new Configuration();
-            for (Class<?> cl : Domain.classes){
-                cfg.addAnnotatedClass(cl);
-            }
-            String mode = Mode.mode.get() + ".properties";
-            isDerby = mode.contains("derby");
-            if (isDerby) {
-                Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
-            }
-            Properties props = new Properties();
-            InputStream is = HibernateTestRunner.class.getResourceAsStream(mode);
-            if (is == null){
-                throw new IllegalArgumentException("No configuration available at classpath:" + mode);
-            }
-            props.load(is);
-            cfg.setProperties(props);
-            sessionFactory = cfg.buildSessionFactory();
+            start();
             super.run(notifier);
         } catch (Exception e) {
             String error = "Caught " + e.getClass().getName();
@@ -107,10 +84,42 @@ public class HibernateTestRunner extends BlockJUnit4ClassRunner {
         } finally {
             shutdown(); 
         }
-
+    }
+    
+    private void start() throws Exception {
+        Configuration cfg = new Configuration();
+        for (Class<?> cl : Domain.classes){
+            cfg.addAnnotatedClass(cl);
+        }
+        String mode = Mode.mode.get() + ".properties";
+        isDerby = mode.contains("derby");
+        if (isDerby) {
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver").newInstance();
+        }
+        Properties props = new Properties();
+        InputStream is = HibernateTestRunner.class.getResourceAsStream(mode);
+        if (is == null){
+            throw new IllegalArgumentException("No configuration available at classpath:" + mode);
+        }
+        props.load(is);
+        cfg.setProperties(props);
+        sessionFactory = cfg.buildSessionFactory();
+        session = sessionFactory.openSession();
+        session.beginTransaction();        
     }
     
     private void shutdown() {
+        if (session != null) {
+            try {
+                if (session.getTransaction().isActive()) {
+                    session.getTransaction().rollback();    
+                }               
+            } finally {
+                session.close();    
+                session = null;
+            }    
+        }            
+        
         if (sessionFactory != null){
             sessionFactory.getCache().evictEntityRegions();            
             sessionFactory.close();

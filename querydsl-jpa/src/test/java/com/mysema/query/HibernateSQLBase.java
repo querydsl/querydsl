@@ -68,13 +68,15 @@ public class HibernateSQLBase {
 
     @Before
     public void setUp(){
-        session.save(new Cat("Beck",1));
-        session.save(new Cat("Kate",2));
-        session.save(new Cat("Kitty",3));
-        session.save(new Cat("Bobby",4));
-        session.save(new Cat("Harold",5));
-        session.save(new Cat("Tim",6));
-        session.flush();
+        if (query().from(cat).notExists()) {
+            session.save(new Cat("Beck",1));
+            session.save(new Cat("Kate",2));
+            session.save(new Cat("Kitty",3));
+            session.save(new Cat("Bobby",4));
+            session.save(new Cat("Harold",5));
+            session.save(new Cat("Tim",6));
+            session.flush();    
+        }        
     }
     
     @Test

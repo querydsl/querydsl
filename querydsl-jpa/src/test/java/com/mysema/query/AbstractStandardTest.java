@@ -108,15 +108,15 @@ public abstract class AbstractStandardTest {
 
     private static final BooleanExpression cond2 = otherCat.name.length().gt(0);
 
-    private final Date birthDate;
+    private static final Date birthDate;
 
-    private final java.sql.Date date;
+    private static final java.sql.Date date;
 
+    private static final java.sql.Time time;
+    
     private final List<Cat> savedCats = new ArrayList<Cat>();
 
-    private final java.sql.Time time;
-
-    {
+    static {
         Calendar cal = Calendar.getInstance();
         cal.set(2000, 1, 2, 3, 4);
         cal.set(Calendar.MILLISECOND, 0);
@@ -139,6 +139,11 @@ public abstract class AbstractStandardTest {
 
     @Before
     public void setUp() {
+        if (query().from(cat).exists()) {
+            savedCats.addAll(query().from(cat).orderBy(cat.id.asc()).list(cat));
+            return;
+        }
+        
         Cat prev = null;
         for (Cat cat : Arrays.asList(
                 new Cat("Bob123", 1, 1.0),

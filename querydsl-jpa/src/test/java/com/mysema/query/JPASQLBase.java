@@ -75,13 +75,15 @@ public class JPASQLBase {
 
     @Before
     public void setUp() {
-        entityManager.persist(new Cat("Beck", 1));
-        entityManager.persist(new Cat("Kate", 2));
-        entityManager.persist(new Cat("Kitty", 3));
-        entityManager.persist(new Cat("Bobby", 4));
-        entityManager.persist(new Cat("Harold", 5));
-        entityManager.persist(new Cat("Tim", 6));
-        entityManager.flush();         
+        if (query().from(cat).notExists()) {
+            entityManager.persist(new Cat("Beck", 1));
+            entityManager.persist(new Cat("Kate", 2));
+            entityManager.persist(new Cat("Kitty", 3));
+            entityManager.persist(new Cat("Bobby", 4));
+            entityManager.persist(new Cat("Harold", 5));
+            entityManager.persist(new Cat("Tim", 6));
+            entityManager.flush();    
+        }                 
     }
     
     @Test

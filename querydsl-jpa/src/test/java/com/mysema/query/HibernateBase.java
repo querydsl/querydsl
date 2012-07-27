@@ -66,12 +66,10 @@ public class HibernateBase extends AbstractStandardTest {
         session.save(entity);
     }
 
-    @SuppressWarnings("unchecked")
     @Test
     public void QueryExposure(){
-        save(new Cat());
-
-        List results = query().from(QCat.cat).createQuery(QCat.cat).list();
+//        save(new Cat());
+        List<Cat> results = query().from(QCat.cat).createQuery(QCat.cat).list();
         assertNotNull(results);
         assertFalse(results.isEmpty());
     }
