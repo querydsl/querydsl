@@ -13,13 +13,15 @@
  */
 package com.mysema.query.collections;
 
-import com.google.common.primitives.Primitives;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.google.common.collect.Maps;
+import com.google.common.primitives.Primitives;
 import com.mysema.query.QueryException;
 import com.mysema.query.codegen.Serializer;
 import com.mysema.query.support.SerializerBase;
@@ -42,6 +44,17 @@ import com.mysema.util.BeanUtils;
  */
 public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer> {
 
+    private static final Map<Operator<?>, String> operatorSymbols = Maps.newHashMap();
+    
+    static {
+        operatorSymbols.put(Ops.EQ, " == ");
+        operatorSymbols.put(Ops.NE, " != ");
+        operatorSymbols.put(Ops.GT, " > ");
+        operatorSymbols.put(Ops.LT, " < ");
+        operatorSymbols.put(Ops.GOE, " >= ");
+        operatorSymbols.put(Ops.LOE, " <= ");
+    }
+    
     public ColQuerySerializer(ColQueryTemplates templates) {
         super(templates);
     }
@@ -155,29 +168,14 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
 
     @Override
     protected void visitOperation(Class<?> type, Operator<?> operator, List<? extends Expression<?>> args) {
-        if (args.size() == 2 && isPrimitive(args.get(0).getType()) && isPrimitive(args.get(1).getType())){
-            // TODO improve me!
-            if (operator == Ops.EQ) {
-                handle(args.get(0)).append(" == ").handle(args.get(1));
-                return;
-            } else if (operator == Ops.NE) {            
-                handle(args.get(0)).append(" != ").handle(args.get(1));
-                return;
-            } else if (operator == Ops.GT){
-                handle(args.get(0)).append(" > ").handle(args.get(1));
-                return;
-            } else if (operator == Ops.LT){
-                handle(args.get(0)).append(" < ").handle(args.get(1));
-                return;
-            } else if (operator == Ops.GOE){
-                handle(args.get(0)).append(" >= ").handle(args.get(1));
-                return;
-            } else if (operator == Ops.LOE){
-                handle(args.get(0)).append(" <= ").handle(args.get(1));
-                return;
-            }
+        if (args.size() == 2 && operatorSymbols.containsKey(operator) 
+             && isPrimitive(args.get(0).getType()) && isPrimitive(args.get(1).getType())){
+            handle(args.get(0));
+            append(operatorSymbols.get(operator));
+            handle(args.get(1));
+            return;
         }
-
+        
         if (operator == Ops.STRING_CAST) {
             visitCast(operator, args.get(0), String.class);
         } else if (operator == Ops.NUMCAST) {
@@ -191,10 +189,9 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
         return type.isPrimitive() || Primitives.isWrapperType(type);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public Void visit(FactoryExpression<?> expr, Void context) {
-        handle(new ConstantImpl(expr));
+        handle(new ConstantImpl<Object>(expr));
         append(".newInstance(");
         handle(", ", expr.getArgs());
         append(")");
