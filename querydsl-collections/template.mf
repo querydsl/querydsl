@@ -9,4 +9,5 @@ Import-Template:
   com.mysema.util.*;version="${project.version}",
   javax.annotation.*;version="0",
   javax.tools.*;version="1",
+  org.eclipse.jdt.*;version="3.7.2",
   com.google.common.*;version="${guava.version}"

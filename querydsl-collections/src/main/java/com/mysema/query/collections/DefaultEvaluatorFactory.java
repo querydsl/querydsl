@@ -21,11 +21,12 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
 
 import com.google.common.primitives.Primitives;
+import com.mysema.codegen.ECJEvaluatorFactory;
 import com.mysema.codegen.Evaluator;
 import com.mysema.codegen.EvaluatorFactory;
+import com.mysema.codegen.JDKEvaluatorFactory;
 import com.mysema.codegen.model.ClassType;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
@@ -55,22 +56,33 @@ public class DefaultEvaluatorFactory {
     private final EvaluatorFactory factory;
 
     private final ColQueryTemplates templates;
-
-    /**
-     * @param templates
-     */
+    
     public DefaultEvaluatorFactory(ColQueryTemplates templates){
         this(templates,
-        (URLClassLoader)Thread.currentThread().getContextClassLoader(),
-        ToolProvider.getSystemJavaCompiler());
+        Thread.currentThread().getContextClassLoader());
+    }
+    
+    public DefaultEvaluatorFactory(ColQueryTemplates templates, EvaluatorFactory factory){
+        this.templates = templates;
+        this.factory = factory;
     }
 
     protected DefaultEvaluatorFactory(ColQueryTemplates templates,
             URLClassLoader classLoader, JavaCompiler compiler){
         this.templates = templates;
-        this.factory = new EvaluatorFactory(classLoader, compiler);
+        this.factory = new JDKEvaluatorFactory(classLoader, compiler);
     }
 
+    protected DefaultEvaluatorFactory(ColQueryTemplates templates, ClassLoader classLoader){
+        this.templates = templates;        
+        if (classLoader instanceof URLClassLoader) {
+            this.factory = new JDKEvaluatorFactory((URLClassLoader) classLoader);
+        } else {
+            // for OSGi compatibility
+            this.factory = new ECJEvaluatorFactory(classLoader);
+        }
+    }
+    
     /**
      * Create an Evaluator for the given query sources and projection
      *
