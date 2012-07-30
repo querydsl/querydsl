@@ -13,6 +13,7 @@
  */
 package com.mysema.query.collections;
 
+import com.google.common.primitives.Primitives;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -187,10 +188,7 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
     }
     
     private static boolean isPrimitive(Class<?> type){
-        return type.isPrimitive()
-            || Number.class.isAssignableFrom(type)
-            || Boolean.class.equals(type)
-            || Character.class.equals(type);
+        return type.isPrimitive() || Primitives.isWrapperType(type);
     }
 
     @SuppressWarnings("unchecked")

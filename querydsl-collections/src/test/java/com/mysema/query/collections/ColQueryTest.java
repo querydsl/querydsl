@@ -27,6 +27,10 @@ import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.NumberExpression;
 import com.mysema.query.types.path.StringPath;
+import com.mysema.query.types.path.NumberPath;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class ColQueryTest extends AbstractQueryTest {
 
@@ -139,6 +143,21 @@ public class ColQueryTest extends AbstractQueryTest {
 
         query().from(cat, cats).where(cat.name.matches("fri.*")).list(cat.name);
 
+    }
+
+    @Test
+    public void BigDecimals() {
+        NumberPath<BigDecimal> a = new NumberPath<BigDecimal>(BigDecimal.class, "cost");
+        List<BigDecimal> nums = from(a, new BigDecimal("2.1"), new BigDecimal("20.21"),
+                new BigDecimal("44.4")).where(a.lt(new BigDecimal("35.1"))).list(a);
+
+        for (BigDecimal num : nums) {
+            System.out.println(num);
+        }
+        assertEquals(2, nums.size());
+        for (BigDecimal num : nums) {
+            assertEquals(-1, num.compareTo(new BigDecimal("35")));
+        }
     }
 
 }
