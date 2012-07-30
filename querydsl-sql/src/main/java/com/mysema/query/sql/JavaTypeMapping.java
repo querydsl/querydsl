@@ -19,6 +19,7 @@ import java.util.Set;
 
 import javax.annotation.Nullable;
 
+import com.google.common.primitives.Primitives;
 import com.mysema.commons.lang.Pair;
 import com.mysema.query.sql.types.BigDecimalType;
 import com.mysema.query.sql.types.BlobType;
@@ -94,6 +95,10 @@ public class JavaTypeMapping {
 
     private static void registerDefault(Type<?> type) {
         defaultTypes.put(type.getReturnedClass(), type);
+        Class<?> primitive = Primitives.unwrap(type.getReturnedClass());
+        if (primitive != null) {
+            defaultTypes.put(primitive, type);
+        }
     }
     
     private final Map<Class<?>,Type<?>> typeByClass = new HashMap<Class<?>,Type<?>>();
@@ -150,6 +155,10 @@ public class JavaTypeMapping {
     
     public void register(Type<?> type) {
         typeByClass.put(type.getReturnedClass(), type);
+        Class<?> primitive = Primitives.unwrap(type.getReturnedClass());
+        if (primitive != null) {
+            typeByClass.put(primitive, type);
+        }
         // Clear previous resolved types, so they won't impact future lookups
         resolvedTypesByClass.clear();
     }

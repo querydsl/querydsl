@@ -22,8 +22,16 @@ import java.io.InputStream;
 import org.junit.Test;
 
 import com.mysema.query.sql.types.BlobType;
+import com.mysema.query.sql.types.BooleanType;
+import com.mysema.query.sql.types.ByteType;
+import com.mysema.query.sql.types.CharacterType;
+import com.mysema.query.sql.types.DoubleType;
+import com.mysema.query.sql.types.FloatType;
 import com.mysema.query.sql.types.InputStreamType;
+import com.mysema.query.sql.types.IntegerType;
+import com.mysema.query.sql.types.LongType;
 import com.mysema.query.sql.types.ObjectType;
+import com.mysema.query.sql.types.ShortType;
 
 public class JavaTypeMappingTest {
 
@@ -44,6 +52,18 @@ public class JavaTypeMappingTest {
     @Test
     public void GetType_for_Object(){
         assertEquals(ObjectType.class, typeMapping.getType(Object.class).getClass());
+    }
+    
+    @Test
+    public void GetType_For_Primitive() {
+        assertEquals(ByteType.class, typeMapping.getType(byte.class).getClass());
+        assertEquals(ShortType.class, typeMapping.getType(short.class).getClass());
+        assertEquals(IntegerType.class, typeMapping.getType(int.class).getClass());
+        assertEquals(LongType.class, typeMapping.getType(long.class).getClass());
+        assertEquals(FloatType.class, typeMapping.getType(float.class).getClass());
+        assertEquals(DoubleType.class, typeMapping.getType(double.class).getClass());
+        assertEquals(BooleanType.class, typeMapping.getType(boolean.class).getClass());
+        assertEquals(CharacterType.class, typeMapping.getType(char.class).getClass());
     }
 
 }
