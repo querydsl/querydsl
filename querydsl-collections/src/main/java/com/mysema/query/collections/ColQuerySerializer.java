@@ -46,6 +46,8 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
 
     private static final Map<Operator<?>, String> operatorSymbols = Maps.newHashMap();
     
+    private static final Map<Class<?>, String> castSuffixes = Maps.newHashMap();
+    
     static {
         operatorSymbols.put(Ops.EQ, " == ");
         operatorSymbols.put(Ops.NE, " != ");
@@ -53,6 +55,14 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
         operatorSymbols.put(Ops.LT, " < ");
         operatorSymbols.put(Ops.GOE, " >= ");
         operatorSymbols.put(Ops.LOE, " <= ");
+        
+        castSuffixes.put(Byte.class, ".byteValue()");
+        castSuffixes.put(Double.class, ".doubleValue()");
+        castSuffixes.put(Float.class, ".floatValue()");
+        castSuffixes.put(Integer.class, ".intValue()");
+        castSuffixes.put(Long.class, ".longValue()");
+        castSuffixes.put(Short.class, ".shortValue()");
+        castSuffixes.put(String.class, ".toString()");
     }
     
     public ColQuerySerializer(ColQueryTemplates templates) {
@@ -146,21 +156,9 @@ public final class ColQuerySerializer extends SerializerBase<ColQuerySerializer>
         } else {
             handle(source);
         }
-
-        if (Byte.class.equals(targetType)) {
-            append(".byteValue()");
-        } else if (Double.class.equals(targetType)) {
-            append(".doubleValue()");
-        } else if (Float.class.equals(targetType)) {
-            append(".floatValue()");
-        } else if (Integer.class.equals(targetType)) {
-            append(".intValue()");
-        } else if (Long.class.equals(targetType)) {
-            append(".longValue()");
-        } else if (Short.class.equals(targetType)) {
-            append(".shortValue()");
-        } else if (String.class.equals(targetType)) {
-            append(".toString()");
+        
+        if (castSuffixes.containsKey(targetType)) {
+            append(castSuffixes.get(targetType));
         } else {
             throw new IllegalArgumentException("Unsupported cast type " + targetType.getName());
         }
