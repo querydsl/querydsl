@@ -17,20 +17,19 @@ import static com.mysema.query.collections.MiniApi.from;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 
 import com.mysema.query.types.Expression;
 import com.mysema.query.types.Ops;
 import com.mysema.query.types.expr.NumberExpression;
-import com.mysema.query.types.path.StringPath;
 import com.mysema.query.types.path.NumberPath;
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
+import com.mysema.query.types.path.StringPath;
 
 public class ColQueryTest extends AbstractQueryTest {
 
