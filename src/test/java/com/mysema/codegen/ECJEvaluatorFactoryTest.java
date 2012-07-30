@@ -8,7 +8,6 @@ package com.mysema.codegen;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
-import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -19,7 +18,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class EvaluatorFactoryTest {
+public class ECJEvaluatorFactoryTest {
 
     public static class TestEntity {
 
@@ -47,7 +46,7 @@ public class EvaluatorFactoryTest {
 
     @Before
     public void setUp() throws IOException {
-        factory = new EvaluatorFactory((URLClassLoader) getClass().getClassLoader());
+        factory = new ECJEvaluatorFactory(getClass().getClassLoader());
     }
 
     @Test

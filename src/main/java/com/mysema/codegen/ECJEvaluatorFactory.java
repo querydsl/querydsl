@@ -1,0 +1,320 @@
+/*
+ * Copyright (c) 2010 Mysema Ltd.
+ * All rights reserved.
+ * 
+ */
+package com.mysema.codegen;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.StringWriter;
+import java.nio.charset.Charset;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.StringTokenizer;
+
+import javax.tools.JavaFileObject;
+import javax.tools.StandardLocation;
+
+import org.eclipse.jdt.core.compiler.CategorizedProblem;
+import org.eclipse.jdt.core.compiler.CharOperation;
+import org.eclipse.jdt.internal.compiler.ClassFile;
+import org.eclipse.jdt.internal.compiler.CompilationResult;
+import org.eclipse.jdt.internal.compiler.Compiler;
+import org.eclipse.jdt.internal.compiler.DefaultErrorHandlingPolicies;
+import org.eclipse.jdt.internal.compiler.ICompilerRequestor;
+import org.eclipse.jdt.internal.compiler.IErrorHandlingPolicy;
+import org.eclipse.jdt.internal.compiler.IProblemFactory;
+import org.eclipse.jdt.internal.compiler.classfmt.ClassFileReader;
+import org.eclipse.jdt.internal.compiler.classfmt.ClassFormatException;
+import org.eclipse.jdt.internal.compiler.env.ICompilationUnit;
+import org.eclipse.jdt.internal.compiler.env.INameEnvironment;
+import org.eclipse.jdt.internal.compiler.env.NameEnvironmentAnswer;
+import org.eclipse.jdt.internal.compiler.impl.CompilerOptions;
+import org.eclipse.jdt.internal.compiler.problem.DefaultProblemFactory;
+import org.eclipse.jdt.internal.compiler.tool.EclipseFileManager;
+
+import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.google.common.io.ByteStreams;
+import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.Parameter;
+import com.mysema.codegen.model.SimpleType;
+import com.mysema.codegen.model.Type;
+import com.mysema.codegen.model.TypeCategory;
+import com.mysema.codegen.support.ClassUtils;
+
+/**
+ * EvaluatorFactory is a factory implementation for creating Evaluator instances
+ * 
+ * @author tiwe
+ * 
+ */
+public class ECJEvaluatorFactory extends AbstractEvaluatorFactory {
+    
+    private final MemFileManager fileManager;
+    
+    private final ClassLoader parentClassLoader;
+    
+    private final List<String> problemList = Lists.newArrayList();
+    
+    private final CompilerOptions compilerOptions;
+    
+    public static CompilerOptions getDefaultCompilerOptions() {
+        String javaSpecVersion = System.getProperty("java.specification.version");
+        Map<String, Object> settings = Maps.newHashMap();
+        settings.put(CompilerOptions.OPTION_Source, javaSpecVersion);
+        settings.put(CompilerOptions.OPTION_TargetPlatform, javaSpecVersion);
+        settings.put(CompilerOptions.OPTION_ReportDeprecation, CompilerOptions.IGNORE);
+        return new CompilerOptions(settings);
+    }
+
+    public ECJEvaluatorFactory(ClassLoader parent) {
+        this(parent, getDefaultCompilerOptions());
+    }
+    
+    public ECJEvaluatorFactory(ClassLoader parent, CompilerOptions compilerOptions) {
+        this.parentClassLoader = parent;
+        this.fileManager = new MemFileManager(parent, new EclipseFileManager(Locale.getDefault(), Charset.defaultCharset()));
+        this.loader = fileManager.getClassLoader(StandardLocation.CLASS_OUTPUT);        
+        this.compilerOptions = compilerOptions;
+    }
+
+    protected void compile(String source, ClassType projectionType, String[] names, Type[] types,
+            String id, Map<String, Object> constants) throws IOException {
+        // create source
+        StringWriter writer = new StringWriter();
+        JavaWriter javaw = new JavaWriter(writer);
+        SimpleType idType = new SimpleType(id, "", id);
+        javaw.beginClass(idType, null);
+        Parameter[] params = new Parameter[names.length];
+        for (int i = 0; i < params.length; i++) {
+            params[i] = new Parameter(names[i], types[i]);
+        }
+
+        for (Map.Entry<String, Object> entry : constants.entrySet()) {
+            Type type = new ClassType(TypeCategory.SIMPLE, ClassUtils.normalize(entry.getValue().getClass()));
+            javaw.publicField(type, entry.getKey());
+        }
+
+        if (constants.isEmpty()) {
+            javaw.beginStaticMethod(projectionType, "eval", params);
+        } else {
+            javaw.beginPublicMethod(projectionType, "eval", params);
+        }
+        javaw.append(source);
+        javaw.end();
+        javaw.end();
+
+        // compile
+        final char[] targetContents = writer.toString().toCharArray();
+        final String targetName = idType.getFullName();
+        final ICompilationUnit[] targetCompilationUnits = new ICompilationUnit[] { new ICompilationUnit() {
+            @Override
+            public char[] getContents() {
+                return targetContents;
+            }
+
+            @Override
+            public char[] getMainTypeName() {
+                int dot = targetName.lastIndexOf('.');
+                if (dot > 0)
+                    return targetName.substring(dot + 1).toCharArray();
+                else
+                    return targetName.toCharArray();
+            }
+
+            @Override
+            public char[][] getPackageName() {
+                StringTokenizer tok = new StringTokenizer(targetName, ".");
+                char[][] result = new char[tok.countTokens() - 1][];                
+                for (int j = 0; j < result.length; j++) {
+                    result[j] = tok.nextToken().toCharArray();
+                }
+                return result;
+            }
+
+            @Override
+            public char[] getFileName() {
+                return CharOperation.concat(targetName.toCharArray(), ".java".toCharArray());
+            }
+        } };
+        
+        INameEnvironment env = new INameEnvironment() {
+
+            private String join(char[][] compoundName, char separator) {
+                if (compoundName == null) {
+                    return "";
+                } else {
+                    List<String> parts = Lists.newArrayListWithCapacity(compoundName.length);                
+                    for (char[] part: compoundName) {
+                        parts.add(new String(part));
+                    }
+                    return Joiner.on(separator).join(parts);
+                }
+            }
+            
+            @Override
+            public NameEnvironmentAnswer findType(char[][] compoundTypeName) {
+                return findType(join(compoundTypeName, '.'));
+            }
+
+            @Override
+            public NameEnvironmentAnswer findType(char[] typeName, char[][] packageName) {
+                return findType(CharOperation.arrayConcat(packageName, typeName));
+            }
+
+            private boolean isClass(String result) {
+                if (Strings.isNullOrEmpty(result))
+                    return false;
+                
+                // if it's the class we're compiling, then of course it's a class
+                if (result.equals(targetName)) {
+                    return true; 
+                }
+                InputStream is = null;
+                try {
+                    // if this is a class we've already compiled, it's a class
+                    is = loader.getResourceAsStream(result);
+                    if (is == null) {
+                        // use our normal class loader now...
+                        String resourceName = result.replace('.', '/') + ".class";
+                        is = parentClassLoader.getResourceAsStream(resourceName);
+                        if (is == null && !result.contains(".")) {
+                            // we couldn't find the class, and it has no package; is it a core class?
+                            is = parentClassLoader.getResourceAsStream("java/lang/" + resourceName);
+                        }
+                    }
+                    if (is == null) {
+                        return false; // if it's a class, we sure couldn't load it
+                    } else {                        
+                        return true; // we actually loaded the class, so it must be one 
+                    }                    
+                } finally {
+                    if (is != null) {
+                        try {
+                            is.close();
+                        } catch (IOException ex) {}
+                    }
+                }
+            }
+            
+            @Override
+            public boolean isPackage(char[][] parentPackageName, char[] packageName) {
+                // if the parent is a class, the child can't be a package
+                String parent = join(parentPackageName, '.');
+                if (isClass(parent))
+                    return false;
+
+                // if the child is a class, it's not a package
+                String qualifiedName = (parent.isEmpty() ? "" : parent + ".") + new String(packageName);
+                return !isClass(qualifiedName);
+            }
+            
+            @Override
+            public void cleanup() {
+            }
+            
+            private NameEnvironmentAnswer findType(String className) {
+                String resourceName = className.replace('.', '/') + ".class";
+                InputStream is = null;
+                try {
+                    // we're only asking ECJ to compile a single class; we shouldn't need this
+                    if (className.equals(targetName)) {
+                        return new NameEnvironmentAnswer(targetCompilationUnits[0], null);
+                    }
+                    
+                    is = loader.getResourceAsStream(resourceName);
+                    if (is == null) {
+                        is = parentClassLoader.getResourceAsStream(resourceName);
+                    }
+                    
+                    if (is != null) {
+                        ClassFileReader cfr = new ClassFileReader(ByteStreams.toByteArray(is), className.toCharArray(), true);
+                        return new NameEnvironmentAnswer(cfr, null);
+                    } else {
+                        return null;
+                    }
+                } catch (ClassFormatException ex) {
+                    throw new RuntimeException(ex);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } finally {
+                    if (is != null) {
+                        try {
+                            is.close();                            
+                        } catch (IOException e) {}
+                    }
+                }
+                
+            }
+        };
+        
+        ICompilerRequestor requestor = new ICompilerRequestor() {
+
+            @Override
+            public void acceptResult(CompilationResult result) {
+                if (result.hasErrors()) {
+                    for (CategorizedProblem problem: result.getProblems()) {
+                        if (problem.isError()) {
+                            problemList.add(problem.getMessage());
+                        }
+                    }
+                } else {                    
+                    for (ClassFile clazz: result.getClassFiles()) {
+                        try {
+                            MemJavaFileObject jfo = (MemJavaFileObject) fileManager
+                                    .getJavaFileForOutput(StandardLocation.CLASS_OUTPUT, 
+                                            new String(clazz.fileName()), JavaFileObject.Kind.CLASS, null);
+                            OutputStream os = jfo.openOutputStream();
+                            os.write(clazz.getBytes());
+                        } catch (IOException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+                }
+            }
+        };
+        
+        problemList.clear();
+
+        IErrorHandlingPolicy policy = DefaultErrorHandlingPolicies.exitAfterAllProblems();
+        IProblemFactory problemFactory = new DefaultProblemFactory(Locale.getDefault());
+
+        try {
+            //Compiler compiler = new Compiler(env, policy, getCompilerOptions(), requestor, problemFactory, true);
+            Compiler compiler = new Compiler(env, policy, compilerOptions, requestor, problemFactory);
+            compiler.compile(targetCompilationUnits);
+            if (!problemList.isEmpty()) {
+                StringBuilder sb = new StringBuilder();
+                for (String problem: problemList) {
+                    sb.append("\t").append(problem).append("\n");
+                }
+                throw new CodegenException("Compilation of " + id + " failed:\n" + source + "\n" + sb.toString());            
+            }            
+        } catch (RuntimeException ex) {
+            // if we encountered an IOException, unbox and throw it;
+            // if we encountered a ClassFormatException, box it as an IOException and throw it
+            // otherwise, it's a legit RuntimeException, 
+            //    not one of our checked exceptions boxed as unchecked; just rethrow
+            Throwable cause = ex.getCause();
+            if (cause != null) {
+                if (cause instanceof IOException)
+                    throw (IOException)cause;
+                else if (cause instanceof ClassFormatException)
+                    throw new IOException(cause);
+            }
+            throw ex;
+        } 
+    }
+
+    public CompilerOptions getCompilerOptions() {
+        return compilerOptions;
+    }
+    
+
+}
