@@ -28,6 +28,7 @@ public class OpenJPATemplates extends JPQLTemplates{
     public OpenJPATemplates() {
         this(DEFAULT_ESCAPE);  
         add(Ops.ALIAS, "{0} {1}");
+        add(Ops.NEGATE, "-1 * {0}", 7);
     }
     
     public OpenJPATemplates(char escape) {

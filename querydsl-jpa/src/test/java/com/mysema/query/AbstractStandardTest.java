@@ -764,6 +764,11 @@ public abstract class AbstractStandardTest {
     }
     
     @Test
+    public void Sum_4() {
+        query().from(cat).uniqueResult(cat.bodyWeight.sum().negate());
+    }
+    
+    @Test
     public void Sum_as_Float() {
         float val = query().from(cat).uniqueResult(cat.floatProperty.sum());
         assertTrue(val > 0);
