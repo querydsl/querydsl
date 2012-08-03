@@ -589,6 +589,30 @@ public abstract class StringExpression extends ComparableExpression<String> {
     public StringExpression substring(int beginIndex, int endIndex) {
         return StringOperation.create(Ops.SUBSTR_2ARGS, this, ConstantImpl.create(beginIndex), ConstantImpl.create(endIndex));
     }
+    
+    /**
+     * Get the given substring
+     *
+     * @param beginIndex
+     * @param endIndex
+     * @return this.substring(beginIndex, endIndex)
+     * @see java.lang.String#substring(int, int)
+     */
+    public StringExpression substring(Expression<Integer> beginIndex, int endIndex) {
+        return StringOperation.create(Ops.SUBSTR_2ARGS, this, beginIndex, ConstantImpl.create(endIndex));
+    }
+    
+    /**
+     * Get the given substring
+     *
+     * @param beginIndex
+     * @param endIndex
+     * @return this.substring(beginIndex, endIndex)
+     * @see java.lang.String#substring(int, int)
+     */
+    public StringExpression substring(int beginIndex, Expression<Integer> endIndex) {
+        return StringOperation.create(Ops.SUBSTR_2ARGS, this, ConstantImpl.create(beginIndex), endIndex);
+    }
 
     /**
      * Get the given substring

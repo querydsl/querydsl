@@ -15,6 +15,15 @@ package com.mysema.query.jpa;
 
 import org.junit.Test;
 
+import com.mysema.query.domain.QCat;
+import com.mysema.query.support.Expressions;
+import com.mysema.query.types.Expression;
+import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.expr.NumberOperation;
+import com.mysema.query.types.expr.StringOperation;
+import com.mysema.query.types.path.StringPath;
+
 public class StringOperationsTest extends AbstractQueryTest{
 
     @Test
@@ -33,4 +42,24 @@ public class StringOperationsTest extends AbstractQueryTest{
         assertToString("lower(cat.name)", cat.name.lower());
     }
 
+    @Test
+    @SuppressWarnings("rawtypes")
+    public void IndexOf() {        
+        Path path = QCat.cat.name;
+        Expression startIndex = Expressions.constant(0);
+        Expression endIndex = NumberOperation.create(Integer.class, Ops.INDEX_OF, path, Expressions.constant("x"));
+        Expression substr = StringOperation.create(Ops.SUBSTR_2ARGS, path, startIndex, endIndex);
+        assertToString("substring(cat.name,1,locate(?1,cat.name)-1)", substr);
+    }
+    
+    @Test
+    public void IndexOf2() {
+        StringPath str = QCat.cat.name;
+        assertToString("substring(cat.name,1,locate(?1,cat.name)-1)", str.substring(0, str.indexOf("x")));
+    }
+    
+    @Test
+    public void IndexOf3() {
+        assertToString("substring(cat.name,2,1)", QCat.cat.name.substring(1,2));
+    }
 }

@@ -185,4 +185,11 @@ public class SubQueryTest extends AbstractQueryTest{
                         sub().from(cat).where(cat.kittens.get(cat.id).name.eq("Kate")).count());
     }
     
+    @Test
+    public void IndexOf() {
+        assertToString("(select count(cat) from Cat cat where locate(?1,cat.name) - 1 = ?2)",
+                
+                        sub().from(cat).where(cat.name.indexOf("a").eq(1)).count());
+    }
+    
 }

@@ -321,7 +321,8 @@ public abstract class SerializerBase<S extends SerializerBase<S>> implements Vis
         for (Template.Element element : template.getElements()) {
             if (element.getStaticText() != null) {
                 append(element.getStaticText());                
-            } else if (element.isAsString()) {
+            } else if (element.isAsString() && args.get(element.getIndex()) instanceof Constant) {
+                // serialize only constants directly
                 appendAsString(args.get(element.getIndex()));                
             } else {
                 int i = element.getIndex();

@@ -73,6 +73,7 @@ import com.mysema.query.jpa.domain.Show;
 import com.mysema.query.jpa.domain4.QBookMark;
 import com.mysema.query.jpa.domain4.QBookVersion;
 import com.mysema.query.jpa.hibernate.HibernateSubQuery;
+import com.mysema.query.jpa.impl.JPASubQuery;
 import com.mysema.query.types.ArrayConstructorExpression;
 import com.mysema.query.types.Concatenation;
 import com.mysema.query.types.ConstructorExpression;
@@ -829,6 +830,17 @@ public abstract class AbstractStandardTest {
             .groupBy(other.name).list(other.name)))
             .list(cat);
         assertNotNull(cats);        
+    }
+    
+    @Test
+    public void SubQuery3() {
+        QCat cat = QCat.cat;
+        QCat other = new QCat("other");
+        query().from(cat)
+            .where(cat.name.eq(new JPASubQuery().from(other)
+                                       .where(other.name.indexOf("B").eq(0))
+                                       .unique(other.name)))
+            .list(cat);
     }
 
     @Test
