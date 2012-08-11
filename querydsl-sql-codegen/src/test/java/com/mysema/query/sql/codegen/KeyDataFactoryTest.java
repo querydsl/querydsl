@@ -58,14 +58,14 @@ public class KeyDataFactoryTest extends AbstractJDBCTest{
         // EMPLOYEE
         
         // primary key
-        Map<String, PrimaryKeyData> primaryKeys = keyDataFactory.getPrimaryKeys(md, null, "EMPLOYEE");
+        Map<String, PrimaryKeyData> primaryKeys = keyDataFactory.getPrimaryKeys(md, null, null, "EMPLOYEE");
         assertFalse(primaryKeys.isEmpty());
         // inverse foreign keys
-        Map<String, InverseForeignKeyData> exportedKeys = keyDataFactory.getExportedKeys(md, null, "EMPLOYEE");
+        Map<String, InverseForeignKeyData> exportedKeys = keyDataFactory.getExportedKeys(md, null, null, "EMPLOYEE");
         assertFalse(exportedKeys.isEmpty());
         assertTrue(exportedKeys.containsKey("FK_SUPERIOR"));
         // foreign keys
-        Map<String, ForeignKeyData> importedKeys = keyDataFactory.getImportedKeys(md, null, "EMPLOYEE");
+        Map<String, ForeignKeyData> importedKeys = keyDataFactory.getImportedKeys(md, null, null, "EMPLOYEE");
         assertFalse(importedKeys.isEmpty());
         assertTrue(importedKeys.containsKey("FK_SUPERIOR"));
         assertTrue(importedKeys.containsKey("FK_SURVEY"));
@@ -73,14 +73,14 @@ public class KeyDataFactoryTest extends AbstractJDBCTest{
         // SURVEY
         
         // primary key
-        primaryKeys = keyDataFactory.getPrimaryKeys(md, null, "SURVEY");
+        primaryKeys = keyDataFactory.getPrimaryKeys(md, null, null, "SURVEY");
         assertFalse(primaryKeys.isEmpty());
         // inverse foreign keys
-        exportedKeys = keyDataFactory.getExportedKeys(md, null, "SURVEY");
+        exportedKeys = keyDataFactory.getExportedKeys(md, null, null, "SURVEY");
         assertFalse(exportedKeys.isEmpty());
         assertTrue(exportedKeys.containsKey("FK_SURVEY"));
         // foreign keys
-        importedKeys = keyDataFactory.getImportedKeys(md, null, "SURVEY");
+        importedKeys = keyDataFactory.getImportedKeys(md, null, null, "SURVEY");
         assertTrue(importedKeys.isEmpty());
         
     }

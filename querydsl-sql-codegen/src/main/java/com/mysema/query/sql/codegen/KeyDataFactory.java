@@ -67,8 +67,8 @@ public class KeyDataFactory {
     }
     
     public Map<String, InverseForeignKeyData> getExportedKeys(DatabaseMetaData md, 
-            String schemaPattern, String tableName) throws SQLException{
-        ResultSet foreignKeys = md.getExportedKeys(null, schemaPattern, tableName);
+            String catalog, String schema, String tableName) throws SQLException{
+        ResultSet foreignKeys = md.getExportedKeys(catalog, schema, tableName);
         Map<String,InverseForeignKeyData> inverseForeignKeyData = new HashMap<String,InverseForeignKeyData>();
         try{
             while (foreignKeys.next()) {
@@ -92,8 +92,8 @@ public class KeyDataFactory {
     }
 
     public Map<String, ForeignKeyData> getImportedKeys(DatabaseMetaData md,
-            String schemaPattern, String tableName) throws SQLException {
-        ResultSet foreignKeys = md.getImportedKeys(null, schemaPattern, tableName);
+            String catalog, String schema, String tableName) throws SQLException {
+        ResultSet foreignKeys = md.getImportedKeys(catalog, schema, tableName);
         Map<String,ForeignKeyData> foreignKeyData = new HashMap<String,ForeignKeyData>();
         try{
             while (foreignKeys.next()) {
@@ -117,8 +117,8 @@ public class KeyDataFactory {
     }
 
     public Map<String, PrimaryKeyData> getPrimaryKeys(DatabaseMetaData md,
-            String schemaPattern, String tableName) throws SQLException {
-        ResultSet primaryKeys = md.getPrimaryKeys(null, schemaPattern, tableName);
+            String catalog, String schema, String tableName) throws SQLException {
+        ResultSet primaryKeys = md.getPrimaryKeys(catalog, schema, tableName);
         Map<String,PrimaryKeyData> primaryKeyData = new HashMap<String,PrimaryKeyData>();
         try{
             while (primaryKeys.next()) {

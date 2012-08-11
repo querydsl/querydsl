@@ -80,6 +80,8 @@ public class MetaDataExporter {
     private static final int COLUMN_SIZE = 7;
 
     private static final int COLUMN_NULLABLE = 11;
+    
+    private static final int CATALOG_NAME = 1;
 
     private static final int SCHEMA_NAME = 2;
 
@@ -249,6 +251,8 @@ public class MetaDataExporter {
     }
 
     private void handleTable(DatabaseMetaData md, ResultSet tables) throws SQLException {
+        String catalog = tables.getString(CATALOG_NAME);
+        String schema = tables.getString(SCHEMA_NAME);
         String schemaName = normalize(tables.getString(SCHEMA_NAME));
         String tableName = normalize(tables.getString(TABLE_NAME));
         String className = namingStrategy.getClassName(tableName);
@@ -257,27 +261,27 @@ public class MetaDataExporter {
 
         // collect primary keys
         Map<String,PrimaryKeyData> primaryKeyData = keyDataFactory
-                .getPrimaryKeys(md, schemaPattern, tableName);
+                .getPrimaryKeys(md, catalog, schema, tableName);
         if (!primaryKeyData.isEmpty()) {
             classModel.getData().put(PrimaryKeyData.class, primaryKeyData.values());
         }
 
         // collect foreign keys
         Map<String,ForeignKeyData> foreignKeyData = keyDataFactory
-                .getImportedKeys(md, schemaPattern, tableName);
+                .getImportedKeys(md, catalog, schema, tableName);
         if (!foreignKeyData.isEmpty()) {
             classModel.getData().put(ForeignKeyData.class, foreignKeyData.values());
         }
 
         // collect inverse foreign keys
         Map<String,InverseForeignKeyData> inverseForeignKeyData = keyDataFactory
-                .getExportedKeys(md, schemaPattern, tableName);
+                .getExportedKeys(md, catalog, schema, tableName);
         if (!inverseForeignKeyData.isEmpty()) {
             classModel.getData().put(InverseForeignKeyData.class, inverseForeignKeyData.values());
         }
 
         // collect columns        
-        ResultSet columns = md.getColumns(null, schemaPattern, tableName.replace("/", "//"), null);
+        ResultSet columns = md.getColumns(catalog, schema, tableName.replace("/", "//"), null);
         try{
             while (columns.next()) {
                 handleColumn(classModel, tableName, columns);
