@@ -73,7 +73,11 @@ public class DefaultNamingStrategyTest {
     public void GetPropertyNameForForeignKey(){
         assertEquals("superiorFk", namingStrategy.getPropertyNameForForeignKey("fk_superior", entityModel));
         assertEquals("superiorFk", namingStrategy.getPropertyNameForForeignKey("FK_SUPERIOR", entityModel));        
+        
+        assertEquals("reffooBar", namingStrategy.getPropertyNameForForeignKey("REFFOO_BAR", entityModel));
+        assertEquals("refFooBar", namingStrategy.getPropertyNameForForeignKey("REF_FOO_BAR", entityModel));
     }
+        
     
     @Test
     public void GetPropertyNameForPrimaryKey(){
