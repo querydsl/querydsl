@@ -1198,11 +1198,16 @@ public class SelectBase extends AbstractBaseTest{
     @Test
     public void Where_Exists() throws SQLException {
         NumberSubQuery<Integer> sq1 = sq().from(employee).unique(employee.id.max());
-
         query().from(employee).where(sq1.exists()).count();
-
+    }
+    
+    @Test
+    public void Where_Exists_Not() throws SQLException {
+        NumberSubQuery<Integer> sq1 = sq().from(employee).unique(employee.id.max());
         query().from(employee).where(sq1.exists().not()).count();
     }
+    
+    
 
     @Test
     public void Wildcard(){
@@ -1214,7 +1219,7 @@ public class SelectBase extends AbstractBaseTest{
             assertNotNull(row[0] + " is not null", row[1]);
         }
     }
-
+    
     @Test
     @SkipForQuoted
     public void Wildcard_All() {
