@@ -78,7 +78,8 @@ public class OriginalNamingStrategy extends AbstractNamingStrategy {
     }
         
     private String getPropertyName(String name) {
-        return JavaSyntaxUtils.isReserved(name) ? name + reservedSuffix : name;
+        String rv = JavaSyntaxUtils.isReserved(name) ? name + reservedSuffix : name;
+        return rv.replace('-', '_');
     }
     
 }

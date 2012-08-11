@@ -52,6 +52,12 @@ public class DefaultNamingStrategyTest {
         assertEquals("userId", namingStrategy.getPropertyName("user_id", entityModel));
         assertEquals("accountEventId", namingStrategy.getPropertyName("accountEvent_id", entityModel));
     }
+    
+    @Test
+    public void GetPropertyName_With_Dashes() {
+        assertEquals("aFoobar", namingStrategy.getPropertyName("A-FOOBAR" , entityModel));
+        assertEquals("aFoobar", namingStrategy.getPropertyName("A_FOOBAR" , entityModel));
+    }
 
     @Test
     public void GetPropertyName_For_Column_With_Spaces() {
