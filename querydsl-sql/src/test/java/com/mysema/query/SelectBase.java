@@ -54,6 +54,7 @@ import com.mysema.query.group.Group;
 import com.mysema.query.group.GroupBy;
 import com.mysema.query.sql.Beans;
 import com.mysema.query.sql.QBeans;
+import com.mysema.query.sql.RelationalPathBase;
 import com.mysema.query.sql.SQLQuery;
 import com.mysema.query.sql.domain.Employee;
 import com.mysema.query.sql.domain.IdName;
@@ -1225,6 +1226,12 @@ public class SelectBase extends AbstractBaseTest{
     public void Wildcard_All() {
         expectedQuery = "select * from EMPLOYEE e";
         query().from(employee).list(Wildcard.all);
+    }
+    
+    @Test
+    public void Wildcard_All2(){
+        query().from(new RelationalPathBase(Object.class, "employee", null, "EMPLOYEE"))
+               .list(Wildcard.all);
     }
     
     @Test
