@@ -34,116 +34,130 @@ import com.mysema.query.jpa.domain2.Domain2;
 import com.mysema.util.FileUtils;
 
 public class HibernateDomainExporterTest {
-    
-    private final SerializerConfig serializerConfig = SimpleSerializerConfig.getConfig(
-            Domain.class.getPackage().getAnnotation(Config.class));
-        
+
+    private final SerializerConfig serializerConfig = SimpleSerializerConfig.getConfig(Domain.class
+            .getPackage().getAnnotation(Config.class));
+
     @Test
     public void Execute_MyEntity() throws IOException {
         FileUtils.delete(new File("target/gen6"));
         File myEntity = new File("src/test/resources/entity.hbm.xml");
         Configuration config = new Configuration();
         config.addFile(myEntity);
-        HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen6"), config);
+        HibernateDomainExporter exporter = new HibernateDomainExporter("Q",
+                new File("target/gen6"), config);
         exporter.execute();
-        
+
         File targetFile = new File("target/gen6/com/mysema/query/jpa/codegen/QMyEntity.java");
         assertContains(targetFile, "StringPath pk1", "StringPath pk2", "StringPath prop1");
     }
-    
+
     @Test
     public void Execute_Contact() throws IOException {
         FileUtils.delete(new File("target/gen1"));
         File contact = new File("src/test/resources/contact.hbm.xml");
         Configuration config = new Configuration();
         config.addFile(contact);
-        HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen1"), config);
+        HibernateDomainExporter exporter = new HibernateDomainExporter("Q",
+                new File("target/gen1"), config);
         exporter.execute();
-        
+
         File targetFile = new File("target/gen1/com/mysema/query/jpa/domain2/QContact.java");
-        assertContains(targetFile, "StringPath email", "StringPath firstName", "NumberPath<Long> id", "StringPath lastName");
+        assertContains(targetFile, "StringPath email", "StringPath firstName",
+                "NumberPath<Long> id", "StringPath lastName");
     }
-    
+
     @Test
     public void Execute_Contact_with_Suffix() throws IOException {
         FileUtils.delete(new File("target/gen1"));
         File contact = new File("src/test/resources/contact.hbm.xml");
         Configuration config = new Configuration();
         config.addFile(contact);
-        HibernateDomainExporter exporter = new HibernateDomainExporter("", "Type", new File("target/gen1"), config);
+        HibernateDomainExporter exporter = new HibernateDomainExporter("", "Type", new File(
+                "target/gen1"), config);
         exporter.execute();
-        
+
         File targetFile = new File("target/gen1/com/mysema/query/jpa/domain2/ContactType.java");
-        assertContains(targetFile, "StringPath email", "StringPath firstName", "NumberPath<Long> id", "StringPath lastName");
+        assertContains(targetFile, "StringPath email", "StringPath firstName",
+                "NumberPath<Long> id", "StringPath lastName");
     }
-    
+
     @Test
     public void Execute_Contact2() throws IOException {
         FileUtils.delete(new File("target/gen2"));
         File contact = new File("src/test/resources/contact2.hbm.xml");
         Configuration config = new Configuration();
         config.addFile(contact);
-        HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen2"), config);
+        HibernateDomainExporter exporter = new HibernateDomainExporter("Q",
+                new File("target/gen2"), config);
         exporter.execute();
-        
+
         File targetFile = new File("target/gen2/com/mysema/query/jpa/domain2/QContact.java");
-        assertContains(targetFile, "StringPath email", "StringPath firstName", "NumberPath<Long> id", "StringPath lastName");
+        assertContains(targetFile, "StringPath email", "StringPath firstName",
+                "NumberPath<Long> id", "StringPath lastName");
     }
-    
+
     @Test
-    public void Execute_Multiple() throws IOException{
+    public void Execute_Multiple() throws IOException {
         FileUtils.delete(new File("target/gen3"));
         Configuration config = new Configuration();
-        for (Class<?> cl : Domain.classes){
+        for (Class<?> cl : Domain.classes) {
             config.addAnnotatedClass(cl);
-        }        
-        HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen3"), serializerConfig, config);
+        }
+        HibernateDomainExporter exporter = new HibernateDomainExporter("Q",
+                new File("target/gen3"), serializerConfig, config);
         exporter.execute();
-        
+
         List<String> failures = new ArrayList<String>();
-        for (File file : new File("target/gen3/com/mysema/query/jpa/domain").listFiles()){
+        for (File file : new File("target/gen3/com/mysema/query/jpa/domain").listFiles()) {
             String result1 = Files.toString(file, Charsets.UTF_8);
-            String result2 = Files.toString(
-                new File("../querydsl-jpa/target/generated-test-sources/java/com/mysema/query/jpa/domain", file.getName()), Charsets.UTF_8);
-            if (!result1.equals(result2)){
+            String result2 = Files
+                    .toString(
+                            new File(
+                                    "../querydsl-jpa/target/generated-test-sources/java/com/mysema/query/jpa/domain",
+                                    file.getName()), Charsets.UTF_8);
+            if (!result1.equals(result2)) {
                 System.err.println(file.getName());
                 failures.add(file.getName());
             }
         }
-        
-        if (!failures.isEmpty()){
+
+        if (!failures.isEmpty()) {
             fail("Failed with " + failures.size() + " failures");
         }
-        
+
     }
-    
+
     @Test
-    public void Execute_Multiple2() throws IOException{
+    public void Execute_Multiple2() throws IOException {
         FileUtils.delete(new File("target/gen4"));
         Configuration config = new Configuration();
-        for (Class<?> cl : Domain2.classes){
+        for (Class<?> cl : Domain2.classes) {
             config.addAnnotatedClass(cl);
-        }        
-        HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen4"), serializerConfig, config);
+        }
+        HibernateDomainExporter exporter = new HibernateDomainExporter("Q",
+                new File("target/gen4"), serializerConfig, config);
         exporter.execute();
-        
+
         List<String> failures = new ArrayList<String>();
-        for (File file : new File("target/gen4/com/mysema/query/jpa/domain2").listFiles()){
+        for (File file : new File("target/gen4/com/mysema/query/jpa/domain2").listFiles()) {
             String result1 = Files.toString(file, Charsets.UTF_8);
-            String result2 = Files.toString(
-                new File("../querydsl-jpa/target/generated-test-sources/java/com/mysema/query/jpa/domain2", file.getName()), Charsets.UTF_8);
-            if (!result1.equals(result2)){
+            String result2 = Files
+                    .toString(
+                            new File(
+                                    "../querydsl-jpa/target/generated-test-sources/java/com/mysema/query/jpa/domain2",
+                                    file.getName()), Charsets.UTF_8);
+            if (!result1.equals(result2)) {
                 System.err.println(file.getName());
                 failures.add(file.getName());
             }
         }
-        
-        if (!failures.isEmpty()){
+
+        if (!failures.isEmpty()) {
             fail("Failed with " + failures.size() + " failures");
         }
-        
+
     }
-    
 
     @Test
     public void Execute_Store() throws IOException {
@@ -151,21 +165,22 @@ public class HibernateDomainExporterTest {
         File contact = new File("src/test/resources/store.hbm.xml");
         Configuration config = new Configuration();
         config.addFile(contact);
-        HibernateDomainExporter exporter = new HibernateDomainExporter("Q", new File("target/gen5"), config);
+        HibernateDomainExporter exporter = new HibernateDomainExporter("Q",
+                new File("target/gen5"), config);
         exporter.execute();
-        
+
         File targetFile = new File("target/gen5/com/mysema/query/jpa/domain3/QStore.java");
         assertContains(targetFile, "StringPath code", "StringPath address");
-        
+
         targetFile = new File("target/gen5/com/mysema/query/jpa/domain3/QHardwareStore.java");
         assertContains(targetFile, "StringPath code = _super.code;", "StringPath address");
     }
 
-    private static void assertContains(File file, String... strings) throws IOException{
+    private static void assertContains(File file, String... strings) throws IOException {
         assertTrue(file.getPath() + " doesn't exist", file.exists());
         String result = Files.toString(file, Charsets.UTF_8);
-        for (String str : strings){
-            assertTrue(str + " was not contained", result.contains(str));    
+        for (String str : strings) {
+            assertTrue(str + " was not contained", result.contains(str));
         }
     }
 

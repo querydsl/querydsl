@@ -71,6 +71,16 @@ public final class ReflectionUtils {
     }
 
     @Nullable
+    public static Method getGetterOrNull(Class<?> beanClass, String name){
+        Method method = getGetterOrNull(beanClass, name, Object.class);
+        if (method != null) {
+            return method;
+        } else {
+            return getGetterOrNull(beanClass, name, Boolean.class);
+        }
+    }
+    
+    @Nullable
     public static Method getGetterOrNull(Class<?> beanClass, String name, Class<?> type){
         String methodName = ((type.equals(Boolean.class) || type.equals(boolean.class)) ? "is" : "get") + BeanUtils.capitalize(name);
         while(beanClass != null && !beanClass.equals(Object.class)){

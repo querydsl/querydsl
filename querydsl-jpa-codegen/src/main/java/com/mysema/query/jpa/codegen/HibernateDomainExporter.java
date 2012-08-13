@@ -41,6 +41,7 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.mapping.Component;
 import org.hibernate.mapping.KeyValue;
 import org.hibernate.mapping.MappedSuperclass;
+import org.hibernate.mapping.OneToMany;
 import org.hibernate.mapping.PersistentClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +49,7 @@ import org.slf4j.LoggerFactory;
 import com.mysema.codegen.CodeWriter;
 import com.mysema.codegen.JavaWriter;
 import com.mysema.codegen.model.ClassType;
+import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeCategory;
 import com.mysema.query.QueryException;
@@ -67,7 +69,7 @@ import com.mysema.query.codegen.Supertype;
 import com.mysema.query.codegen.SupertypeSerializer;
 import com.mysema.query.codegen.TypeFactory;
 import com.mysema.query.codegen.TypeMappings;
-import com.mysema.util.BeanUtils;
+import com.mysema.util.ReflectionUtils;
 
 /**
  * HibernateDomainExporter exports Hibernate XML configuration files to Querydsl expression types
@@ -323,8 +325,18 @@ public class HibernateDomainExporter {
                 handleProperty(embeddedType, embeddedClass, (org.hibernate.mapping.Property)properties.next());
             }
             propertyType = embeddedType;
-        }else if (propertyType.getCategory() == TypeCategory.ENTITY) {
+        } else if (propertyType.getCategory() == TypeCategory.ENTITY) {
             propertyType = createEntityType(Class.forName(propertyType.getFullName()));
+        } else if (p.getValue() instanceof org.hibernate.mapping.Collection) {
+            org.hibernate.mapping.Collection collection = (org.hibernate.mapping.Collection)p.getValue();
+            if (collection.getElement() instanceof OneToMany) {
+                String entityName = ((OneToMany)collection.getElement()).getReferencedEntityName();
+                if (entityName != null) {
+                    Type componentType = typeFactory.create(Class.forName(entityName));
+                    propertyType = new SimpleType(propertyType, componentType);    
+                }                
+            }
+            
         }
         AnnotatedElement annotated = getAnnotatedElement(cl, p.getName());
         Property property = createProperty(entityType, p.getName(), propertyType, annotated);
@@ -377,43 +389,29 @@ public class HibernateDomainExporter {
 
 
     private Type getType(Class<?> cl, String propertyName) throws NoSuchMethodException {
-        try {
-            Field field = cl.getDeclaredField(propertyName);
-            return typeFactory.create(field.getType(), field.getGenericType());
-        } catch (NoSuchFieldException e) {
-            String getter = "get"+BeanUtils.capitalize(propertyName);
-            String bgetter = "is"+BeanUtils.capitalize(propertyName);
-            for (Method method : cl.getDeclaredMethods()) {
-                if ((method.getName().equals(getter) || method.getName().equals(bgetter)) 
-                        && method.getParameterTypes().length == 0) {
-                    return typeFactory.create(method.getReturnType(), method.getGenericReturnType());
-                }
-            }
-            if (cl.getSuperclass().equals(Object.class)) {
-                throw new IllegalArgumentException("No property found for " + cl.getName() + "." + propertyName);
+        Field field = ReflectionUtils.getFieldOrNull(cl, propertyName);
+        if (field != null) {
+            return typeFactory.create(field.getType(), field.getGenericType());    
+        } else {
+            Method method = ReflectionUtils.getGetterOrNull(cl, propertyName);
+            if (method != null) {
+                return typeFactory.create(method.getReturnType(), method.getGenericReturnType());
             } else {
-                return getType(cl.getSuperclass(), propertyName);
-            }
-
+                throw new IllegalArgumentException("No property found for " + cl.getName() + "." + propertyName);
+            }    
         }
     }
 
     private AnnotatedElement getAnnotatedElement(Class<?> cl, String propertyName) throws NoSuchMethodException {
-        try {
-            return cl.getDeclaredField(propertyName);
-        } catch (NoSuchFieldException e) {
-            String getter = "get"+BeanUtils.capitalize(propertyName);
-            String bgetter = "is"+BeanUtils.capitalize(propertyName);
-            for (Method method : cl.getDeclaredMethods()) {
-                if ((method.getName().equals(getter) || method.getName().equals(bgetter)) 
-                        && method.getParameterTypes().length == 0) {
-                    return method;
-                }
-            }
-            if (cl.getSuperclass().equals(Object.class)) {
-                throw new IllegalArgumentException("No property found for " + cl.getName() + "." + propertyName);
+        Field field = ReflectionUtils.getFieldOrNull(cl, propertyName);
+        if (field != null) {
+            return field;
+        } else {
+            Method method = ReflectionUtils.getGetterOrNull(cl, propertyName);
+            if (method != null) {
+                return method;
             } else {
-                return getAnnotatedElement(cl.getSuperclass(), propertyName);
+                throw new IllegalArgumentException("No property found for " + cl.getName() + "." + propertyName);
             }
         }
     }
