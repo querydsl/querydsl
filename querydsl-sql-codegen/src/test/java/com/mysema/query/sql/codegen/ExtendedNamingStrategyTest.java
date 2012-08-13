@@ -41,8 +41,8 @@ public class ExtendedNamingStrategyTest {
         assertEquals("UserData", namingStrategy.getClassName("user_data"));
         assertEquals("U", namingStrategy.getClassName("u"));
         assertEquals("Us",namingStrategy.getClassName("us"));
-        assertEquals("U", namingStrategy.getClassName("u_"));
-        assertEquals("Us",namingStrategy.getClassName("us_"));
+        assertEquals("U_", namingStrategy.getClassName("u_"));
+        assertEquals("Us_",namingStrategy.getClassName("us_"));
     }
 
     @Test

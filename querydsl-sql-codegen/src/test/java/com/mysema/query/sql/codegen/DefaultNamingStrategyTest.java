@@ -41,8 +41,8 @@ public class DefaultNamingStrategyTest {
         assertEquals("UserData", namingStrategy.getClassName("user_data"));
         assertEquals("U", namingStrategy.getClassName("u"));
         assertEquals("Us",namingStrategy.getClassName("us"));
-        assertEquals("U", namingStrategy.getClassName("u_"));
-        assertEquals("Us",namingStrategy.getClassName("us_"));
+        assertEquals("U_", namingStrategy.getClassName("u_"));
+        assertEquals("Us_",namingStrategy.getClassName("us_"));
     }
 
     @Test
@@ -76,6 +76,7 @@ public class DefaultNamingStrategyTest {
         
         assertEquals("reffooBar", namingStrategy.getPropertyNameForForeignKey("REFFOO_BAR", entityModel));
         assertEquals("refFooBar", namingStrategy.getPropertyNameForForeignKey("REF_FOO_BAR", entityModel));
+        assertEquals("refFooBar_", namingStrategy.getPropertyNameForForeignKey("REF_FOO_BAR_", entityModel));
     }
         
     
