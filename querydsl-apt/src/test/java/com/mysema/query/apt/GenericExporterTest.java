@@ -81,6 +81,8 @@ public class GenericExporterTest extends AbstractProcessorTest{
         
         expected.add("QJodaTest_BaseEntity.java");
         
+        expected.add("QEnum3Test_Entity1.java");
+        
         // FIXME
         expected.add("QEntityInheritanceTest_TestEntity.java");
         

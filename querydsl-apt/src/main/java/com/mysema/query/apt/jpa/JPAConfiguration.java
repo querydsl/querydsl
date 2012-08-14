@@ -24,14 +24,20 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.TypeElement;
 import javax.persistence.Access;
 import javax.persistence.AccessType;
+import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Temporal;
 import javax.persistence.Transient;
@@ -67,11 +73,14 @@ public class JPAConfiguration extends DefaultConfiguration {
 
     @SuppressWarnings("unchecked")
     protected List<Class<? extends Annotation>> getAnnotations() {
-        return Arrays.asList(Column.class, Embedded.class, EmbeddedId.class, GeneratedValue.class,
-            Id.class, Version.class, JoinColumn.class, ManyToOne.class, OneToMany.class,
-            PrimaryKeyJoinColumn.class, QueryType.class, QueryTransient.class, Temporal.class,
-            Transient.class);
+        return Arrays.asList(
+            Access.class, Basic.class, Column.class, ElementCollection.class,
+            Embedded.class, EmbeddedId.class, Enumerated.class, GeneratedValue.class, Id.class, 
+            JoinColumn.class, ManyToOne.class, ManyToMany.class, MapKeyEnumerated.class, 
+            OneToOne.class, OneToMany.class, PrimaryKeyJoinColumn.class, QueryType.class, 
+            QueryTransient.class, Temporal.class, Transient.class, Version.class);
     }
+   
 
     @Override
     public VisitorConfig getConfig(TypeElement e, List<? extends Element> elements){
