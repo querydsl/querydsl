@@ -100,6 +100,10 @@ public final class TypeFactory {
                 value = create(cl.getComponentType()).asArrayType();
             } else if (cl.isEnum()) {
                 value = new ClassType(TypeCategory.ENUM, cl);
+            } else if (Number.class.isAssignableFrom(cl) && Comparable.class.isAssignableFrom(cl)) {
+                value = new ClassType(TypeCategory.NUMERIC, cl, parameters);
+            } else if (entity) {
+                value = createOther(cl, entity, parameters);
             } else if (Map.class.isAssignableFrom(cl)) {
                 value = new SimpleType(Types.MAP, parameters[0], parameters[1]);
             } else if (List.class.isAssignableFrom(cl)) {
@@ -107,9 +111,7 @@ public final class TypeFactory {
             } else if (Set.class.isAssignableFrom(cl)) {
                 value = new SimpleType(Types.SET, parameters[0]);
             } else if (Collection.class.isAssignableFrom(cl)) {
-                value = new SimpleType(Types.COLLECTION, parameters[0]);
-            } else if (Number.class.isAssignableFrom(cl) && Comparable.class.isAssignableFrom(cl)) {
-                value = new ClassType(TypeCategory.NUMERIC, cl, parameters);
+                value = new SimpleType(Types.COLLECTION, parameters[0]);            
             } else {
                 value = createOther(cl, entity, parameters);
             }

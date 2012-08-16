@@ -16,11 +16,13 @@ import javax.persistence.Transient;
 import org.junit.Test;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.ForwardingSet;
 import com.google.common.io.Files;
 import com.mysema.query.apt.hibernate.HibernateAnnotationProcessor;
 import com.mysema.query.codegen.GenericExporter;
 import com.mysema.query.codegen.Keywords;
 import com.mysema.query.domain.AbstractEntityTest;
+import com.mysema.query.domain.CustomCollection;
 
 public class GenericExporterTest extends AbstractProcessorTest{
     
@@ -71,6 +73,7 @@ public class GenericExporterTest extends AbstractProcessorTest{
         exporter.setSupertypeAnnotation(MappedSuperclass.class);
         exporter.setSkipAnnotation(Transient.class);
         exporter.setTargetFolder(new File("target/GenericExporterTest2"));
+        exporter.addStopClass(ForwardingSet.class);
         exporter.export(AbstractEntityTest.class.getPackage());
         
         List<String> expected = new ArrayList<String>();
@@ -83,12 +86,31 @@ public class GenericExporterTest extends AbstractProcessorTest{
         
         expected.add("QEnum3Test_Entity1.java");
         
+        expected.add("QCustomCollection_MyCustomCollection.java");
+        expected.add("QCustomCollection_MyCustomCollection2.java");
+
+        
         // FIXME
         expected.add("QEntityInheritanceTest_TestEntity.java");
         
         execute(expected, "GenericExporterTest2", "HibernateAnnotationProcessor");
     }
     
+    @Test
+    public void Execute3() {
+        GenericExporter exporter = new GenericExporter();
+        exporter.setKeywords(Keywords.JPA);
+        exporter.setEntityAnnotation(Entity.class);
+        exporter.setEmbeddableAnnotation(Embeddable.class);
+        exporter.setEmbeddedAnnotation(Embedded.class);        
+        exporter.setSupertypeAnnotation(MappedSuperclass.class);
+        exporter.setSkipAnnotation(Transient.class);
+        exporter.setTargetFolder(new File("target/GenericExporterTest3"));
+        //exporter.addStopClass(ForwardingSet.class);
+        exporter.export(CustomCollection.MyCustomCollection.class,
+                        CustomCollection.MyCustomCollection2.class,
+                        CustomCollection.MyEntity.class);
+    }
     
     private void execute(List<String> expected, String genericExporterFolder, String aptFolder) throws IOException {
         List<String> failures = new ArrayList<String>();
