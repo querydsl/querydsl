@@ -1230,7 +1230,7 @@ public class SelectBase extends AbstractBaseTest{
     
     @Test
     public void Wildcard_All2(){
-        query().from(new RelationalPathBase(Object.class, "employee", null, "EMPLOYEE"))
+        query().from(new RelationalPathBase(Object.class, "employee", "public", "EMPLOYEE"))
                .list(Wildcard.all);
     }
     

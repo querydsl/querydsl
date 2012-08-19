@@ -139,35 +139,39 @@ class ScalaEntitySerializer @Inject()(val typeMappings: TypeMappings) extends Se
   private def getOtherProperties(model: EntityType, writer: CodeWriter, 
       properties: Collection[Property]) = {
     for (property <- properties if property.getType.getCategory != ENTITY) yield { 
+      val name = normalizeProperty(property.getName)
       val methodName: String = "create" + methodNames(property.getType.getCategory)
       
       val value = property.getType.getCategory match {
-        case BOOLEAN | STRING => methodName + "(\"" + property.getName + "\")"
+        case BOOLEAN | STRING => methodName + "(\"" + name + "\")"
         case LIST | SET | COLLECTION => {
           val componentType = writer.getGenericName(true, property.getParameter(0))
           val queryType = typeMappings.getPathType(getRaw(property.getParameter(0)), model, false)
           methodName + "["+componentType+","+
-            writer.getGenericName(true, queryType)+"](\"" + property.getName + "\")"
+            writer.getGenericName(true, queryType)+"](\"" + name+ "\")"
         }
         case MAP => {
-            val keyType = writer.getGenericName(true, property.getParameter(0))
-            val valueType = writer.getGenericName(true, property.getParameter(1))
-            val queryType = typeMappings.getPathType(getRaw(property.getParameter(1)), model, false)
-            methodName + "["+keyType+","+valueType+","+
-              writer.getGenericName(true, queryType)+"](\"" + property.getName + "\")"      
+          val keyType = writer.getGenericName(true, property.getParameter(0))
+          val valueType = writer.getGenericName(true, property.getParameter(1))
+          val queryType = typeMappings.getPathType(getRaw(property.getParameter(1)), model, false)
+          methodName + "["+keyType+","+valueType+","+
+            writer.getGenericName(true, queryType)+"](\"" + name + "\")"      
         }
-        case _ => methodName + "[" + 
-          getRawName(property.getType, writer) + "](\"" + property.getName + "\")"
+        case _ => methodName + "[" + getName(property.getType, writer) + "](\"" + name + "\")"
       }
-      (property.getEscapedName, value)
+      (normalizeProperty(property.getEscapedName), value)
     }
   }
   
-  private def getRawName(t: Type, writer: CodeWriter) = {
+  private def normalizeProperty(name: String) = {
+    if (name.contains("$")) name.substring(name.lastIndexOf("$")+1) else name
+  }
+  
+  private def getName(t: Type, writer: CodeWriter) = {
     if (primitives && Types.PRIMITIVES.containsKey(t)) {
       writer.getRawName(Types.PRIMITIVES.get(t)) 
     } else {
-      writer.getRawName(t)
+      writer.getGenericName(true, t)
     }
   }
   
