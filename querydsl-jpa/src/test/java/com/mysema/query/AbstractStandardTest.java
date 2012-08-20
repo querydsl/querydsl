@@ -271,7 +271,7 @@ public abstract class AbstractStandardTest {
     public void Exists(){
         assertTrue(query().from(cat).where(cat.kittens.any().name.eq("Ruth123")).exists());
     }
-
+    
     @Test
     public void NotExists(){
         assertTrue(query().from(cat).where(cat.kittens.any().name.eq("XXX")).notExists());
@@ -316,6 +316,14 @@ public abstract class AbstractStandardTest {
                 cat.kittens.any().in(savedCats),
                 cat.kittens.any().in(savedCats.subList(0, 1)).not())
             .list(cat);
+    }
+    
+    @Test
+    public void Any_In3() {
+        QEmployee employee = QEmployee.employee;
+        query().from(employee).where(
+                employee.jobFunctions.any().in(JobFunction.CODER, JobFunction.CONSULTANT))
+                .list(employee);
     }
     
     @Test

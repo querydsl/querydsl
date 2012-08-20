@@ -77,10 +77,10 @@ public abstract class JPQLQueryBase<Q extends JPQLQueryBase<Q>> extends Projecta
     @Override
     public boolean exists() {
         if (templates.isSelect1Supported()) {
-            return limit(1).uniqueResult(NumberTemplate.ONE) != null;
+            return limit(1).singleResult(NumberTemplate.ONE) != null;
         } else {            
             EntityPath<?> entityPath = (EntityPath<?>) queryMixin.getMetadata().getJoins().get(0).getTarget();
-            return limit(1).uniqueResult(entityPath) != null;
+            return !limit(1).list(entityPath).isEmpty();
         }                
     }
 

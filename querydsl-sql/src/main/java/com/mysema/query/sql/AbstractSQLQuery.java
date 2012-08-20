@@ -181,7 +181,7 @@ public abstract class AbstractSQLQuery<Q extends AbstractSQLQuery<Q> & Query> ex
 
     @Override
     public boolean exists() {
-        return limit(1).uniqueResult(NumberTemplate.ONE) != null;
+        return limit(1).singleResult(NumberTemplate.ONE) != null;
     }
 
     public Q forUpdate() {

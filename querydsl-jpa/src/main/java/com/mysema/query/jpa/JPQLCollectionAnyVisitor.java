@@ -13,11 +13,18 @@
  */
 package com.mysema.query.jpa;
 
+import java.util.UUID;
+
 import com.mysema.query.support.CollectionAnyVisitor;
 import com.mysema.query.support.Context;
+import com.mysema.query.types.ExpressionUtils;
 import com.mysema.query.types.Ops;
+import com.mysema.query.types.Path;
+import com.mysema.query.types.PathImpl;
 import com.mysema.query.types.Predicate;
 import com.mysema.query.types.PredicateOperation;
+import com.mysema.query.types.ToStringVisitor;
+import com.mysema.query.types.path.EntityPathBase;
 
 /**
  * JPQLCollectionAnyVisitor extends the {@link CollectionAnyVisitor} class with module specific
@@ -34,9 +41,15 @@ public final class JPQLCollectionAnyVisitor extends CollectionAnyVisitor {
     protected Predicate exists(Context c, Predicate condition) {
         JPQLSubQuery query = new JPQLSubQuery();
         for (int i = 0; i < c.paths.size(); i++) {
-            query.from(c.replacements.get(i));
-            query.where(new PredicateOperation(Ops.IN, 
-                    c.replacements.get(i), c.paths.get(i).getMetadata().getParent()));    
+            Path<?> child = c.paths.get(i).getMetadata().getParent();
+            Path<?> parent = child.getMetadata().getParent();
+            Path<?> replacement = c.replacements.get(i);
+            String prefix = parent.accept(ToStringVisitor.DEFAULT, TEMPLATES).replace('.', '_');
+            String suffix = UUID.randomUUID().toString().replace("-", "").substring(0,5);
+            EntityPathBase newParent = new EntityPathBase(parent.getType(), prefix + suffix);
+            Path newChild = new PathImpl(child.getType(), newParent, child.getMetadata().getExpression().toString());            
+            query.from(newParent).innerJoin(newChild, replacement);
+            query.where(ExpressionUtils.eq(newParent, parent));    
         }        
         c.clear();
         query.where(condition);
