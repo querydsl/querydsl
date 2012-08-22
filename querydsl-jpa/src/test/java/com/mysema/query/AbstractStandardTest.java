@@ -899,7 +899,7 @@ public abstract class AbstractStandardTest {
         assertTrue(strings.contains("a"));
         assertTrue(strings.contains("b"));
     }
-    
+        
     @Test
     @ExcludeIn(MYSQL)
     public void GroupBy() {
@@ -932,5 +932,17 @@ public abstract class AbstractStandardTest {
                 System.out.println("  book = " + pair.getFirst() + "," + pair.getSecond());
             }
         }
+    }
+    
+
+    @Test
+    public void GroupBy2() {
+//        select cat0_.name as col_0_0_, cat0_.breed as col_1_0_, sum(cat0_.bodyWeight) as col_2_0_ 
+//        from animal_ cat0_ where cat0_.DTYPE in ('C', 'DC') and cat0_.bodyWeight>? 
+//        group by cat0_.name , cat0_.breed
+        query().from(cat)
+            .where(cat.bodyWeight.gt(0))
+            .groupBy(cat.name, cat.breed)
+            .list(cat.name, cat.breed, cat.bodyWeight.sum());
     }
 }
