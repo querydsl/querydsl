@@ -116,8 +116,7 @@ public final class ClassPathUtils {
             if (className.startsWith("com.sun")) {
                 return null;
             } else {
-                //return Class.forName(className);
-                return classLoader.loadClass(className);
+                return Class.forName(className, true, classLoader);
             }
         } catch (ClassNotFoundException e) {
             return null;

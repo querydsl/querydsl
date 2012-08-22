@@ -13,6 +13,7 @@
  */
 package com.mysema.util;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
@@ -30,6 +31,14 @@ public class ClassPathUtilsTest {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         Set<Class<?>> classes = ClassPathUtils.scanPackage(classLoader, SomeClass.class.getPackage());
         assertFalse(classes.isEmpty());
+    }
+    
+    @Test
+    public void ScanPackage_Check_Initialized() throws IOException {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        Set<Class<?>> classes = ClassPathUtils.scanPackage(classLoader, getClass().getPackage());
+        assertFalse(classes.isEmpty());
+        assertEquals("XXX", SomeOtherClass2.property);
     }
 
 }
