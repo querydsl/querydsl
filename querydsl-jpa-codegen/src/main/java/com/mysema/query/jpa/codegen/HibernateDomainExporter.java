@@ -285,7 +285,7 @@ public class HibernateDomainExporter {
                 handleProperty(entityType, msc.getMappedClass(), (org.hibernate.mapping.Property) properties.next());
             }
         }
-
+        
         // entity classes
         Iterator<?> classMappings = configuration.getClassMappings();
         while (classMappings.hasNext()) {
@@ -328,13 +328,21 @@ public class HibernateDomainExporter {
         } else if (propertyType.getCategory() == TypeCategory.ENTITY) {
             propertyType = createEntityType(Class.forName(propertyType.getFullName()));
         } else if (p.getValue() instanceof org.hibernate.mapping.Collection) {
-            org.hibernate.mapping.Collection collection = (org.hibernate.mapping.Collection)p.getValue();
+            org.hibernate.mapping.Collection collection = (org.hibernate.mapping.Collection)p.getValue();            
             if (collection.getElement() instanceof OneToMany) {
                 String entityName = ((OneToMany)collection.getElement()).getReferencedEntityName();
                 if (entityName != null) {
                     Type componentType = typeFactory.create(Class.forName(entityName));
                     propertyType = new SimpleType(propertyType, componentType);    
                 }                
+            } else if (collection.getElement() instanceof Component) {
+                Component component = (Component)collection.getElement();            
+                Class<?> embeddedClass = Class.forName(component.getComponentClassName());
+                EntityType embeddedType = createEmbeddableType(embeddedClass);
+                Iterator<?> properties = component.getPropertyIterator();
+                while (properties.hasNext()) {
+                    handleProperty(embeddedType, embeddedClass, (org.hibernate.mapping.Property)properties.next());
+                }
             }
             
         }

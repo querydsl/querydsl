@@ -1,10 +1,9 @@
-package com.mysema.query.jpa.domain5;
+package com.mysema.query.jpa.domain6;
 
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 
 import org.hibernate.cfg.Configuration;
 import org.junit.Test;
@@ -21,19 +20,17 @@ public class DomainExporterTest {
         File gen = new File("target/" + getClass().getSimpleName());
         FileUtils.delete(gen);
         Configuration config = new Configuration();
-        for (String res : Arrays.asList("Customer.hbm.xml", 
-                "CustomerContact.hbm.xml", 
-                "CustomerHistory.hbm.xml")) {
-            config.addFile(new File("src/test/resources/com/mysema/query/jpa/domain5/" + res));
-        }
+        config.addFile(new File("src/test/resources/com/mysema/query/jpa/domain6/Contact.hbm.xml"));
         HibernateDomainExporter exporter = new HibernateDomainExporter("Q", gen, config);
         exporter.execute();
 
-        File targetFile = new File(gen, "com/mysema/query/jpa/domain5/QCustomer.java");
-        assertContains(targetFile, "SetPath<CustomerContact, QCustomerContact>",
-                                   "SetPath<CustomerHistory, QCustomerHistory>");
+        File targetFile = new File(gen, "com/mysema/query/jpa/domain6/QContact.java");
+        assertContains(targetFile, "ListPath<PhoneNumber, QPhoneNumber> phoneNumbers");
+        
+        targetFile = new File(gen, "com/mysema/query/jpa/domain6/QPhoneNumber.java");
+        assertContains(targetFile, "QPhoneNumber extends BeanPath<PhoneNumber>", 
+                                   "StringPath number = createString(\"number\")");
     }
-
 
     private static void assertContains(File file, String... strings) throws IOException {
         assertTrue(file.getPath() + " doesn't exist", file.exists());
