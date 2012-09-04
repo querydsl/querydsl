@@ -407,8 +407,11 @@ public class GenericExporter {
                 if (!embeddableTypes.containsKey(embeddableType) && !entityTypes.containsKey(embeddableType)) {
                     EntityType entityType = createEntityType(embeddableType, embeddableTypes);
                     addProperties(embeddableType, entityType);
+                    if (embeddableType == type) {
+                        propertyType = entityType;  
+                    }
                 }    
-            }            
+            }
         }
         if (propertyType == null) {
             propertyType = typeFactory.create(type, genericType);

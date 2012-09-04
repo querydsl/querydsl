@@ -13,6 +13,7 @@
  */
 package com.mysema.query.codegen;
 
+import com.google.common.base.Objects;
 import com.mysema.codegen.model.SimpleType;
 import com.mysema.codegen.model.Type;
 import com.mysema.codegen.model.TypeExtends;
@@ -71,7 +72,7 @@ public final class TypeResolver {
                 param = ((EntityType)param).getInnerType();
             }
             if (param instanceof TypeExtends 
-                    && ((TypeExtends)param).getVarName().equals(typeExtends.getVarName())){
+                    && Objects.equal(((TypeExtends)param).getVarName(), typeExtends.getVarName())){
                 index = i;
             }
         }

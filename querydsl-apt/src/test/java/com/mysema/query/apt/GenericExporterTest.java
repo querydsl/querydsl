@@ -23,6 +23,7 @@ import com.mysema.query.codegen.GenericExporter;
 import com.mysema.query.codegen.Keywords;
 import com.mysema.query.domain.AbstractEntityTest;
 import com.mysema.query.domain.CustomCollection;
+import com.mysema.query.domain.Generic2Test;
 
 public class GenericExporterTest extends AbstractProcessorTest{
     
@@ -30,7 +31,7 @@ public class GenericExporterTest extends AbstractProcessorTest{
     
     private static final List<String> CLASSES = getFiles(PACKAGE_PATH);
     
-    @Test // 2
+    @Test 
     public void Execute() throws IOException {
         // via APT
         process(QuerydslAnnotationProcessor.class, CLASSES, "QuerydslAnnotationProcessor");
@@ -47,19 +48,21 @@ public class GenericExporterTest extends AbstractProcessorTest{
         expected.add("QDelegateTest_User.java");
         expected.add("QDelegate2Test_Entity.java");
         expected.add("QExampleEntity.java");
+        
         // projections are not supported
         expected.add("QQueryProjectionTest_EntityWithProjection.java");
         
         // FIXME
         expected.add("QExternalEntityTest_MyEntity.java");
         expected.add("QQueryEmbeddable2Test_User.java");
+        expected.add("QQueryEmbedded4Test_User.java");
         expected.add("QSuperclass3Test_Subtype.java");
-        expected.add("QExamples_OrderBys.java");
+        expected.add("QExamples_OrderBys.java");        
         
         execute(expected, "GenericExporterTest", "QuerydslAnnotationProcessor");
     }
 
-    @Test // 1
+    @Test 
     public void Execute2() throws IOException {
         // via APT
         process(HibernateAnnotationProcessor.class, CLASSES, "HibernateAnnotationProcessor");
@@ -88,7 +91,6 @@ public class GenericExporterTest extends AbstractProcessorTest{
         
         expected.add("QCustomCollection_MyCustomCollection.java");
         expected.add("QCustomCollection_MyCustomCollection2.java");
-
         
         // FIXME
         expected.add("QEntityInheritanceTest_TestEntity.java");
@@ -110,6 +112,20 @@ public class GenericExporterTest extends AbstractProcessorTest{
         exporter.export(CustomCollection.MyCustomCollection.class,
                         CustomCollection.MyCustomCollection2.class,
                         CustomCollection.MyEntity.class);
+    }
+    
+    @Test 
+    public void Execute4() throws IOException {
+        GenericExporter exporter = new GenericExporter();
+        exporter.setKeywords(Keywords.JPA);
+        exporter.setEntityAnnotation(Entity.class);
+        exporter.setEmbeddableAnnotation(Embeddable.class);
+        exporter.setEmbeddedAnnotation(Embedded.class);        
+        exporter.setSupertypeAnnotation(MappedSuperclass.class);
+        exporter.setSkipAnnotation(Transient.class);
+        exporter.setTargetFolder(new File("target/GenericExporterTest4"));
+        exporter.addStopClass(ForwardingSet.class);
+        exporter.export(Generic2Test.class.getClasses());        
     }
     
     private void execute(List<String> expected, String genericExporterFolder, String aptFolder) throws IOException {
