@@ -16,6 +16,8 @@ package com.mysema.query.collections;
 import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 
@@ -28,7 +30,7 @@ import com.mysema.util.ReflectionUtils;
  *
  */
 public final class ColQueryFunctions {
-
+    
     public static <A extends Comparable<? super A>> boolean between(A a, A b, A c) {
         return a.compareTo(b) >= 0 && a.compareTo(c) <= 0;
     }
@@ -115,9 +117,18 @@ public final class ColQueryFunctions {
         return cal.get(Calendar.YEAR) * 100 + cal.get(Calendar.MONTH) + 1;
     }
 
-    public static boolean like(String str, String like){
-        // TODO : better escaping
-        return str.matches(like.replace("%", ".*").replace('_', '.'));
+    public static boolean like(String str, String like) {
+        if (like.contains("%") || like.contains("_")) {
+            Matcher m = Pattern.compile("[^\\%_]+").matcher(like);
+            StringBuffer sb = new StringBuffer();
+            while (m.find()) {
+                m.appendReplacement(sb, Matcher.quoteReplacement(Pattern.quote(m.group())));
+            }
+            m.appendTail(sb);
+            return str.matches(sb.toString().replace("%", ".*").replace("_", "."));    
+        } else {
+            return str.equals(like);
+        }        
     }
     
     public static boolean like(String str, String like, char escape) {

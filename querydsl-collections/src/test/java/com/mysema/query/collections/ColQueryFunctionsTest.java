@@ -15,6 +15,7 @@ package com.mysema.query.collections;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -27,4 +28,16 @@ public class ColQueryFunctionsTest {
         assertNull(ColQueryFunctions.coalesce(null,null));
     }
 
+    @Test
+    public void Like() {
+        assertTrue(ColQueryFunctions.like("abcDOG", "%DOG"));
+        assertTrue(ColQueryFunctions.like("DOGabc", "DOG%"));
+        assertTrue(ColQueryFunctions.like("abcDOGabc", "%DOG%"));        
+    }
+    
+    @Test
+    public void Like_With_Special_Chars() {
+        assertTrue(ColQueryFunctions.like("$DOG", "$DOG"));
+        assertTrue(ColQueryFunctions.like("$DOGabc", "$DOG%"));
+    }
 }
