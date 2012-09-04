@@ -41,7 +41,12 @@ public class TypeSuper extends TypeAdapter {
     @Override
     public String getGenericName(boolean asArgType, Set<String> packages, Set<String> classes) {
         if (!asArgType) {
-            return "? super " + superType.getGenericName(true, packages, classes);
+            if (superType instanceof TypeExtends) {
+                return "?";
+            } else {
+                return "? super " + superType.getGenericName(true, packages, classes);    
+            }            
+            
         } else {
             return super.getGenericName(asArgType, packages, classes);
         }
